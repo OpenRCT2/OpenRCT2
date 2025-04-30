@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,7 +13,6 @@
 #include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../core/MemoryStream.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/MazeCost.h"
@@ -23,6 +22,9 @@
 #include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"
 #include "../world/Park.h"
+#include "../world/Wall.h"
+#include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TrackElement.h"
 
 using namespace OpenRCT2;
 
@@ -30,7 +32,7 @@ using namespace OpenRCT2::TrackMetaData;
 
 // clang-format off
 /** rct2: 0x00993CE9 */
-static constexpr uint8_t Byte993CE9[] = {
+static constexpr uint8_t kByte993CE9[] = {
     0xFF, 0xE0, 0xFF,
     14, 0, 1, 2,
     6, 2, 4, 5,
@@ -39,7 +41,7 @@ static constexpr uint8_t Byte993CE9[] = {
 };
 
 /** rct2: 0x00993CFC */
-static constexpr uint8_t Byte993CFC[] = {
+static constexpr uint8_t kByte993CFC[] = {
     5, 12, 0xFF, 0xFF,
     9, 0, 0xFF, 0xFF,
     13, 4, 0xFF, 0xFF,
@@ -47,7 +49,7 @@ static constexpr uint8_t Byte993CFC[] = {
 };
 
 /** rct2: 0x00993D0C */
-static constexpr uint8_t Byte993D0C[] = {
+static constexpr uint8_t kByte993D0C[] = {
     3, 0, 0xFF, 0xFF,
     0, 1, 0xFF, 0xFF,
     1, 2, 0xFF, 0xFF,
@@ -97,8 +99,8 @@ GameActions::Result MazeSetTrackAction::Query() const
         res.ErrorMessage = STR_OFF_EDGE_OF_MAP;
         return res;
     }
-    auto& gameState = GetGameState();
-    if (!MapIsLocationOwned(_loc) && !gameState.Cheats.SandboxMode)
+    auto& gameState = getGameState();
+    if (!MapIsLocationOwned(_loc) && !gameState.cheats.sandboxMode)
     {
         res.Error = GameActions::Status::NotOwned;
         res.ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
@@ -123,12 +125,12 @@ GameActions::Result MazeSetTrackAction::Query() const
     auto clearanceHeight = _loc.z + 32;
 
     auto heightDifference = baseHeight - surfaceElement->GetBaseZ();
-    if (heightDifference >= 0 && !gameState.Cheats.DisableSupportLimits)
+    if (heightDifference >= 0 && !gameState.cheats.disableSupportLimits)
     {
         heightDifference /= kCoordsZPerTinyZ;
 
         auto* ride = GetRide(_rideIndex);
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride->getRideTypeDescriptor();
         if (heightDifference > rtd.Heights.MaxHeight)
         {
             res.Error = GameActions::Status::TooHigh;
@@ -169,7 +171,7 @@ GameActions::Result MazeSetTrackAction::Query() const
         }
 
         auto ride = GetRide(_rideIndex);
-        if (ride == nullptr || ride->type == RIDE_CRASH_TYPE_NONE)
+        if (ride == nullptr || !RideTypeIsValid(ride->type))
         {
             LOG_ERROR("Ride not found for rideIndex %u", _rideIndex);
             res.Error = GameActions::Status::NoClearance;
@@ -219,7 +221,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
         auto* trackElement = TileElementInsert<TrackElement>(_loc, 0b1111);
         Guard::Assert(trackElement != nullptr);
 
-        trackElement->SetClearanceZ(_loc.z + MAZE_CLEARANCE_HEIGHT);
+        trackElement->SetClearanceZ(_loc.z + kMazeClearanceHeight);
         trackElement->SetTrackType(TrackElemType::Maze);
         trackElement->SetRideType(ride->type);
         trackElement->SetRideIndex(_rideIndex);
@@ -230,13 +232,13 @@ GameActions::Result MazeSetTrackAction::Execute() const
 
         MapInvalidateTileFull(startLoc);
 
-        ride->maze_tiles++;
-        ride->GetStation().SetBaseZ(tileElement->GetBaseZ());
-        ride->GetStation().Start = { 0, 0 };
+        ride->mazeTiles++;
+        ride->getStation().SetBaseZ(tileElement->GetBaseZ());
+        ride->getStation().Start = { 0, 0 };
 
         if (_initialPlacement && !(flags & GAME_COMMAND_FLAG_GHOST))
         {
-            ride->overall_view = startLoc;
+            ride->overallView = startLoc;
         }
     }
 
@@ -250,10 +252,10 @@ GameActions::Result MazeSetTrackAction::Execute() const
 
             if (!_initialPlacement)
             {
-                segmentOffset = Byte993CE9[(_loc.direction + segmentOffset)];
+                segmentOffset = kByte993CE9[(_loc.direction + segmentOffset)];
                 tileElement->AsTrack()->MazeEntrySubtract(1 << segmentOffset);
 
-                uint8_t temp_edx = Byte993CFC[segmentOffset];
+                uint8_t temp_edx = kByte993CFC[segmentOffset];
                 if (temp_edx != 0xFF)
                 {
                     auto previousElementLoc = CoordsXY{ _loc }.ToTileStart() - CoordsDirectionDelta[_loc.direction];
@@ -308,7 +310,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
                 {
                     tileElement->AsTrack()->MazeEntryAdd(1 << segmentBit);
 
-                    uint32_t direction1 = Byte993D0C[segmentBit];
+                    uint32_t direction1 = kByte993D0C[segmentBit];
                     auto nextElementLoc = previousSegment.ToTileStart() + CoordsDirectionDelta[direction1];
 
                     TileElement* tmp_tileElement = MapGetTrackElementAtOfTypeFromRide(
@@ -316,7 +318,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
 
                     if (tmp_tileElement != nullptr)
                     {
-                        uint8_t edx11 = Byte993CFC[segmentBit];
+                        uint8_t edx11 = kByte993CFC[segmentBit];
                         tmp_tileElement->AsTrack()->MazeEntryAdd(1 << (edx11));
                     }
 
@@ -331,8 +333,8 @@ GameActions::Result MazeSetTrackAction::Execute() const
     if ((tileElement->AsTrack()->GetMazeEntry() & 0x8888) == 0x8888)
     {
         TileElementRemove(tileElement);
-        ride->ValidateStations();
-        ride->maze_tiles--;
+        ride->validateStations();
+        ride->mazeTiles--;
     }
 
     return res;

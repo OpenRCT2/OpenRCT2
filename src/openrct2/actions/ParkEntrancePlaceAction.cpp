@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,7 +20,8 @@
 #include "../world/Footpath.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
-#include "../world/Surface.h"
+#include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/SurfaceElement.h"
 
 using namespace OpenRCT2;
 
@@ -55,9 +56,9 @@ void ParkEntrancePlaceAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result ParkEntrancePlaceAction::Query() const
 {
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !GetGameState().Cheats.SandboxMode)
+    if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
     {
-        return GameActions::Result(GameActions::Status::NotInEditorMode, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::NotInEditorMode, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
     }
 
     auto res = GameActions::Result();
@@ -78,8 +79,8 @@ GameActions::Result ParkEntrancePlaceAction::Query() const
             GameActions::Status::NoFreeElements, STR_CANT_BUILD_THIS_HERE, STR_ERR_LANDSCAPE_DATA_AREA_FULL);
     }
 
-    const auto& gameState = GetGameState();
-    if (gameState.Park.Entrances.size() >= OpenRCT2::Limits::kMaxParkEntrances)
+    const auto& gameState = getGameState();
+    if (gameState.park.Entrances.size() >= OpenRCT2::Limits::kMaxParkEntrances)
     {
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
@@ -110,7 +111,7 @@ GameActions::Result ParkEntrancePlaceAction::Query() const
         EntranceElement* entranceElement = MapGetParkEntranceElementAt(entranceLoc, false);
         if (entranceElement != nullptr)
         {
-            return GameActions::Result(GameActions::Status::ItemAlreadyPlaced, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+            return GameActions::Result(GameActions::Status::ItemAlreadyPlaced, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
         }
     }
 
@@ -125,7 +126,7 @@ GameActions::Result ParkEntrancePlaceAction::Execute() const
 
     uint32_t flags = GetFlags();
 
-    GetGameState().Park.Entrances.push_back(_loc);
+    getGameState().park.Entrances.push_back(_loc);
 
     auto zLow = _loc.z;
     auto zHigh = zLow + ParkEntranceHeight;
@@ -161,7 +162,7 @@ GameActions::Result ParkEntrancePlaceAction::Execute() const
         entranceElement->SetSequenceIndex(index);
         entranceElement->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
         entranceElement->setEntryIndex(_entranceType);
-        if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL)
+        if (gFootpathSelection.LegacyPath == kObjectEntryIndexNull)
         {
             entranceElement->SetSurfaceEntryIndex(gFootpathSelection.NormalSurface);
         }

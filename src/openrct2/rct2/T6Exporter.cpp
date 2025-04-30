@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,7 +39,7 @@ namespace OpenRCT2::RCT2
     {
         try
         {
-            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_WRITE);
+            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::write);
             return SaveTrack(&fs);
         }
         catch (const std::exception& e)
@@ -51,6 +51,7 @@ namespace OpenRCT2::RCT2
 
     bool T6Exporter::SaveTrack(OpenRCT2::IStream* stream)
     {
+        auto& rtd = GetRideTypeDescriptor(_trackDesign.trackAndVehicle.rtdIndex);
         auto td6rideType = OpenRCT2RideTypeToRCT2RideType(_trackDesign.trackAndVehicle.rtdIndex);
         OpenRCT2::MemoryStream tempStream;
         tempStream.WriteValue<uint8_t>(td6rideType);
@@ -66,7 +67,8 @@ namespace OpenRCT2::RCT2
         tempStream.WriteValue<uint8_t>(0);
         auto entranceStyle = GetStationStyleFromIdentifier(_trackDesign.appearance.stationObjectIdentifier);
         tempStream.WriteValue<uint8_t>(entranceStyle);
-        uint16_t _totalAirTime = std::max<uint16_t>(255, (_trackDesign.statistics.totalAirTime * 123) / 1024);
+        // The 512 added is to enforce correctly rounding up, as integer division will truncate.
+        uint16_t _totalAirTime = std::min<uint16_t>(255, ((_trackDesign.statistics.totalAirTime * 123) + 512) / 1024);
         tempStream.WriteValue<uint8_t>(_totalAirTime);
         tempStream.WriteValue<uint8_t>(_trackDesign.operation.departFlags);
         tempStream.WriteValue<uint8_t>(_trackDesign.trackAndVehicle.numberOfTrains);
@@ -81,12 +83,18 @@ namespace OpenRCT2::RCT2
         tempStream.WriteValue<int8_t>(_trackDesign.statistics.maxNegativeVerticalG / kTD46GForcesMultiplier);
         tempStream.WriteValue<uint8_t>(_trackDesign.statistics.maxLateralG / kTD46GForcesMultiplier);
 
-        if (td6rideType == RIDE_TYPE_MINI_GOLF)
-            tempStream.WriteValue<uint8_t>(_trackDesign.statistics.holes & kRCT12InversionAndHoleMask);
+        if (rtd.specialType == RtdSpecialType::miniGolf)
+        {
+            auto numHoles = std::min<uint8_t>(31, _trackDesign.statistics.holes);
+            tempStream.WriteValue<uint8_t>(numHoles & kRCT12InversionAndHoleMask);
+        }
         else
-            tempStream.WriteValue<uint8_t>(_trackDesign.statistics.inversions & kRCT12InversionAndHoleMask);
+        {
+            auto numInversions = std::min<uint8_t>(31, _trackDesign.statistics.inversions);
+            tempStream.WriteValue<uint8_t>(numInversions & kRCT12InversionAndHoleMask);
+        }
 
-        tempStream.WriteValue<uint8_t>(_trackDesign.statistics.drops & kRCT12RideNumDropsMask);
+        tempStream.WriteValue<uint8_t>(std::min<uint8_t>(63, _trackDesign.statistics.drops) & kRCT12RideNumDropsMask);
         tempStream.WriteValue<uint8_t>(_trackDesign.statistics.highestDropHeight);
         tempStream.WriteValue<uint8_t>(_trackDesign.statistics.ratings.excitement / kTD46RatingsMultiplier);
         tempStream.WriteValue<uint8_t>(_trackDesign.statistics.ratings.intensity / kTD46RatingsMultiplier);
@@ -112,10 +120,11 @@ namespace OpenRCT2::RCT2
         {
             tempStream.WriteValue<uint8_t>(_trackDesign.appearance.vehicleColours[i].Tertiary);
         }
-        tempStream.WriteValue<uint8_t>(_trackDesign.operation.liftHillSpeed | (_trackDesign.operation.numCircuits << 5));
+        auto liftSpeed = std::min<uint8_t>(31, _trackDesign.operation.liftHillSpeed);
+        auto numCircuits = std::min<uint8_t>(7, _trackDesign.operation.numCircuits);
+        tempStream.WriteValue<uint8_t>(liftSpeed | (numCircuits << 5));
 
-        const auto& rtd = GetRideTypeDescriptor(_trackDesign.trackAndVehicle.rtdIndex);
-        if (rtd.HasFlag(RtdFlag::isMaze))
+        if (rtd.specialType == RtdSpecialType::maze)
         {
             for (const auto& mazeElement : _trackDesign.mazeElements)
             {
@@ -140,9 +149,9 @@ namespace OpenRCT2::RCT2
             for (const auto& trackElement : _trackDesign.trackElements)
             {
                 auto trackType = OpenRCT2TrackTypeToRCT2(trackElement.type);
-                if (trackType == TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop)
+                if (trackElement.type == TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop)
                 {
-                    trackType = TrackElemType::InvertedUp90ToFlatQuarterLoopAlias;
+                    trackType = OpenRCT2::RCT12::TrackElemType::InvertedUp90ToFlatQuarterLoopAlias;
                 }
                 tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(trackType));
                 auto flags = ConvertToTD46Flags(trackElement);
@@ -167,7 +176,7 @@ namespace OpenRCT2::RCT2
         for (const auto& sceneryElement : _trackDesign.sceneryElements)
         {
             auto flags = sceneryElement.flags;
-            if (sceneryElement.sceneryObject.Entry.GetType() == ObjectType::Walls)
+            if (sceneryElement.sceneryObject.Entry.GetType() == ObjectType::walls)
             {
                 flags &= ~0xFC;
                 flags |= (sceneryElement.tertiaryColour << 2);

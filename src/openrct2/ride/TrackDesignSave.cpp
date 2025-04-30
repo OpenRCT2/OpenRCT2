@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,7 +10,8 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../Game.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
+#include "../core/SawyerCoding.h"
 #include "../interface/Viewport.h"
 #include "../localisation/StringIds.h"
 #include "../object/FootpathObject.h"
@@ -20,12 +21,17 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../rct2/RCT2.h"
-#include "../util/SawyerCoding.h"
-#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Footpath.h"
 #include "../world/Scenery.h"
-#include "../world/Wall.h"
+#include "../world/tile_element/BannerElement.h"
+#include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/LargeSceneryElement.h"
+#include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/SmallSceneryElement.h"
+#include "../world/tile_element/TileElement.h"
+#include "../world/tile_element/TrackElement.h"
+#include "../world/tile_element/WallElement.h"
 #include "RideData.h"
 #include "Station.h"
 #include "Track.h"
@@ -141,11 +147,8 @@ bool TrackDesignSaveContainsTileElement(const TileElement* tileElement)
     return false;
 }
 
-static int32_t TrackDesignSaveGetTotalElementCount(TileElement* tileElement)
+static size_t TrackDesignSaveGetTotalElementCount(TileElement* tileElement)
 {
-    int32_t elementCount;
-    LargeSceneryTile* tile;
-
     switch (tileElement->GetType())
     {
         case TileElementType::Path:
@@ -156,14 +159,7 @@ static int32_t TrackDesignSaveGetTotalElementCount(TileElement* tileElement)
         case TileElementType::LargeScenery:
         {
             auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-            tile = sceneryEntry->tiles;
-            elementCount = 0;
-            do
-            {
-                tile++;
-                elementCount++;
-            } while (tile->x_offset != static_cast<int16_t>(static_cast<uint16_t>(0xFFFF)));
-            return elementCount;
+            return sceneryEntry->tiles.size();
         }
         default:
             return 0;
@@ -248,7 +244,7 @@ static TrackDesignSceneryElement TrackDesignSaveCreateSmallSceneryDesc(
 static TrackDesignAddStatus TrackDesignSaveAddSmallScenery(const CoordsXY& loc, SmallSceneryElement* sceneryElement)
 {
     auto entryIndex = sceneryElement->GetEntryIndex();
-    auto obj = ObjectEntryGetObject(ObjectType::SmallScenery, entryIndex);
+    auto obj = ObjectEntryGetObject(ObjectType::smallScenery, entryIndex);
     if (obj != nullptr && TrackDesignSaveIsSupportedObject(obj))
     {
         auto item = TrackDesignSaveCreateSmallSceneryDesc(*obj, loc, *sceneryElement);
@@ -276,11 +272,11 @@ static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, 
 {
     auto entryIndex = tileElement->GetEntryIndex();
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objectMgr.GetLoadedObject(ObjectType::LargeScenery, entryIndex);
+    auto obj = objectMgr.GetLoadedObject<LargeSceneryObject>(entryIndex);
     if (obj != nullptr && TrackDesignSaveIsSupportedObject(obj))
     {
         auto sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
-        auto sceneryTiles = sceneryEntry->tiles;
+        auto& sceneryTiles = sceneryEntry->tiles;
 
         int32_t z = tileElement->BaseHeight;
         auto direction = tileElement->GetDirection();
@@ -294,18 +290,17 @@ static TrackDesignAddStatus TrackDesignSaveAddLargeScenery(const CoordsXY& loc, 
         }
 
         // Iterate through each tile of the large scenery element
-        sequence = 0;
-        for (auto tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
+        for (auto& tile : sceneryTiles)
         {
-            CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
+            CoordsXY offsetPos{ tile.offset };
             auto rotatedOffsetPos = offsetPos.Rotate(direction);
 
             CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
-                                  sceneryOrigin->z + tile->z_offset };
-            auto largeElement = MapGetLargeScenerySegment({ tileLoc, static_cast<Direction>(direction) }, sequence);
+                                  sceneryOrigin->z + tile.offset.z };
+            auto largeElement = MapGetLargeScenerySegment({ tileLoc, static_cast<Direction>(direction) }, tile.index);
             if (largeElement != nullptr)
             {
-                if (sequence == 0)
+                if (tile.index == 0)
                 {
                     auto item = TrackDesignSaveCreateLargeSceneryDesc(*obj, tileLoc, *largeElement);
                     _trackSavedTileElementsDesc.push_back(std::move(item));
@@ -334,7 +329,7 @@ static TrackDesignSceneryElement TrackDesignSaveCreateWallDesc(
 static TrackDesignAddStatus TrackDesignSaveAddWall(const CoordsXY& loc, WallElement* wallElement)
 {
     auto entryIndex = wallElement->GetEntryIndex();
-    auto obj = ObjectEntryGetObject(ObjectType::Walls, entryIndex);
+    auto obj = ObjectEntryGetObject(ObjectType::walls, entryIndex);
     if (obj != nullptr && TrackDesignSaveIsSupportedObject(obj))
     {
         auto item = TrackDesignSaveCreateWallDesc(*obj, loc, *wallElement);
@@ -474,7 +469,7 @@ static void TrackDesignSavePopTileElementDesc(const TrackDesignSceneryElement& d
 static void TrackDesignSaveRemoveSmallScenery(const CoordsXY& loc, SmallSceneryElement* sceneryElement)
 {
     auto entryIndex = sceneryElement->GetEntryIndex();
-    auto obj = ObjectEntryGetObject(ObjectType::SmallScenery, entryIndex);
+    auto obj = ObjectEntryGetObject(ObjectType::smallScenery, entryIndex);
     if (obj != nullptr)
     {
         auto item = TrackDesignSaveCreateSmallSceneryDesc(*obj, loc, *sceneryElement);
@@ -493,7 +488,7 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
 
     auto entryIndex = tileElement->GetEntryIndex();
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objectMgr.GetLoadedObject(ObjectType::LargeScenery, entryIndex);
+    auto obj = objectMgr.GetLoadedObject<LargeSceneryObject>(entryIndex);
     if (obj != nullptr)
     {
         auto sceneryEntry = reinterpret_cast<const LargeSceneryEntry*>(obj->GetLegacyData());
@@ -511,18 +506,17 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
         }
 
         // Iterate through each tile of the large scenery element
-        sequence = 0;
-        for (auto tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
+        for (auto& tile : sceneryTiles)
         {
-            CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
+            CoordsXY offsetPos{ tile.offset };
             auto rotatedOffsetPos = offsetPos.Rotate(direction);
 
             CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
-                                  sceneryOrigin->z + tile->z_offset };
-            auto largeElement = MapGetLargeScenerySegment({ tileLoc, static_cast<Direction>(direction) }, sequence);
+                                  sceneryOrigin->z + tile.offset.z };
+            auto largeElement = MapGetLargeScenerySegment({ tileLoc, static_cast<Direction>(direction) }, tile.index);
             if (largeElement != nullptr)
             {
-                if (sequence == 0)
+                if (tile.index == 0)
                 {
                     auto item = TrackDesignSaveCreateLargeSceneryDesc(*obj, tileLoc, *largeElement);
                     TrackDesignSavePopTileElementDesc(item);
@@ -536,7 +530,7 @@ static void TrackDesignSaveRemoveLargeScenery(const CoordsXY& loc, LargeSceneryE
 static void TrackDesignSaveRemoveWall(const CoordsXY& loc, WallElement* wallElement)
 {
     auto entryIndex = wallElement->GetEntryIndex();
-    auto obj = ObjectEntryGetObject(ObjectType::Walls, entryIndex);
+    auto obj = ObjectEntryGetObject(ObjectType::walls, entryIndex);
     if (obj != nullptr)
     {
         auto item = TrackDesignSaveCreateWallDesc(*obj, loc, *wallElement);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,31 +9,34 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScMap.hpp"
+    #include "ScMap.hpp"
 
-#    include "../../../GameState.h"
-#    include "../../../entity/Balloon.h"
-#    include "../../../entity/Duck.h"
-#    include "../../../entity/EntityList.h"
-#    include "../../../entity/Fountain.h"
-#    include "../../../entity/Guest.h"
-#    include "../../../entity/Litter.h"
-#    include "../../../entity/MoneyEffect.h"
-#    include "../../../entity/Particle.h"
-#    include "../../../entity/Staff.h"
-#    include "../../../ride/Ride.h"
-#    include "../../../ride/TrainManager.h"
-#    include "../../../world/Map.h"
-#    include "../../Duktape.hpp"
-#    include "../entity/ScEntity.hpp"
-#    include "../entity/ScGuest.hpp"
-#    include "../entity/ScLitter.hpp"
-#    include "../entity/ScParticle.hpp"
-#    include "../entity/ScStaff.hpp"
-#    include "../entity/ScVehicle.hpp"
-#    include "../ride/ScRide.hpp"
-#    include "../ride/ScTrackIterator.h"
-#    include "../world/ScTile.hpp"
+    #include "../../../GameState.h"
+    #include "../../../entity/Balloon.h"
+    #include "../../../entity/Duck.h"
+    #include "../../../entity/EntityList.h"
+    #include "../../../entity/Fountain.h"
+    #include "../../../entity/Guest.h"
+    #include "../../../entity/Litter.h"
+    #include "../../../entity/MoneyEffect.h"
+    #include "../../../entity/Particle.h"
+    #include "../../../entity/Staff.h"
+    #include "../../../ride/Ride.h"
+    #include "../../../ride/RideManager.hpp"
+    #include "../../../ride/TrainManager.h"
+    #include "../../../world/Map.h"
+    #include "../../Duktape.hpp"
+    #include "../entity/ScBalloon.hpp"
+    #include "../entity/ScEntity.hpp"
+    #include "../entity/ScGuest.hpp"
+    #include "../entity/ScLitter.hpp"
+    #include "../entity/ScMoneyEffect.hpp"
+    #include "../entity/ScParticle.hpp"
+    #include "../entity/ScStaff.hpp"
+    #include "../entity/ScVehicle.hpp"
+    #include "../ride/ScRide.hpp"
+    #include "../ride/ScTrackIterator.h"
+    #include "../world/ScTile.hpp"
 
 namespace OpenRCT2::Scripting
 {
@@ -44,7 +47,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScMap::size_get() const
     {
-        return ToDuk(_context, GetGameState().MapSize);
+        return ToDuk(_context, getGameState().mapSize);
     }
 
     int32_t ScMap::numRides_get() const
@@ -54,7 +57,7 @@ namespace OpenRCT2::Scripting
 
     int32_t ScMap::numEntities_get() const
     {
-        return MAX_ENTITIES;
+        return kMaxEntities;
     }
 
     std::vector<std::shared_ptr<ScRide>> ScMap::rides_get() const
@@ -87,7 +90,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScMap::getEntity(int32_t id) const
     {
-        if (id >= 0 && id < MAX_ENTITIES)
+        if (id >= 0 && id < kMaxEntities)
         {
             auto spriteId = EntityId::FromUnderlying(id);
             auto sprite = GetEntity(spriteId);
@@ -107,7 +110,7 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityList<Balloon>())
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->Id)));
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScBalloon>(sprite->Id)));
             }
         }
         else if (type == "car")
@@ -117,8 +120,22 @@ namespace OpenRCT2::Scripting
                 for (auto carId = trainHead->Id; !carId.IsNull();)
                 {
                     auto car = GetEntity<Vehicle>(carId);
+
+                    if (car == nullptr)
+                    {
+                        break;
+                    }
+
                     result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(carId)));
-                    carId = car->next_vehicle_on_train;
+
+                    // Prevent infinite loops: Ensure next_vehicle_on_train is valid and not self-referencing
+                    auto nextCarId = car->next_vehicle_on_train;
+                    if (nextCarId == carId)
+                    {
+                        break;
+                    }
+
+                    carId = nextCarId;
                 }
             }
         }
@@ -127,6 +144,13 @@ namespace OpenRCT2::Scripting
             for (auto sprite : EntityList<Litter>())
             {
                 result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScLitter>(sprite->Id)));
+            }
+        }
+        else if (type == "money_effect")
+        {
+            for (auto sprite : EntityList<MoneyEffect>())
+            {
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScMoneyEffect>(sprite->Id)));
             }
         }
         else if (type == "duck")
@@ -212,7 +236,7 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityTileList<Balloon>(pos))
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->Id)));
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScBalloon>(sprite->Id)));
             }
         }
         else if (type == "car")
@@ -241,6 +265,13 @@ namespace OpenRCT2::Scripting
             for (auto sprite : EntityTileList<Guest>(pos))
             {
                 result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->Id)));
+            }
+        }
+        else if (type == "money_effect")
+        {
+            for (auto sprite : EntityTileList<MoneyEffect>(pos))
+            {
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScMoneyEffect>(sprite->Id)));
             }
         }
         else if (type == "staff")
@@ -310,7 +341,31 @@ namespace OpenRCT2::Scripting
         DukValue res;
         if (type == "car")
         {
-            res = createEntityType<Vehicle, ScVehicle>(_context, initializer);
+            Vehicle* entity = CreateEntity<Vehicle>();
+            if (entity == nullptr)
+            {
+                // Probably no more space for entities for this specified entity type.
+                res = ToDuk(_context, undefined);
+            }
+            else
+            {
+                auto entityPos = CoordsXYZ{ AsOrDefault(initializer["x"], 0), AsOrDefault(initializer["y"], 0),
+                                            AsOrDefault(initializer["z"], 0) };
+                entity->MoveTo(entityPos);
+
+                // Reset some important vehicle vars to their null values
+                entity->sound1_id = OpenRCT2::Audio::SoundId::Null;
+                entity->sound2_id = OpenRCT2::Audio::SoundId::Null;
+                entity->next_vehicle_on_train = EntityId::GetNull();
+                entity->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
+                for (size_t i = 0; i < std::size(entity->peep); i++)
+                {
+                    entity->peep[i] = EntityId::GetNull();
+                }
+                entity->BoatLocation.SetNull();
+
+                res = GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(entity->Id));
+            }
         }
         else if (type == "staff")
         {
@@ -326,7 +381,7 @@ namespace OpenRCT2::Scripting
         }
         else if (type == "money_effect")
         {
-            res = createEntityType<MoneyEffect, ScEntity>(_context, initializer);
+            res = createEntityType<MoneyEffect, ScMoneyEffect>(_context, initializer);
         }
         else if (type == "crashed_vehicle_particle")
         {
@@ -346,7 +401,7 @@ namespace OpenRCT2::Scripting
         }
         else if (type == "balloon")
         {
-            res = createEntityType<Balloon, ScEntity>(_context, initializer);
+            res = createEntityType<Balloon, ScBalloon>(_context, initializer);
         }
         else if (type == "duck")
         {
@@ -426,6 +481,10 @@ namespace OpenRCT2::Scripting
                 return GetObjectAsDukValue(_context, std::make_shared<ScGuest>(spriteId));
             case EntityType::Litter:
                 return GetObjectAsDukValue(_context, std::make_shared<ScLitter>(spriteId));
+            case EntityType::Balloon:
+                return GetObjectAsDukValue(_context, std::make_shared<ScBalloon>(spriteId));
+            case EntityType::MoneyEffect:
+                return GetObjectAsDukValue(_context, std::make_shared<ScMoneyEffect>(spriteId));
             case EntityType::CrashedVehicleParticle:
                 return GetObjectAsDukValue(_context, std::make_shared<ScCrashedVehicleParticle>(spriteId));
             default:

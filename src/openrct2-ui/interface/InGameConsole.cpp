@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,6 +20,7 @@
 #include <openrct2/core/UTF8.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Window.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/LocalisationService.h>
@@ -41,7 +42,7 @@ static int32_t InGameConsoleGetLineHeight()
 
 void InGameConsole::WriteInitial()
 {
-    InteractiveConsole::WriteLine(OPENRCT2_NAME " " OPENRCT2_VERSION);
+    InteractiveConsole::WriteLine(OPENRCT2_NAME " " kOpenRCT2Version);
     InteractiveConsole::WriteLine(LanguageGetString(STR_CONSOLE_HELPER_TEXT));
     InteractiveConsole::WriteLine("");
     WritePrompt();
@@ -54,6 +55,12 @@ void InGameConsole::WritePrompt()
 
 void InGameConsole::Input(ConsoleInput input)
 {
+    if (_isCommandAwaitingCompletion)
+    {
+        // Do not process input while a command is running
+        return;
+    }
+
     switch (input)
     {
         case ConsoleInput::LineClear:
@@ -66,10 +73,17 @@ void InGameConsole::Input(ConsoleInput input)
                 HistoryAdd(_consoleCurrentLine);
 
                 // Append text we are executing to prompt line
-                _consoleLines.back().append(_consoleCurrentLine);
+                _consoleLines.back().first.append(_consoleCurrentLine);
 
                 Execute(_consoleCurrentLine);
-                WritePrompt();
+                if (IsExecuting())
+                {
+                    _isCommandAwaitingCompletion = true;
+                }
+                else
+                {
+                    WritePrompt();
+                }
                 ClearInput();
                 RefreshCaret();
             }
@@ -122,13 +136,13 @@ void InGameConsole::ClearInput()
     _consoleCurrentLine.clear();
     if (_isOpen)
     {
-        _consoleTextInputSession = ContextStartTextInput(_consoleCurrentLine, CONSOLE_INPUT_SIZE);
+        _consoleTextInputSession = ContextStartTextInput(_consoleCurrentLine, kConsoleInputSize);
     }
 }
 
 void InGameConsole::HistoryAdd(const u8string& src)
 {
-    if (_consoleHistory.size() >= CONSOLE_HISTORY_SIZE)
+    if (_consoleHistory.size() >= kConsoleHistorySize)
     {
         _consoleHistory.pop_front();
     }
@@ -188,7 +202,7 @@ void InGameConsole::Open()
     _isOpen = true;
     ScrollToEnd();
     RefreshCaret();
-    _consoleTextInputSession = ContextStartTextInput(_consoleCurrentLine, CONSOLE_INPUT_SIZE);
+    _consoleTextInputSession = ContextStartTextInput(_consoleCurrentLine, kConsoleInputSize);
 }
 
 void InGameConsole::Close()
@@ -218,12 +232,6 @@ void InGameConsole::Toggle()
 
 void InGameConsole::WriteLine(const std::string& input, FormatToken colourFormat)
 {
-    // Include text colour format only for special cases
-    // The draw function handles the default text colour differently
-    auto colourCodepoint = "";
-    if (colourFormat != FormatToken::ColourWindow2)
-        colourCodepoint = "{WINDOW_COLOUR_2}";
-
     std::string line;
     std::size_t splitPos = 0;
     std::size_t stringOffset = 0;
@@ -231,13 +239,13 @@ void InGameConsole::WriteLine(const std::string& input, FormatToken colourFormat
     {
         splitPos = input.find('\n', stringOffset);
         line = input.substr(stringOffset, splitPos - stringOffset);
-        _consoleLines.emplace_back(colourCodepoint + line);
+        _consoleLines.emplace_back(line, colourFormat);
         stringOffset = splitPos + 1;
     }
 
-    if (_consoleLines.size() > CONSOLE_MAX_LINES)
+    if (_consoleLines.size() > kConsoleMaxLines)
     {
-        const std::size_t linesToErase = _consoleLines.size() - CONSOLE_MAX_LINES;
+        const std::size_t linesToErase = _consoleLines.size() - kConsoleMaxLines;
         _consoleLines.erase(_consoleLines.begin(), _consoleLines.begin() + linesToErase);
     }
 }
@@ -271,6 +279,12 @@ void InGameConsole::Update()
         }
     }
 
+    if (_isCommandAwaitingCompletion && !IsExecuting())
+    {
+        WritePrompt();
+        _isCommandAwaitingCompletion = false;
+    }
+
     // Flash the caret
     _consoleCaretTicks = (_consoleCaretTicks + 1) % 30;
 }
@@ -282,17 +296,9 @@ void InGameConsole::Draw(DrawPixelInfo& dpi) const
 
     // Set font
     ColourWithFlags textColour = { ThemeGetColour(WindowClass::Console, 1).colour, 0 };
+    const FontStyle style = InGameConsoleGetFontStyle();
     const int32_t lineHeight = InGameConsoleGetLineHeight();
     const int32_t maxLines = GetNumVisibleLines();
-
-    // This is something of a hack to ensure the text is actually black
-    // as opposed to a desaturated grey
-    thread_local std::string _colourFormatStr;
-    _colourFormatStr.clear();
-    if (textColour.colour == COLOUR_BLACK)
-    {
-        _colourFormatStr = "{BLACK}";
-    }
 
     // TTF looks far better without the outlines
     if (!LocalisationService_UseTrueTypeFont())
@@ -318,29 +324,55 @@ void InGameConsole::Draw(DrawPixelInfo& dpi) const
         INSET_RECT_FLAG_BORDER_INSET);
 
     std::string lineBuffer;
-    auto screenCoords = _consoleTopLeft + ScreenCoordsXY{ CONSOLE_EDGE_PADDING, CONSOLE_EDGE_PADDING };
+    auto screenCoords = _consoleTopLeft + ScreenCoordsXY{ kConsoleEdgePadding, kConsoleEdgePadding };
 
     // Draw text inside console
     for (std::size_t i = 0; i < _consoleLines.size() && i < static_cast<size_t>(maxLines); i++)
     {
         const size_t index = i + _consoleScrollPos;
-        lineBuffer = _colourFormatStr + _consoleLines[index];
-        DrawText(dpi, screenCoords, { textColour, InGameConsoleGetFontStyle() }, lineBuffer.c_str());
+        if (_consoleLines[index].second == FormatToken::ColourWindow2)
+        {
+            // This is something of a hack to ensure the text is actually black
+            // as opposed to a desaturated grey
+            if (textColour.colour == COLOUR_BLACK)
+            {
+                DrawText(dpi, screenCoords, { textColour, style }, "{BLACK}");
+                DrawText(dpi, screenCoords, { kTextColour255, style }, _consoleLines[index].first.c_str(), true);
+            }
+            else
+            {
+                DrawText(dpi, screenCoords, { textColour, style }, _consoleLines[index].first.c_str(), true);
+            }
+        }
+        else
+        {
+            std::string lineColour = FormatTokenToStringWithBraces(_consoleLines[index].second);
+            DrawText(dpi, screenCoords, { textColour, style }, lineColour.c_str());
+            DrawText(dpi, screenCoords, { kTextColour255, style }, _consoleLines[index].first.c_str(), true);
+        }
+
         screenCoords.y += lineHeight;
     }
 
-    screenCoords.y = _consoleBottomRight.y - lineHeight - CONSOLE_EDGE_PADDING - 1;
+    screenCoords.y = _consoleBottomRight.y - lineHeight - kConsoleEdgePadding - 1;
 
     // Draw current line
-    lineBuffer = _colourFormatStr + _consoleCurrentLine;
-    DrawText(dpi, screenCoords, { TEXT_COLOUR_255, InGameConsoleGetFontStyle() }, lineBuffer.c_str(), true);
+    if (textColour.colour == COLOUR_BLACK)
+    {
+        DrawText(dpi, screenCoords, { textColour, style }, "{BLACK}");
+        DrawText(dpi, screenCoords, { kTextColour255, style }, _consoleCurrentLine.c_str(), true);
+    }
+    else
+    {
+        DrawText(dpi, screenCoords, { textColour, style }, _consoleCurrentLine.c_str(), true);
+    }
 
     // Draw caret
-    if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD)
+    if (_consoleCaretTicks < kConsoleCaretFlashThreshold)
     {
         auto caret = screenCoords + ScreenCoordsXY{ _caretScreenPosX, lineHeight };
         uint8_t caretColour = ColourMapA[textColour.colour].lightest;
-        GfxFillRect(dpi, { caret, caret + ScreenCoordsXY{ CONSOLE_CARET_WIDTH, 1 } }, caretColour);
+        GfxFillRect(dpi, { caret, caret + ScreenCoordsXY{ kConsoleCaretWidth, 1 } }, caretColour);
     }
 
     // What about border colours?

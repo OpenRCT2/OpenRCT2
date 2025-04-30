@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,11 +9,9 @@
 
 #include "Date.h"
 
-#include "Context.h"
 #include "Game.h"
 #include "GameState.h"
 #include "core/Guard.hpp"
-#include "localisation/Localisation.Date.h"
 
 using namespace OpenRCT2;
 
@@ -110,15 +108,15 @@ int32_t Date::GetDaysInMonth(int32_t month)
 
 void OpenRCT2::DateUpdate(GameState_t& gameState)
 {
-    int32_t monthTicks = gameState.Date.monthTicks + kMonthTicksIncrement;
+    int32_t monthTicks = gameState.date.monthTicks + kMonthTicksIncrement;
     if (monthTicks > kMaskMonthTicks)
     {
-        gameState.Date.monthTicks = 0;
-        gameState.Date.monthsElapsed++;
+        gameState.date.monthTicks = 0;
+        gameState.date.monthsElapsed++;
     }
     else
     {
-        gameState.Date.monthTicks = static_cast<uint16_t>(monthTicks);
+        gameState.date.monthTicks = static_cast<uint16_t>(monthTicks);
     }
 }
 
@@ -149,7 +147,7 @@ void DateUpdateRealTimeOfDay()
 
 Date& GetDate()
 {
-    return GetGameState().Date;
+    return getGameState().date;
 }
 
 /**
@@ -158,7 +156,7 @@ Date& GetDate()
  */
 void ResetDate()
 {
-    auto& gameState = GetGameState();
-    gameState.Date = {};
+    auto& gameState = getGameState();
+    gameState.date = {};
     gCurrentRealTimeTicks = 0;
 }

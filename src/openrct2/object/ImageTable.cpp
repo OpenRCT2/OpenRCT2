@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,14 +13,15 @@
 #include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
+#include "../SpriteIds.h"
 #include "../core/File.h"
 #include "../core/FileScanner.h"
+#include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../drawing/ImageImporter.h"
-#include "../sprites.h"
 #include "Object.h"
 #include "ObjectFactory.h"
 
@@ -89,11 +90,14 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     {
         result.push_back(std::make_unique<RequiredImage>());
     }
-    else if (String::StartsWith(s, "$CSG"))
+    else if (String::startsWith(s, "$CSG"))
     {
-        auto range = ParseRange(s.substr(4));
-        if (!range.empty())
+        auto rangeStart = s.find('[');
+        auto rangeEnd = s.find(']');
+        if (rangeStart != std::string::npos && rangeEnd != std::string::npos)
         {
+            auto rangeString = s.substr(rangeStart, rangeEnd - rangeStart + 1);
+            auto range = ParseRange(rangeString);
             if (IsCsgLoaded())
             {
                 for (auto i : range)
@@ -115,11 +119,14 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             }
         }
     }
-    else if (String::StartsWith(s, "$G1"))
+    else if (String::startsWith(s, "$G1"))
     {
-        auto range = ParseRange(s.substr(3));
-        if (!range.empty())
+        auto rangeStart = s.find('[');
+        auto rangeEnd = s.find(']');
+        if (rangeStart != std::string::npos && rangeEnd != std::string::npos)
         {
+            auto rangeString = s.substr(rangeStart, rangeEnd - rangeStart + 1);
+            auto range = ParseRange(rangeString);
             for (auto i : range)
             {
                 result.push_back(std::make_unique<RequiredImage>(
@@ -127,26 +134,28 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             }
         }
     }
-    else if (String::StartsWith(s, "$RCT2:OBJDATA/"))
+    else if (String::startsWith(s, "$RCT2:OBJDATA/"))
     {
         auto name = s.substr(14);
         auto rangeStart = name.find('[');
-        if (rangeStart != std::string::npos)
+        auto rangeEnd = name.find(']');
+        if (rangeStart != std::string::npos && rangeEnd != std::string::npos)
         {
-            auto rangeString = name.substr(rangeStart);
-            auto range = ParseRange(name.substr(rangeStart));
+            auto rangeString = name.substr(rangeStart, rangeEnd - rangeStart + 1);
+            auto range = ParseRange(rangeString);
             name = name.substr(0, rangeStart);
             result = LoadObjectImages(context, name, range);
         }
     }
-    else if (String::StartsWith(s, "$LGX:"))
+    else if (String::startsWith(s, "$LGX:"))
     {
         auto name = s.substr(5);
         auto rangeStart = name.find('[');
-        if (rangeStart != std::string::npos)
+        auto rangeEnd = name.find(']');
+        if (rangeStart != std::string::npos && rangeEnd != std::string::npos)
         {
-            auto rangeString = name.substr(rangeStart);
-            auto range = ParseRange(name.substr(rangeStart));
+            auto rangeString = name.substr(rangeStart, rangeEnd - rangeStart + 1);
+            auto range = ParseRange(rangeString);
             name = name.substr(0, rangeStart);
             result = LoadImageArchiveImages(context, name, range);
         }
@@ -170,7 +179,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
         }
         catch (const std::exception& e)
         {
-            auto msg = String::StdFormat("Unable to load image '%s': %s", s.c_str(), e.what());
+            auto msg = String::stdFormat("Unable to load image '%s': %s", s.c_str(), e.what());
             context->LogWarning(ObjectError::BadImageTable, msg.c_str());
             result.push_back(std::make_unique<RequiredImage>());
         }
@@ -205,7 +214,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     }
     catch (const std::exception& e)
     {
-        auto msg = String::StdFormat("Unable to load image '%s': %s", path.c_str(), e.what());
+        auto msg = String::stdFormat("Unable to load image '%s': %s", path.c_str(), e.what());
         context->LogWarning(ObjectError::BadImageTable, msg.c_str());
         result.push_back(std::make_unique<RequiredImage>());
     }
@@ -223,7 +232,14 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadImageArc
         // Fix entry data offsets
         for (uint32_t i = 0; i < gxData->header.num_entries; i++)
         {
-            gxData->elements[i].offset += reinterpret_cast<uintptr_t>(gxData->data.get());
+            if (gxData->elements[i].offset == nullptr)
+            {
+                gxData->elements[i].offset = gxData->data.get();
+            }
+            else
+            {
+                gxData->elements[i].offset += reinterpret_cast<uintptr_t>(gxData->data.get());
+            }
         }
 
         if (range.size() > 0)
@@ -257,7 +273,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadImageArc
     }
     else
     {
-        auto msg = String::StdFormat("Unable to load Gx '%s'", path.c_str());
+        auto msg = String::stdFormat("Unable to load Gx '%s'", path.c_str());
         context->LogWarning(ObjectError::BadImageTable, msg.c_str());
         for (size_t i = 0; i < range.size(); i++)
         {
@@ -333,7 +349,7 @@ std::vector<int32_t> ImageTable::ParseRange(std::string s)
     if (s.length() >= 3 && s[0] == '[' && s[s.length() - 1] == ']')
     {
         s = s.substr(1, s.length() - 2);
-        auto parts = String::Split(s, "..");
+        auto parts = String::split(s, "..");
         if (parts.size() == 1)
         {
             result.push_back(std::stoi(parts[0]));
@@ -364,7 +380,7 @@ std::vector<int32_t> ImageTable::ParseRange(std::string s)
 std::string ImageTable::FindLegacyObject(const std::string& name)
 {
     const auto env = GetContext()->GetPlatformEnvironment();
-    auto objectsPath = env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
+    auto objectsPath = env->GetDirectoryPath(DirBase::rct2, DirId::objects);
     auto objectPath = Path::Combine(objectsPath, name);
     if (File::Exists(objectPath))
     {
@@ -391,7 +407,7 @@ std::string ImageTable::FindLegacyObject(const std::string& name)
         while (scanner->Next())
         {
             auto currentName = Path::GetFileName(scanner->GetPathRelative());
-            if (String::IEquals(currentName, name) || String::IEquals(currentName, altName))
+            if (String::iequals(currentName, name) || String::iequals(currentName, altName))
             {
                 objectPath = scanner->GetPath();
                 break;
@@ -496,7 +512,7 @@ std::vector<std::pair<std::string, Image>> ImageTable::GetImageSources(IReadObje
             if (itSource == result.end())
             {
                 auto imageData = context->GetData(path);
-                auto imageFormat = keepPalette ? IMAGE_FORMAT::PNG : IMAGE_FORMAT::PNG_32;
+                auto imageFormat = keepPalette ? ImageFormat::png : ImageFormat::png32;
                 auto image = Imaging::ReadFromBuffer(imageData, imageFormat);
                 auto pair = std::make_pair<std::string, Image>(std::move(path), std::move(image));
                 result.push_back(std::move(pair));

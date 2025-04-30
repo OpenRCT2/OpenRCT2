@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,7 +13,6 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/RideConstruction.h"
@@ -21,9 +20,11 @@
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Park.h"
-#include "../world/Surface.h"
-#include "../world/Wall.h"
+#include "../world/QuarterTile.h"
+#include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/Slope.h"
+#include "../world/tile_element/SurfaceElement.h"
 
 using namespace OpenRCT2;
 
@@ -77,7 +78,7 @@ GameActions::Result FootpathLayoutPlaceAction::Query() const
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode) && !MapIsLocationOwned(_loc))
+    if (!(gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode) && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
@@ -113,7 +114,7 @@ GameActions::Result FootpathLayoutPlaceAction::Execute() const
     gFootpathGroundFlags = 0;
 
     // Force ride construction to recheck area
-    _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
+    _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);
 
     return ElementInsertExecute(std::move(res));
 }
@@ -167,7 +168,7 @@ GameActions::Result FootpathLayoutPlaceAction::ElementInsertQuery(GameActions::R
     const auto clearanceData = canBuild.GetData<ConstructClearResult>();
     gFootpathGroundFlags = clearanceData.GroundFlags;
 
-    if (!GetGameState().Cheats.DisableClearanceChecks && (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER))
+    if (!getGameState().cheats.disableClearanceChecks && (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER))
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);

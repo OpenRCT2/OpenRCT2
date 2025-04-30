@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,49 +9,53 @@
 
 #include "ObjectTypes.h"
 
-#include "../util/Util.h"
+#include "../core/EnumUtils.hpp"
 #include "Object.h"
 
 #include <algorithm>
 
 constexpr std::array kAllObjectTypes = {
-    ObjectType::Ride,
-    ObjectType::SmallScenery,
-    ObjectType::LargeScenery,
-    ObjectType::Walls,
-    ObjectType::Banners,
-    ObjectType::Paths,
-    ObjectType::PathAdditions,
-    ObjectType::SceneryGroup,
-    ObjectType::ParkEntrance,
-    ObjectType::Water,
-    ObjectType::ScenarioText,
-    ObjectType::TerrainSurface,
-    ObjectType::TerrainEdge,
-    ObjectType::Station,
-    ObjectType::Music,
-    ObjectType::FootpathSurface,
-    ObjectType::FootpathRailings,
-    ObjectType::Audio,
+    ObjectType::ride,
+    ObjectType::smallScenery,
+    ObjectType::largeScenery,
+    ObjectType::walls,
+    ObjectType::banners,
+    ObjectType::paths,
+    ObjectType::pathAdditions,
+    ObjectType::sceneryGroup,
+    ObjectType::parkEntrance,
+    ObjectType::water,
+    ObjectType::scenarioText,
+    ObjectType::terrainSurface,
+    ObjectType::terrainEdge,
+    ObjectType::station,
+    ObjectType::music,
+    ObjectType::footpathSurface,
+    ObjectType::footpathRailings,
+    ObjectType::audio,
+    ObjectType::peepNames,
+    ObjectType::peepAnimations,
+    ObjectType::climate,
 };
 
-static_assert(kAllObjectTypes.size() == EnumValue(ObjectType::Count));
+static_assert(kAllObjectTypes.size() == EnumValue(ObjectType::count));
 
 // Object types that can be saved in a park file.
 static constexpr std::array<const ObjectType, kNumTransientObjectTypes> kTransientObjectTypes = {
-    ObjectType::Ride,         ObjectType::SmallScenery, ObjectType::LargeScenery,    ObjectType::Walls,
-    ObjectType::Banners,      ObjectType::Paths,        ObjectType::PathAdditions,   ObjectType::SceneryGroup,
-    ObjectType::ParkEntrance, ObjectType::Water,        ObjectType::TerrainSurface,  ObjectType::TerrainEdge,
-    ObjectType::Station,      ObjectType::Music,        ObjectType::FootpathSurface, ObjectType::FootpathRailings,
+    ObjectType::ride,         ObjectType::smallScenery,   ObjectType::largeScenery,    ObjectType::walls,
+    ObjectType::banners,      ObjectType::paths,          ObjectType::pathAdditions,   ObjectType::sceneryGroup,
+    ObjectType::parkEntrance, ObjectType::water,          ObjectType::terrainSurface,  ObjectType::terrainEdge,
+    ObjectType::station,      ObjectType::music,          ObjectType::footpathSurface, ObjectType::footpathRailings,
+    ObjectType::peepNames,    ObjectType::peepAnimations, ObjectType::climate,
 };
 
 // Object types that cannot be saved in a park file.
 static constexpr std::array<const ObjectType, kNumIntransientObjectTypes> kIntransientObjectTypes = {
-    ObjectType::ScenarioText,
-    ObjectType::Audio,
+    ObjectType::scenarioText,
+    ObjectType::audio,
 };
 
-static_assert(kNumTransientObjectTypes + kNumIntransientObjectTypes == static_cast<size_t>(ObjectType::Count));
+static_assert(kNumTransientObjectTypes + kNumIntransientObjectTypes == static_cast<size_t>(ObjectType::count));
 
 bool ObjectTypeIsTransient(ObjectType type)
 {

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,12 +30,13 @@ using namespace OpenRCT2;
 
 // Example entry: "$DAT:09F55406|00STBEN "
 // 5 for $DAT:, 8 for the checksum, 1 for the vertical bar, 8 for the .DAT name.
-static constexpr uint8_t DatEntryPrefixLength = 5;
-static constexpr uint8_t DatEntryFlagsLength = 8;
-static constexpr uint8_t DatEntrySeparatorLength = 1;
-static constexpr uint8_t DatEntryLength = DatEntryPrefixLength + DatEntryFlagsLength + DatEntrySeparatorLength + kDatNameLength;
-static constexpr uint8_t DatEntryFlagsStart = DatEntryPrefixLength;
-static constexpr uint8_t DatEntryNameStart = DatEntryPrefixLength + DatEntryFlagsLength + DatEntrySeparatorLength;
+static constexpr uint8_t kDatEntryPrefixLength = 5;
+static constexpr uint8_t kDatEntryFlagsLength = 8;
+static constexpr uint8_t kDatEntrySeparatorLength = 1;
+static constexpr uint8_t kDatEntryLength = kDatEntryPrefixLength + kDatEntryFlagsLength + kDatEntrySeparatorLength
+    + kDatNameLength;
+static constexpr uint8_t kDatEntryFlagsStart = kDatEntryPrefixLength;
+static constexpr uint8_t kDatEntryNameStart = kDatEntryPrefixLength + kDatEntryFlagsLength + kDatEntrySeparatorLength;
 
 void SceneryGroupObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 {
@@ -81,15 +82,15 @@ static std::optional<uint8_t> GetSceneryType(const ObjectType type)
 {
     switch (type)
     {
-        case ObjectType::SmallScenery:
+        case ObjectType::smallScenery:
             return SCENERY_TYPE_SMALL;
-        case ObjectType::LargeScenery:
+        case ObjectType::largeScenery:
             return SCENERY_TYPE_LARGE;
-        case ObjectType::Walls:
+        case ObjectType::walls:
             return SCENERY_TYPE_WALL;
-        case ObjectType::Banners:
+        case ObjectType::banners:
             return SCENERY_TYPE_BANNER;
-        case ObjectType::PathAdditions:
+        case ObjectType::pathAdditions:
             return SCENERY_TYPE_PATH_ITEM;
         default:
             return std::nullopt;
@@ -112,7 +113,7 @@ void SceneryGroupObject::UpdateEntryIndexes()
             continue;
 
         auto entryIndex = objectManager.GetLoadedObjectEntryIndex(ori->LoadedObject.get());
-        if (entryIndex == OBJECT_ENTRY_INDEX_NULL)
+        if (entryIndex == kObjectEntryIndexNull)
         {
             // Some parks have manually deleted objects from the save so they might not be loaded
             // silently remove the object from the SceneryGroupObject
@@ -153,51 +154,12 @@ void SceneryGroupObject::ReadJson(IReadObjectContext* context, json_t& root)
     if (properties.is_object())
     {
         _legacyType.priority = Json::GetNumber<uint8_t>(properties["priority"], 40);
-        _legacyType.entertainer_costumes = ReadJsonEntertainerCostumes(properties["entertainerCostumes"]);
+        _legacyType.entertainer_costumes = 0;
 
         _items = ReadJsonEntries(context, properties["entries"]);
     }
 
     PopulateTablesFromJson(context, root);
-}
-
-uint32_t SceneryGroupObject::ReadJsonEntertainerCostumes(json_t& jCostumes)
-{
-    uint32_t costumes = 0;
-    for (auto& jCostume : jCostumes)
-    {
-        auto entertainer = ParseEntertainerCostume(Json::GetString(jCostume));
-        auto peepSprite = EntertainerCostumeToSprite(entertainer);
-        costumes |= 1 << (static_cast<uint8_t>(peepSprite));
-    }
-    return costumes;
-}
-
-EntertainerCostume SceneryGroupObject::ParseEntertainerCostume(const std::string& s)
-{
-    if (s == "panda")
-        return EntertainerCostume::Panda;
-    if (s == "tiger")
-        return EntertainerCostume::Tiger;
-    if (s == "elephant")
-        return EntertainerCostume::Elephant;
-    if (s == "roman")
-        return EntertainerCostume::Roman;
-    if (s == "gorilla")
-        return EntertainerCostume::Gorilla;
-    if (s == "snowman")
-        return EntertainerCostume::Snowman;
-    if (s == "knight")
-        return EntertainerCostume::Knight;
-    if (s == "astronaut")
-        return EntertainerCostume::Astronaut;
-    if (s == "bandit")
-        return EntertainerCostume::Bandit;
-    if (s == "sheriff")
-        return EntertainerCostume::Sheriff;
-    if (s == "pirate")
-        return EntertainerCostume::Pirate;
-    return EntertainerCostume::Panda;
 }
 
 std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(IReadObjectContext* context, json_t& jEntries)
@@ -207,9 +169,9 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(IReadObje
     for (const auto& jEntry : jEntries)
     {
         auto entryName = Json::GetString(jEntry);
-        if (String::StartsWith(entryName, "$DAT:"))
+        if (String::startsWith(entryName, "$DAT:"))
         {
-            if (entryName.length() != DatEntryLength)
+            if (entryName.length() != kDatEntryLength)
             {
                 std::string errorMessage = "Malformed DAT entry in scenery group: " + entryName;
                 context->LogError(ObjectError::InvalidProperty, errorMessage.c_str());
@@ -219,8 +181,8 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(IReadObje
             try
             {
                 RCTObjectEntry entry = {};
-                entry.flags = std::stoul(entryName.substr(DatEntryFlagsStart, DatEntryFlagsLength), nullptr, 16);
-                std::memcpy(entry.name, entryName.c_str() + DatEntryNameStart, kDatNameLength);
+                entry.flags = std::stoul(entryName.substr(kDatEntryFlagsStart, kDatEntryFlagsLength), nullptr, 16);
+                std::memcpy(entry.name, entryName.c_str() + kDatEntryNameStart, kDatNameLength);
                 entry.checksum = 0;
                 entries.emplace_back(entry);
             }

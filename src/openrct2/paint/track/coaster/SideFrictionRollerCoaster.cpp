@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,13 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/Drawing.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/RideData.h"
 #include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../support/WoodenSupports.hpp"
@@ -152,19 +153,24 @@ static void SideFrictionRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr uint32_t imageIds[4] = {
-        21610,
-        21611,
-        21610,
-        21611,
+    static constexpr ImageIndex imageIds[4][2] = {
+        { 21610, 21612 },
+        { 21611, 21613 },
+        { 21610, 21612 },
+        { 21611, 21613 },
     };
 
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(imageIds[direction]), { 0, 0, height },
+        session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
         { { 0, 2, height }, { 32, 27, 2 } });
     DrawSupportForSequenceA<TrackElemType::EndStation>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
+    if (!TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::none, 0, 9, 11))
+    {
+        PaintAddImageAsParentRotated(
+            session, direction, session.TrackColours.WithIndex(imageIds[direction][1]), { 0, 0, height },
+            { { 0, 2, height + 27 }, { 32, 27, 0 } });
+    }
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -193,7 +199,7 @@ static void SideFrictionRCTrack25DegUp(
                     { { 0, 2, height }, { 32, 27, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21691), { 0, 0, height },
-                    { { 0, 26, height + 5 }, { 32, 1, 9 } });
+                    { { 0, 26, height + 5 }, { 32, 1, 20 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -201,7 +207,7 @@ static void SideFrictionRCTrack25DegUp(
                     { { 0, 2, height }, { 32, 27, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21692), { 0, 0, height },
-                    { { 0, 26, height + 5 }, { 32, 1, 9 } });
+                    { { 0, 26, height + 5 }, { 32, 1, 20 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -231,7 +237,7 @@ static void SideFrictionRCTrack25DegUp(
                     { { 0, 2, height }, { 32, 27, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21635), { 0, 0, height },
-                    { { 0, 26, height + 5 }, { 32, 1, 9 } });
+                    { { 0, 26, height + 5 }, { 32, 1, 20 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -239,7 +245,7 @@ static void SideFrictionRCTrack25DegUp(
                     { { 0, 2, height }, { 32, 27, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21636), { 0, 0, height },
-                    { { 0, 26, height + 5 }, { 32, 1, 9 } });
+                    { { 0, 26, height + 5 }, { 32, 1, 20 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -288,7 +294,7 @@ static void SideFrictionRCTrackFlatTo25DegUp(
                     { { 0, 2, height }, { 32, 27, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21683), { 0, 0, height },
-                    { { 0, 26, height + 5 }, { 32, 1, 9 } });
+                    { { 0, 26, height + 5 }, { 32, 1, 16 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -296,7 +302,7 @@ static void SideFrictionRCTrackFlatTo25DegUp(
                     { { 0, 2, height }, { 32, 27, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21684), { 0, 0, height },
-                    { { 0, 26, height + 5 }, { 32, 1, 9 } });
+                    { { 0, 26, height + 5 }, { 32, 1, 16 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -326,7 +332,7 @@ static void SideFrictionRCTrackFlatTo25DegUp(
                     { { 0, 2, height }, { 32, 27, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21627), { 0, 0, height },
-                    { { 0, 26, height + 5 }, { 32, 1, 9 } });
+                    { { 0, 26, height + 5 }, { 32, 1, 16 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -334,7 +340,7 @@ static void SideFrictionRCTrackFlatTo25DegUp(
                     { { 0, 2, height }, { 32, 27, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21628), { 0, 0, height },
-                    { { 0, 26, height + 5 }, { 32, 1, 9 } });
+                    { { 0, 26, height + 5 }, { 32, 1, 16 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -383,7 +389,7 @@ static void SideFrictionRCTrack25DegUpToFlat(
                     { { 0, 2, height }, { 32, 27, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21687), { 0, 0, height },
-                    { { 0, 26, height + 5 }, { 32, 1, 9 } });
+                    { { 0, 26, height + 5 }, { 32, 1, 16 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -391,7 +397,7 @@ static void SideFrictionRCTrack25DegUpToFlat(
                     { { 0, 2, height }, { 32, 27, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21688), { 0, 0, height },
-                    { { 0, 26, height + 5 }, { 32, 1, 9 } });
+                    { { 0, 26, height + 5 }, { 32, 1, 16 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -421,7 +427,7 @@ static void SideFrictionRCTrack25DegUpToFlat(
                     { { 0, 2, height }, { 32, 27, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21631), { 0, 0, height },
-                    { { 0, 26, height + 5 }, { 32, 1, 9 } });
+                    { { 0, 26, height + 5 }, { 32, 1, 16 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
@@ -429,7 +435,7 @@ static void SideFrictionRCTrack25DegUpToFlat(
                     { { 0, 2, height }, { 32, 27, 2 } });
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(21632), { 0, 0, height },
-                    { { 0, 26, height + 5 }, { 32, 1, 9 } });
+                    { { 0, 26, height + 5 }, { 32, 1, 16 } });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
@@ -531,8 +537,7 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::rightCorner, PaintSegment::topRightSide, PaintSegment::bottomRightSide),
-                    direction),
+                    EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -574,8 +579,8 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -618,9 +623,8 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                        PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
+                        PaintSegment::top, PaintSegment::right, PaintSegment::bottom, PaintSegment::centre,
+                        PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -629,8 +633,7 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::rightCorner, PaintSegment::topRightSide, PaintSegment::bottomRightSide),
-                    direction),
+                    EnumsToFlags(PaintSegment::right, PaintSegment::topRight, PaintSegment::bottomRight), direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -672,8 +675,8 @@ static void SideFrictionRCTrackLeftQuarterTurn5(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -830,8 +833,8 @@ static void SideFrictionRCTrackSBendLeft(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -878,8 +881,8 @@ static void SideFrictionRCTrackSBendLeft(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1031,8 +1034,8 @@ static void SideFrictionRCTrackSBendRight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1079,8 +1082,8 @@ static void SideFrictionRCTrackSBendRight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1232,9 +1235,7 @@ static void SideFrictionRCTrackLeftQuarterTurn3(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
+                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1444,7 +1445,7 @@ static void SideFrictionRCTrackLeftEighthToDiag(
                         { { 16, 16, height }, { 16, 16, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21812), { 0, 0, height },
-                        { { 16, 16, height + 27 }, { 16, 16, 0 } });
+                        { { 16, 16, height + 26 }, { 18, 18, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -1631,10 +1632,10 @@ static void SideFrictionRCTrackRightEighthToDiag(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21768), { 0, 0, height },
-                        { { 4, 4, height }, { 28, 28, 2 } });
+                        { { 16, 16, height }, { 16, 16, 2 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(21784), { 0, 0, height },
-                        { { 4, 4, height + 27 }, { 28, 28, 0 } });
+                        { { 16, 16, height + 26 }, { 18, 18, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -1726,8 +1727,8 @@ static void SideFrictionRCTrackDiagFlat(
         { 21846, 21847, 21848, 21849 },
     };
     const ImageIndex additionalImages[2][kNumOrthogonalDirections] = {
-        { 21826, ImageIndexUndefined, 21827, ImageIndexUndefined },
-        { 21850, ImageIndexUndefined, 21851, ImageIndexUndefined },
+        { 21826, kImageIndexUndefined, 21827, kImageIndexUndefined },
+        { 21850, kImageIndexUndefined, 21851, kImageIndexUndefined },
     };
 
     TrackPaintUtilDiagTilesPaint(
@@ -1741,7 +1742,7 @@ static void SideFrictionRCTrackDiagFlat(
             {
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(additionalImages[trackElement.HasChain()][direction]),
-                    { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+                    { -16, -16, height }, { { -16, -16, height + 24 }, { 32, 32, 0 } });
             }
             break;
         case 2:
@@ -1749,7 +1750,7 @@ static void SideFrictionRCTrackDiagFlat(
             {
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours.WithIndex(additionalImages[trackElement.HasChain()][direction]),
-                    { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
+                    { -16, -16, height }, { { -16, -16, height + 24 }, { 32, 32, 0 } });
             }
             break;
     }
@@ -2301,7 +2302,7 @@ static void SideFrictionRCTrackDiagFlatTo25DegDown(
                             { { -16, -16, height }, { 32, 32, 2 } });
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(21863), { -16, -16, height },
-                            { { -16, -16, height + 35 }, { 32, 32, 0 } });
+                            { { -16, -16, height + 32 }, { 32, 32, 0 } });
                         break;
                 }
             }
@@ -2315,7 +2316,7 @@ static void SideFrictionRCTrackDiagFlatTo25DegDown(
                             { { -16, -16, height }, { 32, 32, 2 } });
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(21839), { -16, -16, height },
-                            { { -16, -16, height + 35 }, { 32, 32, 0 } });
+                            { { -16, -16, height + 32 }, { 32, 32, 0 } });
                         break;
                 }
             }
@@ -2331,7 +2332,7 @@ static void SideFrictionRCTrackDiagFlatTo25DegDown(
                             { { -16, -16, height }, { 32, 32, 2 } });
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(21862), { -16, -16, height },
-                            { { -16, -16, height + 35 }, { 32, 32, 0 } });
+                            { { -16, -16, height + 32 }, { 32, 32, 0 } });
                         break;
                 }
             }
@@ -2345,7 +2346,7 @@ static void SideFrictionRCTrackDiagFlatTo25DegDown(
                             { { -16, -16, height }, { 32, 32, 2 } });
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex(21838), { -16, -16, height },
-                            { { -16, -16, height + 35 }, { 32, 32, 0 } });
+                            { { -16, -16, height + 32 }, { 32, 32, 0 } });
                         break;
                 }
             }
@@ -2594,7 +2595,7 @@ static void SideFrictionRCTrack25DegUpTo60DegUp(
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_1_B),
-                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
+                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 40 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
@@ -2602,7 +2603,7 @@ static void SideFrictionRCTrack25DegUpTo60DegUp(
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_2_B),
-                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
+                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 40 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
@@ -2655,7 +2656,7 @@ static void SideFrictionRCTrack60DegUpTo25DegUp(
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_1_B),
-                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
+                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 36 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
@@ -2663,7 +2664,7 @@ static void SideFrictionRCTrack60DegUpTo25DegUp(
                 { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_2_B),
-                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 9 } });
+                { 0, 0, height }, { { 0, 26, height + 5 }, { 32, 1, 36 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
@@ -2909,7 +2910,7 @@ static void SideFrictionRCTrackDiag60DegDownTo25DegDown(
         session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 };
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSideFrictionRC(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionSideFrictionRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -2994,6 +2995,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionSideFrictionRC(int32_t trackType)
             return SideFrictionRCTrackDiag25DegUpTo60DegUp;
         case TrackElemType::DiagDown60ToDown25:
             return SideFrictionRCTrackDiag60DegDownTo25DegDown;
+        default:
+            return TrackPaintFunctionDummy;
     }
-    return nullptr;
 }

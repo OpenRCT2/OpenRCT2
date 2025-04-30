@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,7 +22,6 @@
 #include "object/ObjectLimits.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
-#include "util/Util.h"
 
 #include <cmath>
 #include <cstring>
@@ -116,7 +115,7 @@ std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
 {
     try
     {
-        OpenRCT2::FileStream stream(path, OpenRCT2::FILE_MODE_OPEN);
+        OpenRCT2::FileStream stream(path, OpenRCT2::FileMode::open);
 
         SpriteFile spriteFile;
         stream.Read(&spriteFile.Header, sizeof(RCTG1Header));
@@ -156,7 +155,7 @@ bool SpriteFile::Save(const utf8* path)
 {
     try
     {
-        OpenRCT2::FileStream stream(path, OpenRCT2::FILE_MODE_WRITE);
+        OpenRCT2::FileStream stream(path, OpenRCT2::FileMode::write);
         stream.Write(&Header, sizeof(RCTG1Header));
 
         if (Header.num_entries > 0)
@@ -207,17 +206,17 @@ static bool SpriteImageExport(const G1Element& spriteElement, u8string_view outP
     GfxSpriteToBuffer(dpi, args);
 
     auto const pixels8 = dpi.bits;
-    auto const pixelsLen = (dpi.width + dpi.pitch) * dpi.height;
+    auto const pixelsLen = dpi.LineStride() * dpi.WorldHeight();
     try
     {
         Image image;
         image.Width = dpi.width;
         image.Height = dpi.height;
         image.Depth = 8;
-        image.Stride = dpi.width + dpi.pitch;
-        image.Palette = std::make_unique<GamePalette>(StandardPalette);
+        image.Stride = dpi.LineStride();
+        image.Palette = StandardPalette;
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
-        Imaging::WriteToFile(outPath, image, IMAGE_FORMAT::PNG);
+        Imaging::WriteToFile(outPath, image, ImageFormat::png);
         return true;
     }
     catch (const std::exception& e)
@@ -231,10 +230,10 @@ static std::optional<ImageImporter::ImportResult> SpriteImageImport(u8string_vie
 {
     try
     {
-        auto format = IMAGE_FORMAT::PNG_32;
+        auto format = ImageFormat::png32;
         if (meta.palette == Palette::KeepIndices)
         {
-            format = IMAGE_FORMAT::PNG;
+            format = ImageFormat::png;
         }
 
         ImageImporter importer;
@@ -264,7 +263,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
     if (argc == 0)
         return -1;
 
-    if (String::IEquals(argv[0], "details"))
+    if (String::iequals(argv[0], "details"))
     {
         if (argc < 2)
         {
@@ -311,7 +310,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "export"))
+    if (String::iequals(argv[0], "export"))
     {
         if (argc < 4)
         {
@@ -345,7 +344,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "exportall"))
+    if (String::iequals(argv[0], "exportall"))
     {
         if (argc < 3)
         {
@@ -390,7 +389,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "exportalldat"))
+    if (String::iequals(argv[0], "exportalldat"))
     {
         if (argc < 3)
         {
@@ -451,7 +450,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "create"))
+    if (String::iequals(argv[0], "create"))
     {
         if (argc < 2)
         {
@@ -466,7 +465,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "append"))
+    if (String::iequals(argv[0], "append"))
     {
         if (argc != 3 && argc != 5)
         {
@@ -519,7 +518,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (String::IEquals(argv[0], "build"))
+    if (String::iequals(argv[0], "build"))
     {
         if (argc < 3)
         {
@@ -538,6 +537,9 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
             return -1;
         }
 
+        if (jsonSprites.is_object() && !jsonSprites["images"].is_null())
+            jsonSprites = jsonSprites["images"];
+
         if (!jsonSprites.is_array())
         {
             fprintf(stderr, "Error: expected array\n");
@@ -555,6 +557,8 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         fprintf(stdout, "Building: %s\n", spriteFilePath);
 
         json_t sprite_description;
+
+        uint32_t numSuccessful = 0;
 
         // Note: jsonSprite is deliberately left non-const: json_t behaviour changes when const
         for (auto& [jsonKey, jsonSprite] : jsonSprites.items())
@@ -589,6 +593,8 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
 
             if (!silent)
                 fprintf(stdout, "Added: %s\n", imagePath.c_str());
+
+            numSuccessful++;
         }
 
         if (!spriteFile.Save(spriteFilePath))
@@ -597,11 +603,11 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        fprintf(stdout, "Finished\n");
+        fprintf(stdout, "Finished building graphics repository with %u images\n", numSuccessful);
         return 1;
     }
 
-    if (String::IEquals(argv[0], "combine"))
+    if (String::iequals(argv[0], "combine"))
     {
         return CommandLineForSpriteCombine(argv, argc);
     }
@@ -622,8 +628,8 @@ static int32_t CommandLineForSpriteCombine(const char** argv, int32_t argc)
     const utf8* dataFile = argv[2];
     const utf8* outputPath = argv[3];
 
-    auto fileHeader = OpenRCT2::FileStream(indexFile, OpenRCT2::FILE_MODE_OPEN);
-    auto fileData = OpenRCT2::FileStream(dataFile, OpenRCT2::FILE_MODE_OPEN);
+    auto fileHeader = OpenRCT2::FileStream(indexFile, OpenRCT2::FileMode::open);
+    auto fileData = OpenRCT2::FileStream(dataFile, OpenRCT2::FileMode::open);
     auto fileHeaderSize = fileHeader.GetLength();
     auto fileDataSize = fileData.GetLength();
 
@@ -632,7 +638,7 @@ static int32_t CommandLineForSpriteCombine(const char** argv, int32_t argc)
     RCTG1Header header = {};
     header.num_entries = numEntries;
     header.total_size = fileDataSize;
-    OpenRCT2::FileStream outputStream(outputPath, OpenRCT2::FILE_MODE_WRITE);
+    OpenRCT2::FileStream outputStream(outputPath, OpenRCT2::FileMode::write);
 
     outputStream.Write(&header, sizeof(RCTG1Header));
     auto g1Elements32 = std::make_unique<RCTG1Element[]>(numEntries);

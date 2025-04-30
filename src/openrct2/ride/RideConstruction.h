@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,20 +10,44 @@
 #pragma once
 
 #include "../Identifiers.h"
+#include "../core/FlagHolder.hpp"
+#include "../core/Money.hpp"
 #include "../world/Location.hpp"
+#include "RideColour.h"
 #include "Station.h"
 #include "Track.h"
 
 #include <cstdint>
 #include <optional>
 
-using track_type_t = uint16_t;
-
 struct TileElement;
 struct CoordsXYE;
 struct RideTypeDescriptor;
 struct TrackDrawerDescriptor;
 struct TrackDrawerEntry;
+
+enum class TrackElementSetFlag : uint8_t
+{
+    highlightOff,
+    highlightOn,
+    colourScheme,
+    cableLiftOn,
+    cableLiftOff,
+    seatRotation,
+    brakeClosed,
+    brakeBoosterSpeed,
+};
+using TrackElementSetFlags = FlagHolder<uint16_t, TrackElementSetFlag>;
+
+enum class TrackSelectionFlag : uint8_t
+{
+    arrow,
+    track,
+    entranceOrExit,
+    recheck,
+    trackPlaceActionQueued,
+};
+using TrackSelectionFlags = FlagHolder<uint8_t, TrackSelectionFlag>;
 
 namespace OpenRCT2
 {
@@ -39,7 +63,21 @@ namespace OpenRCT2
         MazeMove,
         MazeFill
     };
-}
+
+    enum class AlternativeTrackFlag : uint8_t
+    {
+        alternativePieces, // Dinghy slide and Water Coaster
+        inverted,          // Flying RC, Lay-down RC, Multi-dimension RC
+    };
+    using SelectedAlternative = FlagHolder<uint8_t, AlternativeTrackFlag>;
+
+    enum class LiftHillAndInverted : uint8_t
+    {
+        liftHill,
+        inverted,
+    };
+    using SelectedLiftAndInverted = FlagHolder<uint32_t, LiftHillAndInverted>;
+} // namespace OpenRCT2
 
 extern money64 _currentTrackPrice;
 
@@ -50,14 +88,14 @@ extern RideId _currentRideIndex;
 extern CoordsXYZ _currentTrackBegin;
 
 extern uint8_t _currentTrackPieceDirection;
-extern track_type_t _currentTrackPieceType;
-extern uint8_t _currentTrackSelectionFlags;
+extern OpenRCT2::TrackElemType _currentTrackPieceType;
+extern TrackSelectionFlags _currentTrackSelectionFlags;
 extern uint32_t _rideConstructionNextArrowPulse;
 extern TrackPitch _currentTrackPitchEnd;
 extern TrackRoll _currentTrackRollEnd;
-extern uint8_t _currentTrackLiftHill;
-extern uint8_t _currentTrackAlternative;
-extern track_type_t _selectedTrackType;
+extern bool _currentTrackHasLiftHill;
+extern OpenRCT2::SelectedAlternative _currentTrackAlternative;
+extern OpenRCT2::TrackElemType _selectedTrackType;
 
 extern TrackRoll _previousTrackRollEnd;
 extern TrackPitch _previousTrackPitchEnd;
@@ -65,6 +103,7 @@ extern TrackPitch _previousTrackPitchEnd;
 extern CoordsXYZ _previousTrackPiece;
 
 extern uint8_t _currentBrakeSpeed;
+extern RideColourScheme _currentColourScheme;
 extern uint8_t _currentSeatRotationAngle;
 
 extern CoordsXYZD _unkF440C5;
@@ -77,8 +116,6 @@ extern uint8_t gRideEntranceExitPlaceDirection;
 
 void RideEntranceExitPlaceProvisionalGhost();
 void RideEntranceExitRemoveGhost();
-void RideRestoreProvisionalTrackPiece();
-void RideRemoveProvisionalTrackPiece();
 
 void RideConstructionRemoveGhosts();
 
@@ -98,5 +135,9 @@ void RideConstructionStart(Ride& ride);
 
 TrackDrawerDescriptor getCurrentTrackDrawerDescriptor(const RideTypeDescriptor& rtd);
 TrackDrawerEntry getCurrentTrackDrawerEntry(const RideTypeDescriptor& rtd);
-track_type_t GetTrackTypeFromCurve(
+OpenRCT2::TrackElemType GetTrackTypeFromCurve(
     TrackCurve curve, bool startsDiagonal, TrackPitch startSlope, TrackPitch endSlope, TrackRoll startBank, TrackRoll endBank);
+
+std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
+    const CoordsXYZD& location, OpenRCT2::TrackElemType type, uint16_t extra_params, TileElement** output_element,
+    TrackElementSetFlags flags);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,12 +11,12 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include <memory>
-#    include <openrct2/drawing/Image.h>
-#    include <openrct2/drawing/ImageId.hpp>
-#    include <openrct2/scripting/Duktape.hpp>
-#    include <openrct2/scripting/Plugin.h>
-#    include <openrct2/scripting/ScriptEngine.h>
+    #include <memory>
+    #include <openrct2/drawing/Image.h>
+    #include <openrct2/drawing/ImageId.hpp>
+    #include <openrct2/scripting/Duktape.hpp>
+    #include <openrct2/scripting/Plugin.h>
+    #include <openrct2/scripting/ScriptEngine.h>
 
 namespace OpenRCT2::Scripting
 {

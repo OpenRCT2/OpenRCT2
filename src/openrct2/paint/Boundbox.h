@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include "../world/Location.hpp"
 
+#include <array>
 #include <cstdint>
 
 struct BoundBoxXY
@@ -38,3 +39,28 @@ struct BoundBoxXYZ
     {
     }
 };
+
+template<size_t trackSequenceCount, size_t spriteCount>
+constexpr std::array<std::array<std::array<BoundBoxXYZ, spriteCount>, trackSequenceCount>, kNumOrthogonalDirections>
+    flipTrackSequenceBoundBoxesXAxis(
+        const std::array<std::array<std::array<BoundBoxXYZ, spriteCount>, trackSequenceCount>, kNumOrthogonalDirections>&
+            boundBoxes)
+{
+    auto flippedBoundBoxes = boundBoxes;
+    flippedBoundBoxes[0] = boundBoxes[3];
+    flippedBoundBoxes[1] = boundBoxes[2];
+    flippedBoundBoxes[2] = boundBoxes[1];
+    flippedBoundBoxes[3] = boundBoxes[0];
+    for (auto& view : flippedBoundBoxes)
+    {
+        for (auto& trackSequence : view)
+        {
+            for (auto& boundBox : trackSequence)
+            {
+                std::swap(boundBox.offset.x, boundBox.offset.y);
+                std::swap(boundBox.length.x, boundBox.length.y);
+            }
+        }
+    }
+    return flippedBoundBoxes;
+}

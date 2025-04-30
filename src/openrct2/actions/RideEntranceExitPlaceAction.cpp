@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,6 +17,8 @@
 #include "../ride/Station.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/MapAnimation.h"
+#include "../world/Wall.h"
+#include "../world/tile_element/EntranceElement.h"
 
 using namespace OpenRCT2;
 
@@ -69,17 +71,17 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
-    if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
+    if (ride->status != RideStatus::closed && ride->status != RideStatus::simulating)
     {
         return GameActions::Result(GameActions::Status::NotClosed, errorTitle, STR_MUST_BE_CLOSED_FIRST);
     }
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+    if (ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
     {
         return GameActions::Result(GameActions::Status::Disallowed, errorTitle, STR_NOT_ALLOWED_TO_MODIFY_STATION);
     }
 
-    const auto& station = ride->GetStation(_stationNum);
+    const auto& station = ride->getStation(_stationNum);
     const auto location = _isExit ? station.Exit : station.Entrance;
 
     if (!location.IsNull())
@@ -95,12 +97,12 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
         }
     }
 
-    auto z = ride->GetStation(_stationNum).GetBaseZ();
+    auto z = ride->getStation(_stationNum).GetBaseZ();
     if (!LocationValid(_loc))
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_OFF_EDGE_OF_MAP);
     }
-    if (!GetGameState().Cheats.SandboxMode && !MapIsLocationOwned({ _loc, z }))
+    if (!getGameState().cheats.sandboxMode && !MapIsLocationOwned({ _loc, z }))
     {
         return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -151,10 +153,10 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
         RideClearForConstruction(*ride);
-        ride->RemovePeeps();
+        ride->removePeeps();
     }
 
-    auto& station = ride->GetStation(_stationNum);
+    auto& station = ride->getStation(_stationNum);
     const auto location = _isExit ? station.Exit : station.Entrance;
     if (!location.IsNull())
     {
@@ -171,7 +173,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
 
     auto z = station.GetBaseZ();
     if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
-        && !GetGameState().Cheats.DisableClearanceChecks)
+        && !getGameState().cheats.disableClearanceChecks)
     {
         FootpathRemoveLitter({ _loc, z });
         WallRemoveAtZ({ _loc, z });
@@ -234,7 +236,7 @@ GameActions::Result RideEntranceExitPlaceAction::TrackPlaceQuery(const CoordsXYZ
     const auto errorTitle = isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                                    : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
 
-    if (!GetGameState().Cheats.SandboxMode && !MapIsLocationOwned(loc))
+    if (!getGameState().cheats.sandboxMode && !MapIsLocationOwned(loc))
     {
         return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
     }

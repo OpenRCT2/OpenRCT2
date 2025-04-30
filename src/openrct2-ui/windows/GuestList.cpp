@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,24 +10,27 @@
 #include <cmath>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
+#include <openrct2/SpriteIds.h>
+#include <openrct2/core/Numerics.hpp>
+#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Guest.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
-#include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/peep/PeepThoughts.h>
 #include <openrct2/ride/RideData.h>
-#include <openrct2/scenario/Scenario.h>
-#include <openrct2/sprites.h>
-#include <openrct2/util/Math.hpp>
-#include <openrct2/util/Util.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 #include <vector>
+
+using namespace OpenRCT2::Numerics;
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -54,7 +57,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_guest_list_widgets[] = {
+    static constexpr Widget window_guest_list_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({  0, 43}, {350, 287}, WindowWidgetType::Resize,   WindowColour::Secondary                                                   ), // tab content panel
         MakeWidget({  5, 59}, { 80,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_ARG_4_PAGE_X                                 ), // page dropdown
@@ -67,7 +70,6 @@ namespace OpenRCT2::Ui::Windows
         MakeTab   ({  3, 17},                                                                        STR_INDIVIDUAL_GUESTS_TIP    ), // tab 1
         MakeTab   ({ 34, 17},                                                                        STR_SUMMARISED_GUESTS_TIP    ), // tab 2
         MakeWidget({  3, 72}, {344, 255}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_BOTH                                      ), // guest list
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -157,7 +159,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_guest_list_widgets;
+            SetWidgets(window_guest_list_widgets);
             WindowInitScrollWidgets(*this);
 
             _selectedTab = TabId::Summarised;
@@ -167,10 +169,9 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::FlatBtn;
             widgets[WIDX_PAGE_DROPDOWN].type = WindowWidgetType::Empty;
             widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
-            min_width = 350;
-            min_height = 330;
-            max_width = 500;
-            max_height = 450;
+
+            WindowSetResize(*this, { 350, 330 }, { 500, 450 });
+
             RefreshList();
         }
 
@@ -185,14 +186,14 @@ namespace OpenRCT2::Ui::Windows
 
             switch (type)
             {
-                case GuestListFilterType::GuestsOnRide:
+                case GuestListFilterType::guestsOnRide:
                 {
                     auto guestRide = GetRide(RideId::FromUnderlying(index));
                     if (guestRide != nullptr)
                     {
                         ft.Add<StringId>(
-                            guestRide->GetRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside) ? STR_IN_RIDE : STR_ON_RIDE);
-                        guestRide->FormatNameTo(ft);
+                            guestRide->getRideTypeDescriptor().HasFlag(RtdFlag::describeAsInside) ? STR_IN_RIDE : STR_ON_RIDE);
+                        guestRide->formatNameTo(ft);
 
                         _selectedFilter = GuestFilterType::Guests;
                         _highlightedIndex = {};
@@ -201,13 +202,13 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                case GuestListFilterType::GuestsInQueue:
+                case GuestListFilterType::guestsInQueue:
                 {
                     auto guestRide = GetRide(RideId::FromUnderlying(index));
                     if (guestRide != nullptr)
                     {
                         ft.Add<StringId>(STR_QUEUING_FOR);
-                        guestRide->FormatNameTo(ft);
+                        guestRide->formatNameTo(ft);
 
                         _selectedFilter = GuestFilterType::Guests;
                         _highlightedIndex = {};
@@ -216,13 +217,13 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                case GuestListFilterType::GuestsThinkingAboutRide:
+                case GuestListFilterType::guestsThinkingAboutRide:
                 {
                     auto guestRide = GetRide(RideId::FromUnderlying(index));
                     if (guestRide != nullptr)
                     {
-                        ft.Add<StringId>(STR_NONE);
-                        guestRide->FormatNameTo(ft);
+                        ft.Add<StringId>(kStringIdNone);
+                        guestRide->formatNameTo(ft);
 
                         _selectedFilter = GuestFilterType::GuestsThinking;
                         _highlightedIndex = {};
@@ -231,7 +232,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                case GuestListFilterType::GuestsThinkingX:
+                case GuestListFilterType::guestsThinkingX:
                 {
                     ft.Add<StringId>(kPeepThoughtIds[index & 0xFF]);
 
@@ -244,22 +245,6 @@ namespace OpenRCT2::Ui::Windows
             }
 
             RefreshList();
-        }
-
-        void OnResize() override
-        {
-            min_width = 350;
-            min_height = 330;
-            if (width < min_width)
-            {
-                Invalidate();
-                width = min_width;
-            }
-            if (height < min_height)
-            {
-                Invalidate();
-                height = min_height;
-            }
         }
 
         void OnUpdate() override
@@ -420,7 +405,6 @@ namespace OpenRCT2::Ui::Windows
             if (_selectedTab == TabId::Individual && _selectedFilter)
                 widgets[WIDX_MAP].type = WindowWidgetType::FlatBtn;
 
-            ResizeFrameWithPage();
             widgets[WIDX_GUEST_LIST].right = width - 4;
             widgets[WIDX_GUEST_LIST].bottom = height - 15;
             widgets[WIDX_MAP].left = 273 - 350 + width;
@@ -457,7 +441,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (_selectedFilter)
                 {
-                    if (_filterArguments.GetFirstStringId() != STR_NONE)
+                    if (_filterArguments.GetFirstStringId() != kStringIdNone)
                     {
                         format = GetFilterString(*_selectedFilter);
                     }
@@ -649,7 +633,8 @@ namespace OpenRCT2::Ui::Windows
         {
             // Tab 1 image
             auto i = (_selectedTab == TabId::Individual ? _tabAnimationIndex & ~3 : 0);
-            i += GetPeepAnimation(PeepSpriteType::Normal).base_image + 1;
+            auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::Guest);
+            i += animObj->GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1;
             GfxDrawSprite(
                 dpi, ImageId(i, COLOUR_GREY, COLOUR_DARK_OLIVE_GREEN),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].midX(), widgets[WIDX_TAB_1].bottom - 6 });
@@ -792,7 +777,7 @@ namespace OpenRCT2::Ui::Windows
                 Formatter ft;
                 peep.FormatNameTo(ft);
                 OpenRCT2::FormatStringLegacy(name, sizeof(name), STR_STRINGID, ft.Data());
-                if (!String::Contains(name, _filterName.c_str(), true))
+                if (!String::contains(name, _filterName.c_str(), true))
                 {
                     return false;
                 }
@@ -805,16 +790,16 @@ namespace OpenRCT2::Ui::Windows
         {
             auto guestViewType = _selectedFilter == GuestFilterType::Guests ? GuestViewType::Actions : GuestViewType::Thoughts;
             auto peepArgs = GetArgumentsFromPeep(peep, guestViewType);
-            if (_filterArguments.GetFirstStringId() == STR_NONE && _selectedFilter == GuestFilterType::GuestsThinking)
+            if (_filterArguments.GetFirstStringId() == kStringIdNone && _selectedFilter == GuestFilterType::GuestsThinking)
             {
-                Formatter(peepArgs.args).Add<StringId>(STR_NONE);
+                Formatter(peepArgs.args).Add<StringId>(kStringIdNone);
             }
             return _filterArguments == peepArgs;
         }
 
         bool IsRefreshOfGroupsRequired()
         {
-            uint32_t tick256 = Floor2(GetGameState().CurrentTicks, 256);
+            uint32_t tick256 = floor2(getGameState().currentTicks, 256);
             if (_selectedView == _lastFindGroupsSelectedView)
             {
                 if (_lastFindGroupsWait != 0 || _lastFindGroupsTick == tick256)
@@ -842,7 +827,7 @@ namespace OpenRCT2::Ui::Windows
 
         void RefreshGroups()
         {
-            _lastFindGroupsTick = Floor2(GetGameState().CurrentTicks, 256);
+            _lastFindGroupsTick = floor2(getGameState().currentTicks, 256);
             _lastFindGroupsSelectedView = _selectedView;
             _lastFindGroupsWait = 320;
             _groups.clear();
@@ -862,7 +847,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Remove empty group (basically guests with no thoughts)
             auto foundGroup = std::find_if(std::begin(_groups), std::end(_groups), [](GuestGroup& group) {
-                return group.Arguments.GetFirstStringId() == STR_EMPTY;
+                return group.Arguments.GetFirstStringId() == kStringIdEmpty;
             });
             if (foundGroup != std::end(_groups))
             {
@@ -932,7 +917,8 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        template<bool TRealNames> static bool CompareGuestItem(const GuestItem& a, const GuestItem& b)
+        template<bool TRealNames>
+        static bool CompareGuestItem(const GuestItem& a, const GuestItem& b)
         {
             const auto* peepA = GetEntity<Peep>(a.Id);
             const auto* peepB = GetEntity<Peep>(b.Id);
@@ -954,22 +940,23 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
             }
-            return StrLogicalCmp(a.Name, b.Name) < 0;
+            return String::logicalCmp(a.Name, b.Name) < 0;
         }
 
         static GuestItem::CompareFunc GetGuestCompareFunc()
         {
-            return GetGameState().Park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? CompareGuestItem<true>
+            return getGameState().park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? CompareGuestItem<true>
                                                                                 : CompareGuestItem<false>;
         }
     };
 
     WindowBase* GuestListOpen()
     {
-        auto* window = WindowBringToFrontByClass(WindowClass::GuestList);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::GuestList);
         if (window == nullptr)
         {
-            window = WindowCreate<GuestListWindow>(WindowClass::GuestList, 350, 330, WF_10 | WF_RESIZABLE);
+            window = windowMgr->Create<GuestListWindow>(WindowClass::GuestList, 350, 330, WF_10 | WF_RESIZABLE);
         }
         return window;
     }
@@ -989,7 +976,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowGuestListRefreshList()
     {
-        auto* w = WindowFindByClass(WindowClass::GuestList);
+        auto* windowMgr = GetWindowManager();
+        auto* w = windowMgr->FindByClass(WindowClass::GuestList);
         if (w != nullptr)
         {
             static_cast<GuestListWindow*>(w)->RefreshList();

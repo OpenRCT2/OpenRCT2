@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,7 +15,6 @@
 #include "BannerSetStyleAction.h"
 #include "CheatSetAction.h"
 #include "ClearAction.h"
-#include "ClimateSetAction.h"
 #include "CustomAction.h"
 #include "FootpathAdditionPlaceAction.h"
 #include "FootpathAdditionRemoveAction.h"
@@ -117,10 +116,11 @@ namespace OpenRCT2::GameActions
         registry[idx] = { factory, name };
     }
 
-    template<typename T> static constexpr void Register(GameActionRegistry& registry, const char* name)
+    template<typename T>
+    static constexpr void Register(GameActionRegistry& registry, const char* name)
     {
         GameActionFactory factory = []() -> GameAction* { return new T(); };
-        Register<T::TYPE>(registry, factory, name);
+        Register<T::kType>(registry, factory, name);
     }
 
     static constexpr GameActionRegistry BuildRegistry()
@@ -135,7 +135,6 @@ namespace OpenRCT2::GameActions
         REGISTER_ACTION(BannerSetColourAction);
         REGISTER_ACTION(BannerSetNameAction);
         REGISTER_ACTION(BannerSetStyleAction);
-        REGISTER_ACTION(ClimateSetAction);
         REGISTER_ACTION(FootpathPlaceAction);
         REGISTER_ACTION(FootpathLayoutPlaceAction);
         REGISTER_ACTION(FootpathRemoveAction);

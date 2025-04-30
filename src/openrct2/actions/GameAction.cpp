@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,14 +18,12 @@
 #include "../core/MemoryStream.h"
 #include "../entity/MoneyEffect.h"
 #include "../localisation/Formatter.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
-#include "../scenario/Scenario.h"
 #include "../scripting/Duktape.hpp"
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
@@ -101,7 +99,7 @@ namespace OpenRCT2::GameActions
             return;
         }
 
-        const uint32_t currentTick = GetGameState().CurrentTicks;
+        const uint32_t currentTick = getGameState().currentTicks;
 
         while (_actionQueue.begin() != _actionQueue.end())
         {
@@ -183,7 +181,7 @@ namespace OpenRCT2::GameActions
     {
         if (gGamePaused == 0)
             return true;
-        if (GetGameState().Cheats.BuildInPauseMode)
+        if (getGameState().cheats.buildInPauseMode)
             return true;
         if (actionFlags & GameActions::Flags::AllowWhilePaused)
             return true;
@@ -251,7 +249,7 @@ namespace OpenRCT2::GameActions
 
         char temp[128] = {};
         snprintf(
-            temp, sizeof(temp), "[%s] Tick: %u, GA: %s (%08X) (", GetRealm(), GetGameState().CurrentTicks, action->GetName(),
+            temp, sizeof(temp), "[%s] Tick: %u, GA: %s (%08X) (", GetRealm(), getGameState().currentTicks, action->GetName(),
             EnumValue(action->GetType()));
 
         output.Write(temp, strlen(temp));
@@ -345,7 +343,7 @@ namespace OpenRCT2::GameActions
                     if (!(actionFlags & GameActions::Flags::ClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                     {
                         LOG_VERBOSE("[%s] GameAction::Execute %s (Queue)", GetRealm(), action->GetName());
-                        Enqueue(action, GetGameState().CurrentTicks);
+                        Enqueue(action, getGameState().currentTicks);
 
                         return result;
                     }
@@ -415,7 +413,7 @@ namespace OpenRCT2::GameActions
                     }
                     if (recordAction)
                     {
-                        replayManager->AddGameAction(GetGameState().CurrentTicks, action);
+                        replayManager->AddGameAction(getGameState().currentTicks, action);
                     }
                 }
             }
@@ -451,7 +449,7 @@ namespace OpenRCT2::GameActions
 
         if (result.Error != GameActions::Status::Ok && shouldShowError)
         {
-            auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+            auto windowManager = Ui::GetWindowManager();
             windowManager->ShowError(result.GetErrorTitle(), result.GetErrorMessage());
         }
 
@@ -481,7 +479,7 @@ bool GameAction::LocationValid(const CoordsXY& coords) const
         return false;
 #ifdef ENABLE_SCRIPTING
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::ACTION_LOCATION))
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::actionLocation))
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -498,7 +496,7 @@ bool GameAction::LocationValid(const CoordsXY& coords) const
 
         // Call the subscriptions
         auto e = obj.Take();
-        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::ACTION_LOCATION, e, true);
+        hookEngine.Call(OpenRCT2::Scripting::HookType::actionLocation, e, true);
 
         auto scriptResult = OpenRCT2::Scripting::AsOrDefault(e["result"], true);
 

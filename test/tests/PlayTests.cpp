@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,6 +26,7 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/ride/RideManager.hpp>
 #include <openrct2/world/MapAnimation.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
@@ -51,7 +52,7 @@ static std::unique_ptr<IContext> localStartGame(const std::string& parkPath)
     context->GetObjectManager().LoadObjects(loadResult.RequiredObjects);
 
     // TODO: Have a separate GameState and exchange once loaded.
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     importer->Import(gameState);
 
     ResetEntitySpatialIndices();
@@ -67,7 +68,8 @@ static std::unique_ptr<IContext> localStartGame(const std::string& parkPath)
     return context;
 }
 
-template<class Fn> static bool updateUntil(int maxSteps, Fn&& fn)
+template<class Fn>
+static bool updateUntil(int maxSteps, Fn&& fn)
 {
     while (maxSteps-- && !fn())
     {
@@ -76,7 +78,8 @@ template<class Fn> static bool updateUntil(int maxSteps, Fn&& fn)
     return maxSteps > 0;
 }
 
-template<class GA, class... Args> static void execute(Args&&... args)
+template<class GA, class... Args>
+static void execute(Args&&... args)
 {
     GA ga(std::forward<Args>(args)...);
     GameActions::Execute(&ga);
@@ -95,12 +98,12 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     auto context = localStartGame(initStateFile);
     ASSERT_NE(context.get(), nullptr);
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     // Open park for free but charging for rides
     execute<ParkSetParameterAction>(ParkParameter::Open);
     execute<ParkSetEntranceFeeAction>(0);
-    gameState.Park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+    gameState.park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find ferris wheel
     auto rideManager = GetRideManager();
@@ -110,11 +113,11 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     Ride& ferrisWheel = *it;
 
     // Open it for free
-    execute<RideSetStatusAction>(ferrisWheel.id, RideStatus::Open);
+    execute<RideSetStatusAction>(ferrisWheel.id, RideStatus::open);
     execute<RideSetPriceAction>(ferrisWheel.id, 0, true);
 
     // Ignore intensity to stimulate peeps to queue into ferris wheel
-    gameState.Cheats.IgnoreRideIntensity = true;
+    gameState.cheats.ignoreRideIntensity = true;
 
     // Insert a rich guest
     auto richGuest = Park::GenerateGuest();
@@ -155,12 +158,12 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     auto context = localStartGame(initStateFile);
     ASSERT_NE(context.get(), nullptr);
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     // Open park for free but charging for rides
     execute<ParkSetParameterAction>(ParkParameter::Open);
     execute<ParkSetEntranceFeeAction>(0);
-    gameState.Park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+    gameState.park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find car ride
     auto rideManager = GetRideManager();
@@ -169,11 +172,11 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     Ride& carRide = *it;
 
     // Open it for free
-    execute<RideSetStatusAction>(carRide.id, RideStatus::Open);
+    execute<RideSetStatusAction>(carRide.id, RideStatus::open);
     execute<RideSetPriceAction>(carRide.id, 0, true);
 
     // Ignore intensity to stimulate peeps to queue into the ride
-    gameState.Cheats.IgnoreRideIntensity = true;
+    gameState.cheats.ignoreRideIntensity = true;
 
     // Create some guests
     std::vector<Peep*> guests;

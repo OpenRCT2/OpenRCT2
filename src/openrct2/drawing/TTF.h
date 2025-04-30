@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,7 +17,7 @@ bool TTFInitialise();
 void TTFDispose();
 struct TTFSurface;
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 
 struct TTFSurface
 {
@@ -44,4 +44,4 @@ void TTF_SetFontHinting(TTF_Font* font, int hinting);
 int TTF_GetFontHinting(const TTF_Font* font);
 void TTF_Quit(void);
 
-#endif // NO_TTF
+#endif // DISABLE_TTF

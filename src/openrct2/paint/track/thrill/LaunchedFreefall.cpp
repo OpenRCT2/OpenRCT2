@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,8 @@
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
+#include "../../../world/tile_element/TileElement.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
@@ -42,7 +44,7 @@ static void PaintLaunchedFreefallBase(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
     TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, kFloorSpritesMetal, stationObject);
 
@@ -76,36 +78,33 @@ static void PaintLaunchedFreefallBase(
             break;
         case 1:
             blockedSegments = EnumsToFlags(
-                PaintSegment::leftCorner, PaintSegment::topLeftSide, PaintSegment::topCorner, PaintSegment::topRightSide,
-                PaintSegment::rightCorner);
+                PaintSegment::left, PaintSegment::topLeft, PaintSegment::top, PaintSegment::topRight, PaintSegment::right);
             break;
         case 2:
-            blockedSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topRightSide, PaintSegment::rightCorner);
+            blockedSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topRight, PaintSegment::right);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::topCorner, PaintSegment::topRightSide, PaintSegment::rightCorner, PaintSegment::bottomRightSide,
-                PaintSegment::bottomCorner);
+                PaintSegment::top, PaintSegment::topRight, PaintSegment::right, PaintSegment::bottomRight,
+                PaintSegment::bottom);
             break;
         case 4:
-            blockedSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::leftCorner);
+            blockedSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::left);
             break;
         case 5:
-            blockedSegments = EnumsToFlags(
-                PaintSegment::rightCorner, PaintSegment::bottomRightSide, PaintSegment::bottomCorner);
+            blockedSegments = EnumsToFlags(PaintSegment::right, PaintSegment::bottomRight, PaintSegment::bottom);
             break;
         case 6:
             blockedSegments = EnumsToFlags(
-                PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::leftCorner, PaintSegment::bottomLeftSide,
-                PaintSegment::bottomCorner);
+                PaintSegment::top, PaintSegment::topLeft, PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom);
             break;
         case 7:
             blockedSegments = EnumsToFlags(
-                PaintSegment::leftCorner, PaintSegment::bottomLeftSide, PaintSegment::bottomCorner,
-                PaintSegment::bottomRightSide, PaintSegment::rightCorner);
+                PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::bottomRight,
+                PaintSegment::right);
             break;
         case 8:
-            blockedSegments = EnumsToFlags(PaintSegment::leftCorner, PaintSegment::bottomLeftSide, PaintSegment::bottomCorner);
+            blockedSegments = EnumsToFlags(PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, blockedSegments, 0xFFFF, 0);
@@ -142,7 +141,7 @@ static void PaintLaunchedFreefallTowerSection(
 /**
  * rct2: 0x006FD0E8
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLaunchedFreefall(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionLaunchedFreefall(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -151,7 +150,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLaunchedFreefall(int32_t trackType)
 
         case TrackElemType::TowerSection:
             return PaintLaunchedFreefallTowerSection;
+        default:
+            return TrackPaintFunctionDummy;
     }
-
-    return nullptr;
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,14 +15,15 @@
 #include <stdexcept>
 
 #ifdef _WIN32
-#    include <windows.h>
+    #include <windows.h>
 #elif defined(__linux__)
-#    include <fcntl.h>
-#    include <sys/inotify.h>
-#    include <sys/types.h>
-#    include <unistd.h>
+    #include <chrono>
+    #include <fcntl.h>
+    #include <sys/inotify.h>
+    #include <sys/types.h>
+    #include <unistd.h>
 #elif defined(__APPLE__)
-#    include <CoreServices/CoreServices.h>
+    #include <CoreServices/CoreServices.h>
 #endif
 
 #include "../core/Guard.hpp"
@@ -128,7 +129,7 @@ FileWatcher::FileWatcher(u8string_view directoryPath)
 #ifdef _WIN32
     _path = fs::u8path(directoryPath);
     _directoryHandle = CreateFileW(
-        String::ToWideChar(directoryPath).c_str(), FILE_LIST_DIRECTORY, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+        String::toWideChar(directoryPath).c_str(), FILE_LIST_DIRECTORY, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
         nullptr, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, nullptr);
     if (_directoryHandle == INVALID_HANDLE_VALUE)
     {
@@ -251,7 +252,8 @@ void FileWatcher::WatchDirectory()
         }
 
         // Sleep for 1/2 second
-        usleep(500000);
+        using namespace std::chrono_literals;
+        usleep(std::chrono::microseconds(1s).count() / 2);
     }
 #elif defined(__APPLE__)
     if (_stream)

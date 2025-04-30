@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,11 +11,11 @@
 
 #include <memory>
 
-enum class ADVERTISE_STATUS
+enum class AdvertiseStatus
 {
-    DISABLED,
-    UNREGISTERED,
-    REGISTERED,
+    disabled,
+    unregistered,
+    registered,
 };
 
 struct INetworkServerAdvertiser
@@ -24,7 +24,7 @@ struct INetworkServerAdvertiser
     {
     }
 
-    virtual ADVERTISE_STATUS GetStatus() const = 0;
+    virtual AdvertiseStatus GetStatus() const = 0;
     virtual void Update() = 0;
 };
 

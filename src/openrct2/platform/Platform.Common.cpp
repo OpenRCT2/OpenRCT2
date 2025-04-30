@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,25 +10,26 @@
 #include "../Date.h"
 
 #ifdef _WIN32
-#    ifndef WIN32_LEAN_AND_MEAN
-#        define WIN32_LEAN_AND_MEAN
-#    endif
-#    include <windows.h>
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
+    #include <windows.h>
 #endif
 
 #if defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))
-#    include <cpuid.h>
-#    define OpenRCT2_CPUID_GNUC_X86
+    #include <cpuid.h>
+    #define OpenRCT2_CPUID_GNUC_X86
 #elif defined(_MSC_VER) && (_MSC_VER >= 1500) && (defined(_M_X64) || defined(_M_IX86)) // VS2008
-#    include <intrin.h>
-#    include <nmmintrin.h>
-#    define OpenRCT2_CPUID_MSVC_X86
+    #include <intrin.h>
+    #include <nmmintrin.h>
+    #define OpenRCT2_CPUID_MSVC_X86
 #endif
 
 #include "../Context.h"
 #include "../Game.h"
 #include "../core/File.h"
 #include "../core/Path.hpp"
+#include "../core/String.hpp"
 #include "../localisation/Currency.h"
 #include "Platform.h"
 
@@ -90,21 +91,26 @@ namespace OpenRCT2::Platform
         return outTime;
     }
 
-    bool IsRCT2Path(std::string_view path)
+    std::optional<RCT2Variant> classifyGamePath(std::string_view path)
     {
         auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"g1.dat"));
-        return File::Exists(combinedPath);
-    }
+        if (File::Exists(combinedPath))
+            return std::make_optional<RCT2Variant>(RCT2Variant::rct2Original);
 
-    bool IsRCTClassicPath(std::string_view path)
-    {
-        auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Assets", u8"g1.dat"));
-        return File::Exists(combinedPath);
+        combinedPath = Path::ResolveCasing(Path::Combine(path, OpenRCT2::Platform::kRCTClassicWindowsDataFolder, u8"g1.dat"));
+        if (File::Exists(combinedPath))
+            return std::make_optional<RCT2Variant>(RCT2Variant::rctClassicWindows);
+
+        combinedPath = Path::ResolveCasing(Path::Combine(path, OpenRCT2::Platform::kRCTClassicMacOSDataFolder, u8"g1.dat"));
+        if (File::Exists(combinedPath))
+            return std::make_optional<RCT2Variant>(RCT2Variant::rctClassicMac);
+
+        return std::nullopt;
     }
 
     bool OriginalGameDataExists(std::string_view path)
     {
-        return IsRCT2Path(path) || IsRCTClassicPath(path);
+        return classifyGamePath(path) != std::nullopt;
     }
 
     std::string SanitiseFilename(std::string_view originalName)
@@ -116,7 +122,7 @@ namespace OpenRCT2::Platform
                 return std::find(_prohibitedCharacters.begin(), _prohibitedCharacters.end(), ch) != _prohibitedCharacters.end();
             },
             '_');
-        sanitised = String::Trim(sanitised);
+        sanitised = String::trim(sanitised);
         return sanitised;
     }
 
@@ -148,15 +154,15 @@ namespace OpenRCT2::Platform
 #ifdef OPENRCT2_X86
     static bool CPUIDX86(uint32_t* cpuid_outdata, int32_t eax)
     {
-#    if defined(OpenRCT2_CPUID_GNUC_X86)
+    #if defined(OpenRCT2_CPUID_GNUC_X86)
         int ret = __get_cpuid(eax, &cpuid_outdata[0], &cpuid_outdata[1], &cpuid_outdata[2], &cpuid_outdata[3]);
         return ret == 1;
-#    elif defined(OpenRCT2_CPUID_MSVC_X86)
+    #elif defined(OpenRCT2_CPUID_MSVC_X86)
         __cpuid(reinterpret_cast<int*>(cpuid_outdata), static_cast<int>(eax));
         return true;
-#    else
+    #else
         return false;
-#    endif
+    #endif
     }
 #endif // OPENRCT2_X86
 
@@ -180,9 +186,9 @@ namespace OpenRCT2::Platform
         // https://github.com/gcc-mirror/gcc/commit/132fa33ce998df69a9f793d63785785f4b93e6f1
         // which causes it to ignore subleafs, but the new function is unavailable on
         // Ubuntu 18.04's toolchains.
-#    if defined(OpenRCT2_CPUID_GNUC_X86) && (!defined(__FreeBSD__) || (__FreeBSD__ > 10))
+    #if defined(OpenRCT2_CPUID_GNUC_X86) && (!defined(__FreeBSD__) || (__FreeBSD__ > 10))
         return __builtin_cpu_supports("avx2");
-#    else
+    #else
         // AVX2 support is declared as the 5th bit of EBX with CPUID(EAX = 7, ECX = 0).
         uint32_t regs[4] = { 0 };
         if (CPUIDX86(regs, 7))
@@ -197,7 +203,7 @@ namespace OpenRCT2::Platform
             }
             return avxCPUSupport;
         }
-#    endif
+    #endif
 #endif
         return false;
     }

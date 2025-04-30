@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #pragma once
 
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2/object/ObjectTypes.h>
 
 constexpr uint16_t kLandToolMinimumSize = 1;
 constexpr uint16_t kLandToolMaximumSize = 64;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,13 +14,12 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Park.h"
-#include "../world/Wall.h"
+#include "../world/tile_element/PathElement.h"
 
 using namespace OpenRCT2;
 
@@ -53,7 +52,7 @@ GameActions::Result FootpathAdditionRemoveAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode) && !MapIsLocationOwned(_loc))
+    if (!(gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode) && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -87,7 +86,7 @@ GameActions::Result FootpathAdditionRemoveAction::Query() const
     if (!pathElement->AdditionIsGhost() && (GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
         LOG_WARNING("Tried to remove non ghost during ghost removal.");
-        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REMOVE_THIS, kStringIdNone);
     }
     auto res = GameActions::Result();
     res.Position = _loc;

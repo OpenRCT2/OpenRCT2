@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -57,7 +57,8 @@ public:
         return _activeStream;
     }
 
-    template<typename T> DataSerialiser& operator<<(const T& data)
+    template<typename T>
+    DataSerialiser& operator<<(const T& data)
     {
         if (!_isLogging)
         {
@@ -74,7 +75,8 @@ public:
         return *this;
     }
 
-    template<typename T> DataSerialiser& operator<<(DataSerialiserTag<T> data)
+    template<typename T>
+    DataSerialiser& operator<<(DataSerialiserTag<T> data)
     {
         if (!_isLogging)
         {

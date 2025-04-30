@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,8 @@
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
+#include "../../../world/tile_element/TileElement.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Boundbox.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
@@ -22,7 +24,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr BoundBoxXY CrookedHouseData[] = {
+static constexpr BoundBoxXY kCrookedHouseData[] = {
     {
         { 6, 0 },
         { 42, 24 },
@@ -61,11 +63,11 @@ static void PaintCrookedHouseStructure(
     if (ride == nullptr)
         return;
 
-    auto rideEntry = ride->GetRideEntry();
+    auto rideEntry = ride->getRideEntry();
     if (rideEntry == nullptr)
         return;
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+    if (ride->lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
     {
         auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
         if (vehicle != nullptr)
@@ -75,7 +77,7 @@ static void PaintCrookedHouseStructure(
         }
     }
 
-    const auto& boundBox = CrookedHouseData[segment];
+    const auto& boundBox = kCrookedHouseData[segment];
     auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
     PaintAddImageAsParent(
         session, stationColour.WithIndex(imageIndex), { x_offset, y_offset, height + 3 },
@@ -95,7 +97,7 @@ static void PaintCrookedHouse(
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
         GetStationColourScheme(session, trackElement));
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 
@@ -122,20 +124,19 @@ static void PaintCrookedHouse(
     {
         case 1:
             // Top
-            cornerSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight);
             break;
         case 3:
             // Right
-            cornerSegments = EnumsToFlags(PaintSegment::topRightSide, PaintSegment::rightCorner, PaintSegment::bottomRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::topRight, PaintSegment::right, PaintSegment::bottomRight);
             break;
         case 6:
             // Left
-            cornerSegments = EnumsToFlags(PaintSegment::topLeftSide, PaintSegment::leftCorner, PaintSegment::bottomLeftSide);
+            cornerSegments = EnumsToFlags(PaintSegment::topLeft, PaintSegment::left, PaintSegment::bottomLeft);
             break;
         case 7:
             // Bottom
-            cornerSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::bottomRight);
             break;
     }
 
@@ -144,11 +145,11 @@ static void PaintCrookedHouse(
     PaintUtilSetGeneralSupportHeight(session, height + trackElement->ClearanceHeight - trackElement->BaseHeight);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCrookedHouse(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionCrookedHouse(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {
-        return nullptr;
+        return TrackPaintFunctionDummy;
     }
 
     return PaintCrookedHouse;

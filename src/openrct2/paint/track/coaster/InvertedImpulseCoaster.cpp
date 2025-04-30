@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,13 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/Drawing.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/RideData.h"
 #include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../tile_element/Paint.TileElement.h"
@@ -61,24 +62,24 @@ static void InvertedImpulseRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr uint32_t imageIds[4][3] = {
-        { SPR_STATION_BASE_C_SW_NE, 19662, SPR_STATION_INVERTED_BAR_B_SW_NE },
-        { SPR_STATION_BASE_C_NW_SE, 19663, SPR_STATION_INVERTED_BAR_B_NW_SE },
-        { SPR_STATION_BASE_C_SW_NE, 19662, SPR_STATION_INVERTED_BAR_B_SW_NE },
-        { SPR_STATION_BASE_C_NW_SE, 19663, SPR_STATION_INVERTED_BAR_B_NW_SE },
+    static constexpr uint32_t imageIds[4][2] = {
+        { 19662, SPR_STATION_INVERTED_BAR_B_SW_NE },
+        { 19663, SPR_STATION_INVERTED_BAR_B_NW_SE },
+        { 19662, SPR_STATION_INVERTED_BAR_B_SW_NE },
+        { 19663, SPR_STATION_INVERTED_BAR_B_NW_SE },
     };
-
+    const bool stationDrawn = TrackPaintUtilDrawStationInverted(
+        session, ride, direction, height, trackElement, STATION_VARIANT_TALL);
     PaintAddImageAsParentRotated(
-        session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][0]), { 0, 0, height },
-        { { 0, 2, height }, { 32, 28, 1 } });
-    PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(imageIds[direction][1]), { 0, 0, height + 29 },
+        session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height + 29 },
         { { 0, 6, height + 29 }, { 32, 20, 3 } });
-    PaintAddImageAsChildRotated(
-        session, direction, session.SupportColours.WithIndex(imageIds[direction][2]), { 0, 6, height + 29 },
-        { { 0, 6, height + 29 }, { 32, 20, 3 } });
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
-    TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_TALL);
+    if (stationDrawn)
+    {
+        PaintAddImageAsChildRotated(
+            session, direction, session.SupportColours.WithIndex(imageIds[direction][1]), { 0, 6, height + 29 },
+            { { 0, 6, height + 29 }, { 32, 20, 3 } });
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
+    }
     TrackPaintUtilDrawStationTunnelTall(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -758,7 +759,7 @@ static void InvertedImpulseRCTrackRightQuarterTurn190DegDown(
         session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedImpulseRC(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionInvertedImpulseRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -812,6 +813,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedImpulseRC(int32_t trackType)
             return InvertedImpulseRCTrackLeftQuarterTurn190DegDown;
         case TrackElemType::RightQuarterTurn1TileDown90:
             return InvertedImpulseRCTrackRightQuarterTurn190DegDown;
+        default:
+            return TrackPaintFunctionDummy;
     }
-    return nullptr;
 }

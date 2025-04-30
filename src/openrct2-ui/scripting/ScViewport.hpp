@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,14 +11,14 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../interface/Window.h"
+    #include "../interface/Window.h"
 
-#    include <memory>
-#    include <openrct2/Context.h>
-#    include <openrct2/interface/Viewport.h>
-#    include <openrct2/scripting/Duktape.hpp>
-#    include <openrct2/scripting/ScriptEngine.h>
-#    include <openrct2/world/Map.h>
+    #include <memory>
+    #include <openrct2/Context.h>
+    #include <openrct2/interface/Viewport.h>
+    #include <openrct2/scripting/Duktape.hpp>
+    #include <openrct2/scripting/ScriptEngine.h>
+    #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Scripting
 {
@@ -77,7 +77,7 @@ namespace OpenRCT2::Scripting
             auto viewport = GetViewport();
             if (viewport != nullptr)
             {
-                return viewport->viewPos.x + viewport->view_width;
+                return viewport->viewPos.x + viewport->ViewWidth();
             }
             return 0;
         }
@@ -86,7 +86,7 @@ namespace OpenRCT2::Scripting
             auto viewport = GetViewport();
             if (viewport != nullptr)
             {
-                SetViewLeftTop(value - viewport->view_width, viewport->viewPos.y);
+                SetViewLeftTop(value - viewport->ViewWidth(), viewport->viewPos.y);
             }
         }
 
@@ -95,7 +95,7 @@ namespace OpenRCT2::Scripting
             auto viewport = GetViewport();
             if (viewport != nullptr)
             {
-                return viewport->viewPos.y + viewport->view_height;
+                return viewport->viewPos.y + viewport->ViewHeight();
             }
             return 0;
         }
@@ -104,7 +104,7 @@ namespace OpenRCT2::Scripting
             auto viewport = GetViewport();
             if (viewport != nullptr)
             {
-                SetViewLeftTop(viewport->viewPos.x, value - viewport->view_height);
+                SetViewLeftTop(viewport->viewPos.x, value - viewport->ViewHeight());
             }
         }
 
@@ -182,7 +182,7 @@ namespace OpenRCT2::Scripting
             auto viewport = GetViewport();
             if (viewport != nullptr)
             {
-                auto centre = viewport->viewPos + ScreenCoordsXY{ viewport->view_width / 2, viewport->view_height / 2 };
+                auto centre = viewport->viewPos + ScreenCoordsXY{ viewport->ViewWidth() / 2, viewport->ViewHeight() / 2 };
                 auto coords = ViewportPosToMapPos(centre, 24, viewport->rotation);
 
                 auto ctx = GetContext()->GetScriptEngine().GetContext();
@@ -208,8 +208,8 @@ namespace OpenRCT2::Scripting
                     if (coords)
                     {
                         auto screenCoords = Translate3DTo2DWithZ(viewport->rotation, *coords);
-                        auto left = screenCoords.x - (viewport->view_width / 2);
-                        auto top = screenCoords.y - (viewport->view_height / 2);
+                        auto left = screenCoords.x - (viewport->ViewWidth() / 2);
+                        auto top = screenCoords.y - (viewport->ViewHeight() / 2);
                         SetViewLeftTop(left, top);
                     }
                 }
@@ -251,7 +251,8 @@ namespace OpenRCT2::Scripting
             if (_class == WindowClass::MainWindow)
                 return WindowGetMain();
 
-            return WindowFindByNumber(_class, _number);
+            auto* windowMgr = Ui::GetWindowManager();
+            return windowMgr->FindByNumber(_class, _number);
         }
 
         Viewport* GetViewport() const
@@ -274,7 +275,7 @@ namespace OpenRCT2::Scripting
                 {
                     viewport->viewPos.x = left;
                     viewport->viewPos.y = top;
-                    viewport->flags &= ~WF_SCROLLING_TO_LOCATION;
+                    w->flags &= ~WF_SCROLLING_TO_LOCATION;
                     w->savedViewPos.x = viewport->viewPos.x;
                     w->savedViewPos.y = viewport->viewPos.y;
                     viewport->Invalidate();

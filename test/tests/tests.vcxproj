@@ -109,5 +109,13 @@
     <None Include="testdata\sprites\example.dat" />
     <None Include="testdata\sprites\manifest.json" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\openrct2-deps\openrct2-deps.vcxproj">
+      <Project>{c453da76-44b3-4ac8-aaa2-2b64a76993a5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\openrct2\libopenrct2.vcxproj">
+      <Project>{d24d94f6-2a74-480c-b512-629c306ce92f}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

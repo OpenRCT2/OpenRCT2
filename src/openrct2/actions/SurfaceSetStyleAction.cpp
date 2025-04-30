@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,9 +17,9 @@
 #include "../object/ObjectManager.h"
 #include "../object/TerrainEdgeObject.h"
 #include "../object/TerrainSurfaceObject.h"
+#include "../world/Footpath.h"
 #include "../world/Park.h"
-#include "../world/Surface.h"
-#include "../world/TileElement.h"
+#include "../world/tile_element/SurfaceElement.h"
 
 using namespace OpenRCT2;
 
@@ -52,10 +52,10 @@ GameActions::Result SurfaceSetStyleAction::Query() const
 
     auto validRange = ClampRangeWithinMap(_range.Normalise());
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-    if (_surfaceStyle != OBJECT_ENTRY_INDEX_NULL)
+    if (_surfaceStyle != kObjectEntryIndexNull)
     {
         const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-            objManager.GetLoadedObject(ObjectType::TerrainSurface, _surfaceStyle));
+            objManager.GetLoadedObject<TerrainSurfaceObject>(_surfaceStyle));
 
         if (surfaceObj == nullptr)
         {
@@ -65,9 +65,9 @@ GameActions::Result SurfaceSetStyleAction::Query() const
         }
     }
 
-    if (_edgeStyle != OBJECT_ENTRY_INDEX_NULL)
+    if (_edgeStyle != kObjectEntryIndexNull)
     {
-        const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, _edgeStyle));
+        const auto edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(_edgeStyle);
 
         if (edgeObj == nullptr)
         {
@@ -85,11 +85,11 @@ GameActions::Result SurfaceSetStyleAction::Query() const
     res.Position.y = yMid;
     res.Position.z = heightMid;
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     // Do nothing if not in editor, sandbox mode or landscaping is forbidden
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.SandboxMode
-        && (gameState.Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
+    if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
+        && (gameState.park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
@@ -105,7 +105,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
             if (!LocationValid(coords))
                 continue;
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.SandboxMode)
+            if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
             {
                 if (!MapIsLocationInPark(coords))
                     continue;
@@ -117,14 +117,13 @@ GameActions::Result SurfaceSetStyleAction::Query() const
                 continue;
             }
 
-            if (_surfaceStyle != OBJECT_ENTRY_INDEX_NULL)
+            if (_surfaceStyle != kObjectEntryIndexNull)
             {
                 uint8_t curSurfaceStyle = surfaceElement->GetSurfaceObjectIndex();
 
                 if (_surfaceStyle != curSurfaceStyle)
                 {
-                    const auto surfaceObject = static_cast<TerrainSurfaceObject*>(
-                        objManager.GetLoadedObject(ObjectType::TerrainSurface, _surfaceStyle));
+                    const auto* surfaceObject = objManager.GetLoadedObject<TerrainSurfaceObject>(_surfaceStyle);
                     if (surfaceObject != nullptr)
                     {
                         surfaceCost += surfaceObject->Price;
@@ -132,7 +131,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
                 }
             }
 
-            if (_edgeStyle != OBJECT_ENTRY_INDEX_NULL)
+            if (_edgeStyle != kObjectEntryIndexNull)
             {
                 uint8_t curEdgeStyle = surfaceElement->GetEdgeObjectIndex();
 
@@ -173,7 +172,7 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
             if (!LocationValid(coords))
                 continue;
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
+            if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
             {
                 if (!MapIsLocationInPark(coords))
                     continue;
@@ -185,15 +184,14 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
                 continue;
             }
 
-            if (_surfaceStyle != OBJECT_ENTRY_INDEX_NULL)
+            if (_surfaceStyle != kObjectEntryIndexNull)
             {
                 uint8_t curSurfaceStyle = surfaceElement->GetSurfaceObjectIndex();
 
                 if (_surfaceStyle != curSurfaceStyle)
                 {
                     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-                    const auto surfaceObject = static_cast<TerrainSurfaceObject*>(
-                        objManager.GetLoadedObject(ObjectType::TerrainSurface, _surfaceStyle));
+                    const auto* surfaceObject = objManager.GetLoadedObject<TerrainSurfaceObject>(_surfaceStyle);
                     if (surfaceObject != nullptr)
                     {
                         surfaceCost += surfaceObject->Price;
@@ -206,7 +204,7 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
                 }
             }
 
-            if (_edgeStyle != OBJECT_ENTRY_INDEX_NULL)
+            if (_edgeStyle != kObjectEntryIndexNull)
             {
                 uint8_t curEdgeStyle = surfaceElement->GetEdgeObjectIndex();
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,7 +10,7 @@
 #include "RideFreezeRatingAction.h"
 
 #include "../Diagnostic.h"
-#include "../interface/Window.h"
+#include "../ui/WindowManager.h"
 
 using namespace OpenRCT2;
 
@@ -70,9 +70,10 @@ GameActions::Result RideFreezeRatingAction::Execute() const
             break;
     }
 
-    ride->lifecycle_flags |= RIDE_LIFECYCLE_FIXED_RATINGS;
+    ride->lifecycleFlags |= RIDE_LIFECYCLE_FIXED_RATINGS;
 
-    WindowInvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByNumber(WindowClass::Ride, _rideIndex.ToUnderlying());
 
     auto res = GameActions::Result();
     return res;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -17,23 +17,22 @@
 // clang-format off
 constexpr RideTypeDescriptor BobsleighCoasterRTD =
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionBobsleighRC,
+        .trackStyle = TrackStyle::bobsleighCoaster,
         .supportType = MetalSupportType::Tubes,        
-        .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve,TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes,TrackGroup::blockBrakes, TrackGroup::onridePhoto},
-        .ExtraTrackPieces = {},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve,TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes,TrackGroup::blockBrakes, TrackGroup::onridePhoto},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
         EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces,
                      RtdFlag::allowMultipleCircuits),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
+    .DefaultMode = RideMode::continuousCircuit,
     .Naming = { STR_RIDE_NAME_BOBSLEIGH_COASTER, STR_RIDE_DESCRIPTION_BOBSLEIGH_COASTER },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_BOBSLEIGH_COASTER",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 19, 24, 5, 7, },
     .MaxMass = 25,
@@ -42,7 +41,7 @@ constexpr RideTypeDescriptor BobsleighCoasterRTD =
     .UpkeepCosts = { 40, 20, 80, 10, 3, 10 },
     .BuildCosts = { 40.00_GBP, 2.50_GBP, 45, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .DefaultMusic = kMusicObjectRock1,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 75,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -57,13 +56,13 @@ constexpr RideTypeDescriptor BobsleighCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 80), RIDE_RATING(3, 20), RIDE_RATING(2, 50) },
+        { MakeRideRating(2, 80), MakeRideRating(3, 20), MakeRideRating(2, 50) },
         16,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 20), RIDE_RATING(0, 00), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 20), MakeRideRating(0, 00), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -75,7 +74,7 @@ constexpr RideTypeDescriptor BobsleighCoasterRTD =
             { RatingsModifierType::BonusProximity,        0,                20130, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                5577, 0, 0 },
             { RatingsModifierType::RequirementMaxSpeed,   0xC0000,          2, 2, 2 },
-            { RatingsModifierType::RequirementLateralGs,  FIXED_2DP(1, 20), 2, 2, 2 },
+            { RatingsModifierType::RequirementLateralGs,  MakeFixed16_2dp(1, 20), 2, 2, 2 },
             { RatingsModifierType::RequirementLength,     0x1720000,        2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                65536, 23831, 49648 },
         },

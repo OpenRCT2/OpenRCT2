@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -59,51 +59,16 @@ namespace OpenRCT2::PathConstructFlag
 
 struct FootpathSelection
 {
-    ObjectEntryIndex LegacyPath = OBJECT_ENTRY_INDEX_NULL;
-    ObjectEntryIndex NormalSurface = OBJECT_ENTRY_INDEX_NULL;
-    ObjectEntryIndex QueueSurface = OBJECT_ENTRY_INDEX_NULL;
-    ObjectEntryIndex Railings = OBJECT_ENTRY_INDEX_NULL;
+    ObjectEntryIndex LegacyPath = kObjectEntryIndexNull;
+    ObjectEntryIndex NormalSurface = kObjectEntryIndexNull;
+    ObjectEntryIndex QueueSurface = kObjectEntryIndexNull;
+    ObjectEntryIndex Railings = kObjectEntryIndexNull;
     bool IsQueueSelected{};
 
     ObjectEntryIndex GetSelectedSurface() const
     {
         return IsQueueSelected ? QueueSurface : NormalSurface;
     }
-};
-
-// Masks for values stored in TileElement.type
-enum
-{
-    FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE = (1 << 0),
-    FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE = (1 << 1),
-    FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK = (1 << 6) | (1 << 7),
-};
-
-// Masks and flags for values stored in TileElement.properties.path.type
-enum
-{
-    FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK = (1 << 0) | (1 << 1),
-    FOOTPATH_PROPERTIES_FLAG_IS_SLOPED = (1 << 2),
-    FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER = (1 << 3),
-    FOOTPATH_PROPERTIES_TYPE_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
-};
-
-// Masks and flags for values stored in TileElement.properties.path.edges
-enum
-{
-    FOOTPATH_PROPERTIES_EDGES_EDGES_MASK = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3),
-    FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
-};
-
-enum
-{
-    FOOTPATH_ELEMENT_FLAGS2_IS_SLOPED = 1 << 0,
-    FOOTPATH_ELEMENT_FLAGS2_HAS_QUEUE_BANNER = (1 << 1),
-    FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_GHOST = (1 << 2),
-    FOOTPATH_ELEMENT_FLAGS2_BLOCKED_BY_VEHICLE = (1 << 3),
-    FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_BROKEN = (1 << 4),
-    FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY = (1 << 5),
-    FOOTPATH_ELEMENT_FLAGS2_HAS_JUNCTION_RAILINGS = (1 << 6),
 };
 
 enum
@@ -186,3 +151,4 @@ const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex);
 
 void FootpathQueueChainReset();
 void FootpathQueueChainPush(RideId rideIndex);
+bool FootpathIsZAndDirectionValid(const PathElement& tileElement, int32_t currentZ, int32_t currentDirection);

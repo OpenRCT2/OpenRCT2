@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,7 +16,7 @@ namespace OpenRCT2::Localisation
 
 #include "../drawing/Font.h"
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 extern TTFFontSetDescriptor TTFFontMSGothic;
 extern TTFFontSetDescriptor TTFFontNotoSansMono;
 extern TTFFontSetDescriptor TTFFontHiragano;
@@ -30,6 +30,9 @@ extern TTFFontSetDescriptor TTFFontNanum;
 extern TTFFontSetDescriptor TTFFontArial;
 extern TTFFontSetDescriptor TTFFontArialUnicode;
 extern TTFFontSetDescriptor TTFFontMicroHei;
-#endif // NO_TTF
+extern TTFFontSetDescriptor TTFFontRoboto;
+extern TTFFontSetDescriptor TTFFontNotoSansCJK;
+extern TTFFontSetDescriptor TTFFontNotoNaskhArabic;
+#endif // DISABLE_TTF
 
 void TryLoadFonts(OpenRCT2::Localisation::LocalisationService& localisationService);

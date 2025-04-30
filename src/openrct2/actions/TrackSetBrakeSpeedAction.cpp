@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,10 +11,12 @@
 
 #include "../Diagnostic.h"
 #include "../management/Finance.h"
+#include "../ride/RideConstruction.h"
+#include "../world/tile_element/TrackElement.h"
 
 using namespace OpenRCT2;
 
-TrackSetBrakeSpeedAction::TrackSetBrakeSpeedAction(const CoordsXYZ& loc, track_type_t trackType, uint8_t brakeSpeed)
+TrackSetBrakeSpeedAction::TrackSetBrakeSpeedAction(const CoordsXYZ& loc, OpenRCT2::TrackElemType trackType, uint8_t brakeSpeed)
     : _loc(loc)
     , _trackType(trackType)
     , _brakeSpeed(brakeSpeed)
@@ -74,14 +76,14 @@ GameActions::Result TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting) con
     if (_brakeSpeed > kMaximumTrackSpeed)
     {
         LOG_WARNING("Invalid speed for track, speed = %d", _brakeSpeed);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_SPEED_TOO_HIGH, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_SPEED_TOO_HIGH, kStringIdNone);
     }
 
     if (isExecuting)
     {
         GetTrackElementOriginAndApplyChanges(
             { _loc, tileElement->GetDirection() }, tileElement->AsTrack()->GetTrackType(), _brakeSpeed, nullptr,
-            TRACK_ELEMENT_SET_BRAKE_BOOSTER_SPEED);
+            { TrackElementSetFlag::brakeBoosterSpeed });
     }
     return res;
 }

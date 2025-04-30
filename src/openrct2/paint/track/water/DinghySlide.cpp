@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "../../../interface/Viewport.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../tile_element/Segment.h"
@@ -36,6 +37,8 @@ enum
     SPR_DINGHY_SLIDE_FLAT_CHAIN_FRONT_SE_NW = 19731,
     SPR_DINGHY_SLIDE_STATION_SW_NE = 19732,
     SPR_DINGHY_SLIDE_STATION_NW_SE = 19733,
+    SPR_DINGHY_SLIDE_STATION_FRONT_SW_NE = 19734,
+    SPR_DINGHY_SLIDE_STATION_FRONT_NW_SE = 19735,
 
     SPR_DINGHY_SLIDE_FLAT_TO_25_DEG_SW_NE = 19740,
     SPR_DINGHY_SLIDE_FLAT_TO_25_DEG_NW_SE = 19741,
@@ -246,7 +249,7 @@ static void DinghySlideTrackFlat(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -255,23 +258,32 @@ static void DinghySlideTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr uint32_t imageIds[4][2] = {
-        { SPR_DINGHY_SLIDE_STATION_SW_NE, SPR_STATION_BASE_B_SW_NE },
-        { SPR_DINGHY_SLIDE_STATION_NW_SE, SPR_STATION_BASE_B_NW_SE },
-        { SPR_DINGHY_SLIDE_STATION_SW_NE, SPR_STATION_BASE_B_SW_NE },
-        { SPR_DINGHY_SLIDE_STATION_NW_SE, SPR_STATION_BASE_B_NW_SE },
+    static constexpr ImageIndex imageIds[4][2] = {
+        { SPR_DINGHY_SLIDE_STATION_SW_NE, SPR_DINGHY_SLIDE_STATION_FRONT_SW_NE },
+        { SPR_DINGHY_SLIDE_STATION_NW_SE, SPR_DINGHY_SLIDE_STATION_FRONT_NW_SE },
+        { SPR_DINGHY_SLIDE_STATION_SW_NE, SPR_DINGHY_SLIDE_STATION_FRONT_SW_NE },
+        { SPR_DINGHY_SLIDE_STATION_NW_SE, SPR_DINGHY_SLIDE_STATION_FRONT_NW_SE },
     };
 
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
         { { 0, 6, height + 3 }, { 32, 20, 1 } });
-    PaintAddImageAsParentRotated(
-        session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]), { 0, 0, height },
-        { 32, 32, 1 });
 
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
-
-    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
+    if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, 0))
+    {
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
+    }
+    else
+    {
+        PaintAddImageAsParentRotated(
+            session, direction, session.TrackColours.WithIndex(imageIds[direction][1]), { 0, 0, height },
+            { { 0, 27, height }, { 32, 1, 26 } });
+        if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+        {
+            MetalASupportsPaintSetupRotated(
+                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+        }
+    }
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
 
@@ -322,7 +334,7 @@ static void DinghySlideTrack25DegUp(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -361,7 +373,7 @@ static void DinghySlideTrack60DegUp(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
@@ -409,7 +421,7 @@ static void DinghySlideTrackFlatTo25DegUp(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -448,7 +460,7 @@ static void DinghySlideTrack25DegUpTo60DegUp(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -487,7 +499,7 @@ static void DinghySlideTrack60DegUpTo25DegUp(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -535,7 +547,7 @@ static void DinghySlideTrack25DegUpToFlat(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
@@ -674,9 +686,7 @@ static void DinghySlideTrackRightQuarterTurn5(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::rightCorner),
+                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
             break;
@@ -685,8 +695,8 @@ static void DinghySlideTrackRightQuarterTurn5(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide,
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::topRightSide),
+                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
+                        PaintSegment::bottom, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             break;
@@ -694,8 +704,7 @@ static void DinghySlideTrackRightQuarterTurn5(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::centre),
+                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre),
                     direction),
                 0xFFFF, 0);
             break;
@@ -704,8 +713,8 @@ static void DinghySlideTrackRightQuarterTurn5(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::topLeftSide),
+                        PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
+                        PaintSegment::bottom, PaintSegment::topLeft),
                     direction),
                 0xFFFF, 0);
             break;
@@ -713,9 +722,7 @@ static void DinghySlideTrackRightQuarterTurn5(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::leftCorner),
+                    EnumsToFlags(PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left),
                     direction),
                 0xFFFF, 0);
             break;
@@ -784,9 +791,7 @@ static void DinghySlideTrackSBendLeft(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide),
+                    EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             break;
@@ -800,8 +805,8 @@ static void DinghySlideTrackSBendLeft(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             break;
@@ -815,8 +820,8 @@ static void DinghySlideTrackSBendLeft(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             break;
@@ -828,9 +833,7 @@ static void DinghySlideTrackSBendLeft(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide),
+                    EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             break;
@@ -899,9 +902,7 @@ static void DinghySlideTrackSBendRight(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide),
+                    EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             break;
@@ -915,8 +916,8 @@ static void DinghySlideTrackSBendRight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             break;
@@ -930,8 +931,8 @@ static void DinghySlideTrackSBendRight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             break;
@@ -943,9 +944,7 @@ static void DinghySlideTrackSBendRight(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide),
+                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             break;
@@ -1035,15 +1034,15 @@ static void DinghySlideTrackRightQuarterTurn3(
     {
         case 0:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::rightCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right);
             break;
         case 2:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide, PaintSegment::bottomCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottom);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::leftCorner);
+                PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -1059,7 +1058,7 @@ static void DinghySlideTrackLeftQuarterTurn3(
     DinghySlideTrackRightQuarterTurn3(session, ride, trackSequence, (direction + 1) % 4, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlide(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionDinghySlide(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -1105,7 +1104,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlide(int32_t trackType)
             return DinghySlideTrackLeftQuarterTurn3;
         case TrackElemType::RightQuarterTurn3Tiles:
             return DinghySlideTrackRightQuarterTurn3;
+        default:
+            return TrackPaintFunctionDummy;
     }
-
-    return nullptr;
 }

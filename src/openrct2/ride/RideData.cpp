@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,10 +22,10 @@
 #include "../Cheats.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
-#include "../audio/audio.h"
+#include "../SpriteIds.h"
+#include "../audio/Audio.h"
 #include "../interface/Colour.h"
 #include "../management/Research.h"
-#include "../sprites.h"
 #include "Ride.h"
 #include "ShopItem.h"
 #include "Track.h"
@@ -36,6 +36,7 @@
 #include "rtd/coaster/ClassicMiniRollerCoaster.h"
 #include "rtd/coaster/ClassicStandUpRollerCoaster.h"
 #include "rtd/coaster/ClassicWoodenRollerCoaster.h"
+#include "rtd/coaster/ClassicWoodenTwisterRollerCoaster.h"
 #include "rtd/coaster/CompactInvertedCoaster.h"
 #include "rtd/coaster/CorkscrewRollerCoaster.h"
 #include "rtd/coaster/FlyingRollerCoaster.h"
@@ -49,6 +50,7 @@
 #include "rtd/coaster/InvertedRollerCoaster.h"
 #include "rtd/coaster/JuniorRollerCoaster.h"
 #include "rtd/coaster/LIMLaunchedRollerCoaster.h"
+#include "rtd/coaster/LSMLaunchedRollerCoaster.h"
 #include "rtd/coaster/LayDownRollerCoaster.h"
 #include "rtd/coaster/LoopingRollerCoaster.h"
 #include "rtd/coaster/MineRide.h"
@@ -127,7 +129,7 @@ using namespace OpenRCT2::Entity::Yaw;
 
 // clang-format off
 
-const CarEntry CableLiftVehicle = {
+const CarEntry kCableLiftVehicle = {
     .TabRotationMask = 31,
     .spacing = 0,
     .car_mass = 0,
@@ -174,6 +176,9 @@ const CarEntry CableLiftVehicle = {
         /* SpriteGroupType::Slopes42Banked67 */     { 0, SpritePrecision::None},
         /* SpriteGroupType::Slopes42Banked90 */     { 0, SpritePrecision::None},
         /* SpriteGroupType::Slopes60Banked22 */     { 0, SpritePrecision::None},
+        /* SpriteGroupType::Slopes60Banked45 */     { 0, SpritePrecision::None},
+        /* SpriteGroupType::Slopes60Banked67 */     { 0, SpritePrecision::None},
+        /* SpriteGroupType::Slopes60Banked90 */     { 0, SpritePrecision::None},
         /* SpriteGroupType::Corkscrews */           { 0, SpritePrecision::None},
         /* SpriteGroupType::RestraintAnimation */   { 0, SpritePrecision::None},
         /* SpriteGroupType::CurvedLiftHillUp */     { 0, SpritePrecision::None},
@@ -203,13 +208,13 @@ const CarEntry CableLiftVehicle = {
 };
 
 /* rct2: 0x009A0AA0 */
-const uint16_t RideFilmLength[3] = {
+const uint16_t kRideFilmLength[3] = {
     5000, // MOUSE_TAILS
     6000, // STORM_CHASERS
     7000, // SPACE_RAIDERS
 };
 
-const StringId RideModeNames[] = {
+const StringId kRideModeNames[] = {
         STR_RIDE_MODE_NORMAL,
         STR_RIDE_MODE_CONTINUOUS_CIRCUIT,
         STR_RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE,
@@ -250,7 +255,7 @@ const StringId RideModeNames[] = {
 };
 // clang-format on
 
-constexpr RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
+constexpr RideTypeDescriptor kRideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_SPIRAL_ROLLER_COASTER              */ SpiralRollerCoasterRTD,
     /* RIDE_TYPE_STAND_UP_ROLLER_COASTER            */ StandUpRollerCoasterRTD,
     /* RIDE_TYPE_SUSPENDED_SWINGING_COASTER         */ SuspendedSwingingCoasterRTD,
@@ -280,12 +285,12 @@ constexpr RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_SWINGING_SHIP                      */ SwingingShipRTD,
     /* RIDE_TYPE_SWINGING_INVERTER_SHIP             */ SwingingInverterShipRTD,
     /* RIDE_TYPE_FOOD_STALL                         */ FoodStallRTD,
-    /* RIDE_TYPE_1D                                 */ DummyRTD,
+    /* RIDE_TYPE_1D                                 */ kDummyRTD,
     /* RIDE_TYPE_DRINK_STALL                        */ DrinkStallRTD,
-    /* RIDE_TYPE_1F                                 */ DummyRTD,
+    /* RIDE_TYPE_1F                                 */ kDummyRTD,
     /* RIDE_TYPE_SHOP                               */ ShopRTD,
     /* RIDE_TYPE_MERRY_GO_ROUND                     */ MerryGoRoundRTD,
-    /* RIDE_TYPE_22                                 */ DummyRTD,
+    /* RIDE_TYPE_22                                 */ kDummyRTD,
     /* RIDE_TYPE_INFORMATION_KIOSK                  */ InformationKioskRTD,
     /* RIDE_TYPE_TOILETS                            */ ToiletsRTD,
     /* RIDE_TYPE_FERRIS_WHEEL                       */ FerrisWheelRTD,
@@ -331,16 +336,16 @@ constexpr RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_MAGIC_CARPET                       */ MagicCarpetRTD,
     /* RIDE_TYPE_SUBMARINE_RIDE                     */ SubmarineRideRTD,
     /* RIDE_TYPE_RIVER_RAFTS                        */ RiverRaftsRTD,
-    /* RIDE_TYPE_50                                 */ DummyRTD,
+    /* RIDE_TYPE_50                                 */ kDummyRTD,
     /* RIDE_TYPE_ENTERPRISE                         */ EnterpriseRTD,
-    /* RIDE_TYPE_52                                 */ DummyRTD,
-    /* RIDE_TYPE_53                                 */ DummyRTD,
-    /* RIDE_TYPE_54                                 */ DummyRTD,
-    /* RIDE_TYPE_55                                 */ DummyRTD,
+    /* RIDE_TYPE_52                                 */ kDummyRTD,
+    /* RIDE_TYPE_53                                 */ kDummyRTD,
+    /* RIDE_TYPE_54                                 */ kDummyRTD,
+    /* RIDE_TYPE_55                                 */ kDummyRTD,
     /* RIDE_TYPE_INVERTED_IMPULSE_COASTER           */ InvertedImpulseCoasterRTD,
     /* RIDE_TYPE_MINI_ROLLER_COASTER                */ MiniRollerCoasterRTD,
     /* RIDE_TYPE_MINE_RIDE                          */ MineRideRTD,
-    /* RIDE_TYPE_59                                 */ DummyRTD,
+    /* RIDE_TYPE_59                                 */ kDummyRTD,
     /* RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER        */ LIMLaunchedRollerCoasterRTD,
     /* RIDE_TYPE_HYPERCOASTER,                      */ HypercoasterRTD,
     /* RIDE_TYPE_HYPER_TWISTER,                     */ HyperTwisterRTD,
@@ -352,6 +357,8 @@ constexpr RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_ALPINE_COASTER                     */ AlpineCoasterRTD,
     /* RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER      */ ClassicWoodenRollerCoasterRTD,
     /* RIDE_TYPE_CLASSIC_STAND_UP_ROLLER_COASTER    */ ClassicStandUpRollerCoasterRTD,
+    /* RIDE_TYPE_LSM_LAUNCHED_ROLLER_COASTER        */ LSMLaunchedRollerCoasterRTD,
+    /* RIDE_TYPE_CLASSIC_WOODEN_TWISTER_ROLLER_COASTER */ ClassicWoodenTwisterRollerCoasterRTD,
 };
 
 bool RideTypeDescriptor::HasFlag(RtdFlag flag) const
@@ -368,19 +375,19 @@ ResearchCategory RideTypeDescriptor::GetResearchCategory() const
 {
     switch (Category)
     {
-        case RIDE_CATEGORY_TRANSPORT:
+        case RideCategory::transport:
             return ResearchCategory::Transport;
-        case RIDE_CATEGORY_GENTLE:
+        case RideCategory::gentle:
             return ResearchCategory::Gentle;
-        case RIDE_CATEGORY_ROLLERCOASTER:
+        case RideCategory::rollerCoaster:
             return ResearchCategory::Rollercoaster;
-        case RIDE_CATEGORY_THRILL:
+        case RideCategory::thrill:
             return ResearchCategory::Thrill;
-        case RIDE_CATEGORY_WATER:
+        case RideCategory::water:
             return ResearchCategory::Water;
-        case RIDE_CATEGORY_SHOP:
+        case RideCategory::shop:
             return ResearchCategory::Shop;
-        case RIDE_CATEGORY_NONE:
+        case RideCategory::none:
             break;
     }
     LOG_ERROR("Cannot get Research Category of invalid RideCategory");
@@ -392,45 +399,45 @@ bool RideTypeDescriptor::SupportsRideMode(RideMode rideMode) const
     return RideModes & EnumToFlag(rideMode);
 }
 
-static RideTrackGroup _enabledRidePieces = {};
-static RideTrackGroup _disabledRidePieces = {};
+static RideTrackGroups _enabledRideGroups = {};
+static RideTrackGroups _disabledRideGroups = {};
 
 bool IsTrackEnabled(TrackGroup trackGroup)
 {
-    return _enabledRidePieces.get(EnumValue(trackGroup));
+    return _enabledRideGroups.get(EnumValue(trackGroup));
 }
 
-void UpdateEnabledRidePieces(TrackDrawerDescriptor trackDrawerDescriptor)
+void UpdateEnabledRideGroups(TrackDrawerDescriptor trackDrawerDescriptor)
 {
-    trackDrawerDescriptor.Regular.GetAvailableTrackPieces(_enabledRidePieces);
+    trackDrawerDescriptor.Regular.GetAvailableTrackGroups(_enabledRideGroups);
 
-    if (!GetGameState().Cheats.EnableAllDrawableTrackPieces)
+    if (!getGameState().cheats.enableAllDrawableTrackPieces)
     {
-        _enabledRidePieces &= ~_disabledRidePieces;
+        _enabledRideGroups &= ~_disabledRideGroups;
     }
 }
 
-void UpdateDisabledRidePieces(const RideTrackGroup& res)
+void UpdateDisabledRideGroups(const RideTrackGroups& res)
 {
-    _disabledRidePieces = res;
+    _disabledRideGroups = res;
 }
 
-void TrackDrawerEntry::GetAvailableTrackPieces(RideTrackGroup& res) const
+void TrackDrawerEntry::GetAvailableTrackGroups(RideTrackGroups& res) const
 {
-    res = EnabledTrackPieces;
-    if (GetGameState().Cheats.EnableAllDrawableTrackPieces)
-        res |= ExtraTrackPieces;
+    res = enabledTrackGroups;
+    if (getGameState().cheats.enableAllDrawableTrackPieces)
+        res |= extraTrackGroups;
 }
 
 bool TrackDrawerEntry::SupportsTrackGroup(const TrackGroup trackGroup) const
 {
-    return EnabledTrackPieces.get(EnumValue(trackGroup))
-        || (GetGameState().Cheats.EnableAllDrawableTrackPieces && ExtraTrackPieces.get(EnumValue(trackGroup)));
+    return enabledTrackGroups.get(EnumValue(trackGroup))
+        || (getGameState().cheats.enableAllDrawableTrackPieces && extraTrackGroups.get(EnumValue(trackGroup)));
 }
 
 bool TrackDrawerDescriptor::HasCoveredPieces() const
 {
-    return Covered.EnabledTrackPieces.count() > 0;
+    return Covered.enabledTrackGroups.count() > 0;
 }
 
 TrackDrawerDescriptor getTrackDrawerDescriptor(const RideTypeDescriptor& rtd, bool isInverted)
@@ -448,4 +455,11 @@ TrackDrawerEntry getTrackDrawerEntry(const RideTypeDescriptor& rtd, bool isInver
     }
 
     return descriptor.Regular;
+}
+
+int32_t RideTypeDescriptor::GetUnifiedBoosterSpeed(int32_t compressedSpeed) const
+{
+    // BoosterSpeedFactor has valid values of 1, 2, 4 representing a 1/2, 1, and 2 multiplier of legacy speed to unified
+    // speed.
+    return compressedSpeed * LegacyBoosterSettings.BoosterSpeedFactor / 2;
 }

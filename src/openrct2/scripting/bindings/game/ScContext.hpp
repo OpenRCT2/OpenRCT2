@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,23 +11,22 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../../OpenRCT2.h"
-#    include "../../../actions/GameAction.h"
-#    include "../../../interface/Screenshot.h"
-#    include "../../../localisation/Formatting.h"
-#    include "../../../object/ObjectManager.h"
-#    include "../../../scenario/Scenario.h"
-#    include "../../Duktape.hpp"
-#    include "../../HookEngine.h"
-#    include "../../IconNames.hpp"
-#    include "../../ScriptEngine.h"
-#    include "../game/ScConfiguration.hpp"
-#    include "../game/ScDisposable.hpp"
-#    include "../object/ScObjectManager.h"
-#    include "../ride/ScTrackSegment.h"
+    #include "../../../OpenRCT2.h"
+    #include "../../../actions/GameAction.h"
+    #include "../../../interface/Screenshot.h"
+    #include "../../../localisation/Formatting.h"
+    #include "../../../object/ObjectManager.h"
+    #include "../../Duktape.hpp"
+    #include "../../HookEngine.h"
+    #include "../../IconNames.hpp"
+    #include "../../ScriptEngine.h"
+    #include "../game/ScConfiguration.hpp"
+    #include "../game/ScDisposable.hpp"
+    #include "../object/ScObjectManager.h"
+    #include "../ride/ScTrackSegment.h"
 
-#    include <cstdio>
-#    include <memory>
+    #include <cstdio>
+    #include <memory>
 
 namespace OpenRCT2::Scripting
 {
@@ -47,7 +46,7 @@ namespace OpenRCT2::Scripting
     private:
         int32_t apiVersion_get()
         {
-            return OPENRCT2_PLUGIN_API_VERSION;
+            return kPluginApiVersion;
         }
 
         std::shared_ptr<ScConfiguration> configuration_get()
@@ -115,13 +114,13 @@ namespace OpenRCT2::Scripting
 
         std::string mode_get()
         {
-            if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+            if (gLegacyScene == LegacyScene::titleSequence)
                 return "title";
-            else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+            else if (gLegacyScene == LegacyScene::scenarioEditor)
                 return "scenario_editor";
-            else if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+            else if (gLegacyScene == LegacyScene::trackDesigner)
                 return "track_designer";
-            else if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+            else if (gLegacyScene == LegacyScene::trackDesignsManager)
                 return "track_manager";
             return "normal";
         }
@@ -186,16 +185,16 @@ namespace OpenRCT2::Scripting
             return objectManager.getAllObjects(typez);
         }
 
-        DukValue getTrackSegment(track_type_t type)
+        DukValue getTrackSegment(uint16_t type)
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
-            if (type >= TrackElemType::Count)
+            if (type >= EnumValue(TrackElemType::Count))
             {
                 return ToDuk(ctx, nullptr);
             }
             else
             {
-                return GetObjectAsDukValue(ctx, std::make_shared<ScTrackSegment>(type));
+                return GetObjectAsDukValue(ctx, std::make_shared<ScTrackSegment>(static_cast<TrackElemType>(type)));
             }
         }
 
@@ -204,9 +203,9 @@ namespace OpenRCT2::Scripting
             auto ctx = GetContext()->GetScriptEngine().GetContext();
 
             std::vector<DukValue> result;
-            for (track_type_t type = 0; type < TrackElemType::Count; type++)
+            for (uint16_t type = 0; type < EnumValue(TrackElemType::Count); type++)
             {
-                auto obj = std::make_shared<ScTrackSegment>(type);
+                auto obj = std::make_shared<ScTrackSegment>(static_cast<TrackElemType>(type));
                 if (obj != nullptr)
                 {
                     result.push_back(GetObjectAsDukValue(ctx, obj));
@@ -267,13 +266,14 @@ namespace OpenRCT2::Scripting
             return 1;
         }
 
-#    ifdef _MSC_VER
+    #ifdef _MSC_VER
         // HACK workaround to resolve issue #14853
         //      The exception thrown in duk_error was causing a crash when RAII kicked in for this lambda.
         //      Only ensuring it was not in the same generated method fixed it.
         __declspec(noinline)
-#    endif
-            std::shared_ptr<ScDisposable> CreateSubscription(HOOK_TYPE hookType, const DukValue& callback)
+    #endif
+        std::shared_ptr<ScDisposable>
+            CreateSubscription(HookType hookType, const DukValue& callback)
         {
             auto owner = _execInfo.GetCurrentPlugin();
             auto cookie = _hookEngine.Subscribe(hookType, owner, callback);
@@ -286,7 +286,7 @@ namespace OpenRCT2::Scripting
             auto ctx = scriptEngine.GetContext();
 
             auto hookType = GetHookType(hook);
-            if (hookType == HOOK_TYPE::UNDEFINED)
+            if (hookType == HookType::notDefined)
             {
                 duk_error(ctx, DUK_ERR_ERROR, "Unknown hook type");
             }
@@ -471,7 +471,7 @@ namespace OpenRCT2::Scripting
         if (d.type() == DukValue::Type::NUMBER)
         {
             img = d.as_uint();
-            if (GetTargetAPIVersion() <= API_VERSION_63_G2_REORDER)
+            if (GetTargetAPIVersion() <= kApiVersionG2Reorder)
             {
                 img = NewIconIndex(d.as_uint());
             }

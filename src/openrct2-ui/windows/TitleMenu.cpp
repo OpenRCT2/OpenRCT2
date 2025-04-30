@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,16 +10,16 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/scripting/CustomMenu.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/PlatformEnvironment.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
-#include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -46,13 +46,12 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize UpdateButtonDims = { MenuButtonDims.width * 4, 28 };
 
     // clang-format off
-    static Widget _titleMenuWidgets[] = {
+    static constexpr Widget _titleMenuWidgets[] = {
         MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_MENU_NEW_GAME),       STR_START_NEW_GAME_TIP),
         MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_MENU_LOAD_GAME),      STR_CONTINUE_SAVED_GAME_TIP),
         MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_G2_MENU_MULTIPLAYER), STR_SHOW_MULTIPLAYER_TIP),
         MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_MENU_TOOLBOX),        STR_GAME_TOOLS_TIP),
         MakeWidget({0,                       0}, UpdateButtonDims, WindowWidgetType::Empty,  WindowColour::Secondary, STR_UPDATE_AVAILABLE),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -92,14 +91,14 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _titleMenuWidgets;
+            SetWidgets(_titleMenuWidgets);
 
 #ifdef DISABLE_NETWORK
             widgets[WIDX_MULTIPLAYER].type = WindowWidgetType::Empty;
 #endif
 
             int32_t x = 0;
-            for (Widget* widget = widgets; widget != &widgets[WIDX_NEW_VERSION]; widget++)
+            for (Widget* widget = widgets.data(); widget != &widgets[WIDX_NEW_VERSION]; widget++)
             {
                 if (widget->type != WindowWidgetType::Empty)
                 {
@@ -121,45 +120,47 @@ namespace OpenRCT2::Ui::Windows
         {
             WindowBase* windowToOpen = nullptr;
 
+            auto* windowMgr = GetWindowManager();
+
             switch (widgetIndex)
             {
                 case WIDX_START_NEW_GAME:
-                    windowToOpen = WindowFindByClass(WindowClass::ScenarioSelect);
+                    windowToOpen = windowMgr->FindByClass(WindowClass::ScenarioSelect);
                     if (windowToOpen != nullptr)
                     {
-                        WindowBringToFront(*windowToOpen);
+                        windowMgr->BringToFront(*windowToOpen);
                     }
                     else
                     {
-                        WindowCloseByClass(WindowClass::Loadsave);
-                        WindowCloseByClass(WindowClass::ServerList);
+                        windowMgr->CloseByClass(WindowClass::Loadsave);
+                        windowMgr->CloseByClass(WindowClass::ServerList);
                         ScenarioselectOpen(WindowTitleMenuScenarioselectCallback);
                     }
                     break;
                 case WIDX_CONTINUE_SAVED_GAME:
-                    windowToOpen = WindowFindByClass(WindowClass::Loadsave);
+                    windowToOpen = windowMgr->FindByClass(WindowClass::Loadsave);
                     if (windowToOpen != nullptr)
                     {
-                        WindowBringToFront(*windowToOpen);
+                        windowMgr->BringToFront(*windowToOpen);
                     }
                     else
                     {
-                        WindowCloseByClass(WindowClass::ScenarioSelect);
-                        WindowCloseByClass(WindowClass::ServerList);
+                        windowMgr->CloseByClass(WindowClass::ScenarioSelect);
+                        windowMgr->CloseByClass(WindowClass::ServerList);
                         auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
                         GameActions::Execute(&loadOrQuitAction);
                     }
                     break;
                 case WIDX_MULTIPLAYER:
-                    windowToOpen = WindowFindByClass(WindowClass::ServerList);
+                    windowToOpen = windowMgr->FindByClass(WindowClass::ServerList);
                     if (windowToOpen != nullptr)
                     {
-                        WindowBringToFront(*windowToOpen);
+                        windowMgr->BringToFront(*windowToOpen);
                     }
                     else
                     {
-                        WindowCloseByClass(WindowClass::ScenarioSelect);
-                        WindowCloseByClass(WindowClass::Loadsave);
+                        windowMgr->CloseByClass(WindowClass::ScenarioSelect);
+                        windowMgr->CloseByClass(WindowClass::Loadsave);
                         ContextOpenWindow(WindowClass::ServerList);
                     }
                     break;
@@ -193,7 +194,7 @@ namespace OpenRCT2::Ui::Windows
                             if (!hasCustomItems)
                             {
                                 hasCustomItems = true;
-                                gDropdownItems[i++].Format = STR_EMPTY;
+                                gDropdownItems[i++].Format = kStringIdEmpty;
                             }
 
                             gDropdownItems[i].Format = STR_STRING;
@@ -245,7 +246,7 @@ namespace OpenRCT2::Ui::Windows
                         auto context = OpenRCT2::GetContext();
                         auto env = context->GetPlatformEnvironment();
                         auto uiContext = context->GetUiContext();
-                        uiContext->OpenFolder(env->GetDirectoryPath(OpenRCT2::DIRBASE::USER));
+                        uiContext->OpenFolder(env->GetDirectoryPath(OpenRCT2::DirBase::user));
                         break;
                     }
                     default:
@@ -285,8 +286,10 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* TitleMenuOpen()
     {
         const uint16_t windowHeight = MenuButtonDims.height + UpdateButtonDims.height;
-        return WindowCreate<TitleMenuWindow>(
+
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->Create<TitleMenuWindow>(
             WindowClass::TitleMenu, ScreenCoordsXY(0, ContextGetHeight() - 182), 0, windowHeight,
-            WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
+            WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
     }
 } // namespace OpenRCT2::Ui::Windows

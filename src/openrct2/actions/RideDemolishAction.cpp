@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,22 +16,21 @@
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../entity/EntityList.h"
-#include "../interface/Window.h"
 #include "../management/NewsItem.h"
 #include "../peep/RideUseSystem.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Banner.h"
 #include "../world/Park.h"
 #include "../world/TileElementsView.h"
+#include "../world/tile_element/TrackElement.h"
 #include "MazeSetTrackAction.h"
 #include "TrackRemoveAction.h"
 
 using namespace OpenRCT2;
 
-RideDemolishAction::RideDemolishAction(RideId rideIndex, uint8_t modifyType)
+RideDemolishAction::RideDemolishAction(RideId rideIndex, RideModifyType modifyType)
     : _rideIndex(rideIndex)
     , _modifyType(modifyType)
 {
@@ -64,9 +63,9 @@ GameActions::Result RideDemolishAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_ERR_RIDE_NOT_FOUND);
     }
 
-    if ((ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
-         && _modifyType == RIDE_MODIFY_DEMOLISH)
-        && !GetGameState().Cheats.MakeAllDestructible)
+    if ((ride->lifecycleFlags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+         && _modifyType == RideModifyType::demolish)
+        && !getGameState().cheats.makeAllDestructible)
     {
         return GameActions::Result(
             GameActions::Status::NoClearance, STR_CANT_DEMOLISH_RIDE,
@@ -75,20 +74,19 @@ GameActions::Result RideDemolishAction::Query() const
 
     GameActions::Result result = GameActions::Result();
 
-    if (_modifyType == RIDE_MODIFY_RENEW)
+    if (_modifyType == RideModifyType::renew)
     {
-        if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
+        if (ride->status != RideStatus::closed && ride->status != RideStatus::simulating)
         {
             return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_MUST_BE_CLOSED_FIRST);
         }
 
-        if (ride->num_riders > 0)
+        if (ride->numRiders > 0)
         {
             return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_RIDE_NOT_YET_EMPTY);
         }
 
-        if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
-            || ride->GetRideTypeDescriptor().AvailableBreakdowns == 0)
+        if (!(ride->lifecycleFlags & RIDE_LIFECYCLE_EVER_BEEN_OPENED) || ride->getRideTypeDescriptor().AvailableBreakdowns == 0)
         {
             return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_CANT_REFURBISH_NOT_NEEDED);
         }
@@ -111,9 +109,9 @@ GameActions::Result RideDemolishAction::Execute() const
 
     switch (_modifyType)
     {
-        case RIDE_MODIFY_DEMOLISH:
+        case RideModifyType::demolish:
             return DemolishRide(*ride);
-        case RIDE_MODIFY_RENEW:
+        case RideModifyType::renew:
             return RefurbishRide(*ride);
         default:
             LOG_ERROR("Unknown ride demolish type %d", _modifyType);
@@ -126,10 +124,10 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
     money64 refundPrice = DemolishTracks();
 
     RideClearForConstruction(ride);
-    ride.RemovePeeps();
-    ride.StopGuestsQueuing();
+    ride.removePeeps();
+    ride.stopGuestsQueuing();
 
-    ride.ValidateStations();
+    ride.validateStations();
     RideClearLeftoverEntrances(ride);
 
     const auto rideId = ride.id;
@@ -149,23 +147,24 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
     res.Expenditure = ExpenditureType::RideConstruction;
     res.Cost = refundPrice;
 
-    if (!ride.overall_view.IsNull())
+    if (!ride.overallView.IsNull())
     {
-        auto xy = ride.overall_view.ToTileCentre();
+        auto xy = ride.overallView.ToTileCentre();
         res.Position = { xy, TileElementHeight(xy) };
     }
 
-    ride.Delete();
-    GetGameState().Park.Value = Park::CalculateParkValue();
+    ride.remove();
+    getGameState().park.Value = Park::CalculateParkValue();
 
     // Close windows related to the demolished ride
-    WindowCloseByNumber(WindowClass::RideConstruction, rideId.ToUnderlying());
-    WindowCloseByNumber(WindowClass::Ride, rideId.ToUnderlying());
-    WindowCloseByNumber(WindowClass::DemolishRidePrompt, rideId.ToUnderlying());
-    WindowCloseByClass(WindowClass::NewCampaign);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->CloseByNumber(WindowClass::RideConstruction, rideId.ToUnderlying());
+    windowMgr->CloseByNumber(WindowClass::Ride, rideId.ToUnderlying());
+    windowMgr->CloseByNumber(WindowClass::DemolishRidePrompt, rideId.ToUnderlying());
+    windowMgr->CloseByClass(WindowClass::NewCampaign);
 
     // Refresh windows that display the ride name
-    auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = OpenRCT2::Ui::GetWindowManager();
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_CAMPAIGN_RIDE_LIST));
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
@@ -196,11 +195,11 @@ money64 RideDemolishAction::DemolishTracks() const
 
     uint8_t oldpaused = gGamePaused;
     gGamePaused = 0;
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
-    for (TileCoordsXY tilePos = {}; tilePos.x < gameState.MapSize.x; ++tilePos.x)
+    for (TileCoordsXY tilePos = {}; tilePos.x < gameState.mapSize.x; ++tilePos.x)
     {
-        for (tilePos.y = 0; tilePos.y < gameState.MapSize.y; ++tilePos.y)
+        for (tilePos.y = 0; tilePos.y < gameState.mapSize.y; ++tilePos.y)
         {
             const auto tileCoords = tilePos.ToCoordsXY();
             // Loop over all elements of the tile until there are no more items to remove
@@ -241,15 +240,15 @@ money64 RideDemolishAction::DemolishTracks() const
                 }
                 else
                 {
-                    static constexpr CoordsXY DirOffsets[] = {
+                    static constexpr CoordsXY kDirOffsets[] = {
                         { 0, 0 },
                         { 0, 16 },
                         { 16, 16 },
                         { 16, 0 },
                     };
-                    for (Direction dir : ALL_DIRECTIONS)
+                    for (Direction dir : kAllDirections)
                     {
-                        const CoordsXYZ off = { DirOffsets[dir], 0 };
+                        const CoordsXYZ off = { kDirOffsets[dir], 0 };
                         money64 removePrice = MazeRemoveTrack({ location + off, dir });
                         if (removePrice != kMoney64Undefined)
                         {
@@ -274,20 +273,21 @@ GameActions::Result RideDemolishAction::RefurbishRide(Ride& ride) const
     res.Expenditure = ExpenditureType::RideConstruction;
     res.Cost = GetRefurbishPrice(ride);
 
-    ride.Renew();
+    ride.renew();
 
-    ride.lifecycle_flags &= ~RIDE_LIFECYCLE_EVER_BEEN_OPENED;
-    ride.last_crash_type = RIDE_CRASH_TYPE_NONE;
+    ride.lifecycleFlags &= ~RIDE_LIFECYCLE_EVER_BEEN_OPENED;
+    ride.lastCrashType = RIDE_CRASH_TYPE_NONE;
 
-    ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_CUSTOMER;
+    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_CUSTOMER;
 
-    if (!ride.overall_view.IsNull())
+    if (!ride.overallView.IsNull())
     {
-        auto location = ride.overall_view.ToTileCentre();
+        auto location = ride.overallView.ToTileCentre();
         res.Position = { location, TileElementHeight(location) };
     }
 
-    WindowCloseByNumber(WindowClass::DemolishRidePrompt, _rideIndex.ToUnderlying());
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->CloseByNumber(WindowClass::DemolishRidePrompt, _rideIndex.ToUnderlying());
 
     return res;
 }

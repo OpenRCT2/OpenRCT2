@@ -13,6 +13,7 @@ Includes all git commit authors. Aliases are GitHub usernames or community nickn
 * Michael Bernardi (mrmbernardi) - Programming
 * Michael Steenbeek (Gymnasiast) - Lead Localisation - Programming
 * Aaron van Geffen (AaronVanGeffen) - Programming
+* Joshua Jacobs (leicestersquare) - Graphic Artist
 
 ## Support team
 * Kenton Boadway (Krutonium) - Lead OpenScenarios
@@ -122,6 +123,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Arnold Zhou (mrmagic2020) - Various plugin additions, new game option, misc.
 * John Dolph (johnwdolph) - Ride music UI, misc.
 * Harry Hopkinson (Harry-Hopkinson) - Added Cheat for guests ignoring price of rides and stalls.
+* Kendall Frey (kendfrey) - Add plugin API for spawning guests
 * (J-PIE-314) - Flat ride clearance reduction.
 
 ## Bug fixes & Refactors
@@ -246,6 +248,10 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Mike Harvey (harvito)
 * Robert Yan (lewyche)
 * Tom Matalenas (tmatale)
+* Brendan Heinonen (staticinvocation)
+* (QuestionableDeer)
+* David Sungaila (sungaila)
+* Garrett Leach (GarrettLeach)
 
 ## Toolchain
 * (Balletie) - macOS
@@ -267,6 +273,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Mithun Hunsur (Philpax)
 * (RollingStar)
 * (That Human Being)
+* Alex Marck (ATMarcks)
 
 ## Translation
 * Extracting from original files: Ted John (IntelOrca)
@@ -292,7 +299,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Norwegian - Hugo Wallenburg (Goddesen)
 * Polish - Adrian Wielgosik (adrian17), (lopezloo), Michał Janiszewski (janisozaur)
 * Portuguese (BR) - (kaudy), (renansimoes), Tulio Paschoalin Leao (tupaschoal)
-* Russian - (Soosisya)
+* Russian - (Soosisya), (andOlga)
 * Spanish - Josué Acevedo (Wirlie), Diego Mateos (dimateos), (frenchiveruti), (mdtrooper), Daniel Trujillo Viedma (gDanix); small fixes: (teapartycthulu)
 * Swedish - (Jinxit), (mharrys), (Slimeyo), Matte Andersson (Nubbie)
 * Ukrainian - (CsyeCokTheSolly), (Veydzher), (Saba4ara)
@@ -307,6 +314,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Martijn Kroese (MK98) - Diagonal brakes project
 * Peter van den Berg (Recurious) - Diagonal brakes project
 * Joshua Jacobs - OpenGraphics Spooky Theme
+* (mixiate) - Wooden and Mine Train Rollercoaster flat-to-steep track pieces
 
 ## Music
 * Karst "Jalmaan" van Galen Last (AuraSpecs)

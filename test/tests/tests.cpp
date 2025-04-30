@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,13 +11,13 @@
 // directly into the test binary.
 #ifdef _MSC_VER
 
-#    include <gtest/gtest.h>
-#    include <openrct2/core/Guard.hpp>
+    #include <gtest/gtest.h>
+    #include <openrct2/core/Guard.hpp>
 
 int main(int argc, char** argv)
 {
     // Abort on an assertions so the tests do not hang
-    OpenRCT2::Guard::SetAssertBehaviour(ASSERT_BEHAVIOUR::ABORT);
+    OpenRCT2::Guard::SetAssertBehaviour(AssertBehaviour::abort);
 
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

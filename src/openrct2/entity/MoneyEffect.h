@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,8 @@
 #include "../core/Money.hpp"
 #include "../localisation/StringIdType.h"
 #include "EntityBase.h"
+
+#include <utility>
 
 class DataSerialiser;
 struct CoordsXYZ;
@@ -31,6 +33,7 @@ struct MoneyEffect : EntityBase
 
     static void CreateAt(money64 value, const CoordsXYZ& effectPos, bool guestPurchase);
     static void Create(money64 value, const CoordsXYZ& loc);
+    void SetValue(money64 value);
     void Update();
     std::pair<StringId, money64> GetStringId() const;
     void Serialise(DataSerialiser& stream);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,7 +11,6 @@
 
 #include "Location.hpp"
 #include "Map.h"
-#include "TileElement.h"
 
 #include <iterator>
 
@@ -19,7 +18,8 @@ namespace OpenRCT2
 {
     namespace Detail
     {
-        template<typename T, typename T2> T* NextMatchingTile(T2* element)
+        template<typename T, typename T2>
+        T* NextMatchingTile(T2* element)
         {
             if (element == nullptr)
                 return nullptr;
@@ -41,7 +41,8 @@ namespace OpenRCT2
         }
     } // namespace Detail
 
-    template<typename T = TileElement> class TileElementsView
+    template<typename T = TileElement>
+    class TileElementsView
     {
         const TileCoordsXY _loc;
 

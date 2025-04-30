@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #include "PathAdditionObject.h"
 
+#include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
@@ -28,7 +29,7 @@ void PathAdditionObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     _legacyType.draw_type = static_cast<PathAdditionDrawType>(stream->ReadValue<uint8_t>());
     _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
     _legacyType.price = stream->ReadValue<money16>();
-    _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
+    _legacyType.scenery_tab_id = kObjectEntryIndexNull;
     stream->Seek(2, OpenRCT2::STREAM_SEEK_CURRENT);
 
     GetStringTable().Read(context, stream, ObjectStringID::NAME);
@@ -67,7 +68,7 @@ void PathAdditionObject::Load()
     _legacyType.name = LanguageAllocateObjectString(GetName());
     _legacyType.image = LoadImages();
 
-    _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
+    _legacyType.scenery_tab_id = kObjectEntryIndexNull;
 }
 
 void PathAdditionObject::Unload()

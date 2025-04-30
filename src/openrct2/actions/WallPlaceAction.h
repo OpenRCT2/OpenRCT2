@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,8 @@
 #include "../world/Scenery.h"
 #include "GameAction.h"
 
+struct WallSceneryEntry;
+
 struct WallPlaceActionResult
 {
     int32_t BaseHeight{};
@@ -24,9 +26,9 @@ struct WallPlaceActionResult
 class WallPlaceAction final : public GameActionBase<GameCommand::PlaceWall>
 {
 private:
-    ObjectEntryIndex _wallType{ OBJECT_ENTRY_INDEX_NULL };
+    ObjectEntryIndex _wallType{ kObjectEntryIndexNull };
     CoordsXYZ _loc;
-    Direction _edge{ INVALID_DIRECTION };
+    Direction _edge{ kInvalidDirection };
     int32_t _primaryColour{ COLOUR_BLACK };
     int32_t _secondaryColour{ COLOUR_BLACK };
     int32_t _tertiaryColour{ COLOUR_BLACK };
@@ -63,5 +65,6 @@ private:
      * Gets whether the given track type can have a wall placed on the edge of the given direction.
      * Some thin tracks for example are allowed to have walls either side of the track, but wider tracks can not.
      */
-    static bool TrackIsAllowedWallEdges(ride_type_t rideType, track_type_t trackType, uint8_t trackSequence, uint8_t direction);
+    static bool TrackIsAllowedWallEdges(
+        ride_type_t rideType, OpenRCT2::TrackElemType trackType, uint8_t trackSequence, uint8_t direction);
 };

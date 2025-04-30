@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,7 +16,7 @@ class RideEntranceExitPlaceAction final : public GameActionBase<GameCommand::Pla
 {
 private:
     CoordsXY _loc;
-    Direction _direction{ INVALID_DIRECTION };
+    Direction _direction{ kInvalidDirection };
     RideId _rideIndex{ RideId::GetNull() };
     StationIndex _stationNum{ StationIndex::GetNull() };
     bool _isExit{};

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,13 +9,14 @@
 
 #include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -24,9 +25,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_BACKGROUND
     };
 
-    static Widget _tooltipWidgets[] = {
+    static constexpr Widget _tooltipWidgets[] = {
         MakeWidget({ 0, 0 }, { 200, 32 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
-        kWidgetsEnd,
     };
 
     class TooltipWindow final : public Window
@@ -34,19 +34,17 @@ namespace OpenRCT2::Ui::Windows
     private:
         u8string _tooltipText;
         int16_t _tooltipNumLines = 1;
+        int32_t _textWidth;
+        int32_t _textHeight;
 
     public:
         TooltipWindow(const OpenRCT2String& message, ScreenCoordsXY screenCoords)
         {
-            int32_t textWidth = FormatTextForTooltip(message);
-            int32_t textHeight = ((_tooltipNumLines + 1) * FontGetLineHeight(FontStyle::Small));
+            _textWidth = FormatTextForTooltip(message);
+            _textHeight = ((_tooltipNumLines + 1) * FontGetLineHeight(FontStyle::Small));
 
-            width = textWidth + 5;
-            height = textHeight + 4;
-
-            widgets = _tooltipWidgets;
-            widgets[WIDX_BACKGROUND].right = width;
-            widgets[WIDX_BACKGROUND].bottom = height;
+            width = _textWidth + 5;
+            height = _textHeight + 4;
 
             UpdatePosition(screenCoords);
         }
@@ -87,6 +85,14 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
+            SetWidgets(_tooltipWidgets);
+
+            width = _textWidth + 5;
+            height = _textHeight + 4;
+
+            widgets[WIDX_BACKGROUND].right = width;
+            widgets[WIDX_BACKGROUND].bottom = height;
+
             ResetTooltipNotShown();
         }
 
@@ -150,7 +156,7 @@ namespace OpenRCT2::Ui::Windows
         gTooltipCloseTimeout = 0;
         gTooltipWidget.window_classification = WindowClass::Null;
         InputSetState(InputState::Normal);
-        InputSetFlag(INPUT_FLAG_4, false);
+        gInputFlags.unset(InputFlag::unk4);
     }
 
     void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoords)
@@ -159,13 +165,16 @@ namespace OpenRCT2::Ui::Windows
         auto windowPos = tooltipWindow->windowPos;
         auto width = tooltipWindow->width;
         auto height = tooltipWindow->height;
-        WindowCreate(
-            std::move(tooltipWindow), WindowClass::Tooltip, windowPos, width, height, WF_TRANSPARENT | WF_STICK_TO_FRONT);
+
+        auto* windowMgr = GetWindowManager();
+        windowMgr->Create(
+            std::move(tooltipWindow), WindowClass::Tooltip, windowPos, width, height,
+            WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_NO_TITLE_BAR);
     }
 
     void WindowTooltipOpen(WindowBase* widgetWindow, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
-        if (widgetWindow == nullptr || widgetIndex == -1)
+        if (widgetWindow == nullptr || widgetIndex == kWidgetIndexNull)
             return;
 
         auto widget = &widgetWindow->widgets[widgetIndex];
@@ -193,7 +202,7 @@ namespace OpenRCT2::Ui::Windows
             gTooltipWidget.window_number = widgetWindow->number;
             gTooltipWidget.widget_index = widgetIndex;
             result = widgetWindow->OnTooltip(widgetIndex, stringId);
-            if (result.str == STR_NONE)
+            if (result.str == kStringIdNone)
                 return;
         }
 
@@ -202,7 +211,9 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowTooltipClose()
     {
-        WindowCloseByClass(WindowClass::Tooltip);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::Tooltip);
+
         gTooltipCloseTimeout = 0;
         gTooltipWidget.window_classification = WindowClass::Null;
     }

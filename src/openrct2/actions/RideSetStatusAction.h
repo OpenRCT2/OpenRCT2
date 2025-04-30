@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,7 +15,7 @@ class RideSetStatusAction final : public GameActionBase<GameCommand::SetRideStat
 {
 private:
     RideId _rideIndex{ RideId::GetNull() };
-    RideStatus _status{ RideStatus::Closed };
+    RideStatus _status{ RideStatus::closed };
 
 public:
     RideSetStatusAction() = default;

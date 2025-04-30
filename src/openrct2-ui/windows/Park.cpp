@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,31 +7,29 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../interface/Theme.h"
-
 #include <array>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Objective.h>
+#include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ParkSetEntranceFeeAction.h>
 #include <openrct2/actions/ParkSetNameAction.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/UnitConversion.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/management/Award.h>
-#include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/ride/RideData.h>
-#include <openrct2/scenario/Scenario.h>
-#include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
@@ -39,8 +37,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId WINDOW_TITLE = STR_STRINGID;
     static constexpr int32_t WH = 224;
 
-    static constexpr ScreenCoordsXY kGraphTopLeftPadding{ 45, 15 };
-    static constexpr ScreenCoordsXY kGraphBottomRightPadding{ 5, 5 };
+    static constexpr ScreenCoordsXY kGraphTopLeftPadding{ 45, 20 };
+    static constexpr ScreenCoordsXY kGraphBottomRightPadding{ 25, 10 };
     static constexpr uint8_t kGraphNumYLabels = 6;
 
     enum WindowParkPage
@@ -100,7 +98,7 @@ namespace OpenRCT2::Ui::Windows
         MakeTab({ 189, 17 }, STR_PARK_AWARDS_TAB_TIP)                                          /* tab 7 */
 
     // clang-format off
-    static Widget _entranceWidgets[] = {
+    static constexpr Widget _entranceWidgets[] = {
         MAIN_PARK_WIDGETS(230),
         MakeWidget({  3,  46}, {202, 115}, WindowWidgetType::Viewport,      WindowColour::Secondary                                                                      ), // viewport
         MakeWidget({  3, 161}, {202,  11}, WindowWidgetType::LabelCentred,  WindowColour::Secondary                                                                      ), // status
@@ -110,43 +108,36 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({205, 121}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),                 STR_NAME_PARK_TIP                       ), // rename
         MakeWidget({210,  51}, { 14,  15}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0), STR_CLOSE_PARK_TIP                      ),
         MakeWidget({210,  66}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_PARK_TIP                       ),
-        kWidgetsEnd,
     };
 
-    static Widget _ratingWidgets[] = {
+    static constexpr Widget _ratingWidgets[] = {
         MAIN_PARK_WIDGETS(255),
-        kWidgetsEnd,
     };
 
-    static Widget _guestsWidgets[] = {
+    static constexpr Widget _guestsWidgets[] = {
         MAIN_PARK_WIDGETS(255),
-        kWidgetsEnd,
     };
 
-    static Widget _priceWidgets[] = {
+    static constexpr Widget _priceWidgets[] = {
         MAIN_PARK_WIDGETS(230),
         MakeWidget        ({ 21, 50}, {126, 14}, WindowWidgetType::Label,   WindowColour::Secondary, STR_ADMISSION_PRICE),
         MakeSpinnerWidgets({147, 50}, { 76, 14}, WindowWidgetType::Spinner, WindowColour::Secondary                     ), // Price (3 widgets)
-        kWidgetsEnd,
     };
 
-    static Widget _statsWidgets[] = {
+    static constexpr Widget _statsWidgets[] = {
         MAIN_PARK_WIDGETS(230),
-        kWidgetsEnd,
     };
 
-    static Widget _objectiveWidgets[] = {
+    static constexpr Widget _objectiveWidgets[] = {
         MAIN_PARK_WIDGETS(230),
         MakeWidget({7, 207}, {216, 14}, WindowWidgetType::Button, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
-        kWidgetsEnd,
     };
 
-    static Widget _awardsWidgets[] = {
+    static constexpr Widget _awardsWidgets[] = {
         MAIN_PARK_WIDGETS(230),
-        kWidgetsEnd,
     };
 
-    static std::array<Widget*, WINDOW_PARK_PAGE_COUNT> _pagedWidgets = {
+    static std::span<const Widget> _pagedWidgets[] = {
         _entranceWidgets,
         _ratingWidgets,
         _guestsWidgets,
@@ -203,7 +194,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t _numberOfRides = -1;
         uint8_t _peepAnimationFrame = 0;
 
-        Graph::GraphProperties<uint8_t> _ratingProps{};
+        Graph::GraphProperties<uint16_t> _ratingProps{};
         Graph::GraphProperties<uint32_t> _guestProps{};
 
         ScreenRect _ratingGraphBounds;
@@ -416,12 +407,12 @@ namespace OpenRCT2::Ui::Windows
         void SetDisabledTabs()
         {
             // Disable price tab if money is disabled
-            disabled_widgets = (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) ? (1uLL << WIDX_TAB_4) : 0;
+            disabled_widgets = (getGameState().park.Flags & PARK_FLAGS_NO_MONEY) ? (1uLL << WIDX_TAB_4) : 0;
         }
 
         void PrepareWindowTitleText()
         {
-            auto parkName = GetGameState().Park.Name.c_str();
+            auto parkName = getGameState().park.Name.c_str();
 
             auto ft = Formatter::Common();
             ft.Add<StringId>(STR_STRING);
@@ -441,7 +432,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_RENAME:
                 {
-                    auto& park = GetGameState().Park;
+                    auto& park = getGameState().park;
                     WindowTextInputRawOpen(
                         this, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), kUserStringMaxLength);
                     break;
@@ -458,7 +449,7 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeEntrance()
         {
             flags |= WF_RESIZABLE;
-            WindowSetResize(*this, 230, 174 + 9, 230 * 3, (274 + 9) * 3);
+            WindowSetResize(*this, { 230, 174 + 9 }, { 230 * 3, (274 + 9) * 3 });
             InitViewport();
         }
 
@@ -474,7 +465,7 @@ namespace OpenRCT2::Ui::Windows
                 WindowDropdownShowText(
                     { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[1], 0, 2);
 
-                if (GetGameState().Park.IsOpen())
+                if (getGameState().park.IsOpen())
                 {
                     gDropdownDefaultIndex = 0;
                     Dropdown::SetChecked(1, true);
@@ -508,7 +499,7 @@ namespace OpenRCT2::Ui::Windows
         void OnUpdateEntrance()
         {
             frame_no++;
-            WidgetInvalidate(*this, WIDX_TAB_1);
+            InvalidateWidget(WIDX_TAB_1);
         }
 
         void OnTextInputEntrance(WidgetIndex widgetIndex, std::string_view text)
@@ -522,21 +513,20 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDrawEntrance()
         {
-            const auto& gameState = GetGameState();
-            widgets = _pagedWidgets[page];
+            const auto& gameState = getGameState();
             InitScrollWidgets();
 
             SetPressedTab();
 
             // Set open / close park button state
             {
-                auto parkName = gameState.Park.Name.c_str();
+                auto parkName = gameState.park.Name.c_str();
 
                 auto ft = Formatter::Common();
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const char*>(parkName);
             }
-            const bool parkIsOpen = gameState.Park.IsOpen();
+            const bool parkIsOpen = gameState.park.IsOpen();
             widgets[WIDX_OPEN_OR_CLOSE].image = ImageId(parkIsOpen ? SPR_OPEN : SPR_CLOSED);
             const auto closeLightImage = SPR_G2_RCT1_CLOSE_BUTTON_0 + !parkIsOpen * 2
                 + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT);
@@ -545,19 +535,18 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
             // Only allow closing of park for guest / rating objective
-            if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
+            if (gameState.scenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
                 disabled_widgets |= (1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT);
             else
                 disabled_widgets &= ~((1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT));
 
             // Only allow purchase of land when there is money
-            if (gameState.Park.Flags & PARK_FLAGS_NO_MONEY)
+            if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
                 widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::Empty;
             else
                 widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
 
             // Anchor entrance page specific widgets
             widgets[WIDX_VIEWPORT].right = width - 26;
@@ -570,7 +559,7 @@ namespace OpenRCT2::Ui::Windows
             if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK)
             {
                 widgets[WIDX_OPEN_OR_CLOSE].type = WindowWidgetType::Empty;
-                if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
+                if (gameState.scenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
                 {
                     widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::FlatBtn;
                     widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::FlatBtn;
@@ -587,7 +576,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_OPEN_OR_CLOSE].type = WindowWidgetType::FlatBtn;
                 widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::Empty;
                 widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::Empty;
-                y = 49;
+                y = widgets[WIDX_PAGE_BACKGROUND].top + 6;
             }
 
             for (int32_t i = WIDX_CLOSE_LIGHT; i <= WIDX_OPEN_LIGHT; i++)
@@ -623,7 +612,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw park closed / open label
             auto ft = Formatter();
-            ft.Add<StringId>(GetGameState().Park.IsOpen() ? STR_PARK_OPEN : STR_PARK_CLOSED);
+            ft.Add<StringId>(getGameState().park.IsOpen() ? STR_PARK_OPEN : STR_PARK_CLOSED);
 
             auto* labelWidget = &widgets[WIDX_STATUS];
             DrawTextEllipsised(
@@ -636,12 +625,12 @@ namespace OpenRCT2::Ui::Windows
             if (page != WINDOW_PARK_PAGE_ENTRANCE)
                 return;
 
-            const auto& gameState = GetGameState();
+            const auto& gameState = getGameState();
 
             std::optional<Focus> newFocus = std::nullopt;
-            if (!gameState.Park.Entrances.empty())
+            if (!gameState.park.Entrances.empty())
             {
-                const auto& entrance = gameState.Park.Entrances[0];
+                const auto& entrance = gameState.park.Entrances[0];
                 newFocus = Focus(CoordsXYZ{ entrance.x + 16, entrance.y + 16, entrance.z + 32 });
             }
 
@@ -685,39 +674,36 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Rating page
         void OnResizeRating()
         {
-            WindowSetResize(*this, 255, 182, 255, 182);
+            flags |= WF_RESIZABLE;
+            WindowSetResize(*this, { 268, 174 + 9 }, kMaxWindowSize);
         }
 
         void OnUpdateRating()
         {
             frame_no++;
-            WidgetInvalidate(*this, WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_2);
+            if (_ratingProps.UpdateHoverIndex())
+            {
+                InvalidateWidget(WIDX_BACKGROUND);
+            }
         }
 
         void OnPrepareDrawRating()
         {
-            auto* ratingWidgets = _pagedWidgets[page];
-            if (ratingWidgets != widgets)
-            {
-                widgets = ratingWidgets;
-                InitScrollWidgets();
-            }
-
             SetPressedTab();
             PrepareWindowTitleText();
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
 
             _ratingProps.min = 0;
-            _ratingProps.max = 250;
-            _ratingProps.series = GetGameState().Park.RatingHistory;
+            _ratingProps.max = 1000;
+            _ratingProps.series = getGameState().park.RatingHistory;
             const Widget* background = &widgets[WIDX_PAGE_BACKGROUND];
             _ratingGraphBounds = { windowPos + ScreenCoordsXY{ background->left + 4, background->top + 15 },
                                    windowPos + ScreenCoordsXY{ background->right - 4, background->bottom - 4 } };
 
             char buffer[64]{};
-            FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{COMMA32}", Graph::kParkRatingMax);
+            FormatStringToBuffer(buffer, sizeof(buffer), "{BLACK}{COMMA32}", _ratingProps.max);
             int32_t maxWidth = GfxGetStringWidth(buffer, FontStyle::Small) + Graph::kYTickMarkPadding + 1;
             const ScreenCoordsXY dynamicPadding{ std::max(maxWidth, kGraphTopLeftPadding.x), kGraphTopLeftPadding.y };
 
@@ -735,11 +721,18 @@ namespace OpenRCT2::Ui::Windows
 
             // Current value
             Formatter ft;
-            ft.Add<uint16_t>(GetGameState().Park.Rating);
+            ft.Add<uint16_t>(getGameState().park.Rating);
             DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
 
             // Graph border
             GfxFillRectInset(dpi, _ratingGraphBounds, colours[1], INSET_RECT_F_30);
+            // hide resize widget on graph area
+            constexpr ScreenCoordsXY offset{ 1, 1 };
+            constexpr ScreenCoordsXY bigOffset{ 5, 5 };
+            GfxFillRectInset(
+                dpi, { _ratingGraphBounds.Point2 - bigOffset, _ratingGraphBounds.Point2 - offset }, colours[1],
+                INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_BORDER_NONE);
+
             Graph::DrawRatingGraph(dpi, _ratingProps);
         }
 
@@ -748,33 +741,30 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Guests page
         void OnResizeGuests()
         {
-            WindowSetResize(*this, 255, 182, 255, 182);
+            flags |= WF_RESIZABLE;
+            WindowSetResize(*this, { 268, 174 + 9 }, kMaxWindowSize);
         }
 
         void OnUpdateGuests()
         {
             frame_no++;
             _peepAnimationFrame = (_peepAnimationFrame + 1) % 24;
-            WidgetInvalidate(*this, WIDX_TAB_3);
+            InvalidateWidget(WIDX_TAB_3);
+            if (_guestProps.UpdateHoverIndex())
+            {
+                InvalidateWidget(WIDX_BACKGROUND);
+            }
         }
 
         void OnPrepareDrawGuests()
         {
-            auto* guestsWidgets = _pagedWidgets[page];
-            if (widgets != guestsWidgets)
-            {
-                widgets = guestsWidgets;
-                InitScrollWidgets();
-            }
-
             SetPressedTab();
             PrepareWindowTitleText();
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
 
-            const auto& gameState = GetGameState();
-            _guestProps.series = gameState.GuestsInParkHistory;
+            const auto& gameState = getGameState();
+            _guestProps.series = gameState.guestsInParkHistory;
             const Widget* background = &widgets[WIDX_PAGE_BACKGROUND];
             _guestGraphBounds = { windowPos + ScreenCoordsXY{ background->left + 4, background->top + 15 },
                                   windowPos + ScreenCoordsXY{ background->right - 4, background->bottom - 4 } };
@@ -782,10 +772,10 @@ namespace OpenRCT2::Ui::Windows
             // Calculate Y axis max and min
             _guestProps.min = 0;
             _guestProps.max = 5000;
-            for (size_t i = 0; i < std::size(gameState.GuestsInParkHistory); i++)
+            for (size_t i = 0; i < std::size(gameState.guestsInParkHistory); i++)
             {
-                auto value = gameState.GuestsInParkHistory[i];
-                if (value == GuestsInParkHistoryUndefined)
+                auto value = gameState.guestsInParkHistory[i];
+                if (value == kGuestsInParkHistoryUndefined)
                     continue;
                 while (value > _guestProps.max)
                     _guestProps.max += 5000;
@@ -810,11 +800,18 @@ namespace OpenRCT2::Ui::Windows
 
             // Current value
             Formatter ft;
-            ft.Add<uint32_t>(GetGameState().NumGuestsInPark);
+            ft.Add<uint32_t>(getGameState().numGuestsInPark);
             DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
 
             // Graph border
             GfxFillRectInset(dpi, _guestGraphBounds, colours[1], INSET_RECT_F_30);
+            // hide resize widget on graph area
+            constexpr ScreenCoordsXY offset{ 1, 1 };
+            constexpr ScreenCoordsXY bigOffset{ 5, 5 };
+            GfxFillRectInset(
+                dpi, { _guestGraphBounds.Point2 - bigOffset, _guestGraphBounds.Point2 - offset }, colours[1],
+                INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_BORDER_NONE);
+
             Graph::DrawGuestGraph(dpi, _guestProps);
         }
 
@@ -823,24 +820,24 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Price page
         void OnResizePrice()
         {
-            WindowSetResize(*this, 230, 124, 230, 124);
+            WindowSetResize(*this, { 230, 124 }, { 230, 124 });
         }
 
         void OnMouseDownPrice(WidgetIndex widgetIndex)
         {
-            const auto& gameState = GetGameState();
+            const auto& gameState = getGameState();
             switch (widgetIndex)
             {
                 case WIDX_INCREASE_PRICE:
                 {
-                    const auto newFee = std::min(MAX_ENTRANCE_FEE, gameState.Park.EntranceFee + 1.00_GBP);
+                    const auto newFee = std::min(kMaxEntranceFee, gameState.park.EntranceFee + 1.00_GBP);
                     auto gameAction = ParkSetEntranceFeeAction(newFee);
                     GameActions::Execute(&gameAction);
                     break;
                 }
                 case WIDX_DECREASE_PRICE:
                 {
-                    const auto newFee = std::max(0.00_GBP, gameState.Park.EntranceFee - 1.00_GBP);
+                    const auto newFee = std::max(0.00_GBP, gameState.park.EntranceFee - 1.00_GBP);
                     auto gameAction = ParkSetEntranceFeeAction(newFee);
                     GameActions::Execute(&gameAction);
                     break;
@@ -858,24 +855,17 @@ namespace OpenRCT2::Ui::Windows
         void OnUpdatePrice()
         {
             frame_no++;
-            WidgetInvalidate(*this, WIDX_TAB_4);
+            InvalidateWidget(WIDX_TAB_4);
         }
 
         void OnPrepareDrawPrice()
         {
-            auto* priceWidgets = _pagedWidgets[page];
-            if (widgets != priceWidgets)
-            {
-                widgets = priceWidgets;
-                InitScrollWidgets();
-            }
-
             SetPressedTab();
             PrepareWindowTitleText();
 
             // Show a tooltip if the park is pay per ride.
-            widgets[WIDX_PRICE_LABEL].tooltip = STR_NONE;
-            widgets[WIDX_PRICE].tooltip = STR_NONE;
+            widgets[WIDX_PRICE_LABEL].tooltip = kStringIdNone;
+            widgets[WIDX_PRICE].tooltip = kStringIdNone;
 
             if (!Park::EntranceFeeUnlocked())
             {
@@ -884,7 +874,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
-            if ((GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked())
+            if ((getGameState().park.Flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked())
             {
                 widgets[WIDX_PRICE].type = WindowWidgetType::LabelCentred;
                 widgets[WIDX_INCREASE_PRICE].type = WindowWidgetType::Empty;
@@ -898,7 +888,6 @@ namespace OpenRCT2::Ui::Windows
             }
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
         }
 
         void OnDrawPrice(DrawPixelInfo& dpi)
@@ -909,7 +898,7 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 30 };
             auto ft = Formatter();
-            ft.Add<money64>(GetGameState().TotalIncomeFromAdmissions);
+            ft.Add<money64>(getGameState().totalIncomeFromAdmissions);
             DrawTextBasic(dpi, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
 
             money64 parkEntranceFee = Park::GetEntranceFee();
@@ -928,20 +917,20 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Stats page
         void OnResizeStats()
         {
-            WindowSetResize(*this, 230, 119, 230, 119);
+            WindowSetResize(*this, { 230, 119 }, { 230, 119 });
         }
 
         void OnUpdateStats()
         {
             frame_no++;
-            WidgetInvalidate(*this, WIDX_TAB_5);
+            InvalidateWidget(WIDX_TAB_5);
 
             // Invalidate ride count if changed
             const auto rideCount = RideGetCount();
             if (_numberOfRides != rideCount)
             {
                 _numberOfRides = rideCount;
-                WidgetInvalidate(*this, WIDX_PAGE_BACKGROUND);
+                InvalidateWidget(WIDX_PAGE_BACKGROUND);
             }
 
             // Invalidate number of staff if changed
@@ -949,24 +938,16 @@ namespace OpenRCT2::Ui::Windows
             if (_numberOfStaff != staffCount)
             {
                 _numberOfStaff = staffCount;
-                WidgetInvalidate(*this, WIDX_PAGE_BACKGROUND);
+                InvalidateWidget(WIDX_PAGE_BACKGROUND);
             }
         }
 
         void OnPrepareDrawStats()
         {
-            auto* statsWidgets = _pagedWidgets[page];
-            if (widgets != statsWidgets)
-            {
-                widgets = statsWidgets;
-                InitScrollWidgets();
-            }
-
             SetPressedTab();
             PrepareWindowTitleText();
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
         }
 
         void OnDrawStats(DrawPixelInfo& dpi)
@@ -977,9 +958,9 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             // Draw park size
-            auto parkSize = gameState.Park.Size * 10;
+            auto parkSize = gameState.park.Size * 10;
             auto stringIndex = STR_PARK_SIZE_METRIC_LABEL;
             if (Config::Get().general.MeasurementFormat == MeasurementFormat::Imperial)
             {
@@ -1011,12 +992,12 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw number of guests in park
             ft = Formatter();
-            ft.Add<uint32_t>(gameState.NumGuestsInPark);
+            ft.Add<uint32_t>(gameState.numGuestsInPark);
             DrawTextBasic(dpi, screenCoords, STR_GUESTS_IN_PARK_LABEL, ft);
             screenCoords.y += kListRowHeight;
 
             ft = Formatter();
-            ft.Add<uint32_t>(gameState.TotalAdmissions);
+            ft.Add<uint32_t>(gameState.totalAdmissions);
             DrawTextBasic(dpi, screenCoords, STR_TOTAL_ADMISSIONS, ft);
         }
 #pragma endregion
@@ -1029,25 +1010,25 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_ENTER_NAME:
                     WindowTextInputOpen(
                         this, WIDX_ENTER_NAME, STR_ENTER_NAME, STR_PLEASE_ENTER_YOUR_NAME_FOR_THE_SCENARIO_CHART, {}, 0, 0,
-                        ParkNameMaxLength);
+                        kParkNameMaxLength);
                     break;
             }
         }
 
         void OnResizeObjective()
         {
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
             if (gCurrentTTFFontSet != nullptr)
-                WindowSetResize(*this, 230, 270, 230, 270);
+                WindowSetResize(*this, { 230, 270 }, { 230, 270 });
             else
 #endif
-                WindowSetResize(*this, 230, 226, 230, 226);
+                WindowSetResize(*this, { 230, 226 }, { 230, 226 });
         }
 
         void OnUpdateObjective()
         {
             frame_no++;
-            WidgetInvalidate(*this, WIDX_TAB_6);
+            InvalidateWidget(WIDX_TAB_6);
         }
 
         void OnTextInputObjective(WidgetIndex widgetIndex, std::string_view text)
@@ -1055,7 +1036,7 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex == WIDX_ENTER_NAME && !text.empty())
             {
                 std::string strText(text);
-                ScenarioSuccessSubmitName(GetGameState(), strText.c_str());
+                ScenarioSuccessSubmitName(getGameState(), strText.c_str());
                 Invalidate();
             }
         }
@@ -1071,7 +1052,7 @@ namespace OpenRCT2::Ui::Windows
                     return;
                 }
 
-                money = std::clamp(money, 0.00_GBP, MAX_ENTRANCE_FEE);
+                money = std::clamp(money, 0.00_GBP, kMaxEntranceFee);
                 auto gameAction = ParkSetEntranceFeeAction(money);
                 GameActions::Execute(&gameAction);
             }
@@ -1083,7 +1064,7 @@ namespace OpenRCT2::Ui::Windows
             PrepareWindowTitleText();
 
             // Show name input button on scenario completion.
-            if (GetGameState().Park.Flags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
+            if (getGameState().park.Flags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
             {
                 widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Button;
                 widgets[WIDX_ENTER_NAME].top = height - 19;
@@ -1093,12 +1074,11 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Empty;
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
         }
 
         void OnDrawObjective(DrawPixelInfo& dpi)
         {
-            auto& gameState = GetGameState();
+            auto& gameState = getGameState();
             DrawWidgets(dpi);
             DrawTabImages(dpi);
 
@@ -1107,7 +1087,7 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 7 };
             auto ft = Formatter();
             ft.Add<StringId>(STR_STRING);
-            ft.Add<const char*>(gameState.ScenarioDetails.c_str());
+            ft.Add<const char*>(gameState.scenarioDetails.c_str());
             screenCoords.y += DrawTextWrapped(dpi, screenCoords, 222, STR_BLACK_STRING, ft);
             screenCoords.y += 5;
 
@@ -1117,15 +1097,15 @@ namespace OpenRCT2::Ui::Windows
 
             // Objective
             ft = Formatter();
-            formatObjective(ft, gameState.ScenarioObjective);
+            formatObjective(ft, gameState.scenarioObjective);
 
-            screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, kObjectiveNames[gameState.ScenarioObjective.Type], ft);
+            screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, kObjectiveNames[gameState.scenarioObjective.Type], ft);
             screenCoords.y += 5;
 
             // Objective outcome
-            if (gameState.ScenarioCompletedCompanyValue != kMoney64Undefined)
+            if (gameState.scenarioCompletedCompanyValue != kMoney64Undefined)
             {
-                if (gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+                if (gameState.scenarioCompletedCompanyValue == kCompanyValueOnFailedObjective)
                 {
                     // Objective failed
                     DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_FAILED);
@@ -1134,7 +1114,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     // Objective completed
                     ft = Formatter();
-                    ft.Add<money64>(gameState.ScenarioCompletedCompanyValue);
+                    ft.Add<money64>(gameState.scenarioCompletedCompanyValue);
                     DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_ACHIEVED, ft);
                 }
             }
@@ -1144,29 +1124,21 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Awards page
         void OnResizeAwards()
         {
-            WindowSetResize(*this, 230, 182, 230, 182);
+            WindowSetResize(*this, { 230, 182 }, { 230, 182 });
         }
 
         void OnUpdateAwards()
         {
             frame_no++;
-            WidgetInvalidate(*this, WIDX_TAB_7);
+            InvalidateWidget(WIDX_TAB_7);
         }
 
         void OnPrepareDrawAwards()
         {
-            auto* awardsWidgets = _pagedWidgets[page];
-            if (widgets != awardsWidgets)
-            {
-                widgets = awardsWidgets;
-                InitScrollWidgets();
-            }
-
             SetPressedTab();
             PrepareWindowTitleText();
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
-            AnchorBorderWidgets();
         }
 
         void OnDrawAwards(DrawPixelInfo& dpi)
@@ -1177,7 +1149,7 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
-            auto& currentAwards = GetGameState().CurrentAwards;
+            auto& currentAwards = getGameState().currentAwards;
 
             for (const auto& award : currentAwards)
             {
@@ -1200,8 +1172,15 @@ namespace OpenRCT2::Ui::Windows
 
             // Set listen only to viewport
             bool listen = false;
-            if (newPage == WINDOW_PARK_PAGE_ENTRANCE && viewport != nullptr && !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
-                listen = true;
+            if (newPage == WINDOW_PARK_PAGE_ENTRANCE && page == WINDOW_PARK_PAGE_ENTRANCE && viewport != nullptr)
+            {
+                viewport->flags ^= VIEWPORT_FLAG_SOUND_ON;
+                listen = (viewport->flags & VIEWPORT_FLAG_SOUND_ON) != 0;
+            }
+
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (page == newPage && !widgets.empty())
+                return;
 
             page = newPage;
             frame_no = 0;
@@ -1209,20 +1188,23 @@ namespace OpenRCT2::Ui::Windows
             RemoveViewport();
 
             hold_down_widgets = _pagedHoldDownWidgets[newPage];
-            widgets = _pagedWidgets[newPage];
+            SetWidgets(_pagedWidgets[newPage]);
             SetDisabledTabs();
             Invalidate();
+            InitScrollWidgets();
+
+            if (page == WINDOW_PARK_PAGE_GUESTS || WINDOW_PARK_PAGE_RATING)
+            {
+                // We need to compensate for the enlarged title bar for windows that do not
+                // constrain the window height between tabs (e.g. chart tabs)
+                height -= getTitleBarDiffNormal();
+            }
 
             OnResize();
             OnPrepareDraw();
             OnUpdate();
             if (listen && viewport != nullptr)
                 viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
-        }
-
-        void AnchorBorderWidgets()
-        {
-            ResizeFrameWithPage();
         }
 
         void SetPressedTab()
@@ -1265,7 +1247,9 @@ namespace OpenRCT2::Ui::Windows
                     spriteIdx = spriteIdx.WithIndexOffset((frame_no / 8) % 8);
                 GfxDrawSprite(dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
 
-                ImageId peepImage(GetPeepAnimation(PeepSpriteType::Normal).base_image + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL);
+                auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::Guest);
+                ImageId peepImage(
+                    animObj->GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL);
                 if (page == WINDOW_PARK_PAGE_GUESTS)
                     peepImage = peepImage.WithIndexOffset(_peepAnimationFrame & 0xFFFFFFFC);
 
@@ -1313,7 +1297,8 @@ namespace OpenRCT2::Ui::Windows
 
     static ParkWindow* ParkWindowOpen(uint8_t page)
     {
-        auto* wnd = WindowFocusOrCreate<ParkWindow>(WindowClass::ParkInformation, 230, 174 + 9, WF_10);
+        auto* windowMgr = GetWindowManager();
+        auto* wnd = windowMgr->FocusOrCreate<ParkWindow>(WindowClass::ParkInformation, 230, 174 + 9, WF_10);
         if (wnd != nullptr && page != WINDOW_PARK_PAGE_ENTRANCE)
         {
             wnd->OnMouseUp(WIDX_TAB_1 + page);

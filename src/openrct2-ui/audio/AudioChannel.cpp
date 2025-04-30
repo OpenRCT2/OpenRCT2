@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,7 +18,8 @@
 
 namespace OpenRCT2::Audio
 {
-    template<typename AudioSource_ = SDLAudioSource> class AudioChannelImpl final : public ISDLAudioChannel
+    template<typename AudioSource_ = SDLAudioSource>
+    class AudioChannelImpl final : public ISDLAudioChannel
     {
         static_assert(std::is_base_of_v<IAudioSource, AudioSource_>);
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -306,7 +306,7 @@ int32_t AudioMixer::ApplyVolume(const IAudioChannel* channel, void* buffer, size
             volumeAdjust *= _adjustSoundVolume;
 
             // Cap sound volume on title screen so music is more audible
-            if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+            if (gLegacyScene == LegacyScene::titleSequence)
             {
                 volumeAdjust = std::min(volumeAdjust, 0.75f);
             }

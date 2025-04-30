@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,13 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/Drawing.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/RideData.h"
 #include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../tile_element/Paint.TileElement.h"
@@ -30,7 +31,7 @@ static constexpr uint32_t LIM_LAUNCHED_RC_BLOCK_BRAKE_NW_SE_OPEN = 15021;
 static constexpr uint32_t LIM_LAUNCHED_RC_BLOCK_BRAKE_SW_NE_CLOSED = 15022;
 static constexpr uint32_t LIM_LAUNCHED_RC_BLOCK_BRAKE_NW_SE_CLOSED = 15023;
 
-static constexpr uint32_t _LimLauncherBlockBrakeImages[kNumOrthogonalDirections][2] = {
+static constexpr uint32_t kLimLauncherBlockBrakeImages[kNumOrthogonalDirections][2] = {
     { LIM_LAUNCHED_RC_BLOCK_BRAKE_SW_NE_OPEN, LIM_LAUNCHED_RC_BLOCK_BRAKE_SW_NE_CLOSED },
     { LIM_LAUNCHED_RC_BLOCK_BRAKE_NW_SE_OPEN, LIM_LAUNCHED_RC_BLOCK_BRAKE_NW_SE_CLOSED },
     { LIM_LAUNCHED_RC_BLOCK_BRAKE_SW_NE_OPEN, LIM_LAUNCHED_RC_BLOCK_BRAKE_SW_NE_CLOSED },
@@ -42,31 +43,35 @@ static void LimLaunchedRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr uint32_t imageIds[4][2] = {
-        { 15018, SPR_STATION_BASE_B_SW_NE },
-        { 15019, SPR_STATION_BASE_B_NW_SE },
-        { 15018, SPR_STATION_BASE_B_SW_NE },
-        { 15019, SPR_STATION_BASE_B_NW_SE },
+    static constexpr ImageIndex imageIds[4] = {
+        15018,
+        15019,
+        15018,
+        15019,
     };
 
     if (trackElement.GetTrackType() == TrackElemType::EndStation)
     {
         bool isClosed = trackElement.IsBrakeClosed();
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(_LimLauncherBlockBrakeImages[direction][isClosed]),
+            session, direction, session.TrackColours.WithIndex(kLimLauncherBlockBrakeImages[direction][isClosed]),
             { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
     else
     {
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
+            session, direction, session.TrackColours.WithIndex(imageIds[direction]), { 0, 0, height },
             { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
-    PaintAddImageAsParentRotated(
-        session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]), { 0, 0, height },
-        { 32, 32, 1 });
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
-    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
+    if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, 0))
+    {
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
+    }
+    else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+    }
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -115,8 +120,8 @@ static void LimLaunchedRCTrackLeftVerticalLoop(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -145,8 +150,8 @@ static void LimLaunchedRCTrackLeftVerticalLoop(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -178,9 +183,7 @@ static void LimLaunchedRCTrackLeftVerticalLoop(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
+                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 168);
@@ -209,8 +212,8 @@ static void LimLaunchedRCTrackLeftVerticalLoop(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -245,8 +248,8 @@ static void LimLaunchedRCTrackLeftVerticalLoop(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -278,9 +281,7 @@ static void LimLaunchedRCTrackLeftVerticalLoop(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomRightSide),
+                    EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 168);
@@ -309,8 +310,8 @@ static void LimLaunchedRCTrackLeftVerticalLoop(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -356,8 +357,8 @@ static void LimLaunchedRCTrackLeftVerticalLoop(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -634,8 +635,8 @@ static void LimLaunchedRCTrackLeftTwistDownToUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
+                        PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -680,8 +681,8 @@ static void LimLaunchedRCTrackLeftTwistDownToUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -735,8 +736,8 @@ static void LimLaunchedRCTrackLeftTwistDownToUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
+                        PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height);
@@ -796,8 +797,8 @@ static void LimLaunchedRCTrackRightTwistDownToUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
+                        PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -842,8 +843,8 @@ static void LimLaunchedRCTrackRightTwistDownToUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -897,8 +898,8 @@ static void LimLaunchedRCTrackRightTwistDownToUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide),
+                        PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
+                        PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height);
@@ -957,8 +958,8 @@ static void LimLaunchedRCTrackLeftTwistUpToDown(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
+                        PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height);
@@ -1003,8 +1004,8 @@ static void LimLaunchedRCTrackLeftTwistUpToDown(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -1059,8 +1060,8 @@ static void LimLaunchedRCTrackLeftTwistUpToDown(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide),
+                        PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
+                        PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1119,8 +1120,8 @@ static void LimLaunchedRCTrackRightTwistUpToDown(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
+                        PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -1165,8 +1166,8 @@ static void LimLaunchedRCTrackRightTwistUpToDown(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -1221,8 +1222,8 @@ static void LimLaunchedRCTrackRightTwistUpToDown(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft,
+                        PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1326,8 +1327,8 @@ static void LimLaunchedRCTrackLeftCorkscrewUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
+                        PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
+                        PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
@@ -1387,8 +1388,8 @@ static void LimLaunchedRCTrackRightCorkscrewUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
+                        PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -1449,8 +1450,8 @@ static void LimLaunchedRCTrackRightCorkscrewUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
+                        PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft,
+                        PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
@@ -1578,7 +1579,7 @@ static void LimLaunchedRCTrack60DegUpTo90DegUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(15694), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 20, 3 } });
+                        { { 4, 6, height + 8 }, { 2, 20, 55 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -1593,7 +1594,7 @@ static void LimLaunchedRCTrack60DegUpTo90DegUp(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(15697), { 0, 0, height },
-                        { { 0, 6, height }, { 32, 20, 3 } });
+                        { { 4, 6, height + 8 }, { 2, 20, 55 } });
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -1628,7 +1629,7 @@ static void LimLaunchedRCTrack90DegUpTo60DegUp(
         case 0:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(15698), { 0, 0, height },
-                { { 0, 6, height + 2 }, { 6, 20, 3 } });
+                { { 4, 6, height + 8 }, { 2, 20, 48 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
@@ -1643,7 +1644,7 @@ static void LimLaunchedRCTrack90DegUpTo60DegUp(
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(15701), { 0, 0, height },
-                { { 0, 6, height + 2 }, { 6, 20, 3 } });
+                { { 4, 6, height + 8 }, { 2, 20, 48 } });
             break;
     }
     switch (direction)
@@ -1737,7 +1738,7 @@ static void LimLaunchedRCTrack90DegToInvertedFlatQuarterLoopUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide), direction),
+                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
@@ -1768,7 +1769,7 @@ static void LimLaunchedRCTrack90DegToInvertedFlatQuarterLoopUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide), direction),
+                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
@@ -1803,7 +1804,7 @@ static void LimLaunchedRCTrack90DegToInvertedFlatQuarterLoopUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide), direction),
+                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -1826,7 +1827,7 @@ static void LimLaunchedRCTrackBlockBrakes(
 {
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(_LimLauncherBlockBrakeImages[direction][isClosed]), { 0, 0, height },
+        session, direction, session.TrackColours.WithIndex(kLimLauncherBlockBrakeImages[direction][isClosed]), { 0, 0, height },
         { { 0, 6, height }, { 32, 20, 3 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -2007,8 +2008,8 @@ static void LimLaunchedRCTrackLeftBarrelRollUpToDown(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
+                        PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -2053,8 +2054,8 @@ static void LimLaunchedRCTrackLeftBarrelRollUpToDown(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -2108,8 +2109,8 @@ static void LimLaunchedRCTrackLeftBarrelRollUpToDown(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft,
+                        PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -2175,8 +2176,8 @@ static void LimLaunchedRCTrackRightBarrelRollUpToDown(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
+                        PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -2221,8 +2222,8 @@ static void LimLaunchedRCTrackRightBarrelRollUpToDown(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -2276,8 +2277,8 @@ static void LimLaunchedRCTrackRightBarrelRollUpToDown(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide),
+                        PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
+                        PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -2403,8 +2404,8 @@ static void LimLaunchedRCTrackHalfLoopUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 168);
@@ -2745,10 +2746,10 @@ static void LimLaunchedRCTrack60DegUpToFlatLongBase(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -2815,8 +2816,8 @@ static void LimLaunchedRCTrackLeftLargeCorkscrewUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
+                        PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -2857,8 +2858,8 @@ static void LimLaunchedRCTrackLeftLargeCorkscrewUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -2890,9 +2891,7 @@ static void LimLaunchedRCTrackLeftLargeCorkscrewUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
+                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -2905,8 +2904,8 @@ static void LimLaunchedRCTrackLeftLargeCorkscrewUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::bottomLeftSide, PaintSegment::bottomCorner,
-                        PaintSegment::topLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide),
+                        PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::topLeft,
+                        PaintSegment::centre, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             switch (direction)
@@ -2972,8 +2971,8 @@ static void LimLaunchedRCTrackLeftLargeCorkscrewUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::bottomLeftSide, PaintSegment::bottomCorner,
-                        PaintSegment::topLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide),
+                        PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::topLeft,
+                        PaintSegment::centre, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             switch (direction)
@@ -3031,8 +3030,8 @@ static void LimLaunchedRCTrackRightLargeCorkscrewUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::rightCorner,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::right, PaintSegment::topRight,
+                        PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -3073,8 +3072,8 @@ static void LimLaunchedRCTrackRightLargeCorkscrewUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre,
-                        PaintSegment::bottomRightSide, PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomRight,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -3107,8 +3106,7 @@ static void LimLaunchedRCTrackRightLargeCorkscrewUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomRightSide,
-                        PaintSegment::bottomLeftSide),
+                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -3121,8 +3119,8 @@ static void LimLaunchedRCTrackRightLargeCorkscrewUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::bottomLeftSide, PaintSegment::bottomCorner,
-                        PaintSegment::topLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide),
+                        PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::topLeft,
+                        PaintSegment::centre, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             switch (direction)
@@ -3187,8 +3185,8 @@ static void LimLaunchedRCTrackRightLargeCorkscrewUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::bottomLeftSide, PaintSegment::bottomCorner,
-                        PaintSegment::topLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide),
+                        PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::topLeft,
+                        PaintSegment::centre, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             switch (direction)
@@ -3291,8 +3289,8 @@ static void LimLaunchedRCTrackLeftMediumHalfLoopUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::topLeftSide, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::topCorner),
+                        PaintSegment::left, PaintSegment::topLeft, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::top),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -3332,9 +3330,7 @@ static void LimLaunchedRCTrackLeftMediumHalfLoopUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::topLeftSide, PaintSegment::centre,
-                        PaintSegment::bottomLeftSide),
+                    EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 144);
@@ -3345,12 +3341,12 @@ static void LimLaunchedRCTrackLeftMediumHalfLoopUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_MEDIUM_HALF_LOOP + 3),
-                        { 0, 0, height }, { { 0, 0, height }, { 0, 32, 160 } });
+                        { 0, 0, height }, { { 2, 0, height }, { 1, 32, 160 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_MEDIUM_HALF_LOOP + 8),
-                        { 0, 0, height }, { { 30, 0, height }, { 0, 32, 160 } });
+                        { 0, 0, height }, { { 0, 0, height + 140 }, { 32, 32, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -3367,8 +3363,7 @@ static void LimLaunchedRCTrackLeftMediumHalfLoopUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::bottomRightSide, PaintSegment::centre,
-                        PaintSegment::bottomLeftSide),
+                        PaintSegment::bottom, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 144);
@@ -3402,8 +3397,8 @@ static void LimLaunchedRCTrackLeftMediumHalfLoopUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topRightSide, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomCorner, PaintSegment::bottomRightSide, PaintSegment::rightCorner),
+                        PaintSegment::topRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottom,
+                        PaintSegment::bottomRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
 
@@ -3486,8 +3481,8 @@ static void LimLaunchedRCTrackRightMediumHalfLoopUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topRightSide, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomCorner, PaintSegment::bottomRightSide, PaintSegment::rightCorner),
+                        PaintSegment::topRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottom,
+                        PaintSegment::bottomRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -3505,7 +3500,7 @@ static void LimLaunchedRCTrackRightMediumHalfLoopUp(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_MEDIUM_HALF_LOOP + 27),
-                        { 0, 0, height }, { { 30, 0, height }, { 0, 32, 96 } });
+                        { 0, 0, height }, { { 30, 16, height }, { 0, 32, 96 } });
                     MetalBSupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::BottomLeftSide, 18, height, session.SupportColours);
                     break;
@@ -3528,8 +3523,7 @@ static void LimLaunchedRCTrackRightMediumHalfLoopUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::bottomRightSide, PaintSegment::centre,
-                        PaintSegment::bottomLeftSide),
+                        PaintSegment::bottom, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 144);
@@ -3540,17 +3534,17 @@ static void LimLaunchedRCTrackRightMediumHalfLoopUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_MEDIUM_HALF_LOOP + 23),
-                        { 0, 0, height }, { { -12, 0, height }, { 0, 32, 160 } });
+                        { 0, 0, height }, { { 0, 0, height }, { 1, 32, 160 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_MEDIUM_HALF_LOOP + 28),
-                        { 0, 0, height }, { { 29, 0, height }, { 0, 32, 160 } });
+                        { 0, 0, height }, { { 29, 16, height }, { 0, 16, 160 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_MEDIUM_HALF_LOOP + 33),
-                        { 0, 0, height }, { { 30, 0, height }, { 0, 32, 160 } });
+                        { 0, 0, height }, { { 0, 0, height + 140 }, { 32, 32, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -3562,9 +3556,7 @@ static void LimLaunchedRCTrackRightMediumHalfLoopUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
+                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 144);
@@ -3598,8 +3590,8 @@ static void LimLaunchedRCTrackRightMediumHalfLoopUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::topLeftSide, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::topCorner),
+                        PaintSegment::left, PaintSegment::topLeft, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::top),
                     direction),
                 0xFFFF, 0);
             if (direction == 0 || direction == 3)
@@ -3706,8 +3698,8 @@ static void LimLaunchedRCTrackLeftZeroGRollUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::topLeftSide, PaintSegment::topCorner,
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide),
+                        PaintSegment::left, PaintSegment::topLeft, PaintSegment::top, PaintSegment::bottomLeft,
+                        PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -3755,8 +3747,8 @@ static void LimLaunchedRCTrackLeftZeroGRollUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::topLeftSide, PaintSegment::topCorner,
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide),
+                        PaintSegment::left, PaintSegment::topLeft, PaintSegment::top, PaintSegment::bottomLeft,
+                        PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
@@ -3846,8 +3838,8 @@ static void LimLaunchedRCTrackRightZeroGRollUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::bottomRightSide, PaintSegment::rightCorner,
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide),
+                        PaintSegment::bottom, PaintSegment::bottomRight, PaintSegment::right, PaintSegment::bottomLeft,
+                        PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -3895,8 +3887,8 @@ static void LimLaunchedRCTrackRightZeroGRollUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::bottomRightSide, PaintSegment::rightCorner,
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide),
+                        PaintSegment::bottom, PaintSegment::bottomRight, PaintSegment::right, PaintSegment::bottomLeft,
+                        PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
@@ -4025,8 +4017,8 @@ static void LimLaunchedRCTrackLeftLargeZeroGRollUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::topLeftSide, PaintSegment::topCorner,
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide),
+                        PaintSegment::left, PaintSegment::topLeft, PaintSegment::top, PaintSegment::bottomLeft,
+                        PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -4036,8 +4028,8 @@ static void LimLaunchedRCTrackLeftLargeZeroGRollUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::topLeftSide, PaintSegment::topCorner,
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide),
+                        PaintSegment::left, PaintSegment::topLeft, PaintSegment::top, PaintSegment::bottomLeft,
+                        PaintSegment::centre, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             switch (direction)
@@ -4193,8 +4185,8 @@ static void LimLaunchedRCTrackRightLargeZeroGRollUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -4204,8 +4196,8 @@ static void LimLaunchedRCTrackRightLargeZeroGRollUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             switch (direction)
@@ -4313,9 +4305,7 @@ static void LimLaunchedRCTrackLeftBankToLeftQuarterTurn325DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide),
+                    EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -4364,9 +4354,7 @@ static void LimLaunchedRCTrackLeftBankToLeftQuarterTurn325DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomRightSide),
+                    EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -4415,9 +4403,7 @@ static void LimLaunchedRCTrackRightBankToRightQuarterTurn325DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide),
+                    EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -4466,9 +4452,7 @@ static void LimLaunchedRCTrackRightBankToRightQuarterTurn325DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomRightSide),
+                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -4515,9 +4499,7 @@ static void LimLaunchedRCTrackLeftQuarterTurn325DegDownToLeftBank(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide),
+                    EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -4568,9 +4550,7 @@ static void LimLaunchedRCTrackLeftQuarterTurn325DegDownToLeftBank(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomRightSide),
+                    EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -4617,9 +4597,7 @@ static void LimLaunchedRCTrackRightQuarterTurn325DegDownToRightBank(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide),
+                    EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -4670,9 +4648,7 @@ static void LimLaunchedRCTrackRightQuarterTurn325DegDownToRightBank(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomRightSide),
+                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -4783,8 +4759,8 @@ static void LimLaunchedRCTrackLeftLargeHalfLoopUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 88);
@@ -4825,8 +4801,8 @@ static void LimLaunchedRCTrackLeftLargeHalfLoopUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 224);
@@ -4859,8 +4835,7 @@ static void LimLaunchedRCTrackLeftLargeHalfLoopUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
+                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 128);
@@ -4893,8 +4868,8 @@ static void LimLaunchedRCTrackLeftLargeHalfLoopUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 224);
@@ -4931,8 +4906,8 @@ static void LimLaunchedRCTrackLeftLargeHalfLoopUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -5043,8 +5018,8 @@ static void LimLaunchedRCTrackRightLargeHalfLoopUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 88);
@@ -5085,8 +5060,8 @@ static void LimLaunchedRCTrackRightLargeHalfLoopUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 224);
@@ -5118,9 +5093,7 @@ static void LimLaunchedRCTrackRightLargeHalfLoopUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
+                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 128);
@@ -5153,8 +5126,8 @@ static void LimLaunchedRCTrackRightLargeHalfLoopUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 224);
@@ -5191,8 +5164,8 @@ static void LimLaunchedRCTrackRightLargeHalfLoopUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -5343,9 +5316,7 @@ static void LimLaunchedRCTrackDiagFlatTo60DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomRightSide),
+                    EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -5362,8 +5333,7 @@ static void LimLaunchedRCTrackDiagFlatTo60DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
+                    EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -5381,8 +5351,7 @@ static void LimLaunchedRCTrackDiagFlatTo60DegUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
+                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -5413,9 +5382,7 @@ static void LimLaunchedRCTrackDiagFlatTo60DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
+                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -5441,9 +5408,7 @@ static void LimLaunchedRCTrackDiag60DegUpToFlat(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomRightSide),
+                    EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5460,8 +5425,7 @@ static void LimLaunchedRCTrackDiag60DegUpToFlat(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
+                    EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5479,8 +5443,7 @@ static void LimLaunchedRCTrackDiag60DegUpToFlat(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
+                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5511,9 +5474,7 @@ static void LimLaunchedRCTrackDiag60DegUpToFlat(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
+                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5539,9 +5500,7 @@ static void LimLaunchedRCTrackDiagFlatTo60DegDown(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomRightSide),
+                    EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5558,8 +5517,7 @@ static void LimLaunchedRCTrackDiagFlatTo60DegDown(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
+                    EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5577,8 +5535,7 @@ static void LimLaunchedRCTrackDiagFlatTo60DegDown(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
+                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5609,9 +5566,7 @@ static void LimLaunchedRCTrackDiagFlatTo60DegDown(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
+                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 72);
@@ -5637,9 +5592,7 @@ static void LimLaunchedRCTrackDiag60DegDownToFlat(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomRightSide),
+                    EnumsToFlags(PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -5656,8 +5609,7 @@ static void LimLaunchedRCTrackDiag60DegDownToFlat(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::topRightSide),
+                    EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -5675,8 +5627,7 @@ static void LimLaunchedRCTrackDiag60DegDownToFlat(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
+                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -5707,9 +5658,7 @@ static void LimLaunchedRCTrackDiag60DegDownToFlat(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
+                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -5751,7 +5700,7 @@ static void LimLaunchedRCTrackBooster(
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionLimLaunchedRC(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionLimLaunchedRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -6024,6 +5973,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLimLaunchedRC(int32_t trackType)
             return LimLaunchedRCTrackRightLargeZeroGRollDown;
         case TrackElemType::Booster:
             return LimLaunchedRCTrackBooster;
+        default:
+            return TrackPaintFunctionDummy;
     }
-    return nullptr;
 }

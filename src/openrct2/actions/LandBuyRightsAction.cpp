@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,16 +14,15 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/LandSetHeightAction.h"
-#include "../audio/audio.h"
-#include "../interface/Window.h"
+#include "../audio/Audio.h"
+#include "../core/EnumUtils.hpp"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
-#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Surface.h"
+#include "../world/tile_element/SurfaceElement.h"
 
 using namespace OpenRCT2;
 
@@ -114,7 +113,7 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
     if (_setting >= LandBuyRightSetting::Count)
     {
         LOG_ERROR("Invalid land buying setting %u", _setting);
-        return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_ERR_VALUE_OUT_OF_RANGE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, kErrorTitles[0], STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     SurfaceElement* surfaceElement = MapGetSurfaceElementAt(loc);
@@ -122,7 +121,7 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
     {
         LOG_ERROR("No surface at x = %d, y = %d", loc.x, loc.y);
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, _ErrorTitles[EnumValue(_setting)], STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+            GameActions::Status::InvalidParameters, kErrorTitles[EnumValue(_setting)], STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
 
     auto res = GameActions::Result();
@@ -134,18 +133,17 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                 return res;
             }
 
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0
-                || (surfaceElement->GetOwnership() & OWNERSHIP_AVAILABLE) == 0)
+            if (gLegacyScene == LegacyScene::scenarioEditor || (surfaceElement->GetOwnership() & OWNERSHIP_AVAILABLE) == 0)
             {
                 return GameActions::Result(
-                    GameActions::Status::NotOwned, _ErrorTitles[EnumValue(_setting)], STR_LAND_NOT_FOR_SALE);
+                    GameActions::Status::NotOwned, kErrorTitles[EnumValue(_setting)], STR_LAND_NOT_FOR_SALE);
             }
             if (isExecuting)
             {
                 surfaceElement->SetOwnership(OWNERSHIP_OWNED);
                 Park::UpdateFencesAroundTile(loc);
             }
-            res.Cost = GetGameState().LandPrice;
+            res.Cost = getGameState().landPrice;
             return res;
 
         case LandBuyRightSetting::BuyConstructionRights: // 2
@@ -154,11 +152,11 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                 return res;
             }
 
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0
+            if (gLegacyScene == LegacyScene::scenarioEditor
                 || (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0)
             {
                 return GameActions::Result(
-                    GameActions::Status::NotOwned, _ErrorTitles[EnumValue(_setting)], STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE);
+                    GameActions::Status::NotOwned, kErrorTitles[EnumValue(_setting)], STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE);
             }
 
             if (isExecuting)
@@ -167,11 +165,11 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                 uint16_t baseZ = surfaceElement->GetBaseZ();
                 MapInvalidateTile({ loc, baseZ, baseZ + 16 });
             }
-            res.Cost = GetGameState().ConstructionRightsPrice;
+            res.Cost = getGameState().constructionRightsPrice;
             return res;
 
         default:
             LOG_ERROR("Invalid land buying setting %u", _setting);
-            return GameActions::Result(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_ERR_VALUE_OUT_OF_RANGE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, kErrorTitles[0], STR_ERR_VALUE_OUT_OF_RANGE);
     }
 }

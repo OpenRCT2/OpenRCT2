@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,11 +9,10 @@
 
 #pragma once
 
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 #include "RideTypes.h"
 
 #include <memory>
-#include <string>
 #include <vector>
 
 struct TrackDesignFileRef
@@ -33,8 +32,8 @@ struct ITrackDesignRepository
 
     [[nodiscard]] virtual size_t GetCount() const = 0;
     [[nodiscard]] virtual size_t GetCountForObjectEntry(ride_type_t rideType, const std::string& entry) const = 0;
-    [[nodiscard]] virtual std::vector<TrackDesignFileRef> GetItemsForObjectEntry(
-        ride_type_t rideType, const std::string& entry) const = 0;
+    [[nodiscard]] virtual std::vector<TrackDesignFileRef>
+        GetItemsForObjectEntry(ride_type_t rideType, const std::string& entry) const = 0;
 
     virtual void Scan(int32_t language) = 0;
     virtual bool Delete(const std::string& path) = 0;

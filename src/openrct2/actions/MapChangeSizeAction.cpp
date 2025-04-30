@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -59,16 +59,16 @@ GameActions::Result MapChangeSizeAction::Query() const
 
 GameActions::Result MapChangeSizeAction::Execute() const
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     // Expand map
-    while (_targetSize.x > gameState.MapSize.x)
+    while (_targetSize.x > gameState.mapSize.x)
     {
-        gameState.MapSize.x++;
+        gameState.mapSize.x++;
         MapExtendBoundarySurfaceX();
     }
-    while (_targetSize.y > gameState.MapSize.y)
+    while (_targetSize.y > gameState.mapSize.y)
     {
-        gameState.MapSize.y++;
+        gameState.mapSize.y++;
         MapExtendBoundarySurfaceY();
     }
 
@@ -76,9 +76,9 @@ GameActions::Result MapChangeSizeAction::Execute() const
     ShiftMap(_shift);
 
     // Shrink map
-    if (_targetSize.x < gameState.MapSize.x || _targetSize.y < gameState.MapSize.y)
+    if (_targetSize.x < gameState.mapSize.x || _targetSize.y < gameState.mapSize.y)
     {
-        gameState.MapSize = _targetSize;
+        gameState.mapSize = _targetSize;
         MapRemoveOutOfRangeElements();
     }
 

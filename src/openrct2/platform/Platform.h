@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,34 +11,46 @@
 
 #include "../config/ConfigTypes.h"
 #include "../core/DateTime.h"
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 
+#include <bit>
 #include <ctime>
-#include <string>
+#include <optional>
+#include <vector>
 
 #ifdef _WIN32
-#    define PATH_SEPARATOR u8"\\"
-#    define PLATFORM_NEWLINE u8"\r\n"
+    #define PATH_SEPARATOR u8"\\"
+    #define PLATFORM_NEWLINE u8"\r\n"
 #else
-#    define PATH_SEPARATOR u8"/"
-#    define PLATFORM_NEWLINE u8"\n"
+    #define PATH_SEPARATOR u8"/"
+    #define PLATFORM_NEWLINE u8"\n"
 #endif
 #ifdef __ANDROID__
-#    include <jni.h>
+    #include <jni.h>
 #endif // __ANDROID__
 
 #ifndef MAX_PATH
-#    define MAX_PATH 260
+    #define MAX_PATH 260
 #endif
 
-enum class SPECIAL_FOLDER
-{
-    USER_CACHE,
-    USER_CONFIG,
-    USER_DATA,
-    USER_HOME,
+static_assert(
+    std::endian::native == std::endian::little, "OpenRCT2 is known to be broken on big endian. Proceed with caution!");
 
-    RCT2_DISCORD,
+enum class SpecialFolder
+{
+    userCache,
+    userConfig,
+    userData,
+    userHome,
+
+    rct2Discord,
+};
+
+enum class RCT2Variant : uint8_t
+{
+    rct2Original,
+    rctClassicWindows,
+    rctClassicMac,
 };
 
 struct RealWorldDate;
@@ -47,8 +59,14 @@ struct TTFFontDescriptor;
 
 namespace OpenRCT2::Platform
 {
+    constexpr u8string_view kRCTClassicWindowsDataFolder = u8"Assets";
+    // clang-format off
+    constexpr u8string_view kRCTClassicMacOSDataFolder =
+        u8"RCT Classic.app" PATH_SEPARATOR "Contents" PATH_SEPARATOR "Resources";
+    // clang-format on
+
     std::string GetEnvironmentVariable(std::string_view name);
-    std::string GetFolderPath(SPECIAL_FOLDER folder);
+    std::string GetFolderPath(SpecialFolder folder);
     std::string GetInstallPath();
     std::string GetDocsPath();
     std::string GetCurrentExecutablePath();
@@ -75,20 +93,19 @@ namespace OpenRCT2::Platform
     bool ProcessIsElevated();
     float GetDefaultScale();
 
-    bool IsRCT2Path(std::string_view path);
-    bool IsRCTClassicPath(std::string_view path);
+    std::optional<RCT2Variant> classifyGamePath(std::string_view path);
     bool OriginalGameDataExists(std::string_view path);
 
     std::string GetUsername();
 
     std::string GetSteamPath();
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__) || defined(__NetBSD__)
     std::string GetEnvironmentPath(const char* name);
     std::string GetHomePath();
 #endif
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
     std::string GetFontPath(const TTFFontDescriptor& font);
-#endif // NO_TTF
+#endif // DISABLE_TTF
 
     std::string FormatShortDate(std::time_t timestamp);
     std::string FormatTime(std::time_t timestamp);
@@ -127,6 +144,9 @@ namespace OpenRCT2::Platform
 
     bool SSE41Available();
     bool AVX2Available();
+
+    std::vector<std::string_view> GetSearchablePathsRCT1();
+    std::vector<std::string_view> GetSearchablePathsRCT2();
 } // namespace OpenRCT2::Platform
 
 #ifdef __ANDROID__

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -8,7 +8,7 @@
  *****************************************************************************/
 
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Language.h>
@@ -16,6 +16,7 @@
 #include <openrct2/paint/Paint.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/ride/TrackPaint.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -27,20 +28,21 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS,
         WIDX_TOGGLE_SHOW_BOUND_BOXES,
         WIDX_TOGGLE_SHOW_DIRTY_VISUALS,
+        WIDX_TOGGLE_STABLE_PAINT_SORT,
     };
 
     constexpr int32_t WINDOW_WIDTH = 200;
-    constexpr int32_t WINDOW_HEIGHT = 8 + 15 + 15 + 15 + 15 + 11 + 8;
+    constexpr int32_t WINDOW_HEIGHT = 8 + (15 * 6) + 8;
 
     // clang-format off
-    static Widget window_debug_paint_widgets[] = {
+    static constexpr Widget window_debug_paint_widgets[] = {
         MakeWidget({0,          0}, {WINDOW_WIDTH, WINDOW_HEIGHT}, WindowWidgetType::Frame,    WindowColour::Primary                                        ),
         MakeWidget({8, 8 + 15 * 0}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_WIDE_PATHS     ),
         MakeWidget({8, 8 + 15 * 1}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_BLOCKED_TILES  ),
         MakeWidget({8, 8 + 15 * 2}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_SEGMENT_HEIGHTS),
         MakeWidget({8, 8 + 15 * 3}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_BOUND_BOXES    ),
         MakeWidget({8, 8 + 15 * 4}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_DIRTY_VISUALS  ),
-        kWidgetsEnd,
+        MakeWidget({8, 8 + 15 * 5}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_STABLE_SORT  ),
     };
     // clang-format on
 
@@ -52,7 +54,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_debug_paint_widgets;
+            SetWidgets(window_debug_paint_widgets);
 
             InitScrollWidgets();
             WindowPushOthersBelow(*this);
@@ -89,6 +91,11 @@ namespace OpenRCT2::Ui::Windows
 
                 case WIDX_TOGGLE_SHOW_DIRTY_VISUALS:
                     gShowDirtyVisuals = !gShowDirtyVisuals;
+                    GfxInvalidateScreen();
+                    break;
+
+                case WIDX_TOGGLE_STABLE_PAINT_SORT:
+                    gPaintStableSort = !gPaintStableSort;
                     GfxInvalidateScreen();
                     break;
             }
@@ -136,6 +143,7 @@ namespace OpenRCT2::Ui::Windows
             WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
             WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
             WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
+            WidgetSetCheckboxValue(*this, WIDX_TOGGLE_STABLE_PAINT_SORT, gPaintStableSort);
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
@@ -146,9 +154,10 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* DebugPaintOpen()
     {
-        auto* window = WindowFocusOrCreate<DebugPaintWindow>(
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->FocusOrCreate<DebugPaintWindow>(
             WindowClass::DebugPaint, { 16, ContextGetHeight() - 16 - 33 - WINDOW_HEIGHT }, WINDOW_WIDTH, WINDOW_HEIGHT,
-            WF_STICK_TO_FRONT | WF_TRANSPARENT);
+            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_TITLE_BAR);
 
         return window;
     }

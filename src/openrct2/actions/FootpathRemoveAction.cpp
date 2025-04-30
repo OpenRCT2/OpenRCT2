@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,13 +13,13 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Park.h"
-#include "../world/Wall.h"
+#include "../world/tile_element/BannerElement.h"
+#include "../world/tile_element/PathElement.h"
 #include "BannerRemoveAction.h"
 
 using namespace OpenRCT2;
@@ -59,7 +59,7 @@ GameActions::Result FootpathRemoveAction::Query() const
             GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode) && !MapIsLocationOwned(_loc))
+    if (!(gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode) && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(
             GameActions::Status::NotOwned, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_LAND_NOT_OWNED_BY_PARK);
@@ -104,21 +104,21 @@ GameActions::Result FootpathRemoveAction::Execute() const
         TileElementRemove(footpathElement);
         FootpathUpdateQueueChains();
 
-        auto& gameState = GetGameState();
+        auto& gameState = getGameState();
         // Remove the spawn point (if there is one in the current tile)
-        gameState.PeepSpawns.erase(
+        gameState.peepSpawns.erase(
             std::remove_if(
-                gameState.PeepSpawns.begin(), gameState.PeepSpawns.end(),
+                gameState.peepSpawns.begin(), gameState.peepSpawns.end(),
                 [this](const CoordsXYZ& spawn) {
                     {
                         return spawn.ToTileStart() == _loc.ToTileStart();
                     }
                 }),
-            gameState.PeepSpawns.end());
+            gameState.peepSpawns.end());
     }
     else
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, kStringIdNone);
     }
 
     res.Cost += GetRefundPrice(footpathElement);

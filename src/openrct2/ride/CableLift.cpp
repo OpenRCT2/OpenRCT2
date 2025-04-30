@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,10 +9,12 @@
 
 #include "CableLift.h"
 
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../entity/EntityList.h"
 #include "../rct12/RCT12.h"
 #include "../util/Util.h"
+#include "../world/tile_element/TileElement.h"
+#include "../world/tile_element/TrackElement.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "Track.h"
@@ -26,10 +28,10 @@ Vehicle* CableLiftSegmentCreate(
 {
     Vehicle* current = CreateEntity<Vehicle>();
     current->ride = ride.id;
-    current->ride_subtype = OBJECT_ENTRY_INDEX_NULL;
+    current->ride_subtype = kObjectEntryIndexNull;
     if (head)
     {
-        ride.cable_lift = current->Id;
+        ride.cableLift = current->Id;
     }
     current->SubType = head ? Vehicle::Type::Head : Vehicle::Type::Tail;
     current->var_44 = var_44;
@@ -67,7 +69,7 @@ Vehicle* CableLiftSegmentCreate(
 
     z = z * kCoordsZStep;
     current->TrackLocation = { x, y, z };
-    z += ride.GetRideTypeDescriptor().Heights.VehicleZOffset;
+    z += ride.getRideTypeDescriptor().Heights.VehicleZOffset;
 
     current->MoveTo({ 16, 16, z });
     current->SetTrackType(TrackElemType::CableLiftHill);
@@ -325,7 +327,10 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
             SetTrackDirection(output.begin_direction);
             SetTrackType(output.begin_element->AsTrack()->GetTrackType());
 
-            if (output.begin_element->AsTrack()->GetTrackType() == TrackElemType::EndStation)
+            // Doesn't check for diagonal block brakes because there is no diagonal cable lift piece,
+            // no way for a cable lift to start from a diagonal brake.
+            if (output.begin_element->AsTrack()->GetTrackType() == TrackElemType::EndStation
+                || output.begin_element->AsTrack()->GetTrackType() == TrackElemType::BlockBrakes)
             {
                 _vehicleMotionTrackFlags = VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
             }

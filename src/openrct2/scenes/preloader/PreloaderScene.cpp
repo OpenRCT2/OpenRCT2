@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,11 +14,10 @@
 #include "../../Game.h"
 #include "../../GameState.h"
 #include "../../OpenRCT2.h"
-#include "../../audio/audio.h"
+#include "../../audio/Audio.h"
 #include "../../interface/Viewport.h"
-#include "../../interface/Window.h"
-#include "../../localisation/LocalisationService.h"
 #include "../../localisation/StringIds.h"
+#include "../../ui/WindowManager.h"
 #include "../../windows/Intent.h"
 
 #include <sstream>
@@ -35,8 +34,8 @@ void PreloaderScene::Load()
 {
     LOG_VERBOSE("PreloaderScene::Load()");
 
-    gScreenFlags = SCREEN_FLAGS_PLAYING;
-    gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
+    gLegacyScene = LegacyScene::playing;
+    gameStateInitAll(getGameState(), kDefaultMapSize);
     ViewportInitAll();
     ContextOpenWindow(WindowClass::MainWindow);
     WindowSetFlagForAllViewports(VIEWPORT_FLAG_RENDERING_INHIBITED, true);
@@ -50,11 +49,13 @@ void PreloaderScene::Tick()
     gInUpdateCode = true;
 
     ContextHandleInput();
-    WindowInvalidateAll();
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateAll();
 
     gInUpdateCode = false;
 
-    if (_jobs.CountPending() == 0 && _jobs.CountProcessing() == 0)
+    if (!_jobs.IsBusy())
     {
         // Make sure the job is fully completed.
         _jobs.Join();

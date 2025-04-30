@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,10 @@
 #include "../ride/RideData.h"
 #include "../ride/TrackData.h"
 #include "../world/ConstructionClearance.h"
+#include "../world/Footpath.h"
+#include "../world/Wall.h"
+#include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TrackElement.h"
 
 using namespace OpenRCT2;
 
@@ -60,8 +64,8 @@ GameActions::Result MazePlaceTrackAction::Query() const
         res.ErrorMessage = STR_OFF_EDGE_OF_MAP;
         return res;
     }
-    auto& gameState = GetGameState();
-    if (!MapIsLocationOwned(_loc) && !gameState.Cheats.SandboxMode)
+    auto& gameState = getGameState();
+    if (!MapIsLocationOwned(_loc) && !gameState.cheats.sandboxMode)
     {
         res.Error = GameActions::Status::NotOwned;
         res.ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
@@ -83,15 +87,15 @@ GameActions::Result MazePlaceTrackAction::Query() const
     }
 
     auto baseHeight = _loc.z;
-    auto clearanceHeight = _loc.z + MAZE_CLEARANCE_HEIGHT;
+    auto clearanceHeight = _loc.z + kMazeClearanceHeight;
 
     auto heightDifference = baseHeight - surfaceElement->GetBaseZ();
-    if (heightDifference >= 0 && !gameState.Cheats.DisableSupportLimits)
+    if (heightDifference >= 0 && !gameState.cheats.disableSupportLimits)
     {
         heightDifference /= kCoordsZPerTinyZ;
 
         auto* ride = GetRide(_rideIndex);
-        const auto& rtd = ride->GetRideTypeDescriptor();
+        const auto& rtd = ride->getRideTypeDescriptor();
         if (heightDifference > rtd.Heights.MaxHeight)
         {
             res.Error = GameActions::Status::TooHigh;
@@ -124,7 +128,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
     }
 
     auto ride = GetRide(_rideIndex);
-    if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
+    if (ride == nullptr || ride->type == kRideTypeNull)
     {
         LOG_ERROR("Ride not found for rideIndex %u", _rideIndex);
         res.Error = GameActions::Status::InvalidParameters;
@@ -162,7 +166,7 @@ GameActions::Result MazePlaceTrackAction::Execute() const
     }
 
     auto baseHeight = _loc.z;
-    auto clearanceHeight = _loc.z + MAZE_CLEARANCE_HEIGHT;
+    auto clearanceHeight = _loc.z + kMazeClearanceHeight;
 
     auto canBuild = MapCanConstructWithClearAt(
         { _loc.ToTileStart(), baseHeight, clearanceHeight }, &MapPlaceNonSceneryClearFunc, { 0b1111, 0 },
@@ -189,13 +193,13 @@ GameActions::Result MazePlaceTrackAction::Execute() const
 
     MapInvalidateTileFull(startLoc);
 
-    ride->maze_tiles++;
-    ride->GetStation().SetBaseZ(trackElement->GetBaseZ());
-    ride->GetStation().Start = { 0, 0 };
+    ride->mazeTiles++;
+    ride->getStation().SetBaseZ(trackElement->GetBaseZ());
+    ride->getStation().Start = { 0, 0 };
 
-    if (ride->maze_tiles == 1)
+    if (ride->mazeTiles == 1)
     {
-        ride->overall_view = startLoc;
+        ride->overallView = startLoc;
     }
 
     return res;

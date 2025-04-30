@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,8 +11,10 @@
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
+#include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
 #include "../../track/Support.h"
@@ -73,63 +75,63 @@ enum
     SPR_VIRGINIA_REEL_25_DEG_UP_LIFT_HILL_SE_NW = 21503,
 };
 
-static constexpr uint32_t virginia_reel_track_pieces_flat[4] = {
+static constexpr uint32_t kPiecesFlat[4] = {
     SPR_VIRGINIA_REEL_FLAT_SW_NE,
     SPR_VIRGINIA_REEL_FLAT_NW_SE,
     SPR_VIRGINIA_REEL_FLAT_SW_NE,
     SPR_VIRGINIA_REEL_FLAT_NW_SE,
 };
 
-static constexpr uint32_t virginia_reel_track_pieces_flat_lift_hill[4] = {
+static constexpr uint32_t kPiecesFlatLiftHill[4] = {
     SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_SW_NE,
     SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_NW_SE,
     SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_NE_SW,
     SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_SE_NW,
 };
 
-static constexpr uint32_t virginia_reel_track_pieces_flat_to_25_deg_up[4] = {
+static constexpr uint32_t kPiecesFlatTo25DegUp[4] = {
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_SW_NE,
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_NW_SE,
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_NE_SW,
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_SE_NW,
 };
 
-static constexpr uint32_t virginia_reel_track_pieces_flat_to_25_deg_up_lift_hill[4] = {
+static constexpr uint32_t kPiecesFlatTo25DegUpLiftHill[4] = {
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_SW_NE,
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_NW_SE,
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_NE_SW,
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_SE_NW,
 };
 
-static constexpr uint32_t virginia_reel_track_pieces_25_deg_up_to_flat[4] = {
+static constexpr uint32_t kPieces25DegUpToFlat[4] = {
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_SW_NE,
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_NW_SE,
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_NE_SW,
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_SE_NW,
 };
 
-static constexpr uint32_t virginia_reel_track_pieces_25_deg_up_to_flat_lift_hill[4] = {
+static constexpr uint32_t kPieces25DegUpToFlatLiftHill[4] = {
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_LIFT_HILL_SW_NE,
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_LIFT_HILL_NW_SE,
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_LIFT_HILL_NE_SW,
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_LIFT_HILL_SE_NW,
 };
 
-static constexpr uint32_t virginia_reel_track_pieces_25_deg_up[4] = {
+static constexpr uint32_t kPieces25DegUp[4] = {
     SPR_VIRGINIA_REEL_25_DEG_UP_SW_NE,
     SPR_VIRGINIA_REEL_25_DEG_UP_NW_SE,
     SPR_VIRGINIA_REEL_25_DEG_UP_NE_SW,
     SPR_VIRGINIA_REEL_25_DEG_UP_SE_NW,
 };
 
-static constexpr uint32_t virginia_reel_track_pieces_25_deg_up_lift_hill[4] = {
+static constexpr uint32_t kPieces25DegUpLiftHill[4] = {
     SPR_VIRGINIA_REEL_25_DEG_UP_LIFT_HILL_SW_NE,
     SPR_VIRGINIA_REEL_25_DEG_UP_LIFT_HILL_NW_SE,
     SPR_VIRGINIA_REEL_25_DEG_UP_LIFT_HILL_NE_SW,
     SPR_VIRGINIA_REEL_25_DEG_UP_LIFT_HILL_SE_NW,
 };
 
-static constexpr uint32_t virginia_reel_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
+static constexpr uint32_t kPiecesFlatQuarterTurn3Tiles[4][3] = {
     {
         SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0,
         SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1,
@@ -152,7 +154,7 @@ static constexpr uint32_t virginia_reel_track_pieces_flat_quarter_turn_3_tiles[4
     },
 };
 
-static constexpr uint32_t virginia_reel_track_pieces_flat_quarter_turn_1_tile[4] = {
+static constexpr uint32_t kPiecesFlatQuarterTurn1Tile[4] = {
     SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_1_TILE_SW_NW,
     SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_1_TILE_NW_NE,
     SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_1_TILE_NE_SE,
@@ -164,10 +166,10 @@ static void PaintVirginiaReelTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    const uint32_t* sprites = virginia_reel_track_pieces_flat;
+    const uint32_t* sprites = kPiecesFlat;
     if (trackElement.HasChain())
     {
-        sprites = virginia_reel_track_pieces_flat_lift_hill;
+        sprites = kPiecesFlatLiftHill;
     }
 
     auto imageId = session.TrackColours.WithIndex(sprites[direction]);
@@ -182,8 +184,8 @@ static void PaintVirginiaReelTrackFlat(
         PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
-    WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+    DrawSupportForSequenceA<TrackElemType::Flat>(
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -194,10 +196,10 @@ static void PaintVirginiaReelTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    const uint32_t* sprites = virginia_reel_track_pieces_25_deg_up;
+    const uint32_t* sprites = kPieces25DegUp;
     if (trackElement.HasChain())
     {
-        sprites = virginia_reel_track_pieces_25_deg_up_lift_hill;
+        sprites = kPieces25DegUpLiftHill;
     }
 
     auto imageId = session.TrackColours.WithIndex(sprites[direction]);
@@ -217,30 +219,20 @@ static void PaintVirginiaReelTrack25DegUp(
         session.WoodenSupportsPrependTo = ps;
     }
 
+    DrawSupportForSequenceA<TrackElemType::Up25>(
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     switch (direction)
     {
         case 0:
-            WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-                WoodenSupportTransitionType::Up25Deg);
             PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             break;
         case 1:
-            WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-                WoodenSupportTransitionType::Up25Deg);
             PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
             break;
         case 2:
-            WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-                WoodenSupportTransitionType::Up25Deg);
             PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
             break;
         case 3:
-            WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-                WoodenSupportTransitionType::Up25Deg);
             PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             break;
     }
@@ -254,10 +246,10 @@ static void PaintVirginiaReelTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    const uint32_t* sprites = virginia_reel_track_pieces_flat_to_25_deg_up;
+    const uint32_t* sprites = kPiecesFlatTo25DegUp;
     if (trackElement.HasChain())
     {
-        sprites = virginia_reel_track_pieces_flat_to_25_deg_up_lift_hill;
+        sprites = kPiecesFlatTo25DegUpLiftHill;
     }
 
     auto imageId = session.TrackColours.WithIndex(sprites[direction]);
@@ -267,38 +259,23 @@ static void PaintVirginiaReelTrackFlatTo25DegUp(
         case 0:
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
 
-            WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-                WoodenSupportTransitionType::FlatToUp25Deg);
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
             break;
         case 1:
             ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 27, 32, 2 } });
             session.WoodenSupportsPrependTo = ps;
-
-            WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-                WoodenSupportTransitionType::FlatToUp25Deg);
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
             break;
         case 2:
             ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             session.WoodenSupportsPrependTo = ps;
-
-            WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-                WoodenSupportTransitionType::FlatToUp25Deg);
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
             break;
         case 3:
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 27, 32, 2 } });
-
-            WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-                WoodenSupportTransitionType::FlatToUp25Deg);
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
             break;
     }
+
+    DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -309,10 +286,10 @@ static void PaintVirginiaReelTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    const uint32_t* sprites = virginia_reel_track_pieces_25_deg_up_to_flat;
+    const uint32_t* sprites = kPieces25DegUpToFlat;
     if (trackElement.HasChain())
     {
-        sprites = virginia_reel_track_pieces_25_deg_up_to_flat_lift_hill;
+        sprites = kPieces25DegUpToFlatLiftHill;
     }
 
     auto imageId = session.TrackColours.WithIndex(sprites[direction]);
@@ -332,30 +309,20 @@ static void PaintVirginiaReelTrack25DegUpToFlat(
         session.WoodenSupportsPrependTo = ps;
     }
 
+    DrawSupportForSequenceA<TrackElemType::Up25ToFlat>(
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     switch (direction)
     {
         case 0:
-            WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-                WoodenSupportTransitionType::Up25DegToFlat);
             PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::Flat);
             break;
         case 1:
-            WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-                WoodenSupportTransitionType::Up25DegToFlat);
             PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
             break;
         case 2:
-            WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-                WoodenSupportTransitionType::Up25DegToFlat);
             PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::FlatTo25Deg);
             break;
         case 3:
-            WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
-                WoodenSupportTransitionType::Up25DegToFlat);
             PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::Flat);
             break;
     }
@@ -397,28 +364,22 @@ static void PaintVirginiaReelStation(
 
     if (direction == 0 || direction == 2)
     {
-        imageId = GetStationColourScheme(session, trackElement).WithIndex(SPR_STATION_BASE_B_SW_NE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 2 } });
-
         imageId = session.TrackColours.WithIndex(SPR_VIRGINIA_REEL_FLAT_SW_NE);
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 20, 2 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height + 1 }, { 32, 20, 2 } });
 
         PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else if (direction == 1 || direction == 3)
     {
-        imageId = GetStationColourScheme(session, trackElement).WithIndex(SPR_STATION_BASE_B_NW_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 2, 0, height }, { 28, 32, 2 } });
-
         imageId = session.TrackColours.WithIndex(SPR_VIRGINIA_REEL_FLAT_NW_SE);
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 20, 32, 2 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height + 1 }, { 20, 32, 2 } });
 
         PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
-    WoodenASupportsPaintSetupRotated(
-        session, supportType.wooden, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
-    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
+    DrawSupportForSequenceA<TrackElemType::EndStation>(
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
+    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -430,8 +391,7 @@ static void PaintVirginiaReelTrackLeftQuarterTurn3Tiles(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilLeftQuarterTurn3TilesPaint(
-        session, 2, height, direction, trackSequence, session.TrackColours,
-        virginia_reel_track_pieces_flat_quarter_turn_3_tiles);
+        session, 2, height, direction, trackSequence, session.TrackColours, kPiecesFlatQuarterTurn3Tiles);
     TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
@@ -440,16 +400,14 @@ static void PaintVirginiaReelTrackLeftQuarterTurn3Tiles(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topLeftSide, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::leftCorner),
+                    EnumsToFlags(PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left),
                     direction),
                 0xFFFF, 0);
             break;
         case 0:
         case 3:
-            WoodenASupportsPaintSetupRotated(
-                session, supportType.wooden, WoodenSupportSubType::Corner3, direction, height, session.SupportColours);
+            DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn3Tiles>(
+                session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
             break;
     }
@@ -480,27 +438,19 @@ static void PaintVirginiaReelTrackLeftQuarterTurn1Tile(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilLeftQuarterTurn1TilePaint(
-        session, 2, height, 0, direction, session.TrackColours, virginia_reel_track_pieces_flat_quarter_turn_1_tile);
+        session, 2, height, 0, direction, session.TrackColours, kPiecesFlatQuarterTurn1Tile);
 
+    DrawSupportForSequenceA<TrackElemType::LeftQuarterTurn1Tile>(
+        session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
     switch (direction)
     {
         case 0:
-            WoodenASupportsPaintSetup(
-                session, supportType.wooden, WoodenSupportSubType::Corner3, height, session.SupportColours);
             PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
             break;
-        case 1:
-            WoodenASupportsPaintSetup(
-                session, supportType.wooden, WoodenSupportSubType::Corner0, height, session.SupportColours);
-            break;
         case 2:
-            WoodenASupportsPaintSetup(
-                session, supportType.wooden, WoodenSupportSubType::Corner1, height, session.SupportColours);
             PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
             break;
         case 3:
-            WoodenASupportsPaintSetup(
-                session, supportType.wooden, WoodenSupportSubType::Corner2, height, session.SupportColours);
             PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
             PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
             break;
@@ -522,7 +472,7 @@ static void PaintVirginiaReelTrackRightQuarterTurn1Tile(
 /**
  * rct2: 0x00811184
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionVirginiaReel(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionVirginiaReel(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -557,7 +507,8 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionVirginiaReel(int32_t trackType)
             return PaintVirginiaReelTrackLeftQuarterTurn1Tile;
         case TrackElemType::RightQuarterTurn1Tile:
             return PaintVirginiaReelTrackRightQuarterTurn1Tile;
-    }
 
-    return nullptr;
+        default:
+            return TrackPaintFunctionDummy;
+    }
 }

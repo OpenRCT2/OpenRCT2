@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,7 +26,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/EntityTweener.h>
-#include <openrct2/network/network.h>
+#include <openrct2/network/Network.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/park/ParkFile.h>
 #include <openrct2/platform/Platform.h>
@@ -84,7 +84,7 @@ static bool ImportS6(MemoryStream& stream, std::unique_ptr<IContext>& context, b
     objManager.LoadObjects(loadResult.RequiredObjects);
 
     // TODO: Have a separate GameState and exchange once loaded.
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     importer->Import(gameState);
 
     GameInit(retainSpatialIndices);
@@ -103,7 +103,7 @@ static bool ImportPark(MemoryStream& stream, std::unique_ptr<IContext>& context,
     objManager.LoadObjects(loadResult.RequiredObjects);
 
     // TODO: Have a separate GameState and exchange once loaded.
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     importer->Import(gameState);
 
     GameInit(retainSpatialIndices);
@@ -118,7 +118,7 @@ static bool ExportSave(MemoryStream& stream, std::unique_ptr<IContext>& context)
     auto exporter = std::make_unique<ParkFileExporter>();
     exporter->ExportObjectsList = objManager.GetPackableObjects();
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     exporter->Export(gameState, stream);
 
     return true;
@@ -130,7 +130,7 @@ static void RecordGameStateSnapshot(std::unique_ptr<IContext>& context, MemorySt
 
     auto& snapshot = snapshots->CreateSnapshot();
     snapshots->Capture(snapshot);
-    snapshots->LinkSnapshot(snapshot, GetGameState().CurrentTicks, ScenarioRandState().s0);
+    snapshots->LinkSnapshot(snapshot, getGameState().currentTicks, ScenarioRandState().s0);
     DataSerialiser snapShotDs(true, snapshotStream);
     snapshots->SerialiseSnapshot(snapshot, snapShotDs);
 }

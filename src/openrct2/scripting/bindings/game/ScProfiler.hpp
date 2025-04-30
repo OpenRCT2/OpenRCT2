@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,8 +11,8 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../../profiling/Profiling.h"
-#    include "../../Duktape.hpp"
+    #include "../../../profiling/Profiling.h"
+    #include "../../Duktape.hpp"
 
 namespace OpenRCT2::Scripting
 {
@@ -40,7 +40,7 @@ namespace OpenRCT2::Scripting
                 obj.Set("callCount", f->GetCallCount());
                 obj.Set("minTime", f->GetMinTime());
                 obj.Set("maxTime", f->GetMaxTime());
-                obj.Set("totalTime", f->GetTotalTime());
+                obj.Set("totalTime", f->getTotalTime());
                 obj.Set("parents", GetFunctionIndexArray(data, f->GetParents()));
                 obj.Set("children", GetFunctionIndexArray(data, f->GetChildren()));
                 obj.Take().push();

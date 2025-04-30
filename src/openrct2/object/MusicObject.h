@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -53,6 +53,8 @@ private:
     uint32_t _previewImageId{};
 
 public:
+    static constexpr ObjectType kObjectType = ObjectType::music;
+
     StringId NameStringId{};
 
     void ReadJson(IReadObjectContext* context, json_t& root) override;

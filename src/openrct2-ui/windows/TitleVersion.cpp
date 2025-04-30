@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -8,11 +8,12 @@
  *****************************************************************************/
 
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Version.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -21,17 +22,8 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr uint8_t kTextOffset = 8;
 
-    static Widget _widgets[] = {
-        kWidgetsEnd,
-    };
-
     class TitleVersionWindow final : public Window
     {
-        void OnOpen() override
-        {
-            widgets = _widgets;
-        }
-
         void OnDraw(DrawPixelInfo& dpi) override
         {
             // Write name and version information
@@ -48,12 +40,13 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* TitleVersionOpen()
     {
-        auto* window = WindowBringToFrontByClass(WindowClass::TitleVersion);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::TitleVersion);
         if (window == nullptr)
         {
-            window = WindowCreate<TitleVersionWindow>(
+            window = windowMgr->Create<TitleVersionWindow>(
                 WindowClass::TitleVersion, ScreenCoordsXY(kTextOffset, ContextGetHeight() - 30), WW, WH,
-                WF_STICK_TO_BACK | WF_TRANSPARENT);
+                WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_TITLE_BAR);
         }
         return window;
     }

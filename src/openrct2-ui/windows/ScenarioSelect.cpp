@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,36 +11,43 @@
 
 #include <openrct2-ui/interface/Objective.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/Diagnostic.h>
+#include <openrct2/FileClassifier.h>
+#include <openrct2/ParkImporter.h>
+#include <openrct2/SpriteIds.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/FileStream.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/localisation/LocalisationService.h>
+#include <openrct2/park/ParkPreview.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
-#include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
+#include <openrct2/ui/WindowManager.h>
 #include <vector>
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_SELECT_SCENARIO;
-    static constexpr int32_t WW = 734;
-    static constexpr int32_t WH = 384;
-    static constexpr int32_t SidebarWidth = 180;
-    static constexpr int32_t TabWidth = 92;
-    static constexpr int32_t TabHeight = 34;
-    static constexpr int32_t TrueFontSize = 24;
-    static constexpr int32_t WidgetsStart = 17;
-    static constexpr int32_t TabsStart = WidgetsStart;
-    static constexpr int32_t InitialNumUnlockedScenarios = 5;
-    constexpr uint8_t NumTabs = 10;
+    static constexpr int32_t kInitialNumUnlockedScenarios = 5;
+    static constexpr uint8_t kNumTabs = 10;
+    static constexpr int32_t kPreviewPaneWidth = 179;
+    static constexpr int32_t kSidebarWidth = 180;
+    static constexpr int32_t kTabHeight = 34;
+    static constexpr int32_t kWidgetsStart = 17;
+    static constexpr int32_t kTabsStart = kWidgetsStart;
+    static constexpr int32_t kTabWidth = 92;
+    static constexpr int32_t kTrueFontSize = 24;
+    static constexpr int32_t kWindowHeight = 384;
+    static constexpr int32_t kWindowWidth = 734;
+    static constexpr StringId kWindowTitle = STR_SELECT_SCENARIO;
 
     enum class ListItemType : uint8_t
     {
@@ -92,21 +99,20 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget _scenarioSelectWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget({ TabWidth + 1, WidgetsStart }, { WW, 284 }, WindowWidgetType::Resize, WindowColour::Secondary), // tab content panel
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 0) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 01
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 1) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 02
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 2) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 03
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 3) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 04
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 4) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 05
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 5) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 06
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 6) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 07
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 7) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 08
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 8) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 09
-        MakeRemapWidget({ 3, TabsStart + (TabHeight * 8) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 10
-        MakeWidget({ TabWidth + 3, WidgetsStart + 1 }, { WW - SidebarWidth, 362 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), // level list
-        kWidgetsEnd,
+    static constexpr Widget _scenarioSelectWidgets[] = {
+        WINDOW_SHIM(kWindowTitle, kWindowWidth, kWindowHeight),
+        MakeWidget({ kTabWidth + 1, kWidgetsStart }, { kWindowWidth, 284 }, WindowWidgetType::Resize, WindowColour::Secondary), // tab content panel
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 0) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 01
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 1) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 02
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 2) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 03
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 3) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 04
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 4) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 05
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 5) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 06
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 6) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 07
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 7) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 08
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 8) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 09
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 8) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 10
+        MakeWidget({ kTabWidth + 3, kWidgetsStart + 1 }, { kWindowWidth - kSidebarWidth, 362 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), // level list
     };
     // clang-format on
 
@@ -117,6 +123,7 @@ namespace OpenRCT2::Ui::Windows
         std::function<void(std::string_view)> _callback;
         std::vector<ScenarioListItem> _listItems;
         const ScenarioIndexEntry* _highlightedScenario = nullptr;
+        ParkPreview _preview;
 
     public:
         ScenarioSelectWindow(std::function<void(std::string_view)> callback)
@@ -126,7 +133,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            widgets = _scenarioSelectWidgets;
+            SetWidgets(_scenarioSelectWidgets);
 
             // Load scenario list
             ScenarioRepositoryScan();
@@ -150,9 +157,12 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB10)
             {
                 selected_tab = widgetIndex - 4;
-                _highlightedScenario = nullptr;
                 Config::Get().interface.ScenarioselectLastTab = selected_tab;
                 Config::Save();
+
+                _highlightedScenario = nullptr;
+                _preview = {};
+
                 InitialiseListItems();
                 Invalidate();
                 OnResize();
@@ -162,10 +172,69 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        void LoadPreview()
+        {
+            _preview = {};
+
+            if (_highlightedScenario == nullptr)
+                return;
+
+            auto& path = _highlightedScenario->Path;
+            try
+            {
+                auto fs = FileStream(path, FileMode::open);
+
+                ClassifiedFileInfo info;
+                if (!TryClassifyFile(&fs, &info) || info.Type != FileType::park)
+                {
+                    // TODO: try loading a preview from a 'scenario meta' object file
+                    return;
+                }
+
+                auto& objectRepository = GetContext()->GetObjectRepository();
+                auto parkImporter = ParkImporter::CreateParkFile(objectRepository);
+                parkImporter->LoadFromStream(&fs, false, true, path.c_str());
+                _preview = parkImporter->GetParkPreview();
+            }
+            catch (const std::exception& e)
+            {
+                LOG_ERROR("Could not get preview for \"%s\" due to %s", path.c_str(), e.what());
+                _preview = {};
+                return;
+            }
+        }
+
+        ScreenCoordsXY DrawPreview(DrawPixelInfo& dpi, ScreenCoordsXY screenPos)
+        {
+            // Find minimap image to draw, if available
+            PreviewImage* image = nullptr;
+            for (auto& candidate : _preview.images)
+            {
+                if (candidate.type == PreviewImageType::miniMap)
+                {
+                    image = &candidate;
+                    break;
+                }
+            }
+
+            if (image == nullptr)
+                return screenPos;
+
+            // Draw frame
+            auto startFrameX = width - (kPreviewPaneWidth / 2) - (image->width / 2);
+            auto frameStartPos = ScreenCoordsXY(windowPos.x + startFrameX, screenPos.y + 15);
+            auto frameEndPos = frameStartPos + ScreenCoordsXY(image->width + 1, image->height + 1);
+            GfxFillRectInset(dpi, { frameStartPos, frameEndPos }, colours[1], INSET_RECT_F_60 | INSET_RECT_FLAG_FILL_MID_LIGHT);
+
+            // Draw image, if available
+            auto imagePos = frameStartPos + ScreenCoordsXY(1, 1);
+            drawPreviewImage(*image, dpi, imagePos);
+
+            return frameEndPos;
+        }
+
         void OnDraw(DrawPixelInfo& dpi) override
         {
-            const ScenarioIndexEntry* scenario;
-
             DrawWidgets(dpi);
 
             StringId format = STR_WINDOW_COLOUR_2_STRINGID;
@@ -185,13 +254,13 @@ namespace OpenRCT2::Ui::Windows
                     continue;
 
                 auto ft = Formatter();
-                if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
+                if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
                 {
                     ft.Add<StringId>(kScenarioOriginStringIds[i]);
                 }
                 else
                 { // old-style
-                    ft.Add<StringId>(ScenarioCategoryStringIds[i]);
+                    ft.Add<StringId>(kScenarioCategoryStringIds[i]);
                 }
 
                 auto stringCoords = windowPos + ScreenCoordsXY{ widget.midX(), widget.midY() - 3 };
@@ -199,7 +268,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Return if no scenario highlighted
-            scenario = _highlightedScenario;
+            auto* scenario = _highlightedScenario;
             if (scenario == nullptr)
             {
                 if (_showLockedInformation)
@@ -226,11 +295,12 @@ namespace OpenRCT2::Ui::Windows
             // Scenario path
             if (Config::Get().general.DebuggingTools)
             {
-                const auto shortPath = ShortenPath(scenario->Path, width - 6 - TabWidth, FontStyle::Medium);
+                const auto shortPath = ShortenPath(scenario->Path, width - 6 - kTabWidth, FontStyle::Medium);
 
                 auto ft = Formatter();
                 ft.Add<utf8*>(shortPath.c_str());
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ TabWidth + 3, height - 3 - 11 }, STR_STRING, ft, { colours[1] });
+                DrawTextBasic(
+                    dpi, windowPos + ScreenCoordsXY{ kTabWidth + 3, height - 3 - 11 }, STR_STRING, ft, { colours[1] });
             }
 
             // Scenario name
@@ -238,15 +308,18 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_SCENARIOLIST].right + 4, widgets[WIDX_TABCONTENT].top + 5 };
             auto ft = Formatter();
             ft.Add<StringId>(STR_STRING);
-            ft.Add<const char*>(scenario->Name);
+            ft.Add<const char*>(scenario->Name.c_str());
             DrawTextEllipsised(
                 dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
-            screenPos.y += 15;
+
+            // Draw preview
+            auto previewEnd = DrawPreview(dpi, screenPos);
+            screenPos.y = previewEnd.y + 15;
 
             // Scenario details
             ft = Formatter();
             ft.Add<StringId>(STR_STRING);
-            ft.Add<const char*>(scenario->Details);
+            ft.Add<const char*>(scenario->Details.c_str());
             screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_BLACK_STRING, ft) + 5;
 
             // Scenario objective
@@ -286,9 +359,8 @@ namespace OpenRCT2::Ui::Windows
 
             pressed_widgets |= 1LL << (selected_tab + WIDX_TAB1);
 
-            ResizeFrameWithPage();
             const int32_t bottomMargin = Config::Get().general.DebuggingTools ? 17 : 5;
-            widgets[WIDX_SCENARIOLIST].right = width - 179;
+            widgets[WIDX_SCENARIOLIST].right = width - kPreviewPaneWidth;
             widgets[WIDX_SCENARIOLIST].bottom = height - bottomMargin;
         }
 
@@ -310,7 +382,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            return { WW, y };
+            return { kWindowWidth, y };
         }
 
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
@@ -352,6 +424,7 @@ namespace OpenRCT2::Ui::Windows
             if (_highlightedScenario != selected)
             {
                 _highlightedScenario = selected;
+                LoadPreview();
                 Invalidate();
             }
             else if (_showLockedInformation != originalShowLockedInformation)
@@ -444,13 +517,11 @@ namespace OpenRCT2::Ui::Windows
                         bool isDisabled = listItem.scenario.is_locked;
 
                         // Draw scenario name
-                        char buffer[64];
-                        SafeStrCpy(buffer, scenario->Name, sizeof(buffer));
                         StringId format = isDisabled ? static_cast<StringId>(STR_STRINGID)
                                                      : (isHighlighted ? highlighted_format : unhighlighted_format);
                         auto ft = Formatter();
                         ft.Add<StringId>(STR_STRING);
-                        ft.Add<char*>(buffer);
+                        ft.Add<const char*>(scenario->Name.c_str());
                         auto colour = isDisabled ? colours[1].withFlag(ColourFlag::inset, true)
                                                  : ColourWithFlags{ COLOUR_BLACK };
                         auto darkness = isDisabled ? TextDarkness::Dark : TextDarkness::Regular;
@@ -538,8 +609,13 @@ namespace OpenRCT2::Ui::Windows
             uint32_t rct1CompletedScenarios = 0;
             std::optional<size_t> megaParkListItemIndex = std::nullopt;
 
-            int32_t numUnlocks = InitialNumUnlockedScenarios;
-            uint8_t currentHeading = UINT8_MAX;
+            int32_t numUnlocks = kInitialNumUnlockedScenarios;
+            union
+            {
+                uint8_t raw = UINT8_MAX;
+                ScenarioCategory category;
+                ScenarioSource source;
+            } currentHeading{};
             for (size_t i = 0; i < numScenarios; i++)
             {
                 const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
@@ -548,41 +624,41 @@ namespace OpenRCT2::Ui::Windows
                     continue;
 
                 // Category heading
-                StringId headingStringId = STR_NONE;
-                if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
+                StringId headingStringId = kStringIdNone;
+                if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
                 {
-                    if (selected_tab != static_cast<uint8_t>(ScenarioSource::Real) && currentHeading != scenario->Category)
+                    if (selected_tab != EnumValue(ScenarioSource::Real) && currentHeading.category != scenario->Category)
                     {
-                        currentHeading = scenario->Category;
-                        headingStringId = ScenarioCategoryStringIds[currentHeading];
+                        currentHeading.category = scenario->Category;
+                        headingStringId = kScenarioCategoryStringIds[currentHeading.raw];
                     }
                 }
                 else
                 {
-                    if (selected_tab <= SCENARIO_CATEGORY_EXPERT)
+                    if (selected_tab <= EnumValue(ScenarioCategory::expert))
                     {
-                        if (currentHeading != static_cast<uint8_t>(scenario->SourceGame))
+                        if (currentHeading.source != scenario->SourceGame)
                         {
-                            currentHeading = static_cast<uint8_t>(scenario->SourceGame);
-                            headingStringId = kScenarioOriginStringIds[currentHeading];
+                            currentHeading.source = scenario->SourceGame;
+                            headingStringId = kScenarioOriginStringIds[currentHeading.raw];
                         }
                     }
-                    else if (selected_tab == SCENARIO_CATEGORY_OTHER)
+                    else if (selected_tab == EnumValue(ScenarioCategory::other))
                     {
-                        int32_t category = scenario->Category;
-                        if (category <= SCENARIO_CATEGORY_REAL)
+                        auto category = scenario->Category;
+                        if (category <= ScenarioCategory::real)
                         {
-                            category = SCENARIO_CATEGORY_OTHER;
+                            category = ScenarioCategory::other;
                         }
-                        if (currentHeading != category)
+                        if (currentHeading.category != category)
                         {
-                            currentHeading = category;
-                            headingStringId = ScenarioCategoryStringIds[category];
+                            currentHeading.category = category;
+                            headingStringId = kScenarioCategoryStringIds[currentHeading.raw];
                         }
                     }
                 }
 
-                if (headingStringId != STR_NONE)
+                if (headingStringId != kStringIdNone)
                 {
                     ScenarioListItem headerItem;
                     headerItem.type = ListItemType::Heading;
@@ -655,7 +731,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsScenarioVisible(const ScenarioIndexEntry& scenario) const
         {
-            if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
+            if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
             {
                 if (static_cast<uint8_t>(scenario.SourceGame) != selected_tab)
                 {
@@ -664,12 +740,12 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                int32_t category = scenario.Category;
-                if (category > SCENARIO_CATEGORY_OTHER)
+                auto category = scenario.Category;
+                if (category > ScenarioCategory::other)
                 {
-                    category = SCENARIO_CATEGORY_OTHER;
+                    category = ScenarioCategory::other;
                 }
-                if (category != selected_tab)
+                if (EnumValue(category) != selected_tab)
                 {
                     return false;
                 }
@@ -679,7 +755,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsLockingEnabled() const
         {
-            if (Config::Get().general.ScenarioSelectMode != SCENARIO_SELECT_MODE_ORIGIN)
+            if (Config::Get().general.scenarioSelectMode != ScenarioSelectMode::origin)
                 return false;
             if (!Config::Get().general.ScenarioUnlockingEnabled)
                 return false;
@@ -696,18 +772,18 @@ namespace OpenRCT2::Ui::Windows
             for (size_t i = 0; i < numScenarios; i++)
             {
                 const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
-                if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
+                if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
                 {
                     showPages |= 1 << static_cast<uint8_t>(scenario->SourceGame);
                 }
                 else
                 {
-                    int32_t category = scenario->Category;
-                    if (category > SCENARIO_CATEGORY_OTHER)
+                    auto category = scenario->Category;
+                    if (category > ScenarioCategory::other)
                     {
-                        category = SCENARIO_CATEGORY_OTHER;
+                        category = ScenarioCategory::other;
                     }
-                    showPages |= 1 << category;
+                    showPages |= 1 << EnumValue(category);
                 }
             }
 
@@ -717,15 +793,15 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                int32_t firstPage = UtilBitScanForward(showPages);
+                int32_t firstPage = Numerics::bitScanForward(showPages);
                 if (firstPage != -1)
                 {
                     selected_tab = firstPage;
                 }
             }
 
-            int32_t y = TabsStart;
-            for (int32_t i = 0; i < NumTabs; i++)
+            int32_t y = widgets[WIDX_TAB1].top;
+            for (int32_t i = 0; i < kNumTabs; i++)
             {
                 auto& widget = widgets[i + WIDX_TAB1];
                 if (!(showPages & (1 << i)))
@@ -736,8 +812,8 @@ namespace OpenRCT2::Ui::Windows
 
                 widget.type = WindowWidgetType::Tab;
                 widget.top = y;
-                widget.bottom = y + (TabHeight - 1);
-                y += TabHeight;
+                widget.bottom = y + (kTabHeight - 1);
+                y += kTabHeight;
             }
         }
 
@@ -749,7 +825,7 @@ namespace OpenRCT2::Ui::Windows
         static int32_t GetScenarioListItemSize()
         {
             if (!LocalisationService_UseTrueTypeFont())
-                return TrueFontSize;
+                return kTrueFontSize;
 
             // Scenario title
             int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
@@ -761,14 +837,15 @@ namespace OpenRCT2::Ui::Windows
         }
     };
 
-    WindowBase* ScenarioselectOpen(scenarioselect_callback callback)
+    WindowBase* ScenarioselectOpen(ScenarioSelectCallback callback)
     {
         return ScenarioselectOpen([callback](std::string_view scenario) { callback(std::string(scenario).c_str()); });
     }
 
     WindowBase* ScenarioselectOpen(std::function<void(std::string_view)> callback)
     {
-        auto* window = static_cast<ScenarioSelectWindow*>(WindowBringToFrontByClass(WindowClass::ScenarioSelect));
+        auto* windowMgr = GetWindowManager();
+        auto* window = static_cast<ScenarioSelectWindow*>(windowMgr->BringToFrontByClass(WindowClass::ScenarioSelect));
         if (window != nullptr)
         {
             return window;
@@ -776,8 +853,10 @@ namespace OpenRCT2::Ui::Windows
 
         int32_t screenWidth = ContextGetWidth();
         int32_t screenHeight = ContextGetHeight();
-        ScreenCoordsXY screenPos = { (screenWidth - WW) / 2, std::max(kTopToolbarHeight + 1, (screenHeight - WH) / 2) };
-        window = WindowCreate<ScenarioSelectWindow>(WindowClass::ScenarioSelect, screenPos, WW, WH, 0, callback);
+        ScreenCoordsXY screenPos = { (screenWidth - kWindowWidth) / 2,
+                                     std::max(kTopToolbarHeight + 1, (screenHeight - kWindowHeight) / 2) };
+        window = windowMgr->Create<ScenarioSelectWindow>(
+            WindowClass::ScenarioSelect, screenPos, kWindowWidth, kWindowHeight, 0, callback);
         return window;
     }
 } // namespace OpenRCT2::Ui::Windows

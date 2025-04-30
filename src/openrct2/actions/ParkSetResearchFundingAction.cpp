@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,7 +15,6 @@
 #include "../core/MemoryStream.h"
 #include "../localisation/StringIds.h"
 #include "../management/Research.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 
@@ -57,11 +56,11 @@ GameActions::Result ParkSetResearchFundingAction::Query() const
 
 GameActions::Result ParkSetResearchFundingAction::Execute() const
 {
-    auto& gameState = GetGameState();
-    gameState.ResearchPriorities = _priorities;
-    gameState.ResearchFundingLevel = _fundingAmount;
+    auto& gameState = getGameState();
+    gameState.researchPriorities = _priorities;
+    gameState.researchFundingLevel = _fundingAmount;
 
-    auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = OpenRCT2::Ui::GetWindowManager();
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_RESEARCH));
     return GameActions::Result();
 }

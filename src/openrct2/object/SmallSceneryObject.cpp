@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,7 +34,7 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     _legacyType.animation_delay = stream->ReadValue<uint16_t>();
     _legacyType.animation_mask = stream->ReadValue<uint16_t>();
     _legacyType.num_frames = stream->ReadValue<uint16_t>();
-    _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
+    _legacyType.scenery_tab_id = kObjectEntryIndexNull;
 
     GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
@@ -75,7 +75,7 @@ void SmallSceneryObject::Load()
     _legacyType.name = LanguageAllocateObjectString(GetName());
     _legacyType.image = LoadImages();
 
-    _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
+    _legacyType.scenery_tab_id = kObjectEntryIndexNull;
     _legacyType.FrameOffsetCount = 0;
 
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))

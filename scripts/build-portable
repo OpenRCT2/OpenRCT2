@@ -22,6 +22,7 @@ if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
     7z a -r $destination \
         openrct2.exe openrct2.com data \
         ../contributors.md \
+        ../PRIVACY.md \
         ../licence.txt \
         ../distribution/changelog.txt \
         ../distribution/readme.txt \

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,8 +9,7 @@
 
 #include <mutex>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/Http.h>
@@ -25,6 +24,7 @@
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <sstream>
 #include <string>
@@ -208,7 +208,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto& entry = _entries[_currentDownloadIndex];
-            auto name = String::Trim(std::string(entry.GetName()));
+            auto name = String::trim(std::string(entry.GetName()));
             LOG_VERBOSE("Downloading object: [%s]:", name.c_str());
             _currentDownloadIndex++;
             UpdateProgress({ name, _lastDownloadSource, _currentDownloadIndex, _entries.size() });
@@ -279,7 +279,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t TYPE_COL_LEFT = 5 * WW_LESS_PADDING / 8 + 1;
 
     // clang-format off
-    static Widget window_object_load_error_widgets[] = {
+    static constexpr Widget window_object_load_error_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_NAME                         ), // 'Object name' header
         MakeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_SOURCE                       ), // 'Object source' header
@@ -290,7 +290,6 @@ namespace OpenRCT2::Ui::Windows
     #ifndef DISABLE_HTTP
         MakeWidget({            300, 377}, {146,  14}, WindowWidgetType::Button,      WindowColour::Primary, STR_DOWNLOAD_ALL,  STR_DOWNLOAD_ALL_TIP ), // Download all button
     #endif
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -304,25 +303,25 @@ namespace OpenRCT2::Ui::Windows
     {
         switch (type)
         {
-            case ObjectType::Ride:
+            case ObjectType::ride:
                 return STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS;
-            case ObjectType::SmallScenery:
+            case ObjectType::smallScenery:
                 return STR_OBJECT_SELECTION_SMALL_SCENERY;
-            case ObjectType::LargeScenery:
+            case ObjectType::largeScenery:
                 return STR_OBJECT_SELECTION_LARGE_SCENERY;
-            case ObjectType::Walls:
+            case ObjectType::walls:
                 return STR_OBJECT_SELECTION_WALLS_FENCES;
-            case ObjectType::Banners:
+            case ObjectType::banners:
                 return STR_OBJECT_SELECTION_PATH_SIGNS;
-            case ObjectType::Paths:
+            case ObjectType::paths:
                 return STR_OBJECT_SELECTION_FOOTPATHS;
-            case ObjectType::PathAdditions:
+            case ObjectType::pathAdditions:
                 return STR_OBJECT_SELECTION_PATH_EXTRAS;
-            case ObjectType::SceneryGroup:
+            case ObjectType::sceneryGroup:
                 return STR_OBJECT_SELECTION_SCENERY_GROUPS;
-            case ObjectType::ParkEntrance:
+            case ObjectType::parkEntrance:
                 return STR_OBJECT_SELECTION_PARK_ENTRANCE;
-            case ObjectType::Water:
+            case ObjectType::water:
                 return STR_OBJECT_SELECTION_WATER;
             default:
                 return STR_UNKNOWN_OBJECT_TYPE;
@@ -391,13 +390,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 selected_list_item = index;
             }
-            WidgetInvalidate(*this, WIDX_SCROLL);
+            InvalidateWidget(WIDX_SCROLL);
         }
 
     public:
         void OnOpen() override
         {
-            widgets = window_object_load_error_widgets;
+            SetWidgets(window_object_load_error_widgets);
 
             WindowInitScrollWidgets(*this);
             colours[0] = COLOUR_LIGHT_BLUE;
@@ -416,7 +415,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    WindowClose(*this);
+                    Close();
                     return;
                 case WIDX_COPY_CURRENT:
                     if (selected_list_item > -1 && selected_list_item < no_list_items)
@@ -444,7 +443,7 @@ namespace OpenRCT2::Ui::Windows
             if (!WidgetIsHighlighted(*this, WIDX_SCROLL))
             {
                 _highlightedIndex = -1;
-                WidgetInvalidate(*this, WIDX_SCROLL);
+                InvalidateWidget(WIDX_SCROLL);
             }
 
 #ifndef DISABLE_HTTP
@@ -487,7 +486,7 @@ namespace OpenRCT2::Ui::Windows
             else
                 _highlightedIndex = selectedItem;
 
-            WidgetInvalidate(*this, WIDX_SCROLL);
+            InvalidateWidget(WIDX_SCROLL);
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
@@ -541,7 +540,7 @@ namespace OpenRCT2::Ui::Windows
 
                 auto name = entry.GetName();
                 char buffer[256];
-                String::Set(buffer, sizeof(buffer), name.data(), name.size());
+                String::set(buffer, sizeof(buffer), name.data(), name.size());
                 DrawText(dpi, screenCoords, { COLOUR_DARK_GREEN }, buffer);
 
                 if (entry.Generation == ObjectGeneration::DAT)
@@ -555,11 +554,6 @@ namespace OpenRCT2::Ui::Windows
                 const auto type = GetStringFromObjectType(entry.GetType());
                 DrawTextBasic(dpi, { TYPE_COL_LEFT - 3, screenCoords.y }, type, {}, { COLOUR_DARK_GREEN });
             }
-        }
-
-        void OnResize() override
-        {
-            ResizeFrame();
         }
 
         void Initialise(utf8* path, const size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
@@ -577,10 +571,11 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
     {
         // Check if window is already open
-        auto* window = WindowBringToFrontByClass(WindowClass::ObjectLoadError);
+        auto* windowMgr = Ui::GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::ObjectLoadError);
         if (window == nullptr)
         {
-            window = WindowCreate<ObjectLoadErrorWindow>(WindowClass::ObjectLoadError, WW, WH, 0);
+            window = windowMgr->Create<ObjectLoadErrorWindow>(WindowClass::ObjectLoadError, WW, WH, 0);
         }
 
         static_cast<ObjectLoadErrorWindow*>(window)->Initialise(path, numMissingObjects, missingObjects);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,12 +14,10 @@
 #include <cstdint>
 #include <limits>
 
-constexpr auto WINDOW_SCENERY_TAB_SELECTION_UNDEFINED = std::numeric_limits<uint16_t>::max();
-
 struct ScenerySelection
 {
     uint8_t SceneryType{};
-    ObjectEntryIndex EntryIndex = OBJECT_ENTRY_INDEX_NULL;
+    ObjectEntryIndex EntryIndex = kObjectEntryIndexNull;
 
     inline bool operator==(const ScenerySelection& rhs) const
     {
@@ -33,6 +31,6 @@ struct ScenerySelection
 
     bool IsUndefined() const
     {
-        return EntryIndex == OBJECT_ENTRY_INDEX_NULL;
+        return EntryIndex == kObjectEntryIndexNull;
     }
 };

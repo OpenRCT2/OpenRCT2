@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,12 +11,12 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../Duktape.hpp"
-#    include "../../ScriptEngine.h"
-#    include "ScInstalledObject.hpp"
-#    include "ScObject.hpp"
+    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
+    #include "ScInstalledObject.hpp"
+    #include "ScObject.hpp"
 
-#    include <memory>
+    #include <memory>
 
 namespace OpenRCT2::Scripting
 {
@@ -26,6 +26,7 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx);
 
         std::vector<std::shared_ptr<ScInstalledObject>> installedObjects_get() const;
+        std::shared_ptr<ScInstalledObject> installedObject_get(const std::string& identifier) const;
 
         DukValue load(const DukValue& p1, const DukValue& p2);
         void unload(const DukValue& p1, const DukValue& p2);

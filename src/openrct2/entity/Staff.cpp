@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,18 +15,21 @@
 #include "../GameState.h"
 #include "../Input.h"
 #include "../actions/StaffSetOrdersAction.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
+#include "../core/EnumUtils.hpp"
+#include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
-#include "../localisation/Localisation.Date.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../object/ObjectEntryManager.h"
+#include "../object/ObjectLimits.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/PathAdditionEntry.h"
+#include "../object/PeepAnimationsObject.h"
 #include "../object/SceneryGroupEntry.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/TerrainSurfaceObject.h"
@@ -36,14 +39,17 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/Vehicle.h"
-#include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "../world/Scenery.h"
-#include "../world/Surface.h"
+#include "../world/tile_element/EntranceElement.h"
+#include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/Slope.h"
+#include "../world/tile_element/SmallSceneryElement.h"
+#include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TrackElement.h"
 #include "PatrolArea.h"
 #include "Peep.h"
 
@@ -52,26 +58,8 @@
 
 using namespace OpenRCT2;
 
-// clang-format off
-const StringId StaffCostumeNames[] = {
-        STR_STAFF_OPTION_COSTUME_PANDA,
-        STR_STAFF_OPTION_COSTUME_TIGER,
-        STR_STAFF_OPTION_COSTUME_ELEPHANT,
-        STR_STAFF_OPTION_COSTUME_ROMAN,
-        STR_STAFF_OPTION_COSTUME_GORILLA,
-        STR_STAFF_OPTION_COSTUME_SNOWMAN,
-        STR_STAFF_OPTION_COSTUME_KNIGHT,
-        STR_STAFF_OPTION_COSTUME_ASTRONAUT,
-        STR_STAFF_OPTION_COSTUME_BANDIT,
-        STR_STAFF_OPTION_COSTUME_SHERIFF,
-        STR_STAFF_OPTION_COSTUME_PIRATE,
-};
-// clang-format on
-
-// Maximum manhattan distance that litter can be for a handyman to seek to it
-const uint16_t MAX_LITTER_DISTANCE = 3 * kCoordsXYStep;
-
-template<> bool EntityBase::Is<Staff>() const
+template<>
+bool EntityBase::Is<Staff>() const
 {
     return Type == EntityType::Staff;
 }
@@ -139,7 +127,7 @@ bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) cons
     uint8_t total = 0;
     uint8_t pathcount = 0;
     uint8_t widecount = 0;
-    for (Direction adjac_dir : ALL_DIRECTIONS)
+    for (Direction adjac_dir : kAllDirections)
     {
         auto adjacPos = staffPos + CoordsXYZ{ CoordsDirectionDelta[adjac_dir].x, CoordsDirectionDelta[adjac_dir].y, 0 };
 
@@ -183,7 +171,8 @@ bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) cons
             }
 
             /* test_element is a path */
-            if (!PathFinding::IsValidPathZAndDirection(test_element, adjacPos.z / kCoordsZStep, adjac_dir))
+            const auto* adjacentPathElement = test_element->AsPath();
+            if (!FootpathIsZAndDirectionValid(*adjacentPathElement, adjacPos.z / kCoordsZStep, adjac_dir))
                 continue;
 
             /* test_element is a connected path */
@@ -193,7 +182,7 @@ bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) cons
                 pathcount++;
             }
 
-            if (test_element->AsPath()->IsWide())
+            if (adjacentPathElement->IsWide())
             {
                 if (!widefound)
                 {
@@ -327,33 +316,45 @@ bool Staff::HasPatrolArea() const
  *
  *  rct2: 0x006BFBE8
  *
- * Returns INVALID_DIRECTION when no nearby litter or unpathable litter
+ * Returns kInvalidDirection when no nearby litter or unpathable litter
  */
 Direction Staff::HandymanDirectionToNearestLitter() const
 {
-    uint16_t nearestLitterDist = 0xFFFF;
-    Litter* nearestLitter = nullptr;
-    for (auto litter : EntityList<Litter>())
-    {
-        uint16_t distance = abs(litter->x - x) + abs(litter->y - y) + abs(litter->z - z) * 4;
+    // Maximum manhattan distance that litter can be for a handyman to seek to it
+    constexpr auto kTileRadius = 3;
+    constexpr auto kLookupRadius = kCoordsXYStep * kTileRadius;
 
-        if (distance < nearestLitterDist)
+    auto nearestLitterDist = std::numeric_limits<int32_t>::max();
+    Litter* nearestLitter = nullptr;
+
+    for (int32_t tileX = x - kLookupRadius; tileX <= x + kLookupRadius; tileX += kCoordsXYStep)
+    {
+        for (int32_t tileY = y - kLookupRadius; tileY <= y + kLookupRadius; tileY += kCoordsXYStep)
         {
-            nearestLitterDist = distance;
-            nearestLitter = litter;
+            for (auto* litter : EntityTileList<Litter>({ tileX, tileY }))
+            {
+                // Calculate Manhattan distance with z-weighting
+                uint16_t distance = std::abs(litter->x - x) + std::abs(litter->y - y) + std::abs(litter->z - z) * 4;
+
+                if (distance < nearestLitterDist)
+                {
+                    nearestLitterDist = distance;
+                    nearestLitter = litter;
+                }
+            }
         }
     }
 
-    if (nearestLitterDist > MAX_LITTER_DISTANCE)
+    if (nearestLitterDist > kLookupRadius || nearestLitter == nullptr)
     {
-        return INVALID_DIRECTION;
+        return kInvalidDirection;
     }
 
     auto litterTile = CoordsXY{ nearestLitter->x, nearestLitter->y }.ToTileStart();
 
     if (!IsLocationInPatrol(litterTile))
     {
-        return INVALID_DIRECTION;
+        return kInvalidDirection;
     }
 
     Direction nextDirection = DirectionFromTo(CoordsXY(x, y), litterTile.ToTileCentre());
@@ -364,14 +365,14 @@ Direction Staff::HandymanDirectionToNearestLitter() const
 
     TileElement* tileElement = MapGetFirstElementAt(nextTile);
     if (tileElement == nullptr)
-        return INVALID_DIRECTION;
+        return kInvalidDirection;
     do
     {
         if (tileElement->BaseHeight != nextZ)
             continue;
         if (tileElement->GetType() == TileElementType::Entrance || tileElement->GetType() == TileElementType::Track)
         {
-            return INVALID_DIRECTION;
+            return kInvalidDirection;
         }
     } while (!(tileElement++)->IsLastForTile());
 
@@ -379,7 +380,7 @@ Direction Staff::HandymanDirectionToNearestLitter() const
 
     tileElement = MapGetFirstElementAt(nextTile);
     if (tileElement == nullptr)
-        return INVALID_DIRECTION;
+        return kInvalidDirection;
 
     do
     {
@@ -387,7 +388,7 @@ Direction Staff::HandymanDirectionToNearestLitter() const
             continue;
         if (tileElement->GetType() == TileElementType::Entrance || tileElement->GetType() == TileElementType::Track)
         {
-            return INVALID_DIRECTION;
+            return kInvalidDirection;
         }
     } while (!(tileElement++)->IsLastForTile());
 
@@ -404,18 +405,18 @@ uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
     {
         auto surfaceElement = MapGetSurfaceElementAt(NextLoc);
         if (surfaceElement == nullptr)
-            return INVALID_DIRECTION;
+            return kInvalidDirection;
 
         if (NextLoc.z != surfaceElement->GetBaseZ())
-            return INVALID_DIRECTION;
+            return kInvalidDirection;
 
         if (GetNextIsSloped())
         {
-            if (surfaceElement->GetSlope() != PathSlopeToLandSlope[GetNextDirection()])
-                return INVALID_DIRECTION;
+            if (surfaceElement->GetSlope() != kPathSlopeToLandSlope[GetNextDirection()])
+                return kInvalidDirection;
         }
         else if (surfaceElement->GetSlope() != kTileSlopeFlat)
-            return INVALID_DIRECTION;
+            return kInvalidDirection;
     }
 
     uint8_t chosenDirection = ScenarioRand() & 0x3;
@@ -445,7 +446,7 @@ uint8_t Staff::HandymanDirectionToUncutGrass(uint8_t valid_directions) const
             }
         }
     }
-    return INVALID_DIRECTION;
+    return kInvalidDirection;
 }
 
 /**
@@ -483,21 +484,21 @@ bool Staff::DoHandymanPathFinding()
 {
     StaffMowingTimeout++;
 
-    Direction litterDirection = INVALID_DIRECTION;
+    Direction litterDirection = kInvalidDirection;
     uint8_t validDirections = GetValidPatrolDirections(NextLoc);
 
-    if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((GetGameState().CurrentTicks + Id.ToUnderlying()) & 0xFFF) > 110)
+    if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((getGameState().currentTicks + Id.ToUnderlying()) & 0xFFF) > 110)
     {
         litterDirection = HandymanDirectionToNearestLitter();
     }
 
-    Direction newDirection = INVALID_DIRECTION;
-    if (litterDirection == INVALID_DIRECTION && (StaffOrders & STAFF_ORDERS_MOWING) && StaffMowingTimeout >= 12)
+    Direction newDirection = kInvalidDirection;
+    if (litterDirection == kInvalidDirection && (StaffOrders & STAFF_ORDERS_MOWING) && StaffMowingTimeout >= 12)
     {
         newDirection = HandymanDirectionToUncutGrass(validDirections);
     }
 
-    if (newDirection == INVALID_DIRECTION)
+    if (newDirection == kInvalidDirection)
     {
         if (GetNextIsSurface())
         {
@@ -518,7 +519,7 @@ bool Staff::DoHandymanPathFinding()
             else
             {
                 bool chooseRandom = true;
-                if (litterDirection != INVALID_DIRECTION && pathDirections & (1 << litterDirection))
+                if (litterDirection != kInvalidDirection && pathDirections & (1 << litterDirection))
                 {
                     /// Check whether path is a queue path and connected to a ride
                     bool connectedQueue = (pathElement->IsQueue() && !pathElement->GetRideIndex().IsNull());
@@ -593,10 +594,10 @@ Direction Staff::DirectionSurface(Direction initialDirection) const
 
         direction &= 3;
 
-        if (WallInTheWay({ NextLoc, NextLoc.z, NextLoc.z + PEEP_CLEARANCE_HEIGHT }, direction))
+        if (WallInTheWay({ NextLoc, NextLoc.z, NextLoc.z + kPeepClearanceHeight }, direction))
             continue;
 
-        if (WallInTheWay({ NextLoc, NextLoc.z, NextLoc.z + PEEP_CLEARANCE_HEIGHT }, DirectionReverse(direction)))
+        if (WallInTheWay({ NextLoc, NextLoc.z, NextLoc.z + kPeepClearanceHeight }, DirectionReverse(direction)))
             continue;
 
         CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[direction];
@@ -620,10 +621,10 @@ Direction Staff::MechanicDirectionSurface() const
     auto ride = GetRide(CurrentRide);
     if (ride != nullptr && (State == PeepState::Answering || State == PeepState::HeadingToInspection) && (ScenarioRand() & 1))
     {
-        auto location = ride->GetStation(CurrentRideStation).Exit;
+        auto location = ride->getStation(CurrentRideStation).Exit;
         if (location.IsNull())
         {
-            location = ride->GetStation(CurrentRideStation).Entrance;
+            location = ride->getStation(CurrentRideStation).Entrance;
         }
 
         direction = DirectionFromTo(CoordsXY(x, y), location.ToCoordsXY());
@@ -677,7 +678,7 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
         pathDirections |= (1 << DirectionReverse(PeepDirection));
     }
 
-    Direction direction = UtilBitScanForward(pathDirections);
+    Direction direction = Numerics::bitScanForward(pathDirections);
     pathDirections &= ~(1 << direction);
     if (pathDirections == 0)
     {
@@ -701,10 +702,10 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
     {
         /* Find location of the exit for the target ride station
          * or if the ride has no exit, the entrance. */
-        TileCoordsXYZD location = ride->GetStation(CurrentRideStation).Exit;
+        TileCoordsXYZD location = ride->getStation(CurrentRideStation).Exit;
         if (location.IsNull())
         {
-            location = ride->GetStation(CurrentRideStation).Entrance;
+            location = ride->getStation(CurrentRideStation).Entrance;
 
             // If no entrance is present either. This is an incorrect state.
             if (location.IsNull())
@@ -713,12 +714,10 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
             }
         }
 
-        gPeepPathFindIgnoreForeignQueues = false;
-        gPeepPathFindQueueRideIndex = RideId::GetNull();
-
         const auto goalPos = TileCoordsXYZ{ location };
-        Direction pathfindDirection = PathFinding::ChooseDirection(TileCoordsXYZ{ NextLoc }, goalPos, *this);
-        if (pathfindDirection == INVALID_DIRECTION)
+        Direction pathfindDirection = PathFinding::ChooseDirection(
+            TileCoordsXYZ{ NextLoc }, goalPos, *this, false, RideId::GetNull());
+        if (pathfindDirection == kInvalidDirection)
         {
             /* Heuristic search failed for all directions.
              * Reset the PathfindGoal - this means that the PathfindHistory
@@ -742,7 +741,7 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
 bool Staff::DoMechanicPathFinding()
 {
     uint8_t validDirections = GetValidPatrolDirections(NextLoc);
-    Direction newDirection = INVALID_DIRECTION;
+    Direction newDirection = kInvalidDirection;
     if (GetNextIsSurface())
     {
         newDirection = MechanicDirectionSurface();
@@ -797,7 +796,7 @@ Direction Staff::DirectionPath(uint8_t validDirections, PathElement* pathElement
         pathDirections |= (1u << DirectionReverse(PeepDirection));
     }
 
-    Direction direction = UtilBitScanForward(pathDirections);
+    Direction direction = Numerics::bitScanForward(pathDirections);
     // If this is the only direction they can go, then go
     if (pathDirections == (1u << direction))
     {
@@ -823,7 +822,7 @@ bool Staff::DoMiscPathFinding()
 {
     uint8_t validDirections = GetValidPatrolDirections(NextLoc);
 
-    Direction newDirection = INVALID_DIRECTION;
+    Direction newDirection = kInvalidDirection;
     if (GetNextIsSurface())
     {
         newDirection = DirectionSurface(ScenarioRand() & 3);
@@ -876,32 +875,42 @@ bool Staff::IsMechanicHeadingToFixRideBlockingPath()
  */
 void Staff::EntertainerUpdateNearbyPeeps() const
 {
-    for (auto guest : EntityList<Guest>())
+    // Iterate over tiles within a 3-tile radius (96 units)
+    constexpr auto kTileRadius = 3;
+    constexpr auto kLookupRadius = kCoordsXYStep * kTileRadius;
+
+    for (int32_t tileX = x - kLookupRadius; tileX <= x + kLookupRadius; tileX += kCoordsXYStep)
     {
-        if (guest->x == kLocationNull)
-            continue;
-
-        int16_t z_dist = abs(z - guest->z);
-        if (z_dist > 48)
-            continue;
-
-        int16_t x_dist = abs(x - guest->x);
-        int16_t y_dist = abs(y - guest->y);
-
-        if (x_dist > 96)
-            continue;
-
-        if (y_dist > 96)
-            continue;
-
-        if (guest->State == PeepState::Walking)
+        for (int32_t tileY = y - kLookupRadius; tileY <= y + kLookupRadius; tileY += kCoordsXYStep)
         {
-            guest->HappinessTarget = std::min(guest->HappinessTarget + 4, kPeepMaxHappiness);
-        }
-        else if (guest->State == PeepState::Queuing)
-        {
-            guest->TimeInQueue = std::max(0, guest->TimeInQueue - 200);
-            guest->HappinessTarget = std::min(guest->HappinessTarget + 3, kPeepMaxHappiness);
+            for (auto* guest : EntityTileList<Guest>({ tileX, tileY }))
+            {
+                if (guest->x == kLocationNull)
+                    continue;
+
+                int16_t z_dist = std::abs(z - guest->z);
+                if (z_dist > 48)
+                    continue;
+
+                int16_t x_dist = std::abs(x - guest->x);
+                int16_t y_dist = std::abs(y - guest->y);
+
+                if (x_dist > kLookupRadius)
+                    continue;
+
+                if (y_dist > kLookupRadius)
+                    continue;
+
+                if (guest->State == PeepState::Walking)
+                {
+                    guest->HappinessTarget = std::min(guest->HappinessTarget + 4, kPeepMaxHappiness);
+                }
+                else if (guest->State == PeepState::Queuing)
+                {
+                    guest->TimeInQueue = std::max(0, guest->TimeInQueue - 200);
+                    guest->HappinessTarget = std::min(guest->HappinessTarget + 3, kPeepMaxHappiness);
+                }
+            }
         }
     }
 }
@@ -915,10 +924,10 @@ bool Staff::DoEntertainerPathFinding()
     if (((ScenarioRand() & 0xFFFF) <= 0x4000) && IsActionInterruptable())
     {
         Action = (ScenarioRand() & 1) ? PeepActionType::Wave2 : PeepActionType::Joy;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
 
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
         EntertainerUpdateNearbyPeeps();
     }
 
@@ -958,24 +967,17 @@ int32_t Staff::GetHireDate() const
     return HireDate;
 }
 
-PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType)
-{
-    uint8_t value = static_cast<uint8_t>(entertainerType);
-    PeepSpriteType newSpriteType = static_cast<PeepSpriteType>(value + EnumValue(PeepSpriteType::EntertainerPanda));
-    return newSpriteType;
-}
-
 colour_t StaffGetColour(StaffType staffType)
 {
-    const auto& gameState = GetGameState();
+    const auto& gameState = getGameState();
     switch (staffType)
     {
         case StaffType::Handyman:
-            return gameState.StaffHandymanColour;
+            return gameState.staffHandymanColour;
         case StaffType::Mechanic:
-            return gameState.StaffMechanicColour;
+            return gameState.staffMechanicColour;
         case StaffType::Security:
-            return gameState.StaffSecurityColour;
+            return gameState.staffSecurityColour;
         case StaffType::Entertainer:
             return 0;
         default:
@@ -986,17 +988,17 @@ colour_t StaffGetColour(StaffType staffType)
 
 GameActions::Result StaffSetColour(StaffType staffType, colour_t value)
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     switch (staffType)
     {
         case StaffType::Handyman:
-            gameState.StaffHandymanColour = value;
+            gameState.staffHandymanColour = value;
             break;
         case StaffType::Mechanic:
-            gameState.StaffMechanicColour = value;
+            gameState.staffMechanicColour = value;
             break;
         case StaffType::Security:
-            gameState.StaffSecurityColour = value;
+            gameState.staffSecurityColour = value;
             break;
         default:
             return GameActions::Result(
@@ -1005,44 +1007,8 @@ GameActions::Result StaffSetColour(StaffType staffType, colour_t value)
     return GameActions::Result();
 }
 
-uint32_t StaffGetAvailableEntertainerCostumes()
-{
-    uint32_t entertainerCostumes = 0;
-    for (int32_t i = 0; i < kMaxSceneryGroupObjects; i++)
-    {
-        if (SceneryGroupIsInvented(i))
-        {
-            const auto sgEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
-            entertainerCostumes |= sgEntry->entertainer_costumes;
-        }
-    }
-
-    // For some reason the flags are +4 from the actual costume IDs
-    entertainerCostumes >>= 4;
-
-    // Fix #6593: force enable the default costumes, which normally get enabled through the default scenery groups.
-    entertainerCostumes |= (1 << static_cast<uint8_t>(EntertainerCostume::Panda))
-        | (1 << static_cast<uint8_t>(EntertainerCostume::Tiger)) | (1 << static_cast<uint8_t>(EntertainerCostume::Elephant));
-
-    return entertainerCostumes;
-}
-
-int32_t StaffGetAvailableEntertainerCostumeList(EntertainerCostume* costumeList)
-{
-    uint32_t availableCostumes = StaffGetAvailableEntertainerCostumes();
-    int32_t numCostumes = 0;
-    for (uint8_t i = 0; i < static_cast<uint8_t>(EntertainerCostume::Count); i++)
-    {
-        if (availableCostumes & (1 << i))
-        {
-            costumeList[numCostumes++] = static_cast<EntertainerCostume>(i);
-        }
-    }
-    return numCostumes;
-}
-
 /** rct2: 0x009929C8 */
-static constexpr CoordsXY _MowingWaypoints[] = {
+static constexpr CoordsXY kMowingWaypoints[] = {
     { 28, 28 }, { 28, 4 }, { 20, 4 }, { 20, 28 }, { 12, 28 }, { 12, 4 }, { 4, 4 }, { 4, 28 },
 };
 
@@ -1071,13 +1037,13 @@ void Staff::UpdateMowing()
             SwitchToSpecialSprite(2);
         }
 
-        if (Var37 == std::size(_MowingWaypoints))
+        if (Var37 == std::size(kMowingWaypoints))
         {
             StateReset();
             return;
         }
 
-        auto destination = _MowingWaypoints[Var37] + NextLoc;
+        auto destination = kMowingWaypoints[Var37] + NextLoc;
         SetDestination(destination);
 
         if (Var37 != 7)
@@ -1089,7 +1055,7 @@ void Staff::UpdateMowing()
             surfaceElement->SetGrassLength(GRASS_LENGTH_MOWED);
             MapInvalidateTileZoom0({ NextLoc, surfaceElement->GetBaseZ(), surfaceElement->GetBaseZ() + 16 });
         }
-        StaffLawnsMown++;
+        StaffLawnsMown = AddClamp(StaffLawnsMown, 1u);
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
 }
@@ -1106,16 +1072,15 @@ void Staff::UpdateWatering()
         if (!CheckForPath())
             return;
 
-        uint8_t pathingResult;
-        PerformNextAction(pathingResult);
+        const auto [pathingResult, _] = PerformNextAction();
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
         Orientation = (Var37 & 3) << 3;
         Action = PeepActionType::StaffWatering;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
-        UpdateCurrentActionSpriteType();
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
+        UpdateCurrentAnimationType();
 
         SubState = 1;
     }
@@ -1149,7 +1114,7 @@ void Staff::UpdateWatering()
 
             tile_element->AsSmallScenery()->SetAge(0);
             MapInvalidateTileZoom0({ actionLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
-            StaffGardensWatered++;
+            StaffGardensWatered = AddClamp(StaffGardensWatered, 1u);
             WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
         } while (!(tile_element++)->IsLastForTile());
 
@@ -1170,16 +1135,15 @@ void Staff::UpdateEmptyingBin()
         if (!CheckForPath())
             return;
 
-        uint8_t pathingResult;
-        PerformNextAction(pathingResult);
+        const auto [pathingResult, _] = PerformNextAction();
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
         Orientation = (Var37 & 3) << 3;
         Action = PeepActionType::StaffEmptyBin;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
-        UpdateCurrentActionSpriteType();
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
+        UpdateCurrentAnimationType();
 
         SubState = 1;
     }
@@ -1194,7 +1158,7 @@ void Staff::UpdateEmptyingBin()
         UpdateAction();
         Invalidate();
 
-        if (ActionFrame != 11)
+        if (AnimationFrameNum != 11)
             return;
 
         TileElement* tile_element = MapGetFirstElementAt(NextLoc);
@@ -1233,7 +1197,7 @@ void Staff::UpdateEmptyingBin()
         tile_element->AsPath()->SetAdditionStatus(additionStatus);
 
         MapInvalidateTileZoom0({ NextLoc, tile_element->GetBaseZ(), tile_element->GetClearanceZ() });
-        StaffBinsEmptied++;
+        StaffBinsEmptied = AddClamp(StaffBinsEmptied, 1u);
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
 }
@@ -1248,11 +1212,11 @@ void Staff::UpdateSweeping()
     if (!CheckForPath())
         return;
 
-    if (Action == PeepActionType::StaffSweep && ActionFrame == 8)
+    if (Action == PeepActionType::StaffSweep && AnimationFrameNum == 8)
     {
         // Remove sick at this location
         Litter::RemoveAt(GetLocation());
-        StaffLitterSwept++;
+        StaffLitterSwept = AddClamp(StaffLitterSwept, 1u);
         WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
     }
     if (auto loc = UpdateAction(); loc.has_value())
@@ -1266,9 +1230,9 @@ void Staff::UpdateSweeping()
     if (Var37 != 2)
     {
         Action = PeepActionType::StaffSweep;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
-        UpdateCurrentActionSpriteType();
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
+        UpdateCurrentAnimationType();
         return;
     }
     StateReset();
@@ -1287,14 +1251,14 @@ void Staff::UpdateHeadingToInspect()
         return;
     }
 
-    if (ride->GetStation(CurrentRideStation).Exit.IsNull())
+    if (ride->getStation(CurrentRideStation).Exit.IsNull())
     {
-        ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
+        ride->lifecycleFlags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
         SetState(PeepState::Falling);
         return;
     }
 
-    if (ride->mechanic_status != RIDE_MECHANIC_STATUS_HEADING || !(ride->lifecycle_flags & RIDE_LIFECYCLE_DUE_INSPECTION))
+    if (ride->mechanicStatus != RIDE_MECHANIC_STATUS_HEADING || !(ride->lifecycleFlags & RIDE_LIFECYCLE_DUE_INSPECTION))
     {
         SetState(PeepState::Falling);
         return;
@@ -1312,9 +1276,9 @@ void Staff::UpdateHeadingToInspect()
         MechanicTimeSinceCall++;
         if (MechanicTimeSinceCall > 2500)
         {
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_DUE_INSPECTION && ride->mechanic_status == RIDE_MECHANIC_STATUS_HEADING)
+            if (ride->lifecycleFlags & RIDE_LIFECYCLE_DUE_INSPECTION && ride->mechanicStatus == RIDE_MECHANIC_STATUS_HEADING)
             {
-                ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
+                ride->mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
             }
             SetState(PeepState::Falling);
             return;
@@ -1326,10 +1290,7 @@ void Staff::UpdateHeadingToInspect()
         if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
             return;
 
-        uint8_t pathingResult;
-        TileElement* rideEntranceExitElement;
-        PerformNextAction(pathingResult, rideEntranceExitElement);
-
+        const auto [pathingResult, rideEntranceExitElement] = PerformNextAction();
         if (!(pathingResult & PATHING_RIDE_EXIT) && !(pathingResult & PATHING_RIDE_ENTRANCE))
         {
             return;
@@ -1344,7 +1305,7 @@ void Staff::UpdateHeadingToInspect()
 
         if (pathingResult & PATHING_RIDE_ENTRANCE)
         {
-            if (!ride->GetStation(exitIndex).Exit.IsNull())
+            if (!ride->getStation(exitIndex).Exit.IsNull())
             {
                 return;
             }
@@ -1364,10 +1325,10 @@ void Staff::UpdateHeadingToInspect()
     int16_t delta_y = abs(GetLocation().y - GetDestination().y);
     if (auto loc = UpdateAction(); loc.has_value())
     {
-        auto newZ = ride->GetStation(CurrentRideStation).GetBaseZ();
+        auto newZ = ride->getStation(CurrentRideStation).GetBaseZ();
         if (delta_y < 20)
         {
-            newZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
+            newZ += ride->getRideTypeDescriptor().Heights.PlatformHeight;
         }
 
         MoveTo({ loc.value(), newZ });
@@ -1385,7 +1346,7 @@ void Staff::UpdateHeadingToInspect()
 void Staff::UpdateAnswering()
 {
     auto ride = GetRide(CurrentRide);
-    if (ride == nullptr || ride->mechanic_status != RIDE_MECHANIC_STATUS_HEADING)
+    if (ride == nullptr || ride->mechanicStatus != RIDE_MECHANIC_STATUS_HEADING)
     {
         SetState(PeepState::Falling);
         return;
@@ -1394,10 +1355,10 @@ void Staff::UpdateAnswering()
     if (SubState == 0)
     {
         Action = PeepActionType::StaffAnswerCall;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
 
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
 
         SubState = 1;
         PeepWindowStateUpdate(this);
@@ -1422,8 +1383,8 @@ void Staff::UpdateAnswering()
         MechanicTimeSinceCall++;
         if (MechanicTimeSinceCall > 2500)
         {
-            ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
-            ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+            ride->mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
+            ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
             SetState(PeepState::Falling);
             return;
         }
@@ -1434,10 +1395,7 @@ void Staff::UpdateAnswering()
         if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
             return;
 
-        uint8_t pathingResult;
-        TileElement* rideEntranceExitElement;
-        PerformNextAction(pathingResult, rideEntranceExitElement);
-
+        const auto [pathingResult, rideEntranceExitElement] = PerformNextAction();
         if (!(pathingResult & PATHING_RIDE_EXIT) && !(pathingResult & PATHING_RIDE_ENTRANCE))
         {
             return;
@@ -1452,7 +1410,7 @@ void Staff::UpdateAnswering()
 
         if (pathingResult & PATHING_RIDE_ENTRANCE)
         {
-            if (!ride->GetStation(exitIndex).Exit.IsNull())
+            if (!ride->getStation(exitIndex).Exit.IsNull())
             {
                 return;
             }
@@ -1474,10 +1432,10 @@ void Staff::UpdateAnswering()
     int16_t delta_y = abs(y - GetDestination().y);
     if (auto loc = UpdateAction(); loc.has_value())
     {
-        auto newZ = ride->GetStation(CurrentRideStation).GetBaseZ();
+        auto newZ = ride->getStation(CurrentRideStation).GetBaseZ();
         if (delta_y < 20)
         {
-            newZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
+            newZ += ride->getRideTypeDescriptor().Heights.PlatformHeight;
         }
 
         MoveTo({ loc.value(), newZ });
@@ -1489,7 +1447,7 @@ void Staff::UpdateAnswering()
 }
 
 /** rct2: 0x00992A5C */
-static constexpr CoordsXY _WateringUseOffsets[] = {
+static constexpr CoordsXY kWateringUseOffsets[] = {
     { 3, 16 }, { 16, 29 }, { 29, 16 }, { 16, 3 }, { 3, 29 }, { 29, 29 }, { 29, 3 }, { 3, 3 },
 };
 
@@ -1555,7 +1513,7 @@ bool Staff::UpdatePatrollingFindWatering()
             Var37 = chosen_position;
 
             SubState = 0;
-            auto destination = _WateringUseOffsets[chosen_position] + GetLocation().ToTileStart();
+            auto destination = kWateringUseOffsets[chosen_position] + GetLocation().ToTileStart();
             SetDestination(destination, 3);
 
             return true;
@@ -1652,7 +1610,7 @@ bool Staff::UpdatePatrollingFindGrass()
             Var37 = 0;
             // Original code used .y for both x and y. Changed to .x to make more sense (both x and y are 28)
 
-            auto destination = _MowingWaypoints[0] + NextLoc;
+            auto destination = kMowingWaypoints[0] + NextLoc;
             SetDestination(destination, 3);
             return true;
         }
@@ -1691,27 +1649,30 @@ void Staff::Tick128UpdateStaff()
     if (AssignedStaffType != StaffType::Security)
         return;
 
-    PeepSpriteType newSpriteType = PeepSpriteType::SecurityAlt;
+    PeepAnimationGroup newAnimationGroup = PeepAnimationGroup::Alternate;
     if (State != PeepState::Patrolling)
-        newSpriteType = PeepSpriteType::Security;
+        newAnimationGroup = PeepAnimationGroup::Normal;
 
-    if (SpriteType == newSpriteType)
+    if (AnimationGroup == newAnimationGroup)
         return;
 
-    SpriteType = newSpriteType;
-    ActionSpriteImageOffset = 0;
-    WalkingFrameNum = 0;
+    AnimationGroup = newAnimationGroup;
+    AnimationImageIdOffset = 0;
+    WalkingAnimationFrameNum = 0;
     if (Action < PeepActionType::Idle)
         Action = PeepActionType::Walking;
 
+    auto& objManager = GetContext()->GetObjectManager();
+    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
+
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-    if (gSpriteTypeToSlowWalkMap[EnumValue(newSpriteType)])
+    if (animObj->IsSlowWalking(newAnimationGroup))
     {
         PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }
 
-    ActionSpriteType = PeepActionSpriteType::Invalid;
-    UpdateCurrentActionSpriteType();
+    AnimationType = PeepAnimationType::Invalid;
+    UpdateCurrentAnimationType();
 }
 
 bool Staff::IsMechanic() const
@@ -1769,8 +1730,7 @@ void Staff::UpdatePatrolling()
     if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
         return;
 
-    uint8_t pathingResult;
-    PerformNextAction(pathingResult);
+    const auto [pathingResult, _] = PerformNextAction();
     if (!(pathingResult & PATHING_DESTINATION_REACHED))
         return;
 
@@ -1826,7 +1786,7 @@ enum
 
 /**
  * FixingSubstatesForBreakdown[] defines the applicable peep sub_states for
- * mechanics fixing a ride. The array is indexed by breakdown_reason:
+ * mechanics fixing a ride. The array is indexed by breakdownReason:
  * - indexes 0-7 are the 8 breakdown reasons (see BREAKDOWN_* in Ride.h)
  *   when fixing a broken down ride;
  * - index 8 is for inspecting a ride.
@@ -1923,7 +1883,7 @@ void Staff::UpdateFixing(int32_t steps)
     bool firstRun = true;
 
     if ((State == PeepState::Inspecting)
-        && (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
+        && (ride->lifecycleFlags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
     {
         // Ride has broken down since Mechanic was called to inspect it.
         // Mechanic identifies the breakdown and switches to fixing it.
@@ -2003,7 +1963,7 @@ void Staff::UpdateFixing(int32_t steps)
 
         if (State != PeepState::Inspecting)
         {
-            sub_state_sequence_mask = FixingSubstatesForBreakdown[ride->breakdown_reason_pending];
+            sub_state_sequence_mask = FixingSubstatesForBreakdown[ride->breakdownReasonPending];
         }
 
         do
@@ -2021,8 +1981,8 @@ void Staff::UpdateFixing(int32_t steps)
  */
 bool Staff::UpdateFixingEnterStation(Ride& ride) const
 {
-    ride.mechanic_status = RIDE_MECHANIC_STATUS_FIXING;
-    ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+    ride.mechanicStatus = RIDE_MECHANIC_STATUS_FIXING;
+    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
     return true;
 }
@@ -2092,9 +2052,9 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride& ride)
         Orientation = PeepDirection << 3;
 
         Action = (ScenarioRand() & 1) ? PeepActionType::StaffFix2 : PeepActionType::StaffFix;
-        ActionSpriteImageOffset = 0;
-        ActionFrame = 0;
-        UpdateCurrentActionSpriteType();
+        AnimationImageIdOffset = 0;
+        AnimationFrameNum = 0;
+        UpdateCurrentAnimationType();
     }
 
     if (IsActionWalking())
@@ -2106,7 +2066,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride& ride)
     Invalidate();
 
     uint8_t actionFrame = (Action == PeepActionType::StaffFix) ? 0x25 : 0x50;
-    if (ActionFrame != actionFrame)
+    if (AnimationFrameNum != actionFrame)
     {
         return false;
     }
@@ -2133,10 +2093,10 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
     {
         Orientation = PeepDirection << 3;
         Action = PeepActionType::StaffFix3;
-        ActionSpriteImageOffset = 0;
-        ActionFrame = 0;
+        AnimationImageIdOffset = 0;
+        AnimationFrameNum = 0;
 
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
     }
 
     if (IsActionWalking())
@@ -2147,7 +2107,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
     UpdateAction();
     Invalidate();
 
-    if (ActionFrame != 0x65)
+    if (AnimationFrameNum != 0x65)
     {
         return false;
     }
@@ -2164,7 +2124,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
 }
 
 /** rct2: 0x00992A3C */
-static constexpr CoordsXY _StationFixingOffsets[] = {
+static constexpr CoordsXY kStationFixingOffsets[] = {
     { -12, 0 },
     { 0, 12 },
     { 12, 0 },
@@ -2181,13 +2141,13 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation)
-            || !ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+        if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation)
+            || !ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
         {
             return true;
         }
 
-        auto stationPos = ride.GetStation(CurrentRideStation).GetStart();
+        auto stationPos = ride.getStation(CurrentRideStation).GetStart();
         if (stationPos.IsNull())
         {
             return true;
@@ -2201,7 +2161,7 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride& ride)
         }
 
         int32_t trackDirection = tileElement->GetDirection();
-        CoordsXY offset = _StationFixingOffsets[trackDirection];
+        CoordsXY offset = kStationFixingOffsets[trackDirection];
 
         stationPos.x += 16 + offset.x;
         if (offset.x == 0)
@@ -2238,11 +2198,11 @@ bool Staff::UpdateFixingFixStationEnd(bool firstRun)
     if (!firstRun)
     {
         Orientation = PeepDirection << 3;
-        Action = PeepActionType::StaffCheckboard;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
+        Action = PeepActionType::StaffCheckBoard;
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
 
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
     }
 
     if (IsActionWalking())
@@ -2268,13 +2228,13 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation)
-            || !ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+        if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation)
+            || !ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
         {
             return true;
         }
 
-        auto stationPosition = ride.GetStation(CurrentRideStation).GetStart();
+        auto stationPosition = ride.getStation(CurrentRideStation).GetStart();
         if (stationPosition.IsNull())
         {
             return true;
@@ -2308,7 +2268,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride& ride)
 
         // Loc6C12ED:
         auto destination = CoordsXY{ input.x + 16, input.y + 16 };
-        auto offset = _StationFixingOffsets[stationDirection];
+        auto offset = kStationFixingOffsets[stationDirection];
 
         destination.x -= offset.x;
         if (offset.x == 0)
@@ -2345,8 +2305,8 @@ bool Staff::UpdateFixingFixStationStart(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        if (ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation)
-            || !ride.GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+        if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasSinglePieceStation)
+            || !ride.getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
         {
             return true;
         }
@@ -2354,10 +2314,10 @@ bool Staff::UpdateFixingFixStationStart(bool firstRun, const Ride& ride)
         Orientation = PeepDirection << 3;
 
         Action = PeepActionType::StaffFix;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
 
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
     }
 
     if (IsActionWalking())
@@ -2382,10 +2342,10 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride& ride)
         Orientation = PeepDirection << 3;
 
         Action = PeepActionType::StaffFixGround;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
 
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
     }
 
     if (IsActionWalking())
@@ -2396,13 +2356,14 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride& ride)
     UpdateAction();
     Invalidate();
 
-    if (ActionFrame == 0x28)
+    if (AnimationFrameNum == 0x28)
     {
-        ride.mechanic_status = RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES;
-        ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
+        ride.mechanicStatus = RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES;
+        ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
     }
 
-    if (ActionFrame == 0x13 || ActionFrame == 0x19 || ActionFrame == 0x1F || ActionFrame == 0x25 || ActionFrame == 0x2B)
+    if (AnimationFrameNum == 0x13 || AnimationFrameNum == 0x19 || AnimationFrameNum == 0x1F || AnimationFrameNum == 0x25
+        || AnimationFrameNum == 0x2B)
     {
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::MechanicFix, GetLocation());
     }
@@ -2419,10 +2380,10 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        auto stationPosition = ride.GetStation(CurrentRideStation).Exit.ToCoordsXY();
+        auto stationPosition = ride.getStation(CurrentRideStation).Exit.ToCoordsXY();
         if (stationPosition.IsNull())
         {
-            stationPosition = ride.GetStation(CurrentRideStation).Entrance.ToCoordsXY();
+            stationPosition = ride.getStation(CurrentRideStation).Entrance.ToCoordsXY();
 
             if (stationPosition.IsNull())
             {
@@ -2461,21 +2422,21 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& r
         {
             UpdateRideInspected(CurrentRide);
 
-            StaffRidesInspected++;
+            StaffRidesInspected = AddClamp(StaffRidesInspected, 1u);
             WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
-            ride.mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
+            ride.mechanicStatus = RIDE_MECHANIC_STATUS_UNDEFINED;
             return true;
         }
 
-        StaffRidesFixed++;
+        StaffRidesFixed = AddClamp(StaffRidesFixed, 1u);
         WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
         Orientation = PeepDirection << 3;
         Action = PeepActionType::StaffAnswerCall2;
-        ActionFrame = 0;
-        ActionSpriteImageOffset = 0;
+        AnimationFrameNum = 0;
+        AnimationImageIdOffset = 0;
 
-        UpdateCurrentActionSpriteType();
+        UpdateCurrentAnimationType();
     }
 
     if (!IsActionWalking())
@@ -2486,7 +2447,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& r
     }
 
     RideFixBreakdown(ride, steps);
-    ride.mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
+    ride.mechanicStatus = RIDE_MECHANIC_STATUS_UNDEFINED;
     return true;
 }
 
@@ -2499,10 +2460,10 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        auto exitPosition = ride.GetStation(CurrentRideStation).Exit.ToCoordsXY();
+        auto exitPosition = ride.getStation(CurrentRideStation).Exit.ToCoordsXY();
         if (exitPosition.IsNull())
         {
-            exitPosition = ride.GetStation(CurrentRideStation).Entrance.ToCoordsXY();
+            exitPosition = ride.getStation(CurrentRideStation).Entrance.ToCoordsXY();
 
             if (exitPosition.IsNull())
             {
@@ -2523,10 +2484,10 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride& ride)
     int16_t xy_distance;
     if (auto loc = UpdateAction(xy_distance); loc.has_value())
     {
-        auto stationHeight = ride.GetStation(CurrentRideStation).GetBaseZ();
+        auto stationHeight = ride.getStation(CurrentRideStation).GetBaseZ();
         if (xy_distance >= 16)
         {
-            stationHeight += ride.GetRideTypeDescriptor().Heights.PlatformHeight;
+            stationHeight += ride.getRideTypeDescriptor().Heights.PlatformHeight;
         }
 
         MoveTo({ loc.value(), stationHeight });
@@ -2544,11 +2505,10 @@ void Staff::UpdateRideInspected(RideId rideIndex)
     auto ride = GetRide(rideIndex);
     if (ride != nullptr)
     {
-        ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
-        ride->reliability += ((100 - ride->reliability_percentage) / 4) * (ScenarioRand() & 0xFF);
-        ride->last_inspection = 0;
-        ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_MAIN
-            | RIDE_INVALIDATE_RIDE_LIST;
+        ride->lifecycleFlags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
+        ride->reliability += ((100 - ride->reliabilityPercentage) / 4) * (ScenarioRand() & 0xFF);
+        ride->lastInspection = 0;
+        ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
     }
 }
 

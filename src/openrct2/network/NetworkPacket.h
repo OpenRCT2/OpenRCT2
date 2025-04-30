@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 #include "NetworkTypes.h"
 
 #include <memory>
+#include <sfl/small_vector.hpp>
 #include <vector>
 
 #pragma pack(push, 1)
@@ -43,7 +44,8 @@ struct NetworkPacket final
     void Write(const void* bytes, size_t size);
     void WriteString(std::string_view s);
 
-    template<typename T> NetworkPacket& operator>>(T& value)
+    template<typename T>
+    NetworkPacket& operator>>(T& value)
     {
         if (BytesRead + sizeof(value) > Header.Size)
         {
@@ -59,7 +61,8 @@ struct NetworkPacket final
         return *this;
     }
 
-    template<typename T> NetworkPacket& operator<<(T value)
+    template<typename T>
+    NetworkPacket& operator<<(T value)
     {
         T swapped = ByteSwapBE(value);
         Write(&swapped, sizeof(T));
@@ -74,7 +77,7 @@ struct NetworkPacket final
 
 public:
     PacketHeader Header{};
-    std::vector<uint8_t> Data;
+    sfl::small_vector<uint8_t, 512> Data;
     size_t BytesTransferred = 0;
     size_t BytesRead = 0;
 };

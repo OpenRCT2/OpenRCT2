@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -37,7 +37,7 @@ static void PaintTwistStructure(
 
     height += 7;
 
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && !ride.vehicles[0].IsNull())
+    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && !ride.vehicles[0].IsNull())
     {
         vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
 
@@ -53,7 +53,7 @@ static void PaintTwistStructure(
         frameNum = frameNum % 216;
     }
 
-    auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto imageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);
     if (stationColour != TrackStationColour)
     {
         imageTemplate = stationColour;
@@ -68,7 +68,7 @@ static void PaintTwistStructure(
     };
     PaintAddImageAsParent(session, imageId, { xOffset, yOffset, height }, bb);
 
-    if (session.DPI.zoom_level < ZoomLevel{ 1 } && ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (session.DPI.zoom_level < ZoomLevel{ 1 } && ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         for (int32_t i = 0; i < vehicle->num_peeps; i += 2)
         {
@@ -98,7 +98,7 @@ static void PaintTwist(
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
     TrackPaintUtilPaintFloor(session, edges, stationColour, height, kFloorSpritesCork, stationObject);
 
     switch (trackSequence)
@@ -148,17 +148,16 @@ static void PaintTwist(
     switch (trackSequence)
     {
         case 1:
-            cornerSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight);
             break;
         case 3:
-            cornerSegments = EnumsToFlags(PaintSegment::topRightSide, PaintSegment::rightCorner, PaintSegment::bottomRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::topRight, PaintSegment::right, PaintSegment::bottomRight);
             break;
         case 6:
-            cornerSegments = EnumsToFlags(PaintSegment::topLeftSide, PaintSegment::leftCorner, PaintSegment::bottomLeftSide);
+            cornerSegments = EnumsToFlags(PaintSegment::topLeft, PaintSegment::left, PaintSegment::bottomLeft);
             break;
         case 7:
-            cornerSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::bottomRight);
             break;
     }
 
@@ -170,11 +169,11 @@ static void PaintTwist(
 /**
  * rct2: 0x0076D658
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionTwist(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionTwist(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {
-        return nullptr;
+        return TrackPaintFunctionDummy;
     }
 
     return PaintTwist;

@@ -1,0 +1,21 @@
+{
+    "scenario_name": "Mines of Africa",
+    "sha256": "2980c287d81e4e96a46db30d1a80e6bfa0caace6a14488dddc6f20ac71676cff",
+    "elements_to_delete": [
+        {
+            "element_index": 1,
+            "coordinates": [
+                [ 43, 46 ]
+            ]
+        }
+    ],
+    "paths": [
+        {
+            "railings": "rct2.footpath_railings.concrete",
+            "surface": "rct2.footpath_surface.queue_yellow",
+            "coordinates": [ [ 43, 46, 6 ] ],
+            "slope_direction": 3,
+            "queue": true
+        }
+    ]
+}

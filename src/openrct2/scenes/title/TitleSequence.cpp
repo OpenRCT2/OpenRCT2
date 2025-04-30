@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,8 +24,8 @@
 #include "../../core/Zip.h"
 #include "../../scenario/ScenarioRepository.h"
 #include "../../scenario/ScenarioSources.h"
-#include "../../util/Util.h"
 
+#include <algorithm>
 #include <array>
 #include <memory>
 #include <optional>
@@ -57,9 +57,9 @@ namespace OpenRCT2::Title
         LOG_VERBOSE("Loading title sequence: %s", path.c_str());
 
         auto ext = Path::GetExtension(path);
-        if (String::Equals(ext, TITLE_SEQUENCE_EXTENSION))
+        if (String::equals(ext, TITLE_SEQUENCE_EXTENSION))
         {
-            auto zip = Zip::TryOpen(path, ZIP_ACCESS::READ);
+            auto zip = Zip::TryOpen(path, ZipAccess::read);
             if (zip == nullptr)
             {
                 Console::Error::WriteLine("Unable to open '%s'", path.c_str());
@@ -109,7 +109,7 @@ namespace OpenRCT2::Title
             const auto& filename = seq.Saves[index];
             if (seq.IsZip)
             {
-                auto zip = Zip::TryOpen(seq.Path, ZIP_ACCESS::READ);
+                auto zip = Zip::TryOpen(seq.Path, ZipAccess::read);
                 if (zip != nullptr)
                 {
                     auto data = zip->GetFileData(filename);
@@ -133,7 +133,7 @@ namespace OpenRCT2::Title
                 std::unique_ptr<OpenRCT2::IStream> fileStream = nullptr;
                 try
                 {
-                    fileStream = std::make_unique<OpenRCT2::FileStream>(absolutePath, OpenRCT2::FILE_MODE_OPEN);
+                    fileStream = std::make_unique<OpenRCT2::FileStream>(absolutePath, OpenRCT2::FileMode::open);
                 }
                 catch (const IOException& exception)
                 {
@@ -159,7 +159,7 @@ namespace OpenRCT2::Title
             if (seq.IsZip)
             {
                 auto fdata = std::vector<uint8_t>(script.begin(), script.end());
-                auto zip = Zip::Open(seq.Path, ZIP_ACCESS::WRITE);
+                auto zip = Zip::Open(seq.Path, ZipAccess::write);
                 zip->SetFileData("script.txt", std::move(fdata));
             }
             else
@@ -189,7 +189,7 @@ namespace OpenRCT2::Title
             try
             {
                 auto fdata = File::ReadAllBytes(path);
-                auto zip = Zip::TryOpen(seq.Path, ZIP_ACCESS::WRITE);
+                auto zip = Zip::TryOpen(seq.Path, ZipAccess::write);
                 if (zip == nullptr)
                 {
                     Console::Error::WriteLine("Unable to open '%s'", seq.Path.c_str());
@@ -222,7 +222,7 @@ namespace OpenRCT2::Title
         auto& oldRelativePath = seq.Saves[index];
         if (seq.IsZip)
         {
-            auto zip = Zip::TryOpen(seq.Path, ZIP_ACCESS::WRITE);
+            auto zip = Zip::TryOpen(seq.Path, ZipAccess::write);
             if (zip == nullptr)
             {
                 Console::Error::WriteLine("Unable to open '%s'", seq.Path.c_str());
@@ -252,7 +252,7 @@ namespace OpenRCT2::Title
         auto& relativePath = seq.Saves[index];
         if (seq.IsZip)
         {
-            auto zip = Zip::TryOpen(seq.Path, ZIP_ACCESS::WRITE);
+            auto zip = Zip::TryOpen(seq.Path, ZipAccess::write);
             if (zip == nullptr)
             {
                 Console::Error::WriteLine("Unable to open '%s'", seq.Path.c_str());
@@ -319,7 +319,7 @@ namespace OpenRCT2::Title
         {
             auto name = zip->GetFileName(i);
             auto ext = Path::GetExtension(name);
-            if (String::IEquals(ext, ".sv6") || String::IEquals(ext, ".sc6") || String::IEquals(ext, ".park"))
+            if (String::iequals(ext, ".sv6") || String::iequals(ext, ".sc6") || String::iequals(ext, ".park"))
             {
                 saves.push_back(std::move(name));
             }
@@ -341,13 +341,13 @@ namespace OpenRCT2::Title
 
             if (token[0] != 0)
             {
-                if (String::IEquals(token, "LOAD"))
+                if (String::iequals(token, "LOAD"))
                 {
                     auto saveIndex = SAVE_INDEX_INVALID;
                     const std::string relativePath = parts[1].data();
                     for (size_t i = 0; i < saves.size(); i++)
                     {
-                        if (String::IEquals(relativePath, saves[i]))
+                        if (String::iequals(relativePath, saves[i]))
                         {
                             saveIndex = static_cast<uint8_t>(i);
                             break;
@@ -355,51 +355,51 @@ namespace OpenRCT2::Title
                     }
                     command = LoadParkCommand{ saveIndex };
                 }
-                else if (String::IEquals(token, "LOCATION"))
+                else if (String::iequals(token, "LOCATION"))
                 {
                     uint8_t locationX = atoi(parts[1].data()) & 0xFF;
                     uint8_t locationY = atoi(parts[2].data()) & 0xFF;
                     command = SetLocationCommand{ locationX, locationY };
                 }
-                else if (String::IEquals(token, "ROTATE"))
+                else if (String::iequals(token, "ROTATE"))
                 {
                     uint8_t rotations = atoi(parts[1].data()) & 0xFF;
                     command = RotateViewCommand{ rotations };
                 }
-                else if (String::IEquals(token, "ZOOM"))
+                else if (String::iequals(token, "ZOOM"))
                 {
                     uint8_t zoom = atoi(parts[1].data()) & 0xFF;
                     command = SetZoomCommand{ zoom };
                 }
-                else if (String::IEquals(token, "SPEED"))
+                else if (String::iequals(token, "SPEED"))
                 {
                     uint8_t speed = std::max(1, std::min(4, atoi(parts[1].data()) & 0xFF));
                     command = SetSpeedCommand{ speed };
                 }
-                else if (String::IEquals(token, "FOLLOW"))
+                else if (String::iequals(token, "FOLLOW"))
                 {
                     auto entityID = EntityId::FromUnderlying(atoi(parts[1].data()) & 0xFFFF);
                     auto followCommand = FollowEntityCommand{ entityID };
-                    SafeStrCpy(followCommand.Follow.SpriteName, parts[2].data(), kUserStringMaxLength);
+                    String::safeUtf8Copy(followCommand.Follow.SpriteName, parts[2].data(), kUserStringMaxLength);
                     command = followCommand;
                 }
-                else if (String::IEquals(token, "WAIT"))
+                else if (String::iequals(token, "WAIT"))
                 {
                     uint16_t milliseconds = atoi(parts[1].data()) & 0xFFFF;
                     command = WaitCommand{ milliseconds };
                 }
-                else if (String::IEquals(token, "RESTART"))
+                else if (String::iequals(token, "RESTART"))
                 {
                     command = RestartCommand{};
                 }
-                else if (String::IEquals(token, "END"))
+                else if (String::iequals(token, "END"))
                 {
                     command = EndCommand{};
                 }
-                else if (String::IEquals(token, "LOADSC"))
+                else if (String::iequals(token, "LOADSC"))
                 {
                     auto loadScenarioCommand = LoadScenarioCommand{};
-                    SafeStrCpy(loadScenarioCommand.Scenario, parts[1].data(), sizeof(loadScenarioCommand.Scenario));
+                    String::safeUtf8Copy(loadScenarioCommand.Scenario, parts[1].data(), sizeof(loadScenarioCommand.Scenario));
                     command = loadScenarioCommand;
                 }
             }
@@ -445,12 +445,12 @@ namespace OpenRCT2::Title
                 if (!whitespace)
                 {
                     if (part == 0
-                        && ((cindex == 4 && String::StartsWith(parts[0].data(), "LOAD", true))
-                            || (cindex == 6 && String::StartsWith(parts[0].data(), "LOADSC", true))))
+                        && ((cindex == 4 && String::startsWith(parts[0].data(), "LOAD", true))
+                            || (cindex == 6 && String::startsWith(parts[0].data(), "LOADSC", true))))
                     {
                         load = true;
                     }
-                    else if (part == 0 && cindex == 6 && String::StartsWith(parts[0].data(), "FOLLOW", true))
+                    else if (part == 0 && cindex == 6 && String::startsWith(parts[0].data(), "FOLLOW", true))
                     {
                         sprite = true;
                     }
@@ -484,7 +484,7 @@ namespace OpenRCT2::Title
         std::vector<uint8_t> result;
         try
         {
-            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
+            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::open);
             auto size = static_cast<size_t>(fs.GetLength());
             result.resize(size);
             fs.Read(result.data(), size);
@@ -534,28 +534,28 @@ namespace OpenRCT2::Title
                     }
                     else if constexpr (std::is_same_v<T, SetLocationCommand>)
                     {
-                        sb.Append(String::StdFormat("LOCATION %u %u", command.Location.X, command.Location.Y));
+                        sb.Append(String::stdFormat("LOCATION %u %u", command.Location.X, command.Location.Y));
                     }
                     else if constexpr (std::is_same_v<T, RotateViewCommand>)
                     {
-                        sb.Append(String::StdFormat("ROTATE %u", command.Rotations));
+                        sb.Append(String::stdFormat("ROTATE %u", command.Rotations));
                     }
                     else if constexpr (std::is_same_v<T, SetZoomCommand>)
                     {
-                        sb.Append(String::StdFormat("ZOOM %u", command.Zoom));
+                        sb.Append(String::stdFormat("ZOOM %u", command.Zoom));
                     }
                     else if constexpr (std::is_same_v<T, FollowEntityCommand>)
                     {
-                        sb.Append(String::StdFormat("FOLLOW %u ", command.Follow.SpriteIndex));
+                        sb.Append(String::stdFormat("FOLLOW %u ", command.Follow.SpriteIndex));
                         sb.Append(command.Follow.SpriteName);
                     }
                     else if constexpr (std::is_same_v<T, SetSpeedCommand>)
                     {
-                        sb.Append(String::StdFormat("SPEED %u", command.Speed));
+                        sb.Append(String::stdFormat("SPEED %u", command.Speed));
                     }
                     else if constexpr (std::is_same_v<T, WaitCommand>)
                     {
-                        sb.Append(String::StdFormat("WAIT %u", command.Milliseconds));
+                        sb.Append(String::stdFormat("WAIT %u", command.Milliseconds));
                     }
                     else if constexpr (std::is_same_v<T, RestartCommand>)
                     {

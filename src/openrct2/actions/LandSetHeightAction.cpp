@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,18 +12,22 @@
 #include "../Context.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../ride/RideData.h"
 #include "../windows/Intent.h"
 #include "../world/ConstructionClearance.h"
+#include "../world/Footpath.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Surface.h"
 #include "../world/TileElementsView.h"
+#include "../world/Wall.h"
+#include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/Slope.h"
+#include "../world/tile_element/SmallSceneryElement.h"
+#include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TrackElement.h"
 
 using namespace OpenRCT2;
 
@@ -55,36 +59,36 @@ void LandSetHeightAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result LandSetHeightAction::Query() const
 {
-    auto& gameState = GetGameState();
-    if (gameState.Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
+    auto& gameState = getGameState();
+    if (gameState.park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
-        return GameActions::Result(GameActions::Status::Disallowed, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY, STR_NONE);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY, kStringIdNone);
     }
 
     StringId errorMessage = CheckParameters();
-    if (errorMessage != STR_NONE)
+    if (errorMessage != kStringIdNone)
     {
-        return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, errorMessage);
+        return GameActions::Result(GameActions::Status::Disallowed, kStringIdNone, errorMessage);
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.SandboxMode)
+    if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
     {
         if (!MapIsLocationInPark(_coords))
         {
-            return GameActions::Result(GameActions::Status::Disallowed, STR_LAND_NOT_OWNED_BY_PARK, STR_NONE);
+            return GameActions::Result(GameActions::Status::Disallowed, STR_LAND_NOT_OWNED_BY_PARK, kStringIdNone);
         }
     }
 
     money64 sceneryRemovalCost = 0;
-    if (!gameState.Cheats.DisableClearanceChecks)
+    if (!gameState.cheats.disableClearanceChecks)
     {
-        if (gameState.Park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+        if (gameState.park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
         {
             // Check for obstructing large trees
             TileElement* tileElement = CheckTreeObstructions();
             if (tileElement != nullptr)
             {
-                auto res = GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
+                auto res = GameActions::Result(GameActions::Status::Disallowed, kStringIdNone, kStringIdNone);
                 MapGetObstructionErrorText(tileElement, res);
                 return res;
             }
@@ -93,12 +97,12 @@ GameActions::Result LandSetHeightAction::Query() const
     }
 
     // Check for ride support limits
-    if (!gameState.Cheats.DisableSupportLimits)
+    if (!gameState.cheats.disableSupportLimits)
     {
         errorMessage = CheckRideSupports();
-        if (errorMessage != STR_NONE)
+        if (errorMessage != kStringIdNone)
         {
-            return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, errorMessage);
+            return GameActions::Result(GameActions::Status::Disallowed, kStringIdNone, errorMessage);
         }
     }
 
@@ -113,18 +117,18 @@ GameActions::Result LandSetHeightAction::Query() const
     auto* pathElement = MapGetFootpathElement(oldCoords);
     if (pathElement != nullptr && pathElement->AsPath()->IsLevelCrossing(oldCoords))
     {
-        return GameActions::Result(GameActions::Status::Disallowed, STR_REMOVE_LEVEL_CROSSING_FIRST, STR_NONE);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_REMOVE_LEVEL_CROSSING_FIRST, kStringIdNone);
     }
 
     TileElement* tileElement = CheckFloatingStructures(reinterpret_cast<TileElement*>(surfaceElement), _height);
     if (tileElement != nullptr)
     {
-        auto res = GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
+        auto res = GameActions::Result(GameActions::Status::Disallowed, kStringIdNone, kStringIdNone);
         MapGetObstructionErrorText(tileElement, res);
         return res;
     }
 
-    if (!gameState.Cheats.DisableClearanceChecks)
+    if (!gameState.cheats.disableClearanceChecks)
     {
         uint8_t zCorner = _height;
         if (_style & kTileSlopeRaisedCornersMask)
@@ -157,7 +161,7 @@ GameActions::Result LandSetHeightAction::Execute() const
     auto surfaceHeight = TileElementHeight(_coords);
     FootpathRemoveLitter({ _coords, surfaceHeight });
 
-    if (!GetGameState().Cheats.DisableClearanceChecks)
+    if (!getGameState().cheats.disableClearanceChecks)
     {
         WallRemoveAt({ _coords, _height * 8 - 16, _height * 8 + 32 });
         cost += GetSmallSceneryRemovalCost();
@@ -207,7 +211,7 @@ StringId LandSetHeightAction::CheckParameters() const
         return STR_TOO_HIGH;
     }
 
-    return STR_NONE;
+    return kStringIdNone;
 }
 
 TileElement* LandSetHeightAction::CheckTreeObstructions() const
@@ -276,14 +280,14 @@ StringId LandSetHeightAction::CheckRideSupports() const
         if (ride == nullptr)
             continue;
 
-        const auto* rideEntry = ride->GetRideEntry();
+        const auto* rideEntry = ride->getRideEntry();
         if (rideEntry == nullptr)
             continue;
 
         int32_t maxHeight = rideEntry->max_height;
         if (maxHeight == 0)
         {
-            maxHeight = ride->GetRideTypeDescriptor().Heights.MaxHeight;
+            maxHeight = ride->getRideTypeDescriptor().Heights.MaxHeight;
         }
 
         int32_t zDelta = trackElement->ClearanceHeight - _height;
@@ -292,7 +296,7 @@ StringId LandSetHeightAction::CheckRideSupports() const
             return STR_SUPPORTS_CANT_BE_EXTENDED;
         }
     }
-    return STR_NONE;
+    return kStringIdNone;
 }
 
 TileElement* LandSetHeightAction::CheckFloatingStructures(TileElement* surfaceElement, uint8_t zCorner) const
@@ -322,7 +326,7 @@ TileElement* LandSetHeightAction::CheckFloatingStructures(TileElement* surfaceEl
 money64 LandSetHeightAction::GetSurfaceHeightChangeCost(SurfaceElement* surfaceElement) const
 {
     money64 cost{ 0 };
-    for (Direction i : ALL_DIRECTIONS)
+    for (Direction i : kAllDirections)
     {
         int32_t cornerHeight = TileElementGetCornerHeight(surfaceElement, i);
         cornerHeight -= MapGetCornerHeight(_height, _style & kTileSlopeMask, i);

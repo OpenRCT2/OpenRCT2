@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,10 +19,10 @@ using namespace OpenRCT2::Crypt;
 class OpenRCT2FNV1aAlgorithm final : public FNV1aAlgorithm
 {
 private:
-    static constexpr uint64_t Offset = 0xCBF29CE484222325ULL;
-    static constexpr uint64_t Prime = 0x00000100000001B3ULL;
+    static constexpr uint64_t kOffset = 0xCBF29CE484222325ULL;
+    static constexpr uint64_t kPrime = 0x00000100000001B3ULL;
 
-    uint64_t _data = Offset;
+    uint64_t _data = kOffset;
     uint8_t _rem[8]{};
     size_t _remLen{};
 
@@ -33,7 +33,7 @@ private:
             uint64_t temp{};
             std::memcpy(&temp, _rem, _remLen);
             _data ^= temp;
-            _data *= Prime;
+            _data *= kPrime;
             _remLen = 0;
         }
     }
@@ -41,7 +41,7 @@ private:
 public:
     HashAlgorithm* Clear() override
     {
-        _data = Offset;
+        _data = kOffset;
         return this;
     }
 
@@ -68,7 +68,7 @@ public:
         {
             auto temp = *src++;
             _data ^= temp;
-            _data *= Prime;
+            _data *= kPrime;
             dataLen -= sizeof(uint64_t);
         }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,12 +10,12 @@
 #include "Font.h"
 
 #include "../Diagnostic.h"
+#include "../SpriteIds.h"
+#include "../core/EnumUtils.hpp"
 #include "../core/UTF8.h"
 #include "../core/UnicodeChar.h"
 #include "../localisation/LocalisationService.h"
 #include "../rct12/CSChar.h"
-#include "../sprites.h"
-#include "../util/Util.h"
 #include "Drawing.h"
 #include "TTF.h"
 
@@ -25,18 +25,18 @@
 
 using namespace OpenRCT2;
 
-static constexpr int32_t SpriteFontLineHeight[FontStyleCount] = {
+static constexpr int32_t kSpriteFontLineHeight[FontStyleCount] = {
     10,
     10,
     6,
 };
 
-static uint8_t _spriteFontCharacterWidths[FontStyleCount][FONT_SPRITE_GLYPH_COUNT];
+static uint8_t _spriteFontCharacterWidths[FontStyleCount][kSpriteFontGlyphCount];
 static uint8_t _additionalSpriteFontCharacterWidth[FontStyleCount][SPR_G2_GLYPH_COUNT] = {};
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 TTFFontSetDescriptor* gCurrentTTFFontSet;
-#endif // NO_TTF
+#endif // DISABLE_TTF
 
 constexpr uint8_t CS_SPRITE_FONT_OFFSET = 32;
 
@@ -269,8 +269,8 @@ void FontSpriteInitialiseCharacters()
 
     for (const auto& fontStyle : FontStyles)
     {
-        int32_t glyphOffset = EnumValue(fontStyle) * FONT_SPRITE_GLYPH_COUNT;
-        for (uint8_t glyphIndex = 0; glyphIndex < FONT_SPRITE_GLYPH_COUNT; glyphIndex++)
+        int32_t glyphOffset = EnumValue(fontStyle) * kSpriteFontGlyphCount;
+        for (uint8_t glyphIndex = 0; glyphIndex < kSpriteFontGlyphCount; glyphIndex++)
         {
             const G1Element* g1 = GfxGetG1Element(glyphIndex + SPR_CHAR_START + glyphOffset);
             int32_t width = 0;
@@ -323,7 +323,7 @@ int32_t FontSpriteGetCodepointWidth(FontStyle fontStyle, int32_t codepoint)
 {
     int32_t glyphIndex = FontSpriteGetCodepointOffset(codepoint);
     auto baseFontIndex = EnumValue(fontStyle);
-    if (glyphIndex >= FONT_SPRITE_GLYPH_COUNT)
+    if (glyphIndex >= kSpriteFontGlyphCount)
     {
         glyphIndex = (SPR_CHAR_START + glyphIndex) - SPR_G2_CHAR_BEGIN;
 
@@ -335,7 +335,7 @@ int32_t FontSpriteGetCodepointWidth(FontStyle fontStyle, int32_t codepoint)
         return _additionalSpriteFontCharacterWidth[baseFontIndex][glyphIndex];
     }
 
-    if (glyphIndex < 0 || glyphIndex >= static_cast<int32_t>(FONT_SPRITE_GLYPH_COUNT))
+    if (glyphIndex < 0 || glyphIndex >= static_cast<int32_t>(kSpriteFontGlyphCount))
     {
         LOG_WARNING("Invalid glyph index %u", glyphIndex);
         glyphIndex = 0;
@@ -345,9 +345,9 @@ int32_t FontSpriteGetCodepointWidth(FontStyle fontStyle, int32_t codepoint)
 
 ImageId FontSpriteGetCodepointSprite(FontStyle fontStyle, int32_t codepoint)
 {
-    int32_t offset = EnumValue(fontStyle) * FONT_SPRITE_GLYPH_COUNT;
+    int32_t offset = EnumValue(fontStyle) * kSpriteFontGlyphCount;
     auto codePointOffset = FontSpriteGetCodepointOffset(codepoint);
-    if (codePointOffset > FONT_SPRITE_GLYPH_COUNT)
+    if (codePointOffset > kSpriteFontGlyphCount)
     {
         offset = EnumValue(fontStyle) * SPR_G2_GLYPH_COUNT;
     }
@@ -358,13 +358,13 @@ ImageId FontSpriteGetCodepointSprite(FontStyle fontStyle, int32_t codepoint)
 int32_t FontGetLineHeight(FontStyle fontStyle)
 {
     auto fontSize = EnumValue(fontStyle);
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
     if (LocalisationService_UseTrueTypeFont())
     {
         return gCurrentTTFFontSet->size[fontSize].line_height;
     }
-#endif // NO_TTF
-    return SpriteFontLineHeight[fontSize];
+#endif // DISABLE_TTF
+    return kSpriteFontLineHeight[fontSize];
 }
 
 int32_t FontGetLineHeightSmall(FontStyle fontStyle)
@@ -401,7 +401,7 @@ bool FontSupportsStringSprite(const utf8* text)
 
 bool FontSupportsStringTTF(const utf8* text, FontStyle fontStyle)
 {
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
     const utf8* src = text;
     const TTF_Font* font = gCurrentTTFFontSet->size[EnumValue(fontStyle)].font;
     if (font == nullptr)
@@ -421,7 +421,7 @@ bool FontSupportsStringTTF(const utf8* text, FontStyle fontStyle)
     return true;
 #else
     return false;
-#endif // NO_TTF
+#endif // DISABLE_TTF
 }
 
 bool FontSupportsString(const utf8* text, FontStyle fontStyle)

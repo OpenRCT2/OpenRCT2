@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,31 +9,31 @@
 
 #ifndef DISABLE_NETWORK
 
-#    include "NetworkServerAdvertiser.h"
+    #include "NetworkServerAdvertiser.h"
 
-#    include "../Diagnostic.h"
-#    include "../GameState.h"
-#    include "../config/Config.h"
-#    include "../core/Console.hpp"
-#    include "../core/Guard.hpp"
-#    include "../core/Http.h"
-#    include "../core/Json.hpp"
-#    include "../core/String.hpp"
-#    include "../entity/Guest.h"
-#    include "../localisation/Localisation.Date.h"
-#    include "../management/Finance.h"
-#    include "../platform/Platform.h"
-#    include "../util/Util.h"
-#    include "../world/Map.h"
-#    include "../world/Park.h"
-#    include "Socket.h"
-#    include "network.h"
+    #include "../Diagnostic.h"
+    #include "../GameState.h"
+    #include "../config/Config.h"
+    #include "../core/Console.hpp"
+    #include "../core/Guard.hpp"
+    #include "../core/Http.h"
+    #include "../core/Json.hpp"
+    #include "../core/String.hpp"
+    #include "../entity/Guest.h"
+    #include "../localisation/Localisation.Date.h"
+    #include "../management/Finance.h"
+    #include "../platform/Platform.h"
+    #include "../world/Map.h"
+    #include "../world/Park.h"
+    #include "Network.h"
+    #include "Socket.h"
 
-#    include <cstring>
-#    include <iterator>
-#    include <memory>
-#    include <random>
-#    include <string>
+    #include <chrono>
+    #include <cstring>
+    #include <iterator>
+    #include <memory>
+    #include <random>
+    #include <string>
 
 using namespace OpenRCT2;
 
@@ -45,10 +45,11 @@ enum class MasterServerStatus
     InternalError = 500
 };
 
-#    ifndef DISABLE_HTTP
-constexpr int32_t kMasterServerRegisterTime = 120 * 1000; // 2 minutes
-constexpr int32_t kMasterServerHeartbeatTime = 60 * 1000; // 1 minute
-#    endif
+    #ifndef DISABLE_HTTP
+using namespace std::chrono_literals;
+constexpr int32_t kMasterServerRegisterTime = std::chrono::milliseconds(2min).count();
+constexpr int32_t kMasterServerHeartbeatTime = std::chrono::milliseconds(1min).count();
+    #endif
 
 class NetworkServerAdvertiser final : public INetworkServerAdvertiser
 {
@@ -58,9 +59,9 @@ private:
     std::unique_ptr<IUdpSocket> _lanListener;
     uint32_t _lastListenTime{};
 
-    ADVERTISE_STATUS _status = ADVERTISE_STATUS::UNREGISTERED;
+    AdvertiseStatus _status = AdvertiseStatus::unregistered;
 
-#    ifndef DISABLE_HTTP
+    #ifndef DISABLE_HTTP
     uint32_t _lastAdvertiseTime = 0;
     uint32_t _lastHeartbeatTime = 0;
 
@@ -72,19 +73,19 @@ private:
 
     // See https://github.com/OpenRCT2/OpenRCT2/issues/6277 and 4953
     bool _forceIPv4 = false;
-#    endif
+    #endif
 
 public:
     explicit NetworkServerAdvertiser(uint16_t port)
     {
         _port = port;
         _lanListener = CreateUdpSocket();
-#    ifndef DISABLE_HTTP
+    #ifndef DISABLE_HTTP
         _key = GenerateAdvertiseKey();
-#    endif
+    #endif
     }
 
-    ADVERTISE_STATUS GetStatus() const override
+    AdvertiseStatus GetStatus() const override
     {
         return _status;
     }
@@ -92,12 +93,12 @@ public:
     void Update() override
     {
         UpdateLAN();
-#    ifndef DISABLE_HTTP
+    #ifndef DISABLE_HTTP
         if (Config::Get().network.Advertise)
         {
             UpdateWAN();
         }
-#    endif
+    #endif
     }
 
 private:
@@ -120,7 +121,7 @@ private:
                 {
                     std::string sender = endpoint->GetHostname();
                     LOG_VERBOSE("Received %zu bytes from %s on LAN broadcast port", recievedBytes, sender.c_str());
-                    if (String::Equals(buffer, kNetworkLanBroadcastMsg))
+                    if (String::equals(buffer, kNetworkLanBroadcastMsg))
                     {
                         auto body = GetBroadcastJson();
                         auto bodyDump = body.dump();
@@ -141,12 +142,12 @@ private:
         return root;
     }
 
-#    ifndef DISABLE_HTTP
+    #ifndef DISABLE_HTTP
     void UpdateWAN()
     {
         switch (_status)
         {
-            case ADVERTISE_STATUS::UNREGISTERED:
+            case AdvertiseStatus::unregistered:
                 if (_lastAdvertiseTime == 0 || Platform::GetTicks() > _lastAdvertiseTime + kMasterServerRegisterTime)
                 {
                     if (_lastAdvertiseTime == 0)
@@ -156,14 +157,14 @@ private:
                     SendRegistration(_forceIPv4);
                 }
                 break;
-            case ADVERTISE_STATUS::REGISTERED:
+            case AdvertiseStatus::registered:
                 if (Platform::GetTicks() > _lastHeartbeatTime + kMasterServerHeartbeatTime)
                 {
                     SendHeartbeat();
                 }
                 break;
             // exhaust enum values to satisfy clang
-            case ADVERTISE_STATUS::DISABLED:
+            case AdvertiseStatus::disabled:
                 break;
         }
     }
@@ -245,7 +246,7 @@ private:
             if (jsonToken.is_string())
             {
                 _token = Json::GetString(jsonToken);
-                _status = ADVERTISE_STATUS::REGISTERED;
+                _status = AdvertiseStatus::registered;
             }
         }
         else
@@ -287,7 +288,7 @@ private:
         }
         else if (status == MasterServerStatus::InvalidToken)
         {
-            _status = ADVERTISE_STATUS::UNREGISTERED;
+            _status = AdvertiseStatus::unregistered;
             _lastAdvertiseTime = 0;
             Console::Error::WriteLine("Master server heartbeat failed: Invalid Token");
         }
@@ -302,20 +303,20 @@ private:
             { "players", numPlayers },
         };
 
-        const auto& gameState = GetGameState();
+        const auto& gameState = getGameState();
         const auto& date = GetDate();
-        json_t mapSize = { { "x", gameState.MapSize.x - 2 }, { "y", gameState.MapSize.y - 2 } };
+        json_t mapSize = { { "x", gameState.mapSize.x - 2 }, { "y", gameState.mapSize.y - 2 } };
         json_t gameInfo = {
             { "mapSize", mapSize },
             { "day", date.GetMonthTicks() },
             { "month", date.GetMonthsElapsed() },
-            { "guests", gameState.NumGuestsInPark },
-            { "parkValue", gameState.Park.Value },
+            { "guests", gameState.numGuestsInPark },
+            { "parkValue", gameState.park.Value },
         };
 
-        if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY))
+        if (!(gameState.park.Flags & PARK_FLAGS_NO_MONEY))
         {
-            gameInfo["cash"] = gameState.Cash;
+            gameInfo["cash"] = gameState.cash;
         }
 
         root["gameInfo"] = gameInfo;
@@ -352,7 +353,7 @@ private:
         }
         return result;
     }
-#    endif
+    #endif
 };
 
 std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(uint16_t port)

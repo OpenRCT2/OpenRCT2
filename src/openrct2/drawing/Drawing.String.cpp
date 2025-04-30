@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -8,7 +8,9 @@
  *****************************************************************************/
 
 #include "../Context.h"
+#include "../SpriteIds.h"
 #include "../config/Config.h"
+#include "../core/CodepointView.hpp"
 #include "../core/String.hpp"
 #include "../core/UTF8.h"
 #include "../core/UnicodeChar.h"
@@ -19,7 +21,6 @@
 #include "../localisation/Formatting.h"
 #include "../localisation/LocalisationService.h"
 #include "../platform/Platform.h"
-#include "../sprites.h"
 #include "TTF.h"
 
 using namespace OpenRCT2;
@@ -159,12 +160,12 @@ int32_t GfxClipString(utf8* text, int32_t width, FontStyle fontStyle)
  */
 int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8string* outWrappedText, int32_t* outNumLines)
 {
-    constexpr size_t NULL_INDEX = std::numeric_limits<size_t>::max();
+    constexpr size_t kNullIndex = std::numeric_limits<size_t>::max();
     u8string buffer;
 
     size_t currentLineIndex = 0;
-    size_t splitIndex = NULL_INDEX;
-    size_t bestSplitIndex = NULL_INDEX;
+    size_t splitIndex = kNullIndex;
+    size_t bestSplitIndex = kNullIndex;
     size_t numLines = 0;
     int32_t maxWidth = 0;
 
@@ -181,14 +182,14 @@ int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8
                 buffer.append(cb);
 
                 auto lineWidth = GfxGetStringWidth(&buffer[currentLineIndex], fontStyle);
-                if (lineWidth <= width || (splitIndex == NULL_INDEX && bestSplitIndex == NULL_INDEX))
+                if (lineWidth <= width || (splitIndex == kNullIndex && bestSplitIndex == kNullIndex))
                 {
                     if (codepoint == ' ')
                     {
                         // Mark line split here
                         splitIndex = buffer.size() - 1;
                     }
-                    else if (splitIndex == NULL_INDEX)
+                    else if (splitIndex == kNullIndex)
                     {
                         // Mark line split here (this is after first character of line)
                         bestSplitIndex = buffer.size();
@@ -197,7 +198,7 @@ int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8
                 else
                 {
                     // Insert new line before current word
-                    if (splitIndex == NULL_INDEX)
+                    if (splitIndex == kNullIndex)
                     {
                         splitIndex = bestSplitIndex;
                     }
@@ -209,8 +210,8 @@ int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8
                     numLines++;
 
                     currentLineIndex = splitIndex + 1;
-                    splitIndex = NULL_INDEX;
-                    bestSplitIndex = NULL_INDEX;
+                    splitIndex = kNullIndex;
+                    bestSplitIndex = kNullIndex;
 
                     // Trim the beginning of the new line
                     while (buffer[currentLineIndex] == ' ')
@@ -229,8 +230,8 @@ int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8
             numLines++;
 
             currentLineIndex = buffer.size();
-            splitIndex = NULL_INDEX;
-            bestSplitIndex = NULL_INDEX;
+            splitIndex = kNullIndex;
+            bestSplitIndex = kNullIndex;
         }
         else
         {
@@ -331,7 +332,7 @@ void DrawStringCentredRaw(
     for (int32_t i = 0; i <= numLines; i++)
     {
         int32_t width = GfxGetStringWidth(text, fontStyle);
-        DrawText(dpi, screenCoords - ScreenCoordsXY{ width / 2, 0 }, { TEXT_COLOUR_254, fontStyle }, text);
+        DrawText(dpi, screenCoords - ScreenCoordsXY{ width / 2, 0 }, { kTextColour254, fontStyle }, text);
 
         const utf8* ch = text;
         const utf8* nextCh = nullptr;
@@ -462,7 +463,7 @@ void DrawNewsTicker(
         }
 
         screenCoords = { coords.x - halfWidth, lineY };
-        DrawText(dpi, screenCoords, { TEXT_COLOUR_254, FontStyle::Small }, buffer);
+        DrawText(dpi, screenCoords, { kTextColour254, FontStyle::Small }, buffer);
 
         if (numCharactersDrawn > numCharactersToDraw)
         {
@@ -503,7 +504,7 @@ static void TTFDrawStringRawSprite(DrawPixelInfo& dpi, std::string_view text, Te
     }
 }
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 
 static void TTFDrawStringRawTTF(DrawPixelInfo& dpi, std::string_view text, TextDrawInfo* info)
 {
@@ -539,7 +540,7 @@ static void TTFDrawStringRawTTF(DrawPixelInfo& dpi, std::string_view text, TextD
     info->x += surface->w;
 }
 
-#endif // NO_TTF
+#endif // DISABLE_TTF
 
 static void TTFProcessFormatCode(DrawPixelInfo& dpi, const FmtString::Token& token, TextDrawInfo* info)
 {
@@ -591,8 +592,8 @@ static void TTFProcessFormatCode(DrawPixelInfo& dpi, const FmtString::Token& tok
         }
         case FormatToken::InlineSprite:
         {
-            auto imageId = ImageId::FromUInt32(token.parameter);
-            auto g1 = GfxGetG1Element(imageId.GetIndex());
+            auto imageId = ImageId(token.parameter);
+            auto g1 = GfxGetG1Element(imageId);
             if (g1 != nullptr && g1->width <= 32 && g1->height <= 32)
             {
                 if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
@@ -614,7 +615,7 @@ static void TTFProcessFormatCode(DrawPixelInfo& dpi, const FmtString::Token& tok
     }
 }
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 static bool ShouldUseSpriteForCodepoint(char32_t codepoint)
 {
     switch (codepoint)
@@ -643,21 +644,21 @@ static bool ShouldUseSpriteForCodepoint(char32_t codepoint)
             return false;
     }
 }
-#endif // NO_TTF
+#endif // DISABLE_TTF
 
 static void TTFProcessStringLiteral(DrawPixelInfo& dpi, std::string_view text, TextDrawInfo* info)
 {
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
     bool isTTF = info->flags & TEXT_DRAW_FLAG_TTF;
 #else
     bool isTTF = false;
-#endif // NO_TTF
+#endif // DISABLE_TTF
 
     if (!isTTF)
     {
         TTFDrawStringRawSprite(dpi, text, info);
     }
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
     else
     {
         CodepointView codepoints(text);
@@ -673,15 +674,15 @@ static void TTFProcessStringLiteral(DrawPixelInfo& dpi, std::string_view text, T
                     // This error suppression abomination is here to suppress https://github.com/OpenRCT2/OpenRCT2/issues/17371.
                     // Additionally, we have to suppress the error for the error suppression... :'-(
                     // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105937 is fixed in GCC13
-#    if defined(__GNUC__) && !defined(__clang__)
-#        pragma GCC diagnostic push
-#        pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
-#    endif
+    #if defined(__GNUC__) && !defined(__clang__)
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+    #endif
                     auto len = it.GetIndex() - ttfRunIndex.value();
                     TTFDrawStringRawTTF(dpi, text.substr(ttfRunIndex.value(), len), info);
-#    if defined(__GNUC__) && !defined(__clang__)
-#        pragma GCC diagnostic pop
-#    endif
+    #if defined(__GNUC__) && !defined(__clang__)
+        #pragma GCC diagnostic pop
+    #endif
                     ttfRunIndex = std::nullopt;
                 }
 
@@ -704,7 +705,7 @@ static void TTFProcessStringLiteral(DrawPixelInfo& dpi, std::string_view text, T
             TTFDrawStringRawTTF(dpi, text.substr(ttfRunIndex.value(), len), info);
         }
     }
-#endif // NO_TTF
+#endif // DISABLE_TTF
 }
 
 static void TTFProcessStringCodepoint(DrawPixelInfo& dpi, codepoint_t codepoint, TextDrawInfo* info)
@@ -748,7 +749,7 @@ static void TTFProcessString(DrawPixelInfo& dpi, std::string_view text, TextDraw
 
 static void TTFProcessInitialColour(ColourWithFlags colour, TextDrawInfo* info)
 {
-    if (colour.colour != TEXT_COLOUR_254 && colour.colour != TEXT_COLOUR_255)
+    if (colour.colour != kTextColour254 && colour.colour != kTextColour255)
     {
         info->flags &= ~(TEXT_DRAW_FLAG_INSET | TEXT_DRAW_FLAG_OUTLINE);
         if (colour.hasFlag(ColourFlag::withOutline))

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -105,19 +105,6 @@ namespace OpenRCT2
 
     const void* MemoryStream::GetData() const
     {
-        return _data;
-    }
-
-    void* MemoryStream::GetDataCopy() const
-    {
-        auto result = Memory::Allocate<void>(_dataSize);
-        std::memcpy(result, _data, _dataSize);
-        return result;
-    }
-
-    void* MemoryStream::TakeData()
-    {
-        _access &= ~MEMORY_ACCESS::OWNER;
         return _data;
     }
 

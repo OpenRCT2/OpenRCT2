@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -80,7 +80,7 @@ namespace OpenRCT2
         MiniGolfPeepAnimationFramesPutt,
     };
 
-    const size_t MiniGolfPeepAnimationLengths[] = {
+    const size_t kMiniGolfPeepAnimationLengths[] = {
         std::size(MiniGolfPeepAnimationFramesWalk),
         std::size(MiniGolfPeepAnimationFramesPlaceBallDownwards),
         std::size(MiniGolfPeepAnimationFramesSwingLeft),
@@ -113,7 +113,7 @@ namespace OpenRCT2
         if (ride == nullptr)
             return;
 
-        auto rideEntry = ride->GetRideEntry();
+        auto rideEntry = ride->getRideEntry();
         if (rideEntry == nullptr)
             return;
 
@@ -149,7 +149,7 @@ namespace OpenRCT2
         if (ride == nullptr)
             return;
 
-        auto rideEntry = ride->GetRideEntry();
+        auto rideEntry = ride->getRideEntry();
         if (rideEntry == nullptr)
             return;
 

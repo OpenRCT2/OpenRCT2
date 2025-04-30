@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,11 +24,16 @@
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
-#include "../world/Wall.h"
 #include "Banner.h"
 #include "Footpath.h"
-#include "Map.h"
 #include "Scenery.h"
+#include "tile_element/EntranceElement.h"
+#include "tile_element/LargeSceneryElement.h"
+#include "tile_element/PathElement.h"
+#include "tile_element/SmallSceneryElement.h"
+#include "tile_element/TileElement.h"
+#include "tile_element/TrackElement.h"
+#include "tile_element/WallElement.h"
 
 using namespace OpenRCT2;
 
@@ -36,7 +41,7 @@ using map_animation_invalidate_event_handler = bool (*)(const CoordsXYZ& loc);
 
 static std::vector<MapAnimation> _mapAnimations;
 
-constexpr size_t MAX_ANIMATED_OBJECTS = 2000;
+constexpr size_t kMaxAnimatedObjects = 2000;
 
 static bool InvalidateMapAnimation(const MapAnimation& obj);
 
@@ -57,7 +62,7 @@ void MapAnimationCreate(int32_t type, const CoordsXYZ& loc)
 {
     if (!DoesAnimationExist(type, loc))
     {
-        if (_mapAnimations.size() < MAX_ANIMATED_OBJECTS)
+        if (_mapAnimations.size() < kMaxAnimatedObjects)
         {
             // Create new animation
             _mapAnimations.push_back({ static_cast<uint8_t>(type), loc });
@@ -114,7 +119,7 @@ static bool MapAnimationInvalidateRideEntrance(const CoordsXYZ& loc)
         auto ride = GetRide(tileElement->AsEntrance()->GetRideIndex());
         if (ride != nullptr)
         {
-            auto stationObj = ride->GetStationObject();
+            auto stationObj = ride->getStationObject();
             if (stationObj != nullptr)
             {
                 int32_t height = loc.z + stationObj->Height + 8;
@@ -196,7 +201,7 @@ static bool MapAnimationInvalidateSmallScenery(const CoordsXYZ& loc)
         if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_CLOCK))
         {
             // Peep, looking at scenery
-            if (!(GetGameState().CurrentTicks & 0x3FF) && GameIsNotPaused())
+            if (!(getGameState().currentTicks & 0x3FF) && GameIsNotPaused())
             {
                 int32_t direction = tileElement->GetDirection();
                 auto quad = EntityTileList<Peep>(CoordsXY{ loc } - CoordsDirectionDelta[direction]);
@@ -210,9 +215,9 @@ static bool MapAnimationInvalidateSmallScenery(const CoordsXYZ& loc)
                         continue;
 
                     peep->Action = PeepActionType::CheckTime;
-                    peep->ActionFrame = 0;
-                    peep->ActionSpriteImageOffset = 0;
-                    peep->UpdateCurrentActionSpriteType();
+                    peep->AnimationFrameNum = 0;
+                    peep->AnimationImageIdOffset = 0;
+                    peep->UpdateCurrentAnimationType();
                     peep->Invalidate();
                     break;
                 }
@@ -484,7 +489,7 @@ static bool MapAnimationInvalidateWallDoor(const CoordsXYZ& loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
-    if (GetGameState().CurrentTicks & 1)
+    if (getGameState().currentTicks & 1)
         return false;
 
     bool removeAnimation = true;
@@ -702,6 +707,8 @@ void MapAnimationAutoCreateAtTileElement(TileCoordsXY coords, TileElement* el)
                     break;
                 case TrackElemType::SpinningTunnel:
                     MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, loc);
+                    break;
+                default:
                     break;
             }
             break;

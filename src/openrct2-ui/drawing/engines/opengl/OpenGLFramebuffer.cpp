@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,20 +9,20 @@
 
 #ifndef DISABLE_OPENGL
 
-#    include "OpenGLFramebuffer.h"
+    #include "OpenGLFramebuffer.h"
 
-#    include <SDL_video.h>
-#    include <algorithm>
-#    include <cassert>
-#    include <memory>
+    #include <SDL_video.h>
+    #include <algorithm>
+    #include <cassert>
+    #include <memory>
 
 using namespace OpenRCT2::Ui;
 
-constexpr GLuint BACKBUFFER_ID = 0;
+constexpr GLuint kBackBufferID = 0;
 
 OpenGLFramebuffer::OpenGLFramebuffer(SDL_Window* window)
 {
-    _id = BACKBUFFER_ID;
+    _id = kBackBufferID;
     _texture = 0;
     _depth = 0;
     SDL_GL_GetDrawableSize(window, &_width, &_height);
@@ -65,7 +65,7 @@ OpenGLFramebuffer::OpenGLFramebuffer(int32_t width, int32_t height, bool depth, 
 
 OpenGLFramebuffer::~OpenGLFramebuffer()
 {
-    if (_id != BACKBUFFER_ID)
+    if (_id != kBackBufferID)
     {
         glDeleteTextures(1, &_texture);
         glDeleteTextures(1, &_depth);
@@ -105,7 +105,7 @@ void OpenGLFramebuffer::GetPixels(DrawPixelInfo& dpi) const
     {
         std::copy_n(src, _width, dst);
         src -= _width;
-        dst += dpi.width + dpi.pitch;
+        dst += dpi.LineStride();
     }
 }
 
@@ -148,6 +148,29 @@ GLuint OpenGLFramebuffer::CreateDepthTexture(int32_t width, int32_t height)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE);
     return depth;
+}
+
+void OpenGLFramebuffer::SetPixels(const DrawPixelInfo& dpi)
+{
+    assert(dpi.width == _width && dpi.height == _height);
+
+    auto pixels = std::make_unique<uint8_t[]>(_width * _height);
+    // Flip pixels vertically on copy
+    uint8_t* dst = pixels.get() + ((_height - 1) * _width);
+    uint8_t* src = dpi.bits;
+    for (int32_t y = 0; y < _height; y++)
+    {
+        std::copy_n(src, _width, dst);
+        src += dpi.width + dpi.pitch;
+        dst -= _width;
+    }
+
+    glBindTexture(GL_TEXTURE_2D, _texture);
+    CheckGLError();
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    CheckGLError();
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, _width, _height, GL_RED_INTEGER, GL_UNSIGNED_BYTE, pixels.get());
+    CheckGLError();
 }
 
 #endif /* DISABLE_OPENGL */

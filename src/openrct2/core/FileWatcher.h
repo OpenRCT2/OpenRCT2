@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "String.hpp"
+#include "StringTypes.h"
 
 #include <functional>
 #include <string>
@@ -17,11 +17,11 @@
 #include <vector>
 
 #ifdef _WIN32
-#    include "FileSystem.hpp"
+    #include "FileSystem.hpp"
 
 typedef void* HANDLE;
 #elif defined(__APPLE__)
-#    include <CoreServices/CoreServices.h>
+    #include <CoreServices/CoreServices.h>
 #endif
 
 /**

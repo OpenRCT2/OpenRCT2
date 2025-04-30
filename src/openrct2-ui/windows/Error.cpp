@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,15 +9,16 @@
 
 #include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/localisation/Formatting.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -30,9 +31,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto kMaxWidth = 250;
     static constexpr auto kPadding = 4;
 
-    static Widget window_error_widgets[] = {
+    static constexpr Widget window_error_widgets[] = {
         MakeWidget({ 0, 0 }, { 200, 42 }, WindowWidgetType::Frame, WindowColour::Primary),
-        kWidgetsEnd,
     };
 
     class ErrorWindow final : public Window
@@ -53,10 +53,11 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            window_error_widgets[WIDX_BACKGROUND].right = width - 1;
-            window_error_widgets[WIDX_BACKGROUND].bottom = height - 1;
+            SetWidgets(window_error_widgets);
 
-            widgets = window_error_widgets;
+            widgets[WIDX_BACKGROUND].right = width - 1;
+            widgets[WIDX_BACKGROUND].bottom = height - 1;
+
             _staleCount = 0;
 
             if (!gDisableErrorWindowSound)
@@ -120,7 +121,8 @@ namespace OpenRCT2::Ui::Windows
         }
 
         // Close any existing error windows if they exist.
-        WindowCloseByClass(WindowClass::Error);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::Error);
 
         // How wide is the error string?
         int32_t width = GfxGetStringWidthNewLined(buffer.data(), FontStyle::Medium);
@@ -138,8 +140,10 @@ namespace OpenRCT2::Ui::Windows
         windowPosition.y = std::clamp(windowPosition.y, 22, ContextGetHeight() - height - 40);
 
         auto errorWindow = std::make_unique<ErrorWindow>(std::move(buffer), numLines, autoClose);
-        return WindowCreate(
-            std::move(errorWindow), WindowClass::Error, windowPosition, width, height, WF_STICK_TO_FRONT | WF_TRANSPARENT);
+
+        return windowMgr->Create(
+            std::move(errorWindow), WindowClass::Error, windowPosition, width, height,
+            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_TITLE_BAR);
     }
 
     WindowBase* ErrorOpen(StringId title, StringId message, const Formatter& args, bool autoClose)

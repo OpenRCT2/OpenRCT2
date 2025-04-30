@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,7 +12,7 @@
 #include "../Identifiers.h"
 #include "../core/Guard.hpp"
 #include "../core/Money.hpp"
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 #include "StringIdType.h"
 
 #include <array>
@@ -79,7 +79,8 @@ public:
         return CurrentBuf - StartBuf;
     }
 
-    template<typename TSpecified, typename TDeduced> Formatter& Add(TDeduced value)
+    template<typename TSpecified, typename TDeduced>
+    Formatter& Add(TDeduced value)
     {
         static_assert(sizeof(TSpecified) <= sizeof(uint64_t), "Type too large");
         static_assert(sizeof(TDeduced) <= sizeof(uint64_t), "Type too large");

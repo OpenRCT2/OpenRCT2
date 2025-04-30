@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,15 +30,22 @@ enum WALL_SCENERY_FLAGS
 enum WALL_SCENERY_2_FLAGS
 {
     WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR = (1 << 0), // 0x1
-    WALL_SCENERY_2_DOOR_SOUND_MASK = 0x6,
+    WALL_SCENERY_2_DOOR_SOUND_MASK = 0b0110,
     WALL_SCENERY_2_DOOR_SOUND_SHIFT = 1,
     WALL_SCENERY_2_IS_OPAQUE = (1 << 3), // 0x8
     WALL_SCENERY_2_ANIMATED = (1 << 4),  // 0x10
 };
 
+enum class DoorSoundType : uint8_t
+{
+    none,
+    door,
+    portcullis,
+};
+
 struct WallSceneryEntry
 {
-    static constexpr auto kObjectType = ObjectType::Walls;
+    static constexpr auto kObjectType = ObjectType::walls;
 
     StringId name;
     uint32_t image;
@@ -49,4 +56,6 @@ struct WallSceneryEntry
     money64 price;
     ObjectEntryIndex scenery_tab_id;
     uint8_t scrolling_mode;
+
+    DoorSoundType getDoorSoundType() const;
 };

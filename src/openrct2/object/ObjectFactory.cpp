@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,8 +13,9 @@
 #include "../Diagnostic.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/Console.hpp"
+#include "../core/EnumMap.hpp"
 #include "../core/File.h"
 #include "../core/FileStream.h"
 #include "../core/Json.hpp"
@@ -26,6 +27,7 @@
 #include "../rct12/SawyerChunkReader.h"
 #include "AudioObject.h"
 #include "BannerObject.h"
+#include "ClimateObject.h"
 #include "EntranceObject.h"
 #include "FootpathObject.h"
 #include "FootpathRailingsObject.h"
@@ -36,7 +38,10 @@
 #include "ObjectLimits.h"
 #include "ObjectList.h"
 #include "PathAdditionObject.h"
+#include "PeepAnimationsObject.h"
+#include "PeepNamesObject.h"
 #include "RideObject.h"
+#include "ScenarioTextObject.h"
 #include "SceneryGroupObject.h"
 #include "SmallSceneryObject.h"
 #include "StationObject.h"
@@ -186,7 +191,7 @@ public:
     {
         _wasVerbose = true;
 
-        if (!String::IsNullOrEmpty(text))
+        if (!String::isNullOrEmpty(text))
         {
             LOG_VERBOSE("[%s] Info (%d): %s", _identifier.c_str(), code, text);
         }
@@ -196,7 +201,7 @@ public:
     {
         _wasWarning = true;
 
-        if (!String::IsNullOrEmpty(text))
+        if (!String::isNullOrEmpty(text))
         {
             Console::Error::WriteLine("[%s] Warning (%d): %s", _identifier.c_str(), code, text);
         }
@@ -206,7 +211,7 @@ public:
     {
         _wasError = true;
 
-        if (!String::IsNullOrEmpty(text))
+        if (!String::isNullOrEmpty(text))
         {
             Console::Error::WriteLine("[%s] Error (%d): %s", _identifier.c_str(), code, text);
         }
@@ -222,9 +227,9 @@ namespace OpenRCT2::ObjectFactory
     static std::unique_ptr<Object> CreateObjectFromJson(
         IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable);
 
-    static ObjectSourceGame ParseSourceGame(const std::string& s)
+    static ObjectSourceGame ParseSourceGame(const std::string_view s)
     {
-        static const std::unordered_map<std::string, ObjectSourceGame> LookupTable{
+        static const std::unordered_map<std::string_view, ObjectSourceGame> LookupTable{
             { "rct1", ObjectSourceGame::RCT1 },
             { "rct1aa", ObjectSourceGame::AddedAttractions },
             { "rct1ll", ObjectSourceGame::LoopyLandscapes },
@@ -262,12 +267,12 @@ namespace OpenRCT2::ObjectFactory
         std::unique_ptr<Object> result;
         try
         {
-            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
+            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::open);
             auto chunkReader = SawyerChunkReader(&fs);
 
             RCTObjectEntry entry = fs.ReadValue<RCTObjectEntry>();
 
-            if (entry.GetType() != ObjectType::ScenarioText)
+            if (entry.GetType() != ObjectType::scenarioText)
             {
                 result = CreateObject(entry.GetType());
                 result->SetDescriptor(ObjectEntryDescriptor(entry));
@@ -331,58 +336,68 @@ namespace OpenRCT2::ObjectFactory
         std::unique_ptr<Object> result;
         switch (type)
         {
-            case ObjectType::Ride:
+            case ObjectType::ride:
                 result = std::make_unique<RideObject>();
                 break;
-            case ObjectType::SmallScenery:
+            case ObjectType::smallScenery:
                 result = std::make_unique<SmallSceneryObject>();
                 break;
-            case ObjectType::LargeScenery:
+            case ObjectType::largeScenery:
                 result = std::make_unique<LargeSceneryObject>();
                 break;
-            case ObjectType::Walls:
+            case ObjectType::walls:
                 result = std::make_unique<WallObject>();
                 break;
-            case ObjectType::Banners:
+            case ObjectType::banners:
                 result = std::make_unique<BannerObject>();
                 break;
-            case ObjectType::Paths:
+            case ObjectType::paths:
                 result = std::make_unique<FootpathObject>();
                 break;
-            case ObjectType::PathAdditions:
+            case ObjectType::pathAdditions:
                 result = std::make_unique<PathAdditionObject>();
                 break;
-            case ObjectType::SceneryGroup:
+            case ObjectType::sceneryGroup:
                 result = std::make_unique<SceneryGroupObject>();
                 break;
-            case ObjectType::ParkEntrance:
+            case ObjectType::parkEntrance:
                 result = std::make_unique<EntranceObject>();
                 break;
-            case ObjectType::Water:
+            case ObjectType::water:
                 result = std::make_unique<WaterObject>();
                 break;
-            case ObjectType::ScenarioText:
+            case ObjectType::scenarioText:
+                result = std::make_unique<ScenarioTextObject>();
                 break;
-            case ObjectType::TerrainSurface:
+            case ObjectType::terrainSurface:
                 result = std::make_unique<TerrainSurfaceObject>();
                 break;
-            case ObjectType::TerrainEdge:
+            case ObjectType::terrainEdge:
                 result = std::make_unique<TerrainEdgeObject>();
                 break;
-            case ObjectType::Station:
+            case ObjectType::station:
                 result = std::make_unique<StationObject>();
                 break;
-            case ObjectType::Music:
+            case ObjectType::music:
                 result = std::make_unique<MusicObject>();
                 break;
-            case ObjectType::FootpathSurface:
+            case ObjectType::footpathSurface:
                 result = std::make_unique<FootpathSurfaceObject>();
                 break;
-            case ObjectType::FootpathRailings:
+            case ObjectType::footpathRailings:
                 result = std::make_unique<FootpathRailingsObject>();
                 break;
-            case ObjectType::Audio:
+            case ObjectType::audio:
                 result = std::make_unique<AudioObject>();
+                break;
+            case ObjectType::peepNames:
+                result = std::make_unique<PeepNamesObject>();
+                break;
+            case ObjectType::peepAnimations:
+                result = std::make_unique<PeepAnimationsObject>();
+                break;
+            case ObjectType::climate:
+                result = std::make_unique<ClimateObject>();
                 break;
             default:
                 throw std::runtime_error("Invalid object type");
@@ -390,48 +405,35 @@ namespace OpenRCT2::ObjectFactory
         return result;
     }
 
-    static ObjectType ParseObjectType(const std::string& s)
-    {
-        if (s == "ride")
-            return ObjectType::Ride;
-        if (s == "footpath_banner")
-            return ObjectType::Banners;
-        if (s == "footpath_item")
-            return ObjectType::PathAdditions;
-        if (s == "scenery_small")
-            return ObjectType::SmallScenery;
-        if (s == "scenery_large")
-            return ObjectType::LargeScenery;
-        if (s == "scenery_wall")
-            return ObjectType::Walls;
-        if (s == "scenery_group")
-            return ObjectType::SceneryGroup;
-        if (s == "park_entrance")
-            return ObjectType::ParkEntrance;
-        if (s == "water")
-            return ObjectType::Water;
-        if (s == "terrain_surface")
-            return ObjectType::TerrainSurface;
-        if (s == "terrain_edge")
-            return ObjectType::TerrainEdge;
-        if (s == "station")
-            return ObjectType::Station;
-        if (s == "music")
-            return ObjectType::Music;
-        if (s == "footpath_surface")
-            return ObjectType::FootpathSurface;
-        if (s == "footpath_railings")
-            return ObjectType::FootpathRailings;
-        if (s == "audio")
-            return ObjectType::Audio;
-        return ObjectType::None;
-    }
+    static const EnumMap<ObjectType> kObjectTypeMap = {
+        { "ride", ObjectType::ride },
+        { "scenery_small", ObjectType::smallScenery },
+        { "scenery_large", ObjectType::largeScenery },
+        { "scenery_wall", ObjectType::walls },
+        { "footpath_banner", ObjectType::banners },
+        { "footpath_legacy", ObjectType::paths },
+        { "footpath_item", ObjectType::pathAdditions },
+        { "scenery_group", ObjectType::sceneryGroup },
+        { "park_entrance", ObjectType::parkEntrance },
+        { "water", ObjectType::water },
+        { "scenario_text", ObjectType::scenarioText },
+        { "terrain_surface", ObjectType::terrainSurface },
+        { "terrain_edge", ObjectType::terrainEdge },
+        { "station", ObjectType::station },
+        { "music", ObjectType::music },
+        { "footpath_surface", ObjectType::footpathSurface },
+        { "footpath_railings", ObjectType::footpathRailings },
+        { "audio", ObjectType::audio },
+        { "peep_names", ObjectType::peepNames },
+        { "peep_animations", ObjectType::peepAnimations },
+        { "climate", ObjectType::climate },
+    };
 
     std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, std::string_view path, bool loadImages)
     {
         try
         {
-            auto archive = Zip::Open(path, ZIP_ACCESS::READ);
+            auto archive = Zip::Open(path, ZipAccess::read);
             auto jsonBytes = archive->GetFileData("object.json");
             if (jsonBytes.empty())
             {
@@ -522,9 +524,10 @@ namespace OpenRCT2::ObjectFactory
 
         std::unique_ptr<Object> result;
 
-        auto objectType = ParseObjectType(Json::GetString(jRoot["objectType"]));
-        if (objectType != ObjectType::None)
+        auto lookup = kObjectTypeMap.find(Json::GetString(jRoot["objectType"]));
+        if (lookup != kObjectTypeMap.end())
         {
+            auto objectType = lookup->second;
             auto id = Json::GetString(jRoot["id"]);
 
             // Base audio files are renamed to a common, virtual name so asset packs can override it correctly.

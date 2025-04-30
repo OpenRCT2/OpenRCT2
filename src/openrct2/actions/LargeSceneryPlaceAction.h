@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,7 +25,7 @@ class LargeSceneryPlaceAction final : public GameActionBase<GameCommand::PlaceLa
 {
 private:
     CoordsXYZD _loc;
-    ObjectEntryIndex _sceneryType{ OBJECT_ENTRY_INDEX_NULL };
+    ObjectEntryIndex _sceneryType{ kObjectEntryIndexNull };
     uint8_t _primaryColour{};
     uint8_t _secondaryColour{};
     uint8_t _tertiaryColour{};
@@ -46,8 +46,7 @@ public:
     OpenRCT2::GameActions::Result Execute() const override;
 
 private:
-    int16_t GetTotalNumTiles(LargeSceneryTile* tiles) const;
-    bool CheckMapCapacity(LargeSceneryTile* tiles, int16_t numTiles) const;
-    int16_t GetMaxSurfaceHeight(LargeSceneryTile* tiles) const;
+    bool CheckMapCapacity(std::span<const LargeSceneryTile> tiles, size_t numTiles) const;
+    int16_t GetMaxSurfaceHeight(std::span<const LargeSceneryTile> tiles) const;
     void SetNewLargeSceneryElement(LargeSceneryElement& sceneryElement, uint8_t tileNum) const;
 };

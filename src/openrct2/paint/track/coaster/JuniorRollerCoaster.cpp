@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,14 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/Drawing.h"
 #include "../../../interface/Viewport.h"
 #include "../../../object/StationObject.h"
 #include "../../../ride/RideData.h"
 #include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../tile_element/Segment.h"
@@ -1850,7 +1851,8 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_blockbrakes[2][4] = 
     },
 };
 
-template<JuniorRCSubType TSubType> constexpr uint8_t JuniorRCGetSubTypeOffset(const TrackElement& trackElement)
+template<JuniorRCSubType TSubType>
+constexpr uint8_t JuniorRCGetSubTypeOffset(const TrackElement& trackElement)
 {
     return trackElement.HasChain() ? EnumValue(TSubType) : 0;
 }
@@ -1874,7 +1876,7 @@ static void JuniorRCPaintTrackFlat(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -1886,18 +1888,10 @@ static void JuniorRCPaintStation(
 {
     ImageId imageId;
 
-    bool isBraked = trackElement.IsBrakeClosed();
-    auto stationObj = ride.GetStationObject();
+    const bool isBraked = trackElement.IsBrakeClosed();
 
     if (direction == 0 || direction == 2)
     {
-        if (stationObj != nullptr && !(stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
-        {
-            // height -= 2 (height - 2)
-            imageId = GetStationColourScheme(session, trackElement).WithIndex(SPR_STATION_BASE_B_SW_NE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 1 } });
-        }
-
         // height += 2 (height)
         if (trackElement.GetTrackType() == TrackElemType::EndStation && TSubType == JuniorRCSubType::Junior)
         {
@@ -1907,17 +1901,10 @@ static void JuniorRCPaintStation(
         {
             imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_station[false][direction]);
         }
-        PaintAddImageAsChild(session, imageId, { 0, 6, height }, { { 0, 0, height }, { 32, 20, 1 } });
+        PaintAddImageAsParent(session, imageId, { 0, 6, height }, { { 0, 6, height + 1 }, { 32, 20, 1 } });
     }
     else if (direction == 1 || direction == 3)
     {
-        if (stationObj != nullptr && !(stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
-        {
-            // height -= 2 (height - 2)
-            imageId = GetStationColourScheme(session, trackElement).WithIndex(SPR_STATION_BASE_B_NW_SE);
-            PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 2, 0, height }, { 28, 32, 1 } });
-        }
-
         // height += 2 (height)
         if (trackElement.GetTrackType() == TrackElemType::EndStation && TSubType == JuniorRCSubType::Junior)
         {
@@ -1927,13 +1914,19 @@ static void JuniorRCPaintStation(
         {
             imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_station[false][direction]);
         }
-        PaintAddImageAsChild(session, imageId, { 6, 0, height }, { { 0, 0, height }, { 20, 32, 1 } });
+        PaintAddImageAsParent(session, imageId, { 6, 0, height }, { { 0, 6, height + 1 }, { 20, 32, 1 } });
     }
-
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
     TrackPaintUtilDrawStationTunnel(session, direction, height);
 
-    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
+    if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2))
+    {
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
+    }
+    else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+    }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -1962,7 +1955,7 @@ static void JuniorRCPaintTrack25DegUp(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
 }
@@ -1995,7 +1988,7 @@ static void JuniorRCPaintTrackFlatTo25DegUp(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -2040,7 +2033,7 @@ static void JuniorRCPaintTrack25DegUpToFlat(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
@@ -2101,9 +2094,7 @@ static void JuniorRCRightQuarterTurn5TilesPaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::rightCorner),
+                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
             break;
@@ -2112,8 +2103,8 @@ static void JuniorRCRightQuarterTurn5TilesPaintSetup(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide,
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::topRightSide),
+                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
+                        PaintSegment::bottom, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             break;
@@ -2121,8 +2112,7 @@ static void JuniorRCRightQuarterTurn5TilesPaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::centre),
+                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre),
                     direction),
                 0xFFFF, 0);
             break;
@@ -2131,8 +2121,8 @@ static void JuniorRCRightQuarterTurn5TilesPaintSetup(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::topLeftSide),
+                        PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
+                        PaintSegment::bottom, PaintSegment::topLeft),
                     direction),
                 0xFFFF, 0);
             break;
@@ -2140,9 +2130,7 @@ static void JuniorRCRightQuarterTurn5TilesPaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::leftCorner),
+                    EnumsToFlags(PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left),
                     direction),
                 0xFFFF, 0);
             break;
@@ -2211,7 +2199,7 @@ static void JuniorRCFlatToLeftBankPaintSetup(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -2262,7 +2250,7 @@ static void JuniorRCFlatToRightBankPaintSetup(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -2409,9 +2397,7 @@ static void JuniorRCBankedRightQuarterTurn5TilesPaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::rightCorner),
+                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
             break;
@@ -2420,8 +2406,8 @@ static void JuniorRCBankedRightQuarterTurn5TilesPaintSetup(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide,
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::topRightSide),
+                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
+                        PaintSegment::bottom, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             break;
@@ -2429,8 +2415,7 @@ static void JuniorRCBankedRightQuarterTurn5TilesPaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::centre),
+                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre),
                     direction),
                 0xFFFF, 0);
             break;
@@ -2439,8 +2424,8 @@ static void JuniorRCBankedRightQuarterTurn5TilesPaintSetup(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::topLeftSide),
+                        PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
+                        PaintSegment::bottom, PaintSegment::topLeft),
                     direction),
                 0xFFFF, 0);
             break;
@@ -2448,9 +2433,7 @@ static void JuniorRCBankedRightQuarterTurn5TilesPaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::leftCorner),
+                    EnumsToFlags(PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left),
                     direction),
                 0xFFFF, 0);
             break;
@@ -2527,7 +2510,7 @@ static void JuniorRCLeftBankTo25DegUpPaintSetup(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -2590,7 +2573,7 @@ static void JuniorRCRightBankTo25DegUpPaintSetup(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -2654,7 +2637,7 @@ static void JuniorRC25DegUpToLeftBankPaintSetup(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
@@ -2718,7 +2701,7 @@ static void JuniorRC25DegUpToRightBankPaintSetup(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);
 }
@@ -2809,7 +2792,7 @@ static void JuniorRCLeftBankPaintSetup(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -2872,9 +2855,7 @@ static void JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::topCorner),
+                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::top),
                     direction),
                 0xFFFF, 0);
             break;
@@ -2883,8 +2864,8 @@ static void JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topCorner, PaintSegment::leftCorner,
-                        PaintSegment::topLeftSide, PaintSegment::topRightSide),
+                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::top, PaintSegment::left,
+                        PaintSegment::topLeft, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             break;
@@ -2892,9 +2873,7 @@ static void JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomRightSide, PaintSegment::rightCorner, PaintSegment::topRightSide,
-                        PaintSegment::centre),
+                    EnumsToFlags(PaintSegment::bottomRight, PaintSegment::right, PaintSegment::topRight, PaintSegment::centre),
                     direction),
                 0xFFFF, 0);
             break;
@@ -2903,8 +2882,8 @@ static void JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::topLeftSide),
+                        PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
+                        PaintSegment::bottom, PaintSegment::topLeft),
                     direction),
                 0xFFFF, 0);
             break;
@@ -2912,9 +2891,7 @@ static void JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomCorner),
+                    EnumsToFlags(PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottom),
                     direction),
                 0xFFFF, 0);
             break;
@@ -2977,9 +2954,7 @@ static void JuniorRCPaintTrackRightQuarterTurn5Tiles25DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::rightCorner),
+                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
             break;
@@ -2988,8 +2963,8 @@ static void JuniorRCPaintTrackRightQuarterTurn5Tiles25DegUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide,
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::topRightSide),
+                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
+                        PaintSegment::bottom, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             break;
@@ -2997,8 +2972,7 @@ static void JuniorRCPaintTrackRightQuarterTurn5Tiles25DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::centre),
+                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre),
                     direction),
                 0xFFFF, 0);
             break;
@@ -3007,8 +2981,8 @@ static void JuniorRCPaintTrackRightQuarterTurn5Tiles25DegUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::topLeftSide),
+                        PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
+                        PaintSegment::bottom, PaintSegment::topLeft),
                     direction),
                 0xFFFF, 0);
             break;
@@ -3016,9 +2990,7 @@ static void JuniorRCPaintTrackRightQuarterTurn5Tiles25DegUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::leftCorner),
+                    EnumsToFlags(PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left),
                     direction),
                 0xFFFF, 0);
             break;
@@ -3124,21 +3096,21 @@ static void JuniorRCSBendLeftPaintSetup(
     {
         case 0:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::topCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::top);
             break;
         case 1:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::leftCorner,
-                PaintSegment::topLeftSide, PaintSegment::topCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
+                PaintSegment::topLeft, PaintSegment::top);
             break;
         case 2:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomCorner,
-                PaintSegment::bottomRightSide, PaintSegment::rightCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
+                PaintSegment::bottomRight, PaintSegment::right);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, (direction & 1)), 0xFFFF, 0);
@@ -3218,21 +3190,21 @@ static void JuniorRCSBendRightPaintSetup(
     {
         case 0:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::rightCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right);
             break;
         case 1:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomCorner,
-                PaintSegment::bottomRightSide, PaintSegment::rightCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
+                PaintSegment::bottomRight, PaintSegment::right);
             break;
         case 2:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::leftCorner,
-                PaintSegment::topLeftSide, PaintSegment::topCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
+                PaintSegment::topLeft, PaintSegment::top);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::leftCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, (direction & 1)), 0xFFFF, 0);
@@ -3268,15 +3240,15 @@ static void JuniorRCRightQuarterTurn3TilesPaintSetup(
     {
         case 0:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::rightCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right);
             break;
         case 2:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide, PaintSegment::bottomCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottom);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::leftCorner);
+                PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -3387,15 +3359,15 @@ static void JuniorRCRightQuarterTurn3TilesBankPaintSetup(
     {
         case 0:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::rightCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right);
             break;
         case 2:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide, PaintSegment::bottomCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottom);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::leftCorner);
+                PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -3472,11 +3444,11 @@ static void JuniorRCPaintTrackRightQuarterTurn3Tiles25DegUp(
     {
         case 0:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::rightCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::leftCorner);
+                PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -3556,11 +3528,11 @@ static void JuniorRCPaintTrackRightQuarterTurn3Tiles25DegDown(
     {
         case 0:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::rightCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::leftCorner);
+                PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -3662,17 +3634,17 @@ static void JuniorRCRightHalfBankedHelixUpSmallPaintSetup(
     {
         case 0:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::rightCorner,
-                PaintSegment::bottomRightSide);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right,
+                PaintSegment::bottomRight);
             break;
         case 2:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::topLeftSide,
-                PaintSegment::leftCorner);
+                PaintSegment::bottomLeft, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft,
+                PaintSegment::left);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -3733,17 +3705,17 @@ static void JuniorRCRightHalfBankedHelixDownSmallPaintSetup(
     {
         case 0:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::rightCorner,
-                PaintSegment::bottomRightSide);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right,
+                PaintSegment::bottomRight);
             break;
         case 2:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::topLeftSide,
-                PaintSegment::leftCorner);
+                PaintSegment::bottomLeft, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft,
+                PaintSegment::left);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
@@ -3838,8 +3810,8 @@ static void JuniorRCRightHalfBankedHelixUpLargePaintSetup(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide, PaintSegment::centre,
-                        PaintSegment::topRightSide, PaintSegment::rightCorner),
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::right),
                     direction),
                 0xFFFF, 0);
             break;
@@ -3848,8 +3820,8 @@ static void JuniorRCRightHalfBankedHelixUpLargePaintSetup(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide,
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::topRightSide),
+                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
+                        PaintSegment::bottom, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             break;
@@ -3857,8 +3829,7 @@ static void JuniorRCRightHalfBankedHelixUpLargePaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::centre),
+                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre),
                     direction),
                 0xFFFF, 0);
             break;
@@ -3867,8 +3838,8 @@ static void JuniorRCRightHalfBankedHelixUpLargePaintSetup(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::topLeftSide),
+                        PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
+                        PaintSegment::bottom, PaintSegment::topLeft),
                     direction),
                 0xFFFF, 0);
             break;
@@ -3877,8 +3848,8 @@ static void JuniorRCRightHalfBankedHelixUpLargePaintSetup(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide, PaintSegment::centre,
-                        PaintSegment::topLeftSide, PaintSegment::leftCorner),
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::left),
                     direction),
                 0xFFFF, 0);
             break;
@@ -3943,8 +3914,8 @@ static void JuniorRCRightHalfBankedHelixDownLargePaintSetup(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide, PaintSegment::centre,
-                        PaintSegment::topRightSide, PaintSegment::rightCorner),
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::right),
                     direction),
                 0xFFFF, 0);
             break;
@@ -3953,8 +3924,8 @@ static void JuniorRCRightHalfBankedHelixDownLargePaintSetup(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide,
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::topRightSide),
+                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
+                        PaintSegment::bottom, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             break;
@@ -3962,8 +3933,7 @@ static void JuniorRCRightHalfBankedHelixDownLargePaintSetup(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::centre),
+                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre),
                     direction),
                 0xFFFF, 0);
             break;
@@ -3972,8 +3942,8 @@ static void JuniorRCRightHalfBankedHelixDownLargePaintSetup(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::topLeftSide),
+                        PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
+                        PaintSegment::bottom, PaintSegment::topLeft),
                     direction),
                 0xFFFF, 0);
             break;
@@ -3982,8 +3952,8 @@ static void JuniorRCRightHalfBankedHelixDownLargePaintSetup(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide, PaintSegment::centre,
-                        PaintSegment::topLeftSide, PaintSegment::leftCorner),
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::left),
                     direction),
                 0xFFFF, 0);
             break;
@@ -4056,7 +4026,7 @@ static void JuniorRCBrakePaintSetup(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -4095,7 +4065,7 @@ static void JuniorRCBlockBrakePaintSetup(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -4136,26 +4106,26 @@ static void JuniorRCLeftEighthToDiagPaintSetup(
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide);
+            blockedSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight);
             break;
         case 1:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::leftCorner,
-                PaintSegment::topLeftSide, PaintSegment::topCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
+                PaintSegment::topLeft, PaintSegment::top);
             break;
         case 2:
             blockedSegments = EnumsToFlags(
-                PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomCorner, PaintSegment::bottomRightSide,
-                PaintSegment::rightCorner);
+                PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom, PaintSegment::bottomRight,
+                PaintSegment::right);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::leftCorner, PaintSegment::topLeftSide);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::left, PaintSegment::topLeft);
             break;
         case 4:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::topLeftSide,
-                PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::topLeft,
+                PaintSegment::bottom, PaintSegment::bottomRight);
             break;
     }
 
@@ -4199,26 +4169,25 @@ static void JuniorRCRightEighthToDiagPaintSetup(
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide);
+            blockedSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight);
             break;
         case 1:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomCorner,
-                PaintSegment::bottomRightSide, PaintSegment::rightCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
+                PaintSegment::bottomRight, PaintSegment::right);
             break;
         case 2:
             blockedSegments = EnumsToFlags(
-                PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::leftCorner, PaintSegment::topLeftSide,
-                PaintSegment::topCorner);
+                PaintSegment::centre, PaintSegment::topRight, PaintSegment::left, PaintSegment::topLeft, PaintSegment::top);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight);
             break;
         case 4:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::leftCorner,
-                PaintSegment::topLeftSide, PaintSegment::bottomRightSide);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
+                PaintSegment::topLeft, PaintSegment::bottomRight);
             break;
     }
 
@@ -4360,26 +4329,26 @@ static void JuniorRCLeftEighthToDiagBankPaintSetup(
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide);
+            blockedSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight);
             break;
         case 1:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::leftCorner,
-                PaintSegment::topLeftSide, PaintSegment::topCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
+                PaintSegment::topLeft, PaintSegment::top);
             break;
         case 2:
             blockedSegments = EnumsToFlags(
-                PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomCorner, PaintSegment::bottomRightSide,
-                PaintSegment::rightCorner);
+                PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom, PaintSegment::bottomRight,
+                PaintSegment::right);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::leftCorner, PaintSegment::topLeftSide);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::left, PaintSegment::topLeft);
             break;
         case 4:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::topLeftSide,
-                PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::topLeft,
+                PaintSegment::bottom, PaintSegment::bottomRight);
             break;
     }
 
@@ -4503,26 +4472,25 @@ static void JuniorRCRightEighthToDiagBankPaintSetup(
     switch (trackSequence)
     {
         case 0:
-            blockedSegments = EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide);
+            blockedSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight);
             break;
         case 1:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::bottomCorner,
-                PaintSegment::bottomRightSide, PaintSegment::rightCorner);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
+                PaintSegment::bottomRight, PaintSegment::right);
             break;
         case 2:
             blockedSegments = EnumsToFlags(
-                PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::leftCorner, PaintSegment::topLeftSide,
-                PaintSegment::topCorner);
+                PaintSegment::centre, PaintSegment::topRight, PaintSegment::left, PaintSegment::topLeft, PaintSegment::top);
             break;
         case 3:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight);
             break;
         case 4:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide, PaintSegment::leftCorner,
-                PaintSegment::topLeftSide, PaintSegment::bottomRightSide);
+                PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
+                PaintSegment::topLeft, PaintSegment::bottomRight);
             break;
     }
 
@@ -5249,7 +5217,7 @@ static void JuniorRCPaintTrack60DegUp(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 104);
 }
@@ -5335,7 +5303,7 @@ static void JuniorRCPaintTrack25DegUpTo60DegUp(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -5398,7 +5366,7 @@ static void JuniorRCPaintTrack60DegUpTo25DegUp(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -5648,7 +5616,7 @@ static void JuniorRCFlatTo60DegUpPaintSetup(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -5709,7 +5677,7 @@ static void JuniorRC60DegUpToFlatPaintSetup(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 72);
 }
@@ -5757,14 +5725,16 @@ static void JuniorRCBoosterPaintSetup(
     if (direction & 1)
     {
         PaintAddImageAsParent(
-            session, session.TrackColours.WithIndex(SPR_JUNIOR_RC_BOOSTER_NE_SW), { 0, 0, height }, { 20, 32, 1 });
+            session, session.TrackColours.WithIndex(SPR_JUNIOR_RC_BOOSTER_NE_SW), { 0, 0, height },
+            { { 6, 0, height }, { 20, 32, 1 } });
 
         PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
         PaintAddImageAsParent(
-            session, session.TrackColours.WithIndex(SPR_JUNIOR_RC_BOOSTER_NW_SE), { 0, 0, height }, { 32, 20, 1 });
+            session, session.TrackColours.WithIndex(SPR_JUNIOR_RC_BOOSTER_NW_SE), { 0, 0, height },
+            { { 0, 6, height }, { 32, 20, 1 } });
 
         PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
@@ -5778,7 +5748,7 @@ static void JuniorRCBoosterPaintSetup(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -5798,7 +5768,8 @@ static void JuniorRCTrackOnRidePhoto(
 }
 
 /* 0x008AAA0C */
-template<JuniorRCSubType TSubType> TRACK_PAINT_FUNCTION GetTrackPaintFunctionJuniorRCTemplate(int32_t trackType)
+template<JuniorRCSubType TSubType>
+TrackPaintFunction GetTrackPaintFunctionJuniorRCTemplate(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -6022,16 +5993,17 @@ template<JuniorRCSubType TSubType> TRACK_PAINT_FUNCTION GetTrackPaintFunctionJun
 
         case TrackElemType::OnRidePhoto:
             return JuniorRCTrackOnRidePhoto;
+        default:
+            return TrackPaintFunctionDummy;
     }
-    return nullptr;
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionJuniorRC(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionJuniorRC(OpenRCT2::TrackElemType trackType)
 {
     return GetTrackPaintFunctionJuniorRCTemplate<JuniorRCSubType::Junior>(trackType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionWaterRC(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionWaterRC(OpenRCT2::TrackElemType trackType)
 {
     return GetTrackPaintFunctionJuniorRCTemplate<JuniorRCSubType::WaterCoaster>(trackType);
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include "../core/Money.hpp"
 #include "../world/Location.hpp"
+#include "../world/tile_element/SurfaceElement.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "TrackData.h"
@@ -22,11 +23,11 @@ namespace OpenRCT2
     money64 MazeCalculateCost(money64 constructionCost, const Ride& ride, const CoordsXYZ& loc)
     {
         const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
-        money64 price = (ride.GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.priceModifier) >> 16;
+        money64 price = (ride.getRideTypeDescriptor().BuildCosts.TrackPrice * ted.priceModifier) >> 16;
 
         auto surfaceElement = MapGetSurfaceElementAt(loc);
         auto heightDifference = (loc.z - surfaceElement->GetBaseZ()) / kCoordsZPerTinyZ;
-        money64 supportCost = heightDifference * ride.GetRideTypeDescriptor().BuildCosts.SupportPrice;
+        money64 supportCost = heightDifference * ride.getRideTypeDescriptor().BuildCosts.SupportPrice;
 
         return constructionCost + price + supportCost;
     }

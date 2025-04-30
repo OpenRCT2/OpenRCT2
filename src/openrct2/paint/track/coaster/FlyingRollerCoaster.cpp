@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,13 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/Drawing.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/RideData.h"
 #include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/MetalSupports.h"
 #include "../../tile_element/Paint.TileElement.h"
@@ -31,11 +32,11 @@ static void FlyingRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr uint32_t imageIds[4][3] = {
-        { 17154, 17150, SPR_STATION_BASE_A_SW_NE },
-        { 17155, 17151, SPR_STATION_BASE_A_NW_SE },
-        { 17154, 17150, SPR_STATION_BASE_A_SW_NE },
-        { 17155, 17151, SPR_STATION_BASE_A_NW_SE },
+    static constexpr ImageIndex imageIds[4][2] = {
+        { 17154, 17150 },
+        { 17155, 17151 },
+        { 17154, 17150 },
+        { 17155, 17151 },
     };
 
     if (trackElement.GetTrackType() == TrackElemType::EndStation)
@@ -50,11 +51,15 @@ static void FlyingRCTrackStation(
             session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
             { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
-    PaintAddImageAsParentRotated(
-        session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][2]), { 0, 0, height },
-        { 32, 32, 1 });
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
-    TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
+    if (TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::a, 0, 9, 11))
+    {
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, supportType.metal);
+    }
+    else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+    }
 
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -94,7 +99,7 @@ static void FlyingRCTrack90DegToInvertedFlatQuarterLoopUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide), direction),
+                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
@@ -125,7 +130,7 @@ static void FlyingRCTrack90DegToInvertedFlatQuarterLoopUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide), direction),
+                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
@@ -160,7 +165,7 @@ static void FlyingRCTrack90DegToInvertedFlatQuarterLoopUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeftSide, PaintSegment::bottomRightSide), direction),
+                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
@@ -289,8 +294,8 @@ static void FlyingRCTrackHalfLoopInvertedUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::left, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 168);
@@ -431,8 +436,8 @@ static void FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 88);
@@ -465,8 +470,8 @@ static void FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 224);
@@ -499,8 +504,7 @@ static void FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::bottomRightSide),
+                        PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 128);
@@ -533,8 +537,8 @@ static void FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 224);
@@ -579,8 +583,8 @@ static void FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -682,8 +686,8 @@ static void FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 88);
@@ -716,8 +720,8 @@ static void FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide),
+                        PaintSegment::right, PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight,
+                        PaintSegment::bottomLeft, PaintSegment::bottomRight),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 224);
@@ -749,9 +753,7 @@ static void FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::bottomLeftSide),
+                    EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 128);
@@ -784,8 +786,8 @@ static void FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 224);
@@ -830,8 +832,8 @@ static void FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::topRightSide, PaintSegment::bottomLeftSide),
+                        PaintSegment::top, PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft,
+                        PaintSegment::topRight, PaintSegment::bottomLeft),
                     direction),
                 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 40);
@@ -855,7 +857,7 @@ static void FlyingRCTrackRightFlyingLargeHalfLoopUninvertedDown(
         session, ride, 6 - trackSequence, direction, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRC(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionFlyingRC(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -889,6 +891,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRC(int32_t trackType)
             return FlyingRCTrackLeftFlyingLargeHalfLoopUninvertedDown;
         case TrackElemType::RightFlyerLargeHalfLoopUninvertedDown:
             return FlyingRCTrackRightFlyingLargeHalfLoopUninvertedDown;
+        default:
+            return GetTrackPaintFunctionTwisterRC(trackType);
     }
-    return GetTrackPaintFunctionTwisterRC(trackType);
 }

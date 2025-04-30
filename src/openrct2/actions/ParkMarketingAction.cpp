@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,7 +15,6 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
@@ -56,7 +55,7 @@ GameActions::Result ParkMarketingAction::Query() const
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_START_MARKETING_CAMPAIGN, STR_ERR_VALUE_OUT_OF_RANGE);
     }
-    if (GetGameState().Park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
+    if (getGameState().park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_CANT_START_MARKETING_CAMPAIGN,
@@ -83,7 +82,7 @@ GameActions::Result ParkMarketingAction::Execute() const
     MarketingNewCampaign(campaign);
 
     // We are only interested in invalidating the finances (marketing) window
-    auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
+    auto windowManager = OpenRCT2::Ui::GetWindowManager();
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_CASH));
 
     return CreateResult();

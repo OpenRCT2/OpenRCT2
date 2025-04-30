@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,8 +10,6 @@
 #include "FormatCodes.h"
 
 #include "../core/EnumMap.hpp"
-
-#include <string>
 
 // clang-format off
 static const EnumMap<FormatToken> FormatTokenMap = {
@@ -38,6 +36,7 @@ static const EnumMap<FormatToken> FormatTokenMap = {
     { "STRINGID",             FormatToken::StringById,          },
     { "STRING",               FormatToken::String,              },
     { "MONTHYEAR",            FormatToken::MonthYear,           },
+    { "MONTHYEAR_SENTENCE",   FormatToken::MonthYearSentence,   },
     { "MONTH",                FormatToken::Month,               },
     { "VELOCITY",             FormatToken::Velocity,            },
     { "POP16",                FormatToken::Pop16,               },
@@ -45,6 +44,7 @@ static const EnumMap<FormatToken> FormatTokenMap = {
     { "DURATION",             FormatToken::DurationShort,       },
     { "REALTIME",             FormatToken::DurationLong,        },
     { "LENGTH",               FormatToken::Length,              },
+    { "HEIGHT",               FormatToken::Height,              },
     { "SPRITE",               FormatToken::Sprite,              },
     { "BLACK",                FormatToken::ColourBlack,         },
     { "GREY",                 FormatToken::ColourGrey,          },
@@ -98,11 +98,13 @@ bool FormatTokenTakesArgument(FormatToken token)
         case FormatToken::StringById:
         case FormatToken::String:
         case FormatToken::MonthYear:
+        case FormatToken::MonthYearSentence:
         case FormatToken::Month:
         case FormatToken::Velocity:
         case FormatToken::DurationShort:
         case FormatToken::DurationLong:
         case FormatToken::Length:
+        case FormatToken::Height:
         case FormatToken::Sprite:
             return true;
         default:

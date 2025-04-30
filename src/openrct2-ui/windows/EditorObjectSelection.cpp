@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,7 +11,7 @@
 #include <cctype>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Editor.h>
@@ -19,25 +19,27 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/object/ClimateObject.h>
 #include <openrct2/object/MusicObject.h>
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/object/RideObject.h>
 #include <openrct2/object/SceneryGroupObject.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideData.h>
-#include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenes/title/TitleScene.h>
-#include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <span>
 #include <string>
@@ -105,16 +107,6 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr uint8_t _numSourceGameItems = 8;
 
-    static uint32_t _filter_flags;
-    static uint16_t _filter_object_counts[EnumValue(ObjectType::Count)];
-
-    static char _filter_string[MAX_PATH];
-
-    static bool isFilterActive(const uint16_t filter)
-    {
-        return (_filter_flags & filter) == filter;
-    }
-
     static constexpr StringId WINDOW_TITLE = STR_OBJECT_SELECTION;
     static constexpr int32_t WH = 400;
     static constexpr int32_t WW = 600;
@@ -141,54 +133,61 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static ObjectSubTab kRideObjectSubTabs[] = {
-        { STR_OBJECT_FILTER_ALL_RIDES_TIP, ObjectType::Ride, FILTER_RIDES_ALL,      SPR_G2_INFINITY,                  1, 1 },
-        { STR_TRANSPORT_RIDES_TIP,         ObjectType::Ride, FILTER_RIDE_TRANSPORT, SPR_TAB_RIDES_TRANSPORT_0,       20, 4 },
-        { STR_GENTLE_RIDES_TIP,            ObjectType::Ride, FILTER_RIDE_GENTLE,    SPR_TAB_RIDES_GENTLE_0,          32, 8 },
-        { STR_ROLLER_COASTERS_TIP,         ObjectType::Ride, FILTER_RIDE_COASTER,   SPR_TAB_RIDES_ROLLER_COASTERS_0, 10, 2 },
-        { STR_THRILL_RIDES_TIP,            ObjectType::Ride, FILTER_RIDE_THRILL,    SPR_TAB_RIDES_THRILL_0,          72, 4 },
-        { STR_WATER_RIDES_TIP,             ObjectType::Ride, FILTER_RIDE_WATER,     SPR_TAB_RIDES_WATER_0,           24, 4 },
-        { STR_SHOPS_STALLS_TIP,            ObjectType::Ride, FILTER_RIDE_STALL,     SPR_TAB_RIDES_SHOP_0,            28, 4 },
+        { STR_OBJECT_FILTER_ALL_RIDES_TIP, ObjectType::ride, FILTER_RIDES_ALL,      SPR_G2_INFINITY,                  1, 1 },
+        { STR_TRANSPORT_RIDES_TIP,         ObjectType::ride, FILTER_RIDE_TRANSPORT, SPR_TAB_RIDES_TRANSPORT_0,       20, 4 },
+        { STR_GENTLE_RIDES_TIP,            ObjectType::ride, FILTER_RIDE_GENTLE,    SPR_TAB_RIDES_GENTLE_0,          32, 8 },
+        { STR_ROLLER_COASTERS_TIP,         ObjectType::ride, FILTER_RIDE_COASTER,   SPR_TAB_RIDES_ROLLER_COASTERS_0, 10, 2 },
+        { STR_THRILL_RIDES_TIP,            ObjectType::ride, FILTER_RIDE_THRILL,    SPR_TAB_RIDES_THRILL_0,          72, 4 },
+        { STR_WATER_RIDES_TIP,             ObjectType::ride, FILTER_RIDE_WATER,     SPR_TAB_RIDES_WATER_0,           24, 4 },
+        { STR_SHOPS_STALLS_TIP,            ObjectType::ride, FILTER_RIDE_STALL,     SPR_TAB_RIDES_SHOP_0,            28, 4 },
     };
 
     static ObjectSubTab kSceneryObjectSubTabs[] = {
-        { STR_OBJECT_SELECTION_SCENERY_GROUPS,    ObjectType::SceneryGroup,     FILTER_NONE, SPR_TAB_SCENERY_STATUES,    1, 1 },
-        { STR_OBJECT_SELECTION_SMALL_SCENERY,     ObjectType::SmallScenery,     FILTER_NONE, SPR_TAB_SCENERY_TREES,      1, 1 },
-        { STR_OBJECT_SELECTION_LARGE_SCENERY,     ObjectType::LargeScenery,     FILTER_NONE, SPR_TAB_SCENERY_URBAN,      1, 1 },
-        { STR_OBJECT_SELECTION_WALLS_FENCES,      ObjectType::Walls,            FILTER_NONE, SPR_TAB_SCENERY_WALLS,      1, 1 },
+        { STR_OBJECT_SELECTION_SCENERY_GROUPS,    ObjectType::sceneryGroup,     FILTER_NONE, SPR_TAB_SCENERY_STATUES,    1, 1 },
+        { STR_OBJECT_SELECTION_SMALL_SCENERY,     ObjectType::smallScenery,     FILTER_NONE, SPR_TAB_SCENERY_TREES,      1, 1 },
+        { STR_OBJECT_SELECTION_LARGE_SCENERY,     ObjectType::largeScenery,     FILTER_NONE, SPR_TAB_SCENERY_URBAN,      1, 1 },
+        { STR_OBJECT_SELECTION_WALLS_FENCES,      ObjectType::walls,            FILTER_NONE, SPR_TAB_SCENERY_WALLS,      1, 1 },
     };
 
     static ObjectSubTab kPathObjectSubTabs[] = {
-        { STR_OBJECT_SELECTION_FOOTPATH_SURFACES, ObjectType::FootpathSurface,  FILTER_NONE, SPR_G2_PATH_SURFACE_TAB,    1, 1 },
-        { STR_OBJECT_SELECTION_FOOTPATH_RAILINGS, ObjectType::FootpathRailings, FILTER_NONE, SPR_G2_PATH_RAILINGS_TAB,   1, 1 },
-        { STR_OBJECT_SELECTION_FOOTPATHS,         ObjectType::Paths,            FILTER_NONE, SPR_G2_LEGACY_PATH_TAB,     1, 1 },
-        { STR_OBJECT_SELECTION_PATH_EXTRAS,       ObjectType::PathAdditions,    FILTER_NONE, SPR_TAB_SCENERY_PATH_ITEMS, 1, 1 },
-        { STR_OBJECT_SELECTION_PATH_SIGNS,        ObjectType::Banners,          FILTER_NONE, SPR_TAB_SCENERY_SIGNAGE,    1, 1 },
+        { STR_OBJECT_SELECTION_FOOTPATH_SURFACES, ObjectType::footpathSurface,  FILTER_NONE, SPR_G2_PATH_SURFACE_TAB,    1, 1 },
+        { STR_OBJECT_SELECTION_FOOTPATH_RAILINGS, ObjectType::footpathRailings, FILTER_NONE, SPR_G2_PATH_RAILINGS_TAB,   1, 1 },
+        { STR_OBJECT_SELECTION_FOOTPATHS,         ObjectType::paths,            FILTER_NONE, SPR_G2_LEGACY_PATH_TAB,     1, 1 },
+        { STR_OBJECT_SELECTION_PATH_EXTRAS,       ObjectType::pathAdditions,    FILTER_NONE, SPR_TAB_SCENERY_PATH_ITEMS, 1, 1 },
+        { STR_OBJECT_SELECTION_PATH_SIGNS,        ObjectType::banners,          FILTER_NONE, SPR_TAB_SCENERY_SIGNAGE,    1, 1 },
     };
 
     static ObjectSubTab kEntrancesObjectSubTabs[] = {
-        { STR_OBJECT_SELECTION_PARK_ENTRANCE,     ObjectType::ParkEntrance,     FILTER_NONE, SPR_TAB_PARK,            1, 1 },
-        { STR_OBJECT_SELECTION_STATIONS,          ObjectType::Station,          FILTER_NONE, SPR_G2_RIDE_STATION_TAB, 1, 1 },
+        { STR_OBJECT_SELECTION_PARK_ENTRANCE,     ObjectType::parkEntrance,     FILTER_NONE, SPR_TAB_PARK,            1, 1 },
+        { STR_OBJECT_SELECTION_STATIONS,          ObjectType::station,          FILTER_NONE, SPR_G2_RIDE_STATION_TAB, 1, 1 },
     };
 
     static ObjectSubTab kTerrainObjectSubTabs[] = {
-        { STR_OBJECT_SELECTION_TERRAIN_SURFACES,  ObjectType::TerrainSurface,   FILTER_NONE, SPR_G2_TAB_LAND,         1, 1 },
-        { STR_OBJECT_SELECTION_TERRAIN_EDGES,     ObjectType::TerrainEdge,      FILTER_NONE, SPR_G2_TERRAIN_EDGE_TAB, 1, 1 },
-        { STR_OBJECT_SELECTION_WATER,             ObjectType::Water,            FILTER_NONE, SPR_TAB_WATER,           1, 1 },
+        { STR_OBJECT_SELECTION_TERRAIN_SURFACES,  ObjectType::terrainSurface,   FILTER_NONE, SPR_G2_TAB_LAND,         1, 1 },
+        { STR_OBJECT_SELECTION_TERRAIN_EDGES,     ObjectType::terrainEdge,      FILTER_NONE, SPR_G2_TERRAIN_EDGE_TAB, 1, 1 },
+        { STR_OBJECT_SELECTION_WATER,             ObjectType::water,            FILTER_NONE, SPR_TAB_WATER,           1, 1 },
+        { STR_OBJECT_SELECTION_CLIMATE,           ObjectType::climate,          FILTER_NONE, SPR_WEATHER_SUN_CLOUD,   1, 1 },
+    };
+
+    static ObjectSubTab kPeepObjectSubTabs[] = {
+        { STR_OBJECT_SELECTION_PEEP_ANIMATIONS,   ObjectType::peepAnimations,   FILTER_NONE, SPR_G2_PEEP_ANIMATIONS, 1, 1 },
+        { STR_OBJECT_SELECTION_PEEP_NAMES,        ObjectType::peepNames,        FILTER_NONE, SPR_TAB_GUESTS_0,       1, 1 },
     };
 
     static constexpr ObjectPageDesc ObjectSelectionPages[] = {
-        { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS, ObjectType::Ride,            SPR_TAB_RIDE_16,         kRideObjectSubTabs },
-        { STR_OBJECT_SELECTION_SCENERY_GROUPS,            ObjectType::SceneryGroup,    SPR_TAB_SCENERY_STATUES, kSceneryObjectSubTabs },
-        { STR_OBJECT_SELECTION_FOOTPATH_SURFACES,         ObjectType::FootpathSurface, SPR_G2_LEGACY_PATH_TAB,  kPathObjectSubTabs },
-        { STR_OBJECT_SELECTION_PARK_ENTRANCE,             ObjectType::ParkEntrance,    SPR_TAB_PARK,            kEntrancesObjectSubTabs },
-        { STR_OBJECT_SELECTION_TERRAIN_SURFACES,          ObjectType::TerrainSurface,  SPR_G2_TAB_LAND,         kTerrainObjectSubTabs },
-        { STR_OBJECT_SELECTION_MUSIC,                     ObjectType::Music,           SPR_TAB_MUSIC_0,         {} },
+        { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS, ObjectType::ride,            SPR_TAB_RIDE_16,            kRideObjectSubTabs },
+        { STR_OBJECT_SELECTION_SCENERY_GROUPS,            ObjectType::sceneryGroup,    SPR_TAB_SCENERY_STATUES,    kSceneryObjectSubTabs },
+        { STR_OBJECT_SELECTION_FOOTPATH_SURFACES,         ObjectType::footpathSurface, SPR_G2_LEGACY_PATH_TAB,     kPathObjectSubTabs },
+        { STR_OBJECT_SELECTION_PARK_ENTRANCE,             ObjectType::parkEntrance,    SPR_TAB_PARK,               kEntrancesObjectSubTabs },
+        { STR_OBJECT_SELECTION_TERRAIN_SURFACES,          ObjectType::terrainSurface,  SPR_G2_MAP_GEN_TERRAIN_TAB, kTerrainObjectSubTabs },
+        { STR_OBJECT_SELECTION_MUSIC,                     ObjectType::music,           SPR_TAB_MUSIC_0,            {} },
+        { STR_OBJECT_SELECTION_PEEP_NAMES,                ObjectType::peepNames,       SPR_TAB_GUESTS_0,           kPeepObjectSubTabs },
     };
     // clang-format on
 
 #pragma region Widgets
 
-    enum WINDOW_EDITOR_OBJECT_SELECTION_WIDGET_IDX
+    enum WindowEditorObjectSelectionWidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -217,15 +216,13 @@ namespace OpenRCT2::Ui::Windows
 
     validate_global_widx(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
 
-    static bool _window_editor_object_selection_widgets_initialised;
-
     // clang-format off
-    static std::vector<Widget> _window_editor_object_selection_widgets = {
+    static constexpr Widget _window_editor_object_selection_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget         ({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
         MakeWidget         ({  4, 60}, {288, 277}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
         MakeWidget         ({391, 45}, {114, 114}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                                  ),
-        MakeWidget         ({350, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
+        MakeWidget         ({340, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
         MakeDropdownWidgets({470, 22}, {114,  14}, WindowWidgetType::DropdownMenu, WindowColour::Primary,   STR_OBJECT_FILTER,             STR_OBJECT_FILTER_TIP            ),
         MakeWidget         ({  4, 45}, {211,  14}, WindowWidgetType::TextBox,      WindowColour::Secondary                                                                  ),
         MakeWidget         ({218, 45}, { 70,  14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR                                         ),
@@ -242,8 +239,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget         ({700, 50}, { 24,  24}, WindowWidgetType::ImgBtn,      WindowColour::Secondary,  SPR_G2_RELOAD,    STR_RELOAD_OBJECT_TIP ),
         MakeTab            ({  3, 17},                                                                                       STR_STRING_DEFINED_TOOLTIP       ),
         // Copied object type times...
-
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -263,7 +258,10 @@ namespace OpenRCT2::Ui::Windows
         int32_t _listSortType = RIDE_SORT_TYPE;
         bool _listSortDescending = false;
         std::unique_ptr<Object> _loadedObject;
+        u8string _filter;
+        uint32_t _filterFlags = FILTER_RIDES_ALL;
         uint8_t _selectedSubTab = 0;
+        bool _overrideChecks = false;
 
     public:
         /**
@@ -277,19 +275,15 @@ namespace OpenRCT2::Ui::Windows
             Sub6AB211();
             ResetSelectedObjectCountAndSize();
 
-            widgets[WIDX_FILTER_TEXT_BOX].string = _filter_string;
-
-            _filter_flags = FILTER_RIDES_ALL | Config::Get().interface.ObjectSelectionFilterFlags;
-            std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
+            _filterFlags = FILTER_RIDES_ALL | Config::Get().interface.ObjectSelectionFilterFlags;
+            _filter.clear();
 
             WindowInitScrollWidgets(*this);
 
             selected_tab = 0;
             selected_list_item = -1;
-            min_width = WW;
-            min_height = WH;
-            max_width = 1200;
-            max_height = 1000;
+
+            WindowSetResize(*this, { WW, WH }, { 1200, 1000 });
 
             _listSortType = RIDE_SORT_TYPE;
             _listSortDescending = false;
@@ -297,6 +291,17 @@ namespace OpenRCT2::Ui::Windows
             disabled_widgets |= 1u << WIDX_FILTER_RIDE_TAB_FRAME;
 
             VisibleListRefresh();
+        }
+
+        void SetOverrideChecks(bool newState)
+        {
+            _overrideChecks = newState;
+        }
+
+        bool CanClose() override
+        {
+            // Prevent window closure when selection is invalid
+            return _overrideChecks || EditorObjectSelectionWindowCheck();
         }
 
         /**
@@ -307,12 +312,12 @@ namespace OpenRCT2::Ui::Windows
         {
             UnloadUnselectedObjects();
             EditorLoadSelectedObjects();
-            EditorObjectFlagsFree();
+            EditorObjectFlagsClear();
 
             if (_loadedObject != nullptr)
                 _loadedObject->Unload();
 
-            if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+            if (isInEditorMode())
             {
                 ResearchPopulateListRandom();
             }
@@ -328,7 +333,7 @@ namespace OpenRCT2::Ui::Windows
             auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
             ContextBroadcastIntent(&intent);
 
-            VisibleListDispose();
+            VisibleListClear();
 
             intent = Intent(INTENT_ACTION_REFRESH_SCENERY);
             ContextBroadcastIntent(&intent);
@@ -339,7 +344,7 @@ namespace OpenRCT2::Ui::Windows
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-                WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
+                InvalidateWidget(WIDX_FILTER_TEXT_BOX);
             }
 
             auto& currentPage = ObjectSelectionPages[selected_tab];
@@ -355,7 +360,7 @@ namespace OpenRCT2::Ui::Windows
             if (frame_no >= subTabDef.animationLength)
                 frame_no = 0;
 
-            WidgetInvalidate(*this, WIDX_SUB_TAB_0 + _selectedSubTab);
+            InvalidateWidget(WIDX_SUB_TAB_0 + _selectedSubTab);
         }
 
         /**
@@ -367,14 +372,18 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !EditorObjectSelectionWindowCheck())
+                {
+                    if (gLegacyScene != LegacyScene::trackDesignsManager && !EditorObjectSelectionWindowCheck())
                         return;
 
-                    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+                    auto* windowMgr = Ui::GetWindowManager();
+                    windowMgr->CloseByClass(WindowClass::EditorObjectSelection);
+
+                    if (isInEditorMode())
                     {
                         FinishObjectSelection();
                     }
-                    if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+                    if (gLegacyScene == LegacyScene::trackDesignsManager)
                     {
                         GameNotifyMapChange();
                         GameUnloadScripts();
@@ -383,6 +392,7 @@ namespace OpenRCT2::Ui::Windows
                         context->SetActiveScene(context->GetTitleScene());
                     }
                     break;
+                }
 
                 case WIDX_SUB_TAB_0:
                 case WIDX_SUB_TAB_1:
@@ -396,13 +406,12 @@ namespace OpenRCT2::Ui::Windows
 
                     auto& currentPage = ObjectSelectionPages[selected_tab];
                     auto& subTabDef = currentPage.subTabs[_selectedSubTab];
-                    _filter_flags &= ~FILTER_RIDES_ALL;
-                    _filter_flags |= subTabDef.flagFilter;
+                    _filterFlags &= ~FILTER_RIDES_ALL;
+                    _filterFlags |= subTabDef.flagFilter;
 
-                    Config::Get().interface.ObjectSelectionFilterFlags = _filter_flags;
+                    Config::Get().interface.ObjectSelectionFilterFlags = _filterFlags;
                     Config::Save();
 
-                    FilterUpdateCounts();
                     VisibleListRefresh();
 
                     selected_list_item = -1;
@@ -421,16 +430,16 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
 
                     auto intent = Intent(WindowClass::Loadsave);
-                    intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
+                    intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
+                    intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::track);
                     ContextOpenIntent(&intent);
                     break;
                 }
                 case WIDX_FILTER_TEXT_BOX:
-                    WindowStartTextbox(*this, widgetIndex, _filter_string, sizeof(_filter_string));
+                    WindowStartTextbox(*this, widgetIndex, _filter, kTextInputSize);
                     break;
                 case WIDX_FILTER_CLEAR_BUTTON:
-                    std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
-                    FilterUpdateCounts();
+                    _filter.clear();
                     scrolls->contentOffsetY = 0;
                     VisibleListRefresh();
                     Invalidate();
@@ -465,7 +474,7 @@ namespace OpenRCT2::Ui::Windows
                         auto descriptor = _loadedObject->GetDescriptor();
                         auto& objectManager = GetContext()->GetObjectManager();
                         auto entryIndex = objectManager.GetLoadedObjectEntryIndex(descriptor);
-                        if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
+                        if (entryIndex != kObjectEntryIndexNull)
                         {
                             objectManager.UnloadObjects({ descriptor });
                             objectManager.LoadObject(descriptor, entryIndex);
@@ -484,7 +493,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            WindowSetResize(*this, WW, WH, 1200, 1000);
+            WindowSetResize(*this, { WW, WH }, { 1200, 1000 });
         }
 
         static constexpr StringId kSourceStringIds[] = {
@@ -506,14 +515,15 @@ namespace OpenRCT2::Ui::Windows
                         gDropdownItems[ddIdx].Format = STR_TOGGLE_OPTION;
                     }
 
-                    // Track manager cannot select multiple, so only show selection filters if not in track manager
-                    if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+                    // Track designs manager cannot select multiple, so only show selection filters if not in track designs
+                    // manager
+                    if (!(gLegacyScene == LegacyScene::trackDesignsManager))
                     {
                         numSelectionItems = 3;
                         gDropdownItems[DDIX_FILTER_SEPARATOR].Format = 0;
                         gDropdownItems[DDIX_FILTER_SELECTED].Format = STR_TOGGLE_OPTION;
                         gDropdownItems[DDIX_FILTER_NONSELECTED].Format = STR_TOGGLE_OPTION;
-                        gDropdownItems[DDIX_FILTER_SEPARATOR].Args = STR_NONE;
+                        gDropdownItems[DDIX_FILTER_SEPARATOR].Args = kStringIdNone;
                         gDropdownItems[DDIX_FILTER_SELECTED].Args = STR_SELECTED_ONLY;
                         gDropdownItems[DDIX_FILTER_NONSELECTED].Args = STR_NON_SELECTED_ONLY;
                     }
@@ -525,16 +535,16 @@ namespace OpenRCT2::Ui::Windows
 
                     for (int32_t i = 0; i < _numSourceGameItems; i++)
                     {
-                        if (_filter_flags & (1 << i))
+                        if (_filterFlags & (1 << i))
                         {
                             Dropdown::SetChecked(i, true);
                         }
                     }
 
-                    if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+                    if (!(gLegacyScene == LegacyScene::trackDesignsManager))
                     {
-                        Dropdown::SetChecked(DDIX_FILTER_SELECTED, isFilterActive(FILTER_SELECTED));
-                        Dropdown::SetChecked(DDIX_FILTER_NONSELECTED, isFilterActive(FILTER_NONSELECTED));
+                        Dropdown::SetChecked(DDIX_FILTER_SELECTED, IsFilterActive(FILTER_SELECTED));
+                        Dropdown::SetChecked(DDIX_FILTER_NONSELECTED, IsFilterActive(FILTER_NONSELECTED));
                     }
                     break;
             }
@@ -550,22 +560,21 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_FILTER_DROPDOWN_BTN:
                     if (dropdownIndex == DDIX_FILTER_SELECTED)
                     {
-                        _filter_flags ^= FILTER_SELECTED;
-                        _filter_flags &= ~FILTER_NONSELECTED;
+                        _filterFlags ^= FILTER_SELECTED;
+                        _filterFlags &= ~FILTER_NONSELECTED;
                     }
                     else if (dropdownIndex == DDIX_FILTER_NONSELECTED)
                     {
-                        _filter_flags ^= FILTER_NONSELECTED;
-                        _filter_flags &= ~FILTER_SELECTED;
+                        _filterFlags ^= FILTER_NONSELECTED;
+                        _filterFlags &= ~FILTER_SELECTED;
                     }
                     else
                     {
-                        _filter_flags ^= (1 << dropdownIndex);
+                        _filterFlags ^= (1 << dropdownIndex);
                     }
-                    Config::Get().interface.ObjectSelectionFilterFlags = _filter_flags;
+                    Config::Get().interface.ObjectSelectionFilterFlags = _filterFlags;
                     Config::Save();
 
-                    FilterUpdateCounts();
                     scrolls->contentOffsetY = 0;
 
                     VisibleListRefresh();
@@ -592,7 +601,8 @@ namespace OpenRCT2::Ui::Windows
         {
             // Used for in-game object selection cheat to prevent crashing the game
             // when windows attempt to draw objects that don't exist any more
-            WindowCloseAllExceptClass(WindowClass::EditorObjectSelection);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->CloseAllExceptClass(WindowClass::EditorObjectSelection);
 
             int32_t selected_object = GetObjectFromObjectSelection(GetSelectedObjectType(), screenCoords.y);
             if (selected_object == -1)
@@ -608,10 +618,10 @@ namespace OpenRCT2::Ui::Windows
             const CursorState* state = ContextGetCursorState();
             Audio::Play(Audio::SoundId::Click1, 0, state->position.x);
 
-            if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+            if (gLegacyScene == LegacyScene::trackDesignsManager)
             {
                 const auto objectSelectResult = WindowEditorObjectSelectionSelectObject(
-                    0, INPUT_FLAG_EDITOR_OBJECT_SELECT, listItem->repositoryItem);
+                    0, { EditorInputFlag::select }, listItem->repositoryItem);
                 if (!objectSelectResult.Successful)
                     return;
 
@@ -626,31 +636,31 @@ namespace OpenRCT2::Ui::Windows
                 auto& objManager = GetContext()->GetObjectManager();
                 objManager.LoadObject(_loadedObject.get()->GetIdentifier());
 
+                windowMgr->ForceClose(WindowClass::EditorObjectSelection);
+
                 // This function calls window_track_list_open
                 ManageTracks();
-                Close();
                 return;
             }
 
-            uint32_t inputFlags = INPUT_FLAG_EDITOR_OBJECT_1 | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP;
+            EditorInputFlags inputFlags = { EditorInputFlag::unk1, EditorInputFlag::selectObjectsInSceneryGroup };
             // If already selected
             if (!(object_selection_flags & ObjectSelectionFlags::Selected))
-                inputFlags |= INPUT_FLAG_EDITOR_OBJECT_SELECT;
+                inputFlags.set(EditorInputFlag::select);
 
             _gSceneryGroupPartialSelectError = std::nullopt;
             const auto objectSelectResult = WindowEditorObjectSelectionSelectObject(0, inputFlags, listItem->repositoryItem);
             if (!objectSelectResult.Successful)
             {
-                StringId error_title = (inputFlags & INPUT_FLAG_EDITOR_OBJECT_SELECT) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
-                                                                                      : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
+                StringId error_title = (inputFlags.has(EditorInputFlag::select)) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
+                                                                                 : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
 
                 ContextShowError(error_title, objectSelectResult.Message, {});
                 return;
             }
 
-            if (isFilterActive(FILTER_SELECTED) || isFilterActive(FILTER_NONSELECTED))
+            if (IsFilterActive(FILTER_SELECTED) || IsFilterActive(FILTER_NONSELECTED))
             {
-                FilterUpdateCounts();
                 VisibleListRefresh();
                 Invalidate();
             }
@@ -716,7 +726,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // ScrollPaint
             ScreenCoordsXY screenCoords;
-            bool ridePage = (GetSelectedObjectType() == ObjectType::Ride);
+            bool ridePage = (GetSelectedObjectType() == ObjectType::ride);
 
             uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
             GfxClear(dpi, paletteIndex);
@@ -728,7 +738,7 @@ namespace OpenRCT2::Ui::Windows
                 if (screenCoords.y + kScrollableRowHeight >= dpi.y && screenCoords.y <= dpi.y + dpi.height)
                 {
                     // Draw checkbox
-                    if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem.flags & 0x20))
+                    if (!(gLegacyScene == LegacyScene::trackDesignsManager) && !(*listItem.flags & 0x20))
                         GfxFillRectInset(
                             dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
 
@@ -742,7 +752,8 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     // Draw checkmark
-                    if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem.flags & ObjectSelectionFlags::Selected))
+                    if (!(gLegacyScene == LegacyScene::trackDesignsManager)
+                        && (*listItem.flags & ObjectSelectionFlags::Selected))
                     {
                         screenCoords.x = 2;
                         auto darkness = highlighted ? TextDarkness::ExtraDark : TextDarkness::Dark;
@@ -753,7 +764,7 @@ namespace OpenRCT2::Ui::Windows
                         DrawText(dpi, screenCoords, { colour2, FontStyle::Medium, darkness }, kCheckMarkString);
                     }
 
-                    screenCoords.x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
+                    screenCoords.x = gLegacyScene == LegacyScene::trackDesignsManager ? 0 : 15;
 
                     utf8 itemBuffer[512]{};
                     auto bufferWithColour = strcpy(itemBuffer, highlighted ? "{WINDOW_COLOUR_2}" : "{BLACK}");
@@ -774,7 +785,7 @@ namespace OpenRCT2::Ui::Windows
                         width_limit /= 2;
                         // Draw ride type
                         StringId rideTypeStringId = GetRideTypeStringId(listItem.repositoryItem);
-                        SafeStrCpy(buffer, LanguageGetString(rideTypeStringId), 256 - (buffer - bufferWithColour));
+                        String::safeUtf8Copy(buffer, LanguageGetString(rideTypeStringId), 256 - (buffer - bufferWithColour));
                         auto ft = Formatter();
                         ft.Add<const char*>(itemBuffer);
                         DrawTextEllipsised(
@@ -783,8 +794,8 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     // Draw text
-                    SafeStrCpy(buffer, listItem.repositoryItem->Name.c_str(), 256 - (buffer - bufferWithColour));
-                    if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+                    String::safeUtf8Copy(buffer, listItem.repositoryItem->Name.c_str(), 256 - (buffer - bufferWithColour));
+                    if (gLegacyScene == LegacyScene::trackDesignsManager)
                     {
                         while (*buffer != 0 && *buffer != 9)
                             buffer++;
@@ -819,15 +830,10 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex != WIDX_FILTER_TEXT_BOX)
                 return;
 
-            std::string tempText = text.data();
-            const char* c = tempText.c_str();
-
-            if (strcmp(_filter_string, c) == 0)
+            if (text == _filter)
                 return;
 
-            SafeStrCpy(_filter_string, c, sizeof(_filter_string));
-
-            FilterUpdateCounts();
+            _filter.assign(text);
 
             scrolls->contentOffsetY = 0;
 
@@ -838,16 +844,17 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDraw() override
         {
             // Resize widgets
-            ResizeFrameWithPage();
             widgets[WIDX_LIST].right = width - 309;
             widgets[WIDX_LIST].bottom = height - 14;
             widgets[WIDX_PREVIEW].left = width - 209;
             widgets[WIDX_PREVIEW].right = width - 96;
-            ResizeDropdown(WIDX_FILTER_DROPDOWN, { width - kFilterWidth - 10, 22 }, { kFilterWidth, 14 });
-            widgets[WIDX_INSTALL_TRACK].left = width - 250;
-            widgets[WIDX_INSTALL_TRACK].right = width - 137;
             widgets[WIDX_RELOAD_OBJECT].left = width - 9 - 24;
             widgets[WIDX_RELOAD_OBJECT].right = width - 9;
+
+            auto& dropdownWidget = widgets[WIDX_FILTER_DROPDOWN];
+            ResizeDropdown(WIDX_FILTER_DROPDOWN, { width - kFilterWidth - 10, dropdownWidget.top }, { kFilterWidth, 14 });
+            auto& installTrackWidget = widgets[WIDX_INSTALL_TRACK];
+            installTrackWidget.moveToX(dropdownWidget.left - installTrackWidget.width() - 10);
 
             // Set pressed widgets
             pressed_widgets |= 1uLL << WIDX_PREVIEW;
@@ -855,13 +862,12 @@ namespace OpenRCT2::Ui::Windows
 
             // Set window title and buttons
             auto& titleWidget = widgets[WIDX_TITLE];
-            auto& installTrackWidget = widgets[WIDX_INSTALL_TRACK];
-            if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+            if (gLegacyScene == LegacyScene::trackDesignsManager)
             {
                 titleWidget.text = STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE;
                 installTrackWidget.type = WindowWidgetType::Button;
             }
-            else if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+            else if (gLegacyScene == LegacyScene::trackDesigner)
             {
                 titleWidget.text = STR_ROLLER_COASTER_DESIGNER_SELECT_RIDE_TYPES_VEHICLES;
                 installTrackWidget.type = WindowWidgetType::Empty;
@@ -881,15 +887,15 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(currentPage.Caption);
 
             // Set filter dropdown caption
-            if (!isFilterActive(FILTER_SOURCES_ALL))
+            if (!IsFilterActive(FILTER_SOURCES_ALL))
             {
                 // Only one source active?
-                uint32_t sources = _filter_flags & FILTER_SOURCES_ALL;
+                uint32_t sources = _filterFlags & FILTER_SOURCES_ALL;
                 auto numSourcesActive = std::popcount(sources);
                 if (numSourcesActive == 1)
                 {
                     widgets[WIDX_FILTER_DROPDOWN].text = STR_OBJECT_SELECTION_ONLY_STRINGID;
-                    auto firstActiveSource = UtilBitScanForward(sources);
+                    auto firstActiveSource = Numerics::bitScanForward(sources);
                     ft.Add<StringId>(kSourceStringIds[firstActiveSource]);
                 }
                 else
@@ -922,7 +928,7 @@ namespace OpenRCT2::Ui::Windows
             else
                 widgets[WIDX_RELOAD_OBJECT].type = WindowWidgetType::Empty;
 
-            if (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TRACK_DESIGNER))
+            if (gLegacyScene == LegacyScene::trackDesignsManager || gLegacyScene == LegacyScene::trackDesigner)
             {
                 for (size_t i = 1; i < std::size(ObjectSelectionPages); i++)
                 {
@@ -937,19 +943,19 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_FILTER_RIDE_TAB_FRAME].right = widgets[WIDX_LIST].right;
 
             widgets[WIDX_FILTER_TEXT_BOX].right = widgets[WIDX_LIST].right - 77;
-            widgets[WIDX_FILTER_TEXT_BOX].top = (hasSubTabs ? 79 : 48);
-            widgets[WIDX_FILTER_TEXT_BOX].bottom = (hasSubTabs ? 92 : 61);
+            auto contentStart = widgets[WIDX_TAB_CONTENT_PANEL].top;
+            widgets[WIDX_FILTER_TEXT_BOX].moveToY(contentStart + (hasSubTabs ? 36 : 5));
+            widgets[WIDX_FILTER_TEXT_BOX].string = _filter.data();
 
             widgets[WIDX_FILTER_CLEAR_BUTTON].left = widgets[WIDX_LIST].right - 73;
             widgets[WIDX_FILTER_CLEAR_BUTTON].right = widgets[WIDX_LIST].right;
-            widgets[WIDX_FILTER_CLEAR_BUTTON].top = (hasSubTabs ? 79 : 48);
-            widgets[WIDX_FILTER_CLEAR_BUTTON].bottom = (hasSubTabs ? 92 : 61);
+            widgets[WIDX_FILTER_CLEAR_BUTTON].moveToY(contentStart + (hasSubTabs ? 36 : 5));
 
             // Toggle sub-tab visibility
             const auto numSubTabs = static_cast<int8_t>(currentPage.subTabs.size());
             for (int8_t i = 0; i <= 6; i++)
             {
-                widgets[WIDX_SUB_TAB_0 + i].tooltip = i < numSubTabs ? currentPage.subTabs[i].tooltip : STR_NONE;
+                widgets[WIDX_SUB_TAB_0 + i].tooltip = i < numSubTabs ? currentPage.subTabs[i].tooltip : kStringIdNone;
                 widgets[WIDX_SUB_TAB_0 + i].type = i < numSubTabs ? WindowWidgetType::Tab : WindowWidgetType::Empty;
                 pressed_widgets &= ~(1uLL << (WIDX_SUB_TAB_0 + i));
             }
@@ -964,7 +970,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WindowWidgetType::Empty;
 
             // The ride tab has two headers for the list
-            bool isRideTab = GetSelectedObjectType() == ObjectType::Ride;
+            bool isRideTab = GetSelectedObjectType() == ObjectType::ride;
             if (isRideTab)
             {
                 int32_t width_limit = (widgets[WIDX_LIST].width() - 15) / 2;
@@ -1013,7 +1019,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            constexpr int32_t ThrillRidesTabAnimationSequence[] = {
+            constexpr int32_t kThrillRidesTabAnimationSequence[] = {
                 5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 0, 0,
             };
 
@@ -1028,7 +1034,6 @@ namespace OpenRCT2::Ui::Windows
                         continue;
 
                     auto& subTabDef = currentPage.subTabs[i];
-                    int32_t spriteIndex = subTabDef.baseImage;
                     int32_t frame = 0;
                     if (subTabDef.animationLength > 1 && _selectedSubTab == i)
                     {
@@ -1036,12 +1041,16 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     // TODO: generalise this?
+                    int32_t spriteIndex = subTabDef.baseImage;
                     if (currentPage.Caption == STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS && i == 4)
-                        spriteIndex += ThrillRidesTabAnimationSequence[frame];
+                        spriteIndex += kThrillRidesTabAnimationSequence[frame];
                     else
                         spriteIndex += frame;
 
                     auto screenPos = windowPos + ScreenCoordsXY{ widget.left, widget.top };
+                    if (spriteIndex == SPR_WEATHER_SUN_CLOUD)
+                        screenPos += { 2, 4 };
+
                     GfxDrawSprite(dpi, ImageId(spriteIndex, colours[1].colour), screenPos);
                 }
             }
@@ -1055,7 +1064,7 @@ namespace OpenRCT2::Ui::Windows
                 ColourMapA[colours[1].colour].darkest);
 
             // Draw number of selected items
-            if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+            if (!(gLegacyScene == LegacyScene::trackDesignsManager))
             {
                 auto screenPos = windowPos + ScreenCoordsXY{ 3, height - 13 };
 
@@ -1074,7 +1083,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 auto stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<StringId>(_listSortDescending ? STR_DOWN : STR_UP)
-                                                                : STR_NONE;
+                                                                : kStringIdNone;
                 ft.Add<StringId>(stringId);
                 auto screenPos = windowPos + ScreenCoordsXY{ listSortTypeWidget.left + 1, listSortTypeWidget.top + 1 };
                 DrawTextEllipsised(dpi, screenPos, listSortTypeWidget.width(), STR_OBJECTS_SORT_TYPE, ft, { colours[1] });
@@ -1084,7 +1093,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 auto stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<StringId>(_listSortDescending ? STR_DOWN : STR_UP)
-                                                                : STR_NONE;
+                                                                : kStringIdNone;
                 ft.Add<StringId>(stringId);
                 auto screenPos = windowPos + ScreenCoordsXY{ listSortRideWidget.left + 1, listSortRideWidget.top + 1 };
                 DrawTextEllipsised(dpi, screenPos, listSortRideWidget.width(), STR_OBJECTS_SORT_RIDE, ft, { colours[1] });
@@ -1122,35 +1131,36 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
+        bool tabWidgetsInitialised = false;
+
         void InitWidgets()
         {
-            auto& targetWidgets = _window_editor_object_selection_widgets;
-            if (!_window_editor_object_selection_widgets_initialised)
+            SetWidgets(_window_editor_object_selection_widgets);
+            if (!tabWidgetsInitialised)
             {
-                _window_editor_object_selection_widgets_initialised = true;
-                auto tabWidget = targetWidgets[targetWidgets.size() - 2];
+                tabWidgetsInitialised = true;
+                auto tabWidget = widgets[WIDX_TAB_1];
                 for (size_t i = 1; i < std::size(ObjectSelectionPages); i++)
                 {
-                    targetWidgets.insert(targetWidgets.end() - 1, tabWidget);
+                    widgets.insert(widgets.end() - 1, tabWidget);
                 }
             }
-
-            widgets = targetWidgets.data();
         }
 
         void SetPage(int32_t _page)
         {
-            if (selected_tab == _page)
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (selected_tab == _page && !widgets.empty())
                 return;
 
             selected_tab = _page;
             _selectedSubTab = 0;
-            _filter_flags |= FILTER_RIDES_ALL;
+            _filterFlags |= FILTER_RIDES_ALL;
             selected_list_item = -1;
             scrolls[0].contentOffsetY = 0;
             frame_no = 0;
 
-            if (_page == EnumValue(ObjectType::Ride))
+            if (_page == EnumValue(ObjectType::ride))
             {
                 _listSortType = RIDE_SORT_TYPE;
                 _listSortDescending = false;
@@ -1169,7 +1179,7 @@ namespace OpenRCT2::Ui::Windows
         {
             int32_t numObjects = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
 
-            VisibleListDispose();
+            VisibleListClear();
             selected_list_item = -1;
 
             const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
@@ -1196,7 +1206,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (_listItems.empty())
             {
-                VisibleListDispose();
+                VisibleListClear();
             }
             else
             {
@@ -1225,7 +1235,7 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
         }
 
-        void VisibleListDispose()
+        void VisibleListClear()
         {
             _listItems.clear();
             _listItems.shrink_to_fit();
@@ -1271,36 +1281,37 @@ namespace OpenRCT2::Ui::Windows
                 screenPos.y += DrawTextWrapped(dpi, screenPos, descriptionWidth, STR_WINDOW_COLOUR_2_STRINGID, ft);
                 screenPos.y += kListRowHeight;
             }
-            if (GetSelectedObjectType() == ObjectType::Ride)
+
+            if (GetSelectedObjectType() == ObjectType::ride)
             {
                 auto* rideObject = reinterpret_cast<RideObject*>(_loadedObject.get());
-                const auto* rideEntry = reinterpret_cast<RideObjectEntry*>(rideObject->GetLegacyData());
-                if (rideEntry->shop_item[0] != ShopItem::None)
+                const auto& rideEntry = rideObject->GetEntry();
+                if (rideEntry.shop_item[0] != ShopItem::None)
                 {
                     std::string sells = "";
-                    for (size_t i = 0; i < std::size(rideEntry->shop_item); i++)
+                    for (size_t i = 0; i < std::size(rideEntry.shop_item); i++)
                     {
-                        if (rideEntry->shop_item[i] == ShopItem::None)
+                        if (rideEntry.shop_item[i] == ShopItem::None)
                             continue;
 
                         if (!sells.empty())
                             sells += ", ";
 
-                        sells += LanguageGetString(GetShopItemDescriptor(rideEntry->shop_item[i]).Naming.Plural);
+                        sells += LanguageGetString(GetShopItemDescriptor(rideEntry.shop_item[i]).Naming.Plural);
                     }
                     auto ft = Formatter();
                     ft.Add<const char*>(sells.c_str());
                     screenPos.y += DrawTextWrapped(dpi, screenPos, descriptionWidth, STR_RIDE_OBJECT_SHOP_SELLS, ft) + 2;
                 }
             }
-            else if (GetSelectedObjectType() == ObjectType::SceneryGroup)
+            else if (GetSelectedObjectType() == ObjectType::sceneryGroup)
             {
                 const auto* sceneryGroupObject = reinterpret_cast<SceneryGroupObject*>(_loadedObject.get());
                 auto ft = Formatter();
                 ft.Add<uint16_t>(sceneryGroupObject->GetNumIncludedObjects());
                 screenPos.y += DrawTextWrapped(dpi, screenPos, descriptionWidth, STR_INCLUDES_X_OBJECTS, ft) + 2;
             }
-            else if (GetSelectedObjectType() == ObjectType::Music)
+            else if (GetSelectedObjectType() == ObjectType::music)
             {
                 screenPos.y += DrawTextWrapped(dpi, screenPos, descriptionWidth, STR_MUSIC_OBJECT_TRACK_HEADER) + 2;
                 const auto* musicObject = reinterpret_cast<MusicObject*>(_loadedObject.get());
@@ -1320,6 +1331,24 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        StringId GetAnimationPeepTypeStringId(AnimationPeepType type)
+        {
+            switch (type)
+            {
+                case AnimationPeepType::Handyman:
+                    return STR_HANDYMAN_PLURAL;
+                case AnimationPeepType::Mechanic:
+                    return STR_MECHANIC_PLURAL;
+                case AnimationPeepType::Security:
+                    return STR_SECURITY_GUARD_PLURAL;
+                case AnimationPeepType::Entertainer:
+                    return STR_ENTERTAINER_PLURAL;
+                case AnimationPeepType::Guest:
+                default:
+                    return STR_GUESTS;
+            }
+        }
+
         void DrawDebugData(DrawPixelInfo& dpi)
         {
             ObjectListItem* listItem = &_listItems[selected_list_item];
@@ -1333,9 +1362,17 @@ namespace OpenRCT2::Ui::Windows
             screenPos.y += kListRowHeight;
 
             // Draw ride type.
-            if (GetSelectedObjectType() == ObjectType::Ride)
+            if (GetSelectedObjectType() == ObjectType::ride)
             {
                 auto stringId = GetRideTypeStringId(listItem->repositoryItem);
+                DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+            }
+
+            // Draw peep animation object type
+            if (GetSelectedObjectType() == ObjectType::peepAnimations)
+            {
+                auto* animObj = reinterpret_cast<PeepAnimationsObject*>(_loadedObject.get());
+                auto stringId = GetAnimationPeepTypeStringId(animObj->GetPeepType());
                 DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
             }
 
@@ -1381,19 +1418,19 @@ namespace OpenRCT2::Ui::Windows
         bool FilterSelected(uint8_t objectFlag)
         {
             // Track Manager has no concept of selection filtering, so always return true
-            if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+            if (gLegacyScene == LegacyScene::trackDesignsManager)
             {
                 return true;
             }
-            if (isFilterActive(FILTER_SELECTED) == isFilterActive(FILTER_NONSELECTED))
+            if (IsFilterActive(FILTER_SELECTED) == IsFilterActive(FILTER_NONSELECTED))
             {
                 return true;
             }
-            if (isFilterActive(FILTER_SELECTED) && (objectFlag & ObjectSelectionFlags::Selected))
+            if (IsFilterActive(FILTER_SELECTED) && (objectFlag & ObjectSelectionFlags::Selected))
             {
                 return true;
             }
-            if (isFilterActive(FILTER_NONSELECTED) && !(objectFlag & ObjectSelectionFlags::Selected))
+            if (IsFilterActive(FILTER_NONSELECTED) && !(objectFlag & ObjectSelectionFlags::Selected))
             {
                 return true;
             }
@@ -1403,21 +1440,26 @@ namespace OpenRCT2::Ui::Windows
 
         bool FilterCompatibilityObject(const ObjectRepositoryItem& item, uint8_t objectFlag)
         {
-            // Only show compat objects if they are not selected already.
+            // Only show compat objects if they are selected already.
             return !(item.Flags & ObjectItemFlags::IsCompatibilityObject) || (objectFlag & ObjectSelectionFlags::Selected);
+        }
+
+        bool IsFilterActive(const uint16_t filter) const
+        {
+            return (_filterFlags & filter) == filter;
         }
 
         static bool IsFilterInName(const ObjectRepositoryItem& item, std::string_view filter)
         {
-            return String::Contains(item.Name, filter, true);
+            return String::contains(item.Name, filter, true);
         }
 
         static bool IsFilterInRideType(const ObjectRepositoryItem& item, std::string_view filter)
         {
-            if (item.Type == ObjectType::Ride)
+            if (item.Type == ObjectType::ride)
             {
                 auto rideTypeName = LanguageGetString(GetRideTypeStringId(&item));
-                if (String::Contains(rideTypeName, filter, true))
+                if (String::contains(rideTypeName, filter, true))
                     return true;
             }
             return false;
@@ -1425,14 +1467,14 @@ namespace OpenRCT2::Ui::Windows
 
         static bool IsFilterInFilename(const ObjectRepositoryItem& item, std::string_view filter)
         {
-            return String::Contains(item.Path, filter, true);
+            return String::contains(item.Path, filter, true);
         }
 
         static bool IsFilterInAuthor(const ObjectRepositoryItem& item, std::string_view filter)
         {
             for (auto& author : item.Authors)
             {
-                if (String::Contains(author, filter, true))
+                if (String::contains(author, filter, true))
                 {
                     return true;
                 }
@@ -1443,25 +1485,24 @@ namespace OpenRCT2::Ui::Windows
         bool FilterString(const ObjectRepositoryItem& item)
         {
             // Nothing to search for
-            std::string_view filter = _filter_string;
-            if (filter.empty())
+            if (_filter.empty())
                 return true;
 
-            return IsFilterInName(item, filter) || IsFilterInRideType(item, filter) || IsFilterInFilename(item, filter)
-                || IsFilterInAuthor(item, filter);
+            return IsFilterInName(item, _filter) || IsFilterInRideType(item, _filter) || IsFilterInFilename(item, _filter)
+                || IsFilterInAuthor(item, _filter);
         }
 
         bool SourcesMatch(ObjectSourceGame source)
         {
             // clang-format off
-            return (isFilterActive(FILTER_RCT1) && source == ObjectSourceGame::RCT1) ||
-                   (isFilterActive(FILTER_AA)   && source == ObjectSourceGame::AddedAttractions) ||
-                   (isFilterActive(FILTER_LL)   && source == ObjectSourceGame::LoopyLandscapes) ||
-                   (isFilterActive(FILTER_RCT2) && source == ObjectSourceGame::RCT2) ||
-                   (isFilterActive(FILTER_WW)   && source == ObjectSourceGame::WackyWorlds) ||
-                   (isFilterActive(FILTER_TT)   && source == ObjectSourceGame::TimeTwister) ||
-                   (isFilterActive(FILTER_OO)   && source == ObjectSourceGame::OpenRCT2Official) ||
-                   (isFilterActive(FILTER_CUSTOM) &&
+            return (IsFilterActive(FILTER_RCT1) && source == ObjectSourceGame::RCT1) ||
+                   (IsFilterActive(FILTER_AA)   && source == ObjectSourceGame::AddedAttractions) ||
+                   (IsFilterActive(FILTER_LL)   && source == ObjectSourceGame::LoopyLandscapes) ||
+                   (IsFilterActive(FILTER_RCT2) && source == ObjectSourceGame::RCT2) ||
+                   (IsFilterActive(FILTER_WW)   && source == ObjectSourceGame::WackyWorlds) ||
+                   (IsFilterActive(FILTER_TT)   && source == ObjectSourceGame::TimeTwister) ||
+                   (IsFilterActive(FILTER_OO)   && source == ObjectSourceGame::OpenRCT2Official) ||
+                   (IsFilterActive(FILTER_CUSTOM) &&
                         source != ObjectSourceGame::RCT1 &&
                         source != ObjectSourceGame::AddedAttractions &&
                         source != ObjectSourceGame::LoopyLandscapes &&
@@ -1474,7 +1515,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool FilterSource(const ObjectRepositoryItem* item)
         {
-            if (isFilterActive(FILTER_ALL))
+            if (IsFilterActive(FILTER_ALL))
                 return true;
 
             for (auto source : item->Sources)
@@ -1488,48 +1529,27 @@ namespace OpenRCT2::Ui::Windows
 
         bool FilterChunks(const ObjectRepositoryItem* item)
         {
-            if (item->Type == ObjectType::Ride)
+            if (item->Type == ObjectType::ride)
             {
                 ride_type_t rideType = 0;
-                for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
+                for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
                 {
-                    if (item->RideInfo.RideType[i] != RIDE_TYPE_NULL)
+                    if (item->RideInfo.RideType[i] != kRideTypeNull)
                     {
                         rideType = item->RideInfo.RideType[i];
                         break;
                     }
                 }
-                return (_filter_flags & (1 << (GetRideTypeDescriptor(rideType).Category + _numSourceGameItems))) != 0;
+                return (_filterFlags & (1 << (EnumValue(GetRideTypeDescriptor(rideType).Category) + _numSourceGameItems))) != 0;
             }
             return true;
-        }
-
-        void FilterUpdateCounts()
-        {
-            if (!isFilterActive(FILTER_ALL) || _filter_string[0] != '\0')
-            {
-                const auto& selectionFlags = _objectSelectionFlags;
-                std::fill(std::begin(_filter_object_counts), std::end(_filter_object_counts), 0);
-
-                size_t numObjects = ObjectRepositoryGetItemsCount();
-                const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
-                for (size_t i = 0; i < numObjects; i++)
-                {
-                    const ObjectRepositoryItem* item = &items[i];
-                    if (FilterSource(item) && FilterString(*item) && FilterChunks(item) && FilterSelected(selectionFlags[i])
-                        && FilterCompatibilityObject(*item, selectionFlags[i]))
-                    {
-                        _filter_object_counts[EnumValue(item->Type)]++;
-                    }
-                }
-            }
         }
 
         std::string ObjectGetDescription(const Object* object)
         {
             switch (object->GetObjectType())
             {
-                case ObjectType::Ride:
+                case ObjectType::ride:
                 {
                     const RideObject* rideObject = static_cast<const RideObject*>(object);
                     return rideObject->GetDescription();
@@ -1584,10 +1604,10 @@ namespace OpenRCT2::Ui::Windows
             SetEveryRideTypeInvented();
             SetEveryRideEntryInvented();
 
-            GetGameState().EditorStep = EditorStep::DesignsManager;
+            getGameState().editorStep = EditorStep::DesignsManager;
 
             int32_t entry_index = 0;
-            for (; ObjectEntryGetChunk(ObjectType::Ride, entry_index) == nullptr; entry_index++)
+            for (; ObjectEntryGetChunk(ObjectType::ride, entry_index) == nullptr; entry_index++)
                 ;
 
             const auto* rideEntry = GetRideEntryByIndex(entry_index);
@@ -1606,8 +1626,23 @@ namespace OpenRCT2::Ui::Windows
      */
     WindowBase* EditorObjectSelectionOpen()
     {
-        return WindowFocusOrCreate<EditorObjectSelectionWindow>(
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<EditorObjectSelectionWindow>(
             WindowClass::EditorObjectSelection, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
+    }
+
+    // Used for forced closure
+    void EditorObjectSelectionClose()
+    {
+        auto* windowMgr = GetWindowManager();
+        auto window = windowMgr->FindByClass(WindowClass::EditorObjectSelection);
+        if (window == nullptr)
+        {
+            return;
+        }
+        auto objSelWindow = static_cast<EditorObjectSelectionWindow*>(window);
+        objSelWindow->SetOverrideChecks(true);
+        objSelWindow->Close();
     }
 
     static bool VisibleListSortRideName(const ObjectListItem& a, const ObjectListItem& b)
@@ -1621,17 +1656,17 @@ namespace OpenRCT2::Ui::Windows
     {
         auto rideTypeA = LanguageGetString(GetRideTypeStringId(a.repositoryItem));
         auto rideTypeB = LanguageGetString(GetRideTypeStringId(b.repositoryItem));
-        int32_t result = String::Compare(rideTypeA, rideTypeB);
+        int32_t result = String::compare(rideTypeA, rideTypeB);
         return result != 0 ? result < 0 : VisibleListSortRideName(a, b);
     }
 
     static StringId GetRideTypeStringId(const ObjectRepositoryItem* item)
     {
-        StringId result = STR_NONE;
-        for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
+        StringId result = kStringIdNone;
+        for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
         {
             auto rideType = item->RideInfo.RideType[i];
-            if (rideType != RIDE_TYPE_NULL)
+            if (rideType != kRideTypeNull)
             {
                 result = GetRideTypeDescriptor(rideType).Naming.Name;
                 break;
@@ -1664,19 +1699,19 @@ namespace OpenRCT2::Ui::Windows
                     {
                         LOG_ERROR("Failed to load entry %s", std::string(descriptor.GetName()).c_str());
                     }
-                    else if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+                    else if (!isInEditorMode())
                     {
                         // Defaults selected items to researched (if in-game)
                         auto objectType = loadedObject->GetObjectType();
                         auto entryIndex = ObjectManagerGetLoadedObjectEntryIndex(loadedObject);
-                        if (objectType == ObjectType::Ride)
+                        if (objectType == ObjectType::ride)
                         {
                             const auto* rideEntry = GetRideEntryByIndex(entryIndex);
                             auto rideType = rideEntry->GetFirstNonNullRideType();
                             ResearchCategory category = static_cast<ResearchCategory>(GetRideTypeDescriptor(rideType).Category);
                             ResearchInsertRideEntry(rideType, entryIndex, category, true);
                         }
-                        else if (objectType == ObjectType::SceneryGroup)
+                        else if (objectType == ObjectType::sceneryGroup)
                         {
                             ResearchInsertSceneryGroupEntry(entryIndex, true);
                         }
@@ -1688,28 +1723,27 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
         }
-        if (_numSelectedObjectsForType[EnumValue(ObjectType::Water)] == 0)
+        if (_numSelectedObjectsForType[EnumValue(ObjectType::water)] == 0)
         {
             // Reloads the default cyan water palette if no palette was selected.
             LoadPalette();
         }
         if (showFallbackWarning)
-            ContextShowError(STR_OBJECT_SELECTION_FALLBACK_IMAGES_WARNING, STR_EMPTY, Formatter::Common());
+            ContextShowError(STR_OBJECT_SELECTION_FALLBACK_IMAGES_WARNING, kStringIdEmpty, Formatter::Common());
     }
 
     bool EditorObjectSelectionWindowCheck()
     {
-        WindowBase* w;
-
         auto [missingObjectType, errorString] = Editor::CheckObjectSelection();
-        if (missingObjectType == ObjectType::None)
+        if (missingObjectType == ObjectType::none)
         {
-            WindowCloseByClass(WindowClass::EditorObjectSelection);
             return true;
         }
 
         ContextShowError(STR_INVALID_SELECTION_OF_OBJECTS, errorString, {});
-        w = WindowFindByClass(WindowClass::EditorObjectSelection);
+
+        auto* windowMgr = Ui::GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::EditorObjectSelection);
         if (w != nullptr)
         {
             // Click tab with missing object

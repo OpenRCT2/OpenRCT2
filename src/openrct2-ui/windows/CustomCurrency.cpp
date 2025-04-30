@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,14 +10,15 @@
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/util/Util.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -42,10 +43,9 @@ namespace OpenRCT2::Ui::Windows
     static Widget window_custom_currency_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeSpinnerWidgets({100, 30}, {101, 11}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_CURRENCY_FORMAT), // NB: 3 widgets
-        MakeWidget        ({120, 50}, { 81, 11}, WindowWidgetType::Button,   WindowColour::Secondary, STR_EMPTY          ),
+        MakeWidget        ({120, 50}, { 81, 11}, WindowWidgetType::Button,   WindowColour::Secondary, kStringIdEmpty          ),
         MakeWidget        ({220, 50}, {131, 11}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                 ),
         MakeWidget        ({339, 51}, { 11,  9}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH ),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -54,7 +54,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_custom_currency_widgets;
+            SetWidgets(window_custom_currency_widgets);
             hold_down_widgets = (1uLL << WIDX_RATE_UP) | (1uLL << WIDX_RATE_DOWN);
             WindowInitScrollWidgets(*this);
             colours[0] = COLOUR_LIGHT_BROWN;
@@ -65,6 +65,7 @@ namespace OpenRCT2::Ui::Windows
         void OnMouseDown(WidgetIndex widgetIndex) override
         {
             auto* widget = &widgets[widgetIndex - 1];
+            auto* windowMgr = Ui::GetWindowManager();
 
             switch (widgetIndex)
             {
@@ -75,7 +76,7 @@ namespace OpenRCT2::Ui::Windows
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate += 1;
                     Config::Get().general.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
                     Config::Save();
-                    WindowInvalidateAll();
+                    windowMgr->InvalidateAll();
                     break;
                 case WIDX_RATE_DOWN:
                     if (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate > 1)
@@ -83,7 +84,7 @@ namespace OpenRCT2::Ui::Windows
                         CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate -= 1;
                         Config::Get().general.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
                         Config::Save();
-                        WindowInvalidateAll();
+                        windowMgr->InvalidateAll();
                     }
                     break;
                 case WIDX_AFFIX_DROPDOWN_BUTTON:
@@ -149,7 +150,8 @@ namespace OpenRCT2::Ui::Windows
                 Config::Get().general.CustomCurrencyAffix = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode;
                 Config::Save();
 
-                WindowInvalidateAll();
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->InvalidateAll();
             }
         }
 
@@ -158,12 +160,12 @@ namespace OpenRCT2::Ui::Windows
             if (text.empty())
                 return;
 
-            int32_t rate;
+            auto* windowMgr = Ui::GetWindowManager();
 
             switch (widgetIndex)
             {
                 case WIDX_SYMBOL_TEXT:
-                    SafeStrCpy(
+                    String::safeUtf8Copy(
                         CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, std::string(text).c_str(),
                         kCurrencySymbolMaxSize);
 
@@ -171,18 +173,19 @@ namespace OpenRCT2::Ui::Windows
                                                                      .symbol_unicode;
 
                     Config::Save();
-                    WindowInvalidateAll();
+
+                    windowMgr->InvalidateAll();
                     break;
 
                 case WIDX_RATE:
                     const auto res = String::Parse<int32_t>(text);
                     if (res.has_value())
                     {
-                        rate = res.value();
+                        int32_t rate = res.value();
                         CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = rate;
                         Config::Get().general.CustomCurrencyRate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
                         Config::Save();
-                        WindowInvalidateAll();
+                        windowMgr->InvalidateAll();
                     }
                     break;
             }
@@ -195,7 +198,7 @@ namespace OpenRCT2::Ui::Windows
 
             DrawWidgets(dpi);
 
-            auto screenCoords = windowPos + ScreenCoordsXY{ 10, 30 };
+            auto screenCoords = windowPos + ScreenCoordsXY{ 10, 18 + widgets[WIDX_TITLE].height() };
 
             DrawTextBasic(dpi, screenCoords, STR_RATE, {}, { colours[1] });
 
@@ -208,29 +211,22 @@ namespace OpenRCT2::Ui::Windows
 
             DrawTextBasic(dpi, screenCoords, STR_CURRENCY_SYMBOL_TEXT, {}, { colours[1] });
 
-            screenCoords = windowPos
-                + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_SYMBOL_TEXT].left + 1,
-                                  window_custom_currency_widgets[WIDX_SYMBOL_TEXT].top };
+            screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_SYMBOL_TEXT].left + 1, widgets[WIDX_SYMBOL_TEXT].top };
 
             DrawText(dpi, screenCoords, { colours[1] }, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode);
 
             auto drawPos = windowPos
-                + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
-                                  window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top };
+                + ScreenCoordsXY{ widgets[WIDX_AFFIX_DROPDOWN].left + 1, widgets[WIDX_AFFIX_DROPDOWN].top };
             StringId stringId = (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode == CurrencyAffix::Prefix)
                 ? STR_PREFIX
                 : STR_SUFFIX;
             DrawTextBasic(dpi, drawPos, stringId, {}, { colours[1] });
         }
-
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
     };
 
     WindowBase* CustomCurrencyOpen()
     {
-        return WindowFocusOrCreate<CustomCurrencyWindow>(WindowClass::CustomCurrencyConfig, WW, WH, WF_CENTRE_SCREEN);
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<CustomCurrencyWindow>(WindowClass::CustomCurrencyConfig, WW, WH, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
+#include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/ride/RideStringIds.h>
 #include <sstream>
@@ -39,10 +40,10 @@ TEST_F(FmtStringTests, iteration)
     auto fmt = FmtString("{BLACK}Guests: {INT32}");
     for (const auto& t : fmt)
     {
-        actual += String::StdFormat("[%d:%s]", t.kind, std::string(t.text).c_str());
+        actual += String::stdFormat("[%d:%s]", t.kind, std::string(t.text).c_str());
     }
 
-    ASSERT_EQ("[29:{BLACK}][1:Guests: ][8:{INT32}]", actual);
+    ASSERT_EQ("[31:{BLACK}][1:Guests: ][8:{INT32}]", actual);
 }
 
 TEST_F(FmtStringTests, iteration_escaped)
@@ -52,7 +53,7 @@ TEST_F(FmtStringTests, iteration_escaped)
     auto fmt = FmtString("This is an {{ESCAPED}} string.");
     for (const auto& t : fmt)
     {
-        actual += String::StdFormat("[%d:%s]", t.kind, std::string(t.text).c_str());
+        actual += String::stdFormat("[%d:%s]", t.kind, std::string(t.text).c_str());
     }
 
     ASSERT_EQ("[1:This is an ][2:{{][1:ESCAPED][2:}}][1: string.]", actual);

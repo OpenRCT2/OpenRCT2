@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,7 +9,8 @@
 
 #pragma once
 
-template<typename T> class DataSerialiserTag
+template<typename T>
+class DataSerialiserTag
 {
 public:
     DataSerialiserTag(const char* name, T& data)
@@ -33,7 +34,8 @@ private:
     T& _data;
 };
 
-template<typename T> inline DataSerialiserTag<T> CreateDataSerialiserTag(const char* name, T& data)
+template<typename T>
+inline DataSerialiserTag<T> CreateDataSerialiserTag(const char* name, T& data)
 {
     DataSerialiserTag<T> r(name, data);
     return r;

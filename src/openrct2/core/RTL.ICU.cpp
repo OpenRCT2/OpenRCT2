@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -8,16 +8,16 @@
  *****************************************************************************/
 
 #ifndef _WIN32
-#    include "RTL.h"
+    #include "RTL.h"
 
-#    include <algorithm>
-#    include <string>
-#    include <unicode/ubidi.h>
-#    include <unicode/unistr.h>
-#    include <unicode/ushape.h>
-#    include <unicode/ustring.h>
-#    include <unicode/utf.h>
-#    include <unicode/utypes.h>
+    #include <algorithm>
+    #include <string>
+    #include <unicode/ubidi.h>
+    #include <unicode/unistr.h>
+    #include <unicode/ushape.h>
+    #include <unicode/ustring.h>
+    #include <unicode/utf.h>
+    #include <unicode/utypes.h>
 
 std::string FixRTL(std::string& input)
 {

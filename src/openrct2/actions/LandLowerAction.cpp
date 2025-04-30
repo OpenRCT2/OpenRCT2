@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,8 +13,7 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/LandSetHeightAction.h"
-#include "../audio/audio.h"
-#include "../interface/Window.h"
+#include "../audio/Audio.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/RideConstruction.h"
@@ -22,9 +21,9 @@
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Surface.h"
 #include "../world/SurfaceData.h"
 #include "../world/tile_element/Slope.h"
+#include "../world/tile_element/SurfaceElement.h"
 
 using namespace OpenRCT2;
 
@@ -96,7 +95,7 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
             if (surfaceElement == nullptr)
                 continue;
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
+            if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
             {
                 if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {
@@ -144,7 +143,7 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
     }
 
     // Force ride construction to recheck area
-    _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
+    _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);
 
     return res;
 }

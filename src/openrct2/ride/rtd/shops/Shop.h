@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,35 +16,34 @@
 // clang-format off
 constexpr RideTypeDescriptor ShopRTD =
 {
-    .Category = RIDE_CATEGORY_SHOP,
+    .Category = RideCategory::shop,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x1A,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionShop,
-        .EnabledTrackPieces = {},
-        .ExtraTrackPieces = {},
+        .trackStyle = TrackStyle::shop,
+        .enabledTrackGroups = {},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasSinglePieceStation,
                      RtdFlag::cannotHaveGaps, RtdFlag::noTestMode, RtdFlag::noVehicles,
                      RtdFlag::isShopOrFacility, RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide,
                      RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::ShopStall),
-    .DefaultMode = RideMode::ShopStall,
+    .RideModes = EnumsToFlags(RideMode::shopStall),
+    .DefaultMode = RideMode::shopStall,
     .Naming = { STR_RIDE_NAME_SHOP, STR_RIDE_DESCRIPTION_SHOP },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_SHOP",
     .AvailableBreakdowns = 0,
-    .Heights = { 12, DefaultShopHeight, 0, 0, },
+    .Heights = { 12, kDefaultShopHeight, 0, 0, },
     .MaxMass = 255,
     .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 0, 0, 0 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 200.00_GBP, 0.00_GBP, 1, },
     .DefaultPrices = { 0, 0 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .DefaultMusic = kMusicObjectGentle,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 15,
-    .ColourPresets = DEFAULT_STALL_COLOUR_PRESET,
+    .ColourPresets = kDefaultStallColourPreset,
     .ColourPreview = { 0, 0 },
     .ColourKey = RideColourKey::Shop,
     .Name = "shop",
@@ -62,6 +61,6 @@ constexpr RideTypeDescriptor ShopRTD =
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::ShopOrStall,
+    .Classification = RideClassification::shopOrStall,
 };
 // clang-format on

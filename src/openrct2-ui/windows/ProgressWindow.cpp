@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,13 +9,15 @@
 
 #include <array>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
+#include <openrct2/SpriteIds.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
-#include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <random>
 #include <sstream>
 
@@ -32,11 +34,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t kWindowHeight = 90;
 
     // clang-format off
-    static Widget kProgressWindowWidgets[] = {
-        MakeWidget({                0, 0}, {    kWindowWidth, kWindowHeight}, WindowWidgetType::Frame,    WindowColour::Primary                                     ), // panel / background
-        MakeWidget({                1, 1}, {kWindowWidth - 3,            14}, WindowWidgetType::Caption,  WindowColour::Primary, STR_STRINGID,  STR_WINDOW_TITLE_TIP), // title bar
-        MakeWidget({kWindowWidth - 12, 2}, {              11,            12}, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X,   STR_CLOSE_WINDOW_TIP), // close x button
-        kWidgetsEnd,
+    static constexpr Widget kProgressWindowWidgets[] = {
+        WINDOW_SHIM(STR_STRINGID, kWindowWidth, kWindowHeight)
     };
 
     struct LoaderVehicleStyle
@@ -70,7 +69,7 @@ namespace OpenRCT2::Ui::Windows
     class ProgressWindow final : public Window
     {
     private:
-        close_callback _onClose = nullptr;
+        CloseCallback _onClose = nullptr;
 
         StringId _progressFormat;
         std::string _progressTitle;
@@ -83,16 +82,15 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = kProgressWindowWidgets;
-            WindowInitScrollWidgets(*this);
+            Audio::StopSFX();
+
+            SetWidgets(kProgressWindowWidgets);
+            WindowSetResize(*this, { kWindowWidth, kWindowHeight }, { kWindowWidth, kWindowHeight });
 
             frame_no = 0;
-            min_width = kWindowWidth;
-            min_height = kWindowHeight;
-            max_width = min_width;
-            max_height = min_height;
 
             ApplyStyle();
+            ResizeFrame();
         }
 
         void OnClose() override
@@ -121,11 +119,10 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDraw() override
         {
             if (_onClose != nullptr)
-                widgets[WIDX_CLOSE].type = WindowWidgetType::Button;
+                widgets[WIDX_CLOSE].type = WindowWidgetType::CloseBox;
             else
                 widgets[WIDX_CLOSE].type = WindowWidgetType::Empty;
 
-            ResizeFrame();
             PrepareCaption();
         }
 
@@ -194,11 +191,12 @@ namespace OpenRCT2::Ui::Windows
 
             // Figure out where to position the vehicle to indicate progress
             auto* vehicle = GfxGetG1Element(variant.vehicle);
+            int16_t vehicleWidth = (vehicle != nullptr) ? vehicle->width : 0;
             int32_t position;
             if (_totalCount > 0)
-                position = (-vehicle->width + 2) + width * _currentProgress / _totalCount;
+                position = (-vehicleWidth + 2) + width * _currentProgress / _totalCount;
             else
-                position = (vehicle->width + width) / 2;
+                position = (vehicleWidth + width) / 2;
 
             GfxDrawSprite(clipDPI, variant.vehicle, ScreenCoordsXY(position, widget.bottom + 1));
         }
@@ -212,14 +210,14 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
         }
 
-        void SetCloseCallback(close_callback onClose)
+        void SetCloseCallback(CloseCallback onClose)
         {
             _onClose = onClose;
         }
 
         void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format)
         {
-            if (format == STR_NONE)
+            if (format == kStringIdNone)
                 _progressFormat = STR_STRING_M_OF_N;
             else
                 _progressFormat = format;
@@ -230,18 +228,20 @@ namespace OpenRCT2::Ui::Windows
         }
     };
 
-    WindowBase* ProgressWindowOpen(const std::string& text, close_callback onClose)
+    WindowBase* ProgressWindowOpen(const std::string& text, CloseCallback onClose)
     {
         ContextForceCloseWindowByClass(WindowClass::NetworkStatus);
 
+        auto* windowMgr = GetWindowManager();
+
         ProgressWindow* window;
-        if ((window = static_cast<ProgressWindow*>(WindowFindByClass(WindowClass::ProgressWindow))) != nullptr)
+        if ((window = static_cast<ProgressWindow*>(windowMgr->FindByClass(WindowClass::ProgressWindow))) != nullptr)
         {
-            WindowBringToFront(*window);
+            windowMgr->BringToFront(*window);
         }
         else
         {
-            window = WindowCreate<ProgressWindow>(
+            window = windowMgr->Create<ProgressWindow>(
                 WindowClass::ProgressWindow, kWindowWidth, kWindowHeight,
                 WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         }
@@ -253,7 +253,8 @@ namespace OpenRCT2::Ui::Windows
 
     void ProgressWindowSet(uint32_t currentProgress, uint32_t totalCount, StringId format)
     {
-        auto window = WindowFindByClass(WindowClass::ProgressWindow);
+        auto* windowMgr = GetWindowManager();
+        auto window = windowMgr->FindByClass(WindowClass::ProgressWindow);
         if (window == nullptr)
         {
             return;
@@ -265,7 +266,8 @@ namespace OpenRCT2::Ui::Windows
     // Closes the window, deliberately *without* executing the callback.
     void ProgressWindowClose()
     {
-        auto window = WindowFindByClass(WindowClass::ProgressWindow);
+        auto* windowMgr = GetWindowManager();
+        auto window = windowMgr->FindByClass(WindowClass::ProgressWindow);
         if (window == nullptr)
         {
             return;

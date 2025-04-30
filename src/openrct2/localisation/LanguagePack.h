@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,12 +9,10 @@
 
 #pragma once
 
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 #include "../localisation/StringIdType.h"
 
 #include <memory>
-#include <string>
-#include <string_view>
 
 struct ILanguagePack
 {
@@ -26,7 +24,6 @@ struct ILanguagePack
     virtual void RemoveString(StringId stringId) = 0;
     virtual void SetString(StringId stringId, const std::string& str) = 0;
     virtual const utf8* GetString(StringId stringId) const = 0;
-    virtual StringId GetScenarioOverrideStringId(const utf8* scenarioFilename, uint8_t index) = 0;
 };
 
 namespace OpenRCT2::LanguagePackFactory

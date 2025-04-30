@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,10 +14,10 @@
 #include <stdexcept>
 
 #ifndef DISABLE_VORBIS
-#    include <SDL.h>
-#    include <optional>
-#    include <vector>
-#    include <vorbis/vorbisfile.h>
+    #include <SDL.h>
+    #include <optional>
+    #include <vector>
+    #include <vorbis/vorbisfile.h>
 #endif
 
 namespace OpenRCT2::Audio

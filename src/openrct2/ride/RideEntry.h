@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,8 +19,7 @@
 #include <cstdint>
 
 // Set to 255 on all tracked ride entries
-static uint8_t constexpr NoFlatRideCars = 0xFF;
-static ride_type_t constexpr RIDE_TYPE_NULL = 0xFF;
+static uint8_t constexpr kNoFlatRideCars = 0xFF;
 
 struct RideNaming
 {
@@ -49,7 +48,7 @@ struct RideObjectEntry
     // The first three images are previews. They correspond to the ride_type[] array.
     uint32_t images_offset;
     uint32_t flags;
-    ride_type_t ride_type[OpenRCT2::RCT2::ObjectLimits::MaxRideTypesPerRideEntry];
+    ride_type_t ride_type[OpenRCT2::RCT2::ObjectLimits::kMaxRideTypesPerRideEntry];
     uint8_t min_cars_in_train;
     uint8_t max_cars_in_train;
     uint8_t cars_per_flat_ride;
@@ -64,15 +63,14 @@ struct RideObjectEntry
     uint8_t RearCar;
     uint8_t ThirdCar;
     uint8_t BuildMenuPriority;
-    CarEntry Cars[OpenRCT2::RCT2::ObjectLimits::MaxCarTypesPerRideEntry];
+    CarEntry Cars[OpenRCT2::RCT2::ObjectLimits::kMaxCarTypesPerRideEntry];
     VehicleColourPresetList* vehicle_preset_list;
     int8_t excitement_multiplier;
     int8_t intensity_multiplier;
     int8_t nausea_multiplier;
     uint8_t max_height;
-    ShopItem shop_item[OpenRCT2::RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
+    ShopItem shop_item[OpenRCT2::RCT2::ObjectLimits::kMaxShopItemsPerRideEntry];
     StringId capacity;
-    void* obj;
     uint8_t Clearance;
 
     const CarEntry* GetCar(size_t id) const
@@ -93,11 +91,11 @@ struct RideObjectEntry
     {
         for (const auto& currentRideType : ride_type)
         {
-            if (currentRideType != RIDE_TYPE_NULL)
+            if (currentRideType != kRideTypeNull)
                 return currentRideType;
         }
 
-        return RIDE_TYPE_NULL;
+        return kRideTypeNull;
     }
 };
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -47,10 +47,10 @@ namespace OpenRCT2::RCT2
         bool Load(const utf8* path) override
         {
             const auto extension = Path::GetExtension(path);
-            if (String::IEquals(extension, ".td6"))
+            if (String::iequals(extension, ".td6"))
             {
                 _name = GetNameFromTrackPath(path);
-                auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
+                auto fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::open);
                 return LoadFromStream(&fs);
             }
 
@@ -132,7 +132,7 @@ namespace OpenRCT2::RCT2
                 td->operation.operationSetting, GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex).OperatingSettings.MaxValue);
 
             const auto& rtd = GetRideTypeDescriptor(td->trackAndVehicle.rtdIndex);
-            if (rtd.HasFlag(RtdFlag::isMaze))
+            if (rtd.specialType == RtdSpecialType::maze)
             {
                 TD46MazeElement t6MazeElement{};
                 t6MazeElement.All = !0;
@@ -154,10 +154,16 @@ namespace OpenRCT2::RCT2
                     _stream.Read(&t6TrackElement, sizeof(TD46TrackElement));
                     TrackDesignTrackElement trackElement{};
 
-                    track_type_t trackType = RCT2TrackTypeToOpenRCT2(t6TrackElement.Type, td->trackAndVehicle.rtdIndex, true);
-                    if (trackType == TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
+                    OpenRCT2::TrackElemType trackType;
+                    if (t6TrackElement.Type == OpenRCT2::RCT12::TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
                     {
                         trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;
+                    }
+                    else
+                    {
+                        auto rideType = td->trackAndVehicle.rtdIndex;
+                        const bool isFlatRide = GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::isFlatRide);
+                        trackType = RCT2TrackTypeToOpenRCT2(t6TrackElement.Type, rideType, isFlatRide);
                     }
 
                     trackElement.type = trackType;
@@ -191,7 +197,7 @@ namespace OpenRCT2::RCT2
                 sceneryElement.flags = t6SceneryElement.Flags;
                 sceneryElement.primaryColour = t6SceneryElement.PrimaryColour;
                 sceneryElement.secondaryColour = t6SceneryElement.SecondaryColour;
-                if (t6SceneryElement.SceneryObject.GetType() == ObjectType::Walls)
+                if (t6SceneryElement.SceneryObject.GetType() == ObjectType::walls)
                     sceneryElement.tertiaryColour = t6SceneryElement.getTertiaryWallColour();
 
                 td->sceneryElements.push_back(std::move(sceneryElement));
@@ -212,12 +218,9 @@ namespace OpenRCT2::RCT2
                 auto rawObject = ObjectRepositoryLoadObject(&td->trackAndVehicle.vehicleObject.Entry);
                 if (rawObject != nullptr)
                 {
-                    const auto* rideEntry = static_cast<const RideObjectEntry*>(
-                        static_cast<RideObject*>(rawObject.get())->GetLegacyData());
-                    if (rideEntry != nullptr)
-                    {
-                        td->trackAndVehicle.rtdIndex = RCT2RideTypeToOpenRCT2RideType(td->trackAndVehicle.rtdIndex, *rideEntry);
-                    }
+                    const auto& rideEntry = static_cast<RideObject*>(rawObject.get())->GetEntry();
+
+                    td->trackAndVehicle.rtdIndex = RCT2RideTypeToOpenRCT2RideType(td->trackAndVehicle.rtdIndex, rideEntry);
                     rawObject->Unload();
                 }
             }

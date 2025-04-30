@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,7 +9,9 @@
 
 #pragma once
 
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
+
+enum class ScenarioCategory : uint8_t;
 
 struct SourceDescriptor
 {
@@ -17,14 +19,15 @@ struct SourceDescriptor
     uint8_t id;
     uint8_t source;
     int32_t index;
-    uint8_t category;
+    ScenarioCategory category;
+    u8string_view textObjectId;
 };
 
 namespace OpenRCT2::ScenarioSources
 {
-    bool TryGetByName(const utf8* name, SourceDescriptor* outDesc);
+    bool TryGetByName(u8string_view name, SourceDescriptor* outDesc);
     bool TryGetById(uint8_t id, SourceDescriptor* outDesc);
-    void NormaliseName(utf8* buffer, size_t bufferSize, const utf8* name);
+    u8string NormaliseName(u8string_view input);
 } // namespace OpenRCT2::ScenarioSources
 
 // RCT1 scenario index map

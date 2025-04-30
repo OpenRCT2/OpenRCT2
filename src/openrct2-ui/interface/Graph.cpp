@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,7 +39,7 @@ namespace OpenRCT2::Graph
             // Draw Y label tick mark
             GfxFillRect(
                 dpi, { { internalBounds.GetLeft() - 5, curScreenPos + 5 }, { internalBounds.GetLeft(), curScreenPos + 5 } },
-                PALETTE_INDEX_10);
+                PaletteIndex::pi10);
             // Draw horizontal gridline
             GfxFillRectInset(
                 dpi, { { internalBounds.GetLeft(), curScreenPos + 5 }, { internalBounds.GetRight(), curScreenPos + 5 } },
@@ -69,7 +69,7 @@ namespace OpenRCT2::Graph
                     { FontStyle::Small, TextAlignment::CENTRE });
                 // Draw month tick mark
                 GfxFillRect(
-                    dpi, { screenCoords - ScreenCoordsXY{ 0, 4 }, screenCoords - ScreenCoordsXY{ 0, 1 } }, PALETTE_INDEX_10);
+                    dpi, { screenCoords - ScreenCoordsXY{ 0, 4 }, screenCoords - ScreenCoordsXY{ 0, 1 } }, PaletteIndex::pi10);
             }
 
             yearOver32 = (yearOver32 + 1) % 32;
@@ -94,15 +94,13 @@ namespace OpenRCT2::Graph
                 { coords.x, bounds.GetTop() },
                 { coords.x, bounds.GetBottom() },
             },
-            kDashLength, PALETTE_INDEX_10);
-        GfxDrawDashedLine(dpi, { { bounds.GetLeft(), coords.y }, coords }, kDashLength, PALETTE_INDEX_10);
+            kDashLength, PaletteIndex::pi10);
+        GfxDrawDashedLine(dpi, { { bounds.GetLeft(), coords.y }, coords }, kDashLength, PaletteIndex::pi10);
 
-        Formatter ft;
-        ft.Add<money64>(value);
         DrawText(dpi, coords - ScreenCoordsXY{ 0, 16 }, { textCol, TextAlignment::CENTRE }, text);
 
-        GfxFillRect(dpi, { { coords - ScreenCoordsXY{ 2, 2 } }, coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
-        GfxFillRect(dpi, { { coords - ScreenCoordsXY{ 1, 1 } }, { coords + ScreenCoordsXY{ 1, 1 } } }, PALETTE_INDEX_21);
+        GfxFillRect(dpi, { { coords - ScreenCoordsXY{ 2, 2 } }, coords + ScreenCoordsXY{ 2, 2 } }, PaletteIndex::pi10);
+        GfxFillRect(dpi, { { coords - ScreenCoordsXY{ 1, 1 } }, { coords + ScreenCoordsXY{ 1, 1 } } }, PaletteIndex::pi21);
     }
 
     template<typename T, T TkNoValue, bool TbackgroundLine>
@@ -131,12 +129,12 @@ namespace OpenRCT2::Graph
                         auto rightBottom1 = coords + ScreenCoordsXY{ 1, 1 };
                         auto leftTop2 = lastCoords + ScreenCoordsXY{ 0, 1 };
                         auto rightBottom2 = coords + ScreenCoordsXY{ 0, 1 };
-                        GfxDrawLine(dpi, { leftTop1, rightBottom1 }, PALETTE_INDEX_10);
-                        GfxDrawLine(dpi, { leftTop2, rightBottom2 }, PALETTE_INDEX_10);
+                        GfxDrawLine(dpi, { leftTop1, rightBottom1 }, PaletteIndex::pi10);
+                        GfxDrawLine(dpi, { leftTop2, rightBottom2 }, PaletteIndex::pi10);
                     }
                     if (i == 0)
                     {
-                        GfxFillRect(dpi, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
+                        GfxFillRect(dpi, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PaletteIndex::pi10);
                     }
                 }
                 else
@@ -145,12 +143,12 @@ namespace OpenRCT2::Graph
                     {
                         auto leftTop = lastCoords;
                         auto rightBottom = coords;
-                        GfxDrawLine(dpi, { leftTop, rightBottom }, PALETTE_INDEX_21);
+                        GfxDrawLine(dpi, { leftTop, rightBottom }, PaletteIndex::pi21);
                     }
                     if (i == 0)
                     {
                         GfxFillRect(
-                            dpi, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PALETTE_INDEX_21);
+                            dpi, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PaletteIndex::pi21);
                     }
                 }
 
@@ -161,45 +159,40 @@ namespace OpenRCT2::Graph
         }
     }
 
-    void DrawFinanceGraph(DrawPixelInfo& dpi, const GraphProperties<money64>& p)
+    template<typename T, T TkNoValue>
+    static void DrawGraph(
+        DrawPixelInfo& dpi, const GraphProperties<T>& p, const FmtString& labelFmt, const FmtString& tooltipFmt)
     {
-        const FmtString fmt("{BLACK}{CURRENCY2DP}");
-        DrawYLabels<money64>(dpi, p.internalBounds, p.min, p.max, p.numYLabels, p.yLabelStepPx, p.lineCol, fmt);
-        DrawMonths<money64, kMoney64Undefined>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx);
-        DrawLine<money64, kMoney64Undefined, true>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
-        DrawLine<money64, kMoney64Undefined, false>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
+        DrawYLabels<T>(dpi, p.internalBounds, p.min, p.max, p.numYLabels, p.yLabelStepPx, p.lineCol, labelFmt);
+        DrawMonths<T, TkNoValue>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx);
+        DrawLine<T, TkNoValue, true>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
+        DrawLine<T, TkNoValue, false>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
         if (p.hoverIdx >= 0 && p.hoverIdx < p.numPoints)
         {
-            const money64 value = p.series[p.hoverIdx];
-            if (value != kMoney64Undefined)
+            const T value = p.series[p.hoverIdx];
+            if (value != TkNoValue)
             {
                 char buffer[64]{};
-                FormatStringToBuffer(buffer, sizeof(buffer), "{CURRENCY2DP}", value);
-                DrawHoveredValue<money64>(
+                FormatStringToBuffer(buffer, sizeof(buffer), tooltipFmt, value);
+                DrawHoveredValue<T>(
                     dpi, value, p.hoverIdx, p.internalBounds, p.xStepPx, p.min, p.max, buffer,
                     p.lineCol.withFlag(ColourFlag::withOutline, true));
             }
         }
     }
 
-    void DrawRatingGraph(DrawPixelInfo& dpi, const GraphProperties<uint8_t>& p)
+    void DrawFinanceGraph(DrawPixelInfo& dpi, const GraphProperties<money64>& p)
     {
-        constexpr uint8_t noValue = ParkRatingHistoryUndefined;
-        const FmtString fmt("{BLACK}{COMMA32}");
-        // Since the park rating rating history is divided by 4, we have to fudge the max number here.
-        DrawYLabels<uint16_t>(dpi, p.internalBounds, p.min, kParkRatingMax, p.numYLabels, p.yLabelStepPx, p.lineCol, fmt);
-        DrawMonths<uint8_t, noValue>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx);
-        DrawLine<uint8_t, noValue, true>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
-        DrawLine<uint8_t, noValue, false>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
+        DrawGraph<money64, kMoney64Undefined>(dpi, p, "{BLACK}{CURRENCY2DP}", "{CURRENCY2DP}");
+    }
+
+    void DrawRatingGraph(DrawPixelInfo& dpi, const GraphProperties<uint16_t>& p)
+    {
+        DrawGraph<uint16_t, kParkRatingHistoryUndefined>(dpi, p, "{BLACK}{COMMA32}", "{COMMA32}");
     }
 
     void DrawGuestGraph(DrawPixelInfo& dpi, const GraphProperties<uint32_t>& p)
     {
-        constexpr uint32_t noValue = GuestsInParkHistoryUndefined;
-        const FmtString fmt("{BLACK}{COMMA32}");
-        DrawYLabels<uint32_t>(dpi, p.internalBounds, p.min, p.max, p.numYLabels, p.yLabelStepPx, p.lineCol, fmt);
-        DrawMonths<uint32_t, noValue>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx);
-        DrawLine<uint32_t, noValue, true>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
-        DrawLine<uint32_t, noValue, false>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
+        DrawGraph<uint32_t, kGuestsInParkHistoryUndefined>(dpi, p, "{BLACK}{COMMA32}", "{COMMA32}");
     }
 } // namespace OpenRCT2::Graph

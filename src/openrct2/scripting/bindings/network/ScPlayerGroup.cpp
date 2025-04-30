@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,15 +9,15 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScPlayerGroup.hpp"
+    #include "ScPlayerGroup.hpp"
 
-#    include "../../../Context.h"
-#    include "../../../actions/NetworkModifyGroupAction.h"
-#    include "../../../actions/PlayerSetGroupAction.h"
-#    include "../../../core/String.hpp"
-#    include "../../../network/NetworkAction.h"
-#    include "../../../network/network.h"
-#    include "../../Duktape.hpp"
+    #include "../../../Context.h"
+    #include "../../../actions/NetworkModifyGroupAction.h"
+    #include "../../../actions/PlayerSetGroupAction.h"
+    #include "../../../core/String.hpp"
+    #include "../../../network/Network.h"
+    #include "../../../network/NetworkAction.h"
+    #include "../../Duktape.hpp"
 
 namespace OpenRCT2::Scripting
 {
@@ -33,25 +33,25 @@ namespace OpenRCT2::Scripting
 
     std::string ScPlayerGroup::name_get() const
     {
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
         auto index = NetworkGetGroupIndex(_id);
         if (index == -1)
             return {};
         return NetworkGetGroupName(index);
-#    else
+    #else
         return {};
-#    endif
+    #endif
     }
 
     void ScPlayerGroup::name_set(std::string value)
     {
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
         auto action = NetworkModifyGroupAction(ModifyGroupType::SetName, _id, value);
         GameActions::Execute(&action);
-#    endif
+    #endif
     }
 
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
     static std::string TransformPermissionKeyToJS(const std::string& s)
     {
         auto result = s.substr(sizeof("PERMISSION_") - 1);
@@ -64,13 +64,13 @@ namespace OpenRCT2::Scripting
 
     static std::string TransformPermissionKeyToInternal(const std::string& s)
     {
-        return "PERMISSION_" + String::ToUpper(s);
+        return "PERMISSION_" + String::toUpper(s);
     }
-#    endif
+    #endif
 
     std::vector<std::string> ScPlayerGroup::permissions_get() const
     {
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
         auto index = NetworkGetGroupIndex(_id);
         if (index == -1)
             return {};
@@ -87,14 +87,14 @@ namespace OpenRCT2::Scripting
             permissionIndex++;
         }
         return result;
-#    else
+    #else
         return {};
-#    endif
+    #endif
     }
 
     void ScPlayerGroup::permissions_set(std::vector<std::string> value)
     {
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
         auto groupIndex = NetworkGetGroupIndex(_id);
         if (groupIndex == -1)
             return;
@@ -131,7 +131,7 @@ namespace OpenRCT2::Scripting
                 GameActions::Execute(&networkAction2);
             }
         }
-#    endif
+    #endif
     }
 
     void ScPlayerGroup::Register(duk_context* ctx)

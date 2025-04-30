@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,25 +9,19 @@
 
 #include "Painter.h"
 
-#include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../ReplayManager.h"
 #include "../config/Config.h"
+#include "../core/Guard.hpp"
 #include "../drawing/IDrawingEngine.h"
 #include "../drawing/Text.h"
-#include "../interface/Chat.h"
-#include "../interface/InteractiveConsole.h"
-#include "../interface/Widget.h"
-#include "../interface/Window.h"
-#include "../localisation/FormatCodes.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Language.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../scenes/intro/IntroScene.h"
-#include "../scenes/title/TitleScene.h"
 #include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../world/TileInspector.h"
 
 using namespace OpenRCT2;
@@ -93,7 +87,7 @@ void Painter::PaintReplayNotice(DrawPixelInfo& dpi, const char* text)
     auto stringWidth = GfxGetStringWidth(buffer, FontStyle::Medium);
     screenCoords.x = screenCoords.x - stringWidth;
 
-    if (((GetGameState().CurrentTicks >> 1) & 0xF) > 4)
+    if (((getGameState().currentTicks >> 1) & 0xF) > 4)
         DrawText(dpi, screenCoords, { COLOUR_SATURATED_RED }, buffer);
 
     // Make area dirty so the text doesn't get drawn over the last
@@ -102,10 +96,11 @@ void Painter::PaintReplayNotice(DrawPixelInfo& dpi, const char* text)
 
 static bool ShouldShowFPS()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return true;
 
-    return WindowFindByClass(WindowClass::TopToolbar);
+    auto* windowMgr = Ui::GetWindowManager();
+    return windowMgr->FindByClass(WindowClass::TopToolbar);
 }
 
 void Painter::PaintFPS(DrawPixelInfo& dpi)
@@ -124,7 +119,7 @@ void Painter::PaintFPS(DrawPixelInfo& dpi)
     screenCoords.x = screenCoords.x - (stringWidth / 2);
 
     // Move counter below toolbar if buttons are centred
-    const bool isTitle = gScreenFlags == SCREEN_FLAGS_TITLE_DEMO;
+    const bool isTitle = gLegacyScene == LegacyScene::titleSequence;
     if (!isTitle && Config::Get().interface.ToolbarButtonsCentred)
     {
         screenCoords.y = kTopToolbarHeight + 3;
@@ -166,15 +161,13 @@ PaintSession* Painter::CreateSession(DrawPixelInfo& dpi, uint32_t viewFlags, uin
     else
     {
         // Create new one in pool.
-        _paintSessionPool.emplace_back(std::make_unique<PaintSession>());
-        session = _paintSessionPool.back().get();
+        session = &_paintSessionPool.emplace_back();
     }
 
     session->DPI = dpi;
     session->ViewFlags = viewFlags;
     session->QuadrantBackIndex = std::numeric_limits<uint32_t>::max();
     session->QuadrantFrontIndex = 0;
-    session->PaintEntryChain = _paintStructPool.Create();
     session->Flags = 0;
     session->CurrentRotation = rotation;
 
@@ -197,15 +190,12 @@ void Painter::ReleaseSession(PaintSession* session)
 {
     PROFILED_FUNCTION();
 
-    session->PaintEntryChain.Clear();
+    session->paintEntries.clear();
+
     _freePaintSessions.push_back(session);
 }
 
 Painter::~Painter()
 {
-    for (auto&& session : _paintSessionPool)
-    {
-        ReleaseSession(session.get());
-    }
     _paintSessionPool.clear();
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,49 +15,49 @@
 #include <string_view>
 
 #ifndef _WIN32
-#    include <sys/stat.h>
+    #include <sys/stat.h>
 #else
-#    include <io.h>
+    #include <io.h>
 #endif
 
 #ifdef _MSC_VER
-#    define ftello _ftelli64
-#    define fseeko _fseeki64
+    #define ftello _ftelli64
+    #define fseeko _fseeki64
 #endif
 
 namespace OpenRCT2
 {
-    FileStream::FileStream(const fs::path& path, int32_t fileMode)
+    FileStream::FileStream(const fs::path& path, FileMode fileMode)
         : FileStream(path.u8string(), fileMode)
     {
     }
 
-    FileStream::FileStream(const std::string& path, int32_t fileMode)
+    FileStream::FileStream(const std::string& path, FileMode fileMode)
         : FileStream(path.c_str(), fileMode)
     {
     }
 
-    FileStream::FileStream(std::string_view path, int32_t fileMode)
+    FileStream::FileStream(std::string_view path, FileMode fileMode)
         : FileStream(std::string(path), fileMode)
     {
     }
 
-    FileStream::FileStream(const utf8* path, int32_t fileMode)
+    FileStream::FileStream(const utf8* path, FileMode fileMode)
     {
         const char* mode;
         switch (fileMode)
         {
-            case FILE_MODE_OPEN:
+            case FileMode::open:
                 mode = "rb";
                 _canRead = true;
                 _canWrite = false;
                 break;
-            case FILE_MODE_WRITE:
+            case FileMode::write:
                 mode = "w+b";
                 _canRead = true;
                 _canWrite = true;
                 break;
-            case FILE_MODE_APPEND:
+            case FileMode::append:
                 mode = "a";
                 _canRead = false;
                 _canWrite = true;
@@ -77,11 +77,11 @@ namespace OpenRCT2
         }
 
 #ifdef _WIN32
-        auto pathW = String::ToWideChar(path);
-        auto modeW = String::ToWideChar(mode);
+        auto pathW = String::toWideChar(path);
+        auto modeW = String::toWideChar(mode);
         _file = _wfopen(pathW.c_str(), modeW.c_str());
 #else
-        if (fileMode == FILE_MODE_OPEN)
+        if (fileMode == FileMode::open)
         {
             struct stat fileStat;
             // Only allow regular files to be opened as its possible to open directories.
@@ -97,7 +97,7 @@ namespace OpenRCT2
 #endif
         if (_file == nullptr)
         {
-            throw IOException(String::StdFormat("Unable to open '%s'", path));
+            throw IOException(String::stdFormat("Unable to open '%s'", path));
         }
 
 #ifdef _WIN32

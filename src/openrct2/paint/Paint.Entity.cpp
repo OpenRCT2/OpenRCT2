@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,6 +31,9 @@
 #include "vehicle/VehiclePaint.h"
 
 #include <cassert>
+
+using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
 /**
  * Paint Quadrant
@@ -80,11 +83,16 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         // Here converting from land/path/etc height scale to pixel height scale.
         // Note: peeps/scenery on slopes will be above the base
         // height of the slope element, and consequently clipped.
-        if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
+        if (session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW)
         {
             if (entityPos.z > (gClipHeight * kCoordsZStep))
             {
-                continue;
+                // see-through off: don't paint this entity at all
+                // see-through on: paint this entity as partial or hidden later on
+                if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH) == 0)
+                {
+                    continue;
+                }
             }
             if (entityPos.x < gClipSelectionA.x || entityPos.x > (gClipSelectionB.x + kCoordsXYStep - 1))
             {
@@ -101,8 +109,11 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
             screenCoords - ScreenCoordsXY{ spr->SpriteData.Width, spr->SpriteData.HeightMin },
             screenCoords + ScreenCoordsXY{ spr->SpriteData.Width, spr->SpriteData.HeightMax });
 
-        if (session.DPI.y + session.DPI.height <= spriteRect.GetTop() || spriteRect.GetBottom() <= session.DPI.y
-            || session.DPI.x + session.DPI.width <= spriteRect.GetLeft() || spriteRect.GetRight() <= session.DPI.x)
+        const ZoomLevel zoom = session.DPI.zoom_level;
+        if (session.DPI.y + session.DPI.height <= zoom.ApplyInversedTo(spriteRect.GetTop())
+            || zoom.ApplyInversedTo(spriteRect.GetBottom()) <= session.DPI.y
+            || session.DPI.x + session.DPI.width <= zoom.ApplyInversedTo(spriteRect.GetLeft())
+            || zoom.ApplyInversedTo(spriteRect.GetRight()) <= session.DPI.x)
         {
             continue;
         }
@@ -121,9 +132,9 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
         {
             case EntityType::Vehicle:
                 spr->As<Vehicle>()->Paint(session, image_direction);
-                if (LightFXForVehiclesIsAvailable())
+                if (LightFx::ForVehiclesIsAvailable())
                 {
-                    LightFXAddLightsMagicVehicle(spr->As<Vehicle>());
+                    LightFx::AddLightsMagicVehicle(spr->As<Vehicle>());
                 }
                 break;
             case EntityType::Guest:

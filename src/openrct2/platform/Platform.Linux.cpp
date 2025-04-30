@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,53 +9,91 @@
 
 #if defined(__unix__) && !defined(__ANDROID__) && !defined(__APPLE__)
 
-#    include "../Diagnostic.h"
+    #include "../Diagnostic.h"
 
-#    include <cstring>
-#    include <fnmatch.h>
-#    include <limits.h>
-#    include <locale.h>
-#    include <pwd.h>
-#    include <unistd.h>
-#    include <vector>
-#    if defined(__FreeBSD__) || defined(__NetBSD__)
-#        include <stddef.h>
-#        include <sys/param.h>
-#        include <sys/sysctl.h>
-#    endif // __FreeBSD__ || __NetBSD__
-#    if defined(__linux__)
-// for PATH_MAX
-#        include <linux/limits.h>
-#    endif // __linux__
-#    ifndef NO_TTF
-#        include <fontconfig/fontconfig.h>
-#    endif // NO_TTF
+    #include <cstring>
+    #include <fnmatch.h>
+    #include <limits.h>
+    #include <locale.h>
+    #include <pwd.h>
+    #include <stdlib.h>
+    #include <unistd.h>
+    #include <vector>
+    #if defined(__FreeBSD__) || defined(__NetBSD__)
+        #include <stddef.h>
+        #include <sys/param.h>
+        #include <sys/sysctl.h>
+    #endif // __FreeBSD__ || __NetBSD__
+    #if defined(__linux__)
+        // for PATH_MAX
+        #include <linux/limits.h>
+    #endif // __linux__
+    #ifndef DISABLE_TTF
+        #include <fontconfig/fontconfig.h>
+    #endif // DISABLE_TTF
 
-#    include "../Date.h"
-#    include "../OpenRCT2.h"
-#    include "../core/Path.hpp"
-#    include "../localisation/Language.h"
-#    include "Platform.h"
+    #include "../Date.h"
+    #include "../OpenRCT2.h"
+    #include "../core/Path.hpp"
+    #include "../localisation/Language.h"
+    #include "Platform.h"
 
 namespace OpenRCT2::Platform
 {
-    std::string GetFolderPath(SPECIAL_FOLDER folder)
+    // EnvLangGuard allows us to temporarily set the user's locale
+    // to the generic C locale, in order to trick fontconfig into
+    // returning an English font face name, while using RAII to avoid
+    // changing locale settings in other parts of the program
+    class EnvLangGuard
+    {
+    public:
+        EnvLangGuard();
+        ~EnvLangGuard();
+
+    private:
+        // GNU recommends scripts/programs set LC_ALL to override
+        // locales for uniform testing, clearing it after should let
+        // LANG and other locale settings operate normally
+        static constexpr const char* _kOverrideVarName{ "LC_ALL" };
+        static constexpr const char* _kTargetLocale{ "C.UTF-8" };
+    };
+
+    EnvLangGuard::EnvLangGuard()
+    {
+        int overwrite = 1;
+        int result = setenv(_kOverrideVarName, _kTargetLocale, overwrite);
+        if (result != 0)
+        {
+            LOG_VERBOSE("Could not update locale for font selection, some fonts may display incorrectly");
+        }
+    }
+
+    EnvLangGuard::~EnvLangGuard()
+    {
+        int result = unsetenv(_kOverrideVarName);
+        if (result != 0)
+        {
+            LOG_VERBOSE("Could not restore user locale");
+        }
+    }
+
+    std::string GetFolderPath(SpecialFolder folder)
     {
         switch (folder)
         {
-            case SPECIAL_FOLDER::USER_CACHE:
-            case SPECIAL_FOLDER::USER_CONFIG:
-            case SPECIAL_FOLDER::USER_DATA:
+            case SpecialFolder::userCache:
+            case SpecialFolder::userConfig:
+            case SpecialFolder::userData:
             {
                 auto path = GetEnvironmentPath("XDG_CONFIG_HOME");
                 if (path.empty())
                 {
-                    auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
+                    auto home = GetFolderPath(SpecialFolder::userHome);
                     path = Path::Combine(home, u8".config");
                 }
                 return path;
             }
-            case SPECIAL_FOLDER::USER_HOME:
+            case SpecialFolder::userHome:
                 return GetHomePath();
             default:
                 return std::string();
@@ -131,40 +169,40 @@ namespace OpenRCT2::Platform
     std::string GetCurrentExecutablePath()
     {
         char exePath[PATH_MAX] = { 0 };
-#    ifdef __linux__
+    #ifdef __linux__
         auto bytesRead = readlink("/proc/self/exe", exePath, sizeof(exePath));
         if (bytesRead == -1)
         {
             LOG_FATAL("failed to read /proc/self/exe");
         }
-#    elif defined(__FreeBSD__) || defined(__NetBSD__)
-#        if defined(__FreeBSD__)
+    #elif defined(__FreeBSD__) || defined(__NetBSD__)
+        #if defined(__FreeBSD__)
         const int32_t mib[] = {
             CTL_KERN,
             KERN_PROC,
             KERN_PROC_PATHNAME,
             -1,
         };
-#        else
+        #else
         const int32_t mib[] = {
             CTL_KERN,
             KERN_PROC_ARGS,
             -1,
             KERN_PROC_PATHNAME,
         };
-#        endif
+        #endif
         auto exeLen = sizeof(exePath);
         if (sysctl(mib, 4, exePath, &exeLen, nullptr, 0) == -1)
         {
             LOG_FATAL("failed to get process path");
         }
-#    elif defined(__OpenBSD__)
+    #elif defined(__OpenBSD__) || defined(__EMSCRIPTEN__)
         // There is no way to get the path name of a running executable.
         // If you are not using the port or package, you may have to change this line!
         strlcpy(exePath, "/usr/local/bin/", sizeof(exePath));
-#    else
-#        error "Platform does not support full path exe retrieval"
-#    endif
+    #else
+        #error "Platform does not support full path exe retrieval"
+    #endif
         return exePath;
     }
 
@@ -199,7 +237,7 @@ namespace OpenRCT2::Platform
                         break;
                     }
                 }
-            }                                         // end strip
+            } // end strip
             std::memcpy(pattern, langString, length); // copy all until first '.' or '@'
             pattern[length] = '\0';
             // find _ if present
@@ -259,12 +297,12 @@ namespace OpenRCT2::Platform
 
     MeasurementFormat GetLocaleMeasurementFormat()
     {
-// LC_MEASUREMENT is GNU specific.
-#    ifdef LC_MEASUREMENT
+    // LC_MEASUREMENT is GNU specific.
+    #ifdef LC_MEASUREMENT
         const char* langstring = setlocale(LC_MEASUREMENT, "");
-#    else
+    #else
         const char* langstring = setlocale(LC_ALL, "");
-#    endif
+    #endif
 
         if (langstring != nullptr)
         {
@@ -333,9 +371,29 @@ namespace OpenRCT2::Platform
         return u8"Rollercoaster Tycoon 2";
     }
 
-#    ifndef NO_TTF
+    std::vector<std::string_view> GetSearchablePathsRCT1()
+    {
+        return {
+            // game-data-packager uses this path when installing game files
+            "/usr/share/games/roller-coaster-tycoon",
+        };
+    }
+
+    std::vector<std::string_view> GetSearchablePathsRCT2()
+    {
+        return {
+            // game-data-packager uses this path when installing game files
+            "/usr/share/games/roller-coaster-tycoon2",
+        };
+    }
+
+    #ifndef DISABLE_TTF
     std::string GetFontPath(const TTFFontDescriptor& font)
     {
+        // set LANG to portable C.UTF-8 so font face names from fontconfig
+        // are reported in English
+        EnvLangGuard elg;
+
         LOG_VERBOSE("Looking for font %s with FontConfig.", font.font_name);
         FcConfig* config = FcInitLoadConfigAndFonts();
         if (!config)
@@ -390,7 +448,7 @@ namespace OpenRCT2::Platform
         FcFini();
         return path;
     }
-#    endif // NO_TTF
+    #endif // DISABLE_TTF
 } // namespace OpenRCT2::Platform
 
 #endif

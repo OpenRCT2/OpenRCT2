@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,19 +30,19 @@
 
 namespace OpenRCT2::Platform
 {
-    std::string GetFolderPath(SPECIAL_FOLDER folder)
+    std::string GetFolderPath(SpecialFolder folder)
     {
         // macOS stores everything in ~/Library/Application Support/OpenRCT2
         switch (folder)
         {
-            case SPECIAL_FOLDER::USER_CACHE:
-            case SPECIAL_FOLDER::USER_CONFIG:
-            case SPECIAL_FOLDER::USER_DATA:
+            case SpecialFolder::userCache:
+            case SpecialFolder::userConfig:
+            case SpecialFolder::userData:
             {
-                auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
+                auto home = GetFolderPath(SpecialFolder::userHome);
                 return Path::Combine(home, "Library/Application Support");
             }
-            case SPECIAL_FOLDER::USER_HOME:
+            case SpecialFolder::userHome:
                 return GetHomePath();
             default:
                 return std::string();
@@ -101,9 +101,10 @@ namespace OpenRCT2::Platform
                 auto exeDirectory = Path::GetDirectory(exePath);
 
                 // check build and install paths
-                NSArray *dataSearchLocations = @[@"data", @"../share/openrct2"];
+                NSArray* dataSearchLocations = @[ @"data", @"../share/openrct2" ];
 
-                for (NSString *searchLocation in dataSearchLocations) {
+                for (NSString* searchLocation in dataSearchLocations)
+                {
                     path = Path::Combine(exeDirectory, [searchLocation UTF8String]);
                     NSString* nsPath = [NSString stringWithUTF8String:path.c_str()];
                     if ([[NSFileManager defaultManager] fileExistsAtPath:nsPath])
@@ -143,11 +144,11 @@ namespace OpenRCT2::Platform
 
     bool HandleSpecialCommandLineArgument(const char* argument)
     {
-        if (String::Equals(argument, "-NSDocumentRevisionsDebugMode"))
+        if (String::equals(argument, "-NSDocumentRevisionsDebugMode"))
         {
             return true;
         }
-        if (String::StartsWith(argument, "-psn_"))
+        if (String::startsWith(argument, "-psn_"))
         {
             return true;
         }
@@ -280,6 +281,16 @@ namespace OpenRCT2::Platform
             }
         }
     }
-}
+
+    std::vector<std::string_view> GetSearchablePathsRCT1()
+    {
+        return {};
+    }
+
+    std::vector<std::string_view> GetSearchablePathsRCT2()
+    {
+        return {};
+    }
+} // namespace OpenRCT2::Platform
 
 #endif

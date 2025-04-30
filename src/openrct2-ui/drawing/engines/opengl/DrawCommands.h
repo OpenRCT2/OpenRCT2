@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,7 +16,8 @@
 #include <vector>
 namespace OpenRCT2::Ui
 {
-    template<typename T> class CommandBatch
+    template<typename T>
+    class CommandBatch
     {
     private:
         std::vector<T> _instances;
@@ -111,6 +112,7 @@ namespace OpenRCT2::Ui
         GLuint colour;
         ivec4 bounds;
         GLint depth;
+        GLfloat zoom;
 
         enum
         {

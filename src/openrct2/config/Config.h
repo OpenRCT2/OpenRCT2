@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 #include "../localisation/CurrencyTypes.h"
 #include "ConfigTypes.h"
 
@@ -17,8 +17,10 @@
 
 // windows.h defines an interface keyword
 #ifdef interface
-#    undef interface
+    #undef interface
 #endif
+
+enum class ScenarioSelectMode : uint8_t;
 
 namespace OpenRCT2::Config
 {
@@ -97,18 +99,19 @@ namespace OpenRCT2::Config
         bool AutoOpenShops;
         int32_t DefaultInspectionInterval;
         int32_t WindowLimit;
-        int32_t ScenarioSelectMode;
+        ScenarioSelectMode scenarioSelectMode;
         bool ScenarioUnlockingEnabled;
         bool ScenarioHideMegaPark;
         bool SteamOverlayPause;
         bool ShowRealNamesOfGuests;
+        bool ShowRealNamesOfStaff;
         bool AllowEarlyCompletion;
         u8string AssetPackOrder;
         u8string EnabledAssetPacks;
 
         // Loading and saving
         bool ConfirmationPrompt;
-        Sort LoadSaveSort;
+        FileBrowserSort LoadSaveSort;
         u8string LastSaveGameDirectory;
         u8string LastSaveLandscapeDirectory;
         u8string LastSaveScenarioDirectory;
@@ -116,6 +119,11 @@ namespace OpenRCT2::Config
         u8string LastRunVersion;
         bool UseNativeBrowseDialog;
         int64_t LastVersionCheckTime;
+        int16_t FileBrowserWidth;
+        int16_t FileBrowserHeight;
+        bool FileBrowserShowSizeColumn;
+        bool FileBrowserShowDateColumn;
+        bool FileBrowserShowPreviews;
     };
 
     struct Interface
@@ -128,6 +136,7 @@ namespace OpenRCT2::Config
         bool ToolbarShowMute;
         bool ToolbarShowChat;
         bool ToolbarShowZoom;
+        bool ToolbarShowRotateAnticlockwise;
         bool ConsoleSmallFont;
         bool RandomTitleSequence;
         u8string CurrentThemePreset;

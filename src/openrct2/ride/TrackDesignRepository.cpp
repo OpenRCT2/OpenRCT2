@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,12 +16,12 @@
 #include "../core/File.h"
 #include "../core/FileIndex.hpp"
 #include "../core/FileStream.h"
+#include "../core/FlagHolder.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../localisation/LocalisationService.h"
 #include "../object/ObjectRepository.h"
 #include "../ride/RideData.h"
-#include "../util/Util.h"
 #include "TrackDesign.h"
 
 #include <memory>
@@ -29,18 +29,19 @@
 
 using namespace OpenRCT2;
 
+enum TrackRepoItemFlag : uint8_t
+{
+    readOnly,
+};
+using TrackRepoItemFlags = FlagHolder<uint32_t, TrackRepoItemFlag>;
+
 struct TrackRepositoryItem
 {
     std::string Name;
     std::string Path;
-    ride_type_t RideType = RIDE_TYPE_NULL;
+    ride_type_t RideType = kRideTypeNull;
     std::string ObjectEntry;
-    uint32_t Flags = 0;
-};
-
-enum TRACK_REPO_ITEM_FLAGS
-{
-    TRIF_READ_ONLY = (1 << 0),
+    TrackRepoItemFlags flags{};
 };
 
 std::string GetNameFromTrackPath(const std::string& path)
@@ -54,19 +55,19 @@ std::string GetNameFromTrackPath(const std::string& path)
 class TrackDesignFileIndex final : public FileIndex<TrackRepositoryItem>
 {
 private:
-    static constexpr uint32_t MAGIC_NUMBER = 0x58444954; // TIDX
-    static constexpr uint16_t VERSION = 5;
-    static constexpr auto PATTERN = "*.td4;*.td6";
+    static constexpr uint32_t kMagicNumber = 0x58444954; // TIDX
+    static constexpr uint16_t kVersion = 5;
+    static constexpr auto kPattern = "*.td4;*.td6";
 
 public:
     explicit TrackDesignFileIndex(const IPlatformEnvironment& env)
         : FileIndex(
-            "track design index", MAGIC_NUMBER, VERSION, env.GetFilePath(PATHID::CACHE_TRACKS), std::string(PATTERN),
-            std::vector<std::string>({
-                env.GetDirectoryPath(DIRBASE::RCT1, DIRID::TRACK),
-                env.GetDirectoryPath(DIRBASE::RCT2, DIRID::TRACK),
-                env.GetDirectoryPath(DIRBASE::USER, DIRID::TRACK),
-            }))
+              "track design index", kMagicNumber, kVersion, env.GetFilePath(PathId::cacheTracks), std::string(kPattern),
+              std::vector<std::string>({
+                  env.GetDirectoryPath(DirBase::rct1, DirId::trackDesigns),
+                  env.GetDirectoryPath(DirBase::rct2, DirId::trackDesigns),
+                  env.GetDirectoryPath(DirBase::user, DirId::trackDesigns),
+              }))
     {
     }
 
@@ -76,15 +77,14 @@ public:
         auto td = TrackDesignImport(path.c_str());
         if (td != nullptr)
         {
-            TrackRepositoryItem item;
+            TrackRepositoryItem item{};
             item.Name = GetNameFromTrackPath(path);
             item.Path = path;
             item.RideType = td->trackAndVehicle.rtdIndex;
             item.ObjectEntry = std::string(td->trackAndVehicle.vehicleObject.Entry.name, 8);
-            item.Flags = 0;
             if (IsTrackReadOnly(path))
             {
-                item.Flags |= TRIF_READ_ONLY;
+                item.flags.set(TrackRepoItemFlag::readOnly);
             }
             return item;
         }
@@ -99,13 +99,13 @@ protected:
         ds << item.Path;
         ds << item.RideType;
         ds << item.ObjectEntry;
-        ds << item.Flags;
+        ds << item.flags.holder;
     }
 
 private:
     bool IsTrackReadOnly(const std::string& path) const
     {
-        return String::StartsWith(path, SearchPaths[0]) || String::StartsWith(path, SearchPaths[1]);
+        return String::startsWith(path, SearchPaths[0]) || String::startsWith(path, SearchPaths[1]);
     }
 };
 
@@ -155,7 +155,7 @@ public:
                     entryIsNotSeparate = true;
             }
 
-            if (entryIsNotSeparate || String::IEquals(item.ObjectEntry, entry))
+            if (entryIsNotSeparate || String::iequals(item.ObjectEntry, entry))
             {
                 count++;
             }
@@ -189,7 +189,7 @@ public:
                     entryIsNotSeparate = true;
             }
 
-            if (entryIsNotSeparate || String::IEquals(item.ObjectEntry, entry))
+            if (entryIsNotSeparate || String::iequals(item.ObjectEntry, entry))
             {
                 TrackDesignFileRef ref;
                 ref.name = GetNameFromTrackPath(item.Path);
@@ -220,7 +220,7 @@ public:
         if (index != SIZE_MAX)
         {
             const TrackRepositoryItem* item = &_items[index];
-            if (!(item->Flags & TRIF_READ_ONLY))
+            if (!item->flags.has(TrackRepoItemFlag::readOnly))
             {
                 if (File::Delete(path))
                 {
@@ -239,7 +239,7 @@ public:
         if (index != SIZE_MAX)
         {
             TrackRepositoryItem* item = &_items[index];
-            if (!(item->Flags & TRIF_READ_ONLY))
+            if (!item->flags.has(TrackRepoItemFlag::readOnly))
             {
                 std::string directory = Path::GetDirectory(path);
                 std::string newPath = Path::Combine(directory, newName + Path::GetExtension(path));
@@ -258,7 +258,7 @@ public:
     std::string Install(const std::string& path, const std::string& name) override
     {
         std::string result;
-        std::string installDir = _env->GetDirectoryPath(DIRBASE::USER, DIRID::TRACK);
+        std::string installDir = _env->GetDirectoryPath(DirBase::user, DirId::trackDesigns);
 
         std::string newPath = Path::Combine(installDir, name + Path::GetExtension(path));
         if (File::Copy(path, newPath, false))
@@ -282,7 +282,7 @@ private:
             {
                 return a.RideType < b.RideType;
             }
-            return StrLogicalCmp(a.Name.c_str(), b.Name.c_str()) < 0;
+            return String::logicalCmp(a.Name.c_str(), b.Name.c_str()) < 0;
         });
     }
 

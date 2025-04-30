@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,15 +9,16 @@
 
 #include "MetalSupports.h"
 
+#include "../../core/EnumUtils.hpp"
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
-#include "../../util/Util.h"
-#include "../../world/Surface.h"
+#include "../../world/Footpath.h"
 #include "../../world/tile_element/Slope.h"
 #include "../Paint.SessionFlags.h"
 #include "../Paint.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Numerics;
 
 constexpr auto kMetalSupportSkip = 9 * 4 * 2;
 
@@ -198,13 +199,13 @@ static constexpr MetalSupportsImages kSupportBasesAndBeams[] = {
     { 3279, 3262, 3262 }, // MetalSupportGraphic::Fork
     { 3298, 3262, 3262 }, // MetalSupportGraphic::ForkAlt
     { 3334, 3317, 3317 }, // MetalSupportGraphic::Boxed
-    {    0, 3658, 3658 }, // MetalSupportGraphic::Stick
-    {    0, 3658, 3658 }, // MetalSupportGraphic::StickAlt
-    {    0, 3141, 3141 }, // MetalSupportGraphic::ThickCentred
-    {    0, 3158, 3158 }, // MetalSupportGraphic::Thick
-    {    0, 3175, 3175 }, // MetalSupportGraphic::ThickAlt
-    {    0, 3192, 3192 }, // MetalSupportGraphic::ThickAltCentred
-    {    0, 3124, 3124 }, // MetalSupportGraphic::Truss
+    { kImageIndexUndefined, 3658, 3658 }, // MetalSupportGraphic::Stick
+    { kImageIndexUndefined, 3658, 3658 }, // MetalSupportGraphic::StickAlt
+    { kImageIndexUndefined, 3141, 3141 }, // MetalSupportGraphic::ThickCentred
+    { kImageIndexUndefined, 3158, 3158 }, // MetalSupportGraphic::Thick
+    { kImageIndexUndefined, 3175, 3175 }, // MetalSupportGraphic::ThickAlt
+    { kImageIndexUndefined, 3192, 3192 }, // MetalSupportGraphic::ThickAltCentred
+    { kImageIndexUndefined, 3124, 3124 }, // MetalSupportGraphic::Truss
     { 3243, 3209, 3226 }, // MetalSupportGraphic::TubesInverted
     { 3334, 3353, 3353 }, // MetalSupportGraphic::BoxedCoated
 };
@@ -365,7 +366,7 @@ static bool MetalASupportsPaintSetup(
     }
     int16_t si = height;
     if (supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery || height - supportSegments[segment].height < 6
-        || kSupportBasesAndBeams[supportType].base == 0)
+        || kSupportBasesAndBeams[supportType].base == kImageIndexUndefined)
     {
         height = supportSegments[segment].height;
     }
@@ -385,7 +386,7 @@ static bool MetalASupportsPaintSetup(
 
     // Work out if a small support segment required to bring support to normal
     // size (aka floor2(x, 16))
-    int16_t heightDiff = Floor2(height + 16, 16);
+    int16_t heightDiff = floor2(height + 16, 16);
     if (heightDiff > si)
     {
         heightDiff = si;
@@ -582,7 +583,7 @@ static bool MetalBSupportsPaintSetup(
     int32_t si = baseHeight;
 
     if ((supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery) || (baseHeight - supportSegments[segment].height < 6)
-        || (kSupportBasesAndBeams[supportType].beamA == 0))
+        || (kSupportBasesAndBeams[supportType].base == kImageIndexUndefined))
     {
         baseHeight = supportSegments[segment].height;
     }
@@ -598,7 +599,7 @@ static bool MetalBSupportsPaintSetup(
         baseHeight = supportSegments[segment].height + 6;
     }
 
-    int16_t heightDiff = Floor2(baseHeight + 16, 16);
+    int16_t heightDiff = floor2(baseHeight + 16, 16);
     if (heightDiff > si)
     {
         heightDiff = si;
@@ -782,7 +783,7 @@ bool PathPoleSupportsPaintSetup(
     // si = height
     // dx = baseHeight
 
-    int16_t heightDiff = Floor2(baseHeight + 16, 16);
+    int16_t heightDiff = floor2(baseHeight + 16, 16);
     if (heightDiff > height)
     {
         heightDiff = height;

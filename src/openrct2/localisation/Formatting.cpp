@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,13 +9,17 @@
 
 #include "Formatting.h"
 
+#include "../Context.h"
 #include "../Diagnostic.h"
 #include "../config/Config.h"
-#include "../peep/RealNames.h"
-#include "../util/Util.h"
+#include "../core/String.hpp"
+#include "../core/UnitConversion.h"
+#include "../object/ObjectManager.h"
+#include "../object/PeepNamesObject.h"
 #include "Currency.h"
 #include "FormatCodes.h"
 #include "Formatter.h"
+#include "Language.h"
 #include "Localisation.Date.h"
 #include "StringIds.h"
 
@@ -24,7 +28,7 @@
 
 namespace OpenRCT2
 {
-    static void FormatMonthYear(FormatBuffer& ss, int32_t month, int32_t year);
+    static void FormatMonthYear(FormatBuffer& ss, int32_t month, int32_t year, bool inSentence);
 
     static std::optional<int32_t> ParseNumericToken(std::string_view s)
     {
@@ -288,11 +292,15 @@ namespace OpenRCT2
     {
         if (IsRealNameStringId(id))
         {
-            auto realNameIndex = id - kRealNameStart;
-            ss << real_names[realNameIndex % std::size(real_names)];
-            ss << ' ';
-            ss << real_name_initials[(realNameIndex >> 10) % std::size(real_name_initials)];
-            ss << '.';
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* peepNamesObj = objManager.GetLoadedObject<PeepNamesObject>(0);
+            if (peepNamesObj != nullptr)
+            {
+                auto realNameIndex = id - kRealNameStart;
+                ss << peepNamesObj->GetGivenNameAt(realNameIndex);
+                ss << ' ';
+                ss << peepNamesObj->GetSurnameAt(realNameIndex >> 10);
+            }
         }
     }
 
@@ -310,7 +318,8 @@ namespace OpenRCT2
         }
     }
 
-    template<size_t TDecimalPlace, bool TDigitSep, typename T> void FormatNumber(FormatBuffer& ss, T value)
+    template<size_t TDecimalPlace, bool TDigitSep, typename T>
+    void FormatNumber(FormatBuffer& ss, T value)
     {
         char buffer[32];
         size_t i = 0;
@@ -388,7 +397,8 @@ namespace OpenRCT2
         }
     }
 
-    template<size_t TDecimalPlace, bool TDigitSep, typename T> void FormatCurrency(FormatBuffer& ss, T rawValue)
+    template<size_t TDecimalPlace, bool TDigitSep, typename T>
+    void FormatCurrency(FormatBuffer& ss, T rawValue)
     {
         auto currencyDesc = &CurrencyDescriptors[EnumValue(Config::Get().general.CurrencyFormat)];
         auto value = static_cast<int64_t>(rawValue) * currencyDesc->rate;
@@ -443,7 +453,8 @@ namespace OpenRCT2
         }
     }
 
-    template<typename T> static void FormatMinutesSeconds(FormatBuffer& ss, T value)
+    template<typename T>
+    static void FormatMinutesSeconds(FormatBuffer& ss, T value)
     {
         static constexpr StringId Formats[][2] = {
             { STR_DURATION_SEC, STR_DURATION_SECS },
@@ -465,7 +476,8 @@ namespace OpenRCT2
         }
     }
 
-    template<typename T> static void FormatHoursMinutes(FormatBuffer& ss, T value)
+    template<typename T>
+    static void FormatHoursMinutes(FormatBuffer& ss, T value)
     {
         static constexpr StringId Formats[][2] = {
             { STR_REALTIME_MIN, STR_REALTIME_MINS },
@@ -487,7 +499,8 @@ namespace OpenRCT2
         }
     }
 
-    template<typename T> void FormatArgument(FormatBuffer& ss, FormatToken token, T arg)
+    template<typename T>
+    void FormatArgument(FormatBuffer& ss, FormatToken token, T arg)
     {
         switch (token)
         {
@@ -583,12 +596,30 @@ namespace OpenRCT2
                     }
                 }
                 break;
+            case FormatToken::Height:
+                if constexpr (std::is_integral<T>())
+                {
+                    auto metres = HeightUnitsToMetres(arg);
+                    switch (Config::Get().general.MeasurementFormat)
+                    {
+                        default:
+                        case MeasurementFormat::Imperial:
+                            FormatStringID(ss, STR_UNIT_SUFFIX_FEET, MetresToFeet(metres));
+                            break;
+                        case MeasurementFormat::Metric:
+                        case MeasurementFormat::SI:
+                            FormatStringID(ss, STR_UNIT_SUFFIX_METRES, metres);
+                            break;
+                    }
+                }
+                break;
             case FormatToken::MonthYear:
+            case FormatToken::MonthYearSentence:
                 if constexpr (std::is_integral<T>())
                 {
                     auto month = DateGetMonth(arg);
                     auto year = DateGetYear(arg) + 1;
-                    FormatMonthYear(ss, month, year);
+                    FormatMonthYear(ss, month, year, token == FormatToken::MonthYearSentence);
                 }
                 break;
             case FormatToken::Month:
@@ -752,7 +783,8 @@ namespace OpenRCT2
         return CopyStringStreamToBuffer(buffer, bufferLen, ss);
     }
 
-    template<typename T> static T ReadFromArgs(const void*& args)
+    template<typename T>
+    static T ReadFromArgs(const void*& args)
     {
         T value;
         std::memcpy(&value, args, sizeof(T));
@@ -770,36 +802,38 @@ namespace OpenRCT2
                 case FormatToken::Int32:
                 case FormatToken::Comma2dp32:
                 case FormatToken::Sprite:
-                    anyArgs.push_back(ReadFromArgs<int32_t>(args));
+                    anyArgs.emplace_back(ReadFromArgs<int32_t>(args));
                     break;
                 case FormatToken::Currency2dp:
                 case FormatToken::Currency:
-                    anyArgs.push_back(ReadFromArgs<int64_t>(args));
+                    anyArgs.emplace_back(ReadFromArgs<int64_t>(args));
                     break;
                 case FormatToken::UInt16:
                 case FormatToken::MonthYear:
+                case FormatToken::MonthYearSentence:
                 case FormatToken::Month:
                 case FormatToken::Velocity:
                 case FormatToken::DurationShort:
                 case FormatToken::DurationLong:
-                    anyArgs.push_back(ReadFromArgs<uint16_t>(args));
+                    anyArgs.emplace_back(ReadFromArgs<uint16_t>(args));
                     break;
                 case FormatToken::Comma16:
                 case FormatToken::Length:
+                case FormatToken::Height:
                 case FormatToken::Comma1dp16:
-                    anyArgs.push_back(ReadFromArgs<int16_t>(args));
+                    anyArgs.emplace_back(ReadFromArgs<int16_t>(args));
                     break;
                 case FormatToken::StringById:
                 {
                     auto stringId = ReadFromArgs<StringId>(args);
-                    anyArgs.push_back(stringId);
+                    anyArgs.emplace_back(stringId);
                     BuildAnyArgListFromLegacyArgBuffer(GetFmtStringById(stringId), anyArgs, args);
                     break;
                 }
                 case FormatToken::String:
                 {
                     auto sz = ReadFromArgs<const char*>(args);
-                    anyArgs.push_back(sz);
+                    anyArgs.emplace_back(sz);
                     break;
                 }
                 case FormatToken::Pop16:
@@ -814,12 +848,13 @@ namespace OpenRCT2
         }
     }
 
-    static void FormatMonthYear(FormatBuffer& ss, int32_t month, int32_t year)
+    static void FormatMonthYear(FormatBuffer& ss, int32_t month, int32_t year, bool inSentence)
     {
         thread_local std::vector<FormatArg_t> tempArgs;
         tempArgs.clear();
 
-        auto fmt = GetFmtStringById(STR_DATE_FORMAT_MY);
+        auto stringId = inSentence ? STR_DATE_FORMAT_MY_SENTENCE : STR_DATE_FORMAT_MY;
+        auto fmt = GetFmtStringById(stringId);
         Formatter ft;
         ft.Add<uint16_t>(month);
         ft.Add<uint16_t>(year);
@@ -880,7 +915,7 @@ namespace OpenRCT2
 
         FormatStringLegacy(dest, size, format, args);
 
-        std::string upperString = String::ToUpper(dest);
+        std::string upperString = String::toUpper(dest);
 
         if (upperString.size() + 1 >= size)
         {

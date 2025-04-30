@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,17 +38,17 @@
 
 using namespace OpenRCT2;
 
-static int32_t ScenarioCategoryCompare(int32_t categoryA, int32_t categoryB)
+static int32_t ScenarioCategoryCompare(ScenarioCategory categoryA, ScenarioCategory categoryB)
 {
     if (categoryA == categoryB)
         return 0;
-    if (categoryA == SCENARIO_CATEGORY_DLC)
+    if (categoryA == ScenarioCategory::dlc)
         return -1;
-    if (categoryB == SCENARIO_CATEGORY_DLC)
+    if (categoryB == ScenarioCategory::dlc)
         return 1;
-    if (categoryA == SCENARIO_CATEGORY_BUILD_YOUR_OWN)
+    if (categoryA == ScenarioCategory::buildYourOwn)
         return -1;
-    if (categoryB == SCENARIO_CATEGORY_BUILD_YOUR_OWN)
+    if (categoryB == ScenarioCategory::buildYourOwn)
         return 1;
     if (categoryA < categoryB)
         return -1;
@@ -71,10 +71,10 @@ static int32_t ScenarioIndexEntryCompareByCategory(const ScenarioIndexEntry& ent
             {
                 return static_cast<int32_t>(entryA.SourceGame) - static_cast<int32_t>(entryB.SourceGame);
             }
-            return strcmp(entryA.Name, entryB.Name);
-        case SCENARIO_CATEGORY_REAL:
-        case SCENARIO_CATEGORY_OTHER:
-            return strcmp(entryA.Name, entryB.Name);
+            return strcmp(entryA.Name.c_str(), entryB.Name.c_str());
+        case ScenarioCategory::real:
+        case ScenarioCategory::other:
+            return strcmp(entryA.Name.c_str(), entryB.Name.c_str());
     }
 }
 
@@ -123,19 +123,19 @@ static void ScenarioHighscoreFree(ScenarioHighscoreEntry* highscore)
 class ScenarioFileIndex final : public FileIndex<ScenarioIndexEntry>
 {
 private:
-    static constexpr uint32_t MAGIC_NUMBER = 0x58444953; // SIDX
-    static constexpr uint16_t VERSION = 8;
-    static constexpr auto PATTERN = "*.sc4;*.sc6;*.sea;*.park";
+    static constexpr uint32_t kMagicNumber = 0x58444953; // SIDX
+    static constexpr uint16_t kVersion = 9;
+    static constexpr auto kPattern = "*.sc4;*.sc6;*.sea;*.park";
 
 public:
     explicit ScenarioFileIndex(const IPlatformEnvironment& env)
         : FileIndex(
-            "scenario index", MAGIC_NUMBER, VERSION, env.GetFilePath(PATHID::CACHE_SCENARIOS), std::string(PATTERN),
-            std::vector<std::string>({
-                env.GetDirectoryPath(DIRBASE::RCT1, DIRID::SCENARIO),
-                env.GetDirectoryPath(DIRBASE::RCT2, DIRID::SCENARIO),
-                env.GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO),
-            }))
+              "scenario index", kMagicNumber, kVersion, env.GetFilePath(PathId::cacheScenarios), std::string(kPattern),
+              std::vector<std::string>({
+                  env.GetDirectoryPath(DirBase::rct1, DirId::scenarios),
+                  env.GetDirectoryPath(DirBase::rct2, DirId::scenarios),
+                  env.GetDirectoryPath(DirBase::user, DirId::scenarios),
+              }))
     {
     }
 
@@ -182,7 +182,7 @@ protected:
 private:
     static std::unique_ptr<IStream> GetStreamFromRCT2Scenario(const std::string& path)
     {
-        if (String::IEquals(Path::GetExtension(path), ".sea"))
+        if (String::iequals(Path::GetExtension(path), ".sea"))
         {
             auto data = DecryptSea(fs::u8path(path));
             auto ms = std::make_unique<MemoryStream>();
@@ -192,7 +192,7 @@ private:
             return ms;
         }
 
-        auto fs = std::make_unique<FileStream>(path, FILE_MODE_OPEN);
+        auto fs = std::make_unique<FileStream>(path, FileMode::open);
         return fs;
     }
 
@@ -208,17 +208,26 @@ private:
             std::unique_ptr<IParkImporter> importer;
             std::string extension = Path::GetExtension(path);
 
-            if (String::IEquals(extension, ".park"))
+            if (String::iequals(extension, ".park"))
+            {
                 importer = ParkImporter::CreateParkFile(objRepository);
-            else if (String::IEquals(extension, ".sc4"))
+                importer->LoadScenario(path, true);
+            }
+            else if (String::iequals(extension, ".sc4"))
+            {
                 importer = ParkImporter::CreateS4();
+                importer->LoadScenario(path, true);
+            }
             else
+            {
                 importer = ParkImporter::CreateS6(objRepository);
+                auto stream = GetStreamFromRCT2Scenario(path);
+                importer->LoadFromStream(stream.get(), true);
+            }
 
             if (importer)
             {
-                importer->LoadScenario(path, true);
-                if (importer->GetDetails(entry))
+                if (importer->PopulateIndexEntry(entry))
                 {
                     entry->Path = path;
                     entry->Timestamp = timestamp;
@@ -300,7 +309,7 @@ public:
             const auto scenarioFilename = Path::GetFileName(scenario.Path);
 
             // Note: this is always case insensitive search for cross platform consistency
-            if (String::IEquals(filename, scenarioFilename))
+            if (String::iequals(filename, scenarioFilename))
             {
                 return &scenario;
             }
@@ -308,7 +317,7 @@ public:
         return nullptr;
     }
 
-    const ScenarioIndexEntry* GetByInternalName(const utf8* name) const override
+    const ScenarioIndexEntry* GetByInternalName(u8string_view name) const override
     {
         for (size_t i = 0; i < _scenarios.size(); i++)
         {
@@ -318,7 +327,7 @@ public:
                 continue;
 
             // Note: this is always case insensitive search for cross platform consistency
-            if (String::IEquals(name, scenario->InternalName))
+            if (String::iequals(name, scenario->InternalName))
             {
                 return &_scenarios[i];
             }
@@ -352,19 +361,19 @@ public:
             const std::string scenarioExtension = Path::GetExtension(scenarioFileName);
 
             // Check if this is an RCTC scenario that corresponds to a known RCT1/2 scenario or vice versa, see #12626
-            if (String::IEquals(scenarioExtension, ".sea"))
+            if (String::iequals(scenarioExtension, ".sea"))
             {
                 // Get scenario using RCT2 style name of RCTC scenario
                 scenario = GetByFilename((scenarioBaseName + ".sc6").c_str());
             }
-            else if (String::IEquals(scenarioExtension, ".sc6"))
+            else if (String::iequals(scenarioExtension, ".sc6"))
             {
                 // Get scenario using RCTC style name of RCT2 scenario
                 scenario = GetByFilename((scenarioBaseName + ".sea").c_str());
             }
-            // GameState_t::ScenarioFileName .Park scenarios is the full file path instead of just <scenarioName.park>, so need
+            // GameState_t::scenarioFileName .Park scenarios is the full file path instead of just <scenarioName.park>, so need
             // to convert
-            else if (String::IEquals(scenarioExtension, ".park"))
+            else if (String::iequals(scenarioExtension, ".park"))
             {
                 scenario = GetByFilename((scenarioBaseName + ".park").c_str());
             }
@@ -408,7 +417,7 @@ private:
             const auto scenarioFilename = Path::GetFileName(scenario.Path);
 
             // Note: this is always case insensitive search for cross platform consistency
-            if (String::IEquals(filename, scenarioFilename))
+            if (String::iequals(filename, scenarioFilename))
             {
                 return &scenario;
             }
@@ -428,10 +437,10 @@ private:
      */
     void ImportMegaPark()
     {
-        auto mpdatPath = _env->FindFile(DIRBASE::RCT1, DIRID::DATA, "mp.dat");
+        auto mpdatPath = _env->FindFile(DirBase::rct1, DirId::data, "mp.dat");
         if (File::Exists(mpdatPath))
         {
-            auto scenarioDirectory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO);
+            auto scenarioDirectory = _env->GetDirectoryPath(DirBase::user, DirId::scenarios);
             auto expectedSc21Path = Path::Combine(scenarioDirectory, "sc21.sc4");
             auto sc21Path = Path::ResolveCasing(expectedSc21Path);
             if (!File::Exists(sc21Path))
@@ -465,7 +474,7 @@ private:
     {
         auto filename = Path::GetFileName(entry.Path);
 
-        if (!String::Equals(filename, ""))
+        if (!String::equals(filename, ""))
         {
             auto existingEntry = GetByFilename(filename.c_str());
             if (existingEntry != nullptr)
@@ -499,7 +508,7 @@ private:
 
     void Sort()
     {
-        if (Config::Get().general.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
+        if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
         {
             std::sort(
                 _scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
@@ -517,7 +526,7 @@ private:
 
     void LoadScores()
     {
-        std::string path = _env->GetFilePath(PATHID::SCORES);
+        std::string path = _env->GetFilePath(PathId::scores);
         if (!File::Exists(path))
         {
             return;
@@ -525,7 +534,7 @@ private:
 
         try
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = FileStream(path, FileMode::open);
             uint32_t fileVersion = fs.ReadValue<uint32_t>();
             if (fileVersion != 1 && fileVersion != 2)
             {
@@ -557,8 +566,8 @@ private:
      */
     void LoadLegacyScores()
     {
-        std::string rct2Path = _env->GetFilePath(PATHID::SCORES_RCT2);
-        std::string legacyPath = _env->GetFilePath(PATHID::SCORES_LEGACY);
+        std::string rct2Path = _env->GetFilePath(PathId::scoresRCT2);
+        std::string legacyPath = _env->GetFilePath(PathId::scoresLegacy);
         LoadLegacyScores(legacyPath);
         LoadLegacyScores(rct2Path);
     }
@@ -573,7 +582,7 @@ private:
         bool highscoresDirty = false;
         try
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = FileStream(path, FileMode::open);
             if (fs.GetLength() <= 4)
             {
                 // Initial value of scores for RCT2, just ignore
@@ -593,7 +602,7 @@ private:
                     bool notFound = true;
                     for (auto& highscore : _highscores)
                     {
-                        if (String::IEquals(scBasic.Path, highscore->fileName))
+                        if (String::iequals(scBasic.Path, highscore->fileName))
                         {
                             notFound = false;
 
@@ -603,7 +612,7 @@ private:
                                 std::string name = RCT2StringToUTF8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
                                 highscore->name = name;
                                 highscore->company_value = scBasic.CompanyValue;
-                                highscore->timestamp = DATETIME64_MIN;
+                                highscore->timestamp = kDatetime64Min;
                                 break;
                             }
                         }
@@ -615,7 +624,7 @@ private:
                         std::string name = RCT2StringToUTF8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
                         highscore->name = name;
                         highscore->company_value = scBasic.CompanyValue;
-                        highscore->timestamp = DATETIME64_MIN;
+                        highscore->timestamp = kDatetime64Min;
                     }
                 }
             }
@@ -661,10 +670,10 @@ private:
 
     void SaveHighscores()
     {
-        std::string path = _env->GetFilePath(PATHID::SCORES);
+        std::string path = _env->GetFilePath(PathId::scores);
         try
         {
-            auto fs = FileStream(path, FILE_MODE_WRITE);
+            auto fs = FileStream(path, FileMode::write);
             fs.WriteValue<uint32_t>(HighscoreFileVersion);
             fs.WriteValue<uint32_t>(static_cast<uint32_t>(_highscores.size()));
             for (size_t i = 0; i < _highscores.size(); i++)

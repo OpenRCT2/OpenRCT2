@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -149,7 +149,7 @@ void MusicObject::ParseRideTypes(const json_t& jRideTypes)
         if (!szRideType.empty())
         {
             auto rideType = RideObject::ParseRideType(szRideType);
-            if (rideType != RIDE_TYPE_NULL)
+            if (rideType != kRideTypeNull)
             {
                 _rideTypes.push_back(rideType);
             }
@@ -227,7 +227,7 @@ ObjectAsset MusicObject::GetAsset(IReadObjectContext& context, std::string_view 
     if (path.find("$RCT2:DATA/") == 0)
     {
         auto env = GetContext()->GetPlatformEnvironment();
-        auto path2 = env->FindFile(DIRBASE::RCT2, DIRID::DATA, path.substr(11));
+        auto path2 = env->FindFile(DirBase::rct2, DirId::data, path.substr(11));
         return ObjectAsset(path2);
     }
 

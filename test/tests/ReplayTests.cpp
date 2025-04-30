@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -104,7 +104,8 @@ static void PrintTo(const ReplayTestData& testData, std::ostream* os)
 
 struct PrintReplayParameter
 {
-    template<class ParamType> std::string operator()(const testing::TestParamInfo<ParamType>& info) const
+    template<class ParamType>
+    std::string operator()(const testing::TestParamInfo<ParamType>& info) const
     {
         auto data = static_cast<ReplayTestData>(info.param);
         return data.name;

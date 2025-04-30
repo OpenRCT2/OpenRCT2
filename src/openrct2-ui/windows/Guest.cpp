@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,27 +13,31 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/GuestSetFlagsAction.h>
 #include <openrct2/actions/GuestSetNameAction.h>
 #include <openrct2/actions/PeepPickupAction.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/EnumUtils.hpp>
+#include <openrct2/core/String.hpp>
 #include <openrct2/entity/Guest.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/management/Marketing.h>
-#include <openrct2/network/network.h>
-#include <openrct2/peep/PeepAnimationData.h>
+#include <openrct2/network/Network.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/peep/PeepSpriteIds.h>
 #include <openrct2/ride/RideData.h>
+#include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/ShopItem.h>
-#include <openrct2/scenario/Scenario.h>
-#include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
@@ -81,14 +85,26 @@ namespace OpenRCT2::Ui::Windows
         WIDX_LOCATE,
         WIDX_TRACK,
 
-        WIDX_HAPPINESS_BAR = WIDX_TAB_CONTENT_START,
+        WIDX_HAPPINESS_LABEL = WIDX_TAB_CONTENT_START,
+        WIDX_HAPPINESS_BAR,
+        WIDX_ENERGY_LABEL,
         WIDX_ENERGY_BAR,
+        WIDX_HUNGER_LABEL,
         WIDX_HUNGER_BAR,
+        WIDX_THIRST_LABEL,
         WIDX_THIRST_BAR,
+        WIDX_NAUSEA_LABEL,
         WIDX_NAUSEA_BAR,
+        WIDX_TOILET_LABEL,
         WIDX_TOILET_BAR,
+        WIDX_SEPARATOR,
 
-        WIDX_RIDE_SCROLL = WIDX_TAB_CONTENT_START,
+        WIDX_RIDES_BEEN_ON_LABEL = WIDX_TAB_CONTENT_START,
+        WIDX_RIDE_SCROLL,
+
+        WIDX_RECENT_THOUGHTS_LABEL = WIDX_TAB_CONTENT_START,
+
+        WIDX_CARRYING_LABEL = WIDX_TAB_CONTENT_START,
     };
 
     validate_global_widx(WC_PEEP, WIDX_PICKUP);
@@ -107,7 +123,7 @@ namespace OpenRCT2::Ui::Windows
         MakeTab({ 189, 17 }, STR_DEBUG_TIP)                                                     /* Tab 7 */
 
     // clang-format off
-    static Widget _guestWindowWidgetsOverview[] = {
+    static constexpr Widget _guestWindowWidgetsOverview[] = {
         MAIN_GUEST_WIDGETS,
         MakeWidget({  3,  45}, {164, 12}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                               ), // Label Thought marquee
         MakeWidget({  3,  57}, {164, 87}, WindowWidgetType::Viewport,      WindowColour::Secondary                                               ), // Viewport
@@ -116,49 +132,50 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({167,  69}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),     STR_NAME_GUEST_TIP           ), // Rename Button
         MakeWidget({167,  93}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),     STR_LOCATE_SUBJECT_TIP       ), // Locate Button
         MakeWidget({167, 117}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_TRACK_PEEP), STR_TOGGLE_GUEST_TRACKING_TIP), // Track Button
-        kWidgetsEnd,
     };
-    // clang-format on
 
-    static Widget _guestWindowWidgetsStats[] = {
+    static constexpr Widget _guestWindowWidgetsStats[] = {
         MAIN_GUEST_WIDGETS,
-        MakeProgressBar({ 65, (kListRowHeight * 0) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN, 0, 19), // Happiness
-        MakeProgressBar({ 65, (kListRowHeight * 1) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN, 0, 19), // Energy
-        MakeProgressBar({ 65, (kListRowHeight * 2) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 67, 100), // Hunger
-        MakeProgressBar({ 65, (kListRowHeight * 3) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 67, 100), // Thirst
-        MakeProgressBar({ 65, (kListRowHeight * 4) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 47, 100), // Nausea
-        MakeProgressBar({ 65, (kListRowHeight * 5) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 62, 100), // Toilet
-        kWidgetsEnd,
+        MakeWidget     ({  3, (kListRowHeight * 0) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_HAPPINESS_LABEL),
+        MakeProgressBar({ 65, (kListRowHeight * 0) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN, 0, 19),
+        MakeWidget     ({  3, (kListRowHeight * 1) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_ENERGY_LABEL),
+        MakeProgressBar({ 65, (kListRowHeight * 1) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN, 0, 19),
+        MakeWidget     ({  3, (kListRowHeight * 2) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_HUNGER_LABEL),
+        MakeProgressBar({ 65, (kListRowHeight * 2) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 67, 100),
+        MakeWidget     ({  3, (kListRowHeight * 3) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_THIRST_LABEL),
+        MakeProgressBar({ 65, (kListRowHeight * 3) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 67, 100),
+        MakeWidget     ({  3, (kListRowHeight * 4) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_NAUSEA_LABEL),
+        MakeProgressBar({ 65, (kListRowHeight * 4) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 47, 100),
+        MakeWidget     ({  3, (kListRowHeight * 5) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_TOILET_LABEL),
+        MakeProgressBar({ 65, (kListRowHeight * 5) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 62, 100),
+        MakeWidget     ({  3, (kListRowHeight * 7) + 9 + 43 }, { 180, 2  }, WindowWidgetType::HorizontalSeparator, WindowColour::Secondary),
     };
 
-    static Widget _guestWindowWidgetsRides[] = {
+    static constexpr Widget _guestWindowWidgetsRides[] = {
         MAIN_GUEST_WIDGETS,
-        MakeWidget({ 3, 57 }, { 186, 87 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
-        kWidgetsEnd,
+        MakeWidget({ 3, 45 }, { 186, 10 }, WindowWidgetType::Label,  WindowColour::Secondary, STR_GUEST_LABEL_RIDES_BEEN_ON),
+        MakeWidget({ 3, 57  }, { 186, 87 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
     };
 
-    static Widget _guestWindowWidgetsFinance[] = {
+    static constexpr Widget _guestWindowWidgetsFinance[] = {
         MAIN_GUEST_WIDGETS,
-        kWidgetsEnd,
     };
 
-    static Widget _guestWindowWidgetsThoughts[] = {
+    static constexpr Widget _guestWindowWidgetsThoughts[] = {
         MAIN_GUEST_WIDGETS,
-        kWidgetsEnd,
+        MakeWidget({ 3, 45 }, { 186, 10 }, WindowWidgetType::Label,  WindowColour::Secondary, STR_GUEST_RECENT_THOUGHTS_LABEL),
     };
 
-    static Widget _guestWindowWidgetsInventory[] = {
+    static constexpr Widget _guestWindowWidgetsInventory[] = {
         MAIN_GUEST_WIDGETS,
-        kWidgetsEnd,
+        MakeWidget({ 3, 45 }, { 186, 10 }, WindowWidgetType::Label,  WindowColour::Secondary, STR_CARRYING),
     };
 
-    static Widget _guestWindowWidgetsDebug[] = {
+    static constexpr Widget _guestWindowWidgetsDebug[] = {
         MAIN_GUEST_WIDGETS,
-        kWidgetsEnd,
     };
 
-    // clang-format off
-    static constexpr std::array _guestWindowPageWidgets = {
+    static constexpr std::span<const Widget> _guestWindowPageWidgets[] = {
         _guestWindowWidgetsOverview,
         _guestWindowWidgetsStats,
         _guestWindowWidgetsRides,
@@ -167,7 +184,7 @@ namespace OpenRCT2::Ui::Windows
         _guestWindowWidgetsInventory,
         _guestWindowWidgetsDebug,
     };
-    static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
+    static_assert(std::size(_guestWindowPageWidgets) == WINDOW_GUEST_PAGE_COUNT);
     // clang-format on
 
     static constexpr std::array _guestWindowPageSizes = {
@@ -193,15 +210,14 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _guestWindowWidgetsOverview;
+            SetWidgets(_guestWindowWidgetsOverview);
             page = WINDOW_GUEST_OVERVIEW;
             frame_no = 0;
             _marqueePosition = 0;
             picked_peep_frame = 0;
-            min_width = width;
-            min_height = 157;
-            max_width = 500;
-            max_height = 450;
+
+            WindowSetResize(*this, { WW, WH }, { 500, 450 });
+
             selected_list_item = -1;
         }
 
@@ -422,32 +438,24 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeCommon()
         {
             // Get page specific min and max size
-            int32_t minWidth = _guestWindowPageSizes[page][0].width;
-            int32_t minHeight = _guestWindowPageSizes[page][0].height;
-            int32_t maxWidth = _guestWindowPageSizes[page][1].width;
-            int32_t maxHeight = _guestWindowPageSizes[page][1].height;
+            auto minSize = _guestWindowPageSizes[page][0];
+            auto maxSize = _guestWindowPageSizes[page][1];
 
             // Ensure min size is large enough for all tabs to fit
             for (int32_t i = WIDX_TAB_1; i <= WIDX_TAB_7; i++)
             {
                 if (!WidgetIsDisabled(*this, i))
                 {
-                    minWidth = std::max(minWidth, widgets[i].right + 3);
+                    minSize.width = std::max(minSize.width, widgets[i].right + 3);
                 }
             }
-            maxWidth = std::max(minWidth, maxWidth);
+            maxSize.width = std::max(minSize.width, maxSize.width);
 
-            WindowSetResize(*this, minWidth, minHeight, maxWidth, maxHeight);
+            WindowSetResize(*this, minSize, maxSize);
         }
 
         void OnPrepareDrawCommon()
         {
-            if (_guestWindowPageWidgets[page] != widgets)
-            {
-                widgets = _guestWindowPageWidgets[page];
-                InitScrollWidgets();
-            }
-
             pressed_widgets |= 1uLL << (page + WIDX_TAB_1);
 
             const auto peep = GetGuest();
@@ -457,8 +465,6 @@ namespace OpenRCT2::Ui::Windows
             }
             auto ft = Formatter::Common();
             peep->FormatNameTo(ft);
-
-            ResizeFrameWithPage();
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
@@ -483,7 +489,7 @@ namespace OpenRCT2::Ui::Windows
                 if (!WidgetIsDisabled(*this, WIDX_PICKUP))
                     Invalidate();
             }
-            if (GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY)
+            if (getGameState().park.Flags & PARK_FLAGS_NO_MONEY)
             {
                 newDisabledWidgets |= (1uLL << WIDX_TAB_4); // Disable finance tab if no money
             }
@@ -499,12 +505,16 @@ namespace OpenRCT2::Ui::Windows
             if (isToolActive(classification, number))
                 ToolCancel();
 
-            int32_t listen = 0;
+            bool listen = false;
             if (newPage == WINDOW_GUEST_OVERVIEW && page == WINDOW_GUEST_OVERVIEW && viewport != nullptr)
             {
-                if (!(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
-                    listen = 1;
+                viewport->flags ^= VIEWPORT_FLAG_SOUND_ON;
+                listen = (viewport->flags & VIEWPORT_FLAG_SOUND_ON) != 0;
             }
+
+            // Skip setting page if we're already on this page, unless we're initialising the window
+            if (page == newPage && !widgets.empty())
+                return;
 
             page = newPage;
             frame_no = 0;
@@ -515,7 +525,7 @@ namespace OpenRCT2::Ui::Windows
 
             hold_down_widgets = 0;
             pressed_widgets = 0;
-            widgets = _guestWindowPageWidgets[page];
+            SetWidgets(_guestWindowPageWidgets[page]);
             DisableWidgets();
             Invalidate();
             OnResize();
@@ -555,8 +565,10 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            int32_t animationFrame = GetPeepAnimation(peep->SpriteType).base_image + 1;
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
 
+            int32_t animationFrame = animObj->GetPeepAnimation(peep->AnimationGroup).base_image + 1;
             int32_t animationFrameOffset = 0;
 
             if (page == WINDOW_GUEST_OVERVIEW)
@@ -570,27 +582,31 @@ namespace OpenRCT2::Ui::Windows
             GfxDrawSprite(clipDpi, spriteId, screenCoords);
 
             auto* guest = peep->As<Guest>();
-            if (guest != nullptr)
+            if (guest == nullptr)
+                return;
+
+            // There are only 6 walking frames available for each item.
+            auto itemFrame = (_guestAnimationFrame / 4) % 6;
+
+            if (guest->AnimationGroup == PeepAnimationGroup::Hat)
             {
-                // If holding a balloon
-                if (animationFrame >= kPeepSpriteBalloonStateWatchRideId
-                    && animationFrame < kPeepSpriteBalloonStateSittingIdleId + 4)
-                {
-                    GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->BalloonColour), screenCoords);
-                }
+                auto itemOffset = kPeepSpriteHatItemStart + 1;
+                auto imageId = ImageId(itemOffset + itemFrame * 4, guest->HatColour);
+                GfxDrawSprite(clipDpi, imageId, screenCoords);
+            }
 
-                // If holding umbrella
-                if (animationFrame >= kPeepSpriteUmbrellaStateNoneId
-                    && animationFrame < kPeepSpriteUmbrellaStateSittingIdleId + 4)
-                {
-                    GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->UmbrellaColour), screenCoords);
-                }
+            if (guest->AnimationGroup == PeepAnimationGroup::Balloon)
+            {
+                auto itemOffset = kPeepSpriteBalloonItemStart + 1;
+                auto imageId = ImageId(itemOffset + itemFrame * 4, guest->BalloonColour);
+                GfxDrawSprite(clipDpi, imageId, screenCoords);
+            }
 
-                // If wearing hat
-                if (animationFrame >= kPeepSpriteHatStateWatchRideId && animationFrame < kPeepSpriteHatStateSittingIdleId + 4)
-                {
-                    GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->HatColour), screenCoords);
-                }
+            if (guest->AnimationGroup == PeepAnimationGroup::Umbrella)
+            {
+                auto itemOffset = kPeepSpriteUmbrellaItemStart + 1;
+                auto imageId = ImageId(itemOffset + itemFrame * 4, guest->UmbrellaColour);
+                GfxDrawSprite(clipDpi, imageId, screenCoords);
             }
         }
 
@@ -598,21 +614,19 @@ namespace OpenRCT2::Ui::Windows
         {
             DisableWidgets();
             OnPrepareDraw();
-
-            WidgetInvalidate(*this, WIDX_MARQUEE);
-
+            InvalidateWidget(WIDX_MARQUEE);
             OnResizeCommon();
 
             if (viewport != nullptr)
             {
-                auto reqViewportWidth = width - 30;
-                auto reqViewportHeight = height - 72;
+                auto widget = widgets[WIDX_VIEWPORT];
+                auto reqViewportWidth = widget.width() - 1;
+                auto reqViewportHeight = widget.height() - 1;
+                viewport->pos = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
                 if (viewport->width != reqViewportWidth || viewport->height != reqViewportHeight)
                 {
                     viewport->width = reqViewportWidth;
                     viewport->height = reqViewportHeight;
-                    viewport->view_width = viewport->zoom.ApplyInversedTo(viewport->width);
-                    viewport->view_height = viewport->zoom.ApplyInversedTo(viewport->height);
                 }
             }
             OnViewportRotate();
@@ -642,10 +656,11 @@ namespace OpenRCT2::Ui::Windows
                     pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error != GameActions::Status::Ok)
                             return;
-                        WindowBase* wind = WindowFindByNumber(WindowClass::Peep, peepnum);
+                        auto* windowMgr = GetWindowManager();
+                        WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
                         if (wind != nullptr)
                         {
-                            ToolSet(*wind, WC_PEEP__WIDX_PICKUP, Tool::Picker);
+                            ToolSet(*wind, WC_PEEP__WIDX_PICKUP, Tool::picker);
                         }
                     });
                     GameActions::Execute(&pickupAction);
@@ -868,25 +883,34 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdateOverview()
         {
-            _guestAnimationFrame++;
-            _guestAnimationFrame %= 24;
-
-            // Update pickup animation, can only happen in this tab.
-            picked_peep_frame++;
-            picked_peep_frame %= 48;
-
-            WidgetInvalidate(*this, WIDX_TAB_1);
-            WidgetInvalidate(*this, WIDX_TAB_2);
-
             const auto peep = GetGuest();
             if (peep == nullptr)
             {
                 return;
             }
+
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+
+            // Overview tab animation offset
+            _guestAnimationFrame++;
+            _guestAnimationFrame %= 24;
+
+            // Get pickup animation length
+            const auto& pickAnim = animObj->GetPeepAnimation(peep->AnimationGroup, PeepAnimationType::Hanging);
+            const auto pickAnimLength = pickAnim.frame_offsets.size();
+
+            // Update pickup animation, can only happen in this tab.
+            picked_peep_frame++;
+            picked_peep_frame %= pickAnimLength * 4;
+
+            InvalidateWidget(WIDX_TAB_1);
+            InvalidateWidget(WIDX_TAB_2);
+
             if (peep->WindowInvalidateFlags & PEEP_INVALIDATE_PEEP_ACTION)
             {
                 peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_ACTION;
-                WidgetInvalidate(*this, WIDX_ACTION_LBL);
+                InvalidateWidget(WIDX_ACTION_LBL);
             }
 
             _marqueePosition += 2;
@@ -944,8 +968,8 @@ namespace OpenRCT2::Ui::Windows
 
             gPickupPeepImage = ImageId();
 
-            auto info = GetMapCoordinatesFromPos(screenCoords, ViewportInteractionItemAll);
-            if (info.SpriteType == ViewportInteractionItem::None)
+            auto info = GetMapCoordinatesFromPos(screenCoords, kViewportInteractionItemAll);
+            if (info.interactionType == ViewportInteractionItem::None)
                 return;
 
             gPickupPeepX = screenCoords.x - 1;
@@ -957,7 +981,10 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto baseImageId = GetPeepAnimation(peep->SpriteType, PeepActionSpriteType::Ui).base_image;
+            auto& objManager = GetContext()->GetObjectManager();
+            auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(peep->AnimationObjectIndex);
+
+            auto baseImageId = animObj->GetPeepAnimation(peep->AnimationGroup, PeepAnimationType::Hanging).base_image;
             baseImageId += picked_peep_frame >> 2;
             gPickupPeepImage = ImageId(baseImageId, peep->TshirtColour, peep->TrousersColour);
         }
@@ -1096,49 +1123,21 @@ namespace OpenRCT2::Ui::Windows
             InventoryTabDraw(dpi);
             DebugTabDraw(dpi);
 
-            // Not sure why this is not stats widgets
-            // cx dx
             auto screenCoords = windowPos
-                + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
-
-            // Happiness
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_HAPPINESS_LABEL);
-
-            // Energy
-            screenCoords.y += kListRowHeight;
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_ENERGY_LABEL);
-
-            // Hunger
-            screenCoords.y += kListRowHeight;
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_HUNGER_LABEL);
-
-            // Thirst
-            screenCoords.y += kListRowHeight;
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_THIRST_LABEL);
-
-            // Nausea
-            screenCoords.y += kListRowHeight;
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_NAUSEA_LABEL);
-
-            // Toilet
-            screenCoords.y += kListRowHeight;
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_TOILET_LABEL);
+                + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4,
+                                  widgets[WIDX_PAGE_BACKGROUND].top + (kListRowHeight * 6) + 5 };
 
             // Time in park
-            screenCoords.y += kListRowHeight + 1;
             int32_t guestEntryTime = peep->GetParkEntryTime();
             if (guestEntryTime != -1)
             {
-                int32_t timeInPark = (GetGameState().CurrentTicks - guestEntryTime) >> 11;
+                int32_t timeInPark = (getGameState().currentTicks - guestEntryTime) >> 11;
                 auto ft = Formatter();
                 ft.Add<uint16_t>(timeInPark & 0xFFFF);
                 DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_TIME_IN_PARK, ft);
             }
 
             screenCoords.y += kListRowHeight + 9;
-            GfxFillRectInset(
-                dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
-                INSET_RECT_FLAG_BORDER_INSET);
 
             // Preferred Ride
             DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_PREFERRED_RIDE);
@@ -1206,8 +1205,8 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
 
-            WidgetInvalidate(*this, WIDX_TAB_2);
-            WidgetInvalidate(*this, WIDX_TAB_3);
+            InvalidateWidget(WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_3);
 
             const auto guest = GetGuest();
             if (guest == nullptr)
@@ -1216,7 +1215,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Every 2048 ticks do a full window_invalidate
-            int32_t numTicks = GetGameState().CurrentTicks - guest->GetParkEntryTime();
+            int32_t numTicks = getGameState().currentTicks - guest->GetParkEntryTime();
             if (!(numTicks & 0x7FF))
                 Invalidate();
 
@@ -1224,7 +1223,7 @@ namespace OpenRCT2::Ui::Windows
             _riddenRides.clear();
             for (const auto& r : GetRideManager())
             {
-                if (r.IsRide() && guest->HasRidden(r))
+                if (r.isRide() && guest->HasRidden(r))
                 {
                     _riddenRides.push_back(r.id);
                 }
@@ -1312,15 +1311,13 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 2, widgets[WIDX_PAGE_BACKGROUND].top + 2 };
 
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_LABEL_RIDES_BEEN_ON);
-
             screenCoords.y = windowPos.y + widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
             auto ft = Formatter();
             auto* r = GetRide(peep->FavouriteRide);
             if (r != nullptr)
             {
-                r->FormatNameTo(ft);
+                r->formatNameTo(ft);
             }
             else
             {
@@ -1349,7 +1346,7 @@ namespace OpenRCT2::Ui::Windows
                 if (r != nullptr)
                 {
                     auto ft = Formatter();
-                    r->FormatNameTo(ft);
+                    r->formatNameTo(ft);
                     DrawTextBasic(dpi, { 0, y - 1 }, stringId, ft);
                 }
             }
@@ -1379,8 +1376,8 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
 
-            WidgetInvalidate(*this, WIDX_TAB_2);
-            WidgetInvalidate(*this, WIDX_TAB_4);
+            InvalidateWidget(WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_4);
         }
 
         void OnDrawFinance(DrawPixelInfo& dpi)
@@ -1517,8 +1514,8 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
 
-            WidgetInvalidate(*this, WIDX_TAB_2);
-            WidgetInvalidate(*this, WIDX_TAB_5);
+            InvalidateWidget(WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_5);
 
             auto peep = GetGuest();
             if (peep == nullptr)
@@ -1549,13 +1546,9 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            // cx dx
             auto screenCoords = windowPos
-                + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
+                + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 14 };
 
-            DrawTextBasic(dpi, screenCoords, STR_GUEST_RECENT_THOUGHTS_LABEL);
-
-            screenCoords.y += 10;
             for (const auto& thought : peep->Thoughts)
             {
                 if (thought.type == PeepThoughtType::None)
@@ -1592,8 +1585,8 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
 
-            WidgetInvalidate(*this, WIDX_TAB_2);
-            WidgetInvalidate(*this, WIDX_TAB_6);
+            InvalidateWidget(WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_6);
 
             auto peep = GetGuest();
             if (peep == nullptr)
@@ -1607,14 +1600,17 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        std::pair<StringId, Formatter> InventoryFormatItem(Guest& guest, ShopItem item) const
+        std::pair<ImageId, Formatter> InventoryFormatItem(Guest& guest, ShopItem item) const
         {
-            auto parkName = GetGameState().Park.Name.c_str();
+            auto parkName = getGameState().park.Name.c_str();
+
+            // Default item image
+            auto& itemDesc = GetShopItemDescriptor(item);
+            auto itemImage = ImageId(itemDesc.Image);
 
             // Default arguments
             auto ft = Formatter();
-            ft.Add<uint32_t>(GetShopItemDescriptor(item).Image);
-            ft.Add<StringId>(GetShopItemDescriptor(item).Naming.Display);
+            ft.Add<StringId>(itemDesc.Naming.Display);
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(parkName);
 
@@ -1623,29 +1619,27 @@ namespace OpenRCT2::Ui::Windows
             switch (item)
             {
                 case ShopItem::Balloon:
-                    ft.Rewind();
-                    ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.BalloonColour)).ToUInt32());
+                    itemImage = ImageId(itemDesc.Image, guest.BalloonColour);
                     break;
                 case ShopItem::Photo:
                     invRide = GetRide(guest.Photo1RideRef);
                     if (invRide != nullptr)
                     {
                         ft.Rewind();
-                        ft.Increment(6);
-                        invRide->FormatNameTo(ft);
+                        ft.Increment(2);
+                        invRide->formatNameTo(ft);
                     }
 
                     break;
                 case ShopItem::Umbrella:
-                    ft.Rewind();
-                    ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.UmbrellaColour)).ToUInt32());
+                    itemImage = ImageId(itemDesc.Image, guest.UmbrellaColour);
                     break;
                 case ShopItem::Voucher:
                     switch (guest.VoucherType)
                     {
                         case VOUCHER_TYPE_PARK_ENTRY_FREE:
                             ft.Rewind();
-                            ft.Increment(6);
+                            ft.Increment(2);
                             ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_FREE);
                             ft.Add<StringId>(STR_STRING);
                             ft.Add<const char*>(parkName);
@@ -1655,41 +1649,39 @@ namespace OpenRCT2::Ui::Windows
                             if (invRide != nullptr)
                             {
                                 ft.Rewind();
-                                ft.Increment(6);
+                                ft.Increment(2);
                                 ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
-                                invRide->FormatNameTo(ft);
+                                invRide->formatNameTo(ft);
                             }
                             break;
                         case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
                             ft.Rewind();
-                            ft.Increment(6);
+                            ft.Increment(2);
                             ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE);
                             ft.Add<StringId>(STR_STRING);
                             ft.Add<const char*>(parkName);
                             break;
                         case VOUCHER_TYPE_FOOD_OR_DRINK_FREE:
                             ft.Rewind();
-                            ft.Increment(6);
+                            ft.Increment(2);
                             ft.Add<StringId>(STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
                             ft.Add<StringId>(GetShopItemDescriptor(guest.VoucherShopItem).Naming.Singular);
                             break;
                     }
                     break;
                 case ShopItem::Hat:
-                    ft.Rewind();
-                    ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.HatColour)).ToUInt32());
+                    itemImage = ImageId(itemDesc.Image, guest.HatColour);
                     break;
                 case ShopItem::TShirt:
-                    ft.Rewind();
-                    ft.Add<uint32_t>(ImageId(GetShopItemDescriptor(item).Image, (guest.TshirtColour)).ToUInt32());
+                    itemImage = ImageId(itemDesc.Image, guest.TshirtColour);
                     break;
                 case ShopItem::Photo2:
                     invRide = GetRide(guest.Photo2RideRef);
                     if (invRide != nullptr)
                     {
                         ft.Rewind();
-                        ft.Increment(6);
-                        invRide->FormatNameTo(ft);
+                        ft.Increment(2);
+                        invRide->formatNameTo(ft);
                     }
                     break;
                 case ShopItem::Photo3:
@@ -1697,8 +1689,8 @@ namespace OpenRCT2::Ui::Windows
                     if (invRide != nullptr)
                     {
                         ft.Rewind();
-                        ft.Increment(6);
-                        invRide->FormatNameTo(ft);
+                        ft.Increment(2);
+                        invRide->formatNameTo(ft);
                     }
                     break;
                 case ShopItem::Photo4:
@@ -1706,8 +1698,8 @@ namespace OpenRCT2::Ui::Windows
                     if (invRide != nullptr)
                     {
                         ft.Rewind();
-                        ft.Increment(6);
-                        invRide->FormatNameTo(ft);
+                        ft.Increment(2);
+                        invRide->formatNameTo(ft);
                     }
                     break;
                 default:
@@ -1715,7 +1707,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
 
-            return std::make_pair(STR_GUEST_ITEM_FORMAT, ft);
+            return std::make_pair(itemImage, ft);
         }
 
         void OnDrawInventory(DrawPixelInfo& dpi)
@@ -1735,15 +1727,12 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            Widget* pageBackgroundWidget = &widgets[WIDX_PAGE_BACKGROUND];
-            auto screenCoords = windowPos + ScreenCoordsXY{ pageBackgroundWidget->left + 4, pageBackgroundWidget->top + 2 };
-            int32_t itemNameWidth = pageBackgroundWidget->width() - 8;
+            auto& widget = widgets[WIDX_PAGE_BACKGROUND];
+            auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 4, widget.top + 12 };
+            int32_t itemNameWidth = widget.width() - 24;
 
             int32_t maxY = windowPos.y + height - 22;
             int32_t numItems = 0;
-
-            DrawTextBasic(dpi, screenCoords, STR_CARRYING);
-            screenCoords.y += 10;
 
             for (ShopItem item = ShopItem::Balloon; item < ShopItem::Count; item++)
             {
@@ -1752,8 +1741,14 @@ namespace OpenRCT2::Ui::Windows
                 if (!guest->HasItem(item))
                     continue;
 
-                auto [stringId, ft] = InventoryFormatItem(*guest, item);
-                screenCoords.y += DrawTextWrapped(dpi, screenCoords, itemNameWidth, stringId, ft);
+                auto [imageId, ft] = InventoryFormatItem(*guest, item);
+                GfxDrawSprite(dpi, imageId, screenCoords);
+
+                screenCoords.x += 16;
+                screenCoords.y += 1;
+                screenCoords.y += DrawTextWrapped(dpi, screenCoords, itemNameWidth, STR_BLACK_STRING, ft);
+
+                screenCoords.x -= 16;
                 numItems++;
             }
 
@@ -1832,14 +1827,14 @@ namespace OpenRCT2::Ui::Windows
                 if (peep->GetNextIsSurface())
                 {
                     OpenRCT2::FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SURFACE, nullptr);
-                    SafeStrCat(buffer, buffer2, sizeof(buffer));
+                    String::safeConcat(buffer, buffer2, sizeof(buffer));
                 }
                 if (peep->GetNextIsSloped())
                 {
                     auto ft2 = Formatter();
                     ft2.Add<int32_t>(peep->GetNextDirection());
                     OpenRCT2::FormatStringLegacy(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SLOPE, ft2.Data());
-                    SafeStrCat(buffer, buffer2, sizeof(buffer));
+                    String::safeConcat(buffer, buffer2, sizeof(buffer));
                 }
                 DrawText(dpi, screenCoords, {}, buffer);
             }
@@ -1896,14 +1891,15 @@ namespace OpenRCT2::Ui::Windows
             return StaffOpen(peep);
         }
 
-        auto* window = static_cast<GuestWindow*>(WindowBringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
+        auto* windowMgr = GetWindowManager();
+        auto* window = static_cast<GuestWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
         if (window == nullptr)
         {
             int32_t windowWidth = 192;
             if (Config::Get().general.DebuggingTools)
                 windowWidth += TabWidth;
 
-            window = WindowCreate<GuestWindow>(WindowClass::Peep, windowWidth, 157, WF_RESIZABLE);
+            window = windowMgr->Create<GuestWindow>(WindowClass::Peep, windowWidth, 157, WF_RESIZABLE);
             if (window == nullptr)
             {
                 return nullptr;

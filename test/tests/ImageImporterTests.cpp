@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -41,7 +41,7 @@ TEST_F(ImageImporterTests, Import_Logo)
     auto logoPath = GetImagePath("logo.png");
 
     ImageImporter importer;
-    auto image = Imaging::ReadFromFile(logoPath, IMAGE_FORMAT::PNG_32);
+    auto image = Imaging::ReadFromFile(logoPath, ImageFormat::png32);
     auto meta = ImageImportMeta{ .offset = { 3, 5 } };
     auto result = importer.Import(image, meta);
 

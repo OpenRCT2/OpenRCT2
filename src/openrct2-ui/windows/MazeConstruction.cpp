@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,21 +11,23 @@
 
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/MazeSetTrackAction.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideEntranceExitPlaceAction.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
-#include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
+#include <openrct2/world/tile_element/EntranceElement.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -44,12 +46,12 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MAZE_BUILD_MODE = 6,
         WIDX_MAZE_MOVE_MODE,
         WIDX_MAZE_FILL_MODE,
-        WIDX_MAZE_DIRECTION_GROUPBOX = 25,
+        WIDX_MAZE_DIRECTION_GROUPBOX = 27,
         WIDX_MAZE_DIRECTION_NW,
         WIDX_MAZE_DIRECTION_NE,
         WIDX_MAZE_DIRECTION_SW,
         WIDX_MAZE_DIRECTION_SE,
-        WIDX_MAZE_ENTRANCE = 30,
+        WIDX_MAZE_ENTRANCE = 32,
         WIDX_MAZE_EXIT,
     };
 
@@ -58,7 +60,7 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_MAZE_CONSTRUCTION, WIDX_MAZE_EXIT);
 
     // clang-format off
-    static Widget window_maze_construction_widgets[] = {
+    static constexpr Widget window_maze_construction_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({ 3,  17}, {160, 55}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_MODE                                                            ),
         MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
@@ -66,6 +68,8 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({35,  29}, { 32, 32}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_MAZE_CONSTRUCTION_BUILD),    STR_RIDE_CONSTRUCTION_BUILD_MODE                      ),
         MakeWidget({67,  29}, { 32, 32}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_MAZE_CONSTRUCTION_MOVE),     STR_RIDE_CONSTRUCTION_MOVE_MODE                       ),
         MakeWidget({99,  29}, { 32, 32}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_MAZE_CONSTRUCTION_FILL_IN),  STR_RIDE_CONSTRUCTION_FILL_IN_MODE                    ),
+        MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
+        MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
         MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
         MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
         MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
@@ -91,7 +95,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({87, 178}, { 70, 12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_RIDE_CONSTRUCTION_EXIT,     STR_RIDE_CONSTRUCTION_EXIT_TIP                        ),
         MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
         MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -102,7 +105,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = window_maze_construction_widgets;
+            SetWidgets(window_maze_construction_widgets);
             WindowInitScrollWidgets(*this);
             rideId = _currentRideIndex;
             ShowGridlines();
@@ -126,9 +129,9 @@ namespace OpenRCT2::Ui::Windows
             auto currentRide = GetRide(_currentRideIndex);
             if (currentRide != nullptr)
             {
-                if (currentRide->overall_view.IsNull())
+                if (currentRide->overallView.IsNull())
                 {
-                    auto gameAction = RideDemolishAction(currentRide->id, RIDE_MODIFY_DEMOLISH);
+                    auto gameAction = RideDemolishAction(currentRide->id, RideModifyType::demolish);
                     gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
                     GameActions::Execute(&gameAction);
                 }
@@ -163,7 +166,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            ResizeFrameWithPage();
             uint64_t disabledWidgets = 0;
             if (_rideConstructionState == RideConstructionState::Place)
             {
@@ -187,7 +189,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if ((disabledWidgets & (1uLL << i)) != (currentDisabledWidgets & (1uLL << i)))
                 {
-                    WidgetInvalidate(*this, i);
+                    InvalidateWidget(i);
                 }
             }
             disabled_widgets = disabledWidgets;
@@ -212,7 +214,7 @@ namespace OpenRCT2::Ui::Windows
         void OnUpdate() override
         {
             auto currentRide = GetRide(_currentRideIndex);
-            if (currentRide == nullptr || currentRide->status != RideStatus::Closed)
+            if (currentRide == nullptr || currentRide->status != RideStatus::closed)
             {
                 Close();
                 return;
@@ -289,12 +291,12 @@ namespace OpenRCT2::Ui::Windows
             if (currentRide != nullptr)
             {
                 ft.Increment(4);
-                currentRide->FormatNameTo(ft);
+                currentRide->formatNameTo(ft);
             }
             else
             {
                 ft.Increment(4);
-                ft.Add<StringId>(STR_NONE);
+                ft.Add<StringId>(kStringIdNone);
             }
         }
 
@@ -306,14 +308,14 @@ namespace OpenRCT2::Ui::Windows
     private:
         void WindowMazeConstructionEntranceMouseup(WidgetIndex widgetIndex)
         {
-            if (ToolSet(*this, widgetIndex, Tool::Crosshair))
+            if (ToolSet(*this, widgetIndex, Tool::crosshair))
                 return;
 
             gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE
                                                                            : ENTRANCE_TYPE_RIDE_EXIT;
             gRideEntranceExitPlaceRideIndex = rideId;
             gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
-            InputSetFlag(INPUT_FLAG_6, true);
+            gInputFlags.set(InputFlag::unk6);
 
             RideConstructionInvalidateCurrentTrack();
 
@@ -349,7 +351,7 @@ namespace OpenRCT2::Ui::Windows
             if (entranceOrExitCoords.IsNull())
                 return;
 
-            if (gRideEntranceExitPlaceDirection == INVALID_DIRECTION)
+            if (gRideEntranceExitPlaceDirection == kInvalidDirection)
                 return;
 
             RideId rideIndex = gRideEntranceExitPlaceRideIndex;
@@ -364,23 +366,27 @@ namespace OpenRCT2::Ui::Windows
 
                 OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
 
+                auto* windowMgr = Ui::GetWindowManager();
+
                 auto currentRide = GetRide(rideIndex);
                 if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)
                 {
                     ToolCancel();
-                    if (!currentRide->GetRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
-                        WindowCloseByClass(WindowClass::RideConstruction);
+                    if (!currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+                    {
+                        windowMgr->CloseByClass(WindowClass::RideConstruction);
+                    }
                 }
                 else
                 {
                     gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
-                    WindowInvalidateByClass(WindowClass::RideConstruction);
+                    windowMgr->InvalidateByClass(WindowClass::RideConstruction);
 
                     auto newToolWidgetIndex = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE) ? WIDX_MAZE_ENTRANCE
                                                                                                           : WIDX_MAZE_EXIT;
 
                     ToolCancel();
-                    ToolSet(*this, newToolWidgetIndex, Tool::Crosshair);
+                    ToolSet(*this, newToolWidgetIndex, Tool::crosshair);
 
                     WindowMazeConstructionUpdatePressedWidgets();
                 }
@@ -392,7 +398,7 @@ namespace OpenRCT2::Ui::Windows
         {
             int32_t x, y, z, actionFlags = 0, mode;
 
-            _currentTrackSelectionFlags = 0;
+            _currentTrackSelectionFlags.clearAll();
             _rideConstructionNextArrowPulse = 0;
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             RideConstructionInvalidateCurrentTrack();
@@ -435,15 +441,15 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* MazeConstructionOpen()
     {
-        return WindowFocusOrCreate<MazeConstructionWindow>(
+        auto* windowMgr = GetWindowManager();
+        return windowMgr->FocusOrCreate<MazeConstructionWindow>(
             WindowClass::RideConstruction, ScreenCoordsXY(0, 29), WW, WH, WF_NO_AUTO_CLOSE);
     }
 
     void WindowMazeConstructionUpdatePressedWidgets()
     {
-        WindowBase* w;
-
-        w = WindowFindByClass(WindowClass::RideConstruction);
+        auto* windowMgr = GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
         if (w == nullptr)
             return;
 

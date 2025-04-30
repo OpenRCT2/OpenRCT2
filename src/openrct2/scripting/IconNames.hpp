@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include "../SpriteIds.h"
 #include "../core/EnumMap.hpp"
-#include "../sprites.h"
 
 #include <map>
 #include <string>
@@ -169,6 +169,8 @@ namespace OpenRCT2::Scripting
         { "selection_edge_se", SPR_G2_SELECTION_EDGE_SE },
         { "palette_invisible", SPR_G2_ICON_PALETTE_INVISIBLE },
         { "palette_invisible_pressed", SPR_G2_ICON_PALETTE_INVISIBLE_PRESSED },
+        { "monitor_start", SPR_G2_MONITOR_TAB_START },
+        { "monitor_end", SPR_G2_MONITOR_TAB_END },
     };
 
     // Maps legacy G2 icons sprite indices to new sprite indices

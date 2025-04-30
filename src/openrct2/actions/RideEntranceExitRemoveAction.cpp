@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include "../ride/Station.h"
 #include "../world/Entrance.h"
 #include "../world/TileElementsView.h"
+#include "../world/tile_element/EntranceElement.h"
 
 using namespace OpenRCT2;
 
@@ -74,14 +75,14 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
     }
 
-    if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
+    if (ride->status != RideStatus::closed && ride->status != RideStatus::simulating)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_MUST_BE_CLOSED_FIRST, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_MUST_BE_CLOSED_FIRST, kStringIdNone);
     }
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+    if (ride->lifecycleFlags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NOT_ALLOWED_TO_MODIFY_STATION, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NOT_ALLOWED_TO_MODIFY_STATION, kStringIdNone);
     }
 
     if (!LocationValid(_loc))
@@ -123,7 +124,7 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
     if (!isGhost)
     {
         RideClearForConstruction(*ride);
-        ride->RemovePeeps();
+        ride->removePeeps();
         InvalidateTestResults(*ride);
     }
 
@@ -156,7 +157,7 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
 
     TileElementRemove(entranceElement);
 
-    auto& station = ride->GetStation(_stationNum);
+    auto& station = ride->getStation(_stationNum);
     if (_isExit)
     {
         station.Exit.SetNull();

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,15 +9,16 @@
 
 #ifdef __ANDROID__
 
-#    include "Platform.h"
+    #include "Platform.h"
 
-#    include "../Diagnostic.h"
-#    include "../core/Guard.hpp"
-#    include "../localisation/Language.h"
+    #include "../Diagnostic.h"
+    #include "../core/File.h"
+    #include "../core/Guard.hpp"
+    #include "../localisation/Language.h"
 
-#    include <SDL.h>
-#    include <jni.h>
-#    include <memory>
+    #include <SDL.h>
+    #include <jni.h>
+    #include <memory>
 
 AndroidClassLoader::~AndroidClassLoader()
 {
@@ -34,15 +35,15 @@ static std::shared_ptr<AndroidClassLoader> acl;
 
 namespace OpenRCT2::Platform
 {
-    std::string GetFolderPath(SPECIAL_FOLDER folder)
+    std::string GetFolderPath(SpecialFolder folder)
     {
         // Android builds currently only read from /sdcard/openrct2*
         switch (folder)
         {
-            case SPECIAL_FOLDER::USER_CACHE:
-            case SPECIAL_FOLDER::USER_CONFIG:
-            case SPECIAL_FOLDER::USER_DATA:
-            case SPECIAL_FOLDER::USER_HOME:
+            case SpecialFolder::userCache:
+            case SpecialFolder::userConfig:
+            case SpecialFolder::userData:
+            case SpecialFolder::userHome:
                 return "/sdcard";
             default:
                 return std::string();
@@ -162,13 +163,18 @@ namespace OpenRCT2::Platform
         return {};
     }
 
-#    ifndef NO_TTF
+    #ifndef DISABLE_TTF
     std::string GetFontPath(const TTFFontDescriptor& font)
     {
-        STUB();
-        return {};
+        auto expectedPath = std::string("/system/fonts/") + std::string(font.filename);
+        if (File::Exists(expectedPath))
+        {
+            return expectedPath;
+        }
+
+        return "";
     }
-#    endif
+    #endif
 
     float GetDefaultScale()
     {
@@ -191,6 +197,16 @@ namespace OpenRCT2::Platform
         return static_cast<jclass>(env->CallObjectMethod(
             AndroidClassLoader::_classLoader, AndroidClassLoader::_findClassMethod,
             env->NewStringUTF(std::string(name).c_str())));
+    }
+
+    std::vector<std::string_view> GetSearchablePathsRCT1()
+    {
+        return { "/sdcard/rct1" };
+    }
+
+    std::vector<std::string_view> GetSearchablePathsRCT2()
+    {
+        return { "/sdcard/rct2" };
     }
 } // namespace OpenRCT2::Platform
 

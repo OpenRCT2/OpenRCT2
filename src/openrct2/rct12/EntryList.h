@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,7 +10,6 @@
 #pragma once
 
 #include <cstdint>
-#include <string>
 #include <string_view>
 #include <vector>
 
@@ -21,7 +20,7 @@ namespace OpenRCT2::RCT12
     class EntryList
     {
     private:
-        std::vector<std::string> _entries;
+        std::vector<std::string_view> _entries;
 
     public:
         size_t GetCount() const
@@ -29,7 +28,7 @@ namespace OpenRCT2::RCT12
             return _entries.size();
         }
 
-        const std::vector<std::string>& GetEntries() const
+        const std::vector<std::string_view>& GetEntries() const
         {
             return _entries;
         }
@@ -55,7 +54,8 @@ namespace OpenRCT2::RCT12
             }
         }
 
-        template<uint32_t i> void AddRange(const std::string_view (&list)[i])
+        template<uint32_t i>
+        void AddRange(const std::string_view (&list)[i])
         {
             for (auto entry : list)
             {

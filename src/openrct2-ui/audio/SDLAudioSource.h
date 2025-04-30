@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,9 +22,9 @@ namespace OpenRCT2::Audio
     struct IAudioMixer;
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
-#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+    #pragma GCC diagnostic ignored "-Wsuggest-final-types"
 #endif
     class SDLAudioSource : public IAudioSource
     {
@@ -46,7 +46,7 @@ namespace OpenRCT2::Audio
         IAudioMixer* GetMixer();
     };
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
-#    pragma GCC diagnostic pop
+    #pragma GCC diagnostic pop
 #endif
 
     std::unique_ptr<SDLAudioSource> CreateAudioSource(SDL_RWops* rw);

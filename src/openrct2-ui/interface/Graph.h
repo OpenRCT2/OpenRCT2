@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,9 +17,9 @@
 namespace OpenRCT2::Graph
 {
     constexpr int32_t kYTickMarkPadding = 8;
-    constexpr int32_t kParkRatingMax = 1000;
 
-    template<typename T> struct GraphProperties
+    template<typename T>
+    struct GraphProperties
     {
         ScreenRect internalBounds;
         const T* series;
@@ -68,6 +68,6 @@ namespace OpenRCT2::Graph
     };
 
     void DrawFinanceGraph(DrawPixelInfo& dpi, const GraphProperties<money64>& p);
-    void DrawRatingGraph(DrawPixelInfo& dpi, const GraphProperties<uint8_t>& p);
+    void DrawRatingGraph(DrawPixelInfo& dpi, const GraphProperties<uint16_t>& p);
     void DrawGuestGraph(DrawPixelInfo& dpi, const GraphProperties<uint32_t>& p);
 } // namespace OpenRCT2::Graph

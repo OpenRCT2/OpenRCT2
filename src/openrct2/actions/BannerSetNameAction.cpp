@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,9 +14,9 @@
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/StringIds.h"
-#include "../ui/UiContext.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
+#include "../world/tile_element/BannerElement.h"
 #include "GameAction.h"
 
 using namespace OpenRCT2;
@@ -53,6 +53,28 @@ GameActions::Result BannerSetNameAction::Query() const
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
     }
+
+    TileElement* tileElement = BannerGetTileElement(_bannerIndex);
+
+    if (tileElement == nullptr)
+    {
+        LOG_ERROR("Banner tile element not found for bannerIndex %d", _bannerIndex);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
+    }
+
+    BannerElement* bannerElement = tileElement->AsBanner();
+    CoordsXYZD loc = { banner->position.ToCoordsXY(), bannerElement->GetBaseZ(), bannerElement->GetPosition() };
+
+    if (!LocationValid(loc))
+    {
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_OFF_EDGE_OF_MAP);
+    }
+    if (!MapCanBuildAt({ loc.x, loc.y, loc.z - 16 }))
+    {
+        return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_RENAME_BANNER, STR_LAND_NOT_OWNED_BY_PARK);
+    }
+
     return GameActions::Result();
 }
 

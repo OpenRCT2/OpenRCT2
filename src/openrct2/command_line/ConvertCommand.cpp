@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,10 +14,9 @@
 #include "../ParkImporter.h"
 #include "../core/Console.hpp"
 #include "../core/Path.hpp"
-#include "../interface/Window.h"
 #include "../object/ObjectManager.h"
 #include "../park/ParkFile.h"
-#include "../scenario/Scenario.h"
+#include "../ui/WindowManager.h"
 #include "CommandLine.hpp"
 
 #include <cassert>
@@ -93,12 +92,12 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     context->Initialise();
 
     auto& objManager = context->GetObjectManager();
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     try
     {
         auto importer = ParkImporter::Create(sourcePath);
-        auto loadResult = importer->Load(sourcePath.c_str());
+        auto loadResult = importer->Load(sourcePath.c_str(), false);
 
         objManager.LoadObjects(loadResult.RequiredObjects);
 
@@ -123,7 +122,8 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
 
         // HACK remove the main window so it saves the park with the
         //      correct initial view
-        WindowCloseByClass(WindowClass::MainWindow);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::MainWindow);
 
         exporter->Export(gameState, destinationPath);
     }

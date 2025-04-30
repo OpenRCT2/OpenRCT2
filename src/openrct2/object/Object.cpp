@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,7 +18,6 @@
 #include "../core/ZipStream.hpp"
 #include "../drawing/Image.h"
 #include "../localisation/Language.h"
-#include "../localisation/LocalisationService.h"
 #include "../localisation/StringIds.h"
 #include "../world/Scenery.h"
 #include "ObjectLimits.h"
@@ -193,8 +192,8 @@ void Object::SetSourceGames(const std::vector<ObjectSourceGame>& sourceGames)
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
 #endif
 
 std::string Object::GetName() const
@@ -209,7 +208,7 @@ std::string Object::GetName(int32_t language) const
 
 ImageIndex Object::LoadImages()
 {
-    if (_baseImageId == ImageIndexUndefined)
+    if (_baseImageId == kImageIndexUndefined)
     {
         _baseImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
     }
@@ -218,10 +217,10 @@ ImageIndex Object::LoadImages()
 
 void Object::UnloadImages()
 {
-    if (_baseImageId != ImageIndexUndefined)
+    if (_baseImageId != kImageIndexUndefined)
     {
         GfxObjectFreeImages(_baseImageId, GetImageTable().GetCount());
-        _baseImageId = ImageIndexUndefined;
+        _baseImageId = kImageIndexUndefined;
     }
 }
 
@@ -312,7 +311,7 @@ bool ObjectAsset::IsAvailable() const
         return File::Exists(_path);
     }
 
-    auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+    auto zipArchive = Zip::TryOpen(_zipPath, ZipAccess::read);
     return zipArchive != nullptr && zipArchive->Exists(_path);
 }
 
@@ -323,7 +322,7 @@ uint64_t ObjectAsset::GetSize() const
         return File::GetSize(_path);
     }
 
-    auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+    auto zipArchive = Zip::TryOpen(_zipPath, ZipAccess::read);
     if (zipArchive != nullptr)
     {
         auto index = zipArchive->GetIndexFromPath(_path);
@@ -343,7 +342,7 @@ std::vector<uint8_t> ObjectAsset::GetData() const
         return File::ReadAllBytes(_path);
     }
 
-    auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+    auto zipArchive = Zip::TryOpen(_zipPath, ZipAccess::read);
     if (zipArchive != nullptr)
     {
         return zipArchive->GetFileData(_path);
@@ -357,10 +356,10 @@ std::unique_ptr<IStream> ObjectAsset::GetStream() const
     {
         if (_zipPath.empty())
         {
-            return std::make_unique<FileStream>(_path, FILE_MODE_OPEN);
+            return std::make_unique<FileStream>(_path, FileMode::open);
         }
 
-        auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+        auto zipArchive = Zip::TryOpen(_zipPath, ZipAccess::read);
         if (zipArchive != nullptr)
         {
             auto stream = zipArchive->GetFileStream(_path);
@@ -389,7 +388,7 @@ ObjectVersion VersionTuple(std::string_view version)
         return std::make_tuple(0, 0, 0);
     }
 
-    auto nums = String::Split(version, ".");
+    auto nums = String::split(version, ".");
     uint16_t versions[VersionNumFields] = {};
     if (nums.size() > VersionNumFields)
     {
@@ -426,5 +425,5 @@ ObjectVersion VersionTuple(std::string_view version)
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
-#    pragma GCC diagnostic pop
+    #pragma GCC diagnostic pop
 #endif

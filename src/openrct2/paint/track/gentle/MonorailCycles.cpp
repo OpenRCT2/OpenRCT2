@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -75,12 +75,12 @@ enum
     SprMonorailCyclesSBendRightNwSePart3 = 16869,
 };
 
-static constexpr uint32_t MonorailCyclesTrackPiecesFlat[2] = {
+static constexpr uint32_t kMonorailCyclesTrackPiecesFlat[2] = {
     SprMonorailCyclesFlatSwNe,
     SprMonorailCyclesFlatNwSe,
 };
 
-static constexpr uint32_t MonorailCyclesTrackPiecesFlatQuarterTurn5Tiles[4][5] = {
+static constexpr uint32_t kMonorailCyclesTrackPiecesFlatQuarterTurn5Tiles[4][5] = {
     {
         SprMonorailCyclesFlatQuarterTurn5TilesSwSePart0,
         SprMonorailCyclesFlatQuarterTurn5TilesSwSePart1,
@@ -111,7 +111,7 @@ static constexpr uint32_t MonorailCyclesTrackPiecesFlatQuarterTurn5Tiles[4][5] =
     },
 };
 
-static constexpr uint32_t MonorailCyclesTrackPiecesSBendLeft[2][4] = {
+static constexpr uint32_t kMonorailCyclesTrackPiecesSBendLeft[2][4] = {
     {
         SprMonorailCyclesSBendLeftSwNePart0,
         SprMonorailCyclesSBendLeftSwNePart1,
@@ -126,7 +126,7 @@ static constexpr uint32_t MonorailCyclesTrackPiecesSBendLeft[2][4] = {
     },
 };
 
-static constexpr uint32_t MonorailCyclesTrackPiecesSBendRight[2][4] = {
+static constexpr uint32_t kMonorailCyclesTrackPiecesSBendRight[2][4] = {
     {
         SprMonorailCyclesSBendRightSwNePart0,
         SprMonorailCyclesSBendRightSwNePart1,
@@ -141,7 +141,7 @@ static constexpr uint32_t MonorailCyclesTrackPiecesSBendRight[2][4] = {
     },
 };
 
-static constexpr uint32_t MonorailCyclesTrackPiecesFlatQuarterTurn3Tiles[4][3] = {
+static constexpr uint32_t kMonorailCyclesTrackPiecesFlatQuarterTurn3Tiles[4][3] = {
     {
         SprMonorailCyclesFlatQuarterTurn3TilesSwSePart0,
         SprMonorailCyclesFlatQuarterTurn3TilesSwSePart1,
@@ -169,7 +169,7 @@ static void PaintMonorailCyclesTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto imageId = session.TrackColours.WithIndex(MonorailCyclesTrackPiecesFlat[(direction & 1)]);
+    auto imageId = session.TrackColours.WithIndex(kMonorailCyclesTrackPiecesFlat[(direction & 1)]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
     if (direction & 1)
@@ -187,7 +187,7 @@ static void PaintMonorailCyclesTrackFlat(
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
-            EnumsToFlags(PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide), direction),
+            EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight), direction),
         0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -201,25 +201,26 @@ static void PaintMonorailCyclesStation(
 
     if (direction == 0 || direction == 2)
     {
-        imageId = GetStationColourScheme(session, trackElement).WithIndex(SPR_STATION_BASE_B_SW_NE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 1 } });
-
         imageId = session.TrackColours.WithIndex(SprMonorailCyclesFlatSwNe);
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 20, 1 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height + 1 }, { 32, 20, 1 } });
     }
     else if (direction == 1 || direction == 3)
     {
-        imageId = GetStationColourScheme(session, trackElement).WithIndex(SPR_STATION_BASE_B_NW_SE);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 2, 0, height }, { 28, 32, 1 } });
-
         imageId = session.TrackColours.WithIndex(SprMonorailCyclesFlatNwSe);
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 20, 32, 1 } });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height + 1 }, { 20, 32, 1 } });
     }
 
-    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
     TrackPaintUtilDrawStationTunnel(session, direction, height);
 
-    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
+    if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2))
+    {
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
+    }
+    else
+    {
+        MetalASupportsPaintSetupRotated(
+            session, supportType.metal, MetalSupportPlace::Centre, direction, -1, height, session.SupportColours);
+    }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -231,7 +232,7 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilLeftQuarterTurn3TilesPaint(
-        session, 3, height, direction, trackSequence, session.TrackColours, MonorailCyclesTrackPiecesFlatQuarterTurn3Tiles);
+        session, 3, height, direction, trackSequence, session.TrackColours, kMonorailCyclesTrackPiecesFlatQuarterTurn3Tiles);
     TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
@@ -241,9 +242,7 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::topCorner),
+                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::top),
                     direction),
                 0xFFFF, 0);
             break;
@@ -251,9 +250,7 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topLeftSide, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::leftCorner),
+                    EnumsToFlags(PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left),
                     direction),
                 0xFFFF, 0);
             break;
@@ -262,9 +259,7 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide,
-                        PaintSegment::bottomCorner),
+                    EnumsToFlags(PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottom),
                     direction),
                 0xFFFF, 0);
             break;
@@ -290,14 +285,14 @@ static void PaintMonorailCyclesTrackRightQuarterTurn3Tiles(
         session, ride, trackSequence, (direction + 3) % 4, height, trackElement, supportType);
 }
 
-static constexpr int8_t MonorailCyclesTrackRightQuarterTurn5TilesSupportHeightOffset[][7] = {
+static constexpr int8_t kMonorailCyclesTrackRightQuarterTurn5TilesSupportHeightOffset[][7] = {
     { -2, 0, -2, 0, 0, -3, -1 },
     { -3, 0, 0, 0, 0, 0, 0 },
     { 0 },
     { 0, 0, 0, 0, 0, -2, -3 },
 };
 
-static constexpr int8_t MonorailCyclesTrackRightQuarterTurn5TilesSupportSpecial[][7] = {
+static constexpr int8_t kMonorailCyclesTrackRightQuarterTurn5TilesSupportSpecial[][7] = {
     { 0, 0, 0, 0, 0, 0, 0 },
     { 0, 0, 0, 0, 0, 0, 1 },
     { 0, 0, 1, 0, 0, 1, 1 },
@@ -310,11 +305,11 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
     const TrackElement& trackElement, SupportType supportType)
 {
     TrackPaintUtilRightQuarterTurn5TilesPaint(
-        session, 1, height, direction, trackSequence, session.TrackColours, MonorailCyclesTrackPiecesFlatQuarterTurn5Tiles,
+        session, 1, height, direction, trackSequence, session.TrackColours, kMonorailCyclesTrackPiecesFlatQuarterTurn5Tiles,
         nullptr, kDefaultRightQuarterTurn5TilesBoundLengths, kDefaultRightQuarterTurn5TilesBoundOffsets);
 
-    int32_t supportHeight = height + MonorailCyclesTrackRightQuarterTurn5TilesSupportHeightOffset[direction][trackSequence];
-    int32_t supportSpecial = MonorailCyclesTrackRightQuarterTurn5TilesSupportSpecial[direction][trackSequence];
+    int32_t supportHeight = height + kMonorailCyclesTrackRightQuarterTurn5TilesSupportHeightOffset[direction][trackSequence];
+    int32_t supportSpecial = kMonorailCyclesTrackRightQuarterTurn5TilesSupportSpecial[direction][trackSequence];
     switch (trackSequence)
     {
         case 0:
@@ -365,9 +360,7 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::rightCorner),
+                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right),
                     direction),
                 0xFFFF, 0);
             break;
@@ -376,8 +369,8 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::bottomRightSide,
-                        PaintSegment::rightCorner, PaintSegment::bottomCorner, PaintSegment::topRightSide),
+                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::right,
+                        PaintSegment::bottom, PaintSegment::topRight),
                     direction),
                 0xFFFF, 0);
             break;
@@ -385,8 +378,7 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide, PaintSegment::centre),
+                    EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight, PaintSegment::centre),
                     direction),
                 0xFFFF, 0);
             break;
@@ -395,8 +387,8 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::bottomLeftSide,
-                        PaintSegment::leftCorner, PaintSegment::bottomCorner, PaintSegment::topLeftSide),
+                        PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::left,
+                        PaintSegment::bottom, PaintSegment::topLeft),
                     direction),
                 0xFFFF, 0);
             break;
@@ -404,9 +396,7 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomRightSide, PaintSegment::centre, PaintSegment::topLeftSide,
-                        PaintSegment::leftCorner),
+                    EnumsToFlags(PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::left),
                     direction),
                 0xFFFF, 0);
             break;
@@ -436,7 +426,7 @@ static void PaintMonorailCyclesTrackSBendLeft(
         trackSequence = 3 - trackSequence;
     }
 
-    auto imageId = session.TrackColours.WithIndex(MonorailCyclesTrackPiecesSBendLeft[direction & 1][trackSequence]);
+    auto imageId = session.TrackColours.WithIndex(kMonorailCyclesTrackPiecesSBendLeft[direction & 1][trackSequence]);
     switch (trackSequence)
     {
         case 0:
@@ -476,9 +466,7 @@ static void PaintMonorailCyclesTrackSBendLeft(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::topCorner),
+                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::top),
                     direction & 1),
                 0xFFFF, 0);
             break;
@@ -487,8 +475,8 @@ static void PaintMonorailCyclesTrackSBendLeft(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::leftCorner, PaintSegment::topLeftSide, PaintSegment::topCorner),
+                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
+                        PaintSegment::topLeft, PaintSegment::top),
                     direction & 1),
                 0xFFFF, 0);
             break;
@@ -497,8 +485,8 @@ static void PaintMonorailCyclesTrackSBendLeft(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomCorner, PaintSegment::bottomRightSide, PaintSegment::rightCorner),
+                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
+                        PaintSegment::bottomRight, PaintSegment::right),
                     direction & 1),
                 0xFFFF, 0);
             break;
@@ -506,9 +494,7 @@ static void PaintMonorailCyclesTrackSBendLeft(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomCorner),
+                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom),
                     direction & 1),
                 0xFFFF, 0);
             break;
@@ -527,7 +513,7 @@ static void PaintMonorailCyclesTrackSBendRight(
         trackSequence = 3 - trackSequence;
     }
 
-    auto imageId = session.TrackColours.WithIndex(MonorailCyclesTrackPiecesSBendRight[direction & 1][trackSequence]);
+    auto imageId = session.TrackColours.WithIndex(kMonorailCyclesTrackPiecesSBendRight[direction & 1][trackSequence]);
     switch (trackSequence)
     {
         case 0:
@@ -567,9 +553,7 @@ static void PaintMonorailCyclesTrackSBendRight(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::rightCorner),
+                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::right),
                     direction & 1),
                 0xFFFF, 0);
             break;
@@ -578,8 +562,8 @@ static void PaintMonorailCyclesTrackSBendRight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::bottomCorner, PaintSegment::bottomRightSide, PaintSegment::rightCorner),
+                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottom,
+                        PaintSegment::bottomRight, PaintSegment::right),
                     direction & 1),
                 0xFFFF, 0);
             break;
@@ -588,8 +572,8 @@ static void PaintMonorailCyclesTrackSBendRight(
                 session,
                 PaintUtilRotateSegments(
                     EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::leftCorner, PaintSegment::topLeftSide, PaintSegment::topCorner),
+                        PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left,
+                        PaintSegment::topLeft, PaintSegment::top),
                     direction & 1),
                 0xFFFF, 0);
             break;
@@ -597,9 +581,7 @@ static void PaintMonorailCyclesTrackSBendRight(
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
-                    EnumsToFlags(
-                        PaintSegment::bottomLeftSide, PaintSegment::centre, PaintSegment::topRightSide,
-                        PaintSegment::leftCorner),
+                    EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::topRight, PaintSegment::left),
                     direction & 1),
                 0xFFFF, 0);
             break;
@@ -610,7 +592,7 @@ static void PaintMonorailCyclesTrackSBendRight(
 /**
  * rct2: 0x0088ac88
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMonorailCycles(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionMonorailCycles(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -636,7 +618,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMonorailCycles(int32_t trackType)
             return PaintMonorailCyclesTrackLeftQuarterTurn3Tiles;
         case TrackElemType::RightQuarterTurn3Tiles:
             return PaintMonorailCyclesTrackRightQuarterTurn3Tiles;
+        default:
+            return TrackPaintFunctionDummy;
     }
-
-    return nullptr;
 }

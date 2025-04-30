@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,7 +24,7 @@ private:
     MapRange _range;
     LandBuyRightSetting _setting{ LandBuyRightSetting::Count };
 
-    constexpr static StringId _ErrorTitles[] = {
+    constexpr static StringId kErrorTitles[] = {
         STR_CANT_BUY_LAND,
         STR_CANT_BUY_CONSTRUCTION_RIGHTS_HERE,
     };

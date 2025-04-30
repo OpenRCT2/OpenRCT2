@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include "../../../SpriteIds.h"
 #include "../../../ride/RideStringIds.h"
-#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -18,22 +18,22 @@
 // clang-format off
 constexpr RideTypeDescriptor DinghySlideRTD =
 {
-    .Category = RIDE_CATEGORY_WATER,
+    .Category = RideCategory::water,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(
         {
-            .Drawer = GetTrackPaintFunctionDinghySlide,
+            .trackStyle = TrackStyle::dinghySlide,
             .supportType = MetalSupportType::Tubes,
-            .EnabledTrackPieces = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve },
-            .ExtraTrackPieces = {},
+            .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve },
+            .extraTrackGroups = {},
             .icon = SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK,
             .tooltip = STR_RIDE_CONSTRUCTION_U_SHAPED_OPEN_TRACK_TIP,
         }, 
         {
-            .Drawer = GetTrackPaintFunctionDinghySlideCovered,
+            .trackStyle = TrackStyle::dinghySlideCovered,
             .supportType = MetalSupportType::Tubes,
-            .EnabledTrackPieces = {OpenRCT2::TrackElemType::Flat, OpenRCT2::TrackElemType::Up25, OpenRCT2::TrackElemType::Up60, OpenRCT2::TrackElemType::FlatToUp25, OpenRCT2::TrackElemType::Up25ToUp60, OpenRCT2::TrackElemType::Up60ToUp25, OpenRCT2::TrackElemType::Up25ToFlat, OpenRCT2::TrackElemType::Down25, OpenRCT2::TrackElemType::Down60, OpenRCT2::TrackElemType::FlatToDown25, OpenRCT2::TrackElemType::Down25ToDown60, OpenRCT2::TrackElemType::Down60ToDown25, OpenRCT2::TrackElemType::Down25ToFlat, OpenRCT2::TrackElemType::LeftQuarterTurn5Tiles, OpenRCT2::TrackElemType::RightQuarterTurn5Tiles, OpenRCT2::TrackElemType::SBendLeft, OpenRCT2::TrackElemType::SBendRight, OpenRCT2::TrackElemType::LeftQuarterTurn3Tiles,OpenRCT2::TrackElemType::RightQuarterTurn3Tiles},
-            .ExtraTrackPieces = {},
+            .enabledTrackGroups = { TrackGroup::straight, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::curve, TrackGroup::sBend, TrackGroup::curveSmall },
+            .extraTrackGroups = {},
             .icon = SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK,
             .tooltip = STR_RIDE_CONSTRUCTION_O_SHAPED_ENCLOSED_TRACK_TIP,
         }
@@ -46,11 +46,10 @@ constexpr RideTypeDescriptor DinghySlideRTD =
                      RtdFlag::checkForStalling, RtdFlag::hasTrack, RtdFlag::supportsMultipleColourSchemes, 
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::hasAirTime, 
                      RtdFlag::showInTrackDesigner, RtdFlag::interestingToLookAt),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
+    .DefaultMode = RideMode::continuousCircuit,
     .Naming = { STR_RIDE_NAME_DINGHY_SLIDE, STR_RIDE_DESCRIPTION_DINGHY_SLIDE },
     .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_DINGHY_SLIDE",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 15, 24, 5, 7, },
     .MaxMass = 5,
@@ -59,7 +58,7 @@ constexpr RideTypeDescriptor DinghySlideRTD =
     .UpkeepCosts = { 40, 20, 80, 4, 3, 10 },
     .BuildCosts = { 20.00_GBP, 2.00_GBP, 40, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_WATER,
+    .DefaultMusic = kMusicObjectWater,
     .PhotoItem = ShopItem::Photo4,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -73,13 +72,13 @@ constexpr RideTypeDescriptor DinghySlideRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 70), RIDE_RATING(2, 00), RIDE_RATING(1, 50) },
+        { MakeRideRating(2, 70), MakeRideRating(2, 00), MakeRideRating(1, 50) },
         13,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 50), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 50), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },

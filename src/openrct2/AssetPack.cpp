@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -42,7 +42,7 @@ void AssetPack::SetEnabled(bool value)
 
 void AssetPack::Fetch()
 {
-    auto archive = Zip::Open(Path.u8string(), ZIP_ACCESS::READ);
+    auto archive = Zip::Open(Path.u8string(), ZipAccess::read);
     if (!archive->Exists(ManifestFileName))
     {
         throw std::runtime_error("Manifest does not exist.");
@@ -160,7 +160,7 @@ public:
 void AssetPack::Load()
 {
     auto path = Path.u8string();
-    auto archive = Zip::Open(path, ZIP_ACCESS::READ);
+    auto archive = Zip::Open(path, ZipAccess::read);
     if (!archive->Exists(ManifestFileName))
     {
         throw std::runtime_error("Manifest does not exist.");

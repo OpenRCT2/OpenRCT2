@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,7 +16,8 @@
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/input/ShortcutManager.h>
 #include <openrct2-ui/interface/InGameConsole.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
@@ -24,6 +25,7 @@
 #include <openrct2/interface/Window.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 
 using namespace OpenRCT2::Ui;
 
@@ -79,10 +81,10 @@ void InputManager::QueueInputEvent(InputEvent&& e)
 
 void InputManager::CheckJoysticks()
 {
-    constexpr uint32_t CHECK_INTERVAL_MS = 5000;
+    constexpr uint32_t kCheckInternalMs = 5000;
 
     auto tick = SDL_GetTicks();
-    if (tick > _lastJoystickCheck + CHECK_INTERVAL_MS)
+    if (tick > _lastJoystickCheck + kCheckInternalMs)
     {
         _lastJoystickCheck = tick;
 
@@ -110,7 +112,7 @@ void InputManager::Process()
 
 void InputManager::HandleViewScrolling()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
     auto& console = GetInGameConsole();
@@ -194,7 +196,7 @@ void InputManager::Process(const InputEvent& e)
         auto& console = GetInGameConsole();
         if (console.IsOpen())
         {
-            if (!shortcutManager.ProcessEventForSpecificShortcut(e, ShortcutId::DebugToggleConsole))
+            if (!shortcutManager.ProcessEventForSpecificShortcut(e, ShortcutId::kDebugToggleConsole))
             {
                 ProcessInGameConsole(e);
             }
@@ -209,12 +211,37 @@ void InputManager::Process(const InputEvent& e)
 
         if (e.DeviceKind == InputDeviceKind::Keyboard)
         {
-            auto w = WindowFindByClass(WindowClass::Textinput);
+            auto* windowMgr = GetWindowManager();
+
+            // TODO: replace with event
+            auto w = windowMgr->FindByClass(WindowClass::Textinput);
             if (w != nullptr)
             {
                 if (e.State == InputEventState::Release)
                 {
                     OpenRCT2::Ui::Windows::WindowTextInputKey(w, e.Button);
+                }
+                return;
+            }
+
+            // TODO: replace with event
+            w = windowMgr->FindByClass(WindowClass::LoadsaveOverwritePrompt);
+            if (w != nullptr)
+            {
+                if (e.State == InputEventState::Release)
+                {
+                    OpenRCT2::Ui::Windows::WindowLoadSaveOverwritePromptInputKey(w, e.Button);
+                }
+                return;
+            }
+
+            // TODO: replace with event
+            w = windowMgr->FindByClass(WindowClass::Loadsave);
+            if (w != nullptr)
+            {
+                if (e.State == InputEventState::Release)
+                {
+                    OpenRCT2::Ui::Windows::WindowLoadSaveInputKey(w, e.Button);
                 }
                 return;
             }
@@ -305,10 +332,10 @@ void InputManager::ProcessHoldEvents()
         auto& shortcutManager = GetShortcutManager();
         if (!shortcutManager.IsPendingShortcutChange())
         {
-            ProcessViewScrollEvent(ShortcutId::ViewScrollUp, { 0, -1 });
-            ProcessViewScrollEvent(ShortcutId::ViewScrollDown, { 0, 1 });
-            ProcessViewScrollEvent(ShortcutId::ViewScrollLeft, { -1, 0 });
-            ProcessViewScrollEvent(ShortcutId::ViewScrollRight, { 1, 0 });
+            ProcessViewScrollEvent(ShortcutId::kViewScrollUp, { 0, -1 });
+            ProcessViewScrollEvent(ShortcutId::kViewScrollDown, { 0, 1 });
+            ProcessViewScrollEvent(ShortcutId::kViewScrollLeft, { -1, 0 });
+            ProcessViewScrollEvent(ShortcutId::kViewScrollRight, { 1, 0 });
         }
     }
 }
@@ -338,9 +365,9 @@ bool InputManager::GetState(const RegisteredShortcut& shortcut) const
 
 bool InputManager::GetState(const ShortcutInput& shortcut) const
 {
-    constexpr uint32_t UsefulModifiers = KMOD_SHIFT | KMOD_CTRL | KMOD_ALT | KMOD_GUI;
-    auto modifiers = SDL_GetModState() & UsefulModifiers;
-    if ((shortcut.Modifiers & UsefulModifiers) == modifiers)
+    constexpr uint32_t kUsefulModifiers = KMOD_SHIFT | KMOD_CTRL | KMOD_ALT | KMOD_GUI;
+    auto modifiers = SDL_GetModState() & kUsefulModifiers;
+    if ((shortcut.Modifiers & kUsefulModifiers) == modifiers)
     {
         switch (shortcut.Kind)
         {
@@ -398,7 +425,8 @@ bool InputManager::HasTextInputFocus() const
     if (OpenRCT2::Ui::Windows::IsUsingWidgetTextBox() || gChatOpen)
         return true;
 
-    auto w = WindowFindByClass(WindowClass::Textinput);
+    auto* windowMgr = GetWindowManager();
+    auto w = windowMgr->FindByClass(WindowClass::Textinput);
     if (w != nullptr)
         return true;
 

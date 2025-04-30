@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,8 +15,7 @@
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../management/Finance.h"
-#include "../network/network.h"
-#include "../ui/UiContext.h"
+#include "../network/Network.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
@@ -57,7 +56,7 @@ GameActions::Result ParkSetNameAction::Query() const
 GameActions::Result ParkSetNameAction::Execute() const
 {
     // Do a no-op if new name is the same as the current name is the same
-    auto& park = GetGameState().Park;
+    auto& park = getGameState().park;
     if (_name != park.Name)
     {
         park.Name = _name;

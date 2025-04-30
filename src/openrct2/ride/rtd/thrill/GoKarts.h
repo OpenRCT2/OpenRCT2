@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
-#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -18,24 +18,23 @@
 // clang-format off
 constexpr RideTypeDescriptor GoKartsRTD =
 {
-    .Category = RIDE_CATEGORY_THRILL,
+    .Category = RideCategory::thrill,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionGoKarts,
+        .trackStyle = TrackStyle::goKarts,
         .supportType = WoodenSupportType::Truss,
-        .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall},
-        .ExtraTrackPieces = {},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::slopeCurve, TrackGroup::slopeCurveLarge, TrackGroup::sBend},
+        .extraTrackGroups = {TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeSteepLong},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports, RtdFlag::noTestMode, RtdFlag::hasOneStation,
                      RtdFlag::noWallsAroundTrack, RtdFlag::guestsWillRideAgain, RtdFlag::hasVehicleColours, RtdFlag::hasTrack,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::interestingToLookAt),
-    .RideModes = EnumsToFlags(RideMode::Race, RideMode::ContinuousCircuit),
-    .DefaultMode = RideMode::Race,
+    .RideModes = EnumsToFlags(RideMode::race, RideMode::continuousCircuit),
+    .DefaultMode = RideMode::race,
     .OperatingSettings = { 1, 10 },
     .Naming = { STR_RIDE_NAME_GO_KARTS, STR_RIDE_DESCRIPTION_GO_KARTS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_GO_KARTS",
     .AvailableBreakdowns = (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 7, 24, 2, 1, },
     .MaxMass = 255,
@@ -44,7 +43,7 @@ constexpr RideTypeDescriptor GoKartsRTD =
     .UpkeepCosts = { 50, 20, 0, 8, 0, 0 },
     .BuildCosts = { 31.00_GBP, 2.00_GBP, 20, },
     .DefaultPrices = { 20, 0 },
-    .DefaultMusic = MUSIC_OBJECT_TECHNO,
+    .DefaultMusic = kMusicObjectTechno,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -59,13 +58,13 @@ constexpr RideTypeDescriptor GoKartsRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(1, 42), RIDE_RATING(1, 73), RIDE_RATING(0, 40) },
+        { MakeRideRating(1, 42), MakeRideRating(1, 73), MakeRideRating(0, 40) },
         16,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,            700, 32768, 0, 0 },
-            { RatingsModifierType::BonusGoKartRace,        4,   RIDE_RATING(1, 40), RIDE_RATING(0, 50), 0 },
+            { RatingsModifierType::BonusGoKartRace,        4,   MakeRideRating(1, 40), MakeRideRating(0, 50), 0 },
             { RatingsModifierType::BonusTurns,             0,   4458, 3476, 5718 },
             { RatingsModifierType::BonusDrops,             0,   8738, 5461, 6553 },
             { RatingsModifierType::BonusSheltered,         0,   2570, 8738, 2340 },
@@ -75,6 +74,6 @@ constexpr RideTypeDescriptor GoKartsRTD =
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = LightFxAddLightsMagicVehicle_BoatHire,
+    .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_BoatHire,
 };
 // clang-format on

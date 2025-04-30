@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,7 +12,6 @@
 #include "../../../ride/Ride.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../util/Util.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Segment.h"
@@ -31,7 +30,7 @@ enum
     SprDodgemsFenceTopLeft = 21937
 };
 
-static constexpr uint32_t DodgemsFenceSprites[] = {
+static constexpr uint32_t kDodgemsFenceSprites[] = {
     SprDodgemsFenceTopRight,
     SprDodgemsFenceBottomRight,
     SprDodgemsFenceBottomLeft,
@@ -59,15 +58,15 @@ static void PaintDodgems(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
-    if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+    if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
     {
         auto imageId = session.SupportColours.WithIndex(SprDodgemsFloor);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height }, { 30, 30, 1 } });
 
         TrackPaintUtilPaintFences(
-            session, edges, session.MapPosition, trackElement, ride, session.SupportColours, height, DodgemsFenceSprites,
+            session, edges, session.MapPosition, trackElement, ride, session.SupportColours, height, kDodgemsFenceSprites,
             session.CurrentRotation);
 
         switch (direction)
@@ -109,11 +108,11 @@ static void PaintDodgems(
 /**
  * rct2:
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionDodgems(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionDodgems(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack4x4)
     {
-        return nullptr;
+        return TrackPaintFunctionDummy;
     }
 
     return PaintDodgems;

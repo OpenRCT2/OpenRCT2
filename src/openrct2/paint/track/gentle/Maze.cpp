@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,14 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../core/Numerics.hpp"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/Ride.h"
 #include "../../../ride/RideData.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
 #include "../../tile_element/Paint.Surface.h"
@@ -71,7 +72,7 @@ static void MazePaintSetup(
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~EnumToFlag(PaintSegment::centre), 0xFFFF, 0);
 
     int32_t baseImageId = 0;
-    switch (ride.track_colour[0].supports)
+    switch (ride.trackColours[0].supports)
     {
         case 0:
             baseImageId = SprMazeBaseBrick;
@@ -187,11 +188,11 @@ static void MazePaintSetup(
 /**
  * rct2: 0x008A81E8
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMaze(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionMaze(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::Maze)
     {
-        return nullptr;
+        return TrackPaintFunctionDummy;
     }
 
     return MazePaintSetup;

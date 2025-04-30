@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,17 +9,17 @@
 
 #ifdef __ANDROID__
 
-#    include "UiContext.h"
+    #include "UiContext.h"
 
-#    include <SDL.h>
-#    include <dlfcn.h>
-#    include <jni.h>
-#    include <openrct2/Diagnostic.h>
-#    include <openrct2/core/String.hpp>
-#    include <openrct2/platform/Platform.h>
-#    include <openrct2/ui/UiContext.h>
-#    include <sstream>
-#    include <stdexcept>
+    #include <SDL.h>
+    #include <dlfcn.h>
+    #include <jni.h>
+    #include <openrct2/Diagnostic.h>
+    #include <openrct2/core/String.hpp>
+    #include <openrct2/platform/Platform.h>
+    #include <openrct2/ui/UiContext.h>
+    #include <sstream>
+    #include <stdexcept>
 
 namespace OpenRCT2::Ui
 {

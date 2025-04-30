@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,18 +15,17 @@
 #include "../../GameState.h"
 #include "../../Input.h"
 #include "../../OpenRCT2.h"
-#include "../../audio/audio.h"
+#include "../../audio/Audio.h"
 #include "../../config/Config.h"
 #include "../../core/Console.hpp"
 #include "../../drawing/Text.h"
 #include "../../interface/Screenshot.h"
 #include "../../interface/Viewport.h"
-#include "../../interface/Window.h"
+#include "../../network/Network.h"
 #include "../../network/NetworkBase.h"
-#include "../../network/network.h"
-#include "../../scenario/Scenario.h"
 #include "../../scenario/ScenarioRepository.h"
 #include "../../ui/UiContext.h"
+#include "../../ui/WindowManager.h"
 #include "../../util/Util.h"
 #include "../../windows/Intent.h"
 #include "TitleSequence.h"
@@ -54,7 +53,7 @@ bool TitleScene::PreviewSequence(size_t value)
     _previewingSequence = TryLoadSequence(true);
     if (_previewingSequence)
     {
-        if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+        if (gLegacyScene != LegacyScene::titleSequence)
         {
             gPreviewingTitleSequenceInGame = true;
         }
@@ -62,7 +61,7 @@ bool TitleScene::PreviewSequence(size_t value)
     else
     {
         _currentSequence = TitleGetConfigSequence();
-        if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        if (gLegacyScene == LegacyScene::titleSequence)
         {
             TryLoadSequence();
         }
@@ -99,14 +98,14 @@ void TitleScene::Load()
         PauseToggle();
     }
 
-    gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
+    gLegacyScene = LegacyScene::titleSequence;
     gScreenAge = 0;
     gCurrentLoadedPath.clear();
 
 #ifndef DISABLE_NETWORK
     GetContext().GetNetwork().Close();
 #endif
-    gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
+    gameStateInitAll(getGameState(), kDefaultMapSize);
     ViewportInitAll();
     ContextOpenWindow(WindowClass::MainWindow);
 
@@ -159,7 +158,7 @@ void TitleScene::Tick()
         // update_weather_animation();
     }
 
-    InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+    gInputFlags.unset(InputFlag::viewportScrolling);
 
     ContextHandleInput();
 
@@ -184,7 +183,9 @@ void TitleScene::ChangePresetSequence(size_t preset)
 
     if (!_previewingSequence)
         _currentSequence = preset;
-    WindowInvalidateAll();
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateAll();
 }
 
 /**
@@ -318,7 +319,7 @@ bool TitleScene::TryLoadSequence(bool loadPreview)
         _loadedTitleSequenceId = SIZE_MAX;
         if (!loadPreview)
         {
-            gameStateInitAll(GetGameState(), DEFAULT_MAP_SIZE);
+            gameStateInitAll(getGameState(), kDefaultMapSize);
             GameNotifyMapChanged();
         }
         return false;

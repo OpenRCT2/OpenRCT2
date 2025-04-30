@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,11 +12,12 @@
 #include "RideObject.h"
 
 #include "../OpenRCT2.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/EnumMap.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/Memory.hpp"
+#include "../core/Numerics.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../entity/Yaw.hpp"
@@ -36,6 +37,7 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Entity::Yaw;
+using namespace OpenRCT2::Numerics;
 
 /*
  * The number of sprites in the sprite group is the specified precision multiplied by this number. General rule is any slope or
@@ -53,7 +55,7 @@ using namespace OpenRCT2::Entity::Yaw;
  * - curvedLiftHillUp and curvedLiftHillDown are 1 (normally would be combined, but aren't due to RCT2)
  */
 static const uint8_t SpriteGroupMultiplier[EnumValue(SpriteGroupType::Count)] = {
-    1, 2, 2, 2, 2, 2, 2, 10, 1, 2, 2, 2, 2, 2, 2, 2, 6, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 12, 4, 4, 4, 4, 4, 20, 3, 1, 1,
+    1, 2, 2, 2, 2, 2, 2, 10, 1, 2, 2, 2, 2, 2, 2, 2, 6, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 12, 4, 4, 4, 4, 4, 4, 4, 4, 20, 3, 1, 1,
 };
 static_assert(std::size(SpriteGroupMultiplier) == EnumValue(SpriteGroupType::Count));
 
@@ -112,15 +114,15 @@ static constexpr SpritePrecision PrecisionFromNumFrames(uint32_t numRotationFram
     if (numRotationFrames == 0)
         return SpritePrecision::None;
     else
-        return static_cast<SpritePrecision>(UtilBitScanForward(numRotationFrames) + 1);
+        return static_cast<SpritePrecision>(Numerics::bitScanForward(numRotationFrames) + 1);
 }
 
 static void RideObjectUpdateRideType(RideObjectEntry& rideEntry)
 {
-    for (auto i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
+    for (auto i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
     {
         auto oldRideType = rideEntry.ride_type[i];
-        if (oldRideType != RIDE_TYPE_NULL)
+        if (oldRideType != kRideTypeNull)
         {
             rideEntry.ride_type[i] = RCT2::RCT2RideTypeToOpenRCT2RideType(oldRideType, rideEntry);
         }
@@ -135,7 +137,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
         rideType = stream->ReadValue<uint8_t>();
         if (!RideTypeIsValid(rideType))
-            rideType = RIDE_TYPE_NULL;
+            rideType = kRideTypeNull;
     }
     _legacyType.min_cars_in_train = stream->ReadValue<uint8_t>();
     _legacyType.max_cars_in_train = stream->ReadValue<uint8_t>();
@@ -186,7 +188,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
         _presetColours.list[i] = stream->ReadValue<VehicleColour>();
     }
 
-    if (IsRideTypeShopOrFacility(_legacyType.ride_type[0]))
+    if (isRideTypeShopOrFacility(_legacyType.ride_type[0]))
     {
         // This used to be hard-coded. JSON objects set this themselves.
         _presetColours.count = 1;
@@ -200,7 +202,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     }
 
     // Read peep loading positions
-    for (int32_t i = 0; i < RCT2::ObjectLimits::MaxCarTypesPerRideEntry; i++)
+    for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxCarTypesPerRideEntry; i++)
     {
         _peepLoadingWaypoints[i].clear();
         _peepLoadingPositions[i].clear();
@@ -265,8 +267,6 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 
 void RideObject::Load()
 {
-    _legacyType.obj = this;
-
     GetStringTable().Sort();
     _legacyType.naming.Name = LanguageAllocateObjectString(GetName());
     _legacyType.naming.Description = LanguageAllocateObjectString(GetDescription());
@@ -274,8 +274,8 @@ void RideObject::Load()
     _legacyType.images_offset = LoadImages();
     _legacyType.vehicle_preset_list = &_presetColours;
 
-    int32_t currentCarImagesOffset = _legacyType.images_offset + RCT2::ObjectLimits::MaxRideTypesPerRideEntry;
-    for (int32_t i = 0; i < RCT2::ObjectLimits::MaxCarTypesPerRideEntry; i++)
+    int32_t currentCarImagesOffset = _legacyType.images_offset + RCT2::ObjectLimits::kMaxRideTypesPerRideEntry;
+    for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxCarTypesPerRideEntry; i++)
     {
         CarEntry& carEntry = _legacyType.Cars[i];
         if (carEntry.GroupEnabled(SpriteGroupType::SlopeFlat))
@@ -354,7 +354,7 @@ void RideObject::DrawPreview(DrawPixelInfo& dpi, [[maybe_unused]] int32_t width,
 
     for (auto rideType : _legacyType.ride_type)
     {
-        if (rideType != RIDE_TYPE_NULL)
+        if (rideType != kRideTypeNull)
             break;
 
         imageId++;
@@ -378,7 +378,7 @@ ImageIndex RideObject::GetPreviewImage(ride_type_t type)
     auto it = std::find(std::begin(_legacyType.ride_type), std::end(_legacyType.ride_type), type);
     if (it == std::end(_legacyType.ride_type))
     {
-        return ImageIndexUndefined;
+        return kImageIndexUndefined;
     }
 
     return _legacyType.images_offset + std::distance(std::begin(_legacyType.ride_type), it);
@@ -386,17 +386,9 @@ ImageIndex RideObject::GetPreviewImage(ride_type_t type)
 
 void RideObject::SetRepositoryItem(ObjectRepositoryItem* item) const
 {
-    // Find the first non-null ride type, to be used when checking the ride group and determining the category.
-    auto firstRideType = _legacyType.GetFirstNonNullRideType();
-    uint8_t category = GetRideTypeDescriptor(firstRideType).Category;
-
-    for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
+    for (int32_t i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
     {
         item->RideInfo.RideType[i] = _legacyType.ride_type[i];
-    }
-    for (int32_t i = 0; i < RCT2::ObjectLimits::MaxCategoriesPerRide; i++)
-    {
-        item->RideInfo.RideCategory[i] = category;
     }
 
     item->RideInfo.RideFlags = 0;
@@ -416,6 +408,8 @@ void RideObject::ReadLegacyCar([[maybe_unused]] IReadObjectContext* context, ISt
     car->sprite_height_positive = stream->ReadValue<uint8_t>();
     auto legacyAnimation = stream->ReadValue<uint8_t>();
     car->flags = stream->ReadValue<uint32_t>();
+    // Implied in vanilla, but can be turned off in OpenRCT2.
+    car->flags |= CAR_ENTRY_FLAG_ENABLE_BODY_COLOUR;
     car->base_num_frames = stream->ReadValue<uint16_t>();
     stream->Seek(15 * 4, STREAM_SEEK_CURRENT);
     car->no_seating_rows = stream->ReadValue<uint8_t>();
@@ -526,15 +520,15 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
         json_t rideTypes = Json::AsArray(properties["type"]);
         size_t numRideTypes = rideTypes.size();
 
-        for (size_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
+        for (size_t i = 0; i < RCT2::ObjectLimits::kMaxRideTypesPerRideEntry; i++)
         {
-            ObjectEntryIndex rideType = RIDE_TYPE_NULL;
+            auto rideType = kRideTypeNull;
 
             if (i < numRideTypes)
             {
                 rideType = ParseRideType(Json::GetString(rideTypes[i]));
 
-                if (rideType == RIDE_TYPE_NULL)
+                if (rideType == kRideTypeNull)
                 {
                     context->LogError(ObjectError::InvalidProperty, "Unknown ride type");
                 }
@@ -555,7 +549,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
         auto carColours = Json::AsArray(properties["carColours"]);
         _presetColours = ReadJsonCarColours(carColours);
 
-        if (IsRideTypeShopOrFacility(_legacyType.ride_type[0]))
+        if (isRideTypeShopOrFacility(_legacyType.ride_type[0]))
         {
             // Standard car info for a shop
             auto& car = _legacyType.Cars[0];
@@ -572,7 +566,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
 
             // Shop item
             auto rideSells = Json::AsArray(properties["sells"]);
-            auto numShopItems = std::min(static_cast<size_t>(RCT2::ObjectLimits::MaxShopItemsPerRideEntry), rideSells.size());
+            auto numShopItems = std::min(static_cast<size_t>(RCT2::ObjectLimits::kMaxShopItemsPerRideEntry), rideSells.size());
             for (size_t i = 0; i < numShopItems; i++)
             {
                 auto shopItem = ParseShopItem(Json::GetString(rideSells[i]));
@@ -639,7 +633,6 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
             });
     }
 
-    RideObjectUpdateRideType(_legacyType);
     PopulateTablesFromJson(context, root);
 }
 
@@ -649,7 +642,7 @@ void RideObject::ReadJsonVehicleInfo([[maybe_unused]] IReadObjectContext* contex
 
     _legacyType.min_cars_in_train = Json::GetNumber<uint8_t>(properties["minCarsPerTrain"], 1);
     _legacyType.max_cars_in_train = Json::GetNumber<uint8_t>(properties["maxCarsPerTrain"], 1);
-    _legacyType.cars_per_flat_ride = Json::GetNumber<uint8_t>(properties["carsPerFlatRide"], NoFlatRideCars);
+    _legacyType.cars_per_flat_ride = Json::GetNumber<uint8_t>(properties["carsPerFlatRide"], kNoFlatRideCars);
     _legacyType.zero_cars = Json::GetNumber<uint8_t>(properties["numEmptyCars"]);
 
     // Train formation from car indices
@@ -842,6 +835,8 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
             // Obsolete flag, only used on Boat Hire. Remaining usages have not yet been updated as of 2022-07-11.
             { "VEHICLE_ENTRY_FLAG_11", CAR_ENTRY_FLAG_USE_16_ROTATION_FRAMES },
         });
+    if (Json::GetBoolean(jCar["hasBaseColour"], true))
+        car.flags |= CAR_ENTRY_FLAG_ENABLE_BODY_COLOUR;
 
     // legacy sprite groups
     auto jFrames = jCar["frames"];
@@ -880,7 +875,7 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
             auto numRotationFrames = Json::GetNumber<uint8_t>(jRotationCount[SpriteGroupNames[i]], 0);
             if (numRotationFrames != 0)
             {
-                if (!IsPowerOf2(numRotationFrames))
+                if (!std::has_single_bit(numRotationFrames))
                 {
                     context->LogError(ObjectError::InvalidProperty, "spriteGroups values must be powers of 2");
                     continue;
@@ -963,7 +958,7 @@ std::vector<VehicleColour> RideObject::ReadJsonColourConfiguration(json_t& jColo
     return config;
 }
 
-bool RideObject::IsRideTypeShopOrFacility(ride_type_t rideType)
+bool RideObject::isRideTypeShopOrFacility(ride_type_t rideType)
 {
     return GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::isShopOrFacility);
 }
@@ -971,26 +966,26 @@ bool RideObject::IsRideTypeShopOrFacility(ride_type_t rideType)
 ride_type_t RideObject::ParseRideType(const std::string& s)
 {
     auto result = std::find_if(
-        std::begin(RideTypeDescriptors), std::end(RideTypeDescriptors), [s](const auto& rtd) { return rtd.Name == s; });
-    if (result == std::end(RideTypeDescriptors))
-        return RIDE_TYPE_NULL;
+        std::begin(kRideTypeDescriptors), std::end(kRideTypeDescriptors), [s](const auto& rtd) { return rtd.Name == s; });
+    if (result == std::end(kRideTypeDescriptors))
+        return kRideTypeNull;
     else
-        return std::distance(std::begin(RideTypeDescriptors), result);
+        return std::distance(std::begin(kRideTypeDescriptors), result);
 }
 
-static const EnumMap<uint8_t> RideCategoryLookupTable{
-    { "transport", RIDE_CATEGORY_TRANSPORT },
-    { "gentle", RIDE_CATEGORY_GENTLE },
-    { "rollercoaster", RIDE_CATEGORY_ROLLERCOASTER },
-    { "thrill", RIDE_CATEGORY_THRILL },
-    { "water", RIDE_CATEGORY_WATER },
-    { "stall", RIDE_CATEGORY_SHOP },
+static const EnumMap<RideCategory> RideCategoryLookupTable{
+    { "transport", RideCategory::transport },
+    { "gentle", RideCategory::gentle },
+    { "rollercoaster", RideCategory::rollerCoaster },
+    { "thrill", RideCategory::thrill },
+    { "water", RideCategory::water },
+    { "stall", RideCategory::shop },
 };
 
-uint8_t RideObject::ParseRideCategory(const std::string& s)
+RideCategory RideObject::ParseRideCategory(const std::string& s)
 {
     auto result = RideCategoryLookupTable.find(s);
-    return (result != RideCategoryLookupTable.end()) ? result->second : static_cast<uint8_t>(RIDE_CATEGORY_TRANSPORT);
+    return (result != RideCategoryLookupTable.end()) ? result->second : RideCategory::transport;
 }
 
 static const EnumMap<ShopItem> ShopItemLookupTable{

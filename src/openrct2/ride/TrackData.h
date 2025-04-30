@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../paint/support/MetalSupports.h"
 #include "../paint/support/WoodenSupports.h"
 #include "Track.h"
 
@@ -34,7 +35,7 @@ namespace OpenRCT2::TrackMetaData
         TrackCurve trackCurve;
         TrackPitch slopeEnd;
         TrackRoll rollEnd;
-        track_type_t trackElement;
+        OpenRCT2::TrackElemType trackElement;
     };
 
     enum class SpinFunction : uint8_t
@@ -64,7 +65,7 @@ namespace OpenRCT2::TrackMetaData
         uint8_t bottom;
     };
 
-    constexpr DodgemsTrackSize GetDodgemsTrackSize(track_type_t type)
+    constexpr DodgemsTrackSize GetDodgemsTrackSize(OpenRCT2::TrackElemType type)
     {
         if (type == OpenRCT2::TrackElemType::FlatTrack2x2)
             return { 4, 4, 59, 59 };
@@ -81,42 +82,49 @@ namespace OpenRCT2::TrackMetaData
         WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None;
     };
 
+    struct SequenceMetalSupport
+    {
+        MetalSupportPlace place = MetalSupportPlace::None;
+        uint8_t alternates = false;
+    };
+
+    struct SequenceDescriptor
+    {
+        SequenceClearance clearance{};
+        /** rct2: 0x00999A94 */
+        uint8_t allowedWallEdges{};
+        /** rct2: 0x0099BA64 */
+        uint8_t flags{};
+        SequenceWoodenSupport woodenSupports{};
+        SequenceMetalSupport metalSupports{};
+        int8_t extraSupportRotation = 0;
+    };
+
     using TrackComputeFunction = int32_t (*)(const int16_t);
     struct TrackElementDescriptor
     {
         StringId description;
         TrackCoordinates coordinates;
 
-        PreviewTrack* block;
         uint8_t pieceLength;
         TrackCurveChain curveChain;
-        track_type_t alternativeType;
+        OpenRCT2::TrackElemType alternativeType;
         // Price Modifier should be used as in the following calculation:
         // (RideTrackPrice * TED::PriceModifier) / 65536
         uint32_t priceModifier;
-        track_type_t mirrorElement;
+        OpenRCT2::TrackElemType mirrorElement;
         uint32_t heightMarkerPositions;
         uint32_t flags;
 
-        std::array<uint8_t, kMaxSequencesPerPiece> sequenceElementAllowedWallEdges;
-        std::array<uint8_t, kMaxSequencesPerPiece> sequenceProperties;
-        std::array<SequenceWoodenSupport, kMaxSequencesPerPiece> sequenceWoodenSupports;
+        uint8_t numSequences{};
+        std::array<SequenceDescriptor, kMaxSequencesPerPiece> sequences;
 
         TrackDefinition definition;
         SpinFunction spinFunction;
 
         TrackComputeFunction verticalFactor;
         TrackComputeFunction lateralFactor;
-
-        /**
-         * Retrieves the block for the given sequence. This method safely handles
-         * out-of-bounds sequence indices.
-         *
-         * @param sequenceIndex
-         * @return The track block, or nullptr if it doesn’t exist.
-         */
-        const PreviewTrack* GetBlockForSequence(uint8_t sequenceIndex) const;
     };
 
-    const TrackElementDescriptor& GetTrackElementDescriptor(const uint32_t type);
+    const TrackElementDescriptor& GetTrackElementDescriptor(OpenRCT2::TrackElemType type);
 } // namespace OpenRCT2::TrackMetaData

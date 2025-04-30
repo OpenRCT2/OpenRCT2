@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,8 +10,8 @@
 #pragma once
 
 #include "../core/Endianness.h"
+#include "../core/EnumUtils.hpp"
 #include "../ride/RideTypes.h"
-#include "../util/Util.h"
 
 enum
 {
@@ -108,7 +108,8 @@ struct NetworkServerState
 // this structure can be used in combination with DataSerialiser
 // to provide extra details with template specialization.
 #pragma pack(push, 1)
-template<typename T, size_t _TypeID> struct NetworkObjectId
+template<typename T, size_t _TypeID>
+struct NetworkObjectId
 {
     NetworkObjectId(T v)
         : id(v)

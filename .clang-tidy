@@ -7,7 +7,7 @@ Checks: >
     readability-uppercase-literal-suffix
 CheckOptions:
     - key: cppcoreguidelines-macro-usage.AllowedRegexp
-      value: 'validate_global_widx|NETWORK_STREAM_VERSION'
+      value: 'validate_global_widx|NETWORK_STREAM_VERSION|SFL_ASSERT|SFL_CATCH'
     - key: readability-uppercase-literal-suffix.NewSuffixes
       value: 'u;L;uL;LL;uLL'
 WarningsAsErrors: true

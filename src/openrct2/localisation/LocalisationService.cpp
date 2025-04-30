@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,26 +11,23 @@
 
 #include "../Context.h"
 #include "../PlatformEnvironment.h"
-#include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../interface/Fonts.h"
-#include "../object/ObjectManager.h"
 #include "Language.h"
 #include "LanguagePack.h"
-#include "StringIds.h"
 
 #include <stdexcept>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Localisation;
 
-static constexpr uint16_t BASE_OBJECT_STRING_ID = 0x2000;
-static constexpr uint16_t MAX_OBJECT_CACHED_STRINGS = 0x5000 - BASE_OBJECT_STRING_ID;
+static constexpr uint16_t kBaseObjectStringID = 0x2000;
+static constexpr uint16_t kMaxObjectCachedStrings = 0x5000 - kBaseObjectStringID;
 
 LocalisationService::LocalisationService(const std::shared_ptr<IPlatformEnvironment>& env)
     : _env(env)
 {
-    for (StringId stringId = BASE_OBJECT_STRING_ID + MAX_OBJECT_CACHED_STRINGS; stringId >= BASE_OBJECT_STRING_ID; stringId--)
+    for (StringId stringId = kBaseObjectStringID + kMaxObjectCachedStrings; stringId >= kBaseObjectStringID; stringId--)
     {
         _availableObjectStringIds.push(stringId);
     }
@@ -41,13 +38,13 @@ LocalisationService::~LocalisationService() = default;
 
 const char* LocalisationService::GetString(StringId id) const
 {
-    if (id == STR_EMPTY)
+    if (id == kStringIdEmpty)
     {
         return "";
     }
-    else if (id >= BASE_OBJECT_STRING_ID && id < BASE_OBJECT_STRING_ID + MAX_OBJECT_CACHED_STRINGS)
+    else if (id >= kBaseObjectStringID && id < kBaseObjectStringID + kMaxObjectCachedStrings)
     {
-        size_t index = id - BASE_OBJECT_STRING_ID;
+        size_t index = id - kBaseObjectStringID;
         if (index < _objectStrings.size())
         {
             return _objectStrings[index].c_str();
@@ -55,7 +52,7 @@ const char* LocalisationService::GetString(StringId id) const
 
         return "(unallocated string)";
     }
-    else if (id != STR_NONE)
+    else if (id != kStringIdNone)
     {
         for (const auto& language : _loadedLanguages)
         {
@@ -73,7 +70,7 @@ const char* LocalisationService::GetString(StringId id) const
 std::string LocalisationService::GetLanguagePath(uint32_t languageId) const
 {
     auto locale = std::string(LanguagesDescriptors[languageId].locale);
-    auto languageDirectory = _env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::LANGUAGE);
+    auto languageDirectory = _env->GetDirectoryPath(DirBase::openrct2, DirId::languages);
     auto languagePath = Path::Combine(languageDirectory, locale + u8".txt");
     return languagePath;
 }
@@ -143,27 +140,17 @@ void LocalisationService::CloseLanguages()
     _currentLanguage = LANGUAGE_UNDEFINED;
 }
 
-std::tuple<StringId, StringId, StringId> LocalisationService::GetLocalisedScenarioStrings(
-    const std::string& scenarioFilename) const
-{
-    Guard::Assert(!_loadedLanguages.empty());
-    auto result0 = _loadedLanguages[0]->GetScenarioOverrideStringId(scenarioFilename.c_str(), 0);
-    auto result1 = _loadedLanguages[0]->GetScenarioOverrideStringId(scenarioFilename.c_str(), 1);
-    auto result2 = _loadedLanguages[0]->GetScenarioOverrideStringId(scenarioFilename.c_str(), 2);
-    return std::make_tuple(result0, result1, result2);
-}
-
 StringId LocalisationService::AllocateObjectString(const std::string& target)
 {
     if (_availableObjectStringIds.empty())
     {
-        return STR_EMPTY;
+        return kStringIdEmpty;
     }
 
     auto stringId = _availableObjectStringIds.top();
     _availableObjectStringIds.pop();
 
-    size_t index = stringId - BASE_OBJECT_STRING_ID;
+    size_t index = stringId - kBaseObjectStringID;
     if (index >= _objectStrings.size())
     {
         _objectStrings.resize(index + 1);
@@ -175,9 +162,9 @@ StringId LocalisationService::AllocateObjectString(const std::string& target)
 
 void LocalisationService::FreeObjectString(StringId stringId)
 {
-    if (stringId != STR_EMPTY)
+    if (stringId != kStringIdEmpty)
     {
-        size_t index = stringId - BASE_OBJECT_STRING_ID;
+        size_t index = stringId - kBaseObjectStringID;
         if (index < _objectStrings.size())
         {
             _objectStrings[index] = {};

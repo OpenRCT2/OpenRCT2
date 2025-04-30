@@ -9,13 +9,13 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScRideStation.hpp"
+    #include "ScRideStation.hpp"
 
-#    include "../../../Context.h"
-#    include "../../../ride/Ride.h"
-#    include "../../Duktape.hpp"
-#    include "../../ScriptEngine.h"
-#    include "../object/ScObject.hpp"
+    #include "../../../Context.h"
+    #include "../../../ride/Ride.h"
+    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
+    #include "../object/ScObject.hpp"
 
 namespace OpenRCT2::Scripting
 {
@@ -120,9 +120,9 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide(_rideId);
         if (ride != nullptr)
         {
-            if (_stationIndex.ToUnderlying() < std::size(ride->GetStations()))
+            if (_stationIndex.ToUnderlying() < std::size(ride->getStations()))
             {
-                return &ride->GetStation(_stationIndex);
+                return &ride->getStation(_stationIndex);
             }
         }
         return nullptr;

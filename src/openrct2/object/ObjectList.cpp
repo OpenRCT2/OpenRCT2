@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,9 +11,9 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../core/EnumUtils.hpp"
+#include "../core/SawyerCoding.h"
 #include "../object/Object.h"
-#include "../util/SawyerCoding.h"
-#include "../util/Util.h"
 #include "ObjectLimits.h"
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
@@ -22,7 +22,7 @@
 #include <cstring>
 
 // 0x0098DA00
-static constexpr std::array<int32_t, EnumValue(ObjectType::Count)> kObjectEntryGroupCounts = {
+static constexpr std::array<int32_t, EnumValue(ObjectType::count)> kObjectEntryGroupCounts = {
     kMaxRideObjects,         // rides
     kMaxSmallSceneryObjects, // small scenery
     kMaxLargeSceneryObjects, // large scenery
@@ -36,9 +36,10 @@ static constexpr std::array<int32_t, EnumValue(ObjectType::Count)> kObjectEntryG
     kMaxScenarioTextObjects, // scenario text
     kMaxTerrainSurfaceObjects, kMaxTerrainEdgeObjects,     kMaxStationObjects,
     kMaxMusicObjects,          kMaxFootpathSurfaceObjects, kMaxFootpathRailingsObjects,
-    kMaxAudioObjects,
+    kMaxAudioObjects,          kMaxPeepNamesObjects,       kMaxPeepAnimationsObjects,
+    kMaxClimateObjects,
 };
-static_assert(std::size(kObjectEntryGroupCounts) == EnumValue(ObjectType::Count));
+static_assert(std::size(kObjectEntryGroupCounts) == EnumValue(ObjectType::count));
 
 size_t getObjectEntryGroupCount(ObjectType objectType)
 {
@@ -48,7 +49,7 @@ size_t getObjectEntryGroupCount(ObjectType objectType)
 size_t getObjectTypeLimit(ObjectType type)
 {
     auto index = EnumValue(type);
-    if (index >= EnumValue(ObjectType::Count))
+    if (index >= EnumValue(ObjectType::count))
         return 0;
     return static_cast<size_t>(kObjectEntryGroupCounts[index]);
 }
@@ -170,17 +171,32 @@ void ObjectList::SetObject(ObjectType type, ObjectEntryIndex index, std::string_
     SetObject(index, entry);
 }
 
-ObjectEntryIndex ObjectList::Find(ObjectType type, std::string_view identifier)
+ObjectEntryIndex ObjectList::Find(ObjectType type, std::string_view identifier) const
 {
     auto& subList = GetList(type);
     for (size_t i = 0; i < subList.size(); i++)
     {
-        if (subList[i].Identifier == identifier)
+        if (subList[i].Generation == ObjectGeneration::JSON && subList[i].Identifier == identifier)
         {
             return static_cast<ObjectEntryIndex>(i);
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
+}
+
+// Intended to be used to find non-custom legacy objects. For internal use only.
+ObjectEntryIndex ObjectList::FindLegacy(ObjectType type, std::string_view identifier) const
+{
+    auto& subList = GetList(type);
+    for (size_t i = 0; i < subList.size(); i++)
+    {
+        if (subList[i].Generation == ObjectGeneration::DAT && subList[i].Entry.GetName() == identifier
+            && subList[i].Entry.GetSourceGame() != ObjectSourceGame::Custom)
+        {
+            return static_cast<ObjectEntryIndex>(i);
+        }
+    }
+    return kObjectEntryIndexNull;
 }
 
 /**
@@ -194,7 +210,7 @@ void ObjectCreateIdentifierName(char* string_buffer, size_t size, const RCTObjec
 
 void ObjectGetTypeEntryIndex(size_t index, ObjectType* outObjectType, ObjectEntryIndex* outEntryIndex)
 {
-    uint8_t objectType = EnumValue(ObjectType::Ride);
+    uint8_t objectType = EnumValue(ObjectType::ride);
     for (size_t groupCount : kObjectEntryGroupCounts)
     {
         if (index >= groupCount)

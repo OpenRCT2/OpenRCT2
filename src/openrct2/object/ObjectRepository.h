@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,6 +22,7 @@ namespace OpenRCT2
 } // namespace OpenRCT2
 
 class Object;
+enum class RideCategory : uint8_t;
 
 namespace OpenRCT2::Localisation
 {
@@ -52,8 +53,7 @@ struct ObjectRepositoryItem
     struct
     {
         uint8_t RideFlags;
-        uint8_t RideCategory[OpenRCT2::RCT2::ObjectLimits::MaxCategoriesPerRide];
-        ride_type_t RideType[OpenRCT2::RCT2::ObjectLimits::MaxRideTypesPerRideEntry];
+        ride_type_t RideType[OpenRCT2::RCT2::ObjectLimits::kMaxRideTypesPerRideEntry];
     } RideInfo;
     struct
     {
@@ -63,6 +63,10 @@ struct ObjectRepositoryItem
     {
         uint8_t Flags{};
     } FootpathSurfaceInfo;
+    struct
+    {
+        uint8_t PeepType{};
+    } PeepAnimationsInfo;
 
     [[nodiscard]] ObjectSourceGame GetFirstSourceGame() const
     {

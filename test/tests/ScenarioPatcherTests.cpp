@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/Guard.hpp>
+#include <openrct2/core/String.hpp>
 #include <openrct2/rct12/ScenarioPatcher.h>
 
 /* Test that all JSONs are with the expected formatting, otherwise the fetcher will abort
@@ -31,16 +32,16 @@ TEST(FetchAndApplyScenarioPatch, expected_json_format)
     ASSERT_TRUE(initialised);
 
     auto env = context->GetPlatformEnvironment();
-    auto scenarioPatches = env->GetDirectoryPath(OpenRCT2::DIRBASE::OPENRCT2, OpenRCT2::DIRID::SCENARIO_PATCHES);
+    auto scenarioPatches = env->GetDirectoryPath(OpenRCT2::DirBase::openrct2, OpenRCT2::DirId::scenarioPatches);
 
     std::error_code ec;
     OpenRCT2::RCT12::SetDryRun(true);
-    OpenRCT2::Guard::SetAssertBehaviour(ASSERT_BEHAVIOUR::ABORT);
+    OpenRCT2::Guard::SetAssertBehaviour(AssertBehaviour::abort);
     static const u8string dummySHA;
     for (const fs::directory_entry& entry : fs::directory_iterator(scenarioPatches, ec))
     {
         auto path = entry.path().u8string();
-        if (OpenRCT2::String::EndsWith(path, ".parkpatch"))
+        if (OpenRCT2::String::endsWith(path, ".parkpatch"))
         {
             OpenRCT2::RCT12::ApplyScenarioPatch(path, dummySHA);
         }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,11 +11,11 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../../entity/Guest.h"
-#    include "../../../management/Marketing.h"
-#    include "ScPeep.hpp"
+    #include "../../../entity/Guest.h"
+    #include "../../../management/Marketing.h"
+    #include "ScPeep.hpp"
 
-enum class PeepActionSpriteType : uint8_t;
+enum class PeepAnimationType : uint8_t;
 
 namespace OpenRCT2::Scripting
 {

@@ -2,27 +2,32 @@
 
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
+#include "../windows/Windows.h"
 
 #include <cassert>
 #include <numeric>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/audio/AudioChannel.h>
 #include <openrct2/audio/AudioMixer.h>
-#include <openrct2/audio/audio.h>
-#include <openrct2/core/FixedVector.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/profiling/Profiling.h>
 #include <openrct2/ride/TrainManager.h>
 #include <openrct2/ride/Vehicle.h>
+#include <openrct2/util/Util.h>
+#include <openrct2/world/tile_element/SurfaceElement.h>
+#include <sfl/static_vector.hpp>
 
 namespace OpenRCT2::Audio
 {
     namespace
     {
-        template<typename T> class TrainIterator;
-        template<typename T> class Train
+        template<typename T>
+        class TrainIterator;
+        template<typename T>
+        class Train
         {
         public:
             explicit Train(T* vehicle)
@@ -46,7 +51,8 @@ namespace OpenRCT2::Audio
         private:
             T* FirstCar;
         };
-        template<typename T> class TrainIterator
+        template<typename T>
+        class TrainIterator
         {
         public:
             using iterator = TrainIterator;
@@ -90,7 +96,8 @@ namespace OpenRCT2::Audio
         };
     } // namespace
 
-    template<typename T> int32_t Train<T>::GetMass() const
+    template<typename T>
+    int32_t Train<T>::GetMass() const
     {
         return std::accumulate(
             begin(), end(), 0, [](int32_t totalMass, const Vehicle& vehicle) { return totalMass + vehicle.mass; });
@@ -98,10 +105,10 @@ namespace OpenRCT2::Audio
 
     static bool SoundCanPlay(const Vehicle& vehicle)
     {
-        if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+        if (gLegacyScene == LegacyScene::scenarioEditor)
             return false;
 
-        if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && GetGameState().EditorStep != EditorStep::RollercoasterDesigner)
+        if (gLegacyScene == LegacyScene::trackDesigner && getGameState().editorStep != EditorStep::RollercoasterDesigner)
             return false;
 
         if (vehicle.sound1_id == SoundId::Null && vehicle.sound2_id == SoundId::Null)
@@ -113,8 +120,8 @@ namespace OpenRCT2::Audio
         if (g_music_tracking_viewport == nullptr)
             return false;
 
-        const auto quarter_w = g_music_tracking_viewport->view_width / 4;
-        const auto quarter_h = g_music_tracking_viewport->view_height / 4;
+        const auto quarter_w = g_music_tracking_viewport->ViewWidth() / 4;
+        const auto quarter_h = g_music_tracking_viewport->ViewHeight() / 4;
 
         auto left = g_music_tracking_viewport->viewPos.x;
         auto bottom = g_music_tracking_viewport->viewPos.y;
@@ -128,8 +135,8 @@ namespace OpenRCT2::Audio
         if (left >= vehicle.SpriteData.SpriteRect.GetRight() || bottom >= vehicle.SpriteData.SpriteRect.GetBottom())
             return false;
 
-        auto right = g_music_tracking_viewport->view_width + left;
-        auto top = g_music_tracking_viewport->view_height + bottom;
+        auto right = g_music_tracking_viewport->ViewWidth() + left;
+        auto top = g_music_tracking_viewport->ViewHeight() + bottom;
 
         if (Ui::Windows::WindowGetClassification(*gWindowAudioExclusive) == WindowClass::MainWindow)
         {
@@ -231,7 +238,7 @@ namespace OpenRCT2::Audio
      *  rct2: 0x006BB9FF
      */
     static void UpdateSoundParams(
-        const Vehicle& vehicle, FixedVector<VehicleSoundParams, kMaxVehicleSounds>& vehicleSoundParamsList)
+        const Vehicle& vehicle, sfl::static_vector<VehicleSoundParams, kMaxVehicleSounds>& vehicleSoundParamsList)
     {
         if (!SoundCanPlay(vehicle))
             return;
@@ -429,7 +436,8 @@ namespace OpenRCT2::Audio
         OtherNoises, // e.g. Screams
     };
 
-    template<SoundType type> static uint16_t SoundFrequency(const SoundId id, uint16_t baseFrequency)
+    template<SoundType type>
+    static uint16_t SoundFrequency(const SoundId id, uint16_t baseFrequency)
     {
         if constexpr (type == SoundType::TrackNoises)
         {
@@ -449,7 +457,8 @@ namespace OpenRCT2::Audio
         }
     }
 
-    template<SoundType type> static bool ShouldUpdateChannelRate(const SoundId id)
+    template<SoundType type>
+    static bool ShouldUpdateChannelRate(const SoundId id)
     {
         return type == SoundType::TrackNoises || !IsFixedFrequencySound(id);
     }
@@ -461,7 +470,7 @@ namespace OpenRCT2::Audio
         volume = volume / 8;
         volume = std::max(volume - 0x1FFF, -10000);
 
-        if (sound.Channel != nullptr && sound.Channel->IsDone())
+        if (sound.Channel != nullptr && sound.Channel->IsDone() && IsLoopingSound(sound.Id))
         {
             sound.Id = SoundId::Null;
             sound.Channel = nullptr;
@@ -507,7 +516,7 @@ namespace OpenRCT2::Audio
             sound.Pan = sound_params->pan_x;
             sound.Channel->SetPan(DStoMixerPan(sound_params->pan_x));
         }
-        if (!(GetGameState().CurrentTicks & 3) && sound_params->frequency != sound.Frequency)
+        if (!(getGameState().currentTicks & 3) && sound_params->frequency != sound.Frequency)
         {
             sound.Frequency = sound_params->frequency;
             if (ShouldUpdateChannelRate<type>(id))
@@ -529,7 +538,7 @@ namespace OpenRCT2::Audio
         if (!IsAvailable())
             return;
 
-        FixedVector<VehicleSoundParams, kMaxVehicleSounds> vehicleSoundParamsList;
+        sfl::static_vector<VehicleSoundParams, kMaxVehicleSounds> vehicleSoundParamsList;
 
         VehicleSoundsUpdateWindowSetup();
 

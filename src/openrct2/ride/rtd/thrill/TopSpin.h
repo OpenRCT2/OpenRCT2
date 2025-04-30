@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -17,12 +17,12 @@
 // clang-format off
 constexpr RideTypeDescriptor TopSpinRTD =
 {
-    .Category = RIDE_CATEGORY_THRILL,
+    .Category = RideCategory::thrill,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionTopspin,
-        .EnabledTrackPieces = {},
-        .ExtraTrackPieces = {},
+        .trackStyle = TrackStyle::topSpin,
+        .enabledTrackGroups = {},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::hasSinglePieceStation,
@@ -30,11 +30,10 @@ constexpr RideTypeDescriptor TopSpinRTD =
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::hasVehicleColours,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::interestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::Beginners, RideMode::Intense, RideMode::Berserk),
-    .DefaultMode = RideMode::Beginners,
+    .RideModes = EnumsToFlags(RideMode::beginners, RideMode::intense, RideMode::berserk),
+    .DefaultMode = RideMode::beginners,
     .Naming = { STR_RIDE_NAME_TOP_SPIN, STR_RIDE_DESCRIPTION_TOP_SPIN },
     .NameConvention = { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_TOP_SPIN",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 16, 112, 3, 2, },
     .MaxMass = 255,
@@ -43,7 +42,7 @@ constexpr RideTypeDescriptor TopSpinRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 72.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 20, 0 },
-    .DefaultMusic = MUSIC_OBJECT_TECHNO,
+    .DefaultMusic = kMusicObjectTechno,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
-#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -18,13 +18,13 @@
 // clang-format off
 constexpr RideTypeDescriptor MonorailCyclesRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionMonorailCycles,
+        .trackStyle = TrackStyle::monorailCycles,
         .supportType = MetalSupportType::Stick,
-        .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve},
-        .ExtraTrackPieces = {},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::canSynchroniseWithAdjacentStations,
@@ -32,11 +32,10 @@ constexpr RideTypeDescriptor MonorailCyclesRTD =
                      RtdFlag::guestsWillRideAgain, RtdFlag::hasVehicleColours, RtdFlag::hasTrack,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::slightlyInterestingToLookAt),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
+    .DefaultMode = RideMode::continuousCircuit,
     .Naming = { STR_RIDE_NAME_MONORAIL_CYCLES, STR_RIDE_DESCRIPTION_MONORAIL_CYCLES },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_MONORAIL_CYCLES",
     .AvailableBreakdowns = (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 5, 24, 8, 7, },
     .MaxMass = 2,
@@ -45,7 +44,7 @@ constexpr RideTypeDescriptor MonorailCyclesRTD =
     .UpkeepCosts = { 47, 20, 0, 8, 3, 5 },
     .BuildCosts = { 10.00_GBP, 2.50_GBP, 30, },
     .DefaultPrices = { 15, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -58,13 +57,13 @@ constexpr RideTypeDescriptor MonorailCyclesRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(1, 40), RIDE_RATING(0, 20), RIDE_RATING(0, 00) },
+        { MakeRideRating(1, 40), MakeRideRating(0, 20), MakeRideRating(0, 00) },
         4,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 15), RIDE_RATING(0, 00), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 15), MakeRideRating(0, 00), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -78,6 +77,6 @@ constexpr RideTypeDescriptor MonorailCyclesRTD =
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = LightFxAddLightsMagicVehicle_BoatHire,
+    .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_BoatHire,
 };
 // clang-format on

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,26 +12,24 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/CheatSetAction.h>
 #include <openrct2/actions/ParkSetDateAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Localisation.Date.h>
-#include <openrct2/network/network.h>
-#include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
+#include <openrct2/network/Network.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
-#include <openrct2/world/Surface.h>
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum WINDOW_TRANSPARENCY_WIDGET_IDX
+    enum WindowTransparencyWidgetIndex
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,
@@ -65,7 +63,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
     // clang-format off
-    static Widget _transparancyWidgets[] =
+    static constexpr Widget _transparancyWidgets[] =
     {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({  2, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_VEGETATION),  STR_SEE_THROUGH_VEGETATION),
@@ -77,14 +75,12 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({152, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_GUESTS),                     STR_SEE_THROUGH_GUESTS),
         MakeWidget({177, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                     STR_SEE_THROUGH_STAFF),
 
-        MakeWidget({  2, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_VEGETATION),
-        MakeWidget({ 27, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_SCENERY),
-        MakeWidget({ 52, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_PATHS),
-        MakeWidget({ 77, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_RIDES),
-        MakeWidget({102, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_VEHICLES),
-        MakeWidget({127, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_SUPPORTS),
-
-        { kWidgetsEnd },
+        MakeWidget({  2, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  kStringIdNone,                       STR_INVISIBLE_VEGETATION),
+        MakeWidget({ 27, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  kStringIdNone,                       STR_INVISIBLE_SCENERY),
+        MakeWidget({ 52, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  kStringIdNone,                       STR_INVISIBLE_PATHS),
+        MakeWidget({ 77, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  kStringIdNone,                       STR_INVISIBLE_RIDES),
+        MakeWidget({102, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  kStringIdNone,                       STR_INVISIBLE_VEHICLES),
+        MakeWidget({127, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  kStringIdNone,                       STR_INVISIBLE_SUPPORTS),
     };
     // clang-format on
 
@@ -94,7 +90,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _transparancyWidgets;
+            SetWidgets(_transparancyWidgets);
             WindowPushOthersBelow(*this);
 
             auto* w = WindowGetMain();
@@ -153,33 +149,17 @@ namespace OpenRCT2::Ui::Windows
             // Locate mechanic button image
             const auto& widget = widgets[WIDX_HIDE_STAFF];
             auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.top };
-            auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, GetGameState().StaffMechanicColour);
+            auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, getGameState().staffMechanicColour);
             GfxDrawSprite(dpi, image, screenCoords);
         }
 
     private:
-        uint32_t ToggleSeeThrough(uint32_t wflags, uint32_t seeThroughFlag, uint32_t transparencyFlag)
-        {
-            wflags ^= seeThroughFlag;
-            // If see-through is disabled, we also want to disable invisible
-            if (!(wflags & seeThroughFlag))
-            {
-                wflags &= ~transparencyFlag;
-            }
-            SaveInConfig(wflags);
-            return wflags;
-        }
-
         uint32_t ToggleTransparency(uint32_t wflags, uint32_t transparencyFlag, uint32_t seeThroughFlag)
         {
             wflags ^= transparencyFlag;
             if (wflags & transparencyFlag)
             {
                 wflags |= seeThroughFlag;
-            }
-            else
-            {
-                wflags &= ~seeThroughFlag;
             }
             SaveInConfig(wflags);
             return wflags;
@@ -198,22 +178,22 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_HIDE_RIDES:
-                    wflags = ToggleSeeThrough(wflags, VIEWPORT_FLAG_HIDE_RIDES, VIEWPORT_FLAG_INVISIBLE_RIDES);
+                    wflags ^= VIEWPORT_FLAG_HIDE_RIDES;
                     break;
                 case WIDX_HIDE_VEHICLES:
-                    wflags = ToggleSeeThrough(wflags, VIEWPORT_FLAG_HIDE_VEHICLES, VIEWPORT_FLAG_INVISIBLE_VEHICLES);
+                    wflags ^= VIEWPORT_FLAG_HIDE_VEHICLES;
                     break;
                 case WIDX_HIDE_SCENERY:
-                    wflags = ToggleSeeThrough(wflags, VIEWPORT_FLAG_HIDE_SCENERY, VIEWPORT_FLAG_INVISIBLE_SCENERY);
+                    wflags ^= VIEWPORT_FLAG_HIDE_SCENERY;
                     break;
                 case WIDX_HIDE_VEGETATION:
-                    wflags = ToggleSeeThrough(wflags, VIEWPORT_FLAG_HIDE_VEGETATION, VIEWPORT_FLAG_INVISIBLE_VEGETATION);
+                    wflags ^= VIEWPORT_FLAG_HIDE_VEGETATION;
                     break;
                 case WIDX_HIDE_PATHS:
-                    wflags = ToggleSeeThrough(wflags, VIEWPORT_FLAG_HIDE_PATHS, VIEWPORT_FLAG_INVISIBLE_PATHS);
+                    wflags ^= VIEWPORT_FLAG_HIDE_PATHS;
                     break;
                 case WIDX_HIDE_SUPPORTS:
-                    wflags = ToggleSeeThrough(wflags, VIEWPORT_FLAG_HIDE_SUPPORTS, VIEWPORT_FLAG_INVISIBLE_SUPPORTS);
+                    wflags ^= VIEWPORT_FLAG_HIDE_SUPPORTS;
                     break;
                 case WIDX_INVISIBLE_RIDES:
                     wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_RIDES, VIEWPORT_FLAG_HIDE_RIDES);
@@ -260,18 +240,14 @@ namespace OpenRCT2::Ui::Windows
             Config::Get().general.InvisibleSupports = wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
             Config::Save();
         }
-
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
     };
 
     WindowBase* TransparencyOpen()
     {
-        auto* window = WindowBringToFrontByClass(WindowClass::Transparency);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::Transparency);
         if (window == nullptr)
-            window = WindowCreate<TransparencyWindow>(WindowClass::Transparency, ScreenCoordsXY(32, 32), WW, WH);
+            window = windowMgr->Create<TransparencyWindow>(WindowClass::Transparency, ScreenCoordsXY(32, 32), WW, WH);
 
         return window;
     }

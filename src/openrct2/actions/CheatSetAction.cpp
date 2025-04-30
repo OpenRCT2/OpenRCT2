@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,18 +14,20 @@
 #include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../config/Config.h"
+#include "../core/EnumUtils.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../entity/Duck.h"
+#include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../localisation/StringIds.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../object/PathAdditionEntry.h"
 #include "../ride/Ride.h"
+#include "../ride/RideManager.hpp"
 #include "../ride/Vehicle.h"
-#include "../scenario/Scenario.h"
-#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
@@ -35,7 +37,9 @@
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Surface.h"
+#include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/SmallSceneryElement.h"
+#include "../world/tile_element/SurfaceElement.h"
 #include "ParkSetLoanAction.h"
 #include "ParkSetParameterAction.h"
 
@@ -101,57 +105,59 @@ GameActions::Result CheatSetAction::Query() const
 
 GameActions::Result CheatSetAction::Execute() const
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
+    auto* windowMgr = Ui::GetWindowManager();
+
     switch (static_cast<CheatType>(_cheatType.id))
     {
         case CheatType::SandboxMode:
-            gameState.Cheats.SandboxMode = _param1 != 0;
-            WindowInvalidateByClass(WindowClass::Map);
-            WindowInvalidateByClass(WindowClass::Footpath);
+            gameState.cheats.sandboxMode = _param1 != 0;
+            windowMgr->InvalidateByClass(WindowClass::Map);
+            windowMgr->InvalidateByClass(WindowClass::Footpath);
             break;
         case CheatType::DisableClearanceChecks:
-            gameState.Cheats.DisableClearanceChecks = _param1 != 0;
+            gameState.cheats.disableClearanceChecks = _param1 != 0;
             // Required to update the clearance checks overlay on the Cheats button.
-            WindowInvalidateByClass(WindowClass::TopToolbar);
+            windowMgr->InvalidateByClass(WindowClass::TopToolbar);
             break;
         case CheatType::DisableSupportLimits:
-            gameState.Cheats.DisableSupportLimits = _param1 != 0;
+            gameState.cheats.disableSupportLimits = _param1 != 0;
             break;
         case CheatType::ShowAllOperatingModes:
-            gameState.Cheats.ShowAllOperatingModes = _param1 != 0;
+            gameState.cheats.showAllOperatingModes = _param1 != 0;
             break;
         case CheatType::ShowVehiclesFromOtherTrackTypes:
-            gameState.Cheats.ShowVehiclesFromOtherTrackTypes = _param1 != 0;
+            gameState.cheats.showVehiclesFromOtherTrackTypes = _param1 != 0;
             break;
         case CheatType::FastLiftHill:
-            gameState.Cheats.UnlockOperatingLimits = _param1 != 0;
+            gameState.cheats.unlockOperatingLimits = _param1 != 0;
             break;
         case CheatType::DisableBrakesFailure:
-            gameState.Cheats.DisableBrakesFailure = _param1 != 0;
+            gameState.cheats.disableBrakesFailure = _param1 != 0;
             break;
         case CheatType::DisableAllBreakdowns:
-            gameState.Cheats.DisableAllBreakdowns = _param1 != 0;
+            gameState.cheats.disableAllBreakdowns = _param1 != 0;
             break;
         case CheatType::DisableTrainLengthLimit:
-            gameState.Cheats.DisableTrainLengthLimit = _param1 != 0;
+            gameState.cheats.disableTrainLengthLimit = _param1 != 0;
             break;
         case CheatType::EnableChainLiftOnAllTrack:
-            gameState.Cheats.EnableChainLiftOnAllTrack = _param1 != 0;
+            gameState.cheats.enableChainLiftOnAllTrack = _param1 != 0;
             break;
         case CheatType::BuildInPauseMode:
-            gameState.Cheats.BuildInPauseMode = _param1 != 0;
+            gameState.cheats.buildInPauseMode = _param1 != 0;
             break;
         case CheatType::IgnoreRideIntensity:
-            gameState.Cheats.IgnoreRideIntensity = _param1 != 0;
+            gameState.cheats.ignoreRideIntensity = _param1 != 0;
             break;
         case CheatType::IgnorePrice:
-            gameState.Cheats.IgnorePrice = _param1 != 0;
+            gameState.cheats.ignorePrice = _param1 != 0;
             break;
         case CheatType::DisableVandalism:
-            gameState.Cheats.DisableVandalism = _param1 != 0;
+            gameState.cheats.disableVandalism = _param1 != 0;
             break;
         case CheatType::DisableLittering:
-            gameState.Cheats.DisableLittering = _param1 != 0;
+            gameState.cheats.disableLittering = _param1 != 0;
             break;
         case CheatType::NoMoney:
             SetScenarioNoMoney(_param1 != 0);
@@ -190,7 +196,7 @@ GameActions::Result CheatSetAction::Execute() const
             RemoveLitter();
             break;
         case CheatType::DisablePlantAging:
-            gameState.Cheats.DisablePlantAging = _param1 != 0;
+            gameState.cheats.disablePlantAging = _param1 != 0;
             break;
         case CheatType::SetStaffSpeed:
             SetStaffSpeed(_param1);
@@ -199,8 +205,8 @@ GameActions::Result CheatSetAction::Execute() const
             RenewRides();
             break;
         case CheatType::MakeDestructible:
-            gameState.Cheats.MakeAllDestructible = _param1 != 0;
-            WindowInvalidateByClass(WindowClass::Ride);
+            gameState.cheats.makeAllDestructible = _param1 != 0;
+            windowMgr->InvalidateByClass(WindowClass::Ride);
             break;
         case CheatType::FixRides:
             FixBrokenRides();
@@ -219,35 +225,35 @@ GameActions::Result CheatSetAction::Execute() const
             ClimateForceWeather(WeatherType{ static_cast<uint8_t>(_param1) });
             break;
         case CheatType::FreezeWeather:
-            gameState.Cheats.FreezeWeather = _param1 != 0;
+            gameState.cheats.freezeWeather = _param1 != 0;
             break;
-        case CheatType::NeverEndingMarketing:
-            gameState.Cheats.NeverendingMarketing = _param1 != 0;
+        case CheatType::NeverendingMarketing:
+            gameState.cheats.neverendingMarketing = _param1 != 0;
             break;
         case CheatType::OpenClosePark:
-            ParkSetOpen(!gameState.Park.IsOpen());
+            ParkSetOpen(!gameState.park.IsOpen());
             break;
         case CheatType::HaveFun:
-            gameState.ScenarioObjective.Type = OBJECTIVE_HAVE_FUN;
+            gameState.scenarioObjective.Type = OBJECTIVE_HAVE_FUN;
             break;
         case CheatType::SetForcedParkRating:
             Park::SetForcedRating(_param1);
             break;
         case CheatType::AllowArbitraryRideTypeChanges:
-            gameState.Cheats.AllowArbitraryRideTypeChanges = _param1 != 0;
-            WindowInvalidateByClass(WindowClass::Ride);
+            gameState.cheats.allowArbitraryRideTypeChanges = _param1 != 0;
+            windowMgr->InvalidateByClass(WindowClass::Ride);
             break;
         case CheatType::OwnAllLand:
             OwnAllLand();
             break;
         case CheatType::DisableRideValueAging:
-            gameState.Cheats.DisableRideValueAging = _param1 != 0;
+            gameState.cheats.disableRideValueAging = _param1 != 0;
             break;
         case CheatType::IgnoreResearchStatus:
-            gameState.Cheats.IgnoreResearchStatus = _param1 != 0;
+            gameState.cheats.ignoreResearchStatus = _param1 != 0;
             break;
         case CheatType::EnableAllDrawableTrackPieces:
-            gameState.Cheats.EnableAllDrawableTrackPieces = _param1 != 0;
+            gameState.cheats.enableAllDrawableTrackPieces = _param1 != 0;
             break;
         case CheatType::CreateDucks:
             CreateDucks(_param1);
@@ -256,13 +262,13 @@ GameActions::Result CheatSetAction::Execute() const
             Duck::RemoveAll();
             break;
         case CheatType::AllowTrackPlaceInvalidHeights:
-            gameState.Cheats.AllowTrackPlaceInvalidHeights = _param1 != 0;
+            gameState.cheats.allowTrackPlaceInvalidHeights = _param1 != 0;
             break;
         case CheatType::AllowRegularPathAsQueue:
-            gameState.Cheats.AllowRegularPathAsQueue = _param1 != 0;
+            gameState.cheats.allowRegularPathAsQueue = _param1 != 0;
             break;
         case CheatType::AllowSpecialColourSchemes:
-            gameState.Cheats.AllowSpecialColourSchemes = static_cast<bool>(_param1);
+            gameState.cheats.allowSpecialColourSchemes = static_cast<bool>(_param1);
             break;
         case CheatType::RemoveParkFences:
             RemoveParkFences();
@@ -280,7 +286,7 @@ GameActions::Result CheatSetAction::Execute() const
         Config::Save();
     }
 
-    WindowInvalidateByClass(WindowClass::Cheats);
+    windowMgr->InvalidateByClass(WindowClass::Cheats);
     return GameActions::Result();
 }
 
@@ -324,7 +330,7 @@ ParametersRange CheatSetAction::GetParameterRange(CheatType cheatType) const
             [[fallthrough]];
         case CheatType::FreezeWeather:
             [[fallthrough]];
-        case CheatType::NeverEndingMarketing:
+        case CheatType::NeverendingMarketing:
             [[fallthrough]];
         case CheatType::AllowArbitraryRideTypeChanges:
             [[fallthrough]];
@@ -431,10 +437,10 @@ ParametersRange CheatSetAction::GetParameterRange(CheatType cheatType) const
 
 void CheatSetAction::SetGrassLength(int32_t length) const
 {
-    auto& gameState = GetGameState();
-    for (int32_t y = 0; y < gameState.MapSize.y; y++)
+    auto& gameState = getGameState();
+    for (int32_t y = 0; y < gameState.mapSize.y; y++)
     {
-        for (int32_t x = 0; x < gameState.MapSize.x; x++)
+        for (int32_t x = 0; x < gameState.mapSize.x; x++)
         {
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement == nullptr)
@@ -517,26 +523,25 @@ void CheatSetAction::FixBrokenRides() const
 {
     for (auto& ride : GetRideManager())
     {
-        if (ride.lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
+        if (ride.lifecycleFlags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
         {
             auto mechanic = RideGetAssignedMechanic(ride);
 
             if (mechanic != nullptr)
             {
-                if (ride.mechanic_status == RIDE_MECHANIC_STATUS_FIXING)
+                if (ride.mechanicStatus == RIDE_MECHANIC_STATUS_FIXING)
                 {
                     mechanic->RideSubState = PeepRideSubState::ApproachExit;
                 }
                 else if (
-                    ride.mechanic_status == RIDE_MECHANIC_STATUS_CALLING
-                    || ride.mechanic_status == RIDE_MECHANIC_STATUS_HEADING)
+                    ride.mechanicStatus == RIDE_MECHANIC_STATUS_CALLING || ride.mechanicStatus == RIDE_MECHANIC_STATUS_HEADING)
                 {
                     mechanic->RemoveFromRide();
                 }
             }
 
             RideFixBreakdown(ride, 0);
-            ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+            ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
         }
     }
 }
@@ -545,9 +550,10 @@ void CheatSetAction::RenewRides() const
 {
     for (auto& ride : GetRideManager())
     {
-        ride.Renew();
+        ride.renew();
     }
-    WindowInvalidateByClass(WindowClass::Ride);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::Ride);
 }
 
 void CheatSetAction::ResetRideCrashStatus() const
@@ -555,10 +561,11 @@ void CheatSetAction::ResetRideCrashStatus() const
     for (auto& ride : GetRideManager())
     {
         // Reset crash status and history
-        ride.lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
-        ride.last_crash_type = RIDE_CRASH_TYPE_NONE;
+        ride.lifecycleFlags &= ~RIDE_LIFECYCLE_CRASHED;
+        ride.lastCrashType = RIDE_CRASH_TYPE_NONE;
     }
-    WindowInvalidateByClass(WindowClass::Ride);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::Ride);
 }
 
 void CheatSetAction::Set10MinuteInspection() const
@@ -566,54 +573,58 @@ void CheatSetAction::Set10MinuteInspection() const
     for (auto& ride : GetRideManager())
     {
         // Set inspection interval to 10 minutes
-        ride.inspection_interval = RIDE_INSPECTION_EVERY_10_MINUTES;
+        ride.inspectionInterval = RIDE_INSPECTION_EVERY_10_MINUTES;
     }
-    WindowInvalidateByClass(WindowClass::Ride);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::Ride);
 }
 
 void CheatSetAction::SetScenarioNoMoney(bool enabled) const
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     if (enabled)
     {
-        gameState.Park.Flags |= PARK_FLAGS_NO_MONEY;
+        gameState.park.Flags |= PARK_FLAGS_NO_MONEY;
     }
     else
     {
-        gameState.Park.Flags &= ~PARK_FLAGS_NO_MONEY;
+        gameState.park.Flags &= ~PARK_FLAGS_NO_MONEY;
     }
 
     // Invalidate all windows that have anything to do with finance
-    WindowInvalidateByClass(WindowClass::Ride);
-    WindowInvalidateByClass(WindowClass::Peep);
-    WindowInvalidateByClass(WindowClass::ParkInformation);
-    WindowInvalidateByClass(WindowClass::Finances);
-    WindowInvalidateByClass(WindowClass::BottomToolbar);
-    WindowInvalidateByClass(WindowClass::TopToolbar);
-    WindowInvalidateByClass(WindowClass::Cheats);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::Ride);
+    windowMgr->InvalidateByClass(WindowClass::Peep);
+    windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+    windowMgr->InvalidateByClass(WindowClass::Finances);
+    windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
+    windowMgr->InvalidateByClass(WindowClass::TopToolbar);
+    windowMgr->InvalidateByClass(WindowClass::Cheats);
 }
 
 void CheatSetAction::SetMoney(money64 amount) const
 {
-    GetGameState().Cash = amount;
+    getGameState().cash = amount;
 
-    WindowInvalidateByClass(WindowClass::Finances);
-    WindowInvalidateByClass(WindowClass::BottomToolbar);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::Finances);
+    windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
 }
 
 void CheatSetAction::AddMoney(money64 amount) const
 {
-    auto& gameState = GetGameState();
-    gameState.Cash = AddClamp<money64>(gameState.Cash, amount);
+    auto& gameState = getGameState();
+    gameState.cash = AddClamp<money64>(gameState.cash, amount);
 
-    WindowInvalidateByClass(WindowClass::Finances);
-    WindowInvalidateByClass(WindowClass::BottomToolbar);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::Finances);
+    windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
 }
 
 void CheatSetAction::ClearLoan() const
 {
     // First give money
-    AddMoney(GetGameState().BankLoan);
+    AddMoney(getGameState().bankLoan);
 
     // Then pay the loan
     auto gameAction = ParkSetLoanAction(0.00_GBP);
@@ -626,7 +637,9 @@ void CheatSetAction::GenerateGuests(int32_t count) const
     {
         Park::GenerateGuest();
     }
-    WindowInvalidateByClass(WindowClass::BottomToolbar);
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
 }
 
 void CheatSetAction::SetGuestParameter(int32_t parameter, int32_t value) const
@@ -669,7 +682,7 @@ void CheatSetAction::SetGuestParameter(int32_t parameter, int32_t value) const
                 peep->Intensity = IntensityRange(value, 15);
                 break;
         }
-        peep->UpdateSpriteType();
+        peep->UpdateAnimationGroup();
     }
 }
 
@@ -687,26 +700,28 @@ void CheatSetAction::GiveObjectToGuests(int32_t object) const
                 break;
             case OBJECT_BALLOON:
                 peep->GiveItem(ShopItem::Balloon);
-                peep->BalloonColour = ScenarioRandMax(COLOUR_NUM_NORMAL);
-                peep->UpdateSpriteType();
+                peep->BalloonColour = ScenarioRandMax(kColourNumNormal);
+                peep->UpdateAnimationGroup();
                 break;
             case OBJECT_UMBRELLA:
                 peep->GiveItem(ShopItem::Umbrella);
-                peep->UmbrellaColour = ScenarioRandMax(COLOUR_NUM_NORMAL);
-                peep->UpdateSpriteType();
+                peep->UmbrellaColour = ScenarioRandMax(kColourNumOriginal);
+                peep->UpdateAnimationGroup();
                 break;
         }
     }
-    WindowInvalidateByClass(WindowClass::Peep);
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::Peep);
 }
 
 void CheatSetAction::RemoveAllGuests() const
 {
     for (auto& ride : GetRideManager())
     {
-        ride.num_riders = 0;
+        ride.numRiders = 0;
 
-        for (auto& station : ride.GetStations())
+        for (auto& station : ride.getStations())
         {
             station.QueueLength = 0;
             station.LastPeepInQueue = EntityId::GetNull();
@@ -746,10 +761,16 @@ void CheatSetAction::RemoveAllGuests() const
     // will be fetched on a deleted guest.
     for (auto guest : EntityList<Guest>())
     {
+        // Frozen peeps are usually placed and tweaked for artistic purposes,
+        // so exempt them from being removed.
+        if (guest->PeepFlags & PEEP_FLAGS_POSITION_FROZEN)
+            continue;
+
         guest->Remove();
     }
 
-    WindowInvalidateByClass(WindowClass::Ride);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::Ride);
     GfxInvalidateScreen();
 }
 
@@ -793,7 +814,7 @@ void CheatSetAction::OwnAllLand() const
     }
 
     // Completely unown peep spawn points
-    for (const auto& spawn : GetGameState().PeepSpawns)
+    for (const auto& spawn : getGameState().peepSpawns)
     {
         auto* surfaceElement = MapGetSurfaceElementAt(spawn);
         if (surfaceElement != nullptr)

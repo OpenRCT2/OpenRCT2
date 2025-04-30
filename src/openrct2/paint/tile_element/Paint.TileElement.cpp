@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include "../../Game.h"
 #include "../../Input.h"
+#include "../../SpriteIds.h"
 #include "../../config/Config.h"
 #include "../../core/Numerics.hpp"
 #include "../../drawing/Drawing.h"
@@ -19,14 +20,14 @@
 #include "../../ride/RideData.h"
 #include "../../ride/TrackData.h"
 #include "../../ride/TrackPaint.h"
-#include "../../sprites.h"
 #include "../../world/Banner.h"
 #include "../../world/Entrance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
-#include "../../world/Surface.h"
 #include "../../world/tile_element/Slope.h"
+#include "../../world/tile_element/SurfaceElement.h"
+#include "../../world/tile_element/TileElement.h"
 #include "../Paint.SessionFlags.h"
 #include "../Paint.h"
 #include "../VirtualFloor.h"
@@ -91,11 +92,11 @@ static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y)
     dx -= 16;
     int32_t bx = dx + 32;
 
-    if (bx <= session.DPI.y)
+    if (bx <= session.DPI.WorldY())
         return;
     dx -= 20;
-    dx -= session.DPI.height;
-    if (dx >= session.DPI.y)
+    dx -= session.DPI.WorldHeight();
+    if (dx >= session.DPI.WorldY())
         return;
 
     session.SpritePosition.x = x;
@@ -179,7 +180,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         PaintAddImageAsParent(session, imageId, { 0, 0, arrowZ }, { { 0, 0, arrowZ + 18 }, { 32, 32, -1 } });
     }
 
-    if (screenMinY + 52 <= session.DPI.y)
+    if (screenMinY + 52 <= session.DPI.WorldY())
         return;
 
     const TileElement* element = tile_element; // push tile_element
@@ -203,7 +204,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         max_height = std::max(max_height, VirtualFloorGetHeight());
     }
 
-    if (screenMinY - (max_height + 32) >= session.DPI.y + session.DPI.height)
+    if (screenMinY - (max_height + 32) >= session.DPI.WorldY() + session.DPI.WorldHeight())
         return;
 
     session.SpritePosition.x = coords.x;
@@ -220,7 +221,16 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
 
         // Only paint tile_elements below the clip height.
         if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->GetBaseZ() > gClipHeight * kCoordsZStep))
-            continue;
+        {
+            // see-through off: don't paint this tile_element at all
+            // see-through on: paint this tile_element as partial or hidden later on
+            // note: surface elements are not painted even with see-through turned on
+            if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH) == 0
+                || tile_element->GetType() == TileElementType::Surface)
+            {
+                continue;
+            }
+        }
 
         Direction direction = tile_element->GetDirectionWithOffset(rotation);
         int32_t baseZ = tile_element->GetBaseZ();
@@ -349,18 +359,18 @@ void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height
     session.Support.slope = slope;
 }
 
-const uint16_t segment_offsets[9] = {
-    EnumToFlag(PaintSegment::topCorner),    EnumToFlag(PaintSegment::leftCorner),     EnumToFlag(PaintSegment::rightCorner),
-    EnumToFlag(PaintSegment::bottomCorner), EnumToFlag(PaintSegment::centre),         EnumToFlag(PaintSegment::topLeftSide),
-    EnumToFlag(PaintSegment::topRightSide), EnumToFlag(PaintSegment::bottomLeftSide), EnumToFlag(PaintSegment::bottomRightSide),
+const uint16_t kSegmentOffsets[9] = {
+    EnumToFlag(PaintSegment::top),      EnumToFlag(PaintSegment::left),       EnumToFlag(PaintSegment::right),
+    EnumToFlag(PaintSegment::bottom),   EnumToFlag(PaintSegment::centre),     EnumToFlag(PaintSegment::topLeft),
+    EnumToFlag(PaintSegment::topRight), EnumToFlag(PaintSegment::bottomLeft), EnumToFlag(PaintSegment::bottomRight),
 };
 
 void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope)
 {
     SupportHeight* supportSegments = session.SupportSegments;
-    for (std::size_t s = 0; s < std::size(segment_offsets); s++)
+    for (std::size_t s = 0; s < std::size(kSegmentOffsets); s++)
     {
-        if (segments & segment_offsets[s])
+        if (segments & kSegmentOffsets[s])
         {
             supportSegments[s].height = height;
             if (height != 0xFFFF)

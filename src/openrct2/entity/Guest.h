@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -185,7 +185,7 @@ enum class PeepNauseaTolerance : uint8_t
     High
 };
 
-static constexpr uint16_t PeepThoughtItemNone = std::numeric_limits<uint16_t>::max();
+static constexpr uint16_t kPeepThoughtItemNone = std::numeric_limits<uint16_t>::max();
 
 struct PeepThought
 {
@@ -329,7 +329,7 @@ public:
     bool HasEmptyContainer() const;
     void OnEnterRide(Ride& ride);
     void OnExitRide(Ride& ride);
-    void UpdateSpriteType();
+    void UpdateAnimationGroup();
     bool HeadingForRideOrParkExit() const;
     void StopPurchaseThought(ride_type_t rideType);
     void TryGetUpFromSitting();
@@ -346,15 +346,15 @@ public:
     void SpendMoney(money64 amount, ExpenditureType type);
     void SetHasRidden(const Ride& ride);
     bool HasRidden(const Ride& ride) const;
-    void SetHasRiddenRideType(int32_t rideType);
-    bool HasRiddenRideType(int32_t rideType) const;
+    void SetHasRiddenRideType(ride_type_t rideType);
+    bool HasRiddenRideType(ride_type_t rideType) const;
     void SetParkEntryTime(int32_t entryTime);
     int32_t GetParkEntryTime() const;
     void CheckIfLost();
     void CheckCantFindRide();
     void CheckCantFindExit();
     bool DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price);
-    void SetSpriteType(PeepSpriteType new_sprite_type);
+    void SetAnimationGroup(PeepAnimationGroup new_sprite_type);
     void HandleEasterEggName();
     int32_t GetEasterEggNameId() const;
     void UpdateEasterEggInteractions();
@@ -380,7 +380,7 @@ public:
 
 private:
     void UpdateRide();
-    void UpdateOnRide(){}; // TODO
+    void UpdateOnRide() {}; // TODO
     void UpdateWalking();
     void UpdateWaitingAtCrossing();
     void UpdateQueuing();
@@ -423,7 +423,6 @@ private:
     void GivePassingPeepsIceCream(Guest* passingPeep);
     Ride* FindBestRideToGoOn();
     OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> FindRidesToGoOn();
-    bool FindVehicleToEnter(const Ride& ride, std::vector<uint8_t>& car_array);
     void GoToRideEntrance(const Ride& ride);
 };
 

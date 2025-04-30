@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,7 +24,8 @@ uint16_t GetMiscEntityCount();
 uint16_t GetNumFreeEntities();
 const std::vector<EntityId>& GetEntityTileList(const CoordsXY& spritePos);
 
-template<typename T> class EntityTileIterator
+template<typename T>
+class EntityTileIterator
 {
 private:
     std::vector<EntityId>::const_iterator iter;
@@ -44,7 +45,7 @@ public:
 
         while (iter != end && Entity == nullptr)
         {
-            Entity = GetEntity<T>(*iter++);
+            Entity = TryGetEntity<T>(*iter++);
         }
         return *this;
     }
@@ -75,7 +76,8 @@ public:
     using iterator_category = std::forward_iterator_tag;
 };
 
-template<typename T = EntityBase> class EntityTileList
+template<typename T = EntityBase>
+class EntityTileList
 {
 private:
     const std::vector<EntityId>& vec;
@@ -96,7 +98,8 @@ public:
     }
 };
 
-template<typename T> class EntityListIterator
+template<typename T>
+class EntityListIterator
 {
 private:
     std::list<EntityId>::const_iterator iter;
@@ -116,7 +119,7 @@ public:
 
         while (iter != end && Entity == nullptr)
         {
-            Entity = GetEntity<T>(*iter++);
+            Entity = TryGetEntity<T>(*iter++);
         }
         return *this;
     }
@@ -147,7 +150,8 @@ public:
     using iterator_category = std::forward_iterator_tag;
 };
 
-template<typename T = EntityBase> class EntityList
+template<typename T = EntityBase>
+class EntityList
 {
 private:
     using EntityListIterator_t = EntityListIterator<T>;

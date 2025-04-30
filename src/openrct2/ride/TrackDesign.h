@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,8 +11,10 @@
 
 #include "../Limits.h"
 #include "../actions/GameActionResult.h"
+#include "../core/EnumUtils.hpp"
 #include "../object/Object.h"
 #include "../ride/RideColour.h"
+#include "../ride/Track.h"
 #include "../world/Map.h"
 #include "RideRatings.h"
 #include "VehicleColour.h"
@@ -99,7 +101,7 @@ enum class TrackDesignTrackElementFlag : uint8_t
 
 struct TrackDesignTrackElement
 {
-    track_type_t type = 0;
+    OpenRCT2::TrackElemType type = OpenRCT2::TrackElemType::Flat;
     uint8_t flags = 0;
     uint8_t colourScheme = 0;
     ::StationIndex stationIndex = StationIndex::FromUnderlying(0);

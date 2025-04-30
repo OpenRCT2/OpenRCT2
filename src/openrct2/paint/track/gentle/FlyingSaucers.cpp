@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -50,9 +50,9 @@ static void PaintFlyingSaucers(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
-    if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+    if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
     {
         auto imageId = session.TrackColours.WithIndex(SprFlyingSaucersFloor);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height }, { 30, 30, 1 } });
@@ -69,11 +69,11 @@ static void PaintFlyingSaucers(
 /**
  * rct2: 0x00887208
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingSaucers(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionFlyingSaucers(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack4x4)
     {
-        return nullptr;
+        return TrackPaintFunctionDummy;
     }
 
     return PaintFlyingSaucers;

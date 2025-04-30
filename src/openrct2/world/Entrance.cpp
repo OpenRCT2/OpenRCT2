@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,7 @@
 #include "../actions/RideEntranceExitRemoveAction.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../object/FootpathObject.h"
 #include "../object/FootpathSurfaceObject.h"
 #include "../object/ObjectManager.h"
@@ -27,9 +27,10 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "Footpath.h"
-#include "Map.h"
 #include "MapAnimation.h"
 #include "Park.h"
+#include "tile_element/EntranceElement.h"
+#include "tile_element/TrackElement.h"
 
 using namespace OpenRCT2;
 
@@ -68,7 +69,7 @@ void ParkEntranceRemoveGhost()
 int32_t ParkEntranceGetIndex(const CoordsXYZ& entrancePos)
 {
     int32_t i = 0;
-    for (const auto& entrance : GetGameState().Park.Entrances)
+    for (const auto& entrance : getGameState().park.Entrances)
     {
         if (entrancePos == entrance)
         {
@@ -81,12 +82,12 @@ int32_t ParkEntranceGetIndex(const CoordsXYZ& entrancePos)
 
 void ParkEntranceReset()
 {
-    GetGameState().Park.Entrances.clear();
+    getGameState().park.Entrances.clear();
 }
 
 void RideEntranceExitPlaceProvisionalGhost()
 {
-    if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
+    if (_currentTrackSelectionFlags.has(TrackSelectionFlag::entranceOrExit))
     {
         RideEntranceExitPlaceGhost(
             _currentRideIndex, gRideEntranceExitGhostPosition, gRideEntranceExitGhostPosition.direction,
@@ -96,7 +97,7 @@ void RideEntranceExitPlaceProvisionalGhost()
 
 void RideEntranceExitRemoveGhost()
 {
-    if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
+    if (_currentTrackSelectionFlags.has(TrackSelectionFlag::entranceOrExit))
     {
         auto rideEntranceExitRemove = RideEntranceExitRemoveAction(
             gRideEntranceExitGhostPosition, _currentRideIndex, gRideEntranceExitGhostStationIndex,
@@ -119,7 +120,7 @@ money64 RideEntranceExitPlaceGhost(
 
     if (result != kMoney64Undefined)
     {
-        _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT;
+        _currentTrackSelectionFlags.set(TrackSelectionFlag::entranceOrExit);
         gRideEntranceExitGhostPosition.x = entranceExitCoords.x;
         gRideEntranceExitGhostPosition.y = entranceExitCoords.y;
         gRideEntranceExitGhostPosition.direction = direction;
@@ -210,19 +211,19 @@ void MazeEntranceHedgeRemoval(const CoordsXYE& entrance)
 
 void ParkEntranceFixLocations(void)
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     // Fix ParkEntrance locations for which the tile_element no longer exists
-    gameState.Park.Entrances.erase(
+    gameState.park.Entrances.erase(
         std::remove_if(
-            gameState.Park.Entrances.begin(), gameState.Park.Entrances.end(),
+            gameState.park.Entrances.begin(), gameState.park.Entrances.end(),
             [](const auto& entrance) { return MapGetParkEntranceElementAt(entrance, false) == nullptr; }),
-        gameState.Park.Entrances.end());
+        gameState.park.Entrances.end());
 }
 
 void ParkEntranceUpdateLocations()
 {
-    auto& gameState = GetGameState();
-    gameState.Park.Entrances.clear();
+    auto& gameState = getGameState();
+    gameState.park.Entrances.clear();
     TileElementIterator it;
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
@@ -232,7 +233,7 @@ void ParkEntranceUpdateLocations()
             && entranceElement->GetSequenceIndex() == 0 && !entranceElement->IsGhost())
         {
             auto entrance = TileCoordsXYZD(it.x, it.y, it.element->BaseHeight, it.element->GetDirection()).ToCoordsXYZD();
-            gameState.Park.Entrances.push_back(entrance);
+            gameState.park.Entrances.push_back(entrance);
         }
     }
 }

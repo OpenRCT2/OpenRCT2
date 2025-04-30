@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,12 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "audio.h"
+#include "Audio.h"
 
 #include "../Context.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../config/Config.h"
+#include "../core/EnumUtils.hpp"
 #include "../core/File.h"
 #include "../core/FileStream.h"
 #include "../core/Memory.hpp"
@@ -26,9 +27,10 @@
 #include "../ride/Ride.h"
 #include "../ride/RideAudio.h"
 #include "../scenes/intro/IntroScene.h"
-#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
+#include "../world/tile_element/SurfaceElement.h"
 #include "AudioChannel.h"
 #include "AudioContext.h"
 #include "AudioMixer.h"
@@ -48,9 +50,9 @@ namespace OpenRCT2::Audio
 
     static std::vector<std::string> _audioDevices;
     static int32_t _currentAudioDevice = -1;
-    static ObjectEntryIndex _soundsAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
-    static ObjectEntryIndex _soundsAdditionalAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
-    static ObjectEntryIndex _titleAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
+    static ObjectEntryIndex _soundsAudioObjectEntryIndex = kObjectEntryIndexNull;
+    static ObjectEntryIndex _soundsAdditionalAudioObjectEntryIndex = kObjectEntryIndexNull;
+    static ObjectEntryIndex _titleAudioObjectEntryIndex = kObjectEntryIndexNull;
 
     bool gGameSoundsOff = false;
     int32_t gVolumeAdjustZoom = 0;
@@ -187,14 +189,12 @@ namespace OpenRCT2::Audio
         uint32_t sampleIndex = EnumValue(id);
         if (id >= SoundId::LiftRMC)
         {
-            audioObject = static_cast<AudioObject*>(
-                objManager.GetLoadedObject(ObjectType::Audio, _soundsAdditionalAudioObjectEntryIndex));
+            audioObject = objManager.GetLoadedObject<AudioObject>(_soundsAdditionalAudioObjectEntryIndex);
             sampleIndex -= EnumValue(SoundId::LiftRMC);
         }
         else
         {
-            audioObject = static_cast<AudioObject*>(
-                objManager.GetLoadedObject(ObjectType::Audio, _soundsAudioObjectEntryIndex));
+            audioObject = objManager.GetLoadedObject<AudioObject>(_soundsAudioObjectEntryIndex);
         }
         return std::make_tuple(audioObject, sampleIndex);
     }
@@ -202,10 +202,10 @@ namespace OpenRCT2::Audio
     static void Play(IAudioSource* audioSource, int32_t volume, int32_t pan)
     {
         int32_t mixerPan = 0;
-        if (pan != AUDIO_PLAY_AT_CENTRE)
+        if (pan != kAudioPlayAtCentre)
         {
             int32_t x2 = pan << 16;
-            uint16_t screenWidth = std::max<int32_t>(64, OpenRCT2::GetContext()->GetUiContext()->GetWidth());
+            uint16_t screenWidth = std::max<int32_t>(64, ContextGetWidth());
             mixerPan = ((x2 / screenWidth) - 0x8000) >> 4;
         }
 
@@ -253,7 +253,7 @@ namespace OpenRCT2::Audio
     static bool IsRCT1TitleMusicAvailable()
     {
         auto env = GetContext()->GetPlatformEnvironment();
-        auto rct1path = env->GetDirectoryPath(DIRBASE::RCT1);
+        auto rct1path = env->GetDirectoryPath(DirBase::rct1);
         return !rct1path.empty();
     }
 
@@ -283,7 +283,7 @@ namespace OpenRCT2::Audio
 
         if (it != musicMap.end())
         {
-            return ObjectEntryDescriptor(ObjectType::Audio, it->second);
+            return ObjectEntryDescriptor(ObjectType::audio, it->second);
         }
 
         // No music descriptor for the current setting, intentional for TitleMusicKind::None
@@ -292,7 +292,7 @@ namespace OpenRCT2::Audio
 
     void PlayTitleMusic()
     {
-        if (gGameSoundsOff || !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) || IntroIsPlaying())
+        if (gGameSoundsOff || gLegacyScene != LegacyScene::titleSequence || IntroIsPlaying())
         {
             StopTitleMusic();
             return;
@@ -320,13 +320,18 @@ namespace OpenRCT2::Audio
         }
     }
 
-    void StopAll()
+    void StopSFX()
     {
-        StopTitleMusic();
         StopVehicleSounds();
-        RideAudio::StopAllChannels();
         PeepStopCrowdNoise();
         ClimateStopWeatherSound();
+    }
+
+    void StopAll()
+    {
+        StopSFX();
+        StopTitleMusic();
+        RideAudio::StopAllChannels();
     }
 
     int32_t GetDeviceCount()
@@ -358,15 +363,15 @@ namespace OpenRCT2::Audio
         }
 
         // Unload the audio object
-        if (_titleAudioObjectEntryIndex != OBJECT_ENTRY_INDEX_NULL)
+        if (_titleAudioObjectEntryIndex != kObjectEntryIndexNull)
         {
             auto& objManager = GetContext()->GetObjectManager();
-            auto* obj = objManager.GetLoadedObject(ObjectType::Audio, _titleAudioObjectEntryIndex);
+            auto* obj = objManager.GetLoadedObject<AudioObject>(_titleAudioObjectEntryIndex);
             if (obj != nullptr)
             {
                 objManager.UnloadObjects({ obj->GetDescriptor() });
             }
-            _titleAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
+            _titleAudioObjectEntryIndex = kObjectEntryIndexNull;
         }
     }
 
@@ -408,17 +413,14 @@ namespace OpenRCT2::Audio
             Pause();
         }
 
-        WindowInvalidateByClass(WindowClass::Options);
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateByClass(WindowClass::Options);
     }
 
     void Pause()
     {
         gGameSoundsOff = true;
-        StopVehicleSounds();
-        RideAudio::StopAllChannels();
-        PeepStopCrowdNoise();
-        ClimateStopWeatherSound();
-        StopTitleMusic();
+        StopAll();
     }
 
     void Resume()
@@ -501,9 +503,9 @@ namespace OpenRCT2::Audio
 
     float DStoMixerPan(int32_t pan)
     {
-        constexpr int32_t DSBPAN_LEFT = -10000;
-        constexpr int32_t DSBPAN_RIGHT = 10000;
-        return ((static_cast<float>(pan) + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2;
+        constexpr int32_t kDSBPanLeft = -10000;
+        constexpr int32_t kDSBPanRight = 10000;
+        return ((static_cast<float>(pan) + -kDSBPanLeft) / kDSBPanRight) / 2;
     }
 
     double DStoMixerRate(int32_t frequency)

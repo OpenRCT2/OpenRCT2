@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #include "WallObject.h"
 
+#include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
@@ -27,7 +28,7 @@ void WallObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stre
     _legacyType.height = stream->ReadValue<uint8_t>();
     _legacyType.flags2 = stream->ReadValue<uint8_t>();
     _legacyType.price = stream->ReadValue<money16>();
-    _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
+    _legacyType.scenery_tab_id = kObjectEntryIndexNull;
     stream->Seek(1, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
 

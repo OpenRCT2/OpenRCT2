@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,61 +9,63 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScriptEngine.h"
+    #include "ScriptEngine.h"
 
-#    include "../PlatformEnvironment.h"
-#    include "../actions/BannerPlaceAction.h"
-#    include "../actions/CustomAction.h"
-#    include "../actions/GameAction.h"
-#    include "../actions/LargeSceneryPlaceAction.h"
-#    include "../actions/RideCreateAction.h"
-#    include "../actions/StaffHireNewAction.h"
-#    include "../actions/WallPlaceAction.h"
-#    include "../config/Config.h"
-#    include "../core/EnumMap.hpp"
-#    include "../core/File.h"
-#    include "../core/FileScanner.h"
-#    include "../core/Path.hpp"
-#    include "../interface/InteractiveConsole.h"
-#    include "../platform/Platform.h"
-#    include "Duktape.hpp"
-#    include "bindings/entity/ScEntity.hpp"
-#    include "bindings/entity/ScGuest.hpp"
-#    include "bindings/entity/ScLitter.hpp"
-#    include "bindings/entity/ScParticle.hpp"
-#    include "bindings/entity/ScPeep.hpp"
-#    include "bindings/entity/ScStaff.hpp"
-#    include "bindings/entity/ScVehicle.hpp"
-#    include "bindings/game/ScCheats.hpp"
-#    include "bindings/game/ScConsole.hpp"
-#    include "bindings/game/ScContext.hpp"
-#    include "bindings/game/ScDisposable.hpp"
-#    include "bindings/game/ScPlugin.hpp"
-#    include "bindings/game/ScProfiler.hpp"
-#    include "bindings/network/ScNetwork.hpp"
-#    include "bindings/network/ScPlayer.hpp"
-#    include "bindings/network/ScPlayerGroup.hpp"
-#    include "bindings/network/ScSocket.hpp"
-#    include "bindings/object/ScInstalledObject.hpp"
-#    include "bindings/object/ScObject.hpp"
-#    include "bindings/object/ScObjectManager.h"
-#    include "bindings/ride/ScRide.hpp"
-#    include "bindings/ride/ScRideStation.hpp"
-#    include "bindings/world/ScClimate.hpp"
-#    include "bindings/world/ScDate.hpp"
-#    include "bindings/world/ScMap.hpp"
-#    include "bindings/world/ScPark.hpp"
-#    include "bindings/world/ScParkMessage.hpp"
-#    include "bindings/world/ScResearch.hpp"
-#    include "bindings/world/ScScenario.hpp"
-#    include "bindings/world/ScTile.hpp"
-#    include "bindings/world/ScTileElement.hpp"
+    #include "../PlatformEnvironment.h"
+    #include "../actions/BannerPlaceAction.h"
+    #include "../actions/CustomAction.h"
+    #include "../actions/GameAction.h"
+    #include "../actions/LargeSceneryPlaceAction.h"
+    #include "../actions/RideCreateAction.h"
+    #include "../actions/StaffHireNewAction.h"
+    #include "../actions/WallPlaceAction.h"
+    #include "../config/Config.h"
+    #include "../core/EnumMap.hpp"
+    #include "../core/File.h"
+    #include "../core/FileScanner.h"
+    #include "../core/Path.hpp"
+    #include "../interface/InteractiveConsole.h"
+    #include "../platform/Platform.h"
+    #include "Duktape.hpp"
+    #include "bindings/entity/ScBalloon.hpp"
+    #include "bindings/entity/ScEntity.hpp"
+    #include "bindings/entity/ScGuest.hpp"
+    #include "bindings/entity/ScLitter.hpp"
+    #include "bindings/entity/ScMoneyEffect.hpp"
+    #include "bindings/entity/ScParticle.hpp"
+    #include "bindings/entity/ScPeep.hpp"
+    #include "bindings/entity/ScStaff.hpp"
+    #include "bindings/entity/ScVehicle.hpp"
+    #include "bindings/game/ScCheats.hpp"
+    #include "bindings/game/ScConsole.hpp"
+    #include "bindings/game/ScContext.hpp"
+    #include "bindings/game/ScDisposable.hpp"
+    #include "bindings/game/ScPlugin.hpp"
+    #include "bindings/game/ScProfiler.hpp"
+    #include "bindings/network/ScNetwork.hpp"
+    #include "bindings/network/ScPlayer.hpp"
+    #include "bindings/network/ScPlayerGroup.hpp"
+    #include "bindings/network/ScSocket.hpp"
+    #include "bindings/object/ScInstalledObject.hpp"
+    #include "bindings/object/ScObject.hpp"
+    #include "bindings/object/ScObjectManager.h"
+    #include "bindings/ride/ScRide.hpp"
+    #include "bindings/ride/ScRideStation.hpp"
+    #include "bindings/world/ScClimate.hpp"
+    #include "bindings/world/ScDate.hpp"
+    #include "bindings/world/ScMap.hpp"
+    #include "bindings/world/ScPark.hpp"
+    #include "bindings/world/ScParkMessage.hpp"
+    #include "bindings/world/ScResearch.hpp"
+    #include "bindings/world/ScScenario.hpp"
+    #include "bindings/world/ScTile.hpp"
+    #include "bindings/world/ScTileElement.hpp"
 
-#    include <cassert>
-#    include <iostream>
-#    include <memory>
-#    include <stdexcept>
-#    include <string>
+    #include <cassert>
+    #include <iostream>
+    #include <memory>
+    #include <stdexcept>
+    #include <string>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
@@ -403,7 +405,7 @@ void ScriptEngine::Initialise()
     auto ctx = static_cast<duk_context*>(_context);
     ScCheats::Register(ctx);
     ScClimate::Register(ctx);
-    ScClimateState::Register(ctx);
+    ScWeatherState::Register(ctx);
     ScConfiguration::Register(ctx);
     ScConsole::Register(ctx);
     ScContext::Register(ctx);
@@ -417,6 +419,7 @@ void ScriptEngine::Initialise()
     ScSceneryObject::Register(ctx);
     ScSmallSceneryObject::Register(ctx);
     ScLargeSceneryObject::Register(ctx);
+    ScLargeSceneryObjectTile::Register(ctx);
     ScWallObject::Register(ctx);
     ScFootpathAdditionObject::Register(ctx);
     ScBannerObject::Register(ctx);
@@ -437,15 +440,17 @@ void ScriptEngine::Initialise()
     ScTrackSegment::Register(ctx);
     ScEntity::Register(ctx);
     ScLitter::Register(ctx);
+    ScBalloon::Register(ctx);
+    ScMoneyEffect::Register(ctx);
     ScVehicle::Register(ctx);
     ScCrashedVehicleParticle::Register(ctx);
     ScPeep::Register(ctx);
     ScGuest::Register(ctx);
     ScThought::Register(ctx);
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
     ScSocket::Register(ctx);
     ScListener::Register(ctx);
-#    endif
+    #endif
     ScScenario::Register(ctx);
     ScScenarioObjective::Register(ctx);
     ScPatrolArea::Register(ctx);
@@ -591,7 +596,7 @@ std::vector<std::string> ScriptEngine::GetPluginFiles() const
 {
     // Scan for .js files in plugin directory
     std::vector<std::string> pluginFiles;
-    auto base = _env.GetDirectoryPath(DIRBASE::USER, DIRID::PLUGIN);
+    auto base = _env.GetDirectoryPath(DirBase::user, DirId::plugins);
     if (Path::DirectoryExists(base))
     {
         auto pattern = Path::Combine(base, u8"*.js");
@@ -714,7 +719,7 @@ void ScriptEngine::LoadPlugin(std::shared_ptr<Plugin>& plugin)
         if (!plugin->IsLoaded())
         {
             const auto& metadata = plugin->GetMetadata();
-            if (metadata.MinApiVersion <= OPENRCT2_PLUGIN_API_VERSION)
+            if (metadata.MinApiVersion <= kPluginApiVersion)
             {
                 ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
                 plugin->Load();
@@ -793,7 +798,7 @@ void ScriptEngine::SetupHotReloading()
 {
     try
     {
-        auto base = _env.GetDirectoryPath(DIRBASE::USER, DIRID::PLUGIN);
+        auto base = _env.GetDirectoryPath(DirBase::user, DirId::plugins);
         if (Path::DirectoryExists(base))
         {
             _pluginFileWatcher = std::make_unique<FileWatcher>(base);
@@ -1086,7 +1091,7 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAct
         }
 
         std::vector<DukValue> pluginCallArgs;
-        if (customActionInfo.Owner->GetTargetAPIVersion() <= API_VERSION_68_CUSTOM_ACTION_ARGS)
+        if (customActionInfo.Owner->GetTargetAPIVersion() <= kApiVersionCustomActionArgs)
         {
             pluginCallArgs = { *dukArgs };
         }
@@ -1357,7 +1362,6 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "bannersetname", GameCommand::SetBannerName },
     { "bannersetstyle", GameCommand::SetBannerStyle },
     { "clearscenery", GameCommand::ClearScenery },
-    { "climateset", GameCommand::SetClimate },
     { "footpathplace", GameCommand::PlacePath },
     { "footpathlayoutplace", GameCommand::PlacePathLayout },
     { "footpathremove", GameCommand::RemovePath },
@@ -1459,7 +1463,7 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, GameActions::Res
 {
     DukStackFrame frame(_context);
 
-    auto hookType = isExecute ? HOOK_TYPE::ACTION_EXECUTE : HOOK_TYPE::ACTION_QUERY;
+    auto hookType = isExecute ? HookType::actionExecute : HookType::actionQuery;
     if (_hookEngine.HasSubscriptions(hookType))
     {
         DukObject obj(_context);
@@ -1572,7 +1576,7 @@ void ScriptEngine::LoadSharedStorage()
 {
     InitSharedStorage();
 
-    auto path = _env.GetFilePath(PATHID::PLUGIN_STORE);
+    auto path = _env.GetFilePath(PathId::pluginStore);
     try
     {
         if (File::Exists(path))
@@ -1594,7 +1598,7 @@ void ScriptEngine::LoadSharedStorage()
 
 void ScriptEngine::SaveSharedStorage()
 {
-    auto path = _env.GetFilePath(PATHID::PLUGIN_STORE);
+    auto path = _env.GetFilePath(PathId::pluginStore);
     try
     {
         _sharedStorage.push();
@@ -1748,16 +1752,16 @@ void ScriptEngine::RemoveIntervals(const std::shared_ptr<Plugin>& plugin)
     }
 }
 
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
 void ScriptEngine::AddSocket(const std::shared_ptr<ScSocketBase>& socket)
 {
     _sockets.push_back(socket);
 }
-#    endif
+    #endif
 
 void ScriptEngine::UpdateSockets()
 {
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
     // Use simple for i loop as Update calls can modify the list
     auto it = _sockets.begin();
     while (it != _sockets.end())
@@ -1773,12 +1777,12 @@ void ScriptEngine::UpdateSockets()
             it++;
         }
     }
-#    endif
+    #endif
 }
 
 void ScriptEngine::RemoveSockets(const std::shared_ptr<Plugin>& plugin)
 {
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
     auto it = _sockets.begin();
     while (it != _sockets.end())
     {
@@ -1793,7 +1797,7 @@ void ScriptEngine::RemoveSockets(const std::shared_ptr<Plugin>& plugin)
             it++;
         }
     }
-#    endif
+    #endif
 }
 
 std::string OpenRCT2::Scripting::Stringify(const DukValue& val)
@@ -1846,7 +1850,7 @@ int32_t OpenRCT2::Scripting::GetTargetAPIVersion()
     if (plugin == nullptr)
     {
         // For in-game console, default to the current API version
-        return OPENRCT2_PLUGIN_API_VERSION;
+        return kPluginApiVersion;
     }
 
     return plugin->GetTargetAPIVersion();

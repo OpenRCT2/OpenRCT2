@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../OpenRCT2.h"
 #include "../config/ConfigTypes.h"
+#include "../localisation/FormatCodes.h"
 #include "../platform/Platform.h"
 #include "../scripting/ScriptEngine.h"
 
@@ -19,7 +20,7 @@
 
 // Ignore isatty warning on WIN32
 #ifdef _MSC_VER
-#    pragma warning(disable : 4996)
+    #pragma warning(disable : 4996)
 #endif
 
 void StdInOutConsole::Start()

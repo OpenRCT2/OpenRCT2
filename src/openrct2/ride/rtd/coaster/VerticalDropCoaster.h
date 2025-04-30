@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include "../../../SpriteIds.h"
 #include "../../../paint/support/MetalSupports.h"
-#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -18,25 +18,24 @@
 // clang-format off
 constexpr RideTypeDescriptor VerticalDropCoasterRTD =
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionTwisterRC,
+        .trackStyle = TrackStyle::twisterRollerCoaster,
         .supportType = MetalSupportType::Boxed,
-        .EnabledTrackPieces = {TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::liftHillSteep, TrackGroup::flatRollBanking, TrackGroup::verticalLoop, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeLong, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::slopeVertical, TrackGroup::slopeCurveBanked, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::curveVertical, TrackGroup::halfLoopLarge, TrackGroup::brakeForDrop, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
-        .ExtraTrackPieces = {TrackGroup::halfLoop, TrackGroup::corkscrew, TrackGroup::barrelRoll, TrackGroup::poweredLift, TrackGroup::halfLoopLarge, TrackGroup::quarterLoop, TrackGroup::booster, TrackGroup::twist},
+        .enabledTrackGroups = {TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::liftHillSteep, TrackGroup::flatRollBanking, TrackGroup::verticalLoop, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::flatToSteepSlope, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::slopeVertical, TrackGroup::slopeCurveBanked, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::curveVertical, TrackGroup::halfLoopLarge, TrackGroup::brakeForDrop, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeCurveLarge, TrackGroup::halfLoopMedium, TrackGroup::zeroGRoll, TrackGroup::zeroGRollLarge, TrackGroup::corkscrew, TrackGroup::corkscrewLarge, TrackGroup::diveLoop},
+        .extraTrackGroups = {TrackGroup::halfLoop, TrackGroup::barrelRoll, TrackGroup::poweredLift, TrackGroup::halfLoopLarge, TrackGroup::quarterLoop, TrackGroup::booster, TrackGroup::twist, TrackGroup::slopeSteepLong, TrackGroup::diagSlopeSteepLong},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
         EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
+    .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 10, 27 },
     .BoosterSettings = { 17, 68 },
     .LegacyBoosterSettings = { 17, 68 },
     .Naming = { STR_RIDE_NAME_VERTICAL_DROP_ROLLER_COASTER, STR_RIDE_DESCRIPTION_VERTICAL_DROP_ROLLER_COASTER },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 55, 24, 8, 11, },
     .MaxMass = 25,
@@ -45,7 +44,7 @@ constexpr RideTypeDescriptor VerticalDropCoasterRTD =
     .UpkeepCosts = { 44, 20, 80, 11, 3, 10 },
     .BuildCosts = { 60.00_GBP, 2.50_GBP, 42, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .DefaultMusic = kMusicObjectRock1,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 95,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -61,13 +60,13 @@ constexpr RideTypeDescriptor VerticalDropCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(3, 20), RIDE_RATING(0, 80), RIDE_RATING(0, 30) },
+        { MakeRideRating(3, 20), MakeRideRating(0, 80), MakeRideRating(0, 30) },
         16,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           4000,             1146, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                97418, 141699, 70849 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
             { RatingsModifierType::BonusDuration,         150,              26214, 0, 0 },
@@ -79,7 +78,7 @@ constexpr RideTypeDescriptor VerticalDropCoasterRTD =
             { RatingsModifierType::BonusScenery,          0,                6693, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 20,               2, 2, 2 },
             { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 2, 2 },
-            { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 10), 2, 2, 2 },
+            { RatingsModifierType::RequirementNegativeGs, MakeFixed16_2dp(0, 10), 2, 2, 2 },
             { RatingsModifierType::RequirementNumDrops,   1,                2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                40960, 35746, 49648 },
         },

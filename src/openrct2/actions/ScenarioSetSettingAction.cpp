@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,10 +13,8 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../entity/Peep.h"
-#include "../interface/Window.h"
 #include "../management/Finance.h"
-#include "../scenario/Scenario.h"
-#include "../util/Util.h"
+#include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
 using namespace OpenRCT2;
@@ -48,203 +46,205 @@ GameActions::Result ScenarioSetSettingAction::Query() const
 
 GameActions::Result ScenarioSetSettingAction::Execute() const
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
+    auto* windowMgr = Ui::GetWindowManager();
+
     switch (_setting)
     {
         case ScenarioSetSetting::NoMoney:
-            if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+            if (gLegacyScene == LegacyScene::scenarioEditor)
             {
                 if (_value != 0)
                 {
-                    gameState.Park.Flags |= PARK_FLAGS_NO_MONEY;
+                    gameState.park.Flags |= PARK_FLAGS_NO_MONEY;
                 }
                 else
                 {
-                    gameState.Park.Flags &= ~PARK_FLAGS_NO_MONEY;
+                    gameState.park.Flags &= ~PARK_FLAGS_NO_MONEY;
                 }
             }
             else
             {
                 if (_value != 0)
                 {
-                    gameState.Park.Flags |= PARK_FLAGS_NO_MONEY;
+                    gameState.park.Flags |= PARK_FLAGS_NO_MONEY;
                 }
                 else
                 {
-                    gameState.Park.Flags &= ~PARK_FLAGS_NO_MONEY;
+                    gameState.park.Flags &= ~PARK_FLAGS_NO_MONEY;
                 }
                 // Invalidate all windows that have anything to do with finance
-                WindowInvalidateByClass(WindowClass::Ride);
-                WindowInvalidateByClass(WindowClass::Peep);
-                WindowInvalidateByClass(WindowClass::ParkInformation);
-                WindowInvalidateByClass(WindowClass::Finances);
-                WindowInvalidateByClass(WindowClass::BottomToolbar);
-                WindowInvalidateByClass(WindowClass::TopToolbar);
+                windowMgr->InvalidateByClass(WindowClass::Ride);
+                windowMgr->InvalidateByClass(WindowClass::Peep);
+                windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+                windowMgr->InvalidateByClass(WindowClass::Finances);
+                windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
+                windowMgr->InvalidateByClass(WindowClass::TopToolbar);
             }
             break;
         case ScenarioSetSetting::InitialCash:
-            gameState.InitialCash = std::clamp<money64>(_value, 0.00_GBP, 1000000.00_GBP);
-            gameState.Cash = gameState.InitialCash;
-            WindowInvalidateByClass(WindowClass::Finances);
-            WindowInvalidateByClass(WindowClass::BottomToolbar);
+            gameState.initialCash = std::clamp<money64>(_value, 0.00_GBP, 1000000.00_GBP);
+            gameState.cash = gameState.initialCash;
+            windowMgr->InvalidateByClass(WindowClass::Finances);
+            windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
             break;
         case ScenarioSetSetting::InitialLoan:
-            gameState.BankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
-            gameState.MaxBankLoan = std::max(gameState.BankLoan, gameState.MaxBankLoan);
-            WindowInvalidateByClass(WindowClass::Finances);
+            gameState.bankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
+            gameState.maxBankLoan = std::max(gameState.bankLoan, gameState.maxBankLoan);
+            windowMgr->InvalidateByClass(WindowClass::Finances);
             break;
         case ScenarioSetSetting::MaximumLoanSize:
-            gameState.MaxBankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
-            gameState.BankLoan = std::min(gameState.BankLoan, gameState.MaxBankLoan);
-            WindowInvalidateByClass(WindowClass::Finances);
+            gameState.maxBankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
+            gameState.bankLoan = std::min(gameState.bankLoan, gameState.maxBankLoan);
+            windowMgr->InvalidateByClass(WindowClass::Finances);
             break;
         case ScenarioSetSetting::AnnualInterestRate:
-            gameState.BankLoanInterestRate = std::clamp<uint8_t>(_value, 0, MaxBankLoanInterestRate);
-            WindowInvalidateByClass(WindowClass::Finances);
+            gameState.bankLoanInterestRate = std::clamp<uint8_t>(_value, 0, MaxBankLoanInterestRate);
+            windowMgr->InvalidateByClass(WindowClass::Finances);
             break;
         case ScenarioSetSetting::ForbidMarketingCampaigns:
             if (_value != 0)
             {
-                gameState.Park.Flags |= PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
+                gameState.park.Flags |= PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
             }
             else
             {
-                gameState.Park.Flags &= ~PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
+                gameState.park.Flags &= ~PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
             }
             break;
         case ScenarioSetSetting::AverageCashPerGuest:
-            gameState.GuestInitialCash = std::clamp<money64>(_value, 0.00_GBP, 1000.00_GBP);
+            gameState.guestInitialCash = std::clamp<money64>(_value, 0.00_GBP, 1000.00_GBP);
             break;
         case ScenarioSetSetting::GuestInitialHappiness:
-            gameState.GuestInitialHappiness = std::clamp<uint8_t>(_value, 40, 250);
+            gameState.guestInitialHappiness = std::clamp<uint8_t>(_value, 40, 250);
             break;
         case ScenarioSetSetting::GuestInitialHunger:
-            gameState.GuestInitialHunger = std::clamp<uint8_t>(_value, 40, 250);
+            gameState.guestInitialHunger = std::clamp<uint8_t>(_value, 40, 250);
             break;
         case ScenarioSetSetting::GuestInitialThirst:
-            gameState.GuestInitialThirst = std::clamp<uint8_t>(_value, 40, 250);
+            gameState.guestInitialThirst = std::clamp<uint8_t>(_value, 40, 250);
             break;
         case ScenarioSetSetting::GuestsPreferLessIntenseRides:
             if (_value != 0)
             {
-                gameState.Park.Flags |= PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
+                gameState.park.Flags |= PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
             }
             else
             {
-                gameState.Park.Flags &= ~PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
+                gameState.park.Flags &= ~PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
             }
             break;
         case ScenarioSetSetting::GuestsPreferMoreIntenseRides:
             if (_value != 0)
             {
-                gameState.Park.Flags |= PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
+                gameState.park.Flags |= PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
             }
             else
             {
-                gameState.Park.Flags &= ~PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
+                gameState.park.Flags &= ~PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
             }
             break;
         case ScenarioSetSetting::CostToBuyLand:
-            gameState.LandPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
+            gameState.landPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
             break;
         case ScenarioSetSetting::CostToBuyConstructionRights:
-            gameState.ConstructionRightsPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
+            gameState.constructionRightsPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
             break;
         case ScenarioSetSetting::ParkChargeMethod:
-            if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+            if (gLegacyScene == LegacyScene::scenarioEditor)
             {
                 if (_value == 0)
                 {
-                    gameState.Park.Flags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                    gameState.Park.Flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
-                    gameState.Park.EntranceFee = 0.00_GBP;
+                    gameState.park.Flags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                    gameState.park.Flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gameState.park.EntranceFee = 0.00_GBP;
                 }
                 else if (_value == 1)
                 {
-                    gameState.Park.Flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-                    gameState.Park.Flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
-                    gameState.Park.EntranceFee = 10.00_GBP;
+                    gameState.park.Flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+                    gameState.park.Flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gameState.park.EntranceFee = 10.00_GBP;
                 }
                 else
                 {
-                    gameState.Park.Flags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                    gameState.Park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
-                    gameState.Park.EntranceFee = 10.00_GBP;
+                    gameState.park.Flags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                    gameState.park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gameState.park.EntranceFee = 10.00_GBP;
                 }
             }
             else
             {
                 if (_value == 0)
                 {
-                    gameState.Park.Flags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                    gameState.Park.Flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gameState.park.Flags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                    gameState.park.Flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
                 }
                 else if (_value == 1)
                 {
-                    gameState.Park.Flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-                    gameState.Park.Flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gameState.park.Flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+                    gameState.park.Flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
                 }
                 else
                 {
-                    gameState.Park.Flags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                    gameState.Park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gameState.park.Flags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                    gameState.park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
                 }
-                WindowInvalidateByClass(WindowClass::ParkInformation);
-                WindowInvalidateByClass(WindowClass::Ride);
+                windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+                windowMgr->InvalidateByClass(WindowClass::Ride);
             }
             break;
         case ScenarioSetSetting::ParkChargeEntryFee:
-            gameState.Park.EntranceFee = std::clamp<money64>(_value, 0.00_GBP, MAX_ENTRANCE_FEE);
-            WindowInvalidateByClass(WindowClass::ParkInformation);
+            gameState.park.EntranceFee = std::clamp<money64>(_value, 0.00_GBP, kMaxEntranceFee);
+            windowMgr->InvalidateByClass(WindowClass::ParkInformation);
             break;
         case ScenarioSetSetting::ForbidTreeRemoval:
             if (_value != 0)
             {
-                gameState.Park.Flags |= PARK_FLAGS_FORBID_TREE_REMOVAL;
+                gameState.park.Flags |= PARK_FLAGS_FORBID_TREE_REMOVAL;
             }
             else
             {
-                gameState.Park.Flags &= ~PARK_FLAGS_FORBID_TREE_REMOVAL;
+                gameState.park.Flags &= ~PARK_FLAGS_FORBID_TREE_REMOVAL;
             }
             break;
         case ScenarioSetSetting::ForbidLandscapeChanges:
             if (_value != 0)
             {
-                gameState.Park.Flags |= PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
+                gameState.park.Flags |= PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
             }
             else
             {
-                gameState.Park.Flags &= ~PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
+                gameState.park.Flags &= ~PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
             }
             break;
         case ScenarioSetSetting::ForbidHighConstruction:
             if (_value != 0)
             {
-                gameState.Park.Flags |= PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+                gameState.park.Flags |= PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
             }
             else
             {
-                gameState.Park.Flags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+                gameState.park.Flags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
             }
             break;
         case ScenarioSetSetting::ParkRatingHigherDifficultyLevel:
             if (_value != 0)
             {
-                gameState.Park.Flags |= PARK_FLAGS_DIFFICULT_PARK_RATING;
+                gameState.park.Flags |= PARK_FLAGS_DIFFICULT_PARK_RATING;
             }
             else
             {
-                gameState.Park.Flags &= ~PARK_FLAGS_DIFFICULT_PARK_RATING;
+                gameState.park.Flags &= ~PARK_FLAGS_DIFFICULT_PARK_RATING;
             }
             break;
         case ScenarioSetSetting::GuestGenerationHigherDifficultyLevel:
             if (_value != 0)
             {
-                gameState.Park.Flags |= PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
+                gameState.park.Flags |= PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
             }
             else
             {
-                gameState.Park.Flags &= ~PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
+                gameState.park.Flags &= ~PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
             }
             break;
         case ScenarioSetSetting::AllowEarlyCompletion:
@@ -254,11 +254,11 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
         {
             if (_value != 0)
             {
-                gameState.Park.Flags |= PARK_FLAGS_RCT1_INTEREST;
+                gameState.park.Flags |= PARK_FLAGS_RCT1_INTEREST;
             }
             else
             {
-                gameState.Park.Flags &= ~PARK_FLAGS_RCT1_INTEREST;
+                gameState.park.Flags &= ~PARK_FLAGS_RCT1_INTEREST;
             }
             break;
         }
@@ -267,6 +267,6 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
-    WindowInvalidateByClass(WindowClass::EditorScenarioOptions);
+    windowMgr->InvalidateByClass(WindowClass::EditorScenarioOptions);
     return GameActions::Result();
 }

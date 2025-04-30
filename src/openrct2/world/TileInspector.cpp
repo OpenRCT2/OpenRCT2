@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,21 +11,27 @@
 
 #include "../Diagnostic.h"
 #include "../actions/GameAction.h"
-#include "../interface/Window.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
+#include "../ui/WindowManager.h"
 #include "../windows/TileInspectorGlobals.h"
-#include "../world/MapAnimation.h"
 #include "Banner.h"
 #include "Footpath.h"
 #include "Location.hpp"
-#include "Map.h"
+#include "MapAnimation.h"
 #include "Park.h"
 #include "Scenery.h"
-#include "Surface.h"
+#include "tile_element/BannerElement.h"
+#include "tile_element/EntranceElement.h"
+#include "tile_element/LargeSceneryElement.h"
+#include "tile_element/PathElement.h"
 #include "tile_element/Slope.h"
+#include "tile_element/SmallSceneryElement.h"
+#include "tile_element/SurfaceElement.h"
+#include "tile_element/TrackElement.h"
+#include "tile_element/WallElement.h"
 
 #include <optional>
 
@@ -77,7 +83,8 @@ namespace OpenRCT2::TileInspector
     static bool IsTileSelected(const CoordsXY& loc)
     {
         // Return true for everyone who has the window open and tile selected
-        auto* window = WindowFindByClass(WindowClass::TileInspector);
+        auto* windowMgr = Ui::GetWindowManager();
+        auto* window = windowMgr->FindByClass(WindowClass::TileInspector);
         return window != nullptr && loc == windowTileInspectorTile.ToCoordsXY();
     }
 
@@ -86,19 +93,18 @@ namespace OpenRCT2::TileInspector
         const auto* const largeEntry = largeScenery->GetEntry();
         const auto direction = largeScenery->GetDirection();
         const auto sequenceIndex = largeScenery->GetSequenceIndex();
-        const auto* tiles = largeEntry->tiles;
-        const auto& tile = tiles[sequenceIndex];
+        const auto& tiles = largeEntry->tiles;
+        const auto& initialTile = tiles[sequenceIndex];
         const auto rotatedFirstTile = CoordsXYZ{
-            CoordsXY{ tile.x_offset, tile.y_offset }.Rotate(direction),
-            tile.z_offset,
+            CoordsXY{ initialTile.offset }.Rotate(direction),
+            initialTile.offset.z,
         };
 
         const auto firstTile = CoordsXYZ{ loc, largeScenery->GetBaseZ() } - rotatedFirstTile;
         auto numFoundElements = 0;
-        for (int32_t i = 0; tiles[i].x_offset != -1; i++)
+        for (auto& tile : tiles)
         {
-            const auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tiles[i].x_offset, tiles[i].y_offset }.Rotate(direction),
-                                                       tiles[i].z_offset };
+            const auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tile.offset }.Rotate(direction), tile.offset.z };
 
             const auto currentTile = firstTile + rotatedCurrentTile;
 
@@ -113,7 +119,7 @@ namespace OpenRCT2::TileInspector
                     if (tileElement->GetDirection() != direction)
                         continue;
 
-                    if (tileElement->AsLargeScenery()->GetSequenceIndex() != i)
+                    if (tileElement->AsLargeScenery()->GetSequenceIndex() != tile.index)
                         continue;
 
                     if (tileElement->GetBaseZ() != currentTile.z)
@@ -233,7 +239,7 @@ namespace OpenRCT2::TileInspector
                     if (ride != nullptr)
                     {
                         auto stationIndex = tileElement->AsEntrance()->GetStationIndex();
-                        auto& station = ride->GetStation(stationIndex);
+                        auto& station = ride->getStation(stationIndex);
                         auto entrance = station.Entrance;
                         auto exit = station.Exit;
                         uint8_t entranceType = tileElement->AsEntrance()->GetEntranceType();
@@ -315,7 +321,7 @@ namespace OpenRCT2::TileInspector
                 if (newBanner == nullptr)
                 {
                     LOG_ERROR("No free banners available");
-                    return GameActions::Result(GameActions::Status::Unknown, STR_TOO_MANY_BANNERS_IN_GAME, STR_NONE);
+                    return GameActions::Result(GameActions::Status::Unknown, STR_TOO_MANY_BANNERS_IN_GAME, kStringIdNone);
                 }
                 auto newId = newBanner->id;
                 // Copy the banners style
@@ -425,7 +431,7 @@ namespace OpenRCT2::TileInspector
         {
             return GameActions::Result(GameActions::Status::TooLow, STR_CANT_LOWER_ELEMENT_HERE, STR_TOO_LOW);
         }
-        if (newBaseHeight > MAX_ELEMENT_HEIGHT)
+        if (newBaseHeight > kMaxTileElementHeight)
         {
             return GameActions::Result(GameActions::Status::TooHigh, STR_CANT_RAISE_ELEMENT_HERE, STR_TOO_HIGH);
         }
@@ -433,7 +439,7 @@ namespace OpenRCT2::TileInspector
         {
             return GameActions::Result(GameActions::Status::NoClearance, STR_CANT_LOWER_ELEMENT_HERE, STR_NO_CLEARANCE);
         }
-        if (newClearanceHeight > MAX_ELEMENT_HEIGHT)
+        if (newClearanceHeight > kMaxTileElementHeight)
         {
             return GameActions::Result(GameActions::Status::NoClearance, STR_CANT_RAISE_ELEMENT_HERE, STR_NO_CLEARANCE);
         }
@@ -463,7 +469,7 @@ namespace OpenRCT2::TileInspector
                     if (ride != nullptr)
                     {
                         auto entranceIndex = tileElement->AsEntrance()->GetStationIndex();
-                        auto& station = ride->GetStation(entranceIndex);
+                        auto& station = ride->getStation(entranceIndex);
                         const auto& entranceLoc = station.Entrance;
                         const auto& exitLoc = station.Exit;
                         uint8_t z = tileElement->BaseHeight;
@@ -646,7 +652,7 @@ namespace OpenRCT2::TileInspector
         if (isExecuting)
         {
             auto stationIndex = entranceElement->AsEntrance()->GetStationIndex();
-            auto& station = ride->GetStation(stationIndex);
+            auto& station = ride->getStation(stationIndex);
 
             switch (entranceElement->AsEntrance()->GetEntranceType())
             {
@@ -721,29 +727,30 @@ namespace OpenRCT2::TileInspector
                     GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
 
             const auto& ted = GetTrackElementDescriptor(type);
-            const auto* trackBlock = ted.GetBlockForSequence(trackElement->AsTrack()->GetSequenceIndex());
-            if (trackBlock == nullptr)
+            auto sequenceIndex = trackElement->AsTrack()->GetSequenceIndex();
+            if (sequenceIndex >= ted.numSequences)
                 return GameActions::Result(
                     GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_BLOCK_NOT_FOUND);
 
+            const auto& trackBlock = ted.sequences[sequenceIndex].clearance;
             uint8_t originDirection = trackElement->GetDirection();
-            CoordsXY offsets = { trackBlock->x, trackBlock->y };
+            CoordsXY offsets = { trackBlock.x, trackBlock.y };
             CoordsXY coords = { originX, originY };
             coords += offsets.Rotate(DirectionReverse(originDirection));
 
             originX = static_cast<int16_t>(coords.x);
             originY = static_cast<int16_t>(coords.y);
-            originZ -= trackBlock->z;
+            originZ -= trackBlock.z;
 
-            trackBlock = ted.block;
-            for (; trackBlock->index != 255; trackBlock++)
+            for (uint8_t i = 0; i < ted.numSequences; i++)
             {
-                CoordsXYZD elem = { originX, originY, originZ + trackBlock->z, rotation };
-                offsets.x = trackBlock->x;
-                offsets.y = trackBlock->y;
+                const auto& trackBlock2 = ted.sequences[i].clearance;
+                CoordsXYZD elem = { originX, originY, originZ + trackBlock2.z, rotation };
+                offsets.x = trackBlock2.x;
+                offsets.y = trackBlock2.y;
                 elem += offsets.Rotate(originDirection);
 
-                TrackElement* nextTrackElement = MapGetTrackElementAtOfTypeSeq(elem, type, trackBlock->index);
+                TrackElement* nextTrackElement = MapGetTrackElementAtOfTypeSeq(elem, type, i);
                 if (nextTrackElement == nullptr)
                 {
                     LOG_ERROR("Track map element part not found!");
@@ -802,29 +809,30 @@ namespace OpenRCT2::TileInspector
                     GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
 
             const auto& ted = GetTrackElementDescriptor(type);
-            auto trackBlock = ted.GetBlockForSequence(trackElement->AsTrack()->GetSequenceIndex());
-            if (trackBlock == nullptr)
+            auto sequenceIndex = trackElement->AsTrack()->GetSequenceIndex();
+            if (sequenceIndex >= ted.numSequences)
                 return GameActions::Result(
                     GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_BLOCK_NOT_FOUND);
 
+            const auto& trackBlock = ted.sequences[sequenceIndex].clearance;
             uint8_t originDirection = trackElement->GetDirection();
-            CoordsXY offsets = { trackBlock->x, trackBlock->y };
+            CoordsXY offsets = { trackBlock.x, trackBlock.y };
             CoordsXY coords = { originX, originY };
             coords += offsets.Rotate(DirectionReverse(originDirection));
 
             originX = static_cast<int16_t>(coords.x);
             originY = static_cast<int16_t>(coords.y);
-            originZ -= trackBlock->z;
+            originZ -= trackBlock.z;
 
-            trackBlock = ted.block;
-            for (; trackBlock->index != 255; trackBlock++)
+            for (uint8_t i = 0; i < ted.numSequences; i++)
             {
-                CoordsXYZD elem = { originX, originY, originZ + trackBlock->z, rotation };
-                offsets.x = trackBlock->x;
-                offsets.y = trackBlock->y;
+                const auto& trackBlock2 = ted.sequences[i].clearance;
+                CoordsXYZD elem = { originX, originY, originZ + trackBlock2.z, rotation };
+                offsets.x = trackBlock2.x;
+                offsets.y = trackBlock2.y;
                 elem += offsets.Rotate(originDirection);
 
-                TrackElement* nextTrackElement = MapGetTrackElementAtOfTypeSeq(elem, type, trackBlock->index);
+                TrackElement* nextTrackElement = MapGetTrackElementAtOfTypeSeq(elem, type, i);
                 if (nextTrackElement == nullptr)
                 {
                     LOG_ERROR("Track map element part not found!");

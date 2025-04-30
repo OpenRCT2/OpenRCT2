@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -17,25 +17,24 @@
 // clang-format off
 constexpr RideTypeDescriptor SpiralSlideRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack2x2,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionSpiralSlide,
-        .EnabledTrackPieces = {},
-        .ExtraTrackPieces = {},
+        .trackStyle = TrackStyle::spiralSlide,
+        .enabledTrackGroups = {},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::hasSinglePieceStation,
                      RtdFlag::cannotHaveGaps, RtdFlag::noTestMode, RtdFlag::noVehicles,
                      RtdFlag::noWallsAroundTrack, RtdFlag::isFlatRide, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::interestingToLookAt,
-                     RtdFlag::listVehiclesSeparately, RtdFlag::isSpiralSlide),
-    .RideModes = EnumsToFlags(RideMode::SingleRidePerAdmission, RideMode::UnlimitedRidesPerAdmission),
-    .DefaultMode = RideMode::SingleRidePerAdmission,
+                     RtdFlag::listVehiclesSeparately),
+    .RideModes = EnumsToFlags(RideMode::singleRidePerAdmission, RideMode::unlimitedRidesPerAdmission),
+    .DefaultMode = RideMode::singleRidePerAdmission,
     .OperatingSettings = { 1, 5 },
     .Naming = { STR_RIDE_NAME_SPIRAL_SLIDE, STR_RIDE_DESCRIPTION_SPIRAL_SLIDE },
     .NameConvention = { RideComponentType::Train, RideComponentType::Building, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_SPIRAL_SLIDE",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 15, 128, 0, 2, },
     .MaxMass = 255,
@@ -44,7 +43,7 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 82.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 15, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 40,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -59,12 +58,12 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(1, 50), RIDE_RATING(1, 40), RIDE_RATING(0, 90) },
+        { MakeRideRating(1, 50), MakeRideRating(1, 40), MakeRideRating(0, 90) },
         8,
         2,
         false,
         {
-            { RatingsModifierType::BonusSlideUnlimitedRides, 0, RIDE_RATING(0, 40), RIDE_RATING(0, 20), RIDE_RATING(0, 25) },
+            { RatingsModifierType::BonusSlideUnlimitedRides, 0, MakeRideRating(0, 40), MakeRideRating(0, 20), MakeRideRating(0, 25) },
             { RatingsModifierType::BonusScenery,             0, 25098, 0, 0 },
         },
     },
@@ -73,11 +72,12 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::Ride,
+    .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceSpiralSlide,
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
     .ConstructionWindowContext = RideConstructionWindowContext::Default,
-    .RideUpdate = UpdateSpiralSlide,
+    .RideUpdate = updateSpiralSlide,
+    .specialType = RtdSpecialType::spiralSlide,
 };
 // clang-format on

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,61 +14,62 @@
 #include <cstring>
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Formatting.h>
+#include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/StringIds.h>
 #include <unordered_map>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
-constexpr uint32_t UsefulModifiers = KMOD_SHIFT | KMOD_CTRL | KMOD_ALT | KMOD_GUI;
+constexpr uint32_t kUsefulModifiers = KMOD_SHIFT | KMOD_CTRL | KMOD_ALT | KMOD_GUI;
 
 static uint32_t ParseModifier(std::string_view text)
 {
-    if (String::IEquals(text, "CTRL"))
+    if (String::iequals(text, "CTRL"))
     {
         return KMOD_CTRL;
     }
-    if (String::IEquals(text, "LCTRL"))
+    if (String::iequals(text, "LCTRL"))
     {
         return KMOD_LCTRL;
     }
-    if (String::IEquals(text, "RCTRL"))
+    if (String::iequals(text, "RCTRL"))
     {
         return KMOD_RCTRL;
     }
-    if (String::IEquals(text, "SHIFT"))
+    if (String::iequals(text, "SHIFT"))
     {
         return KMOD_SHIFT;
     }
-    if (String::IEquals(text, "LSHIFT"))
+    if (String::iequals(text, "LSHIFT"))
     {
         return KMOD_LSHIFT;
     }
-    if (String::IEquals(text, "RSHIFT"))
+    if (String::iequals(text, "RSHIFT"))
     {
         return KMOD_RSHIFT;
     }
-    if (String::IEquals(text, "ALT"))
+    if (String::iequals(text, "ALT"))
     {
         return KMOD_ALT;
     }
-    if (String::IEquals(text, "LALT"))
+    if (String::iequals(text, "LALT"))
     {
         return KMOD_LALT;
     }
-    if (String::IEquals(text, "RALT"))
+    if (String::iequals(text, "RALT"))
     {
         return KMOD_RALT;
     }
-    if (String::IEquals(text, "GUI"))
+    if (String::iequals(text, "GUI"))
     {
         return KMOD_GUI;
     }
-    if (String::IEquals(text, "LCTRL"))
+    if (String::iequals(text, "LCTRL"))
     {
         return KMOD_LGUI;
     }
-    if (String::IEquals(text, "RGUI"))
+    if (String::iequals(text, "RGUI"))
     {
         return KMOD_RGUI;
     }
@@ -119,28 +120,28 @@ ShortcutInput::ShortcutInput(std::string_view value)
     }
     auto rem = value.substr(index);
 
-    if (String::StartsWith(rem, "JOY ", true))
+    if (String::startsWith(rem, "JOY ", true))
     {
         rem = rem.substr(4);
-        if (String::Equals(rem, "LEFT"))
+        if (String::equals(rem, "LEFT"))
         {
             Kind = InputDeviceKind::JoyHat;
             Modifiers = modifiers;
             Button = SDL_HAT_LEFT;
         }
-        else if (String::Equals(rem, "RIGHT"))
+        else if (String::equals(rem, "RIGHT"))
         {
             Kind = InputDeviceKind::JoyHat;
             Modifiers = modifiers;
             Button = SDL_HAT_RIGHT;
         }
-        else if (String::Equals(rem, "UP"))
+        else if (String::equals(rem, "UP"))
         {
             Kind = InputDeviceKind::JoyHat;
             Modifiers = modifiers;
             Button = SDL_HAT_UP;
         }
-        else if (String::Equals(rem, "DOWN"))
+        else if (String::equals(rem, "DOWN"))
         {
             Kind = InputDeviceKind::JoyHat;
             Modifiers = modifiers;
@@ -157,7 +158,7 @@ ShortcutInput::ShortcutInput(std::string_view value)
             }
         }
     }
-    else if (String::StartsWith(rem, "MOUSE ", true))
+    else if (String::startsWith(rem, "MOUSE ", true))
     {
         rem = rem.substr(6);
         auto number = String::Parse<int32_t>(rem);
@@ -168,13 +169,13 @@ ShortcutInput::ShortcutInput(std::string_view value)
             Button = *number - 1;
         }
     }
-    else if (String::IEquals(rem, "LMB"))
+    else if (String::iequals(rem, "LMB"))
     {
         Kind = InputDeviceKind::Mouse;
         Modifiers = modifiers;
         Button = 0;
     }
-    else if (String::IEquals(rem, "RMB"))
+    else if (String::iequals(rem, "RMB"))
     {
         Kind = InputDeviceKind::Mouse;
         Modifiers = modifiers;
@@ -202,7 +203,7 @@ std::string_view ShortcutInput::GetModifierName(uint32_t key, bool localised)
     auto r = _keys.find(key);
     if (r != _keys.end())
     {
-        if (localised && r->second.second != STR_NONE)
+        if (localised && r->second.second != kStringIdNone)
         {
             return LanguageGetString(r->second.second);
         }
@@ -379,7 +380,7 @@ static bool HasModifier(uint32_t shortcut, uint32_t actual, uint32_t left, uint3
 
 static bool CompareModifiers(uint32_t shortcut, uint32_t actual)
 {
-    shortcut &= UsefulModifiers;
+    shortcut &= kUsefulModifiers;
     return HasModifier(shortcut, actual, KMOD_LCTRL, KMOD_RCTRL) && HasModifier(shortcut, actual, KMOD_LSHIFT, KMOD_RSHIFT)
         && HasModifier(shortcut, actual, KMOD_LALT, KMOD_RALT) && HasModifier(shortcut, actual, KMOD_LGUI, KMOD_RGUI);
 }
@@ -399,7 +400,7 @@ bool ShortcutInput::Matches(const InputEvent& e) const
 std::optional<ShortcutInput> ShortcutInput::FromInputEvent(const InputEvent& e)
 {
     // Assume any side modifier (more specific configurations can be done by manually editing config file)
-    auto modifiers = e.Modifiers & UsefulModifiers;
+    auto modifiers = e.Modifiers & kUsefulModifiers;
     for (auto mod : { KMOD_CTRL, KMOD_SHIFT, KMOD_ALT, KMOD_GUI })
     {
         if (modifiers & mod)

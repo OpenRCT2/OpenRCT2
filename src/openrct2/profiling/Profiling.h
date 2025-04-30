@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,7 +38,7 @@ namespace OpenRCT2::Profiling
         virtual std::vector<double> GetTimeSamples() const = 0;
 
         // Returns all time accumulated in microseconds.
-        virtual double GetTotalTime() const = 0;
+        virtual double getTotalTime() const = 0;
 
         // Returns the min. time in microseconds.
         virtual double GetMinTime() const = 0;
@@ -118,7 +118,7 @@ namespace OpenRCT2::Profiling
                 return { Children.begin(), Children.end() };
             }
 
-            double GetTotalTime() const override
+            double getTotalTime() const override
             {
                 std::scoped_lock lock(Mutex);
                 return TotalTimeUs;
@@ -137,7 +137,8 @@ namespace OpenRCT2::Profiling
             }
         };
 
-        template<typename TName> struct FunctionWrapper : FunctionInternal
+        template<typename TName>
+        struct FunctionWrapper : FunctionInternal
         {
             const char* GetName() const noexcept override
             {
@@ -149,7 +150,8 @@ namespace OpenRCT2::Profiling
         // This avoids the compiler generating thread-safe initialization
         // by making a unique type per function which hosts a global using
         // the inline keyword for the variable (C++17).
-        template<typename TName> struct Storage
+        template<typename TName>
+        struct Storage
         {
             static inline FunctionWrapper<TName> Data;
         };
@@ -159,7 +161,8 @@ namespace OpenRCT2::Profiling
 
     } // namespace Detail
 
-    template<typename T> class ScopedProfiling
+    template<typename T>
+    class ScopedProfiling
     {
         bool _enabled;
         T& _func;

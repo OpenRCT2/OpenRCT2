@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,12 +9,12 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScObjectManager.h"
+    #include "ScObjectManager.h"
 
-#    include "../../../object/ObjectList.h"
-#    include "../../../ride/RideData.h"
-#    include "../../Duktape.hpp"
-#    include "../../ScriptEngine.h"
+    #include "../../../object/ObjectList.h"
+    #include "../../../ride/RideData.h"
+    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
@@ -22,6 +22,7 @@ using namespace OpenRCT2::Scripting;
 void ScObjectManager::Register(duk_context* ctx)
 {
     dukglue_register_property(ctx, &ScObjectManager::installedObjects_get, nullptr, "installedObjects");
+    dukglue_register_method(ctx, &ScObjectManager::installedObject_get, "getInstalledObject");
     dukglue_register_method(ctx, &ScObjectManager::load, "load");
     dukglue_register_method(ctx, &ScObjectManager::unload, "unload");
     dukglue_register_method(ctx, &ScObjectManager::getObject, "getObject");
@@ -42,6 +43,14 @@ std::vector<std::shared_ptr<ScInstalledObject>> ScObjectManager::installedObject
     }
 
     return result;
+}
+
+std::shared_ptr<ScInstalledObject> ScObjectManager::installedObject_get(const std::string& identifier) const
+{
+    auto context = GetContext();
+    auto& objectRepository = context->GetObjectRepository();
+    auto object = objectRepository.FindObject(identifier);
+    return object != nullptr ? std::make_shared<ScInstalledObject>(object->Id) : nullptr;
 }
 
 DukValue ScObjectManager::load(const DukValue& p1, const DukValue& p2)
@@ -148,15 +157,15 @@ void ScObjectManager::unload(const DukValue& p1, const DukValue& p2)
     if (p1.type() == DukValue::STRING)
     {
         const auto& szP1 = p1.as_string();
-        auto objType = ScObject::StringToObjectType(szP1);
-        if (objType)
+        auto objType = objectTypeFromString(szP1);
+        if (objType != ObjectType::none)
         {
             // unload(type, index)
             if (p2.type() != DukValue::NUMBER)
                 throw DukException() << "'index' is invalid.";
 
             auto objIndex = p2.as_uint();
-            auto obj = objectManager.GetLoadedObject(*objType, objIndex);
+            auto obj = objectManager.GetLoadedObject(objType, objIndex);
             if (obj != nullptr)
             {
                 objectManager.UnloadObjects({ obj->GetDescriptor() });
@@ -189,13 +198,13 @@ DukValue ScObjectManager::getObject(const std::string& typez, int32_t index) con
     auto ctx = GetContext()->GetScriptEngine().GetContext();
     auto& objManager = GetContext()->GetObjectManager();
 
-    auto type = ScObject::StringToObjectType(typez);
-    if (type)
+    auto type = objectTypeFromString(typez);
+    if (type != ObjectType::none)
     {
-        auto obj = objManager.GetLoadedObject(*type, index);
+        auto obj = objManager.GetLoadedObject(type, index);
         if (obj != nullptr)
         {
-            return CreateScObject(ctx, *type, index);
+            return CreateScObject(ctx, type, index);
         }
     }
     else
@@ -211,16 +220,16 @@ std::vector<DukValue> ScObjectManager::getAllObjects(const std::string& typez) c
     auto& objManager = GetContext()->GetObjectManager();
 
     std::vector<DukValue> result;
-    auto type = ScObject::StringToObjectType(typez);
-    if (type)
+    auto type = objectTypeFromString(typez);
+    if (type != ObjectType::none)
     {
-        auto count = getObjectEntryGroupCount(*type);
+        auto count = getObjectEntryGroupCount(type);
         for (auto i = 0u; i < count; i++)
         {
-            auto obj = objManager.GetLoadedObject(*type, i);
+            auto obj = objManager.GetLoadedObject(type, i);
             if (obj != nullptr)
             {
-                result.push_back(CreateScObject(ctx, *type, i));
+                result.push_back(CreateScObject(ctx, type, i));
             }
         }
     }
@@ -236,14 +245,14 @@ void ScObjectManager::MarkAsResearched(const Object* object)
     // Defaults selected items to researched (if in-game)
     auto objectType = object->GetObjectType();
     auto entryIndex = ObjectManagerGetLoadedObjectEntryIndex(object);
-    if (objectType == ObjectType::Ride)
+    if (objectType == ObjectType::ride)
     {
         const auto* rideEntry = GetRideEntryByIndex(entryIndex);
         auto rideType = rideEntry->GetFirstNonNullRideType();
         auto category = static_cast<ResearchCategory>(GetRideTypeDescriptor(rideType).Category);
         ResearchInsertRideEntry(rideType, entryIndex, category, true);
     }
-    else if (objectType == ObjectType::SceneryGroup)
+    else if (objectType == ObjectType::sceneryGroup)
     {
         ResearchInsertSceneryGroupEntry(entryIndex, true);
     }
@@ -261,19 +270,19 @@ DukValue ScObjectManager::CreateScObject(duk_context* ctx, ObjectType type, int3
 {
     switch (type)
     {
-        case ObjectType::Ride:
+        case ObjectType::ride:
             return GetObjectAsDukValue(ctx, std::make_shared<ScRideObject>(type, index));
-        case ObjectType::SmallScenery:
+        case ObjectType::smallScenery:
             return GetObjectAsDukValue(ctx, std::make_shared<ScSmallSceneryObject>(type, index));
-        case ObjectType::LargeScenery:
+        case ObjectType::largeScenery:
             return GetObjectAsDukValue(ctx, std::make_shared<ScLargeSceneryObject>(type, index));
-        case ObjectType::Walls:
+        case ObjectType::walls:
             return GetObjectAsDukValue(ctx, std::make_shared<ScWallObject>(type, index));
-        case ObjectType::PathAdditions:
+        case ObjectType::pathAdditions:
             return GetObjectAsDukValue(ctx, std::make_shared<ScFootpathAdditionObject>(type, index));
-        case ObjectType::Banners:
+        case ObjectType::banners:
             return GetObjectAsDukValue(ctx, std::make_shared<ScBannerObject>(type, index));
-        case ObjectType::SceneryGroup:
+        case ObjectType::sceneryGroup:
             return GetObjectAsDukValue(ctx, std::make_shared<ScSceneryGroupObject>(type, index));
         default:
             return GetObjectAsDukValue(ctx, std::make_shared<ScObject>(type, index));

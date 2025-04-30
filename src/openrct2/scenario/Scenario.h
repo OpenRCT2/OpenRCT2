@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,16 +9,12 @@
 
 #pragma once
 
+#include "../core/EnumUtils.hpp"
+#include "../core/Money.hpp"
 #include "../core/Random.hpp"
-#include "../entity/EntityList.h"
-#include "../management/Finance.h"
-#include "../management/Research.h"
-#include "../object/Object.h"
+#include "../core/String.hpp"
+#include "../localisation/StringIdType.h"
 #include "../ride/RideRatings.h"
-#include "../world/Banner.h"
-#include "../world/Climate.h"
-#include "../world/Map.h"
-#include "../world/MapAnimation.h"
 
 struct ResultWithMessage;
 
@@ -42,23 +38,23 @@ enum
     S6_TYPE_SCENARIO
 };
 
-enum SCENARIO_CATEGORY
+enum class ScenarioCategory : uint8_t
 {
     // RCT2 categories (keep order)
-    SCENARIO_CATEGORY_BEGINNER,
-    SCENARIO_CATEGORY_CHALLENGING,
-    SCENARIO_CATEGORY_EXPERT,
-    SCENARIO_CATEGORY_REAL,
-    SCENARIO_CATEGORY_OTHER,
+    beginner,
+    challenging,
+    expert,
+    real,
+    other,
 
     // OpenRCT2 categories
-    SCENARIO_CATEGORY_DLC,
-    SCENARIO_CATEGORY_BUILD_YOUR_OWN,
-    SCENARIO_CATEGORY_COMPETITIONS,
-    SCENARIO_CATEGORY_TIME_MACHINE,
-    SCENARIO_CATEGORY_KATYS_DREAMWORLD,
+    dlc,
+    buildYourOwn,
+    competitions,
+    timeMachine,
+    katysDreamworld,
 
-    SCENARIO_CATEGORY_COUNT
+    count,
 };
 
 enum
@@ -101,7 +97,7 @@ struct Objective
     union
     {
         money64 Currency;
-        uint16_t MinimumExcitement; // For the "Finish 5 coaster with a minimum excitement rating" objective.
+        ride_rating MinimumExcitement; // For the "Finish 5 coaster with a minimum excitement rating" objective.
     };
 
     bool NeedsMoney() const
@@ -131,10 +127,10 @@ private:
     ObjectiveStatus CheckMonthlyFoodIncome() const;
 };
 
-enum
+enum class ScenarioSelectMode : uint8_t
 {
-    SCENARIO_SELECT_MODE_DIFFICULTY,
-    SCENARIO_SELECT_MODE_ORIGIN,
+    difficulty,
+    origin,
 };
 
 enum
@@ -150,9 +146,9 @@ enum
 constexpr uint8_t kAutosavePause = 0;
 constexpr uint8_t kDefaultNumAutosavesToKeep = 10;
 
-static constexpr money64 COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x8000000000000001;
+static constexpr money64 kCompanyValueOnFailedObjective = 0x8000000000000001;
 
-extern const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
+extern const StringId kScenarioCategoryStringIds[EnumValue(ScenarioCategory::count)];
 
 extern bool gAllowEarlyCompletionInNetworkPlay;
 

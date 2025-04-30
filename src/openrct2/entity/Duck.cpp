@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,13 +10,13 @@
 
 #include "../Game.h"
 #include "../GameState.h"
-#include "../audio/audio.h"
+#include "../SpriteIds.h"
+#include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
+#include "../entity/EntityList.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
-#include "../scenario/Scenario.h"
-#include "../sprites.h"
-#include "../world/Surface.h"
+#include "../world/tile_element/SurfaceElement.h"
 #include "EntityRegistry.h"
 
 #include <iterator>
@@ -40,7 +40,7 @@ static constexpr uint8_t kDuckAnimationFlyToWater[] =
     8, 9, 10, 11, 12, 13
 };
 
-static constexpr uint8_t kkDuckAnimationswim[] =
+static constexpr uint8_t kDuckAnimationSwim[] =
 {
     0
 };
@@ -60,18 +60,18 @@ static constexpr uint8_t kDuckAnimationFlyAway[] =
 {
     8, 9, 10, 11, 12, 13
 };
-
-static constexpr const uint8_t * kDuckAnimations[] =
-{
-    kDuckAnimationFlyToWater,    // FLY_TO_WATER
-    kkDuckAnimationswim,         // SWIM
-    kDuckAnimationDrink,         // DRINK
-    kDuckAnimationDoubleDrink,   // DOUBLE_DRINK
-    kDuckAnimationFlyAway,       // FLY_AWAY
-};
 // clang-format on
 
-template<> bool EntityBase::Is<Duck>() const
+static constexpr const uint8_t* kDuckAnimations[] = {
+    kDuckAnimationFlyToWater,  //  DuckState::FlyToWater,
+    kDuckAnimationSwim,        //  DuckState::Swim,
+    kDuckAnimationDrink,       //  DuckState::Drink,
+    kDuckAnimationDoubleDrink, //  DuckState::DoubleDrink,
+    kDuckAnimationFlyAway,     //  DuckState::FlyAway,
+};
+
+template<>
+bool EntityBase::Is<Duck>() const
 {
     return Type == EntityType::Duck;
 }
@@ -89,7 +89,7 @@ void Duck::Remove()
 
 void Duck::UpdateFlyToWater()
 {
-    const auto currentTicks = GetGameState().CurrentTicks;
+    const auto currentTicks = getGameState().currentTicks;
 
     if ((currentTicks & 3) != 0)
         return;
@@ -153,7 +153,7 @@ void Duck::UpdateFlyToWater()
 
 void Duck::UpdateSwim()
 {
-    const auto currentTicks = GetGameState().CurrentTicks;
+    const auto currentTicks = getGameState().currentTicks;
 
     if (((currentTicks + Id.ToUnderlying()) & 3) != 0)
         return;
@@ -251,7 +251,7 @@ void Duck::UpdateDoubleDrink()
 
 void Duck::UpdateFlyAway()
 {
-    if ((GetGameState().CurrentTicks & 3) == 0)
+    if ((getGameState().currentTicks & 3) == 0)
     {
         frame++;
         if (frame >= std::size(kDuckAnimationFlyAway))

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,10 +9,11 @@
 
 #pragma once
 
+#include <cstdint>
 #include <string>
 #include <string_view>
 
-enum class FormatToken
+enum class FormatToken : uint8_t
 {
     Unknown,
     Literal,
@@ -37,11 +38,13 @@ enum class FormatToken
     StringById,
     String,
     MonthYear,
+    MonthYearSentence,
     Month,
     Velocity,
     DurationShort,
     DurationLong,
     Length,
+    Height,
     Sprite,
     Pop16,
     Push16,

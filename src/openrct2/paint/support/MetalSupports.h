@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,8 +13,6 @@
 #include "../../world/Location.hpp"
 
 #include <cstdint>
-
-using track_type_t = uint16_t;
 
 enum class MetalSupportType
 {

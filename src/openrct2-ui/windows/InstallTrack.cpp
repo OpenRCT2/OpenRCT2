@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,21 +11,22 @@
 
 #include <memory>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/PlatformEnvironment.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/SpriteIds.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/Path.hpp>
+#include <openrct2/core/UnitConversion.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
-#include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
+#include <openrct2/ui/WindowManager.h>
 #include <string>
 #include <vector>
 
@@ -50,14 +51,13 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t ACTION_BUTTONS_LEFT = WW - 100;
 
     // clang-format off
-    static Widget window_install_track_widgets[] = {
+    static constexpr Widget window_install_track_widgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({                   4,  18}, {372, 219}, WindowWidgetType::FlatBtn, WindowColour::Primary                                                              ),
         MakeWidget({PREVIEW_BUTTONS_LEFT, 422}, { 22,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_ROTATE_ARROW),                     STR_ROTATE_90_TIP     ),
         MakeWidget({PREVIEW_BUTTONS_LEFT, 398}, { 22,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_SCENERY),                          STR_TOGGLE_SCENERY_TIP),
         MakeWidget({ ACTION_BUTTONS_LEFT, 241}, { 97,  15}, WindowWidgetType::Button,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_INSTALL                        ),
         MakeWidget({ ACTION_BUTTONS_LEFT, 259}, { 97,  15}, WindowWidgetType::Button,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_CANCEL                         ),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -83,7 +83,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override
         {
-            widgets = window_install_track_widgets;
+            SetWidgets(window_install_track_widgets);
 
             WindowInitScrollWidgets(*this);
             WindowPushOthersRight(*this);
@@ -152,7 +152,7 @@ namespace OpenRCT2::Ui::Windows
             DrawWidgets(dpi);
 
             // Track preview
-            Widget* widget = &window_install_track_widgets[WIDX_TRACK_PREVIEW];
+            Widget* widget = &widgets[WIDX_TRACK_PREVIEW];
             auto screenPos = windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
             int32_t colour = ColourMapA[colours[0].colour].darkest;
             GfxFillRect(dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
@@ -239,9 +239,9 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto& rtd = GetRideTypeDescriptor(td.trackAndVehicle.rtdIndex);
-            if (!rtd.HasFlag(RtdFlag::isMaze))
+            if (rtd.specialType != RtdSpecialType::maze)
             {
-                if (td.trackAndVehicle.rtdIndex == RIDE_TYPE_MINI_GOLF)
+                if (rtd.specialType == RtdSpecialType::miniGolf)
                 {
                     // Holes
                     auto ft = Formatter();
@@ -253,7 +253,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     // Maximum speed
                     {
-                        uint16_t speed = ((td.statistics.maxSpeed << 16) * 9) >> 18;
+                        uint16_t speed = ToHumanReadableSpeed(td.statistics.maxSpeed << 16);
                         auto ft = Formatter();
                         ft.Add<uint16_t>(speed);
                         DrawTextBasic(dpi, screenPos, STR_MAX_SPEED, ft);
@@ -261,7 +261,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     // Average speed
                     {
-                        uint16_t speed = ((td.statistics.averageSpeed << 16) * 9) >> 18;
+                        uint16_t speed = ToHumanReadableSpeed(td.statistics.averageSpeed << 16);
                         auto ft = Formatter();
                         ft.Add<uint16_t>(speed);
                         DrawTextBasic(dpi, screenPos, STR_AVERAGE_SPEED, ft);
@@ -305,7 +305,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 if (td.statistics.totalAirTime != 0)
                 {
-                    int32_t airTime = td.statistics.totalAirTime * 3;
+                    int32_t airTime = ToHumanReadableAirTime(td.statistics.totalAirTime);
                     auto ft = Formatter();
                     ft.Add<int32_t>(airTime);
                     DrawTextBasic(dpi, screenPos, STR_TOTAL_AIR_TIME, ft);
@@ -354,11 +354,6 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
-
     private:
         void UpdatePreview()
         {
@@ -368,11 +363,11 @@ namespace OpenRCT2::Ui::Windows
         void InstallTrackDesign()
         {
             auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
-            auto destPath = env->GetDirectoryPath(OpenRCT2::DIRBASE::USER, OpenRCT2::DIRID::TRACK);
+            auto destPath = env->GetDirectoryPath(OpenRCT2::DirBase::user, OpenRCT2::DirId::trackDesigns);
             if (!Path::CreateDirectory(destPath))
             {
                 LOG_ERROR("Unable to create directory '%s'", destPath.c_str());
-                ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
+                ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, kStringIdNone, {});
                 return;
             }
 
@@ -381,7 +376,7 @@ namespace OpenRCT2::Ui::Windows
             if (File::Exists(destPath))
             {
                 LOG_INFO("%s already exists, prompting user for a different track design name", destPath.c_str());
-                ContextShowError(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, STR_NONE, {});
+                ContextShowError(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, kStringIdNone, {});
                 WindowTextInputRawOpen(
                     this, WIDX_INSTALL, STR_SELECT_NEW_NAME_FOR_TRACK_DESIGN,
                     STR_AN_EXISTING_TRACK_DESIGN_ALREADY_HAS_THIS_NAME, {}, _trackName.c_str(), 255);
@@ -394,7 +389,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
+                    ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, kStringIdNone, {});
                 }
             }
         }
@@ -405,12 +400,12 @@ namespace OpenRCT2::Ui::Windows
         auto trackDesign = TrackDesignImport(path);
         if (trackDesign == nullptr)
         {
-            ContextShowError(STR_UNABLE_TO_LOAD_FILE, STR_NONE, {});
+            ContextShowError(STR_UNABLE_TO_LOAD_FILE, kStringIdNone, {});
             return nullptr;
         }
 
         ObjectManagerUnloadAllObjects();
-        if (trackDesign->trackAndVehicle.rtdIndex == RIDE_TYPE_NULL)
+        if (trackDesign->trackAndVehicle.rtdIndex == kRideTypeNull)
         {
             LOG_ERROR("Failed to load track (ride type null): %s", path);
             return nullptr;
@@ -421,17 +416,15 @@ namespace OpenRCT2::Ui::Windows
             return nullptr;
         }
 
-        WindowCloseByClass(WindowClass::EditorObjectSelection);
-        WindowCloseConstructionWindows();
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->ForceClose(WindowClass::EditorObjectSelection);
+        windowMgr->CloseConstructionWindows();
 
         gTrackDesignSceneryToggle = false;
         _currentTrackPieceDirection = 2;
 
-        int32_t screenWidth = ContextGetWidth();
-        int32_t screenHeight = ContextGetHeight();
-        auto screenPos = ScreenCoordsXY{ screenWidth / 2 - 201, std::max(kTopToolbarHeight + 1, screenHeight / 2 - 200) };
-
-        auto* window = WindowFocusOrCreate<InstallTrackWindow>(WindowClass::InstallTrack, screenPos, WW, WH, 0);
+        auto* window = windowMgr->FocusOrCreate<InstallTrackWindow>(
+            WindowClass::InstallTrack, WW, WH, WF_AUTO_POSITION | WF_CENTRE_SCREEN);
         window->SetupTrack(path, std::move(trackDesign));
 
         return window;

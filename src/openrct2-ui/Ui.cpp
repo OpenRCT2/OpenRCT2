@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,11 +24,16 @@
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
 
+#ifdef __EMSCRIPTEN__
+    #include <emscripten.h>
+#endif
+
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::Ui;
 
-template<typename T> static std::shared_ptr<T> ToShared(std::unique_ptr<T>&& src)
+template<typename T>
+static std::shared_ptr<T> ToShared(std::unique_ptr<T>&& src)
 {
     return std::shared_ptr<T>(std::move(src));
 }
@@ -42,6 +47,12 @@ int NormalisedMain(int argc, const char** argv)
 int main(int argc, const char** argv)
 #endif
 {
+#ifdef __EMSCRIPTEN__
+    MAIN_THREAD_EM_ASM({
+        specialHTMLTargets["!canvas"] = Module.canvas;
+        Module.canvas.addEventListener("contextmenu", function(e) { e.preventDefault(); });
+    });
+#endif
     std::unique_ptr<IContext> context;
     int32_t rc = EXIT_SUCCESS;
     int runGame = CommandLineRun(argv, argc);

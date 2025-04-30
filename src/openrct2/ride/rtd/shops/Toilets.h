@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,36 +16,35 @@
 // clang-format off
 constexpr RideTypeDescriptor ToiletsRTD =
 {
-    .Category = RIDE_CATEGORY_SHOP,
+    .Category = RideCategory::shop,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x1A,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionFacility,
-        .EnabledTrackPieces = {},
-        .ExtraTrackPieces = {},
+        .trackStyle = TrackStyle::facility,
+        .enabledTrackGroups = {},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps, RtdFlag::noTestMode,
                      RtdFlag::noVehicles, RtdFlag::isShopOrFacility, RtdFlag::noWallsAroundTrack,
                      RtdFlag::isFlatRide, RtdFlag::guestsShouldGoInsideFacility, RtdFlag::describeAsInside,
-                     RtdFlag::isToilet, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::ShopStall),
-    .DefaultMode = RideMode::ShopStall,
+                     RtdFlag::listVehiclesSeparately),
+    .RideModes = EnumsToFlags(RideMode::shopStall),
+    .DefaultMode = RideMode::shopStall,
     .OperatingSettings = { 4, 4 },
     .Naming = { STR_RIDE_NAME_TOILETS, STR_RIDE_DESCRIPTION_TOILETS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_TOILETS",
     .AvailableBreakdowns = 0,
-    .Heights = { 12, DefaultToiletHeight, 0, 0, },
+    .Heights = { 12, kDefaultToiletHeight, 0, 0, },
     .MaxMass = 255,
     .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 0, 0, 0 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 225.00_GBP, 0.00_GBP, 1, },
     .DefaultPrices = { 0, 0 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .DefaultMusic = kMusicObjectGentle,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 5,
-    .ColourPresets = DEFAULT_FLAT_RIDE_COLOUR_PRESET,
+    .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
     .ColourKey = RideColourKey::Toilets,
     .Name = "toilets",
@@ -63,6 +62,7 @@ constexpr RideTypeDescriptor ToiletsRTD =
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::KioskOrFacility,
+    .Classification = RideClassification::kioskOrFacility,
+    .specialType = RtdSpecialType::toilet,
 };
 // clang-format on

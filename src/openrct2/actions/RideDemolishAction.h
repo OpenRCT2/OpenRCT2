@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,15 +11,21 @@
 
 #include "GameAction.h"
 
+enum class RideModifyType : uint8_t
+{
+    demolish,
+    renew,
+};
+
 class RideDemolishAction final : public GameActionBase<GameCommand::DemolishRide>
 {
 private:
     RideId _rideIndex{ RideId::GetNull() };
-    uint8_t _modifyType{ RIDE_MODIFY_DEMOLISH };
+    RideModifyType _modifyType{ RideModifyType::demolish };
 
 public:
     RideDemolishAction() = default;
-    RideDemolishAction(RideId rideIndex, uint8_t modifyType);
+    RideDemolishAction(RideId rideIndex, RideModifyType modifyType);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -56,7 +56,7 @@ static void SpiralSlidePaintTileRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto rideEntry = ride.GetRideEntry();
+    auto rideEntry = ride.getRideEntry();
     if (rideEntry == nullptr)
         return;
 
@@ -78,7 +78,7 @@ static void SpiralSlidePaintTileLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto rideEntry = ride.GetRideEntry();
+    auto rideEntry = ride.getRideEntry();
     if (rideEntry == nullptr)
         return;
 
@@ -100,7 +100,7 @@ static void SpiralSlidePaintTileFront(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto rideEntry = ride.GetRideEntry();
+    auto rideEntry = ride.getRideEntry();
     if (rideEntry == nullptr)
         return;
 
@@ -138,9 +138,9 @@ static void SpiralSlidePaintTileFront(
         PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 8, 0, height + 3 }, { 8, 16, 108 } });
     }
 
-    if (session.DPI.zoom_level <= ZoomLevel{ 0 } && ride.slide_in_use != 0)
+    if (session.DPI.zoom_level <= ZoomLevel{ 0 } && ride.slideInUse != 0)
     {
-        uint8_t slide_progress = ride.spiral_slide_progress;
+        uint8_t slide_progress = ride.spiralSlideProgress;
         if (slide_progress != 0)
         {
             slide_progress--;
@@ -186,7 +186,7 @@ static void SpiralSlidePaintTileFront(
                 boundingBox.x = 8;
             }
 
-            imageId = ImageId(offset + slide_progress, ride.slide_peep_t_shirt_colour, COLOUR_GREY);
+            imageId = ImageId(offset + slide_progress, ride.slidePeepTShirtColour, COLOUR_GREY);
 
             PaintAddImageAsChild(session, imageId, { 16, 16, height }, { boundingBoxOffset, boundingBox });
         }
@@ -200,7 +200,7 @@ static void PaintSpiralSlide(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto rideEntry = ride.GetRideEntry();
+    auto rideEntry = ride.getRideEntry();
     if (rideEntry == nullptr)
         return;
 
@@ -213,9 +213,9 @@ static void PaintSpiralSlide(
         GetStationColourScheme(session, trackElement));
 
     // Base
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
-    if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+    if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
     {
         auto imageId = session.SupportColours.WithIndex(
             rideEntry->Cars[0].base_image_id + ((direction & 1) ? SpiralSlideBaseB : SpiralSlideBaseA));
@@ -253,11 +253,11 @@ static void PaintSpiralSlide(
 /**
  * rct2: 0x0074840C
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSpiralSlide(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionSpiralSlide(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack2x2)
     {
-        return nullptr;
+        return TrackPaintFunctionDummy;
     }
 
     return PaintSpiralSlide;

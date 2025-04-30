@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -8,21 +8,21 @@
  *****************************************************************************/
 
 #ifdef __ENABLE_DISCORD__
-#    include "DiscordService.h"
+    #include "DiscordService.h"
 
-#    include "../Context.h"
-#    include "../Diagnostic.h"
-#    include "../GameState.h"
-#    include "../OpenRCT2.h"
-#    include "../core/Console.hpp"
-#    include "../core/String.hpp"
-#    include "../core/UTF8.h"
-#    include "../localisation/Formatting.h"
-#    include "../world/Park.h"
-#    include "network.h"
+    #include "../Context.h"
+    #include "../Diagnostic.h"
+    #include "../GameState.h"
+    #include "../OpenRCT2.h"
+    #include "../core/Console.hpp"
+    #include "../core/String.hpp"
+    #include "../core/UTF8.h"
+    #include "../localisation/Formatting.h"
+    #include "../world/Park.h"
+    #include "Network.h"
 
-#    include <chrono>
-#    include <discord_rpc.h>
+    #include <chrono>
+    #include <discord_rpc.h>
 
 using namespace OpenRCT2;
 
@@ -66,8 +66,8 @@ DiscordService::~DiscordService()
 
 static std::string GetParkName()
 {
-    auto& gameState = GetGameState();
-    return gameState.Park.Name;
+    auto& gameState = getGameState();
+    return gameState.park.Name;
 }
 
 void DiscordService::Tick()
@@ -88,7 +88,7 @@ void DiscordService::RefreshPresence() const
 
     std::string state;
     std::string details;
-    switch (gScreenFlags)
+    switch (gLegacyScene)
     {
         default:
             details = GetParkName();
@@ -127,16 +127,16 @@ void DiscordService::RefreshPresence() const
                 discordPresence.instance = 1;
             }
             break;
-        case SCREEN_FLAGS_TITLE_DEMO:
+        case LegacyScene::titleSequence:
             details = "In Menus";
             break;
-        case SCREEN_FLAGS_SCENARIO_EDITOR:
+        case LegacyScene::scenarioEditor:
             details = "In Scenario Editor";
             break;
-        case SCREEN_FLAGS_TRACK_DESIGNER:
+        case LegacyScene::trackDesigner:
             details = "In Track Designer";
             break;
-        case SCREEN_FLAGS_TRACK_MANAGER:
+        case LegacyScene::trackDesignsManager:
             details = "In Track Designs Manager";
             break;
     }

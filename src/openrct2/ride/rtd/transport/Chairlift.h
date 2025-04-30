@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
-#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -18,13 +18,13 @@
 // clang-format off
 constexpr RideTypeDescriptor ChairliftRTD =
 {
-    .Category = RIDE_CATEGORY_TRANSPORT,
+    .Category = RideCategory::transport,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionChairlift,
+        .trackStyle = TrackStyle::chairlift,
         .supportType = MetalSupportType::Truss,
-        .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall},
-        .ExtraTrackPieces = {},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports, RtdFlag::canSynchroniseWithAdjacentStations,
@@ -32,12 +32,11 @@ constexpr RideTypeDescriptor ChairliftRTD =
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::allowMoreVehiclesThanStationFits, RtdFlag::isTransportRide, RtdFlag::showInTrackDesigner,
                      RtdFlag::slightlyInterestingToLookAt, RtdFlag::isSuspended),
-    .RideModes = EnumsToFlags(RideMode::StationToStation),
-    .DefaultMode = RideMode::StationToStation,
+    .RideModes = EnumsToFlags(RideMode::stationToStation),
+    .DefaultMode = RideMode::stationToStation,
     .OperatingSettings = { 1, 4 },
     .Naming = { STR_RIDE_NAME_CHAIRLIFT, STR_RIDE_DESCRIPTION_CHAIRLIFT },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_CHAIRLIFT",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 40, 32, 28, 2, },
     .MaxMass = 18,
@@ -46,7 +45,7 @@ constexpr RideTypeDescriptor ChairliftRTD =
     .UpkeepCosts = { 60, 20, 0, 4, 3, 10 },
     .BuildCosts = { 32.50_GBP, 0.50_GBP, 30, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 55,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -60,7 +59,7 @@ constexpr RideTypeDescriptor ChairliftRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(1, 60), RIDE_RATING(0, 40), RIDE_RATING(0, 50) },
+        { MakeRideRating(1, 60), MakeRideRating(0, 40), MakeRideRating(0, 50) },
         14,
         -1,
         false,
@@ -80,15 +79,15 @@ constexpr RideTypeDescriptor ChairliftRTD =
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = LightFxAddLightsMagicVehicle_ChairLift,
+    .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_ChairLift,
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::Ride,
+    .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,
     .ConstructionWindowContext = RideConstructionWindowContext::Default,
-    .RideUpdate = UpdateChairlift,
+    .RideUpdate = updateChairlift,
 };
 // clang-format on

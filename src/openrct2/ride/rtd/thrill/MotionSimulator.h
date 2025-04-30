@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,12 +16,12 @@
 // clang-format off
 constexpr RideTypeDescriptor MotionSimulatorRTD =
 {
-    .Category = RIDE_CATEGORY_THRILL,
+    .Category = RideCategory::thrill,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack2x2,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionMotionsimulator,
-        .EnabledTrackPieces = {},
-        .ExtraTrackPieces = {},
+        .trackStyle = TrackStyle::motionSimulator,
+        .enabledTrackGroups = {},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps,
@@ -29,11 +29,10 @@ constexpr RideTypeDescriptor MotionSimulatorRTD =
                      RtdFlag::isFlatRide, RtdFlag::hasVehicleColours, RtdFlag::allowMusic,
                      RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::slightlyInterestingToLookAt, RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::FilmAvengingAviators, RideMode::FilmThrillRiders),
-    .DefaultMode = RideMode::FilmAvengingAviators,
+    .RideModes = EnumsToFlags(RideMode::filmAvengingAviators, RideMode::filmThrillRiders),
+    .DefaultMode = RideMode::filmAvengingAviators,
     .Naming = { STR_RIDE_NAME_MOTION_SIMULATOR, STR_RIDE_DESCRIPTION_MOTION_SIMULATOR },
     .NameConvention = { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_MOTION_SIMULATOR",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 12, 64, 3, 2, },
     .MaxMass = 255,
@@ -42,10 +41,10 @@ constexpr RideTypeDescriptor MotionSimulatorRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 110.00_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 20, 0 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .DefaultMusic = kMusicObjectRock1,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 45,
-    .ColourPresets = DEFAULT_FLAT_RIDE_COLOUR_PRESET,
+    .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
     .ColourKey = RideColourKey::Ride,
     .Name = "motion_simulator",
@@ -65,7 +64,7 @@ constexpr RideTypeDescriptor MotionSimulatorRTD =
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::Ride,
+    .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,

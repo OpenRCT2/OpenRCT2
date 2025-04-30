@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,25 +9,32 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "ScTileElement.hpp"
+    #include "ScTileElement.hpp"
 
-#    include "../../../Context.h"
-#    include "../../../core/Guard.hpp"
-#    include "../../../entity/EntityRegistry.h"
-#    include "../../../object/LargeSceneryEntry.h"
-#    include "../../../object/WallSceneryEntry.h"
-#    include "../../../ride/Ride.h"
-#    include "../../../ride/RideData.h"
-#    include "../../../ride/Track.h"
-#    include "../../../world/Footpath.h"
-#    include "../../../world/Scenery.h"
-#    include "../../../world/Surface.h"
-#    include "../../Duktape.hpp"
-#    include "../../ScriptEngine.h"
+    #include "../../../Context.h"
+    #include "../../../core/Guard.hpp"
+    #include "../../../entity/EntityRegistry.h"
+    #include "../../../object/LargeSceneryEntry.h"
+    #include "../../../object/WallSceneryEntry.h"
+    #include "../../../ride/Ride.h"
+    #include "../../../ride/RideData.h"
+    #include "../../../ride/Track.h"
+    #include "../../../world/Footpath.h"
+    #include "../../../world/Scenery.h"
+    #include "../../../world/tile_element/BannerElement.h"
+    #include "../../../world/tile_element/EntranceElement.h"
+    #include "../../../world/tile_element/LargeSceneryElement.h"
+    #include "../../../world/tile_element/PathElement.h"
+    #include "../../../world/tile_element/SmallSceneryElement.h"
+    #include "../../../world/tile_element/SurfaceElement.h"
+    #include "../../../world/tile_element/TrackElement.h"
+    #include "../../../world/tile_element/WallElement.h"
+    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
 
-#    include <cstdio>
-#    include <cstring>
-#    include <utility>
+    #include <cstdio>
+    #include <cstring>
+    #include <utility>
 
 namespace OpenRCT2::Scripting
 {
@@ -416,7 +423,7 @@ namespace OpenRCT2::Scripting
         auto* el = _element->AsTrack();
         if (el != nullptr)
         {
-            duk_push_int(ctx, el->GetTrackType());
+            duk_push_int(ctx, EnumValue(el->GetTrackType()));
         }
         else
         {
@@ -436,7 +443,7 @@ namespace OpenRCT2::Scripting
             return;
         }
 
-        el->SetTrackType(value);
+        el->SetTrackType(static_cast<TrackElemType>(value));
         Invalidate();
     }
 
@@ -500,8 +507,8 @@ namespace OpenRCT2::Scripting
 
                     if (ride != nullptr)
                     {
-                        const auto& rtd = ride->GetRideTypeDescriptor();
-                        if (rtd.HasFlag(RtdFlag::isMaze))
+                        const auto& rtd = ride->getRideTypeDescriptor();
+                        if (rtd.specialType == RtdSpecialType::maze)
                             throw DukException() << "Cannot read 'sequence' property, TrackElement belongs to a maze.";
                     }
 
@@ -553,8 +560,8 @@ namespace OpenRCT2::Scripting
 
                     if (ride != nullptr)
                     {
-                        const auto& rtd = ride->GetRideTypeDescriptor();
-                        if (rtd.HasFlag(RtdFlag::isMaze))
+                        const auto& rtd = ride->getRideTypeDescriptor();
+                        if (rtd.specialType == RtdSpecialType::maze)
                             throw DukException() << "Cannot set 'sequence' property, TrackElement belongs to a maze.";
                     }
 
@@ -826,8 +833,8 @@ namespace OpenRCT2::Scripting
             if (ride == nullptr)
                 throw DukException() << "Cannot read 'mazeEntry' property, ride is invalid.";
 
-            const auto& rtd = ride->GetRideTypeDescriptor();
-            if (!rtd.HasFlag(RtdFlag::isMaze))
+            const auto& rtd = ride->getRideTypeDescriptor();
+            if (rtd.specialType != RtdSpecialType::maze)
                 throw DukException() << "Cannot read 'mazeEntry' property, ride is not a maze.";
 
             duk_push_int(ctx, el->GetMazeEntry());
@@ -856,8 +863,8 @@ namespace OpenRCT2::Scripting
             if (ride == nullptr)
                 throw DukException() << "Cannot set 'mazeEntry' property, ride is invalid.";
 
-            const auto& rtd = ride->GetRideTypeDescriptor();
-            if (!rtd.HasFlag(RtdFlag::isMaze))
+            const auto& rtd = ride->getRideTypeDescriptor();
+            if (rtd.specialType != RtdSpecialType::maze)
                 throw DukException() << "Cannot set 'mazeEntry' property, ride is not a maze.";
 
             el->SetMazeEntry(value.as_uint());
@@ -884,8 +891,8 @@ namespace OpenRCT2::Scripting
             if (ride == nullptr)
                 throw DukException() << "Cannot read 'colourScheme' property, ride is invalid.";
 
-            const auto& rtd = ride->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RtdFlag::isMaze))
+            const auto& rtd = ride->getRideTypeDescriptor();
+            if (rtd.specialType == RtdSpecialType::maze)
                 throw DukException() << "Cannot read 'colourScheme' property, TrackElement belongs to a maze.";
 
             duk_push_int(ctx, el->GetColourScheme());
@@ -914,8 +921,8 @@ namespace OpenRCT2::Scripting
             if (ride == nullptr)
                 throw DukException() << "Cannot set 'colourScheme', ride is invalid.";
 
-            const auto& rtd = ride->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RtdFlag::isMaze))
+            const auto& rtd = ride->getRideTypeDescriptor();
+            if (rtd.specialType == RtdSpecialType::maze)
                 throw DukException() << "Cannot set 'colourScheme' property, TrackElement belongs to a maze.";
 
             el->SetColourScheme(static_cast<RideColourScheme>(value.as_uint()));
@@ -942,8 +949,8 @@ namespace OpenRCT2::Scripting
             if (ride == nullptr)
                 throw DukException() << "Cannot read 'seatRotation' property, ride is invalid.";
 
-            const auto& rtd = ride->GetRideTypeDescriptor();
-            if (rtd.HasFlag(RtdFlag::isMaze))
+            const auto& rtd = ride->getRideTypeDescriptor();
+            if (rtd.specialType == RtdSpecialType::maze)
                 throw DukException() << "Cannot read 'seatRotation' property, TrackElement belongs to a maze.";
 
             duk_push_int(ctx, el->GetSeatRotation());
@@ -972,8 +979,8 @@ namespace OpenRCT2::Scripting
             if (ride == nullptr)
                 throw DukException() << "Cannot set 'seatRotation' property, ride is invalid.";
 
-            const auto& rtd = ride->GetRideTypeDescriptor();
-            if (!rtd.HasFlag(RtdFlag::isMaze))
+            const auto& rtd = ride->getRideTypeDescriptor();
+            if (rtd.specialType != RtdSpecialType::maze)
                 throw DukException() << "Cannot set 'seatRotation' property, TrackElement belongs to a maze.";
 
             el->SetSeatRotation(value.as_uint());
@@ -1127,7 +1134,7 @@ namespace OpenRCT2::Scripting
             {
                 auto* el = _element->AsPath();
                 auto index = el->GetLegacyPathEntryIndex();
-                if (index != OBJECT_ENTRY_INDEX_NULL)
+                if (index != kObjectEntryIndexNull)
                     duk_push_int(ctx, index);
                 else
                     duk_push_null(ctx);
@@ -1777,7 +1784,7 @@ namespace OpenRCT2::Scripting
         {
             auto* el = _element->AsPath();
             auto index = el->GetSurfaceEntryIndex();
-            if (index != OBJECT_ENTRY_INDEX_NULL)
+            if (index != kObjectEntryIndexNull)
             {
                 duk_push_int(ctx, index);
             }
@@ -1815,7 +1822,7 @@ namespace OpenRCT2::Scripting
         {
             auto* el = _element->AsPath();
             auto index = el->GetRailingsEntryIndex();
-            if (index != OBJECT_ENTRY_INDEX_NULL)
+            if (index != kObjectEntryIndexNull)
             {
                 duk_push_int(ctx, index);
             }
@@ -1962,7 +1969,7 @@ namespace OpenRCT2::Scripting
         if (el != nullptr)
         {
             auto index = el->GetLegacyPathEntryIndex();
-            if (index != OBJECT_ENTRY_INDEX_NULL)
+            if (index != kObjectEntryIndexNull)
             {
                 duk_push_int(ctx, index);
             }
@@ -1999,7 +2006,7 @@ namespace OpenRCT2::Scripting
         if (el != nullptr)
         {
             auto index = el->GetSurfaceEntryIndex();
-            if (index != OBJECT_ENTRY_INDEX_NULL)
+            if (index != kObjectEntryIndexNull)
             {
                 duk_push_int(ctx, index);
             }
@@ -2154,18 +2161,17 @@ namespace OpenRCT2::Scripting
         const auto* const largeEntry = largeScenery->GetEntry();
         const auto direction = largeScenery->GetDirection();
         const auto sequenceIndex = largeScenery->GetSequenceIndex();
-        const auto* tiles = largeEntry->tiles;
-        const auto& tile = tiles[sequenceIndex];
+        const auto& tiles = largeEntry->tiles;
+        const auto& initialTile = tiles[sequenceIndex];
         const auto rotatedFirstTile = CoordsXYZ{
-            CoordsXY{ tile.x_offset, tile.y_offset }.Rotate(direction),
-            tile.z_offset,
+            CoordsXY{ initialTile.offset }.Rotate(direction),
+            initialTile.offset.z,
         };
 
         const auto firstTile = CoordsXYZ{ loc, largeScenery->GetBaseZ() } - rotatedFirstTile;
-        for (int32_t i = 0; tiles[i].x_offset != -1; i++)
+        for (auto& tile : tiles)
         {
-            const auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tiles[i].x_offset, tiles[i].y_offset }.Rotate(direction),
-                                                       tiles[i].z_offset };
+            const auto rotatedCurrentTile = CoordsXYZ{ CoordsXY{ tile.offset }.Rotate(direction), tile.offset.z };
 
             const auto currentTile = firstTile + rotatedCurrentTile;
 
@@ -2185,7 +2191,7 @@ namespace OpenRCT2::Scripting
                         continue;
                     if (tileElement->AsLargeScenery()->GetEntryIndex() != largeScenery->GetEntryIndex())
                         continue;
-                    if (tileElement->AsLargeScenery()->GetSequenceIndex() != i)
+                    if (tileElement->AsLargeScenery()->GetSequenceIndex() != tile.index)
                         continue;
 
                     return tileElement->AsLargeScenery();

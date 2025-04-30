@@ -1,2 +1,2 @@
-RIDE_TYPE_HYPERCOASTER: (592, 537, 239)
-RIDE_TYPE_HYPERCOASTER: (600, 624, 294)
+hypercoaster: (592, 537, 239)
+hypercoaster: (600, 624, 294)

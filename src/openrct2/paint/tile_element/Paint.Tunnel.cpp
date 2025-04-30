@@ -1,6 +1,7 @@
 
 #include "Paint.Tunnel.h"
 
+#include "../../core/EnumUtils.hpp"
 #include "../Paint.h"
 
 #include <cstdint>

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,7 +11,6 @@
 
 #include "../Cheats.h"
 #include "../core/MemoryStream.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
@@ -21,7 +20,7 @@
 using namespace OpenRCT2;
 
 RideSetColourSchemeAction::RideSetColourSchemeAction(
-    const CoordsXYZD& location, track_type_t trackType, uint16_t newColourScheme)
+    const CoordsXYZD& location, OpenRCT2::TrackElemType trackType, uint16_t newColourScheme)
     : _loc(location)
     , _trackType(trackType)
     , _newColourScheme(newColourScheme)
@@ -78,7 +77,7 @@ GameActions::Result RideSetColourSchemeAction::Execute() const
     res.Expenditure = ExpenditureType::RideConstruction;
     res.ErrorTitle = STR_CANT_SET_COLOUR_SCHEME;
 
-    GetTrackElementOriginAndApplyChanges(_loc, _trackType, _newColourScheme, nullptr, TRACK_ELEMENT_SET_COLOUR_SCHEME);
+    GetTrackElementOriginAndApplyChanges(_loc, _trackType, _newColourScheme, nullptr, { TrackElementSetFlag::colourScheme });
 
     return res;
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,10 +11,11 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
+#include "../localisation/StringIdType.h"
 #include "../management/Finance.h"
-#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
+#include "../world/tile_element/BannerElement.h"
 #include "GameAction.h"
 
 using namespace OpenRCT2;
@@ -47,14 +48,19 @@ void BannerSetStyleAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result BannerSetStyleAction::Query() const
 {
+    StringId errorTitle = STR_CANT_REPAINT_THIS;
+    if (_type == BannerSetStyleType::NoEntry)
+    {
+        errorTitle = STR_CANT_RENAME_BANNER;
+    }
+
     auto res = GameActions::Result();
 
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
         LOG_ERROR("Banner not found for bannerIndex %d", _bannerIndex);
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
+        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
     }
 
     res.Expenditure = ExpenditureType::Landscaping;
@@ -66,8 +72,19 @@ GameActions::Result BannerSetStyleAction::Query() const
     if (tileElement == nullptr)
     {
         LOG_ERROR("Banner tile element not found for bannerIndex %d", _bannerIndex);
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
+        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
+    }
+
+    BannerElement* bannerElement = tileElement->AsBanner();
+    CoordsXYZ loc = { banner->position.ToCoordsXY(), bannerElement->GetBaseZ() };
+
+    if (!LocationValid(loc))
+    {
+        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_OFF_EDGE_OF_MAP);
+    }
+    if (!MapCanBuildAt({ loc.x, loc.y, loc.z - 16 }))
+    {
+        return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     switch (_type)
@@ -93,7 +110,7 @@ GameActions::Result BannerSetStyleAction::Query() const
             if (tileElement->AsBanner() == nullptr)
             {
                 LOG_ERROR("Tile element was not a banner.");
-                return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
+                return GameActions::Result(GameActions::Status::Unknown, STR_CANT_RENAME_BANNER, kStringIdNone);
             }
             break;
         default:
@@ -125,7 +142,7 @@ GameActions::Result BannerSetStyleAction::Execute() const
     if (tileElement == nullptr)
     {
         LOG_ERROR("Banner tile element not found for bannerIndex &u", _bannerIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
     }
 
     switch (_type)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,35 +11,46 @@
 
 #include "Fonts.h"
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 
 TTFontFamily const TTFFamilyChineseSimplified = {
     &TTFFontSimSun,
     &TTFFontHeiti,
     &TTFFontMicroHei,
+    &TTFFontNotoSansCJK,
 };
 
 TTFontFamily const TTFFamilyChineseTraditional = {
     &TTFFontMingLiu,
     &TTFFontLiHeiPro,
     &TTFFontMicroHei,
+    &TTFFontNotoSansCJK,
 };
 
 TTFontFamily const TTFFamilyJapanese = {
     &TTFFontHiragano,
     &TTFFontNotoSansMono,
     &TTFFontMSGothic,
+    &TTFFontNotoSansCJK,
 };
 
 TTFontFamily const TTFFamilyKorean = {
     &TTFFontGulim,
     &TTFFontNanum,
     &TTFFontMalgun,
+    &TTFFontNotoSansCJK,
+};
+
+TTFontFamily const TTFFamilyArabic = {
+    &TTFFontArialUnicode,
+    &TTFFontArial,
+    &TTFFontNotoNaskhArabic,
 };
 
 TTFontFamily const TTFFamilySansSerif = {
     &TTFFontArialUnicode,
     &TTFFontArial,
+    &TTFFontRoboto,
 };
 
-#endif // NO_TTF
+#endif // DISABLE_TTF

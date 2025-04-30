@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,17 +14,19 @@
 #include "../localisation/StringIdType.h"
 #include "../ride/RideTypes.h"
 #include "../ride/Station.h"
-#include "../util/Util.h"
 #include "../world/Location.hpp"
 
 #include <array>
 #include <optional>
+#include <string>
+#include <string_view>
+#include <utility>
 
 constexpr uint8_t kPeepMinEnergy = 32;
 constexpr uint8_t kPeepMaxEnergy = 128;
 constexpr uint8_t kPeepMaxEnergyTarget = 255; // Oddly, this differs from max energy!
 
-constexpr auto PEEP_CLEARANCE_HEIGHT = 4 * kCoordsZStep;
+constexpr auto kPeepClearanceHeight = 4 * kCoordsZStep;
 
 class Formatter;
 struct TileElement;
@@ -34,16 +36,6 @@ namespace OpenRCT2::GameActions
 {
     class Result;
 }
-
-enum class StaffType : uint8_t
-{
-    Handyman,
-    Mechanic,
-    Security,
-    Entertainer,
-
-    Count
-};
 
 enum class PeepState : uint8_t
 {
@@ -129,7 +121,7 @@ enum class PeepActionType : uint8_t
     Drowning = 11,
     StaffAnswerCall = 12,
     StaffAnswerCall2 = 13,
-    StaffCheckboard = 14,
+    StaffCheckBoard = 14,
     StaffFix = 15,
     StaffFix2 = 16,
     StaffFixGround = 17,
@@ -151,9 +143,9 @@ enum class PeepActionType : uint8_t
     Walking = 255,
 };
 
-enum class PeepActionSpriteType : uint8_t
+enum class PeepAnimationType : uint8_t
 {
-    None = 0,
+    Walking = 0,
     CheckTime = 1,
     WatchRide = 2,
     EatFood = 3,
@@ -164,7 +156,7 @@ enum class PeepActionSpriteType : uint8_t
     SittingEatFood = 8,
     SittingLookAroundLeft = 9,
     SittingLookAroundRight = 10,
-    Ui = 11,
+    Hanging = 11,
     StaffMower = 12,
     Wow = 13,
     ThrowUp = 14,
@@ -173,7 +165,7 @@ enum class PeepActionSpriteType : uint8_t
     Drowning = 17,
     StaffAnswerCall = 18,
     StaffAnswerCall2 = 19,
-    StaffCheckboard = 20,
+    StaffCheckBoard = 20,
     StaffFix = 21,
     StaffFix2 = 22,
     StaffFixGround = 23,
@@ -240,57 +232,46 @@ enum PeepNextFlags
     PEEP_NEXT_FLAG_UNUSED = (1 << 4),
 };
 
-enum class PeepSpriteType : uint8_t
+enum class PeepAnimationGroup : uint8_t
 {
     Normal = 0,
-    Handyman = 1,
-    Mechanic = 2,
-    Security = 3,
-    EntertainerPanda = 4,
-    EntertainerTiger = 5,
-    EntertainerElephant = 6,
-    EntertainerRoman = 7,
-    EntertainerGorilla = 8,
-    EntertainerSnowman = 9,
-    EntertainerKnight = 10,
-    EntertainerAstronaut = 11,
-    EntertainerBandit = 12,
-    EntertainerSheriff = 13,
-    EntertainerPirate = 14,
-    IceCream = 15,
-    Chips = 16,
-    Burger = 17,
-    Drink = 18,
-    Balloon = 19,
-    Candyfloss = 20,
-    Umbrella = 21,
-    Pizza = 22,
-    SecurityAlt = 23,
-    Popcorn = 24,
-    ArmsCrossed = 25,
-    HeadDown = 26,
-    Nauseous = 27,
-    VeryNauseous = 28,
-    RequireToilet = 29,
-    Hat = 30,
-    HotDog = 31,
-    Tentacle = 32,
-    ToffeeApple = 33,
-    Doughnut = 34,
-    Coffee = 35,
-    Chicken = 36,
-    Lemonade = 37,
-    Watching = 38,
-    Pretzel = 39,
-    Sunglasses = 40,
-    SuJongkwa = 41,
-    Juice = 42,
-    FunnelCake = 43,
-    Noodles = 44,
-    Sausage = 45,
-    Soup = 46,
-    Sandwich = 47,
-    Count = 48,
+
+    // Security staff
+    Alternate = 1,
+
+    // Guest variations
+    IceCream = 1,
+    Chips = 2,
+    Burger = 3,
+    Drink = 4,
+    Balloon = 5,
+    Candyfloss = 6,
+    Umbrella = 7,
+    Pizza = 8,
+    Popcorn = 9,
+    ArmsCrossed = 10,
+    HeadDown = 11,
+    Nauseous = 12,
+    VeryNauseous = 13,
+    RequireToilet = 14,
+    Hat = 15,
+    HotDog = 16,
+    Tentacle = 17,
+    ToffeeApple = 18,
+    Doughnut = 19,
+    Coffee = 20,
+    Chicken = 21,
+    Lemonade = 22,
+    Watching = 23,
+    Pretzel = 24,
+    Sunglasses = 25,
+    Sujeonggwa = 26,
+    Juice = 27,
+    FunnelCake = 28,
+    Noodles = 29,
+    Sausage = 30,
+    Soup = 31,
+    Sandwich = 32,
 
     Invalid = 255
 };
@@ -322,7 +303,8 @@ struct Peep : EntityBase
         PeepRideSubState RideSubState;
         PeepUsingBinSubState UsingBinSubState;
     };
-    PeepSpriteType SpriteType;
+    ObjectEntryIndex AnimationObjectIndex;
+    PeepAnimationGroup AnimationGroup;
     uint8_t TshirtColour;
     uint8_t TrousersColour;
     uint16_t DestinationX; // Location that the peep is trying to get to
@@ -352,13 +334,13 @@ struct Peep : EntityBase
     };
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
     uint8_t SpecialSprite;
-    PeepActionSpriteType ActionSpriteType;
-    // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which
+    PeepAnimationType AnimationType;
+    // Seems to be used like a local variable, as it's always set before calling SwitchNextAnimationType, which
     // reads this again
-    PeepActionSpriteType NextActionSpriteType;
-    uint8_t ActionSpriteImageOffset;
+    PeepAnimationType NextAnimationType;
+    uint8_t AnimationImageIdOffset;
     PeepActionType Action;
-    uint8_t ActionFrame;
+    uint8_t AnimationFrameNum;
     uint8_t StepProgress;
     union
     {
@@ -370,7 +352,7 @@ struct Peep : EntityBase
     uint8_t PathCheckOptimisation; // see peep.checkForPath
     TileCoordsXYZD PathfindGoal;
     std::array<TileCoordsXYZD, 4> PathfindHistory;
-    uint8_t WalkingFrameNum;
+    uint8_t WalkingAnimationFrameNum;
     uint32_t PeepFlags;
 
 public: // Peep
@@ -383,7 +365,7 @@ public: // Peep
     void ThrowUp();
     void SetState(PeepState new_state);
     void Remove();
-    void UpdateCurrentActionSpriteType();
+    void UpdateCurrentAnimationType();
     void UpdateSpriteBoundingBox();
     void SwitchToSpecialSprite(uint8_t special_sprite_id);
     void StateReset();
@@ -421,11 +403,10 @@ public: // Peep
     bool ShouldWaitForLevelCrossing();
     bool IsOnLevelCrossing();
     bool IsOnPathBlockedByVehicle();
-    void PerformNextAction(uint8_t& pathing_result);
-    void PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result);
+    std::pair<uint8_t, TileElement*> PerformNextAction();
     [[nodiscard]] int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
-    void SwitchNextActionSpriteType();
-    [[nodiscard]] PeepActionSpriteType GetActionSpriteType();
+    void SwitchNextAnimationType();
+    [[nodiscard]] PeepAnimationType GetAnimationType();
 
 private:
     void UpdateFalling();
@@ -441,10 +422,9 @@ enum
     PATHING_RIDE_ENTRANCE = 1 << 3,
 };
 
-extern const bool gSpriteTypeToSlowWalkMap[48];
-
 int32_t PeepGetStaffCount();
 void PeepUpdateAll();
+void PeepUpdateAllBoundingBoxes();
 void PeepProblemWarningsUpdate();
 void PeepStopCrowdNoise();
 void PeepUpdateCrowdNoise();
@@ -460,6 +440,6 @@ void PeepDecrementNumRiders(Peep* peep);
 void PeepSetMapTooltip(Peep* peep);
 int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b);
 
-void PeepUpdateNames(bool realNames);
+void PeepUpdateNames();
 
 StringId GetRealNameStringIDFromPeepID(uint32_t id);

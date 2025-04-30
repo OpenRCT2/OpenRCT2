@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -57,8 +57,8 @@ namespace OpenRCT2::GameActions
         using StringVariant = std::variant<std::string, StringId>;
 
         OpenRCT2::GameActions::Status Error = OpenRCT2::GameActions::Status::Ok;
-        StringVariant ErrorTitle = STR_NONE;
-        StringVariant ErrorMessage = STR_NONE;
+        StringVariant ErrorTitle = kStringIdNone;
+        StringVariant ErrorMessage = kStringIdNone;
         std::array<uint8_t, 32> ErrorMessageArgs{};
         CoordsXYZ Position = { kLocationNull, kLocationNull, kLocationNull };
         money64 Cost = 0;
@@ -81,7 +81,8 @@ namespace OpenRCT2::GameActions
 
         // It is recommended to use strong types since a type alias such as 'using MyType = uint32_t'
         // is still just uint32_t, this guarantees the data is associated with the correct type.
-        template<typename T> void SetData(const T&& data)
+        template<typename T>
+        void SetData(const T&& data)
         {
 #ifdef __ANDROID__
             ResultData = std::make_shared<T>(data);
@@ -90,7 +91,8 @@ namespace OpenRCT2::GameActions
 #endif
         }
 
-        template<typename T> T GetData() const
+        template<typename T>
+        T GetData() const
         {
 #ifdef __ANDROID__
             return *static_cast<T*>(ResultData.get());

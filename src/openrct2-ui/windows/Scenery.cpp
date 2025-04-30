@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,11 +14,12 @@
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/ViewportInteraction.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/BannerPlaceAction.h>
 #include <openrct2/actions/BannerSetColourAction.h>
 #include <openrct2/actions/FootpathAdditionPlaceAction.h>
@@ -29,15 +30,17 @@
 #include <openrct2/actions/SmallScenerySetColourAction.h>
 #include <openrct2/actions/WallPlaceAction.h>
 #include <openrct2/actions/WallSetColourAction.h>
-#include <openrct2/audio/audio.h>
+#include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Guard.hpp>
+#include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/management/Research.h>
-#include <openrct2/network/network.h>
+#include <openrct2/network/Network.h>
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
+#include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
@@ -46,19 +49,29 @@
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/paint/VirtualFloor.h>
-#include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
+#include <openrct2/util/Util.h>
+#include <openrct2/world/ConstructionClearance.h>
+#include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
+#include <openrct2/world/tile_element/BannerElement.h>
+#include <openrct2/world/tile_element/LargeSceneryElement.h>
+#include <openrct2/world/tile_element/PathElement.h>
+#include <openrct2/world/tile_element/SmallSceneryElement.h>
+#include <openrct2/world/tile_element/SurfaceElement.h>
+#include <openrct2/world/tile_element/WallElement.h>
+
+using namespace OpenRCT2::Numerics;
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_NONE;
+    static constexpr StringId WINDOW_TITLE = kStringIdNone;
     constexpr int32_t WINDOW_SCENERY_MIN_WIDTH = 634;
-    constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 195;
+    constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 195 - kTitleHeightNormal;
     constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
     constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
-    constexpr int32_t InitTabPosX = 3;
-    constexpr int32_t InitTabPosY = 17;
+    constexpr int32_t kTabMargin = 3;
     constexpr int32_t TabWidth = 31;
     constexpr int32_t TabHeight = 28;
     constexpr int32_t ReservedTabCount = 2;
@@ -93,7 +106,7 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_SCENERY, WIDX_SCENERY_EYEDROPPER_BUTTON);
 
     // clang-format off
-    static Widget WindowSceneryBaseWidgets[] = {
+    static constexpr Widget WindowSceneryBaseWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WINDOW_SCENERY_MIN_WIDTH, WINDOW_SCENERY_MIN_HEIGHT),
         MakeWidget     ({  0,  43}, {634, 99}, WindowWidgetType::Resize,    WindowColour::Secondary                                                  ), // 8         0x009DE2C8
         MakeWidget     ({  2,  62}, {607, 80}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                 ), // 1000000   0x009DE418
@@ -107,7 +120,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget     ({  4,  46}, {211, 14}, WindowWidgetType::TextBox,   WindowColour::Secondary                          ),
         MakeWidget     ({218,  46}, { 70, 14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR ),
         MakeWidget     ({539,  46}, { 70, 14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_RESTRICT_SCENERY,   STR_RESTRICT_SCENERY_TIP ),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -143,7 +155,7 @@ namespace OpenRCT2::Ui::Windows
         struct SceneryTabInfo
         {
             SceneryTabType Type = SCENERY_TAB_TYPE_GROUP;
-            ObjectEntryIndex SceneryGroupIndex = OBJECT_ENTRY_INDEX_NULL;
+            ObjectEntryIndex SceneryGroupIndex = kObjectEntryIndexNull;
             std::deque<ScenerySelection> Entries{};
             u8string Filter = "";
 
@@ -190,7 +202,6 @@ namespace OpenRCT2::Ui::Windows
         };
 
         std::vector<SceneryTabInfo> _tabEntries;
-        std::vector<Widget> _widgets;
         int32_t _requiredWidth;
         int32_t _actualMinHeight;
         ScenerySelection _selectedScenery;
@@ -241,7 +252,10 @@ namespace OpenRCT2::Ui::Windows
             ViewportSetVisibility(ViewportVisibility::Default);
 
             if (gWindowSceneryScatterEnabled)
-                WindowCloseByClass(WindowClass::SceneryScatter);
+            {
+                auto* windowMgr = Ui::GetWindowManager();
+                windowMgr->CloseByClass(WindowClass::SceneryScatter);
+            }
 
             if (isToolActive(WindowClass::Scenery))
                 ToolCancel();
@@ -249,6 +263,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMouseUp(WidgetIndex widgetIndex) override
         {
+            auto* windowMgr = Ui::GetWindowManager();
+
             switch (widgetIndex)
             {
                 case WIDX_SCENERY_CLOSE:
@@ -264,14 +280,14 @@ namespace OpenRCT2::Ui::Windows
                     _sceneryPaintEnabled ^= true;
                     gWindowSceneryEyedropperEnabled = false;
                     if (gWindowSceneryScatterEnabled)
-                        WindowCloseByClass(WindowClass::SceneryScatter);
+                        windowMgr->CloseByClass(WindowClass::SceneryScatter);
                     Invalidate();
                     break;
                 case WIDX_SCENERY_EYEDROPPER_BUTTON:
                     _sceneryPaintEnabled = false;
                     gWindowSceneryEyedropperEnabled = !gWindowSceneryEyedropperEnabled;
                     if (gWindowSceneryScatterEnabled)
-                        WindowCloseByClass(WindowClass::SceneryScatter);
+                        windowMgr->CloseByClass(WindowClass::SceneryScatter);
                     SceneryRemoveGhostToolPlacement();
                     Invalidate();
                     break;
@@ -279,7 +295,7 @@ namespace OpenRCT2::Ui::Windows
                     _sceneryPaintEnabled = false;
                     gWindowSceneryEyedropperEnabled = false;
                     if (gWindowSceneryScatterEnabled)
-                        WindowCloseByClass(WindowClass::SceneryScatter);
+                        windowMgr->CloseByClass(WindowClass::SceneryScatter);
                     else if (
                         NetworkGetMode() != NETWORK_MODE_CLIENT
                         || NetworkCanPerformCommand(NetworkGetCurrentPlayerGroupIndex(), -2))
@@ -353,7 +369,7 @@ namespace OpenRCT2::Ui::Windows
                 ContentUpdateScroll();
             }
 
-            ResizeFrameWithPage();
+            ResizeFrame();
         }
 
         void OnMouseDown(WidgetIndex widgetIndex) override
@@ -408,7 +424,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Find out what scenery the cursor is over
                 const CursorState* state = ContextGetCursorState();
-                WidgetIndex widgetIndex = WindowFindWidgetFromPoint(*this, state->position);
+
+                auto* windowMgr = GetWindowManager();
+                WidgetIndex widgetIndex = windowMgr->FindWidgetFromPoint(*this, state->position);
                 if (widgetIndex == WIDX_SCENERY_LIST)
                 {
                     ScreenCoordsXY scrollPos = {};
@@ -435,14 +453,16 @@ namespace OpenRCT2::Ui::Windows
         void OnUpdate() override
         {
             const CursorState* state = ContextGetCursorState();
-            WindowBase* other = WindowFindFromPoint(state->position);
+
+            auto* windowMgr = GetWindowManager();
+            WindowBase* other = windowMgr->FindFromPoint(state->position);
             if (other == this)
             {
                 ScreenCoordsXY window = state->position - ScreenCoordsXY{ windowPos.x - 26, windowPos.y };
 
                 if (window.y < 44 || window.x <= width)
                 {
-                    WidgetIndex widgetIndex = WindowFindWidgetFromPoint(*this, state->position);
+                    WidgetIndex widgetIndex = windowMgr->FindWidgetFromPoint(*this, state->position);
                     if (widgetIndex >= WIDX_SCENERY_TAB_CONTENT_PANEL)
                     {
                         _hoverCounter++;
@@ -483,7 +503,7 @@ namespace OpenRCT2::Ui::Windows
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
-                WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
+                InvalidateWidget(WIDX_FILTER_TEXT_BOX);
             }
 
             Invalidate();
@@ -496,11 +516,11 @@ namespace OpenRCT2::Ui::Windows
 
             if (gWindowSceneryEyedropperEnabled)
             {
-                gCurrentToolId = Tool::Crosshair;
+                gCurrentToolId = Tool::crosshair;
             }
             else if (_sceneryPaintEnabled)
             {
-                gCurrentToolId = Tool::PaintDown;
+                gCurrentToolId = Tool::paintDown;
             }
             else
             {
@@ -510,7 +530,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (tabSelectedScenery.SceneryType == SCENERY_TYPE_BANNER)
                     {
-                        gCurrentToolId = Tool::EntranceDown;
+                        gCurrentToolId = Tool::entranceDown;
                     }
                     else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_LARGE)
                     {
@@ -535,7 +555,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    gCurrentToolId = Tool::Arrow;
+                    gCurrentToolId = Tool::arrow;
                 }
             }
         }
@@ -611,11 +631,13 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
             }
-            return { STR_NONE, Formatter() };
+            return { kStringIdNone, Formatter() };
         }
 
         void OnPrepareDraw() override
         {
+            _actualMinHeight = WINDOW_SCENERY_MIN_HEIGHT + getTitleBarTargetHeight();
+
             // Set the window title
             StringId titleStringId = STR_MISCELLANEOUS;
             const auto tabIndex = _activeTabIndex;
@@ -670,7 +692,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::FlatBtn;
                 }
 
-                if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode)
+                if (gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode)
                 {
                     widgets[WIDX_RESTRICT_SCENERY].type = WindowWidgetType::Button;
                     if (IsSceneryItemRestricted(tabSelectedScenery))
@@ -761,13 +783,14 @@ namespace OpenRCT2::Ui::Windows
                 const auto lastTabWidget = &widgets[WIDX_SCENERY_TAB_1 + lastTabIndex];
                 windowWidth = std::max<int32_t>(windowWidth, lastTabWidget->right + 3);
 
+                auto tabTop = widgets[WIDX_SCENERY_TITLE].bottom + kTabMargin;
                 if (GetSceneryTabInfoForMisc() != nullptr)
                 {
                     auto miscTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 2];
                     miscTabWidget->left = windowWidth - 2 * TabWidth - 6;
                     miscTabWidget->right = windowWidth - TabWidth - 7;
-                    miscTabWidget->top = InitTabPosY;
-                    miscTabWidget->bottom = InitTabPosY + TabHeight;
+                    miscTabWidget->top = tabTop;
+                    miscTabWidget->bottom = tabTop + TabHeight;
                 }
 
                 if (_tabEntries.back().IsAll())
@@ -775,12 +798,12 @@ namespace OpenRCT2::Ui::Windows
                     auto allTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 1];
                     allTabWidget->left = windowWidth - TabWidth - 6;
                     allTabWidget->right = windowWidth - 7;
-                    allTabWidget->top = InitTabPosY;
-                    allTabWidget->bottom = InitTabPosY + TabHeight;
+                    allTabWidget->top = tabTop;
+                    allTabWidget->bottom = tabTop + TabHeight;
                 }
             }
 
-            ResizeFrameWithPage();
+            ResizeFrame();
             widgets[WIDX_SCENERY_LIST].right = windowWidth - 26;
             widgets[WIDX_SCENERY_LIST].bottom = height - 24;
 
@@ -820,7 +843,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto [name, price] = GetNameAndPrice(selectedSceneryEntry);
-            if (price != kMoney64Undefined && !(GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+            if (price != kMoney64Undefined && !(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(price);
@@ -1046,7 +1069,9 @@ namespace OpenRCT2::Ui::Windows
             _requiredWidth = std::min(static_cast<int32_t>(_tabEntries.size()), MaxTabsPerRow) * TabWidth + 5;
 
             PrepareWidgets();
-            WindowInvalidateByClass(WindowClass::Scenery);
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::Scenery);
         }
 
         int32_t GetRequiredWidth() const
@@ -1062,7 +1087,8 @@ namespace OpenRCT2::Ui::Windows
             return contentWidth / SCENERY_BUTTON_WIDTH;
         }
 
-        template<typename T> T CountRows(T items) const
+        template<typename T>
+        T CountRows(T items) const
         {
             const auto rows = items / GetNumColumns();
             return rows;
@@ -1224,7 +1250,7 @@ namespace OpenRCT2::Ui::Windows
 
         void InitSceneryEntry(const ScenerySelection& selection, const ObjectEntryIndex sceneryGroupIndex)
         {
-            Guard::ArgumentInRange<int32_t>(selection.EntryIndex, 0, OBJECT_ENTRY_INDEX_NULL);
+            Guard::ArgumentInRange<int32_t>(selection.EntryIndex, 0, kObjectEntryIndexNull);
 
             if (IsSceneryAvailableToBuild(selection))
             {
@@ -1236,7 +1262,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Add scenery to primary group (usually trees or path additions)
-                if (sceneryGroupIndex != OBJECT_ENTRY_INDEX_NULL)
+                if (sceneryGroupIndex != kObjectEntryIndexNull)
                 {
                     auto* tabInfo = GetSceneryTabInfoForGroup(sceneryGroupIndex);
                     if (tabInfo != nullptr)
@@ -1288,13 +1314,13 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsFilterInName(const Object& object)
         {
-            return String::Contains(object.GetName(), _filteredSceneryTab.Filter, true);
+            return String::contains(object.GetName(), _filteredSceneryTab.Filter, true);
         }
 
         bool IsFilterInAuthors(const Object& object)
         {
             for (auto author : object.GetAuthors())
-                if (String::Contains(author, _filteredSceneryTab.Filter, true))
+                if (String::contains(author, _filteredSceneryTab.Filter, true))
                     return true;
 
             return false;
@@ -1302,13 +1328,13 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsFilterInIdentifier(const Object& object)
         {
-            return String::Contains(object.GetIdentifier(), _filteredSceneryTab.Filter, true);
+            return String::contains(object.GetIdentifier(), _filteredSceneryTab.Filter, true);
         }
 
         bool IsFilterInFilename(const Object& object)
         {
             auto repoItem = ObjectRepositoryFindObjectByEntry(&(object.GetObjectEntry()));
-            return String::Contains(repoItem->Path, _filteredSceneryTab.Filter, true);
+            return String::contains(repoItem->Path, _filteredSceneryTab.Filter, true);
         }
 
         void SortTabs()
@@ -1317,9 +1343,9 @@ namespace OpenRCT2::Ui::Windows
                 if (a.SceneryGroupIndex == b.SceneryGroupIndex)
                     return false;
 
-                if (a.SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL)
+                if (a.SceneryGroupIndex == kObjectEntryIndexNull)
                     return false;
-                if (b.SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL)
+                if (b.SceneryGroupIndex == kObjectEntryIndexNull)
                     return true;
 
                 const auto* entryA = a.GetSceneryGroupEntry();
@@ -1342,25 +1368,14 @@ namespace OpenRCT2::Ui::Windows
         void PrepareWidgets()
         {
             // Add the base widgets
-            _widgets.clear();
-            for (const auto& widget : WindowSceneryBaseWidgets)
-            {
-                _widgets.push_back(widget);
-            }
-
-            // Remove WWT_LAST
-            auto lastWidget = _widgets.back();
-            _widgets.pop_back();
-
-            // Add tabs
-            _actualMinHeight = WINDOW_SCENERY_MIN_HEIGHT;
-            int32_t xInit = InitTabPosX;
-            int32_t tabsInThisRow = 0;
+            SetWidgets(WindowSceneryBaseWidgets);
 
             auto hasMisc = GetSceneryTabInfoForMisc() != nullptr;
             auto maxTabsInThisRow = MaxTabsPerRow - 1 - (hasMisc ? 1 : 0);
 
-            ScreenCoordsXY pos = { xInit, InitTabPosY };
+            // Add tabs
+            int32_t tabsInThisRow = 0;
+            ScreenCoordsXY pos = { kTabMargin, widgets[WIDX_SCENERY_TITLE].bottom + kTabMargin };
             for (const auto& tabInfo : _tabEntries)
             {
                 auto widget = MakeTab(pos, STR_STRING_DEFINED_TOOLTIP);
@@ -1387,12 +1402,12 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                _widgets.push_back(widget);
+                widgets.push_back(widget);
 
                 tabsInThisRow++;
                 if (tabsInThisRow >= maxTabsInThisRow)
                 {
-                    pos.x = xInit;
+                    pos.x = kTabMargin;
                     pos.y += TabHeight;
                     tabsInThisRow = 0;
                     _actualMinHeight += TabHeight;
@@ -1400,35 +1415,31 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            _widgets.push_back(lastWidget);
-
             // Shift base widgets based on number of tab rows
             int32_t shiftAmount = (GetTabRowCount() - 1) * TabHeight;
             if (shiftAmount > 0)
             {
-                _widgets[WIDX_SCENERY_LIST].top += shiftAmount;
-                _widgets[WIDX_SCENERY_LIST].bottom += shiftAmount;
-                _widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].top += shiftAmount;
-                _widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].bottom += shiftAmount;
-                _widgets[WIDX_SCENERY_REPAINT_SCENERY_BUTTON].top += shiftAmount;
-                _widgets[WIDX_SCENERY_REPAINT_SCENERY_BUTTON].bottom += shiftAmount;
-                _widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].top += shiftAmount;
-                _widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].bottom += shiftAmount;
-                _widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].top += shiftAmount;
-                _widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].bottom += shiftAmount;
-                _widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].top += shiftAmount;
-                _widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].bottom += shiftAmount;
-                _widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].top += shiftAmount;
-                _widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].bottom += shiftAmount;
-                _widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].top += shiftAmount;
-                _widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].bottom += shiftAmount;
-                _widgets[WIDX_FILTER_TEXT_BOX].top += shiftAmount;
-                _widgets[WIDX_FILTER_TEXT_BOX].bottom += shiftAmount;
-                _widgets[WIDX_FILTER_CLEAR_BUTTON].top += shiftAmount;
-                _widgets[WIDX_FILTER_CLEAR_BUTTON].bottom += shiftAmount;
+                widgets[WIDX_SCENERY_LIST].top += shiftAmount;
+                widgets[WIDX_SCENERY_LIST].bottom += shiftAmount;
+                widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].top += shiftAmount;
+                widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].bottom += shiftAmount;
+                widgets[WIDX_SCENERY_REPAINT_SCENERY_BUTTON].top += shiftAmount;
+                widgets[WIDX_SCENERY_REPAINT_SCENERY_BUTTON].bottom += shiftAmount;
+                widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].top += shiftAmount;
+                widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].bottom += shiftAmount;
+                widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].top += shiftAmount;
+                widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].bottom += shiftAmount;
+                widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].top += shiftAmount;
+                widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].bottom += shiftAmount;
+                widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].top += shiftAmount;
+                widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].bottom += shiftAmount;
+                widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].top += shiftAmount;
+                widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].bottom += shiftAmount;
+                widgets[WIDX_FILTER_TEXT_BOX].top += shiftAmount;
+                widgets[WIDX_FILTER_TEXT_BOX].bottom += shiftAmount;
+                widgets[WIDX_FILTER_CLEAR_BUTTON].top += shiftAmount;
+                widgets[WIDX_FILTER_CLEAR_BUTTON].bottom += shiftAmount;
             }
-
-            widgets = _widgets.data();
         }
 
         ScenerySelection GetSceneryIdByCursorPos(const ScreenCoordsXY& screenCoords) const
@@ -1956,10 +1967,9 @@ namespace OpenRCT2::Ui::Windows
                     auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(selection.EntryIndex);
                     gMapSelectionTiles.clear();
 
-                    for (auto* tile = sceneryEntry->tiles;
-                         tile->x_offset != static_cast<int16_t>(static_cast<uint16_t>(0xFFFF)); tile++)
+                    for (auto& tile : sceneryEntry->tiles)
                     {
-                        CoordsXY tileLocation = { tile->x_offset, tile->y_offset };
+                        CoordsXY tileLocation = { tile.offset };
                         auto rotatedTileCoords = tileLocation.Rotate(direction);
 
                         rotatedTileCoords.x += mapTile.x;
@@ -2203,7 +2213,7 @@ namespace OpenRCT2::Ui::Windows
                 ViewportInteractionItem::Scenery, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
                 ViewportInteractionItem::Banner);
             auto info = GetMapCoordinatesFromPos(screenCoords, flag);
-            switch (info.SpriteType)
+            switch (info.interactionType)
             {
                 case ViewportInteractionItem::Scenery:
                 {
@@ -2280,7 +2290,7 @@ namespace OpenRCT2::Ui::Windows
                 ViewportInteractionItem::Scenery, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
                 ViewportInteractionItem::Banner, ViewportInteractionItem::PathAddition);
             auto info = GetMapCoordinatesFromPos(screenCoords, flag);
-            switch (info.SpriteType)
+            switch (info.interactionType)
             {
                 case ViewportInteractionItem::Scenery:
                 {
@@ -2354,7 +2364,7 @@ namespace OpenRCT2::Ui::Windows
 
         void Sub6E1F34UpdateScreenCoordsAndButtonsPressed(bool canRaiseItem, ScreenCoordsXY& screenPos)
         {
-            if (!canRaiseItem && !GetGameState().Cheats.DisableSupportLimits)
+            if (!canRaiseItem && !getGameState().cheats.disableSupportLimits)
             {
                 gSceneryCtrlPressed = false;
                 gSceneryShiftPressed = false;
@@ -2373,7 +2383,7 @@ namespace OpenRCT2::Ui::Windows
                             ViewportInteractionItem::LargeScenery);
                         auto info = GetMapCoordinatesFromPos(screenPos, flag);
 
-                        if (info.SpriteType != ViewportInteractionItem::None)
+                        if (info.interactionType != ViewportInteractionItem::None)
                         {
                             gSceneryCtrlPressed = true;
                             gSceneryCtrlPressZ = info.Element->GetBaseZ();
@@ -2412,7 +2422,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             gSceneryShiftPressZOffset = mainWnd->viewport->zoom.ApplyTo(gSceneryShiftPressZOffset);
                         }
-                        gSceneryShiftPressZOffset = Floor2(gSceneryShiftPressZOffset, 8);
+                        gSceneryShiftPressZOffset = floor2(gSceneryShiftPressZOffset, 8);
 
                         screenPos.x = gSceneryShiftPressX;
                         screenPos.y = gSceneryShiftPressY;
@@ -2430,7 +2440,8 @@ namespace OpenRCT2::Ui::Windows
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, uint8_t* outQuadrant,
             Direction* outRotation)
         {
-            auto* w = WindowFindByClass(WindowClass::Scenery);
+            auto* windowMgr = GetWindowManager();
+            auto* w = windowMgr->FindByClass(WindowClass::Scenery);
 
             if (w == nullptr)
             {
@@ -2550,7 +2561,7 @@ namespace OpenRCT2::Ui::Windows
                 auto info = GetMapCoordinatesFromPos(screenPos, flag);
                 gridPos = info.Loc;
 
-                if (info.SpriteType == ViewportInteractionItem::None)
+                if (info.interactionType == ViewportInteractionItem::None)
                 {
                     gridPos.SetNull();
                     return;
@@ -2627,7 +2638,8 @@ namespace OpenRCT2::Ui::Windows
         void Sub6E1F34PathItem(
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, int32_t* outZ)
         {
-            auto* w = WindowFindByClass(WindowClass::Scenery);
+            auto* windowMgr = GetWindowManager();
+            auto* w = windowMgr->FindByClass(WindowClass::Scenery);
 
             if (w == nullptr)
             {
@@ -2643,7 +2655,7 @@ namespace OpenRCT2::Ui::Windows
             auto info = GetMapCoordinatesFromPos(screenPos, flag);
             gridPos = info.Loc;
 
-            if (info.SpriteType == ViewportInteractionItem::None)
+            if (info.interactionType == ViewportInteractionItem::None)
             {
                 gridPos.SetNull();
                 return;
@@ -2660,7 +2672,8 @@ namespace OpenRCT2::Ui::Windows
         void Sub6E1F34Wall(
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, uint8_t* outEdges)
         {
-            auto* w = WindowFindByClass(WindowClass::Scenery);
+            auto* windowMgr = GetWindowManager();
+            auto* w = windowMgr->FindByClass(WindowClass::Scenery);
 
             if (w == nullptr)
             {
@@ -2750,7 +2763,8 @@ namespace OpenRCT2::Ui::Windows
         void Sub6E1F34LargeScenery(
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, Direction* outDirection)
         {
-            auto* w = WindowFindByClass(WindowClass::Scenery);
+            auto* windowMgr = GetWindowManager();
+            auto* w = windowMgr->FindByClass(WindowClass::Scenery);
 
             if (w == nullptr)
             {
@@ -2766,9 +2780,9 @@ namespace OpenRCT2::Ui::Windows
             if (sceneryEntry)
             {
                 int16_t maxClearZ = 0;
-                for (int32_t i = 0; sceneryEntry->tiles[i].x_offset != -1; ++i)
+                for (auto& tile : sceneryEntry->tiles)
                 {
-                    maxClearZ = std::max<int16_t>(maxClearZ, sceneryEntry->tiles[i].z_clearance);
+                    maxClearZ = std::max<int16_t>(maxClearZ, tile.zClearance);
                 }
                 maxPossibleHeight = std::max(0, maxPossibleHeight - maxClearZ);
             }
@@ -2851,7 +2865,8 @@ namespace OpenRCT2::Ui::Windows
             const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, int32_t* outZ,
             Direction* outDirection)
         {
-            auto* w = WindowFindByClass(WindowClass::Scenery);
+            auto* windowMgr = GetWindowManager();
+            auto* w = windowMgr->FindByClass(WindowClass::Scenery);
 
             if (w == nullptr)
             {
@@ -2867,7 +2882,7 @@ namespace OpenRCT2::Ui::Windows
             auto info = GetMapCoordinatesFromPos(screenPos, flag);
             gridPos = info.Loc;
 
-            if (info.SpriteType == ViewportInteractionItem::None)
+            if (info.interactionType == ViewportInteractionItem::None)
             {
                 gridPos.SetNull();
                 return;
@@ -3200,10 +3215,11 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* SceneryOpen()
     {
-        auto* w = static_cast<SceneryWindow*>(WindowBringToFrontByClass(WindowClass::Scenery));
+        auto* windowMgr = GetWindowManager();
+        auto* w = static_cast<SceneryWindow*>(windowMgr->BringToFrontByClass(WindowClass::Scenery));
         if (w == nullptr)
         {
-            w = WindowCreate<SceneryWindow>(WindowClass::Scenery);
+            w = windowMgr->Create<SceneryWindow>(WindowClass::Scenery);
         }
         return w;
     }
@@ -3212,7 +3228,8 @@ namespace OpenRCT2::Ui::Windows
         const ScenerySelection& scenery, const std::optional<colour_t> primary, const std::optional<colour_t> secondary,
         const std::optional<colour_t> tertiary, const std::optional<colour_t> rotation)
     {
-        auto* w = static_cast<SceneryWindow*>(WindowBringToFrontByClass(WindowClass::Scenery));
+        auto* windowMgr = GetWindowManager();
+        auto* w = static_cast<SceneryWindow*>(windowMgr->BringToFrontByClass(WindowClass::Scenery));
         if (w != nullptr)
         {
             w->SetSelectedItem(scenery, primary, secondary, tertiary, rotation);
@@ -3222,7 +3239,8 @@ namespace OpenRCT2::Ui::Windows
     void WindowScenerySetSelectedTab(const ObjectEntryIndex sceneryGroupIndex)
     {
         // Should this bring to front?
-        auto* w = static_cast<SceneryWindow*>(WindowFindByClass(WindowClass::Scenery));
+        auto* windowMgr = GetWindowManager();
+        auto* w = static_cast<SceneryWindow*>(windowMgr->FindByClass(WindowClass::Scenery));
         if (w != nullptr)
         {
             return w->SetSelectedTab(sceneryGroupIndex);
@@ -3248,7 +3266,8 @@ namespace OpenRCT2::Ui::Windows
 
     const ScenerySelection WindowSceneryGetTabSelection()
     {
-        auto* w = static_cast<SceneryWindow*>(WindowFindByClass(WindowClass::Scenery));
+        auto* windowMgr = GetWindowManager();
+        auto* w = static_cast<SceneryWindow*>(windowMgr->FindByClass(WindowClass::Scenery));
         if (w != nullptr)
         {
             return w->GetTabSelection();
@@ -3261,7 +3280,8 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowSceneryInit()
     {
-        auto* w = static_cast<SceneryWindow*>(WindowFindByClass(WindowClass::Scenery));
+        auto* windowMgr = GetWindowManager();
+        auto* w = static_cast<SceneryWindow*>(windowMgr->FindByClass(WindowClass::Scenery));
         if (w != nullptr)
         {
             w->Init();
@@ -3277,8 +3297,8 @@ namespace OpenRCT2::Ui::Windows
         else
         {
             auto* toolWindow = ContextOpenWindow(WindowClass::Scenery);
-            ToolSet(*toolWindow, WIDX_SCENERY_BACKGROUND, Tool::Arrow);
-            InputSetFlag(INPUT_FLAG_6, true);
+            ToolSet(*toolWindow, WIDX_SCENERY_BACKGROUND, Tool::arrow);
+            gInputFlags.set(InputFlag::unk6);
         }
     }
 } // namespace OpenRCT2::Ui::Windows

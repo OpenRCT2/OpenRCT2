@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,7 +14,10 @@
 
 #include <cstdint>
 
-using track_type_t = uint16_t;
+namespace OpenRCT2
+{
+    enum class TrackElemType : uint16_t;
+}
 
 enum class WoodenSupportType : uint8_t
 {
@@ -57,6 +60,28 @@ enum class WoodenSupportTransitionType : uint8_t
     Up60DegToFlatLongBaseSeq1 = 18,
     Up60DegToFlatLongBaseSeq2 = 19,
     Up60DegToFlatLongBaseSeq3 = 20,
+
+    // Inverted versions
+    Down25DegToFlat = 21,
+    FlatToDown25Deg = 22,
+    Down25Deg = 23,
+    Down60DegToDown25Deg = 24,
+    Down25DegToDown60Deg = 25,
+    Down60Deg = 26,
+    Down60DegToFlat = 28,
+    FlatToDown60Deg = 29,
+    Down25DegToFlatRailway = 30,
+    FlatToDown25DegRailway = 31,
+    Down25DegRailway = 32,
+
+    Down60DegToFlatLongBaseSeq3 = 34,
+    Down60DegToFlatLongBaseSeq2 = 35,
+    Down60DegToFlatLongBaseSeq1 = 36,
+    Down60DegToFlatLongBaseSeq0 = 37,
+    FlatToDown60DegLongBaseSeq3 = 38,
+    FlatToDown60DegLongBaseSeq2 = 39,
+    FlatToDown60DegLongBaseSeq1 = 40,
+    FlatToDown60DegLongBaseSeq0 = 41,
 };
 
 struct FootpathPaintInfo;
@@ -78,8 +103,8 @@ bool PathBoxSupportsPaintSetup(
     PaintSession& session, WoodenSupportSubType supportType, bool isSloped, Direction slopeRotation, int32_t height,
     ImageId imageTemplate, const FootpathPaintInfo& pathPaintInfo);
 bool DrawSupportForSequenceA(
-    PaintSession& session, WoodenSupportType supportType, track_type_t trackType, uint8_t sequence, Direction direction,
-    int32_t height, ImageId imageTemplate);
+    PaintSession& session, WoodenSupportType supportType, OpenRCT2::TrackElemType trackType, uint8_t sequence,
+    Direction direction, int32_t height, ImageId imageTemplate);
 bool DrawSupportForSequenceB(
-    PaintSession& session, WoodenSupportType supportType, track_type_t trackType, uint8_t sequence, Direction direction,
-    int32_t height, ImageId imageTemplate);
+    PaintSession& session, WoodenSupportType supportType, OpenRCT2::TrackElemType trackType, uint8_t sequence,
+    Direction direction, int32_t height, ImageId imageTemplate);

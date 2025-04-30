@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,22 +13,20 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../GameState.h"
+#include "../core/EnumUtils.hpp"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Research.h"
 #include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
-#include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
-#include "../util/Util.h"
 #include "../world/Park.h"
 
 using namespace OpenRCT2;
 
-constexpr static StringId SetVehicleTypeErrorTitle[] = {
+constexpr static StringId kSetVehicleTypeErrorTitle[] = {
     STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL,
     STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL,
     STR_RIDE_SET_VEHICLE_TYPE_FAIL,
@@ -68,7 +66,7 @@ GameActions::Result RideSetVehicleAction::Query() const
     {
         LOG_ERROR("Invalid ride vehicle type %d", _type);
     }
-    auto errTitle = SetVehicleTypeErrorTitle[EnumValue(_type)];
+    auto errTitle = kSetVehicleTypeErrorTitle[EnumValue(_type)];
 
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
@@ -77,12 +75,12 @@ GameActions::Result RideSetVehicleAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_ERR_RIDE_NOT_FOUND);
     }
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+    if (ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
     {
         return GameActions::Result(GameActions::Status::Broken, errTitle, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
     }
 
-    if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
+    if (ride->status != RideStatus::closed && ride->status != RideStatus::simulating)
     {
         return GameActions::Result(GameActions::Status::NotClosed, errTitle, STR_MUST_BE_CLOSED_FIRST);
     }
@@ -104,7 +102,7 @@ GameActions::Result RideSetVehicleAction::Query() const
             if (rideEntry == nullptr)
             {
                 LOG_ERROR("Ride entry not found for _value %d", _value);
-                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, kStringIdNone);
             }
 
             // Validate preset
@@ -127,7 +125,7 @@ GameActions::Result RideSetVehicleAction::Query() const
 
 GameActions::Result RideSetVehicleAction::Execute() const
 {
-    auto errTitle = SetVehicleTypeErrorTitle[EnumValue(_type)];
+    auto errTitle = kSetVehicleTypeErrorTitle[EnumValue(_type)];
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
@@ -139,38 +137,38 @@ GameActions::Result RideSetVehicleAction::Execute() const
     {
         case RideSetVehicleType::NumTrains:
             RideClearForConstruction(*ride);
-            ride->RemovePeeps();
-            ride->vehicle_change_timeout = 100;
+            ride->removePeeps();
+            ride->vehicleChangeTimeout = 100;
 
-            ride->ProposedNumTrains = _value;
+            ride->proposedNumTrains = _value;
             break;
         case RideSetVehicleType::NumCarsPerTrain:
         {
             RideClearForConstruction(*ride);
-            ride->RemovePeeps();
-            ride->vehicle_change_timeout = 100;
+            ride->removePeeps();
+            ride->vehicleChangeTimeout = 100;
 
             InvalidateTestResults(*ride);
             auto rideEntry = GetRideEntryByIndex(ride->subtype);
             if (rideEntry == nullptr)
             {
                 LOG_ERROR("Ride entry not found for index %d", ride->subtype);
-                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, kStringIdNone);
             }
             uint8_t clampValue = _value;
-            static_assert(sizeof(clampValue) == sizeof(ride->proposed_num_cars_per_train));
-            if (!GetGameState().Cheats.DisableTrainLengthLimit)
+            static_assert(sizeof(clampValue) == sizeof(ride->proposedNumCarsPerTrain));
+            if (!getGameState().cheats.disableTrainLengthLimit)
             {
                 clampValue = std::clamp(clampValue, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
             }
-            ride->proposed_num_cars_per_train = clampValue;
+            ride->proposedNumCarsPerTrain = clampValue;
             break;
         }
         case RideSetVehicleType::RideEntry:
         {
             RideClearForConstruction(*ride);
-            ride->RemovePeeps();
-            ride->vehicle_change_timeout = 100;
+            ride->removePeeps();
+            ride->vehicleChangeTimeout = 100;
 
             InvalidateTestResults(*ride);
             ride->subtype = _value;
@@ -178,39 +176,39 @@ GameActions::Result RideSetVehicleAction::Execute() const
             if (rideEntry == nullptr)
             {
                 LOG_ERROR("Ride entry not found for index %d", ride->subtype);
-                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, kStringIdNone);
             }
 
             RideSetVehicleColoursToRandomPreset(*ride, _colour);
-            if (!GetGameState().Cheats.DisableTrainLengthLimit)
+            if (!getGameState().cheats.disableTrainLengthLimit)
             {
-                ride->proposed_num_cars_per_train = std::clamp(
-                    ride->proposed_num_cars_per_train, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
+                ride->proposedNumCarsPerTrain = std::clamp(
+                    ride->proposedNumCarsPerTrain, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
             }
             break;
         }
         case RideSetVehicleType::TrainsReversed:
         {
             RideClearForConstruction(*ride);
-            ride->RemovePeeps();
-            ride->vehicle_change_timeout = 100;
+            ride->removePeeps();
+            ride->vehicleChangeTimeout = 100;
 
-            ride->SetLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS, _value);
+            ride->setLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS, _value);
             break;
         }
 
         default:
             LOG_ERROR("Invalid ride vehicle setting %d", _type);
-            return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, kStringIdNone);
     }
 
-    ride->num_circuits = 1;
-    ride->UpdateMaxVehicles();
+    ride->numCircuits = 1;
+    ride->updateMaxVehicles();
 
     auto res = GameActions::Result();
-    if (!ride->overall_view.IsNull())
+    if (!ride->overallView.IsNull())
     {
-        auto location = ride->overall_view.ToTileCentre();
+        auto location = ride->overallView.ToTileCentre();
         res.Position = { location, TileElementHeight(res.Position) };
     }
 
@@ -225,15 +223,15 @@ GameActions::Result RideSetVehicleAction::Execute() const
 bool RideSetVehicleAction::RideIsVehicleTypeValid(const Ride& ride) const
 {
     bool selectionShouldBeExpanded;
-    int32_t rideTypeIterator, rideTypeIteratorMax;
-    auto& gameState = GetGameState();
+    ride_type_t rideTypeIterator, rideTypeIteratorMax;
+    auto& gameState = getGameState();
 
     {
-        const auto& rtd = ride.GetRideTypeDescriptor();
-        if (gameState.Cheats.ShowVehiclesFromOtherTrackTypes
+        const auto& rtd = ride.getRideTypeDescriptor();
+        if (gameState.cheats.showVehiclesFromOtherTrackTypes
             && !(
-                ride.GetRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide) || rtd.HasFlag(RtdFlag::isMaze)
-                || ride.type == RIDE_TYPE_MINI_GOLF))
+                ride.getRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide) || rtd.specialType == RtdSpecialType::maze
+                || rtd.specialType == RtdSpecialType::miniGolf))
         {
             selectionShouldBeExpanded = true;
             rideTypeIterator = 0;
@@ -255,7 +253,7 @@ bool RideSetVehicleAction::RideIsVehicleTypeValid(const Ride& ride) const
                 continue;
 
             const auto& rtd = GetRideTypeDescriptor(rideTypeIterator);
-            if (rtd.HasFlag(RtdFlag::isMaze) || rideTypeIterator == RIDE_TYPE_MINI_GOLF)
+            if (rtd.specialType == RtdSpecialType::maze || rtd.specialType == RtdSpecialType::miniGolf)
                 continue;
         }
 
@@ -265,7 +263,7 @@ bool RideSetVehicleAction::RideIsVehicleTypeValid(const Ride& ride) const
         {
             if (rideEntryIndex == _value)
             {
-                if (!RideEntryIsInvented(rideEntryIndex) && !gameState.Cheats.IgnoreResearchStatus)
+                if (!RideEntryIsInvented(rideEntryIndex) && !gameState.cheats.ignoreResearchStatus)
                 {
                     return false;
                 }

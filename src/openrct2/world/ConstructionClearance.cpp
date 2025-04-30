@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,10 +18,18 @@
 #include "../openrct2/Cheats.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
-#include "../world/tile_element/Slope.h"
 #include "Park.h"
+#include "QuarterTile.h"
 #include "Scenery.h"
-#include "Surface.h"
+#include "tile_element/EntranceElement.h"
+#include "tile_element/LargeSceneryElement.h"
+#include "tile_element/PathElement.h"
+#include "tile_element/Slope.h"
+#include "tile_element/SmallSceneryElement.h"
+#include "tile_element/SurfaceElement.h"
+#include "tile_element/TileElement.h"
+#include "tile_element/TrackElement.h"
+#include "tile_element/WallElement.h"
 
 using namespace OpenRCT2;
 
@@ -36,14 +44,14 @@ static int32_t MapPlaceClearFunc(
 
     auto* scenery = (*tile_element)->AsSmallScenery()->GetEntry();
 
-    auto& gameState = GetGameState();
-    if (gameState.Park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+    auto& gameState = getGameState();
+    if (gameState.park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
     {
         if (scenery != nullptr && scenery->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
             return 1;
     }
 
-    if (!(gameState.Park.Flags & PARK_FLAGS_NO_MONEY) && scenery != nullptr)
+    if (!(gameState.park.Flags & PARK_FLAGS_NO_MONEY) && scenery != nullptr)
         *price += scenery->removal_price;
 
     if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -102,7 +110,7 @@ static bool MapLoc68BABCShouldContinue(
         && tileElement->AsTrack()->GetTrackType() == TrackElemType::Flat)
     {
         auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
-        if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RtdFlag::supportsLevelCrossings))
+        if (ride != nullptr && ride->getRideTypeDescriptor().HasFlag(RtdFlag::supportsLevelCrossings))
         {
             return true;
         }
@@ -138,7 +146,7 @@ GameActions::Result MapCanConstructWithClearAt(
         return res;
     }
 
-    if (GetGameState().Cheats.DisableClearanceChecks)
+    if (getGameState().cheats.disableClearanceChecks)
     {
         res.SetData(ConstructClearResult{ groundFlags });
         return res;
@@ -148,7 +156,7 @@ GameActions::Result MapCanConstructWithClearAt(
     if (tileElement == nullptr)
     {
         res.Error = GameActions::Status::Unknown;
-        res.ErrorMessage = STR_NONE;
+        res.ErrorMessage = kStringIdNone;
         return res;
     }
 
@@ -190,7 +198,7 @@ GameActions::Result MapCanConstructWithClearAt(
             }
         }
 
-        if (GetGameState().Park.Flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION && !isTree)
+        if (getGameState().park.Flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION && !isTree)
         {
             const auto heightFromGround = pos.clearanceZ - tileElement->GetBaseZ();
 
@@ -226,27 +234,27 @@ GameActions::Result MapCanConstructWithClearAt(
                 const auto slope = tileElement->AsSurface()->GetSlope();
                 if (slope & kTileSlopeNCornerUp)
                 {
-                    northZ += LAND_HEIGHT_STEP;
+                    northZ += kLandHeightStep;
                     if (slope == (kTileSlopeSCornerDown | kTileSlopeDiagonalFlag))
-                        northZ += LAND_HEIGHT_STEP;
+                        northZ += kLandHeightStep;
                 }
                 if (slope & kTileSlopeECornerUp)
                 {
-                    eastZ += LAND_HEIGHT_STEP;
+                    eastZ += kLandHeightStep;
                     if (slope == (kTileSlopeWCornerDown | kTileSlopeDiagonalFlag))
-                        eastZ += LAND_HEIGHT_STEP;
+                        eastZ += kLandHeightStep;
                 }
                 if (slope & kTileSlopeSCornerUp)
                 {
-                    southZ += LAND_HEIGHT_STEP;
+                    southZ += kLandHeightStep;
                     if (slope == (kTileSlopeNCornerDown | kTileSlopeDiagonalFlag))
-                        southZ += LAND_HEIGHT_STEP;
+                        southZ += kLandHeightStep;
                 }
                 if (slope & kTileSlopeWCornerUp)
                 {
-                    westZ += LAND_HEIGHT_STEP;
+                    westZ += kLandHeightStep;
                     if (slope == (kTileSlopeECornerDown | kTileSlopeDiagonalFlag))
-                        westZ += LAND_HEIGHT_STEP;
+                        westZ += kLandHeightStep;
                 }
                 const auto baseHeight = pos.baseZ + (4 * kCoordsZStep);
                 const auto baseQuarter = quarterTile.GetBaseQuarterOccupied();
@@ -305,7 +313,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
                 res.ErrorMessage = STR_X_IN_THE_WAY;
 
                 Formatter ft(res.ErrorMessageArgs.data());
-                ride->FormatNameTo(ft);
+                ride->formatNameTo(ft);
             }
             break;
         case TileElementType::SmallScenery:
@@ -313,7 +321,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(STR_EMPTY);
+            StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(kStringIdEmpty);
             ft.Add<StringId>(stringId);
             break;
         }
@@ -336,7 +344,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             auto* wallEntry = tileElement->AsWall()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            StringId stringId = wallEntry != nullptr ? wallEntry->name : static_cast<StringId>(STR_EMPTY);
+            StringId stringId = wallEntry != nullptr ? wallEntry->name : static_cast<StringId>(kStringIdEmpty);
             ft.Add<StringId>(stringId);
             break;
         }
@@ -345,7 +353,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(STR_EMPTY);
+            StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(kStringIdEmpty);
             ft.Add<StringId>(stringId);
             break;
         }

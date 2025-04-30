@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,11 +14,11 @@
 class GameSetSpeedAction final : public GameActionBase<GameCommand::SetGameSpeed>
 {
 private:
-    int32_t _speed{ 1 };
+    uint8_t _speed{ 1 };
 
 public:
     GameSetSpeedAction() = default;
-    GameSetSpeedAction(int32_t speed);
+    GameSetSpeedAction(uint8_t speed);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
@@ -29,5 +29,5 @@ public:
     OpenRCT2::GameActions::Result Execute() const override;
 
 private:
-    bool IsValidSpeed(int32_t speed) const;
+    bool IsValidSpeed(uint8_t speed) const;
 };

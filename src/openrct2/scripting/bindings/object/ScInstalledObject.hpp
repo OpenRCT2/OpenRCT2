@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,40 +11,18 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../../Context.h"
-#    include "../../../object/ObjectRepository.h"
-#    include "../../Duktape.hpp"
-#    include "../../ScriptEngine.h"
+    #include "../../../Context.h"
+    #include "../../../object/ObjectRepository.h"
+    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
 
-#    include <optional>
+    #include <optional>
+    #include <string_view>
 
 namespace OpenRCT2::Scripting
 {
-    inline std::string_view ObjectTypeToString(uint8_t type)
-    {
-        static constexpr std::string_view Types[] = {
-            "ride",
-            "small_scenery",
-            "large_scenery",
-            "wall",
-            "banner",
-            "footpath",
-            "footpath_addition",
-            "scenery_group",
-            "park_entrance",
-            "water",
-            "stex",
-            "terrain_surface",
-            "terrain_edge",
-            "station",
-            "music",
-            "footpath_surface",
-            "footpath_railings",
-        };
-        if (type >= std::size(Types))
-            return "unknown";
-        return Types[type];
-    }
+    std::string_view objectTypeToString(ObjectType type);
+    ObjectType objectTypeFromString(std::string_view string);
 
     inline std::string_view ObjectSourceGameToString(ObjectSourceGame sourceGame)
     {
@@ -122,7 +100,7 @@ namespace OpenRCT2::Scripting
             auto installedObject = GetInstalledObject();
             if (installedObject != nullptr)
             {
-                return std::string(ObjectTypeToString(EnumValue(installedObject->Type)));
+                return std::string(objectTypeToString(installedObject->Type));
             }
             return {};
         }

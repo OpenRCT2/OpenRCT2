@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 
 #include <memory>
 #include <string>
@@ -19,7 +19,8 @@ namespace OpenRCT2
     struct IStream;
 }
 
-template<typename T> struct IConfigEnum;
+template<typename T>
+struct IConfigEnum;
 
 struct IIniWriter
 {
@@ -34,7 +35,8 @@ struct IIniWriter
     virtual void WriteString(const std::string& name, const std::string& value) = 0;
     virtual void WriteEnum(const std::string& name, const std::string& key) = 0;
 
-    template<typename T> void WriteEnum(const std::string& name, T value, const IConfigEnum<T>& configEnum)
+    template<typename T>
+    void WriteEnum(const std::string& name, T value, const IConfigEnum<T>& configEnum)
     {
         static_assert(sizeof(T) <= sizeof(int32_t), "Type too large");
 

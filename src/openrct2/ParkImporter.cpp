@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -41,16 +41,16 @@ namespace OpenRCT2::ParkImporter
 
     bool ExtensionIsOpenRCT2ParkFile(std::string_view extension)
     {
-        return String::IEquals(extension, ".park");
+        return String::iequals(extension, ".park");
     }
 
     bool ExtensionIsRCT1(std::string_view extension)
     {
-        return String::IEquals(extension, ".sc4") || String::IEquals(extension, ".sv4");
+        return String::iequals(extension, ".sc4") || String::iequals(extension, ".sv4");
     }
 
     bool ExtensionIsScenario(std::string_view extension)
     {
-        return String::IEquals(extension, ".sc4") || String::IEquals(extension, ".sc6") || String::IEquals(extension, ".sea");
+        return String::iequals(extension, ".sc4") || String::iequals(extension, ".sc6") || String::iequals(extension, ".sea");
     }
 } // namespace OpenRCT2::ParkImporter

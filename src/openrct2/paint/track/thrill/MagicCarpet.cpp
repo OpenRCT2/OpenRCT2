@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -41,16 +41,16 @@ enum
     SPR_MAGIC_CARPET_PENDULUM_SW = 22102,
 };
 
-static constexpr int16_t MagicCarpetOscillationZ[] = {
+static constexpr int16_t kMagicCarpetOscillationZ[] = {
     -2, -1, 1, 5, 10, 16, 23, 30, 37, 45, 52, 59, 65, 70, 74, 76, 77, 76, 74, 70, 65, 59, 52, 45, 37, 30, 23, 16, 10, 5, 1, -1,
 };
 
-static constexpr int8_t MagicCarpetOscillationXY[] = {
+static constexpr int8_t kMagicCarpetOscillationXY[] = {
     0, 6,  12,  18,  23,  27,  30,  31,  32,  31,  30,  27,  23,  18,  12,  6,
     0, -5, -11, -17, -22, -26, -29, -30, -31, -30, -29, -26, -22, -17, -11, -5,
 };
 
-static constexpr BoundBoxXY MagicCarpetBounds[] = {
+static constexpr BoundBoxXY kMagicCarpetBounds[] = {
     { { 0, 8 }, { 32, 16 } },
     { { 8, 0 }, { 16, 32 } },
     { { 0, 8 }, { 32, 16 } },
@@ -93,7 +93,7 @@ static ImageIndex GetMagicCarpetPendulumImage(Plane plane, Direction direction, 
 
 static Vehicle* GetFirstVehicle(const Ride& ride)
 {
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
     {
         return GetEntity<Vehicle>(ride.vehicles[0]);
     }
@@ -146,11 +146,11 @@ static void PaintMagicCarpetVehicle(
     PaintSession& session, const Ride& ride, uint8_t direction, int32_t swing, CoordsXYZ offset, const BoundBoxXYZ& bb,
     ImageId stationColour)
 {
-    const auto* rideEntry = ride.GetRideEntry();
+    const auto* rideEntry = ride.getRideEntry();
     if (rideEntry == nullptr)
         return;
 
-    auto directionalOffset = MagicCarpetOscillationXY[swing];
+    auto directionalOffset = kMagicCarpetOscillationXY[swing];
     switch (direction)
     {
         case 0:
@@ -166,10 +166,10 @@ static void PaintMagicCarpetVehicle(
             offset.y -= directionalOffset;
             break;
     }
-    offset.z += MagicCarpetOscillationZ[swing];
+    offset.z += kMagicCarpetOscillationZ[swing];
 
     // Vehicle
-    auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto imageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);
     if (stationColour != TrackStationColour)
     {
         imageTemplate = stationColour;
@@ -201,7 +201,7 @@ static void PaintMagicCarpetStructure(
         (direction & 1) ? axisOffset : 0,
         height + 7,
     };
-    BoundBoxXYZ bb = { { MagicCarpetBounds[direction].offset, height + 7 }, { MagicCarpetBounds[direction].length, 127 } };
+    BoundBoxXYZ bb = { { kMagicCarpetBounds[direction].offset, height + 7 }, { kMagicCarpetBounds[direction].length, 127 } };
 
     PaintMagicCarpetFrame(session, Plane::Back, direction, offset, bb);
     PaintMagicCarpetPendulum(session, Plane::Back, swing, direction, offset, bb);
@@ -225,9 +225,9 @@ static void PaintMagicCarpet(
         case 0:
         case 2:
             DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
-            const StationObject* stationObject = ride.GetStationObject();
+            const StationObject* stationObject = ride.getStationObject();
 
-            if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
+            if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
             {
                 auto imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_D);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
@@ -255,12 +255,13 @@ static void PaintMagicCarpet(
     PaintUtilSetGeneralSupportHeight(session, height + trackElement->ClearanceHeight - trackElement->BaseHeight);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionMagicCarpet(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionMagicCarpet(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
         case TrackElemType::FlatTrack1x4A:
             return PaintMagicCarpet;
+        default:
+            return TrackPaintFunctionDummy;
     }
-    return nullptr;
 }

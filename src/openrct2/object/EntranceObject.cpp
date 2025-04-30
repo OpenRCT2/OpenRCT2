@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,11 +9,12 @@
 
 #include "EntranceObject.h"
 
+#include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../localisation/LocalisationService.h"
+#include "../localisation/Language.h"
 #include "../paint/tile_element/Paint.TileElement.h"
 
 using namespace OpenRCT2;
@@ -70,7 +71,7 @@ void EntranceObject::ReadJson(IReadObjectContext* context, json_t& root)
 ImageIndex EntranceObject::GetImage(uint8_t sequence, Direction direction) const
 {
     if (sequence > 2)
-        return ImageIndexUndefined;
+        return kImageIndexUndefined;
     return _legacyType.image_id + ((direction & 3) * 3) + sequence;
 }
 

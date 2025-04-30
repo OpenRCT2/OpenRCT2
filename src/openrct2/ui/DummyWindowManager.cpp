@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,14 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../localisation/Formatter.h"
 #include "WindowManager.h"
+
+class Formatter;
 
 namespace OpenRCT2::Ui
 {
     class DummyWindowManager final : public IWindowManager
     {
-        void Init() override{};
+        void Init() override {};
         WindowBase* OpenWindow(WindowClass /*wc*/) override
         {
             return nullptr;
@@ -66,6 +67,71 @@ namespace OpenRCT2::Ui
         {
         }
         WindowBase* GetOwner(const Viewport* viewport) override
+        {
+            return nullptr;
+        }
+
+        WindowBase* Create(
+            std::unique_ptr<WindowBase>&& w, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height,
+            WindowFlags flags) override
+        {
+            return nullptr;
+        }
+
+        void Close(WindowBase& window) override {};
+        void CloseSurplus(int32_t cap, WindowClass avoid_classification) override {};
+        void CloseByClass(WindowClass cls) override {};
+        void CloseByNumber(WindowClass cls, rct_windownumber number) override {};
+        void CloseByNumber(WindowClass cls, EntityId number) override {};
+        void CloseTop() override {};
+        void CloseAll() override {};
+        void CloseAllExceptClass(WindowClass cls) override {};
+        void CloseAllExceptFlags(WindowFlags flags) override {};
+        void CloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls) override {};
+        void CloseConstructionWindows() override {};
+
+        WindowBase* FindByClass(WindowClass cls) override
+        {
+            return nullptr;
+        }
+        WindowBase* FindByNumber(WindowClass cls, rct_windownumber number) override
+        {
+            return nullptr;
+        }
+        WindowBase* FindByNumber(WindowClass cls, EntityId id) override
+        {
+            return nullptr;
+        }
+        WindowBase* FindFromPoint(const ScreenCoordsXY& screenCoords) override
+        {
+            return nullptr;
+        }
+        WidgetIndex FindWidgetFromPoint(WindowBase& w, const ScreenCoordsXY& screenCoords) override
+        {
+            return kWidgetIndexNull;
+        }
+
+        void InvalidateByClass(WindowClass cls) override {};
+        void InvalidateByNumber(WindowClass cls, rct_windownumber number) override {};
+        void InvalidateByNumber(WindowClass cls, EntityId id) override {};
+        void InvalidateAll() override {};
+        void InvalidateWidget(WindowBase& w, WidgetIndex widgetIndex) override {};
+        void InvalidateWidgetByClass(WindowClass cls, WidgetIndex widgetIndex) override {};
+        void InvalidateWidgetByNumber(WindowClass cls, rct_windownumber number, WidgetIndex widgetIndex) override {};
+
+        WindowBase* BringToFront(WindowBase& w) override
+        {
+            return nullptr;
+        }
+        WindowBase* BringToFrontByClass(WindowClass cls) override
+        {
+            return nullptr;
+        }
+        WindowBase* BringToFrontByClassWithFlags(WindowClass cls, WindowFlags flags) override
+        {
+            return nullptr;
+        }
+        WindowBase* BringToFrontByNumber(WindowClass cls, rct_windownumber number) override
         {
             return nullptr;
         }

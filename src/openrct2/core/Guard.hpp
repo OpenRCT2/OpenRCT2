@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,15 +11,16 @@
 
 #include <memory>
 #include <optional>
+#include <source_location>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <string>
 
-enum class ASSERT_BEHAVIOUR
+enum class AssertBehaviour
 {
-    ABORT,
-    CASSERT,
-    MESSAGE_BOX,
+    abort,
+    cAssert,
+    messageBox,
 };
 
 /**
@@ -27,17 +28,19 @@ enum class ASSERT_BEHAVIOUR
  */
 namespace OpenRCT2::Guard
 {
-    ASSERT_BEHAVIOUR GetAssertBehaviour();
-    void SetAssertBehaviour(ASSERT_BEHAVIOUR behaviour);
+    AssertBehaviour GetAssertBehaviour();
+    void SetAssertBehaviour(AssertBehaviour behaviour);
 
-    void Assert(bool expression, const char* message = nullptr, ...);
+    void Assert(bool expression, const std::source_location& location = std::source_location::current());
+    void Assert(bool expression, const char* message, ...);
     void Assert_VA(bool expression, const char* message, va_list args);
     void Fail(const char* message = nullptr, ...);
     void Fail_VA(const char* message, va_list args);
 
     std::optional<std::string> GetLastAssertMessage();
 
-    template<typename T> static void ArgumentNotNull(T* argument, const char* message = nullptr, ...)
+    template<typename T>
+    static void ArgumentNotNull(T* argument, const char* message = nullptr, ...)
     {
         va_list args;
         va_start(args, message);
@@ -45,7 +48,8 @@ namespace OpenRCT2::Guard
         va_end(args);
     }
 
-    template<typename T> static void ArgumentNotNull(const std::shared_ptr<T>& argument, const char* message = nullptr, ...)
+    template<typename T>
+    static void ArgumentNotNull(const std::shared_ptr<T>& argument, const char* message = nullptr, ...)
     {
         va_list args;
         va_start(args, message);
@@ -53,7 +57,8 @@ namespace OpenRCT2::Guard
         va_end(args);
     }
 
-    template<typename T> static void ArgumentInRange(T argument, T min, T max, const char* message = nullptr, ...)
+    template<typename T>
+    static void ArgumentInRange(T argument, T min, T max, const char* message = nullptr, ...)
     {
         va_list args;
         va_start(args, message);
@@ -61,7 +66,8 @@ namespace OpenRCT2::Guard
         va_end(args);
     }
 
-    template<typename T> static void IndexInRange(size_t index, const T& container)
+    template<typename T>
+    static void IndexInRange(size_t index, const T& container)
     {
         Guard::Assert(index < container.size(), "Index %zu out of bounds (%zu)", index, container.size());
     }

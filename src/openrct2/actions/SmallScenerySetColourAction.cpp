@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,15 +14,13 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
 #include "../ride/TrackDesign.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
-#include "../world/Surface.h"
-#include "../world/TileElement.h"
+#include "../world/tile_element/SmallSceneryElement.h"
 
 using namespace OpenRCT2;
 
@@ -85,7 +83,7 @@ GameActions::Result SmallScenerySetColourAction::QueryExecute(bool isExecuting) 
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
+    if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
     {
         if (!MapIsLocationOwned(_loc))
         {
@@ -98,7 +96,7 @@ GameActions::Result SmallScenerySetColourAction::QueryExecute(bool isExecuting) 
     if (sceneryElement == nullptr)
     {
         LOG_ERROR("Small scenery not found at: x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
     }
 
     if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(sceneryElement->IsGhost()))

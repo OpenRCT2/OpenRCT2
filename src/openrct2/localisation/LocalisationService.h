@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,7 +15,6 @@
 #include <stack>
 #include <string>
 #include <string_view>
-#include <tuple>
 #include <vector>
 
 struct ILanguagePack;
@@ -58,7 +57,6 @@ namespace OpenRCT2::Localisation
         ~LocalisationService();
 
         const char* GetString(StringId id) const;
-        std::tuple<StringId, StringId, StringId> GetLocalisedScenarioStrings(const std::string& scenarioFilename) const;
         std::string GetLanguagePath(uint32_t languageId) const;
 
         void OpenLanguage(int32_t id);

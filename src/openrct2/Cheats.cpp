@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,16 +13,13 @@
 #include "actions/CheatSetAction.h"
 #include "actions/ParkSetLoanAction.h"
 #include "core/DataSerialiser.h"
-#include "network/network.h"
+#include "network/Network.h"
 #include "ride/Ride.h"
-#include "scenario/Scenario.h"
-#include "util/Util.h"
 #include "world/Climate.h"
 #include "world/Footpath.h"
 #include "world/Map.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
-#include "world/Surface.h"
 
 using namespace OpenRCT2;
 
@@ -31,34 +28,35 @@ using namespace OpenRCT2;
 
 void CheatsReset()
 {
-    auto& gameState = GetGameState();
-    gameState.Cheats.SandboxMode = false;
-    gameState.Cheats.DisableClearanceChecks = false;
-    gameState.Cheats.DisableSupportLimits = false;
-    gameState.Cheats.ShowAllOperatingModes = false;
-    gameState.Cheats.ShowVehiclesFromOtherTrackTypes = false;
-    gameState.Cheats.DisableTrainLengthLimit = false;
-    gameState.Cheats.EnableChainLiftOnAllTrack = false;
-    gameState.Cheats.UnlockOperatingLimits = false;
-    gameState.Cheats.DisableBrakesFailure = false;
-    gameState.Cheats.DisableAllBreakdowns = false;
-    gameState.Cheats.BuildInPauseMode = false;
-    gameState.Cheats.IgnoreRideIntensity = false;
-    gameState.Cheats.IgnorePrice = false;
-    gameState.Cheats.DisableVandalism = false;
-    gameState.Cheats.DisableLittering = false;
-    gameState.Cheats.NeverendingMarketing = false;
-    gameState.Cheats.FreezeWeather = false;
-    gameState.Cheats.DisablePlantAging = false;
-    gameState.Cheats.AllowArbitraryRideTypeChanges = false;
-    gameState.Cheats.DisableRideValueAging = false;
-    gameState.Cheats.IgnoreResearchStatus = false;
-    gameState.Cheats.EnableAllDrawableTrackPieces = false;
-    gameState.Cheats.AllowTrackPlaceInvalidHeights = false;
-    gameState.Cheats.AllowRegularPathAsQueue = false;
-    gameState.Cheats.AllowSpecialColourSchemes = false;
-    gameState.Cheats.MakeAllDestructible = false;
-    gameState.Cheats.SelectedStaffSpeed = StaffSpeedCheat::None;
+    auto& gameState = getGameState();
+    gameState.cheats.sandboxMode = false;
+    gameState.cheats.disableClearanceChecks = false;
+    gameState.cheats.disableSupportLimits = false;
+    gameState.cheats.showAllOperatingModes = false;
+    gameState.cheats.showVehiclesFromOtherTrackTypes = false;
+    gameState.cheats.disableTrainLengthLimit = false;
+    gameState.cheats.enableChainLiftOnAllTrack = false;
+    gameState.cheats.unlockOperatingLimits = false;
+    gameState.cheats.disableBrakesFailure = false;
+    gameState.cheats.disableAllBreakdowns = false;
+    gameState.cheats.buildInPauseMode = false;
+    gameState.cheats.ignoreRideIntensity = false;
+    gameState.cheats.ignorePrice = false;
+    gameState.cheats.disableVandalism = false;
+    gameState.cheats.disableLittering = false;
+    gameState.cheats.neverendingMarketing = false;
+    gameState.cheats.freezeWeather = false;
+    gameState.cheats.disablePlantAging = false;
+    gameState.cheats.allowArbitraryRideTypeChanges = false;
+    gameState.cheats.disableRideValueAging = false;
+    gameState.cheats.ignoreResearchStatus = false;
+    gameState.cheats.enableAllDrawableTrackPieces = false;
+    gameState.cheats.allowTrackPlaceInvalidHeights = false;
+    gameState.cheats.allowRegularPathAsQueue = false;
+    gameState.cheats.allowSpecialColourSchemes = false;
+    gameState.cheats.makeAllDestructible = false;
+    gameState.cheats.selectedStaffSpeed = StaffSpeedCheat::None;
+    gameState.cheats.forcedParkRating = kForcedParkRatingDisabled;
 }
 
 void CheatsSet(CheatType cheatType, int64_t param1 /* = 0*/, int64_t param2 /* = 0*/)
@@ -67,7 +65,8 @@ void CheatsSet(CheatType cheatType, int64_t param1 /* = 0*/, int64_t param2 /* =
     GameActions::Execute(&cheatSetAction);
 }
 
-template<typename T> static void CheatEntrySerialise(DataSerialiser& ds, CheatType type, const T& value, uint16_t& count)
+template<typename T>
+static void CheatEntrySerialise(DataSerialiser& ds, CheatType type, const T& value, uint16_t& count)
 {
     ds << static_cast<int32_t>(type) << value;
     count++;
@@ -76,7 +75,7 @@ template<typename T> static void CheatEntrySerialise(DataSerialiser& ds, CheatTy
 void CheatsSerialise(DataSerialiser& ds)
 {
     uint16_t count = 0;
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     if (ds.IsSaving())
     {
@@ -86,36 +85,37 @@ void CheatsSerialise(DataSerialiser& ds)
         uint64_t countOffset = stream.GetPosition();
         ds << count;
 
-        CheatEntrySerialise(ds, CheatType::SandboxMode, gameState.Cheats.SandboxMode, count);
-        CheatEntrySerialise(ds, CheatType::DisableClearanceChecks, gameState.Cheats.DisableClearanceChecks, count);
-        CheatEntrySerialise(ds, CheatType::DisableSupportLimits, gameState.Cheats.DisableSupportLimits, count);
-        CheatEntrySerialise(ds, CheatType::ShowAllOperatingModes, gameState.Cheats.ShowAllOperatingModes, count);
+        CheatEntrySerialise(ds, CheatType::SandboxMode, gameState.cheats.sandboxMode, count);
+        CheatEntrySerialise(ds, CheatType::DisableClearanceChecks, gameState.cheats.disableClearanceChecks, count);
+        CheatEntrySerialise(ds, CheatType::DisableSupportLimits, gameState.cheats.disableSupportLimits, count);
+        CheatEntrySerialise(ds, CheatType::ShowAllOperatingModes, gameState.cheats.showAllOperatingModes, count);
         CheatEntrySerialise(
-            ds, CheatType::ShowVehiclesFromOtherTrackTypes, gameState.Cheats.ShowVehiclesFromOtherTrackTypes, count);
-        CheatEntrySerialise(ds, CheatType::FastLiftHill, gameState.Cheats.UnlockOperatingLimits, count);
-        CheatEntrySerialise(ds, CheatType::DisableBrakesFailure, gameState.Cheats.DisableBrakesFailure, count);
-        CheatEntrySerialise(ds, CheatType::DisableAllBreakdowns, gameState.Cheats.DisableAllBreakdowns, count);
-        CheatEntrySerialise(ds, CheatType::BuildInPauseMode, gameState.Cheats.BuildInPauseMode, count);
-        CheatEntrySerialise(ds, CheatType::IgnoreRideIntensity, gameState.Cheats.IgnoreRideIntensity, count);
-        CheatEntrySerialise(ds, CheatType::DisableVandalism, gameState.Cheats.DisableVandalism, count);
-        CheatEntrySerialise(ds, CheatType::DisableLittering, gameState.Cheats.DisableLittering, count);
-        CheatEntrySerialise(ds, CheatType::NeverEndingMarketing, gameState.Cheats.NeverendingMarketing, count);
-        CheatEntrySerialise(ds, CheatType::FreezeWeather, gameState.Cheats.FreezeWeather, count);
-        CheatEntrySerialise(ds, CheatType::DisableTrainLengthLimit, gameState.Cheats.DisableTrainLengthLimit, count);
-        CheatEntrySerialise(ds, CheatType::DisablePlantAging, gameState.Cheats.DisablePlantAging, count);
-        CheatEntrySerialise(ds, CheatType::EnableChainLiftOnAllTrack, gameState.Cheats.EnableChainLiftOnAllTrack, count);
+            ds, CheatType::ShowVehiclesFromOtherTrackTypes, gameState.cheats.showVehiclesFromOtherTrackTypes, count);
+        CheatEntrySerialise(ds, CheatType::FastLiftHill, gameState.cheats.unlockOperatingLimits, count);
+        CheatEntrySerialise(ds, CheatType::DisableBrakesFailure, gameState.cheats.disableBrakesFailure, count);
+        CheatEntrySerialise(ds, CheatType::DisableAllBreakdowns, gameState.cheats.disableAllBreakdowns, count);
+        CheatEntrySerialise(ds, CheatType::BuildInPauseMode, gameState.cheats.buildInPauseMode, count);
+        CheatEntrySerialise(ds, CheatType::IgnoreRideIntensity, gameState.cheats.ignoreRideIntensity, count);
+        CheatEntrySerialise(ds, CheatType::DisableVandalism, gameState.cheats.disableVandalism, count);
+        CheatEntrySerialise(ds, CheatType::DisableLittering, gameState.cheats.disableLittering, count);
+        CheatEntrySerialise(ds, CheatType::NeverendingMarketing, gameState.cheats.neverendingMarketing, count);
+        CheatEntrySerialise(ds, CheatType::FreezeWeather, gameState.cheats.freezeWeather, count);
+        CheatEntrySerialise(ds, CheatType::DisableTrainLengthLimit, gameState.cheats.disableTrainLengthLimit, count);
+        CheatEntrySerialise(ds, CheatType::DisablePlantAging, gameState.cheats.disablePlantAging, count);
+        CheatEntrySerialise(ds, CheatType::EnableChainLiftOnAllTrack, gameState.cheats.enableChainLiftOnAllTrack, count);
         CheatEntrySerialise(
-            ds, CheatType::AllowArbitraryRideTypeChanges, gameState.Cheats.AllowArbitraryRideTypeChanges, count);
-        CheatEntrySerialise(ds, CheatType::DisableRideValueAging, gameState.Cheats.DisableRideValueAging, count);
-        CheatEntrySerialise(ds, CheatType::IgnoreResearchStatus, gameState.Cheats.IgnoreResearchStatus, count);
-        CheatEntrySerialise(ds, CheatType::EnableAllDrawableTrackPieces, gameState.Cheats.EnableAllDrawableTrackPieces, count);
+            ds, CheatType::AllowArbitraryRideTypeChanges, gameState.cheats.allowArbitraryRideTypeChanges, count);
+        CheatEntrySerialise(ds, CheatType::DisableRideValueAging, gameState.cheats.disableRideValueAging, count);
+        CheatEntrySerialise(ds, CheatType::IgnoreResearchStatus, gameState.cheats.ignoreResearchStatus, count);
+        CheatEntrySerialise(ds, CheatType::EnableAllDrawableTrackPieces, gameState.cheats.enableAllDrawableTrackPieces, count);
         CheatEntrySerialise(
-            ds, CheatType::AllowTrackPlaceInvalidHeights, gameState.Cheats.AllowTrackPlaceInvalidHeights, count);
-        CheatEntrySerialise(ds, CheatType::AllowRegularPathAsQueue, gameState.Cheats.AllowRegularPathAsQueue, count);
-        CheatEntrySerialise(ds, CheatType::AllowSpecialColourSchemes, gameState.Cheats.AllowSpecialColourSchemes, count);
-        CheatEntrySerialise(ds, CheatType::MakeDestructible, gameState.Cheats.MakeAllDestructible, count);
-        CheatEntrySerialise(ds, CheatType::SetStaffSpeed, gameState.Cheats.SelectedStaffSpeed, count);
-        CheatEntrySerialise(ds, CheatType::IgnorePrice, gameState.Cheats.IgnorePrice, count);
+            ds, CheatType::AllowTrackPlaceInvalidHeights, gameState.cheats.allowTrackPlaceInvalidHeights, count);
+        CheatEntrySerialise(ds, CheatType::AllowRegularPathAsQueue, gameState.cheats.allowRegularPathAsQueue, count);
+        CheatEntrySerialise(ds, CheatType::AllowSpecialColourSchemes, gameState.cheats.allowSpecialColourSchemes, count);
+        CheatEntrySerialise(ds, CheatType::MakeDestructible, gameState.cheats.makeAllDestructible, count);
+        CheatEntrySerialise(ds, CheatType::SetStaffSpeed, gameState.cheats.selectedStaffSpeed, count);
+        CheatEntrySerialise(ds, CheatType::IgnorePrice, gameState.cheats.ignorePrice, count);
+        CheatEntrySerialise(ds, CheatType::SetForcedParkRating, gameState.cheats.forcedParkRating, count);
 
         // Remember current position and update count.
         uint64_t endOffset = stream.GetPosition();
@@ -140,89 +140,91 @@ void CheatsSerialise(DataSerialiser& ds)
             switch (static_cast<CheatType>(type))
             {
                 case CheatType::SandboxMode:
-                    ds << gameState.Cheats.SandboxMode;
+                    ds << gameState.cheats.sandboxMode;
                     break;
                 case CheatType::DisableClearanceChecks:
-                    ds << gameState.Cheats.DisableClearanceChecks;
+                    ds << gameState.cheats.disableClearanceChecks;
                     break;
                 case CheatType::DisableSupportLimits:
-                    ds << gameState.Cheats.DisableSupportLimits;
+                    ds << gameState.cheats.disableSupportLimits;
                     break;
                 case CheatType::ShowAllOperatingModes:
-                    ds << gameState.Cheats.ShowAllOperatingModes;
+                    ds << gameState.cheats.showAllOperatingModes;
                     break;
                 case CheatType::ShowVehiclesFromOtherTrackTypes:
-                    ds << gameState.Cheats.ShowVehiclesFromOtherTrackTypes;
+                    ds << gameState.cheats.showVehiclesFromOtherTrackTypes;
                     break;
                 case CheatType::FastLiftHill:
-                    ds << gameState.Cheats.UnlockOperatingLimits;
+                    ds << gameState.cheats.unlockOperatingLimits;
                     break;
                 case CheatType::DisableBrakesFailure:
-                    ds << gameState.Cheats.DisableBrakesFailure;
+                    ds << gameState.cheats.disableBrakesFailure;
                     break;
                 case CheatType::DisableAllBreakdowns:
-                    ds << gameState.Cheats.DisableAllBreakdowns;
+                    ds << gameState.cheats.disableAllBreakdowns;
                     break;
                 case CheatType::BuildInPauseMode:
-                    ds << gameState.Cheats.BuildInPauseMode;
+                    ds << gameState.cheats.buildInPauseMode;
                     break;
                 case CheatType::IgnoreRideIntensity:
-                    ds << gameState.Cheats.IgnoreRideIntensity;
+                    ds << gameState.cheats.ignoreRideIntensity;
                     break;
                 case CheatType::IgnorePrice:
-                    ds << gameState.Cheats.IgnorePrice;
+                    ds << gameState.cheats.ignorePrice;
                     break;
                 case CheatType::DisableVandalism:
-                    ds << gameState.Cheats.DisableVandalism;
+                    ds << gameState.cheats.disableVandalism;
                     break;
                 case CheatType::DisableLittering:
-                    ds << gameState.Cheats.DisableLittering;
+                    ds << gameState.cheats.disableLittering;
                     break;
-                case CheatType::NeverEndingMarketing:
-                    ds << gameState.Cheats.NeverendingMarketing;
+                case CheatType::NeverendingMarketing:
+                    ds << gameState.cheats.neverendingMarketing;
                     break;
                 case CheatType::FreezeWeather:
-                    ds << gameState.Cheats.FreezeWeather;
+                    ds << gameState.cheats.freezeWeather;
                     break;
                 case CheatType::DisableTrainLengthLimit:
-                    ds << gameState.Cheats.DisableTrainLengthLimit;
+                    ds << gameState.cheats.disableTrainLengthLimit;
                     break;
                 case CheatType::DisablePlantAging:
-                    ds << gameState.Cheats.DisablePlantAging;
+                    ds << gameState.cheats.disablePlantAging;
                     break;
                 case CheatType::EnableChainLiftOnAllTrack:
-                    ds << gameState.Cheats.EnableChainLiftOnAllTrack;
+                    ds << gameState.cheats.enableChainLiftOnAllTrack;
                     break;
                 case CheatType::AllowArbitraryRideTypeChanges:
-                    ds << gameState.Cheats.AllowArbitraryRideTypeChanges;
+                    ds << gameState.cheats.allowArbitraryRideTypeChanges;
                     break;
                 case CheatType::DisableRideValueAging:
-                    ds << gameState.Cheats.DisableRideValueAging;
+                    ds << gameState.cheats.disableRideValueAging;
                     break;
                 case CheatType::IgnoreResearchStatus:
-                    ds << gameState.Cheats.IgnoreResearchStatus;
+                    ds << gameState.cheats.ignoreResearchStatus;
                     break;
                 case CheatType::EnableAllDrawableTrackPieces:
-                    ds << gameState.Cheats.EnableAllDrawableTrackPieces;
+                    ds << gameState.cheats.enableAllDrawableTrackPieces;
                     break;
                 case CheatType::AllowTrackPlaceInvalidHeights:
-                    ds << gameState.Cheats.AllowTrackPlaceInvalidHeights;
+                    ds << gameState.cheats.allowTrackPlaceInvalidHeights;
                     break;
                 case CheatType::NoCapOnQueueLengthDummy:
                     ds << dummyBool;
                     break;
                 case CheatType::AllowRegularPathAsQueue:
-                    ds << gameState.Cheats.AllowRegularPathAsQueue;
+                    ds << gameState.cheats.allowRegularPathAsQueue;
                     break;
                 case CheatType::AllowSpecialColourSchemes:
-                    ds << gameState.Cheats.AllowSpecialColourSchemes;
+                    ds << gameState.cheats.allowSpecialColourSchemes;
                     break;
                 case CheatType::MakeDestructible:
-                    ds << gameState.Cheats.MakeAllDestructible;
+                    ds << gameState.cheats.makeAllDestructible;
                     break;
                 case CheatType::SetStaffSpeed:
-                    ds << gameState.Cheats.SelectedStaffSpeed;
+                    ds << gameState.cheats.selectedStaffSpeed;
                     break;
+                case CheatType::SetForcedParkRating:
+                    ds << gameState.cheats.forcedParkRating;
                 default:
                     break;
             }
@@ -306,7 +308,7 @@ const char* CheatsGetName(CheatType cheatType)
             return LanguageGetString(STR_CHANGE_WEATHER);
         case CheatType::FreezeWeather:
             return LanguageGetString(STR_CHEAT_FREEZE_WEATHER);
-        case CheatType::NeverEndingMarketing:
+        case CheatType::NeverendingMarketing:
             return LanguageGetString(STR_CHEAT_NEVERENDING_MARKETING);
         case CheatType::OpenClosePark:
             return LanguageGetString(STR_CHEAT_OPEN_PARK);

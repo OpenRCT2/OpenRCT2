@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,9 +22,14 @@
 #include "../world/Banner.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/MapAnimation.h"
-#include "../world/Surface.h"
 #include "../world/Wall.h"
+#include "../world/tile_element/LargeSceneryElement.h"
+#include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/Slope.h"
+#include "../world/tile_element/SmallSceneryElement.h"
+#include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TrackElement.h"
+#include "../world/tile_element/WallElement.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
@@ -84,10 +89,10 @@ GameActions::Result WallPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     auto mapSizeMax = GetMapSizeMaxXY();
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN)
-        && !gameState.Cheats.SandboxMode)
+    if (gLegacyScene != LegacyScene::scenarioEditor && !(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN)
+        && !gameState.cheats.sandboxMode)
     {
         if (_loc.z == 0)
         {
@@ -109,7 +114,7 @@ GameActions::Result WallPlaceAction::Query() const
 
     if (_edge > 3)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
     }
 
     uint8_t edgeSlope = 0;
@@ -146,14 +151,14 @@ GameActions::Result WallPlaceAction::Query() const
     {
         uint16_t waterHeight = surfaceElement->GetWaterHeight();
 
-        if (targetHeight < waterHeight && !gameState.Cheats.DisableClearanceChecks)
+        if (targetHeight < waterHeight && !gameState.cheats.disableClearanceChecks)
         {
             return GameActions::Result(
                 GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
         }
     }
 
-    if (targetHeight < surfaceElement->GetBaseZ() && !gameState.Cheats.DisableClearanceChecks)
+    if (targetHeight < surfaceElement->GetBaseZ() && !gameState.cheats.disableClearanceChecks)
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
@@ -166,7 +171,7 @@ GameActions::Result WallPlaceAction::Query() const
         newBaseHeight += 2;
         if (surfaceElement->GetSlope() & (1 << newEdge))
         {
-            if (targetHeight / 8 < newBaseHeight && !gameState.Cheats.DisableClearanceChecks)
+            if (targetHeight / 8 < newBaseHeight && !gameState.cheats.disableClearanceChecks)
             {
                 return GameActions::Result(
                     GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
@@ -182,7 +187,7 @@ GameActions::Result WallPlaceAction::Query() const
                     if (surfaceElement->GetSlope() & (1 << newEdge))
                     {
                         newBaseHeight += 2;
-                        if (targetHeight / 8 < newBaseHeight && !gameState.Cheats.DisableClearanceChecks)
+                        if (targetHeight / 8 < newBaseHeight && !gameState.cheats.disableClearanceChecks)
                         {
                             return GameActions::Result(
                                 GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE,
@@ -197,7 +202,7 @@ GameActions::Result WallPlaceAction::Query() const
         newEdge = (_edge + 3) & 3;
         if (surfaceElement->GetSlope() & (1 << newEdge))
         {
-            if (targetHeight / 8 < newBaseHeight && !gameState.Cheats.DisableClearanceChecks)
+            if (targetHeight / 8 < newBaseHeight && !gameState.cheats.disableClearanceChecks)
             {
                 return GameActions::Result(
                     GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
@@ -213,7 +218,7 @@ GameActions::Result WallPlaceAction::Query() const
                     if (surfaceElement->GetSlope() & (1 << newEdge))
                     {
                         newBaseHeight += 2;
-                        if (targetHeight / 8 < newBaseHeight && !gameState.Cheats.DisableClearanceChecks)
+                        if (targetHeight / 8 < newBaseHeight && !gameState.cheats.disableClearanceChecks)
                         {
                             return GameActions::Result(
                                 GameActions::Status::Disallowed, STR_CANT_BUILD_THIS_HERE,
@@ -256,7 +261,7 @@ GameActions::Result WallPlaceAction::Query() const
     clearanceHeight += wallEntry->height;
 
     bool wallAcrossTrack = false;
-    if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN) && !gameState.Cheats.DisableClearanceChecks)
+    if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN) && !gameState.cheats.disableClearanceChecks)
     {
         auto result = WallCheckObstruction(wallEntry, targetHeight / 8, clearanceHeight, &wallAcrossTrack);
         if (result.Error != GameActions::Status::Ok)
@@ -281,7 +286,7 @@ GameActions::Result WallPlaceAction::Query() const
 GameActions::Result WallPlaceAction::Execute() const
 {
     auto res = GameActions::Result();
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     res.ErrorTitle = STR_CANT_BUILD_THIS_HERE;
     res.Position = _loc;
@@ -334,7 +339,7 @@ GameActions::Result WallPlaceAction::Execute() const
     clearanceHeight += wallEntry->height;
 
     bool wallAcrossTrack = false;
-    if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN) && !gameState.Cheats.DisableClearanceChecks)
+    if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN) && !gameState.cheats.disableClearanceChecks)
     {
         auto result = WallCheckObstruction(wallEntry, targetHeight / kCoordsZStep, clearanceHeight, &wallAcrossTrack);
         if (result.Error != GameActions::Status::Ok)
@@ -412,7 +417,7 @@ GameActions::Result WallPlaceAction::Execute() const
 bool WallPlaceAction::WallCheckObstructionWithTrack(
     const WallSceneryEntry* wall, int32_t z0, TrackElement* trackElement, bool* wallAcrossTrack) const
 {
-    track_type_t trackType = trackElement->GetTrackType();
+    OpenRCT2::TrackElemType trackType = trackElement->GetTrackType();
 
     using namespace OpenRCT2::TrackMetaData;
     const auto& ted = GetTrackElementDescriptor(trackType);
@@ -434,7 +439,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         return false;
     }
 
-    if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::allowDoorsOnTrack))
+    if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::allowDoorsOnTrack))
     {
         return false;
     }
@@ -448,7 +453,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
     int32_t z;
     if (sequence == 0)
     {
-        if (std::get<0>(ted.sequenceProperties) & TRACK_SEQUENCE_FLAG_DISALLOW_DOORS)
+        if (ted.sequences[0].flags & TRACK_SEQUENCE_FLAG_DISALLOW_DOORS)
         {
             return false;
         }
@@ -460,9 +465,8 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
                 direction = DirectionReverse(trackElement->GetDirection());
                 if (direction == _edge)
                 {
-                    const PreviewTrack* trackBlock = ted.GetBlockForSequence(sequence);
                     z = ted.coordinates.zBegin;
-                    z = trackElement->BaseHeight + ((z - trackBlock->z) * 8);
+                    z = trackElement->BaseHeight + ((z - ted.sequences[sequence].clearance.z) * 8);
                     if (z == z0)
                     {
                         return true;
@@ -472,8 +476,8 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         }
     }
 
-    const PreviewTrack* trackBlock = &ted.block[sequence + 1];
-    if (trackBlock->index != 0xFF)
+    bool isLastInSequence = (sequence + 1) == ted.numSequences;
+    if (!isLastInSequence)
     {
         return false;
     }
@@ -495,9 +499,8 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         return false;
     }
 
-    trackBlock = ted.GetBlockForSequence(sequence);
     z = ted.coordinates.zEnd;
-    z = trackElement->BaseHeight + ((z - trackBlock->z) * 8);
+    z = trackElement->BaseHeight + ((z - ted.sequences[sequence].clearance.z) * kCoordsZStep);
     return z == z0;
 }
 
@@ -533,7 +536,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
             int32_t direction = tileElement->GetDirection();
             if (_edge == direction)
             {
-                auto res = GameActions::Result(GameActions::Status::NoClearance, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+                auto res = GameActions::Result(GameActions::Status::NoClearance, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
                 MapGetObstructionErrorText(tileElement, res);
                 return res;
             }
@@ -541,7 +544,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
         }
         if (tileElement->GetOccupiedQuadrants() == 0)
             continue;
-        auto res = GameActions::Result(GameActions::Status::NoClearance, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+        auto res = GameActions::Result(GameActions::Status::NoClearance, STR_CANT_BUILD_THIS_HERE, kStringIdNone);
         switch (elementType)
         {
             case TileElementType::Entrance:
@@ -566,8 +569,8 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
                 auto sequence = largeSceneryElement->GetSequenceIndex();
                 const LargeSceneryTile& tile = sceneryEntry->tiles[sequence];
 
-                int32_t direction = ((_edge - tileElement->GetDirection()) & kTileElementDirectionMask) + 8;
-                if (!(tile.flags & (1 << direction)))
+                int32_t direction = ((_edge - tileElement->GetDirection()) & kTileElementDirectionMask);
+                if (!(tile.walls & (1 << direction)))
                 {
                     MapGetObstructionErrorText(tileElement, res);
                     return res;
@@ -600,12 +603,12 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
 }
 
 bool WallPlaceAction::TrackIsAllowedWallEdges(
-    ride_type_t rideType, track_type_t trackType, uint8_t trackSequence, uint8_t direction)
+    ride_type_t rideType, OpenRCT2::TrackElemType trackType, uint8_t trackSequence, uint8_t direction)
 {
     if (!GetRideTypeDescriptor(rideType).HasFlag(RtdFlag::noWallsAroundTrack))
     {
         const auto& ted = GetTrackElementDescriptor(trackType);
-        if (ted.sequenceElementAllowedWallEdges[trackSequence] & (1 << direction))
+        if (ted.sequences[trackSequence].allowedWallEdges & (1 << direction))
         {
             return true;
         }

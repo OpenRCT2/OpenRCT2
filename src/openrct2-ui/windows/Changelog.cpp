@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,8 +9,7 @@
 
 #include <fstream>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/PlatformEnvironment.h>
@@ -21,7 +20,7 @@
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
-#include <openrct2/util/Util.h>
+#include <openrct2/ui/WindowManager.h>
 #include <vector>
 
 namespace OpenRCT2::Ui::Windows
@@ -48,7 +47,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({0,  14}, {500, 382}, WindowWidgetType::Resize,      WindowColour::Secondary                               ), // content panel
         MakeWidget({3,  16}, {495, 366}, WindowWidgetType::Scroll,      WindowColour::Secondary, SCROLL_BOTH                  ), // scroll area
         MakeWidget({3, 473}, {300,  14}, WindowWidgetType::Placeholder, WindowColour::Secondary, STR_NEW_RELEASE_DOWNLOAD_PAGE), // changelog button
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -63,7 +61,7 @@ namespace OpenRCT2::Ui::Windows
         /**
          * @brief Retrieves the changelog contents.
          */
-        const std::string GetText(PATHID pathId)
+        const std::string GetText(PathId pathId)
         {
             auto env = GetContext()->GetPlatformEnvironment();
             auto path = env->GetFilePath(pathId);
@@ -101,7 +99,7 @@ namespace OpenRCT2::Ui::Windows
                     return true;
 
                 case WV_CHANGELOG:
-                    if (!ReadFile(PATHID::CHANGELOG))
+                    if (!ReadFile(PathId::changelog))
                     {
                         return false;
                     }
@@ -110,7 +108,7 @@ namespace OpenRCT2::Ui::Windows
                     return true;
 
                 case WV_CONTRIBUTORS:
-                    if (!ReadFile(PATHID::CONTRIBUTORS))
+                    if (!ReadFile(PathId::contributors))
                     {
                         return false;
                     }
@@ -124,47 +122,33 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnOpen() override
-        {
-            widgets = _windowChangelogWidgets;
-
-            WindowInitScrollWidgets(*this);
-            min_width = MIN_WW;
-            min_height = MIN_WH;
-            max_width = MIN_WW;
-            max_height = MIN_WH;
-        }
-
-        void OnResize() override
+        void SetResizeDimensions()
         {
             int32_t screenWidth = ContextGetWidth();
             int32_t screenHeight = ContextGetHeight();
 
-            max_width = (screenWidth * 4) / 5;
-            max_height = (screenHeight * 4) / 5;
+            WindowSetResize(*this, { MIN_WW, MIN_WH }, { (screenWidth * 4) / 5, (screenHeight * 4) / 5 });
+        }
 
-            min_width = MIN_WW;
-            min_height = MIN_WH;
+        void OnOpen() override
+        {
+            SetWidgets(_windowChangelogWidgets);
 
-            auto download_button_width = widgets[WIDX_OPEN_URL].width();
-            widgets[WIDX_OPEN_URL].left = (width - download_button_width) / 2;
-            widgets[WIDX_OPEN_URL].right = widgets[WIDX_OPEN_URL].left + download_button_width;
+            WindowInitScrollWidgets(*this);
+            SetResizeDimensions();
+        }
 
-            if (width < min_width)
-            {
-                Invalidate();
-                width = min_width;
-            }
-            if (height < min_height)
-            {
-                Invalidate();
-                height = min_height;
-            }
+        void OnResize() override
+        {
+            SetResizeDimensions();
+
+            auto downloadButtonWidth = widgets[WIDX_OPEN_URL].width();
+            widgets[WIDX_OPEN_URL].left = (width - downloadButtonWidth) / 2;
+            widgets[WIDX_OPEN_URL].right = widgets[WIDX_OPEN_URL].left + downloadButtonWidth;
         }
 
         void OnPrepareDraw() override
         {
-            ResizeFrameWithPage();
             widgets[WIDX_SCROLL].right = width - 3;
             widgets[WIDX_SCROLL].bottom = height - 22;
             widgets[WIDX_OPEN_URL].bottom = height - 5;
@@ -213,20 +197,6 @@ namespace OpenRCT2::Ui::Windows
                 static_cast<int32_t>(_changelogLines.size()) * FontGetLineHeight(FontStyle::Medium));
         }
 
-        // TODO: This probably should be a utility function defined elsewhere for reusability
-        /**
-         * @brief Reimplementation of Window's GetCentrePositionForNewWindow for ChangelogWindow.
-         *
-         * @return ScreenCoordsXY
-         */
-        static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t height)
-        {
-            auto uiContext = GetContext()->GetUiContext();
-            auto screenWidth = uiContext->GetWidth();
-            auto screenHeight = uiContext->GetHeight();
-            return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(kTopToolbarHeight + 1, (screenHeight - height) / 2) };
-        }
-
     private:
         /**
          * @brief Converts NewVersionInfo into changelog lines
@@ -237,12 +207,12 @@ namespace OpenRCT2::Ui::Windows
             _newVersionInfo = GetContext()->GetNewVersionInfo();
             if (_newVersionInfo != nullptr)
             {
-                char version_info[256];
+                char versionInfo[256];
 
-                const char* version_info_ptr = _newVersionInfo->name.c_str();
-                FormatStringLegacy(version_info, 256, STR_NEW_RELEASE_VERSION_INFO, &version_info_ptr);
+                const char* versionInfoPtr = _newVersionInfo->name.c_str();
+                FormatStringLegacy(versionInfo, 256, STR_NEW_RELEASE_VERSION_INFO, &versionInfoPtr);
 
-                _changelogLines.emplace_back(version_info);
+                _changelogLines.emplace_back(versionInfo);
                 _changelogLines.emplace_back("");
 
                 ProcessText(_newVersionInfo->changelog);
@@ -254,21 +224,10 @@ namespace OpenRCT2::Ui::Windows
         }
 
         /**
-         * @brief Get the absolute path for the changelog file
-         *
-         * @return std::string
-         */
-        std::string GetChangelogPath()
-        {
-            auto env = GetContext()->GetPlatformEnvironment();
-            return env->GetFilePath(PATHID::CHANGELOG);
-        }
-
-        /**
          * @brief Attempts to read the changelog file, returns true on success
          *
          */
-        bool ReadFile(PATHID pathId)
+        bool ReadFile(PathId pathId)
         {
             std::string _text;
             try
@@ -320,17 +279,14 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ChangelogOpen(int personality)
     {
-        auto* window = WindowBringToFrontByClass(WindowClass::Changelog);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::Changelog);
         if (window == nullptr)
         {
-            // Create a new centred window
-            int32_t screenWidth = ContextGetWidth();
-            int32_t screenHeight = ContextGetHeight();
-            int32_t width = (screenWidth * 4) / 5;
-            int32_t height = (screenHeight * 4) / 5;
-
-            auto pos = ChangelogWindow::GetCentrePositionForNewWindow(width, height);
-            auto* newWindow = WindowCreate<ChangelogWindow>(WindowClass::Changelog, pos, width, height, WF_RESIZABLE);
+            int32_t width = (ContextGetWidth() * 4) / 5;
+            int32_t height = (ContextGetHeight() * 4) / 5;
+            auto* newWindow = windowMgr->Create<ChangelogWindow>(
+                WindowClass::Changelog, width, height, WF_CENTRE_SCREEN | WF_RESIZABLE);
             newWindow->SetPersonality(personality);
             return newWindow;
         }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,12 +14,13 @@
 #include "../GameState.h"
 #include "../config/Config.h"
 #include "../entity/Guest.h"
-#include "../interface/Window.h"
 #include "../localisation/Formatter.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
+#include "../ride/RideManager.hpp"
 #include "../ride/ShopItem.h"
+#include "../ui/WindowManager.h"
 #include "../world/Park.h"
 #include "Finance.h"
 #include "NewsItem.h"
@@ -91,7 +92,7 @@ static void MarketingRaiseFinishedNotification(const MarketingCampaign& campaign
             auto ride = GetRide(campaign.RideId);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(ft);
+                ride->formatNameTo(ft);
             }
         }
         else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
@@ -111,12 +112,12 @@ void MarketingUpdate()
 {
     PROFILED_FUNCTION();
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
-    if (gameState.Cheats.NeverendingMarketing)
+    if (gameState.cheats.neverendingMarketing)
         return;
 
-    for (auto it = gameState.MarketingCampaigns.begin(); it != gameState.MarketingCampaigns.end();)
+    for (auto it = gameState.marketingCampaigns.begin(); it != gameState.marketingCampaigns.end();)
     {
         auto& campaign = *it;
         if (campaign.Flags & MarketingCampaignFlags::FIRST_WEEK)
@@ -133,7 +134,7 @@ void MarketingUpdate()
         if (campaign.WeeksLeft == 0)
         {
             MarketingRaiseFinishedNotification(campaign);
-            it = gameState.MarketingCampaigns.erase(it);
+            it = gameState.marketingCampaigns.erase(it);
         }
         else
         {
@@ -141,7 +142,8 @@ void MarketingUpdate()
         }
     }
 
-    WindowInvalidateByClass(WindowClass::Finances);
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::Finances);
 }
 
 void MarketingSetGuestCampaign(Guest* peep, int32_t campaignType)
@@ -200,7 +202,7 @@ bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
             // Check if any rides exist
             for (auto& ride : GetRideManager())
             {
-                if (ride.IsRide())
+                if (ride.isRide())
                 {
                     return true;
                 }
@@ -211,7 +213,7 @@ bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
             // Check if any food or drink stalls exist
             for (auto& ride : GetRideManager())
             {
-                auto rideEntry = ride.GetRideEntry();
+                auto rideEntry = ride.getRideEntry();
                 if (rideEntry != nullptr)
                 {
                     for (auto& item : rideEntry->shop_item)
@@ -232,7 +234,7 @@ bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
 
 MarketingCampaign* MarketingGetCampaign(int32_t campaignType)
 {
-    for (auto& campaign : GetGameState().MarketingCampaigns)
+    for (auto& campaign : getGameState().marketingCampaigns)
     {
         if (campaign.Type == campaignType)
         {
@@ -252,7 +254,7 @@ void MarketingNewCampaign(const MarketingCampaign& campaign)
     }
     else
     {
-        GetGameState().MarketingCampaigns.push_back(campaign);
+        getGameState().marketingCampaigns.push_back(campaign);
     }
 }
 
@@ -266,7 +268,7 @@ void MarketingCancelCampaignsForRide(const RideId rideId)
         return false;
     };
 
-    auto& v = GetGameState().MarketingCampaigns;
+    auto& v = getGameState().marketingCampaigns;
     auto removedIt = std::remove_if(v.begin(), v.end(), isCampaignForRideFn);
     v.erase(removedIt, v.end());
 }

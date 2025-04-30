@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -8,42 +8,48 @@
  *****************************************************************************/
 #include "Particle.h"
 
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../ride/VehicleColour.h"
 #include "../scenario/Scenario.h"
+#include "../world/tile_element/SurfaceElement.h"
 #include "EntityRegistry.h"
 
 #include <iterator>
 
-// TODO: Create constants in sprites.h
-static constexpr uint32_t _VehicleCrashParticleSprites[kCrashedVehicleParticleNumberTypes] = {
+// TODO: Create constants in SpriteIds.h
+static constexpr uint32_t kVehicleCrashParticleSprites[kCrashedVehicleParticleNumberTypes] = {
     22577, 22589, 22601, 22613, 22625,
 };
 
-template<> bool EntityBase::Is<SteamParticle>() const
+template<>
+bool EntityBase::Is<SteamParticle>() const
 {
     return Type == EntityType::SteamParticle;
 }
 
-template<> bool EntityBase::Is<ExplosionFlare>() const
+template<>
+bool EntityBase::Is<ExplosionFlare>() const
 {
     return Type == EntityType::ExplosionFlare;
 }
 
-template<> bool EntityBase::Is<ExplosionCloud>() const
+template<>
+bool EntityBase::Is<ExplosionCloud>() const
 {
     return Type == EntityType::ExplosionCloud;
 }
 
-template<> bool EntityBase::Is<VehicleCrashParticle>() const
+template<>
+bool EntityBase::Is<VehicleCrashParticle>() const
 {
     return Type == EntityType::CrashedVehicleParticle;
 }
 
-template<> bool EntityBase::Is<CrashSplashParticle>() const
+template<>
+bool EntityBase::Is<CrashSplashParticle>() const
 {
     return Type == EntityType::CrashSplash;
 }
@@ -171,7 +177,7 @@ void VehicleCrashParticle::Paint(PaintSession& session, int32_t imageDirection) 
         return;
     }
 
-    uint32_t imageId = _VehicleCrashParticleSprites[crashed_sprite_base] + frame / 256;
+    uint32_t imageId = kVehicleCrashParticleSprites[crashed_sprite_base] + frame / 256;
     auto image = ImageId(imageId, colour[0], colour[1]);
     PaintAddImageAsParent(session, image, { 0, 0, z }, { 1, 1, 0 });
 }
@@ -217,7 +223,7 @@ void CrashSplashParticle::Paint(PaintSession& session, int32_t imageDirection) c
 {
     PROFILED_FUNCTION();
 
-    // TODO: Create constant in sprites.h
+    // TODO: Create constant in SpriteIds.h
     uint32_t imageId = 22927 + (frame / 256);
     PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
 }
@@ -276,7 +282,7 @@ void SteamParticle::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    // TODO: Create constant in sprites.h
+    // TODO: Create constant in SpriteIds.h
     uint32_t imageId = 22637 + (frame / 256);
     PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
 }
@@ -367,7 +373,7 @@ void ExplosionFlare::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    // TODO: Create constant in sprites.h
+    // TODO: Create constant in SpriteIds.h
     uint32_t imageId = 22896 + (frame / 256);
     PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
 }

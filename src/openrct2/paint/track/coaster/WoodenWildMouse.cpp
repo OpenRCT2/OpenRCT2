@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,13 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/Drawing.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/RideData.h"
 #include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
-#include "../../../sprites.h"
 #include "../../../world/Map.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Paint.TileElement.h"
@@ -148,8 +149,8 @@ static void WoodenWildMouseTrackFlat(
         session,
         PaintUtilRotateSegments(
             EnumsToFlags(
-                PaintSegment::topCorner, PaintSegment::leftCorner, PaintSegment::rightCorner, PaintSegment::bottomCorner,
-                PaintSegment::topLeftSide, PaintSegment::bottomRightSide),
+                PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::bottom, PaintSegment::topLeft,
+                PaintSegment::bottomRight),
             direction),
         height, 0x20);
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -160,22 +161,18 @@ static void WoodenWildMouseTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    static constexpr uint32_t imageIds[4][2] = {
-        { SPR_WOODEN_WILD_MOUSE_FLAT_SW_NE, SPR_STATION_BASE_B_SW_NE },
-        { SPR_WOODEN_WILD_MOUSE_FLAT_NW_SE, SPR_STATION_BASE_B_NW_SE },
-        { SPR_WOODEN_WILD_MOUSE_FLAT_SW_NE, SPR_STATION_BASE_B_SW_NE },
-        { SPR_WOODEN_WILD_MOUSE_FLAT_NW_SE, SPR_STATION_BASE_B_NW_SE },
+    static constexpr ImageIndex imageIds[4] = {
+        SPR_WOODEN_WILD_MOUSE_FLAT_SW_NE,
+        SPR_WOODEN_WILD_MOUSE_FLAT_NW_SE,
+        SPR_WOODEN_WILD_MOUSE_FLAT_SW_NE,
+        SPR_WOODEN_WILD_MOUSE_FLAT_NW_SE,
     };
-
     PaintAddImageAsParentRotated(
-        session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]),
-        { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 1 } });
-    PaintAddImageAsChildRotated(
-        session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 6, height },
-        { { 0, 0, height }, { 32, 20, 1 } });
+        session, direction, session.TrackColours.WithIndex(imageIds[direction]), { 0, 6, height },
+        { { 0, 6, height + 1 }, { 32, 20, 1 } });
     DrawSupportForSequenceA<TrackElemType::EndStation>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
+    TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2);
     TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -541,7 +538,7 @@ static void WoodenWildMouseTrackRightQuarterTurn3(
             break;
         case 2:
             blockedSegments = EnumsToFlags(
-                PaintSegment::bottomCorner, PaintSegment::centre, PaintSegment::bottomLeftSide, PaintSegment::bottomRightSide);
+                PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight);
             break;
         case 3:
             blockedSegments = kSegmentsAll;
@@ -720,7 +717,7 @@ static void WoodenWildMouseTrack60DegDownToFlat(
     WoodenWildMouseTrackFlatTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement, supportType);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenWildMouse(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionWoodenWildMouse(OpenRCT2::TrackElemType trackType)
 {
     switch (trackType)
     {
@@ -770,6 +767,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenWildMouse(int32_t trackType)
             return WoodenWildMouseTrackFlatTo60DegDown;
         case TrackElemType::Down60ToFlat:
             return WoodenWildMouseTrack60DegDownToFlat;
+        default:
+            return TrackPaintFunctionDummy;
     }
-    return nullptr;
 }

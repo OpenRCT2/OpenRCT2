@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,16 +9,16 @@
 
 #pragma once
 
+#include "../core/Money.hpp"
 #include "Object.h"
 
 struct CoordsXY;
 
-enum TERRAIN_SURFACE_FLAGS
+enum TerrainSurfaceFlags
 {
-    NONE = 0,
-    SMOOTH_WITH_SELF = 1 << 0,
-    SMOOTH_WITH_OTHER = 1 << 1,
-    CAN_GROW = 1 << 2,
+    smoothWithSelf = 1 << 0,
+    smoothWithOther = 1 << 1,
+    canGrow = 1 << 2,
 };
 
 class TerrainSurfaceObject final : public Object
@@ -35,6 +35,8 @@ private:
     static constexpr auto kNumImagesInEntry = 19;
 
 public:
+    static constexpr ObjectType kObjectType = ObjectType::terrainSurface;
+
     static constexpr uint8_t kNoValue = 0xFF;
     StringId NameStringId{};
     uint32_t IconImageId{};
@@ -52,7 +54,7 @@ public:
     colour_t Colour{};
     uint8_t Rotations{};
     money64 Price{};
-    TERRAIN_SURFACE_FLAGS Flags{};
+    TerrainSurfaceFlags Flags{};
     PaletteIndex MapColours[2]{};
 
     void ReadJson(IReadObjectContext* context, json_t& root) override;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,14 +9,14 @@
 
 #ifndef DISABLE_OPENGL
 
-#    include "OpenGLShaderProgram.h"
+    #include "OpenGLShaderProgram.h"
 
-#    include <openrct2/Context.h>
-#    include <openrct2/PlatformEnvironment.h>
-#    include <openrct2/core/Console.hpp>
-#    include <openrct2/core/FileStream.h>
-#    include <openrct2/core/Path.hpp>
-#    include <openrct2/core/String.hpp>
+    #include <openrct2/Context.h>
+    #include <openrct2/PlatformEnvironment.h>
+    #include <openrct2/core/Console.hpp>
+    #include <openrct2/core/FileStream.h>
+    #include <openrct2/core/Path.hpp>
+    #include <openrct2/core/String.hpp>
 
 using namespace OpenRCT2::Ui;
 
@@ -59,7 +59,7 @@ GLuint OpenGLShader::GetShaderId()
 std::string OpenGLShader::GetPath(const std::string& name)
 {
     auto env = GetContext()->GetPlatformEnvironment();
-    auto shadersPath = env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::SHADER);
+    auto shadersPath = env->GetDirectoryPath(DirBase::openrct2, DirId::shaders);
     auto path = Path::Combine(shadersPath, name);
     if (_type == GL_VERTEX_SHADER)
     {
@@ -74,10 +74,10 @@ std::string OpenGLShader::GetPath(const std::string& name)
 
 std::string OpenGLShader::ReadSourceCode(const std::string& path)
 {
-    auto fs = FileStream(path, FILE_MODE_OPEN);
+    auto fs = FileStream(path, FileMode::open);
 
     uint64_t fileLength = fs.GetLength();
-    if (fileLength > MaxSourceSize)
+    if (fileLength > kMaxSourceSize)
     {
         throw IOException("Shader source too large.");
     }

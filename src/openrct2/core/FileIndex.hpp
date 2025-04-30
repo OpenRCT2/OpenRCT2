@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,10 +23,11 @@
 #include <chrono>
 #include <list>
 #include <string>
-#include <tuple>
+#include <utility>
 #include <vector>
 
-template<typename TItem> class FileIndex
+template<typename TItem>
+class FileIndex
 {
 private:
     struct DirectoryStats
@@ -61,7 +62,7 @@ private:
     };
 
     // Index file format version which when incremented forces a rebuild
-    static constexpr uint8_t FILE_INDEX_VERSION = 4;
+    static constexpr uint8_t kFileIndexVersion = 4;
 
     std::string const _name;
     uint32_t const _magicNumber;
@@ -209,7 +210,7 @@ private:
         return allItems;
     }
 
-    std::tuple<bool, std::vector<TItem>> ReadIndexFile(int32_t language, const DirectoryStats& stats) const
+    std::pair<bool, std::vector<TItem>> ReadIndexFile(int32_t language, const DirectoryStats& stats) const
     {
         bool loadedItems = false;
         std::vector<TItem> items;
@@ -218,12 +219,12 @@ private:
             try
             {
                 LOG_VERBOSE("FileIndex:Loading index: '%s'", _indexPath.c_str());
-                auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FILE_MODE_OPEN);
+                auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FileMode::open);
 
                 // Read header, check if we need to re-scan
                 auto header = fs.ReadValue<FileIndexHeader>();
                 if (header.HeaderSize == sizeof(FileIndexHeader) && header.MagicNumber == _magicNumber
-                    && header.VersionA == FILE_INDEX_VERSION && header.VersionB == _version && header.LanguageId == language
+                    && header.VersionA == kFileIndexVersion && header.VersionB == _version && header.LanguageId == language
                     && header.Stats.TotalFiles == stats.TotalFiles && header.Stats.TotalFileSize == stats.TotalFileSize
                     && header.Stats.FileDateModifiedChecksum == stats.FileDateModifiedChecksum
                     && header.Stats.PathChecksum == stats.PathChecksum)
@@ -250,7 +251,7 @@ private:
                 OpenRCT2::Console::Error::WriteLine("%s", e.what());
             }
         }
-        return std::make_tuple(loadedItems, std::move(items));
+        return { loadedItems, std::move(items) };
     }
 
     void WriteIndexFile(int32_t language, const DirectoryStats& stats, const std::vector<TItem>& items) const
@@ -259,12 +260,12 @@ private:
         {
             LOG_VERBOSE("FileIndex:Writing index: '%s'", _indexPath.c_str());
             OpenRCT2::Path::CreateDirectory(OpenRCT2::Path::GetDirectory(_indexPath));
-            auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FILE_MODE_WRITE);
+            auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FileMode::write);
 
             // Write header
             FileIndexHeader header;
             header.MagicNumber = _magicNumber;
-            header.VersionA = FILE_INDEX_VERSION;
+            header.VersionA = kFileIndexVersion;
             header.VersionB = _version;
             header.LanguageId = language;
             header.Stats = stats;

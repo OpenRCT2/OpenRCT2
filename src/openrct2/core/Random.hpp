@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,17 +27,18 @@ namespace OpenRCT2::Random
     /**
      * FixedSeedSequence adheres to the _Named Requirement_ `SeedSequence`.
      */
-    template<size_t TNum = 0> class FixedSeedSequence
+    template<size_t TNum = 0>
+    class FixedSeedSequence
     {
     public:
         using result_type = uint32_t;
 
         static constexpr size_t N = TNum;
-        static constexpr result_type default_seed = 0x1234567F;
+        static constexpr result_type kDefaultSeed = 0x1234567F;
 
         explicit FixedSeedSequence()
         {
-            std::fill(v.begin(), v.end(), default_seed);
+            std::fill(v.begin(), v.end(), kDefaultSeed);
         }
 
         template<
@@ -60,7 +61,8 @@ namespace OpenRCT2::Random
         {
         }
 
-        template<typename TIt> void generate(TIt begin, TIt end) const
+        template<typename TIt>
+        void generate(TIt begin, TIt end) const
         {
             std::copy_n(v.begin(), std::min(static_cast<size_t>(end - begin), N), begin);
         }
@@ -70,7 +72,8 @@ namespace OpenRCT2::Random
             return N;
         }
 
-        template<typename TIt> constexpr void param(TIt ob) const
+        template<typename TIt>
+        constexpr void param(TIt ob) const
         {
             std::copy(v.begin(), v.end(), ob);
         }
@@ -79,7 +82,8 @@ namespace OpenRCT2::Random
         std::array<result_type, N> v;
     };
 
-    template<typename TUIntType> struct RotateEngineState
+    template<typename TUIntType>
+    struct RotateEngineState
     {
         using value_type = TUIntType;
 
@@ -106,7 +110,7 @@ namespace OpenRCT2::Random
         static constexpr result_type x = TX;
         static constexpr size_t r1 = TR1;
         static constexpr size_t r2 = TR2;
-        static constexpr result_type default_seed = 1;
+        static constexpr result_type kDefaultSeed = 1;
 
         static constexpr result_type min()
         {
@@ -137,13 +141,14 @@ namespace OpenRCT2::Random
             seed(seed_seq);
         }
 
-        void seed(result_type s = default_seed)
+        void seed(result_type s = kDefaultSeed)
         {
             s0 = s;
             s1 = s;
         }
 
-        template<typename TSseq> typename std::enable_if<std::is_class<TSseq>::value, void>::type seed(TSseq& seed_seq)
+        template<typename TSseq>
+        typename std::enable_if<std::is_class<TSseq>::value, void>::type seed(TSseq& seed_seq)
         {
             std::array<result_type, 2> s;
             seed_seq.generate(s.begin(), s.end());

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,17 +15,16 @@
 #include "../actions/LandLowerAction.h"
 #include "../actions/LandRaiseAction.h"
 #include "../actions/LandSetHeightAction.h"
-#include "../audio/audio.h"
-#include "../interface/Window.h"
+#include "../audio/Audio.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Surface.h"
 #include "../world/SurfaceData.h"
 #include "../world/tile_element/Slope.h"
+#include "../world/tile_element/SurfaceElement.h"
 
 #include <algorithm>
 
@@ -339,14 +338,14 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
     // Cap bounds to map
     auto l = std::max(normRange.GetLeft(), 32);
     auto t = std::max(normRange.GetTop(), 32);
-    auto r = std::clamp(normRange.GetRight(), 0, MAXIMUM_TILE_START_XY);
-    auto b = std::clamp(normRange.GetBottom(), 0, MAXIMUM_TILE_START_XY);
+    auto r = std::clamp(normRange.GetRight(), 0, kMaximumTileStartXY);
+    auto b = std::clamp(normRange.GetBottom(), 0, kMaximumTileStartXY);
     auto validRange = MapRange{ l, t, r, b };
 
     int32_t centreZ = TileElementHeight(_coords);
 
     auto res = GameActions::Result();
-    res.ErrorTitle = _ErrorTitles[_isLowering ? 0 : 1];
+    res.ErrorTitle = kErrorTitles[_isLowering ? 0 : 1];
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position = { _coords.x, _coords.y, centreZ };
 

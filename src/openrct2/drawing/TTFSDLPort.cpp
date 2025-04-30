@@ -1,4 +1,5 @@
 // Adapted from freetype.h in order to avoid C-style casts.
+// clang-format off
 
 #define FT_LOAD_TARGET_ALT(x) (static_cast<FT_Int32>((x)&15) << 16)
 #define FT_IMAGE_TAG(value, _x1, _x2, _x3, _x4)                                                                                \
@@ -12,7 +13,7 @@
  * removed.
  */
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 
 /*
 SDL_ttf:  A companion library to SDL for working with TrueType (tm) fonts

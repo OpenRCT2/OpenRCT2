@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,10 +10,11 @@
 #include "ShopItem.h"
 
 #include "../GameState.h"
+#include "../SpriteIds.h"
 #include "../entity/Guest.h"
 #include "../localisation/StringIds.h"
 #include "../ride/RideEntry.h"
-#include "../sprites.h"
+#include "../ride/RideManager.hpp"
 
 using namespace OpenRCT2;
 
@@ -54,10 +55,10 @@ constexpr ShopItemDescriptor ShopItems[EnumValue(ShopItem::Count)] = {
     /* ShopItem::Lemonade */         {  0.40_GBP, 1.10_GBP,   2.10_GBP,  1.00_GBP,   1.20_GBP,      SPR_SHOP_ITEM_LEMONADE,            { STR_SHOP_ITEM_PRICE_LABEL_LEMONADE,               STR_SHOP_ITEM_SINGULAR_LEMONADE,            STR_SHOP_ITEM_PLURAL_LEMONADE,              STR_SHOP_ITEM_INDEFINITE_LEMONADE,              STR_SHOP_ITEM_DISPLAY_LEMONADE            }, SHOP_ITEM_FLAG_IS_DRINK,                                     Litter::Type::EmptyBottle,      115,              ShopItem::EmptyBottle,      PeepThoughtType::LemonadeMuch,          PeepThoughtType::Lemonade           },
     /* ShopItem::EmptyBox */         {  0.00_GBP, 0.00_GBP,   0.00_GBP,  0.00_GBP,   0.00_GBP,      SPR_SHOP_ITEM_EMPTY_BOX,           { STR_SHOP_ITEM_PRICE_LABEL_EMPTY_BOX,              STR_SHOP_ITEM_SINGULAR_EMPTY_BOX,           STR_SHOP_ITEM_PLURAL_EMPTY_BOX,             STR_SHOP_ITEM_INDEFINITE_EMPTY_BOX,             STR_SHOP_ITEM_DISPLAY_EMPTY_BOX           }, SHOP_ITEM_FLAG_IS_CONTAINER,                                 Litter::Type::EmptyBox,         0,                ShopItem::None,             PeepThoughtType::None,                  PeepThoughtType::None               },
     /* ShopItem::EmptyBottle */      {  0.00_GBP, 0.00_GBP,   0.00_GBP,  0.00_GBP,   0.00_GBP,      SPR_SHOP_ITEM_EMPTY_BOTTLE,        { STR_SHOP_ITEM_PRICE_LABEL_EMPTY_BOTTLE,           STR_SHOP_ITEM_SINGULAR_EMPTY_BOTTLE,        STR_SHOP_ITEM_PLURAL_EMPTY_BOTTLE,          STR_SHOP_ITEM_INDEFINITE_EMPTY_BOTTLE,          STR_SHOP_ITEM_DISPLAY_EMPTY_BOTTLE        }, SHOP_ITEM_FLAG_IS_CONTAINER,                                 Litter::Type::EmptyBottle,      0,                ShopItem::None,             PeepThoughtType::None,                  PeepThoughtType::None               },
-    /* 28 */                         {  0.00_GBP, 0.00_GBP,   0.00_GBP,  0.00_GBP,   0.00_GBP,      0,                                 { STR_NONE,                                         STR_NONE,                                   STR_NONE,                                   STR_NONE,                                       STR_NONE                                  }, 0,                                                           Litter::Type::Vomit,            0xFF,             ShopItem::None,             PeepThoughtType::None,                  PeepThoughtType::None               },
-    /* 29 */                         {  0.00_GBP, 0.00_GBP,   0.00_GBP,  0.00_GBP,   0.00_GBP,      0,                                 { STR_NONE,                                         STR_NONE,                                   STR_NONE,                                   STR_NONE,                                       STR_NONE                                  }, 0,                                                           Litter::Type::Vomit,            0xFF,             ShopItem::None,             PeepThoughtType::None,                  PeepThoughtType::None               },
-    /* 30 */                         {  0.00_GBP, 0.00_GBP,   0.00_GBP,  0.00_GBP,   0.00_GBP,      0,                                 { STR_NONE,                                         STR_NONE,                                   STR_NONE,                                   STR_NONE,                                       STR_NONE                                  }, 0,                                                           Litter::Type::Vomit,            0xFF,             ShopItem::None,             PeepThoughtType::None,                  PeepThoughtType::None               },
-    /* ShopItem::Admission */        {  0.00_GBP, 0.00_GBP,   0.00_GBP,  0.00_GBP,   0.00_GBP,      0,                                 { STR_NONE,                                         STR_NONE,                                   STR_NONE,                                   STR_NONE,                                       STR_NONE                                  }, 0,                                                           Litter::Type::Vomit,            0xFF,             ShopItem::None,             PeepThoughtType::None,                  PeepThoughtType::None               },
+    /* 28 */                         {  0.00_GBP, 0.00_GBP,   0.00_GBP,  0.00_GBP,   0.00_GBP,      0,                                 { kStringIdNone,                                         kStringIdNone,                                   kStringIdNone,                                   kStringIdNone,                                       kStringIdNone                                  }, 0,                                                           Litter::Type::Vomit,            0xFF,             ShopItem::None,             PeepThoughtType::None,                  PeepThoughtType::None               },
+    /* 29 */                         {  0.00_GBP, 0.00_GBP,   0.00_GBP,  0.00_GBP,   0.00_GBP,      0,                                 { kStringIdNone,                                         kStringIdNone,                                   kStringIdNone,                                   kStringIdNone,                                       kStringIdNone                                  }, 0,                                                           Litter::Type::Vomit,            0xFF,             ShopItem::None,             PeepThoughtType::None,                  PeepThoughtType::None               },
+    /* 30 */                         {  0.00_GBP, 0.00_GBP,   0.00_GBP,  0.00_GBP,   0.00_GBP,      0,                                 { kStringIdNone,                                         kStringIdNone,                                   kStringIdNone,                                   kStringIdNone,                                       kStringIdNone                                  }, 0,                                                           Litter::Type::Vomit,            0xFF,             ShopItem::None,             PeepThoughtType::None,                  PeepThoughtType::None               },
+    /* ShopItem::Admission */        {  0.00_GBP, 0.00_GBP,   0.00_GBP,  0.00_GBP,   0.00_GBP,      0,                                 { kStringIdNone,                                         kStringIdNone,                                   kStringIdNone,                                   kStringIdNone,                                       kStringIdNone                                  }, 0,                                                           Litter::Type::Vomit,            0xFF,             ShopItem::None,             PeepThoughtType::None,                  PeepThoughtType::None               },
     /* ShopItem::Photo2 */           {  0.20_GBP, 3.00_GBP,   3.00_GBP,  3.00_GBP,   0.00_GBP,      SPR_SHOP_ITEM_PHOTO2,              { STR_SHOP_ITEM_PRICE_LABEL_ON_RIDE_PHOTO,          STR_SHOP_ITEM_SINGULAR_ON_RIDE_PHOTO,       STR_SHOP_ITEM_PLURAL_ON_RIDE_PHOTO,         STR_SHOP_ITEM_INDEFINITE_ON_RIDE_PHOTO,         STR_SHOP_ITEM_DISPLAY_ON_RIDE_PHOTO       }, SHOP_ITEM_FLAG_IS_PHOTO | SHOP_ITEM_FLAG_IS_SOUVENIR,        Litter::Type::Rubbish,          0,                ShopItem::None,             PeepThoughtType::Photo2Much,            PeepThoughtType::Photo2             },
     /* ShopItem::Photo3 */           {  0.20_GBP, 3.00_GBP,   3.00_GBP,  3.00_GBP,   0.00_GBP,      SPR_SHOP_ITEM_PHOTO3,              { STR_SHOP_ITEM_PRICE_LABEL_ON_RIDE_PHOTO,          STR_SHOP_ITEM_SINGULAR_ON_RIDE_PHOTO,       STR_SHOP_ITEM_PLURAL_ON_RIDE_PHOTO,         STR_SHOP_ITEM_INDEFINITE_ON_RIDE_PHOTO,         STR_SHOP_ITEM_DISPLAY_ON_RIDE_PHOTO       }, SHOP_ITEM_FLAG_IS_PHOTO | SHOP_ITEM_FLAG_IS_SOUVENIR,        Litter::Type::Rubbish,          0,                ShopItem::None,             PeepThoughtType::Photo3Much,            PeepThoughtType::Photo3             },
     /* ShopItem::Photo4 */           {  0.20_GBP, 3.00_GBP,   3.00_GBP,  3.00_GBP,   0.00_GBP,      SPR_SHOP_ITEM_PHOTO4,              { STR_SHOP_ITEM_PRICE_LABEL_ON_RIDE_PHOTO,          STR_SHOP_ITEM_SINGULAR_ON_RIDE_PHOTO,       STR_SHOP_ITEM_PLURAL_ON_RIDE_PHOTO,         STR_SHOP_ITEM_INDEFINITE_ON_RIDE_PHOTO,         STR_SHOP_ITEM_DISPLAY_ON_RIDE_PHOTO       }, SHOP_ITEM_FLAG_IS_PHOTO | SHOP_ITEM_FLAG_IS_SOUVENIR,        Litter::Type::Rubbish,          0,                ShopItem::None,             PeepThoughtType::Photo4Much,            PeepThoughtType::Photo4             },
@@ -121,7 +122,7 @@ money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem)
     {
         if (&ride != forRide)
         {
-            auto rideEntry = ride.GetRideEntry();
+            auto rideEntry = ride.getRideEntry();
             if (rideEntry == nullptr)
             {
                 continue;
@@ -134,7 +135,7 @@ money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem)
             {
                 return ride.price[1];
             }
-            if (GetShopItemDescriptor(shopItem).IsPhoto() && (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
+            if (GetShopItemDescriptor(shopItem).IsPhoto() && (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
             {
                 return ride.price[1];
             }
@@ -146,7 +147,7 @@ money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem)
 
 bool ShopItemHasCommonPrice(const ShopItem shopItem)
 {
-    return (GetGameState().SamePriceThroughoutPark & EnumToFlag(shopItem)) != 0;
+    return (getGameState().samePriceThroughoutPark & EnumToFlag(shopItem)) != 0;
 }
 
 bool ShopItemDescriptor::IsFood() const

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,67 +11,364 @@
 
 // Structures shared between both RCT1 and RCT2.
 
+#include "../core/EnumUtils.hpp"
+#include "../core/FlagHolder.hpp"
+#include "../core/Money.hpp"
+#include "../entity/Fountain.h"
 #include "../management/Research.h"
 #include "../object/Object.h"
 #include "../ride/RideTypes.h"
 #include "../world/tile_element/TileElementType.h"
 #include "Limits.h"
 
+#include <span>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <vector>
 
 class ObjectList;
 
-using track_type_t = uint16_t;
-using RCT12TrackType = uint8_t;
+namespace OpenRCT2
+{
+    enum class TrackElemType : uint16_t;
+}
 namespace OpenRCT2::RCT12
 {
+    enum class ClimateType : uint8_t
+    {
+        coolAndWet,
+        warm,
+        hotAndDry,
+        cold,
+        count
+    };
+
     class EntryList;
-}
 
-constexpr uint8_t RCT2_STRING_FORMAT_ARG_START = 123;
-constexpr uint8_t RCT2_STRING_FORMAT_ARG_END = 141;
-constexpr uint8_t RCT2_STRING_FORMAT_COLOUR_START = 142;
-constexpr uint8_t RCT2_STRING_FORMAT_COLOUR_END = 156;
+    enum class TrackElemType : uint8_t
+    {
+        Flat = 0,
+        EndStation = 1,
+        BeginStation = 2,
+        MiddleStation = 3,
+        Up25 = 4,
+        Up60 = 5,
+        FlatToUp25 = 6,
+        Up25ToUp60 = 7,
+        Up60ToUp25 = 8,
+        Up25ToFlat = 9,
+        Down25 = 10,
+        Down60 = 11,
+        FlatToDown25 = 12,
+        Down25ToDown60 = 13,
+        Down60ToDown25 = 14,
+        Down25ToFlat = 15,
+        LeftQuarterTurn5Tiles = 16,
+        RightQuarterTurn5Tiles = 17,
+        FlatToLeftBank = 18,
+        FlatToRightBank = 19,
+        LeftBankToFlat = 20,
+        RightBankToFlat = 21,
+        BankedLeftQuarterTurn5Tiles = 22,
+        BankedRightQuarterTurn5Tiles = 23,
+        LeftBankToUp25 = 24,
+        RightBankToUp25 = 25,
+        Up25ToLeftBank = 26,
+        Up25ToRightBank = 27,
+        LeftBankToDown25 = 28,
+        RightBankToDown25 = 29,
+        Down25ToLeftBank = 30,
+        Down25ToRightBank = 31,
+        LeftBank = 32,
+        RightBank = 33,
+        LeftQuarterTurn5TilesUp25 = 34,
+        RightQuarterTurn5TilesUp25 = 35,
+        LeftQuarterTurn5TilesDown25 = 36,
+        RightQuarterTurn5TilesDown25 = 37,
+        SBendLeft = 38,
+        SBendRight = 39,
+        LeftVerticalLoop = 40,
+        RightVerticalLoop = 41,
+        LeftQuarterTurn3Tiles = 42,
+        RightQuarterTurn3Tiles = 43,
+        LeftBankedQuarterTurn3Tiles = 44,
+        RightBankedQuarterTurn3Tiles = 45,
+        LeftQuarterTurn3TilesUp25 = 46,
+        RightQuarterTurn3TilesUp25 = 47,
+        LeftQuarterTurn3TilesDown25 = 48,
+        RightQuarterTurn3TilesDown25 = 49,
+        LeftQuarterTurn1Tile = 50,
+        RightQuarterTurn1Tile = 51,
+        LeftTwistDownToUp = 52,
+        RightTwistDownToUp = 53,
+        LeftTwistUpToDown = 54,
+        RightTwistUpToDown = 55,
+        HalfLoopUp = 56,
+        HalfLoopDown = 57,
+        LeftCorkscrewUp = 58,
+        RightCorkscrewUp = 59,
+        LeftCorkscrewDown = 60,
+        RightCorkscrewDown = 61,
+        FlatToUp60 = 62,
+        Up60ToFlat = 63,
+        FlatToDown60 = 64,
+        Down60ToFlat = 65,
+        TowerBase = 66,
+        TowerSection = 67,
+        FlatCovered = 68,
+        Up25Covered = 69,
+        Up60Covered = 70,
+        FlatToUp25Covered = 71,
+        Up25ToUp60Covered = 72,
+        Up60ToUp25Covered = 73,
+        Up25ToFlatCovered = 74,
+        Down25Covered = 75,
+        Down60Covered = 76,
+        FlatToDown25Covered = 77,
+        Down25ToDown60Covered = 78,
+        Down60ToDown25Covered = 79,
+        Down25ToFlatCovered = 80,
+        LeftQuarterTurn5TilesCovered = 81,
+        RightQuarterTurn5TilesCovered = 82,
+        SBendLeftCovered = 83,
+        SBendRightCovered = 84,
+        LeftQuarterTurn3TilesCovered = 85,
+        RightQuarterTurn3TilesCovered = 86,
+        LeftHalfBankedHelixUpSmall = 87,
+        RightHalfBankedHelixUpSmall = 88,
+        LeftHalfBankedHelixDownSmall = 89,
+        RightHalfBankedHelixDownSmall = 90,
+        LeftHalfBankedHelixUpLarge = 91,
+        RightHalfBankedHelixUpLarge = 92,
+        LeftHalfBankedHelixDownLarge = 93,
+        RightHalfBankedHelixDownLarge = 94,
+        LeftQuarterTurn1TileUp60 = 95,
+        RightQuarterTurn1TileUp60 = 96,
+        LeftQuarterTurn1TileDown60 = 97,
+        RightQuarterTurn1TileDown60 = 98,
+        Brakes = 99,
+        Booster = 100,
+        Maze = 101,
+        LeftQuarterBankedHelixLargeUp = 102,
+        RightQuarterBankedHelixLargeUp = 103,
+        LeftQuarterBankedHelixLargeDown = 104,
+        RightQuarterBankedHelixLargeDown = 105,
+        LeftQuarterHelixLargeUp = 106,
+        RightQuarterHelixLargeUp = 107,
+        LeftQuarterHelixLargeDown = 108,
+        RightQuarterHelixLargeDown = 109,
+        Up25LeftBanked = 110,
+        Up25RightBanked = 111,
+        Waterfall = 112,
+        Rapids = 113,
+        OnRidePhoto = 114,
+        Down25LeftBanked = 115,
+        Down25RightBanked = 116,
+        Watersplash = 117,
+        FlatToUp60LongBase = 118,
+        Up60ToFlatLongBase = 119,
+        Whirlpool = 120,
+        Down60ToFlatLongBase = 121,
+        FlatToDown60LongBase = 122,
+        CableLiftHill = 123,
+        ReverseFreefallSlope = 124,
+        ReverseFreefallVertical = 125,
+        Up90 = 126,
+        Down90 = 127,
+        Up60ToUp90 = 128,
+        Down90ToDown60 = 129,
+        Up90ToUp60 = 130,
+        Down60ToDown90 = 131,
+        BrakeForDrop = 132,
+        LeftEighthToDiag = 133,
+        RightEighthToDiag = 134,
+        LeftEighthToOrthogonal = 135,
+        RightEighthToOrthogonal = 136,
+        LeftEighthBankToDiag = 137,
+        RightEighthBankToDiag = 138,
+        LeftEighthBankToOrthogonal = 139,
+        RightEighthBankToOrthogonal = 140,
+        DiagFlat = 141,
+        DiagUp25 = 142,
+        DiagUp60 = 143,
+        DiagFlatToUp25 = 144,
+        DiagUp25ToUp60 = 145,
+        DiagUp60ToUp25 = 146,
+        DiagUp25ToFlat = 147,
+        DiagDown25 = 148,
+        DiagDown60 = 149,
+        DiagFlatToDown25 = 150,
+        DiagDown25ToDown60 = 151,
+        DiagDown60ToDown25 = 152,
+        DiagDown25ToFlat = 153,
+        DiagFlatToUp60 = 154,
+        DiagUp60ToFlat = 155,
+        DiagFlatToDown60 = 156,
+        DiagDown60ToFlat = 157,
+        DiagFlatToLeftBank = 158,
+        DiagFlatToRightBank = 159,
+        DiagLeftBankToFlat = 160,
+        DiagRightBankToFlat = 161,
+        DiagLeftBankToUp25 = 162,
+        DiagRightBankToUp25 = 163,
+        DiagUp25ToLeftBank = 164,
+        DiagUp25ToRightBank = 165,
+        DiagLeftBankToDown25 = 166,
+        DiagRightBankToDown25 = 167,
+        DiagDown25ToLeftBank = 168,
+        DiagDown25ToRightBank = 169,
+        DiagLeftBank = 170,
+        DiagRightBank = 171,
+        LogFlumeReverser = 172,
+        SpinningTunnel = 173,
+        LeftBarrelRollUpToDown = 174,
+        RightBarrelRollUpToDown = 175,
+        LeftBarrelRollDownToUp = 176,
+        RightBarrelRollDownToUp = 177,
+        LeftBankToLeftQuarterTurn3TilesUp25 = 178,
+        RightBankToRightQuarterTurn3TilesUp25 = 179,
+        LeftQuarterTurn3TilesDown25ToLeftBank = 180,
+        RightQuarterTurn3TilesDown25ToRightBank = 181,
+        PoweredLift = 182,
+        LeftLargeHalfLoopUp = 183,
+        RightLargeHalfLoopUp = 184,
+        LeftLargeHalfLoopDown = 185,
+        RightLargeHalfLoopDown = 186,
+        LeftFlyerTwistUp = 187,
+        RightFlyerTwistUp = 188,
+        LeftFlyerTwistDown = 189,
+        RightFlyerTwistDown = 190,
+        FlyerHalfLoopUninvertedUp = 191,
+        FlyerHalfLoopInvertedDown = 192,
+        LeftFlyerCorkscrewUp = 193,
+        RightFlyerCorkscrewUp = 194,
+        LeftFlyerCorkscrewDown = 195,
+        RightFlyerCorkscrewDown = 196,
+        HeartLineTransferUp = 197,
+        HeartLineTransferDown = 198,
+        LeftHeartLineRoll = 199,
+        RightHeartLineRoll = 200,
+        MinigolfHoleA = 201,
+        MinigolfHoleB = 202,
+        MinigolfHoleC = 203,
+        MinigolfHoleD = 204,
+        MinigolfHoleE = 205,
+        MultiDimInvertedFlatToDown90QuarterLoop = 206,
+        Up90ToInvertedFlatQuarterLoop = 207,
+        InvertedFlatToDown90QuarterLoop = 208,
+        LeftCurvedLiftHill = 209,
+        RightCurvedLiftHill = 210,
+        LeftReverser = 211,
+        RightReverser = 212,
+        AirThrustTopCap = 213,
+        AirThrustVerticalDown = 214,
+        AirThrustVerticalDownToLevel = 215,
+        BlockBrakes = 216,
+        LeftBankedQuarterTurn3TileUp25 = 217,
+        RightBankedQuarterTurn3TileUp25 = 218,
+        LeftBankedQuarterTurn3TileDown25 = 219,
+        RightBankedQuarterTurn3TileDown25 = 220,
+        LeftBankedQuarterTurn5TileUp25 = 221,
+        RightBankedQuarterTurn5TileUp25 = 222,
+        LeftBankedQuarterTurn5TileDown25 = 223,
+        RightBankedQuarterTurn5TileDown25 = 224,
+        Up25ToLeftBankedUp25 = 225,
+        Up25ToRightBankedUp25 = 226,
+        LeftBankedUp25ToUp25 = 227,
+        RightBankedUp25ToUp25 = 228,
+        Down25ToLeftBankedDown25 = 229,
+        Down25ToRightBankedDown25 = 230,
+        LeftBankedDown25ToDown25 = 231,
+        RightBankedDown25ToDown25 = 232,
+        LeftBankedFlatToLeftBankedUp25 = 233,
+        RightBankedFlatToRightBankedUp25 = 234,
+        LeftBankedUp25ToLeftBankedFlat = 235,
+        RightBankedUp25ToRightBankedFlat = 236,
+        LeftBankedFlatToLeftBankedDown25 = 237,
+        RightBankedFlatToRightBankedDown25 = 238,
+        LeftBankedDown25ToLeftBankedFlat = 239,
+        RightBankedDown25ToRightBankedFlat = 240,
+        FlatToLeftBankedUp25 = 241,
+        FlatToRightBankedUp25 = 242,
+        LeftBankedUp25ToFlat = 243,
+        RightBankedUp25ToFlat = 244,
+        FlatToLeftBankedDown25 = 245,
+        FlatToRightBankedDown25 = 246,
+        LeftBankedDown25ToFlat = 247,
+        RightBankedDown25ToFlat = 248,
+        LeftQuarterTurn1TileUp90 = 249,
+        RightQuarterTurn1TileUp90 = 250,
+        LeftQuarterTurn1TileDown90 = 251,
+        RightQuarterTurn1TileDown90 = 252,
+        MultiDimUp90ToInvertedFlatQuarterLoop = 253,
+        MultiDimFlatToDown90QuarterLoop = 254,
+        MultiDimInvertedUp90ToFlatQuarterLoop = 255,
 
-constexpr uint8_t RCT12_SOUND_ID_NULL = 0xFF;
+        // SV6/TD6 element aliases
+        RotationControlToggleAlias = 100,
+        InvertedUp90ToFlatQuarterLoopAlias = 101,
+        FlatTrack1x4A_Alias = 95,
+        FlatTrack2x2_Alias = 110,
+        FlatTrack4x4_Alias = 111,
+        FlatTrack2x4_Alias = 115,
+        FlatTrack1x5_Alias = 116,
+        FlatTrack1x1A_Alias = 118,
+        FlatTrack1x4B_Alias = 119,
+        FlatTrack1x1B_Alias = 121,
+        FlatTrack1x4C_Alias = 122,
+        FlatTrack3x3_Alias = 123,
+    };
+} // namespace OpenRCT2::RCT12
+
+constexpr uint8_t kRCT12StringFormatArgStart = 123;
+constexpr uint8_t kRCT12StringFormatArgEnd = 141;
+constexpr uint8_t kRCT12StringFormatColourStart = 142;
+constexpr uint8_t kRCT12StringFormatColourEnd = 156;
+
+constexpr uint8_t kRCT12SoundIdNull = 0xFF;
 
 using RCT12RideId = uint8_t;
-constexpr RCT12RideId RCT12_RIDE_ID_NULL = 255;
+constexpr RCT12RideId kRCT12RideIdNull = 255;
 
-constexpr uint8_t RCT12_BANNER_INDEX_NULL = std::numeric_limits<uint8_t>::max();
+constexpr uint8_t kRCT12BannerIndexNull = std::numeric_limits<uint8_t>::max();
 
-constexpr uint8_t RCT12_TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK = 0xE0;   // in RCT12TileElement.properties.surface.slope
-constexpr uint8_t RCT12_TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK = 0x1F; // in RCT12TileElement.properties.surface.terrain
-constexpr uint8_t RCT12_TILE_ELEMENT_SURFACE_TERRAIN_MASK = 0xE0;      // in RCT12TileElement.properties.surface.terrain
+constexpr uint8_t kRCT12SurfaceElementEdgeStyleMask = 0xE0;         // in RCT12TileElement.properties.surface.slope
+constexpr uint8_t kRCT12SurfaceElementWaterHeightMask = 0x1F;       // in RCT12TileElement.properties.surface.terrain
+constexpr uint8_t kRCT12SurfaceElementTerrainMask = 0xE0;           // in RCT12TileElement.properties.surface.terrain
+constexpr uint8_t kRCT12SurfaceElementTypeSurfaceMask = 0b00000011; // in RCT12TileElement.properties.surface.type
+constexpr uint8_t kRCT12SurfaceElementTypeEdgeMask = 0b01000000;    // in RCT12TileElement.properties.surface.type
 
-constexpr uint8_t RCT12_SMALL_SCENERY_ELEMENT_NEEDS_SUPPORTS_FLAG = 0x20;
-constexpr uint8_t RCT12_TILE_ELEMENT_COLOUR_MASK = 0b0001'1111;
+constexpr uint8_t kRCT12SmallSceneryElementNeedsSupportsFlag = 0x20;
+constexpr uint8_t kRCT12TileElementColourMask = 0b0001'1111;
 
-constexpr uint16_t RCT12_TILE_ELEMENT_LARGE_TYPE_MASK = 0x3FF;
+constexpr uint16_t kRCT12TileElementLargeTypeMask = 0x3FF;
 
-constexpr uint16_t const RCT12_XY8_UNDEFINED = 0xFFFF;
+constexpr uint8_t kRCT12TrackElementTypeFlagChainLift = 1 << 7;
+constexpr uint8_t kRCT12TrackElementSequenceGreenLight = 1 << 7;
+
+constexpr uint16_t const kRCT12xy8Undefined = 0xFFFF;
 
 using RCT12ObjectEntryIndex = uint8_t;
-constexpr RCT12ObjectEntryIndex RCT12_OBJECT_ENTRY_INDEX_NULL = 255;
+constexpr RCT12ObjectEntryIndex kRCT12ObjectEntryIndexNull = 255;
 
 // Everything before this point has been researched
-constexpr uint32_t RCT12_RESEARCHED_ITEMS_SEPARATOR = 0xFFFFFFFF;
+constexpr uint32_t kRCT12ResearchedItemsSeparator = 0xFFFFFFFF;
 // Everything before this point and after separator still requires research
-constexpr uint32_t RCT12_RESEARCHED_ITEMS_END = 0xFFFFFFFE;
+constexpr uint32_t kRCT12ResearchedItemsEnd = 0xFFFFFFFE;
 // Extra end of list entry. Leftover from RCT1.
-constexpr uint32_t RCT12_RESEARCHED_ITEMS_END_2 = 0xFFFFFFFD;
+constexpr uint32_t kRCT12ResearchedItemsEnd2 = 0xFFFFFFFD;
 
-constexpr uint16_t RCT12_PEEP_SPAWN_UNDEFINED = 0xFFFF;
+constexpr uint16_t kRCT12PeepSpawnUndefined = 0xFFFF;
 
-constexpr uint16_t RCT12VehicleTrackDirectionMask = 0b0000000000000011;
-constexpr uint16_t RCT12VehicleTrackTypeMask = 0b1111111111111100;
+constexpr uint16_t kRCT12VehicleTrackDirectionMask = 0b0000000000000011;
+constexpr uint16_t kRCT12VehicleTrackTypeMask = 0b1111111111111100;
 
-constexpr uint8_t RCT12PeepThoughtItemNone = std::numeric_limits<uint8_t>::max();
+constexpr uint8_t kRCT12PeepThoughtItemNone = std::numeric_limits<uint8_t>::max();
 
-constexpr uint8_t RCT12GuestsInParkHistoryFactor = 20;
-constexpr uint8_t RCT12ParkHistoryUndefined = std::numeric_limits<uint8_t>::max();
+constexpr uint8_t kRCT12GuestsInParkHistoryFactor = 20;
+constexpr uint8_t kRCT12ParkRatingHistoryFactor = 4;
+constexpr uint8_t kRCT12ParkHistoryUndefined = std::numeric_limits<uint8_t>::max();
 
 constexpr uint8_t kTD46RatingsMultiplier = 10;
 constexpr uint8_t kTD46GForcesMultiplier = 32;
@@ -93,12 +390,6 @@ enum class RCT12TrackDesignVersion : uint8_t
 
 enum
 {
-    RCT12_SURFACE_ELEMENT_TYPE_SURFACE_MASK = 0b00000011,
-    RCT12_SURFACE_ELEMENT_TYPE_EDGE_MASK = 0b01000000,
-};
-
-enum
-{
     RCT12_TILE_ELEMENT_FLAG_GHOST = (1 << 4),
     RCT12_TILE_ELEMENT_FLAG_BROKEN = (1 << 5),
     RCT12_TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED = (1 << 5),
@@ -106,11 +397,6 @@ enum
     RCT12_TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE = (1 << 6),
     RCT12_TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED = (1 << 6),
     RCT12_TILE_ELEMENT_FLAG_LAST_TILE = (1 << 7)
-};
-
-enum
-{
-    RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT = 1 << 7,
 };
 
 enum
@@ -210,12 +496,12 @@ struct RCT12xy8
 
     bool IsNull() const
     {
-        return xy == RCT12_XY8_UNDEFINED;
+        return xy == kRCT12xy8Undefined;
     }
 
     void SetNull()
     {
-        xy = RCT12_XY8_UNDEFINED;
+        xy = kRCT12xy8Undefined;
     }
 };
 static_assert(sizeof(RCT12xy8) == 2);
@@ -263,8 +549,8 @@ static_assert(sizeof(TD46MazeElement) == 0x04);
 /* Track Element entry  size: 0x02 */
 struct TD46TrackElement
 {
-    uint8_t Type;  // 0x00
-    uint8_t Flags; // 0x01
+    OpenRCT2::RCT12::TrackElemType Type; // 0x00
+    uint8_t Flags;                       // 0x01
 };
 static_assert(sizeof(TD46TrackElement) == 0x02);
 
@@ -376,11 +662,13 @@ struct RCT12TileElementBase
 struct RCT12TileElement : public RCT12TileElementBase
 {
     uint8_t Pad04[4];
-    template<typename TType, RCT12TileElementType TClass> const TType* as() const
+    template<typename TType, RCT12TileElementType TClass>
+    const TType* as() const
     {
         return static_cast<RCT12TileElementType>(GetType()) == TClass ? reinterpret_cast<const TType*>(this) : nullptr;
     }
-    template<typename TType, RCT12TileElementType TClass> TType* as()
+    template<typename TType, RCT12TileElementType TClass>
+    TType* as()
     {
         return static_cast<RCT12TileElementType>(GetType()) == TClass ? reinterpret_cast<TType*>(this) : nullptr;
     }
@@ -507,7 +795,7 @@ static_assert(sizeof(RCT12PathElement) == 8);
 struct RCT12TrackElement : RCT12TileElementBase
 {
 private:
-    uint8_t TrackType; // 4
+    OpenRCT2::RCT12::TrackElemType TrackType; // 4
     union
     {
         struct
@@ -530,7 +818,7 @@ private:
     };
     uint8_t RideIndex; // 7
 public:
-    uint8_t GetTrackType() const;
+    OpenRCT2::RCT12::TrackElemType GetTrackType() const;
     uint8_t GetSequenceIndex() const;
     uint8_t GetRideIndex() const;
     RideColourScheme GetColourScheme() const;
@@ -698,6 +986,61 @@ enum class RCT12PeepType : uint8_t
     Invalid = 0xFF
 };
 
+enum class RCT12PeepAnimationGroup : uint8_t
+{
+    Normal = 0,
+    Handyman = 1,
+    Mechanic = 2,
+    Security = 3,
+    EntertainerPanda = 4,
+    EntertainerTiger = 5,
+    EntertainerElephant = 6,
+    EntertainerRoman = 7,
+    EntertainerGorilla = 8,
+    EntertainerSnowman = 9,
+    EntertainerKnight = 10,
+    EntertainerAstronaut = 11,
+    EntertainerBandit = 12,
+    EntertainerSheriff = 13,
+    EntertainerPirate = 14,
+    IceCream = 15,
+    Chips = 16,
+    Burger = 17,
+    Drink = 18,
+    Balloon = 19,
+    Candyfloss = 20,
+    Umbrella = 21,
+    Pizza = 22,
+    SecurityAlt = 23,
+    Popcorn = 24,
+    ArmsCrossed = 25,
+    HeadDown = 26,
+    Nauseous = 27,
+    VeryNauseous = 28,
+    RequireToilet = 29,
+    Hat = 30,
+    HotDog = 31,
+    Tentacle = 32,
+    ToffeeApple = 33,
+    Doughnut = 34,
+    Coffee = 35,
+    Chicken = 36,
+    Lemonade = 37,
+    Watching = 38,
+    Pretzel = 39,
+    Sunglasses = 40,
+    Sujeonggwa = 41,
+    Juice = 42,
+    FunnelCake = 43,
+    Noodles = 44,
+    Sausage = 45,
+    Soup = 46,
+    Sandwich = 47,
+    Count = 48,
+
+    Invalid = 255
+};
+
 struct RCT12EntityBase
 {
     RCT12EntityIdentifier EntityIdentifier;         // 0x00
@@ -765,9 +1108,9 @@ struct RCT12EntityJumpingFountain : RCT12EntityBase
     uint8_t NumTicksAlive; // 0x26
     uint8_t Frame;         // 0x27
     uint8_t Pad28[0x2F - 0x28];
-    uint8_t FountainFlags; // 0x2F
-    int16_t TargetX;       // 0x30
-    int16_t TargetY;       // 0x32
+    OpenRCT2::FountainFlags fountainFlags{}; // 0x2F
+    int16_t TargetX;                         // 0x30
+    int16_t TargetY;                         // 0x32
     uint8_t Pad34[0x46 - 0x34];
     uint16_t Iteration; // 0x46
 };
@@ -830,17 +1173,17 @@ static_assert(sizeof(RCT12PeepThought) == 4);
 
 struct RCT12RideMeasurement
 {
-    uint8_t RideIndex;                                                  // 0x0000
-    uint8_t Flags;                                                      // 0x0001
-    uint32_t LastUseTick;                                               // 0x0002
-    uint16_t NumItems;                                                  // 0x0006
-    uint16_t CurrentItem;                                               // 0x0008
-    uint8_t VehicleIndex;                                               // 0x000A
-    uint8_t CurrentStation;                                             // 0x000B
-    int8_t Vertical[OpenRCT2::RCT12::Limits::RideMeasurementMaxItems];  // 0x000C
-    int8_t Lateral[OpenRCT2::RCT12::Limits::RideMeasurementMaxItems];   // 0x12CC
-    uint8_t Velocity[OpenRCT2::RCT12::Limits::RideMeasurementMaxItems]; // 0x258C
-    uint8_t Altitude[OpenRCT2::RCT12::Limits::RideMeasurementMaxItems]; // 0x384C
+    uint8_t RideIndex;                                                   // 0x0000
+    uint8_t Flags;                                                       // 0x0001
+    uint32_t LastUseTick;                                                // 0x0002
+    uint16_t NumItems;                                                   // 0x0006
+    uint16_t CurrentItem;                                                // 0x0008
+    uint8_t VehicleIndex;                                                // 0x000A
+    uint8_t CurrentStation;                                              // 0x000B
+    int8_t Vertical[OpenRCT2::RCT12::Limits::kRideMeasurementMaxItems];  // 0x000C
+    int8_t Lateral[OpenRCT2::RCT12::Limits::kRideMeasurementMaxItems];   // 0x12CC
+    uint8_t Velocity[OpenRCT2::RCT12::Limits::kRideMeasurementMaxItems]; // 0x258C
+    uint8_t Altitude[OpenRCT2::RCT12::Limits::kRideMeasurementMaxItems]; // 0x384C
 };
 static_assert(sizeof(RCT12RideMeasurement) == 0x4B0C);
 
@@ -907,23 +1250,25 @@ RideId RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId);
 bool IsLikelyUTF8(std::string_view s);
 std::string RCT12RemoveFormattingUTF8(std::string_view s);
 std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer);
-track_type_t RCT12FlatTrackTypeToOpenRCT2(RCT12TrackType origTrackType);
-RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType);
+OpenRCT2::TrackElemType RCT12FlatTrackTypeToOpenRCT2(OpenRCT2::RCT12::TrackElemType origTrackType);
+OpenRCT2::RCT12::TrackElemType OpenRCT2FlatTrackTypeToRCT12(OpenRCT2::TrackElemType origTrackType);
 std::string_view GetStationIdentifierFromStyle(uint8_t style);
 uint8_t GetStationStyleFromIdentifier(u8string_view identifier);
 std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier);
 void RCT12AddDefaultObjects(ObjectList& objectList);
+void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, std::span<const std::string_view> objectNames);
 void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const OpenRCT2::RCT12::EntryList& entryList);
 bool IsUserStringID(StringId stringId);
 
-static constexpr money32 RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x80000001;
+static constexpr money32 kRCT12CompanyValueOnFailedObjective = 0x80000001;
 
 money64 RCT12CompletedCompanyValueToOpenRCT2(money32 origValue);
 
-template<typename T> std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
+template<typename T>
+std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
 {
     std::vector<uint16_t> ridesTypesBeenOn;
-    for (uint16_t i = 0; i < OpenRCT2::RCT12::Limits::MaxRideObjects; i++)
+    for (uint16_t i = 0; i < OpenRCT2::RCT12::Limits::kMaxRideObjects; i++)
     {
         if (srcPeep->RideTypesBeenOn[i / 8] & (1 << (i % 8)))
         {
@@ -932,7 +1277,8 @@ template<typename T> std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
     }
     return ridesTypesBeenOn;
 }
-template<typename T> std::vector<RideId> RCT12GetRidesBeenOn(T* srcPeep)
+template<typename T>
+std::vector<RideId> RCT12GetRidesBeenOn(T* srcPeep)
 {
     std::vector<RideId> ridesBeenOn;
     for (uint16_t i = 0; i < OpenRCT2::RCT12::Limits::kMaxRidesInPark; i++)
@@ -965,4 +1311,6 @@ namespace OpenRCT2::RCT12
      * Handles single and multi-byte strings.
      */
     size_t GetRCTStringBufferLen(const char* buffer, size_t maxBufferLen);
+    bool TrackTypeHasSpeedSetting(OpenRCT2::RCT12::TrackElemType trackType);
+    bool TrackTypeIsStation(OpenRCT2::RCT12::TrackElemType trackType);
 } // namespace OpenRCT2::RCT12

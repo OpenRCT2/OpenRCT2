@@ -1,0 +1,40 @@
+{
+    "scenario_name": "Iceberg Islands",
+    "sha256": "4a762ae89bf279dbcaead9e457c21014a9e39eb4a46cf1cbf63304450f9ed050",
+    "elements_to_delete": [
+        {
+            "element_index": 2,
+            "coordinates": [
+                [ 49, 43 ], [ 50, 43 ], [ 51, 43 ], [ 44, 55 ]
+            ]
+        },
+        {
+            "element_index": 1,
+            "coordinates": [
+                [ 44, 54 ], [ 44, 53 ]
+            ]
+        }
+    ],
+    "paths": [
+        {
+            "railings": "rct2.footpath_railings.concrete",
+            "surface": "rct1.footpath_surface.queue_blue",
+            "coordinates": [ [ 51, 43, 24 ], [ 44, 55, 20 ] ],
+            "queue": true
+        },
+        {
+            "railings": "rct2.footpath_railings.concrete",
+            "surface": "rct1.footpath_surface.queue_blue",
+            "coordinates": [ [ 50, 43, 24 ], [ 49, 43, 26 ] ],
+            "slope_direction": 0,
+            "queue": true
+        },
+        {
+            "railings": "rct2.footpath_railings.concrete",
+            "surface": "rct1.footpath_surface.queue_blue",
+            "coordinates": [ [ 44, 54, 18 ], [ 44, 53, 16 ] ],
+            "slope_direction": 1,
+            "queue": true
+        }
+    ]
+}

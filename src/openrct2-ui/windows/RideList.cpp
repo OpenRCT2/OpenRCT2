@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,25 +12,27 @@
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideSetStatusAction.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Formatter.h>
-#include <openrct2/network/network.h>
+#include <openrct2/network/Network.h>
+#include <openrct2/ride/RideManager.hpp>
 #include <openrct2/ride/RideRatings.h>
-#include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_NONE;
+    static constexpr StringId WINDOW_TITLE = kStringIdNone;
     static constexpr int32_t WH = 240;
     static constexpr int32_t WW = 340;
 
@@ -62,7 +64,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget _rideListWidgets[] = {
+    static constexpr Widget _rideListWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({  0, 43}, {340, 197}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ), // tab page background
         MakeWidget({315, 60}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_TOGGLE_OPEN_CLOSE),      STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
@@ -76,7 +78,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({320, 62}, { 14,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0)                                    ),
         MakeWidget({320, 76}, { 14,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0)                                     ),
         MakeWidget({315, 90}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_DEMOLISH),               STR_QUICK_DEMOLISH_RIDE           ),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -173,15 +174,14 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = _rideListWidgets;
+            SetWidgets(_rideListWidgets);
             WindowInitScrollWidgets(*this);
+            WindowSetResize(*this, { 340, 240 }, { 400, 700 });
+
             page = PAGE_RIDES;
             selected_list_item = -1;
             frame_no = 0;
-            min_width = 340;
-            min_height = 240;
-            max_width = 400;
-            max_height = 700;
+
             RefreshList();
 
             list_information_type = 0;
@@ -210,7 +210,8 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SORT].left = width - 60;
             widgets[WIDX_SORT].right = width - 60 + 54;
 
-            ResizeDropdown(WIDX_CURRENT_INFORMATION_TYPE, { 150, 46 }, { width - 216, kDropdownHeight });
+            auto dropdownStart = widgets[WIDX_CURRENT_INFORMATION_TYPE].top;
+            ResizeDropdown(WIDX_CURRENT_INFORMATION_TYPE, { 150, dropdownStart }, { width - 216, kDropdownHeight });
 
             // Refreshing the list can be a very intensive operation
             // owing to its use of ride_has_any_track_elements().
@@ -230,7 +231,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    WindowClose(*this);
+                    Close();
                     break;
                 case WIDX_SORT:
                     list_information_type = _windowRideListInformationType;
@@ -300,7 +301,7 @@ namespace OpenRCT2::Ui::Windows
                 int32_t selectedIndex = -1;
                 for (int32_t type = INFORMATION_TYPE_STATUS; type <= lastType; type++)
                 {
-                    if ((GetGameState().Park.Flags & PARK_FLAGS_NO_MONEY))
+                    if ((getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
                     {
                         if (ride_info_type_money_mapping[type])
                         {
@@ -374,7 +375,7 @@ namespace OpenRCT2::Ui::Windows
         void OnUpdate() override
         {
             frame_no = (frame_no + 1) % 64;
-            WidgetInvalidate(*this, WIDX_TAB_1 + page);
+            InvalidateWidget(WIDX_TAB_1 + page);
             if (_windowRideListInformationType != INFORMATION_TYPE_STATUS)
                 Invalidate();
         }
@@ -418,7 +419,7 @@ namespace OpenRCT2::Ui::Windows
             const auto selectedRideId = _rideList[index].Id;
             if (_quickDemolishMode && NetworkGetMode() != NETWORK_MODE_CLIENT)
             {
-                auto gameAction = RideDemolishAction(selectedRideId, RIDE_MODIFY_DEMOLISH);
+                auto gameAction = RideDemolishAction(selectedRideId, RideModifyType::demolish);
                 GameActions::Execute(&gameAction);
                 RefreshList();
             }
@@ -464,8 +465,6 @@ namespace OpenRCT2::Ui::Windows
             else
                 pressed_widgets &= ~(1uLL << WIDX_QUICK_DEMOLISH);
 
-            ResizeFrameWithPage();
-
             widgets[WIDX_LIST].right = width - 26;
             widgets[WIDX_LIST].bottom = height - 15;
             widgets[WIDX_OPEN_CLOSE_ALL].right = width - 2;
@@ -490,10 +489,10 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto c = static_cast<RideClassification>(page);
                     allClosed = std::none_of(rideManager.begin(), rideManager.end(), [c](const Ride& rideRef) {
-                        return rideRef.GetClassification() == c && rideRef.status == RideStatus::Open;
+                        return rideRef.getClassification() == c && rideRef.status == RideStatus::open;
                     });
                     allOpen = std::none_of(rideManager.begin(), rideManager.end(), [c](const Ride& rideRef) {
-                        return rideRef.GetClassification() == c && rideRef.status != RideStatus::Open;
+                        return rideRef.getClassification() == c && rideRef.status != RideStatus::open;
                     });
                 }
 
@@ -568,7 +567,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Ride name
                 auto ft = Formatter();
-                ridePtr->FormatNameTo(ft);
+                ridePtr->formatNameTo(ft);
                 DrawTextEllipsised(dpi, { 0, y - 1 }, 159, format, ft);
 
                 // Ride information
@@ -581,11 +580,11 @@ namespace OpenRCT2::Ui::Windows
                     case INFORMATION_TYPE_STATUS:
                         formatSecondaryEnabled = false;
                         ft.Rewind();
-                        ridePtr->FormatStatusTo(ft);
+                        ridePtr->formatStatusTo(ft);
 
                         // Make test red and bold if broken down or crashed
-                        if ((ridePtr->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
-                            || (ridePtr->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
+                        if ((ridePtr->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN)
+                            || (ridePtr->lifecycleFlags & RIDE_LIFECYCLE_CRASHED))
                         {
                             format = STR_RED_OUTLINED_STRING;
                         }
@@ -616,14 +615,14 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     case INFORMATION_TYPE_TOTAL_CUSTOMERS:
                         formatSecondary = STR_RIDE_LIST_TOTAL_CUSTOMERS_LABEL;
-                        ft.Add<uint32_t>(ridePtr->total_customers);
+                        ft.Add<uint32_t>(ridePtr->totalCustomers);
                         break;
                     case INFORMATION_TYPE_TOTAL_PROFIT:
                         formatSecondary = 0;
-                        if (ridePtr->total_profit != kMoney64Undefined)
+                        if (ridePtr->totalProfit != kMoney64Undefined)
                         {
                             formatSecondary = STR_RIDE_LIST_TOTAL_PROFIT_LABEL;
-                            ft.Add<money64>(ridePtr->total_profit);
+                            ft.Add<money64>(ridePtr->totalProfit);
                         }
                         break;
                     case INFORMATION_TYPE_CUSTOMERS:
@@ -632,7 +631,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     case INFORMATION_TYPE_AGE:
                     {
-                        const auto age = DateGetYear(ridePtr->GetAge());
+                        const auto age = DateGetYear(ridePtr->getAge());
                         switch (age)
                         {
                             case 0:
@@ -650,23 +649,23 @@ namespace OpenRCT2::Ui::Windows
                     }
                     case INFORMATION_TYPE_INCOME:
                         formatSecondary = 0;
-                        if (ridePtr->income_per_hour != kMoney64Undefined)
+                        if (ridePtr->incomePerHour != kMoney64Undefined)
                         {
                             formatSecondary = STR_RIDE_LIST_INCOME_LABEL;
-                            ft.Add<money64>(ridePtr->income_per_hour);
+                            ft.Add<money64>(ridePtr->incomePerHour);
                         }
                         break;
                     case INFORMATION_TYPE_RUNNING_COST:
                         formatSecondary = STR_RIDE_LIST_RUNNING_COST_UNKNOWN;
-                        if (ridePtr->upkeep_cost != kMoney64Undefined)
+                        if (ridePtr->upkeepCost != kMoney64Undefined)
                         {
                             formatSecondary = STR_RIDE_LIST_RUNNING_COST_LABEL;
-                            ft.Add<money64>(ridePtr->upkeep_cost * 16);
+                            ft.Add<money64>(ridePtr->upkeepCost * 16);
                         }
                         break;
                     case INFORMATION_TYPE_QUEUE_LENGTH:
                     {
-                        const auto queueLength = ridePtr->GetTotalQueueLength();
+                        const auto queueLength = ridePtr->getTotalQueueLength();
                         ft.Add<uint16_t>(queueLength);
 
                         if (queueLength == 1)
@@ -685,7 +684,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     case INFORMATION_TYPE_QUEUE_TIME:
                     {
-                        const auto maxQueueTime = ridePtr->GetMaxQueueTime();
+                        const auto maxQueueTime = ridePtr->getMaxQueueTime();
                         ft.Add<uint16_t>(maxQueueTime);
 
                         if (maxQueueTime > 1)
@@ -699,7 +698,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     }
                     case INFORMATION_TYPE_RELIABILITY:
-                        ft.Add<uint16_t>(ridePtr->reliability_percentage);
+                        ft.Add<uint16_t>(ridePtr->reliabilityPercentage);
                         formatSecondary = STR_RELIABILITY_LABEL;
                         break;
                     case INFORMATION_TYPE_DOWN_TIME:
@@ -708,11 +707,11 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     case INFORMATION_TYPE_GUESTS_FAVOURITE:
                         formatSecondary = 0;
-                        if (ridePtr->IsRide())
+                        if (ridePtr->isRide())
                         {
-                            ft.Add<uint32_t>(ridePtr->guests_favourite);
-                            formatSecondary = ridePtr->guests_favourite == 1 ? STR_GUESTS_FAVOURITE_LABEL
-                                                                             : STR_GUESTS_FAVOURITE_PLURAL_LABEL;
+                            ft.Add<uint32_t>(ridePtr->guestsFavourite);
+                            formatSecondary = ridePtr->guestsFavourite == 1 ? STR_GUESTS_FAVOURITE_LABEL
+                                                                            : STR_GUESTS_FAVOURITE_PLURAL_LABEL;
                         }
                         break;
                     case INFORMATION_TYPE_EXCITEMENT:
@@ -791,7 +790,8 @@ namespace OpenRCT2::Ui::Windows
          * Used in RefreshList() to handle the sorting of the list.
          * Uses a lambda function (predicate) as exit criteria for the algorithm.
          */
-        template<typename TSortPred> void SortListByPredicate(const TSortPred& pred)
+        template<typename TSortPred>
+        void SortListByPredicate(const TSortPred& pred)
         {
             std::sort(_rideList.begin(), _rideList.end(), [&pred](const auto& lhs, const auto& rhs) {
                 const Ride* rideLhs = GetRide(lhs.Id);
@@ -807,7 +807,7 @@ namespace OpenRCT2::Ui::Windows
         void SortListByName()
         {
             std::sort(_rideList.begin(), _rideList.end(), [](const auto& lhs, const auto& rhs) {
-                return !(0 <= StrLogicalCmp(lhs.Name.c_str(), rhs.Name.c_str()));
+                return !(0 <= String::logicalCmp(lhs.Name.c_str(), rhs.Name.c_str()));
             });
         }
 
@@ -820,20 +820,20 @@ namespace OpenRCT2::Ui::Windows
             _rideList.clear();
             for (auto& rideRef : GetRideManager())
             {
-                if (rideRef.GetClassification() != static_cast<RideClassification>(page)
-                    || (rideRef.status == RideStatus::Closed && !RideHasAnyTrackElements(rideRef)))
+                if (rideRef.getClassification() != static_cast<RideClassification>(page)
+                    || (rideRef.status == RideStatus::closed && !RideHasAnyTrackElements(rideRef)))
                 {
                     continue;
                 }
 
-                if (rideRef.window_invalidate_flags & RIDE_INVALIDATE_RIDE_LIST)
+                if (rideRef.windowInvalidateFlags & RIDE_INVALIDATE_RIDE_LIST)
                 {
-                    rideRef.window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_LIST;
+                    rideRef.windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_LIST;
                 }
 
                 RideListEntry entry{};
                 entry.Id = rideRef.id;
-                entry.Name = rideRef.GetName();
+                entry.Name = rideRef.getName();
 
                 _rideList.push_back(std::move(entry));
             }
@@ -860,12 +860,12 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case INFORMATION_TYPE_TOTAL_CUSTOMERS:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.total_customers <= otherRide.total_customers;
+                        return thisRide.totalCustomers <= otherRide.totalCustomers;
                     });
                     break;
                 case INFORMATION_TYPE_TOTAL_PROFIT:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.total_profit <= otherRide.total_profit;
+                        return thisRide.totalProfit <= otherRide.totalProfit;
                     });
                     break;
                 case INFORMATION_TYPE_CUSTOMERS:
@@ -875,32 +875,32 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case INFORMATION_TYPE_AGE:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.build_date <= otherRide.build_date;
+                        return thisRide.buildDate <= otherRide.buildDate;
                     });
                     break;
                 case INFORMATION_TYPE_INCOME:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.income_per_hour <= otherRide.income_per_hour;
+                        return thisRide.incomePerHour <= otherRide.incomePerHour;
                     });
                     break;
                 case INFORMATION_TYPE_RUNNING_COST:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.upkeep_cost <= otherRide.upkeep_cost;
+                        return thisRide.upkeepCost <= otherRide.upkeepCost;
                     });
                     break;
                 case INFORMATION_TYPE_QUEUE_LENGTH:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.GetTotalQueueLength() <= otherRide.GetTotalQueueLength();
+                        return thisRide.getTotalQueueLength() <= otherRide.getTotalQueueLength();
                     });
                     break;
                 case INFORMATION_TYPE_QUEUE_TIME:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.GetMaxQueueTime() <= otherRide.GetMaxQueueTime();
+                        return thisRide.getMaxQueueTime() <= otherRide.getMaxQueueTime();
                     });
                     break;
                 case INFORMATION_TYPE_RELIABILITY:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.reliability_percentage <= otherRide.reliability_percentage;
+                        return thisRide.reliabilityPercentage <= otherRide.reliabilityPercentage;
                     });
                     break;
                 case INFORMATION_TYPE_DOWN_TIME:
@@ -910,7 +910,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case INFORMATION_TYPE_GUESTS_FAVOURITE:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        return thisRide.guests_favourite <= otherRide.guests_favourite;
+                        return thisRide.guestsFavourite <= otherRide.guestsFavourite;
                     });
                     break;
                 case INFORMATION_TYPE_EXCITEMENT:
@@ -946,10 +946,10 @@ namespace OpenRCT2::Ui::Windows
         {
             for (auto& rideRef : GetRideManager())
             {
-                if (rideRef.status != RideStatus::Closed
-                    && rideRef.GetClassification() == static_cast<RideClassification>(page))
+                if (rideRef.status != RideStatus::closed
+                    && rideRef.getClassification() == static_cast<RideClassification>(page))
                 {
-                    auto gameAction = RideSetStatusAction(rideRef.id, RideStatus::Closed);
+                    auto gameAction = RideSetStatusAction(rideRef.id, RideStatus::closed);
                     GameActions::Execute(&gameAction);
                 }
             }
@@ -960,9 +960,9 @@ namespace OpenRCT2::Ui::Windows
         {
             for (auto& rideRef : GetRideManager())
             {
-                if (rideRef.status != RideStatus::Open && rideRef.GetClassification() == static_cast<RideClassification>(page))
+                if (rideRef.status != RideStatus::open && rideRef.getClassification() == static_cast<RideClassification>(page))
                 {
-                    auto gameAction = RideSetStatusAction(rideRef.id, RideStatus::Open);
+                    auto gameAction = RideSetStatusAction(rideRef.id, RideStatus::open);
                     GameActions::Execute(&gameAction);
                 }
             }
@@ -976,10 +976,12 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* RideListOpen()
     {
         // Check if window is already open
-        auto* window = WindowBringToFrontByClass(WindowClass::RideList);
+        auto* windowMgr = GetWindowManager();
+        auto* window = windowMgr->BringToFrontByClass(WindowClass::RideList);
         if (window == nullptr)
         {
-            window = WindowCreate<RideListWindow>(WindowClass::RideList, ScreenCoordsXY(32, 32), WW, WH, WF_10 | WF_RESIZABLE);
+            window = windowMgr->Create<RideListWindow>(
+                WindowClass::RideList, ScreenCoordsXY(32, 32), WW, WH, WF_10 | WF_RESIZABLE);
         }
         return window;
     }

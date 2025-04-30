@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,9 +9,9 @@
 
 #pragma once
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
 #include "../../../ride/RideStringIds.h"
-#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -19,22 +19,22 @@
 // clang-format off
 constexpr RideTypeDescriptor WaterCoasterRTD =
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(
         {
-            .Drawer = GetTrackPaintFunctionWaterRC,
+            .trackStyle = TrackStyle::waterCoaster,
             .supportType = MetalSupportType::Fork,
-            .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::blockBrakes, TrackGroup::onridePhoto, TrackGroup::booster, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
-            .ExtraTrackPieces = {TrackGroup::slopeLong},
+            .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::blockBrakes, TrackGroup::onridePhoto, TrackGroup::booster, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
+            .extraTrackGroups = {TrackGroup::flatToSteepSlope},
             .icon = SPR_RIDE_CONSTRUCTION_RC_TRACK,
             .tooltip = STR_RIDE_CONSTRUCTION_STANDARD_RC_TRACK_TIP,
         },
         {
-            .Drawer = GetTrackPaintFunctionSplashBoats,
+            .trackStyle = TrackStyle::splashBoats,
             .supportType = WoodenSupportType::Truss,
-            .EnabledTrackPieces = {OpenRCT2::TrackElemType::Flat, OpenRCT2::TrackElemType::LeftQuarterTurn5Tiles, OpenRCT2::TrackElemType::RightQuarterTurn5Tiles, OpenRCT2::TrackElemType::SBendLeft, OpenRCT2::TrackElemType::SBendRight},
-            .ExtraTrackPieces = {},
+            .enabledTrackGroups = { TrackGroup::straight, TrackGroup::curve, TrackGroup::sBend },
+            .extraTrackGroups = {},
             .icon = SPR_RIDE_CONSTRUCTION_WATER_CHANNEL,
             .tooltip = STR_RIDE_CONSTRUCTION_WATER_CHANNEL_TIP,
         }
@@ -42,14 +42,13 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
         EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::hasCoveredPieces, RtdFlag::checkGForces),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
+    .DefaultMode = RideMode::continuousCircuit,
     .TrackSpeedSettings = { 30, 15 },
     .BoosterSettings = { 17, 16 },
     .LegacyBoosterSettings = { 17, 16, 1 },
     .Naming = { STR_RIDE_NAME_WATER_COASTER, STR_RIDE_DESCRIPTION_WATER_COASTER },
     .NameConvention = { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_WATER_COASTER",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 18, 24, 4, 7, },
     .MaxMass = 13,
@@ -58,7 +57,7 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
     .UpkeepCosts = { 60, 20, 80, 8, 3, 10 },
     .BuildCosts = { 27.50_GBP, 2.00_GBP, 40, },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_WATER,
+    .DefaultMusic = kMusicObjectWater,
     .PhotoItem = ShopItem::Photo4,
     .BonusValue = 60,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -73,13 +72,13 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(2, 70), RIDE_RATING(2, 80), RIDE_RATING(2, 10) },
+        { MakeRideRating(2, 70), MakeRideRating(2, 80), MakeRideRating(2, 10) },
         14,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -98,11 +97,11 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = LightFxAddLightsMagicVehicle_BoatHire,
+    .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_BoatHire,
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::Ride,
+    .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationDefault,

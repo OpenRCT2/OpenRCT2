@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -32,7 +32,7 @@ namespace OpenRCT2::Ui
 
     // TODO Bitmaps aren't very complicated to read so we should probably just write our
     //      own implementation in libopenrct2 and spare the AOT implementation registration.
-    static Image ReadBitmap(std::istream& istream, IMAGE_FORMAT format)
+    static Image ReadBitmap(std::istream& istream, ImageFormat format)
     {
         auto buffer = ReadToVector(istream);
         auto sdlStream = SDL_RWFromConstMem(buffer.data(), static_cast<int>(buffer.size()));
@@ -101,6 +101,6 @@ namespace OpenRCT2::Ui
 
     void RegisterBitmapReader()
     {
-        Imaging::SetReader(IMAGE_FORMAT::BITMAP, ReadBitmap);
+        Imaging::SetReader(ImageFormat::bitmap, ReadBitmap);
     }
 } // namespace OpenRCT2::Ui

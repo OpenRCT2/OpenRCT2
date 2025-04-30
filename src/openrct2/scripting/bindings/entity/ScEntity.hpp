@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,16 +11,15 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../../../Context.h"
-#    include "../../../entity/EntityList.h"
-#    include "../../../entity/EntityRegistry.h"
-#    include "../../../entity/Peep.h"
-#    include "../../../util/Util.h"
-#    include "../../Duktape.hpp"
-#    include "../../ScriptEngine.h"
+    #include "../../../Context.h"
+    #include "../../../entity/EntityList.h"
+    #include "../../../entity/EntityRegistry.h"
+    #include "../../../entity/Peep.h"
+    #include "../../Duktape.hpp"
+    #include "../../ScriptEngine.h"
 
-#    include <string_view>
-#    include <unordered_map>
+    #include <string_view>
+    #include <unordered_map>
 
 namespace OpenRCT2::Scripting
 {
@@ -59,11 +58,11 @@ namespace OpenRCT2::Scripting
                     case EntityType::Vehicle:
                         return "car";
                     case EntityType::Guest:
-                        if (targetApiVersion <= API_VERSION_33_PEEP_DEPRECATION)
+                        if (targetApiVersion <= kApiVersionPeepDeprecation)
                             return "peep";
                         return "guest";
                     case EntityType::Staff:
-                        if (targetApiVersion <= API_VERSION_33_PEEP_DEPRECATION)
+                        if (targetApiVersion <= kApiVersionPeepDeprecation)
                             return "peep";
                         return "staff";
                     case EntityType::SteamParticle:

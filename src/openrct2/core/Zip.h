@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -49,14 +49,14 @@ struct IZipArchive
     [[nodiscard]] bool Exists(std::string_view path) const;
 };
 
-enum class ZIP_ACCESS
+enum class ZipAccess
 {
-    READ,
-    WRITE,
+    read,
+    write,
 };
 
 namespace OpenRCT2::Zip
 {
-    [[nodiscard]] std::unique_ptr<IZipArchive> Open(std::string_view path, ZIP_ACCESS zipAccess);
-    [[nodiscard]] std::unique_ptr<IZipArchive> TryOpen(std::string_view path, ZIP_ACCESS zipAccess);
+    [[nodiscard]] std::unique_ptr<IZipArchive> Open(std::string_view path, ZipAccess zipAccess);
+    [[nodiscard]] std::unique_ptr<IZipArchive> TryOpen(std::string_view path, ZipAccess zipAccess);
 } // namespace OpenRCT2::Zip

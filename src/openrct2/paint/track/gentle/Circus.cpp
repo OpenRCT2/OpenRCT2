@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,18 +25,18 @@ using namespace OpenRCT2;
 static void PaintCircusTent(
     PaintSession& session, const Ride& ride, uint8_t direction, int8_t al, int8_t cl, uint16_t height, ImageId stationColour)
 {
-    auto rideEntry = ride.GetRideEntry();
+    auto rideEntry = ride.getRideEntry();
     if (rideEntry == nullptr)
         return;
 
     auto vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         session.InteractionType = ViewportInteractionItem::Entity;
         session.CurrentlyDrawnEntity = vehicle;
     }
 
-    auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto imageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);
     if (stationColour != TrackStationColour)
     {
         imageTemplate = stationColour;
@@ -63,7 +63,7 @@ static void PaintCircus(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
 
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 
@@ -99,20 +99,19 @@ static void PaintCircus(
     {
         case 1:
             // Top
-            cornerSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight);
             break;
         case 3:
             // Right
-            cornerSegments = EnumsToFlags(PaintSegment::topRightSide, PaintSegment::rightCorner, PaintSegment::bottomRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::topRight, PaintSegment::right, PaintSegment::bottomRight);
             break;
         case 6:
             // Left
-            cornerSegments = EnumsToFlags(PaintSegment::topLeftSide, PaintSegment::leftCorner, PaintSegment::bottomLeftSide);
+            cornerSegments = EnumsToFlags(PaintSegment::topLeft, PaintSegment::left, PaintSegment::bottomLeft);
             break;
         case 7:
             // Bottom
-            cornerSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::bottomRight);
             break;
     }
 
@@ -121,11 +120,11 @@ static void PaintCircus(
     PaintUtilSetGeneralSupportHeight(session, height + trackElement->ClearanceHeight - trackElement->BaseHeight);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionCircus(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionCircus(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {
-        return nullptr;
+        return TrackPaintFunctionDummy;
     }
 
     return PaintCircus;

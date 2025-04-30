@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,9 +11,9 @@
 
 #include "../Diagnostic.h"
 #include "../OpenRCT2.h"
+#include "../SpriteIds.h"
 #include "../core/Console.hpp"
 #include "../core/Guard.hpp"
-#include "../sprites.h"
 #include "Drawing.h"
 
 #include <algorithm>
@@ -21,8 +21,8 @@
 
 using namespace OpenRCT2;
 
-constexpr uint32_t BASE_IMAGE_ID = SPR_IMAGE_LIST_BEGIN;
-constexpr uint32_t MAX_IMAGES = SPR_IMAGE_LIST_END - BASE_IMAGE_ID;
+constexpr uint32_t kBaseImageID = SPR_IMAGE_LIST_BEGIN;
+constexpr uint32_t kMaxImages = SPR_IMAGE_LIST_END - kBaseImageID;
 
 static bool _initialised = false;
 static std::list<ImageList> _freeLists;
@@ -31,11 +31,11 @@ static uint32_t _allocatedImageCount;
 #ifdef DEBUG_LEVEL_1
 static std::list<ImageList> _allocatedLists;
 
-// MSVC's compiler doesn't support the [[maybe_unused]] attribute for unused static functions. Until this has been resolved, we
-// need to explicitly tell the compiler to temporarily disable the warning.
-// See discussion at https://github.com/OpenRCT2/OpenRCT2/pull/7617
-#    pragma warning(push)
-#    pragma warning(disable : 4505) // unreferenced local function has been removed
+    // MSVC's compiler doesn't support the [[maybe_unused]] attribute for unused static functions. Until this has been resolved,
+    // we need to explicitly tell the compiler to temporarily disable the warning. See discussion at
+    // https://github.com/OpenRCT2/OpenRCT2/pull/7617
+    #pragma warning(push)
+    #pragma warning(disable : 4505) // unreferenced local function has been removed
 
 [[maybe_unused]] static bool AllocatedListContains(uint32_t baseImageId, uint32_t count)
 {
@@ -46,7 +46,7 @@ static std::list<ImageList> _allocatedLists;
     return contains;
 }
 
-#    pragma warning(pop)
+    #pragma warning(pop)
 
 static bool AllocatedListRemove(uint32_t baseImageId, uint32_t count)
 {
@@ -65,7 +65,7 @@ static bool AllocatedListRemove(uint32_t baseImageId, uint32_t count)
 
 static uint32_t GetNumFreeImagesRemaining()
 {
-    return MAX_IMAGES - _allocatedImageCount;
+    return kMaxImages - _allocatedImageCount;
 }
 
 static void InitialiseImageList()
@@ -73,7 +73,7 @@ static void InitialiseImageList()
     Guard::Assert(!_initialised, GUARD_LINE);
 
     _freeLists.clear();
-    _freeLists.push_back({ BASE_IMAGE_ID, MAX_IMAGES });
+    _freeLists.push_back({ kBaseImageID, kMaxImages });
 #ifdef DEBUG_LEVEL_1
     _allocatedLists.clear();
 #endif
@@ -129,7 +129,7 @@ static uint32_t TryAllocateImageList(uint32_t count)
             return imageList.BaseId;
         }
     }
-    return ImageIndexUndefined;
+    return kImageIndexUndefined;
 }
 
 static uint32_t AllocateImageList(uint32_t count)
@@ -141,12 +141,12 @@ static uint32_t AllocateImageList(uint32_t count)
         InitialiseImageList();
     }
 
-    uint32_t baseImageId = ImageIndexUndefined;
+    uint32_t baseImageId = kImageIndexUndefined;
     uint32_t freeImagesRemaining = GetNumFreeImagesRemaining();
     if (freeImagesRemaining >= count)
     {
         baseImageId = TryAllocateImageList(count);
-        if (baseImageId == ImageIndexUndefined)
+        if (baseImageId == kImageIndexUndefined)
         {
             // Defragment and try again
             MergeFreeLists();
@@ -159,7 +159,7 @@ static uint32_t AllocateImageList(uint32_t count)
 static void FreeImageList(uint32_t baseImageId, uint32_t count)
 {
     Guard::Assert(_initialised, GUARD_LINE);
-    Guard::Assert(baseImageId >= BASE_IMAGE_ID, GUARD_LINE);
+    Guard::Assert(baseImageId >= kBaseImageID, GUARD_LINE);
 
 #ifdef DEBUG_LEVEL_1
     if (!AllocatedListRemove(baseImageId, count))
@@ -192,14 +192,14 @@ uint32_t GfxObjectAllocateImages(const G1Element* images, uint32_t count)
 {
     if (count == 0 || gOpenRCT2NoGraphics)
     {
-        return ImageIndexUndefined;
+        return kImageIndexUndefined;
     }
 
     uint32_t baseImageId = AllocateImageList(count);
-    if (baseImageId == ImageIndexUndefined)
+    if (baseImageId == kImageIndexUndefined)
     {
         LOG_ERROR("Reached maximum image limit.");
-        return ImageIndexUndefined;
+        return kImageIndexUndefined;
     }
 
     uint32_t imageId = baseImageId;
@@ -215,7 +215,7 @@ uint32_t GfxObjectAllocateImages(const G1Element* images, uint32_t count)
 
 void GfxObjectFreeImages(uint32_t baseImageId, uint32_t count)
 {
-    if (baseImageId != 0 && baseImageId != ImageIndexUndefined)
+    if (baseImageId != 0 && baseImageId != kImageIndexUndefined)
     {
         // Zero the G1 elements so we don't have invalid pointers
         // and data lying about
@@ -250,7 +250,7 @@ size_t ImageListGetUsedCount()
 
 size_t ImageListGetMaximum()
 {
-    return MAX_IMAGES;
+    return kMaxImages;
 }
 
 const std::list<ImageList>& GetAvailableAllocationRanges()

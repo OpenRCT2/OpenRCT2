@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,22 +11,22 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../actions/CustomAction.h"
-#    include "../core/FileWatcher.h"
-#    include "../management/Finance.h"
-#    include "../world/Location.hpp"
-#    include "HookEngine.h"
-#    include "Plugin.h"
+    #include "../actions/CustomAction.h"
+    #include "../core/FileWatcher.h"
+    #include "../management/Finance.h"
+    #include "../world/Location.hpp"
+    #include "HookEngine.h"
+    #include "Plugin.h"
 
-#    include <future>
-#    include <list>
-#    include <memory>
-#    include <mutex>
-#    include <queue>
-#    include <string>
-#    include <unordered_map>
-#    include <unordered_set>
-#    include <vector>
+    #include <future>
+    #include <list>
+    #include <memory>
+    #include <mutex>
+    #include <queue>
+    #include <string>
+    #include <unordered_map>
+    #include <unordered_set>
+    #include <vector>
 
 struct duk_hthread;
 typedef struct duk_hthread duk_context;
@@ -46,17 +46,17 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
-    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 98;
+    static constexpr int32_t kPluginApiVersion = 106;
 
     // Versions marking breaking changes.
-    static constexpr int32_t API_VERSION_33_PEEP_DEPRECATION = 33;
-    static constexpr int32_t API_VERSION_63_G2_REORDER = 63;
-    static constexpr int32_t API_VERSION_68_CUSTOM_ACTION_ARGS = 68;
-    static constexpr int32_t API_VERSION_77_NETWORK_IDS = 77;
+    static constexpr int32_t kApiVersionPeepDeprecation = 33;
+    static constexpr int32_t kApiVersionG2Reorder = 63;
+    static constexpr int32_t kApiVersionCustomActionArgs = 68;
+    static constexpr int32_t kApiVersionNetworkIDs = 77;
 
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
     class ScSocketBase;
-#    endif
+    #endif
 
     class ScriptExecutionInfo
     {
@@ -173,9 +173,9 @@ namespace OpenRCT2::Scripting
         };
 
         std::unordered_map<std::string, CustomActionInfo> _customActions;
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
         std::list<std::shared_ptr<ScSocketBase>> _sockets;
-#    endif
+    #endif
 
     public:
         ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env);
@@ -264,9 +264,9 @@ namespace OpenRCT2::Scripting
         static std::string_view ExpenditureTypeToString(ExpenditureType expenditureType);
         static ExpenditureType StringToExpenditureType(std::string_view expenditureType);
 
-#    ifndef DISABLE_NETWORK
+    #ifndef DISABLE_NETWORK
         void AddSocket(const std::shared_ptr<ScSocketBase>& socket);
-#    endif
+    #endif
 
     private:
         void RegisterConstants();

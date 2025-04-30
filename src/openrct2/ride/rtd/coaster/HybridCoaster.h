@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,33 +9,32 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../Track.h"
 
 // clang-format off
 constexpr RideTypeDescriptor HybridCoasterRTD =
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = OpenRCT2::HybridRC::GetTrackPaintFunction,
+        .trackStyle = TrackStyle::hybridCoaster,
         .supportType = WoodenSupportType::Truss,
-        .EnabledTrackPieces = {TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::liftHillSteep, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::slopeVertical, TrackGroup::barrelRoll, TrackGroup::poweredLift, TrackGroup::slopeCurveBanked, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::slopeSteepLong, TrackGroup::curveVertical, TrackGroup::quarterLoop, TrackGroup::zeroGRoll, TrackGroup::zeroGRollLarge, TrackGroup::slopeCurveLarge, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
-        .ExtraTrackPieces = {TrackGroup::booster},
+        .enabledTrackGroups = {TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::liftHillSteep, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::slopeVertical, TrackGroup::barrelRoll, TrackGroup::poweredLift, TrackGroup::slopeCurveBanked, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::slopeSteepLong, TrackGroup::curveVertical, TrackGroup::quarterLoop, TrackGroup::zeroGRoll, TrackGroup::zeroGRollLarge, TrackGroup::slopeCurveLarge, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::inclinedBrakes },
+        .extraTrackGroups = {TrackGroup::booster},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 
         EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports, 
                      RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces, 
                      RtdFlag::allowMultipleCircuits, RtdFlag::allowReversedTrains),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned),
+    .DefaultMode = RideMode::continuousCircuit,
     .BoosterSettings = { 15, 52 },
     .LegacyBoosterSettings = { 15, 52 },
     .Naming = { STR_RIDE_NAME_HYBRID_COASTER, STR_RIDE_DESCRIPTION_HYBRID_COASTER },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_HYBRID_COASTER",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 43, 24, 13, 13},
     .MaxMass = 18,
@@ -44,7 +43,7 @@ constexpr RideTypeDescriptor HybridCoasterRTD =
     .UpkeepCosts = { 40, 20, 80, 10, 3, 10 },
     .BuildCosts = { 65.00_GBP, 3.50_GBP, 55},
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_2,
+    .DefaultMusic = kMusicObjectRock2,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 120,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -63,13 +62,13 @@ constexpr RideTypeDescriptor HybridCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(3, 80), RIDE_RATING(1, 00), RIDE_RATING(0, 45) },
+        { MakeRideRating(3, 80), MakeRideRating(1, 00), MakeRideRating(0, 45) },
         16,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                364088, 400497, 0 },
@@ -83,7 +82,7 @@ constexpr RideTypeDescriptor HybridCoasterRTD =
             { RatingsModifierType::BonusScenery,          0,                6693, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 14,               2, 2, 2 },
             { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 2, 2 },
-            { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 40), 2, 2, 2 },
+            { RatingsModifierType::RequirementNegativeGs, MakeFixed16_2dp(0, 40), 2, 2, 2 },
             { RatingsModifierType::RequirementNumDrops,   2,                2, 2, 2 },
             { RatingsModifierType::PenaltyLateralGs,      0,                24576, 35746, 49648 },
         },

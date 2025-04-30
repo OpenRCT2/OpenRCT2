@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include "../management/Finance.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
+#include "../world/tile_element/BannerElement.h"
 #include "GameAction.h"
 
 using namespace OpenRCT2;
@@ -91,7 +92,7 @@ GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
     if (banner == nullptr)
     {
         LOG_ERROR("Invalid banner index %u", index);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
     }
 
     if (isExecuting)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../../../sprites.h"
+#include "../../../SpriteIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -17,26 +17,25 @@
 // clang-format off
 constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
 {
-    .Category = RIDE_CATEGORY_ROLLERCOASTER,
+    .Category = RideCategory::rollerCoaster,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionHeartlineTwisterRC,
+        .trackStyle = TrackStyle::heartlineTwisterCoaster,
         .supportType = WoodenSupportType::Mine,
-        .EnabledTrackPieces = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::liftHillSteep, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::heartlineRoll, TrackGroup::heartlineTransfer},
-        .ExtraTrackPieces = {},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::liftHillSteep, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::heartlineRoll, TrackGroup::heartlineTransfer},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
                  EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation, RtdFlag::checkGForces,
                               RtdFlag::allowReversedTrains),
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
+    .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = { 10, 27 },
     .BoosterSettings = { 25, 25 },
     .LegacyBoosterSettings = { 25, 25 },
     .Naming = { STR_RIDE_NAME_HEARTLINE_TWISTER_COASTER, STR_RIDE_DESCRIPTION_HEARTLINE_TWISTER_COASTER },
     .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_HEARTLINE_TWISTER_COASTER",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 22, 24, 15, 9, },
     .MaxMass = 18,
@@ -45,7 +44,7 @@ constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
     .UpkeepCosts = { 47, 20, 80, 11, 3, 10 },
     .BuildCosts = { 72.50_GBP, 3.50_GBP, 30, },
     .DefaultPrices = { 15, 20 },
-    .DefaultMusic = MUSIC_OBJECT_TECHNO,
+    .DefaultMusic = kMusicObjectTechno,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 70,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -59,13 +58,13 @@ constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(3, 00), RIDE_RATING(1, 70), RIDE_RATING(1, 65) },
+        { MakeRideRating(3, 00), MakeRideRating(1, 70), MakeRideRating(1, 65) },
         18,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000, 764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,    RIDE_RATING(0, 20), RIDE_RATING(0, 04), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,    MakeRideRating(0, 20), MakeRideRating(0, 04), 0 },
             { RatingsModifierType::BonusTrainLength,      0,    187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,    97418, 123987, 70849 },
             { RatingsModifierType::BonusAverageSpeed,     0,    291271, 436906, 0 },

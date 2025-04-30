@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,6 +16,7 @@
 #include "../../../ride/Vehicle.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
+#include "../../support/WoodenSupports.hpp"
 #include "../../tile_element/Segment.h"
 #include "../../track/Segment.h"
 
@@ -29,7 +30,7 @@ enum
     SprSpaceRingsFenceNw = 22149,
 };
 
-static constexpr uint32_t SpaceRingsFenceSprites[] = {
+static constexpr uint32_t kSpaceRingsFenceSprites[] = {
     SprSpaceRingsFenceNe,
     SprSpaceRingsFenceSe,
     SprSpaceRingsFenceSw,
@@ -41,44 +42,45 @@ static void PaintSpaceRingsStructure(
     PaintSession& session, const Ride& ride, uint8_t direction, uint32_t segment, int32_t height, ImageId stationColour)
 {
     uint32_t vehicleIndex = (segment - direction) & 0x3;
-
-    if (ride.num_stations == 0 || vehicleIndex < ride.NumTrains)
+    const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
+    if (rideEntry == nullptr || (ride.numStations != 0 && vehicleIndex >= ride.numTrains))
     {
-        const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
+        session.CurrentlyDrawnEntity = nullptr;
+        session.InteractionType = ViewportInteractionItem::Ride;
+        return;
+    }
 
-        int32_t frameNum = direction;
+    int32_t frameNum = direction;
+    uint32_t baseImageId = rideEntry->Cars[0].base_image_id;
+    auto vehicle = GetEntity<Vehicle>(ride.vehicles[vehicleIndex]);
+    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    {
+        session.InteractionType = ViewportInteractionItem::Entity;
+        session.CurrentlyDrawnEntity = vehicle;
+        frameNum += static_cast<int8_t>(vehicle->Pitch) * 4;
+    }
 
-        uint32_t baseImageId = rideEntry->Cars[0].base_image_id;
-        auto vehicle = GetEntity<Vehicle>(ride.vehicles[vehicleIndex]);
-        if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (ride.vehicleColourSettings != VehicleColourSettings::perTrain)
+    {
+        vehicleIndex = 0;
+    }
+
+    if (stationColour == TrackStationColour)
+    {
+        stationColour = ImageId(0, ride.vehicleColours[vehicleIndex].Body, ride.vehicleColours[vehicleIndex].Trim);
+    }
+
+    auto imageId = stationColour.WithIndex(baseImageId + frameNum);
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { -10, -10, height }, { 20, 20, 23 } });
+
+    if (vehicle != nullptr && vehicle->num_peeps > 0)
+    {
+        auto* rider = GetEntity<Guest>(vehicle->peep[0]);
+        if (rider != nullptr)
         {
-            session.InteractionType = ViewportInteractionItem::Entity;
-            session.CurrentlyDrawnEntity = vehicle;
-            frameNum += static_cast<int8_t>(vehicle->Pitch) * 4;
-        }
-
-        if (ride.vehicleColourSettings != VehicleColourSettings::perTrain)
-        {
-            vehicleIndex = 0;
-        }
-
-        if (stationColour == TrackStationColour)
-        {
-            stationColour = ImageId(0, ride.vehicle_colours[vehicleIndex].Body, ride.vehicle_colours[vehicleIndex].Trim);
-        }
-
-        auto imageId = stationColour.WithIndex(baseImageId + frameNum);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { -10, -10, height }, { 20, 20, 23 } });
-
-        if (vehicle != nullptr && vehicle->num_peeps > 0)
-        {
-            auto* rider = GetEntity<Guest>(vehicle->peep[0]);
-            if (rider != nullptr)
-            {
-                stationColour = ImageId(0, rider->TshirtColour, rider->TrousersColour);
-                imageId = stationColour.WithIndex(baseImageId + 352 + frameNum);
-                PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { -10, -10, height }, { 20, 20, 23 } });
-            }
+            stationColour = ImageId(0, rider->TshirtColour, rider->TrousersColour);
+            imageId = stationColour.WithIndex(baseImageId + 352 + frameNum);
+            PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { -10, -10, height }, { 20, 20, 23 } });
         }
     }
 
@@ -99,10 +101,10 @@ static void PaintSpaceRings(
     ImageId imageId;
 
     auto stationColour = GetStationColourScheme(session, trackElement);
-    WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
+    DrawSupportForSequenceA<TrackElemType::FlatTrack3x3>(
+        session, supportType.wooden, trackSequence, direction, height, GetStationColourScheme(session, trackElement));
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 
     switch (trackSequence)
@@ -121,7 +123,7 @@ static void PaintSpaceRings(
             break;
         default:
             TrackPaintUtilPaintFences(
-                session, edges, position, trackElement, ride, stationColour, height, SpaceRingsFenceSprites,
+                session, edges, position, trackElement, ride, stationColour, height, kSpaceRingsFenceSprites,
                 session.CurrentRotation);
             break;
     }
@@ -150,35 +152,33 @@ static void PaintSpaceRings(
             break;
         case 1:
             cornerSegments = EnumsToFlags(
-                PaintSegment::leftCorner, PaintSegment::topLeftSide, PaintSegment::topCorner, PaintSegment::topRightSide,
-                PaintSegment::rightCorner);
+                PaintSegment::left, PaintSegment::topLeft, PaintSegment::top, PaintSegment::topRight, PaintSegment::right);
             break;
         case 2:
-            cornerSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topRightSide, PaintSegment::rightCorner);
+            cornerSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topRight, PaintSegment::right);
             break;
         case 3:
             cornerSegments = EnumsToFlags(
-                PaintSegment::topCorner, PaintSegment::topRightSide, PaintSegment::rightCorner, PaintSegment::bottomRightSide,
-                PaintSegment::bottomCorner);
+                PaintSegment::top, PaintSegment::topRight, PaintSegment::right, PaintSegment::bottomRight,
+                PaintSegment::bottom);
             break;
         case 4:
-            cornerSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::leftCorner);
+            cornerSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::left);
             break;
         case 5:
-            cornerSegments = EnumsToFlags(PaintSegment::rightCorner, PaintSegment::bottomRightSide, PaintSegment::bottomCorner);
+            cornerSegments = EnumsToFlags(PaintSegment::right, PaintSegment::bottomRight, PaintSegment::bottom);
             break;
         case 6:
             cornerSegments = EnumsToFlags(
-                PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::leftCorner, PaintSegment::bottomLeftSide,
-                PaintSegment::bottomCorner);
+                PaintSegment::top, PaintSegment::topLeft, PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom);
             break;
         case 7:
             cornerSegments = EnumsToFlags(
-                PaintSegment::leftCorner, PaintSegment::bottomLeftSide, PaintSegment::bottomCorner,
-                PaintSegment::bottomRightSide, PaintSegment::rightCorner);
+                PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::bottomRight,
+                PaintSegment::right);
             break;
         case 8:
-            cornerSegments = EnumsToFlags(PaintSegment::leftCorner, PaintSegment::bottomLeftSide, PaintSegment::bottomCorner);
+            cornerSegments = EnumsToFlags(PaintSegment::left, PaintSegment::bottomLeft, PaintSegment::bottom);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
@@ -189,11 +189,11 @@ static void PaintSpaceRings(
 /**
  * rct2: 0x0x00767A40
  */
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionSpaceRings(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionSpaceRings(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {
-        return nullptr;
+        return TrackPaintFunctionDummy;
     }
 
     return PaintSpaceRings;

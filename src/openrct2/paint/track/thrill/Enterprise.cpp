@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
+#include "../../../world/tile_element/TrackElement.h"
 #include "../../Boundbox.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"
@@ -21,6 +22,7 @@
 #include "../../track/Segment.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Numerics;
 
 static void PaintEnterpriseRiders(
     PaintSession& session, const RideObjectEntry& rideEntry, Vehicle& vehicle, uint32_t imageOffset, const CoordsXYZ& offset,
@@ -38,7 +40,7 @@ static void PaintEnterpriseRiders(
             break;
 
         auto frameOffset1 = ((imageOffset % 4) * 4 + (i * 4) % 15) & 0x0F;
-        auto frameOffset2 = Floor2(imageOffset, 4) * 4;
+        auto frameOffset2 = floor2(imageOffset, 4) * 4;
         auto imageTemplate = ImageId(0, vehicle.peep_tshirt_colours[i]);
         auto imageId = imageTemplate.WithIndex(baseImageIndex + 196 + frameOffset1 + frameOffset2);
         PaintAddImageAsChild(session, imageId, offset, bb);
@@ -53,7 +55,7 @@ static void PaintEnterpriseStructure(
         return;
 
     Vehicle* vehicle = nullptr;
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+    if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
     {
         vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
         if (vehicle != nullptr)
@@ -72,7 +74,7 @@ static void PaintEnterpriseStructure(
         imageOffset = (vehicle->Pitch << 2) + (((vehicle->Orientation >> 3) + session.CurrentRotation) % 4);
     }
 
-    auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto imageTemplate = ImageId(0, ride.vehicleColours[0].Body, ride.vehicleColours[0].Trim);
     auto imageFlags = GetStationColourScheme(session, trackElement);
     if (imageFlags != TrackStationColour)
     {
@@ -102,7 +104,7 @@ static void PaintEnterprise(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
-    const StationObject* stationObject = ride.GetStationObject();
+    const StationObject* stationObject = ride.getStationObject();
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, kFloorSpritesCork, stationObject);
 
     TrackPaintUtilPaintFences(
@@ -155,17 +157,16 @@ static void PaintEnterprise(
     switch (trackSequence)
     {
         case 0:
-            cornerSegments = EnumsToFlags(PaintSegment::topCorner, PaintSegment::topLeftSide, PaintSegment::topRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::top, PaintSegment::topLeft, PaintSegment::topRight);
             break;
         case 3:
-            cornerSegments = EnumsToFlags(PaintSegment::topRightSide, PaintSegment::rightCorner, PaintSegment::bottomRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::topRight, PaintSegment::right, PaintSegment::bottomRight);
             break;
         case 12:
-            cornerSegments = EnumsToFlags(PaintSegment::topLeftSide, PaintSegment::leftCorner, PaintSegment::bottomLeftSide);
+            cornerSegments = EnumsToFlags(PaintSegment::topLeft, PaintSegment::left, PaintSegment::bottomLeft);
             break;
         case 15:
-            cornerSegments = EnumsToFlags(
-                PaintSegment::bottomLeftSide, PaintSegment::bottomCorner, PaintSegment::bottomRightSide);
+            cornerSegments = EnumsToFlags(PaintSegment::bottomLeft, PaintSegment::bottom, PaintSegment::bottomRight);
             break;
     }
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
@@ -173,11 +174,11 @@ static void PaintEnterprise(
     PaintUtilSetGeneralSupportHeight(session, height + trackElement->ClearanceHeight - trackElement->BaseHeight);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionEnterprise(int32_t trackType)
+TrackPaintFunction GetTrackPaintFunctionEnterprise(OpenRCT2::TrackElemType trackType)
 {
     if (trackType != TrackElemType::FlatTrack4x4)
     {
-        return nullptr;
+        return TrackPaintFunctionDummy;
     }
 
     return PaintEnterprise;

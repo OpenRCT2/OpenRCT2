@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,29 +7,29 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__) || defined(__NetBSD__)
 
-#    include "Platform.h"
+    #include "Platform.h"
 
-#    include "../Date.h"
-#    include "../Diagnostic.h"
-#    include "../core/Memory.hpp"
-#    include "../core/Path.hpp"
-#    include "../util/Util.h"
+    #include "../Date.h"
+    #include "../Diagnostic.h"
+    #include "../core/Memory.hpp"
+    #include "../core/Path.hpp"
+    #include "../core/String.hpp"
 
-#    include <cerrno>
-#    include <clocale>
-#    include <cstdlib>
-#    include <cstring>
-#    include <ctime>
-#    include <dirent.h>
-#    include <fcntl.h>
-#    include <fnmatch.h>
-#    include <locale>
-#    include <pwd.h>
-#    include <sys/stat.h>
-#    include <sys/time.h>
-#    include <unistd.h>
+    #include <cerrno>
+    #include <clocale>
+    #include <cstdlib>
+    #include <cstring>
+    #include <ctime>
+    #include <dirent.h>
+    #include <fcntl.h>
+    #include <fnmatch.h>
+    #include <locale>
+    #include <pwd.h>
+    #include <sys/stat.h>
+    #include <sys/time.h>
+    #include <unistd.h>
 
 // The name of the mutex used to prevent multiple instances of the game from running
 static constexpr const utf8* SINGLE_INSTANCE_MUTEX_NAME = u8"openrct2.lock";
@@ -38,7 +38,7 @@ namespace OpenRCT2::Platform
 {
     std::string GetEnvironmentVariable(std::string_view name)
     {
-        return String::ToStd(getenv(std::string(name).c_str()));
+        return String::toStd(getenv(std::string(name).c_str()));
     }
 
     std::string GetEnvironmentPath(const char* name)
@@ -113,12 +113,12 @@ namespace OpenRCT2::Platform
 
     bool FindApp(std::string_view app, std::string* output)
     {
-        return Execute(String::StdFormat("which %s 2> /dev/null", std::string(app).c_str()), output) == 0;
+        return Execute(String::stdFormat("which %s 2> /dev/null", std::string(app).c_str()), output) == 0;
     }
 
     int32_t Execute(std::string_view command, std::string* output)
     {
-#    ifndef __EMSCRIPTEN__
+    #ifndef __EMSCRIPTEN__
         LOG_VERBOSE("executing \"%s\"...", std::string(command).c_str());
         FILE* fpipe = popen(std::string(command).c_str(), "r");
         if (fpipe == nullptr)
@@ -160,18 +160,16 @@ namespace OpenRCT2::Platform
 
         // Return exit code
         return pclose(fpipe);
-#    else
-        LOG_WARNING("Emscripten cannot execute processes. The commandline was '%s'.", command.c_str());
+    #else
+        LOG_WARNING("Emscripten cannot execute processes. The commandline was '%s'.", std::string(command).c_str());
         return -1;
-#    endif // __EMSCRIPTEN__
+    #endif // __EMSCRIPTEN__
     }
 
     uint64_t GetLastModified(std::string_view path)
     {
         uint64_t lastModified = 0;
-        struct stat statInfo
-        {
-        };
+        struct stat statInfo{};
         if (stat(std::string(path).c_str(), &statInfo) == 0)
         {
             lastModified = statInfo.st_mtime;
@@ -182,9 +180,7 @@ namespace OpenRCT2::Platform
     uint64_t GetFileSize(std::string_view path)
     {
         uint64_t size = 0;
-        struct stat statInfo
-        {
-        };
+        struct stat statInfo{};
         if (stat(std::string(path).c_str(), &statInfo) == 0)
         {
             size = statInfo.st_size;
@@ -223,7 +219,7 @@ namespace OpenRCT2::Platform
                 // Find a file which matches by name (case insensitive)
                 for (int32_t i = 0; i < count; i++)
                 {
-                    if (String::IEquals(files[i]->d_name, fileName.c_str()))
+                    if (String::iequals(files[i]->d_name, fileName.c_str()))
                     {
                         result = Path::Combine(directory, std::string(files[i]->d_name));
                         break;
@@ -279,12 +275,12 @@ namespace OpenRCT2::Platform
 
     TemperatureUnit GetLocaleTemperatureFormat()
     {
-// LC_MEASUREMENT is GNU specific.
-#    ifdef LC_MEASUREMENT
+    // LC_MEASUREMENT is GNU specific.
+    #ifdef LC_MEASUREMENT
         const char* langstring = setlocale(LC_MEASUREMENT, "");
-#    else
+    #else
         const char* langstring = setlocale(LC_ALL, "");
-#    endif
+    #endif
 
         if (langstring != nullptr)
         {
@@ -299,11 +295,11 @@ namespace OpenRCT2::Platform
 
     bool ProcessIsElevated()
     {
-#    ifndef __EMSCRIPTEN__
+    #ifndef __EMSCRIPTEN__
         return (geteuid() == 0);
-#    else
+    #else
         return false;
-#    endif // __EMSCRIPTEN__
+    #endif // __EMSCRIPTEN__
     }
 
     bool LockSingleInstance()

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
-#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -18,12 +18,12 @@
 // clang-format off
 constexpr RideTypeDescriptor DodgemsRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack4x4,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionDodgems,
-        .EnabledTrackPieces = {},
-        .ExtraTrackPieces = {},
+        .trackStyle = TrackStyle::dodgems,
+        .enabledTrackGroups = {},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::hasSinglePieceStation,
@@ -31,12 +31,11 @@ constexpr RideTypeDescriptor DodgemsRTD =
                      RtdFlag::isFlatRide, RtdFlag::hasVehicleColours, RtdFlag::hasMusicByDefault,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::slightlyInterestingToLookAt),
-    .RideModes = EnumsToFlags(RideMode::Dodgems),
-    .DefaultMode = RideMode::Dodgems,
+    .RideModes = EnumsToFlags(RideMode::dodgems),
+    .DefaultMode = RideMode::dodgems,
     .OperatingSettings = { 20, 180 },
     .Naming = { STR_RIDE_NAME_DODGEMS, STR_RIDE_DESCRIPTION_DODGEMS },
     .NameConvention = { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_DODGEMS",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 9, 48, 2, 2, },
     .MaxMass = 255,
@@ -45,7 +44,7 @@ constexpr RideTypeDescriptor DodgemsRTD =
     .UpkeepCosts = { 50, 1, 0, 5, 0, 0 },
     .BuildCosts = { 27.50_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 15, 0 },
-    .DefaultMusic = MUSIC_OBJECT_DODGEMS,
+    .DefaultMusic = kMusicObjectDodgems,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 35,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -61,18 +60,18 @@ constexpr RideTypeDescriptor DodgemsRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(1, 30), RIDE_RATING(0, 50), RIDE_RATING(0, 35) },
+        { MakeRideRating(1, 30), MakeRideRating(0, 50), MakeRideRating(0, 35) },
         16,
         7,
         false,
         {
             // Special case, passing -2 to represent division by 2
             { RatingsModifierType::BonusOperationOption, 0, 1, -2, 0 }, 
-            { RatingsModifierType::BonusNumTrains,       4, RIDE_RATING(0, 80), 0, 0 },
+            { RatingsModifierType::BonusNumTrains,       4, MakeRideRating(0, 80), 0, 0 },
             { RatingsModifierType::BonusScenery,         0, 5577, 0, 0 },
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = LightFxAddLightsMagicVehicle_BoatHire,
+    .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_BoatHire,
 };
 // clang-format on

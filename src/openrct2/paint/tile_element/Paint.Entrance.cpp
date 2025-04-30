@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "../../Context.h"
 #include "../../Game.h"
 #include "../../GameState.h"
+#include "../../SpriteIds.h"
 #include "../../config/Config.h"
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
@@ -23,17 +24,20 @@
 #include "../../profiling/Profiling.h"
 #include "../../ride/RideData.h"
 #include "../../ride/TrackDesign.h"
-#include "../../sprites.h"
 #include "../../world/Banner.h"
 #include "../../world/Entrance.h"
 #include "../../world/Footpath.h"
 #include "../../world/Park.h"
 #include "../../world/TileInspector.h"
+#include "../../world/tile_element/EntranceElement.h"
 #include "../support/WoodenSupports.h"
 #include "Paint.TileElement.h"
 #include "Segment.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
+
+using OpenRCT2::Drawing::LightFx::LightType;
 
 static void PaintRideEntranceExitScrollingText(
     PaintSession& session, const EntranceElement& entranceEl, const StationObject& stationObj, Direction direction,
@@ -53,9 +57,9 @@ static void PaintRideEntranceExitScrollingText(
 
     auto ft = Formatter();
     ft.Add<StringId>(STR_RIDE_ENTRANCE_NAME);
-    if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+    if (ride->status == RideStatus::open && !(ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
-        ride->FormatNameTo(ft);
+        ride->formatNameTo(ft);
     }
     else
     {
@@ -72,7 +76,7 @@ static void PaintRideEntranceExitScrollingText(
         FormatStringLegacy(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
     auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
-    auto scroll = stringWidth > 0 ? (GetGameState().CurrentTicks / 2) % stringWidth : 0;
+    auto scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
 
     PaintAddImageAsChild(
         session, ScrollingTextSetup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, stationObj.ScrollingMode, COLOUR_BLACK),
@@ -83,26 +87,26 @@ static void PaintRideEntranceExitLightEffects(PaintSession& session, int32_t hei
 {
     PROFILED_FUNCTION();
 
-    if (LightFXIsAvailable())
+    if (LightFx::IsAvailable())
     {
         if (entranceEl.GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
         {
-            LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 0, 0, height + 45, LightType::Lantern3);
+            LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 0, height + 45, LightType::Lantern3);
         }
 
         switch (entranceEl.GetDirection())
         {
             case 0:
-                LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 16, 0, height + 16, LightType::Lantern2);
+                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 16, 0, height + 16, LightType::Lantern2);
                 break;
             case 1:
-                LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 0, -16, height + 16, LightType::Lantern2);
+                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, -16, height + 16, LightType::Lantern2);
                 break;
             case 2:
-                LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, -16, 0, height + 16, LightType::Lantern2);
+                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, -16, 0, height + 16, LightType::Lantern2);
                 break;
             case 3:
-                LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 0, 16, height + 16, LightType::Lantern2);
+                LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 16, height + 16, LightType::Lantern2);
                 break;
         }
     }
@@ -125,8 +129,8 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
         return;
     }
 
-    auto stationObj = ride->GetStationObject();
-    if (stationObj == nullptr || stationObj->BaseImageId == ImageIndexUndefined)
+    auto stationObj = ride->getStationObject();
+    if (stationObj == nullptr || stationObj->BaseImageId == kImageIndexUndefined)
     {
         return;
     }
@@ -135,10 +139,9 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
 
     PaintRideEntranceExitLightEffects(session, height, entranceEl);
 
-    auto hasGlass = (stationObj->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT) != 0;
-    auto colourPrimary = ride->track_colour[0].main;
-    auto colourSecondary = ride->track_colour[0].additional;
-    auto imageTemplate = ImageId(0, colourPrimary, colourSecondary);
+    auto hasGlass = (stationObj->Flags & StationObjectFlags::isTransparent) != 0;
+    auto colourPrimary = ride->trackColours[0].main;
+    auto imageTemplate = ImageId(0);
     ImageId glassImageTemplate;
     if (hasGlass)
     {
@@ -154,6 +157,18 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
+    else
+    {
+        if (stationObj->Flags & StationObjectFlags::hasPrimaryColour)
+        {
+            imageTemplate = imageTemplate.WithPrimary(colourPrimary);
+        }
+        if (stationObj->Flags & StationObjectFlags::hasSecondaryColour)
+        {
+            auto colourSecondary = ride->trackColours[0].additional;
+            imageTemplate = imageTemplate.WithSecondary(colourSecondary);
+        }
+    }
 
     // Format modified to stop repeated code
 
@@ -161,33 +176,30 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     // Certain entrance styles have another 2 images to draw for coloured windows
 
     auto isExit = entranceEl.GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
-    CoordsXYZ boundBoxLength = {
-        (direction & 1) ? 2 : 28,
-        (direction & 1) ? 28 : 2,
-        isExit ? 32 : 48,
-    };
 
     // Back
     ImageIndex imageIndex = isExit ? stationObj->BaseImageId + direction + 8 : stationObj->BaseImageId + direction;
     ImageIndex glassImageIndex = isExit ? stationObj->BaseImageId + direction + 24 : stationObj->BaseImageId + direction + 16;
-    PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 2, 2, height }, boundBoxLength });
+    PaintAddImageAsParentRotated(
+        session, direction, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 2, 2, height }, { 28, 8, 30 } });
     if (hasGlass)
     {
-        PaintAddImageAsChild(
-            session, glassImageTemplate.WithIndex(glassImageIndex), { 0, 0, height }, { { 2, 2, height }, boundBoxLength });
+        PaintAddImageAsChildRotated(
+            session, direction, glassImageTemplate.WithIndex(glassImageIndex), { 0, 0, height },
+            { { 2, 2, height }, { 28, 8, 30 } });
     }
 
     // Front
+    const auto frontBoundBoxZ = isExit ? 1 : 17;
     imageIndex += 4;
     PaintAddImageAsParent(
-        session, imageTemplate.WithIndex(imageIndex), { 0, 0, height },
-        { { (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height }, boundBoxLength });
+        session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 2, 2, height + 30 }, { 28, 28, frontBoundBoxZ } });
     if (hasGlass)
     {
         glassImageIndex += 4;
         PaintAddImageAsChild(
             session, glassImageTemplate.WithIndex(glassImageIndex), { 0, 0, height },
-            { { (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height }, boundBoxLength });
+            { { 2, 2, height + 30 }, { 28, 28, frontBoundBoxZ } });
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
@@ -221,10 +233,10 @@ static void PaintParkEntranceScrollingText(
         return;
 
     auto ft = Formatter();
-    auto& gameState = GetGameState();
-    if (gameState.Park.Flags & PARK_FLAGS_PARK_OPEN)
+    auto& gameState = getGameState();
+    if (gameState.park.Flags & PARK_FLAGS_PARK_OPEN)
     {
-        const auto& park = gameState.Park;
+        const auto& park = gameState.park;
         auto name = park.Name.c_str();
         ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(name);
@@ -246,7 +258,7 @@ static void PaintParkEntranceScrollingText(
     }
 
     auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
-    auto scroll = stringWidth > 0 ? (gameState.CurrentTicks / 2) % stringWidth : 0;
+    auto scroll = stringWidth > 0 ? (gameState.currentTicks / 2) % stringWidth : 0;
     auto imageIndex = ScrollingTextSetup(
         session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode + direction / 2, COLOUR_BLACK);
     auto textHeight = height + entrance.GetTextHeight();
@@ -257,9 +269,9 @@ static void PaintParkEntranceLightEffects(PaintSession& session)
 {
     PROFILED_FUNCTION();
 
-    if (LightFXIsAvailable())
+    if (LightFx::IsAvailable())
     {
-        LightFXAdd3DLightMagicFromDrawingTile(session.MapPosition, 0, 0, 155, LightType::Lantern3);
+        LightFx::Add3DLightMagicFromDrawingTile(session.MapPosition, 0, 0, 155, LightType::Lantern3);
     }
 }
 
@@ -286,8 +298,7 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
     }
 
     auto& objManager = GetContext()->GetObjectManager();
-    auto entrance = reinterpret_cast<EntranceObject*>(
-        objManager.GetLoadedObject(ObjectType::ParkEntrance, entranceEl.getEntryIndex()));
+    const auto* entrance = objManager.GetLoadedObject<EntranceObject>(entranceEl.getEntryIndex());
     auto sequence = entranceEl.GetSequenceIndex();
     switch (sequence)
     {
@@ -319,9 +330,8 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
             if (entrance != nullptr)
             {
                 auto imageIndex = entrance->GetImage(sequence, direction);
-                auto y = ((direction / 2 + sequence / 2) & 1) ? 26 : 32;
                 PaintAddImageAsParent(
-                    session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 3, 3, height }, { 26, y, 79 } });
+                    session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { { 3, 3, height }, { 26, 26, 79 } });
             }
             break;
     }

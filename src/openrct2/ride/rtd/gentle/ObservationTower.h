@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,8 +9,8 @@
 
 #pragma once
 
+#include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
-#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -18,23 +18,22 @@
 // clang-format off
 constexpr RideTypeDescriptor ObservationTowerRTD =
 {
-    .Category = RIDE_CATEGORY_GENTLE,
+    .Category = RideCategory::gentle,
     .StartTrackPiece = OpenRCT2::TrackElemType::TowerBase,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunctionObservationTower,
-        .EnabledTrackPieces = {TrackGroup::tower},
-        .ExtraTrackPieces = {},
+        .trackStyle = TrackStyle::observationTower,
+        .enabledTrackGroups = {TrackGroup::tower},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps,
                      RtdFlag::hasLoadOptions, RtdFlag::noWallsAroundTrack, RtdFlag::hasVehicleColours, RtdFlag::hasTrack,
                      RtdFlag::supportsMultipleColourSchemes, RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit,
                      RtdFlag::showInTrackDesigner, RtdFlag::slightlyInterestingToLookAt),
-    .RideModes = EnumsToFlags(RideMode::RotatingLift),
-    .DefaultMode = RideMode::RotatingLift,
+    .RideModes = EnumsToFlags(RideMode::rotatingLift),
+    .DefaultMode = RideMode::rotatingLift,
     .Naming = { STR_RIDE_NAME_OBSERVATION_TOWER, STR_RIDE_DESCRIPTION_OBSERVATION_TOWER },
     .NameConvention = { RideComponentType::Cabin, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_OBSERVATION_TOWER",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 255, 32, 3, 2, },
     .MaxMass = 15,
@@ -43,7 +42,7 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
     .UpkeepCosts = { 50, 20, 0, 10, 0, 0 },
     .BuildCosts = { 18.50_GBP, 0.00_GBP, 4, },
     .DefaultPrices = { 10, 0 },
-    .DefaultMusic = MUSIC_OBJECT_SUMMER,
+    .DefaultMusic = kMusicObjectSummer,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 45,
     .ColourPresets = TRACK_COLOUR_PRESETS(
@@ -57,7 +56,7 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { RIDE_RATING(1, 50), RIDE_RATING(0, 00), RIDE_RATING(0, 10) },
+        { MakeRideRating(1, 50), MakeRideRating(0, 00), MakeRideRating(0, 10) },
         15,
         7,
         false,
@@ -69,6 +68,6 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = LightFxAddLightsMagicVehicle_ObservationTower,
+    .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_ObservationTower,
 };
 // clang-format on

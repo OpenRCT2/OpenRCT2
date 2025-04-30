@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,11 +22,11 @@ class LoadOrQuitAction final : public GameActionBase<GameCommand::LoadOrQuit>
 {
 private:
     LoadOrQuitModes _mode{};
-    PromptMode _savePromptMode{ PromptMode::SaveBeforeLoad };
+    PromptMode _savePromptMode{ PromptMode::saveBeforeLoad };
 
 public:
     LoadOrQuitAction() = default;
-    LoadOrQuitAction(LoadOrQuitModes mode, PromptMode savePromptMode = PromptMode::SaveBeforeLoad);
+    LoadOrQuitAction(LoadOrQuitModes mode, PromptMode savePromptMode = PromptMode::saveBeforeLoad);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

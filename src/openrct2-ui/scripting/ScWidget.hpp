@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,17 +11,17 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "../interface/Widget.h"
-#    include "../interface/Window.h"
-#    include "CustomListView.h"
-#    include "CustomWindow.h"
-#    include "ScViewport.hpp"
+    #include "../interface/Widget.h"
+    #include "CustomListView.h"
+    #include "CustomWindow.h"
+    #include "ScViewport.hpp"
 
-#    include <memory>
-#    include <openrct2/Context.h>
-#    include <openrct2/scripting/Duktape.hpp>
-#    include <openrct2/scripting/IconNames.hpp>
-#    include <openrct2/scripting/ScriptEngine.h>
+    #include <memory>
+    #include <openrct2/Context.h>
+    #include <openrct2/scripting/Duktape.hpp>
+    #include <openrct2/scripting/IconNames.hpp>
+    #include <openrct2/scripting/ScriptEngine.h>
+    #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Scripting
 {
@@ -113,10 +113,10 @@ namespace OpenRCT2::Scripting
                         return "placeholder";
                     case WindowWidgetType::ProgressBar:
                         return "progress_bar";
+                    case WindowWidgetType::HorizontalSeparator:
+                        return "horizontal_separator";
                     case WindowWidgetType::Custom:
                         return "custom";
-                    case WindowWidgetType::Last:
-                        return "last";
                 }
             }
             return "unknown";
@@ -167,7 +167,8 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr)
             {
-                return widget->top;
+                auto w = GetWindow();
+                return widget->top - w->getTitleBarDiffNormal();
             }
             return 0;
         }
@@ -176,6 +177,8 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr)
             {
+                auto w = GetWindow();
+                value += w->getTitleBarDiffNormal();
                 auto delta = value - widget->top;
 
                 Invalidate();
@@ -393,7 +396,8 @@ namespace OpenRCT2::Scripting
             if (_class == WindowClass::MainWindow)
                 return WindowGetMain();
 
-            return WindowFindByNumber(_class, _number);
+            auto* windowMgr = Ui::GetWindowManager();
+            return windowMgr->FindByNumber(_class, _number);
         }
 
         Widget* GetWidget() const
@@ -420,14 +424,15 @@ namespace OpenRCT2::Scripting
         {
             if (widget != nullptr)
             {
+                auto* windowMgr = Ui::GetWindowManager();
                 if (widget->type == WindowWidgetType::DropdownMenu)
                 {
-                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 1);
+                    windowMgr->InvalidateWidgetByNumber(_class, _number, _widgetIndex + 1);
                 }
                 else if (widget->type == WindowWidgetType::Spinner)
                 {
-                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 1);
-                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 2);
+                    windowMgr->InvalidateWidgetByNumber(_class, _number, _widgetIndex + 1);
+                    windowMgr->InvalidateWidgetByNumber(_class, _number, _widgetIndex + 2);
                 }
             }
             Invalidate();
@@ -435,7 +440,8 @@ namespace OpenRCT2::Scripting
 
         void Invalidate()
         {
-            WidgetInvalidateByNumber(_class, _number, _widgetIndex);
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateWidgetByNumber(_class, _number, _widgetIndex);
         }
     };
 
@@ -505,7 +511,7 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr && (widget->type == WindowWidgetType::FlatBtn || widget->type == WindowWidgetType::ImgBtn))
             {
-                if (GetTargetAPIVersion() <= API_VERSION_63_G2_REORDER)
+                if (GetTargetAPIVersion() <= kApiVersionG2Reorder)
                 {
                     return LegacyIconIndex(widget->image.GetIndex());
                 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,17 +10,23 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 #include "../localisation/StringIdType.h"
 
 #include <algorithm>
 #include <array>
 #include <iterator>
 #include <optional>
+#include <span>
 #include <string>
 
 struct CoordsXYZ;
 class Formatter;
+
+namespace OpenRCT2
+{
+    struct GameState_t;
+}
 
 namespace OpenRCT2::News
 {
@@ -58,13 +64,13 @@ namespace OpenRCT2::News
      */
     struct Item
     {
-        News::ItemType Type;
-        uint8_t Flags;
-        uint32_t Assoc;
-        uint16_t Ticks;
-        uint16_t MonthYear;
-        uint8_t Day;
-        std::string Text;
+        News::ItemType Type = News::ItemType::Null;
+        uint8_t Flags{};
+        uint32_t Assoc{};
+        uint16_t Ticks{};
+        uint16_t MonthYear{};
+        uint8_t Day{};
+        std::string Text{};
 
         constexpr bool IsEmpty() const noexcept
         {
@@ -120,7 +126,8 @@ namespace OpenRCT2::News
     constexpr int32_t MaxItemsArchive = 50;
     constexpr int32_t MaxItems = News::ItemHistoryStart + News::MaxItemsArchive;
 
-    template<std::size_t N> class ItemQueue
+    template<std::size_t N>
+    class ItemQueue
     {
     public:
         static_assert(N > 0, "Cannot instantiate News::ItemQueue with size=0");
@@ -234,7 +241,7 @@ namespace OpenRCT2::News
 
         void clear() noexcept
         {
-            front().Type = News::ItemType::Null;
+            std::fill(Queue.begin(), Queue.end(), News::Item{});
         }
 
     private:
@@ -264,7 +271,8 @@ namespace OpenRCT2::News
             return Archived;
         }
 
-        template<typename Predicate> void ForeachRecentNews(Predicate&& p)
+        template<typename Predicate>
+        void ForeachRecentNews(Predicate&& p)
         {
             for (auto& newsItem : Recent)
             {
@@ -272,7 +280,8 @@ namespace OpenRCT2::News
             }
         }
 
-        template<typename Predicate> void ForeachArchivedNews(Predicate&& p)
+        template<typename Predicate>
+        void ForeachArchivedNews(Predicate&& p)
         {
             for (auto& newsItem : Archived)
             {
@@ -287,7 +296,7 @@ namespace OpenRCT2::News
         News::ItemQueue<News::MaxItemsArchive> Archived;
     };
 
-    void InitQueue();
+    void InitQueue(GameState_t& gameState);
 
     void UpdateCurrentItem();
     void CloseCurrentItem();
@@ -312,4 +321,7 @@ namespace OpenRCT2::News
 
     void AddItemToQueue(News::Item* newNewsItem);
     void RemoveItem(int32_t index);
+
+    void importNewsItems(
+        GameState_t& gameState, const std::span<const News::Item> recent, const std::span<const News::Item> archived);
 } // namespace OpenRCT2::News

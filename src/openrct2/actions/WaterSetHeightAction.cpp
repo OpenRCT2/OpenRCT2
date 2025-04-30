@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,8 +14,10 @@
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
 #include "../world/ConstructionClearance.h"
+#include "../world/Footpath.h"
 #include "../world/Park.h"
-#include "../world/Surface.h"
+#include "../world/Wall.h"
+#include "../world/tile_element/SurfaceElement.h"
 
 using namespace OpenRCT2;
 
@@ -49,29 +51,29 @@ GameActions::Result WaterSetHeightAction::Query() const
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position = { _coords, _height * kCoordsZStep };
 
-    auto& gameState = GetGameState();
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.SandboxMode
-        && gameState.Park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
+    auto& gameState = getGameState();
+    if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
+        && gameState.park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
-        return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
+        return GameActions::Result(GameActions::Status::Disallowed, kStringIdNone, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
     }
 
     StringId errorMsg = CheckParameters();
-    if (errorMsg != STR_NONE)
+    if (errorMsg != kStringIdNone)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, errorMsg);
+        return GameActions::Result(GameActions::Status::InvalidParameters, kStringIdNone, errorMsg);
     }
 
     if (!LocationValid(_coords))
     {
-        return GameActions::Result(GameActions::Status::NotOwned, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(GameActions::Status::NotOwned, kStringIdNone, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gameState.Cheats.SandboxMode)
+    if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode)
     {
         if (!MapIsLocationInPark(_coords))
         {
-            return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
+            return GameActions::Result(GameActions::Status::Disallowed, kStringIdNone, STR_LAND_NOT_OWNED_BY_PARK);
         }
     }
 
@@ -119,7 +121,7 @@ GameActions::Result WaterSetHeightAction::Execute() const
 
     int32_t surfaceHeight = TileElementHeight(_coords);
     FootpathRemoveLitter({ _coords, surfaceHeight });
-    if (!GetGameState().Cheats.DisableClearanceChecks)
+    if (!getGameState().cheats.disableClearanceChecks)
         WallRemoveAtZ({ _coords, surfaceHeight });
 
     SurfaceElement* surfaceElement = MapGetSurfaceElementAt(_coords);
@@ -163,5 +165,5 @@ StringId WaterSetHeightAction::CheckParameters() const
         return STR_TOO_HIGH;
     }
 
-    return STR_NONE;
+    return kStringIdNone;
 }

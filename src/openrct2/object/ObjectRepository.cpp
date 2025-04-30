@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include "../PlatformEnvironment.h"
 #include "../core/Console.hpp"
 #include "../core/DataSerialiser.h"
+#include "../core/EnumUtils.hpp"
 #include "../core/FileIndex.hpp"
 #include "../core/FileStream.h"
 #include "../core/Guard.hpp"
@@ -23,6 +24,7 @@
 #include "../core/MemoryStream.h"
 #include "../core/Numerics.hpp"
 #include "../core/Path.hpp"
+#include "../core/SawyerCoding.h"
 #include "../core/String.hpp"
 #include "../localisation/LocalisationService.h"
 #include "../object/Object.h"
@@ -31,8 +33,6 @@
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerChunkWriter.h"
 #include "../scenario/ScenarioRepository.h"
-#include "../util/SawyerCoding.h"
-#include "../util/Util.h"
 #include "Object.h"
 #include "ObjectFactory.h"
 #include "ObjectList.h"
@@ -69,26 +69,26 @@ struct ObjectEntryEqual
     }
 };
 
-using ObjectIdentifierMap = std::unordered_map<std::string, size_t>;
+using ObjectIdentifierMap = std::unordered_map<std::string, size_t, String::Hash, std::equal_to<>>;
 using ObjectEntryMap = std::unordered_map<RCTObjectEntry, size_t, ObjectEntryHash, ObjectEntryEqual>;
 
 class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
-    static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 29;
-    static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
+    static constexpr uint32_t kMagicNumber = 0x5844494F; // OIDX
+    static constexpr uint16_t kVersion = 31;
+    static constexpr auto kPattern = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
 
 public:
     explicit ObjectFileIndex(IObjectRepository& objectRepository, const IPlatformEnvironment& env)
         : FileIndex(
-            "object index", MAGIC_NUMBER, VERSION, env.GetFilePath(PATHID::CACHE_OBJECTS), std::string(PATTERN),
-            std::vector<std::string>{
-                env.GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT),
-                env.GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT),
-            })
+              "object index", kMagicNumber, kVersion, env.GetFilePath(PathId::cacheObjects), std::string(kPattern),
+              std::vector<std::string>{
+                  env.GetDirectoryPath(DirBase::openrct2, DirId::objects),
+                  env.GetDirectoryPath(DirBase::user, DirId::objects),
+              })
         , _objectRepository(objectRepository)
     {
     }
@@ -98,11 +98,11 @@ public:
     {
         std::unique_ptr<Object> object;
         auto extension = Path::GetExtension(path);
-        if (String::IEquals(extension, ".json"))
+        if (String::iequals(extension, ".json"))
         {
             object = ObjectFactory::CreateObjectFromJsonFile(_objectRepository, path, false);
         }
-        else if (String::IEquals(extension, ".parkobj"))
+        else if (String::iequals(extension, ".parkobj"))
         {
             object = ObjectFactory::CreateObjectFromZipFile(_objectRepository, path, false);
         }
@@ -147,21 +147,23 @@ protected:
 
         switch (item.Type)
         {
-            case ObjectType::Ride:
+            case ObjectType::ride:
                 ds << item.RideInfo.RideFlags;
-                ds << item.RideInfo.RideCategory;
                 ds << item.RideInfo.RideType;
                 break;
-            case ObjectType::SceneryGroup:
+            case ObjectType::sceneryGroup:
             {
                 ds << item.SceneryGroupInfo.Entries;
                 break;
             }
-            case ObjectType::FootpathSurface:
+            case ObjectType::footpathSurface:
                 ds << item.FootpathSurfaceInfo.Flags;
                 break;
+            case ObjectType::peepAnimations:
+                ds << item.PeepAnimationsInfo.PeepType;
+                break;
             default:
-                // Switch processes only ObjectType::Ride and ObjectType::SceneryGroup
+                // Switch processes only ObjectType::ride and ObjectType::sceneryGroup
                 break;
         }
     }
@@ -169,7 +171,7 @@ protected:
 private:
     bool IsTrackReadOnly(const std::string& path) const
     {
-        return String::StartsWith(path, SearchPaths[0]) || String::StartsWith(path, SearchPaths[1]);
+        return String::startsWith(path, SearchPaths[0]) || String::startsWith(path, SearchPaths[1]);
     }
 };
 
@@ -233,7 +235,7 @@ public:
 
     const ObjectRepositoryItem* FindObject(std::string_view identifier) const override final
     {
-        auto kvp = _newItemMap.find(std::string(identifier));
+        auto kvp = _newItemMap.find(identifier);
         if (kvp != _newItemMap.end())
         {
             return &_items[kvp->second];
@@ -264,11 +266,11 @@ public:
         Guard::ArgumentNotNull(ori, GUARD_LINE);
 
         auto extension = Path::GetExtension(ori->Path);
-        if (String::IEquals(extension, ".json"))
+        if (String::iequals(extension, ".json"))
         {
             return ObjectFactory::CreateObjectFromJsonFile(*this, ori->Path, !gOpenRCT2NoGraphics);
         }
-        if (String::IEquals(extension, ".parkobj"))
+        if (String::iequals(extension, ".parkobj"))
         {
             return ObjectFactory::CreateObjectFromZipFile(*this, ori->Path, !gOpenRCT2NoGraphics);
         }
@@ -364,7 +366,7 @@ private:
     void SortItems()
     {
         std::sort(_items.begin(), _items.end(), [](const ObjectRepositoryItem& a, const ObjectRepositoryItem& b) -> bool {
-            return String::Compare(a.Name, b.Name) < 0;
+            return String::compare(a.Name, b.Name) < 0;
         });
 
         // Fix the IDs
@@ -528,17 +530,17 @@ private:
 
         // Encode data
         ObjectType objectType = entry->GetType();
-        SawyerCodingChunkHeader chunkHeader;
+        SawyerCoding::ChunkHeader chunkHeader;
         chunkHeader.encoding = kLegacyObjectEntryGroupEncoding[EnumValue(objectType)];
         chunkHeader.length = static_cast<uint32_t>(dataSize);
         uint8_t* encodedDataBuffer = Memory::Allocate<uint8_t>(0x600000);
-        size_t encodedDataSize = SawyerCodingWriteChunkBuffer(
+        size_t encodedDataSize = SawyerCoding::WriteChunkBuffer(
             encodedDataBuffer, reinterpret_cast<const uint8_t*>(data), chunkHeader);
 
         // Save to file
         try
         {
-            auto fs = FileStream(std::string(path), FILE_MODE_WRITE);
+            auto fs = FileStream(std::string(path), FileMode::write);
             fs.Write(entry, sizeof(RCTObjectEntry));
             fs.Write(encodedDataBuffer, encodedDataSize);
 
@@ -584,7 +586,7 @@ private:
     std::string GetPathForNewObject(ObjectGeneration generation, std::string_view name)
     {
         // Get object directory and create it if it doesn't exist
-        auto userObjPath = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
+        auto userObjPath = _env->GetDirectoryPath(DirBase::user, DirId::objects);
         Path::CreateDirectory(userObjPath);
 
         // Find a unique file name
@@ -595,7 +597,7 @@ private:
         while (File::Exists(fullPath))
         {
             counter++;
-            fullPath = Path::Combine(userObjPath, String::StdFormat("%s-%02X%s", fileName.c_str(), counter, extension));
+            fullPath = Path::Combine(userObjPath, String::stdFormat("%s-%02X%s", fileName.c_str(), counter, extension));
         }
 
         return fullPath;
@@ -622,7 +624,7 @@ private:
             }
 
             // Convert to UTF-8 filename
-            return String::ConvertToUtf8(normalisedName, OpenRCT2::CodePage::CP_1252);
+            return String::convertToUtf8(normalisedName, OpenRCT2::CodePage::CP_1252);
         }
         else
         {
@@ -635,11 +637,11 @@ private:
         const ObjectRepositoryItem* item = FindObject(entry);
         if (item == nullptr)
         {
-            throw std::runtime_error(String::StdFormat("Unable to find object '%.8s'", entry->name));
+            throw std::runtime_error(String::stdFormat("Unable to find object '%.8s'", entry->name));
         }
 
         // Read object data from file
-        auto fs = OpenRCT2::FileStream(item->Path, OpenRCT2::FILE_MODE_OPEN);
+        auto fs = OpenRCT2::FileStream(item->Path, OpenRCT2::FileMode::open);
         auto fileEntry = fs.ReadValue<RCTObjectEntry>();
         if (*entry != fileEntry)
         {

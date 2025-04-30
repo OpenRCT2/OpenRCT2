@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,7 +25,7 @@ namespace OpenRCT2::Audio
     class AudioContext final : public IAudioContext
     {
     private:
-        static constexpr size_t STREAM_MIN_SIZE = 2 * 1024 * 1024; // 2 MiB
+        static constexpr size_t kStreamMinSize = 2 * 1024 * 1024; // 2 MiB
 
         std::unique_ptr<AudioMixer> _audioMixer;
 
@@ -55,7 +55,7 @@ namespace OpenRCT2::Audio
             int32_t numDevices = SDL_GetNumAudioDevices(SDL_FALSE);
             for (int32_t i = 0; i < numDevices; i++)
             {
-                devices.emplace_back(String::ToStd(SDL_GetAudioDeviceName(i, SDL_FALSE)));
+                devices.emplace_back(String::toStd(SDL_GetAudioDeviceName(i, SDL_FALSE)));
             }
             return devices;
         }
@@ -90,6 +90,7 @@ namespace OpenRCT2::Audio
             }
             catch (const std::exception& e)
             {
+                SDL_RWclose(rw);
                 LOG_VERBOSE("Unable to create audio source: %s", e.what());
                 return nullptr;
             }
@@ -109,7 +110,7 @@ namespace OpenRCT2::Audio
 
                 // Load whole stream into memory if small enough
                 auto dataLength = source->GetLength();
-                if (dataLength < STREAM_MIN_SIZE)
+                if (dataLength < kStreamMinSize)
                 {
                     auto& targetFormat = _audioMixer->GetFormat();
                     source = source->ToMemory(targetFormat);
@@ -119,6 +120,7 @@ namespace OpenRCT2::Audio
             }
             catch (const std::exception& e)
             {
+                SDL_RWclose(rw);
                 LOG_VERBOSE("Unable to create audio source: %s", e.what());
                 return nullptr;
             }

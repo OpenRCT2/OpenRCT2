@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,7 +14,6 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../object/ObjectEntryManager.h"
@@ -22,6 +21,7 @@
 #include "../ride/Ride.h"
 #include "../world/Park.h"
 #include "../world/TileElementsView.h"
+#include "../world/tile_element/SmallSceneryElement.h"
 #include "GameAction.h"
 #include "SmallSceneryPlaceAction.h"
 
@@ -74,11 +74,11 @@ GameActions::Result SmallSceneryRemoveAction::Query() const
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position = _loc;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
-        && !GetGameState().Cheats.SandboxMode)
+    if (gLegacyScene != LegacyScene::scenarioEditor && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
+        && !getGameState().cheats.sandboxMode)
     {
         // Check if allowed to remove item
-        if (GetGameState().Park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+        if (getGameState().park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
         {
             if (entry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
             {
@@ -132,8 +132,6 @@ GameActions::Result SmallSceneryRemoveAction::Execute() const
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
-
-    res.Position.z = TileElementHeight(res.Position);
 
     MapInvalidateTileFull(_loc);
     TileElementRemove(tileElement);

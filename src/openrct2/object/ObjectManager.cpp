@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,15 +12,15 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../ParkImporter.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/Console.hpp"
+#include "../core/EnumUtils.hpp"
 #include "../core/JobPool.h"
 #include "../core/Memory.hpp"
-#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "../ride/RideAudio.h"
-#include "../util/Util.h"
+#include "../ui/WindowManager.h"
 #include "BannerSceneryEntry.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
@@ -58,7 +58,7 @@ class ObjectManager final : public IObjectManager
 private:
     IObjectRepository& _objectRepository;
 
-    std::array<std::vector<Object*>, EnumValue(ObjectType::Count)> _loadedObjects;
+    std::array<std::vector<Object*>, EnumValue(ObjectType::count)> _loadedObjects;
     std::array<std::vector<ObjectEntryIndex>, RIDE_TYPE_COUNT> _rideTypeToObjectMap;
 
     // Used to return a safe empty vector back from GetAllRideEntries, can be removed when std::span is available
@@ -80,7 +80,7 @@ public:
     Object* GetLoadedObject(ObjectType objectType, size_t index) override
     {
         // This is sometimes done deliberately (to avoid boilerplate), so no need to log_warn for this.
-        if (index == OBJECT_ENTRY_INDEX_NULL)
+        if (index == kObjectEntryIndexNull)
         {
             return nullptr;
         }
@@ -88,7 +88,7 @@ public:
         if (index >= static_cast<size_t>(getObjectEntryGroupCount(objectType)))
         {
 #ifdef DEBUG
-            if (index != OBJECT_ENTRY_INDEX_NULL)
+            if (index != kObjectEntryIndexNull)
             {
                 LOG_WARNING("Object index %u exceeds maximum for type %d.", index, objectType);
             }
@@ -121,7 +121,7 @@ public:
         {
             return GetLoadedObjectEntryIndex(obj);
         }
-        return OBJECT_ENTRY_INDEX_NULL;
+        return kObjectEntryIndexNull;
     }
 
     ObjectEntryIndex GetLoadedObjectEntryIndex(const ObjectEntryDescriptor& descriptor) override
@@ -131,12 +131,12 @@ public:
         {
             return GetLoadedObjectEntryIndex(obj);
         }
-        return OBJECT_ENTRY_INDEX_NULL;
+        return kObjectEntryIndexNull;
     }
 
     ObjectEntryIndex GetLoadedObjectEntryIndex(const Object* object) override
     {
-        ObjectEntryIndex result = OBJECT_ENTRY_INDEX_NULL;
+        ObjectEntryIndex result = kObjectEntryIndexNull;
         size_t index = GetLoadedObjectIndex(object);
         if (index != SIZE_MAX)
         {
@@ -472,7 +472,8 @@ private:
         LOG_VERBOSE("%u / %u objects unloaded", numObjectsUnloaded, totalObjectsLoaded);
     }
 
-    template<typename T> void UpdateSceneryGroupIndexes(ObjectType type)
+    template<typename T>
+    void UpdateSceneryGroupIndexes(ObjectType type)
     {
         auto& list = GetObjectList(type);
         for (auto* loadedObject : list)
@@ -487,13 +488,13 @@ private:
 
     void UpdateSceneryGroupIndexes()
     {
-        UpdateSceneryGroupIndexes<SmallSceneryEntry>(ObjectType::SmallScenery);
-        UpdateSceneryGroupIndexes<LargeSceneryEntry>(ObjectType::LargeScenery);
-        UpdateSceneryGroupIndexes<WallSceneryEntry>(ObjectType::Walls);
-        UpdateSceneryGroupIndexes<BannerSceneryEntry>(ObjectType::Banners);
-        UpdateSceneryGroupIndexes<PathAdditionEntry>(ObjectType::PathAdditions);
+        UpdateSceneryGroupIndexes<SmallSceneryEntry>(ObjectType::smallScenery);
+        UpdateSceneryGroupIndexes<LargeSceneryEntry>(ObjectType::largeScenery);
+        UpdateSceneryGroupIndexes<WallSceneryEntry>(ObjectType::walls);
+        UpdateSceneryGroupIndexes<BannerSceneryEntry>(ObjectType::banners);
+        UpdateSceneryGroupIndexes<PathAdditionEntry>(ObjectType::pathAdditions);
 
-        auto& list = GetObjectList(ObjectType::SceneryGroup);
+        auto& list = GetObjectList(ObjectType::sceneryGroup);
         for (auto* loadedObject : list)
         {
             auto sgObject = static_cast<SceneryGroupObject*>(loadedObject);
@@ -502,10 +503,6 @@ private:
                 sgObject->UpdateEntryIndexes();
             }
         }
-
-        // HACK Scenery window will lose its tabs after changing the scenery group indexing
-        //      for now just close it, but it will be better to later tell it to invalidate the tabs
-        WindowCloseByClass(WindowClass::Scenery);
     }
 
     ObjectEntryIndex GetPrimarySceneryGroupEntryIndex(Object* loadedObject)
@@ -514,7 +511,7 @@ private:
         const auto& primarySGEntry = sceneryObject->GetPrimarySceneryGroup();
         Object* sgObject = GetLoadedObject(primarySGEntry);
 
-        auto entryIndex = OBJECT_ENTRY_INDEX_NULL;
+        auto entryIndex = kObjectEntryIndexNull;
         if (sgObject != nullptr)
         {
             entryIndex = GetLoadedObjectEntryIndex(sgObject);
@@ -538,7 +535,12 @@ private:
                 if (entry.HasValue())
                 {
                     const auto* ori = _objectRepository.FindObject(entry);
-                    if (ori == nullptr && entry.GetType() != ObjectType::ScenarioText)
+                    if (ori == nullptr && entry.GetType() == ObjectType::scenarioText)
+                    {
+                        continue;
+                    }
+
+                    if (ori == nullptr)
                     {
                         missingObjects.push_back(entry);
                         ReportMissingObject(entry);
@@ -733,18 +735,16 @@ private:
         }
 
         // Build object lists
-        const auto maxRideObjects = static_cast<size_t>(getObjectEntryGroupCount(ObjectType::Ride));
+        const auto maxRideObjects = static_cast<size_t>(getObjectEntryGroupCount(ObjectType::ride));
         for (size_t i = 0; i < maxRideObjects; i++)
         {
-            auto* rideObject = static_cast<RideObject*>(GetLoadedObject(ObjectType::Ride, i));
+            auto* rideObject = static_cast<RideObject*>(GetLoadedObject(ObjectType::ride, i));
             if (rideObject == nullptr)
                 continue;
 
-            const auto* entry = static_cast<RideObjectEntry*>(rideObject->GetLegacyData());
-            if (entry == nullptr)
-                continue;
+            const auto& entry = rideObject->GetEntry();
 
-            for (auto rideType : entry->ride_type)
+            for (auto rideType : entry.ride_type)
             {
                 if (rideType < _rideTypeToObjectMap.size())
                 {

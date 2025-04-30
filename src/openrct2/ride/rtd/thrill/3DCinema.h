@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,12 +17,12 @@
 // C++ does not allow names to start with a number, hence the absence of the '3D' prefix.
 constexpr RideTypeDescriptor CinemaRTD =
 {
-    .Category = RIDE_CATEGORY_THRILL,
+    .Category = RideCategory::thrill,
     .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
-        .Drawer = GetTrackPaintFunction3dCinema,
-        .EnabledTrackPieces = {},
-        .ExtraTrackPieces = {},
+        .trackStyle = TrackStyle::_3DCinema,
+        .enabledTrackGroups = {},
+        .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasSinglePieceStation, RtdFlag::cannotHaveGaps,
@@ -30,11 +30,10 @@ constexpr RideTypeDescriptor CinemaRTD =
                      RtdFlag::isFlatRide, RtdFlag::describeAsInside, RtdFlag::hasVehicleColours,
                      RtdFlag::allowMusic, RtdFlag::hasEntranceAndExit, RtdFlag::singleSession,
                      RtdFlag::listVehiclesSeparately),
-    .RideModes = EnumsToFlags(RideMode::MouseTails3DFilm, RideMode::StormChasers3DFilm, RideMode::SpaceRaiders3DFilm),
-    .DefaultMode = RideMode::MouseTails3DFilm,
+    .RideModes = EnumsToFlags(RideMode::mouseTails3DFilm, RideMode::stormChasers3DFilm, RideMode::spaceRaiders3DFilm),
+    .DefaultMode = RideMode::mouseTails3DFilm,
     .Naming = { STR_RIDE_NAME_3D_CINEMA, STR_RIDE_DESCRIPTION_3D_CINEMA },
     .NameConvention = { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station },
-    .EnumName = "RIDE_TYPE_3D_CINEMA",
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 12, kDefault3DCinemaHeight, 3, 2, },
     .MaxMass = 255,
@@ -43,10 +42,10 @@ constexpr RideTypeDescriptor CinemaRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 70.00_GBP, 1.00_GBP, 1, },
     .DefaultPrices = { 20, 0 },
-    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .DefaultMusic = kMusicObjectRock1,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 45,
-    .ColourPresets = DEFAULT_FLAT_RIDE_COLOUR_PRESET,
+    .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { 0, 0 },
     .ColourKey = RideColourKey::Ride,
     .Name = "3d_cinema",

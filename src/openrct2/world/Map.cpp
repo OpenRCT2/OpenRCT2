@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,19 +20,19 @@
 #include "../actions/LargeSceneryRemoveAction.h"
 #include "../actions/ParkEntranceRemoveAction.h"
 #include "../actions/WallRemoveAction.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
+#include "../core/EnumUtils.hpp"
 #include "../core/Guard.hpp"
 #include "../entity/Duck.h"
+#include "../entity/EntityList.h"
 #include "../entity/EntityTweener.h"
 #include "../entity/Fountain.h"
 #include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../interface/Cursors.h"
 #include "../interface/Viewport.h"
-#include "../interface/Window.h"
-#include "../localisation/Localisation.Date.h"
 #include "../management/Finance.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/ObjectManager.h"
 #include "../object/SmallSceneryEntry.h"
@@ -40,14 +40,12 @@
 #include "../profiling/Profiling.h"
 #include "../ride/RideConstruction.h"
 #include "../ride/RideData.h"
+#include "../ride/RideManager.hpp"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"
-#include "../scenario/Scenario.h"
-#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/TilePointerIndex.hpp"
-#include "../world/tile_element/Slope.h"
 #include "Banner.h"
 #include "Climate.h"
 #include "Entrance.h"
@@ -55,10 +53,16 @@
 #include "MapAnimation.h"
 #include "Park.h"
 #include "Scenery.h"
-#include "Surface.h"
 #include "TileElementsView.h"
 #include "TileInspector.h"
-#include "Wall.h"
+#include "tile_element/BannerElement.h"
+#include "tile_element/EntranceElement.h"
+#include "tile_element/LargeSceneryElement.h"
+#include "tile_element/PathElement.h"
+#include "tile_element/Slope.h"
+#include "tile_element/SmallSceneryElement.h"
+#include "tile_element/SurfaceElement.h"
+#include "tile_element/TrackElement.h"
 
 #include <iterator>
 #include <memory>
@@ -110,32 +114,32 @@ static TileCoordsXY _mapSizeStash;
 
 void StashMap()
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     _tileIndexStash = std::move(_tileIndex);
-    _tileElementsStash = std::move(gameState.TileElements);
-    _mapSizeStash = gameState.MapSize;
+    _tileElementsStash = std::move(gameState.tileElements);
+    _mapSizeStash = gameState.mapSize;
     _tileElementsInUseStash = _tileElementsInUse;
 }
 
 void UnstashMap()
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     _tileIndex = std::move(_tileIndexStash);
-    gameState.TileElements = std::move(_tileElementsStash);
-    gameState.MapSize = _mapSizeStash;
+    gameState.tileElements = std::move(_tileElementsStash);
+    gameState.mapSize = _mapSizeStash;
     _tileElementsInUse = _tileElementsInUseStash;
 }
 
 CoordsXY GetMapSizeUnits()
 {
-    auto& gameState = GetGameState();
-    return { (gameState.MapSize.x - 1) * kCoordsXYStep, (gameState.MapSize.y - 1) * kCoordsXYStep };
+    auto& gameState = getGameState();
+    return { (gameState.mapSize.x - 1) * kCoordsXYStep, (gameState.mapSize.y - 1) * kCoordsXYStep };
 }
 CoordsXY GetMapSizeMinus2()
 {
-    auto& gameState = GetGameState();
-    return { (gameState.MapSize.x * kCoordsXYStep) + (8 * kCoordsXYStep - 2),
-             (gameState.MapSize.y * kCoordsXYStep) + (8 * kCoordsXYStep - 2) };
+    auto& gameState = getGameState();
+    return { (gameState.mapSize.x * kCoordsXYStep) + (8 * kCoordsXYStep - 2),
+             (gameState.mapSize.y * kCoordsXYStep) + (8 * kCoordsXYStep - 2) };
 }
 CoordsXY GetMapSizeMaxXY()
 {
@@ -144,15 +148,15 @@ CoordsXY GetMapSizeMaxXY()
 
 const std::vector<TileElement>& GetTileElements()
 {
-    return GetGameState().TileElements;
+    return getGameState().tileElements;
 }
 
 void SetTileElements(GameState_t& gameState, std::vector<TileElement>&& tileElements)
 {
-    gameState.TileElements = std::move(tileElements);
+    gameState.tileElements = std::move(tileElements);
     _tileIndex = TilePointerIndex<TileElement>(
-        kMaximumMapSizeTechnical, gameState.TileElements.data(), gameState.TileElements.size());
-    _tileElementsInUse = gameState.TileElements.size();
+        kMaximumMapSizeTechnical, gameState.tileElements.data(), gameState.tileElements.size());
+    _tileElementsInUse = gameState.tileElements.size();
 }
 
 static TileElement GetDefaultSurfaceElement()
@@ -175,7 +179,7 @@ static TileElement GetDefaultSurfaceElement()
 std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts()
 {
     std::vector<TileElement> newElements;
-    newElements.reserve(std::max(MIN_TILE_ELEMENTS, GetGameState().TileElements.size()));
+    newElements.reserve(std::max(MIN_TILE_ELEMENTS, getGameState().tileElements.size()));
     for (int32_t y = 0; y < kMaximumMapSizeTechnical; y++)
     {
         for (int32_t x = 0; x < kMaximumMapSizeTechnical; x++)
@@ -240,46 +244,46 @@ static void ReorganiseTileElements(GameState_t& gameState, size_t capacity)
 
 static void ReorganiseTileElements(size_t capacity)
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     ReorganiseTileElements(gameState, capacity);
 }
 
 void ReorganiseTileElements()
 {
-    auto& gameState = GetGameState();
-    ReorganiseTileElements(gameState, gameState.TileElements.size());
+    auto& gameState = getGameState();
+    ReorganiseTileElements(gameState, gameState.tileElements.size());
 }
 
 static bool MapCheckFreeElementsAndReorganise(size_t numElementsOnTile, size_t numNewElements)
 {
     // Check hard cap on num in use tiles (this would be the size of _tileElements immediately after a reorg)
-    if (_tileElementsInUse + numNewElements > MAX_TILE_ELEMENTS)
+    if (_tileElementsInUse + numNewElements > kMaxTileElements)
     {
         return false;
     }
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     auto totalElementsRequired = numElementsOnTile + numNewElements;
-    auto freeElements = gameState.TileElements.capacity() - gameState.TileElements.size();
+    auto freeElements = gameState.tileElements.capacity() - gameState.tileElements.size();
     if (freeElements >= totalElementsRequired)
     {
         return true;
     }
 
     // if space issue is due to fragmentation then Reorg Tiles without increasing capacity
-    if (gameState.TileElements.size() > totalElementsRequired + _tileElementsInUse)
+    if (gameState.tileElements.size() > totalElementsRequired + _tileElementsInUse)
     {
         ReorganiseTileElements();
         // This check is not expected to fail
-        freeElements = gameState.TileElements.capacity() - gameState.TileElements.size();
+        freeElements = gameState.tileElements.capacity() - gameState.tileElements.size();
         if (freeElements >= totalElementsRequired)
         {
             return true;
         }
     }
 
-    // Capacity must increase to handle the space (Note capacity can go above MAX_TILE_ELEMENTS)
-    auto newCapacity = gameState.TileElements.capacity() * 2;
+    // Capacity must increase to handle the space (Note capacity can go above kMaxTileElements)
+    auto newCapacity = gameState.tileElements.capacity() * 2;
     ReorganiseTileElements(newCapacity);
     return true;
 }
@@ -315,15 +319,15 @@ int32_t TileElementIteratorNext(TileElementIterator* it)
         return 1;
     }
 
-    auto& gameState = GetGameState();
-    if (it->y < (gameState.MapSize.y - 2))
+    auto& gameState = getGameState();
+    if (it->y < (gameState.mapSize.y - 2))
     {
         it->y++;
         it->element = MapGetFirstElementAt(TileCoordsXY{ it->x, it->y });
         return it->element == nullptr ? 0 : 1;
     }
 
-    if (it->x < (gameState.MapSize.x - 2))
+    if (it->x < (gameState.mapSize.x - 2))
     {
         it->y = 1;
         it->x++;
@@ -461,12 +465,12 @@ void MapInit(const TileCoordsXY& size)
 {
     auto numTiles = kMaximumMapSizeTechnical * kMaximumMapSizeTechnical;
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     SetTileElements(gameState, std::vector<TileElement>(numTiles, GetDefaultSurfaceElement()));
 
-    gameState.GrassSceneryTileLoopPosition = 0;
-    gameState.WidePathTileLoopPosition = {};
-    gameState.MapSize = size;
+    gameState.grassSceneryTileLoopPosition = 0;
+    gameState.widePathTileLoopPosition = {};
+    gameState.mapSize = size;
     MapRemoveOutOfRangeElements();
     ClearMapAnimations();
 
@@ -483,11 +487,11 @@ void MapCountRemainingLandRights()
 {
     gLandRemainingOwnershipSales = 0;
     gLandRemainingConstructionSales = 0;
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
-    for (int32_t y = 0; y < gameState.MapSize.y; y++)
+    for (int32_t y = 0; y < gameState.mapSize.y; y++)
     {
-        for (int32_t x = 0; x < gameState.MapSize.x; x++)
+        for (int32_t x = 0; x < gameState.mapSize.x; x++)
         {
             auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             // Surface elements are sometimes hacked out to save some space for other map elements
@@ -527,8 +531,8 @@ void MapCountRemainingLandRights()
  */
 void MapStripGhostFlagFromElements()
 {
-    auto& gameState = GetGameState();
-    for (auto& element : gameState.TileElements)
+    auto& gameState = getGameState();
+    for (auto& element : gameState.tileElements)
     {
         element.SetGhost(false);
     }
@@ -664,7 +668,7 @@ int16_t TileElementHeight(const CoordsXYZ& loc, uint8_t slope)
             return height;
         }
         // This tile is essentially at the next height level
-        height += LAND_HEIGHT_STEP;
+        height += kLandHeightStep;
         // so we move *down* the slope
         if (quad < 0)
         {
@@ -755,26 +759,29 @@ void MapUpdatePathWideFlags()
 {
     PROFILED_FUNCTION();
 
-    if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+    if (isInTrackDesignerOrManager())
     {
         return;
     }
 
+    const int32_t kPracticalMapSizeBigX = getGameState().mapSize.x * kCoordsXYStep;
+    const int32_t kPracticalMapSizeBigY = getGameState().mapSize.y * kCoordsXYStep;
+
     // Presumably update_path_wide_flags is too computationally expensive to call for every
     // tile every update, so gWidePathTileLoopX and gWidePathTileLoopY store the x and y
     // progress. A maximum of 128 calls is done per update.
-    CoordsXY& loopPosition = GetGameState().WidePathTileLoopPosition;
+    CoordsXY& loopPosition = getGameState().widePathTileLoopPosition;
     for (int32_t i = 0; i < 128; i++)
     {
         FootpathUpdatePathWideFlags(loopPosition);
 
         // Next x, y tile
         loopPosition.x += kCoordsXYStep;
-        if (loopPosition.x >= MAXIMUM_MAP_SIZE_BIG)
+        if (loopPosition.x >= kPracticalMapSizeBigX)
         {
             loopPosition.x = 0;
             loopPosition.y += kCoordsXYStep;
-            if (loopPosition.y >= MAXIMUM_MAP_SIZE_BIG)
+            if (loopPosition.y >= kPracticalMapSizeBigY)
             {
                 loopPosition.y = 0;
             }
@@ -807,8 +814,8 @@ int32_t MapHeightFromSlope(const CoordsXY& coords, int32_t slopeDirection, bool 
 
 bool MapIsLocationValid(const CoordsXY& coords)
 {
-    const bool is_x_valid = coords.x < MAXIMUM_MAP_SIZE_BIG && coords.x >= 0;
-    const bool is_y_valid = coords.y < MAXIMUM_MAP_SIZE_BIG && coords.y >= 0;
+    const bool is_x_valid = coords.x < kMaximumMapSizeBig && coords.x >= 0;
+    const bool is_y_valid = coords.y < kMaximumMapSizeBig && coords.y >= 0;
     return is_x_valid && is_y_valid;
 }
 
@@ -820,9 +827,9 @@ bool MapIsEdge(const CoordsXY& coords)
 
 bool MapCanBuildAt(const CoordsXYZ& loc)
 {
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+    if (gLegacyScene == LegacyScene::scenarioEditor)
         return true;
-    if (GetGameState().Cheats.SandboxMode)
+    if (getGameState().cheats.sandboxMode)
         return true;
     if (MapIsLocationOwned(loc))
         return true;
@@ -846,7 +853,7 @@ bool MapIsLocationOwned(const CoordsXYZ& loc)
 
             if (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
             {
-                if (loc.z < surfaceElement->GetBaseZ() || loc.z >= surfaceElement->GetBaseZ() + ConstructionRightsClearanceBig)
+                if (loc.z < surfaceElement->GetBaseZ() || loc.z >= surfaceElement->GetBaseZ() + kConstructionRightsClearanceBig)
                     return true;
             }
         }
@@ -958,7 +965,7 @@ uint8_t MapGetLowestLandHeight(const MapRange& range)
 
             if (surfaceElement != nullptr && min_height > surfaceElement->BaseHeight)
             {
-                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
+                if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
                 {
                     if (!MapIsLocationInPark(CoordsXY{ xi, yi }))
                     {
@@ -987,7 +994,7 @@ uint8_t MapGetHighestLandHeight(const MapRange& range)
             auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ xi, yi });
             if (surfaceElement != nullptr)
             {
-                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
+                if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
                 {
                     if (!MapIsLocationInPark(CoordsXY{ xi, yi }))
                     {
@@ -1010,7 +1017,7 @@ uint8_t MapGetHighestLandHeight(const MapRange& range)
 
 bool MapIsLocationAtEdge(const CoordsXY& loc)
 {
-    return loc.x < 32 || loc.y < 32 || loc.x >= (MAXIMUM_TILE_START_XY) || loc.y >= (MAXIMUM_TILE_START_XY);
+    return loc.x < 32 || loc.y < 32 || loc.x >= (kMaximumTileStartXY) || loc.y >= (kMaximumTileStartXY);
 }
 
 /**
@@ -1032,12 +1039,12 @@ void TileElementRemove(TileElement* tileElement)
 
     // Mark the latest element with the last element flag.
     (tileElement - 1)->SetLastForTile(true);
-    tileElement->BaseHeight = MAX_ELEMENT_HEIGHT;
+    tileElement->BaseHeight = kMaxTileElementHeight;
     _tileElementsInUse--;
-    auto& gameState = GetGameState();
-    if (tileElement == &gameState.TileElements.back())
+    auto& gameState = getGameState();
+    if (tileElement == &gameState.tileElements.back())
     {
-        gameState.TileElements.pop_back();
+        gameState.tileElements.pop_back();
     }
 }
 
@@ -1162,11 +1169,11 @@ static TileElement* AllocateTileElements(size_t numElementsOnTile, size_t numNew
         return nullptr;
     }
 
-    auto& gameState = GetGameState();
-    auto oldSize = gameState.TileElements.size();
-    gameState.TileElements.resize(gameState.TileElements.size() + numElementsOnTile + numNewElements);
+    auto& gameState = getGameState();
+    auto oldSize = gameState.tileElements.size();
+    gameState.tileElements.resize(gameState.tileElements.size() + numElementsOnTile + numNewElements);
     _tileElementsInUse += numNewElements;
-    return &gameState.TileElements[oldSize];
+    return &gameState.tileElements[oldSize];
 }
 
 /**
@@ -1200,7 +1207,7 @@ TileElement* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants, 
         {
             // Copy over map element
             *newTileElement = *originalTileElement;
-            originalTileElement->BaseHeight = MAX_ELEMENT_HEIGHT;
+            originalTileElement->BaseHeight = kMaxTileElementHeight;
             originalTileElement++;
             newTileElement++;
 
@@ -1235,7 +1242,7 @@ TileElement* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants, 
         {
             // Copy over map element
             *newTileElement = *originalTileElement;
-            originalTileElement->BaseHeight = MAX_ELEMENT_HEIGHT;
+            originalTileElement->BaseHeight = kMaxTileElementHeight;
             originalTileElement++;
             newTileElement++;
         } while (!((newTileElement - 1)->IsLastForTile()));
@@ -1253,11 +1260,10 @@ void MapUpdateTiles()
 {
     PROFILED_FUNCTION();
 
-    int32_t ignoreScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER;
-    if (gScreenFlags & ignoreScreenFlags)
+    if (isInEditorMode())
         return;
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     // Update 43 more tiles (for each 256x256 block)
     for (int32_t j = 0; j < 43; j++)
@@ -1265,7 +1271,7 @@ void MapUpdateTiles()
         int32_t x = 0;
         int32_t y = 0;
 
-        uint16_t interleaved_xy = gameState.GrassSceneryTileLoopPosition;
+        uint16_t interleaved_xy = gameState.grassSceneryTileLoopPosition;
         for (int32_t i = 0; i < 8; i++)
         {
             x = (x << 1) | (interleaved_xy & 1);
@@ -1275,9 +1281,9 @@ void MapUpdateTiles()
         }
 
         // Repeat for each 256x256 block on the map
-        for (int32_t blockY = 0; blockY < gameState.MapSize.y; blockY += 256)
+        for (int32_t blockY = 0; blockY < gameState.mapSize.y; blockY += 256)
         {
-            for (int32_t blockX = 0; blockX < gameState.MapSize.x; blockX += 256)
+            for (int32_t blockX = 0; blockX < gameState.mapSize.x; blockX += 256)
             {
                 auto mapPos = TileCoordsXY{ blockX + x, blockY + y }.ToCoordsXY();
                 if (MapIsEdge(mapPos))
@@ -1292,7 +1298,7 @@ void MapUpdateTiles()
             }
         }
 
-        gameState.GrassSceneryTileLoopPosition++;
+        gameState.grassSceneryTileLoopPosition++;
     }
 }
 
@@ -1309,13 +1315,13 @@ void MapRemoveOutOfRangeElements()
     // NOTE: This is only a workaround for non-networked games.
     // Map resize has to become its own Game Action to properly solve this issue.
     //
-    auto& gameState = GetGameState();
-    bool buildState = gameState.Cheats.BuildInPauseMode;
-    gameState.Cheats.BuildInPauseMode = true;
+    auto& gameState = getGameState();
+    bool buildState = gameState.cheats.buildInPauseMode;
+    gameState.cheats.buildInPauseMode = true;
 
-    for (int32_t y = MAXIMUM_MAP_SIZE_BIG - kCoordsXYStep; y >= 0; y -= kCoordsXYStep)
+    for (int32_t y = kMaximumMapSizeBig - kCoordsXYStep; y >= 0; y -= kCoordsXYStep)
     {
-        for (int32_t x = MAXIMUM_MAP_SIZE_BIG - kCoordsXYStep; x >= 0; x -= kCoordsXYStep)
+        for (int32_t x = kMaximumMapSizeBig - kCoordsXYStep; x >= 0; x -= kCoordsXYStep)
         {
             if (x == 0 || y == 0 || x >= mapSizeMax.x || y >= mapSizeMax.y)
             {
@@ -1332,7 +1338,7 @@ void MapRemoveOutOfRangeElements()
     }
 
     // Reset cheat state
-    gameState.Cheats.BuildInPauseMode = buildState;
+    gameState.cheats.buildInPauseMode = buildState;
 }
 
 static void MapExtendBoundarySurfaceExtendTile(const SurfaceElement& sourceTile, SurfaceElement& destTile)
@@ -1377,7 +1383,7 @@ static void MapExtendBoundarySurfaceExtendTile(const SurfaceElement& sourceTile,
  */
 void MapExtendBoundarySurfaceY()
 {
-    auto y = GetGameState().MapSize.y - 2;
+    auto y = getGameState().mapSize.y - 2;
     for (auto x = 0; x < kMaximumMapSizeTechnical; x++)
     {
         auto existingTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y - 1 });
@@ -1397,7 +1403,7 @@ void MapExtendBoundarySurfaceY()
  */
 void MapExtendBoundarySurfaceX()
 {
-    auto x = GetGameState().MapSize.x - 2;
+    auto x = getGameState().mapSize.x - 2;
     for (auto y = 0; y < kMaximumMapSizeTechnical; y++)
     {
         auto existingTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x - 1, y });
@@ -1414,7 +1420,7 @@ void MapExtendBoundarySurfaceX()
  * Clears the provided element properly from a certain tile, and updates
  * the pointer (when needed) passed to this function to point to the next element.
  */
-static void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
+void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
 {
     TileElement* element = *elementPtr;
     switch (element->GetType())
@@ -1504,13 +1510,13 @@ static void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
  */
 static void ClearElementsAt(const CoordsXY& loc)
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     // Remove the spawn point (if there is one in the current tile)
-    gameState.PeepSpawns.erase(
+    gameState.peepSpawns.erase(
         std::remove_if(
-            gameState.PeepSpawns.begin(), gameState.PeepSpawns.end(),
+            gameState.peepSpawns.begin(), gameState.peepSpawns.end(),
             [loc](const CoordsXY& spawn) { return spawn.ToTileStart() == loc.ToTileStart(); }),
-        gameState.PeepSpawns.end());
+        gameState.peepSpawns.end());
 
     TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
@@ -1534,9 +1540,9 @@ int32_t MapGetHighestZ(const CoordsXY& loc)
 
     // Raise z so that is above highest point of land and water on tile
     if ((surfaceElement->GetSlope() & kTileSlopeRaisedCornersMask) != kTileSlopeFlat)
-        z += LAND_HEIGHT_STEP;
+        z += kLandHeightStep;
     if ((surfaceElement->GetSlope() & kTileSlopeDiagonalFlag) != 0)
-        z += LAND_HEIGHT_STEP;
+        z += kLandHeightStep;
 
     z = std::max(z, surfaceElement->GetWaterHeight());
     return z;
@@ -1670,20 +1676,18 @@ SmallSceneryElement* MapGetSmallSceneryElementAt(const CoordsXYZ& sceneryCoords,
 std::optional<CoordsXYZ> MapLargeSceneryGetOrigin(
     const CoordsXYZD& sceneryPos, int32_t sequence, LargeSceneryElement** outElement)
 {
-    LargeSceneryTile* tile;
-
     auto tileElement = MapGetLargeScenerySegment(sceneryPos, sequence);
     if (tileElement == nullptr)
         return std::nullopt;
 
     auto* sceneryEntry = tileElement->GetEntry();
-    tile = &sceneryEntry->tiles[sequence];
+    auto& tile = sceneryEntry->tiles[sequence];
 
-    CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
+    CoordsXY offsetPos{ tile.offset };
     auto rotatedOffsetPos = offsetPos.Rotate(sceneryPos.direction);
 
     auto origin = CoordsXYZ{ sceneryPos.x - rotatedOffsetPos.x, sceneryPos.y - rotatedOffsetPos.y,
-                             sceneryPos.z - tile->z_offset };
+                             sceneryPos.z - tile.offset.z };
     if (outElement != nullptr)
         *outElement = tileElement;
     return origin;
@@ -1696,7 +1700,6 @@ std::optional<CoordsXYZ> MapLargeSceneryGetOrigin(
 bool MapLargeScenerySignSetColour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour)
 {
     LargeSceneryElement* tileElement;
-    LargeSceneryTile *sceneryTiles, *tile;
 
     auto sceneryOrigin = MapLargeSceneryGetOrigin(signPos, sequence, &tileElement);
     if (!sceneryOrigin)
@@ -1705,18 +1708,16 @@ bool MapLargeScenerySignSetColour(const CoordsXYZD& signPos, int32_t sequence, u
     }
 
     auto* sceneryEntry = tileElement->GetEntry();
-    sceneryTiles = sceneryEntry->tiles;
 
     // Iterate through each tile of the large scenery element
-    sequence = 0;
-    for (tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
+    for (auto& tile : sceneryEntry->tiles)
     {
-        CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
+        CoordsXY offsetPos{ tile.offset };
         auto rotatedOffsetPos = offsetPos.Rotate(signPos.direction);
 
         auto tmpSignPos = CoordsXYZD{ sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
-                                      sceneryOrigin->z + tile->z_offset, signPos.direction };
-        tileElement = MapGetLargeScenerySegment(tmpSignPos, sequence);
+                                      sceneryOrigin->z + tile.offset.z, signPos.direction };
+        tileElement = MapGetLargeScenerySegment(tmpSignPos, tile.index);
         if (tileElement != nullptr)
         {
             tileElement->SetPrimaryColour(mainColour);
@@ -1865,9 +1866,9 @@ bool MapSurfaceIsBlocked(const CoordsXY& mapCoords)
 /* Clears all map elements, to be used before generating a new map */
 void MapClearAllElements()
 {
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_BIG; y += kCoordsXYStep)
+    for (int32_t y = 0; y < kMaximumMapSizeBig; y += kCoordsXYStep)
     {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_BIG; x += kCoordsXYStep)
+        for (int32_t x = 0; x < kMaximumMapSizeBig; x += kCoordsXYStep)
         {
             ClearElementsAt({ x, y });
         }
@@ -1904,7 +1905,7 @@ TrackElement* MapGetTrackElementAt(const CoordsXYZ& trackPos)
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* MapGetTrackElementAtOfType(const CoordsXYZ& trackPos, track_type_t trackType)
+TileElement* MapGetTrackElementAtOfType(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType)
 {
     TileElement* tileElement = MapGetFirstElementAt(trackPos);
     if (tileElement == nullptr)
@@ -1931,7 +1932,7 @@ TileElement* MapGetTrackElementAtOfType(const CoordsXYZ& trackPos, track_type_t 
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZ& trackPos, track_type_t trackType, int32_t sequence)
+TileElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType, int32_t sequence)
 {
     TileElement* tileElement = MapGetFirstElementAt(trackPos);
     auto trackTilePos = TileCoordsXYZ{ trackPos };
@@ -1954,7 +1955,7 @@ TileElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZ& trackPos, track_type
     return nullptr;
 }
 
-TrackElement* MapGetTrackElementAtOfType(const CoordsXYZD& location, track_type_t trackType)
+TrackElement* MapGetTrackElementAtOfType(const CoordsXYZD& location, OpenRCT2::TrackElemType trackType)
 {
     auto tileElement = MapGetFirstElementAt(location);
     if (tileElement != nullptr)
@@ -1977,7 +1978,7 @@ TrackElement* MapGetTrackElementAtOfType(const CoordsXYZD& location, track_type_
     return nullptr;
 }
 
-TrackElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZD& location, track_type_t trackType, int32_t sequence)
+TrackElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZD& location, OpenRCT2::TrackElemType trackType, int32_t sequence)
 {
     auto tileElement = MapGetFirstElementAt(location);
     if (tileElement != nullptr)
@@ -2008,7 +2009,7 @@ TrackElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZD& location, track_ty
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* MapGetTrackElementAtOfTypeFromRide(const CoordsXYZ& trackPos, track_type_t trackType, RideId rideIndex)
+TileElement* MapGetTrackElementAtOfTypeFromRide(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType, RideId rideIndex)
 {
     TileElement* tileElement = MapGetFirstElementAt(trackPos);
     if (tileElement == nullptr)
@@ -2148,7 +2149,7 @@ uint16_t CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos)
         {
             destOwnership = OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
             // Do not own construction rights if too high/below surface
-            if (tileElement->BaseHeight - ConstructionRightsClearanceSmall > tilePos.z || tileElement->BaseHeight < tilePos.z)
+            if (tileElement->BaseHeight - kConstructionRightsClearanceSmall > tilePos.z || tileElement->BaseHeight < tilePos.z)
             {
                 destOwnership = OWNERSHIP_UNOWNED;
                 break;
@@ -2201,7 +2202,7 @@ void ShiftMap(const TileCoordsXY& amount)
         return;
 
     auto amountToMove = amount.ToCoordsXY();
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
 
     // Tile elements
     auto newElements = std::vector<TileElement>();
@@ -2211,8 +2212,8 @@ void ShiftMap(const TileCoordsXY& amount)
         {
             auto srcX = x - amount.x;
             auto srcY = y - amount.y;
-            if (x > 0 && y > 0 && x < gameState.MapSize.x - 1 && y < gameState.MapSize.y - 1 && srcX > 0 && srcY > 0
-                && srcX < gameState.MapSize.x - 1 && srcY < gameState.MapSize.y - 1)
+            if (x > 0 && y > 0 && x < gameState.mapSize.x - 1 && y < gameState.mapSize.y - 1 && srcX > 0 && srcY > 0
+                && srcX < gameState.mapSize.x - 1 && srcY < gameState.mapSize.y - 1)
             {
                 auto srcTile = _tileIndex.GetFirstElementAt(TileCoordsXY(srcX, srcY));
                 do
@@ -2220,7 +2221,7 @@ void ShiftMap(const TileCoordsXY& amount)
                     newElements.push_back(*srcTile);
                 } while (!(srcTile++)->IsLastForTile());
             }
-            else if (x == 0 || y == 0 || x == gameState.MapSize.x - 1 || y == gameState.MapSize.y - 1)
+            else if (x == 0 || y == 0 || x == gameState.mapSize.x - 1 || y == gameState.mapSize.y - 1)
             {
                 auto surface = GetDefaultSurfaceElement();
                 surface.SetBaseZ(kMinimumLandZ);
@@ -2231,8 +2232,8 @@ void ShiftMap(const TileCoordsXY& amount)
             }
             else
             {
-                auto copyX = std::clamp(srcX, 1, gameState.MapSize.x - 2);
-                auto copyY = std::clamp(srcY, 1, gameState.MapSize.y - 2);
+                auto copyX = std::clamp(srcX, 1, gameState.mapSize.x - 2);
+                auto copyY = std::clamp(srcY, 1, gameState.mapSize.y - 2);
                 auto srcTile = MapGetSurfaceElementAt(TileCoordsXY(copyX, copyY));
                 if (srcTile != nullptr)
                 {
@@ -2253,10 +2254,10 @@ void ShiftMap(const TileCoordsXY& amount)
     SetTileElements(gameState, std::move(newElements));
     MapRemoveOutOfRangeElements();
 
-    for (auto& spawn : gameState.PeepSpawns)
+    for (auto& spawn : gameState.peepSpawns)
         shiftIfNotNull(spawn, amountToMove);
 
-    for (auto& entrance : gameState.Park.Entrances)
+    for (auto& entrance : gameState.park.Entrances)
         shiftIfNotNull(entrance, amountToMove);
 
     // Entities
@@ -2348,7 +2349,7 @@ void ShiftMap(const TileCoordsXY& amount)
     // Rides
     for (auto& ride : GetRideManager())
     {
-        auto& stations = ride.GetStations();
+        auto stations = ride.getStations();
         for (auto& station : stations)
         {
             shiftIfNotNull(station.Start, amountToMove);
@@ -2356,12 +2357,12 @@ void ShiftMap(const TileCoordsXY& amount)
             shiftIfNotNull(station.Exit, amount);
         }
 
-        shiftIfNotNull(ride.overall_view, amountToMove);
-        shiftIfNotNull(ride.boat_hire_return_position, amount);
-        shiftIfNotNull(ride.CurTestTrackLocation, amount);
-        shiftIfNotNull(ride.ChairliftBullwheelLocation[0], amount);
-        shiftIfNotNull(ride.ChairliftBullwheelLocation[1], amount);
-        shiftIfNotNull(ride.CableLiftLoc, amountToMove);
+        shiftIfNotNull(ride.overallView, amountToMove);
+        shiftIfNotNull(ride.boatHireReturnPosition, amount);
+        shiftIfNotNull(ride.curTestTrackLocation, amount);
+        shiftIfNotNull(ride.chairliftBullwheelLocation[0], amount);
+        shiftIfNotNull(ride.chairliftBullwheelLocation[1], amount);
+        shiftIfNotNull(ride.cableLiftLoc, amountToMove);
     }
 
     // Banners

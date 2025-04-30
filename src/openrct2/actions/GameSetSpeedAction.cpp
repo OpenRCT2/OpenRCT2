@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,11 +11,11 @@
 
 #include "../Diagnostic.h"
 #include "../config/Config.h"
-#include "../interface/Window.h"
+#include "../ui/WindowManager.h"
 
 using namespace OpenRCT2;
 
-GameSetSpeedAction::GameSetSpeedAction(int32_t speed)
+GameSetSpeedAction::GameSetSpeedAction(uint8_t speed)
     : _speed(speed)
 {
 }
@@ -63,12 +63,14 @@ GameActions::Result GameSetSpeedAction::Execute() const
     }
 
     gGameSpeed = _speed;
-    WindowInvalidateByClass(WindowClass::TopToolbar);
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::TopToolbar);
 
     return res;
 }
 
-bool GameSetSpeedAction::IsValidSpeed(int32_t speed) const
+bool GameSetSpeedAction::IsValidSpeed(uint8_t speed) const
 {
     return (speed >= 1 && speed <= 4) || (Config::Get().general.DebuggingTools && speed == 8);
 }

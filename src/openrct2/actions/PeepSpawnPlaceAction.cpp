@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,7 +17,7 @@
 #include "../management/Finance.h"
 #include "../world/Footpath.h"
 #include "../world/Park.h"
-#include "../world/Surface.h"
+#include "../world/tile_element/SurfaceElement.h"
 
 using namespace OpenRCT2;
 
@@ -45,9 +45,9 @@ void PeepSpawnPlaceAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result PeepSpawnPlaceAction::Query() const
 {
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !GetGameState().Cheats.SandboxMode)
+    if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
     {
-        return GameActions::Result(GameActions::Status::NotInEditorMode, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::NotInEditorMode, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, kStringIdNone);
     }
 
     auto res = GameActions::Result();
@@ -103,37 +103,37 @@ GameActions::Result PeepSpawnPlaceAction::Execute() const
     spawn.z = _location.z;
     spawn.direction = _location.direction;
 
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     // When attempting to place a peep spawn on a tile that already contains it,
     // remove that peep spawn instead.
-    if (!gameState.PeepSpawns.empty())
+    if (!gameState.peepSpawns.empty())
     {
         // When searching for existing spawns, ignore the direction.
         auto foundSpawn = std::find_if(
-            gameState.PeepSpawns.begin(), gameState.PeepSpawns.end(), [spawn](const CoordsXYZ& existingSpawn) {
+            gameState.peepSpawns.begin(), gameState.peepSpawns.end(), [spawn](const CoordsXYZ& existingSpawn) {
                 {
                     return existingSpawn.ToTileStart() == spawn.ToTileStart();
                 }
             });
 
-        if (foundSpawn != std::end(gameState.PeepSpawns))
+        if (foundSpawn != std::end(gameState.peepSpawns))
         {
-            gameState.PeepSpawns.erase(foundSpawn);
+            gameState.peepSpawns.erase(foundSpawn);
             MapInvalidateTileFull(spawn);
             return res;
         }
     }
 
     // If we have reached our max peep spawns, remove the oldest spawns
-    while (gameState.PeepSpawns.size() >= Limits::kMaxPeepSpawns)
+    while (gameState.peepSpawns.size() >= Limits::kMaxPeepSpawns)
     {
-        PeepSpawn oldestSpawn = *gameState.PeepSpawns.begin();
-        gameState.PeepSpawns.erase(gameState.PeepSpawns.begin());
+        PeepSpawn oldestSpawn = *gameState.peepSpawns.begin();
+        gameState.peepSpawns.erase(gameState.peepSpawns.begin());
         MapInvalidateTileFull(oldestSpawn);
     }
 
     // Set peep spawn
-    gameState.PeepSpawns.push_back(spawn);
+    gameState.peepSpawns.push_back(spawn);
 
     // Invalidate tile
     MapInvalidateTileFull(_location);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,9 +16,10 @@
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../actions/CheatSetAction.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../config/Config.h"
 #include "../core/Console.hpp"
+#include "../core/EnumUtils.hpp"
 #include "../core/File.h"
 #include "../core/Imaging.h"
 #include "../core/Path.hpp"
@@ -28,11 +29,10 @@
 #include "../localisation/Formatter.h"
 #include "../paint/Painter.h"
 #include "../platform/Platform.h"
-#include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/Map.h"
 #include "../world/Park.h"
-#include "../world/Surface.h"
+#include "../world/tile_element/SurfaceElement.h"
 #include "Viewport.h"
 
 #include <cctype>
@@ -55,17 +55,17 @@ uint8_t gScreenshotCountdown = 0;
 static bool WriteDpiToFile(std::string_view path, const DrawPixelInfo& dpi, const GamePalette& palette)
 {
     auto const pixels8 = dpi.bits;
-    auto const pixelsLen = (dpi.width + dpi.pitch) * dpi.height;
+    auto const pixelsLen = dpi.LineStride() * dpi.height;
     try
     {
         Image image;
         image.Width = dpi.width;
         image.Height = dpi.height;
         image.Depth = 8;
-        image.Stride = dpi.width + dpi.pitch;
-        image.Palette = std::make_unique<GamePalette>(palette);
+        image.Stride = dpi.LineStride();
+        image.Palette = palette;
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
-        Imaging::WriteToFile(path, image, IMAGE_FORMAT::PNG);
+        Imaging::WriteToFile(path, image, ImageFormat::png);
         return true;
     }
     catch (const std::exception& e)
@@ -98,11 +98,11 @@ void ScreenshotCheck()
                 Formatter ft;
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const utf8*>(filename.c_str());
-                ContextShowError(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft, true);
+                ContextShowError(STR_SCREENSHOT_SAVED_AS, kStringIdNone, ft, true);
             }
             else
             {
-                ContextShowError(STR_SCREENSHOT_FAILED, STR_NONE, {}, true);
+                ContextShowError(STR_SCREENSHOT_FAILED, kStringIdNone, {}, true);
             }
 
             // redraw_weather();
@@ -112,13 +112,13 @@ void ScreenshotCheck()
 
 static std::string ScreenshotGetParkName()
 {
-    return GetGameState().Park.Name;
+    return getGameState().park.Name;
 }
 
 static std::string ScreenshotGetDirectory()
 {
     auto env = GetContext()->GetPlatformEnvironment();
-    return env->GetDirectoryPath(DIRBASE::USER, DIRID::SCREENSHOT);
+    return env->GetDirectoryPath(DirBase::user, DirId::screenshots);
 }
 
 static std::pair<RealWorldDate, RealWorldTime> ScreenshotGetDateTime()
@@ -240,7 +240,7 @@ static DrawPixelInfo CreateDPI(const Viewport& viewport)
 
     if (viewport.flags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND)
     {
-        std::memset(dpi.bits, PALETTE_INDEX_0, static_cast<size_t>(dpi.width) * dpi.height);
+        std::memset(dpi.bits, PaletteIndex::pi0, static_cast<size_t>(dpi.width) * dpi.height);
     }
 
     return dpi;
@@ -257,25 +257,25 @@ static void ReleaseDPI(DrawPixelInfo& dpi)
 
 static Viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     // Get the tile coordinates of each corner
     const TileCoordsXY cornerCoords[2][4] = {
         {
             // Map corners
             { 1, 1 },
-            { gameState.MapSize.x - 2, gameState.MapSize.y - 2 },
-            { 1, gameState.MapSize.y - 2 },
-            { gameState.MapSize.x - 2, 1 },
+            { gameState.mapSize.x - 2, gameState.mapSize.y - 2 },
+            { 1, gameState.mapSize.y - 2 },
+            { gameState.mapSize.x - 2, 1 },
         },
         {
             // Horizontal view clipping corners
             TileCoordsXY{ CoordsXY{ std::max(gClipSelectionA.x, 32), std::max(gClipSelectionA.y, 32) } },
-            TileCoordsXY{ CoordsXY{ std::min(gClipSelectionB.x, (gameState.MapSize.x - 2) * 32),
-                                    std::min(gClipSelectionB.y, (gameState.MapSize.y - 2) * 32) } },
+            TileCoordsXY{ CoordsXY{ std::min(gClipSelectionB.x, (gameState.mapSize.x - 2) * 32),
+                                    std::min(gClipSelectionB.y, (gameState.mapSize.y - 2) * 32) } },
             TileCoordsXY{
-                CoordsXY{ std::max(gClipSelectionA.x, 32), std::min(gClipSelectionB.y, (gameState.MapSize.y - 2) * 32) } },
+                CoordsXY{ std::max(gClipSelectionA.x, 32), std::min(gClipSelectionB.y, (gameState.mapSize.y - 2) * 32) } },
             TileCoordsXY{
-                CoordsXY{ std::min(gClipSelectionB.x, (gameState.MapSize.x - 2) * 32), std::max(gClipSelectionA.y, 32) } },
+                CoordsXY{ std::min(gClipSelectionB.x, (gameState.mapSize.x - 2) * 32), std::max(gClipSelectionA.y, 32) } },
         },
     };
 
@@ -297,10 +297,8 @@ static Viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
 
     Viewport viewport{};
     viewport.viewPos = { left, top };
-    viewport.view_width = right - left;
-    viewport.view_height = bottom - top;
-    viewport.width = zoom.ApplyInversedTo(viewport.view_width);
-    viewport.height = zoom.ApplyInversedTo(viewport.view_height);
+    viewport.width = zoom.ApplyInversedTo(right - left);
+    viewport.height = zoom.ApplyInversedTo(bottom - top);
     viewport.zoom = zoom;
     viewport.rotation = rotation;
 
@@ -318,8 +316,13 @@ static void RenderViewport(IDrawingEngine* drawingEngine, const Viewport& viewpo
         tempDrawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
         drawingEngine = tempDrawingEngine.get();
     }
+
+    tempDrawingEngine->BeginDraw();
+
     dpi.DrawingEngine = drawingEngine;
-    ViewportRender(dpi, &viewport, { { 0, 0 }, { viewport.width, viewport.height } });
+    ViewportRender(dpi, &viewport);
+
+    tempDrawingEngine->EndDraw();
 }
 
 void ScreenshotGiant()
@@ -362,12 +365,12 @@ void ScreenshotGiant()
         Formatter ft;
         ft.Add<StringId>(STR_STRING);
         ft.Add<const utf8*>(filename.c_str());
-        ContextShowError(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft, true);
+        ContextShowError(STR_SCREENSHOT_SAVED_AS, kStringIdNone, ft, true);
     }
     catch (const std::exception& e)
     {
         LOG_ERROR("%s", e.what());
-        ContextShowError(STR_SCREENSHOT_FAILED, STR_NONE, {}, true);
+        ContextShowError(STR_SCREENSHOT_FAILED, kStringIdNone, {}, true);
     }
 
     ReleaseDPI(dpi);
@@ -434,7 +437,7 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
         }
     }
 
-    bool giantScreenshot = (argc == 5) && String::IEquals(argv[2], "giant");
+    bool giantScreenshot = (argc == 5) && String::iequals(argv[2], "giant");
     if (argc != 4 && argc != 8 && !giantScreenshot)
     {
         std::printf("Usage: openrct2 screenshot <file> <output_image> <width> <height> [<x> <y> <zoom> <rotation>]\n");
@@ -467,7 +470,7 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
             throw std::runtime_error("Failed to load park.");
         }
 
-        gScreenFlags = SCREEN_FLAGS_PLAYING;
+        gLegacyScene = LegacyScene::playing;
 
         Viewport viewport{};
         if (giantScreenshot)
@@ -502,7 +505,7 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
                 customRotation = std::atoi(argv[7]) & 3;
             }
 
-            const auto& mapSize = GetGameState().MapSize;
+            const auto& mapSize = getGameState().mapSize;
             if (resolutionWidth == 0 || resolutionHeight == 0)
             {
                 resolutionWidth = (mapSize.x * kCoordsXYStep * 2) >> customZoom;
@@ -514,8 +517,6 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
 
             viewport.width = resolutionWidth;
             viewport.height = resolutionHeight;
-            viewport.view_width = viewport.width;
-            viewport.view_height = viewport.height;
             if (customLocation)
             {
                 if (centreMapX)
@@ -528,18 +529,18 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
 
                 auto coords2d = Translate3DTo2DWithZ(customRotation, coords3d);
 
-                viewport.viewPos = { coords2d.x - ((viewport.view_width << customZoom) / 2),
-                                     coords2d.y - ((viewport.view_height << customZoom) / 2) };
+                viewport.viewPos = { coords2d.x - ((viewport.ViewWidth() << customZoom) / 2),
+                                     coords2d.y - ((viewport.ViewHeight() << customZoom) / 2) };
                 viewport.zoom = ZoomLevel{ static_cast<int8_t>(customZoom) };
                 viewport.rotation = customRotation;
             }
             else
             {
-                auto& gameState = GetGameState();
-                viewport.viewPos = { gameState.SavedView
-                                     - ScreenCoordsXY{ (viewport.view_width / 2), (viewport.view_height / 2) } };
-                viewport.zoom = gameState.SavedViewZoom;
-                viewport.rotation = gameState.SavedViewRotation;
+                auto& gameState = getGameState();
+                viewport.viewPos = { gameState.savedView
+                                     - ScreenCoordsXY{ (viewport.ViewWidth() / 2), (viewport.ViewHeight() / 2) } };
+                viewport.zoom = gameState.savedViewZoom;
+                viewport.rotation = gameState.savedViewRotation;
             }
         }
 
@@ -618,14 +619,12 @@ void CaptureImage(const CaptureOptions& options)
     {
         viewport.width = options.View->Width;
         viewport.height = options.View->Height;
-        viewport.view_width = viewport.width;
-        viewport.view_height = viewport.height;
 
         auto z = TileElementHeight(options.View->Position);
         CoordsXYZ coords3d(options.View->Position, z);
         auto coords2d = Translate3DTo2DWithZ(options.Rotation, coords3d);
-        viewport.viewPos = { coords2d.x - ((options.Zoom.ApplyTo(viewport.view_width)) / 2),
-                             coords2d.y - ((options.Zoom.ApplyTo(viewport.view_height)) / 2) };
+        viewport.viewPos = { coords2d.x - ((options.Zoom.ApplyTo(viewport.ViewWidth())) / 2),
+                             coords2d.y - ((options.Zoom.ApplyTo(viewport.ViewHeight())) / 2) };
         viewport.zoom = options.Zoom;
         viewport.rotation = options.Rotation;
     }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,6 +31,7 @@ enum
     LANGUAGE_SPANISH,
     LANGUAGE_FRENCH,
     LANGUAGE_FRENCH_CA,
+    LANGUAGE_GALICIAN,
     LANGUAGE_ITALIAN,
     LANGUAGE_JAPANESE,
     LANGUAGE_KOREAN,
@@ -74,7 +75,7 @@ struct LanguageDescriptor
     const utf8* english_name;
     const utf8* native_name;
     uint8_t fallback;
-#if !defined(NO_TTF)
+#if !defined(DISABLE_TTF)
     TTFontFamily const* font_family;
 #else
     void* font_family;
@@ -88,6 +89,5 @@ uint8_t LanguageGetIDFromLocale(const char* locale);
 const char* LanguageGetString(StringId id);
 bool LanguageOpen(int32_t id);
 
-bool LanguageGetLocalisedScenarioStrings(const utf8* scenarioFilename, StringId* outStringIds);
 void LanguageFreeObjectString(StringId stringId);
 StringId LanguageAllocateObjectString(const std::string& target);

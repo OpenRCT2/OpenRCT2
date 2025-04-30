@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,13 +9,13 @@
 
 #pragma once
 
-#include "core/String.hpp"
+#include "core/BackgroundWorker.hpp"
+#include "core/StringTypes.h"
 #include "interface/WindowClasses.h"
 #include "localisation/StringIdType.h"
 #include "world/Location.hpp"
 
 #include <memory>
-#include <string>
 
 struct IObjectManager;
 struct IObjectRepository;
@@ -26,12 +26,13 @@ enum class CursorID : uint8_t;
 namespace OpenRCT2
 {
     struct IStream;
-}
+    class Intent;
+    struct WindowBase;
+} // namespace OpenRCT2
+
 struct ITrackDesignRepository;
 struct IGameStateSnapshots;
 
-class Intent;
-struct WindowBase;
 struct NewVersionInfo;
 
 struct TTFFontDescriptor;
@@ -160,7 +161,7 @@ namespace OpenRCT2
         virtual void DisposeDrawingEngine() = 0;
 
         virtual void OpenProgress(StringId captionStringId) = 0;
-        virtual void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format = STR_NONE) = 0;
+        virtual void SetProgress(uint32_t currentProgress, uint32_t totalCount, StringId format = kStringIdNone) = 0;
         virtual void CloseProgress() = 0;
 
         virtual bool LoadParkFromFile(const u8string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) = 0;
@@ -177,6 +178,8 @@ namespace OpenRCT2
 
         virtual void SetTimeScale(float newScale) = 0;
         virtual float GetTimeScale() const = 0;
+
+        virtual BackgroundWorker& GetBackgroundWorker() = 0;
     };
 
     [[nodiscard]] std::unique_ptr<IContext> CreateContext();
@@ -222,16 +225,15 @@ int32_t ContextGetWidth();
 int32_t ContextGetHeight();
 bool ContextHasFocus();
 void ContextSetCursorTrap(bool value);
-WindowBase* ContextOpenWindow(WindowClass wc);
-WindowBase* ContextOpenDetailWindow(uint8_t type, int32_t id);
-WindowBase* ContextOpenWindowView(uint8_t view);
-WindowBase* ContextShowError(StringId title, StringId message, const class Formatter& args, bool autoClose = false);
-WindowBase* ContextOpenIntent(Intent* intent);
-void ContextBroadcastIntent(Intent* intent);
+OpenRCT2::WindowBase* ContextOpenWindow(WindowClass wc);
+OpenRCT2::WindowBase* ContextOpenDetailWindow(uint8_t type, int32_t id);
+OpenRCT2::WindowBase* ContextOpenWindowView(uint8_t view);
+OpenRCT2::WindowBase* ContextShowError(StringId title, StringId message, const class Formatter& args, bool autoClose = false);
+OpenRCT2::WindowBase* ContextOpenIntent(OpenRCT2::Intent* intent);
+void ContextBroadcastIntent(OpenRCT2::Intent* intent);
 void ContextForceCloseWindowByClass(WindowClass wc);
 void ContextHandleInput();
 void ContextInputHandleKeyboard(bool isTitle);
 void ContextQuit();
 bool ContextLoadParkFromStream(void* stream);
-bool ContextOpenCommonFileDialog(utf8* outFilename, OpenRCT2::Ui::FileDialogDesc& desc, size_t outSize);
 u8string ContextOpenCommonFileDialog(OpenRCT2::Ui::FileDialogDesc& desc);

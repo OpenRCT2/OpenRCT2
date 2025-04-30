@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,9 +9,12 @@
 
 #include "ScVehicle.hpp"
 
+#include "../../../world/tile_element/TrackElement.h"
 #include "../ride/ScRide.hpp"
 
 #ifdef ENABLE_SCRIPTING
+
+using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Scripting
 {
@@ -75,7 +78,7 @@ namespace OpenRCT2::Scripting
             ctx, &ScVehicle::flag_get<VehicleFlags::CarIsReversed>, &ScVehicle::flag_set<VehicleFlags::CarIsReversed>,
             "isReversed");
         dukglue_register_property(ctx, &ScVehicle::colours_get, &ScVehicle::colours_set, "colours");
-        dukglue_register_property(ctx, &ScVehicle::trackLocation_get, &ScVehicle::trackLocation_set, "trackLocation");
+        dukglue_register_property(ctx, &ScVehicle::trackLocation_get, nullptr, "trackLocation");
         dukglue_register_property(ctx, &ScVehicle::trackProgress_get, nullptr, "trackProgress");
         dukglue_register_property(ctx, &ScVehicle::remainingDistance_get, nullptr, "remainingDistance");
         dukglue_register_property(ctx, &ScVehicle::subposition_get, nullptr, "subposition");
@@ -88,6 +91,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScVehicle::guests_get, nullptr, "guests");
         dukglue_register_property(ctx, &ScVehicle::gForces_get, nullptr, "gForces");
         dukglue_register_method(ctx, &ScVehicle::travelBy, "travelBy");
+        dukglue_register_method(ctx, &ScVehicle::moveToTrack, "moveToTrack");
     }
 
     Vehicle* ScVehicle::GetVehicle() const
@@ -336,13 +340,15 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    template<uint32_t flag> bool ScVehicle::flag_get() const
+    template<uint32_t flag>
+    bool ScVehicle::flag_get() const
     {
         auto vehicle = GetVehicle();
         return vehicle != nullptr ? vehicle->HasFlag(flag) : false;
     }
 
-    template<uint32_t flag> void ScVehicle::flag_set(bool value)
+    template<uint32_t flag>
+    void ScVehicle::flag_set(bool value)
     {
         ThrowIfGameStateNotMutable();
         auto vehicle = GetVehicle();
@@ -390,24 +396,10 @@ namespace OpenRCT2::Scripting
             dukCoords.Set("y", vehicle->TrackLocation.y);
             dukCoords.Set("z", vehicle->TrackLocation.z);
             dukCoords.Set("direction", vehicle->GetTrackDirection());
-            dukCoords.Set("trackType", vehicle->GetTrackType());
+            dukCoords.Set("trackType", EnumValue(vehicle->GetTrackType()));
             return dukCoords.Take();
         }
         return ToDuk(ctx, nullptr);
-    }
-    void ScVehicle::trackLocation_set(const DukValue& value)
-    {
-        ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
-        if (vehicle != nullptr)
-        {
-            auto x = AsOrDefault(value["x"], 0);
-            auto y = AsOrDefault(value["y"], 0);
-            auto z = AsOrDefault(value["z"], 0);
-            vehicle->TrackLocation = CoordsXYZ(x, y, z);
-            vehicle->SetTrackDirection(AsOrDefault(value["direction"], 0));
-            vehicle->SetTrackType(AsOrDefault(value["trackType"], 0));
-        }
     }
 
     uint16_t ScVehicle::trackProgress_get() const
@@ -541,7 +533,40 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->MoveRelativeDistance(value);
+            EntityTweener::Get().RemoveEntity(vehicle);
         }
+    }
+
+    void ScVehicle::moveToTrack(int32_t x, int32_t y, int32_t elementIndex)
+    {
+        CoordsXY coords = TileCoordsXY(x, y).ToCoordsXY();
+        auto vehicle = GetVehicle();
+        if (vehicle == nullptr)
+            return;
+
+        auto el = MapGetNthElementAt(coords, elementIndex);
+        if (el == nullptr)
+            return;
+
+        auto origin = GetTrackSegmentOrigin(CoordsXYE(coords, el));
+        if (!origin)
+            return;
+
+        auto trackEl = el->AsTrack();
+
+        vehicle->TrackLocation.x = origin->x;
+        vehicle->TrackLocation.y = origin->y;
+        vehicle->TrackLocation.z = origin->z;
+        vehicle->SetTrackDirection(origin->direction);
+        vehicle->SetTrackType(trackEl->GetTrackType());
+
+        // Clip track progress to avoid being out of bounds of current piece
+        uint16_t trackTotalProgress = vehicle->GetTrackProgress();
+        if (trackTotalProgress && vehicle->track_progress >= trackTotalProgress)
+            vehicle->track_progress = trackTotalProgress - 1;
+
+        vehicle->UpdateTrackChange();
+        EntityTweener::Get().RemoveEntity(vehicle);
     }
 } // namespace OpenRCT2::Scripting
 

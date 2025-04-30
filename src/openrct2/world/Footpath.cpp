@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,24 +21,26 @@
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
-#include "../interface/Window_internal.h"
+#include "../interface/WindowBase.h"
 #include "../object/FootpathObject.h"
 #include "../object/FootpathRailingsObject.h"
 #include "../object/FootpathSurfaceObject.h"
 #include "../object/ObjectEntryManager.h"
+#include "../object/ObjectLimits.h"
 #include "../object/ObjectManager.h"
 #include "../object/PathAdditionEntry.h"
 #include "../paint/VirtualFloor.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
-#include "../util/Util.h"
-#include "../world/tile_element/Slope.h"
 #include "Location.hpp"
-#include "Map.h"
 #include "MapAnimation.h"
-#include "Surface.h"
-#include "TileElement.h"
+#include "tile_element/BannerElement.h"
+#include "tile_element/EntranceElement.h"
+#include "tile_element/PathElement.h"
+#include "tile_element/Slope.h"
+#include "tile_element/SurfaceElement.h"
+#include "tile_element/TrackElement.h"
 
 #include <bit>
 #include <iterator>
@@ -159,7 +161,7 @@ void FootpathInterruptPeeps(const CoordsXYZ& footpathPos)
                 auto destination = location.ToTileCentre();
                 peep->SetState(PeepState::Walking);
                 peep->SetDestination(destination, 5);
-                peep->UpdateCurrentActionSpriteType();
+                peep->UpdateCurrentAnimationType();
             }
         }
     }
@@ -429,7 +431,7 @@ static bool FootpathReconnectQueueToPath(
     }
 
     int32_t z = tileElement->GetBaseZ();
-    TileElement* targetFootpathElement = FootpathGetElement({ targetQueuePos, z - LAND_HEIGHT_STEP, z }, direction);
+    TileElement* targetFootpathElement = FootpathGetElement({ targetQueuePos, z - kLandHeightStep, z }, direction);
     if (targetFootpathElement != nullptr && !targetFootpathElement->AsPath()->IsQueue())
     {
         auto targetQueueElement = targetFootpathElement->AsPath();
@@ -472,7 +474,7 @@ static bool FootpathDisconnectQueueFromPath(const CoordsXY& footpathPos, TileEle
             return true;
     }
 
-    for (Direction direction : ALL_DIRECTIONS)
+    for (Direction direction : kAllDirections)
     {
         if ((action < 0) && (direction == tileElement->AsPath()->GetSlopeDirection()))
             continue;
@@ -558,7 +560,7 @@ static void Loc6A6D7E(
     FootpathNeighbourList* neighbourList)
 {
     auto targetPos = CoordsXY{ initialTileElementPos } + CoordsDirectionDelta[direction];
-    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode) && MapIsEdge(targetPos))
+    if ((gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode) && MapIsEdge(targetPos))
     {
         if (query)
         {
@@ -586,7 +588,7 @@ static void Loc6A6D7E(
                         }
                         return;
                     }
-                    if (tileElement->GetBaseZ() == initialTileElementPos.z - LAND_HEIGHT_STEP)
+                    if (tileElement->GetBaseZ() == initialTileElementPos.z - kLandHeightStep)
                     {
                         if (tileElement->AsPath()->IsSloped()
                             && tileElement->AsPath()->GetSlopeDirection() == DirectionReverse(direction))
@@ -607,7 +609,7 @@ static void Loc6A6D7E(
                             continue;
                         }
 
-                        if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
+                        if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
                         {
                             continue;
                         }
@@ -615,13 +617,13 @@ static void Loc6A6D7E(
                         const auto trackType = tileElement->AsTrack()->GetTrackType();
                         const uint8_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
                         const auto& ted = GetTrackElementDescriptor(trackType);
-                        if (!(ted.sequenceProperties[trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
+                        if (!(ted.sequences[trackSequence].flags & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
                         {
                             return;
                         }
                         uint16_t dx = DirectionReverse((direction - tileElement->GetDirection()) & kTileElementDirectionMask);
 
-                        if (!(ted.sequenceProperties[trackSequence] & (1 << dx)))
+                        if (!(ted.sequences[trackSequence].flags & (1 << dx)))
                         {
                             return;
                         }
@@ -693,7 +695,7 @@ static void Loc6A6C85(
             return;
         }
 
-        if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
+        if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
         {
             return;
         }
@@ -701,12 +703,12 @@ static void Loc6A6C85(
         const auto trackType = tileElementPos.element->AsTrack()->GetTrackType();
         const uint8_t trackSequence = tileElementPos.element->AsTrack()->GetSequenceIndex();
         const auto& ted = GetTrackElementDescriptor(trackType);
-        if (!(ted.sequenceProperties[trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
+        if (!(ted.sequences[trackSequence].flags & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
         {
             return;
         }
         uint16_t dx = (direction - tileElementPos.element->GetDirection()) & kTileElementDirectionMask;
-        if (!(ted.sequenceProperties[trackSequence] & (1 << dx)))
+        if (!(ted.sequences[trackSequence].flags & (1 << dx)))
         {
             return;
         }
@@ -723,7 +725,7 @@ static void Loc6A6C85(
             }
             if (tileElementPos.element->AsPath()->GetSlopeDirection() == direction)
             {
-                pos.z += LAND_HEIGHT_STEP;
+                pos.z += kLandHeightStep;
             }
         }
     }
@@ -745,7 +747,7 @@ void FootpathConnectEdges(const CoordsXY& footpathPos, TileElement* tileElement,
     FootpathNeighbourListInit(&neighbourList);
 
     FootpathUpdateQueueEntranceBanner(footpathPos, tileElement);
-    for (Direction direction : ALL_DIRECTIONS)
+    for (Direction direction : kAllDirections)
     {
         Loc6A6C85({ footpathPos, tileElement }, direction, flags, true, &neighbourList);
     }
@@ -820,7 +822,7 @@ void FootpathChainRideQueue(
             {
                 if (tileElement->AsPath()->GetSlopeDirection() == direction)
                 {
-                    baseZ += LAND_HEIGHT_STEP;
+                    baseZ += kLandHeightStep;
                 }
             }
         }
@@ -846,7 +848,7 @@ void FootpathChainRideQueue(
                     foundQueue = true;
                     break;
                 }
-                if (tileElement->GetBaseZ() == baseZ - LAND_HEIGHT_STEP)
+                if (tileElement->GetBaseZ() == baseZ - kLandHeightStep)
                 {
                     if (!tileElement->AsPath()->IsSloped())
                         break;
@@ -854,7 +856,7 @@ void FootpathChainRideQueue(
                     if (DirectionReverse(tileElement->AsPath()->GetSlopeDirection()) != direction)
                         break;
 
-                    baseZ -= LAND_HEIGHT_STEP;
+                    baseZ -= kLandHeightStep;
                     foundQueue = true;
                     break;
                 }
@@ -951,7 +953,7 @@ void FootpathUpdateQueueChains()
         if (ride == nullptr)
             continue;
 
-        for (const auto& station : ride->GetStations())
+        for (const auto& station : ride->getStations())
         {
             if (station.Entrance.IsNull())
                 continue;
@@ -970,7 +972,7 @@ void FootpathUpdateQueueChains()
 
                     Direction direction = DirectionReverse(tileElement->GetDirection());
                     FootpathChainRideQueue(
-                        rideIndex, ride->GetStationIndex(&station), station.Entrance.ToCoordsXY(), tileElement, direction);
+                        rideIndex, ride->getStationIndex(&station), station.Entrance.ToCoordsXY(), tileElement, direction);
                 } while (!(tileElement++)->IsLastForTile());
             }
         }
@@ -1017,7 +1019,7 @@ static void FootpathFixOwnership(const CoordsXY& mapPos)
 
 static bool GetNextDirection(uint32_t edges, int32_t* direction)
 {
-    int32_t index = UtilBitScanForward(edges);
+    int32_t index = Numerics::bitScanForward(edges);
     if (index == -1)
         return false;
 
@@ -1236,292 +1238,6 @@ int32_t FootpathIsConnectedToMapEdge(const CoordsXYZ& footpathPos, int32_t direc
     return FootpathIsConnectedToMapEdgeHelper(footpathPos, direction, flags);
 }
 
-bool PathElement::IsSloped() const
-{
-    return (Flags2 & FOOTPATH_ELEMENT_FLAGS2_IS_SLOPED) != 0;
-}
-
-void PathElement::SetSloped(bool isSloped)
-{
-    Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_IS_SLOPED;
-    if (isSloped)
-        Flags2 |= FOOTPATH_ELEMENT_FLAGS2_IS_SLOPED;
-}
-
-bool PathElement::HasJunctionRailings() const
-{
-    return Flags2 & FOOTPATH_ELEMENT_FLAGS2_HAS_JUNCTION_RAILINGS;
-}
-
-void PathElement::SetJunctionRailings(bool hasJunctionRailings)
-{
-    Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_HAS_JUNCTION_RAILINGS;
-    if (hasJunctionRailings)
-        Flags2 |= FOOTPATH_ELEMENT_FLAGS2_HAS_JUNCTION_RAILINGS;
-}
-
-Direction PathElement::GetSlopeDirection() const
-{
-    return SlopeDirection;
-}
-
-void PathElement::SetSlopeDirection(Direction newSlope)
-{
-    SlopeDirection = newSlope;
-}
-
-bool PathElement::IsQueue() const
-{
-    return (Type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) != 0;
-}
-
-void PathElement::SetIsQueue(bool isQueue)
-{
-    Type &= ~FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE;
-    if (isQueue)
-        Type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE;
-}
-
-bool PathElement::HasQueueBanner() const
-{
-    return (Flags2 & FOOTPATH_ELEMENT_FLAGS2_HAS_QUEUE_BANNER) != 0;
-}
-
-void PathElement::SetHasQueueBanner(bool hasQueueBanner)
-{
-    Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_HAS_QUEUE_BANNER;
-    if (hasQueueBanner)
-        Flags2 |= FOOTPATH_ELEMENT_FLAGS2_HAS_QUEUE_BANNER;
-}
-
-bool PathElement::IsBroken() const
-{
-    return (Flags2 & FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_BROKEN) != 0;
-}
-
-void PathElement::SetIsBroken(bool isBroken)
-{
-    if (isBroken)
-    {
-        Flags2 |= FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_BROKEN;
-    }
-    else
-    {
-        Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_BROKEN;
-    }
-}
-
-bool PathElement::IsBlockedByVehicle() const
-{
-    return (Flags2 & FOOTPATH_ELEMENT_FLAGS2_BLOCKED_BY_VEHICLE) != 0;
-}
-
-void PathElement::SetIsBlockedByVehicle(bool isBlocked)
-{
-    if (isBlocked)
-    {
-        Flags2 |= FOOTPATH_ELEMENT_FLAGS2_BLOCKED_BY_VEHICLE;
-    }
-    else
-    {
-        Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_BLOCKED_BY_VEHICLE;
-    }
-}
-
-::StationIndex PathElement::GetStationIndex() const
-{
-    return StationIndex;
-}
-
-void PathElement::SetStationIndex(::StationIndex newStationIndex)
-{
-    StationIndex = newStationIndex;
-}
-
-bool PathElement::IsWide() const
-{
-    return (Type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE) != 0;
-}
-
-void PathElement::SetWide(bool isWide)
-{
-    Type &= ~FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
-    if (isWide)
-        Type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
-}
-
-bool PathElement::HasAddition() const
-{
-    return Additions != 0;
-}
-
-uint8_t PathElement::GetAddition() const
-{
-    return Additions;
-}
-
-ObjectEntryIndex PathElement::GetAdditionEntryIndex() const
-{
-    // `Additions` is set to 0 when there is no addition, so the value 1 corresponds with path addition slot 0, etc.
-    return GetAddition() - 1;
-}
-
-const PathAdditionEntry* PathElement::GetAdditionEntry() const
-{
-    if (!HasAddition())
-        return nullptr;
-    return OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(GetAdditionEntryIndex());
-}
-
-void PathElement::SetAddition(uint8_t newAddition)
-{
-    Additions = newAddition;
-}
-
-void PathElement::SetAdditionEntryIndex(ObjectEntryIndex entryIndex)
-{
-    // `Additions` is set to 0 when there is no addition, so the value 1 corresponds with path addition slot 0, etc.
-    Additions = entryIndex + 1;
-}
-
-bool PathElement::AdditionIsGhost() const
-{
-    return (Flags2 & FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_GHOST) != 0;
-}
-
-void PathElement::SetAdditionIsGhost(bool isGhost)
-{
-    Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_GHOST;
-    if (isGhost)
-        Flags2 |= FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_GHOST;
-}
-
-ObjectEntryIndex PathElement::GetLegacyPathEntryIndex() const
-{
-    if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
-        return SurfaceIndex;
-
-    return OBJECT_ENTRY_INDEX_NULL;
-}
-
-const FootpathObject* PathElement::GetLegacyPathEntry() const
-{
-    return GetLegacyFootpathEntry(GetLegacyPathEntryIndex());
-}
-
-void PathElement::SetLegacyPathEntryIndex(ObjectEntryIndex newIndex)
-{
-    SurfaceIndex = newIndex;
-    RailingsIndex = OBJECT_ENTRY_INDEX_NULL;
-    Flags2 |= FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
-}
-
-bool PathElement::HasLegacyPathEntry() const
-{
-    return (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY) != 0;
-}
-
-const PathSurfaceDescriptor* PathElement::GetSurfaceDescriptor() const
-{
-    if (HasLegacyPathEntry())
-    {
-        const auto* legacyPathEntry = GetLegacyPathEntry();
-        if (legacyPathEntry == nullptr)
-            return nullptr;
-
-        if (IsQueue())
-            return &legacyPathEntry->GetQueueSurfaceDescriptor();
-
-        return &legacyPathEntry->GetPathSurfaceDescriptor();
-    }
-
-    const auto* surfaceEntry = GetSurfaceEntry();
-    if (surfaceEntry == nullptr)
-        return nullptr;
-
-    return &surfaceEntry->GetDescriptor();
-}
-
-const PathRailingsDescriptor* PathElement::GetRailingsDescriptor() const
-{
-    if (HasLegacyPathEntry())
-    {
-        const auto* legacyPathEntry = GetLegacyPathEntry();
-        if (legacyPathEntry == nullptr)
-            return nullptr;
-
-        return &legacyPathEntry->GetPathRailingsDescriptor();
-    }
-
-    const auto* railingsEntry = GetRailingsEntry();
-    if (railingsEntry == nullptr)
-        return nullptr;
-
-    return &railingsEntry->GetDescriptor();
-}
-
-ObjectEntryIndex PathElement::GetSurfaceEntryIndex() const
-{
-    if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
-        return OBJECT_ENTRY_INDEX_NULL;
-
-    return SurfaceIndex;
-}
-
-const FootpathSurfaceObject* PathElement::GetSurfaceEntry() const
-{
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    return static_cast<FootpathSurfaceObject*>(objMgr.GetLoadedObject(ObjectType::FootpathSurface, GetSurfaceEntryIndex()));
-}
-
-void PathElement::SetSurfaceEntryIndex(ObjectEntryIndex newIndex)
-{
-    SurfaceIndex = newIndex;
-    Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
-}
-
-ObjectEntryIndex PathElement::GetRailingsEntryIndex() const
-{
-    if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
-        return OBJECT_ENTRY_INDEX_NULL;
-
-    return RailingsIndex;
-}
-
-const FootpathRailingsObject* PathElement::GetRailingsEntry() const
-{
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    return static_cast<FootpathRailingsObject*>(objMgr.GetLoadedObject(ObjectType::FootpathRailings, GetRailingsEntryIndex()));
-}
-
-void PathElement::SetRailingsEntryIndex(ObjectEntryIndex newEntryIndex)
-{
-    RailingsIndex = newEntryIndex;
-    Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
-}
-
-uint8_t PathElement::GetQueueBannerDirection() const
-{
-    return ((Type & FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK) >> 6);
-}
-
-void PathElement::SetQueueBannerDirection(uint8_t direction)
-{
-    Type &= ~FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK;
-    Type |= (direction << 6);
-}
-
-bool PathElement::ShouldDrawPathOverSupports() const
-{
-    // TODO: make this an actual decision of the tile element.
-    return (GetRailingsDescriptor()->Flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS);
-}
-
-void PathElement::SetShouldDrawPathOverSupports(bool on)
-{
-    LOG_VERBOSE("Setting 'draw path over supports' to %d", static_cast<size_t>(on));
-}
-
 /**
  *
  *  rct2: 0x006A8B12
@@ -1595,6 +1311,11 @@ void FootpathUpdatePathWideFlags(const CoordsXY& footpathPos)
     // x -= 0x20;
     // FootpathClearWide(x, y);
     // y -= 0x20;
+
+    // Only consider approx. 1/8 of tiles for wide path status
+    // (NB: the other 7/8 do get cleared above!)
+    if (!(footpathPos.x & 0xE0) || (!(footpathPos.y & 0xE0)))
+        return;
 
     TileElement* tileElement = MapGetFirstElementAt(footpathPos);
     if (tileElement == nullptr)
@@ -1939,16 +1660,16 @@ bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const T
                     if (ride == nullptr)
                         continue;
 
-                    if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
+                    if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
                         break;
 
                     const auto trackType = tileElement->AsTrack()->GetTrackType();
                     const uint8_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
                     const auto& ted = GetTrackElementDescriptor(trackType);
-                    if (ted.sequenceProperties[trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
+                    if (ted.sequences[trackSequence].flags & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
                     {
                         uint16_t dx = ((coords.direction - tileElement->GetDirection()) & kTileElementDirectionMask);
-                        if (ted.sequenceProperties[trackSequence] & (1 << dx))
+                        if (ted.sequences[trackSequence].flags & (1 << dx))
                         {
                             // Track element has the flags required for the given direction
                             return true;
@@ -2032,7 +1753,7 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
         if (ride == nullptr)
             return;
 
-        if (!ride->GetRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
+        if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::isFlatRide))
             return;
     }
 
@@ -2086,7 +1807,7 @@ void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement
 
 static ObjectEntryIndex FootpathGetDefaultSurface(bool queue)
 {
-    bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode);
+    bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode);
     for (ObjectEntryIndex i = 0; i < kMaxFootpathSurfaceObjects; i++)
     {
         auto pathEntry = GetPathSurfaceEntry(i);
@@ -2102,7 +1823,7 @@ static ObjectEntryIndex FootpathGetDefaultSurface(bool queue)
             }
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 static bool FootpathIsSurfaceEntryOkay(ObjectEntryIndex index, bool queue)
@@ -2110,7 +1831,7 @@ static bool FootpathIsSurfaceEntryOkay(ObjectEntryIndex index, bool queue)
     auto pathEntry = GetPathSurfaceEntry(index);
     if (pathEntry != nullptr)
     {
-        bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode);
+        bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode);
         if (!showEditorPaths && (pathEntry->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR))
         {
             return false;
@@ -2133,14 +1854,14 @@ static ObjectEntryIndex FootpathGetDefaultRailings()
             return i;
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 static bool FootpathIsLegacyPathEntryOkay(ObjectEntryIndex index)
 {
-    bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode);
+    bool showEditorPaths = (gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode);
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-    auto footpathObj = static_cast<FootpathObject*>(objManager.GetLoadedObject(ObjectType::Paths, index));
+    auto footpathObj = objManager.GetLoadedObject<FootpathObject>(index);
     if (footpathObj != nullptr)
     {
         auto pathEntry = reinterpret_cast<FootpathEntry*>(footpathObj->GetLegacyData());
@@ -2158,7 +1879,7 @@ static ObjectEntryIndex FootpathGetDefaultLegacyPath()
             return i;
         }
     }
-    return OBJECT_ENTRY_INDEX_NULL;
+    return kObjectEntryIndexNull;
 }
 
 bool FootpathSelectDefault()
@@ -2187,7 +1908,7 @@ bool FootpathSelectDefault()
 
     // Select default legacy path
     auto legacyPathIndex = FootpathGetDefaultLegacyPath();
-    if (gFootpathSelection.LegacyPath != OBJECT_ENTRY_INDEX_NULL)
+    if (gFootpathSelection.LegacyPath != kObjectEntryIndexNull)
     {
         if (FootpathIsLegacyPathEntryOkay(gFootpathSelection.LegacyPath))
         {
@@ -2197,13 +1918,13 @@ bool FootpathSelectDefault()
         else
         {
             // Reset legacy path, we default to a surface (if there are any)
-            gFootpathSelection.LegacyPath = OBJECT_ENTRY_INDEX_NULL;
+            gFootpathSelection.LegacyPath = kObjectEntryIndexNull;
         }
     }
 
-    if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+    if (surfaceIndex == kObjectEntryIndexNull)
     {
-        if (legacyPathIndex == OBJECT_ENTRY_INDEX_NULL)
+        if (legacyPathIndex == kObjectEntryIndexNull)
         {
             // No surfaces or legacy paths available
             return false;
@@ -2222,32 +1943,19 @@ bool FootpathSelectDefault()
 const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex)
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::Paths, entryIndex);
-    if (obj == nullptr)
-        return nullptr;
-
-    const FootpathObject* footpathObject = (static_cast<FootpathObject*>(obj));
-    return footpathObject;
+    return objMgr.GetLoadedObject<FootpathObject>(entryIndex);
 }
 
 const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex)
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::FootpathSurface, entryIndex);
-    if (obj == nullptr)
-        return nullptr;
-
-    return static_cast<FootpathSurfaceObject*>(obj);
+    return objMgr.GetLoadedObject<FootpathSurfaceObject>(entryIndex);
 }
 
 const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex)
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::FootpathRailings, entryIndex);
-    if (obj == nullptr)
-        return nullptr;
-
-    return static_cast<FootpathRailingsObject*>(obj);
+    return objMgr.GetLoadedObject<FootpathRailingsObject>(entryIndex);
 }
 
 RideId PathElement::GetRideIndex() const
@@ -2321,5 +2029,32 @@ bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
         return false;
     }
 
-    return ride->GetRideTypeDescriptor().HasFlag(RtdFlag::supportsLevelCrossings);
+    return ride->getRideTypeDescriptor().HasFlag(RtdFlag::supportsLevelCrossings);
+}
+
+bool FootpathIsZAndDirectionValid(const PathElement& pathElement, int32_t currentZ, int32_t currentDirection)
+{
+    if (pathElement.IsSloped())
+    {
+        int32_t slopeDirection = pathElement.GetSlopeDirection();
+        if (slopeDirection == currentDirection)
+        {
+            if (currentZ != pathElement.BaseHeight)
+                return false;
+        }
+        else
+        {
+            slopeDirection = DirectionReverse(slopeDirection);
+            if (slopeDirection != currentDirection)
+                return false;
+            if (currentZ != pathElement.BaseHeight + 2)
+                return false;
+        }
+    }
+    else
+    {
+        if (currentZ != pathElement.BaseHeight)
+            return false;
+    }
+    return true;
 }

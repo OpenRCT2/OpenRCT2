@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,15 +9,15 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "CustomImages.h"
+    #include "CustomImages.h"
 
-#    include "ScGraphicsContext.hpp"
+    #include "ScGraphicsContext.hpp"
 
-#    include <openrct2/Context.h>
-#    include <openrct2/drawing/Image.h>
-#    include <openrct2/drawing/ImageImporter.h>
-#    include <openrct2/drawing/X8DrawingEngine.h>
-#    include <openrct2/scripting/Plugin.h>
+    #include <openrct2/Context.h>
+    #include <openrct2/drawing/Image.h>
+    #include <openrct2/drawing/ImageImporter.h>
+    #include <openrct2/drawing/X8DrawingEngine.h>
+    #include <openrct2/scripting/Plugin.h>
 
 using namespace OpenRCT2::Drawing;
 
@@ -83,7 +83,7 @@ namespace OpenRCT2::Scripting
         images.resize(count);
 
         auto base = GfxObjectAllocateImages(images.data(), count);
-        if (base == ImageIndexUndefined)
+        if (base == kImageIndexUndefined)
         {
             return {};
         }
@@ -317,7 +317,7 @@ namespace OpenRCT2::Scripting
             }
             case PixelDataKind::Png:
             {
-                auto imageFormat = pixelData.Palette == PixelDataPaletteKind::Keep ? IMAGE_FORMAT::PNG : IMAGE_FORMAT::PNG_32;
+                auto imageFormat = pixelData.Palette == PixelDataPaletteKind::Keep ? ImageFormat::png : ImageFormat::png32;
                 auto palette = pixelData.Palette == PixelDataPaletteKind::Keep ? Palette::KeepIndices : Palette::OpenRCT2;
                 auto importMode = getImportModeFromPalette(pixelData.Palette);
                 auto pngData = DukGetDataFromBufferLikeObject(pixelData.Data);
@@ -341,7 +341,8 @@ namespace OpenRCT2::Scripting
         return imageData;
     }
 
-    template<> PixelDataKind FromDuk(const DukValue& d)
+    template<>
+    PixelDataKind FromDuk(const DukValue& d)
     {
         if (d.type() == DukValue::Type::STRING)
         {
@@ -358,7 +359,8 @@ namespace OpenRCT2::Scripting
         return PixelDataKind::Unknown;
     }
 
-    template<> PixelDataPaletteKind FromDuk(const DukValue& d)
+    template<>
+    PixelDataPaletteKind FromDuk(const DukValue& d)
     {
         if (d.type() == DukValue::Type::STRING)
         {
@@ -450,8 +452,12 @@ namespace OpenRCT2::Scripting
             dpi.bits = new uint8_t[bufferSize];
             std::memset(dpi.bits, 0, bufferSize);
 
+            drawingEngine->BeginDraw();
+
             // Draw the original image if we are creating a new one
             GfxDrawSprite(dpi, ImageId(id), { 0, 0 });
+
+            drawingEngine->EndDraw();
         }
         else
         {

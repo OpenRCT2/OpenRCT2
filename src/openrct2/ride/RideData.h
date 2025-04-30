@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,16 +16,16 @@
             __VA_ARGS__                                                                                                        \
         }                                                                                                                      \
     }
-#define DEFAULT_FLAT_RIDE_COLOUR_PRESET TRACK_COLOUR_PRESETS({ COLOUR_BRIGHT_RED, COLOUR_LIGHT_BLUE, COLOUR_YELLOW })
-#define DEFAULT_STALL_COLOUR_PRESET TRACK_COLOUR_PRESETS({ COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED })
+#define kDefaultFlatRideColourPreset TRACK_COLOUR_PRESETS({ COLOUR_BRIGHT_RED, COLOUR_LIGHT_BLUE, COLOUR_YELLOW })
+#define kDefaultStallColourPreset TRACK_COLOUR_PRESETS({ COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED })
 
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/BitSet.hpp"
+#include "../core/EnumUtils.hpp"
 #include "../drawing/ImageIndexType.h"
 #include "../entity/Guest.h"
 #include "../localisation/StringIds.h"
 #include "../paint/track/Support.h"
-#include "../util/Util.h"
 #include "Ride.h"
 #include "RideAudio.h"
 #include "RideConstruction.h"
@@ -34,7 +34,7 @@
 #include "RideStringIds.h"
 #include "ShopItem.h"
 #include "Track.h"
-#include "TrackPaint.h"
+#include "TrackStyle.h"
 #include "Vehicle.h"
 
 enum class ResearchCategory : uint8_t;
@@ -280,7 +280,7 @@ struct UpkeepCostsDescriptor
     money64 CostPerStation;
 };
 
-using RideTrackGroup = OpenRCT2::BitSet<EnumValue(TrackGroup::count)>;
+using RideTrackGroups = OpenRCT2::BitSet<EnumValue(TrackGroup::count)>;
 using UpdateRideApproachVehicleWaypointsFunction = void (*)(Guest&, const CoordsXY&, int16_t&);
 using RideMusicUpdateFunction = void (*)(Ride&);
 using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest*, Ride&, CoordsXYZD&);
@@ -288,7 +288,7 @@ using StartRideMusicFunction = void (*)(const OpenRCT2::RideAudio::ViewportRideM
 using LightFXAddLightsMagicVehicleFunction = void (*)(const Vehicle* vehicle);
 using RideLocationFunction = CoordsXY (*)(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
 using RideUpdateFunction = void (*)(Ride& ride);
-using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride& ride, const track_type_t trackType);
+using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride& ride, const OpenRCT2::TrackElemType trackType);
 using MusicTrackOffsetLengthFunc = std::pair<size_t, size_t> (*)(const Ride& ride);
 using SpecialElementRatingAdjustmentFunc = void (*)(const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
 
@@ -301,18 +301,18 @@ enum class RideConstructionWindowContext : uint8_t
 
 struct TrackDrawerEntry
 {
-    TRACK_PAINT_FUNCTION_GETTER Drawer = nullptr;
+    TrackStyle trackStyle = TrackStyle::null;
     SupportType supportType{};
     /** rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63) */
-    RideTrackGroup EnabledTrackPieces{};
+    RideTrackGroups enabledTrackGroups{};
     // Pieces that this ride type _can_ draw, but are disabled because their vehicles lack the relevant sprites,
     // or because they are not realistic for the ride type (e.g. LIM boosters in Mini Roller Coasters).
-    RideTrackGroup ExtraTrackPieces{};
+    RideTrackGroups extraTrackGroups{};
 
     ImageIndex icon = kSpriteIdNull;
-    StringId tooltip = STR_NONE;
+    StringId tooltip = kStringIdNone;
 
-    void GetAvailableTrackPieces(RideTrackGroup& res) const;
+    void GetAvailableTrackGroups(RideTrackGroups& res) const;
     bool SupportsTrackGroup(const TrackGroup trackGroup) const;
 };
 
@@ -341,114 +341,126 @@ struct TrackDrawerDescriptor
 
 enum class RtdFlag : uint8_t
 {
-    hasTrackColourMain = 0,
-    hasTrackColourAdditional = 1,
-    hasTrackColourSupports = 2,
+    hasTrackColourMain,
+    hasTrackColourAdditional,
+    hasTrackColourSupports,
 
     // Set by flat rides, tower rides and shops/stalls.
-    hasSinglePieceStation = 3,
+    hasSinglePieceStation,
 
-    hasLeaveWhenAnotherVehicleArrivesAtStation = 4,
-    canSynchroniseWithAdjacentStations = 5,
+    hasLeaveWhenAnotherVehicleArrivesAtStation,
+    canSynchroniseWithAdjacentStations,
 
     // Used only by boat Hire and submarine ride
-    trackMustBeOnWater = 6,
+    trackMustBeOnWater,
 
-    hasGForces = 7,
+    hasGForces,
 
     // Used by rides that can't have gaps, like those with a vertical tower,
     // such as the observation tower.
-    cannotHaveGaps = 8,
+    cannotHaveGaps,
 
-    hasDataLogging = 9,
-    hasDrops = 10,
+    hasDataLogging,
+    hasDrops,
 
-    noTestMode = 11,
+    noTestMode,
+
     // Set on rides with two varieties, like the u and o shapes of the dinghy slide
     // and the dry and submerged track of the water coaster.
-
-    hasCoveredPieces = 12,
+    hasCoveredPieces,
 
     // Used only by maze, spiral slide and shops
-    noVehicles = 13,
+    noVehicles,
 
-    hasLoadOptions = 14,
-    hasLsmBehaviourOnFlat = 15,
+    hasLoadOptions,
+    hasLsmBehaviourOnFlat,
 
     // Set by flat rides where the vehicle is integral to the structure, like
     // Merry-go-round and swinging ships. (Contrast with rides like dodgems.)
-    vehicleIsIntegral = 16,
+    vehicleIsIntegral,
 
-    isShopOrFacility = 17,
+    isShopOrFacility,
 
     // If set, wall scenery can not share a tile with the ride's track
-    noWallsAroundTrack = 18,
+    noWallsAroundTrack,
 
-    isFlatRide = 19,
+    isFlatRide,
 
     // Whether or not guests will go on the ride again if they liked it
     // (this is usually applied to everything apart from transport rides).
-    guestsWillRideAgain = 20,
+    guestsWillRideAgain,
 
     // Used by Toilets and First Aid to mark that guest should go
     // inside the building (rather than 'buying' at the counter)
-    guestsShouldGoInsideFacility = 21,
+    guestsShouldGoInsideFacility,
 
     // Guests are "IN" (ride) rather than "ON" (ride)
-    describeAsInside = 22,
+    describeAsInside,
 
-    sellsFood = 23,
-    sellsDrinks = 24,
-    isToilet = 25,
+    sellsFood,
+    sellsDrinks,
 
     // Whether or not vehicle colours can be set
-    hasVehicleColours = 26,
+    hasVehicleColours,
 
-    checkForStalling = 27,
-    hasTrack = 28,
+    checkForStalling,
+    hasTrack,
 
     // Only set by lift
-    allowExtraTowerBases = 29,
+    allowExtraTowerBases,
 
     // Only set by reverser coaster
-    layeredVehiclePreview = 30,
+    layeredVehiclePreview,
 
-    supportsMultipleColourSchemes = 31,
-    allowDoorsOnTrack = 32,
-    hasMusicByDefault = 33,
-    allowMusic = 34,
+    supportsMultipleColourSchemes,
+    allowDoorsOnTrack,
+    hasMusicByDefault,
+    allowMusic,
 
     // Used by the Flying RC, Lay-down RC, Multi-dimension RC
-    hasInvertedVariant = 35,
+    hasInvertedVariant,
 
-    checkGForces = 36,
-    hasEntranceAndExit = 37,
-    allowMoreVehiclesThanStationFits = 38,
-    hasAirTime = 39,
-    singleSession = 40,
-    allowMultipleCircuits = 41,
-    allowCableLiftHill = 42,
-    showInTrackDesigner = 43,
-    isTransportRide = 44,
-    interestingToLookAt = 45,
-    slightlyInterestingToLookAt = 46,
+    checkGForces,
+    hasEntranceAndExit,
+    allowMoreVehiclesThanStationFits,
+    hasAirTime,
+    singleSession,
+    allowMultipleCircuits,
+    allowCableLiftHill,
+    showInTrackDesigner,
+    isTransportRide,
+    interestingToLookAt,
+    slightlyInterestingToLookAt,
 
     // This is only set on the Flying RC and its alternative type.
-    startConstructionInverted = 47,
+    startConstructionInverted,
 
-    listVehiclesSeparately = 48,
-    supportsLevelCrossings = 49,
-    isSuspended = 50,
-    hasLandscapeDoors = 51,
-    upInclineRequiresLift = 52,
-    guestsCanUseUmbrella = 53,
-    isCashMachine = 54,
-    hasOneStation = 55,
-    hasSeatRotation = 56,
-    isFirstAid = 57,
-    isMaze = 58,
-    isSpiralSlide = 59,
-    allowReversedTrains = 60,
+    listVehiclesSeparately,
+    supportsLevelCrossings,
+    isSuspended,
+    hasLandscapeDoors,
+    upInclineRequiresLift,
+    guestsCanUseUmbrella,
+    hasOneStation,
+    hasSeatRotation,
+    allowReversedTrains,
+};
+
+/**
+ * Some rides are so different from others that they need some special code.
+ * This replaces direct ride type checks.
+ *
+ * Note: only add to this list if behaviour cannot sufficiently be altered using flags.
+ */
+enum class RtdSpecialType
+{
+    none,
+    maze,
+    miniGolf,
+    spiralSlide,
+    toilet,
+    cashMachine,
+    firstAid,
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.
@@ -465,9 +477,9 @@ constexpr uint64_t kRtdFlagsCommonCoasterNonAlt = EnumsToFlags(
 
 struct RideTypeDescriptor
 {
-    uint8_t Category{};
+    RideCategory Category{};
     /** rct2: 0x0097CC68 */
-    track_type_t StartTrackPiece{};
+    OpenRCT2::TrackElemType StartTrackPiece{};
     TrackDrawerDescriptor TrackPaintFunctions{};
     TrackDrawerDescriptor InvertedTrackPaintFunctions{};
     uint64_t Flags{};
@@ -481,7 +493,6 @@ struct RideTypeDescriptor
     RideLegacyBoosterSettings LegacyBoosterSettings{};
     RideNaming Naming{};
     RideNameConvention NameConvention{};
-    const char* EnumName{};
     uint8_t AvailableBreakdowns{};
     /** rct2: 0x0097D218 */
     RideHeights Heights{};
@@ -493,7 +504,7 @@ struct RideTypeDescriptor
     UpkeepCostsDescriptor UpkeepCosts{};
     // rct2: 0x0097DD78
     RideBuildCost BuildCosts{};
-    money64 DefaultPrices[OpenRCT2::RCT2::ObjectLimits::MaxShopItemsPerRideEntry]{};
+    money64 DefaultPrices[OpenRCT2::RCT2::ObjectLimits::kMaxShopItemsPerRideEntry]{};
     std::string_view DefaultMusic{};
     /** rct2: 0x0097D7CB */
     ShopItemIndex PhotoItem{};
@@ -516,7 +527,7 @@ struct RideTypeDescriptor
     TrackDesignCreateMode DesignCreateMode = TrackDesignCreateMode::Default;
 
     RideMusicUpdateFunction MusicUpdateFunction = DefaultMusicUpdate;
-    RideClassification Classification = RideClassification::Ride;
+    RideClassification Classification = RideClassification::ride;
 
     PeepUpdateRideLeaveEntranceFunc UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault;
     SpecialElementRatingAdjustmentFunc SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default;
@@ -531,25 +542,24 @@ struct RideTypeDescriptor
     MusicTrackOffsetLengthFunc MusicTrackOffsetLength = OpenRCT2::RideAudio::RideMusicGetTrackOffsetLength_Default;
 
     UpdateRideApproachVehicleWaypointsFunction UpdateRideApproachVehicleWaypoints = UpdateRideApproachVehicleWaypointsDefault;
+    RtdSpecialType specialType = RtdSpecialType::none;
 
     bool HasFlag(RtdFlag flag) const;
     /** @deprecated */
     bool SupportsTrackGroup(const TrackGroup trackGroup) const;
     ResearchCategory GetResearchCategory() const;
     bool SupportsRideMode(RideMode rideMode) const;
+    /**
+     * Converts booster speed from the ride type's speed regime (Junior, Default, Giga) to to the unified values used by the
+     * vehicle. See https://github.com/OpenRCT2/OpenRCT2/discussions/23119 for more information about unified speed.
+     */
+    int32_t GetUnifiedBoosterSpeed(int32_t relativeSpeed) const;
 };
 
-extern const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT];
-
-enum
-{
-    RIDE_TYPE_NO_ALTERNATIVES = 0,
-    RIDE_TYPE_ALTERNATIVE_TRACK_PIECES = 1, // Dinghy slide and Water Coaster
-    RIDE_TYPE_ALTERNATIVE_TRACK_TYPE = 2,   // Flying RC, Lay-down RC, Multi-dimension RC
-};
+extern const RideTypeDescriptor kRideTypeDescriptors[RIDE_TYPE_COUNT];
 
 // clang-format off
-constexpr RideComponentName RideComponentNames[] =
+constexpr RideComponentName kRideComponentNames[] =
 {
     { STR_RIDE_COMPONENT_TRAIN,             STR_RIDE_COMPONENT_TRAIN_PLURAL,            STR_RIDE_COMPONENT_TRAIN_CAPITALISED,               STR_RIDE_COMPONENT_TRAIN_CAPITALISED_PLURAL,            STR_RIDE_COMPONENT_TRAIN_COUNT,             STR_RIDE_COMPONENT_TRAIN_COUNT_PLURAL,              STR_RIDE_COMPONENT_TRAIN_NO },
     { STR_RIDE_COMPONENT_BOAT,              STR_RIDE_COMPONENT_BOAT_PLURAL,             STR_RIDE_COMPONENT_BOAT_CAPITALISED,                STR_RIDE_COMPONENT_BOAT_CAPITALISED_PLURAL,             STR_RIDE_COMPONENT_BOAT_COUNT,              STR_RIDE_COMPONENT_BOAT_COUNT_PLURAL,               STR_RIDE_COMPONENT_BOAT_NO },
@@ -568,59 +578,59 @@ constexpr RideComponentName RideComponentNames[] =
 };
 // clang-format on
 
-constexpr std::string_view MUSIC_OBJECT_DODGEMS = "rct2.music.dodgems";
-constexpr std::string_view MUSIC_OBJECT_EGYPTIAN = "rct2.music.egyptian";
-constexpr std::string_view MUSIC_OBJECT_FAIRGROUND = "rct2.music.fairground";
-constexpr std::string_view MUSIC_OBJECT_GENTLE = "rct2.music.gentle";
-constexpr std::string_view MUSIC_OBJECT_HORROR = "rct2.music.horror";
-constexpr std::string_view MUSIC_OBJECT_PIRATE = "rct2.music.pirate";
-constexpr std::string_view MUSIC_OBJECT_ROCK_1 = "rct2.music.rock1";
-constexpr std::string_view MUSIC_OBJECT_ROCK_2 = "rct2.music.rock2";
-constexpr std::string_view MUSIC_OBJECT_ROCK_3 = "rct2.music.rock3";
-constexpr std::string_view MUSIC_OBJECT_SUMMER = "rct2.music.summer";
-constexpr std::string_view MUSIC_OBJECT_TECHNO = "rct2.music.techno";
-constexpr std::string_view MUSIC_OBJECT_WATER = "rct2.music.water";
-constexpr std::string_view MUSIC_OBJECT_WILD_WEST = "rct2.music.wildwest";
+constexpr std::string_view kMusicObjectDodgems = "rct2.music.dodgems";
+constexpr std::string_view kMusicObjectEgyptian = "rct2.music.egyptian";
+constexpr std::string_view kMusicObjectFairground = "rct2.music.fairground";
+constexpr std::string_view kMusicObjectGentle = "rct2.music.gentle";
+constexpr std::string_view kMusicObjectHorror = "rct2.music.horror";
+constexpr std::string_view kMusicObjectPirate = "rct2.music.pirate";
+constexpr std::string_view kMusicObjectRock1 = "rct2.music.rock1";
+constexpr std::string_view kMusicObjectRock2 = "rct2.music.rock2";
+constexpr std::string_view kMusicObjectRock3 = "rct2.music.rock3";
+constexpr std::string_view kMusicObjectSummer = "rct2.music.summer";
+constexpr std::string_view kMusicObjectTechno = "rct2.music.techno";
+constexpr std::string_view kMusicObjectWater = "rct2.music.water";
+constexpr std::string_view kMusicObjectWildWest = "rct2.music.wildwest";
+constexpr std::string_view kMusicObjectModern = "rct2.music.modern";
 
 constexpr const RideComponentName& GetRideComponentName(const RideComponentType type)
 {
-    return RideComponentNames[EnumValue(type)];
+    return kRideComponentNames[EnumValue(type)];
 }
 
-constexpr uint64_t AllRideModesAvailable = EnumsToFlags(
-    RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned, RideMode::ReverseInclineLaunchedShuttle,
-    RideMode::PoweredLaunchPasstrough, RideMode::Shuttle, RideMode::Normal, RideMode::BoatHire, RideMode::UpwardLaunch,
-    RideMode::RotatingLift, RideMode::StationToStation, RideMode::SingleRidePerAdmission, RideMode::UnlimitedRidesPerAdmission,
-    RideMode::Maze, RideMode::Race, RideMode::Dodgems, RideMode::Swing, RideMode::ShopStall, RideMode::Rotation,
-    RideMode::ForwardRotation, RideMode::BackwardRotation, RideMode::FilmAvengingAviators, RideMode::MouseTails3DFilm,
-    RideMode::SpaceRings, RideMode::Beginners, RideMode::LimPoweredLaunch, RideMode::FilmThrillRiders,
-    RideMode::StormChasers3DFilm, RideMode::SpaceRaiders3DFilm, RideMode::Intense, RideMode::Berserk, RideMode::HauntedHouse,
-    RideMode::Circus, RideMode::DownwardLaunch, RideMode::CrookedHouse, RideMode::FreefallDrop, RideMode::PoweredLaunch,
-    RideMode::PoweredLaunchBlockSectioned);
+constexpr uint64_t kAllRideModesAvailable = EnumsToFlags(
+    RideMode::continuousCircuit, RideMode::continuousCircuitBlockSectioned, RideMode::reverseInclineLaunchedShuttle,
+    RideMode::poweredLaunchPasstrough, RideMode::shuttle, RideMode::normal, RideMode::boatHire, RideMode::upwardLaunch,
+    RideMode::rotatingLift, RideMode::stationToStation, RideMode::singleRidePerAdmission, RideMode::unlimitedRidesPerAdmission,
+    RideMode::maze, RideMode::race, RideMode::dodgems, RideMode::swing, RideMode::shopStall, RideMode::rotation,
+    RideMode::forwardRotation, RideMode::backwardRotation, RideMode::filmAvengingAviators, RideMode::mouseTails3DFilm,
+    RideMode::spaceRings, RideMode::beginners, RideMode::limPoweredLaunch, RideMode::filmThrillRiders,
+    RideMode::stormChasers3DFilm, RideMode::spaceRaiders3DFilm, RideMode::intense, RideMode::berserk, RideMode::hauntedHouse,
+    RideMode::circus, RideMode::downwardLaunch, RideMode::crookedHouse, RideMode::freefallDrop, RideMode::poweredLaunch,
+    RideMode::poweredLaunchBlockSectioned);
 
-extern const CarEntry CableLiftVehicle;
+extern const CarEntry kCableLiftVehicle;
 
-extern const uint16_t RideFilmLength[3];
+extern const uint16_t kRideFilmLength[3];
 
-extern const StringId RideModeNames[EnumValue(RideMode::Count)];
+extern const StringId kRideModeNames[EnumValue(RideMode::count)];
 
 // clang-format off
-constexpr RideTypeDescriptor DummyRTD =
+constexpr RideTypeDescriptor kDummyRTD =
 {
-    .Category = RIDE_CATEGORY_NONE,
+    .Category = RideCategory::none,
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = {},
     .InvertedTrackPaintFunctions = {},
     .Flags = 0,
-    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
-    .DefaultMode = RideMode::ContinuousCircuit,
+    .RideModes = EnumsToFlags(RideMode::continuousCircuit),
+    .DefaultMode = RideMode::continuousCircuit,
     .OperatingSettings = {},
     .TrackSpeedSettings = {},
     .BoosterSettings = {},
     .LegacyBoosterSettings = {},
     .Naming = { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN },
     .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
-    .EnumName = "(INVALID)",
     .AvailableBreakdowns = 0,
     .Heights = { 12, 64, 0, 0, },
     .MaxMass = 255,
@@ -629,17 +639,17 @@ constexpr RideTypeDescriptor DummyRTD =
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 0.00_GBP, 0.00_GBP, 1 },
     .DefaultPrices = { 20, 20 },
-    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .DefaultMusic = kMusicObjectGentle,
     .PhotoItem = ShopItem::Photo,
     .BonusValue = 0,
-    .ColourPresets = DEFAULT_FLAT_RIDE_COLOUR_PRESET,
+    .ColourPresets = kDefaultFlatRideColourPreset,
     .ColourPreview = { kSpriteIdNull, kSpriteIdNull },
     .ColourKey = RideColourKey::Ride,
     .Name = "invalid",
 	.RatingsData =
     {
         RatingsCalculationType::FlatRide,
-        { RIDE_RATING(1, 00), RIDE_RATING(1, 00), RIDE_RATING(1, 00) },
+        { MakeRideRating(1, 00), MakeRideRating(1, 00), MakeRideRating(1, 00) },
         1,
         -1,
         false,
@@ -652,27 +662,27 @@ constexpr RideTypeDescriptor DummyRTD =
     .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
-    .Classification = RideClassification::Ride,
+    .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
 };
 // clang-format on
 
-constexpr const RideTypeDescriptor& GetRideTypeDescriptor(ObjectEntryIndex rideType)
+constexpr const RideTypeDescriptor& GetRideTypeDescriptor(ride_type_t rideType)
 {
-    if (rideType >= std::size(RideTypeDescriptors))
-        return DummyRTD;
+    if (rideType >= std::size(kRideTypeDescriptors))
+        return kDummyRTD;
 
-    return RideTypeDescriptors[rideType];
+    return kRideTypeDescriptors[rideType];
 }
 
-constexpr bool RideTypeIsValid(ObjectEntryIndex rideType)
+constexpr bool RideTypeIsValid(ride_type_t rideType)
 {
-    return rideType < std::size(RideTypeDescriptors);
+    return rideType < std::size(kRideTypeDescriptors);
 }
 
 bool IsTrackEnabled(TrackGroup trackGroup);
-void UpdateEnabledRidePieces(TrackDrawerDescriptor trackDrawerDescriptor);
-void UpdateDisabledRidePieces(const RideTrackGroup& res);
+void UpdateEnabledRideGroups(TrackDrawerDescriptor trackDrawerDescriptor);
+void UpdateDisabledRideGroups(const RideTrackGroups& res);
 
 TrackDrawerDescriptor getTrackDrawerDescriptor(const RideTypeDescriptor& rtd, bool isInverted);
 TrackDrawerEntry getTrackDrawerEntry(const RideTypeDescriptor& rtd, bool isInverted = false, bool isCovered = false);

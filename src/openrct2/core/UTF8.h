@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "String.hpp"
+#include "StringTypes.h"
 
 uint32_t UTF8GetNext(const utf8* char_ptr, const utf8** nextchar_ptr);
 bool UTF8IsCodepointStart(const utf8* text);

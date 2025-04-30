@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,9 +14,12 @@
 #include "../object/BannerSceneryEntry.h"
 #include "../object/ObjectEntryManager.h"
 #include "../world/Banner.h"
+#include "../world/Footpath.h"
 #include "../world/MapAnimation.h"
 #include "../world/Scenery.h"
 #include "../world/TileElementsView.h"
+#include "../world/tile_element/BannerElement.h"
+#include "../world/tile_element/PathElement.h"
 #include "GameAction.h"
 
 using namespace OpenRCT2;

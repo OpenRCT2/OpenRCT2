@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,9 +21,9 @@ constexpr uint16_t kMaxBannerObjects = 255;
 constexpr uint16_t kMaxPathObjects = 255;
 constexpr uint16_t kMaxPathAdditionObjects = 255;
 constexpr uint16_t kMaxSceneryGroupObjects = 255;
-constexpr uint16_t kMaxParkEntranceObjects = 4;
+constexpr uint16_t kMaxParkEntranceObjects = 255;
 constexpr uint16_t kMaxWaterObjects = 1;
-constexpr uint16_t kMaxScenarioTextObjects = 0;
+constexpr uint16_t kMaxScenarioTextObjects = 1;
 constexpr uint16_t kMaxTerrainSurfaceObjects = 255;
 constexpr uint16_t kMaxTerrainEdgeObjects = 255;
 constexpr uint16_t kMaxStationObjects = 255;
@@ -31,5 +31,8 @@ constexpr uint16_t kMaxMusicObjects = 255;
 constexpr uint16_t kMaxFootpathSurfaceObjects = 255;
 constexpr uint16_t kMaxFootpathRailingsObjects = 255;
 constexpr uint16_t kMaxAudioObjects = 255;
+constexpr uint16_t kMaxPeepNamesObjects = 1;
+constexpr uint16_t kMaxPeepAnimationsObjects = 255;
+constexpr uint16_t kMaxClimateObjects = 1;
 
 constexpr uint8_t kDatNameLength = 8;

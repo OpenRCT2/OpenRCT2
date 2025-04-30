@@ -1,13 +1,21 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2025 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
 #include "SurfaceData.h"
 
-#include "Surface.h"
 #include "tile_element/Slope.h"
 
 // 0x00981A1E
 // Table of pre-calculated surface slopes (32) when raising the land tile for a given selection (5)
 // 0x1F = new slope
 // 0x20 = base height increases
-constexpr uint8_t TileElementRaiseStyles[9][32] = {
+constexpr uint8_t kTileElementRaiseStyles[9][32] = {
     // MAP_SELECT_TYPE_CORNER_0
     { kTileSlopeNCornerUp,
       kTileSlopeDiagonalFlag | kTileSlopeNCornerUp | kTileSlopeECornerUp | kTileSlopeWCornerUp,
@@ -316,7 +324,7 @@ constexpr uint8_t TileElementRaiseStyles[9][32] = {
 // Basically the inverse of the table above.
 // 0x1F = new slope
 // 0x20 = base height increases
-constexpr uint8_t TileElementLowerStyles[9][32] = {
+constexpr uint8_t kTileElementLowerStyles[9][32] = {
     // MAP_SELECT_TYPE_CORNER_0
     { kTileSlopeRaiseOrLowerBaseHeight | kTileSlopeECornerUp | kTileSlopeSCornerUp | kTileSlopeWCornerUp,
       0,
@@ -638,10 +646,10 @@ constexpr uint8_t TileElementLowerStyles[9][32] = {
 
 uint8_t LowerSurfaceCornerFlags(size_t SelectedCorner, size_t CurrentSlope)
 {
-    return TileElementLowerStyles[SelectedCorner][CurrentSlope];
+    return kTileElementLowerStyles[SelectedCorner][CurrentSlope];
 }
 
 uint8_t RaiseSurfaceCornerFlags(size_t SelectedCorner, size_t CurrentSlope)
 {
-    return TileElementRaiseStyles[SelectedCorner][CurrentSlope];
+    return kTileElementRaiseStyles[SelectedCorner][CurrentSlope];
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,15 +10,16 @@
 #include "../UiStringIds.h"
 
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/AssetPack.h>
 #include <openrct2/AssetPackManager.h>
 #include <openrct2/Context.h>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/sprites.h>
+#include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Ui::Windows
 {
@@ -40,7 +41,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget WindowAssetPacksWidgets[] = {
+    static constexpr Widget WindowAssetPacksWidgets[] = {
         WINDOW_SHIM(WINDOW_TITLE, WW, WH),
         MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_HIGH_PRIORITY),
         MakeWidget({ 0, 0 }, { 0, 147 }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL),
@@ -48,7 +49,6 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_ARROW_UP), STR_INCREASE_PRIOTITY_TIP),
         MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_ARROW_DOWN), STR_DECREASE_PRIOTITY_TIP),
         MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_RELOAD), STR_RELOAD_ASSET_PACKS_TIP),
-        kWidgetsEnd,
     };
     // clang-format on
 
@@ -63,7 +63,7 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            widgets = WindowAssetPacksWidgets;
+            SetWidgets(WindowAssetPacksWidgets);
             WindowInitScrollWidgets(*this);
         }
 
@@ -151,11 +151,9 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            ResizeFrame();
-
             auto& list = widgets[WIDX_LIST];
             list.left = 6;
-            list.top = 20 + 11 + 3;
+            list.top = widgets[WIDX_TITLE].height() + 8 + 11 + 3;
             list.right = width - 2 - 24 - 1;
             list.bottom = height - 6 - 11 - 3;
 
@@ -168,7 +166,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_LOW_LABEL].left = list.left;
             widgets[WIDX_LOW_LABEL].right = list.right;
 
-            auto toolstripY = 20;
+            auto toolstripY = widgets[WIDX_TITLE].height() + 8;
             auto toolstripRight = width - 2;
             auto toolstripLeft = toolstripRight - 24;
             for (WidgetIndex i = WIDX_MOVE_UP; i <= WIDX_APPLY; i++)
@@ -344,7 +342,9 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* AssetPacksOpen()
     {
+        auto* windowMgr = GetWindowManager();
         auto flags = WF_AUTO_POSITION | WF_CENTRE_SCREEN;
-        return WindowFocusOrCreate<AssetPacksWindow>(WindowClass::AssetPacks, WW, WH, flags);
+
+        return windowMgr->FocusOrCreate<AssetPacksWindow>(WindowClass::AssetPacks, WW, WH, flags);
     }
 } // namespace OpenRCT2::Ui::Windows

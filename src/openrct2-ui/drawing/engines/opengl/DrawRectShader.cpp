@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,7 +9,7 @@
 
 #ifndef DISABLE_OPENGL
 
-#    include "DrawRectShader.h"
+    #include "DrawRectShader.h"
 
 using namespace OpenRCT2::Ui;
 
@@ -22,18 +22,18 @@ namespace
     };
 } // namespace
 
-constexpr VDStruct VertexData[4] = {
+constexpr VDStruct kVertexData[4] = {
     { 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f },
     { 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f },
     { 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f },
     { 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f },
 };
 
-constexpr size_t InitialInstancesBufferSize = 32768;
+constexpr size_t kInitialInstancesBufferSize = 32768;
 
 DrawRectShader::DrawRectShader()
     : OpenGLShaderProgram("drawrect")
-    , _maxInstancesBufferSize(InitialInstancesBufferSize)
+    , _maxInstancesBufferSize(kInitialInstancesBufferSize)
 {
     GetLocations();
 
@@ -42,7 +42,7 @@ DrawRectShader::DrawRectShader()
     glGenVertexArrays(1, &_vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(VertexData), VertexData, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(kVertexData), kVertexData, GL_STATIC_DRAW);
 
     glBindVertexArray(_vao);
 
@@ -57,19 +57,19 @@ DrawRectShader::DrawRectShader()
     glVertexAttribPointer(vVertVec, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), reinterpret_cast<void*>(offsetof(VDStruct, vec)));
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(DrawRectCommand) * InitialInstancesBufferSize, NULL, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(DrawRectCommand) * kInitialInstancesBufferSize, nullptr, GL_STREAM_DRAW);
 
     glVertexAttribIPointer(vClip, 4, GL_INT, sizeof(DrawRectCommand), reinterpret_cast<void*>(offsetof(DrawRectCommand, clip)));
     glVertexAttribIPointer(
         vTexColourAtlas, 1, GL_INT, sizeof(DrawRectCommand),
         reinterpret_cast<void*>(offsetof(DrawRectCommand, texColourAtlas)));
     glVertexAttribPointer(
-        vTexColourBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawRectCommand),
+        vTexColourCoords, 4, GL_FLOAT, GL_FALSE, sizeof(DrawRectCommand),
         reinterpret_cast<void*>(offsetof(DrawRectCommand, texColourBounds)));
     glVertexAttribIPointer(
         vTexMaskAtlas, 1, GL_INT, sizeof(DrawRectCommand), reinterpret_cast<void*>(offsetof(DrawRectCommand, texMaskAtlas)));
     glVertexAttribPointer(
-        vTexMaskBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawRectCommand),
+        vTexMaskCoords, 4, GL_FLOAT, GL_FALSE, sizeof(DrawRectCommand),
         reinterpret_cast<void*>(offsetof(DrawRectCommand, texMaskBounds)));
     glVertexAttribIPointer(
         vPalettes, 3, GL_INT, sizeof(DrawRectCommand), reinterpret_cast<void*>(offsetof(DrawRectCommand, palettes)));
@@ -81,6 +81,8 @@ DrawRectShader::DrawRectShader()
         vBounds, 4, GL_INT, sizeof(DrawRectCommand), reinterpret_cast<void*>(offsetof(DrawRectCommand, bounds)));
     glVertexAttribIPointer(
         vDepth, 1, GL_INT, sizeof(DrawRectCommand), reinterpret_cast<void*>(offsetof(DrawRectCommand, depth)));
+    glVertexAttribPointer(
+        vZoom, 1, GL_FLOAT, GL_FALSE, sizeof(DrawRectCommand), reinterpret_cast<void*>(offsetof(DrawRectCommand, zoom)));
 
     glEnableVertexAttribArray(vVertMat + 0);
     glEnableVertexAttribArray(vVertMat + 1);
@@ -90,25 +92,27 @@ DrawRectShader::DrawRectShader()
 
     glEnableVertexAttribArray(vClip);
     glEnableVertexAttribArray(vTexColourAtlas);
-    glEnableVertexAttribArray(vTexColourBounds);
+    glEnableVertexAttribArray(vTexColourCoords);
     glEnableVertexAttribArray(vTexMaskAtlas);
-    glEnableVertexAttribArray(vTexMaskBounds);
+    glEnableVertexAttribArray(vTexMaskCoords);
     glEnableVertexAttribArray(vPalettes);
     glEnableVertexAttribArray(vFlags);
     glEnableVertexAttribArray(vColour);
     glEnableVertexAttribArray(vBounds);
     glEnableVertexAttribArray(vDepth);
+    glEnableVertexAttribArray(vZoom);
 
     glVertexAttribDivisor(vClip, 1);
     glVertexAttribDivisor(vTexColourAtlas, 1);
-    glVertexAttribDivisor(vTexColourBounds, 1);
+    glVertexAttribDivisor(vTexColourCoords, 1);
     glVertexAttribDivisor(vTexMaskAtlas, 1);
-    glVertexAttribDivisor(vTexMaskBounds, 1);
+    glVertexAttribDivisor(vTexMaskCoords, 1);
     glVertexAttribDivisor(vPalettes, 1);
     glVertexAttribDivisor(vFlags, 1);
     glVertexAttribDivisor(vColour, 1);
     glVertexAttribDivisor(vBounds, 1);
     glVertexAttribDivisor(vDepth, 1);
+    glVertexAttribDivisor(vZoom, 1);
 
     Use();
     glUniform1i(uTexture, 0);
@@ -136,14 +140,15 @@ void DrawRectShader::GetLocations()
 
     vClip = GetAttributeLocation("vClip");
     vTexColourAtlas = GetAttributeLocation("vTexColourAtlas");
-    vTexColourBounds = GetAttributeLocation("vTexColourBounds");
+    vTexColourCoords = GetAttributeLocation("vTexColourCoords");
     vTexMaskAtlas = GetAttributeLocation("vTexMaskAtlas");
-    vTexMaskBounds = GetAttributeLocation("vTexMaskBounds");
+    vTexMaskCoords = GetAttributeLocation("vTexMaskCoords");
     vPalettes = GetAttributeLocation("vPalettes");
     vFlags = GetAttributeLocation("vFlags");
     vColour = GetAttributeLocation("vColour");
     vBounds = GetAttributeLocation("vBounds");
     vDepth = GetAttributeLocation("vDepth");
+    vZoom = GetAttributeLocation("vZoom");
 
     vVertMat = GetAttributeLocation("vVertMat");
     vVertVec = GetAttributeLocation("vVertVec");

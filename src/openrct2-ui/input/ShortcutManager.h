@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -57,7 +57,7 @@ namespace OpenRCT2::Ui
     {
     public:
         std::string Id;
-        StringId LocalisedName = STR_NONE;
+        StringId LocalisedName = kStringIdNone;
         std::string CustomName;
         std::vector<ShortcutInput> Default;
         std::vector<ShortcutInput> Current;
@@ -133,7 +133,8 @@ namespace OpenRCT2::Ui
         void SaveUserBindings();
 
         void RegisterShortcut(RegisteredShortcut&& shortcut);
-        template<typename... Args> void RegisterShortcut(Args&&... args)
+        template<typename... Args>
+        void RegisterShortcut(Args&&... args)
         {
             RegisterShortcut(RegisteredShortcut(std::forward<Args>(args)...));
         }

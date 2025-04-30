@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,7 +14,7 @@
 #include "../config/ConfigTypes.h"
 #include "../core/Console.hpp"
 #include "../entity/EntityRegistry.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../platform/Platform.h"
 #include "CommandLine.hpp"
 
@@ -25,8 +25,9 @@ using namespace OpenRCT2;
 
 static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator);
 
-const CommandLineCommand CommandLine::SimulateCommands[]{ // Main commands
-                                                          DefineCommand("", "<ticks>", nullptr, HandleSimulate), CommandTableEnd
+const CommandLineCommand CommandLine::kSimulateCommands[]{ // Main commands
+                                                           DefineCommand("", "<ticks>", nullptr, HandleSimulate),
+                                                           kCommandTableEnd
 };
 
 static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator)

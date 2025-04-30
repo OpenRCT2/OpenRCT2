@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,9 +10,8 @@
 #pragma once
 
 #include "../core/JsonFwd.hpp"
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 #include "../drawing/ImageIndexType.h"
-#include "../util/Util.h"
 #include "ImageTable.h"
 #include "ObjectAsset.h"
 #include "ObjectTypes.h"
@@ -180,9 +179,9 @@ struct IReadObjectContext
 };
 
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
-#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-types"
+    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
 #endif
 class Object
 {
@@ -197,7 +196,7 @@ private:
     ObjectGeneration _generation{};
     bool _usesFallbackImages{};
     bool _isCompatibilityObject{};
-    ImageIndex _baseImageId{ ImageIndexUndefined };
+    ImageIndex _baseImageId{ kImageIndexUndefined };
 
 protected:
     StringTable& GetStringTable()
@@ -337,7 +336,7 @@ public:
     void UnloadImages();
 };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
-#    pragma GCC diagnostic pop
+    #pragma GCC diagnostic pop
 #endif
 
 int32_t ObjectCalculateChecksum(const RCTObjectEntry* entry, const void* data, size_t dataLength);
@@ -350,7 +349,7 @@ const Object* ObjectEntryGetObject(ObjectType objectType, ObjectEntryIndex index
 
 constexpr bool IsIntransientObjectType(ObjectType type)
 {
-    return type == ObjectType::Audio;
+    return type == ObjectType::audio;
 }
 
 u8string VersionString(const ObjectVersion& version);

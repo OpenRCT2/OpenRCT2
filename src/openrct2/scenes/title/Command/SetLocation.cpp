@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,7 +12,7 @@
 #include "../../../OpenRCT2.h"
 #include "../../../interface/Viewport.h"
 #include "../../../interface/Window.h"
-#include "../../../interface/Window_internal.h"
+#include "../../../interface/WindowBase.h"
 #include "../../../world/Map.h"
 
 namespace OpenRCT2::Title
@@ -26,12 +26,10 @@ namespace OpenRCT2::Title
             int32_t z = TileElementHeight(loc);
 
             // Prevent scroll adjustment due to window placement when in-game
-            auto oldScreenFlags = gScreenFlags;
-            gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
-            w->SetLocation({ loc, z });
-            gScreenFlags = oldScreenFlags;
-
-            ViewportUpdatePosition(w);
+            auto oldLegacyScene = gLegacyScene;
+            gLegacyScene = LegacyScene::titleSequence;
+            w->SetViewportLocation({ loc, z });
+            gLegacyScene = oldLegacyScene;
         }
 
         return 0;

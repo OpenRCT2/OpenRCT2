@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,16 +9,16 @@
 
 #ifdef ENABLE_SCRIPTING
 
-#    include "Plugin.h"
+    #include "Plugin.h"
 
-#    include "../Diagnostic.h"
-#    include "../OpenRCT2.h"
-#    include "../core/File.h"
-#    include "Duktape.hpp"
-#    include "ScriptEngine.h"
+    #include "../Diagnostic.h"
+    #include "../OpenRCT2.h"
+    #include "../core/File.h"
+    #include "Duktape.hpp"
+    #include "ScriptEngine.h"
 
-#    include <fstream>
-#    include <memory>
+    #include <fstream>
+    #include <memory>
 
 using namespace OpenRCT2::Scripting;
 
@@ -122,15 +122,15 @@ void Plugin::ThrowIfStopping() const
 
 void Plugin::Unload()
 {
-// https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105937, fixed in GCC13
-#    if defined(__GNUC__) && !defined(__clang__)
-#        pragma GCC diagnostic push
-#        pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
-#    endif
+    // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105937, fixed in GCC13
+    #if defined(__GNUC__) && !defined(__clang__)
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+    #endif
     _metadata.Main = {};
-#    if defined(__GNUC__) && !defined(__clang__)
-#        pragma GCC diagnostic pop
-#    endif
+    #if defined(__GNUC__) && !defined(__clang__)
+        #pragma GCC diagnostic pop
+    #endif
     _hasLoaded = false;
 }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,9 +14,9 @@
 #include <SDL_pixels.h>
 #include <array>
 #include <cassert>
+#include <openrct2/SpriteIds.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/DrawingLock.hpp>
-#include <openrct2/sprites.h>
 #include <shared_mutex>
 #include <unordered_map>
 #include <vector>
@@ -54,16 +54,16 @@ namespace OpenRCT2::Ui
 
     // This is the maximum width and height of each atlas, basically the
     // granularity at which new atlases are allocated (2048 -> 4 MB of VRAM)
-    constexpr int32_t TEXTURE_CACHE_MAX_ATLAS_SIZE = 2048;
+    constexpr int32_t kTextureCacheMaxAtlasSize = 2048;
 
     // Pixel dimensions of smallest supported slots in texture atlases
     // Must be a power of 2!
-    constexpr int32_t TEXTURE_CACHE_SMALLEST_SLOT = 32;
+    constexpr int32_t kTextureCacheSmallestSlot = 32;
 
     struct BasicTextureInfo
     {
         GLuint index;
-        vec4 normalizedBounds;
+        vec4 coords;
     };
 
     // Location of an image (texture atlas index, slot and normalized coordinates)
@@ -124,7 +124,12 @@ namespace OpenRCT2::Ui
             info.index = _index;
             info.slot = slot;
             info.bounds = bounds;
-            info.normalizedBounds = NormalizeCoordinates(bounds);
+            info.coords = vec4{
+                static_cast<float>(bounds.x),
+                static_cast<float>(bounds.y),
+                static_cast<float>(_atlasWidth),
+                static_cast<float>(_atlasHeight),
+            };
 
             return info;
         }
@@ -155,9 +160,9 @@ namespace OpenRCT2::Ui
         {
             int32_t actualSize = std::max(actualWidth, actualHeight);
 
-            if (actualSize < TEXTURE_CACHE_SMALLEST_SLOT)
+            if (actualSize < kTextureCacheSmallestSlot)
             {
-                actualSize = TEXTURE_CACHE_SMALLEST_SLOT;
+                actualSize = kTextureCacheSmallestSlot;
             }
 
             return static_cast<int32_t>(ceil(log2f(static_cast<float>(actualSize))));
@@ -174,16 +179,6 @@ namespace OpenRCT2::Ui
                 _imageSize * row,
                 _imageSize * col + actualWidth,
                 _imageSize * row + actualHeight,
-            };
-        }
-
-        [[nodiscard]] vec4 NormalizeCoordinates(const ivec4& coords) const
-        {
-            return vec4{
-                coords.x / static_cast<float>(_atlasWidth),
-                coords.y / static_cast<float>(_atlasHeight),
-                coords.z / static_cast<float>(_atlasWidth),
-                coords.w / static_cast<float>(_atlasHeight),
             };
         }
     };

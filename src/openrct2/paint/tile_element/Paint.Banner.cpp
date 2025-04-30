@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,13 +23,14 @@
 #include "../../world/Banner.h"
 #include "../../world/Scenery.h"
 #include "../../world/TileInspector.h"
+#include "../../world/tile_element/BannerElement.h"
 #include "Paint.TileElement.h"
 
 using namespace OpenRCT2;
 
-// BannerBoundBoxes[rotation][0] is for the pole in the back
-// BannerBoundBoxes[rotation][1] is for the pole and the banner in the front
-constexpr CoordsXY BannerBoundBoxes[][2] = {
+// kBannerBoundBoxes[rotation][0] is for the pole in the back
+// kBannerBoundBoxes[rotation][1] is for the pole and the banner in the front
+constexpr CoordsXY kBannerBoundBoxes[][2] = {
     { { 1, 2 }, { 1, 29 } },
     { { 2, 32 }, { 29, 32 } },
     { { 32, 2 }, { 32, 29 } },
@@ -67,7 +68,7 @@ static void PaintBannerScrollingText(
     }
 
     auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
-    auto scroll = stringWidth > 0 ? (GetGameState().CurrentTicks / 2) % stringWidth : 0;
+    auto scroll = stringWidth > 0 ? (getGameState().currentTicks / 2) % stringWidth : 0;
     auto imageId = ScrollingTextSetup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 22 }, { bbOffset, { 1, 1, 21 } });
 }
@@ -116,10 +117,10 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
 
     auto imageIndex = (direction << 1) + bannerEntry->image;
     auto imageId = imageTemplate.WithIndex(imageIndex);
-    auto bbOffset = CoordsXYZ(BannerBoundBoxes[direction][0], height + 2);
+    auto bbOffset = CoordsXYZ(kBannerBoundBoxes[direction][0], height + 2);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { bbOffset, { 1, 1, 21 } });
 
-    bbOffset = CoordsXYZ(BannerBoundBoxes[direction][1], height + 2);
+    bbOffset = CoordsXYZ(kBannerBoundBoxes[direction][1], height + 2);
     PaintAddImageAsParent(session, imageId.WithIndexOffset(1), { 0, 0, height }, { bbOffset, { 1, 1, 21 } });
 
     PaintBannerScrollingText(session, *bannerEntry, *banner, bannerElement, direction, height, bbOffset);

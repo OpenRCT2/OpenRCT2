@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,22 +10,26 @@
 #pragma once
 
 #include "../core/CallingConventions.h"
-#include "../core/String.hpp"
+#include "../core/StringTypes.h"
 #include "../interface/Colour.h"
 #include "../interface/ZoomLevel.h"
 #include "../world/Location.hpp"
+#include "ColourPalette.h"
 #include "Font.h"
 #include "ImageId.hpp"
 #include "Text.h"
 
+#include <array>
 #include <cassert>
 #include <memory>
 #include <optional>
+#include <span>
 #include <vector>
 
 struct ScreenCoordsXY;
 struct ScreenLine;
 struct ScreenRect;
+
 namespace OpenRCT2
 {
     struct IPlatformEnvironment;
@@ -36,47 +40,6 @@ namespace OpenRCT2::Drawing
 {
     struct IDrawingEngine;
 }
-
-struct PaletteBGRA
-{
-    uint8_t Blue{};
-    uint8_t Green{};
-    uint8_t Red{};
-    uint8_t Alpha{};
-};
-
-constexpr auto PALETTE_SIZE = 256u;
-
-struct GamePalette
-{
-    PaletteBGRA Colour[PALETTE_SIZE]{};
-
-    PaletteBGRA& operator[](size_t idx)
-    {
-        assert(idx < PALETTE_SIZE);
-        if (idx >= PALETTE_SIZE)
-        {
-            static PaletteBGRA dummy;
-            return dummy;
-        }
-
-        return Colour[idx];
-    }
-
-    const PaletteBGRA operator[](size_t idx) const
-    {
-        assert(idx < PALETTE_SIZE);
-        if (idx >= PALETTE_SIZE)
-            return {};
-
-        return Colour[idx];
-    }
-
-    explicit operator uint8_t*()
-    {
-        return reinterpret_cast<uint8_t*>(Colour);
-    }
-};
 
 struct G1Element
 {
@@ -113,24 +76,41 @@ struct DrawPixelInfo
     int32_t width{};
     int32_t height{};
     int32_t pitch{}; // note: this is actually (pitch - width)
+    int32_t cullingX{};
+    int32_t cullingY{};
+    int32_t cullingWidth{};
+    int32_t cullingHeight{};
     ZoomLevel zoom_level{};
-
-    /**
-     * As x and y are based on 1:1 units, zooming in will cause a reduction in precision when mapping zoomed-in
-     * pixels to 1:1 pixels. When x, y are not a multiple of the zoom level, the remainder will be non-zero.
-     * The drawing of sprites will need to be offset by this amount.
-     */
-    uint8_t remX{};
-    uint8_t remY{};
 
     // Last position of drawn text.
     ScreenCoordsXY lastStringPos{};
 
     OpenRCT2::Drawing::IDrawingEngine* DrawingEngine{};
 
-    size_t GetBytesPerRow() const;
     uint8_t* GetBitsOffset(const ScreenCoordsXY& pos) const;
     DrawPixelInfo Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const;
+
+    [[nodiscard]] constexpr int32_t WorldX() const
+    {
+        return zoom_level.ApplyTo(x);
+    }
+    [[nodiscard]] constexpr int32_t WorldY() const
+    {
+        return zoom_level.ApplyTo(y);
+    }
+    [[nodiscard]] constexpr int32_t WorldWidth() const
+    {
+        return zoom_level.ApplyTo(width);
+    }
+    [[nodiscard]] constexpr int32_t WorldHeight() const
+    {
+        return zoom_level.ApplyTo(height);
+    }
+
+    [[nodiscard]] constexpr int32_t LineStride() const
+    {
+        return width + pitch;
+    }
 };
 
 struct TextDrawInfo
@@ -183,25 +163,25 @@ enum
 
 using DrawBlendOp = uint8_t;
 
-constexpr DrawBlendOp BLEND_NONE = 0;
+constexpr DrawBlendOp kBlendNone = 0;
 
 /**
  * Only supported by BITMAP. RLE images always encode transparency via the encoding.
  * Pixel value of 0 represents transparent.
  */
-constexpr DrawBlendOp BLEND_TRANSPARENT = 1 << 0;
+constexpr DrawBlendOp kBlendTransparent = 1 << 0;
 
 /**
  * Whether to use the pixel value from the source image.
  * This is usually only unset for glass images where there the src is only a transparency mask.
  */
-constexpr DrawBlendOp BLEND_SRC = 1 << 1;
+constexpr DrawBlendOp kBlendSrc = 1 << 1;
 
 /**
  * Whether to use the pixel value of the destination image for blending.
  * This is used for any image that filters the target image, e.g. glass or water.
  */
-constexpr DrawBlendOp BLEND_DST = 2 << 2;
+constexpr DrawBlendOp kBlendDst = 2 << 2;
 
 enum
 {
@@ -211,6 +191,10 @@ enum
     INSET_RECT_FLAG_BORDER_INSET = (1 << 5),      // 0x20
     INSET_RECT_FLAG_FILL_DONT_LIGHTEN = (1 << 6), // 0x40
     INSET_RECT_FLAG_FILL_MID_LIGHT = (1 << 7),    // 0x80
+
+    INSET_RECT_F_30 = (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE),
+    INSET_RECT_F_60 = (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN),
+    INSET_RECT_F_E0 = (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT),
 };
 
 enum class FilterPaletteID : int32_t
@@ -371,38 +355,39 @@ struct TranslucentWindowPalette
 struct PaletteMap
 {
 private:
-    uint8_t* _data{};
-    uint32_t _dataLength{};
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-    uint16_t _numMaps;
-#pragma clang diagnostic pop
-    uint16_t _mapLength;
+    std::span<uint8_t> _data{};
+#ifdef _DEBUG
+    // We only require those fields for the asserts in debug builds.
+    size_t _numMaps{};
+    size_t _mapLength{};
+#endif
 
 public:
-    static const PaletteMap& GetDefault();
+    static PaletteMap GetDefault();
 
-    PaletteMap() = default;
+    constexpr PaletteMap() = default;
 
-    PaletteMap(uint8_t* data, uint16_t numMaps, uint16_t mapLength)
-        : _data(data)
-        , _dataLength(numMaps * mapLength)
+    constexpr PaletteMap(uint8_t* data, size_t numMaps, size_t mapLength)
+        : _data{ data, numMaps * mapLength }
+#ifdef _DEBUG
         , _numMaps(numMaps)
         , _mapLength(mapLength)
+#endif
     {
     }
 
-    template<std::size_t TSize>
-    PaletteMap(uint8_t (&map)[TSize])
+    constexpr PaletteMap(std::span<uint8_t> map)
         : _data(map)
-        , _dataLength(static_cast<uint32_t>(std::size(map)))
+#ifdef _DEBUG
         , _numMaps(1)
-        , _mapLength(static_cast<uint16_t>(std::size(map)))
+        , _mapLength(map.size())
+#endif
     {
     }
 
     uint8_t& operator[](size_t index);
     uint8_t operator[](size_t index) const;
+
     uint8_t Blend(uint8_t src, uint8_t dst) const;
     void Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, size_t length);
 };
@@ -410,7 +395,7 @@ public:
 struct DrawSpriteArgs
 {
     ImageId Image;
-    const PaletteMap& PalMap;
+    PaletteMap PalMap;
     const G1Element& SourceImage;
     int32_t SrcX;
     int32_t SrcY;
@@ -433,9 +418,10 @@ struct DrawSpriteArgs
     }
 };
 
-template<DrawBlendOp TBlendOp> bool FASTCALL BlitPixel(const uint8_t* src, uint8_t* dst, const PaletteMap& paletteMap)
+template<DrawBlendOp TBlendOp>
+bool FASTCALL BlitPixel(const uint8_t* src, uint8_t* dst, const PaletteMap& paletteMap)
 {
-    if constexpr (TBlendOp & BLEND_TRANSPARENT)
+    if constexpr (TBlendOp & kBlendTransparent)
     {
         // Ignore transparent pixels
         if (*src == 0)
@@ -444,10 +430,10 @@ template<DrawBlendOp TBlendOp> bool FASTCALL BlitPixel(const uint8_t* src, uint8
         }
     }
 
-    if constexpr (((TBlendOp & BLEND_SRC) != 0) && ((TBlendOp & BLEND_DST) != 0))
+    if constexpr (((TBlendOp & kBlendSrc) != 0) && ((TBlendOp & kBlendDst) != 0))
     {
         auto pixel = paletteMap.Blend(*src, *dst);
-        if constexpr (TBlendOp & BLEND_TRANSPARENT)
+        if constexpr (TBlendOp & kBlendTransparent)
         {
             if (pixel == 0)
             {
@@ -457,10 +443,10 @@ template<DrawBlendOp TBlendOp> bool FASTCALL BlitPixel(const uint8_t* src, uint8
         *dst = pixel;
         return true;
     }
-    else if constexpr ((TBlendOp & BLEND_SRC) != 0)
+    else if constexpr ((TBlendOp & kBlendSrc) != 0)
     {
         auto pixel = paletteMap[*src];
-        if constexpr (TBlendOp & BLEND_TRANSPARENT)
+        if constexpr (TBlendOp & kBlendTransparent)
         {
             if (pixel == 0)
             {
@@ -470,10 +456,10 @@ template<DrawBlendOp TBlendOp> bool FASTCALL BlitPixel(const uint8_t* src, uint8
         *dst = pixel;
         return true;
     }
-    else if constexpr ((TBlendOp & BLEND_DST) != 0)
+    else if constexpr ((TBlendOp & kBlendDst) != 0)
     {
         auto pixel = paletteMap[*dst];
-        if constexpr (TBlendOp & BLEND_TRANSPARENT)
+        if constexpr (TBlendOp & kBlendTransparent)
         {
             if (pixel == 0)
             {
@@ -507,14 +493,10 @@ void FASTCALL BlitPixels(const uint8_t* src, uint8_t* dst, const PaletteMap& pal
 
 constexpr uint8_t kPaletteTotalOffsets = 192;
 
-#define INSET_RECT_F_30 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE)
-#define INSET_RECT_F_60 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN)
-#define INSET_RECT_F_E0 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_FILL_MID_LIGHT)
-
 constexpr int8_t kMaxScrollingTextModes = 38;
 
-extern GamePalette gPalette;
-extern uint8_t gGamePalette[256 * 4];
+extern OpenRCT2::Drawing::GamePalette gPalette;
+extern OpenRCT2::Drawing::GamePalette gGamePalette;
 extern uint32_t gPaletteEffectFrame;
 
 extern uint8_t gTextPalette[];
@@ -627,10 +609,12 @@ void MaskFn(
 
 std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId);
 std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId);
-void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colours);
+void UpdatePalette(std::span<const OpenRCT2::Drawing::PaletteBGRA> palette, int32_t start_index, int32_t num_colours);
 void UpdatePaletteEffects();
 
 void RefreshVideo();
 void ToggleWindowedMode();
+
+void DebugDPI(DrawPixelInfo& dpi);
 
 #include "NewDrawing.h"

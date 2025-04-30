@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,6 +17,9 @@
 #include "../management/Finance.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
+#include "../world/tile_element/LargeSceneryElement.h"
+#include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/SmallSceneryElement.h"
 #include "FootpathRemoveAction.h"
 #include "LargeSceneryRemoveAction.h"
 #include "SmallSceneryRemoveAction.h"
@@ -78,7 +81,7 @@ GameActions::Result ClearAction::QueryExecute(bool executing) const
 
     auto noValidTiles = true;
     auto error = GameActions::Status::Ok;
-    StringId errorMessage = STR_NONE;
+    StringId errorMessage = kStringIdNone;
     money64 totalCost = 0;
 
     auto validRange = ClampRangeWithinMap(_range);
@@ -217,11 +220,11 @@ money64 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
 
 void ClearAction::ResetClearLargeSceneryFlag()
 {
-    auto& gameState = GetGameState();
+    auto& gameState = getGameState();
     // TODO: Improve efficiency of this
-    for (int32_t y = 0; y < gameState.MapSize.y; y++)
+    for (int32_t y = 0; y < gameState.mapSize.y; y++)
     {
-        for (int32_t x = 0; x < gameState.MapSize.x; x++)
+        for (int32_t x = 0; x < gameState.mapSize.x; x++)
         {
             auto tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
             do
@@ -239,6 +242,6 @@ void ClearAction::ResetClearLargeSceneryFlag()
 
 bool ClearAction::MapCanClearAt(const CoordsXY& location)
 {
-    return (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode
+    return gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode
         || MapIsLocationOwnedOrHasRights(location);
 }

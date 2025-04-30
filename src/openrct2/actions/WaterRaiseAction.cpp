@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,8 +11,9 @@
 
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../ride/RideConstruction.h"
+#include "../world/tile_element/SurfaceElement.h"
 #include "WaterSetHeightAction.h"
 
 using namespace OpenRCT2;
@@ -79,7 +80,7 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
             if (surfaceElement == nullptr)
                 continue;
 
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
+            if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
             {
                 if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {
@@ -138,7 +139,7 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::LayingOutWater, res.Position);
     }
     // Force ride construction to recheck area
-    _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
+    _currentTrackSelectionFlags.set(TrackSelectionFlag::recheck);
 
     return res;
 }
@@ -151,7 +152,7 @@ uint16_t WaterRaiseAction::GetHighestHeight(const MapRange& validRange) const
     {
         for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += kCoordsXYStep)
         {
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
+            if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
             {
                 if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,7 +31,8 @@ enum class TestEnumClassNonContinuous
     G
 };
 
-template<typename TEnum> void TestEnumKeyLookup()
+template<typename TEnum>
+void TestEnumKeyLookup()
 {
     // clang-format off
     EnumMap<TEnum> enumMap = {
@@ -78,7 +79,8 @@ template<typename TEnum> void TestEnumKeyLookup()
     SUCCEED();
 }
 
-template<typename TEnum> void TestEnumValueLookup()
+template<typename TEnum>
+void TestEnumValueLookup()
 {
     // clang-format off
     EnumMap<TEnum> enumMap = {

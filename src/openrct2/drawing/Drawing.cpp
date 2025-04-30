@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,84 +14,68 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
+#include "../SpriteIds.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../object/Object.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/WaterEntry.h"
 #include "../platform/Platform.h"
-#include "../sprites.h"
+#include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/Location.hpp"
 #include "LightFX.h"
 
+#include <array>
 #include <cassert>
 #include <cstring>
+#include <numeric>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Drawing;
 
-const PaletteMap& PaletteMap::GetDefault()
+static auto _defaultPaletteMapping = []() {
+    std::array<uint8_t, 256> res;
+    std::iota(res.begin(), res.end(), 0);
+    return res;
+}();
+
+PaletteMap PaletteMap::GetDefault()
 {
-    static bool initialised = false;
-    static uint8_t data[256];
-    static PaletteMap defaultMap(data);
-    if (!initialised)
-    {
-        for (size_t i = 0; i < sizeof(data); i++)
-        {
-            data[i] = static_cast<uint8_t>(i);
-        }
-        initialised = true;
-    }
-    return defaultMap;
+    return PaletteMap(_defaultPaletteMapping);
 }
 
 uint8_t& PaletteMap::operator[](size_t index)
 {
-    assert(index < _dataLength);
-
-    // Provide safety in release builds
-    if (index >= _dataLength)
-    {
-        static uint8_t dummy;
-        return dummy;
-    }
-
     return _data[index];
 }
 
 uint8_t PaletteMap::operator[](size_t index) const
 {
-    assert(index < _dataLength);
-
-    // Provide safety in release builds
-    if (index >= _dataLength)
-    {
-        return 0;
-    }
-
     return _data[index];
 }
 
 uint8_t PaletteMap::Blend(uint8_t src, uint8_t dst) const
 {
+#ifdef _DEBUG
     // src = 0 would be transparent so there is no blend palette for that, hence (src - 1)
     assert(src != 0 && (src - 1) < _numMaps);
     assert(dst < _mapLength);
+#endif
     auto idx = ((src - 1) * 256) + dst;
-    return (*this)[idx];
+    return _data[idx];
 }
 
 void PaletteMap::Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, size_t length)
 {
-    auto maxLength = std::min(_mapLength - srcIndex, _mapLength - dstIndex);
+    auto maxLength = std::min(_data.size() - srcIndex, _data.size() - dstIndex);
     assert(length <= maxLength);
     auto copyLength = std::min(length, maxLength);
-    std::memcpy(&_data[dstIndex], &src._data[srcIndex], copyLength);
+    std::copy(src._data.begin() + srcIndex, src._data.begin() + srcIndex + copyLength, _data.begin() + dstIndex);
 }
 
-GamePalette gPalette;
-uint8_t gGamePalette[256 * 4];
+OpenRCT2::Drawing::GamePalette gPalette;
+OpenRCT2::Drawing::GamePalette gGamePalette;
 uint32_t gPaletteEffectFrame;
 
 ImageId gPickupPeepImage;
@@ -302,7 +286,7 @@ enum
     SPR_PALETTE_GLASS_VOID,
 };
 
-static constexpr FilterPaletteID GlassPaletteIds[COLOUR_COUNT] = {
+static constexpr FilterPaletteID kGlassPaletteIds[COLOUR_COUNT] = {
     FilterPaletteID::PaletteGlassBlack,
     FilterPaletteID::PaletteGlassGrey,
     FilterPaletteID::PaletteGlassWhite,
@@ -363,7 +347,7 @@ static constexpr FilterPaletteID GlassPaletteIds[COLOUR_COUNT] = {
 
 // Previously 0x97FCBC use it to get the correct palette from g1_elements
 // clang-format off
-static constexpr uint16_t palette_to_g1_offset[kPaletteTotalOffsets] = {
+static constexpr uint16_t kPaletteToG1Offset[kPaletteTotalOffsets] = {
     SPR_PALETTE_BLACK,
     SPR_PALETTE_GREY,
     SPR_PALETTE_WHITE,
@@ -712,16 +696,17 @@ void GfxTransposePalette(int32_t pal, uint8_t product)
     {
         int32_t width = g1->width;
         int32_t x = g1->x_offset;
-        uint8_t* dest_pointer = &gGamePalette[x * 4];
         uint8_t* source_pointer = g1->offset;
 
         for (; width > 0; width--)
         {
-            dest_pointer[0] = (source_pointer[0] * product) >> 8;
-            dest_pointer[1] = (source_pointer[1] * product) >> 8;
-            dest_pointer[2] = (source_pointer[2] * product) >> 8;
+            auto& dest_pointer = gGamePalette[x];
+            dest_pointer.Blue = (source_pointer[0] * product) >> 8;
+            dest_pointer.Green = (source_pointer[1] * product) >> 8;
+            dest_pointer.Red = (source_pointer[2] * product) >> 8;
             source_pointer += 3;
-            dest_pointer += 4;
+
+            x++;
         }
         UpdatePalette(gGamePalette, 10, 236);
     }
@@ -743,7 +728,7 @@ void LoadPalette()
     auto water_type = OpenRCT2::ObjectManager::GetObjectEntry<WaterObjectEntry>(0);
     if (water_type != nullptr)
     {
-        Guard::Assert(water_type->image_id != ImageIndexUndefined, "Failed to load water palette");
+        Guard::Assert(water_type->image_id != kImageIndexUndefined, "Failed to load water palette");
         palette = water_type->image_id;
     }
 
@@ -753,14 +738,14 @@ void LoadPalette()
         int32_t width = g1->width;
         int32_t x = g1->x_offset;
         uint8_t* src = g1->offset;
-        uint8_t* dst = &gGamePalette[x * 4];
         for (; width > 0; width--)
         {
-            dst[0] = src[0];
-            dst[1] = src[1];
-            dst[2] = src[2];
+            auto& dst = gGamePalette[x];
+            dst.Blue = src[0];
+            dst.Green = src[1];
+            dst.Red = src[2];
             src += 3;
-            dst += 4;
+            x++;
         }
     }
     UpdatePalette(gGamePalette, 10, 236);
@@ -787,6 +772,7 @@ void GfxInvalidateScreen()
  */
 bool ClipDrawPixelInfo(DrawPixelInfo& dst, DrawPixelInfo& src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
 {
+    assert(src.zoom_level == ZoomLevel{ 0 });
     int32_t right = coords.x + width;
     int32_t bottom = coords.y + height;
 
@@ -814,7 +800,7 @@ bool ClipDrawPixelInfo(DrawPixelInfo& dst, DrawPixelInfo& src, const ScreenCoord
         uint16_t clippedFromTop = coords.y - dst.y;
         dst.height -= clippedFromTop;
         dst.y = coords.y;
-        uint32_t bitsPlus = (dst.pitch + dst.width) * clippedFromTop;
+        uint32_t bitsPlus = dst.LineStride() * clippedFromTop;
         dst.bits += bitsPlus;
     }
 
@@ -863,7 +849,7 @@ std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId)
 {
     if (paletteId < kPaletteTotalOffsets)
     {
-        return palette_to_g1_offset[paletteId];
+        return kPaletteToG1Offset[paletteId];
     }
     return std::nullopt;
 }
@@ -882,46 +868,40 @@ std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
     return std::nullopt;
 }
 
-size_t DrawPixelInfo::GetBytesPerRow() const
-{
-    return static_cast<size_t>(width) + pitch;
-}
-
 uint8_t* DrawPixelInfo::GetBitsOffset(const ScreenCoordsXY& pos) const
 {
-    return bits + pos.x + (pos.y * GetBytesPerRow());
+    return bits + pos.x + pos.y * LineStride();
 }
 
 DrawPixelInfo DrawPixelInfo::Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const
 {
     DrawPixelInfo result = *this;
     result.bits = GetBitsOffset(pos);
-    result.x = static_cast<int16_t>(pos.x);
-    result.y = static_cast<int16_t>(pos.y);
-    result.width = static_cast<int16_t>(size.width);
-    result.height = static_cast<int16_t>(size.height);
-    result.pitch = static_cast<int16_t>(width + pitch - size.width);
+    result.x = pos.x;
+    result.y = pos.y;
+    result.width = size.width;
+    result.height = size.height;
+    result.pitch = width + pitch - size.width;
     return result;
 }
 
 FilterPaletteID GetGlassPaletteId(colour_t c)
 {
-    return GlassPaletteIds[c];
+    return kGlassPaletteIds[c];
 }
 
-void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colours)
+void UpdatePalette(std::span<const OpenRCT2::Drawing::PaletteBGRA> palette, int32_t start_index, int32_t num_colours)
 {
-    colours += start_index * 4;
-
     for (int32_t i = start_index; i < num_colours + start_index; i++)
     {
-        uint8_t r = colours[2];
-        uint8_t g = colours[1];
-        uint8_t b = colours[0];
+        const auto& colour = palette[i];
+        uint8_t b = colour.Blue;
+        uint8_t g = colour.Green;
+        uint8_t r = colour.Red;
 
-        if (LightFXIsAvailable())
+        if (LightFx::IsAvailable())
         {
-            LightFXApplyPaletteFilter(i, &r, &g, &b);
+            LightFx::ApplyPaletteFilter(i, &r, &g, &b);
         }
         else
         {
@@ -934,18 +914,17 @@ void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colo
             }
         }
 
-        gPalette[i].Red = r;
-        gPalette[i].Green = g;
         gPalette[i].Blue = b;
+        gPalette[i].Green = g;
+        gPalette[i].Red = r;
         gPalette[i].Alpha = 0;
-        colours += 4;
     }
 
     // Fix #1749 and #6535: rainbow path, donut shop and pause button contain black spots that should be white.
-    gPalette[255].Alpha = 0;
-    gPalette[255].Red = 255;
-    gPalette[255].Green = 255;
     gPalette[255].Blue = 255;
+    gPalette[255].Green = 255;
+    gPalette[255].Red = 255;
+    gPalette[255].Alpha = 0;
 
     if (!gOpenRCT2Headless)
     {
@@ -988,15 +967,16 @@ void UpdatePaletteEffects()
         if (g1 != nullptr)
         {
             int32_t xoffset = g1->x_offset;
-            xoffset = xoffset * 4;
-            uint8_t* paletteOffset = gGamePalette + xoffset;
+
             for (int32_t i = 0; i < g1->width; i++)
             {
-                paletteOffset[(i * 4) + 0] = -((0xFF - g1->offset[(i * 3) + 0]) / 2) - 1;
-                paletteOffset[(i * 4) + 1] = -((0xFF - g1->offset[(i * 3) + 1]) / 2) - 1;
-                paletteOffset[(i * 4) + 2] = -((0xFF - g1->offset[(i * 3) + 2]) / 2) - 1;
+                auto& paletteOffset = gGamePalette[xoffset + i];
+                paletteOffset.Blue = -((0xFF - g1->offset[(i * 3) + 0]) / 2) - 1;
+                paletteOffset.Green = -((0xFF - g1->offset[(i * 3) + 1]) / 2) - 1;
+                paletteOffset.Red = -((0xFF - g1->offset[(i * 3) + 2]) / 2) - 1;
             }
-            UpdatePalette(gGamePalette, PALETTE_OFFSET_DYNAMIC, PALETTE_LENGTH_DYNAMIC);
+
+            UpdatePalette(gGamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
         }
         gClimateLightningFlash++;
     }
@@ -1016,13 +996,13 @@ void UpdatePaletteEffects()
             if (g1 != nullptr)
             {
                 int32_t xoffset = g1->x_offset;
-                xoffset = xoffset * 4;
-                uint8_t* paletteOffset = gGamePalette + xoffset;
+
                 for (int32_t i = 0; i < g1->width; i++)
                 {
-                    paletteOffset[(i * 4) + 0] = g1->offset[(i * 3) + 0];
-                    paletteOffset[(i * 4) + 1] = g1->offset[(i * 3) + 1];
-                    paletteOffset[(i * 4) + 2] = g1->offset[(i * 3) + 2];
+                    auto& paletteOffset = gGamePalette[xoffset + i];
+                    paletteOffset.Blue = g1->offset[(i * 3) + 0];
+                    paletteOffset.Green = g1->offset[(i * 3) + 1];
+                    paletteOffset.Red = g1->offset[(i * 3) + 2];
                 }
             }
         }
@@ -1031,7 +1011,7 @@ void UpdatePaletteEffects()
         uint32_t shade = 0;
         if (Config::Get().general.RenderWeatherGloom)
         {
-            auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().ClimateCurrent);
+            auto paletteId = ClimateGetWeatherGloomPaletteId(getGameState().weatherCurrent);
             if (paletteId != FilterPaletteID::PaletteNull)
             {
                 shade = 1;
@@ -1052,19 +1032,18 @@ void UpdatePaletteEffects()
         if (g1 != nullptr)
         {
             uint8_t* vs = &g1->offset[j * 3];
-            uint8_t* vd = &gGamePalette[PALETTE_OFFSET_WATER_WAVES * 4];
-            int32_t n = PALETTE_LENGTH_WATER_WAVES;
+            int32_t n = kPaletteLengthWaterWaves;
             for (int32_t i = 0; i < n; i++)
             {
-                vd[0] = vs[0];
-                vd[1] = vs[1];
-                vd[2] = vs[2];
+                auto& vd = gGamePalette[kPaletteOffsetWaterWaves + i];
+                vd.Blue = vs[0];
+                vd.Green = vs[1];
+                vd.Red = vs[2];
                 vs += 9;
                 if (vs >= &g1->offset[9 * n])
                 {
                     vs -= 9 * n;
                 }
-                vd += 4;
             }
         }
 
@@ -1073,23 +1052,23 @@ void UpdatePaletteEffects()
         {
             waterId = water_type->palette_index_2;
         }
+
         g1 = GfxGetG1Element(shade + waterId);
         if (g1 != nullptr)
         {
             uint8_t* vs = &g1->offset[j * 3];
-            uint8_t* vd = &gGamePalette[PALETTE_OFFSET_WATER_SPARKLES * 4];
-            int32_t n = PALETTE_LENGTH_WATER_SPARKLES;
+            int32_t n = kPaletteLengthWaterSparkles;
             for (int32_t i = 0; i < n; i++)
             {
-                vd[0] = vs[0];
-                vd[1] = vs[1];
-                vd[2] = vs[2];
+                auto& vd = gGamePalette[kPaletteOffsetWaterSparkles + i];
+                vd.Blue = vs[0];
+                vd.Green = vs[1];
+                vd.Red = vs[2];
                 vs += 9;
                 if (vs >= &g1->offset[9 * n])
                 {
                     vs -= 9 * n;
                 }
-                vd += 4;
             }
         }
 
@@ -1099,26 +1078,25 @@ void UpdatePaletteEffects()
         if (g1 != nullptr)
         {
             uint8_t* vs = &g1->offset[j * 3];
-            uint8_t* vd = &gGamePalette[PALETTE_INDEX_243 * 4];
             int32_t n = 3;
             for (int32_t i = 0; i < n; i++)
             {
-                vd[0] = vs[0];
-                vd[1] = vs[1];
-                vd[2] = vs[2];
+                auto& vd = gGamePalette[PaletteIndex::pi243 + i];
+                vd.Blue = vs[0];
+                vd.Green = vs[1];
+                vd.Red = vs[2];
                 vs += 3;
                 if (vs >= &g1->offset[3 * n])
                 {
                     vs -= 3 * n;
                 }
-                vd += 4;
             }
         }
 
-        UpdatePalette(gGamePalette, PALETTE_OFFSET_ANIMATED, PALETTE_LENGTH_ANIMATED);
+        UpdatePalette(gGamePalette, kPaletteOffsetAnimated, kPaletteLengthAnimated);
         if (gClimateLightningFlash == 2)
         {
-            UpdatePalette(gGamePalette, PALETTE_OFFSET_DYNAMIC, PALETTE_LENGTH_DYNAMIC);
+            UpdatePalette(gGamePalette, kPaletteOffsetDynamic, kPaletteLengthDynamic);
             gClimateLightningFlash = 0;
         }
     }
@@ -1137,4 +1115,27 @@ void ToggleWindowedMode()
     ContextSetFullscreenMode(targetMode);
     Config::Get().general.FullscreenMode = targetMode;
     Config::Save();
+}
+
+void DebugDPI(DrawPixelInfo& dpi)
+{
+    ScreenCoordsXY topLeft = { dpi.x, dpi.y };
+    ScreenCoordsXY bottomRight = { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 };
+    ScreenCoordsXY topRight = { dpi.x + dpi.width - 1, dpi.y };
+    ScreenCoordsXY bottomLeft = { dpi.x, dpi.y + dpi.height - 1 };
+
+    GfxDrawLine(dpi, { topLeft, bottomRight }, PaletteIndex::pi136);
+    GfxDrawLine(dpi, { bottomLeft, topRight }, PaletteIndex::pi136);
+    GfxDrawLine(dpi, { topLeft, topRight }, PaletteIndex::pi129);
+    GfxDrawLine(dpi, { topRight, bottomRight }, PaletteIndex::pi129);
+    GfxDrawLine(dpi, { bottomLeft, bottomRight }, PaletteIndex::pi129);
+    GfxDrawLine(dpi, { topLeft, bottomLeft }, PaletteIndex::pi129);
+
+    GfxDrawLine(dpi, { topLeft, topLeft + ScreenCoordsXY{ 4, 0 } }, PaletteIndex::pi136);
+
+    const auto str = std::to_string(dpi.x);
+    DrawText(dpi, ScreenCoordsXY{ dpi.x, dpi.y }, { COLOUR_WHITE, FontStyle::Tiny }, str.c_str());
+
+    const auto str2 = std::to_string(dpi.y);
+    DrawText(dpi, ScreenCoordsXY{ dpi.x, dpi.y + 6 }, { COLOUR_WHITE, FontStyle::Tiny }, str2.c_str());
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,7 @@ enum
 
 struct WaterObjectEntry
 {
-    static constexpr auto kObjectType = ObjectType::Water;
+    static constexpr auto kObjectType = ObjectType::water;
 
     StringId string_idx;      // 0x00
     uint32_t image_id;        // 0x02

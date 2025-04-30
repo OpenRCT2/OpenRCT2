@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,26 +9,27 @@
 
 #ifndef DISABLE_NETWORK
 
-#    include "ServerList.h"
+    #include "ServerList.h"
 
-#    include "../Context.h"
-#    include "../Diagnostic.h"
-#    include "../PlatformEnvironment.h"
-#    include "../config/Config.h"
-#    include "../core/File.h"
-#    include "../core/FileStream.h"
-#    include "../core/Guard.hpp"
-#    include "../core/Http.h"
-#    include "../core/Json.hpp"
-#    include "../core/Memory.hpp"
-#    include "../core/Path.hpp"
-#    include "../core/String.hpp"
-#    include "../platform/Platform.h"
-#    include "Socket.h"
-#    include "network.h"
+    #include "../Context.h"
+    #include "../Diagnostic.h"
+    #include "../PlatformEnvironment.h"
+    #include "../config/Config.h"
+    #include "../core/File.h"
+    #include "../core/FileStream.h"
+    #include "../core/Guard.hpp"
+    #include "../core/Http.h"
+    #include "../core/Json.hpp"
+    #include "../core/Memory.hpp"
+    #include "../core/Path.hpp"
+    #include "../core/String.hpp"
+    #include "../localisation/Language.h"
+    #include "../platform/Platform.h"
+    #include "Network.h"
+    #include "Socket.h"
 
-#    include <numeric>
-#    include <optional>
+    #include <numeric>
+    #include <optional>
 
 using namespace OpenRCT2;
 
@@ -64,7 +65,7 @@ int32_t ServerListEntry::CompareTo(const ServerListEntry& other) const
         return a.Players > b.Players ? -1 : 1;
     }
 
-    return String::Compare(a.Name, b.Name, true);
+    return String::compare(a.Name, b.Name, true);
 }
 
 bool ServerListEntry::IsVersionValid() const noexcept
@@ -118,7 +119,7 @@ void ServerList::Sort()
             [](const ServerListEntry& a, const ServerListEntry& b) {
                 if (a.Favourite == b.Favourite)
                 {
-                    return String::IEquals(a.Address, b.Address);
+                    return String::iequals(a.Address, b.Address);
                 }
                 return false;
             }),
@@ -189,10 +190,10 @@ std::vector<ServerListEntry> ServerList::ReadFavourites() const
     try
     {
         auto env = GetContext()->GetPlatformEnvironment();
-        auto path = env->GetFilePath(PATHID::NETWORK_SERVERS);
+        auto path = env->GetFilePath(PathId::networkServers);
         if (File::Exists(path))
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = FileStream(path, FileMode::open);
             auto numEntries = fs.ReadValue<uint32_t>();
             for (size_t i = 0; i < numEntries; i++)
             {
@@ -242,11 +243,11 @@ bool ServerList::WriteFavourites(const std::vector<ServerListEntry>& entries) co
     LOG_VERBOSE("server_list_write(%d, 0x%p)", entries.size(), entries.data());
 
     auto env = GetContext()->GetPlatformEnvironment();
-    auto path = Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"servers.cfg");
+    auto path = Path::Combine(env->GetDirectoryPath(DirBase::user), u8"servers.cfg");
 
     try
     {
-        auto fs = FileStream(path, FILE_MODE_WRITE);
+        auto fs = FileStream(path, FileMode::write);
         fs.WriteValue<uint32_t>(static_cast<uint32_t>(entries.size()));
         for (const auto& entry : entries)
         {
@@ -353,9 +354,9 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
 
 std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync() const
 {
-#    ifdef DISABLE_HTTP
+    #ifdef DISABLE_HTTP
     return {};
-#    else
+    #else
 
     auto p = std::make_shared<std::promise<std::vector<ServerListEntry>>>();
     auto f = p->get_future();
@@ -422,7 +423,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync
         }
     });
     return f;
-#    endif
+    #endif
 }
 
 uint32_t ServerList::GetTotalPlayerCount() const
@@ -430,6 +431,12 @@ uint32_t ServerList::GetTotalPlayerCount() const
     return std::accumulate(_serverEntries.begin(), _serverEntries.end(), 0, [](uint32_t acc, const ServerListEntry& entry) {
         return acc + entry.Players;
     });
+}
+
+const char* MasterServerException::what() const noexcept
+{
+    static std::string localisedStatusText = LanguageGetString(StatusText);
+    return localisedStatusText.c_str();
 }
 
 #endif

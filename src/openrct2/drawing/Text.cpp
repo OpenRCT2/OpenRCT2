@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -52,7 +52,7 @@ public:
         for (int32_t line = 0; line < LineCount; ++line)
         {
             DrawText(dpi, lineCoords, tempPaint, buffer);
-            tempPaint.Colour = TEXT_COLOUR_254;
+            tempPaint.Colour = kTextColour254;
             buffer = GetStringEnd(buffer) + 1;
             lineCoords.y += LineHeight;
         }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,6 +26,11 @@ struct IObjectManager
     }
 
     virtual Object* GetLoadedObject(ObjectType objectType, size_t index) = 0;
+    template<typename TClass>
+    TClass* GetLoadedObject(size_t index)
+    {
+        return static_cast<TClass*>(GetLoadedObject(TClass::kObjectType, index));
+    }
     virtual Object* GetLoadedObject(const ObjectEntryDescriptor& entry) = 0;
     virtual ObjectEntryIndex GetLoadedObjectEntryIndex(std::string_view identifier) = 0;
     virtual ObjectEntryIndex GetLoadedObjectEntryIndex(const ObjectEntryDescriptor& descriptor) = 0;

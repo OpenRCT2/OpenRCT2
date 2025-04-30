@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,21 +12,23 @@
 #include "../drawing/ImageId.hpp"
 #include "Object.h"
 
-namespace OpenRCT2::STATION_OBJECT_FLAGS
+namespace OpenRCT2::StationObjectFlags
 {
-    const uint32_t HAS_PRIMARY_COLOUR = 1 << 0;
-    const uint32_t HAS_SECONDARY_COLOUR = 1 << 1;
-    const uint32_t IS_TRANSPARENT = 1 << 2;
-    const uint32_t NO_PLATFORMS = 1 << 3;
-    const uint32_t HAS_SHELTER = (1 << 4);
-} // namespace OpenRCT2::STATION_OBJECT_FLAGS
+    const uint32_t hasPrimaryColour = 1 << 0;
+    const uint32_t hasSecondaryColour = 1 << 1;
+    const uint32_t isTransparent = 1 << 2;
+    const uint32_t noPlatforms = 1 << 3;
+    const uint32_t hasShelter = (1 << 4);
+} // namespace OpenRCT2::StationObjectFlags
 
 class StationObject final : public Object
 {
 public:
+    static constexpr ObjectType kObjectType = ObjectType::station;
+
     StringId NameStringId{};
-    ImageIndex BaseImageId = ImageIndexUndefined;
-    ImageIndex ShelterImageId = ImageIndexUndefined;
+    ImageIndex BaseImageId = kImageIndexUndefined;
+    ImageIndex ShelterImageId = kImageIndexUndefined;
     uint32_t Flags{};
     int32_t Height{};
     uint8_t ScrollingMode{};

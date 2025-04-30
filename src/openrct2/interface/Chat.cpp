@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,16 +10,15 @@
 #include "Chat.h"
 
 #include "../Context.h"
+#include "../audio/Audio.h"
 #include "../audio/AudioMixer.h"
-#include "../audio/audio.h"
 #include "../core/UTF8.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/Text.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../platform/Platform.h"
-#include "../util/Util.h"
 #include "../world/Location.hpp"
 
 using namespace OpenRCT2;
@@ -192,7 +191,7 @@ void ChatDraw(DrawPixelInfo& dpi, ColourWithFlags chatBackgroundColor)
         auto ft = Formatter();
         ft.Add<const char*>(lineCh);
         inputLineHeight = DrawTextWrapped(
-            dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, STR_STRING, ft, { TEXT_COLOUR_255 });
+            dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, STR_STRING, ft, { kTextColour255 });
         GfxSetDirtyBlocks({ screenCoords, { screenCoords + ScreenCoordsXY{ _chatWidth, inputLineHeight + 15 } } });
 
         // TODO: Show caret if the input text has multiple lines
@@ -202,9 +201,24 @@ void ChatDraw(DrawPixelInfo& dpi, ColourWithFlags chatBackgroundColor)
             int32_t caretX = screenCoords.x + GfxGetStringWidth(lineBuffer, FontStyle::Medium);
             int32_t caretY = screenCoords.y + 14;
 
-            GfxFillRect(dpi, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PALETTE_INDEX_56);
+            GfxFillRect(dpi, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PaletteIndex::pi56);
         }
     }
+}
+
+/**
+ * strftime wrapper which appends to an existing string.
+ */
+static size_t StrCatFTime(char* buffer, size_t bufferSize, const char* format, const struct tm* tp)
+{
+    size_t stringLen = strnlen(buffer, bufferSize);
+    if (stringLen < bufferSize)
+    {
+        char* dst = buffer + stringLen;
+        size_t dstMaxSize = bufferSize - stringLen;
+        return strftime(dst, dstMaxSize, format, tp);
+    }
+    return 0;
 }
 
 void ChatAddHistory(std::string_view s)
@@ -288,7 +302,7 @@ static int32_t ChatHistoryDrawString(DrawPixelInfo& dpi, const char* text, const
     int32_t lineY = screenCoords.y;
     for (int32_t line = 0; line <= numLines; ++line)
     {
-        DrawText(dpi, { screenCoords.x, lineY - (numLines * lineHeight) }, { TEXT_COLOUR_254 }, bufferPtr);
+        DrawText(dpi, { screenCoords.x, lineY - (numLines * lineHeight) }, { kTextColour254 }, bufferPtr);
         bufferPtr = GetStringEnd(bufferPtr) + 1;
         lineY += lineHeight;
     }

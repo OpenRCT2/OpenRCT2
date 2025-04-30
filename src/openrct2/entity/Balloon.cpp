@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,16 +10,17 @@
 #include "Balloon.h"
 
 #include "../Game.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
-#include "../network/network.h"
+#include "../network/Network.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
-#include "../util/Util.h"
+#include "../world/tile_element/TrackElement.h"
 #include "EntityRegistry.h"
 
-template<> bool EntityBase::Is<Balloon>() const
+template<>
+bool EntityBase::Is<Balloon>() const
 {
     return Type == EntityType::Balloon;
 }

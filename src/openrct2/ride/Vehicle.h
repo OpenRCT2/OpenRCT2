@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../Identifiers.h"
-#include "../audio/audio.h"
+#include "../audio/Audio.h"
 #include "../entity/EntityBase.h"
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
@@ -22,8 +22,6 @@
 #include <array>
 #include <cstddef>
 #include <vector>
-
-using track_type_t = uint16_t;
 
 struct Ride;
 struct RideObjectEntry;
@@ -49,6 +47,11 @@ struct VehicleInfo
     uint8_t direction;     // 0x06
     uint8_t Pitch;         // 0x07
     uint8_t bank_rotation; // 0x08
+
+    bool IsInvalid() const
+    {
+        return x == 0 && y == 0 && z == 0 && direction == 0 && Pitch == 0 && bank_rotation == 0;
+    }
 };
 
 struct SoundIdVolume;
@@ -232,25 +235,28 @@ struct Vehicle : EntityBase
     Ride* GetRide() const;
     Vehicle* TrainHead() const;
     Vehicle* TrainTail() const;
+    uint16_t GetTrackProgress() const;
     void UpdateAnimationAnimalFlying();
     void EnableCollisionsForTrain();
     /**
      * Instantly moves the specific car forward or backwards along the track.
      */
     void MoveRelativeDistance(int32_t distance);
-    track_type_t GetTrackType() const
+    void UpdateTrackChange();
+    OpenRCT2::TrackElemType GetTrackType() const
     {
-        return TrackTypeAndDirection >> 2;
+        return static_cast<OpenRCT2::TrackElemType>(TrackTypeAndDirection >> 2);
     }
+    bool IsOnCoveredTrack() const;
     uint8_t GetTrackDirection() const
     {
         return TrackTypeAndDirection & VehicleTrackDirectionMask;
     }
-    void SetTrackType(track_type_t trackType)
+    void SetTrackType(OpenRCT2::TrackElemType trackType)
     {
         // set the upper 14 bits to 0, then set track type
         TrackTypeAndDirection &= ~VehicleTrackTypeMask;
-        TrackTypeAndDirection |= trackType << 2;
+        TrackTypeAndDirection |= EnumValue(trackType) << 2;
     }
     void SetTrackDirection(uint8_t trackDirection)
     {
@@ -280,7 +286,6 @@ struct Vehicle : EntityBase
 
 private:
     const VehicleInfo* GetMoveInfo() const;
-    uint16_t GetTrackProgress() const;
     void CableLiftUpdate();
     bool CableLiftUpdateTrackMotionForwards();
     bool CableLiftUpdateTrackMotionBackwards();
@@ -348,6 +353,7 @@ private:
     void UpdateTrackMotionUpStopCheck() const;
     void ApplyNonStopBlockBrake();
     void ApplyStopBlockBrake();
+    void ApplyCableLiftBlockBrake(bool brakeClosed);
     void CheckAndApplyBlockSectionStopSite();
     void UpdateVelocity();
     void UpdateSpinningCar();
@@ -364,8 +370,9 @@ private:
     int32_t UpdateTrackMotionMiniGolfCalculateAcceleration(const CarEntry& carEntry);
     int32_t UpdateTrackMotionMiniGolf(int32_t* outStation);
     void UpdateTrackMotionMiniGolfVehicle(const Ride& curRide, const RideObjectEntry& rideEntry, const CarEntry* carEntry);
-    bool UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Ride& curRide, const RideObjectEntry& rideEntry);
-    bool UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, const Ride& curRide, uint16_t* progress);
+    bool UpdateTrackMotionForwardsGetNewTrack(
+        OpenRCT2::TrackElemType trackType, const Ride& curRide, const RideObjectEntry& rideEntry);
+    bool UpdateTrackMotionBackwardsGetNewTrack(OpenRCT2::TrackElemType trackType, const Ride& curRide, uint16_t* progress);
     bool UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* otherVehicleIndex);
     void UpdateGoKartAttemptSwitchLanes();
     void UpdateSceneryDoor() const;
@@ -378,6 +385,24 @@ private:
 
     void Loc6DCE02(const Ride& curRide);
     void Loc6DCDE4(const Ride& curRide);
+
+    enum class UpdateMiniGolfSubroutineStatus
+    {
+        carryOn,
+        restart,
+        stop,
+    };
+    [[nodiscard]] UpdateMiniGolfSubroutineStatus UpdateTrackMotionMiniGolfFlagsStatus(const Ride& curRide);
+    /**
+     * @return UpdateMiniGolfSubroutineStatus::stop or UpdateMiniGolfSubroutineStatus::carryOn
+     */
+    [[nodiscard]] UpdateMiniGolfSubroutineStatus Loc6DC462(const Ride& curRide);
+    /**
+     * @return UpdateMiniGolfSubroutineStatus::stop or UpdateMiniGolfSubroutineStatus::restart
+     */
+    [[nodiscard]] UpdateMiniGolfSubroutineStatus Loc6DCA9A(const Ride& curRide);
+    void UpdateTrackMotionPreUpdate(
+        Vehicle& car, const Ride& curRide, const RideObjectEntry& rideEntry, const CarEntry* carEntry);
 };
 static_assert(sizeof(Vehicle) <= 512);
 
@@ -527,11 +552,11 @@ constexpr uint8_t kVehicleSeatNumMask = 0x7F;
 Vehicle* TryGetVehicle(EntityId spriteIndex);
 void VehicleUpdateAll();
 void VehicleSoundsUpdate();
-uint16_t VehicleGetMoveInfoSize(VehicleTrackSubposition trackSubposition, track_type_t type, uint8_t direction);
+uint16_t VehicleGetMoveInfoSize(VehicleTrackSubposition trackSubposition, OpenRCT2::TrackElemType type, uint8_t direction);
 
-void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const track_type_t trackType);
-void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const track_type_t trackType);
-void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride& ride, const track_type_t trackType);
+void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const OpenRCT2::TrackElemType trackType);
+void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const OpenRCT2::TrackElemType trackType);
+void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride& ride, const OpenRCT2::TrackElemType trackType);
 
 extern Vehicle* gCurrentVehicle;
 extern StationIndex _vehicleStationIndex;

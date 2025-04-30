@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,8 +23,8 @@
 #include "entity/Staff.h"
 #include "ride/Vehicle.h"
 
-static constexpr size_t MaximumGameStateSnapshots = 32;
-static constexpr uint32_t InvalidTick = 0xFFFFFFFF;
+static constexpr size_t kMaximumGameStateSnapshots = 32;
+static constexpr uint32_t kInvalidTick = 0xFFFFFFFF;
 
 #pragma pack(push, 1)
 union EntitySnapshot
@@ -48,13 +48,14 @@ struct GameStateSnapshot_t
         return *this;
     }
 
-    uint32_t tick = InvalidTick;
+    uint32_t tick = kInvalidTick;
     uint32_t srand0 = 0;
 
     OpenRCT2::MemoryStream storedSprites;
     OpenRCT2::MemoryStream parkParameters;
 
-    template<typename T> bool EntitySizeCheck(DataSerialiser& ds)
+    template<typename T>
+    bool EntitySizeCheck(DataSerialiser& ds)
     {
         uint32_t size = sizeof(T);
         ds << size;
@@ -64,7 +65,8 @@ struct GameStateSnapshot_t
         }
         return true;
     }
-    template<typename... T> bool EntitiesSizeCheck(DataSerialiser& ds)
+    template<typename... T>
+    bool EntitiesSizeCheck(DataSerialiser& ds)
     {
         return (EntitySizeCheck<T>(ds) && ...);
     }
@@ -185,7 +187,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     virtual void Capture(GameStateSnapshot_t& snapshot) override final
     {
         snapshot.SerialiseSprites(
-            [](const EntityId index) { return reinterpret_cast<EntitySnapshot*>(GetEntity(index)); }, MAX_ENTITIES, true);
+            [](const EntityId index) { return reinterpret_cast<EntitySnapshot*>(GetEntity(index)); }, kMaxEntities, true);
 
         // LOG_INFO("Snapshot size: %u bytes", static_cast<uint32_t>(snapshot.storedSprites.GetLength()));
     }
@@ -211,7 +213,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     std::vector<EntitySnapshot> BuildSpriteList(GameStateSnapshot_t& snapshot) const
     {
         std::vector<EntitySnapshot> spriteList;
-        spriteList.resize(MAX_ENTITIES);
+        spriteList.resize(kMaxEntities);
 
         for (auto& sprite : spriteList)
         {
@@ -220,7 +222,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         }
 
         snapshot.SerialiseSprites(
-            [&spriteList](const EntityId index) { return &spriteList[index.ToUnderlying()]; }, MAX_ENTITIES, false);
+            [&spriteList](const EntityId index) { return &spriteList[index.ToUnderlying()]; }, kMaxEntities, false);
 
         return spriteList;
     }
@@ -265,7 +267,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, NextFlags);
         COMPARE_FIELD(Peep, State);
         COMPARE_FIELD(Peep, SubState);
-        COMPARE_FIELD(Peep, SpriteType);
+        COMPARE_FIELD(Peep, AnimationGroup);
         COMPARE_FIELD(Peep, TshirtColour);
         COMPARE_FIELD(Peep, TrousersColour);
         COMPARE_FIELD(Peep, DestinationX);
@@ -281,11 +283,11 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, CurrentTrain);
         COMPARE_FIELD(Peep, TimeToSitdown);
         COMPARE_FIELD(Peep, SpecialSprite);
-        COMPARE_FIELD(Peep, ActionSpriteType);
-        COMPARE_FIELD(Peep, NextActionSpriteType);
-        COMPARE_FIELD(Peep, ActionSpriteImageOffset);
+        COMPARE_FIELD(Peep, AnimationType);
+        COMPARE_FIELD(Peep, NextAnimationType);
+        COMPARE_FIELD(Peep, AnimationImageIdOffset);
         COMPARE_FIELD(Peep, Action);
-        COMPARE_FIELD(Peep, ActionFrame);
+        COMPARE_FIELD(Peep, AnimationFrameNum);
         COMPARE_FIELD(Peep, StepProgress);
         COMPARE_FIELD(Peep, MazeLastEdge);
         COMPARE_FIELD(Peep, InteractionRideIndex);
@@ -302,7 +304,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             COMPARE_FIELD(Peep, PathfindHistory[i].z);
             COMPARE_FIELD(Peep, PathfindHistory[i].direction);
         }
-        COMPARE_FIELD(Peep, WalkingFrameNum);
+        COMPARE_FIELD(Peep, WalkingAnimationFrameNum);
         COMPARE_FIELD(Peep, PeepFlags);
     }
 
@@ -523,7 +525,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(JumpingFountain, frame);
         COMPARE_FIELD(JumpingFountain, FountainType);
         COMPARE_FIELD(JumpingFountain, NumTicksAlive);
-        COMPARE_FIELD(JumpingFountain, FountainFlags);
+        COMPARE_FIELD(JumpingFountain, fountainFlags);
         COMPARE_FIELD(JumpingFountain, TargetX);
         COMPARE_FIELD(JumpingFountain, TargetY);
         COMPARE_FIELD(JumpingFountain, Iteration);
@@ -787,7 +789,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     }
 
 private:
-    CircularBuffer<std::unique_ptr<GameStateSnapshot_t>, MaximumGameStateSnapshots> _snapshots;
+    CircularBuffer<std::unique_ptr<GameStateSnapshot_t>, kMaximumGameStateSnapshots> _snapshots;
 };
 
 std::unique_ptr<IGameStateSnapshots> CreateGameStateSnapshots()

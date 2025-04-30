@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2024 OpenRCT2 developers
+ * Copyright (c) 2014-2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,9 +9,9 @@
 
 #ifndef DISABLE_OPENGL
 
-#    include "DrawLineShader.h"
+    #include "DrawLineShader.h"
 
-#    include "OpenGLFramebuffer.h"
+    #include "OpenGLFramebuffer.h"
 
 using namespace OpenRCT2::Ui;
 
@@ -23,7 +23,7 @@ namespace
     };
 } // namespace
 
-constexpr VDStruct VertexData[2] = {
+constexpr VDStruct kVertexData[2] = {
     { 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },
     { 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
 };
@@ -38,7 +38,7 @@ DrawLineShader::DrawLineShader()
     glGenVertexArrays(1, &_vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(VertexData), VertexData, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(kVertexData), kVertexData, GL_STATIC_DRAW);
 
     glBindVertexArray(_vao);
     glVertexAttribPointer(
