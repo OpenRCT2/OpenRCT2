@@ -12,6 +12,9 @@
 #include <algorithm>
 #include <functional>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnull-dereference"
+
 namespace OpenRCT2::Core::Algorithm
 {
 
@@ -37,3 +40,5 @@ namespace OpenRCT2::Core::Algorithm
     }
 
 } // namespace OpenRCT2::Core::Algorithm
+
+#pragma GCC diagnostic pop
