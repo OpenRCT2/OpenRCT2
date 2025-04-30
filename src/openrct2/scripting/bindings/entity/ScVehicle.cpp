@@ -111,6 +111,7 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->ride_subtype = value;
+            vehicle->Invalidate();
         }
     }
 
@@ -126,6 +127,7 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->vehicle_type = value;
+            vehicle->Invalidate();
         }
     }
 
@@ -141,6 +143,7 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->Pitch = value;
+            vehicle->Invalidate();
         }
     }
 
@@ -337,6 +340,7 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->bank_rotation = value;
+            vehicle->Invalidate();
         }
     }
 
@@ -362,6 +366,7 @@ namespace OpenRCT2::Scripting
             {
                 vehicle->ClearFlag(flag);
             }
+            vehicle->Invalidate();
         }
     }
 
@@ -382,6 +387,7 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->colours = FromDuk<VehicleColour>(value);
+            vehicle->Invalidate();
         }
     }
 
@@ -485,6 +491,7 @@ namespace OpenRCT2::Scripting
         if (vehicle != nullptr)
         {
             vehicle->spin_sprite = value;
+            vehicle->Invalidate();
         }
     }
 

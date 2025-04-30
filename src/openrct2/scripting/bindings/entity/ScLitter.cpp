@@ -70,6 +70,7 @@ namespace OpenRCT2::Scripting
             return;
         auto* litter = GetLitter();
         litter->SubType = it->second;
+        litter->Invalidate();
     }
 
     uint32_t ScLitter::creationTick_get() const

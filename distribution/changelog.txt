@@ -22,6 +22,7 @@
 - Fix: [#24121] Checkbox labels run beyond the edge of the window if they’re too long to fit.
 - Fix: [#24142] [Plugin] Track origin is miscalculated on downward slopes.
 - Fix: [#24220] Narrow station platforms have missing sides on certain rotations.
+- Fix: [#24310] [Plugin] Missing invalidation on various plugin api setters for entities.
 
 0.4.21 (2025-04-05)
 ------------------------------------------------------------------------
