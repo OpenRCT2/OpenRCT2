@@ -215,11 +215,11 @@ namespace OpenRCT2::Ui::Windows
             ClearableItems itemsToClear = 0;
 
             if (_clearSmallScenery)
-                itemsToClear |= CLEARABLE_ITEMS::SCENERY_SMALL;
+                itemsToClear |= CLEARABLE_ITEMS::kScenerySmall;
             if (_clearLargeScenery)
-                itemsToClear |= CLEARABLE_ITEMS::SCENERY_LARGE;
+                itemsToClear |= CLEARABLE_ITEMS::kSceneryLarge;
             if (_clearFootpath)
-                itemsToClear |= CLEARABLE_ITEMS::SCENERY_FOOTPATH;
+                itemsToClear |= CLEARABLE_ITEMS::kSceneryFootpath;
 
             return ClearAction(range, itemsToClear);
         }
