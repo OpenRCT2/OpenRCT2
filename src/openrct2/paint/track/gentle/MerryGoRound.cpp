@@ -172,7 +172,7 @@ static void PaintMerryGoRound(
 
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 64);
+    PaintUtilSetGeneralSupportHeight(session, height + trackElement->ClearanceHeight - trackElement->BaseHeight);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMerryGoRound(int32_t trackType)

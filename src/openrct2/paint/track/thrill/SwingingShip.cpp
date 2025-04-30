@@ -295,7 +295,7 @@ static void PaintSwingingShip(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 112);
+    PaintUtilSetGeneralSupportHeight(session, height + trackElement->ClearanceHeight - trackElement->BaseHeight);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionSwingingShip(int32_t trackType)

@@ -170,7 +170,7 @@ static void PaintEnterprise(
     }
     PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~cornerSegments, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 160);
+    PaintUtilSetGeneralSupportHeight(session, height + trackElement->ClearanceHeight - trackElement->BaseHeight);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionEnterprise(int32_t trackType)
