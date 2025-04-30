@@ -34,7 +34,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr Widget window_ride_refurbish_widgets[] =
     {
-        WINDOW_SHIM_WHITE(STR_REFURBISH_RIDE, WW, WH),
+        WINDOW_SHIM(STR_REFURBISH_RIDE, WW, WH),
         MakeWidget({ 10, WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_REFURBISH),
         MakeWidget({ WW - 95, WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
     };

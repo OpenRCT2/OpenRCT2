@@ -916,8 +916,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             {
                 auto location = TileCoordsXYZ(int_val[0], int_val[1], 0).ToCoordsXYZ().ToTileCentre();
                 location.z = TileElementHeight(location);
-                w->SetLocation(location);
-                ViewportUpdatePosition(w);
+                w->SetViewportLocation(location);
                 console.Execute("get location");
             }
         }

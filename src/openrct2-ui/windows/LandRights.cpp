@@ -308,11 +308,12 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Position land size tool
-            widgets[WIDX_PREVIEW].top = 17;
+            auto contentTop = widgets[WIDX_TITLE].bottom + 3;
+            widgets[WIDX_PREVIEW].top = contentTop;
             widgets[WIDX_PREVIEW].bottom = widgets[WIDX_PREVIEW].top + 32;
-            widgets[WIDX_DECREMENT].top = 18;
+            widgets[WIDX_DECREMENT].top = contentTop + 1;
             widgets[WIDX_DECREMENT].bottom = widgets[WIDX_DECREMENT].top + 16;
-            widgets[WIDX_INCREMENT].top = 32;
+            widgets[WIDX_INCREMENT].top = contentTop + 16;
             widgets[WIDX_INCREMENT].bottom = widgets[WIDX_INCREMENT].top + 16;
 
             // Show in-game mode widgets
@@ -330,11 +331,12 @@ namespace OpenRCT2::Ui::Windows
         void PrepareDrawSandbox()
         {
             // Position land size tool
-            widgets[WIDX_PREVIEW].top = 17 + 24;
+            auto contentTop = widgets[WIDX_TITLE].bottom + 27;
+            widgets[WIDX_PREVIEW].top = contentTop;
             widgets[WIDX_PREVIEW].bottom = widgets[WIDX_PREVIEW].top + 32;
-            widgets[WIDX_DECREMENT].top = 18 + 24;
+            widgets[WIDX_DECREMENT].top = contentTop + 1;
             widgets[WIDX_DECREMENT].bottom = widgets[WIDX_DECREMENT].top + 16;
-            widgets[WIDX_INCREMENT].top = 32 + 24;
+            widgets[WIDX_INCREMENT].top = contentTop + 16;
             widgets[WIDX_INCREMENT].bottom = widgets[WIDX_INCREMENT].top + 16;
 
             // Hide in-game mode widgets

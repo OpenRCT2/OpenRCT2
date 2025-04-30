@@ -53,11 +53,6 @@ constexpr uint16_t kMaxStationLocations = OpenRCT2::Limits::kMaxStationsPerRide 
 
 constexpr uint16_t kMazeClearanceHeight = 4 * kCoordsZStep;
 
-constexpr uint8_t kRideMaxDropsCount = 63;
-constexpr uint8_t kRideNumDropsMask = 0b00111111;
-constexpr uint8_t kRideMaxNumPoweredLiftsCount = 3;
-constexpr uint8_t kRideNumPoweredLiftsMask = 0b11000000;
-
 constexpr money64 kRideMinPrice = 0.00_GBP;
 constexpr money64 kRideMaxPrice = 20.00_GBP;
 
@@ -133,6 +128,17 @@ struct TrackDesignState;
 enum class RideMode : uint8_t;
 enum class RideStatus : uint8_t;
 
+enum class SpecialElement : uint8_t
+{
+    spinningTunnel = 5,
+    splash = 5,
+    rapids = 5,
+    reverser = 6,
+    waterfall = 6,
+    whirlpool = 7,
+};
+using SpecialElements = FlagHolder<uint8_t, SpecialElement>;
+
 /**
  * Ride structure.
  *
@@ -178,11 +184,8 @@ struct Ride
 
     uint8_t boatHireReturnDirection{};
     TileCoordsXY boatHireReturnPosition;
-    // bits 0 through 4 are the number of helix sections
-    // bit 5: spinning tunnel, water splash, or rapids
-    // bit 6: log reverser, waterfall
-    // bit 7: whirlpool
-    uint8_t specialTrackElements{};
+    uint8_t numHelices{};
+    SpecialElements specialTrackElements{};
     // Use ToHumanReadableSpeed if converting to display
     int32_t maxSpeed{};
     int32_t averageSpeed{};
@@ -202,7 +205,8 @@ struct Ride
     uint16_t turnCountBanked{};
     uint16_t turnCountSloped{}; // X = number turns > 3 elements
     // Y is number of powered lifts, X is drops
-    uint8_t dropsPoweredLifts{}; // (YYXX XXXX)
+    uint8_t numDrops{};
+    uint8_t numPoweredLifts{};
     uint8_t startDropHeight{};
     uint8_t highestDropHeight{};
     int32_t shelteredLength{};
@@ -298,12 +302,15 @@ struct Ride
     uint8_t currentIssues{};
     uint32_t lastIssueTime{};
 
-    // TO-DO: those friend functions are temporary, find a way to not access the private fields
-    friend void updateSpiralSlide(Ride& ride);
-    friend void updateChairlift(Ride& ride);
-
 private:
     std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide> stations{};
+
+public:
+    uint8_t numInversions{};
+    uint8_t numHoles{};
+    uint8_t shelteredEighths{};
+
+    std::unique_ptr<RideMeasurement> measurement;
 
 public:
     RideStation& getStation(StationIndex stationIndex = StationIndex::FromUnderlying(0));
@@ -315,13 +322,6 @@ public:
     // Returns the logical station number from the given station. Index 0 = station 1, index 1 = station 2. It accounts for gaps
     // in the station array. e.g. if only slot 0 and 2 are in use, index 2 returns 2 instead of 3.
     StationIndex::UnderlyingType getStationNumber(StationIndex in) const;
-
-public:
-    uint16_t inversions{};
-    uint16_t holes{};
-    uint8_t shelteredEighths{};
-
-    std::unique_ptr<RideMeasurement> measurement;
 
 private:
     void update();
@@ -431,11 +431,9 @@ public:
 
     bool findTrackGap(const CoordsXYE& input, CoordsXYE* output) const;
 
-    uint8_t getNumDrops() const;
-    void setNumDrops(uint8_t newValue);
-
-    uint8_t getNumPoweredLifts() const;
-    void setPoweredLifts(uint8_t newValue);
+    // TO-DO: those friend functions are temporary, find a way to not access the private fields
+    friend void updateSpiralSlide(Ride& ride);
+    friend void updateChairlift(Ride& ride);
 };
 void updateSpiralSlide(Ride& ride);
 void updateChairlift(Ride& ride);
@@ -808,14 +806,6 @@ enum
     RIDE_MEASUREMENT_FLAG_G_FORCES = 1 << 2
 };
 
-// Constants for ride->specialTrackElements
-enum
-{
-    RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS = 1 << 5,
-    RIDE_ELEMENT_REVERSER_OR_WATERFALL = 1 << 6,
-    RIDE_ELEMENT_WHIRLPOOL = 1 << 7
-};
-
 enum
 {
     RIDE_CRASH_TYPE_NONE = 0,
@@ -896,8 +886,6 @@ int32_t GetTurnCount1Element(const Ride& ride, uint8_t type);
 int32_t GetTurnCount2Elements(const Ride& ride, uint8_t type);
 int32_t GetTurnCount3Elements(const Ride& ride, uint8_t type);
 int32_t GetTurnCount4PlusElements(const Ride& ride, uint8_t type);
-
-uint8_t RideGetHelixSections(const Ride& ride);
 
 bool RideHasAnyTrackElements(const Ride& ride);
 

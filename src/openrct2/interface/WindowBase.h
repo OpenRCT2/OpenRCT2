@@ -88,7 +88,7 @@ namespace OpenRCT2
             rct_windownumber number{};
             RideId rideId;
         };
-        uint16_t flags{};
+        WindowFlags flags{};
         OpenRCT2::ScrollArea scrolls[3];
         uint16_t no_list_items{};     // 0 for no items
         int16_t selected_list_item{}; // -1 for none selected
@@ -109,7 +109,7 @@ namespace OpenRCT2
         VisibilityCache visibility{};
         EntityId viewport_smart_follow_sprite{ EntityId::GetNull() }; // Handles setting viewport target sprite etc
 
-        void SetLocation(const CoordsXYZ& coords);
+        void SetViewportLocation(const CoordsXYZ& coords);
         void Invalidate();
         void RemoveViewport();
         void SetWidgets(const std::span<const Widget> newWidgets);

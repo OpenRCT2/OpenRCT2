@@ -157,9 +157,9 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
     statistics.maxPositiveVerticalG = ride.maxPositiveVerticalG;
     statistics.maxNegativeVerticalG = ride.maxNegativeVerticalG;
     statistics.maxLateralG = ride.maxLateralG;
-    statistics.inversions = ride.inversions;
-    statistics.holes = ride.holes;
-    statistics.drops = ride.getNumDrops();
+    statistics.inversions = ride.numInversions;
+    statistics.holes = ride.numHoles;
+    statistics.drops = ride.numDrops;
     statistics.highestDropHeight = ride.highestDropHeight;
     statistics.totalAirTime = ride.totalAirTime;
 
@@ -2131,6 +2131,8 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels)
     auto drawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
     dpi.DrawingEngine = drawingEngine.get();
 
+    drawingEngine->BeginDraw();
+
     const ScreenCoordsXY offset = { size_x / 2, size_y / 2 };
     for (uint8_t i = 0; i < 4; i++)
     {
@@ -2140,6 +2142,8 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels)
 
         dpi.bits += kTrackPreviewImageSize;
     }
+
+    drawingEngine->EndDraw();
 
     ride->remove();
     UnstashMap();

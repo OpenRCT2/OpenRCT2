@@ -58,9 +58,6 @@
 
 using namespace OpenRCT2;
 
-// Maximum manhattan distance that litter can be for a handyman to seek to it
-const uint16_t MAX_LITTER_DISTANCE = 3 * kCoordsXYStep;
-
 template<>
 bool EntityBase::Is<Staff>() const
 {
@@ -323,20 +320,32 @@ bool Staff::HasPatrolArea() const
  */
 Direction Staff::HandymanDirectionToNearestLitter() const
 {
-    uint16_t nearestLitterDist = 0xFFFF;
-    Litter* nearestLitter = nullptr;
-    for (auto litter : EntityList<Litter>())
-    {
-        uint16_t distance = abs(litter->x - x) + abs(litter->y - y) + abs(litter->z - z) * 4;
+    // Maximum manhattan distance that litter can be for a handyman to seek to it
+    constexpr auto kTileRadius = 3;
+    constexpr auto kLookupRadius = kCoordsXYStep * kTileRadius;
 
-        if (distance < nearestLitterDist)
+    auto nearestLitterDist = std::numeric_limits<int32_t>::max();
+    Litter* nearestLitter = nullptr;
+
+    for (int32_t tileX = x - kLookupRadius; tileX <= x + kLookupRadius; tileX += kCoordsXYStep)
+    {
+        for (int32_t tileY = y - kLookupRadius; tileY <= y + kLookupRadius; tileY += kCoordsXYStep)
         {
-            nearestLitterDist = distance;
-            nearestLitter = litter;
+            for (auto* litter : EntityTileList<Litter>({ tileX, tileY }))
+            {
+                // Calculate Manhattan distance with z-weighting
+                uint16_t distance = std::abs(litter->x - x) + std::abs(litter->y - y) + std::abs(litter->z - z) * 4;
+
+                if (distance < nearestLitterDist)
+                {
+                    nearestLitterDist = distance;
+                    nearestLitter = litter;
+                }
+            }
         }
     }
 
-    if (nearestLitterDist > MAX_LITTER_DISTANCE)
+    if (nearestLitterDist > kLookupRadius || nearestLitter == nullptr)
     {
         return kInvalidDirection;
     }
@@ -866,32 +875,42 @@ bool Staff::IsMechanicHeadingToFixRideBlockingPath()
  */
 void Staff::EntertainerUpdateNearbyPeeps() const
 {
-    for (auto guest : EntityList<Guest>())
+    // Iterate over tiles within a 3-tile radius (96 units)
+    constexpr auto kTileRadius = 3;
+    constexpr auto kLookupRadius = kCoordsXYStep * kTileRadius;
+
+    for (int32_t tileX = x - kLookupRadius; tileX <= x + kLookupRadius; tileX += kCoordsXYStep)
     {
-        if (guest->x == kLocationNull)
-            continue;
-
-        int16_t z_dist = abs(z - guest->z);
-        if (z_dist > 48)
-            continue;
-
-        int16_t x_dist = abs(x - guest->x);
-        int16_t y_dist = abs(y - guest->y);
-
-        if (x_dist > 96)
-            continue;
-
-        if (y_dist > 96)
-            continue;
-
-        if (guest->State == PeepState::Walking)
+        for (int32_t tileY = y - kLookupRadius; tileY <= y + kLookupRadius; tileY += kCoordsXYStep)
         {
-            guest->HappinessTarget = std::min(guest->HappinessTarget + 4, kPeepMaxHappiness);
-        }
-        else if (guest->State == PeepState::Queuing)
-        {
-            guest->TimeInQueue = std::max(0, guest->TimeInQueue - 200);
-            guest->HappinessTarget = std::min(guest->HappinessTarget + 3, kPeepMaxHappiness);
+            for (auto* guest : EntityTileList<Guest>({ tileX, tileY }))
+            {
+                if (guest->x == kLocationNull)
+                    continue;
+
+                int16_t z_dist = std::abs(z - guest->z);
+                if (z_dist > 48)
+                    continue;
+
+                int16_t x_dist = std::abs(x - guest->x);
+                int16_t y_dist = std::abs(y - guest->y);
+
+                if (x_dist > kLookupRadius)
+                    continue;
+
+                if (y_dist > kLookupRadius)
+                    continue;
+
+                if (guest->State == PeepState::Walking)
+                {
+                    guest->HappinessTarget = std::min(guest->HappinessTarget + 4, kPeepMaxHappiness);
+                }
+                else if (guest->State == PeepState::Queuing)
+                {
+                    guest->TimeInQueue = std::max(0, guest->TimeInQueue - 200);
+                    guest->HappinessTarget = std::min(guest->HappinessTarget + 3, kPeepMaxHappiness);
+                }
+            }
         }
     }
 }

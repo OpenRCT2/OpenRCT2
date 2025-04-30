@@ -631,13 +631,13 @@ namespace OpenRCT2::Scripting
     uint8_t ScRide::numDrops_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->getNumDrops() : 0;
+        return ride != nullptr ? ride->numDrops : 0;
     }
 
     uint8_t ScRide::numLiftHills_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->getNumPoweredLifts() : 0;
+        return ride != nullptr ? ride->numPoweredLifts : 0;
     }
 
     double ScRide::highestDropHeight_get() const

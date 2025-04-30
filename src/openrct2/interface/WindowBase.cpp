@@ -8,10 +8,18 @@
 
 namespace OpenRCT2
 {
-    void WindowBase::SetLocation(const CoordsXYZ& coords)
+    void WindowBase::SetViewportLocation(const CoordsXYZ& coords)
     {
         WindowScrollToLocation(*this, coords);
         flags &= ~WF_SCROLLING_TO_LOCATION;
+
+        // Immediately update the viewport position since we are not scrolling.
+        if (viewport != nullptr)
+        {
+            viewport->viewPos = savedViewPos;
+        }
+
+        Invalidate();
     }
 
     void WindowBase::Invalidate()
@@ -41,7 +49,7 @@ namespace OpenRCT2
         return CursorID::Arrow;
     }
 
-    static inline void repositionCloseButton(Widget& closeButton, int32_t windowWidth)
+    static inline void repositionCloseButton(Widget& closeButton, int32_t windowWidth, bool translucent)
     {
         auto closeButtonSize = Config::Get().interface.EnlargedUi ? kCloseButtonSizeTouch : kCloseButtonSize;
         if (Config::Get().interface.WindowButtonsOnTheLeft)
@@ -56,11 +64,10 @@ namespace OpenRCT2
         }
 
         // Set appropriate close button
-        bool useWhite = closeButton.string == kCloseBoxStringWhiteLarge || closeButton.string == kCloseBoxStringWhiteNormal;
         if (closeButtonSize == kCloseButtonSizeTouch)
-            closeButton.string = !useWhite ? kCloseBoxStringBlackLarge : kCloseBoxStringWhiteLarge;
+            closeButton.string = !translucent ? kCloseBoxStringBlackLarge : kCloseBoxStringWhiteLarge;
         else
-            closeButton.string = !useWhite ? kCloseBoxStringBlackNormal : kCloseBoxStringWhiteNormal;
+            closeButton.string = !translucent ? kCloseBoxStringBlackNormal : kCloseBoxStringWhiteNormal;
     }
 
     void WindowBase::ResizeFrame()
@@ -85,7 +92,10 @@ namespace OpenRCT2
         // Close button
         auto& closeButton = widgets[2];
         if (closeButton.type == WindowWidgetType::CloseBox || closeButton.type == WindowWidgetType::Empty)
-            repositionCloseButton(closeButton, width);
+        {
+            bool translucent = colours[closeButton.colour].hasFlag(ColourFlag::translucent);
+            repositionCloseButton(closeButton, width, translucent);
+        }
 
         // Page/resize widget
         if (widgets.size() >= 4)

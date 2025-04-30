@@ -11,6 +11,7 @@
 
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
+#include "InvalidationGrid.h"
 
 #include <memory>
 
@@ -24,17 +25,6 @@ namespace OpenRCT2
     namespace Drawing
     {
         class X8DrawingContext;
-
-        struct DirtyGrid
-        {
-            uint32_t BlockShiftX;
-            uint32_t BlockShiftY;
-            uint32_t BlockWidth;
-            uint32_t BlockHeight;
-            uint32_t BlockColumns;
-            uint32_t BlockRows;
-            uint8_t* Blocks;
-        };
 
         class X8WeatherDrawer final : public IWeatherDrawer
         {
@@ -73,14 +63,13 @@ namespace OpenRCT2
             size_t _bitsSize = 0;
             uint8_t* _bits = nullptr;
 
-            DirtyGrid _dirtyGrid = {};
-
             DrawPixelInfo _bitsDPI = {};
 
             bool _lastLightFXenabled = false;
 
             X8WeatherDrawer _weatherDrawer;
             X8DrawingContext* _drawingContext;
+            InvalidationGrid _invalidationGrid;
 
         public:
             explicit X8DrawingEngine(const std::shared_ptr<Ui::IUiContext>& uiContext);
@@ -100,8 +89,16 @@ namespace OpenRCT2
             void SetPalette(const GamePalette& palette) override;
             void SetVSync(bool vsync) override;
             void Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) override;
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+    #pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#endif
             void BeginDraw() override;
             void EndDraw() override;
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+    #pragma GCC diagnostic pop
+#endif
             void PaintWindows() override;
             void PaintWeather() override;
             void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) override;
@@ -115,13 +112,12 @@ namespace OpenRCT2
 
         protected:
             void ConfigureBits(uint32_t width, uint32_t height, uint32_t pitch);
-            virtual void OnDrawDirtyBlock(uint32_t x, uint32_t y, uint32_t columns, uint32_t rows);
+            virtual void OnDrawDirtyBlock(int32_t left, int32_t top, int32_t right, int32_t bottom);
 
         private:
             void ConfigureDirtyGrid();
             void DrawAllDirtyBlocks();
-            uint32_t GetNumDirtyRows(const uint32_t x, const uint32_t y, const uint32_t columns);
-            void DrawDirtyBlocks(uint32_t x, uint32_t y, uint32_t columns, uint32_t rows);
+            void DrawDirtyBlocks(int32_t left, int32_t top, int32_t right, int32_t bottom);
         };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
     #pragma GCC diagnostic pop
@@ -131,10 +127,13 @@ namespace OpenRCT2
         {
         private:
             X8DrawingEngine* _engine = nullptr;
+            bool _isDrawing = false;
 
         public:
             explicit X8DrawingContext(X8DrawingEngine* engine);
 
+            void BeginDraw();
+            void EndDraw();
             void Clear(DrawPixelInfo& dpi, uint8_t paletteIndex) override;
             void FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
             void FilterRect(
@@ -149,6 +148,11 @@ namespace OpenRCT2
             void DrawTTFBitmap(
                 DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y,
                 uint8_t hintingThreshold) override;
+
+            bool IsActive() const noexcept
+            {
+                return _isDrawing;
+            }
         };
     } // namespace Drawing
 } // namespace OpenRCT2

@@ -275,7 +275,7 @@ namespace OpenRCT2::Scripting
                 {
                     viewport->viewPos.x = left;
                     viewport->viewPos.y = top;
-                    viewport->flags &= ~WF_SCROLLING_TO_LOCATION;
+                    w->flags &= ~WF_SCROLLING_TO_LOCATION;
                     w->savedViewPos.x = viewport->viewPos.x;
                     w->savedViewPos.y = viewport->viewPos.y;
                     viewport->Invalidate();

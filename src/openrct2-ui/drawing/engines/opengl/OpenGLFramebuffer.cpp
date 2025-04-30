@@ -150,4 +150,27 @@ GLuint OpenGLFramebuffer::CreateDepthTexture(int32_t width, int32_t height)
     return depth;
 }
 
+void OpenGLFramebuffer::SetPixels(const DrawPixelInfo& dpi)
+{
+    assert(dpi.width == _width && dpi.height == _height);
+
+    auto pixels = std::make_unique<uint8_t[]>(_width * _height);
+    // Flip pixels vertically on copy
+    uint8_t* dst = pixels.get() + ((_height - 1) * _width);
+    uint8_t* src = dpi.bits;
+    for (int32_t y = 0; y < _height; y++)
+    {
+        std::copy_n(src, _width, dst);
+        src += dpi.width + dpi.pitch;
+        dst -= _width;
+    }
+
+    glBindTexture(GL_TEXTURE_2D, _texture);
+    CheckGLError();
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    CheckGLError();
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, _width, _height, GL_RED_INTEGER, GL_UNSIGNED_BYTE, pixels.get());
+    CheckGLError();
+}
+
 #endif /* DISABLE_OPENGL */
