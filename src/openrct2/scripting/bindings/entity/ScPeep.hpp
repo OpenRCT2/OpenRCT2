@@ -155,6 +155,7 @@ namespace OpenRCT2::Scripting
             {
                 peep->PeepDirection = value;
                 peep->Orientation = value << 3;
+                peep->Invalidate();
             }
         }
 
@@ -171,6 +172,7 @@ namespace OpenRCT2::Scripting
             {
                 value = std::clamp(value, kPeepMinEnergy, kPeepMaxEnergy);
                 peep->Energy = value;
+                peep->Invalidate();
             }
         }
 
