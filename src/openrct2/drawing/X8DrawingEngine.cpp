@@ -181,7 +181,9 @@ void X8DrawingEngine::DrawDirtyBlocks(int32_t left, int32_t top, int32_t right, 
 {
     // Draw region
     OnDrawDirtyBlock(left, top, right, bottom);
-    ViewportRenderPrimary(_bitsDPI);
+
+    auto vpDPI = _bitsDPI.Crop({ left, top }, { right - left, bottom - top });
+    ViewportRenderPrimary(vpDPI);
 }
 
 void X8DrawingEngine::CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy)
