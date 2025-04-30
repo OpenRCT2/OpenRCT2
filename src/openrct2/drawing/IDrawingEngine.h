@@ -19,7 +19,7 @@
 enum class DrawingEngine : int32_t
 {
     None = -1,
-    Software,
+    SoftwareDeprecated,
     SoftwareWithHardwareDisplay,
     OpenGL,
     Count,

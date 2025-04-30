@@ -101,7 +101,6 @@ namespace OpenRCT2::Config
     });
 
     static const auto Enum_DrawingEngine = ConfigEnum<DrawingEngine>({
-        ConfigEnumEntry<DrawingEngine>("SOFTWARE", DrawingEngine::Software),
         ConfigEnumEntry<DrawingEngine>("SOFTWARE_HWD", DrawingEngine::SoftwareWithHardwareDisplay),
         ConfigEnumEntry<DrawingEngine>("OPENGL", DrawingEngine::OpenGL),
     });
@@ -212,7 +211,7 @@ namespace OpenRCT2::Config
 
             // Default config setting is false until the games canvas can be separated from the effect
             model->DayNightCycle = reader->GetBoolean("day_night_cycle", false);
-            const bool isHardware = model->DrawingEngine != DrawingEngine::Software;
+            const bool isHardware = true;
             model->EnableLightFx = isHardware && reader->GetBoolean("enable_light_fx", false);
             model->EnableLightFxForVehicles = isHardware && reader->GetBoolean("enable_light_fx_for_vehicles", false);
             model->UpperCaseBanners = reader->GetBoolean("upper_case_banners", false);
@@ -265,6 +264,12 @@ namespace OpenRCT2::Config
             model->FileBrowserShowSizeColumn = reader->GetBoolean("file_browser_show_size_column", true);
             model->FileBrowserShowDateColumn = reader->GetBoolean("file_browser_show_date_column", true);
             model->FileBrowserShowPreviews = reader->GetBoolean("file_browser_show_previews", true);
+
+            // Used to be an option but is now removed, SoftwareWithHardwareDisplay substitutes for Software.
+            if (model->DrawingEngine == DrawingEngine::SoftwareDeprecated)
+            {
+                model->DrawingEngine = DrawingEngine::SoftwareWithHardwareDisplay;
+            }
         }
     }
 
