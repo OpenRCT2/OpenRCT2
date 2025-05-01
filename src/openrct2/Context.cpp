@@ -642,7 +642,7 @@ namespace OpenRCT2
 
             // Attempt to create drawing engine of the type specified in the config.
             {
-                auto drawingEngine = initializeEngine(_drawingEngineType);
+                auto drawingEngine = initializeEngine(drawingEngineType);
                 if (drawingEngine != nullptr)
                 {
                     _drawingEngine = std::move(drawingEngine);
@@ -653,13 +653,9 @@ namespace OpenRCT2
                     if (drawingEngineType == DrawingEngine::OpenGL)
                     {
                         drawingEngineType = DrawingEngine::SoftwareWithHardwareDisplay;
-
-                        Config::Get().general.DrawingEngine = _drawingEngineType;
-                        Config::Save();
-
                         LOG_ERROR("Trying fallback back to software...");
 
-                        drawingEngine = initializeEngine(_drawingEngineType);
+                        drawingEngine = initializeEngine(drawingEngineType);
                         if (drawingEngine != nullptr)
                         {
                             _drawingEngine = std::move(drawingEngine);
@@ -672,6 +668,8 @@ namespace OpenRCT2
                     }
                 }
             }
+
+            _drawingEngineType = drawingEngineType;
 
             Config::Get().general.DrawingEngine = drawingEngineType;
             Config::Save();
