@@ -897,9 +897,6 @@ namespace OpenRCT2::Ui::Windows
                 disabled_widgets &= ~(1uLL << WIDX_RESOLUTION_LABEL);
             }
 
-            disabled_widgets &= (1uLL << WIDX_STEAM_OVERLAY_PAUSE);
-            disabled_widgets &= ~(1uLL << WIDX_USE_VSYNC_CHECKBOX);
-
             SetCheckboxValue(WIDX_UNCAP_FPS_CHECKBOX, Config::Get().general.UncapFPS);
             SetCheckboxValue(WIDX_USE_VSYNC_CHECKBOX, Config::Get().general.UseVSync);
             SetCheckboxValue(WIDX_SHOW_FPS_CHECKBOX, Config::Get().general.ShowFPS);
