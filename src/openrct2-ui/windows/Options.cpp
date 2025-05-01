@@ -426,26 +426,14 @@ namespace OpenRCT2::Ui::Windows
         window_options_misc_widgets,
         window_options_advanced_widgets,
     };
-
     // clang-format on
 
-    static constexpr std::pair<StringId, DrawingEngine> kDrawingEngineChoices[] = {
-        { STR_DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY, DrawingEngine::SoftwareWithHardwareDisplay },
+    static constexpr StringId kDrawingEngineStringIds[] = {
+        STR_DRAWING_ENGINE_SOFTWARE,
 #ifndef DISABLE_OPENGL
-        { STR_DRAWING_ENGINE_OPENGL, DrawingEngine::OpenGL },
+        STR_DRAWING_ENGINE_OPENGL,
 #endif
     };
-
-    static constexpr int32_t getDrawingEngineIndex(DrawingEngine engine)
-    {
-        for (int32_t i = 0; i < static_cast<int32_t>(std::size(kDrawingEngineChoices)); ++i)
-        {
-            if (kDrawingEngineChoices[i].second == engine)
-                return i;
-        }
-        Guard::Fail("Unsupported drawing engine: %u", EnumValue(engine));
-        return -1;
-    }
 
 #pragma endregion
 
@@ -811,14 +799,14 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_DRAWING_ENGINE_DROPDOWN:
                 {
-                    const auto numItems = static_cast<int32_t>(std::size(kDrawingEngineChoices));
+                    const auto numItems = static_cast<int32_t>(std::size(kDrawingEngineStringIds));
                     for (int32_t i = 0; i < numItems; i++)
                     {
                         gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[i].Args = kDrawingEngineChoices[i].first;
+                        gDropdownItems[i].Args = kDrawingEngineStringIds[i];
                     }
                     ShowDropdown(widget, numItems);
-                    Dropdown::SetChecked(getDrawingEngineIndex(Config::Get().general.DrawingEngine), true);
+                    Dropdown::SetChecked(EnumValue(Config::Get().general.DrawingEngine), true);
                     break;
                 }
                 case WIDX_SCALE_UP:
@@ -874,10 +862,11 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 case WIDX_DRAWING_ENGINE_DROPDOWN:
-                    if (DrawingEngine selectedEngine = kDrawingEngineChoices[dropdownIndex].second;
-                        selectedEngine != Config::Get().general.DrawingEngine)
+                    if (dropdownIndex != EnumValue(Config::Get().general.DrawingEngine))
                     {
-                        Config::Get().general.DrawingEngine = selectedEngine;
+                        DrawingEngine dstEngine = static_cast<DrawingEngine>(dropdownIndex);
+
+                        Config::Get().general.DrawingEngine = dstEngine;
                         RefreshVideo();
                         Config::Save();
                         Invalidate();
@@ -908,11 +897,7 @@ namespace OpenRCT2::Ui::Windows
                 disabled_widgets &= ~(1uLL << WIDX_RESOLUTION_LABEL);
             }
 
-            // Disable Steam Overlay checkbox when using software or OpenGL rendering.
-            // TODO: Check if this even works properly.
-            disabled_widgets |= (1uLL << WIDX_STEAM_OVERLAY_PAUSE);
-
-            // VSync.
+            disabled_widgets &= (1uLL << WIDX_STEAM_OVERLAY_PAUSE);
             disabled_widgets &= ~(1uLL << WIDX_USE_VSYNC_CHECKBOX);
 
             SetCheckboxValue(WIDX_UNCAP_FPS_CHECKBOX, Config::Get().general.UncapFPS);
@@ -925,9 +910,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Dropdown captions for straightforward strings.
             widgets[WIDX_FULLSCREEN].text = FullscreenModeNames[Config::Get().general.FullscreenMode];
-
-            const auto selectedDrawingEngine = getDrawingEngineIndex(Config::Get().general.DrawingEngine);
-            widgets[WIDX_DRAWING_ENGINE].text = kDrawingEngineChoices[selectedDrawingEngine].first;
+            widgets[WIDX_DRAWING_ENGINE].text = kDrawingEngineStringIds[EnumValue(Config::Get().general.DrawingEngine)];
         }
 
         void DisplayDraw(DrawPixelInfo& dpi)

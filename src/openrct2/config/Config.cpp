@@ -101,7 +101,7 @@ namespace OpenRCT2::Config
     });
 
     static const auto Enum_DrawingEngine = ConfigEnum<DrawingEngine>({
-        ConfigEnumEntry<DrawingEngine>("SOFTWARE_HWD", DrawingEngine::SoftwareWithHardwareDisplay),
+        ConfigEnumEntry<DrawingEngine>("SOFTWARE", DrawingEngine::SoftwareWithHardwareDisplay),
         ConfigEnumEntry<DrawingEngine>("OPENGL", DrawingEngine::OpenGL),
     });
 
@@ -264,12 +264,6 @@ namespace OpenRCT2::Config
             model->FileBrowserShowSizeColumn = reader->GetBoolean("file_browser_show_size_column", true);
             model->FileBrowserShowDateColumn = reader->GetBoolean("file_browser_show_date_column", true);
             model->FileBrowserShowPreviews = reader->GetBoolean("file_browser_show_previews", true);
-
-            // Used to be an option but is now removed, SoftwareWithHardwareDisplay substitutes for Software.
-            if (model->DrawingEngine == DrawingEngine::SoftwareDeprecated)
-            {
-                model->DrawingEngine = DrawingEngine::SoftwareWithHardwareDisplay;
-            }
         }
     }
 

@@ -639,10 +639,6 @@ namespace OpenRCT2
             };
 
             auto drawingEngineType = Config::Get().general.DrawingEngine;
-            if (drawingEngineType == DrawingEngine::SoftwareDeprecated)
-            {
-                drawingEngineType = DrawingEngine::SoftwareWithHardwareDisplay;
-            }
 
             // Attempt to create drawing engine of the type specified in the config.
             {
