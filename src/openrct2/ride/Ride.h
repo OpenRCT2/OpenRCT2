@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../Limits.h"
-#include "../Scripting/Duktape.hpp"
+#include "../scripting/Duktape.hpp"
 #include "../actions/ResultWithMessage.h"
 #include "../core/BitSet.hpp"
 #include "../core/FixedPoint.hpp"
