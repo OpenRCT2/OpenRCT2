@@ -82,6 +82,7 @@
 #include <cstdlib>
 #include <iterator>
 #include <limits>
+#include <openrct2/scripting/bindings/ride/ScRide.hpp>
 #include <optional>
 #include <sfl/static_vector.hpp>
 
@@ -93,16 +94,6 @@ RideMode& operator++(RideMode& d, int)
 {
     return d = (d == RideMode::count) ? RideMode::normal : static_cast<RideMode>(static_cast<uint8_t>(d) + 1);
 }
-
-static const DukEnumMap<uint8_t> BreakdownMap // The types of breakdowns.
-    ({ { "safety_cut_out", BREAKDOWN_SAFETY_CUT_OUT },
-       { "restraints_stuck_closed", BREAKDOWN_RESTRAINTS_STUCK_CLOSED },
-       { "restraints_stuck_open", BREAKDOWN_RESTRAINTS_STUCK_OPEN },
-       { "doors_stuck_closed", BREAKDOWN_DOORS_STUCK_CLOSED },
-       { "doors_stuck_open", BREAKDOWN_DOORS_STUCK_OPEN },
-       { "vehicle_malfunction", BREAKDOWN_VEHICLE_MALFUNCTION },
-       { "brakes_failure", BREAKDOWN_BRAKES_FAILURE },
-       { "control_failure", BREAKDOWN_CONTROL_FAILURE } });
 
 static constexpr int32_t RideInspectionInterval[] = {
     10, 20, 30, 45, 60, 120, 0, 0,
