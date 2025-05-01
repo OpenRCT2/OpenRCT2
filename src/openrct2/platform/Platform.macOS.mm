@@ -289,7 +289,7 @@ namespace OpenRCT2::Platform
 
     std::vector<std::string_view> GetSearchablePathsRCT2()
     {
-        return {};
+        return { "/Applications" };
     }
 } // namespace OpenRCT2::Platform
 
