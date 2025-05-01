@@ -82,7 +82,6 @@
 #include <cstdlib>
 #include <iterator>
 #include <limits>
-#include <openrct2/scripting/bindings/ride/ScRide.hpp>
 #include <optional>
 #include <sfl/static_vector.hpp>
 
