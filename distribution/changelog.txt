@@ -109,11 +109,8 @@
 0.4.22 (2025-05-04)
 ------------------------------------------------------------------------
 - Feature: [#24206] [Plugin] Add APIs for breaking down rides, reading the current breakdown, and for fixing broken down rides.
-
-
 - Feature: [#24242] [Plugin] Add ride-breakdown hooktype.
 - Improved: [#20073] The OpenGL drawing engine now supports screen invalidation which avoids the redrawing of unchanged regions.
-
 - Improved: [#21767] RCT Classic for macOS can now be used as the source game.
 - Improved: [#23590] Title bars are now drawn bigger when “Enlarged UI” is enabled.
 - Improved: [#23626] Add small, medium and large flat and sloped turns, S-bends and diagonal track to the Go-Karts.
