@@ -961,7 +961,7 @@ constexpr uint32_t kBoundingBoxIndexUndefined = std::numeric_limits<uint32_t>::m
 #pragma region VehiclePaintUtil
 
 static void PaintVehicleRiders(
-    PaintSession& session, const Vehicle* vehicle, const CarEntry* carEntry, uint32_t baseImageId, int32_t z,
+    PaintSession& session, const Vehicle* vehicle, const CarEntry* carEntry, uint32_t baseImageId, const int32_t z,
     const VehicleBoundBox& bb)
 {
     baseImageId += carEntry->NumCarImages;
@@ -993,7 +993,7 @@ static void PaintVehicleRiders(
 
 // 6D5214
 static void vehicle_sprite_paint(
-    PaintSession& session, const Vehicle* vehicle, int32_t spriteIndex, const VehicleBoundBox& bb, int32_t z,
+    PaintSession& session, const Vehicle* vehicle, int32_t spriteIndex, const VehicleBoundBox& bb, const int32_t z,
     const CarEntry* carEntry)
 {
     if (carEntry->draw_order >= std::size(VehicleBoundboxes))
@@ -1030,7 +1030,7 @@ static void vehicle_sprite_paint(
 
 // 6D520E
 static void VehicleSpritePaintWithSwinging(
-    PaintSession& session, const Vehicle* vehicle, int32_t spriteIndex, int32_t boundingBoxIndex, int32_t z,
+    PaintSession& session, const Vehicle* vehicle, int32_t spriteIndex, int32_t boundingBoxIndex, const int32_t z,
     const CarEntry* carEntry)
 {
     vehicle_sprite_paint(
@@ -1039,7 +1039,7 @@ static void VehicleSpritePaintWithSwinging(
 }
 
 static void VehicleSpritePaintRestraints(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -1060,7 +1060,7 @@ static uint8_t GetPaintBankRotation(const Vehicle* vehicle)
 
 // 6D51DE
 static void VehiclePitchFlatUnbanked(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     // Restraint animations are only drawn for vehicles that are in a cardinal direction (north, east, south, west)
@@ -1077,7 +1077,7 @@ static void VehiclePitchFlatUnbanked(
 
 // 6D4EE7
 static void VehiclePitchFlatBankedLeft22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -1094,7 +1094,7 @@ static void VehiclePitchFlatBankedLeft22(
 
 // 6D4F34
 static void VehiclePitchFlatBankedLeft45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection) + 108;
@@ -1111,7 +1111,7 @@ static void VehiclePitchFlatBankedLeft45(
 
 // 6D4F0C
 static void VehiclePitchFlatBankedRight22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -1128,7 +1128,7 @@ static void VehiclePitchFlatBankedRight22(
 
 // 6D4F5C
 static void VehiclePitchFlatBankedRight45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection) ^ 8) + 108;
@@ -1145,7 +1145,7 @@ static void VehiclePitchFlatBankedRight45(
 
 // 6D4F84
 static void VehiclePitchFlatBankedLeft67(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
@@ -1166,7 +1166,7 @@ static void VehiclePitchFlatBankedLeft67(
 
 // 6D4FE4
 static void VehiclePitchFlatBankedLeft90(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
@@ -1187,7 +1187,7 @@ static void VehiclePitchFlatBankedLeft90(
 
 // 6D5055
 static void VehiclePitchFlatBankedLeft112(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
@@ -1208,7 +1208,7 @@ static void VehiclePitchFlatBankedLeft112(
 
 // 6D50C6
 static void VehiclePitchFlatBankedLeft135(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
@@ -1229,7 +1229,7 @@ static void VehiclePitchFlatBankedLeft135(
 
 // 6D5137
 static void VehiclePitchFlatBankedLeft157(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
@@ -1250,7 +1250,7 @@ static void VehiclePitchFlatBankedLeft157(
 
 // 6D4FB1
 static void VehiclePitchFlatBankedRight67(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
@@ -1271,7 +1271,7 @@ static void VehiclePitchFlatBankedRight67(
 
 // 6D501B
 static void VehiclePitchFlatBankedRight90(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
@@ -1292,7 +1292,7 @@ static void VehiclePitchFlatBankedRight90(
 
 // 6D508C
 static void VehiclePitchFlatBankedRight112(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
@@ -1313,7 +1313,7 @@ static void VehiclePitchFlatBankedRight112(
 
 // 6D50FD
 static void VehiclePitchFlatBankedRight135(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
@@ -1334,7 +1334,7 @@ static void VehiclePitchFlatBankedRight135(
 
 // 6D516E
 static void VehiclePitchFlatBankedRight157(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
@@ -1355,7 +1355,7 @@ static void VehiclePitchFlatBankedRight157(
 
 // 6D4EE4
 static void VehiclePitchUninvertedFlatBankedLeft22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     carEntry--;
@@ -1364,7 +1364,7 @@ static void VehiclePitchUninvertedFlatBankedLeft22(
 
 // 6D4F31
 static void VehiclePitchUninvertedFlatBankedLeft45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     carEntry--;
@@ -1373,7 +1373,7 @@ static void VehiclePitchUninvertedFlatBankedLeft45(
 
 // 6D4F09
 static void VehiclePitchUninvertedFlatBankedRight22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     carEntry--;
@@ -1382,7 +1382,7 @@ static void VehiclePitchUninvertedFlatBankedRight22(
 
 // 6D4F59
 static void VehiclePitchUninvertedFlatBankedRight45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     carEntry--;
@@ -1391,7 +1391,7 @@ static void VehiclePitchUninvertedFlatBankedRight45(
 
 // 6D51D7
 static void VehiclePitchFlat(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     // 0x009A3DE4:
@@ -1469,7 +1469,7 @@ static void VehiclePitchFlat(
 
 // 6D4614
 static void VehiclePitchUp12Unbanked(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -1486,7 +1486,7 @@ static void VehiclePitchUp12Unbanked(
 
 // 6D4662
 static void VehiclePitchUp12BankedLeft22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -1503,7 +1503,7 @@ static void VehiclePitchUp12BankedLeft22(
 
 // 6D46DB
 static void VehiclePitchUp12BankedLeft45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -1520,7 +1520,7 @@ static void VehiclePitchUp12BankedLeft45(
 
 // 6D467D
 static void VehiclePitchUp12BankedRight22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -1537,7 +1537,7 @@ static void VehiclePitchUp12BankedRight22(
 
 // 6D46FD
 static void VehiclePitchUp12BankedRight45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -1554,7 +1554,7 @@ static void VehiclePitchUp12BankedRight45(
 
 // 6D460D
 static void VehiclePitchUp12(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     // 0x009A3C04:
@@ -1598,7 +1598,7 @@ static void VehiclePitchUp12(
 
 // 6D4791
 static void VehiclePitchUp25Unbanked(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection)) + 16;
@@ -1615,7 +1615,7 @@ static void VehiclePitchUp25Unbanked(
 
 // 6D4833
 static void VehiclePitchUp25BankedLeft22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection) + 16;
@@ -1632,7 +1632,7 @@ static void VehiclePitchUp25BankedLeft22(
 
 // 6D48D6
 static void VehiclePitchUp25BankedLeft45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (boundingBoxIndex == kBoundingBoxIndexUndefined)
@@ -1656,7 +1656,7 @@ static void VehiclePitchUp25BankedLeft45(
 
 // 6D4858
 static void VehiclePitchUp25BankedRight22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection) + 16;
@@ -1673,7 +1673,7 @@ static void VehiclePitchUp25BankedRight22(
 
 // 6D4910
 static void VehiclePitchUp25BankedRight45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (boundingBoxIndex == kBoundingBoxIndexUndefined)
@@ -1696,7 +1696,7 @@ static void VehiclePitchUp25BankedRight45(
 }
 
 static void VehiclePitchUp25BankedLeft67(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo4(imageDirection) + 124;
@@ -1712,7 +1712,7 @@ static void VehiclePitchUp25BankedLeft67(
 }
 
 static void VehiclePitchUp25BankedLeft90(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo4(imageDirection) + 128;
@@ -1728,7 +1728,7 @@ static void VehiclePitchUp25BankedLeft90(
 }
 
 static void VehiclePitchUp25BankedLeft112(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo4(imageDirection) + 132;
@@ -1744,7 +1744,7 @@ static void VehiclePitchUp25BankedLeft112(
 }
 
 static void VehiclePitchUp25BankedLeft135(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo4(imageDirection) + 136;
@@ -1760,7 +1760,7 @@ static void VehiclePitchUp25BankedLeft135(
 }
 
 static void VehiclePitchUp25BankedLeft157(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo4(imageDirection) + 140;
@@ -1776,7 +1776,7 @@ static void VehiclePitchUp25BankedLeft157(
 }
 
 static void VehiclePitchUp25BankedRight67(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo4(imageDirection) ^ 2) + 124;
@@ -1792,7 +1792,7 @@ static void VehiclePitchUp25BankedRight67(
 }
 
 static void VehiclePitchUp25BankedRight90(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo4(imageDirection) ^ 2) + 128;
@@ -1808,7 +1808,7 @@ static void VehiclePitchUp25BankedRight90(
 }
 
 static void VehiclePitchUp25BankedRight112(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo4(imageDirection) ^ 2) + 132;
@@ -1824,7 +1824,7 @@ static void VehiclePitchUp25BankedRight112(
 }
 
 static void VehiclePitchUp25BankedRight135(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo4(imageDirection) ^ 2) + 136;
@@ -1840,7 +1840,7 @@ static void VehiclePitchUp25BankedRight135(
 }
 
 static void VehiclePitchUp25BankedRight157(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo4(imageDirection) ^ 2) + 140;
@@ -1857,7 +1857,7 @@ static void VehiclePitchUp25BankedRight157(
 
 // 6D476C
 static void VehiclePitchUp25(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     // 0x009A3CA4:
@@ -1934,7 +1934,7 @@ static void VehiclePitchUp25(
 
 // 6D49DC
 static void VehiclePitchUp42Unbanked(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo8(imageDirection)) + 32;
@@ -1950,7 +1950,7 @@ static void VehiclePitchUp42Unbanked(
 }
 
 static void VehiclePitchUp42BankedLeft22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo8(imageDirection)) + 32;
@@ -1966,7 +1966,7 @@ static void VehiclePitchUp42BankedLeft22(
 }
 
 static void VehiclePitchUp42BankedLeft45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo8(imageDirection)) + 32;
@@ -1982,7 +1982,7 @@ static void VehiclePitchUp42BankedLeft45(
 }
 
 static void VehiclePitchUp42BankedRight22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo8(imageDirection)) + 32;
@@ -1998,7 +1998,7 @@ static void VehiclePitchUp42BankedRight22(
 }
 
 static void VehiclePitchUp42BankedRight45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo8(imageDirection)) + 32;
@@ -2014,7 +2014,7 @@ static void VehiclePitchUp42BankedRight45(
 }
 
 static void VehiclePitchUp42BankedLeft67(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo8(imageDirection)) + 32;
@@ -2030,7 +2030,7 @@ static void VehiclePitchUp42BankedLeft67(
 }
 
 static void VehiclePitchUp42BankedLeft90(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo8(imageDirection)) + 32;
@@ -2046,7 +2046,7 @@ static void VehiclePitchUp42BankedLeft90(
 }
 
 static void VehiclePitchUp42BankedRight67(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo8(imageDirection)) + 32;
@@ -2062,7 +2062,7 @@ static void VehiclePitchUp42BankedRight67(
 }
 
 static void VehiclePitchUp42BankedRight90(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo8(imageDirection)) + 32;
@@ -2078,7 +2078,7 @@ static void VehiclePitchUp42BankedRight90(
 }
 
 static void VehiclePitchUp42BankedLeft135(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     const int32_t modifiedImageDirection = (imageDirection + 8) % 32;
@@ -2096,7 +2096,7 @@ static void VehiclePitchUp42BankedLeft135(
 }
 
 static void VehiclePitchUp42BankedRight135(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo4(imageDirection) + 3 * 4 + 144;
@@ -2113,7 +2113,7 @@ static void VehiclePitchUp42BankedRight135(
 
 // 6D49DC
 static void VehiclePitchUp42(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     switch (GetPaintBankRotation(vehicle))
@@ -2158,7 +2158,7 @@ static void VehiclePitchUp42(
 
 // 6D4A31
 static void VehiclePitchUp60Unbanked(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection)) + 40;
@@ -2174,7 +2174,7 @@ static void VehiclePitchUp60Unbanked(
 }
 
 static void VehiclePitchUp60BankedLeft22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection)) + 40;
@@ -2190,7 +2190,7 @@ static void VehiclePitchUp60BankedLeft22(
 }
 
 static void VehiclePitchUp60BankedRight22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection)) + 40;
@@ -2206,7 +2206,7 @@ static void VehiclePitchUp60BankedRight22(
 }
 
 static void VehiclePitchUp60(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     switch (GetPaintBankRotation(vehicle))
@@ -2233,7 +2233,7 @@ static void VehiclePitchUp60(
 
 // 6D463D
 static void VehiclePitchDown12Unbanked(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -2250,7 +2250,7 @@ static void VehiclePitchDown12Unbanked(
 
 // 6D469B
 static void VehiclePitchDown12BankedLeft22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -2267,7 +2267,7 @@ static void VehiclePitchDown12BankedLeft22(
 
 // 6D4722
 static void VehiclePitchDown12BankedLeft45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -2284,7 +2284,7 @@ static void VehiclePitchDown12BankedLeft45(
 
 // 6D46B9
 static void VehiclePitchDown12BankedRight22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -2301,7 +2301,7 @@ static void VehiclePitchDown12BankedRight22(
 
 // 6D4747
 static void VehiclePitchDown12BankedRight45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -2318,7 +2318,7 @@ static void VehiclePitchDown12BankedRight45(
 
 // 6D4636
 static void VehiclePitchDown12(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     // 0x009A3C54:
@@ -2396,7 +2396,7 @@ static void VehiclePitchDown12(
 
 // 6D47E4
 static void VehiclePitchDown25Unbanked(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : ((YawTo16(imageDirection)) ^ 8) + 16;
@@ -2413,7 +2413,7 @@ static void VehiclePitchDown25Unbanked(
 
 // 6D4880
 static void VehiclePitchDown25BankedLeft22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : ((YawTo16(imageDirection)) ^ 8) + 16;
@@ -2430,7 +2430,7 @@ static void VehiclePitchDown25BankedLeft22(
 
 // 6D4953
 static void VehiclePitchDown25BankedLeft45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (boundingBoxIndex == kBoundingBoxIndexUndefined)
@@ -2454,7 +2454,7 @@ static void VehiclePitchDown25BankedLeft45(
 
 // 6D48AB
 static void VehiclePitchDown25BankedRight22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : ((YawTo16(imageDirection)) ^ 8) + 16;
@@ -2471,7 +2471,7 @@ static void VehiclePitchDown25BankedRight22(
 
 // 6D4996
 static void VehiclePitchDown25BankedRight45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (boundingBoxIndex == kBoundingBoxIndexUndefined)
@@ -2494,7 +2494,7 @@ static void VehiclePitchDown25BankedRight45(
 }
 
 static void VehiclePitchDown25BankedLeft67(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo4(imageDirection) + 124;
@@ -2510,7 +2510,7 @@ static void VehiclePitchDown25BankedLeft67(
 }
 
 static void VehiclePitchDown25BankedLeft90(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo4(imageDirection) + 128;
@@ -2526,7 +2526,7 @@ static void VehiclePitchDown25BankedLeft90(
 }
 
 static void VehiclePitchDown25BankedLeft112(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo4(imageDirection) + 132;
@@ -2542,7 +2542,7 @@ static void VehiclePitchDown25BankedLeft112(
 }
 
 static void VehiclePitchDown25BankedLeft135(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo4(imageDirection) + 136;
@@ -2558,7 +2558,7 @@ static void VehiclePitchDown25BankedLeft135(
 }
 
 static void VehiclePitchDown25BankedLeft157(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo4(imageDirection) + 140;
@@ -2574,7 +2574,7 @@ static void VehiclePitchDown25BankedLeft157(
 }
 
 static void VehiclePitchDown25BankedRight67(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo4(imageDirection) ^ 2) + 124;
@@ -2590,7 +2590,7 @@ static void VehiclePitchDown25BankedRight67(
 }
 
 static void VehiclePitchDown25BankedRight90(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo4(imageDirection) ^ 2) + 128;
@@ -2606,7 +2606,7 @@ static void VehiclePitchDown25BankedRight90(
 }
 
 static void VehiclePitchDown25BankedRight112(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo4(imageDirection) ^ 2) + 132;
@@ -2622,7 +2622,7 @@ static void VehiclePitchDown25BankedRight112(
 }
 
 static void VehiclePitchDown25BankedRight135(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo4(imageDirection) ^ 2) + 136;
@@ -2638,7 +2638,7 @@ static void VehiclePitchDown25BankedRight135(
 }
 
 static void VehiclePitchDown25BankedRight157(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo4(imageDirection) ^ 2) + 140;
@@ -2655,7 +2655,7 @@ static void VehiclePitchDown25BankedRight157(
 
 // 6D47DD
 static void VehiclePitchDown25(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     // 0x009A3CF4:
@@ -2732,7 +2732,7 @@ static void VehiclePitchDown25(
 
 // 6D4A05
 static void VehiclePitchDown42Unbanked(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : ((YawTo8(imageDirection)) ^ 4) + 32;
@@ -2748,7 +2748,7 @@ static void VehiclePitchDown42Unbanked(
 }
 
 static void VehiclePitchDown42BankedLeft22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo8(imageDirection)) + 32;
@@ -2764,7 +2764,7 @@ static void VehiclePitchDown42BankedLeft22(
 }
 
 static void VehiclePitchDown42BankedLeft45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo8(imageDirection)) + 32;
@@ -2780,7 +2780,7 @@ static void VehiclePitchDown42BankedLeft45(
 }
 
 static void VehiclePitchDown42BankedRight22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo8(imageDirection)) + 32;
@@ -2796,7 +2796,7 @@ static void VehiclePitchDown42BankedRight22(
 }
 
 static void VehiclePitchDown42BankedRight45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo8(imageDirection)) + 32;
@@ -2812,7 +2812,7 @@ static void VehiclePitchDown42BankedRight45(
 }
 
 static void VehiclePitchDown42BankedLeft67(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo8(imageDirection)) + 32;
@@ -2828,7 +2828,7 @@ static void VehiclePitchDown42BankedLeft67(
 }
 
 static void VehiclePitchDown42BankedLeft90(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo8(imageDirection)) + 32;
@@ -2844,7 +2844,7 @@ static void VehiclePitchDown42BankedLeft90(
 }
 
 static void VehiclePitchDown42BankedRight67(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo8(imageDirection)) + 32;
@@ -2860,7 +2860,7 @@ static void VehiclePitchDown42BankedRight67(
 }
 
 static void VehiclePitchDown42BankedRight90(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo8(imageDirection)) + 32;
@@ -2876,7 +2876,7 @@ static void VehiclePitchDown42BankedRight90(
 }
 
 static void VehiclePitchDown42BankedLeft135(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo4(imageDirection) + 8 * 4 + 144;
@@ -2892,7 +2892,7 @@ static void VehiclePitchDown42BankedLeft135(
 }
 
 static void VehiclePitchDown42BankedRight135(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     const int32_t modifiedImageDirection = (imageDirection + 8) % 32;
@@ -2910,7 +2910,7 @@ static void VehiclePitchDown42BankedRight135(
 }
 
 static void VehiclePitchDown42(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     switch (GetPaintBankRotation(vehicle))
@@ -2955,7 +2955,7 @@ static void VehiclePitchDown42(
 
 // 6D4A59
 static void VehiclePitchDown60Unbanked(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : ((YawTo16(imageDirection)) ^ 8) + 40;
@@ -2971,7 +2971,7 @@ static void VehiclePitchDown60Unbanked(
 }
 
 static void VehiclePitchDown60BankedLeft22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection)) + 40;
@@ -2987,7 +2987,7 @@ static void VehiclePitchDown60BankedLeft22(
 }
 
 static void VehiclePitchDown60BankedRight22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection)) + 40;
@@ -3003,7 +3003,7 @@ static void VehiclePitchDown60BankedRight22(
 }
 
 static void VehiclePitchDown60(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     switch (GetPaintBankRotation(vehicle))
@@ -3028,7 +3028,7 @@ static void VehiclePitchDown60(
 
 // 6D4A81
 static void VehiclePitchUp75(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo4(imageDirection)) + 56;
@@ -3045,7 +3045,7 @@ static void VehiclePitchUp75(
 
 // 6D4AE8
 static void VehiclePitchUp90(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection)) + 60;
@@ -3066,7 +3066,7 @@ static void VehiclePitchUp90(
 
 // 6D4B57
 static void VehiclePitchUp105(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo4(imageDirection)) + 76;
@@ -3083,7 +3083,7 @@ static void VehiclePitchUp105(
 
 // 6D4BB7
 static void VehiclePitchUp120(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo4(imageDirection)) + 80;
@@ -3100,7 +3100,7 @@ static void VehiclePitchUp120(
 
 // 6D4C17
 static void VehiclePitchUp135(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo4(imageDirection)) + 84;
@@ -3117,7 +3117,7 @@ static void VehiclePitchUp135(
 
 // 6D4C77
 static void VehiclePitchUp150(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo4(imageDirection)) + 88;
@@ -3134,7 +3134,7 @@ static void VehiclePitchUp150(
 
 // 6D4CD7
 static void VehiclePitchUp165(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo4(imageDirection)) + 92;
@@ -3155,7 +3155,7 @@ static void VehiclePitchUp165(
 
 // 6D4D37
 static void VehiclePitchInverted(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo4(imageDirection)) + 96;
@@ -3176,7 +3176,7 @@ static void VehiclePitchInverted(
 
 // 6D4AA3
 static void VehiclePitchDown75(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
@@ -3201,7 +3201,7 @@ static void VehiclePitchDown75(
 
 // 6D4B0D
 static void VehiclePitchDown90(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
@@ -3230,7 +3230,7 @@ static void VehiclePitchDown90(
 
 // 6D4B80
 static void VehiclePitchDown105(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
@@ -3251,7 +3251,7 @@ static void VehiclePitchDown105(
 
 // 6D4BE0
 static void VehiclePitchDown120(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
@@ -3272,7 +3272,7 @@ static void VehiclePitchDown120(
 
 // 6D4C40
 static void VehiclePitchDown135(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
@@ -3293,7 +3293,7 @@ static void VehiclePitchDown135(
 
 // 6D4CA0
 static void VehiclePitchDown150(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
@@ -3314,7 +3314,7 @@ static void VehiclePitchDown150(
 
 // 6D4D00
 static void VehiclePitchDown165(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
@@ -3340,7 +3340,7 @@ static void VehiclePitchDown165(
 // 6D51A5
 template<int32_t corkscrewFrame>
 void VehiclePitchCorkscrew(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     if (vehicle->HasFlag(VehicleFlags::CarIsInverted))
@@ -3368,7 +3368,7 @@ void VehiclePitchCorkscrew(
 
 // 6D4D67
 static void VehiclePitchUp8Unbanked(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3385,7 +3385,7 @@ static void VehiclePitchUp8Unbanked(
 
 // 6D4DB5
 static void VehiclePitchUp8BankedLeft22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3402,7 +3402,7 @@ static void VehiclePitchUp8BankedLeft22(
 
 // 6D4DD3
 static void VehiclePitchUp8BankedRight22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3418,7 +3418,7 @@ static void VehiclePitchUp8BankedRight22(
 }
 
 static void VehiclePitchUp8BankedLeft45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3434,7 +3434,7 @@ static void VehiclePitchUp8BankedLeft45(
 }
 
 static void VehiclePitchUp8BankedRight45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3451,7 +3451,7 @@ static void VehiclePitchUp8BankedRight45(
 
 // 6D4D60
 static void VehiclePitchUp8(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     // 0x009A3D44:
@@ -3486,7 +3486,7 @@ static void VehiclePitchUp8(
 
 // 6D4E3A
 static void VehiclePitchUp16Unbanked(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3502,7 +3502,7 @@ static void VehiclePitchUp16Unbanked(
 }
 
 static void VehiclePitchUp16BankedLeft22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3518,7 +3518,7 @@ static void VehiclePitchUp16BankedLeft22(
 }
 
 static void VehiclePitchUp16BankedRight22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3534,7 +3534,7 @@ static void VehiclePitchUp16BankedRight22(
 }
 
 static void VehiclePitchUp16BankedLeft45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3550,7 +3550,7 @@ static void VehiclePitchUp16BankedLeft45(
 }
 
 static void VehiclePitchUp16BankedRight45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3566,7 +3566,7 @@ static void VehiclePitchUp16BankedRight45(
 }
 
 static void VehiclePitchUp16(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     switch (GetPaintBankRotation(vehicle))
@@ -3598,7 +3598,7 @@ static void VehiclePitchUp16(
 
 // 6D4E8F
 static void VehiclePitchUp50Unbanked(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3614,7 +3614,7 @@ static void VehiclePitchUp50Unbanked(
 }
 
 static void VehiclePitchUp50BankedLeft45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection)) + 40;
@@ -3630,7 +3630,7 @@ static void VehiclePitchUp50BankedLeft45(
 }
 
 static void VehiclePitchUp50BankedRight45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection)) + 40;
@@ -3646,7 +3646,7 @@ static void VehiclePitchUp50BankedRight45(
 }
 
 static void VehiclePitchUp50BankedLeft67(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection)) + 40;
@@ -3662,7 +3662,7 @@ static void VehiclePitchUp50BankedLeft67(
 }
 
 static void VehiclePitchUp50BankedRight67(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection)) + 40;
@@ -3678,7 +3678,7 @@ static void VehiclePitchUp50BankedRight67(
 }
 
 static void VehiclePitchUp50BankedLeft90(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection)) + 40;
@@ -3694,7 +3694,7 @@ static void VehiclePitchUp50BankedLeft90(
 }
 
 static void VehiclePitchUp50BankedRight90(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection)) + 40;
@@ -3710,7 +3710,7 @@ static void VehiclePitchUp50BankedRight90(
 }
 
 static void VehiclePitchUp50(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     switch (GetPaintBankRotation(vehicle))
@@ -3751,7 +3751,7 @@ static void VehiclePitchUp50(
 
 // 6D4D90
 static void VehiclePitchDown8Unbanked(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3768,7 +3768,7 @@ static void VehiclePitchDown8Unbanked(
 
 // 6D4DF4
 static void VehiclePitchDown8BankedLeft22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3785,7 +3785,7 @@ static void VehiclePitchDown8BankedLeft22(
 
 // 6D4E15
 static void VehiclePitchDown8BankedRight22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3801,7 +3801,7 @@ static void VehiclePitchDown8BankedRight22(
 }
 
 static void VehiclePitchDown8BankedLeft45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3817,7 +3817,7 @@ static void VehiclePitchDown8BankedLeft45(
 }
 
 static void VehiclePitchDown8BankedRight45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3834,7 +3834,7 @@ static void VehiclePitchDown8BankedRight45(
 
 // 6D4D89
 static void VehiclePitchDown8(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     // 0x009A3D94:
@@ -3869,7 +3869,7 @@ static void VehiclePitchDown8(
 
 // 6D4E63
 static void VehiclePitchDown16Unbanked(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3885,7 +3885,7 @@ static void VehiclePitchDown16Unbanked(
 }
 
 static void VehiclePitchDown16BankedLeft22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3901,7 +3901,7 @@ static void VehiclePitchDown16BankedLeft22(
 }
 
 static void VehiclePitchDown16BankedRight22(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3917,7 +3917,7 @@ static void VehiclePitchDown16BankedRight22(
 }
 
 static void VehiclePitchDown16BankedLeft45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3933,7 +3933,7 @@ static void VehiclePitchDown16BankedLeft45(
 }
 
 static void VehiclePitchDown16BankedRight45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3949,7 +3949,7 @@ static void VehiclePitchDown16BankedRight45(
 }
 
 static void VehiclePitchDown16(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     switch (GetPaintBankRotation(vehicle))
@@ -3981,7 +3981,7 @@ static void VehiclePitchDown16(
 
 // 6D4EB8
 static void VehiclePitchDown50Unbanked(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -3997,7 +3997,7 @@ static void VehiclePitchDown50Unbanked(
 }
 
 static void VehiclePitchDown50BankedLeft45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection)) + 40;
@@ -4013,7 +4013,7 @@ static void VehiclePitchDown50BankedLeft45(
 }
 
 static void VehiclePitchDown50BankedRight45(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection)) + 40;
@@ -4029,7 +4029,7 @@ static void VehiclePitchDown50BankedRight45(
 }
 
 static void VehiclePitchDown50BankedLeft67(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection)) + 40;
@@ -4045,7 +4045,7 @@ static void VehiclePitchDown50BankedLeft67(
 }
 
 static void VehiclePitchDown50BankedRight67(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection)) + 40;
@@ -4061,7 +4061,7 @@ static void VehiclePitchDown50BankedRight67(
 }
 
 static void VehiclePitchDown50BankedLeft90(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection)) + 40;
@@ -4077,7 +4077,7 @@ static void VehiclePitchDown50BankedLeft90(
 }
 
 static void VehiclePitchDown50BankedRight90(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : (YawTo16(imageDirection)) + 40;
@@ -4093,7 +4093,7 @@ static void VehiclePitchDown50BankedRight90(
 }
 
 static void VehiclePitchDown50(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     switch (GetPaintBankRotation(vehicle))
@@ -4132,7 +4132,7 @@ static void VehiclePitchDown50(
 
 // 6D47DA
 static void VehiclePitchInvertingDown25(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     carEntry--;
@@ -4141,7 +4141,7 @@ static void VehiclePitchInvertingDown25(
 
 // 6D4A02
 static void VehiclePitchInvertingDown42(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     carEntry--;
@@ -4150,7 +4150,7 @@ static void VehiclePitchInvertingDown42(
 
 // 6D4A56
 static void VehiclePitchInvertingDown60(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     carEntry--;
@@ -4163,7 +4163,7 @@ static void VehiclePitchInvertingDown60(
 
 // 6D4773
 static void VehiclePitchSpiralLiftUp(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -4179,7 +4179,7 @@ static void VehiclePitchSpiralLiftUp(
 }
 
 static void VehiclePitchSpiralLiftDown(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry,
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
     boundingBoxIndex = boundingBoxIndex != kBoundingBoxIndexUndefined ? boundingBoxIndex : YawTo16(imageDirection);
@@ -4273,7 +4273,7 @@ static constexpr vehicle_sprite_func PaintFunctionsByPitch[] = {
  *
  *  rct2: 0x006D5600
  */
-static void vehicle_visual_splash1_effect(PaintSession& session, int32_t z, const Vehicle* vehicle)
+static void vehicle_visual_splash1_effect(PaintSession& session, const int32_t z, const Vehicle* vehicle)
 {
     if (vehicle->GetTrackType() != TrackElemType::Watersplash)
     {
@@ -4300,7 +4300,7 @@ static void vehicle_visual_splash1_effect(PaintSession& session, int32_t z, cons
  *
  *  rct2: 0x006D5696
  */
-static void vehicle_visual_splash2_effect(PaintSession& session, int32_t z, const Vehicle* vehicle)
+static void vehicle_visual_splash2_effect(PaintSession& session, const int32_t z, const Vehicle* vehicle)
 {
     if (vehicle->Orientation & 7)
     {
@@ -4323,7 +4323,7 @@ static void vehicle_visual_splash2_effect(PaintSession& session, int32_t z, cons
  *
  *  rct2: 0x006D57EE
  */
-static void vehicle_visual_splash3_effect(PaintSession& session, int32_t z, const Vehicle* vehicle)
+static void vehicle_visual_splash3_effect(PaintSession& session, const int32_t z, const Vehicle* vehicle)
 {
     if (vehicle->Orientation & 7)
     {
@@ -4346,7 +4346,7 @@ static void vehicle_visual_splash3_effect(PaintSession& session, int32_t z, cons
  *
  *  rct2: 0x006D5783
  */
-static void vehicle_visual_splash4_effect(PaintSession& session, int32_t z, const Vehicle* vehicle)
+static void vehicle_visual_splash4_effect(PaintSession& session, const int32_t z, const Vehicle* vehicle)
 {
     Vehicle* vehicle2 = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
     if (vehicle2 == nullptr)
@@ -4374,7 +4374,7 @@ static void vehicle_visual_splash4_effect(PaintSession& session, int32_t z, cons
  *
  *  rct2: 0x006D5701
  */
-static void vehicle_visual_splash5_effect(PaintSession& session, int32_t z, const Vehicle* vehicle)
+static void vehicle_visual_splash5_effect(PaintSession& session, const int32_t z, const Vehicle* vehicle)
 {
     Vehicle* vehicle2 = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
     if (vehicle2 == nullptr)
@@ -4402,7 +4402,7 @@ static void vehicle_visual_splash5_effect(PaintSession& session, int32_t z, cons
     PaintAddImageAsChild(session, ImageId(image_id), { 0, 0, z }, { { 0, 0, z }, { 1, 1, 0 } });
 }
 
-void VehicleVisualSplashEffect(PaintSession& session, int32_t z, const Vehicle* vehicle, const CarEntry* carEntry)
+void VehicleVisualSplashEffect(PaintSession& session, const int32_t z, const Vehicle* vehicle, const CarEntry* carEntry)
 {
     switch (carEntry->effect_visual)
     {
@@ -4431,7 +4431,7 @@ void VehicleVisualSplashEffect(PaintSession& session, int32_t z, const Vehicle* 
  *  rct2: 0x006D45F8
  */
 void VehicleVisualDefault(
-    PaintSession& session, int32_t imageDirection, int32_t z, const Vehicle* vehicle, const CarEntry* carEntry)
+    PaintSession& session, int32_t imageDirection, const int32_t z, const Vehicle* vehicle, const CarEntry* carEntry)
 {
     if (vehicle->Pitch < std::size(PaintFunctionsByPitch))
     {
