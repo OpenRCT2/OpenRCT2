@@ -211,9 +211,9 @@ namespace OpenRCT2::Config
 
             // Default config setting is false until the games canvas can be separated from the effect
             model->DayNightCycle = reader->GetBoolean("day_night_cycle", false);
-            const bool isHardware = true;
-            model->EnableLightFx = isHardware && reader->GetBoolean("enable_light_fx", false);
-            model->EnableLightFxForVehicles = isHardware && reader->GetBoolean("enable_light_fx_for_vehicles", false);
+            const bool supportsLightFx = model->DrawingEngine == DrawingEngine::SoftwareWithHardwareDisplay;
+            model->EnableLightFx = supportsLightFx && reader->GetBoolean("enable_light_fx", false);
+            model->EnableLightFxForVehicles = supportsLightFx && reader->GetBoolean("enable_light_fx_for_vehicles", false);
             model->UpperCaseBanners = reader->GetBoolean("upper_case_banners", false);
             model->DisableLightningEffect = reader->GetBoolean("disable_lightning_effect", false);
             model->SteamOverlayPause = reader->GetBoolean("steam_overlay_pause", true);
