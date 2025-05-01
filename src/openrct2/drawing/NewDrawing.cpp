@@ -28,12 +28,6 @@ using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Paint;
 using namespace OpenRCT2::Ui;
 
-StringId DrawingEngineStringIds[] = {
-    STR_DRAWING_ENGINE_SOFTWARE,
-    STR_DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY,
-    STR_DRAWING_ENGINE_OPENGL,
-};
-
 DrawingEngine drawing_engine_get_type()
 {
     auto context = GetContext();

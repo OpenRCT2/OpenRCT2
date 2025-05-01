@@ -428,6 +428,13 @@ namespace OpenRCT2::Ui::Windows
     };
     // clang-format on
 
+    static constexpr StringId kDrawingEngineStringIds[] = {
+        STR_DRAWING_ENGINE_SOFTWARE,
+#ifndef DISABLE_OPENGL
+        STR_DRAWING_ENGINE_OPENGL,
+#endif
+    };
+
 #pragma endregion
 
     class OptionsWindow final : public Window
@@ -792,15 +799,11 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_DRAWING_ENGINE_DROPDOWN:
                 {
-                    int32_t numItems = 3;
-#ifdef DISABLE_OPENGL
-                    numItems = 2;
-#endif
-
+                    const auto numItems = static_cast<int32_t>(std::size(kDrawingEngineStringIds));
                     for (int32_t i = 0; i < numItems; i++)
                     {
                         gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[i].Args = DrawingEngineStringIds[i];
+                        gDropdownItems[i].Args = kDrawingEngineStringIds[i];
                     }
                     ShowDropdown(widget, numItems);
                     Dropdown::SetChecked(EnumValue(Config::Get().general.DrawingEngine), true);
@@ -894,27 +897,6 @@ namespace OpenRCT2::Ui::Windows
                 disabled_widgets &= ~(1uLL << WIDX_RESOLUTION_LABEL);
             }
 
-            // Disable Steam Overlay checkbox when using software or OpenGL rendering.
-            if (Config::Get().general.DrawingEngine == DrawingEngine::Software
-                || Config::Get().general.DrawingEngine == DrawingEngine::OpenGL)
-            {
-                disabled_widgets |= (1uLL << WIDX_STEAM_OVERLAY_PAUSE);
-            }
-            else
-            {
-                disabled_widgets &= ~(1uLL << WIDX_STEAM_OVERLAY_PAUSE);
-            }
-
-            // Disable changing VSync for Software engine, as we can't control its use of VSync
-            if (Config::Get().general.DrawingEngine == DrawingEngine::Software)
-            {
-                disabled_widgets |= (1uLL << WIDX_USE_VSYNC_CHECKBOX);
-            }
-            else
-            {
-                disabled_widgets &= ~(1uLL << WIDX_USE_VSYNC_CHECKBOX);
-            }
-
             SetCheckboxValue(WIDX_UNCAP_FPS_CHECKBOX, Config::Get().general.UncapFPS);
             SetCheckboxValue(WIDX_USE_VSYNC_CHECKBOX, Config::Get().general.UseVSync);
             SetCheckboxValue(WIDX_SHOW_FPS_CHECKBOX, Config::Get().general.ShowFPS);
@@ -925,7 +907,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Dropdown captions for straightforward strings.
             widgets[WIDX_FULLSCREEN].text = FullscreenModeNames[Config::Get().general.FullscreenMode];
-            widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(Config::Get().general.DrawingEngine)];
+            widgets[WIDX_DRAWING_ENGINE].text = kDrawingEngineStringIds[EnumValue(Config::Get().general.DrawingEngine)];
         }
 
         void DisplayDraw(DrawPixelInfo& dpi)
