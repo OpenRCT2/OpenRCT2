@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../Limits.h"
-#include "../scripting/Duktape.hpp"
 #include "../actions/ResultWithMessage.h"
 #include "../core/BitSet.hpp"
 #include "../core/FixedPoint.hpp"
@@ -19,6 +18,7 @@
 #include "../object/MusicObject.h"
 #include "../rct2/DATLimits.h"
 #include "../rct2/Limits.h"
+#include "../scripting/Duktape.hpp"
 #include "../world/Map.h"
 #include "RideColour.h"
 #include "RideEntry.h"
