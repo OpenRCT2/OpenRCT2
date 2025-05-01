@@ -76,6 +76,7 @@
 #include <cassert>
 #include <iterator>
 #include <limits>
+#include <openrct2/scripting/bindings/ride/ScRide.hpp>
 #include <optional>
 
 using namespace OpenRCT2;
