@@ -353,7 +353,7 @@ namespace OpenRCT2
                 // draw left
                 auto _right = left + shift.x;
                 auto clipped = dpi.Crop({ left, top }, { _right - left, bottom - top });
-                ViewportRender(dpi, vp);
+                ViewportRender(clipped, vp);
                 left += shift.x;
             }
             else if (shift.x < 0)
@@ -361,7 +361,7 @@ namespace OpenRCT2
                 // draw right
                 auto _left = right + shift.x;
                 auto clipped = dpi.Crop({ _left, top }, { right - _left, bottom - top });
-                ViewportRender(dpi, vp);
+                ViewportRender(clipped, vp);
                 right += shift.x;
             }
 
@@ -370,14 +370,14 @@ namespace OpenRCT2
                 // draw top
                 bottom = top + shift.y;
                 auto clipped = dpi.Crop({ left, top }, { right - left, bottom - top });
-                ViewportRender(dpi, vp);
+                ViewportRender(clipped, vp);
             }
             else if (shift.y < 0)
             {
                 // draw bottom
                 top = bottom + shift.y;
                 auto clipped = dpi.Crop({ left, top }, { right - left, bottom - top });
-                ViewportRender(dpi, vp);
+                ViewportRender(clipped, vp);
             }
         }
         else
