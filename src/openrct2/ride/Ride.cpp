@@ -911,7 +911,7 @@ bool Ride::supportsStatus(RideStatus s) const
         case RideStatus::simulating:
             return (!rtd.HasFlag(RtdFlag::noTestMode) && rtd.HasFlag(RtdFlag::hasTrack));
         case RideStatus::testing:
-            return !rtd.HasFlag(RtdFlag::noTestMode);
+            return !rtd.HasFlag(RtdFlag::noTestMode) && mode != RideMode::waterSlide;
         case RideStatus::count: // Meaningless but necessary to satisfy -Wswitch
             return false;
     }
@@ -2569,6 +2569,10 @@ static ResultWithMessage RideModeCheckValidStationNumbers(const Ride& ride)
             if (numStations >= 2)
                 return { true };
             return { false, STR_UNABLE_TO_OPERATE_WITH_LESS_THAN_TWO_STATIONS_IN_THIS_MODE };
+        case RideMode::waterSlide:
+            if (numStations == 2)
+                return { true };
+            return { false, STR_UNABLE_TO_OPERATE_WITHOUT_TWO_STATIONS_IN_THIS_MODE };
         default:
         {
             // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled
@@ -2619,8 +2623,10 @@ static ResultWithMessage RideCheckForEntranceExit(RideId rideIndex)
     if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
         return { true };
 
-    uint8_t entrance = 0;
-    uint8_t exit = 0;
+    auto hasEntrance = false;
+    auto hasExit = false;
+    auto entranceZ = -1;
+    auto lowestExitZ = -1;
     for (const auto& station : ride->getStations())
     {
         if (station.Start.IsNull())
@@ -2628,32 +2634,44 @@ static ResultWithMessage RideCheckForEntranceExit(RideId rideIndex)
 
         if (!station.Entrance.IsNull())
         {
-            entrance = 1;
+            if (hasEntrance && ride->mode == RideMode::waterSlide)
+            {
+                return { false, STR_ONLY_ONE_ENTRANCE_ALLOWED_IN_THIS_MODE };
+            }
+            entranceZ = station.Entrance.z;
+            hasEntrance = true;
         }
 
         if (!station.Exit.IsNull())
         {
-            exit = 1;
+            // Water slide mode allows for two exits (to make the entrance station easier to access for mechanics).
+            if (lowestExitZ < 0 || lowestExitZ > station.Exit.z)
+                lowestExitZ = station.Exit.z;
+
+            hasExit = true;
         }
 
         // If station start and no entrance/exit
         // Sets same error message as no entrance
         if (station.Exit.IsNull() && station.Entrance.IsNull())
         {
-            entrance = 0;
+            hasEntrance = false;
             break;
         }
     }
 
-    if (entrance == 0)
+    if (!hasEntrance)
     {
         return { false, STR_ENTRANCE_NOT_YET_BUILT };
     }
 
-    if (exit == 0)
+    if (!hasExit)
     {
         return { false, STR_EXIT_NOT_YET_BUILT };
     }
+
+    if (ride->mode == RideMode::waterSlide && entranceZ <= lowestExitZ)
+        return { false, STR_ENTRANCE_MUST_BE_HIGHER_THAN_EXIT_IN_THIS_MODE };
 
     return { true };
 }
@@ -3655,7 +3673,18 @@ ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying
                     vehicle->UpdateTrackMotion(nullptr);
                 }
 
-                vehicle->EnableCollisionsForTrain();
+                if (mode == RideMode::waterSlide)
+                {
+                    vehicle->waterSlideSetWaiting();
+                    if (i == 0)
+                    {
+                        vehicle->waterSlideRespawnVehicle();
+                    }
+                }
+                else
+                {
+                    vehicle->EnableCollisionsForTrain();
+                }
             }
         }
     }
@@ -3753,6 +3782,30 @@ void Ride::moveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackEle
     if (cableLiftPreviousBlock != nullptr)
     {
         cableLiftPreviousBlock->SetBrakeClosed(false);
+    }
+}
+
+void Ride::VehicleRespawnTrain(const Ride& ride, Vehicle* trainHead, CoordsXYZ trainPos, TrackElement* trackElement)
+{
+    int32_t remainingDistance = 0;
+    int32_t direction = trackElement->GetDirection();
+    auto posOffset = trainPos + CoordsXYZ{ word_9A2A60[direction], ride.getRideTypeDescriptor().Heights.VehicleZOffset };
+    for (auto vehicle = trainHead; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    {
+        int32_t halfSpacing = vehicle->Entry()->spacing >> 1;
+        remainingDistance -= halfSpacing;
+        vehicle->remaining_distance = remainingDistance;
+        remainingDistance -= halfSpacing;
+
+        vehicle->Orientation = direction << 3;
+        vehicle->TrackLocation = trainPos;
+        vehicle->MoveTo(posOffset);
+        vehicle->SetTrackType(trackElement->GetTrackType());
+        vehicle->SetTrackDirection(direction);
+        vehicle->track_progress = 31;
+        vehicle->current_station = trackElement->GetStationIndex();
+
+        vehicle->SetState(Vehicle::Status::MovingToEndOfStation);
     }
 }
 
@@ -4984,7 +5037,7 @@ static int32_t RideGetTrackLength(const Ride& ride)
     for (const auto& station : ride.getStations())
     {
         trackStart = station.GetStart();
-        if (trackStart.IsNull())
+        if (trackStart.IsNull() || (ride.mode == RideMode::waterSlide && station.Entrance.IsNull()))
             continue;
 
         tileElement = MapGetFirstElementAt(trackStart);
@@ -5120,6 +5173,18 @@ void Ride::updateMaxVehicles()
             case RideMode::poweredLaunch:
                 maxNumTrains = 1;
                 break;
+            case RideMode::waterSlide:
+            {
+                int32_t trainLength = 0;
+                for (int32_t i = 0; i < newCarsPerTrain; i++)
+                {
+                    const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(subtype, newCarsPerTrain, i)];
+                    trainLength += carEntry.spacing;
+                }
+                maxNumTrains = std::min(
+                    (RideGetTrackLength(*this) / (trainLength >> 9)) + 2, int32_t(OpenRCT2::Limits::kMaxTrainsPerRide));
+                break;
+            }
             default:
                 // Calculate maximum number of trains
                 int32_t trainLength = 0;
