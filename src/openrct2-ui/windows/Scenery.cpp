@@ -71,6 +71,8 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 195 - kTitleHeightNormal;
     constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
     constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
+    constexpr int32_t kDescriptionHeight = 24;
+    constexpr int32_t kInputMargin = 2;
     constexpr int32_t kMaxWindowHeight = 473;
     constexpr int32_t kTabMargin = 3;
     constexpr int32_t TabWidth = 31;
@@ -113,7 +115,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget     ({  2,  62}, {607, 80}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                 ), // 1000000   0x009DE418
         MakeWidget     ({609,  59}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW),    STR_ROTATE_OBJECTS_90      ), // 2000000   0x009DE428
         MakeWidget     ({609,  83}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PAINTBRUSH),      STR_SCENERY_PAINTBRUSH_TIP ), // 4000000   0x009DE438
-        MakeWidget     ({615,  108}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_COLOUR          ), // 8000000   0x009DE448
+        MakeWidget     ({615, 108}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_COLOUR          ), // 8000000   0x009DE448
         MakeWidget     ({615, 120}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_SECONDARY_COLOUR), // 10000000  0x009DE458
         MakeWidget     ({615, 132}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_TERTIARY_COLOUR  ), // 20000000  0x009DE468
         MakeWidget     ({609, 145}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_EYEDROPPER),   STR_SCENERY_EYEDROPPER_TIP ), // 40000000  0x009DE478
@@ -478,7 +480,7 @@ namespace OpenRCT2::Ui::Windows
                         else
                         {
                             const auto& listWidget = widgets[WIDX_SCENERY_LIST];
-                            const auto nonListHeight = height - listWidget.height() + 12;
+                            const auto nonListHeight = height - listWidget.height() + 2;
 
                             const auto numRows = static_cast<int32_t>(CountRows());
                             const auto maxContentHeight = numRows * SCENERY_BUTTON_HEIGHT;
@@ -637,7 +639,10 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            _actualMinHeight = WINDOW_SCENERY_MIN_HEIGHT + getTitleBarTargetHeight();
+            // Minimum window height: title, one scenery button, status bar, padding
+            _actualMinHeight = getTitleBarTargetHeight() + SCENERY_BUTTON_HEIGHT + kDescriptionHeight + 2 * kTabMargin;
+            _actualMinHeight += (1 + (_tabEntries.size() / GetMaxTabCountInARow())) * TabHeight;
+            _actualMinHeight += widgets[WIDX_FILTER_TEXT_BOX].height() + 2 * kInputMargin;
 
             // Set the window title
             StringId titleStringId = STR_MISCELLANEOUS;
@@ -806,7 +811,7 @@ namespace OpenRCT2::Ui::Windows
 
             ResizeFrame();
             widgets[WIDX_SCENERY_LIST].right = windowWidth - 26;
-            widgets[WIDX_SCENERY_LIST].bottom = height - 24;
+            widgets[WIDX_SCENERY_LIST].bottom = height - kDescriptionHeight;
 
             widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].left = windowWidth - 25;
             widgets[WIDX_SCENERY_REPAINT_SCENERY_BUTTON].left = windowWidth - 25;
