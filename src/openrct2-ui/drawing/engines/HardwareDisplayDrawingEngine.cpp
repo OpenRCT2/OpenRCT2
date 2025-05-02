@@ -208,13 +208,14 @@ public:
 
     void EndDraw() override
     {
-        X8DrawingEngine::EndDraw();
-
-        Display();
         if (gShowDirtyVisuals)
         {
             UpdateDirtyVisuals();
         }
+
+        Display();
+
+        X8DrawingEngine::EndDraw();
     }
 
 protected:
@@ -255,6 +256,7 @@ private:
             CopyBitsToTexture(
                 _screenTexture, _bits, static_cast<int32_t>(_width), static_cast<int32_t>(_height), _paletteHWMapped);
         }
+
         if (smoothNN)
         {
             SDL_SetRenderTarget(_sdlRenderer, _scaledScreenTexture);

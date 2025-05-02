@@ -284,22 +284,8 @@ public:
     void Resize(uint32_t width, uint32_t height) override
     {
         ConfigureBits(width, height, width);
-        ConfigureCanvas();
+        ConfigureRenderTargets();
         ConfigureDirtyGrid();
-
-        _drawingContext->Resize(width, height);
-
-        _drawingContext->StartNewDraw();
-
-        _drawingContext->SetViewportFrameBuffer();
-        _drawingContext->Clear(_bitsDPI, PaletteIndex::pi10);
-        _drawingContext->FlushCommandBuffers();
-
-        _drawingContext->SetUiFrameBuffer();
-        _drawingContext->Clear(_bitsDPI, PaletteIndex::pi0);
-        _drawingContext->FlushCommandBuffers();
-
-        _drawingContext->FinishDraw();
     }
 
     void ConfigureDirtyGrid()
@@ -645,7 +631,7 @@ private:
         dpi->pitch = _pitch - width;
     }
 
-    void ConfigureCanvas()
+    void ConfigureRenderTargets()
     {
         // Re-create screen framebuffer
         _screenFramebuffer = std::make_unique<OpenGLFramebuffer>(_window);
@@ -660,6 +646,20 @@ private:
             uint32_t scale = std::ceil(Config::Get().general.WindowScale);
             _smoothScaleFramebuffer = std::make_unique<OpenGLFramebuffer>(_width * scale, _height * scale, false, false);
         }
+
+        _drawingContext->Resize(_width, _height);
+
+        _drawingContext->StartNewDraw();
+
+        _drawingContext->SetViewportFrameBuffer();
+        _drawingContext->Clear(_bitsDPI, PaletteIndex::pi10);
+        _drawingContext->FlushCommandBuffers();
+
+        _drawingContext->SetUiFrameBuffer();
+        _drawingContext->Clear(_bitsDPI, PaletteIndex::pi0);
+        _drawingContext->FlushCommandBuffers();
+
+        _drawingContext->FinishDraw();
     }
 
     void Display()

@@ -50,7 +50,6 @@ namespace OpenRCT2
             uint32_t _pitch = 0;
             size_t _bitsSize = 0;
             uint8_t* _bits = nullptr;
-
             DrawPixelInfo _bitsDPI = {};
 
             bool _lastLightFXenabled = false;
@@ -98,7 +97,7 @@ namespace OpenRCT2
             void InvalidateImage(uint32_t image) override;
 
         protected:
-            void ConfigureBits(uint32_t width, uint32_t height, uint32_t pitch);
+            void ConfigureRenderTargets(uint32_t width, uint32_t height, uint32_t pitch);
             virtual void OnDrawDirtyBlock(int32_t left, int32_t top, int32_t right, int32_t bottom);
 
         private:

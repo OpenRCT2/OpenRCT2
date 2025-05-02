@@ -106,7 +106,7 @@ void X8DrawingEngine::Initialise()
 void X8DrawingEngine::Resize(uint32_t width, uint32_t height)
 {
     uint32_t pitch = width;
-    ConfigureBits(width, height, pitch);
+    ConfigureRenderTargets(width, height, pitch);
 
     _drawingContext->BeginDraw();
     _drawingContext->Clear(_bitsDPI, PaletteIndex::pi10);
@@ -256,7 +256,7 @@ void X8DrawingEngine::InvalidateImage([[maybe_unused]] uint32_t image)
     // Not applicable for this engine
 }
 
-void X8DrawingEngine::ConfigureBits(uint32_t width, uint32_t height, uint32_t pitch)
+void X8DrawingEngine::ConfigureRenderTargets(uint32_t width, uint32_t height, uint32_t pitch)
 {
     size_t newBitsSize = pitch * height;
     uint8_t* newBits = new uint8_t[newBitsSize];
