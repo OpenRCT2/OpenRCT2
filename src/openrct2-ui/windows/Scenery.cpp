@@ -71,6 +71,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 195 - kTitleHeightNormal;
     constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
     constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
+    constexpr int32_t kMaxWindowHeight = 473;
     constexpr int32_t kTabMargin = 3;
     constexpr int32_t TabWidth = 31;
     constexpr int32_t TabHeight = 28;
@@ -481,8 +482,8 @@ namespace OpenRCT2::Ui::Windows
 
                             const auto numRows = static_cast<int32_t>(CountRows());
                             const auto maxContentHeight = numRows * SCENERY_BUTTON_HEIGHT;
-                            const auto maxWindowHeight = maxContentHeight + nonListHeight;
-                            const auto windowHeight = std::clamp(maxWindowHeight, _actualMinHeight, 473);
+                            const auto expandedWindowHeight = maxContentHeight + nonListHeight;
+                            const auto windowHeight = std::clamp(expandedWindowHeight, _actualMinHeight, kMaxWindowHeight);
 
                             min_height = windowHeight;
                             max_height = windowHeight;
