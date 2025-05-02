@@ -1201,8 +1201,9 @@ namespace OpenRCT2::Ui::Windows
             }
 
             OnResize();
-            OnPrepareDraw();
             OnUpdate();
+            ResizeFrame();
+
             if (listen && viewport != nullptr)
                 viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
         }
