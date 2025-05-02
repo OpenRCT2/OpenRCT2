@@ -64,7 +64,8 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_OPTIONS_PAGE_RENDERING,
         WINDOW_OPTIONS_PAGE_CULTURE,
         WINDOW_OPTIONS_PAGE_AUDIO,
-        WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
+        WINDOW_OPTIONS_PAGE_INTERFACE,
+        WINDOW_OPTIONS_PAGE_CONTROLS,
         WINDOW_OPTIONS_PAGE_MISC,
         WINDOW_OPTIONS_PAGE_ADVANCED,
         WINDOW_OPTIONS_PAGE_COUNT
@@ -83,7 +84,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TAB_RENDERING,
         WIDX_TAB_CULTURE,
         WIDX_TAB_AUDIO,
-        WIDX_TAB_CONTROLS_AND_INTERFACE,
+        WIDX_TAB_INTERFACE,
+        WIDX_TAB_CONTROLS,
         WIDX_TAB_MISC,
         WIDX_TAB_ADVANCED,
 
@@ -163,17 +165,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SOUND_VOLUME,
         WIDX_MUSIC_VOLUME,
 
-        // Controls and interface
-        WIDX_CONTROLS_GROUP = WIDX_PAGE_START,
-        WIDX_SCREEN_EDGE_SCROLLING,
-        WIDX_TRAP_CURSOR,
-        WIDX_INVERT_DRAG,
-        WIDX_ZOOM_TO_CURSOR,
-        WIDX_WINDOW_BUTTONS_ON_THE_LEFT,
-        WIDX_ENLARGED_UI,
-        WIDX_TOUCH_ENHANCEMENTS,
-        WIDX_HOTKEY_DROPDOWN,
-        WIDX_THEMES_GROUP,
+        // Interface
+        WIDX_THEMES_GROUP = WIDX_PAGE_START,
         WIDX_THEMES_LABEL,
         WIDX_THEMES,
         WIDX_THEMES_DROPDOWN,
@@ -189,6 +182,17 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TOOLBAR_SHOW_CHAT,
         WIDX_TOOLBAR_SHOW_ZOOM,
         WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE,
+
+        // Controls
+        WIDX_CONTROLS_GROUP = WIDX_PAGE_START,
+        WIDX_SCREEN_EDGE_SCROLLING,
+        WIDX_TRAP_CURSOR,
+        WIDX_INVERT_DRAG,
+        WIDX_ZOOM_TO_CURSOR,
+        WIDX_WINDOW_BUTTONS_ON_THE_LEFT,
+        WIDX_ENLARGED_UI,
+        WIDX_TOUCH_ENHANCEMENTS,
+        WIDX_HOTKEY_DROPDOWN,
 
         // Misc
         WIDX_TITLE_SEQUENCE_GROUP = WIDX_PAGE_START,
@@ -244,9 +248,10 @@ namespace OpenRCT2::Ui::Windows
         MakeTab({ 34, 17 }, STR_OPTIONS_RENDERING_TIP), \
         MakeTab({ 65, 17 }, STR_OPTIONS_CULTURE_TIP), \
         MakeTab({ 96, 17 }, STR_OPTIONS_AUDIO_TIP), \
-        MakeTab({ 127, 17 }, STR_OPTIONS_CONTROLS_AND_INTERFACE_TIP), \
-        MakeTab({ 158, 17 }, STR_OPTIONS_MISCELLANEOUS_TIP), \
-        MakeTab({ 189, 17 }, STR_OPTIONS_ADVANCED)
+        MakeTab({ 127, 17 }, STR_OPTIONS_INTERFACE_TIP), \
+        MakeTab({ 158, 17 }, STR_OPTIONS_CONTROLS_TIP), \
+        MakeTab({ 189, 17 }, STR_OPTIONS_MISCELLANEOUS_TIP), \
+        MakeTab({ 220, 17 }, STR_OPTIONS_ADVANCED)
 
     static constexpr Widget window_options_display_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
@@ -333,10 +338,8 @@ namespace OpenRCT2::Ui::Windows
     };
 
     constexpr int32_t kControlsGroupStart = 53;
-    constexpr int32_t kThemesGroupStart = 193;
-    constexpr int32_t kToolbarGroupStart = 245;
 
-    static constexpr Widget window_options_controls_and_interface_widgets[] = {
+    static constexpr Widget window_options_controls_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
         MakeWidget({  5, kControlsGroupStart +  0},  {300,137}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CONTROLS_GROUP                                                ), // Controls group
         MakeWidget({ 10, kControlsGroupStart + 13},  {290, 14}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SCREEN_EDGE_SCROLLING,      STR_SCREEN_EDGE_SCROLLING_TIP     ), // Edge scrolling
@@ -347,7 +350,13 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 10, kControlsGroupStart + 90},  {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_ENLARGED_UI,                STR_ENLARGED_UI_TIP               ),
         MakeWidget({ 25, kControlsGroupStart + 105}, {275, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_TOUCH_ENHANCEMENTS,         STR_TOUCH_ENHANCEMENTS_TIP        ),
         MakeWidget({155, kControlsGroupStart + 120}, {145, 13}, WindowWidgetType::Button,   WindowColour::Secondary, STR_HOTKEY,                     STR_HOTKEY_TIP                    ), // Set hotkeys buttons
+    };
 
+    constexpr int32_t kThemesGroupStart = 53;
+    constexpr int32_t kToolbarGroupStart = kThemesGroupStart + 52;
+
+    static constexpr Widget window_options_interface_widgets[] = {
+        MAIN_OPTIONS_WIDGETS,
         MakeWidget({  5, kThemesGroupStart +  0}, {300, 48}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_THEMES_GROUP                                          ), // Themes group
         MakeWidget({ 10, kThemesGroupStart + 14}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_THEMES_LABEL_CURRENT_THEME, STR_CURRENT_THEME_TIP     ), // Themes
         MakeWidget({155, kThemesGroupStart + 14}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRING                                                ),
@@ -422,7 +431,8 @@ namespace OpenRCT2::Ui::Windows
         window_options_rendering_widgets,
         window_options_culture_widgets,
         window_options_audio_widgets,
-        window_options_controls_and_interface_widgets,
+        window_options_interface_widgets,
+        window_options_controls_widgets,
         window_options_misc_widgets,
         window_options_advanced_widgets,
     };
@@ -462,8 +472,11 @@ namespace OpenRCT2::Ui::Windows
                     case WINDOW_OPTIONS_PAGE_AUDIO:
                         AudioMouseUp(widgetIndex);
                         break;
-                    case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
+                    case WINDOW_OPTIONS_PAGE_CONTROLS:
                         ControlsMouseUp(widgetIndex);
+                        break;
+                    case WINDOW_OPTIONS_PAGE_INTERFACE:
+                        InterfaceMouseUp(widgetIndex);
                         break;
                     case WINDOW_OPTIONS_PAGE_MISC:
                         MiscMouseUp(widgetIndex);
@@ -494,8 +507,8 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_OPTIONS_PAGE_AUDIO:
                     AudioMouseDown(widgetIndex);
                     break;
-                case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-                    ControlsMouseDown(widgetIndex);
+                case WINDOW_OPTIONS_PAGE_INTERFACE:
+                    InterfaceMouseDown(widgetIndex);
                     break;
                 case WINDOW_OPTIONS_PAGE_MISC:
                     MiscMouseDown(widgetIndex);
@@ -527,8 +540,8 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_OPTIONS_PAGE_AUDIO:
                     AudioDropdown(widgetIndex, dropdownIndex);
                     break;
-                case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-                    ControlsDropdown(widgetIndex, dropdownIndex);
+                case WINDOW_OPTIONS_PAGE_INTERFACE:
+                    InterfaceDropdown(widgetIndex, dropdownIndex);
                     break;
                 case WINDOW_OPTIONS_PAGE_MISC:
                     MiscDropdown(widgetIndex, dropdownIndex);
@@ -559,8 +572,11 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_OPTIONS_PAGE_AUDIO:
                     AudioPrepareDraw();
                     break;
-                case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
+                case WINDOW_OPTIONS_PAGE_CONTROLS:
                     ControlsPrepareDraw();
+                    break;
+                case WINDOW_OPTIONS_PAGE_INTERFACE:
+                    InterfacePrepareDraw();
                     break;
                 case WINDOW_OPTIONS_PAGE_MISC:
                     MiscPrepareDraw();
@@ -605,7 +621,7 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_OPTIONS_PAGE_DISPLAY:
                 case WINDOW_OPTIONS_PAGE_RENDERING:
                 case WINDOW_OPTIONS_PAGE_CULTURE:
-                case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
+                case WINDOW_OPTIONS_PAGE_CONTROLS:
                 case WINDOW_OPTIONS_PAGE_MISC:
                 case WINDOW_OPTIONS_PAGE_ADVANCED:
                 default:
@@ -622,7 +638,7 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_OPTIONS_PAGE_DISPLAY:
                 case WINDOW_OPTIONS_PAGE_RENDERING:
                 case WINDOW_OPTIONS_PAGE_CULTURE:
-                case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
+                case WINDOW_OPTIONS_PAGE_CONTROLS:
                 case WINDOW_OPTIONS_PAGE_MISC:
                 case WINDOW_OPTIONS_PAGE_ADVANCED:
                 default:
@@ -651,7 +667,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_RENDERING:
                 case WIDX_TAB_CULTURE:
                 case WIDX_TAB_AUDIO:
-                case WIDX_TAB_CONTROLS_AND_INTERFACE:
+                case WIDX_TAB_CONTROLS:
+                case WIDX_TAB_INTERFACE:
                 case WIDX_TAB_MISC:
                 case WIDX_TAB_ADVANCED:
                     SetPage(widgetIndex - WIDX_FIRST_TAB);
@@ -665,8 +682,8 @@ namespace OpenRCT2::Ui::Windows
 
             disabled_widgets = 0;
             auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
-            const bool controlsTabSelected = (WIDX_FIRST_TAB + page) == WIDX_TAB_CONTROLS_AND_INTERFACE;
-            if (!hasFilePicker && controlsTabSelected)
+            const bool advancedTabSelected = (WIDX_FIRST_TAB + page) == WIDX_TAB_ADVANCED;
+            if (!hasFilePicker && advancedTabSelected)
             {
                 disabled_widgets |= (1uLL << WIDX_ALWAYS_NATIVE_LOADSAVE);
                 widgets[WIDX_ALWAYS_NATIVE_LOADSAVE].type = WindowWidgetType::Empty;
@@ -1527,15 +1544,6 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
 #pragma region Controls tab events
-        void ToggleToolbarSetting(bool& setting)
-        {
-            setting ^= true;
-            Config::Save();
-            Invalidate();
-
-            auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByClass(WindowClass::TopToolbar);
-        }
 
         void ControlsMouseUp(WidgetIndex widgetIndex)
         {
@@ -1561,33 +1569,6 @@ namespace OpenRCT2::Ui::Windows
                     Config::Get().general.ZoomToCursor ^= 1;
                     Config::Save();
                     Invalidate();
-                    break;
-                case WIDX_TOOLBAR_BUTTONS_CENTRED:
-                    ToggleToolbarSetting(Config::Get().interface.ToolbarButtonsCentred);
-                    break;
-                case WIDX_TOOLBAR_SHOW_FINANCES:
-                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowFinances);
-                    break;
-                case WIDX_TOOLBAR_SHOW_RESEARCH:
-                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowResearch);
-                    break;
-                case WIDX_TOOLBAR_SHOW_CHEATS:
-                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowCheats);
-                    break;
-                case WIDX_TOOLBAR_SHOW_NEWS:
-                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowNews);
-                    break;
-                case WIDX_TOOLBAR_SHOW_MUTE:
-                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowMute);
-                    break;
-                case WIDX_TOOLBAR_SHOW_CHAT:
-                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowChat);
-                    break;
-                case WIDX_TOOLBAR_SHOW_ZOOM:
-                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowZoom);
-                    break;
-                case WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE:
-                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowRotateAnticlockwise);
                     break;
                 case WIDX_WINDOW_BUTTONS_ON_THE_LEFT:
                     Config::Get().interface.WindowButtonsOnTheLeft ^= 1;
@@ -1616,6 +1597,66 @@ namespace OpenRCT2::Ui::Windows
                     Config::Save();
                     Invalidate();
                     break;
+            }
+        }
+
+        void ControlsPrepareDraw()
+        {
+            SetCheckboxValue(WIDX_SCREEN_EDGE_SCROLLING, Config::Get().general.EdgeScrolling);
+            SetCheckboxValue(WIDX_TRAP_CURSOR, Config::Get().general.TrapCursor);
+            SetCheckboxValue(WIDX_INVERT_DRAG, Config::Get().general.InvertViewportDrag);
+            SetCheckboxValue(WIDX_ZOOM_TO_CURSOR, Config::Get().general.ZoomToCursor);
+            SetCheckboxValue(WIDX_WINDOW_BUTTONS_ON_THE_LEFT, Config::Get().interface.WindowButtonsOnTheLeft);
+            SetCheckboxValue(WIDX_ENLARGED_UI, Config::Get().interface.EnlargedUi);
+            SetCheckboxValue(WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.TouchEnhancements);
+
+            WidgetSetEnabled(*this, WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.EnlargedUi);
+        }
+
+#pragma endregion
+
+#pragma region Interface tab events
+        void ToggleToolbarSetting(bool& setting)
+        {
+            setting ^= true;
+            Config::Save();
+            Invalidate();
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::TopToolbar);
+        }
+
+        void InterfaceMouseUp(WidgetIndex widgetIndex)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_TOOLBAR_BUTTONS_CENTRED:
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarButtonsCentred);
+                    break;
+                case WIDX_TOOLBAR_SHOW_FINANCES:
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowFinances);
+                    break;
+                case WIDX_TOOLBAR_SHOW_RESEARCH:
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowResearch);
+                    break;
+                case WIDX_TOOLBAR_SHOW_CHEATS:
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowCheats);
+                    break;
+                case WIDX_TOOLBAR_SHOW_NEWS:
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowNews);
+                    break;
+                case WIDX_TOOLBAR_SHOW_MUTE:
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowMute);
+                    break;
+                case WIDX_TOOLBAR_SHOW_CHAT:
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowChat);
+                    break;
+                case WIDX_TOOLBAR_SHOW_ZOOM:
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowZoom);
+                    break;
+                case WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE:
+                    ToggleToolbarSetting(Config::Get().interface.ToolbarShowRotateAnticlockwise);
+                    break;
                 case WIDX_THEMES_BUTTON:
                     ContextOpenWindow(WindowClass::Themes);
                     Invalidate();
@@ -1623,7 +1664,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void ControlsMouseDown(WidgetIndex widgetIndex)
+        void InterfaceMouseDown(WidgetIndex widgetIndex)
         {
             Widget* widget = &widgets[widgetIndex - 1];
 
@@ -1648,7 +1689,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void ControlsDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
+        void InterfaceDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
             switch (widgetIndex)
             {
@@ -1662,12 +1703,8 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void ControlsPrepareDraw()
+        void InterfacePrepareDraw()
         {
-            SetCheckboxValue(WIDX_SCREEN_EDGE_SCROLLING, Config::Get().general.EdgeScrolling);
-            SetCheckboxValue(WIDX_TRAP_CURSOR, Config::Get().general.TrapCursor);
-            SetCheckboxValue(WIDX_INVERT_DRAG, Config::Get().general.InvertViewportDrag);
-            SetCheckboxValue(WIDX_ZOOM_TO_CURSOR, Config::Get().general.ZoomToCursor);
             SetCheckboxValue(WIDX_TOOLBAR_BUTTONS_CENTRED, Config::Get().interface.ToolbarButtonsCentred);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_FINANCES, Config::Get().interface.ToolbarShowFinances);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_RESEARCH, Config::Get().interface.ToolbarShowResearch);
@@ -1677,11 +1714,6 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_CHAT, Config::Get().interface.ToolbarShowChat);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_ZOOM, Config::Get().interface.ToolbarShowZoom);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE, Config::Get().interface.ToolbarShowRotateAnticlockwise);
-            SetCheckboxValue(WIDX_WINDOW_BUTTONS_ON_THE_LEFT, Config::Get().interface.WindowButtonsOnTheLeft);
-            SetCheckboxValue(WIDX_ENLARGED_UI, Config::Get().interface.EnlargedUi);
-            SetCheckboxValue(WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.TouchEnhancements);
-
-            WidgetSetEnabled(*this, WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.EnlargedUi);
 
             size_t activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
             const utf8* activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
@@ -2130,7 +2162,8 @@ namespace OpenRCT2::Ui::Windows
             DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_RENDERING, SPR_G2_TAB_TREE);
             DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_CULTURE, SPR_TAB_TIMER_0);
             DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_AUDIO, SPR_TAB_MUSIC_0);
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE, SPR_TAB_GEARS_0);
+            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_INTERFACE, SPR_TAB_PAINT_0);
+            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_CONTROLS, SPR_G2_CONTROLS_TAB_START);
             DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_MISC, SPR_TAB_RIDE_0);
             DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
         }
@@ -2225,7 +2258,8 @@ namespace OpenRCT2::Ui::Windows
             1, // WINDOW_OPTIONS_PAGE_RENDERING,
             8, // WINDOW_OPTIONS_PAGE_CULTURE,
             2, // WINDOW_OPTIONS_PAGE_AUDIO,
-            2, // WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
+            4, // WINDOW_OPTIONS_PAGE_INTERFACE,
+            8, // WINDOW_OPTIONS_PAGE_CONTROLS,
             4, // WINDOW_OPTIONS_PAGE_MISC,
             2, // WINDOW_OPTIONS_PAGE_ADVANCED,
         };
@@ -2235,7 +2269,8 @@ namespace OpenRCT2::Ui::Windows
             1,                                                 // WINDOW_OPTIONS_PAGE_RENDERING,
             8,                                                 // WINDOW_OPTIONS_PAGE_CULTURE,
             16,                                                // WINDOW_OPTIONS_PAGE_AUDIO,
-            4,                                                 // WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
+            8,                                                 // WINDOW_OPTIONS_PAGE_INTERFACE,
+            8,                                                 // WINDOW_OPTIONS_PAGE_CONTROLS,
             16,                                                // WINDOW_OPTIONS_PAGE_MISC,
             16,                                                // WINDOW_OPTIONS_PAGE_ADVANCED,
         };

@@ -444,6 +444,46 @@
         "y": 3
     },
     {
+        "path": "icons/controls_0.png",
+        "x": 1,
+        "y": 1
+    },
+    {
+        "path": "icons/controls_1.png",
+        "x": 1,
+        "y": 1
+    },
+    {
+        "path": "icons/controls_2.png",
+        "x": 1,
+        "y": 1
+    },
+    {
+        "path": "icons/controls_3.png",
+        "x": 1,
+        "y": 1
+    },
+    {
+        "path": "icons/controls_4.png",
+        "x": 1,
+        "y": 1
+    },
+    {
+        "path": "icons/controls_5.png",
+        "x": 1,
+        "y": 1
+    },
+    {
+        "path": "icons/controls_6.png",
+        "x": 1,
+        "y": 1
+    },
+    {
+        "path": "icons/controls_7.png",
+        "x": 1,
+        "y": 1
+    },
+    {
         "path": "logo_mono_dithered.png"
     },
     {
