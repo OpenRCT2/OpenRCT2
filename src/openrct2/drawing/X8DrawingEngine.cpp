@@ -33,6 +33,60 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Ui;
 
+void X8FrameBuffer::Resize(int32_t width, int32_t height, int32_t pitch)
+{
+    size_t newBitsSize = pitch * height;
+
+    auto newBits = std::make_unique<uint8_t[]>(newBitsSize);
+    if (_bits == nullptr)
+    {
+        std::fill_n(newBits.get(), newBitsSize, 0);
+    }
+    else
+    {
+        if (_pitch == pitch)
+        {
+            std::copy_n(_bits.get(), std::min(_bitsSize, newBitsSize), newBits.get());
+        }
+        else
+        {
+            uint8_t* src = _bits.get();
+            uint8_t* dst = newBits.get();
+
+            uint32_t minWidth = std::min(width, width);
+            uint32_t minHeight = std::min(height, height);
+            for (uint32_t y = 0; y < minHeight; y++)
+            {
+                std::copy_n(src, minWidth, dst);
+                if (pitch - minWidth > 0)
+                {
+                    std::fill_n(dst + minWidth, pitch - minWidth, 0);
+                }
+                src += _pitch;
+                dst += pitch;
+            }
+        }
+    }
+
+    _bits = std::move(newBits);
+    _bitsSize = newBitsSize;
+    _width = width;
+    _height = height;
+    _pitch = pitch;
+}
+
+DrawPixelInfo X8FrameBuffer::GetDrawingPixelInfo() const
+{
+    DrawPixelInfo dpi;
+    dpi.bits = _bits.get();
+    dpi.x = 0;
+    dpi.y = 0;
+    dpi.width = _width;
+    dpi.height = _height;
+    dpi.pitch = _pitch - _width;
+    return dpi;
+}
+
 X8WeatherDrawer::X8WeatherDrawer(IDrawingContext& drawingCtx)
     : _drawingContext{ &drawingCtx }
 {
@@ -85,8 +139,6 @@ void X8WeatherDrawer::Draw(
 
 X8DrawingEngine::X8DrawingEngine([[maybe_unused]] const std::shared_ptr<Ui::IUiContext>& uiContext)
 {
-    _bitsDPI.DrawingEngine = this;
-
     _drawingContext = std::make_unique<X8DrawingContext>(this);
     _weatherDrawer = std::make_unique<X8WeatherDrawer>(*_drawingContext);
 
@@ -96,7 +148,6 @@ X8DrawingEngine::X8DrawingEngine([[maybe_unused]] const std::shared_ptr<Ui::IUiC
 
 X8DrawingEngine::~X8DrawingEngine()
 {
-    delete[] _bits;
 }
 
 void X8DrawingEngine::Initialise()
@@ -105,11 +156,15 @@ void X8DrawingEngine::Initialise()
 
 void X8DrawingEngine::Resize(uint32_t width, uint32_t height)
 {
+    _width = static_cast<int32_t>(width);
+    _height = static_cast<int32_t>(height);
+
     uint32_t pitch = width;
     ConfigureRenderTargets(width, height, pitch);
 
+    auto vpDPI = _vpFrameBuffer.GetDrawingPixelInfo();
     _drawingContext->BeginDraw();
-    _drawingContext->Clear(_bitsDPI, PaletteIndex::pi10);
+    _drawingContext->Clear(vpDPI, PaletteIndex::pi10);
     _drawingContext->EndDraw();
 }
 
@@ -134,7 +189,8 @@ void X8DrawingEngine::BeginDraw()
         // HACK we need to re-configure the bits if light fx has been enabled / disabled
         if (_lastLightFXenabled != Config::Get().general.EnableLightFx)
         {
-            Resize(_width, _height);
+            auto dpi = GetDrawingPixelInfo();
+            Resize(dpi.width, dpi.height);
             GfxInvalidateScreen();
             _lastLightFXenabled = Config::Get().general.EnableLightFx;
         }
@@ -161,12 +217,18 @@ void X8DrawingEngine::PaintViewport()
 
 void X8DrawingEngine::PaintWindows()
 {
-    WindowDrawAll(_bitsDPI, 0, 0, static_cast<int32_t>(_width), static_cast<int32_t>(_height));
+    auto dpiUi = _uiFrameBuffer.GetDrawingPixelInfo();
+    dpiUi.DrawingEngine = this;
+
+    WindowDrawAll(dpiUi, 0, 0, dpiUi.width, dpiUi.height);
 }
 
 void X8DrawingEngine::PaintWeather()
 {
-    DrawWeather(_bitsDPI, _weatherDrawer.get());
+    auto dpiEffects = _effectsFramebuffer.GetDrawingPixelInfo();
+    dpiEffects.DrawingEngine = this;
+
+    DrawWeather(dpiEffects, _weatherDrawer.get());
 }
 
 void X8DrawingEngine::DrawAllDirtyBlocks()
@@ -182,8 +244,12 @@ void X8DrawingEngine::DrawDirtyBlocks(int32_t left, int32_t top, int32_t right, 
     // Draw region
     OnDrawDirtyBlock(left, top, right, bottom);
 
-    auto vpDPI = _bitsDPI.Crop({ left, top }, { right - left, bottom - top });
-    ViewportRenderPrimary(vpDPI);
+    auto vpDPI = _vpFrameBuffer.GetDrawingPixelInfo();
+    vpDPI.DrawingEngine = this;
+
+    auto croppedDPI = vpDPI.Crop({ left, top }, { right - left, bottom - top });
+
+    ViewportRenderPrimary(croppedDPI);
 }
 
 void X8DrawingEngine::CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy)
@@ -191,23 +257,26 @@ void X8DrawingEngine::CopyRect(int32_t x, int32_t y, int32_t width, int32_t heig
     if (dx == 0 && dy == 0)
         return;
 
+    // Assume primary viewport buffer.
+    auto vpDPI = _vpFrameBuffer.GetDrawingPixelInfo();
+
     // Originally 0x00683359
     // Adjust for move off screen
     // NOTE: when zooming, there can be x, y, dx, dy combinations that go off the
     // screen; hence the checks. This code should ultimately not be called when
     // zooming because this function is specific to updating the screen on move
     int32_t lmargin = std::min(x - dx, 0);
-    int32_t rmargin = std::min(static_cast<int32_t>(_width) - (x - dx + width), 0);
+    int32_t rmargin = std::min(static_cast<int32_t>(vpDPI.width) - (x - dx + width), 0);
     int32_t tmargin = std::min(y - dy, 0);
-    int32_t bmargin = std::min(static_cast<int32_t>(_height) - (y - dy + height), 0);
+    int32_t bmargin = std::min(static_cast<int32_t>(vpDPI.height) - (y - dy + height), 0);
     x -= lmargin;
     y -= tmargin;
     width += lmargin + rmargin;
     height += tmargin + bmargin;
 
-    int32_t stride = _bitsDPI.LineStride();
-    uint8_t* to = _bitsDPI.bits + y * stride + x;
-    uint8_t* from = _bitsDPI.bits + (y - dy) * stride + x - dx;
+    int32_t stride = vpDPI.LineStride();
+    uint8_t* to = vpDPI.bits + y * stride + x;
+    uint8_t* from = vpDPI.bits + (y - dy) * stride + x - dx;
 
     if (dy > 0)
     {
@@ -228,7 +297,9 @@ void X8DrawingEngine::CopyRect(int32_t x, int32_t y, int32_t width, int32_t heig
 
 std::string X8DrawingEngine::Screenshot()
 {
-    return ScreenshotDumpPNG(_bitsDPI);
+    auto vpDPI = _vpFrameBuffer.GetDrawingPixelInfo();
+
+    return ScreenshotDumpPNG(vpDPI);
 }
 
 IDrawingContext* X8DrawingEngine::GetDrawingContext()
@@ -243,7 +314,10 @@ IDrawingContext* X8DrawingEngine::GetDrawingContext()
 
 DrawPixelInfo X8DrawingEngine::GetDrawingPixelInfo()
 {
-    return _bitsDPI;
+    auto dpi = _vpFrameBuffer.GetDrawingPixelInfo();
+    dpi.DrawingEngine = this;
+
+    return dpi;
 }
 
 DrawingEngineFlags X8DrawingEngine::GetFlags()
@@ -258,58 +332,16 @@ void X8DrawingEngine::InvalidateImage([[maybe_unused]] uint32_t image)
 
 void X8DrawingEngine::ConfigureRenderTargets(uint32_t width, uint32_t height, uint32_t pitch)
 {
-    size_t newBitsSize = pitch * height;
-    uint8_t* newBits = new uint8_t[newBitsSize];
-    if (_bits == nullptr)
-    {
-        std::fill_n(newBits, newBitsSize, 0);
-    }
-    else
-    {
-        if (_pitch == pitch)
-        {
-            std::copy_n(_bits, std::min(_bitsSize, newBitsSize), newBits);
-        }
-        else
-        {
-            uint8_t* src = _bits;
-            uint8_t* dst = newBits;
-
-            uint32_t minWidth = std::min(_width, width);
-            uint32_t minHeight = std::min(_height, height);
-            for (uint32_t y = 0; y < minHeight; y++)
-            {
-                std::copy_n(src, minWidth, dst);
-                if (pitch - minWidth > 0)
-                {
-                    std::fill_n(dst + minWidth, pitch - minWidth, 0);
-                }
-                src += _pitch;
-                dst += pitch;
-            }
-        }
-        delete[] _bits;
-    }
-
-    _bits = newBits;
-    _bitsSize = newBitsSize;
-    _width = width;
-    _height = height;
-    _pitch = pitch;
-
-    DrawPixelInfo* dpi = &_bitsDPI;
-    dpi->bits = _bits;
-    dpi->x = 0;
-    dpi->y = 0;
-    dpi->width = width;
-    dpi->height = height;
-    dpi->pitch = _pitch - width;
+    _vpFrameBuffer.Resize(width, height, pitch);
+    _effectsFramebuffer.Resize(width, height, pitch);
+    _uiFrameBuffer.Resize(width, height, pitch);
 
     ConfigureDirtyGrid();
 
     if (LightFx::IsAvailable())
     {
-        LightFx::UpdateBuffers(*dpi);
+        auto dpi = GetDrawingPixelInfo();
+        LightFx::UpdateBuffers(dpi);
     }
 }
 
@@ -322,7 +354,8 @@ void X8DrawingEngine::ConfigureDirtyGrid()
     const auto blockWidth = 1u << 7;
     const auto blockHeight = 1u << 7;
 
-    _invalidationGrid.reset(_width, _height, blockWidth, blockHeight);
+    auto vpDPI = _vpFrameBuffer.GetDrawingPixelInfo();
+    _invalidationGrid.reset(vpDPI.width, vpDPI.height, blockWidth, blockHeight);
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

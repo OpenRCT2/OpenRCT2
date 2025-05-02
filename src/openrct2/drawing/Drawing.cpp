@@ -882,6 +882,7 @@ DrawPixelInfo DrawPixelInfo::Crop(const ScreenCoordsXY& pos, const ScreenSize& s
     result.width = size.width;
     result.height = size.height;
     result.pitch = width + pitch - size.width;
+    result.DrawingEngine = DrawingEngine;
     return result;
 }
 

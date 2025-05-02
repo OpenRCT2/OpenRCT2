@@ -241,20 +241,32 @@ protected:
 private:
     void Display()
     {
-        if (Config::Get().general.EnableLightFx)
+        // Render viewport.
         {
-            void* pixels;
-            int32_t pitch;
-            if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
+            auto vpDPI = _vpFrameBuffer.GetDrawingPixelInfo();
+
+            if (Config::Get().general.EnableLightFx)
             {
-                LightFx::RenderToTexture(pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
-                SDL_UnlockTexture(_screenTexture);
+                void* pixels;
+                int32_t pitch;
+                if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
+                {
+                    LightFx::RenderToTexture(
+                        pixels, pitch, vpDPI.bits, vpDPI.width, vpDPI.height, _paletteHWMapped, _lightPaletteHWMapped);
+                    SDL_UnlockTexture(_screenTexture);
+                }
+            }
+            else
+            {
+                CopyBitsToTexture(_screenTexture, vpDPI.bits, vpDPI.width, vpDPI.height, _paletteHWMapped);
             }
         }
-        else
+
+        // Render UI.
         {
-            CopyBitsToTexture(
-                _screenTexture, _bits, static_cast<int32_t>(_width), static_cast<int32_t>(_height), _paletteHWMapped);
+            auto uiDPI = _uiFrameBuffer.GetDrawingPixelInfo();
+
+
         }
 
         if (smoothNN)

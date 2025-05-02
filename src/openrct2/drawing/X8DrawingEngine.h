@@ -42,15 +42,31 @@ namespace OpenRCT2
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wsuggest-final-types"
 #endif
+
+        class X8FrameBuffer
+        {
+            std::unique_ptr<uint8_t[]> _bits{};
+            int32_t _width{};
+            int32_t _height{};
+            int32_t _pitch{};
+            size_t _bitsSize{};
+
+        public:
+            X8FrameBuffer() = default;
+
+            void Resize(int32_t width, int32_t height, int32_t pitch);
+
+            DrawPixelInfo GetDrawingPixelInfo() const;
+        };
+
         class X8DrawingEngine : public IDrawingEngine
         {
         protected:
-            uint32_t _width = 0;
-            uint32_t _height = 0;
-            uint32_t _pitch = 0;
-            size_t _bitsSize = 0;
-            uint8_t* _bits = nullptr;
-            DrawPixelInfo _bitsDPI = {};
+            X8FrameBuffer _vpFrameBuffer;
+            X8FrameBuffer _effectsFramebuffer;
+            X8FrameBuffer _uiFrameBuffer;
+            int32_t _width{};
+            int32_t _height{};
 
             bool _lastLightFXenabled = false;
 
