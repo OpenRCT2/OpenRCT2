@@ -641,7 +641,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // Minimum window height: title, one scenery button, status bar, padding
             _actualMinHeight = getTitleBarTargetHeight() + SCENERY_BUTTON_HEIGHT + kDescriptionHeight + 2 * kTabMargin;
-            _actualMinHeight += (1 + (_tabEntries.size() / GetMaxTabCountInARow())) * TabHeight;
+            _actualMinHeight += static_cast<int32_t>(1 + (_tabEntries.size() / GetMaxTabCountInARow())) * TabHeight;
             _actualMinHeight += widgets[WIDX_FILTER_TEXT_BOX].height() + 2 * kInputMargin;
 
             // Set the window title
