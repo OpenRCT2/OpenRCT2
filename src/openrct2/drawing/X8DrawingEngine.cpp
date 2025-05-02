@@ -53,8 +53,8 @@ void X8FrameBuffer::Resize(int32_t width, int32_t height, int32_t pitch)
             uint8_t* src = _bits.get();
             uint8_t* dst = newBits.get();
 
-            uint32_t minWidth = std::min(width, width);
-            uint32_t minHeight = std::min(height, height);
+            uint32_t minWidth = std::min(width, _width);
+            uint32_t minHeight = std::min(height, _height);
             for (uint32_t y = 0; y < minHeight; y++)
             {
                 std::copy_n(src, minWidth, dst);
@@ -220,6 +220,19 @@ void X8DrawingEngine::PaintWindows()
     auto dpiUi = _uiFrameBuffer.GetDrawingPixelInfo();
     dpiUi.DrawingEngine = this;
 
+    // In order for transparency to work we need to copy vp to ui
+    // and then draw the windows on top of that.
+    if (false)
+    {
+        auto dpiVp = _vpFrameBuffer.GetDrawingPixelInfo();
+        std::memcpy(dpiUi.bits, dpiVp.bits, dpiVp.width * dpiVp.height);
+    }
+    else
+    {
+        // Fully transparent.
+        std::memset(dpiUi.bits, 0, dpiUi.width * dpiUi.height);
+    }
+
     WindowDrawAll(dpiUi, 0, 0, dpiUi.width, dpiUi.height);
 }
 
@@ -227,6 +240,19 @@ void X8DrawingEngine::PaintWeather()
 {
     auto dpiEffects = _effectsFramebuffer.GetDrawingPixelInfo();
     dpiEffects.DrawingEngine = this;
+
+    // In order for transparency to work we need to copy vp to effects
+    // and then draw the weather on top of that.
+    if (false)
+    {
+        auto dpiVp = _vpFrameBuffer.GetDrawingPixelInfo();
+        std::memcpy(dpiEffects.bits, dpiVp.bits, dpiVp.width * dpiVp.height);
+    }
+    else
+    {
+        // Fully transparent.
+        std::memset(dpiEffects.bits, 0, dpiEffects.width * dpiEffects.height);
+    }
 
     DrawWeather(dpiEffects, _weatherDrawer.get());
 }

@@ -336,7 +336,6 @@ namespace OpenRCT2
         DrawPixelInfo& dpi, Viewport* vp, const WindowBase* originalWindow, const ScreenCoordsXY shift,
         const ScreenRect& drawRect)
     {
-   
         auto left = drawRect.GetLeft();
         auto right = drawRect.GetRight();
         auto top = drawRect.GetTop();

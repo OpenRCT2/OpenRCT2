@@ -6,7 +6,6 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-
 #include "DrawingEngineFactory.hpp"
 
 #include <SDL.h>
@@ -21,6 +20,7 @@
 #include <openrct2/drawing/X8DrawingEngine.h>
 #include <openrct2/paint/Paint.h>
 #include <openrct2/ui/UiContext.h>
+#include <span>
 #include <vector>
 
 using namespace OpenRCT2;
@@ -35,8 +35,13 @@ private:
     std::shared_ptr<IUiContext> const _uiContext;
     SDL_Window* _window = nullptr;
     SDL_Renderer* _sdlRenderer = nullptr;
-    SDL_Texture* _screenTexture = nullptr;
+
+    SDL_Texture* _vpTexture = nullptr;
+    SDL_Texture* _effectsTexture = nullptr;
+    SDL_Texture* _uiTexture = nullptr;
+
     SDL_Texture* _scaledScreenTexture = nullptr;
+
     SDL_PixelFormat* _screenTextureFormat = nullptr;
     uint32_t _paletteHWMapped[256] = { 0 };
     uint32_t _lightPaletteHWMapped[256] = { 0 };
@@ -62,9 +67,17 @@ public:
 
     ~HardwareDisplayDrawingEngine() override
     {
-        if (_screenTexture != nullptr)
+        if (_vpTexture != nullptr)
         {
-            SDL_DestroyTexture(_screenTexture);
+            SDL_DestroyTexture(_vpTexture);
+        }
+        if (_uiTexture != nullptr)
+        {
+            SDL_DestroyTexture(_uiTexture);
+        }
+        if (_effectsTexture != nullptr)
+        {
+            SDL_DestroyTexture(_effectsTexture);
         }
         if (_scaledScreenTexture != nullptr)
         {
@@ -88,7 +101,7 @@ public:
             SDL_RenderSetVSync(_sdlRenderer, vsync ? 1 : 0);
 #else
             SDL_DestroyRenderer(_sdlRenderer);
-            _screenTexture = nullptr;
+            _vpTexture = nullptr;
             _scaledScreenTexture = nullptr;
             Initialise();
             Resize(_uiContext->GetWidth(), _uiContext->GetHeight());
@@ -103,9 +116,9 @@ public:
             return;
         }
 
-        if (_screenTexture != nullptr)
+        if (_vpTexture != nullptr)
         {
-            SDL_DestroyTexture(_screenTexture);
+            SDL_DestroyTexture(_vpTexture);
         }
         SDL_FreeFormat(_screenTextureFormat);
 
@@ -116,7 +129,7 @@ public:
             LOG_WARNING("HWDisplayDrawingEngine::Resize error: %s", SDL_GetError());
             return;
         }
-        uint32_t pixelFormat = SDL_PIXELFORMAT_UNKNOWN;
+        uint32_t pixelFormat = SDL_PIXELFORMAT_RGBA32;
         for (uint32_t i = 0; i < rendererInfo.num_texture_formats; i++)
         {
             uint32_t format = rendererInfo.texture_formats[i];
@@ -149,10 +162,10 @@ public:
             snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%d", static_cast<int32_t>(scaleQuality));
             SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 
-            _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
+            _vpTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
             Guard::Assert(
-                _screenTexture != nullptr, "Failed to create unscaled screen texture (%ux%u, pixelFormat = %u): %s", width,
-                height, pixelFormat, SDL_GetError());
+                _vpTexture != nullptr, "Failed to create unscaled screen texture (%ux%u, pixelFormat = %u): %s", width, height,
+                pixelFormat, SDL_GetError());
 
             SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
 
@@ -167,14 +180,24 @@ public:
         }
         else
         {
-            _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
+            _vpTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
             Guard::Assert(
-                _screenTexture != nullptr, "Failed to create screen texture (%ux%u, pixelFormat = %u): %s", width, height,
+                _vpTexture != nullptr, "Failed to create screen texture (%ux%u, pixelFormat = %u): %s", width, height,
+                pixelFormat, SDL_GetError());
+
+            _uiTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
+            Guard::Assert(
+                _uiTexture != nullptr, "Failed to create UI texture (%ux%u, pixelFormat = %u): %s", width, height, pixelFormat,
+                SDL_GetError());
+
+            _effectsTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
+            Guard::Assert(
+                _effectsTexture != nullptr, "Failed to create effects texture (%ux%u, pixelFormat = %u): %s", width, height,
                 pixelFormat, SDL_GetError());
         }
 
         uint32_t format;
-        SDL_QueryTexture(_screenTexture, &format, nullptr, nullptr, nullptr);
+        SDL_QueryTexture(_vpTexture, &format, nullptr, nullptr, nullptr);
         _screenTextureFormat = SDL_AllocFormat(format);
 
         X8DrawingEngine::Resize(width, height);
@@ -186,7 +209,9 @@ public:
         {
             for (int32_t i = 0; i < 256; i++)
             {
-                _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].Red, palette[i].Green, palette[i].Blue);
+                bool fullyTransparent = i == 0;
+                _paletteHWMapped[i] = SDL_MapRGBA(
+                    _screenTextureFormat, palette[i].Red, palette[i].Green, palette[i].Blue, fullyTransparent ? 0 : 255);
             }
 
             if (Config::Get().general.EnableLightFx)
@@ -249,37 +274,51 @@ private:
             {
                 void* pixels;
                 int32_t pitch;
-                if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
+                if (SDL_LockTexture(_vpTexture, nullptr, &pixels, &pitch) == 0)
                 {
                     LightFx::RenderToTexture(
                         pixels, pitch, vpDPI.bits, vpDPI.width, vpDPI.height, _paletteHWMapped, _lightPaletteHWMapped);
-                    SDL_UnlockTexture(_screenTexture);
+                    SDL_UnlockTexture(_vpTexture);
                 }
             }
             else
             {
-                CopyBitsToTexture(_screenTexture, vpDPI.bits, vpDPI.width, vpDPI.height, _paletteHWMapped);
+                CopyBitsToTexture(_vpTexture, vpDPI.bits, vpDPI.width, vpDPI.height, _paletteHWMapped);
             }
+        }
+
+        // Render effects.
+        {
+            auto effectsDPI = _effectsFramebuffer.GetDrawingPixelInfo();
+
+            CopyBitsToTexture(_effectsTexture, effectsDPI.bits, effectsDPI.width, effectsDPI.height, _paletteHWMapped);
         }
 
         // Render UI.
         {
             auto uiDPI = _uiFrameBuffer.GetDrawingPixelInfo();
 
-
+            CopyBitsToTexture(_uiTexture, uiDPI.bits, uiDPI.width, uiDPI.height, _paletteHWMapped);
         }
 
         if (smoothNN)
         {
             SDL_SetRenderTarget(_sdlRenderer, _scaledScreenTexture);
-            SDL_RenderCopy(_sdlRenderer, _screenTexture, nullptr, nullptr);
+            SDL_RenderCopy(_sdlRenderer, _vpTexture, nullptr, nullptr);
 
             SDL_SetRenderTarget(_sdlRenderer, nullptr);
             SDL_RenderCopy(_sdlRenderer, _scaledScreenTexture, nullptr, nullptr);
         }
         else
         {
-            SDL_RenderCopy(_sdlRenderer, _screenTexture, nullptr, nullptr);
+            SDL_SetTextureBlendMode(_vpTexture, SDL_BLENDMODE_BLEND);
+            SDL_RenderCopy(_sdlRenderer, _vpTexture, nullptr, nullptr);
+
+            SDL_SetTextureBlendMode(_effectsTexture, SDL_BLENDMODE_BLEND);
+            SDL_RenderCopy(_sdlRenderer, _effectsTexture, nullptr, nullptr);
+
+            SDL_SetTextureBlendMode(_uiTexture, SDL_BLENDMODE_BLEND);
+            SDL_RenderCopy(_sdlRenderer, _uiTexture, nullptr, nullptr);
         }
 
         if (gShowDirtyVisuals)
@@ -301,7 +340,7 @@ private:
         }
     }
 
-    void CopyBitsToTexture(SDL_Texture* texture, uint8_t* src, int32_t width, int32_t height, const uint32_t* palette)
+    void CopyBitsToTexture(SDL_Texture* texture, uint8_t* src, int32_t width, int32_t height, std::span<const uint32_t> palette)
     {
         void* pixels;
         int32_t pitch;
