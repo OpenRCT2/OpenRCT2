@@ -101,7 +101,7 @@ namespace OpenRCT2::Config
     });
 
     static const auto Enum_DrawingEngine = ConfigEnum<DrawingEngine>({
-        ConfigEnumEntry<DrawingEngine>("SOFTWARE", DrawingEngine::SoftwareWithHardwareDisplay),
+        ConfigEnumEntry<DrawingEngine>("SOFTWARE_HW", DrawingEngine::SoftwareWithHardwareDisplay),
         ConfigEnumEntry<DrawingEngine>("OPENGL", DrawingEngine::OpenGL),
     });
 
