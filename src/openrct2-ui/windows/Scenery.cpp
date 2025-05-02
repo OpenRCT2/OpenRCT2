@@ -828,6 +828,10 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].right = windowWidth - 8;
             widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].right = windowWidth - 8;
             widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].right = windowWidth - 8;
+
+            const bool canFit = widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].top < height;
+            widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = canFit ? WindowWidgetType::FlatBtn : WindowWidgetType::Empty;
+            widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = canFit ? WindowWidgetType::FlatBtn : WindowWidgetType::Empty;
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
