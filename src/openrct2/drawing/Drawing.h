@@ -76,6 +76,10 @@ struct DrawPixelInfo
     int32_t width{};
     int32_t height{};
     int32_t pitch{}; // note: this is actually (pitch - width)
+    int32_t cullingX{};
+    int32_t cullingY{};
+    int32_t cullingWidth{};
+    int32_t cullingHeight{};
     ZoomLevel zoom_level{};
 
     // Last position of drawn text.

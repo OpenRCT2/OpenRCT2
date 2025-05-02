@@ -58,6 +58,7 @@ namespace OpenRCT2::Scripting
         {
             entity->frame = std::clamp<uint16_t>(value, 0, kCrashedVehicleParticleNumberSprites - 1)
                 * kCrashedVehicleParticleFrameToSprite;
+            entity->Invalidate();
         }
     }
     uint8_t ScCrashedVehicleParticle::frame_get() const
@@ -76,6 +77,7 @@ namespace OpenRCT2::Scripting
         if (entity != nullptr)
         {
             entity->crashed_sprite_base = CrashParticleTypeMap[value];
+            entity->Invalidate();
         }
     }
     std::string ScCrashedVehicleParticle::crashedSpriteBase_get() const
@@ -194,6 +196,7 @@ namespace OpenRCT2::Scripting
             {
                 entity->crashed_sprite_base = CrashParticleTypeMap[value["crashParticleType"].as_string()];
             }
+            entity->Invalidate();
         }
     }
 
@@ -218,6 +221,7 @@ namespace OpenRCT2::Scripting
             auto colours = FromDuk<VehicleColour>(value);
             entity->colour[0] = colours.Body;
             entity->colour[1] = colours.Trim;
+            entity->Invalidate();
         }
     }
 }; // namespace OpenRCT2::Scripting

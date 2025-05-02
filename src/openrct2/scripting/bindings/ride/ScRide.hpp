@@ -192,6 +192,12 @@ namespace OpenRCT2::Scripting
 
         Ride* GetRide() const;
 
+        void SetBreakdown(const std::string& breakDown);
+
+        void FixBreakdown();
+
+        std::string getBreakdown() const;
+
     public:
         static void Register(duk_context* ctx);
     };

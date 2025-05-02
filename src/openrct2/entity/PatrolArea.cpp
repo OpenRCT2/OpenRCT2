@@ -15,6 +15,9 @@
 
 #include <cassert>
 
+using namespace OpenRCT2;
+using namespace OpenRCT2::Core;
+
 static PatrolArea _consolidatedPatrolArea[EnumValue(StaffType::Count)];
 static std::variant<StaffType, EntityId> _patrolAreaToRender;
 
@@ -59,7 +62,7 @@ bool PatrolArea::Get(const TileCoordsXY& pos) const
     if (area == nullptr)
         return false;
 
-    auto it = BinaryFind(area->SortedTiles.begin(), area->SortedTiles.end(), pos, CompareTileCoordsXY);
+    auto it = Algorithm::binaryFind(area->SortedTiles.begin(), area->SortedTiles.end(), pos, CompareTileCoordsXY);
     auto found = it != area->SortedTiles.end();
     return found;
 }

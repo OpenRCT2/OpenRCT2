@@ -51,6 +51,7 @@ enum class RCT2Variant : uint8_t
     rct2Original,
     rctClassicWindows,
     rctClassicMac,
+    rctClassicPlusMac,
 };
 
 struct RealWorldDate;
@@ -63,6 +64,8 @@ namespace OpenRCT2::Platform
     // clang-format off
     constexpr u8string_view kRCTClassicMacOSDataFolder =
         u8"RCT Classic.app" PATH_SEPARATOR "Contents" PATH_SEPARATOR "Resources";
+    constexpr u8string_view kRCTClassicPlusMacOSDataFolder =
+        u8"RCT Classic+.app" PATH_SEPARATOR "Contents" PATH_SEPARATOR "Resources";
     // clang-format on
 
     std::string GetEnvironmentVariable(std::string_view name);

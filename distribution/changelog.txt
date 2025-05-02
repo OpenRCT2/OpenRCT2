@@ -1,5 +1,6 @@
 0.4.22 (in development)
 ------------------------------------------------------------------------
+- Feature: [#24206] [Plugin] Add APIs for breaking down rides, reading the current breakdown, and for fixing broken down rides.
 - Improved: [#20073] The OpenGL drawing engine now supports screen invalidation which avoids the redrawing of unchanged regions.
 - Improved: [#21767] RCT Classic for macOS can now be used as the source game.
 - Improved: [#23590] Title bars are now drawn bigger when “Enlarged UI” is enabled.
@@ -11,6 +12,9 @@
 - Change: [#24069] [Plugin] Plugins are now available in the scenario editor and track designer.
 - Change: [#24135] Compress Emscripten js/wasm files.
 - Change: [#24235] Small changes to RCT1 theme.
+- Change: [#24236] Controls and Interface options now both have their own tabs in the Options window.
+- Change: [#24308] “Software” and “Software (hardware display)” renderers have been merged into a single “Software” renderer.
+- Change: [#24317] The scenery window now shows at least one row of scenery objects, even if there are multiple rows of tabs.
 - Fix: [#18479] Tile elements ordered beneath water do not draw correctly.
 - Fix: [#19782] Game stops counting inversions and golf holes after 31 (original bug).
 - Fix: [#21207] Track List window gets positioned incorrectly.
@@ -19,9 +23,11 @@
 - Fix: [#22634] Asset packs with sound effect overrides are not loaded correctly at startup.
 - Fix: [#23108] Missing pieces on Hypercoaster and Hyper-Twister, even with the ‘all drawable track pieces’ cheat enabled.
 - Fix: [#24013] Failure to load a scenario preview image (minimap) could lead to an uncaught exception error message.
+- Fix: [#24045] [Plugin] Data storage is not cleared when converting save game to scenario.
 - Fix: [#24121] Checkbox labels run beyond the edge of the window if they’re too long to fit.
 - Fix: [#24142] [Plugin] Track origin is miscalculated on downward slopes.
 - Fix: [#24220] Narrow station platforms have missing sides on certain rotations.
+- Fix: [#24310] [Plugin] Missing invalidation on various plugin api setters for entities.
 
 0.4.21 (2025-04-05)
 ------------------------------------------------------------------------
