@@ -162,8 +162,6 @@ void X8DrawingEngine::Invalidate(int32_t left, int32_t top, int32_t right, int32
 
 void X8DrawingEngine::BeginDraw()
 {
-    _drawingContext->BeginDraw();
-
     if (!IntroIsPlaying())
     {
         // HACK we need to re-configure the bits if light fx has been enabled / disabled
@@ -175,6 +173,8 @@ void X8DrawingEngine::BeginDraw()
         }
         _weatherDrawer.Restore(_bitsDPI);
     }
+
+    _drawingContext->BeginDraw();
 }
 
 void X8DrawingEngine::EndDraw()
