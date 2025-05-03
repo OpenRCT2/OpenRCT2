@@ -129,8 +129,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         GfxFillRect(rt, { leftTop, rightBottom }, ColourMapA[colours[0].colour].mid_dark);
                         GfxFillRect(
-                            rt, { leftTop + shadowOffset, rightBottom + shadowOffset },
-                            ColourMapA[colours[0].colour].lightest);
+                            rt, { leftTop + shadowOffset, rightBottom + shadowOffset }, ColourMapA[colours[0].colour].lightest);
                     }
                 }
                 else

@@ -504,8 +504,7 @@ namespace OpenRCT2::Ui::Windows
             GfxFillRect(rt, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[0].colour].lightest);
         }
 
-        void DrawItem(
-            RenderTarget& rt, int32_t y, int32_t scrollWidth, const ShortcutStringPair& shortcut, bool isHighlighted)
+        void DrawItem(RenderTarget& rt, int32_t y, int32_t scrollWidth, const ShortcutStringPair& shortcut, bool isHighlighted)
         {
             auto format = STR_BLACK_STRING;
             if (isHighlighted)

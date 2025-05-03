@@ -150,8 +150,7 @@ namespace OpenRCT2
             // Drawing
             [[nodiscard]] virtual std::shared_ptr<Drawing::IDrawingEngineFactory> GetDrawingEngineFactory() = 0;
             virtual void DrawWeatherAnimation(
-                OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, RenderTarget& rt,
-                OpenRCT2::Drawing::DrawWeatherFunc drawFunc)
+                OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, RenderTarget& rt, OpenRCT2::Drawing::DrawWeatherFunc drawFunc)
                 = 0;
 
             // Text input

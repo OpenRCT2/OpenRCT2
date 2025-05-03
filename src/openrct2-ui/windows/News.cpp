@@ -276,8 +276,7 @@ namespace OpenRCT2::Ui::Windows
                             GfxDrawSprite(rt, ImageId(SPR_FINANCE), screenCoords);
                             break;
                         case News::ItemType::Research:
-                            GfxDrawSprite(
-                                rt, ImageId(newsItem.Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
+                            GfxDrawSprite(rt, ImageId(newsItem.Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
                             break;
                         case News::ItemType::Peeps:
                             GfxDrawSprite(rt, ImageId(SPR_GUESTS), screenCoords);

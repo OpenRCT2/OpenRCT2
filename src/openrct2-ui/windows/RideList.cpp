@@ -541,8 +541,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             GfxFillRect(
-                rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width, rt.height } },
-                ColourMapA[colours[1].colour].mid_light);
+                rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width, rt.height } }, ColourMapA[colours[1].colour].mid_light);
 
             auto y = 0;
             for (size_t i = 0; i < _rideList.size(); i++)

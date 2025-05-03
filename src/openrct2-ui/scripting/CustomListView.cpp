@@ -595,14 +595,12 @@ void CustomListView::Paint(WindowBase* w, RenderTarget& rt, const ScrollArea* sc
                 if (isSelected)
                 {
                     GfxFilterRect(
-                        rt, { { rt.x, y }, { rt.x + rt.width, y + (kListRowHeight - 1) } },
-                        FilterPaletteID::PaletteDarken2);
+                        rt, { { rt.x, y }, { rt.x + rt.width, y + (kListRowHeight - 1) } }, FilterPaletteID::PaletteDarken2);
                 }
                 else if (isHighlighted)
                 {
                     GfxFilterRect(
-                        rt, { { rt.x, y }, { rt.x + rt.width, y + (kListRowHeight - 1) } },
-                        FilterPaletteID::PaletteDarken2);
+                        rt, { { rt.x, y }, { rt.x + rt.width, y + (kListRowHeight - 1) } }, FilterPaletteID::PaletteDarken2);
                 }
                 else if (isStriped)
                 {
@@ -705,8 +703,7 @@ void CustomListView::PaintHeading(
     }
 }
 
-void CustomListView::PaintSeperator(
-    RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const
+void CustomListView::PaintSeperator(RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const
 {
     auto hasText = text != nullptr && text[0] != '\0';
     auto left = pos.x + 4;

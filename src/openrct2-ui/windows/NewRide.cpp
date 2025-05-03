@@ -940,8 +940,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     ft = Formatter();
                     ft.Add<StringId>(rideEntry.naming.Name);
-                    DrawTextEllipsised(
-                        rt, screenPos + ScreenCoordsXY{ 0, 39 }, WindowWidth - 2, STR_NEW_RIDE_VEHICLE_NAME, ft);
+                    DrawTextEllipsised(rt, screenPos + ScreenCoordsXY{ 0, 39 }, WindowWidth - 2, STR_NEW_RIDE_VEHICLE_NAME, ft);
                 }
                 else
                 {

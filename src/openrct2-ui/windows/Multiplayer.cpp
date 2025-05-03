@@ -892,8 +892,7 @@ namespace OpenRCT2::Ui::Windows
             if (i == selected_list_item)
             {
                 GfxFilterRect(
-                    rt, { 0, screenCoords.y, 800, screenCoords.y + kScrollableRowHeight - 1 },
-                    FilterPaletteID::PaletteDarken1);
+                    rt, { 0, screenCoords.y, 800, screenCoords.y + kScrollableRowHeight - 1 }, FilterPaletteID::PaletteDarken1);
             }
             if (screenCoords.y > rt.y + rt.height)
             {

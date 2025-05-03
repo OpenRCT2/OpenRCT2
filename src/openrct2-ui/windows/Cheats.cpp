@@ -834,8 +834,7 @@ static StringId window_cheats_page_titles[] = {
             if (!IsWidgetDisabled(WIDX_TAB_5))
             {
                 GfxDrawSprite(
-                    rt, ImageId(SPR_TAB_PARK),
-                    windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_5].left, widgets[WIDX_TAB_5].top });
+                    rt, ImageId(SPR_TAB_PARK), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_5].left, widgets[WIDX_TAB_5].top });
             }
 
             // Rides tab

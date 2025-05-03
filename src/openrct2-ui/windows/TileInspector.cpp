@@ -1166,8 +1166,7 @@ static uint64_t PageDisabledWidgets[] = {
                             {
                                 auto ft = Formatter();
                                 ft.Add<StringId>(surfaceObj->NameStringId);
-                                DrawTextBasic(
-                                    rt, screenCoords, STR_TILE_INSPECTOR_FOOTPATH_SURFACE_NAME, ft, { COLOUR_WHITE });
+                                DrawTextBasic(rt, screenCoords, STR_TILE_INSPECTOR_FOOTPATH_SURFACE_NAME, ft, { COLOUR_WHITE });
                             }
 
                             // Railings name
@@ -1255,8 +1254,7 @@ static uint64_t PageDisabledWidgets[] = {
                         ft = Formatter();
                         ft.Add<StringId>(rtd.Naming.Name);
                         DrawTextBasic(
-                            rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, ft,
-                            { colours[1] });
+                            rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, ft, { colours[1] });
 
                         // Track
                         ft = Formatter();
@@ -1589,8 +1587,7 @@ static uint64_t PageDisabledWidgets[] = {
         {
             const int32_t listWidth = widgets[WIDX_LIST].width();
             GfxFillRect(
-                rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } },
-                ColourMapA[colours[1].colour].mid_light);
+                rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);
 
             // Show usage hint when nothing is selected
             if (!_tileSelected)
@@ -1737,8 +1734,7 @@ static uint64_t PageDisabledWidgets[] = {
 
                 // Checkmarks for ghost and last for tile
                 if (ghost)
-                    DrawTextBasic(
-                        rt, screenCoords + ScreenCoordsXY{ GhostFlagColumnXY.x, 0 }, stringFormat, checkboxFormatter);
+                    DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ GhostFlagColumnXY.x, 0 }, stringFormat, checkboxFormatter);
                 if (last)
                     DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ LastFlagColumnXY.x, 0 }, stringFormat, checkboxFormatter);
 

@@ -60,8 +60,7 @@ void GfxFillRectInset(RenderTarget& rt, const ScreenRect& rect, ColourWithFlags 
 
             if (!(flags & INSET_RECT_FLAG_FILL_NONE))
             {
-                GfxFilterRect(
-                    rt, { leftTop + ScreenCoordsXY{ 1, 1 }, { rightBottom - ScreenCoordsXY{ 1, 1 } } }, palette.base);
+                GfxFilterRect(rt, { leftTop + ScreenCoordsXY{ 1, 1 }, { rightBottom - ScreenCoordsXY{ 1, 1 } } }, palette.base);
             }
         }
     }

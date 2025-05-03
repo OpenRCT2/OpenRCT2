@@ -1003,8 +1003,7 @@ namespace OpenRCT2
         const int32_t worldX = viewport->zoom.ApplyInversedTo(viewport->viewPos.x) + std::max(0, offsetX);
         const int32_t worldY = viewport->zoom.ApplyInversedTo(viewport->viewPos.y) + std::max(0, offsetY);
         const int32_t width = std::min(viewport->pos.x + viewport->width, rt.x + rt.width) - std::max(viewport->pos.x, rt.x);
-        const int32_t height = std::min(viewport->pos.y + viewport->height, rt.y + rt.height)
-            - std::max(viewport->pos.y, rt.y);
+        const int32_t height = std::min(viewport->pos.y + viewport->height, rt.y + rt.height) - std::max(viewport->pos.y, rt.y);
 
         RenderTarget worldRT;
         worldRT.DrawingEngine = rt.DrawingEngine;
@@ -1628,8 +1627,7 @@ namespace OpenRCT2
      * rct2: 0x00679074
      */
     static bool IsSpriteInteractedWithPaletteSet(
-        RenderTarget& rt, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap,
-        const uint8_t imageType)
+        RenderTarget& rt, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap, const uint8_t imageType)
     {
         PROFILED_FUNCTION();
 

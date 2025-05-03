@@ -4889,8 +4889,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    GfxDrawSprite(
-                        rt, ImageId(GetShopItemDescriptor(shopItem).Image, ride->trackColours[0].main), screenCoords);
+                    GfxDrawSprite(rt, ImageId(GetShopItemDescriptor(shopItem).Image, ride->trackColours[0].main), screenCoords);
                 }
             }
 

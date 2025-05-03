@@ -775,14 +775,13 @@ namespace OpenRCT2::Ui::Windows
             auto ft = Formatter();
             ft.Add<uint16_t>(_settings.treeToLandRatio);
             DrawTextBasic(
-                rt,
-                windowPos + ScreenCoordsXY{ widgets[WIDX_TREE_LAND_RATIO].left + 1, widgets[WIDX_TREE_LAND_RATIO].top + 1 },
+                rt, windowPos + ScreenCoordsXY{ widgets[WIDX_TREE_LAND_RATIO].left + 1, widgets[WIDX_TREE_LAND_RATIO].top + 1 },
                 STR_MAPGEN_TREE_TO_LAND_RATIO_PCT, ft, { textColour });
 
             // Minimum tree altitude, label and value
             DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_ALTITUDE_MIN].top + 1 }, STR_MAPGEN_TREE_MIN_ALTITUDE,
-                {}, { textColour });
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_ALTITUDE_MIN].top + 1 }, STR_MAPGEN_TREE_MIN_ALTITUDE, {},
+                { textColour });
 
             ft = Formatter();
             ft.Add<int16_t>(BaseZToMetres(_settings.minTreeAltitude));
@@ -796,8 +795,8 @@ namespace OpenRCT2::Ui::Windows
             const auto maxTreeTextColour = _settings.trees && !isFlatland ? enabledColour : disabledColour;
 
             DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_ALTITUDE_MAX].top + 1 }, STR_MAPGEN_TREE_MAX_ALTITUDE,
-                {}, { maxTreeTextColour });
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_ALTITUDE_MAX].top + 1 }, STR_MAPGEN_TREE_MAX_ALTITUDE, {},
+                { maxTreeTextColour });
 
             ft = Formatter();
             ft.Add<int16_t>(BaseZToMetres(_settings.maxTreeAltitude));
@@ -886,8 +885,7 @@ namespace OpenRCT2::Ui::Windows
             ft = Formatter();
             ft.Add<uint16_t>(_settings.simplex_octaves);
             DrawTextBasic(
-                rt,
-                windowPos + ScreenCoordsXY{ widgets[WIDX_SIMPLEX_OCTAVES].left + 1, widgets[WIDX_SIMPLEX_OCTAVES].top + 1 },
+                rt, windowPos + ScreenCoordsXY{ widgets[WIDX_SIMPLEX_OCTAVES].left + 1, widgets[WIDX_SIMPLEX_OCTAVES].top + 1 },
                 STR_COMMA16, ft, { textColour });
         }
 

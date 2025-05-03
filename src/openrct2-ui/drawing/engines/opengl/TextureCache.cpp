@@ -295,8 +295,8 @@ AtlasTextureInfo TextureCache::LoadImageTexture(const ImageId imageId)
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
     glTexSubImage3D(
-        GL_TEXTURE_2D_ARRAY, 0, cacheInfo.bounds.x, cacheInfo.bounds.y, cacheInfo.index, rt.width, rt.height, 1,
-        GL_RED_INTEGER, GL_UNSIGNED_BYTE, rt.bits);
+        GL_TEXTURE_2D_ARRAY, 0, cacheInfo.bounds.x, cacheInfo.bounds.y, cacheInfo.index, rt.width, rt.height, 1, GL_RED_INTEGER,
+        GL_UNSIGNED_BYTE, rt.bits);
 
     DeleteDPI(rt);
 
@@ -312,8 +312,8 @@ AtlasTextureInfo TextureCache::LoadGlyphTexture(const ImageId imageId, const Pal
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
     glTexSubImage3D(
-        GL_TEXTURE_2D_ARRAY, 0, cacheInfo.bounds.x, cacheInfo.bounds.y, cacheInfo.index, rt.width, rt.height, 1,
-        GL_RED_INTEGER, GL_UNSIGNED_BYTE, rt.bits);
+        GL_TEXTURE_2D_ARRAY, 0, cacheInfo.bounds.x, cacheInfo.bounds.y, cacheInfo.index, rt.width, rt.height, 1, GL_RED_INTEGER,
+        GL_UNSIGNED_BYTE, rt.bits);
 
     DeleteDPI(rt);
 

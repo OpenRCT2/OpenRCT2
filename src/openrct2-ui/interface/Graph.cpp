@@ -105,8 +105,8 @@ namespace OpenRCT2::Graph
 
     template<typename T, T TkNoValue, bool TbackgroundLine>
     static void DrawLine(
-        RenderTarget& rt, const T* series, const int32_t count, const ScreenRect& bounds, const int32_t xStep,
-        const T minValue, const T maxValue)
+        RenderTarget& rt, const T* series, const int32_t count, const ScreenRect& bounds, const int32_t xStep, const T minValue,
+        const T maxValue)
     {
         const T screenRange = bounds.GetHeight();
         const T valueRange = maxValue - minValue;
@@ -160,8 +160,7 @@ namespace OpenRCT2::Graph
     }
 
     template<typename T, T TkNoValue>
-    static void DrawGraph(
-        RenderTarget& rt, const GraphProperties<T>& p, const FmtString& labelFmt, const FmtString& tooltipFmt)
+    static void DrawGraph(RenderTarget& rt, const GraphProperties<T>& p, const FmtString& labelFmt, const FmtString& tooltipFmt)
     {
         DrawYLabels<T>(rt, p.internalBounds, p.min, p.max, p.numYLabels, p.yLabelStepPx, p.lineCol, labelFmt);
         DrawMonths<T, TkNoValue>(rt, p.series, p.numPoints, p.internalBounds, p.xStepPx);
