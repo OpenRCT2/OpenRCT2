@@ -2124,9 +2124,9 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, Config::Get().network.StayConnected);
 
 #ifdef __EMSCRIPTEN__
-            widgets[WIDX_GROUP_ADVANCED].bottom = kAdvancedStart + 97;
+            widgets[WIDX_GROUP_ADVANCED].bottom = kAdvancedStart + 86 + getTitleBarDiffNormal();
 #else
-            widgets[WIDX_GROUP_ADVANCED].bottom = kAdvancedStart + 77;
+            widgets[WIDX_GROUP_ADVANCED].bottom = kAdvancedStart + 66 + getTitleBarDiffNormal();
 #endif
 
             widgets[WIDX_ASSET_PACKS].top = widgets[WIDX_GROUP_ADVANCED].bottom - 20;
