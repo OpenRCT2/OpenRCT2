@@ -374,8 +374,8 @@ void Duck::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    RenderTarget& dpi = session.DPI;
-    if (dpi.zoom_level > ZoomLevel{ 1 })
+    RenderTarget& rt = session.DPI;
+    if (rt.zoom_level > ZoomLevel{ 1 })
         return;
 
     uint32_t imageId = GetFrameImage(imageDirection);

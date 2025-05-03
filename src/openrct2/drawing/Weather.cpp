@@ -23,13 +23,13 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
 static void DrawLightRain(
-    RenderTarget& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+    RenderTarget& rt, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
 static void DrawHeavyRain(
-    RenderTarget& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+    RenderTarget& rt, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
 static void DrawLightSnow(
-    RenderTarget& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+    RenderTarget& rt, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
 static void DrawHeavySnow(
-    RenderTarget& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+    RenderTarget& rt, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
 
 /**
  *
@@ -51,7 +51,7 @@ const DrawWeatherFunc DrawSnowFunctions[] = {
  *
  *  rct2: 0x00684218
  */
-void DrawWeather(RenderTarget& dpi, IWeatherDrawer* weatherDrawer)
+void DrawWeather(RenderTarget& rt, IWeatherDrawer* weatherDrawer)
 {
     if (!Config::Get().general.RenderWeatherEffects)
         return;
@@ -74,7 +74,7 @@ void DrawWeather(RenderTarget& dpi, IWeatherDrawer* weatherDrawer)
     }
 
     auto uiContext = GetContext()->GetUiContext();
-    uiContext->DrawWeatherAnimation(weatherDrawer, dpi, drawFunc);
+    uiContext->DrawWeatherAnimation(weatherDrawer, rt, drawFunc);
 }
 
 /**
@@ -82,7 +82,7 @@ void DrawWeather(RenderTarget& dpi, IWeatherDrawer* weatherDrawer)
  *  rct2: 0x00684114
  */
 static void DrawLightRain(
-    RenderTarget& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
+    RenderTarget& rt, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
     const auto currentTicks = getGameState().currentTicks;
 
@@ -91,14 +91,14 @@ static void DrawLightRain(
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, kRainPattern);
+    weatherDrawer->Draw(rt, left, top, width, height, x_start, y_start, kRainPattern);
 
     x_start = -static_cast<int32_t>(currentTicks) + 0x18;
     y_start = (currentTicks * 4) + 0x0D;
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, kRainPattern);
+    weatherDrawer->Draw(rt, left, top, width, height, x_start, y_start, kRainPattern);
 }
 
 /**
@@ -106,7 +106,7 @@ static void DrawLightRain(
  *  rct2: 0x0068416D
  */
 static void DrawHeavyRain(
-    RenderTarget& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
+    RenderTarget& rt, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
     const auto currentTicks = getGameState().currentTicks;
 
@@ -115,32 +115,32 @@ static void DrawHeavyRain(
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, kRainPattern);
+    weatherDrawer->Draw(rt, left, top, width, height, x_start, y_start, kRainPattern);
 
     x_start = -static_cast<int32_t>(currentTicks) + 0x10;
     y_start = (currentTicks * 6) + 5;
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, kRainPattern);
+    weatherDrawer->Draw(rt, left, top, width, height, x_start, y_start, kRainPattern);
 
     x_start = -static_cast<int32_t>(currentTicks) + 8;
     y_start = (currentTicks * 3) + 7;
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, kRainPattern);
+    weatherDrawer->Draw(rt, left, top, width, height, x_start, y_start, kRainPattern);
 
     x_start = -static_cast<int32_t>(currentTicks) + 0x18;
     y_start = (currentTicks * 4) + 0x0D;
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, kRainPattern);
+    weatherDrawer->Draw(rt, left, top, width, height, x_start, y_start, kRainPattern);
 }
 
 static void DrawLightSnow(
-    RenderTarget& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
+    RenderTarget& rt, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
     const auto currentTicks = getGameState().currentTicks;
 
@@ -153,18 +153,18 @@ static void DrawLightSnow(
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, kSnowPattern);
+    weatherDrawer->Draw(rt, left, top, width, height, x_start, y_start, kSnowPattern);
 
     x_start = negT + 16 + (cos(cosTick) * 6);
     y_start = t + 16;
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, kSnowPattern);
+    weatherDrawer->Draw(rt, left, top, width, height, x_start, y_start, kSnowPattern);
 }
 
 static void DrawHeavySnow(
-    RenderTarget& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
+    RenderTarget& rt, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
     const auto currentTicks = getGameState().currentTicks;
 
@@ -173,26 +173,26 @@ static void DrawHeavySnow(
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, kSnowPattern);
+    weatherDrawer->Draw(rt, left, top, width, height, x_start, y_start, kSnowPattern);
 
     x_start = -static_cast<int32_t>(currentTicks * 4) + 6;
     y_start = currentTicks + 5;
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, kSnowPattern);
+    weatherDrawer->Draw(rt, left, top, width, height, x_start, y_start, kSnowPattern);
 
     x_start = -static_cast<int32_t>(currentTicks * 2) + 11;
     y_start = currentTicks + 18;
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, kSnowPattern);
+    weatherDrawer->Draw(rt, left, top, width, height, x_start, y_start, kSnowPattern);
 
     x_start = -static_cast<int32_t>(currentTicks * 3) + 17;
     y_start = currentTicks + 11;
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    weatherDrawer->Draw(dpi, left, top, width, height, x_start, y_start, kSnowPattern);
+    weatherDrawer->Draw(rt, left, top, width, height, x_start, y_start, kSnowPattern);
 }

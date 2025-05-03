@@ -320,8 +320,8 @@ namespace OpenRCT2
     void WindowCheckAllValidZoom();
     void WindowZoomSet(WindowBase& w, ZoomLevel zoomLevel, bool atCursor);
 
-    void WindowDrawAll(RenderTarget& dpi, int32_t left, int32_t top, int32_t right, int32_t bottom);
-    void WindowDraw(RenderTarget& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+    void WindowDrawAll(RenderTarget& rt, int32_t left, int32_t top, int32_t right, int32_t bottom);
+    void WindowDraw(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
     bool isToolActive(WindowClass cls);
     bool isToolActive(WindowClass cls, rct_windownumber number);

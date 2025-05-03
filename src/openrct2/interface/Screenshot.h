@@ -53,7 +53,7 @@ struct CaptureOptions
 
 void ScreenshotCheck();
 std::string ScreenshotDump();
-std::string ScreenshotDumpPNG(RenderTarget& dpi);
+std::string ScreenshotDumpPNG(RenderTarget& rt);
 
 void ScreenshotGiant();
 int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOptions* options);

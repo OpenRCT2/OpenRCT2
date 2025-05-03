@@ -38,7 +38,7 @@ void ChatToggle();
 
 void ChatInit();
 void ChatUpdate();
-void ChatDraw(RenderTarget& dpi, ColourWithFlags chatBackgroundColour);
+void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColour);
 
 void ChatAddHistory(std::string_view s);
 void ChatInput(ChatInput input);

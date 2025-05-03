@@ -52,7 +52,7 @@ void ClimateObject::Unload()
 static RawClimate readWeatherTable(json_t& weather);
 static Climate convertRawClimate(const RawClimate& rawClimate);
 
-void ClimateObject::DrawPreview(RenderTarget& dpi, int32_t width, int32_t height) const
+void ClimateObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
 {
     const auto dist = getYearlyDistribution();
     const auto totalSize = kNumClimateMonths * kWeatherDistSize;
@@ -62,12 +62,12 @@ void ClimateObject::DrawPreview(RenderTarget& dpi, int32_t width, int32_t height
         auto type = WeatherType(i);
         auto imageId = ImageId(ClimateGetWeatherSpriteId(type));
         auto coords = ScreenCoordsXY(8 + (i % 3) * 35, 3 + (i / 3) * 37);
-        GfxDrawSprite(dpi, imageId, coords);
+        GfxDrawSprite(rt, imageId, coords);
 
         auto ft = Formatter();
         ft.Add<uint16_t>(dist[i] * 100 / totalSize);
         DrawTextEllipsised(
-            dpi, coords + ScreenCoordsXY{ 12, 22 }, 35, STR_CLIMATE_WEATHER_PERCENT, ft,
+            rt, coords + ScreenCoordsXY{ 12, 22 }, 35, STR_CLIMATE_WEATHER_PERCENT, ft,
             { FontStyle::Small, TextAlignment::CENTRE });
     }
 }

@@ -52,17 +52,17 @@ extern uint8_t gClipHeight;
 
 uint8_t gScreenshotCountdown = 0;
 
-static bool WriteDpiToFile(std::string_view path, const RenderTarget& dpi, const GamePalette& palette)
+static bool WriteDpiToFile(std::string_view path, const RenderTarget& rt, const GamePalette& palette)
 {
-    auto const pixels8 = dpi.bits;
-    auto const pixelsLen = dpi.LineStride() * dpi.height;
+    auto const pixels8 = rt.bits;
+    auto const pixelsLen = rt.LineStride() * rt.height;
     try
     {
         Image image;
-        image.Width = dpi.width;
-        image.Height = dpi.height;
+        image.Width = rt.width;
+        image.Height = rt.height;
         image.Depth = 8;
-        image.Stride = dpi.LineStride();
+        image.Stride = rt.LineStride();
         image.Palette = palette;
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
         Imaging::WriteToFile(path, image, ImageFormat::png);
