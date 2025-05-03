@@ -747,6 +747,7 @@ enum
     BREAKDOWN_COUNT
 };
 
+#ifdef ENABLE_SCRIPTING
 static const OpenRCT2::Scripting::DukEnumMap<uint8_t> BreakdownMap // The types of breakdowns.
     ({ { "safety_cut_out", BREAKDOWN_SAFETY_CUT_OUT },
        { "restraints_stuck_closed", BREAKDOWN_RESTRAINTS_STUCK_CLOSED },
@@ -756,6 +757,7 @@ static const OpenRCT2::Scripting::DukEnumMap<uint8_t> BreakdownMap // The types 
        { "vehicle_malfunction", BREAKDOWN_VEHICLE_MALFUNCTION },
        { "brakes_failure", BREAKDOWN_BRAKES_FAILURE },
        { "control_failure", BREAKDOWN_CONTROL_FAILURE } });
+#endif
 
 enum
 {
