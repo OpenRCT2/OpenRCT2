@@ -200,7 +200,7 @@ struct TextPaint
 };
 
 void DrawTextBasic(RenderTarget& dpi, const ScreenCoordsXY& coords, StringId format);
-void DrawTextEllipsised(RenderTarget& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format);
+void DrawTextEllipsised(RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, StringId format);
 int32_t DrawTextWrapped(RenderTarget& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format);
 
 void DrawText(
@@ -208,7 +208,7 @@ void DrawText(
 void DrawTextBasic(
     RenderTarget& dpi, const ScreenCoordsXY& coords, StringId format, const Formatter& ft, TextPaint textPaint = {});
 void DrawTextEllipsised(
-    RenderTarget& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft,
+    RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft,
     TextPaint textPaint = {});
 int32_t DrawTextWrapped(
     RenderTarget& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft,

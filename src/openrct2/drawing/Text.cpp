@@ -32,7 +32,7 @@ public:
         LineHeight = FontGetLineHeight(paint.FontStyle);
     }
 
-    void Draw(RenderTarget& dpi, const ScreenCoordsXY& coords)
+    void Draw(RenderTarget& rt, const ScreenCoordsXY& coords)
     {
         TextPaint tempPaint = Paint;
 
@@ -51,7 +51,7 @@ public:
         const utf8* buffer = Buffer.data();
         for (int32_t line = 0; line < LineCount; ++line)
         {
-            DrawText(dpi, lineCoords, tempPaint, buffer);
+            DrawText(rt, lineCoords, tempPaint, buffer);
             tempPaint.Colour = kTextColour254;
             buffer = GetStringEnd(buffer) + 1;
             lineCoords.y += LineHeight;
@@ -74,8 +74,7 @@ public:
     }
 };
 
-void DrawText(
-    RenderTarget& dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting)
+void DrawText(RenderTarget& rt, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting)
 {
     int32_t width = noFormatting ? GfxGetStringWidthNoFormatting(text, paint.FontStyle)
                                  : GfxGetStringWidth(text, paint.FontStyle);
@@ -93,62 +92,62 @@ void DrawText(
             break;
     }
 
-    TTFDrawString(dpi, text, paint.Colour, alignedCoords, noFormatting, paint.FontStyle, paint.Darkness);
+    TTFDrawString(rt, text, paint.Colour, alignedCoords, noFormatting, paint.FontStyle, paint.Darkness);
 
     if (paint.UnderlineText == TextUnderline::On)
     {
         GfxFillRect(
-            dpi, { { alignedCoords + ScreenCoordsXY{ 0, 11 } }, { alignedCoords + ScreenCoordsXY{ width, 11 } } },
+            rt, { { alignedCoords + ScreenCoordsXY{ 0, 11 } }, { alignedCoords + ScreenCoordsXY{ width, 11 } } },
             gTextPalette[1]);
         if (gTextPalette[2] != 0)
         {
             GfxFillRect(
-                dpi, { { alignedCoords + ScreenCoordsXY{ 1, 12 } }, { alignedCoords + ScreenCoordsXY{ width + 1, 12 } } },
+                rt, { { alignedCoords + ScreenCoordsXY{ 1, 12 } }, { alignedCoords + ScreenCoordsXY{ width + 1, 12 } } },
                 gTextPalette[2]);
         }
     }
 }
 
-void DrawTextBasic(RenderTarget& dpi, const ScreenCoordsXY& coords, StringId format)
+void DrawTextBasic(RenderTarget& rt, const ScreenCoordsXY& coords, StringId format)
 {
     Formatter ft{};
     TextPaint textPaint{};
-    DrawTextBasic(dpi, coords, format, ft, textPaint);
+    DrawTextBasic(rt, coords, format, ft, textPaint);
 }
 
-void DrawTextBasic(RenderTarget& dpi, const ScreenCoordsXY& coords, StringId format, const Formatter& ft, TextPaint textPaint)
+void DrawTextBasic(RenderTarget& rt, const ScreenCoordsXY& coords, StringId format, const Formatter& ft, TextPaint textPaint)
 {
     utf8 buffer[512];
     OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), format, ft.Data());
-    DrawText(dpi, coords, textPaint, buffer);
+    DrawText(rt, coords, textPaint, buffer);
 }
 
-void DrawTextEllipsised(RenderTarget& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format)
+void DrawTextEllipsised(RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, StringId format)
 {
     Formatter ft{};
     TextPaint textPaint{};
-    DrawTextEllipsised(dpi, coords, width, format, ft, textPaint);
+    DrawTextEllipsised(rt, coords, width, format, ft, textPaint);
 }
 
 void DrawTextEllipsised(
-    RenderTarget& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft, TextPaint textPaint)
+    RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft, TextPaint textPaint)
 {
     utf8 buffer[512];
     OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), format, ft.Data());
     GfxClipString(buffer, width, textPaint.FontStyle);
 
-    DrawText(dpi, coords, textPaint, buffer);
+    DrawText(rt, coords, textPaint, buffer);
 }
 
-int32_t DrawTextWrapped(RenderTarget& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format)
+int32_t DrawTextWrapped(RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, StringId format)
 {
     Formatter ft{};
     TextPaint textPaint{};
-    return DrawTextWrapped(dpi, coords, width, format, ft, textPaint);
+    return DrawTextWrapped(rt, coords, width, format, ft, textPaint);
 }
 
 int32_t DrawTextWrapped(
-    RenderTarget& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft, TextPaint textPaint)
+    RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft, TextPaint textPaint)
 {
     const void* args = ft.Data();
 
@@ -161,11 +160,11 @@ int32_t DrawTextWrapped(
         int32_t lineHeight = layout.GetHeight() / lineCount;
         int32_t yOffset = (lineCount - 1) * lineHeight / 2;
 
-        layout.Draw(dpi, coords - ScreenCoordsXY{ layout.GetWidth() / 2, yOffset });
+        layout.Draw(rt, coords - ScreenCoordsXY{ layout.GetWidth() / 2, yOffset });
     }
     else
     {
-        layout.Draw(dpi, coords);
+        layout.Draw(rt, coords);
     }
 
     return layout.GetHeight();

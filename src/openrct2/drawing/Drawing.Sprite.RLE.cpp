@@ -13,7 +13,7 @@
 #include <cstring>
 
 template<DrawBlendOp TBlendOp>
-static void FASTCALL DrawRLESpriteMagnify(RenderTarget& dpi, const DrawSpriteArgs& args)
+static void FASTCALL DrawRLESpriteMagnify(RenderTarget& rt, const DrawSpriteArgs& args)
 {
     auto& paletteMap = args.PalMap;
     auto imgData = args.SourceImage.offset;
@@ -22,8 +22,8 @@ static void FASTCALL DrawRLESpriteMagnify(RenderTarget& dpi, const DrawSpriteArg
     auto srcY = args.SrcY;
     auto width = args.Width;
     auto height = args.Height;
-    auto zoom = dpi.zoom_level;
-    auto dstLineWidth = dpi.LineStride();
+    auto zoom = rt.zoom_level;
+    auto dstLineWidth = rt.LineStride();
 
     for (int32_t y = 0; y < height; y++)
     {
@@ -58,7 +58,7 @@ static void FASTCALL DrawRLESpriteMagnify(RenderTarget& dpi, const DrawSpriteArg
 }
 
 template<DrawBlendOp TBlendOp, size_t TZoom>
-static void FASTCALL DrawRLESpriteMinify(RenderTarget& dpi, const DrawSpriteArgs& args)
+static void FASTCALL DrawRLESpriteMinify(RenderTarget& rt, const DrawSpriteArgs& args)
 {
     auto src0 = args.SourceImage.offset;
     auto dst0 = args.DestinationBits;
@@ -67,7 +67,7 @@ static void FASTCALL DrawRLESpriteMinify(RenderTarget& dpi, const DrawSpriteArgs
     auto width = args.Width;
     auto height = args.Height;
     auto zoom = 1 << TZoom;
-    auto dstLineWidth = static_cast<size_t>(dpi.LineStride());
+    auto dstLineWidth = static_cast<size_t>(rt.LineStride());
 
     // Move up to the first line of the image if source_y_start is negative. Why does this even occur?
     if (srcY < 0)
@@ -153,26 +153,26 @@ static void FASTCALL DrawRLESpriteMinify(RenderTarget& dpi, const DrawSpriteArgs
 }
 
 template<DrawBlendOp TBlendOp>
-static void FASTCALL DrawRLESprite(RenderTarget& dpi, const DrawSpriteArgs& args)
+static void FASTCALL DrawRLESprite(RenderTarget& rt, const DrawSpriteArgs& args)
 {
-    auto zoom_level = static_cast<int8_t>(dpi.zoom_level);
+    auto zoom_level = static_cast<int8_t>(rt.zoom_level);
     switch (zoom_level)
     {
         case -2:
         case -1:
-            DrawRLESpriteMagnify<TBlendOp>(dpi, args);
+            DrawRLESpriteMagnify<TBlendOp>(rt, args);
             break;
         case 0:
-            DrawRLESpriteMinify<TBlendOp, 0>(dpi, args);
+            DrawRLESpriteMinify<TBlendOp, 0>(rt, args);
             break;
         case 1:
-            DrawRLESpriteMinify<TBlendOp, 1>(dpi, args);
+            DrawRLESpriteMinify<TBlendOp, 1>(rt, args);
             break;
         case 2:
-            DrawRLESpriteMinify<TBlendOp, 2>(dpi, args);
+            DrawRLESpriteMinify<TBlendOp, 2>(rt, args);
             break;
         case 3:
-            DrawRLESpriteMinify<TBlendOp, 3>(dpi, args);
+            DrawRLESpriteMinify<TBlendOp, 3>(rt, args);
             break;
         default:
             assert(false);
@@ -186,25 +186,25 @@ static void FASTCALL DrawRLESprite(RenderTarget& dpi, const DrawSpriteArgs& args
  *  rct2: 0x0067AA18
  * @param imageId Only flags are used.
  */
-void FASTCALL GfxRleSpriteToBuffer(RenderTarget& dpi, const DrawSpriteArgs& args)
+void FASTCALL GfxRleSpriteToBuffer(RenderTarget& rt, const DrawSpriteArgs& args)
 {
     if (args.Image.HasPrimary())
     {
         if (args.Image.IsBlended())
         {
-            DrawRLESprite<kBlendTransparent | kBlendSrc | kBlendDst>(dpi, args);
+            DrawRLESprite<kBlendTransparent | kBlendSrc | kBlendDst>(rt, args);
         }
         else
         {
-            DrawRLESprite<kBlendTransparent | kBlendSrc>(dpi, args);
+            DrawRLESprite<kBlendTransparent | kBlendSrc>(rt, args);
         }
     }
     else if (args.Image.IsBlended())
     {
-        DrawRLESprite<kBlendTransparent | kBlendDst>(dpi, args);
+        DrawRLESprite<kBlendTransparent | kBlendDst>(rt, args);
     }
     else
     {
-        DrawRLESprite<kBlendTransparent>(dpi, args);
+        DrawRLESprite<kBlendTransparent>(rt, args);
     }
 }

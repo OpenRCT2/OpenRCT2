@@ -517,21 +517,21 @@ void GfxTransposePalette(int32_t pal, uint8_t product);
 void LoadPalette();
 
 // other
-void GfxClear(RenderTarget& dpi, uint8_t paletteIndex);
-void GfxFilterPixel(RenderTarget& dpi, const ScreenCoordsXY& coords, FilterPaletteID palette);
+void GfxClear(RenderTarget& rt, uint8_t paletteIndex);
+void GfxFilterPixel(RenderTarget& rt, const ScreenCoordsXY& coords, FilterPaletteID palette);
 void GfxInvalidatePickedUpPeep();
-void GfxDrawPickedUpPeep(RenderTarget& dpi);
+void GfxDrawPickedUpPeep(RenderTarget& rt);
 
 // line
-void GfxDrawLine(RenderTarget& dpi, const ScreenLine& line, int32_t colour);
-void GfxDrawLineSoftware(RenderTarget& dpi, const ScreenLine& line, int32_t colour);
+void GfxDrawLine(RenderTarget& rt, const ScreenLine& line, int32_t colour);
+void GfxDrawLineSoftware(RenderTarget& rt, const ScreenLine& line, int32_t colour);
 void GfxDrawDashedLine(
-    RenderTarget& dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color);
+    RenderTarget& rt, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color);
 
 // rect
-void GfxFillRect(RenderTarget& dpi, const ScreenRect& rect, int32_t colour);
-void GfxFillRectInset(RenderTarget& dpi, const ScreenRect& rect, ColourWithFlags colour, uint8_t flags);
-void GfxFilterRect(RenderTarget& dpi, const ScreenRect& rect, FilterPaletteID palette);
+void GfxFillRect(RenderTarget& rt, const ScreenRect& rect, int32_t colour);
+void GfxFillRectInset(RenderTarget& rt, const ScreenRect& rect, ColourWithFlags colour, uint8_t flags);
+void GfxFilterRect(RenderTarget& rt, const ScreenRect& rect, FilterPaletteID palette);
 
 // sprite
 bool GfxLoadG1(const OpenRCT2::IPlatformEnvironment& env);
@@ -545,30 +545,30 @@ const G1Element* GfxGetG1Element(ImageIndex image_id);
 void GfxSetG1Element(ImageIndex imageId, const G1Element* g1);
 std::optional<Gx> GfxLoadGx(const std::vector<uint8_t>& buffer);
 bool IsCsgLoaded();
-void FASTCALL GfxSpriteToBuffer(RenderTarget& dpi, const DrawSpriteArgs& args);
-void FASTCALL GfxBmpSpriteToBuffer(RenderTarget& dpi, const DrawSpriteArgs& args);
-void FASTCALL GfxRleSpriteToBuffer(RenderTarget& dpi, const DrawSpriteArgs& args);
-void FASTCALL GfxDrawSprite(RenderTarget& dpi, const ImageId image_id, const ScreenCoordsXY& coords);
-void FASTCALL GfxDrawGlyph(RenderTarget& dpi, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
-void FASTCALL GfxDrawSpriteSolid(RenderTarget& dpi, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour);
-void FASTCALL GfxDrawSpriteRawMasked(
-    RenderTarget& dpi, const ScreenCoordsXY& coords, const ImageId maskImage, const ImageId colourImage);
-void FASTCALL GfxDrawSpriteSoftware(RenderTarget& dpi, const ImageId imageId, const ScreenCoordsXY& spriteCoords);
+void FASTCALL GfxSpriteToBuffer(RenderTarget& rt, const DrawSpriteArgs& args);
+void FASTCALL GfxBmpSpriteToBuffer(RenderTarget& rt, const DrawSpriteArgs& args);
+void FASTCALL GfxRleSpriteToBuffer(RenderTarget& rt, const DrawSpriteArgs& args);
+void FASTCALL GfxDrawSprite(RenderTarget& rt, const ImageId image_id, const ScreenCoordsXY& coords);
+void FASTCALL GfxDrawGlyph(RenderTarget& rt, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
+void FASTCALL GfxDrawSpriteSolid(RenderTarget& rt, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour);
+void FASTCALL
+    GfxDrawSpriteRawMasked(RenderTarget& rt, const ScreenCoordsXY& coords, const ImageId maskImage, const ImageId colourImage);
+void FASTCALL GfxDrawSpriteSoftware(RenderTarget& rt, const ImageId imageId, const ScreenCoordsXY& spriteCoords);
 void FASTCALL GfxDrawSpritePaletteSetSoftware(
-    RenderTarget& dpi, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
+    RenderTarget& rt, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
 void FASTCALL GfxDrawSpriteRawMaskedSoftware(
-    RenderTarget& dpi, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage);
+    RenderTarget& rt, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage);
 
 // string
 void GfxDrawStringLeftCentred(
-    RenderTarget& dpi, StringId format, void* args, ColourWithFlags colour, const ScreenCoordsXY& coords);
+    RenderTarget& rt, StringId format, void* args, ColourWithFlags colour, const ScreenCoordsXY& coords);
 void DrawStringCentredRaw(
-    RenderTarget& dpi, const ScreenCoordsXY& coords, int32_t numLines, const utf8* text, FontStyle fontStyle);
+    RenderTarget& rt, const ScreenCoordsXY& coords, int32_t numLines, const utf8* text, FontStyle fontStyle);
 void DrawNewsTicker(
-    RenderTarget& dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, StringId format, u8string_view args,
+    RenderTarget& rt, const ScreenCoordsXY& coords, int32_t width, colour_t colour, StringId format, u8string_view args,
     int32_t ticks);
 void GfxDrawStringWithYOffsets(
-    RenderTarget& dpi, const utf8* text, ColourWithFlags colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
+    RenderTarget& rt, const utf8* text, ColourWithFlags colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
     bool forceSpriteFont, FontStyle fontStyle);
 
 int32_t GfxWrapString(u8string_view text, int32_t width, FontStyle fontStyle, u8string* outWrappedText, int32_t* outNumLines);
@@ -579,7 +579,7 @@ int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle);
 int32_t GfxClipString(char* buffer, int32_t width, FontStyle fontStyle);
 u8string ShortenPath(const u8string& path, int32_t availableWidth, FontStyle fontStyle);
 void TTFDrawString(
-    RenderTarget& dpi, const_utf8string text, ColourWithFlags colour, const ScreenCoordsXY& coords, bool noFormatting,
+    RenderTarget& rt, const_utf8string text, ColourWithFlags colour, const ScreenCoordsXY& coords, bool noFormatting,
     FontStyle fontStyle, TextDarkness darkness);
 
 // scrolling text
@@ -615,6 +615,6 @@ void UpdatePaletteEffects();
 void RefreshVideo();
 void ToggleWindowedMode();
 
-void DebugDPI(RenderTarget& dpi);
+void DebugDPI(RenderTarget& rt);
 
 #include "NewDrawing.h"

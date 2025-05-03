@@ -298,26 +298,26 @@ namespace OpenRCT2::Drawing::LightFx
                     if (w != nullptr)
                     {
                         // based on GetMapCoordinatesFromPosWindow
-                        RenderTarget dpi;
-                        dpi.zoom_level = _current_view_zoom_front;
-                        dpi.x = _current_view_zoom_front.ApplyInversedTo(entry.viewCoords.x + offsetPattern[0 + pat * 2]);
-                        dpi.y = _current_view_zoom_front.ApplyInversedTo(entry.viewCoords.y + offsetPattern[1 + pat * 2]);
-                        dpi.height = 1;
-                        dpi.width = 1;
+                        RenderTarget rt;
+                        rt.zoom_level = _current_view_zoom_front;
+                        rt.x = _current_view_zoom_front.ApplyInversedTo(entry.viewCoords.x + offsetPattern[0 + pat * 2]);
+                        rt.y = _current_view_zoom_front.ApplyInversedTo(entry.viewCoords.y + offsetPattern[1 + pat * 2]);
+                        rt.height = 1;
+                        rt.width = 1;
 
-                        dpi.cullingX = dpi.x;
-                        dpi.cullingY = dpi.y;
-                        dpi.cullingWidth = dpi.width;
-                        dpi.cullingHeight = dpi.height;
+                        rt.cullingX = rt.x;
+                        rt.cullingY = rt.y;
+                        rt.cullingWidth = rt.width;
+                        rt.cullingHeight = rt.height;
 
-                        PaintSession* session = PaintSessionAlloc(dpi, w->viewport->flags, w->viewport->rotation);
+                        PaintSession* session = PaintSessionAlloc(rt, w->viewport->flags, w->viewport->rotation);
                         PaintSessionGenerate(*session);
                         PaintSessionArrange(*session);
                         auto info = SetInteractionInfoFromPaintSession(
                             session, w->viewport->flags, kViewportInteractionItemAll);
                         PaintSessionFree(session);
 
-                        //  LOG_WARNING("[%i, %i]", dpi->x, dpi->y);
+                        //  LOG_WARNING("[%i, %i]", rt.x, rt.y);
 
                         mapCoord = info.Loc;
                         mapCoord.x += tileOffsetX;
