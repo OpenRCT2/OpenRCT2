@@ -316,6 +316,7 @@ namespace OpenRCT2::World::MapGenerator
 
     void smoothMap(TileCoordsXY mapSize, SmoothFunction smoothFunc)
     {
+        int numIterations = 0;
         while (true)
         {
             auto numTilesChanged = 0;
@@ -328,8 +329,10 @@ namespace OpenRCT2::World::MapGenerator
                 }
             }
 
-            if (numTilesChanged == 0)
+            if (numTilesChanged == 0 || numIterations == 10)
                 break;
+
+            numIterations++;
         }
     }
 } // namespace OpenRCT2::World::MapGenerator
