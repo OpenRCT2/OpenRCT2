@@ -192,9 +192,9 @@ namespace OpenRCT2::Ui::Windows
 
         void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            auto dpiCoords = ScreenCoordsXY{ rt.x, rt.y };
+            auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             GfxFillRect(
-                rt, { dpiCoords, dpiCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
+                rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
 
             auto assetPackManager = GetContext()->GetAssetPackManager();
@@ -264,8 +264,7 @@ namespace OpenRCT2::Ui::Windows
                 auto checkmark = Formatter();
                 checkmark.Add<StringId>(STR_STRING);
                 checkmark.Add<char*>(kCheckMarkString);
-                DrawTextBasic(
-                    rt, ScreenCoordsXY{ rect.GetLeft() + 1, rect.GetTop() }, STR_WINDOW_COLOUR_2_STRINGID, checkmark);
+                DrawTextBasic(rt, ScreenCoordsXY{ rect.GetLeft() + 1, rect.GetTop() }, STR_WINDOW_COLOUR_2_STRINGID, checkmark);
             }
         }
 

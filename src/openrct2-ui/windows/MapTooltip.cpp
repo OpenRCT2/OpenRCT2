@@ -46,7 +46,7 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
             StringId stringId;
             std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(StringId));
@@ -56,7 +56,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto stringCoords = windowPos + ScreenCoordsXY{ width / 2, height / 2 };
-            DrawTextWrapped(dpi, stringCoords, width, STR_MAP_TOOLTIP_STRINGID, _mapTooltipArgs, { TextAlignment::CENTRE });
+            DrawTextWrapped(rt, stringCoords, width, STR_MAP_TOOLTIP_STRINGID, _mapTooltipArgs, { TextAlignment::CENTRE });
         }
     };
 

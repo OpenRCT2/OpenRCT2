@@ -181,18 +181,18 @@ namespace OpenRCT2::Graph
         }
     }
 
-    void DrawFinanceGraph(RenderTarget& dpi, const GraphProperties<money64>& p)
+    void DrawFinanceGraph(RenderTarget& rt, const GraphProperties<money64>& p)
     {
-        DrawGraph<money64, kMoney64Undefined>(dpi, p, "{BLACK}{CURRENCY2DP}", "{CURRENCY2DP}");
+        DrawGraph<money64, kMoney64Undefined>(rt, p, "{BLACK}{CURRENCY2DP}", "{CURRENCY2DP}");
     }
 
-    void DrawRatingGraph(RenderTarget& dpi, const GraphProperties<uint16_t>& p)
+    void DrawRatingGraph(RenderTarget& rt, const GraphProperties<uint16_t>& p)
     {
-        DrawGraph<uint16_t, kParkRatingHistoryUndefined>(dpi, p, "{BLACK}{COMMA32}", "{COMMA32}");
+        DrawGraph<uint16_t, kParkRatingHistoryUndefined>(rt, p, "{BLACK}{COMMA32}", "{COMMA32}");
     }
 
-    void DrawGuestGraph(RenderTarget& dpi, const GraphProperties<uint32_t>& p)
+    void DrawGuestGraph(RenderTarget& rt, const GraphProperties<uint32_t>& p)
     {
-        DrawGraph<uint32_t, kGuestsInParkHistoryUndefined>(dpi, p, "{BLACK}{COMMA32}", "{COMMA32}");
+        DrawGraph<uint32_t, kGuestsInParkHistoryUndefined>(rt, p, "{BLACK}{COMMA32}", "{COMMA32}");
     }
 } // namespace OpenRCT2::Graph

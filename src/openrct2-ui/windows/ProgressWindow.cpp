@@ -167,15 +167,15 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            WindowDrawWidgets(*this, dpi);
+            WindowDrawWidgets(*this, rt);
 
             auto& widget = widgets[WIDX_TITLE];
             auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.bottom + 1 };
 
             RenderTarget clipDPI;
-            if (!ClipDrawPixelInfo(clipDPI, dpi, screenCoords, width - 3, height - widget.bottom - 3))
+            if (!ClipDrawPixelInfo(clipDPI, rt, screenCoords, width - 3, height - widget.bottom - 3))
                 return;
 
             auto& variant = kVehicleStyles[style];

@@ -307,12 +307,12 @@ namespace OpenRCT2::Ui::Windows
             return { fallback, ft };
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
 
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME, {},
+                rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME, {},
                 { COLOUR_WHITE });
 
             // Draw version number
@@ -320,18 +320,18 @@ namespace OpenRCT2::Ui::Windows
             auto ft = Formatter();
             ft.Add<const char*>(version.c_str());
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 324, widgets[WIDX_START_SERVER].top + 1 }, STR_NETWORK_VERSION, ft,
+                rt, windowPos + ScreenCoordsXY{ 324, widgets[WIDX_START_SERVER].top + 1 }, STR_NETWORK_VERSION, ft,
                 { COLOUR_WHITE });
 
             ft = Formatter();
             ft.Add<uint32_t>(_numPlayersOnline);
-            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, height - 15 }, _statusText, ft, { COLOUR_WHITE });
+            DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 8, height - 15 }, _statusText, ft, { COLOUR_WHITE });
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
-            GfxClear(dpi, paletteIndex);
+            GfxClear(rt, paletteIndex);
 
             auto& listWidget = widgets[WIDX_LIST];
             int32_t listWidgetWidth = listWidget.width();
@@ -340,7 +340,7 @@ namespace OpenRCT2::Ui::Windows
             screenCoords.y = 0;
             for (int32_t i = 0; i < no_list_items; i++)
             {
-                if (screenCoords.y >= dpi.y + dpi.height)
+                if (screenCoords.y >= rt.y + rt.height)
                     continue;
 
                 const auto& serverDetails = _serverList.GetServer(i);
@@ -350,7 +350,7 @@ namespace OpenRCT2::Ui::Windows
                 if (highlighted)
                 {
                     GfxFilterRect(
-                        dpi, { 0, screenCoords.y, listWidgetWidth, screenCoords.y + kItemHeight },
+                        rt, { 0, screenCoords.y, listWidgetWidth, screenCoords.y + kItemHeight },
                         FilterPaletteID::PaletteDarken1);
                     _version = serverDetails.Version;
                 }
@@ -389,7 +389,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<const char*>(serverInfoToShow);
                 DrawTextEllipsised(
-                    dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, spaceAvailableForInfo, STR_STRING, ft, { colour });
+                    rt, screenCoords + ScreenCoordsXY{ 0, 3 }, spaceAvailableForInfo, STR_STRING, ft, { colour });
 
                 int32_t right = listWidgetWidth - 7 - kScrollBarWidth;
 
@@ -407,20 +407,20 @@ namespace OpenRCT2::Ui::Windows
                     bool correctVersion = serverDetails.Version == NetworkGetVersion();
                     compatibilitySpriteId = correctVersion ? SPR_G2_RCT1_OPEN_BUTTON_2 : SPR_G2_RCT1_CLOSE_BUTTON_2;
                 }
-                GfxDrawSprite(dpi, ImageId(compatibilitySpriteId), { right, screenCoords.y + 1 });
+                GfxDrawSprite(rt, ImageId(compatibilitySpriteId), { right, screenCoords.y + 1 });
                 right -= 4;
 
                 // Draw lock icon
                 right -= 8;
                 if (serverDetails.RequiresPassword)
                 {
-                    GfxDrawSprite(dpi, ImageId(SPR_G2_LOCKED), { right, screenCoords.y + 4 });
+                    GfxDrawSprite(rt, ImageId(SPR_G2_LOCKED), { right, screenCoords.y + 4 });
                 }
                 right -= 6;
 
                 // Draw number of players
                 screenCoords.x = right - numPlayersStringWidth;
-                DrawText(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, { colours[1] }, players);
+                DrawText(rt, screenCoords + ScreenCoordsXY{ 0, 3 }, { colours[1] }, players);
 
                 screenCoords.y += kItemHeight;
             }

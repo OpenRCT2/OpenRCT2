@@ -270,23 +270,23 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_STAFF_LIST_HIRE_BUTTON].right = width - 11;
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(GetStaffWage(GetSelectedStaffType()));
                 auto y = widgets[WIDX_STAFF_LIST_TITLE].bottom + 17;
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ width - 155, y }, STR_COST_PER_MONTH, ft);
+                DrawTextBasic(rt, windowPos + ScreenCoordsXY{ width - 155, y }, STR_COST_PER_MONTH, ft);
             }
 
             if (GetSelectedStaffType() != StaffType::Entertainer)
             {
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].top + 1 },
+                    rt, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].top + 1 },
                     STR_UNIFORM_COLOUR);
             }
 
@@ -298,7 +298,7 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<StringId>(staffTypeStringId);
 
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_STAFF_LIST_LIST].bottom + 2 }, STR_STAFF_LIST_COUNTER, ft);
+                rt, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_STAFF_LIST_LIST].bottom + 2 }, STR_STAFF_LIST_COUNTER, ft);
         }
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
@@ -362,11 +362,11 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
+            auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             GfxFillRect(
-                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } },
+                rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
 
             // How much space do we have for the name and action columns? (Discount scroll area and icons.)
@@ -379,12 +379,12 @@ namespace OpenRCT2::Ui::Windows
             size_t i = 0;
             for (const auto& entry : _staffList)
             {
-                if (y > dpi.y + dpi.height)
+                if (y > rt.y + rt.height)
                 {
                     break;
                 }
 
-                if (y + 11 >= dpi.y)
+                if (y + 11 >= rt.y)
                 {
                     const auto* peep = GetEntity<Staff>(entry.Id);
                     if (peep == nullptr)
@@ -398,7 +398,7 @@ namespace OpenRCT2::Ui::Windows
 
                     if (i == _highlightedIndex)
                     {
-                        GfxFilterRect(dpi, { 0, y, 800, y + (kScrollableRowHeight - 1) }, FilterPaletteID::PaletteDarken1);
+                        GfxFilterRect(rt, { 0, y, 800, y + (kScrollableRowHeight - 1) }, FilterPaletteID::PaletteDarken1);
 
                         format = STR_WINDOW_COLOUR_2_STRINGID;
                         if (_quickFireMode)
@@ -407,16 +407,16 @@ namespace OpenRCT2::Ui::Windows
 
                     auto ft = Formatter();
                     peep->FormatNameTo(ft);
-                    DrawTextEllipsised(dpi, { 0, y }, nameColumnSize, format, ft);
+                    DrawTextEllipsised(rt, { 0, y }, nameColumnSize, format, ft);
 
                     ft = Formatter();
                     peep->FormatActionTo(ft);
-                    DrawTextEllipsised(dpi, { actionOffset, y }, actionColumnSize, format, ft);
+                    DrawTextEllipsised(rt, { actionOffset, y }, actionColumnSize, format, ft);
 
                     // True if a patrol path is set for the worker
                     if (peep->HasPatrolArea())
                     {
-                        GfxDrawSprite(dpi, ImageId(SPR_STAFF_PATROL_PATH), { nameColumnSize + 5, y });
+                        GfxDrawSprite(rt, ImageId(SPR_STAFF_PATROL_PATH), { nameColumnSize + 5, y });
                     }
 
                     auto staffOrderIcon_x = nameColumnSize + 20;
@@ -429,7 +429,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             if (staffOrders & 1)
                             {
-                                GfxDrawSprite(dpi, ImageId(staffOrderSprite), { staffOrderIcon_x, y });
+                                GfxDrawSprite(rt, ImageId(staffOrderSprite), { staffOrderIcon_x, y });
                             }
                             staffOrders = staffOrders >> 1;
                             staffOrderIcon_x += 9;
@@ -439,7 +439,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else
                     {
-                        GfxDrawSprite(dpi, GetCostumeInlineSprite(peep->AnimationObjectIndex), { staffOrderIcon_x, y });
+                        GfxDrawSprite(rt, GetCostumeInlineSprite(peep->AnimationObjectIndex), { staffOrderIcon_x, y });
                     }
                 }
 
@@ -586,16 +586,16 @@ namespace OpenRCT2::Ui::Windows
             return static_cast<StaffType>(_selectedTab);
         }
 
-        void DrawTabImages(RenderTarget& dpi) const
+        void DrawTabImages(RenderTarget& rt) const
         {
             const auto& gameState = getGameState();
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_HANDYMEN, AnimationPeepType::Handyman, gameState.staffHandymanColour);
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_MECHANICS, AnimationPeepType::Mechanic, gameState.staffMechanicColour);
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_SECURITY, AnimationPeepType::Security, gameState.staffSecurityColour);
-            DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, AnimationPeepType::Entertainer);
+            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_HANDYMEN, AnimationPeepType::Handyman, gameState.staffHandymanColour);
+            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_MECHANICS, AnimationPeepType::Mechanic, gameState.staffMechanicColour);
+            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_SECURITY, AnimationPeepType::Security, gameState.staffSecurityColour);
+            DrawTabImage(rt, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, AnimationPeepType::Entertainer);
         }
 
-        void DrawTabImage(RenderTarget& dpi, int32_t tabIndex, AnimationPeepType type, colour_t colour) const
+        void DrawTabImage(RenderTarget& rt, int32_t tabIndex, AnimationPeepType type, colour_t colour) const
         {
             PeepAnimationsObject* animObj = findPeepAnimationsObjectForType(type);
             if (animObj == nullptr)
@@ -609,11 +609,11 @@ namespace OpenRCT2::Ui::Windows
             auto imageId = anim.base_image + 1 + anim.frame_offsets[frame] * 4;
 
             GfxDrawSprite(
-                dpi, ImageId(imageId, colour),
+                rt, ImageId(imageId, colour),
                 windowPos + ScreenCoordsXY{ (widget.left + widget.right) / 2, widget.bottom - 6 });
         }
 
-        void DrawTabImage(RenderTarget& dpi, int32_t tabIndex, AnimationPeepType type) const
+        void DrawTabImage(RenderTarget& rt, int32_t tabIndex, AnimationPeepType type) const
         {
             PeepAnimationsObject* animObj = findPeepAnimationsObjectForType(type);
             if (animObj == nullptr)
@@ -624,7 +624,7 @@ namespace OpenRCT2::Ui::Windows
 
             RenderTarget clippedDpi;
             if (ClipDrawPixelInfo(
-                    clippedDpi, dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 },
+                    clippedDpi, rt, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 },
                     widget.right - widget.left - 1, widget.bottom - widget.top - 1))
             {
                 auto frame = _selectedTab == tabIndex ? _tabAnimationIndex / 4 : 0;

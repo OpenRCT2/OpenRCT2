@@ -418,20 +418,20 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_GROUP_BY_TRACK_TYPE].left = width - 8 - localizedGroupByTrackTypeWidth;
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             if (_currentTab != RESEARCH_TAB)
             {
                 RideSelection item = _newRideVars.HighlightedRide;
                 if (item.Type != kRideTypeNull || item.EntryIndex != kObjectEntryIndexNull)
-                    DrawRideInformation(dpi, item, windowPos + ScreenCoordsXY{ 3, height - 64 }, width - 6);
+                    DrawRideInformation(rt, item, windowPos + ScreenCoordsXY{ 3, height - 64 }, width - 6);
             }
             else
             {
-                WindowResearchDevelopmentDraw(this, dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
+                WindowResearchDevelopmentDraw(this, rt, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
             }
         }
 
@@ -475,14 +475,14 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             if (_currentTab == RESEARCH_TAB)
             {
                 return;
             }
 
-            GfxClear(dpi, ColourMapA[colours[1].colour].mid_light);
+            GfxClear(rt, ColourMapA[colours[1].colour].mid_light);
 
             ScreenCoordsXY coords{ 1, 1 };
             RideSelection* listItem = _windowNewRideListItems;
@@ -494,13 +494,13 @@ namespace OpenRCT2::Ui::Windows
                     buttonFlags |= INSET_RECT_FLAG_BORDER_INSET;
                 if (_newRideVars.HighlightedRide == *listItem || buttonFlags != 0)
                     GfxFillRectInset(
-                        dpi, { coords, coords + ScreenCoordsXY{ 115, 115 } }, colours[1],
+                        rt, { coords, coords + ScreenCoordsXY{ 115, 115 } }, colours[1],
                         INSET_RECT_FLAG_FILL_MID_LIGHT | buttonFlags);
 
                 // Draw ride image with feathered border
                 auto mask = ImageId(SPR_NEW_RIDE_MASK);
                 auto rideImage = ImageId(GetRideImage(*listItem));
-                GfxDrawSpriteRawMasked(dpi, coords + ScreenCoordsXY{ 2, 2 }, mask, rideImage);
+                GfxDrawSpriteRawMasked(rt, coords + ScreenCoordsXY{ 2, 2 }, mask, rideImage);
 
                 // Next position
                 coords.x += 116;
@@ -919,7 +919,7 @@ namespace OpenRCT2::Ui::Windows
             WidgetScrollUpdateThumbs(*this, WIDX_RIDE_LIST);
         }
 
-        void DrawRideInformation(RenderTarget& dpi, RideSelection item, const ScreenCoordsXY& screenPos, int32_t textWidth)
+        void DrawRideInformation(RenderTarget& rt, RideSelection item, const ScreenCoordsXY& screenPos, int32_t textWidth)
         {
             auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
             const auto* rideObj = objMgr.GetLoadedObject<RideObject>(item.EntryIndex);
@@ -932,7 +932,7 @@ namespace OpenRCT2::Ui::Windows
             // Ride name and description
             ft.Add<StringId>(rideNaming.Name);
             ft.Add<StringId>(rideNaming.Description);
-            DrawTextWrapped(dpi, screenPos, textWidth, STR_NEW_RIDE_NAME_AND_DESCRIPTION, ft);
+            DrawTextWrapped(rt, screenPos, textWidth, STR_NEW_RIDE_NAME_AND_DESCRIPTION, ft);
 
             if (!_vehicleAvailability.empty())
             {
@@ -941,13 +941,13 @@ namespace OpenRCT2::Ui::Windows
                     ft = Formatter();
                     ft.Add<StringId>(rideEntry.naming.Name);
                     DrawTextEllipsised(
-                        dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WindowWidth - 2, STR_NEW_RIDE_VEHICLE_NAME, ft);
+                        rt, screenPos + ScreenCoordsXY{ 0, 39 }, WindowWidth - 2, STR_NEW_RIDE_VEHICLE_NAME, ft);
                 }
                 else
                 {
                     ft = Formatter();
                     ft.Add<const utf8*>(_vehicleAvailability.c_str());
-                    DrawTextEllipsised(dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WindowWidth - 2, STR_AVAILABLE_VEHICLES, ft);
+                    DrawTextEllipsised(rt, screenPos + ScreenCoordsXY{ 0, 39 }, WindowWidth - 2, STR_AVAILABLE_VEHICLES, ft);
                 }
             }
 
@@ -955,7 +955,7 @@ namespace OpenRCT2::Ui::Windows
             auto designCountStringId = GetDesignsAvailableStringId(count);
             ft = Formatter();
             ft.Add<int32_t>(count);
-            DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ 0, 51 }, designCountStringId, ft);
+            DrawTextBasic(rt, screenPos + ScreenCoordsXY{ 0, 51 }, designCountStringId, ft);
 
             // Price
             if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
@@ -974,7 +974,7 @@ namespace OpenRCT2::Ui::Windows
 
                 ft = Formatter();
                 ft.Add<money64>(price);
-                DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ textWidth, 51 }, stringId, ft, { TextAlignment::RIGHT });
+                DrawTextBasic(rt, screenPos + ScreenCoordsXY{ textWidth, 51 }, stringId, ft, { TextAlignment::RIGHT });
             }
 
             // Draw object author(s) if debugging tools are active
@@ -998,12 +998,12 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<const char*>(authorsString.c_str());
 
                 DrawTextEllipsised(
-                    dpi, screenPos + ScreenCoordsXY{ textWidth, 0 }, WindowWidth - 2, STR_WINDOW_COLOUR_2_STRINGID, ft,
+                    rt, screenPos + ScreenCoordsXY{ textWidth, 0 }, WindowWidth - 2, STR_WINDOW_COLOUR_2_STRINGID, ft,
                     { TextAlignment::RIGHT });
             }
         }
 
-        void DrawTabImage(RenderTarget& dpi, NewRideTabId tab, int32_t spriteIndex)
+        void DrawTabImage(RenderTarget& rt, NewRideTabId tab, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(tab);
 
@@ -1016,20 +1016,20 @@ namespace OpenRCT2::Ui::Windows
                 spriteIndex += tab == THRILL_TAB ? ThrillRidesTabAnimationSequence[frame] : frame;
 
                 GfxDrawSprite(
-                    dpi, ImageId(spriteIndex, colours[1].colour),
+                    rt, ImageId(spriteIndex, colours[1].colour),
                     windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
             }
         }
 
-        void DrawTabImages(RenderTarget& dpi)
+        void DrawTabImages(RenderTarget& rt)
         {
-            DrawTabImage(dpi, TRANSPORT_TAB, SPR_TAB_RIDES_TRANSPORT_0);
-            DrawTabImage(dpi, GENTLE_TAB, SPR_TAB_RIDES_GENTLE_0);
-            DrawTabImage(dpi, ROLLER_COASTER_TAB, SPR_TAB_RIDES_ROLLER_COASTERS_0);
-            DrawTabImage(dpi, THRILL_TAB, SPR_TAB_RIDES_THRILL_0);
-            DrawTabImage(dpi, WATER_TAB, SPR_TAB_RIDES_WATER_0);
-            DrawTabImage(dpi, SHOP_TAB, SPR_TAB_RIDES_SHOP_0);
-            DrawTabImage(dpi, RESEARCH_TAB, SPR_TAB_FINANCES_RESEARCH_0);
+            DrawTabImage(rt, TRANSPORT_TAB, SPR_TAB_RIDES_TRANSPORT_0);
+            DrawTabImage(rt, GENTLE_TAB, SPR_TAB_RIDES_GENTLE_0);
+            DrawTabImage(rt, ROLLER_COASTER_TAB, SPR_TAB_RIDES_ROLLER_COASTERS_0);
+            DrawTabImage(rt, THRILL_TAB, SPR_TAB_RIDES_THRILL_0);
+            DrawTabImage(rt, WATER_TAB, SPR_TAB_RIDES_WATER_0);
+            DrawTabImage(rt, SHOP_TAB, SPR_TAB_RIDES_SHOP_0);
+            DrawTabImage(rt, RESEARCH_TAB, SPR_TAB_FINANCES_RESEARCH_0);
         }
 
         StringId GetDesignsAvailableStringId(int32_t count)

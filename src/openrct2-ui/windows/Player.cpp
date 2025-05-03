@@ -147,16 +147,16 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
             switch (page)
             {
                 case WINDOW_PLAYER_PAGE_OVERVIEW:
-                    OnDrawOverview(dpi);
+                    OnDrawOverview(rt);
                     break;
 
                 case WINDOW_PLAYER_PAGE_STATISTICS:
-                    OnDrawStatistics(dpi);
+                    OnDrawStatistics(rt);
                     break;
             }
         }
@@ -247,7 +247,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImages(RenderTarget& dpi)
+        void DrawTabImages(RenderTarget& rt)
         {
             Widget* widget;
 
@@ -256,7 +256,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 widget = &this->widgets[WIDX_TAB_1];
                 auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
-                GfxDrawSprite(dpi, ImageId(SPR_PEEP_LARGE_FACE_NORMAL), screenCoords);
+                GfxDrawSprite(rt, ImageId(SPR_PEEP_LARGE_FACE_NORMAL), screenCoords);
             }
 
             // Tab 2
@@ -271,7 +271,7 @@ namespace OpenRCT2::Ui::Windows
                     imageId += (frame_no / 2) & 7;
                 }
 
-                GfxDrawSprite(dpi, ImageId(imageId), screenCoords);
+                GfxDrawSprite(rt, ImageId(imageId), screenCoords);
             }
         }
 
@@ -410,10 +410,10 @@ namespace OpenRCT2::Ui::Windows
             WidgetSetEnabled(*this, WIDX_KICK, canKick && !isOwnWindow && !isServer);
         }
 
-        void OnDrawOverview(RenderTarget& dpi)
+        void OnDrawOverview(RenderTarget& rt)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             int32_t player = NetworkGetPlayerIndex(static_cast<uint8_t>(number));
             if (player == -1)
@@ -434,7 +434,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<const char*>(_buffer.c_str());
 
                 DrawTextEllipsised(
-                    dpi, windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
+                    rt, windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
                     { TextAlignment::CENTRE });
             }
 
@@ -443,10 +443,10 @@ namespace OpenRCT2::Ui::Windows
 
             auto ft = Formatter();
             ft.Add<StringId>(STR_PING);
-            DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
+            DrawTextBasic(rt, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
             char ping[64];
             snprintf(ping, 64, "%d ms", NetworkGetPlayerPing(player));
-            DrawText(dpi, screenCoords + ScreenCoordsXY(30, 0), { colours[2] }, ping);
+            DrawText(rt, screenCoords + ScreenCoordsXY(30, 0), { colours[2] }, ping);
 
             // Draw last action
             screenCoords = windowPos + ScreenCoordsXY{ width / 2, height - 13 };
@@ -461,11 +461,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 ft.Add<StringId>(STR_ACTION_NA);
             }
-            DrawTextEllipsised(dpi, screenCoords, updatedWidth, STR_LAST_ACTION_RAN, ft, { TextAlignment::CENTRE });
+            DrawTextEllipsised(rt, screenCoords, updatedWidth, STR_LAST_ACTION_RAN, ft, { TextAlignment::CENTRE });
 
             if (viewport != nullptr && _drawViewport)
             {
-                WindowDrawViewport(dpi, *this);
+                WindowDrawViewport(rt, *this);
             }
         }
 
@@ -594,10 +594,10 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_2);
         }
 
-        void OnDrawStatistics(RenderTarget& dpi)
+        void OnDrawStatistics(RenderTarget& rt)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             int32_t player = NetworkGetPlayerIndex(static_cast<uint8_t>(number));
             if (player == -1)
@@ -610,13 +610,13 @@ namespace OpenRCT2::Ui::Windows
 
             auto ft = Formatter();
             ft.Add<uint32_t>(NetworkGetPlayerCommandsRan(player));
-            DrawTextBasic(dpi, screenCoords, STR_COMMANDS_RAN, ft);
+            DrawTextBasic(rt, screenCoords, STR_COMMANDS_RAN, ft);
 
             screenCoords.y += kListRowHeight;
 
             ft = Formatter();
             ft.Add<uint32_t>(NetworkGetPlayerMoneySpent(player));
-            DrawTextBasic(dpi, screenCoords, STR_MONEY_SPENT, ft);
+            DrawTextBasic(rt, screenCoords, STR_MONEY_SPENT, ft);
         }
 
 #pragma endregion

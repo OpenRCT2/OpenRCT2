@@ -74,9 +74,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            WindowDrawWidgets(*this, dpi);
+            WindowDrawWidgets(*this, rt);
 
             auto currentRide = GetRide(rideId);
             if (currentRide != nullptr)
@@ -88,7 +88,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<money64>(_demolishRideCost / 2);
 
                 ScreenCoordsXY stringCoords(windowPos.x + WW / 2, windowPos.y + (WH / 2) - 3);
-                DrawTextWrapped(dpi, stringCoords, WW - 4, stringId, ft, { TextAlignment::CENTRE });
+                DrawTextWrapped(rt, stringCoords, WW - 4, stringId, ft, { TextAlignment::CENTRE });
             }
         }
     };

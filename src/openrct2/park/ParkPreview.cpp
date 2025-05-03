@@ -242,7 +242,7 @@ namespace OpenRCT2
         return image;
     }
 
-    void drawPreviewImage(const PreviewImage& image, RenderTarget& dpi, ScreenCoordsXY screenPos)
+    void drawPreviewImage(const PreviewImage& image, RenderTarget& rt, ScreenCoordsXY screenPos)
     {
         auto* drawingEngine = GetContext()->GetDrawingEngine();
         if (drawingEngine == nullptr)
@@ -261,7 +261,7 @@ namespace OpenRCT2
             drawingEngine->InvalidateImage(imageId.GetIndex());
 
             // Draw preview image and restore original G1 image
-            GfxDrawSprite(dpi, imageId, screenPos);
+            GfxDrawSprite(rt, imageId, screenPos);
             *g1 = backupG1;
             drawingEngine->InvalidateImage(imageId.GetIndex());
         }

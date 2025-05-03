@@ -466,11 +466,11 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
             ScreenCoordsXY screenCoords;
-            WindowDrawWidgets(*this, dpi);
-            WindowFootpathDrawDropdownButtons(dpi);
+            WindowDrawWidgets(*this, rt);
+            WindowFootpathDrawDropdownButtons(rt);
 
             if (!IsWidgetDisabled(WIDX_CONSTRUCT))
             {
@@ -517,13 +517,13 @@ namespace OpenRCT2::Ui::Windows
                     // Draw construction image
                     screenCoords = this->windowPos
                         + ScreenCoordsXY{ widgets[WIDX_CONSTRUCT].midX(), widgets[WIDX_CONSTRUCT].bottom - 60 };
-                    GfxDrawSprite(dpi, ImageId(image), screenCoords);
+                    GfxDrawSprite(rt, ImageId(image), screenCoords);
                 }
 
                 // Draw build this... label
                 screenCoords = this->windowPos
                     + ScreenCoordsXY{ widgets[WIDX_CONSTRUCT].midX(), widgets[WIDX_CONSTRUCT].bottom - 23 };
-                DrawTextBasic(dpi, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
+                DrawTextBasic(rt, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
             }
 
             // Draw cost
@@ -535,7 +535,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<money64>(_windowFootpathCost);
-                    DrawTextBasic(dpi, screenCoords, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
+                    DrawTextBasic(rt, screenCoords, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
                 }
             }
         }
@@ -601,7 +601,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void WindowFootpathDrawDropdownButtons(RenderTarget& dpi)
+        void WindowFootpathDrawDropdownButtons(RenderTarget& rt)
         {
             if (gFootpathSelection.LegacyPath == kObjectEntryIndexNull)
             {
@@ -620,8 +620,8 @@ namespace OpenRCT2::Ui::Windows
                     queueImage = pathEntry->PreviewImageId;
                 }
 
-                WindowFootpathDrawDropdownButton(dpi, WIDX_FOOTPATH_TYPE, pathImage);
-                WindowFootpathDrawDropdownButton(dpi, WIDX_QUEUELINE_TYPE, queueImage);
+                WindowFootpathDrawDropdownButton(rt, WIDX_FOOTPATH_TYPE, pathImage);
+                WindowFootpathDrawDropdownButton(rt, WIDX_QUEUELINE_TYPE, queueImage);
 
                 // Set railing
                 auto railingsImage = kSpriteIdNull;
@@ -630,7 +630,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     railingsImage = railingsEntry->PreviewImageId;
                 }
-                WindowFootpathDrawDropdownButton(dpi, WIDX_RAILINGS_TYPE, railingsImage);
+                WindowFootpathDrawDropdownButton(rt, WIDX_RAILINGS_TYPE, railingsImage);
             }
             else
             {
@@ -647,15 +647,15 @@ namespace OpenRCT2::Ui::Windows
                     queueImage = pathEntry->GetQueuePreviewImage();
                 }
 
-                WindowFootpathDrawDropdownButton(dpi, WIDX_FOOTPATH_TYPE, pathImage);
-                WindowFootpathDrawDropdownButton(dpi, WIDX_QUEUELINE_TYPE, queueImage);
+                WindowFootpathDrawDropdownButton(rt, WIDX_FOOTPATH_TYPE, pathImage);
+                WindowFootpathDrawDropdownButton(rt, WIDX_QUEUELINE_TYPE, queueImage);
             }
         }
 
-        void WindowFootpathDrawDropdownButton(RenderTarget& dpi, WidgetIndex widgetIndex, ImageIndex image)
+        void WindowFootpathDrawDropdownButton(RenderTarget& rt, WidgetIndex widgetIndex, ImageIndex image)
         {
             const auto& widget = widgets[widgetIndex];
-            GfxDrawSprite(dpi, ImageId(image), { windowPos.x + widget.left, windowPos.y + widget.top });
+            GfxDrawSprite(rt, ImageId(image), { windowPos.x + widget.left, windowPos.y + widget.top });
         }
 
         /**

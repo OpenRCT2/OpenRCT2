@@ -205,10 +205,10 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
         }
 
     private:
@@ -222,14 +222,14 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImages(RenderTarget& dpi)
+        void DrawTabImages(RenderTarget& rt)
         {
-            DrawTabImage(dpi, NOTIFICATION_CATEGORY_PARK, SPR_TAB_PARK);
-            DrawTabImage(dpi, NOTIFICATION_CATEGORY_RIDE, SPR_TAB_RIDE_0);
-            DrawTabImage(dpi, NOTIFICATION_CATEGORY_GUEST, SPR_TAB_GUESTS_0);
+            DrawTabImage(rt, NOTIFICATION_CATEGORY_PARK, SPR_TAB_PARK);
+            DrawTabImage(rt, NOTIFICATION_CATEGORY_RIDE, SPR_TAB_RIDE_0);
+            DrawTabImage(rt, NOTIFICATION_CATEGORY_GUEST, SPR_TAB_GUESTS_0);
         }
 
-        void DrawTabImage(RenderTarget& dpi, int32_t p, int32_t spriteIndex)
+        void DrawTabImage(RenderTarget& rt, int32_t p, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
 
@@ -246,7 +246,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 const auto& widget = widgets[widgetIndex];
-                GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget.left, widget.top });
+                GfxDrawSprite(rt, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget.left, widget.top });
             }
         }
 

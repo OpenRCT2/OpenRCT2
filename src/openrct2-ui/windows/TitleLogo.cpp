@@ -58,11 +58,11 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x0066B872
          */
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
             auto screenCoords = windowPos + ScreenCoordsXY{ 2, 2 };
-            GfxDrawSprite(dpi, ImageId(SPR_G2_LOGO), screenCoords);
-            GfxDrawSprite(dpi, ImageId(SPR_G2_TITLE), screenCoords + ScreenCoordsXY{ 104, 18 });
+            GfxDrawSprite(rt, ImageId(SPR_G2_LOGO), screenCoords);
+            GfxDrawSprite(rt, ImageId(SPR_G2_TITLE), screenCoords + ScreenCoordsXY{ 104, 18 });
         }
     };
 

@@ -2287,27 +2287,27 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x0067236F
          */
-        void RidesOnScrollDraw(RenderTarget& dpi, int32_t scrollIndex)
+        void RidesOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
         {
             int32_t colour = ColourMapA[colours[1].colour].mid_light;
-            GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
+            GfxFillRect(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);
 
             for (int32_t i = 0; i < static_cast<int32_t>(_rideableRides.size()); i++)
             {
                 int32_t y = i * 12;
 
-                if (y + 12 < dpi.y || y >= dpi.y + dpi.height)
+                if (y + 12 < rt.y || y >= rt.y + rt.height)
                     continue;
 
                 // Checkbox
-                GfxFillRectInset(dpi, { { 2, y }, { 11, y + 10 } }, colours[1], INSET_RECT_F_E0);
+                GfxFillRectInset(rt, { { 2, y }, { 11, y + 10 } }, colours[1], INSET_RECT_F_E0);
 
                 // Highlighted
                 auto stringId = STR_BLACK_STRING;
                 if (i == selected_list_item)
                 {
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                    GfxFilterRect(dpi, { 0, y, width, y + 11 }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(rt, { 0, y, width, y + 11 }, FilterPaletteID::PaletteDarken1);
                 }
 
                 // Checkbox mark
@@ -2318,7 +2318,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::ExtraDark : TextDarkness::Dark;
                         DrawText(
-                            dpi, { 2, y }, { colours[1].withFlag(ColourFlag::translucent, false), FontStyle::Medium, darkness },
+                            rt, { 2, y }, { colours[1].withFlag(ColourFlag::translucent, false), FontStyle::Medium, darkness },
                             kCheckMarkString);
                     }
 
@@ -2326,7 +2326,7 @@ namespace OpenRCT2::Ui::Windows
 
                     Formatter ft;
                     currentRide->formatNameTo(ft);
-                    DrawTextBasic(dpi, { 15, y }, stringId, ft);
+                    DrawTextBasic(rt, { 15, y }, stringId, ft);
                 }
             }
         }

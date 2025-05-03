@@ -46,9 +46,9 @@ namespace OpenRCT2::Ui::Windows
             WindowFootpathResetSelectedPath();
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            ViewportRender(dpi, viewport);
+            ViewportRender(rt, viewport);
         }
 
     private:

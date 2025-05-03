@@ -251,15 +251,15 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
             ScreenCoordsXY screenCoords;
             int32_t numTiles;
             money64 price;
             Widget* previewWidget = &widgets[WIDX_PREVIEW];
 
-            DrawWidgets(dpi);
-            DrawDropdownButtons(dpi);
+            DrawWidgets(rt);
+            DrawDropdownButtons(rt);
 
             // Draw number for tool sizes bigger than 7
             if (gLandToolSize > kLandToolMaximumSizeWithSprite)
@@ -268,15 +268,15 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<uint16_t>(gLandToolSize);
                 screenCoords = { windowPos.x + previewWidget->midX(), windowPos.y + previewWidget->midY() };
                 DrawTextBasic(
-                    dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+                    rt, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
             }
             else if (_landToolMountainMode)
             {
                 screenCoords = { windowPos.x + previewWidget->left, windowPos.y + previewWidget->top };
                 auto sprite = ImageId(gLandToolSize % 2 == 0 ? SPR_G2_MOUNTAIN_TOOL_EVEN : SPR_G2_MOUNTAIN_TOOL_ODD);
-                GfxDrawSprite(dpi, sprite, screenCoords);
-                WidgetDraw(dpi, *this, WIDX_DECREMENT);
-                WidgetDraw(dpi, *this, WIDX_INCREMENT);
+                GfxDrawSprite(rt, sprite, screenCoords);
+                WidgetDraw(rt, *this, WIDX_DECREMENT);
+                WidgetDraw(rt, *this, WIDX_INCREMENT);
             }
 
             screenCoords = { windowPos.x + previewWidget->midX(), windowPos.y + previewWidget->bottom + 5 };
@@ -288,7 +288,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<money64>(_landToolRaiseCost);
-                    DrawTextBasic(dpi, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                    DrawTextBasic(rt, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::CENTRE });
                 }
                 screenCoords.y += 10;
 
@@ -297,7 +297,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<money64>(_landToolLowerCost);
-                    DrawTextBasic(dpi, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                    DrawTextBasic(rt, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
                 }
                 screenCoords.y += 50;
 
@@ -321,7 +321,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<money64>(price);
-                    DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                    DrawTextBasic(rt, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
                 }
             }
         }
@@ -835,7 +835,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawDropdownButtons(RenderTarget& dpi)
+        void DrawDropdownButtons(RenderTarget& rt)
         {
             auto& objManager = GetContext()->GetObjectManager();
             const auto* surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(_selectedFloorTexture);
@@ -854,14 +854,14 @@ namespace OpenRCT2::Ui::Windows
                 edgeImage = ImageId(edgeObj->IconImageId);
             }
 
-            DrawDropdownButton(dpi, WIDX_FLOOR, surfaceImage);
-            DrawDropdownButton(dpi, WIDX_WALL, edgeImage);
+            DrawDropdownButton(rt, WIDX_FLOOR, surfaceImage);
+            DrawDropdownButton(rt, WIDX_WALL, edgeImage);
         }
 
-        void DrawDropdownButton(RenderTarget& dpi, WidgetIndex widgetIndex, ImageId image)
+        void DrawDropdownButton(RenderTarget& rt, WidgetIndex widgetIndex, ImageId image)
         {
             const auto& widget = widgets[widgetIndex];
-            GfxDrawSprite(dpi, image, { windowPos.x + widget.left, windowPos.y + widget.top });
+            GfxDrawSprite(rt, image, { windowPos.x + widget.left, windowPos.y + widget.top });
         }
     };
 

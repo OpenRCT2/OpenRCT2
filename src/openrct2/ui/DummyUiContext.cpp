@@ -30,7 +30,7 @@ namespace OpenRCT2::Ui
         void Tick() override
         {
         }
-        void Draw(RenderTarget& /*dpi*/) override
+        void Draw(RenderTarget& /*rt*/) override
         {
         }
 

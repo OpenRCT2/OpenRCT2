@@ -607,18 +607,18 @@ namespace OpenRCT2::Ui::Windows
             CommonPrepareDrawAfter();
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             switch (page)
             {
                 case WINDOW_OPTIONS_PAGE_DISPLAY:
-                    DisplayDraw(dpi);
+                    DisplayDraw(rt);
                     break;
                 case WINDOW_OPTIONS_PAGE_ADVANCED:
-                    AdvancedDraw(dpi);
+                    AdvancedDraw(rt);
                     break;
                 default:
                     break;
@@ -943,12 +943,12 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_DRAWING_ENGINE].text = kDrawingEngineStringIds[EnumValue(Config::Get().general.DrawingEngine)];
         }
 
-        void DisplayDraw(RenderTarget& dpi)
+        void DisplayDraw(RenderTarget& rt)
         {
             auto ft = Formatter();
             ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.WindowScale * 100));
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_SCALE].left + 1, widgets[WIDX_SCALE].top + 1 },
+                rt, windowPos + ScreenCoordsXY{ widgets[WIDX_SCALE].left + 1, widgets[WIDX_SCALE].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA2DP32, ft, { colours[1] });
         }
 #pragma endregion
@@ -2133,13 +2133,12 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_ASSET_PACKS].bottom = widgets[WIDX_GROUP_ADVANCED].bottom - 6;
         }
 
-        void AdvancedDraw(RenderTarget& dpi)
+        void AdvancedDraw(RenderTarget& rt)
         {
             auto ft = Formatter();
             ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.AutosaveAmount));
             DrawTextBasic(
-                dpi,
-                windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
+                rt, windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA32, ft, { colours[1] });
 
             // Format RCT1 path
@@ -2156,7 +2155,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
 
             auto screenCoords = windowPos + ScreenCoordsXY{ pathWidget.left + 1, pathWidget.top + padding };
-            DrawTextEllipsised(dpi, screenCoords, pathWidget.width(), STR_BLACK_STRING, ft);
+            DrawTextEllipsised(rt, screenCoords, pathWidget.width(), STR_BLACK_STRING, ft);
         }
 
         OpenRCT2String AdvancedTooltip(WidgetIndex widgetIndex, StringId fallback)
@@ -2211,19 +2210,19 @@ namespace OpenRCT2::Ui::Windows
                 Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
         }
 
-        void DrawTabImages(RenderTarget& dpi)
+        void DrawTabImages(RenderTarget& rt)
         {
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_DISPLAY, SPR_G2_MONITOR_TAB_START);
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_RENDERING, SPR_G2_TAB_TREE);
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_CULTURE, SPR_TAB_TIMER_0);
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_AUDIO, SPR_TAB_MUSIC_0);
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_INTERFACE, SPR_TAB_PAINT_0);
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_CONTROLS, SPR_G2_CONTROLS_TAB_START);
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_MISC, SPR_TAB_RIDE_0);
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
+            DrawTabImage(rt, WINDOW_OPTIONS_PAGE_DISPLAY, SPR_G2_MONITOR_TAB_START);
+            DrawTabImage(rt, WINDOW_OPTIONS_PAGE_RENDERING, SPR_G2_TAB_TREE);
+            DrawTabImage(rt, WINDOW_OPTIONS_PAGE_CULTURE, SPR_TAB_TIMER_0);
+            DrawTabImage(rt, WINDOW_OPTIONS_PAGE_AUDIO, SPR_TAB_MUSIC_0);
+            DrawTabImage(rt, WINDOW_OPTIONS_PAGE_INTERFACE, SPR_TAB_PAINT_0);
+            DrawTabImage(rt, WINDOW_OPTIONS_PAGE_CONTROLS, SPR_G2_CONTROLS_TAB_START);
+            DrawTabImage(rt, WINDOW_OPTIONS_PAGE_MISC, SPR_TAB_RIDE_0);
+            DrawTabImage(rt, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
         }
 
-        void DrawTabImage(RenderTarget& dpi, int32_t p, int32_t spriteIndex)
+        void DrawTabImage(RenderTarget& rt, int32_t p, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
             Widget* widget = &widgets[widgetIndex];
@@ -2239,7 +2238,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Draw normal, enabled sprite.
-                GfxDrawSprite(dpi, ImageId(spriteIndex), screenCoords);
+                GfxDrawSprite(rt, ImageId(spriteIndex), screenCoords);
             }
             else
             {
@@ -2248,10 +2247,10 @@ namespace OpenRCT2::Ui::Windows
 
                 // Draw greyed out (light border bottom right shadow)
                 GfxDrawSpriteSolid(
-                    dpi, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[windowColour].lighter);
+                    rt, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[windowColour].lighter);
 
                 // Draw greyed out (dark)
-                GfxDrawSpriteSolid(dpi, ImageId(spriteIndex), screenCoords, ColourMapA[windowColour].mid_light);
+                GfxDrawSpriteSolid(rt, ImageId(spriteIndex), screenCoords, ColourMapA[windowColour].mid_light);
             }
         }
 

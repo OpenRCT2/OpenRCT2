@@ -287,7 +287,7 @@ public:
     virtual void Load() = 0;
     virtual void Unload() = 0;
 
-    virtual void DrawPreview(RenderTarget& /*dpi*/, int32_t /*width*/, int32_t /*height*/) const
+    virtual void DrawPreview(RenderTarget& /*rt*/, int32_t /*width*/, int32_t /*height*/) const
     {
     }
 

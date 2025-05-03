@@ -85,9 +85,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            WindowDrawWidgets(*this, dpi);
+            WindowDrawWidgets(*this, rt);
             thread_local std::string _buffer;
 
             _buffer.assign("{WHITE}");
@@ -96,7 +96,7 @@ namespace OpenRCT2::Ui::Windows
 
             ScreenCoordsXY screenCoords(windowPos.x + (width / 2), windowPos.y + (height / 2));
             screenCoords.x -= GfxGetStringWidth(_buffer, FontStyle::Medium) / 2;
-            DrawText(dpi, screenCoords, { COLOUR_BLACK }, _buffer.c_str());
+            DrawText(rt, screenCoords, { COLOUR_BLACK }, _buffer.c_str());
         }
 
         void SetCloseCallBack(CloseCallback onClose)

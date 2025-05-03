@@ -101,7 +101,7 @@ namespace OpenRCT2::Ui::Windows
             UpdatePosition(gTooltipCursor);
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
             int32_t left = windowPos.x;
             int32_t top = windowPos.y;
@@ -109,25 +109,25 @@ namespace OpenRCT2::Ui::Windows
             int32_t bottom = windowPos.y + height - 1;
 
             // Background
-            GfxFilterRect(dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::Palette45);
-            GfxFilterRect(dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::PaletteGlassLightOrange);
+            GfxFilterRect(rt, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::Palette45);
+            GfxFilterRect(rt, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::PaletteGlassLightOrange);
 
             // Sides
-            GfxFilterRect(dpi, { { left + 0, top + 2 }, { left + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
-            GfxFilterRect(dpi, { { right + 0, top + 2 }, { right + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
-            GfxFilterRect(dpi, { { left + 2, bottom + 0 }, { right - 2, bottom + 0 } }, FilterPaletteID::PaletteDarken3);
-            GfxFilterRect(dpi, { { left + 2, top + 0 }, { right - 2, top + 0 } }, FilterPaletteID::PaletteDarken3);
+            GfxFilterRect(rt, { { left + 0, top + 2 }, { left + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
+            GfxFilterRect(rt, { { right + 0, top + 2 }, { right + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
+            GfxFilterRect(rt, { { left + 2, bottom + 0 }, { right - 2, bottom + 0 } }, FilterPaletteID::PaletteDarken3);
+            GfxFilterRect(rt, { { left + 2, top + 0 }, { right - 2, top + 0 } }, FilterPaletteID::PaletteDarken3);
 
             // Corners
-            GfxFilterPixel(dpi, { left + 1, top + 1 }, FilterPaletteID::PaletteDarken3);
-            GfxFilterPixel(dpi, { right - 1, top + 1 }, FilterPaletteID::PaletteDarken3);
-            GfxFilterPixel(dpi, { left + 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
-            GfxFilterPixel(dpi, { right - 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
+            GfxFilterPixel(rt, { left + 1, top + 1 }, FilterPaletteID::PaletteDarken3);
+            GfxFilterPixel(rt, { right - 1, top + 1 }, FilterPaletteID::PaletteDarken3);
+            GfxFilterPixel(rt, { left + 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
+            GfxFilterPixel(rt, { right - 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
 
             // Text
             left = windowPos.x + ((width + 1) / 2) - 1;
             top = windowPos.y + 1;
-            DrawStringCentredRaw(dpi, { left, top }, _tooltipNumLines, _tooltipText.data(), FontStyle::Small);
+            DrawStringCentredRaw(rt, { left, top }, _tooltipNumLines, _tooltipText.data(), FontStyle::Small);
         }
 
     private:

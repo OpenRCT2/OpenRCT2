@@ -73,9 +73,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
 
             Peep* peep = GetEntity<Staff>(EntityId::FromUnderlying(number));
             // The staff member may have been fired in the meantime.
@@ -87,7 +87,7 @@ namespace OpenRCT2::Ui::Windows
             peep->FormatNameTo(ft);
 
             ScreenCoordsXY textCoords(windowPos + ScreenCoordsXY{ WW / 2, (WH / 2) - 3 });
-            DrawTextWrapped(dpi, textCoords, WW - 4, STR_FIRE_STAFF_ID, ft, { TextAlignment::CENTRE });
+            DrawTextWrapped(rt, textCoords, WW - 4, STR_FIRE_STAFF_ID, ft, { TextAlignment::CENTRE });
         }
     };
 

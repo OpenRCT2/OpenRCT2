@@ -348,15 +348,15 @@ namespace OpenRCT2::Ui::Windows
             OnPrepareDrawGraph(graphPageWidget, centredGraph);
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             switch (page)
             {
                 case WINDOW_FINANCES_PAGE_SUMMARY:
-                    OnDrawSummary(dpi);
+                    OnDrawSummary(rt);
                     break;
                 case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
                 {
@@ -364,25 +364,25 @@ namespace OpenRCT2::Ui::Windows
                     const auto cashLessLoan = gameState.cash - gameState.bankLoan;
                     const auto fmt = cashLessLoan >= 0 ? STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE
                                                        : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE;
-                    OnDrawGraph(dpi, cashLessLoan, fmt);
+                    OnDrawGraph(rt, cashLessLoan, fmt);
                     break;
                 }
                 case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
-                    OnDrawGraph(dpi, getGameState().park.Value, STR_FINANCES_PARK_VALUE);
+                    OnDrawGraph(rt, getGameState().park.Value, STR_FINANCES_PARK_VALUE);
                     break;
                 case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
                 {
                     auto& gameState = getGameState();
                     const auto fmt = gameState.currentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE
                                                                   : STR_FINANCES_WEEKLY_PROFIT_LOSS;
-                    OnDrawGraph(dpi, gameState.currentProfit, fmt);
+                    OnDrawGraph(rt, gameState.currentProfit, fmt);
                     break;
                 }
                 case WINDOW_FINANCES_PAGE_MARKETING:
-                    OnDrawMarketing(dpi);
+                    OnDrawMarketing(rt);
                     break;
                 case WINDOW_FINANCES_PAGE_RESEARCH:
-                    WindowResearchFundingDraw(this, dpi);
+                    WindowResearchFundingDraw(this, rt);
                     break;
             }
         }
@@ -397,7 +397,7 @@ namespace OpenRCT2::Ui::Windows
             return {};
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             if (page != WINDOW_FINANCES_PAGE_SUMMARY)
                 return;
@@ -413,7 +413,7 @@ namespace OpenRCT2::Ui::Windows
                 // Darken every even row
                 if (i % 2 == 0)
                     GfxFillRect(
-                        dpi,
+                        rt,
                         { screenCoords - ScreenCoordsXY{ 0, 1 },
                           screenCoords + ScreenCoordsXY{ row_width, (kTableCellHeight - 2) } },
                         ColourMapA[colours[1].colour].lighter | 0x1000000);
@@ -435,7 +435,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(STR_FINANCES_SUMMARY_MONTH_HEADING);
                 ft.Add<uint16_t>(monthyear);
                 DrawTextBasic(
-                    dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 },
+                    rt, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 },
                     monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, ft,
                     { TextUnderline::On, TextAlignment::RIGHT });
                 screenCoords.y += 14;
@@ -453,7 +453,7 @@ namespace OpenRCT2::Ui::Windows
                         ft = Formatter();
                         ft.Add<money64>(expenditure);
                         DrawTextBasic(
-                            dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft,
+                            rt, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft,
                             { TextAlignment::RIGHT });
                     }
                     screenCoords.y += kTableCellHeight;
@@ -465,10 +465,10 @@ namespace OpenRCT2::Ui::Windows
                 ft = Formatter();
                 ft.Add<money64>(profit);
                 DrawTextBasic(
-                    dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, { TextAlignment::RIGHT });
+                    rt, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, { TextAlignment::RIGHT });
 
                 GfxFillRect(
-                    dpi,
+                    rt,
                     { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, -2 } },
                     PaletteIndex::pi10);
 
@@ -590,7 +590,7 @@ namespace OpenRCT2::Ui::Windows
                 InitialiseScrollPosition(WIDX_SUMMARY_SCROLL, 0);
         }
 
-        void OnDrawSummary(RenderTarget& dpi)
+        void OnDrawSummary(RenderTarget& rt)
         {
             auto titleBarBottom = widgets[WIDX_TITLE].bottom;
             auto screenCoords = windowPos + ScreenCoordsXY{ 8, titleBarBottom + 37 };
@@ -598,7 +598,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Expenditure / Income heading
             DrawTextBasic(
-                dpi, screenCoords, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, {},
+                rt, screenCoords, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, {},
                 { COLOUR_BLACK, TextUnderline::On, TextAlignment::LEFT });
             screenCoords.y += 14;
 
@@ -608,36 +608,36 @@ namespace OpenRCT2::Ui::Windows
                 // Darken every even row
                 if (i % 2 == 0)
                     GfxFillRect(
-                        dpi,
+                        rt,
                         { screenCoords - ScreenCoordsXY{ 0, 1 }, screenCoords + ScreenCoordsXY{ 121, (kTableCellHeight - 2) } },
                         ColourMapA[colours[1].colour].lighter | 0x1000000);
 
-                DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, _windowFinancesSummaryRowLabels[i]);
+                DrawTextBasic(rt, screenCoords - ScreenCoordsXY{ 0, 1 }, _windowFinancesSummaryRowLabels[i]);
                 screenCoords.y += kTableCellHeight;
             }
 
             // Horizontal rule below expenditure / income table
             GfxFillRectInset(
-                dpi,
+                rt,
                 { windowPos + ScreenCoordsXY{ 8, titleBarBottom + 258 },
                   windowPos + ScreenCoordsXY{ 8 + 513, titleBarBottom + 258 + 1 } },
                 colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
             // Loan and interest rate
-            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, titleBarBottom + 265 }, STR_FINANCES_SUMMARY_LOAN);
+            DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 8, titleBarBottom + 265 }, STR_FINANCES_SUMMARY_LOAN);
             if (!(gameState.park.Flags & PARK_FLAGS_RCT1_INTEREST))
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(gameState.bankLoanInterestRate);
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ 167, titleBarBottom + 265 }, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, ft);
+                    rt, windowPos + ScreenCoordsXY{ 167, titleBarBottom + 265 }, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, ft);
             }
 
             // Current cash
             auto ft = Formatter();
             ft.Add<money64>(gameState.cash);
             StringId stringId = gameState.cash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
-            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, titleBarBottom + 280 }, stringId, ft);
+            DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 8, titleBarBottom + 280 }, stringId, ft);
 
             // Objective related financial information
             if (gameState.scenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
@@ -646,7 +646,7 @@ namespace OpenRCT2::Ui::Windows
                 ft = Formatter();
                 ft.Add<money64>(lastMonthProfit);
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ 280, titleBarBottom + 265 },
+                    rt, windowPos + ScreenCoordsXY{ 280, titleBarBottom + 265 },
                     STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, ft);
             }
             else
@@ -654,10 +654,10 @@ namespace OpenRCT2::Ui::Windows
                 // Park value and company value
                 ft = Formatter();
                 ft.Add<money64>(gameState.park.Value);
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, titleBarBottom + 265 }, STR_PARK_VALUE_LABEL, ft);
+                DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 280, titleBarBottom + 265 }, STR_PARK_VALUE_LABEL, ft);
                 ft = Formatter();
                 ft.Add<money64>(gameState.companyValue);
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, titleBarBottom + 280 }, STR_COMPANY_VALUE_LABEL, ft);
+                DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 280, titleBarBottom + 280 }, STR_COMPANY_VALUE_LABEL, ft);
             }
         }
 
@@ -708,7 +708,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDrawMarketing(RenderTarget& dpi)
+        void OnDrawMarketing(RenderTarget& rt)
         {
             auto screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_TAB_1].top + 45 };
             int32_t noCampaignsActive = 1;
@@ -749,14 +749,14 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
                 // Advertisement
-                DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 296, kMarketingCampaignNames[i][1], ft);
+                DrawTextEllipsised(rt, screenCoords + ScreenCoordsXY{ 4, 0 }, 296, kMarketingCampaignNames[i][1], ft);
 
                 // Duration
                 uint16_t weeksRemaining = marketingCampaign->WeeksLeft;
                 ft = Formatter();
                 ft.Add<uint16_t>(weeksRemaining);
                 DrawTextBasic(
-                    dpi, screenCoords + ScreenCoordsXY{ 304, 0 },
+                    rt, screenCoords + ScreenCoordsXY{ 304, 0 },
                     weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, ft);
 
                 screenCoords.y += kListRowHeight;
@@ -764,7 +764,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (noCampaignsActive)
             {
-                DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, STR_MARKETING_CAMPAIGNS_NONE);
+                DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ 4, 0 }, STR_MARKETING_CAMPAIGNS_NONE);
             }
 
             // Draw campaign button text
@@ -775,10 +775,10 @@ namespace OpenRCT2::Ui::Windows
                 {
                     // Draw button text
                     screenCoords = windowPos + ScreenCoordsXY{ campaignButton->left, campaignButton->textTop() };
-                    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, kMarketingCampaignNames[i][0]);
+                    DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ 4, 0 }, kMarketingCampaignNames[i][0]);
                     auto ft = Formatter();
                     ft.Add<money64>(AdvertisingCampaignPricePerWeek[i]);
-                    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ kCostPerWeekOffset, 0 }, STR_MARKETING_PER_WEEK, ft);
+                    DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ kCostPerWeekOffset, 0 }, STR_MARKETING_PER_WEEK, ft);
                 }
             }
         }
@@ -787,22 +787,22 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Graph Events
 
-        void OnDrawGraph(RenderTarget& dpi, const money64 currentValue, const StringId fmt) const
+        void OnDrawGraph(RenderTarget& rt, const money64 currentValue, const StringId fmt) const
         {
             Formatter ft;
             ft.Add<money64>(currentValue);
-            DrawTextBasic(dpi, _graphBounds.Point1 - ScreenCoordsXY{ 0, 11 }, fmt, ft);
+            DrawTextBasic(rt, _graphBounds.Point1 - ScreenCoordsXY{ 0, 11 }, fmt, ft);
 
             // Graph
-            GfxFillRectInset(dpi, _graphBounds, colours[1], INSET_RECT_F_30);
+            GfxFillRectInset(rt, _graphBounds, colours[1], INSET_RECT_F_30);
             // hide resize widget on graph area
             constexpr ScreenCoordsXY offset{ 1, 1 };
             constexpr ScreenCoordsXY bigOffset{ 5, 5 };
             GfxFillRectInset(
-                dpi, { _graphBounds.Point2 - bigOffset, _graphBounds.Point2 - offset }, colours[1],
+                rt, { _graphBounds.Point2 - bigOffset, _graphBounds.Point2 - offset }, colours[1],
                 INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_BORDER_NONE);
 
-            Graph::DrawFinanceGraph(dpi, _graphProps);
+            Graph::DrawFinanceGraph(rt, _graphProps);
         }
 
         void OnPrepareDrawGraph(const Widget* graphPageWidget, const bool centredGraph)
@@ -852,7 +852,7 @@ namespace OpenRCT2::Ui::Windows
             WidgetScrollUpdateThumbs(*this, widgetIndex);
         }
 
-        void DrawTabImage(RenderTarget& dpi, int32_t tabPage, int32_t spriteIndex)
+        void DrawTabImage(RenderTarget& rt, int32_t tabPage, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + tabPage;
 
@@ -865,19 +865,19 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 GfxDrawSprite(
-                    dpi, ImageId(spriteIndex),
+                    rt, ImageId(spriteIndex),
                     windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
             }
         }
 
-        void DrawTabImages(RenderTarget& dpi)
+        void DrawTabImages(RenderTarget& rt)
         {
-            DrawTabImage(dpi, WINDOW_FINANCES_PAGE_SUMMARY, SPR_TAB_FINANCES_SUMMARY_0);
-            DrawTabImage(dpi, WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH, SPR_TAB_FINANCES_FINANCIAL_GRAPH_0);
-            DrawTabImage(dpi, WINDOW_FINANCES_PAGE_VALUE_GRAPH, SPR_TAB_FINANCES_VALUE_GRAPH_0);
-            DrawTabImage(dpi, WINDOW_FINANCES_PAGE_PROFIT_GRAPH, SPR_TAB_FINANCES_PROFIT_GRAPH_0);
-            DrawTabImage(dpi, WINDOW_FINANCES_PAGE_MARKETING, SPR_TAB_FINANCES_MARKETING_0);
-            DrawTabImage(dpi, WINDOW_FINANCES_PAGE_RESEARCH, SPR_TAB_FINANCES_RESEARCH_0);
+            DrawTabImage(rt, WINDOW_FINANCES_PAGE_SUMMARY, SPR_TAB_FINANCES_SUMMARY_0);
+            DrawTabImage(rt, WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH, SPR_TAB_FINANCES_FINANCIAL_GRAPH_0);
+            DrawTabImage(rt, WINDOW_FINANCES_PAGE_VALUE_GRAPH, SPR_TAB_FINANCES_VALUE_GRAPH_0);
+            DrawTabImage(rt, WINDOW_FINANCES_PAGE_PROFIT_GRAPH, SPR_TAB_FINANCES_PROFIT_GRAPH_0);
+            DrawTabImage(rt, WINDOW_FINANCES_PAGE_MARKETING, SPR_TAB_FINANCES_MARKETING_0);
+            DrawTabImage(rt, WINDOW_FINANCES_PAGE_RESEARCH, SPR_TAB_FINANCES_RESEARCH_0);
         }
     };
 

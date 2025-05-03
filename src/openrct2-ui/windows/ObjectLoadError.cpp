@@ -489,27 +489,27 @@ namespace OpenRCT2::Ui::Windows
             InvalidateWidget(WIDX_SCROLL);
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            WindowDrawWidgets(*this, dpi);
+            WindowDrawWidgets(*this, rt);
 
             // Draw explanatory message
             auto ft = Formatter();
             ft.Add<StringId>(STR_OBJECT_ERROR_WINDOW_EXPLANATION);
-            DrawTextWrapped(dpi, windowPos + ScreenCoordsXY{ 5, 18 }, WW - 10, STR_BLACK_STRING, ft);
+            DrawTextWrapped(rt, windowPos + ScreenCoordsXY{ 5, 18 }, WW - 10, STR_BLACK_STRING, ft);
 
             // Draw file name
             ft = Formatter();
             ft.Add<StringId>(STR_OBJECT_ERROR_WINDOW_FILE);
             ft.Add<utf8*>(_filePath.c_str());
-            DrawTextEllipsised(dpi, { windowPos.x + 5, windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft);
+            DrawTextEllipsised(rt, { windowPos.x + 5, windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft);
         }
 
-        void OnScrollDraw(const int32_t scrollIndex, RenderTarget& dpi) override
+        void OnScrollDraw(const int32_t scrollIndex, RenderTarget& rt) override
         {
-            auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
+            auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             GfxFillRect(
-                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } },
+                rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
             const int32_t listWidth = widgets[WIDX_SCROLL].width();
 
@@ -517,21 +517,21 @@ namespace OpenRCT2::Ui::Windows
             {
                 ScreenCoordsXY screenCoords;
                 screenCoords.y = i * kScrollableRowHeight;
-                if (screenCoords.y > dpi.y + dpi.height)
+                if (screenCoords.y > rt.y + rt.height)
                     break;
 
-                if (screenCoords.y + kScrollableRowHeight < dpi.y)
+                if (screenCoords.y + kScrollableRowHeight < rt.y)
                     continue;
 
                 const auto screenRect = ScreenRect{ { 0, screenCoords.y },
                                                     { listWidth, screenCoords.y + kScrollableRowHeight - 1 } };
                 // If hovering over item, change the color and fill the backdrop.
                 if (i == selected_list_item)
-                    GfxFillRect(dpi, screenRect, ColourMapA[colours[1].colour].darker);
+                    GfxFillRect(rt, screenRect, ColourMapA[colours[1].colour].darker);
                 else if (i == _highlightedIndex)
-                    GfxFillRect(dpi, screenRect, ColourMapA[colours[1].colour].mid_dark);
+                    GfxFillRect(rt, screenRect, ColourMapA[colours[1].colour].mid_dark);
                 else if ((i & 1) != 0) // odd / even check
-                    GfxFillRect(dpi, screenRect, ColourMapA[colours[1].colour].light);
+                    GfxFillRect(rt, screenRect, ColourMapA[colours[1].colour].light);
 
                 // Draw the actual object entry's name...
                 screenCoords.x = NAME_COL_LEFT - 3;
@@ -541,18 +541,18 @@ namespace OpenRCT2::Ui::Windows
                 auto name = entry.GetName();
                 char buffer[256];
                 String::set(buffer, sizeof(buffer), name.data(), name.size());
-                DrawText(dpi, screenCoords, { COLOUR_DARK_GREEN }, buffer);
+                DrawText(rt, screenCoords, { COLOUR_DARK_GREEN }, buffer);
 
                 if (entry.Generation == ObjectGeneration::DAT)
                 {
                     // ... source game ...
                     const auto sourceStringId = ObjectManagerGetSourceGameString(entry.Entry.GetSourceGame());
-                    DrawTextBasic(dpi, { SOURCE_COL_LEFT - 3, screenCoords.y }, sourceStringId, {}, { COLOUR_DARK_GREEN });
+                    DrawTextBasic(rt, { SOURCE_COL_LEFT - 3, screenCoords.y }, sourceStringId, {}, { COLOUR_DARK_GREEN });
                 }
 
                 // ... and type
                 const auto type = GetStringFromObjectType(entry.GetType());
-                DrawTextBasic(dpi, { TYPE_COL_LEFT - 3, screenCoords.y }, type, {}, { COLOUR_DARK_GREEN });
+                DrawTextBasic(rt, { TYPE_COL_LEFT - 3, screenCoords.y }, type, {}, { COLOUR_DARK_GREEN });
             }
         }
 

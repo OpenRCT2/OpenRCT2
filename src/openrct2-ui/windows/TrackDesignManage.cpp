@@ -71,7 +71,7 @@ namespace OpenRCT2::Ui::Windows
         void OnClose() override;
         void OnMouseUp(WidgetIndex widgetIndex) override;
         void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override;
-        void OnDraw(RenderTarget& dpi) override;
+        void OnDraw(RenderTarget& rt) override;
     };
 
     class TrackDeletePromptWindow final : public Window
@@ -87,7 +87,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnOpen() override;
         void OnMouseUp(WidgetIndex widgetIndex) override;
-        void OnDraw(RenderTarget& dpi) override;
+        void OnDraw(RenderTarget& rt) override;
     };
 
     static void WindowTrackDeletePromptOpen(TrackDesignFileRef* tdFileRef);
@@ -174,10 +174,10 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    void TrackDesignManageWindow::OnDraw(RenderTarget& dpi)
+    void TrackDesignManageWindow::OnDraw(RenderTarget& rt)
     {
         Formatter::Common().Add<const utf8*>(_trackDesignFileReference->name.c_str());
-        DrawWidgets(dpi);
+        DrawWidgets(rt);
     }
 
     /**
@@ -228,14 +228,14 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    void TrackDeletePromptWindow::OnDraw(RenderTarget& dpi)
+    void TrackDeletePromptWindow::OnDraw(RenderTarget& rt)
     {
-        DrawWidgets(dpi);
+        DrawWidgets(rt);
 
         auto ft = Formatter();
         ft.Add<const utf8*>(_trackDesignFileReference->name.c_str());
         DrawTextWrapped(
-            dpi, { windowPos.x + (WW_DELETE_PROMPT / 2), windowPos.y + ((WH_DELETE_PROMPT / 2) - 9) }, (WW_DELETE_PROMPT - 4),
+            rt, { windowPos.x + (WW_DELETE_PROMPT / 2), windowPos.y + ((WH_DELETE_PROMPT / 2) - 9) }, (WW_DELETE_PROMPT - 4),
             STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, ft, { TextAlignment::CENTRE });
     }
 } // namespace OpenRCT2::Ui::Windows

@@ -297,7 +297,7 @@ namespace OpenRCT2::Ui::Windows
             pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
         }
 
-        void DrawTabImage(RenderTarget& dpi, int32_t newPage, int32_t spriteIndex)
+        void DrawTabImage(RenderTarget& rt, int32_t newPage, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + newPage;
 
@@ -310,17 +310,17 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 GfxDrawSprite(
-                    dpi, ImageId(spriteIndex),
+                    rt, ImageId(spriteIndex),
                     windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
             }
         }
 
-        void DrawTabImages(RenderTarget& dpi)
+        void DrawTabImages(RenderTarget& rt)
         {
-            DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_BASE, SPR_TAB_GEARS_0);
-            DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_TERRAIN, SPR_G2_MAP_GEN_TERRAIN_TAB);
-            DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_WATER, SPR_TAB_WATER);
-            DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_FORESTS, SPR_TAB_SCENERY_TREES);
+            DrawTabImage(rt, WINDOW_MAPGEN_PAGE_BASE, SPR_TAB_GEARS_0);
+            DrawTabImage(rt, WINDOW_MAPGEN_PAGE_TERRAIN, SPR_G2_MAP_GEN_TERRAIN_TAB);
+            DrawTabImage(rt, WINDOW_MAPGEN_PAGE_WATER, SPR_TAB_WATER);
+            DrawTabImage(rt, WINDOW_MAPGEN_PAGE_FORESTS, SPR_TAB_SCENERY_TREES);
         }
 
         void ChangeMapSize(int32_t sizeOffset)
@@ -595,16 +595,16 @@ namespace OpenRCT2::Ui::Windows
             // clang-format on
         }
 
-        void BaseDraw(RenderTarget& dpi)
+        void BaseDraw(RenderTarget& rt)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise)
-                SimplexDraw(dpi);
+                SimplexDraw(rt);
 
             else if (_settings.algorithm == MapGenerator::Algorithm::heightmapImage)
-                HeightmapDraw(dpi);
+                HeightmapDraw(rt);
 
             const auto enabledColour = colours[1];
             const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
@@ -612,13 +612,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto textColour = IsWidgetDisabled(WIDX_MAP_SIZE_Y) ? disabledColour : enabledColour;
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_MAP_SIZE_Y].top + 1 }, STR_MAP_SIZE, {}, { textColour });
+                    rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_MAP_SIZE_Y].top + 1 }, STR_MAP_SIZE, {}, { textColour });
             }
 
             {
                 auto textColour = enabledColour;
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_SOURCE].top + 1 }, STR_HEIGHTMAP_SOURCE, {},
+                    rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_SOURCE].top + 1 }, STR_HEIGHTMAP_SOURCE, {},
                     { textColour });
             }
         }
@@ -757,10 +757,10 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetDisabled(WIDX_TREE_ALTITUDE_MAX_DOWN, !_settings.trees || isFlatland);
         }
 
-        void ForestsDraw(RenderTarget& dpi)
+        void ForestsDraw(RenderTarget& rt)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             const auto enabledColour = colours[1];
             const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
@@ -769,25 +769,25 @@ namespace OpenRCT2::Ui::Windows
 
             // Tree to land ratio, label and value
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_LAND_RATIO].top + 1 }, STR_MAPGEN_TREE_TO_LAND_RATIO, {},
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_LAND_RATIO].top + 1 }, STR_MAPGEN_TREE_TO_LAND_RATIO, {},
                 { textColour });
 
             auto ft = Formatter();
             ft.Add<uint16_t>(_settings.treeToLandRatio);
             DrawTextBasic(
-                dpi,
+                rt,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TREE_LAND_RATIO].left + 1, widgets[WIDX_TREE_LAND_RATIO].top + 1 },
                 STR_MAPGEN_TREE_TO_LAND_RATIO_PCT, ft, { textColour });
 
             // Minimum tree altitude, label and value
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_ALTITUDE_MIN].top + 1 }, STR_MAPGEN_TREE_MIN_ALTITUDE,
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_ALTITUDE_MIN].top + 1 }, STR_MAPGEN_TREE_MIN_ALTITUDE,
                 {}, { textColour });
 
             ft = Formatter();
             ft.Add<int16_t>(BaseZToMetres(_settings.minTreeAltitude));
             DrawTextBasic(
-                dpi,
+                rt,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TREE_ALTITUDE_MIN].left + 1, widgets[WIDX_TREE_ALTITUDE_MIN].top + 1 },
                 STR_RIDE_LENGTH_ENTRY, ft, { textColour });
 
@@ -796,13 +796,13 @@ namespace OpenRCT2::Ui::Windows
             const auto maxTreeTextColour = _settings.trees && !isFlatland ? enabledColour : disabledColour;
 
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_ALTITUDE_MAX].top + 1 }, STR_MAPGEN_TREE_MAX_ALTITUDE,
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_ALTITUDE_MAX].top + 1 }, STR_MAPGEN_TREE_MAX_ALTITUDE,
                 {}, { maxTreeTextColour });
 
             ft = Formatter();
             ft.Add<int16_t>(BaseZToMetres(_settings.maxTreeAltitude));
             DrawTextBasic(
-                dpi,
+                rt,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TREE_ALTITUDE_MAX].left + 1, widgets[WIDX_TREE_ALTITUDE_MAX].top + 1 },
                 STR_RIDE_LENGTH_ENTRY, ft, { maxTreeTextColour });
         }
@@ -862,31 +862,31 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void SimplexDraw(RenderTarget& dpi)
+        void SimplexDraw(RenderTarget& rt)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             const auto textColour = colours[1];
 
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1 },
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1 },
                 STR_MAPGEN_SIMPLEX_NOISE_BASE_FREQUENCY, {}, { textColour });
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_SIMPLEX_OCTAVES].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_OCTAVES,
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_SIMPLEX_OCTAVES].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_OCTAVES,
                 {}, { textColour });
 
             auto ft = Formatter();
             ft.Add<uint16_t>(_settings.simplex_base_freq);
             DrawTextBasic(
-                dpi,
+                rt,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_SIMPLEX_BASE_FREQ].left + 1, widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA2DP32, ft, { textColour });
 
             ft = Formatter();
             ft.Add<uint16_t>(_settings.simplex_octaves);
             DrawTextBasic(
-                dpi,
+                rt,
                 windowPos + ScreenCoordsXY{ widgets[WIDX_SIMPLEX_OCTAVES].left + 1, widgets[WIDX_SIMPLEX_OCTAVES].top + 1 },
                 STR_COMMA16, ft, { textColour });
         }
@@ -973,7 +973,7 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalize_height);
         }
 
-        void HeightmapDraw(RenderTarget& dpi)
+        void HeightmapDraw(RenderTarget& rt)
         {
             const auto enabledColour = colours[1];
             const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
@@ -984,14 +984,14 @@ namespace OpenRCT2::Ui::Windows
 
             // Smooth strength label
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 24, widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 }, STR_MAPGEN_SMOOTH_STRENGTH, {},
+                rt, windowPos + ScreenCoordsXY{ 24, widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 }, STR_MAPGEN_SMOOTH_STRENGTH, {},
                 { strengthColour });
 
             // Smooth strength value
             auto ft = Formatter();
             ft.Add<uint16_t>(_settings.smooth_strength);
             auto pos = ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_STRENGTH].left + 1, widgets[WIDX_HEIGHTMAP_STRENGTH].top + 1 };
-            DrawTextBasic(dpi, windowPos + pos, STR_COMMA16, ft, { strengthColour });
+            DrawTextBasic(rt, windowPos + pos, STR_COMMA16, ft, { strengthColour });
 
             // Current heightmap image filename
             ft = Formatter();
@@ -1002,7 +1002,7 @@ namespace OpenRCT2::Ui::Windows
 
             pos = ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_BROWSE].top + 1 };
             auto textWidth = widgets[WIDX_HEIGHTMAP_BROWSE].left - 11;
-            DrawTextEllipsised(dpi, windowPos + pos, textWidth, STR_MAPGEN_CURRENT_HEIGHTMAP_FILE, ft);
+            DrawTextEllipsised(rt, windowPos + pos, textWidth, STR_MAPGEN_CURRENT_HEIGHTMAP_FILE, ft);
         }
 
         void HeightmapTextInput(WidgetIndex widgetIndex, int32_t value)
@@ -1159,7 +1159,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawDropdownButton(RenderTarget& dpi, WidgetIndex widgetIndex, ImageId image)
+        void DrawDropdownButton(RenderTarget& rt, WidgetIndex widgetIndex, ImageId image)
         {
             const auto& widget = widgets[widgetIndex];
             ScreenCoordsXY pos = { windowPos.x + widget.left, windowPos.y + widget.top };
@@ -1168,20 +1168,20 @@ namespace OpenRCT2::Ui::Windows
                 // Draw greyed out (light border bottom right shadow)
                 auto colour = colours[widget.colour].colour;
                 colour = ColourMapA[colour].lighter;
-                GfxDrawSpriteSolid(dpi, image, pos + ScreenCoordsXY{ 1, 1 }, colour);
+                GfxDrawSpriteSolid(rt, image, pos + ScreenCoordsXY{ 1, 1 }, colour);
 
                 // Draw greyed out (dark)
                 colour = colours[widget.colour].colour;
                 colour = ColourMapA[colour].mid_light;
-                GfxDrawSpriteSolid(dpi, image, pos, colour);
+                GfxDrawSpriteSolid(rt, image, pos, colour);
             }
             else
             {
-                GfxDrawSprite(dpi, image, pos);
+                GfxDrawSprite(rt, image, pos);
             }
         }
 
-        void DrawDropdownButtons(RenderTarget& dpi, WidgetIndex floorWidgetIndex, WidgetIndex edgeWidgetIndex)
+        void DrawDropdownButtons(RenderTarget& rt, WidgetIndex floorWidgetIndex, WidgetIndex edgeWidgetIndex)
         {
             auto& objManager = GetContext()->GetObjectManager();
             const auto* surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(_settings.landTexture);
@@ -1202,8 +1202,8 @@ namespace OpenRCT2::Ui::Windows
                 edgeImage = ImageId(edgeObj->IconImageId);
             }
 
-            DrawDropdownButton(dpi, floorWidgetIndex, surfaceImage);
-            DrawDropdownButton(dpi, edgeWidgetIndex, edgeImage);
+            DrawDropdownButton(rt, floorWidgetIndex, surfaceImage);
+            DrawDropdownButton(rt, edgeWidgetIndex, edgeImage);
         }
 
         void TerrainPrepareDraw()
@@ -1223,42 +1223,42 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
         }
 
-        void TerrainDraw(RenderTarget& dpi)
+        void TerrainDraw(RenderTarget& rt)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
-            DrawDropdownButtons(dpi, WIDX_FLOOR_TEXTURE, WIDX_WALL_TEXTURE);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
+            DrawDropdownButtons(rt, WIDX_FLOOR_TEXTURE, WIDX_WALL_TEXTURE);
 
             const auto enabledColour = colours[1];
             const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
 
             // Floor texture label
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_FLOOR_TEXTURE].top + 1 }, STR_TERRAIN_LABEL, {},
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_FLOOR_TEXTURE].top + 1 }, STR_TERRAIN_LABEL, {},
                 { enabledColour });
 
             // Minimum land height label and value
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_LOW].top + 1 }, STR_MAPGEN_MIN_LAND_HEIGHT, {},
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_LOW].top + 1 }, STR_MAPGEN_MIN_LAND_HEIGHT, {},
                 { enabledColour });
 
             auto ft = Formatter();
             ft.Add<int32_t>(BaseZToMetres(_settings.heightmapLow));
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_LOW].left + 1, widgets[WIDX_HEIGHTMAP_LOW].top + 1 },
+                rt, windowPos + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_LOW].left + 1, widgets[WIDX_HEIGHTMAP_LOW].top + 1 },
                 STR_RIDE_LENGTH_ENTRY, ft, { enabledColour });
 
             const auto maxLandColour = IsWidgetDisabled(WIDX_HEIGHTMAP_HIGH) ? disabledColour : enabledColour;
 
             // Maximum land height label and value
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_HIGH].top + 1 }, STR_MAPGEN_MAX_LAND_HEIGHT, {},
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_HIGH].top + 1 }, STR_MAPGEN_MAX_LAND_HEIGHT, {},
                 { maxLandColour });
 
             ft = Formatter();
             ft.Add<int32_t>(BaseZToMetres(_settings.heightmapHigh));
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_HIGH].left + 1, widgets[WIDX_HEIGHTMAP_HIGH].top + 1 },
+                rt, windowPos + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_HIGH].left + 1, widgets[WIDX_HEIGHTMAP_HIGH].top + 1 },
                 STR_RIDE_LENGTH_ENTRY, ft, { maxLandColour });
         }
 
@@ -1334,21 +1334,21 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
         }
 
-        void WaterDraw(RenderTarget& dpi)
+        void WaterDraw(RenderTarget& rt)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             const auto textColour = colours[1];
 
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, {},
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, {},
                 { textColour });
 
             auto ft = Formatter();
             ft.Add<int32_t>(BaseZToMetres(_settings.waterLevel));
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_LEVEL].left + 1, widgets[WIDX_WATER_LEVEL].top + 1 },
+                rt, windowPos + ScreenCoordsXY{ widgets[WIDX_WATER_LEVEL].left + 1, widgets[WIDX_WATER_LEVEL].top + 1 },
                 STR_RIDE_LENGTH_ENTRY, ft, { colours[1] });
         }
 
@@ -1446,18 +1446,18 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
             switch (page)
             {
                 case WINDOW_MAPGEN_PAGE_BASE:
-                    return BaseDraw(dpi);
+                    return BaseDraw(rt);
                 case WINDOW_MAPGEN_PAGE_FORESTS:
-                    return ForestsDraw(dpi);
+                    return ForestsDraw(rt);
                 case WINDOW_MAPGEN_PAGE_TERRAIN:
-                    return TerrainDraw(dpi);
+                    return TerrainDraw(rt);
                 case WINDOW_MAPGEN_PAGE_WATER:
-                    return WaterDraw(dpi);
+                    return WaterDraw(rt);
             }
         }
 

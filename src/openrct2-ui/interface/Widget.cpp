@@ -715,7 +715,7 @@ namespace OpenRCT2::Ui
         bottomRight.y++;
         bottomRight.x++;
 
-        // Create a new inner scroll dpi
+        // Create a new inner scroll render target
         RenderTarget scrollRT = rt;
 
         // Clip the scroll dpi against the outer dpi
@@ -724,7 +724,7 @@ namespace OpenRCT2::Ui
         int32_t cr = std::min<int32_t>(rt.x + rt.width, bottomRight.x);
         int32_t cb = std::min<int32_t>(rt.y + rt.height, bottomRight.y);
 
-        // Set the respective dpi attributes
+        // Set the respective render target attributes
         scrollRT.x = cl - topLeft.x + scroll.contentOffsetX;
         scrollRT.y = ct - topLeft.y + scroll.contentOffsetY;
         scrollRT.width = cr - cl;
@@ -1135,7 +1135,7 @@ namespace OpenRCT2::Ui
         bool active = w.classification == tbIdent.window.classification && w.number == tbIdent.window.number
             && widgetIndex == tbIdent.widget_index;
 
-        // GfxFillRectInset(dpi, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
+        // GfxFillRectInset(rt, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
         GfxFillRectInset(rt, { topLeft, bottomRight }, w.colours[widget.colour], INSET_RECT_F_60);
 
         // Figure out where the text should be positioned vertically.

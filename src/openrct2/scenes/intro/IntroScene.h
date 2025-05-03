@@ -45,5 +45,5 @@ namespace OpenRCT2
 
     bool IntroIsPlaying();
     void IntroUpdate();
-    void IntroDraw(RenderTarget& dpi);
+    void IntroDraw(RenderTarget& rt);
 } // namespace OpenRCT2

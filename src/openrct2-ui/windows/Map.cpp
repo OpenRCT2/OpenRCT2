@@ -566,9 +566,9 @@ namespace OpenRCT2::Ui::Windows
             OnScrollMouseDown(scrollIndex, screenCoords);
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            GfxClear(dpi, PaletteIndex::pi10);
+            GfxClear(rt, PaletteIndex::pi10);
 
             // Ensure small maps are centred
             auto screenOffset = ScreenCoordsXY(0, 0);
@@ -582,17 +582,17 @@ namespace OpenRCT2::Ui::Windows
             g1temp.height = getMiniMapWidth();
             GfxSetG1Element(SPR_TEMP, &g1temp);
             DrawingEngineInvalidateImage(SPR_TEMP);
-            GfxDrawSprite(dpi, ImageId(SPR_TEMP), screenOffset);
+            GfxDrawSprite(rt, ImageId(SPR_TEMP), screenOffset);
 
             if (selected_tab == PAGE_PEEPS)
             {
-                PaintPeepOverlay(dpi, screenOffset);
+                PaintPeepOverlay(rt, screenOffset);
             }
             else
             {
-                PaintTrainOverlay(dpi, screenOffset);
+                PaintTrainOverlay(rt, screenOffset);
             }
-            PaintHudRectangle(dpi, screenOffset);
+            PaintHudRectangle(rt, screenOffset);
         }
 
         void OnPrepareDraw() override
@@ -661,10 +661,10 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             if (!isEditorOrSandbox())
             {
@@ -678,9 +678,9 @@ namespace OpenRCT2::Ui::Windows
                     for (uint32_t i = 0; i < std::size(RideKeyColours); i++)
                     {
                         GfxFillRect(
-                            dpi, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } },
+                            rt, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } },
                             RideKeyColours[i]);
-                        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ kListRowHeight, 0 }, MapLabels[i], {});
+                        DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ kListRowHeight, 0 }, MapLabels[i], {});
                         screenCoords.y += kListRowHeight;
                         if (i == 3)
                         {
@@ -692,7 +692,7 @@ namespace OpenRCT2::Ui::Windows
             else if (!isToolActive(*this, WIDX_SET_LAND_RIGHTS))
             {
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP_SIZE_SPINNER_Y].top + 1 }, STR_MAP_SIZE, {},
+                    rt, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP_SIZE_SPINNER_Y].top + 1 }, STR_MAP_SIZE, {},
                     { colours[1] });
             }
         }
@@ -951,21 +951,21 @@ namespace OpenRCT2::Ui::Windows
             return colourB;
         }
 
-        void PaintPeepOverlay(RenderTarget& dpi, const ScreenCoordsXY& offset)
+        void PaintPeepOverlay(RenderTarget& rt, const ScreenCoordsXY& offset)
         {
             auto flashColour = GetGuestFlashColour();
             for (auto guest : EntityList<Guest>())
             {
-                DrawMapPeepPixel(guest, flashColour, dpi, offset);
+                DrawMapPeepPixel(guest, flashColour, rt, offset);
             }
             flashColour = GetStaffFlashColour();
             for (auto staff : EntityList<Staff>())
             {
-                DrawMapPeepPixel(staff, flashColour, dpi, offset);
+                DrawMapPeepPixel(staff, flashColour, rt, offset);
             }
         }
 
-        void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, RenderTarget& dpi, const ScreenCoordsXY& offset)
+        void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, RenderTarget& rt, const ScreenCoordsXY& offset)
         {
             if (peep->x == kLocationNull)
                 return;
@@ -984,7 +984,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            GfxFillRect(dpi, { leftTop, rightBottom }, colour);
+            GfxFillRect(rt, { leftTop, rightBottom }, colour);
         }
 
         uint8_t GetGuestFlashColour() const
@@ -1011,7 +1011,7 @@ namespace OpenRCT2::Ui::Windows
             return colour;
         }
 
-        void PaintTrainOverlay(RenderTarget& dpi, const ScreenCoordsXY& offset)
+        void PaintTrainOverlay(RenderTarget& rt, const ScreenCoordsXY& offset)
         {
             for (auto train : TrainManager::View())
             {
@@ -1023,7 +1023,7 @@ namespace OpenRCT2::Ui::Windows
                     auto mapCoord = TransformToMapCoords({ vehicle->x, vehicle->y });
                     auto pixelCoord = ScreenCoordsXY{ mapCoord.x, mapCoord.y } + offset;
 
-                    GfxFillRect(dpi, { pixelCoord, pixelCoord }, PaletteIndex::pi171);
+                    GfxFillRect(rt, { pixelCoord, pixelCoord }, PaletteIndex::pi171);
                 }
             }
         }
@@ -1032,7 +1032,7 @@ namespace OpenRCT2::Ui::Windows
          * The call to GfxFillRect was originally wrapped in Sub68DABD which made sure that arguments were ordered correctly,
          * but it doesn't look like it's ever necessary here so the call was removed.
          */
-        void PaintHudRectangle(RenderTarget& dpi, const ScreenCoordsXY& widgetOffset)
+        void PaintHudRectangle(RenderTarget& rt, const ScreenCoordsXY& widgetOffset)
         {
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow == nullptr)
@@ -1054,23 +1054,23 @@ namespace OpenRCT2::Ui::Windows
             auto leftBottom = ScreenCoordsXY{ leftTop.x, rightBottom.y };
 
             // top horizontal lines
-            GfxFillRect(dpi, { leftTop, leftTop + ScreenCoordsXY{ 3, 0 } }, PaletteIndex::pi56);
-            GfxFillRect(dpi, { rightTop - ScreenCoordsXY{ 3, 0 }, rightTop }, PaletteIndex::pi56);
+            GfxFillRect(rt, { leftTop, leftTop + ScreenCoordsXY{ 3, 0 } }, PaletteIndex::pi56);
+            GfxFillRect(rt, { rightTop - ScreenCoordsXY{ 3, 0 }, rightTop }, PaletteIndex::pi56);
 
             // left vertical lines
-            GfxFillRect(dpi, { leftTop, leftTop + ScreenCoordsXY{ 0, 3 } }, PaletteIndex::pi56);
-            GfxFillRect(dpi, { leftBottom - ScreenCoordsXY{ 0, 3 }, leftBottom }, PaletteIndex::pi56);
+            GfxFillRect(rt, { leftTop, leftTop + ScreenCoordsXY{ 0, 3 } }, PaletteIndex::pi56);
+            GfxFillRect(rt, { leftBottom - ScreenCoordsXY{ 0, 3 }, leftBottom }, PaletteIndex::pi56);
 
             // bottom horizontal lines
-            GfxFillRect(dpi, { leftBottom, leftBottom + ScreenCoordsXY{ 3, 0 } }, PaletteIndex::pi56);
-            GfxFillRect(dpi, { rightBottom - ScreenCoordsXY{ 3, 0 }, rightBottom }, PaletteIndex::pi56);
+            GfxFillRect(rt, { leftBottom, leftBottom + ScreenCoordsXY{ 3, 0 } }, PaletteIndex::pi56);
+            GfxFillRect(rt, { rightBottom - ScreenCoordsXY{ 3, 0 }, rightBottom }, PaletteIndex::pi56);
 
             // right vertical lines
-            GfxFillRect(dpi, { rightTop, rightTop + ScreenCoordsXY{ 0, 3 } }, PaletteIndex::pi56);
-            GfxFillRect(dpi, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PaletteIndex::pi56);
+            GfxFillRect(rt, { rightTop, rightTop + ScreenCoordsXY{ 0, 3 } }, PaletteIndex::pi56);
+            GfxFillRect(rt, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PaletteIndex::pi56);
         }
 
-        void DrawTabImages(RenderTarget& dpi)
+        void DrawTabImages(RenderTarget& rt)
         {
             // Guest tab image (animated)
             uint32_t guestTabImage = SPR_TAB_GUESTS_0;
@@ -1078,7 +1078,7 @@ namespace OpenRCT2::Ui::Windows
                 guestTabImage += list_information_type / 4;
 
             GfxDrawSprite(
-                dpi, ImageId(guestTabImage),
+                rt, ImageId(guestTabImage),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_PEOPLE_TAB].left, widgets[WIDX_PEOPLE_TAB].top });
 
             // Ride/stall tab image (animated)
@@ -1087,7 +1087,7 @@ namespace OpenRCT2::Ui::Windows
                 rideTabImage += list_information_type / 4;
 
             GfxDrawSprite(
-                dpi, ImageId(rideTabImage),
+                rt, ImageId(rideTabImage),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_RIDES_TAB].left, widgets[WIDX_RIDES_TAB].top });
         }
 
