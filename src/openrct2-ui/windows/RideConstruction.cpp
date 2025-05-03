@@ -2638,7 +2638,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         void DrawTrackPiece(
-            RenderTarget& dpi, RideId rideIndex, OpenRCT2::TrackElemType trackType, int32_t trackDirection,
+            RenderTarget& rt, RideId rideIndex, OpenRCT2::TrackElemType trackType, int32_t trackDirection,
             SelectedLiftAndInverted liftHillAndInvertedState, int32_t widgetWidth, int32_t widgetHeight)
         {
             auto currentRide = GetRide(rideIndex);
@@ -2667,15 +2667,15 @@ namespace OpenRCT2::Ui::Windows
 
             const ScreenCoordsXY rotatedScreenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), mapCoords);
 
-            dpi.x += rotatedScreenCoords.x - widgetWidth / 2;
-            dpi.y += rotatedScreenCoords.y - widgetHeight / 2 - 16;
+            rt.x += rotatedScreenCoords.x - widgetWidth / 2;
+            rt.y += rotatedScreenCoords.y - widgetHeight / 2 - 16;
 
-            dpi.cullingX = dpi.x;
-            dpi.cullingY = dpi.y;
-            dpi.cullingWidth = dpi.width;
-            dpi.cullingHeight = dpi.height;
+            rt.cullingX = rt.x;
+            rt.cullingY = rt.y;
+            rt.cullingWidth = rt.width;
+            rt.cullingHeight = rt.height;
 
-            DrawTrackPieceHelper(dpi, rideIndex, trackType, trackDirection, liftHillAndInvertedState, { 4096, 4096 }, 1024);
+            DrawTrackPieceHelper(rt, rideIndex, trackType, trackDirection, liftHillAndInvertedState, { 4096, 4096 }, 1024);
         }
 
         void DrawTrackPieceHelper(

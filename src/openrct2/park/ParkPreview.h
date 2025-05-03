@@ -54,5 +54,5 @@ namespace OpenRCT2
     struct GameState_t;
 
     ParkPreview generatePreviewFromGameState(const GameState_t& gameState);
-    void drawPreviewImage(const PreviewImage& image, RenderTarget& dpi, ScreenCoordsXY screenPos);
+    void drawPreviewImage(const PreviewImage& image, RenderTarget& rt, ScreenCoordsXY screenPos);
 } // namespace OpenRCT2

@@ -97,9 +97,9 @@ namespace OpenRCT2::Ui::Windows
             return Config::Get().interface.EnlargedUi ? 6 : 0;
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
 
             int32_t highlightedIndex = gDropdownHighlightedIndex;
             for (int32_t i = 0; i < gDropdownNumItems; i++)
@@ -122,14 +122,14 @@ namespace OpenRCT2::Ui::Windows
                     if (colours[0].hasFlag(ColourFlag::translucent))
                     {
                         TranslucentWindowPalette palette = TranslucentWindowPalettes[colours[0].colour];
-                        GfxFilterRect(dpi, { leftTop, rightBottom }, palette.highlight);
-                        GfxFilterRect(dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
+                        GfxFilterRect(rt, { leftTop, rightBottom }, palette.highlight);
+                        GfxFilterRect(rt, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
                     }
                     else
                     {
-                        GfxFillRect(dpi, { leftTop, rightBottom }, ColourMapA[colours[0].colour].mid_dark);
+                        GfxFillRect(rt, { leftTop, rightBottom }, ColourMapA[colours[0].colour].mid_dark);
                         GfxFillRect(
-                            dpi, { leftTop + shadowOffset, rightBottom + shadowOffset },
+                            rt, { leftTop + shadowOffset, rightBottom + shadowOffset },
                             ColourMapA[colours[0].colour].lightest);
                     }
                 }
@@ -139,7 +139,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         // Darken the cell's background slightly when highlighted
                         const ScreenCoordsXY rightBottom = screenCoords + ScreenCoordsXY{ ItemWidth - 1, ItemHeight - 1 };
-                        GfxFilterRect(dpi, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
+                        GfxFilterRect(rt, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
                     }
 
                     StringId item = gDropdownItems[i].Format;
@@ -150,7 +150,7 @@ namespace OpenRCT2::Ui::Windows
                                                : ImageId(static_cast<uint32_t>(gDropdownItems[i].Args));
                         if (item == Dropdown::kFormatColourPicker && highlightedIndex == i)
                             image = image.WithIndexOffset(1);
-                        GfxDrawSprite(dpi, image, screenCoords);
+                        GfxDrawSprite(rt, image, screenCoords);
                     }
                     else
                     {
@@ -169,7 +169,7 @@ namespace OpenRCT2::Ui::Windows
                         auto yOffset = GetAdditionalRowPadding();
                         Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItems[i].Args));
                         DrawTextEllipsised(
-                            dpi, { screenCoords.x + 2, screenCoords.y + yOffset }, width - 7, item, ft, { colour });
+                            rt, { screenCoords.x + 2, screenCoords.y + yOffset }, width - 7, item, ft, { colour });
                     }
                 }
             }

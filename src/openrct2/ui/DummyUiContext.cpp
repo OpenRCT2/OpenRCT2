@@ -172,7 +172,7 @@ namespace OpenRCT2::Ui
         {
             return std::make_shared<X8DrawingEngineFactory>();
         }
-        void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, RenderTarget& dpi, DrawWeatherFunc drawFunc) override
+        void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, RenderTarget& rt, DrawWeatherFunc drawFunc) override
         {
         }
 

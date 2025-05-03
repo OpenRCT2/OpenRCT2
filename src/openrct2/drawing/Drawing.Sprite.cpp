@@ -754,18 +754,18 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
 
     if (zoomLevel > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE))
     {
-        RenderTarget zoomed_dpi = rt;
-        zoomed_dpi.bits = rt.bits;
-        zoomed_dpi.x = rt.x;
-        zoomed_dpi.y = rt.y;
-        zoomed_dpi.height = rt.height;
-        zoomed_dpi.width = rt.width;
-        zoomed_dpi.pitch = rt.pitch;
-        zoomed_dpi.zoom_level = zoomLevel - 1;
+        RenderTarget zoomedRT = rt;
+        zoomedRT.bits = rt.bits;
+        zoomedRT.x = rt.x;
+        zoomedRT.y = rt.y;
+        zoomedRT.height = rt.height;
+        zoomedRT.width = rt.width;
+        zoomedRT.pitch = rt.pitch;
+        zoomedRT.zoom_level = zoomLevel - 1;
 
         const auto spriteCoords = ScreenCoordsXY{ coords.x / 2, coords.y / 2 };
         GfxDrawSpritePaletteSetSoftware(
-            zoomed_dpi, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), spriteCoords, paletteMap);
+            zoomedRT, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), spriteCoords, paletteMap);
         return;
     }
 
@@ -920,15 +920,15 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     GfxSpriteToBuffer(rt, args);
 }
 
-void FASTCALL GfxSpriteToBuffer(RenderTarget& dpi, const DrawSpriteArgs& args)
+void FASTCALL GfxSpriteToBuffer(RenderTarget& rt, const DrawSpriteArgs& args)
 {
     if (args.SourceImage.flags & G1_FLAG_RLE_COMPRESSION)
     {
-        GfxRleSpriteToBuffer(dpi, args);
+        GfxRleSpriteToBuffer(rt, args);
     }
     else if (!(args.SourceImage.flags & G1_FLAG_1))
     {
-        GfxBmpSpriteToBuffer(dpi, args);
+        GfxBmpSpriteToBuffer(rt, args);
     }
 }
 

@@ -351,14 +351,14 @@ namespace OpenRCT2
             WindowScrollToLocation(*mainWindow, newCoords);
     }
 
-    void Window::OnDraw(RenderTarget& dpi)
+    void Window::OnDraw(RenderTarget& rt)
     {
-        Windows::WindowDrawWidgets(*this, dpi);
+        Windows::WindowDrawWidgets(*this, rt);
     }
 
-    void Window::OnDrawWidget(WidgetIndex widgetIndex, RenderTarget& dpi)
+    void Window::OnDrawWidget(WidgetIndex widgetIndex, RenderTarget& rt)
     {
-        WidgetDraw(dpi, *this, widgetIndex);
+        WidgetDraw(rt, *this, widgetIndex);
     }
 
     void Window::InitScrollWidgets()
@@ -412,9 +412,9 @@ namespace OpenRCT2
         SetWidgetPressed(widgetIndex, value);
     }
 
-    void Window::DrawWidgets(RenderTarget& dpi)
+    void Window::DrawWidgets(RenderTarget& rt)
     {
-        Windows::WindowDrawWidgets(*this, dpi);
+        Windows::WindowDrawWidgets(*this, rt);
     }
 
     void Window::Close()
@@ -1041,20 +1041,20 @@ namespace OpenRCT2::Ui::Windows
      * @param dpi (edi)
      * @param w (esi)
      */
-    void WindowDrawViewport(RenderTarget& dpi, WindowBase& w)
+    void WindowDrawViewport(RenderTarget& rt, WindowBase& w)
     {
-        ViewportRender(dpi, w.viewport);
+        ViewportRender(rt, w.viewport);
     }
 
     /**
      *
      *  rct2: 0x006EB15C
      */
-    void WindowDrawWidgets(WindowBase& w, RenderTarget& dpi)
+    void WindowDrawWidgets(WindowBase& w, RenderTarget& rt)
     {
         if ((w.flags & WF_TRANSPARENT) && !(w.flags & WF_NO_BACKGROUND))
             GfxFilterRect(
-                dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::Palette51);
+                rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, FilterPaletteID::Palette51);
 
         // todo: some code missing here? Between 006EB18C and 006EB260
         for (WidgetIndex widgetIndex = 0; widgetIndex < w.widgets.size(); widgetIndex++)
@@ -1066,11 +1066,11 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Check if widget is outside the draw region
-            if (w.windowPos.x + widget.left < dpi.x + dpi.width && w.windowPos.x + widget.right >= dpi.x)
+            if (w.windowPos.x + widget.left < rt.x + rt.width && w.windowPos.x + widget.right >= rt.x)
             {
-                if (w.windowPos.y + widget.top < dpi.y + dpi.height && w.windowPos.y + widget.bottom >= dpi.y)
+                if (w.windowPos.y + widget.top < rt.y + rt.height && w.windowPos.y + widget.bottom >= rt.y)
                 {
-                    w.OnDrawWidget(widgetIndex, dpi);
+                    w.OnDrawWidget(widgetIndex, rt);
                 }
             }
         }
@@ -1080,7 +1080,7 @@ namespace OpenRCT2::Ui::Windows
         if (w.flags & WF_WHITE_BORDER_MASK)
         {
             GfxFillRectInset(
-                dpi, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, { COLOUR_WHITE },
+                rt, { w.windowPos, w.windowPos + ScreenCoordsXY{ w.width - 1, w.height - 1 } }, { COLOUR_WHITE },
                 INSET_RECT_FLAG_FILL_NONE);
         }
     }

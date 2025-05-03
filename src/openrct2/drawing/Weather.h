@@ -37,4 +37,4 @@ static constexpr uint8_t kSnowPattern[] =
 
 // clang-format on
 
-void DrawWeather(RenderTarget& dpi, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer);
+void DrawWeather(RenderTarget& rt, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer);

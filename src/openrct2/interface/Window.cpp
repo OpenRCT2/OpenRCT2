@@ -579,7 +579,7 @@ static constexpr float kWindowScrollLocations[][2] = {
     static void WindowDrawSingle(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
         assert(rt.zoom_level == ZoomLevel{ 0 });
-        // Copy dpi so we can crop it
+        // Copy render target so we can crop it
         RenderTarget copy = rt;
 
         // Clamp left to 0

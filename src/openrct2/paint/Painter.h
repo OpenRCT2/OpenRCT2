@@ -46,13 +46,13 @@ namespace OpenRCT2
             explicit Painter(const std::shared_ptr<Ui::IUiContext>& uiContext);
             void Paint(Drawing::IDrawingEngine& de);
 
-            PaintSession* CreateSession(RenderTarget& dpi, uint32_t viewFlags, uint8_t rotation);
+            PaintSession* CreateSession(RenderTarget& rt, uint32_t viewFlags, uint8_t rotation);
             void ReleaseSession(PaintSession* session);
             ~Painter();
 
         private:
-            void PaintReplayNotice(RenderTarget& dpi, const char* text);
-            void PaintFPS(RenderTarget& dpi);
+            void PaintReplayNotice(RenderTarget& rt, const char* text);
+            void PaintFPS(RenderTarget& rt);
             void MeasureFPS();
         };
     } // namespace Paint

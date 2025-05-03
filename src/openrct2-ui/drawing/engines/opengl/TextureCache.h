@@ -231,6 +231,6 @@ namespace OpenRCT2::Ui
         void FreeTextures();
 
         static RenderTarget CreateDPI(int32_t width, int32_t height);
-        static void DeleteDPI(RenderTarget dpi);
+        static void DeleteDPI(RenderTarget rt);
     };
 } // namespace OpenRCT2::Ui

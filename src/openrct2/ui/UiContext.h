@@ -28,7 +28,7 @@ namespace OpenRCT2
         struct IDrawingEngineFactory;
         struct IWeatherDrawer;
         using DrawWeatherFunc = void (*)(
-            RenderTarget& dpi, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width,
+            RenderTarget& rt, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width,
             int32_t height);
     } // namespace Drawing
 
@@ -100,7 +100,7 @@ namespace OpenRCT2
 
             virtual void InitialiseScriptExtensions() = 0;
             virtual void Tick() = 0;
-            virtual void Draw(RenderTarget& dpi) = 0;
+            virtual void Draw(RenderTarget& rt) = 0;
 
             // Window
             virtual void CreateWindow() = 0;
@@ -150,7 +150,7 @@ namespace OpenRCT2
             // Drawing
             [[nodiscard]] virtual std::shared_ptr<Drawing::IDrawingEngineFactory> GetDrawingEngineFactory() = 0;
             virtual void DrawWeatherAnimation(
-                OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, RenderTarget& dpi,
+                OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, RenderTarget& rt,
                 OpenRCT2::Drawing::DrawWeatherFunc drawFunc)
                 = 0;
 

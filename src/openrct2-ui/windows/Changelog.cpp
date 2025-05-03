@@ -175,7 +175,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             const int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
 
@@ -183,10 +183,10 @@ namespace OpenRCT2::Ui::Windows
             for (const auto& line : _changelogLines)
             {
                 screenCoords.y += lineHeight;
-                if (screenCoords.y + lineHeight < dpi.y || screenCoords.y >= dpi.y + dpi.height)
+                if (screenCoords.y + lineHeight < rt.y || screenCoords.y >= rt.y + rt.height)
                     continue;
 
-                DrawText(dpi, screenCoords, { colours[0] }, line.c_str());
+                DrawText(rt, screenCoords, { colours[0] }, line.c_str());
             }
         }
 

@@ -28,34 +28,34 @@ using namespace OpenRCT2;
 
 namespace OpenRCT2::Ui
 {
-    static void WidgetFrameDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetResizeDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetButtonDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetTabDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetFlatButtonDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetTextButton(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetTextCentred(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetText(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetTextInset(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetTextBoxDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetProgressBarDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetHorizontalSeparatorDraw(RenderTarget& dpi, WindowBase& w, const Widget& widget);
-    static void WidgetGroupboxDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetCaptionDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetCheckboxDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetCloseboxDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetScrollDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetFrameDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetResizeDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetButtonDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetTabDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetFlatButtonDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetTextButton(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetTextCentred(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetText(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetTextInset(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetTextBoxDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetProgressBarDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetHorizontalSeparatorDraw(RenderTarget& rt, WindowBase& w, const Widget& widget);
+    static void WidgetGroupboxDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetCaptionDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetCheckboxDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetCloseboxDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetScrollDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetHScrollbarDraw(
-        RenderTarget& dpi, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour);
+        RenderTarget& rt, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour);
     static void WidgetVScrollbarDraw(
-        RenderTarget& dpi, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour);
-    static void WidgetDrawImage(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
+        RenderTarget& rt, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour);
+    static void WidgetDrawImage(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
 
     /**
      *
      *  rct2: 0x006EB2A8
      */
-    void WidgetDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    void WidgetDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
         const auto* widget = GetWidgetByIndex(w, widgetIndex);
         if (widget == nullptr)
@@ -67,60 +67,60 @@ namespace OpenRCT2::Ui
         switch (widget->type)
         {
             case WindowWidgetType::Frame:
-                WidgetFrameDraw(dpi, w, widgetIndex);
+                WidgetFrameDraw(rt, w, widgetIndex);
                 break;
             case WindowWidgetType::Resize:
-                WidgetResizeDraw(dpi, w, widgetIndex);
+                WidgetResizeDraw(rt, w, widgetIndex);
                 break;
             case WindowWidgetType::ImgBtn:
-                WidgetButtonDraw(dpi, w, widgetIndex);
+                WidgetButtonDraw(rt, w, widgetIndex);
                 break;
             case WindowWidgetType::ColourBtn:
             case WindowWidgetType::TrnBtn:
             case WindowWidgetType::Tab:
-                WidgetTabDraw(dpi, w, widgetIndex);
+                WidgetTabDraw(rt, w, widgetIndex);
                 break;
             case WindowWidgetType::FlatBtn:
-                WidgetFlatButtonDraw(dpi, w, widgetIndex);
+                WidgetFlatButtonDraw(rt, w, widgetIndex);
                 break;
             case WindowWidgetType::Button:
             case WindowWidgetType::TableHeader:
-                WidgetTextButton(dpi, w, widgetIndex);
+                WidgetTextButton(rt, w, widgetIndex);
                 break;
             case WindowWidgetType::LabelCentred:
-                WidgetTextCentred(dpi, w, widgetIndex);
+                WidgetTextCentred(rt, w, widgetIndex);
                 break;
             case WindowWidgetType::Label:
-                WidgetText(dpi, w, widgetIndex);
+                WidgetText(rt, w, widgetIndex);
                 break;
             case WindowWidgetType::Spinner:
             case WindowWidgetType::DropdownMenu:
             case WindowWidgetType::Viewport:
-                WidgetTextInset(dpi, w, widgetIndex);
+                WidgetTextInset(rt, w, widgetIndex);
                 break;
             case WindowWidgetType::Groupbox:
-                WidgetGroupboxDraw(dpi, w, widgetIndex);
+                WidgetGroupboxDraw(rt, w, widgetIndex);
                 break;
             case WindowWidgetType::Caption:
-                WidgetCaptionDraw(dpi, w, widgetIndex);
+                WidgetCaptionDraw(rt, w, widgetIndex);
                 break;
             case WindowWidgetType::CloseBox:
-                WidgetCloseboxDraw(dpi, w, widgetIndex);
+                WidgetCloseboxDraw(rt, w, widgetIndex);
                 break;
             case WindowWidgetType::Scroll:
-                WidgetScrollDraw(dpi, w, widgetIndex);
+                WidgetScrollDraw(rt, w, widgetIndex);
                 break;
             case WindowWidgetType::Checkbox:
-                WidgetCheckboxDraw(dpi, w, widgetIndex);
+                WidgetCheckboxDraw(rt, w, widgetIndex);
                 break;
             case WindowWidgetType::TextBox:
-                WidgetTextBoxDraw(dpi, w, widgetIndex);
+                WidgetTextBoxDraw(rt, w, widgetIndex);
                 break;
             case WindowWidgetType::ProgressBar:
-                WidgetProgressBarDraw(dpi, w, widgetIndex);
+                WidgetProgressBarDraw(rt, w, widgetIndex);
                 break;
             case WindowWidgetType::HorizontalSeparator:
-                WidgetHorizontalSeparatorDraw(dpi, w, *widget);
+                WidgetHorizontalSeparatorDraw(rt, w, *widget);
                 break;
             default:
                 break;
@@ -131,7 +131,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EB6CE
      */
-    static void WidgetFrameDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetFrameDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -147,21 +147,21 @@ namespace OpenRCT2::Ui
         auto colour = w.colours[widget.colour];
 
         // Draw the frame
-        GfxFillRectInset(dpi, { leftTop, { r, b } }, colour, press);
+        GfxFillRectInset(rt, { leftTop, { r, b } }, colour, press);
 
         if (!w.canBeResized())
             return;
 
         // Draw the resize sprite at the bottom right corner
         leftTop = w.windowPos + ScreenCoordsXY{ widget.right - 18, widget.bottom - 18 };
-        GfxDrawSprite(dpi, ImageId(SPR_RESIZE, colour.colour), leftTop);
+        GfxDrawSprite(rt, ImageId(SPR_RESIZE, colour.colour), leftTop);
     }
 
     /**
      *
      *  rct2: 0x006EB765
      */
-    static void WidgetResizeDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetResizeDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -174,21 +174,21 @@ namespace OpenRCT2::Ui
         auto colour = w.colours[widget.colour];
 
         // Draw the panel
-        GfxFillRectInset(dpi, { leftTop, { r, b } }, colour, 0);
+        GfxFillRectInset(rt, { leftTop, { r, b } }, colour, 0);
 
         if (!w.canBeResized())
             return;
 
         // Draw the resize sprite at the bottom right corner
         leftTop = w.windowPos + ScreenCoordsXY{ widget.right - 18, widget.bottom - 18 };
-        GfxDrawSprite(dpi, ImageId(SPR_RESIZE, colour.colour), leftTop);
+        GfxDrawSprite(rt, ImageId(SPR_RESIZE, colour.colour), leftTop);
     }
 
     /**
      *
      *  rct2: 0x006EB8E5
      */
-    static void WidgetButtonDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetButtonDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -206,21 +206,21 @@ namespace OpenRCT2::Ui
         if (static_cast<int32_t>(widget.image.GetIndex()) == -2)
         {
             // Draw border with no fill
-            GfxFillRectInset(dpi, rect, colour, press | INSET_RECT_FLAG_FILL_NONE);
+            GfxFillRectInset(rt, rect, colour, press | INSET_RECT_FLAG_FILL_NONE);
             return;
         }
 
         // Draw the border with fill
-        GfxFillRectInset(dpi, rect, colour, press);
+        GfxFillRectInset(rt, rect, colour, press);
 
-        WidgetDrawImage(dpi, w, widgetIndex);
+        WidgetDrawImage(rt, w, widgetIndex);
     }
 
     /**
      *
      *  rct2: 0x006EB806
      */
-    static void WidgetTabDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetTabDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         auto& widget = w.widgets[widgetIndex];
@@ -243,13 +243,13 @@ namespace OpenRCT2::Ui
         // Draw widgets that aren't explicitly disabled.
         if (!WidgetIsDisabled(w, widgetIndex))
         {
-            WidgetDrawImage(dpi, w, widgetIndex);
+            WidgetDrawImage(rt, w, widgetIndex);
             return;
         }
 
         if (widget.type != WindowWidgetType::TrnBtn)
         {
-            WidgetDrawImage(dpi, w, widgetIndex);
+            WidgetDrawImage(rt, w, widgetIndex);
             return;
         }
 
@@ -262,18 +262,18 @@ namespace OpenRCT2::Ui
         auto image = widget.image.WithIndex(newIndex).WithPrimary(colour);
 
         // Draw disabled image
-        GfxDrawSprite(dpi, image, leftTop);
+        GfxDrawSprite(rt, image, leftTop);
     }
 
     /**
      *
      *  rct2: 0x006EB861
      */
-    static void WidgetFlatButtonDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetFlatButtonDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
         if (!WidgetIsDisabled(w, widgetIndex) && WidgetIsHighlighted(w, widgetIndex))
         {
-            WidgetButtonDraw(dpi, w, widgetIndex);
+            WidgetButtonDraw(rt, w, widgetIndex);
             return;
         }
 
@@ -293,23 +293,23 @@ namespace OpenRCT2::Ui
             if (static_cast<int32_t>(widget.image.GetIndex()) == -2)
             {
                 // Draw border with no fill
-                GfxFillRectInset(dpi, rect, colour, INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE);
+                GfxFillRectInset(rt, rect, colour, INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE);
                 return;
             }
 
             // Draw the border with fill
-            GfxFillRectInset(dpi, rect, colour, INSET_RECT_FLAG_BORDER_INSET);
+            GfxFillRectInset(rt, rect, colour, INSET_RECT_FLAG_BORDER_INSET);
         }
 
         // Draw image
-        WidgetDrawImage(dpi, w, widgetIndex);
+        WidgetDrawImage(rt, w, widgetIndex);
     }
 
     /**
      *
      *  rct2: 0x006EBBEB
      */
-    static void WidgetTextButton(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetTextButton(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -322,16 +322,16 @@ namespace OpenRCT2::Ui
 
         // Border
         uint8_t press = WidgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
-        GfxFillRectInset(dpi, rect, colour, press);
+        GfxFillRectInset(rt, rect, colour, press);
 
         // Button caption
         if (widget.type != WindowWidgetType::TableHeader)
         {
-            WidgetTextCentred(dpi, w, widgetIndex);
+            WidgetTextCentred(rt, w, widgetIndex);
         }
         else
         {
-            WidgetText(dpi, w, widgetIndex);
+            WidgetText(rt, w, widgetIndex);
         }
     }
 
@@ -339,7 +339,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EBC41
      */
-    static void WidgetTextCentred(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetTextCentred(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -372,11 +372,11 @@ namespace OpenRCT2::Ui
         ScreenCoordsXY coords = { (topLeft.x + r + 1) / 2 - 1, topLeft.y };
         if (widget.type == WindowWidgetType::LabelCentred)
         {
-            DrawTextWrapped(dpi, coords, widget.width() - 2, stringId, ft, { colour, TextAlignment::CENTRE });
+            DrawTextWrapped(rt, coords, widget.width() - 2, stringId, ft, { colour, TextAlignment::CENTRE });
         }
         else
         {
-            DrawTextEllipsised(dpi, coords, widget.width() - 2, stringId, ft, { colour, TextAlignment::CENTRE });
+            DrawTextEllipsised(rt, coords, widget.width() - 2, stringId, ft, { colour, TextAlignment::CENTRE });
         }
     }
 
@@ -384,7 +384,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EBD52
      */
-    static void WidgetText(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetText(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -420,11 +420,11 @@ namespace OpenRCT2::Ui
         ScreenCoordsXY coords = { l + 1, t };
         if (widget.type == WindowWidgetType::LabelCentred)
         {
-            DrawTextWrapped(dpi, coords, r - l, stringId, ft, { colour, TextAlignment::CENTRE });
+            DrawTextWrapped(rt, coords, r - l, stringId, ft, { colour, TextAlignment::CENTRE });
         }
         else
         {
-            DrawTextEllipsised(dpi, coords, r - l, stringId, ft, colour);
+            DrawTextEllipsised(rt, coords, r - l, stringId, ft, colour);
         }
     }
 
@@ -432,7 +432,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EBD1F
      */
-    static void WidgetTextInset(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetTextInset(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -443,15 +443,15 @@ namespace OpenRCT2::Ui
 
         auto colour = w.colours[widget.colour];
 
-        GfxFillRectInset(dpi, rect, colour, INSET_RECT_F_60);
-        WidgetText(dpi, w, widgetIndex);
+        GfxFillRectInset(rt, rect, colour, INSET_RECT_F_60);
+        WidgetText(rt, w, widgetIndex);
     }
 
     /**
      *
      *  rct2: 0x006EB535
      */
-    static void WidgetGroupboxDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetGroupboxDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -488,7 +488,7 @@ namespace OpenRCT2::Ui
 
             auto ft = Formatter();
             ft.Add<utf8*>(buffer);
-            DrawTextBasic(dpi, { l, t }, STR_STRING, ft, { colour });
+            DrawTextBasic(rt, { l, t }, STR_STRING, ft, { colour });
             textRight = l + GfxGetStringWidth(buffer, FontStyle::Medium) + 1;
         }
 
@@ -502,31 +502,31 @@ namespace OpenRCT2::Ui
         uint8_t colour = w.colours[widget.colour].colour;
 
         // Border left of text
-        GfxFillRect(dpi, { { l, t }, { l + 4, t } }, ColourMapA[colour].mid_dark);
-        GfxFillRect(dpi, { { l + 1, t + 1 }, { l + 4, t + 1 } }, ColourMapA[colour].lighter);
+        GfxFillRect(rt, { { l, t }, { l + 4, t } }, ColourMapA[colour].mid_dark);
+        GfxFillRect(rt, { { l + 1, t + 1 }, { l + 4, t + 1 } }, ColourMapA[colour].lighter);
 
         // Border right of text
-        GfxFillRect(dpi, { { textRight, t }, { r - 1, t } }, ColourMapA[colour].mid_dark);
-        GfxFillRect(dpi, { { textRight, t + 1 }, { r - 2, t + 1 } }, ColourMapA[colour].lighter);
+        GfxFillRect(rt, { { textRight, t }, { r - 1, t } }, ColourMapA[colour].mid_dark);
+        GfxFillRect(rt, { { textRight, t + 1 }, { r - 2, t + 1 } }, ColourMapA[colour].lighter);
 
         // Border right
-        GfxFillRect(dpi, { { r - 1, t + 1 }, { r - 1, b - 1 } }, ColourMapA[colour].mid_dark);
-        GfxFillRect(dpi, { { r, t }, { r, b } }, ColourMapA[colour].lighter);
+        GfxFillRect(rt, { { r - 1, t + 1 }, { r - 1, b - 1 } }, ColourMapA[colour].mid_dark);
+        GfxFillRect(rt, { { r, t }, { r, b } }, ColourMapA[colour].lighter);
 
         // Border bottom
-        GfxFillRect(dpi, { { l, b - 1 }, { r - 2, b - 1 } }, ColourMapA[colour].mid_dark);
-        GfxFillRect(dpi, { { l, b }, { r - 1, b } }, ColourMapA[colour].lighter);
+        GfxFillRect(rt, { { l, b - 1 }, { r - 2, b - 1 } }, ColourMapA[colour].mid_dark);
+        GfxFillRect(rt, { { l, b }, { r - 1, b } }, ColourMapA[colour].lighter);
 
         // Border left
-        GfxFillRect(dpi, { { l, t + 1 }, { l, b - 2 } }, ColourMapA[colour].mid_dark);
-        GfxFillRect(dpi, { { l + 1, t + 2 }, { l + 1, b - 2 } }, ColourMapA[colour].lighter);
+        GfxFillRect(rt, { { l, t + 1 }, { l, b - 2 } }, ColourMapA[colour].mid_dark);
+        GfxFillRect(rt, { { l + 1, t + 2 }, { l + 1, b - 2 } }, ColourMapA[colour].lighter);
     }
 
     /**
      *
      *  rct2: 0x006EB2F9
      */
-    static void WidgetCaptionDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetCaptionDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto* widget = &w.widgets[widgetIndex];
@@ -541,16 +541,16 @@ namespace OpenRCT2::Ui
         if (w.flags & WF_10)
             press |= INSET_RECT_FLAG_FILL_MID_LIGHT;
 
-        GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, press);
+        GfxFillRectInset(rt, { topLeft, bottomRight }, colour, press);
 
         // Black caption bars look slightly green, this fixes that
         if (colour.colour == COLOUR_BLACK)
             GfxFillRect(
-                dpi, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } },
+                rt, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } },
                 ColourMapA[colour.colour].dark);
         else
             GfxFilterRect(
-                dpi, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } },
+                rt, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } },
                 FilterPaletteID::PaletteDarken3);
 
         // Draw text
@@ -572,7 +572,7 @@ namespace OpenRCT2::Ui
             topLeft.y += kTitleHeightLarge / 4;
 
         DrawTextEllipsised(
-            dpi, topLeft, width, widget->text, Formatter::Common(),
+            rt, topLeft, width, widget->text, Formatter::Common(),
             { ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true), TextAlignment::CENTRE });
     }
 
@@ -580,7 +580,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EBB85
      */
-    static void WidgetCloseboxDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetCloseboxDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -599,7 +599,7 @@ namespace OpenRCT2::Ui
         auto colour = w.colours[widget.colour];
 
         // Draw the button
-        GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, press);
+        GfxFillRectInset(rt, { topLeft, bottomRight }, colour, press);
 
         if (widget.string == nullptr)
             return;
@@ -609,14 +609,14 @@ namespace OpenRCT2::Ui
         if (WidgetIsDisabled(w, widgetIndex))
             colour.setFlag(ColourFlag::inset, true);
 
-        DrawText(dpi, topLeft, { colour, TextAlignment::CENTRE }, widget.string);
+        DrawText(rt, topLeft, { colour, TextAlignment::CENTRE }, widget.string);
     }
 
     /**
      *
      *  rct2: 0x006EBAD9
      */
-    static void WidgetCheckboxDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetCheckboxDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -629,7 +629,7 @@ namespace OpenRCT2::Ui
         auto colour = w.colours[widget.colour];
 
         // checkbox
-        GfxFillRectInset(dpi, { midLeft - ScreenCoordsXY{ 0, 5 }, midLeft + ScreenCoordsXY{ 9, 4 } }, colour, INSET_RECT_F_60);
+        GfxFillRectInset(rt, { midLeft - ScreenCoordsXY{ 0, 5 }, midLeft + ScreenCoordsXY{ 9, 4 } }, colour, INSET_RECT_F_60);
 
         if (WidgetIsDisabled(w, widgetIndex))
         {
@@ -640,7 +640,7 @@ namespace OpenRCT2::Ui
         if (WidgetIsPressed(w, widgetIndex))
         {
             DrawText(
-                dpi, { midLeft - ScreenCoordsXY{ 0, 5 } }, { colour.withFlag(ColourFlag::translucent, false) },
+                rt, { midLeft - ScreenCoordsXY{ 0, 5 } }, { colour.withFlag(ColourFlag::translucent, false) },
                 kCheckMarkString);
         }
 
@@ -657,14 +657,14 @@ namespace OpenRCT2::Ui
         }
 
         DrawTextEllipsised(
-            dpi, w.windowPos + ScreenCoordsXY{ widget.left + 14, widget.textTop() }, widget.width() - 14, stringId, ft, colour);
+            rt, w.windowPos + ScreenCoordsXY{ widget.left + 14, widget.textTop() }, widget.width() - 14, stringId, ft, colour);
     }
 
     /**
      *
      *  rct2: 0x006EBD96
      */
-    static void WidgetScrollDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetScrollDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         int32_t scrollIndex = WindowGetScrollDataIndex(w, widgetIndex);
@@ -678,7 +678,7 @@ namespace OpenRCT2::Ui
         auto colour = w.colours[widget.colour];
 
         // Draw the border
-        GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
+        GfxFillRectInset(rt, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
 
         // Inflate by -1
         topLeft.x++;
@@ -693,7 +693,7 @@ namespace OpenRCT2::Ui
         if (hScrollNeeded)
         {
             WidgetHScrollbarDraw(
-                dpi, scroll, topLeft.x, bottomRight.y - kScrollBarWidth,
+                rt, scroll, topLeft.x, bottomRight.y - kScrollBarWidth,
                 ((scroll.flags & VSCROLLBAR_VISIBLE) ? bottomRight.x - (kScrollBarWidth + 1) : bottomRight.x), bottomRight.y,
                 colour);
         }
@@ -702,7 +702,7 @@ namespace OpenRCT2::Ui
         if (vScrollNeeded)
         {
             WidgetVScrollbarDraw(
-                dpi, scroll, bottomRight.x - kScrollBarWidth, topLeft.y, bottomRight.x,
+                rt, scroll, bottomRight.x - kScrollBarWidth, topLeft.y, bottomRight.x,
                 ((scroll.flags & HSCROLLBAR_VISIBLE) ? bottomRight.y - (kScrollBarWidth + 1) : bottomRight.y), colour);
         }
 
@@ -716,50 +716,50 @@ namespace OpenRCT2::Ui
         bottomRight.x++;
 
         // Create a new inner scroll dpi
-        RenderTarget scroll_dpi = dpi;
+        RenderTarget scrollRT = rt;
 
         // Clip the scroll dpi against the outer dpi
-        int32_t cl = std::max<int32_t>(dpi.x, topLeft.x);
-        int32_t ct = std::max<int32_t>(dpi.y, topLeft.y);
-        int32_t cr = std::min<int32_t>(dpi.x + dpi.width, bottomRight.x);
-        int32_t cb = std::min<int32_t>(dpi.y + dpi.height, bottomRight.y);
+        int32_t cl = std::max<int32_t>(rt.x, topLeft.x);
+        int32_t ct = std::max<int32_t>(rt.y, topLeft.y);
+        int32_t cr = std::min<int32_t>(rt.x + rt.width, bottomRight.x);
+        int32_t cb = std::min<int32_t>(rt.y + rt.height, bottomRight.y);
 
         // Set the respective dpi attributes
-        scroll_dpi.x = cl - topLeft.x + scroll.contentOffsetX;
-        scroll_dpi.y = ct - topLeft.y + scroll.contentOffsetY;
-        scroll_dpi.width = cr - cl;
-        scroll_dpi.height = cb - ct;
-        scroll_dpi.bits += cl - dpi.x;
-        scroll_dpi.bits += (ct - dpi.y) * dpi.LineStride();
-        scroll_dpi.pitch = dpi.LineStride() - scroll_dpi.width;
+        scrollRT.x = cl - topLeft.x + scroll.contentOffsetX;
+        scrollRT.y = ct - topLeft.y + scroll.contentOffsetY;
+        scrollRT.width = cr - cl;
+        scrollRT.height = cb - ct;
+        scrollRT.bits += cl - rt.x;
+        scrollRT.bits += (ct - rt.y) * rt.LineStride();
+        scrollRT.pitch = rt.LineStride() - scrollRT.width;
 
         // Draw the scroll contents
-        if (scroll_dpi.width > 0 && scroll_dpi.height > 0)
-            w.OnScrollDraw(scrollIndex, scroll_dpi);
+        if (scrollRT.width > 0 && scrollRT.height > 0)
+            w.OnScrollDraw(scrollIndex, scrollRT);
     }
 
     static void WidgetHScrollbarDraw(
-        RenderTarget& dpi, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour)
+        RenderTarget& rt, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour)
     {
         colour.setFlag(ColourFlag::translucent, false);
 
         // Trough
-        GfxFillRect(dpi, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, ColourMapA[colour.colour].lighter);
+        GfxFillRect(rt, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, ColourMapA[colour.colour].lighter);
         GfxFillRect(
-            dpi, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, 0x1000000 | ColourMapA[colour.colour].mid_dark);
+            rt, { { l + kScrollBarWidth, t }, { r - kScrollBarWidth, b } }, 0x1000000 | ColourMapA[colour.colour].mid_dark);
         GfxFillRect(
-            dpi, { { l + kScrollBarWidth, t + 2 }, { r - kScrollBarWidth, t + 2 } }, ColourMapA[colour.colour].mid_dark);
-        GfxFillRect(dpi, { { l + kScrollBarWidth, t + 3 }, { r - kScrollBarWidth, t + 3 } }, ColourMapA[colour.colour].lighter);
+            rt, { { l + kScrollBarWidth, t + 2 }, { r - kScrollBarWidth, t + 2 } }, ColourMapA[colour.colour].mid_dark);
+        GfxFillRect(rt, { { l + kScrollBarWidth, t + 3 }, { r - kScrollBarWidth, t + 3 } }, ColourMapA[colour.colour].lighter);
         GfxFillRect(
-            dpi, { { l + kScrollBarWidth, t + 7 }, { r - kScrollBarWidth, t + 7 } }, ColourMapA[colour.colour].mid_dark);
-        GfxFillRect(dpi, { { l + kScrollBarWidth, t + 8 }, { r - kScrollBarWidth, t + 8 } }, ColourMapA[colour.colour].lighter);
+            rt, { { l + kScrollBarWidth, t + 7 }, { r - kScrollBarWidth, t + 7 } }, ColourMapA[colour.colour].mid_dark);
+        GfxFillRect(rt, { { l + kScrollBarWidth, t + 8 }, { r - kScrollBarWidth, t + 8 } }, ColourMapA[colour.colour].lighter);
 
         // Left button
         {
             uint8_t flags = (scroll.flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
-            GfxFillRectInset(dpi, { { l, t }, { l + (kScrollBarWidth - 1), b } }, colour, flags);
-            DrawText(dpi, { l + 1, t }, {}, kBlackLeftArrowString);
+            GfxFillRectInset(rt, { { l, t }, { l + (kScrollBarWidth - 1), b } }, colour, flags);
+            DrawText(rt, { l + 1, t }, {}, kBlackLeftArrowString);
         }
 
         // Thumb
@@ -768,59 +768,59 @@ namespace OpenRCT2::Ui
             int16_t right = std::min(r - kScrollBarWidth, l + scroll.hThumbRight - 1);
             uint8_t flags = (scroll.flags & HSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
-            GfxFillRectInset(dpi, { { left, t }, { right, b } }, colour, flags);
+            GfxFillRectInset(rt, { { left, t }, { right, b } }, colour, flags);
         }
 
         // Right button
         {
             uint8_t flags = (scroll.flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
-            GfxFillRectInset(dpi, { { r - (kScrollBarWidth - 1), t }, { r, b } }, colour, flags);
-            DrawText(dpi, { r - 6, t }, {}, kBlackRightArrowString);
+            GfxFillRectInset(rt, { { r - (kScrollBarWidth - 1), t }, { r, b } }, colour, flags);
+            DrawText(rt, { r - 6, t }, {}, kBlackRightArrowString);
         }
     }
 
     static void WidgetVScrollbarDraw(
-        RenderTarget& dpi, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour)
+        RenderTarget& rt, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour)
     {
         colour.setFlag(ColourFlag::translucent, false);
 
         // Trough
-        GfxFillRect(dpi, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
+        GfxFillRect(rt, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
         GfxFillRect(
-            dpi, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, 0x1000000 | ColourMapA[colour.colour].mid_dark);
+            rt, { { l, t + kScrollBarWidth }, { r, b - kScrollBarWidth } }, 0x1000000 | ColourMapA[colour.colour].mid_dark);
         GfxFillRect(
-            dpi, { { l + 2, t + kScrollBarWidth }, { l + 2, b - kScrollBarWidth } }, ColourMapA[colour.colour].mid_dark);
-        GfxFillRect(dpi, { { l + 3, t + kScrollBarWidth }, { l + 3, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
+            rt, { { l + 2, t + kScrollBarWidth }, { l + 2, b - kScrollBarWidth } }, ColourMapA[colour.colour].mid_dark);
+        GfxFillRect(rt, { { l + 3, t + kScrollBarWidth }, { l + 3, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
         GfxFillRect(
-            dpi, { { l + 7, t + kScrollBarWidth }, { l + 7, b - kScrollBarWidth } }, ColourMapA[colour.colour].mid_dark);
-        GfxFillRect(dpi, { { l + 8, t + kScrollBarWidth }, { l + 8, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
+            rt, { { l + 7, t + kScrollBarWidth }, { l + 7, b - kScrollBarWidth } }, ColourMapA[colour.colour].mid_dark);
+        GfxFillRect(rt, { { l + 8, t + kScrollBarWidth }, { l + 8, b - kScrollBarWidth } }, ColourMapA[colour.colour].lighter);
 
         // Up button
         GfxFillRectInset(
-            dpi, { { l, t }, { r, t + (kScrollBarWidth - 1) } }, colour,
+            rt, { { l, t }, { r, t + (kScrollBarWidth - 1) } }, colour,
             ((scroll.flags & VSCROLLBAR_UP_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-        DrawText(dpi, { l + 1, t - 1 }, {}, kBlackUpArrowString);
+        DrawText(rt, { l + 1, t - 1 }, {}, kBlackUpArrowString);
 
         // Thumb
         GfxFillRectInset(
-            dpi,
+            rt,
             { { l, std::max(t + kScrollBarWidth, t + scroll.vThumbTop - 1) },
               { r, std::min(b - kScrollBarWidth, t + scroll.vThumbBottom - 1) } },
             { colour }, ((scroll.flags & VSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
 
         // Down button
         GfxFillRectInset(
-            dpi, { { l, b - (kScrollBarWidth - 1) }, { r, b } }, colour,
+            rt, { { l, b - (kScrollBarWidth - 1) }, { r, b } }, colour,
             ((scroll.flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-        DrawText(dpi, { l + 1, b - (kScrollBarWidth - 1) }, {}, kBlackDownArrowString);
+        DrawText(rt, { l + 1, b - (kScrollBarWidth - 1) }, {}, kBlackDownArrowString);
     }
 
     /**
      *
      *  rct2: 0x006EB951
      */
-    static void WidgetDrawImage(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetDrawImage(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -843,11 +843,11 @@ namespace OpenRCT2::Ui
         {
             // Draw greyed out (light border bottom right shadow)
             auto mappedColour = ColourMapA[colour].lighter;
-            GfxDrawSpriteSolid(dpi, image, screenCoords + ScreenCoordsXY{ 1, 1 }, mappedColour);
+            GfxDrawSpriteSolid(rt, image, screenCoords + ScreenCoordsXY{ 1, 1 }, mappedColour);
 
             // Draw greyed out (dark)
             mappedColour = ColourMapA[colour].mid_light;
-            GfxDrawSpriteSolid(dpi, image, screenCoords, mappedColour);
+            GfxDrawSpriteSolid(rt, image, screenCoords, mappedColour);
         }
         else
         {
@@ -861,7 +861,7 @@ namespace OpenRCT2::Ui
             else
                 image = image.WithPrimary(colour);
 
-            GfxDrawSprite(dpi, image, screenCoords);
+            GfxDrawSprite(rt, image, screenCoords);
         }
     }
 
@@ -1122,7 +1122,7 @@ namespace OpenRCT2::Ui
         WidgetSetPressed(w, widgetIndex, value);
     }
 
-    static void WidgetTextBoxDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetTextBoxDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -1136,7 +1136,7 @@ namespace OpenRCT2::Ui
             && widgetIndex == tbIdent.widget_index;
 
         // GfxFillRectInset(dpi, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
-        GfxFillRectInset(dpi, { topLeft, bottomRight }, w.colours[widget.colour], INSET_RECT_F_60);
+        GfxFillRectInset(rt, { topLeft, bottomRight }, w.colours[widget.colour], INSET_RECT_F_60);
 
         // Figure out where the text should be positioned vertically.
         topLeft.y = w.windowPos.y + widget.textTop();
@@ -1148,7 +1148,7 @@ namespace OpenRCT2::Ui
             {
                 u8string wrappedString;
                 GfxWrapString(widget.string, bottomRight.x - topLeft.x - 5, FontStyle::Medium, &wrappedString, nullptr);
-                DrawText(dpi, { topLeft.x + 2, topLeft.y }, { w.colours[1] }, wrappedString.c_str(), true);
+                DrawText(rt, { topLeft.x + 2, topLeft.y }, { w.colours[1] }, wrappedString.c_str(), true);
             }
             return;
         }
@@ -1158,7 +1158,7 @@ namespace OpenRCT2::Ui
         u8string wrappedString;
         GfxWrapString(*textInput->Buffer, bottomRight.x - topLeft.x - 5 - 6, FontStyle::Medium, &wrappedString, nullptr);
 
-        DrawText(dpi, { topLeft.x + 2, topLeft.y }, { w.colours[1] }, wrappedString.c_str(), true);
+        DrawText(rt, { topLeft.x + 2, topLeft.y }, { w.colours[1] }, wrappedString.c_str(), true);
 
         // Make a trimmed view of the string for measuring the width.
         int32_t curX = topLeft.x
@@ -1182,11 +1182,11 @@ namespace OpenRCT2::Ui
         {
             auto colour = ColourMapA[w.colours[1].colour].mid_light;
             auto y = topLeft.y + 1 + widget.height() - 4;
-            GfxFillRect(dpi, { { curX, y }, { curX + width, y } }, colour + 5);
+            GfxFillRect(rt, { { curX, y }, { curX + width, y } }, colour + 5);
         }
     }
 
-    static void WidgetProgressBarDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetProgressBarDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
         const auto& widget = w.widgets[widgetIndex];
 
@@ -1200,7 +1200,7 @@ namespace OpenRCT2::Ui
         auto isBlinking = (lowerBlinkBounds != upperBlinkBounds) && (percentage >= lowerBlinkBounds)
             && (percentage <= upperBlinkBounds);
 
-        GfxFillRectInset(dpi, { topLeft, bottomRight }, w.colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(rt, { topLeft, bottomRight }, w.colours[1], INSET_RECT_F_30);
         if (isBlinking)
         {
             if (GameIsNotPaused() && (gCurrentRealTimeTicks & 8))
@@ -1212,17 +1212,17 @@ namespace OpenRCT2::Ui
         if (fillSize > 0)
         {
             GfxFillRectInset(
-                dpi, { topLeft + ScreenCoordsXY{ 1, 1 }, topLeft + ScreenCoordsXY{ fillSize + 1, widget.height() - 1 } },
+                rt, { topLeft + ScreenCoordsXY{ 1, 1 }, topLeft + ScreenCoordsXY{ fillSize + 1, widget.height() - 1 } },
                 { widget.colour }, 0);
         }
     }
 
-    static void WidgetHorizontalSeparatorDraw(RenderTarget& dpi, WindowBase& w, const Widget& widget)
+    static void WidgetHorizontalSeparatorDraw(RenderTarget& rt, WindowBase& w, const Widget& widget)
     {
         ScreenCoordsXY topLeft{ w.windowPos + ScreenCoordsXY{ widget.left, widget.top } };
         ScreenCoordsXY bottomRight{ w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom } };
 
-        GfxFillRectInset(dpi, { topLeft, bottomRight }, w.colours[1], INSET_RECT_FLAG_BORDER_INSET);
+        GfxFillRectInset(rt, { topLeft, bottomRight }, w.colours[1], INSET_RECT_FLAG_BORDER_INSET);
     }
 
     ImageId GetColourButtonImage(colour_t colour)

@@ -185,16 +185,16 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_APPLY].top = widgets[WIDX_APPLY].bottom - 24;
         }
 
-        void OnDraw(RenderTarget& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
         }
 
-        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
+            auto dpiCoords = ScreenCoordsXY{ rt.x, rt.y };
             GfxFillRect(
-                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } },
+                rt, { dpiCoords, dpiCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
                 ColourMapA[colours[1].colour].mid_light);
 
             auto assetPackManager = GetContext()->GetAssetPackManager();
@@ -205,9 +205,9 @@ namespace OpenRCT2::Ui::Windows
             auto y = 0;
             for (size_t i = 0; i <= numAssetPacks; i++)
             {
-                if (y > dpi.y + dpi.height)
+                if (y > rt.y + rt.height)
                     break;
-                if (y + 11 < dpi.y)
+                if (y + 11 < rt.y)
                     continue;
 
                 auto isSelected = i == _selectedIndex;
@@ -216,7 +216,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<StringId>(STR_BASE_GRAPHICS_MUSIC_SOUND);
-                    PaintItem(dpi, y, ft, true, isSelected, isHighlighted);
+                    PaintItem(rt, y, ft, true, isSelected, isHighlighted);
                 }
                 else
                 {
@@ -227,7 +227,7 @@ namespace OpenRCT2::Ui::Windows
                         auto ft = Formatter();
                         ft.Add<StringId>(STR_STRING);
                         ft.Add<const char*>(assetPack->Name.c_str());
-                        PaintItem(dpi, y, ft, isChecked, isSelected, isHighlighted);
+                        PaintItem(rt, y, ft, isChecked, isSelected, isHighlighted);
                     }
                 }
                 y += ItemHeight;
@@ -235,37 +235,37 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        void PaintItem(RenderTarget& dpi, int32_t y, Formatter& ft, bool isChecked, bool isSelected, bool isHighlighted)
+        void PaintItem(RenderTarget& rt, int32_t y, Formatter& ft, bool isChecked, bool isSelected, bool isHighlighted)
         {
             auto listWidth = widgets[WIDX_LIST].right - widgets[WIDX_LIST].left;
             auto stringId = STR_BLACK_STRING;
             auto fillRectangle = ScreenRect{ { 0, y }, { listWidth, y + ItemHeight - 1 } };
             if (isSelected)
             {
-                GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
+                GfxFillRect(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
             }
             else if (isHighlighted)
             {
-                GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
+                GfxFillRect(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
             }
 
-            DrawTextEllipsised(dpi, { 16, y + 1 }, listWidth, stringId, ft);
+            DrawTextEllipsised(rt, { 16, y + 1 }, listWidth, stringId, ft);
 
             auto checkboxSize = ItemHeight - 3;
-            PaintCheckbox(dpi, { { 2, y + 1 }, { 2 + checkboxSize + 1, y + 1 + checkboxSize } }, isChecked);
+            PaintCheckbox(rt, { { 2, y + 1 }, { 2 + checkboxSize + 1, y + 1 + checkboxSize } }, isChecked);
         }
 
-        void PaintCheckbox(RenderTarget& dpi, const ScreenRect& rect, bool checked)
+        void PaintCheckbox(RenderTarget& rt, const ScreenRect& rect, bool checked)
         {
-            GfxFillRectInset(dpi, rect, colours[1], INSET_RECT_F_E0);
+            GfxFillRectInset(rt, rect, colours[1], INSET_RECT_F_E0);
             if (checked)
             {
                 auto checkmark = Formatter();
                 checkmark.Add<StringId>(STR_STRING);
                 checkmark.Add<char*>(kCheckMarkString);
                 DrawTextBasic(
-                    dpi, ScreenCoordsXY{ rect.GetLeft() + 1, rect.GetTop() }, STR_WINDOW_COLOUR_2_STRINGID, checkmark);
+                    rt, ScreenCoordsXY{ rect.GetLeft() + 1, rect.GetTop() }, STR_WINDOW_COLOUR_2_STRINGID, checkmark);
             }
         }
 

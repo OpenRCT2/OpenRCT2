@@ -49,7 +49,7 @@ void TerrainSurfaceObject::Unload()
     NumEntries = 0;
 }
 
-void TerrainSurfaceObject::DrawPreview(RenderTarget& dpi, int32_t width, int32_t height) const
+void TerrainSurfaceObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
 {
     auto imageId = ImageId(GetImageId({}, 1, 0, 0, false, false));
     if (Colour != kNoValue)
@@ -69,7 +69,7 @@ void TerrainSurfaceObject::DrawPreview(RenderTarget& dpi, int32_t width, int32_t
         }
         for (int32_t j = 0; j < 4; j++)
         {
-            GfxDrawSprite(dpi, imageId, screenCoords);
+            GfxDrawSprite(rt, imageId, screenCoords);
             screenCoords.x += 64;
         }
         screenCoords.y += 16;

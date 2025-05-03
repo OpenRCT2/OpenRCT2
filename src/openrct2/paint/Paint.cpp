@@ -103,7 +103,7 @@ static void PaintSessionAddPSToQuadrant(PaintSession& session, PaintStruct* ps)
     session.QuadrantFrontIndex = std::max(session.QuadrantFrontIndex, paintQuadrantIndex);
 }
 
-static constexpr bool imageWithinDPI(const ScreenCoordsXY& imagePos, const G1Element& g1, const RenderTarget& dpi)
+static constexpr bool imageWithinDPI(const ScreenCoordsXY& imagePos, const G1Element& g1, const RenderTarget& rt)
 {
     const int32_t left = imagePos.x + g1.x_offset;
     const int32_t bottom = imagePos.y + g1.y_offset;
@@ -114,29 +114,29 @@ static constexpr bool imageWithinDPI(const ScreenCoordsXY& imagePos, const G1Ele
     // mber: It is possible to use only the bottom else block here if you change <= and >= to simply < and >.
     // However, since this is used to cull paint structs, I'd prefer to keep the condition strict and calculate
     // the culling differently for minifying and magnifying.
-    const auto zoom = dpi.zoom_level;
+    const auto zoom = rt.zoom_level;
     if (zoom > ZoomLevel{ 0 })
     {
-        const int32_t x = zoom.ApplyTo(dpi.cullingX);
-        const int32_t y = zoom.ApplyTo(dpi.cullingY);
+        const int32_t x = zoom.ApplyTo(rt.cullingX);
+        const int32_t y = zoom.ApplyTo(rt.cullingY);
         if (right <= x)
             return false;
         if (top <= y)
             return false;
-        if (left >= x + zoom.ApplyTo(dpi.cullingWidth))
+        if (left >= x + zoom.ApplyTo(rt.cullingWidth))
             return false;
-        if (bottom >= y + zoom.ApplyTo(dpi.cullingHeight))
+        if (bottom >= y + zoom.ApplyTo(rt.cullingHeight))
             return false;
     }
     else
     {
-        if (zoom.ApplyInversedTo(right) <= dpi.cullingX)
+        if (zoom.ApplyInversedTo(right) <= rt.cullingX)
             return false;
-        if (zoom.ApplyInversedTo(top) <= dpi.cullingY)
+        if (zoom.ApplyInversedTo(top) <= rt.cullingY)
             return false;
-        if (zoom.ApplyInversedTo(left) >= dpi.cullingX + dpi.cullingWidth)
+        if (zoom.ApplyInversedTo(left) >= rt.cullingX + rt.cullingWidth)
             return false;
-        if (zoom.ApplyInversedTo(bottom) >= dpi.cullingY + dpi.cullingHeight)
+        if (zoom.ApplyInversedTo(bottom) >= rt.cullingY + rt.cullingHeight)
             return false;
     }
     return true;

@@ -224,7 +224,7 @@ namespace OpenRCT2
 
         drawingEngine->BeginDraw();
 
-        RenderTarget dpi{
+        RenderTarget rt{
             .bits = static_cast<uint8_t*>(image.pixels),
             .x = 0,
             .y = 0,
@@ -235,7 +235,7 @@ namespace OpenRCT2
             .DrawingEngine = drawingEngine.get(),
         };
 
-        ViewportRender(dpi, &saveVp);
+        ViewportRender(rt, &saveVp);
 
         drawingEngine->EndDraw();
 

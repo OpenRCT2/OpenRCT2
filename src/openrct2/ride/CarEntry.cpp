@@ -53,7 +53,7 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
 
     uint8_t bitmap[kHeight][kWidth] = { 0 };
 
-    RenderTarget dpi = {
+    RenderTarget rt = {
         .bits = reinterpret_cast<uint8_t*>(bitmap),
         .x = -(kWidth / 2),
         .y = -(kHeight / 2),
@@ -65,7 +65,7 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
 
     for (int32_t i = 0; i < numImages; ++i)
     {
-        GfxDrawSpriteSoftware(dpi, ImageId(carEntry.base_image_id + i), { 0, 0 });
+        GfxDrawSpriteSoftware(rt, ImageId(carEntry.base_image_id + i), { 0, 0 });
     }
 
     int32_t spriteWidth = -1;

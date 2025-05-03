@@ -38,20 +38,20 @@ void Painter::Paint(IDrawingEngine& de)
 {
     PROFILED_FUNCTION();
 
-    auto dpi = de.GetDrawingPixelInfo();
+    auto rt = de.GetDrawingPixelInfo();
 
     if (IntroIsPlaying())
     {
-        IntroDraw(*dpi);
+        IntroDraw(*rt);
     }
     else
     {
         de.PaintWindows();
 
         UpdatePaletteEffects();
-        _uiContext->Draw(*dpi);
+        _uiContext->Draw(*rt);
 
-        GfxDrawPickedUpPeep(*dpi);
+        GfxDrawPickedUpPeep(*rt);
         GfxInvalidatePickedUpPeep();
 
         de.PaintWeather();
@@ -68,16 +68,16 @@ void Painter::Paint(IDrawingEngine& de)
         text = "Normalising...";
 
     if (text != nullptr)
-        PaintReplayNotice(*dpi, text);
+        PaintReplayNotice(*rt, text);
 
     if (Config::Get().general.ShowFPS)
     {
-        PaintFPS(*dpi);
+        PaintFPS(*rt);
     }
     gCurrentDrawCount++;
 }
 
-void Painter::PaintReplayNotice(RenderTarget& dpi, const char* text)
+void Painter::PaintReplayNotice(RenderTarget& rt, const char* text)
 {
     ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, _uiContext->GetHeight() - 44);
 
@@ -88,7 +88,7 @@ void Painter::PaintReplayNotice(RenderTarget& dpi, const char* text)
     screenCoords.x = screenCoords.x - stringWidth;
 
     if (((getGameState().currentTicks >> 1) & 0xF) > 4)
-        DrawText(dpi, screenCoords, { COLOUR_SATURATED_RED }, buffer);
+        DrawText(rt, screenCoords, { COLOUR_SATURATED_RED }, buffer);
 
     // Make area dirty so the text doesn't get drawn over the last
     GfxSetDirtyBlocks({ screenCoords, screenCoords + ScreenCoordsXY{ stringWidth, 16 } });
@@ -103,7 +103,7 @@ static bool ShouldShowFPS()
     return windowMgr->FindByClass(WindowClass::TopToolbar);
 }
 
-void Painter::PaintFPS(RenderTarget& dpi)
+void Painter::PaintFPS(RenderTarget& rt)
 {
     if (!ShouldShowFPS())
         return;
@@ -125,10 +125,10 @@ void Painter::PaintFPS(RenderTarget& dpi)
         screenCoords.y = kTopToolbarHeight + 3;
     }
 
-    DrawText(dpi, screenCoords, { COLOUR_WHITE }, buffer);
+    DrawText(rt, screenCoords, { COLOUR_WHITE }, buffer);
 
     // Make area dirty so the text doesn't get drawn over the last
-    GfxSetDirtyBlocks({ { screenCoords - ScreenCoordsXY{ 16, 4 } }, { dpi.lastStringPos.x + 16, screenCoords.y + 16 } });
+    GfxSetDirtyBlocks({ { screenCoords - ScreenCoordsXY{ 16, 4 } }, { rt.lastStringPos.x + 16, screenCoords.y + 16 } });
 }
 
 void Painter::MeasureFPS()
@@ -144,7 +144,7 @@ void Painter::MeasureFPS()
     _lastSecond = currentTime;
 }
 
-PaintSession* Painter::CreateSession(RenderTarget& dpi, uint32_t viewFlags, uint8_t rotation)
+PaintSession* Painter::CreateSession(RenderTarget& rt, uint32_t viewFlags, uint8_t rotation)
 {
     PROFILED_FUNCTION();
 
@@ -164,7 +164,7 @@ PaintSession* Painter::CreateSession(RenderTarget& dpi, uint32_t viewFlags, uint
         session = &_paintSessionPool.emplace_back();
     }
 
-    session->DPI = dpi;
+    session->DPI = rt;
     session->ViewFlags = viewFlags;
     session->QuadrantBackIndex = std::numeric_limits<uint32_t>::max();
     session->QuadrantFrontIndex = 0;

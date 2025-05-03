@@ -201,18 +201,18 @@ bool PeepAnimationsObject::IsSlowWalking(PeepAnimationGroup animGroup) const
     return _animationGroups[EnumValue(animGroup)].isSlowWalking;
 }
 
-void PeepAnimationsObject::DrawPreview(RenderTarget& dpi, int32_t width, int32_t height) const
+void PeepAnimationsObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
 {
     auto centre = ScreenCoordsXY{ width / 2, height / 2 };
 
     // Draw inline sprite in the centre
-    GfxDrawSprite(dpi, ImageId(_imageOffsetId + 0), centre + ScreenCoordsXY{ -8, -8 });
+    GfxDrawSprite(rt, ImageId(_imageOffsetId + 0), centre + ScreenCoordsXY{ -8, -8 });
 
     // Draw four cardinal directions around the inline sprite
-    GfxDrawSprite(dpi, ImageId(_imageOffsetId + 4, COLOUR_BRIGHT_RED, COLOUR_TEAL), centre + ScreenCoordsXY{ -32, -24 });
-    GfxDrawSprite(dpi, ImageId(_imageOffsetId + 2, COLOUR_BRIGHT_RED, COLOUR_TEAL), centre + ScreenCoordsXY{ +32, +32 });
-    GfxDrawSprite(dpi, ImageId(_imageOffsetId + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL), centre + ScreenCoordsXY{ +32, -24 });
-    GfxDrawSprite(dpi, ImageId(_imageOffsetId + 3, COLOUR_BRIGHT_RED, COLOUR_TEAL), centre + ScreenCoordsXY{ -32, +32 });
+    GfxDrawSprite(rt, ImageId(_imageOffsetId + 4, COLOUR_BRIGHT_RED, COLOUR_TEAL), centre + ScreenCoordsXY{ -32, -24 });
+    GfxDrawSprite(rt, ImageId(_imageOffsetId + 2, COLOUR_BRIGHT_RED, COLOUR_TEAL), centre + ScreenCoordsXY{ +32, +32 });
+    GfxDrawSprite(rt, ImageId(_imageOffsetId + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL), centre + ScreenCoordsXY{ +32, -24 });
+    GfxDrawSprite(rt, ImageId(_imageOffsetId + 3, COLOUR_BRIGHT_RED, COLOUR_TEAL), centre + ScreenCoordsXY{ -32, +32 });
 }
 
 void PeepAnimationsObject::SetRepositoryItem(ObjectRepositoryItem* item) const
