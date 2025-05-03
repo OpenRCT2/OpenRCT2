@@ -632,8 +632,6 @@ namespace OpenRCT2
                 {
                     LOG_ERROR(ex.what());
                     LOG_ERROR("Unable to initialise drawing engine.");
-
-                    return nullptr;
                 }
                 return nullptr;
             };
