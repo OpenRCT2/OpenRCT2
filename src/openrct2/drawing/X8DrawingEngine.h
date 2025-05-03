@@ -45,7 +45,7 @@ namespace OpenRCT2
             X8WeatherDrawer();
             ~X8WeatherDrawer();
             void Draw(
-                RenderTarget& dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+                RenderTarget& rt, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
                 const uint8_t* weatherpattern) override;
             void Restore(RenderTarget& dpi);
         };
@@ -63,7 +63,7 @@ namespace OpenRCT2
             size_t _bitsSize = 0;
             uint8_t* _bits = nullptr;
 
-            RenderTarget _bitsDPI = {};
+            RenderTarget _mainRT = {};
 
             bool _lastLightFXenabled = false;
 
@@ -134,19 +134,18 @@ namespace OpenRCT2
 
             void BeginDraw();
             void EndDraw();
-            void Clear(RenderTarget& dpi, uint8_t paletteIndex) override;
-            void FillRect(RenderTarget& dpi, uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
+            void Clear(RenderTarget& rt, uint8_t paletteIndex) override;
+            void FillRect(RenderTarget& rt, uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
             void FilterRect(
-                RenderTarget& dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
-            void DrawLine(RenderTarget& dpi, uint32_t colour, const ScreenLine& line) override;
-            void DrawSprite(RenderTarget& dpi, const ImageId imageId, int32_t x, int32_t y) override;
+                RenderTarget& rt, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
+            void DrawLine(RenderTarget& rt, uint32_t colour, const ScreenLine& line) override;
+            void DrawSprite(RenderTarget& rt, const ImageId imageId, int32_t x, int32_t y) override;
             void DrawSpriteRawMasked(
-                RenderTarget& dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage) override;
-            void DrawSpriteSolid(RenderTarget& dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
-            void DrawGlyph(
-                RenderTarget& dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap) override;
+                RenderTarget& rt, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage) override;
+            void DrawSpriteSolid(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
+            void DrawGlyph(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap) override;
             void DrawTTFBitmap(
-                RenderTarget& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y,
+                RenderTarget& rt, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y,
                 uint8_t hintingThreshold) override;
 
             bool IsActive() const noexcept
