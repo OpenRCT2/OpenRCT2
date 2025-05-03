@@ -889,7 +889,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             switch (page)
             {
@@ -1068,7 +1068,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
         {
             switch (page)
             {
@@ -1200,7 +1200,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t tab, int32_t spriteIndex)
+        void DrawTabImage(RenderTarget& dpi, int32_t tab, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + tab;
 
@@ -1217,7 +1217,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabMain(DrawPixelInfo& dpi)
+        void DrawTabMain(RenderTarget& dpi)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_MAIN);
             if (!WidgetIsDisabled(*this, widgetIndex))
@@ -1251,7 +1251,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabVehicle(DrawPixelInfo& dpi)
+        void DrawTabVehicle(RenderTarget& dpi)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_VEHICLE);
             const auto& widget = widgets[widgetIndex];
@@ -1266,7 +1266,7 @@ namespace OpenRCT2::Ui::Windows
 
                 screenCoords += windowPos;
 
-                DrawPixelInfo clipDPI;
+                RenderTarget clipDPI;
                 if (!ClipDrawPixelInfo(clipDPI, dpi, screenCoords, clipWidth, clipHeight))
                 {
                     return;
@@ -1316,7 +1316,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabCustomer(DrawPixelInfo& dpi)
+        void DrawTabCustomer(RenderTarget& dpi)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_CUSTOMER);
 
@@ -1336,7 +1336,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& dpi)
         {
             DrawTabVehicle(dpi);
             DrawTabImage(dpi, WINDOW_RIDE_PAGE_OPERATING, SPR_TAB_GEARS_0);
@@ -2576,7 +2576,7 @@ namespace OpenRCT2::Ui::Windows
             return GetStatusStation(ft);
         }
 
-        void MainOnDraw(DrawPixelInfo& dpi)
+        void MainOnDraw(RenderTarget& dpi)
         {
             WindowDrawWidgets(*this, dpi);
             DrawTabImages(dpi);
@@ -2865,7 +2865,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void VehicleOnDraw(DrawPixelInfo& dpi)
+        void VehicleOnDraw(RenderTarget& dpi)
         {
             WindowDrawWidgets(*this, dpi);
             DrawTabImages(dpi);
@@ -2952,7 +2952,7 @@ namespace OpenRCT2::Ui::Windows
             ImageId imageId;
         };
 
-        void VehicleOnScrollDraw(DrawPixelInfo& dpi, int32_t scrollIndex)
+        void VehicleOnScrollDraw(RenderTarget& dpi, int32_t scrollIndex)
         {
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -3683,7 +3683,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
-        void OperatingOnDraw(DrawPixelInfo& dpi)
+        void OperatingOnDraw(RenderTarget& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -4026,7 +4026,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void MaintenanceOnDraw(DrawPixelInfo& dpi)
+        void MaintenanceOnDraw(RenderTarget& dpi)
         {
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -4812,10 +4812,10 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
-        void ColourOnDraw(DrawPixelInfo& dpi)
+        void ColourOnDraw(RenderTarget& dpi)
         {
             // TODO: This should use lists and identified sprites
-            DrawPixelInfo clippedDpi;
+            RenderTarget clippedDpi;
 
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -4931,7 +4931,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void ColourOnScrollDraw(DrawPixelInfo& dpi, int32_t scrollIndex) const
+        void ColourOnScrollDraw(RenderTarget& dpi, int32_t scrollIndex) const
         {
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -5237,7 +5237,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
-        void MusicOnDraw(DrawPixelInfo& dpi)
+        void MusicOnDraw(RenderTarget& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -5266,7 +5266,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t clipHeight = previewWidget.height() - 1;
 
             // Draw the preview image
-            DrawPixelInfo clipDPI;
+            RenderTarget clipDPI;
             auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
             if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, clipWidth, clipHeight))
             {
@@ -5274,7 +5274,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void MusicOnScrollDraw(DrawPixelInfo& dpi, int32_t scrollIndex)
+        void MusicOnScrollDraw(RenderTarget& dpi, int32_t scrollIndex)
         {
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -5609,7 +5609,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
-        void MeasurementsOnDraw(DrawPixelInfo& dpi)
+        void MeasurementsOnDraw(RenderTarget& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -6053,13 +6053,13 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
-        void GraphsOnDraw(DrawPixelInfo& dpi)
+        void GraphsOnDraw(RenderTarget& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
         }
 
-        void GraphsOnScrollDraw(DrawPixelInfo& dpi, int32_t scrollIndex)
+        void GraphsOnScrollDraw(RenderTarget& dpi, int32_t scrollIndex)
         {
             GfxClear(dpi, ColourMapA[COLOUR_SATURATED_GREEN].darker);
 
@@ -6614,7 +6614,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
-        void IncomeOnDraw(DrawPixelInfo& dpi)
+        void IncomeOnDraw(RenderTarget& dpi)
         {
             StringId stringId;
             money64 profit;
@@ -6813,7 +6813,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void CustomerOnDraw(DrawPixelInfo& dpi)
+        void CustomerOnDraw(RenderTarget& dpi)
         {
             ShopItem shopItem;
             int16_t popularity, satisfaction, queueTime;

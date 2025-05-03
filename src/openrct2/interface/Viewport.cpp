@@ -79,8 +79,8 @@ namespace OpenRCT2
     {
     }
 
-    static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi);
-    static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi);
+    static void ViewportPaintWeatherGloom(RenderTarget& dpi);
+    static void ViewportPaint(const Viewport* viewport, RenderTarget& dpi);
     static void ViewportUpdateFollowSprite(WindowBase* window);
     static void ViewportUpdateSmartFollowEntity(WindowBase* window);
     static void ViewportUpdateSmartFollowStaff(WindowBase* window, const Staff& peep);
@@ -333,7 +333,7 @@ namespace OpenRCT2
      *  rct2: 0x006E7FF3
      */
     static void ViewportRedrawAfterShift(
-        DrawPixelInfo& dpi, WindowBase* window, const WindowBase* originalWindow, const ScreenCoordsXY shift,
+        RenderTarget& dpi, WindowBase* window, const WindowBase* originalWindow, const ScreenCoordsXY shift,
         const ScreenRect& drawRect)
     {
         // sub-divide by intersecting windows
@@ -442,7 +442,7 @@ namespace OpenRCT2
         }
     }
 
-    static void ViewportShiftPixels(DrawPixelInfo& dpi, WindowBase* window, Viewport* viewport, int32_t x_diff, int32_t y_diff)
+    static void ViewportShiftPixels(RenderTarget& dpi, WindowBase* window, Viewport* viewport, int32_t x_diff, int32_t y_diff)
     {
         // This loop redraws all parts covered by transparent windows.
         auto it = WindowGetIterator(window);
@@ -522,7 +522,7 @@ namespace OpenRCT2
 
             if (DrawingEngineHasDirtyOptimisations())
             {
-                DrawPixelInfo& dpi = DrawingEngineGetDpi();
+                RenderTarget& dpi = DrawingEngineGetDpi();
                 WindowDrawAll(dpi, left, top, right, bottom);
                 return;
             }
@@ -574,7 +574,7 @@ namespace OpenRCT2
 
         if (DrawingEngineHasDirtyOptimisations())
         {
-            DrawPixelInfo& dpi = DrawingEngineGetDpi();
+            RenderTarget& dpi = DrawingEngineGetDpi();
             ViewportShiftPixels(dpi, w, viewport, x_diff, y_diff);
         }
         else
@@ -928,7 +928,7 @@ namespace OpenRCT2
      *  edi: dpi
      *  ebp: bottom
      */
-    void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport)
+    void ViewportRender(RenderTarget& dpi, const Viewport* viewport)
     {
         if (viewport->flags & VIEWPORT_FLAG_RENDERING_INHIBITED)
             return;
@@ -994,7 +994,7 @@ namespace OpenRCT2
      *  edi: dpi
      *  ebp: bottom
      */
-    static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi)
+    static void ViewportPaint(const Viewport* viewport, RenderTarget& dpi)
     {
         PROFILED_FUNCTION();
 
@@ -1006,7 +1006,7 @@ namespace OpenRCT2
         const int32_t height = std::min(viewport->pos.y + viewport->height, dpi.y + dpi.height)
             - std::max(viewport->pos.y, dpi.y);
 
-        DrawPixelInfo worldDpi;
+        RenderTarget worldDpi;
         worldDpi.DrawingEngine = dpi.DrawingEngine;
         worldDpi.bits = dpi.bits + std::max(0, -offsetX) + std::max(0, -offsetY) * dpi.LineStride();
         worldDpi.x = worldX;
@@ -1044,7 +1044,7 @@ namespace OpenRCT2
             PaintSession* session = PaintSessionAlloc(worldDpi, viewport->flags, viewport->rotation);
             _paintColumns.push_back(session);
 
-            DrawPixelInfo& columnDpi = session->DPI;
+            RenderTarget& columnDpi = session->DPI;
             if (x >= columnDpi.x)
             {
                 const int32_t leftPitch = x - columnDpi.x;
@@ -1111,7 +1111,7 @@ namespace OpenRCT2
         }
     }
 
-    static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi)
+    static void ViewportPaintWeatherGloom(RenderTarget& dpi)
     {
         auto paletteId = ClimateGetWeatherGloomPaletteId(getGameState().weatherCurrent);
         if (paletteId != FilterPaletteID::PaletteNull)
@@ -1628,7 +1628,7 @@ namespace OpenRCT2
      * rct2: 0x00679074
      */
     static bool IsSpriteInteractedWithPaletteSet(
-        DrawPixelInfo& dpi, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap,
+        RenderTarget& dpi, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap,
         const uint8_t imageType)
     {
         PROFILED_FUNCTION();
@@ -1695,7 +1695,7 @@ namespace OpenRCT2
      *  rct2: 0x00679023
      */
 
-    static bool IsSpriteInteractedWith(DrawPixelInfo& dpi, ImageId imageId, const ScreenCoordsXY& coords)
+    static bool IsSpriteInteractedWith(RenderTarget& dpi, ImageId imageId, const ScreenCoordsXY& coords)
     {
         PROFILED_FUNCTION();
 
@@ -1815,7 +1815,7 @@ namespace OpenRCT2
                 viewLoc.x &= viewport->zoom.ApplyTo(0xFFFFFFFF) & 0xFFFFFFFF;
                 viewLoc.y &= viewport->zoom.ApplyTo(0xFFFFFFFF) & 0xFFFFFFFF;
             }
-            DrawPixelInfo dpi;
+            RenderTarget dpi;
             dpi.zoom_level = viewport->zoom;
             dpi.x = viewport->zoom.ApplyInversedTo(viewLoc.x);
             dpi.y = viewport->zoom.ApplyInversedTo(viewLoc.y);

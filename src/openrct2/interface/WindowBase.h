@@ -154,10 +154,10 @@ namespace OpenRCT2
         virtual void OnPrepareDraw()
         {
         }
-        virtual void OnDraw(DrawPixelInfo& dpi)
+        virtual void OnDraw(RenderTarget& dpi)
         {
         }
-        virtual void OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi)
+        virtual void OnDrawWidget(WidgetIndex widgetIndex, RenderTarget& dpi)
         {
         }
         virtual OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback)
@@ -192,7 +192,7 @@ namespace OpenRCT2
         virtual void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
         {
         }
-        virtual void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi)
+        virtual void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi)
         {
         }
         virtual void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)

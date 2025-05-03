@@ -98,7 +98,7 @@ namespace OpenRCT2::Ui::Windows
             return numRows;
         }
 
-        void PaintPreview(DrawPixelInfo& dpi, ImageIndex imageStart, ScreenCoordsXY screenCoords, Direction direction)
+        void PaintPreview(RenderTarget& dpi, ImageIndex imageStart, ScreenCoordsXY screenCoords, Direction direction)
         {
             imageStart += (direction * 3);
 
@@ -288,7 +288,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_LIST].bottom = height - 5;
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
             GfxDrawSprite(
@@ -296,7 +296,7 @@ namespace OpenRCT2::Ui::Windows
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TAB].left, widgets[WIDX_TAB].top });
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
         {
             GfxClear(dpi, ColourMapA[colours[1].colour].mid_light);
 
@@ -316,7 +316,7 @@ namespace OpenRCT2::Ui::Windows
                         dpi, { coords, coords + ScreenCoordsXY{ kImageSize - 1, kImageSize - 1 } }, colours[1],
                         INSET_RECT_FLAG_FILL_MID_LIGHT | buttonFlags);
 
-                DrawPixelInfo clipDPI;
+                RenderTarget clipDPI;
                 auto screenPos = coords + ScreenCoordsXY{ kScrollPadding, kScrollPadding };
                 if (ClipDrawPixelInfo(
                         clipDPI, dpi, screenPos, kImageSize - (2 * kScrollPadding), kImageSize - (2 * kScrollPadding)))

@@ -32,7 +32,7 @@ public:
         LineHeight = FontGetLineHeight(paint.FontStyle);
     }
 
-    void Draw(DrawPixelInfo& dpi, const ScreenCoordsXY& coords)
+    void Draw(RenderTarget& dpi, const ScreenCoordsXY& coords)
     {
         TextPaint tempPaint = Paint;
 
@@ -75,7 +75,7 @@ public:
 };
 
 void DrawText(
-    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting)
+    RenderTarget& dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting)
 {
     int32_t width = noFormatting ? GfxGetStringWidthNoFormatting(text, paint.FontStyle)
                                  : GfxGetStringWidth(text, paint.FontStyle);
@@ -109,21 +109,21 @@ void DrawText(
     }
 }
 
-void DrawTextBasic(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, StringId format)
+void DrawTextBasic(RenderTarget& dpi, const ScreenCoordsXY& coords, StringId format)
 {
     Formatter ft{};
     TextPaint textPaint{};
     DrawTextBasic(dpi, coords, format, ft, textPaint);
 }
 
-void DrawTextBasic(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, StringId format, const Formatter& ft, TextPaint textPaint)
+void DrawTextBasic(RenderTarget& dpi, const ScreenCoordsXY& coords, StringId format, const Formatter& ft, TextPaint textPaint)
 {
     utf8 buffer[512];
     OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), format, ft.Data());
     DrawText(dpi, coords, textPaint, buffer);
 }
 
-void DrawTextEllipsised(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format)
+void DrawTextEllipsised(RenderTarget& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format)
 {
     Formatter ft{};
     TextPaint textPaint{};
@@ -131,7 +131,7 @@ void DrawTextEllipsised(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_
 }
 
 void DrawTextEllipsised(
-    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft, TextPaint textPaint)
+    RenderTarget& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft, TextPaint textPaint)
 {
     utf8 buffer[512];
     OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), format, ft.Data());
@@ -140,7 +140,7 @@ void DrawTextEllipsised(
     DrawText(dpi, coords, textPaint, buffer);
 }
 
-int32_t DrawTextWrapped(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format)
+int32_t DrawTextWrapped(RenderTarget& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format)
 {
     Formatter ft{};
     TextPaint textPaint{};
@@ -148,7 +148,7 @@ int32_t DrawTextWrapped(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_
 }
 
 int32_t DrawTextWrapped(
-    DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft, TextPaint textPaint)
+    RenderTarget& dpi, const ScreenCoordsXY& coords, int32_t width, StringId format, const Formatter& ft, TextPaint textPaint)
 {
     const void* args = ft.Data();
 

@@ -262,7 +262,7 @@ namespace OpenRCT2::Ui::Windows
             CreateViewport();
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
 

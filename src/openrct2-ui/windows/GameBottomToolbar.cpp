@@ -85,7 +85,7 @@ namespace OpenRCT2::Ui::Windows
                     : colours[0].colour);
         }
 
-        void DrawLeftPanel(DrawPixelInfo& dpi)
+        void DrawLeftPanel(RenderTarget& dpi)
         {
             const auto& leftPanelWidget = widgets[WIDX_LEFT_OUTSET];
 
@@ -147,7 +147,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawParkRating(DrawPixelInfo& dpi, int32_t colour, const ScreenCoordsXY& coords, uint8_t factor)
+        void DrawParkRating(RenderTarget& dpi, int32_t colour, const ScreenCoordsXY& coords, uint8_t factor)
         {
             int16_t bar_width = (factor * 114) / 255;
             GfxFillRectInset(
@@ -167,7 +167,7 @@ namespace OpenRCT2::Ui::Windows
             GfxDrawSprite(dpi, ImageId(SPR_RATING_HIGH), coords + ScreenCoordsXY{ 114, 0 });
         }
 
-        void DrawRightPanel(DrawPixelInfo& dpi)
+        void DrawRightPanel(RenderTarget& dpi)
         {
             const auto& rightPanelWidget = widgets[WIDX_RIGHT_OUTSET];
 
@@ -227,7 +227,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawNewsItem(DrawPixelInfo& dpi)
+        void DrawNewsItem(RenderTarget& dpi)
         {
             const auto& middleOutsetWidget = widgets[WIDX_MIDDLE_OUTSET];
             auto* newsItem = News::GetItem(0);
@@ -260,7 +260,7 @@ namespace OpenRCT2::Ui::Windows
                     if (newsItem->HasButton())
                         break;
 
-                    DrawPixelInfo clipped_dpi;
+                    RenderTarget clipped_dpi;
                     if (!ClipDrawPixelInfo(clipped_dpi, dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
                     {
                         break;
@@ -343,7 +343,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawMiddlePanel(DrawPixelInfo& dpi)
+        void DrawMiddlePanel(RenderTarget& dpi)
         {
             Widget* middleOutsetWidget = &widgets[WIDX_MIDDLE_OUTSET];
 
@@ -611,7 +611,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             auto leftWidget = widgets[WIDX_LEFT_OUTSET];
             auto rightWidget = widgets[WIDX_RIGHT_OUTSET];

@@ -39,7 +39,7 @@ void TerrainEdgeObject::Unload()
     BaseImageId = 0;
 }
 
-void TerrainEdgeObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
+void TerrainEdgeObject::DrawPreview(RenderTarget& dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 

@@ -717,7 +717,7 @@ static std::optional<PaletteMap> FASTCALL GfxDrawSpriteGetPalette(ImageId imageI
     return paletteMap;
 }
 
-void FASTCALL GfxDrawSpriteSoftware(DrawPixelInfo& dpi, const ImageId imageId, const ScreenCoordsXY& spriteCoords)
+void FASTCALL GfxDrawSpriteSoftware(RenderTarget& dpi, const ImageId imageId, const ScreenCoordsXY& spriteCoords)
 {
     if (imageId.HasValue())
     {
@@ -740,7 +740,7 @@ void FASTCALL GfxDrawSpriteSoftware(DrawPixelInfo& dpi, const ImageId imageId, c
  * y (dx)
  */
 void FASTCALL GfxDrawSpritePaletteSetSoftware(
-    DrawPixelInfo& dpi, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
+    RenderTarget& dpi, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
     const auto zoomLevel = dpi.zoom_level;
     int32_t x = coords.x;
@@ -754,7 +754,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
 
     if (zoomLevel > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE))
     {
-        DrawPixelInfo zoomed_dpi = dpi;
+        RenderTarget zoomed_dpi = dpi;
         zoomed_dpi.bits = dpi.bits;
         zoomed_dpi.x = dpi.x;
         zoomed_dpi.y = dpi.y;
@@ -920,7 +920,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     GfxSpriteToBuffer(dpi, args);
 }
 
-void FASTCALL GfxSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
+void FASTCALL GfxSpriteToBuffer(RenderTarget& dpi, const DrawSpriteArgs& args)
 {
     if (args.SourceImage.flags & G1_FLAG_RLE_COMPRESSION)
     {
@@ -939,7 +939,7 @@ void FASTCALL GfxSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
  *  rct2: 0x00681DE2
  */
 void FASTCALL GfxDrawSpriteRawMaskedSoftware(
-    DrawPixelInfo& dpi, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage)
+    RenderTarget& dpi, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage)
 {
     int32_t left, top, right, bottom, width, height;
     auto imgMask = GfxGetG1Element(maskImage);

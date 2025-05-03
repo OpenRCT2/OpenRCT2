@@ -375,7 +375,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             switch (page)
             {
@@ -597,7 +597,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDrawEntrance(DrawPixelInfo& dpi)
+        void OnDrawEntrance(RenderTarget& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -712,7 +712,7 @@ namespace OpenRCT2::Ui::Windows
                 kGraphNumYLabels, kParkRatingHistorySize);
         }
 
-        void OnDrawRating(DrawPixelInfo& dpi)
+        void OnDrawRating(RenderTarget& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -791,7 +791,7 @@ namespace OpenRCT2::Ui::Windows
                 kGraphNumYLabels, kGuestsInParkHistorySize);
         }
 
-        void OnDrawGuests(DrawPixelInfo& dpi)
+        void OnDrawGuests(RenderTarget& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -890,7 +890,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void OnDrawPrice(DrawPixelInfo& dpi)
+        void OnDrawPrice(RenderTarget& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -950,7 +950,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void OnDrawStats(DrawPixelInfo& dpi)
+        void OnDrawStats(RenderTarget& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -1076,7 +1076,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void OnDrawObjective(DrawPixelInfo& dpi)
+        void OnDrawObjective(RenderTarget& dpi)
         {
             auto& gameState = getGameState();
             DrawWidgets(dpi);
@@ -1141,7 +1141,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void OnDrawAwards(DrawPixelInfo& dpi)
+        void OnDrawAwards(RenderTarget& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -1215,7 +1215,7 @@ namespace OpenRCT2::Ui::Windows
             pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& dpi)
         {
             // Entrance tab
             if (!WidgetIsDisabled(*this, WIDX_TAB_1))

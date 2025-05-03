@@ -109,7 +109,7 @@ void DrawingEngineDispose()
     }
 }
 
-DrawPixelInfo& DrawingEngineGetDpi()
+RenderTarget& DrawingEngineGetDpi()
 {
     auto context = GetContext();
     auto drawingEngine = context->GetDrawingEngine();
@@ -154,7 +154,7 @@ void GfxSetDirtyBlocks(const ScreenRect& rect)
     }
 }
 
-void GfxClear(DrawPixelInfo& dpi, uint8_t paletteIndex)
+void GfxClear(RenderTarget& dpi, uint8_t paletteIndex)
 {
     auto drawingEngine = dpi.DrawingEngine;
     if (drawingEngine != nullptr)
@@ -164,7 +164,7 @@ void GfxClear(DrawPixelInfo& dpi, uint8_t paletteIndex)
     }
 }
 
-void GfxFillRect(DrawPixelInfo& dpi, const ScreenRect& rect, int32_t colour)
+void GfxFillRect(RenderTarget& dpi, const ScreenRect& rect, int32_t colour)
 {
     auto drawingEngine = dpi.DrawingEngine;
     if (drawingEngine != nullptr)
@@ -174,7 +174,7 @@ void GfxFillRect(DrawPixelInfo& dpi, const ScreenRect& rect, int32_t colour)
     }
 }
 
-void GfxFilterRect(DrawPixelInfo& dpi, const ScreenRect& rect, FilterPaletteID palette)
+void GfxFilterRect(RenderTarget& dpi, const ScreenRect& rect, FilterPaletteID palette)
 {
     auto drawingEngine = dpi.DrawingEngine;
     if (drawingEngine != nullptr)
@@ -184,7 +184,7 @@ void GfxFilterRect(DrawPixelInfo& dpi, const ScreenRect& rect, FilterPaletteID p
     }
 }
 
-void GfxDrawLine(DrawPixelInfo& dpi, const ScreenLine& line, int32_t colour)
+void GfxDrawLine(RenderTarget& dpi, const ScreenLine& line, int32_t colour)
 {
     auto drawingEngine = dpi.DrawingEngine;
     if (drawingEngine != nullptr)
@@ -195,7 +195,7 @@ void GfxDrawLine(DrawPixelInfo& dpi, const ScreenLine& line, int32_t colour)
 }
 
 void GfxDrawDashedLine(
-    DrawPixelInfo& dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color)
+    RenderTarget& dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color)
 {
     assert(dashedLineSegmentLength > 0);
 
@@ -227,7 +227,7 @@ void GfxDrawDashedLine(
     }
 }
 
-void FASTCALL GfxDrawSprite(DrawPixelInfo& dpi, const ImageId imageId, const ScreenCoordsXY& coords)
+void FASTCALL GfxDrawSprite(RenderTarget& dpi, const ImageId imageId, const ScreenCoordsXY& coords)
 {
     auto drawingEngine = dpi.DrawingEngine;
     if (drawingEngine != nullptr)
@@ -237,7 +237,7 @@ void FASTCALL GfxDrawSprite(DrawPixelInfo& dpi, const ImageId imageId, const Scr
     }
 }
 
-void FASTCALL GfxDrawGlyph(DrawPixelInfo& dpi, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
+void FASTCALL GfxDrawGlyph(RenderTarget& dpi, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
     auto drawingEngine = dpi.DrawingEngine;
     if (drawingEngine != nullptr)
@@ -248,7 +248,7 @@ void FASTCALL GfxDrawGlyph(DrawPixelInfo& dpi, const ImageId image, const Screen
 }
 
 void FASTCALL
-    GfxDrawSpriteRawMasked(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, const ImageId maskImage, const ImageId colourImage)
+    GfxDrawSpriteRawMasked(RenderTarget& dpi, const ScreenCoordsXY& coords, const ImageId maskImage, const ImageId colourImage)
 {
     auto drawingEngine = dpi.DrawingEngine;
     if (drawingEngine != nullptr)
@@ -258,7 +258,7 @@ void FASTCALL
     }
 }
 
-void FASTCALL GfxDrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour)
+void FASTCALL GfxDrawSpriteSolid(RenderTarget& dpi, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour)
 {
     auto drawingEngine = dpi.DrawingEngine;
     if (drawingEngine != nullptr)

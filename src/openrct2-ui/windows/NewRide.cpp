@@ -418,7 +418,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_GROUP_BY_TRACK_TYPE].left = width - 8 - localizedGroupByTrackTypeWidth;
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -475,7 +475,7 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
         {
             if (_currentTab == RESEARCH_TAB)
             {
@@ -919,7 +919,7 @@ namespace OpenRCT2::Ui::Windows
             WidgetScrollUpdateThumbs(*this, WIDX_RIDE_LIST);
         }
 
-        void DrawRideInformation(DrawPixelInfo& dpi, RideSelection item, const ScreenCoordsXY& screenPos, int32_t textWidth)
+        void DrawRideInformation(RenderTarget& dpi, RideSelection item, const ScreenCoordsXY& screenPos, int32_t textWidth)
         {
             auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
             const auto* rideObj = objMgr.GetLoadedObject<RideObject>(item.EntryIndex);
@@ -1003,7 +1003,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, NewRideTabId tab, int32_t spriteIndex)
+        void DrawTabImage(RenderTarget& dpi, NewRideTabId tab, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(tab);
 
@@ -1021,7 +1021,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& dpi)
         {
             DrawTabImage(dpi, TRANSPORT_TAB, SPR_TAB_RIDES_TRANSPORT_0);
             DrawTabImage(dpi, GENTLE_TAB, SPR_TAB_RIDES_GENTLE_0);

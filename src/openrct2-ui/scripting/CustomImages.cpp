@@ -434,7 +434,7 @@ namespace OpenRCT2::Scripting
         auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
 
         auto drawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
-        DrawPixelInfo dpi;
+        RenderTarget dpi;
         dpi.DrawingEngine = drawingEngine.get();
         dpi.width = size.width;
         dpi.height = size.height;

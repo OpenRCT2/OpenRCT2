@@ -248,7 +248,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -268,7 +268,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabPage, int32_t spriteIndex)
+        void DrawTabImage(RenderTarget& dpi, int32_t tabPage, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + tabPage;
 
@@ -288,7 +288,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& dpi)
         {
             DrawTabImage(dpi, WINDOW_RESEARCH_PAGE_DEVELOPMENT, SPR_TAB_FINANCES_RESEARCH_0);
             DrawTabImage(dpi, WINDOW_RESEARCH_PAGE_FUNDING, SPR_TAB_FINANCES_SUMMARY_0);
@@ -341,7 +341,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    void WindowResearchDevelopmentDraw(WindowBase* w, DrawPixelInfo& dpi, WidgetIndex baseWidgetIndex)
+    void WindowResearchDevelopmentDraw(WindowBase* w, RenderTarget& dpi, WidgetIndex baseWidgetIndex)
     {
         const auto& gameState = getGameState();
 
@@ -574,7 +574,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    void WindowResearchFundingDraw(WindowBase* w, DrawPixelInfo& dpi)
+    void WindowResearchFundingDraw(WindowBase* w, RenderTarget& dpi)
     {
         const auto& gameState = getGameState();
         if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)

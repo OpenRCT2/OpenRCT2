@@ -77,7 +77,7 @@ void Painter::Paint(IDrawingEngine& de)
     gCurrentDrawCount++;
 }
 
-void Painter::PaintReplayNotice(DrawPixelInfo& dpi, const char* text)
+void Painter::PaintReplayNotice(RenderTarget& dpi, const char* text)
 {
     ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, _uiContext->GetHeight() - 44);
 
@@ -103,7 +103,7 @@ static bool ShouldShowFPS()
     return windowMgr->FindByClass(WindowClass::TopToolbar);
 }
 
-void Painter::PaintFPS(DrawPixelInfo& dpi)
+void Painter::PaintFPS(RenderTarget& dpi)
 {
     if (!ShouldShowFPS())
         return;
@@ -144,7 +144,7 @@ void Painter::MeasureFPS()
     _lastSecond = currentTime;
 }
 
-PaintSession* Painter::CreateSession(DrawPixelInfo& dpi, uint32_t viewFlags, uint8_t rotation)
+PaintSession* Painter::CreateSession(RenderTarget& dpi, uint32_t viewFlags, uint8_t rotation)
 {
     PROFILED_FUNCTION();
 

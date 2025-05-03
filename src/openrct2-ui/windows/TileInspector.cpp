@@ -1045,7 +1045,7 @@ static uint64_t PageDisabledWidgets[] = {
             InvalidateWidget(WIDX_LIST);
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
             ScreenCoordsXY screenCoords(windowPos.x, windowPos.y);
@@ -1585,7 +1585,7 @@ static uint64_t PageDisabledWidgets[] = {
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
         {
             const int32_t listWidth = widgets[WIDX_LIST].width();
             GfxFillRect(

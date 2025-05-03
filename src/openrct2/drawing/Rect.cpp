@@ -23,7 +23,7 @@
  * colour (ebp)
  * flags (si)
  */
-void GfxFillRectInset(DrawPixelInfo& dpi, const ScreenRect& rect, ColourWithFlags colour, uint8_t flags)
+void GfxFillRectInset(RenderTarget& dpi, const ScreenRect& rect, ColourWithFlags colour, uint8_t flags)
 {
     const auto leftTop = ScreenCoordsXY{ rect.GetLeft(), rect.GetTop() };
     const auto leftBottom = ScreenCoordsXY{ rect.GetLeft(), rect.GetBottom() };

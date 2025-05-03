@@ -225,7 +225,7 @@ namespace OpenRCT2::Ui::Windows
             CommonPrepareDrawAfter();
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -533,7 +533,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_FIRE].right = width - 2;
         }
 
-        void OverviewDraw(DrawPixelInfo& dpi)
+        void OverviewDraw(RenderTarget& dpi)
         {
             // Draw the viewport no sound sprite
             if (viewport != nullptr)
@@ -560,7 +560,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextEllipsised(dpi, screenPos, widgetWidth, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
         }
 
-        void DrawOverviewTabImage(DrawPixelInfo& dpi)
+        void DrawOverviewTabImage(RenderTarget& dpi)
         {
             if (IsWidgetDisabled(WIDX_TAB_1))
                 return;
@@ -572,7 +572,7 @@ namespace OpenRCT2::Ui::Windows
             if (page == WINDOW_STAFF_OVERVIEW)
                 widgetHeight++;
 
-            DrawPixelInfo clip_dpi;
+            RenderTarget clip_dpi;
             if (!ClipDrawPixelInfo(clip_dpi, dpi, screenCoords, widgetWidth, widgetHeight))
             {
                 return;
@@ -919,7 +919,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
 #pragma region Statistics tab events
-        void StatsDraw(DrawPixelInfo& dpi)
+        void StatsDraw(RenderTarget& dpi)
         {
             auto staff = GetStaff();
             if (staff == nullptr)
@@ -1176,14 +1176,14 @@ namespace OpenRCT2::Ui::Windows
             WindowFollowSprite(*main, EntityId::FromUnderlying(number));
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& dpi)
         {
             DrawOverviewTabImage(dpi);
             DrawTabImage(dpi, WINDOW_STAFF_OPTIONS, SPR_TAB_STAFF_OPTIONS_0);
             DrawTabImage(dpi, WINDOW_STAFF_STATISTICS, SPR_TAB_STATS_0);
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t p, int32_t baseImageId)
+        void DrawTabImage(RenderTarget& dpi, int32_t p, int32_t baseImageId)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + p;
             Widget* widget = &widgets[widgetIndex];

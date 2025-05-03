@@ -122,7 +122,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
 
@@ -252,7 +252,7 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetPressed(static_cast<WidgetIndex>(WIDX_TAB_0 + _currentTabIndex), true);
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -298,7 +298,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
         {
             auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
             GfxFillRect(
@@ -468,7 +468,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi) const
+        void DrawTabImages(RenderTarget& dpi) const
         {
             for (size_t i = 0; i < _tabs.size(); i++)
             {
@@ -476,7 +476,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, size_t tabIndex) const
+        void DrawTabImage(RenderTarget& dpi, size_t tabIndex) const
         {
             const auto& tabDesc = _tabs[tabIndex];
             auto widgetIndex = static_cast<WidgetIndex>(WIDX_TAB_0 + tabIndex);
@@ -497,7 +497,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawSeparator(DrawPixelInfo& dpi, int32_t y, int32_t scrollWidth)
+        void DrawSeparator(RenderTarget& dpi, int32_t y, int32_t scrollWidth)
         {
             const int32_t top = y + (kScrollableRowHeight / 2) - 1;
             GfxFillRect(dpi, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[0].colour].mid_dark);
@@ -505,7 +505,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         void DrawItem(
-            DrawPixelInfo& dpi, int32_t y, int32_t scrollWidth, const ShortcutStringPair& shortcut, bool isHighlighted)
+            RenderTarget& dpi, int32_t y, int32_t scrollWidth, const ShortcutStringPair& shortcut, bool isHighlighted)
         {
             auto format = STR_BLACK_STRING;
             if (isHighlighted)

@@ -351,12 +351,12 @@ namespace OpenRCT2
             WindowScrollToLocation(*mainWindow, newCoords);
     }
 
-    void Window::OnDraw(DrawPixelInfo& dpi)
+    void Window::OnDraw(RenderTarget& dpi)
     {
         Windows::WindowDrawWidgets(*this, dpi);
     }
 
-    void Window::OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi)
+    void Window::OnDrawWidget(WidgetIndex widgetIndex, RenderTarget& dpi)
     {
         WidgetDraw(dpi, *this, widgetIndex);
     }
@@ -412,7 +412,7 @@ namespace OpenRCT2
         SetWidgetPressed(widgetIndex, value);
     }
 
-    void Window::DrawWidgets(DrawPixelInfo& dpi)
+    void Window::DrawWidgets(RenderTarget& dpi)
     {
         Windows::WindowDrawWidgets(*this, dpi);
     }
@@ -1041,7 +1041,7 @@ namespace OpenRCT2::Ui::Windows
      * @param dpi (edi)
      * @param w (esi)
      */
-    void WindowDrawViewport(DrawPixelInfo& dpi, WindowBase& w)
+    void WindowDrawViewport(RenderTarget& dpi, WindowBase& w)
     {
         ViewportRender(dpi, w.viewport);
     }
@@ -1050,7 +1050,7 @@ namespace OpenRCT2::Ui::Windows
      *
      *  rct2: 0x006EB15C
      */
-    void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi)
+    void WindowDrawWidgets(WindowBase& w, RenderTarget& dpi)
     {
         if ((w.flags & WF_TRANSPARENT) && !(w.flags & WF_NO_BACKGROUND))
             GfxFilterRect(

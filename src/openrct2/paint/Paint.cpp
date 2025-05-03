@@ -103,7 +103,7 @@ static void PaintSessionAddPSToQuadrant(PaintSession& session, PaintStruct* ps)
     session.QuadrantFrontIndex = std::max(session.QuadrantFrontIndex, paintQuadrantIndex);
 }
 
-static constexpr bool imageWithinDPI(const ScreenCoordsXY& imagePos, const G1Element& g1, const DrawPixelInfo& dpi)
+static constexpr bool imageWithinDPI(const ScreenCoordsXY& imagePos, const G1Element& g1, const RenderTarget& dpi)
 {
     const int32_t left = imagePos.x + g1.x_offset;
     const int32_t bottom = imagePos.y + g1.y_offset;
@@ -683,7 +683,7 @@ void PaintSessionArrange(PaintSessionCore& session)
     return _paintArrangeFuncsLegacy[session.CurrentRotation](session);
 }
 
-static inline void PaintAttachedPS(DrawPixelInfo& dpi, PaintStruct* ps, uint32_t viewFlags)
+static inline void PaintAttachedPS(RenderTarget& dpi, PaintStruct* ps, uint32_t viewFlags)
 {
     AttachedPaintStruct* attached_ps = ps->Attached;
     for (; attached_ps != nullptr; attached_ps = attached_ps->NextEntry)
@@ -854,7 +854,7 @@ static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uin
     }
 }
 
-PaintSession* PaintSessionAlloc(DrawPixelInfo& dpi, uint32_t viewFlags, uint8_t rotation)
+PaintSession* PaintSessionAlloc(RenderTarget& dpi, uint32_t viewFlags, uint8_t rotation)
 {
     return GetContext()->GetPainter()->CreateSession(dpi, viewFlags, rotation);
 }
@@ -1081,7 +1081,7 @@ void PaintFloatingMoneyEffect(
  *
  *  rct2: 0x006860C3
  */
-void PaintDrawMoneyStructs(DrawPixelInfo& dpi, PaintStringStruct* ps)
+void PaintDrawMoneyStructs(RenderTarget& dpi, PaintStringStruct* ps)
 {
     do
     {

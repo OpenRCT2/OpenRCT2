@@ -224,7 +224,7 @@ namespace OpenRCT2
 
         drawingEngine->BeginDraw();
 
-        DrawPixelInfo dpi{
+        RenderTarget dpi{
             .bits = static_cast<uint8_t*>(image.pixels),
             .x = 0,
             .y = 0,
@@ -242,7 +242,7 @@ namespace OpenRCT2
         return image;
     }
 
-    void drawPreviewImage(const PreviewImage& image, DrawPixelInfo& dpi, ScreenCoordsXY screenPos)
+    void drawPreviewImage(const PreviewImage& image, RenderTarget& dpi, ScreenCoordsXY screenPos)
     {
         auto* drawingEngine = GetContext()->GetDrawingEngine();
         if (drawingEngine == nullptr)

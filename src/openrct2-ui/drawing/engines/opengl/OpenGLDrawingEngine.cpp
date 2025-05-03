@@ -85,8 +85,8 @@ private:
     } _commandBuffers;
 
     static uint8_t ComputeOutCode(ScreenCoordsXY, ScreenCoordsXY, ScreenCoordsXY);
-    static bool CohenSutherlandLineClip(ScreenLine&, const DrawPixelInfo&);
-    [[nodiscard]] ScreenRect CalculateClipping(const DrawPixelInfo& dpi) const;
+    static bool CohenSutherlandLineClip(ScreenLine&, const RenderTarget&);
+    [[nodiscard]] ScreenRect CalculateClipping(const RenderTarget& dpi) const;
 
 public:
     explicit OpenGLDrawingContext(OpenGLDrawingEngine& engine);
@@ -113,18 +113,18 @@ public:
     void StartNewDraw();
     void FinishDraw();
 
-    void Clear(DrawPixelInfo& dpi, uint8_t paletteIndex) override;
-    void FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
+    void Clear(RenderTarget& dpi, uint8_t paletteIndex) override;
+    void FillRect(RenderTarget& dpi, uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
     void FilterRect(
-        DrawPixelInfo& dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
-    void DrawLine(DrawPixelInfo& dpi, uint32_t colour, const ScreenLine& line) override;
-    void DrawSprite(DrawPixelInfo& dpi, const ImageId imageId, int32_t x, int32_t y) override;
+        RenderTarget& dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
+    void DrawLine(RenderTarget& dpi, uint32_t colour, const ScreenLine& line) override;
+    void DrawSprite(RenderTarget& dpi, const ImageId imageId, int32_t x, int32_t y) override;
     void DrawSpriteRawMasked(
-        DrawPixelInfo& dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage) override;
-    void DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
-    void DrawGlyph(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette) override;
+        RenderTarget& dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage) override;
+    void DrawSpriteSolid(RenderTarget& dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
+    void DrawGlyph(RenderTarget& dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette) override;
     void DrawTTFBitmap(
-        DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold) override;
+        RenderTarget& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold) override;
 
     void FlushCommandBuffers();
 
@@ -150,7 +150,7 @@ public:
     }
 
     virtual void Draw(
-        DrawPixelInfo& dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+        RenderTarget& dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
         const uint8_t* weatherpattern) override
     {
         const uint8_t* pattern = weatherpattern;
@@ -203,7 +203,7 @@ private:
     size_t _bitsSize = 0;
     std::unique_ptr<uint8_t[]> _bits;
 
-    DrawPixelInfo _bitsDPI = {};
+    RenderTarget _bitsDPI = {};
 
     std::unique_ptr<OpenGLDrawingContext> _drawingContext;
 
@@ -465,7 +465,7 @@ public:
         return _drawingContext.get();
     }
 
-    DrawPixelInfo* GetDrawingPixelInfo() override
+    RenderTarget* GetDrawingPixelInfo() override
     {
         return &_bitsDPI;
     }
@@ -480,7 +480,7 @@ public:
         _drawingContext->GetTextureCache()->InvalidateImage(image);
     }
 
-    DrawPixelInfo* GetDPI()
+    RenderTarget* GetDPI()
     {
         return &_bitsDPI;
     }
@@ -540,7 +540,7 @@ private:
         _height = height;
         _pitch = pitch;
 
-        DrawPixelInfo* dpi = &_bitsDPI;
+        RenderTarget* dpi = &_bitsDPI;
         dpi->bits = _bits.get();
         dpi->x = 0;
         dpi->y = 0;
@@ -629,7 +629,7 @@ void OpenGLDrawingContext::FinishDraw()
     _inDraw = false;
 }
 
-void OpenGLDrawingContext::Clear(DrawPixelInfo& dpi, uint8_t paletteIndex)
+void OpenGLDrawingContext::Clear(RenderTarget& dpi, uint8_t paletteIndex)
 {
     Guard::Assert(_inDraw == true);
 
@@ -637,7 +637,7 @@ void OpenGLDrawingContext::Clear(DrawPixelInfo& dpi, uint8_t paletteIndex)
 }
 
 void OpenGLDrawingContext::FillRect(
-    DrawPixelInfo& dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    RenderTarget& dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     Guard::Assert(_inDraw == true);
 
@@ -675,7 +675,7 @@ void OpenGLDrawingContext::FillRect(
 }
 
 void OpenGLDrawingContext::FilterRect(
-    DrawPixelInfo& dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    RenderTarget& dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     Guard::Assert(_inDraw == true);
 
@@ -721,7 +721,7 @@ uint8_t OpenGLDrawingContext::ComputeOutCode(
 
 // Trims the line to be within the bounds of the dpi.
 // based on: https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm
-bool OpenGLDrawingContext::CohenSutherlandLineClip(ScreenLine& line, const DrawPixelInfo& dpi)
+bool OpenGLDrawingContext::CohenSutherlandLineClip(ScreenLine& line, const RenderTarget& dpi)
 {
     ScreenCoordsXY topLeft = { dpi.x, dpi.y };
     ScreenCoordsXY bottomRight = { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 };
@@ -785,7 +785,7 @@ bool OpenGLDrawingContext::CohenSutherlandLineClip(ScreenLine& line, const DrawP
     }
 }
 
-void OpenGLDrawingContext::DrawLine(DrawPixelInfo& dpi, uint32_t colour, const ScreenLine& line)
+void OpenGLDrawingContext::DrawLine(RenderTarget& dpi, uint32_t colour, const ScreenLine& line)
 {
     Guard::Assert(_inDraw == true);
 
@@ -814,7 +814,7 @@ static auto EuclideanRemainder(const auto a, const auto b)
     return r >= 0 ? r : r + b;
 };
 
-void OpenGLDrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId, const int32_t x, const int32_t y)
+void OpenGLDrawingContext::DrawSprite(RenderTarget& dpi, const ImageId imageId, const int32_t x, const int32_t y)
 {
     Guard::Assert(_inDraw == true);
 
@@ -828,7 +828,7 @@ void OpenGLDrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId,
     {
         if (g1Element->flags & G1_FLAG_HAS_ZOOM_SPRITE)
         {
-            DrawPixelInfo zoomedDPI;
+            RenderTarget zoomedDPI;
             zoomedDPI.bits = dpi.bits;
             zoomedDPI.x = dpi.x;
             zoomedDPI.y = dpi.y;
@@ -949,7 +949,7 @@ void OpenGLDrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId,
 }
 
 void OpenGLDrawingContext::DrawSpriteRawMasked(
-    DrawPixelInfo& dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage)
+    RenderTarget& dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage)
 {
     Guard::Assert(_inDraw == true);
 
@@ -1011,7 +1011,7 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(
     command.zoom = zoom;
 }
 
-void OpenGLDrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour)
+void OpenGLDrawingContext::DrawSpriteSolid(RenderTarget& dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour)
 {
     Guard::Assert(_inDraw == true);
 
@@ -1063,7 +1063,7 @@ void OpenGLDrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId ima
     command.zoom = 1.0f;
 }
 
-void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette)
+void OpenGLDrawingContext::DrawGlyph(RenderTarget& dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette)
 {
     Guard::Assert(_inDraw == true);
 
@@ -1119,7 +1119,7 @@ void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, in
 }
 
 void OpenGLDrawingContext::DrawTTFBitmap(
-    DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
+    RenderTarget& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
 {
     Guard::Assert(_inDraw == true);
 
@@ -1293,11 +1293,11 @@ void OpenGLDrawingContext::HandleTransparency()
     _commandBuffers.transparent.clear();
 }
 
-ScreenRect OpenGLDrawingContext::CalculateClipping(const DrawPixelInfo& dpi) const
+ScreenRect OpenGLDrawingContext::CalculateClipping(const RenderTarget& dpi) const
 {
     // mber: Calculating the screen coordinates by dividing the difference between pointers like this is a dirty hack.
     //       It's also quite slow. In future the drawing code needs to be refactored to avoid this somehow.
-    const DrawPixelInfo* screenDPI = _engine.GetDPI();
+    const RenderTarget* screenDPI = _engine.GetDPI();
     const int32_t bytesPerRow = screenDPI->LineStride();
     const int32_t bitsOffset = static_cast<int32_t>(dpi.bits - screenDPI->bits);
     #ifndef NDEBUG

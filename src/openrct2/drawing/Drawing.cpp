@@ -678,7 +678,7 @@ void MaskFn(
     MaskFunc(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
 }
 
-void GfxFilterPixel(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, FilterPaletteID palette)
+void GfxFilterPixel(RenderTarget& dpi, const ScreenCoordsXY& coords, FilterPaletteID palette)
 {
     GfxFilterRect(dpi, { coords, coords }, palette);
 }
@@ -770,7 +770,7 @@ void GfxInvalidateScreen()
  * height (dx)
  * drawpixelinfo (edi)
  */
-bool ClipDrawPixelInfo(DrawPixelInfo& dst, DrawPixelInfo& src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
+bool ClipDrawPixelInfo(RenderTarget& dst, RenderTarget& src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
 {
     assert(src.zoom_level == ZoomLevel{ 0 });
     int32_t right = coords.x + width;
@@ -837,7 +837,7 @@ void GfxInvalidatePickedUpPeep()
     }
 }
 
-void GfxDrawPickedUpPeep(DrawPixelInfo& dpi)
+void GfxDrawPickedUpPeep(RenderTarget& dpi)
 {
     if (gPickupPeepImage.HasValue())
     {
@@ -868,14 +868,14 @@ std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
     return std::nullopt;
 }
 
-uint8_t* DrawPixelInfo::GetBitsOffset(const ScreenCoordsXY& pos) const
+uint8_t* RenderTarget::GetBitsOffset(const ScreenCoordsXY& pos) const
 {
     return bits + pos.x + pos.y * LineStride();
 }
 
-DrawPixelInfo DrawPixelInfo::Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const
+RenderTarget RenderTarget::Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const
 {
-    DrawPixelInfo result = *this;
+    RenderTarget result = *this;
     result.bits = GetBitsOffset(pos);
     result.x = pos.x;
     result.y = pos.y;
@@ -1117,7 +1117,7 @@ void ToggleWindowedMode()
     Config::Save();
 }
 
-void DebugDPI(DrawPixelInfo& dpi)
+void DebugDPI(RenderTarget& dpi)
 {
     ScreenCoordsXY topLeft = { dpi.x, dpi.y };
     ScreenCoordsXY bottomRight = { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 };

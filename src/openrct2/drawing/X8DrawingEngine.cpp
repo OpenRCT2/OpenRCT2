@@ -44,7 +44,7 @@ X8WeatherDrawer::~X8WeatherDrawer()
 }
 
 void X8WeatherDrawer::Draw(
-    DrawPixelInfo& dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+    RenderTarget& dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
     const uint8_t* weatherpattern)
 {
     const uint8_t* pattern = weatherpattern;
@@ -92,7 +92,7 @@ void X8WeatherDrawer::Draw(
     }
 }
 
-void X8WeatherDrawer::Restore(DrawPixelInfo& dpi)
+void X8WeatherDrawer::Restore(RenderTarget& dpi)
 {
     if (_weatherPixelsCount > 0)
     {
@@ -253,7 +253,7 @@ IDrawingContext* X8DrawingEngine::GetDrawingContext()
     return _drawingContext;
 }
 
-DrawPixelInfo* X8DrawingEngine::GetDrawingPixelInfo()
+RenderTarget* X8DrawingEngine::GetDrawingPixelInfo()
 {
     return &_bitsDPI;
 }
@@ -268,7 +268,7 @@ void X8DrawingEngine::InvalidateImage([[maybe_unused]] uint32_t image)
     // Not applicable for this engine
 }
 
-DrawPixelInfo* X8DrawingEngine::GetDPI()
+RenderTarget* X8DrawingEngine::GetDPI()
 {
     return &_bitsDPI;
 }
@@ -314,7 +314,7 @@ void X8DrawingEngine::ConfigureBits(uint32_t width, uint32_t height, uint32_t pi
     _height = height;
     _pitch = pitch;
 
-    DrawPixelInfo* dpi = &_bitsDPI;
+    RenderTarget* dpi = &_bitsDPI;
     dpi->bits = _bits;
     dpi->x = 0;
     dpi->y = 0;
@@ -366,7 +366,7 @@ X8DrawingContext::X8DrawingContext(X8DrawingEngine* engine)
     _engine = engine;
 }
 
-void X8DrawingContext::Clear(DrawPixelInfo& dpi, uint8_t paletteIndex)
+void X8DrawingContext::Clear(RenderTarget& dpi, uint8_t paletteIndex)
 {
     Guard::Assert(_isDrawing == true);
 
@@ -429,7 +429,7 @@ static constexpr const uint16_t* kPatterns[] = {
 };
 // clang-format on
 
-void X8DrawingContext::FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void X8DrawingContext::FillRect(RenderTarget& dpi, uint32_t colour, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     Guard::Assert(_isDrawing == true);
 
@@ -552,7 +552,7 @@ void X8DrawingContext::FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t lef
 }
 
 void X8DrawingContext::FilterRect(
-    DrawPixelInfo& dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    RenderTarget& dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     Guard::Assert(_isDrawing == true);
 
@@ -620,14 +620,14 @@ void X8DrawingContext::FilterRect(
     }
 }
 
-void X8DrawingContext::DrawLine(DrawPixelInfo& dpi, uint32_t colour, const ScreenLine& line)
+void X8DrawingContext::DrawLine(RenderTarget& dpi, uint32_t colour, const ScreenLine& line)
 {
     Guard::Assert(_isDrawing == true);
 
     GfxDrawLineSoftware(dpi, line, colour);
 }
 
-void X8DrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId, int32_t x, int32_t y)
+void X8DrawingContext::DrawSprite(RenderTarget& dpi, const ImageId imageId, int32_t x, int32_t y)
 {
     Guard::Assert(_isDrawing == true);
 
@@ -635,14 +635,14 @@ void X8DrawingContext::DrawSprite(DrawPixelInfo& dpi, const ImageId imageId, int
 }
 
 void X8DrawingContext::DrawSpriteRawMasked(
-    DrawPixelInfo& dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage)
+    RenderTarget& dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage)
 {
     Guard::Assert(_isDrawing == true);
 
     GfxDrawSpriteRawMaskedSoftware(dpi, { x, y }, maskImage, colourImage);
 }
 
-void X8DrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour)
+void X8DrawingContext::DrawSpriteSolid(RenderTarget& dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour)
 {
     Guard::Assert(_isDrawing == true);
 
@@ -654,7 +654,7 @@ void X8DrawingContext::DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, 
     GfxDrawSpritePaletteSetSoftware(dpi, ImageId(image.GetIndex(), 0), spriteCoords, PaletteMap(palette));
 }
 
-void X8DrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap)
+void X8DrawingContext::DrawGlyph(RenderTarget& dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap)
 {
     Guard::Assert(_isDrawing == true);
 
@@ -664,7 +664,7 @@ void X8DrawingContext::DrawGlyph(DrawPixelInfo& dpi, const ImageId image, int32_
 #ifndef DISABLE_TTF
 template<bool TUseHinting>
 static void DrawTTFBitmapInternal(
-    DrawPixelInfo& dpi, uint8_t colour, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
+    RenderTarget& dpi, uint8_t colour, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
 {
     assert(dpi.zoom_level == ZoomLevel{ 0 });
     const int32_t surfaceWidth = surface->w;
@@ -734,7 +734,7 @@ static void DrawTTFBitmapInternal(
 #endif // DISABLE_TTF
 
 void X8DrawingContext::DrawTTFBitmap(
-    DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
+    RenderTarget& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y, uint8_t hintingThreshold)
 {
 #ifndef DISABLE_TTF
     const uint8_t fgColor = info->palette[1];

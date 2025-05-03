@@ -16,7 +16,7 @@
 #include <string>
 #include <vector>
 
-struct DrawPixelInfo;
+struct RenderTarget;
 
 namespace OpenRCT2
 {
@@ -54,5 +54,5 @@ namespace OpenRCT2
     struct GameState_t;
 
     ParkPreview generatePreviewFromGameState(const GameState_t& gameState);
-    void drawPreviewImage(const PreviewImage& image, DrawPixelInfo& dpi, ScreenCoordsXY screenPos);
+    void drawPreviewImage(const PreviewImage& image, RenderTarget& dpi, ScreenCoordsXY screenPos);
 } // namespace OpenRCT2

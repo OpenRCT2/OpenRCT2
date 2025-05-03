@@ -185,12 +185,12 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_APPLY].top = widgets[WIDX_APPLY].bottom - 24;
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
         {
             auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
             GfxFillRect(
@@ -235,7 +235,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        void PaintItem(DrawPixelInfo& dpi, int32_t y, Formatter& ft, bool isChecked, bool isSelected, bool isHighlighted)
+        void PaintItem(RenderTarget& dpi, int32_t y, Formatter& ft, bool isChecked, bool isSelected, bool isHighlighted)
         {
             auto listWidth = widgets[WIDX_LIST].right - widgets[WIDX_LIST].left;
             auto stringId = STR_BLACK_STRING;
@@ -256,7 +256,7 @@ namespace OpenRCT2::Ui::Windows
             PaintCheckbox(dpi, { { 2, y + 1 }, { 2 + checkboxSize + 1, y + 1 + checkboxSize } }, isChecked);
         }
 
-        void PaintCheckbox(DrawPixelInfo& dpi, const ScreenRect& rect, bool checked)
+        void PaintCheckbox(RenderTarget& dpi, const ScreenRect& rect, bool checked)
         {
             GfxFillRectInset(dpi, rect, colours[1], INSET_RECT_F_E0);
             if (checked)

@@ -251,7 +251,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             ScreenCoordsXY screenCoords;
             int32_t numTiles;
@@ -835,7 +835,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawDropdownButtons(DrawPixelInfo& dpi)
+        void DrawDropdownButtons(RenderTarget& dpi)
         {
             auto& objManager = GetContext()->GetObjectManager();
             const auto* surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(_selectedFloorTexture);
@@ -858,7 +858,7 @@ namespace OpenRCT2::Ui::Windows
             DrawDropdownButton(dpi, WIDX_WALL, edgeImage);
         }
 
-        void DrawDropdownButton(DrawPixelInfo& dpi, WidgetIndex widgetIndex, ImageId image)
+        void DrawDropdownButton(RenderTarget& dpi, WidgetIndex widgetIndex, ImageId image)
         {
             const auto& widget = widgets[widgetIndex];
             GfxDrawSprite(dpi, image, { windowPos.x + widget.left, windowPos.y + widget.top });

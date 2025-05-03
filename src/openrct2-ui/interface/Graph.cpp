@@ -22,7 +22,7 @@ namespace OpenRCT2::Graph
 
     template<typename T>
     static void DrawYLabels(
-        DrawPixelInfo& dpi, const ScreenRect& internalBounds, const T min, const T max, const int32_t numYLabels,
+        RenderTarget& dpi, const ScreenRect& internalBounds, const T min, const T max, const int32_t numYLabels,
         const int32_t yLabelStepPx, const ColourWithFlags lineCol, const FmtString& fmt)
     {
         T curLabel = max;
@@ -50,7 +50,7 @@ namespace OpenRCT2::Graph
     }
 
     template<typename T, T TkNoValue>
-    static void DrawMonths(DrawPixelInfo& dpi, const T* series, int32_t count, const ScreenRect& bounds, const int32_t xStep)
+    static void DrawMonths(RenderTarget& dpi, const T* series, int32_t count, const ScreenRect& bounds, const int32_t xStep)
     {
         auto& date = GetDate();
         int32_t currentMonth = date.GetMonth();
@@ -79,7 +79,7 @@ namespace OpenRCT2::Graph
 
     template<typename T>
     static void DrawHoveredValue(
-        DrawPixelInfo& dpi, const T value, const int32_t hoverIdx, const ScreenRect& bounds, const int32_t xStep,
+        RenderTarget& dpi, const T value, const int32_t hoverIdx, const ScreenRect& bounds, const int32_t xStep,
         const T minValue, const T maxValue, const_utf8string text, ColourWithFlags textCol)
     {
         const T screenRange = bounds.GetHeight();
@@ -105,7 +105,7 @@ namespace OpenRCT2::Graph
 
     template<typename T, T TkNoValue, bool TbackgroundLine>
     static void DrawLine(
-        DrawPixelInfo& dpi, const T* series, const int32_t count, const ScreenRect& bounds, const int32_t xStep,
+        RenderTarget& dpi, const T* series, const int32_t count, const ScreenRect& bounds, const int32_t xStep,
         const T minValue, const T maxValue)
     {
         const T screenRange = bounds.GetHeight();
@@ -161,7 +161,7 @@ namespace OpenRCT2::Graph
 
     template<typename T, T TkNoValue>
     static void DrawGraph(
-        DrawPixelInfo& dpi, const GraphProperties<T>& p, const FmtString& labelFmt, const FmtString& tooltipFmt)
+        RenderTarget& dpi, const GraphProperties<T>& p, const FmtString& labelFmt, const FmtString& tooltipFmt)
     {
         DrawYLabels<T>(dpi, p.internalBounds, p.min, p.max, p.numYLabels, p.yLabelStepPx, p.lineCol, labelFmt);
         DrawMonths<T, TkNoValue>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx);
@@ -181,17 +181,17 @@ namespace OpenRCT2::Graph
         }
     }
 
-    void DrawFinanceGraph(DrawPixelInfo& dpi, const GraphProperties<money64>& p)
+    void DrawFinanceGraph(RenderTarget& dpi, const GraphProperties<money64>& p)
     {
         DrawGraph<money64, kMoney64Undefined>(dpi, p, "{BLACK}{CURRENCY2DP}", "{CURRENCY2DP}");
     }
 
-    void DrawRatingGraph(DrawPixelInfo& dpi, const GraphProperties<uint16_t>& p)
+    void DrawRatingGraph(RenderTarget& dpi, const GraphProperties<uint16_t>& p)
     {
         DrawGraph<uint16_t, kParkRatingHistoryUndefined>(dpi, p, "{BLACK}{COMMA32}", "{COMMA32}");
     }
 
-    void DrawGuestGraph(DrawPixelInfo& dpi, const GraphProperties<uint32_t>& p)
+    void DrawGuestGraph(RenderTarget& dpi, const GraphProperties<uint32_t>& p)
     {
         DrawGraph<uint32_t, kGuestsInParkHistoryUndefined>(dpi, p, "{BLACK}{COMMA32}", "{COMMA32}");
     }

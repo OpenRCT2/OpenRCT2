@@ -429,7 +429,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -575,7 +575,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
         {
             GfxFillRect(
                 dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } },
@@ -629,7 +629,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& dpi)
         {
             // Tab 1 image
             auto i = (_selectedTab == TabId::Individual ? _tabAnimationIndex & ~3 : 0);
@@ -646,7 +646,7 @@ namespace OpenRCT2::Ui::Windows
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
         }
 
-        void DrawScrollIndividual(DrawPixelInfo& dpi)
+        void DrawScrollIndividual(RenderTarget& dpi)
         {
             size_t index = 0;
             auto y = static_cast<int32_t>(_selectedPage) * -GUEST_PAGE_HEIGHT;
@@ -713,7 +713,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawScrollSummarised(DrawPixelInfo& dpi)
+        void DrawScrollSummarised(RenderTarget& dpi)
         {
             size_t index = 0;
             auto y = 0;

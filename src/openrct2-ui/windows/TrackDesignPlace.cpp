@@ -335,14 +335,14 @@ namespace OpenRCT2::Ui::Windows
             DrawMiniPreview(*_trackDesign);
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             auto ft = Formatter::Common();
             ft.Add<char*>(_trackDesign->gameStateData.name.c_str());
             WindowDrawWidgets(*this, dpi);
 
             // Draw mini tile preview
-            DrawPixelInfo clippedDpi;
+            RenderTarget clippedDpi;
             if (ClipDrawPixelInfo(clippedDpi, dpi, this->windowPos + ScreenCoordsXY{ 4, 18 }, 168, 78))
             {
                 G1Element g1temp = {};

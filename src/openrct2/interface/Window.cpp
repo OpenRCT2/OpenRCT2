@@ -71,8 +71,8 @@ static constexpr float kWindowScrollLocations[][2] = {
 };
     // clang-format on
 
-    static void WindowDrawCore(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
-    static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+    static void WindowDrawCore(RenderTarget& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+    static void WindowDrawSingle(RenderTarget& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
     std::list<std::shared_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w)
     {
@@ -494,7 +494,7 @@ static constexpr float kWindowScrollLocations[][2] = {
      * Splits a drawing of a window into regions that can be seen and are not hidden
      * by other opaque overlapping windows.
      */
-    void WindowDraw(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    void WindowDraw(RenderTarget& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
         if (!WindowIsVisible(w))
             return;
@@ -551,7 +551,7 @@ static constexpr float kWindowScrollLocations[][2] = {
     /**
      * Draws the given window and any other overlapping transparent windows.
      */
-    static void WindowDrawCore(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    static void WindowDrawCore(RenderTarget& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
         // Clamp region
         left = std::max<int32_t>(left, w.windowPos.x);
@@ -576,11 +576,11 @@ static constexpr float kWindowScrollLocations[][2] = {
         }
     }
 
-    static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    static void WindowDrawSingle(RenderTarget& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
         assert(dpi.zoom_level == ZoomLevel{ 0 });
         // Copy dpi so we can crop it
-        DrawPixelInfo copy = dpi;
+        RenderTarget copy = dpi;
 
         // Clamp left to 0
         int32_t overflow = left - copy.x;
@@ -905,7 +905,7 @@ static constexpr float kWindowScrollLocations[][2] = {
      * right (dx)
      * bottom (bp)
      */
-    void WindowDrawAll(DrawPixelInfo& dpi, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    void WindowDrawAll(RenderTarget& dpi, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
         auto windowDPI = dpi.Crop({ left, top }, { right - left, bottom - top });
         WindowVisitEach([&windowDPI, left, top, right, bottom](WindowBase* w) {

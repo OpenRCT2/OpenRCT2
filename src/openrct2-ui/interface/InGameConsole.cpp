@@ -289,7 +289,7 @@ void InGameConsole::Update()
     _consoleCaretTicks = (_consoleCaretTicks + 1) % 30;
 }
 
-void InGameConsole::Draw(DrawPixelInfo& dpi) const
+void InGameConsole::Draw(RenderTarget& dpi) const
 {
     if (!_isOpen)
         return;

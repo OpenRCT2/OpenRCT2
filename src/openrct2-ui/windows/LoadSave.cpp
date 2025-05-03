@@ -385,7 +385,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawPreview(DrawPixelInfo& dpi)
+        void DrawPreview(RenderTarget& dpi)
         {
             constexpr auto kPreviewHeight = kPreviewWidth / 5 * 4;
 
@@ -690,7 +690,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
 
@@ -729,7 +729,7 @@ namespace OpenRCT2::Ui::Windows
                     auto ft = Formatter();
                     ft.Add<StringId>(indicatorId);
 
-                    auto cdpi = const_cast<const DrawPixelInfo&>(dpi);
+                    auto cdpi = const_cast<const RenderTarget&>(dpi);
                     DrawTextEllipsised(
                         cdpi, windowPos + ScreenCoordsXY{ widget.left + 5, widget.top + 1 }, widget.width(), strId, ft,
                         { COLOUR_GREY });
@@ -1029,7 +1029,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
         {
             GfxFillRect(
                 dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } },

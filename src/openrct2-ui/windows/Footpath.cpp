@@ -466,7 +466,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             ScreenCoordsXY screenCoords;
             WindowDrawWidgets(*this, dpi);
@@ -601,7 +601,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void WindowFootpathDrawDropdownButtons(DrawPixelInfo& dpi)
+        void WindowFootpathDrawDropdownButtons(RenderTarget& dpi)
         {
             if (gFootpathSelection.LegacyPath == kObjectEntryIndexNull)
             {
@@ -652,7 +652,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void WindowFootpathDrawDropdownButton(DrawPixelInfo& dpi, WidgetIndex widgetIndex, ImageIndex image)
+        void WindowFootpathDrawDropdownButton(RenderTarget& dpi, WidgetIndex widgetIndex, ImageIndex image)
         {
             const auto& widget = widgets[widgetIndex];
             GfxDrawSprite(dpi, ImageId(image), { windowPos.x + widget.left, windowPos.y + widget.top });

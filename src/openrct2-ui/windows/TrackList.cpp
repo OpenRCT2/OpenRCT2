@@ -449,7 +449,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
 
@@ -670,7 +670,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(const int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(const int32_t scrollIndex, RenderTarget& dpi) override
         {
             uint8_t paletteIndex = ColourMapA[colours[0].colour].mid_light;
             GfxClear(dpi, paletteIndex);

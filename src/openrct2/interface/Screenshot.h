@@ -17,7 +17,7 @@
 #include <optional>
 #include <string>
 
-struct DrawPixelInfo;
+struct RenderTarget;
 
 extern uint8_t gScreenshotCountdown;
 
@@ -53,7 +53,7 @@ struct CaptureOptions
 
 void ScreenshotCheck();
 std::string ScreenshotDump();
-std::string ScreenshotDumpPNG(DrawPixelInfo& dpi);
+std::string ScreenshotDumpPNG(RenderTarget& dpi);
 
 void ScreenshotGiant();
 int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOptions* options);

@@ -38,7 +38,7 @@ enum DrawingEngineFlag
 };
 using DrawingEngineFlags = FlagHolder<uint8_t, DrawingEngineFlag>;
 
-struct DrawPixelInfo;
+struct RenderTarget;
 
 namespace OpenRCT2::Ui
 {
@@ -70,7 +70,7 @@ namespace OpenRCT2::Drawing
         virtual std::string Screenshot() = 0;
 
         virtual IDrawingContext* GetDrawingContext() = 0;
-        virtual DrawPixelInfo* GetDrawingPixelInfo() = 0;
+        virtual RenderTarget* GetDrawingPixelInfo() = 0;
 
         virtual DrawingEngineFlags GetFlags() = 0;
 
@@ -90,7 +90,7 @@ namespace OpenRCT2::Drawing
     {
         virtual ~IWeatherDrawer() = default;
         virtual void Draw(
-            DrawPixelInfo& dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+            RenderTarget& dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
             const uint8_t* weatherpattern)
             = 0;
     };

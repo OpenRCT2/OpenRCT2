@@ -143,7 +143,7 @@ void LargeSceneryObject::Unload()
     _baseImageId = _legacyType.image = 0;
 }
 
-void LargeSceneryObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
+void LargeSceneryObject::DrawPreview(RenderTarget& dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, (height / 2) - 39 };
 

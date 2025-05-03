@@ -22,7 +22,7 @@ namespace OpenRCT2::Scripting
     {
     private:
         duk_context* _ctx{};
-        DrawPixelInfo _dpi{};
+        RenderTarget _dpi{};
 
         std::optional<colour_t> _colour{};
         std::optional<colour_t> _secondaryColour{};
@@ -32,7 +32,7 @@ namespace OpenRCT2::Scripting
         uint8_t _fill{};
 
     public:
-        ScGraphicsContext(duk_context* ctx, const DrawPixelInfo& dpi)
+        ScGraphicsContext(duk_context* ctx, const RenderTarget& dpi)
             : _ctx(ctx)
             , _dpi(dpi)
         {
@@ -180,7 +180,7 @@ namespace OpenRCT2::Scripting
 
         void clip(int32_t x, int32_t y, int32_t width, int32_t height)
         {
-            DrawPixelInfo newDpi;
+            RenderTarget newDpi;
             ClipDrawPixelInfo(newDpi, _dpi, { x, y }, width, height);
             _dpi = newDpi;
         }

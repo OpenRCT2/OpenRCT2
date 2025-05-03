@@ -834,7 +834,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = canFit ? WindowWidgetType::FlatBtn : WindowWidgetType::Empty;
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
             DrawTabs(dpi, windowPos);
@@ -894,7 +894,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
         {
             if (scrollIndex == SceneryContentScrollIndex)
             {
@@ -1580,7 +1580,7 @@ namespace OpenRCT2::Ui::Windows
             return { name, price };
         }
 
-        void DrawTabs(DrawPixelInfo& dpi, const ScreenCoordsXY& offset)
+        void DrawTabs(RenderTarget& dpi, const ScreenCoordsXY& offset)
         {
             for (size_t tabIndex = 0; tabIndex < _tabEntries.size(); tabIndex++)
             {
@@ -1595,7 +1595,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawSceneryItem(DrawPixelInfo& dpi, ScenerySelection scenerySelection)
+        void DrawSceneryItem(RenderTarget& dpi, ScenerySelection scenerySelection)
         {
             if (scenerySelection.SceneryType == SCENERY_TYPE_BANNER)
             {
@@ -1699,7 +1699,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void ContentScrollDraw(DrawPixelInfo& dpi)
+        void ContentScrollDraw(RenderTarget& dpi)
         {
             GfxClear(dpi, ColourMapA[colours[1].colour].mid_light);
 
@@ -1742,7 +1742,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                DrawPixelInfo clipdpi;
+                RenderTarget clipdpi;
                 if (ClipDrawPixelInfo(
                         clipdpi, dpi, topLeft + ScreenCoordsXY{ 1, 1 }, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2))
                 {

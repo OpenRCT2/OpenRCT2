@@ -89,7 +89,7 @@ void OpenGLFramebuffer::BindRead() const
     glBindFramebuffer(GL_READ_FRAMEBUFFER, _id);
 }
 
-void OpenGLFramebuffer::GetPixels(DrawPixelInfo& dpi) const
+void OpenGLFramebuffer::GetPixels(RenderTarget& dpi) const
 {
     assert(dpi.width == _width && dpi.height == _height);
 
@@ -150,7 +150,7 @@ GLuint OpenGLFramebuffer::CreateDepthTexture(int32_t width, int32_t height)
     return depth;
 }
 
-void OpenGLFramebuffer::SetPixels(const DrawPixelInfo& dpi)
+void OpenGLFramebuffer::SetPixels(const RenderTarget& dpi)
 {
     assert(dpi.width == _width && dpi.height == _height);
 

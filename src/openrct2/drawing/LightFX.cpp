@@ -39,7 +39,7 @@ namespace OpenRCT2::Drawing::LightFx
     static uint8_t _bakedLightTexture_spot_1[64 * 64];
     static uint8_t _bakedLightTexture_spot_2[128 * 128];
     static uint8_t _bakedLightTexture_spot_3[256 * 256];
-    static DrawPixelInfo _pixelInfo;
+    static RenderTarget _pixelInfo;
     static bool _lightfxAvailable = false;
 
     static void* _light_rendered_buffer_back = nullptr;
@@ -182,7 +182,7 @@ namespace OpenRCT2::Drawing::LightFx
         CalcRescaleLightHalf(_bakedLightTexture_spot_0, _bakedLightTexture_spot_1, 32, 32);
     }
 
-    void UpdateBuffers(DrawPixelInfo& info)
+    void UpdateBuffers(RenderTarget& info)
     {
         _light_rendered_buffer_front = realloc(_light_rendered_buffer_front, info.width * info.height);
         _light_rendered_buffer_back = realloc(_light_rendered_buffer_back, info.width * info.height);
@@ -298,7 +298,7 @@ namespace OpenRCT2::Drawing::LightFx
                     if (w != nullptr)
                     {
                         // based on GetMapCoordinatesFromPosWindow
-                        DrawPixelInfo dpi;
+                        RenderTarget dpi;
                         dpi.zoom_level = _current_view_zoom_front;
                         dpi.x = _current_view_zoom_front.ApplyInversedTo(entry.viewCoords.x + offsetPattern[0 + pat * 2]);
                         dpi.y = _current_view_zoom_front.ApplyInversedTo(entry.viewCoords.y + offsetPattern[1 + pat * 2]);

@@ -270,7 +270,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_STAFF_LIST_HIRE_BUTTON].right = width - 11;
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -362,7 +362,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
         {
             auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
             GfxFillRect(
@@ -586,7 +586,7 @@ namespace OpenRCT2::Ui::Windows
             return static_cast<StaffType>(_selectedTab);
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi) const
+        void DrawTabImages(RenderTarget& dpi) const
         {
             const auto& gameState = getGameState();
             DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_HANDYMEN, AnimationPeepType::Handyman, gameState.staffHandymanColour);
@@ -595,7 +595,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, AnimationPeepType::Entertainer);
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, AnimationPeepType type, colour_t colour) const
+        void DrawTabImage(RenderTarget& dpi, int32_t tabIndex, AnimationPeepType type, colour_t colour) const
         {
             PeepAnimationsObject* animObj = findPeepAnimationsObjectForType(type);
             if (animObj == nullptr)
@@ -613,7 +613,7 @@ namespace OpenRCT2::Ui::Windows
                 windowPos + ScreenCoordsXY{ (widget.left + widget.right) / 2, widget.bottom - 6 });
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, AnimationPeepType type) const
+        void DrawTabImage(RenderTarget& dpi, int32_t tabIndex, AnimationPeepType type) const
         {
             PeepAnimationsObject* animObj = findPeepAnimationsObjectForType(type);
             if (animObj == nullptr)
@@ -622,7 +622,7 @@ namespace OpenRCT2::Ui::Windows
             auto widgetIndex = WIDX_STAFF_LIST_HANDYMEN_TAB + tabIndex;
             const auto& widget = widgets[widgetIndex];
 
-            DrawPixelInfo clippedDpi;
+            RenderTarget clippedDpi;
             if (ClipDrawPixelInfo(
                     clippedDpi, dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 },
                     widget.right - widget.left - 1, widget.bottom - widget.top - 1))

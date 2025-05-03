@@ -489,7 +489,7 @@ namespace OpenRCT2::Ui::Windows
             InvalidateWidget(WIDX_SCROLL);
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             WindowDrawWidgets(*this, dpi);
 
@@ -505,7 +505,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextEllipsised(dpi, { windowPos.x + 5, windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft);
         }
 
-        void OnScrollDraw(const int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(const int32_t scrollIndex, RenderTarget& dpi) override
         {
             auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
             GfxFillRect(

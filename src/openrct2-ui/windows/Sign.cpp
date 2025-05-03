@@ -291,7 +291,7 @@ namespace OpenRCT2::Ui::Windows
             text_colour_btn->image = GetColourButtonImage(_textColour);
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
 

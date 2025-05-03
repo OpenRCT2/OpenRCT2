@@ -600,7 +600,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -789,7 +789,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& dpi)
         {
             // Money tab
             if (!IsWidgetDisabled(WIDX_TAB_1))

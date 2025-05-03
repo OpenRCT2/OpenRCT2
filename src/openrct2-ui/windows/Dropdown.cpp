@@ -97,7 +97,7 @@ namespace OpenRCT2::Ui::Windows
             return Config::Get().interface.EnlargedUi ? 6 : 0;
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
 

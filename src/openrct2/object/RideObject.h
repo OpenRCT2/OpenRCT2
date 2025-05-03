@@ -44,7 +44,7 @@ public:
     void Load() override;
     void Unload() override;
 
-    void DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const override;
+    void DrawPreview(RenderTarget& dpi, int32_t width, int32_t height) const override;
 
     std::string GetDescription() const;
     std::string GetCapacity() const;

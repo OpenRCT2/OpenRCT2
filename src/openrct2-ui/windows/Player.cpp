@@ -147,7 +147,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             switch (page)
             {
@@ -247,7 +247,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& dpi)
         {
             Widget* widget;
 
@@ -410,7 +410,7 @@ namespace OpenRCT2::Ui::Windows
             WidgetSetEnabled(*this, WIDX_KICK, canKick && !isOwnWindow && !isServer);
         }
 
-        void OnDrawOverview(DrawPixelInfo& dpi)
+        void OnDrawOverview(RenderTarget& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -594,7 +594,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_2);
         }
 
-        void OnDrawStatistics(DrawPixelInfo& dpi)
+        void OnDrawStatistics(RenderTarget& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);

@@ -169,12 +169,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
         {
             int32_t lineHeight = FontGetLineHeight(FontStyle::Small);
             int32_t itemHeight = CalculateItemHeight();
@@ -236,7 +236,7 @@ namespace OpenRCT2::Ui::Windows
                         case News::ItemType::Peep:
                         case News::ItemType::PeepOnRide:
                         {
-                            DrawPixelInfo cliped_dpi;
+                            RenderTarget cliped_dpi;
                             if (!ClipDrawPixelInfo(cliped_dpi, dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
                             {
                                 break;

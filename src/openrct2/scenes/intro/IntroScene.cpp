@@ -56,7 +56,7 @@ namespace OpenRCT2
     static void ScreenIntroProcessMouseInput();
     static void ScreenIntroProcessKeyboardInput();
     static void ScreenIntroSkipPart();
-    static void ScreenIntroDrawLogo(DrawPixelInfo& dpi);
+    static void ScreenIntroDrawLogo(RenderTarget& dpi);
 
     // rct2: 0x0068E966
     void IntroScene::Tick()
@@ -187,7 +187,7 @@ namespace OpenRCT2
         }
     }
 
-    void IntroDraw(DrawPixelInfo& dpi)
+    void IntroDraw(RenderTarget& dpi)
     {
         int32_t screenWidth = ContextGetWidth();
 
@@ -302,7 +302,7 @@ namespace OpenRCT2
         }
     }
 
-    static void ScreenIntroDrawLogo(DrawPixelInfo& dpi)
+    static void ScreenIntroDrawLogo(RenderTarget& dpi)
     {
         int32_t screenWidth = ContextGetWidth();
         int32_t imageWidth = 640;

@@ -28,34 +28,34 @@ using namespace OpenRCT2;
 
 namespace OpenRCT2::Ui
 {
-    static void WidgetFrameDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetResizeDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetButtonDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetTabDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetFlatButtonDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetTextButton(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetTextCentred(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetText(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetTextInset(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetTextBoxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetProgressBarDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetHorizontalSeparatorDraw(DrawPixelInfo& dpi, WindowBase& w, const Widget& widget);
-    static void WidgetGroupboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetCaptionDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetCheckboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetCloseboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
-    static void WidgetScrollDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetFrameDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetResizeDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetButtonDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetTabDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetFlatButtonDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetTextButton(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetTextCentred(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetText(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetTextInset(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetTextBoxDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetProgressBarDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetHorizontalSeparatorDraw(RenderTarget& dpi, WindowBase& w, const Widget& widget);
+    static void WidgetGroupboxDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetCaptionDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetCheckboxDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetCloseboxDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    static void WidgetScrollDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
     static void WidgetHScrollbarDraw(
-        DrawPixelInfo& dpi, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour);
+        RenderTarget& dpi, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour);
     static void WidgetVScrollbarDraw(
-        DrawPixelInfo& dpi, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour);
-    static void WidgetDrawImage(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+        RenderTarget& dpi, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour);
+    static void WidgetDrawImage(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex);
 
     /**
      *
      *  rct2: 0x006EB2A8
      */
-    void WidgetDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    void WidgetDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
     {
         const auto* widget = GetWidgetByIndex(w, widgetIndex);
         if (widget == nullptr)
@@ -131,7 +131,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EB6CE
      */
-    static void WidgetFrameDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetFrameDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -161,7 +161,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EB765
      */
-    static void WidgetResizeDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetResizeDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -188,7 +188,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EB8E5
      */
-    static void WidgetButtonDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetButtonDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -220,7 +220,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EB806
      */
-    static void WidgetTabDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetTabDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         auto& widget = w.widgets[widgetIndex];
@@ -269,7 +269,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EB861
      */
-    static void WidgetFlatButtonDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetFlatButtonDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
     {
         if (!WidgetIsDisabled(w, widgetIndex) && WidgetIsHighlighted(w, widgetIndex))
         {
@@ -309,7 +309,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EBBEB
      */
-    static void WidgetTextButton(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetTextButton(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -339,7 +339,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EBC41
      */
-    static void WidgetTextCentred(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetTextCentred(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -384,7 +384,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EBD52
      */
-    static void WidgetText(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetText(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -432,7 +432,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EBD1F
      */
-    static void WidgetTextInset(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetTextInset(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -451,7 +451,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EB535
      */
-    static void WidgetGroupboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetGroupboxDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -526,7 +526,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EB2F9
      */
-    static void WidgetCaptionDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetCaptionDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto* widget = &w.widgets[widgetIndex];
@@ -580,7 +580,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EBB85
      */
-    static void WidgetCloseboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetCloseboxDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -616,7 +616,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EBAD9
      */
-    static void WidgetCheckboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetCheckboxDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -664,7 +664,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EBD96
      */
-    static void WidgetScrollDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetScrollDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         int32_t scrollIndex = WindowGetScrollDataIndex(w, widgetIndex);
@@ -716,7 +716,7 @@ namespace OpenRCT2::Ui
         bottomRight.x++;
 
         // Create a new inner scroll dpi
-        DrawPixelInfo scroll_dpi = dpi;
+        RenderTarget scroll_dpi = dpi;
 
         // Clip the scroll dpi against the outer dpi
         int32_t cl = std::max<int32_t>(dpi.x, topLeft.x);
@@ -739,7 +739,7 @@ namespace OpenRCT2::Ui
     }
 
     static void WidgetHScrollbarDraw(
-        DrawPixelInfo& dpi, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour)
+        RenderTarget& dpi, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour)
     {
         colour.setFlag(ColourFlag::translucent, false);
 
@@ -781,7 +781,7 @@ namespace OpenRCT2::Ui
     }
 
     static void WidgetVScrollbarDraw(
-        DrawPixelInfo& dpi, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour)
+        RenderTarget& dpi, const ScrollArea& scroll, int32_t l, int32_t t, int32_t r, int32_t b, ColourWithFlags colour)
     {
         colour.setFlag(ColourFlag::translucent, false);
 
@@ -820,7 +820,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EB951
      */
-    static void WidgetDrawImage(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetDrawImage(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -1122,7 +1122,7 @@ namespace OpenRCT2::Ui
         WidgetSetPressed(w, widgetIndex, value);
     }
 
-    static void WidgetTextBoxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetTextBoxDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
     {
         // Get the widget
         const auto& widget = w.widgets[widgetIndex];
@@ -1186,7 +1186,7 @@ namespace OpenRCT2::Ui
         }
     }
 
-    static void WidgetProgressBarDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
+    static void WidgetProgressBarDraw(RenderTarget& dpi, WindowBase& w, WidgetIndex widgetIndex)
     {
         const auto& widget = w.widgets[widgetIndex];
 
@@ -1217,7 +1217,7 @@ namespace OpenRCT2::Ui
         }
     }
 
-    static void WidgetHorizontalSeparatorDraw(DrawPixelInfo& dpi, WindowBase& w, const Widget& widget)
+    static void WidgetHorizontalSeparatorDraw(RenderTarget& dpi, WindowBase& w, const Widget& widget)
     {
         ScreenCoordsXY topLeft{ w.windowPos + ScreenCoordsXY{ widget.left, widget.top } };
         ScreenCoordsXY bottomRight{ w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom } };

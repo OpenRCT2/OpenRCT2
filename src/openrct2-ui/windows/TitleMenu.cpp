@@ -273,7 +273,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             GfxFilterRect(dpi, _filterRect, FilterPaletteID::Palette51);
             DrawWidgets(dpi);

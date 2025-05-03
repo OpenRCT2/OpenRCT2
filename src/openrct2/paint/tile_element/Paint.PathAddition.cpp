@@ -199,7 +199,7 @@ static void PathAdditionBenchesPaint(
 /* rct2: 0x006A6008 */
 static void PathAdditionJumpingFountainsPaint(
     PaintSession& session, const PathAdditionEntry& pathAdditionEntry, int32_t height, ImageId imageTemplate,
-    DrawPixelInfo& dpi)
+    RenderTarget& dpi)
 {
     if (dpi.zoom_level > ZoomLevel{ 0 })
         return;

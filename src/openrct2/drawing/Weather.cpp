@@ -23,13 +23,13 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
 static void DrawLightRain(
-    DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+    RenderTarget& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
 static void DrawHeavyRain(
-    DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+    RenderTarget& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
 static void DrawLightSnow(
-    DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+    RenderTarget& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
 static void DrawHeavySnow(
-    DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+    RenderTarget& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
 
 /**
  *
@@ -51,7 +51,7 @@ const DrawWeatherFunc DrawSnowFunctions[] = {
  *
  *  rct2: 0x00684218
  */
-void DrawWeather(DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer)
+void DrawWeather(RenderTarget& dpi, IWeatherDrawer* weatherDrawer)
 {
     if (!Config::Get().general.RenderWeatherEffects)
         return;
@@ -82,7 +82,7 @@ void DrawWeather(DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer)
  *  rct2: 0x00684114
  */
 static void DrawLightRain(
-    DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
+    RenderTarget& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
     const auto currentTicks = getGameState().currentTicks;
 
@@ -106,7 +106,7 @@ static void DrawLightRain(
  *  rct2: 0x0068416D
  */
 static void DrawHeavyRain(
-    DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
+    RenderTarget& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
     const auto currentTicks = getGameState().currentTicks;
 
@@ -140,7 +140,7 @@ static void DrawHeavyRain(
 }
 
 static void DrawLightSnow(
-    DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
+    RenderTarget& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
     const auto currentTicks = getGameState().currentTicks;
 
@@ -164,7 +164,7 @@ static void DrawLightSnow(
 }
 
 static void DrawHeavySnow(
-    DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
+    RenderTarget& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
     const auto currentTicks = getGameState().currentTicks;
 

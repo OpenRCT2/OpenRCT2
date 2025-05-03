@@ -52,7 +52,7 @@ extern uint8_t gClipHeight;
 
 uint8_t gScreenshotCountdown = 0;
 
-static bool WriteDpiToFile(std::string_view path, const DrawPixelInfo& dpi, const GamePalette& palette)
+static bool WriteDpiToFile(std::string_view path, const RenderTarget& dpi, const GamePalette& palette)
 {
     auto const pixels8 = dpi.bits;
     auto const pixelsLen = dpi.LineStride() * dpi.height;
@@ -172,7 +172,7 @@ static std::optional<std::string> ScreenshotGetNextPath()
     return std::nullopt;
 };
 
-std::string ScreenshotDumpPNG(DrawPixelInfo& dpi)
+std::string ScreenshotDumpPNG(RenderTarget& dpi)
 {
     // Get a free screenshot path
     auto path = ScreenshotGetNextPath();
@@ -227,9 +227,9 @@ static int32_t GetTallestVisibleTileTop(
     return minViewY - 64;
 }
 
-static DrawPixelInfo CreateDPI(const Viewport& viewport)
+static RenderTarget CreateDPI(const Viewport& viewport)
 {
-    DrawPixelInfo dpi;
+    RenderTarget dpi;
     dpi.width = viewport.width;
     dpi.height = viewport.height;
     dpi.bits = new (std::nothrow) uint8_t[dpi.width * dpi.height];
@@ -246,7 +246,7 @@ static DrawPixelInfo CreateDPI(const Viewport& viewport)
     return dpi;
 }
 
-static void ReleaseDPI(DrawPixelInfo& dpi)
+static void ReleaseDPI(RenderTarget& dpi)
 {
     if (dpi.bits != nullptr)
         delete[] dpi.bits;
@@ -305,7 +305,7 @@ static Viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
     return viewport;
 }
 
-static void RenderViewport(IDrawingEngine* drawingEngine, const Viewport& viewport, DrawPixelInfo& dpi)
+static void RenderViewport(IDrawingEngine* drawingEngine, const Viewport& viewport, RenderTarget& dpi)
 {
     // Ensure sprites appear regardless of rotation
     ResetAllSpriteQuadrantPlacements();
@@ -327,7 +327,7 @@ static void RenderViewport(IDrawingEngine* drawingEngine, const Viewport& viewpo
 
 void ScreenshotGiant()
 {
-    DrawPixelInfo dpi{};
+    RenderTarget dpi{};
     try
     {
         auto path = ScreenshotGetNextPath();
@@ -446,7 +446,7 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
     }
 
     int32_t exitCode = 1;
-    DrawPixelInfo dpi;
+    RenderTarget dpi;
     try
     {
         bool customLocation = false;

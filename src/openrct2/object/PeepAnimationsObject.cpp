@@ -201,7 +201,7 @@ bool PeepAnimationsObject::IsSlowWalking(PeepAnimationGroup animGroup) const
     return _animationGroups[EnumValue(animGroup)].isSlowWalking;
 }
 
-void PeepAnimationsObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
+void PeepAnimationsObject::DrawPreview(RenderTarget& dpi, int32_t width, int32_t height) const
 {
     auto centre = ScreenCoordsXY{ width / 2, height / 2 };
 

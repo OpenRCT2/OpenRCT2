@@ -101,7 +101,7 @@ namespace OpenRCT2::Ui::Windows
             UpdatePosition(gTooltipCursor);
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             int32_t left = windowPos.x;
             int32_t top = windowPos.y;

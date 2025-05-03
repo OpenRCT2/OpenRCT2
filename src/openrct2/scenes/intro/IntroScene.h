@@ -13,7 +13,7 @@
 
 #include <cstdint>
 
-struct DrawPixelInfo;
+struct RenderTarget;
 
 namespace OpenRCT2
 {
@@ -45,5 +45,5 @@ namespace OpenRCT2
 
     bool IntroIsPlaying();
     void IntroUpdate();
-    void IntroDraw(DrawPixelInfo& dpi);
+    void IntroDraw(RenderTarget& dpi);
 } // namespace OpenRCT2

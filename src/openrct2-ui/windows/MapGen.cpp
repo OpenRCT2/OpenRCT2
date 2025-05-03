@@ -297,7 +297,7 @@ namespace OpenRCT2::Ui::Windows
             pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t newPage, int32_t spriteIndex)
+        void DrawTabImage(RenderTarget& dpi, int32_t newPage, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + newPage;
 
@@ -315,7 +315,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& dpi)
         {
             DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_BASE, SPR_TAB_GEARS_0);
             DrawTabImage(dpi, WINDOW_MAPGEN_PAGE_TERRAIN, SPR_G2_MAP_GEN_TERRAIN_TAB);
@@ -595,7 +595,7 @@ namespace OpenRCT2::Ui::Windows
             // clang-format on
         }
 
-        void BaseDraw(DrawPixelInfo& dpi)
+        void BaseDraw(RenderTarget& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -757,7 +757,7 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetDisabled(WIDX_TREE_ALTITUDE_MAX_DOWN, !_settings.trees || isFlatland);
         }
 
-        void ForestsDraw(DrawPixelInfo& dpi)
+        void ForestsDraw(RenderTarget& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -862,7 +862,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void SimplexDraw(DrawPixelInfo& dpi)
+        void SimplexDraw(RenderTarget& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -973,7 +973,7 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_HEIGHTMAP_NORMALIZE, _settings.normalize_height);
         }
 
-        void HeightmapDraw(DrawPixelInfo& dpi)
+        void HeightmapDraw(RenderTarget& dpi)
         {
             const auto enabledColour = colours[1];
             const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
@@ -1159,7 +1159,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawDropdownButton(DrawPixelInfo& dpi, WidgetIndex widgetIndex, ImageId image)
+        void DrawDropdownButton(RenderTarget& dpi, WidgetIndex widgetIndex, ImageId image)
         {
             const auto& widget = widgets[widgetIndex];
             ScreenCoordsXY pos = { windowPos.x + widget.left, windowPos.y + widget.top };
@@ -1181,7 +1181,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawDropdownButtons(DrawPixelInfo& dpi, WidgetIndex floorWidgetIndex, WidgetIndex edgeWidgetIndex)
+        void DrawDropdownButtons(RenderTarget& dpi, WidgetIndex floorWidgetIndex, WidgetIndex edgeWidgetIndex)
         {
             auto& objManager = GetContext()->GetObjectManager();
             const auto* surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(_settings.landTexture);
@@ -1223,7 +1223,7 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
         }
 
-        void TerrainDraw(DrawPixelInfo& dpi)
+        void TerrainDraw(RenderTarget& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -1334,7 +1334,7 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
         }
 
-        void WaterDraw(DrawPixelInfo& dpi)
+        void WaterDraw(RenderTarget& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -1446,7 +1446,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             switch (page)
             {

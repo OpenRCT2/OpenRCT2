@@ -18,7 +18,7 @@
 
 struct PaintSession;
 struct PaintStruct;
-struct DrawPixelInfo;
+struct RenderTarget;
 struct TileElement;
 struct EntityBase;
 struct Guest;
@@ -190,7 +190,7 @@ namespace OpenRCT2
     void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest& peep);
     void ViewportRotateSingle(WindowBase* window, int32_t direction);
     void ViewportRotateAll(int32_t direction);
-    void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport);
+    void ViewportRender(RenderTarget& dpi, const Viewport* viewport);
 
     CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords, uint8_t rotation);
 

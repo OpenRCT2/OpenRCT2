@@ -566,7 +566,7 @@ namespace OpenRCT2::Ui::Windows
             OnScrollMouseDown(scrollIndex, screenCoords);
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
         {
             GfxClear(dpi, PaletteIndex::pi10);
 
@@ -661,7 +661,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -951,7 +951,7 @@ namespace OpenRCT2::Ui::Windows
             return colourB;
         }
 
-        void PaintPeepOverlay(DrawPixelInfo& dpi, const ScreenCoordsXY& offset)
+        void PaintPeepOverlay(RenderTarget& dpi, const ScreenCoordsXY& offset)
         {
             auto flashColour = GetGuestFlashColour();
             for (auto guest : EntityList<Guest>())
@@ -965,7 +965,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, DrawPixelInfo& dpi, const ScreenCoordsXY& offset)
+        void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, RenderTarget& dpi, const ScreenCoordsXY& offset)
         {
             if (peep->x == kLocationNull)
                 return;
@@ -1011,7 +1011,7 @@ namespace OpenRCT2::Ui::Windows
             return colour;
         }
 
-        void PaintTrainOverlay(DrawPixelInfo& dpi, const ScreenCoordsXY& offset)
+        void PaintTrainOverlay(RenderTarget& dpi, const ScreenCoordsXY& offset)
         {
             for (auto train : TrainManager::View())
             {
@@ -1032,7 +1032,7 @@ namespace OpenRCT2::Ui::Windows
          * The call to GfxFillRect was originally wrapped in Sub68DABD which made sure that arguments were ordered correctly,
          * but it doesn't look like it's ever necessary here so the call was removed.
          */
-        void PaintHudRectangle(DrawPixelInfo& dpi, const ScreenCoordsXY& widgetOffset)
+        void PaintHudRectangle(RenderTarget& dpi, const ScreenCoordsXY& widgetOffset)
         {
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow == nullptr)
@@ -1070,7 +1070,7 @@ namespace OpenRCT2::Ui::Windows
             GfxFillRect(dpi, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PaletteIndex::pi56);
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& dpi)
         {
             // Guest tab image (animated)
             uint32_t guestTabImage = SPR_TAB_GUESTS_0;

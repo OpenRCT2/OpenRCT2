@@ -146,15 +146,15 @@ namespace OpenRCT2::Ui::Windows
     private:
         void ResetPressedWidgets();
 
-        void InformationPaint(DrawPixelInfo& dpi);
-        void PlayersPaint(DrawPixelInfo& dpi);
-        void GroupsPaint(DrawPixelInfo& dpi);
+        void InformationPaint(RenderTarget& dpi);
+        void PlayersPaint(RenderTarget& dpi);
+        void GroupsPaint(RenderTarget& dpi);
 
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t page_number, int32_t spriteIndex);
-        void DrawTabImages(DrawPixelInfo& dpi);
+        void DrawTabImage(RenderTarget& dpi, int32_t page_number, int32_t spriteIndex);
+        void DrawTabImages(RenderTarget& dpi);
 
-        void PlayersScrollPaint(int32_t scrollIndex, DrawPixelInfo& dpi) const;
-        void GroupsScrollPaint(int32_t scrollIndex, DrawPixelInfo& dpi) const;
+        void PlayersScrollPaint(int32_t scrollIndex, RenderTarget& dpi) const;
+        void GroupsScrollPaint(int32_t scrollIndex, RenderTarget& dpi) const;
 
         void ShowGroupDropdown(WidgetIndex widgetIndex);
         ScreenSize InformationGetSize();
@@ -168,7 +168,7 @@ namespace OpenRCT2::Ui::Windows
         void OnResize() override;
         void OnUpdate() override;
         void OnPrepareDraw() override;
-        void OnDraw(DrawPixelInfo& dpi) override;
+        void OnDraw(RenderTarget& dpi) override;
 
         void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override;
         void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override;
@@ -177,7 +177,7 @@ namespace OpenRCT2::Ui::Windows
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override;
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override;
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override;
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override;
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override;
     };
 
     WindowBase* MultiplayerOpen()
@@ -439,7 +439,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    void MultiplayerWindow::OnDraw(DrawPixelInfo& dpi)
+    void MultiplayerWindow::OnDraw(RenderTarget& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -658,7 +658,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    void MultiplayerWindow::OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi)
+    void MultiplayerWindow::OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi)
     {
         switch (page)
         {
@@ -672,9 +672,9 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    void MultiplayerWindow::InformationPaint(DrawPixelInfo& dpi)
+    void MultiplayerWindow::InformationPaint(RenderTarget& dpi)
     {
-        DrawPixelInfo clippedDPI;
+        RenderTarget clippedDPI;
         if (ClipDrawPixelInfo(clippedDPI, dpi, windowPos, width, height))
         {
             auto screenCoords = ScreenCoordsXY{ 3, widgets[WIDX_CONTENT_PANEL].top + 7 };
@@ -725,7 +725,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    void MultiplayerWindow::PlayersPaint(DrawPixelInfo& dpi)
+    void MultiplayerWindow::PlayersPaint(RenderTarget& dpi)
     {
         // Number of players
         StringId stringId = no_list_items == 1 ? STR_MULTIPLAYER_PLAYER_COUNT : STR_MULTIPLAYER_PLAYER_COUNT_PLURAL;
@@ -735,7 +735,7 @@ namespace OpenRCT2::Ui::Windows
         DrawTextBasic(dpi, screenCoords, stringId, ft, { colours[2] });
     }
 
-    void MultiplayerWindow::PlayersScrollPaint(int32_t scrollIndex, DrawPixelInfo& dpi) const
+    void MultiplayerWindow::PlayersScrollPaint(int32_t scrollIndex, RenderTarget& dpi) const
     {
         ScreenCoordsXY screenCoords;
         screenCoords.y = 0;
@@ -835,7 +835,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    void MultiplayerWindow::GroupsPaint(DrawPixelInfo& dpi)
+    void MultiplayerWindow::GroupsPaint(RenderTarget& dpi)
     {
         thread_local std::string _buffer;
 
@@ -878,7 +878,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    void MultiplayerWindow::GroupsScrollPaint(int32_t scrollIndex, DrawPixelInfo& dpi) const
+    void MultiplayerWindow::GroupsScrollPaint(int32_t scrollIndex, RenderTarget& dpi) const
     {
         auto screenCoords = ScreenCoordsXY{ 0, 0 };
 
@@ -921,7 +921,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    void MultiplayerWindow::DrawTabImage(DrawPixelInfo& dpi, int32_t page_number, int32_t spriteIndex)
+    void MultiplayerWindow::DrawTabImage(RenderTarget& dpi, int32_t page_number, int32_t spriteIndex)
     {
         WidgetIndex widgetIndex = WIDX_TAB1 + page_number;
 
@@ -942,7 +942,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    void MultiplayerWindow::DrawTabImages(DrawPixelInfo& dpi)
+    void MultiplayerWindow::DrawTabImages(RenderTarget& dpi)
     {
         DrawTabImage(dpi, WINDOW_MULTIPLAYER_PAGE_INFORMATION, SPR_TAB_KIOSKS_AND_FACILITIES_0);
         DrawTabImage(dpi, WINDOW_MULTIPLAYER_PAGE_PLAYERS, SPR_TAB_GUESTS_0);

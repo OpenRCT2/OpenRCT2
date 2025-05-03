@@ -216,12 +216,12 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ResearchOpen();
     void WindowResearchDevelopmentMouseUp(WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex);
     void WindowResearchDevelopmentPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex);
-    void WindowResearchDevelopmentDraw(WindowBase* w, DrawPixelInfo& dpi, WidgetIndex baseWidgetIndex);
+    void WindowResearchDevelopmentDraw(WindowBase* w, RenderTarget& dpi, WidgetIndex baseWidgetIndex);
     void WindowResearchFundingMouseDown(WindowBase* w, WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex);
     void WindowResearchFundingMouseUp(WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex);
     void WindowResearchFundingDropdown(WidgetIndex widgetIndex, int32_t selectedIndex, WidgetIndex baseWidgetIndex);
     void WindowResearchFundingPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex);
-    void WindowResearchFundingDraw(WindowBase* w, DrawPixelInfo& dpi);
+    void WindowResearchFundingDraw(WindowBase* w, RenderTarget& dpi);
 
     // Ride
     WindowBase* RideMainOpen(const Ride& ride);

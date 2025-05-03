@@ -101,7 +101,7 @@ namespace OpenRCT2::Ui::Windows
     }
 
     static void DrawResearchItem(
-        DrawPixelInfo& dpi, const ResearchItem& researchItem, const int16_t& width, const ScreenCoordsXY& screenCoords,
+        RenderTarget& dpi, const ResearchItem& researchItem, const int16_t& width, const ScreenCoordsXY& screenCoords,
         StringId format, TextPaint textPaint)
     {
         const StringId itemNameId = researchItem.GetName();
@@ -268,7 +268,7 @@ namespace OpenRCT2::Ui::Windows
             WindowEditorInventionsListDragOpen(researchItem, windowPos, widgets[WIDX_PRE_RESEARCHED_SCROLL].right);
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
         {
             const auto& gameState = getGameState();
 
@@ -353,7 +353,7 @@ namespace OpenRCT2::Ui::Windows
             return fallback;
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
 
@@ -399,7 +399,7 @@ namespace OpenRCT2::Ui::Windows
             const auto* object = ObjectEntryGetObject(objectEntryType, researchItem->entryIndex);
             if (object != nullptr)
             {
-                DrawPixelInfo clipDPI;
+                RenderTarget clipDPI;
                 screenPos = windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 };
                 const auto clipWidth = bkWidget.width() - 1;
                 const auto clipHeight = bkWidget.height() - 1;
@@ -655,7 +655,7 @@ namespace OpenRCT2::Ui::Windows
             Close();
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             auto screenCoords = windowPos + ScreenCoordsXY{ 0, 2 };
 

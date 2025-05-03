@@ -13,7 +13,7 @@
 #include <cstring>
 
 template<DrawBlendOp TBlendOp>
-static void FASTCALL DrawRLESpriteMagnify(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
+static void FASTCALL DrawRLESpriteMagnify(RenderTarget& dpi, const DrawSpriteArgs& args)
 {
     auto& paletteMap = args.PalMap;
     auto imgData = args.SourceImage.offset;
@@ -58,7 +58,7 @@ static void FASTCALL DrawRLESpriteMagnify(DrawPixelInfo& dpi, const DrawSpriteAr
 }
 
 template<DrawBlendOp TBlendOp, size_t TZoom>
-static void FASTCALL DrawRLESpriteMinify(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
+static void FASTCALL DrawRLESpriteMinify(RenderTarget& dpi, const DrawSpriteArgs& args)
 {
     auto src0 = args.SourceImage.offset;
     auto dst0 = args.DestinationBits;
@@ -153,7 +153,7 @@ static void FASTCALL DrawRLESpriteMinify(DrawPixelInfo& dpi, const DrawSpriteArg
 }
 
 template<DrawBlendOp TBlendOp>
-static void FASTCALL DrawRLESprite(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
+static void FASTCALL DrawRLESprite(RenderTarget& dpi, const DrawSpriteArgs& args)
 {
     auto zoom_level = static_cast<int8_t>(dpi.zoom_level);
     switch (zoom_level)
@@ -186,7 +186,7 @@ static void FASTCALL DrawRLESprite(DrawPixelInfo& dpi, const DrawSpriteArgs& arg
  *  rct2: 0x0067AA18
  * @param imageId Only flags are used.
  */
-void FASTCALL GfxRleSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
+void FASTCALL GfxRleSpriteToBuffer(RenderTarget& dpi, const DrawSpriteArgs& args)
 {
     if (args.Image.HasPrimary())
     {

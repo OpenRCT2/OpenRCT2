@@ -348,7 +348,7 @@ namespace OpenRCT2::Ui::Windows
             OnPrepareDrawGraph(graphPageWidget, centredGraph);
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -397,7 +397,7 @@ namespace OpenRCT2::Ui::Windows
             return {};
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
         {
             if (page != WINDOW_FINANCES_PAGE_SUMMARY)
                 return;
@@ -590,7 +590,7 @@ namespace OpenRCT2::Ui::Windows
                 InitialiseScrollPosition(WIDX_SUMMARY_SCROLL, 0);
         }
 
-        void OnDrawSummary(DrawPixelInfo& dpi)
+        void OnDrawSummary(RenderTarget& dpi)
         {
             auto titleBarBottom = widgets[WIDX_TITLE].bottom;
             auto screenCoords = windowPos + ScreenCoordsXY{ 8, titleBarBottom + 37 };
@@ -708,7 +708,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDrawMarketing(DrawPixelInfo& dpi)
+        void OnDrawMarketing(RenderTarget& dpi)
         {
             auto screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_TAB_1].top + 45 };
             int32_t noCampaignsActive = 1;
@@ -787,7 +787,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Graph Events
 
-        void OnDrawGraph(DrawPixelInfo& dpi, const money64 currentValue, const StringId fmt) const
+        void OnDrawGraph(RenderTarget& dpi, const money64 currentValue, const StringId fmt) const
         {
             Formatter ft;
             ft.Add<money64>(currentValue);
@@ -852,7 +852,7 @@ namespace OpenRCT2::Ui::Windows
             WidgetScrollUpdateThumbs(*this, widgetIndex);
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabPage, int32_t spriteIndex)
+        void DrawTabImage(RenderTarget& dpi, int32_t tabPage, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + tabPage;
 
@@ -870,7 +870,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& dpi)
         {
             DrawTabImage(dpi, WINDOW_FINANCES_PAGE_SUMMARY, SPR_TAB_FINANCES_SUMMARY_0);
             DrawTabImage(dpi, WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH, SPR_TAB_FINANCES_FINANCIAL_GRAPH_0);

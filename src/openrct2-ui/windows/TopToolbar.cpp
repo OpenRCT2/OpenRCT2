@@ -875,7 +875,7 @@ namespace OpenRCT2::Ui::Windows
                 AlignButtonsCentre();
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             const auto& gameState = getGameState();
             int32_t imgId;

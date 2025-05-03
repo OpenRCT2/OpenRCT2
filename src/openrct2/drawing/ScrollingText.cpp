@@ -51,7 +51,7 @@ static void ScrollingTextSetBitmapForTTF(
 static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_t offset, uint16_t count, bool isAntiAliased)
 {
     uint8_t drawingSurface[64];
-    DrawPixelInfo dpi;
+    RenderTarget dpi;
     dpi.bits = reinterpret_cast<uint8_t*>(&drawingSurface);
     dpi.width = 8;
     dpi.height = 8;

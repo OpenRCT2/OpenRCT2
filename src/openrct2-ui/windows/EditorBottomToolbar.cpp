@@ -117,7 +117,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             auto drawPreviousButton = widgets[WIDX_PREVIOUS_STEP_BUTTON].type != WindowWidgetType::Empty;
             auto drawNextButton = widgets[WIDX_NEXT_STEP_BUTTON].type != WindowWidgetType::Empty;
@@ -326,7 +326,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::Empty;
         }
 
-        void DrawLeftButtonBack(DrawPixelInfo& dpi)
+        void DrawLeftButtonBack(RenderTarget& dpi)
         {
             auto previousWidget = widgets[WIDX_PREVIOUS_IMAGE];
             auto leftTop = windowPos + ScreenCoordsXY{ previousWidget.left, previousWidget.top };
@@ -334,7 +334,7 @@ namespace OpenRCT2::Ui::Windows
             GfxFilterRect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
         }
 
-        void DrawLeftButton(DrawPixelInfo& dpi)
+        void DrawLeftButton(RenderTarget& dpi)
         {
             const auto topLeft = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 1, widgets[WIDX_PREVIOUS_IMAGE].top + 1 };
@@ -364,7 +364,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
         }
 
-        void DrawRightButtonBack(DrawPixelInfo& dpi)
+        void DrawRightButtonBack(RenderTarget& dpi)
         {
             auto nextWidget = widgets[WIDX_NEXT_IMAGE];
             auto leftTop = windowPos + ScreenCoordsXY{ nextWidget.left, nextWidget.top };
@@ -372,7 +372,7 @@ namespace OpenRCT2::Ui::Windows
             GfxFilterRect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
         }
 
-        void DrawRightButton(DrawPixelInfo& dpi)
+        void DrawRightButton(RenderTarget& dpi)
         {
             const auto topLeft = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].left + 1, widgets[WIDX_NEXT_IMAGE].top + 1 };
@@ -403,7 +403,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
         }
 
-        void DrawStepText(DrawPixelInfo& dpi)
+        void DrawStepText(RenderTarget& dpi)
         {
             int16_t stateX = (widgets[WIDX_PREVIOUS_IMAGE].right + widgets[WIDX_NEXT_IMAGE].left) / 2 + windowPos.x;
             int16_t stateY = height - 0x0C + windowPos.y;

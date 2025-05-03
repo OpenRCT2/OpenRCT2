@@ -192,7 +192,7 @@ static bool SpriteImageExport(const G1Element& spriteElement, u8string_view outP
     auto pixelBuffer = std::make_unique<uint8_t[]>(pixelBufferSize);
     auto pixels = pixelBuffer.get();
 
-    DrawPixelInfo dpi;
+    RenderTarget dpi;
     dpi.bits = pixels;
     dpi.x = 0;
     dpi.y = 0;

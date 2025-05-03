@@ -444,7 +444,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& dpi) override
         {
             switch (page)
             {
@@ -502,7 +502,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& dpi) override
         {
             if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_RIDES)
             {
@@ -576,7 +576,7 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetPressed(WIDX_TAB_1 + page, true);
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& dpi)
         {
             Widget* widget;
             int32_t spriteIndex;
@@ -1087,7 +1087,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x0067161C
          */
-        void ObjectiveOnDraw(DrawPixelInfo& dpi)
+        void ObjectiveOnDraw(RenderTarget& dpi)
         {
             const auto& gameState = getGameState();
             StringId stringId;
@@ -1250,7 +1250,7 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
         }
 
-        void ScenarioDetailsOnDraw(DrawPixelInfo& dpi)
+        void ScenarioDetailsOnDraw(RenderTarget& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -1656,7 +1656,7 @@ namespace OpenRCT2::Ui::Windows
                                                                                    : WindowWidgetType::CloseBox;
         }
 
-        void FinancialDraw(DrawPixelInfo& dpi)
+        void FinancialDraw(RenderTarget& dpi)
         {
             ScreenCoordsXY screenCoords{};
 
@@ -1943,7 +1943,7 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetPressed(WIDX_HARD_GUEST_GENERATION, gameState.park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION);
         }
 
-        void GuestsDraw(DrawPixelInfo& dpi)
+        void GuestsDraw(RenderTarget& dpi)
         {
             ScreenCoordsXY screenCoords{};
 
@@ -2142,7 +2142,7 @@ namespace OpenRCT2::Ui::Windows
                                                                                    : WindowWidgetType::CloseBox;
         }
 
-        void LandDraw(DrawPixelInfo& dpi)
+        void LandDraw(RenderTarget& dpi)
         {
             ScreenCoordsXY screenCoords{};
 
@@ -2277,7 +2277,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x00672340
          */
-        void RidesOnDraw(DrawPixelInfo& dpi)
+        void RidesOnDraw(RenderTarget& dpi)
         {
             DrawWidgets(dpi);
             DrawTabImages(dpi);
@@ -2287,7 +2287,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x0067236F
          */
-        void RidesOnScrollDraw(DrawPixelInfo& dpi, int32_t scrollIndex)
+        void RidesOnScrollDraw(RenderTarget& dpi, int32_t scrollIndex)
         {
             int32_t colour = ColourMapA[colours[1].colour].mid_light;
             GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);

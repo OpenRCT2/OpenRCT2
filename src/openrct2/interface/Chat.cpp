@@ -40,7 +40,7 @@ static TextInputSession* _chatTextInputSession;
 static const u8string& ChatGetHistory(size_t index);
 static uint32_t ChatHistoryGetTime(size_t index);
 static void ChatClearInput();
-static int32_t ChatHistoryDrawString(DrawPixelInfo& dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width);
+static int32_t ChatHistoryDrawString(RenderTarget& dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width);
 
 bool ChatAvailable()
 {
@@ -84,7 +84,7 @@ void ChatUpdate()
     _chatCaretTicks = (_chatCaretTicks + 1) % 30;
 }
 
-void ChatDraw(DrawPixelInfo& dpi, ColourWithFlags chatBackgroundColor)
+void ChatDraw(RenderTarget& dpi, ColourWithFlags chatBackgroundColor)
 {
     thread_local std::string lineBuffer;
 
@@ -285,7 +285,7 @@ static void ChatClearInput()
 
 // This method is the same as gfx_draw_string_left_wrapped.
 // But this adjusts the initial Y coordinate depending of the number of lines.
-static int32_t ChatHistoryDrawString(DrawPixelInfo& dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width)
+static int32_t ChatHistoryDrawString(RenderTarget& dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width)
 {
     int32_t numLines;
     u8string wrappedString;
