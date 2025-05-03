@@ -436,10 +436,10 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({ 10, kAdvancedStart + 16}, {295, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
         MakeWidget        ({ 10, kAdvancedStart + 30}, {295, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_STAY_CONNECTED_AFTER_DESYNC,           STR_STAY_CONNECTED_AFTER_DESYNC_TIP          ), // Do not disconnect after the client desynchronises with the server
 #ifdef __EMSCRIPTEN__
-        MakeWidget        ({  5, kAdvancedStart + 50}, {140, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EXPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data export
-        MakeWidget        ({150, kAdvancedStart + 50}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_IMPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data import
+        MakeWidget        ({ 10, kAdvancedStart + 46}, {135, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EXPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data export
+        MakeWidget        ({150, kAdvancedStart + 46}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_IMPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data import
 #endif
-        MakeWidget        ({150, kAdvancedStart + 70}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                ), // Asset packs
+        MakeWidget        ({150, kAdvancedStart + 64}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                ), // Asset packs
     };
 
     static constexpr std::span<const Widget> window_options_page_widgets[] = {
@@ -2124,9 +2124,9 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, Config::Get().network.StayConnected);
 
 #ifdef __EMSCRIPTEN__
-            widgets[WIDX_GROUP_ADVANCED].bottom = kAdvancedStart + 86 + getTitleBarDiffNormal();
+            widgets[WIDX_GROUP_ADVANCED].bottom = kAdvancedStart + 84 + getTitleBarDiffNormal();
 #else
-            widgets[WIDX_GROUP_ADVANCED].bottom = kAdvancedStart + 66 + getTitleBarDiffNormal();
+            widgets[WIDX_GROUP_ADVANCED].bottom = kAdvancedStart + 64 + getTitleBarDiffNormal();
 #endif
 
             widgets[WIDX_ASSET_PACKS].top = widgets[WIDX_GROUP_ADVANCED].bottom - 20;
