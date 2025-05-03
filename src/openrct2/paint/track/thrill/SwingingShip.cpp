@@ -295,7 +295,7 @@ static void PaintSwingingShip(
             break;
     }
 
-    PaintUtilSetGeneralSupportHeight(session, height + 112);
+    PaintUtilSetGeneralSupportHeight(session, height + trackElement->ClearanceHeight - trackElement->BaseHeight);
 }
 
 TrackPaintFunction GetTrackPaintFunctionSwingingShip(OpenRCT2::TrackElemType trackType)
