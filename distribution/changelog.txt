@@ -6,6 +6,7 @@
 - Improved: [#23590] Title bars are now drawn bigger when “Enlarged UI” is enabled.
 - Improved: [#23626] Add small, medium and large flat and sloped turns, S-bends and diagonal track to the Go-Karts.
 - Improved: [#23982] The scenario objective window has been merged into the scenario options window.
+- Improved: [#24233] RCT Classic+ from Apple Arcade can now be used as the source game, and is detected automatically.
 - Improved: [#24260] Better performance on parks that have a lot of Guests and Entertainers.
 - Change: [#23803] Lightning strikes and thunder now happen at the same frequency independently of the game speed.
 - Change: [#23857] Replace display options tab with custom sprites.
@@ -27,6 +28,7 @@
 - Fix: [#24121] Checkbox labels run beyond the edge of the window if they’re too long to fit.
 - Fix: [#24142] [Plugin] Track origin is miscalculated on downward slopes.
 - Fix: [#24220] Narrow station platforms have missing sides on certain rotations.
+- Fix: [#24286] Steam installs of RCT1 and RCT2 are not autodetected on macOS.
 - Fix: [#24310] [Plugin] Missing invalidation on various plugin api setters for entities.
 
 0.4.21 (2025-04-05)
