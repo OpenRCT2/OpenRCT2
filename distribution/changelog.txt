@@ -15,6 +15,7 @@
 - Change: [#24236] Controls and Interface options now both have their own tabs in the Options window.
 - Change: [#24308] “Software” and “Software (hardware display)” renderers have been merged into a single “Software” renderer.
 - Change: [#24317] The scenery window now shows at least one row of scenery objects, even if there are multiple rows of tabs.
+- Fix: [#18479] Tile elements ordered beneath water do not draw correctly.
 - Fix: [#19782] Game stops counting inversions and golf holes after 31 (original bug).
 - Fix: [#21207] Track List window gets positioned incorrectly.
 - Fix: [#21919] Non-recolourable cars still show colour picker (original bug).
