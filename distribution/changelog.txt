@@ -1,3 +1,6 @@
+0.4.23 (in development)
+------------------------------------------------------------------------
+
 0.4.22 (2025-05-04)
 ------------------------------------------------------------------------
 - Feature: [#24206] [Plugin] Add APIs for breaking down rides, reading the current breakdown, and for fixing broken down rides.
