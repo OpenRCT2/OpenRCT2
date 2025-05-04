@@ -82,7 +82,7 @@ void DrawingEngineSetPalette(const GamePalette& colours)
         auto drawingEngine = context->GetDrawingEngine();
         if (drawingEngine != nullptr)
         {
-            drawingEngine->SetPalette(colours);
+            drawingEngine->SetPrimaryPalette(colours);
         }
     }
 }
@@ -107,13 +107,6 @@ void DrawingEngineDispose()
     {
         context->DisposeDrawingEngine();
     }
-}
-
-DrawPixelInfo& DrawingEngineGetDpi()
-{
-    auto context = GetContext();
-    auto drawingEngine = context->GetDrawingEngine();
-    return *(drawingEngine->GetDrawingPixelInfo());
 }
 
 bool DrawingEngineHasDirtyOptimisations()

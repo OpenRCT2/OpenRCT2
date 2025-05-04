@@ -28,47 +28,50 @@ namespace OpenRCT2
 
         class X8WeatherDrawer final : public IWeatherDrawer
         {
-        private:
-            struct WeatherPixel
-            {
-                uint32_t Position;
-                uint8_t Colour;
-            };
-
-            static constexpr uint32_t kMaxWeatherPixels = 0xFFFE;
-
-            size_t _weatherPixelsCapacity = kMaxWeatherPixels;
-            uint32_t _weatherPixelsCount = 0;
-            WeatherPixel* _weatherPixels = nullptr;
+            IDrawingContext* _drawingContext = nullptr;
 
         public:
-            X8WeatherDrawer();
-            ~X8WeatherDrawer();
+            X8WeatherDrawer(IDrawingContext& drawingCtx);
+
             void Draw(
                 DrawPixelInfo& dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
                 const uint8_t* weatherpattern) override;
-            void Restore(DrawPixelInfo& dpi);
         };
 
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wsuggest-final-types"
 #endif
+
+        class X8FrameBuffer
+        {
+            std::unique_ptr<uint8_t[]> _bits{};
+            int32_t _width{};
+            int32_t _height{};
+            int32_t _pitch{};
+            size_t _bitsSize{};
+
+        public:
+            X8FrameBuffer() = default;
+
+            void Resize(int32_t width, int32_t height, int32_t pitch);
+
+            DrawPixelInfo GetDrawingPixelInfo() const;
+        };
+
         class X8DrawingEngine : public IDrawingEngine
         {
         protected:
-            uint32_t _width = 0;
-            uint32_t _height = 0;
-            uint32_t _pitch = 0;
-            size_t _bitsSize = 0;
-            uint8_t* _bits = nullptr;
-
-            DrawPixelInfo _bitsDPI = {};
+            X8FrameBuffer _vpFrameBuffer;
+            X8FrameBuffer _effectsFramebuffer;
+            X8FrameBuffer _uiFrameBuffer;
+            int32_t _width{};
+            int32_t _height{};
 
             bool _lastLightFXenabled = false;
 
-            X8WeatherDrawer _weatherDrawer;
-            X8DrawingContext* _drawingContext;
+            std::unique_ptr<X8WeatherDrawer> _weatherDrawer;
+            std::unique_ptr<X8DrawingContext> _drawingContext;
             InvalidationGrid _invalidationGrid;
 
         public:
@@ -86,7 +89,7 @@ namespace OpenRCT2
 
             void Initialise() override;
             void Resize(uint32_t width, uint32_t height) override;
-            void SetPalette(const GamePalette& palette) override;
+            void SetPrimaryPalette(const GamePalette& palette) override;
             void SetVSync(bool vsync) override;
             void Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) override;
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
@@ -99,19 +102,18 @@ namespace OpenRCT2
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
     #pragma GCC diagnostic pop
 #endif
+            void PaintViewport() override;
             void PaintWindows() override;
             void PaintWeather() override;
             void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) override;
             std::string Screenshot() override;
             IDrawingContext* GetDrawingContext() override;
-            DrawPixelInfo* GetDrawingPixelInfo() override;
+            DrawPixelInfo GetDrawingPixelInfo() override;
             DrawingEngineFlags GetFlags() override;
             void InvalidateImage(uint32_t image) override;
 
-            DrawPixelInfo* GetDPI();
-
         protected:
-            void ConfigureBits(uint32_t width, uint32_t height, uint32_t pitch);
+            void ConfigureRenderTargets(uint32_t width, uint32_t height, uint32_t pitch);
             virtual void OnDrawDirtyBlock(int32_t left, int32_t top, int32_t right, int32_t bottom);
 
         private:
@@ -154,5 +156,6 @@ namespace OpenRCT2
                 return _isDrawing;
             }
         };
+
     } // namespace Drawing
 } // namespace OpenRCT2

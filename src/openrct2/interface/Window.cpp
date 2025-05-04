@@ -907,10 +907,14 @@ static constexpr float kWindowScrollLocations[][2] = {
      */
     void WindowDrawAll(DrawPixelInfo& dpi, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
+        auto* main = WindowGetMain();
+
         auto windowDPI = dpi.Crop({ left, top }, { right - left, bottom - top });
-        WindowVisitEach([&windowDPI, left, top, right, bottom](WindowBase* w) {
-            if (w->flags & WF_TRANSPARENT)
+        WindowVisitEach([&](WindowBase* w) {
+            if (w == main)
                 return;
+            // if (w->flags & WF_TRANSPARENT)
+            // return;
             if (right <= w->windowPos.x || bottom <= w->windowPos.y)
                 return;
             if (left >= w->windowPos.x + w->width || top >= w->windowPos.y + w->height)

@@ -57,20 +57,24 @@ namespace OpenRCT2::Drawing
 
         virtual void Initialise() = 0;
         virtual void Resize(uint32_t width, uint32_t height) = 0;
-        virtual void SetPalette(const GamePalette& colours) = 0;
+        virtual void SetPrimaryPalette(const GamePalette& colours) = 0;
 
         virtual void SetVSync(bool vsync) = 0;
 
         virtual void Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) = 0;
+
         virtual void BeginDraw() = 0;
         virtual void EndDraw() = 0;
-        virtual void PaintWindows() = 0;
+
+        virtual void PaintViewport() = 0;
         virtual void PaintWeather() = 0;
+        virtual void PaintWindows() = 0;
+
         virtual void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) = 0;
         virtual std::string Screenshot() = 0;
 
         virtual IDrawingContext* GetDrawingContext() = 0;
-        virtual DrawPixelInfo* GetDrawingPixelInfo() = 0;
+        virtual DrawPixelInfo GetDrawingPixelInfo() = 0;
 
         virtual DrawingEngineFlags GetFlags() = 0;
 

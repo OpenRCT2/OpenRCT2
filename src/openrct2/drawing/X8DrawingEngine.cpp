@@ -33,14 +33,63 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Ui;
 
-X8WeatherDrawer::X8WeatherDrawer()
+void X8FrameBuffer::Resize(int32_t width, int32_t height, int32_t pitch)
 {
-    _weatherPixels = new WeatherPixel[_weatherPixelsCapacity];
+    size_t newBitsSize = pitch * height;
+
+    auto newBits = std::make_unique<uint8_t[]>(newBitsSize);
+    if (_bits == nullptr)
+    {
+        std::fill_n(newBits.get(), newBitsSize, 0);
+    }
+    else
+    {
+        if (_pitch == pitch)
+        {
+            std::copy_n(_bits.get(), std::min(_bitsSize, newBitsSize), newBits.get());
+        }
+        else
+        {
+            uint8_t* src = _bits.get();
+            uint8_t* dst = newBits.get();
+
+            uint32_t minWidth = std::min(width, _width);
+            uint32_t minHeight = std::min(height, _height);
+            for (uint32_t y = 0; y < minHeight; y++)
+            {
+                std::copy_n(src, minWidth, dst);
+                if (pitch - minWidth > 0)
+                {
+                    std::fill_n(dst + minWidth, pitch - minWidth, 0);
+                }
+                src += _pitch;
+                dst += pitch;
+            }
+        }
+    }
+
+    _bits = std::move(newBits);
+    _bitsSize = newBitsSize;
+    _width = width;
+    _height = height;
+    _pitch = pitch;
 }
 
-X8WeatherDrawer::~X8WeatherDrawer()
+DrawPixelInfo X8FrameBuffer::GetDrawingPixelInfo() const
 {
-    delete[] _weatherPixels;
+    DrawPixelInfo dpi;
+    dpi.bits = _bits.get();
+    dpi.x = 0;
+    dpi.y = 0;
+    dpi.width = _width;
+    dpi.height = _height;
+    dpi.pitch = _pitch - _width;
+    return dpi;
+}
+
+X8WeatherDrawer::X8WeatherDrawer(IDrawingContext& drawingCtx)
+    : _drawingContext{ &drawingCtx }
+{
 }
 
 void X8WeatherDrawer::Draw(
@@ -57,59 +106,29 @@ void X8WeatherDrawer::Draw(
     uint32_t pixelOffset = dpi.LineStride() * y + x;
     uint8_t patternYPos = patternStartYOffset % patternYSpace;
 
-    uint8_t* screenBits = dpi.bits;
-
-    // Stores the colours of changed pixels
-    WeatherPixel* newPixels = &_weatherPixels[_weatherPixelsCount];
     for (; height != 0; height--)
     {
         auto patternX = pattern[patternYPos * 2];
         if (patternX != 0xFF)
         {
-            if (_weatherPixelsCount < (_weatherPixelsCapacity - static_cast<uint32_t>(width)))
+            uint32_t finalPixelOffset = width + pixelOffset;
+
+            uint32_t xPixelOffset = pixelOffset;
+            xPixelOffset += (static_cast<uint8_t>(patternX - patternStartXOffset)) % patternXSpace;
+
+            auto patternPixel = pattern[patternYPos * 2 + 1];
+            for (; xPixelOffset < finalPixelOffset; xPixelOffset += patternXSpace)
             {
-                uint32_t finalPixelOffset = width + pixelOffset;
+                int32_t pixelX = xPixelOffset % dpi.width;
+                int32_t pixelY = (xPixelOffset / dpi.width) % dpi.height;
 
-                uint32_t xPixelOffset = pixelOffset;
-                xPixelOffset += (static_cast<uint8_t>(patternX - patternStartXOffset)) % patternXSpace;
-
-                auto patternPixel = pattern[patternYPos * 2 + 1];
-                for (; xPixelOffset < finalPixelOffset; xPixelOffset += patternXSpace)
-                {
-                    uint8_t current_pixel = screenBits[xPixelOffset];
-                    screenBits[xPixelOffset] = patternPixel;
-                    _weatherPixelsCount++;
-
-                    // Store colour and position
-                    *newPixels++ = { xPixelOffset, current_pixel };
-                }
+                _drawingContext->DrawLine(dpi, patternPixel, { { pixelX, pixelY }, { pixelX + 1, pixelY + 1 } });
             }
         }
 
         pixelOffset += dpi.LineStride();
         patternYPos++;
         patternYPos %= patternYSpace;
-    }
-}
-
-void X8WeatherDrawer::Restore(DrawPixelInfo& dpi)
-{
-    if (_weatherPixelsCount > 0)
-    {
-        uint32_t numPixels = dpi.LineStride() * dpi.height;
-        uint8_t* bits = dpi.bits;
-        for (uint32_t i = 0; i < _weatherPixelsCount; i++)
-        {
-            WeatherPixel weatherPixel = _weatherPixels[i];
-            if (weatherPixel.Position >= numPixels)
-            {
-                // Pixel out of bounds, bail
-                break;
-            }
-
-            bits[weatherPixel.Position] = weatherPixel.Colour;
-        }
-        _weatherPixelsCount = 0;
     }
 }
 
@@ -120,16 +139,15 @@ void X8WeatherDrawer::Restore(DrawPixelInfo& dpi)
 
 X8DrawingEngine::X8DrawingEngine([[maybe_unused]] const std::shared_ptr<Ui::IUiContext>& uiContext)
 {
-    _drawingContext = new X8DrawingContext(this);
-    _bitsDPI.DrawingEngine = this;
+    _drawingContext = std::make_unique<X8DrawingContext>(this);
+    _weatherDrawer = std::make_unique<X8WeatherDrawer>(*_drawingContext);
+
     LightFx::SetAvailable(true);
     _lastLightFXenabled = Config::Get().general.EnableLightFx;
 }
 
 X8DrawingEngine::~X8DrawingEngine()
 {
-    delete _drawingContext;
-    delete[] _bits;
 }
 
 void X8DrawingEngine::Initialise()
@@ -138,15 +156,19 @@ void X8DrawingEngine::Initialise()
 
 void X8DrawingEngine::Resize(uint32_t width, uint32_t height)
 {
-    uint32_t pitch = width;
-    ConfigureBits(width, height, pitch);
+    _width = static_cast<int32_t>(width);
+    _height = static_cast<int32_t>(height);
 
+    uint32_t pitch = width;
+    ConfigureRenderTargets(width, height, pitch);
+
+    auto vpDPI = _vpFrameBuffer.GetDrawingPixelInfo();
     _drawingContext->BeginDraw();
-    _drawingContext->Clear(_bitsDPI, PaletteIndex::pi10);
+    _drawingContext->Clear(vpDPI, PaletteIndex::pi10);
     _drawingContext->EndDraw();
 }
 
-void X8DrawingEngine::SetPalette([[maybe_unused]] const GamePalette& palette)
+void X8DrawingEngine::SetPrimaryPalette([[maybe_unused]] const GamePalette& palette)
 {
 }
 
@@ -167,11 +189,11 @@ void X8DrawingEngine::BeginDraw()
         // HACK we need to re-configure the bits if light fx has been enabled / disabled
         if (_lastLightFXenabled != Config::Get().general.EnableLightFx)
         {
-            Resize(_width, _height);
+            auto dpi = GetDrawingPixelInfo();
+            Resize(dpi.width, dpi.height);
             GfxInvalidateScreen();
             _lastLightFXenabled = Config::Get().general.EnableLightFx;
         }
-        _weatherDrawer.Restore(_bitsDPI);
     }
 
     _drawingContext->BeginDraw();
@@ -182,7 +204,7 @@ void X8DrawingEngine::EndDraw()
     _drawingContext->EndDraw();
 }
 
-void X8DrawingEngine::PaintWindows()
+void X8DrawingEngine::PaintViewport()
 {
     WindowResetVisibilities();
 
@@ -193,9 +215,67 @@ void X8DrawingEngine::PaintWindows()
     DrawAllDirtyBlocks();
 }
 
+void X8DrawingEngine::PaintWindows()
+{
+    auto dpiUi = _uiFrameBuffer.GetDrawingPixelInfo();
+    dpiUi.DrawingEngine = this;
+
+    // In order for transparency to work we need to copy vp to ui
+    // and then draw the windows on top of that.
+    if (false)
+    {
+        auto dpiVp = _vpFrameBuffer.GetDrawingPixelInfo();
+        std::memcpy(dpiUi.bits, dpiVp.bits, dpiVp.width * dpiVp.height);
+    }
+    else
+    {
+        // Fully transparent.
+        std::memset(dpiUi.bits, 0, dpiUi.width * dpiUi.height);
+    }
+
+    WindowDrawAll(dpiUi, 0, 0, dpiUi.width, dpiUi.height);
+}
+
 void X8DrawingEngine::PaintWeather()
 {
-    DrawWeather(_bitsDPI, &_weatherDrawer);
+    auto dpiEffects = _effectsFramebuffer.GetDrawingPixelInfo();
+    dpiEffects.DrawingEngine = this;
+
+    // In order for transparency to work we need to copy vp to effects
+    // and then draw the weather on top of that.
+    if (false)
+    {
+        auto dpiVp = _vpFrameBuffer.GetDrawingPixelInfo();
+        std::memcpy(dpiEffects.bits, dpiVp.bits, dpiVp.width * dpiVp.height);
+    }
+    else
+    {
+        // Fully transparent.
+        std::memset(dpiEffects.bits, 0, dpiEffects.width * dpiEffects.height);
+    }
+
+    DrawWeather(dpiEffects, _weatherDrawer.get());
+}
+
+void X8DrawingEngine::DrawAllDirtyBlocks()
+{
+    _invalidationGrid.traverseDirtyCells([this](int32_t left, int32_t top, int32_t right, int32_t bottom) {
+        // Draw region
+        DrawDirtyBlocks(left, top, right, bottom);
+    });
+}
+
+void X8DrawingEngine::DrawDirtyBlocks(int32_t left, int32_t top, int32_t right, int32_t bottom)
+{
+    // Draw region
+    OnDrawDirtyBlock(left, top, right, bottom);
+
+    auto vpDPI = _vpFrameBuffer.GetDrawingPixelInfo();
+    vpDPI.DrawingEngine = this;
+
+    auto croppedDPI = vpDPI.Crop({ left, top }, { right - left, bottom - top });
+
+    ViewportRenderPrimary(croppedDPI);
 }
 
 void X8DrawingEngine::CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy)
@@ -203,23 +283,26 @@ void X8DrawingEngine::CopyRect(int32_t x, int32_t y, int32_t width, int32_t heig
     if (dx == 0 && dy == 0)
         return;
 
+    // Assume primary viewport buffer.
+    auto vpDPI = _vpFrameBuffer.GetDrawingPixelInfo();
+
     // Originally 0x00683359
     // Adjust for move off screen
     // NOTE: when zooming, there can be x, y, dx, dy combinations that go off the
     // screen; hence the checks. This code should ultimately not be called when
     // zooming because this function is specific to updating the screen on move
     int32_t lmargin = std::min(x - dx, 0);
-    int32_t rmargin = std::min(static_cast<int32_t>(_width) - (x - dx + width), 0);
+    int32_t rmargin = std::min(static_cast<int32_t>(vpDPI.width) - (x - dx + width), 0);
     int32_t tmargin = std::min(y - dy, 0);
-    int32_t bmargin = std::min(static_cast<int32_t>(_height) - (y - dy + height), 0);
+    int32_t bmargin = std::min(static_cast<int32_t>(vpDPI.height) - (y - dy + height), 0);
     x -= lmargin;
     y -= tmargin;
     width += lmargin + rmargin;
     height += tmargin + bmargin;
 
-    int32_t stride = _bitsDPI.LineStride();
-    uint8_t* to = _bitsDPI.bits + y * stride + x;
-    uint8_t* from = _bitsDPI.bits + (y - dy) * stride + x - dx;
+    int32_t stride = vpDPI.LineStride();
+    uint8_t* to = vpDPI.bits + y * stride + x;
+    uint8_t* from = vpDPI.bits + (y - dy) * stride + x - dx;
 
     if (dy > 0)
     {
@@ -240,7 +323,9 @@ void X8DrawingEngine::CopyRect(int32_t x, int32_t y, int32_t width, int32_t heig
 
 std::string X8DrawingEngine::Screenshot()
 {
-    return ScreenshotDumpPNG(_bitsDPI);
+    auto vpDPI = _vpFrameBuffer.GetDrawingPixelInfo();
+
+    return ScreenshotDumpPNG(vpDPI);
 }
 
 IDrawingContext* X8DrawingEngine::GetDrawingContext()
@@ -250,12 +335,15 @@ IDrawingContext* X8DrawingEngine::GetDrawingContext()
         Guard::Fail("Drawing context is not active.");
         return nullptr;
     }
-    return _drawingContext;
+    return _drawingContext.get();
 }
 
-DrawPixelInfo* X8DrawingEngine::GetDrawingPixelInfo()
+DrawPixelInfo X8DrawingEngine::GetDrawingPixelInfo()
 {
-    return &_bitsDPI;
+    auto dpi = _vpFrameBuffer.GetDrawingPixelInfo();
+    dpi.DrawingEngine = this;
+
+    return dpi;
 }
 
 DrawingEngineFlags X8DrawingEngine::GetFlags()
@@ -268,65 +356,18 @@ void X8DrawingEngine::InvalidateImage([[maybe_unused]] uint32_t image)
     // Not applicable for this engine
 }
 
-DrawPixelInfo* X8DrawingEngine::GetDPI()
+void X8DrawingEngine::ConfigureRenderTargets(uint32_t width, uint32_t height, uint32_t pitch)
 {
-    return &_bitsDPI;
-}
-
-void X8DrawingEngine::ConfigureBits(uint32_t width, uint32_t height, uint32_t pitch)
-{
-    size_t newBitsSize = pitch * height;
-    uint8_t* newBits = new uint8_t[newBitsSize];
-    if (_bits == nullptr)
-    {
-        std::fill_n(newBits, newBitsSize, 0);
-    }
-    else
-    {
-        if (_pitch == pitch)
-        {
-            std::copy_n(_bits, std::min(_bitsSize, newBitsSize), newBits);
-        }
-        else
-        {
-            uint8_t* src = _bits;
-            uint8_t* dst = newBits;
-
-            uint32_t minWidth = std::min(_width, width);
-            uint32_t minHeight = std::min(_height, height);
-            for (uint32_t y = 0; y < minHeight; y++)
-            {
-                std::copy_n(src, minWidth, dst);
-                if (pitch - minWidth > 0)
-                {
-                    std::fill_n(dst + minWidth, pitch - minWidth, 0);
-                }
-                src += _pitch;
-                dst += pitch;
-            }
-        }
-        delete[] _bits;
-    }
-
-    _bits = newBits;
-    _bitsSize = newBitsSize;
-    _width = width;
-    _height = height;
-    _pitch = pitch;
-
-    DrawPixelInfo* dpi = &_bitsDPI;
-    dpi->bits = _bits;
-    dpi->x = 0;
-    dpi->y = 0;
-    dpi->width = width;
-    dpi->height = height;
-    dpi->pitch = _pitch - width;
+    _vpFrameBuffer.Resize(width, height, pitch);
+    _effectsFramebuffer.Resize(width, height, pitch);
+    _uiFrameBuffer.Resize(width, height, pitch);
 
     ConfigureDirtyGrid();
 
     if (LightFx::IsAvailable())
     {
-        LightFx::UpdateBuffers(*dpi);
+        auto dpi = GetDrawingPixelInfo();
+        LightFx::UpdateBuffers(dpi);
     }
 }
 
@@ -339,22 +380,8 @@ void X8DrawingEngine::ConfigureDirtyGrid()
     const auto blockWidth = 1u << 7;
     const auto blockHeight = 1u << 7;
 
-    _invalidationGrid.reset(_width, _height, blockWidth, blockHeight);
-}
-
-void X8DrawingEngine::DrawAllDirtyBlocks()
-{
-    _invalidationGrid.traverseDirtyCells([this](int32_t left, int32_t top, int32_t right, int32_t bottom) {
-        // Draw region
-        DrawDirtyBlocks(left, top, right, bottom);
-    });
-}
-
-void X8DrawingEngine::DrawDirtyBlocks(int32_t left, int32_t top, int32_t right, int32_t bottom)
-{
-    // Draw region
-    OnDrawDirtyBlock(left, top, right, bottom);
-    WindowDrawAll(_bitsDPI, left, top, right, bottom);
+    auto vpDPI = _vpFrameBuffer.GetDrawingPixelInfo();
+    _invalidationGrid.reset(vpDPI.width, vpDPI.height, blockWidth, blockHeight);
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
