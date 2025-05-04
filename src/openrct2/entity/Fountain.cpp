@@ -410,8 +410,8 @@ void JumpingFountain::Paint(PaintSession& session, int32_t imageDirection) const
     constexpr uint32_t kJumpingFountainSnowBaseImage = 23037;
     constexpr uint32_t kJumpingFountainWaterBaseImage = 22973;
 
-    DrawPixelInfo& dpi = session.DPI;
-    if (dpi.zoom_level > ZoomLevel{ 0 })
+    RenderTarget& rt = session.DPI;
+    if (rt.zoom_level > ZoomLevel{ 0 })
     {
         return;
     }

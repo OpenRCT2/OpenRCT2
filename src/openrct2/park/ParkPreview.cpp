@@ -224,7 +224,7 @@ namespace OpenRCT2
 
         drawingEngine->BeginDraw();
 
-        DrawPixelInfo dpi{
+        RenderTarget rt{
             .bits = static_cast<uint8_t*>(image.pixels),
             .x = 0,
             .y = 0,
@@ -235,14 +235,14 @@ namespace OpenRCT2
             .DrawingEngine = drawingEngine.get(),
         };
 
-        ViewportRender(dpi, &saveVp);
+        ViewportRender(rt, &saveVp);
 
         drawingEngine->EndDraw();
 
         return image;
     }
 
-    void drawPreviewImage(const PreviewImage& image, DrawPixelInfo& dpi, ScreenCoordsXY screenPos)
+    void drawPreviewImage(const PreviewImage& image, RenderTarget& rt, ScreenCoordsXY screenPos)
     {
         auto* drawingEngine = GetContext()->GetDrawingEngine();
         if (drawingEngine == nullptr)
@@ -261,7 +261,7 @@ namespace OpenRCT2
             drawingEngine->InvalidateImage(imageId.GetIndex());
 
             // Draw preview image and restore original G1 image
-            GfxDrawSprite(dpi, imageId, screenPos);
+            GfxDrawSprite(rt, imageId, screenPos);
             *g1 = backupG1;
             drawingEngine->InvalidateImage(imageId.GetIndex());
         }

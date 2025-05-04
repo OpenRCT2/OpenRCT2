@@ -79,8 +79,8 @@ namespace OpenRCT2
     {
     }
 
-    static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi);
-    static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi);
+    static void ViewportPaintWeatherGloom(RenderTarget& rt);
+    static void ViewportPaint(const Viewport* viewport, RenderTarget& rt);
     static void ViewportUpdateFollowSprite(WindowBase* window);
     static void ViewportUpdateSmartFollowEntity(WindowBase* window);
     static void ViewportUpdateSmartFollowStaff(WindowBase* window, const Staff& peep);
@@ -333,7 +333,7 @@ namespace OpenRCT2
      *  rct2: 0x006E7FF3
      */
     static void ViewportRedrawAfterShift(
-        DrawPixelInfo& dpi, WindowBase* window, const WindowBase* originalWindow, const ScreenCoordsXY shift,
+        RenderTarget& rt, WindowBase* window, const WindowBase* originalWindow, const ScreenCoordsXY shift,
         const ScreenRect& drawRect)
     {
         // sub-divide by intersecting windows
@@ -355,41 +355,41 @@ namespace OpenRCT2
                     return itNext;
                 }();
                 ViewportRedrawAfterShift(
-                    dpi, itNextWindow == g_window_list.end() ? nullptr : itNextWindow->get(), originalWindow, shift, drawRect);
+                    rt, itNextWindow == g_window_list.end() ? nullptr : itNextWindow->get(), originalWindow, shift, drawRect);
                 return;
             }
 
             if (drawRect.GetLeft() < window->windowPos.x)
             {
                 ScreenRect leftRect = { drawRect.Point1, { window->windowPos.x, drawRect.GetBottom() } };
-                ViewportRedrawAfterShift(dpi, window, originalWindow, shift, leftRect);
+                ViewportRedrawAfterShift(rt, window, originalWindow, shift, leftRect);
 
                 ScreenRect rightRect = { { window->windowPos.x, drawRect.GetTop() }, drawRect.Point2 };
-                ViewportRedrawAfterShift(dpi, window, originalWindow, shift, rightRect);
+                ViewportRedrawAfterShift(rt, window, originalWindow, shift, rightRect);
             }
             else if (drawRect.GetRight() > window->windowPos.x + window->width)
             {
                 ScreenRect leftRect = { drawRect.Point1, { window->windowPos.x + window->width, drawRect.GetBottom() } };
-                ViewportRedrawAfterShift(dpi, window, originalWindow, shift, leftRect);
+                ViewportRedrawAfterShift(rt, window, originalWindow, shift, leftRect);
 
                 ScreenRect rightRect = { { window->windowPos.x + window->width, drawRect.GetTop() }, drawRect.Point2 };
-                ViewportRedrawAfterShift(dpi, window, originalWindow, shift, rightRect);
+                ViewportRedrawAfterShift(rt, window, originalWindow, shift, rightRect);
             }
             else if (drawRect.GetTop() < window->windowPos.y)
             {
                 ScreenRect topRect = { drawRect.Point1, { drawRect.GetRight(), window->windowPos.y } };
-                ViewportRedrawAfterShift(dpi, window, originalWindow, shift, topRect);
+                ViewportRedrawAfterShift(rt, window, originalWindow, shift, topRect);
 
                 ScreenRect bottomRect = { { drawRect.GetLeft(), window->windowPos.y }, drawRect.Point2 };
-                ViewportRedrawAfterShift(dpi, window, originalWindow, shift, bottomRect);
+                ViewportRedrawAfterShift(rt, window, originalWindow, shift, bottomRect);
             }
             else if (drawRect.GetBottom() > window->windowPos.y + window->height)
             {
                 ScreenRect topRect = { drawRect.Point1, { drawRect.GetRight(), window->windowPos.y + window->height } };
-                ViewportRedrawAfterShift(dpi, window, originalWindow, shift, topRect);
+                ViewportRedrawAfterShift(rt, window, originalWindow, shift, topRect);
 
                 ScreenRect bottomRect = { { drawRect.GetLeft(), window->windowPos.y + window->height }, drawRect.Point2 };
-                ViewportRedrawAfterShift(dpi, window, originalWindow, shift, bottomRect);
+                ViewportRedrawAfterShift(rt, window, originalWindow, shift, bottomRect);
             }
         }
         else
@@ -410,14 +410,14 @@ namespace OpenRCT2
                 {
                     // draw left
                     auto _right = left + shift.x;
-                    WindowDrawAll(dpi, left, top, _right, bottom);
+                    WindowDrawAll(rt, left, top, _right, bottom);
                     left += shift.x;
                 }
                 else if (shift.x < 0)
                 {
                     // draw right
                     auto _left = right + shift.x;
-                    WindowDrawAll(dpi, _left, top, right, bottom);
+                    WindowDrawAll(rt, _left, top, right, bottom);
                     right += shift.x;
                 }
 
@@ -425,24 +425,24 @@ namespace OpenRCT2
                 {
                     // draw top
                     bottom = top + shift.y;
-                    WindowDrawAll(dpi, left, top, right, bottom);
+                    WindowDrawAll(rt, left, top, right, bottom);
                 }
                 else if (shift.y < 0)
                 {
                     // draw bottom
                     top = bottom + shift.y;
-                    WindowDrawAll(dpi, left, top, right, bottom);
+                    WindowDrawAll(rt, left, top, right, bottom);
                 }
             }
             else
             {
                 // redraw whole draw rectangle
-                WindowDrawAll(dpi, left, top, right, bottom);
+                WindowDrawAll(rt, left, top, right, bottom);
             }
         }
     }
 
-    static void ViewportShiftPixels(DrawPixelInfo& dpi, WindowBase* window, Viewport* viewport, int32_t x_diff, int32_t y_diff)
+    static void ViewportShiftPixels(RenderTarget& rt, WindowBase* window, Viewport* viewport, int32_t x_diff, int32_t y_diff)
     {
         // This loop redraws all parts covered by transparent windows.
         auto it = WindowGetIterator(window);
@@ -484,11 +484,11 @@ namespace OpenRCT2
             if (top >= bottom)
                 continue;
 
-            WindowDrawAll(dpi, left, top, right, bottom);
+            WindowDrawAll(rt, left, top, right, bottom);
         }
 
         ViewportRedrawAfterShift(
-            dpi, window, window, { x_diff, y_diff },
+            rt, window, window, { x_diff, y_diff },
             { viewport->pos, { viewport->pos.x + viewport->width, viewport->pos.y + viewport->height } });
     }
 
@@ -522,8 +522,8 @@ namespace OpenRCT2
 
             if (DrawingEngineHasDirtyOptimisations())
             {
-                DrawPixelInfo& dpi = DrawingEngineGetDpi();
-                WindowDrawAll(dpi, left, top, right, bottom);
+                RenderTarget& rt = DrawingEngineGetDpi();
+                WindowDrawAll(rt, left, top, right, bottom);
                 return;
             }
             else
@@ -574,8 +574,8 @@ namespace OpenRCT2
 
         if (DrawingEngineHasDirtyOptimisations())
         {
-            DrawPixelInfo& dpi = DrawingEngineGetDpi();
-            ViewportShiftPixels(dpi, w, viewport, x_diff, y_diff);
+            RenderTarget& rt = DrawingEngineGetDpi();
+            ViewportShiftPixels(rt, w, viewport, x_diff, y_diff);
         }
         else
         {
@@ -928,21 +928,21 @@ namespace OpenRCT2
      *  edi: dpi
      *  ebp: bottom
      */
-    void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport)
+    void ViewportRender(RenderTarget& rt, const Viewport* viewport)
     {
         if (viewport->flags & VIEWPORT_FLAG_RENDERING_INHIBITED)
             return;
 
-        if (dpi.x + dpi.width <= viewport->pos.x)
+        if (rt.x + rt.width <= viewport->pos.x)
             return;
-        if (dpi.y + dpi.height <= viewport->pos.y)
+        if (rt.y + rt.height <= viewport->pos.y)
             return;
-        if (dpi.x >= viewport->pos.x + viewport->width)
+        if (rt.x >= viewport->pos.x + viewport->width)
             return;
-        if (dpi.y >= viewport->pos.y + viewport->height)
+        if (rt.y >= viewport->pos.y + viewport->height)
             return;
 
-        ViewportPaint(viewport, dpi);
+        ViewportPaint(viewport, rt);
     }
 
     static void ViewportFillColumn(PaintSession& session)
@@ -994,27 +994,26 @@ namespace OpenRCT2
      *  edi: dpi
      *  ebp: bottom
      */
-    static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi)
+    static void ViewportPaint(const Viewport* viewport, RenderTarget& rt)
     {
         PROFILED_FUNCTION();
 
-        const int32_t offsetX = dpi.x - viewport->pos.x;
-        const int32_t offsetY = dpi.y - viewport->pos.y;
+        const int32_t offsetX = rt.x - viewport->pos.x;
+        const int32_t offsetY = rt.y - viewport->pos.y;
         const int32_t worldX = viewport->zoom.ApplyInversedTo(viewport->viewPos.x) + std::max(0, offsetX);
         const int32_t worldY = viewport->zoom.ApplyInversedTo(viewport->viewPos.y) + std::max(0, offsetY);
-        const int32_t width = std::min(viewport->pos.x + viewport->width, dpi.x + dpi.width) - std::max(viewport->pos.x, dpi.x);
-        const int32_t height = std::min(viewport->pos.y + viewport->height, dpi.y + dpi.height)
-            - std::max(viewport->pos.y, dpi.y);
+        const int32_t width = std::min(viewport->pos.x + viewport->width, rt.x + rt.width) - std::max(viewport->pos.x, rt.x);
+        const int32_t height = std::min(viewport->pos.y + viewport->height, rt.y + rt.height) - std::max(viewport->pos.y, rt.y);
 
-        DrawPixelInfo worldDpi;
-        worldDpi.DrawingEngine = dpi.DrawingEngine;
-        worldDpi.bits = dpi.bits + std::max(0, -offsetX) + std::max(0, -offsetY) * dpi.LineStride();
-        worldDpi.x = worldX;
-        worldDpi.y = worldY;
-        worldDpi.width = width;
-        worldDpi.height = height;
-        worldDpi.pitch = dpi.LineStride() - worldDpi.width;
-        worldDpi.zoom_level = viewport->zoom;
+        RenderTarget worldRT;
+        worldRT.DrawingEngine = rt.DrawingEngine;
+        worldRT.bits = rt.bits + std::max(0, -offsetX) + std::max(0, -offsetY) * rt.LineStride();
+        worldRT.x = worldX;
+        worldRT.y = worldY;
+        worldRT.width = width;
+        worldRT.height = height;
+        worldRT.pitch = rt.LineStride() - worldRT.width;
+        worldRT.zoom_level = viewport->zoom;
 
         _paintColumns.clear();
 
@@ -1029,48 +1028,48 @@ namespace OpenRCT2
         }
 
         bool useParallelDrawing = false;
-        if (useMultithreading && dpi.DrawingEngine->GetFlags().has(DrawingEngineFlag::parallelDrawing))
+        if (useMultithreading && rt.DrawingEngine->GetFlags().has(DrawingEngineFlag::parallelDrawing))
         {
             useParallelDrawing = true;
         }
 
-        const int32_t columnWidth = worldDpi.zoom_level.ApplyInversedTo(kCoordsXYStep);
-        const int32_t rightBorder = worldDpi.x + worldDpi.width;
-        const int32_t alignedX = floor2(worldDpi.x, columnWidth);
+        const int32_t columnWidth = worldRT.zoom_level.ApplyInversedTo(kCoordsXYStep);
+        const int32_t rightBorder = worldRT.x + worldRT.width;
+        const int32_t alignedX = floor2(worldRT.x, columnWidth);
 
         // Generate and sort columns.
         for (int32_t x = alignedX; x < rightBorder; x += columnWidth)
         {
-            PaintSession* session = PaintSessionAlloc(worldDpi, viewport->flags, viewport->rotation);
+            PaintSession* session = PaintSessionAlloc(worldRT, viewport->flags, viewport->rotation);
             _paintColumns.push_back(session);
 
-            DrawPixelInfo& columnDpi = session->DPI;
-            if (x >= columnDpi.x)
+            RenderTarget& columnRT = session->DPI;
+            if (x >= columnRT.x)
             {
-                const int32_t leftPitch = x - columnDpi.x;
-                columnDpi.width = columnDpi.width - leftPitch;
-                columnDpi.bits += leftPitch;
-                columnDpi.pitch += leftPitch;
-                columnDpi.x = x;
+                const int32_t leftPitch = x - columnRT.x;
+                columnRT.width = columnRT.width - leftPitch;
+                columnRT.bits += leftPitch;
+                columnRT.pitch += leftPitch;
+                columnRT.x = x;
             }
 
-            int32_t paintRight = columnDpi.x + columnDpi.width;
+            int32_t paintRight = columnRT.x + columnRT.width;
             if (paintRight >= x + columnWidth)
             {
                 const int32_t rightPitch = paintRight - x - columnWidth;
                 paintRight -= rightPitch;
-                columnDpi.pitch += rightPitch;
+                columnRT.pitch += rightPitch;
             }
-            columnDpi.width = paintRight - columnDpi.x;
+            columnRT.width = paintRight - columnRT.x;
 
             // culling sprites outside the clipped column causes sorting differences between invalidation blocks
             // not culling sprites outside the full column width also causes a different kind of glitching
             constexpr int32_t cullingY = ZoomLevel::max().ApplyInversedTo(std::numeric_limits<int32_t>::max()) / 2;
 
-            columnDpi.cullingX = floor2(columnDpi.x, columnWidth);
-            columnDpi.cullingY = -cullingY;
-            columnDpi.cullingWidth = columnWidth;
-            columnDpi.cullingHeight = cullingY * 2;
+            columnRT.cullingX = floor2(columnRT.x, columnWidth);
+            columnRT.cullingY = -cullingY;
+            columnRT.cullingWidth = columnWidth;
+            columnRT.cullingHeight = cullingY * 2;
 
             if (useMultithreading)
             {
@@ -1111,16 +1110,16 @@ namespace OpenRCT2
         }
     }
 
-    static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi)
+    static void ViewportPaintWeatherGloom(RenderTarget& rt)
     {
         auto paletteId = ClimateGetWeatherGloomPaletteId(getGameState().weatherCurrent);
         if (paletteId != FilterPaletteID::PaletteNull)
         {
-            auto x = dpi.x;
-            auto y = dpi.y;
-            auto w = dpi.width;
-            auto h = dpi.height;
-            GfxFilterRect(dpi, ScreenRect(x, y, x + w, y + h), paletteId);
+            auto x = rt.x;
+            auto y = rt.y;
+            auto w = rt.width;
+            auto h = rt.height;
+            GfxFilterRect(rt, ScreenRect(x, y, x + w, y + h), paletteId);
         }
     }
 
@@ -1628,8 +1627,7 @@ namespace OpenRCT2
      * rct2: 0x00679074
      */
     static bool IsSpriteInteractedWithPaletteSet(
-        DrawPixelInfo& dpi, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap,
-        const uint8_t imageType)
+        RenderTarget& rt, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap, const uint8_t imageType)
     {
         PROFILED_FUNCTION();
 
@@ -1639,11 +1637,11 @@ namespace OpenRCT2
             return false;
         }
 
-        ZoomLevel zoomLevel = dpi.zoom_level;
-        ScreenCoordsXY interactionPoint{ dpi.WorldX(), dpi.WorldY() };
+        ZoomLevel zoomLevel = rt.zoom_level;
+        ScreenCoordsXY interactionPoint{ rt.WorldX(), rt.WorldY() };
         ScreenCoordsXY origin = coords;
 
-        if (dpi.zoom_level > ZoomLevel{ 0 })
+        if (rt.zoom_level > ZoomLevel{ 0 })
         {
             if (g1->flags & G1_FLAG_NO_ZOOM_DRAW)
             {
@@ -1695,7 +1693,7 @@ namespace OpenRCT2
      *  rct2: 0x00679023
      */
 
-    static bool IsSpriteInteractedWith(DrawPixelInfo& dpi, ImageId imageId, const ScreenCoordsXY& coords)
+    static bool IsSpriteInteractedWith(RenderTarget& rt, ImageId imageId, const ScreenCoordsXY& coords)
     {
         PROFILED_FUNCTION();
 
@@ -1722,7 +1720,7 @@ namespace OpenRCT2
         {
             imageType = IMAGE_TYPE_DEFAULT;
         }
-        return IsSpriteInteractedWithPaletteSet(dpi, imageId, coords, paletteMap, imageType);
+        return IsSpriteInteractedWithPaletteSet(rt, imageId, coords, paletteMap, imageType);
     }
 
     /**
@@ -1815,19 +1813,19 @@ namespace OpenRCT2
                 viewLoc.x &= viewport->zoom.ApplyTo(0xFFFFFFFF) & 0xFFFFFFFF;
                 viewLoc.y &= viewport->zoom.ApplyTo(0xFFFFFFFF) & 0xFFFFFFFF;
             }
-            DrawPixelInfo dpi;
-            dpi.zoom_level = viewport->zoom;
-            dpi.x = viewport->zoom.ApplyInversedTo(viewLoc.x);
-            dpi.y = viewport->zoom.ApplyInversedTo(viewLoc.y);
-            dpi.height = 1;
-            dpi.width = 1;
+            RenderTarget rt;
+            rt.zoom_level = viewport->zoom;
+            rt.x = viewport->zoom.ApplyInversedTo(viewLoc.x);
+            rt.y = viewport->zoom.ApplyInversedTo(viewLoc.y);
+            rt.height = 1;
+            rt.width = 1;
 
-            dpi.cullingX = dpi.x;
-            dpi.cullingY = dpi.y;
-            dpi.cullingWidth = dpi.width;
-            dpi.cullingHeight = dpi.height;
+            rt.cullingX = rt.x;
+            rt.cullingY = rt.y;
+            rt.cullingWidth = rt.width;
+            rt.cullingHeight = rt.height;
 
-            PaintSession* session = PaintSessionAlloc(dpi, viewport->flags, viewport->rotation);
+            PaintSession* session = PaintSessionAlloc(rt, viewport->flags, viewport->rotation);
             PaintSessionGenerate(*session);
             PaintSessionArrange(*session);
             info = SetInteractionInfoFromPaintSession(session, viewport->flags, flags & 0xFFFF);

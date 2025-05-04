@@ -21,7 +21,7 @@
 #include <unordered_map>
 #include <vector>
 
-struct DrawPixelInfo;
+struct RenderTarget;
 struct PaletteMap;
 enum class FilterPaletteID : int32_t;
 
@@ -226,11 +226,11 @@ namespace OpenRCT2::Ui
         AtlasTextureInfo LoadGlyphTexture(const ImageId image, const PaletteMap& paletteMap);
         AtlasTextureInfo AllocateImage(int32_t imageWidth, int32_t imageHeight);
         AtlasTextureInfo LoadBitmapTexture(ImageIndex image, const void* pixels, size_t width, size_t height);
-        static DrawPixelInfo GetImageAsDPI(const ImageId imageId);
-        static DrawPixelInfo GetGlyphAsDPI(const ImageId imageId, const PaletteMap& paletteMap);
+        static RenderTarget GetImageAsDPI(const ImageId imageId);
+        static RenderTarget GetGlyphAsDPI(const ImageId imageId, const PaletteMap& paletteMap);
         void FreeTextures();
 
-        static DrawPixelInfo CreateDPI(int32_t width, int32_t height);
-        static void DeleteDPI(DrawPixelInfo dpi);
+        static RenderTarget CreateDPI(int32_t width, int32_t height);
+        static void DeleteDPI(RenderTarget rt);
     };
 } // namespace OpenRCT2::Ui

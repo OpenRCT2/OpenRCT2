@@ -520,16 +520,16 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B3235
          */
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            WindowDrawWidgets(*this, dpi);
-            DrawTabImages(dpi);
+            WindowDrawWidgets(*this, rt);
+            DrawTabImages(rt);
 
             // Draw number of attractions on bottom
             auto ft = Formatter();
             ft.Add<uint16_t>(static_cast<uint16_t>(_rideList.size()));
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_LIST].bottom + 2 }, ride_list_statusbar_count_strings[page],
+                rt, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_LIST].bottom + 2 }, ride_list_statusbar_count_strings[page],
                 ft);
         }
 
@@ -537,12 +537,11 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B3240
          */
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
+            auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             GfxFillRect(
-                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width, dpi.height } },
-                ColourMapA[colours[1].colour].mid_light);
+                rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width, rt.height } }, ColourMapA[colours[1].colour].mid_light);
 
             auto y = 0;
             for (size_t i = 0; i < _rideList.size(); i++)
@@ -554,7 +553,7 @@ namespace OpenRCT2::Ui::Windows
                 if (i == static_cast<size_t>(selected_list_item))
                 {
                     // Background highlight
-                    GfxFilterRect(dpi, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(rt, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::PaletteDarken1);
                     format = STR_WINDOW_COLOUR_2_STRINGID;
                     if (_quickDemolishMode)
                         format = STR_LIGHTPINK_STRINGID;
@@ -568,7 +567,7 @@ namespace OpenRCT2::Ui::Windows
                 // Ride name
                 auto ft = Formatter();
                 ridePtr->formatNameTo(ft);
-                DrawTextEllipsised(dpi, { 0, y - 1 }, 159, format, ft);
+                DrawTextEllipsised(rt, { 0, y - 1 }, 159, format, ft);
 
                 // Ride information
                 ft = Formatter();
@@ -745,7 +744,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Rewind();
                     ft.Add<StringId>(formatSecondary);
                 }
-                DrawTextEllipsised(dpi, { 160, y - 1 }, 157, format, ft);
+                DrawTextEllipsised(rt, { 160, y - 1 }, 157, format, ft);
                 y += kScrollableRowHeight;
             }
         }
@@ -760,7 +759,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B38EA
          */
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& rt)
         {
             int32_t sprite_idx;
 
@@ -769,21 +768,21 @@ namespace OpenRCT2::Ui::Windows
             if (page == PAGE_RIDES)
                 sprite_idx += frame_no / 4;
             GfxDrawSprite(
-                dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
+                rt, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
 
             // Shops and stalls tab
             sprite_idx = SPR_TAB_SHOPS_AND_STALLS_0;
             if (page == PAGE_SHOPS_AND_STALLS)
                 sprite_idx += frame_no / 4;
             GfxDrawSprite(
-                dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
+                rt, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
 
             // Information kiosks and facilities tab
             sprite_idx = SPR_TAB_KIOSKS_AND_FACILITIES_0;
             if (page == PAGE_KIOSKS_AND_FACILITIES)
                 sprite_idx += (frame_no / 4) % 8;
             GfxDrawSprite(
-                dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
+                rt, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
         }
 
         /**

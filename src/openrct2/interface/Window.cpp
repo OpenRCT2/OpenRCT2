@@ -71,8 +71,8 @@ static constexpr float kWindowScrollLocations[][2] = {
 };
     // clang-format on
 
-    static void WindowDrawCore(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
-    static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+    static void WindowDrawCore(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+    static void WindowDrawSingle(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
     std::list<std::shared_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w)
     {
@@ -494,7 +494,7 @@ static constexpr float kWindowScrollLocations[][2] = {
      * Splits a drawing of a window into regions that can be seen and are not hidden
      * by other opaque overlapping windows.
      */
-    void WindowDraw(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    void WindowDraw(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
         if (!WindowIsVisible(w))
             return;
@@ -518,26 +518,26 @@ static constexpr float kWindowScrollLocations[][2] = {
             if (topwindow->windowPos.x > left)
             {
                 // Split draw at topwindow.left
-                WindowDrawCore(dpi, w, left, top, topwindow->windowPos.x, bottom);
-                WindowDrawCore(dpi, w, topwindow->windowPos.x, top, right, bottom);
+                WindowDrawCore(rt, w, left, top, topwindow->windowPos.x, bottom);
+                WindowDrawCore(rt, w, topwindow->windowPos.x, top, right, bottom);
             }
             else if (topwindow->windowPos.x + topwindow->width < right)
             {
                 // Split draw at topwindow.right
-                WindowDrawCore(dpi, w, left, top, topwindow->windowPos.x + topwindow->width, bottom);
-                WindowDrawCore(dpi, w, topwindow->windowPos.x + topwindow->width, top, right, bottom);
+                WindowDrawCore(rt, w, left, top, topwindow->windowPos.x + topwindow->width, bottom);
+                WindowDrawCore(rt, w, topwindow->windowPos.x + topwindow->width, top, right, bottom);
             }
             else if (topwindow->windowPos.y > top)
             {
                 // Split draw at topwindow.top
-                WindowDrawCore(dpi, w, left, top, right, topwindow->windowPos.y);
-                WindowDrawCore(dpi, w, left, topwindow->windowPos.y, right, bottom);
+                WindowDrawCore(rt, w, left, top, right, topwindow->windowPos.y);
+                WindowDrawCore(rt, w, left, topwindow->windowPos.y, right, bottom);
             }
             else if (topwindow->windowPos.y + topwindow->height < bottom)
             {
                 // Split draw at topwindow.bottom
-                WindowDrawCore(dpi, w, left, top, right, topwindow->windowPos.y + topwindow->height);
-                WindowDrawCore(dpi, w, left, topwindow->windowPos.y + topwindow->height, right, bottom);
+                WindowDrawCore(rt, w, left, top, right, topwindow->windowPos.y + topwindow->height);
+                WindowDrawCore(rt, w, left, topwindow->windowPos.y + topwindow->height, right, bottom);
             }
 
             // Drawing for this region should be done now, exit
@@ -545,13 +545,13 @@ static constexpr float kWindowScrollLocations[][2] = {
         }
 
         // No windows overlap
-        WindowDrawCore(dpi, w, left, top, right, bottom);
+        WindowDrawCore(rt, w, left, top, right, bottom);
     }
 
     /**
      * Draws the given window and any other overlapping transparent windows.
      */
-    static void WindowDrawCore(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    static void WindowDrawCore(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
         // Clamp region
         left = std::max<int32_t>(left, w.windowPos.x);
@@ -571,16 +571,16 @@ static constexpr float kWindowScrollLocations[][2] = {
                 continue;
             if ((&w == v || (v->flags & WF_TRANSPARENT)) && WindowIsVisible(*v))
             {
-                WindowDrawSingle(dpi, *v, left, top, right, bottom);
+                WindowDrawSingle(rt, *v, left, top, right, bottom);
             }
         }
     }
 
-    static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    static void WindowDrawSingle(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
-        assert(dpi.zoom_level == ZoomLevel{ 0 });
-        // Copy dpi so we can crop it
-        DrawPixelInfo copy = dpi;
+        assert(rt.zoom_level == ZoomLevel{ 0 });
+        // Copy render target so we can crop it
+        RenderTarget copy = rt;
 
         // Clamp left to 0
         int32_t overflow = left - copy.x;
@@ -905,17 +905,17 @@ static constexpr float kWindowScrollLocations[][2] = {
      * right (dx)
      * bottom (bp)
      */
-    void WindowDrawAll(DrawPixelInfo& dpi, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    void WindowDrawAll(RenderTarget& rt, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
-        auto windowDPI = dpi.Crop({ left, top }, { right - left, bottom - top });
-        WindowVisitEach([&windowDPI, left, top, right, bottom](WindowBase* w) {
+        auto windowRT = rt.Crop({ left, top }, { right - left, bottom - top });
+        WindowVisitEach([&windowRT, left, top, right, bottom](WindowBase* w) {
             if (w->flags & WF_TRANSPARENT)
                 return;
             if (right <= w->windowPos.x || bottom <= w->windowPos.y)
                 return;
             if (left >= w->windowPos.x + w->width || top >= w->windowPos.y + w->height)
                 return;
-            WindowDraw(windowDPI, *w, left, top, right, bottom);
+            WindowDraw(windowRT, *w, left, top, right, bottom);
         });
     }
 

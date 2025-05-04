@@ -22,7 +22,7 @@ namespace OpenRCT2::Scripting
     {
     private:
         duk_context* _ctx{};
-        DrawPixelInfo _dpi{};
+        RenderTarget _rt{};
 
         std::optional<colour_t> _colour{};
         std::optional<colour_t> _secondaryColour{};
@@ -32,9 +32,9 @@ namespace OpenRCT2::Scripting
         uint8_t _fill{};
 
     public:
-        ScGraphicsContext(duk_context* ctx, const DrawPixelInfo& dpi)
+        ScGraphicsContext(duk_context* ctx, const RenderTarget& rt)
             : _ctx(ctx)
-            , _dpi(dpi)
+            , _rt(rt)
         {
         }
 
@@ -141,12 +141,12 @@ namespace OpenRCT2::Scripting
 
         int32_t width_get() const
         {
-            return _dpi.width;
+            return _rt.width;
         }
 
         int32_t height_get() const
         {
-            return _dpi.height;
+            return _rt.height;
         }
 
         DukValue getImage(uint32_t id)
@@ -163,26 +163,26 @@ namespace OpenRCT2::Scripting
 
         void box(int32_t x, int32_t y, int32_t width, int32_t height)
         {
-            GfxFillRectInset(_dpi, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) }, 0);
+            GfxFillRectInset(_rt, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) }, 0);
         }
 
         void well(int32_t x, int32_t y, int32_t width, int32_t height)
         {
             GfxFillRectInset(
-                _dpi, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) },
+                _rt, { x, y, x + width - 1, y + height - 1 }, { _colour.value_or(0) },
                 INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
         }
 
         void clear()
         {
-            GfxClear(_dpi, _fill);
+            GfxClear(_rt, _fill);
         }
 
         void clip(int32_t x, int32_t y, int32_t width, int32_t height)
         {
-            DrawPixelInfo newDpi;
-            ClipDrawPixelInfo(newDpi, _dpi, { x, y }, width, height);
-            _dpi = newDpi;
+            RenderTarget newDpi;
+            ClipDrawPixelInfo(newDpi, _rt, { x, y }, width, height);
+            _rt = newDpi;
         }
 
         void image(uint32_t id, int32_t x, int32_t y)
@@ -205,12 +205,12 @@ namespace OpenRCT2::Scripting
                 }
             }
 
-            GfxDrawSprite(_dpi, img.WithTertiary(_tertiaryColour.value_or(0)), { x, y });
+            GfxDrawSprite(_rt, img.WithTertiary(_tertiaryColour.value_or(0)), { x, y });
         }
 
         void line(int32_t x1, int32_t y1, int32_t x2, int32_t y2)
         {
-            GfxDrawLine(_dpi, { { x1, y1 }, { x2, y2 } }, _stroke);
+            GfxDrawLine(_rt, { { x1, y1 }, { x2, y2 } }, _stroke);
         }
 
         void rect(int32_t x, int32_t y, int32_t width, int32_t height)
@@ -229,13 +229,13 @@ namespace OpenRCT2::Scripting
             }
             if (_fill != 0)
             {
-                GfxFillRect(_dpi, { x, y, x + width - 1, y + height - 1 }, _fill);
+                GfxFillRect(_rt, { x, y, x + width - 1, y + height - 1 }, _fill);
             }
         }
 
         void text(const std::string& text, int32_t x, int32_t y)
         {
-            DrawText(_dpi, { x, y }, { _colour.value_or(0) }, text.c_str());
+            DrawText(_rt, { x, y }, { _colour.value_or(0) }, text.c_str());
         }
     };
 } // namespace OpenRCT2::Scripting

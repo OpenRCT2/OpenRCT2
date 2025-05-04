@@ -385,7 +385,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawPreview(DrawPixelInfo& dpi)
+        void DrawPreview(RenderTarget& rt)
         {
             constexpr auto kPreviewHeight = kPreviewWidth / 5 * 4;
 
@@ -393,7 +393,7 @@ namespace OpenRCT2::Ui::Windows
             auto& widget = widgets[WIDX_SCROLL];
             auto frameStartPos = windowPos + ScreenCoordsXY(width - kPreviewWidth - kPadding - 1, widget.top);
             auto frameEndPos = frameStartPos + ScreenCoordsXY(kPreviewWidth + 1, kPreviewHeight + 1);
-            GfxFillRectInset(dpi, { frameStartPos, frameEndPos }, colours[1], INSET_RECT_F_60 | INSET_RECT_FLAG_FILL_MID_LIGHT);
+            GfxFillRectInset(rt, { frameStartPos, frameEndPos }, colours[1], INSET_RECT_F_60 | INSET_RECT_FLAG_FILL_MID_LIGHT);
 
             // Draw park name
             {
@@ -401,7 +401,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const char*>(_preview.parkName.c_str());
-                DrawTextEllipsised(dpi, namePos, kPreviewWidth, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
+                DrawTextEllipsised(rt, namePos, kPreviewWidth, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
             }
 
             // Draw image, if available
@@ -411,7 +411,7 @@ namespace OpenRCT2::Ui::Windows
                 if (image.type == PreviewImageType::screenshot)
                 {
                     auto imagePos = frameStartPos + ScreenCoordsXY(1, 1);
-                    drawPreviewImage(image, dpi, imagePos);
+                    drawPreviewImage(image, rt, imagePos);
                     foundImage = true;
                     break;
                 }
@@ -422,7 +422,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto imagePos = frameStartPos + ScreenCoordsXY(1, 1);
                 auto colour = ColourMapA[colours[1].colour].dark;
-                GfxDrawSpriteSolid(dpi, ImageId(SPR_G2_LOGO_MONO_DITHERED), imagePos, colour);
+                GfxDrawSpriteSolid(rt, ImageId(SPR_G2_LOGO_MONO_DITHERED), imagePos, colour);
 
                 auto textPos = imagePos + ScreenCoordsXY(kPreviewWidth / 2, kPreviewHeight / 2 - 6);
 
@@ -434,7 +434,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 DrawTextBasic(
-                    dpi, textPos, previewText, {},
+                    rt, textPos, previewText, {},
                     { ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true), TextAlignment::CENTRE });
                 return;
             }
@@ -448,7 +448,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(DateDayNames[_preview.day]);
                 ft.Add<int16_t>(_preview.month);
                 ft.Add<int16_t>(_preview.year + 1);
-                DrawTextBasic(dpi, summaryCoords, STR_SUMMARY_DATE, ft);
+                DrawTextBasic(rt, summaryCoords, STR_SUMMARY_DATE, ft);
                 summaryCoords.y += kListRowHeight;
             }
 
@@ -456,7 +456,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_preview.parkRating);
-                DrawTextBasic(dpi, summaryCoords, STR_SUMMARY_PARK_RATING, ft);
+                DrawTextBasic(rt, summaryCoords, STR_SUMMARY_PARK_RATING, ft);
                 summaryCoords.y += kListRowHeight;
             }
 
@@ -465,7 +465,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_preview.cash);
-                DrawTextBasic(dpi, summaryCoords, STR_SUMMARY_CASH, ft);
+                DrawTextBasic(rt, summaryCoords, STR_SUMMARY_CASH, ft);
                 summaryCoords.y += kListRowHeight;
             }
 
@@ -473,7 +473,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_preview.numRides);
-                DrawTextBasic(dpi, summaryCoords, STR_SUMMARY_NUM_RIDES, ft);
+                DrawTextBasic(rt, summaryCoords, STR_SUMMARY_NUM_RIDES, ft);
                 summaryCoords.y += kListRowHeight;
             }
 
@@ -481,7 +481,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_preview.numGuests);
-                DrawTextBasic(dpi, summaryCoords, STR_SUMMARY_NUM_GUESTS, ft);
+                DrawTextBasic(rt, summaryCoords, STR_SUMMARY_NUM_GUESTS, ft);
                 summaryCoords.y += kListRowHeight;
             }
         }
@@ -690,12 +690,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
 
             if (ShowPreviews())
-                DrawPreview(dpi);
+                DrawPreview(rt);
 
             {
                 const auto& widget = widgets[WIDX_PARENT_FOLDER];
@@ -715,11 +715,11 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<const char*>(normalisedPathC);
 
                 auto pathPos = windowPos + ScreenCoordsXY{ 4, widget.top + 4 };
-                DrawTextEllipsised(dpi, pathPos, pathWidth, STR_STRING, ft);
+                DrawTextEllipsised(rt, pathPos, pathWidth, STR_STRING, ft);
             }
 
             const auto drawButtonCaption =
-                [dpi, this](Widget& widget, StringId strId, FileBrowserSort ascSort, FileBrowserSort descSort) {
+                [rt, this](Widget& widget, StringId strId, FileBrowserSort ascSort, FileBrowserSort descSort) {
                     StringId indicatorId = kStringIdNone;
                     if (Config::Get().general.LoadSaveSort == ascSort)
                         indicatorId = STR_UP;
@@ -729,7 +729,7 @@ namespace OpenRCT2::Ui::Windows
                     auto ft = Formatter();
                     ft.Add<StringId>(indicatorId);
 
-                    auto cdpi = const_cast<const DrawPixelInfo&>(dpi);
+                    auto cdpi = const_cast<const RenderTarget&>(rt);
                     DrawTextEllipsised(
                         cdpi, windowPos + ScreenCoordsXY{ widget.left + 5, widget.top + 1 }, widget.width(), strId, ft,
                         { COLOUR_GREY });
@@ -752,7 +752,7 @@ namespace OpenRCT2::Ui::Windows
             if (action == LoadSaveAction::save)
             {
                 auto& widget = widgets[WIDX_FILENAME_TEXTBOX];
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 5, widget.top + 2 }, STR_FILENAME_LABEL, {}, { COLOUR_GREY });
+                DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 5, widget.top + 2 }, STR_FILENAME_LABEL, {}, { COLOUR_GREY });
             }
         }
 
@@ -1029,11 +1029,10 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             GfxFillRect(
-                dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } },
-                ColourMapA[colours[1].colour].mid_light);
+                rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);
 
             const int32_t listWidth = widgets[WIDX_SCROLL].width();
             const auto sizeColumnLeft = widgets[WIDX_SORT_SIZE].left;
@@ -1045,10 +1044,10 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t i = 0; i < no_list_items; i++)
             {
                 int32_t y = i * kScrollableRowHeight;
-                if (y > dpi.y + dpi.height)
+                if (y > rt.y + rt.height)
                     break;
 
-                if (y + kScrollableRowHeight < dpi.y)
+                if (y + kScrollableRowHeight < rt.y)
                     continue;
 
                 StringId stringId = STR_BLACK_STRING;
@@ -1057,20 +1056,20 @@ namespace OpenRCT2::Ui::Windows
                 if (i == selected_list_item)
                 {
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                    GfxFilterRect(dpi, { 0, y, listWidth, y + kScrollableRowHeight }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(rt, { 0, y, listWidth, y + kScrollableRowHeight }, FilterPaletteID::PaletteDarken1);
                 }
                 // display a marker next to the currently loaded game file
                 if (_listItems[i].loaded)
                 {
                     auto ft = Formatter();
                     ft.Add<StringId>(STR_RIGHTGUILLEMET);
-                    DrawTextBasic(dpi, { 0, y }, stringId, ft);
+                    DrawTextBasic(rt, { 0, y }, stringId, ft);
                 }
 
                 // Folders get a folder icon
                 if (_listItems[i].type == FileType::directory)
                 {
-                    GfxDrawSprite(dpi, ImageId(SPR_G2_FOLDER), { 1, y });
+                    GfxDrawSprite(rt, ImageId(SPR_G2_FOLDER), { 1, y });
                 }
 
                 // Print filename
@@ -1078,7 +1077,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<char*>(_listItems[i].name.c_str());
                 int32_t max_file_width = widgets[WIDX_SORT_NAME].width() - 15;
-                DrawTextEllipsised(dpi, { 15, y }, max_file_width, stringId, ft);
+                DrawTextEllipsised(rt, { 15, y }, max_file_width, stringId, ft);
 
                 // Print formatted modified date, if this is a file
                 if (_listItems[i].type != FileType::file)
@@ -1090,7 +1089,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<StringId>(STR_FILEBROWSER_FILE_SIZE_VALUE);
                     ft.Add<uint32_t>(_listItems[i].fileSizeFormatted);
                     ft.Add<StringId>(_listItems[i].fileSizeUnit);
-                    DrawTextEllipsised(dpi, { sizeColumnLeft + 2, y }, maxDateWidth + maxTimeWidth, stringId, ft);
+                    DrawTextEllipsised(rt, { sizeColumnLeft + 2, y }, maxDateWidth + maxTimeWidth, stringId, ft);
                 }
 
                 if (config.FileBrowserShowDateColumn)
@@ -1099,12 +1098,12 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<StringId>(STR_STRING);
                     ft.Add<char*>(_listItems[i].dateFormatted.c_str());
                     DrawTextEllipsised(
-                        dpi, { dateAnchor - kDateTimeGap, y }, maxDateWidth, stringId, ft, { TextAlignment::RIGHT });
+                        rt, { dateAnchor - kDateTimeGap, y }, maxDateWidth, stringId, ft, { TextAlignment::RIGHT });
 
                     ft = Formatter();
                     ft.Add<StringId>(STR_STRING);
                     ft.Add<char*>(_listItems[i].timeFormatted.c_str());
-                    DrawTextEllipsised(dpi, { dateAnchor + kDateTimeGap, y }, maxTimeWidth, stringId, ft);
+                    DrawTextEllipsised(rt, { dateAnchor + kDateTimeGap, y }, maxTimeWidth, stringId, ft);
                 }
             }
         }

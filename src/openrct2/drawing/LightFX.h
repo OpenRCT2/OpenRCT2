@@ -15,7 +15,7 @@
 
 struct CoordsXY;
 struct Vehicle;
-struct DrawPixelInfo;
+struct RenderTarget;
 struct CoordsXYZ;
 struct EntityBase;
 
@@ -51,7 +51,7 @@ namespace OpenRCT2::Drawing::LightFx
 
     void Init();
 
-    void UpdateBuffers(DrawPixelInfo&);
+    void UpdateBuffers(RenderTarget&);
 
     void PrepareLightList();
     void SwapBuffers();

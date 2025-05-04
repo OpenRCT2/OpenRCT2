@@ -29,7 +29,7 @@ namespace OpenRCT2::Localisation
     class LocalisationService;
 }
 
-struct DrawPixelInfo;
+struct RenderTarget;
 
 enum ObjectItemFlags : uint8_t
 {

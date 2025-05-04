@@ -24,16 +24,16 @@ namespace OpenRCT2::Ui::Windows
 
     class TitleVersionWindow final : public Window
     {
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
             // Write name and version information
             const auto whiteOutline = ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true);
-            DrawText(dpi, windowPos, { whiteOutline }, gVersionInfoFull);
+            DrawText(rt, windowPos, { whiteOutline }, gVersionInfoFull);
             width = GfxGetStringWidth(gVersionInfoFull, FontStyle::Medium);
 
             // Write platform information
             constexpr const char platformInfo[] = OPENRCT2_PLATFORM " (" OPENRCT2_ARCHITECTURE ")";
-            DrawText(dpi, windowPos + ScreenCoordsXY(0, kListRowHeight), { whiteOutline }, platformInfo);
+            DrawText(rt, windowPos + ScreenCoordsXY(0, kListRowHeight), { whiteOutline }, platformInfo);
             width = std::max<int16_t>(width, GfxGetStringWidth(platformInfo, FontStyle::Medium)) + kTextOffset;
         }
     };

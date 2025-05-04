@@ -192,28 +192,28 @@ static bool SpriteImageExport(const G1Element& spriteElement, u8string_view outP
     auto pixelBuffer = std::make_unique<uint8_t[]>(pixelBufferSize);
     auto pixels = pixelBuffer.get();
 
-    DrawPixelInfo dpi;
-    dpi.bits = pixels;
-    dpi.x = 0;
-    dpi.y = 0;
-    dpi.width = spriteElement.width;
-    dpi.height = spriteElement.height;
-    dpi.pitch = 0;
-    dpi.zoom_level = ZoomLevel{ 0 };
+    RenderTarget rt;
+    rt.bits = pixels;
+    rt.x = 0;
+    rt.y = 0;
+    rt.width = spriteElement.width;
+    rt.height = spriteElement.height;
+    rt.pitch = 0;
+    rt.zoom_level = ZoomLevel{ 0 };
 
     DrawSpriteArgs args(
         ImageId(), PaletteMap::GetDefault(), spriteElement, 0, 0, spriteElement.width, spriteElement.height, pixels);
-    GfxSpriteToBuffer(dpi, args);
+    GfxSpriteToBuffer(rt, args);
 
-    auto const pixels8 = dpi.bits;
-    auto const pixelsLen = dpi.LineStride() * dpi.WorldHeight();
+    auto const pixels8 = rt.bits;
+    auto const pixelsLen = rt.LineStride() * rt.WorldHeight();
     try
     {
         Image image;
-        image.Width = dpi.width;
-        image.Height = dpi.height;
+        image.Width = rt.width;
+        image.Height = rt.height;
         image.Depth = 8;
-        image.Stride = dpi.LineStride();
+        image.Stride = rt.LineStride();
         image.Palette = StandardPalette;
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
         Imaging::WriteToFile(outPath, image, ImageFormat::png);

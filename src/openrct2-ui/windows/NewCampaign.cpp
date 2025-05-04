@@ -362,18 +362,18 @@ namespace OpenRCT2::Ui::Windows
                 WidgetSetDisabled(*this, WIDX_START_BUTTON, true);
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
             ScreenCoordsXY screenCoords{};
 
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
 
             // Number of weeks
             Widget* spinnerWidget = &widgets[WIDX_WEEKS_SPINNER];
             auto ft = Formatter();
             ft.Add<int16_t>(Campaign.no_weeks);
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ spinnerWidget->left + 1, spinnerWidget->top },
+                rt, windowPos + ScreenCoordsXY{ spinnerWidget->left + 1, spinnerWidget->top },
                 Campaign.no_weeks == 1 ? STR_MARKETING_1_WEEK : STR_X_WEEKS, ft, { colours[0] });
 
             screenCoords = windowPos + ScreenCoordsXY{ 14, spinnerWidget->bottom + 6 };
@@ -381,13 +381,13 @@ namespace OpenRCT2::Ui::Windows
             // Price per week
             ft = Formatter();
             ft.Add<money64>(AdvertisingCampaignPricePerWeek[Campaign.campaign_type]);
-            DrawTextBasic(dpi, screenCoords, STR_MARKETING_COST_PER_WEEK, ft);
+            DrawTextBasic(rt, screenCoords, STR_MARKETING_COST_PER_WEEK, ft);
             screenCoords.y += 13;
 
             // Total price
             ft = Formatter();
             ft.Add<money64>(AdvertisingCampaignPricePerWeek[Campaign.campaign_type] * Campaign.no_weeks);
-            DrawTextBasic(dpi, screenCoords, STR_MARKETING_TOTAL_COST, ft);
+            DrawTextBasic(rt, screenCoords, STR_MARKETING_TOTAL_COST, ft);
         }
 
         int16_t GetCampaignType() const

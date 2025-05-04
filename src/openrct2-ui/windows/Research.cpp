@@ -248,27 +248,27 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             switch (page)
             {
                 case WINDOW_RESEARCH_PAGE_DEVELOPMENT:
                 {
-                    WindowResearchDevelopmentDraw(this, dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
+                    WindowResearchDevelopmentDraw(this, rt, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
                     break;
                 }
                 case WINDOW_RESEARCH_PAGE_FUNDING:
                 {
-                    WindowResearchFundingDraw(this, dpi);
+                    WindowResearchFundingDraw(this, rt);
                     break;
                 }
             }
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t tabPage, int32_t spriteIndex)
+        void DrawTabImage(RenderTarget& rt, int32_t tabPage, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + tabPage;
 
@@ -283,15 +283,15 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 GfxDrawSprite(
-                    dpi, ImageId(spriteIndex),
+                    rt, ImageId(spriteIndex),
                     windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
             }
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& rt)
         {
-            DrawTabImage(dpi, WINDOW_RESEARCH_PAGE_DEVELOPMENT, SPR_TAB_FINANCES_RESEARCH_0);
-            DrawTabImage(dpi, WINDOW_RESEARCH_PAGE_FUNDING, SPR_TAB_FINANCES_SUMMARY_0);
+            DrawTabImage(rt, WINDOW_RESEARCH_PAGE_DEVELOPMENT, SPR_TAB_FINANCES_RESEARCH_0);
+            DrawTabImage(rt, WINDOW_RESEARCH_PAGE_FUNDING, SPR_TAB_FINANCES_SUMMARY_0);
         }
     };
 
@@ -341,7 +341,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    void WindowResearchDevelopmentDraw(WindowBase* w, DrawPixelInfo& dpi, WidgetIndex baseWidgetIndex)
+    void WindowResearchDevelopmentDraw(WindowBase* w, RenderTarget& rt, WidgetIndex baseWidgetIndex)
     {
         const auto& gameState = getGameState();
 
@@ -354,19 +354,19 @@ namespace OpenRCT2::Ui::Windows
             // Research type
             auto ft = Formatter();
             ft.Add<StringId>(STR_RESEARCH_UNKNOWN);
-            DrawTextWrapped(dpi, screenCoords, 296, STR_RESEARCH_TYPE_LABEL, ft);
+            DrawTextWrapped(rt, screenCoords, 296, STR_RESEARCH_TYPE_LABEL, ft);
             screenCoords.y += 25;
 
             // Progress
             ft = Formatter();
             ft.Add<StringId>(STR_RESEARCH_COMPLETED_AL);
-            DrawTextWrapped(dpi, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
+            DrawTextWrapped(rt, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
             screenCoords.y += 15;
 
             // Expected
             ft = Formatter();
             ft.Add<StringId>(STR_RESEARCH_STAGE_UNKNOWN);
-            DrawTextBasic(dpi, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
+            DrawTextBasic(rt, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
         }
         else
         {
@@ -403,13 +403,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 ft.Add<StringId>(gameState.researchNextItem->GetName());
             }
-            DrawTextWrapped(dpi, screenCoords, 296, label, ft);
+            DrawTextWrapped(rt, screenCoords, 296, label, ft);
             screenCoords.y += 25;
 
             // Progress
             ft = Formatter();
             ft.Add<StringId>(ResearchStageNames[gameState.researchProgressStage]);
-            DrawTextWrapped(dpi, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
+            DrawTextWrapped(rt, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, ft);
             screenCoords.y += 15;
 
             // Expected
@@ -425,7 +425,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 ft.Add<StringId>(STR_RESEARCH_STAGE_UNKNOWN);
             }
-            DrawTextBasic(dpi, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
+            DrawTextBasic(rt, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
         }
 
         // Last development
@@ -460,7 +460,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            DrawTextWrapped(dpi, screenCoords, 266, lastDevelopmentFormat, ft);
+            DrawTextWrapped(rt, screenCoords, 266, lastDevelopmentFormat, ft);
         }
     }
 
@@ -574,7 +574,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    void WindowResearchFundingDraw(WindowBase* w, DrawPixelInfo& dpi)
+    void WindowResearchFundingDraw(WindowBase* w, RenderTarget& rt)
     {
         const auto& gameState = getGameState();
         if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
@@ -584,7 +584,7 @@ namespace OpenRCT2::Ui::Windows
         auto ft = Formatter();
         ft.Add<money64>(research_cost_table[currentResearchLevel]);
         DrawTextBasic(
-            dpi, w->windowPos + ScreenCoordsXY{ 10, w->widgets[WIDX_TAB_1].top + 60 }, STR_RESEARCH_COST_PER_MONTH, ft);
+            rt, w->windowPos + ScreenCoordsXY{ 10, w->widgets[WIDX_TAB_1].top + 60 }, STR_RESEARCH_COST_PER_MONTH, ft);
     }
 
 #pragma endregion

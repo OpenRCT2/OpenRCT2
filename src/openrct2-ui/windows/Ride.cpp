@@ -889,39 +889,39 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
             switch (page)
             {
                 case WINDOW_RIDE_PAGE_MAIN:
-                    MainOnDraw(dpi);
+                    MainOnDraw(rt);
                     break;
                 case WINDOW_RIDE_PAGE_VEHICLE:
-                    VehicleOnDraw(dpi);
+                    VehicleOnDraw(rt);
                     break;
                 case WINDOW_RIDE_PAGE_OPERATING:
-                    OperatingOnDraw(dpi);
+                    OperatingOnDraw(rt);
                     break;
                 case WINDOW_RIDE_PAGE_MAINTENANCE:
-                    MaintenanceOnDraw(dpi);
+                    MaintenanceOnDraw(rt);
                     break;
                 case WINDOW_RIDE_PAGE_COLOUR:
-                    ColourOnDraw(dpi);
+                    ColourOnDraw(rt);
                     break;
                 case WINDOW_RIDE_PAGE_MUSIC:
-                    MusicOnDraw(dpi);
+                    MusicOnDraw(rt);
                     break;
                 case WINDOW_RIDE_PAGE_MEASUREMENTS:
-                    MeasurementsOnDraw(dpi);
+                    MeasurementsOnDraw(rt);
                     break;
                 case WINDOW_RIDE_PAGE_GRAPHS:
-                    GraphsOnDraw(dpi);
+                    GraphsOnDraw(rt);
                     break;
                 case WINDOW_RIDE_PAGE_INCOME:
-                    IncomeOnDraw(dpi);
+                    IncomeOnDraw(rt);
                     break;
                 case WINDOW_RIDE_PAGE_CUSTOMER:
-                    CustomerOnDraw(dpi);
+                    CustomerOnDraw(rt);
                     break;
             }
         }
@@ -1068,21 +1068,21 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             switch (page)
             {
                 case WINDOW_RIDE_PAGE_VEHICLE:
-                    VehicleOnScrollDraw(dpi, scrollIndex);
+                    VehicleOnScrollDraw(rt, scrollIndex);
                     break;
                 case WINDOW_RIDE_PAGE_COLOUR:
-                    ColourOnScrollDraw(dpi, scrollIndex);
+                    ColourOnScrollDraw(rt, scrollIndex);
                     break;
                 case WINDOW_RIDE_PAGE_GRAPHS:
-                    GraphsOnScrollDraw(dpi, scrollIndex);
+                    GraphsOnScrollDraw(rt, scrollIndex);
                     break;
                 case WINDOW_RIDE_PAGE_MUSIC:
-                    MusicOnScrollDraw(dpi, scrollIndex);
+                    MusicOnScrollDraw(rt, scrollIndex);
                     break;
             }
         }
@@ -1200,7 +1200,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t tab, int32_t spriteIndex)
+        void DrawTabImage(RenderTarget& rt, int32_t tab, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + tab;
 
@@ -1213,11 +1213,11 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 const auto& widget = widgets[widgetIndex];
-                GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget.left, widget.top });
+                GfxDrawSprite(rt, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget.left, widget.top });
             }
         }
 
-        void DrawTabMain(DrawPixelInfo& dpi)
+        void DrawTabMain(RenderTarget& rt)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_MAIN);
             if (!WidgetIsDisabled(*this, widgetIndex))
@@ -1246,12 +1246,12 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     const auto& widget = widgets[widgetIndex];
-                    GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget.left, widget.top });
+                    GfxDrawSprite(rt, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget.left, widget.top });
                 }
             }
         }
 
-        void DrawTabVehicle(DrawPixelInfo& dpi)
+        void DrawTabVehicle(RenderTarget& rt)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_VEHICLE);
             const auto& widget = widgets[widgetIndex];
@@ -1266,8 +1266,8 @@ namespace OpenRCT2::Ui::Windows
 
                 screenCoords += windowPos;
 
-                DrawPixelInfo clipDPI;
-                if (!ClipDrawPixelInfo(clipDPI, dpi, screenCoords, clipWidth, clipHeight))
+                RenderTarget clipDPI;
+                if (!ClipDrawPixelInfo(clipDPI, rt, screenCoords, clipWidth, clipHeight))
                 {
                     return;
                 }
@@ -1316,7 +1316,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabCustomer(DrawPixelInfo& dpi)
+        void DrawTabCustomer(RenderTarget& rt)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_CUSTOMER);
 
@@ -1331,23 +1331,23 @@ namespace OpenRCT2::Ui::Windows
                 spriteIndex += animObj->GetPeepAnimation(PeepAnimationGroup::Normal).base_image + 1;
 
                 GfxDrawSprite(
-                    dpi, ImageId(spriteIndex, COLOUR_BRIGHT_RED, COLOUR_TEAL),
+                    rt, ImageId(spriteIndex, COLOUR_BRIGHT_RED, COLOUR_TEAL),
                     windowPos + ScreenCoordsXY{ widget.midX(), widget.bottom - 6 });
             }
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& rt)
         {
-            DrawTabVehicle(dpi);
-            DrawTabImage(dpi, WINDOW_RIDE_PAGE_OPERATING, SPR_TAB_GEARS_0);
-            DrawTabImage(dpi, WINDOW_RIDE_PAGE_MAINTENANCE, SPR_TAB_WRENCH_0);
-            DrawTabImage(dpi, WINDOW_RIDE_PAGE_INCOME, SPR_TAB_ADMISSION_0);
-            DrawTabMain(dpi);
-            DrawTabImage(dpi, WINDOW_RIDE_PAGE_MEASUREMENTS, SPR_TAB_TIMER_0);
-            DrawTabImage(dpi, WINDOW_RIDE_PAGE_COLOUR, SPR_TAB_PAINT_0);
-            DrawTabImage(dpi, WINDOW_RIDE_PAGE_GRAPHS, SPR_TAB_GRAPH_A_0);
-            DrawTabCustomer(dpi);
-            DrawTabImage(dpi, WINDOW_RIDE_PAGE_MUSIC, SPR_TAB_MUSIC_0);
+            DrawTabVehicle(rt);
+            DrawTabImage(rt, WINDOW_RIDE_PAGE_OPERATING, SPR_TAB_GEARS_0);
+            DrawTabImage(rt, WINDOW_RIDE_PAGE_MAINTENANCE, SPR_TAB_WRENCH_0);
+            DrawTabImage(rt, WINDOW_RIDE_PAGE_INCOME, SPR_TAB_ADMISSION_0);
+            DrawTabMain(rt);
+            DrawTabImage(rt, WINDOW_RIDE_PAGE_MEASUREMENTS, SPR_TAB_TIMER_0);
+            DrawTabImage(rt, WINDOW_RIDE_PAGE_COLOUR, SPR_TAB_PAINT_0);
+            DrawTabImage(rt, WINDOW_RIDE_PAGE_GRAPHS, SPR_TAB_GRAPH_A_0);
+            DrawTabCustomer(rt);
+            DrawTabImage(rt, WINDOW_RIDE_PAGE_MUSIC, SPR_TAB_MUSIC_0);
         }
 
         void DisableTabs()
@@ -2576,17 +2576,17 @@ namespace OpenRCT2::Ui::Windows
             return GetStatusStation(ft);
         }
 
-        void MainOnDraw(DrawPixelInfo& dpi)
+        void MainOnDraw(RenderTarget& rt)
         {
-            WindowDrawWidgets(*this, dpi);
-            DrawTabImages(dpi);
+            WindowDrawWidgets(*this, rt);
+            DrawTabImages(rt);
 
             // Viewport and ear icon
             if (viewport != nullptr)
             {
-                WindowDrawViewport(dpi, *this);
+                WindowDrawViewport(rt, *this);
                 if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
-                    GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*this));
+                    GfxDrawSprite(rt, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*this));
             }
 
             // View dropdown
@@ -2615,7 +2615,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto* widget = &widgets[WIDX_VIEW];
             DrawTextBasic(
-                dpi, { windowPos.x + (widget->left + widget->right - 11) / 2, windowPos.y + widget->top },
+                rt, { windowPos.x + (widget->left + widget->right - 11) / 2, windowPos.y + widget->top },
                 STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
 
             // Status
@@ -2623,7 +2623,7 @@ namespace OpenRCT2::Ui::Windows
             widget = &widgets[WIDX_STATUS];
             StringId rideStatus = GetStatus(ft);
             DrawTextEllipsised(
-                dpi, windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top }, widget->width(), rideStatus,
+                rt, windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top }, widget->width(), rideStatus,
                 ft, { TextAlignment::CENTRE });
         }
 
@@ -2865,10 +2865,10 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void VehicleOnDraw(DrawPixelInfo& dpi)
+        void VehicleOnDraw(RenderTarget& rt)
         {
-            WindowDrawWidgets(*this, dpi);
-            DrawTabImages(dpi);
+            WindowDrawWidgets(*this, rt);
+            DrawTabImages(rt);
 
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -2882,13 +2882,13 @@ namespace OpenRCT2::Ui::Windows
             // Description
             auto ft = Formatter();
             ft.Add<StringId>(rideEntry->naming.Description);
-            screenCoords.y += DrawTextWrapped(dpi, screenCoords, 300, STR_BLACK_STRING, ft, { TextAlignment::LEFT });
+            screenCoords.y += DrawTextWrapped(rt, screenCoords, 300, STR_BLACK_STRING, ft, { TextAlignment::LEFT });
             screenCoords.y += 2;
 
             // Capacity
             ft = Formatter();
             ft.Add<StringId>(rideEntry->capacity);
-            DrawTextBasic(dpi, screenCoords, STR_CAPACITY, ft);
+            DrawTextBasic(rt, screenCoords, STR_CAPACITY, ft);
 
             // Excitement Factor
             if (rideEntry->excitement_multiplier != 0)
@@ -2899,7 +2899,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<int16_t>(abs(rideEntry->excitement_multiplier));
                 StringId stringId = rideEntry->excitement_multiplier > 0 ? STR_EXCITEMENT_FACTOR
                                                                          : STR_EXCITEMENT_FACTOR_NEGATIVE;
-                DrawTextBasic(dpi, screenCoords, stringId, ft);
+                DrawTextBasic(rt, screenCoords, stringId, ft);
             }
 
             // Intensity Factor
@@ -2914,7 +2914,7 @@ namespace OpenRCT2::Ui::Windows
                 ft = Formatter();
                 ft.Add<int16_t>(abs(rideEntry->intensity_multiplier));
                 StringId stringId = rideEntry->intensity_multiplier > 0 ? STR_INTENSITY_FACTOR : STR_INTENSITY_FACTOR_NEGATIVE;
-                DrawTextBasic(dpi, screenCoords, stringId, ft);
+                DrawTextBasic(rt, screenCoords, stringId, ft);
 
                 if (lineHeight != 10)
                     screenCoords.x -= 150;
@@ -2928,7 +2928,7 @@ namespace OpenRCT2::Ui::Windows
                 ft = Formatter();
                 ft.Add<int16_t>(abs(rideEntry->nausea_multiplier));
                 StringId stringId = rideEntry->nausea_multiplier > 0 ? STR_NAUSEA_FACTOR : STR_NAUSEA_FACTOR_NEGATIVE;
-                DrawTextBasic(dpi, screenCoords, stringId, ft);
+                DrawTextBasic(rt, screenCoords, stringId, ft);
             }
 
             const auto minimumPreviewStart = screenCoords.y - windowPos.y + kListRowHeight + 5;
@@ -2952,7 +2952,7 @@ namespace OpenRCT2::Ui::Windows
             ImageId imageId;
         };
 
-        void VehicleOnScrollDraw(DrawPixelInfo& dpi, int32_t scrollIndex)
+        void VehicleOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
         {
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -2961,7 +2961,7 @@ namespace OpenRCT2::Ui::Windows
             const auto* rideEntry = ride->getRideEntry();
 
             // Background
-            GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } }, PaletteIndex::pi12);
+            GfxFillRect(rt, { { rt.x, rt.y }, { rt.x + rt.width, rt.y + rt.height } }, PaletteIndex::pi12);
 
             Widget* widget = &widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
             int32_t startX = std::max(2, (widget->width() - ((ride->numTrains - 1) * 36)) / 2 - 25);
@@ -3042,7 +3042,7 @@ namespace OpenRCT2::Ui::Windows
 
                 VehicleDrawInfo* current = nextSpriteToDraw;
                 while (--current >= trainCarImages)
-                    GfxDrawSprite(dpi, current->imageId, { current->x, current->y });
+                    GfxDrawSprite(rt, current->imageId, { current->x, current->y });
 
                 startX += 36;
             }
@@ -3683,10 +3683,10 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
-        void OperatingOnDraw(DrawPixelInfo& dpi)
+        void OperatingOnDraw(RenderTarget& rt)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -3695,7 +3695,7 @@ namespace OpenRCT2::Ui::Windows
             // Horizontal rule between mode settings and depart settings
             auto ruleStart = widgets[WIDX_LOAD_DROPDOWN].top - 8;
             GfxFillRectInset(
-                dpi,
+                rt,
                 { windowPos + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, ruleStart },
                   windowPos + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].right - 5, ruleStart + 1 } },
                 colours[1], INSET_RECT_FLAG_BORDER_INSET);
@@ -3707,7 +3707,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<uint16_t>(ride->numBlockBrakes + ride->numStations);
                 auto underWidget = ride->mode == RideMode::poweredLaunchBlockSectioned ? WIDX_MODE_TWEAK : WIDX_MODE;
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ 21, widgets[underWidget].bottom + 3 }, STR_BLOCK_SECTIONS, ft,
+                    rt, windowPos + ScreenCoordsXY{ 21, widgets[underWidget].bottom + 3 }, STR_BLOCK_SECTIONS, ft,
                     { COLOUR_BLACK });
             }
         }
@@ -4026,7 +4026,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void MaintenanceOnDraw(DrawPixelInfo& dpi)
+        void MaintenanceOnDraw(RenderTarget& rt)
         {
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -4038,19 +4038,19 @@ namespace OpenRCT2::Ui::Windows
             uint16_t downTime = ride->downtime;
             WidgetProgressBarSetNewPercentage(widgets[WIDX_DOWN_TIME_BAR], downTime);
 
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             // Locate mechanic button image
             Widget* widget = &widgets[WIDX_LOCATE_MECHANIC];
             auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
             auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, getGameState().staffMechanicColour);
-            GfxDrawSprite(dpi, image, screenCoords);
+            GfxDrawSprite(rt, image, screenCoords);
 
             // Inspection label
             widget = &widgets[WIDX_INSPECTION_INTERVAL];
             screenCoords = windowPos + ScreenCoordsXY{ 4, widget->top + 1 };
-            DrawTextBasic(dpi, screenCoords, STR_INSPECTION);
+            DrawTextBasic(rt, screenCoords, STR_INSPECTION);
 
             // Reliability
             widget = &widgets[WIDX_PAGE_BACKGROUND];
@@ -4058,12 +4058,12 @@ namespace OpenRCT2::Ui::Windows
 
             auto ft = Formatter();
             ft.Add<uint16_t>(reliability);
-            DrawTextBasic(dpi, screenCoords, STR_RELIABILITY_LABEL_1757, ft);
+            DrawTextBasic(rt, screenCoords, STR_RELIABILITY_LABEL_1757, ft);
             screenCoords.y += 11;
 
             ft = Formatter();
             ft.Add<uint16_t>(downTime);
-            DrawTextBasic(dpi, screenCoords, STR_DOWN_TIME_LABEL_1889, ft);
+            DrawTextBasic(rt, screenCoords, STR_DOWN_TIME_LABEL_1889, ft);
             screenCoords.y += 26;
 
             // Last inspection
@@ -4077,7 +4077,7 @@ namespace OpenRCT2::Ui::Windows
 
             ft = Formatter();
             ft.Add<uint16_t>(ride->lastInspection);
-            DrawTextBasic(dpi, screenCoords, stringId, ft);
+            DrawTextBasic(rt, screenCoords, stringId, ft);
             screenCoords.y += 12;
 
             // Last / current breakdown
@@ -4087,7 +4087,7 @@ namespace OpenRCT2::Ui::Windows
             stringId = (ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN) ? STR_CURRENT_BREAKDOWN : STR_LAST_BREAKDOWN;
             ft = Formatter();
             ft.Add<StringId>(RideBreakdownReasonNames[ride->breakdownReason]);
-            DrawTextBasic(dpi, screenCoords, stringId, ft);
+            DrawTextBasic(rt, screenCoords, stringId, ft);
             screenCoords.y += 12;
 
             // Mechanic status
@@ -4125,7 +4125,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (stringId == STR_CALLING_MECHANIC || stringId == STR_NO_MECHANICS_ARE_HIRED_MESSAGE)
                     {
-                        DrawTextWrapped(dpi, screenCoords, 280, stringId, {}, { TextAlignment::LEFT });
+                        DrawTextWrapped(rt, screenCoords, 280, stringId, {}, { TextAlignment::LEFT });
                     }
                     else
                     {
@@ -4134,7 +4134,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             ft = Formatter();
                             staff->FormatNameTo(ft);
-                            DrawTextWrapped(dpi, screenCoords, 280, stringId, ft, { TextAlignment::LEFT });
+                            DrawTextWrapped(rt, screenCoords, 280, stringId, ft, { TextAlignment::LEFT });
                         }
                     }
                 }
@@ -4812,23 +4812,23 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
-        void ColourOnDraw(DrawPixelInfo& dpi)
+        void ColourOnDraw(RenderTarget& rt)
         {
             // TODO: This should use lists and identified sprites
-            DrawPixelInfo clippedDpi;
+            RenderTarget clippedDpi;
 
             auto ride = GetRide(rideId);
             if (ride == nullptr)
                 return;
 
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             // Track / shop item preview
             const auto& trackPreviewWidget = widgets[WIDX_TRACK_PREVIEW];
             if (trackPreviewWidget.type != WindowWidgetType::Empty)
                 GfxFillRect(
-                    dpi,
+                    rt,
                     { { windowPos + ScreenCoordsXY{ trackPreviewWidget.left + 1, trackPreviewWidget.top + 1 } },
                       { windowPos + ScreenCoordsXY{ trackPreviewWidget.right - 1, trackPreviewWidget.bottom - 1 } } },
                     PaletteIndex::pi12);
@@ -4845,7 +4845,7 @@ namespace OpenRCT2::Ui::Windows
                 const auto& rtd = ride->getRideTypeDescriptor();
                 if (rtd.specialType == RtdSpecialType::maze)
                 {
-                    GfxDrawSprite(dpi, ImageId(MazeOptions[trackColour.supports].sprite), screenCoords);
+                    GfxDrawSprite(rt, ImageId(MazeOptions[trackColour.supports].sprite), screenCoords);
                 }
                 else
                 {
@@ -4853,14 +4853,14 @@ namespace OpenRCT2::Ui::Windows
                     int32_t spriteIndex = typeDescriptor.ColourPreview.Track;
                     if (spriteIndex != 0)
                     {
-                        GfxDrawSprite(dpi, ImageId(spriteIndex, trackColour.main, trackColour.additional), screenCoords);
+                        GfxDrawSprite(rt, ImageId(spriteIndex, trackColour.main, trackColour.additional), screenCoords);
                     }
 
                     // Supports
                     spriteIndex = typeDescriptor.ColourPreview.Supports;
                     if (spriteIndex != 0)
                     {
-                        GfxDrawSprite(dpi, ImageId(spriteIndex, trackColour.supports), screenCoords);
+                        GfxDrawSprite(rt, ImageId(spriteIndex, trackColour.supports), screenCoords);
                     }
                 }
             }
@@ -4885,12 +4885,11 @@ namespace OpenRCT2::Ui::Windows
                         }
                     }
 
-                    GfxDrawSprite(dpi, ImageId(GetShopItemDescriptor(shopItem).Image, spriteColour), screenCoords);
+                    GfxDrawSprite(rt, ImageId(GetShopItemDescriptor(shopItem).Image, spriteColour), screenCoords);
                 }
                 else
                 {
-                    GfxDrawSprite(
-                        dpi, ImageId(GetShopItemDescriptor(shopItem).Image, ride->trackColours[0].main), screenCoords);
+                    GfxDrawSprite(rt, ImageId(GetShopItemDescriptor(shopItem).Image, ride->trackColours[0].main), screenCoords);
                 }
             }
 
@@ -4900,7 +4899,7 @@ namespace OpenRCT2::Ui::Windows
             if (entrancePreviewWidget.type != WindowWidgetType::Empty)
             {
                 if (ClipDrawPixelInfo(
-                        clippedDpi, dpi,
+                        clippedDpi, rt,
                         windowPos + ScreenCoordsXY{ entrancePreviewWidget.left + 1, entrancePreviewWidget.top + 1 },
                         entrancePreviewWidget.width(), entrancePreviewWidget.height()))
                 {
@@ -4927,11 +4926,11 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 auto labelPos = windowPos + ScreenCoordsXY{ 3, widgets[WIDX_ENTRANCE_STYLE].top };
-                DrawTextEllipsised(dpi, labelPos, 97, STR_STATION_STYLE, {});
+                DrawTextEllipsised(rt, labelPos, 97, STR_STATION_STYLE, {});
             }
         }
 
-        void ColourOnScrollDraw(DrawPixelInfo& dpi, int32_t scrollIndex) const
+        void ColourOnScrollDraw(RenderTarget& rt, int32_t scrollIndex) const
         {
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -4945,7 +4944,7 @@ namespace OpenRCT2::Ui::Windows
             auto vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
 
             // Background colour
-            GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, PaletteIndex::pi12);
+            GfxFillRect(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, PaletteIndex::pi12);
 
             // ?
             auto screenCoords = ScreenCoordsXY{ vehiclePreviewWidget->width() / 2, vehiclePreviewWidget->height() - 15 };
@@ -4966,7 +4965,7 @@ namespace OpenRCT2::Ui::Windows
             imageIndex *= carEntry.base_num_frames;
             imageIndex += carEntry.base_image_id;
             auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
-            GfxDrawSprite(dpi, imageId, screenCoords);
+            GfxDrawSprite(rt, imageId, screenCoords);
         }
 
 #pragma endregion
@@ -5237,10 +5236,10 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
-        void MusicOnDraw(DrawPixelInfo& dpi)
+        void MusicOnDraw(RenderTarget& rt)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
             auto ride = GetRide(rideId);
             if (ride == nullptr)
                 return;
@@ -5252,7 +5251,7 @@ namespace OpenRCT2::Ui::Windows
 
             // 'Tracks' caption
             auto trackLabelPos = windowPos + ScreenCoordsXY{ widgets[WIDX_MUSIC_DATA].left, widgets[WIDX_MUSIC_DATA].top - 13 };
-            DrawTextWrapped(dpi, trackLabelPos, width, STR_MUSIC_OBJECT_TRACK_HEADER, {}, { TextAlignment::LEFT });
+            DrawTextWrapped(rt, trackLabelPos, width, STR_MUSIC_OBJECT_TRACK_HEADER, {}, { TextAlignment::LEFT });
 
             // Do we have a preview image to draw?
             auto musicObj = ride->getMusicObject();
@@ -5266,15 +5265,15 @@ namespace OpenRCT2::Ui::Windows
             int32_t clipHeight = previewWidget.height() - 1;
 
             // Draw the preview image
-            DrawPixelInfo clipDPI;
+            RenderTarget clipDPI;
             auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
-            if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, clipWidth, clipHeight))
+            if (ClipDrawPixelInfo(clipDPI, rt, screenPos, clipWidth, clipHeight))
             {
                 musicObj->DrawPreview(clipDPI, clipWidth, clipHeight);
             }
         }
 
-        void MusicOnScrollDraw(DrawPixelInfo& dpi, int32_t scrollIndex)
+        void MusicOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
         {
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -5286,7 +5285,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
-            GfxClear(dpi, paletteIndex);
+            GfxClear(rt, paletteIndex);
 
             auto* musicObj = ride->getMusicObject();
             if (musicObj == nullptr)
@@ -5297,7 +5296,7 @@ namespace OpenRCT2::Ui::Windows
             for (size_t i = 0; i < musicObj->GetTrackCount(); i++)
             {
                 // Skip invisible items
-                if (y + kScrollableRowHeight < dpi.y || y > dpi.y + dpi.height)
+                if (y + kScrollableRowHeight < rt.y || y > rt.y + rt.height)
                 {
                     y += kScrollableRowHeight;
                     continue;
@@ -5318,7 +5317,7 @@ namespace OpenRCT2::Ui::Windows
                                                         : STR_MUSIC_OBJECT_TRACK_LIST_ITEM_WITH_COMPOSER;
 
                 // Draw the track
-                DrawTextBasic(dpi, { 0, y }, stringId, ft, { FontStyle::Small });
+                DrawTextBasic(rt, { 0, y }, stringId, ft, { FontStyle::Small });
                 y += kScrollableRowHeight;
             }
         }
@@ -5609,10 +5608,10 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
-        void MeasurementsOnDraw(DrawPixelInfo& dpi)
+        void MeasurementsOnDraw(RenderTarget& rt)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             if (widgets[WIDX_SAVE_DESIGN].type == WindowWidgetType::Button)
             {
@@ -5620,12 +5619,12 @@ namespace OpenRCT2::Ui::Windows
 
                 ScreenCoordsXY widgetCoords(windowPos.x + widget->width() / 2, windowPos.y + widget->top + 40);
                 DrawTextWrapped(
-                    dpi, widgetCoords, width - 8, STR_CLICK_ITEMS_OF_SCENERY_TO_SELECT, {}, { TextAlignment::CENTRE });
+                    rt, widgetCoords, width - 8, STR_CLICK_ITEMS_OF_SCENERY_TO_SELECT, {}, { TextAlignment::CENTRE });
 
                 widgetCoords.x = windowPos.x + 4;
                 widgetCoords.y = windowPos.y + widgets[WIDX_SELECT_NEARBY_SCENERY].bottom + 17;
                 GfxFillRectInset(
-                    dpi, { widgetCoords, { windowPos.x + 312, widgetCoords.y + 1 } }, colours[1], INSET_RECT_FLAG_BORDER_INSET);
+                    rt, { widgetCoords, { windowPos.x + 312, widgetCoords.y + 1 } }, colours[1], INSET_RECT_FLAG_BORDER_INSET);
             }
             else
             {
@@ -5645,7 +5644,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<StringId>(ratingName);
                     StringId stringId = !RideHasRatings(*ride) ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE
                                                                : STR_EXCITEMENT_RATING;
-                    DrawTextBasic(dpi, screenCoords, stringId, ft);
+                    DrawTextBasic(rt, screenCoords, stringId, ft);
                     screenCoords.y += kListRowHeight;
 
                     // Intensity
@@ -5660,7 +5659,7 @@ namespace OpenRCT2::Ui::Windows
                     else if (ride->ratings.intensity >= MakeRideRating(10, 00))
                         stringId = STR_INTENSITY_RATING_RED;
 
-                    DrawTextBasic(dpi, screenCoords, stringId, ft);
+                    DrawTextBasic(rt, screenCoords, stringId, ft);
                     screenCoords.y += kListRowHeight;
 
                     // Nausea
@@ -5669,12 +5668,12 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<uint32_t>(ride->ratings.nausea);
                     ft.Add<StringId>(ratingName);
                     stringId = !RideHasRatings(*ride) ? STR_NAUSEA_RATING_NOT_YET_AVAILABLE : STR_NAUSEA_RATING;
-                    DrawTextBasic(dpi, screenCoords, stringId, ft);
+                    DrawTextBasic(rt, screenCoords, stringId, ft);
                     screenCoords.y += 2 * kListRowHeight;
 
                     // Horizontal rule
                     GfxFillRectInset(
-                        dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 303, -5 } }, colours[1],
+                        rt, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 303, -5 } }, colours[1],
                         INSET_RECT_FLAG_BORDER_INSET);
 
                     if (!(ride->lifecycleFlags & RIDE_LIFECYCLE_NO_RAW_STATS))
@@ -5684,7 +5683,7 @@ namespace OpenRCT2::Ui::Windows
                             // Holes
                             ft = Formatter();
                             ft.Add<uint16_t>(ride->numHoles);
-                            DrawTextBasic(dpi, screenCoords, STR_HOLES, ft);
+                            DrawTextBasic(rt, screenCoords, STR_HOLES, ft);
                             screenCoords.y += kListRowHeight;
                         }
                         else
@@ -5692,13 +5691,13 @@ namespace OpenRCT2::Ui::Windows
                             // Max speed
                             ft = Formatter();
                             ft.Add<int32_t>(ToHumanReadableSpeed(ride->maxSpeed));
-                            DrawTextBasic(dpi, screenCoords, STR_MAX_SPEED, ft);
+                            DrawTextBasic(rt, screenCoords, STR_MAX_SPEED, ft);
                             screenCoords.y += kListRowHeight;
 
                             // Average speed
                             ft = Formatter();
                             ft.Add<int32_t>(ToHumanReadableSpeed(ride->averageSpeed));
-                            DrawTextBasic(dpi, screenCoords, STR_AVERAGE_SPEED, ft);
+                            DrawTextBasic(rt, screenCoords, STR_AVERAGE_SPEED, ft);
                             screenCoords.y += kListRowHeight;
 
                             // Ride time
@@ -5738,7 +5737,7 @@ namespace OpenRCT2::Ui::Windows
                             ft.Add<uint16_t>(0);
                             ft.Add<uint16_t>(0);
                             ft.Add<uint16_t>(0);
-                            DrawTextEllipsised(dpi, screenCoords, 308, STR_RIDE_TIME, ft);
+                            DrawTextEllipsised(rt, screenCoords, 308, STR_RIDE_TIME, ft);
                             screenCoords.y += kListRowHeight;
                         }
 
@@ -5778,7 +5777,7 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<uint16_t>(0);
                         ft.Add<uint16_t>(0);
                         ft.Add<uint16_t>(0);
-                        DrawTextEllipsised(dpi, screenCoords, 308, STR_RIDE_LENGTH, ft);
+                        DrawTextEllipsised(rt, screenCoords, 308, STR_RIDE_LENGTH, ft);
 
                         screenCoords.y += kListRowHeight;
 
@@ -5789,7 +5788,7 @@ namespace OpenRCT2::Ui::Windows
 
                             ft = Formatter();
                             ft.Add<fixed16_2dp>(ride->maxPositiveVerticalG);
-                            DrawTextBasic(dpi, screenCoords, stringId, ft);
+                            DrawTextBasic(rt, screenCoords, stringId, ft);
                             screenCoords.y += kListRowHeight;
 
                             // Max. negative vertical G's
@@ -5798,20 +5797,20 @@ namespace OpenRCT2::Ui::Windows
                                 : STR_MAX_NEGATIVE_VERTICAL_G;
                             ft = Formatter();
                             ft.Add<int32_t>(ride->maxNegativeVerticalG);
-                            DrawTextBasic(dpi, screenCoords, stringId, ft);
+                            DrawTextBasic(rt, screenCoords, stringId, ft);
                             screenCoords.y += kListRowHeight;
 
                             // Max lateral G's
                             stringId = ride->maxLateralG > kRideGForcesRedLateral ? STR_MAX_LATERAL_G_RED : STR_MAX_LATERAL_G;
                             ft = Formatter();
                             ft.Add<fixed16_2dp>(ride->maxLateralG);
-                            DrawTextBasic(dpi, screenCoords, stringId, ft);
+                            DrawTextBasic(rt, screenCoords, stringId, ft);
                             screenCoords.y += kListRowHeight;
 
                             // Total 'air' time
                             ft = Formatter();
                             ft.Add<fixed32_2dp>(ToHumanReadableAirTime(ride->totalAirTime));
-                            DrawTextBasic(dpi, screenCoords, STR_TOTAL_AIR_TIME, ft);
+                            DrawTextBasic(rt, screenCoords, STR_TOTAL_AIR_TIME, ft);
                             screenCoords.y += kListRowHeight;
                         }
 
@@ -5819,14 +5818,14 @@ namespace OpenRCT2::Ui::Windows
                         {
                             ft = Formatter();
                             ft.Add<uint16_t>(ride->numDrops);
-                            DrawTextBasic(dpi, screenCoords, STR_DROPS, ft);
+                            DrawTextBasic(rt, screenCoords, STR_DROPS, ft);
                             screenCoords.y += kListRowHeight;
 
                             // Highest drop height
                             auto highestDropHeight = (ride->highestDropHeight * 3) / 4;
                             ft = Formatter();
                             ft.Add<int32_t>(highestDropHeight);
-                            DrawTextBasic(dpi, screenCoords, STR_HIGHEST_DROP_HEIGHT, ft);
+                            DrawTextBasic(rt, screenCoords, STR_HIGHEST_DROP_HEIGHT, ft);
                             screenCoords.y += kListRowHeight;
                         }
 
@@ -5837,7 +5836,7 @@ namespace OpenRCT2::Ui::Windows
                             {
                                 ft = Formatter();
                                 ft.Add<uint16_t>(ride->numInversions);
-                                DrawTextBasic(dpi, screenCoords, STR_INVERSIONS, ft);
+                                DrawTextBasic(rt, screenCoords, STR_INVERSIONS, ft);
                                 screenCoords.y += kListRowHeight;
                             }
                         }
@@ -5845,7 +5844,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    DrawTextBasic(dpi, screenCoords, STR_NO_TEST_RESULTS_YET);
+                    DrawTextBasic(rt, screenCoords, STR_NO_TEST_RESULTS_YET);
                 }
             }
         }
@@ -6053,15 +6052,15 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
-        void GraphsOnDraw(DrawPixelInfo& dpi)
+        void GraphsOnDraw(RenderTarget& rt)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
         }
 
-        void GraphsOnScrollDraw(DrawPixelInfo& dpi, int32_t scrollIndex)
+        void GraphsOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
         {
-            GfxClear(dpi, ColourMapA[COLOUR_SATURATED_GREEN].darker);
+            GfxClear(rt, ColourMapA[COLOUR_SATURATED_GREEN].darker);
 
             auto widget = &widgets[WIDX_GRAPH];
             auto ride = GetRide(rideId);
@@ -6077,7 +6076,7 @@ namespace OpenRCT2::Ui::Windows
                 // No measurement message
                 ScreenCoordsXY stringCoords(widget->width() / 2, widget->height() / 2 - 5);
                 int32_t txtWidth = widget->width() - 2;
-                DrawTextWrapped(dpi, stringCoords, txtWidth, message.str, message.args, { TextAlignment::CENTRE });
+                DrawTextWrapped(rt, stringCoords, txtWidth, message.str, message.args, { TextAlignment::CENTRE });
                 return;
             }
 
@@ -6086,17 +6085,17 @@ namespace OpenRCT2::Ui::Windows
             const uint8_t darkColour = ColourMapA[COLOUR_SATURATED_GREEN].mid_dark;
 
             int32_t time = 0;
-            for (int32_t x = 0; x < dpi.x + dpi.width; x += 80)
+            for (int32_t x = 0; x < rt.x + rt.width; x += 80)
             {
-                if (x + 80 >= dpi.x)
+                if (x + 80 >= rt.x)
                 {
-                    auto coord1 = ScreenCoordsXY{ x, dpi.y };
-                    auto coord2 = ScreenCoordsXY{ x, dpi.y + dpi.height - 1 };
-                    GfxFillRect(dpi, { coord1, coord2 }, lightColour);
-                    GfxFillRect(dpi, { coord1 + ScreenCoordsXY{ 16, 0 }, coord2 + ScreenCoordsXY{ 16, 0 } }, darkColour);
-                    GfxFillRect(dpi, { coord1 + ScreenCoordsXY{ 32, 0 }, coord2 + ScreenCoordsXY{ 32, 0 } }, darkColour);
-                    GfxFillRect(dpi, { coord1 + ScreenCoordsXY{ 48, 0 }, coord2 + ScreenCoordsXY{ 48, 0 } }, darkColour);
-                    GfxFillRect(dpi, { coord1 + ScreenCoordsXY{ 64, 0 }, coord2 + ScreenCoordsXY{ 64, 0 } }, darkColour);
+                    auto coord1 = ScreenCoordsXY{ x, rt.y };
+                    auto coord2 = ScreenCoordsXY{ x, rt.y + rt.height - 1 };
+                    GfxFillRect(rt, { coord1, coord2 }, lightColour);
+                    GfxFillRect(rt, { coord1 + ScreenCoordsXY{ 16, 0 }, coord2 + ScreenCoordsXY{ 16, 0 } }, darkColour);
+                    GfxFillRect(rt, { coord1 + ScreenCoordsXY{ 32, 0 }, coord2 + ScreenCoordsXY{ 32, 0 } }, darkColour);
+                    GfxFillRect(rt, { coord1 + ScreenCoordsXY{ 48, 0 }, coord2 + ScreenCoordsXY{ 48, 0 } }, darkColour);
+                    GfxFillRect(rt, { coord1 + ScreenCoordsXY{ 64, 0 }, coord2 + ScreenCoordsXY{ 64, 0 } }, darkColour);
                 }
                 time += 5;
             }
@@ -6118,7 +6117,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Minor / major line
                 int32_t colour = yUnit == 0 ? lightColour : darkColour;
-                GfxFillRect(dpi, { { dpi.x, y }, { dpi.x + dpi.width - 1, y } }, colour);
+                GfxFillRect(rt, { { rt.x, y }, { rt.x + rt.width - 1, y } }, colour);
 
                 int16_t scaled_yUnit = yUnit;
                 // Scale modifier
@@ -6128,28 +6127,28 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<int16_t>(scaled_yUnit);
 
-                DrawTextBasic(dpi, { scrolls[0].contentOffsetX + 1, y - 4 }, stringID, ft, { FontStyle::Small });
+                DrawTextBasic(rt, { scrolls[0].contentOffsetX + 1, y - 4 }, stringID, ft, { FontStyle::Small });
             }
 
             // Time marks
             time = 0;
-            for (int32_t x = 0; x < dpi.x + dpi.width; x += 80)
+            for (int32_t x = 0; x < rt.x + rt.width; x += 80)
             {
                 auto ft = Formatter();
                 ft.Add<int32_t>(time);
-                if (x + 80 >= dpi.x)
-                    DrawTextBasic(dpi, { x + 2, 1 }, STR_RIDE_STATS_TIME, ft, { FontStyle::Small });
+                if (x + 80 >= rt.x)
+                    DrawTextBasic(rt, { x + 2, 1 }, STR_RIDE_STATS_TIME, ft, { FontStyle::Small });
                 time += 5;
             }
 
             // Plot
-            int32_t x = dpi.x;
+            int32_t x = rt.x;
             int32_t firstPoint, secondPoint;
             // Uses the force limits (used to draw extreme G's in red on measurement tab) to determine if line should be drawn
             // red.
             int32_t intensityThresholdPositive = 0;
             int32_t intensityThresholdNegative = 0;
-            for (int32_t graphWidth = 0; graphWidth < dpi.width; graphWidth++, x++)
+            for (int32_t graphWidth = 0; graphWidth < rt.width; graphWidth++, x++)
             {
                 if (x < 0 || x >= measurement->num_items - 1)
                     continue;
@@ -6203,7 +6202,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Draw the current line in grey.
                 GfxFillRect(
-                    dpi, { { x, firstPoint }, { x, secondPoint } },
+                    rt, { { x, firstPoint }, { x, secondPoint } },
                     previousMeasurement ? PaletteIndex::pi17 : PaletteIndex::pi21);
 
                 // Draw red over extreme values (if supported by graph type).
@@ -6216,7 +6215,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         const auto redLineTop = ScreenCoordsXY{ x, std::max(firstPoint, intensityThresholdNegative) };
                         const auto redLineBottom = ScreenCoordsXY{ x, std::max(secondPoint, intensityThresholdNegative) };
-                        GfxFillRect(dpi, { redLineTop, redLineBottom }, redLineColour);
+                        GfxFillRect(rt, { redLineTop, redLineBottom }, redLineColour);
                     }
 
                     // Line exceeds positive threshold (at top of graph).
@@ -6224,7 +6223,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         const auto redLineTop = ScreenCoordsXY{ x, std::min(firstPoint, intensityThresholdPositive) };
                         const auto redLineBottom = ScreenCoordsXY{ x, std::min(secondPoint, intensityThresholdPositive) };
-                        GfxFillRect(dpi, { redLineTop, redLineBottom }, redLineColour);
+                        GfxFillRect(rt, { redLineTop, redLineBottom }, redLineColour);
                     }
                 }
             }
@@ -6614,14 +6613,14 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
-        void IncomeOnDraw(DrawPixelInfo& dpi)
+        void IncomeOnDraw(RenderTarget& rt)
         {
             StringId stringId;
             money64 profit;
             ShopItem primaryItem, secondaryItem;
 
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -6651,7 +6650,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<money64>(profit);
 
-                DrawTextBasic(dpi, screenCoords, stringId, ft);
+                DrawTextBasic(rt, screenCoords, stringId, ft);
             }
             screenCoords.y += 44;
 
@@ -6675,7 +6674,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<money64>(profit);
 
-                DrawTextBasic(dpi, screenCoords, stringId, ft);
+                DrawTextBasic(rt, screenCoords, stringId, ft);
             }
             screenCoords.y += 18;
 
@@ -6685,7 +6684,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<money64>(ride->incomePerHour);
 
-                DrawTextBasic(dpi, screenCoords, STR_INCOME_PER_HOUR, ft);
+                DrawTextBasic(rt, screenCoords, STR_INCOME_PER_HOUR, ft);
                 screenCoords.y += kListRowHeight;
             }
 
@@ -6694,7 +6693,7 @@ namespace OpenRCT2::Ui::Windows
             stringId = ride->upkeepCost == kMoney64Undefined ? STR_RUNNING_COST_UNKNOWN : STR_RUNNING_COST_PER_HOUR;
             auto ft = Formatter();
             ft.Add<money64>(costPerHour);
-            DrawTextBasic(dpi, screenCoords, stringId, ft);
+            DrawTextBasic(rt, screenCoords, stringId, ft);
             screenCoords.y += kListRowHeight;
 
             // Profit per hour
@@ -6702,7 +6701,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 ft = Formatter();
                 ft.Add<money64>(ride->profit);
-                DrawTextBasic(dpi, screenCoords, STR_PROFIT_PER_HOUR, ft);
+                DrawTextBasic(rt, screenCoords, STR_PROFIT_PER_HOUR, ft);
                 screenCoords.y += kListRowHeight;
             }
             screenCoords.y += 5;
@@ -6710,7 +6709,7 @@ namespace OpenRCT2::Ui::Windows
             // Total profit
             ft = Formatter();
             ft.Add<money64>(ride->totalProfit);
-            DrawTextBasic(dpi, screenCoords, STR_TOTAL_PROFIT, ft);
+            DrawTextBasic(rt, screenCoords, STR_TOTAL_PROFIT, ft);
         }
 
 #pragma endregion
@@ -6813,14 +6812,14 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void CustomerOnDraw(DrawPixelInfo& dpi)
+        void CustomerOnDraw(RenderTarget& rt)
         {
             ShopItem shopItem;
             int16_t popularity, satisfaction, queueTime;
             StringId stringId;
 
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             auto ride = GetRide(rideId);
             if (ride == nullptr)
@@ -6834,14 +6833,14 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 ft.Add<int16_t>(ride->numRiders);
-                DrawTextBasic(dpi, screenCoords, STR_CUSTOMERS_ON_RIDE, ft);
+                DrawTextBasic(rt, screenCoords, STR_CUSTOMERS_ON_RIDE, ft);
                 screenCoords.y += kListRowHeight;
             }
 
             // Customers per hour
             auto ft = Formatter();
             ft.Add<int32_t>(RideCustomersPerHour(*ride));
-            DrawTextBasic(dpi, screenCoords, STR_CUSTOMERS_PER_HOUR, ft);
+            DrawTextBasic(rt, screenCoords, STR_CUSTOMERS_PER_HOUR, ft);
             screenCoords.y += kListRowHeight;
 
             // Popularity
@@ -6857,7 +6856,7 @@ namespace OpenRCT2::Ui::Windows
             }
             ft = Formatter();
             ft.Add<int16_t>(popularity);
-            DrawTextBasic(dpi, screenCoords, stringId, ft);
+            DrawTextBasic(rt, screenCoords, stringId, ft);
             screenCoords.y += kListRowHeight;
 
             // Satisfaction
@@ -6873,7 +6872,7 @@ namespace OpenRCT2::Ui::Windows
             }
             ft = Formatter();
             ft.Add<int16_t>(satisfaction);
-            DrawTextBasic(dpi, screenCoords, stringId, ft);
+            DrawTextBasic(rt, screenCoords, stringId, ft);
             screenCoords.y += kListRowHeight;
 
             // Queue time
@@ -6883,7 +6882,7 @@ namespace OpenRCT2::Ui::Windows
                 stringId = queueTime == 1 ? STR_QUEUE_TIME_MINUTE : STR_QUEUE_TIME_MINUTES;
                 ft = Formatter();
                 ft.Add<int32_t>(queueTime);
-                screenCoords.y += DrawTextWrapped(dpi, screenCoords, 308, stringId, ft, { TextAlignment::LEFT });
+                screenCoords.y += DrawTextWrapped(rt, screenCoords, 308, stringId, ft, { TextAlignment::LEFT });
                 screenCoords.y += 5;
             }
 
@@ -6894,7 +6893,7 @@ namespace OpenRCT2::Ui::Windows
                 ft = Formatter();
                 ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Plural);
                 ft.Add<uint32_t>(ride->numPrimaryItemsSold);
-                DrawTextBasic(dpi, screenCoords, STR_ITEMS_SOLD, ft);
+                DrawTextBasic(rt, screenCoords, STR_ITEMS_SOLD, ft);
                 screenCoords.y += kListRowHeight;
             }
 
@@ -6906,14 +6905,14 @@ namespace OpenRCT2::Ui::Windows
                 ft = Formatter();
                 ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Plural);
                 ft.Add<uint32_t>(ride->numSecondaryItemsSold);
-                DrawTextBasic(dpi, screenCoords, STR_ITEMS_SOLD, ft);
+                DrawTextBasic(rt, screenCoords, STR_ITEMS_SOLD, ft);
                 screenCoords.y += kListRowHeight;
             }
 
             // Total customers
             ft = Formatter();
             ft.Add<uint32_t>(ride->totalCustomers);
-            DrawTextBasic(dpi, screenCoords, STR_TOTAL_CUSTOMERS, ft);
+            DrawTextBasic(rt, screenCoords, STR_TOTAL_CUSTOMERS, ft);
             screenCoords.y += kListRowHeight;
 
             // Guests favourite
@@ -6922,7 +6921,7 @@ namespace OpenRCT2::Ui::Windows
                 ft = Formatter();
                 ft.Add<uint32_t>(ride->guestsFavourite);
                 stringId = ride->guestsFavourite == 1 ? STR_FAVOURITE_RIDE_OF_GUEST : STR_FAVOURITE_RIDE_OF_GUESTS;
-                DrawTextBasic(dpi, screenCoords, stringId, ft);
+                DrawTextBasic(rt, screenCoords, stringId, ft);
                 screenCoords.y += kListRowHeight;
             }
             screenCoords.y += 2;
@@ -6933,7 +6932,7 @@ namespace OpenRCT2::Ui::Windows
             stringId = age == 0 ? STR_BUILT_THIS_YEAR : age == 1 ? STR_BUILT_LAST_YEAR : STR_BUILT_YEARS_AGO;
             ft = Formatter();
             ft.Add<int16_t>(age);
-            DrawTextBasic(dpi, screenCoords, stringId, ft);
+            DrawTextBasic(rt, screenCoords, stringId, ft);
         }
 
 #pragma endregion

@@ -197,8 +197,8 @@ void MoneyEffect::Paint(PaintSession& session, int32_t imageDirection) const
         return;
     }
 
-    DrawPixelInfo& dpi = session.DPI;
-    if (dpi.zoom_level > ZoomLevel{ 0 })
+    RenderTarget& rt = session.DPI;
+    if (rt.zoom_level > ZoomLevel{ 0 })
     {
         return;
     }

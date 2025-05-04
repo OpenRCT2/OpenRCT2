@@ -875,12 +875,12 @@ namespace OpenRCT2::Ui::Windows
                 AlignButtonsCentre();
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
             const auto& gameState = getGameState();
             int32_t imgId;
 
-            WindowDrawWidgets(*this, dpi);
+            WindowDrawWidgets(*this, rt);
 
             ScreenCoordsXY screenPos{};
             // Draw staff button image (setting masks to the staff colours)
@@ -890,7 +890,7 @@ namespace OpenRCT2::Ui::Windows
                 imgId = SPR_TOOLBAR_STAFF;
                 if (WidgetIsPressed(*this, WIDX_STAFF))
                     imgId++;
-                GfxDrawSprite(dpi, ImageId(imgId, gameState.staffHandymanColour, gameState.staffMechanicColour), screenPos);
+                GfxDrawSprite(rt, ImageId(imgId, gameState.staffHandymanColour, gameState.staffMechanicColour), screenPos);
             }
 
             // Draw fast forward button
@@ -900,15 +900,15 @@ namespace OpenRCT2::Ui::Windows
                               windowPos.y + widgets[WIDX_FASTFORWARD].top + 0 };
                 if (WidgetIsPressed(*this, WIDX_FASTFORWARD))
                     screenPos.y++;
-                GfxDrawSprite(dpi, ImageId(SPR_G2_FASTFORWARD), screenPos + ScreenCoordsXY{ 6, 3 });
+                GfxDrawSprite(rt, ImageId(SPR_G2_FASTFORWARD), screenPos + ScreenCoordsXY{ 6, 3 });
 
                 for (int32_t i = 0; i < gGameSpeed && gGameSpeed <= 4; i++)
                 {
-                    GfxDrawSprite(dpi, ImageId(SPR_G2_SPEED_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 5, 15 });
+                    GfxDrawSprite(rt, ImageId(SPR_G2_SPEED_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 5, 15 });
                 }
                 for (int32_t i = 0; i < 3 && i < gGameSpeed - 4 && gGameSpeed >= 5; i++)
                 {
-                    GfxDrawSprite(dpi, ImageId(SPR_G2_HYPER_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 6, 15 });
+                    GfxDrawSprite(rt, ImageId(SPR_G2_HYPER_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 6, 15 });
                 }
             }
 
@@ -918,14 +918,14 @@ namespace OpenRCT2::Ui::Windows
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_CHEATS].left - 1, widgets[WIDX_CHEATS].top - 1 };
                 if (WidgetIsPressed(*this, WIDX_CHEATS))
                     screenPos.y++;
-                GfxDrawSprite(dpi, ImageId(SPR_G2_SANDBOX), screenPos);
+                GfxDrawSprite(rt, ImageId(SPR_G2_SANDBOX), screenPos);
 
                 // Draw an overlay if clearance checks are disabled
                 if (getGameState().cheats.disableClearanceChecks)
                 {
                     auto colour = ColourWithFlags{ COLOUR_DARK_ORANGE }.withFlag(ColourFlag::withOutline, true);
                     DrawTextBasic(
-                        dpi, screenPos + ScreenCoordsXY{ 26, 2 }, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, {},
+                        rt, screenPos + ScreenCoordsXY{ 26, 2 }, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, {},
                         { colour, TextAlignment::RIGHT });
                 }
             }
@@ -936,7 +936,7 @@ namespace OpenRCT2::Ui::Windows
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_CHAT].left, widgets[WIDX_CHAT].top - 2 };
                 if (WidgetIsPressed(*this, WIDX_CHAT))
                     screenPos.y++;
-                GfxDrawSprite(dpi, ImageId(SPR_G2_CHAT), screenPos);
+                GfxDrawSprite(rt, ImageId(SPR_G2_CHAT), screenPos);
             }
 
             // Draw debug button
@@ -945,7 +945,7 @@ namespace OpenRCT2::Ui::Windows
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_DEBUG].left, widgets[WIDX_DEBUG].top - 1 };
                 if (WidgetIsPressed(*this, WIDX_DEBUG))
                     screenPos.y++;
-                GfxDrawSprite(dpi, ImageId(SPR_TAB_GEARS_0), screenPos);
+                GfxDrawSprite(rt, ImageId(SPR_TAB_GEARS_0), screenPos);
             }
 
             // Draw research button
@@ -954,7 +954,7 @@ namespace OpenRCT2::Ui::Windows
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_RESEARCH].left - 1, widgets[WIDX_RESEARCH].top };
                 if (WidgetIsPressed(*this, WIDX_RESEARCH))
                     screenPos.y++;
-                GfxDrawSprite(dpi, ImageId(SPR_TAB_FINANCES_RESEARCH_0), screenPos);
+                GfxDrawSprite(rt, ImageId(SPR_TAB_FINANCES_RESEARCH_0), screenPos);
             }
 
             // Draw finances button
@@ -963,7 +963,7 @@ namespace OpenRCT2::Ui::Windows
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_FINANCES].left + 3, widgets[WIDX_FINANCES].top + 1 };
                 if (WidgetIsPressed(*this, WIDX_FINANCES))
                     screenPos.y++;
-                GfxDrawSprite(dpi, ImageId(SPR_FINANCE), screenPos);
+                GfxDrawSprite(rt, ImageId(SPR_FINANCE), screenPos);
             }
 
             // Draw news button
@@ -972,7 +972,7 @@ namespace OpenRCT2::Ui::Windows
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_NEWS].left + 3, widgets[WIDX_NEWS].top + 0 };
                 if (WidgetIsPressed(*this, WIDX_NEWS))
                     screenPos.y++;
-                GfxDrawSprite(dpi, ImageId(SPR_G2_TAB_NEWS), screenPos);
+                GfxDrawSprite(rt, ImageId(SPR_G2_TAB_NEWS), screenPos);
             }
 
             // Draw network button
@@ -984,13 +984,13 @@ namespace OpenRCT2::Ui::Windows
 
                 // Draw (de)sync icon.
                 imgId = (NetworkIsDesynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
-                GfxDrawSprite(dpi, ImageId(imgId), screenPos + ScreenCoordsXY{ 3, 11 });
+                GfxDrawSprite(rt, ImageId(imgId), screenPos + ScreenCoordsXY{ 3, 11 });
 
                 // Draw number of players.
                 auto ft = Formatter();
                 ft.Add<int32_t>(NetworkGetNumVisiblePlayers());
                 auto colour = ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true);
-                DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, { colour, TextAlignment::RIGHT });
+                DrawTextBasic(rt, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, { colour, TextAlignment::RIGHT });
             }
 
             if (widgets[WIDX_ROTATE_ANTI_CLOCKWISE].type != WindowWidgetType::Empty)
@@ -1000,7 +1000,7 @@ namespace OpenRCT2::Ui::Windows
                                       widgets[WIDX_ROTATE_ANTI_CLOCKWISE].top + 0 };
                 if (IsWidgetPressed(WIDX_ROTATE_ANTI_CLOCKWISE))
                     screenPos.y++;
-                GfxDrawSprite(dpi, ImageId(SPR_G2_ICON_ROTATE_ANTI_CLOCKWISE), screenPos);
+                GfxDrawSprite(rt, ImageId(SPR_G2_ICON_ROTATE_ANTI_CLOCKWISE), screenPos);
             }
         }
     };

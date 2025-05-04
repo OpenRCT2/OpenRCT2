@@ -169,12 +169,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             int32_t lineHeight = FontGetLineHeight(FontStyle::Small);
             int32_t itemHeight = CalculateItemHeight();
@@ -183,9 +183,9 @@ namespace OpenRCT2::Ui::Windows
 
             for (const auto& newsItem : getGameState().newsItems.GetArchived())
             {
-                if (y >= dpi.y + dpi.height)
+                if (y >= rt.y + rt.height)
                     break;
-                if (y + itemHeight < dpi.y)
+                if (y + itemHeight < rt.y)
                 {
                     y += itemHeight;
                     i++;
@@ -194,7 +194,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Background
                 GfxFillRectInset(
-                    dpi, { -1, y, 383, y + itemHeight - 1 }, colours[1],
+                    rt, { -1, y, 383, y + itemHeight - 1 }, colours[1],
                     (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
 
                 // Date text
@@ -202,14 +202,14 @@ namespace OpenRCT2::Ui::Windows
                     auto ft = Formatter();
                     ft.Add<StringId>(DateDayNames[newsItem.Day - 1]);
                     ft.Add<StringId>(DateGameMonthNames[DateGetMonth(newsItem.MonthYear)]);
-                    DrawTextBasic(dpi, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE, FontStyle::Small });
+                    DrawTextBasic(rt, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE, FontStyle::Small });
                 }
                 // Item text
                 {
                     auto ft = Formatter();
                     ft.Add<const char*>(newsItem.Text.c_str());
                     DrawTextWrapped(
-                        dpi, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft,
+                        rt, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft,
                         { COLOUR_BRIGHT_GREEN, FontStyle::Small });
                 }
                 // Subject button
@@ -226,18 +226,18 @@ namespace OpenRCT2::Ui::Windows
                             press = INSET_RECT_FLAG_BORDER_INSET;
                         }
                     }
-                    GfxFillRectInset(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
+                    GfxFillRectInset(rt, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
 
                     switch (newsItem.Type)
                     {
                         case News::ItemType::Ride:
-                            GfxDrawSprite(dpi, ImageId(SPR_RIDE), screenCoords);
+                            GfxDrawSprite(rt, ImageId(SPR_RIDE), screenCoords);
                             break;
                         case News::ItemType::Peep:
                         case News::ItemType::PeepOnRide:
                         {
-                            DrawPixelInfo cliped_dpi;
-                            if (!ClipDrawPixelInfo(cliped_dpi, dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
+                            RenderTarget clippedRT;
+                            if (!ClipDrawPixelInfo(clippedRT, rt, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
                             {
                                 break;
                             }
@@ -268,25 +268,24 @@ namespace OpenRCT2::Ui::Windows
 
                             ImageIndex imageId = animObj->GetPeepAnimation(spriteType).base_image + 1;
                             auto image = ImageId(imageId, peep->TshirtColour, peep->TrousersColour);
-                            GfxDrawSprite(cliped_dpi, image, clipCoords);
+                            GfxDrawSprite(clippedRT, image, clipCoords);
                             break;
                         }
                         case News::ItemType::Money:
                         case News::ItemType::Campaign:
-                            GfxDrawSprite(dpi, ImageId(SPR_FINANCE), screenCoords);
+                            GfxDrawSprite(rt, ImageId(SPR_FINANCE), screenCoords);
                             break;
                         case News::ItemType::Research:
-                            GfxDrawSprite(
-                                dpi, ImageId(newsItem.Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
+                            GfxDrawSprite(rt, ImageId(newsItem.Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
                             break;
                         case News::ItemType::Peeps:
-                            GfxDrawSprite(dpi, ImageId(SPR_GUESTS), screenCoords);
+                            GfxDrawSprite(rt, ImageId(SPR_GUESTS), screenCoords);
                             break;
                         case News::ItemType::Award:
-                            GfxDrawSprite(dpi, ImageId(SPR_AWARD), screenCoords);
+                            GfxDrawSprite(rt, ImageId(SPR_AWARD), screenCoords);
                             break;
                         case News::ItemType::Graph:
-                            GfxDrawSprite(dpi, ImageId(SPR_GRAPH), screenCoords);
+                            GfxDrawSprite(rt, ImageId(SPR_GRAPH), screenCoords);
                             break;
                         case News::ItemType::Null:
                         case News::ItemType::Blank:
@@ -307,8 +306,8 @@ namespace OpenRCT2::Ui::Windows
                         if (i == _pressedNewsItemIndex && _pressedButtonIndex == 2)
                             press = 0x20;
                     }
-                    GfxFillRectInset(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
-                    GfxDrawSprite(dpi, ImageId(SPR_LOCATE), screenCoords);
+                    GfxFillRectInset(rt, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
+                    GfxDrawSprite(rt, ImageId(SPR_LOCATE), screenCoords);
                 }
 
                 y += itemHeight;

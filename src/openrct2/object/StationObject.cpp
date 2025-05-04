@@ -46,7 +46,7 @@ void StationObject::Unload()
     ShelterImageId = kImageIndexUndefined;
 }
 
-void StationObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
+void StationObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, (height / 2) + 16 };
 
@@ -65,16 +65,16 @@ void StationObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t heigh
         imageId = imageId.WithSecondary(colour1);
     }
 
-    GfxDrawSprite(dpi, imageId, screenCoords);
+    GfxDrawSprite(rt, imageId, screenCoords);
     if (Flags & StationObjectFlags::isTransparent)
     {
-        GfxDrawSprite(dpi, tImageId, screenCoords);
+        GfxDrawSprite(rt, tImageId, screenCoords);
     }
 
-    GfxDrawSprite(dpi, imageId.WithIndexOffset(4), screenCoords);
+    GfxDrawSprite(rt, imageId.WithIndexOffset(4), screenCoords);
     if (Flags & StationObjectFlags::isTransparent)
     {
-        GfxDrawSprite(dpi, tImageId.WithIndexOffset(4), screenCoords);
+        GfxDrawSprite(rt, tImageId.WithIndexOffset(4), screenCoords);
     }
 }
 
