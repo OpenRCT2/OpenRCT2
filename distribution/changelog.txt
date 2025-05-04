@@ -8,6 +8,7 @@
 - Improved: [#23982] The scenario objective window has been merged into the scenario options window.
 - Improved: [#24233] RCT Classic+ from Apple Arcade can now be used as the source game, and is detected automatically.
 - Improved: [#24260] Better performance on parks that have a lot of Guests and Entertainers.
+- Improved: [#24319] RCT Classic installs via Steam are now detected automatically on Windows.
 - Change: [#23803] Lightning strikes and thunder now happen at the same frequency independently of the game speed.
 - Change: [#23857] Replace display options tab with custom sprites.
 - Change: [#24069] [Plugin] Plugins are now available in the scenario editor and track designer.
