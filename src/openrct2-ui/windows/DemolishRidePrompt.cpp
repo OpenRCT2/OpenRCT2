@@ -35,7 +35,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr Widget window_ride_demolish_widgets[] =
     {
-        WINDOW_SHIM_WHITE(STR_DEMOLISH_RIDE, WW, WH),
+        WINDOW_SHIM(STR_DEMOLISH_RIDE, WW, WH),
         MakeWidget({     10, WH - 22}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_DEMOLISH          ),
         MakeWidget({WW - 95, WH - 22}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
     };
@@ -91,11 +91,6 @@ namespace OpenRCT2::Ui::Windows
                 ScreenCoordsXY stringCoords(windowPos.x + WW / 2, windowPos.y + (WH / 2) - 3);
                 DrawTextWrapped(dpi, stringCoords, WW - 4, stringId, ft, { TextAlignment::CENTRE });
             }
-        }
-
-        void OnResize() override
-        {
-            ResizeFrame();
         }
     };
 

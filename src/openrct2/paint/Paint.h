@@ -298,6 +298,9 @@ inline PaintStruct* PaintAddImageAsParentRotated(
     return PaintAddImageAsParentRotated(session, direction, imageId, offset, { offset, boundBoxSize });
 }
 
+PaintStruct* PaintAddImageAsParentHeight(
+    PaintSession& session, const ImageId imageId, const int32_t height, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
+
 bool PaintAttachToPreviousAttach(PaintSession& session, const ImageId imageId, int32_t x, int32_t y);
 bool PaintAttachToPreviousPS(PaintSession& session, const ImageId image_id, int32_t x, int32_t y);
 void PaintFloatingMoneyEffect(

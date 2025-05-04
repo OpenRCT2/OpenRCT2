@@ -204,8 +204,8 @@ static constexpr ScreenSize CHEAT_CHECK = {221, 12};
 static constexpr ScreenSize CHEAT_SPINNER = {117, 14};
 static constexpr ScreenSize MINMAX_BUTTON = {55, 17};
 
-static constexpr int32_t TAB_WIDTH = 31;
-static constexpr int32_t TAB_START = 3;
+static constexpr int32_t kTabWidth = 31;
+static constexpr int32_t kTabStart = 3;
 
 #pragma endregion
 
@@ -519,6 +519,11 @@ static StringId window_cheats_page_titles[] = {
             {
                 case WINDOW_CHEATS_PAGE_MONEY:
                 {
+                    if (isInEditorMode())
+                    {
+                        SetWidgetDisabled(WIDX_NO_MONEY, true);
+                    }
+
                     auto moneyDisabled = (gameState.park.Flags & PARK_FLAGS_NO_MONEY) != 0;
                     SetCheckboxValue(WIDX_NO_MONEY, moneyDisabled);
                     SetWidgetDisabled(WIDX_ADD_SET_MONEY_GROUP, moneyDisabled);
@@ -591,13 +596,12 @@ static StringId window_cheats_page_titles[] = {
             {
                 SetWidgetDisabled(WIDX_TAB_2, true);
                 SetWidgetDisabled(WIDX_TAB_3, true);
-                SetWidgetDisabled(WIDX_NO_MONEY, true);
+                UpdateTabPositions();
             }
         }
 
         void OnDraw(DrawPixelInfo& dpi) override
         {
-            UpdateTabPositions();
             DrawWidgets(dpi);
             DrawTabImages(dpi);
 
@@ -613,7 +617,10 @@ static StringId window_cheats_page_titles[] = {
                 {
                     colour.setFlag(ColourFlag::inset, true);
                 }
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 93 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });
+
+                auto& widget = widgets[WIDX_MONEY_SPINNER];
+                DrawTextBasic(
+                    dpi, windowPos + ScreenCoordsXY{ _xLcol, widget.top + 2 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });
             }
             else if (page == WINDOW_CHEATS_PAGE_DATE)
             {
@@ -756,26 +763,28 @@ static StringId window_cheats_page_titles[] = {
             }
             maxY += 6;
 
-            Invalidate();
-            WindowInitScrollWidgets(*this);
-            height = maxY;
-            ResizeFrameWithPage();
-            Invalidate();
+            if (maxY != height)
+            {
+                Invalidate();
+                height = maxY;
+                ResizeFrame();
+                Invalidate();
+            }
         }
 
         void UpdateTabPositions()
         {
-            constexpr uint16_t tabs[] = {
-                WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4, WIDX_TAB_5, WIDX_TAB_6,
+            constexpr WidgetIndex tabs[] = {
+                WIDX_TAB_1, WIDX_TAB_2, WIDX_TAB_3, WIDX_TAB_4, WIDX_TAB_5, WIDX_TAB_6, WIDX_TAB_7,
             };
 
-            auto left = TAB_START;
+            auto left = kTabStart;
             for (auto tab : tabs)
             {
                 widgets[tab].left = left;
                 if (!IsWidgetDisabled(tab))
                 {
-                    left += TAB_WIDTH;
+                    left += kTabWidth;
                 }
             }
         }
@@ -1341,11 +1350,6 @@ static StringId window_cheats_page_titles[] = {
                 }
                 break;
             }
-        }
-
-        void OnResize() override
-        {
-            ResizeFrameWithPage();
         }
     };
 

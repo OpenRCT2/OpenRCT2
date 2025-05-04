@@ -1,8 +1,44 @@
+0.4.22 (in development)
+------------------------------------------------------------------------
+- Feature: [#24206] [Plugin] Add APIs for breaking down rides, reading the current breakdown, and for fixing broken down rides.
+- Improved: [#20073] The OpenGL drawing engine now supports screen invalidation which avoids the redrawing of unchanged regions.
+- Improved: [#21767] RCT Classic for macOS can now be used as the source game.
+- Improved: [#23590] Title bars are now drawn bigger when “Enlarged UI” is enabled.
+- Improved: [#23626] Add small, medium and large flat and sloped turns, S-bends and diagonal track to the Go-Karts.
+- Improved: [#23982] The scenario objective window has been merged into the scenario options window.
+- Improved: [#24233] RCT Classic+ from Apple Arcade can now be used as the source game, and is detected automatically.
+- Improved: [#24260] Better performance on parks that have a lot of Guests and Entertainers.
+- Improved: [#24319] RCT Classic installs via Steam are now detected automatically on Windows.
+- Change: [#23803] Lightning strikes and thunder now happen at the same frequency independently of the game speed.
+- Change: [#23857] Replace display options tab with custom sprites.
+- Change: [#24069] [Plugin] Plugins are now available in the scenario editor and track designer.
+- Change: [#24135] Compress Emscripten js/wasm files.
+- Change: [#24194] The advanced options tab has been reworked to make it easier to find the RCT1 path setting.
+- Change: [#24235] Small changes to RCT1 theme.
+- Change: [#24236] Controls and Interface options now both have their own tabs in the Options window.
+- Change: [#24308] “Software” and “Software (hardware display)” renderers have been merged into a single “Software” renderer.
+- Change: [#24317] The scenery window now shows at least one row of scenery objects, even if there are multiple rows of tabs.
+- Fix: [#18479] Tile elements ordered beneath water do not draw correctly.
+- Fix: [#19782] Game stops counting inversions and golf holes after 31 (original bug).
+- Fix: [#21207] Track List window gets positioned incorrectly.
+- Fix: [#21919] Non-recolourable cars still show colour picker (original bug).
+- Fix: [#22182] [Plugin] Crash when using map.getAllEntities("car").
+- Fix: [#22634] Asset packs with sound effect overrides are not loaded correctly at startup.
+- Fix: [#23108] Missing pieces on Hypercoaster and Hyper-Twister, even with the ‘all drawable track pieces’ cheat enabled.
+- Fix: [#24013] Failure to load a scenario preview image (minimap) could lead to an uncaught exception error message.
+- Fix: [#24045] [Plugin] Data storage is not cleared when converting save game to scenario.
+- Fix: [#24121] Checkbox labels run beyond the edge of the window if they’re too long to fit.
+- Fix: [#24142] [Plugin] Track origin is miscalculated on downward slopes.
+- Fix: [#24220] Narrow station platforms have missing sides on certain rotations.
+- Fix: [#24286] Steam installs of RCT1 and RCT2 are not autodetected on macOS.
+- Fix: [#24310] [Plugin] Missing invalidation on various plugin api setters for entities.
+
 0.4.21 (2025-04-05)
 ------------------------------------------------------------------------
 - Feature: [#22646] New scenario files now contain a minimap image, shown in the scenario selection window.
 - Feature: [#23774] Climates can now be customised using objects.
 - Feature: [#23876] New park save files now contain a preview image, shown in the load/save window.
+- Feature: [#24146] [Plugin] Add APIs for colouring balloons and setting the value of money effects.
 - Improved: [#24078] Handrails on Wooden Roller Coaster station sprites with no platforms have been removed.
 - Improved: [objects#379] Add additional colour schemes to Mine Train.
 - Change: [#23932] The land rights window now checks “Land Owned” by default.

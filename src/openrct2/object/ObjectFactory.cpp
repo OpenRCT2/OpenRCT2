@@ -227,9 +227,9 @@ namespace OpenRCT2::ObjectFactory
     static std::unique_ptr<Object> CreateObjectFromJson(
         IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable);
 
-    static ObjectSourceGame ParseSourceGame(const std::string& s)
+    static ObjectSourceGame ParseSourceGame(const std::string_view s)
     {
-        static const std::unordered_map<std::string, ObjectSourceGame> LookupTable{
+        static const std::unordered_map<std::string_view, ObjectSourceGame> LookupTable{
             { "rct1", ObjectSourceGame::RCT1 },
             { "rct1aa", ObjectSourceGame::AddedAttractions },
             { "rct1ll", ObjectSourceGame::LoopyLandscapes },

@@ -10,14 +10,13 @@
 #pragma once
 
 #include <memory>
+#include <openrct2/core/Guard.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
 
 namespace OpenRCT2::Ui
 {
     struct IUiContext;
 
-    [[nodiscard]] std::unique_ptr<Drawing::IDrawingEngine> CreateSoftwareDrawingEngine(
-        const std::shared_ptr<IUiContext>& uiContext);
     [[nodiscard]] std::unique_ptr<Drawing::IDrawingEngine> CreateHardwareDisplayDrawingEngine(
         const std::shared_ptr<IUiContext>& uiContext);
 #ifndef DISABLE_OPENGL
@@ -33,8 +32,6 @@ namespace OpenRCT2::Ui
         {
             switch (type)
             {
-                case DrawingEngine::Software:
-                    return CreateSoftwareDrawingEngine(uiContext);
                 case DrawingEngine::SoftwareWithHardwareDisplay:
                     return CreateHardwareDisplayDrawingEngine(uiContext);
 #ifndef DISABLE_OPENGL
@@ -42,6 +39,7 @@ namespace OpenRCT2::Ui
                     return CreateOpenGLDrawingEngine(uiContext);
 #endif
                 default:
+                    Guard::Fail("Unknown renderer: %u", static_cast<uint32_t>(type));
                     return nullptr;
             }
         }

@@ -13,7 +13,7 @@
  * removed.
  */
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 
 /*
 SDL_ttf:  A companion library to SDL for working with TrueType (tm) fonts

@@ -21,7 +21,7 @@
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
-#include "../interface/Window_internal.h"
+#include "../interface/WindowBase.h"
 #include "../localisation/Formatter.h"
 #include "../network/Network.h"
 #include "../ui/WindowManager.h"

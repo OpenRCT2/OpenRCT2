@@ -332,7 +332,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            ResizeFrame();
             WindowRideConstructionUpdateEnabledTrackPieces();
 
             auto currentRide = GetRide(_currentRideIndex);
@@ -2670,6 +2669,11 @@ namespace OpenRCT2::Ui::Windows
 
             dpi.x += rotatedScreenCoords.x - widgetWidth / 2;
             dpi.y += rotatedScreenCoords.y - widgetHeight / 2 - 16;
+
+            dpi.cullingX = dpi.x;
+            dpi.cullingY = dpi.y;
+            dpi.cullingWidth = dpi.width;
+            dpi.cullingHeight = dpi.height;
 
             DrawTrackPieceHelper(dpi, rideIndex, trackType, trackDirection, liftHillAndInvertedState, { 4096, 4096 }, 1024);
         }

@@ -103,38 +103,40 @@ static void PaintSessionAddPSToQuadrant(PaintSession& session, PaintStruct* ps)
     session.QuadrantFrontIndex = std::max(session.QuadrantFrontIndex, paintQuadrantIndex);
 }
 
-static constexpr bool ImageWithinDPI(const ScreenCoordsXY& imagePos, const G1Element& g1, const DrawPixelInfo& dpi)
+static constexpr bool imageWithinDPI(const ScreenCoordsXY& imagePos, const G1Element& g1, const DrawPixelInfo& dpi)
 {
-    int32_t left = imagePos.x + g1.x_offset;
-    int32_t bottom = imagePos.y + g1.y_offset;
+    const int32_t left = imagePos.x + g1.x_offset;
+    const int32_t bottom = imagePos.y + g1.y_offset;
 
-    int32_t right = left + g1.width;
-    int32_t top = bottom + g1.height;
+    const int32_t right = left + g1.width;
+    const int32_t top = bottom + g1.height;
 
     // mber: It is possible to use only the bottom else block here if you change <= and >= to simply < and >.
     // However, since this is used to cull paint structs, I'd prefer to keep the condition strict and calculate
     // the culling differently for minifying and magnifying.
-    auto zoom = dpi.zoom_level;
+    const auto zoom = dpi.zoom_level;
     if (zoom > ZoomLevel{ 0 })
     {
-        if (right <= dpi.WorldX())
+        const int32_t x = zoom.ApplyTo(dpi.cullingX);
+        const int32_t y = zoom.ApplyTo(dpi.cullingY);
+        if (right <= x)
             return false;
-        if (top <= dpi.WorldY())
+        if (top <= y)
             return false;
-        if (left >= dpi.WorldX() + dpi.WorldWidth())
+        if (left >= x + zoom.ApplyTo(dpi.cullingWidth))
             return false;
-        if (bottom >= dpi.WorldY() + dpi.WorldHeight())
+        if (bottom >= y + zoom.ApplyTo(dpi.cullingHeight))
             return false;
     }
     else
     {
-        if (zoom.ApplyInversedTo(right) <= dpi.x)
+        if (zoom.ApplyInversedTo(right) <= dpi.cullingX)
             return false;
-        if (zoom.ApplyInversedTo(top) <= dpi.y)
+        if (zoom.ApplyInversedTo(top) <= dpi.cullingY)
             return false;
-        if (zoom.ApplyInversedTo(left) >= dpi.x + dpi.width)
+        if (zoom.ApplyInversedTo(left) >= dpi.cullingX + dpi.cullingWidth)
             return false;
-        if (zoom.ApplyInversedTo(bottom) >= dpi.y + dpi.height)
+        if (zoom.ApplyInversedTo(bottom) >= dpi.cullingY + dpi.cullingHeight)
             return false;
     }
     return true;
@@ -184,7 +186,7 @@ static PaintStruct* CreateNormalPaintStruct(
 
     const auto imagePos = Translate3DTo2DWithZ(session.CurrentRotation, swappedRotCoord);
 
-    if (!ImageWithinDPI(imagePos, *g1, session.DPI))
+    if (!imageWithinDPI(imagePos, *g1, session.DPI))
     {
         return nullptr;
     }
@@ -199,6 +201,54 @@ static PaintStruct* CreateNormalPaintStruct(
     }
 
     ps->image_id = image_id;
+    ps->ScreenPos = imagePos;
+    ps->Bounds.x_end = rotBoundBoxSize.x + rotBoundBoxOffset.x + session.SpritePosition.x;
+    ps->Bounds.y_end = rotBoundBoxSize.y + rotBoundBoxOffset.y + session.SpritePosition.y;
+    ps->Bounds.z_end = rotBoundBoxSize.z + rotBoundBoxOffset.z;
+    ps->Bounds.x = rotBoundBoxOffset.x + session.SpritePosition.x;
+    ps->Bounds.y = rotBoundBoxOffset.y + session.SpritePosition.y;
+    ps->Bounds.z = rotBoundBoxOffset.z;
+    ps->Attached = nullptr;
+    ps->Children = nullptr;
+    ps->NextQuadrantEntry = nullptr;
+    ps->InteractionItem = session.InteractionType;
+    ps->MapPos = session.MapPosition;
+    ps->Element = session.CurrentlyDrawnTileElement;
+    ps->Entity = session.CurrentlyDrawnEntity;
+
+    return ps;
+}
+
+static PaintStruct* CreateNormalPaintStructHeight(
+    PaintSession& session, const ImageId imageId, const int32_t height, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
+{
+    auto* const g1 = GfxGetG1Element(imageId);
+    if (g1 == nullptr)
+    {
+        return nullptr;
+    }
+
+    const auto swappedRotation = DirectionFlipXAxis(session.CurrentRotation);
+    auto swappedRotCoord = CoordsXYZ{ offset.Rotate(swappedRotation), offset.z + height };
+    swappedRotCoord += session.SpritePosition;
+
+    const auto imagePos = Translate3DTo2DWithZ(session.CurrentRotation, swappedRotCoord);
+
+    if (!imageWithinDPI(imagePos, *g1, session.DPI))
+    {
+        return nullptr;
+    }
+
+    const auto rotBoundBoxOffset = CoordsXYZ{ boundBox.offset.Rotate(swappedRotation), boundBox.offset.z + height };
+    const auto rotBoundBoxSize = RotateBoundBoxSize(boundBox.length, session.CurrentRotation);
+
+    auto* ps = session.AllocateNormalPaintEntry();
+    if (ps == nullptr)
+    {
+        return nullptr;
+    }
+
+    ps->image_id = imageId;
     ps->ScreenPos = imagePos;
     ps->Bounds.x_end = rotBoundBoxSize.x + rotBoundBoxOffset.x + session.SpritePosition.x;
     ps->Bounds.y_end = rotBoundBoxSize.y + rotBoundBoxOffset.y + session.SpritePosition.y;
@@ -905,6 +955,23 @@ PaintStruct* PaintAddImageAsChild(
     }
 
     parentPS->Children = ps;
+
+    return ps;
+}
+
+PaintStruct* PaintAddImageAsParentHeight(
+    PaintSession& session, const ImageId imageId, const int32_t height, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox)
+{
+    session.LastPS = nullptr;
+    session.LastAttachedPS = nullptr;
+
+    auto* const ps = CreateNormalPaintStructHeight(session, imageId, height, offset, boundBox);
+    if (ps == nullptr)
+    {
+        return nullptr;
+    }
+
+    PaintSessionAddPSToQuadrant(session, ps);
 
     return ps;
 }

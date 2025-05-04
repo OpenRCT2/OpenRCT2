@@ -126,7 +126,7 @@ namespace OpenRCT2::Ui::Windows
         {
             DrawWidgets(dpi);
 
-            ScreenCoordsXY stringCoords(windowPos.x + 125, windowPos.y + 30);
+            ScreenCoordsXY stringCoords(windowPos.x + 125, windowPos.y + widgets[WIDX_TITLE].bottom + 16);
 
             auto ft = Formatter();
             if (_shortcutCustomName.empty())
@@ -189,8 +189,6 @@ namespace OpenRCT2::Ui::Windows
             InitialiseTabs();
             InitialiseWidgets();
             InitialiseList();
-
-            WindowSetResize(*this, { WW, WH }, { WW_SC_MAX, WH_SC_MAX });
         }
 
         void OnClose() override
@@ -201,7 +199,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            WindowSetResize(*this, { min_width, min_height }, { max_width, max_height });
+            WindowSetResize(*this, { WW, WH }, { WW_SC_MAX, WH_SC_MAX });
         }
 
         void OnUpdate() override
@@ -240,7 +238,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            ResizeFrameWithPage();
             widgets[WIDX_SCROLL].right = width - 5;
             widgets[WIDX_SCROLL].bottom = height - 19;
             widgets[WIDX_RESET].top = height - 16;
@@ -458,6 +455,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             WindowInitScrollWidgets(*this);
+            ResizeFrame();
         }
 
         void SetTab(size_t index)
@@ -576,7 +574,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr Widget WindowResetShortcutKeysPromptWidgets[] = {
-        WINDOW_SHIM_WHITE(STR_SHORTCUT_ACTION_RESET, RESET_PROMPT_WW, RESET_PROMPT_WH),
+        WINDOW_SHIM(STR_SHORTCUT_ACTION_RESET, RESET_PROMPT_WW, RESET_PROMPT_WH),
         MakeWidget(
             { 2, 30 }, { RESET_PROMPT_WW - 4, 12 }, WindowWidgetType::LabelCentred, WindowColour::Primary,
             STR_RESET_SHORTCUT_KEYS_PROMPT),

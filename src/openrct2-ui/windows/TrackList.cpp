@@ -740,11 +740,6 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
-
         void SetIsBeingUpdated(const bool beingUpdated)
         {
             _selectedItemIsBeingUpdated = beingUpdated;
@@ -761,19 +756,18 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->CloseConstructionWindows();
 
+        WindowFlags flags = 0;
         ScreenCoordsXY screenPos{};
         if (gLegacyScene == LegacyScene::trackDesignsManager)
         {
-            int32_t screenWidth = ContextGetWidth();
-            int32_t screenHeight = ContextGetHeight();
-            screenPos = { screenWidth / 2 - 300, std::max(kTopToolbarHeight + 1, screenHeight / 2 - 200) };
+            flags = WF_AUTO_POSITION | WF_CENTRE_SCREEN;
         }
         else
         {
             screenPos = { 0, kTopToolbarHeight + 2 };
         }
 
-        return windowMgr->Create<TrackListWindow>(WindowClass::TrackDesignList, WW, WH, 0, item);
+        return windowMgr->Create<TrackListWindow>(WindowClass::TrackDesignList, screenPos, WW, WH, flags, item);
     }
 
     void WindowTrackDesignListReloadTracks()

@@ -15,6 +15,7 @@
 
 #include <bit>
 #include <ctime>
+#include <optional>
 #include <vector>
 
 #ifdef _WIN32
@@ -45,12 +46,28 @@ enum class SpecialFolder
     rct2Discord,
 };
 
+enum class RCT2Variant : uint8_t
+{
+    rct2Original,
+    rctClassicWindows,
+    rctClassicMac,
+    rctClassicPlusMac,
+};
+
 struct RealWorldDate;
 struct RealWorldTime;
 struct TTFFontDescriptor;
 
 namespace OpenRCT2::Platform
 {
+    constexpr u8string_view kRCTClassicWindowsDataFolder = u8"Assets";
+    // clang-format off
+    constexpr u8string_view kRCTClassicMacOSDataFolder =
+        u8"RCT Classic.app" PATH_SEPARATOR "Contents" PATH_SEPARATOR "Resources";
+    constexpr u8string_view kRCTClassicPlusMacOSDataFolder =
+        u8"RCT Classic+.app" PATH_SEPARATOR "Contents" PATH_SEPARATOR "Resources";
+    // clang-format on
+
     std::string GetEnvironmentVariable(std::string_view name);
     std::string GetFolderPath(SpecialFolder folder);
     std::string GetInstallPath();
@@ -79,8 +96,7 @@ namespace OpenRCT2::Platform
     bool ProcessIsElevated();
     float GetDefaultScale();
 
-    bool IsRCT2Path(std::string_view path);
-    bool IsRCTClassicPath(std::string_view path);
+    std::optional<RCT2Variant> classifyGamePath(std::string_view path);
     bool OriginalGameDataExists(std::string_view path);
 
     std::string GetUsername();
@@ -90,9 +106,9 @@ namespace OpenRCT2::Platform
     std::string GetEnvironmentPath(const char* name);
     std::string GetHomePath();
 #endif
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
     std::string GetFontPath(const TTFFontDescriptor& font);
-#endif // NO_TTF
+#endif // DISABLE_TTF
 
     std::string FormatShortDate(std::time_t timestamp);
     std::string FormatTime(std::time_t timestamp);

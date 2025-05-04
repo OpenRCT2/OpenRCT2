@@ -84,7 +84,7 @@ class PlatformEnvironment final : public IPlatformEnvironment
 {
 private:
     u8string _basePath[kDirBaseCount];
-    bool _usingRCTClassic{};
+    RCT2Variant _rct2Variant = RCT2Variant::rct2Original;
 
 public:
     explicit PlatformEnvironment(DirBaseValues basePaths)
@@ -111,7 +111,21 @@ public:
                 directoryName = kDirectoryNamesRCT2[EnumValue(did)];
                 break;
             case DirBase::rct2:
-                directoryName = _usingRCTClassic ? "Assets" : kDirectoryNamesRCT2[EnumValue(did)];
+                switch (_rct2Variant)
+                {
+                    case RCT2Variant::rct2Original:
+                        directoryName = kDirectoryNamesRCT2[EnumValue(did)];
+                        break;
+                    case RCT2Variant::rctClassicWindows:
+                        directoryName = OpenRCT2::Platform::kRCTClassicWindowsDataFolder;
+                        break;
+                    case RCT2Variant::rctClassicMac:
+                        directoryName = OpenRCT2::Platform::kRCTClassicMacOSDataFolder;
+                        break;
+                    case RCT2Variant::rctClassicPlusMac:
+                        directoryName = OpenRCT2::Platform::kRCTClassicPlusMacOSDataFolder;
+                        break;
+                }
                 break;
             case DirBase::openrct2:
             case DirBase::user:
@@ -136,7 +150,7 @@ public:
         auto dataPath = GetDirectoryPath(base, did);
 
         std::string alternativeFilename;
-        if (_usingRCTClassic && base == DirBase::rct2 && did == DirId::data)
+        if (_rct2Variant != RCT2Variant::rct2Original && base == DirBase::rct2 && did == DirId::data)
         {
             // Special case, handle RCT Classic css ogg files
             if (String::startsWith(fileName, "css", true) && String::endsWith(fileName, ".dat", true))
@@ -168,13 +182,16 @@ public:
 
         if (base == DirBase::rct2)
         {
-            _usingRCTClassic = Platform::IsRCTClassicPath(path);
+            // This value being empty can be valid on headless.
+            auto variant = Platform::classifyGamePath(path);
+            if (variant.has_value())
+                _rct2Variant = variant.value();
         }
     }
 
     bool IsUsingClassic() const override
     {
-        return _usingRCTClassic;
+        return _rct2Variant != RCT2Variant::rct2Original;
     }
 
 private:

@@ -195,7 +195,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
 
     if (element->GetType() == TileElementType::Surface && (element->AsSurface()->GetWaterHeight() > 0))
     {
-        max_height = element->AsSurface()->GetWaterHeight();
+        max_height = std::max(max_height, static_cast<uint16_t>(element->AsSurface()->GetWaterHeight()));
     }
 
     if (partOfVirtualFloor)

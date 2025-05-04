@@ -26,7 +26,7 @@ enum class FontStyle : uint8_t
 constexpr uint8_t FontStyleCount = 3;
 constexpr std::array<FontStyle, FontStyleCount> FontStyles = { FontStyle::Small, FontStyle::Medium, FontStyle::Tiny };
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 
 struct InternalTTFFont;
 using TTF_Font = InternalTTFFont;
@@ -49,7 +49,7 @@ struct TTFFontSetDescriptor
 
 extern TTFFontSetDescriptor* gCurrentTTFFontSet;
 
-#endif // NO_TTF
+#endif // DISABLE_TTF
 
 void FontSpriteInitialiseCharacters();
 int32_t FontSpriteGetCodepointOffset(int32_t codepoint);

@@ -27,9 +27,11 @@
     #include "../interface/InteractiveConsole.h"
     #include "../platform/Platform.h"
     #include "Duktape.hpp"
+    #include "bindings/entity/ScBalloon.hpp"
     #include "bindings/entity/ScEntity.hpp"
     #include "bindings/entity/ScGuest.hpp"
     #include "bindings/entity/ScLitter.hpp"
+    #include "bindings/entity/ScMoneyEffect.hpp"
     #include "bindings/entity/ScParticle.hpp"
     #include "bindings/entity/ScPeep.hpp"
     #include "bindings/entity/ScStaff.hpp"
@@ -438,6 +440,8 @@ void ScriptEngine::Initialise()
     ScTrackSegment::Register(ctx);
     ScEntity::Register(ctx);
     ScLitter::Register(ctx);
+    ScBalloon::Register(ctx);
+    ScMoneyEffect::Register(ctx);
     ScVehicle::Register(ctx);
     ScCrashedVehicleParticle::Register(ctx);
     ScPeep::Register(ctx);
@@ -1358,7 +1362,6 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "bannersetname", GameCommand::SetBannerName },
     { "bannersetstyle", GameCommand::SetBannerStyle },
     { "clearscenery", GameCommand::ClearScenery },
-    { "climateset", GameCommand::SetClimate },
     { "footpathplace", GameCommand::PlacePath },
     { "footpathlayoutplace", GameCommand::PlacePathLayout },
     { "footpathremove", GameCommand::RemovePath },

@@ -177,9 +177,7 @@ public:
         SDL_QueryTexture(_screenTexture, &format, nullptr, nullptr, nullptr);
         _screenTextureFormat = SDL_AllocFormat(format);
 
-        ConfigureBits(width, height, width);
-
-        _drawingContext->Clear(_bitsDPI, PALETTE_INDEX_10);
+        X8DrawingEngine::Resize(width, height);
     }
 
     void SetPalette(const GamePalette& palette) override
@@ -203,8 +201,15 @@ public:
         }
     }
 
+    void BeginDraw() override
+    {
+        X8DrawingEngine::BeginDraw();
+    }
+
     void EndDraw() override
     {
+        X8DrawingEngine::EndDraw();
+
         Display();
         if (gShowDirtyVisuals)
         {
@@ -213,17 +218,20 @@ public:
     }
 
 protected:
-    void OnDrawDirtyBlock(uint32_t left, uint32_t top, uint32_t columns, uint32_t rows) override
+    void OnDrawDirtyBlock(int32_t left, int32_t top, int32_t right, int32_t bottom) override
     {
         if (gShowDirtyVisuals)
         {
-            uint32_t right = left + columns;
-            uint32_t bottom = top + rows;
-            for (uint32_t x = left; x < right; x++)
+            const auto columns = (right - left) / _invalidationGrid.getBlockWidth();
+            const auto rows = (bottom - top) / _invalidationGrid.getBlockHeight();
+            const auto firstRow = top / _invalidationGrid.getBlockHeight();
+            const auto firstColumn = left / _invalidationGrid.getBlockWidth();
+
+            for (uint32_t y = 0; y < rows; y++)
             {
-                for (uint32_t y = top; y < bottom; y++)
+                for (uint32_t x = 0; x < columns; x++)
                 {
-                    SetDirtyVisualTime(x, y, kDirtyVisualTime);
+                    SetDirtyVisualTime(firstColumn + x, firstRow + y, kDirtyVisualTime);
                 }
             }
         }
@@ -330,7 +338,7 @@ private:
     uint32_t GetDirtyVisualTime(uint32_t x, uint32_t y)
     {
         uint32_t result = 0;
-        uint32_t i = y * _dirtyGrid.BlockColumns + x;
+        uint32_t i = y * _invalidationGrid.getColumnCount() + x;
         if (_dirtyVisualsTime.size() > i)
         {
             result = _dirtyVisualsTime[i];
@@ -340,7 +348,7 @@ private:
 
     void SetDirtyVisualTime(uint32_t x, uint32_t y, uint32_t value)
     {
-        uint32_t i = y * _dirtyGrid.BlockColumns + x;
+        uint32_t i = y * _invalidationGrid.getColumnCount() + x;
         if (_dirtyVisualsTime.size() > i)
         {
             _dirtyVisualsTime[i] = value;
@@ -349,10 +357,13 @@ private:
 
     void UpdateDirtyVisuals()
     {
-        _dirtyVisualsTime.resize(_dirtyGrid.BlockRows * _dirtyGrid.BlockColumns);
-        for (uint32_t y = 0; y < _dirtyGrid.BlockRows; y++)
+        const auto rows = _invalidationGrid.getRowCount();
+        const auto columns = _invalidationGrid.getColumnCount();
+
+        _dirtyVisualsTime.resize(rows * columns);
+        for (uint32_t y = 0; y < rows; y++)
         {
-            for (uint32_t x = 0; x < _dirtyGrid.BlockColumns; x++)
+            for (uint32_t x = 0; x < columns; x++)
             {
                 auto timeLeft = GetDirtyVisualTime(x, y);
                 if (timeLeft > 0)
@@ -373,19 +384,19 @@ private:
         float scaleY = Config::Get().general.WindowScale * renderY / static_cast<float>(windowY);
 
         SDL_SetRenderDrawBlendMode(_sdlRenderer, SDL_BLENDMODE_BLEND);
-        for (uint32_t y = 0; y < _dirtyGrid.BlockRows; y++)
+        for (uint32_t y = 0; y < _invalidationGrid.getRowCount(); y++)
         {
-            for (uint32_t x = 0; x < _dirtyGrid.BlockColumns; x++)
+            for (uint32_t x = 0; x < _invalidationGrid.getColumnCount(); x++)
             {
                 auto timeLeft = GetDirtyVisualTime(x, y);
                 if (timeLeft > 0)
                 {
                     uint8_t alpha = static_cast<uint8_t>(timeLeft * 5 / 2);
                     SDL_Rect ddRect;
-                    ddRect.x = static_cast<int32_t>(x * _dirtyGrid.BlockWidth * scaleX);
-                    ddRect.y = static_cast<int32_t>(y * _dirtyGrid.BlockHeight * scaleY);
-                    ddRect.w = static_cast<int32_t>(_dirtyGrid.BlockWidth * scaleX);
-                    ddRect.h = static_cast<int32_t>(_dirtyGrid.BlockHeight * scaleY);
+                    ddRect.x = static_cast<int32_t>(x * _invalidationGrid.getBlockWidth() * scaleX);
+                    ddRect.y = static_cast<int32_t>(y * _invalidationGrid.getBlockHeight() * scaleY);
+                    ddRect.w = static_cast<int32_t>(_invalidationGrid.getBlockWidth() * scaleX);
+                    ddRect.h = static_cast<int32_t>(_invalidationGrid.getBlockHeight() * scaleY);
 
                     SDL_SetRenderDrawColor(_sdlRenderer, 255, 255, 255, alpha);
                     SDL_RenderFillRect(_sdlRenderer, &ddRect);

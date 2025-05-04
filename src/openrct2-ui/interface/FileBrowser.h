@@ -58,7 +58,7 @@ namespace OpenRCT2::Ui::FileBrowser
     const char* GetFilterPatternByType(const LoadSaveType type, const bool isSave);
     u8string RemovePatternWildcard(u8string_view pattern);
     u8string GetDir(const LoadSaveType type);
-    void RegisterCallback(std::function<void(ModalResult result, std::string_view)> callback);
+    void RegisterCallback(LoadSaveCallback callback);
     void InvokeCallback(ModalResult result, const utf8* path);
     void Select(const char* path, LoadSaveAction action, LoadSaveType type, TrackDesign* trackDesignPtr);
     StringId GetTitleStringId(LoadSaveType type, bool isSave);

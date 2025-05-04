@@ -151,8 +151,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            ResizeFrame();
-
             auto& list = widgets[WIDX_LIST];
             list.left = 6;
             list.top = widgets[WIDX_TITLE].height() + 8 + 11 + 3;

@@ -194,7 +194,6 @@ namespace OpenRCT2::Ui::Windows
         WindowClass::EditorObjectSelection,
         WindowClass::EditorInventionList,
         WindowClass::EditorScenarioOptions,
-        WindowClass::EditorObjectiveOptions,
         WindowClass::Mapgen,
         WindowClass::ManageTrackDesign,
         WindowClass::InstallTrack,
@@ -290,8 +289,6 @@ namespace OpenRCT2::Ui::Windows
             {
                 WindowSetResize(*this, { 320, 270 }, { 320, 450 });
             }
-
-            ResizeFrameWithPage();
         }
 
         void OnUpdate() override
@@ -320,7 +317,6 @@ namespace OpenRCT2::Ui::Windows
                 _buttonIndex = -1;
             }
 
-            ResizeFrameWithPage();
             widgets[WIDX_THEMES_LIST].right = width - 4;
             widgets[WIDX_THEMES_LIST].bottom = height - 0x0F;
 

@@ -364,6 +364,126 @@
         "x": 1
     },
     {
+        "path": "icons/monitor_0.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_1.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_2.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_3.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_4.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_5.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_6.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_7.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_8.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_9.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_10.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_11.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_12.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_13.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_14.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/monitor_15.png",
+        "x": 3,
+        "y": 3
+    },
+    {
+        "path": "icons/controls_0.png",
+        "x": 1,
+        "y": 1
+    },
+    {
+        "path": "icons/controls_1.png",
+        "x": 1,
+        "y": 1
+    },
+    {
+        "path": "icons/controls_2.png",
+        "x": 1,
+        "y": 1
+    },
+    {
+        "path": "icons/controls_3.png",
+        "x": 1,
+        "y": 1
+    },
+    {
+        "path": "icons/controls_4.png",
+        "x": 1,
+        "y": 1
+    },
+    {
+        "path": "icons/controls_5.png",
+        "x": 1,
+        "y": 1
+    },
+    {
+        "path": "icons/controls_6.png",
+        "x": 1,
+        "y": 1
+    },
+    {
+        "path": "icons/controls_7.png",
+        "x": 1,
+        "y": 1
+    },
+    {
         "path": "logo_mono_dithered.png"
     },
     {
@@ -23577,6 +23697,3688 @@
         "path": "track/mine_ride/19471.png",
         "x": -32,
         "y": -4
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_1_1.png",
+        "x": -32,
+        "y": -33
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_1_2.png",
+        "x": -6,
+        "y": -20
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_2_1.png",
+        "x": -23,
+        "y": -16
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_2_2.png",
+        "x": -32,
+        "y": -17
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_3_1.png",
+        "x": -27,
+        "y": -16
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_3_2.png",
+        "x": -32,
+        "y": -17
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_4_1.png",
+        "x": -26,
+        "y": -33
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_4_2.png",
+        "x": -32,
+        "y": -20
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_1_1.png",
+        "x": -33,
+        "y": -34
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_1_2.png",
+        "x": -6,
+        "y": -20
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_2_1.png",
+        "x": -4,
+        "y": -18
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_2_2.png",
+        "x": -33,
+        "y": -5
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_3_1.png",
+        "x": -32,
+        "y": -18
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_3_2.png",
+        "x": -7,
+        "y": -5
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_4_1.png",
+        "x": -26,
+        "y": -33
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_4_2.png",
+        "x": -32,
+        "y": -20
+    },
+    {
+        "path": "track/go_karts/steep_1_1.png",
+        "x": -33,
+        "y": -65
+    },
+    {
+        "path": "track/go_karts/steep_1_2.png",
+        "x": -6,
+        "y": -52
+    },
+    {
+        "path": "track/go_karts/steep_2.png",
+        "x": -33,
+        "y": -49
+    },
+    {
+        "path": "track/go_karts/steep_3.png",
+        "x": -32,
+        "y": -49
+    },
+    {
+        "path": "track/go_karts/steep_4_1.png",
+        "x": -26,
+        "y": -65
+    },
+    {
+        "path": "track/go_karts/steep_4_2.png",
+        "x": -32,
+        "y": -52
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_1_1.png",
+        "x": -32,
+        "y": -5
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_1_2.png",
+        "x": -6,
+        "y": 8
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_1_3.png",
+        "x": -33,
+        "y": -19
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_1_4.png",
+        "x": -6,
+        "y": -6
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_1_5.png",
+        "x": -32,
+        "y": -28
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_1_6.png",
+        "x": -6,
+        "y": -14
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_1_7.png",
+        "x": -32,
+        "y": -49
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_1_8.png",
+        "x": -6,
+        "y": -36
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_2_1.png",
+        "x": -25,
+        "y": -2
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_2_2.png",
+        "x": -32,
+        "y": 12
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_2_3.png",
+        "x": -25,
+        "y": -6
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_2_4.png",
+        "x": -33,
+        "y": 8
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_2_5.png",
+        "x": -34,
+        "y": 2
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_2_6.png",
+        "x": -34,
+        "y": -40
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_2_7.png",
+        "x": -31,
+        "y": -33
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_2_8.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_3_1.png",
+        "x": -33,
+        "y": -2
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_3_2.png",
+        "x": -7,
+        "y": 12
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_3_3.png",
+        "x": -33,
+        "y": -6
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_3_4.png",
+        "x": -8,
+        "y": 8
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_3_5.png",
+        "x": -1,
+        "y": 2
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_3_6.png",
+        "x": -59,
+        "y": -40
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_3_7.png",
+        "x": -32,
+        "y": -33
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_3_8.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_4_1.png",
+        "x": -26,
+        "y": -5
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_4_2.png",
+        "x": -33,
+        "y": 8
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_4_3.png",
+        "x": -26,
+        "y": -19
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_4_4.png",
+        "x": -32,
+        "y": -5
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_4_5.png",
+        "x": -26,
+        "y": -28
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_4_6.png",
+        "x": -32,
+        "y": -14
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_4_7.png",
+        "x": -26,
+        "y": -49
+    },
+    {
+        "path": "track/go_karts/flat_to_steep_up_4_8.png",
+        "x": -32,
+        "y": -36
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_1_1.png",
+        "x": -33,
+        "y": -46
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_1_2.png",
+        "x": -6,
+        "y": -33
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_1_3.png",
+        "x": -33,
+        "y": -31
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_1_4.png",
+        "x": -6,
+        "y": -18
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_1_5.png",
+        "x": -33,
+        "y": -21
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_1_6.png",
+        "x": -6,
+        "y": -8
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_1_7.png",
+        "x": -33,
+        "y": -10
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_1_8.png",
+        "x": -6,
+        "y": 3
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_2_1.png",
+        "x": -33,
+        "y": -20
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_2_2.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_2_3.png",
+        "x": -14,
+        "y": -17
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_2_4.png",
+        "x": -32,
+        "y": -4
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_2_5.png",
+        "x": -23,
+        "y": -9
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_2_6.png",
+        "x": -33,
+        "y": 4
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_2_7.png",
+        "x": -24,
+        "y": -5
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_2_8.png",
+        "x": -32,
+        "y": 8
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_3_1.png",
+        "x": -17,
+        "y": -20
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_3_2.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_3_3.png",
+        "x": -35,
+        "y": -17
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_3_4.png",
+        "x": -9,
+        "y": -4
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_3_5.png",
+        "x": -32,
+        "y": -9
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_3_6.png",
+        "x": -6,
+        "y": 4
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_3_7.png",
+        "x": -33,
+        "y": -5
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_3_8.png",
+        "x": -6,
+        "y": 8
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_4_1.png",
+        "x": -26,
+        "y": -46
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_4_2.png",
+        "x": -32,
+        "y": -33
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_4_3.png",
+        "x": -26,
+        "y": -31
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_4_4.png",
+        "x": -32,
+        "y": -18
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_4_5.png",
+        "x": -26,
+        "y": -21
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_4_6.png",
+        "x": -32,
+        "y": -7
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_4_7.png",
+        "x": -26,
+        "y": -9
+    },
+    {
+        "path": "track/go_karts/steep_to_flat_up_4_8.png",
+        "x": -33,
+        "y": 4
+    },
+    {
+        "path": "track/go_karts/small_turn_left_1_1.png",
+        "x": -32,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_1_2.png",
+        "x": -6,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_1_3.png",
+        "x": 10,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_1_4.png",
+        "x": 0,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_1_5.png",
+        "x": -32,
+        "y": 7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_1_6.png",
+        "x": -15,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_1_7.png",
+        "x": -26,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_1_8.png",
+        "x": -30,
+        "y": 11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_2_1.png",
+        "x": -25,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_2_2.png",
+        "x": -32,
+        "y": 12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_2_3.png",
+        "x": -32,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_2_4.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_2_5.png",
+        "x": -14,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_2_6.png",
+        "x": -24,
+        "y": 7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_2_7.png",
+        "x": -32,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_2_8.png",
+        "x": -16,
+        "y": 12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_3_1.png",
+        "x": -19,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_3_2.png",
+        "x": -24,
+        "y": 11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_3_3.png",
+        "x": -32,
+        "y": 7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_3_4.png",
+        "x": -20,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_3_5.png",
+        "x": 13,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_3_6.png",
+        "x": 5,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_3_7.png",
+        "x": -16,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_3_8.png",
+        "x": -23,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_4_1.png",
+        "x": -32,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_4_2.png",
+        "x": -20,
+        "y": 21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_4_3.png",
+        "x": -8,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_4_4.png",
+        "x": -32,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_4_5.png",
+        "x": -24,
+        "y": 17,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_4_6.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_4_7.png",
+        "x": -32,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_4_8.png",
+        "x": -6,
+        "y": 20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_1_1.png",
+        "x": -32,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_1_2.png",
+        "x": -6,
+        "y": 7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_1_3.png",
+        "x": 0,
+        "y": 11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_1_4.png",
+        "x": -32,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_1_5.png",
+        "x": -10,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_1_6.png",
+        "x": -9,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_1_7.png",
+        "x": -9,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_1_8.png",
+        "x": 27,
+        "y": 12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_1_9.png",
+        "x": 0,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_1_10.png",
+        "x": -32,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_1_11.png",
+        "x": -4,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_1_12.png",
+        "x": -26,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_1_13.png",
+        "x": -30,
+        "y": 12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_2_1.png",
+        "x": -25,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_2_2.png",
+        "x": -32,
+        "y": 12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_2_3.png",
+        "x": -32,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_2_4.png",
+        "x": -18,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_2_5.png",
+        "x": -26,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_2_6.png",
+        "x": -32,
+        "y": 10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_2_7.png",
+        "x": -2,
+        "y": 30,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_2_8.png",
+        "x": -8,
+        "y": 32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_2_9.png",
+        "x": -10,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_2_10.png",
+        "x": -28,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_2_11.png",
+        "x": -32,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_2_12.png",
+        "x": -32,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_2_13.png",
+        "x": -12,
+        "y": 12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_3_1.png",
+        "x": -27,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_3_2.png",
+        "x": 5,
+        "y": 12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_3_3.png",
+        "x": -32,
+        "y": 12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_3_4.png",
+        "x": -30,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_3_5.png",
+        "x": 0,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_3_6.png",
+        "x": -7,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_3_7.png",
+        "x": -32,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_3_8.png",
+        "x": -1,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_3_9.png",
+        "x": -32,
+        "y": 11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_3_10.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_3_11.png",
+        "x": -8,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_3_12.png",
+        "x": -22,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_3_13.png",
+        "x": -31,
+        "y": 7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_4_1.png",
+        "x": -30,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_4_2.png",
+        "x": -26,
+        "y": 17,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_4_3.png",
+        "x": 0,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_4_4.png",
+        "x": -9,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_4_5.png",
+        "x": -24,
+        "y": 11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_4_6.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_4_7.png",
+        "x": -32,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_4_8.png",
+        "x": -30,
+        "y": 13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_4_9.png",
+        "x": -4,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_4_10.png",
+        "x": -32,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_4_11.png",
+        "x": -28,
+        "y": 11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_4_12.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_4_13.png",
+        "x": -32,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_4_14.png",
+        "x": -6,
+        "y": 17,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_1_1.png",
+        "x": -32,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_1_2.png",
+        "x": -6,
+        "y": 10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_1_3.png",
+        "x": -32,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_1_4.png",
+        "x": -10,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_1_5.png",
+        "x": 0,
+        "y": 5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_1_6.png",
+        "x": 4,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_1_7.png",
+        "x": -32,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_1_8.png",
+        "x": -23,
+        "y": 5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_1_9.png",
+        "x": -20,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_1_10.png",
+        "x": -23,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_2_1.png",
+        "x": -25,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_2_2.png",
+        "x": -32,
+        "y": 12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_2_3.png",
+        "x": -20,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_2_4.png",
+        "x": -28,
+        "y": 10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_2_5.png",
+        "x": -32,
+        "y": 10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_2_6.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_2_7.png",
+        "x": -6,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_2_8.png",
+        "x": -16,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_2_9.png",
+        "x": -32,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_2_10.png",
+        "x": -20,
+        "y": 21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_3_1.png",
+        "x": -28,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_3_2.png",
+        "x": 0,
+        "y": 12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_3_3.png",
+        "x": 0,
+        "y": 15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_3_4.png",
+        "x": -13,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_3_5.png",
+        "x": -16,
+        "y": 13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_3_6.png",
+        "x": -32,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_3_7.png",
+        "x": -16,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_3_8.png",
+        "x": 17,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_3_9.png",
+        "x": 10,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_3_10.png",
+        "x": -23,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_4_1.png",
+        "x": -30,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_4_2.png",
+        "x": -32,
+        "y": 15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_4_3.png",
+        "x": -6,
+        "y": 32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_4_4.png",
+        "x": -32,
+        "y": 7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_4_5.png",
+        "x": -4,
+        "y": 29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_4_6.png",
+        "x": -12,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_4_7.png",
+        "x": -23,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_4_8.png",
+        "x": -24,
+        "y": 19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_4_9.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_4_10.png",
+        "x": 0,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_4_11.png",
+        "x": 0,
+        "y": 22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_1_1.png",
+        "x": -32,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_1_2.png",
+        "x": -6,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_1_3.png",
+        "x": -24,
+        "y": 32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_1_4.png",
+        "x": -30,
+        "y": 7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_1_5.png",
+        "x": -2,
+        "y": 28,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_1_6.png",
+        "x": -24,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_1_7.png",
+        "x": -32,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_1_8.png",
+        "x": -16,
+        "y": 19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_1_9.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_1_10.png",
+        "x": -32,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_1_11.png",
+        "x": -18,
+        "y": 22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_2_1.png",
+        "x": -25,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_2_2.png",
+        "x": -32,
+        "y": 12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_2_3.png",
+        "x": -32,
+        "y": 15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_2_4.png",
+        "x": -31,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_2_5.png",
+        "x": -32,
+        "y": 13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_2_6.png",
+        "x": 3,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_2_7.png",
+        "x": -5,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_2_8.png",
+        "x": -32,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_2_9.png",
+        "x": -19,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_2_10.png",
+        "x": -23,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_3_1.png",
+        "x": -32,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_3_2.png",
+        "x": -11,
+        "y": 12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_3_3.png",
+        "x": -32,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_3_4.png",
+        "x": -24,
+        "y": 10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_3_5.png",
+        "x": -24,
+        "y": 10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_3_6.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_3_7.png",
+        "x": -10,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_3_8.png",
+        "x": -22,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_3_9.png",
+        "x": 0,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_3_10.png",
+        "x": 0,
+        "y": 21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_4_1.png",
+        "x": -22,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_4_2.png",
+        "x": -28,
+        "y": 11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_4_3.png",
+        "x": -8,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_4_4.png",
+        "x": -15,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_4_5.png",
+        "x": -32,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_4_6.png",
+        "x": -12,
+        "y": 4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_4_7.png",
+        "x": 19,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_4_8.png",
+        "x": 10,
+        "y": 5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_4_9.png",
+        "x": -15,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_4_10.png",
+        "x": -23,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_diag_1_1.png",
+        "x": 0,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_diag_1_2.png",
+        "x": 0,
+        "y": 22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_diag_1_3.png",
+        "x": -16,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_diag_1_4.png",
+        "x": -22,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_diag_1_5.png",
+        "x": -16,
+        "y": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_diag_1_6.png",
+        "x": -16,
+        "y": 22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_diag_2_1.png",
+        "x": -23,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_diag_2_2.png",
+        "x": -23,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_1_1.png",
+        "x": 0,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_1_2.png",
+        "x": 0,
+        "y": 21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_1_3.png",
+        "x": -16,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_1_4.png",
+        "x": -22,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_1_5.png",
+        "x": -16,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_1_6.png",
+        "x": -16,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_2_1.png",
+        "x": -23,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_2_2.png",
+        "x": -23,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_3_1.png",
+        "x": -16,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_3_2.png",
+        "x": -16,
+        "y": 21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_3_3.png",
+        "x": -16,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_3_4.png",
+        "x": -16,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_3_5.png",
+        "x": 0,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_3_6.png",
+        "x": 0,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_4_1.png",
+        "x": -23,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/flat_to_gentle_up_diag_4_2.png",
+        "x": -23,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_1_1.png",
+        "x": 0,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_1_2.png",
+        "x": 0,
+        "y": 18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_1_3.png",
+        "x": -21,
+        "y": -21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_1_4.png",
+        "x": -32,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_1_5.png",
+        "x": -16,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_1_6.png",
+        "x": -16,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_2_1.png",
+        "x": -18,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_2_2.png",
+        "x": -23,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_3_1.png",
+        "x": -16,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_3_2.png",
+        "x": -16,
+        "y": 18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_3_3.png",
+        "x": -16,
+        "y": -21,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_3_4.png",
+        "x": -22,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_3_5.png",
+        "x": 0,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_3_6.png",
+        "x": 0,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_4_1.png",
+        "x": -23,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_flat_up_diag_4_2.png",
+        "x": -23,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_1_1.png",
+        "x": 0,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_1_2.png",
+        "x": 0,
+        "y": 18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_1_3.png",
+        "x": -21,
+        "y": -25,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_1_4.png",
+        "x": -32,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_1_5.png",
+        "x": -16,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_1_6.png",
+        "x": -16,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_2_1.png",
+        "x": -18,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_2_2.png",
+        "x": -23,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_3_1.png",
+        "x": -16,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_3_2.png",
+        "x": -16,
+        "y": 18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_3_3.png",
+        "x": -16,
+        "y": -25,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_3_4.png",
+        "x": -16,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_3_5.png",
+        "x": 0,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_3_6.png",
+        "x": 0,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_diag_4.png",
+        "x": -23,
+        "y": -34,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_1_1.png",
+        "x": 0,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_1_2.png",
+        "x": 0,
+        "y": 17,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_1_3.png",
+        "x": -19,
+        "y": -32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_1_4.png",
+        "x": -32,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_1_5.png",
+        "x": -16,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_1_6.png",
+        "x": -16,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_2_1.png",
+        "x": -20,
+        "y": 13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_2_2.png",
+        "x": -23,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_3_1.png",
+        "x": -16,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_3_2.png",
+        "x": -16,
+        "y": 17,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_3_3.png",
+        "x": -16,
+        "y": -32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_3_4.png",
+        "x": -16,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_3_5.png",
+        "x": 0,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_3_6.png",
+        "x": 0,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_4_1.png",
+        "x": -23,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/gentle_to_steep_up_diag_4_2.png",
+        "x": -23,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_1_1.png",
+        "x": 0,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_1_2.png",
+        "x": 0,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_1_3.png",
+        "x": -16,
+        "y": -40,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_1_4.png",
+        "x": -16,
+        "y": -22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_1_5.png",
+        "x": -16,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_1_6.png",
+        "x": -16,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_2_1.png",
+        "x": -23,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_2_2.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_3_1.png",
+        "x": -16,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_3_2.png",
+        "x": -16,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_3_3.png",
+        "x": -16,
+        "y": -40,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_3_4.png",
+        "x": -16,
+        "y": -22,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_3_5.png",
+        "x": 0,
+        "y": -29,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_3_6.png",
+        "x": 0,
+        "y": -10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_4_1.png",
+        "x": -23,
+        "y": -50,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_to_gentle_up_diag_4_2.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_1_1.png",
+        "x": 0,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_1_2.png",
+        "x": 0,
+        "y": 5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_1_3.png",
+        "x": -16,
+        "y": -61,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_1_4.png",
+        "x": -32,
+        "y": -43,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_1_5.png",
+        "x": -16,
+        "y": -61,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_1_6.png",
+        "x": -16,
+        "y": -43,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_2_1.png",
+        "x": -23,
+        "y": -19,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_2_2.png",
+        "x": -23,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_3_1.png",
+        "x": -16,
+        "y": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_3_2.png",
+        "x": -16,
+        "y": 5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_3_3.png",
+        "x": -16,
+        "y": -61,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_3_4.png",
+        "x": -16,
+        "y": -43,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_3_5.png",
+        "x": 0,
+        "y": -61,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_3_6.png",
+        "x": 0,
+        "y": -43,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_4_1.png",
+        "x": -23,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/steep_diag_4_2.png",
+        "x": -23,
+        "y": -50,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_1_1.png",
+        "x": -32,
+        "y": -18
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_1_2.png",
+        "x": -23,
+        "y": -17
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_1_3.png",
+        "x": 19,
+        "y": 9
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_1_4.png",
+        "x": 12,
+        "y": 4
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_1_5.png",
+        "x": -30,
+        "y": 5
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_1_6.png",
+        "x": -14,
+        "y": 0
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_1_7.png",
+        "x": -27,
+        "y": -18
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_1_8.png",
+        "x": -32,
+        "y": -4
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_2_1.png",
+        "x": -25,
+        "y": -11
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_2_2.png",
+        "x": -32,
+        "y": 7
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_2_3.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_2_4.png",
+        "x": -16,
+        "y": 7
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_2_5.png",
+        "x": -32,
+        "y": -18
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_2_6.png",
+        "x": -28,
+        "y": -5
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_3_1.png",
+        "x": -19,
+        "y": -2
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_3_2.png",
+        "x": -25,
+        "y": 5
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_3_3.png",
+        "x": 13,
+        "y": 14
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_3_4.png",
+        "x": 5,
+        "y": 11
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_3_5.png",
+        "x": -17,
+        "y": -5
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_3_6.png",
+        "x": -24,
+        "y": 2
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_4_1.png",
+        "x": -29,
+        "y": -13
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_4_2.png",
+        "x": -32,
+        "y": 4
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_4_3.png",
+        "x": -26,
+        "y": 13
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_4_4.png",
+        "x": -4,
+        "y": 34
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_4_5.png",
+        "x": -33,
+        "y": -4
+    },
+    {
+        "path": "track/go_karts/small_turn_left_gentle_up_4_6.png",
+        "x": -7,
+        "y": 11
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_1_1.png",
+        "x": -32,
+        "y": -13
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_1_2.png",
+        "x": -6,
+        "y": 4
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_1_3.png",
+        "x": -9,
+        "y": 13
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_1_4.png",
+        "x": -2,
+        "y": 34
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_1_5.png",
+        "x": -26,
+        "y": -4
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_1_6.png",
+        "x": -32,
+        "y": 11
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_2_1.png",
+        "x": -23,
+        "y": -2
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_2_2.png",
+        "x": 19,
+        "y": 5
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_2_3.png",
+        "x": -18,
+        "y": 14
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_2_4.png",
+        "x": -14,
+        "y": 11
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_2_5.png",
+        "x": -32,
+        "y": -5
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_2_6.png",
+        "x": -7,
+        "y": 2
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_3_1.png",
+        "x": -32,
+        "y": -11
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_3_2.png",
+        "x": -30,
+        "y": 8
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_3_3.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_3_4.png",
+        "x": -20,
+        "y": 7
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_3_5.png",
+        "x": -27,
+        "y": -18
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_3_6.png",
+        "x": -33,
+        "y": -5
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_4_1.png",
+        "x": -18,
+        "y": -18
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_4_2.png",
+        "x": -25,
+        "y": -17
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_4_3.png",
+        "x": -32,
+        "y": 8
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_4_4.png",
+        "x": -21,
+        "y": 4
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_4_5.png",
+        "x": 13,
+        "y": 5
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_4_6.png",
+        "x": 5,
+        "y": 0
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_4_7.png",
+        "x": -19,
+        "y": -18
+    },
+    {
+        "path": "track/go_karts/small_turn_right_gentle_up_4_8.png",
+        "x": -24,
+        "y": -5
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_1_1.png",
+        "x": -32,
+        "y": -27
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_1_2.png",
+        "x": -17,
+        "y": -28
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_1_3.png",
+        "x": -32,
+        "y": -8
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_1_4.png",
+        "x": -11,
+        "y": -8
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_1_5.png",
+        "x": -5,
+        "y": 1
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_1_6.png",
+        "x": -8,
+        "y": 0
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_1_7.png",
+        "x": -31,
+        "y": -5
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_1_8.png",
+        "x": -32,
+        "y": -7
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_1_9.png",
+        "x": -27,
+        "y": -18
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_1_10.png",
+        "x": -32,
+        "y": -4
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_2_1.png",
+        "x": -23,
+        "y": -6
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_2_2.png",
+        "x": -32,
+        "y": 10
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_2_3.png",
+        "x": -18,
+        "y": -21
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_2_4.png",
+        "x": -32,
+        "y": -2
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_2_5.png",
+        "x": 0,
+        "y": -2
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_2_6.png",
+        "x": -16,
+        "y": 13
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_2_7.png",
+        "x": -20,
+        "y": -26
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_2_8.png",
+        "x": -8,
+        "y": -10
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_2_9.png",
+        "x": -26,
+        "y": -18
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_2_10.png",
+        "x": -9,
+        "y": -5
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_3_1.png",
+        "x": -27,
+        "y": -2
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_3_2.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_3_3.png",
+        "x": 0,
+        "y": 3
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_3_4.png",
+        "x": -8,
+        "y": 6
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_3_5.png",
+        "x": -13,
+        "y": 7
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_3_6.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_3_7.png",
+        "x": 1,
+        "y": 1
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_3_8.png",
+        "x": -7,
+        "y": 1
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_3_9.png",
+        "x": -21,
+        "y": -1
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_3_10.png",
+        "x": -28,
+        "y": 7
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_4_1.png",
+        "x": -29,
+        "y": -13
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_4_2.png",
+        "x": -32,
+        "y": -1
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_4_3.png",
+        "x": -26,
+        "y": -4
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_4_4.png",
+        "x": -16,
+        "y": 20
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_4_5.png",
+        "x": -16,
+        "y": -14
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_4_6.png",
+        "x": -20,
+        "y": -1
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_4_7.png",
+        "x": -30,
+        "y": -2
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_4_8.png",
+        "x": -4,
+        "y": 17
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_4_9.png",
+        "x": -33,
+        "y": -3
+    },
+    {
+        "path": "track/go_karts/medium_turn_left_gentle_up_4_10.png",
+        "x": -7,
+        "y": 11
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_1_1.png",
+        "x": -32,
+        "y": -13
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_1_2.png",
+        "x": -6,
+        "y": -1
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_1_3.png",
+        "x": -25,
+        "y": -4
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_1_4.png",
+        "x": -2,
+        "y": 20
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_1_5.png",
+        "x": -16,
+        "y": -14
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_1_6.png",
+        "x": -16,
+        "y": -1
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_1_7.png",
+        "x": -29,
+        "y": -2
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_1_8.png",
+        "x": -15,
+        "y": 17
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_1_9.png",
+        "x": -24,
+        "y": -3
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_1_10.png",
+        "x": -32,
+        "y": 11
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_2_1.png",
+        "x": -32,
+        "y": -2
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_2_2.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_2_3.png",
+        "x": -31,
+        "y": 3
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_2_4.png",
+        "x": 0,
+        "y": 6
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_2_5.png",
+        "x": -17,
+        "y": 7
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_2_6.png",
+        "x": 0,
+        "y": 0
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_2_7.png",
+        "x": -19,
+        "y": 1
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_2_8.png",
+        "x": -10,
+        "y": 1
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_2_9.png",
+        "x": -33,
+        "y": -1
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_2_10.png",
+        "x": -8,
+        "y": 7
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_3_1.png",
+        "x": -32,
+        "y": -6
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_3_2.png",
+        "x": -10,
+        "y": 10
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_3_3.png",
+        "x": -32,
+        "y": -21
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_3_4.png",
+        "x": -32,
+        "y": -2
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_3_5.png",
+        "x": -24,
+        "y": -2
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_3_6.png",
+        "x": -27,
+        "y": 14
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_3_7.png",
+        "x": -22,
+        "y": -26
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_3_8.png",
+        "x": -27,
+        "y": -10
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_3_9.png",
+        "x": -27,
+        "y": -18
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_3_10.png",
+        "x": -33,
+        "y": -5
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_4_1.png",
+        "x": -21,
+        "y": -27
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_4_2.png",
+        "x": -27,
+        "y": -28
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_4_3.png",
+        "x": 1,
+        "y": -8
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_4_4.png",
+        "x": -7,
+        "y": -8
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_4_5.png",
+        "x": -31,
+        "y": 1
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_4_6.png",
+        "x": -32,
+        "y": 0
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_4_7.png",
+        "x": 0,
+        "y": -5
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_4_8.png",
+        "x": -8,
+        "y": -7
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_4_9.png",
+        "x": -29,
+        "y": -18
+    },
+    {
+        "path": "track/go_karts/medium_turn_right_gentle_up_4_10.png",
+        "x": -31,
+        "y": -5
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_1_1.png",
+        "x": -32,
+        "y": -32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_1_2.png",
+        "x": -11,
+        "y": -36,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_1_3.png",
+        "x": -32,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_1_4.png",
+        "x": -32,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_1_5.png",
+        "x": 4,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_1_6.png",
+        "x": 1,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_1_7.png",
+        "x": -22,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_1_8.png",
+        "x": -26,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_2_1.png",
+        "x": -23,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_2_2.png",
+        "x": -32,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_2_3.png",
+        "x": -14,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_2_4.png",
+        "x": -24,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_2_5.png",
+        "x": -4,
+        "y": 11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_2_6.png",
+        "x": -4,
+        "y": 27,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_2_7.png",
+        "x": -20,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_2_8.png",
+        "x": -20,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_3_1.png",
+        "x": -28,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_3_2.png",
+        "x": 8,
+        "y": 10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_3_3.png",
+        "x": -15,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_3_4.png",
+        "x": -18,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_3_5.png",
+        "x": -12,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_3_6.png",
+        "x": -12,
+        "y": 10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_3_7.png",
+        "x": -23,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_3_8.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_4_1.png",
+        "x": -28,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_4_2.png",
+        "x": -32,
+        "y": -3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_4_3.png",
+        "x": -27,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_4_4.png",
+        "x": -30,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_4_5.png",
+        "x": -8,
+        "y": -17,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_4_6.png",
+        "x": -10,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_4_7.png",
+        "x": 0,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_diag_gentle_up_4_8.png",
+        "x": 0,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_1_1.png",
+        "x": -32,
+        "y": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_1_2.png",
+        "x": -6,
+        "y": -3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_1_3.png",
+        "x": -20,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_1_4.png",
+        "x": -3,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_1_5.png",
+        "x": -13,
+        "y": -17,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_1_6.png",
+        "x": -4,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_1_7.png",
+        "x": -32,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_1_8.png",
+        "x": -24,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_2_1.png",
+        "x": -23,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_2_2.png",
+        "x": -32,
+        "y": 10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_2_3.png",
+        "x": -20,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_2_4.png",
+        "x": -20,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_2_5.png",
+        "x": -8,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_2_6.png",
+        "x": -8,
+        "y": 10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_2_7.png",
+        "x": -10,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_2_8.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_3_1.png",
+        "x": -32,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_3_2.png",
+        "x": -16,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_3_3.png",
+        "x": -28,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_3_4.png",
+        "x": -28,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_3_5.png",
+        "x": -12,
+        "y": 11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_3_6.png",
+        "x": -12,
+        "y": 27,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_3_7.png",
+        "x": 0,
+        "y": -13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_3_8.png",
+        "x": 0,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_4_1.png",
+        "x": -22,
+        "y": -32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_4_2.png",
+        "x": -28,
+        "y": -36,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_4_3.png",
+        "x": -9,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_4_4.png",
+        "x": -17,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_4_5.png",
+        "x": -29,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_4_6.png",
+        "x": -10,
+        "y": 8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_4_7.png",
+        "x": -15,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_diag_gentle_up_4_8.png",
+        "x": -23,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_1_1.png",
+        "x": 0,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_1_2.png",
+        "x": 0,
+        "y": 13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_1_3.png",
+        "x": -30,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_1_4.png",
+        "x": -8,
+        "y": 13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_1_5.png",
+        "x": -31,
+        "y": -28,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_1_6.png",
+        "x": -8,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_1_7.png",
+        "x": -22,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_1_8.png",
+        "x": -4,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_2_1.png",
+        "x": -15,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_2_2.png",
+        "x": -23,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_2_3.png",
+        "x": -11,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_2_4.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_2_5.png",
+        "x": -2,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_2_6.png",
+        "x": -18,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_2_7.png",
+        "x": -17,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_2_8.png",
+        "x": -25,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_3_1.png",
+        "x": -32,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_3_2.png",
+        "x": -32,
+        "y": 10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_3_3.png",
+        "x": -14,
+        "y": -25,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_3_4.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_3_5.png",
+        "x": -32,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_3_6.png",
+        "x": -8,
+        "y": 15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_3_7.png",
+        "x": -33,
+        "y": -3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_3_8.png",
+        "x": -8,
+        "y": 11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_4_1.png",
+        "x": -25,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_4_2.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_4_3.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_4_4.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_4_5.png",
+        "x": -29,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_4_6.png",
+        "x": -31,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_4_7.png",
+        "x": -27,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_left_to_orthogonal_gentle_up_4_8.png",
+        "x": -33,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_1_1.png",
+        "x": 0,
+        "y": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_1_2.png",
+        "x": 0,
+        "y": 10,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_1_3.png",
+        "x": 0,
+        "y": -25,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_1_4.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_1_5.png",
+        "x": -32,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_1_6.png",
+        "x": -32,
+        "y": 15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_1_7.png",
+        "x": -22,
+        "y": -3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_1_8.png",
+        "x": -24,
+        "y": 11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_2_1.png",
+        "x": -33,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_2_2.png",
+        "x": 6,
+        "y": 14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_2_3.png",
+        "x": -13,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_2_4.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_2_5.png",
+        "x": -19,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_2_6.png",
+        "x": -13,
+        "y": 6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_2_7.png",
+        "x": -33,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_2_8.png",
+        "x": -8,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_3_1.png",
+        "x": -22,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_3_2.png",
+        "x": -29,
+        "y": 13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_3_3.png",
+        "x": -22,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_3_4.png",
+        "x": -29,
+        "y": 13,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_3_5.png",
+        "x": -27,
+        "y": -28,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_3_6.png",
+        "x": -32,
+        "y": -11,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_3_7.png",
+        "x": -27,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_3_8.png",
+        "x": -33,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_4_1.png",
+        "x": -23,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_4_2.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_4_3.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_4_4.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_4_5.png",
+        "x": -14,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_4_6.png",
+        "x": -20,
+        "y": -9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_4_7.png",
+        "x": -32,
+        "y": -18,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/large_turn_right_to_orthogonal_gentle_up_4_8.png",
+        "x": -32,
+        "y": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_left_1_1.png",
+        "x": -32,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_left_1_2.png",
+        "x": -8,
+        "y": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_left_1_3.png",
+        "x": -32,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_left_1_4.png",
+        "x": -11,
+        "y": -12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_left_1_5.png",
+        "x": -7,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_left_1_6.png",
+        "x": -8,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_left_1_7.png",
+        "x": -28,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_left_1_8.png",
+        "x": 1,
+        "y": 12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_left_2_1.png",
+        "x": -25,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_left_2_2.png",
+        "x": -32,
+        "y": 12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_left_2_3.png",
+        "x": -19,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_left_2_4.png",
+        "x": -28,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_left_2_5.png",
+        "x": -32,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_left_2_6.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_left_2_7.png",
+        "x": -8,
+        "y": 32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_left_2_8.png",
+        "x": -30,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_left_2_9.png",
+        "x": -32,
+        "y": 15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_right_1_1.png",
+        "x": -32,
+        "y": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_right_1_2.png",
+        "x": -6,
+        "y": 15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_right_1_3.png",
+        "x": -29,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_right_1_4.png",
+        "x": 0,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_right_1_5.png",
+        "x": -22,
+        "y": 32,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_right_1_6.png",
+        "x": -30,
+        "y": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_right_1_7.png",
+        "x": -32,
+        "y": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_right_1_8.png",
+        "x": -32,
+        "y": -2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_right_1_9.png",
+        "x": -12,
+        "y": 12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_right_2_1.png",
+        "x": -25,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_right_2_2.png",
+        "x": -32,
+        "y": 12,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_right_2_3.png",
+        "x": -32,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_right_2_4.png",
+        "x": -4,
+        "y": 2,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_right_2_5.png",
+        "x": -2,
+        "y": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_right_2_6.png",
+        "x": -31,
+        "y": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_right_2_7.png",
+        "x": -21,
+        "y": -7,
+        "palette": "keep"
+    },
+    {
+        "path": "track/go_karts/s_bend_right_2_8.png",
+        "x": -27,
+        "y": -7,
+        "palette": "keep"
     },
     {
         "path": "support/flat_to_steep_1_1.png",

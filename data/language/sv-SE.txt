@@ -2238,10 +2238,8 @@ STR_3230    :Blockbromsar kan inte användas direkt efter varandra
 STR_3231    :Blockbromsar kan inte användas efter en uppskjutskulle
 STR_3232    :Inställningar – Finanser
 STR_3233    :Inställningar – Besökare
-STR_3234    :Inställningar – Parken
 STR_3235    :Visa finansiella inställningar
 STR_3236    :Visa besökarinställningar
-STR_3237    :Visa parkinställningar
 STR_3238    :Inga pengar
 STR_3239    :Gör detta till en ’inga pengar’-park utan finansiella begränsningar
 STR_3240    :{WINDOW_COLOUR_2}Startpengar:
@@ -2282,18 +2280,10 @@ STR_3278    :{WINDOW_COLOUR_2}Kostnad för att köpa bygglov:
 STR_3279    :Gratis parkentré och betala per åktur
 STR_3280    :Gratis åkturer och betala för parkentré
 STR_3281    :{WINDOW_COLOUR_2}Entrépris:
-STR_3282    :Välj uppdrag och parknamn
 STR_3283    :Välj åkturer som ska bevaras
-STR_3284    :Uppdragsval
 STR_3285    :Bevarade åkturer
 STR_3286    :Välj uppdrag för detta scenario
 STR_3287    :{WINDOW_COLOUR_2}Uppdrag:
-STR_3288    :Välj klimat
-STR_3289    :{WINDOW_COLOUR_2}Klimat:
-STR_3290    :Svalt och blött
-STR_3291    :Varmt
-STR_3292    :Hett och torrt
-STR_3293    :Kallt
 STR_3294    :Ändra…
 STR_3295    :Byt namn på parken
 STR_3296    :Byt namn på scenario

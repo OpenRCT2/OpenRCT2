@@ -280,8 +280,6 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            ResizeFrame();
-
             Widget& colourBtn = widgets[WIDX_MAIN_COLOUR];
             colourBtn.type = WindowWidgetType::Empty;
 
@@ -302,11 +300,6 @@ namespace OpenRCT2::Ui::Windows
             colourBtn.image = GetColourButtonImage(banner->colour);
             Widget& dropDownWidget = widgets[WIDX_TEXT_COLOUR_DROPDOWN];
             dropDownWidget.text = BannerColouredTextFormats[banner->text_colour];
-        }
-
-        void OnResize() override
-        {
-            ResizeFrame();
         }
     };
 

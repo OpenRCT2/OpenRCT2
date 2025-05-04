@@ -327,9 +327,6 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_FINANCES_PAGE_RESEARCH:
                     WindowResearchFundingPrepareDraw(this, WIDX_RESEARCH_FUNDING);
                     return;
-                default:
-                    return;
-
                 case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
                     graphPageWidget = &widgets[WIDX_PAGE_BACKGROUND];
                     centredGraph = false;
@@ -345,6 +342,8 @@ namespace OpenRCT2::Ui::Windows
                     centredGraph = true;
                     _graphProps.series = getGameState().cashHistory;
                     break;
+                default:
+                    return;
             }
             OnPrepareDrawGraph(graphPageWidget, centredGraph);
         }
@@ -405,7 +404,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto screenCoords = ScreenCoordsXY{ 0, kTableCellHeight + 2 };
 
-            Widget self = widgets[WIDX_SUMMARY_SCROLL];
+            auto& self = widgets[WIDX_SUMMARY_SCROLL];
             int32_t row_width = std::max<uint16_t>(scrolls[0].contentWidth, self.width());
 
             // Expenditure / Income row labels
@@ -471,7 +470,7 @@ namespace OpenRCT2::Ui::Windows
                 GfxFillRect(
                     dpi,
                     { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, -2 } },
-                    PALETTE_INDEX_10);
+                    PaletteIndex::pi10);
 
                 screenCoords.x += EXPENDITURE_COLUMN_WIDTH;
             }
@@ -488,12 +487,7 @@ namespace OpenRCT2::Ui::Windows
             page = p;
             frame_no = 0;
 
-            hold_down_widgets = _windowFinancesPageHoldDownWidgets[p];
-            pressed_widgets = 0;
-            SetWidgets(_windowFinancesPageWidgets[p]);
-            SetDisabledTabs();
             Invalidate();
-
             if (p == WINDOW_FINANCES_PAGE_RESEARCH)
             {
                 width = WW_RESEARCH;
@@ -511,9 +505,12 @@ namespace OpenRCT2::Ui::Windows
                 || p == WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH)
             {
                 flags |= WF_RESIZABLE;
-                WindowSetResize(
-                    *this, { WW_OTHER_TABS, kHeightOtherTabs },
-                    { std::numeric_limits<int16_t>::max(), std::numeric_limits<int16_t>::max() });
+
+                // We need to compensate for the enlarged title bar for windows that do not
+                // constrain the window height between tabs (e.g. chart tabs)
+                height -= getTitleBarDiffNormal();
+
+                WindowSetResize(*this, { WW_OTHER_TABS, kHeightOtherTabs }, kMaxWindowSize);
             }
             else
             {
@@ -521,7 +518,14 @@ namespace OpenRCT2::Ui::Windows
                 height = kHeightOtherTabs;
                 flags &= ~WF_RESIZABLE;
             }
-            OnResize();
+
+            SetWidgets(_windowFinancesPageWidgets[p]);
+            SetDisabledTabs();
+
+            hold_down_widgets = _windowFinancesPageHoldDownWidgets[p];
+            pressed_widgets = 0;
+
+            ResizeFrame();
             OnPrepareDraw();
             InitScrollWidgets();
 
@@ -678,7 +682,7 @@ namespace OpenRCT2::Ui::Windows
         {
             // Count number of active campaigns
             int32_t numActiveCampaigns = static_cast<int32_t>(getGameState().marketingCampaigns.size());
-            int32_t y = std::max(1, numActiveCampaigns) * kListRowHeight + 92;
+            int32_t y = widgets[WIDX_TAB_1].top + std::max(1, numActiveCampaigns) * kListRowHeight + 75;
 
             // Update group box positions
             widgets[WIDX_ACTIVE_CAMPAIGNS_GROUP].bottom = y - 22;
@@ -874,11 +878,6 @@ namespace OpenRCT2::Ui::Windows
             DrawTabImage(dpi, WINDOW_FINANCES_PAGE_PROFIT_GRAPH, SPR_TAB_FINANCES_PROFIT_GRAPH_0);
             DrawTabImage(dpi, WINDOW_FINANCES_PAGE_MARKETING, SPR_TAB_FINANCES_MARKETING_0);
             DrawTabImage(dpi, WINDOW_FINANCES_PAGE_RESEARCH, SPR_TAB_FINANCES_RESEARCH_0);
-        }
-
-        void OnResize() override
-        {
-            ResizeFrameWithPage();
         }
     };
 

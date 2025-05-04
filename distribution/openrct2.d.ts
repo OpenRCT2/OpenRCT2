@@ -1710,6 +1710,7 @@ declare global {
         readonly year: number;
     }
 
+
     /**
      * APIs for the map.
      */
@@ -1731,11 +1732,15 @@ declare global {
         getAllEntities(type: "staff"): Staff[];
         getAllEntities(type: "car"): Car[];
         getAllEntities(type: "litter"): Litter[];
+        getAllEntities(type: "balloon"): Balloon[];
+        getAllEntities(type: "money_effect"): MoneyEffect[];
         getAllEntitiesOnTile(type: EntityType, tilePos: CoordsXY): Entity[];
         getAllEntitiesOnTile(type: "guest", tilePos: CoordsXY): Guest[];
         getAllEntitiesOnTile(type: "staff", tilePos: CoordsXY): Staff[];
         getAllEntitiesOnTile(type: "car", tilePos: CoordsXY): Car[];
         getAllEntitiesOnTile(type: "litter", tilePos: CoordsXY): Litter[];
+        getAllEntitiesOnTile(type: "balloon", tilePos: CoordsXY): Balloon[];
+        getAllEntitiesOnTile(type: "money_effect", tilePos: CoordsXY): MoneyEffect[];
         createEntity(type: EntityType, initializer: object): Entity;
 
         /**
@@ -1745,6 +1750,7 @@ declare global {
          * @param elementIndex The index of the track element on the tile.
          */
         getTrackIterator(location: CoordsXY, elementIndex: number): TrackIterator | null;
+		
     }
 
     type TileElementType =
@@ -2495,11 +2501,30 @@ declare global {
          * Highest drop height in height units. Use `context.formatString()` to convert into metres/feet. Ex: `formatString('{HEIGHT}', ride.highestDropHeight)`.
          */
         readonly highestDropHeight: number;
+		
+		 /**
+         * The current breakdown of the ride.
+         */
+        readonly breakdown: BreakdownType;
+		 
+		/**
+         * Set a breakdown on a ride.
+         * @param breakdown The type of breakdown to set.
+         */
+        setBreakdown(breakdown: BreakdownType): void;
+		
+		/**
+         * Fix a ride / clear the breakdown.
+         */
+        fixBreakdown(): void;
+		
     }
 
     type RideClassification = "ride" | "stall" | "facility";
 
     type RideStatus = "closed" | "open" | "testing" | "simulating";
+	
+	type BreakdownType =  "brakes_failure" | "control_failure" | "doors_stuck_closed" | "doors_stuck_open" | "restraints_stuck_closed" | "restraints_stuck_open"  | "safety_cut_out" | "vehicle_malfunction";
 
     interface TrackColour {
         main: number;
@@ -3844,6 +3869,26 @@ declare global {
         "empty_juice_cup" |
         "empty_bowl_blue";
 
+	/**
+     * Represents balloon entity.
+     */
+    interface Balloon extends Entity {
+        /**
+         * The colour of the balloon.
+         */
+        colour: number;      
+	}
+	
+	/**
+     * Represents money_effect entity.
+     */
+    interface MoneyEffect extends Entity {
+        /**
+         * The value of the money effect.
+         */
+        value: number;  
+	}
+	
     /**
      * Network APIs
      * Use `network.mode` to determine whether the current game is a client, server or in single player mode.

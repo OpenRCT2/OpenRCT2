@@ -38,9 +38,10 @@ enum class EditorStep : uint8_t
     InventionsListSetUp,   // 2
     OptionsSelection,      // 3
     ObjectiveSelection,    // 4
-    SaveScenario,          // 5
-    RollercoasterDesigner, // 6
-    DesignsManager,        // 7
+    ScenarioDetails,       // 5
+    SaveScenario,          // 6
+    RollercoasterDesigner, // 7
+    DesignsManager,        // 8
     Invalid = 255,         // 255
 };
 

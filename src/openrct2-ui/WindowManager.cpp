@@ -80,8 +80,6 @@ public:
                 return EditorInventionsListOpen();
             case WindowClass::EditorObjectSelection:
                 return EditorObjectSelectionOpen();
-            case WindowClass::EditorObjectiveOptions:
-                return EditorObjectiveOptionsOpen();
             case WindowClass::EditorScenarioOptions:
                 return EditorScenarioOptionsOpen();
             case WindowClass::Finances:
@@ -641,9 +639,6 @@ public:
             mainWindow->savedViewPos.x -= viewport->ViewWidth() / 2;
             mainWindow->savedViewPos.y -= viewport->ViewHeight() / 2;
 
-            // Make sure the viewport has correct coordinates set.
-            ViewportUpdatePosition(mainWindow);
-
             mainWindow->Invalidate();
         }
     }
@@ -840,8 +835,10 @@ public:
 
     WindowBase* Create(
         std::unique_ptr<WindowBase>&& wp, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height,
-        uint32_t flags) override
+        WindowFlags flags) override
     {
+        height += wp->getTitleBarDiffTarget();
+
         if (flags & WF_AUTO_POSITION)
         {
             if (flags & WF_CENTRE_SCREEN)
@@ -853,6 +850,8 @@ public:
                 pos = GetAutoPositionForNewWindow(width, height);
             }
         }
+
+        height -= wp->getTitleBarDiffTarget();
 
         // Check if there are any window slots left
         // include kWindowLimitReserved for items such as the main viewport and toolbars to not appear to be counted.
@@ -1068,7 +1067,7 @@ public:
     /**
      * Closes all windows, save for those having any of the passed flags.
      */
-    void CloseAllExceptFlags(uint16_t flags) override
+    void CloseAllExceptFlags(WindowFlags flags) override
     {
         CloseByCondition([flags](WindowBase* w) -> bool { return !(w->flags & flags); });
     }
@@ -1345,7 +1344,7 @@ public:
         return &w;
     }
 
-    WindowBase* BringToFrontByClassWithFlags(WindowClass cls, uint16_t flags) override
+    WindowBase* BringToFrontByClassWithFlags(WindowClass cls, WindowFlags flags) override
     {
         WindowBase* w = FindByClass(cls);
         if (w != nullptr)

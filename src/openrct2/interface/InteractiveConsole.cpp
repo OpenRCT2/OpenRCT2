@@ -43,7 +43,7 @@
 #include "../interface/Chat.h"
 #include "../interface/Colour.h"
 #include "../interface/Viewport.h"
-#include "../interface/Window_internal.h"
+#include "../interface/WindowBase.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
@@ -78,7 +78,7 @@
 #include <thread>
 #include <vector>
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
     #include "../drawing/TTF.h"
 #endif
 
@@ -722,7 +722,7 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         {
             console.WriteFormatLine("host_timescale %.02f", OpenRCT2::GetContext()->GetTimeScale());
         }
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
         else if (argv[0] == "enable_hinting")
         {
             console.WriteFormatLine("enable_hinting %d", Config::Get().fonts.EnableHinting);
@@ -916,8 +916,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             {
                 auto location = TileCoordsXYZ(int_val[0], int_val[1], 0).ToCoordsXYZ().ToTileCentre();
                 location.z = TileElementHeight(location);
-                w->SetLocation(location);
-                ViewportUpdatePosition(w);
+                w->SetViewportLocation(location);
                 console.Execute("get location");
             }
         }
@@ -1003,7 +1002,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
 
             console.Execute("get host_timescale");
         }
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
         else if (varName == "enable_hinting" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             Config::Get().fonts.EnableHinting = (int_val[0] != 0);
@@ -1184,17 +1183,6 @@ static void ConsoleCommandOpen(InteractiveConsole& console, const arguments_t& a
         else if (argv[0] == "scenario_options" && InvalidArguments(&invalidTitle, !title))
         {
             ContextOpenWindow(WindowClass::EditorScenarioOptions);
-        }
-        else if (argv[0] == "objective_options" && InvalidArguments(&invalidTitle, !title))
-        {
-            if (NetworkGetMode() != NETWORK_MODE_NONE)
-            {
-                console.WriteLineError("Cannot open this window in multiplayer mode.");
-            }
-            else
-            {
-                ContextOpenWindow(WindowClass::EditorObjectiveOptions);
-            }
         }
         else if (argv[0] == "options")
         {

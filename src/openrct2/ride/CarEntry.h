@@ -36,7 +36,7 @@ enum class CarEntryAnimation : uint8_t
     Count,
 };
 
-enum : uint32_t
+enum : uint64_t
 {
     CAR_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY = 1
         << 0, // Set on powered vehicles that do not slow down when going down a hill.
@@ -84,6 +84,7 @@ enum : uint32_t
     CAR_ENTRY_FLAG_WATER_RIDE = 1 << 29, // Set on rides where water would provide continuous propulsion.
     CAR_ENTRY_FLAG_GO_KART = 1 << 30,
     CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT = 1u << 31,
+    CAR_ENTRY_FLAG_ENABLE_BODY_COLOUR = 1uLL << 32,
 };
 
 enum : uint32_t
@@ -202,7 +203,7 @@ struct CarEntry
     uint8_t sprite_height_negative;
     uint8_t sprite_height_positive;
     CarEntryAnimation animation;
-    uint32_t flags;
+    uint64_t flags;
     uint16_t base_num_frames; // The number of sprites of animation or swinging per rotation frame
     uint32_t base_image_id;
     VehicleSpriteGroup SpriteGroups[EnumValue(SpriteGroupType::Count)];

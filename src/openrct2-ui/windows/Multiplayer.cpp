@@ -395,7 +395,6 @@ namespace OpenRCT2::Ui::Windows
     {
         ResetPressedWidgets();
         SetWidgetPressed(WIDX_TAB1 + page, true);
-        ResizeFrameWithPage();
         switch (page)
         {
             case WINDOW_MULTIPLAYER_PAGE_INFORMATION:
@@ -678,7 +677,7 @@ namespace OpenRCT2::Ui::Windows
         DrawPixelInfo clippedDPI;
         if (ClipDrawPixelInfo(clippedDPI, dpi, windowPos, width, height))
         {
-            auto screenCoords = ScreenCoordsXY{ 3, 50 };
+            auto screenCoords = ScreenCoordsXY{ 3, widgets[WIDX_CONTENT_PANEL].top + 7 };
             int32_t newWidth = width - 6;
 
             const auto& name = NetworkGetServerName();

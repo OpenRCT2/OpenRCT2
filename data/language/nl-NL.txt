@@ -2237,10 +2237,8 @@ STR_3230    :Blokremmen kunnen niet direct achter elkaar gebruikt worden
 STR_3231    :Blokremmen kunnen niet direct achter de top van een kettingheuvel geplaatst worden
 STR_3232    :Opties - Financiën
 STR_3233    :Opties - Bezoekers
-STR_3234    :Opties - Park
 STR_3235    :Toon financiële opties
 STR_3236    :Toon bezoekersopties
-STR_3237    :Toon parkopties
 STR_3238    :Zonder geld
 STR_3239    :Schakel geld compleet uit, zodat het park geen financiële beperkingen heeft
 STR_3240    :{WINDOW_COLOUR_2}Startsaldo:
@@ -2281,18 +2279,10 @@ STR_3278    :{WINDOW_COLOUR_2}Prijs bouwrechten:
 STR_3279    :Gratis entree / Per rit betalen
 STR_3280    :Betaalde entree / Attracties gratis
 STR_3281    :{WINDOW_COLOUR_2}Entreeprijs:
-STR_3282    :Doelstelling en parknaam selecteren
 STR_3283    :Beschermde attracties selecteren
-STR_3284    :Doelselectie
 STR_3285    :Beschermde attracties
 STR_3286    :Selecteer doelstelling voor dit scenario
 STR_3287    :{WINDOW_COLOUR_2}Doelstelling:
-STR_3288    :Selecteer klimaat:
-STR_3289    :{WINDOW_COLOUR_2}Klimaat:
-STR_3290    :Koel en nat
-STR_3291    :Warm
-STR_3292    :Heet en droog
-STR_3293    :Koud
 STR_3294    :Aanpassen…
 STR_3295    :Parknaam veranderen
 STR_3296    :Scenarionaam veranderen
@@ -2521,7 +2511,7 @@ STR_5265    :Selecteer uit welke bronnen objecten zichtbaar zijn
 STR_5266    :Weergave
 STR_5267    :Landinstellingen
 STR_5268    :Audio
-STR_5269    :Bediening en interface
+STR_5269    :Bediening
 STR_5270    :Overig
 STR_5272    :Klein decor
 STR_5273    :Groot decor
@@ -3794,3 +3784,23 @@ STR_6739    :{WINDOW_COLOUR_2}Datum: {BLACK}{STRINGID}
 STR_6740    :{WINDOW_COLOUR_2}Geld: {BLACK}{CURRENCY2DP}
 STR_6741    :{WINDOW_COLOUR_2}Aantal attracties: {BLACK}{UINT16}
 STR_6742    :{WINDOW_COLOUR_2}Aantal bezoekers: {BLACK}{UINT16}
+STR_6743    :Klimaat
+STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6745    :{WINDOW_COLOUR_2}Intensiteitsvoorkeuren bezoekers:
+STR_6746    :Geen voorkeuren
+STR_6747    :Voorkeuren variëren (standaard)
+STR_6748    :Alleen minder intense attracties
+STR_6749    :Alleen intensere attracties
+STR_6750    :Selecteer welke intensiteit van attracties de voorkeur heeft van nieuwe bezoekers.
+STR_6751    :Wachtrijen kunnen niet gebruikt worden voor overwegen!
+STR_6752    :Scenario-opties - Doel
+STR_6753    :Scenario-opties - Scenario-details
+STR_6754    :Scenario-opties - Landbeperkingen
+STR_6755    :Toon opties voor doel
+STR_6756    :Toon opties voor scenario-details
+STR_6757    :Toon opties voor landbeperkingen
+STR_6758    :Leenopties
+STR_6759    :Bedrijfsmodel
+STR_6760    :Inkomen:
+STR_6761    :Scenariodetails
+STR_6762    :Interface

@@ -39,7 +39,7 @@ namespace OpenRCT2::Graph
             // Draw Y label tick mark
             GfxFillRect(
                 dpi, { { internalBounds.GetLeft() - 5, curScreenPos + 5 }, { internalBounds.GetLeft(), curScreenPos + 5 } },
-                PALETTE_INDEX_10);
+                PaletteIndex::pi10);
             // Draw horizontal gridline
             GfxFillRectInset(
                 dpi, { { internalBounds.GetLeft(), curScreenPos + 5 }, { internalBounds.GetRight(), curScreenPos + 5 } },
@@ -69,7 +69,7 @@ namespace OpenRCT2::Graph
                     { FontStyle::Small, TextAlignment::CENTRE });
                 // Draw month tick mark
                 GfxFillRect(
-                    dpi, { screenCoords - ScreenCoordsXY{ 0, 4 }, screenCoords - ScreenCoordsXY{ 0, 1 } }, PALETTE_INDEX_10);
+                    dpi, { screenCoords - ScreenCoordsXY{ 0, 4 }, screenCoords - ScreenCoordsXY{ 0, 1 } }, PaletteIndex::pi10);
             }
 
             yearOver32 = (yearOver32 + 1) % 32;
@@ -94,13 +94,13 @@ namespace OpenRCT2::Graph
                 { coords.x, bounds.GetTop() },
                 { coords.x, bounds.GetBottom() },
             },
-            kDashLength, PALETTE_INDEX_10);
-        GfxDrawDashedLine(dpi, { { bounds.GetLeft(), coords.y }, coords }, kDashLength, PALETTE_INDEX_10);
+            kDashLength, PaletteIndex::pi10);
+        GfxDrawDashedLine(dpi, { { bounds.GetLeft(), coords.y }, coords }, kDashLength, PaletteIndex::pi10);
 
         DrawText(dpi, coords - ScreenCoordsXY{ 0, 16 }, { textCol, TextAlignment::CENTRE }, text);
 
-        GfxFillRect(dpi, { { coords - ScreenCoordsXY{ 2, 2 } }, coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
-        GfxFillRect(dpi, { { coords - ScreenCoordsXY{ 1, 1 } }, { coords + ScreenCoordsXY{ 1, 1 } } }, PALETTE_INDEX_21);
+        GfxFillRect(dpi, { { coords - ScreenCoordsXY{ 2, 2 } }, coords + ScreenCoordsXY{ 2, 2 } }, PaletteIndex::pi10);
+        GfxFillRect(dpi, { { coords - ScreenCoordsXY{ 1, 1 } }, { coords + ScreenCoordsXY{ 1, 1 } } }, PaletteIndex::pi21);
     }
 
     template<typename T, T TkNoValue, bool TbackgroundLine>
@@ -129,12 +129,12 @@ namespace OpenRCT2::Graph
                         auto rightBottom1 = coords + ScreenCoordsXY{ 1, 1 };
                         auto leftTop2 = lastCoords + ScreenCoordsXY{ 0, 1 };
                         auto rightBottom2 = coords + ScreenCoordsXY{ 0, 1 };
-                        GfxDrawLine(dpi, { leftTop1, rightBottom1 }, PALETTE_INDEX_10);
-                        GfxDrawLine(dpi, { leftTop2, rightBottom2 }, PALETTE_INDEX_10);
+                        GfxDrawLine(dpi, { leftTop1, rightBottom1 }, PaletteIndex::pi10);
+                        GfxDrawLine(dpi, { leftTop2, rightBottom2 }, PaletteIndex::pi10);
                     }
                     if (i == 0)
                     {
-                        GfxFillRect(dpi, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
+                        GfxFillRect(dpi, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PaletteIndex::pi10);
                     }
                 }
                 else
@@ -143,12 +143,12 @@ namespace OpenRCT2::Graph
                     {
                         auto leftTop = lastCoords;
                         auto rightBottom = coords;
-                        GfxDrawLine(dpi, { leftTop, rightBottom }, PALETTE_INDEX_21);
+                        GfxDrawLine(dpi, { leftTop, rightBottom }, PaletteIndex::pi21);
                     }
                     if (i == 0)
                     {
                         GfxFillRect(
-                            dpi, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PALETTE_INDEX_21);
+                            dpi, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PaletteIndex::pi21);
                     }
                 }
 

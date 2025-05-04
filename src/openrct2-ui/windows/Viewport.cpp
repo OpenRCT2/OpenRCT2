@@ -187,9 +187,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
-
-            ResizeFrameWithPage();
             widgets[WIDX_ZOOM_IN].left = width - 27;
             widgets[WIDX_ZOOM_IN].right = width - 2;
             widgets[WIDX_ZOOM_OUT].left = width - 27;
@@ -213,6 +210,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (viewport != nullptr)
             {
+                Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
                 viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 };
                 viewport->width = widgets[WIDX_VIEWPORT].width() - 1;
                 viewport->height = widgets[WIDX_VIEWPORT].height() - 1;

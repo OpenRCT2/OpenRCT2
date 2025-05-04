@@ -208,9 +208,9 @@ void ClimateUpdate()
         gameState.weatherCurrent.weatherEffect == WeatherEffectType::Storm
         || gameState.weatherCurrent.weatherEffect == WeatherEffectType::Blizzard)
     {
-        // Create new thunder and lightning
-        uint32_t randomNumber = UtilRand();
-        if ((randomNumber & 0xFFFF) <= 0x1B4)
+        // Create new thunder and lightning. Their amount is scaled inversely proportional
+        // to the game speed, otherwise they become annoying at very high speeds
+        if (uint32_t randomNumber = UtilRand(); (randomNumber & 0xFFFF) <= (0x1B4u >> gGameSpeed))
         {
             randomNumber >>= 16;
             _thunderTimer = 43 + (randomNumber % 64);
@@ -286,6 +286,13 @@ bool ClimateIsSnowingHeavily()
 bool WeatherIsDry(WeatherType weather)
 {
     return weather == WeatherType::Sunny || weather == WeatherType::PartiallyCloudy || weather == WeatherType::Cloudy;
+}
+
+bool ClimateHasWeatherEffect()
+{
+    const auto& weatherCurrent = getGameState().weatherCurrent;
+    // The game starts drawing rain whenever this level is not none.
+    return weatherCurrent.level != WeatherLevel::None;
 }
 
 FilterPaletteID ClimateGetWeatherGloomPaletteId(const WeatherState& state)

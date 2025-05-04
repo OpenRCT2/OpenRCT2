@@ -2240,10 +2240,8 @@ STR_3230    :No es poden usar dos frens de bloc consecutius.
 STR_3231    :Els frens de bloc no es poden usar directament després de la cadena d’elevació.
 STR_3232    :Opcions - Finances
 STR_3233    :Opcions - Visitants
-STR_3234    :Opcions - Parc
 STR_3235    :Mostra les opcions financeres.
 STR_3236    :Mostra les opcions dels visitants.
-STR_3237    :Mostra les opcions del parc.
 STR_3238    :Sense diners
 STR_3239    :Estableix que el parc no tingui restriccions financeres.
 STR_3240    :{WINDOW_COLOUR_2}Efectiu inicial:
@@ -2284,18 +2282,10 @@ STR_3278    :{WINDOW_COLOUR_2}Preu dels drets de construcció:
 STR_3279    :Entrada gratis / Atraccions de pagament
 STR_3280    :Entrada de pagament / Atraccions gratis
 STR_3281    :{WINDOW_COLOUR_2}Preu de l’entrada:
-STR_3282    :Tria dels objectius i del nom del parc.
 STR_3283    :Seleccioneu les atraccions protegides. Aquestes s’hauran de preservar i no es podran modificar.
-STR_3284    :Selecció de l’objectiu
 STR_3285    :Atraccions protegides
 STR_3286    :Seleccioneu l’objectiu d’aquest escenari.
 STR_3287    :{WINDOW_COLOUR_2}Objectiu:
-STR_3288    :Trieu el clima.
-STR_3289    :{WINDOW_COLOUR_2}Clima:
-STR_3290    :Fresc i humit
-STR_3291    :Càlid
-STR_3292    :Calorós i sec
-STR_3293    :Fred
 STR_3294    :Canvia…
 STR_3295    :Canvia el nom del parc.
 STR_3296    :Canvia el nom de l’escenari.

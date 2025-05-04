@@ -2226,10 +2226,8 @@ STR_3230    :Blok frenler peş peşe inşa edilemez
 STR_3231    :Tırmanma zincirinden hemen sonra blok frenleri kullanılamaz
 STR_3232    :Ayarlar - Finansal
 STR_3233    :Ayarlar - Müşteriler
-STR_3234    :Ayarlar - Park
 STR_3235    :Finansal ayarlarını göster
 STR_3236    :Müşteri ayarlarını göster
-STR_3237    :Park ayarlarını göster
 STR_3238    :Parasız
 STR_3239    :Bu ayar ile para ve finansal uygulamalar tamamen sıra dışı bırakılıyor
 STR_3240    :{WINDOW_COLOUR_2}Ana para:
@@ -2270,18 +2268,10 @@ STR_3278    :{WINDOW_COLOUR_2}İnşa izni satın alma fiyatı:
 STR_3279    :Ücretsiz park girişi / Ücretli aletler
 STR_3280    :Ücretli park girişi / Ücretsiz aletler
 STR_3281    :{WINDOW_COLOUR_2}Giriş fiyatı:
-STR_3282    :Park hedefi ve ismi seçiniz
 STR_3283    :Korunmasını istediğiniz aletleri seçiniz{NEWLINE}(bu aletler silinemiyor veya değiştirilemiyor)
-STR_3284    :Hedef seçimi
 STR_3285    :Koruma altında olan aletler
 STR_3286    :Bu senaryo için hedef seçiniz
 STR_3287    :{WINDOW_COLOUR_2}Hedef(ler):
-STR_3288    :İklimi seçiniz
-STR_3289    :{WINDOW_COLOUR_2}İklim:
-STR_3290    :Serin ve ıslak
-STR_3291    :Sıcak
-STR_3292    :Sıcak ve kuru
-STR_3293    :Serin
 STR_3294    :Değiştir…
 STR_3295    :Parkın ismini değiştiriniz
 STR_3296    :Senaryonun ismini değiştiriniz

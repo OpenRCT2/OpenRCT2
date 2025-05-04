@@ -29,12 +29,12 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr ScreenCoordsXY kInGameSize = { 94, 94 };
-    static constexpr ScreenCoordsXY kEditorSize = { 280, 104 };
+    static constexpr ScreenSize kInGameSize = { 94, 94 };
+    static constexpr ScreenSize kEditorSize = { 280, 104 };
 
     static constexpr StringId WINDOW_TITLE = STR_LAND_RIGHTS;
-    static constexpr int32_t WW = kInGameSize.x;
-    static constexpr int32_t WH = kInGameSize.y;
+    static constexpr int32_t WW = kInGameSize.width;
+    static constexpr int32_t WH = kInGameSize.height;
 
     enum WindowLandRightsWidgetIdx
     {
@@ -127,6 +127,7 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             SetWidgets(window_land_rights_widgets);
+
             hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
@@ -307,11 +308,12 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Position land size tool
-            widgets[WIDX_PREVIEW].top = 17;
+            auto contentTop = widgets[WIDX_TITLE].bottom + 3;
+            widgets[WIDX_PREVIEW].top = contentTop;
             widgets[WIDX_PREVIEW].bottom = widgets[WIDX_PREVIEW].top + 32;
-            widgets[WIDX_DECREMENT].top = 18;
+            widgets[WIDX_DECREMENT].top = contentTop + 1;
             widgets[WIDX_DECREMENT].bottom = widgets[WIDX_DECREMENT].top + 16;
-            widgets[WIDX_INCREMENT].top = 32;
+            widgets[WIDX_INCREMENT].top = contentTop + 16;
             widgets[WIDX_INCREMENT].bottom = widgets[WIDX_INCREMENT].top + 16;
 
             // Show in-game mode widgets
@@ -329,11 +331,12 @@ namespace OpenRCT2::Ui::Windows
         void PrepareDrawSandbox()
         {
             // Position land size tool
-            widgets[WIDX_PREVIEW].top = 17 + 24;
+            auto contentTop = widgets[WIDX_TITLE].bottom + 27;
+            widgets[WIDX_PREVIEW].top = contentTop;
             widgets[WIDX_PREVIEW].bottom = widgets[WIDX_PREVIEW].top + 32;
-            widgets[WIDX_DECREMENT].top = 18 + 24;
+            widgets[WIDX_DECREMENT].top = contentTop + 1;
             widgets[WIDX_DECREMENT].bottom = widgets[WIDX_DECREMENT].top + 16;
-            widgets[WIDX_INCREMENT].top = 32 + 24;
+            widgets[WIDX_INCREMENT].top = contentTop + 16;
             widgets[WIDX_INCREMENT].bottom = widgets[WIDX_INCREMENT].top + 16;
 
             // Hide in-game mode widgets
@@ -348,7 +351,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX].type = WindowWidgetType::Checkbox;
         }
 
-        ScreenCoordsXY GetModeDimensions() const
+        ScreenSize GetModeDimensions() const
         {
             if (IsOwnershipMode())
                 return kEditorSize;
@@ -361,7 +364,7 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetPressed(WIDX_PREVIEW, true);
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
 
-            if (width != GetModeDimensions().x)
+            if (width != GetModeDimensions().width)
                 OnResize();
 
             if (IsOwnershipMode())
@@ -381,13 +384,11 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
 
             auto dimensions = GetModeDimensions();
-            width = dimensions.x;
-            height = dimensions.y;
+            WindowSetResize(*this, dimensions, dimensions);
 
             if (windowPos.x + width > ContextGetWidth())
                 windowPos.x = ContextGetWidth() - width;
 
-            ResizeFrame();
             Invalidate();
         }
 

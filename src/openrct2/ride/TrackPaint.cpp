@@ -741,7 +741,7 @@ bool TrackPaintUtilDrawNarrowStationPlatform(
     if (direction & 1)
     {
         PaintAddImageAsParent(
-            session, colour.WithIndex(kStationBaseTypeSpriteIndexes[EnumValue(baseType)][0]), { 0, 0, height + baseOffsetZ },
+            session, colour.WithIndex(kStationBaseTypeSpriteIndexes[EnumValue(baseType)][1]), { 0, 0, height + baseOffsetZ },
             { { 0, 2, height }, { 32, 28, 1 } });
 
         bool hasFence = TrackPaintUtilHasFence(EDGE_NE, position, trackElement, ride, session.CurrentRotation);

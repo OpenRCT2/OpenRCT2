@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 
     #include "../Diagnostic.h"
 
@@ -371,4 +371,4 @@ void TTFDispose()
 {
 }
 
-#endif // NO_TTF
+#endif // DISABLE_TTF

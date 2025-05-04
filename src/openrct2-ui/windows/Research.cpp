@@ -122,8 +122,6 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             SetPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
-            width = WW_DEVELOPMENT;
-            height = WH_DEVELOPMENT;
             ResearchUpdateUncompletedTypes();
         }
 
@@ -134,12 +132,6 @@ namespace OpenRCT2::Ui::Windows
 
             page = newPageIndex;
             frame_no = 0;
-            RemoveViewport();
-
-            hold_down_widgets = 0;
-            SetWidgets(window_research_page_widgets[newPageIndex]);
-            disabled_widgets = 0;
-            pressed_widgets = 0;
 
             Invalidate();
             if (newPageIndex == WINDOW_RESEARCH_PAGE_DEVELOPMENT)
@@ -152,10 +144,12 @@ namespace OpenRCT2::Ui::Windows
                 width = WW_FUNDING;
                 height = WH_FUNDING;
             }
-            OnResize();
-
-            InitScrollWidgets();
             Invalidate();
+
+            SetWidgets(window_research_page_widgets[newPageIndex]);
+            hold_down_widgets = 0;
+            disabled_widgets = 0;
+            pressed_widgets = 0;
         }
 
     private:
@@ -274,11 +268,6 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnResize() override
-        {
-            ResizeFrameWithPage();
-        }
-
         void DrawTabImage(DrawPixelInfo& dpi, int32_t tabPage, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + tabPage;
@@ -309,7 +298,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ResearchOpen()
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->FocusOrCreate<ResearchWindow>(WindowClass::Research, WW_FUNDING, WH_FUNDING, WF_10);
+        auto* window = windowMgr->FocusOrCreate<ResearchWindow>(WindowClass::Research, WW_DEVELOPMENT, WH_DEVELOPMENT, WF_10);
         window->SetPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
         return window;
     }

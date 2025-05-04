@@ -2235,10 +2235,8 @@ STR_3230    :Blokkolófékek nem használhatóak közvetlenül egymás után
 STR_3231    :Blokkolófékek nem használhatóak közvetlenül ennek felvonószakasznak a csúcsa után
 STR_3232    :Beállítások - pénzügyi
 STR_3233    :Beállítások - vendégek
-STR_3234    :Beállítások - park
 STR_3235    :Pénzügyi beállítások
 STR_3236    :A vendégek beállításai
-STR_3237    :A park beállításai
 STR_3238    :Nem kell pénz
 STR_3239    :Legyen ez a park egy „pénz nélküli” park, pénzügyi korlátozások nélkül
 STR_3240    :{WINDOW_COLOUR_2}Kezdőtőke:
@@ -2279,18 +2277,10 @@ STR_3278    :{WINDOW_COLOUR_2}Építési jogok vásárlási költsége:
 STR_3279    :Ingyenes parkbelépő / Fizetős játékok
 STR_3280    :Fizetős parkbelépő / Ingyenes játékok
 STR_3281    :{WINDOW_COLOUR_2}Belépési díj:
-STR_3282    :A cél és a park nevének kiválasztása
 STR_3283    :A műemlékvédelem alá eső játékok kiválasztása
-STR_3284    :Cél kiválasztása
 STR_3285    :Védett játékok
 STR_3286    :A pálya céljának kiválasztása
 STR_3287    :{WINDOW_COLOUR_2}Cél:
-STR_3288    :Éghajlat kiválasztása
-STR_3289    :{WINDOW_COLOUR_2}Éghajlat:
-STR_3290    :Hűvös és nedves
-STR_3291    :Meleg
-STR_3292    :Forró és száraz
-STR_3293    :Hideg
 STR_3294    :Változtat…
 STR_3295    :A park nevének megváltoztatása
 STR_3296    :A pálya nevének megváltoztatása

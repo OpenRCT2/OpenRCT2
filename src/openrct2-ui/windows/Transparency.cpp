@@ -240,11 +240,6 @@ namespace OpenRCT2::Ui::Windows
             Config::Get().general.InvisibleSupports = wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
             Config::Save();
         }
-
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
     };
 
     WindowBase* TransparencyOpen()

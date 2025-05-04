@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <SolutionDir Condition="'$(SolutionDir)'==''">..\..\</SolutionDir>
@@ -44,11 +45,13 @@
     <ProjectGuid>{D24D94F6-2A74-480C-B512-629C306CE92F}</ProjectGuid>
     <RootNamespace>openrct2-lib</RootNamespace>
     <ProjectName>libopenrct2</ProjectName>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
   </PropertyGroup>
   <Import Project="..\..\openrct2.common.props" />
+  <Import Project="..\..\openrct2.deps.targets" Condition="'$(IsSolutionBuild)' != 'true'" />
   <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions>__ENABLE_DISCORD__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -246,6 +249,7 @@
     <ClInclude Include="drawing\Image.h" />
     <ClInclude Include="drawing\ImageId.hpp" />
     <ClInclude Include="drawing\ImageImporter.h" />
+    <ClInclude Include="drawing\InvalidationGrid.h" />
     <ClInclude Include="drawing\LightFX.h" />
     <ClInclude Include="drawing\NewDrawing.h" />
     <ClInclude Include="drawing\ScrollingText.h" />
@@ -287,8 +291,8 @@
     <ClInclude Include="interface\Viewport.h" />
     <ClInclude Include="interface\Widget.h" />
     <ClInclude Include="interface\Window.h" />
+    <ClInclude Include="interface\WindowBase.h" />
     <ClInclude Include="interface\WindowClasses.h" />
-    <ClInclude Include="interface\Window_internal.h" />
     <ClInclude Include="interface\ZoomLevel.h" />
     <ClInclude Include="Limits.h" />
     <ClInclude Include="localisation\Currency.h" />
@@ -561,9 +565,11 @@
     <ClInclude Include="scenes\title\TitleSequence.h" />
     <ClInclude Include="scenes\title\TitleSequenceManager.h" />
     <ClInclude Include="scenes\title\TitleSequencePlayer.h" />
+    <ClInclude Include="scripting\bindings\entity\ScBalloon.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScEntity.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScGuest.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScLitter.hpp" />
+    <ClInclude Include="scripting\bindings\entity\ScMoneyEffect.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScParticle.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScPeep.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScStaff.hpp" />
@@ -600,6 +606,7 @@
     <ClInclude Include="scripting\IconNames.hpp" />
     <ClInclude Include="scripting\Plugin.h" />
     <ClInclude Include="scripting\ScriptEngine.h" />
+    <ClInclude Include="scripting\SoundNames.hpp" />
     <ClInclude Include="SpriteIds.h" />
     <ClInclude Include="System.hpp" />
     <ClInclude Include="TrackImporter.h" />
@@ -799,6 +806,7 @@
     <ClCompile Include="drawing\Font.cpp" />
     <ClCompile Include="drawing\Image.cpp" />
     <ClCompile Include="drawing\ImageImporter.cpp" />
+    <ClCompile Include="drawing\InvalidationGrid.cpp" />
     <ClCompile Include="drawing\LightFX.cpp" />
     <ClCompile Include="drawing\Line.cpp" />
     <ClCompile Include="drawing\NewDrawing.cpp" />
@@ -840,7 +848,7 @@
     <ClCompile Include="interface\StdInOutConsole.cpp" />
     <ClCompile Include="interface\Viewport.cpp" />
     <ClCompile Include="interface\Window.cpp" />
-    <ClCompile Include="interface\Window_internal.cpp" />
+    <ClCompile Include="interface\WindowBase.cpp" />
     <ClCompile Include="interface\ZoomLevel.cpp" />
     <ClCompile Include="localisation\Currency.cpp" />
     <ClCompile Include="localisation\FormatCodes.cpp" />
@@ -1088,8 +1096,10 @@
     <ClCompile Include="scenes\title\TitleScene.cpp" />
     <ClCompile Include="scenes\title\TitleSequence.cpp" />
     <ClCompile Include="scenes\title\TitleSequenceManager.cpp" />
+    <ClCompile Include="scripting\bindings\entity\ScBalloon.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScGuest.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScLitter.cpp" />
+    <ClCompile Include="scripting\bindings\entity\ScMoneyEffect.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScParticle.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScStaff.cpp" />
     <ClCompile Include="scripting\bindings\entity\ScVehicle.cpp" />
@@ -1152,6 +1162,11 @@
       </ForcedIncludeFiles>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\openrct2-deps\openrct2-deps.vcxproj">
+      <Project>{c453da76-44b3-4ac8-aaa2-2b64a76993a5}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

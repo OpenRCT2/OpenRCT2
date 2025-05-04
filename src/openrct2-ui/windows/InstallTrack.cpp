@@ -354,11 +354,6 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
-
     private:
         void UpdatePreview()
         {
@@ -428,11 +423,8 @@ namespace OpenRCT2::Ui::Windows
         gTrackDesignSceneryToggle = false;
         _currentTrackPieceDirection = 2;
 
-        int32_t screenWidth = ContextGetWidth();
-        int32_t screenHeight = ContextGetHeight();
-        auto screenPos = ScreenCoordsXY{ screenWidth / 2 - 201, std::max(kTopToolbarHeight + 1, screenHeight / 2 - 200) };
-
-        auto* window = windowMgr->FocusOrCreate<InstallTrackWindow>(WindowClass::InstallTrack, screenPos, WW, WH, 0);
+        auto* window = windowMgr->FocusOrCreate<InstallTrackWindow>(
+            WindowClass::InstallTrack, WW, WH, WF_AUTO_POSITION | WF_CENTRE_SCREEN);
         window->SetupTrack(path, std::move(trackDesign));
 
         return window;

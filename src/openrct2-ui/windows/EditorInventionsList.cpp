@@ -450,8 +450,6 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
                                                                                    : WindowWidgetType::CloseBox;
 
-            ResizeFrameWithPage();
-
             int16_t scrollListHeight = (height - 88) / 2;
 
             widgets[WIDX_PRE_RESEARCHED_SCROLL].bottom = 60 + scrollListHeight;

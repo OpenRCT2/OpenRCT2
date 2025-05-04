@@ -102,6 +102,7 @@ namespace OpenRCT2::Scripting
             // Reset state to walking to prevent invalid actions from carrying over
             peep->Action = PeepActionType::Walking;
             peep->AnimationType = peep->NextAnimationType = PeepAnimationType::Walking;
+            peep->Invalidate();
         }
     }
 
@@ -119,6 +120,7 @@ namespace OpenRCT2::Scripting
         {
             peep->TshirtColour = value;
             peep->TrousersColour = value;
+            peep->Invalidate();
         }
     }
 
@@ -210,6 +212,7 @@ namespace OpenRCT2::Scripting
 
         peep->AnimationObjectIndex = costume->objectId;
         peep->AnimationGroup = costume->group;
+        peep->Invalidate();
     }
 
     std::shared_ptr<ScPatrolArea> ScStaff::patrolArea_get() const

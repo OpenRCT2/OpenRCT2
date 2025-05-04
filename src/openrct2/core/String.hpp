@@ -19,6 +19,24 @@
 
 namespace OpenRCT2::String
 {
+    struct Hash
+    {
+        using is_transparent = void;
+
+        size_t operator()(const char* txt) const
+        {
+            return std::hash<std::string_view>{}(txt);
+        }
+        size_t operator()(std::string_view txt) const
+        {
+            return std::hash<std::string_view>{}(txt);
+        }
+        size_t operator()(const std::string& txt) const
+        {
+            return std::hash<std::string>{}(txt);
+        }
+    };
+
     std::string toStd(const utf8* str);
     std::string toUtf8(std::wstring_view src);
     std::wstring toWideChar(std::string_view src);
@@ -34,10 +52,8 @@ namespace OpenRCT2::String
     int32_t compare(const utf8* a, const utf8* b, bool ignoreCase = false);
 
     bool equals(u8string_view a, u8string_view b);
-    bool equals(const u8string& a, const u8string& b);
     bool equals(const utf8* a, const utf8* b, bool ignoreCase = false);
     bool iequals(u8string_view a, u8string_view b);
-    bool iequals(const u8string& a, const u8string& b);
     bool iequals(const utf8* a, const utf8* b);
 
     bool startsWith(std::string_view str, std::string_view match, bool ignoreCase = false);

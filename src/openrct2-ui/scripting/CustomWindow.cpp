@@ -21,6 +21,7 @@
 
     #include <limits>
     #include <openrct2/SpriteIds.h>
+    #include <openrct2/config/Config.h>
     #include <openrct2/drawing/Drawing.h>
     #include <openrct2/interface/Window.h>
     #include <openrct2/localisation/Formatter.h>
@@ -425,8 +426,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 min_width = _info.Desc.MinWidth.value_or(0);
                 min_height = _info.Desc.MinHeight.value_or(0);
-                max_width = _info.Desc.MaxWidth.value_or(std::numeric_limits<int16_t>::max());
-                max_height = _info.Desc.MaxHeight.value_or(std::numeric_limits<int16_t>::max());
+                max_width = _info.Desc.MaxWidth.value_or(kMaxWindowSize.width);
+                max_height = _info.Desc.MaxHeight.value_or(kMaxWindowSize.height);
             }
             RefreshWidgets();
         }
@@ -485,10 +486,12 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            // This has to be called to ensure the window frame is correctly initialised - not doing this will
-            // cause an assertion to be hit.
-            ResizeFrameWithPage();
-            widgets[WIDX_CLOSE].text = colours[0].hasFlag(ColourFlag::translucent) ? STR_CLOSE_X_WHITE : STR_CLOSE_X;
+            auto& closeButton = widgets[WIDX_CLOSE];
+            bool translucent = colours[closeButton.colour].hasFlag(ColourFlag::translucent);
+            if (Config::Get().interface.EnlargedUi)
+                closeButton.string = !translucent ? kCloseBoxStringBlackLarge : kCloseBoxStringWhiteLarge;
+            else
+                closeButton.string = !translucent ? kCloseBoxStringBlackNormal : kCloseBoxStringWhiteNormal;
 
             // Having the content panel visible for transparent windows makes the borders darker than they should be
             // For now just hide it if there are no tabs and the window is not resizable
@@ -755,6 +758,9 @@ namespace OpenRCT2::Ui::Windows
 
         void ChangeTab(size_t tabIndex)
         {
+            if (page == static_cast<int16_t>(tabIndex) && !widgets.empty())
+                return;
+
             page = static_cast<int16_t>(tabIndex);
             frame_no = 0;
             RefreshWidgets();

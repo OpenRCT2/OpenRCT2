@@ -41,7 +41,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr Widget _savePromptWidgets[] = {
-        WINDOW_SHIM_WHITE(kStringIdNone, WW_SAVE, WH_SAVE),
+        WINDOW_SHIM(kStringIdNone, WW_SAVE, WH_SAVE),
         MakeWidget({  2, 19}, {256, 12}, WindowWidgetType::LabelCentred, WindowColour::Primary, kStringIdEmpty                ), // question/label
         MakeWidget({  8, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_SAVE     ), // save
         MakeWidget({ 91, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_DONT_SAVE), // don't save
@@ -60,7 +60,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr Widget _quitPromptWidgets[] = {
-        WINDOW_SHIM_WHITE(STR_QUIT_GAME_PROMPT_TITLE, WW_QUIT, WH_QUIT),
+        WINDOW_SHIM(STR_QUIT_GAME_PROMPT_TITLE, WW_QUIT, WH_QUIT),
         MakeWidget({ 8, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_OK    ), // ok
         MakeWidget({91, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL), // cancel
     };
@@ -195,11 +195,6 @@ namespace OpenRCT2::Ui::Windows
         void OnDraw(DrawPixelInfo& dpi) override
         {
             DrawWidgets(dpi);
-        }
-
-        void OnResize() override
-        {
-            ResizeFrame();
         }
     };
 

@@ -504,7 +504,7 @@ static void TTFDrawStringRawSprite(DrawPixelInfo& dpi, std::string_view text, Te
     }
 }
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 
 static void TTFDrawStringRawTTF(DrawPixelInfo& dpi, std::string_view text, TextDrawInfo* info)
 {
@@ -540,7 +540,7 @@ static void TTFDrawStringRawTTF(DrawPixelInfo& dpi, std::string_view text, TextD
     info->x += surface->w;
 }
 
-#endif // NO_TTF
+#endif // DISABLE_TTF
 
 static void TTFProcessFormatCode(DrawPixelInfo& dpi, const FmtString::Token& token, TextDrawInfo* info)
 {
@@ -615,7 +615,7 @@ static void TTFProcessFormatCode(DrawPixelInfo& dpi, const FmtString::Token& tok
     }
 }
 
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
 static bool ShouldUseSpriteForCodepoint(char32_t codepoint)
 {
     switch (codepoint)
@@ -644,21 +644,21 @@ static bool ShouldUseSpriteForCodepoint(char32_t codepoint)
             return false;
     }
 }
-#endif // NO_TTF
+#endif // DISABLE_TTF
 
 static void TTFProcessStringLiteral(DrawPixelInfo& dpi, std::string_view text, TextDrawInfo* info)
 {
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
     bool isTTF = info->flags & TEXT_DRAW_FLAG_TTF;
 #else
     bool isTTF = false;
-#endif // NO_TTF
+#endif // DISABLE_TTF
 
     if (!isTTF)
     {
         TTFDrawStringRawSprite(dpi, text, info);
     }
-#ifndef NO_TTF
+#ifndef DISABLE_TTF
     else
     {
         CodepointView codepoints(text);
@@ -705,7 +705,7 @@ static void TTFProcessStringLiteral(DrawPixelInfo& dpi, std::string_view text, T
             TTFDrawStringRawTTF(dpi, text.substr(ttfRunIndex.value(), len), info);
         }
     }
-#endif // NO_TTF
+#endif // DISABLE_TTF
 }
 
 static void TTFProcessStringCodepoint(DrawPixelInfo& dpi, codepoint_t codepoint, TextDrawInfo* info)

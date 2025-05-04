@@ -25,7 +25,7 @@
 #include "../ui/WindowManager.h"
 #include "Viewport.h"
 #include "Widget.h"
-#include "Window_internal.h"
+#include "WindowBase.h"
 
 #include <cassert>
 #include <cmath>
@@ -292,75 +292,82 @@ static constexpr float kWindowScrollLocations[][2] = {
     void WindowScrollToLocation(WindowBase& w, const CoordsXYZ& coords)
     {
         WindowUnfollowSprite(w);
-        if (w.viewport != nullptr)
+
+        if (w.viewport == nullptr)
         {
-            int16_t height = TileElementHeight(coords);
-            if (coords.z < height - 16)
+            return;
+        }
+
+        int16_t height = TileElementHeight(coords);
+        if (coords.z < height - 16)
+        {
+            if (!(w.viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
             {
-                if (!(w.viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
-                {
-                    w.viewport->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
-                    w.Invalidate();
-                }
+                w.viewport->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                w.Invalidate();
             }
-            else
+        }
+        else
+        {
+            if (w.viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
             {
-                if (w.viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-                {
-                    w.viewport->flags &= ~VIEWPORT_FLAG_UNDERGROUND_INSIDE;
-                    w.Invalidate();
-                }
+                w.viewport->flags &= ~VIEWPORT_FLAG_UNDERGROUND_INSIDE;
+                w.Invalidate();
             }
+        }
 
-            auto screenCoords = Translate3DTo2DWithZ(w.viewport->rotation, coords);
+        auto screenCoords = Translate3DTo2DWithZ(w.viewport->rotation, coords);
 
-            int32_t i = 0;
-            if (gLegacyScene != LegacyScene::titleSequence)
+        int32_t i = 0;
+        if (gLegacyScene != LegacyScene::titleSequence)
+        {
+            bool found = false;
+            while (!found)
             {
-                bool found = false;
-                while (!found)
-                {
-                    auto x2 = w.viewport->pos.x + static_cast<int32_t>(w.viewport->width * kWindowScrollLocations[i][0]);
-                    auto y2 = w.viewport->pos.y + static_cast<int32_t>(w.viewport->height * kWindowScrollLocations[i][1]);
+                auto x2 = w.viewport->pos.x + static_cast<int32_t>(w.viewport->width * kWindowScrollLocations[i][0]);
+                auto y2 = w.viewport->pos.y + static_cast<int32_t>(w.viewport->height * kWindowScrollLocations[i][1]);
 
-                    auto it = WindowGetIterator(&w);
-                    for (; it != g_window_list.end(); it++)
+                auto it = WindowGetIterator(&w);
+                for (; it != g_window_list.end(); it++)
+                {
+                    if ((*it)->flags & WF_DEAD)
+                        continue;
+
+                    auto w2 = (*it).get();
+                    auto x1 = w2->windowPos.x - 10;
+                    auto y1 = w2->windowPos.y - 10;
+                    if (x2 >= x1 && x2 <= w2->width + x1 + 20)
                     {
-                        auto w2 = (*it).get();
-                        auto x1 = w2->windowPos.x - 10;
-                        auto y1 = w2->windowPos.y - 10;
-                        if (x2 >= x1 && x2 <= w2->width + x1 + 20)
+                        if (y2 >= y1 && y2 <= w2->height + y1 + 20)
                         {
-                            if (y2 >= y1 && y2 <= w2->height + y1 + 20)
-                            {
-                                // window is covering this area, try the next one
-                                i++;
-                                found = false;
-                                break;
-                            }
+                            // window is covering this area, try the next one
+                            i++;
+                            found = false;
+                            break;
                         }
                     }
-                    if (it == g_window_list.end())
-                    {
-                        found = true;
-                    }
-                    if (i >= static_cast<int32_t>(std::size(kWindowScrollLocations)))
-                    {
-                        i = 0;
-                        found = true;
-                    }
+                }
+                if (it == g_window_list.end())
+                {
+                    found = true;
+                }
+                if (i >= static_cast<int32_t>(std::size(kWindowScrollLocations)))
+                {
+                    i = 0;
+                    found = true;
                 }
             }
-            // rct2: 0x006E7C76
-            if (w.viewport_target_sprite.IsNull())
+        }
+
+        // rct2: 0x006E7C76
+        if (w.viewport_target_sprite.IsNull())
+        {
+            if (!(w.flags & WF_NO_SCROLLING))
             {
-                if (!(w.flags & WF_NO_SCROLLING))
-                {
-                    w.savedViewPos = screenCoords
-                        - ScreenCoordsXY{ static_cast<int32_t>(w.viewport->ViewWidth() * kWindowScrollLocations[i][0]),
-                                          static_cast<int32_t>(w.viewport->ViewHeight() * kWindowScrollLocations[i][1]) };
-                    w.flags |= WF_SCROLLING_TO_LOCATION;
-                }
+                w.savedViewPos = screenCoords
+                    - ScreenCoordsXY{ static_cast<int32_t>(w.viewport->ViewWidth() * kWindowScrollLocations[i][0]),
+                                      static_cast<int32_t>(w.viewport->ViewHeight() * kWindowScrollLocations[i][1]) };
+                w.flags |= WF_SCROLLING_TO_LOCATION;
             }
         }
     }
@@ -498,11 +505,13 @@ static constexpr float kWindowScrollLocations[][2] = {
         {
             // Check if this window overlaps w
             auto topwindow = it->get();
+            if (topwindow->flags & WF_TRANSPARENT)
+                continue;
+            if (topwindow->flags & WF_DEAD)
+                continue;
             if (topwindow->windowPos.x >= right || topwindow->windowPos.y >= bottom)
                 continue;
             if (topwindow->windowPos.x + topwindow->width <= left || topwindow->windowPos.y + topwindow->height <= top)
-                continue;
-            if (topwindow->flags & WF_TRANSPARENT)
                 continue;
 
             // A window overlaps w, split up the draw into two regions where the window starts to overlap

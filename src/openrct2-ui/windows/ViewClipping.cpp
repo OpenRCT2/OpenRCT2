@@ -362,6 +362,7 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             SetWidgets(_viewClippingWidgets);
+
             this->hold_down_widgets = (1uLL << WIDX_CLIP_HEIGHT_INCREASE) | (1uL << WIDX_CLIP_HEIGHT_DECREASE);
             WindowInitScrollWidgets(*this);
 
@@ -381,11 +382,6 @@ namespace OpenRCT2::Ui::Windows
                 mainWindow->viewport->flags |= VIEWPORT_FLAG_CLIP_VIEW;
                 mainWindow->Invalidate();
             }
-        }
-
-        void OnResize() override
-        {
-            ResizeFrame();
         }
 
     private:

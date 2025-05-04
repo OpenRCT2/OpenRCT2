@@ -447,26 +447,6 @@ namespace OpenRCT2::Ui
         WidgetText(dpi, w, widgetIndex);
     }
 
-    static std::pair<StringId, void*> WidgetGetStringidAndArgs(const Widget& widget)
-    {
-        auto stringId = widget.text;
-        void* formatArgs = gCommonFormatArgs;
-        if (widget.flags & WIDGET_FLAGS::TEXT_IS_STRING)
-        {
-            if (widget.string == nullptr || widget.string[0] == '\0')
-            {
-                stringId = kStringIdNone;
-                formatArgs = nullptr;
-            }
-            else
-            {
-                stringId = STR_STRING;
-                formatArgs = const_cast<void*>(reinterpret_cast<const void*>(&widget.string));
-            }
-        }
-        return std::make_pair(stringId, formatArgs);
-    }
-
     /**
      *
      *  rct2: 0x006EB535
@@ -482,7 +462,21 @@ namespace OpenRCT2::Ui
         auto textRight = l;
 
         // Text
-        auto [stringId, formatArgs] = WidgetGetStringidAndArgs(widget);
+        auto stringId = widget.text;
+        auto rawFt = Formatter::Common();
+        if (widget.flags & WIDGET_FLAGS::TEXT_IS_STRING)
+        {
+            if (widget.string != nullptr && widget.string[0] != '\0')
+            {
+                stringId = STR_STRING;
+                rawFt.Add<utf8*>(widget.string);
+            }
+            else
+            {
+                stringId = kStringIdNone;
+            }
+        }
+
         if (stringId != kStringIdNone)
         {
             auto colour = w.colours[widget.colour].withFlag(ColourFlag::translucent, false);
@@ -490,7 +484,8 @@ namespace OpenRCT2::Ui
                 colour.setFlag(ColourFlag::inset, true);
 
             utf8 buffer[512] = { 0 };
-            OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), stringId, formatArgs);
+            OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), stringId, rawFt.Data());
+
             auto ft = Formatter();
             ft.Add<utf8*>(buffer);
             DrawTextBasic(dpi, { l, t }, STR_STRING, ft, { colour });
@@ -573,6 +568,8 @@ namespace OpenRCT2::Ui
         topLeft.x += width / 2;
         if (Config::Get().interface.WindowButtonsOnTheLeft)
             topLeft.x += kCloseButtonSize;
+        if (Config::Get().interface.EnlargedUi)
+            topLeft.y += kTitleHeightLarge / 4;
 
         DrawTextEllipsised(
             dpi, topLeft, width, widget->text, Formatter::Common(),
@@ -604,17 +601,15 @@ namespace OpenRCT2::Ui
         // Draw the button
         GfxFillRectInset(dpi, { topLeft, bottomRight }, colour, press);
 
-        if (widget.text == kStringIdNone)
+        if (widget.string == nullptr)
             return;
 
         topLeft = w.windowPos + ScreenCoordsXY{ widget.midX() - 1, std::max<int32_t>(widget.top, widget.midY() - 5) };
 
         if (WidgetIsDisabled(w, widgetIndex))
             colour.setFlag(ColourFlag::inset, true);
-        ;
 
-        DrawTextEllipsised(
-            dpi, topLeft, widget.width() - 2, widget.text, Formatter::Common(), { colour, TextAlignment::CENTRE });
+        DrawText(dpi, topLeft, { colour, TextAlignment::CENTRE }, widget.string);
     }
 
     /**
@@ -653,8 +648,16 @@ namespace OpenRCT2::Ui
         if (widget.text == kStringIdNone)
             return;
 
-        auto [stringId, formatArgs] = WidgetGetStringidAndArgs(widget);
-        GfxDrawStringLeftCentred(dpi, stringId, formatArgs, colour, { midLeft + ScreenCoordsXY{ 14, 0 } });
+        auto stringId = widget.text;
+        auto ft = Formatter::Common();
+        if (widget.flags & WIDGET_FLAGS::TEXT_IS_STRING)
+        {
+            stringId = STR_STRING;
+            ft.Add<utf8*>(widget.string);
+        }
+
+        DrawTextEllipsised(
+            dpi, w.windowPos + ScreenCoordsXY{ widget.left + 14, widget.textTop() }, widget.width() - 14, stringId, ft, colour);
     }
 
     /**

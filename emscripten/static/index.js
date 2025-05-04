@@ -12,11 +12,45 @@
     if (!window.SharedArrayBuffer)
     {
         document.getElementById("loadingWebassembly").innerText = "Error! SharedArrayBuffer is not defined. This page required the CORP and COEP response headers.";
+        return;
     }
     if (!window.WebAssembly)
     {
         document.getElementById("loadingWebassembly").innerText = "Error! This page requires WebAssembly. Please upgrade your browser or enable WebAssembly support.";
+        return;
     }
+
+    let assets;
+    try
+    {
+        let req = await fetch("openrct2.zip");
+        if (!req.ok) {
+            throw new Error("Response is not ok!")
+        }
+        let data = await req.blob();
+        let zip = new JSZip();
+        let contents = await zip.loadAsync(data);
+        assets = {
+            js: URL.createObjectURL(new Blob([await zip.file("openrct2.js").async("uint8array")], {type: 'application/json'})),
+            wasm: URL.createObjectURL(new Blob([await zip.file("openrct2.wasm").async("uint8array")], {type: 'application/wasm'}))
+        }
+    }
+    catch(e)
+    {
+        assets = null;
+        console.warn("Failed to fetch openrct2.zip. Will pull not-compressed files", e);
+    }
+
+    await new Promise(resolve => {
+        const script = document.createElement("script");
+        script.src = assets === null ? "openrct2.js" : assets.js;
+        script.addEventListener("load", resolve);
+        script.addEventListener("error", (e) => {
+            document.getElementById("loadingWebassembly").innerText = "Error loading openrct2.js!";
+            console.error(e);
+        });
+        document.body.appendChild(script);
+    })
 
     window.Module = await window.OPENRCT2_WEB(
         {
@@ -37,6 +71,10 @@
             monitorRunDependencies: () => {},
             locateFile: function(fileName)
             {
+                if (assets !== null && fileName === "openrct2.wasm")
+                {
+                    return assets.wasm;
+                }
                 console.log("loading", fileName);
                 return fileName;
             }

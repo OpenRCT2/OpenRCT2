@@ -246,7 +246,7 @@ STR_0825    :Nom choisi déjà utilisé
 STR_0826    :Trop de noms définis
 STR_0827    :Pas assez d’argent — Nécessite {CURRENCY2DP}
 STR_0828    :Fermer la fenêtre
-STR_0829    :Titre de la fenêtre — Faîtes glisser ceci pour déplacer la fenêtre
+STR_0829    :Titre de la fenêtre — Faites glisser ceci pour déplacer la fenêtre
 STR_0830    :Zoom avant
 STR_0831    :Zoom arrière
 STR_0832    :Tourner la vue de 90° dans le sens des aiguilles d’une montre
@@ -2245,10 +2245,8 @@ STR_3230    :Les freins de blocs ne peuvent être posés les uns derrière les a
 STR_3231    :Les freins de blocs ne peuvent être posés directement après le sommet d’une remontée
 STR_3232    :Options — Finances
 STR_3233    :Options — Visiteurs
-STR_3234    :Options — Parc
 STR_3235    :Voir les options financières
 STR_3236    :Voir les options des visiteurs
-STR_3237    :Voir les options du parc
 STR_3238    :Pas d’argent
 STR_3239    :Faire de ce parc un parc « sans argent », sans restrictions financières
 STR_3240    :{WINDOW_COLOUR_2}Argent initial :
@@ -2289,18 +2287,10 @@ STR_3278    :{WINDOW_COLOUR_2}Coût d’achat droits de constr. :
 STR_3279    :Entrée gratuite/Attr. payantes
 STR_3280    :Entrée payante/Attr. gratuites
 STR_3281    :{WINDOW_COLOUR_2}Prix d’entrée :
-STR_3282    :Choisir objectif et nom du parc
 STR_3283    :Choisir attractions à protéger
-STR_3284    :Sélection des objectifs
 STR_3285    :Attractions protégées
 STR_3286    :Sélectionne un objectif pour ce scénario
 STR_3287    :{WINDOW_COLOUR_2}Objectif :
-STR_3288    :Selectionne le climat
-STR_3289    :{WINDOW_COLOUR_2}Climat :
-STR_3290    :Frais et humide
-STR_3291    :Chaud
-STR_3292    :Chaud et sec
-STR_3293    :Froid
 STR_3294    :Modifier…
 STR_3295    :Modifie le nom du parc
 STR_3296    :Modifie le nom du scénario
@@ -3805,3 +3795,22 @@ STR_6739    :{WINDOW_COLOUR_2}Date : {BLACK}{STRINGID}
 STR_6740    :{WINDOW_COLOUR_2}Argent : {BLACK}{CURRENCY2DP}
 STR_6741    :{WINDOW_COLOUR_2}Attractions : {BLACK}{UINT16}
 STR_6742    :{WINDOW_COLOUR_2}Visiteurs : {BLACK}{UINT16}
+STR_6743    :Climat
+STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6745    :{WINDOW_COLOUR_2}Préférence d’intensité des visiteurs :
+STR_6746    :Sans préférence
+STR_6747    :Diverses préférences (défaut)
+STR_6748    :Que des attractions calmes
+STR_6749    :Que des attractions intenses
+STR_6750    :Détermine quelle intensité d’attraction les nouveaux visiteurs préfèrent
+STR_6751    :Les files d’attente ne peuvent pas être utilisées comme passage à niveau !
+STR_6752    :Options du scénario — Objectif
+STR_6753    :Options du scénario — Détails du scénario
+STR_6754    :Options du scénario — Restrictions du paysage
+STR_6755    :Afficher les options d’objectif
+STR_6756    :Afficher les options de détails du scénario
+STR_6757    :Afficher les options de restrictions du paysage
+STR_6758    :Options d’emprunt
+STR_6759    :Mode opérationnel
+STR_6760    :Revenus :
+STR_6761    :Détails du scénario

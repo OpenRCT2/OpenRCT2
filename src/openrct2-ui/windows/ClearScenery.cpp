@@ -77,6 +77,7 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override
         {
             SetWidgets(window_clear_scenery_widgets);
+
             hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
             WindowInitScrollWidgets(*this);
             WindowPushOthersBelow(*this);
@@ -207,11 +208,6 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
-
         ClearAction GetClearAction()
         {
             auto range = MapRange(gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y);
@@ -219,11 +215,11 @@ namespace OpenRCT2::Ui::Windows
             ClearableItems itemsToClear = 0;
 
             if (_clearSmallScenery)
-                itemsToClear |= CLEARABLE_ITEMS::SCENERY_SMALL;
+                itemsToClear |= CLEARABLE_ITEMS::kScenerySmall;
             if (_clearLargeScenery)
-                itemsToClear |= CLEARABLE_ITEMS::SCENERY_LARGE;
+                itemsToClear |= CLEARABLE_ITEMS::kSceneryLarge;
             if (_clearFootpath)
-                itemsToClear |= CLEARABLE_ITEMS::SCENERY_FOOTPATH;
+                itemsToClear |= CLEARABLE_ITEMS::kSceneryFootpath;
 
             return ClearAction(range, itemsToClear);
         }

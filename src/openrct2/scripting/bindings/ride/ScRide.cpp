@@ -21,6 +21,16 @@
 
 namespace OpenRCT2::Scripting
 {
+    static const DukEnumMap<uint8_t> BreakdownMap // The types of breakdowns.
+        ({ { "safety_cut_out", BREAKDOWN_SAFETY_CUT_OUT },
+           { "restraints_stuck_closed", BREAKDOWN_RESTRAINTS_STUCK_CLOSED },
+           { "restraints_stuck_open", BREAKDOWN_RESTRAINTS_STUCK_OPEN },
+           { "doors_stuck_closed", BREAKDOWN_DOORS_STUCK_CLOSED },
+           { "doors_stuck_open", BREAKDOWN_DOORS_STUCK_OPEN },
+           { "vehicle_malfunction", BREAKDOWN_VEHICLE_MALFUNCTION },
+           { "brakes_failure", BREAKDOWN_BRAKES_FAILURE },
+           { "control_failure", BREAKDOWN_CONTROL_FAILURE } });
+
     ScRide::ScRide(RideId rideId)
         : _rideId(rideId)
     {
@@ -489,6 +499,46 @@ namespace OpenRCT2::Scripting
         return ::GetRide(_rideId);
     }
 
+    void ScRide::SetBreakdown(const std::string& breakDown)
+    {
+        ThrowIfGameStateNotMutable();
+        auto ride = GetRide();
+        if (ride != nullptr && ride->canBreakDown() && ride->status == RideStatus::open)
+        {
+            auto it = BreakdownMap.find(breakDown);
+            if (it == BreakdownMap.end())
+                return;
+            RidePrepareBreakdown(*ride, it->second);
+        }
+    }
+
+    void ScRide::FixBreakdown()
+    {
+        ThrowIfGameStateNotMutable();
+        auto ride = GetRide();
+        if (ride != nullptr && ride->canBreakDown())
+        {
+            RideFixBreakdown(*ride, 0);
+        }
+    }
+
+    std::string ScRide::getBreakdown() const
+    {
+        auto ride = GetRide();
+
+        if (ride != nullptr)
+        {
+            if (!(ride->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
+            {
+                return "none";
+            }
+            auto it = BreakdownMap.find(ride->breakdownReason);
+            if (it != BreakdownMap.end())
+                return std::string(it->first);
+        }
+        return "";
+    }
+
     uint8_t ScRide::downtime_get() const
     {
         auto ride = GetRide();
@@ -581,13 +631,13 @@ namespace OpenRCT2::Scripting
     uint8_t ScRide::numDrops_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->getNumDrops() : 0;
+        return ride != nullptr ? ride->numDrops : 0;
     }
 
     uint8_t ScRide::numLiftHills_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->getNumPoweredLifts() : 0;
+        return ride != nullptr ? ride->numPoweredLifts : 0;
     }
 
     double ScRide::highestDropHeight_get() const
@@ -642,6 +692,9 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScRide::numDrops_get, nullptr, "numDrops");
         dukglue_register_property(ctx, &ScRide::numLiftHills_get, nullptr, "numLiftHills");
         dukglue_register_property(ctx, &ScRide::highestDropHeight_get, nullptr, "highestDropHeight");
+        dukglue_register_property(ctx, &ScRide::getBreakdown, nullptr, "breakdown");
+        dukglue_register_method(ctx, &ScRide::SetBreakdown, "setBreakdown");
+        dukglue_register_method(ctx, &ScRide::FixBreakdown, "fixBreakdown");
     }
 
 } // namespace OpenRCT2::Scripting

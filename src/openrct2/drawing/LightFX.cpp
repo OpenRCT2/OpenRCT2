@@ -16,7 +16,7 @@
 #include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
-#include "../interface/Window_internal.h"
+#include "../interface/WindowBase.h"
 #include "../paint/Paint.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -304,6 +304,11 @@ namespace OpenRCT2::Drawing::LightFx
                         dpi.y = _current_view_zoom_front.ApplyInversedTo(entry.viewCoords.y + offsetPattern[1 + pat * 2]);
                         dpi.height = 1;
                         dpi.width = 1;
+
+                        dpi.cullingX = dpi.x;
+                        dpi.cullingY = dpi.y;
+                        dpi.cullingWidth = dpi.width;
+                        dpi.cullingHeight = dpi.height;
 
                         PaintSession* session = PaintSessionAlloc(dpi, w->viewport->flags, w->viewport->rotation);
                         PaintSessionGenerate(*session);

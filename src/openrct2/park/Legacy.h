@@ -9,12 +9,13 @@
 
 #pragma once
 
+#include "../core/FlagHolder.hpp"
 #include "../object/Object.h"
 
 #include <cstdint>
 #include <optional>
+#include <span>
 #include <string_view>
-#include <vector>
 
 namespace OpenRCT2
 {
@@ -36,6 +37,8 @@ namespace OpenRCT2
 struct ObjectEntryDescriptor;
 class ObjectList;
 using ride_type_t = uint16_t;
+enum class SpecialElement : uint8_t;
+using SpecialElements = FlagHolder<uint8_t, SpecialElement>;
 
 std::string_view MapToNewObjectIdentifier(std::string_view s);
 std::optional<std::string_view> GetDATPathName(std::string_view newPathName);
@@ -45,7 +48,7 @@ void UpdateFootpathsFromMapping(
     ObjectList& requiredObjects, ObjectEntryIndex& surfaceCount, ObjectEntryIndex& railingCount, ObjectEntryIndex entryIndex,
     const OpenRCT2::RCT2::FootpathMapping* footpathMapping);
 
-const std::vector<std::string_view>& GetLegacyPeepAnimationObjects();
+std::span<const std::string_view> GetLegacyPeepAnimationObjects();
 void ConvertPeepAnimationTypeToObjects(OpenRCT2::GameState_t& gameState);
 
 std::string_view GetClimateObjectIdFromLegacyClimateType(OpenRCT2::RCT12::ClimateType);
@@ -62,3 +65,6 @@ std::string_view GetClimateObjectIdFromLegacyClimateType(OpenRCT2::RCT12::Climat
  * @return
  */
 bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType trackType, int32_t parkFileVersion = -1);
+
+std::pair<uint8_t, SpecialElements> splitCombinedHelicesAndSpecialElements(uint8_t combinedValue);
+std::pair<uint8_t, uint8_t> splitCombinedNumDropsPoweredLifts(uint8_t combinedValue);

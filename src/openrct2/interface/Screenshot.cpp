@@ -240,7 +240,7 @@ static DrawPixelInfo CreateDPI(const Viewport& viewport)
 
     if (viewport.flags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND)
     {
-        std::memset(dpi.bits, PALETTE_INDEX_0, static_cast<size_t>(dpi.width) * dpi.height);
+        std::memset(dpi.bits, PaletteIndex::pi0, static_cast<size_t>(dpi.width) * dpi.height);
     }
 
     return dpi;
@@ -316,8 +316,13 @@ static void RenderViewport(IDrawingEngine* drawingEngine, const Viewport& viewpo
         tempDrawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
         drawingEngine = tempDrawingEngine.get();
     }
+
+    tempDrawingEngine->BeginDraw();
+
     dpi.DrawingEngine = drawingEngine;
     ViewportRender(dpi, &viewport);
+
+    tempDrawingEngine->EndDraw();
 }
 
 void ScreenshotGiant()

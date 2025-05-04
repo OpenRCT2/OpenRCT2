@@ -570,7 +570,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto& config = Config::Get().general;
             config.FileBrowserWidth = width;
-            config.FileBrowserHeight = height;
+            config.FileBrowserHeight = height - getTitleBarDiffNormal();
         }
 
         void OnUpdate() override
@@ -584,8 +584,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            ResizeFrameWithPage();
-
             auto toolbarXPos = width - 5;
             for (auto widgetIndex = 3; widgetIndex >= 0; widgetIndex--)
             {
@@ -667,13 +665,13 @@ namespace OpenRCT2::Ui::Windows
 
                 // Get 'Save' button string width
                 auto saveLabel = LanguageGetString(STR_FILEBROWSER_SAVE_BUTTON);
-                auto saveLabelWidth = GfxGetStringWidth(saveLabel, FontStyle::Medium) + 16;
+                auto saveLabelWidth = GfxGetStringWidth(saveLabel, FontStyle::Medium) + 12;
 
                 widgets[WIDX_SAVE].type = WindowWidgetType::Button;
                 widgets[WIDX_SAVE].top = height - paddingBottom - 15;
                 widgets[WIDX_SAVE].bottom = height - paddingBottom - 3;
                 widgets[WIDX_SAVE].right = widgets[WIDX_SCROLL].right;
-                widgets[WIDX_SAVE].left = widgets[WIDX_SCROLL].right - saveLabelWidth;
+                widgets[WIDX_SAVE].left = widgets[WIDX_SAVE].right - saveLabelWidth;
 
                 // Get 'Filename:' string width
                 auto filenameLabel = LanguageGetString(STR_FILENAME_LABEL);
@@ -764,6 +762,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
+                    InvokeCallback(ModalResult::cancel, "");
                     Close();
                     break;
 

@@ -64,7 +64,8 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_OPTIONS_PAGE_RENDERING,
         WINDOW_OPTIONS_PAGE_CULTURE,
         WINDOW_OPTIONS_PAGE_AUDIO,
-        WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
+        WINDOW_OPTIONS_PAGE_INTERFACE,
+        WINDOW_OPTIONS_PAGE_CONTROLS,
         WINDOW_OPTIONS_PAGE_MISC,
         WINDOW_OPTIONS_PAGE_ADVANCED,
         WINDOW_OPTIONS_PAGE_COUNT
@@ -83,7 +84,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TAB_RENDERING,
         WIDX_TAB_CULTURE,
         WIDX_TAB_AUDIO,
-        WIDX_TAB_CONTROLS_AND_INTERFACE,
+        WIDX_TAB_INTERFACE,
+        WIDX_TAB_CONTROLS,
         WIDX_TAB_MISC,
         WIDX_TAB_ADVANCED,
 
@@ -163,17 +165,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SOUND_VOLUME,
         WIDX_MUSIC_VOLUME,
 
-        // Controls and interface
-        WIDX_CONTROLS_GROUP = WIDX_PAGE_START,
-        WIDX_SCREEN_EDGE_SCROLLING,
-        WIDX_TRAP_CURSOR,
-        WIDX_INVERT_DRAG,
-        WIDX_ZOOM_TO_CURSOR,
-        WIDX_WINDOW_BUTTONS_ON_THE_LEFT,
-        WIDX_ENLARGED_UI,
-        WIDX_TOUCH_ENHANCEMENTS,
-        WIDX_HOTKEY_DROPDOWN,
-        WIDX_THEMES_GROUP,
+        // Interface
+        WIDX_THEMES_GROUP = WIDX_PAGE_START,
         WIDX_THEMES_LABEL,
         WIDX_THEMES,
         WIDX_THEMES_DROPDOWN,
@@ -189,6 +182,17 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TOOLBAR_SHOW_CHAT,
         WIDX_TOOLBAR_SHOW_ZOOM,
         WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE,
+
+        // Controls
+        WIDX_CONTROLS_GROUP = WIDX_PAGE_START,
+        WIDX_SCREEN_EDGE_SCROLLING,
+        WIDX_TRAP_CURSOR,
+        WIDX_INVERT_DRAG,
+        WIDX_ZOOM_TO_CURSOR,
+        WIDX_WINDOW_BUTTONS_ON_THE_LEFT,
+        WIDX_ENLARGED_UI,
+        WIDX_TOUCH_ENHANCEMENTS,
+        WIDX_HOTKEY_DROPDOWN,
 
         // Misc
         WIDX_TITLE_SEQUENCE_GROUP = WIDX_PAGE_START,
@@ -211,9 +215,14 @@ namespace OpenRCT2::Ui::Windows
         WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN,
 
         // Advanced
-        WIDX_DEBUGGING_TOOLS = WIDX_PAGE_START,
-        WIDX_SAVE_PLUGIN_DATA_CHECKBOX,
-        WIDX_STAY_CONNECTED_AFTER_DESYNC,
+        WIDX_GROUP_RCT1_PATH = WIDX_PAGE_START,
+        WIDX_PATH_TO_RCT1_LABEL,
+        WIDX_PATH_TO_RCT1_PATH,
+        WIDX_PATH_TO_RCT1_BROWSE,
+        WIDX_PATH_TO_RCT1_CLEAR,
+
+        WIDX_GROUP_SAVING,
+        WIDX_EXPORT_CUSTOM_OBJECTS_CHECKBOX,
         WIDX_ALWAYS_NATIVE_LOADSAVE,
         WIDX_AUTOSAVE_FREQUENCY_LABEL,
         WIDX_AUTOSAVE_FREQUENCY,
@@ -222,14 +231,15 @@ namespace OpenRCT2::Ui::Windows
         WIDX_AUTOSAVE_AMOUNT,
         WIDX_AUTOSAVE_AMOUNT_UP,
         WIDX_AUTOSAVE_AMOUNT_DOWN,
-        WIDX_PATH_TO_RCT1_TEXT,
-        WIDX_PATH_TO_RCT1_BUTTON,
-        WIDX_PATH_TO_RCT1_CLEAR,
-        WIDX_ASSET_PACKS,
+
+        WIDX_GROUP_ADVANCED,
+        WIDX_DEBUGGING_TOOLS,
+        WIDX_STAY_CONNECTED_AFTER_DESYNC,
 #ifdef __EMSCRIPTEN__
         WIDX_EXPORT_EMSCRIPTEN_DATA,
         WIDX_IMPORT_EMSCRIPTEN_DATA,
 #endif
+        WIDX_ASSET_PACKS,
     };
 
     // clang-format off
@@ -244,9 +254,10 @@ namespace OpenRCT2::Ui::Windows
         MakeTab({ 34, 17 }, STR_OPTIONS_RENDERING_TIP), \
         MakeTab({ 65, 17 }, STR_OPTIONS_CULTURE_TIP), \
         MakeTab({ 96, 17 }, STR_OPTIONS_AUDIO_TIP), \
-        MakeTab({ 127, 17 }, STR_OPTIONS_CONTROLS_AND_INTERFACE_TIP), \
-        MakeTab({ 158, 17 }, STR_OPTIONS_MISCELLANEOUS_TIP), \
-        MakeTab({ 189, 17 }, STR_OPTIONS_ADVANCED)
+        MakeTab({ 127, 17 }, STR_OPTIONS_INTERFACE_TIP), \
+        MakeTab({ 158, 17 }, STR_OPTIONS_CONTROLS_TIP), \
+        MakeTab({ 189, 17 }, STR_OPTIONS_MISCELLANEOUS_TIP), \
+        MakeTab({ 220, 17 }, STR_OPTIONS_ADVANCED)
 
     static constexpr Widget window_options_display_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
@@ -333,10 +344,8 @@ namespace OpenRCT2::Ui::Windows
     };
 
     constexpr int32_t kControlsGroupStart = 53;
-    constexpr int32_t kThemesGroupStart = 193;
-    constexpr int32_t kToolbarGroupStart = 245;
 
-    static constexpr Widget window_options_controls_and_interface_widgets[] = {
+    static constexpr Widget window_options_controls_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
         MakeWidget({  5, kControlsGroupStart +  0},  {300,137}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CONTROLS_GROUP                                                ), // Controls group
         MakeWidget({ 10, kControlsGroupStart + 13},  {290, 14}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SCREEN_EDGE_SCROLLING,      STR_SCREEN_EDGE_SCROLLING_TIP     ), // Edge scrolling
@@ -347,7 +356,13 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 10, kControlsGroupStart + 90},  {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_ENLARGED_UI,                STR_ENLARGED_UI_TIP               ),
         MakeWidget({ 25, kControlsGroupStart + 105}, {275, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_TOUCH_ENHANCEMENTS,         STR_TOUCH_ENHANCEMENTS_TIP        ),
         MakeWidget({155, kControlsGroupStart + 120}, {145, 13}, WindowWidgetType::Button,   WindowColour::Secondary, STR_HOTKEY,                     STR_HOTKEY_TIP                    ), // Set hotkeys buttons
+    };
 
+    constexpr int32_t kThemesGroupStart = 53;
+    constexpr int32_t kToolbarGroupStart = kThemesGroupStart + 52;
+
+    static constexpr Widget window_options_interface_widgets[] = {
+        MAIN_OPTIONS_WIDGETS,
         MakeWidget({  5, kThemesGroupStart +  0}, {300, 48}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_THEMES_GROUP                                          ), // Themes group
         MakeWidget({ 10, kThemesGroupStart + 14}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_THEMES_LABEL_CURRENT_THEME, STR_CURRENT_THEME_TIP     ), // Themes
         MakeWidget({155, kThemesGroupStart + 14}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRING                                                ),
@@ -396,25 +411,35 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({288, kTweaksStart + 77}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       ), // Default inspection time dropdown button
     };
 
+    constexpr int32_t kRCT1Start = 53;
+    constexpr int32_t kSavingStart = kRCT1Start + 54;
+    constexpr int32_t kAdvancedStart = kSavingStart + 84;
+
     static constexpr Widget window_options_advanced_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
-        MakeWidget        ({ 10,  54}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
-        MakeWidget        ({ 10,  69}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_SAVE_PLUGIN_DATA,                      STR_SAVE_PLUGIN_DATA_TIP                     ), // Export plug-in objects with saved games
-        MakeWidget        ({ 10,  84}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_STAY_CONNECTED_AFTER_DESYNC,           STR_STAY_CONNECTED_AFTER_DESYNC_TIP          ), // Do not disconnect after the client desynchronises with the server
-        MakeWidget        ({ 10,  99}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_ALWAYS_NATIVE_LOADSAVE,                STR_ALWAYS_NATIVE_LOADSAVE_TIP               ), // Use native load/save window
-        MakeWidget        ({ 23, 114}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL,      STR_AUTOSAVE_FREQUENCY_TIP                   ),
-        MakeWidget        ({165, 113}, {135, 13}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                          ), // Autosave dropdown
-        MakeWidget        ({288, 114}, { 11, 11}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
-        MakeWidget        ({ 23, 130}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_AUTOSAVE_AMOUNT,                       STR_AUTOSAVE_AMOUNT_TIP                      ),
-        MakeSpinnerWidgets({165, 130}, {135, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                             STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
-        MakeWidget        ({ 23, 145}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path text
-        MakeWidget        ({ 24, 160}, {266, 14}, WindowWidgetType::Button,       WindowColour::Secondary, kStringIdNone,                             STR_STRING_TOOLTIP                           ), // RCT 1 path button
-        MakeWidget        ({289, 160}, { 11, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
-        MakeWidget        ({150, 176}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                ), // Asset packs
+        MakeWidget        ({  5, kRCT1Start +  0}, {300, 50}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_RCT1                                                                          ),
+        MakeWidget        ({ 10, kRCT1Start + 16}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path label
+        MakeWidget        ({ 10, kRCT1Start + 30}, {290, 14}, WindowWidgetType::Label,        WindowColour::Secondary, kStringIdNone,                             STR_STRING_TOOLTIP                           ), // RCT 1 path path
+        MakeWidget        ({239, kRCT1Start + 15}, { 60, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_BROWSE                                                                              ), // RCT 1 path browse
+        MakeWidget        ({249, kRCT1Start + 15}, { 50, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_SHORTCUT_CLEAR,                        STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear
+
+        MakeWidget        ({  5, kSavingStart +  0}, {300, 80}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_SAVING                                                                        ),
+        MakeWidget        ({ 10, kSavingStart + 16}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_SAVE_PLUGIN_DATA,                      STR_SAVE_PLUGIN_DATA_TIP                     ), // Export plug-in objects with saved games
+        MakeWidget        ({ 10, kSavingStart + 30}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_ALWAYS_NATIVE_LOADSAVE,                STR_ALWAYS_NATIVE_LOADSAVE_TIP               ), // Use native load/save window
+        MakeWidget        ({ 23, kSavingStart + 46}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL,      STR_AUTOSAVE_FREQUENCY_TIP                   ),
+        MakeWidget        ({165, kSavingStart + 45}, {135, 13}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                          ), // Autosave dropdown
+        MakeWidget        ({288, kSavingStart + 46}, { 11, 11}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
+        MakeWidget        ({ 23, kSavingStart + 60}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_AUTOSAVE_AMOUNT,                       STR_AUTOSAVE_AMOUNT_TIP                      ),
+        MakeSpinnerWidgets({165, kSavingStart + 60}, {135, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                             STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
+
+        MakeWidget        ({  5, kAdvancedStart +  0}, {300, 97}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_ADVANCED                                                                      ),
+        MakeWidget        ({ 10, kAdvancedStart + 16}, {295, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
+        MakeWidget        ({ 10, kAdvancedStart + 30}, {295, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_STAY_CONNECTED_AFTER_DESYNC,           STR_STAY_CONNECTED_AFTER_DESYNC_TIP          ), // Do not disconnect after the client desynchronises with the server
 #ifdef __EMSCRIPTEN__
-        MakeWidget        ({150, 192}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EXPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data export
-        MakeWidget        ({150, 208}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_IMPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data import
+        MakeWidget        ({ 10, kAdvancedStart + 46}, {135, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EXPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data export
+        MakeWidget        ({150, kAdvancedStart + 46}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_IMPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data import
 #endif
+        MakeWidget        ({150, kAdvancedStart + 64}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                ), // Asset packs
     };
 
     static constexpr std::span<const Widget> window_options_page_widgets[] = {
@@ -422,11 +447,19 @@ namespace OpenRCT2::Ui::Windows
         window_options_rendering_widgets,
         window_options_culture_widgets,
         window_options_audio_widgets,
-        window_options_controls_and_interface_widgets,
+        window_options_interface_widgets,
+        window_options_controls_widgets,
         window_options_misc_widgets,
         window_options_advanced_widgets,
     };
     // clang-format on
+
+    static constexpr StringId kDrawingEngineStringIds[] = {
+        STR_DRAWING_ENGINE_SOFTWARE,
+#ifndef DISABLE_OPENGL
+        STR_DRAWING_ENGINE_OPENGL,
+#endif
+    };
 
 #pragma endregion
 
@@ -455,8 +488,11 @@ namespace OpenRCT2::Ui::Windows
                     case WINDOW_OPTIONS_PAGE_AUDIO:
                         AudioMouseUp(widgetIndex);
                         break;
-                    case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
+                    case WINDOW_OPTIONS_PAGE_CONTROLS:
                         ControlsMouseUp(widgetIndex);
+                        break;
+                    case WINDOW_OPTIONS_PAGE_INTERFACE:
+                        InterfaceMouseUp(widgetIndex);
                         break;
                     case WINDOW_OPTIONS_PAGE_MISC:
                         MiscMouseUp(widgetIndex);
@@ -487,8 +523,8 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_OPTIONS_PAGE_AUDIO:
                     AudioMouseDown(widgetIndex);
                     break;
-                case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-                    ControlsMouseDown(widgetIndex);
+                case WINDOW_OPTIONS_PAGE_INTERFACE:
+                    InterfaceMouseDown(widgetIndex);
                     break;
                 case WINDOW_OPTIONS_PAGE_MISC:
                     MiscMouseDown(widgetIndex);
@@ -520,8 +556,8 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_OPTIONS_PAGE_AUDIO:
                     AudioDropdown(widgetIndex, dropdownIndex);
                     break;
-                case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-                    ControlsDropdown(widgetIndex, dropdownIndex);
+                case WINDOW_OPTIONS_PAGE_INTERFACE:
+                    InterfaceDropdown(widgetIndex, dropdownIndex);
                     break;
                 case WINDOW_OPTIONS_PAGE_MISC:
                     MiscDropdown(widgetIndex, dropdownIndex);
@@ -552,8 +588,11 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_OPTIONS_PAGE_AUDIO:
                     AudioPrepareDraw();
                     break;
-                case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
+                case WINDOW_OPTIONS_PAGE_CONTROLS:
                     ControlsPrepareDraw();
+                    break;
+                case WINDOW_OPTIONS_PAGE_INTERFACE:
+                    InterfacePrepareDraw();
                     break;
                 case WINDOW_OPTIONS_PAGE_MISC:
                     MiscPrepareDraw();
@@ -598,7 +637,7 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_OPTIONS_PAGE_DISPLAY:
                 case WINDOW_OPTIONS_PAGE_RENDERING:
                 case WINDOW_OPTIONS_PAGE_CULTURE:
-                case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
+                case WINDOW_OPTIONS_PAGE_CONTROLS:
                 case WINDOW_OPTIONS_PAGE_MISC:
                 case WINDOW_OPTIONS_PAGE_ADVANCED:
                 default:
@@ -615,7 +654,7 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_OPTIONS_PAGE_DISPLAY:
                 case WINDOW_OPTIONS_PAGE_RENDERING:
                 case WINDOW_OPTIONS_PAGE_CULTURE:
-                case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
+                case WINDOW_OPTIONS_PAGE_CONTROLS:
                 case WINDOW_OPTIONS_PAGE_MISC:
                 case WINDOW_OPTIONS_PAGE_ADVANCED:
                 default:
@@ -644,7 +683,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_RENDERING:
                 case WIDX_TAB_CULTURE:
                 case WIDX_TAB_AUDIO:
-                case WIDX_TAB_CONTROLS_AND_INTERFACE:
+                case WIDX_TAB_CONTROLS:
+                case WIDX_TAB_INTERFACE:
                 case WIDX_TAB_MISC:
                 case WIDX_TAB_ADVANCED:
                     SetPage(widgetIndex - WIDX_FIRST_TAB);
@@ -658,8 +698,8 @@ namespace OpenRCT2::Ui::Windows
 
             disabled_widgets = 0;
             auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
-            const bool controlsTabSelected = (WIDX_FIRST_TAB + page) == WIDX_TAB_CONTROLS_AND_INTERFACE;
-            if (!hasFilePicker && controlsTabSelected)
+            const bool advancedTabSelected = (WIDX_FIRST_TAB + page) == WIDX_TAB_ADVANCED;
+            if (!hasFilePicker && advancedTabSelected)
             {
                 disabled_widgets |= (1uLL << WIDX_ALWAYS_NATIVE_LOADSAVE);
                 widgets[WIDX_ALWAYS_NATIVE_LOADSAVE].type = WindowWidgetType::Empty;
@@ -675,13 +715,15 @@ namespace OpenRCT2::Ui::Windows
                 const auto& widget = widgets[widgetIdx];
                 y = std::max<int32_t>(y, widget.bottom);
             }
-            height = y + 6;
-            ResizeFrameWithPage();
-        }
+            y += 6;
 
-        void OnResize() override
-        {
-            ResizeFrameWithPage();
+            if (height != y)
+            {
+                Invalidate();
+                height = y;
+                ResizeFrame();
+                Invalidate();
+            }
         }
 
         void CommonUpdate()
@@ -790,15 +832,11 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_DRAWING_ENGINE_DROPDOWN:
                 {
-                    int32_t numItems = 3;
-#ifdef DISABLE_OPENGL
-                    numItems = 2;
-#endif
-
+                    const auto numItems = static_cast<int32_t>(std::size(kDrawingEngineStringIds));
                     for (int32_t i = 0; i < numItems; i++)
                     {
                         gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[i].Args = DrawingEngineStringIds[i];
+                        gDropdownItems[i].Args = kDrawingEngineStringIds[i];
                     }
                     ShowDropdown(widget, numItems);
                     Dropdown::SetChecked(EnumValue(Config::Get().general.DrawingEngine), true);
@@ -892,27 +930,6 @@ namespace OpenRCT2::Ui::Windows
                 disabled_widgets &= ~(1uLL << WIDX_RESOLUTION_LABEL);
             }
 
-            // Disable Steam Overlay checkbox when using software or OpenGL rendering.
-            if (Config::Get().general.DrawingEngine == DrawingEngine::Software
-                || Config::Get().general.DrawingEngine == DrawingEngine::OpenGL)
-            {
-                disabled_widgets |= (1uLL << WIDX_STEAM_OVERLAY_PAUSE);
-            }
-            else
-            {
-                disabled_widgets &= ~(1uLL << WIDX_STEAM_OVERLAY_PAUSE);
-            }
-
-            // Disable changing VSync for Software engine, as we can't control its use of VSync
-            if (Config::Get().general.DrawingEngine == DrawingEngine::Software)
-            {
-                disabled_widgets |= (1uLL << WIDX_USE_VSYNC_CHECKBOX);
-            }
-            else
-            {
-                disabled_widgets &= ~(1uLL << WIDX_USE_VSYNC_CHECKBOX);
-            }
-
             SetCheckboxValue(WIDX_UNCAP_FPS_CHECKBOX, Config::Get().general.UncapFPS);
             SetCheckboxValue(WIDX_USE_VSYNC_CHECKBOX, Config::Get().general.UseVSync);
             SetCheckboxValue(WIDX_SHOW_FPS_CHECKBOX, Config::Get().general.ShowFPS);
@@ -923,7 +940,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Dropdown captions for straightforward strings.
             widgets[WIDX_FULLSCREEN].text = FullscreenModeNames[Config::Get().general.FullscreenMode];
-            widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(Config::Get().general.DrawingEngine)];
+            widgets[WIDX_DRAWING_ENGINE].text = kDrawingEngineStringIds[EnumValue(Config::Get().general.DrawingEngine)];
         }
 
         void DisplayDraw(DrawPixelInfo& dpi)
@@ -1543,15 +1560,6 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
 #pragma region Controls tab events
-        void ToggleToolbarSetting(bool& setting)
-        {
-            setting ^= true;
-            Config::Save();
-            Invalidate();
-
-            auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByClass(WindowClass::TopToolbar);
-        }
 
         void ControlsMouseUp(WidgetIndex widgetIndex)
         {
@@ -1578,6 +1586,66 @@ namespace OpenRCT2::Ui::Windows
                     Config::Save();
                     Invalidate();
                     break;
+                case WIDX_WINDOW_BUTTONS_ON_THE_LEFT:
+                    Config::Get().interface.WindowButtonsOnTheLeft ^= 1;
+                    Config::Save();
+                    Invalidate();
+                    windowMgr->InvalidateAll();
+                    WindowVisitEach([](WindowBase* w) { w->ResizeFrame(); });
+                    break;
+                case WIDX_ENLARGED_UI:
+                    Config::Get().interface.EnlargedUi ^= 1;
+                    if (Config::Get().interface.EnlargedUi == false)
+                        Config::Get().interface.TouchEnhancements = false;
+                    Config::Save();
+                    Invalidate();
+                    windowMgr->InvalidateAll();
+                    WindowVisitEach([](WindowBase* w) { w->ResizeFrame(); });
+                    break;
+                case WIDX_TOUCH_ENHANCEMENTS:
+                    Config::Get().interface.TouchEnhancements ^= 1;
+                    Config::Save();
+                    Invalidate();
+                    windowMgr->InvalidateAll();
+                    break;
+                case WIDX_INVERT_DRAG:
+                    Config::Get().general.InvertViewportDrag ^= 1;
+                    Config::Save();
+                    Invalidate();
+                    break;
+            }
+        }
+
+        void ControlsPrepareDraw()
+        {
+            SetCheckboxValue(WIDX_SCREEN_EDGE_SCROLLING, Config::Get().general.EdgeScrolling);
+            SetCheckboxValue(WIDX_TRAP_CURSOR, Config::Get().general.TrapCursor);
+            SetCheckboxValue(WIDX_INVERT_DRAG, Config::Get().general.InvertViewportDrag);
+            SetCheckboxValue(WIDX_ZOOM_TO_CURSOR, Config::Get().general.ZoomToCursor);
+            SetCheckboxValue(WIDX_WINDOW_BUTTONS_ON_THE_LEFT, Config::Get().interface.WindowButtonsOnTheLeft);
+            SetCheckboxValue(WIDX_ENLARGED_UI, Config::Get().interface.EnlargedUi);
+            SetCheckboxValue(WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.TouchEnhancements);
+
+            WidgetSetEnabled(*this, WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.EnlargedUi);
+        }
+
+#pragma endregion
+
+#pragma region Interface tab events
+        void ToggleToolbarSetting(bool& setting)
+        {
+            setting ^= true;
+            Config::Save();
+            Invalidate();
+
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->InvalidateByClass(WindowClass::TopToolbar);
+        }
+
+        void InterfaceMouseUp(WidgetIndex widgetIndex)
+        {
+            switch (widgetIndex)
+            {
                 case WIDX_TOOLBAR_BUTTONS_CENTRED:
                     ToggleToolbarSetting(Config::Get().interface.ToolbarButtonsCentred);
                     break;
@@ -1605,31 +1673,6 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE:
                     ToggleToolbarSetting(Config::Get().interface.ToolbarShowRotateAnticlockwise);
                     break;
-                case WIDX_WINDOW_BUTTONS_ON_THE_LEFT:
-                    Config::Get().interface.WindowButtonsOnTheLeft ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    windowMgr->InvalidateAll();
-                    break;
-                case WIDX_ENLARGED_UI:
-                    Config::Get().interface.EnlargedUi ^= 1;
-                    if (Config::Get().interface.EnlargedUi == false)
-                        Config::Get().interface.TouchEnhancements = false;
-                    Config::Save();
-                    Invalidate();
-                    windowMgr->InvalidateAll();
-                    break;
-                case WIDX_TOUCH_ENHANCEMENTS:
-                    Config::Get().interface.TouchEnhancements ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    windowMgr->InvalidateAll();
-                    break;
-                case WIDX_INVERT_DRAG:
-                    Config::Get().general.InvertViewportDrag ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    break;
                 case WIDX_THEMES_BUTTON:
                     ContextOpenWindow(WindowClass::Themes);
                     Invalidate();
@@ -1637,7 +1680,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void ControlsMouseDown(WidgetIndex widgetIndex)
+        void InterfaceMouseDown(WidgetIndex widgetIndex)
         {
             Widget* widget = &widgets[widgetIndex - 1];
 
@@ -1662,7 +1705,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void ControlsDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
+        void InterfaceDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
             switch (widgetIndex)
             {
@@ -1676,12 +1719,8 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void ControlsPrepareDraw()
+        void InterfacePrepareDraw()
         {
-            SetCheckboxValue(WIDX_SCREEN_EDGE_SCROLLING, Config::Get().general.EdgeScrolling);
-            SetCheckboxValue(WIDX_TRAP_CURSOR, Config::Get().general.TrapCursor);
-            SetCheckboxValue(WIDX_INVERT_DRAG, Config::Get().general.InvertViewportDrag);
-            SetCheckboxValue(WIDX_ZOOM_TO_CURSOR, Config::Get().general.ZoomToCursor);
             SetCheckboxValue(WIDX_TOOLBAR_BUTTONS_CENTRED, Config::Get().interface.ToolbarButtonsCentred);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_FINANCES, Config::Get().interface.ToolbarShowFinances);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_RESEARCH, Config::Get().interface.ToolbarShowResearch);
@@ -1691,11 +1730,6 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_CHAT, Config::Get().interface.ToolbarShowChat);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_ZOOM, Config::Get().interface.ToolbarShowZoom);
             SetCheckboxValue(WIDX_TOOLBAR_SHOW_ROTATE_ANTI_CLOCKWISE, Config::Get().interface.ToolbarShowRotateAnticlockwise);
-            SetCheckboxValue(WIDX_WINDOW_BUTTONS_ON_THE_LEFT, Config::Get().interface.WindowButtonsOnTheLeft);
-            SetCheckboxValue(WIDX_ENLARGED_UI, Config::Get().interface.EnlargedUi);
-            SetCheckboxValue(WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.TouchEnhancements);
-
-            WidgetSetEnabled(*this, WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.EnlargedUi);
 
             size_t activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
             const utf8* activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
@@ -1930,7 +1964,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Save();
                     GfxInvalidateScreen();
                     break;
-                case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
+                case WIDX_EXPORT_CUSTOM_OBJECTS_CHECKBOX:
                     Config::Get().general.SavePluginData ^= 1;
                     Config::Save();
                     Invalidate();
@@ -1945,7 +1979,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Save();
                     Invalidate();
                     break;
-                case WIDX_PATH_TO_RCT1_BUTTON:
+                case WIDX_PATH_TO_RCT1_BROWSE:
                 {
                     auto rct1path = OpenRCT2::GetContext()->GetUiContext()->ShowDirectoryDialog(
                         LanguageGetString(STR_PATH_TO_RCT1_BROWSER));
@@ -2055,11 +2089,48 @@ namespace OpenRCT2::Ui::Windows
 
         void AdvancedPrepareDraw()
         {
-            SetCheckboxValue(WIDX_DEBUGGING_TOOLS, Config::Get().general.DebuggingTools);
-            SetCheckboxValue(WIDX_SAVE_PLUGIN_DATA_CHECKBOX, Config::Get().general.SavePluginData);
-            SetCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, Config::Get().network.StayConnected);
+            if (!Config::Get().general.RCT1Path.empty())
+            {
+                widgets[WIDX_PATH_TO_RCT1_PATH].type = WindowWidgetType::Label;
+                widgets[WIDX_PATH_TO_RCT1_BROWSE].type = WindowWidgetType::Empty;
+                widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WindowWidgetType::Button;
+
+                // Get 'Clear' button string width
+                auto clearLabel = LanguageGetString(STR_SHORTCUT_CLEAR);
+                auto clearLabelWidth = GfxGetStringWidth(clearLabel, FontStyle::Medium) + 12;
+
+                widgets[WIDX_PATH_TO_RCT1_CLEAR].right = widgets[WIDX_PAGE_BACKGROUND].right - 12;
+                widgets[WIDX_PATH_TO_RCT1_CLEAR].left = widgets[WIDX_PATH_TO_RCT1_BROWSE].right - clearLabelWidth;
+            }
+            else
+            {
+                widgets[WIDX_PATH_TO_RCT1_PATH].type = WindowWidgetType::Empty;
+                widgets[WIDX_PATH_TO_RCT1_BROWSE].type = WindowWidgetType::Button;
+                widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WindowWidgetType::Empty;
+
+                // Get 'Browse' button string width
+                auto browseLabel = LanguageGetString(STR_BROWSE);
+                auto browseLabelWidth = GfxGetStringWidth(browseLabel, FontStyle::Medium) + 12;
+
+                widgets[WIDX_PATH_TO_RCT1_BROWSE].right = widgets[WIDX_PAGE_BACKGROUND].right - 12;
+                widgets[WIDX_PATH_TO_RCT1_BROWSE].left = widgets[WIDX_PATH_TO_RCT1_BROWSE].right - browseLabelWidth;
+            }
+
+            SetCheckboxValue(WIDX_EXPORT_CUSTOM_OBJECTS_CHECKBOX, Config::Get().general.SavePluginData);
             SetCheckboxValue(WIDX_ALWAYS_NATIVE_LOADSAVE, Config::Get().general.UseNativeBrowseDialog);
             widgets[WIDX_AUTOSAVE_FREQUENCY].text = AutosaveNames[Config::Get().general.AutosaveFrequency];
+
+            SetCheckboxValue(WIDX_DEBUGGING_TOOLS, Config::Get().general.DebuggingTools);
+            SetCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, Config::Get().network.StayConnected);
+
+#ifdef __EMSCRIPTEN__
+            widgets[WIDX_GROUP_ADVANCED].bottom = kAdvancedStart + 84 + getTitleBarDiffNormal();
+#else
+            widgets[WIDX_GROUP_ADVANCED].bottom = kAdvancedStart + 64 + getTitleBarDiffNormal();
+#endif
+
+            widgets[WIDX_ASSET_PACKS].top = widgets[WIDX_GROUP_ADVANCED].bottom - 20;
+            widgets[WIDX_ASSET_PACKS].bottom = widgets[WIDX_GROUP_ADVANCED].bottom - 6;
         }
 
         void AdvancedDraw(DrawPixelInfo& dpi)
@@ -2071,24 +2142,26 @@ namespace OpenRCT2::Ui::Windows
                 windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA32, ft, { colours[1] });
 
+            // Format RCT1 path
             const auto normalisedPath = Platform::StrDecompToPrecomp(Config::Get().general.RCT1Path);
             ft = Formatter();
+            ft.Add<StringId>(STR_STRING);
             ft.Add<const utf8*>(normalisedPath.c_str());
 
-            Widget pathWidget = widgets[WIDX_PATH_TO_RCT1_BUTTON];
-
-            // Apply vertical alignment if appropriate.
+            auto& pathWidget = widgets[WIDX_PATH_TO_RCT1_PATH];
             int32_t widgetHeight = pathWidget.bottom - pathWidget.top;
+
+            // Apply vertical alignment if font height requires it
             int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
-            uint32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
-            ScreenCoordsXY screenCoords = { windowPos.x + pathWidget.left + 1,
-                                            windowPos.y + pathWidget.top + static_cast<int32_t>(padding) };
-            DrawTextEllipsised(dpi, screenCoords, 277, STR_STRING, ft, { colours[1] });
+            int32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
+
+            auto screenCoords = windowPos + ScreenCoordsXY{ pathWidget.left + 1, pathWidget.top + padding };
+            DrawTextEllipsised(dpi, screenCoords, pathWidget.width(), STR_BLACK_STRING, ft);
         }
 
         OpenRCT2String AdvancedTooltip(WidgetIndex widgetIndex, StringId fallback)
         {
-            if (widgetIndex == WIDX_PATH_TO_RCT1_BUTTON)
+            if (widgetIndex == WIDX_PATH_TO_RCT1_PATH)
             {
                 if (Config::Get().general.RCT1Path.empty())
                 {
@@ -2117,8 +2190,8 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(window_options_page_widgets[page]);
 
             Invalidate();
-            OnResize();
             OnPrepareDraw();
+            OnResize();
             InitScrollWidgets();
             Invalidate();
         }
@@ -2140,11 +2213,12 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawTabImages(DrawPixelInfo& dpi)
         {
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_DISPLAY, SPR_TAB_PAINT_0);
+            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_DISPLAY, SPR_G2_MONITOR_TAB_START);
             DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_RENDERING, SPR_G2_TAB_TREE);
             DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_CULTURE, SPR_TAB_TIMER_0);
             DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_AUDIO, SPR_TAB_MUSIC_0);
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE, SPR_TAB_GEARS_0);
+            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_INTERFACE, SPR_TAB_PAINT_0);
+            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_CONTROLS, SPR_G2_CONTROLS_TAB_START);
             DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_MISC, SPR_TAB_RIDE_0);
             DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
         }
@@ -2239,19 +2313,21 @@ namespace OpenRCT2::Ui::Windows
             1, // WINDOW_OPTIONS_PAGE_RENDERING,
             8, // WINDOW_OPTIONS_PAGE_CULTURE,
             2, // WINDOW_OPTIONS_PAGE_AUDIO,
-            2, // WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
+            4, // WINDOW_OPTIONS_PAGE_INTERFACE,
+            8, // WINDOW_OPTIONS_PAGE_CONTROLS,
             4, // WINDOW_OPTIONS_PAGE_MISC,
             2, // WINDOW_OPTIONS_PAGE_ADVANCED,
         };
 
         static constexpr int32_t TabAnimationFrames[] = {
-            8,  // WINDOW_OPTIONS_PAGE_DISPLAY,
-            1,  // WINDOW_OPTIONS_PAGE_RENDERING,
-            8,  // WINDOW_OPTIONS_PAGE_CULTURE,
-            16, // WINDOW_OPTIONS_PAGE_AUDIO,
-            4,  // WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
-            16, // WINDOW_OPTIONS_PAGE_MISC,
-            16, // WINDOW_OPTIONS_PAGE_ADVANCED,
+            SPR_G2_MONITOR_TAB_END - SPR_G2_MONITOR_TAB_START, // WINDOW_OPTIONS_PAGE_DISPLAY,
+            1,                                                 // WINDOW_OPTIONS_PAGE_RENDERING,
+            8,                                                 // WINDOW_OPTIONS_PAGE_CULTURE,
+            16,                                                // WINDOW_OPTIONS_PAGE_AUDIO,
+            8,                                                 // WINDOW_OPTIONS_PAGE_INTERFACE,
+            8,                                                 // WINDOW_OPTIONS_PAGE_CONTROLS,
+            16,                                                // WINDOW_OPTIONS_PAGE_MISC,
+            16,                                                // WINDOW_OPTIONS_PAGE_ADVANCED,
         };
     };
 

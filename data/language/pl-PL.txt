@@ -2238,10 +2238,8 @@ STR_3230    :Hamulce blokowe nie mogą znajdować się bezpośrednio jeden po dr
 STR_3231    :Hamulce blokowe nie mogą znajdować się bezpośrednio za szczytem wzniesienia z wyciągarki
 STR_3232    :Opcje - Finanse
 STR_3233    :Opcje - Goście
-STR_3234    :Opcje - Park
 STR_3235    :Pokaż opcje finansowe
 STR_3236    :Wyświetl opcje gości
-STR_3237    :Wyświetl opcje parku
 STR_3238    :Bez pieniędzy
 STR_3239    :Ta opcja pozwala znieść wszelkie ograniczenia finansowe dla parku
 STR_3240    :{WINDOW_COLOUR_2}Początkowa gotówka:
@@ -2282,18 +2280,10 @@ STR_3278    :{WINDOW_COLOUR_2}Koszt zakupu planów budowy:
 STR_3279    :Darmowe wejście i płatne atrakcje
 STR_3280    :Płatne wejście i darmowe atrakcje
 STR_3281    :{WINDOW_COLOUR_2}Cena za wejście:
-STR_3282    :Wybierz cel i nazwę parku
 STR_3283    :Wybierz atrakcje, które mają zostać zachowane
-STR_3284    :Wybór celu
 STR_3285    :Zachowane atrakcje
 STR_3286    :Wybierz cele dla tego scenariusza
 STR_3287    :{WINDOW_COLOUR_2}Cel:
-STR_3288    :Wybierz klimat
-STR_3289    :{WINDOW_COLOUR_2}Klimat:
-STR_3290    :Zimno i mokro
-STR_3291    :Ciepło
-STR_3292    :Gorąco i sucho
-STR_3293    :Zimno
 STR_3294    :Zmień…
 STR_3295    :Zmień nazwę parku
 STR_3296    :Zmień nazwę scenariusza

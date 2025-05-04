@@ -438,22 +438,20 @@ namespace OpenRCT2::Ui::Windows
         void OnResizeCommon()
         {
             // Get page specific min and max size
-            int32_t minWidth = _guestWindowPageSizes[page][0].width;
-            int32_t minHeight = _guestWindowPageSizes[page][0].height;
-            int32_t maxWidth = _guestWindowPageSizes[page][1].width;
-            int32_t maxHeight = _guestWindowPageSizes[page][1].height;
+            auto minSize = _guestWindowPageSizes[page][0];
+            auto maxSize = _guestWindowPageSizes[page][1];
 
             // Ensure min size is large enough for all tabs to fit
             for (int32_t i = WIDX_TAB_1; i <= WIDX_TAB_7; i++)
             {
                 if (!WidgetIsDisabled(*this, i))
                 {
-                    minWidth = std::max(minWidth, widgets[i].right + 3);
+                    minSize.width = std::max(minSize.width, widgets[i].right + 3);
                 }
             }
-            maxWidth = std::max(minWidth, maxWidth);
+            maxSize.width = std::max(minSize.width, maxSize.width);
 
-            WindowSetResize(*this, { minWidth, minHeight }, { maxWidth, maxHeight });
+            WindowSetResize(*this, minSize, maxSize);
         }
 
         void OnPrepareDrawCommon()
@@ -467,8 +465,6 @@ namespace OpenRCT2::Ui::Windows
             }
             auto ft = Formatter::Common();
             peep->FormatNameTo(ft);
-
-            ResizeFrameWithPage();
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }

@@ -435,13 +435,6 @@ static constexpr int32_t kUnk9A39C4[] = {
     1380375879, 555809667,  -372906620, -1231746017, -1859775391, 0,          2096579710, 1946281152, 2096579710,  1946281152,
 };
 
-static constexpr CoordsXY kAvoidCollisionMoveOffset[] = {
-    { -1, 0 },
-    { 0, 1 },
-    { 1, 0 },
-    { 0, -1 },
-};
-
 static constexpr OpenRCT2::Audio::SoundId kDoorOpenSoundIds[] = {
     OpenRCT2::Audio::SoundId::Null,       // DoorSoundType::none
     OpenRCT2::Audio::SoundId::DoorOpen,   // DoorSoundType::door
@@ -510,9 +503,11 @@ static bool vehicle_move_info_valid(
             break;
         case VehicleTrackSubposition::GoKartsLeftLane:
         case VehicleTrackSubposition::GoKartsRightLane:
+            size = 1204;
+            break;
         case VehicleTrackSubposition::GoKartsMovingToRightLane:
         case VehicleTrackSubposition::GoKartsMovingToLeftLane:
-            size = 208;
+            size = 568;
             break;
         case VehicleTrackSubposition::MiniGolfPathA9: // VehicleTrackSubposition::MiniGolfStart9
         case VehicleTrackSubposition::MiniGolfBallPathA10:
@@ -813,8 +808,8 @@ void RideUpdateMeasurementsSpecialElements_Default(Ride& ride, const OpenRCT2::T
     uint16_t trackFlags = ted.flags;
     if (trackFlags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
     {
-        if (ride.inversions < OpenRCT2::Limits::kMaxInversions)
-            ride.inversions++;
+        if (ride.numInversions < OpenRCT2::Limits::kMaxInversions)
+            ride.numInversions++;
     }
 }
 
@@ -824,8 +819,8 @@ void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride& ride, const OpenRCT2::
     uint16_t trackFlags = ted.flags;
     if (trackFlags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
     {
-        if (ride.holes < OpenRCT2::Limits::kMaxGolfHoles)
-            ride.holes++;
+        if (ride.numHoles < OpenRCT2::Limits::kMaxGolfHoles)
+            ride.numHoles++;
     }
 }
 
@@ -833,7 +828,7 @@ void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride& ride, const OpenRC
 {
     if (trackType >= TrackElemType::FlatCovered && trackType <= TrackElemType::RightQuarterTurn3TilesCovered)
     {
-        ride.specialTrackElements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+        ride.specialTrackElements.set(SpecialElement::splash);
     }
 }
 
@@ -932,12 +927,8 @@ void Vehicle::UpdateMeasurements()
             if (!(curRide->testingFlags.has(RideTestingFlag::poweredLift)))
             {
                 curRide->testingFlags.set(RideTestingFlag::poweredLift);
-                auto numPoweredLifts = curRide->getNumPoweredLifts();
-                if (numPoweredLifts < kRideMaxNumPoweredLiftsCount)
-                {
-                    numPoweredLifts++;
-                    curRide->setPoweredLifts(numPoweredLifts);
-                }
+                if (curRide->numPoweredLifts < OpenRCT2::Limits::kRideMaxNumPoweredLiftsCount)
+                    curRide->numPoweredLifts++;
             }
         }
         else
@@ -951,20 +942,24 @@ void Vehicle::UpdateMeasurements()
         switch (trackElemType)
         {
             case TrackElemType::Rapids:
+                curRide->specialTrackElements.set(SpecialElement::rapids);
+                break;
             case TrackElemType::SpinningTunnel:
-                curRide->specialTrackElements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+                curRide->specialTrackElements.set(SpecialElement::spinningTunnel);
                 break;
             case TrackElemType::Waterfall:
+                curRide->specialTrackElements.set(SpecialElement::waterfall);
+                break;
             case TrackElemType::LogFlumeReverser:
-                curRide->specialTrackElements |= RIDE_ELEMENT_REVERSER_OR_WATERFALL;
+                curRide->specialTrackElements.set(SpecialElement::reverser);
                 break;
             case TrackElemType::Whirlpool:
-                curRide->specialTrackElements |= RIDE_ELEMENT_WHIRLPOOL;
+                curRide->specialTrackElements.set(SpecialElement::whirlpool);
                 break;
             case TrackElemType::Watersplash:
                 if (velocity >= 11.0_mph)
                 {
-                    curRide->specialTrackElements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+                    curRide->specialTrackElements.set(SpecialElement::splash);
                 }
             default:
                 break;
@@ -1069,10 +1064,8 @@ void Vehicle::UpdateMeasurements()
             curRide->testingFlags.unset(RideTestingFlag::dropUp);
             curRide->testingFlags.set(RideTestingFlag::dropDown);
 
-            uint8_t drops = curRide->getNumDrops();
-            if (drops < kRideMaxDropsCount)
-                drops++;
-            curRide->setNumDrops(drops);
+            if (curRide->numDrops < OpenRCT2::Limits::kRideMaxDropsCount)
+                curRide->numDrops++;
 
             curRide->startDropHeight = z / kCoordsZStep;
             testingFlags.unset(RideTestingFlag::dropUp);
@@ -1100,22 +1093,16 @@ void Vehicle::UpdateMeasurements()
             curRide->testingFlags.unset(RideTestingFlag::dropDown);
             curRide->testingFlags.set(RideTestingFlag::dropUp);
 
-            auto drops = curRide->getNumDrops();
-            if (drops != kRideMaxDropsCount)
-                drops++;
-            curRide->setNumDrops(drops);
+            if (curRide->numDrops < OpenRCT2::Limits::kRideMaxDropsCount)
+                curRide->numDrops++;
 
             curRide->startDropHeight = z / kCoordsZStep;
         }
 
         if (trackFlags & TRACK_ELEM_FLAG_HELIX)
         {
-            uint8_t helixes = RideGetHelixSections(*curRide);
-            if (helixes != OpenRCT2::Limits::kMaxHelices)
-                helixes++;
-
-            curRide->specialTrackElements &= ~0x1F;
-            curRide->specialTrackElements |= helixes;
+            if (curRide->numHelices < OpenRCT2::Limits::kMaxHelices)
+                curRide->numHelices++;
         }
     }
 
@@ -2391,15 +2378,17 @@ static void test_reset(Ride& ride, StationIndex curStation)
     ride.turnCountDefault = 0;
     ride.turnCountBanked = 0;
     ride.turnCountSloped = 0;
-    ride.inversions = 0;
-    ride.holes = 0;
+    ride.numInversions = 0;
+    ride.numHoles = 0;
     ride.shelteredEighths = 0;
-    ride.dropsPoweredLifts = 0;
+    ride.numDrops = 0;
+    ride.numPoweredLifts = 0;
     ride.shelteredLength = 0;
     ride.var11C = 0;
     ride.numShelteredSections = 0;
     ride.highestDropHeight = 0;
-    ride.specialTrackElements = 0;
+    ride.numHelices = 0;
+    ride.specialTrackElements.clearAll();
     for (auto& station : ride.getStations())
     {
         station.SegmentLength = 0;
@@ -6662,12 +6651,24 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
             if (direction < 0x14)
                 continue;
 
-            uint32_t offsetSpriteDirection = (Orientation + 4) & 31;
-            uint32_t offsetDirection = offsetSpriteDirection >> 3;
-            uint32_t next_x_diff = abs(loc.x + kAvoidCollisionMoveOffset[offsetDirection].x - vehicle2->x);
-            uint32_t next_y_diff = abs(loc.y + kAvoidCollisionMoveOffset[offsetDirection].y - vehicle2->y);
+            const CoordsXY directionVector = Math::Trigonometry::YawToDirectionVector[Entity::Yaw::YawTo64(Orientation)];
 
-            if (next_x_diff + next_y_diff < x_diff + y_diff)
+            const CoordsXY directionVectorToVehicle2 = { vehicle2->x - loc.x, vehicle2->y - loc.y };
+            const int32_t directionVectorToVehicle2Length = (directionVectorToVehicle2.x * directionVectorToVehicle2.x)
+                + (directionVectorToVehicle2.y * directionVectorToVehicle2.y);
+
+            const int32_t dotProduct = (directionVector.x * directionVectorToVehicle2.x)
+                + (directionVector.y * directionVectorToVehicle2.y);
+
+            static constexpr int32_t threshold = []() consteval {
+                const constexpr float originalThreshold = 0.35f;
+                const constexpr float directionVectorLength = 256.0f;
+                const constexpr float thresholdLength = originalThreshold * directionVectorLength;
+                return static_cast<int32_t>(thresholdLength * thresholdLength);
+            }();
+            static_assert(threshold == 8028);
+
+            if (dotProduct > 0 && dotProduct * dotProduct > threshold * directionVectorToVehicle2Length)
             {
                 collideVehicle = vehicle2;
                 mayCollide = true;
@@ -7052,7 +7053,12 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     if ((carEntry->flags & CAR_ENTRY_FLAG_GO_KART) && TrackSubposition < VehicleTrackSubposition::GoKartsMovingToRightLane)
     {
         trackType = tileElement->AsTrack()->GetTrackType();
-        if (trackType == TrackElemType::Flat
+        if (trackType == TrackElemType::Flat || trackType == TrackElemType::LeftQuarterTurn3Tiles
+            || trackType == TrackElemType::RightQuarterTurn3Tiles || trackType == TrackElemType::LeftQuarterTurn5Tiles
+            || trackType == TrackElemType::RightQuarterTurn5Tiles || trackType == TrackElemType::LeftEighthToDiag
+            || trackType == TrackElemType::RightEighthToDiag || trackType == TrackElemType::LeftEighthToOrthogonal
+            || trackType == TrackElemType::RightEighthToOrthogonal || trackType == TrackElemType::DiagFlat
+            || trackType == TrackElemType::SBendLeft || trackType == TrackElemType::SBendRight
             || ((curRide.lifecycleFlags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && tileElement->AsTrack()->IsStation()))
         {
             UpdateGoKartAttemptSwitchLanes();

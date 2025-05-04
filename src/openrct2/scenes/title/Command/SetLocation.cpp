@@ -12,7 +12,7 @@
 #include "../../../OpenRCT2.h"
 #include "../../../interface/Viewport.h"
 #include "../../../interface/Window.h"
-#include "../../../interface/Window_internal.h"
+#include "../../../interface/WindowBase.h"
 #include "../../../world/Map.h"
 
 namespace OpenRCT2::Title
@@ -28,10 +28,8 @@ namespace OpenRCT2::Title
             // Prevent scroll adjustment due to window placement when in-game
             auto oldLegacyScene = gLegacyScene;
             gLegacyScene = LegacyScene::titleSequence;
-            w->SetLocation({ loc, z });
+            w->SetViewportLocation({ loc, z });
             gLegacyScene = oldLegacyScene;
-
-            ViewportUpdatePosition(w);
         }
 
         return 0;

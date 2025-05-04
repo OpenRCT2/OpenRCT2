@@ -44,7 +44,7 @@
 #include "../world/tile_element/WallElement.h"
 #include "Colour.h"
 #include "Window.h"
-#include "Window_internal.h"
+#include "WindowBase.h"
 
 #include <cstring>
 #include <list>
@@ -345,7 +345,15 @@ namespace OpenRCT2
                 || drawRect.GetTop() >= window->windowPos.y + window->height)
             {
                 auto itWindowPos = WindowGetIterator(window);
-                auto itNextWindow = itWindowPos != g_window_list.end() ? std::next(itWindowPos) : g_window_list.end();
+                // Get next valid window after.
+                auto itNextWindow = [&]() {
+                    auto itNext = std::next(itWindowPos);
+                    while (itNext != g_window_list.end() && (itNext->get()->flags & WF_DEAD))
+                    {
+                        ++itNext;
+                    }
+                    return itNext;
+                }();
                 ViewportRedrawAfterShift(
                     dpi, itNextWindow == g_window_list.end() ? nullptr : itNextWindow->get(), originalWindow, shift, drawRect);
                 return;
@@ -441,7 +449,7 @@ namespace OpenRCT2
         for (; it != g_window_list.end(); it++)
         {
             auto w = it->get();
-            if (!(w->flags & WF_TRANSPARENT))
+            if (!(w->flags & WF_TRANSPARENT) || (w->flags & WF_DEAD))
                 continue;
             if (w->viewport == viewport)
                 continue;
@@ -518,6 +526,10 @@ namespace OpenRCT2
                 WindowDrawAll(dpi, left, top, right, bottom);
                 return;
             }
+            else
+            {
+                GfxInvalidateScreen();
+            }
         }
 
         Viewport view_copy = *viewport;
@@ -565,6 +577,10 @@ namespace OpenRCT2
             DrawPixelInfo& dpi = DrawingEngineGetDpi();
             ViewportShiftPixels(dpi, w, viewport, x_diff, y_diff);
         }
+        else
+        {
+            GfxInvalidateScreen();
+        }
 
         *viewport = view_copy;
     }
@@ -599,6 +615,10 @@ namespace OpenRCT2
      */
     void ViewportUpdatePosition(WindowBase* window)
     {
+        // Guard against any code attempting to call this at the wrong time.
+        Guard::Assert(
+            GetContext()->GetDrawingEngine()->GetDrawingContext() != nullptr, "We must be in a valid drawing context.");
+
         window->OnResize();
 
         Viewport* viewport = window->viewport;
@@ -710,7 +730,7 @@ namespace OpenRCT2
 
             if (gLegacyScene != LegacyScene::titleSequence)
             {
-                int32_t height = (TileElementHeight({ sprite->x, sprite->y }))-16;
+                int32_t height = TileElementHeight({ sprite->x, sprite->y }) - 16;
                 int32_t underground = sprite->z < height;
                 ViewportSetUndergroundFlag(underground, window, window->viewport);
             }
@@ -1042,6 +1062,15 @@ namespace OpenRCT2
                 columnDpi.pitch += rightPitch;
             }
             columnDpi.width = paintRight - columnDpi.x;
+
+            // culling sprites outside the clipped column causes sorting differences between invalidation blocks
+            // not culling sprites outside the full column width also causes a different kind of glitching
+            constexpr int32_t cullingY = ZoomLevel::max().ApplyInversedTo(std::numeric_limits<int32_t>::max()) / 2;
+
+            columnDpi.cullingX = floor2(columnDpi.x, columnWidth);
+            columnDpi.cullingY = -cullingY;
+            columnDpi.cullingWidth = columnWidth;
+            columnDpi.cullingHeight = cullingY * 2;
 
             if (useMultithreading)
             {
@@ -1792,6 +1821,11 @@ namespace OpenRCT2
             dpi.y = viewport->zoom.ApplyInversedTo(viewLoc.y);
             dpi.height = 1;
             dpi.width = 1;
+
+            dpi.cullingX = dpi.x;
+            dpi.cullingY = dpi.y;
+            dpi.cullingWidth = dpi.width;
+            dpi.cullingHeight = dpi.height;
 
             PaintSession* session = PaintSessionAlloc(dpi, viewport->flags, viewport->rotation);
             PaintSessionGenerate(*session);

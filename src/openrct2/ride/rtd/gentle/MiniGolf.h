@@ -61,10 +61,12 @@ constexpr RideTypeDescriptor MiniGolfRTD =
         {
             { RatingsModifierType::BonusLength,      6000, 873, 0, 0 },
             { RatingsModifierType::BonusTurns,       0,    14860, 0, 0 },
+            // The first six holes used to benefit from bonuses intended for inversions.
+            { RatingsModifierType::BonusHoles,       6,    6, 0, 0 },
             { RatingsModifierType::BonusSheltered,   0,    5140, 6553, 4681 },
             { RatingsModifierType::BonusProximity,   0,    15657, 0, 0 },
             { RatingsModifierType::BonusScenery,     0,    27887, 0, 0 },
-            { RatingsModifierType::BonusHoles,       0,    5, 0, 0 },
+            { RatingsModifierType::BonusHoles,       31,   5, 0, 0 },
             { RatingsModifierType::RequirementHoles, 1,    8, 2, 2 },
         },
     },

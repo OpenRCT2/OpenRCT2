@@ -815,6 +815,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
             }
         }
+
         void OnUpdate() override
         {
             switch (page)
@@ -1471,11 +1472,6 @@ namespace OpenRCT2::Ui::Windows
             for (i = 0; i < WINDOW_RIDE_PAGE_COUNT; i++)
                 pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
             pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
-        }
-
-        void AnchorBorderWidgets()
-        {
-            ResizeFrameWithPage();
         }
 
 #pragma region Main
@@ -2368,8 +2364,6 @@ namespace OpenRCT2::Ui::Windows
                 + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
             widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
-            AnchorBorderWidgets();
-
             const int32_t offset = gameState.cheats.allowArbitraryRideTypeChanges ? 15 : 0;
             // Anchor main page specific widgets
             widgets[WIDX_VIEWPORT].right = width - 26;
@@ -2439,8 +2433,9 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_SIMULATE_LIGHT].type = WindowWidgetType::Empty;
                 widgets[WIDX_TEST_LIGHT].type = WindowWidgetType::Empty;
                 widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::Empty;
-                widgetHeight = 46;
+                widgetHeight = widgets[WIDX_PAGE_BACKGROUND].top + 3;
             }
+
             for (i = WIDX_CLOSE_LIGHT; i <= WIDX_OPEN_LIGHT; i++)
             {
                 widgets[i].left = width - 20;
@@ -2660,7 +2655,7 @@ namespace OpenRCT2::Ui::Windows
 
         void VehicleResize()
         {
-            auto bottom = widgets[WIDX_VEHICLE_TRAINS].bottom + 6;
+            auto bottom = widgets[WIDX_VEHICLE_TRAINS].bottom + 6 - getTitleBarDiffNormal();
             WindowSetResize(*this, { kMinimumWindowWidth, bottom }, { kMinimumWindowWidth, bottom });
         }
 
@@ -2858,7 +2853,6 @@ namespace OpenRCT2::Ui::Windows
 
             ride->formatNameTo(ft);
 
-            AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
 
             if (abs(ride->numCarsPerTrain - rideEntry->zero_cars) == 1)
@@ -2942,7 +2936,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto heightIncrease = minimumPreviewStart - widgets[WIDX_VEHICLE_TRAINS_PREVIEW].top;
                 height += heightIncrease;
-                ResizeFrameWithPage();
+                ResizeFrame();
 
                 for (auto i = EnumValue(WIDX_VEHICLE_TRAINS_PREVIEW); i <= WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE; i++)
                 {
@@ -2967,7 +2961,7 @@ namespace OpenRCT2::Ui::Windows
             const auto* rideEntry = ride->getRideEntry();
 
             // Background
-            GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } }, PALETTE_INDEX_12);
+            GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } }, PaletteIndex::pi12);
 
             Widget* widget = &widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
             int32_t startX = std::max(2, (widget->width() - ((ride->numTrains - 1) * 36)) / 2 - 25);
@@ -3205,7 +3199,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OperatingResize()
         {
-            auto bottom = widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].bottom + 6;
+            auto bottom = widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].bottom + 6 - getTitleBarDiffNormal();
             WindowSetResize(*this, { kMinimumWindowWidth, bottom }, { kMinimumWindowWidth, bottom });
         }
 
@@ -3686,7 +3680,6 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_MODE_TWEAK_DECREASE].type = WindowWidgetType::Empty;
             }
 
-            AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
@@ -3776,7 +3769,7 @@ namespace OpenRCT2::Ui::Windows
 
         void MaintenanceResize()
         {
-            auto bottom = widgets[WIDX_LOCATE_MECHANIC].bottom + 6;
+            auto bottom = widgets[WIDX_LOCATE_MECHANIC].bottom + 6 - getTitleBarDiffNormal();
             WindowSetResize(*this, { kMinimumWindowWidth, bottom }, { kMinimumWindowWidth, bottom });
         }
 
@@ -4009,7 +4002,6 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_INSPECTION_INTERVAL].text = kRideInspectionIntervalNames[ride->inspectionInterval];
 
-            AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
 
             if (Config::Get().general.DebuggingTools && NetworkGetMode() == NETWORK_MODE_NONE)
@@ -4253,20 +4245,21 @@ namespace OpenRCT2::Ui::Windows
                     if (rideEntry == nullptr)
                         return;
 
+                    bool allowChangingBodyColour = false;
                     bool allowChangingTrimColour = false;
                     bool allowChangingTertiaryColour = false;
                     for (int32_t i = 0; i < ride->numCarsPerTrain; i++)
                     {
                         uint8_t vehicleTypeIndex = RideEntryGetVehicleAtPosition(ride->subtype, ride->numCarsPerTrain, i);
 
+                        if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_BODY_COLOUR)
+                            allowChangingBodyColour = true;
+
                         if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TRIM_COLOUR)
-                        {
                             allowChangingTrimColour = true;
-                        }
+
                         if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TERTIARY_COLOUR)
-                        {
                             allowChangingTertiaryColour = true;
-                        }
                     }
 
                     int32_t numItems = ride->numTrains;
@@ -4275,23 +4268,28 @@ namespace OpenRCT2::Ui::Windows
 
                     for (auto i = 0; i < numItems; i++)
                     {
-                        colour_t colour = UtilRand() % kColourNumNormal;
-                        auto vehicleSetBodyColourAction = RideSetAppearanceAction(
-                            rideId, RideSetAppearanceType::VehicleColourBody, colour, i);
-                        GameActions::Execute(&vehicleSetBodyColourAction);
+                        if (allowChangingBodyColour)
+                        {
+                            colour_t colour = UtilRand() % kColourNumNormal;
+                            auto vehicleSetBodyColourAction = RideSetAppearanceAction(
+                                rideId, RideSetAppearanceType::VehicleColourBody, colour, i);
+                            GameActions::Execute(&vehicleSetBodyColourAction);
+                        }
+
                         if (allowChangingTrimColour)
                         {
-                            colour = UtilRand() % kColourNumNormal;
+                            colour_t colour = UtilRand() % kColourNumNormal;
                             auto vehicleSetTrimColourAction = RideSetAppearanceAction(
                                 rideId, RideSetAppearanceType::VehicleColourTrim, colour, i);
                             GameActions::Execute(&vehicleSetTrimColourAction);
-                            if (allowChangingTertiaryColour)
-                            {
-                                colour = UtilRand() % kColourNumNormal;
-                                auto vehicleSetTertiaryColourAction = RideSetAppearanceAction(
-                                    rideId, RideSetAppearanceType::VehicleColourTertiary, colour, i);
-                                GameActions::Execute(&vehicleSetTertiaryColourAction);
-                            }
+                        }
+
+                        if (allowChangingTertiaryColour)
+                        {
+                            colour_t colour = UtilRand() % kColourNumNormal;
+                            auto vehicleSetTertiaryColourAction = RideSetAppearanceAction(
+                                rideId, RideSetAppearanceType::VehicleColourTertiary, colour, i);
+                            GameActions::Execute(&vehicleSetTertiaryColourAction);
                         }
                     }
                     break;
@@ -4301,7 +4299,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ColourResize()
         {
-            auto bottom = widgets[WIDX_VEHICLE_PREVIEW].bottom + 6;
+            auto bottom = widgets[WIDX_VEHICLE_PREVIEW].bottom + 6 - getTitleBarDiffNormal();
             WindowSetResize(*this, { kMinimumWindowWidth, bottom }, { kMinimumWindowWidth, bottom });
         }
 
@@ -4722,6 +4720,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_VEHICLE_BODY_COLOUR].type = WindowWidgetType::ColourBtn;
                 widgets[WIDX_VEHICLE_BODY_COLOUR].image = GetColourButtonImage(vehicleColour.Body);
 
+                bool allowChangingBodyColour = false;
                 bool allowChangingTrimColour = false;
                 bool allowChangingTertiaryColour = false;
 
@@ -4729,35 +4728,34 @@ namespace OpenRCT2::Ui::Windows
                 {
                     uint8_t vehicleTypeIndex = RideEntryGetVehicleAtPosition(ride->subtype, ride->numCarsPerTrain, i);
 
+                    if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_BODY_COLOUR)
+                        allowChangingBodyColour = true;
+
                     if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TRIM_COLOUR)
-                    {
                         allowChangingTrimColour = true;
-                    }
+
                     if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TERTIARY_COLOUR)
-                    {
                         allowChangingTertiaryColour = true;
-                    }
                 }
 
-                // Additional colours
+                widgets[WIDX_VEHICLE_BODY_COLOUR].type = WindowWidgetType::Empty;
+                widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WindowWidgetType::Empty;
+                widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WindowWidgetType::Empty;
+
+                if (allowChangingBodyColour)
+                {
+                    widgets[WIDX_VEHICLE_BODY_COLOUR].type = WindowWidgetType::ColourBtn;
+                    widgets[WIDX_VEHICLE_BODY_COLOUR].image = GetColourButtonImage(vehicleColour.Body);
+                }
                 if (allowChangingTrimColour)
                 {
                     widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WindowWidgetType::ColourBtn;
                     widgets[WIDX_VEHICLE_TRIM_COLOUR].image = GetColourButtonImage(vehicleColour.Trim);
-                    if (allowChangingTertiaryColour)
-                    {
-                        widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WindowWidgetType::ColourBtn;
-                        widgets[WIDX_VEHICLE_TERTIARY_COLOUR].image = GetColourButtonImage(vehicleColour.Tertiary);
-                    }
-                    else
-                    {
-                        widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WindowWidgetType::Empty;
-                    }
                 }
-                else
+                if (allowChangingTertiaryColour)
                 {
-                    widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WindowWidgetType::Empty;
-                    widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WindowWidgetType::Empty;
+                    widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WindowWidgetType::ColourBtn;
+                    widgets[WIDX_VEHICLE_TERTIARY_COLOUR].image = GetColourButtonImage(vehicleColour.Tertiary);
                 }
 
                 // Vehicle colour scheme type
@@ -4811,7 +4809,6 @@ namespace OpenRCT2::Ui::Windows
             ft.Increment(14);
             ft.Add<StringId>(ColourSchemeNames[colourScheme]);
 
-            AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
@@ -4834,7 +4831,7 @@ namespace OpenRCT2::Ui::Windows
                     dpi,
                     { { windowPos + ScreenCoordsXY{ trackPreviewWidget.left + 1, trackPreviewWidget.top + 1 } },
                       { windowPos + ScreenCoordsXY{ trackPreviewWidget.right - 1, trackPreviewWidget.bottom - 1 } } },
-                    PALETTE_INDEX_12);
+                    PaletteIndex::pi12);
 
             auto trackColour = ride->trackColours[_rideColour];
 
@@ -4907,7 +4904,7 @@ namespace OpenRCT2::Ui::Windows
                         windowPos + ScreenCoordsXY{ entrancePreviewWidget.left + 1, entrancePreviewWidget.top + 1 },
                         entrancePreviewWidget.width(), entrancePreviewWidget.height()))
                 {
-                    GfxClear(clippedDpi, PALETTE_INDEX_12);
+                    GfxClear(clippedDpi, PaletteIndex::pi12);
 
                     auto stationObj = ride->getStationObject();
                     if (stationObj != nullptr && stationObj->BaseImageId != kImageIndexUndefined)
@@ -4929,7 +4926,8 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                DrawTextEllipsised(dpi, { windowPos.x + 3, windowPos.y + 103 }, 97, STR_STATION_STYLE, {});
+                auto labelPos = windowPos + ScreenCoordsXY{ 3, widgets[WIDX_ENTRANCE_STYLE].top };
+                DrawTextEllipsised(dpi, labelPos, 97, STR_STATION_STYLE, {});
             }
         }
 
@@ -4947,7 +4945,7 @@ namespace OpenRCT2::Ui::Windows
             auto vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
 
             // Background colour
-            GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, PALETTE_INDEX_12);
+            GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, PaletteIndex::pi12);
 
             // ?
             auto screenCoords = ScreenCoordsXY{ vehiclePreviewWidget->width() / 2, vehiclePreviewWidget->height() - 15 };
@@ -5236,7 +5234,6 @@ namespace OpenRCT2::Ui::Windows
                 disabled_widgets |= (1uLL << WIDX_MUSIC) | (1uLL << WIDX_MUSIC_DROPDOWN) | (1uLL << WIDX_MUSIC_DATA);
             }
 
-            AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
@@ -5609,7 +5606,6 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
@@ -5687,7 +5683,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             // Holes
                             ft = Formatter();
-                            ft.Add<uint16_t>(ride->holes);
+                            ft.Add<uint16_t>(ride->numHoles);
                             DrawTextBasic(dpi, screenCoords, STR_HOLES, ft);
                             screenCoords.y += kListRowHeight;
                         }
@@ -5822,7 +5818,7 @@ namespace OpenRCT2::Ui::Windows
                         if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasDrops))
                         {
                             ft = Formatter();
-                            ft.Add<uint16_t>(ride->getNumDrops());
+                            ft.Add<uint16_t>(ride->numDrops);
                             DrawTextBasic(dpi, screenCoords, STR_DROPS, ft);
                             screenCoords.y += kListRowHeight;
 
@@ -5837,10 +5833,10 @@ namespace OpenRCT2::Ui::Windows
                         if (ride->getRideTypeDescriptor().specialType != RtdSpecialType::miniGolf)
                         {
                             // Inversions
-                            if (ride->inversions != 0)
+                            if (ride->numInversions != 0)
                             {
                                 ft = Formatter();
-                                ft.Add<uint16_t>(ride->inversions);
+                                ft.Add<uint16_t>(ride->numInversions);
                                 DrawTextBasic(dpi, screenCoords, STR_INVERSIONS, ft);
                                 screenCoords.y += kListRowHeight;
                             }
@@ -5903,7 +5899,7 @@ namespace OpenRCT2::Ui::Windows
 
         void GraphsResize()
         {
-            WindowSetResize(*this, { kMinimumWindowWidth, 182 }, { std::numeric_limits<int16_t>::max(), 450 });
+            WindowSetResize(*this, { kMinimumWindowWidth, 182 }, { kMaxWindowSize.width, 450 });
         }
 
         void GraphsOnMouseDown(WidgetIndex widgetIndex)
@@ -6054,7 +6050,6 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_GRAPH_VERTICAL].bottom = y;
             widgets[WIDX_GRAPH_LATERAL].bottom = y;
 
-            AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
@@ -6208,12 +6203,13 @@ namespace OpenRCT2::Ui::Windows
 
                 // Draw the current line in grey.
                 GfxFillRect(
-                    dpi, { { x, firstPoint }, { x, secondPoint } }, previousMeasurement ? PALETTE_INDEX_17 : PALETTE_INDEX_21);
+                    dpi, { { x, firstPoint }, { x, secondPoint } },
+                    previousMeasurement ? PaletteIndex::pi17 : PaletteIndex::pi21);
 
                 // Draw red over extreme values (if supported by graph type).
                 if (listType == GRAPH_VERTICAL || listType == GRAPH_LATERAL)
                 {
-                    const auto redLineColour = previousMeasurement ? PALETTE_INDEX_171 : PALETTE_INDEX_173;
+                    const auto redLineColour = previousMeasurement ? PaletteIndex::pi171 : PaletteIndex::pi173;
 
                     // Line exceeds negative threshold (at bottom of graph).
                     if (secondPoint >= intensityThresholdNegative)
@@ -6615,7 +6611,6 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_SECONDARY_PRICE].text = STR_FREE;
             }
 
-            AnchorBorderWidgets();
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
         }
 
@@ -6814,7 +6809,6 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_SHOW_GUESTS_QUEUING].type = WindowWidgetType::FlatBtn;
                 }
 
-                AnchorBorderWidgets();
                 WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
             }
         }

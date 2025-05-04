@@ -72,11 +72,6 @@ namespace OpenRCT2::Ui::Windows
         void OnMouseUp(WidgetIndex widgetIndex) override;
         void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override;
         void OnDraw(DrawPixelInfo& dpi) override;
-
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
     };
 
     class TrackDeletePromptWindow final : public Window
@@ -93,11 +88,6 @@ namespace OpenRCT2::Ui::Windows
         void OnOpen() override;
         void OnMouseUp(WidgetIndex widgetIndex) override;
         void OnDraw(DrawPixelInfo& dpi) override;
-
-        void OnResize() override
-        {
-            ResizeFrame();
-        }
     };
 
     static void WindowTrackDeletePromptOpen(TrackDesignFileRef* tdFileRef);
@@ -199,15 +189,11 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->CloseByClass(WindowClass::TrackDeletePrompt);
 
-        int32_t screenWidth = ContextGetWidth();
-        int32_t screenHeight = ContextGetHeight();
         auto trackDeletePromptWindow = std::make_unique<TrackDeletePromptWindow>(tdFileRef);
 
         windowMgr->Create(
-            std::move(trackDeletePromptWindow), WindowClass::TrackDeletePrompt,
-            ScreenCoordsXY(
-                std::max(kTopToolbarHeight + 1, (screenWidth - WW_DELETE_PROMPT) / 2), (screenHeight - WH_DELETE_PROMPT) / 2),
-            WW_DELETE_PROMPT, WH_DELETE_PROMPT, WF_STICK_TO_FRONT | WF_TRANSPARENT);
+            std::move(trackDeletePromptWindow), WindowClass::TrackDeletePrompt, {}, WW_DELETE_PROMPT, WH_DELETE_PROMPT,
+            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_AUTO_POSITION | WF_CENTRE_SCREEN);
     }
 
     void TrackDeletePromptWindow::OnOpen()

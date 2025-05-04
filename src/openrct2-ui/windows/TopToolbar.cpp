@@ -158,11 +158,10 @@ namespace OpenRCT2::Ui::Windows
         DDIDX_OBJECT_SELECTION = 2,
         DDIDX_INVENTIONS_LIST = 3,
         DDIDX_SCENARIO_OPTIONS = 4,
-        DDIDX_OBJECTIVE_OPTIONS = 5,
-        // 6 is a separator
-        DDIDX_ENABLE_SANDBOX_MODE = 7,
-        DDIDX_DISABLE_CLEARANCE_CHECKS = 8,
-        DDIDX_DISABLE_SUPPORT_LIMITS = 9,
+        // 5 is a separator
+        DDIDX_ENABLE_SANDBOX_MODE = 6,
+        DDIDX_DISABLE_CLEARANCE_CHECKS = 7,
+        DDIDX_DISABLE_SUPPORT_LIMITS = 8,
 
         TOP_TOOLBAR_CHEATS_COUNT,
     };
@@ -1060,42 +1059,24 @@ namespace OpenRCT2::Ui::Windows
             { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
             colours[1].withFlag(ColourFlag::translucent, true), 0, TOP_TOOLBAR_VIEW_MENU_COUNT);
 
-        // Set checkmarks
-        auto* mainViewport = WindowGetMain()->viewport;
-        if (mainViewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-            Dropdown::SetChecked(DDIDX_UNDERGROUND_INSIDE, true);
-        if (Config::Get().general.TransparentWater)
-            Dropdown::SetChecked(DDIDX_TRANSPARENT_WATER, true);
-        if (mainViewport->flags & VIEWPORT_FLAG_HIDE_BASE)
-            Dropdown::SetChecked(DDIDX_HIDE_BASE, true);
-        if (mainViewport->flags & VIEWPORT_FLAG_HIDE_VERTICAL)
-            Dropdown::SetChecked(DDIDX_HIDE_VERTICAL, true);
-        if (mainViewport->flags & VIEWPORT_FLAG_HIDE_RIDES)
-            Dropdown::SetChecked(DDIDX_HIDE_RIDES, true);
-        if (mainViewport->flags & VIEWPORT_FLAG_HIDE_VEHICLES)
-            Dropdown::SetChecked(DDIDX_HIDE_VEHICLES, true);
-        if (mainViewport->flags & VIEWPORT_FLAG_HIDE_VEGETATION)
-            Dropdown::SetChecked(DDIDX_HIDE_VEGETATION, true);
-        if (mainViewport->flags & VIEWPORT_FLAG_HIDE_SCENERY)
-            Dropdown::SetChecked(DDIDX_HIDE_SCENERY, true);
-        if (mainViewport->flags & VIEWPORT_FLAG_HIDE_PATHS)
-            Dropdown::SetChecked(DDIDX_HIDE_PATHS, true);
-        if (mainViewport->flags & VIEWPORT_FLAG_HIDE_SUPPORTS)
-            Dropdown::SetChecked(DDIDX_HIDE_SUPPORTS, true);
-        if (mainViewport->flags & VIEWPORT_FLAG_HIDE_GUESTS)
-            Dropdown::SetChecked(DDIDX_HIDE_GUESTS, true);
-        if (mainViewport->flags & VIEWPORT_FLAG_HIDE_STAFF)
-            Dropdown::SetChecked(DDIDX_HIDE_STAFF, true);
-        if (mainViewport->flags & VIEWPORT_FLAG_LAND_HEIGHTS)
-            Dropdown::SetChecked(DDIDX_LAND_HEIGHTS, true);
-        if (mainViewport->flags & VIEWPORT_FLAG_TRACK_HEIGHTS)
-            Dropdown::SetChecked(DDIDX_TRACK_HEIGHTS, true);
-        if (mainViewport->flags & VIEWPORT_FLAG_PATH_HEIGHTS)
-            Dropdown::SetChecked(DDIDX_PATH_HEIGHTS, true);
-        if (mainViewport->flags & VIEWPORT_FLAG_CLIP_VIEW)
-            Dropdown::SetChecked(DDIDX_VIEW_CLIPPING, true);
-        if (mainViewport->flags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
-            Dropdown::SetChecked(DDIDX_HIGHLIGHT_PATH_ISSUES, true);
+        auto mvpFlags = WindowGetMain()->viewport->flags;
+        SetChecked(DDIDX_UNDERGROUND_INSIDE, mvpFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+        SetChecked(DDIDX_TRANSPARENT_WATER, Config::Get().general.TransparentWater);
+        SetChecked(DDIDX_HIDE_BASE, mvpFlags & VIEWPORT_FLAG_HIDE_BASE);
+        SetChecked(DDIDX_HIDE_VERTICAL, mvpFlags & VIEWPORT_FLAG_HIDE_VERTICAL);
+        SetChecked(DDIDX_HIDE_RIDES, mvpFlags & VIEWPORT_FLAG_HIDE_RIDES);
+        SetChecked(DDIDX_HIDE_VEHICLES, mvpFlags & VIEWPORT_FLAG_HIDE_VEHICLES);
+        SetChecked(DDIDX_HIDE_VEGETATION, mvpFlags & VIEWPORT_FLAG_HIDE_VEGETATION);
+        SetChecked(DDIDX_HIDE_SCENERY, mvpFlags & VIEWPORT_FLAG_HIDE_SCENERY);
+        SetChecked(DDIDX_HIDE_PATHS, mvpFlags & VIEWPORT_FLAG_HIDE_PATHS);
+        SetChecked(DDIDX_HIDE_SUPPORTS, mvpFlags & VIEWPORT_FLAG_HIDE_SUPPORTS);
+        SetChecked(DDIDX_HIDE_GUESTS, mvpFlags & VIEWPORT_FLAG_HIDE_GUESTS);
+        SetChecked(DDIDX_HIDE_STAFF, mvpFlags & VIEWPORT_FLAG_HIDE_STAFF);
+        SetChecked(DDIDX_LAND_HEIGHTS, mvpFlags & VIEWPORT_FLAG_LAND_HEIGHTS);
+        SetChecked(DDIDX_TRACK_HEIGHTS, mvpFlags & VIEWPORT_FLAG_TRACK_HEIGHTS);
+        SetChecked(DDIDX_PATH_HEIGHTS, mvpFlags & VIEWPORT_FLAG_PATH_HEIGHTS);
+        SetChecked(DDIDX_VIEW_CLIPPING, mvpFlags & VIEWPORT_FLAG_CLIP_VIEW);
+        SetChecked(DDIDX_HIGHLIGHT_PATH_ISSUES, mvpFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 
         gDropdownDefaultIndex = DDIDX_UNDERGROUND_INSIDE;
     }
@@ -1406,7 +1387,6 @@ namespace OpenRCT2::Ui::Windows
             ToggleOption(DDIDX_OBJECT_SELECTION, STR_DEBUG_DROPDOWN_OBJECT_SELECTION),
             ToggleOption(DDIDX_INVENTIONS_LIST, STR_DEBUG_DROPDOWN_INVENTIONS_LIST),
             ToggleOption(DDIDX_SCENARIO_OPTIONS, STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS),
-            ToggleOption(DDIDX_OBJECTIVE_OPTIONS, STR_CHEATS_MENU_OBJECTIVE_OPTIONS),
             Separator(),
             ToggleOption(DDIDX_ENABLE_SANDBOX_MODE, STR_ENABLE_SANDBOX_MODE),
             ToggleOption(DDIDX_DISABLE_CLEARANCE_CHECKS, STR_DISABLE_CLEARANCE_CHECKS),
@@ -1425,7 +1405,6 @@ namespace OpenRCT2::Ui::Windows
         {
             Dropdown::SetDisabled(DDIDX_OBJECT_SELECTION, true);
             Dropdown::SetDisabled(DDIDX_INVENTIONS_LIST, true);
-            Dropdown::SetDisabled(DDIDX_OBJECTIVE_OPTIONS, true);
         }
 
         if (isInEditorMode())
@@ -1433,7 +1412,6 @@ namespace OpenRCT2::Ui::Windows
             Dropdown::SetDisabled(DDIDX_OBJECT_SELECTION, true);
             Dropdown::SetDisabled(DDIDX_INVENTIONS_LIST, true);
             Dropdown::SetDisabled(DDIDX_SCENARIO_OPTIONS, true);
-            Dropdown::SetDisabled(DDIDX_OBJECTIVE_OPTIONS, true);
             Dropdown::SetDisabled(DDIDX_ENABLE_SANDBOX_MODE, true);
         }
 
@@ -1476,9 +1454,6 @@ namespace OpenRCT2::Ui::Windows
                 break;
             case DDIDX_SCENARIO_OPTIONS:
                 ContextOpenWindow(WindowClass::EditorScenarioOptions);
-                break;
-            case DDIDX_OBJECTIVE_OPTIONS:
-                ContextOpenWindow(WindowClass::EditorObjectiveOptions);
                 break;
             case DDIDX_ENABLE_SANDBOX_MODE:
                 CheatsSet(CheatType::SandboxMode, !getGameState().cheats.sandboxMode);

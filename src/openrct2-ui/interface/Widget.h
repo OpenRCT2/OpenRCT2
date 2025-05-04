@@ -15,18 +15,22 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Widget.h>
 
+// clang-format off
+#define WINDOW_SHIM(TITLE, WIDTH, HEIGHT) \
+    { WindowWidgetType::Frame,    0,  0,  WIDTH - 1, 0, HEIGHT - 1, 0xFFFFFFFF,  kStringIdNone        }, \
+    { WindowWidgetType::Caption,  0,  1,  WIDTH - 2, 1, 14,         TITLE,       STR_WINDOW_TITLE_TIP }, \
+    { .type    = WindowWidgetType::CloseBox, \
+      .colour  = 0,                          \
+      .left    = WIDTH - 13,                 \
+      .right   = WIDTH - 3,                  \
+      .top     = 2,                          \
+      .bottom  = 13,                         \
+      .string  = kCloseBoxStringBlackNormal, \
+      .tooltip = STR_CLOSE_WINDOW_TIP }
+// clang-format on
+
 namespace OpenRCT2::Ui
 {
-    // clang-format off
-#define WINDOW_SHIM_RAW(TITLE, WIDTH, HEIGHT, CLOSE_STR) \
-    { WindowWidgetType::Frame,    0,  0,          WIDTH - 1, 0, HEIGHT - 1, 0xFFFFFFFF,  kStringIdNone }, \
-    { WindowWidgetType::Caption,  0,  1,          WIDTH - 2, 1, 14,         TITLE,       STR_WINDOW_TITLE_TIP }, \
-    { WindowWidgetType::CloseBox, 0,  WIDTH - 13, WIDTH - 3, 2, 13,         CLOSE_STR,   STR_CLOSE_WINDOW_TIP }
-
-#define WINDOW_SHIM(TITLE, WIDTH, HEIGHT) WINDOW_SHIM_RAW(TITLE, WIDTH, HEIGHT, STR_CLOSE_X)
-#define WINDOW_SHIM_WHITE(TITLE, WIDTH, HEIGHT) WINDOW_SHIM_RAW(TITLE, WIDTH, HEIGHT, STR_CLOSE_X_WHITE)
-    // clang-format on
-
     ImageId GetColourButtonImage(colour_t colour);
     Widget* GetWidgetByIndex(const WindowBase& w, WidgetIndex widgetIndex);
 
