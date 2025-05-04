@@ -112,11 +112,14 @@ namespace OpenRCT2::Ui::Windows
         WIDX_PAGE_START,
 
         // Objective tab
-        WIDX_OBJECTIVE = WIDX_PAGE_START,
+        WIDX_OBJECTIVE_LABEL = WIDX_PAGE_START,
+        WIDX_OBJECTIVE,
         WIDX_OBJECTIVE_DROPDOWN,
+        WIDX_OBJECTIVE_ARG_1_LABEL,
         WIDX_OBJECTIVE_ARG_1,
         WIDX_OBJECTIVE_ARG_1_INCREASE,
         WIDX_OBJECTIVE_ARG_1_DECREASE,
+        WIDX_OBJECTIVE_ARG_2_LABEL,
         WIDX_OBJECTIVE_ARG_2,
         WIDX_OBJECTIVE_ARG_2_INCREASE,
         WIDX_OBJECTIVE_ARG_2_DECREASE,
@@ -211,9 +214,12 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto window_editor_scenario_options_objective_widgets = makeWidgets(
         makeOptionsWidgets(STR_SCENARIO_OPTIONS_OBJECTIVE, kSizeObjective),
+        makeWidget        ({  8,  48}, {344,  12}, WidgetType::label,    WindowColour::secondary, STR_OBJECTIVE_DROPDOWN_LABEL                                       ),
         makeWidget        ({ 98,  48}, {344,  12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,           STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
         makeWidget        ({430,  49}, { 11,  10}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH, STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
+        makeWidget        ({ 28,  65}, {140,  12}, WidgetType::label,    WindowColour::secondary, kStringIdEmpty                                                     ),
         makeSpinnerWidgets({158,  65}, {120,  12}, WidgetType::button,   WindowColour::secondary                                                                     ), // NB: 3 widgets
+        makeWidget        ({ 28,  82}, {140,  12}, WidgetType::label,    WindowColour::secondary, STR_WINDOW_OBJECTIVE_DATE                                          ),
         makeSpinnerWidgets({158,  82}, {120,  12}, WidgetType::button,   WindowColour::secondary                                                                     ), // NB: 3 widgets
         makeWidget        ({ 14,  99}, {340,  12}, WidgetType::checkbox, WindowColour::secondary, STR_HARD_PARK_RATING,   STR_HARD_PARK_RATING_TIP                   )
     );
@@ -1050,9 +1056,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 case OBJECTIVE_GUESTS_BY:
                 case OBJECTIVE_PARK_VALUE_BY:
+                    widgets[WIDX_OBJECTIVE_ARG_1_LABEL].type = WidgetType::label;
                     widgets[WIDX_OBJECTIVE_ARG_1].type = WidgetType::spinner;
                     widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WidgetType::button;
                     widgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WidgetType::button;
+                    widgets[WIDX_OBJECTIVE_ARG_2_LABEL].type = WidgetType::label;
                     widgets[WIDX_OBJECTIVE_ARG_2].type = WidgetType::spinner;
                     widgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WidgetType::button;
                     widgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WidgetType::button;
@@ -1063,24 +1071,60 @@ namespace OpenRCT2::Ui::Windows
                 case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
                 case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
                 case OBJECTIVE_MONTHLY_FOOD_INCOME:
+                    widgets[WIDX_OBJECTIVE_ARG_1_LABEL].type = WidgetType::label;
                     widgets[WIDX_OBJECTIVE_ARG_1].type = WidgetType::spinner;
                     widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WidgetType::button;
                     widgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WidgetType::button;
+                    widgets[WIDX_OBJECTIVE_ARG_2_LABEL].type = WidgetType::empty;
                     widgets[WIDX_OBJECTIVE_ARG_2].type = WidgetType::empty;
                     widgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WidgetType::empty;
                     widgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WidgetType::empty;
                     break;
                 default:
+                    widgets[WIDX_OBJECTIVE_ARG_1_LABEL].type = WidgetType::empty;
                     widgets[WIDX_OBJECTIVE_ARG_1].type = WidgetType::empty;
                     widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WidgetType::empty;
                     widgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WidgetType::empty;
+                    widgets[WIDX_OBJECTIVE_ARG_2_LABEL].type = WidgetType::empty;
                     widgets[WIDX_OBJECTIVE_ARG_2].type = WidgetType::empty;
                     widgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WidgetType::empty;
                     widgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WidgetType::empty;
                     break;
             }
 
-            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty : WidgetType::closeBox;
+            auto arg1StringId = kStringIdEmpty;
+            if (widgets[WIDX_OBJECTIVE_ARG_1_LABEL].type != WidgetType::empty)
+            {
+                // Objective argument 1 label
+                switch (gameState.scenarioObjective.Type)
+                {
+                    case OBJECTIVE_GUESTS_BY:
+                    case OBJECTIVE_GUESTS_AND_RATING:
+                        arg1StringId = STR_WINDOW_OBJECTIVE_GUEST_COUNT;
+                        break;
+                    case OBJECTIVE_PARK_VALUE_BY:
+                    case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
+                        arg1StringId = STR_WINDOW_OBJECTIVE_PARK_VALUE;
+                        break;
+                    case OBJECTIVE_MONTHLY_RIDE_INCOME:
+                        arg1StringId = STR_WINDOW_OBJECTIVE_MONTHLY_INCOME;
+                        break;
+                    case OBJECTIVE_MONTHLY_FOOD_INCOME:
+                        arg1StringId = STR_WINDOW_OBJECTIVE_MONTHLY_PROFIT;
+                        break;
+                    case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
+                        arg1StringId = STR_WINDOW_OBJECTIVE_MINIMUM_LENGTH;
+                        break;
+                    default:
+                        arg1StringId = STR_WINDOW_OBJECTIVE_EXCITEMENT_RATING;
+                        break;
+                }
+            }
+
+            widgets[WIDX_OBJECTIVE_ARG_1_LABEL].text = arg1StringId;
+
+            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty
+                                                                                   : WidgetType::closeBox;
 
             SetWidgetPressed(WIDX_HARD_PARK_RATING, gameState.park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING);
         }
@@ -1092,49 +1136,20 @@ namespace OpenRCT2::Ui::Windows
         void ObjectiveOnDraw(RenderTarget& rt)
         {
             const auto& gameState = getGameState();
-            StringId stringId;
 
             DrawWidgets(rt);
             DrawTabImages(rt);
 
-            // Objective label
-            auto screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_OBJECTIVE].top };
-            DrawTextBasic(rt, screenCoords, STR_OBJECTIVE_DROPDOWN_LABEL);
-
             // Objective value
-            screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_OBJECTIVE].left + 1, widgets[WIDX_OBJECTIVE].top };
+            auto screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_OBJECTIVE].left + 1, widgets[WIDX_OBJECTIVE].top };
             auto ft = Formatter();
             ft.Add<StringId>(ObjectiveDropdownOptionNames[gameState.scenarioObjective.Type]);
             DrawTextBasic(rt, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
 
             if (widgets[WIDX_OBJECTIVE_ARG_1].type != WidgetType::empty)
             {
-                // Objective argument 1 label
-                screenCoords = windowPos + ScreenCoordsXY{ 28, widgets[WIDX_OBJECTIVE_ARG_1].top };
-                switch (gameState.scenarioObjective.Type)
-                {
-                    case OBJECTIVE_GUESTS_BY:
-                    case OBJECTIVE_GUESTS_AND_RATING:
-                        stringId = STR_WINDOW_OBJECTIVE_GUEST_COUNT;
-                        break;
-                    case OBJECTIVE_PARK_VALUE_BY:
-                    case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-                        stringId = STR_WINDOW_OBJECTIVE_PARK_VALUE;
-                        break;
-                    case OBJECTIVE_MONTHLY_RIDE_INCOME:
-                        stringId = STR_WINDOW_OBJECTIVE_MONTHLY_INCOME;
-                        break;
-                    case OBJECTIVE_MONTHLY_FOOD_INCOME:
-                        stringId = STR_WINDOW_OBJECTIVE_MONTHLY_PROFIT;
-                        break;
-                    case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-                        stringId = STR_WINDOW_OBJECTIVE_MINIMUM_LENGTH;
-                        break;
-                    default:
-                        stringId = STR_WINDOW_OBJECTIVE_EXCITEMENT_RATING;
-                        break;
-                }
-                DrawTextBasic(rt, screenCoords, stringId);
+                const auto wColour2 = colours[1];
+                StringId stringId = kStringIdEmpty;
 
                 // Objective argument 1 value
                 screenCoords = windowPos
@@ -1167,15 +1182,11 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<money64>(gameState.scenarioObjective.Currency);
                         break;
                 }
-                DrawTextBasic(rt, screenCoords, stringId, ft, { COLOUR_BLACK });
+                DrawTextBasic(rt, screenCoords, stringId, ft, wColour2);
             }
 
             if (widgets[WIDX_OBJECTIVE_ARG_2].type != WidgetType::empty)
             {
-                // Objective argument 2 label
-                screenCoords = windowPos + ScreenCoordsXY{ 28, widgets[WIDX_OBJECTIVE_ARG_2].top };
-                DrawTextBasic(rt, screenCoords, STR_WINDOW_OBJECTIVE_DATE);
-
                 // Objective argument 2 value
                 screenCoords = windowPos
                     + ScreenCoordsXY{ widgets[WIDX_OBJECTIVE_ARG_2].left + 1, widgets[WIDX_OBJECTIVE_ARG_2].top };
@@ -1591,70 +1602,75 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
 
             auto& gameState = getGameState();
-            if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
+            bool noMoney = gameState.park.Flags & PARK_FLAGS_NO_MONEY;
+            SetWidgetPressed(WIDX_NO_MONEY, noMoney);
+
+            SetWidgetDisabled(WIDX_GROUP_LOAN, noMoney);
+            SetWidgetDisabled(WIDX_INITIAL_LOAN_LABEL, noMoney);
+            SetWidgetDisabled(WIDX_INITIAL_LOAN, noMoney);
+            SetWidgetDisabled(WIDX_INITIAL_LOAN_INCREASE, noMoney);
+            SetWidgetDisabled(WIDX_INITIAL_LOAN_DECREASE, noMoney);
+            SetWidgetDisabled(WIDX_MAXIMUM_LOAN_LABEL, noMoney);
+            SetWidgetDisabled(WIDX_MAXIMUM_LOAN, noMoney);
+            SetWidgetDisabled(WIDX_MAXIMUM_LOAN_INCREASE, noMoney);
+            SetWidgetDisabled(WIDX_MAXIMUM_LOAN_DECREASE, noMoney);
+
+            if (gameState.park.Flags & PARK_FLAGS_RCT1_INTEREST)
             {
-                SetWidgetPressed(WIDX_NO_MONEY, true);
-                for (int32_t i = WIDX_GROUP_LOAN; i <= WIDX_FORBID_MARKETING; i++)
-                    widgets[i].type = WidgetType::empty;
+                widgets[WIDX_INTEREST_RATE_LABEL].type = WidgetType::empty;
+                widgets[WIDX_INTEREST_RATE].type = WidgetType::empty;
+                widgets[WIDX_INTEREST_RATE_INCREASE].type = WidgetType::empty;
+                widgets[WIDX_INTEREST_RATE_DECREASE].type = WidgetType::empty;
+                widgets[WIDX_RCT1_INTEREST].type = WidgetType::checkbox;
+                SetWidgetPressed(WIDX_RCT1_INTEREST, true);
+                SetWidgetDisabled(WIDX_RCT1_INTEREST, noMoney);
             }
             else
             {
-                SetWidgetPressed(WIDX_NO_MONEY, false);
+                widgets[WIDX_INTEREST_RATE_LABEL].type = WidgetType::label;
+                widgets[WIDX_INTEREST_RATE].type = WidgetType::spinner;
+                widgets[WIDX_INTEREST_RATE_INCREASE].type = WidgetType::button;
+                widgets[WIDX_INTEREST_RATE_DECREASE].type = WidgetType::button;
+                widgets[WIDX_RCT1_INTEREST].type = WidgetType::empty;
+                SetWidgetDisabled(WIDX_INTEREST_RATE_LABEL, noMoney);
+                SetWidgetDisabled(WIDX_INTEREST_RATE, noMoney);
+                SetWidgetDisabled(WIDX_INTEREST_RATE_INCREASE, noMoney);
+                SetWidgetDisabled(WIDX_INTEREST_RATE_DECREASE, noMoney);
+            }
 
-                widgets[WIDX_GROUP_LOAN].type = WidgetType::groupbox;
-                widgets[WIDX_INITIAL_LOAN_LABEL].type = WidgetType::label;
-                widgets[WIDX_INITIAL_LOAN].type = WidgetType::spinner;
-                widgets[WIDX_INITIAL_LOAN_INCREASE].type = WidgetType::button;
-                widgets[WIDX_INITIAL_LOAN_DECREASE].type = WidgetType::button;
-                widgets[WIDX_MAXIMUM_LOAN_LABEL].type = WidgetType::label;
-                widgets[WIDX_MAXIMUM_LOAN].type = WidgetType::spinner;
-                widgets[WIDX_MAXIMUM_LOAN_INCREASE].type = WidgetType::button;
-                widgets[WIDX_MAXIMUM_LOAN_DECREASE].type = WidgetType::button;
+            SetWidgetDisabled(WIDX_GROUP_BUSINESS_MODEL, noMoney);
+            SetWidgetDisabled(WIDX_INITIAL_CASH_LABEL, noMoney);
+            SetWidgetDisabled(WIDX_INITIAL_CASH, noMoney);
+            SetWidgetDisabled(WIDX_INITIAL_CASH_INCREASE, noMoney);
+            SetWidgetDisabled(WIDX_INITIAL_CASH_DECREASE, noMoney);
+            SetWidgetDisabled(WIDX_PAY_FOR_PARK_OR_RIDES_LABEL, noMoney);
+            SetWidgetDisabled(WIDX_PAY_FOR_PARK_OR_RIDES, noMoney);
+            SetWidgetDisabled(WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN, noMoney);
+            SetWidgetDisabled(WIDX_FORBID_MARKETING, noMoney);
 
-                if (gameState.park.Flags & PARK_FLAGS_RCT1_INTEREST)
-                {
-                    widgets[WIDX_INTEREST_RATE_LABEL].type = WidgetType::empty;
-                    widgets[WIDX_INTEREST_RATE].type = WidgetType::empty;
-                    widgets[WIDX_INTEREST_RATE_INCREASE].type = WidgetType::empty;
-                    widgets[WIDX_INTEREST_RATE_DECREASE].type = WidgetType::empty;
-                    widgets[WIDX_RCT1_INTEREST].type = WidgetType::checkbox;
-                    SetWidgetPressed(WIDX_RCT1_INTEREST, true);
-                }
-                else
-                {
-                    widgets[WIDX_INTEREST_RATE_LABEL].type = WidgetType::label;
-                    widgets[WIDX_INTEREST_RATE].type = WidgetType::spinner;
-                    widgets[WIDX_INTEREST_RATE_INCREASE].type = WidgetType::button;
-                    widgets[WIDX_INTEREST_RATE_DECREASE].type = WidgetType::button;
-                    widgets[WIDX_RCT1_INTEREST].type = WidgetType::empty;
-                }
-
-                widgets[WIDX_GROUP_BUSINESS_MODEL].type = WidgetType::groupbox;
-                widgets[WIDX_INITIAL_CASH_LABEL].type = WidgetType::label;
-                widgets[WIDX_INITIAL_CASH].type = WidgetType::spinner;
-                widgets[WIDX_INITIAL_CASH_INCREASE].type = WidgetType::button;
-                widgets[WIDX_INITIAL_CASH_DECREASE].type = WidgetType::button;
-                widgets[WIDX_PAY_FOR_PARK_OR_RIDES_LABEL].type = WidgetType::label;
-                widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type = WidgetType::dropdownMenu;
-                widgets[WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN].type = WidgetType::button;
+            if (!Park::EntranceFeeUnlocked())
+            {
+                widgets[WIDX_ENTRY_PRICE_LABEL].type = WidgetType::empty;
+                widgets[WIDX_ENTRY_PRICE].type = WidgetType::empty;
+                widgets[WIDX_ENTRY_PRICE_INCREASE].type = WidgetType::empty;
+                widgets[WIDX_ENTRY_PRICE_DECREASE].type = WidgetType::empty;
+            }
+            else
+            {
                 widgets[WIDX_ENTRY_PRICE_LABEL].type = WidgetType::label;
                 widgets[WIDX_ENTRY_PRICE].type = WidgetType::spinner;
                 widgets[WIDX_ENTRY_PRICE_INCREASE].type = WidgetType::button;
                 widgets[WIDX_ENTRY_PRICE_DECREASE].type = WidgetType::button;
-                widgets[WIDX_FORBID_MARKETING].type = WidgetType::checkbox;
-
-                if (!Park::EntranceFeeUnlocked())
-                {
-                    widgets[WIDX_ENTRY_PRICE_LABEL].type = WidgetType::empty;
-                    widgets[WIDX_ENTRY_PRICE].type = WidgetType::empty;
-                    widgets[WIDX_ENTRY_PRICE_INCREASE].type = WidgetType::empty;
-                    widgets[WIDX_ENTRY_PRICE_DECREASE].type = WidgetType::empty;
-                }
+                SetWidgetDisabled(WIDX_ENTRY_PRICE_LABEL, noMoney);
+                SetWidgetDisabled(WIDX_ENTRY_PRICE, noMoney);
+                SetWidgetDisabled(WIDX_ENTRY_PRICE_INCREASE, noMoney);
+                SetWidgetDisabled(WIDX_ENTRY_PRICE_DECREASE, noMoney);
             }
 
             SetWidgetPressed(WIDX_FORBID_MARKETING, gameState.park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN);
 
-            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty : WidgetType::closeBox;
+            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty
+                                                                                   : WidgetType::closeBox;
         }
 
         void FinancialDraw(RenderTarget& rt)
@@ -1664,7 +1680,8 @@ namespace OpenRCT2::Ui::Windows
             WindowDrawWidgets(*this, rt);
             DrawTabImages(rt);
 
-            auto& gameState = getGameState();
+            const auto& gameState = getGameState();
+            const auto wColour2 = colours[1];
 
             const auto& initialCashWidget = widgets[WIDX_INITIAL_CASH];
             if (initialCashWidget.type != WidgetType::empty)
@@ -1672,7 +1689,8 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords = windowPos + ScreenCoordsXY{ initialCashWidget.left + 1, initialCashWidget.top };
                 auto ft = Formatter();
                 ft.Add<money64>(getGameState().initialCash);
-                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+                auto colour = !IsWidgetDisabled(WIDX_INITIAL_CASH) ? wColour2 : wColour2.withFlag(ColourFlag::inset, true);
+                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft, colour);
             }
 
             const auto& initialLoanWidget = widgets[WIDX_INITIAL_LOAN];
@@ -1681,7 +1699,8 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords = windowPos + ScreenCoordsXY{ initialLoanWidget.left + 1, initialLoanWidget.top };
                 auto ft = Formatter();
                 ft.Add<money64>(gameState.bankLoan);
-                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+                auto colour = !IsWidgetDisabled(WIDX_INITIAL_LOAN) ? wColour2 : wColour2.withFlag(ColourFlag::inset, true);
+                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft, colour);
             }
 
             const auto& maximumLoanWidget = widgets[WIDX_MAXIMUM_LOAN];
@@ -1690,7 +1709,8 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords = windowPos + ScreenCoordsXY{ maximumLoanWidget.left + 1, maximumLoanWidget.top };
                 auto ft = Formatter();
                 ft.Add<money64>(getGameState().maxBankLoan);
-                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+                auto colour = !IsWidgetDisabled(WIDX_MAXIMUM_LOAN) ? wColour2 : wColour2.withFlag(ColourFlag::inset, true);
+                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft, colour);
             }
 
             const auto& interestRateWidget = widgets[WIDX_INTEREST_RATE];
@@ -1701,7 +1721,8 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<int16_t>(
                     std::clamp<int16_t>(static_cast<int16_t>(gameState.bankLoanInterestRate), INT16_MIN, INT16_MAX));
-                DrawTextBasic(rt, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
+                auto colour = !IsWidgetDisabled(WIDX_INTEREST_RATE) ? wColour2 : wColour2.withFlag(ColourFlag::inset, true);
+                DrawTextBasic(rt, screenCoords, STR_PERCENT_FORMAT_LABEL, ft, colour);
             }
 
             const auto& payForParkOrRidesWidget = widgets[WIDX_PAY_FOR_PARK_OR_RIDES];
@@ -1719,7 +1740,9 @@ namespace OpenRCT2::Ui::Windows
                 else
                     ft.Add<StringId>(STR_PAY_PARK_ENTER);
 
-                DrawTextBasic(rt, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
+                auto colour = !IsWidgetDisabled(WIDX_PAY_FOR_PARK_OR_RIDES) ? wColour2
+                                                                            : wColour2.withFlag(ColourFlag::inset, true);
+                DrawTextBasic(rt, screenCoords, STR_STRINGID, ft, colour);
             }
 
             const auto& entryPriceWidget = widgets[WIDX_ENTRY_PRICE];
@@ -1729,7 +1752,8 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords = windowPos + ScreenCoordsXY{ entryPriceWidget.left + 1, entryPriceWidget.top };
                 auto ft = Formatter();
                 ft.Add<money64>(gameState.park.EntranceFee);
-                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+                auto colour = !IsWidgetDisabled(WIDX_INITIAL_CASH) ? wColour2 : wColour2.withFlag(ColourFlag::inset, true);
+                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft, colour);
             }
         }
 
@@ -1925,20 +1949,15 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
 
             auto& gameState = getGameState();
-            if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
-            {
-                widgets[WIDX_CASH_PER_GUEST].type = WidgetType::empty;
-                widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WidgetType::empty;
-                widgets[WIDX_CASH_PER_GUEST_DECREASE].type = WidgetType::empty;
-            }
-            else
-            {
-                widgets[WIDX_CASH_PER_GUEST].type = WidgetType::spinner;
-                widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WidgetType::button;
-                widgets[WIDX_CASH_PER_GUEST_DECREASE].type = WidgetType::button;
-            }
+            bool noMoney = gameState.park.Flags & PARK_FLAGS_NO_MONEY;
 
-            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty : WidgetType::closeBox;
+            SetWidgetDisabled(WIDX_CASH_PER_GUEST_LABEL, noMoney);
+            SetWidgetDisabled(WIDX_CASH_PER_GUEST, noMoney);
+            SetWidgetDisabled(WIDX_CASH_PER_GUEST_INCREASE, noMoney);
+            SetWidgetDisabled(WIDX_CASH_PER_GUEST_DECREASE, noMoney);
+
+            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty
+                                                                                   : WidgetType::closeBox;
 
             SetWidgetPressed(WIDX_HARD_GUEST_GENERATION, gameState.park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION);
         }
@@ -1949,7 +1968,9 @@ namespace OpenRCT2::Ui::Windows
 
             WindowDrawWidgets(*this, rt);
             DrawTabImages(rt);
-            auto& gameState = getGameState();
+
+            const auto& gameState = getGameState();
+            const auto wColour2 = colours[1];
 
             const auto& cashPerGuestWidget = widgets[WIDX_CASH_PER_GUEST];
             if (cashPerGuestWidget.type != WidgetType::empty)
@@ -1958,29 +1979,32 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords = windowPos + ScreenCoordsXY{ cashPerGuestWidget.left + 1, cashPerGuestWidget.top };
                 auto ft = Formatter();
                 ft.Add<money64>(gameState.guestInitialCash);
-                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+                auto colour = !IsWidgetDisabled(WIDX_CASH_PER_GUEST) ? wColour2 : wColour2.withFlag(ColourFlag::inset, true);
+                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft, colour);
             }
+
+            auto colour = wColour2;
 
             // Guest initial happiness value
             const auto& initialHappinessWidget = widgets[WIDX_GUEST_INITIAL_HAPPINESS];
             screenCoords = windowPos + ScreenCoordsXY{ initialHappinessWidget.left + 1, initialHappinessWidget.top };
             auto ft = Formatter();
             ft.Add<uint16_t>((gameState.guestInitialHappiness * 100) / 255);
-            DrawTextBasic(rt, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
+            DrawTextBasic(rt, screenCoords, STR_PERCENT_FORMAT_LABEL, ft, colour);
 
             // Guest initial hunger value
             const auto& initialHungerWidget = widgets[WIDX_GUEST_INITIAL_HUNGER];
             screenCoords = windowPos + ScreenCoordsXY{ initialHungerWidget.left + 1, initialHungerWidget.top };
             ft = Formatter();
             ft.Add<uint16_t>(((255 - gameState.guestInitialHunger) * 100) / 255);
-            DrawTextBasic(rt, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
+            DrawTextBasic(rt, screenCoords, STR_PERCENT_FORMAT_LABEL, ft, colour);
 
             // Guest initial thirst value
             const auto& initialThirstWidget = widgets[WIDX_GUEST_INITIAL_THIRST];
             screenCoords = windowPos + ScreenCoordsXY{ initialThirstWidget.left + 1, initialThirstWidget.top };
             ft = Formatter();
             ft.Add<uint16_t>(((255 - gameState.guestInitialThirst) * 100) / 255);
-            DrawTextBasic(rt, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
+            DrawTextBasic(rt, screenCoords, STR_PERCENT_FORMAT_LABEL, ft, colour);
 
             // Guests' intensity value
             {
@@ -2118,27 +2142,23 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
 
             auto& gameState = getGameState();
-            if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
-            {
-                for (int32_t i = WIDX_LAND_COST_LABEL; i <= WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE; i++)
-                    widgets[i].type = WidgetType::empty;
-            }
-            else
-            {
-                widgets[WIDX_LAND_COST_LABEL].type = WidgetType::label;
-                widgets[WIDX_LAND_COST].type = WidgetType::spinner;
-                widgets[WIDX_LAND_COST_INCREASE].type = WidgetType::button;
-                widgets[WIDX_LAND_COST_DECREASE].type = WidgetType::button;
-                widgets[WIDX_CONSTRUCTION_RIGHTS_COST].type = WidgetType::spinner;
-                widgets[WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE].type = WidgetType::button;
-                widgets[WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE].type = WidgetType::button;
-            }
+            bool noMoney = gameState.park.Flags & PARK_FLAGS_NO_MONEY;
+
+            SetWidgetDisabled(WIDX_LAND_COST_LABEL, noMoney);
+            SetWidgetDisabled(WIDX_LAND_COST, noMoney);
+            SetWidgetDisabled(WIDX_LAND_COST_INCREASE, noMoney);
+            SetWidgetDisabled(WIDX_LAND_COST_DECREASE, noMoney);
+            SetWidgetDisabled(WIDX_CONSTRUCTION_RIGHTS_COST_LABEL, noMoney);
+            SetWidgetDisabled(WIDX_CONSTRUCTION_RIGHTS_COST, noMoney);
+            SetWidgetDisabled(WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE, noMoney);
+            SetWidgetDisabled(WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE, noMoney);
 
             SetWidgetPressed(WIDX_FORBID_TREE_REMOVAL, gameState.park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL);
             SetWidgetPressed(WIDX_FORBID_LANDSCAPE_CHANGES, gameState.park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES);
             SetWidgetPressed(WIDX_FORBID_HIGH_CONSTRUCTION, gameState.park.Flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION);
 
-            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty : WidgetType::closeBox;
+            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty
+                                                                                   : WidgetType::closeBox;
         }
 
         void LandDraw(RenderTarget& rt)
@@ -2149,6 +2169,8 @@ namespace OpenRCT2::Ui::Windows
             DrawTabImages(rt);
 
             const auto& gameState = getGameState();
+            const auto wColour2 = colours[1];
+
             const auto& landCostWidget = widgets[WIDX_LAND_COST];
             if (landCostWidget.type != WidgetType::empty)
             {
@@ -2156,7 +2178,8 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords = windowPos + ScreenCoordsXY{ landCostWidget.left + 1, landCostWidget.top };
                 auto ft = Formatter();
                 ft.Add<money64>(gameState.landPrice);
-                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+                auto colour = !IsWidgetDisabled(WIDX_LAND_COST) ? wColour2 : wColour2.withFlag(ColourFlag::inset, true);
+                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft, colour);
             }
 
             const auto& constructionRightsCostWidget = widgets[WIDX_CONSTRUCTION_RIGHTS_COST];
@@ -2167,7 +2190,9 @@ namespace OpenRCT2::Ui::Windows
                     + ScreenCoordsXY{ constructionRightsCostWidget.left + 1, constructionRightsCostWidget.top };
                 auto ft = Formatter();
                 ft.Add<money64>(gameState.constructionRightsPrice);
-                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+                auto colour = !IsWidgetDisabled(WIDX_CONSTRUCTION_RIGHTS_COST) ? wColour2
+                                                                               : wColour2.withFlag(ColourFlag::inset, true);
+                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft, colour);
             }
         }
 
@@ -2281,7 +2306,8 @@ namespace OpenRCT2::Ui::Windows
         {
             SetPressedTab();
 
-            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty : WidgetType::closeBox;
+            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty
+                                                                                   : WidgetType::closeBox;
         }
 
         /**
