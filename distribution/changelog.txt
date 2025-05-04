@@ -13,6 +13,7 @@
 - Change: [#23857] Replace display options tab with custom sprites.
 - Change: [#24069] [Plugin] Plugins are now available in the scenario editor and track designer.
 - Change: [#24135] Compress Emscripten js/wasm files.
+- Change: [#24194] The advanced options tab has been reworked to make it easier to find the RCT1 path setting.
 - Change: [#24235] Small changes to RCT1 theme.
 - Change: [#24236] Controls and Interface options now both have their own tabs in the Options window.
 - Change: [#24308] “Software” and “Software (hardware display)” renderers have been merged into a single “Software” renderer.
