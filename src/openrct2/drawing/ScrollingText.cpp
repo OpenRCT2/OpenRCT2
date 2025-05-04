@@ -39,7 +39,7 @@ struct DrawScrollText
 };
 
 static DrawScrollText _drawScrollTextList[OpenRCT2::kMaxScrollingTextEntries];
-static uint8_t _characterBitmaps[kSpriteFontGlyphCount + SPR_FONTS_GLYPH_COUNT][8];
+static uint8_t _characterBitmaps[SPR_FONTS_GLYPH_COUNT][8];
 static uint32_t _drawSCrollNextIndex = 0;
 static std::mutex _scrollingTextMutex;
 
@@ -48,7 +48,7 @@ static void ScrollingTextSetBitmapForSprite(
 static void ScrollingTextSetBitmapForTTF(
     std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour);
 
-static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_t offset, uint16_t count, bool isAntiAliased)
+static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_t count)
 {
     uint8_t drawingSurface[64];
     RenderTarget rt;
@@ -68,12 +68,12 @@ static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_
             {
                 val >>= 1;
                 uint8_t pixel = rt.bits[x + y * 8];
-                if (pixel == 1 || (isAntiAliased && pixel == 2))
+                if (pixel == 1)
                 {
                     val |= 0x80;
                 }
             }
-            _characterBitmaps[offset + i][x] = val;
+            _characterBitmaps[i][x] = val;
         }
     }
 };
@@ -105,19 +105,13 @@ static void ScrollingTextInitialiseScrollingText()
 
 void ScrollingTextInitialiseBitmaps()
 {
-    ScrollingTextInitialiseCharacterBitmaps(SPR_CHAR_START, 0, kSpriteFontGlyphCount, gTinyFontAntiAliased);
-    ScrollingTextInitialiseCharacterBitmaps(SPR_FONTS_BEGIN, kSpriteFontGlyphCount, SPR_FONTS_GLYPH_COUNT, false);
+    ScrollingTextInitialiseCharacterBitmaps(SPR_FONTS_BEGIN, SPR_FONTS_GLYPH_COUNT);
     ScrollingTextInitialiseScrollingText();
 }
 
 static uint8_t* FontSpriteGetCodepointBitmap(int32_t codepoint)
 {
     auto offset = FontSpriteGetCodepointOffset(codepoint);
-    if (offset >= kSpriteFontGlyphCount)
-    {
-        return _characterBitmaps[offset - (SPR_FONTS_BEGIN - SPR_CHAR_START) + kSpriteFontGlyphCount];
-    }
-
     return _characterBitmaps[offset];
 }
 

@@ -506,8 +506,6 @@ extern ImageId gPickupPeepImage;
 extern int32_t gPickupPeepX;
 extern int32_t gPickupPeepY;
 
-extern bool gTinyFontAntiAliased;
-
 bool ClipDrawPixelInfo(RenderTarget& dst, RenderTarget& src, const ScreenCoordsXY& coords, int32_t width, int32_t height);
 void GfxSetDirtyBlocks(const ScreenRect& rect);
 void GfxInvalidateScreen();

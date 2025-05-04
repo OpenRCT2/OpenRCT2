@@ -1651,7 +1651,7 @@ enum : ImageIndex
     SPR_FONTS_BEGIN = SPR_G2_END,
     // Sprite font characters
 
-    SPR_FONTS_AE_UPPER = SPR_FONTS_BEGIN + 0,
+    SPR_FONTS_AE_UPPER = SPR_FONTS_BEGIN + 224,
     SPR_FONTS_AE_LOWER,
     SPR_FONTS_O_STROKE_UPPER,
     SPR_FONTS_O_STROKE_LOWER,
@@ -1764,9 +1764,6 @@ enum : ImageIndex
 
     SPR_FONTS_ROUBLE_SIGN,
 
-    SPR_FONTS_J,
-    SPR_FONTS_L,
-
     SPR_FONTS_C_CIRCUMFLEX_UPPER,
     SPR_FONTS_C_CIRCUMFLEX_LOWER,
     SPR_FONTS_G_CIRCUMFLEX_UPPER,
@@ -1802,4 +1799,4 @@ enum : ImageIndex
 };
 
 constexpr size_t kG2SpriteCount = SPR_G2_END - SPR_G2_BEGIN;
-constexpr size_t kFontDatSpriteCount = SPR_FONTS_END - SPR_FONTS_BEGIN;
+constexpr size_t kFontsDatSpriteCount = SPR_FONTS_END - SPR_FONTS_BEGIN;
