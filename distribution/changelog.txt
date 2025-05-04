@@ -1,4 +1,4 @@
-0.4.22 (in development)
+0.4.22 (2025-05-04)
 ------------------------------------------------------------------------
 - Feature: [#24206] [Plugin] Add APIs for breaking down rides, reading the current breakdown, and for fixing broken down rides.
 - Improved: [#20073] The OpenGL drawing engine now supports screen invalidation which avoids the redrawing of unchanged regions.
