@@ -914,6 +914,8 @@ namespace OpenRCT2::Platform
             R"(C:\Program Files (x86)\Infogrames\RollerCoaster Tycoon 2)",
             R"(C:\Program Files\Infogrames Interactive\RollerCoaster Tycoon 2)",
             R"(C:\Program Files (x86)\Infogrames Interactive\RollerCoaster Tycoon 2)",
+            R"(C:\Program Files\Steam\steamapps\common\RollerCoaster Tycoon Classic)",
+            R"(C:\Program Files (x86)\Steam\steamapps\common\RollerCoaster Tycoon Classic)",
         };
     }
 
