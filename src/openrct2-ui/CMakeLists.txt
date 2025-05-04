@@ -207,6 +207,10 @@ if(MACOS_BUNDLE)
         PUBLIC ${CMAKE_BINARY_DIR}/g2.dat
         )
         list(APPEND BUNDLE_RESOURCES ${CMAKE_BINARY_DIR}/g2.dat)
+        target_sources(openrct2
+                PUBLIC ${CMAKE_BINARY_DIR}/font.dat
+        )
+        list(APPEND BUNDLE_RESOURCES ${CMAKE_BINARY_DIR}/font.dat)
     endif()
 
 

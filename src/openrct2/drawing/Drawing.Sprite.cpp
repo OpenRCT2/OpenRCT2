@@ -434,6 +434,7 @@ static void MaskMagnify(
 
 static Gx _g1 = {};
 static Gx _g2 = {};
+static Gx _font = {};
 static Gx _csg = {};
 static G1Element _scrollingText[kMaxScrollingTextEntries]{};
 static bool _csgLoaded = false;
@@ -508,11 +509,14 @@ void GfxUnloadG1()
     _g1.elements.shrink_to_fit();
 }
 
-void GfxUnloadG2()
+void GfxUnloadG2AndFont()
 {
     _g2.data.reset();
     _g2.elements.clear();
     _g2.elements.shrink_to_fit();
+    _font.data.reset();
+    _font.elements.clear();
+    _font.elements.shrink_to_fit();
 }
 
 void GfxUnloadCsg()
@@ -522,30 +526,30 @@ void GfxUnloadCsg()
     _csg.elements.shrink_to_fit();
 }
 
-bool GfxLoadG2()
+static bool GfxLoadOpenRCT2Gx(std::string filename, Gx& target, size_t expectedNumItems)
 {
-    LOG_VERBOSE("GfxLoadG2()");
-
+    LOG_VERBOSE("GfxLoadOpenRCT2Gx(\"%s\")", filename.c_str());
     auto env = GetContext()->GetPlatformEnvironment();
 
-    std::string path = Path::Combine(env->GetDirectoryPath(DirBase::openrct2), u8"g2.dat");
+    std::string path = Path::Combine(env->GetDirectoryPath(DirBase::openrct2), filename.c_str());
 
     try
     {
         auto fs = FileStream(path, FileMode::open);
-        _g2.header = fs.ReadValue<RCTG1Header>();
+        target.header = fs.ReadValue<RCTG1Header>();
 
         // Read element headers
-        _g2.elements.resize(_g2.header.num_entries);
-        ReadAndConvertGxDat(&fs, _g2.header.num_entries, false, _g2.elements.data());
+        target.elements.resize(target.header.num_entries);
+        ReadAndConvertGxDat(&fs, target.header.num_entries, false, target.elements.data());
 
         // Read element data
-        _g2.data = fs.ReadArray<uint8_t>(_g2.header.total_size);
+        target.data = fs.ReadArray<uint8_t>(target.header.total_size);
 
-        if (_g2.header.num_entries != G2_SPRITE_COUNT)
+        if (target.header.num_entries != expectedNumItems)
         {
-            std::string errorMessage = "Mismatched g2.dat size.\nExpected: " + std::to_string(G2_SPRITE_COUNT) + "\nActual: "
-                + std::to_string(_g2.header.num_entries) + "\ng2.dat may be installed improperly.\nPath to g2.dat: " + path;
+            std::string errorMessage = "Mismatched " + filename + " size.\nExpected: " + std::to_string(expectedNumItems)
+                + "\nActual: " + std::to_string(target.header.num_entries) + "\n" + filename
+                + " may be installed improperly.\nPath to " + filename + ": " + path;
 
             LOG_ERROR(errorMessage.c_str());
 
@@ -553,38 +557,47 @@ bool GfxLoadG2()
             {
                 auto uiContext = GetContext()->GetUiContext();
                 uiContext->ShowMessageBox(errorMessage);
-                uiContext->ShowMessageBox("Warning: You may experience graphical glitches if you continue. It's recommended "
-                                          "that you update g2.dat if you're seeing this message");
+                uiContext->ShowMessageBox(
+                    "Warning: You may experience graphical glitches if you continue. It's recommended "
+                    "that you update "
+                    + filename + " if you're seeing this message");
             }
         }
 
         // Fix entry data offsets
-        for (uint32_t i = 0; i < _g2.header.num_entries; i++)
+        for (uint32_t i = 0; i < target.header.num_entries; i++)
         {
-            if (_g2.elements[i].offset == nullptr)
+            if (target.elements[i].offset == nullptr)
             {
-                _g2.elements[i].offset = _g2.data.get();
+                target.elements[i].offset = target.data.get();
             }
             else
             {
-                _g2.elements[i].offset += reinterpret_cast<uintptr_t>(_g2.data.get());
+                target.elements[i].offset += reinterpret_cast<uintptr_t>(target.data.get());
             }
         }
         return true;
     }
     catch (const std::exception&)
     {
-        _g2.elements.clear();
-        _g2.elements.shrink_to_fit();
+        target.elements.clear();
+        target.elements.shrink_to_fit();
 
-        LOG_FATAL("Unable to load g2 graphics");
+        LOG_FATAL("Unable to load %s graphics", filename.c_str());
         if (!gOpenRCT2Headless)
         {
             auto uiContext = GetContext()->GetUiContext();
-            uiContext->ShowMessageBox("Unable to load g2.dat");
+            uiContext->ShowMessageBox("Unable to load " + filename);
         }
     }
     return false;
+}
+
+bool GfxLoadG2AndFont()
+{
+    auto res1 = GfxLoadOpenRCT2Gx("g2.dat", _g2, kG2SpriteCount);
+    auto res2 = GfxLoadOpenRCT2Gx("font.dat", _font, kFontDatSpriteCount);
+    return res1 && res2;
 }
 
 bool GfxLoadCsg()
@@ -1036,6 +1049,16 @@ const G1Element* GfxGetG1Element(ImageIndex image_id)
         }
 
         LOG_WARNING("Invalid entry in g2.dat requested, idx = %u. You may have to update your g2.dat.", idx);
+    }
+    else if (offset < SPR_FONT_END)
+    {
+        size_t idx = offset - SPR_FONT_BEGIN;
+        if (idx < _font.header.num_entries)
+        {
+            return &_font.elements[idx];
+        }
+
+        LOG_WARNING("Invalid entry in font.dat requested, idx = %u. You may have to update your font.dat.", idx);
     }
     else if (offset < SPR_CSG_END)
     {

@@ -403,6 +403,18 @@ else ()
     message("Skipping g2.dat generation in macOS cross-compile")
 endif ()
 
+# font
+if (NOT (MACOS_BUNDLE AND (NOT CMAKE_OSX_ARCHITECTURES MATCHES "${SYSTEM_MACOS_ARCH}")))
+    add_custom_command(
+            OUTPUT font.dat
+            COMMAND ./openrct2-cli sprite build ${CMAKE_BINARY_DIR}/font.dat ${ROOT_DIR}/resources/font/sprites.json
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+    add_custom_target(font DEPENDS OpenRCT2::openrct2-cli font.dat)
+else ()
+    message("Skipping font.dat generation in macOS cross-compile")
+endif ()
+
 # Include tests
 if (WITH_TESTS)
     enable_testing()
@@ -425,6 +437,7 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
     # CMake does not allow specifying a dependency chain which includes built-in
     # targets, like `install`, so we have to trick it and execute dependency ourselves.
     install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_CURRENT_BINARY_DIR}\" --target g2)")
+    install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_CURRENT_BINARY_DIR}\" --target font)")
     if (DOWNLOAD_TITLE_SEQUENCES)
         # Checks if this version of the title sequences are already installed, updates if necessary
         # if /data/sequence exists, it will overwrite this anyways (see `install(DIRECTORY "data/" ...)` below)
@@ -487,6 +500,7 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
             )")
     endif ()
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/g2.dat" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/font.dat" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
     install(DIRECTORY "data/" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
 
     # even when building WITH_TESTS, none of the below install steps are required for OpenRCT2.app
