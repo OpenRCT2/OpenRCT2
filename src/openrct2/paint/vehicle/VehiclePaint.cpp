@@ -2143,13 +2143,14 @@ static void VehiclePitchUp42BankedLeft135(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
+    constexpr uint32_t corkscrewFrame = 13;
     const int32_t modifiedImageDirection = (imageDirection + 8) % 32;
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined
         ? boundingBoxIndex
-        : YawTo4(modifiedImageDirection) + 13 * 4 + kBoundBoxIndexCorkscrew;
+        : YawTo4(modifiedImageDirection) + corkscrewFrame * kNumOrthogonalDirections + kBoundBoxIndexCorkscrew;
     if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
     {
-        const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, modifiedImageDirection, 13);
+        const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, modifiedImageDirection, corkscrewFrame);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteIndex, boundingBoxIndex, z, carEntry);
     }
     else
@@ -2162,11 +2163,13 @@ static void VehiclePitchUp42BankedRight135(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo4(imageDirection) + 3 * 4 + kBoundBoxIndexCorkscrew;
+    constexpr uint32_t corkscrewFrame = 3;
+    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined
+        ? boundingBoxIndex
+        : YawTo4(imageDirection) + corkscrewFrame * kNumOrthogonalDirections + kBoundBoxIndexCorkscrew;
     if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
     {
-        const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, 3);
+        const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, corkscrewFrame);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteIndex, boundingBoxIndex, z, carEntry);
     }
     else
@@ -2973,11 +2976,13 @@ static void VehiclePitchDown42BankedLeft135(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
-    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined ? boundingBoxIndex
-                                                                   : YawTo4(imageDirection) + 8 * 4 + kBoundBoxIndexCorkscrew;
+    constexpr uint32_t corkscrewFrame = 8;
+    boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined
+        ? boundingBoxIndex
+        : YawTo4(imageDirection) + corkscrewFrame * kNumOrthogonalDirections + kBoundBoxIndexCorkscrew;
     if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
     {
-        const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, 8);
+        const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, corkscrewFrame);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteIndex, boundingBoxIndex, z, carEntry);
     }
     else
@@ -2990,13 +2995,14 @@ static void VehiclePitchDown42BankedRight135(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, const int32_t z, const CarEntry* carEntry,
     uint32_t boundingBoxIndex)
 {
+    constexpr uint32_t corkscrewFrame = 18;
     const int32_t modifiedImageDirection = (imageDirection + 8) % 32;
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined
         ? boundingBoxIndex
-        : YawTo4(modifiedImageDirection) + 18 * 4 + kBoundBoxIndexCorkscrew;
+        : YawTo4(modifiedImageDirection) + corkscrewFrame * kNumOrthogonalDirections + kBoundBoxIndexCorkscrew;
     if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
     {
-        const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, modifiedImageDirection, 18);
+        const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, modifiedImageDirection, corkscrewFrame);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteIndex, boundingBoxIndex, z, carEntry);
     }
     else
@@ -3463,7 +3469,7 @@ void VehiclePitchCorkscrew(
     }
     boundingBoxIndex = boundingBoxIndex != kBoundBoxIndexUndefined
         ? boundingBoxIndex
-        : (YawTo4(imageDirection)) + corkscrewFrame * 4 + kBoundBoxIndexCorkscrew;
+        : (YawTo4(imageDirection)) + corkscrewFrame * kNumOrthogonalDirections + kBoundBoxIndexCorkscrew;
     if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
     {
         const int32_t spriteIndex = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, corkscrewFrame);
