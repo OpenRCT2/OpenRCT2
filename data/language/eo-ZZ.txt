@@ -2510,7 +2510,7 @@ STR_5265    :Elekti la enhavo-fontojn kiuj estas videblaj
 STR_5266    :Ekrano
 STR_5267    :Kulturo kaj Unuoj
 STR_5268    :Aŭdaĵoj
-STR_5269    :Regiloj kaj interfaco
+STR_5269    :Regiloj
 STR_5270    :Diversaĵoj
 STR_5272    :Malgranda Pejzaĝo
 STR_5273    :Granda Pejzaĝo
@@ -3804,3 +3804,7 @@ STR_6758    :Prunto-agordoj
 STR_6759    :Komerca modelo
 STR_6760    :Perlaboraĵoj:
 STR_6761    :Detaloj de Scenaro
+STR_6762    :Interfaco
+STR_6763    :RollerCoaster Tycoon 1
+STR_6764    :Konservado kaj aŭtokonservado
+STR_6765    :Altnivela
