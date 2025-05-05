@@ -38,6 +38,7 @@
 #include "object/ObjectRepository.h"
 #include "peep/PeepAnimations.h"
 #include "rct1/RCT1.h"
+#include "scripting/ScriptEngine.h"
 #include "ui/WindowManager.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
@@ -160,6 +161,12 @@ namespace OpenRCT2::Editor
 
         GameLoadScripts();
         GameNotifyMapChanged();
+
+#ifdef ENABLE_SCRIPTING
+        // Clear the plugin storage before saving
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        scriptEngine.ClearParkStorage();
+#endif
     }
 
     /**
@@ -279,7 +286,6 @@ namespace OpenRCT2::Editor
 
         RideInitAll();
 
-        //
         for (auto* guest : EntityList<Guest>())
         {
             guest->SetName({});

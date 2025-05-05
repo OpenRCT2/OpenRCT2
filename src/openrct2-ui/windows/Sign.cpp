@@ -291,13 +291,13 @@ namespace OpenRCT2::Ui::Windows
             text_colour_btn->image = GetColourButtonImage(_textColour);
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
 
             if (viewport != nullptr)
             {
-                WindowDrawViewport(dpi, *this);
+                WindowDrawViewport(rt, *this);
             }
         }
 

@@ -22,6 +22,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/management/Research.h>
+#include <openrct2/scripting/ScriptEngine.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
@@ -116,26 +117,26 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
             auto drawPreviousButton = widgets[WIDX_PREVIOUS_STEP_BUTTON].type != WindowWidgetType::Empty;
             auto drawNextButton = widgets[WIDX_NEXT_STEP_BUTTON].type != WindowWidgetType::Empty;
 
             if (drawPreviousButton)
-                DrawLeftButtonBack(dpi);
+                DrawLeftButtonBack(rt);
 
             if (drawNextButton)
-                DrawRightButtonBack(dpi);
+                DrawRightButtonBack(rt);
 
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
 
             if (drawPreviousButton)
-                DrawLeftButton(dpi);
+                DrawLeftButton(rt);
 
             if (drawNextButton)
-                DrawRightButton(dpi);
+                DrawRightButton(rt);
 
-            DrawStepText(dpi);
+            DrawStepText(rt);
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -296,6 +297,12 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
+#ifdef ENABLE_SCRIPTING
+            // Clear the plugin storage before saving
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine.ClearParkStorage();
+#endif
+
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->CloseAll();
 
@@ -319,24 +326,24 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::Empty;
         }
 
-        void DrawLeftButtonBack(DrawPixelInfo& dpi)
+        void DrawLeftButtonBack(RenderTarget& rt)
         {
             auto previousWidget = widgets[WIDX_PREVIOUS_IMAGE];
             auto leftTop = windowPos + ScreenCoordsXY{ previousWidget.left, previousWidget.top };
             auto rightBottom = windowPos + ScreenCoordsXY{ previousWidget.right, previousWidget.bottom };
-            GfxFilterRect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::Palette51);
         }
 
-        void DrawLeftButton(DrawPixelInfo& dpi)
+        void DrawLeftButton(RenderTarget& rt)
         {
             const auto topLeft = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 1, widgets[WIDX_PREVIOUS_IMAGE].top + 1 };
             const auto bottomRight = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].right - 1, widgets[WIDX_PREVIOUS_IMAGE].bottom - 1 };
-            GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
+            GfxFillRectInset(rt, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
 
             GfxDrawSprite(
-                dpi, ImageId(SPR_PREVIOUS),
+                rt, ImageId(SPR_PREVIOUS),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 6, widgets[WIDX_PREVIOUS_IMAGE].top + 6 });
 
             colour_t textColour = colours[1].colour;
@@ -353,28 +360,28 @@ namespace OpenRCT2::Ui::Windows
             if (gLegacyScene == LegacyScene::trackDesigner)
                 stringId = STR_EDITOR_STEP_OBJECT_SELECTION;
 
-            DrawTextBasic(dpi, { textX, textY }, STR_BACK_TO_PREVIOUS_STEP, {}, { textColour, TextAlignment::CENTRE });
-            DrawTextBasic(dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
+            DrawTextBasic(rt, { textX, textY }, STR_BACK_TO_PREVIOUS_STEP, {}, { textColour, TextAlignment::CENTRE });
+            DrawTextBasic(rt, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
         }
 
-        void DrawRightButtonBack(DrawPixelInfo& dpi)
+        void DrawRightButtonBack(RenderTarget& rt)
         {
             auto nextWidget = widgets[WIDX_NEXT_IMAGE];
             auto leftTop = windowPos + ScreenCoordsXY{ nextWidget.left, nextWidget.top };
             auto rightBottom = windowPos + ScreenCoordsXY{ nextWidget.right, nextWidget.bottom };
-            GfxFilterRect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+            GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::Palette51);
         }
 
-        void DrawRightButton(DrawPixelInfo& dpi)
+        void DrawRightButton(RenderTarget& rt)
         {
             const auto topLeft = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].left + 1, widgets[WIDX_NEXT_IMAGE].top + 1 };
             const auto bottomRight = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].right - 1, widgets[WIDX_NEXT_IMAGE].bottom - 1 };
-            GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
+            GfxFillRectInset(rt, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
 
             GfxDrawSprite(
-                dpi, ImageId(SPR_NEXT),
+                rt, ImageId(SPR_NEXT),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].right - 29, widgets[WIDX_NEXT_IMAGE].top + 6 });
 
             colour_t textColour = colours[1].colour;
@@ -392,17 +399,17 @@ namespace OpenRCT2::Ui::Windows
             if (gLegacyScene == LegacyScene::trackDesigner)
                 stringId = STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER;
 
-            DrawTextBasic(dpi, { textX, textY }, STR_FORWARD_TO_NEXT_STEP, {}, { textColour, TextAlignment::CENTRE });
-            DrawTextBasic(dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
+            DrawTextBasic(rt, { textX, textY }, STR_FORWARD_TO_NEXT_STEP, {}, { textColour, TextAlignment::CENTRE });
+            DrawTextBasic(rt, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
         }
 
-        void DrawStepText(DrawPixelInfo& dpi)
+        void DrawStepText(RenderTarget& rt)
         {
             int16_t stateX = (widgets[WIDX_PREVIOUS_IMAGE].right + widgets[WIDX_NEXT_IMAGE].left) / 2 + windowPos.x;
             int16_t stateY = height - 0x0C + windowPos.y;
             auto colour = colours[2].withFlag(ColourFlag::translucent, false).withFlag(ColourFlag::withOutline, true);
             DrawTextBasic(
-                dpi, { stateX, stateY }, kEditorStepNames[EnumValue(getGameState().editorStep)], {},
+                rt, { stateX, stateY }, kEditorStepNames[EnumValue(getGameState().editorStep)], {},
                 { colour, TextAlignment::CENTRE });
         }
 

@@ -289,7 +289,7 @@ void InGameConsole::Update()
     _consoleCaretTicks = (_consoleCaretTicks + 1) % 30;
 }
 
-void InGameConsole::Draw(DrawPixelInfo& dpi) const
+void InGameConsole::Draw(RenderTarget& rt) const
 {
     if (!_isOpen)
         return;
@@ -309,18 +309,18 @@ void InGameConsole::Draw(DrawPixelInfo& dpi) const
     Invalidate();
 
     // Give console area a translucent effect.
-    GfxFilterRect(dpi, { _consoleTopLeft, _consoleBottomRight }, FilterPaletteID::Palette51);
+    GfxFilterRect(rt, { _consoleTopLeft, _consoleBottomRight }, FilterPaletteID::Palette51);
 
     // Make input area more opaque.
     GfxFilterRect(
-        dpi, { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 10 }, _consoleBottomRight - ScreenCoordsXY{ 0, 1 } },
+        rt, { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 10 }, _consoleBottomRight - ScreenCoordsXY{ 0, 1 } },
         FilterPaletteID::Palette51);
 
     // Paint background colour.
     auto backgroundColour = ThemeGetColour(WindowClass::Console, 0);
-    GfxFillRectInset(dpi, { _consoleTopLeft, _consoleBottomRight }, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
+    GfxFillRectInset(rt, { _consoleTopLeft, _consoleBottomRight }, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
     GfxFillRectInset(
-        dpi, { _consoleTopLeft + ScreenCoordsXY{ 1, 1 }, _consoleBottomRight - ScreenCoordsXY{ 1, 1 } }, backgroundColour,
+        rt, { _consoleTopLeft + ScreenCoordsXY{ 1, 1 }, _consoleBottomRight - ScreenCoordsXY{ 1, 1 } }, backgroundColour,
         INSET_RECT_FLAG_BORDER_INSET);
 
     std::string lineBuffer;
@@ -336,19 +336,19 @@ void InGameConsole::Draw(DrawPixelInfo& dpi) const
             // as opposed to a desaturated grey
             if (textColour.colour == COLOUR_BLACK)
             {
-                DrawText(dpi, screenCoords, { textColour, style }, "{BLACK}");
-                DrawText(dpi, screenCoords, { kTextColour255, style }, _consoleLines[index].first.c_str(), true);
+                DrawText(rt, screenCoords, { textColour, style }, "{BLACK}");
+                DrawText(rt, screenCoords, { kTextColour255, style }, _consoleLines[index].first.c_str(), true);
             }
             else
             {
-                DrawText(dpi, screenCoords, { textColour, style }, _consoleLines[index].first.c_str(), true);
+                DrawText(rt, screenCoords, { textColour, style }, _consoleLines[index].first.c_str(), true);
             }
         }
         else
         {
             std::string lineColour = FormatTokenToStringWithBraces(_consoleLines[index].second);
-            DrawText(dpi, screenCoords, { textColour, style }, lineColour.c_str());
-            DrawText(dpi, screenCoords, { kTextColour255, style }, _consoleLines[index].first.c_str(), true);
+            DrawText(rt, screenCoords, { textColour, style }, lineColour.c_str());
+            DrawText(rt, screenCoords, { kTextColour255, style }, _consoleLines[index].first.c_str(), true);
         }
 
         screenCoords.y += lineHeight;
@@ -359,12 +359,12 @@ void InGameConsole::Draw(DrawPixelInfo& dpi) const
     // Draw current line
     if (textColour.colour == COLOUR_BLACK)
     {
-        DrawText(dpi, screenCoords, { textColour, style }, "{BLACK}");
-        DrawText(dpi, screenCoords, { kTextColour255, style }, _consoleCurrentLine.c_str(), true);
+        DrawText(rt, screenCoords, { textColour, style }, "{BLACK}");
+        DrawText(rt, screenCoords, { kTextColour255, style }, _consoleCurrentLine.c_str(), true);
     }
     else
     {
-        DrawText(dpi, screenCoords, { textColour, style }, _consoleCurrentLine.c_str(), true);
+        DrawText(rt, screenCoords, { textColour, style }, _consoleCurrentLine.c_str(), true);
     }
 
     // Draw caret
@@ -372,7 +372,7 @@ void InGameConsole::Draw(DrawPixelInfo& dpi) const
     {
         auto caret = screenCoords + ScreenCoordsXY{ _caretScreenPosX, lineHeight };
         uint8_t caretColour = ColourMapA[textColour.colour].lightest;
-        GfxFillRect(dpi, { caret, caret + ScreenCoordsXY{ kConsoleCaretWidth, 1 } }, caretColour);
+        GfxFillRect(rt, { caret, caret + ScreenCoordsXY{ kConsoleCaretWidth, 1 } }, caretColour);
     }
 
     // What about border colours?
@@ -381,21 +381,21 @@ void InGameConsole::Draw(DrawPixelInfo& dpi) const
 
     // Input area top border
     GfxFillRect(
-        dpi,
+        rt,
         { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 11 },
           { _consoleBottomRight.x, _consoleBottomRight.y - lineHeight - 11 } },
         borderColour1);
     GfxFillRect(
-        dpi,
+        rt,
         { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 10 },
           { _consoleBottomRight.x, _consoleBottomRight.y - lineHeight - 10 } },
         borderColour2);
 
     // Input area bottom border
     GfxFillRect(
-        dpi, { { _consoleTopLeft.x, _consoleBottomRight.y - 1 }, { _consoleBottomRight.x, _consoleBottomRight.y - 1 } },
+        rt, { { _consoleTopLeft.x, _consoleBottomRight.y - 1 }, { _consoleBottomRight.x, _consoleBottomRight.y - 1 } },
         borderColour1);
-    GfxFillRect(dpi, { { _consoleTopLeft.x, _consoleBottomRight.y }, _consoleBottomRight }, borderColour2);
+    GfxFillRect(rt, { { _consoleTopLeft.x, _consoleBottomRight.y }, _consoleBottomRight }, borderColour2);
 }
 
 // Calculates the amount of visible lines, based on the console size, excluding the input line.

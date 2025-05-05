@@ -19,7 +19,7 @@ constexpr int16_t kChatInputSize = 1024;
 constexpr uint8_t kChatMaxMessageLength = 200;
 constexpr int16_t kChatMaxWindowWidth = 600;
 
-struct DrawPixelInfo;
+struct RenderTarget;
 struct ScreenCoordsXY;
 
 enum class ChatInput : uint8_t
@@ -38,7 +38,7 @@ void ChatToggle();
 
 void ChatInit();
 void ChatUpdate();
-void ChatDraw(DrawPixelInfo& dpi, ColourWithFlags chatBackgroundColour);
+void ChatDraw(RenderTarget& rt, ColourWithFlags chatBackgroundColour);
 
 void ChatAddHistory(std::string_view s);
 void ChatInput(ChatInput input);

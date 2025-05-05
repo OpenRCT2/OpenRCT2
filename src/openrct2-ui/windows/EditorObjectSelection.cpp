@@ -722,25 +722,25 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             // ScrollPaint
             ScreenCoordsXY screenCoords;
             bool ridePage = (GetSelectedObjectType() == ObjectType::ride);
 
             uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
-            GfxClear(dpi, paletteIndex);
+            GfxClear(rt, paletteIndex);
 
             screenCoords.y = 0;
             for (size_t i = 0; i < _listItems.size(); i++)
             {
                 const auto& listItem = _listItems[i];
-                if (screenCoords.y + kScrollableRowHeight >= dpi.y && screenCoords.y <= dpi.y + dpi.height)
+                if (screenCoords.y + kScrollableRowHeight >= rt.y && screenCoords.y <= rt.y + rt.height)
                 {
                     // Draw checkbox
                     if (!(gLegacyScene == LegacyScene::trackDesignsManager) && !(*listItem.flags & 0x20))
                         GfxFillRectInset(
-                            dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
+                            rt, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
 
                     // Highlight background
                     auto highlighted = i == static_cast<size_t>(selected_list_item)
@@ -748,7 +748,7 @@ namespace OpenRCT2::Ui::Windows
                     if (highlighted)
                     {
                         auto bottom = screenCoords.y + (kScrollableRowHeight - 1);
-                        GfxFilterRect(dpi, { 0, screenCoords.y, width, bottom }, FilterPaletteID::PaletteDarken1);
+                        GfxFilterRect(rt, { 0, screenCoords.y, width, bottom }, FilterPaletteID::PaletteDarken1);
                     }
 
                     // Draw checkmark
@@ -761,7 +761,7 @@ namespace OpenRCT2::Ui::Windows
                         if (*listItem.flags & (ObjectSelectionFlags::InUse | ObjectSelectionFlags::AlwaysRequired))
                             colour2.setFlag(ColourFlag::inset, true);
 
-                        DrawText(dpi, screenCoords, { colour2, FontStyle::Medium, darkness }, kCheckMarkString);
+                        DrawText(rt, screenCoords, { colour2, FontStyle::Medium, darkness }, kCheckMarkString);
                     }
 
                     screenCoords.x = gLegacyScene == LegacyScene::trackDesignsManager ? 0 : 15;
@@ -789,7 +789,7 @@ namespace OpenRCT2::Ui::Windows
                         auto ft = Formatter();
                         ft.Add<const char*>(itemBuffer);
                         DrawTextEllipsised(
-                            dpi, screenCoords, width_limit - 15, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
+                            rt, screenCoords, width_limit - 15, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
                         screenCoords.x = widgets[WIDX_LIST_SORT_RIDE].left - widgets[WIDX_LIST].left;
                     }
 
@@ -804,7 +804,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     auto ft = Formatter();
                     ft.Add<const char*>(itemBuffer);
-                    DrawTextEllipsised(dpi, screenCoords, width_limit, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
+                    DrawTextEllipsised(rt, screenCoords, width_limit, STR_STRING, ft, { colour, FontStyle::Medium, darkness });
                 }
                 screenCoords.y += kScrollableRowHeight;
             }
@@ -1003,9 +1003,9 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIEW].right = widgets[WIDX_PREVIEW].left + kPreviewSize;
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
 
             // Draw main tab images
             for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
@@ -1015,7 +1015,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto image = ImageId(ObjectSelectionPages[i].Image);
                     auto screenPos = windowPos + ScreenCoordsXY{ widget.left, widget.top };
-                    GfxDrawSprite(dpi, image, screenPos);
+                    GfxDrawSprite(rt, image, screenPos);
                 }
             }
 
@@ -1051,14 +1051,14 @@ namespace OpenRCT2::Ui::Windows
                     if (spriteIndex == SPR_WEATHER_SUN_CLOUD)
                         screenPos += { 2, 4 };
 
-                    GfxDrawSprite(dpi, ImageId(spriteIndex, colours[1].colour), screenPos);
+                    GfxDrawSprite(rt, ImageId(spriteIndex, colours[1].colour), screenPos);
                 }
             }
 
             // Preview background
             const auto& previewWidget = widgets[WIDX_PREVIEW];
             GfxFillRect(
-                dpi,
+                rt,
                 { windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 },
                   windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },
                 ColourMapA[colours[1].colour].darkest);
@@ -1074,7 +1074,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<uint16_t>(numSelected);
                 ft.Add<uint16_t>(totalSelectable);
-                DrawTextBasic(dpi, screenPos, STR_OBJECT_SELECTION_SELECTION_SIZE, ft);
+                DrawTextBasic(rt, screenPos, STR_OBJECT_SELECTION_SELECTION_SIZE, ft);
             }
 
             // Draw sort button text
@@ -1086,7 +1086,7 @@ namespace OpenRCT2::Ui::Windows
                                                                 : kStringIdNone;
                 ft.Add<StringId>(stringId);
                 auto screenPos = windowPos + ScreenCoordsXY{ listSortTypeWidget.left + 1, listSortTypeWidget.top + 1 };
-                DrawTextEllipsised(dpi, screenPos, listSortTypeWidget.width(), STR_OBJECTS_SORT_TYPE, ft, { colours[1] });
+                DrawTextEllipsised(rt, screenPos, listSortTypeWidget.width(), STR_OBJECTS_SORT_TYPE, ft, { colours[1] });
             }
             const auto& listSortRideWidget = widgets[WIDX_LIST_SORT_RIDE];
             if (listSortRideWidget.type != WindowWidgetType::Empty)
@@ -1096,7 +1096,7 @@ namespace OpenRCT2::Ui::Windows
                                                                 : kStringIdNone;
                 ft.Add<StringId>(stringId);
                 auto screenPos = windowPos + ScreenCoordsXY{ listSortRideWidget.left + 1, listSortRideWidget.top + 1 };
-                DrawTextEllipsised(dpi, screenPos, listSortRideWidget.width(), STR_OBJECTS_SORT_RIDE, ft, { colours[1] });
+                DrawTextEllipsised(rt, screenPos, listSortRideWidget.width(), STR_OBJECTS_SORT_RIDE, ft, { colours[1] });
             }
 
             if (selected_list_item == -1 || _loadedObject == nullptr)
@@ -1104,18 +1104,18 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw preview
             {
-                DrawPixelInfo clipDPI;
+                RenderTarget clipDPI;
                 auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
                 int32_t previewWidth = previewWidget.width() - 1;
                 int32_t previewHeight = previewWidget.height() - 1;
-                if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, previewWidth, previewHeight))
+                if (ClipDrawPixelInfo(clipDPI, rt, screenPos, previewWidth, previewHeight))
                 {
                     _loadedObject->DrawPreview(clipDPI, previewWidth, previewHeight);
                 }
             }
 
-            DrawDescriptions(dpi);
-            DrawDebugData(dpi);
+            DrawDescriptions(rt);
+            DrawDebugData(rt);
         }
 
         void GoToTab(ObjectType objectType)
@@ -1241,7 +1241,7 @@ namespace OpenRCT2::Ui::Windows
             _listItems.shrink_to_fit();
         }
 
-        void DrawDescriptions(DrawPixelInfo& dpi)
+        void DrawDescriptions(RenderTarget& rt)
         {
             auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIEW].midX(), widgets[WIDX_PREVIEW].bottom + 3 };
             auto descriptionWidth = width - widgets[WIDX_LIST].right - 12;
@@ -1254,7 +1254,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const char*>(listItem->repositoryItem->Name.c_str());
                 screenPos.y += DrawTextWrapped(
-                    dpi, screenPos, descriptionWidth, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
+                    rt, screenPos, descriptionWidth, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
 
                 // Leave some space between name and description
                 screenPos.y += kListRowHeight;
@@ -1266,7 +1266,7 @@ namespace OpenRCT2::Ui::Windows
             if (_loadedObject->IsCompatibilityObject())
             {
                 screenPos.y += DrawTextWrapped(
-                                   dpi, screenPos, descriptionWidth, STR_OBJECT_SELECTION_COMPAT_OBJECT_DESCRIPTION, {},
+                                   rt, screenPos, descriptionWidth, STR_OBJECT_SELECTION_COMPAT_OBJECT_DESCRIPTION, {},
                                    { COLOUR_BRIGHT_RED })
                     + kListRowHeight;
             }
@@ -1278,7 +1278,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const char*>(description.c_str());
 
-                screenPos.y += DrawTextWrapped(dpi, screenPos, descriptionWidth, STR_WINDOW_COLOUR_2_STRINGID, ft);
+                screenPos.y += DrawTextWrapped(rt, screenPos, descriptionWidth, STR_WINDOW_COLOUR_2_STRINGID, ft);
                 screenPos.y += kListRowHeight;
             }
 
@@ -1301,7 +1301,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     auto ft = Formatter();
                     ft.Add<const char*>(sells.c_str());
-                    screenPos.y += DrawTextWrapped(dpi, screenPos, descriptionWidth, STR_RIDE_OBJECT_SHOP_SELLS, ft) + 2;
+                    screenPos.y += DrawTextWrapped(rt, screenPos, descriptionWidth, STR_RIDE_OBJECT_SHOP_SELLS, ft) + 2;
                 }
             }
             else if (GetSelectedObjectType() == ObjectType::sceneryGroup)
@@ -1309,11 +1309,11 @@ namespace OpenRCT2::Ui::Windows
                 const auto* sceneryGroupObject = reinterpret_cast<SceneryGroupObject*>(_loadedObject.get());
                 auto ft = Formatter();
                 ft.Add<uint16_t>(sceneryGroupObject->GetNumIncludedObjects());
-                screenPos.y += DrawTextWrapped(dpi, screenPos, descriptionWidth, STR_INCLUDES_X_OBJECTS, ft) + 2;
+                screenPos.y += DrawTextWrapped(rt, screenPos, descriptionWidth, STR_INCLUDES_X_OBJECTS, ft) + 2;
             }
             else if (GetSelectedObjectType() == ObjectType::music)
             {
-                screenPos.y += DrawTextWrapped(dpi, screenPos, descriptionWidth, STR_MUSIC_OBJECT_TRACK_HEADER) + 2;
+                screenPos.y += DrawTextWrapped(rt, screenPos, descriptionWidth, STR_MUSIC_OBJECT_TRACK_HEADER) + 2;
                 const auto* musicObject = reinterpret_cast<MusicObject*>(_loadedObject.get());
                 for (size_t i = 0; i < musicObject->GetTrackCount(); i++)
                 {
@@ -1326,7 +1326,7 @@ namespace OpenRCT2::Ui::Windows
                     auto ft = Formatter();
                     ft.Add<const char*>(track->Name.c_str());
                     ft.Add<const char*>(track->Composer.c_str());
-                    screenPos.y += DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 10, 0 }, descriptionWidth, stringId, ft);
+                    screenPos.y += DrawTextWrapped(rt, screenPos + ScreenCoordsXY{ 10, 0 }, descriptionWidth, stringId, ft);
                 }
             }
         }
@@ -1349,7 +1349,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawDebugData(DrawPixelInfo& dpi)
+        void DrawDebugData(RenderTarget& rt)
         {
             ObjectListItem* listItem = &_listItems[selected_list_item];
             auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height - (kListRowHeight * 6) };
@@ -1357,7 +1357,7 @@ namespace OpenRCT2::Ui::Windows
             // Draw fallback image warning
             if (_loadedObject && _loadedObject->UsesFallbackImages())
             {
-                DrawTextBasic(dpi, screenPos, STR_OBJECT_USES_FALLBACK_IMAGES, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+                DrawTextBasic(rt, screenPos, STR_OBJECT_USES_FALLBACK_IMAGES, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
             }
             screenPos.y += kListRowHeight;
 
@@ -1365,7 +1365,7 @@ namespace OpenRCT2::Ui::Windows
             if (GetSelectedObjectType() == ObjectType::ride)
             {
                 auto stringId = GetRideTypeStringId(listItem->repositoryItem);
-                DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+                DrawTextBasic(rt, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
             }
 
             // Draw peep animation object type
@@ -1373,14 +1373,14 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto* animObj = reinterpret_cast<PeepAnimationsObject*>(_loadedObject.get());
                 auto stringId = GetAnimationPeepTypeStringId(animObj->GetPeepType());
-                DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+                DrawTextBasic(rt, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
             }
 
             screenPos.y += kListRowHeight;
 
             // Draw object source
             auto stringId = ObjectManagerGetSourceGameString(listItem->repositoryItem->GetFirstSourceGame());
-            DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+            DrawTextBasic(rt, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
             screenPos.y += kListRowHeight;
 
             // Draw object filename
@@ -1390,7 +1390,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const utf8*>(path.c_str());
                 DrawTextBasic(
-                    dpi, { windowPos.x + this->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
+                    rt, { windowPos.x + this->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
                     { COLOUR_BLACK, TextAlignment::RIGHT });
                 screenPos.y += kListRowHeight;
             }
@@ -1410,7 +1410,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const char*>(authorsString.c_str());
                 DrawTextEllipsised(
-                    dpi, { windowPos.x + width - 5, screenPos.y }, width - widgets[WIDX_LIST].right - 4,
+                    rt, { windowPos.x + width - 5, screenPos.y }, width - widgets[WIDX_LIST].right - 4,
                     STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::RIGHT });
             }
         }

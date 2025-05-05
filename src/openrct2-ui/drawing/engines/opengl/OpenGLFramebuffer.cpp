@@ -89,9 +89,9 @@ void OpenGLFramebuffer::BindRead() const
     glBindFramebuffer(GL_READ_FRAMEBUFFER, _id);
 }
 
-void OpenGLFramebuffer::GetPixels(DrawPixelInfo& dpi) const
+void OpenGLFramebuffer::GetPixels(RenderTarget& rt) const
 {
-    assert(dpi.width == _width && dpi.height == _height);
+    assert(rt.width == _width && rt.height == _height);
 
     auto pixels = std::make_unique<uint8_t[]>(_width * _height);
     glBindTexture(GL_TEXTURE_2D, _texture);
@@ -100,12 +100,12 @@ void OpenGLFramebuffer::GetPixels(DrawPixelInfo& dpi) const
 
     // Flip pixels vertically on copy
     uint8_t* src = pixels.get() + ((_height - 1) * _width);
-    uint8_t* dst = dpi.bits;
+    uint8_t* dst = rt.bits;
     for (int32_t y = 0; y < _height; y++)
     {
         std::copy_n(src, _width, dst);
         src -= _width;
-        dst += dpi.LineStride();
+        dst += rt.LineStride();
     }
 }
 
@@ -150,18 +150,18 @@ GLuint OpenGLFramebuffer::CreateDepthTexture(int32_t width, int32_t height)
     return depth;
 }
 
-void OpenGLFramebuffer::SetPixels(const DrawPixelInfo& dpi)
+void OpenGLFramebuffer::SetPixels(const RenderTarget& rt)
 {
-    assert(dpi.width == _width && dpi.height == _height);
+    assert(rt.width == _width && rt.height == _height);
 
     auto pixels = std::make_unique<uint8_t[]>(_width * _height);
     // Flip pixels vertically on copy
     uint8_t* dst = pixels.get() + ((_height - 1) * _width);
-    uint8_t* src = dpi.bits;
+    uint8_t* src = rt.bits;
     for (int32_t y = 0; y < _height; y++)
     {
         std::copy_n(src, _width, dst);
-        src += dpi.width + dpi.pitch;
+        src += rt.width + rt.pitch;
         dst -= _width;
     }
 

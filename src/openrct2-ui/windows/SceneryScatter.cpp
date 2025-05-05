@@ -179,9 +179,9 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gWindowSceneryScatterSize));
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            WindowDrawWidgets(*this, dpi);
+            WindowDrawWidgets(*this, rt);
 
             // Draw area as a number for tool sizes bigger than 7
             if (gWindowSceneryScatterSize > kLandToolMaximumSizeWithSprite)
@@ -191,7 +191,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<uint16_t>(gWindowSceneryScatterSize);
                 DrawTextBasic(
-                    dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+                    rt, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
             }
         }
     };

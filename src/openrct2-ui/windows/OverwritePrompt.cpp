@@ -86,16 +86,16 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
 
             auto ft = Formatter();
             ft.Add<StringId>(STR_STRING);
             ft.Add<char*>(_name.c_str());
 
             ScreenCoordsXY stringCoords(windowPos.x + width / 2, windowPos.y + (height / 2) - 3);
-            DrawTextWrapped(dpi, stringCoords, width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, ft, { TextAlignment::CENTRE });
+            DrawTextWrapped(rt, stringCoords, width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, ft, { TextAlignment::CENTRE });
         }
     };
 

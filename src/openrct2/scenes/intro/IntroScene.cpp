@@ -56,7 +56,7 @@ namespace OpenRCT2
     static void ScreenIntroProcessMouseInput();
     static void ScreenIntroProcessKeyboardInput();
     static void ScreenIntroSkipPart();
-    static void ScreenIntroDrawLogo(DrawPixelInfo& dpi);
+    static void ScreenIntroDrawLogo(RenderTarget& rt);
 
     // rct2: 0x0068E966
     void IntroScene::Tick()
@@ -187,7 +187,7 @@ namespace OpenRCT2
         }
     }
 
-    void IntroDraw(DrawPixelInfo& dpi)
+    void IntroDraw(RenderTarget& rt)
     {
         int32_t screenWidth = ContextGetWidth();
 
@@ -197,37 +197,35 @@ namespace OpenRCT2
             case IntroState::Disclaimer2:
                 break;
             case IntroState::PublisherBegin:
-                GfxClear(dpi, kBackgroundColourDark);
+                GfxClear(rt, kBackgroundColourDark);
                 break;
             case IntroState::PublisherScroll:
-                GfxClear(dpi, kBackgroundColourDark);
+                GfxClear(rt, kBackgroundColourDark);
 
                 // Draw a white rectangle for the logo background (gives a bit of white margin)
                 GfxFillRect(
-                    dpi,
+                    rt,
                     { { (screenWidth / 2) - 320 + 50, _introStateCounter + 50 },
                       { (screenWidth / 2) - 320 + 50 + 540, _introStateCounter + 50 + 425 } },
                     kBorderColourPublisher);
 
                 // Draw Infogrames logo
-                GfxDrawSprite(dpi, ImageId(SPR_INTRO_INFOGRAMES_00), { (screenWidth / 2) - 320 + 69, _introStateCounter + 69 });
+                GfxDrawSprite(rt, ImageId(SPR_INTRO_INFOGRAMES_00), { (screenWidth / 2) - 320 + 69, _introStateCounter + 69 });
+                GfxDrawSprite(rt, ImageId(SPR_INTRO_INFOGRAMES_10), { (screenWidth / 2) - 320 + 319, _introStateCounter + 69 });
+                GfxDrawSprite(rt, ImageId(SPR_INTRO_INFOGRAMES_01), { (screenWidth / 2) - 320 + 69, _introStateCounter + 319 });
                 GfxDrawSprite(
-                    dpi, ImageId(SPR_INTRO_INFOGRAMES_10), { (screenWidth / 2) - 320 + 319, _introStateCounter + 69 });
-                GfxDrawSprite(
-                    dpi, ImageId(SPR_INTRO_INFOGRAMES_01), { (screenWidth / 2) - 320 + 69, _introStateCounter + 319 });
-                GfxDrawSprite(
-                    dpi, ImageId(SPR_INTRO_INFOGRAMES_11), { (screenWidth / 2) - 320 + 319, _introStateCounter + 319 });
+                    rt, ImageId(SPR_INTRO_INFOGRAMES_11), { (screenWidth / 2) - 320 + 319, _introStateCounter + 319 });
                 break;
             case IntroState::DeveloperBegin:
-                GfxClear(dpi, kBackgroundColourDark);
+                GfxClear(rt, kBackgroundColourDark);
                 GfxTransposePalette(PALETTE_G1_IDX_DEVELOPER, 255);
                 break;
             case IntroState::DeveloperScroll:
-                GfxClear(dpi, kBackgroundColourDark);
+                GfxClear(rt, kBackgroundColourDark);
 
                 // Draw Chris Sawyer logo
-                GfxDrawSprite(dpi, ImageId(SPR_INTRO_CHRIS_SAWYER_00), { (screenWidth / 2) - 320 + 70, _introStateCounter });
-                GfxDrawSprite(dpi, ImageId(SPR_INTRO_CHRIS_SAWYER_10), { (screenWidth / 2) - 320 + 320, _introStateCounter });
+                GfxDrawSprite(rt, ImageId(SPR_INTRO_CHRIS_SAWYER_00), { (screenWidth / 2) - 320 + 70, _introStateCounter });
+                GfxDrawSprite(rt, ImageId(SPR_INTRO_CHRIS_SAWYER_10), { (screenWidth / 2) - 320 + 320, _introStateCounter });
                 break;
             case IntroState::LogoFadeIn:
                 if (_introStateCounter <= 0xFF00)
@@ -238,10 +236,10 @@ namespace OpenRCT2
                 {
                     GfxTransposePalette(PALETTE_G1_IDX_LOGO, 255);
                 }
-                ScreenIntroDrawLogo(dpi);
+                ScreenIntroDrawLogo(rt);
                 break;
             case IntroState::LogoWait:
-                ScreenIntroDrawLogo(dpi);
+                ScreenIntroDrawLogo(rt);
                 break;
             case IntroState::LogoFadeOut:
                 if (_introStateCounter >= 0)
@@ -252,10 +250,10 @@ namespace OpenRCT2
                 {
                     GfxTransposePalette(PALETTE_G1_IDX_LOGO, 0);
                 }
-                ScreenIntroDrawLogo(dpi);
+                ScreenIntroDrawLogo(rt);
                 break;
             case IntroState::Clear:
-                GfxClear(dpi, kBackgroundColourDark);
+                GfxClear(rt, kBackgroundColourDark);
                 break;
             default:
                 break;
@@ -302,7 +300,7 @@ namespace OpenRCT2
         }
     }
 
-    static void ScreenIntroDrawLogo(DrawPixelInfo& dpi)
+    static void ScreenIntroDrawLogo(RenderTarget& rt)
     {
         int32_t screenWidth = ContextGetWidth();
         int32_t imageWidth = 640;
@@ -315,12 +313,12 @@ namespace OpenRCT2
         DrawingEngineInvalidateImage(SPR_INTRO_LOGO_11);
         DrawingEngineInvalidateImage(SPR_INTRO_LOGO_21);
 
-        GfxClear(dpi, kBackgroundColourLogo);
-        GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_00), { imageX + 0, 0 });
-        GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_10), { imageX + 220, 0 });
-        GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_20), { imageX + 440, 0 });
-        GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_01), { imageX + 0, 240 });
-        GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_11), { imageX + 220, 240 });
-        GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_21), { imageX + 440, 240 });
+        GfxClear(rt, kBackgroundColourLogo);
+        GfxDrawSprite(rt, ImageId(SPR_INTRO_LOGO_00), { imageX + 0, 0 });
+        GfxDrawSprite(rt, ImageId(SPR_INTRO_LOGO_10), { imageX + 220, 0 });
+        GfxDrawSprite(rt, ImageId(SPR_INTRO_LOGO_20), { imageX + 440, 0 });
+        GfxDrawSprite(rt, ImageId(SPR_INTRO_LOGO_01), { imageX + 0, 240 });
+        GfxDrawSprite(rt, ImageId(SPR_INTRO_LOGO_11), { imageX + 220, 240 });
+        GfxDrawSprite(rt, ImageId(SPR_INTRO_LOGO_21), { imageX + 440, 240 });
     }
 } // namespace OpenRCT2

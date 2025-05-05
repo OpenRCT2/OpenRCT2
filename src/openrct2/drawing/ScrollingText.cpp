@@ -51,15 +51,15 @@ static void ScrollingTextSetBitmapForTTF(
 static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_t offset, uint16_t count, bool isAntiAliased)
 {
     uint8_t drawingSurface[64];
-    DrawPixelInfo dpi;
-    dpi.bits = reinterpret_cast<uint8_t*>(&drawingSurface);
-    dpi.width = 8;
-    dpi.height = 8;
+    RenderTarget rt;
+    rt.bits = reinterpret_cast<uint8_t*>(&drawingSurface);
+    rt.width = 8;
+    rt.height = 8;
 
     for (int32_t i = 0; i < count; i++)
     {
         std::fill_n(drawingSurface, sizeof(drawingSurface), 0x00);
-        GfxDrawSpriteSoftware(dpi, ImageId(glyphStart + (EnumValue(FontStyle::Tiny) * count) + i), { -1, 0 });
+        GfxDrawSpriteSoftware(rt, ImageId(glyphStart + (EnumValue(FontStyle::Tiny) * count) + i), { -1, 0 });
 
         for (int32_t x = 0; x < 8; x++)
         {
@@ -67,7 +67,7 @@ static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_
             for (int32_t y = 0; y < 8; y++)
             {
                 val >>= 1;
-                uint8_t pixel = dpi.bits[x + y * 8];
+                uint8_t pixel = rt.bits[x + y * 8];
                 if (pixel == 1 || (isAntiAliased && pixel == 2))
                 {
                     val |= 0x80;

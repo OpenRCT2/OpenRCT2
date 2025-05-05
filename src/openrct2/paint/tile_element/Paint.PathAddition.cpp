@@ -198,10 +198,9 @@ static void PathAdditionBenchesPaint(
 
 /* rct2: 0x006A6008 */
 static void PathAdditionJumpingFountainsPaint(
-    PaintSession& session, const PathAdditionEntry& pathAdditionEntry, int32_t height, ImageId imageTemplate,
-    DrawPixelInfo& dpi)
+    PaintSession& session, const PathAdditionEntry& pathAdditionEntry, int32_t height, ImageId imageTemplate, RenderTarget& rt)
 {
-    if (dpi.zoom_level > ZoomLevel{ 0 })
+    if (rt.zoom_level > ZoomLevel{ 0 })
         return;
 
     auto imageId = imageTemplate.WithIndex(pathAdditionEntry.image);

@@ -101,7 +101,7 @@ namespace OpenRCT2::Ui::Windows
     }
 
     static void DrawResearchItem(
-        DrawPixelInfo& dpi, const ResearchItem& researchItem, const int16_t& width, const ScreenCoordsXY& screenCoords,
+        RenderTarget& rt, const ResearchItem& researchItem, const int16_t& width, const ScreenCoordsXY& screenCoords,
         StringId format, TextPaint textPaint)
     {
         const StringId itemNameId = researchItem.GetName();
@@ -117,20 +117,20 @@ namespace OpenRCT2::Ui::Windows
             // Draw group name
             auto ft = Formatter();
             ft.Add<StringId>(rideTypeName);
-            DrawTextEllipsised(dpi, screenCoords, columnSplitOffset - 11, format, ft, textPaint);
+            DrawTextEllipsised(rt, screenCoords, columnSplitOffset - 11, format, ft, textPaint);
 
             // Draw vehicle name
             ft = Formatter();
             ft.Add<StringId>(itemNameId);
             DrawTextEllipsised(
-                dpi, { screenCoords + ScreenCoordsXY{ columnSplitOffset, 0 } }, columnSplitOffset - 11, format, ft, textPaint);
+                rt, { screenCoords + ScreenCoordsXY{ columnSplitOffset, 0 } }, columnSplitOffset - 11, format, ft, textPaint);
         }
         else
         {
             // Scenery group, flat ride or shopdis
             auto ft = Formatter();
             ft.Add<StringId>(itemNameId);
-            DrawTextEllipsised(dpi, screenCoords, width, format, ft, textPaint);
+            DrawTextEllipsised(rt, screenCoords, width, format, ft, textPaint);
         }
     }
 
@@ -268,13 +268,13 @@ namespace OpenRCT2::Ui::Windows
             WindowEditorInventionsListDragOpen(researchItem, windowPos, widgets[WIDX_PRE_RESEARCHED_SCROLL].right);
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             const auto& gameState = getGameState();
 
             // Draw background
             uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
-            GfxClear(dpi, paletteIndex);
+            GfxClear(rt, paletteIndex);
 
             int16_t boxWidth = widgets[WIDX_RESEARCH_ORDER_SCROLL].width();
             int32_t itemY = -kScrollableRowHeight;
@@ -284,7 +284,7 @@ namespace OpenRCT2::Ui::Windows
             for (const auto& researchItem : researchList)
             {
                 itemY += kScrollableRowHeight;
-                if (itemY + kScrollableRowHeight < dpi.y || itemY >= dpi.y + dpi.height)
+                if (itemY + kScrollableRowHeight < rt.y || itemY >= rt.y + rt.height)
                     continue;
 
                 if (_selectedResearchItem == &researchItem)
@@ -303,7 +303,7 @@ namespace OpenRCT2::Ui::Windows
                         bottom = itemY;
                     }
 
-                    GfxFilterRect(dpi, { 0, top, boxWidth, bottom }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(rt, { 0, top, boxWidth, bottom }, FilterPaletteID::PaletteDarken1);
                 }
 
                 if (dragItem != nullptr && researchItem == *dragItem)
@@ -324,7 +324,7 @@ namespace OpenRCT2::Ui::Windows
                     colour = colours[1].withFlag(ColourFlag::inset, true);
                 }
 
-                DrawResearchItem(dpi, researchItem, boxWidth, { 1, itemY }, STR_BLACK_STRING, { colour, fontStyle, darkness });
+                DrawResearchItem(rt, researchItem, boxWidth, { 1, itemY }, STR_BLACK_STRING, { colour, fontStyle, darkness });
             }
         }
 
@@ -353,28 +353,28 @@ namespace OpenRCT2::Ui::Windows
             return fallback;
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
 
             // Tab image
             auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top };
-            GfxDrawSprite(dpi, ImageId(SPR_TAB_FINANCES_RESEARCH_0 + (frame_no / 2) % 8), screenPos);
+            GfxDrawSprite(rt, ImageId(SPR_TAB_FINANCES_RESEARCH_0 + (frame_no / 2) % 8), screenPos);
 
             // Pre-researched items label
             screenPos = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PRE_RESEARCHED_SCROLL].left, widgets[WIDX_PRE_RESEARCHED_SCROLL].top - 11 };
-            DrawTextBasic(dpi, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_PREINVENTED_ITEMS);
+            DrawTextBasic(rt, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_PREINVENTED_ITEMS);
 
             // Research order label
             screenPos = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_RESEARCH_ORDER_SCROLL].left, widgets[WIDX_RESEARCH_ORDER_SCROLL].top - 11 };
-            DrawTextBasic(dpi, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_TO_BE_INVENTED_ITEMS);
+            DrawTextBasic(rt, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_TO_BE_INVENTED_ITEMS);
 
             // Preview background
             auto& bkWidget = widgets[WIDX_PREVIEW];
             GfxFillRect(
-                dpi,
+                rt,
                 { windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 },
                   windowPos + ScreenCoordsXY{ bkWidget.right - 1, bkWidget.bottom - 1 } },
                 ColourMapA[colours[1].colour].darkest);
@@ -399,11 +399,11 @@ namespace OpenRCT2::Ui::Windows
             const auto* object = ObjectEntryGetObject(objectEntryType, researchItem->entryIndex);
             if (object != nullptr)
             {
-                DrawPixelInfo clipDPI;
+                RenderTarget clipDPI;
                 screenPos = windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 };
                 const auto clipWidth = bkWidget.width() - 1;
                 const auto clipHeight = bkWidget.height() - 1;
-                if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, clipWidth, clipHeight))
+                if (ClipDrawPixelInfo(clipDPI, rt, screenPos, clipWidth, clipHeight))
                 {
                     object->DrawPreview(clipDPI, clipWidth, clipHeight);
                 }
@@ -432,14 +432,14 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(stringId);
             }
 
-            DrawTextEllipsised(dpi, screenPos, itemWidth, drawString, ft, { TextAlignment::CENTRE });
+            DrawTextEllipsised(rt, screenPos, itemWidth, drawString, ft, { TextAlignment::CENTRE });
             screenPos.y += 15;
 
             // Item category
             screenPos.x = windowPos.x + widgets[WIDX_RESEARCH_ORDER_SCROLL].right + 4;
             ft = Formatter();
             ft.Add<StringId>(researchItem->GetCategoryInventionString());
-            DrawTextBasic(dpi, screenPos, STR_INVENTION_RESEARCH_GROUP, ft);
+            DrawTextBasic(rt, screenPos, STR_INVENTION_RESEARCH_GROUP, ft);
         }
 
         void OnPrepareDraw() override
@@ -655,12 +655,12 @@ namespace OpenRCT2::Ui::Windows
             Close();
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
             auto screenCoords = windowPos + ScreenCoordsXY{ 0, 2 };
 
             DrawResearchItem(
-                dpi, _draggedItem, width, screenCoords, STR_WINDOW_COLOUR_2_STRINGID,
+                rt, _draggedItem, width, screenCoords, STR_WINDOW_COLOUR_2_STRINGID,
                 { ColourWithFlags{ COLOUR_BLACK }.withFlag(ColourFlag::withOutline, true) });
         }
 

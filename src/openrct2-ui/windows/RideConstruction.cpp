@@ -1623,13 +1623,13 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_O_TRACK].tooltip = trackDrawerDescriptor.Covered.tooltip;
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawPixelInfo clipdpi;
+            RenderTarget clippedRT;
             Widget* widget;
             int32_t widgetWidth, widgetHeight;
 
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
 
             widget = &widgets[WIDX_CONSTRUCT];
             if (widget->type == WindowWidgetType::Empty)
@@ -1647,23 +1647,23 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = ScreenCoordsXY{ windowPos.x + widget->left + 1, windowPos.y + widget->top + 1 };
             widgetWidth = widget->width() - 1;
             widgetHeight = widget->height() - 1;
-            if (ClipDrawPixelInfo(clipdpi, dpi, screenCoords, widgetWidth, widgetHeight))
+            if (ClipDrawPixelInfo(clippedRT, rt, screenCoords, widgetWidth, widgetHeight))
             {
                 DrawTrackPiece(
-                    clipdpi, rideIndex, trackType, trackDirection, liftHillAndInvertedState, widgetWidth, widgetHeight);
+                    clippedRT, rideIndex, trackType, trackDirection, liftHillAndInvertedState, widgetWidth, widgetHeight);
             }
 
             // Draw cost
             screenCoords = { windowPos.x + widget->midX(), windowPos.y + widget->bottom - 23 };
             if (_rideConstructionState != RideConstructionState::Place)
-                DrawTextBasic(dpi, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
+                DrawTextBasic(rt, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
 
             screenCoords.y += 11;
             if (_currentTrackPrice != kMoney64Undefined && !(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_currentTrackPrice);
-                DrawTextBasic(dpi, screenCoords, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
+                DrawTextBasic(rt, screenCoords, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
             }
         }
 
@@ -2638,7 +2638,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         void DrawTrackPiece(
-            DrawPixelInfo& dpi, RideId rideIndex, OpenRCT2::TrackElemType trackType, int32_t trackDirection,
+            RenderTarget& rt, RideId rideIndex, OpenRCT2::TrackElemType trackType, int32_t trackDirection,
             SelectedLiftAndInverted liftHillAndInvertedState, int32_t widgetWidth, int32_t widgetHeight)
         {
             auto currentRide = GetRide(rideIndex);
@@ -2667,25 +2667,25 @@ namespace OpenRCT2::Ui::Windows
 
             const ScreenCoordsXY rotatedScreenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), mapCoords);
 
-            dpi.x += rotatedScreenCoords.x - widgetWidth / 2;
-            dpi.y += rotatedScreenCoords.y - widgetHeight / 2 - 16;
+            rt.x += rotatedScreenCoords.x - widgetWidth / 2;
+            rt.y += rotatedScreenCoords.y - widgetHeight / 2 - 16;
 
-            dpi.cullingX = dpi.x;
-            dpi.cullingY = dpi.y;
-            dpi.cullingWidth = dpi.width;
-            dpi.cullingHeight = dpi.height;
+            rt.cullingX = rt.x;
+            rt.cullingY = rt.y;
+            rt.cullingWidth = rt.width;
+            rt.cullingHeight = rt.height;
 
-            DrawTrackPieceHelper(dpi, rideIndex, trackType, trackDirection, liftHillAndInvertedState, { 4096, 4096 }, 1024);
+            DrawTrackPieceHelper(rt, rideIndex, trackType, trackDirection, liftHillAndInvertedState, { 4096, 4096 }, 1024);
         }
 
         void DrawTrackPieceHelper(
-            DrawPixelInfo& dpi, RideId rideIndex, OpenRCT2::TrackElemType trackType, int32_t trackDirection,
+            RenderTarget& rt, RideId rideIndex, OpenRCT2::TrackElemType trackType, int32_t trackDirection,
             SelectedLiftAndInverted liftHillAndInvertedState, const CoordsXY& originCoords, int32_t originZ)
         {
             TileElement tempSideTrackTileElement{ 0x80, 0x8F, 128, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             TileElement tempTrackTileElement{};
             TileElement* backupTileElementArrays[5]{};
-            PaintSession* session = PaintSessionAlloc(dpi, 0, GetCurrentRotation());
+            PaintSession* session = PaintSessionAlloc(rt, 0, GetCurrentRotation());
             trackDirection &= 3;
 
             auto currentRide = GetRide(rideIndex);

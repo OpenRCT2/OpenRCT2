@@ -136,7 +136,7 @@ namespace OpenRCT2
         std::unique_ptr<GameScene> _gameScene;
         IScene* _activeScene = nullptr;
 
-        DrawingEngine _drawingEngineType = DrawingEngine::Software;
+        DrawingEngine _drawingEngineType = DrawingEngine::SoftwareWithHardwareDisplay;
         std::unique_ptr<IDrawingEngine> _drawingEngine;
         std::unique_ptr<Painter> _painter;
 
@@ -612,58 +612,65 @@ namespace OpenRCT2
         {
             assert(_drawingEngine == nullptr);
 
-            _drawingEngineType = Config::Get().general.DrawingEngine;
-
-            auto drawingEngineFactory = _uiContext->GetDrawingEngineFactory();
-            auto drawingEngine = drawingEngineFactory->Create(_drawingEngineType, _uiContext);
-
-            if (drawingEngine == nullptr)
-            {
-                if (_drawingEngineType == DrawingEngine::Software)
+            const auto initializeEngine = [&](DrawingEngine engine) -> std::unique_ptr<IDrawingEngine> {
+                try
                 {
-                    _drawingEngineType = DrawingEngine::None;
-                    LOG_FATAL("Unable to create a drawing engine.");
-                    exit(-1);
+                    auto drawingEngineFactory = _uiContext->GetDrawingEngineFactory();
+                    auto drawingEngine = drawingEngineFactory->Create(engine, _uiContext);
+                    if (drawingEngine == nullptr)
+                    {
+                        LOG_FATAL("Unable to create a drawing engine.");
+                        return nullptr;
+                    }
+
+                    drawingEngine->Initialise();
+                    drawingEngine->SetVSync(Config::Get().general.UseVSync);
+
+                    return drawingEngine;
+                }
+                catch (std::exception& ex)
+                {
+                    LOG_ERROR(ex.what());
+                    LOG_ERROR("Unable to initialise drawing engine.");
+                }
+                return nullptr;
+            };
+
+            auto drawingEngineType = Config::Get().general.DrawingEngine;
+
+            // Attempt to create drawing engine of the type specified in the config.
+            {
+                auto drawingEngine = initializeEngine(drawingEngineType);
+                if (drawingEngine != nullptr)
+                {
+                    _drawingEngine = std::move(drawingEngine);
                 }
                 else
                 {
-                    LOG_ERROR("Unable to create drawing engine. Falling back to software.");
-
-                    // Fallback to software
-                    Config::Get().general.DrawingEngine = DrawingEngine::Software;
-                    Config::Save();
-                    DrawingEngineInit();
-                }
-            }
-            else
-            {
-                try
-                {
-                    drawingEngine->Initialise();
-                    drawingEngine->SetVSync(Config::Get().general.UseVSync);
-                    _drawingEngine = std::move(drawingEngine);
-                }
-                catch (const std::exception& ex)
-                {
-                    if (_drawingEngineType == DrawingEngine::Software)
+                    // If the drawing engine creation failed, try to create a software engine.
+                    if (drawingEngineType == DrawingEngine::OpenGL)
                     {
-                        _drawingEngineType = DrawingEngine::None;
-                        LOG_ERROR(ex.what());
-                        LOG_FATAL("Unable to initialise a drawing engine.");
-                        exit(-1);
-                    }
-                    else
-                    {
-                        LOG_ERROR(ex.what());
-                        LOG_ERROR("Unable to initialise drawing engine. Falling back to software.");
+                        drawingEngineType = DrawingEngine::SoftwareWithHardwareDisplay;
+                        LOG_ERROR("Trying fallback back to software...");
 
-                        // Fallback to software
-                        Config::Get().general.DrawingEngine = DrawingEngine::Software;
-                        Config::Save();
-                        DrawingEngineInit();
+                        drawingEngine = initializeEngine(drawingEngineType);
+                        if (drawingEngine != nullptr)
+                        {
+                            _drawingEngine = std::move(drawingEngine);
+                        }
+                        else
+                        {
+                            LOG_FATAL("Unable to create any renderer.");
+                            exit(-1);
+                        }
                     }
                 }
             }
+
+            _drawingEngineType = drawingEngineType;
+
+            Config::Get().general.DrawingEngine = drawingEngineType;
+            Config::Save();
 
             WindowCheckAllValidZoom();
         }

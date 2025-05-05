@@ -47,6 +47,7 @@ namespace OpenRCT2::Scripting
         if (balloon != nullptr)
         {
             balloon->colour = value;
+            balloon->Invalidate();
         }
     }
 

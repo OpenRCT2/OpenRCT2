@@ -444,22 +444,22 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
             switch (page)
             {
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE:
-                    return ObjectiveOnDraw(dpi);
+                    return ObjectiveOnDraw(rt);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS:
-                    return ScenarioDetailsOnDraw(dpi);
+                    return ScenarioDetailsOnDraw(rt);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL:
-                    return FinancialDraw(dpi);
+                    return FinancialDraw(rt);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS:
-                    return GuestsDraw(dpi);
+                    return GuestsDraw(rt);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_PARK:
-                    return LandDraw(dpi);
+                    return LandDraw(rt);
                 case WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_RIDES:
-                    return RidesOnDraw(dpi);
+                    return RidesOnDraw(rt);
             }
         }
 
@@ -502,11 +502,11 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_RIDES)
             {
-                RidesOnScrollDraw(dpi, scrollIndex);
+                RidesOnScrollDraw(rt, scrollIndex);
             }
         }
 
@@ -576,7 +576,7 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetPressed(WIDX_TAB_1 + page, true);
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& rt)
         {
             Widget* widget;
             int32_t spriteIndex;
@@ -589,7 +589,7 @@ namespace OpenRCT2::Ui::Windows
                 if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_OBJECTIVE)
                     spriteIndex += (frame_no / 4) % 16;
 
-                GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+                GfxDrawSprite(rt, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
             }
 
             // Tab 2
@@ -600,7 +600,7 @@ namespace OpenRCT2::Ui::Windows
                 if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_SCENARIO_DETAILS)
                     spriteIndex += (frame_no / 4) % 8;
 
-                GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+                GfxDrawSprite(rt, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
             }
 
             // Tab 3
@@ -611,7 +611,7 @@ namespace OpenRCT2::Ui::Windows
                 if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL)
                     spriteIndex += (frame_no / 2) % 8;
 
-                GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+                GfxDrawSprite(rt, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
             }
 
             // Tab 4
@@ -622,7 +622,7 @@ namespace OpenRCT2::Ui::Windows
                 if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS)
                     spriteIndex += (frame_no / 4) % 8;
 
-                GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+                GfxDrawSprite(rt, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
             }
 
             // Tab 5
@@ -630,7 +630,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 widget = &widgets[WIDX_TAB_5];
                 spriteIndex = SPR_G2_MAP_GEN_TERRAIN_TAB;
-                GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+                GfxDrawSprite(rt, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
             }
 
             // Tab 6
@@ -641,7 +641,7 @@ namespace OpenRCT2::Ui::Windows
                 if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_RIDES)
                     spriteIndex += (frame_no / 4) % 16;
 
-                GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+                GfxDrawSprite(rt, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
             }
         }
 
@@ -1087,23 +1087,23 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x0067161C
          */
-        void ObjectiveOnDraw(DrawPixelInfo& dpi)
+        void ObjectiveOnDraw(RenderTarget& rt)
         {
             const auto& gameState = getGameState();
             StringId stringId;
 
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             // Objective label
             auto screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_OBJECTIVE].top };
-            DrawTextBasic(dpi, screenCoords, STR_OBJECTIVE_DROPDOWN_LABEL);
+            DrawTextBasic(rt, screenCoords, STR_OBJECTIVE_DROPDOWN_LABEL);
 
             // Objective value
             screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_OBJECTIVE].left + 1, widgets[WIDX_OBJECTIVE].top };
             auto ft = Formatter();
             ft.Add<StringId>(ObjectiveDropdownOptionNames[gameState.scenarioObjective.Type]);
-            DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
+            DrawTextBasic(rt, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
 
             if (widgets[WIDX_OBJECTIVE_ARG_1].type != WindowWidgetType::Empty)
             {
@@ -1132,7 +1132,7 @@ namespace OpenRCT2::Ui::Windows
                         stringId = STR_WINDOW_OBJECTIVE_EXCITEMENT_RATING;
                         break;
                 }
-                DrawTextBasic(dpi, screenCoords, stringId);
+                DrawTextBasic(rt, screenCoords, stringId);
 
                 // Objective argument 1 value
                 screenCoords = windowPos
@@ -1165,21 +1165,21 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<money64>(gameState.scenarioObjective.Currency);
                         break;
                 }
-                DrawTextBasic(dpi, screenCoords, stringId, ft, { COLOUR_BLACK });
+                DrawTextBasic(rt, screenCoords, stringId, ft, { COLOUR_BLACK });
             }
 
             if (widgets[WIDX_OBJECTIVE_ARG_2].type != WindowWidgetType::Empty)
             {
                 // Objective argument 2 label
                 screenCoords = windowPos + ScreenCoordsXY{ 28, widgets[WIDX_OBJECTIVE_ARG_2].top };
-                DrawTextBasic(dpi, screenCoords, STR_WINDOW_OBJECTIVE_DATE);
+                DrawTextBasic(rt, screenCoords, STR_WINDOW_OBJECTIVE_DATE);
 
                 // Objective argument 2 value
                 screenCoords = windowPos
                     + ScreenCoordsXY{ widgets[WIDX_OBJECTIVE_ARG_2].left + 1, widgets[WIDX_OBJECTIVE_ARG_2].top };
                 ft = Formatter();
                 ft.Add<uint16_t>((gameState.scenarioObjective.Year * MONTH_COUNT) - 1);
-                DrawTextBasic(dpi, screenCoords, STR_WINDOW_OBJECTIVE_VALUE_DATE, ft);
+                DrawTextBasic(rt, screenCoords, STR_WINDOW_OBJECTIVE_VALUE_DATE, ft);
             }
         }
 
@@ -1250,10 +1250,10 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
         }
 
-        void ScenarioDetailsOnDraw(DrawPixelInfo& dpi)
+        void ScenarioDetailsOnDraw(RenderTarget& rt)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             const auto& gameState = getGameState();
 
@@ -1267,7 +1267,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const char*>(parkName);
-                DrawTextEllipsised(dpi, screenCoords, widthToSet, STR_WINDOW_PARK_NAME, ft);
+                DrawTextEllipsised(rt, screenCoords, widthToSet, STR_WINDOW_PARK_NAME, ft);
             }
 
             // Scenario name
@@ -1277,11 +1277,11 @@ namespace OpenRCT2::Ui::Windows
             auto ft = Formatter();
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(gameState.scenarioName.c_str());
-            DrawTextEllipsised(dpi, screenCoords, widthToSet, STR_WINDOW_SCENARIO_NAME, ft);
+            DrawTextEllipsised(rt, screenCoords, widthToSet, STR_WINDOW_SCENARIO_NAME, ft);
 
             // Scenario details label
             screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_DETAILS].top };
-            DrawTextBasic(dpi, screenCoords, STR_WINDOW_PARK_DETAILS);
+            DrawTextBasic(rt, screenCoords, STR_WINDOW_PARK_DETAILS);
 
             // Scenario details value
             screenCoords = windowPos + ScreenCoordsXY{ 16, widgets[WIDX_DETAILS].top + 10 };
@@ -1290,17 +1290,17 @@ namespace OpenRCT2::Ui::Windows
             ft = Formatter();
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(gameState.scenarioDetails.c_str());
-            DrawTextWrapped(dpi, screenCoords, widthToSet, STR_BLACK_STRING, ft);
+            DrawTextWrapped(rt, screenCoords, widthToSet, STR_BLACK_STRING, ft);
 
             // Scenario category label
             screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_CATEGORY].top };
-            DrawTextBasic(dpi, screenCoords, STR_WINDOW_SCENARIO_GROUP);
+            DrawTextBasic(rt, screenCoords, STR_WINDOW_SCENARIO_GROUP);
 
             // Scenario category value
             screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_CATEGORY].left + 1, widgets[WIDX_CATEGORY].top };
             ft = Formatter();
             ft.Add<StringId>(kScenarioCategoryStringIds[EnumValue(gameState.scenarioCategory)]);
-            DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
+            DrawTextBasic(rt, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
         }
 
         /**
@@ -1656,12 +1656,12 @@ namespace OpenRCT2::Ui::Windows
                                                                                    : WindowWidgetType::CloseBox;
         }
 
-        void FinancialDraw(DrawPixelInfo& dpi)
+        void FinancialDraw(RenderTarget& rt)
         {
             ScreenCoordsXY screenCoords{};
 
-            WindowDrawWidgets(*this, dpi);
-            DrawTabImages(dpi);
+            WindowDrawWidgets(*this, rt);
+            DrawTabImages(rt);
 
             auto& gameState = getGameState();
 
@@ -1671,7 +1671,7 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords = windowPos + ScreenCoordsXY{ initialCashWidget.left + 1, initialCashWidget.top };
                 auto ft = Formatter();
                 ft.Add<money64>(getGameState().initialCash);
-                DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
 
             const auto& initialLoanWidget = widgets[WIDX_INITIAL_LOAN];
@@ -1680,7 +1680,7 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords = windowPos + ScreenCoordsXY{ initialLoanWidget.left + 1, initialLoanWidget.top };
                 auto ft = Formatter();
                 ft.Add<money64>(gameState.bankLoan);
-                DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
 
             const auto& maximumLoanWidget = widgets[WIDX_MAXIMUM_LOAN];
@@ -1689,7 +1689,7 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords = windowPos + ScreenCoordsXY{ maximumLoanWidget.left + 1, maximumLoanWidget.top };
                 auto ft = Formatter();
                 ft.Add<money64>(getGameState().maxBankLoan);
-                DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
 
             const auto& interestRateWidget = widgets[WIDX_INTEREST_RATE];
@@ -1700,7 +1700,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<int16_t>(
                     std::clamp<int16_t>(static_cast<int16_t>(gameState.bankLoanInterestRate), INT16_MIN, INT16_MAX));
-                DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
+                DrawTextBasic(rt, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
             }
 
             const auto& payForParkOrRidesWidget = widgets[WIDX_PAY_FOR_PARK_OR_RIDES];
@@ -1718,7 +1718,7 @@ namespace OpenRCT2::Ui::Windows
                 else
                     ft.Add<StringId>(STR_PAY_PARK_ENTER);
 
-                DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
+                DrawTextBasic(rt, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
             }
 
             const auto& entryPriceWidget = widgets[WIDX_ENTRY_PRICE];
@@ -1728,7 +1728,7 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords = windowPos + ScreenCoordsXY{ entryPriceWidget.left + 1, entryPriceWidget.top };
                 auto ft = Formatter();
                 ft.Add<money64>(gameState.park.EntranceFee);
-                DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
         }
 
@@ -1943,12 +1943,12 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetPressed(WIDX_HARD_GUEST_GENERATION, gameState.park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION);
         }
 
-        void GuestsDraw(DrawPixelInfo& dpi)
+        void GuestsDraw(RenderTarget& rt)
         {
             ScreenCoordsXY screenCoords{};
 
-            WindowDrawWidgets(*this, dpi);
-            DrawTabImages(dpi);
+            WindowDrawWidgets(*this, rt);
+            DrawTabImages(rt);
             auto& gameState = getGameState();
 
             const auto& cashPerGuestWidget = widgets[WIDX_CASH_PER_GUEST];
@@ -1958,7 +1958,7 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords = windowPos + ScreenCoordsXY{ cashPerGuestWidget.left + 1, cashPerGuestWidget.top };
                 auto ft = Formatter();
                 ft.Add<money64>(gameState.guestInitialCash);
-                DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
 
             // Guest initial happiness value
@@ -1966,21 +1966,21 @@ namespace OpenRCT2::Ui::Windows
             screenCoords = windowPos + ScreenCoordsXY{ initialHappinessWidget.left + 1, initialHappinessWidget.top };
             auto ft = Formatter();
             ft.Add<uint16_t>((gameState.guestInitialHappiness * 100) / 255);
-            DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
+            DrawTextBasic(rt, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 
             // Guest initial hunger value
             const auto& initialHungerWidget = widgets[WIDX_GUEST_INITIAL_HUNGER];
             screenCoords = windowPos + ScreenCoordsXY{ initialHungerWidget.left + 1, initialHungerWidget.top };
             ft = Formatter();
             ft.Add<uint16_t>(((255 - gameState.guestInitialHunger) * 100) / 255);
-            DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
+            DrawTextBasic(rt, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 
             // Guest initial thirst value
             const auto& initialThirstWidget = widgets[WIDX_GUEST_INITIAL_THIRST];
             screenCoords = windowPos + ScreenCoordsXY{ initialThirstWidget.left + 1, initialThirstWidget.top };
             ft = Formatter();
             ft.Add<uint16_t>(((255 - gameState.guestInitialThirst) * 100) / 255);
-            DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
+            DrawTextBasic(rt, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 
             // Guests' intensity value
             {
@@ -2000,7 +2000,7 @@ namespace OpenRCT2::Ui::Windows
 
                 ft = Formatter();
                 ft.Add<StringId>(prefString);
-                DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
+                DrawTextBasic(rt, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
             }
         }
 
@@ -2142,12 +2142,12 @@ namespace OpenRCT2::Ui::Windows
                                                                                    : WindowWidgetType::CloseBox;
         }
 
-        void LandDraw(DrawPixelInfo& dpi)
+        void LandDraw(RenderTarget& rt)
         {
             ScreenCoordsXY screenCoords{};
 
-            WindowDrawWidgets(*this, dpi);
-            DrawTabImages(dpi);
+            WindowDrawWidgets(*this, rt);
+            DrawTabImages(rt);
 
             const auto& gameState = getGameState();
             const auto& landCostWidget = widgets[WIDX_LAND_COST];
@@ -2157,7 +2157,7 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords = windowPos + ScreenCoordsXY{ landCostWidget.left + 1, landCostWidget.top };
                 auto ft = Formatter();
                 ft.Add<money64>(gameState.landPrice);
-                DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
 
             const auto& constructionRightsCostWidget = widgets[WIDX_CONSTRUCTION_RIGHTS_COST];
@@ -2168,7 +2168,7 @@ namespace OpenRCT2::Ui::Windows
                     + ScreenCoordsXY{ constructionRightsCostWidget.left + 1, constructionRightsCostWidget.top };
                 auto ft = Formatter();
                 ft.Add<money64>(gameState.constructionRightsPrice);
-                DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
+                DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
             }
         }
 
@@ -2277,37 +2277,37 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x00672340
          */
-        void RidesOnDraw(DrawPixelInfo& dpi)
+        void RidesOnDraw(RenderTarget& rt)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
         }
 
         /**
          *
          *  rct2: 0x0067236F
          */
-        void RidesOnScrollDraw(DrawPixelInfo& dpi, int32_t scrollIndex)
+        void RidesOnScrollDraw(RenderTarget& rt, int32_t scrollIndex)
         {
             int32_t colour = ColourMapA[colours[1].colour].mid_light;
-            GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
+            GfxFillRect(rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, colour);
 
             for (int32_t i = 0; i < static_cast<int32_t>(_rideableRides.size()); i++)
             {
                 int32_t y = i * 12;
 
-                if (y + 12 < dpi.y || y >= dpi.y + dpi.height)
+                if (y + 12 < rt.y || y >= rt.y + rt.height)
                     continue;
 
                 // Checkbox
-                GfxFillRectInset(dpi, { { 2, y }, { 11, y + 10 } }, colours[1], INSET_RECT_F_E0);
+                GfxFillRectInset(rt, { { 2, y }, { 11, y + 10 } }, colours[1], INSET_RECT_F_E0);
 
                 // Highlighted
                 auto stringId = STR_BLACK_STRING;
                 if (i == selected_list_item)
                 {
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
-                    GfxFilterRect(dpi, { 0, y, width, y + 11 }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(rt, { 0, y, width, y + 11 }, FilterPaletteID::PaletteDarken1);
                 }
 
                 // Checkbox mark
@@ -2318,7 +2318,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::ExtraDark : TextDarkness::Dark;
                         DrawText(
-                            dpi, { 2, y }, { colours[1].withFlag(ColourFlag::translucent, false), FontStyle::Medium, darkness },
+                            rt, { 2, y }, { colours[1].withFlag(ColourFlag::translucent, false), FontStyle::Medium, darkness },
                             kCheckMarkString);
                     }
 
@@ -2326,7 +2326,7 @@ namespace OpenRCT2::Ui::Windows
 
                     Formatter ft;
                     currentRide->formatNameTo(ft);
-                    DrawTextBasic(dpi, { 15, y }, stringId, ft);
+                    DrawTextBasic(rt, { 15, y }, stringId, ft);
                 }
             }
         }
