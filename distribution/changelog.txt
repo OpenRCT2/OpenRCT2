@@ -25,6 +25,7 @@
 - Fix: [#22628] Potential crash while rebuilding the scenario index.
 - Fix: [#23289] Dodgems and Flying Saucer cars can spawn on top of each other when the ride is opened.
 - Fix: [#24332] Banner font renders differently when using RCT Classic as the base game.
+- Fix: [#24343] Large gentle turns are buildable without cheats when the vehicles do not have sprites for them.
 - Fix: [#24346] Possible crash during line drawing in OpenGL mode.
 - Fix: [#24353] ‘Show dirty visuals’ is off by one pixel and does not work correctly with higher framerates.
 - Fix: [#24362] When upgrading from an older version on Windows, old versions of official objects are not always removed.  

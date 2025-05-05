@@ -4914,13 +4914,13 @@ OpenRCT2::BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(
           SpritePrecision::Sprites4 }, // TrackGroup::flyingHalfLoopInvertedUp
         { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
           SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90,
-          SpritePrecision::Sprites4 },                             // TrackGroup::flyingHalfLoopUninvertedDown
-        {},                                                        // TrackGroup::slopeCurveLarge
-        {},                                                        // TrackGroup::slopeCurveLargeBanked
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBrakes
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBlockBrakes
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites8 },  // TrackGroup::inclinedBrakes
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBooster
+          SpritePrecision::Sprites4 },                                     // TrackGroup::flyingHalfLoopUninvertedDown
+        { SpriteGroupType::Slopes25, SpritePrecision::Sprites16 },         // TrackGroup::slopeCurveLarge
+        { SpriteGroupType::Slopes25Banked45, SpritePrecision::Sprites16 }, // TrackGroup::slopeCurveLargeBanked
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 },         // TrackGroup::diagBrakes
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 },         // TrackGroup::diagBlockBrakes
+        { SpriteGroupType::Slopes25, SpritePrecision::Sprites8 },          // TrackGroup::inclinedBrakes
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 },         // TrackGroup::diagBooster
         { SpriteGroupType::Slopes8, SpritePrecision::Sprites4, SpriteGroupType::Slopes16, SpritePrecision::Sprites4,
           SpriteGroupType::Slopes25, SpritePrecision::Sprites8, SpriteGroupType::Slopes42, SpritePrecision::Sprites8,
           SpriteGroupType::Slopes50, SpritePrecision::Sprites4 }, // TrackGroup::slopeSteepLong
