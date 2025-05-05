@@ -9641,6 +9641,26 @@
         "palette": "keep"
     },
     {
+        "path": "track/wooden/23556.png",
+        "x": -1,
+        "y": -30
+    },
+    {
+        "path": "track/wooden/23557.png",
+        "x": -32,
+        "y": -14
+    },
+    {
+        "path": "track/wooden/23558.png",
+        "x": -32,
+        "y": -30
+    },
+    {
+        "path": "track/wooden/23559.png",
+        "x": 0,
+        "y": -14
+    },
+    {
         "path": "track/wooden/left_bank_front_swne.png",
         "x": -2,
         "y": -7
@@ -9948,7 +9968,7 @@
     },
     {
         "path": "track/wooden/60_25_swne_chained_back.png",
-        "x": 0,
+        "x": -1,
         "y": -30,
         "palette": "keep"
     },
