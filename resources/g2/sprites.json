@@ -9641,56 +9641,6 @@
         "palette": "keep"
     },
     {
-        "path": "track/wooden/23567.png",
-        "x": -32,
-        "y": 2
-    },
-    {
-        "path": "track/wooden/23568.png",
-        "x": -1,
-        "y": 2
-    },
-    {
-        "path": "track/wooden/23569.png",
-        "x": -32,
-        "y": 2
-    },
-    {
-        "path": "track/wooden/23570.png",
-        "x": 0,
-        "y": 2
-    },
-    {
-        "path": "track/wooden/23603.png",
-        "x": -32,
-        "y": 2
-    },
-    {
-        "path": "track/wooden/23604.png",
-        "x": 0,
-        "y": 2
-    },
-    {
-        "path": "track/wooden/23807.png",
-        "x": -32,
-        "y": -3
-    },
-    {
-        "path": "track/wooden/23812.png",
-        "x": -32,
-        "y": -3
-    },
-    {
-        "path": "track/wooden/23914.png",
-        "x": -38,
-        "y": -4
-    },
-    {
-        "path": "track/wooden/23919.png",
-        "x": -26,
-        "y": -4
-    },
-    {
         "path": "track/wooden/left_bank_front_swne.png",
         "x": -2,
         "y": -7

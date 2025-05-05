@@ -109,8 +109,8 @@ enum
     SPR_WOODEN_RC_FLAT_TO_25_DEG_FRONT_NE_SW = 23566,
     SPR_WOODEN_RC_25_DEG_TO_FLAT_FRONT_NW_SE = 23567,
     SPR_WOODEN_RC_25_DEG_TO_FLAT_FRONT_NE_SW = 23568,
-    SPR_WOODEN_RC_25_DEG_FRONT_NW_SE = SPR_G2_WOODEN_RC_23569,
-    SPR_WOODEN_RC_25_DEG_FRONT_NE_SW = SPR_G2_WOODEN_RC_23570,
+    SPR_WOODEN_RC_25_DEG_FRONT_NW_SE = 23569,
+    SPR_WOODEN_RC_25_DEG_FRONT_NE_SW = 23570,
     SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_SW_NE = 23571,
     SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_NW_SE = 23572,
     SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_NE_SW = 23573,
@@ -128,8 +128,8 @@ enum
     SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_FRONT_NE_SW = 23600,
     SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_FRONT_NW_SE = 23601,
     SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_FRONT_NE_SW = 23602,
-    SPR_WOODEN_RC_25_DEG_CHAIN_FRONT_NW_SE = SPR_G2_WOODEN_RC_23603,
-    SPR_WOODEN_RC_25_DEG_CHAIN_FRONT_NE_SW = SPR_G2_WOODEN_RC_23604,
+    SPR_WOODEN_RC_25_DEG_CHAIN_FRONT_NW_SE = 23603,
+    SPR_WOODEN_RC_25_DEG_CHAIN_FRONT_NE_SW = 23604,
     SPR_WOODEN_RC_QUARTER_TURN_5_SW_SE_SEQ_0 = 23605,
     SPR_WOODEN_RC_QUARTER_TURN_5_SW_SE_SEQ_2 = 23606,
     SPR_WOODEN_RC_QUARTER_TURN_5_SW_SE_SEQ_3 = 23607,
@@ -2568,13 +2568,13 @@ static void WoodenRCTrack25DegUpToFlat(
             {
                 SPR_WOODEN_RC_25_DEG_TO_FLAT_NW_SE,
                 SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_NW_SE,
-                SPR_G2_WOODEN_RC_23567,
+                SPR_WOODEN_RC_25_DEG_TO_FLAT_FRONT_NW_SE,
                 SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_FRONT_NW_SE,
             },
             {
                 SPR_WOODEN_RC_25_DEG_TO_FLAT_NE_SW,
                 SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_NE_SW,
-                SPR_G2_WOODEN_RC_23568,
+                SPR_WOODEN_RC_25_DEG_TO_FLAT_FRONT_NE_SW,
                 SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_FRONT_NE_SW,
             },
             {
@@ -3166,8 +3166,8 @@ static void WoodenRCTrackLeftQuarterTurn525DegUp(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24652), { 0, 0, height },
                         { { 0, 2, height }, { 32, 27, 2 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(SPR_G2_WOODEN_RC_23812),
-                        { 0, 0, height }, { { 0, 2, height + 67 }, { 32, 27, 0 } });
+                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(23812), { 0, 0, height },
+                        { { 0, 2, height + 67 }, { 32, 27, 0 } });
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24678), { 0, 0, height },
                         { { 0, 2, height + 67 }, { 32, 27, 0 } });
@@ -3538,8 +3538,8 @@ static void WoodenRCTrackRightQuarterTurn525DegUp(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24637), { 0, 0, height },
                         { { 0, 2, height }, { 32, 27, 2 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(SPR_G2_WOODEN_RC_23807),
-                        { 0, 0, height }, { { 0, 2, height + 67 }, { 32, 27, 0 } });
+                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(23807), { 0, 0, height },
+                        { { 0, 2, height + 67 }, { 32, 27, 0 } });
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24673), { 0, 0, height },
                         { { 0, 2, height + 67 }, { 32, 27, 0 } });
@@ -5225,8 +5225,8 @@ static void WoodenRCTrackLeftQuarterTurn325DegUp(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24774), { 0, 6, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(SPR_G2_WOODEN_RC_23919),
-                        { 0, 6, height }, { { 0, 6, height + 67 }, { 32, 20, 0 } });
+                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(23919), { 0, 6, height },
+                        { { 0, 6, height + 67 }, { 32, 20, 0 } });
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24785), { 0, 6, height },
                         { { 0, 6, height + 67 }, { 32, 20, 0 } });
@@ -5401,8 +5401,8 @@ static void WoodenRCTrackRightQuarterTurn325DegUp(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24765), { 0, 6, height },
                         { { 0, 6, height }, { 32, 20, 2 } });
                     PaintAddImageAsParentRotated(
-                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(SPR_G2_WOODEN_RC_23914),
-                        { 0, 6, height }, { { 0, 6, height + 67 }, { 32, 20, 0 } });
+                        session, direction, WoodenRCGetTrackColour<isClassic>(session).WithIndex(23914), { 0, 6, height },
+                        { { 0, 6, height + 67 }, { 32, 20, 0 } });
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24780), { 0, 6, height },
                         { { 0, 6, height + 67 }, { 32, 20, 0 } });
