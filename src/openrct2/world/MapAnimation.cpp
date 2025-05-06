@@ -35,185 +35,80 @@
 #include "tile_element/TrackElement.h"
 #include "tile_element/WallElement.h"
 
+#include <algorithm>
+#include <vector>
+
 using namespace OpenRCT2;
 
-using map_animation_invalidate_event_handler = bool (*)(const CoordsXYZ& loc);
+// Set to track tiles that contain animated elements
+static std::vector<TileCoordsXY> _mapAnimations;
 
-static std::vector<MapAnimation> _mapAnimations;
-
-constexpr size_t kMaxAnimatedObjects = 2000;
-
-static bool InvalidateMapAnimation(const MapAnimation& obj);
-
-static bool DoesAnimationExist(int32_t type, const CoordsXYZ& location)
+static void InvalidateTile(const CoordsXYZ& loc, int32_t zMin, int32_t zMax)
 {
-    for (const auto& a : _mapAnimations)
+    MapInvalidateTileZoom1({ loc, zMin, zMax });
+}
+
+static bool UpdateEntranceAnimation(EntranceElement* entrance, CoordsXYZ& loc, int32_t baseZ)
+{
+    if (entrance->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
     {
-        if (a.type == type && a.location == location)
+        auto ride = GetRide(entrance->GetRideIndex());
+        if (ride != nullptr)
         {
-            // Animation already exists
+            auto stationObj = ride->getStationObject();
+            if (stationObj != nullptr)
+            {
+                InvalidateTile(loc, baseZ + stationObj->Height + 8, baseZ + stationObj->Height + 24);
+                return true;
+            }
+        }
+    }
+    else if (entrance->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE && entrance->GetSequenceIndex() == 0)
+    {
+        InvalidateTile(loc, baseZ + 32, baseZ + 64);
+        return true;
+    }
+
+    return false;
+}
+
+static bool UpdatePathAnimation(PathElement* path, CoordsXYZ& loc, int32_t baseZ)
+{
+    if (path->IsQueue() && path->HasQueueBanner())
+    {
+        int32_t direction = (path->GetQueueBannerDirection() + GetCurrentRotation()) & 3;
+        if (direction == TILE_ELEMENT_DIRECTION_NORTH || direction == TILE_ELEMENT_DIRECTION_EAST)
+        {
+            InvalidateTile(loc, baseZ + 16, baseZ + 30);
             return true;
         }
     }
     return false;
 }
 
-void MapAnimationCreate(int32_t type, const CoordsXYZ& loc)
+static bool UpdateSmallSceneryAnimation(SmallSceneryElement* scenery, CoordsXYZ& loc, int32_t baseZ)
 {
-    if (!DoesAnimationExist(type, loc))
+    auto entry = scenery->GetEntry();
+    if (entry == nullptr)
     {
-        if (_mapAnimations.size() < kMaxAnimatedObjects)
-        {
-            // Create new animation
-            _mapAnimations.push_back({ static_cast<uint8_t>(type), loc });
-        }
-        else
-        {
-            LOG_ERROR("Exceeded the maximum number of animations");
-        }
-    }
-}
-
-/**
- *
- *  rct2: 0x0068AFAD
- */
-void MapAnimationInvalidateAll()
-{
-    PROFILED_FUNCTION();
-
-    auto it = _mapAnimations.begin();
-    while (it != _mapAnimations.end())
-    {
-        if (InvalidateMapAnimation(*it))
-        {
-            // Map animation has finished, remove it
-            it = _mapAnimations.erase(it);
-        }
-        else
-        {
-            it++;
-        }
-    }
-}
-
-/**
- *
- *  rct2: 0x00666670
- */
-static bool MapAnimationInvalidateRideEntrance(const CoordsXYZ& loc)
-{
-    TileCoordsXYZ tileLoc{ loc };
-    auto tileElement = MapGetFirstElementAt(loc);
-    if (tileElement == nullptr)
-        return true;
-    do
-    {
-        if (tileElement->BaseHeight != tileLoc.z)
-            continue;
-        if (tileElement->GetType() != TileElementType::Entrance)
-            continue;
-        if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
-            continue;
-
-        auto ride = GetRide(tileElement->AsEntrance()->GetRideIndex());
-        if (ride != nullptr)
-        {
-            auto stationObj = ride->getStationObject();
-            if (stationObj != nullptr)
-            {
-                int32_t height = loc.z + stationObj->Height + 8;
-                MapInvalidateTileZoom1({ loc, height, height + 16 });
-            }
-        }
         return false;
-    } while (!(tileElement++)->IsLastForTile());
+    }
 
-    return true;
-}
-
-/**
- *
- *  rct2: 0x006A7BD4
- */
-static bool MapAnimationInvalidateQueueBanner(const CoordsXYZ& loc)
-{
-    TileCoordsXYZ tileLoc{ loc };
-    TileElement* tileElement;
-
-    tileElement = MapGetFirstElementAt(loc);
-    if (tileElement == nullptr)
-        return true;
-    do
+    if (entry->HasFlag(
+            SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 | SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 | SMALL_SCENERY_FLAG_SWAMP_GOO
+            | SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS | SMALL_SCENERY_FLAG_IS_CLOCK))
     {
-        if (tileElement->BaseHeight != tileLoc.z)
-            continue;
-        if (tileElement->GetType() != TileElementType::Path)
-            continue;
-        if (!(tileElement->AsPath()->IsQueue()))
-            continue;
-        if (!tileElement->AsPath()->HasQueueBanner())
-            continue;
-
-        int32_t direction = (tileElement->AsPath()->GetQueueBannerDirection() + GetCurrentRotation()) & 3;
-        if (direction == TILE_ELEMENT_DIRECTION_NORTH || direction == TILE_ELEMENT_DIRECTION_EAST)
+        // Don't apply anything to peeps when the scenery is a ghost.
+        if (!scenery->IsGhost())
         {
-            MapInvalidateTileZoom1({ loc, loc.z + 16, loc.z + 30 });
-        }
-        return false;
-    } while (!(tileElement++)->IsLastForTile());
-
-    return true;
-}
-
-/**
- *
- *  rct2: 0x006E32C9
- */
-static bool MapAnimationInvalidateSmallScenery(const CoordsXYZ& loc)
-{
-    TileCoordsXYZ tileLoc{ loc };
-
-    auto tileElement = MapGetFirstElementAt(loc);
-    if (tileElement == nullptr)
-        return true;
-    do
-    {
-        if (tileElement->BaseHeight != tileLoc.z)
-            continue;
-        if (tileElement->GetType() != TileElementType::SmallScenery)
-            continue;
-        if (tileElement->IsGhost())
-            continue;
-
-        auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
-        if (sceneryEntry == nullptr)
-            continue;
-
-        if (sceneryEntry->HasFlag(
-                SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 | SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 | SMALL_SCENERY_FLAG_SWAMP_GOO
-                | SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
-        {
-            MapInvalidateTileZoom1({ loc, loc.z, tileElement->GetClearanceZ() });
-            return false;
-        }
-
-        if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_CLOCK))
-        {
-            // Peep, looking at scenery
-            if (!(getGameState().currentTicks & 0x3FF) && GameIsNotPaused())
+            if (entry->HasFlag(SMALL_SCENERY_FLAG_IS_CLOCK) && !(getGameState().currentTicks & 0x3FF) && !GameIsPaused())
             {
-                int32_t direction = tileElement->GetDirection();
+                int32_t direction = scenery->GetDirection();
                 auto quad = EntityTileList<Peep>(CoordsXY{ loc } - CoordsDirectionDelta[direction]);
                 for (auto peep : quad)
                 {
-                    if (peep->State != PeepState::Walking)
+                    if (peep->State != PeepState::Walking || peep->z != baseZ || peep->Action < PeepActionType::Idle)
                         continue;
-                    if (peep->z != loc.z)
-                        continue;
-                    if (peep->Action < PeepActionType::Idle)
-                        continue;
-
                     peep->Action = PeepActionType::CheckTime;
                     peep->AnimationFrameNum = 0;
                     peep->AnimationImageIdOffset = 0;
@@ -222,393 +117,294 @@ static bool MapAnimationInvalidateSmallScenery(const CoordsXYZ& loc)
                     break;
                 }
             }
-            MapInvalidateTileZoom1({ loc, loc.z, tileElement->GetClearanceZ() });
-            return false;
         }
+        auto clearZ = scenery->GetClearanceZ();
+        InvalidateTile(loc, baseZ, clearZ);
+        return true;
+    }
 
-    } while (!(tileElement++)->IsLastForTile());
-    return true;
+    return false;
 }
 
-/**
- *
- *  rct2: 0x00666C63
- */
-static bool MapAnimationInvalidateParkEntrance(const CoordsXYZ& loc)
+static bool UpdateTrackAnimation(TrackElement* track, CoordsXYZ& loc, int32_t baseZ)
 {
-    TileCoordsXYZ tileLoc{ loc };
-    TileElement* tileElement;
-
-    tileElement = MapGetFirstElementAt(loc);
-    if (tileElement == nullptr)
-        return true;
-    do
+    auto clearZ = track->GetClearanceZ();
+    switch (track->GetTrackType())
     {
-        if (tileElement->BaseHeight != tileLoc.z)
-            continue;
-        if (tileElement->GetType() != TileElementType::Entrance)
-            continue;
-        if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
-            continue;
-        if (tileElement->AsEntrance()->GetSequenceIndex())
-            continue;
-
-        MapInvalidateTileZoom1({ loc, loc.z + 32, loc.z + 64 });
-        return false;
-    } while (!(tileElement++)->IsLastForTile());
-
-    return true;
-}
-
-/**
- *
- *  rct2: 0x006CE29E
- */
-static bool MapAnimationInvalidateTrackWaterfall(const CoordsXYZ& loc)
-{
-    TileCoordsXYZ tileLoc{ loc };
-    TileElement* tileElement;
-
-    tileElement = MapGetFirstElementAt(loc);
-    if (tileElement == nullptr)
-        return true;
-    do
-    {
-        if (tileElement->BaseHeight != tileLoc.z)
-            continue;
-        if (tileElement->GetType() != TileElementType::Track)
-            continue;
-
-        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Waterfall)
-        {
-            MapInvalidateTileZoom1({ loc, loc.z + 14, loc.z + 46 });
-            return false;
-        }
-    } while (!(tileElement++)->IsLastForTile());
-
-    return true;
-}
-
-/**
- *
- *  rct2: 0x006CE2F3
- */
-static bool MapAnimationInvalidateTrackRapids(const CoordsXYZ& loc)
-{
-    TileCoordsXYZ tileLoc{ loc };
-    TileElement* tileElement;
-
-    tileElement = MapGetFirstElementAt(loc);
-    if (tileElement == nullptr)
-        return true;
-    do
-    {
-        if (tileElement->BaseHeight != tileLoc.z)
-            continue;
-        if (tileElement->GetType() != TileElementType::Track)
-            continue;
-
-        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Rapids)
-        {
-            MapInvalidateTileZoom1({ loc, loc.z + 14, loc.z + 18 });
-            return false;
-        }
-    } while (!(tileElement++)->IsLastForTile());
-
-    return true;
-}
-
-/**
- *
- *  rct2: 0x006CE39D
- */
-static bool MapAnimationInvalidateTrackOnRidePhoto(const CoordsXYZ& loc)
-{
-    TileCoordsXYZ tileLoc{ loc };
-    TileElement* tileElement;
-
-    tileElement = MapGetFirstElementAt(loc);
-    if (tileElement == nullptr)
-        return true;
-    do
-    {
-        if (tileElement->BaseHeight != tileLoc.z)
-            continue;
-        if (tileElement->GetType() != TileElementType::Track)
-            continue;
-
-        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::OnRidePhoto)
-        {
-            MapInvalidateTileZoom1({ loc, loc.z, tileElement->GetClearanceZ() });
-            if (GameIsPaused())
-            {
-                return false;
-            }
-            if (tileElement->AsTrack()->IsTakingPhoto())
-            {
-                tileElement->AsTrack()->DecrementPhotoTimeout();
-                return false;
-            }
-
+        case TrackElemType::Waterfall:
+            InvalidateTile(loc, baseZ + 14, baseZ + 46);
             return true;
-        }
-    } while (!(tileElement++)->IsLastForTile());
-
-    return true;
-}
-
-/**
- *
- *  rct2: 0x006CE348
- */
-static bool MapAnimationInvalidateTrackWhirlpool(const CoordsXYZ& loc)
-{
-    TileCoordsXYZ tileLoc{ loc };
-    TileElement* tileElement;
-
-    tileElement = MapGetFirstElementAt(loc);
-    if (tileElement == nullptr)
-        return true;
-    do
-    {
-        if (tileElement->BaseHeight != tileLoc.z)
-            continue;
-        if (tileElement->GetType() != TileElementType::Track)
-            continue;
-
-        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Whirlpool)
-        {
-            MapInvalidateTileZoom1({ loc, loc.z + 14, loc.z + 18 });
-            return false;
-        }
-    } while (!(tileElement++)->IsLastForTile());
-
-    return true;
-}
-
-/**
- *
- *  rct2: 0x006CE3FA
- */
-static bool MapAnimationInvalidateTrackSpinningTunnel(const CoordsXYZ& loc)
-{
-    TileCoordsXYZ tileLoc{ loc };
-    TileElement* tileElement;
-
-    tileElement = MapGetFirstElementAt(loc);
-    if (tileElement == nullptr)
-        return true;
-    do
-    {
-        if (tileElement->BaseHeight != tileLoc.z)
-            continue;
-        if (tileElement->GetType() != TileElementType::Track)
-            continue;
-
-        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::SpinningTunnel)
-        {
-            MapInvalidateTileZoom1({ loc, loc.z + 14, loc.z + 32 });
-            return false;
-        }
-    } while (!(tileElement++)->IsLastForTile());
-
-    return true;
-}
-
-/**
- *
- *  rct2: 0x0068DF8F
- */
-static bool MapAnimationInvalidateRemove([[maybe_unused]] const CoordsXYZ& loc)
-{
-    return true;
-}
-
-/**
- *
- *  rct2: 0x006BA2BB
- */
-static bool MapAnimationInvalidateBanner(const CoordsXYZ& loc)
-{
-    TileCoordsXYZ tileLoc{ loc };
-    TileElement* tileElement;
-
-    tileElement = MapGetFirstElementAt(loc);
-    if (tileElement == nullptr)
-        return true;
-    do
-    {
-        if (tileElement->BaseHeight != tileLoc.z)
-            continue;
-        if (tileElement->GetType() != TileElementType::Banner)
-            continue;
-        MapInvalidateTileZoom1({ loc, loc.z, loc.z + 16 });
-        return false;
-    } while (!(tileElement++)->IsLastForTile());
-
-    return true;
-}
-
-/**
- *
- *  rct2: 0x006B94EB
- */
-static bool MapAnimationInvalidateLargeScenery(const CoordsXYZ& loc)
-{
-    TileCoordsXYZ tileLoc{ loc };
-    TileElement* tileElement;
-
-    bool wasInvalidated = false;
-    tileElement = MapGetFirstElementAt(loc);
-    if (tileElement == nullptr)
-        return true;
-    do
-    {
-        if (tileElement->BaseHeight != tileLoc.z)
-            continue;
-        if (tileElement->GetType() != TileElementType::LargeScenery)
-            continue;
-
-        auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-        if (sceneryEntry != nullptr && sceneryEntry->flags & LARGE_SCENERY_FLAG_ANIMATED)
-        {
-            MapInvalidateTileZoom1({ loc, loc.z, loc.z + 16 });
-            wasInvalidated = true;
-        }
-    } while (!(tileElement++)->IsLastForTile());
-
-    return !wasInvalidated;
-}
-
-/**
- *
- *  rct2: 0x006E5B50
- */
-static bool MapAnimationInvalidateWallDoor(const CoordsXYZ& loc)
-{
-    TileCoordsXYZ tileLoc{ loc };
-    TileElement* tileElement;
-
-    if (getGameState().currentTicks & 1)
-        return false;
-
-    bool removeAnimation = true;
-    tileElement = MapGetFirstElementAt(loc);
-    if (tileElement == nullptr)
-        return removeAnimation;
-    do
-    {
-        if (tileElement->BaseHeight != tileLoc.z)
-            continue;
-        if (tileElement->GetType() != TileElementType::Wall)
-            continue;
-
-        auto* wallEntry = tileElement->AsWall()->GetEntry();
-        if (wallEntry == nullptr || !(wallEntry->flags & WALL_SCENERY_IS_DOOR))
-            continue;
-
-        if (GameIsPaused())
-        {
-            return false;
-        }
-
-        bool invalidate = false;
-
-        uint8_t currentFrame = tileElement->AsWall()->GetAnimationFrame();
-        if (currentFrame != 0)
-        {
-            if (currentFrame == 15)
+        case TrackElemType::Rapids:
+        case TrackElemType::Whirlpool:
+            InvalidateTile(loc, baseZ + 14, baseZ + 18);
+            return true;
+        case TrackElemType::SpinningTunnel:
+            InvalidateTile(loc, baseZ + 14, baseZ + 32);
+            return true;
+        case TrackElemType::OnRidePhoto:
+            if (!GameIsPaused() && track->IsTakingPhoto())
             {
-                currentFrame = 0;
+                InvalidateTile(loc, baseZ, clearZ);
+                track->DecrementPhotoTimeout();
+                return true;
             }
-            else
+            break;
+    }
+
+    return false;
+}
+
+static bool UpdateLargeSceneryAnimation(LargeSceneryElement* scenery, CoordsXYZ& loc, int32_t baseZ)
+{
+    auto entry = scenery->GetEntry();
+    if (entry != nullptr && (entry->flags & LARGE_SCENERY_FLAG_ANIMATED))
+    {
+        InvalidateTile(loc, baseZ, baseZ + 16);
+        return true;
+    }
+
+    return false;
+}
+
+static bool UpdateWallAnimation(WallElement* wall, CoordsXYZ& loc, int32_t baseZ)
+{
+    auto entry = wall->GetEntry();
+    if (entry == nullptr)
+    {
+        return false;
+    }
+
+    if (entry->flags & WALL_SCENERY_IS_DOOR)
+    {
+        if (!(getGameState().currentTicks & 1) && !GameIsPaused())
+        {
+            uint8_t currentFrame = wall->GetAnimationFrame();
+            if (currentFrame != 0)
             {
-                removeAnimation = false;
-                if (currentFrame != 5)
+                if (currentFrame == 15)
+                {
+                    wall->SetAnimationFrame(0);
+                }
+                else if (currentFrame != 5)
                 {
                     currentFrame++;
-                    if (currentFrame == 13 && !(wallEntry->flags & WALL_SCENERY_LONG_DOOR_ANIMATION))
+                    if (currentFrame == 13 && !(entry->flags & WALL_SCENERY_LONG_DOOR_ANIMATION))
                         currentFrame = 15;
-
-                    invalidate = true;
+                    wall->SetAnimationFrame(currentFrame);
+                    InvalidateTile(loc, baseZ, baseZ + 32);
+                    return true;
                 }
             }
         }
-        tileElement->AsWall()->SetAnimationFrame(currentFrame);
-        if (invalidate)
-        {
-            MapInvalidateTileZoom1({ loc, loc.z, loc.z + 32 });
-        }
-    } while (!(tileElement++)->IsLastForTile());
-
-    return removeAnimation;
-}
-
-/**
- *
- *  rct2: 0x006E5EE4
- */
-static bool MapAnimationInvalidateWall(const CoordsXYZ& loc)
-{
-    TileCoordsXYZ tileLoc{ loc };
-    TileElement* tileElement;
-
-    bool wasInvalidated = false;
-    tileElement = MapGetFirstElementAt(loc);
-    if (tileElement == nullptr)
-        return true;
-    do
-    {
-        if (tileElement->BaseHeight != tileLoc.z)
-            continue;
-        if (tileElement->GetType() != TileElementType::Wall)
-            continue;
-
-        auto* wallEntry = tileElement->AsWall()->GetEntry();
-
-        if (wallEntry == nullptr
-            || (!(wallEntry->flags2 & WALL_SCENERY_2_ANIMATED) && wallEntry->scrolling_mode == SCROLLING_MODE_NONE))
-            continue;
-
-        MapInvalidateTileZoom1({ loc, loc.z, loc.z + 16 });
-        wasInvalidated = true;
-    } while (!(tileElement++)->IsLastForTile());
-
-    return !wasInvalidated;
-}
-
-/**
- *
- *  rct2: 0x009819DC
- */
-static constexpr map_animation_invalidate_event_handler _animatedObjectEventHandlers[MAP_ANIMATION_TYPE_COUNT] = {
-    MapAnimationInvalidateRideEntrance,     MapAnimationInvalidateQueueBanner,    MapAnimationInvalidateSmallScenery,
-    MapAnimationInvalidateParkEntrance,     MapAnimationInvalidateTrackWaterfall, MapAnimationInvalidateTrackRapids,
-    MapAnimationInvalidateTrackOnRidePhoto, MapAnimationInvalidateTrackWhirlpool, MapAnimationInvalidateTrackSpinningTunnel,
-    MapAnimationInvalidateRemove,           MapAnimationInvalidateBanner,         MapAnimationInvalidateLargeScenery,
-    MapAnimationInvalidateWallDoor,         MapAnimationInvalidateWall,
-};
-
-/**
- * @returns true if the animation should be removed.
- */
-static bool InvalidateMapAnimation(const MapAnimation& a)
-{
-    if (a.type < std::size(_animatedObjectEventHandlers))
-    {
-        return _animatedObjectEventHandlers[a.type](a.location);
     }
+    else if ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != SCROLLING_MODE_NONE)
+    {
+        InvalidateTile(loc, baseZ, baseZ + 16);
+        return true;
+    }
+
+    return false;
+}
+
+static bool UpdateBannerAnimation([[maybe_unused]] BannerElement* banner, CoordsXYZ& loc, int32_t baseZ)
+{
+    InvalidateTile(loc, baseZ, baseZ + 16);
     return true;
 }
 
-const std::vector<MapAnimation>& GetMapAnimations()
+static bool UpdateTileAnimations(const TileCoordsXY& coords)
 {
-    return _mapAnimations;
+    bool wasUpdated = false;
+    auto tileElement = MapGetFirstElementAt(coords);
+    if (tileElement == nullptr)
+    {
+        return false;
+    }
+
+    do
+    {
+        auto baseZ = tileElement->GetBaseZ();
+        CoordsXYZ loc{ coords.ToCoordsXY(), baseZ };
+
+        switch (tileElement->GetType())
+        {
+            case TileElementType::Entrance:
+                wasUpdated |= UpdateEntranceAnimation(tileElement->AsEntrance(), loc, baseZ);
+                break;
+            case TileElementType::Path:
+                wasUpdated |= UpdatePathAnimation(tileElement->AsPath(), loc, baseZ);
+                break;
+            case TileElementType::SmallScenery:
+                wasUpdated |= UpdateSmallSceneryAnimation(tileElement->AsSmallScenery(), loc, baseZ);
+                break;
+            case TileElementType::Track:
+                wasUpdated |= UpdateTrackAnimation(tileElement->AsTrack(), loc, baseZ);
+                break;
+            case TileElementType::Banner:
+                wasUpdated |= UpdateBannerAnimation(tileElement->AsBanner(), loc, baseZ);
+                break;
+            case TileElementType::LargeScenery:
+                wasUpdated |= UpdateLargeSceneryAnimation(tileElement->AsLargeScenery(), loc, baseZ);
+                break;
+            case TileElementType::Wall:
+                wasUpdated |= UpdateWallAnimation(tileElement->AsWall(), loc, baseZ);
+                break;
+            default:
+                break;
+        }
+    } while (!(tileElement++)->IsLastForTile());
+
+    return wasUpdated;
+}
+
+static void MarkTileAnimated(const CoordsXY& loc)
+{
+    auto coords = TileCoordsXY{ loc };
+
+    auto it = std::lower_bound(_mapAnimations.begin(), _mapAnimations.end(), coords, [](auto& a, auto& b) {
+        return std::tie(a.x, a.y) < std::tie(b.x, b.y);
+    });
+
+    if (it != _mapAnimations.end() && *it == coords)
+    {
+        return; // Already exists
+    }
+
+    _mapAnimations.insert(it, coords);
+}
+
+void MapAnimationUpdateAll()
+{
+    PROFILED_FUNCTION();
+
+    auto it = _mapAnimations.begin();
+    while (it != _mapAnimations.end())
+    {
+        if (UpdateTileAnimations(*it))
+        {
+            ++it; // Tile was updated, keep it
+        }
+        else
+        {
+            it = _mapAnimations.erase(it); // No updates, remove tile
+        }
+    }
 }
 
 void ClearMapAnimations()
 {
     _mapAnimations.clear();
+}
+
+static bool IsElementAnimated(const TileElementBase* el)
+{
+    if (el == nullptr)
+    {
+        return false;
+    }
+
+    switch (el->GetType())
+    {
+        case TileElementType::Banner:
+            return true;
+        case TileElementType::Wall:
+        {
+            auto wall = el->AsWall();
+            auto entry = wall->GetEntry();
+            if (entry != nullptr
+                && ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != SCROLLING_MODE_NONE
+                    || (entry->flags & WALL_SCENERY_IS_DOOR)))
+            {
+                return true;
+            }
+            break;
+        }
+        case TileElementType::SmallScenery:
+        {
+            auto scenery = el->AsSmallScenery();
+            auto entry = scenery->GetEntry();
+            if (entry != nullptr && entry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
+            {
+                return true;
+            }
+            break;
+        }
+        case TileElementType::LargeScenery:
+        {
+            auto scenery = el->AsLargeScenery();
+            auto entry = scenery->GetEntry();
+            if (entry != nullptr && (entry->flags & LARGE_SCENERY_FLAG_ANIMATED))
+            {
+                return true;
+            }
+            break;
+        }
+        case TileElementType::Path:
+        {
+            auto path = el->AsPath();
+            if (path->HasQueueBanner())
+            {
+                return true;
+            }
+            break;
+        }
+        case TileElementType::Entrance:
+        {
+            auto entrance = el->AsEntrance();
+            if (entrance->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE && entrance->GetSequenceIndex() == 0)
+            {
+                return true;
+            }
+            else if (entrance->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+            {
+                return true;
+            }
+            break;
+        }
+        case TileElementType::Track:
+        {
+            auto track = el->AsTrack();
+            switch (track->GetTrackType())
+            {
+                case TrackElemType::Waterfall:
+                case TrackElemType::Rapids:
+                case TrackElemType::Whirlpool:
+                case TrackElemType::SpinningTunnel:
+                case TrackElemType::OnRidePhoto:
+                    return true;
+                    break;
+                default:
+                    break;
+            }
+            break;
+        }
+        default:
+            break;
+    }
+
+    return false;
+}
+
+void MapAnimationCreate(const CoordsXY& coords, const TileElementBase* tileElement)
+{
+    if (!IsElementAnimated(tileElement))
+    {
+        return;
+    }
+
+    MarkTileAnimated(coords);
+}
+
+void MapAnimationCreate(const CoordsXY& loc)
+{
+    auto* tileElement = MapGetFirstElementAt(loc);
+    if (tileElement == nullptr)
+        return;
+
+    do
+    {
+        MapAnimationCreate(loc, tileElement);
+    } while (!(tileElement++)->IsLastForTile());
 }
 
 void MapAnimationAutoCreate()
@@ -619,102 +415,7 @@ void MapAnimationAutoCreate()
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
     {
-        MapAnimationAutoCreateAtTileElement(TileCoordsXY(it.x, it.y), it.element);
-    }
-}
-
-void MapAnimationAutoCreateAtTileElement(TileCoordsXY coords, TileElement* el)
-{
-    if (el == nullptr)
-    {
-        return;
-    }
-    auto loc = CoordsXYZ{ coords.ToCoordsXY(), el->GetBaseZ() };
-    switch (el->GetType())
-    {
-        case TileElementType::Banner:
-            MapAnimationCreate(MAP_ANIMATION_TYPE_BANNER, loc);
-            break;
-        case TileElementType::Wall:
-        {
-            auto wallEl = el->AsWall();
-            auto* entry = wallEl->GetEntry();
-            if (entry != nullptr && ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != SCROLLING_MODE_NONE))
-            {
-                MapAnimationCreate(MAP_ANIMATION_TYPE_WALL, loc);
-            }
-            break;
-        }
-        case TileElementType::SmallScenery:
-        {
-            auto sceneryEl = el->AsSmallScenery();
-            auto* sceneryEntry = sceneryEl->GetEntry();
-            if (sceneryEntry != nullptr && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
-            {
-                MapAnimationCreate(MAP_ANIMATION_TYPE_SMALL_SCENERY, loc);
-            }
-            break;
-        }
-        case TileElementType::LargeScenery:
-        {
-            auto sceneryEl = el->AsLargeScenery();
-            auto entry = sceneryEl->GetEntry();
-            if (entry != nullptr && (entry->flags & LARGE_SCENERY_FLAG_ANIMATED))
-            {
-                MapAnimationCreate(MAP_ANIMATION_TYPE_LARGE_SCENERY, loc);
-            }
-            break;
-        }
-        case TileElementType::Path:
-        {
-            auto path = el->AsPath();
-            if (path->HasQueueBanner())
-            {
-                MapAnimationCreate(MAP_ANIMATION_TYPE_QUEUE_BANNER, loc);
-            }
-            break;
-        }
-        case TileElementType::Entrance:
-        {
-            auto entrance = el->AsEntrance();
-            switch (entrance->GetEntranceType())
-            {
-                case ENTRANCE_TYPE_PARK_ENTRANCE:
-                    if (entrance->GetSequenceIndex() == 0)
-                    {
-                        MapAnimationCreate(MAP_ANIMATION_TYPE_PARK_ENTRANCE, loc);
-                    }
-                    break;
-                case ENTRANCE_TYPE_RIDE_ENTRANCE:
-                    MapAnimationCreate(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, loc);
-                    break;
-            }
-            break;
-        }
-        case TileElementType::Track:
-        {
-            auto track = el->AsTrack();
-            switch (track->GetTrackType())
-            {
-                case TrackElemType::Waterfall:
-                    MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_WATERFALL, loc);
-                    break;
-                case TrackElemType::Rapids:
-                    MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_RAPIDS, loc);
-                    break;
-                case TrackElemType::Whirlpool:
-                    MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL, loc);
-                    break;
-                case TrackElemType::SpinningTunnel:
-                    MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, loc);
-                    break;
-                default:
-                    break;
-            }
-            break;
-        }
-        case TileElementType::Surface:
-            break;
+        MapAnimationCreate(TileCoordsXY(it.x, it.y).ToCoordsXY(), it.element);
     }
 }
 
@@ -725,6 +426,6 @@ void ShiftAllMapAnimations(CoordsXY amount)
 
     for (auto& a : _mapAnimations)
     {
-        a.location += amount;
+        a += TileCoordsXY{ amount };
     }
 }

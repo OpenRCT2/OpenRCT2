@@ -594,18 +594,16 @@ GameActions::Result TrackPlaceAction::Execute() const
         switch (_trackType)
         {
             case TrackElemType::Waterfall:
-                MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_WATERFALL, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
-                break;
+                [[fallthrough]];
             case TrackElemType::Rapids:
-                MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_RAPIDS, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
-                break;
+                [[fallthrough]];
             case TrackElemType::Whirlpool:
-                MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
-                break;
+                [[fallthrough]];
             case TrackElemType::SpinningTunnel:
-                MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
+                MapAnimationCreate(mapLoc, trackElement);
                 break;
             case TrackElemType::Brakes:
+                [[fallthrough]];
             case TrackElemType::DiagBrakes:
                 trackElement->SetBrakeClosed(true);
                 break;

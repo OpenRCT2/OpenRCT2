@@ -452,7 +452,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     MapInvalidateTileFull(_loc);
     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
     {
-        MapAnimationCreate(MAP_ANIMATION_TYPE_SMALL_SCENERY, CoordsXYZ{ _loc, sceneryElement->GetBaseZ() });
+        MapAnimationCreate(_loc, sceneryElement);
     }
 
     return res;
