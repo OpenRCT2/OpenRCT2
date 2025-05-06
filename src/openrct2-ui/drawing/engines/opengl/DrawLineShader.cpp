@@ -63,7 +63,6 @@ DrawLineShader::DrawLineShader()
     glEnableVertexAttribArray(vVertMat + 2);
     glEnableVertexAttribArray(vVertMat + 3);
 
-    glEnableVertexAttribArray(vClip);
     glEnableVertexAttribArray(vBounds);
     glEnableVertexAttribArray(vColour);
     glEnableVertexAttribArray(vDepth);

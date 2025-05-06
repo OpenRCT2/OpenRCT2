@@ -19,7 +19,6 @@ namespace OpenRCT2::Ui
     private:
         GLuint uScreenSize;
 
-        GLuint vClip;
         GLuint vBounds;
         GLuint vColour;
         GLuint vDepth;
