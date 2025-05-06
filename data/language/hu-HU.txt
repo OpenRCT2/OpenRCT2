@@ -99,6 +99,8 @@ STR_0094    :Egysínű hullámvasút
 STR_0095    :Alpesi hullámvasút
 STR_0096    :Klasszikus fa hullámvasút
 STR_0097    :Klasszikus álló hullámvasút
+STR_0098    :LSM kilövéses hullámvasút
+STR_0099    :Klasszikus fa csavart hullámvasút
 STR_0512    :Egy kompakt hullámvasút spirális felvonószakasszal és sima, csavaros esésekkel.
 STR_0513    :Egy átforduló hullámvasút, amelyen az utasok álló helyzetben utaznak
 STR_0514    :A hullámvasút pályája alatt felfüggesztett vonatok oldalt kilengenek a kanyarokban
@@ -183,6 +185,8 @@ STR_0604    :Az utasok egymás mögött utaznak egy keskeny, egysínű pályán,
 STR_0605    :Az utasok egy kanyargós acélpályán szánkóznak lefelé, fékezéssel szabályozva a sebességüket
 STR_0606    :Egy régebbi stílusú, fából készült hullámvasút gyors és durva utazással, rengeteg légi idővel, némi oldalirányú G-vel, és úgy tervezve, hogy „kontrollvesztettség” élményét nyújtsa
 STR_0607    :Egy intenzív, régebbi stílusú acél átforduló hullámvasút, amelyen az utasok álló helyzetben utaznak
+STR_0608    :A hullámvasút szerelvényeit lineáris szinkronmotorok gyorsítják fel, miközben átszáguldanak a szűk kanyarokon és éles fordulókon
+STR_0609    :Régi stílusú fa hullámvasút, amely gyors és rázós utazást kínál csuklós szerelvényekkel, rengeteg súlytalanság-élménnyel és kanyargós pályaszakaszokkal  
 STR_0767    :Vendég {INT32}
 STR_0768    :Mindenes {INT32}
 STR_0769    :Gépész {INT32}
@@ -2194,7 +2198,7 @@ STR_3188    :Úti hirdetőtáblák
 STR_3189    :Régi típusú utak
 STR_3190    :Úti extrák
 STR_3191    :Díszletcsoportok
-STR_3192    :Park bejárata
+STR_3192    :Park bejáratok
 STR_3193    :Víz
 STR_3195    :Találmányok listája
 STR_3196    :{WINDOW_COLOUR_2}Kutatási csoport: {BLACK}{STRINGID}
@@ -2585,7 +2589,7 @@ STR_5368    :Ütközés törlése
 STR_5371    :Objektumok kiválasztása
 STR_5372    :Jobb egérgombos húzás invertálása
 STR_5373    :Név {STRINGID}
-STR_5374    :Dátum {STRINGID}
+STR_5374    :Módosítás dátuma {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
 STR_5404    :A név már létezik
@@ -3580,7 +3584,7 @@ STR_6537    :Normál utak lehetnek várósorok
 STR_6538    :Megjeleníti a normál utakat a várósorok legördülő menüjében az Utak ablakon belül.
 STR_6539    :Fék zárva
 STR_6540    :{WINDOW_COLOUR_2}Külön köszönet a következő vállalatoknak, hogy engedélyezték hasonlóságuk használatát:
-STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG, Intamin Amusement Rides Int. Corp. Est.
 STR_6542    :Közreműködők
 STR_6543    :Közreműködők…
 STR_6544    :A kölcsön nem lehet negatív!
@@ -3749,3 +3753,26 @@ STR_6706    :{WINDOW_COLOUR_2}Jelenlegi képfájl: {BLACK}{STRING}
 STR_6707    :(nincs kiválasztva)
 STR_6708    :Simítási erősség
 STR_6709    :Add meg a simítási erősséget {COMMA16} és {COMMA16} között
+STR_6710    :Stabil rendezés
+STR_6711    :Fájlnév:
+STR_6712    :Mentés
+STR_6713    :{COMMA32} {STRINGID}
+STR_6714    :Fájlnév
+STR_6715    :Módosítás dátuma
+STR_6716    :Fájlméret
+STR_6717    :Fájlméret {STRINGID}
+STR_6718    :Vendég animációk
+STR_6719    :Legalább egy vendég animációs objektumot kell kiválasztani
+STR_6720    :Legalább egy mindenes animációs objektumot kell kiválasztani
+STR_6721    :Legalább egy gépész animációs objektumot kell kiválasztani
+STR_6722    :Legalább egy biztonsági őr animációs objektumot kell kiválasztani
+STR_6723    :Legalább egy szórakoztató animációs objektumot kell kiválasztani
+STR_6724    :Pálya szövegek
+STR_6725    :X:
+STR_6726    :Y:
+STR_6727    :Merülőhurok (balra)
+STR_6728    :Merülőhurok (jobbra)
+STR_6729    :A kábeles felvonószakasznak közvetlenül az állomás vagy a blokkoló fék után kell kezdődnie
+STR_6730    :Emscripten-adatok exportálása
+STR_6731    :Emscripten-adatok importálása
+STR_6732    :Gomb megjelenítése az eszköztáron a nézet óramutató járásával ellentétes elforgatásához

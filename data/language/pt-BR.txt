@@ -2510,7 +2510,7 @@ STR_5265    :Selecione quais fontes de conteúdo são visíveis
 STR_5266    :Exibição
 STR_5267    :Idioma e Unidades
 STR_5268    :Áudio
-STR_5269    :Controles e interface
+STR_5269    :Controles
 STR_5270    :Variados
 STR_5272    :Cenário Pequeno
 STR_5273    :Cenário Grande
@@ -3804,3 +3804,7 @@ STR_6758    :Opções de empréstimo
 STR_6759    :Modelo de negócios
 STR_6760    :Proventos:
 STR_6761    :Detalhes do cenário
+STR_6762    :Interface
+STR_6763    :RollerCoaster Tycoon 1
+STR_6764    :Salvamento e autosalvamentos
+STR_6765    :Avançado
