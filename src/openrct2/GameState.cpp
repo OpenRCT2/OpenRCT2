@@ -321,7 +321,7 @@ namespace OpenRCT2
         RideMeasurementsUpdate();
         News::UpdateCurrentItem();
 
-        MapAnimationInvalidateAll();
+        MapAnimation::UpdateAll();
         VehicleSoundsUpdate();
         PeepUpdateCrowdNoise();
         ClimateUpdateSound();

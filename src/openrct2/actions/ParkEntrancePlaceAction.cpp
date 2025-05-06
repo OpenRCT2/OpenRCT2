@@ -186,7 +186,7 @@ GameActions::Result ParkEntrancePlaceAction::Execute() const
 
         if (index == 0)
         {
-            MapAnimationCreate(MAP_ANIMATION_TYPE_PARK_ENTRANCE, { entranceLoc, zLow });
+            MapAnimation::Create(entranceLoc);
         }
     }
 

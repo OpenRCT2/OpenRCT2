@@ -6313,8 +6313,9 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
     {
         door->SetAnimationIsBackwards(isBackwards);
         door->SetAnimationFrame(1);
-        MapAnimationCreate(MAP_ANIMATION_TYPE_WALL_DOOR, doorLocation);
         play_scenery_door_open_sound(trackLocation, door);
+
+        MapAnimation::Create(doorLocation);
     }
 
     if (isLastVehicle)
@@ -6322,6 +6323,8 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
         door->SetAnimationIsBackwards(isBackwards);
         door->SetAnimationFrame(6);
         play_scenery_door_close_sound(trackLocation, door);
+
+        MapAnimation::Create(doorLocation);
     }
 }
 
@@ -6407,17 +6410,6 @@ void Vehicle::UpdateGoKartAttemptSwitchLanes()
         // This changes "riding left" to "moving to right lane" and "riding right" to "moving to left lane".
         TrackSubposition = VehicleTrackSubposition{ static_cast<uint8_t>(static_cast<uint8_t>(TrackSubposition) + 2u) };
     }
-}
-
-/**
- *
- *  rct2: 0x006DB545
- */
-static void trigger_on_ride_photo(const CoordsXYZ& loc, TileElement* tileElement)
-{
-    tileElement->AsTrack()->SetPhotoTimeout();
-
-    MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO, { loc, tileElement->GetBaseZ() });
 }
 
 /**
@@ -7105,7 +7097,8 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     }
     if (trackType == TrackElemType::OnRidePhoto)
     {
-        trigger_on_ride_photo(TrackLocation, tileElement);
+        tileElement->AsTrack()->SetPhotoTimeout();
+        MapAnimation::Create(TrackLocation);
     }
     if (trackType == TrackElemType::RotationControlToggle)
     {

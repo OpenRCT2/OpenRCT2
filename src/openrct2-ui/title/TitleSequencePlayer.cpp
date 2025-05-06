@@ -328,7 +328,7 @@ namespace OpenRCT2::Title
                     parkImporter->Import(gameState);
                     ReportProgress(100);
 
-                    MapAnimationAutoCreate();
+                    MapAnimation::CreateAll();
                 }
                 PrepareParkForPlayback();
                 _initialLoadCommand = false;
@@ -384,7 +384,7 @@ namespace OpenRCT2::Title
                     parkImporter->Import(gameState);
                     ReportProgress(100);
 
-                    MapAnimationAutoCreate();
+                    MapAnimation::CreateAll();
                 }
                 PrepareParkForPlayback();
                 _initialLoadCommand = false;

@@ -399,7 +399,7 @@ GameActions::Result WallPlaceAction::Execute() const
 
     wallElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
-    MapAnimationCreate(MAP_ANIMATION_TYPE_WALL, targetLoc);
+    MapAnimation::Create(targetLoc);
     MapInvalidateTileZoom1({ _loc, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
 
     res.Cost = wallEntry->price;

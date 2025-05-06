@@ -213,7 +213,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
         station.LastPeepInQueue = EntityId::GetNull();
         station.QueueLength = 0;
 
-        MapAnimationCreate(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, { _loc, z });
+        MapAnimation::Create(_loc);
     }
 
     FootpathQueueChainReset();
