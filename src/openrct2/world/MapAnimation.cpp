@@ -149,6 +149,8 @@ static bool UpdateTrackAnimation(TrackElement* track, CoordsXYZ& loc, int32_t ba
                 return true;
             }
             break;
+        default:
+            break;
     }
 
     return false;
@@ -372,7 +374,6 @@ static bool IsElementAnimated(const TileElementBase* el)
                 case TrackElemType::SpinningTunnel:
                 case TrackElemType::OnRidePhoto:
                     return true;
-                    break;
                 default:
                     break;
             }
