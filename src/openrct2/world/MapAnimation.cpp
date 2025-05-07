@@ -40,7 +40,7 @@
 
 using namespace OpenRCT2;
 
-// Set to track tiles that contain animated elements
+// A list of tile coordinates which contains animated tile elements.
 static std::vector<TileCoordsXY> _mapAnimations;
 
 static void InvalidateTile(const CoordsXYZ& loc, int32_t zMin, int32_t zMax)
@@ -221,13 +221,13 @@ static bool UpdateBannerAnimation([[maybe_unused]] BannerElement* banner, Coords
 
 static bool UpdateTileAnimations(const TileCoordsXY& coords)
 {
-    bool wasUpdated = false;
     auto tileElement = MapGetFirstElementAt(coords);
     if (tileElement == nullptr)
     {
         return false;
     }
 
+    bool hasAnimations = false;
     do
     {
         auto baseZ = tileElement->GetBaseZ();
@@ -236,32 +236,32 @@ static bool UpdateTileAnimations(const TileCoordsXY& coords)
         switch (tileElement->GetType())
         {
             case TileElementType::Entrance:
-                wasUpdated |= UpdateEntranceAnimation(tileElement->AsEntrance(), loc, baseZ);
+                hasAnimations |= UpdateEntranceAnimation(tileElement->AsEntrance(), loc, baseZ);
                 break;
             case TileElementType::Path:
-                wasUpdated |= UpdatePathAnimation(tileElement->AsPath(), loc, baseZ);
+                hasAnimations |= UpdatePathAnimation(tileElement->AsPath(), loc, baseZ);
                 break;
             case TileElementType::SmallScenery:
-                wasUpdated |= UpdateSmallSceneryAnimation(tileElement->AsSmallScenery(), loc, baseZ);
+                hasAnimations |= UpdateSmallSceneryAnimation(tileElement->AsSmallScenery(), loc, baseZ);
                 break;
             case TileElementType::Track:
-                wasUpdated |= UpdateTrackAnimation(tileElement->AsTrack(), loc, baseZ);
+                hasAnimations |= UpdateTrackAnimation(tileElement->AsTrack(), loc, baseZ);
                 break;
             case TileElementType::Banner:
-                wasUpdated |= UpdateBannerAnimation(tileElement->AsBanner(), loc, baseZ);
+                hasAnimations |= UpdateBannerAnimation(tileElement->AsBanner(), loc, baseZ);
                 break;
             case TileElementType::LargeScenery:
-                wasUpdated |= UpdateLargeSceneryAnimation(tileElement->AsLargeScenery(), loc, baseZ);
+                hasAnimations |= UpdateLargeSceneryAnimation(tileElement->AsLargeScenery(), loc, baseZ);
                 break;
             case TileElementType::Wall:
-                wasUpdated |= UpdateWallAnimation(tileElement->AsWall(), loc, baseZ);
+                hasAnimations |= UpdateWallAnimation(tileElement->AsWall(), loc, baseZ);
                 break;
             default:
                 break;
         }
     } while (!(tileElement++)->IsLastForTile());
 
-    return wasUpdated;
+    return hasAnimations;
 }
 
 static void MarkTileAnimated(const CoordsXY& loc)
