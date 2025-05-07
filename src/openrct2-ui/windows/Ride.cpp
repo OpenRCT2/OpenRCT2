@@ -3705,21 +3705,19 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(ride->numBlockBrakes + ride->numStations);
+
                 auto underWidget = ride->mode == RideMode::poweredLaunchBlockSectioned ? WIDX_MODE_TWEAK : WIDX_MODE;
 
-                // Offset block section text if mode is set to powered launch block section with cheats
-                int offset = 0;
                 if (getGameState().cheats.showAllOperatingModes && ride->mode == RideMode::poweredLaunchBlockSectioned)
                 {
-                    const auto& rtd = ride->getRideTypeDescriptor();
-                    if (rtd.TrackPaintFunctions.Regular.SupportsTrackGroup(TrackGroup::liftHill))
+                    if (widgets[WIDX_LIFT_HILL_SPEED].type != WindowWidgetType::Empty)
                     {
-                        offset = 13;
+                        underWidget = WIDX_LIFT_HILL_SPEED;
                     }
                 }
 
                 DrawTextBasic(
-                    rt, windowPos + ScreenCoordsXY{ 21, widgets[underWidget].bottom + 3 + offset}, STR_BLOCK_SECTIONS, ft,
+                    rt, windowPos + ScreenCoordsXY{ 21, widgets[underWidget].bottom + 3 }, STR_BLOCK_SECTIONS, ft,
                     { COLOUR_BLACK });
             }
         }
