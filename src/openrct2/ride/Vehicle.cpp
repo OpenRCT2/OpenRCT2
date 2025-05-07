@@ -6312,7 +6312,7 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
         door->SetAnimationFrame(1);
         play_scenery_door_open_sound(trackLocation, door);
 
-        MapInvalidateElement(doorLocation, door->as<TileElement>());
+        MapAnimationCreate(doorLocation, door);
     }
 
     if (isLastVehicle)
@@ -6321,7 +6321,7 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
         door->SetAnimationFrame(6);
         play_scenery_door_close_sound(trackLocation, door);
 
-        MapInvalidateElement(doorLocation, door->as<TileElement>());
+        MapAnimationCreate(doorLocation, door);
     }
 }
 
@@ -7095,7 +7095,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     if (trackType == TrackElemType::OnRidePhoto)
     {
         tileElement->AsTrack()->SetPhotoTimeout();
-        MapInvalidateElement(TrackLocation, tileElement);
+        MapAnimationCreate(TrackLocation, tileElement);
     }
     if (trackType == TrackElemType::RotationControlToggle)
     {

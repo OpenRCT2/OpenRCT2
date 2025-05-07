@@ -36,12 +36,21 @@
 #include "tile_element/WallElement.h"
 
 #include <algorithm>
-#include <vector>
+#include <set>
 
 using namespace OpenRCT2;
 
+struct TileCoordsXYCmp
+{
+    constexpr bool operator()(const TileCoordsXY& lhs, const TileCoordsXY& rhs) const noexcept
+    {
+        // NOTE: Ordering should match GetFirstElementAt which is x + (y * size)
+        return std::tie(lhs.y, lhs.x) < std::tie(rhs.y, rhs.x);
+    }
+};
+
 // A list of tile coordinates which contains animated tile elements.
-static std::vector<TileCoordsXY> _mapAnimations;
+static std::set<TileCoordsXY, TileCoordsXYCmp> _mapAnimations;
 
 static void InvalidateTile(const CoordsXYZ& loc, int32_t zMin, int32_t zMax)
 {
@@ -146,8 +155,8 @@ static bool UpdateTrackAnimation(TrackElement* track, CoordsXYZ& loc, int32_t ba
             {
                 InvalidateTile(loc, baseZ, clearZ);
                 track->DecrementPhotoTimeout();
+                return true;
             }
-            return true;
         default:
             break;
     }
@@ -177,32 +186,46 @@ static bool UpdateWallAnimation(WallElement* wall, CoordsXYZ& loc, int32_t baseZ
 
     if (entry->flags & WALL_SCENERY_IS_DOOR)
     {
-        if (!(getGameState().currentTicks & 1) && !GameIsPaused())
+        if (getGameState().currentTicks & 1)
         {
-            const auto currentFrame = wall->GetAnimationFrame();
-            if (currentFrame != 0)
+            return true;
+        }
+
+        if (GameIsPaused())
+        {
+            return true;
+        }
+
+        bool removeAnim = true;
+
+        const auto currentFrame = wall->GetAnimationFrame();
+        if (currentFrame != 0)
+        {
+            auto newFrame = currentFrame;
+            if (currentFrame == 15)
             {
-                auto newFrame = currentFrame;
-                if (currentFrame == 15)
-                {
-                    newFrame = 0;
-                }
-                else if (currentFrame != 5)
+                newFrame = 0;
+            }
+            else
+            {
+                removeAnim = false;
+                if (currentFrame != 5)
                 {
                     newFrame++;
+
                     if (newFrame == 13 && !(entry->flags & WALL_SCENERY_LONG_DOOR_ANIMATION))
                         newFrame = 15;
                 }
+            }
 
-                if (currentFrame != newFrame)
-                {
-                    wall->SetAnimationFrame(newFrame);
-                    InvalidateTile(loc, baseZ, baseZ + 32);
-                }
+            if (currentFrame != newFrame)
+            {
+                wall->SetAnimationFrame(newFrame);
+                InvalidateTile(loc, baseZ, baseZ + 32);
             }
         }
 
-        return true;
+        return !removeAnim;
     }
     else if ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != SCROLLING_MODE_NONE)
     {
@@ -268,17 +291,7 @@ static void MarkTileAnimated(const CoordsXY& loc)
 {
     auto coords = TileCoordsXY{ loc };
 
-    auto it = std::lower_bound(_mapAnimations.begin(), _mapAnimations.end(), coords, [](auto& a, auto& b) {
-        // NOTE: Ordering should match GetFirstElementAt which is x + (y * size)
-        return std::tie(a.y, a.x) < std::tie(b.y, a.x);
-    });
-
-    if (it != _mapAnimations.end() && *it == coords)
-    {
-        return; // Already exists
-    }
-
-    _mapAnimations.insert(it, coords);
+    _mapAnimations.insert(coords);
 }
 
 void MapAnimationUpdateAll()
@@ -304,7 +317,7 @@ void ClearMapAnimations()
     _mapAnimations.clear();
 }
 
-static bool IsElementAnimated(const TileElementBase* el)
+static bool IsElementAnimated(const TileElementBase* el, bool skipDoors)
 {
     if (el == nullptr)
     {
@@ -319,9 +332,16 @@ static bool IsElementAnimated(const TileElementBase* el)
         {
             auto wall = el->AsWall();
             auto entry = wall->GetEntry();
-            if (entry != nullptr && ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != SCROLLING_MODE_NONE))
+            if (entry != nullptr)
             {
-                return true;
+                if ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != SCROLLING_MODE_NONE)
+                {
+                    return true;
+                }
+                if (!skipDoors && (entry->flags & WALL_SCENERY_IS_DOOR))
+                {
+                    return true;
+                }
             }
             break;
         }
@@ -392,24 +412,12 @@ static bool IsElementAnimated(const TileElementBase* el)
 
 void MapAnimationCreate(const CoordsXY& coords, const TileElementBase* tileElement)
 {
-    if (!IsElementAnimated(tileElement))
+    if (!IsElementAnimated(tileElement, false))
     {
         return;
     }
 
     MarkTileAnimated(coords);
-}
-
-void MapAnimationCreate(const CoordsXY& loc)
-{
-    auto* tileElement = MapGetFirstElementAt(loc);
-    if (tileElement == nullptr)
-        return;
-
-    do
-    {
-        MapAnimationCreate(loc, tileElement);
-    } while (!(tileElement++)->IsLastForTile());
 }
 
 void MapAnimationAutoCreate()
@@ -420,7 +428,12 @@ void MapAnimationAutoCreate()
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
     {
-        MapAnimationCreate(TileCoordsXY(it.x, it.y).ToCoordsXY(), it.element);
+        if (!IsElementAnimated(it.element, true))
+        {
+            continue;
+        }
+
+        MarkTileAnimated(TileCoordsXY(it.x, it.y).ToCoordsXY());
     }
 }
 
@@ -429,8 +442,12 @@ void ShiftAllMapAnimations(CoordsXY amount)
     if (amount.x == 0 && amount.y == 0)
         return;
 
+    std::set<TileCoordsXY, TileCoordsXYCmp> newMapAnimations;
+
     for (auto& a : _mapAnimations)
     {
-        a += TileCoordsXY{ amount };
+        newMapAnimations.insert(a + TileCoordsXY{ amount });
     }
+
+    _mapAnimations = std::move(newMapAnimations);
 }

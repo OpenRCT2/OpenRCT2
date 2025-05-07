@@ -16,7 +16,6 @@
 struct TileElementBase;
 
 void MapAnimationCreate(const CoordsXY& coords, const TileElementBase* tileElement);
-void MapAnimationCreate(const CoordsXY& coords);
 void MapAnimationUpdateAll();
 void ClearMapAnimations();
 void MapAnimationAutoCreate();
