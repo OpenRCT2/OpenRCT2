@@ -319,9 +319,7 @@ static bool IsElementAnimated(const TileElementBase* el)
         {
             auto wall = el->AsWall();
             auto entry = wall->GetEntry();
-            if (entry != nullptr
-                && ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != SCROLLING_MODE_NONE
-                    || (entry->flags & WALL_SCENERY_IS_DOOR)))
+            if (entry != nullptr && ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != SCROLLING_MODE_NONE))
             {
                 return true;
             }
