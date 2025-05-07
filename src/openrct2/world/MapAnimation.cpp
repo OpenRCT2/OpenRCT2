@@ -201,11 +201,6 @@ static bool UpdateWallAnimation(WallElement* wall, CoordsXYZ& loc, int32_t baseZ
                     InvalidateTile(loc, baseZ, baseZ + 32);
                 }
             }
-            else
-            {
-                // Animation completed.
-                return false;
-            }
         }
 
         return true;

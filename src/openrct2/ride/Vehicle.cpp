@@ -6310,9 +6310,9 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
     {
         door->SetAnimationIsBackwards(isBackwards);
         door->SetAnimationFrame(1);
-        // NOTE: What is this doing here? This is probably not required.
-        MapAnimationCreate(doorLocation, door);
         play_scenery_door_open_sound(trackLocation, door);
+
+        MapInvalidateElement(doorLocation, door->as<TileElement>());
     }
 
     if (isLastVehicle)
@@ -6320,6 +6320,8 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
         door->SetAnimationIsBackwards(isBackwards);
         door->SetAnimationFrame(6);
         play_scenery_door_close_sound(trackLocation, door);
+
+        MapInvalidateElement(doorLocation, door->as<TileElement>());
     }
 }
 
