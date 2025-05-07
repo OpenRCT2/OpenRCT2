@@ -180,24 +180,35 @@ static bool UpdateWallAnimation(WallElement* wall, CoordsXYZ& loc, int32_t baseZ
     {
         if (!(getGameState().currentTicks & 1) && !GameIsPaused())
         {
-            uint8_t currentFrame = wall->GetAnimationFrame();
+            const auto currentFrame = wall->GetAnimationFrame();
             if (currentFrame != 0)
             {
+                auto newFrame = currentFrame;
                 if (currentFrame == 15)
                 {
-                    wall->SetAnimationFrame(0);
+                    newFrame = 0;
                 }
                 else if (currentFrame != 5)
                 {
-                    currentFrame++;
-                    if (currentFrame == 13 && !(entry->flags & WALL_SCENERY_LONG_DOOR_ANIMATION))
-                        currentFrame = 15;
-                    wall->SetAnimationFrame(currentFrame);
+                    newFrame++;
+                    if (newFrame == 13 && !(entry->flags & WALL_SCENERY_LONG_DOOR_ANIMATION))
+                        newFrame = 15;
+                }
+
+                if (currentFrame != newFrame)
+                {
+                    wall->SetAnimationFrame(newFrame);
                     InvalidateTile(loc, baseZ, baseZ + 32);
-                    return true;
                 }
             }
+            else
+            {
+                // Animation completed.
+                return false;
+            }
         }
+
+        return true;
     }
     else if ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != SCROLLING_MODE_NONE)
     {
