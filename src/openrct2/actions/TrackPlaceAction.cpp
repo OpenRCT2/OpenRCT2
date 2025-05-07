@@ -599,6 +599,8 @@ GameActions::Result TrackPlaceAction::Execute() const
                 [[fallthrough]];
             case TrackElemType::Whirlpool:
                 [[fallthrough]];
+            case TrackElemType::OnRidePhoto:
+                [[fallthrough]];
             case TrackElemType::SpinningTunnel:
                 MapAnimationCreate(mapLoc, trackElement);
                 break;
