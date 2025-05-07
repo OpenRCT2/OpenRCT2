@@ -146,9 +146,8 @@ static bool UpdateTrackAnimation(TrackElement* track, CoordsXYZ& loc, int32_t ba
             {
                 InvalidateTile(loc, baseZ, clearZ);
                 track->DecrementPhotoTimeout();
-                return true;
             }
-            break;
+            return true;
         default:
             break;
     }

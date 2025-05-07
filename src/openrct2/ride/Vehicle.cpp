@@ -6411,18 +6411,6 @@ void Vehicle::UpdateGoKartAttemptSwitchLanes()
 
 /**
  *
- *  rct2: 0x006DB545
- */
-static void trigger_on_ride_photo(const CoordsXYZ& loc, TileElement* tileElement)
-{
-    tileElement->AsTrack()->SetPhotoTimeout();
-
-    // NOTE: Might also not be required here.
-    MapAnimationCreate(loc, tileElement);
-}
-
-/**
- *
  *  rct2: 0x006DEDE8
  */
 void Vehicle::UpdateSceneryDoorBackwards() const
@@ -7106,7 +7094,8 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     }
     if (trackType == TrackElemType::OnRidePhoto)
     {
-        trigger_on_ride_photo(TrackLocation, tileElement);
+        tileElement->AsTrack()->SetPhotoTimeout();
+        MapInvalidateElement(TrackLocation, tileElement);
     }
     if (trackType == TrackElemType::RotationControlToggle)
     {
