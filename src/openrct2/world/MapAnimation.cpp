@@ -269,7 +269,8 @@ static void MarkTileAnimated(const CoordsXY& loc)
     auto coords = TileCoordsXY{ loc };
 
     auto it = std::lower_bound(_mapAnimations.begin(), _mapAnimations.end(), coords, [](auto& a, auto& b) {
-        return std::tie(a.x, a.y) < std::tie(b.x, b.y);
+        // NOTE: Ordering should match GetFirstElementAt which is x + (y * size)
+        return std::tie(a.y, a.x) < std::tie(b.y, a.x);
     });
 
     if (it != _mapAnimations.end() && *it == coords)
