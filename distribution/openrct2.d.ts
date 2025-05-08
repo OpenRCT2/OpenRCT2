@@ -516,6 +516,8 @@ declare global {
         subscribe(hook: "park.guest.softcap.calculate", callback: (e: ParkCalculateGuestCapArgs) => void): IDisposable;
         subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
         subscribe(hook: "vehicle.crash", callback: (e: VehicleCrashArgs) => void): IDisposable;
+        subscribe(hook: "ride.breakdown", callback: (e: RideBreakdownArgs) => void): IDisposable;
+        subscribe(hook: "ride.fix", callback: (e: RideFixArgs) => void): IDisposable;
 
         /**
          * Can only be used in intransient plugins.
@@ -645,6 +647,7 @@ declare global {
         "network.join" |
         "network.leave" |
         "park.guest.softcap.calculate" |
+        "ride.breakdown" |
         "ride.ratings.calculate" |
         "vehicle.crash";
 
@@ -1667,6 +1670,18 @@ declare global {
         readonly id: number;
         readonly crashIntoType: VehicleCrashIntoType;
     }
+    
+    interface RideBreakdownArgs {
+        readonly ride: number;
+        readonly reason: BreakdownType;
+        readonly vehicle: number | null;
+    }
+
+    interface RideFixArgs
+    {
+        readonly ride: number;
+        readonly fixedBy: number;
+    }
 
     /**
      * The 'suggestedGuestMaximum' field in this interface can be used to override
@@ -1750,7 +1765,7 @@ declare global {
          * @param elementIndex The index of the track element on the tile.
          */
         getTrackIterator(location: CoordsXY, elementIndex: number): TrackIterator | null;
-		
+        
     }
 
     type TileElementType =
@@ -2501,30 +2516,30 @@ declare global {
          * Highest drop height in height units. Use `context.formatString()` to convert into metres/feet. Ex: `formatString('{HEIGHT}', ride.highestDropHeight)`.
          */
         readonly highestDropHeight: number;
-		
-		 /**
+        
+         /**
          * The current breakdown of the ride.
          */
         readonly breakdown: BreakdownType;
-		 
-		/**
+         
+        /**
          * Set a breakdown on a ride.
          * @param breakdown The type of breakdown to set.
          */
         setBreakdown(breakdown: BreakdownType): void;
-		
-		/**
+        
+        /**
          * Fix a ride / clear the breakdown.
          */
         fixBreakdown(): void;
-		
+        
     }
 
     type RideClassification = "ride" | "stall" | "facility";
 
     type RideStatus = "closed" | "open" | "testing" | "simulating";
-	
-	type BreakdownType =  "brakes_failure" | "control_failure" | "doors_stuck_closed" | "doors_stuck_open" | "restraints_stuck_closed" | "restraints_stuck_open"  | "safety_cut_out" | "vehicle_malfunction";
+    
+    type BreakdownType =  "brakes_failure" | "control_failure" | "doors_stuck_closed" | "doors_stuck_open" | "restraints_stuck_closed" | "restraints_stuck_open"  | "safety_cut_out" | "vehicle_malfunction";
 
     interface TrackColour {
         main: number;
@@ -3869,7 +3884,7 @@ declare global {
         "empty_juice_cup" |
         "empty_bowl_blue";
 
-	/**
+    /**
      * Represents balloon entity.
      */
     interface Balloon extends Entity {
@@ -3877,9 +3892,9 @@ declare global {
          * The colour of the balloon.
          */
         colour: number;      
-	}
-	
-	/**
+    }
+    
+    /**
      * Represents money_effect entity.
      */
     interface MoneyEffect extends Entity {
@@ -3887,8 +3902,8 @@ declare global {
          * The value of the money effect.
          */
         value: number;  
-	}
-	
+    }
+    
     /**
      * Network APIs
      * Use `network.mode` to determine whether the current game is a client, server or in single player mode.

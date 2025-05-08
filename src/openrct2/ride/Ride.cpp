@@ -47,6 +47,8 @@
 #include "../object/StationObject.h"
 #include "../profiling/Profiling.h"
 #include "../rct1/RCT1.h"
+#include "../scripting/HookEngine.h"
+#include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -130,6 +132,12 @@ static void RideInspectionUpdate(Ride& ride);
 static void RideMechanicStatusUpdate(Ride& ride, int32_t mechanicStatus);
 static void RideMusicUpdate(Ride& ride);
 static void RideShopConnected(const Ride& ride);
+#ifdef ENABLE_SCRIPTING
+// TODO: InvokeRideBreakdownHook is called by RidePrepareBreakdown, which seems to be when the breakdown actually occurs,
+// as opposed to when the player is notified about it and sees its effects (ex. restraints not opening/closing)
+// Should it stay this way, or instead be invoked at the same time the player receives the notification that the ride has broken down?
+static void InvokeRideBreakdownHook(const Ride& ride, int32_t breakdownReason, const Vehicle* brokenVehicle);
+#endif
 
 RideId GetNextFreeRideId()
 {
@@ -1544,6 +1552,9 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
             {
                 ride.inspectionStation = i;
             }
+#ifdef ENABLE_SCRIPTING
+            InvokeRideBreakdownHook(ride, breakdownReason, nullptr);
+#endif
 
             break;
         case BREAKDOWN_RESTRAINTS_STUCK_CLOSED:
@@ -1562,11 +1573,24 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
                 {
                     vehicle = vehicle->GetCar(ride.brokenCar);
                 }
+
                 if (vehicle != nullptr)
                 {
                     vehicle->SetFlag(VehicleFlags::CarIsBroken);
+
+#ifdef ENABLE_SCRIPTING
+                    InvokeRideBreakdownHook(ride, breakdownReason, vehicle);
+#endif
                 }
+                else
+#ifdef ENABLE_SCRIPTING
+                    InvokeRideBreakdownHook(ride, breakdownReason, nullptr);
+#endif
             }
+            else
+#ifdef ENABLE_SCRIPTING
+                InvokeRideBreakdownHook(ride, breakdownReason, nullptr);
+#endif
             break;
         case BREAKDOWN_VEHICLE_MALFUNCTION:
             // Choose a random train
@@ -1578,7 +1602,15 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
             if (vehicle != nullptr)
             {
                 vehicle->SetFlag(VehicleFlags::TrainIsBroken);
+
+#ifdef ENABLE_SCRIPTING
+                InvokeRideBreakdownHook(ride, breakdownReason, vehicle);
+#endif
             }
+            else
+#ifdef ENABLE_SCRIPTING
+                InvokeRideBreakdownHook(ride, breakdownReason, nullptr);
+#endif
             break;
         case BREAKDOWN_BRAKES_FAILURE:
             // Original code generates a random number but does not use it
@@ -1588,6 +1620,10 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
             {
                 ride.inspectionStation = i;
             }
+
+#ifdef ENABLE_SCRIPTING
+            InvokeRideBreakdownHook(ride, breakdownReason, nullptr);
+#endif
             break;
     }
 }
@@ -2394,6 +2430,79 @@ static void RideShopConnected(const Ride& ride)
 }
 
 #pragma endregion
+
+#ifdef ENABLE_SCRIPTING
+static void InvokeRideBreakdownHook(const Ride& ride, int32_t reason, const Vehicle* brokenVehicle)
+{
+    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::rideBreakdown))
+    {
+        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+        // Create event args object
+        auto obj = OpenRCT2::Scripting::DukObject(ctx);
+        obj.Set("ride", ride.id.ToUnderlying());
+
+        switch (reason)
+        {
+            case BREAKDOWN_SAFETY_CUT_OUT:
+                obj.Set("reason", "safety_cut_out");
+                break;
+            case BREAKDOWN_RESTRAINTS_STUCK_CLOSED:
+                obj.Set("reason", "restraints_stuck_closed");
+                break;
+            case BREAKDOWN_RESTRAINTS_STUCK_OPEN:
+                obj.Set("reason", "restraints_stuck_open");
+                break;
+            case BREAKDOWN_DOORS_STUCK_CLOSED:
+                obj.Set("reason", "doors_stuck_closed");
+                break;
+            case BREAKDOWN_DOORS_STUCK_OPEN:
+                obj.Set("reason", "doors_stuck_open");
+                break;
+            case BREAKDOWN_VEHICLE_MALFUNCTION:
+                obj.Set("reason", "vehicle_malfunction");
+                break;
+            case BREAKDOWN_BRAKES_FAILURE:
+                obj.Set("reason", "brakes_failure");
+                break;
+            case BREAKDOWN_CONTROL_FAILURE:
+                obj.Set("reason", "control_failure");
+                break;
+#ifdef __cpp_lib_unreachable
+            default:
+                std::unreachable();
+#endif
+        }
+
+        if (brokenVehicle)
+            obj.Set("vehicle", brokenVehicle->Id.ToUnderlying());
+        else
+            obj.Set("vehicle", nullptr);
+
+        // Call the subscriptions
+        auto e = obj.Take();
+        hookEngine.Call(OpenRCT2::Scripting::HookType::rideBreakdown, e, true);
+    }
+}
+
+void InvokeRideFixHook(const Ride& ride)
+{
+    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::rideFix))
+    {
+        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+        // Create event args object
+        auto obj = OpenRCT2::Scripting::DukObject(ctx);
+        obj.Set("ride", ride.id.ToUnderlying());
+
+        // Call the subscriptions
+        auto e = obj.Take();
+        hookEngine.Call(OpenRCT2::Scripting::HookType::rideFix, e, true);
+    }
+}
+#endif
 
 #pragma region Interface
 
@@ -4682,6 +4791,10 @@ void RideFixBreakdown(Ride& ride, int32_t reliabilityIncreaseFactor)
 
     uint8_t unreliability = 100 - ride.reliabilityPercentage;
     ride.reliability += reliabilityIncreaseFactor * (unreliability / 2);
+
+#ifdef ENABLE_SCRIPTING
+    InvokeRideFixHook(ride);
+#endif
 }
 
 /**
