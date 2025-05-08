@@ -30,7 +30,8 @@ using namespace OpenRCT2::Ui;
 class HardwareDisplayDrawingEngine final : public X8DrawingEngine
 {
 private:
-    constexpr static uint32_t kDirtyVisualTime = 32;
+    constexpr static uint32_t kDirtyVisualTime = 40;
+    constexpr static uint32_t kDirtyRegionAlpha = 100;
 
     std::shared_ptr<IUiContext> const _uiContext;
     SDL_Window* _window = nullptr;
@@ -211,10 +212,6 @@ public:
         X8DrawingEngine::EndDraw();
 
         Display();
-        if (gShowDirtyVisuals)
-        {
-            UpdateDirtyVisuals();
-        }
     }
 
 protected:
@@ -222,8 +219,8 @@ protected:
     {
         if (gShowDirtyVisuals)
         {
-            const auto columns = (right - left) / _invalidationGrid.getBlockWidth();
-            const auto rows = (bottom - top) / _invalidationGrid.getBlockHeight();
+            const auto columns = ((right - left) + (_invalidationGrid.getBlockWidth() - 1)) / _invalidationGrid.getBlockWidth();
+            const auto rows = ((bottom - top) + (_invalidationGrid.getBlockHeight() - 1)) / _invalidationGrid.getBlockHeight();
             const auto firstRow = top / _invalidationGrid.getBlockHeight();
             const auto firstColumn = left / _invalidationGrid.getBlockWidth();
 
@@ -231,7 +228,7 @@ protected:
             {
                 for (uint32_t x = 0; x < columns; x++)
                 {
-                    SetDirtyVisualTime(firstColumn + x, firstRow + y, kDirtyVisualTime);
+                    SetDirtyVisualTime(firstColumn + x, firstRow + y, gCurrentRealTimeTicks + kDirtyVisualTime);
                 }
             }
         }
@@ -348,29 +345,15 @@ private:
 
     void SetDirtyVisualTime(uint32_t x, uint32_t y, uint32_t value)
     {
-        uint32_t i = y * _invalidationGrid.getColumnCount() + x;
-        if (_dirtyVisualsTime.size() > i)
-        {
-            _dirtyVisualsTime[i] = value;
-        }
-    }
-
-    void UpdateDirtyVisuals()
-    {
         const auto rows = _invalidationGrid.getRowCount();
         const auto columns = _invalidationGrid.getColumnCount();
 
         _dirtyVisualsTime.resize(rows * columns);
-        for (uint32_t y = 0; y < rows; y++)
+
+        uint32_t i = y * _invalidationGrid.getColumnCount() + x;
+        if (_dirtyVisualsTime.size() > i)
         {
-            for (uint32_t x = 0; x < columns; x++)
-            {
-                auto timeLeft = GetDirtyVisualTime(x, y);
-                if (timeLeft > 0)
-                {
-                    SetDirtyVisualTime(x, y, timeLeft - 1);
-                }
-            }
+            _dirtyVisualsTime[i] = value;
         }
     }
 
@@ -388,10 +371,11 @@ private:
         {
             for (uint32_t x = 0; x < _invalidationGrid.getColumnCount(); x++)
             {
-                auto timeLeft = GetDirtyVisualTime(x, y);
+                const auto timeEnd = GetDirtyVisualTime(x, y);
+                const auto timeLeft = gCurrentRealTimeTicks < timeEnd ? timeEnd - gCurrentRealTimeTicks : 0;
                 if (timeLeft > 0)
                 {
-                    uint8_t alpha = static_cast<uint8_t>(timeLeft * 5 / 2);
+                    uint8_t alpha = timeLeft * kDirtyRegionAlpha / kDirtyVisualTime;
                     SDL_Rect ddRect;
                     ddRect.x = static_cast<int32_t>(x * _invalidationGrid.getBlockWidth() * scaleX);
                     ddRect.y = static_cast<int32_t>(y * _invalidationGrid.getBlockHeight() * scaleY);
