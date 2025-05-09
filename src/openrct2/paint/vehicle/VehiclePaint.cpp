@@ -1682,7 +1682,7 @@ static void VehiclePitchUp25BankedLeft90(
     }
     else
     {
-        VehiclePitchUp25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft90(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -1697,7 +1697,7 @@ static void VehiclePitchUp25BankedLeft112(
     }
     else
     {
-        VehiclePitchUp25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft112(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -1712,7 +1712,7 @@ static void VehiclePitchUp25BankedLeft135(
     }
     else
     {
-        VehiclePitchUp25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft135(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -1727,7 +1727,7 @@ static void VehiclePitchUp25BankedLeft157(
     }
     else
     {
-        VehiclePitchUp25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft157(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -1757,7 +1757,7 @@ static void VehiclePitchUp25BankedRight90(
     }
     else
     {
-        VehiclePitchUp25BankedRight45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight90(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -1772,7 +1772,7 @@ static void VehiclePitchUp25BankedRight112(
     }
     else
     {
-        VehiclePitchUp25BankedRight45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight112(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -1787,7 +1787,7 @@ static void VehiclePitchUp25BankedRight135(
     }
     else
     {
-        VehiclePitchUp25BankedRight45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight135(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -1802,7 +1802,7 @@ static void VehiclePitchUp25BankedRight157(
     }
     else
     {
-        VehiclePitchUp25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight157(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2437,7 +2437,7 @@ static void VehiclePitchDown25BankedLeft90(
     }
     else
     {
-        VehiclePitchDown25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft90(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2452,7 +2452,7 @@ static void VehiclePitchDown25BankedLeft11BankedLeft45(
     }
     else
     {
-        VehiclePitchDown25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft112(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2467,7 +2467,7 @@ static void VehiclePitchDown25BankedLeft135(
     }
     else
     {
-        VehiclePitchDown25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft135(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2482,7 +2482,7 @@ static void VehiclePitchDown25BankedLeft157(
     }
     else
     {
-        VehiclePitchDown25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft157(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2512,7 +2512,7 @@ static void VehiclePitchDown25BankedRight90(
     }
     else
     {
-        VehiclePitchDown25BankedRight45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight90(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2527,7 +2527,7 @@ static void VehiclePitchDown25BankedRight11BankedLeft45(
     }
     else
     {
-        VehiclePitchDown25BankedRight45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight112(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2542,7 +2542,7 @@ static void VehiclePitchDown25BankedRight135(
     }
     else
     {
-        VehiclePitchDown25BankedRight45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight135(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2557,7 +2557,7 @@ static void VehiclePitchDown25BankedRight157(
     }
     else
     {
-        VehiclePitchDown25BankedRight45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight157(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
