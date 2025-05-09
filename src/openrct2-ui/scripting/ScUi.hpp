@@ -46,12 +46,23 @@ namespace OpenRCT2::Scripting
         { "expert", ScenarioCategory::expert },
         { "real", ScenarioCategory::real },
         { "other", ScenarioCategory::other },
+        { "graphite", ScenarioCategory::graphite },
+        { "emerald", ScenarioCategory::emerald },
+        { "ruby", ScenarioCategory::ruby },
+        { "sapphire", ScenarioCategory::sapphire },
+        { "amethyst", ScenarioCategory::amethyst },
+        { "coral", ScenarioCategory::coral },
+        { "ivory", ScenarioCategory::ivory },
+        { "bronze", ScenarioCategory::bronze },
+        { "silver", ScenarioCategory::silver },
+        { "gold", ScenarioCategory::gold },
         { "dlc", ScenarioCategory::dlc },
         { "build_your_own", ScenarioCategory::buildYourOwn },
         { "competitions", ScenarioCategory::competitions },
     });
 
     static const DukEnumMap<ScenarioSource> ScenarioSourceMap({
+        { "rctc", ScenarioSource::RCTC },
         { "rct1", ScenarioSource::RCT1 },
         { "rct1_aa", ScenarioSource::RCT1_AA },
         { "rct1_ll", ScenarioSource::RCT1_LL },

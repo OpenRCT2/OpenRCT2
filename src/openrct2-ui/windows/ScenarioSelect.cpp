@@ -37,7 +37,7 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr int32_t kInitialNumUnlockedScenarios = 5;
-    static constexpr uint8_t kNumTabs = 10;
+    static constexpr uint8_t kNumTabs = 11;
     static constexpr uint8_t kPadding = 5;
     static constexpr int32_t kPreviewPaneWidthRegular = 180;
     static constexpr int32_t kPreviewPaneWidthScreenshots = 254;
@@ -88,14 +88,15 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TAB8,
         WIDX_TAB9,
         WIDX_TAB10,
+        WIDX_TAB11,
         WIDX_SCENARIOLIST
     };
 
     static constexpr StringId kScenarioOriginStringIds[] = {
-        STR_SCENARIO_CATEGORY_RCT1,        STR_SCENARIO_CATEGORY_RCT1_AA,    STR_SCENARIO_CATEGORY_RCT1_LL,
-        STR_SCENARIO_CATEGORY_RCT2,        STR_SCENARIO_CATEGORY_RCT2_WW,    STR_SCENARIO_CATEGORY_RCT2_TT,
-        STR_SCENARIO_CATEGORY_UCES,        STR_SCENARIO_CATEGORY_REAL_PARKS, STR_SCENARIO_CATEGORY_EXTRAS_PARKS,
-        STR_SCENARIO_CATEGORY_OTHER_PARKS,
+        STR_SCENARIO_CATEGORY_RCTC,         STR_SCENARIO_CATEGORY_RCT1,        STR_SCENARIO_CATEGORY_RCT1_AA,
+        STR_SCENARIO_CATEGORY_RCT1_LL,      STR_SCENARIO_CATEGORY_RCT2,        STR_SCENARIO_CATEGORY_RCT2_WW,
+        STR_SCENARIO_CATEGORY_RCT2_TT,      STR_SCENARIO_CATEGORY_UCES,        STR_SCENARIO_CATEGORY_REAL_PARKS,
+        STR_SCENARIO_CATEGORY_EXTRAS_PARKS, STR_SCENARIO_CATEGORY_OTHER_PARKS,
     };
 
     // clang-format off
@@ -111,7 +112,8 @@ namespace OpenRCT2::Ui::Windows
         makeRemapWidget({ 3, kTabsStart + (kTabHeight * 6) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 07
         makeRemapWidget({ 3, kTabsStart + (kTabHeight * 7) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 08
         makeRemapWidget({ 3, kTabsStart + (kTabHeight * 8) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 09
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 8) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 10
+        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 9) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 10
+        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 9) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 11
         makeWidget({ kTabWidth + 3, kWidgetsStart + 1 }, { kWindowSize.width - kPreviewPaneWidthRegular, 362 }, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL    ) // level list
     );
     // clang-format on
@@ -162,7 +164,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMouseDown(WidgetIndex widgetIndex) override
         {
-            if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB10)
+            if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB11)
             {
                 selected_tab = widgetIndex - 4;
                 Config::Get().interface.scenarioSelectLastTab = selected_tab;
@@ -431,7 +433,7 @@ namespace OpenRCT2::Ui::Windows
             pressed_widgets &= ~(
                 (1uLL << WIDX_CLOSE) | (1uLL << WIDX_TAB1) | (1uLL << WIDX_TAB2) | (1uLL << WIDX_TAB3) | (1uLL << WIDX_TAB4)
                 | (1uLL << WIDX_TAB5) | (1uLL << WIDX_TAB6) | (1uLL << WIDX_TAB7) | (1uLL << WIDX_TAB8) | (1uLL << WIDX_TAB9)
-                | (1uLL << WIDX_TAB10));
+                | (1uLL << WIDX_TAB10) | (1uLL << WIDX_TAB11));
 
             pressed_widgets |= 1LL << (selected_tab + WIDX_TAB1);
 
@@ -835,7 +837,7 @@ namespace OpenRCT2::Ui::Windows
                 return false;
             if (!Config::Get().general.ScenarioUnlockingEnabled)
                 return false;
-            if (selected_tab >= 6)
+            if (selected_tab >= 7)
                 return false;
 
             return true;

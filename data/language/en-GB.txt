@@ -3829,3 +3829,15 @@ STR_6781    :Screenshots
 STR_6782    :Park notifications
 STR_6783    :Ride notifications
 STR_6784    :Guest notifications
+STR_6785    :RollerCoaster Tycoon Classic
+STR_6786    :Graphite Group
+STR_6787    :Emerald Group
+STR_6788    :Ruby Group
+STR_6789    :Sapphire Group
+STR_6790    :Amethyst Group
+STR_6791    :Coral Group
+STR_6792    :Ivory Group
+STR_6793    :Bronze Group
+STR_6794    :Silver Group
+STR_6795    :Gold Group
+STR_6796    :Bonus Group

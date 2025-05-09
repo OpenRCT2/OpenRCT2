@@ -21,6 +21,7 @@ enum class FileExtension
     SC6,
     SV6,
     TD6,
+    SEA,
     PARK,
 };
 

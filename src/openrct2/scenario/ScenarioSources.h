@@ -25,7 +25,7 @@ struct SourceDescriptor
 
 namespace OpenRCT2::ScenarioSources
 {
-    bool TryGetByName(u8string_view name, SourceDescriptor* outDesc);
+    bool TryGetByName(u8string_view name, SourceDescriptor* outDesc, bool classic = false);
     bool TryGetById(uint8_t id, SourceDescriptor* outDesc);
     u8string NormaliseName(u8string_view input);
 } // namespace OpenRCT2::ScenarioSources

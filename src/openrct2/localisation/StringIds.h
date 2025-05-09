@@ -1728,6 +1728,18 @@ enum : StringId
     STR_OBJECT_SELECTION_CLIMATE = 6743,
     STR_CLIMATE_WEATHER_PERCENT = 6744,
 
+    STR_GRAPHITE_GROUP = 6786,
+    STR_EMERALD_GROUP = STR_GRAPHITE_GROUP + 1,
+    STR_RUBY_GROUP = STR_GRAPHITE_GROUP + 2,
+    STR_SAPPHIRE_GROUP = STR_GRAPHITE_GROUP + 3,
+    STR_AMETHYST_GROUP = STR_GRAPHITE_GROUP + 4,
+    STR_CORAL_GROUP = STR_GRAPHITE_GROUP + 5,
+    STR_IVORY_GROUP = STR_GRAPHITE_GROUP + 6,
+    STR_BRONZE_GROUP = STR_GRAPHITE_GROUP + 7,
+    STR_SILVER_GROUP = STR_GRAPHITE_GROUP + 8,
+    STR_GOLD_GROUP = STR_GRAPHITE_GROUP + 9,
+    STR_BONUS_GROUP = STR_GRAPHITE_GROUP + 10,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

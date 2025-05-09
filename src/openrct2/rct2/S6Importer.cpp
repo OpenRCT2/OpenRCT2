@@ -10,6 +10,7 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../Editor.h"
+#include "../FileClassifier.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
@@ -265,7 +266,8 @@ namespace OpenRCT2::RCT2
 
             // Look up and store information regarding the origins of this scenario.
             SourceDescriptor desc;
-            if (ScenarioSources::TryGetByName(dst->Name.c_str(), &desc))
+            const bool classic = GetFileExtensionType(dst->Path) == FileExtension::SEA;
+            if (ScenarioSources::TryGetByName(dst->Name.c_str(), &desc, classic))
             {
                 dst->ScenarioId = desc.id;
                 dst->SourceIndex = desc.index;

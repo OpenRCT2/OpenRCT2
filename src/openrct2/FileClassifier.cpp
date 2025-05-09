@@ -212,7 +212,7 @@ FileExtension GetFileExtensionType(u8string_view path)
     if (String::iequals(extension, ".sc6"))
         return FileExtension::SC6;
     if (String::iequals(extension, ".sea"))
-        return FileExtension::SC6;
+        return FileExtension::SEA;
     if (String::iequals(extension, ".sv6"))
         return FileExtension::SV6;
     if (String::iequals(extension, ".sv7"))

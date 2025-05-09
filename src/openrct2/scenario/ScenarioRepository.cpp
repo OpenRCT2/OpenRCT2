@@ -124,7 +124,7 @@ class ScenarioFileIndex final : public FileIndex<ScenarioIndexEntry>
 {
 private:
     static constexpr uint32_t kMagicNumber = 0x58444953; // SIDX
-    static constexpr uint16_t kVersion = 9;
+    static constexpr uint16_t kVersion = 10;
     static constexpr auto kPattern = "*.sc4;*.sc6;*.sea;*.park";
 
 public:
