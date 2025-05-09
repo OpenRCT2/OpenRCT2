@@ -398,7 +398,7 @@ if (NOT CMAKE_CROSSCOMPILING)
     foreach(graphics_file ${graphics_files})
         set(output_file "${graphics_file}.dat")
         set(json_file "${ROOT_DIR}/resources/${graphics_file}/sprites.json")
-        file(GLOB_RECURSE dependent_files "${ROOT_DIR}/resources/${graphics_file}/*")
+        file(GLOB_RECURSE dependent_files CONFIGURE_DEPENDS "${ROOT_DIR}/resources/${graphics_file}/*")
         add_custom_command(
             OUTPUT ${output_file}
             COMMAND ./openrct2-cli sprite build "${CMAKE_BINARY_DIR}/${output_file}" "${json_file}"
