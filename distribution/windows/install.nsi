@@ -2,7 +2,7 @@
 !define APPVERSION          "${APPV_MAIN}${APPV_EXTRA}"
 !define APPVERSIONINTERNAL  "${APPV_MAIN}.0"
 !define APPNAMEANDVERSION   "${APPNAME} ${APPVERSION}"
-!define APPURLLINK          "https://github.com/OpenRCT2/OpenRCT2"
+!define APPURLLINK          "https://openrct2.io"
 !define OPENRCT2_EXE        "openrct2.exe"
 !define OPENRCT2_COM        "openrct2.com"
 
