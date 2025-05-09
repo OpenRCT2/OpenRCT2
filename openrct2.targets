@@ -9,6 +9,7 @@
     <CLIProjectName Condition="'$(CLIProjectName)' == ''">openrct2-cli</CLIProjectName>
     <CLIProjectPath Condition="'$(CLIProjectPath)' == ''">$(SolutionDir)src\$(CLIProjectName)\$(CLIProjectName).vcxproj</CLIProjectPath>
     <G2CLIPath Condition="'$(G2CLIPath)' == ''">$(OutDir)$(CLIProjectName).exe</G2CLIPath>
+    <FontsCLIPath Condition="'$(FontsCLIPath)' == ''">$(OutDir)$(CLIProjectName).exe</FontsCLIPath>
 
     <!-- Data Configuration -->
     <DataOutputPath Condition="'$(DataOutputPath)' == ''">$(OutDir)data\</DataOutputPath>
@@ -18,12 +19,15 @@
     <DataScenarioPath Condition="'$(DataScenarioPath)' == ''">$(SolutionDir)data\scenario_patches\</DataScenarioPath>
     <ResourcesG2Path Condition="'$(ResourcesG2Path)' == ''">$(SolutionDir)resources\g2\</ResourcesG2Path>
     <G2InputFile Condition="'$(G2InputFile)' == ''">$(ResourcesG2Path)sprites.json</G2InputFile>
+    <ResourcesFontsPath Condition="'$(ResourcesFontsPath)' == ''">$(SolutionDir)resources\fonts\</ResourcesFontsPath>
+    <FontsInputFile Condition="'$(FontsInputFile)' == ''">$(ResourcesFontsPath)sprites.json</FontsInputFile>
     <DataOutputPath Condition="'$(DataOutputPath)' == ''">$(OutDir)data\</DataOutputPath>
   </PropertyGroup>
     
   <!-- File Group Definitions -->
   <ItemGroup>
     <G2Input Include="$(G2InputFile)" />
+    <FontsInput Include="$(FontsInputFile)" />
     
     <LanguageFiles Include="$(DataLanguagePath)**\*"
                    Exclude="$(DataLanguagePath)*.bak;
@@ -117,6 +121,25 @@
            ForceTouch="true"
            AlwaysCreate="true" />
   </Target>
-  
   <Target Name="g2" DependsOnTargets="BuildG2" />
+  
+    <Target Name="BuildFonts"
+            AfterTargets="Build"
+            Inputs="@(FontsInput)"
+            Outputs="$(DataOutputPath)fonts.dat"
+            Condition="'$(TestConfig)' != 'true' and ('$(Platform)' != 'ARM64' or '$(PROCESSOR_ARCHITECTURE)' == 'ARM64')">
+  
+      <MakeDir Directories="$(DataOutputPath)" />
+      
+      <Exec Command="&quot;$(FontsCLIPath)&quot; sprite build &quot;$(DataOutputPath)fonts.dat&quot; &quot;%(FontsInput.FullPath)&quot;"
+            ConsoleToMSBuild="true"
+            IgnoreExitCode="false">
+        <Output TaskParameter="ConsoleOutput" PropertyName="FontsBuildOutput" />
+      </Exec>
+  
+      <Touch Files="$(DataOutputPath)fonts.dat"
+             ForceTouch="true"
+             AlwaysCreate="true" />
+    </Target>
+  <Target Name="fonts" DependsOnTargets="BuildFonts" />
 </Project>

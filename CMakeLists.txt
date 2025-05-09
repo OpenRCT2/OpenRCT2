@@ -391,16 +391,31 @@ if(NOT DISABLE_GUI)
     include("${ROOT_DIR}/src/openrct2-ui/CMakeLists.txt" NO_POLICY_SCOPE)
 endif()
 
-# g2
-if (NOT (MACOS_BUNDLE AND (NOT CMAKE_OSX_ARCHITECTURES MATCHES "${SYSTEM_MACOS_ARCH}")))
-    add_custom_command(
-        OUTPUT g2.dat
-        COMMAND ./openrct2-cli sprite build ${CMAKE_BINARY_DIR}/g2.dat ${ROOT_DIR}/resources/g2/sprites.json
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    )
-    add_custom_target(g2 DEPENDS OpenRCT2::openrct2-cli g2.dat)
+# graphics files (g2.dat and font.dat) 
+if (NOT CMAKE_CROSSCOMPILING)
+    set(graphics_files "g2" "fonts")
+    
+    foreach(graphics_file ${graphics_files})
+        set(output_file "${graphics_file}.dat")
+        set(json_file "${ROOT_DIR}/resources/${graphics_file}/sprites.json")
+        file(GLOB_RECURSE dependent_files "${ROOT_DIR}/resources/${graphics_file}/*")
+        add_custom_command(
+            OUTPUT ${output_file}
+            COMMAND ./openrct2-cli sprite build "${CMAKE_BINARY_DIR}/${output_file}" "${json_file}"
+            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+            DEPENDS ${dependent_files}
+        )
+        list(APPEND output_files "${output_file}")
+    endforeach()
+
+    add_custom_target(graphics DEPENDS OpenRCT2::openrct2-cli ${output_files})
+
+    if(NOT DISABLE_GUI)
+        add_dependencies(openrct2 graphics)
+    endif()
+    
 else ()
-    message("Skipping g2.dat generation in macOS cross-compile")
+    message("Skipping graphics generation in cross-compile")
 endif ()
 
 # Include tests
@@ -422,9 +437,6 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
                         "${ROOT_DIR}/distribution/scripting.md"
                         "${ROOT_DIR}/distribution/openrct2.d.ts")
 
-    # CMake does not allow specifying a dependency chain which includes built-in
-    # targets, like `install`, so we have to trick it and execute dependency ourselves.
-    install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_CURRENT_BINARY_DIR}\" --target g2)")
     if (DOWNLOAD_TITLE_SEQUENCES)
         # Checks if this version of the title sequences are already installed, updates if necessary
         # if /data/sequence exists, it will overwrite this anyways (see `install(DIRECTORY "data/" ...)` below)
@@ -487,6 +499,7 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
             )")
     endif ()
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/g2.dat" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/fonts.dat" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
     install(DIRECTORY "data/" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
 
     # even when building WITH_TESTS, none of the below install steps are required for OpenRCT2.app

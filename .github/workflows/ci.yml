@@ -150,7 +150,7 @@ jobs:
       - name: Run check-changelog-formatting
         run: scripts/check-changelog-formatting
   g2dat:
-    name: g2.dat
+    name: g2.dat and fonts.dat
     runs-on: ubuntu-latest
     needs: build_variables
     steps:
@@ -167,11 +167,19 @@ jobs:
       - name: Build g2.dat
         run: |
           gxc build g2.dat OpenRCT2/resources/g2/sprites.json
-      - name: Upload artifacts
+      - name: Build fonts.dat
+        run: |
+          gxc build fonts.dat OpenRCT2/resources/fonts/sprites.json
+      - name: Upload g2.dat
         uses: actions/upload-artifact@v4
         with:
           name: g2-${{ needs.build_variables.outputs.name }}.dat
           path: g2.dat
+      - name: Upload fonts.dat
+        uses: actions/upload-artifact@v4
+        with:
+          name: fonts-${{ needs.build_variables.outputs.name }}.dat
+          path: fonts.dat
   windows:
     name: Windows
     runs-on: windows-latest
@@ -234,6 +242,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: g2-${{ needs.build_variables.outputs.name }}.dat
+          path: bin/data
+      - name: Download fonts.dat on ARM64
+        if: matrix.platform == 'arm64'
+        uses: actions/download-artifact@v4
+        with:
+          name: fonts-${{ needs.build_variables.outputs.name }}.dat
           path: bin/data
       - name: Build artifacts
         run: |
