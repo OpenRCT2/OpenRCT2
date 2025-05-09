@@ -245,8 +245,6 @@ namespace OpenRCT2::RCT2
 
         bool PopulateIndexEntry(ScenarioIndexEntry* dst) override
         {
-            *dst = {};
-
             dst->Category = _s6.Info.Category;
             dst->ObjectiveType = _s6.Info.ObjectiveType;
             dst->ObjectiveArg1 = _s6.Info.ObjectiveArg1;
