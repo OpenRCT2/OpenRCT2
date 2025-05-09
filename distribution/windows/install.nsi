@@ -150,7 +150,8 @@ Section "!OpenRCT2" Section1
 
     SetShellVarContext all
 
-    ; Copy data files
+    ; Copy data files. Clear out the old dir first, to ensure upgrades do not result in old objects sticking around.
+    RMDir /r "$INSTDIR\data"
     SetOutPath "$INSTDIR\data\"
     File /r ${PATH_ROOT}bin\data\*
 
