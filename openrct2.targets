@@ -9,7 +9,7 @@
     <CLIProjectName Condition="'$(CLIProjectName)' == ''">openrct2-cli</CLIProjectName>
     <CLIProjectPath Condition="'$(CLIProjectPath)' == ''">$(SolutionDir)src\$(CLIProjectName)\$(CLIProjectName).vcxproj</CLIProjectPath>
     <G2CLIPath Condition="'$(G2CLIPath)' == ''">$(OutDir)$(CLIProjectName).exe</G2CLIPath>
-    <FontCLIPath Condition="'$(FontCLIPath)' == ''">$(OutDir)$(CLIProjectName).exe</FontCLIPath>
+    <FontsCLIPath Condition="'$(FontsCLIPath)' == ''">$(OutDir)$(CLIProjectName).exe</FontsCLIPath>
 
     <!-- Data Configuration -->
     <DataOutputPath Condition="'$(DataOutputPath)' == ''">$(OutDir)data\</DataOutputPath>
@@ -19,15 +19,15 @@
     <DataScenarioPath Condition="'$(DataScenarioPath)' == ''">$(SolutionDir)data\scenario_patches\</DataScenarioPath>
     <ResourcesG2Path Condition="'$(ResourcesG2Path)' == ''">$(SolutionDir)resources\g2\</ResourcesG2Path>
     <G2InputFile Condition="'$(G2InputFile)' == ''">$(ResourcesG2Path)sprites.json</G2InputFile>
-    <ResourcesFontPath Condition="'$(ResourcesFontPath)' == ''">$(SolutionDir)resources\font\</ResourcesFontPath>
-    <FontInputFile Condition="'$(FontInputFile)' == ''">$(ResourcesFontPath)sprites.json</FontInputFile>
+    <ResourcesFontsPath Condition="'$(ResourcesFontsPath)' == ''">$(SolutionDir)resources\fonts\</ResourcesFontsPath>
+    <FontsInputFile Condition="'$(FontsInputFile)' == ''">$(ResourcesFontsPath)sprites.json</FontsInputFile>
     <DataOutputPath Condition="'$(DataOutputPath)' == ''">$(OutDir)data\</DataOutputPath>
   </PropertyGroup>
     
   <!-- File Group Definitions -->
   <ItemGroup>
     <G2Input Include="$(G2InputFile)" />
-    <FontInput Include="$(FontInputFile)" />
+    <FontsInput Include="$(FontsInputFile)" />
     
     <LanguageFiles Include="$(DataLanguagePath)**\*"
                    Exclude="$(DataLanguagePath)*.bak;
@@ -123,23 +123,23 @@
   </Target>
   <Target Name="g2" DependsOnTargets="BuildG2" />
   
-    <Target Name="BuildFont"
+    <Target Name="BuildFonts"
             AfterTargets="Build"
-            Inputs="@(FontInput)"
-            Outputs="$(DataOutputPath)font.dat"
+            Inputs="@(FontsInput)"
+            Outputs="$(DataOutputPath)fonts.dat"
             Condition="'$(TestConfig)' != 'true' and ('$(Platform)' != 'ARM64' or '$(PROCESSOR_ARCHITECTURE)' == 'ARM64')">
   
       <MakeDir Directories="$(DataOutputPath)" />
       
-      <Exec Command="&quot;$(FontCLIPath)&quot; sprite build &quot;$(DataOutputPath)font.dat&quot; &quot;%(FontInput.FullPath)&quot;"
+      <Exec Command="&quot;$(FontsCLIPath)&quot; sprite build &quot;$(DataOutputPath)fonts.dat&quot; &quot;%(FontsInput.FullPath)&quot;"
             ConsoleToMSBuild="true"
             IgnoreExitCode="false">
-        <Output TaskParameter="ConsoleOutput" PropertyName="FontBuildOutput" />
+        <Output TaskParameter="ConsoleOutput" PropertyName="FontsBuildOutput" />
       </Exec>
   
-      <Touch Files="$(DataOutputPath)font.dat"
+      <Touch Files="$(DataOutputPath)fonts.dat"
              ForceTouch="true"
              AlwaysCreate="true" />
     </Target>
-  <Target Name="font" DependsOnTargets="BuildFont" />
+  <Target Name="fonts" DependsOnTargets="BuildFonts" />
 </Project>

@@ -220,7 +220,7 @@ namespace OpenRCT2
 
             GfxObjectCheckAllImagesFreed();
             GfxUnloadCsg();
-            GfxUnloadG2AndFont();
+            GfxUnloadG2AndFonts();
             GfxUnloadG1();
             Audio::Close();
 
@@ -1036,7 +1036,7 @@ namespace OpenRCT2
             {
                 return false;
             }
-            GfxLoadG2AndFont();
+            GfxLoadG2AndFonts();
             GfxLoadCsg();
             FontSpriteInitialiseCharacters();
             return true;

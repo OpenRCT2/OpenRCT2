@@ -434,7 +434,7 @@ static void MaskMagnify(
 
 static Gx _g1 = {};
 static Gx _g2 = {};
-static Gx _font = {};
+static Gx _fonts = {};
 static Gx _csg = {};
 static G1Element _scrollingText[kMaxScrollingTextEntries]{};
 static bool _csgLoaded = false;
@@ -509,14 +509,14 @@ void GfxUnloadG1()
     _g1.elements.shrink_to_fit();
 }
 
-void GfxUnloadG2AndFont()
+void GfxUnloadG2AndFonts()
 {
     _g2.data.reset();
     _g2.elements.clear();
     _g2.elements.shrink_to_fit();
-    _font.data.reset();
-    _font.elements.clear();
-    _font.elements.shrink_to_fit();
+    _fonts.data.reset();
+    _fonts.elements.clear();
+    _fonts.elements.shrink_to_fit();
 }
 
 void GfxUnloadCsg()
@@ -593,10 +593,10 @@ static bool GfxLoadOpenRCT2Gx(std::string filename, Gx& target, size_t expectedN
     return false;
 }
 
-bool GfxLoadG2AndFont()
+bool GfxLoadG2AndFonts()
 {
     auto res1 = GfxLoadOpenRCT2Gx("g2.dat", _g2, kG2SpriteCount);
-    auto res2 = GfxLoadOpenRCT2Gx("font.dat", _font, kFontDatSpriteCount);
+    auto res2 = GfxLoadOpenRCT2Gx("fonts.dat", _fonts, kFontDatSpriteCount);
     return res1 && res2;
 }
 
@@ -1050,15 +1050,15 @@ const G1Element* GfxGetG1Element(ImageIndex image_id)
 
         LOG_WARNING("Invalid entry in g2.dat requested, idx = %u. You may have to update your g2.dat.", idx);
     }
-    else if (offset < SPR_FONT_END)
+    else if (offset < SPR_FONTS_END)
     {
-        size_t idx = offset - SPR_FONT_BEGIN;
-        if (idx < _font.header.num_entries)
+        size_t idx = offset - SPR_FONTS_BEGIN;
+        if (idx < _fonts.header.num_entries)
         {
-            return &_font.elements[idx];
+            return &_fonts.elements[idx];
         }
 
-        LOG_WARNING("Invalid entry in font.dat requested, idx = %u. You may have to update your font.dat.", idx);
+        LOG_WARNING("Invalid entry in fonts.dat requested, idx = %u. You may have to update your fonts.dat.", idx);
     }
     else if (offset < SPR_CSG_END)
     {
