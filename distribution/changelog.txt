@@ -1,6 +1,7 @@
 0.4.23 (in development)
 ------------------------------------------------------------------------
 - Feature: [#24313] [Plugin] Add API for setting a ride vehicle’s sprite to a smoke plume. 
+- Improved: [#24364] Vehicles without all the sprites for Zero G Rolls now use better fallbacks.
 - Improved: [#24368] Clicking the in-game update notication now leads to a more user-friendly download page.
 - Change: [#24342] g2.dat is now split into g2.dat and fonts.dat.
 - Change: [#24362] The Windows installer now prevents installing to the same folder as RollerCoaster Tycoon 2 or Classic.
