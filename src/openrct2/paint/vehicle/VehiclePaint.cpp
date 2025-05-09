@@ -1969,7 +1969,7 @@ static void VehiclePitchUp42BankedLeft67(
     }
     else
     {
-        VehiclePitchUp42Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchUp25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -1984,7 +1984,7 @@ static void VehiclePitchUp42BankedLeft90(
     }
     else
     {
-        VehiclePitchUp42Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft90(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -1999,7 +1999,7 @@ static void VehiclePitchUp42BankedRight67(
     }
     else
     {
-        VehiclePitchUp42Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchUp25BankedRight45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2014,7 +2014,7 @@ static void VehiclePitchUp42BankedRight90(
     }
     else
     {
-        VehiclePitchUp42Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight90(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2724,7 +2724,7 @@ static void VehiclePitchDown42BankedLeft67(
     }
     else
     {
-        VehiclePitchDown42Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchDown25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2739,7 +2739,7 @@ static void VehiclePitchDown42BankedLeft90(
     }
     else
     {
-        VehiclePitchDown42Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft90(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2754,7 +2754,7 @@ static void VehiclePitchDown42BankedRight67(
     }
     else
     {
-        VehiclePitchDown42Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchDown25BankedRight45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2769,7 +2769,7 @@ static void VehiclePitchDown42BankedRight90(
     }
     else
     {
-        VehiclePitchDown42Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight90(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
