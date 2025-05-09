@@ -276,6 +276,107 @@ namespace OpenRCT2::ScenarioSources
         { SC_UNIDENTIFIED, "Prehistoric - Jurassic Safari",         ScenarioCategory::expert,      "rct2tt.scenario_text.coastersaurus"                 },
     };
 
+    // RCT: Classic
+    static constexpr ScenarioTitleDescriptor kScenarioTitlesRCTC[] =
+    {
+        { SC_UNIDENTIFIED, "Forest Frontiers",     ScenarioCategory::graphite, "rctc.scenario_text.forest_frontiers"   },
+        { SC_UNIDENTIFIED, "Dynamite Dunes",       ScenarioCategory::graphite, "rctc.scenario_text.dynamite_dunes"     },
+        { SC_UNIDENTIFIED, "Leafy Lake",           ScenarioCategory::graphite, "rctc.scenario_text.leafy_lake"         },
+        { SC_UNIDENTIFIED, "Diamond Heights",      ScenarioCategory::graphite, "rctc.scenario_text.diamond_heights"    },
+        { SC_UNIDENTIFIED, "White Water Park",     ScenarioCategory::graphite, "rctc.scenario_text.white_water_park"   },
+        { SC_UNIDENTIFIED, "Trinity Islands",      ScenarioCategory::graphite, "rctc.scenario_text.trinity_islands"    },
+        { SC_UNIDENTIFIED, "Three Monkeys Park",   ScenarioCategory::graphite, "rctc.scenario_text.three_monkeys_park" },
+        { SC_UNIDENTIFIED, "Factory Capers",       ScenarioCategory::graphite, "rctc.scenario_text.factory_capers"     },
+        { SC_UNIDENTIFIED, "Katie's Dreamland",    ScenarioCategory::graphite, "rctc.scenario_text.katies_dreamland"   },
+        { SC_UNIDENTIFIED, "Bumbly Beach",         ScenarioCategory::emerald,  "rctc.scenario_text.bumbly_beach"       },
+        { SC_UNIDENTIFIED, "Karts & Coasters",     ScenarioCategory::emerald,  "rctc.scenario_text.karts_coasters"     },
+        { SC_UNIDENTIFIED, "Evergreen Gardens",    ScenarioCategory::emerald,  "rctc.scenario_text.evergreen_gardens"  },
+        { SC_UNIDENTIFIED, "Crazy Castle",         ScenarioCategory::emerald,  "rctc.scenario_text.crazy_castle"       },
+        { SC_UNIDENTIFIED, "Mel's World",          ScenarioCategory::emerald,  "rctc.scenario_text.mels_world"         },
+        { SC_UNIDENTIFIED, "Mystic Mountain",      ScenarioCategory::emerald,  "rctc.scenario_text.mystic_mountain"    },
+        { SC_UNIDENTIFIED, "Pacific Pyramids",     ScenarioCategory::emerald,  "rctc.scenario_text.pacific_pyramids"   },
+        { SC_UNIDENTIFIED, "Crumbly Woods",        ScenarioCategory::emerald,  "rctc.scenario_text.crumbly_woods"      },
+        { SC_UNIDENTIFIED, "Paradise Pier",        ScenarioCategory::emerald,  "rctc.scenario_text.paradise_pier"      },
+        { SC_UNIDENTIFIED, "Millennium Mines",     ScenarioCategory::ruby,     "rctc.scenario_text.millennium_mines"   },
+        { SC_UNIDENTIFIED, "Electric Fields",      ScenarioCategory::ruby,     "rctc.scenario_text.electric_fields"    },
+        { SC_UNIDENTIFIED, "Haunted Harbour",      ScenarioCategory::ruby,     "rctc.scenario_text.haunted_harbour"    },
+        { SC_UNIDENTIFIED, "Barony Bridge",        ScenarioCategory::ruby,     "rctc.scenario_text.barony_bridge"      },
+        { SC_UNIDENTIFIED, "Funtopia",             ScenarioCategory::ruby,     "rctc.scenario_text.funtopia"           },
+        { SC_UNIDENTIFIED, "Canary Mines",         ScenarioCategory::ruby,     "rctc.scenario_text.canary_mines"       },
+        { SC_UNIDENTIFIED, "Future World",         ScenarioCategory::ruby,     "rctc.scenario_text.future_world"       },
+        { SC_UNIDENTIFIED, "Gentle Glen",          ScenarioCategory::ruby,     "rctc.scenario_text.gentle_glen"        },
+        { SC_UNIDENTIFIED, "Jolly Jungle",         ScenarioCategory::ruby,     "rctc.scenario_text.jolly_jungle"       },
+        { SC_UNIDENTIFIED, "Iceberg Islands",      ScenarioCategory::sapphire, "rctc.scenario_text.iceberg_islands"    },
+        { SC_UNIDENTIFIED, "Volcania",             ScenarioCategory::sapphire, "rctc.scenario_text.volcania"           },
+        { SC_UNIDENTIFIED, "Arid Heights",         ScenarioCategory::sapphire, "rctc.scenario_text.arid_heights"       },
+        { SC_UNIDENTIFIED, "Razor Rocks",          ScenarioCategory::sapphire, "rctc.scenario_text.razor_rocks"        },
+        { SC_UNIDENTIFIED, "Crater Lake",          ScenarioCategory::sapphire, "rctc.scenario_text.crater_lake"        },
+        { SC_UNIDENTIFIED, "Vertigo Views",        ScenarioCategory::sapphire, "rctc.scenario_text.vertigo_views"      },
+        { SC_UNIDENTIFIED, "Paradise Pier 2",      ScenarioCategory::sapphire, "rctc.scenario_text.paradise_pier_2"    },
+        { SC_UNIDENTIFIED, "Dragon's Cove",        ScenarioCategory::sapphire, "rctc.scenario_text.dragons_cove"       },
+        { SC_UNIDENTIFIED, "Good Knight Park",     ScenarioCategory::sapphire, "rctc.scenario_text.good_knight_park"   },
+        { SC_UNIDENTIFIED, "Fun Fortress",         ScenarioCategory::amethyst, "rctc.scenario_text.fun_fortress"       },
+        { SC_UNIDENTIFIED, "Amity Airfield",       ScenarioCategory::amethyst, "rctc.scenario_text.amity_airfield"     },
+        { SC_UNIDENTIFIED, "Bumbly Bazaar",        ScenarioCategory::amethyst, "rctc.scenario_text.bumbly_bazaar"      },
+        { SC_UNIDENTIFIED, "Whispering Cliffs",    ScenarioCategory::amethyst, "rctc.scenario_text.whispering_cliffs"  },
+        { SC_UNIDENTIFIED, "Hydro Hills",          ScenarioCategory::amethyst, "rctc.scenario_text.hydro_hills"        },
+        { SC_UNIDENTIFIED, "Sprightly Park",       ScenarioCategory::amethyst, "rctc.scenario_text.sprightly_park"     },
+        { SC_UNIDENTIFIED, "Magic Quarters",       ScenarioCategory::amethyst, "rctc.scenario_text.magic_quarters"     },
+        { SC_UNIDENTIFIED, "Fruit Farm",           ScenarioCategory::amethyst, "rctc.scenario_text.fruit_farm"         },
+        { SC_UNIDENTIFIED, "Pokey Park",           ScenarioCategory::amethyst, "rctc.scenario_text.pokey_park"         },
+        { SC_UNIDENTIFIED, "Butterfly Dam",        ScenarioCategory::coral,    "rctc.scenario_text.butterfly_dam"      },
+        { SC_UNIDENTIFIED, "Coaster Canyon",       ScenarioCategory::coral,    "rctc.scenario_text.coaster_canyon"     },
+        { SC_UNIDENTIFIED, "Thunderstorm Park",    ScenarioCategory::coral,    "rctc.scenario_text.thunderstorm_park"  },
+        { SC_UNIDENTIFIED, "Harmonic Hills",       ScenarioCategory::coral,    "rctc.scenario_text.harmonic_hills"     },
+        { SC_UNIDENTIFIED, "Roman Village",        ScenarioCategory::coral,    "rctc.scenario_text.roman_village"      },
+        { SC_UNIDENTIFIED, "Swamp Cove",           ScenarioCategory::coral,    "rctc.scenario_text.swamp_cove"         },
+        { SC_UNIDENTIFIED, "Adrenaline Heights",   ScenarioCategory::coral,    "rctc.scenario_text.adrenaline_heights" },
+        { SC_UNIDENTIFIED, "Botany Breakers",      ScenarioCategory::coral,    "rctc.scenario_text.botany_breakers"    },
+        { SC_UNIDENTIFIED, "Rotting Heights",      ScenarioCategory::coral,    "rctc.scenario_text.rotting_heights"    },
+        { SC_UNIDENTIFIED, "Lightning Peaks",      ScenarioCategory::coral,    "rctc.scenario_text.lightning_peaks"    },
+        { SC_UNIDENTIFIED, "Utopia Park",          ScenarioCategory::ivory,    "rctc.scenario_text.utopia_park"        },
+        { SC_UNIDENTIFIED, "Ivory Towers",         ScenarioCategory::ivory,    "rctc.scenario_text.ivory_towers"       },
+        { SC_UNIDENTIFIED, "Thunder Rock",         ScenarioCategory::ivory,    "rctc.scenario_text.thunder_rock"       },
+        { SC_UNIDENTIFIED, "Dusty Greens",         ScenarioCategory::ivory,    "rctc.scenario_text.dusty_greens"       },
+        { SC_UNIDENTIFIED, "Fungus Woods",         ScenarioCategory::ivory,    "rctc.scenario_text.fungus_woods"       },
+        { SC_UNIDENTIFIED, "Gravity Gardens",      ScenarioCategory::ivory,    "rctc.scenario_text.gravity_gardens"    },
+        { SC_UNIDENTIFIED, "Wacky Warren",         ScenarioCategory::ivory,    "rctc.scenario_text.wacky_warren"       },
+        { SC_UNIDENTIFIED, "Grand Glacier",        ScenarioCategory::ivory,    "rctc.scenario_text.grand_glacier"      },
+        { SC_UNIDENTIFIED, "Crazy Craters",        ScenarioCategory::ivory,    "rctc.scenario_text.crazy_craters"      },
+        { SC_UNIDENTIFIED, "Icarus Park",          ScenarioCategory::ivory,    "rctc.scenario_text.icarus_park"        },
+        { SC_UNIDENTIFIED, "Dusty Desert",         ScenarioCategory::bronze,   "rctc.scenario_text.dusty_desert"       },
+        { SC_UNIDENTIFIED, "Woodworm Park",        ScenarioCategory::bronze,   "rctc.scenario_text.woodworm_park"      },
+        { SC_UNIDENTIFIED, "Sunny Swamps",         ScenarioCategory::bronze,   "rctc.scenario_text.sunny_swamps"       },
+        { SC_UNIDENTIFIED, "Frightmare Hills",     ScenarioCategory::bronze,   "rctc.scenario_text.frightmare_hills"   },
+        { SC_UNIDENTIFIED, "Thunder Rocks",        ScenarioCategory::bronze,   "rctc.scenario_text.thunder_rocks"      },
+        { SC_UNIDENTIFIED, "Octagon Park",         ScenarioCategory::bronze,   "rctc.scenario_text.octagon_park"       },
+        { SC_UNIDENTIFIED, "Pleasure Island",      ScenarioCategory::bronze,   "rctc.scenario_text.pleasure_island"    },
+        { SC_UNIDENTIFIED, "Icicle Worlds",        ScenarioCategory::bronze,   "rctc.scenario_text.icicle_worlds"      },
+        { SC_UNIDENTIFIED, "Ghost Town",           ScenarioCategory::bronze,   "rctc.scenario_text.ghost_town"         },
+        { SC_UNIDENTIFIED, "Infernal Views",       ScenarioCategory::bronze,   "rctc.scenario_text.infernal_views"     },
+        { SC_UNIDENTIFIED, "Fiasco Forest",        ScenarioCategory::silver,   "rctc.scenario_text.fiasco_forest"      },
+        { SC_UNIDENTIFIED, "Pickle Park",          ScenarioCategory::silver,   "rctc.scenario_text.pickle_park"        },
+        { SC_UNIDENTIFIED, "Giggle Downs",         ScenarioCategory::silver,   "rctc.scenario_text.giggle_downs"       },
+        { SC_UNIDENTIFIED, "Mineral Park",         ScenarioCategory::silver,   "rctc.scenario_text.mineral_park"       },
+        { SC_UNIDENTIFIED, "Coaster Crazy",        ScenarioCategory::silver,   "rctc.scenario_text.coaster_crazy"      },
+        { SC_UNIDENTIFIED, "Pacifica",             ScenarioCategory::silver,   "rctc.scenario_text.pacifica"           },
+        { SC_UNIDENTIFIED, "Alpine Adventures",    ScenarioCategory::silver,   "rctc.scenario_text.alpine_adventures"  },
+        { SC_UNIDENTIFIED, "Extreme Heights",      ScenarioCategory::silver,   "rctc.scenario_text.extreme_heights"    },
+        { SC_UNIDENTIFIED, "Lucky Lake",           ScenarioCategory::silver,   "rctc.scenario_text.luck_lake"          },
+        { SC_UNIDENTIFIED, "Rainbow Summit",       ScenarioCategory::silver,   "rctc.scenario_text.rainbow_summit"     },
+        { SC_UNIDENTIFIED, "Rainbow Valley",       ScenarioCategory::gold,     "rctc.scenario_text.rainbow_valley"     },
+        { SC_UNIDENTIFIED, "Urban Park",           ScenarioCategory::gold,     "rctc.scenario_text.urban_park"         },
+        { SC_UNIDENTIFIED, "Geoffrey Gardens",     ScenarioCategory::gold,     "rctc.scenario_text.geoffrey_gardens"   },
+        { SC_UNIDENTIFIED, "Southern Sands",       ScenarioCategory::gold,     "rctc.scenario_text.southern_sands"     },
+        { SC_UNIDENTIFIED, "Tiny Towers",          ScenarioCategory::gold,     "rctc.scenario_text.tiny_towers"        },
+        { SC_UNIDENTIFIED, "Nevermore Park",       ScenarioCategory::gold,     "rctc.scenario_text.nevermore_park"     },
+        { SC_UNIDENTIFIED, "Terror Town",          ScenarioCategory::gold,     "rctc.scenario_text.terror_town"        },
+        { SC_UNIDENTIFIED, "Megaworld Park",       ScenarioCategory::gold,     "rctc.scenario_text.megaworld_park"     },
+        { SC_UNIDENTIFIED, "Venus Ponds",          ScenarioCategory::gold,     "rctc.scenario_text.venus_ponds"        },
+        { SC_UNIDENTIFIED, "Micro Park",           ScenarioCategory::gold,     "rctc.scenario_text.micro_park"         },
+        { SC_UNIDENTIFIED, "Tycoon Park",          ScenarioCategory::bonus,    "rctc.scenario_text.tycoon_park"        },
+    };
+
     // User Created Expansion Sets
     static constexpr ScenarioTitleDescriptor kScenarioTitlesUCES[] =
     {
@@ -296,7 +397,7 @@ namespace OpenRCT2::ScenarioSources
         { SC_UNIDENTIFIED, "Dragon Islands",                                   ScenarioCategory::katysDreamworld, "uces.scenario_text.dragon_islands"               },
         { SC_UNIDENTIFIED, "Kiddy Karnival II",                                ScenarioCategory::katysDreamworld, "uces.scenario_text.kiddie_karnival_ii"           },
         { SC_UNIDENTIFIED, "Sand Dune",                                        ScenarioCategory::katysDreamworld, "uces.scenario_text.sand_dune"                    },
-        { SC_UNIDENTIFIED, "UCES Halloween",                                   ScenarioCategory::other,            "uces.scenario_text.cemetery_ridge"               },
+        { SC_UNIDENTIFIED, "UCES Halloween",                                   ScenarioCategory::other,           "uces.scenario_text.cemetery_ridge"               },
     };
 
     // Real parks
@@ -339,10 +440,10 @@ namespace OpenRCT2::ScenarioSources
         { SC_STEEL_TWISTER_COMPETITION,                 "Steel Twister Roller Coaster Competition",   ScenarioCategory::competitions,   {}                                                            },
         { SC_SUSPENDED_ROLLER_COASTER_COMPETITION,      "Suspended Roller Coaster Competition",       ScenarioCategory::competitions,   {}                                                            },
         { SC_WOODEN_ROLLER_COASTER_COMPETITION,         "Wooden Roller Coaster Competition",          ScenarioCategory::competitions,   {}                                                            },
-        { SC_UNIDENTIFIED,                              "Tycoon Park",                                ScenarioCategory::other,          "rct2.scenario_text.tycoon_park"                              },
     };
 
     constexpr std::span<const ScenarioTitleDescriptor> kScenarioTitlesBySource[] = {
+        kScenarioTitlesRCTC,
         kScenarioTitlesRCT1,
         kScenarioTitlesRCT1AA,
         kScenarioTitlesRCT1LL,
@@ -357,12 +458,13 @@ namespace OpenRCT2::ScenarioSources
 
 #pragma endregion
 
-    bool TryGetByName(u8string_view name, SourceDescriptor* outDesc)
+    bool TryGetByName(u8string_view name, SourceDescriptor* outDesc, bool classic)
     {
         Guard::ArgumentNotNull(outDesc, GUARD_LINE);
 
-        int32_t currentIndex = 0;
-        for (size_t i = 0; i < std::size(kScenarioTitlesBySource); i++)
+        // Only include classic scenarios if requested as these will be prioritized over non-classic scenarios
+        int32_t currentIndex = classic ? 0 : std::size(kScenarioTitlesRCTC);
+        for (size_t i = classic ? 0 : 1; i < std::size(kScenarioTitlesBySource); i++)
         {
             for (size_t j = 0; j < std::size(kScenarioTitlesBySource[i]); j++)
             {

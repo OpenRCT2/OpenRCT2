@@ -47,6 +47,19 @@ enum class ScenarioCategory : uint8_t
     real,
     other,
 
+    // RCT Classic categories (keep order)
+    graphite,
+    emerald,
+    ruby,
+    sapphire,
+    amethyst,
+    coral,
+    ivory,
+    bronze,
+    silver,
+    gold,
+    bonus,
+
     // OpenRCT2 categories
     dlc,
     buildYourOwn,
