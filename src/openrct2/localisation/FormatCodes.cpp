@@ -10,6 +10,10 @@
 #include "FormatCodes.h"
 
 #include "../core/EnumMap.hpp"
+#include "../core/EnumUtils.hpp"
+#include "../drawing/TextColour.h"
+
+using namespace OpenRCT2;
 
 // clang-format off
 static const EnumMap<FormatToken> FormatTokenMap = {
@@ -136,53 +140,33 @@ bool FormatTokenIsColour(FormatToken token)
     }
 }
 
-size_t FormatTokenGetTextColourIndex(FormatToken token)
+TextColour FormatTokenToTextColour(FormatToken token)
 {
-    switch (token)
-    {
-        case FormatToken::ColourBlack:
-            return 0;
-        case FormatToken::ColourGrey:
-            return 1;
-        case FormatToken::ColourWhite:
-            return 2;
-        case FormatToken::ColourRed:
-            return 3;
-        case FormatToken::ColourGreen:
-            return 4;
-        case FormatToken::ColourYellow:
-            return 5;
-        case FormatToken::ColourTopaz:
-            return 6;
-        case FormatToken::ColourCeladon:
-            return 7;
-        case FormatToken::ColourBabyBlue:
-            return 8;
-        case FormatToken::ColourPaleLavender:
-            return 9;
-        case FormatToken::ColourPaleGold:
-            return 10;
-        case FormatToken::ColourLightPink:
-            return 11;
-        case FormatToken::ColourPearlAqua:
-            return 12;
-        case FormatToken::ColourPaleSilver:
-            return 13;
-        default:
-            return 0;
-    }
+    uint8_t value = EnumValue(token) - EnumValue(FormatToken::ColourBlack);
+    if (value >= kNumTextColours)
+        return TextColour::black;
+
+    return static_cast<TextColour>(value);
 }
 
-FormatToken FormatTokenFromTextColour(size_t textColour)
+FormatToken FormatTokenFromTextColour(TextColour textColour)
 {
     static constexpr FormatToken tokens[] = {
-        FormatToken::ColourBlack,        FormatToken::ColourGrey,       FormatToken::ColourWhite,
-        FormatToken::ColourRed,          FormatToken::ColourGreen,      FormatToken::ColourYellow,
-        FormatToken::ColourTopaz,        FormatToken::ColourCeladon,    FormatToken::ColourBabyBlue,
-        FormatToken::ColourPaleLavender, FormatToken::ColourPaleGold,   FormatToken::ColourLightPink,
-        FormatToken::ColourPearlAqua,    FormatToken::ColourPaleSilver,
+        FormatToken::ColourBlack,        // TextColour::black
+        FormatToken::ColourGrey,         // TextColour::grey
+        FormatToken::ColourWhite,        // TextColour::white
+        FormatToken::ColourRed,          // TextColour::red
+        FormatToken::ColourGreen,        // TextColour::green
+        FormatToken::ColourYellow,       // TextColour::yellow
+        FormatToken::ColourTopaz,        // TextColour::topaz
+        FormatToken::ColourCeladon,      // TextColour::celadon
+        FormatToken::ColourBabyBlue,     // TextColour::babyBlue
+        FormatToken::ColourPaleLavender, // TextColour::paleLavender
+        FormatToken::ColourPaleGold,     // TextColour::paleGold
+        FormatToken::ColourLightPink,    // TextColour::lightPink
+        FormatToken::ColourPearlAqua,    // TextColour::pearlAqua
+        FormatToken::ColourPaleSilver,   // TextColour::paleSilver
     };
-    if (textColour >= std::size(tokens))
-        return FormatToken::ColourBlack;
-    return tokens[textColour];
+
+    return tokens[EnumValue(textColour)];
 }

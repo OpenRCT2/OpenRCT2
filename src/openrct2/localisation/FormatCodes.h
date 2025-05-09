@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "../drawing/TextColour.h"
+
 #include <cstdint>
 #include <string>
 #include <string_view>
@@ -82,5 +84,5 @@ std::string FormatTokenToString(FormatToken token);
 std::string FormatTokenToStringWithBraces(FormatToken token);
 bool FormatTokenTakesArgument(FormatToken token);
 bool FormatTokenIsColour(FormatToken token);
-size_t FormatTokenGetTextColourIndex(FormatToken token);
-FormatToken FormatTokenFromTextColour(size_t textColour);
+OpenRCT2::TextColour FormatTokenToTextColour(FormatToken token);
+FormatToken FormatTokenFromTextColour(OpenRCT2::TextColour textColour);

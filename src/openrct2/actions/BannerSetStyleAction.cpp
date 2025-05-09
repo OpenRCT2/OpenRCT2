@@ -151,7 +151,7 @@ GameActions::Result BannerSetStyleAction::Execute() const
             banner->colour = _parameter;
             break;
         case BannerSetStyleType::TextColour:
-            banner->text_colour = _parameter;
+            banner->textColour = static_cast<TextColour>(_parameter);
             break;
         case BannerSetStyleType::NoEntry:
         {

@@ -32,7 +32,8 @@ class ObjectList;
 namespace OpenRCT2
 {
     enum class TrackElemType : uint16_t;
-}
+    enum class TextColour : uint8_t;
+} // namespace OpenRCT2
 namespace OpenRCT2::RCT12
 {
     enum class ClimateType : uint8_t
@@ -1197,9 +1198,9 @@ struct RCT12Banner
         uint8_t Colour;    // 0x04
         uint8_t RideIndex; // 0x04
     };
-    uint8_t TextColour; // 0x05
-    uint8_t x;          // 0x06
-    uint8_t y;          // 0x07
+    OpenRCT2::TextColour textColour; // 0x05
+    uint8_t x;                       // 0x06
+    uint8_t y;                       // 0x07
 };
 static_assert(sizeof(RCT12Banner) == 8);
 
