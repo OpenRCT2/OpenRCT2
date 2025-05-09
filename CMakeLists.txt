@@ -392,7 +392,7 @@ if(NOT DISABLE_GUI)
 endif()
 
 # graphics files (g2.dat and font.dat) 
-if (NOT (MACOS_BUNDLE AND (NOT CMAKE_OSX_ARCHITECTURES MATCHES "${SYSTEM_MACOS_ARCH}")))
+if (NOT CMAKE_CROSSCOMPILING)
     set(graphics_files "g2" "fonts")
     
     foreach(graphics_file ${graphics_files})
@@ -415,7 +415,7 @@ if (NOT (MACOS_BUNDLE AND (NOT CMAKE_OSX_ARCHITECTURES MATCHES "${SYSTEM_MACOS_A
     endif()
     
 else ()
-    message("Skipping graphics generation in macOS cross-compile")
+    message("Skipping graphics generation in cross-compile")
 endif ()
 
 # Include tests
