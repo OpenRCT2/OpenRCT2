@@ -228,12 +228,7 @@ static void PaintRiverRapidsTrack25Deg(
     bool isStart = direction == 0 || direction == 3;
 
     ImageId imageId = session.TrackColours.WithIndex(sprites[direction][0]);
-    PaintStruct* ps = PaintAddImageAsParentRotated(
-        session, direction, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 4 } });
-    if (!isStart)
-    {
-        session.WoodenSupportsPrependTo = ps;
-    }
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 4 } });
 
     imageId = session.TrackColours.WithIndex(sprites[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height + 16 }, { 32, 1, 34 } });
@@ -252,7 +247,6 @@ static void PaintRiverRapidsTrack25DegToFlatA(
     PaintSession& session, uint8_t direction, int32_t height, const uint32_t sprites[4][2], SupportType supportType)
 {
     ImageId imageId;
-    PaintStruct* ps;
 
     bool isStart = direction == 0 || direction == 3;
     switch (direction)
@@ -267,8 +261,7 @@ static void PaintRiverRapidsTrack25DegToFlatA(
 
         case 1:
             imageId = session.TrackColours.WithIndex(sprites[direction][0]);
-            ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 4 } });
-            session.WoodenSupportsPrependTo = ps;
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 4 } });
 
             imageId = session.TrackColours.WithIndex(sprites[direction][1]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 18 } });
@@ -276,8 +269,7 @@ static void PaintRiverRapidsTrack25DegToFlatA(
 
         case 2:
             imageId = session.TrackColours.WithIndex(sprites[direction][0]);
-            ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 4 } });
-            session.WoodenSupportsPrependTo = ps;
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 4 } });
 
             imageId = session.TrackColours.WithIndex(sprites[direction][1]);
 
@@ -307,7 +299,6 @@ static void PaintRiverRapidsTrack25DegToFlatB(
     PaintSession& session, uint8_t direction, int32_t height, const uint32_t sprites[4][2], SupportType supportType)
 {
     ImageId imageId;
-    PaintStruct* ps;
 
     switch (direction)
     {
@@ -321,8 +312,7 @@ static void PaintRiverRapidsTrack25DegToFlatB(
 
         case 1:
             imageId = session.TrackColours.WithIndex(sprites[direction][0]);
-            ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
-            session.WoodenSupportsPrependTo = ps;
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
 
             imageId = session.TrackColours.WithIndex(sprites[direction][1]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 26 } });
@@ -330,8 +320,7 @@ static void PaintRiverRapidsTrack25DegToFlatB(
 
         case 2:
             imageId = session.TrackColours.WithIndex(sprites[direction][0]);
-            ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 11 } });
-            session.WoodenSupportsPrependTo = ps;
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 11 } });
 
             imageId = session.TrackColours.WithIndex(sprites[direction][1]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height + 16 }, { 32, 1, 26 } });

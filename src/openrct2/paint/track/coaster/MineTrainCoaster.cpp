@@ -251,14 +251,14 @@ static void MineTrainRCTrack60DegUp(
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 1:
-            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+            PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(20091), { 0, 0, height },
-                { { 27, 0, height }, { 1, 32, 98 } });
+                { { 4, 27, height }, { 24, 1, 88 } });
             break;
         case 2:
-            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+            PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(20092), { 0, 0, height },
-                { { 27, 0, height }, { 1, 32, 98 } });
+                { { 4, 27, height }, { 24, 1, 88 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
@@ -368,20 +368,20 @@ static void MineTrainRCTrack25DegUpTo60DegUp(
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 1:
-            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+            PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(20079), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 1 } });
+                { { 4, 5, height }, { 24, 1, 56 } });
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(20082), { 0, 0, height },
-                { { 0, 27, height }, { 32, 1, 66 } });
+                { { 4, 27, height }, { 24, 1, 56 } });
             break;
         case 2:
-            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+            PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(20080), { 0, 0, height },
-                { { 0, 6, height }, { 32, 20, 1 } });
+                { { 4, 5, height }, { 24, 1, 56 } });
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(20083), { 0, 0, height },
-                { { 0, 27, height }, { 32, 1, 66 } });
+                { { 4, 27, height }, { 24, 1, 56 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
@@ -418,20 +418,20 @@ static void MineTrainRCTrack60DegUpTo25DegUp(
                 { { 0, 6, height }, { 32, 20, 1 } });
             break;
         case 1:
-            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+            PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(20085), { 0, 0, height },
-                { { 4, 29, height - 16 }, { 24, 1, 61 } });
+                { { 4, 5, height }, { 24, 1, 56 } });
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(20088), { 0, 0, height },
-                { { 0, 4, height }, { 32, 2, 66 } });
+                { { 4, 27, height }, { 24, 1, 56 } });
             break;
         case 2:
-            session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+            PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(20086), { 0, 0, height },
-                { { 4, 29, height - 16 }, { 24, 1, 61 } });
+                { { 4, 5, height }, { 24, 1, 56 } });
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(20089), { 0, 0, height },
-                { { 0, 4, height }, { 32, 2, 66 } });
+                { { 4, 27, height }, { 24, 1, 56 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
@@ -7056,14 +7056,14 @@ static void MineTrainRCTrackFlatTo60DegUpLongBase(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 7),
-                        { 0, 0, height }, { { 28, 4, height }, { 2, 24, 56 } });
+                        { 0, 0, height }, { { 4, 27, height }, { 24, 1, 72 } });
                     break;
                 case 2:
-                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 11),
-                        { 0, 0, height }, { { 28, 4, height }, { 2, 24, 56 } });
+                        { 0, 0, height }, { { 4, 27, height }, { 24, 1, 72 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -7104,14 +7104,14 @@ static void MineTrainRCTrack60DegUpToFlatLongBase(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
-                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 20),
-                        { 0, 0, height }, { { 28, 4, height }, { 2, 24, 56 } });
+                        { 0, 0, height }, { { 4, 27, height }, { 24, 1, 72 } });
                     break;
                 case 2:
-                    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 24),
-                        { 0, 0, height }, { { 28, 4, height }, { 2, 24, 56 } });
+                        { 0, 0, height }, { { 4, 27, height }, { 24, 1, 72 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -7141,12 +7141,12 @@ static void MineTrainRCTrack60DegUpToFlatLongBase(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 21),
-                        { 0, 0, height }, { { 28, 4, height }, { 2, 24, 56 } });
+                        { 0, 0, height }, { { 4, 27, height }, { 24, 1, 72 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 25),
-                        { 0, 0, height }, { { 28, 4, height }, { 2, 24, 56 } });
+                        { 0, 0, height }, { { 4, 27, height }, { 24, 1, 72 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(

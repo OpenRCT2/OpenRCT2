@@ -518,9 +518,8 @@ static void PaintSplashBoatsTrack60DegUp(
     auto imageId = session.TrackColours.WithIndex(kSplashBoats60DegUpImageId[direction]);
     auto frontImageId = session.TrackColours.WithIndex(kSplashBoats60DegUpFrontImageId[direction]);
 
-    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-        session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
-    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 98 } });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 4, 5, height }, { 24, 1, 88 } });
+    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 4, 27, height }, { 24, 1, 88 } });
 
     DrawSupportForSequenceA<TrackElemType::Up60>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
@@ -594,9 +593,8 @@ static void PaintSplashBoatsTrack25DegUpTo60DegUp(
     auto imageId = session.TrackColours.WithIndex(kSplashBoats25DegUpTo60DegUpImageId[direction]);
     auto frontImageId = session.TrackColours.WithIndex(kSplashBoats25DegUpTo60DegUpFrontImageId[direction]);
 
-    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-        session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
-    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 4, 5, height }, { 24, 1, 56 } });
+    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 4, 27, height }, { 24, 1, 56 } });
 
     DrawSupportForSequenceA<TrackElemType::Up25ToUp60>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
@@ -620,9 +618,8 @@ static void PaintSplashBoatsTrack60DegUpTo25DegUp(
     auto imageId = session.TrackColours.WithIndex(kSplashBoats60DegUpTo25DegUpImageId[direction]);
     auto frontImageId = session.TrackColours.WithIndex(kSplashBoats60DegUpTo25DegUpFrontImageId[direction]);
 
-    session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-        session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
-    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 4, 5, height }, { 24, 1, 56 } });
+    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 4, 27, height }, { 24, 1, 56 } });
 
     DrawSupportForSequenceA<TrackElemType::Up60ToUp25>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
