@@ -338,7 +338,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.13
+        uses: hendrikmuhs/ccache-action@v1.2.18
         with:
           key: ${{ matrix.cache_key }}
       - name: Install GCC problem matcher
@@ -380,13 +380,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.13
+        uses: hendrikmuhs/ccache-action@v1.2.18
         with:
           key: ${{ matrix.cache_key }}
-      - name: Configure ccache
-        run: |
-          # See https://github.com/hendrikmuhs/ccache-action/issues/146
-          ccache --set-config=compiler_check=content
       - name: Install GCC problem matcher
         uses: ammaraskar/gcc-problem-matcher@master
       - name: Build OpenRCT2
@@ -478,7 +474,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.13
+        uses: hendrikmuhs/ccache-action@v1.2.18
         with:
           key: linux-${{ matrix.platform }}-${{ matrix.distro }}
       - name: Get pre-reqs
@@ -508,7 +504,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.13
+        uses: hendrikmuhs/ccache-action@v1.2.18
         with:
           key: linux-appimage
       - name: Install Clang 15
@@ -567,7 +563,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.13
+        uses: hendrikmuhs/ccache-action@v1.2.18
         with:
           key: linux-clang
       - name: Install GCC problem matcher
@@ -583,7 +579,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.13
+        uses: hendrikmuhs/ccache-action@v1.2.18
         with:
           key: linux-clang
       - name: Install GCC problem matcher
@@ -624,7 +620,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.13
+        uses: hendrikmuhs/ccache-action@v1.2.18
         with:
           key: android
       - name: Install GCC problem matcher
@@ -652,7 +648,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.13
+        uses: hendrikmuhs/ccache-action@v1.2.18
         with:
           key: emscripten
       - name: Install GCC problem matcher
