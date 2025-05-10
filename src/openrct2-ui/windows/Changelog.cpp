@@ -165,7 +165,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_OPEN_URL:
                     if (_newVersionInfo != nullptr)
                     {
-                        GetContext()->GetUiContext()->OpenURL(_newVersionInfo->url);
+                        GetContext()->GetUiContext()->OpenURL("https://openrct2.io/download/release");
                     }
                     else
                     {
