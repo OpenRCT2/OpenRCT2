@@ -644,7 +644,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t fullRows = 0;
             if (GetMaxTabCountInARow() > 0)
             {
-                fullRows = static_cast<int32_t> (_tabEntries.size() / GetMaxTabCountInARow());
+                fullRows = static_cast<int32_t>(_tabEntries.size() / GetMaxTabCountInARow());
             }
             _actualMinHeight += (1 + fullRows) * TabHeight;
             _actualMinHeight += widgets[WIDX_FILTER_TEXT_BOX].height() + 2 * kInputMargin;
