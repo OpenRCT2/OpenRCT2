@@ -232,6 +232,7 @@ namespace OpenRCT2::Config
                 "scenario_select_mode", ScenarioSelectMode::origin, Enum_ScenarioSelectMode);
             model->ScenarioUnlockingEnabled = reader->GetBoolean("scenario_unlocking_enabled", true);
             model->ScenarioHideMegaPark = reader->GetBoolean("scenario_hide_mega_park", true);
+            model->ScenarioHideTycoonPark = reader->GetBoolean("scenario_hide_tycoon_park", true);
             model->LastSaveGameDirectory = reader->GetString("last_game_directory", "");
             model->LastSaveLandscapeDirectory = reader->GetString("last_landscape_directory", "");
             model->LastSaveScenarioDirectory = reader->GetString("last_scenario_directory", "");
