@@ -3484,7 +3484,7 @@ static void VehiclePitchUp50BankedLeft45(
     }
     else
     {
-        VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchUp50Unbanked(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -3499,7 +3499,7 @@ static void VehiclePitchUp50BankedRight45(
     }
     else
     {
-        VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchUp50Unbanked(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -3514,7 +3514,7 @@ static void VehiclePitchUp50BankedLeft67(
     }
     else
     {
-        VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchUp25BankedLeft45(session, vehicle, (imageDirection + 2) % 32, z, carEntry);
     }
 }
 
@@ -3529,7 +3529,7 @@ static void VehiclePitchUp50BankedRight67(
     }
     else
     {
-        VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchUp25BankedRight45(session, vehicle, (imageDirection - 2) % 32, z, carEntry);
     }
 }
 
@@ -3544,7 +3544,7 @@ static void VehiclePitchUp50BankedLeft90(
     }
     else
     {
-        VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchCorkscrew<12>(session, vehicle, (imageDirection + 8) % 32, z, carEntry);
     }
 }
 
@@ -3559,7 +3559,7 @@ static void VehiclePitchUp50BankedRight90(
     }
     else
     {
-        VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchCorkscrew<2>(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -3877,7 +3877,7 @@ static void VehiclePitchDown50BankedLeft67(
     }
     else
     {
-        VehiclePitchDown50Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchDown25BankedLeft45(session, vehicle, (imageDirection - 2) % 32, z, carEntry);
     }
 }
 
@@ -3892,7 +3892,7 @@ static void VehiclePitchDown50BankedRight67(
     }
     else
     {
-        VehiclePitchDown50Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchDown25BankedRight45(session, vehicle, (imageDirection + 2) % 32, z, carEntry);
     }
 }
 
@@ -3907,7 +3907,7 @@ static void VehiclePitchDown50BankedLeft90(
     }
     else
     {
-        VehiclePitchDown50Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchCorkscrew<7>(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -3922,7 +3922,7 @@ static void VehiclePitchDown50BankedRight90(
     }
     else
     {
-        VehiclePitchDown50Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchCorkscrew<17>(session, vehicle, (imageDirection + 8) % 32, z, carEntry);
     }
 }
 
