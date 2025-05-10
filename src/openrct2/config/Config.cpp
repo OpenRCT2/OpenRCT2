@@ -231,6 +231,7 @@ namespace OpenRCT2::Config
                 "scenario_select_mode", ScenarioSelectMode::origin, Enum_ScenarioSelectMode);
             model->ScenarioUnlockingEnabled = reader->GetBoolean("scenario_unlocking_enabled", true);
             model->ScenarioHideMegaPark = reader->GetBoolean("scenario_hide_mega_park", true);
+            model->ScenarioHideTycoonPark = reader->GetBoolean("scenario_hide_tycoon_park", true);
             model->LastSaveGameDirectory = reader->GetString("last_game_directory", "");
             model->LastSaveLandscapeDirectory = reader->GetString("last_landscape_directory", "");
             model->LastSaveScenarioDirectory = reader->GetString("last_scenario_directory", "");
@@ -323,6 +324,7 @@ namespace OpenRCT2::Config
         writer->WriteEnum<ScenarioSelectMode>("scenario_select_mode", model->scenarioSelectMode, Enum_ScenarioSelectMode);
         writer->WriteBoolean("scenario_unlocking_enabled", model->ScenarioUnlockingEnabled);
         writer->WriteBoolean("scenario_hide_mega_park", model->ScenarioHideMegaPark);
+        writer->WriteBoolean("scenario_hide_tycoon_park", model->ScenarioHideTycoonPark);
         writer->WriteString("last_game_directory", model->LastSaveGameDirectory);
         writer->WriteString("last_landscape_directory", model->LastSaveLandscapeDirectory);
         writer->WriteString("last_scenario_directory", model->LastSaveScenarioDirectory);
