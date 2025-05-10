@@ -3926,36 +3926,6 @@ static void VehiclePitchDown50BankedRight90(
     }
 }
 
-static void VehiclePitchDown50BankedLeft135(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
-{
-    if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
-    {
-        int32_t boundingBoxNum = (YawTo4(imageDirection)) + 4 * 4 + 144;
-        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, 4);
-        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
-    }
-    else
-    {
-        VehiclePitchDown60Unbanked(session, vehicle, imageDirection, z, carEntry);
-    }
-}
-
-static void VehiclePitchDown50BankedRight135(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
-{
-    if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
-    {
-        int32_t boundingBoxNum = (YawTo4(imageDirection)) + 4 * 4 + 144;
-        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, 4);
-        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
-    }
-    else
-    {
-        VehiclePitchDown60Unbanked(session, vehicle, imageDirection, z, carEntry);
-    }
-}
-
 static void VehiclePitchDown50(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
@@ -3976,17 +3946,11 @@ static void VehiclePitchDown50(
         case 6:
             VehiclePitchDown50BankedLeft90(session, vehicle, imageDirection, z, carEntry);
             break;
-        case 8:
-            VehiclePitchDown50BankedLeft135(session, vehicle, imageDirection, z, carEntry);
-            break;
         case 10:
             VehiclePitchDown50BankedRight67(session, vehicle, imageDirection, z, carEntry);
             break;
         case 11:
             VehiclePitchDown50BankedRight90(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 13:
-            VehiclePitchDown50BankedRight135(session, vehicle, imageDirection, z, carEntry);
             break;
         default:
             VehiclePitchDown60Unbanked(session, vehicle, imageDirection, z, carEntry);
