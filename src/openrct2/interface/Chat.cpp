@@ -289,7 +289,7 @@ static int32_t ChatHistoryDrawString(RenderTarget& rt, const char* text, const S
 {
     int32_t numLines;
     u8string wrappedString;
-    GfxWrapString(FormatString("{OUTLINE}{WHITE}{STRING}", text), width, FontStyle::Medium, &wrappedString, &numLines);
+    GfxWrapString(FormatString("{OUTLINE}{STRING}", text), width, FontStyle::Medium, &wrappedString, &numLines);
     auto lineHeight = FontGetLineHeight(FontStyle::Medium);
 
     int32_t expectedY = screenCoords.y - (numLines * lineHeight);
