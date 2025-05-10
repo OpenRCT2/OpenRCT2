@@ -70,7 +70,7 @@ NewVersionInfo GetLatestVersion()
     // If the check doesn't succeed, provide current version so we don't bother user
     // with invalid data.
     std::string tag = gVersionInfoTag;
-    NewVersionInfo verinfo{ tag, "", "", "" };
+    NewVersionInfo verinfo{ tag, "", "" };
 #if !defined(DISABLE_HTTP) && !defined(DISABLE_VERSION_CHECKER)
     auto now = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
     auto then = Config::Get().general.LastVersionCheckTime;
@@ -100,7 +100,6 @@ NewVersionInfo GetLatestVersion()
         verinfo.tag = Json::GetString(root["tag_name"]);
         verinfo.name = Json::GetString(root["name"]);
         verinfo.changelog = Json::GetString(root["body"]);
-        verinfo.url = Json::GetString(root["html_url"]);
 
         Config::Get().general.LastVersionCheckTime = now;
         Config::Save();

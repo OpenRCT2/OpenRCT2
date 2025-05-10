@@ -1,5 +1,6 @@
 0.4.23 (in development)
 ------------------------------------------------------------------------
+- Improved: [#24368] Clicking the in-game update notication now leads to a more user-friendly download page.
 
 0.4.22 (2025-05-04)
 ------------------------------------------------------------------------
