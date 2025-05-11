@@ -978,7 +978,7 @@ namespace OpenRCT2::Ui::Windows
             const int16_t newHeight = maxBottom + 5;
 
             height = newHeight;
-            
+
             SetWidgets(widgetList);
             WindowInitScrollWidgets(*this);
             UpdateViewport();
