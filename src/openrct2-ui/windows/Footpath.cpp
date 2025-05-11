@@ -1626,6 +1626,17 @@ namespace OpenRCT2::Ui::Windows
             OnMouseUp(WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL);
         }
 
+        void KeyboardShortcutToggleType()
+        {
+            WindowDropdownClose();
+
+            gFootpathSelection.IsQueueSelected = !gFootpathSelection.IsQueueSelected;
+
+            FootpathUpdateProvisional();
+            _windowFootpathCost = kMoney64Undefined;
+            Invalidate();
+        }
+
 #pragma endregion
     };
 
@@ -1758,6 +1769,20 @@ namespace OpenRCT2::Ui::Windows
             if (footpathWindow != nullptr)
             {
                 footpathWindow->KeyboardShortcutConstructionModeBridgeOrTunnel();
+            }
+        }
+    }
+
+    void WindowFootpathKeyboardShortcutToggleType()
+    {
+        auto* windowMgr = GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
+        if (w != nullptr)
+        {
+            auto* footpathWindow = static_cast<FootpathWindow*>(w);
+            if (footpathWindow != nullptr)
+            {
+                footpathWindow->KeyboardShortcutToggleType();
             }
         }
     }

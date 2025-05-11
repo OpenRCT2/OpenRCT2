@@ -107,6 +107,7 @@ namespace OpenRCT2::Ui::ShortcutId
     constexpr std::string_view kWindowFootpathConstructionModeLand = "window.footpath.construction_mode_land";
     constexpr std::string_view kWindowFootpathConstructionModeBridgeOrTunnel = "window.footpath.construction_mode_bridge_or_"
                                                                                "tunnel";
+    constexpr std::string_view kWindowFootpathToggleType = "window.footpath.toggle_type";
 
     // Window / tile inspector
     constexpr std::string_view kWindowTileInspectorToggleInvisibility = "window.tileinspector.toggle_invisibility";

@@ -756,6 +756,19 @@ static void ShortcutFootpathConstructionModeBridgeOrTunnel()
     }
 }
 
+static void ShortcutFootpathToggleType()
+{
+    if (gLegacyScene == LegacyScene::titleSequence)
+        return;
+
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
+    if (window != nullptr)
+    {
+        WindowFootpathKeyboardShortcutToggleType();
+    }
+}
+
 static void ShortcutToggleTransparentWater()
 {
     if (gLegacyScene == LegacyScene::titleSequence)
@@ -906,6 +919,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::kWindowRideConstructionDemolish, STR_SHORTCUT_CONSTRUCTION_DEMOLISH_CURRENT, "NUMPAD -", ShortcutConstructionDemolishCurrent);
     RegisterShortcut(ShortcutId::kWindowFootpathConstructionModeLand, STR_SHORTCUT_FOOTPATH_CONSTRUCTION_MODE_LAND,  ShortcutFootpathConstructionModeLand);
     RegisterShortcut(ShortcutId::kWindowFootpathConstructionModeBridgeOrTunnel, STR_SHORTCUT_FOOTPATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL, ShortcutFootpathConstructionModeBridgeOrTunnel);
+    RegisterShortcut(ShortcutId::kWindowFootpathToggleType, STR_SHORTCUT_FOOTPATH_TOGGLE_TYPE, ShortcutFootpathToggleType);
     RegisterShortcut(ShortcutId::kWindowTileInspectorToggleInvisibility, STR_SHORTCUT_TOGGLE_INVISIBILITY, WindowTileInspectorKeyboardShortcutToggleInvisibility);
     RegisterShortcut(ShortcutId::kWindowTileInspectorCopy, STR_SHORTCUT_COPY_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_COPY));
     RegisterShortcut(ShortcutId::kWindowTileInspectorPaste, STR_SHORTCUT_PASTE_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE));

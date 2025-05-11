@@ -3824,3 +3824,4 @@ STR_6776    :{COMMA16} minutes
 STR_6777    :more than 4 hours
 STR_6778    :Footpath - Use land mode
 STR_6779    :Footpath - Use bridge/tunnel mode
+STR_6780    :Footpath - Toggle path/queue
