@@ -375,7 +375,7 @@ void RideUpdateFavouritedStat()
             auto ride = GetRide(peep->FavouriteRide);
             if (ride != nullptr)
             {
-                ride->guestsFavourite++;
+                ride->guestsFavourite = AddClamp(ride->guestsFavourite, 1u);
                 ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
             }
         }
@@ -1305,7 +1305,7 @@ static void RideInspectionUpdate(Ride& ride)
     if (gLegacyScene == LegacyScene::trackDesigner)
         return;
 
-    ride.lastInspection++;
+    ride.lastInspection = AddClamp<uint8_t>(ride.lastInspection, 1);
     if (ride.lastInspection == 0)
         ride.lastInspection--;
 

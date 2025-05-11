@@ -50,6 +50,7 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ui/WindowManager.h"
+#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
 #include "../world/ConstructionClearance.h"
@@ -2274,7 +2275,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         auto cost = ride->price[0];
         if (cost != 0 && !(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
         {
-            ride->totalProfit += cost;
+            ride->totalProfit = AddClamp(ride->totalProfit, cost);
             ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
             guest->SpendMoney(cost, ExpenditureType::ParkRideTickets);
         }
