@@ -47,7 +47,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t kTabsStart = kWidgetsStart;
     static constexpr int32_t kTabWidth = 92;
     static constexpr int32_t kTrueFontSize = 24;
-    static constexpr int32_t kWindowHeight = 384;
+    static constexpr int32_t kWindowHeight = 394;
     static constexpr int32_t kWindowWidth = 734;
     static constexpr StringId kWindowTitle = STR_SELECT_SCENARIO;
 
