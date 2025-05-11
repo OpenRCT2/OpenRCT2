@@ -1616,6 +1616,16 @@ namespace OpenRCT2::Ui::Windows
             OnMouseDown(WIDX_CONSTRUCT);
         }
 
+        void KeyboardShortcutConstructionModeLand()
+        {
+            OnMouseUp(WIDX_CONSTRUCT_ON_LAND);
+        }
+
+        void KeyboardShortcutConstructionModeBridgeOrTunnel()
+        {
+            OnMouseUp(WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL);
+        }
+
 #pragma endregion
     };
 
@@ -1720,6 +1730,34 @@ namespace OpenRCT2::Ui::Windows
             if (footpathWindow != nullptr)
             {
                 footpathWindow->KeyboardShortcutBuildCurrent();
+            }
+        }
+    }
+
+    void WindowFootpathKeyboardShortcutConstructionModeLand()
+    {
+        auto* windowMgr = GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
+        if (w != nullptr)
+        {
+            auto* footpathWindow = static_cast<FootpathWindow*>(w);
+            if (footpathWindow != nullptr)
+            {
+                footpathWindow->KeyboardShortcutConstructionModeLand();
+            }
+        }
+    }
+
+    void WindowFootpathKeyboardShortcutConstructionModeBridgeOrTunnel()
+    {
+        auto* windowMgr = GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
+        if (w != nullptr)
+        {
+            auto* footpathWindow = static_cast<FootpathWindow*>(w);
+            if (footpathWindow != nullptr)
+            {
+                footpathWindow->KeyboardShortcutConstructionModeBridgeOrTunnel();
             }
         }
     }

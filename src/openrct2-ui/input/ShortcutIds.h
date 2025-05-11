@@ -103,6 +103,11 @@ namespace OpenRCT2::Ui::ShortcutId
     constexpr std::string_view kWindowRideConstructionBuild = "window.rideconstruction.build";
     constexpr std::string_view kWindowRideConstructionDemolish = "window.rideconstruction.demolish";
 
+    // Window / footpath
+    constexpr std::string_view kWindowFootpathConstructionModeLand = "window.footpath.construction_mode_land";
+    constexpr std::string_view kWindowFootpathConstructionModeBridgeOrTunnel = "window.footpath.construction_mode_bridge_or_"
+                                                                               "tunnel";
+
     // Window / tile inspector
     constexpr std::string_view kWindowTileInspectorToggleInvisibility = "window.tileinspector.toggle_invisibility";
     constexpr std::string_view kWindowTileInspectorCopy = "window.tileinspector.copy";
