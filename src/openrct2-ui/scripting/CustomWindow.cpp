@@ -893,11 +893,19 @@ namespace OpenRCT2::Ui::Windows
                 _info.WidgetIndexMap.push_back(std::numeric_limits<size_t>::max());
             }
 
-            // Add window tabs
-            if (_info.Desc.Tabs.size() != 0)
+            const int16_t titleHeight = Config::Get().interface.EnlargedUi ? kTitleHeightLarge : kTitleHeightNormal;
+            const int16_t titleOffset = titleHeight - kTitleHeightNormal;
+
+            if (widgetList.size() > WIDX_CLOSE)
             {
-                widgetList[WIDX_CONTENT_PANEL].top = 43;
+                widgetList[WIDX_TITLE].bottom = widgetList[WIDX_TITLE].top + titleHeight;
+                widgetList[WIDX_CLOSE].bottom = widgetList[WIDX_CLOSE].top + titleHeight;
+                widgetList[WIDX_CONTENT_PANEL].top = kTitleHeightNormal + titleOffset;
             }
+
+            // Add window tabs
+            const int16_t tabTop = 17 + titleOffset;
+            const int16_t tabBottom = 43 + titleOffset;
             for (size_t tabDescIndex = 0; tabDescIndex < _info.Desc.Tabs.size(); tabDescIndex++)
             {
                 Widget widget{};
@@ -905,8 +913,8 @@ namespace OpenRCT2::Ui::Windows
                 widget.colour = 1;
                 widget.left = static_cast<int16_t>(3 + (tabDescIndex * 31));
                 widget.right = widget.left + 30;
-                widget.top = 17;
-                widget.bottom = 43;
+                widget.top = tabTop;
+                widget.bottom = tabBottom;
                 widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull);
                 widget.tooltip = kStringIdNone;
                 widgetList.push_back(widget);
@@ -914,22 +922,28 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Add custom widgets
-            auto totalWidgets = _info.Desc.Widgets.size();
-            auto tabWidgetsOffset = totalWidgets;
+            size_t totalWidgets = _info.Desc.Widgets.size();
+            size_t tabWidgetsOffset = totalWidgets;
             if (_info.Desc.Tabs.size() != 0)
             {
                 totalWidgets += _info.Desc.Tabs[page].Widgets.size();
             }
+
             for (size_t widgetDescIndex = 0; widgetDescIndex < totalWidgets; widgetDescIndex++)
             {
                 const auto& widgetDesc = widgetDescIndex < _info.Desc.Widgets.size()
                     ? _info.Desc.Widgets[widgetDescIndex]
                     : _info.Desc.Tabs[page].Widgets[widgetDescIndex - tabWidgetsOffset];
+
                 auto preWidgetSize = widgetList.size();
                 CreateWidget(widgetList, widgetDesc);
                 auto numWidgetsAdded = widgetList.size() - preWidgetSize;
+
                 for (size_t i = 0; i < numWidgetsAdded; i++)
                 {
+                    Widget& widget = widgetList[preWidgetSize + i];
+                    widget.top += titleOffset;
+                    widget.bottom += titleOffset;
                     _info.WidgetIndexMap.push_back(widgetDescIndex);
                 }
 
@@ -950,8 +964,22 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            SetWidgets(widgetList);
+            // Fix for plugin windows not resize correctly when switching tabs
+            int16_t maxBottom = 0;
+            for (const auto& widget : widgetList)
+            {
+                if (!(widget.flags & WIDGET_FLAGS::IS_HIDDEN))
+                {
+                    maxBottom = std::max(maxBottom, widget.bottom);
+                }
+            }
 
+            // +5 just for extra padding at the bottom
+            const int16_t newHeight = maxBottom + 5;
+
+            height = newHeight;
+            
+            SetWidgets(widgetList);
             WindowInitScrollWidgets(*this);
             UpdateViewport();
         }
