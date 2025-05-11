@@ -976,7 +976,6 @@ namespace OpenRCT2::Ui::Windows
 
             // +5 just for extra padding at the bottom
             const int16_t newHeight = maxBottom + 5;
-
             height = newHeight;
 
             SetWidgets(widgetList);
