@@ -144,6 +144,7 @@ enum class ScenarioSelectMode : uint8_t
 {
     difficulty,
     origin,
+    group,
 };
 
 enum

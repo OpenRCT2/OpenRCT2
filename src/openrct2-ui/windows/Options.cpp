@@ -1892,12 +1892,14 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_SCENARIO_GROUPING_DROPDOWN:
                 {
-                    uint32_t numItems = 2;
+                    uint32_t numItems = 3;
 
                     gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
                     gDropdownItems[0].Args = STR_OPTIONS_SCENARIO_DIFFICULTY;
                     gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
                     gDropdownItems[1].Args = STR_OPTIONS_SCENARIO_ORIGIN;
+                    gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[2].Args = STR_OPTIONS_SCENARIO_GROUP;
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
@@ -2016,14 +2018,23 @@ namespace OpenRCT2::Ui::Windows
             else
                 widgets[WIDX_SCENARIO_PREVIEWS].text = STR_SCENARIO_PREVIEWS_MINIMAPS;
 
-            if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::difficulty)
-                widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_DIFFICULTY;
-            else
-                widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_ORIGIN;
+            switch (Config::Get().general.scenarioSelectMode)
+            {
+                default:
+                case ScenarioSelectMode::difficulty:
+                    widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_DIFFICULTY;
+                    break;
+                case ScenarioSelectMode::origin:
+                    widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_ORIGIN;
+                    break;
+                case ScenarioSelectMode::group:
+                    widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_GROUP;
+                    break;
+            }
 
             SetCheckboxValue(WIDX_SCENARIO_UNLOCKING, Config::Get().general.ScenarioUnlockingEnabled);
 
-            if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
+            if (Config::Get().general.scenarioSelectMode != ScenarioSelectMode::difficulty)
             {
                 disabled_widgets &= ~(1uLL << WIDX_SCENARIO_UNLOCKING);
             }
