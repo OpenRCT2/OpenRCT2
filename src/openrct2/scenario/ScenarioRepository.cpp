@@ -227,7 +227,9 @@ private:
 
             if (importer)
             {
-                *entry = { path, timestamp };
+                *entry = {};
+                entry->Path = path;
+                entry->Timestamp = timestamp;
                 if (importer->PopulateIndexEntry(entry))
                 {
                     return true;
