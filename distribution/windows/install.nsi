@@ -555,10 +555,15 @@ Function un.onInit
 FunctionEnd
 
 Function DoNotInstallInRCT2Folder
-    IfFileExists "$INSTDIR\Data\g1.dat" exists notexists
-    exists:
+    IfFileExists "$INSTDIR\Data\g1.dat" datag1exists datag1notexists
+    datag1exists:
     MessageBox MB_OK|MB_ICONSTOP `You cannot install OpenRCT2 to the same directory as RollerCoaster Tycoon 2.`
     Abort
-    notexists:
+    datag1notexists:
+    IfFileExists "$INSTDIR\Assets\g1.dat" assetsg1exists assetsg1notexists
+    assetsg1exists:
+    MessageBox MB_OK|MB_ICONSTOP `You cannot install OpenRCT2 to the same directory as RollerCoaster Classic.`
+    Abort
+    assetsg1notexists:
 FunctionEnd
 ; eof
