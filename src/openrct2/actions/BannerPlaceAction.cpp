@@ -145,7 +145,7 @@ GameActions::Result BannerPlaceAction::Execute() const
     }
     banner->flags = 0;
     banner->text = {};
-    banner->text_colour = 2;
+    banner->textColour = TextColour::white;
     banner->type = _bannerType; // Banner must be deleted after this point in an early return
     banner->colour = _primaryColour;
     banner->position = TileCoordsXY(_loc);

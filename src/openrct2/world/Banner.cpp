@@ -53,7 +53,7 @@ void Banner::FormatTextTo(Formatter& ft, bool addColour) const
 {
     if (addColour)
     {
-        auto formatToken = FormatTokenFromTextColour(text_colour);
+        auto formatToken = FormatTokenFromTextColour(textColour);
         formattedTextBuffer = FormatTokenToStringWithBraces(formatToken);
         ft.Add<StringId>(STR_STRING_STRINGID);
         ft.Add<const char*>(formattedTextBuffer.data());
@@ -442,7 +442,7 @@ Banner* CreateBanner()
         banner->type = 0;
         banner->text = {};
         banner->colour = COLOUR_WHITE;
-        banner->text_colour = COLOUR_WHITE;
+        banner->textColour = TextColour::white;
     }
     return banner;
 }

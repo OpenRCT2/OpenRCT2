@@ -1421,7 +1421,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::Banner:
             {
                 auto* el = _element->AsBanner();
-                duk_push_int(ctx, el->GetBanner()->text_colour);
+                duk_push_int(ctx, EnumValue(el->GetBanner()->textColour));
                 break;
             }
             default:
@@ -1461,7 +1461,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::Banner:
             {
                 auto* el = _element->AsBanner();
-                el->GetBanner()->text_colour = value;
+                el->GetBanner()->textColour = static_cast<TextColour>(value);
                 Invalidate();
                 break;
             }
@@ -2254,7 +2254,7 @@ namespace OpenRCT2::Scripting
         {
             banner->text = {};
             banner->colour = 0;
-            banner->text_colour = 0;
+            banner->textColour = TextColour::black;
             banner->flags = 0;
             if (_element->GetType() == TileElementType::Wall)
                 banner->flags = BANNER_FLAG_IS_WALL;
