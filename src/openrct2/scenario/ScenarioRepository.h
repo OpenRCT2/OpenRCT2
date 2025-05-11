@@ -17,6 +17,7 @@
 
 struct RCTObjectEntry;
 enum class ScenarioCategory : uint8_t;
+enum class ScenarioGroup : uint8_t;
 
 struct ScenarioHighscoreEntry
 {
@@ -28,7 +29,6 @@ struct ScenarioHighscoreEntry
 
 enum class ScenarioSource : uint8_t
 {
-    RCTC,
     RCT1,
     RCT1_AA,
     RCT1_LL,
@@ -46,8 +46,10 @@ struct ScenarioIndexEntry
     u8string Path;
     uint64_t Timestamp;
 
-    // Category / sequence
+    // Category / Group / sequence
     ScenarioCategory Category;
+    ScenarioGroup Group;
+    int16_t GroupIndex = -1;
     ScenarioSource SourceGame;
     int16_t SourceIndex = -1;
     uint16_t ScenarioId;

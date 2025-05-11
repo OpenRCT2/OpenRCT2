@@ -115,6 +115,43 @@ static int32_t ScenarioIndexEntryCompareByIndex(const ScenarioIndexEntry& entryA
     }
 }
 
+static int32_t ScenarioIndexEntryCompareByGroup(const ScenarioIndexEntry& entryA, const ScenarioIndexEntry& entryB)
+{
+    // Order by group
+    if (entryA.Group != entryB.Group)
+    {
+        return static_cast<int32_t>(entryA.Group) - static_cast<int32_t>(entryB.Group);
+    }
+
+    // Then by index / category / name
+    ScenarioGroup scenarioGroup = ScenarioGroup{ entryA.Group };
+    switch (scenarioGroup)
+    {
+        default:
+            if (entryA.GroupIndex == -1 && entryB.GroupIndex == -1)
+            {
+                if (entryA.Category == entryB.Category)
+                {
+                    return ScenarioIndexEntryCompareByCategory(entryA, entryB);
+                }
+
+                return ScenarioCategoryCompare(entryA.Category, entryB.Category);
+            }
+            if (entryA.GroupIndex == -1)
+            {
+                return 1;
+            }
+            if (entryB.GroupIndex == -1)
+            {
+                return -1;
+            }
+            return entryA.GroupIndex - entryB.GroupIndex;
+
+        case ScenarioGroup::other:
+            return ScenarioIndexEntryCompareByIndex(entryA, entryB);
+    }
+}
+
 static void ScenarioHighscoreFree(ScenarioHighscoreEntry* highscore)
 {
     delete highscore;
@@ -166,6 +203,8 @@ protected:
         }
         ds << item.Timestamp;
         ds << item.Category;
+        ds << item.Group;
+        ds << item.GroupIndex;
         ds << item.SourceGame;
         ds << item.SourceIndex;
         ds << item.ScenarioId;
@@ -509,19 +548,27 @@ private:
 
     void Sort()
     {
-        if (Config::Get().general.scenarioSelectMode != ScenarioSelectMode::difficulty)
+        switch (Config::Get().general.scenarioSelectMode)
         {
-            std::sort(
-                _scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
-                    return ScenarioIndexEntryCompareByIndex(a, b) < 0;
-                });
-        }
-        else
-        {
-            std::sort(
-                _scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
-                    return ScenarioIndexEntryCompareByCategory(a, b) < 0;
-                });
+            case ScenarioSelectMode::origin:
+                std::sort(
+                    _scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
+                        return ScenarioIndexEntryCompareByIndex(a, b) < 0;
+                    });
+                break;
+            case ScenarioSelectMode::group:
+                std::sort(
+                    _scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
+                        return ScenarioIndexEntryCompareByGroup(a, b) < 0;
+                    });
+                break;
+            default:
+            case ScenarioSelectMode::difficulty:
+                std::sort(
+                    _scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
+                        return ScenarioIndexEntryCompareByCategory(a, b) < 0;
+                    });
+                break;
         }
     }
 
