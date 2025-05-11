@@ -235,6 +235,8 @@ namespace OpenRCT2::RCT1
                 isOfficial = ScenarioSources::TryGetByName(_s4.ScenarioName, &desc);
 
             dst->Category = desc.category;
+            dst->Group = desc.group;
+            dst->GroupIndex = desc.groupIndex;
             dst->SourceGame = ScenarioSource{ desc.source };
             dst->SourceIndex = desc.index;
             dst->ScenarioId = desc.id;

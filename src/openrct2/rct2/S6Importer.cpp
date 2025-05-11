@@ -266,13 +266,14 @@ namespace OpenRCT2::RCT2
 
             // Look up and store information regarding the origins of this scenario.
             SourceDescriptor desc;
-            const bool classic = GetFileExtensionType(dst->Path) == FileExtension::SEA;
-            if (ScenarioSources::TryGetByName(dst->Name.c_str(), &desc, classic))
+            if (ScenarioSources::TryGetByName(dst->Name.c_str(), &desc))
             {
                 dst->ScenarioId = desc.id;
                 dst->SourceIndex = desc.index;
                 dst->SourceGame = ScenarioSource{ desc.source };
                 dst->Category = desc.category;
+                dst->Group = desc.group;
+                dst->GroupIndex = desc.groupIndex;
             }
             else
             {
@@ -286,6 +287,8 @@ namespace OpenRCT2::RCT2
                 {
                     dst->SourceGame = ScenarioSource::Other;
                 }
+                dst->Group = ScenarioGroup::other;
+                dst->GroupIndex = -1;
             }
 
             // dst->name will be translated later so keep the untranslated name here

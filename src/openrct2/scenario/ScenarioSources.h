@@ -12,6 +12,7 @@
 #include "../core/StringTypes.h"
 
 enum class ScenarioCategory : uint8_t;
+enum class ScenarioGroup : uint8_t;
 
 struct SourceDescriptor
 {
@@ -20,12 +21,14 @@ struct SourceDescriptor
     uint8_t source;
     int32_t index;
     ScenarioCategory category;
+    ScenarioGroup group;
+    int32_t groupIndex;
     u8string_view textObjectId;
 };
 
 namespace OpenRCT2::ScenarioSources
 {
-    bool TryGetByName(u8string_view name, SourceDescriptor* outDesc, bool classic = false);
+    bool TryGetByName(u8string_view name, SourceDescriptor* outDesc);
     bool TryGetById(uint8_t id, SourceDescriptor* outDesc);
     u8string NormaliseName(u8string_view input);
 } // namespace OpenRCT2::ScenarioSources

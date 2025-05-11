@@ -47,7 +47,21 @@ enum class ScenarioCategory : uint8_t
     real,
     other,
 
-    // RCT Classic categories (keep order)
+    // OpenRCT2 categories
+    dlc,
+    buildYourOwn,
+    competitions,
+    timeMachine,
+    katysDreamworld,
+
+    count,
+};
+
+enum class ScenarioGroup : uint8_t
+{
+    other,
+
+    // RCT Classic groups (keep order)
     graphite,
     emerald,
     ruby,
@@ -59,13 +73,6 @@ enum class ScenarioCategory : uint8_t
     silver,
     gold,
     bonus,
-
-    // OpenRCT2 categories
-    dlc,
-    buildYourOwn,
-    competitions,
-    timeMachine,
-    katysDreamworld,
 
     count,
 };
@@ -163,6 +170,7 @@ constexpr uint8_t kDefaultNumAutosavesToKeep = 10;
 static constexpr money64 kCompanyValueOnFailedObjective = 0x8000000000000001;
 
 extern const StringId kScenarioCategoryStringIds[EnumValue(ScenarioCategory::count)];
+extern const StringId kScenarioGroupStringIds[EnumValue(ScenarioGroup::count)];
 
 extern bool gAllowEarlyCompletionInNetworkPlay;
 
