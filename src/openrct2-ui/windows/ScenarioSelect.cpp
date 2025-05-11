@@ -725,7 +725,9 @@ namespace OpenRCT2::Ui::Windows
                 if (!IsScenarioVisible(*scenario))
                     continue;
 
-                if (Config::Get().general.ScenarioHideTycoonPark && IsLockingEnabled())
+                // Tycoon park handling
+                if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::group
+                    && Config::Get().general.ScenarioHideTycoonPark && IsLockingEnabled())
                 {
                     if (scenario->Group == ScenarioGroup::bonus && rctcLockedGroups.any())
                         continue;
@@ -798,13 +800,18 @@ namespace OpenRCT2::Ui::Windows
                 scenarioItem.scenario.scenario = scenario;
                 if (IsLockingEnabled())
                 {
-                    if (scenario->Group == ScenarioGroup::bonus)
-                        scenarioItem.scenario.is_locked = rctcLockedGroups.any();
-                    else if (scenario->Group != ScenarioGroup::other)
-                        scenarioItem.scenario.is_locked = rctcLockedGroups.count() > kInitialNumUnlockedGroups
-                            || numUnlocks <= 0;
+                    if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::group)
+                    {
+                        if (scenario->Group == ScenarioGroup::bonus)
+                            scenarioItem.scenario.is_locked = rctcLockedGroups.any();
+                        else if (scenario->Group != ScenarioGroup::other)
+                            scenarioItem.scenario.is_locked = rctcLockedGroups.count() > kInitialNumUnlockedGroups
+                                || numUnlocks <= 0;
+                    }
                     else
+                    {
                         scenarioItem.scenario.is_locked = numUnlocks <= 0;
+                    }
 
                     if (scenario->Highscore == nullptr)
                     {
