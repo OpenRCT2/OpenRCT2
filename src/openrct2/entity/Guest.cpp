@@ -6404,6 +6404,7 @@ static void GuestUpdateWalkingBreakScenery(Guest& guest)
         if (std::max(xDist, yDist) < 224)
         {
             innerPeep->StaffVandalsStopped = AddClamp(innerPeep->StaffVandalsStopped, 1u);
+            innerPeep->WindowInvalidateFlags |= PEEP_INVALIDATE_STAFF_STATS;
             return;
         }
     }

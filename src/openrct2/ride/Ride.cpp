@@ -1306,6 +1306,7 @@ static void RideInspectionUpdate(Ride& ride)
         return;
 
     ride.lastInspection = AddClamp<uint8_t>(ride.lastInspection, 1);
+    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
     int32_t inspectionIntervalMinutes = RideInspectionInterval[ride.inspectionInterval];
     // An inspection interval of 0 minutes means the ride is set to never be inspected.
