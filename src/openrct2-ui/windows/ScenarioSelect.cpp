@@ -9,6 +9,7 @@
 
 #include "../interface/Theme.h"
 
+#include <bitset>
 #include <openrct2-ui/interface/Objective.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
@@ -700,11 +701,12 @@ namespace OpenRCT2::Ui::Windows
             uint32_t rct1CompletedScenarios = 0;
             std::optional<size_t> megaParkListItemIndex = std::nullopt;
 
-            int32_t numUnlocks = kInitialNumUnlockedScenarios;
-            int32_t numUnlockedGroups = 0;
-            int32_t completedScenariosPerGroup[EnumValue(ScenarioGroup::count)] = { 0 };
-            int32_t numUnlocksPerGroup[EnumValue(ScenarioGroup::count)] = { 0 };
-            std::fill_n(numUnlocksPerGroup, EnumValue(ScenarioCategory::count), kInitialNumUnlockedScenariosPerGroup);
+            // Tycoon park unlock
+            std::bitset<EnumValue(ScenarioGroup::count)> rctcLockedGroups = 0;
+
+            int32_t numUnlocks = Config::Get().general.scenarioSelectMode == ScenarioSelectMode::group
+                ? kInitialNumUnlockedScenariosPerGroup
+                : kInitialNumUnlockedScenarios;
             union
             {
                 uint8_t raw = UINT8_MAX;
@@ -715,12 +717,17 @@ namespace OpenRCT2::Ui::Windows
             {
                 const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
 
+                if (scenario->Highscore == nullptr && scenario->Group != ScenarioGroup::other)
+                {
+                    rctcLockedGroups.set(EnumValue(scenario->Group));
+                }
+
                 if (!IsScenarioVisible(*scenario))
                     continue;
 
                 if (Config::Get().general.ScenarioHideTycoonPark && IsLockingEnabled())
                 {
-                    if (scenario->Group == ScenarioGroup::bonus && numUnlockedGroups < 10)
+                    if (scenario->Group == ScenarioGroup::bonus && rctcLockedGroups.any())
                         continue;
                 }
 
@@ -792,32 +799,19 @@ namespace OpenRCT2::Ui::Windows
                 if (IsLockingEnabled())
                 {
                     if (scenario->Group == ScenarioGroup::bonus)
-                        scenarioItem.scenario.is_locked = numUnlockedGroups < 10;
+                        scenarioItem.scenario.is_locked = rctcLockedGroups.any();
                     else if (scenario->Group != ScenarioGroup::other)
-                        scenarioItem.scenario.is_locked = numUnlocksPerGroup[EnumValue(scenario->Group)] <= 0
-                            || EnumValue(scenario->Group) > numUnlockedGroups + kInitialNumUnlockedGroups;
+                        scenarioItem.scenario.is_locked = rctcLockedGroups.count() > kInitialNumUnlockedGroups
+                            || numUnlocks <= 0;
                     else
                         scenarioItem.scenario.is_locked = numUnlocks <= 0;
 
                     if (scenario->Highscore == nullptr)
                     {
                         numUnlocks--;
-                        numUnlocksPerGroup[EnumValue(scenario->Group)]--;
                     }
                     else
                     {
-                        completedScenariosPerGroup[EnumValue(scenario->Group)]++;
-                        if (scenario->Group != ScenarioGroup::other)
-                        {
-                            if ((scenario->Group <= ScenarioGroup::amethyst
-                                 && completedScenariosPerGroup[EnumValue(scenario->Group)] == 9)
-                                || (scenario->Group <= ScenarioGroup::gold
-                                    && completedScenariosPerGroup[EnumValue(scenario->Group)] == 10))
-                            {
-                                numUnlockedGroups++;
-                            }
-                        }
-
                         // Mark RCT1 scenario as completed
                         if (scenario->ScenarioId < SC_MEGA_PARK)
                         {
