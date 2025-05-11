@@ -76,6 +76,7 @@ Var SHORTCUTS
 !define MUI_COMPONENTSPAGE_SMALLDESC
 !insertmacro MUI_PAGE_COMPONENTS
 
+!define MUI_PAGE_CUSTOMFUNCTION_LEAVE DoNotInstallInRCT2Folder
 !insertmacro MUI_PAGE_DIRECTORY
 
 ManifestDPIAware true
@@ -551,5 +552,13 @@ FunctionEnd
 
 Function un.onInit
 !insertmacro Init "uninstaller"
+FunctionEnd
+
+Function DoNotInstallInRCT2Folder
+    IfFileExists "$INSTDIR\Data\g1.dat" exists notexists
+    exists:
+    MessageBox MB_OK|MB_ICONSTOP `You cannot install OpenRCT2 to the same directory as RollerCoaster Tycoon 2.`
+    Abort
+    notexists:
 FunctionEnd
 ; eof
