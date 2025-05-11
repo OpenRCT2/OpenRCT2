@@ -440,6 +440,7 @@ namespace OpenRCT2::ScenarioSources
         { SC_STEEL_TWISTER_COMPETITION,                 "Steel Twister Roller Coaster Competition",   ScenarioCategory::competitions,   "rct1dlc.scenario_meta.steel_twister_roller_coaster_competition"   },
         { SC_SUSPENDED_ROLLER_COASTER_COMPETITION,      "Suspended Roller Coaster Competition",       ScenarioCategory::competitions,   "rct1dlc.scenario_meta.suspended_roller_coaster_competition"       },
         { SC_WOODEN_ROLLER_COASTER_COMPETITION,         "Wooden Roller Coaster Competition",          ScenarioCategory::competitions,   "rct1dlc.scenario_meta.wooden_roller_coaster_competition"          },
+        { SC_UNIDENTIFIED,                              "Tycoon Park",                                ScenarioCategory::other,          "rct2.scenario_meta.tycoon_park"                                   },
     };
 
     constexpr std::span<const ScenarioTitleDescriptor> kScenarioTitlesBySource[] = {
