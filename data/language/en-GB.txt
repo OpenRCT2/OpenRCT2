@@ -3823,3 +3823,4 @@ STR_6775    :Bronze Group
 STR_6776    :Silver Group
 STR_6777    :Gold Group
 STR_6778    :Bonus Group
+STR_6779    :Scenario group

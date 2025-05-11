@@ -126,6 +126,7 @@ namespace OpenRCT2::Config
     static const auto Enum_ScenarioSelectMode = ConfigEnum<ScenarioSelectMode>({
         ConfigEnumEntry<ScenarioSelectMode>("ORIGIN", ScenarioSelectMode::origin),
         ConfigEnumEntry<ScenarioSelectMode>("DIFFICULTY", ScenarioSelectMode::difficulty),
+        ConfigEnumEntry<ScenarioSelectMode>("GROUP", ScenarioSelectMode::group),
     });
 
     /**

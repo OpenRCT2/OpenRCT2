@@ -507,7 +507,7 @@ private:
 
     void Sort()
     {
-        if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
+        if (Config::Get().general.scenarioSelectMode != ScenarioSelectMode::difficulty)
         {
             std::sort(
                 _scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
