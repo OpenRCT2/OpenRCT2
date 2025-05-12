@@ -900,7 +900,8 @@ namespace OpenRCT2::Ui::Windows
 
             // WindowBase::getTitleBarCurrentHeight() is not returning the right value when first time OnOpen()
             const int16_t titleOffset = WindowBase::getTitleBarTargetHeight() - kTitleHeightNormal;
-            // Since we changed the caption and close button's bottom, we will need to retrieve where the content starts at dynamically now
+            // Since we changed the caption and close button's bottom,
+            // we will need to retrieve where the content starts at dynamically now
             const int16_t tabTop = widgetList[WIDX_TITLE].bottom + 1;
             const int16_t tabBottom = tabTop + 26;
 
@@ -970,7 +971,7 @@ namespace OpenRCT2::Ui::Windows
             int16_t maxBottom = 0;
             for (const auto& widget : widgetList)
             {
-                //bitmask to only acquire the max bottom for the visible widgets
+                // Bitmask to only acquire the max bottom for the visible widgets
                 if (!(widget.flags & WIDGET_FLAGS::IS_HIDDEN))
                 {
                     maxBottom = std::max(maxBottom, widget.bottom);
