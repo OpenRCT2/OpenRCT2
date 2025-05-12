@@ -255,6 +255,7 @@
     <ClInclude Include="drawing\ScrollingText.h" />
     <ClInclude Include="drawing\Weather.h" />
     <ClInclude Include="drawing\Text.h" />
+    <ClInclude Include="drawing\TextColour.h" />
     <ClInclude Include="drawing\TTF.h" />
     <ClInclude Include="drawing\X8DrawingEngine.h" />
     <ClInclude Include="Editor.h" />

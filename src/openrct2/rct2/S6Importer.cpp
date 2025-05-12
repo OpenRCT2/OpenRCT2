@@ -1141,7 +1141,7 @@ namespace OpenRCT2::RCT2
                 dst->colour = src->Colour;
             }
 
-            dst->text_colour = src->TextColour;
+            dst->textColour = src->textColour;
             dst->position.x = src->x;
             dst->position.y = src->y;
         }

@@ -19,6 +19,7 @@
 #include <openrct2/actions/BannerSetNameAction.h>
 #include <openrct2/actions/BannerSetStyleAction.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/drawing/TextColour.h>
 #include <openrct2/object/BannerSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/ui/WindowManager.h>
@@ -47,21 +48,21 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static constexpr StringId BannerColouredTextFormats[] = {
-        STR_TEXT_COLOUR_BLACK,
-        STR_TEXT_COLOUR_GREY,
-        STR_TEXT_COLOUR_WHITE,
-        STR_TEXT_COLOUR_RED,
-        STR_TEXT_COLOUR_GREEN,
-        STR_TEXT_COLOUR_YELLOW,
-        STR_TEXT_COLOUR_TOPAZ,
-        STR_TEXT_COLOUR_CELADON,
-        STR_TEXT_COLOUR_BABYBLUE,
-        STR_TEXT_COLOUR_PALELAVENDER,
-        STR_TEXT_COLOUR_PALEGOLD,
-        STR_TEXT_COLOUR_LIGHTPINK,
-        STR_TEXT_COLOUR_PEARLAQUA,
-        STR_TEXT_COLOUR_PALESILVER,
+    static constexpr StringId kBannerColouredTextFormats[] = {
+        STR_TEXT_COLOUR_BLACK,        // TextColour::black
+        STR_TEXT_COLOUR_GREY,         // TextColour::grey
+        STR_TEXT_COLOUR_WHITE,        // TextColour::white
+        STR_TEXT_COLOUR_RED,          // TextColour::red
+        STR_TEXT_COLOUR_GREEN,        // TextColour::green
+        STR_TEXT_COLOUR_YELLOW,       // TextColour::yellow
+        STR_TEXT_COLOUR_TOPAZ,        // TextColour::topaz
+        STR_TEXT_COLOUR_CELADON,      // TextColour::celadon
+        STR_TEXT_COLOUR_BABYBLUE,     // TextColour::babyBlue
+        STR_TEXT_COLOUR_PALELAVENDER, // TextColour::paleLavender
+        STR_TEXT_COLOUR_PALEGOLD,     // TextColour::paleGold 
+        STR_TEXT_COLOUR_LIGHTPINK,    // TextColour::lightPink 
+        STR_TEXT_COLOUR_PEARLAQUA,    // TextColour::pearlAqua 
+        STR_TEXT_COLOUR_PALESILVER,   // TextColour::paleSilver 
     };
 
     static constexpr Widget window_banner_widgets[] = {
@@ -164,10 +165,11 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_TEXT_COLOUR_DROPDOWN_BUTTON:
 
-                    for (int32_t i = 0; i < 13; ++i)
+                    auto numItems = std::size(kBannerColouredTextFormats) - 1;
+                    for (size_t i = 0; i < numItems; ++i)
                     {
                         gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[i].Args = BannerColouredTextFormats[i + 1];
+                        gDropdownItems[i].Args = kBannerColouredTextFormats[i + 1];
                     }
 
                     // Switch to the dropdown box widget.
@@ -175,9 +177,9 @@ namespace OpenRCT2::Ui::Windows
 
                     WindowDropdownShowTextCustomWidth(
                         { widget->left + windowPos.x, widget->top + windowPos.y }, widget->height() + 1, colours[1], 0,
-                        Dropdown::Flag::StayOpen, 13, widget->width() - 3);
+                        Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
 
-                    Dropdown::SetChecked(banner->text_colour - 1, true);
+                    Dropdown::SetChecked(EnumValue(banner->textColour) - 1, true);
                     break;
             }
         }
@@ -299,7 +301,7 @@ namespace OpenRCT2::Ui::Windows
             }
             colourBtn.image = GetColourButtonImage(banner->colour);
             Widget& dropDownWidget = widgets[WIDX_TEXT_COLOUR_DROPDOWN];
-            dropDownWidget.text = BannerColouredTextFormats[banner->text_colour];
+            dropDownWidget.text = kBannerColouredTextFormats[EnumValue(banner->textColour)];
         }
     };
 

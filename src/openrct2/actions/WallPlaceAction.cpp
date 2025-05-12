@@ -361,7 +361,7 @@ GameActions::Result WallPlaceAction::Execute() const
 
         banner->text = {};
         banner->colour = COLOUR_WHITE;
-        banner->text_colour = COLOUR_WHITE;
+        banner->textColour = TextColour::white;
         banner->flags = BANNER_FLAG_IS_WALL;
         banner->type = 0; // Banner must be deleted after this point in an early return
         banner->position = TileCoordsXY(_loc);
