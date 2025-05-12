@@ -562,7 +562,7 @@ Function DoNotInstallInRCT2Folder
     datag1notexists:
     IfFileExists "$INSTDIR\Assets\g1.dat" assetsg1exists assetsg1notexists
     assetsg1exists:
-    MessageBox MB_OK|MB_ICONSTOP `You cannot install OpenRCT2 to the same directory as RollerCoaster Classic.`
+    MessageBox MB_OK|MB_ICONSTOP `You cannot install OpenRCT2 to the same directory as RollerCoaster Tycoon Classic.`
     Abort
     assetsg1notexists:
 FunctionEnd
