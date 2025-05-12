@@ -2096,7 +2096,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WindowWidgetType::Button;
 
                 // Get 'Clear' button string width
-                auto clearLabel = LanguageGetString(STR_SHORTCUT_CLEAR);
+                auto clearLabel = LanguageGetString(STR_CLEAR_BUTTON);
                 auto clearLabelWidth = GfxGetStringWidth(clearLabel, FontStyle::Medium) + 12;
 
                 widgets[WIDX_PATH_TO_RCT1_CLEAR].right = widgets[WIDX_PAGE_BACKGROUND].right - 12;
