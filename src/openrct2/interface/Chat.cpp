@@ -228,7 +228,7 @@ void ChatAddHistory(std::string_view s)
     time(&timer);
     auto tmInfo = localtime(&timer);
     char timeBuffer[64]{};
-    StrCatFTime(timeBuffer, sizeof(timeBuffer), "[%H:%M] ", tmInfo);
+    StrCatFTime(timeBuffer, sizeof(timeBuffer), "{WHITE}[%H:%M]{RESET} ", tmInfo);
 
     std::string buffer = timeBuffer;
     buffer += s;
