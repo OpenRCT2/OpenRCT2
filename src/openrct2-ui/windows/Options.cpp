@@ -92,7 +92,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_PAGE_START,
 
         // Display
-        WIDX_HARDWARE_GROUP = WIDX_PAGE_START,
+        WIDX_WINDOW_GROUP = WIDX_PAGE_START,
         WIDX_FULLSCREEN_LABEL,
         WIDX_FULLSCREEN,
         WIDX_FULLSCREEN_DROPDOWN,
@@ -103,19 +103,23 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SCALE,
         WIDX_SCALE_UP,
         WIDX_SCALE_DOWN,
+
+        WIDX_RENDERING_GROUP,
         WIDX_DRAWING_ENGINE_LABEL,
         WIDX_DRAWING_ENGINE,
         WIDX_DRAWING_ENGINE_DROPDOWN,
-        WIDX_STEAM_OVERLAY_PAUSE,
         WIDX_UNCAP_FPS_CHECKBOX,
+        WIDX_USE_VSYNC_CHECKBOX,
         WIDX_SHOW_FPS_CHECKBOX,
         WIDX_MULTITHREADING_CHECKBOX,
-        WIDX_USE_VSYNC_CHECKBOX,
+
+        WIDX_BEHAVIOUR_GROUP,
+        WIDX_STEAM_OVERLAY_PAUSE,
         WIDX_MINIMIZE_FOCUS_LOSS,
         WIDX_DISABLE_SCREENSAVER_LOCK,
 
-        // Rendering
-        WIDX_RENDERING_GROUP = WIDX_PAGE_START,
+        // Map rendering
+        WIDX_MAP_RENDERING_GROUP = WIDX_PAGE_START,
         WIDX_TILE_SMOOTHING_CHECKBOX,
         WIDX_GRIDLINES_CHECKBOX,
         WIDX_UPPER_CASE_BANNERS_CHECKBOX,
@@ -261,7 +265,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget window_options_display_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
-        MakeWidget        ({  5,  53}, {300, 170}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_HARDWARE_GROUP                                                              ), // Hardware group
+        MakeWidget        ({  5,  53}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_HARDWARE_GROUP                                                              ), // Hardware group
         MakeWidget        ({ 10,  67}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_FULLSCREEN_MODE,                   STR_FULLSCREEN_MODE_TIP                  ), // Fullscreen
         MakeWidget        ({155,  68}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ),
         MakeWidget        ({288,  69}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_FULLSCREEN_MODE_TIP                  ),
@@ -269,17 +273,21 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({155,  83}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_ARG_16_RESOLUTION_X_BY_Y                                                    ),
         MakeWidget        ({288,  84}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DISPLAY_RESOLUTION_TIP               ),
         MakeWidget        ({ 10,  98}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_UI_SCALING_DESC,                   STR_WINDOW_SCALE_TIP                     ), // Scale
-        MakeSpinnerWidgets({155,  98}, {145,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                              STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
-        MakeWidget        ({ 10, 113}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DRAWING_ENGINE,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine
-        MakeWidget        ({155, 113}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ), // Drawing engine
-        MakeWidget        ({288, 114}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DRAWING_ENGINE_TIP                   ),
-        MakeWidget        ({ 11, 144}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_STEAM_OVERLAY_PAUSE,               STR_STEAM_OVERLAY_PAUSE_TIP              ), // Pause on steam overlay
-        MakeWidget        ({ 11, 161}, {143,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_UNCAP_FPS,                         STR_UNCAP_FPS_TIP                        ), // Uncap fps
-        MakeWidget        ({155, 161}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
-        MakeWidget        ({155, 176}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
-        MakeWidget        ({ 11, 176}, {143,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_USE_VSYNC,                         STR_USE_VSYNC_TIP                        ), // Use vsync
-        MakeWidget        ({ 11, 191}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
-        MakeWidget        ({ 11, 206}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              ), // Disable screensaver
+        MakeSpinnerWidgets({155,  98}, {145,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                         STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
+
+        MakeWidget        ({  5, 121}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_HARDWARE_GROUP                                                              ), // Rendering group
+        MakeWidget        ({ 10, 135}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DRAWING_ENGINE,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (label)
+        MakeWidget        ({155, 135}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ), // Drawing engine (dropdown label)
+        MakeWidget        ({288, 136}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (chevron)
+        MakeWidget        ({ 11, 151}, {143,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_UNCAP_FPS,                         STR_UNCAP_FPS_TIP                        ), // Uncap fps
+        MakeWidget        ({ 11, 166}, {143,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_USE_VSYNC,                         STR_USE_VSYNC_TIP                        ), // Use vsync
+        MakeWidget        ({155, 151}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
+        MakeWidget        ({155, 166}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
+
+        MakeWidget        ({  5, 188}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_HARDWARE_GROUP                                                              ), // Behaviour group
+        MakeWidget        ({ 11, 203}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_STEAM_OVERLAY_PAUSE,               STR_STEAM_OVERLAY_PAUSE_TIP              ), // Pause on steam overlay
+        MakeWidget        ({ 11, 218}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
+        MakeWidget        ({ 11, 233}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              ), // Disable screensaver
     };
 
     constexpr int32_t kFrameRenderingStart = 53;
