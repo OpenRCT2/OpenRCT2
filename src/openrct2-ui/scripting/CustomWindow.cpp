@@ -893,8 +893,18 @@ namespace OpenRCT2::Ui::Windows
                 _info.WidgetIndexMap.push_back(std::numeric_limits<size_t>::max());
             }
 
+            const int16_t titleHeight = Config::Get().interface.EnlargedUi ? kTitleHeightLarge : kTitleHeightNormal;
+            const int16_t titleOffset = titleHeight - kTitleHeightNormal;
+
+            if (widgetList.size() > WIDX_CLOSE)
+            {
+                widgetList[WIDX_TITLE].bottom = widgetList[WIDX_TITLE].top + titleHeight;
+                widgetList[WIDX_CLOSE].bottom = widgetList[WIDX_CLOSE].top + titleHeight;
+                widgetList[WIDX_CONTENT_PANEL].top = kTitleHeightNormal + titleOffset;
+            }
+
             // Add window tabs
-            const int16_t tabTop = 17;
+            const int16_t tabTop = 17 + titleOffset;
             const int16_t tabBottom = 43 + titleOffset;
             for (size_t tabDescIndex = 0; tabDescIndex < _info.Desc.Tabs.size(); tabDescIndex++)
             {
@@ -966,7 +976,6 @@ namespace OpenRCT2::Ui::Windows
 
             // +5 just for extra padding at the bottom
             const int16_t newHeight = maxBottom + 5;
-
             height = newHeight;
 
             SetWidgets(widgetList);
