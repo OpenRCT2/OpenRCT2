@@ -1305,7 +1305,7 @@ static void RideInspectionUpdate(Ride& ride)
     if (gLegacyScene == LegacyScene::trackDesigner)
         return;
 
-    ride.lastInspection = AddClamp<uint8_t>(ride.lastInspection, 1);
+    ride.lastInspection = AddClamp<decltype(ride.lastInspection)>(ride.lastInspection, 1);
     ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
     int32_t inspectionIntervalMinutes = RideInspectionInterval[ride.inspectionInterval];
