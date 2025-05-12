@@ -421,7 +421,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({ 10, kRCT1Start + 16}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path label
         MakeWidget        ({ 10, kRCT1Start + 30}, {290, 14}, WindowWidgetType::Label,        WindowColour::Secondary, kStringIdNone,                             STR_STRING_TOOLTIP                           ), // RCT 1 path path
         MakeWidget        ({239, kRCT1Start + 15}, { 60, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_BROWSE                                                                              ), // RCT 1 path browse
-        MakeWidget        ({249, kRCT1Start + 15}, { 50, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_SHORTCUT_CLEAR,                        STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear
+        MakeWidget        ({249, kRCT1Start + 15}, { 50, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_CLEAR_BUTTON,                          STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear
 
         MakeWidget        ({  5, kSavingStart +  0}, {300, 80}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_SAVING                                                                        ),
         MakeWidget        ({ 10, kSavingStart + 16}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_SAVE_PLUGIN_DATA,                      STR_SAVE_PLUGIN_DATA_TIP                     ), // Export plug-in objects with saved games

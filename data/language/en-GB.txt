@@ -3810,3 +3810,4 @@ STR_6762    :Interface
 STR_6763    :RollerCoaster Tycoon 1
 STR_6764    :Saving and autosaves
 STR_6765    :Advanced
+STR_6766    :Clear
