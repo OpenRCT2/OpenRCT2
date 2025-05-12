@@ -2,7 +2,7 @@
 !define APPVERSION          "${APPV_MAIN}${APPV_EXTRA}"
 !define APPVERSIONINTERNAL  "${APPV_MAIN}.0"
 !define APPNAMEANDVERSION   "${APPNAME} ${APPVERSION}"
-!define APPURLLINK          "https://github.com/OpenRCT2/OpenRCT2"
+!define APPURLLINK          "https://openrct2.io"
 !define OPENRCT2_EXE        "openrct2.exe"
 !define OPENRCT2_COM        "openrct2.com"
 
@@ -76,6 +76,7 @@ Var SHORTCUTS
 !define MUI_COMPONENTSPAGE_SMALLDESC
 !insertmacro MUI_PAGE_COMPONENTS
 
+!define MUI_PAGE_CUSTOMFUNCTION_LEAVE DoNotInstallInRCT2Folder
 !insertmacro MUI_PAGE_DIRECTORY
 
 ManifestDPIAware true
@@ -106,8 +107,33 @@ ManifestDPIAware true
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
 
-; Set languages (first is default language)
+; Set languages (first is default language). Other languages are sorted by ISO code.
 !insertmacro MUI_LANGUAGE "English"
+!insertmacro MUI_LANGUAGE "Arabic"
+!insertmacro MUI_LANGUAGE "Catalan"
+!insertmacro MUI_LANGUAGE "Czech"
+!insertmacro MUI_LANGUAGE "Danish"
+!insertmacro MUI_LANGUAGE "German"
+!insertmacro MUI_LANGUAGE "Esperanto"
+!insertmacro MUI_LANGUAGE "Spanish"
+!insertmacro MUI_LANGUAGE "Finnish"
+!insertmacro MUI_LANGUAGE "French"
+!insertmacro MUI_LANGUAGE "Galician"
+!insertmacro MUI_LANGUAGE "Hungarian"
+!insertmacro MUI_LANGUAGE "Italian"
+!insertmacro MUI_LANGUAGE "Japanese"
+!insertmacro MUI_LANGUAGE "Korean"
+!insertmacro MUI_LANGUAGE "Norwegian"
+!insertmacro MUI_LANGUAGE "Dutch"
+!insertmacro MUI_LANGUAGE "Polish"
+!insertmacro MUI_LANGUAGE "PortugueseBR"
+!insertmacro MUI_LANGUAGE "Russian"
+!insertmacro MUI_LANGUAGE "Swedish"
+!insertmacro MUI_LANGUAGE "Turkish"
+!insertmacro MUI_LANGUAGE "Ukrainian"
+!insertmacro MUI_LANGUAGE "Vietnamese"
+!insertmacro MUI_LANGUAGE "SimpChinese"
+!insertmacro MUI_LANGUAGE "TradChinese"
 !insertmacro MUI_RESERVEFILE_LANGDLL
 
 !macro Init thing
@@ -150,7 +176,8 @@ Section "!OpenRCT2" Section1
 
     SetShellVarContext all
 
-    ; Copy data files
+    ; Copy data files. Clear out the old dir first, to ensure upgrades do not result in old objects sticking around.
+    RMDir /r "$INSTDIR\data"
     SetOutPath "$INSTDIR\data\"
     File /r ${PATH_ROOT}bin\data\*
 
@@ -219,7 +246,7 @@ SectionEnd
 
 ; Modern install component descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-    !insertmacro MUI_DESCRIPTION_TEXT ${Section1} "Minimal OpenRCT2 installation in English. You must have RollerCoaster Tycoon 2 installed."
+    !insertmacro MUI_DESCRIPTION_TEXT ${Section1} "Minimal OpenRCT2 installation. You must have RollerCoaster Tycoon 2 installed."
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;-----------------------------------------------
@@ -525,5 +552,18 @@ FunctionEnd
 
 Function un.onInit
 !insertmacro Init "uninstaller"
+FunctionEnd
+
+Function DoNotInstallInRCT2Folder
+    IfFileExists "$INSTDIR\Data\g1.dat" datag1exists datag1notexists
+    datag1exists:
+    MessageBox MB_OK|MB_ICONSTOP `You cannot install OpenRCT2 to the same directory as RollerCoaster Tycoon 2.`
+    Abort
+    datag1notexists:
+    IfFileExists "$INSTDIR\Assets\g1.dat" assetsg1exists assetsg1notexists
+    assetsg1exists:
+    MessageBox MB_OK|MB_ICONSTOP `You cannot install OpenRCT2 to the same directory as RollerCoaster Tycoon Classic.`
+    Abort
+    assetsg1notexists:
 FunctionEnd
 ; eof

@@ -2,8 +2,10 @@
 ------------------------------------------------------------------------
 - Improved: [#24368] Clicking the in-game update notication now leads to a more user-friendly download page.
 - Change: [#24342] g2.dat is now split into g2.dat and fonts.dat. 
+- Change: [#24362] The Windows installer now prevents installing to the same folder as RollerCoaster Tycoon 2 or Classic.
 - Fix: [#24346] Possible crash during line drawing in OpenGL mode.
-- Fix: [#24353] ‘Show dirty visuals’ is off by one pixel and does not work correctly with higher framerates.  
+- Fix: [#24353] ‘Show dirty visuals’ is off by one pixel and does not work correctly with higher framerates.
+- Fix: [#24362] When upgrading from an older version on Windows, old versions of official objects are not always removed.  
 
 0.4.22 (2025-05-04)
 ------------------------------------------------------------------------
