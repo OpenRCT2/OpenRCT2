@@ -8,6 +8,7 @@
  *****************************************************************************/
 #include "Particle.h"
 
+#include "../SpriteIds.h"
 #include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
 #include "../paint/Paint.h"
@@ -19,9 +20,9 @@
 
 #include <iterator>
 
-// TODO: Create constants in SpriteIds.h
 static constexpr uint32_t kVehicleCrashParticleSprites[kCrashedVehicleParticleNumberTypes] = {
-    22577, 22589, 22601, 22613, 22625,
+    SPR_VEHICLE_CRASH_PARTICLE_1, SPR_VEHICLE_CRASH_PARTICLE_2, SPR_VEHICLE_CRASH_PARTICLE_3,
+    SPR_VEHICLE_CRASH_PARTICLE_4, SPR_VEHICLE_CRASH_PARTICLE_5,
 };
 
 template<>
@@ -223,8 +224,7 @@ void CrashSplashParticle::Paint(PaintSession& session, int32_t imageDirection) c
 {
     PROFILED_FUNCTION();
 
-    // TODO: Create constant in SpriteIds.h
-    uint32_t imageId = 22927 + (frame / 256);
+    uint32_t imageId = SPR_CRASH_SPLASH_PARTICLE + (frame / 256);
     PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
 }
 
@@ -282,8 +282,7 @@ void SteamParticle::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    // TODO: Create constant in SpriteIds.h
-    uint32_t imageId = 22637 + (frame / 256);
+    uint32_t imageId = SPR_STEAM_PARTICLE + (frame / 256);
     PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
 }
 
@@ -328,7 +327,7 @@ void ExplosionCloud::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    uint32_t imageId = 22878 + (frame / 256);
+    uint32_t imageId = SPR_EXPLOSION_CLOUD + (frame / 256);
     PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
 }
 
@@ -373,7 +372,6 @@ void ExplosionFlare::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    // TODO: Create constant in SpriteIds.h
-    uint32_t imageId = 22896 + (frame / 256);
+    uint32_t imageId = SPR_EXPLOSION_FLARE + (frame / 256);
     PaintAddImageAsParent(session, ImageId(imageId), { 0, 0, z }, { 1, 1, 0 });
 }
