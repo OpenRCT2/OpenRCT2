@@ -7,7 +7,7 @@
 - Fix: [#24346] Possible crash during line drawing in OpenGL mode.
 - Fix: [#24353] ‘Show dirty visuals’ is off by one pixel and does not work correctly with higher framerates.
 - Fix: [#24362] When upgrading from an older version on Windows, old versions of official objects are not always removed.  
-- Fix: [#24371] Fix divide by zero when there is no scenery
+- Fix: [#24371] Fix divide by zero when there is no scenery.
 
 0.4.22 (2025-05-04)
 ------------------------------------------------------------------------
