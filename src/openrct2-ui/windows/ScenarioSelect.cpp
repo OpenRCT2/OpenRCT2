@@ -804,7 +804,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (scenario->Group == ScenarioGroup::bonus)
                             scenarioItem.scenario.is_locked = rctcIncompleteGroups.any();
-                        else if (scenario->Group != ScenarioGroup::other)
+                        else
                             scenarioItem.scenario.is_locked = rctcIncompleteGroups.count() > kInitialNumUnlockedGroups
                                 || numUnlocks <= 0;
                     }
