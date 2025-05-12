@@ -625,7 +625,7 @@ namespace OpenRCT2::Ui::Windows
             std::optional<size_t> megaParkListItemIndex = std::nullopt;
 
             // Tycoon park unlock
-            std::bitset<EnumValue(ScenarioGroup::count)> rctcLockedGroups = 0;
+            std::bitset<EnumValue(ScenarioGroup::count)> rctcIncompleteGroups = 0;
 
             int32_t numUnlocks = Config::Get().general.scenarioSelectMode == ScenarioSelectMode::group
                 ? kInitialNumUnlockedScenariosPerGroup
@@ -642,7 +642,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (scenario->Highscore == nullptr && scenario->Group != ScenarioGroup::other)
                 {
-                    rctcLockedGroups.set(EnumValue(scenario->Group));
+                    rctcIncompleteGroups.set(EnumValue(scenario->Group));
                 }
 
                 if (!IsScenarioVisible(*scenario))
@@ -652,7 +652,7 @@ namespace OpenRCT2::Ui::Windows
                 if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::group
                     && Config::Get().general.ScenarioHideTycoonPark && IsLockingEnabled())
                 {
-                    if (scenario->Group == ScenarioGroup::bonus && rctcLockedGroups.any())
+                    if (scenario->Group == ScenarioGroup::bonus && rctcIncompleteGroups.any())
                         continue;
                 }
 
@@ -726,9 +726,9 @@ namespace OpenRCT2::Ui::Windows
                     if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::group)
                     {
                         if (scenario->Group == ScenarioGroup::bonus)
-                            scenarioItem.scenario.is_locked = rctcLockedGroups.any();
+                            scenarioItem.scenario.is_locked = rctcIncompleteGroups.any();
                         else if (scenario->Group != ScenarioGroup::other)
-                            scenarioItem.scenario.is_locked = rctcLockedGroups.count() > kInitialNumUnlockedGroups
+                            scenarioItem.scenario.is_locked = rctcIncompleteGroups.count() > kInitialNumUnlockedGroups
                                 || numUnlocks <= 0;
                     }
                     else
