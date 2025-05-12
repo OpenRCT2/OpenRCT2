@@ -894,14 +894,13 @@ namespace OpenRCT2::Ui::Windows
             }
 
             /* Resize the caption and close button to match the title bar size in runtime.
-               We don't need to put it ResizeFrame since only when calling the RefreshWidget, 
-               the static UI shim got recreated, causing the stale value to be updated again. */
+               when the static UI shim got recreated, causing the stale value to be updated again. */
             widgetList[WIDX_TITLE].bottom = WindowBase::getTitleBarTargetHeight() + 1;
             widgetList[WIDX_CLOSE].bottom = WindowBase::getTitleBarTargetHeight();
 
             // WindowBase::getTitleBarCurrentHeight() is not returning the right value when first time OnOpen()
             const int16_t titleOffset = WindowBase::getTitleBarTargetHeight() - kTitleHeightNormal;
-            // Since we changed the caption and close button's bottom, we will need to retrieve where the content starts at dyanmically now
+            // Since we changed the caption and close button's bottom, we will need to retrieve where the content starts at dynamically now
             const int16_t tabTop = widgetList[WIDX_TITLE].bottom + 1;
             const int16_t tabBottom = tabTop + 26;
 
