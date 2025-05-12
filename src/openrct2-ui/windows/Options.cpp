@@ -108,8 +108,9 @@ namespace OpenRCT2::Ui::Windows
         WIDX_DRAWING_ENGINE_LABEL,
         WIDX_DRAWING_ENGINE,
         WIDX_DRAWING_ENGINE_DROPDOWN,
-        WIDX_UNCAP_FPS_CHECKBOX,
-        WIDX_USE_VSYNC_CHECKBOX,
+        WIDX_FRAME_RATE_LIMIT_LABEL,
+        WIDX_FRAME_RATE_LIMIT,
+        WIDX_FRAME_RATE_LIMIT_DROPDOWN,
         WIDX_SHOW_FPS_CHECKBOX,
         WIDX_MULTITHREADING_CHECKBOX,
 
@@ -265,7 +266,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget window_options_display_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
-        MakeWidget        ({  5,  53}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_HARDWARE_GROUP                                                              ), // Hardware group
+        MakeWidget        ({  5,  53}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_WINDOW                                                                ), // Window group
         MakeWidget        ({ 10,  67}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_FULLSCREEN_MODE,                   STR_FULLSCREEN_MODE_TIP                  ), // Fullscreen
         MakeWidget        ({155,  68}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ),
         MakeWidget        ({288,  69}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_FULLSCREEN_MODE_TIP                  ),
@@ -275,16 +276,17 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({ 10,  98}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_UI_SCALING_DESC,                   STR_WINDOW_SCALE_TIP                     ), // Scale
         MakeSpinnerWidgets({155,  98}, {145,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                         STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
 
-        MakeWidget        ({  5, 121}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_HARDWARE_GROUP                                                              ), // Rendering group
+        MakeWidget        ({  5, 121}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_RENDERING                                                             ), // Rendering group
         MakeWidget        ({ 10, 135}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DRAWING_ENGINE,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (label)
         MakeWidget        ({155, 135}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ), // Drawing engine (dropdown label)
         MakeWidget        ({288, 136}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (chevron)
-        MakeWidget        ({ 11, 151}, {143,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_UNCAP_FPS,                         STR_UNCAP_FPS_TIP                        ), // Uncap fps
-        MakeWidget        ({ 11, 166}, {143,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_USE_VSYNC,                         STR_USE_VSYNC_TIP                        ), // Use vsync
-        MakeWidget        ({155, 151}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
+        MakeWidget        ({ 10, 150}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_FRAME_RATE_LIMIT_LABEL                                                      ), // Frame rate limit (label)
+        MakeWidget        ({155, 150}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ), // Frame rate limit (dropdown label)
+        MakeWidget        ({288, 151}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                              ), // Frame rate limit (chevron)
+        MakeWidget        ({ 10, 166}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
         MakeWidget        ({155, 166}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
 
-        MakeWidget        ({  5, 188}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_HARDWARE_GROUP                                                              ), // Behaviour group
+        MakeWidget        ({  5, 188}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_BEHAVIOUR                                                             ), // Behaviour group
         MakeWidget        ({ 11, 203}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_STEAM_OVERLAY_PAUSE,               STR_STEAM_OVERLAY_PAUSE_TIP              ), // Pause on steam overlay
         MakeWidget        ({ 11, 218}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
         MakeWidget        ({ 11, 233}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              ), // Disable screensaver
@@ -747,18 +749,6 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
-                case WIDX_UNCAP_FPS_CHECKBOX:
-                    Config::Get().general.UncapFPS ^= 1;
-                    DrawingEngineSetVSync(Config::Get().general.UseVSync);
-                    Config::Save();
-                    Invalidate();
-                    break;
-                case WIDX_USE_VSYNC_CHECKBOX:
-                    Config::Get().general.UseVSync ^= 1;
-                    DrawingEngineSetVSync(Config::Get().general.UseVSync);
-                    Config::Save();
-                    Invalidate();
-                    break;
                 case WIDX_SHOW_FPS_CHECKBOX:
                     Config::Get().general.ShowFPS ^= 1;
                     Config::Save();
@@ -865,6 +855,27 @@ namespace OpenRCT2::Ui::Windows
                     ContextTriggerResize();
                     ContextUpdateCursorScale();
                     break;
+                case WIDX_FRAME_RATE_LIMIT_DROPDOWN:
+                {
+                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[0].Args = STR_FRAME_RATE_LIMIT_DEFAULT;
+                    gDropdownItems[1].Args = STR_FRAME_RATE_LIMIT_VSYNC;
+                    gDropdownItems[2].Args = STR_FRAME_RATE_LIMIT_UNRESTRICTED;
+
+                    ShowDropdown(widget, 3);
+
+                    auto& config = Config::Get().general;
+                    auto activeItem = 0;
+                    if (config.UncapFPS)
+                    {
+                        activeItem = config.UseVSync ? 1 : 2;
+                    }
+
+                    Dropdown::SetChecked(activeItem, true);
+                    break;
+                }
             }
         }
 
@@ -890,8 +901,8 @@ namespace OpenRCT2::Ui::Windows
                         Config::Save();
                         GfxInvalidateScreen();
                     }
+                    break;
                 }
-                break;
                 case WIDX_FULLSCREEN_DROPDOWN:
                     if (dropdownIndex != Config::Get().general.FullscreenMode)
                     {
@@ -913,6 +924,30 @@ namespace OpenRCT2::Ui::Windows
                         Invalidate();
                     }
                     break;
+                case WIDX_FRAME_RATE_LIMIT_DROPDOWN:
+                {
+                    auto& config = Config::Get().general;
+                    switch (dropdownIndex)
+                    {
+                        case 0: // vanilla
+                            config.UncapFPS = 0;
+                            config.UseVSync = 0;
+                            break;
+                        case 1: // vsync
+                            config.UncapFPS = 1;
+                            config.UseVSync = 1;
+                            break;
+                        case 2: // uncapped
+                            config.UncapFPS = 1;
+                            config.UseVSync = 0;
+                            break;
+                    }
+
+                    DrawingEngineSetVSync(config.UseVSync);
+                    Config::Save();
+                    Invalidate();
+                    break;
+                }
             }
         }
 
@@ -938,8 +973,6 @@ namespace OpenRCT2::Ui::Windows
                 disabled_widgets &= ~(1uLL << WIDX_RESOLUTION_LABEL);
             }
 
-            SetCheckboxValue(WIDX_UNCAP_FPS_CHECKBOX, Config::Get().general.UncapFPS);
-            SetCheckboxValue(WIDX_USE_VSYNC_CHECKBOX, Config::Get().general.UseVSync);
             SetCheckboxValue(WIDX_SHOW_FPS_CHECKBOX, Config::Get().general.ShowFPS);
             SetCheckboxValue(WIDX_MULTITHREADING_CHECKBOX, Config::Get().general.MultiThreading);
             SetCheckboxValue(WIDX_MINIMIZE_FOCUS_LOSS, Config::Get().general.MinimizeFullscreenFocusLoss);
@@ -949,6 +982,20 @@ namespace OpenRCT2::Ui::Windows
             // Dropdown captions for straightforward strings.
             widgets[WIDX_FULLSCREEN].text = FullscreenModeNames[Config::Get().general.FullscreenMode];
             widgets[WIDX_DRAWING_ENGINE].text = kDrawingEngineStringIds[EnumValue(Config::Get().general.DrawingEngine)];
+
+            static constexpr StringId kFrameRateLimitStringIds[] = {
+                STR_FRAME_RATE_LIMIT_DEFAULT,
+                STR_FRAME_RATE_LIMIT_VSYNC,
+                STR_FRAME_RATE_LIMIT_UNRESTRICTED,
+            };
+
+            auto& config = Config::Get().general;
+            auto activeItem = 0;
+            if (config.UncapFPS)
+            {
+                activeItem = config.UseVSync ? 1 : 2;
+            }
+            widgets[WIDX_FRAME_RATE_LIMIT].text = kFrameRateLimitStringIds[activeItem];
         }
 
         void DisplayDraw(RenderTarget& rt)
