@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Identifiers.h"
+#include "../drawing/TextColour.h"
 #include "../ride/RideTypes.h"
 #include "Location.hpp"
 
@@ -38,7 +39,7 @@ struct Banner
     mutable std::string formattedTextBuffer;
     uint8_t colour{};
     RideId ride_index{};
-    uint8_t text_colour{};
+    OpenRCT2::TextColour textColour{};
     TileCoordsXY position;
 
     bool IsNull() const

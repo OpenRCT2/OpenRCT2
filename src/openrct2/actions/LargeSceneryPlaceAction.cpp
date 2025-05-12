@@ -250,7 +250,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
 
         banner->text = {};
         banner->colour = 2;
-        banner->text_colour = 2;
+        banner->textColour = TextColour::white;
         banner->flags = BANNER_FLAG_IS_LARGE_SCENERY;
         banner->type = 0;
         banner->position = TileCoordsXY(_loc);

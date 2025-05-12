@@ -83,7 +83,6 @@ struct NewVersionInfo
     std::string tag;
     std::string name;
     std::string changelog;
-    std::string url;
 };
 
 NewVersionInfo GetLatestVersion();

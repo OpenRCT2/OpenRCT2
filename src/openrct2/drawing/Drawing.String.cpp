@@ -271,13 +271,13 @@ void GfxDrawStringLeftCentred(
 /**
  * Changes the palette so that the next character changes colour
  */
-static void ColourCharacter(uint8_t colour, const uint16_t* current_font_flags, uint8_t* palette_pointer)
+static void ColourCharacter(TextColour colour, const uint16_t* current_font_flags, uint8_t* palette_pointer)
 {
     int32_t colour32 = 0;
     const G1Element* g1 = GfxGetG1Element(SPR_TEXT_PALETTE);
     if (g1 != nullptr)
     {
-        uint32_t idx = (colour & 0xFF) * 4;
+        uint32_t idx = EnumValue(colour) * 4;
         std::memcpy(&colour32, &g1->offset[idx], sizeof(colour32));
     }
 
@@ -608,8 +608,8 @@ static void TTFProcessFormatCode(RenderTarget& rt, const FmtString::Token& token
             if (FormatTokenIsColour(token.kind))
             {
                 uint16_t flags = info->flags;
-                auto colourIndex = FormatTokenGetTextColourIndex(token.kind);
-                ColourCharacter(static_cast<uint8_t>(colourIndex), &flags, info->palette);
+                auto colourIndex = FormatTokenToTextColour(token.kind);
+                ColourCharacter(colourIndex, &flags, info->palette);
             }
             break;
     }

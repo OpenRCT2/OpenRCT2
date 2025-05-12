@@ -1535,8 +1535,8 @@ static void ScrollingTextSetBitmapForSprite(
                 auto g1 = GfxGetG1Element(SPR_TEXT_PALETTE);
                 if (g1 != nullptr)
                 {
-                    auto colourIndex = FormatTokenGetTextColourIndex(token.kind);
-                    characterColour = g1->offset[colourIndex * 4];
+                    auto colourIndex = FormatTokenToTextColour(token.kind);
+                    characterColour = g1->offset[EnumValue(colourIndex) * 4];
                 }
             }
         }
@@ -1569,8 +1569,8 @@ static void ScrollingTextSetBitmapForTTF(
             auto g1 = GfxGetG1Element(SPR_TEXT_PALETTE);
             if (g1 != nullptr)
             {
-                auto colourIndex = FormatTokenGetTextColourIndex(token.kind);
-                colour = g1->offset[colourIndex * 4];
+                auto colourIndex = FormatTokenToTextColour(token.kind);
+                colour = g1->offset[EnumValue(colourIndex) * 4];
             }
         }
     }
