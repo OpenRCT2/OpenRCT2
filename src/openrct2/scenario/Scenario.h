@@ -59,8 +59,6 @@ enum class ScenarioCategory : uint8_t
 
 enum class ScenarioGroup : uint8_t
 {
-    other,
-
     // RCT Classic groups (keep order)
     graphite,
     emerald,
@@ -72,6 +70,8 @@ enum class ScenarioGroup : uint8_t
     bronze,
     silver,
     gold,
+
+    other,
     bonus,
 
     count,

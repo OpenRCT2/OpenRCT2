@@ -52,7 +52,6 @@ namespace OpenRCT2::Scripting
     });
 
     static const DukEnumMap<ScenarioGroup> ScenarioGroupMap({
-        { "other", ScenarioGroup::other },
         { "graphite", ScenarioGroup::graphite },
         { "emerald", ScenarioGroup::emerald },
         { "ruby", ScenarioGroup::ruby },
@@ -63,6 +62,8 @@ namespace OpenRCT2::Scripting
         { "bronze", ScenarioGroup::bronze },
         { "silver", ScenarioGroup::silver },
         { "gold", ScenarioGroup::gold },
+        { "other", ScenarioGroup::other },
+        { "bonus", ScenarioGroup::bonus },
     });
 
     static const DukEnumMap<ScenarioSource> ScenarioSourceMap({

@@ -694,7 +694,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
 
                     case ScenarioSelectMode::group:
-                        if (selected_tab == 0)
+                        if (selected_tab == EnumValue(ScenarioGroup::other))
                         {
                             if (currentHeading.source != scenario->SourceGame)
                             {
@@ -809,10 +809,6 @@ namespace OpenRCT2::Ui::Windows
                     }
                     return EnumValue(category) == selected_tab;
                 case ScenarioSelectMode::group:
-                    if (group < ScenarioGroup::graphite || ScenarioGroup::bonus < group)
-                    {
-                        group = ScenarioGroup::other;
-                    }
                     if (group == ScenarioGroup::bonus)
                     {
                         // We don't want to reveal the existence of the bonus group until it's unlocked,
@@ -831,9 +827,9 @@ namespace OpenRCT2::Ui::Windows
             switch (Config::Get().general.scenarioSelectMode)
             {
                 case ScenarioSelectMode::group:
-                    return selected_tab != 0;
+                    return selected_tab != EnumValue(ScenarioGroup::other);
                 case ScenarioSelectMode::origin:
-                    return selected_tab < 7;
+                    return selected_tab < EnumValue(ScenarioSource::UCES);
                 default:
                 case ScenarioSelectMode::difficulty:
                     return false;
@@ -863,7 +859,7 @@ namespace OpenRCT2::Ui::Windows
                         showPages |= 1 << EnumValue(category);
                         break;
                     case ScenarioSelectMode::group:
-                        if (group > ScenarioGroup::gold)
+                        if (group == ScenarioGroup::bonus)
                         {
                             group = ScenarioGroup::gold;
                         }
