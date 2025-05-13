@@ -3891,7 +3891,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
         }
         else
         {
-            ride.totalProfit = AddClamp<money64>(ride.totalProfit, ridePrice);
+            AddClamp(&ride.totalProfit, ridePrice);
             ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
             SpendMoney(PaidOnRides, ridePrice, ExpenditureType::ParkRideTickets);
         }
@@ -6280,7 +6280,7 @@ static void PeepUpdateWalkingBreakScenery(Guest* peep)
 
         if (std::max(xDist, yDist) < 224)
         {
-            innerPeep->StaffVandalsStopped = AddClamp(innerPeep->StaffVandalsStopped, 1u);
+            AddClamp(&innerPeep->StaffVandalsStopped, 1);
             return;
         }
     }

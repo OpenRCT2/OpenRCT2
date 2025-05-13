@@ -227,7 +227,7 @@ void ScenarioSuccessSubmitName(GameState_t& gameState, const char* name)
 static void ScenarioCheckEntranceFeeTooHigh()
 {
     const auto& gameState = getGameState();
-    const auto max_fee = AddClamp<money64>(gameState.totalRideValueForMoney, gameState.totalRideValueForMoney / 2);
+    const auto max_fee = AddClamp(gameState.totalRideValueForMoney, gameState.totalRideValueForMoney / 2);
 
     if ((gameState.park.Flags & PARK_FLAGS_PARK_OPEN) && Park::GetEntranceFee() > max_fee)
     {

@@ -17,27 +17,65 @@
 uint32_t UtilRand();
 float UtilRandNormalDistributed();
 
-template<typename T>
-constexpr T AddClamp(T value, T valueToAdd)
+template<typename T1, typename T2 = T1>
+constexpr T1 AddClamp(T1 value, T2 valueToAdd)
 {
-    if (std::is_same_v<decltype(value), money64>)
+    static_assert(std::is_arithmetic_v<T1> && std::is_arithmetic_v<T2>);
+    if (std::is_same_v<T1, money64>)
     {
         static_assert(sizeof(money64) == sizeof(int64_t));
     }
-    auto maxCap = std::numeric_limits<T>::max();
-    auto minCap = std::numeric_limits<T>::lowest();
-    if ((valueToAdd > 0) && (value > (maxCap - (valueToAdd))))
+
+    using CommonT = decltype(value + valueToAdd);
+    auto maxCap = static_cast<CommonT>(std::numeric_limits<T1>::max());
+    auto minCap = static_cast<CommonT>(std::numeric_limits<T1>::lowest());
+
+    CommonT result;
+    if ((valueToAdd > 0) && (static_cast<CommonT>(value) > (maxCap - valueToAdd)))
     {
-        return maxCap;
+        result = maxCap;
     }
-    else if ((valueToAdd < 0) && (value < (minCap - (valueToAdd))))
+    else if ((valueToAdd < 0) && (static_cast<CommonT>(value) < (minCap - valueToAdd)))
     {
-        return minCap;
+        result = minCap;
     }
     else
     {
-        return value + valueToAdd;
+        result = static_cast<CommonT>(value) + valueToAdd;
     }
+
+    return static_cast<T1>(result);
+}
+
+template<typename T1, typename T2 = T1>
+constexpr void AddClamp(T1* value, T2 valueToAdd)
+{
+    static_assert(std::is_arithmetic_v<T1> && std::is_arithmetic_v<T2>);
+    if (std::is_same_v<T1, money64>)
+    {
+        static_assert(sizeof(money64) == sizeof(int64_t));
+    }
+
+    using CommonT = decltype(*value + valueToAdd);
+    auto maxCap = static_cast<CommonT>(std::numeric_limits<T1>::max());
+    auto minCap = static_cast<CommonT>(std::numeric_limits<T1>::lowest());
+
+    CommonT v = static_cast<CommonT>(*value);
+    CommonT result;
+    if ((valueToAdd > 0) && (v > (maxCap - valueToAdd)))
+    {
+        result = maxCap;
+    }
+    else if ((valueToAdd < 0) && (v < (minCap - valueToAdd)))
+    {
+        result = minCap;
+    }
+    else
+    {
+        result = v + valueToAdd;
+    }
+
+    *value = static_cast<T1>(result);
 }
 
 uint8_t Lerp(uint8_t a, uint8_t b, float t);
