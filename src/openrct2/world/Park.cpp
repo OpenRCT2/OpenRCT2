@@ -531,7 +531,7 @@ namespace OpenRCT2::Park
 
         auto result = gameState.park.Value - gameState.bankLoan;
 
-        AddClamp(&result, FinanceGetCurrentCash());
+        result = AddClamp(result, FinanceGetCurrentCash());
 
         return result;
     }

@@ -876,14 +876,14 @@ void Vehicle::UpdateMeasurements()
 
         if (curRide->averageSpeedTestTimeout == 0 && absVelocity > 0)
         {
-            AddClamp(&curRide->averageSpeed, absVelocity);
+            curRide->averageSpeed = AddClamp(curRide->averageSpeed, absVelocity);
             stationForTestSegment.SegmentTime++;
         }
 
         int32_t distance = abs(((velocity + acceleration) >> 10) * 42);
         if (NumLaps == 0)
         {
-            AddClamp(&stationForTestSegment.SegmentLength, distance);
+            stationForTestSegment.SegmentLength = AddClamp(stationForTestSegment.SegmentLength, distance);
         }
 
         if (curRide->getRideTypeDescriptor().HasFlag(RtdFlag::hasGForces))
@@ -1187,7 +1187,7 @@ void Vehicle::UpdateMeasurements()
     if (distance < 0)
         return;
 
-    AddClamp(&curRide->shelteredLength, distance);
+    curRide->shelteredLength = AddClamp(curRide->shelteredLength, distance);
 }
 
 struct SoundIdVolume
