@@ -1372,7 +1372,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t GetMaxTabCountInARow()
         {
             int32_t tabEntries = static_cast<int32_t>(_tabEntries.size());
-            return std::min(tabEntries, MaxTabsPerRow);
+            return std::clamp(tabEntries, 1, MaxTabsPerRow);
         }
 
         void PrepareWidgets()
