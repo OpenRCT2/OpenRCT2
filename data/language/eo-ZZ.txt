@@ -3808,3 +3808,4 @@ STR_6762    :Interfaco
 STR_6763    :RollerCoaster Tycoon 1
 STR_6764    :Konservado kaj aŭtokonservado
 STR_6765    :Altnivela
+STR_6766    :Vakigi
