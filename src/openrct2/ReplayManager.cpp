@@ -413,7 +413,7 @@ namespace OpenRCT2
                 // If there are difference write a log to the desyncs folder
                 if (res != cmpData.spriteChanges.end())
                 {
-                    std::string outputPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
+                    std::string outputPath = GetContext()->GetPlatformEnvironment().GetDirectoryPath(
                         DirBase::user, DirId::desyncLogs);
                     char uniqueFileName[128] = {};
                     snprintf(uniqueFileName, sizeof(uniqueFileName), "replay_desync_%u.txt", currentTicks);
@@ -624,7 +624,7 @@ namespace OpenRCT2
                 fileName += ".parkrep";
             }
 
-            std::string outPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
+            std::string outPath = GetContext()->GetPlatformEnvironment().GetDirectoryPath(
                 DirBase::user, DirId::replayRecordings);
             std::string outFile = Path::Combine(outPath, fileName);
 

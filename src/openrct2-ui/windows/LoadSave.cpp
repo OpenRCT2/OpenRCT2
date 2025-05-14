@@ -365,7 +365,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 },
                 [](const ParkPreview preview) {
-                    auto* windowMgr = GetContext()->GetUiContext()->GetWindowManager();
+                    auto* windowMgr = GetContext()->GetUiContext().GetWindowManager();
                     auto* wnd = windowMgr->FindByClass(WindowClass::Loadsave);
                     if (wnd == nullptr)
                     {
@@ -497,8 +497,8 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(window_loadsave_widgets);
 
-            const auto uiContext = OpenRCT2::GetContext()->GetUiContext();
-            if (!uiContext->HasFilePicker())
+            const auto& uiContext = OpenRCT2::GetContext()->GetUiContext();
+            if (!uiContext.HasFilePicker())
             {
                 disabled_widgets |= (1uLL << WIDX_SYSTEM_BROWSER);
                 widgets[WIDX_SYSTEM_BROWSER].type = WindowWidgetType::Empty;

@@ -817,8 +817,8 @@ namespace OpenRCT2::Config
 
     u8string GetDefaultPath()
     {
-        auto env = GetContext()->GetPlatformEnvironment();
-        return Path::Combine(env->GetDirectoryPath(DirBase::user), u8"config.ini");
+        auto& env = GetContext()->GetPlatformEnvironment();
+        return Path::Combine(env.GetDirectoryPath(DirBase::user), u8"config.ini");
     }
 
     bool SaveToPath(u8string_view path)
@@ -846,10 +846,10 @@ namespace OpenRCT2::Config
                 return false;
             }
 
-            auto uiContext = GetContext()->GetUiContext();
-            if (!uiContext->HasFilePicker())
+            auto& uiContext = GetContext()->GetUiContext();
+            if (!uiContext.HasFilePicker())
             {
-                uiContext->ShowMessageBox(LanguageGetString(STR_NEEDS_RCT2_FILES_MANUAL));
+                uiContext.ShowMessageBox(LanguageGetString(STR_NEEDS_RCT2_FILES_MANUAL));
                 return false;
             }
 
@@ -858,18 +858,18 @@ namespace OpenRCT2::Config
                 const char* g1DatPath = PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat";
                 while (true)
                 {
-                    uiContext->ShowMessageBox(LanguageGetString(STR_NEEDS_RCT2_FILES));
+                    uiContext.ShowMessageBox(LanguageGetString(STR_NEEDS_RCT2_FILES));
                     std::string gog = LanguageGetString(STR_OWN_ON_GOG);
                     std::string hdd = LanguageGetString(STR_INSTALLED_ON_HDD);
 
                     std::vector<std::string> options;
                     std::string chosenOption;
 
-                    if (uiContext->HasMenuSupport())
+                    if (uiContext.HasMenuSupport())
                     {
                         options.push_back(hdd);
                         options.push_back(gog);
-                        int optionIndex = uiContext->ShowMenuDialog(
+                        int optionIndex = uiContext.ShowMenuDialog(
                             options, LanguageGetString(STR_OPENRCT2_SETUP), LanguageGetString(STR_WHICH_APPLIES_BEST));
                         if (optionIndex < 0 || static_cast<uint32_t>(optionIndex) >= options.size())
                         {
@@ -889,7 +889,7 @@ namespace OpenRCT2::Config
                     std::vector<std::string> possibleInstallPaths{};
                     if (chosenOption == hdd)
                     {
-                        possibleInstallPaths.emplace_back(uiContext->ShowDirectoryDialog(LanguageGetString(STR_PICK_RCT2_DIR)));
+                        possibleInstallPaths.emplace_back(uiContext.ShowDirectoryDialog(LanguageGetString(STR_PICK_RCT2_DIR)));
                     }
                     else if (chosenOption == gog)
                     {
@@ -897,16 +897,16 @@ namespace OpenRCT2::Config
                         std::string dummy;
                         if (!Platform::FindApp("innoextract", &dummy))
                         {
-                            uiContext->ShowMessageBox(LanguageGetString(STR_INSTALL_INNOEXTRACT));
+                            uiContext.ShowMessageBox(LanguageGetString(STR_INSTALL_INNOEXTRACT));
                             return false;
                         }
 
                         const std::string dest = Path::Combine(
-                            GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DirBase::config), "rct2");
+                            GetContext()->GetPlatformEnvironment().GetDirectoryPath(DirBase::config), "rct2");
 
                         while (true)
                         {
-                            uiContext->ShowMessageBox(LanguageGetString(STR_PLEASE_SELECT_GOG_INSTALLER));
+                            uiContext.ShowMessageBox(LanguageGetString(STR_PLEASE_SELECT_GOG_INSTALLER));
                             auto gogPath = SelectGogInstaller();
                             if (gogPath.empty())
                             {
@@ -914,12 +914,12 @@ namespace OpenRCT2::Config
                                 return false;
                             }
 
-                            uiContext->ShowMessageBox(LanguageGetString(STR_THIS_WILL_TAKE_A_FEW_MINUTES));
+                            uiContext.ShowMessageBox(LanguageGetString(STR_THIS_WILL_TAKE_A_FEW_MINUTES));
 
                             if (ExtractGogInstaller(gogPath, dest))
                                 break;
 
-                            uiContext->ShowMessageBox(LanguageGetString(STR_NOT_THE_GOG_INSTALLER));
+                            uiContext.ShowMessageBox(LanguageGetString(STR_NOT_THE_GOG_INSTALLER));
                         }
 
                         // New installer extracts to ‘dest’, old installer installs in ‘dest/app’.
@@ -940,7 +940,7 @@ namespace OpenRCT2::Config
                         }
                     }
 
-                    uiContext->ShowMessageBox(FormatStringIDLegacy(STR_COULD_NOT_FIND_AT_PATH, &g1DatPath));
+                    uiContext.ShowMessageBox(FormatStringIDLegacy(STR_COULD_NOT_FIND_AT_PATH, &g1DatPath));
                 }
             }
             catch (const std::exception& ex)

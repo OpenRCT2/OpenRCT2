@@ -76,15 +76,15 @@ namespace OpenRCT2::Audio
 
     void Init()
     {
-        auto audioContext = GetContext()->GetAudioContext();
+        auto& audioContext = GetContext()->GetAudioContext();
         if (Config::Get().sound.Device.empty())
         {
-            audioContext->SetOutputDevice("");
+            audioContext.SetOutputDevice("");
             _currentAudioDevice = 0;
         }
         else
         {
-            audioContext->SetOutputDevice(Config::Get().sound.Device);
+            audioContext.SetOutputDevice(Config::Get().sound.Device);
 
             PopulateDevices();
             for (int32_t i = 0; i < GetDeviceCount(); i++)
@@ -115,8 +115,8 @@ namespace OpenRCT2::Audio
 
     void PopulateDevices()
     {
-        auto audioContext = OpenRCT2::GetContext()->GetAudioContext();
-        std::vector<std::string> devices = audioContext->GetOutputDevices();
+        auto& audioContext = OpenRCT2::GetContext()->GetAudioContext();
+        std::vector<std::string> devices = audioContext.GetOutputDevices();
 
         // Replace blanks with localised unknown string
         for (auto& device : devices)
@@ -252,8 +252,8 @@ namespace OpenRCT2::Audio
 
     static bool IsRCT1TitleMusicAvailable()
     {
-        auto env = GetContext()->GetPlatformEnvironment();
-        auto rct1path = env->GetDirectoryPath(DirBase::rct1);
+        auto& env = GetContext()->GetPlatformEnvironment();
+        auto rct1path = env.GetDirectoryPath(DirBase::rct1);
         return !rct1path.empty();
     }
 
@@ -453,8 +453,8 @@ namespace OpenRCT2::Audio
 
     static IAudioMixer* GetMixer()
     {
-        auto audioContext = GetContext()->GetAudioContext();
-        return audioContext->GetMixer();
+        auto& audioContext = GetContext()->GetAudioContext();
+        return audioContext.GetMixer();
     }
 
     std::shared_ptr<IAudioChannel> CreateAudioChannel(

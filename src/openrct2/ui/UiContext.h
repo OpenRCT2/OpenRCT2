@@ -168,6 +168,6 @@ namespace OpenRCT2
             virtual ITitleSequencePlayer* GetTitleSequencePlayer() = 0;
         };
 
-        [[nodiscard]] std::shared_ptr<IUiContext> CreateDummyUiContext();
+        [[nodiscard]] std::unique_ptr<IUiContext> CreateDummyUiContext();
     } // namespace Ui
 } // namespace OpenRCT2

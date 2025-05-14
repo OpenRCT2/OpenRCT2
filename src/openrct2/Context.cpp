@@ -171,20 +171,20 @@ namespace OpenRCT2
     public:
         Context(
             std::unique_ptr<IPlatformEnvironment>&& env, std::unique_ptr<IAudioContext>&& audioContext,
-            std::unique_ptr<IUiContext>& uiContext)
+            std::unique_ptr<IUiContext>&& uiContext)
             : _env(std::move(env))
             , _audioContext(std::move(audioContext))
             , _uiContext(std::move(uiContext))
-            , _localisationService(std::make_unique<LocalisationService>(env))
+            , _localisationService(std::make_unique<LocalisationService>(*_env))
             , _replayManager(CreateReplayManager())
             , _gameStateSnapshots(CreateGameStateSnapshots())
 #ifdef ENABLE_SCRIPTING
-            , _scriptEngine(_stdInOutConsole, *env)
+            , _scriptEngine(_stdInOutConsole, *_env)
 #endif
 #ifndef DISABLE_NETWORK
             , _network(*this)
 #endif
-            , _painter(std::make_unique<Painter>(uiContext))
+            , _painter(std::make_unique<Painter>(*_uiContext))
         {
             // Can't have more than one context currently.
             Guard::Assert(Instance == nullptr);
@@ -436,13 +436,13 @@ namespace OpenRCT2
                 catch (const std::exception& eFallback)
                 {
                     LOG_FATAL("Failed to open fallback language: %s", eFallback.what());
-                    auto uiContext = GetContext()->GetUiContext();
+                    auto& uiContext = GetContext()->GetUiContext();
 #ifdef __ANDROID__
-                    uiContext->ShowMessageBox(
+                    uiContext.ShowMessageBox(
                         "You need to copy some additional files to finish your install.\n\nSee "
                         "https://docs.openrct2.io/en/latest/installing/installing-on-android.html for more details.");
 #else
-                    uiContext->ShowMessageBox("Failed to load language file!\nYour installation may be damaged.");
+                    uiContext.ShowMessageBox("Failed to load language file!\nYour installation may be damaged.");
 #endif
                     return false;
                 }
@@ -466,10 +466,10 @@ namespace OpenRCT2
 
             // The repositories are all dependent on the RCT2 path being set,
             // so they cannot be set in the constructor.
-            _objectRepository = CreateObjectRepository(_env);
+            _objectRepository = CreateObjectRepository(*_env);
             _objectManager = CreateObjectManager(*_objectRepository);
-            _trackDesignRepository = CreateTrackDesignRepository(_env);
-            _scenarioRepository = CreateScenarioRepository(_env);
+            _trackDesignRepository = CreateTrackDesignRepository(*_env);
+            _scenarioRepository = CreateScenarioRepository(*_env);
 
             if (!gOpenRCT2Headless)
             {
@@ -616,7 +616,7 @@ namespace OpenRCT2
                 try
                 {
                     auto drawingEngineFactory = _uiContext->GetDrawingEngineFactory();
-                    auto drawingEngine = drawingEngineFactory->Create(engine, _uiContext);
+                    auto drawingEngine = drawingEngineFactory->Create(engine, *_uiContext);
                     if (drawingEngine == nullptr)
                     {
                         LOG_FATAL("Unable to create a drawing engine.");
@@ -1611,27 +1611,27 @@ void OpenRCT2Finish()
 
 void ContextSetCurrentCursor(CursorID cursor)
 {
-    GetContext()->GetUiContext()->SetCursor(cursor);
+    GetContext()->GetUiContext().SetCursor(cursor);
 }
 
 void ContextUpdateCursorScale()
 {
-    GetContext()->GetUiContext()->SetCursorScale(static_cast<uint8_t>(std::round(Config::Get().general.WindowScale)));
+    GetContext()->GetUiContext().SetCursorScale(static_cast<uint8_t>(std::round(Config::Get().general.WindowScale)));
 }
 
 void ContextHideCursor()
 {
-    GetContext()->GetUiContext()->SetCursorVisible(false);
+    GetContext()->GetUiContext().SetCursorVisible(false);
 }
 
 void ContextShowCursor()
 {
-    GetContext()->GetUiContext()->SetCursorVisible(true);
+    GetContext()->GetUiContext().SetCursorVisible(true);
 }
 
 ScreenCoordsXY ContextGetCursorPosition()
 {
-    return GetContext()->GetUiContext()->GetCursorPosition();
+    return GetContext()->GetUiContext().GetCursorPosition();
 }
 
 ScreenCoordsXY ContextGetCursorPositionScaled()
@@ -1644,72 +1644,72 @@ ScreenCoordsXY ContextGetCursorPositionScaled()
 
 void ContextSetCursorPosition(const ScreenCoordsXY& cursorPosition)
 {
-    GetContext()->GetUiContext()->SetCursorPosition(cursorPosition);
+    GetContext()->GetUiContext().SetCursorPosition(cursorPosition);
 }
 
 const CursorState* ContextGetCursorState()
 {
-    return GetContext()->GetUiContext()->GetCursorState();
+    return GetContext()->GetUiContext().GetCursorState();
 }
 
 const uint8_t* ContextGetKeysState()
 {
-    return GetContext()->GetUiContext()->GetKeysState();
+    return GetContext()->GetUiContext().GetKeysState();
 }
 
 const uint8_t* ContextGetKeysPressed()
 {
-    return GetContext()->GetUiContext()->GetKeysPressed();
+    return GetContext()->GetUiContext().GetKeysPressed();
 }
 
 TextInputSession* ContextStartTextInput(u8string& buffer, size_t maxLength)
 {
-    return GetContext()->GetUiContext()->StartTextInput(buffer, maxLength);
+    return GetContext()->GetUiContext().StartTextInput(buffer, maxLength);
 }
 
 void ContextStopTextInput()
 {
-    GetContext()->GetUiContext()->StopTextInput();
+    GetContext()->GetUiContext().StopTextInput();
 }
 
 bool ContextIsInputActive()
 {
-    return GetContext()->GetUiContext()->IsTextInputActive();
+    return GetContext()->GetUiContext().IsTextInputActive();
 }
 
 void ContextTriggerResize()
 {
-    return GetContext()->GetUiContext()->TriggerResize();
+    return GetContext()->GetUiContext().TriggerResize();
 }
 
 void ContextSetFullscreenMode(int32_t mode)
 {
-    return GetContext()->GetUiContext()->SetFullscreenMode(static_cast<FullscreenMode>(mode));
+    return GetContext()->GetUiContext().SetFullscreenMode(static_cast<FullscreenMode>(mode));
 }
 
 void ContextRecreateWindow()
 {
-    GetContext()->GetUiContext()->RecreateWindow();
+    GetContext()->GetUiContext().RecreateWindow();
 }
 
 int32_t ContextGetWidth()
 {
-    return GetContext()->GetUiContext()->GetWidth();
+    return GetContext()->GetUiContext().GetWidth();
 }
 
 int32_t ContextGetHeight()
 {
-    return GetContext()->GetUiContext()->GetHeight();
+    return GetContext()->GetUiContext().GetHeight();
 }
 
 bool ContextHasFocus()
 {
-    return GetContext()->GetUiContext()->HasFocus();
+    return GetContext()->GetUiContext().HasFocus();
 }
 
 void ContextSetCursorTrap(bool value)
 {
-    GetContext()->GetUiContext()->SetCursorTrap(value);
+    GetContext()->GetUiContext().SetCursorTrap(value);
 }
 
 WindowBase* ContextOpenWindow(WindowClass wc)
@@ -1775,7 +1775,7 @@ u8string ContextOpenCommonFileDialog(OpenRCT2::Ui::FileDialogDesc& desc)
 {
     try
     {
-        return GetContext()->GetUiContext()->ShowFileDialog(desc);
+        return GetContext()->GetUiContext().ShowFileDialog(desc);
     }
     catch (const std::exception& ex)
     {

@@ -73,8 +73,8 @@ void DrawWeather(RenderTarget& rt, IWeatherDrawer* weatherDrawer)
         drawFunc = DrawSnowFunctions[EnumValue(weatherLevel)];
     }
 
-    auto uiContext = GetContext()->GetUiContext();
-    uiContext->DrawWeatherAnimation(weatherDrawer, rt, drawFunc);
+    auto& uiContext = GetContext()->GetUiContext();
+    uiContext.DrawWeatherAnimation(weatherDrawer, rt, drawFunc);
 }
 
 /**

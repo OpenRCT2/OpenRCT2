@@ -697,7 +697,7 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
 
             disabled_widgets = 0;
-            auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
+            auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext().HasFilePicker();
             const bool advancedTabSelected = (WIDX_FIRST_TAB + page) == WIDX_TAB_ADVANCED;
             if (!hasFilePicker && advancedTabSelected)
             {
@@ -788,7 +788,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_RESOLUTION_DROPDOWN:
                 {
-                    const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
+                    const auto& resolutions = OpenRCT2::GetContext()->GetUiContext().GetFullscreenResolutions();
 
                     int32_t selectedResolution = -1;
                     for (size_t i = 0; i < resolutions.size(); i++)
@@ -866,7 +866,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_RESOLUTION_DROPDOWN:
                 {
-                    const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
+                    const auto& resolutions = OpenRCT2::GetContext()->GetUiContext().GetFullscreenResolutions();
 
                     const Resolution& resolution = resolutions[dropdownIndex];
                     if (resolution.Width != Config::Get().general.FullscreenWidth
@@ -1420,16 +1420,16 @@ namespace OpenRCT2::Ui::Windows
                     OpenRCT2::Audio::InitRideSounds(dropdownIndex);
                     if (dropdownIndex < OpenRCT2::Audio::GetDeviceCount())
                     {
-                        auto audioContext = GetContext()->GetAudioContext();
+                        auto& audioContext = GetContext()->GetAudioContext();
                         if (dropdownIndex == 0)
                         {
-                            audioContext->SetOutputDevice("");
+                            audioContext.SetOutputDevice("");
                             Config::Get().sound.Device = "";
                         }
                         else
                         {
                             const auto& deviceName = GetDeviceName(dropdownIndex);
-                            audioContext->SetOutputDevice(deviceName);
+                            audioContext.SetOutputDevice(deviceName);
                             Config::Get().sound.Device = deviceName;
                         }
                         Config::Save();
@@ -1981,7 +1981,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_PATH_TO_RCT1_BROWSE:
                 {
-                    auto rct1path = OpenRCT2::GetContext()->GetUiContext()->ShowDirectoryDialog(
+                    auto rct1path = OpenRCT2::GetContext()->GetUiContext().ShowDirectoryDialog(
                         LanguageGetString(STR_PATH_TO_RCT1_BROWSER));
                     if (!rct1path.empty())
                     {
@@ -2279,8 +2279,8 @@ namespace OpenRCT2::Ui::Windows
 
         static bool IsRCT1TitleMusicAvailable()
         {
-            auto env = GetContext()->GetPlatformEnvironment();
-            auto rct1path = env->GetDirectoryPath(DirBase::rct1);
+            auto& env = GetContext()->GetPlatformEnvironment();
+            auto rct1path = env.GetDirectoryPath(DirBase::rct1);
             return !rct1path.empty();
         }
 

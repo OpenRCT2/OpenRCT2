@@ -251,15 +251,15 @@ class ScenarioRepository final : public IScenarioRepository
 private:
     static constexpr uint32_t HighscoreFileVersion = 2;
 
-    std::shared_ptr<IPlatformEnvironment> const _env;
+    IPlatformEnvironment& _env;
     ScenarioFileIndex const _fileIndex;
     std::vector<ScenarioIndexEntry> _scenarios;
     std::vector<ScenarioHighscoreEntry*> _highscores;
 
 public:
-    explicit ScenarioRepository(const std::shared_ptr<IPlatformEnvironment>& env)
+    explicit ScenarioRepository(IPlatformEnvironment& env)
         : _env(env)
-        , _fileIndex(*env)
+        , _fileIndex(env)
     {
     }
 
@@ -437,10 +437,10 @@ private:
      */
     void ImportMegaPark()
     {
-        auto mpdatPath = _env->FindFile(DirBase::rct1, DirId::data, "mp.dat");
+        auto mpdatPath = _env.FindFile(DirBase::rct1, DirId::data, "mp.dat");
         if (File::Exists(mpdatPath))
         {
-            auto scenarioDirectory = _env->GetDirectoryPath(DirBase::user, DirId::scenarios);
+            auto scenarioDirectory = _env.GetDirectoryPath(DirBase::user, DirId::scenarios);
             auto expectedSc21Path = Path::Combine(scenarioDirectory, "sc21.sc4");
             auto sc21Path = Path::ResolveCasing(expectedSc21Path);
             if (!File::Exists(sc21Path))
@@ -526,7 +526,7 @@ private:
 
     void LoadScores()
     {
-        std::string path = _env->GetFilePath(PathId::scores);
+        std::string path = _env.GetFilePath(PathId::scores);
         if (!File::Exists(path))
         {
             return;
@@ -566,8 +566,8 @@ private:
      */
     void LoadLegacyScores()
     {
-        std::string rct2Path = _env->GetFilePath(PathId::scoresRCT2);
-        std::string legacyPath = _env->GetFilePath(PathId::scoresLegacy);
+        std::string rct2Path = _env.GetFilePath(PathId::scoresRCT2);
+        std::string legacyPath = _env.GetFilePath(PathId::scoresLegacy);
         LoadLegacyScores(legacyPath);
         LoadLegacyScores(rct2Path);
     }
@@ -670,7 +670,7 @@ private:
 
     void SaveHighscores()
     {
-        std::string path = _env->GetFilePath(PathId::scores);
+        std::string path = _env.GetFilePath(PathId::scores);
         try
         {
             auto fs = FileStream(path, FileMode::write);
@@ -692,7 +692,7 @@ private:
     }
 };
 
-std::unique_ptr<IScenarioRepository> CreateScenarioRepository(const std::shared_ptr<IPlatformEnvironment>& env)
+std::unique_ptr<IScenarioRepository> CreateScenarioRepository(IPlatformEnvironment& env)
 {
     return std::make_unique<ScenarioRepository>(env);
 }

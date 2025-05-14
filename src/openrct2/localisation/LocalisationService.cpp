@@ -24,7 +24,7 @@ using namespace OpenRCT2::Localisation;
 static constexpr uint16_t kBaseObjectStringID = 0x2000;
 static constexpr uint16_t kMaxObjectCachedStrings = 0x5000 - kBaseObjectStringID;
 
-LocalisationService::LocalisationService(const std::shared_ptr<IPlatformEnvironment>& env)
+LocalisationService::LocalisationService(IPlatformEnvironment& env)
     : _env(env)
 {
     for (StringId stringId = kBaseObjectStringID + kMaxObjectCachedStrings; stringId >= kBaseObjectStringID; stringId--)
@@ -70,7 +70,7 @@ const char* LocalisationService::GetString(StringId id) const
 std::string LocalisationService::GetLanguagePath(uint32_t languageId) const
 {
     auto locale = std::string(LanguagesDescriptors[languageId].locale);
-    auto languageDirectory = _env->GetDirectoryPath(DirBase::openrct2, DirId::languages);
+    auto languageDirectory = _env.GetDirectoryPath(DirBase::openrct2, DirId::languages);
     auto languagePath = Path::Combine(languageDirectory, locale + u8".txt");
     return languagePath;
 }

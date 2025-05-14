@@ -316,8 +316,8 @@ static bool OnCrash(
 
 static std::wstring GetDumpDirectory()
 {
-    auto env = GetContext()->GetPlatformEnvironment();
-    auto crashPath = env->GetDirectoryPath(DirBase::user, DirId::crashDumps);
+    auto& env = GetContext()->GetPlatformEnvironment();
+    auto crashPath = env.GetDirectoryPath(DirBase::user, DirId::crashDumps);
 
     auto result = String::toWideChar(crashPath);
     return result;

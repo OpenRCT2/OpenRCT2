@@ -1305,8 +1305,8 @@ static void ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& console,
     if (String::indexOf(argv[0].c_str(), '/') == SIZE_MAX && String::indexOf(argv[0].c_str(), '\\') == SIZE_MAX)
     {
         // no / or \ was included. File should be in save dir.
-        auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
-        auto directory = env->GetDirectoryPath(OpenRCT2::DirBase::user, OpenRCT2::DirId::saves);
+        auto& env = OpenRCT2::GetContext()->GetPlatformEnvironment();
+        auto directory = env.GetDirectoryPath(OpenRCT2::DirBase::user, OpenRCT2::DirId::saves);
         savePath = Path::Combine(directory, argv[0]);
     }
     else
@@ -1378,7 +1378,7 @@ static void ConsoleCommandReplayStartRecord(InteractiveConsole& console, const a
     {
         name += ".parkrep";
     }
-    std::string outPath = OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
+    std::string outPath = OpenRCT2::GetContext()->GetPlatformEnvironment().GetDirectoryPath(
         OpenRCT2::DirBase::user, OpenRCT2::DirId::replayRecordings);
     name = Path::Combine(outPath, name);
 
@@ -1504,7 +1504,7 @@ static void ConsoleCommandReplayNormalise(InteractiveConsole& console, const arg
     {
         outputFile += ".parkrep";
     }
-    std::string outPath = OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
+    std::string outPath = OpenRCT2::GetContext()->GetPlatformEnvironment().GetDirectoryPath(
         OpenRCT2::DirBase::user, OpenRCT2::DirId::replayRecordings);
     outputFile = Path::Combine(outPath, outputFile);
 

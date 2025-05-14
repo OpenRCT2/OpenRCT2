@@ -117,8 +117,8 @@ static std::string ScreenshotGetParkName()
 
 static std::string ScreenshotGetDirectory()
 {
-    auto env = GetContext()->GetPlatformEnvironment();
-    return env->GetDirectoryPath(DirBase::user, DirId::screenshots);
+    auto& env = GetContext()->GetPlatformEnvironment();
+    return env.GetDirectoryPath(DirBase::user, DirId::screenshots);
 }
 
 static std::pair<RealWorldDate, RealWorldTime> ScreenshotGetDateTime()

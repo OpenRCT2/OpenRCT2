@@ -1054,8 +1054,8 @@ private:
 
     void SetAudioVolume(float value)
     {
-        auto audioContext = GetContext()->GetAudioContext();
-        auto mixer = audioContext->GetMixer();
+        auto& audioContext = GetContext()->GetAudioContext();
+        auto* mixer = audioContext.GetMixer();
         if (mixer != nullptr)
         {
             mixer->SetVolume(value);
@@ -1070,18 +1070,18 @@ std::unique_ptr<IUiContext> OpenRCT2::Ui::CreateUiContext(IPlatformEnvironment& 
 
 InGameConsole& OpenRCT2::Ui::GetInGameConsole()
 {
-    auto uiContext = std::static_pointer_cast<UiContext>(GetContext()->GetUiContext());
-    return uiContext->GetInGameConsole();
+    auto& uiContext = static_cast<UiContext&>(GetContext()->GetUiContext());
+    return uiContext.GetInGameConsole();
 }
 
 InputManager& OpenRCT2::Ui::GetInputManager()
 {
-    auto uiContext = std::static_pointer_cast<UiContext>(GetContext()->GetUiContext());
-    return uiContext->GetInputManager();
+    auto& uiContext = static_cast<UiContext&>(GetContext()->GetUiContext());
+    return uiContext.GetInputManager();
 }
 
 ShortcutManager& OpenRCT2::Ui::GetShortcutManager()
 {
-    auto uiContext = std::static_pointer_cast<UiContext>(GetContext()->GetUiContext());
-    return uiContext->GetShortcutManager();
+    auto& uiContext = static_cast<UiContext&>(GetContext()->GetUiContext());
+    return uiContext.GetShortcutManager();
 }

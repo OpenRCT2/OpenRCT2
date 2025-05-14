@@ -68,12 +68,12 @@ void AssetPackManager::Scan()
     ClearAssetPacks();
 
     auto context = GetContext();
-    auto env = context->GetPlatformEnvironment();
+    auto& env = context->GetPlatformEnvironment();
 
-    auto openrct2Dir = fs::u8path(env->GetDirectoryPath(DirBase::openrct2, DirId::assetPacks));
+    auto openrct2Dir = fs::u8path(env.GetDirectoryPath(DirBase::openrct2, DirId::assetPacks));
     Scan(openrct2Dir);
 
-    auto userDirectory = fs::u8path(env->GetDirectoryPath(DirBase::user, DirId::assetPacks));
+    auto userDirectory = fs::u8path(env.GetDirectoryPath(DirBase::user, DirId::assetPacks));
     Path::CreateDirectory(userDirectory.u8string());
     Scan(userDirectory);
 }

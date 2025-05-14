@@ -132,7 +132,7 @@ namespace OpenRCT2::Ui::Windows
                     SetPage(widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
                     break;
                 case WIDX_JOIN_DISCORD:
-                    OpenRCT2::GetContext()->GetUiContext()->OpenURL("https://discord.gg/ZXZd8D8");
+                    OpenRCT2::GetContext()->GetUiContext().OpenURL("https://discord.gg/ZXZd8D8");
                     break;
                 case WIDX_CHANGELOG:
                     ContextOpenWindow(WindowClass::Changelog);
@@ -141,7 +141,7 @@ namespace OpenRCT2::Ui::Windows
                     ContextOpenWindowView(WV_NEW_VERSION_INFO);
                     break;
                 case WIDX_COPY_BUILD_INFO:
-                    OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(gVersionInfoFull);
+                    OpenRCT2::GetContext()->GetUiContext().SetClipboardText(gVersionInfoFull);
                     break;
                 case WIDX_CONTRIBUTORS_BUTTON:
                     ContextOpenWindowView(WV_CONTRIBUTORS);

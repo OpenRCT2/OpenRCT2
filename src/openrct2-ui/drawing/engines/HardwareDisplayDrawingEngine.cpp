@@ -33,7 +33,7 @@ private:
     constexpr static uint32_t kDirtyVisualTime = 40;
     constexpr static uint32_t kDirtyRegionAlpha = 100;
 
-    std::shared_ptr<IUiContext> const _uiContext;
+    IUiContext& _uiContext;
     SDL_Window* _window = nullptr;
     SDL_Renderer* _sdlRenderer = nullptr;
     SDL_Texture* _screenTexture = nullptr;
@@ -54,11 +54,11 @@ private:
     bool smoothNN = false;
 
 public:
-    explicit HardwareDisplayDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
+    explicit HardwareDisplayDrawingEngine(IUiContext& uiContext)
         : X8DrawingEngine(uiContext)
         , _uiContext(uiContext)
     {
-        _window = static_cast<SDL_Window*>(_uiContext->GetWindow());
+        _window = static_cast<SDL_Window*>(_uiContext.GetWindow());
     }
 
     ~HardwareDisplayDrawingEngine() override
@@ -128,7 +128,7 @@ public:
             }
         }
 
-        ScaleQuality scaleQuality = GetContext()->GetUiContext()->GetScaleQuality();
+        ScaleQuality scaleQuality = GetContext()->GetUiContext().GetScaleQuality();
         if (scaleQuality == ScaleQuality::SmoothNearestNeighbour)
         {
             scaleQuality = ScaleQuality::Linear;
@@ -270,7 +270,7 @@ private:
             RenderDirtyVisuals();
         }
 
-        bool isSteamOverlayActive = GetContext()->GetUiContext()->IsSteamOverlayActive();
+        bool isSteamOverlayActive = GetContext()->GetUiContext().IsSteamOverlayActive();
         if (isSteamOverlayActive && Config::Get().general.SteamOverlayPause)
         {
             OverlayPreRenderCheck();
@@ -428,7 +428,7 @@ private:
     }
 };
 
-std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateHardwareDisplayDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
+std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateHardwareDisplayDrawingEngine(IUiContext& uiContext)
 {
     return std::make_unique<HardwareDisplayDrawingEngine>(uiContext);
 }

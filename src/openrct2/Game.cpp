@@ -366,7 +366,7 @@ void GameLoadInit()
         WindowUnfollowSprite(*mainWindow);
     }
 
-    auto windowManager = context->GetUiContext()->GetWindowManager();
+    auto windowManager = context->GetUiContext().GetWindowManager();
     auto& gameState = getGameState();
     windowManager->SetMainView(gameState.savedView, gameState.savedViewZoom, gameState.savedViewRotation);
 
@@ -474,8 +474,8 @@ void SaveGameCmd(u8string_view name /* = {} */)
     }
     else
     {
-        auto env = GetContext()->GetPlatformEnvironment();
-        auto savePath = Path::Combine(env->GetDirectoryPath(DirBase::user, DirId::saves), u8string(name) + u8".park");
+        auto& env = GetContext()->GetPlatformEnvironment();
+        auto savePath = Path::Combine(env.GetDirectoryPath(DirBase::user, DirId::saves), u8string(name) + u8".park");
         SaveGameWithName(savePath);
     }
 }
@@ -517,12 +517,12 @@ static void LimitAutosaveCount(const size_t numberOfFilesToKeep, bool processLan
     size_t autosavesCount = 0;
     size_t numAutosavesToDelete = 0;
 
-    auto environment = GetContext()->GetPlatformEnvironment();
-    auto folderDirectory = environment->GetDirectoryPath(DirBase::user, DirId::saves);
+    auto& environment = GetContext()->GetPlatformEnvironment();
+    auto folderDirectory = environment.GetDirectoryPath(DirBase::user, DirId::saves);
     char const* fileFilter = "autosave_*.park";
     if (processLandscapeFolder)
     {
-        folderDirectory = environment->GetDirectoryPath(DirBase::user, DirId::landscapes);
+        folderDirectory = environment.GetDirectoryPath(DirBase::user, DirId::landscapes);
         fileFilter = "autosave_*.park";
     }
 
@@ -595,8 +595,8 @@ void GameAutosave()
     int32_t autosavesToKeep = Config::Get().general.AutosaveAmount;
     LimitAutosaveCount(autosavesToKeep - 1, isInEditorMode());
 
-    auto env = GetContext()->GetPlatformEnvironment();
-    auto autosaveDir = Path::Combine(env->GetDirectoryPath(DirBase::user, subDirectory), u8"autosave");
+    auto& env = GetContext()->GetPlatformEnvironment();
+    auto autosaveDir = Path::Combine(env.GetDirectoryPath(DirBase::user, subDirectory), u8"autosave");
     Path::CreateDirectory(autosaveDir);
 
     auto path = Path::Combine(autosaveDir, timeName);
@@ -711,7 +711,7 @@ void GameLoadOrQuitNoSavePrompt()
 void StartSilentRecord()
 {
     std::string name = Path::Combine(
-        OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(OpenRCT2::DirBase::user), u8"debug_replay.parkrep");
+        OpenRCT2::GetContext()->GetPlatformEnvironment().GetDirectoryPath(OpenRCT2::DirBase::user), u8"debug_replay.parkrep");
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
     if (replayManager->StartRecording(name, OpenRCT2::k_MaxReplayTicks, OpenRCT2::IReplayManager::RecordType::SILENT))
     {

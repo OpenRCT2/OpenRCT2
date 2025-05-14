@@ -737,9 +737,9 @@ public:
 
     static ScreenCoordsXY GetAutoPositionForNewWindow(int32_t width, int32_t height)
     {
-        auto uiContext = GetContext()->GetUiContext();
-        auto screenWidth = uiContext->GetWidth();
-        auto screenHeight = uiContext->GetHeight();
+        auto& uiContext = GetContext()->GetUiContext();
+        auto screenWidth = uiContext.GetWidth();
+        auto screenHeight = uiContext.GetHeight();
 
         // Place window in an empty corner of the screen
         const ScreenCoordsXY cornerPositions[] = {
@@ -827,9 +827,9 @@ public:
 
     static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t height)
     {
-        auto uiContext = GetContext()->GetUiContext();
-        auto screenWidth = uiContext->GetWidth();
-        auto screenHeight = uiContext->GetHeight();
+        auto& uiContext = GetContext()->GetUiContext();
+        auto screenWidth = uiContext.GetWidth();
+        auto screenHeight = uiContext.GetHeight();
         return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(kTopToolbarHeight + 1, (screenHeight - height) / 2) };
     }
 

@@ -35,7 +35,7 @@ namespace OpenRCT2
         struct Painter final
         {
         private:
-            std::shared_ptr<Ui::IUiContext> const _uiContext;
+            Ui::IUiContext& _uiContext;
             sfl::segmented_vector<PaintSession, 32> _paintSessionPool;
             std::vector<PaintSession*> _freePaintSessions;
             time_t _lastSecond = 0;
@@ -43,7 +43,7 @@ namespace OpenRCT2
             int32_t _frames = 0;
 
         public:
-            explicit Painter(const std::shared_ptr<Ui::IUiContext>& uiContext);
+            explicit Painter(Ui::IUiContext& uiContext);
             void Paint(Drawing::IDrawingEngine& de);
 
             PaintSession* CreateSession(RenderTarget& rt, uint32_t viewFlags, uint8_t rotation);

@@ -244,9 +244,9 @@ namespace OpenRCT2::Ui::Windows
                     case DDIDX_OPEN_CONTENT_FOLDER:
                     {
                         auto context = OpenRCT2::GetContext();
-                        auto env = context->GetPlatformEnvironment();
-                        auto uiContext = context->GetUiContext();
-                        uiContext->OpenFolder(env->GetDirectoryPath(OpenRCT2::DirBase::user));
+                        auto& env = context->GetPlatformEnvironment();
+                        auto& uiContext = context->GetUiContext();
+                        uiContext.OpenFolder(env.GetDirectoryPath(OpenRCT2::DirBase::user));
                         break;
                     }
                     default:

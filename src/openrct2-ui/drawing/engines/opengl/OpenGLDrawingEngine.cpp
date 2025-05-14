@@ -193,7 +193,7 @@ public:
 class OpenGLDrawingEngine final : public IDrawingEngine
 {
 private:
-    std::shared_ptr<IUiContext> const _uiContext;
+    IUiContext& _uiContext;
     SDL_Window* _window = nullptr;
     SDL_GLContext _context = nullptr;
 
@@ -218,12 +218,12 @@ public:
     SDL_Color Palette[256];
     vec4 GLPalette[256];
 
-    explicit OpenGLDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
+    explicit OpenGLDrawingEngine(IUiContext& uiContext)
         : _uiContext(uiContext)
         , _drawingContext(std::make_unique<OpenGLDrawingContext>(*this))
         , _weatherDrawer(_drawingContext.get())
     {
-        _window = static_cast<SDL_Window*>(_uiContext->GetWindow());
+        _window = static_cast<SDL_Window*>(_uiContext.GetWindow());
         _mainRT.DrawingEngine = this;
         LightFx::SetAvailable(false);
     }
@@ -555,11 +555,11 @@ private:
         _screenFramebuffer = std::make_unique<OpenGLFramebuffer>(_window);
         _smoothScaleFramebuffer.reset();
         _scaleFramebuffer.reset();
-        if (GetContext()->GetUiContext()->GetScaleQuality() != ScaleQuality::NearestNeighbour)
+        if (GetContext()->GetUiContext().GetScaleQuality() != ScaleQuality::NearestNeighbour)
         {
             _scaleFramebuffer = std::make_unique<OpenGLFramebuffer>(_width, _height, false, false);
         }
-        if (GetContext()->GetUiContext()->GetScaleQuality() == ScaleQuality::SmoothNearestNeighbour)
+        if (GetContext()->GetUiContext().GetScaleQuality() == ScaleQuality::SmoothNearestNeighbour)
         {
             uint32_t scale = std::ceil(Config::Get().general.WindowScale);
             _smoothScaleFramebuffer = std::make_unique<OpenGLFramebuffer>(_width * scale, _height * scale, false, false);
@@ -572,7 +572,7 @@ private:
     }
 };
 
-std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateOpenGLDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
+std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateOpenGLDrawingEngine(IUiContext& uiContext)
 {
     return std::make_unique<OpenGLDrawingEngine>(uiContext);
 }
