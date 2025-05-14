@@ -3808,3 +3808,4 @@ STR_6762    :Interface
 STR_6763    :RollerCoaster Tycoon 1
 STR_6764    :Salvamento e autosalvamentos
 STR_6765    :Avançado
+STR_6766    :Limpar

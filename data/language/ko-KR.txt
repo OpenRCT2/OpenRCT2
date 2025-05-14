@@ -1868,7 +1868,7 @@ STR_2537    :Clear
 STR_2538    :Enter
 STR_2543    :Alt/Menu
 STR_2544    :Pause
-STR_2545    :Caps
+STR_2545    :CapsLock
 STR_2552    :ESC
 STR_2557    :스페이스
 STR_2558    :PgUp
@@ -3811,3 +3811,4 @@ STR_6762    :인터페이스
 STR_6763    :롤러코스터 타이쿤 1
 STR_6764    :저장 및 자동저장
 STR_6765    :고급
+STR_6766    :초기화
