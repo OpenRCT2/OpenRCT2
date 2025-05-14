@@ -105,9 +105,9 @@ namespace OpenRCT2
     {
     private:
         // Dependencies
-        std::shared_ptr<IPlatformEnvironment> const _env;
-        std::shared_ptr<IAudioContext> const _audioContext;
-        std::shared_ptr<IUiContext> const _uiContext;
+        std::unique_ptr<IPlatformEnvironment> const _env;
+        std::unique_ptr<IAudioContext> const _audioContext;
+        std::unique_ptr<IUiContext> const _uiContext;
 
         // Services
         std::unique_ptr<LocalisationService> _localisationService;
@@ -170,11 +170,11 @@ namespace OpenRCT2
 
     public:
         Context(
-            const std::shared_ptr<IPlatformEnvironment>& env, const std::shared_ptr<IAudioContext>& audioContext,
-            const std::shared_ptr<IUiContext>& uiContext)
-            : _env(env)
-            , _audioContext(audioContext)
-            , _uiContext(uiContext)
+            std::unique_ptr<IPlatformEnvironment>&& env, std::unique_ptr<IAudioContext>&& audioContext,
+            std::unique_ptr<IUiContext>& uiContext)
+            : _env(std::move(env))
+            , _audioContext(std::move(audioContext))
+            , _uiContext(std::move(uiContext))
             , _localisationService(std::make_unique<LocalisationService>(env))
             , _replayManager(CreateReplayManager())
             , _gameStateSnapshots(CreateGameStateSnapshots())
@@ -227,14 +227,14 @@ namespace OpenRCT2
             Instance = nullptr;
         }
 
-        std::shared_ptr<IAudioContext> GetAudioContext() override
+        IAudioContext& GetAudioContext() override
         {
-            return _audioContext;
+            return *_audioContext;
         }
 
-        std::shared_ptr<IUiContext> GetUiContext() override
+        IUiContext& GetUiContext() override
         {
-            return _uiContext;
+            return *_uiContext;
         }
 
 #ifdef ENABLE_SCRIPTING
@@ -244,9 +244,9 @@ namespace OpenRCT2
         }
 #endif
 
-        std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() override
+        IPlatformEnvironment& GetPlatformEnvironment() override
         {
-            return _env;
+            return *_env;
         }
 
         Localisation::LocalisationService& GetLocalisationService() override
@@ -1581,10 +1581,10 @@ namespace OpenRCT2
     }
 
     std::unique_ptr<IContext> CreateContext(
-        const std::shared_ptr<IPlatformEnvironment>& env, const std::shared_ptr<Audio::IAudioContext>& audioContext,
-        const std::shared_ptr<IUiContext>& uiContext)
+        std::unique_ptr<IPlatformEnvironment>&& env, std::unique_ptr<Audio::IAudioContext>&& audioContext,
+        std::unique_ptr<IUiContext>&& uiContext)
     {
-        return std::make_unique<Context>(env, audioContext, uiContext);
+        return std::make_unique<Context>(std::move(env), std::move(audioContext), std::move(uiContext));
     }
 
     IContext* GetContext()

@@ -67,19 +67,19 @@ int main(int argc, const char** argv)
         else
         {
             // Run OpenRCT2 with a UI context
-            auto env = ToShared(CreatePlatformEnvironment());
-            std::shared_ptr<IAudioContext> audioContext;
+            auto env = CreatePlatformEnvironment();
+            std::unique_ptr<IAudioContext> audioContext;
             try
             {
-                audioContext = ToShared(CreateAudioContext());
+                audioContext = CreateAudioContext();
             }
             catch (const SDLException& e)
             {
                 LOG_WARNING("Failed to create audio context. Using dummy audio context. Error message was: %s", e.what());
-                audioContext = ToShared(CreateDummyAudioContext());
+                audioContext = CreateDummyAudioContext();
             }
-            auto uiContext = ToShared(CreateUiContext(env));
-            context = CreateContext(env, audioContext, uiContext);
+            auto uiContext = CreateUiContext(*env);
+            context = CreateContext(std::move(env), std::move(audioContext), std::move(uiContext));
         }
         rc = context->RunOpenRCT2(argc, argv);
     }

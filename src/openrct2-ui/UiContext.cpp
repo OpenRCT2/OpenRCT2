@@ -115,7 +115,7 @@ public:
         return _shortcutManager;
     }
 
-    explicit UiContext(const std::shared_ptr<IPlatformEnvironment>& env)
+    explicit UiContext(IPlatformEnvironment& env)
         : _platformUiContext(CreatePlatformUiContext())
         , _windowManager(CreateWindowManager())
         , _shortcutManager(env)
@@ -1063,7 +1063,7 @@ private:
     }
 };
 
-std::unique_ptr<IUiContext> OpenRCT2::Ui::CreateUiContext(const std::shared_ptr<IPlatformEnvironment>& env)
+std::unique_ptr<IUiContext> OpenRCT2::Ui::CreateUiContext(IPlatformEnvironment& env)
 {
     return std::make_unique<UiContext>(env);
 }
