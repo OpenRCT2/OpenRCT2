@@ -36,7 +36,7 @@
 namespace OpenRCT2
 {
 
-    std::list<std::shared_ptr<WindowBase>> g_window_list;
+    std::vector<std::unique_ptr<WindowBase>> g_window_list;
     WindowBase* gWindowAudioExclusive;
 
     WindowCloseModifier gLastCloseModifier = { { WindowClass::Null, 0 }, CloseWindowModifier::none };
@@ -74,11 +74,9 @@ static constexpr float kWindowScrollLocations[][2] = {
     static void WindowDrawCore(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
     static void WindowDrawSingle(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
-    std::list<std::shared_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w)
+    std::vector<std::unique_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w)
     {
-        return std::find_if(g_window_list.begin(), g_window_list.end(), [w](const std::shared_ptr<WindowBase>& w2) -> bool {
-            return w == w2.get();
-        });
+        return std::find_if(g_window_list.begin(), g_window_list.end(), [w](auto&& w2) { return w == w2.get(); });
     }
 
     void WindowVisitEach(std::function<void(WindowBase*)> func)
@@ -131,7 +129,9 @@ static constexpr float kWindowScrollLocations[][2] = {
     void WindowUpdateAll()
     {
         // Remove all windows in g_window_list that have the WF_DEAD flag
-        g_window_list.remove_if([](auto&& w) -> bool { return w->flags & WF_DEAD; });
+        g_window_list.erase(
+            std::remove_if(g_window_list.begin(), g_window_list.end(), [](auto&& w) -> bool { return w->flags & WF_DEAD; }),
+            g_window_list.end());
 
         // Periodic update happens every second so 40 ticks.
         if (gCurrentRealTimeTicks >= gWindowUpdateTicks)

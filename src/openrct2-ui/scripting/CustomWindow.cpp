@@ -1481,7 +1481,7 @@ namespace OpenRCT2::Ui::Windows
     void CloseWindowsOwnedByPlugin(std::shared_ptr<Plugin> plugin)
     {
         // Get all the windows that need closing
-        std::vector<std::shared_ptr<WindowBase>> customWindows;
+        std::vector<WindowBase*> customWindows;
         for (const auto& window : g_window_list)
         {
             if (window->classification == WindowClass::Custom)
@@ -1490,7 +1490,7 @@ namespace OpenRCT2::Ui::Windows
                 auto& customInfo = GetInfo(customWindow);
                 if (customInfo.Owner == plugin)
                 {
-                    customWindows.push_back(window);
+                    customWindows.push_back(window.get());
                 }
             }
         }
@@ -1498,7 +1498,7 @@ namespace OpenRCT2::Ui::Windows
         for (auto& window : customWindows)
         {
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->Close(*window.get());
+            windowMgr->Close(*window);
         }
     }
 

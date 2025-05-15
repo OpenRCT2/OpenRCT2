@@ -294,7 +294,7 @@ namespace OpenRCT2
 
     extern colour_t gCurrentWindowColours[3];
 
-    std::list<std::shared_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w);
+    std::vector<std::unique_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w);
     void WindowVisitEach(std::function<void(WindowBase*)> func);
 
     void WindowSetFlagForAllViewports(uint32_t viewportFlag, bool enabled);

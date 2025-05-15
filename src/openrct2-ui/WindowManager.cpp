@@ -1328,7 +1328,7 @@ public:
                     }
                 }
 
-                g_window_list.splice(itDestPos, g_window_list, itSourcePos);
+                std::iter_swap(itSourcePos, itDestPos);
                 w.Invalidate();
 
                 if (w.windowPos.x + w.width < 20)
