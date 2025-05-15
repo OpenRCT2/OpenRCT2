@@ -4,6 +4,7 @@
 - Feature: [#24313] [Plugin] Add API for setting a ride vehicle’s sprite to a smoke plume.
 - Improved: [#24364] Improve the fallback vehicle sprites for Zero G Rolls, and allow small ones to be built without cheats if the fallbacks are available.
 - Improved: [#24368] Clicking the in-game update notication now leads to a more user-friendly download page.
+- Improved: [#24409] Steam installs of RCT Classic are now detected automatically.
 - Change: [#24342] g2.dat is now split into g2.dat and fonts.dat.
 - Change: [#24362] The Windows installer now prevents installing to the same folder as RollerCoaster Tycoon 2 or Classic.
 - Change: [#24418] Small & Large Zero G Rolls can now be built on the LIM Launched RC without cheats if vehicle sprites are available.

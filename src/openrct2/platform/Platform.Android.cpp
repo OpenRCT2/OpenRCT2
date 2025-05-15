@@ -163,6 +163,11 @@ namespace OpenRCT2::Platform
         return {};
     }
 
+    u8string GetRCTClassicSteamDir()
+    {
+        return {};
+    }
+
     #ifndef DISABLE_TTF
     std::string GetFontPath(const TTFFontDescriptor& font)
     {

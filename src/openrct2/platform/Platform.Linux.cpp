@@ -371,6 +371,11 @@ namespace OpenRCT2::Platform
         return u8"Rollercoaster Tycoon 2";
     }
 
+    u8string GetRCTClassicSteamDir()
+    {
+        return u8"RollerCoaster Tycoon Classic";
+    }
+
     std::vector<std::string_view> GetSearchablePathsRCT1()
     {
         return {
