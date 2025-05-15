@@ -1361,6 +1361,8 @@ namespace OpenRCT2
             PROFILED_FUNCTION();
 
             const bool shouldDraw = ShouldDraw();
+            const bool shouldTween = shouldDraw && Config::Get().general.Tweening;
+
             auto& tweener = EntityTweener::Get();
 
             _uiContext->ProcessMessages();
@@ -1368,7 +1370,7 @@ namespace OpenRCT2
             while (_ticksAccumulator >= kGameUpdateTimeMS)
             {
                 // Get the original position of each sprite
-                if (shouldDraw)
+                if (shouldTween)
                     tweener.PreTick();
 
                 Tick();
@@ -1376,7 +1378,7 @@ namespace OpenRCT2
                 _ticksAccumulator -= kGameUpdateTimeMS;
 
                 // Get the next position of each sprite
-                if (shouldDraw)
+                if (shouldTween)
                     tweener.PostTick();
             }
 
@@ -1385,11 +1387,14 @@ namespace OpenRCT2
             ContextHandleInput();
             WindowUpdateAll();
 
-            if (shouldDraw)
+            if (shouldTween)
             {
                 const float alpha = std::min(_ticksAccumulator / kGameUpdateTimeMS, 1.0f);
                 tweener.Tween(alpha);
+            }
 
+            if (shouldDraw)
+            {
                 Draw();
             }
         }

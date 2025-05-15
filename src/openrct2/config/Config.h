@@ -42,6 +42,7 @@ namespace OpenRCT2::Config
         ::DrawingEngine DrawingEngine;
         bool UncapFPS;
         bool UseVSync;
+        bool Tweening;
         bool ShowFPS;
         std::atomic_uint8_t MultiThreading;
         bool MinimizeFullscreenFocusLoss;
