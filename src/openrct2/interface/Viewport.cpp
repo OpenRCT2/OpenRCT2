@@ -47,7 +47,7 @@
 #include "WindowBase.h"
 
 #include <cstring>
-#include <list>
+#include <sfl/segmented_vector.hpp>
 #include <unordered_map>
 
 namespace OpenRCT2
@@ -65,7 +65,7 @@ namespace OpenRCT2
     uint8_t gShowLandRightsRefCount;
     uint8_t gShowConstructionRightsRefCount;
 
-    static std::list<Viewport> _viewports;
+    static sfl::segmented_vector<Viewport, 32> _viewports;
     Viewport* g_music_tracking_viewport;
 
     static std::unique_ptr<JobPool> _paintJobs;
