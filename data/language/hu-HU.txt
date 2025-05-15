@@ -2237,8 +2237,8 @@ STR_3228    :Kezdő pozíciók megadása az emberek számára
 STR_3229    :Blokkolófékek nem használhatóak közvetlenül az állomás után
 STR_3230    :Blokkolófékek nem használhatóak közvetlenül egymás után
 STR_3231    :Blokkolófékek nem használhatóak közvetlenül ennek felvonószakasznak a csúcsa után
-STR_3232    :Beállítások - pénzügyi
-STR_3233    :Beállítások - vendégek
+STR_3232    :Pálya beállítások - Pénzügyi
+STR_3233    :Pálya beállítások - Vendégek
 STR_3235    :Pénzügyi beállítások
 STR_3236    :A vendégek beállításai
 STR_3238    :Nem kell pénz
@@ -2282,7 +2282,7 @@ STR_3279    :Ingyenes parkbelépő / Fizetős játékok
 STR_3280    :Fizetős parkbelépő / Ingyenes játékok
 STR_3281    :{WINDOW_COLOUR_2}Belépési díj:
 STR_3283    :A műemlékvédelem alá eső játékok kiválasztása
-STR_3285    :Védett játékok
+STR_3285    :Pálya beállítások - Védett játékok
 STR_3286    :A pálya céljának kiválasztása
 STR_3287    :{WINDOW_COLOUR_2}Cél:
 STR_3294    :Változtat…
@@ -2511,7 +2511,7 @@ STR_5265    :A látható tartalomforrások kiválasztása
 STR_5266    :Képernyő
 STR_5267    :Kultúra és egységek
 STR_5268    :Hang
-STR_5269    :Irányítás és felhasználói felület
+STR_5269    :Irányítás
 STR_5270    :Egyéb
 STR_5272    :Kis díszletek
 STR_5273    :Nagy díszletek
@@ -3200,7 +3200,7 @@ STR_6102    :A játékok értéke nem csökken az idő múlásával, így a vend
 STR_6103    :Ez a beállítás le van tiltva hálózati játék alatt.
 STR_6105    :Hiperhullámvasút
 STR_6107    :Monster Truck-ok
-STR_6109    :Hiper-csavaró
+STR_6109    :Hiper-csavart hullámvasút
 STR_6111    :Klasszikus mini hullámvasút
 STR_6113    :Magas, nem forduló hullámvasút nagy esésekkel, nagy sebességgel és kényelmes vonatokkal, csak biztonsági rudas rögzítéssel
 STR_6115    :Motoros óriás 4x4-es teherautók, amelyek meredek lejtőkön is felhajtanak
@@ -3776,3 +3776,37 @@ STR_6729    :A kábeles felvonószakasznak közvetlenül az állomás vagy a blo
 STR_6730    :Emscripten-adatok exportálása
 STR_6731    :Emscripten-adatok importálása
 STR_6732    :Gomb megjelenítése az eszköztáron a nézet óramutató járásával ellentétes elforgatásához
+STR_6733    :Átlátszó
+STR_6734    :A vágási magasságon vagy afölött levő térképelemek átlátszóan jelennek meg
+STR_6735    :Ugrás a szülőmappára
+STR_6736    :Előnézet
+STR_6737    :Nincs előnézet
+STR_6738    :{WINDOW_COLOUR_2}Park értékelése: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Dátum: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Pénz: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Játékok száma: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Vendégek száma: {BLACK}{UINT16}
+STR_6743    :Éghajlat
+STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6745    :Vendégek intenzitási preferenciái:
+STR_6746    :Nincsenek preferenciák
+STR_6747    :Változó preferenciák (alapértelmezett)
+STR_6748    :Csak kevésbé intenzív játékok
+STR_6749    :Csak intenzívebb játékok
+STR_6750    :Válaszd ki, hogy az új vendégek milyen intenzitású játékokat preferáljanak
+STR_6751    :A várakozási útvonalak nem használhatók szintbeli kereszteződéseknél!
+STR_6752    :Pálya beállítások – Cél
+STR_6753    :Pálya beállítások – Pálya részletei
+STR_6754    :Pálya beállítások – Területkorlátozások
+STR_6755    :Cél beállításai
+STR_6756    :Pálya részleteinek beállításai
+STR_6757    :Területkorlátozási beállítások
+STR_6758    :Kölcsön beállításai
+STR_6759    :Üzleti modell
+STR_6760    :Bevételek:
+STR_6761    :Pálya részletei
+STR_6762    :Felhasználói felület
+STR_6763    :RollerCoaster Tycoon 1
+STR_6764    :Mentés és automatikus mentés
+STR_6765    :Haladó
+STR_6766    :Törlés
