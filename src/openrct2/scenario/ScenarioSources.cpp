@@ -34,6 +34,12 @@ namespace OpenRCT2::ScenarioSources
         u8string_view TextObjectId;
     };
 
+    struct ScenarioGroupDescriptor
+    {
+        const utf8* Title;
+        const ScenarioGroup Group;
+    };
+
 #pragma region Scenario Data
 
     // clang-format off
@@ -116,6 +122,107 @@ namespace OpenRCT2::ScenarioSources
         { "Rock 'n' Roll - Flower Power",               "Rock 'n' Roll - dzieci kwiaty"             },
         // Skipping Rock 'n' Roll - Rock 'n' Roll as that name matches exactly.
 
+    };
+
+    // RCT: Classic
+    static constexpr ScenarioGroupDescriptor kScenarioGroupsRCTC[] =
+    {
+        { "Forest Frontiers",     ScenarioGroup::graphite },
+        { "Dynamite Dunes",       ScenarioGroup::graphite },
+        { "Leafy Lake",           ScenarioGroup::graphite },
+        { "Diamond Heights",      ScenarioGroup::graphite },
+        { "White Water Park",     ScenarioGroup::graphite },
+        { "Trinity Islands",      ScenarioGroup::graphite },
+        { "Three Monkeys Park",   ScenarioGroup::graphite },
+        { "Factory Capers",       ScenarioGroup::graphite },
+        { "Katie's Dreamland",    ScenarioGroup::graphite },
+        { "Bumbly Beach",         ScenarioGroup::emerald  },
+        { "Karts & Coasters",     ScenarioGroup::emerald  },
+        { "Evergreen Gardens",    ScenarioGroup::emerald  },
+        { "Crazy Castle",         ScenarioGroup::emerald  },
+        { "Mel's World",          ScenarioGroup::emerald  },
+        { "Mystic Mountain",      ScenarioGroup::emerald  },
+        { "Pacific Pyramids",     ScenarioGroup::emerald  },
+        { "Crumbly Woods",        ScenarioGroup::emerald  },
+        { "Paradise Pier",        ScenarioGroup::emerald  },
+        { "Millennium Mines",     ScenarioGroup::ruby     },
+        { "Electric Fields",      ScenarioGroup::ruby     },
+        { "Haunted Harbour",      ScenarioGroup::ruby     },
+        { "Barony Bridge",        ScenarioGroup::ruby     },
+        { "Funtopia",             ScenarioGroup::ruby     },
+        { "Canary Mines",         ScenarioGroup::ruby     },
+        { "Future World",         ScenarioGroup::ruby     },
+        { "Gentle Glen",          ScenarioGroup::ruby     },
+        { "Jolly Jungle",         ScenarioGroup::ruby     },
+        { "Iceberg Islands",      ScenarioGroup::sapphire },
+        { "Volcania",             ScenarioGroup::sapphire },
+        { "Arid Heights",         ScenarioGroup::sapphire },
+        { "Razor Rocks",          ScenarioGroup::sapphire },
+        { "Crater Lake",          ScenarioGroup::sapphire },
+        { "Vertigo Views",        ScenarioGroup::sapphire },
+        { "Paradise Pier 2",      ScenarioGroup::sapphire },
+        { "Dragon's Cove",        ScenarioGroup::sapphire },
+        { "Good Knight Park",     ScenarioGroup::sapphire },
+        { "Fun Fortress",         ScenarioGroup::amethyst },
+        { "Amity Airfield",       ScenarioGroup::amethyst },
+        { "Bumbly Bazaar",        ScenarioGroup::amethyst },
+        { "Whispering Cliffs",    ScenarioGroup::amethyst },
+        { "Hydro Hills",          ScenarioGroup::amethyst },
+        { "Sprightly Park",       ScenarioGroup::amethyst },
+        { "Magic Quarters",       ScenarioGroup::amethyst },
+        { "Fruit Farm",           ScenarioGroup::amethyst },
+        { "Pokey Park",           ScenarioGroup::amethyst },
+        { "Butterfly Dam",        ScenarioGroup::coral    },
+        { "Coaster Canyon",       ScenarioGroup::coral    },
+        { "Thunderstorm Park",    ScenarioGroup::coral    },
+        { "Harmonic Hills",       ScenarioGroup::coral    },
+        { "Roman Village",        ScenarioGroup::coral    },
+        { "Swamp Cove",           ScenarioGroup::coral    },
+        { "Adrenaline Heights",   ScenarioGroup::coral    },
+        { "Botany Breakers",      ScenarioGroup::coral    },
+        { "Rotting Heights",      ScenarioGroup::coral    },
+        { "Lightning Peaks",      ScenarioGroup::coral    },
+        { "Utopia Park",          ScenarioGroup::ivory    },
+        { "Ivory Towers",         ScenarioGroup::ivory    },
+        { "Thunder Rock",         ScenarioGroup::ivory    },
+        { "Dusty Greens",         ScenarioGroup::ivory    },
+        { "Fungus Woods",         ScenarioGroup::ivory    },
+        { "Gravity Gardens",      ScenarioGroup::ivory    },
+        { "Wacky Warren",         ScenarioGroup::ivory    },
+        { "Grand Glacier",        ScenarioGroup::ivory    },
+        { "Crazy Craters",        ScenarioGroup::ivory    },
+        { "Icarus Park",          ScenarioGroup::ivory    },
+        { "Dusty Desert",         ScenarioGroup::bronze   },
+        { "Woodworm Park",        ScenarioGroup::bronze   },
+        { "Sunny Swamps",         ScenarioGroup::bronze   },
+        { "Frightmare Hills",     ScenarioGroup::bronze   },
+        { "Thunder Rocks",        ScenarioGroup::bronze   },
+        { "Octagon Park",         ScenarioGroup::bronze   },
+        { "Pleasure Island",      ScenarioGroup::bronze   },
+        { "Icicle Worlds",        ScenarioGroup::bronze   },
+        { "Ghost Town",           ScenarioGroup::bronze   },
+        { "Infernal Views",       ScenarioGroup::bronze   },
+        { "Fiasco Forest",        ScenarioGroup::silver   },
+        { "Pickle Park",          ScenarioGroup::silver   },
+        { "Giggle Downs",         ScenarioGroup::silver   },
+        { "Mineral Park",         ScenarioGroup::silver   },
+        { "Coaster Crazy",        ScenarioGroup::silver   },
+        { "Pacifica",             ScenarioGroup::silver   },
+        { "Alpine Adventures",    ScenarioGroup::silver   },
+        { "Extreme Heights",      ScenarioGroup::silver   },
+        { "Lucky Lake",           ScenarioGroup::silver   },
+        { "Rainbow Summit",       ScenarioGroup::silver   },
+        { "Rainbow Valley",       ScenarioGroup::gold     },
+        { "Urban Park",           ScenarioGroup::gold     },
+        { "Geoffrey Gardens",     ScenarioGroup::gold     },
+        { "Southern Sands",       ScenarioGroup::gold     },
+        { "Tiny Towers",          ScenarioGroup::gold     },
+        { "Nevermore Park",       ScenarioGroup::gold     },
+        { "Terror Town",          ScenarioGroup::gold     },
+        { "Megaworld Park",       ScenarioGroup::gold     },
+        { "Venus Ponds",          ScenarioGroup::gold     },
+        { "Micro Park",           ScenarioGroup::gold     },
+        { "Tycoon Park",          ScenarioGroup::bonus    },
     };
 
     // RCT
@@ -296,7 +403,7 @@ namespace OpenRCT2::ScenarioSources
         { SC_UNIDENTIFIED, "Dragon Islands",                                   ScenarioCategory::katysDreamworld, "uces.scenario_text.dragon_islands"               },
         { SC_UNIDENTIFIED, "Kiddy Karnival II",                                ScenarioCategory::katysDreamworld, "uces.scenario_text.kiddie_karnival_ii"           },
         { SC_UNIDENTIFIED, "Sand Dune",                                        ScenarioCategory::katysDreamworld, "uces.scenario_text.sand_dune"                    },
-        { SC_UNIDENTIFIED, "UCES Halloween",                                   ScenarioCategory::other,            "uces.scenario_text.cemetery_ridge"               },
+        { SC_UNIDENTIFIED, "UCES Halloween",                                   ScenarioCategory::other,           "uces.scenario_text.cemetery_ridge"               },
     };
 
     // Real parks
@@ -357,6 +464,26 @@ namespace OpenRCT2::ScenarioSources
 
 #pragma endregion
 
+    static bool TryGetGroupByName(u8string_view name, SourceDescriptor* outDesc)
+    {
+        Guard::ArgumentNotNull(outDesc, GUARD_LINE);
+
+        for (size_t i = 0; i < std::size(kScenarioGroupsRCTC); i++)
+        {
+            const ScenarioGroupDescriptor* desc = &kScenarioGroupsRCTC[i];
+            if (String::iequals(name, desc->Title))
+            {
+                outDesc->group = desc->Group;
+                outDesc->groupIndex = static_cast<int32_t>(i);
+                return true;
+            }
+        }
+
+        outDesc->group = ScenarioGroup::other;
+        outDesc->groupIndex = -1;
+        return false;
+    }
+
     bool TryGetByName(u8string_view name, SourceDescriptor* outDesc)
     {
         Guard::ArgumentNotNull(outDesc, GUARD_LINE);
@@ -375,6 +502,7 @@ namespace OpenRCT2::ScenarioSources
                     outDesc->index = currentIndex;
                     outDesc->category = desc->Category;
                     outDesc->textObjectId = desc->TextObjectId;
+                    TryGetGroupByName(name, outDesc);
                     return true;
                 }
                 currentIndex++;
@@ -386,6 +514,8 @@ namespace OpenRCT2::ScenarioSources
         outDesc->source = static_cast<uint8_t>(ScenarioSource::Other);
         outDesc->index = -1;
         outDesc->category = ScenarioCategory::other;
+        outDesc->group = ScenarioGroup::other;
+        outDesc->groupIndex = -1;
         outDesc->textObjectId = {};
         return false;
     }
@@ -408,6 +538,7 @@ namespace OpenRCT2::ScenarioSources
                     outDesc->index = currentIndex;
                     outDesc->category = desc->Category;
                     outDesc->textObjectId = desc->TextObjectId;
+                    TryGetGroupByName(desc->Title, outDesc);
                     return true;
                 }
                 currentIndex++;
@@ -419,6 +550,8 @@ namespace OpenRCT2::ScenarioSources
         outDesc->source = static_cast<uint8_t>(ScenarioSource::Other);
         outDesc->index = -1;
         outDesc->category = ScenarioCategory::other;
+        outDesc->group = ScenarioGroup::other;
+        outDesc->groupIndex = -1;
         outDesc->textObjectId = {};
         return false;
     }

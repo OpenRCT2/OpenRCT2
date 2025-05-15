@@ -9,6 +9,7 @@
 
 #include "../interface/Theme.h"
 
+#include <bitset>
 #include <openrct2-ui/interface/Objective.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
@@ -37,7 +38,9 @@
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr int32_t kInitialNumUnlockedScenarios = 5;
-    static constexpr uint8_t kNumTabs = 10;
+    static constexpr int32_t kInitialNumUnlockedScenariosPerGroup = 3;
+    static constexpr int32_t kInitialNumUnlockedGroups = 3;
+    static constexpr uint8_t kNumTabs = 11;
     static constexpr int32_t kPreviewPaneWidth = 179;
     static constexpr int32_t kSidebarWidth = 180;
     static constexpr int32_t kTabHeight = 34;
@@ -45,7 +48,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t kTabsStart = kWidgetsStart;
     static constexpr int32_t kTabWidth = 92;
     static constexpr int32_t kTrueFontSize = 24;
-    static constexpr int32_t kWindowHeight = 384;
+    static constexpr int32_t kWindowHeight = 394;
     static constexpr int32_t kWindowWidth = 734;
     static constexpr StringId kWindowTitle = STR_SELECT_SCENARIO;
 
@@ -88,6 +91,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TAB8,
         WIDX_TAB9,
         WIDX_TAB10,
+        WIDX_TAB11,
         WIDX_SCENARIOLIST
     };
 
@@ -111,7 +115,8 @@ namespace OpenRCT2::Ui::Windows
         MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 6) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 07
         MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 7) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 08
         MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 8) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 09
-        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 8) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 10
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 9) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 10
+        MakeRemapWidget({ 3, kTabsStart + (kTabHeight * 9) }, { kTabWidth, kTabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 11
         MakeWidget({ kTabWidth + 3, kWidgetsStart + 1 }, { kWindowWidth - kSidebarWidth, 362 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), // level list
     };
     // clang-format on
@@ -154,7 +159,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnMouseDown(WidgetIndex widgetIndex) override
         {
-            if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB10)
+            if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB11)
             {
                 selected_tab = widgetIndex - 4;
                 Config::Get().interface.ScenarioselectLastTab = selected_tab;
@@ -247,20 +252,31 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Text for each tab
-            for (uint32_t i = 0; i < std::size(kScenarioOriginStringIds); i++)
+            for (uint32_t i = 0; i < kNumTabs; i++)
             {
                 const Widget& widget = widgets[WIDX_TAB1 + i];
                 if (widget.type == WindowWidgetType::Empty)
                     continue;
 
                 auto ft = Formatter();
-                if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
+                switch (Config::Get().general.scenarioSelectMode)
                 {
-                    ft.Add<StringId>(kScenarioOriginStringIds[i]);
-                }
-                else
-                { // old-style
-                    ft.Add<StringId>(kScenarioCategoryStringIds[i]);
+                    case ScenarioSelectMode::origin:
+                        if (i >= std::size(kScenarioOriginStringIds))
+                            continue;
+                        ft.Add<StringId>(kScenarioOriginStringIds[i]);
+                        break;
+                    default:
+                    case ScenarioSelectMode::difficulty: // old-style
+                        if (i >= std::size(kScenarioCategoryStringIds))
+                            continue;
+                        ft.Add<StringId>(kScenarioCategoryStringIds[i]);
+                        break;
+                    case ScenarioSelectMode::group:
+                        if (i >= std::size(kScenarioGroupStringIds))
+                            continue;
+                        ft.Add<StringId>(kScenarioGroupStringIds[i]);
+                        break;
                 }
 
                 auto stringCoords = windowPos + ScreenCoordsXY{ widget.midX(), widget.midY() - 3 };
@@ -354,7 +370,7 @@ namespace OpenRCT2::Ui::Windows
             pressed_widgets &= ~(
                 (1uLL << WIDX_CLOSE) | (1uLL << WIDX_TAB1) | (1uLL << WIDX_TAB2) | (1uLL << WIDX_TAB3) | (1uLL << WIDX_TAB4)
                 | (1uLL << WIDX_TAB5) | (1uLL << WIDX_TAB6) | (1uLL << WIDX_TAB7) | (1uLL << WIDX_TAB8) | (1uLL << WIDX_TAB9)
-                | (1uLL << WIDX_TAB10));
+                | (1uLL << WIDX_TAB10) | (1uLL << WIDX_TAB11));
 
             pressed_widgets |= 1LL << (selected_tab + WIDX_TAB1);
 
@@ -608,7 +624,12 @@ namespace OpenRCT2::Ui::Windows
             uint32_t rct1CompletedScenarios = 0;
             std::optional<size_t> megaParkListItemIndex = std::nullopt;
 
-            int32_t numUnlocks = kInitialNumUnlockedScenarios;
+            // Tycoon park unlock
+            std::bitset<EnumValue(ScenarioGroup::count)> rctcIncompleteGroups = 0;
+
+            int32_t numUnlocks = Config::Get().general.scenarioSelectMode == ScenarioSelectMode::group
+                ? kInitialNumUnlockedScenariosPerGroup
+                : kInitialNumUnlockedScenarios;
             union
             {
                 uint8_t raw = UINT8_MAX;
@@ -619,42 +640,73 @@ namespace OpenRCT2::Ui::Windows
             {
                 const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
 
+                if (scenario->Highscore == nullptr && scenario->Group != ScenarioGroup::other)
+                {
+                    rctcIncompleteGroups.set(EnumValue(scenario->Group));
+                }
+
                 if (!IsScenarioVisible(*scenario))
                     continue;
 
+                // Tycoon park handling
+                if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::group
+                    && Config::Get().general.ScenarioHideTycoonPark && IsLockingEnabled())
+                {
+                    if (scenario->Group == ScenarioGroup::bonus && rctcIncompleteGroups.any())
+                        continue;
+                }
+
                 // Category heading
                 StringId headingStringId = kStringIdNone;
-                if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
+                switch (Config::Get().general.scenarioSelectMode)
                 {
-                    if (selected_tab != EnumValue(ScenarioSource::Real) && currentHeading.category != scenario->Category)
-                    {
-                        currentHeading.category = scenario->Category;
-                        headingStringId = kScenarioCategoryStringIds[currentHeading.raw];
-                    }
-                }
-                else
-                {
-                    if (selected_tab <= EnumValue(ScenarioCategory::expert))
-                    {
-                        if (currentHeading.source != scenario->SourceGame)
+                    case ScenarioSelectMode::origin:
+                        if (selected_tab != EnumValue(ScenarioSource::Real) && currentHeading.category != scenario->Category)
                         {
-                            currentHeading.source = scenario->SourceGame;
-                            headingStringId = kScenarioOriginStringIds[currentHeading.raw];
-                        }
-                    }
-                    else if (selected_tab == EnumValue(ScenarioCategory::other))
-                    {
-                        auto category = scenario->Category;
-                        if (category <= ScenarioCategory::real)
-                        {
-                            category = ScenarioCategory::other;
-                        }
-                        if (currentHeading.category != category)
-                        {
-                            currentHeading.category = category;
+                            currentHeading.category = scenario->Category;
                             headingStringId = kScenarioCategoryStringIds[currentHeading.raw];
                         }
-                    }
+                        break;
+
+                    default:
+                    case ScenarioSelectMode::difficulty:
+                        if (selected_tab <= EnumValue(ScenarioCategory::expert))
+                        {
+                            if (currentHeading.source != scenario->SourceGame)
+                            {
+                                currentHeading.source = scenario->SourceGame;
+                                headingStringId = kScenarioOriginStringIds[currentHeading.raw];
+                            }
+                        }
+                        else if (selected_tab == EnumValue(ScenarioCategory::other))
+                        {
+                            auto category = scenario->Category;
+                            if (category <= ScenarioCategory::real)
+                            {
+                                category = ScenarioCategory::other;
+                            }
+                            if (currentHeading.category != category)
+                            {
+                                currentHeading.category = category;
+                                headingStringId = kScenarioCategoryStringIds[currentHeading.raw];
+                            }
+                        }
+                        break;
+
+                    case ScenarioSelectMode::group:
+                        if (selected_tab == EnumValue(ScenarioGroup::other))
+                        {
+                            if (currentHeading.source != scenario->SourceGame)
+                            {
+                                currentHeading.source = scenario->SourceGame;
+                                headingStringId = kScenarioOriginStringIds[currentHeading.raw];
+                            }
+                        }
+                        else if (scenario->Group == ScenarioGroup::bonus)
+                        {
+                            headingStringId = STR_BONUS_GROUP;
+                        }
+                        break;
                 }
 
                 if (headingStringId != kStringIdNone)
@@ -671,7 +723,19 @@ namespace OpenRCT2::Ui::Windows
                 scenarioItem.scenario.scenario = scenario;
                 if (IsLockingEnabled())
                 {
-                    scenarioItem.scenario.is_locked = numUnlocks <= 0;
+                    if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::group)
+                    {
+                        if (scenario->Group == ScenarioGroup::bonus)
+                            scenarioItem.scenario.is_locked = rctcIncompleteGroups.any();
+                        else
+                            scenarioItem.scenario.is_locked = rctcIncompleteGroups.count() > kInitialNumUnlockedGroups
+                                || numUnlocks <= 0;
+                    }
+                    else
+                    {
+                        scenarioItem.scenario.is_locked = numUnlocks <= 0;
+                    }
+
                     if (scenario->Highscore == nullptr)
                     {
                         numUnlocks--;
@@ -695,6 +759,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     scenarioItem.scenario.is_locked = false;
                 }
+
                 _listItems.push_back(std::move(scenarioItem));
             }
 
@@ -730,38 +795,45 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsScenarioVisible(const ScenarioIndexEntry& scenario) const
         {
-            if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
+            auto category = scenario.Category;
+            auto group = scenario.Group;
+            switch (Config::Get().general.scenarioSelectMode)
             {
-                if (static_cast<uint8_t>(scenario.SourceGame) != selected_tab)
-                {
-                    return false;
-                }
+                case ScenarioSelectMode::origin:
+                    return static_cast<uint8_t>(scenario.SourceGame) == selected_tab;
+                default:
+                case ScenarioSelectMode::difficulty:
+                    if (category > ScenarioCategory::other)
+                    {
+                        category = ScenarioCategory::other;
+                    }
+                    return EnumValue(category) == selected_tab;
+                case ScenarioSelectMode::group:
+                    if (group == ScenarioGroup::bonus)
+                    {
+                        // We don't want to reveal the existence of the bonus group until it's unlocked,
+                        // so we'll include it in the tab for the gold group instead
+                        group = ScenarioGroup::gold;
+                    }
+                    return EnumValue(group) == selected_tab;
             }
-            else
-            {
-                auto category = scenario.Category;
-                if (category > ScenarioCategory::other)
-                {
-                    category = ScenarioCategory::other;
-                }
-                if (EnumValue(category) != selected_tab)
-                {
-                    return false;
-                }
-            }
-            return true;
         }
 
         bool IsLockingEnabled() const
         {
-            if (Config::Get().general.scenarioSelectMode != ScenarioSelectMode::origin)
-                return false;
             if (!Config::Get().general.ScenarioUnlockingEnabled)
                 return false;
-            if (selected_tab >= 6)
-                return false;
 
-            return true;
+            switch (Config::Get().general.scenarioSelectMode)
+            {
+                case ScenarioSelectMode::group:
+                    return selected_tab != EnumValue(ScenarioGroup::other);
+                case ScenarioSelectMode::origin:
+                    return selected_tab < EnumValue(ScenarioSource::UCES);
+                default:
+                case ScenarioSelectMode::difficulty:
+                    return false;
+            }
         }
 
         void InitTabs()
@@ -771,18 +843,28 @@ namespace OpenRCT2::Ui::Windows
             for (size_t i = 0; i < numScenarios; i++)
             {
                 const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
-                if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
+                auto category = scenario->Category;
+                auto group = scenario->Group;
+                switch (Config::Get().general.scenarioSelectMode)
                 {
-                    showPages |= 1 << static_cast<uint8_t>(scenario->SourceGame);
-                }
-                else
-                {
-                    auto category = scenario->Category;
-                    if (category > ScenarioCategory::other)
-                    {
-                        category = ScenarioCategory::other;
-                    }
-                    showPages |= 1 << EnumValue(category);
+                    case ScenarioSelectMode::origin:
+                        showPages |= 1 << static_cast<uint8_t>(scenario->SourceGame);
+                        break;
+                    default:
+                    case ScenarioSelectMode::difficulty:
+                        if (category > ScenarioCategory::other)
+                        {
+                            category = ScenarioCategory::other;
+                        }
+                        showPages |= 1 << EnumValue(category);
+                        break;
+                    case ScenarioSelectMode::group:
+                        if (group == ScenarioGroup::bonus)
+                        {
+                            group = ScenarioGroup::gold;
+                        }
+                        showPages |= 1 << EnumValue(group);
+                        break;
                 }
             }
 

@@ -71,6 +71,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
         case FileExtension::SV4:
         case FileExtension::SC6:
         case FileExtension::SV6:
+        case FileExtension::SEA:
             break;
         case FileExtension::PARK:
             if (destinationFileType == FileExtension::PARK)

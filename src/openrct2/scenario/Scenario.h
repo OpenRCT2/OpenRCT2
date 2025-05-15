@@ -57,6 +57,26 @@ enum class ScenarioCategory : uint8_t
     count,
 };
 
+enum class ScenarioGroup : uint8_t
+{
+    // RCT Classic groups (keep order)
+    graphite,
+    emerald,
+    ruby,
+    sapphire,
+    amethyst,
+    coral,
+    ivory,
+    bronze,
+    silver,
+    gold,
+
+    other,
+    bonus,
+
+    count,
+};
+
 enum
 {
     OBJECTIVE_NONE,
@@ -131,6 +151,7 @@ enum class ScenarioSelectMode : uint8_t
 {
     difficulty,
     origin,
+    group,
 };
 
 enum
@@ -149,6 +170,7 @@ constexpr uint8_t kDefaultNumAutosavesToKeep = 10;
 static constexpr money64 kCompanyValueOnFailedObjective = 0x8000000000000001;
 
 extern const StringId kScenarioCategoryStringIds[EnumValue(ScenarioCategory::count)];
+extern const StringId kScenarioGroupStringIds[EnumValue(ScenarioGroup::count)];
 
 extern bool gAllowEarlyCompletionInNetworkPlay;
 

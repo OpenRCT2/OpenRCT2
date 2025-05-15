@@ -227,13 +227,13 @@ namespace OpenRCT2::RCT1
 
         bool PopulateIndexEntry(ScenarioIndexEntry* dst) override
         {
-            *dst = {};
-
             SourceDescriptor desc;
             // If no entry is found, this is a custom scenario.
             bool isOfficial = ScenarioSources::TryGetById(_s4.ScenarioSlotIndex, &desc);
 
             dst->Category = desc.category;
+            dst->Group = desc.group;
+            dst->GroupIndex = desc.groupIndex;
             dst->SourceGame = ScenarioSource{ desc.source };
             dst->SourceIndex = desc.index;
             dst->ScenarioId = desc.id;
