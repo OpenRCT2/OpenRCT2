@@ -29,7 +29,7 @@ using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Paint;
 using namespace OpenRCT2::Ui;
 
-Painter::Painter(const std::shared_ptr<IUiContext>& uiContext)
+Painter::Painter(IUiContext& uiContext)
     : _uiContext(uiContext)
 {
 }
@@ -49,7 +49,7 @@ void Painter::Paint(IDrawingEngine& de)
         de.PaintWindows();
 
         UpdatePaletteEffects();
-        _uiContext->Draw(*rt);
+        _uiContext.Draw(*rt);
 
         GfxDrawPickedUpPeep(*rt);
         GfxInvalidatePickedUpPeep();
@@ -79,7 +79,7 @@ void Painter::Paint(IDrawingEngine& de)
 
 void Painter::PaintReplayNotice(RenderTarget& rt, const char* text)
 {
-    ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, _uiContext->GetHeight() - 44);
+    ScreenCoordsXY screenCoords(_uiContext.GetWidth() / 2, _uiContext.GetHeight() - 44);
 
     char buffer[64]{};
     FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{RED}{STRING}", text);
@@ -115,7 +115,7 @@ void Painter::PaintFPS(RenderTarget& rt)
     const int32_t stringWidth = GfxGetStringWidth(buffer, FontStyle::Medium);
 
     // Figure out where counter should be rendered
-    ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, 2);
+    ScreenCoordsXY screenCoords(_uiContext.GetWidth() / 2, 2);
     screenCoords.x = screenCoords.x - (stringWidth / 2);
 
     // Move counter below toolbar if buttons are centred

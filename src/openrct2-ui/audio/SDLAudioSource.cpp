@@ -53,11 +53,8 @@ IAudioMixer* SDLAudioSource::GetMixer()
     if (ctx == nullptr)
         return nullptr;
 
-    auto audioContext = ctx->GetAudioContext();
-    if (audioContext == nullptr)
-        return nullptr;
-
-    return audioContext->GetMixer();
+    auto& audioContext = ctx->GetAudioContext();
+    return audioContext.GetMixer();
 }
 
 int32_t SDLAudioSource::GetBytesPerSecond() const

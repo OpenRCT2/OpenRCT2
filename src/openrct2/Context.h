@@ -124,9 +124,9 @@ namespace OpenRCT2
     {
         virtual ~IContext() = default;
 
-        [[nodiscard]] virtual std::shared_ptr<Audio::IAudioContext> GetAudioContext() = 0;
-        [[nodiscard]] virtual std::shared_ptr<Ui::IUiContext> GetUiContext() = 0;
-        [[nodiscard]] virtual std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() = 0;
+        [[nodiscard]] virtual Audio::IAudioContext& GetAudioContext() = 0;
+        [[nodiscard]] virtual Ui::IUiContext& GetUiContext() = 0;
+        [[nodiscard]] virtual IPlatformEnvironment& GetPlatformEnvironment() = 0;
         virtual Localisation::LocalisationService& GetLocalisationService() = 0;
         virtual IObjectManager& GetObjectManager() = 0;
         virtual IObjectRepository& GetObjectRepository() = 0;
@@ -184,8 +184,8 @@ namespace OpenRCT2
 
     [[nodiscard]] std::unique_ptr<IContext> CreateContext();
     [[nodiscard]] std::unique_ptr<IContext> CreateContext(
-        const std::shared_ptr<IPlatformEnvironment>& env, const std::shared_ptr<Audio::IAudioContext>& audioContext,
-        const std::shared_ptr<Ui::IUiContext>& uiContext);
+        std::unique_ptr<IPlatformEnvironment>&& env, std::unique_ptr<Audio::IAudioContext>&& audioContext,
+        std::unique_ptr<Ui::IUiContext>&& uiContext);
     [[nodiscard]] IContext* GetContext();
 } // namespace OpenRCT2
 

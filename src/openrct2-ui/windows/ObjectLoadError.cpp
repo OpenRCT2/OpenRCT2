@@ -377,7 +377,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto clip = stream.str();
-            OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(clip.c_str());
+            OpenRCT2::GetContext()->GetUiContext().SetClipboardText(clip.c_str());
         }
 
         void SelectObjectFromList(const int32_t index)
@@ -421,7 +421,7 @@ namespace OpenRCT2::Ui::Windows
                     if (selected_list_item > -1 && selected_list_item < no_list_items)
                     {
                         const auto name = std::string(_invalidEntries[selected_list_item].GetName());
-                        OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(name.c_str());
+                        OpenRCT2::GetContext()->GetUiContext().SetClipboardText(name.c_str());
                     }
                     break;
                 case WIDX_COPY_ALL:

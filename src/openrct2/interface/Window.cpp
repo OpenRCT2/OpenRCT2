@@ -987,6 +987,6 @@ static constexpr float kWindowScrollLocations[][2] = {
     // TODO: declared in WindowManager.h; move when refactors continue
     Ui::IWindowManager* Ui::GetWindowManager()
     {
-        return GetContext()->GetUiContext()->GetWindowManager();
+        return GetContext()->GetUiContext().GetWindowManager();
     }
 } // namespace OpenRCT2

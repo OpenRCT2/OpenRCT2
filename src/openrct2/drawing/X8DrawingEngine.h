@@ -72,7 +72,7 @@ namespace OpenRCT2
             InvalidationGrid _invalidationGrid;
 
         public:
-            explicit X8DrawingEngine(const std::shared_ptr<Ui::IUiContext>& uiContext);
+            explicit X8DrawingEngine(Ui::IUiContext& uiContext);
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
     #pragma GCC diagnostic push

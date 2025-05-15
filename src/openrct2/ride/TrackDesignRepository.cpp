@@ -112,16 +112,15 @@ private:
 class TrackDesignRepository final : public ITrackDesignRepository
 {
 private:
-    std::shared_ptr<IPlatformEnvironment> const _env;
+    IPlatformEnvironment& _env;
     TrackDesignFileIndex const _fileIndex;
     std::vector<TrackRepositoryItem> _items;
 
 public:
-    explicit TrackDesignRepository(const std::shared_ptr<IPlatformEnvironment>& env)
+    explicit TrackDesignRepository(IPlatformEnvironment& env)
         : _env(env)
-        , _fileIndex(*env)
+        , _fileIndex(env)
     {
-        Guard::ArgumentNotNull(env);
     }
 
     size_t GetCount() const override
@@ -258,7 +257,7 @@ public:
     std::string Install(const std::string& path, const std::string& name) override
     {
         std::string result;
-        std::string installDir = _env->GetDirectoryPath(DirBase::user, DirId::trackDesigns);
+        std::string installDir = _env.GetDirectoryPath(DirBase::user, DirId::trackDesigns);
 
         std::string newPath = Path::Combine(installDir, name + Path::GetExtension(path));
         if (File::Copy(path, newPath, false))
@@ -310,7 +309,7 @@ private:
     }
 };
 
-std::unique_ptr<ITrackDesignRepository> CreateTrackDesignRepository(const std::shared_ptr<IPlatformEnvironment>& env)
+std::unique_ptr<ITrackDesignRepository> CreateTrackDesignRepository(IPlatformEnvironment& env)
 {
     return std::make_unique<TrackDesignRepository>(env);
 }

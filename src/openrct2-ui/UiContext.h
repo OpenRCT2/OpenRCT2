@@ -50,7 +50,7 @@ namespace OpenRCT2::Ui
         virtual bool HasFilePicker() const = 0;
     };
 
-    [[nodiscard]] std::unique_ptr<IUiContext> CreateUiContext(const std::shared_ptr<IPlatformEnvironment>& env);
+    [[nodiscard]] std::unique_ptr<IUiContext> CreateUiContext(IPlatformEnvironment& env);
     [[nodiscard]] std::unique_ptr<IPlatformUiContext> CreatePlatformUiContext();
 
     [[nodiscard]] InGameConsole& GetInGameConsole();

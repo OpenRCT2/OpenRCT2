@@ -58,8 +58,8 @@ GLuint OpenGLShader::GetShaderId()
 
 std::string OpenGLShader::GetPath(const std::string& name)
 {
-    auto env = GetContext()->GetPlatformEnvironment();
-    auto shadersPath = env->GetDirectoryPath(DirBase::openrct2, DirId::shaders);
+    auto& env = GetContext()->GetPlatformEnvironment();
+    auto shadersPath = env.GetDirectoryPath(DirBase::openrct2, DirId::shaders);
     auto path = Path::Combine(shadersPath, name);
     if (_type == GL_VERTEX_SHADER)
     {

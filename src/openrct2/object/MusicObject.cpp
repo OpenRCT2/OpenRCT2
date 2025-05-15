@@ -47,13 +47,13 @@ void MusicObject::Load()
     }
 
     // Load metadata of samples
-    auto audioContext = GetContext()->GetAudioContext();
+    auto& audioContext = GetContext()->GetAudioContext();
     for (auto& track : _tracks)
     {
         auto stream = track.Asset.GetStream();
         if (stream != nullptr)
         {
-            auto source = audioContext->CreateStreamFromWAV(std::move(stream));
+            auto source = audioContext.CreateStreamFromWAV(std::move(stream));
             if (source != nullptr)
             {
                 track.BytesPerTick = source->GetBytesPerSecond() / 40;
@@ -226,8 +226,8 @@ ObjectAsset MusicObject::GetAsset(IReadObjectContext& context, std::string_view 
 {
     if (path.find("$RCT2:DATA/") == 0)
     {
-        auto env = GetContext()->GetPlatformEnvironment();
-        auto path2 = env->FindFile(DirBase::rct2, DirId::data, path.substr(11));
+        auto& env = GetContext()->GetPlatformEnvironment();
+        auto path2 = env.FindFile(DirBase::rct2, DirId::data, path.substr(11));
         return ObjectAsset(path2);
     }
 

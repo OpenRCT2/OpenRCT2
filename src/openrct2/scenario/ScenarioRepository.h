@@ -89,8 +89,7 @@ struct IScenarioRepository
     virtual bool TryRecordHighscore(int32_t language, const utf8* scenarioFileName, money64 companyValue, const utf8* name) = 0;
 };
 
-[[nodiscard]] std::unique_ptr<IScenarioRepository> CreateScenarioRepository(
-    const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
+[[nodiscard]] std::unique_ptr<IScenarioRepository> CreateScenarioRepository(OpenRCT2::IPlatformEnvironment& env);
 [[nodiscard]] IScenarioRepository* GetScenarioRepository();
 
 void ScenarioRepositoryScan();

@@ -495,8 +495,8 @@ bool GfxLoadG1(const IPlatformEnvironment& env)
         LOG_FATAL("Unable to load g1 graphics");
         if (!gOpenRCT2Headless)
         {
-            auto uiContext = GetContext()->GetUiContext();
-            uiContext->ShowMessageBox("Unable to load g1.dat. Your RollerCoaster Tycoon 2 path may be incorrectly set.");
+            auto& uiContext = GetContext()->GetUiContext();
+            uiContext.ShowMessageBox("Unable to load g1.dat. Your RollerCoaster Tycoon 2 path may be incorrectly set.");
         }
         return false;
     }
@@ -529,9 +529,9 @@ void GfxUnloadCsg()
 static bool GfxLoadOpenRCT2Gx(std::string filename, Gx& target, size_t expectedNumItems)
 {
     LOG_VERBOSE("GfxLoadOpenRCT2Gx(\"%s\")", filename.c_str());
-    auto env = GetContext()->GetPlatformEnvironment();
+    auto& env = GetContext()->GetPlatformEnvironment();
 
-    std::string path = Path::Combine(env->GetDirectoryPath(DirBase::openrct2), filename.c_str());
+    std::string path = Path::Combine(env.GetDirectoryPath(DirBase::openrct2), filename.c_str());
 
     try
     {
@@ -555,9 +555,9 @@ static bool GfxLoadOpenRCT2Gx(std::string filename, Gx& target, size_t expectedN
 
             if (!gOpenRCT2Headless)
             {
-                auto uiContext = GetContext()->GetUiContext();
-                uiContext->ShowMessageBox(errorMessage);
-                uiContext->ShowMessageBox(
+                auto& uiContext = GetContext()->GetUiContext();
+                uiContext.ShowMessageBox(errorMessage);
+                uiContext.ShowMessageBox(
                     "Warning: You may experience graphical glitches if you continue. It's recommended "
                     "that you update "
                     + filename + " if you're seeing this message");
@@ -586,8 +586,8 @@ static bool GfxLoadOpenRCT2Gx(std::string filename, Gx& target, size_t expectedN
         LOG_FATAL("Unable to load %s graphics", filename.c_str());
         if (!gOpenRCT2Headless)
         {
-            auto uiContext = GetContext()->GetUiContext();
-            uiContext->ShowMessageBox("Unable to load " + filename);
+            auto& uiContext = GetContext()->GetUiContext();
+            uiContext.ShowMessageBox("Unable to load " + filename);
         }
     }
     return false;

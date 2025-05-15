@@ -177,16 +177,16 @@ private:
 
 class ObjectRepository final : public IObjectRepository
 {
-    std::shared_ptr<IPlatformEnvironment> const _env;
+    IPlatformEnvironment& _env;
     ObjectFileIndex const _fileIndex;
     std::vector<ObjectRepositoryItem> _items;
     ObjectIdentifierMap _newItemMap;
     ObjectEntryMap _itemMap;
 
 public:
-    explicit ObjectRepository(const std::shared_ptr<IPlatformEnvironment>& env)
+    explicit ObjectRepository(IPlatformEnvironment& env)
         : _env(env)
-        , _fileIndex(*this, *env)
+        , _fileIndex(*this, env)
     {
     }
 
@@ -586,7 +586,7 @@ private:
     std::string GetPathForNewObject(ObjectGeneration generation, std::string_view name)
     {
         // Get object directory and create it if it doesn't exist
-        auto userObjPath = _env->GetDirectoryPath(DirBase::user, DirId::objects);
+        auto userObjPath = _env.GetDirectoryPath(DirBase::user, DirId::objects);
         Path::CreateDirectory(userObjPath);
 
         // Find a unique file name
@@ -657,7 +657,7 @@ private:
     }
 };
 
-std::unique_ptr<IObjectRepository> CreateObjectRepository(const std::shared_ptr<IPlatformEnvironment>& env)
+std::unique_ptr<IObjectRepository> CreateObjectRepository(IPlatformEnvironment& env)
 {
     return std::make_unique<ObjectRepository>(env);
 }

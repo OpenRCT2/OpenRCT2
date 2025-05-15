@@ -686,8 +686,8 @@ static constexpr UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
         std::string GetThemePath()
         {
             auto context = GetContext();
-            auto env = context->GetPlatformEnvironment();
-            return env->GetDirectoryPath(DirBase::user, DirId::themes);
+            auto& env = context->GetPlatformEnvironment();
+            return env.GetDirectoryPath(DirBase::user, DirId::themes);
         }
     } // namespace ThemeManager
 

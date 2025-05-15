@@ -68,8 +68,8 @@ void DrawingEngineResize()
         auto drawingEngine = context->GetDrawingEngine();
         if (drawingEngine != nullptr)
         {
-            auto uiContext = context->GetUiContext();
-            drawingEngine->Resize(uiContext->GetWidth(), uiContext->GetHeight());
+            auto& uiContext = context->GetUiContext();
+            drawingEngine->Resize(uiContext.GetWidth(), uiContext.GetHeight());
         }
     }
 }

@@ -17,18 +17,15 @@ namespace OpenRCT2::Ui
 {
     struct IUiContext;
 
-    [[nodiscard]] std::unique_ptr<Drawing::IDrawingEngine> CreateHardwareDisplayDrawingEngine(
-        const std::shared_ptr<IUiContext>& uiContext);
+    [[nodiscard]] std::unique_ptr<Drawing::IDrawingEngine> CreateHardwareDisplayDrawingEngine(IUiContext& uiContext);
 #ifndef DISABLE_OPENGL
-    [[nodiscard]] std::unique_ptr<Drawing::IDrawingEngine> CreateOpenGLDrawingEngine(
-        const std::shared_ptr<IUiContext>& uiContext);
+    [[nodiscard]] std::unique_ptr<Drawing::IDrawingEngine> CreateOpenGLDrawingEngine(IUiContext& uiContext);
 #endif
 
     class DrawingEngineFactory final : public Drawing::IDrawingEngineFactory
     {
     public:
-        [[nodiscard]] std::unique_ptr<Drawing::IDrawingEngine> Create(
-            DrawingEngine type, const std::shared_ptr<IUiContext>& uiContext) override
+        [[nodiscard]] std::unique_ptr<Drawing::IDrawingEngine> Create(DrawingEngine type, IUiContext& uiContext) override
         {
             switch (type)
             {

@@ -508,8 +508,8 @@ namespace OpenRCT2::ObjectFactory
 
     static bool isUsingClassic()
     {
-        auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
-        return env->IsUsingClassic();
+        auto& env = OpenRCT2::GetContext()->GetPlatformEnvironment();
+        return env.IsUsingClassic();
     }
 
     std::unique_ptr<Object> CreateObjectFromJson(

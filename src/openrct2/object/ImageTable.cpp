@@ -379,8 +379,8 @@ std::vector<int32_t> ImageTable::ParseRange(std::string s)
 
 std::string ImageTable::FindLegacyObject(const std::string& name)
 {
-    const auto env = GetContext()->GetPlatformEnvironment();
-    auto objectsPath = env->GetDirectoryPath(DirBase::rct2, DirId::objects);
+    const auto& env = GetContext()->GetPlatformEnvironment();
+    auto objectsPath = env.GetDirectoryPath(DirBase::rct2, DirId::objects);
     auto objectPath = Path::Combine(objectsPath, name);
     if (File::Exists(objectPath))
     {

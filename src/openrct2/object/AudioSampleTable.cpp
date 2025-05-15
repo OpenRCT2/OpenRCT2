@@ -110,7 +110,6 @@ void AudioSampleTable::LoadFrom(const AudioSampleTable& table, size_t sourceStar
 
 void AudioSampleTable::Load()
 {
-    auto audioContext = GetContext()->GetAudioContext();
     for (size_t i = 0; i < _entries.size(); i++)
     {
         auto& entry = _entries[i];
@@ -158,14 +157,14 @@ IAudioSource* AudioSampleTable::LoadSample(uint32_t index) const
             auto stream = entry.Asset->GetStream();
             if (stream != nullptr)
             {
-                auto audioContext = GetContext()->GetAudioContext();
+                auto& audioContext = GetContext()->GetAudioContext();
                 if (entry.PathIndex)
                 {
-                    result = audioContext->CreateStreamFromCSS(std::move(stream), *entry.PathIndex);
+                    result = audioContext.CreateStreamFromCSS(std::move(stream), *entry.PathIndex);
                 }
                 else
                 {
-                    result = audioContext->CreateStreamFromWAV(std::move(stream));
+                    result = audioContext.CreateStreamFromWAV(std::move(stream));
                 }
             }
         }

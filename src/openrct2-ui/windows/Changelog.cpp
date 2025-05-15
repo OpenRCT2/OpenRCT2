@@ -63,8 +63,8 @@ namespace OpenRCT2::Ui::Windows
          */
         const std::string GetText(PathId pathId)
         {
-            auto env = GetContext()->GetPlatformEnvironment();
-            auto path = env->GetFilePath(pathId);
+            auto& env = GetContext()->GetPlatformEnvironment();
+            auto path = env.GetFilePath(pathId);
             auto fs = std::ifstream(fs::u8path(path), std::ios::in);
             if (!fs.is_open())
             {
@@ -165,7 +165,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_OPEN_URL:
                     if (_newVersionInfo != nullptr)
                     {
-                        GetContext()->GetUiContext()->OpenURL("https://openrct2.io/download/release");
+                        GetContext()->GetUiContext().OpenURL("https://openrct2.io/download/release");
                     }
                     else
                     {

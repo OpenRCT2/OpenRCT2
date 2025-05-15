@@ -31,8 +31,8 @@ TEST(FetchAndApplyScenarioPatch, expected_json_format)
     bool initialised = context->Initialise();
     ASSERT_TRUE(initialised);
 
-    auto env = context->GetPlatformEnvironment();
-    auto scenarioPatches = env->GetDirectoryPath(OpenRCT2::DirBase::openrct2, OpenRCT2::DirId::scenarioPatches);
+    auto& env = context->GetPlatformEnvironment();
+    auto scenarioPatches = env.GetDirectoryPath(OpenRCT2::DirBase::openrct2, OpenRCT2::DirId::scenarioPatches);
 
     std::error_code ec;
     OpenRCT2::RCT12::SetDryRun(true);

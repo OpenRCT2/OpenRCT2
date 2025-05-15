@@ -101,8 +101,7 @@ struct IObjectRepository
     virtual void ExportPackedObject(OpenRCT2::IStream* stream) = 0;
 };
 
-[[nodiscard]] std::unique_ptr<IObjectRepository> CreateObjectRepository(
-    const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
+[[nodiscard]] std::unique_ptr<IObjectRepository> CreateObjectRepository(OpenRCT2::IPlatformEnvironment& env);
 
 [[nodiscard]] bool IsObjectCustom(const ObjectRepositoryItem* object);
 
