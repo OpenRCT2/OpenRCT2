@@ -26,7 +26,6 @@ struct RenderTarget;
 struct TrackDesignFileRef;
 struct ScenarioIndexEntry;
 
-enum class VisibilityCache : uint8_t;
 enum class CursorID : uint8_t;
 enum class CloseWindowModifier : uint8_t;
 
@@ -232,13 +231,6 @@ enum class ModalResult : int8_t
     ok,
 };
 
-enum class VisibilityCache : uint8_t
-{
-    unknown,
-    visible,
-    covered
-};
-
 enum class CloseWindowModifier : uint8_t
 {
     none,
@@ -341,10 +333,7 @@ namespace OpenRCT2
 
     void TextinputCancel();
 
-    bool WindowIsVisible(WindowBase& w);
-
     Viewport* WindowGetPreviousViewport(Viewport* current);
-    void WindowResetVisibilities();
     void WindowInitAll();
 
     void WindowFollowSprite(WindowBase& w, EntityId spriteIndex);

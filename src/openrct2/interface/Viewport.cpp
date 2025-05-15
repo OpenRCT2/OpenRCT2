@@ -203,6 +203,7 @@ namespace OpenRCT2
         if (Config::Get().general.AlwaysShowGridlines)
             viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
         w->viewport = viewport;
+        viewport->isVisible = w->IsVisible();
 
         CoordsXYZ centrePos = focus.GetPos();
         w->viewport_target_sprite = std::visit(
@@ -250,7 +251,7 @@ namespace OpenRCT2
     {
         for (auto& vp : _viewports)
         {
-            if (maxZoom == ZoomLevel{ -1 } || vp.zoom <= ZoomLevel{ maxZoom })
+            if (vp.isVisible && (maxZoom == ZoomLevel{ -1 } || vp.zoom <= ZoomLevel{ maxZoom }))
             {
                 int32_t x1, y1, x2, y2;
 
@@ -272,7 +273,7 @@ namespace OpenRCT2
     {
         for (auto& vp : _viewports)
         {
-            if (maxZoom == ZoomLevel{ -1 } || vp.zoom <= ZoomLevel{ maxZoom })
+            if (vp.isVisible && (maxZoom == ZoomLevel{ -1 } || vp.zoom <= ZoomLevel{ maxZoom }))
             {
                 auto screenCoords = Translate3DTo2DWithZ(vp.rotation, pos);
                 auto screenPos = ScreenRect(
@@ -287,7 +288,7 @@ namespace OpenRCT2
     {
         for (auto& vp : _viewports)
         {
-            if (maxZoom == ZoomLevel{ -1 } || vp.zoom <= ZoomLevel{ maxZoom })
+            if (vp.isVisible && (maxZoom == ZoomLevel{ -1 } || vp.zoom <= ZoomLevel{ maxZoom }))
             {
                 ViewportInvalidate(&vp, screenRect);
             }
@@ -1840,24 +1841,6 @@ namespace OpenRCT2
     void ViewportInvalidate(const Viewport* viewport, const ScreenRect& screenRect)
     {
         PROFILED_FUNCTION();
-
-        // if unknown viewport visibility, use the containing window to discover the status
-        if (viewport->visibility == VisibilityCache::unknown)
-        {
-            auto windowManager = Ui::GetWindowManager();
-            auto owner = windowManager->GetOwner(viewport);
-            if (owner != nullptr && owner->classification != WindowClass::MainWindow)
-            {
-                // note, window_is_visible will update viewport->visibility, so this should have a low hit count
-                if (!WindowIsVisible(*owner))
-                {
-                    return;
-                }
-            }
-        }
-
-        if (viewport->visibility == VisibilityCache::covered)
-            return;
 
         auto zoom = viewport->zoom;
         auto viewPos = viewport->viewPos;

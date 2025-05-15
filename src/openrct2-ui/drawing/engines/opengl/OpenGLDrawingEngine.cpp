@@ -366,8 +366,6 @@ public:
 
     void PaintWindows() override
     {
-        WindowResetVisibilities();
-
         if (ClimateHasWeatherEffect())
         {
             WindowUpdateAllViewports();

@@ -38,7 +38,7 @@ namespace OpenRCT2
         uint32_t flags{};
         ZoomLevel zoom{};
         uint8_t rotation{};
-        VisibilityCache visibility{};
+        bool isVisible = false;
 
         [[nodiscard]] constexpr int32_t ViewWidth() const
         {

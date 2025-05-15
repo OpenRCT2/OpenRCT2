@@ -184,8 +184,6 @@ void X8DrawingEngine::EndDraw()
 
 void X8DrawingEngine::PaintWindows()
 {
-    WindowResetVisibilities();
-
     // Redraw dirty regions before updating the viewports, otherwise
     // when viewports get panned, they copy dirty pixels
     DrawAllDirtyBlocks();
