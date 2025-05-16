@@ -25,8 +25,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
-
 enum
 {
     SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE = 22164,
@@ -191,8 +189,6 @@ static void AirPoweredVerticalRCTrackFlat(
     DrawSupportForSequenceA<TrackElemType::Flat>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -215,8 +211,6 @@ static void AirPoweredVerticalRCTrackStation(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
     TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 5, trackElement, StationBaseType::b, -2);
-
-    TrackPaintUtilDrawStationTunnel(session, direction, height);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -260,7 +254,6 @@ static void AirPoweredVerticalRCTrackRightQuarterTurn5(
     TrackPaintUtilRightQuarterTurn5TilesPaint3(session, height, direction, trackSequence, session.TrackColours, imageIds);
     DrawSupportForSequenceA<TrackElemType::RightQuarterTurn5Tiles>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    TrackPaintUtilRightQuarterTurn5TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {
@@ -352,8 +345,6 @@ static void AirPoweredVerticalRCTrackFlatToLeftBank(
     DrawSupportForSequenceA<TrackElemType::FlatToLeftBank>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -381,8 +372,6 @@ static void AirPoweredVerticalRCTrackFlatToRightBank(
 
     DrawSupportForSequenceA<TrackElemType::FlatToRightBank>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -455,7 +444,6 @@ static void AirPoweredVerticalRCTrackBankedRightQuarterTurn5(
 
     DrawSupportForSequenceA<TrackElemType::BankedRightQuarterTurn5Tiles>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-    TrackPaintUtilRightQuarterTurn5TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {
@@ -548,8 +536,6 @@ static void AirPoweredVerticalRCTrackLeftBank(
     DrawSupportForSequenceA<TrackElemType::LeftBank>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -577,8 +563,6 @@ static void AirPoweredVerticalRCTrackBrakes(
 
     DrawSupportForSequenceA<TrackElemType::Brakes>(
         session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -698,8 +682,6 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
 
             DrawSupportForSequenceA<TrackElemType::ReverseFreefallSlope>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
-            PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
             break;
         case 1:
         case 2:
@@ -724,11 +706,6 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
 
             DrawSupportForSequenceA<TrackElemType::ReverseFreefallSlope>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
-            if (trackSequence == 0)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-            }
             break;
         case 4:
             if (isDirection03)
@@ -791,9 +768,6 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
             }
             DrawSupportForSequenceA<TrackElemType::ReverseFreefallSlope>(
                 session, supportType.wooden, trackSequence, direction, height, session.SupportColours);
-
-            PaintUtilSetVerticalTunnel(session, height + 240);
-
             break;
     }
 
@@ -831,8 +805,6 @@ static void AirPoweredVerticalRCTrackVerticalUp(
                 PaintAddImageAsParentRotated(
                     session, direction, imageId, { 0, 0, height }, { { 30, 6, height }, { 2, 20, 79 } });
             }
-
-            PaintUtilSetVerticalTunnel(session, height + 80);
             break;
     }
 
@@ -903,7 +875,6 @@ static void AirPoweredVerticalRCTrackVerticalTop(
                 PaintAddImageAsParentRotated(
                     session, direction, imageIdT, { 0, 0, height }, { { 33, 6, height }, { 2, 20, 1 } });
             }
-            PaintUtilSetVerticalTunnel(session, height + 80);
             break;
         case 2:
             imageIdT = session.TrackColours.WithIndex(imageIds[direction][3]);
@@ -917,7 +888,6 @@ static void AirPoweredVerticalRCTrackVerticalTop(
                 PaintAddImageAsParentRotated(
                     session, direction, imageIdT, { 0, 0, height }, { { 0, 6, height }, { 2, 20, 15 } });
             }
-            PaintUtilSetVerticalTunnel(session, height + 80);
             break;
         case 3:
             imageIdS = session.SupportColours.WithIndex(imageIds[direction][4]);
@@ -975,13 +945,11 @@ static void AirPoweredVerticalRCTrackBooster(
     {
         auto imageId = colour.WithIndex(SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
         auto imageId = colour.WithIndex(SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     DrawSupportForSequenceA<TrackElemType::Booster>(

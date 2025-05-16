@@ -25,6 +25,8 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
         {
             .trackStyle = TrackStyle::waterCoaster,
             .supportType = MetalSupportType::Fork,
+            .trackGroupTunnelStyles = kTrackGroupTunnelStylesStandard,
+            .tunnelGroup = TunnelGroup::uninverted,
             .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::blockBrakes, TrackGroup::onridePhoto, TrackGroup::booster, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
             .extraTrackGroups = {TrackGroup::flatToSteepSlope},
             .icon = SPR_RIDE_CONSTRUCTION_RC_TRACK,
@@ -33,6 +35,8 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
         {
             .trackStyle = TrackStyle::splashBoats,
             .supportType = WoodenSupportType::Truss,
+            .trackGroupTunnelStyles = kTrackGroupTunnelStylesSquare,
+            .tunnelGroup = TunnelGroup::uninverted,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::curve, TrackGroup::sBend },
             .extraTrackGroups = {},
             .icon = SPR_RIDE_CONSTRUCTION_WATER_CHANNEL,

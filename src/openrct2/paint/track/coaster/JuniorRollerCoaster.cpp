@@ -26,8 +26,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
-
 enum class JuniorRCSubType : uint8_t
 {
     Junior = 1,
@@ -1865,7 +1863,6 @@ static void JuniorRCPaintTrackFlat(
     auto subTypeOffset = JuniorRCGetSubTypeOffset<TSubType>(trackElement);
     auto imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_flat[subTypeOffset][direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
@@ -1916,7 +1913,6 @@ static void JuniorRCPaintStation(
         }
         PaintAddImageAsParent(session, imageId, { 6, 0, height }, { { 0, 6, height + 1 }, { 20, 32, 1 } });
     }
-    TrackPaintUtilDrawStationTunnel(session, direction, height);
 
     if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2))
     {
@@ -1941,11 +1937,6 @@ static void JuniorRCPaintTrack25DegUp(
     auto imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_25_deg_up[subTypeOffset][direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
 
-    int8_t tunnelHeights[4] = { -8, 8, 8, -8 };
-    TunnelSubType tunnelType[4] = { TunnelSubType::SlopeStart, TunnelSubType::SlopeEnd, TunnelSubType::SlopeEnd,
-                                    TunnelSubType::SlopeStart };
-    PaintUtilPushTunnelRotated(session, direction, height + tunnelHeights[direction], kTunnelGroup, tunnelType[direction]);
-
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
@@ -1969,14 +1960,6 @@ static void JuniorRCPaintTrackFlatTo25DegUp(
     auto imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_flat_to_25_deg_up[subTypeOffset][direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
-    if (direction == 0 || direction == 3)
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    else
-    {
-        PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
@@ -2001,28 +1984,6 @@ static void JuniorRCPaintTrack25DegUpToFlat(
     auto subTypeOffset = JuniorRCGetSubTypeOffset<TSubType>(trackElement);
     auto imageId = session.TrackColours.WithIndex(junior_rc_track_pieces_25_deg_up_to_flat[subTypeOffset][direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
-
-    TunnelSubType tunnelType;
-    int16_t tunnelHeight;
-    if (direction == 1 || direction == 2)
-    {
-        tunnelType = TunnelSubType::FlatTo25Deg;
-        tunnelHeight = height + 8;
-    }
-    else
-    {
-        tunnelType = TunnelSubType::Flat;
-        tunnelHeight = height - 8;
-    }
-
-    if (direction & 1)
-    {
-        PaintUtilPushTunnelRight(session, tunnelHeight, kTunnelGroup, tunnelType);
-    }
-    else
-    {
-        PaintUtilPushTunnelLeft(session, tunnelHeight, kTunnelGroup, tunnelType);
-    }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
@@ -2066,26 +2027,6 @@ static void JuniorRCRightQuarterTurn5TilesPaintSetup(
                 session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 0, supportHeight,
                 session.SupportColours);
             break;
-    }
-
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 0 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 1 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     switch (trackSequence)
@@ -2166,14 +2107,10 @@ static void JuniorRCFlatToLeftBankPaintSetup(
     if (direction & 1)
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
-
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
-
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     if (junior_rc_track_pieces_flat_to_left_bank[direction][1] != 0)
@@ -2217,14 +2154,10 @@ static void JuniorRCFlatToRightBankPaintSetup(
     if (direction & 1)
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
-
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
-
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     if (junior_rc_track_pieces_flat_to_right_bank[direction][1] != 0)
@@ -2371,26 +2304,6 @@ static void JuniorRCBankedRightQuarterTurn5TilesPaintSetup(
             break;
     }
 
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 0 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 1 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
     switch (trackSequence)
     {
         case 0:
@@ -2491,22 +2404,6 @@ static void JuniorRCLeftBankTo25DegUpPaintSetup(
             session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
     }
 
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-            break;
-    }
-
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
@@ -2554,22 +2451,6 @@ static void JuniorRCRightBankTo25DegUpPaintSetup(
             session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
     }
 
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-            break;
-    }
-
     PaintUtilSetSegmentSupportHeight(
         session,
         PaintUtilRotateSegments(
@@ -2587,31 +2468,14 @@ static void JuniorRC25DegUpToLeftBankPaintSetup(
 {
     ImageId image_id;
 
-    TunnelSubType tunnelType;
-    int16_t tunnelHeight;
-    if (direction == 1 || direction == 2)
-    {
-        tunnelType = TunnelSubType::FlatTo25Deg;
-        tunnelHeight = height + 8;
-    }
-    else
-    {
-        tunnelType = TunnelSubType::Flat;
-        tunnelHeight = height - 8;
-    }
-
     image_id = session.TrackColours.WithIndex(junior_rc_track_pieces_25_deg_up_to_left_bank[direction][0]);
     if (direction & 1)
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
-
-        PaintUtilPushTunnelRight(session, tunnelHeight, kTunnelGroup, tunnelType);
     }
     else
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
-
-        PaintUtilPushTunnelLeft(session, tunnelHeight, kTunnelGroup, tunnelType);
     }
 
     if (junior_rc_track_pieces_25_deg_up_to_left_bank[direction][1] != 0)
@@ -2651,31 +2515,14 @@ static void JuniorRC25DegUpToRightBankPaintSetup(
 {
     ImageId image_id;
 
-    TunnelSubType tunnelType;
-    int16_t tunnelHeight;
-    if (direction == 1 || direction == 2)
-    {
-        tunnelType = TunnelSubType::FlatTo25Deg;
-        tunnelHeight = height + 8;
-    }
-    else
-    {
-        tunnelType = TunnelSubType::Flat;
-        tunnelHeight = height - 8;
-    }
-
     image_id = session.TrackColours.WithIndex(junior_rc_track_pieces_25_deg_up_to_right_bank[direction][0]);
     if (direction & 1)
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 1 } });
-
-        PaintUtilPushTunnelRight(session, tunnelHeight, kTunnelGroup, tunnelType);
     }
     else
     {
         PaintAddImageAsParent(session, image_id, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
-
-        PaintUtilPushTunnelLeft(session, tunnelHeight, kTunnelGroup, tunnelType);
     }
 
     if (junior_rc_track_pieces_25_deg_up_to_right_bank[direction][1] != 0)
@@ -2774,15 +2621,6 @@ static void JuniorRCLeftBankPaintSetup(
         session, image_id, { 0, 0, height },
         { { junior_rc_left_bank_bound_offsets[direction], height }, junior_rc_left_bank_bound_lengths[direction] });
 
-    if (direction & 1)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    else
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
@@ -2830,23 +2668,6 @@ static void JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp(
                 session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), supportSpecial[direction],
                 height, session.SupportColours);
             break;
-    }
-
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    if (direction == 2 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    if (direction == 3 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
     switch (trackSequence)
@@ -2929,23 +2750,6 @@ static void JuniorRCPaintTrackRightQuarterTurn5Tiles25DegUp(
                 session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 8, height,
                 session.SupportColours);
             break;
-    }
-
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    if (direction == 0 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-    if (direction == 1 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
     switch (trackSequence)
@@ -3061,20 +2865,6 @@ static void JuniorRCSBendLeftPaintSetup(
         PaintAddImageAsParent(session, imageId, { offset.y, offset.x, height }, { bounds.y, bounds.x, 1 });
     }
 
-    if (direction == 0 || direction == 2)
-    {
-        if (trackSequence == 0)
-        {
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-    }
-    else
-    {
-        if (trackSequence == 3)
-        {
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-    }
     switch (trackSequence)
     {
         case 0:
@@ -3154,20 +2944,6 @@ static void JuniorRCSBendRightPaintSetup(
         PaintAddImageAsParent(session, imageId, { offset.y, offset.x, height }, { bounds.y, bounds.x, 1 });
     }
 
-    if (direction == 0 || direction == 2)
-    {
-        if (trackSequence == 0)
-        {
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-    }
-    else
-    {
-        if (trackSequence == 3)
-        {
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-        }
-    }
     switch (trackSequence)
     {
         case 0:
@@ -3220,7 +2996,6 @@ static void JuniorRCRightQuarterTurn3TilesPaintSetup(
     TrackPaintUtilRightQuarterTurn3TilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours, junior_rc_track_pieces_flat_quarter_turn_3_tiles,
         defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, nullptr);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
     switch (trackSequence)
     {
@@ -3328,7 +3103,6 @@ static void JuniorRCRightQuarterTurn3TilesBankPaintSetup(
         session, thickness[direction][trackSequence], height, direction, trackSequence, session.TrackColours,
         junior_rc_track_pieces_banked_quarter_turn_3_tiles, nullptr, junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths,
         junior_rc_right_quarter_turn_3_tiles_bank_offsets);
-    TrackPaintUtilRightQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
 
     if (direction == 1 && trackSequence == 3)
     {
@@ -3406,26 +3180,6 @@ static void JuniorRCPaintTrackRightQuarterTurn3Tiles25DegUp(
         PaintAddImageAsParent(session, imageId, { offset, height }, { { bb.offset, height }, { bb.length, 1 } });
     }
 
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-
-    if (direction == 0 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
-
-    if (direction == 1 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
-
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-
     switch (trackSequence)
     {
         case 0:
@@ -3488,26 +3242,6 @@ static void JuniorRCPaintTrackRightQuarterTurn3Tiles25DegDown(
     if (imageId.GetIndex() != 0)
     {
         PaintAddImageAsParent(session, imageId, { offset, height }, { { bb.offset, height }, { bb.length, 1 } });
-    }
-
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
-    }
-
-    if (direction == 0 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-
-    if (direction == 1 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-    }
-
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
     }
 
     switch (trackSequence)
@@ -3609,26 +3343,6 @@ static void JuniorRCRightHalfBankedHelixUpSmallPaintSetup(
             session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 6, height, session.SupportColours);
     }
 
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 0 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 1 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
     int32_t blockedSegments = 0;
     switch (trackSequence)
     {
@@ -3678,26 +3392,6 @@ static void JuniorRCRightHalfBankedHelixDownSmallPaintSetup(
     {
         MetalASupportsPaintSetupRotated(
             session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 2, height, session.SupportColours);
-    }
-
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 0 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 1 && trackSequence == 3)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
     }
 
     int32_t blockedSegments = 0;
@@ -3783,26 +3477,6 @@ static void JuniorRCRightHalfBankedHelixUpLargePaintSetup(
             session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 7, height, session.SupportColours);
     }
 
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 0 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 1 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
     switch (trackSequence)
     {
         case 0:
@@ -3885,26 +3559,6 @@ static void JuniorRCRightHalfBankedHelixDownLargePaintSetup(
     {
         MetalASupportsPaintSetupRotated(
             session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 1, height, session.SupportColours);
-    }
-
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 0 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 1 && trackSequence == 6)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
     }
 
     switch (trackSequence)
@@ -4007,14 +3661,10 @@ static void JuniorRCBrakePaintSetup(
     if (direction & 1)
     {
         PaintAddImageAsParent(session, image_id, { 6, 0, height }, { 20, 32, 1 });
-
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
         PaintAddImageAsParent(session, image_id, { 0, 6, height }, { 32, 20, 1 });
-
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -4046,14 +3696,10 @@ static void JuniorRCBlockBrakePaintSetup(
     if (direction & 1)
     {
         PaintAddImageAsParent(session, image_id, { 6, 0, height }, { 20, 32, 1 });
-
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
         PaintAddImageAsParent(session, image_id, { 0, 6, height }, { 32, 20, 1 });
-
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -4091,15 +3737,6 @@ static void JuniorRCLeftEighthToDiagPaintSetup(
                 session, supportType.metal, MetalSupportPlace::LeftCorner, DirectionPrev(direction), 0, height,
                 session.SupportColours);
             break;
-    }
-
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     int32_t blockedSegments = 0;
@@ -4154,15 +3791,6 @@ static void JuniorRCRightEighthToDiagPaintSetup(
                 session, supportType.metal, MetalSupportPlace::BottomCorner, DirectionNext(direction), 0, height,
                 session.SupportColours);
             break;
-    }
-
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     int32_t blockedSegments = 0;
@@ -4316,15 +3944,6 @@ static void JuniorRCLeftEighthToDiagBankPaintSetup(
             break;
     }
 
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-
     int32_t blockedSegments = 0;
     switch (trackSequence)
     {
@@ -4457,15 +4076,6 @@ static void JuniorRCRightEighthToDiagBankPaintSetup(
             MetalASupportsPaintSetupRotated(
                 session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
             break;
-    }
-
-    if (direction == 0 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
-    }
-    if (direction == 3 && trackSequence == 0)
-    {
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     int32_t blockedSegments = 0;
@@ -5190,22 +4800,6 @@ static void JuniorRCPaintTrack60DegUp(
         { { junior_rc_60_deg_up_bound_offsets[direction], height },
           { junior_rc_60_deg_up_bound_lengths[direction], junior_rc_60_deg_up_bound_thickness[direction] } });
 
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height + 56, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            break;
-    }
-
     static constexpr int8_t support[4] = { 35, 29, 25, 32 };
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
@@ -5276,22 +4870,6 @@ static void JuniorRCPaintTrack25DegUpTo60DegUp(
                 junior_rc_25_deg_up_to_60_deg_up_bound_thickness[direction] } });
     }
 
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            break;
-    }
-
     static constexpr int8_t support[4] = { 12, 12, 12, 14 };
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
@@ -5339,22 +4917,6 @@ static void JuniorRCPaintTrack60DegUpTo25DegUp(
             { { junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][1], height },
               { junior_rc_25_deg_up_to_60_deg_up_bound_lengths[direction][1],
                 junior_rc_25_deg_up_to_60_deg_up_bound_thickness[direction] } });
-    }
-
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            break;
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -5589,22 +5151,6 @@ static void JuniorRCFlatTo60DegUpPaintSetup(
                 junior_rc_flat_to_60_deg_up_bound_thickness[direction] } });
     }
 
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeStart);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeStart);
-            break;
-    }
-
     static constexpr int8_t support[4] = { 12, 12, 12, 14 };
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
@@ -5650,22 +5196,6 @@ static void JuniorRC60DegUpToFlatPaintSetup(
             { { junior_rc_flat_to_60_deg_up_bound_offsets[direction][1], height },
               { junior_rc_flat_to_60_deg_up_bound_lengths[direction][1],
                 junior_rc_flat_to_60_deg_up_bound_thickness[direction] } });
-    }
-
-    switch (direction)
-    {
-        case 0:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeStart);
-            break;
-        case 1:
-            PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 2:
-            PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
-            break;
-        case 3:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeStart);
-            break;
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -5727,16 +5257,12 @@ static void JuniorRCBoosterPaintSetup(
         PaintAddImageAsParent(
             session, session.TrackColours.WithIndex(SPR_JUNIOR_RC_BOOSTER_NE_SW), { 0, 0, height },
             { { 6, 0, height }, { 20, 32, 1 } });
-
-        PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
     else
     {
         PaintAddImageAsParent(
             session, session.TrackColours.WithIndex(SPR_JUNIOR_RC_BOOSTER_NW_SE), { 0, 0, height },
             { { 0, 6, height }, { 32, 20, 1 } });
-
-        PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
     }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))

@@ -25,8 +25,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
-
 /** rct2: 0x007C7244, 0x007C7254, 0x007C7264 */
 static void FlyingRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -61,7 +59,6 @@ static void FlyingRCTrackStation(
             session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
     }
 
-    TrackPaintUtilDrawStationTunnel(session, direction, height);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
@@ -158,10 +155,6 @@ static void FlyingRCTrack90DegToInvertedFlatQuarterLoopUp(
                         { { 0, 6, height + 24 }, { 32, 20, 3 } });
                     break;
             }
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -233,10 +226,6 @@ static void FlyingRCTrackHalfLoopInvertedUp(
                     break;
             }
 
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
-            }
             PaintUtilSetGeneralSupportHeight(session, height + 72);
             break;
         case 1:
@@ -324,10 +313,6 @@ static void FlyingRCTrackHalfLoopInvertedUp(
                         { { 0, 6, height + 34 }, { 32, 20, 3 } });
                     break;
             }
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height + 32, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
@@ -371,10 +356,6 @@ static void FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(
                         session, direction, session.TrackColours.WithIndex(27660), { 0, 0, height - 4 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
-            }
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -575,10 +556,6 @@ static void FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(
                         session, supportType.metal, MetalSupportPlace::Centre, 0, height + 24, session.SupportColours);
                     break;
             }
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height + 32, kTunnelGroup, TunnelSubType::Flat);
-            }
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -621,10 +598,6 @@ static void FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(
                         session, direction, session.TrackColours.WithIndex(27667), { 0, 0, height - 4 },
                         { { 0, 6, height + 29 }, { 32, 20, 3 } });
                     break;
-            }
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             }
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
@@ -823,10 +796,6 @@ static void FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::Centre, 0, height + 24, session.SupportColours);
                     break;
-            }
-            if (direction == 0 || direction == 3)
-            {
-                PaintUtilPushTunnelRotated(session, direction, height + 32, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,

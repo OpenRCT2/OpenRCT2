@@ -22,6 +22,8 @@ constexpr RideTypeDescriptor MineRideRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::mineRide,
         .supportType = MetalSupportType::Fork,
+        .trackGroupTunnelStyles = kTrackGroupTunnelStylesSquare,
+        .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::onridePhoto},
         .extraTrackGroups = {},
     }),

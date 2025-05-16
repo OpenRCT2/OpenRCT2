@@ -22,6 +22,8 @@ constexpr RideTypeDescriptor SpinningWildMouseRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::steelWildMouse,
         .supportType = MetalSupportType::Tubes,
+        .trackGroupTunnelStyles = kTrackGroupTunnelStylesStandard,
+        .tunnelGroup = TunnelGroup::uninverted,
         .enabledTrackGroups = {TrackGroup::straight,TrackGroup::stationEnd,TrackGroup::liftHill,  TrackGroup::slope,TrackGroup::flatToSteepSlope,TrackGroup::curveVerySmall,TrackGroup::curveSmall, TrackGroup::brakes,TrackGroup::blockBrakes,TrackGroup::rotationControlToggle},
         .extraTrackGroups = {TrackGroup::liftHillSteep, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve},
     }),
