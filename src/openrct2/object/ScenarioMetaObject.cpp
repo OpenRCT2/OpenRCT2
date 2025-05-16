@@ -18,10 +18,16 @@ using namespace OpenRCT2;
 
 void ScenarioMetaObject::Load()
 {
+    auto numImages = GetImageTable().GetCount();
+    if (numImages == 0)
+        return;
+
+    _imageOffsetId = LoadImages();
 }
 
 void ScenarioMetaObject::Unload()
 {
+    UnloadImages();
 }
 
 void ScenarioMetaObject::ReadJson(IReadObjectContext* context, json_t& root)
@@ -43,4 +49,14 @@ std::string ScenarioMetaObject::GetParkName()
 std::string ScenarioMetaObject::GetScenarioDetails()
 {
     return GetStringTable().GetString(ObjectStringID::SCENARIO_DETAILS);
+}
+
+ImageIndex ScenarioMetaObject::GetMiniMapImageIndex() const
+{
+    return _imageOffsetId;
+}
+
+ImageIndex ScenarioMetaObject::GetPreviewImageIndex() const
+{
+    return _imageOffsetId + 1;
 }

@@ -16,6 +16,9 @@
 
 class ScenarioMetaObject final : public Object
 {
+private:
+    ImageIndex _imageOffsetId;
+
 public:
     static constexpr ObjectType kObjectType = ObjectType::scenarioMeta;
 
@@ -26,4 +29,7 @@ public:
     std::string GetScenarioName();
     std::string GetParkName();
     std::string GetScenarioDetails();
+
+    ImageIndex GetMiniMapImageIndex() const;
+    ImageIndex GetPreviewImageIndex() const;
 };
