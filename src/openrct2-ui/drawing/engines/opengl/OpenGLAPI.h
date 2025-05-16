@@ -10,6 +10,8 @@
 #pragma once
 
 #include <openrct2/Diagnostic.h>
+#include <source_location>
+#include <type_traits>
 
 #ifdef OPENGL_NO_LINK
 
@@ -120,6 +122,51 @@ using PFNGLTEXSUBIMAGE2D = void(APIENTRYP)(
 
 namespace OpenRCT2::Ui
 {
+    template<typename TFn, typename... TArgs>
+    inline auto glCallImpl(std::source_location srcLoc, TFn fn, TArgs&&... args) -> decltype(fn(std::forward<TArgs>(args)...))
+    {
+        const auto trimFilePath = [](const char* filePath) {
+            const char* srcPos = strstr(filePath, "src/");
+            if (srcPos == nullptr)
+            {
+                srcPos = strstr(filePath, "src\\");
+            }
+            if (srcPos != nullptr)
+            {
+                return srcPos;
+            }
+            return filePath;
+        };
+
+        if constexpr (std::is_same_v<decltype(fn(std::forward<TArgs>(args)...)), void>)
+        {
+            fn(std::forward<TArgs>(args)...);
+            GLenum error = glGetError();
+            if (error != GL_NO_ERROR)
+            {
+                LOG_ERROR("OpenGL Error 0x%04X at %s:%d", error, trimFilePath(srcLoc.file_name()), srcLoc.line());
+            }
+        }
+        else
+        {
+            auto result = fn(std::forward<TArgs>(args)...);
+            GLenum error = glGetError();
+            if (error != GL_NO_ERROR)
+            {
+                LOG_ERROR("OpenGL Error 0x%04X at %s:%d", error, trimFilePath(srcLoc.file_name()), srcLoc.line());
+            }
+            return result;
+        }
+    }
+
+#define glCall(fn, ...) glCallImpl(std::source_location::current(), fn, __VA_ARGS__)
+
+    template<typename T>
+    GLsizei glSizeOf()
+    {
+        return static_cast<GLsizei>(sizeof(T));
+    }
+
     inline void CheckGLError()
     {
         GLenum error = glGetError();
