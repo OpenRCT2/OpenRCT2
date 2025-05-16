@@ -37,8 +37,6 @@ TextureCache::~TextureCache()
 
 void TextureCache::InvalidateImage(ImageIndex image)
 {
-    unique_lock lock(_mutex);
-
     uint32_t index = _indexMap[image];
     if (index == kUnusedIndex)
         return;
@@ -75,8 +73,6 @@ BasicTextureInfo TextureCache::GetOrLoadImageTexture(const ImageId imageId)
 
     // Try to read cached texture first.
     {
-        shared_lock lock(_mutex);
-
         index = _indexMap[imageId.GetIndex()];
         if (index != kUnusedIndex)
         {
@@ -89,8 +85,6 @@ BasicTextureInfo TextureCache::GetOrLoadImageTexture(const ImageId imageId)
     }
 
     // Load new texture.
-    unique_lock lock(_mutex);
-
     index = static_cast<uint32_t>(_textureCache.size());
 
     AtlasTextureInfo info = LoadImageTexture(imageId);
@@ -108,8 +102,6 @@ BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(const ImageId imageId, cons
 
     // Try to read cached texture first.
     {
-        shared_lock lock(_mutex);
-
         uint8_t glyphMap[8];
         for (uint8_t i = 0; i < 8; i++)
         {
@@ -129,8 +121,6 @@ BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(const ImageId imageId, cons
     }
 
     // Load new texture.
-    unique_lock lock(_mutex);
-
     auto cacheInfo = LoadGlyphTexture(imageId, paletteMap);
     auto it = _glyphTextureMap.insert(std::make_pair(glyphId, cacheInfo));
 
@@ -143,8 +133,6 @@ BasicTextureInfo TextureCache::GetOrLoadBitmapTexture(ImageIndex image, const vo
 
     // Try to read cached texture first.
     {
-        shared_lock lock(_mutex);
-
         index = _indexMap[image];
         if (index != kUnusedIndex)
         {
@@ -157,8 +145,6 @@ BasicTextureInfo TextureCache::GetOrLoadBitmapTexture(ImageIndex image, const vo
     }
 
     // Load new texture.
-    unique_lock lock(_mutex);
-
     index = uint32_t(_textureCache.size());
 
     AtlasTextureInfo info = LoadBitmapTexture(image, pixels, width, height);

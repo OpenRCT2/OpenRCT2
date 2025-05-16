@@ -17,7 +17,6 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/DrawingLock.hpp>
-#include <shared_mutex>
 #include <unordered_map>
 #include <vector>
 
@@ -200,10 +199,6 @@ namespace OpenRCT2::Ui
 
         GLuint _paletteTexture = 0;
         GLuint _blendPaletteTexture = 0;
-
-        std::shared_mutex _mutex;
-        using shared_lock = DrawingSharedLock<std::shared_mutex>;
-        using unique_lock = DrawingUniqueLock<std::shared_mutex>;
 
     public:
         TextureCache();
