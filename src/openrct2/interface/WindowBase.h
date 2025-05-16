@@ -227,5 +227,5 @@ namespace OpenRCT2
 #endif
 
     // rct2: 0x01420078
-    extern std::list<std::shared_ptr<WindowBase>> g_window_list;
+    extern std::vector<std::unique_ptr<WindowBase>> g_window_list;
 } // namespace OpenRCT2
