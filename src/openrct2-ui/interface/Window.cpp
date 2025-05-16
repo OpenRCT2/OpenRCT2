@@ -1030,7 +1030,6 @@ namespace OpenRCT2::Ui::Windows
         WindowVisitEach([](WindowBase* w) {
             Windows::WindowUpdateScrollWidgets(*w);
             WindowInvalidatePressedImageButton(*w);
-            w->OnResize();
         });
     }
 

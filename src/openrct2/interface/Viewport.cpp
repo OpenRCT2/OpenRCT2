@@ -620,8 +620,6 @@ namespace OpenRCT2
         Guard::Assert(
             GetContext()->GetDrawingEngine()->GetDrawingContext() != nullptr, "We must be in a valid drawing context.");
 
-        window->OnResize();
-
         Viewport* viewport = window->viewport;
         if (viewport == nullptr)
             return;

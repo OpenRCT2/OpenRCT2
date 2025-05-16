@@ -233,6 +233,8 @@ namespace OpenRCT2::Ui::Windows
             _sceneryPaintEnabled = false; // repaint coloured scenery tool state
             gWindowSceneryEyedropperEnabled = false;
 
+            _actualMinHeight = GetMinimumHeight();
+
             width = GetRequiredWidth();
             min_width = width;
             max_width = width;
@@ -489,6 +491,13 @@ namespace OpenRCT2::Ui::Windows
 
                             min_height = windowHeight;
                             max_height = windowHeight;
+
+                            if (height < min_height)
+                            {
+                                height = min_height;
+                                Invalidate();
+                                ContentUpdateScroll();
+                            }
                         }
                     }
                 }
@@ -501,6 +510,13 @@ namespace OpenRCT2::Ui::Windows
                     min_height = _actualMinHeight;
                     max_height = _actualMinHeight;
                 }
+            }
+
+            if (height > max_height)
+            {
+                Invalidate();
+                height = max_height;
+                ContentUpdateScroll();
             }
 
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
@@ -639,10 +655,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            // Minimum window height: title, one scenery button, status bar, padding
-            _actualMinHeight = getTitleBarTargetHeight() + SCENERY_BUTTON_HEIGHT + kDescriptionHeight + 2 * kTabMargin;
-            _actualMinHeight += static_cast<int32_t>(1 + (_tabEntries.size() / GetMaxTabCountInARow())) * TabHeight;
-            _actualMinHeight += widgets[WIDX_FILTER_TEXT_BOX].height() + 2 * kInputMargin;
+            _actualMinHeight = GetMinimumHeight();
 
             // Set the window title
             StringId titleStringId = STR_MISCELLANEOUS;
@@ -1090,6 +1103,15 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
+        int32_t GetMinimumHeight() const
+        {
+            // Minimum window height: title, one scenery button, status bar, padding
+            int32_t minHeight = getTitleBarTargetHeight() + SCENERY_BUTTON_HEIGHT + kDescriptionHeight + 2 * kTabMargin;
+            minHeight += static_cast<int32_t>(1 + (_tabEntries.size() / GetMaxTabCountInARow())) * TabHeight;
+            minHeight += widgets[WIDX_FILTER_TEXT_BOX].height() + 2 * kInputMargin;
+            return minHeight;
+        }
+
         int32_t GetNumColumns() const
         {
             const auto& listWidget = widgets[WIDX_SCENERY_LIST];
@@ -1369,7 +1391,7 @@ namespace OpenRCT2::Ui::Windows
             return std::max<int32_t>((static_cast<int32_t>(_tabEntries.size()) + MaxTabsPerRow - 1) / MaxTabsPerRow, 0);
         }
 
-        int32_t GetMaxTabCountInARow()
+        int32_t GetMaxTabCountInARow() const
         {
             int32_t tabEntries = static_cast<int32_t>(_tabEntries.size());
             return std::clamp(tabEntries, 1, MaxTabsPerRow);
