@@ -155,7 +155,7 @@ namespace OpenRCT2
         for (auto y = 0u; y < image.height; y++)
         {
             int32_t mapY = 1 + (y * mapSkipFactor);
-            if (mapY >= drawableMapSize.y)
+            if (mapY > drawableMapSize.y)
                 break;
 
             _tileColourIndex = y % 2;
