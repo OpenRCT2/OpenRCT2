@@ -124,6 +124,7 @@ namespace OpenRCT2::Ui::Windows
         std::vector<ScenarioListItem> _listItems;
         const ScenarioIndexEntry* _highlightedScenario = nullptr;
         ParkPreview _preview;
+        BackgroundWorker::Job _previewLoadJob;
 
     public:
         ScenarioSelectWindow(std::function<void(std::string_view)> callback)
@@ -179,29 +180,57 @@ namespace OpenRCT2::Ui::Windows
             if (_highlightedScenario == nullptr)
                 return;
 
+            if (_previewLoadJob.isValid())
+                _previewLoadJob.cancel();
+
+            auto& bgWorker = GetContext()->GetBackgroundWorker();
             auto& path = _highlightedScenario->Path;
-            try
-            {
-                auto fs = FileStream(path, FileMode::open);
 
-                ClassifiedFileInfo info;
-                if (!TryClassifyFile(&fs, &info) || info.Type != FileType::park)
-                {
-                    // TODO: try loading a preview from a 'scenario meta' object file
-                    return;
-                }
+            _previewLoadJob = bgWorker.addJob(
+                [path]() {
+                    try
+                    {
+                        auto fs = FileStream(path, FileMode::open);
 
-                auto& objectRepository = GetContext()->GetObjectRepository();
-                auto parkImporter = ParkImporter::CreateParkFile(objectRepository);
-                parkImporter->LoadFromStream(&fs, false, true, path.c_str());
-                _preview = parkImporter->GetParkPreview();
-            }
-            catch (const std::exception& e)
-            {
-                LOG_ERROR("Could not get preview for \"%s\" due to %s", path.c_str(), e.what());
-                _preview = {};
-                return;
-            }
+                        ClassifiedFileInfo info;
+                        if (!TryClassifyFile(&fs, &info))
+                            return ParkPreview{};
+
+                        if (info.Type == FileType::park)
+                        {
+                            auto& objectRepository = GetContext()->GetObjectRepository();
+                            auto parkImporter = ParkImporter::CreateParkFile(objectRepository);
+                            parkImporter->LoadFromStream(&fs, false, true, path.c_str());
+                            return parkImporter->GetParkPreview();
+                        }
+                        else
+                        {
+                            return ParkPreview{};
+                        }
+
+                    }
+                    catch (const std::exception& e)
+                    {
+                        LOG_ERROR("Could not get preview for \"%s\" due to %s", path.c_str(), e.what());
+                        return ParkPreview{};
+                    }
+                },
+                [](const ParkPreview preview) {
+                    auto* windowMgr = GetWindowManager();
+                    auto* wnd = windowMgr->FindByClass(WindowClass::ScenarioSelect);
+                    if (wnd == nullptr)
+                    {
+                        return;
+                    }
+                    auto* scenarioSelectWnd = static_cast<ScenarioSelectWindow*>(wnd);
+                    scenarioSelectWnd->UpdateParkPreview(preview);
+                });
+        }
+
+        void UpdateParkPreview(const ParkPreview& preview)
+        {
+            _preview = preview;
+            Invalidate();
         }
 
         ScreenCoordsXY DrawPreview(RenderTarget& rt, ScreenCoordsXY screenPos)
