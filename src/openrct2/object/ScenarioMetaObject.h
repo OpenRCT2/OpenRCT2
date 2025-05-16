@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../core/IStream.hpp"
+#include "../park/ParkPreview.h"
 #include "Object.h"
 
 #include <string>
@@ -30,6 +31,6 @@ public:
     std::string GetParkName();
     std::string GetScenarioDetails();
 
-    ImageIndex GetMiniMapImageIndex() const;
-    ImageIndex GetPreviewImageIndex() const;
+    OpenRCT2::PreviewImage GetMiniMapImage() const;
+    OpenRCT2::PreviewImage GetPreviewImage() const;
 };

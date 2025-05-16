@@ -26,6 +26,9 @@
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/localisation/LocalisationService.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/ObjectRepository.h>
+#include <openrct2/object/ScenarioMetaObject.h>
 #include <openrct2/park/ParkPreview.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
@@ -190,45 +193,77 @@ namespace OpenRCT2::Ui::Windows
 
             auto& bgWorker = GetContext()->GetBackgroundWorker();
             auto& path = _highlightedScenario->Path;
+            auto& name = _highlightedScenario->InternalName;
 
-            _previewLoadJob = bgWorker.addJob(
-                [path]() {
-                    try
-                    {
-                        auto fs = FileStream(path, FileMode::open);
+            ClassifiedFileInfo info;
+            if (!TryClassifyFile(path, &info))
+                return;
 
-                        ClassifiedFileInfo info;
-                        if (!TryClassifyFile(&fs, &info))
-                            return ParkPreview{};
-
-                        if (info.Type == FileType::park)
+            if (info.Type == FileType::park)
+            {
+                _previewLoadJob = bgWorker.addJob(
+                    [path, name]() {
+                        try
                         {
+                            auto fs = FileStream(path, FileMode::open);
                             auto& objectRepository = GetContext()->GetObjectRepository();
                             auto parkImporter = ParkImporter::CreateParkFile(objectRepository);
                             parkImporter->LoadFromStream(&fs, false, true, path.c_str());
                             return parkImporter->GetParkPreview();
                         }
-                        else
+                        catch (const std::exception& e)
                         {
+                            LOG_ERROR("Could not get preview for \"%s\" due to %s", path.c_str(), e.what());
                             return ParkPreview{};
                         }
-                    }
-                    catch (const std::exception& e)
-                    {
-                        LOG_ERROR("Could not get preview for \"%s\" due to %s", path.c_str(), e.what());
-                        return ParkPreview{};
-                    }
-                },
-                [](const ParkPreview preview) {
-                    auto* windowMgr = GetWindowManager();
-                    auto* wnd = windowMgr->FindByClass(WindowClass::ScenarioSelect);
-                    if (wnd == nullptr)
-                    {
+                    },
+                    [](const ParkPreview preview) {
+                        auto* windowMgr = GetWindowManager();
+                        auto* wnd = windowMgr->FindByClass(WindowClass::ScenarioSelect);
+                        if (wnd == nullptr)
+                        {
+                            return;
+                        }
+                        auto* scenarioSelectWnd = static_cast<ScenarioSelectWindow*>(wnd);
+                        scenarioSelectWnd->UpdateParkPreview(preview);
+                    });
+            }
+            else if (info.Type == FileType::scenario)
+            {
+                SourceDescriptor source{};
+                if (!ScenarioSources::TryGetByName(name, &source))
+                    return;
+
+                auto& objManager = GetContext()->GetObjectManager();
+
+                // Unload current scenario meta object if it's not the one we need
+                auto* loadedObject = objManager.GetLoadedObject(ObjectType::scenarioMeta, 0);
+                if (loadedObject != nullptr && loadedObject->GetIdentifier() != source.textObjectId)
+                {
+                    objManager.UnloadObjects({ loadedObject->GetDescriptor() });
+                    loadedObject = nullptr;
+                }
+
+                // Load the relevant scenario meta file if it hasn't been loaded yet
+                if (loadedObject == nullptr)
+                {
+                    loadedObject = objManager.LoadObject(source.textObjectId);
+                    if (loadedObject == nullptr)
                         return;
-                    }
-                    auto* scenarioSelectWnd = static_cast<ScenarioSelectWindow*>(wnd);
-                    scenarioSelectWnd->UpdateParkPreview(preview);
-                });
+                }
+
+                auto* scenarioMetaObj = reinterpret_cast<ScenarioMetaObject*>(loadedObject);
+
+                ParkPreview preview{};
+                preview.images.push_back(scenarioMetaObj->GetMiniMapImage());
+                preview.images.push_back(scenarioMetaObj->GetPreviewImage());
+
+                _preview = preview;
+            }
+            else
+            {
+                return;
+            }
         }
 
         void UpdateParkPreview(const ParkPreview& preview)

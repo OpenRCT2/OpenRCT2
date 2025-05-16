@@ -51,12 +51,36 @@ std::string ScenarioMetaObject::GetScenarioDetails()
     return GetStringTable().GetString(ObjectStringID::SCENARIO_DETAILS);
 }
 
-ImageIndex ScenarioMetaObject::GetMiniMapImageIndex() const
+PreviewImage ScenarioMetaObject::GetMiniMapImage() const
 {
-    return _imageOffsetId;
+    PreviewImage preview{};
+    preview.type = PreviewImageType::miniMap;
+
+    auto* g1 = GfxGetG1Element(_imageOffsetId);
+    if (g1 == nullptr)
+        return preview;
+
+    preview.width = g1->width;
+    preview.height = g1->height;
+
+    std::copy_n(g1->offset, g1->width * g1->height, preview.pixels);
+
+    return preview;
 }
 
-ImageIndex ScenarioMetaObject::GetPreviewImageIndex() const
+PreviewImage ScenarioMetaObject::GetPreviewImage() const
 {
-    return _imageOffsetId + 1;
+    PreviewImage preview{};
+    preview.type = PreviewImageType::screenshot;
+
+    auto* g1 = GfxGetG1Element(_imageOffsetId + 1);
+    if (g1 == nullptr)
+        return preview;
+
+    preview.width = g1->width;
+    preview.height = g1->height;
+
+    std::copy_n(g1->offset, g1->width * g1->height, preview.pixels);
+
+    return preview;
 }
