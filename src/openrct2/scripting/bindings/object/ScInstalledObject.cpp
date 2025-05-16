@@ -24,7 +24,7 @@ namespace OpenRCT2::Scripting
         { "scenery_group", ObjectType::sceneryGroup },
         { "park_entrance", ObjectType::parkEntrance },
         { "water", ObjectType::water },
-        { "scenario_text", ObjectType::scenarioText },
+        { "scenario_meta", ObjectType::scenarioMeta },
         { "terrain_surface", ObjectType::terrainSurface },
         { "terrain_edge", ObjectType::terrainEdge },
         { "station", ObjectType::station },

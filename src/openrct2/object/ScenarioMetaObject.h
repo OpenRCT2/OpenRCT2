@@ -14,10 +14,10 @@
 
 #include <string>
 
-class ScenarioTextObject final : public Object
+class ScenarioMetaObject final : public Object
 {
 public:
-    static constexpr ObjectType kObjectType = ObjectType::scenarioText;
+    static constexpr ObjectType kObjectType = ObjectType::scenarioMeta;
 
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;

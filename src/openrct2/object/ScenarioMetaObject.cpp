@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "ScenarioTextObject.h"
+#include "ScenarioMetaObject.h"
 
 #include "../Context.h"
 #include "../PlatformEnvironment.h"
@@ -16,31 +16,31 @@
 
 using namespace OpenRCT2;
 
-void ScenarioTextObject::Load()
+void ScenarioMetaObject::Load()
 {
 }
 
-void ScenarioTextObject::Unload()
+void ScenarioMetaObject::Unload()
 {
 }
 
-void ScenarioTextObject::ReadJson(IReadObjectContext* context, json_t& root)
+void ScenarioMetaObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
-    Guard::Assert(root.is_object(), "ScenarioTextObject::ReadJson expects parameter root to be an object");
+    Guard::Assert(root.is_object(), "ScenarioMetaObject::ReadJson expects parameter root to be an object");
     PopulateTablesFromJson(context, root);
 }
 
-std::string ScenarioTextObject::GetScenarioName()
+std::string ScenarioMetaObject::GetScenarioName()
 {
     return GetStringTable().GetString(ObjectStringID::NAME); // SCENARIO_NAME
 }
 
-std::string ScenarioTextObject::GetParkName()
+std::string ScenarioMetaObject::GetParkName()
 {
     return GetStringTable().GetString(ObjectStringID::PARK_NAME);
 }
 
-std::string ScenarioTextObject::GetScenarioDetails()
+std::string ScenarioMetaObject::GetScenarioDetails()
 {
     return GetStringTable().GetString(ObjectStringID::SCENARIO_DETAILS);
 }

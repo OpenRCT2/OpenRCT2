@@ -49,7 +49,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
-#include "../object/ScenarioTextObject.h"
+#include "../object/ScenarioMetaObject.h"
 #include "../object/WallSceneryEntry.h"
 #include "../park/Legacy.h"
 #include "../park/ParkPreview.h"
@@ -296,10 +296,9 @@ namespace OpenRCT2::RCT2
             {
                 auto& objManager = GetContext()->GetObjectManager();
 
-                // Load the one specified
                 if (auto obj = objManager.LoadTempObject(desc.textObjectId); obj != nullptr)
                 {
-                    auto& textObject = reinterpret_cast<ScenarioTextObject&>(*obj);
+                    auto& textObject = reinterpret_cast<ScenarioMetaObject&>(*obj);
                     dst->Name = textObject.GetScenarioName();
                     dst->Details = textObject.GetScenarioDetails();
 
@@ -1913,11 +1912,11 @@ namespace OpenRCT2::RCT2
             // Normalise the name to make the scenario as recognisable as possible
             auto normalisedName = ScenarioSources::NormaliseName(_s6.Info.Name);
 
-            // Infer what scenario text object to use, if any
+            // Infer what scenario meta object to use, if any
             SourceDescriptor desc;
             if (ScenarioSources::TryGetByName(normalisedName.c_str(), &desc) && !desc.textObjectId.empty())
                 AppendRequiredObjects(
-                    objectList, ObjectType::scenarioText, std::vector<std::string_view>({ desc.textObjectId }));
+                    objectList, ObjectType::scenarioMeta, std::vector<std::string_view>({ desc.textObjectId }));
 
             auto animObjects = GetLegacyPeepAnimationObjects();
             AppendRequiredObjects(objectList, ObjectType::peepAnimations, animObjects);

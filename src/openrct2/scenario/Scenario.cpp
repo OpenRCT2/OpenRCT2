@@ -40,7 +40,7 @@
 #include "../object/ObjectLimits.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
-#include "../object/ScenarioTextObject.h"
+#include "../object/ScenarioMetaObject.h"
 #include "../object/WaterEntry.h"
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
@@ -112,7 +112,7 @@ void ScenarioReset(GameState_t& gameState)
     gameState.cash = gameState.initialCash;
 
     auto& objManager = GetContext()->GetObjectManager();
-    if (auto* textObject = objManager.GetLoadedObject<ScenarioTextObject>(0); textObject != nullptr)
+    if (auto* textObject = objManager.GetLoadedObject<ScenarioMetaObject>(0); textObject != nullptr)
     {
         gameState.scenarioName = textObject->GetScenarioName();
         gameState.park.Name = textObject->GetParkName();
