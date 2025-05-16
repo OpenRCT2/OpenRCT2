@@ -103,3 +103,4 @@ extern "C" void glVertexAttribDivisor(GLuint index, GLuint divisor);
 #endif
 OPENGL_PROC(PFNGLBLENDFUNCSEPARATEPROC, glBlendFuncSeparate)
 OPENGL_PROC(PFNGLTEXSUBIMAGE2D, glTexSubImage2D)
+OPENGL_PROC(PFNGLDRAWBUFFERSPROC, glDrawBuffers)

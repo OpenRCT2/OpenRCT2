@@ -44,6 +44,9 @@
     #define glGetIntegerv __static__glGetIntegerv
     #define glGetTexImage __static__glGetTexImage
     #define glTexSubImage2D __static__glTexSubImage2D
+    #define glDrawBuffers __static__glDrawBuffers
+
+// END [Do not define 1.1 function signatures]
 
 #endif
 
@@ -81,6 +84,7 @@
     #undef glGetIntegerv
     #undef glGetTexImage
     #undef glTexSubImage2D
+    #undef glDrawBuffers
 
 // 1.1 function signatures
 using PFNGLBEGINPROC = void(APIENTRYP)(GLenum mode);
@@ -116,6 +120,7 @@ using PFNGLGETTEXIMAGEPROC = void(APIENTRYP)(GLenum target, GLint level, GLenum 
 using PFNGLTEXSUBIMAGE2D = void(APIENTRYP)(
     GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type,
     const GLvoid* pixels);
+using PFNGLDRAWBUFFERSPROC = void(APIENTRYP)(GLsizei n, const GLenum* bufs);
 
     #define OPENGL_PROC(TYPE, PROC) extern TYPE PROC;
     #include "OpenGLAPIProc.h"

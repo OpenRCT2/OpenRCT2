@@ -211,6 +211,7 @@ private:
     std::unique_ptr<OpenGLFramebuffer> _screenFramebuffer;
     std::unique_ptr<OpenGLFramebuffer> _scaleFramebuffer;
     std::unique_ptr<OpenGLFramebuffer> _smoothScaleFramebuffer;
+    std::unique_ptr<OpenGLFramebuffer> _tempFramebuffer;
     OpenGLWeatherDrawer _weatherDrawer;
     InvalidationGrid _invalidationGrid;
 
@@ -266,6 +267,7 @@ public:
         ConfigureDirtyGrid();
 
         _drawingContext->Resize(width, height);
+        _tempFramebuffer = std::make_unique<OpenGLFramebuffer>(width, height);
 
         _drawingContext->StartNewDraw();
         _drawingContext->Clear(_mainRT, PaletteIndex::pi10);
@@ -414,9 +416,11 @@ public:
 
         _drawingContext->FlushCommandBuffers();
 
-        OpenGLFramebuffer& framebuffer = _drawingContext->GetFinalFramebuffer();
-        framebuffer.Bind();
-        framebuffer.GetPixels(_mainRT);
+        auto& framebuffer = _drawingContext->GetFinalFramebuffer();
+        auto& tempBuffer = *_tempFramebuffer;
+
+        const int32_t texHeight = static_cast<int32_t>(framebuffer.GetHeight());
+        const int32_t texWidth = static_cast<int32_t>(framebuffer.GetWidth());
 
         // Originally 0x00683359
         // Adjust for move off screen
@@ -424,35 +428,52 @@ public:
         // screen; hence the checks. This code should ultimately not be called when
         // zooming because this function is specific to updating the screen on move
         int32_t lmargin = std::min(x - dx, 0);
-        int32_t rmargin = std::min(static_cast<int32_t>(_width) - (x - dx + width), 0);
+        int32_t rmargin = std::min(texWidth - (x - dx + width), 0);
         int32_t tmargin = std::min(y - dy, 0);
-        int32_t bmargin = std::min(static_cast<int32_t>(_height) - (y - dy + height), 0);
+        int32_t bmargin = std::min(texHeight - (y - dy + height), 0);
         x -= lmargin;
         y -= tmargin;
         width += lmargin + rmargin;
         height += tmargin + bmargin;
 
-        int32_t stride = _mainRT.LineStride();
-        uint8_t* to = _mainRT.bits + y * stride + x;
-        uint8_t* from = _mainRT.bits + (y - dy) * stride + x - dx;
+        if (width <= 0 || height <= 0)
+            return;
 
-        if (dy > 0)
-        {
-            // If positive dy, reverse directions
-            to += (height - 1) * stride;
-            from += (height - 1) * stride;
-            stride = -stride;
-        }
+        const auto flipYAxis = [texHeight](int32_t yPos, int32_t h) {
+            // Convert to OpenGL bottom-left origin coords.
+            return texHeight - yPos - h;
+        };
 
-        // Move bytes
-        for (int32_t i = 0; i < height; i++)
-        {
-            memmove(to, from, width);
-            to += stride;
-            from += stride;
-        }
+        int32_t srcX = x - dx;
+        int32_t srcY = flipYAxis(y - dy, height);
+        int32_t destX = x;
+        int32_t destY = flipYAxis(y, height);
 
-        framebuffer.SetPixels(_mainRT);
+        // Clamp coordinates to valid range
+        srcX = std::max(0, std::min(srcX, texWidth - 1));
+        srcY = std::max(0, std::min(srcY, texHeight - 1));
+        destX = std::max(0, std::min(destX, texWidth - 1));
+        destY = std::max(0, std::min(destY, texHeight - 1));
+        width = std::max(0, std::min(width, texWidth - std::max(srcX, destX)));
+        height = std::max(0, std::min(height, texHeight - std::max(srcY, destY)));
+
+        if (srcX >= texWidth || srcY >= texHeight || srcX + width <= 0 || srcY + height <= 0)
+            return;
+
+        GLuint mainFBO = framebuffer.GetFBO();
+        GLuint tempFBO = tempBuffer.GetFBO();
+
+        // Always use temp FBO to avoid potential driver issues
+        glCall(glBindFramebuffer, GL_READ_FRAMEBUFFER, mainFBO);
+        glCall(glBindFramebuffer, GL_DRAW_FRAMEBUFFER, tempFBO);
+        glCall(
+            glBlitFramebuffer, srcX, srcY, srcX + width, srcY + height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+
+        glCall(glBindFramebuffer, GL_READ_FRAMEBUFFER, tempFBO);
+        glCall(glBindFramebuffer, GL_DRAW_FRAMEBUFFER, mainFBO);
+        glCall(
+            glBlitFramebuffer, 0, 0, width, height, destX, destY, destX + width, destY + height, GL_COLOR_BUFFER_BIT,
+            GL_NEAREST);
     }
 
     IDrawingContext* GetDrawingContext() override
