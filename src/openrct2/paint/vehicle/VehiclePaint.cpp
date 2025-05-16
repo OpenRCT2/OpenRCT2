@@ -1682,7 +1682,7 @@ static void VehiclePitchUp25BankedLeft90(
     }
     else
     {
-        VehiclePitchUp25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft90(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -1697,7 +1697,7 @@ static void VehiclePitchUp25BankedLeft112(
     }
     else
     {
-        VehiclePitchUp25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft112(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -1712,7 +1712,7 @@ static void VehiclePitchUp25BankedLeft135(
     }
     else
     {
-        VehiclePitchUp25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft135(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -1727,7 +1727,7 @@ static void VehiclePitchUp25BankedLeft157(
     }
     else
     {
-        VehiclePitchUp25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft157(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -1757,7 +1757,7 @@ static void VehiclePitchUp25BankedRight90(
     }
     else
     {
-        VehiclePitchUp25BankedRight45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight90(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -1772,7 +1772,7 @@ static void VehiclePitchUp25BankedRight112(
     }
     else
     {
-        VehiclePitchUp25BankedRight45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight112(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -1787,7 +1787,7 @@ static void VehiclePitchUp25BankedRight135(
     }
     else
     {
-        VehiclePitchUp25BankedRight45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight135(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -1802,7 +1802,7 @@ static void VehiclePitchUp25BankedRight157(
     }
     else
     {
-        VehiclePitchUp25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight157(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -1969,7 +1969,7 @@ static void VehiclePitchUp42BankedLeft67(
     }
     else
     {
-        VehiclePitchUp42Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchUp25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -1984,7 +1984,7 @@ static void VehiclePitchUp42BankedLeft90(
     }
     else
     {
-        VehiclePitchUp42Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft90(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -1999,7 +1999,7 @@ static void VehiclePitchUp42BankedRight67(
     }
     else
     {
-        VehiclePitchUp42Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchUp25BankedRight45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2014,7 +2014,7 @@ static void VehiclePitchUp42BankedRight90(
     }
     else
     {
-        VehiclePitchUp42Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight90(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2437,11 +2437,11 @@ static void VehiclePitchDown25BankedLeft90(
     }
     else
     {
-        VehiclePitchDown25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft90(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
-static void VehiclePitchDown25BankedLeft11BankedLeft45(
+static void VehiclePitchDown25BankedLeft112(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25InlineTwists))
@@ -2452,7 +2452,7 @@ static void VehiclePitchDown25BankedLeft11BankedLeft45(
     }
     else
     {
-        VehiclePitchDown25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft112(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2467,7 +2467,7 @@ static void VehiclePitchDown25BankedLeft135(
     }
     else
     {
-        VehiclePitchDown25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft135(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2482,7 +2482,7 @@ static void VehiclePitchDown25BankedLeft157(
     }
     else
     {
-        VehiclePitchDown25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft157(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2512,11 +2512,11 @@ static void VehiclePitchDown25BankedRight90(
     }
     else
     {
-        VehiclePitchDown25BankedRight45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight90(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
-static void VehiclePitchDown25BankedRight11BankedLeft45(
+static void VehiclePitchDown25BankedRight112(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     if (carEntry->GroupEnabled(SpriteGroupType::Slopes25InlineTwists))
@@ -2527,7 +2527,7 @@ static void VehiclePitchDown25BankedRight11BankedLeft45(
     }
     else
     {
-        VehiclePitchDown25BankedRight45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight112(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2542,7 +2542,7 @@ static void VehiclePitchDown25BankedRight135(
     }
     else
     {
-        VehiclePitchDown25BankedRight45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight135(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2557,7 +2557,7 @@ static void VehiclePitchDown25BankedRight157(
     }
     else
     {
-        VehiclePitchDown25BankedRight45(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight157(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2590,7 +2590,7 @@ static void VehiclePitchDown25(
             VehiclePitchDown25BankedLeft90(session, vehicle, imageDirection, z, carEntry);
             break;
         case 7:
-            VehiclePitchDown25BankedLeft11BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchDown25BankedLeft112(session, vehicle, imageDirection, z, carEntry);
             break;
         case 8:
             VehiclePitchDown25BankedLeft135(session, vehicle, imageDirection, z, carEntry);
@@ -2605,7 +2605,7 @@ static void VehiclePitchDown25(
             VehiclePitchDown25BankedRight90(session, vehicle, imageDirection, z, carEntry);
             break;
         case 12:
-            VehiclePitchDown25BankedRight11BankedLeft45(session, vehicle, imageDirection, z, carEntry);
+            VehiclePitchDown25BankedRight112(session, vehicle, imageDirection, z, carEntry);
             break;
         case 13:
             VehiclePitchDown25BankedRight135(session, vehicle, imageDirection, z, carEntry);
@@ -2724,7 +2724,7 @@ static void VehiclePitchDown42BankedLeft67(
     }
     else
     {
-        VehiclePitchDown42Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchDown25BankedLeft45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2739,7 +2739,7 @@ static void VehiclePitchDown42BankedLeft90(
     }
     else
     {
-        VehiclePitchDown42Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedLeft90(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2754,7 +2754,7 @@ static void VehiclePitchDown42BankedRight67(
     }
     else
     {
-        VehiclePitchDown42Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchDown25BankedRight45(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -2769,7 +2769,7 @@ static void VehiclePitchDown42BankedRight90(
     }
     else
     {
-        VehiclePitchDown42Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchFlatBankedRight90(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
