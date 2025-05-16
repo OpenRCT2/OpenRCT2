@@ -379,6 +379,15 @@ namespace OpenRCT2::Ui::Windows
             DrawTextEllipsised(
                 rt, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
 
+            // Still loading the preview?
+            if (_previewLoadJob.isValid())
+            {
+                ft = Formatter();
+                ft.Add<StringId>(STR_LOADING_GENERIC);
+                DrawTextBasic(rt, screenPos + ScreenCoordsXY{ 85, 15 }, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
+                return;
+            }
+
             // Draw preview
             auto previewEnd = DrawPreview(rt, screenPos);
             screenPos.y = previewEnd.y + 15;
