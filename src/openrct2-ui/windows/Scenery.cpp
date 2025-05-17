@@ -452,6 +452,7 @@ namespace OpenRCT2::Ui::Windows
                 // This will happen when the mouse leaves the scroll window and is required so that the cost and description
                 // switch to the tool scenery selection.
                 _selectedScenery = {};
+                Invalidate();
             }
         }
 
@@ -524,8 +525,6 @@ namespace OpenRCT2::Ui::Windows
                 WindowUpdateTextboxCaret();
                 InvalidateWidget(WIDX_FILTER_TEXT_BOX);
             }
-
-            Invalidate();
 
             if (!isToolActive(WindowClass::Scenery))
             {
@@ -1523,7 +1522,7 @@ namespace OpenRCT2::Ui::Windows
         void ContentScrollMouseOver(const ScreenCoordsXY& screenCoords)
         {
             ScenerySelection scenery = GetSceneryIdByCursorPos(screenCoords);
-            if (!scenery.IsUndefined())
+            if (!scenery.IsUndefined() && _selectedScenery != scenery)
             {
                 _selectedScenery = scenery;
                 Invalidate();
