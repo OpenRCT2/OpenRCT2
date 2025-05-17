@@ -34,30 +34,31 @@ ApplyPaletteShader::ApplyPaletteShader()
 {
     GetLocations();
 
-    glGenBuffers(1, &_vbo);
-    glGenVertexArrays(1, &_vao);
+    glCall(glGenBuffers, 1, &_vbo);
+    glCall(glGenVertexArrays, 1, &_vao);
 
-    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(kVertexData), kVertexData, GL_STATIC_DRAW);
+    glCall(glBindBuffer, GL_ARRAY_BUFFER, _vbo);
+    glCall(glBufferData, GL_ARRAY_BUFFER, sizeof(kVertexData), kVertexData, GL_STATIC_DRAW);
 
-    glBindVertexArray(_vao);
-    glVertexAttribPointer(
-        vPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), reinterpret_cast<void*>(offsetof(VDStruct, position)));
-    glVertexAttribPointer(
-        vTextureCoordinate, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct),
+    glCall(glBindVertexArray, _vao);
+    glCall(
+        glVertexAttribPointer, vPosition, 2, GL_FLOAT, GL_FALSE, glSizeOf<VDStruct>(),
+        reinterpret_cast<void*>(offsetof(VDStruct, position)));
+    glCall(
+        glVertexAttribPointer, vTextureCoordinate, 2, GL_FLOAT, GL_FALSE, glSizeOf<VDStruct>(),
         reinterpret_cast<void*>(offsetof(VDStruct, texturecoordinate)));
 
-    glEnableVertexAttribArray(vPosition);
-    glEnableVertexAttribArray(vTextureCoordinate);
+    glCall(glEnableVertexAttribArray, vPosition);
+    glCall(glEnableVertexAttribArray, vTextureCoordinate);
 
     Use();
-    glUniform1i(uTexture, 0);
+    glCall(glUniform1i, uTexture, 0);
 }
 
 ApplyPaletteShader::~ApplyPaletteShader()
 {
-    glDeleteBuffers(1, &_vbo);
-    glDeleteVertexArrays(1, &_vao);
+    glCall(glDeleteBuffers, 1, &_vbo);
+    glCall(glDeleteVertexArrays, 1, &_vao);
 }
 
 void ApplyPaletteShader::GetLocations()
@@ -76,12 +77,12 @@ void ApplyPaletteShader::SetTexture(GLuint texture)
 
 void ApplyPaletteShader::SetPalette(const vec4* glPalette)
 {
-    glUniform4fv(uPalette, 256, reinterpret_cast<const GLfloat*>(glPalette));
+    glCall(glUniform4fv, uPalette, 256, reinterpret_cast<const GLfloat*>(glPalette));
 }
 
 void ApplyPaletteShader::Draw()
 {
-    glBindVertexArray(_vao);
+    glCall(glBindVertexArray, _vao);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 

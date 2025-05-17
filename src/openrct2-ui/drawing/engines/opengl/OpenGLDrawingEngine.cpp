@@ -1217,8 +1217,8 @@ void OpenGLDrawingContext::FlushCommandBuffers()
 {
     Guard::Assert(_inDraw == true);
 
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+    glCall(glEnable, GL_DEPTH_TEST);
+    glCall(glDepthFunc, GL_LESS);
 
     _swapFramebuffer->BindOpaque();
     _drawRectShader->Use();
@@ -1271,8 +1271,8 @@ void OpenGLDrawingContext::HandleTransparency()
     {
         _swapFramebuffer->BindTransparent();
 
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_GREATER);
+        glCall(glEnable, GL_DEPTH_TEST);
+        glCall(glDepthFunc, GL_GREATER);
         _drawRectShader->Use();
 
         if (i > 0)

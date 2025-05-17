@@ -47,8 +47,8 @@ namespace OpenRCT2::Ui
         explicit OpenGLShaderProgram(OpenGLShaderProgram&&) = default;
         virtual ~OpenGLShaderProgram();
 
-        GLuint GetAttributeLocation(const char* name);
-        GLuint GetUniformLocation(const char* name);
+        GLint GetAttributeLocation(const char* name);
+        GLint GetUniformLocation(const char* name);
         void Use();
 
     private:

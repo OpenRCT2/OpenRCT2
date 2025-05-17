@@ -17,17 +17,17 @@ namespace OpenRCT2::Ui
     class DrawLineShader final : public OpenGLShaderProgram
     {
     private:
-        GLuint uScreenSize;
+        GLint uScreenSize{ -1 };
 
-        GLuint vBounds;
-        GLuint vColour;
-        GLuint vDepth;
+        GLint vBounds{ -1 };
+        GLint vColour{ -1 };
+        GLint vDepth{ -1 };
 
-        GLuint vVertMat;
+        GLint vVertMat{ -1 };
 
-        GLuint _vbo;
-        GLuint _vboInstances;
-        GLuint _vao;
+        GLuint _vbo{};
+        GLuint _vboInstances{};
+        GLuint _vao{};
 
     public:
         DrawLineShader();
