@@ -11,6 +11,7 @@
 
 #include <openrct2/Diagnostic.h>
 #include <source_location>
+#include <string.h>
 #include <type_traits>
 
 #ifdef OPENGL_NO_LINK
