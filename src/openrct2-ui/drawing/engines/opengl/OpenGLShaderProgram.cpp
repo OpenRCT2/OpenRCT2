@@ -125,12 +125,22 @@ OpenGLShaderProgram::~OpenGLShaderProgram()
 
 GLint OpenGLShaderProgram::GetAttributeLocation(const char* name)
 {
-    return glGetAttribLocation(_id, name);
+    auto res = glCall(glGetAttribLocation, _id, name);
+    if (res == -1)
+    {
+        LOG_ERROR("Attribute \"%s\" not found in shader program", name);
+    }
+    return res;
 }
 
 GLint OpenGLShaderProgram::GetUniformLocation(const char* name)
 {
-    return glGetUniformLocation(_id, name);
+    auto res = glCall(glGetUniformLocation, _id, name);
+    if (res == -1)
+    {
+        LOG_ERROR("Uniform \"%s\" not found in shader program", name);
+    }
+    return res;
 }
 
 void OpenGLShaderProgram::Use()

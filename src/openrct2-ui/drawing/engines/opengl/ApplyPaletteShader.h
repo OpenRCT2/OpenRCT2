@@ -17,14 +17,14 @@ namespace OpenRCT2::Ui
     class ApplyPaletteShader final : public OpenGLShaderProgram
     {
     private:
-        GLuint uTexture;
-        GLuint uPalette;
+        GLint uTexture{ -1 };
+        GLint uPalette{ -1 };
 
-        GLuint vPosition;
-        GLuint vTextureCoordinate;
+        GLint vPosition{ -1 };
+        GLint vTextureCoordinate{ -1 };
 
-        GLuint _vbo;
-        GLuint _vao;
+        GLuint _vbo{};
+        GLuint _vao{};
 
     public:
         ApplyPaletteShader();

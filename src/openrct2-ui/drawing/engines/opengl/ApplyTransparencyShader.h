@@ -16,18 +16,18 @@ namespace OpenRCT2::Ui
     class ApplyTransparencyShader final : public OpenGLShaderProgram
     {
     private:
-        GLuint uOpaqueTex;
-        GLuint uOpaqueDepth;
-        GLuint uTransparentTex;
-        GLuint uTransparentDepth;
-        GLuint uPaletteTex;
-        GLuint uBlendPaletteTex;
+        GLint uOpaqueTex{ -1 };
+        GLint uOpaqueDepth{ -1 };
+        GLint uTransparentTex{ -1 };
+        GLint uTransparentDepth{ -1 };
+        GLint uPaletteTex{ -1 };
+        GLint uBlendPaletteTex{ -1 };
 
-        GLuint vPosition;
-        GLuint vTextureCoordinate;
+        GLint vPosition{ -1 };
+        GLint vTextureCoordinate{ -1 };
 
-        GLuint _vbo;
-        GLuint _vao;
+        GLuint _vbo{};
+        GLuint _vao{};
 
     public:
         ApplyTransparencyShader();
