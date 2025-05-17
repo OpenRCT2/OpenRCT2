@@ -5511,6 +5511,13 @@ namespace OpenRCT2::Ui::Windows
             frame_no++;
             OnPrepareDraw();
             InvalidateWidget(WIDX_TAB_7);
+
+            Ride* const ride = GetRide(rideId);
+            if (ride && ride->windowInvalidateFlags & RIDE_INVALIDATE_RIDE_RATINGS)
+            {
+                Invalidate();
+                ride->windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_RATINGS;
+            }
         }
 
         void MeasurementsOnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
