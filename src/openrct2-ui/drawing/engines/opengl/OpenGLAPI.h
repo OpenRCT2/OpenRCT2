@@ -162,7 +162,9 @@ namespace OpenRCT2::Ui
         }
     }
 
+    // NOLINTBEGIN
 #define glCall(fn, ...) glCallImpl(std::source_location::current(), fn, __VA_ARGS__)
+    // NOLINTEND
 
     template<typename T>
     GLsizei glSizeOf()
