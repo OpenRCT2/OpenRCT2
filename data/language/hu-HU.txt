@@ -3810,3 +3810,10 @@ STR_6763    :RollerCoaster Tycoon 1
 STR_6764    :Mentés és automatikus mentés
 STR_6765    :Haladó
 STR_6766    :Törlés
+STR_6767    :Ablak
+STR_6768    :Renderelés
+STR_6769    :Viselkedés
+STR_6770    :FPS-korlát:
+STR_6771    :Belső sebesség (alapért.)
+STR_6772    :Vertikális szinkron
+STR_6773    :Korlátlan
