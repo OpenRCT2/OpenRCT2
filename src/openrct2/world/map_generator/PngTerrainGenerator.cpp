@@ -235,22 +235,8 @@ namespace OpenRCT2::World::MapGenerator
         // Smooth tile edges
         if (settings->smoothTileEdges)
         {
-            // Keep smoothing the entire map until no tiles are changed anymore
-            while (true)
-            {
-                uint32_t numTilesChanged = 0;
-                for (auto y = 0; y < dest.height; y++)
-                {
-                    for (auto x = 0; x < dest.width; x++)
-                    {
-                        auto tileCoords = HeightmapCoordToTileCoordsXY(x, y);
-                        numTilesChanged += TileSmooth(tileCoords);
-                    }
-                }
-
-                if (numTilesChanged == 0)
-                    break;
-            }
+            // Set the tile slopes so that there are no cliffs
+            smoothMap(settings->mapSize, smoothTileWeak);
         }
     }
 } // namespace OpenRCT2::World::MapGenerator
