@@ -11,6 +11,7 @@
 
     #include "../DrawingEngineFactory.hpp"
     #include "ApplyPaletteShader.h"
+    #include "CopyRectShader.h"
     #include "DrawCommands.h"
     #include "DrawLineShader.h"
     #include "DrawRectShader.h"
@@ -208,6 +209,8 @@ private:
     std::unique_ptr<OpenGLDrawingContext> _drawingContext;
 
     std::unique_ptr<ApplyPaletteShader> _applyPaletteShader;
+    std::unique_ptr<CopyRectShader> _copyRectShader;
+
     std::unique_ptr<OpenGLFramebuffer> _screenFramebuffer;
     std::unique_ptr<OpenGLFramebuffer> _scaleFramebuffer;
     std::unique_ptr<OpenGLFramebuffer> _smoothScaleFramebuffer;
@@ -258,6 +261,7 @@ public:
         _drawingContext->Initialise();
 
         _applyPaletteShader = std::make_unique<ApplyPaletteShader>();
+        _copyRectShader = std::make_unique<CopyRectShader>();
     }
 
     void Resize(uint32_t width, uint32_t height) override
@@ -461,19 +465,27 @@ public:
             return;
 
         GLuint mainFBO = framebuffer.GetFBO();
+        GLuint mainTexture = framebuffer.GetTexture();
         GLuint tempFBO = tempBuffer.GetFBO();
+        GLuint tempTexture = tempBuffer.GetTexture();
 
-        // Always use temp FBO to avoid potential driver issues
-        glCall(glBindFramebuffer, GL_READ_FRAMEBUFFER, mainFBO);
-        glCall(glBindFramebuffer, GL_DRAW_FRAMEBUFFER, tempFBO);
-        glCall(
-            glBlitFramebuffer, srcX, srcY, srcX + width, srcY + height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+        // First pass: Copy from main to temp
+        glBindFramebuffer(GL_FRAMEBUFFER, tempFBO);
+        glViewport(0, 0, width, height);
+        _copyRectShader->Use();
+        _copyRectShader->SetTexture(mainTexture);
+        _copyRectShader->SetSourceRect(srcX, srcY, width, height);
+        _copyRectShader->SetTextureSize(texWidth, texHeight);
+        _copyRectShader->Draw();
 
-        glCall(glBindFramebuffer, GL_READ_FRAMEBUFFER, tempFBO);
-        glCall(glBindFramebuffer, GL_DRAW_FRAMEBUFFER, mainFBO);
-        glCall(
-            glBlitFramebuffer, 0, 0, width, height, destX, destY, destX + width, destY + height, GL_COLOR_BUFFER_BIT,
-            GL_NEAREST);
+        // Second pass: Copy from temp to main
+        glBindFramebuffer(GL_FRAMEBUFFER, mainFBO);
+        glViewport(destX, destY, width, height);
+        _copyRectShader->Use();
+        _copyRectShader->SetTexture(tempTexture);
+        _copyRectShader->SetSourceRect(0, 0, width, height);
+        _copyRectShader->SetTextureSize(texWidth, texHeight);
+        _copyRectShader->Draw();
     }
 
     IDrawingContext* GetDrawingContext() override
