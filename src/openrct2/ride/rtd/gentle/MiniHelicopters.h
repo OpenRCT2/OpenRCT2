@@ -11,6 +11,7 @@
 
 #include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
+#include "../../../paint/track/gentle/MiniHelicopters.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -25,6 +26,8 @@ constexpr RideTypeDescriptor MiniHelicoptersRTD =
         .supportType = MetalSupportType::Stick,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::curveSmall},
         .extraTrackGroups = {TrackGroup::spinningTunnel},
+        .sprites = OpenRCT2::MiniHelicopters::kSprites,
+        .stationDesc = { 5, StationType::wide, StationBaseType::b, -2 },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::canSynchroniseWithAdjacentStations,

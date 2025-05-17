@@ -11,6 +11,7 @@
 
 #include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
+#include "../../../paint/track/water/SplashBoats.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -25,6 +26,9 @@ constexpr RideTypeDescriptor SplashBoatsRTD =
         .supportType = WoodenSupportType::Truss,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::slopeSteepDown, TrackGroup::sBend, TrackGroup::curve, TrackGroup::onridePhoto},
         .extraTrackGroups = {},
+        .sprites = OpenRCT2::SplashBoats::kSprites,
+        .stationDesc = { 7, StationType::narrow, StationBaseType::b, 0 },
+        .onRidePhotoType = { false, 7, OnRidePhotoSize::small },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | EnumsToFlags(RtdFlag::hasLeaveWhenAnotherVehicleArrivesAtStation,

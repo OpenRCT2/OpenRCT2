@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../../SpriteIds.h"
+#include "../../../paint/track/coaster/MiniRollerCoaster.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -24,6 +25,9 @@ constexpr RideTypeDescriptor SpiralRollerCoasterRTD =
         .supportType = MetalSupportType::Fork,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::liftHillCurved},
         .extraTrackGroups = {TrackGroup::booster, TrackGroup::liftHill},
+        .sprites = OpenRCT2::MiniRollerCoaster::kSprites,
+        .stationDesc = { 9, StationType::wide, StationBaseType::a, 0 },
+        .onRidePhotoType = { true, 3, OnRidePhotoSize::normal },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 

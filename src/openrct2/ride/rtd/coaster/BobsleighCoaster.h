@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../../SpriteIds.h"
+#include "../../../paint/track/coaster/BobsleighCoaster.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -24,6 +25,9 @@ constexpr RideTypeDescriptor BobsleighCoasterRTD =
         .supportType = MetalSupportType::Tubes,        
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve,TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes,TrackGroup::blockBrakes, TrackGroup::onridePhoto},
         .extraTrackGroups = {},
+        .sprites = OpenRCT2::BobsleighCoaster::kSprites,
+        .stationDesc = { 5, StationType::wide, StationBaseType::b, 0 },
+        .onRidePhotoType = { true, 3, OnRidePhotoSize::normal },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |

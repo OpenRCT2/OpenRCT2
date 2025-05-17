@@ -40,6 +40,42 @@ struct BoundBoxXYZ
     }
 };
 
+constexpr std::array<BoundBoxXYZ, kNumOrthogonalDirections> flipTrackSequenceBoundBoxesXAxis(
+    const std::array<BoundBoxXYZ, kNumOrthogonalDirections>& boundBoxes)
+{
+    auto flippedBoundBoxes = boundBoxes;
+    flippedBoundBoxes[0] = boundBoxes[3];
+    flippedBoundBoxes[1] = boundBoxes[2];
+    flippedBoundBoxes[2] = boundBoxes[1];
+    flippedBoundBoxes[3] = boundBoxes[0];
+    for (auto& boundBox : flippedBoundBoxes)
+    {
+        std::swap(boundBox.offset.x, boundBox.offset.y);
+        std::swap(boundBox.length.x, boundBox.length.y);
+    }
+    return flippedBoundBoxes;
+}
+
+template<size_t trackSequenceCount>
+constexpr std::array<std::array<BoundBoxXYZ, trackSequenceCount>, kNumOrthogonalDirections> flipTrackSequenceBoundBoxesXAxis(
+    const std::array<std::array<BoundBoxXYZ, trackSequenceCount>, kNumOrthogonalDirections>& boundBoxes)
+{
+    auto flippedBoundBoxes = boundBoxes;
+    flippedBoundBoxes[0] = boundBoxes[3];
+    flippedBoundBoxes[1] = boundBoxes[2];
+    flippedBoundBoxes[2] = boundBoxes[1];
+    flippedBoundBoxes[3] = boundBoxes[0];
+    for (auto& view : flippedBoundBoxes)
+    {
+        for (auto& boundBox : view)
+        {
+            std::swap(boundBox.offset.x, boundBox.offset.y);
+            std::swap(boundBox.length.x, boundBox.length.y);
+        }
+    }
+    return flippedBoundBoxes;
+}
+
 template<size_t trackSequenceCount, size_t spriteCount>
 constexpr std::array<std::array<std::array<BoundBoxXYZ, spriteCount>, trackSequenceCount>, kNumOrthogonalDirections>
     flipTrackSequenceBoundBoxesXAxis(

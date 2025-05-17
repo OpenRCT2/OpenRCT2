@@ -286,6 +286,53 @@ enum class RideConstructionWindowContext : uint8_t
     Maze,
 };
 
+struct TrackElementSprites
+{
+    const ImageIndex* imageIndexes;
+    const CoordsXYZ* offsets;
+    const BoundBoxXYZ* boundBoxes;
+    bool isRotated; // temporary workaround for rotated track elements being handled by existing track paint functions
+};
+
+enum class StationType
+{
+    narrow,
+    wide,
+    invertedWide24,
+    invertedWide40,
+    pier,
+};
+
+enum class StationBaseType
+{
+    none,
+    a,
+    b,
+    c,
+};
+constexpr uint32_t kStationBaseTypeCount = 4;
+
+struct StationDesc
+{
+    int8_t platformHeight = 0;
+    StationType stationType = StationType::narrow;
+    StationBaseType baseType = StationBaseType::none;
+    int8_t baseHeight = 0;
+};
+
+enum class OnRidePhotoSize
+{
+    normal,
+    small,
+};
+
+struct OnRidePhotoType
+{
+    bool platform = false;
+    int8_t height = 0;
+    OnRidePhotoSize size = OnRidePhotoSize::normal;
+};
+
 struct TrackDrawerEntry
 {
     TrackStyle trackStyle = TrackStyle::null;
@@ -295,6 +342,9 @@ struct TrackDrawerEntry
     // Pieces that this ride type _can_ draw, but are disabled because their vehicles lack the relevant sprites,
     // or because they are not realistic for the ride type (e.g. LIM boosters in Mini Roller Coasters).
     RideTrackGroups extraTrackGroups{};
+    std::array<TrackElementSprites, EnumValue(OpenRCT2::TrackElemType::Count)> sprites{};
+    StationDesc stationDesc{};
+    OnRidePhotoType onRidePhotoType{};
 
     ImageIndex icon = kSpriteIdNull;
     StringId tooltip = kStringIdNone;

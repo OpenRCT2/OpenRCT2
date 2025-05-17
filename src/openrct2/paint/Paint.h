@@ -146,6 +146,7 @@ struct PaintSessionCore
     uint32_t QuadrantFrontIndex;
     ImageId TrackColours;
     ImageId SupportColours;
+    ImageId TrackPrimarySupportSecondaryColours;
     SupportHeight SupportSegments[9];
     SupportHeight Support;
     uint16_t WaterHeight;
@@ -299,6 +300,9 @@ inline PaintStruct* PaintAddImageAsParentRotated(
 }
 
 PaintStruct* PaintAddImageAsParentHeight(
+    PaintSession& session, const ImageId imageId, const int32_t height, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
+
+PaintStruct* PaintAddImageAsChildHeight(
     PaintSession& session, const ImageId imageId, const int32_t height, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);
 
 bool PaintAttachToPreviousAttach(PaintSession& session, const ImageId imageId, int32_t x, int32_t y);

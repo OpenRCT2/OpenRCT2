@@ -10,6 +10,8 @@
 #pragma once
 
 #include "../../../SpriteIds.h"
+#include "../../../paint/track/coaster/CompactInvertedCoaster.h"
+#include "../../../paint/track/coaster/CorkscrewRollerCoaster.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -25,14 +27,19 @@ constexpr RideTypeDescriptor LayDownRollerCoasterRTD =
             .supportType = MetalSupportType::TubesInverted,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::verticalLoop, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::inlineTwistUninverted, TrackGroup::flyingHalfLoopUninvertedUp, TrackGroup::corkscrewUninverted, TrackGroup::slopeSteepLong, TrackGroup::diagSlopeSteepLong, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeRollBanking, TrackGroup::slopeCurveBanked, TrackGroup::slopeCurveLarge },
             .extraTrackGroups = { TrackGroup::flyingHalfLoopUninvertedDown, TrackGroup::booster },
+            .sprites = OpenRCT2::CorkscrewRollerCoaster::kSprites,
+            .stationDesc = { 9, StationType::wide, StationBaseType::a, 0 },
+            .onRidePhotoType = { true, 3, OnRidePhotoSize::normal },
         }
     ),
     .InvertedTrackPaintFunctions = TrackDrawerDescriptor(
         {
-            .trackStyle = TrackStyle::layDownRollerCoasterInverted,
+            .trackStyle = TrackStyle::compactInvertedCoaster,
             .supportType = MetalSupportType::TubesInverted,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedQuarter, TrackGroup::helixUpBankedQuarter, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::inlineTwistInverted, TrackGroup::flyingHalfLoopInvertedDown, TrackGroup::corkscrewInverted, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes },
             .extraTrackGroups = { TrackGroup::flyingHalfLoopInvertedUp, TrackGroup::stationEnd, TrackGroup::liftHill },
+            .sprites = OpenRCT2::CompactInvertedCoaster::kSprites,
+            .stationDesc = { 6, StationType::invertedWide24, StationBaseType::c, 0 },
         }
     ),
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 

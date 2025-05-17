@@ -11,6 +11,8 @@
 
 #include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
+#include "../../../paint/track/coaster/WaterCoaster.h"
+#include "../../../paint/track/water/SplashBoats.h"
 #include "../../../ride/RideStringIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
@@ -27,6 +29,9 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
             .supportType = MetalSupportType::Fork,
             .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::blockBrakes, TrackGroup::onridePhoto, TrackGroup::booster, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
             .extraTrackGroups = {TrackGroup::flatToSteepSlope},
+            .sprites = OpenRCT2::WaterCoaster::kSprites,
+            .stationDesc = { 5, StationType::wide, StationBaseType::b, -2 },
+            .onRidePhotoType = { true, 3, OnRidePhotoSize::normal },
             .icon = SPR_RIDE_CONSTRUCTION_RC_TRACK,
             .tooltip = STR_RIDE_CONSTRUCTION_STANDARD_RC_TRACK_TIP,
         },
@@ -35,6 +40,9 @@ constexpr RideTypeDescriptor WaterCoasterRTD =
             .supportType = WoodenSupportType::Truss,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::curve, TrackGroup::sBend },
             .extraTrackGroups = {},
+            .sprites = OpenRCT2::SplashBoats::kSprites,
+            .stationDesc = { 7, StationType::narrow, StationBaseType::b, 0 },
+            .onRidePhotoType = { false, 7, OnRidePhotoSize::small },
             .icon = SPR_RIDE_CONSTRUCTION_WATER_CHANNEL,
             .tooltip = STR_RIDE_CONSTRUCTION_WATER_CHANNEL_TIP,
         }

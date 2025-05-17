@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../../SpriteIds.h"
+#include "../../../paint/track/coaster/Steeplechase.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -24,6 +25,8 @@ constexpr RideTypeDescriptor SteeplechaseRTD =
         .supportType = MetalSupportType::Stick,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::blockBrakes, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
         .extraTrackGroups = {},
+        .sprites = OpenRCT2::Steeplechase::kSprites,
+        .stationDesc = { 5, StationType::wide, StationBaseType::b, -2 },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 

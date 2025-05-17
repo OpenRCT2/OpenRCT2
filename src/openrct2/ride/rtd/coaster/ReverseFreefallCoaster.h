@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../../SpriteIds.h"
+#include "../../../paint/track/coaster/ReverseFreefallCoaster.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -24,6 +25,9 @@ constexpr RideTypeDescriptor ReverseFreefallCoasterRTD =
         .supportType = WoodenSupportType::Truss,
         .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHillSteep, TrackGroup::reverseFreefall, TrackGroup::onridePhoto},
         .extraTrackGroups = {},
+        .sprites = OpenRCT2::ReverseFreefallCoaster::kSprites,
+        .stationDesc = { 5, StationType::narrow, StationBaseType::b, -2 },
+        .onRidePhotoType = { false, 3, OnRidePhotoSize::normal },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt

@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../../../SpriteIds.h"
+#include "../../../paint/track/coaster/AirPoweredVerticalCoaster.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -24,6 +25,9 @@ constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
         .supportType = WoodenSupportType::Truss,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHillSteep, TrackGroup::liftHillCurve, TrackGroup::flatRollBanking, TrackGroup::curve, TrackGroup::brakes, TrackGroup::reverseFreefall, TrackGroup::slopeToFlat, TrackGroup::onridePhoto},
         .extraTrackGroups = {TrackGroup::booster},
+        .sprites = OpenRCT2::AirPoweredVerticalCoaster::kSprites,
+        .stationDesc = { 5, StationType::narrow, StationBaseType::b, -2 },
+        .onRidePhotoType = { false, 3, OnRidePhotoSize::normal },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | EnumsToFlags(RtdFlag::checkGForces),

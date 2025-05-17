@@ -10,6 +10,8 @@
 #pragma once
 
 #include "../../../SpriteIds.h"
+#include "../../../paint/track/water/DinghySlide.h"
+#include "../../../paint/track/water/DinghySlideCovered.h"
 #include "../../../ride/RideStringIds.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
@@ -26,6 +28,8 @@ constexpr RideTypeDescriptor DinghySlideRTD =
             .supportType = MetalSupportType::Tubes,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve },
             .extraTrackGroups = {},
+            .sprites = OpenRCT2::DinghySlide::kSprites,
+            .stationDesc = { 5, StationType::wide, StationBaseType::b, 0 },
             .icon = SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK,
             .tooltip = STR_RIDE_CONSTRUCTION_U_SHAPED_OPEN_TRACK_TIP,
         }, 
@@ -34,6 +38,8 @@ constexpr RideTypeDescriptor DinghySlideRTD =
             .supportType = MetalSupportType::Tubes,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::curve, TrackGroup::sBend, TrackGroup::curveSmall },
             .extraTrackGroups = {},
+            .sprites = OpenRCT2::DinghySlideCovered::kSprites,
+            .stationDesc = { 5, StationType::wide, StationBaseType::b, 0 },
             .icon = SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK,
             .tooltip = STR_RIDE_CONSTRUCTION_O_SHAPED_ENCLOSED_TRACK_TIP,
         }

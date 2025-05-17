@@ -14,9 +14,11 @@
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../paint/track/Support.h"
 #include "../world/Map.h"
+#include "../world/tile_element/TrackElement.h"
 
 class StationObject;
 struct Ride;
+enum class StationBaseType;
 
 constexpr uint8_t kTrackMap2x2[][4] = {
     { 0, 1, 2, 3 },
@@ -115,37 +117,6 @@ enum
     SPR_FENCE_METAL_B_SE = 14991,
     SPR_FENCE_METAL_B_SW = 14992,
     SPR_FENCE_METAL_B_NW = 14993,
-
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW = 16870,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW = 16871,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0 = 16872,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1 = 16873,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2 = 16874,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_0 = 16875,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_1 = 16876,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_2 = 16877,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_0 = 16878,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_1 = 16879,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_2 = 16880,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_0 = 16881,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_1 = 16882,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_2 = 16883,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_SW_NE = 16884,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_NW_SE = 16885,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_NE_SW = 16886,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_SE_NW = 16887,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_SW_NE = 16888,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_NW_SE = 16889,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_NE_SW = 16890,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_SE_NW = 16891,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_SW_NE = 16892,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_NW_SE = 16893,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_NE_SW = 16894,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_SE_NW = 16895,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SW_NW = 16896,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_NW_NE = 16897,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_NE_SE = 16898,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SE_SW = 16899,
 
     SPR_FLOOR_CORK_SE_SW = 22134,
     SPR_FLOOR_CORK_SW = 22135,
@@ -334,70 +305,10 @@ constexpr uint32_t kFenceSpritesMetalB[] = {
     SPR_FENCE_METAL_B_NW,
 };
 
-constexpr uint32_t kTrackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles[4][3] = {
-    {
-        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0,
-        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1,
-        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2,
-    },
-    {
-        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_0,
-        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_1,
-        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_2,
-    },
-    {
-        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_0,
-        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_1,
-        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_2,
-    },
-    {
-        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_0,
-        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_1,
-        SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_2,
-    }
-};
-constexpr uint32_t kTrackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile[4] = {
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SW_NW,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_NW_NE,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_NE_SE,
-    SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SE_SW,
-};
-
 extern const uint8_t kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[];
 extern const Direction kMapReversedDiagonalStraight[];
 
-extern const CoordsXY kDefaultRightQuarterTurn5TilesOffsets[4][5];
-extern const CoordsXYZ kDefaultRightQuarterTurn5TilesBoundOffsets[4][5];
-extern const CoordsXY kDefaultRightQuarterTurn5TilesBoundLengths[4][5];
-
 extern const uint8_t kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[];
-extern const CoordsXY defaultRightQuarterTurn3TilesOffsets[4][3];
-extern const CoordsXYZ defaultRightQuarterTurn3TilesBoundOffsets[4][3];
-extern const CoordsXY defaultRightQuarterTurn3TilesBoundLengths[4][3];
-
-constexpr int8_t kRightQuarterTurn3TilesSpriteMap[] = { 0, -1, 1, 2 };
-
-extern const CoordsXY defaultRightHelixUpSmallQuarterBoundLengths[4][3][2];
-extern const CoordsXYZ defaultRightHelixUpSmallQuarterBoundOffsets[4][3][2];
-
-extern const CoordsXY defaultRightHelixUpLargeQuarterBoundLengths[4][5][2];
-extern const CoordsXYZ defaultRightHelixUpLargeQuarterBoundOffsets[4][5][2];
-
-extern const CoordsXYZ defaultLeftEighthToDiagBoundOffsets[4][4];
-extern const CoordsXY defaultLeftEighthToDiagBoundLengths[4][4];
-extern const CoordsXYZ defaultRightEighthToDiagBoundOffsets[4][4];
-extern const CoordsXY defaultRightEighthToDiagBoundLengths[4][4];
-extern const int8_t defaultEighthToDiagThickness[4][4];
-
-extern const CoordsXY defaultDiagBoundLengths[4];
-extern const CoordsXY defaultDiagTileOffsets[4];
-
-constexpr bool kDiagSpriteMap[kNumOrthogonalDirections][4] = {
-    { false, true, false, false },
-    { false, false, false, true },
-    { false, false, true, false },
-    { true, false, false, false },
-};
 
 extern const uint8_t mapLeftEighthTurnToOrthogonal[5];
 
@@ -413,37 +324,7 @@ void TrackPaintUtilPaintFences(
     PaintSession& session, uint8_t edges, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride,
     const ImageId colourFlags, uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation);
 
-enum class StationBaseType
-{
-    none,
-    a,
-    b,
-    c,
-};
-constexpr uint32_t kStationBaseTypeCount = 4;
-
-bool TrackPaintUtilDrawStationCovers(
-    PaintSession& session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height,
-    ImageId colour);
-bool TrackPaintUtilDrawStationCovers2(
-    PaintSession& session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height,
-    uint8_t stationVariant, ImageId colour);
-bool TrackPaintUtilDrawNarrowStationPlatform(
-    PaintSession& session, const Ride& ride, Direction direction, int32_t height, int32_t zOffset,
-    const TrackElement& trackElement, const StationBaseType baseType, const int32_t baseOffsetZ);
-bool TrackPaintUtilDrawStation(
-    PaintSession& session, const Ride& ride, Direction direction, uint16_t height, const TrackElement& trackElement,
-    const StationBaseType baseType, const int32_t baseOffsetZ);
-bool TrackPaintUtilDrawStation2(
-    PaintSession& session, const Ride& ride, Direction direction, uint16_t height, const TrackElement& trackElement,
-    const StationBaseType baseType, const int32_t baseOffsetZ, int32_t fenceOffsetA, int32_t fenceOffsetB);
-bool TrackPaintUtilDrawStationInverted(
-    PaintSession& session, const Ride& ride, Direction direction, int32_t height, const TrackElement& trackElement,
-    uint8_t stationVariant);
 bool TrackPaintUtilShouldPaintSupports(const CoordsXY& position);
-void TrackPaintUtilDrawPier(
-    PaintSession& session, const Ride& ride, const StationObject* stationObject, const CoordsXY& position, Direction direction,
-    int32_t height, const TrackElement& trackElement, uint8_t rotation);
 inline void TrackPaintUtilDrawStationTunnel(PaintSession& session, Direction direction, int32_t height)
 {
     PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
@@ -452,96 +333,6 @@ inline void TrackPaintUtilDrawStationTunnelTall(PaintSession& session, Direction
 {
     PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Tall);
 }
-
-void TrackPaintUtilRightQuarterTurn5TilesPaint(
-    PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId colourFlags, const uint32_t sprites[4][5], const CoordsXY offsets[4][5], const CoordsXY boundsLengths[4][5],
-    const CoordsXYZ boundsOffsets[4][5]);
-void TrackPaintUtilRightQuarterTurn5TilesPaint2(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId colourFlags,
-    const SpriteBb sprites[][5]);
-void TrackPaintUtilRightQuarterTurn5TilesPaint3(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId colourFlags,
-    const SpriteBb sprites[][5]);
-
-void TrackPaintUtilRightQuarterTurn3TilesPaint(
-    PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId colourFlags, const uint32_t sprites[4][3], const CoordsXY offsets[4][3], const CoordsXY boundsLengths[4][3],
-    const CoordsXYZ boundsOffsets[4][3]);
-void TrackPaintUtilRightQuarterTurn3TilesPaint2(
-    PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId colourFlags, const uint32_t sprites[4][3]);
-void TrackPaintUtilRightQuarterTurn3TilesPaint2WithHeightOffset(
-    PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId colourFlags, const uint32_t sprites[4][3], int32_t heightOffset);
-void TrackPaintUtilRightQuarterTurn3TilesPaint3(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId colourFlags,
-    const SpriteBb sprites[4][3]);
-void TrackPaintUtilRightQuarterTurn3TilesPaint4(
-    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId colourFlags,
-    const SpriteBb sprites[4][3]);
-
-void TrackPaintUtilLeftQuarterTurn3TilesPaint(
-    PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId colourFlags, const uint32_t sprites[4][3]);
-void TrackPaintUtilLeftQuarterTurn3TilesPaintWithHeightOffset(
-    PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId colourFlags, const uint32_t sprites[4][3], int32_t heightOffset);
-void TrackPaintUtilLeftQuarterTurn1TilePaint(
-    PaintSession& session, int8_t thickness, int16_t height, int16_t boundBoxZOffset, Direction direction,
-    const ImageId colourFlags, const uint32_t* sprites);
-void TrackPaintUtilSpinningTunnelPaint(PaintSession& session, int8_t thickness, int16_t height, Direction direction);
-
-/**
- * Renders the black metal platform and the supports of the on-ride photo section.
- *
- * @param session
- * @param direction
- * @param height
- * @param supportType
- */
-void TrackPaintUtilOnridePhotoPlatformPaint(
-    PaintSession& session, Direction direction, int32_t height, MetalSupportType supportType);
-
-void TrackPaintUtilOnridePhotoSmallPaint(
-    PaintSession& session, Direction direction, int32_t height, const TrackElement& trackElement);
-void TrackPaintUtilOnridePhotoPaint(
-    PaintSession& session, Direction direction, int32_t height, const TrackElement& trackElement);
-void TrackPaintUtilOnridePhotoPaint2(
-    PaintSession& session, Direction direction, int32_t height, int32_t trackHeightOffset, int32_t supportsAboveHeightOffset,
-    const TrackElement& trackElement);
-void TrackPaintUtilOnridePhotoPaint2(
-    PaintSession& session, Direction direction, const TrackElement& trackElement, int32_t height,
-    int32_t supportsAboveHeightOffset = kGeneralSupportHeightOnRidePhoto, int32_t trackHeightOffset = 3);
-void TrackPaintUtilRightHelixUpSmallQuarterTilesPaint(
-    PaintSession& session, const int8_t thickness[2], int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId colourFlags, const uint32_t sprites[4][3][2], const CoordsXY offsets[4][3][2],
-    const CoordsXY boundsLengths[4][3][2], const CoordsXYZ boundsOffsets[4][3][2]);
-void TrackPaintUtilRightHelixUpLargeQuarterTilesPaint(
-    PaintSession& session, const int8_t thickness[2], int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId colourFlags, const uint32_t sprites[4][5][2], const CoordsXY offsets[4][5][2],
-    const CoordsXY boundsLengths[4][5][2], const CoordsXYZ boundsOffsets[4][5][2]);
-void TrackPaintUtilEighthToDiagTilesPaint(
-    PaintSession& session, const int8_t thickness[4][4], int16_t height, Direction direction, uint8_t trackSequence,
-    const ImageId colourFlags, const uint32_t sprites[4][4], const CoordsXY offsets[4][4], const CoordsXY boundsLengths[4][4],
-    const CoordsXYZ boundsOffsets[4][4]);
-void TrackPaintUtilDiagTilesPaint(
-    PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const uint32_t sprites[4], const CoordsXY offsets[4], const CoordsXY boundsLengths[4], const CoordsXYZ boundsOffsets[4],
-    int8_t additionalBoundsHeight, const ImageId colourFlags);
-inline void TrackPaintUtilDiagTilesPaint(
-    PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const uint32_t sprites[4], const CoordsXY offsets[4], const CoordsXY boundsLengths[4],
-    const CoordsXYZ boundsOffsets[4] = nullptr, int8_t additionalBoundsHeight = 0)
-{
-    TrackPaintUtilDiagTilesPaint(
-        session, thickness, height, direction, trackSequence, sprites, offsets, boundsLengths, boundsOffsets,
-        additionalBoundsHeight, session.TrackColours);
-}
-
-void TrackPaintUtilDiagTilesPaintExtra(
-    PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
-    const uint32_t sprites[4], MetalSupportType supportType);
 
 void TrackPaintUtilRightVerticalLoopSegments(PaintSession& session, Direction direction, uint8_t trackSequence);
 
@@ -553,6 +344,238 @@ void DrawSBendLeftSupports(
 void DrawSBendRightSupports(
     PaintSession& session, MetalSupportType supportType, uint8_t sequence, Direction direction, int32_t height,
     int32_t specialA, int32_t specialB);
+
+void trackPaintSprite(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteSupportColoursWithChild(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteSupportColoursWithChildChain(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteSupportColoursWithChildBrake(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteSupportColoursWithChildOnRidePhoto(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteSupportColoursBrakePlatformlessStation(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteSupportColoursPlatformlessStation(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteTrackSupportColours(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteTrackSupportColoursChain(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteTrackSupportColoursBrake(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteTrackSupportColoursStation(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteTrackSupportColoursOnRidePhoto(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteWithChild(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteWithChildSupportColoursPlatformlessStation(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteChain(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteChainCableLift(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteBrake(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteBrakePlatformlessStationCovers(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteBrakePoweredLaunchStation(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteBrakeStation(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteCableLift(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpritePlatformlessStationCovers(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpritePoweredLaunchStation(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteFence2(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteFence3(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteSupport(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteSupports2(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteSupportChildTrackColours(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteStation(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteOnRidePhoto(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteSpinningTunnel(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSpriteWithChildSpinningTunnel(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSprites2(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSprites2SupportColoursWithChild(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSprites2SupportColoursWithChildChain(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSprites2SupportColoursWithChildBrake(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSprites2TrackSupportColours(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSprites2TrackSupportColoursChain(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSprites2WithChild(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSprites2Chain(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSprites2Brake(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSprites2CableLift(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSprites2PlatformlessStation(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSprites2Station(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSprites2StationCovers(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSprites2OnRidePhoto(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSprites3(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintSprites4GreenLightStationCovers(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintStation1SpriteFences(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintStationChairlift(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintStationPier(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintWaterfall(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintRapidsSprites2(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintWatersplashSupportColoursWithChild(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintWhirlpoolSprites2(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintReverseFreefallSlope(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintReverseFreefallVertical(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
+
+void trackPaintFlatRailwayCrossing(
+    PaintSession& session, const Ride& ride, const uint8_t trackSequence, const Direction direction, const int32_t height,
+    const TrackElement& trackElement, const SupportType supportType);
 
 using TrackPaintFunction = void (&)(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
@@ -607,6 +630,7 @@ TrackPaintFunction GetTrackPaintFunctionSideFrictionRC(OpenRCT2::TrackElemType t
 TrackPaintFunction GetTrackPaintFunctionWoodenRC(OpenRCT2::TrackElemType trackType);
 TrackPaintFunction GetTrackPaintFunctionWildMouse(OpenRCT2::TrackElemType trackType);
 TrackPaintFunction GetTrackPaintFunctionMultiDimensionRC(OpenRCT2::TrackElemType trackType);
+TrackPaintFunction GetTrackPaintFunctionMultiDimensionRCInverted(OpenRCT2::TrackElemType trackType);
 TrackPaintFunction GetTrackPaintFunctionFlyingRC(OpenRCT2::TrackElemType trackType);
 TrackPaintFunction GetTrackPaintFunctionFlyingRCInverted(OpenRCT2::TrackElemType trackType);
 TrackPaintFunction GetTrackPaintFunctionVirginiaReel(OpenRCT2::TrackElemType trackType);

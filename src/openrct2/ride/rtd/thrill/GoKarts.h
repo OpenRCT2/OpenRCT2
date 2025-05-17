@@ -11,6 +11,7 @@
 
 #include "../../../SpriteIds.h"
 #include "../../../drawing/LightFX.h"
+#include "../../../paint/track/thrill/GoKarts.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -25,6 +26,7 @@ constexpr RideTypeDescriptor GoKartsRTD =
         .supportType = WoodenSupportType::Truss,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::slopeCurve, TrackGroup::slopeCurveLarge, TrackGroup::sBend},
         .extraTrackGroups = {TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeSteepLong},
+        .sprites = OpenRCT2::GoKarts::kSprites,
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = EnumsToFlags(RtdFlag::hasTrackColourMain, RtdFlag::hasTrackColourSupports, RtdFlag::noTestMode, RtdFlag::hasOneStation,
