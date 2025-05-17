@@ -171,7 +171,7 @@ namespace OpenRCT2::Ui::Windows
                 Close();
         }
 
-        void Invalidate()
+        void OnPrepareDraw() override
         {
             // Set the preview image button to be pressed down
             pressed_widgets = (1uLL << WIDX_PREVIEW) | (_clearSmallScenery ? (1uLL << WIDX_SMALL_SCENERY) : 0)
