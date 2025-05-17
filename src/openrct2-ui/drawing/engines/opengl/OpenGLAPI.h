@@ -9,10 +9,12 @@
 
 #pragma once
 
+#include <functional>
 #include <openrct2/Diagnostic.h>
 #include <source_location>
 #include <string.h>
 #include <type_traits>
+#include <utility>
 
 #ifdef OPENGL_NO_LINK
 
@@ -123,8 +125,8 @@ using PFNGLTEXSUBIMAGE2D = void(APIENTRYP)(
 
 namespace OpenRCT2::Ui
 {
-    template<typename TFn, typename... TArgs>
-    inline auto glCallImpl(std::source_location srcLoc, TFn fn, TArgs&&... args) -> decltype(fn(std::forward<TArgs>(args)...))
+    template<typename TSrcLoc, typename TFn, typename... TArgs>
+    inline auto glCallImpl(TSrcLoc&& srcLoc, TFn&& fn, TArgs&&... args) -> decltype(fn(std::forward<TArgs>(args)...))
     {
         const auto trimFilePath = [](const char* filePath) {
             const char* srcPos = strstr(filePath, "src/");
@@ -141,7 +143,7 @@ namespace OpenRCT2::Ui
 
         if constexpr (std::is_same_v<decltype(fn(std::forward<TArgs>(args)...)), void>)
         {
-            fn(std::forward<TArgs>(args)...);
+            std::invoke(std::forward<TFn>(fn), std::forward<TArgs>(args)...);
             GLenum error = glGetError();
             if (error != GL_NO_ERROR)
             {
@@ -150,7 +152,7 @@ namespace OpenRCT2::Ui
         }
         else
         {
-            auto result = fn(std::forward<TArgs>(args)...);
+            auto result = std::invoke(std::forward<TFn>(fn), std::forward<TArgs>(args)...);
             GLenum error = glGetError();
             if (error != GL_NO_ERROR)
             {
