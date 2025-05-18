@@ -464,24 +464,28 @@ public:
         if (srcX >= texWidth || srcY >= texHeight || srcX + width <= 0 || srcY + height <= 0)
             return;
 
-        GLuint mainFBO = framebuffer.GetFBO();
-        GLuint mainTexture = framebuffer.GetTexture();
-        GLuint tempFBO = tempBuffer.GetFBO();
-        GLuint tempTexture = tempBuffer.GetTexture();
-
         // First pass: Copy from main to temp
-        glBindFramebuffer(GL_FRAMEBUFFER, tempFBO);
-        glViewport(0, 0, width, height);
+        GLuint mainTexture = framebuffer.GetTexture();
+        tempBuffer.BindDraw();
+
+        glCall(glViewport, 0, 0, width, height);
+
         _copyRectShader->Use();
+        _copyRectShader->SetFlipY(true);
         _copyRectShader->SetTexture(mainTexture);
         _copyRectShader->SetSourceRect(srcX, srcY, width, height);
         _copyRectShader->SetTextureSize(texWidth, texHeight);
         _copyRectShader->Draw();
 
         // Second pass: Copy from temp to main
-        glBindFramebuffer(GL_FRAMEBUFFER, mainFBO);
-        glViewport(destX, destY, width, height);
+        GLuint tempTexture = tempBuffer.GetTexture();
+        framebuffer.BindDraw();
+
+        int32_t glDestY = texHeight - destY - height;
+        glCall(glViewport, destX, glDestY, width, height);
+
         _copyRectShader->Use();
+        _copyRectShader->SetFlipY(false);
         _copyRectShader->SetTexture(tempTexture);
         _copyRectShader->SetSourceRect(0, 0, width, height);
         _copyRectShader->SetTextureSize(texWidth, texHeight);

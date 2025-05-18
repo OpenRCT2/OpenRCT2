@@ -66,6 +66,7 @@ void CopyRectShader::GetLocations()
     uTexture = GetUniformLocation("uTexture");
     uSourceRect = GetUniformLocation("uSourceRect");
     uTextureSize = GetUniformLocation("uTextureSize");
+    uFlipY = GetUniformLocation("uFlipY");
     vPosition = GetAttributeLocation("vPosition");
     vTextureCoordinate = GetAttributeLocation("vTextureCoordinate");
 }
@@ -91,6 +92,11 @@ void CopyRectShader::Draw()
 {
     glCall(glBindVertexArray, _vao);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+}
+
+void CopyRectShader::SetFlipY(bool flip)
+{
+    glUniform1i(uFlipY, flip ? 1 : 0);
 }
 
 #endif /* DISABLE_OPENGL */
