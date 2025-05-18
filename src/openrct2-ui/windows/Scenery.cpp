@@ -496,8 +496,9 @@ namespace OpenRCT2::Ui::Windows
                             if (height < min_height)
                             {
                                 height = min_height;
-                                Invalidate();
+                                OnPrepareDraw();
                                 ContentUpdateScroll();
+                                Invalidate();
                             }
                         }
                     }
@@ -517,6 +518,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 Invalidate();
                 height = max_height;
+                OnPrepareDraw();
                 ContentUpdateScroll();
             }
 
