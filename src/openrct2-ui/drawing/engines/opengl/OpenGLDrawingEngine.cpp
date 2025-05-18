@@ -467,11 +467,8 @@ public:
         // First pass: Copy from main to temp
         GLuint mainTexture = framebuffer.GetTexture();
         tempBuffer.BindDraw();
-
         glCall(glViewport, 0, 0, width, height);
-
         _copyRectShader->Use();
-        _copyRectShader->SetFlipY(true);
         _copyRectShader->SetTexture(mainTexture);
         _copyRectShader->SetSourceRect(srcX, srcY, width, height);
         _copyRectShader->SetTextureSize(texWidth, texHeight);
@@ -480,12 +477,8 @@ public:
         // Second pass: Copy from temp to main
         GLuint tempTexture = tempBuffer.GetTexture();
         framebuffer.BindDraw();
-
-        int32_t glDestY = texHeight - destY - height;
-        glCall(glViewport, destX, glDestY, width, height);
-
+        glCall(glViewport, destX, destY, width, height);
         _copyRectShader->Use();
-        _copyRectShader->SetFlipY(false);
         _copyRectShader->SetTexture(tempTexture);
         _copyRectShader->SetSourceRect(0, 0, width, height);
         _copyRectShader->SetTextureSize(texWidth, texHeight);

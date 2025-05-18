@@ -1,7 +1,7 @@
-#version 150
+#version 330 core
 
 in vec2 fTextureCoordinate;
-layout(location = 0) out lowp vec4 fragColor;
+out vec4 fragColor;
 
 uniform sampler2D uTexture;
 

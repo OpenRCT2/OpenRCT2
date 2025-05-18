@@ -20,7 +20,6 @@ namespace OpenRCT2::Ui
         GLint uTexture{ -1 };
         GLint uSourceRect{ -1 };
         GLint uTextureSize{ -1 };
-        GLint uFlipY{ -1 };
 
         GLint vPosition{ -1 };
         GLint vTextureCoordinate{ -1 };
@@ -35,7 +34,6 @@ namespace OpenRCT2::Ui
         static void SetTexture(GLuint texture);
         void SetSourceRect(int32_t x, int32_t y, int32_t width, int32_t height);
         void SetTextureSize(int32_t width, int32_t height);
-        void SetFlipY(bool flip);
 
         void Draw();
 
