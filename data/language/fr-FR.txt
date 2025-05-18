@@ -2519,7 +2519,7 @@ STR_5265    :Choisir la source des objets visibles
 STR_5266    :Affichage
 STR_5267    :Langue et unités
 STR_5268    :Audio
-STR_5269    :Contrôles et interface
+STR_5269    :Contrôles
 STR_5270    :Divers
 STR_5272    :Petits décors
 STR_5273    :Grands décors
@@ -3814,3 +3814,15 @@ STR_6758    :Options d’emprunt
 STR_6759    :Mode opérationnel
 STR_6760    :Revenus :
 STR_6761    :Détails du scénario
+STR_6762    :Interface
+STR_6763    :RollerCoaster Tycoon 1
+STR_6764    :Enregistrement et sauvegardes automatiques
+STR_6765    :Avancé
+STR_6766    :Effacer
+STR_6767    :Fenêtre
+STR_6768    :Rendu
+STR_6769    :Comportement
+STR_6770    :Limite de fréquence d’image :
+STR_6771    :Vitesse interne (par défaut)
+STR_6772    :Synchronisation verticale
+STR_6773    :Illimitée

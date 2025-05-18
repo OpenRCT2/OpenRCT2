@@ -3809,3 +3809,10 @@ STR_6763    :RollerCoaster Tycoon 1
 STR_6764    :Salvamento e autosalvamentos
 STR_6765    :Avançado
 STR_6766    :Limpar
+STR_6767    :Janela
+STR_6768    :Renderização
+STR_6769    :Comportamento
+STR_6770    :Limite da taxa de quadros:
+STR_6771    :Velocidade interna (padrão)
+STR_6772    :Sincronização vertical
+STR_6773    :Irrestrita
