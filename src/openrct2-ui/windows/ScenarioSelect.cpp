@@ -207,7 +207,6 @@ namespace OpenRCT2::Ui::Windows
                         {
                             return ParkPreview{};
                         }
-
                     }
                     catch (const std::exception& e)
                     {
