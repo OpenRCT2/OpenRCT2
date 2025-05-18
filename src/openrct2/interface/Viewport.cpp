@@ -247,29 +247,26 @@ namespace OpenRCT2
         return mainWindow->viewport;
     }
 
-    void ViewportsInvalidate(int32_t x, int32_t y, int32_t z0, int32_t z1, ZoomLevel maxZoom)
+    void ViewportsInvalidate(const int32_t x, const int32_t y, const int32_t z0, const int32_t z1, const ZoomLevel maxZoom)
     {
         for (auto& vp : _viewports)
         {
             if (vp.isVisible && (maxZoom == ZoomLevel{ -1 } || vp.zoom <= ZoomLevel{ maxZoom }))
             {
-                int32_t x1, y1, x2, y2;
+                const auto screenCoord = Translate3DTo2DWithZ(vp.rotation, CoordsXYZ{ x + 16, y + 16, 0 });
 
-                x += 16;
-                y += 16;
-                auto screenCoord = Translate3DTo2DWithZ(vp.rotation, CoordsXYZ{ x, y, 0 });
-
-                x1 = screenCoord.x - 32;
-                y1 = screenCoord.y - 32 - z1;
-                x2 = screenCoord.x + 32;
-                y2 = screenCoord.y + 32 - z0;
+                const int32_t x1 = screenCoord.x - 32;
+                const int32_t y1 = screenCoord.y - 32 - z1;
+                const int32_t x2 = screenCoord.x + 32;
+                const int32_t y2 = screenCoord.y + 32 - z0;
 
                 ViewportInvalidate(&vp, ScreenRect{ { x1, y1 }, { x2, y2 } });
             }
         }
     }
 
-    void ViewportsInvalidate(const CoordsXYZ& pos, int32_t width, int32_t minHeight, int32_t maxHeight, ZoomLevel maxZoom)
+    void ViewportsInvalidate(
+        const CoordsXYZ& pos, const int32_t width, const int32_t minHeight, const int32_t maxHeight, const ZoomLevel maxZoom)
     {
         for (auto& vp : _viewports)
         {
@@ -284,7 +281,7 @@ namespace OpenRCT2
         }
     }
 
-    void ViewportsInvalidate(const ScreenRect& screenRect, ZoomLevel maxZoom)
+    void ViewportsInvalidate(const ScreenRect& screenRect, const ZoomLevel maxZoom)
     {
         for (auto& vp : _viewports)
         {
