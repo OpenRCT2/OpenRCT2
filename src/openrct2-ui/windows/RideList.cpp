@@ -97,6 +97,7 @@ namespace OpenRCT2::Ui::Windows
         INFORMATION_TYPE_QUEUE_TIME,
         INFORMATION_TYPE_RELIABILITY,
         INFORMATION_TYPE_DOWN_TIME,
+        INFORMATION_TYPE_LAST_INSPECTION,
         INFORMATION_TYPE_GUESTS_FAVOURITE,
         INFORMATION_TYPE_EXCITEMENT,
         INFORMATION_TYPE_INTENSITY,
@@ -119,6 +120,7 @@ namespace OpenRCT2::Ui::Windows
         STR_QUEUE_TIME,
         STR_RELIABILITY,
         STR_DOWN_TIME,
+        STR_LAST_INSPECTION,
         STR_GUESTS_FAVOURITE,
         STR_RIDE_LIST_EXCITEMENT,
         STR_RIDE_LIST_INTENSITY,
@@ -146,6 +148,7 @@ namespace OpenRCT2::Ui::Windows
         false, // Queue time
         false, // Reliability
         false, // Down time
+        false, // Last inspection
         false, // Guests favourite
         false, // Excitement
         false, // Intensity
@@ -211,7 +214,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SORT].right = width - 60 + 54;
 
             auto dropdownStart = widgets[WIDX_CURRENT_INFORMATION_TYPE].top;
-            ResizeDropdown(WIDX_CURRENT_INFORMATION_TYPE, { 150, dropdownStart }, { width - 216, kDropdownHeight });
+            ResizeDropdown(WIDX_CURRENT_INFORMATION_TYPE, { 100, dropdownStart }, { width - 166, kDropdownHeight });
 
             // Refreshing the list can be a very intensive operation
             // owing to its use of ride_has_any_track_elements().
@@ -704,6 +707,25 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<uint16_t>(ridePtr->downtime);
                         formatSecondary = STR_DOWN_TIME_LABEL;
                         break;
+                    case INFORMATION_TYPE_LAST_INSPECTION:
+                    {
+                        const auto lastInspection = ridePtr->lastInspection;
+                        ft.Add<uint16_t>(lastInspection);
+
+                        if (lastInspection <= 1)
+                        {
+                            formatSecondary = STR_LAST_INSPECTION_LABEL_MINUTE;
+                        }
+                        else if (lastInspection <= 240)
+                        {
+                            formatSecondary = STR_LAST_INSPECTION_LABEL_MINUTES;
+                        }
+                        else
+                        {
+                            formatSecondary = STR_LAST_INSPECTION_LABEL_MORE_THAN_FOUR_HOURS;
+                        }
+                        break;
+                    }
                     case INFORMATION_TYPE_GUESTS_FAVOURITE:
                         formatSecondary = 0;
                         if (ridePtr->isRide())
@@ -905,6 +927,11 @@ namespace OpenRCT2::Ui::Windows
                 case INFORMATION_TYPE_DOWN_TIME:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
                         return thisRide.downtime <= otherRide.downtime;
+                    });
+                    break;
+                case INFORMATION_TYPE_LAST_INSPECTION:
+                    SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                        return thisRide.lastInspection <= otherRide.lastInspection;
                     });
                     break;
                 case INFORMATION_TYPE_GUESTS_FAVOURITE:
