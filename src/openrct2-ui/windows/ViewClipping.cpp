@@ -320,7 +320,7 @@ namespace OpenRCT2::Ui::Windows
                     auto ft = Formatter();
                     if (Config::Get().general.ShowHeightAsUnits)
                     {
-                        ft.Add<fixed32_2dp>(FIXED_2DP(gClipHeight, 0) / 2 - FIXED_2DP(7, 0));
+                        ft.Add<fixed32_2dp>(MakeFixed2dp<fixed32_2dp>(gClipHeight, 0) / 2 - MakeFixed2dp<fixed32_2dp>(7, 0));
                         DrawTextBasic(rt, screenCoords, STR_UNIT2DP_NO_SUFFIX, ft, { this->colours[0] });
                     }
                     else
@@ -329,14 +329,17 @@ namespace OpenRCT2::Ui::Windows
                         {
                             case MeasurementFormat::Imperial:
                             {
-                                ft.Add<fixed32_2dp>(FIXED_2DP(gClipHeight, 0) / 2.0f * 5.0f - FIXED_2DP(35, 0));
+                                ft.Add<fixed32_2dp>(
+                                    MakeFixed2dp<fixed32_2dp>(gClipHeight, 0) / 2.0f * 5.0f - MakeFixed2dp<fixed32_2dp>(35, 0));
                                 DrawTextBasic(rt, screenCoords, STR_UNIT2DP_SUFFIX_FEET, ft, { this->colours[0] });
                                 break;
                             }
                             case MeasurementFormat::Metric:
                             case MeasurementFormat::SI:
                             {
-                                ft.Add<fixed32_2dp>(FIXED_2DP(gClipHeight, 0) / 2.0f * 1.5f - FIXED_2DP(10, 50));
+                                ft.Add<fixed32_2dp>(
+                                    MakeFixed2dp<fixed32_2dp>(gClipHeight, 0) / 2.0f * 1.5f
+                                    - MakeFixed2dp<fixed32_2dp>(10, 50));
                                 DrawTextBasic(rt, screenCoords, STR_UNIT2DP_SUFFIX_METRES, ft, { this->colours[0] });
                                 break;
                             }
