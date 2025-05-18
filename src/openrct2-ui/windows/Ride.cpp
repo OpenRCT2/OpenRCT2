@@ -2311,6 +2311,7 @@ namespace OpenRCT2::Ui::Windows
 
         void MainViewportRotate()
         {
+            focus = std::nullopt;
             InitViewport();
         }
 
