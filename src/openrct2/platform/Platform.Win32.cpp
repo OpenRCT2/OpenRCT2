@@ -806,6 +806,11 @@ namespace OpenRCT2::Platform
         return u8"Rollercoaster Tycoon 2";
     }
 
+    u8string GetRCTClassicSteamDir()
+    {
+        return u8"RollerCoaster Tycoon Classic";
+    }
+
     time_t FileGetModifiedTime(u8string_view path)
     {
         WIN32_FILE_ATTRIBUTE_DATA data{};

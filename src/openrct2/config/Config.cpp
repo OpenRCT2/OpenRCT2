@@ -752,6 +752,12 @@ namespace OpenRCT2::Config
             {
                 return location;
             }
+
+            std::string location2 = Path::Combine(steamPath, Platform::GetRCTClassicSteamDir());
+            if (Platform::OriginalGameDataExists(location2))
+            {
+                return location2;
+            }
         }
 
         auto discordPath = Platform::GetFolderPath(SpecialFolder::rct2Discord);
