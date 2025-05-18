@@ -589,7 +589,7 @@ namespace OpenRCT2
     // rct2: 0x006E7A15
     static void ViewportSetUndergroundFlag(int32_t underground, WindowBase* window, Viewport* viewport)
     {
-        if (window->classification != WindowClass::MainWindow
+        if ((window->classification != WindowClass::MainWindow && window->classification != WindowClass::Viewport)
             || (window->classification == WindowClass::MainWindow && !window->viewport_smart_follow_sprite.IsNull()))
         {
             if (!underground)
