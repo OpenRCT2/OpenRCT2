@@ -336,6 +336,10 @@ const char* CheatsGetName(CheatType cheatType)
             return LanguageGetString(STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES);
         case CheatType::RemoveParkFences:
             return LanguageGetString(STR_CHEAT_REMOVE_PARK_FENCES);
+        case CheatType::GrantAward:
+            return LanguageGetString(STR_CHEAT_AWARDS_GRANT);
+        case CheatType::ClearAwards:
+            return LanguageGetString(STR_CHEAT_AWARDS_CLEAR);
         default:
             return "Unknown Cheat";
     }

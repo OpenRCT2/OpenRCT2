@@ -1728,6 +1728,10 @@ enum : StringId
     STR_OBJECT_SELECTION_CLIMATE = 6743,
     STR_CLIMATE_WEATHER_PERCENT = 6744,
 
+    STR_CHEAT_GROUP_AWARDS = 6778,
+    STR_CHEAT_AWARDS_GRANT = 6779,
+    STR_CHEAT_AWARDS_CLEAR = 6780,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

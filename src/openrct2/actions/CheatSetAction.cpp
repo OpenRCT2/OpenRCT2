@@ -273,6 +273,12 @@ GameActions::Result CheatSetAction::Execute() const
         case CheatType::RemoveParkFences:
             RemoveParkFences();
             break;
+        case CheatType::GrantAward:
+            GrantAward(static_cast<AwardType>(_param1));
+            break;
+        case CheatType::ClearAwards:
+            ClearAwards();
+            break;
         default:
         {
             LOG_ERROR("Invalid cheat type %d", _cheatType.id);
@@ -424,6 +430,10 @@ ParametersRange CheatSetAction::GetParameterRange(CheatType cheatType) const
         case CheatType::RemoveLitter:
             [[fallthrough]];
         case CheatType::RemoveParkFences:
+            return { { 0, 0 }, { 0, 0 } };
+        case CheatType::GrantAward:
+            return { { 0, EnumValue(AwardType::Count) - 1 }, { 0, 0 } };
+        case CheatType::ClearAwards:
             return { { 0, 0 }, { 0, 0 } };
         case CheatType::Count:
             break;
@@ -862,4 +872,17 @@ void CheatSetAction::RemoveParkFences() const
     } while (TileElementIteratorNext(&it));
 
     GfxInvalidateScreen();
+}
+
+void CheatSetAction::GrantAward(AwardType award) const
+{
+    AwardGrant(award);
+}
+
+void CheatSetAction::ClearAwards() const
+{
+    AwardReset();
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByClass(WindowClass::ParkInformation);
 }

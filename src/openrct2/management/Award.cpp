@@ -657,3 +657,32 @@ void AwardUpdateAll()
         }
     }
 }
+
+void AwardGrant(AwardType type)
+{
+    auto& gameState = getGameState();
+    auto& currentAwards = gameState.currentAwards;
+    auto* windowMgr = Ui::GetWindowManager();
+
+    // Remove award type if already granted
+    auto res = std::remove_if(
+        std::begin(currentAwards), std::end(currentAwards), [type](const Award& award) { return award.Type == type; });
+    if (res != std::end(currentAwards))
+    {
+        currentAwards.erase(res, std::end(currentAwards));
+    }
+
+    // Ensure there is space for the award
+    if (currentAwards.size() >= OpenRCT2::Limits::kMaxAwards)
+    {
+        currentAwards.erase(currentAwards.begin());
+    }
+
+    // Add award
+    currentAwards.push_back(Award{ 5u, type });
+    if (Config::Get().notifications.ParkAward)
+    {
+        News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[EnumValue(type)], 0, {});
+    }
+    windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+}

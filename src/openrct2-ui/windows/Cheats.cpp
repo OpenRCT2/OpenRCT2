@@ -162,6 +162,11 @@ enum WindowCheatsWidgetIdx
     WIDX_ALLOW_BUILD_IN_PAUSE_MODE,
     WIDX_ALLOW_REGULAR_PATH_AS_QUEUE,
     WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES,
+    WIDX_AWARDS_GROUP,
+    WIDX_AWARDS_DROPDOWN,
+    WIDX_AWARDS_DROPDOWN_BUTTON,
+    WIDX_AWARDS_GRANT,
+    WIDX_AWARDS_CLEAR,
 
     WIDX_FIX_ALL = WIDX_TAB_CONTENT,
     WIDX_RENEW_RIDES,
@@ -314,6 +319,12 @@ static constexpr Widget window_cheats_park_widgets[] =
     MakeWidget        ({ 11, 207}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_BUILD_IN_PAUSE_MODE,          STR_CHEAT_BUILD_IN_PAUSE_MODE_TIP         ), // Build in pause mode
     MakeWidget        ({ 11, 224}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_PATH_AS_QUEUE,          STR_CHEAT_ALLOW_PATH_AS_QUEUE_TIP         ), // Allow regular footpaths as queue path
     MakeWidget        ({ 11, 241}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES, STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES_TIP), // Allow special colours in dropdown
+
+    MakeWidget        ({  5, 264}, {238,  60},   WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_CHEAT_GROUP_AWARDS), // Awards group
+    MakeWidget        ({ 11, 279}, {111,  14},   WindowWidgetType::DropdownMenu, WindowColour::Secondary                        ), // Award dropdown
+    MakeWidget        ({110, 280}, { 11,  12},   WindowWidgetType::Button,       WindowColour::Secondary,STR_DROPDOWN_GLYPH     ), // Award dropdown
+    MakeWidget        ({127, 279}, CHEAT_BUTTON, WindowWidgetType::Button,       WindowColour::Secondary, STR_CHEAT_AWARDS_GRANT), // Grant award
+    MakeWidget        ({ 11, 300}, CHEAT_BUTTON, WindowWidgetType::Button,       WindowColour::Secondary, STR_CHEAT_AWARDS_CLEAR), // Clear awards
 };
 
 static constexpr Widget window_cheats_rides_widgets[] =
@@ -411,6 +422,7 @@ static StringId window_cheats_page_titles[] = {
         int32_t _yearSpinnerValue = 1;
         int32_t _monthSpinnerValue = 1;
         int32_t _daySpinnerValue = 1;
+        AwardType _selectedAwardType = AwardType::MostUntidy;
 
     public:
         void OnOpen() override
@@ -499,6 +511,10 @@ static StringId window_cheats_page_titles[] = {
             {
                 OnDropdownWeather(widgetIndex, selectedIndex);
             }
+            else if (page == WINDOW_CHEATS_PAGE_PARK)
+            {
+                OnDropdownPark(widgetIndex, selectedIndex);
+            }
         }
 
         void OnPrepareDraw() override
@@ -555,6 +571,8 @@ static StringId window_cheats_page_titles[] = {
                     SetCheckboxValue(WIDX_ALLOW_BUILD_IN_PAUSE_MODE, gameState.cheats.buildInPauseMode);
                     SetCheckboxValue(WIDX_ALLOW_REGULAR_PATH_AS_QUEUE, gameState.cheats.allowRegularPathAsQueue);
                     SetCheckboxValue(WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES, gameState.cheats.allowSpecialColourSchemes);
+
+                    widgets[WIDX_AWARDS_DROPDOWN].text = STR_AWARD_MOST_UNTIDY + static_cast<uint16_t>(_selectedAwardType);
                     break;
                 case WINDOW_CHEATS_PAGE_RIDES:
                     SetCheckboxValue(WIDX_UNLOCK_OPERATING_LIMITS, gameState.cheats.unlockOperatingLimits);
@@ -986,6 +1004,19 @@ static StringId window_cheats_page_titles[] = {
                         CheatsSet(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
                     }
                     break;
+                case WIDX_AWARDS_DROPDOWN_BUTTON:
+                    Widget* dropdownWidget = &widgets[widgetIndex - 1];
+                    auto numAwards = static_cast<uint16_t>(AwardType::Count);
+
+                    for (uint16_t i = 0; i < numAwards; i++)
+                    {
+                        gDropdownItems[i].Format = STR_AWARD_MOST_UNTIDY + i;
+                    }
+
+                    WindowDropdownShowTextCustomWidth(
+                        { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+                        colours[1], 0, Dropdown::Flag::StayOpen, numAwards, WW);
+                    break;
             }
         }
 
@@ -1084,6 +1115,18 @@ static StringId window_cheats_page_titles[] = {
                 case WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES:
                     CheatsSet(CheatType::AllowSpecialColourSchemes, !gameState.cheats.allowSpecialColourSchemes);
                     break;
+                case WIDX_AWARDS_GRANT:
+                {
+                    auto cheatSetAction = CheatSetAction(CheatType::GrantAward, static_cast<int64_t>(_selectedAwardType));
+                    GameActions::Execute(&cheatSetAction);
+                }
+                break;
+                case WIDX_AWARDS_CLEAR:
+                {
+                    auto cheatSetAction = CheatSetAction(CheatType::ClearAwards);
+                    GameActions::Execute(&cheatSetAction);
+                }
+                break;
             }
         }
 
@@ -1158,6 +1201,19 @@ static StringId window_cheats_page_titles[] = {
                         speed = kCheatsStaffFastSpeed;
                 }
                 CheatsSet(CheatType::SetStaffSpeed, speed);
+            }
+        }
+
+        void OnDropdownPark(WidgetIndex widgetIndex, int32_t dropdownIndex)
+        {
+            if (dropdownIndex == -1)
+            {
+                return;
+            }
+
+            if (widgetIndex == WIDX_AWARDS_DROPDOWN_BUTTON)
+            {
+                _selectedAwardType = static_cast<AwardType>(dropdownIndex);
             }
         }
 

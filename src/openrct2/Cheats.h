@@ -106,6 +106,8 @@ enum class CheatType : int32_t
     AllowSpecialColourSchemes,
     RemoveParkFences,
     IgnorePrice,
+    GrantAward,
+    ClearAwards,
     Count,
 };
 

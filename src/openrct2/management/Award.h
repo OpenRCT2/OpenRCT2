@@ -42,5 +42,6 @@ struct Award
 };
 
 bool AwardIsPositive(AwardType type);
+void AwardGrant(AwardType type);
 void AwardReset();
 void AwardUpdateAll();

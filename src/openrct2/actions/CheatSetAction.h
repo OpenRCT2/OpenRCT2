@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../management/Award.h"
 #include "GameAction.h"
 
 class CheatSetAction final : public GameActionBase<GameCommand::Cheat>
@@ -55,4 +56,6 @@ private:
     void ParkSetOpen(bool isOpen) const;
     void CreateDucks(int count) const;
     void RemoveParkFences() const;
+    void GrantAward(AwardType award) const;
+    void ClearAwards() const;
 };
