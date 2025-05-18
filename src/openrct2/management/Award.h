@@ -9,6 +9,9 @@
 
 #pragma once
 
+#include "../SpriteIds.h"
+#include "../localisation/StringIds.h"
+
 #include <cstdint>
 #include <vector>
 
@@ -42,5 +45,9 @@ struct Award
 };
 
 bool AwardIsPositive(AwardType type);
+ImageIndex AwardGetSprite(AwardType type);
+StringId AwardGetText(AwardType type);
+StringId AwardGetNews(AwardType type);
+void AwardGrant(AwardType type);
 void AwardReset();
 void AwardUpdateAll();
