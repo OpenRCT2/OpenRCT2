@@ -33,32 +33,19 @@ using namespace OpenRCT2;
 static constexpr uint16_t kVirtualFloorBaseSize = 5 * kCoordsXYStep;
 static constexpr CoordsXY kVirtualFloorBaseSizeXY = { kVirtualFloorBaseSize, kVirtualFloorBaseSize };
 static uint16_t _virtualFloorHeight = 0;
-static CoordsXYZ _virtualFloorLastMinPos;
-static CoordsXYZ _virtualFloorLastMaxPos;
-static uint32_t _virtualFloorFlags = 0;
-
-enum VirtualFloorFlags
-{
-    VIRTUAL_FLOOR_FLAG_NONE = 0,
-    VIRTUAL_FLOOR_FLAG_ENABLED = (1 << 1),
-    VIRTUAL_FLOOR_FORCE_INVALIDATION = (1 << 2),
-};
+static CoordsXYZ _virtualFloorLastMinPos{ std::numeric_limits<int32_t>::max(), std::numeric_limits<int32_t>::max(), 0 };
+static CoordsXYZ _virtualFloorLastMaxPos{ std::numeric_limits<int32_t>::lowest(), std::numeric_limits<int32_t>::lowest(), 0 };
+static bool _virtualFloorIsEnabled = false;
 
 bool VirtualFloorIsEnabled()
 {
-    return (_virtualFloorFlags & VIRTUAL_FLOOR_FLAG_ENABLED) != 0;
+    return _virtualFloorIsEnabled;
 }
 
-void VirtualFloorSetHeight(int16_t height)
+void VirtualFloorSetHeight(const int16_t height)
 {
-    if (!VirtualFloorIsEnabled())
+    if (VirtualFloorIsEnabled())
     {
-        return;
-    }
-
-    if (_virtualFloorHeight != height)
-    {
-        VirtualFloorInvalidate();
         _virtualFloorHeight = height;
     }
 }
@@ -80,7 +67,8 @@ void VirtualFloorEnable()
     }
 
     VirtualFloorReset();
-    _virtualFloorFlags |= VIRTUAL_FLOOR_FLAG_ENABLED;
+
+    _virtualFloorIsEnabled = true;
 }
 
 void VirtualFloorDisable()
@@ -90,19 +78,21 @@ void VirtualFloorDisable()
         return;
     }
 
-    _virtualFloorFlags &= ~VIRTUAL_FLOOR_FLAG_ENABLED;
-
-    // Force invalidation, even if the position hasn't changed.
-    _virtualFloorFlags |= VIRTUAL_FLOOR_FORCE_INVALIDATION;
-    VirtualFloorInvalidate();
-    _virtualFloorFlags &= ~VIRTUAL_FLOOR_FORCE_INVALIDATION;
+    VirtualFloorInvalidate(true);
 
     VirtualFloorReset();
+
+    _virtualFloorIsEnabled = false;
 }
 
-void VirtualFloorInvalidate()
+void VirtualFloorInvalidate(const bool alwaysInvalidate)
 {
     PROFILED_FUNCTION();
+
+    if (!VirtualFloorIsEnabled())
+    {
+        return;
+    }
 
     // First, let's figure out how big our selection is.
     CoordsXY min_position = { std::numeric_limits<int32_t>::max(), std::numeric_limits<int32_t>::max() };
@@ -125,11 +115,6 @@ void VirtualFloorInvalidate()
         }
     }
 
-    bool invalidateNewRegion
-        = (min_position.x != std::numeric_limits<int32_t>::max() && min_position.y != std::numeric_limits<int32_t>::max()
-           && max_position.x != std::numeric_limits<int32_t>::lowest()
-           && max_position.y != std::numeric_limits<int32_t>::lowest());
-
     // Apply the virtual floor size to the computed invalidation area.
     min_position.x -= kVirtualFloorBaseSize + 16;
     min_position.y -= kVirtualFloorBaseSize + 16;
@@ -142,8 +127,7 @@ void VirtualFloorInvalidate()
         && _virtualFloorLastMaxPos.x != std::numeric_limits<int32_t>::lowest()
         && _virtualFloorLastMaxPos.y != std::numeric_limits<int32_t>::lowest())
     {
-        if (_virtualFloorLastMinPos != min_position || _virtualFloorLastMaxPos != max_position
-            || (_virtualFloorFlags & VIRTUAL_FLOOR_FORCE_INVALIDATION) != 0)
+        if (_virtualFloorLastMinPos != min_position || _virtualFloorLastMaxPos != max_position || alwaysInvalidate)
         {
             LOG_VERBOSE(
                 "Invalidating previous region, Min: %d %d, Max: %d %d", _virtualFloorLastMinPos.x, _virtualFloorLastMinPos.y,
@@ -158,26 +142,18 @@ void VirtualFloorInvalidate()
         return;
     }
 
-    if (!(_virtualFloorFlags & VIRTUAL_FLOOR_FLAG_ENABLED))
-    {
-        return;
-    }
-
     LOG_VERBOSE("Min: %d %d, Max: %d %d", min_position.x, min_position.y, max_position.x, max_position.y);
 
-    if (invalidateNewRegion)
-    {
-        MapInvalidateRegion(min_position, max_position);
+    MapInvalidateRegion(min_position, max_position);
 
-        // Save minimal and maximal positions.
-        _virtualFloorLastMinPos.x = min_position.x;
-        _virtualFloorLastMinPos.y = min_position.y;
-        _virtualFloorLastMinPos.z = _virtualFloorHeight;
+    // Save minimal and maximal positions.
+    _virtualFloorLastMinPos.x = min_position.x;
+    _virtualFloorLastMinPos.y = min_position.y;
+    _virtualFloorLastMinPos.z = _virtualFloorHeight;
 
-        _virtualFloorLastMaxPos.x = max_position.x;
-        _virtualFloorLastMaxPos.y = max_position.y;
-        _virtualFloorLastMaxPos.z = _virtualFloorHeight;
-    }
+    _virtualFloorLastMaxPos.x = max_position.x;
+    _virtualFloorLastMaxPos.y = max_position.y;
+    _virtualFloorLastMaxPos.z = _virtualFloorHeight;
 }
 
 bool VirtualFloorTileIsFloor(const CoordsXY& loc)

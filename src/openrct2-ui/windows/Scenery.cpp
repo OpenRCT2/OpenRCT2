@@ -1767,11 +1767,6 @@ namespace OpenRCT2::Ui::Windows
             MapInvalidateSelectionRect();
             MapInvalidateMapSelectionTiles();
 
-            if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
-            {
-                VirtualFloorInvalidate();
-            }
-
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
 
