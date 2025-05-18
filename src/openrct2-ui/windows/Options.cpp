@@ -108,11 +108,12 @@ namespace OpenRCT2::Ui::Windows
         WIDX_DRAWING_ENGINE_LABEL,
         WIDX_DRAWING_ENGINE,
         WIDX_DRAWING_ENGINE_DROPDOWN,
+        WIDX_MULTITHREADING_CHECKBOX,
         WIDX_FRAME_RATE_LIMIT_LABEL,
         WIDX_FRAME_RATE_LIMIT,
         WIDX_FRAME_RATE_LIMIT_DROPDOWN,
         WIDX_SHOW_FPS_CHECKBOX,
-        WIDX_MULTITHREADING_CHECKBOX,
+        WIDX_ENABLE_TWEENING_CHECKBOX,
 
         WIDX_BEHAVIOUR_GROUP,
         WIDX_STEAM_OVERLAY_PAUSE,
@@ -276,20 +277,21 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({ 10,  98}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_UI_SCALING_DESC,                   STR_WINDOW_SCALE_TIP                     ), // Scale
         MakeSpinnerWidgets({155,  98}, {145,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                         STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
 
-        MakeWidget        ({  5, 121}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_RENDERING                                                             ), // Rendering group
+        MakeWidget        ({  5, 121}, {300,  80}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_RENDERING                                                             ), // Rendering group
         MakeWidget        ({ 10, 135}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DRAWING_ENGINE,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (label)
         MakeWidget        ({155, 135}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ), // Drawing engine (dropdown label)
         MakeWidget        ({288, 136}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (chevron)
-        MakeWidget        ({ 10, 150}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_FRAME_RATE_LIMIT_LABEL                                                      ), // Frame rate limit (label)
-        MakeWidget        ({155, 150}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ), // Frame rate limit (dropdown label)
-        MakeWidget        ({288, 151}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                              ), // Frame rate limit (chevron)
-        MakeWidget        ({ 10, 166}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
-        MakeWidget        ({155, 166}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
+        MakeWidget        ({ 10, 150}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
+        MakeWidget        ({ 10, 150+16}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_FRAME_RATE_LIMIT_LABEL                                                      ), // Frame rate limit (label)
+        MakeWidget        ({155, 150+16}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ), // Frame rate limit (dropdown label)
+        MakeWidget        ({288, 151+16}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                              ), // Frame rate limit (chevron)
+        MakeWidget        ({ 10, 166+16}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
+        MakeWidget        ({155, 166+16}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_ENABLE_TWEENING,                   STR_ENABLE_TWEENING_TIP                  ), // Enable tweening
 
-        MakeWidget        ({  5, 188}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_BEHAVIOUR                                                             ), // Behaviour group
-        MakeWidget        ({ 11, 203}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_STEAM_OVERLAY_PAUSE,               STR_STEAM_OVERLAY_PAUSE_TIP              ), // Pause on steam overlay
-        MakeWidget        ({ 11, 218}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
-        MakeWidget        ({ 11, 233}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              ), // Disable screensaver
+        MakeWidget        ({  5, 188+16}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_BEHAVIOUR                                                             ), // Behaviour group
+        MakeWidget        ({ 11, 203+16}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_STEAM_OVERLAY_PAUSE,               STR_STEAM_OVERLAY_PAUSE_TIP              ), // Pause on steam overlay
+        MakeWidget        ({ 11, 218+16}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
+        MakeWidget        ({ 11, 233+16}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              ), // Disable screensaver
     };
 
     constexpr int32_t kFrameRenderingStart = 53;
@@ -759,6 +761,11 @@ namespace OpenRCT2::Ui::Windows
                     Config::Save();
                     Invalidate();
                     break;
+                case WIDX_ENABLE_TWEENING_CHECKBOX:
+                    Config::Get().general.Tweening ^= 1;
+                    Config::Save();
+                    Invalidate();
+                    break;
                 case WIDX_MINIMIZE_FOCUS_LOSS:
                     Config::Get().general.MinimizeFullscreenFocusLoss ^= 1;
                     Config::Save();
@@ -975,6 +982,8 @@ namespace OpenRCT2::Ui::Windows
 
             SetCheckboxValue(WIDX_SHOW_FPS_CHECKBOX, Config::Get().general.ShowFPS);
             SetCheckboxValue(WIDX_MULTITHREADING_CHECKBOX, Config::Get().general.MultiThreading);
+            SetCheckboxValue(WIDX_ENABLE_TWEENING_CHECKBOX, Config::Get().general.Tweening);
+
             SetCheckboxValue(WIDX_MINIMIZE_FOCUS_LOSS, Config::Get().general.MinimizeFullscreenFocusLoss);
             SetCheckboxValue(WIDX_STEAM_OVERLAY_PAUSE, Config::Get().general.SteamOverlayPause);
             SetCheckboxValue(WIDX_DISABLE_SCREENSAVER_LOCK, Config::Get().general.DisableScreensaver);
