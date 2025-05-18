@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#22476] “Time since last inspection” statistic is available in the rides window.
 - Feature: [#24313] [Plugin] Add API for setting a ride vehicle’s sprite to a smoke plume.
+- Feature: [#24438] Grant/clear awards cheats.
 - Improved: [#24364] Improve the fallback vehicle sprites for Zero G Rolls, and allow small ones to be built without cheats if the fallbacks are available.
 - Improved: [#24368] Clicking the in-game update notication now leads to a more user-friendly download page.
 - Change: [#24342] g2.dat is now split into g2.dat and fonts.dat.
