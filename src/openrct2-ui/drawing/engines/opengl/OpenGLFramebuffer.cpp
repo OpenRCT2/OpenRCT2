@@ -43,7 +43,7 @@ OpenGLFramebuffer::OpenGLFramebuffer(int32_t width, int32_t height, bool depth, 
     }
     else
     {
-        glCall(glTexImage2D, GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB8, GL_UNSIGNED_BYTE, nullptr);
+        glCall(glTexImage2D, GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
     }
     glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -65,12 +65,46 @@ OpenGLFramebuffer::OpenGLFramebuffer(int32_t width, int32_t height, bool depth, 
     glCall(glFramebufferTexture2D, GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _depth, 0);
     glCall(glFramebufferTexture2D, GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_TEXTURE_2D, 0, 0);
 
+    // Verify completeness
+    const GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    if (status != GL_FRAMEBUFFER_COMPLETE)
+    {
+        const char* errorMsg = "Unknown error";
+        switch (status)
+        {
+            case GL_FRAMEBUFFER_UNDEFINED:
+                errorMsg = "Undefined";
+                break;
+            case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+                errorMsg = "Incomplete attachment";
+                break;
+            case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+                errorMsg = "Missing attachment";
+                break;
+            case GL_FRAMEBUFFER_UNSUPPORTED:
+                errorMsg = "Unsupported combination";
+                break;
+        }
+        LOG_ERROR("Framebuffer incomplete: (%u) %s", status, errorMsg);
+    }
+
     const GLenum drawBuffers[] = { GL_COLOR_ATTACHMENT0 };
     glCall(glDrawBuffers, 1, drawBuffers);
 
-    glCall(glBindFramebuffer, GL_FRAMEBUFFER, _id);
-    glCall(glClearColor, 0, 0, 0, 0);
-    glCall(glClear, GL_COLOR_BUFFER_BIT);
+    // Clear the framebuffer.
+    glCall(glClearColor, 0, 0, 0, 0); // Always clear color
+
+    if (depth)
+    {
+        glCall(glClearDepth, 1.0f);
+        glCall(glClear, GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+    else
+    {
+        glCall(glClear, GL_COLOR_BUFFER_BIT);
+    }
+
+    glCall(glBindFramebuffer, GL_FRAMEBUFFER, 0);
 }
 
 OpenGLFramebuffer::~OpenGLFramebuffer()
