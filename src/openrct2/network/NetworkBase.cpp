@@ -719,64 +719,22 @@ const char* NetworkBase::FormatChat(NetworkPlayer* fromPlayer, const char* text)
     if (fromPlayer != nullptr)
     {
         auto& network = OpenRCT2::GetContext()->GetNetwork();
-        auto it = network.GetGroupByID(fromPlayer->Id);
-        std::string groupName = "";
-        std::vector<std::string> colours;
-        if (it != nullptr)
+        auto* playerGroup = fromPlayer->Group;
+        std::string colourCode = "{BABYBLUE}"; 
+
+        if (playerGroup != nullptr)
         {
-            groupName = it->GetName();
-            if (groupName[0] != '{')
-            {
-                colours.push_back("{WHITE}");
-            }
+            std::string groupName = playerGroup->GetName();
+            if (groupName == "Admin") colourCode = "{RED}";
+            else if (groupName == "Spectator") colourCode = "{GREY}";
+            else if (groupName == "User") colourCode = "{BABYBLUE}";
         }
 
-        for (size_t i = 0; i < groupName.size(); ++i)
-        {
-            if (groupName[i] == '{')
-            {
-                std::string colour = "{";
-                ++i;
-                while (i < groupName.size() && groupName[i] != '}' && groupName[i] != '{')
-                {
-                    colour += groupName[i];
-                    ++i;
-                }
-                colour += '}';
-                if (groupName[i] == '}' && i < groupName.size())
-                {
-                    colours.push_back(colour);
-                }
-            }
-        }
-
-        if (colours.size() == 0 || (colours.size() == 1 && colours[0] == "{WHITE}"))
-        {
-            formatted += "{BABYBLUE}";
-            formatted += fromPlayer->Name;
-        }
-        else
-        {
-            size_t j = 0;
-            size_t proportionalSize = fromPlayer->Name.size() / colours.size();
-            for (size_t i = 0; i < colours.size(); ++i)
-            {
-                formatted += colours[i];
-                size_t numCharacters = proportionalSize + j;
-                for (; j < numCharacters && j < fromPlayer->Name.size(); ++j)
-                {
-                    formatted += fromPlayer->Name[j];
-                }
-            }
-            while (j < fromPlayer->Name.size())
-            {
-                formatted += fromPlayer->Name[j];
-                j++;
-            }
-        }
-
+        formatted += colourCode;
+        formatted += fromPlayer->Name;
         formatted += ": ";
     }
+
     formatted += "{WHITE}";
     formatted += text;
     return formatted.c_str();
