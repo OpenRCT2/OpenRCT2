@@ -369,7 +369,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_GROUP_BY_TRACK_TYPE:
                     Config::Get().interface.ListRideVehiclesSeparately = !Config::Get().interface.ListRideVehiclesSeparately;
                     Config::Save();
-                    SetPage(_currentTab);
+                    PopulateRideList();
+                    Invalidate();
                     break;
                 case WIDX_FILTER_TEXT_BOX:
                     WindowStartTextbox(*this, widgetIndex, _filter, kTextInputSize);
