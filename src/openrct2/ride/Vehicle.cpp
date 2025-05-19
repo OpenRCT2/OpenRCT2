@@ -6313,6 +6313,7 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
     {
         door->SetAnimationIsBackwards(isBackwards);
         door->SetAnimationFrame(1);
+        door->SetIsAnimating(true);
         play_scenery_door_open_sound(trackLocation, door);
 
         MapAnimation::Create(doorLocation);
@@ -6322,6 +6323,7 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
     {
         door->SetAnimationIsBackwards(isBackwards);
         door->SetAnimationFrame(6);
+        door->SetIsAnimating(true);
         play_scenery_door_close_sound(trackLocation, door);
 
         MapAnimation::Create(doorLocation);

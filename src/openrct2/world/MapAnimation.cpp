@@ -189,7 +189,7 @@ static bool UpdateWallAnimation(WallElement& wall, const CoordsXYZ& loc, const i
         return false;
     }
 
-    if (entry->flags & WALL_SCENERY_IS_DOOR)
+    if (entry->flags & WALL_SCENERY_IS_DOOR && wall.IsAnimating())
     {
         if (getGameState().currentTicks & 1)
         {
@@ -205,6 +205,7 @@ static bool UpdateWallAnimation(WallElement& wall, const CoordsXYZ& loc, const i
             if (currentFrame == 15)
             {
                 newFrame = 0;
+                wall.SetIsAnimating(false);
             }
             else
             {
@@ -327,7 +328,7 @@ static bool UpdateTemporaryAnimation(const TemporaryMapAnimation& animation)
     return hasAnimations;
 }
 
-static bool IsElementAnimated(const TileElementBase& element, const bool skipDoors)
+static bool IsElementAnimated(const TileElementBase& element)
 {
     switch (element.GetType())
     {
@@ -343,7 +344,7 @@ static bool IsElementAnimated(const TileElementBase& element, const bool skipDoo
                 {
                     return true;
                 }
-                if (!skipDoors && (entry->flags & WALL_SCENERY_IS_DOOR))
+                if (entry->flags & WALL_SCENERY_IS_DOOR && wall->IsAnimating())
                 {
                     return true;
                 }
@@ -432,7 +433,7 @@ void MapAnimation::CreateAll()
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
     {
-        if (IsElementAnimated(*it.element, true))
+        if (IsElementAnimated(*it.element))
         {
             _mapAnimations.insert(TileCoordsXY(it.x, it.y));
         }
