@@ -482,6 +482,8 @@ namespace OpenRCT2::Ui::Windows
                 }
                 widgetIndex++;
             }
+
+            UpdateViewport();
         }
 
         void OnPrepareDraw() override

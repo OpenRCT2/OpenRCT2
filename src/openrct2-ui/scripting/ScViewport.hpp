@@ -271,7 +271,7 @@ namespace OpenRCT2::Scripting
             if (w != nullptr)
             {
                 auto viewport = w->viewport;
-                if (viewport != nullptr)
+                if (viewport != nullptr && (viewport->viewPos.x != left || viewport->viewPos.y != top))
                 {
                     viewport->viewPos.x = left;
                     viewport->viewPos.y = top;
