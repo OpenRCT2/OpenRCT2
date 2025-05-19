@@ -3817,3 +3817,7 @@ STR_6770    :FPS-korlát:
 STR_6771    :Belső sebesség (alapért.)
 STR_6772    :Vertikális szinkron
 STR_6773    :Korlátlan
+STR_6774    :Ellenőrzés óta eltelt idő
+STR_6775    :{COMMA16} perc
+STR_6776    :{COMMA16} perc
+STR_6777    :több mint 4 óra

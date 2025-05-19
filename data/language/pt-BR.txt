@@ -3816,3 +3816,7 @@ STR_6770    :Limite da taxa de quadros:
 STR_6771    :Velocidade interna (padrão)
 STR_6772    :Sincronização vertical
 STR_6773    :Irrestrita
+STR_6774    :Tempo desde a última inspeção
+STR_6775    :{COMMA16} minuto
+STR_6776    :{COMMA16} minutos
+STR_6777    :mais de 4 horas
