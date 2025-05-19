@@ -13,6 +13,7 @@
 - Fix: [#24362] When upgrading from an older version on Windows, old versions of official objects are not always removed.  
 - Fix: [#24371] Fix divide by zero in the scenery window when there is no scenery.
 - Fix: [#24403] Park fences draw underneath and through opaque water.
+- Fix: [#24406] The network status window uses an undefined string for its title.
 
 0.4.22 (2025-05-04)
 ------------------------------------------------------------------------
