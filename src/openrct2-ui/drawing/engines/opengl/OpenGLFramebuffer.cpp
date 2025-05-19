@@ -136,26 +136,6 @@ void OpenGLFramebuffer::BindRead() const
     glCall(glBindFramebuffer, GL_READ_FRAMEBUFFER, _id);
 }
 
-void OpenGLFramebuffer::GetPixels(RenderTarget& rt) const
-{
-    assert(rt.width == _width && rt.height == _height);
-
-    auto pixels = std::make_unique<uint8_t[]>(_width * _height);
-    glCall(glBindTexture, GL_TEXTURE_2D, _texture);
-    glCall(glPixelStorei, GL_PACK_ALIGNMENT, 1);
-    glCall(glGetTexImage, GL_TEXTURE_2D, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, pixels.get());
-
-    // Flip pixels vertically on copy
-    uint8_t* src = pixels.get() + ((_height - 1) * _width);
-    uint8_t* dst = rt.bits;
-    for (int32_t y = 0; y < _height; y++)
-    {
-        std::copy_n(src, _width, dst);
-        src -= _width;
-        dst += rt.LineStride();
-    }
-}
-
 void OpenGLFramebuffer::SwapColourBuffer(OpenGLFramebuffer& other)
 {
     std::swap(_texture, other._texture);
@@ -198,6 +178,26 @@ GLuint OpenGLFramebuffer::CreateDepthTexture(int32_t width, int32_t height)
     glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glCall(glTexParameteri, GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     return depth;
+}
+
+void OpenGLFramebuffer::GetPixels(RenderTarget& rt) const
+{
+    assert(rt.width == _width && rt.height == _height);
+
+    auto pixels = std::make_unique<uint8_t[]>(_width * _height);
+    glCall(glBindTexture, GL_TEXTURE_2D, _texture);
+    glCall(glPixelStorei, GL_PACK_ALIGNMENT, 1);
+    glCall(glGetTexImage, GL_TEXTURE_2D, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, pixels.get());
+
+    // Flip pixels vertically on copy
+    uint8_t* src = pixels.get() + ((_height - 1) * _width);
+    uint8_t* dst = rt.bits;
+    for (int32_t y = 0; y < _height; y++)
+    {
+        std::copy_n(src, _width, dst);
+        src -= _width;
+        dst += rt.LineStride();
+    }
 }
 
 void OpenGLFramebuffer::SetPixels(const RenderTarget& rt)

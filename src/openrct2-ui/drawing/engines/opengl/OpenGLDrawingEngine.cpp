@@ -421,16 +421,11 @@ public:
         _drawingContext->FlushCommandBuffers();
 
         auto& framebuffer = _drawingContext->GetFinalFramebuffer();
-        auto& tempBuffer = *_tempFramebuffer;
 
-        const int32_t texHeight = static_cast<int32_t>(framebuffer.GetHeight());
         const int32_t texWidth = static_cast<int32_t>(framebuffer.GetWidth());
+        const int32_t texHeight = static_cast<int32_t>(framebuffer.GetHeight());
 
-        // Originally 0x00683359
         // Adjust for move off screen
-        // NOTE: when zooming, there can be x, y, dx, dy combinations that go off the
-        // screen; hence the checks. This code should ultimately not be called when
-        // zooming because this function is specific to updating the screen on move
         int32_t lmargin = std::min(x - dx, 0);
         int32_t rmargin = std::min(texWidth - (x - dx + width), 0);
         int32_t tmargin = std::min(y - dy, 0);
@@ -443,6 +438,10 @@ public:
         if (width <= 0 || height <= 0)
             return;
 
+    #if 0
+
+        auto& tempBuffer = *_tempFramebuffer;
+
         const auto flipYAxis = [texHeight](int32_t yPos, int32_t h) {
             // Convert to OpenGL bottom-left origin coords.
             return texHeight - yPos - h;
@@ -452,17 +451,6 @@ public:
         int32_t srcY = flipYAxis(y - dy, height);
         int32_t destX = x;
         int32_t destY = flipYAxis(y, height);
-
-        // Clamp coordinates to valid range
-        srcX = std::max(0, std::min(srcX, texWidth - 1));
-        srcY = std::max(0, std::min(srcY, texHeight - 1));
-        destX = std::max(0, std::min(destX, texWidth - 1));
-        destY = std::max(0, std::min(destY, texHeight - 1));
-        width = std::max(0, std::min(width, texWidth - std::max(srcX, destX)));
-        height = std::max(0, std::min(height, texHeight - std::max(srcY, destY)));
-
-        if (srcX >= texWidth || srcY >= texHeight || srcX + width <= 0 || srcY + height <= 0)
-            return;
 
         glCall(glDisable, GL_BLEND);
         glCall(glDisable, GL_DEPTH_TEST);
@@ -488,6 +476,36 @@ public:
         _copyRectShader->SetSourceRect(0, 0, width, height);
         _copyRectShader->SetTextureSize(texWidth, texHeight);
         _copyRectShader->Draw();
+
+    #else
+
+        auto& tempFb = *_tempFramebuffer;
+
+        // Calculate source region in OpenGL coordinates
+        int32_t srcX0 = x - dx;
+        int32_t srcY0_app = y - dy;
+        int32_t glSrcY0 = texHeight - (srcY0_app + height);
+        int32_t glSrcY1 = texHeight - srcY0_app;
+
+        // Blit source region from main framebuffer to temporary
+        framebuffer.BindRead();
+        tempFb.BindDraw();
+        glCall(glBlitFramebuffer, srcX0, glSrcY0, srcX0 + width, glSrcY1, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+
+        // Blit from temporary to destination in main framebuffer
+        framebuffer.BindDraw();
+        tempFb.BindRead();
+
+        int32_t dstX0 = x;
+        int32_t dstY0_app = y;
+        int32_t glDstY0 = texHeight - (dstY0_app + height);
+        int32_t glDstY1 = texHeight - dstY0_app;
+
+        glCall(glBlitFramebuffer, 0, 0, width, height, dstX0, glDstY0, dstX0 + width, glDstY1, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+
+    #endif
+
+        framebuffer.Bind();
     }
 
     IDrawingContext* GetDrawingContext() override
