@@ -299,6 +299,44 @@ static bool UpdateOnRidePhotoAnimation(TrackElement& track, const CoordsXYZ& coo
     return false;
 }
 
+static bool UpdateLandEdgeDoorsAnimation(TrackElement& track, const CoordsXYZ& coords)
+{
+    if (getGameState().currentTicks & 3)
+    {
+        return true;
+    }
+
+    bool isAnimating = false;
+
+    const auto doorAState = track.GetDoorAState();
+    if (doorAState >= kLandEdgeDoorFrameEnd)
+    {
+        track.SetDoorAState(kLandEdgeDoorFrameClosed);
+        MapInvalidateTileZoom1({ coords, coords.z + 32 });
+    }
+    else if (doorAState != kLandEdgeDoorFrameClosed && doorAState != kLandEdgeDoorFrameOpen)
+    {
+        track.SetDoorAState(doorAState + 1);
+        MapInvalidateTileZoom1({ coords, coords.z + 32 });
+        isAnimating = true;
+    }
+
+    const auto doorBState = track.GetDoorBState();
+    if (doorBState >= kLandEdgeDoorFrameEnd)
+    {
+        track.SetDoorBState(kLandEdgeDoorFrameClosed);
+        MapInvalidateTileZoom1({ coords, coords.z + 32 });
+    }
+    else if (doorBState != kLandEdgeDoorFrameClosed && doorBState != kLandEdgeDoorFrameOpen)
+    {
+        track.SetDoorBState(doorBState + 1);
+        MapInvalidateTileZoom1({ coords, coords.z + 32 });
+        isAnimating = true;
+    }
+
+    return isAnimating;
+}
+
 static bool UpdateTemporaryAnimation(const TemporaryMapAnimation& animation)
 {
     const TileCoordsXYZ tileCoords{ animation.location };
@@ -308,7 +346,7 @@ static bool UpdateTemporaryAnimation(const TemporaryMapAnimation& animation)
         return true;
     }
 
-    bool hasAnimations = false;
+    bool isAnimating = false;
     do
     {
         switch (animation.type)
@@ -318,14 +356,21 @@ static bool UpdateTemporaryAnimation(const TemporaryMapAnimation& animation)
                 if (tileElement->GetType() == TileElementType::Track && tileElement->BaseHeight == tileCoords.z
                     && tileElement->AsTrack()->GetTrackType() == TrackElemType::OnRidePhoto)
                 {
-                    hasAnimations |= UpdateOnRidePhotoAnimation(*tileElement->AsTrack(), animation.location);
+                    isAnimating |= UpdateOnRidePhotoAnimation(*tileElement->AsTrack(), animation.location);
                 }
                 break;
+            }
+            case MapAnimation::TemporaryType::landEdgeDoor:
+            {
+                if (tileElement->GetType() == TileElementType::Track && tileElement->BaseHeight == tileCoords.z)
+                {
+                    isAnimating |= UpdateLandEdgeDoorsAnimation(*tileElement->AsTrack(), animation.location);
+                }
             }
         }
     } while (!(tileElement++)->IsLastForTile());
 
-    return hasAnimations;
+    return isAnimating;
 }
 
 static bool IsElementAnimated(const TileElementBase& element)

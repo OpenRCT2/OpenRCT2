@@ -16,6 +16,7 @@ namespace OpenRCT2::MapAnimation
     enum class TemporaryType : uint8_t
     {
         onRidePhoto,
+        landEdgeDoor,
     };
 
     void Create(const CoordsXY coords);
