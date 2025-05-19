@@ -18,6 +18,7 @@
 #include "../drawing/Text.h"
 #include "../localisation/Formatting.h"
 #include "../paint/Paint.h"
+#include "../paint/VirtualFloor.h"
 #include "../profiling/Profiling.h"
 #include "../scenes/intro/IntroScene.h"
 #include "../ui/UiContext.h"
@@ -46,6 +47,8 @@ void Painter::Paint(IDrawingEngine& de)
     }
     else
     {
+        VirtualFloorInvalidate(false);
+
         de.PaintWindows();
 
         UpdatePaletteEffects();
