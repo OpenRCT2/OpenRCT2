@@ -1,0 +1,84 @@
+STR_0007    :Miniature Railway
+STR_0015    :Bobsled Coaster
+STR_0027    :Bumper Cars
+STR_0035    :Merry-Go-Round
+STR_0038    :Restroom
+STR_0045    :Elevator
+STR_0047    :ATM
+STR_0517    :Passengers travel in miniature trains along a narrow-gauge railway track
+STR_0529    :Mine train-themed roller coaster trains move along steel track designed to resemble old railway lines
+STR_0537    :Guests bump into one another in self-controlled electric bumper cars
+STR_0555    :Guests travel in an elevator vertically between different levels
+STR_0574    :Riders are secured in special harnesses in a lying position, navigating twisted track and inversions either facing upwards or downwards
+STR_0976    :Restrooms and Information Kiosks
+STR_1102    :Moving at {VELOCITY}
+STR_1105    :Moving at {VELOCITY}
+STR_1108    :Moving at {VELOCITY}
+STR_1120    :Moving at {VELOCITY}
+STR_1129    :All vehicles use identical colors
+STR_1130    :Different colors per {STRINGID}
+STR_1131    :Different colors per vehicle
+STR_1136    :Choose primary color
+STR_1137    :Choose additional color 1
+STR_1138    :Choose additional color 2
+STR_1139    :Choose support structure color
+STR_1140    :Choose vehicle color scheme option
+STR_1396    :Color scheme options
+STR_1442    :Emptying trash can
+STR_1490    :"{STRINGID} offers excellent value"
+STR_1502    :"I need to use the restroom"
+STR_1506    :"The trash here is unacceptable"
+STR_1518    :"This balloon from {STRINGID} offers excellent value"
+STR_1519    :"This stuffed animal from {STRINGID} offers excellent value"
+STR_1520    :"This park map from {STRINGID} offers excellent value"
+STR_1521    :"This on-ride photograph from {STRINGID} offers excellent value"
+STR_1522    :"This umbrella from {STRINGID} offers excellent value"
+STR_1523    :"This drink from {STRINGID} offers excellent value"
+STR_1524    :"This burger from {STRINGID} offers excellent value"
+STR_1525    :"These fries from {STRINGID} offer excellent value"
+STR_1526    :"This ice cream from {STRINGID} offers excellent value"
+STR_1527    :"This cotton candy from {STRINGID} offers excellent value"
+STR_1531    :"This pizza from {STRINGID} offers excellent value"
+STR_1533    :"This popcorn from {STRINGID} offers excellent value"
+STR_1534    :"This hot dog from {STRINGID} offers excellent value"
+STR_1535    :"This tentacle from {STRINGID} offers excellent value"
+STR_1536    :"This hat from {STRINGID} offers excellent value"
+STR_1537    :"This candy apple from {STRINGID} offers excellent value"
+STR_1538    :"This T-shirt from {STRINGID} offers excellent value"
+STR_1539    :"This donut from {STRINGID} offers excellent value"
+STR_1540    :"This coffee from {STRINGID} offers excellent value"
+STR_1542    :"This fried chicken from {STRINGID} offers excellent value"
+STR_1543    :"This lemonade from {STRINGID} offers excellent value"
+STR_1559    :"I am not willing to pay that much for fries from {STRINGID}"
+STR_1561    :"I am not willing to pay that much for cotton candy from {STRINGID}"
+STR_1571    :"I am not willing to pay that much for a candy apple from {STRINGID}"
+STR_1573    :"I am not willing to pay that much for a donut from {STRINGID}"
+STR_1584    :"This on-ride photograph from {STRINGID} offers excellent value"
+STR_1585    :"This on-ride photograph from {STRINGID} offers excellent value"
+STR_1586    :"This on-ride photograph from {STRINGID} offers excellent value"
+STR_1587    :"This pretzel from {STRINGID} offers excellent value"
+STR_1588    :"This hot chocolate from {STRINGID} offers excellent value"
+STR_1589    :"This iced tea from {STRINGID} offers excellent value"
+STR_1590    :"This funnel cake from {STRINGID} offers excellent value"
+STR_1591    :"These sunglasses from {STRINGID} offer excellent value"
+STR_1592    :"These beef noodles from {STRINGID} offer excellent value"
+STR_1593    :"These fried rice noodles from {STRINGID} offer excellent value"
+STR_1594    :"This wonton soup from {STRINGID} offers excellent value"
+STR_1595    :"This meatball soup from {STRINGID} offers excellent value"
+STR_1596    :"This fruit juice from {STRINGID} offers excellent value"
+STR_1597    :"This soy milk from {STRINGID} offers excellent value"
+STR_1598    :"This sujeonggwa from {STRINGID} offers excellent value"
+STR_1599    :"This sub sandwich from {STRINGID} offers excellent value"
+STR_1600    :"This biscuit from {STRINGID} offers excellent value"
+STR_1604    :"This grilled sausage from {STRINGID} offers excellent value"
+STR_1667    :{WINDOW_COLOUR_2}Restroom:
+STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Empty trash cans
+STR_1753    :Display summarized list of guests in park
+STR_1790    :Choose uniform color for this type of staff
+STR_1791    :{WINDOW_COLOUR_2}Uniform color:
+STR_1819    :{WINDOW_COLOUR_2}All guests (summarized)
+STR_1834    :Guests' favorite
+STR_1842    :Favorite of: {COMMA32} guest
+STR_1843    :Favorite of: {COMMA32} guests
+STR_1929    :{RED}{STRINGID} still has not been repaired{NEWLINE}Check the positions of your mechanics and consider improving their deployment
+...
