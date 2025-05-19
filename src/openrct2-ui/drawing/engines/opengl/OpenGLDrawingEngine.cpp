@@ -464,6 +464,9 @@ public:
         if (srcX >= texWidth || srcY >= texHeight || srcX + width <= 0 || srcY + height <= 0)
             return;
 
+        glCall(glDisable, GL_BLEND);
+        glCall(glDisable, GL_DEPTH_TEST);
+
         // First pass: Copy from main to temp
         GLuint mainTexture = framebuffer.GetTexture();
         tempBuffer.BindDraw();
