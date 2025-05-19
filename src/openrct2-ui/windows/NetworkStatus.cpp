@@ -26,7 +26,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr Widget window_network_status_widgets[] = {
-        WINDOW_SHIM(320, 90, kStringIdEmpty)
+        WINDOW_SHIM(kStringIdEmpty, 320, 90)
     };
     // clang-format on
 
