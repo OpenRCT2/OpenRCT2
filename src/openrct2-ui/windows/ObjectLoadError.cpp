@@ -493,16 +493,18 @@ namespace OpenRCT2::Ui::Windows
         {
             WindowDrawWidgets(*this, rt);
 
+            auto screenPos = windowPos + ScreenCoordsXY{ 5, widgets[WIDX_TITLE].bottom };
+
             // Draw explanatory message
             auto ft = Formatter();
             ft.Add<StringId>(STR_OBJECT_ERROR_WINDOW_EXPLANATION);
-            DrawTextWrapped(rt, windowPos + ScreenCoordsXY{ 5, 18 }, WW - 10, STR_BLACK_STRING, ft);
+            DrawTextWrapped(rt, screenPos + ScreenCoordsXY{ 0, 4 }, WW - 10, STR_BLACK_STRING, ft);
 
             // Draw file name
             ft = Formatter();
             ft.Add<StringId>(STR_OBJECT_ERROR_WINDOW_FILE);
             ft.Add<utf8*>(_filePath.c_str());
-            DrawTextEllipsised(rt, { windowPos.x + 5, windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft);
+            DrawTextEllipsised(rt, screenPos + ScreenCoordsXY{ 0, 29 }, WW - 5, STR_BLACK_STRING, ft);
         }
 
         void OnScrollDraw(const int32_t scrollIndex, RenderTarget& rt) override
