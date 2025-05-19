@@ -9,10 +9,9 @@
 
 #include "ScVehicle.hpp"
 
+#include "../../../ride/TrackData.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../ride/ScRide.hpp"
-
-#include <openrct2/ride/TrackData.h>
 
 #ifdef ENABLE_SCRIPTING
 
