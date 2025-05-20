@@ -70,7 +70,7 @@ void Banner::FormatTextTo(Formatter& ft) const
     }
     else if (flags.has(BannerFlag::linkedToRide))
     {
-        auto ride = GetRide(ride_index);
+        auto ride = GetRide(rideIndex);
         if (ride != nullptr)
         {
             ride->formatNameTo(ft);
@@ -379,7 +379,7 @@ void UnlinkAllRideBanners()
         if (!banner.IsNull())
         {
             banner.flags.unset(BannerFlag::linkedToRide);
-            banner.ride_index = RideId::GetNull();
+            banner.rideIndex = RideId::GetNull();
         }
     }
 }
@@ -389,10 +389,10 @@ void UnlinkAllBannersForRide(RideId rideId)
     auto& gameState = getGameState();
     for (auto& banner : gameState.banners)
     {
-        if (!banner.IsNull() && (banner.flags.has(BannerFlag::linkedToRide)) && banner.ride_index == rideId)
+        if (!banner.IsNull() && (banner.flags.has(BannerFlag::linkedToRide)) && banner.rideIndex == rideId)
         {
             banner.flags.unset(BannerFlag::linkedToRide);
-            banner.ride_index = RideId::GetNull();
+            banner.rideIndex = RideId::GetNull();
             banner.text = {};
         }
     }

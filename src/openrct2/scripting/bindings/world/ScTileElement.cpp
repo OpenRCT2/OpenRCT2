@@ -2109,11 +2109,11 @@ namespace OpenRCT2::Scripting
             if (_element->GetType() != TileElementType::Banner)
             {
                 if (value.empty())
-                    banner->ride_index = BannerGetClosestRideIndex({ banner->position.ToCoordsXY(), 16 });
+                    banner->rideIndex = BannerGetClosestRideIndex({ banner->position.ToCoordsXY(), 16 });
                 else
-                    banner->ride_index = RideId::GetNull();
+                    banner->rideIndex = RideId::GetNull();
 
-                banner->flags.set(BannerFlag::linkedToRide, !banner->ride_index.IsNull());
+                banner->flags.set(BannerFlag::linkedToRide, !banner->rideIndex.IsNull());
             }
         }
     }
@@ -2258,7 +2258,7 @@ namespace OpenRCT2::Scripting
                 RideId rideIndex = BannerGetClosestRideIndex({ _coords, _element->BaseHeight });
                 if (!rideIndex.IsNull())
                 {
-                    banner->ride_index = rideIndex;
+                    banner->rideIndex = rideIndex;
                     banner->flags.set(BannerFlag::linkedToRide);
                 }
             }

@@ -48,7 +48,7 @@ struct Banner
     std::string text;
     mutable std::string formattedTextBuffer;
     uint8_t colour{};
-    RideId ride_index{};
+    RideId rideIndex{};
     OpenRCT2::TextColour textColour{};
     TileCoordsXY position;
 

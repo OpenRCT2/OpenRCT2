@@ -258,7 +258,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         RideId rideIndex = BannerGetClosestRideIndex({ _loc, maxHeight });
         if (!rideIndex.IsNull())
         {
-            banner->ride_index = rideIndex;
+            banner->rideIndex = rideIndex;
             banner->flags.set(BannerFlag::linkedToRide);
         }
 

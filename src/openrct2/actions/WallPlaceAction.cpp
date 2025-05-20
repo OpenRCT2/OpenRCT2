@@ -369,7 +369,7 @@ GameActions::Result WallPlaceAction::Execute() const
         RideId rideIndex = BannerGetClosestRideIndex(targetLoc);
         if (!rideIndex.IsNull())
         {
-            banner->ride_index = rideIndex;
+            banner->rideIndex = rideIndex;
             banner->flags.set(BannerFlag::linkedToRide);
         }
     }

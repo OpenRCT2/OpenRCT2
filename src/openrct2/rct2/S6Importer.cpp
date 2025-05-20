@@ -1134,7 +1134,7 @@ namespace OpenRCT2::RCT2
 
             if (src->flags.has(BannerFlag::linkedToRide))
             {
-                dst->ride_index = RCT12RideIdToOpenRCT2RideId(src->RideIndex);
+                dst->rideIndex = RCT12RideIdToOpenRCT2RideId(src->RideIndex);
             }
             else
             {

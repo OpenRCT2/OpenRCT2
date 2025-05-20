@@ -87,7 +87,7 @@ GameActions::Result SignSetNameAction::Execute() const
     if (!_name.empty())
     {
         banner->flags.unset(BannerFlag::linkedToRide);
-        banner->ride_index = RideId::GetNull();
+        banner->rideIndex = RideId::GetNull();
         banner->text = _name;
     }
     else
@@ -97,13 +97,13 @@ GameActions::Result SignSetNameAction::Execute() const
         if (rideIndex.IsNull())
         {
             banner->flags.unset(BannerFlag::linkedToRide);
-            banner->ride_index = RideId::GetNull();
+            banner->rideIndex = RideId::GetNull();
             banner->text = {};
         }
         else
         {
             banner->flags.set(BannerFlag::linkedToRide);
-            banner->ride_index = rideIndex;
+            banner->rideIndex = rideIndex;
             banner->text = {};
         }
     }
