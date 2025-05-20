@@ -17,6 +17,8 @@
 - Fix: [#24403] Park fences draw underneath and through opaque water.
 - Fix: [#24406] The network status window uses an undefined string for its title.
 - Fix: [#24444] In the object load error window, the guide text overlaps when the title bar is enlarged.
+- Fix: [#24440] To resolve issue where shortcut keys were not localised.
+- Fix: [#24448] To correct the Caps Lock shortcut misassigned to numpad dot.
 
 0.4.22 (2025-05-04)
 ------------------------------------------------------------------------
