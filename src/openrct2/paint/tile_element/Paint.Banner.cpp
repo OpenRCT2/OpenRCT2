@@ -55,7 +55,7 @@ static void PaintBannerScrollingText(
     }
 
     auto ft = Formatter();
-    banner.FormatTextTo(ft, true);
+    banner.formatTextTo(ft, true);
 
     char text[256];
     if (Config::Get().general.UpperCaseBanners)

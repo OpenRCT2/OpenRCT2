@@ -2095,7 +2095,7 @@ namespace OpenRCT2::Scripting
         if (idx == BannerIndex::GetNull())
             duk_push_null(ctx);
         else
-            duk_push_string(ctx, GetBanner(idx)->GetText().c_str());
+            duk_push_string(ctx, GetBanner(idx)->getText().c_str());
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::bannerText_set(std::string value)

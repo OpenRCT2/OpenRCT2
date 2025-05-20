@@ -416,7 +416,7 @@ namespace OpenRCT2::Ui
                     {
                         auto ft = Formatter();
                         ft.Add<StringId>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
-                        banner->FormatTextTo(ft);
+                        banner->formatTextTo(ft);
                         ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
                         ft.Add<StringId>(wallEntry->name);
                         SetMapTooltip(ft);
@@ -435,7 +435,7 @@ namespace OpenRCT2::Ui
                     {
                         auto ft = Formatter();
                         ft.Add<StringId>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
-                        banner->FormatTextTo(ft);
+                        banner->formatTextTo(ft);
                         ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
                         ft.Add<StringId>(sceneryEntry->name);
                         SetMapTooltip(ft);
@@ -453,7 +453,7 @@ namespace OpenRCT2::Ui
 
                     auto ft = Formatter();
                     ft.Add<StringId>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
-                    banner->FormatTextTo(ft, /*addColour*/ true);
+                    banner->formatTextTo(ft, /*addColour*/ true);
                     ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
                     ft.Add<StringId>(bannerEntry->name);
                     SetMapTooltip(ft);

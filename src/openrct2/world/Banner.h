@@ -52,14 +52,14 @@ struct Banner
     OpenRCT2::TextColour textColour{};
     TileCoordsXY position;
 
-    bool IsNull() const
+    bool isNull() const
     {
         return type == kBannerNull;
     }
 
-    std::string GetText() const;
-    void FormatTextTo(Formatter&, bool addColour) const;
-    void FormatTextTo(Formatter&) const;
+    std::string getText() const;
+    void formatTextTo(Formatter&, bool addColour) const;
+    void formatTextTo(Formatter&) const;
 };
 
 void BannerInit(OpenRCT2::GameState_t& gameState);

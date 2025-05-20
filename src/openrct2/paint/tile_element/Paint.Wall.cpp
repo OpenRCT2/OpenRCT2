@@ -174,7 +174,7 @@ static void PaintWallScrollingText(
     auto textPaletteIndex = direction == 0 ? ColourMapA[textColour].mid_dark : ColourMapA[textColour].light;
 
     auto ft = Formatter();
-    banner->FormatTextTo(ft);
+    banner->formatTextTo(ft);
     char signString[256];
     if (Config::Get().general.UpperCaseBanners)
     {
