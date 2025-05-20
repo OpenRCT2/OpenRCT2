@@ -8,7 +8,9 @@
 - Change: [#24342] g2.dat is now split into g2.dat and fonts.dat.
 - Change: [#24362] The Windows installer now prevents installing to the same folder as RollerCoaster Tycoon 2 or Classic.
 - Change: [#24418] Small & Large Zero G Rolls can now be built on the LIM Launched RC without cheats if vehicle sprites are available.
+- Fix: [#5269] Font bugs when using the Russian release of RCT2 as the base game.
 - Fix: [#11071, #22958] The virtual floor does not always draw correctly.
+- Fix: [#24332] Banner font renders differently when using RCT Classic as the base game.
 - Fix: [#24346] Possible crash during line drawing in OpenGL mode.
 - Fix: [#24353] ‘Show dirty visuals’ is off by one pixel and does not work correctly with higher framerates.
 - Fix: [#24362] When upgrading from an older version on Windows, old versions of official objects are not always removed.  

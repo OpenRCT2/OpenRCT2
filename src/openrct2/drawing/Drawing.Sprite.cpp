@@ -441,7 +441,6 @@ static bool _csgLoaded = false;
 
 static G1Element _g1Temp = {};
 static std::vector<G1Element> _imageListElements;
-bool gTinyFontAntiAliased = false;
 
 /**
  *
@@ -467,7 +466,6 @@ bool GfxLoadG1(const IPlatformEnvironment& env)
         bool is_rctc = _g1.header.num_entries == SPR_RCTC_G1_END;
         _g1.elements.resize(_g1.header.num_entries);
         ReadAndConvertGxDat(&fs, _g1.header.num_entries, is_rctc, _g1.elements.data());
-        gTinyFontAntiAliased = is_rctc;
 
         // Read element data
         _g1.data = fs.ReadArray<uint8_t>(_g1.header.total_size);
@@ -596,7 +594,7 @@ static bool GfxLoadOpenRCT2Gx(std::string filename, Gx& target, size_t expectedN
 bool GfxLoadG2AndFonts()
 {
     auto res1 = GfxLoadOpenRCT2Gx("g2.dat", _g2, kG2SpriteCount);
-    auto res2 = GfxLoadOpenRCT2Gx("fonts.dat", _fonts, kFontDatSpriteCount);
+    auto res2 = GfxLoadOpenRCT2Gx("fonts.dat", _fonts, kFontsDatSpriteCount);
     return res1 && res2;
 }
 
