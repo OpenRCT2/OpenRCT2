@@ -19,6 +19,7 @@ namespace OpenRCT2::Ui::ShortcutId
     constexpr std::string_view kInterfaceRotateConstruction = "interface.general.rotate_construction";
     constexpr std::string_view kInterfaceCancelConstruction = "interface.general.cancel_construction";
     constexpr std::string_view kInterfacePause = "interface.general.pause";
+    constexpr std::string_view kInterfaceCapsLock = "interface.general.caps_lock";
     constexpr std::string_view kInterfaceDecreaseSpeed = "interface.misc.decrease_speed";
     constexpr std::string_view kInterfaceIncreaseSpeed = "interface.misc.increase_speed";
     constexpr std::string_view kInterfaceToggleToolbars = "interface.misc.toggle_toolbars";
