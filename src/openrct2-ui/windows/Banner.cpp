@@ -210,13 +210,13 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_BANNER_TEXT:
                     WindowTextInputRawOpen(
-                        this, WIDX_BANNER_TEXT, STR_BANNER_TEXT, STR_ENTER_BANNER_TEXT, {}, banner->GetText().c_str(), 32);
+                        this, WIDX_BANNER_TEXT, STR_BANNER_TEXT, STR_ENTER_BANNER_TEXT, {}, banner->getText().c_str(), 32);
                     break;
                 case WIDX_BANNER_NO_ENTRY:
                 {
                     TextinputCancel();
                     auto bannerSetStyle = BannerSetStyleAction(
-                        BannerSetStyleType::NoEntry, GetBannerIndex(), banner->flags ^ BANNER_FLAG_NO_ENTRY);
+                        BannerSetStyleType::NoEntry, GetBannerIndex(), !banner->flags.has(BannerFlag::noEntry));
                     GameActions::Execute(&bannerSetStyle);
                     break;
                 }
@@ -293,7 +293,7 @@ namespace OpenRCT2::Ui::Windows
             pressed_widgets &= ~(1uLL << WIDX_BANNER_NO_ENTRY);
             disabled_widgets &= ~(
                 (1uLL << WIDX_BANNER_TEXT) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON));
-            if (banner->flags & BANNER_FLAG_NO_ENTRY)
+            if (banner->flags.has(BannerFlag::noEntry))
             {
                 pressed_widgets |= (1uLL << WIDX_BANNER_NO_ENTRY);
                 disabled_widgets |= (1uLL << WIDX_BANNER_TEXT) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN)

@@ -1125,16 +1125,16 @@ namespace OpenRCT2::RCT2
             *dst = {};
             dst->id = id;
             dst->type = RCTEntryIndexToOpenRCT2EntryIndex(src->Type);
-            dst->flags = src->Flags;
+            dst->flags = src->flags;
 
-            if (!(src->Flags & BANNER_FLAG_LINKED_TO_RIDE) && IsUserStringID(src->StringID))
+            if (!(src->flags.has(BannerFlag::linkedToRide)) && IsUserStringID(src->StringID))
             {
                 dst->text = GetUserString(src->StringID);
             }
 
-            if (src->Flags & BANNER_FLAG_LINKED_TO_RIDE)
+            if (src->flags.has(BannerFlag::linkedToRide))
             {
-                dst->ride_index = RCT12RideIdToOpenRCT2RideId(src->RideIndex);
+                dst->rideIndex = RCT12RideIdToOpenRCT2RideId(src->RideIndex);
             }
             else
             {
@@ -1488,7 +1488,7 @@ namespace OpenRCT2::RCT2
                     // Import banner information
                     dst2->SetBannerIndex(BannerIndex::GetNull());
                     auto entry = dst2->GetEntry();
-                    if (entry != nullptr && entry->scrolling_mode != SCROLLING_MODE_NONE)
+                    if (entry != nullptr && entry->scrolling_mode != kScrollingModeNone)
                     {
                         auto bannerIndex = src2->GetBannerIndex();
                         if (bannerIndex < std::size(_s6.Banners))
@@ -1521,7 +1521,7 @@ namespace OpenRCT2::RCT2
                     // Import banner information
                     dst2->SetBannerIndex(BannerIndex::GetNull());
                     auto entry = dst2->GetEntry();
-                    if (entry != nullptr && entry->scrolling_mode != SCROLLING_MODE_NONE)
+                    if (entry != nullptr && entry->scrolling_mode != kScrollingModeNone)
                     {
                         auto bannerIndex = src2->GetBannerIndex();
                         if (bannerIndex < std::size(_s6.Banners))

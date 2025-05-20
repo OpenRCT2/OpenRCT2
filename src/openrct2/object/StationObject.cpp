@@ -87,7 +87,7 @@ void StationObject::ReadJson(IReadObjectContext* context, json_t& root)
     if (properties.is_object())
     {
         Height = Json::GetNumber<int32_t>(properties["height"]);
-        ScrollingMode = Json::GetNumber<uint8_t>(properties["scrollingMode"], SCROLLING_MODE_NONE);
+        ScrollingMode = Json::GetNumber<uint8_t>(properties["scrollingMode"], kScrollingModeNone);
         Flags = Json::GetFlags<uint32_t>(
             properties,
             {

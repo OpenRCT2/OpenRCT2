@@ -30,7 +30,7 @@ BannerIndex TileElement::GetBannerIndex() const
         case TileElementType::LargeScenery:
         {
             auto* sceneryEntry = AsLargeScenery()->GetEntry();
-            if (sceneryEntry == nullptr || sceneryEntry->scrolling_mode == SCROLLING_MODE_NONE)
+            if (sceneryEntry == nullptr || sceneryEntry->scrolling_mode == kScrollingModeNone)
                 return BannerIndex::GetNull();
 
             return AsLargeScenery()->GetBannerIndex();
@@ -38,7 +38,7 @@ BannerIndex TileElement::GetBannerIndex() const
         case TileElementType::Wall:
         {
             auto* wallEntry = AsWall()->GetEntry();
-            if (wallEntry == nullptr || wallEntry->scrolling_mode == SCROLLING_MODE_NONE)
+            if (wallEntry == nullptr || wallEntry->scrolling_mode == kScrollingModeNone)
                 return BannerIndex::GetNull();
 
             return AsWall()->GetBannerIndex();

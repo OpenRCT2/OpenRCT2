@@ -86,8 +86,8 @@ GameActions::Result SignSetNameAction::Execute() const
 
     if (!_name.empty())
     {
-        banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
-        banner->ride_index = RideId::GetNull();
+        banner->flags.unset(BannerFlag::linkedToRide);
+        banner->rideIndex = RideId::GetNull();
         banner->text = _name;
     }
     else
@@ -96,14 +96,14 @@ GameActions::Result SignSetNameAction::Execute() const
         RideId rideIndex = BannerGetClosestRideIndex({ banner->position.ToCoordsXY(), 16 });
         if (rideIndex.IsNull())
         {
-            banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
-            banner->ride_index = RideId::GetNull();
+            banner->flags.unset(BannerFlag::linkedToRide);
+            banner->rideIndex = RideId::GetNull();
             banner->text = {};
         }
         else
         {
-            banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
-            banner->ride_index = rideIndex;
+            banner->flags.set(BannerFlag::linkedToRide);
+            banner->rideIndex = rideIndex;
             banner->text = {};
         }
     }

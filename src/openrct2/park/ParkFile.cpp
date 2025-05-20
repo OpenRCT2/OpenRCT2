@@ -1302,7 +1302,7 @@ namespace OpenRCT2
                     cs.Write(static_cast<uint32_t>(numBanners));
 
                     [[maybe_unused]] size_t numWritten = 0;
-                    for (BannerIndex::UnderlyingType i = 0; i < MAX_BANNERS; i++)
+                    for (BannerIndex::UnderlyingType i = 0; i < kMaxBanners; i++)
                     {
                         auto banner = GetBanner(BannerIndex::FromUnderlying(i));
                         if (banner != nullptr)
@@ -1361,10 +1361,10 @@ namespace OpenRCT2
                 cs.ReadWrite(banner.id);
             }
             cs.ReadWrite(banner.type);
-            cs.ReadWrite(banner.flags);
+            cs.ReadWrite(banner.flags.holder);
             cs.ReadWrite(banner.text);
             cs.ReadWrite(banner.colour);
-            cs.ReadWrite(banner.ride_index);
+            cs.ReadWrite(banner.rideIndex);
             cs.ReadWrite(banner.textColour);
             cs.ReadWrite(banner.position.x);
             cs.ReadWrite(banner.position.y);

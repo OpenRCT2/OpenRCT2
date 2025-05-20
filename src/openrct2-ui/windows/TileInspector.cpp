@@ -1451,7 +1451,7 @@ static uint64_t PageDisabledWidgets[] = {
                         if (banner != nullptr)
                         {
                             ft = Formatter();
-                            banner->FormatTextTo(ft);
+                            banner->formatTextTo(ft);
                             DrawTextBasic(
                                 rt, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, ft,
                                 { colours[1] });
@@ -1515,13 +1515,13 @@ static uint64_t PageDisabledWidgets[] = {
 
                         // Banner info
                         auto* largeSceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(largeSceneryType);
-                        if (largeSceneryEntry != nullptr && largeSceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
+                        if (largeSceneryEntry != nullptr && largeSceneryEntry->scrolling_mode != kScrollingModeNone)
                         {
                             auto banner = sceneryElement->GetBanner();
                             if (banner != nullptr)
                             {
                                 ft = Formatter();
-                                banner->FormatTextTo(ft);
+                                banner->formatTextTo(ft);
                                 DrawTextBasic(
                                     rt, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, ft,
                                     { colours[1] });
@@ -1555,7 +1555,7 @@ static uint64_t PageDisabledWidgets[] = {
                         if (banner != nullptr)
                         {
                             Formatter ft;
-                            banner->FormatTextTo(ft);
+                            banner->formatTextTo(ft);
                             DrawTextBasic(rt, screenCoords, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, ft, { colours[1] });
                         }
 

@@ -208,7 +208,7 @@ void LargeSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
         _legacyType.price = Json::GetNumber<int16_t>(properties["price"]) * 10;
         _legacyType.removal_price = Json::GetNumber<int16_t>(properties["removalPrice"]) * 10;
 
-        _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"], SCROLLING_MODE_NONE);
+        _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"], kScrollingModeNone);
 
         _legacyType.flags = Json::GetFlags<uint8_t>(
             properties,

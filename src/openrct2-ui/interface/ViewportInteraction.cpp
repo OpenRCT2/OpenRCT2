@@ -409,14 +409,14 @@ namespace OpenRCT2::Ui
             case ViewportInteractionItem::Wall:
             {
                 auto* wallEntry = tileElement->AsWall()->GetEntry();
-                if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
+                if (wallEntry->scrolling_mode != kScrollingModeNone)
                 {
                     auto banner = tileElement->AsWall()->GetBanner();
                     if (banner != nullptr)
                     {
                         auto ft = Formatter();
                         ft.Add<StringId>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
-                        banner->FormatTextTo(ft);
+                        banner->formatTextTo(ft);
                         ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
                         ft.Add<StringId>(wallEntry->name);
                         SetMapTooltip(ft);
@@ -428,14 +428,14 @@ namespace OpenRCT2::Ui
             case ViewportInteractionItem::LargeScenery:
             {
                 auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-                if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
+                if (sceneryEntry->scrolling_mode != kScrollingModeNone)
                 {
                     auto banner = tileElement->AsLargeScenery()->GetBanner();
                     if (banner != nullptr)
                     {
                         auto ft = Formatter();
                         ft.Add<StringId>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
-                        banner->FormatTextTo(ft);
+                        banner->formatTextTo(ft);
                         ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
                         ft.Add<StringId>(sceneryEntry->name);
                         SetMapTooltip(ft);
@@ -453,7 +453,7 @@ namespace OpenRCT2::Ui
 
                     auto ft = Formatter();
                     ft.Add<StringId>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
-                    banner->FormatTextTo(ft, /*addColour*/ true);
+                    banner->formatTextWithColourTo(ft);
                     ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
                     ft.Add<StringId>(bannerEntry->name);
                     SetMapTooltip(ft);
@@ -693,7 +693,7 @@ namespace OpenRCT2::Ui
     static void ViewportInteractionRemoveParkWall(const WallElement& wallElement, const CoordsXY& mapCoords)
     {
         auto* wallEntry = wallElement.GetEntry();
-        if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
+        if (wallEntry->scrolling_mode != kScrollingModeNone)
         {
             ContextOpenDetailWindow(WD_SIGN_SMALL, wallElement.GetBannerIndex().ToUnderlying());
         }
@@ -713,7 +713,7 @@ namespace OpenRCT2::Ui
     {
         auto* sceneryEntry = largeSceneryElement.GetEntry();
 
-        if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
+        if (sceneryEntry->scrolling_mode != kScrollingModeNone)
         {
             auto bannerIndex = largeSceneryElement.GetBannerIndex();
             ContextOpenDetailWindow(WD_SIGN, bannerIndex.ToUnderlying());

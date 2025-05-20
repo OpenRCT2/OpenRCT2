@@ -45,7 +45,7 @@ static void PaintRideEntranceExitScrollingText(
 {
     PROFILED_FUNCTION();
 
-    if (stationObj.ScrollingMode == SCROLLING_MODE_NONE)
+    if (stationObj.ScrollingMode == kScrollingModeNone)
         return;
 
     if (entranceEl.GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
@@ -229,7 +229,7 @@ static void PaintParkEntranceScrollingText(
         return;
 
     auto scrollingMode = entrance.GetScrollingMode();
-    if (scrollingMode == SCROLLING_MODE_NONE)
+    if (scrollingMode == kScrollingModeNone)
         return;
 
     auto ft = Formatter();

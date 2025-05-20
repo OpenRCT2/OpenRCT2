@@ -197,7 +197,7 @@ namespace OpenRCT2::Scripting
         {
             auto element = &first[index];
             if (element->GetType() != TileElementType::LargeScenery
-                || element->AsLargeScenery()->GetEntry()->scrolling_mode == SCROLLING_MODE_NONE
+                || element->AsLargeScenery()->GetEntry()->scrolling_mode == kScrollingModeNone
                 || ScTileElement::GetOtherLargeSceneryElement(_coords, element->AsLargeScenery()) == nullptr)
             {
                 element->RemoveBannerEntry();
