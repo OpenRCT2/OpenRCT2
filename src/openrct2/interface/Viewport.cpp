@@ -255,12 +255,10 @@ namespace OpenRCT2
             {
                 const auto screenCoord = Translate3DTo2DWithZ(vp.rotation, CoordsXYZ{ x + 16, y + 16, 0 });
 
-                const int32_t x1 = screenCoord.x - 32;
-                const int32_t y1 = screenCoord.y - 32 - z1;
-                const int32_t x2 = screenCoord.x + 32;
-                const int32_t y2 = screenCoord.y + 32 - z0;
+                const auto topLeft = screenCoord - ScreenCoordsXY(32, 32 + z1);
+                const auto bottomRight = screenCoord + ScreenCoordsXY(32, 32 - z0);
 
-                ViewportInvalidate(&vp, ScreenRect{ { x1, y1 }, { x2, y2 } });
+                ViewportInvalidate(&vp, ScreenRect{ topLeft, bottomRight });
             }
         }
     }
