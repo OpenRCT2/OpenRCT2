@@ -246,7 +246,6 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdate() override
         {
-            InvalidateWidget(WIDX_CONSTRUCT);
             WindowFootpathUpdateProvisionalPathForBridgeMode();
 
             // #2502: The camera might have changed rotation, so we need to update which directional buttons are pressed
@@ -1056,11 +1055,14 @@ namespace OpenRCT2::Ui::Windows
             // Set provisional path
             auto pathType = gFootpathSelection.GetSelectedSurface();
             auto constructFlags = FootpathCreateConstructFlags(pathType);
-            _windowFootpathCost = FootpathProvisionalSet(
+            const auto footpathCost = FootpathProvisionalSet(
                 pathType, gFootpathSelection.Railings, { *mapPos, baseZ }, slope, constructFlags);
 
-            auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByClass(WindowClass::Footpath);
+            if (_windowFootpathCost != footpathCost)
+            {
+                _windowFootpathCost = footpathCost;
+                InvalidateWidget(WIDX_CONSTRUCT);
+            }
         }
 
         /**
