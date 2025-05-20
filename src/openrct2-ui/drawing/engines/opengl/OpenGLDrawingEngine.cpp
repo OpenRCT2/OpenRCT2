@@ -481,27 +481,27 @@ public:
 
         auto& tempFb = *_tempFramebuffer;
 
-        // Calculate source region in OpenGL coordinates
-        int32_t srcX0 = x - dx;
-        int32_t srcY0_app = y - dy;
-        int32_t glSrcY0 = texHeight - (srcY0_app + height);
-        int32_t glSrcY1 = texHeight - srcY0_app;
-
-        // Blit source region from main framebuffer to temporary
+        // Blit source region to temp
         framebuffer.BindRead();
         tempFb.BindDraw();
-        glCall(glBlitFramebuffer, srcX0, glSrcY0, srcX0 + width, glSrcY1, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
-        // Blit from temporary to destination in main framebuffer
+        glCall(glReadBuffer, GL_COLOR_ATTACHMENT0);
+        glCall(glDrawBuffer, GL_COLOR_ATTACHMENT0);
+
+        glCall(
+            glBlitFramebuffer, x - dx, framebuffer.GetHeight() - (y - dy + height), x - dx + width,
+            framebuffer.GetHeight() - (y - dy), 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+
+        // Blit temp to destination
         framebuffer.BindDraw();
         tempFb.BindRead();
 
-        int32_t dstX0 = x;
-        int32_t dstY0_app = y;
-        int32_t glDstY0 = texHeight - (dstY0_app + height);
-        int32_t glDstY1 = texHeight - dstY0_app;
+        glCall(glReadBuffer, GL_COLOR_ATTACHMENT0);
+        glCall(glDrawBuffer, GL_COLOR_ATTACHMENT0);
 
-        glCall(glBlitFramebuffer, 0, 0, width, height, dstX0, glDstY0, dstX0 + width, glDstY1, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+        glCall(
+            glBlitFramebuffer, 0, 0, width, height, x, framebuffer.GetHeight() - (y + height), x + width,
+            framebuffer.GetHeight() - y, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
     #endif
 
