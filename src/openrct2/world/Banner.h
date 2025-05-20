@@ -25,7 +25,7 @@ namespace OpenRCT2
     struct GameState_t;
 }
 
-constexpr ObjectEntryIndex BANNER_NULL = kObjectEntryIndexNull;
+constexpr ObjectEntryIndex kBannerNull = kObjectEntryIndexNull;
 constexpr size_t kMaxBanners = 8192;
 
 constexpr uint8_t kScrollingModeNone = 255;
@@ -33,7 +33,7 @@ constexpr uint8_t kScrollingModeNone = 255;
 struct Banner
 {
     BannerIndex id = BannerIndex::GetNull();
-    ObjectEntryIndex type = BANNER_NULL;
+    ObjectEntryIndex type = kBannerNull;
     uint8_t flags{};
     std::string text;
     mutable std::string formattedTextBuffer;
@@ -44,7 +44,7 @@ struct Banner
 
     bool IsNull() const
     {
-        return type == BANNER_NULL;
+        return type == kBannerNull;
     }
 
     std::string GetText() const;

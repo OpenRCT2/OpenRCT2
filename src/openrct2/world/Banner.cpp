@@ -288,7 +288,7 @@ static void BannerDeallocateUnlinked()
             auto* banner = GetBanner(bannerId);
             if (banner != nullptr)
             {
-                banner->type = BANNER_NULL;
+                banner->type = kBannerNull;
             }
         }
     }
