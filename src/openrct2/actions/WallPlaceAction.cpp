@@ -238,7 +238,7 @@ GameActions::Result WallPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
 
-    if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
+    if (wallEntry->scrolling_mode != kScrollingModeNone)
     {
         if (HasReachedBannerLimit())
         {
@@ -349,7 +349,7 @@ GameActions::Result WallPlaceAction::Execute() const
     }
 
     Banner* banner = nullptr;
-    if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
+    if (wallEntry->scrolling_mode != kScrollingModeNone)
     {
         banner = CreateBanner();
         if (banner == nullptr)

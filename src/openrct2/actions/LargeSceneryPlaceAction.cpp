@@ -118,7 +118,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
 
     res.Position.z = maxHeight;
 
-    if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
+    if (sceneryEntry->scrolling_mode != kScrollingModeNone)
     {
         if (HasReachedBannerLimit())
         {
@@ -238,7 +238,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
 
     // Allocate banner
     Banner* banner = nullptr;
-    if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
+    if (sceneryEntry->scrolling_mode != kScrollingModeNone)
     {
         banner = CreateBanner();
         if (banner == nullptr)

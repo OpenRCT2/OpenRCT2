@@ -405,7 +405,7 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
     auto imageIndex = sceneryEntry->image + 4 + (sequenceNum << 2) + direction;
     PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { bbOffset, bbLength });
 
-    if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE && direction != 1 && direction != 2)
+    if (sceneryEntry->scrolling_mode != kScrollingModeNone && direction != 1 && direction != 2)
     {
         if (sceneryEntry->flags & LARGE_SCENERY_FLAG_3D_TEXT)
         {

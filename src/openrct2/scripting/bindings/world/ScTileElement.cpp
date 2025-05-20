@@ -2205,7 +2205,7 @@ namespace OpenRCT2::Scripting
     {
         // check if other element still uses the banner entry
         if (_element->GetType() == TileElementType::LargeScenery
-            && _element->AsLargeScenery()->GetEntry()->scrolling_mode != SCROLLING_MODE_NONE
+            && _element->AsLargeScenery()->GetEntry()->scrolling_mode != kScrollingModeNone
             && GetOtherLargeSceneryElement(_coords, _element->AsLargeScenery()) != nullptr)
             return;
         // remove banner entry (if one exists)
@@ -2222,7 +2222,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::Wall:
             {
                 auto wallEntry = _element->AsWall()->GetEntry();
-                if (wallEntry == nullptr || wallEntry->scrolling_mode == SCROLLING_MODE_NONE)
+                if (wallEntry == nullptr || wallEntry->scrolling_mode == kScrollingModeNone)
                     return;
                 break;
             }
@@ -2230,7 +2230,7 @@ namespace OpenRCT2::Scripting
             {
                 auto largeScenery = _element->AsLargeScenery();
                 auto largeSceneryEntry = largeScenery->GetEntry();
-                if (largeSceneryEntry == nullptr || largeSceneryEntry->scrolling_mode == SCROLLING_MODE_NONE)
+                if (largeSceneryEntry == nullptr || largeSceneryEntry->scrolling_mode == kScrollingModeNone)
                     return;
 
                 auto otherElement = GetOtherLargeSceneryElement(_coords, largeScenery);

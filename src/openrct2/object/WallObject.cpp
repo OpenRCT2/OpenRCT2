@@ -108,7 +108,7 @@ void WallObject::ReadJson(IReadObjectContext* context, json_t& root)
         _legacyType.height = Json::GetNumber<uint8_t>(properties["height"]);
         _legacyType.price = Json::GetNumber<money64>(properties["price"]);
 
-        _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"], SCROLLING_MODE_NONE);
+        _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"], kScrollingModeNone);
 
         SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));
 

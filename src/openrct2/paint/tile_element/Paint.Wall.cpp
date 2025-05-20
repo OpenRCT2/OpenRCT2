@@ -159,7 +159,7 @@ static void PaintWallScrollingText(
         return;
 
     auto scrollingMode = wallEntry.scrolling_mode;
-    if (scrollingMode == SCROLLING_MODE_NONE)
+    if (scrollingMode == kScrollingModeNone)
         return;
 
     scrollingMode = wallEntry.scrolling_mode + ((direction + 1) & 3);

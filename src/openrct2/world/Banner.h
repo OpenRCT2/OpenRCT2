@@ -28,7 +28,7 @@ namespace OpenRCT2
 constexpr ObjectEntryIndex BANNER_NULL = kObjectEntryIndexNull;
 constexpr size_t kMaxBanners = 8192;
 
-constexpr uint8_t SCROLLING_MODE_NONE = 255;
+constexpr uint8_t kScrollingModeNone = 255;
 
 struct Banner
 {

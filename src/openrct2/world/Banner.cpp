@@ -187,7 +187,7 @@ WallElement* BannerGetScrollingWallTileElement(BannerIndex bannerIndex)
             continue;
 
         auto* wallEntry = wallElement->GetEntry();
-        if (wallEntry->scrolling_mode == SCROLLING_MODE_NONE)
+        if (wallEntry->scrolling_mode == kScrollingModeNone)
             continue;
         if (wallElement->GetBannerIndex() != bannerIndex)
             continue;

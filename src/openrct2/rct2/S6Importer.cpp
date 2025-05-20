@@ -1488,7 +1488,7 @@ namespace OpenRCT2::RCT2
                     // Import banner information
                     dst2->SetBannerIndex(BannerIndex::GetNull());
                     auto entry = dst2->GetEntry();
-                    if (entry != nullptr && entry->scrolling_mode != SCROLLING_MODE_NONE)
+                    if (entry != nullptr && entry->scrolling_mode != kScrollingModeNone)
                     {
                         auto bannerIndex = src2->GetBannerIndex();
                         if (bannerIndex < std::size(_s6.Banners))
@@ -1521,7 +1521,7 @@ namespace OpenRCT2::RCT2
                     // Import banner information
                     dst2->SetBannerIndex(BannerIndex::GetNull());
                     auto entry = dst2->GetEntry();
-                    if (entry != nullptr && entry->scrolling_mode != SCROLLING_MODE_NONE)
+                    if (entry != nullptr && entry->scrolling_mode != kScrollingModeNone)
                     {
                         auto bannerIndex = src2->GetBannerIndex();
                         if (bannerIndex < std::size(_s6.Banners))
