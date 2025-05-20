@@ -3706,13 +3706,21 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<uint16_t>(ride->numBlockBrakes + ride->numStations);
 
-                auto underWidget = ride->mode == RideMode::poweredLaunchBlockSectioned ? WIDX_MODE_TWEAK : WIDX_MODE;
-
-                if (getGameState().cheats.showAllOperatingModes && ride->mode == RideMode::poweredLaunchBlockSectioned)
+                auto underWidget = WIDX_MODE;
+                // Check for lowest widget up to WIDX_LIFT_HILL_SPEED
+                if (ride->mode == RideMode::poweredLaunchBlockSectioned)
                 {
-                    if (widgets[WIDX_LIFT_HILL_SPEED].type != WindowWidgetType::Empty)
+                    int lowestWidget = 0;
+                    for (int i = 0; i < widgets.size(); ++i)
                     {
-                        underWidget = WIDX_LIFT_HILL_SPEED;
+                        if (widgets[i].type != WindowWidgetType::Empty)
+                        {
+                            if (widgets[i].bottom <= widgets[WIDX_LIFT_HILL_SPEED].bottom && widgets[i].bottom > lowestWidget)
+                            {
+                                lowestWidget = widgets[i].bottom;
+                                underWidget = static_cast<decltype(underWidget)>(i);
+                            }
+                        }
                     }
                 }
 
