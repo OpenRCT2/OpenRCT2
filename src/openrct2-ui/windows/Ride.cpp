@@ -3711,7 +3711,7 @@ namespace OpenRCT2::Ui::Windows
                 if (ride->mode == RideMode::poweredLaunchBlockSectioned)
                 {
                     int lowestWidget = 0;
-                    for (int i = 0; i < widgets.size(); ++i)
+                    for (size_t i = 0; i < widgets.size(); ++i)
                     {
                         if (widgets[i].type != WindowWidgetType::Empty)
                         {
