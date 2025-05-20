@@ -191,12 +191,12 @@ std::optional<uint8_t> MusicObject::GetOriginalStyleId() const
     return _originalStyleId;
 }
 
-bool MusicObject::SupportsRideType(ride_type_t rideType)
+bool MusicObject::SupportsRideType(ride_type_t rideType, bool onlyAllowIfExplicitlyListed)
 {
     if (_rideTypes.size() == 0)
     {
-        // Default behaviour for music is to only exclude from merry-go-round
-        return rideType != RIDE_TYPE_MERRY_GO_ROUND;
+        // Some rides, like the merry-go-round, need music objects to explicitly list them.
+        return !onlyAllowIfExplicitlyListed;
     }
 
     auto it = std::find(_rideTypes.begin(), _rideTypes.end(), rideType);

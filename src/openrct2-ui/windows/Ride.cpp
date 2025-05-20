@@ -5047,6 +5047,7 @@ namespace OpenRCT2::Ui::Windows
             if (ride == nullptr)
                 return;
 
+            const auto& rtd = ride->getRideTypeDescriptor();
             // Construct list of available music
             auto& musicOrder = window_ride_current_music_style_order;
             musicOrder.clear();
@@ -5076,7 +5077,8 @@ namespace OpenRCT2::Ui::Windows
                         }
                     }
 
-                    if (getGameState().cheats.unlockOperatingLimits || musicObj->SupportsRideType(ride->type))
+                    if (getGameState().cheats.unlockOperatingLimits
+                        || musicObj->SupportsRideType(ride->type, rtd.HasFlag(RtdFlag::requireExplicitListingInMusicObjects)))
                     {
                         musicOrder.push_back(i);
                     }
