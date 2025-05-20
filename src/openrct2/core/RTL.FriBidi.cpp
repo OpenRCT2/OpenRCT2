@@ -8,9 +8,8 @@
  *****************************************************************************/
 
 #if defined(_WIN32) && defined(USE_FRIBIDI)
-    #include "RTL.h"
-
     #include "../Diagnostic.h"
+    #include "RTL.h"
 
     #include <string>
 

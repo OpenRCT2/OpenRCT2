@@ -7,10 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../ride/Vehicle.h"
-
 #include "../../entity/EntityRegistry.h"
 #include "../../ride/Ride.h"
+#include "../../ride/Vehicle.h"
 #include "../Paint.h"
 #include "VehiclePaint.h"
 

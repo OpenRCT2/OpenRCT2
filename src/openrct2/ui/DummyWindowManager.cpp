@@ -15,7 +15,7 @@ namespace OpenRCT2::Ui
 {
     class DummyWindowManager final : public IWindowManager
     {
-        void Init() override {};
+        void Init() override{};
         WindowBase* OpenWindow(WindowClass /*wc*/) override
         {
             return nullptr;
@@ -78,17 +78,17 @@ namespace OpenRCT2::Ui
             return nullptr;
         }
 
-        void Close(WindowBase& window) override {};
-        void CloseSurplus(int32_t cap, WindowClass avoid_classification) override {};
-        void CloseByClass(WindowClass cls) override {};
-        void CloseByNumber(WindowClass cls, rct_windownumber number) override {};
-        void CloseByNumber(WindowClass cls, EntityId number) override {};
-        void CloseTop() override {};
-        void CloseAll() override {};
-        void CloseAllExceptClass(WindowClass cls) override {};
-        void CloseAllExceptFlags(WindowFlags flags) override {};
-        void CloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls) override {};
-        void CloseConstructionWindows() override {};
+        void Close(WindowBase& window) override{};
+        void CloseSurplus(int32_t cap, WindowClass avoid_classification) override{};
+        void CloseByClass(WindowClass cls) override{};
+        void CloseByNumber(WindowClass cls, rct_windownumber number) override{};
+        void CloseByNumber(WindowClass cls, EntityId number) override{};
+        void CloseTop() override{};
+        void CloseAll() override{};
+        void CloseAllExceptClass(WindowClass cls) override{};
+        void CloseAllExceptFlags(WindowFlags flags) override{};
+        void CloseAllExceptNumberAndClass(rct_windownumber number, WindowClass cls) override{};
+        void CloseConstructionWindows() override{};
 
         WindowBase* FindByClass(WindowClass cls) override
         {
@@ -111,13 +111,13 @@ namespace OpenRCT2::Ui
             return kWidgetIndexNull;
         }
 
-        void InvalidateByClass(WindowClass cls) override {};
-        void InvalidateByNumber(WindowClass cls, rct_windownumber number) override {};
-        void InvalidateByNumber(WindowClass cls, EntityId id) override {};
-        void InvalidateAll() override {};
-        void InvalidateWidget(WindowBase& w, WidgetIndex widgetIndex) override {};
-        void InvalidateWidgetByClass(WindowClass cls, WidgetIndex widgetIndex) override {};
-        void InvalidateWidgetByNumber(WindowClass cls, rct_windownumber number, WidgetIndex widgetIndex) override {};
+        void InvalidateByClass(WindowClass cls) override{};
+        void InvalidateByNumber(WindowClass cls, rct_windownumber number) override{};
+        void InvalidateByNumber(WindowClass cls, EntityId id) override{};
+        void InvalidateAll() override{};
+        void InvalidateWidget(WindowBase& w, WidgetIndex widgetIndex) override{};
+        void InvalidateWidgetByClass(WindowClass cls, WidgetIndex widgetIndex) override{};
+        void InvalidateWidgetByNumber(WindowClass cls, rct_windownumber number, WidgetIndex widgetIndex) override{};
 
         WindowBase* BringToFront(WindowBase& w) override
         {

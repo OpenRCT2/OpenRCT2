@@ -35,7 +35,6 @@
 
 namespace OpenRCT2
 {
-
     std::vector<std::unique_ptr<WindowBase>> g_window_list;
     WindowBase* gWindowAudioExclusive;
 

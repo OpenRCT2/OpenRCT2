@@ -195,7 +195,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_FORBID_HIGH_CONSTRUCTION
     };
 
-    // clang-format off
+// clang-format off
     #define MAIN_OPTIONS_WIDGETS(TITLE, WIDTH, HEIGHT) \
         WINDOW_SHIM(TITLE, WIDTH, HEIGHT), \
         MakeWidget({  0, 43}, { WIDTH, 106 }, WindowWidgetType::Resize, WindowColour::Secondary), \

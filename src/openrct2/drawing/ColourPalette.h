@@ -5,7 +5,6 @@
 
 namespace OpenRCT2::Drawing
 {
-
     struct PaletteBGRA
     {
         uint8_t Blue{};

@@ -9,10 +9,9 @@
 
 #if !defined(DISABLE_HTTP) && !defined(_WIN32) && !defined(__ANDROID__)
 
-    #include "Http.h"
-
     #include "../Version.h"
     #include "../core/Console.hpp"
+    #include "Http.h"
 
     #include <cstring>
     #include <memory>

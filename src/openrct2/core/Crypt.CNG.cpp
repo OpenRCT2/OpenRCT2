@@ -9,9 +9,8 @@
 
 #if !defined(DISABLE_NETWORK) && defined(_WIN32)
 
-    #include "Crypt.h"
-
     #include "../platform/Platform.h"
+    #include "Crypt.h"
     #include "IStream.hpp"
 
     #include <cstdint>
@@ -23,7 +22,7 @@
     #include <string>
     #include <tuple>
 
-// clang-format off
+    // clang-format off
 // CNG: Cryptography API: Next Generation (CNG)
 //      available in Windows Vista onwards.
 #include <windows.h>

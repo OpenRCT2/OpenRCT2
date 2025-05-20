@@ -62,12 +62,12 @@ private:
 public:
     explicit TrackDesignFileIndex(const IPlatformEnvironment& env)
         : FileIndex(
-              "track design index", kMagicNumber, kVersion, env.GetFilePath(PathId::cacheTracks), std::string(kPattern),
-              std::vector<std::string>({
-                  env.GetDirectoryPath(DirBase::rct1, DirId::trackDesigns),
-                  env.GetDirectoryPath(DirBase::rct2, DirId::trackDesigns),
-                  env.GetDirectoryPath(DirBase::user, DirId::trackDesigns),
-              }))
+            "track design index", kMagicNumber, kVersion, env.GetFilePath(PathId::cacheTracks), std::string(kPattern),
+            std::vector<std::string>({
+                env.GetDirectoryPath(DirBase::rct1, DirId::trackDesigns),
+                env.GetDirectoryPath(DirBase::rct2, DirId::trackDesigns),
+                env.GetDirectoryPath(DirBase::user, DirId::trackDesigns),
+            }))
     {
     }
 

@@ -9,10 +9,9 @@
 
 #if !defined(DISABLE_HTTP) && defined(__ANDROID__)
 
-    #include "Http.h"
-
     #include "../Version.h"
     #include "../platform/Platform.h"
+    #include "Http.h"
 
     #include <SDL.h>
     #include <android/log.h>

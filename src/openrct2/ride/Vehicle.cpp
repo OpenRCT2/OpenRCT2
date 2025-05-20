@@ -6660,12 +6660,14 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
             const int32_t dotProduct = (directionVector.x * directionVectorToVehicle2.x)
                 + (directionVector.y * directionVectorToVehicle2.y);
 
-            static constexpr int32_t threshold = []() consteval {
+            static constexpr int32_t threshold = []() consteval
+            {
                 const constexpr float originalThreshold = 0.35f;
                 const constexpr float directionVectorLength = 256.0f;
                 const constexpr float thresholdLength = originalThreshold * directionVectorLength;
                 return static_cast<int32_t>(thresholdLength * thresholdLength);
-            }();
+            }
+            ();
             static_assert(threshold == 8028);
 
             if (dotProduct > 0 && dotProduct * dotProduct > threshold * directionVectorToVehicle2Length)

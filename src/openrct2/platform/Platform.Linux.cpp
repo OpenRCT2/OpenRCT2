@@ -237,7 +237,7 @@ namespace OpenRCT2::Platform
                         break;
                     }
                 }
-            } // end strip
+            }                                         // end strip
             std::memcpy(pattern, langString, length); // copy all until first '.' or '@'
             pattern[length] = '\0';
             // find _ if present

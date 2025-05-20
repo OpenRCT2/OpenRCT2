@@ -380,7 +380,7 @@ public:
 
 private:
     void UpdateRide();
-    void UpdateOnRide() {}; // TODO
+    void UpdateOnRide(){}; // TODO
     void UpdateWalking();
     void UpdateWaitingAtCrossing();
     void UpdateQueuing();

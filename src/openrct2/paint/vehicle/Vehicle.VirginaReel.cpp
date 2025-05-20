@@ -8,7 +8,6 @@
  *****************************************************************************/
 
 #include "../../ride/Vehicle.h"
-
 #include "../Boundbox.h"
 #include "../Paint.h"
 #include "VehiclePaint.h"

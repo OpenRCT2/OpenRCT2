@@ -9,12 +9,11 @@
 
 #ifdef __ANDROID__
 
-    #include "Platform.h"
-
     #include "../Diagnostic.h"
     #include "../core/File.h"
     #include "../core/Guard.hpp"
     #include "../localisation/Language.h"
+    #include "Platform.h"
 
     #include <SDL.h>
     #include <jni.h>

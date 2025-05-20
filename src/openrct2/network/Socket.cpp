@@ -19,7 +19,7 @@
     #include <string>
     #include <thread>
 
-// clang-format off
+    // clang-format off
 // MSVC: include <math.h> here otherwise PI gets defined twice
 #include <cmath>
 
@@ -368,7 +368,9 @@ public:
         {
             throw std::runtime_error("Socket not listening.");
         }
-        struct sockaddr_storage client_addr{};
+        struct sockaddr_storage client_addr
+        {
+        };
         socklen_t client_len = sizeof(struct sockaddr_storage);
 
         std::unique_ptr<ITcpSocket> tcpSocket;

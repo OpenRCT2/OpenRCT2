@@ -10,7 +10,6 @@
 #if (defined(__unix__) || defined(__EMSCRIPTEN__)) && !defined(__ANDROID__) && !defined(__APPLE__)
 
     #include "UiContext.h"
-
     #include "UiStringIds.h"
 
     #include <SDL.h>

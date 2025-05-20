@@ -368,10 +368,12 @@ public:
     constexpr PaletteMap() = default;
 
     constexpr PaletteMap(uint8_t* data, size_t numMaps, size_t mapLength)
-        : _data{ data, numMaps * mapLength }
+        : _data
+    {
+        data, numMaps* mapLength
+    }
 #ifdef _DEBUG
-        , _numMaps(numMaps)
-        , _mapLength(mapLength)
+    , _numMaps(numMaps), _mapLength(mapLength)
 #endif
     {
     }

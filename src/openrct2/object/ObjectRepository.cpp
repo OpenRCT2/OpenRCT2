@@ -84,11 +84,11 @@ private:
 public:
     explicit ObjectFileIndex(IObjectRepository& objectRepository, const IPlatformEnvironment& env)
         : FileIndex(
-              "object index", kMagicNumber, kVersion, env.GetFilePath(PathId::cacheObjects), std::string(kPattern),
-              std::vector<std::string>{
-                  env.GetDirectoryPath(DirBase::openrct2, DirId::objects),
-                  env.GetDirectoryPath(DirBase::user, DirId::objects),
-              })
+            "object index", kMagicNumber, kVersion, env.GetFilePath(PathId::cacheObjects), std::string(kPattern),
+            std::vector<std::string>{
+                env.GetDirectoryPath(DirBase::openrct2, DirId::objects),
+                env.GetDirectoryPath(DirBase::user, DirId::objects),
+            })
         , _objectRepository(objectRepository)
     {
     }
