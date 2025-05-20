@@ -64,11 +64,11 @@ void Banner::FormatTextTo(Formatter& ft, bool addColour) const
 
 void Banner::FormatTextTo(Formatter& ft) const
 {
-    if (flags & BANNER_FLAG_NO_ENTRY)
+    if (flags.has(BannerFlag::noEntry))
     {
         ft.Add<StringId>(STR_NO_ENTRY);
     }
-    else if (flags & BANNER_FLAG_LINKED_TO_RIDE)
+    else if (flags.has(BannerFlag::linkedToRide))
     {
         auto ride = GetRide(ride_index);
         if (ride != nullptr)
@@ -378,7 +378,7 @@ void UnlinkAllRideBanners()
     {
         if (!banner.IsNull())
         {
-            banner.flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
+            banner.flags.unset(BannerFlag::linkedToRide);
             banner.ride_index = RideId::GetNull();
         }
     }
@@ -389,9 +389,9 @@ void UnlinkAllBannersForRide(RideId rideId)
     auto& gameState = getGameState();
     for (auto& banner : gameState.banners)
     {
-        if (!banner.IsNull() && (banner.flags & BANNER_FLAG_LINKED_TO_RIDE) && banner.ride_index == rideId)
+        if (!banner.IsNull() && (banner.flags.has(BannerFlag::linkedToRide)) && banner.ride_index == rideId)
         {
-            banner.flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
+            banner.flags.unset(BannerFlag::linkedToRide);
             banner.ride_index = RideId::GetNull();
             banner.text = {};
         }
@@ -438,7 +438,7 @@ Banner* CreateBanner()
     if (banner != nullptr)
     {
         banner->id = bannerIndex;
-        banner->flags = 0;
+        banner->flags = {};
         banner->type = 0;
         banner->text = {};
         banner->colour = COLOUR_WHITE;

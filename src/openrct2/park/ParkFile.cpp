@@ -1361,7 +1361,7 @@ namespace OpenRCT2
                 cs.ReadWrite(banner.id);
             }
             cs.ReadWrite(banner.type);
-            cs.ReadWrite(banner.flags);
+            cs.ReadWrite(banner.flags.holder);
             cs.ReadWrite(banner.text);
             cs.ReadWrite(banner.colour);
             cs.ReadWrite(banner.ride_index);

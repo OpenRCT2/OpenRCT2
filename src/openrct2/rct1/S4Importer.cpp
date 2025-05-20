@@ -2510,10 +2510,10 @@ namespace OpenRCT2::RCT1
                 type = kObjectEntryIndexNull;
             dst->type = type;
 
-            dst->flags = 0;
-            if (src->Flags & BANNER_FLAG_NO_ENTRY)
+            dst->flags = {};
+            if (src->flags.has(BannerFlag::noEntry))
             {
-                dst->flags |= BANNER_FLAG_NO_ENTRY;
+                dst->flags.set(BannerFlag::noEntry);
             }
 
             if (IsUserStringID(src->StringID))

@@ -362,7 +362,7 @@ GameActions::Result WallPlaceAction::Execute() const
         banner->text = {};
         banner->colour = COLOUR_WHITE;
         banner->textColour = TextColour::white;
-        banner->flags = BANNER_FLAG_IS_WALL;
+        banner->flags = { BannerFlag::isWall };
         banner->type = 0; // Banner must be deleted after this point in an early return
         banner->position = TileCoordsXY(_loc);
 
@@ -370,7 +370,7 @@ GameActions::Result WallPlaceAction::Execute() const
         if (!rideIndex.IsNull())
         {
             banner->ride_index = rideIndex;
-            banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
+            banner->flags.set(BannerFlag::linkedToRide);
         }
     }
 

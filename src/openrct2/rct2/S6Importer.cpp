@@ -1125,14 +1125,14 @@ namespace OpenRCT2::RCT2
             *dst = {};
             dst->id = id;
             dst->type = RCTEntryIndexToOpenRCT2EntryIndex(src->Type);
-            dst->flags = src->Flags;
+            dst->flags = src->flags;
 
-            if (!(src->Flags & BANNER_FLAG_LINKED_TO_RIDE) && IsUserStringID(src->StringID))
+            if (!(src->flags.has(BannerFlag::linkedToRide)) && IsUserStringID(src->StringID))
             {
                 dst->text = GetUserString(src->StringID);
             }
 
-            if (src->Flags & BANNER_FLAG_LINKED_TO_RIDE)
+            if (src->flags.has(BannerFlag::linkedToRide))
             {
                 dst->ride_index = RCT12RideIdToOpenRCT2RideId(src->RideIndex);
             }

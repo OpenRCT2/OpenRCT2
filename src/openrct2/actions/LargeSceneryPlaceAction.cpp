@@ -251,7 +251,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         banner->text = {};
         banner->colour = 2;
         banner->textColour = TextColour::white;
-        banner->flags = BANNER_FLAG_IS_LARGE_SCENERY;
+        banner->flags = { BannerFlag::isLargeScenery };
         banner->type = 0;
         banner->position = TileCoordsXY(_loc);
 
@@ -259,7 +259,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         if (!rideIndex.IsNull())
         {
             banner->ride_index = rideIndex;
-            banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
+            banner->flags.set(BannerFlag::linkedToRide);
         }
 
         resultData.bannerId = banner->id;

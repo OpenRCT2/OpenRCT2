@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Identifiers.h"
+#include "../core/FlagHolder.hpp"
 #include "../drawing/TextColour.h"
 #include "../ride/RideTypes.h"
 #include "Location.hpp"
@@ -30,11 +31,20 @@ constexpr size_t kMaxBanners = 8192;
 
 constexpr uint8_t kScrollingModeNone = 255;
 
+enum class BannerFlag : uint8_t
+{
+    noEntry = 0,
+    isLargeScenery = 1,
+    linkedToRide = 2,
+    isWall = 3,
+};
+using BannerFlags = FlagHolder<uint8_t, BannerFlag>;
+
 struct Banner
 {
     BannerIndex id = BannerIndex::GetNull();
     ObjectEntryIndex type = kBannerNull;
-    uint8_t flags{};
+    BannerFlags flags{};
     std::string text;
     mutable std::string formattedTextBuffer;
     uint8_t colour{};
@@ -50,14 +60,6 @@ struct Banner
     std::string GetText() const;
     void FormatTextTo(Formatter&, bool addColour) const;
     void FormatTextTo(Formatter&) const;
-};
-
-enum BANNER_FLAGS
-{
-    BANNER_FLAG_NO_ENTRY = (1 << 0),
-    BANNER_FLAG_IS_LARGE_SCENERY = (1 << 1),
-    BANNER_FLAG_LINKED_TO_RIDE = (1 << 2),
-    BANNER_FLAG_IS_WALL = (1 << 3)
 };
 
 void BannerInit(OpenRCT2::GameState_t& gameState);

@@ -380,6 +380,8 @@ constexpr uint8_t kRCT12RideNumDropsMask = 0b00111111;
 struct TrackDesign;
 struct TrackDesignTrackElement;
 enum class RideColourScheme : uint8_t;
+enum class BannerFlag : uint8_t;
+using BannerFlags = FlagHolder<uint8_t, BannerFlag>;
 
 enum class RCT12TrackDesignVersion : uint8_t
 {
@@ -1191,7 +1193,7 @@ static_assert(sizeof(RCT12RideMeasurement) == 0x4B0C);
 struct RCT12Banner
 {
     RCT12ObjectEntryIndex Type;
-    uint8_t Flags;       // 0x01
+    BannerFlags flags;   // 0x01
     ::StringId StringID; // 0x02
     union
     {

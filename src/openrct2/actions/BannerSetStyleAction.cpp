@@ -163,10 +163,9 @@ GameActions::Result BannerSetStyleAction::Execute() const
                     GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
             }
 
-            banner->flags &= ~BANNER_FLAG_NO_ENTRY;
-            banner->flags |= (_parameter != 0) ? BANNER_FLAG_NO_ENTRY : 0;
+            banner->flags.set(BannerFlag::noEntry, (_parameter != 0));
             uint8_t allowedEdges = 0xF;
-            if (banner->flags & BANNER_FLAG_NO_ENTRY)
+            if (banner->flags.has(BannerFlag::noEntry))
             {
                 allowedEdges &= ~(1 << bannerElement->GetPosition());
             }

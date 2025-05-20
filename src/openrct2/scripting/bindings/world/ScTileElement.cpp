@@ -2113,10 +2113,7 @@ namespace OpenRCT2::Scripting
                 else
                     banner->ride_index = RideId::GetNull();
 
-                if (banner->ride_index.IsNull())
-                    banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
-                else
-                    banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
+                banner->flags.set(BannerFlag::linkedToRide, !banner->ride_index.IsNull());
             }
         }
     }
@@ -2127,7 +2124,7 @@ namespace OpenRCT2::Scripting
         auto* ctx = scriptEngine.GetContext();
         auto* el = _element->AsBanner();
         if (el != nullptr)
-            duk_push_boolean(ctx, (el->GetBanner()->flags & BANNER_FLAG_NO_ENTRY) != 0);
+            duk_push_boolean(ctx, el->GetBanner()->flags.has(BannerFlag::noEntry));
         else
             duk_push_null(ctx);
         return DukValue::take_from_stack(ctx);
@@ -2138,14 +2135,7 @@ namespace OpenRCT2::Scripting
         auto* el = _element->AsBanner();
         if (el != nullptr)
         {
-            if (value)
-            {
-                el->GetBanner()->flags |= BANNER_FLAG_NO_ENTRY;
-            }
-            else
-            {
-                el->GetBanner()->flags &= ~BANNER_FLAG_NO_ENTRY;
-            }
+            el->GetBanner()->flags.set(BannerFlag::noEntry, value);
             Invalidate();
         }
     }
@@ -2255,11 +2245,11 @@ namespace OpenRCT2::Scripting
             banner->text = {};
             banner->colour = 0;
             banner->textColour = TextColour::black;
-            banner->flags = 0;
+            banner->flags = {};
             if (_element->GetType() == TileElementType::Wall)
-                banner->flags = BANNER_FLAG_IS_WALL;
+                banner->flags.set(BannerFlag::isWall);
             if (_element->GetType() == TileElementType::LargeScenery)
-                banner->flags = BANNER_FLAG_IS_LARGE_SCENERY;
+                banner->flags.set(BannerFlag::isLargeScenery);
             banner->type = 0;
             banner->position = TileCoordsXY(_coords);
 
@@ -2269,7 +2259,7 @@ namespace OpenRCT2::Scripting
                 if (!rideIndex.IsNull())
                 {
                     banner->ride_index = rideIndex;
-                    banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
+                    banner->flags.set(BannerFlag::linkedToRide);
                 }
             }
 
