@@ -122,7 +122,7 @@ static RideId BannerGetRideIndexAt(const CoordsXYZ& bannerCoords)
 static BannerIndex BannerGetNewIndex()
 {
     auto& gameState = getGameState();
-    for (BannerIndex::UnderlyingType bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
+    for (BannerIndex::UnderlyingType bannerIndex = 0; bannerIndex < kMaxBanners; bannerIndex++)
     {
         if (bannerIndex < gameState.banners.size())
         {
@@ -417,7 +417,7 @@ Banner* GetOrCreateBanner(BannerIndex id)
 {
     auto& gameState = getGameState();
     const auto index = id.ToUnderlying();
-    if (index < MAX_BANNERS)
+    if (index < kMaxBanners)
     {
         if (index >= gameState.banners.size())
         {
@@ -488,5 +488,5 @@ size_t GetNumBanners()
 bool HasReachedBannerLimit()
 {
     auto numBanners = GetNumBanners();
-    return numBanners >= MAX_BANNERS;
+    return numBanners >= kMaxBanners;
 }

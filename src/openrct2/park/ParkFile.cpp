@@ -1302,7 +1302,7 @@ namespace OpenRCT2
                     cs.Write(static_cast<uint32_t>(numBanners));
 
                     [[maybe_unused]] size_t numWritten = 0;
-                    for (BannerIndex::UnderlyingType i = 0; i < MAX_BANNERS; i++)
+                    for (BannerIndex::UnderlyingType i = 0; i < kMaxBanners; i++)
                     {
                         auto banner = GetBanner(BannerIndex::FromUnderlying(i));
                         if (banner != nullptr)
