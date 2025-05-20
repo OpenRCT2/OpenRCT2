@@ -58,7 +58,7 @@ struct Banner
     }
 
     std::string getText() const;
-    void formatTextTo(Formatter&, bool addColour) const;
+    void formatTextWithColourTo(Formatter&) const;
     void formatTextTo(Formatter&) const;
 };
 

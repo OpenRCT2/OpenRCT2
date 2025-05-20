@@ -453,7 +453,7 @@ namespace OpenRCT2::Ui
 
                     auto ft = Formatter();
                     ft.Add<StringId>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
-                    banner->formatTextTo(ft, /*addColour*/ true);
+                    banner->formatTextWithColourTo(ft);
                     ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
                     ft.Add<StringId>(bannerEntry->name);
                     SetMapTooltip(ft);

@@ -49,15 +49,12 @@ std::string Banner::getText() const
     return FormatStringIDLegacy(STR_STRINGID, ft.Data());
 }
 
-void Banner::formatTextTo(Formatter& ft, bool addColour) const
+void Banner::formatTextWithColourTo(Formatter& ft) const
 {
-    if (addColour)
-    {
-        auto formatToken = FormatTokenFromTextColour(textColour);
-        formattedTextBuffer = FormatTokenToStringWithBraces(formatToken);
-        ft.Add<StringId>(STR_STRING_STRINGID);
-        ft.Add<const char*>(formattedTextBuffer.data());
-    }
+    auto formatToken = FormatTokenFromTextColour(textColour);
+    formattedTextBuffer = FormatTokenToStringWithBraces(formatToken);
+    ft.Add<StringId>(STR_STRING_STRINGID);
+    ft.Add<const char*>(formattedTextBuffer.data());
 
     formatTextTo(ft);
 }
