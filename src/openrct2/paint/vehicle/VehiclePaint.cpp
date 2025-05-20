@@ -3484,7 +3484,7 @@ static void VehiclePitchUp50BankedLeft45(
     }
     else
     {
-        VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchUp50Unbanked(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -3499,7 +3499,7 @@ static void VehiclePitchUp50BankedRight45(
     }
     else
     {
-        VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchUp50Unbanked(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -3514,7 +3514,7 @@ static void VehiclePitchUp50BankedLeft67(
     }
     else
     {
-        VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchUp25BankedLeft45(session, vehicle, (imageDirection + 2) % 32, z, carEntry);
     }
 }
 
@@ -3529,7 +3529,7 @@ static void VehiclePitchUp50BankedRight67(
     }
     else
     {
-        VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchUp25BankedRight45(session, vehicle, (imageDirection - 2) % 32, z, carEntry);
     }
 }
 
@@ -3544,7 +3544,7 @@ static void VehiclePitchUp50BankedLeft90(
     }
     else
     {
-        VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchCorkscrew<12>(session, vehicle, (imageDirection + 8) % 32, z, carEntry);
     }
 }
 
@@ -3559,7 +3559,7 @@ static void VehiclePitchUp50BankedRight90(
     }
     else
     {
-        VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchCorkscrew<2>(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -3877,7 +3877,7 @@ static void VehiclePitchDown50BankedLeft67(
     }
     else
     {
-        VehiclePitchDown50Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchDown25BankedLeft45(session, vehicle, (imageDirection - 2) % 32, z, carEntry);
     }
 }
 
@@ -3892,7 +3892,7 @@ static void VehiclePitchDown50BankedRight67(
     }
     else
     {
-        VehiclePitchDown50Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchDown25BankedRight45(session, vehicle, (imageDirection + 2) % 32, z, carEntry);
     }
 }
 
@@ -3907,7 +3907,7 @@ static void VehiclePitchDown50BankedLeft90(
     }
     else
     {
-        VehiclePitchDown50Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchCorkscrew<7>(session, vehicle, imageDirection, z, carEntry);
     }
 }
 
@@ -3922,37 +3922,7 @@ static void VehiclePitchDown50BankedRight90(
     }
     else
     {
-        VehiclePitchDown50Unbanked(session, vehicle, imageDirection, z, carEntry);
-    }
-}
-
-static void VehiclePitchDown50BankedLeft135(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
-{
-    if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
-    {
-        int32_t boundingBoxNum = (YawTo4(imageDirection)) + 4 * 4 + 144;
-        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, 4);
-        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
-    }
-    else
-    {
-        VehiclePitchDown60Unbanked(session, vehicle, imageDirection, z, carEntry);
-    }
-}
-
-static void VehiclePitchDown50BankedRight135(
-    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
-{
-    if (carEntry->GroupEnabled(SpriteGroupType::Corkscrews))
-    {
-        int32_t boundingBoxNum = (YawTo4(imageDirection)) + 4 * 4 + 144;
-        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::Corkscrews, imageDirection, 4);
-        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
-    }
-    else
-    {
-        VehiclePitchDown60Unbanked(session, vehicle, imageDirection, z, carEntry);
+        VehiclePitchCorkscrew<17>(session, vehicle, (imageDirection + 8) % 32, z, carEntry);
     }
 }
 
@@ -3976,17 +3946,11 @@ static void VehiclePitchDown50(
         case 6:
             VehiclePitchDown50BankedLeft90(session, vehicle, imageDirection, z, carEntry);
             break;
-        case 8:
-            VehiclePitchDown50BankedLeft135(session, vehicle, imageDirection, z, carEntry);
-            break;
         case 10:
             VehiclePitchDown50BankedRight67(session, vehicle, imageDirection, z, carEntry);
             break;
         case 11:
             VehiclePitchDown50BankedRight90(session, vehicle, imageDirection, z, carEntry);
-            break;
-        case 13:
-            VehiclePitchDown50BankedRight135(session, vehicle, imageDirection, z, carEntry);
             break;
         default:
             VehiclePitchDown60Unbanked(session, vehicle, imageDirection, z, carEntry);
