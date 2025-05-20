@@ -1259,11 +1259,23 @@ namespace OpenRCT2::Ui::Windows
 
             if (!WidgetIsDisabled(*this, widgetIndex))
             {
+                const Ride* const ride = GetRide(rideId);
+                if (ride == nullptr)
+                    return;
+
+                const auto* const rideEntry = ride->getRideEntry();
+                if (rideEntry == nullptr)
+                    return;
+
+                const bool isHalfScale = rideEntry->flags & RIDE_ENTRY_FLAG_VEHICLE_TAB_SCALE_HALF;
+
                 auto screenCoords = ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
                 int32_t clipWidth = widget.right - screenCoords.x;
-                int32_t clipHeight = widget.bottom - 3 - screenCoords.y;
-                if (page == WINDOW_RIDE_PAGE_VEHICLE)
+                int32_t clipHeight = widget.bottom - screenCoords.y;
+                if (page == WINDOW_RIDE_PAGE_VEHICLE && !isHalfScale)
+                {
                     clipHeight += 4;
+                }
 
                 screenCoords += windowPos;
 
@@ -1273,33 +1285,19 @@ namespace OpenRCT2::Ui::Windows
                     return;
                 }
 
-                screenCoords = ScreenCoordsXY{ widget.width() / 2, widget.height() - 12 };
+                auto spriteCoords = ScreenCoordsXY{ widget.width() / 2, 17 };
 
-                auto ride = GetRide(rideId);
-                if (ride == nullptr)
-                    return;
-
-                auto rideEntry = ride->getRideEntry();
-                if (rideEntry == nullptr)
-                    return;
-
-                if (rideEntry->flags & RIDE_ENTRY_FLAG_VEHICLE_TAB_SCALE_HALF)
+                if (isHalfScale)
                 {
                     clipDPI.zoom_level = ZoomLevel{ 1 };
-                    screenCoords.x *= 2;
-                    screenCoords.y *= 2;
-                    clipDPI.x *= 2;
-                    clipDPI.y *= 2;
-                }
-
-                // For any suspended rides, move image higher in the vehicle tab on the rides window
-                if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::isSuspended))
-                {
-                    screenCoords.y /= 4;
+                    spriteCoords.x *= 2;
+                    spriteCoords.y *= 2;
                 }
 
                 const auto vehicle = RideEntryGetVehicleAtPosition(ride->subtype, ride->numCarsPerTrain, rideEntry->TabCar);
                 const auto& carEntry = rideEntry->Cars[vehicle];
+
+                spriteCoords.y += carEntry.tab_height;
 
                 auto vehicleId = (ride->vehicleColourSettings == VehicleColourSettings::perCar) ? rideEntry->TabCar : 0;
                 VehicleColour vehicleColour = RideGetVehicleColour(*ride, vehicleId);
@@ -1313,7 +1311,7 @@ namespace OpenRCT2::Ui::Windows
                 imageIndex *= carEntry.base_num_frames;
                 imageIndex += carEntry.base_image_id;
                 auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
-                GfxDrawSprite(clipDPI, imageId, screenCoords);
+                GfxDrawSprite(clipDPI, imageId, spriteCoords);
             }
         }
 
