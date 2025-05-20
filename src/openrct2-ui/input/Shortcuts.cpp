@@ -786,6 +786,12 @@ void ShortcutManager::RegisterDefaultShortcuts()
             GameActions::Execute(&pauseToggleAction);
         }
     });
+
+    // Add CAPSLOCK shortcut mapping
+    RegisterShortcut(ShortcutId::kInterfaceCapsLock, STR_SHORTCUT_CAPSLOCK, "CAPSLOCK", []() {
+        // You can define an action here if needed, or leave it as a placeholder.
+    });
+
     RegisterShortcut(ShortcutId::kInterfaceDecreaseSpeed, STR_SHORTCUT_REDUCE_GAME_SPEED, "-", ShortcutReduceGameSpeed);
     RegisterShortcut(ShortcutId::kInterfaceIncreaseSpeed, STR_SHORTCUT_INCREASE_GAME_SPEED, "=", ShortcutIncreaseGameSpeed);
     RegisterShortcut(ShortcutId::kInterfaceToggleToolbars, STR_SHORTCUT_TOGGLE_VISIBILITY_OF_TOOLBARS, ShortcutRemoveTopBottomToolbarToggle);

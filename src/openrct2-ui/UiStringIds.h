@@ -274,6 +274,7 @@ namespace OpenRCT2
         STR_SHORTCUT_MENU = 2618,
         STR_SHORTCUT_NUMLOCK = 2669,
         STR_SHORTCUT_SCROLL = 2670,
+        STR_SHORTCUT_CAPSLOCK = 2671,
 
         // Widgets
         STR_CLOSE_X = 824,
