@@ -249,7 +249,6 @@ std::string_view ShortcutInput::GetLocalisedKeyName(uint32_t key)
         { SDLK_CAPSLOCK, STR_SHORTCUT_CAPSLOCK },
         { SDLK_CLEAR, STR_SHORTCUT_CLEAR },
         { SDLK_PAUSE, STR_SHORTCUT_PAUSE },
-        { SDLK_CAPSLOCK, STR_SHORTCUT_CAPS },
         { SDLK_END, STR_SHORTCUT_END },
         { SDLK_HOME, STR_SHORTCUT_HOME },
         { SDLK_SELECT, STR_SHORTCUT_SELECT },
