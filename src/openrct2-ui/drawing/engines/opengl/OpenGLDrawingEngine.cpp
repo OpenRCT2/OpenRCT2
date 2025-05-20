@@ -438,7 +438,7 @@ public:
         if (width <= 0 || height <= 0)
             return;
 
-    #if 0
+    #ifndef __MACOSX__
 
         auto& tempBuffer = *_tempFramebuffer;
 
@@ -479,33 +479,34 @@ public:
 
     #else
 
-        auto& tempFb = *_tempFramebuffer;
+        // Slow but functional path for MacOS, OpenGL is deprecated on MacOS
+        // and there seems to be issues that aren't present on other platforms.
 
-        // Blit source region to temp
-        framebuffer.BindRead();
-        tempFb.BindDraw();
+        framebuffer.GetPixels(_mainRT);
 
-        glCall(glReadBuffer, GL_COLOR_ATTACHMENT0);
-        glCall(glDrawBuffer, GL_COLOR_ATTACHMENT0);
+        int32_t stride = _mainRT.LineStride();
+        uint8_t* to = _mainRT.bits + y * stride + x;
+        uint8_t* from = _mainRT.bits + (y - dy) * stride + x - dx;
 
-        glCall(
-            glBlitFramebuffer, x - dx, framebuffer.GetHeight() - (y - dy + height), x - dx + width,
-            framebuffer.GetHeight() - (y - dy), 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+        if (dy > 0)
+        {
+            // If positive dy, reverse directions
+            to += (height - 1) * stride;
+            from += (height - 1) * stride;
+            stride = -stride;
+        }
 
-        // Blit temp to destination
-        framebuffer.BindDraw();
-        tempFb.BindRead();
+        // Move bytes
+        for (int32_t i = 0; i < height; i++)
+        {
+            memmove(to, from, width);
+            to += stride;
+            from += stride;
+        }
 
-        glCall(glReadBuffer, GL_COLOR_ATTACHMENT0);
-        glCall(glDrawBuffer, GL_COLOR_ATTACHMENT0);
-
-        glCall(
-            glBlitFramebuffer, 0, 0, width, height, x, framebuffer.GetHeight() - (y + height), x + width,
-            framebuffer.GetHeight() - y, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+        framebuffer.SetPixels(_mainRT);
 
     #endif
-
-        framebuffer.Bind();
     }
 
     IDrawingContext* GetDrawingContext() override
