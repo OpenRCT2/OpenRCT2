@@ -569,6 +569,8 @@ namespace OpenRCT2::RCT2
             gameState.savedViewZoom = ZoomLevel{ static_cast<int8_t>(_s6.SavedViewZoom) };
             gameState.savedViewRotation = _s6.SavedViewRotation;
 
+            ImportMapAnimations();
+
             ImportRideRatingsCalcData();
             ImportRideMeasurements();
             gameState.nextGuestNumber = _s6.NextGuestIndex;
@@ -1018,6 +1020,43 @@ namespace OpenRCT2::RCT2
             dst->cableLift = EntityId::FromUnderlying(src->cableLift);
 
             // Pad208[0x58];
+        }
+
+        void ImportMapAnimations()
+        {
+            for (const auto& mapAnimation : std::span(_s6.MapAnimations, _s6.NumMapAnimations))
+            {
+                switch (mapAnimation.Type)
+                {
+                    case kRCT12MapAnimationTypeOnRidePhoto:
+                        MapAnimation::CreateTemporary(
+                            { mapAnimation.x, mapAnimation.y, mapAnimation.BaseZ * kCoordsZStep },
+                            MapAnimation::TemporaryType::onRidePhoto);
+                        break;
+                    case kRCT12MapAnimationTypeWallDoor:
+                    {
+                        const CoordsXYZ coords{ mapAnimation.x, mapAnimation.y, mapAnimation.BaseZ * kCoordsZStep };
+                        const TileCoordsXYZ tileCoords{ coords };
+                        TileElement* tileElement = MapGetFirstElementAt(tileCoords);
+                        if (tileElement == nullptr)
+                        {
+                            continue;
+                        }
+
+                        do
+                        {
+                            if (tileElement->GetType() != TileElementType::Wall || tileElement->BaseHeight != tileCoords.z)
+                            {
+                                continue;
+                            }
+
+                            tileElement->AsWall()->SetIsAnimating(true);
+                            MapAnimation::Create(coords);
+                        } while (!(tileElement++)->IsLastForTile());
+                        break;
+                    }
+                }
+            }
         }
 
         void ImportRideRatingsCalcData()

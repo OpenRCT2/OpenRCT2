@@ -1167,6 +1167,7 @@ static_assert(sizeof(RCT12MapAnimation) == 6);
 
 static constexpr uint8_t kRCT12MapAnimationTypeOnRidePhoto = 6;
 static constexpr uint8_t kRCT12MapAnimationTypeLandEdgeDoor = 9;
+static constexpr uint8_t kRCT12MapAnimationTypeWallDoor = 12;
 
 struct RCT12ResearchItem
 {
