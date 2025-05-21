@@ -327,21 +327,10 @@ public:
     bool HasDrink() const;
     bool HasFoodOrDrink() const;
     bool HasEmptyContainer() const;
-    void OnEnterRide(Ride& ride);
-    void OnExitRide(Ride& ride);
     void UpdateAnimationGroup();
     bool HeadingForRideOrParkExit() const;
-    void StopPurchaseThought(ride_type_t rideType);
-    void TryGetUpFromSitting();
-    bool ShouldRideWhileRaining(const Ride& ride);
-    void ChoseNotToGoOnRide(const Ride& ride, bool peepAtRide, bool updateLastRide);
-    void PickRideToGoOn();
     void ReadMap();
     bool ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, bool thinking);
-    bool ShouldGoToShop(Ride& ride, bool peepAtShop);
-    bool ShouldFindBench();
-    bool UpdateWalkingFindBench();
-    bool UpdateWalkingFindBin();
     void SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureType type);
     void SpendMoney(money64 amount, ExpenditureType type);
     void SetHasRidden(const Ride& ride);
@@ -353,9 +342,7 @@ public:
     void CheckIfLost();
     void CheckCantFindRide();
     void CheckCantFindExit();
-    bool DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price);
     void SetAnimationGroup(PeepAnimationGroup new_sprite_type);
-    void HandleEasterEggName();
     int32_t GetEasterEggNameId() const;
     void UpdateEasterEggInteractions();
     void InsertNewThought(PeepThoughtType thought_type);
@@ -377,8 +364,21 @@ public:
     // Removes the ride from the guests memory, this includes
     // the history, thoughts, etc.
     void RemoveRideFromMemory(RideId rideId);
+    void HandleEasterEggName();
+    void ChoseNotToGoOnRide(const Ride& ride, bool peepAtRide, bool updateLastRide);
+    void OnEnterRide(Ride& ride);
+    void OnExitRide(Ride& ride);
 
 private:
+    void StopPurchaseThought(ride_type_t rideType);
+    bool ShouldGoToShop(Ride& ride, bool peepAtShop);
+    bool DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price);
+    void TryGetUpFromSitting();
+    bool ShouldRideWhileRaining(const Ride& ride);
+    void PickRideToGoOn();
+    bool ShouldFindBench();
+    bool UpdateWalkingFindBin();
+    bool UpdateWalkingFindBench();
     void UpdateRide();
     void UpdateOnRide() {}; // TODO
     void UpdateWalking();
