@@ -417,10 +417,10 @@ private:
     void UpdateMotivesIdle();
     void UpdateConsumptionMotives();
     int32_t CheckEasterEggName(int32_t index) const;
-    void GivePassingPeepsPurpleClothes(Guest* passingPeep);
-    void GivePassingPeepsPizza(Guest* passingPeep);
-    void MakePassingPeepsSick(Guest* passingPeep);
-    void GivePassingPeepsIceCream(Guest* passingPeep);
+    void GivePassingGuestPurpleClothes(Guest& passingPeep);
+    void GivePassingGuestPizza(Guest& passingPeep);
+    void MakePassingGuestSick(Guest& passingPeep);
+    void GivePassingPeepsIceCream(Guest& passingPeep);
     Ride* FindBestRideToGoOn();
     OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> FindRidesToGoOn();
     void GoToRideEntrance(const Ride& ride);
