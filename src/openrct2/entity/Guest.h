@@ -370,12 +370,6 @@ public:
     void OnExitRide(Ride& ride);
 
 private:
-    void StopPurchaseThought(ride_type_t rideType);
-    bool ShouldGoToShop(Ride& ride, bool peepAtShop);
-    bool DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price);
-    void TryGetUpFromSitting();
-    bool ShouldRideWhileRaining(const Ride& ride);
-    void PickRideToGoOn();
     bool ShouldFindBench();
     bool UpdateWalkingFindBin();
     bool UpdateWalkingFindBench();
@@ -421,8 +415,6 @@ private:
     void GivePassingGuestPizza(Guest& passingPeep);
     void MakePassingGuestSick(Guest& passingPeep);
     void GivePassingPeepsIceCream(Guest& passingPeep);
-    Ride* FindBestRideToGoOn();
-    OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> FindRidesToGoOn();
     void GoToRideEntrance(const Ride& ride);
 };
 

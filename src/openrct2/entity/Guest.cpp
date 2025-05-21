@@ -464,6 +464,10 @@ static void GuestHeadForNearestRideWithSpecialType(Guest& guest, bool considerOn
 static bool Loc690FD0(Guest& guest, RideId* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
 static void GuestUpdateWalkingBreakScenery(Guest& guest);
 static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView, uint8_t* rideSeatToView);
+static bool GuestShouldGoToShop(Guest& guest, Ride& ride, bool peepAtShop);
+static bool GuestShouldRideWhileRaining(Guest& guest, const Ride& ride);
+static void GuestPickRideToGoOn(Guest& guest);
+static Ride* GuestFindBestRideToGoOn(Guest& guest);
 
 template<>
 bool EntityBase::Is<Guest>() const
@@ -1046,7 +1050,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
 
         if (time_duration >= 5)
         {
-            PickRideToGoOn();
+            GuestPickRideToGoOn(*this);
 
             if (GuestHeadingToRideId.IsNull())
             {
@@ -1062,7 +1066,7 @@ void Guest::Tick128UpdateGuest(uint32_t index)
 
     if ((ScenarioRand() & 0xFFFF) <= ((HasItem(ShopItem::Map)) ? 8192u : 2184u))
     {
-        PickRideToGoOn();
+        GuestPickRideToGoOn(*this);
     }
 
     if ((index & 0x3FF) == (currentTicks & 0x3FF))
@@ -1253,22 +1257,22 @@ void Guest::Tick128UpdateGuest(uint32_t index)
  *
  *  rct2: 0x00691677
  */
-void Guest::TryGetUpFromSitting()
+static void GuestTryGetUpFromSitting(Guest& guest)
 {
     // Eats all food first
-    if (HasFoodOrDrink())
+    if (guest.HasFoodOrDrink())
         return;
 
-    TimeToSitdown--;
-    if (TimeToSitdown)
+    guest.TimeToSitdown--;
+    if (guest.TimeToSitdown)
         return;
 
-    SetState(PeepState::Walking);
+    guest.SetState(PeepState::Walking);
 
     // Set destination to the centre of the tile.
-    auto destination = GetLocation().ToTileCentre();
-    SetDestination(destination, 5);
-    UpdateCurrentAnimationType();
+    const auto destination = guest.GetLocation().ToTileCentre();
+    guest.SetDestination(destination, 5);
+    guest.UpdateCurrentAnimationType();
 }
 
 /**
@@ -1310,7 +1314,7 @@ void Guest::UpdateSitting()
                 return;
 
             Action = PeepActionType::Idle;
-            TryGetUpFromSitting();
+            GuestTryGetUpFromSitting(*this);
             return;
         }
 
@@ -1327,7 +1331,7 @@ void Guest::UpdateSitting()
 
         if (AnimationGroup == PeepAnimationGroup::Umbrella)
         {
-            TryGetUpFromSitting();
+            GuestTryGetUpFromSitting(*this);
             return;
         }
 
@@ -1335,7 +1339,7 @@ void Guest::UpdateSitting()
         {
             if ((ScenarioRand() & 0xFFFFu) > 1310u)
             {
-                TryGetUpFromSitting();
+                GuestTryGetUpFromSitting(*this);
                 return;
             }
             Action = PeepActionType::SittingEatFood;
@@ -1348,12 +1352,12 @@ void Guest::UpdateSitting()
         const auto rand = ScenarioRand();
         if ((rand & 0xFFFFu) > 131u)
         {
-            TryGetUpFromSitting();
+            GuestTryGetUpFromSitting(*this);
             return;
         }
         if (AnimationGroup == PeepAnimationGroup::Balloon || AnimationGroup == PeepAnimationGroup::Hat)
         {
-            TryGetUpFromSitting();
+            GuestTryGetUpFromSitting(*this);
             return;
         }
 
@@ -1519,35 +1523,36 @@ static money64 getItemValue(const ShopItemDescriptor& shopItemDescriptor)
  *
  *  rct2: 0x0069AF1E
  */
-bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
+static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopItem, money64 price)
 {
     const bool isPrecipitating = ClimateIsRaining() || ClimateIsSnowingHeavily();
     const bool isUmbrella = shopItem == ShopItem::Umbrella;
     const bool isRainingAndUmbrella = isPrecipitating && isUmbrella;
 
     bool hasVoucher = false;
-    if ((HasItem(ShopItem::Voucher)) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE) && (VoucherShopItem == shopItem))
+    if ((guest.HasItem(ShopItem::Voucher)) && (guest.VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
+        && (guest.VoucherShopItem == shopItem))
     {
         hasVoucher = true;
     }
 
-    if (HasItem(shopItem))
+    if (guest.HasItem(shopItem))
     {
-        InsertNewThought(PeepThoughtType::AlreadyGot, shopItem);
+        guest.InsertNewThought(PeepThoughtType::AlreadyGot, shopItem);
         return false;
     }
 
     const auto& shopItemDescriptor = GetShopItemDescriptor(shopItem);
     if (shopItemDescriptor.IsFoodOrDrink())
     {
-        int32_t food = Numerics::bitScanForward(GetFoodOrDrinkFlags());
+        int32_t food = Numerics::bitScanForward(guest.GetFoodOrDrinkFlags());
         if (food != -1)
         {
-            InsertNewThought(PeepThoughtType::HaventFinished, static_cast<ShopItem>(food));
+            guest.InsertNewThought(PeepThoughtType::HaventFinished, static_cast<ShopItem>(food));
             return false;
         }
 
-        if (Nausea >= 145)
+        if (guest.Nausea >= 145)
             return false;
     }
 
@@ -1564,21 +1569,21 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
         return false;
     }
 
-    if (shopItemDescriptor.IsFood() && (Hunger > 75))
+    if (shopItemDescriptor.IsFood() && (guest.Hunger > 75))
     {
-        InsertNewThought(PeepThoughtType::NotHungry);
+        guest.InsertNewThought(PeepThoughtType::NotHungry);
         return false;
     }
 
-    if (shopItemDescriptor.IsDrink() && (Thirst > 75))
+    if (shopItemDescriptor.IsDrink() && (guest.Thirst > 75))
     {
-        InsertNewThought(PeepThoughtType::NotThirsty);
+        guest.InsertNewThought(PeepThoughtType::NotThirsty);
         return false;
     }
 
     if (!isRainingAndUmbrella && (shopItem != ShopItem::Map) && shopItemDescriptor.IsSouvenir() && !hasVoucher)
     {
-        if (((ScenarioRand() & 0x7F) + 0x73) > Happiness || GuestNumRides < 3)
+        if (((ScenarioRand() & 0x7F) + 0x73) > guest.Happiness || guest.GuestNumRides < 3)
             return false;
     }
 
@@ -1586,14 +1591,14 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
     {
         if (price != 0 && !(gameState.park.Flags & PARK_FLAGS_NO_MONEY))
         {
-            if (CashInPocket == 0)
+            if (guest.CashInPocket == 0)
             {
-                InsertNewThought(PeepThoughtType::SpentMoney);
+                guest.InsertNewThought(PeepThoughtType::SpentMoney);
                 return false;
             }
-            if (price > CashInPocket)
+            if (price > guest.CashInPocket)
             {
-                InsertNewThought(PeepThoughtType::CantAffordItem, shopItem);
+                guest.InsertNewThought(PeepThoughtType::CantAffordItem, shopItem);
                 return false;
             }
         }
@@ -1606,16 +1611,16 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
             if (!isRainingAndUmbrella)
             {
                 itemValue = -itemValue;
-                if (Happiness >= 128)
+                if (guest.Happiness >= 128)
                 {
                     itemValue /= 2;
-                    if (Happiness >= 180)
+                    if (guest.Happiness >= 180)
                         itemValue /= 2;
                 }
                 if (itemValue > (static_cast<money64>(ScenarioRand() & 0x07)) && !(getGameState().cheats.ignorePrice))
                 {
                     // "I'm not paying that much for x"
-                    InsertNewThought(shopItemDescriptor.TooMuchThought, ride.id);
+                    guest.InsertNewThought(shopItemDescriptor.TooMuchThought, ride.id);
                     return false;
                 }
             }
@@ -1630,13 +1635,13 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
                 if (itemValue >= static_cast<money64>(ScenarioRand() & 0x07))
                 {
                     // "This x is a really good value"
-                    InsertNewThought(shopItemDescriptor.GoodValueThought, ride.id);
+                    guest.InsertNewThought(shopItemDescriptor.GoodValueThought, ride.id);
                 }
             }
 
             int32_t happinessGrowth = itemValue * 4;
-            HappinessTarget = std::min((HappinessTarget + happinessGrowth), kPeepMaxHappiness);
-            Happiness = std::min((Happiness + happinessGrowth), kPeepMaxHappiness);
+            guest.HappinessTarget = std::min((guest.HappinessTarget + happinessGrowth), kPeepMaxHappiness);
+            guest.Happiness = std::min((guest.Happiness + happinessGrowth), kPeepMaxHappiness);
         }
 
         // reset itemValue for satisfaction calculation
@@ -1658,70 +1663,70 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
 
     // The peep has now decided to buy the item (or, specifically, has not been
     // dissuaded so far).
-    GiveItem(shopItem);
+    guest.GiveItem(shopItem);
     const auto hasRandomShopColour = ride.hasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS);
 
     if (shopItem == ShopItem::TShirt)
-        TshirtColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
+        guest.TshirtColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
 
     if (shopItem == ShopItem::Hat)
-        HatColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
+        guest.HatColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
 
     if (shopItem == ShopItem::Balloon)
-        BalloonColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
+        guest.BalloonColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
 
     if (shopItem == ShopItem::Umbrella)
-        UmbrellaColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
+        guest.UmbrellaColour = hasRandomShopColour ? ScenarioRandMax(kColourNumNormal) : ride.trackColours[0].main;
 
     if (shopItem == ShopItem::Map)
-        ResetPathfindGoal();
+        guest.ResetPathfindGoal();
 
     if (shopItem == ShopItem::Photo)
-        Photo1RideRef = ride.id;
+        guest.Photo1RideRef = ride.id;
 
     if (shopItem == ShopItem::Photo2)
-        Photo2RideRef = ride.id;
+        guest.Photo2RideRef = ride.id;
 
     if (shopItem == ShopItem::Photo3)
-        Photo3RideRef = ride.id;
+        guest.Photo3RideRef = ride.id;
 
     if (shopItem == ShopItem::Photo4)
-        Photo4RideRef = ride.id;
+        guest.Photo4RideRef = ride.id;
 
-    WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-    UpdateAnimationGroup();
-    if (PeepFlags & PEEP_FLAGS_TRACKING)
+    guest.WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+    guest.UpdateAnimationGroup();
+    if (guest.PeepFlags & PEEP_FLAGS_TRACKING)
     {
         auto ft = Formatter();
-        FormatNameTo(ft);
+        guest.FormatNameTo(ft);
         ft.Add<StringId>(shopItemDescriptor.Naming.Indefinite);
         if (Config::Get().notifications.GuestBoughtItem)
         {
-            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, Id, ft);
+            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, guest.Id, ft);
         }
     }
 
     if (shopItemDescriptor.IsFood())
-        AmountOfFood++;
+        guest.AmountOfFood++;
 
     if (shopItemDescriptor.IsDrink())
-        AmountOfDrinks++;
+        guest.AmountOfDrinks++;
 
     if (shopItemDescriptor.IsSouvenir())
-        AmountOfSouvenirs++;
+        guest.AmountOfSouvenirs++;
 
-    money64* expend_type = &PaidOnSouvenirs;
+    money64* expend_type = &guest.PaidOnSouvenirs;
     ExpenditureType expenditure = ExpenditureType::ShopStock;
 
     if (shopItemDescriptor.IsFood())
     {
-        expend_type = &PaidOnFood;
+        expend_type = &guest.PaidOnFood;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 
     if (shopItemDescriptor.IsDrink())
     {
-        expend_type = &PaidOnDrink;
+        expend_type = &guest.PaidOnDrink;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 
@@ -1732,12 +1737,12 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
     expenditure = static_cast<ExpenditureType>(static_cast<int32_t>(expenditure) - 1);
     if (hasVoucher)
     {
-        RemoveItem(ShopItem::Voucher);
-        WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+        guest.RemoveItem(ShopItem::Voucher);
+        guest.WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
     else if (!(gameState.park.Flags & PARK_FLAGS_NO_MONEY))
     {
-        SpendMoney(*expend_type, price, expenditure);
+        guest.SpendMoney(*expend_type, price, expenditure);
     }
     ride.totalProfit += (price - shopItemDescriptor.Cost);
     ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
@@ -1839,74 +1844,49 @@ void Guest::OnExitRide(Ride& ride)
  *
  *  rct2: 0x00695DD2
  */
-void Guest::PickRideToGoOn()
+static void GuestPickRideToGoOn(Guest& guest)
 {
-    if (State != PeepState::Walking)
+    if (guest.State != PeepState::Walking)
         return;
-    if (!GuestHeadingToRideId.IsNull())
+    if (!guest.GuestHeadingToRideId.IsNull())
         return;
-    if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
+    if (guest.PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         return;
-    if (HasFoodOrDrink())
+    if (guest.HasFoodOrDrink())
         return;
-    if (x == kLocationNull)
+    if (guest.x == kLocationNull)
         return;
 
-    auto ride = FindBestRideToGoOn();
+    auto* ride = GuestFindBestRideToGoOn(guest);
     if (ride != nullptr)
     {
         // Head to that ride
-        GuestHeadingToRideId = ride->id;
-        GuestIsLostCountdown = 200;
-        ResetPathfindGoal();
-        WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
+        guest.GuestHeadingToRideId = ride->id;
+        guest.GuestIsLostCountdown = 200;
+        guest.ResetPathfindGoal();
+        guest.WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
 
         // Make peep look at their map if they have one
-        if (HasItem(ShopItem::Map))
+        if (guest.HasItem(ShopItem::Map))
         {
-            ReadMap();
+            guest.ReadMap();
         }
     }
 }
 
-Ride* Guest::FindBestRideToGoOn()
-{
-    // Pick the most exciting ride
-    auto rideConsideration = FindRidesToGoOn();
-    Ride* mostExcitingRide = nullptr;
-    for (auto& ride : GetRideManager())
-    {
-        const auto rideIndex = ride.id.ToUnderlying();
-        if (rideConsideration.size() > rideIndex && rideConsideration[rideIndex])
-        {
-            if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_QUEUE_FULL))
-            {
-                if (ShouldGoOnRide(ride, StationIndex::FromUnderlying(0), false, true) && RideHasRatings(ride))
-                {
-                    if (mostExcitingRide == nullptr || ride.ratings.excitement > mostExcitingRide->ratings.excitement)
-                    {
-                        mostExcitingRide = &ride;
-                    }
-                }
-            }
-        }
-    }
-    return mostExcitingRide;
-}
-
-OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> Guest::FindRidesToGoOn()
+static OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> GuestFindRidesToGoOn(Guest& guest)
 {
     OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> rideConsideration;
 
     // FIX  Originally checked for a toy, likely a mistake and should be a map,
     //      but then again this seems to only allow the peep to go on
     //      rides they haven't been on before.
-    if (HasItem(ShopItem::Map))
+    if (guest.HasItem(ShopItem::Map))
     {
         // Consider rides that peep hasn't been on yet
         for (auto& ride : GetRideManager())
         {
-            if (!HasRidden(ride))
+            if (!guest.HasRidden(ride))
             {
                 rideConsideration[ride.id.ToUnderlying()] = true;
             }
@@ -1916,8 +1896,8 @@ OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> Guest::FindRidesToGoOn()
     {
         // Take nearby rides into consideration
         constexpr auto radius = 10 * 32;
-        int32_t cx = floor2(x, 32);
-        int32_t cy = floor2(y, 32);
+        int32_t cx = floor2(guest.x, 32);
+        int32_t cy = floor2(guest.y, 32);
         for (int32_t tileX = cx - radius; tileX <= cx + radius; tileX += kCoordsXYStep)
         {
             for (int32_t tileY = cy - radius; tileY <= cy + radius; tileY += kCoordsXYStep)
@@ -1950,6 +1930,31 @@ OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> Guest::FindRidesToGoOn()
     return rideConsideration;
 }
 
+static Ride* GuestFindBestRideToGoOn(Guest& guest)
+{
+    // Pick the most exciting ride
+    auto rideConsideration = GuestFindRidesToGoOn(guest);
+    Ride* mostExcitingRide = nullptr;
+    for (auto& ride : GetRideManager())
+    {
+        const auto rideIndex = ride.id.ToUnderlying();
+        if (rideConsideration.size() > rideIndex && rideConsideration[rideIndex])
+        {
+            if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_QUEUE_FULL))
+            {
+                if (guest.ShouldGoOnRide(ride, StationIndex::FromUnderlying(0), false, true) && RideHasRatings(ride))
+                {
+                    if (mostExcitingRide == nullptr || ride.ratings.excitement > mostExcitingRide->ratings.excitement)
+                    {
+                        mostExcitingRide = &ride;
+                    }
+                }
+            }
+        }
+    }
+    return mostExcitingRide;
+}
+
 /**
  * This function is called whenever a peep is deciding whether or not they want
  * to go on a ride or visit a shop. They may be physically present at the
@@ -1977,7 +1982,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
 
         if (ride.getRideTypeDescriptor().HasFlag(RtdFlag::isShopOrFacility))
         {
-            return ShouldGoToShop(ride, peepAtRide);
+            return GuestShouldGoToShop(*this, ride, peepAtRide);
         }
 
         // This used to check !(flags & 2), but the function is only ever called with flags = 0, 1 or 6.
@@ -2088,7 +2093,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 else
                 {
                     const bool isPrecipitating = ClimateIsRaining() || ClimateIsSnowingHeavily();
-                    if (isPrecipitating && !ShouldRideWhileRaining(ride))
+                    if (isPrecipitating && !GuestShouldRideWhileRaining(*this, ride))
                     {
                         if (peepAtRide)
                         {
@@ -2104,7 +2109,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                     }
                     // If it is raining and the ride provides shelter skip the
                     // ride intensity check and get me on a sheltered ride!
-                    if (!isPrecipitating || !ShouldRideWhileRaining(ride))
+                    if (!isPrecipitating || !GuestShouldRideWhileRaining(*this, ride))
                     {
                         if (!getGameState().cheats.ignoreRideIntensity)
                         {
@@ -2243,76 +2248,76 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
     return false;
 }
 
-bool Guest::ShouldGoToShop(Ride& ride, bool peepAtShop)
+static bool GuestShouldGoToShop(Guest& guest, Ride& ride, bool peepAtShop)
 {
     // Peeps won't go to the same shop twice in a row.
-    if (ride.id == PreviousRide)
+    if (ride.id == guest.PreviousRide)
     {
-        ChoseNotToGoOnRide(ride, peepAtShop, true);
+        guest.ChoseNotToGoOnRide(ride, peepAtShop, true);
         return false;
     }
 
     const auto& rtd = ride.getRideTypeDescriptor();
     if (rtd.specialType == RtdSpecialType::toilet)
     {
-        if (Toilet < 70)
+        if (guest.Toilet < 70)
         {
-            ChoseNotToGoOnRide(ride, peepAtShop, true);
+            guest.ChoseNotToGoOnRide(ride, peepAtShop, true);
             return false;
         }
 
         // The amount that peeps are willing to pay to use the Toilets scales with their toilet stat.
         // It effectively has a minimum of $0.10 (due to the check above) and a maximum of $0.60.
-        if ((RideGetPrice(ride) * 40 > Toilet) && !getGameState().cheats.ignorePrice)
+        if ((RideGetPrice(ride) * 40 > guest.Toilet) && !getGameState().cheats.ignorePrice)
         {
             if (peepAtShop)
             {
-                InsertNewThought(PeepThoughtType::NotPaying, ride.id);
-                if (HappinessTarget >= 60)
+                guest.InsertNewThought(PeepThoughtType::NotPaying, ride.id);
+                if (guest.HappinessTarget >= 60)
                 {
-                    HappinessTarget -= 16;
+                    guest.HappinessTarget -= 16;
                 }
                 ride.updatePopularity(0);
             }
-            ChoseNotToGoOnRide(ride, peepAtShop, true);
+            guest.ChoseNotToGoOnRide(ride, peepAtShop, true);
             return false;
         }
     }
 
     if (rtd.specialType == RtdSpecialType::firstAid)
     {
-        if (Nausea < 128)
+        if (guest.Nausea < 128)
         {
-            ChoseNotToGoOnRide(ride, peepAtShop, true);
+            guest.ChoseNotToGoOnRide(ride, peepAtShop, true);
             return false;
         }
     }
 
     // Basic price checks
     auto ridePrice = RideGetPrice(ride);
-    if (ridePrice != 0 && ridePrice > CashInPocket)
+    if (ridePrice != 0 && ridePrice > guest.CashInPocket)
     {
         if (peepAtShop)
         {
-            if (CashInPocket <= 0)
+            if (guest.CashInPocket <= 0)
             {
-                InsertNewThought(PeepThoughtType::SpentMoney);
+                guest.InsertNewThought(PeepThoughtType::SpentMoney);
             }
             else
             {
-                InsertNewThought(PeepThoughtType::CantAffordRide, ride.id);
+                guest.InsertNewThought(PeepThoughtType::CantAffordRide, ride.id);
             }
         }
-        ChoseNotToGoOnRide(ride, peepAtShop, true);
+        guest.ChoseNotToGoOnRide(ride, peepAtShop, true);
         return false;
     }
 
     if (peepAtShop)
     {
         ride.updatePopularity(1);
-        if (ride.id == GuestHeadingToRideId)
+        if (ride.id == guest.GuestHeadingToRideId)
         {
-            GuestResetRideHeading(*this);
+            GuestResetRideHeading(guest);
         }
     }
     return true;
@@ -2381,7 +2386,7 @@ int32_t Guest::GetParkEntryTime() const
     return ParkEntryTime;
 }
 
-bool Guest::ShouldRideWhileRaining(const Ride& ride)
+static bool GuestShouldRideWhileRaining(Guest& guest, const Ride& ride)
 {
     // Peeps will go on rides that are sufficiently undercover while it's raining.
     // The threshold is fairly low and only requires about 10-15% of the ride to be undercover.
@@ -2391,7 +2396,7 @@ bool Guest::ShouldRideWhileRaining(const Ride& ride)
     }
 
     // Peeps with umbrellas will go on rides where they can use their umbrella on it (like the Maze) 50% of the time
-    if (HasItem(ShopItem::Umbrella) && ride.getRideTypeDescriptor().HasFlag(RtdFlag::guestsCanUseUmbrella)
+    if (guest.HasItem(ShopItem::Umbrella) && ride.getRideTypeDescriptor().HasFlag(RtdFlag::guestsCanUseUmbrella)
         && (ScenarioRand() & 2) == 0)
     {
         return true;
@@ -3289,7 +3294,7 @@ static void GuestHeadForNearestRideWithSpecialType(Guest& guest, bool considerOn
  * such as "I'm hungry" after visiting a food shop.
  * Works for Thirst/Hungry/Low Money/Toilet
  */
-void Guest::StopPurchaseThought(ride_type_t rideType)
+static void GuestStopPurchaseThought(Guest& guest, ride_type_t rideType)
 {
     auto thoughtType = PeepThoughtType::Hungry;
 
@@ -3314,7 +3319,7 @@ void Guest::StopPurchaseThought(ride_type_t rideType)
     // Remove the related thought
     for (int32_t i = 0; i < kPeepMaxThoughts; ++i)
     {
-        PeepThought* thought = &Thoughts[i];
+        PeepThought* thought = &guest.Thoughts[i];
 
         if (thought->type == PeepThoughtType::None)
             break;
@@ -3327,9 +3332,9 @@ void Guest::StopPurchaseThought(ride_type_t rideType)
             memmove(thought, thought + 1, sizeof(PeepThought) * (kPeepMaxThoughts - i - 1));
         }
 
-        Thoughts[kPeepMaxThoughts - 1].type = PeepThoughtType::None;
+        guest.Thoughts[kPeepMaxThoughts - 1].type = PeepThoughtType::None;
 
-        WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
+        guest.WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
         i--;
     }
 }
@@ -3442,7 +3447,7 @@ void Guest::UpdateBuying()
             {
                 auto price = ride->price[1];
 
-                item_bought = DecideAndBuyItem(*ride, ride_type->shop_item[1], price);
+                item_bought = GuestDecideAndBuyItem(*this, *ride, ride_type->shop_item[1], price);
                 if (item_bought)
                 {
                     ride->numSecondaryItemsSold++;
@@ -3453,7 +3458,7 @@ void Guest::UpdateBuying()
             {
                 auto price = ride->price[0];
 
-                item_bought = DecideAndBuyItem(*ride, ride_type->shop_item[0], price);
+                item_bought = GuestDecideAndBuyItem(*this, *ride, ride_type->shop_item[0], price);
                 if (item_bought)
                 {
                     ride->numPrimaryItemsSold++;
@@ -3466,7 +3471,7 @@ void Guest::UpdateBuying()
     {
         ride->updatePopularity(1);
 
-        StopPurchaseThought(ride->type);
+        GuestStopPurchaseThought(*this, ride->type);
     }
     else
     {
@@ -4463,7 +4468,7 @@ void Guest::UpdateRideInExit()
     if (ride->lifecycleFlags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
     {
         ShopItem secondaryItem = ride->getRideTypeDescriptor().PhotoItem;
-        if (DecideAndBuyItem(*ride, secondaryItem, ride->price[1]))
+        if (GuestDecideAndBuyItem(*this, *ride, secondaryItem, ride->price[1]))
         {
             ride->numSecondaryItemsSold++;
         }
@@ -5171,7 +5176,7 @@ void Guest::UpdateRideShopInteract()
 
     HappinessTarget = std::min(HappinessTarget + 30, kPeepMaxHappiness);
     Happiness = HappinessTarget;
-    StopPurchaseThought(ride->type);
+    GuestStopPurchaseThought(*this, ride->type);
 }
 
 /**
