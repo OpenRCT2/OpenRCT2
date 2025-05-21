@@ -59,6 +59,7 @@ public:
     };
     uint32_t StaffBinsEmptied;
 
+    void Update();
     void UpdateStaff(uint32_t stepsToTake);
     void Tick128UpdateStaff();
     bool IsMechanic() const;

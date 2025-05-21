@@ -356,7 +356,6 @@ struct Peep : EntityBase
     uint32_t PeepFlags;
 
 public: // Peep
-    void Update();
     std::optional<CoordsXY> UpdateAction(int16_t& xy_distance);
     std::optional<CoordsXY> UpdateAction();
     bool UpdateActionAnimation();
@@ -408,7 +407,7 @@ public: // Peep
     void SwitchNextAnimationType();
     [[nodiscard]] PeepAnimationType GetAnimationType();
 
-private:
+protected:
     void UpdateFalling();
     void Update1();
     void UpdatePicked();

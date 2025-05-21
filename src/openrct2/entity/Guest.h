@@ -320,6 +320,7 @@ public:
     uint8_t FavouriteRideRating;
     uint64_t ItemFlags;
 
+    void Update();
     void UpdateGuest();
     void Tick128UpdateGuest(uint32_t index);
     uint64_t GetFoodOrDrinkFlags() const;

@@ -1680,6 +1680,104 @@ bool Staff::IsMechanic() const
     return AssignedStaffType == StaffType::Mechanic;
 }
 
+void Staff::Update()
+{
+    if (PeepFlags & PEEP_FLAGS_POSITION_FROZEN)
+    {
+        if (!(PeepFlags & PEEP_FLAGS_ANIMATION_FROZEN))
+        {
+            // This is circumventing other logic, so only update every few ticks
+            if ((getGameState().currentTicks & 3) == 0)
+            {
+                if (IsActionWalking())
+                    UpdateWalkingAnimation();
+                else
+                    UpdateActionAnimation();
+                Invalidate();
+            }
+        }
+        return;
+    }
+    else if (PeepFlags & PEEP_FLAGS_ANIMATION_FROZEN)
+    {
+        // Animation is frozen while position is not. This allows a peep to walk
+        // around without its sprite being updated, which looks very glitchy.
+        // We'll just remove the flag and continue as normal, in this case.
+        PeepFlags &= ~PEEP_FLAGS_ANIMATION_FROZEN;
+    }
+
+    auto* guest = As<Guest>();
+    if (guest != nullptr)
+    {
+    }
+
+    // Walking speed logic
+    uint32_t stepsToTake = Energy;
+    if (stepsToTake < 95 && State == PeepState::Queuing)
+        stepsToTake = 95;
+    if ((PeepFlags & PEEP_FLAGS_SLOW_WALK) && State != PeepState::Queuing)
+        stepsToTake /= 2;
+    if (IsActionWalking() && GetNextIsSloped())
+    {
+        stepsToTake /= 2;
+        if (State == PeepState::Queuing)
+            stepsToTake += stepsToTake / 2;
+    }
+    // Ensure guests make it across a level crossing in time
+    constexpr auto minStepsForCrossing = 55;
+    if (stepsToTake < minStepsForCrossing && IsOnPathBlockedByVehicle())
+        stepsToTake = minStepsForCrossing;
+
+    uint32_t carryCheck = StepProgress + stepsToTake;
+    StepProgress = carryCheck;
+    if (carryCheck <= 255)
+    {
+        if (guest != nullptr)
+        {
+            guest->UpdateEasterEggInteractions();
+        }
+    }
+    else
+    {
+        // Loc68FD2F
+        switch (State)
+        {
+            case PeepState::Falling:
+                UpdateFalling();
+                break;
+            case PeepState::One:
+                Update1();
+                break;
+            case PeepState::OnRide:
+                // No action
+                break;
+            case PeepState::Picked:
+                UpdatePicked();
+                break;
+            default:
+            {
+                if (guest != nullptr)
+                {
+                    guest->UpdateGuest();
+                }
+                else
+                {
+                    auto* staff = As<Staff>();
+                    if (staff != nullptr)
+                    {
+                        staff->UpdateStaff(stepsToTake);
+                    }
+                    else
+                    {
+                        assert(false);
+                    }
+                }
+                break;
+            }
+        }
+    }
+}
+
 void Staff::UpdateStaff(uint32_t stepsToTake)
 {
     switch (State)
