@@ -245,3 +245,5 @@ STR_6662    :Randomize colors for every train or vehicle
 STR_6670    :Guest behavior
 
 STR_6732    :Show a button in the toolbar to rotate the view counterclockwise
+STR_6766    :{WINDOW_COLOUR_2}Same color throughout park
+STR_6767    :Select whether this color (or randomization) is used throughout the entire park

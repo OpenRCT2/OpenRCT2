@@ -426,7 +426,7 @@ public:
     bool hasLifecycleFlag(uint32_t flag) const;
     void setLifecycleFlag(uint32_t flag, bool on);
 
-    bool hasRecolourableShopItems() const;
+    std::optional<ShopItem> getRecolourableShopItem() const;
     bool hasStation() const;
 
     bool findTrackGap(const CoordsXYE& input, CoordsXYE* output) const;

@@ -16,6 +16,8 @@
 #include "../drawing/Drawing.h"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
+#include "../ride/RideData.h"
+#include "../ride/RideManager.hpp"
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
@@ -105,6 +107,10 @@ GameActions::Result RideSetAppearanceAction::Execute() const
     {
         case RideSetAppearanceType::TrackColourMain:
             ride->trackColours[_index].main = _value;
+            if (_index == 0)
+            {
+                PropagateShopItemCommonColourValue(*ride, &RideSetAppearanceAction::UpdateRideShopItemColour);
+            }
             GfxInvalidateScreen();
             break;
         case RideSetAppearanceType::TrackColourAdditional:
@@ -141,6 +147,7 @@ GameActions::Result RideSetAppearanceAction::Execute() const
             break;
         case RideSetAppearanceType::SellingItemColourIsRandom:
             ride->setLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS, static_cast<bool>(_value));
+            PropagateShopItemCommonColourValue(*ride, &RideSetAppearanceAction::UpdateRideShopItemRandomColourFlag);
             break;
     }
 
@@ -155,4 +162,42 @@ GameActions::Result RideSetAppearanceAction::Execute() const
     }
 
     return res;
+}
+
+void RideSetAppearanceAction::UpdateRideShopItemColour(Ride& ride) const
+{
+    ride.trackColours[0].main = _value;
+}
+
+void RideSetAppearanceAction::UpdateRideShopItemRandomColourFlag(Ride& ride) const
+{
+    ride.setLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS, static_cast<bool>(_value));
+    auto windowMgr = Ui::GetWindowManager();
+    windowMgr->InvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+}
+
+void RideSetAppearanceAction::PropagateShopItemCommonColourValue(Ride& changedRide, RideUpdater updater) const
+{
+    // first check if the changed ride has a recolourable shop item
+    auto optChangedShopItem = changedRide.getRecolourableShopItem();
+    if (!optChangedShopItem.has_value())
+        return;
+
+    // next check if the shop item has the common colour flag set
+    auto changedShopItem = optChangedShopItem.value();
+    if (!ShopItemHasCommonColour(changedShopItem))
+        return;
+
+    // propagate changed value to other rides with the same shop item
+    for (auto& ride : GetRideManager())
+    {
+        if (ride.id == changedRide.id)
+            continue;
+
+        auto optShopItem = ride.getRecolourableShopItem();
+        if (!optShopItem.has_value() || changedShopItem != optShopItem.value())
+            continue;
+
+        std::invoke(updater, this, ride);
+    }
 }

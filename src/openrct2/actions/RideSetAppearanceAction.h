@@ -44,4 +44,11 @@ public:
     void Serialise(DataSerialiser& stream) override;
     OpenRCT2::GameActions::Result Query() const override;
     OpenRCT2::GameActions::Result Execute() const override;
+
+private:
+    void UpdateRideShopItemColour(Ride& ride) const;
+    void UpdateRideShopItemRandomColourFlag(Ride& ride) const;
+
+    typedef void (RideSetAppearanceAction::*RideUpdater)(Ride& ride) const;
+    void PropagateShopItemCommonColourValue(Ride& ride, RideUpdater updater) const;
 };

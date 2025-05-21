@@ -269,6 +269,18 @@ GameActions::Result RideCreateAction::Execute() const
         }
     }
 
+    // Try to set shop item colour and random flag from existing ride if shop item common flag is set.
+    auto optShopItem = ride->getRecolourableShopItem();
+    if (optShopItem.has_value() && ShopItemHasCommonColour(optShopItem.value()))
+    {
+        auto optColourAndRndFlag = ShopItemGetCommonColour(ride, optShopItem.value());
+        if (optColourAndRndFlag.has_value())
+        {
+            ride->trackColours[0].main = optColourAndRndFlag.value().first;
+            ride->setLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS, optColourAndRndFlag.value().second);
+        }
+    }
+
     ride->value = kRideValueUndefined;
     ride->satisfaction = 255;
     ride->popularity = 255;

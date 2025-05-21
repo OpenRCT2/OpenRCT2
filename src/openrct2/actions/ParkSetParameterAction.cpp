@@ -80,6 +80,10 @@ GameActions::Result ParkSetParameterAction::Execute() const
             gameState.samePriceThroughoutPark = _value;
             windowMgr->InvalidateByClass(WindowClass::Ride);
             break;
+        case ParkParameter::SameColourInPark:
+            gameState.sameColourThroughoutPark = _value;
+            windowMgr->InvalidateByClass(WindowClass::Ride);
+            break;
         default:
             LOG_ERROR("Invalid park parameter %d", _parameter);
             return GameActions::Result(

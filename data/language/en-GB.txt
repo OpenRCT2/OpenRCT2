@@ -3822,3 +3822,5 @@ STR_6774    :Time since last inspection
 STR_6775    :{COMMA16} minute
 STR_6776    :{COMMA16} minutes
 STR_6777    :more than 4 hours
+STR_6778    :{WINDOW_COLOUR_2}Same colour throughout park
+STR_6779    :Select whether this colour (or randomization) is used throughout the entire park

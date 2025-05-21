@@ -16,6 +16,7 @@ enum class ParkParameter : uint8_t
     Close,
     Open,
     SamePriceInPark,
+    SameColourInPark,
     Count
 };
 

@@ -111,6 +111,7 @@ namespace OpenRCT2
         colour_t staffMechanicColour;
         colour_t staffSecurityColour;
         uint64_t samePriceThroughoutPark{};
+        uint64_t sameColourThroughoutPark{};
 
         uint8_t researchFundingLevel;
         uint8_t researchPriorities;

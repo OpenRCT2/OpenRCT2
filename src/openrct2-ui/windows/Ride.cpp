@@ -203,6 +203,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_VEHICLE_TRIM_COLOUR,
         WIDX_VEHICLE_TERTIARY_COLOUR,
         WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX,
+        WIDX_SELL_ITEM_COLOUR_SAME_THROUGHOUT_PARK,
         WIDX_RANDOMISE_VEHICLE_COLOURS,
 
         WIDX_PLAY_MUSIC = 14,
@@ -345,6 +346,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 99, 190}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
         MakeWidget({119, 190}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_ADDITIONAL_COLOUR_2_TIP           ),
         MakeWidget({100,  74}, {239, 12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_RANDOM_COLOUR                                                 ),
+        MakeWidget({100,  90}, {239, 12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_SAME_COLOUR_THROUGHOUT_PARK, STR_SAME_COLOUR_THROUGHOUT_PARK_TIP),
         MakeWidget({139, 190}, {110, 12}, WindowWidgetType::Button,    WindowColour::Secondary, STR_RANDOMISE_VEHICLE_COLOURS, STR_RANDOMISE_VEHICLE_COLOURS_TIP  ),
     };
 
@@ -4236,6 +4238,19 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
+                case WIDX_SELL_ITEM_COLOUR_SAME_THROUGHOUT_PARK:
+                {
+                    auto ride = GetRide(rideId);
+                    if (ride != nullptr)
+                    {
+                        auto optShopItem = ride->getRecolourableShopItem();
+                        if (optShopItem.has_value())
+                        {
+                            UpdateShopItemSameColourThroughout(ride, optShopItem.value());
+                        }
+                    }
+                    break;
+                }
                 case WIDX_RANDOMISE_VEHICLE_COLOURS:
                 {
                     auto ride = GetRide(rideId);
@@ -4643,8 +4658,9 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_TRACK_ADDITIONAL_COLOUR].type = WindowWidgetType::Empty;
             }
 
-            // Selling item random colour checkbox
-            if (ride->hasRecolourableShopItems())
+            // Selling item random colour and share (random) colour throughout park checkboxes
+            auto optShopItem = ride->getRecolourableShopItem();
+            if (optShopItem.has_value())
             {
                 widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].type = WindowWidgetType::Checkbox;
                 if (ride->hasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS))
@@ -4655,10 +4671,21 @@ namespace OpenRCT2::Ui::Windows
                 {
                     pressed_widgets &= ~(1uLL << WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX);
                 }
+
+                widgets[WIDX_SELL_ITEM_COLOUR_SAME_THROUGHOUT_PARK].type = WindowWidgetType::Checkbox;
+                if (ShopItemHasCommonColour(optShopItem.value()))
+                {
+                    pressed_widgets |= (1uLL << WIDX_SELL_ITEM_COLOUR_SAME_THROUGHOUT_PARK);
+                }
+                else
+                {
+                    pressed_widgets &= ~(1uLL << WIDX_SELL_ITEM_COLOUR_SAME_THROUGHOUT_PARK);
+                }
             }
             else
             {
                 widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].type = WindowWidgetType::Empty;
+                widgets[WIDX_SELL_ITEM_COLOUR_SAME_THROUGHOUT_PARK].type = WindowWidgetType::Empty;
             }
 
             // Track supports colour
@@ -4967,6 +4994,27 @@ namespace OpenRCT2::Ui::Windows
             imageIndex += carEntry.base_image_id;
             auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
             GfxDrawSprite(rt, imageId, screenCoords);
+        }
+
+        static void UpdateShopItemSameColourThroughout(Ride* ride, ShopItem shopItem)
+        {
+            // first set the shop item common flag to the new value
+            const auto& gameState = getGameState();
+            const auto existingFlags = gameState.sameColourThroughoutPark;
+            auto newFlags = existingFlags ^ EnumToFlag(shopItem);
+            const auto sameColourAction = ParkSetParameterAction(ParkParameter::SameColourInPark, newFlags);
+            GameActions::Execute(&sameColourAction);
+
+            // then exec both the main colour
+            auto trackColourMainAction = RideSetAppearanceAction(
+                ride->id, RideSetAppearanceType::TrackColourMain, ride->trackColours[0].main, 0);
+            GameActions::Execute(&trackColourMainAction);
+
+            // and random color actions
+            const bool rndFlag = ride->hasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS);
+            auto rndFlagAction = RideSetAppearanceAction(
+                ride->id, RideSetAppearanceType::SellingItemColourIsRandom, rndFlag, 0);
+            GameActions::Execute(&rndFlagAction);
         }
 
 #pragma endregion

@@ -11,6 +11,10 @@
 
 #include "../core/Money.hpp"
 #include "../entity/Litter.h"
+#include "../interface/Colour.h"
+
+#include <optional>
+#include <utility>
 
 struct Ride;
 
@@ -130,5 +134,8 @@ enum
 
 money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem);
 bool ShopItemHasCommonPrice(const ShopItem shopItem);
+
+std::optional<std::pair<colour_t, bool>> ShopItemGetCommonColour(Ride* forRide, const ShopItem shopItem);
+bool ShopItemHasCommonColour(const ShopItem shopItem);
 
 const ShopItemDescriptor& GetShopItemDescriptor(ShopItem item);
