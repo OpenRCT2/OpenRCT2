@@ -1707,24 +1707,10 @@ void Staff::Update()
     }
 
     // Walking speed logic
-    uint32_t stepsToTake = Energy;
-    if (stepsToTake < 95 && State == PeepState::Queuing)
-        stepsToTake = 95;
-    if ((PeepFlags & PEEP_FLAGS_SLOW_WALK) && State != PeepState::Queuing)
-        stepsToTake /= 2;
-    if (IsActionWalking() && GetNextIsSloped())
-    {
-        stepsToTake /= 2;
-        if (State == PeepState::Queuing)
-            stepsToTake += stepsToTake / 2;
-    }
-    // Ensure guests make it across a level crossing in time
-    constexpr auto minStepsForCrossing = 55;
-    if (stepsToTake < minStepsForCrossing && IsOnPathBlockedByVehicle())
-        stepsToTake = minStepsForCrossing;
-
-    uint32_t carryCheck = StepProgress + stepsToTake;
+    const auto stepsToTake = GetStepsToTake();
+    const auto carryCheck = StepProgress + stepsToTake;
     StepProgress = carryCheck;
+
     if (carryCheck <= 255)
     {
         // No-op: Keep replay working for now, can be eliminate with a replay update.

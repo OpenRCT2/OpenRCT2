@@ -399,9 +399,9 @@ public: // Peep
     // TODO: Make these private again when done refactoring
 public: // Peep
     [[nodiscard]] bool CheckForPath();
-    bool ShouldWaitForLevelCrossing();
-    bool IsOnLevelCrossing();
-    bool IsOnPathBlockedByVehicle();
+    bool ShouldWaitForLevelCrossing() const;
+    bool IsOnLevelCrossing() const;
+    bool IsOnPathBlockedByVehicle() const;
     std::pair<uint8_t, TileElement*> PerformNextAction();
     [[nodiscard]] int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
     void SwitchNextAnimationType();
@@ -411,6 +411,7 @@ protected:
     void UpdateFalling();
     void Update1();
     void UpdatePicked();
+    uint32_t GetStepsToTake() const;
 };
 
 enum

@@ -300,7 +300,7 @@ bool Peep::CheckForPath()
     return false;
 }
 
-bool Peep::ShouldWaitForLevelCrossing()
+bool Peep::ShouldWaitForLevelCrossing() const
 {
     if (IsOnPathBlockedByVehicle())
     {
@@ -318,13 +318,13 @@ bool Peep::ShouldWaitForLevelCrossing()
     return false;
 }
 
-bool Peep::IsOnLevelCrossing()
+bool Peep::IsOnLevelCrossing() const
 {
     auto trackElement = MapGetTrackElementAt(GetLocation());
     return trackElement != nullptr;
 }
 
-bool Peep::IsOnPathBlockedByVehicle()
+bool Peep::IsOnPathBlockedByVehicle() const
 {
     auto curPos = TileCoordsXYZ(GetLocation());
     return FootpathIsBlockedByVehicle(curPos);
@@ -926,6 +926,27 @@ void Peep::UpdatePicked()
     {
         guest->InsertNewThought(PeepThoughtType::Help);
     }
+}
+
+uint32_t Peep::GetStepsToTake() const
+{
+    uint32_t stepsToTake = Energy;
+    if (stepsToTake < 95 && State == PeepState::Queuing)
+        stepsToTake = 95;
+    if ((PeepFlags & PEEP_FLAGS_SLOW_WALK) && State != PeepState::Queuing)
+        stepsToTake /= 2;
+    if (IsActionWalking() && GetNextIsSloped())
+    {
+        stepsToTake /= 2;
+        if (State == PeepState::Queuing)
+            stepsToTake += stepsToTake / 2;
+    }
+    // Ensure guests make it across a level crossing in time
+    constexpr auto minStepsForCrossing = 55;
+    if (stepsToTake < minStepsForCrossing && IsOnPathBlockedByVehicle())
+        stepsToTake = minStepsForCrossing;
+
+    return stepsToTake;
 }
 
 /**
