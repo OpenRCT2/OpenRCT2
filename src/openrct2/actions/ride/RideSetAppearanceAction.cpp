@@ -16,6 +16,7 @@
 #include "../../drawing/Drawing.h"
 #include "../../localisation/StringIds.h"
 #include "../../ride/Ride.h"
+#include "../../ride/RideManager.hpp"
 #include "../../ui/WindowManager.h"
 #include "../../world/Map.h"
 #include "../../world/Park.h"
@@ -104,6 +105,8 @@ namespace OpenRCT2::GameActions
         {
             case RideSetAppearanceType::trackColourMain:
                 ride->trackColours[_index].main = static_cast<Drawing::Colour>(_value);
+                if (_index == 0)
+                    propagateShopItemCommonColourValue(gameState, *ride, &RideSetAppearanceAction::updateRideShopItemColour);
                 GfxInvalidateScreen();
                 break;
             case RideSetAppearanceType::trackColourAdditional:
@@ -140,6 +143,8 @@ namespace OpenRCT2::GameActions
                 break;
             case RideSetAppearanceType::sellingItemColourIsRandom:
                 ride->flags.set(RideFlag::randomShopColours, static_cast<bool>(_value));
+                propagateShopItemCommonColourValue(
+                    gameState, *ride, &RideSetAppearanceAction::updateRideShopItemRandomColourFlag);
                 break;
         }
 
@@ -154,5 +159,44 @@ namespace OpenRCT2::GameActions
         }
 
         return res;
+    }
+
+    void RideSetAppearanceAction::updateRideShopItemColour(Ride& ride) const
+    {
+        ride.trackColours[0].main = static_cast<Drawing::Colour>(_value);
+    }
+
+    void RideSetAppearanceAction::updateRideShopItemRandomColourFlag(Ride& ride) const
+    {
+        ride.flags.set(RideFlag::randomShopColours, static_cast<bool>(_value));
+        auto windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateByNumber(WindowClass::ride, ride.id.ToUnderlying());
+    }
+
+    void RideSetAppearanceAction::propagateShopItemCommonColourValue(
+        GameState_t& gameState, Ride& changedRide, RideUpdater updater) const
+    {
+        // first check if the changed ride has a recolourable shop item
+        auto optChangedShopItem = changedRide.getRecolourableShopItem();
+        if (!optChangedShopItem.has_value())
+            return;
+
+        // next check if the shop item has the common colour flag set
+        auto changedShopItem = optChangedShopItem.value();
+        if (!ShopItemHasCommonColour(changedShopItem))
+            return;
+
+        // propagate changed value to other rides with the same shop item
+        for (auto& ride : RideManager(gameState))
+        {
+            if (ride.id == changedRide.id)
+                continue;
+
+            auto optShopItem = ride.getRecolourableShopItem();
+            if (!optShopItem.has_value() || changedShopItem != optShopItem.value())
+                continue;
+
+            std::invoke(updater, this, ride);
+        }
     }
 } // namespace OpenRCT2::GameActions

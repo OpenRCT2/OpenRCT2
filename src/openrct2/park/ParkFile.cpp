@@ -919,6 +919,10 @@ namespace OpenRCT2
                     cs.readWrite(park.staffMechanicColour);
                     cs.readWrite(park.staffSecurityColour);
                     cs.readWrite(park.samePriceThroughoutPark);
+                    if (version >= kSameColourThroughoutParkVersion)
+                    {
+                        cs.readWrite(park.sameColourThroughoutPark);
+                    }
 
                     // Finances
                     if (cs.getMode() == OrcaStream::Mode::reading)

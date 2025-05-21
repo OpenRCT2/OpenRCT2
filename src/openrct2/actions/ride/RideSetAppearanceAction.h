@@ -46,5 +46,12 @@ namespace OpenRCT2::GameActions
         void Serialise(DataSerialiser& stream) override;
         Result Query(GameState_t& gameState, Park::ParkData& park) const override;
         Result Execute(GameState_t& gameState, Park::ParkData& park) const override;
+
+    private:
+        void updateRideShopItemColour(Ride& ride) const;
+        void updateRideShopItemRandomColourFlag(Ride& ride) const;
+
+        typedef void (RideSetAppearanceAction::*RideUpdater)(Ride& ride) const;
+        void propagateShopItemCommonColourValue(GameState_t& gameState, Ride& ride, RideUpdater updater) const;
     };
 } // namespace OpenRCT2::GameActions
