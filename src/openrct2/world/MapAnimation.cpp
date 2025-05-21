@@ -472,8 +472,6 @@ void MapAnimation::CreateTemporary(const CoordsXYZ& coords, const TemporaryType 
 
 void MapAnimation::CreateAll()
 {
-    ClearAll();
-
     TileElementIterator it;
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))

@@ -1165,6 +1165,9 @@ struct RCT12MapAnimation
 };
 static_assert(sizeof(RCT12MapAnimation) == 6);
 
+static constexpr uint8_t kRCT12MapAnimationTypeOnRidePhoto = 6;
+static constexpr uint8_t kRCT12MapAnimationTypeLandEdgeDoor = 9;
+
 struct RCT12ResearchItem
 {
     // Bit 16 (0: scenery entry, 1: ride entry)

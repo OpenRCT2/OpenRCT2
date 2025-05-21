@@ -51,6 +51,7 @@ static std::unique_ptr<IContext> localStartGame(const std::string& parkPath)
     auto loadResult = importer->LoadSavedGame(parkPath.c_str(), false);
     context->GetObjectManager().LoadObjects(loadResult.RequiredObjects);
 
+    MapAnimation::ClearAll();
     // TODO: Have a separate GameState and exchange once loaded.
     auto& gameState = getGameState();
     importer->Import(gameState);
