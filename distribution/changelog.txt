@@ -5,6 +5,7 @@
 - Improved: [#24364] Improve the fallback vehicle sprites for Zero G Rolls, and allow small ones to be built without cheats if the fallbacks are available.
 - Improved: [#24368] Clicking the in-game update notication now leads to a more user-friendly download page.
 - Improved: [#24409] Steam installs of RCT Classic are now detected automatically.
+- Improved: [#24413] Better performance when moving the viewport on Windows and Linux platforms.
 - Improved: [#24417] Improve the fallback vehicle sprites for Dive Loops.
 - Change: [#24342] g2.dat is now split into g2.dat and fonts.dat.
 - Change: [#24362] The Windows installer now prevents installing to the same folder as RollerCoaster Tycoon 2 or Classic.
