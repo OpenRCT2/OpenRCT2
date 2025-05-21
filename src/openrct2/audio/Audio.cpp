@@ -35,7 +35,6 @@
 #include "AudioContext.h"
 #include "AudioMixer.h"
 #include "../interface/Window.h"
-#include "../interface/ViewportManager.h"
 
 #include <cmath>
 #include <memory>
@@ -161,10 +160,12 @@ namespace OpenRCT2::Audio
         uint8_t rotation = GetCurrentRotation();
         auto pos2 = Translate3DTo2DWithZ(rotation, location);
 
-        for (Viewport* viewport : ViewportManager::GetActiveViewports())
-        {
+        WindowVisitEach([&](WindowBase* w) {
+            if (w->viewport == nullptr)
+                return;
+            Viewport* viewport = w->viewport;
             if (!(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
-                continue;
+                return;
 
             int16_t vx = pos2.x - viewport->viewPos.x;
             params.pan = viewport->pos.x + viewport->zoom.ApplyInversedTo(vx);
@@ -176,10 +177,10 @@ namespace OpenRCT2::Audio
             if (!viewport->Contains(pos2) || params.volume < -10000)
             {
                 params.in_range = false;
-                return params;
+                // Early exit from WindowVisitEach by throwing an exception (or set a flag and return after loop)
+                throw 1;
             }
-        }
-
+        });
         return params;
     }
 
