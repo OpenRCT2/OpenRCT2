@@ -11,6 +11,7 @@
 
     #include "../DrawingEngineFactory.hpp"
     #include "ApplyPaletteShader.h"
+    #include "CopyRectShader.h"
     #include "DrawCommands.h"
     #include "DrawLineShader.h"
     #include "DrawRectShader.h"
@@ -208,9 +209,12 @@ private:
     std::unique_ptr<OpenGLDrawingContext> _drawingContext;
 
     std::unique_ptr<ApplyPaletteShader> _applyPaletteShader;
+    std::unique_ptr<CopyRectShader> _copyRectShader;
+
     std::unique_ptr<OpenGLFramebuffer> _screenFramebuffer;
     std::unique_ptr<OpenGLFramebuffer> _scaleFramebuffer;
     std::unique_ptr<OpenGLFramebuffer> _smoothScaleFramebuffer;
+    std::unique_ptr<OpenGLFramebuffer> _tempFramebuffer;
     OpenGLWeatherDrawer _weatherDrawer;
     InvalidationGrid _invalidationGrid;
 
@@ -236,9 +240,9 @@ public:
     void Initialise() override
     {
         OpenGLVersion requiredVersion = kOpenGLMinimumRequiredVersion;
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, requiredVersion.Major);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, requiredVersion.Minor);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
         _context = SDL_GL_CreateContext(_window);
         if (_context == nullptr)
@@ -257,6 +261,7 @@ public:
         _drawingContext->Initialise();
 
         _applyPaletteShader = std::make_unique<ApplyPaletteShader>();
+        _copyRectShader = std::make_unique<CopyRectShader>();
     }
 
     void Resize(uint32_t width, uint32_t height) override
@@ -266,6 +271,7 @@ public:
         ConfigureDirtyGrid();
 
         _drawingContext->Resize(width, height);
+        _tempFramebuffer = std::make_unique<OpenGLFramebuffer>(width, height);
 
         _drawingContext->StartNewDraw();
         _drawingContext->Clear(_mainRT, PaletteIndex::pi10);
@@ -414,23 +420,69 @@ public:
 
         _drawingContext->FlushCommandBuffers();
 
-        OpenGLFramebuffer& framebuffer = _drawingContext->GetFinalFramebuffer();
-        framebuffer.Bind();
-        framebuffer.GetPixels(_mainRT);
+        auto& framebuffer = _drawingContext->GetFinalFramebuffer();
 
-        // Originally 0x00683359
+        const int32_t texWidth = static_cast<int32_t>(framebuffer.GetWidth());
+        const int32_t texHeight = static_cast<int32_t>(framebuffer.GetHeight());
+
         // Adjust for move off screen
-        // NOTE: when zooming, there can be x, y, dx, dy combinations that go off the
-        // screen; hence the checks. This code should ultimately not be called when
-        // zooming because this function is specific to updating the screen on move
         int32_t lmargin = std::min(x - dx, 0);
-        int32_t rmargin = std::min(static_cast<int32_t>(_width) - (x - dx + width), 0);
+        int32_t rmargin = std::min(texWidth - (x - dx + width), 0);
         int32_t tmargin = std::min(y - dy, 0);
-        int32_t bmargin = std::min(static_cast<int32_t>(_height) - (y - dy + height), 0);
+        int32_t bmargin = std::min(texHeight - (y - dy + height), 0);
         x -= lmargin;
         y -= tmargin;
         width += lmargin + rmargin;
         height += tmargin + bmargin;
+
+        if (width <= 0 || height <= 0)
+            return;
+
+    #ifndef __MACOSX__
+
+        auto& tempBuffer = *_tempFramebuffer;
+
+        const auto flipYAxis = [texHeight](int32_t yPos, int32_t h) {
+            // Convert to OpenGL bottom-left origin coords.
+            return texHeight - yPos - h;
+        };
+
+        int32_t srcX = x - dx;
+        int32_t srcY = flipYAxis(y - dy, height);
+        int32_t destX = x;
+        int32_t destY = flipYAxis(y, height);
+
+        glCall(glDisable, GL_BLEND);
+        glCall(glDisable, GL_DEPTH_TEST);
+
+        // First pass: Copy from main to temp
+        GLuint mainTexture = framebuffer.GetTexture();
+        tempBuffer.BindDraw();
+        framebuffer.BindRead();
+        glCall(glViewport, 0, 0, width, height);
+        _copyRectShader->Use();
+        _copyRectShader->SetTexture(mainTexture);
+        _copyRectShader->SetSourceRect(srcX, srcY, width, height);
+        _copyRectShader->SetTextureSize(texWidth, texHeight);
+        _copyRectShader->Draw();
+
+        // Second pass: Copy from temp to main
+        GLuint tempTexture = tempBuffer.GetTexture();
+        framebuffer.BindDraw();
+        tempBuffer.BindRead();
+        glCall(glViewport, destX, destY, width, height);
+        _copyRectShader->Use();
+        _copyRectShader->SetTexture(tempTexture);
+        _copyRectShader->SetSourceRect(0, 0, width, height);
+        _copyRectShader->SetTextureSize(texWidth, texHeight);
+        _copyRectShader->Draw();
+
+    #else
+
+        // Slow but functional path for MacOS, OpenGL is deprecated on MacOS
+        // and there seems to be issues that aren't present on other platforms.
+
+        framebuffer.GetPixels(_mainRT);
 
         int32_t stride = _mainRT.LineStride();
         uint8_t* to = _mainRT.bits + y * stride + x;
@@ -453,6 +505,8 @@ public:
         }
 
         framebuffer.SetPixels(_mainRT);
+
+    #endif
     }
 
     IDrawingContext* GetDrawingContext() override

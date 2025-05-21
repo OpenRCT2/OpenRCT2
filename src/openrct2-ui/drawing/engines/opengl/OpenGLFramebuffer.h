@@ -42,6 +42,10 @@ namespace OpenRCT2::Ui
         {
             return _height;
         }
+        GLuint GetFBO() const
+        {
+            return _id;
+        }
         GLuint GetTexture() const
         {
             return _texture;

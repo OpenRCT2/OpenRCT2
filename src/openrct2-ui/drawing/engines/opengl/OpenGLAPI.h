@@ -44,6 +44,13 @@
     #define glGetIntegerv __static__glGetIntegerv
     #define glGetTexImage __static__glGetTexImage
     #define glTexSubImage2D __static__glTexSubImage2D
+    #define glDrawBuffers __static__glDrawBuffers
+    #define glCheckFramebufferStatus __static__glCheckFramebufferStatus
+    #define glClearDepth __static__glClearDepth
+    #define glReadBuffer __static__glReadBuffer
+    #define glDrawBuffer __static__glDrawBuffer
+
+// END [Do not define 1.1 function signatures]
 
 #endif
 
@@ -81,6 +88,11 @@
     #undef glGetIntegerv
     #undef glGetTexImage
     #undef glTexSubImage2D
+    #undef glDrawBuffers
+    #undef glCheckFramebufferStatus
+    #undef glClearDepth
+    #undef glReadBuffer
+    #undef glDrawBuffer
 
 // 1.1 function signatures
 using PFNGLBEGINPROC = void(APIENTRYP)(GLenum mode);
@@ -116,6 +128,11 @@ using PFNGLGETTEXIMAGEPROC = void(APIENTRYP)(GLenum target, GLint level, GLenum 
 using PFNGLTEXSUBIMAGE2D = void(APIENTRYP)(
     GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type,
     const GLvoid* pixels);
+using PFNGLDRAWBUFFERSPROC = void(APIENTRYP)(GLsizei n, const GLenum* bufs);
+using PFNGLCHECKFRAMEBUFFERSTATUSPROC = GLenum(APIENTRYP)(GLenum target);
+using PFNGLCLEARDEPTHPROC = void(APIENTRYP)(GLdouble depth);
+using PFNGLREADBUFFERPROC = void(APIENTRYP)(GLenum mode);
+using PFNGLDRAWBUFFERPROC = void(APIENTRYP)(GLenum mode);
 
     #define OPENGL_PROC(TYPE, PROC) extern TYPE PROC;
     #include "OpenGLAPIProc.h"
