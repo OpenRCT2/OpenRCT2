@@ -166,45 +166,4 @@ namespace OpenRCT2
     {
         return getTitleBarCurrentHeight() - kTitleHeightNormal;
     }
-
-    bool WindowBase::IsVisible() const
-    {
-        return isVisible;
-    }
-
-    void WindowBase::UpdateVisibility()
-    {
-        if (viewport == nullptr)
-        {
-            isVisible = true;
-            return;
-        }
-        if (classification == WindowClass::MainWindow)
-        {
-            isVisible = true;
-            viewport->isVisible = true;
-            return;
-        }
-
-        // start from the window above the current
-        auto itPos = WindowGetIterator(this);
-        for (auto it = std::next(itPos); it != g_window_list.end(); it++)
-        {
-            const auto& other = *(*it);
-            if (other.flags & WF_DEAD)
-                continue;
-
-            if (other.windowPos.x <= windowPos.x && other.windowPos.y <= windowPos.y
-                && other.windowPos.x + other.width >= windowPos.x + width
-                && other.windowPos.y + other.height >= windowPos.y + height)
-            {
-                isVisible = false;
-                viewport->isVisible = false;
-                return;
-            }
-        }
-
-        isVisible = true;
-        viewport->isVisible = true;
-    }
 } // namespace OpenRCT2

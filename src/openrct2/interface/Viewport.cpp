@@ -203,7 +203,7 @@ namespace OpenRCT2
         if (Config::Get().general.AlwaysShowGridlines)
             viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
         w->viewport = viewport;
-        viewport->isVisible = w->IsVisible();
+        viewport->isVisible = w->isVisible;
 
         CoordsXYZ centrePos = focus.GetPos();
         w->viewport_target_sprite = std::visit(

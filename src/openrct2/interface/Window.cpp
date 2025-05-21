@@ -115,11 +115,48 @@ static constexpr float kWindowScrollLocations[][2] = {
     void WindowUpdateAllViewports()
     {
         WindowVisitEach([&](WindowBase* w) {
-            if (w->viewport != nullptr && w->IsVisible())
+            if (w->viewport != nullptr && w->isVisible)
             {
                 ViewportUpdatePosition(w);
             }
         });
+    }
+
+    static void WindowUpdateVisibilities()
+    {
+        const auto itEnd = g_window_list.end();
+        for (auto it = g_window_list.begin(); it != itEnd; ++it)
+        {
+            auto& window = *(*it);
+            if (window.viewport == nullptr)
+            {
+                window.isVisible = true;
+                continue;
+            }
+            if (window.classification == WindowClass::MainWindow)
+            {
+                window.isVisible = true;
+                window.viewport->isVisible = true;
+                continue;
+            }
+            window.isVisible = true;
+            window.viewport->isVisible = true;
+            for (auto itOther = std::next(it); itOther != itEnd; ++itOther)
+            {
+                const auto& otherWindow = *(*itOther);
+                if (otherWindow.flags & WF_DEAD)
+                    continue;
+
+                if (otherWindow.windowPos.x <= window.windowPos.x && otherWindow.windowPos.y <= window.windowPos.y
+                    && otherWindow.windowPos.x + otherWindow.width >= window.windowPos.x + window.width
+                    && otherWindow.windowPos.y + otherWindow.height >= window.windowPos.y + window.height)
+                {
+                    window.isVisible = false;
+                    window.viewport->isVisible = false;
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -156,7 +193,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         auto windowManager = Ui::GetWindowManager();
         windowManager->UpdateMouseWheel();
 
-        WindowVisitEach([](WindowBase* const w) { w->UpdateVisibility(); });
+        WindowUpdateVisibilities();
     }
 
     void WindowNotifyLanguageChange()
@@ -498,7 +535,7 @@ static constexpr float kWindowScrollLocations[][2] = {
      */
     void WindowDraw(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
-        if (!w.IsVisible())
+        if (!w.isVisible)
             return;
 
         // Divide the draws up for only the visible regions of the window recursively
@@ -571,7 +608,7 @@ static constexpr float kWindowScrollLocations[][2] = {
             auto* v = (*it).get();
             if (v->flags & WF_DEAD)
                 continue;
-            if ((&w == v || (v->flags & WF_TRANSPARENT)) && v->IsVisible())
+            if ((&w == v || (v->flags & WF_TRANSPARENT)) && v->isVisible)
             {
                 WindowDrawSingle(rt, *v, left, top, right, bottom);
             }

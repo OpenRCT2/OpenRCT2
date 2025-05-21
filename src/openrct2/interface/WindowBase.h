@@ -106,11 +106,7 @@ namespace OpenRCT2
         ScreenCoordsXY savedViewPos{};
         WindowClass classification{};
         ColourWithFlags colours[6]{};
-
-    private:
         bool isVisible = true;
-
-    public:
         EntityId viewport_smart_follow_sprite{ EntityId::GetNull() }; // Handles setting viewport target sprite etc
 
         void SetViewportLocation(const CoordsXYZ& coords);
@@ -129,9 +125,6 @@ namespace OpenRCT2
         virtual ~WindowBase() = default;
 
         WindowBase& operator=(const WindowBase&) = delete;
-
-        bool IsVisible() const;
-        void UpdateVisibility();
 
         constexpr bool canBeResized() const
         {
