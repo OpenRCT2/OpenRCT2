@@ -7098,7 +7098,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     if (trackType == TrackElemType::OnRidePhoto)
     {
         tileElement->AsTrack()->SetPhotoTimeout();
-        MapAnimation::Create(TrackLocation);
+        MapAnimation::CreateTemporary(TrackLocation, MapAnimation::TemporaryType::onRidePhoto);
     }
     if (trackType == TrackElemType::RotationControlToggle)
     {

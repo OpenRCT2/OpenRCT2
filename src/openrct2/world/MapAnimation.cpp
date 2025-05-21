@@ -40,6 +40,18 @@
 
 using namespace OpenRCT2;
 
+struct TemporaryMapAnimation
+{
+    CoordsXYZ location{};
+    MapAnimation::TemporaryType type{};
+
+    bool operator<(const TemporaryMapAnimation& rhs) const
+    {
+        return std::tie(location.y, location.x, type, location.z)
+            < std::tie(rhs.location.y, rhs.location.x, rhs.type, rhs.location.z);
+    }
+};
+
 struct TileCoordsXYCmp
 {
     constexpr bool operator()(const TileCoordsXY& lhs, const TileCoordsXY& rhs) const noexcept
@@ -51,6 +63,8 @@ struct TileCoordsXYCmp
 
 // A list of tile coordinates which contains animated tile elements.
 static std::set<TileCoordsXY, TileCoordsXYCmp> _mapAnimations;
+
+static std::set<TemporaryMapAnimation> _temporaryMapAnimations;
 
 static bool UpdateEntranceAnimation(const EntranceElement& entrance, const CoordsXYZ& loc, const int32_t baseZ)
 {
@@ -136,7 +150,6 @@ static bool UpdateSmallSceneryAnimation(const SmallSceneryElement& scenery, cons
 
 static bool UpdateTrackAnimation(TrackElement& track, const CoordsXYZ& loc, const int32_t baseZ)
 {
-    const auto clearZ = track.GetClearanceZ();
     switch (track.GetTrackType())
     {
         case TrackElemType::Waterfall:
@@ -149,13 +162,6 @@ static bool UpdateTrackAnimation(TrackElement& track, const CoordsXYZ& loc, cons
         case TrackElemType::SpinningTunnel:
             MapInvalidateTileZoom1({ loc, baseZ + 14, baseZ + 32 });
             return true;
-        case TrackElemType::OnRidePhoto:
-            if (track.IsTakingPhoto())
-            {
-                MapInvalidateTileZoom1({ loc, baseZ, clearZ });
-                track.DecrementPhotoTimeout();
-                return true;
-            }
         default:
             break;
     }
@@ -281,6 +287,46 @@ static bool UpdateTileAnimations(const TileCoordsXY& coords)
     return hasAnimations;
 }
 
+static bool UpdateOnRidePhotoAnimation(TrackElement& track, const CoordsXYZ& coords)
+{
+    if (track.IsTakingPhoto())
+    {
+        track.DecrementPhotoTimeout();
+        MapInvalidateTileZoom1({ coords, track.GetClearanceZ() });
+        return true;
+    }
+    return false;
+}
+
+static bool UpdateTemporaryAnimation(const TemporaryMapAnimation& animation)
+{
+    const TileCoordsXYZ tileCoords{ animation.location };
+    TileElement* tileElement = MapGetFirstElementAt(tileCoords);
+    if (tileElement == nullptr)
+    {
+        return true;
+    }
+
+    bool hasAnimations = false;
+    do
+    {
+        switch (animation.type)
+        {
+            case MapAnimation::TemporaryType::onRidePhoto:
+            {
+                if (tileElement->GetType() == TileElementType::Track && tileElement->BaseHeight == tileCoords.z
+                    && tileElement->AsTrack()->GetTrackType() == TrackElemType::OnRidePhoto)
+                {
+                    hasAnimations |= UpdateOnRidePhotoAnimation(*tileElement->AsTrack(), animation.location);
+                }
+                break;
+            }
+        }
+    } while (!(tileElement++)->IsLastForTile());
+
+    return hasAnimations;
+}
+
 static bool IsElementAnimated(const TileElementBase& element, const bool skipDoors)
 {
     switch (element.GetType())
@@ -355,7 +401,6 @@ static bool IsElementAnimated(const TileElementBase& element, const bool skipDoo
                 case TrackElemType::Rapids:
                 case TrackElemType::Whirlpool:
                 case TrackElemType::SpinningTunnel:
-                case TrackElemType::OnRidePhoto:
                     return true;
                 default:
                     break;
@@ -374,6 +419,11 @@ void MapAnimation::Create(const CoordsXY coords)
     _mapAnimations.insert(TileCoordsXY(coords));
 }
 
+void MapAnimation::CreateTemporary(const CoordsXYZ& coords, const TemporaryType type)
+{
+    _temporaryMapAnimations.insert(TemporaryMapAnimation{ coords, type });
+}
+
 void MapAnimation::CreateAll()
 {
     ClearAll();
@@ -389,27 +439,35 @@ void MapAnimation::CreateAll()
     }
 }
 
+template<auto TUpdateFunction>
+static void UpdateAll(auto& mapAnimations)
+{
+    auto it = mapAnimations.begin();
+    while (it != mapAnimations.end())
+    {
+        if (TUpdateFunction(*it))
+        {
+            ++it;
+        }
+        else
+        {
+            it = mapAnimations.erase(it);
+        }
+    }
+}
+
 void MapAnimation::UpdateAll()
 {
     PROFILED_FUNCTION();
 
-    auto it = _mapAnimations.begin();
-    while (it != _mapAnimations.end())
-    {
-        if (UpdateTileAnimations(*it))
-        {
-            ++it; // Tile was updated, keep it
-        }
-        else
-        {
-            it = _mapAnimations.erase(it); // No updates, remove tile
-        }
-    }
+    UpdateAll<UpdateTileAnimations>(_mapAnimations);
+    UpdateAll<UpdateTemporaryAnimation>(_temporaryMapAnimations);
 }
 
 void MapAnimation::ClearAll()
 {
     _mapAnimations.clear();
+    _temporaryMapAnimations.clear();
 }
 
 void MapAnimation::ShiftAll(const CoordsXY amount)
@@ -423,4 +481,11 @@ void MapAnimation::ShiftAll(const CoordsXY amount)
         newMapAnimations.insert(a + TileCoordsXY(amount));
     }
     _mapAnimations = std::move(newMapAnimations);
+
+    std::set<TemporaryMapAnimation> newTemporaryMapAnimations;
+    for (const auto& a : _temporaryMapAnimations)
+    {
+        newTemporaryMapAnimations.insert(TemporaryMapAnimation{ a.location + CoordsXYZ(amount, 0), a.type });
+    }
+    _temporaryMapAnimations = std::move(newTemporaryMapAnimations);
 }
