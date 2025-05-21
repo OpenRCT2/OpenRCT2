@@ -1706,11 +1706,6 @@ void Staff::Update()
         PeepFlags &= ~PEEP_FLAGS_ANIMATION_FROZEN;
     }
 
-    auto* guest = As<Guest>();
-    if (guest != nullptr)
-    {
-    }
-
     // Walking speed logic
     uint32_t stepsToTake = Energy;
     if (stepsToTake < 95 && State == PeepState::Queuing)
@@ -1732,10 +1727,7 @@ void Staff::Update()
     StepProgress = carryCheck;
     if (carryCheck <= 255)
     {
-        if (guest != nullptr)
-        {
-            guest->UpdateEasterEggInteractions();
-        }
+        // No-op: Keep replay working for now, can be eliminate with a replay update.
     }
     else
     {
@@ -1755,25 +1747,8 @@ void Staff::Update()
                 UpdatePicked();
                 break;
             default:
-            {
-                if (guest != nullptr)
-                {
-                    guest->UpdateGuest();
-                }
-                else
-                {
-                    auto* staff = As<Staff>();
-                    if (staff != nullptr)
-                    {
-                        staff->UpdateStaff(stepsToTake);
-                    }
-                    else
-                    {
-                        assert(false);
-                    }
-                }
+                UpdateStaff(stepsToTake);
                 break;
-            }
         }
     }
 }
