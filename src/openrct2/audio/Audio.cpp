@@ -34,7 +34,8 @@
 #include "AudioChannel.h"
 #include "AudioContext.h"
 #include "AudioMixer.h"
-#include "../interface/Window.h"
+#include "../interface/Window.hpp"
+
 
 #include <cmath>
 #include <memory>
