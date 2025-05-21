@@ -1732,48 +1732,38 @@ void Staff::Update()
             case PeepState::Picked:
                 UpdatePicked();
                 break;
+            case PeepState::Patrolling:
+                UpdatePatrolling();
+                break;
+            case PeepState::Mowing:
+                UpdateMowing();
+                break;
+            case PeepState::Sweeping:
+                UpdateSweeping();
+                break;
+            case PeepState::Answering:
+                UpdateAnswering();
+                break;
+            case PeepState::Fixing:
+                UpdateFixing(stepsToTake);
+                break;
+            case PeepState::Inspecting:
+                UpdateFixing(stepsToTake);
+                break;
+            case PeepState::EmptyingBin:
+                UpdateEmptyingBin();
+                break;
+            case PeepState::Watering:
+                UpdateWatering();
+                break;
+            case PeepState::HeadingToInspection:
+                UpdateHeadingToInspect();
+                break;
             default:
-                UpdateStaff(stepsToTake);
+                // TODO reset to default state
+                assert(false);
                 break;
         }
-    }
-}
-
-void Staff::UpdateStaff(uint32_t stepsToTake)
-{
-    switch (State)
-    {
-        case PeepState::Patrolling:
-            UpdatePatrolling();
-            break;
-        case PeepState::Mowing:
-            UpdateMowing();
-            break;
-        case PeepState::Sweeping:
-            UpdateSweeping();
-            break;
-        case PeepState::Answering:
-            UpdateAnswering();
-            break;
-        case PeepState::Fixing:
-            UpdateFixing(stepsToTake);
-            break;
-        case PeepState::Inspecting:
-            UpdateFixing(stepsToTake);
-            break;
-        case PeepState::EmptyingBin:
-            UpdateEmptyingBin();
-            break;
-        case PeepState::Watering:
-            UpdateWatering();
-            break;
-        case PeepState::HeadingToInspection:
-            UpdateHeadingToInspect();
-            break;
-        default:
-            // TODO reset to default state
-            assert(false);
-            break;
     }
 }
 

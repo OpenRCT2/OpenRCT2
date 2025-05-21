@@ -5324,54 +5324,44 @@ void Guest::Update()
             case PeepState::Picked:
                 UpdatePicked();
                 break;
+            case PeepState::QueuingFront:
+                UpdateRide();
+                break;
+            case PeepState::LeavingRide:
+                UpdateRide();
+                break;
+            case PeepState::Walking:
+                UpdateWalking();
+                break;
+            case PeepState::Queuing:
+                UpdateQueuing();
+                break;
+            case PeepState::EnteringRide:
+                UpdateRide();
+                break;
+            case PeepState::Sitting:
+                UpdateSitting();
+                break;
+            case PeepState::EnteringPark:
+                UpdateEnteringPark();
+                break;
+            case PeepState::LeavingPark:
+                UpdateLeavingPark();
+                break;
+            case PeepState::Buying:
+                UpdateBuying();
+                break;
+            case PeepState::Watching:
+                UpdateWatching();
+                break;
+            case PeepState::UsingBin:
+                UpdateUsingBin();
+                break;
             default:
-                UpdateGuest();
+                // TODO reset to default state
+                assert(false);
                 break;
         }
-    }
-}
-
-void Guest::UpdateGuest()
-{
-    switch (State)
-    {
-        case PeepState::QueuingFront:
-            UpdateRide();
-            break;
-        case PeepState::LeavingRide:
-            UpdateRide();
-            break;
-        case PeepState::Walking:
-            UpdateWalking();
-            break;
-        case PeepState::Queuing:
-            UpdateQueuing();
-            break;
-        case PeepState::EnteringRide:
-            UpdateRide();
-            break;
-        case PeepState::Sitting:
-            UpdateSitting();
-            break;
-        case PeepState::EnteringPark:
-            UpdateEnteringPark();
-            break;
-        case PeepState::LeavingPark:
-            UpdateLeavingPark();
-            break;
-        case PeepState::Buying:
-            UpdateBuying();
-            break;
-        case PeepState::Watching:
-            UpdateWatching();
-            break;
-        case PeepState::UsingBin:
-            UpdateUsingBin();
-            break;
-        default:
-            // TODO reset to default state
-            assert(false);
-            break;
     }
 }
 
