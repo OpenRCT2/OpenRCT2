@@ -148,7 +148,6 @@ std::vector<uint8_t> SmallSceneryObject::ReadFrameOffsets(OpenRCT2::IStream* str
     {
         data.push_back(frameOffset);
     }
-    data.push_back(frameOffset);
     return data;
 }
 
