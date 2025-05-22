@@ -2185,6 +2185,14 @@ namespace OpenRCT2::Ui::Windows
             WindowSetResize(*this, kSizeRides, kSizeRides);
         }
 
+        static std::string GetRideString(RideId rideId)
+        {
+            const auto* ride = GetRide(rideId);
+            if (ride == nullptr)
+                return "";
+            return ride->getName();
+        }
+
         /**
          *
          *  rct2: 0x00672544
@@ -2205,6 +2213,11 @@ namespace OpenRCT2::Ui::Windows
                     _rideableRides.push_back(currentRide.id);
                 }
             }
+
+            // Sort the rides alphabetically
+            std::stable_sort(_rideableRides.begin(), _rideableRides.end(), [](const RideId& a, const RideId& b) {
+                return String::compare(GetRideString(a), GetRideString(b), false) < 0;
+            });
 
             if (oldSize != _rideableRides.size())
             {
