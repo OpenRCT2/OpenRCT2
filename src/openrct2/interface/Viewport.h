@@ -14,6 +14,7 @@
 
 #include <limits>
 #include <optional>
+#include <sfl/static_vector.hpp>
 #include <vector>
 
 struct PaintSession;
@@ -64,6 +65,8 @@ namespace OpenRCT2
         {
             return (sPos.x >= pos.x && sPos.x < pos.x + width && sPos.y >= pos.y && sPos.y < pos.y + height);
         }
+
+        [[nodiscard]] bool ContainsTile(const TileCoordsXY coords) const noexcept;
 
         [[nodiscard]] ScreenCoordsXY ScreenToViewportCoord(const ScreenCoordsXY& screenCoord) const;
 
@@ -227,4 +230,8 @@ namespace OpenRCT2
     void ViewportSetSavedView();
 
     VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlags);
+
+    using ViewportList = sfl::static_vector<Viewport*, kMaxViewportCount>;
+
+    ViewportList GetVisibleViewports() noexcept;
 } // namespace OpenRCT2

@@ -914,7 +914,7 @@ void FootpathChainRideQueue(
             lastPathElement->AsPath()->SetHasQueueBanner(true);
             lastPathElement->AsPath()->SetQueueBannerDirection(lastPathDirection); // set the ride sign direction
 
-            MapAnimation::Create(lastPath);
+            MapAnimation::MarkTileForInvalidation(lastPath);
         }
     }
 }

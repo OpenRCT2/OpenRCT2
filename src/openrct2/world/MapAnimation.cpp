@@ -36,6 +36,7 @@
 #include "tile_element/WallElement.h"
 
 #include <algorithm>
+#include <map>
 #include <set>
 
 using namespace OpenRCT2;
@@ -54,6 +55,12 @@ struct TemporaryMapAnimation
     }
 };
 
+enum class UpdateType : uint8_t
+{
+    invalidate,
+    update,
+};
+
 struct TileCoordsXYCmp
 {
     constexpr bool operator()(const TileCoordsXY& lhs, const TileCoordsXY& rhs) const noexcept
@@ -64,11 +71,11 @@ struct TileCoordsXYCmp
 };
 
 // A list of tile coordinates which contains animated tile elements.
-static std::set<TileCoordsXY, TileCoordsXYCmp> _mapAnimations;
+static std::map<TileCoordsXY, UpdateType, TileCoordsXYCmp> _mapAnimations;
 
 static std::set<TemporaryMapAnimation> _temporaryMapAnimations;
 
-static bool UpdateEntranceAnimation(const EntranceElement& entrance, const CoordsXYZ& loc, const int32_t baseZ)
+static bool InvalidateEntranceAnimation(const EntranceElement& entrance, const CoordsXYZ& loc, const int32_t baseZ)
 {
     if (entrance.GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
     {
@@ -96,7 +103,7 @@ static bool UpdateEntranceAnimation(const EntranceElement& entrance, const Coord
     return false;
 }
 
-static bool UpdatePathAnimation(const PathElement& path, const CoordsXYZ& loc, const int32_t baseZ)
+static bool InvalidatePathAnimation(const PathElement& path, const CoordsXYZ& loc, const int32_t baseZ)
 {
     if (path.IsQueue() && path.HasQueueBanner())
     {
@@ -110,18 +117,20 @@ static bool UpdatePathAnimation(const PathElement& path, const CoordsXYZ& loc, c
     return false;
 }
 
-static bool UpdateSmallSceneryAnimation(const SmallSceneryElement& scenery, const CoordsXYZ& loc, const int32_t baseZ)
+static std::optional<UpdateType> UpdateSmallSceneryAnimation(
+    const SmallSceneryElement& scenery, const CoordsXYZ& loc, const int32_t baseZ)
 {
     const auto entry = scenery.GetEntry();
     if (entry == nullptr)
     {
-        return false;
+        return std::nullopt;
     }
 
     if (entry->HasFlag(
             SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 | SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 | SMALL_SCENERY_FLAG_SWAMP_GOO
             | SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS | SMALL_SCENERY_FLAG_IS_CLOCK))
     {
+        auto animationType = UpdateType ::invalidate;
         // Don't apply anything to peeps when the scenery is a ghost.
         if (!scenery.IsGhost())
         {
@@ -140,17 +149,18 @@ static bool UpdateSmallSceneryAnimation(const SmallSceneryElement& scenery, cons
                     peep->Invalidate();
                     break;
                 }
+                animationType = UpdateType ::update;
             }
         }
         const auto clearZ = scenery.GetClearanceZ();
         ViewportsInvalidate(loc.x, loc.y, baseZ, clearZ, kMaxZoom);
-        return true;
+        return std::optional(animationType);
     }
 
-    return false;
+    return std::nullopt;
 }
 
-static bool UpdateTrackAnimation(TrackElement& track, const CoordsXYZ& loc, const int32_t baseZ)
+static bool InvalidateTrackAnimation(TrackElement& track, const CoordsXYZ& loc, const int32_t baseZ)
 {
     switch (track.GetTrackType())
     {
@@ -171,7 +181,7 @@ static bool UpdateTrackAnimation(TrackElement& track, const CoordsXYZ& loc, cons
     return false;
 }
 
-static bool UpdateLargeSceneryAnimation(const LargeSceneryElement& scenery, const CoordsXYZ& loc, const int32_t baseZ)
+static bool InvalidateLargeSceneryAnimation(const LargeSceneryElement& scenery, const CoordsXYZ& loc, const int32_t baseZ)
 {
     const auto entry = scenery.GetEntry();
     if (entry != nullptr && (entry->flags & LARGE_SCENERY_FLAG_ANIMATED))
@@ -183,19 +193,19 @@ static bool UpdateLargeSceneryAnimation(const LargeSceneryElement& scenery, cons
     return false;
 }
 
-static bool UpdateWallAnimation(WallElement& wall, const CoordsXYZ& loc, const int32_t baseZ)
+static std::optional<UpdateType> UpdateWallAnimation(WallElement& wall, const CoordsXYZ& loc, const int32_t baseZ)
 {
     const auto entry = wall.GetEntry();
     if (entry == nullptr)
     {
-        return false;
+        return std::nullopt;
     }
 
     if (entry->flags & WALL_SCENERY_IS_DOOR && wall.IsAnimating())
     {
         if (getGameState().currentTicks & 1)
         {
-            return true;
+            return std::optional(UpdateType::update);
         }
 
         bool removeAnim = true;
@@ -228,32 +238,34 @@ static bool UpdateWallAnimation(WallElement& wall, const CoordsXYZ& loc, const i
             }
         }
 
-        return !removeAnim;
+        return removeAnim ? std::nullopt : std::optional(UpdateType::update);
     }
     else if ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != kScrollingModeNone)
     {
         ViewportsInvalidate(loc.x, loc.y, baseZ, baseZ + 16, kMaxZoom);
-        return true;
+        return std::optional(UpdateType::invalidate);
     }
 
-    return false;
+    return std::nullopt;
 }
 
-static bool UpdateBannerAnimation([[maybe_unused]] const BannerElement& banner, const CoordsXYZ& loc, const int32_t baseZ)
+static bool InvalidateBannerAnimation([[maybe_unused]] const BannerElement& banner, const CoordsXYZ& loc, const int32_t baseZ)
 {
     ViewportsInvalidate(loc.x, loc.y, baseZ, baseZ + 16, kMaxZoom);
     return true;
 }
 
-static bool UpdateTileAnimations(const TileCoordsXY& coords)
+template<bool noInvalidations>
+static std::optional<UpdateType> UpdateTileAnimations(const TileCoordsXY& coords)
 {
     auto tileElement = MapGetFirstElementAt(coords);
     if (tileElement == nullptr)
     {
-        return false;
+        return std::nullopt;
     }
 
     bool hasAnimations = false;
+    auto animationType = UpdateType ::invalidate;
     do
     {
         const auto baseZ = tileElement->GetBaseZ();
@@ -262,32 +274,67 @@ static bool UpdateTileAnimations(const TileCoordsXY& coords)
         switch (tileElement->GetType())
         {
             case TileElementType::Entrance:
-                hasAnimations |= UpdateEntranceAnimation(*tileElement->AsEntrance(), loc, baseZ);
+                if constexpr (!noInvalidations)
+                {
+                    hasAnimations |= InvalidateEntranceAnimation(*tileElement->AsEntrance(), loc, baseZ);
+                }
                 break;
             case TileElementType::Path:
-                hasAnimations |= UpdatePathAnimation(*tileElement->AsPath(), loc, baseZ);
+                if constexpr (!noInvalidations)
+                {
+                    hasAnimations |= InvalidatePathAnimation(*tileElement->AsPath(), loc, baseZ);
+                }
                 break;
             case TileElementType::SmallScenery:
-                hasAnimations |= UpdateSmallSceneryAnimation(*tileElement->AsSmallScenery(), loc, baseZ);
+            {
+                const auto result = UpdateSmallSceneryAnimation(*tileElement->AsSmallScenery(), loc, baseZ);
+                if (result)
+                {
+                    hasAnimations |= true;
+                    if (result.value() == UpdateType::update)
+                    {
+                        animationType = UpdateType::update;
+                    }
+                }
                 break;
+            }
             case TileElementType::Track:
-                hasAnimations |= UpdateTrackAnimation(*tileElement->AsTrack(), loc, baseZ);
+                if constexpr (!noInvalidations)
+                {
+                    hasAnimations |= InvalidateTrackAnimation(*tileElement->AsTrack(), loc, baseZ);
+                }
                 break;
             case TileElementType::Banner:
-                hasAnimations |= UpdateBannerAnimation(*tileElement->AsBanner(), loc, baseZ);
+                if constexpr (!noInvalidations)
+                {
+                    hasAnimations |= InvalidateBannerAnimation(*tileElement->AsBanner(), loc, baseZ);
+                }
                 break;
             case TileElementType::LargeScenery:
-                hasAnimations |= UpdateLargeSceneryAnimation(*tileElement->AsLargeScenery(), loc, baseZ);
+                if constexpr (!noInvalidations)
+                {
+                    hasAnimations |= InvalidateLargeSceneryAnimation(*tileElement->AsLargeScenery(), loc, baseZ);
+                }
                 break;
             case TileElementType::Wall:
-                hasAnimations |= UpdateWallAnimation(*tileElement->AsWall(), loc, baseZ);
+            {
+                const auto result = UpdateWallAnimation(*tileElement->AsWall(), loc, baseZ);
+                if (result)
+                {
+                    hasAnimations |= true;
+                    if (result.value() == UpdateType::update)
+                    {
+                        animationType = UpdateType::update;
+                    }
+                }
                 break;
+            }
             default:
                 break;
         }
     } while (!(tileElement++)->IsLastForTile());
 
-    return hasAnimations;
+    return hasAnimations ? std::optional(animationType) : std::nullopt;
 }
 
 static bool UpdateOnRidePhotoAnimation(TrackElement& track, const CoordsXYZ& coords)
@@ -375,12 +422,12 @@ static bool UpdateTemporaryAnimation(const TemporaryMapAnimation& animation)
     return isAnimating;
 }
 
-static bool IsElementAnimated(const TileElementBase& element)
+static std::optional<UpdateType> IsElementAnimated(const TileElementBase& element)
 {
     switch (element.GetType())
     {
         case TileElementType::Banner:
-            return true;
+            return std::optional(UpdateType::invalidate);
         case TileElementType::Wall:
         {
             const auto wall = element.AsWall();
@@ -389,11 +436,11 @@ static bool IsElementAnimated(const TileElementBase& element)
             {
                 if ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != kScrollingModeNone)
                 {
-                    return true;
+                    return std::optional(UpdateType::invalidate);
                 }
                 if (entry->flags & WALL_SCENERY_IS_DOOR && wall->IsAnimating())
                 {
-                    return true;
+                    return std::optional(UpdateType::update);
                 }
             }
             break;
@@ -404,7 +451,14 @@ static bool IsElementAnimated(const TileElementBase& element)
             const auto entry = scenery->GetEntry();
             if (entry != nullptr && entry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
             {
-                return true;
+                if (entry->HasFlag(SMALL_SCENERY_FLAG_IS_CLOCK))
+                {
+                    return std::optional(UpdateType::update);
+                }
+                else
+                {
+                    return std::optional(UpdateType::invalidate);
+                }
             }
             break;
         }
@@ -414,7 +468,7 @@ static bool IsElementAnimated(const TileElementBase& element)
             const auto entry = scenery->GetEntry();
             if (entry != nullptr && (entry->flags & LARGE_SCENERY_FLAG_ANIMATED))
             {
-                return true;
+                return std::optional(UpdateType::invalidate);
             }
             break;
         }
@@ -423,7 +477,7 @@ static bool IsElementAnimated(const TileElementBase& element)
             const auto path = element.AsPath();
             if (path->HasQueueBanner())
             {
-                return true;
+                return std::optional(UpdateType::invalidate);
             }
             break;
         }
@@ -432,11 +486,11 @@ static bool IsElementAnimated(const TileElementBase& element)
             const auto entrance = element.AsEntrance();
             if (entrance->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE && entrance->GetSequenceIndex() == 0)
             {
-                return true;
+                return std::optional(UpdateType::invalidate);
             }
             else if (entrance->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
             {
-                return true;
+                return std::optional(UpdateType::invalidate);
             }
             break;
         }
@@ -449,7 +503,7 @@ static bool IsElementAnimated(const TileElementBase& element)
                 case TrackElemType::Rapids:
                 case TrackElemType::Whirlpool:
                 case TrackElemType::SpinningTunnel:
-                    return true;
+                    return std::optional(UpdateType::invalidate);
                 default:
                     break;
             }
@@ -459,12 +513,17 @@ static bool IsElementAnimated(const TileElementBase& element)
             break;
     }
 
-    return false;
+    return std::nullopt;
 }
 
-void MapAnimation::Create(const CoordsXY coords)
+void MapAnimation::MarkTileForInvalidation(const CoordsXY coords)
 {
-    _mapAnimations.insert(TileCoordsXY(coords));
+    _mapAnimations[TileCoordsXY(coords)];
+}
+
+void MapAnimation::MarkTileForUpdate(const CoordsXY coords)
+{
+    _mapAnimations[TileCoordsXY(coords)] = UpdateType::update;
 }
 
 void MapAnimation::CreateTemporary(const CoordsXYZ& coords, const TemporaryType type)
@@ -478,36 +537,79 @@ void MapAnimation::MarkAllTiles()
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
     {
-        if (IsElementAnimated(*it.element))
+        const auto isAnimated = IsElementAnimated(*it.element);
+        if (isAnimated)
         {
-            _mapAnimations.insert(TileCoordsXY(it.x, it.y));
+            switch (*isAnimated)
+            {
+                case UpdateType::invalidate:
+                    _mapAnimations[TileCoordsXY(it.x, it.y)];
+                    break;
+                case UpdateType::update:
+                    _mapAnimations[TileCoordsXY(it.x, it.y)] = UpdateType::update;
+                    break;
+            }
         }
     }
 }
 
-template<auto TUpdateFunction>
-static void UpdateAll(auto& mapAnimations)
+static bool IsTileInView(const TileCoordsXY coords, const ViewportList& viewports) noexcept
 {
-    auto it = mapAnimations.begin();
-    while (it != mapAnimations.end())
+    for (const auto viewport : viewports)
     {
-        if (TUpdateFunction(*it))
+        if (viewport->ContainsTile(coords))
         {
-            ++it;
-        }
-        else
-        {
-            it = mapAnimations.erase(it);
+            return true;
         }
     }
+    return false;
 }
 
 void MapAnimation::UpdateAll()
 {
     PROFILED_FUNCTION();
 
-    UpdateAll<UpdateTileAnimations>(_mapAnimations);
-    UpdateAll<UpdateTemporaryAnimation>(_temporaryMapAnimations);
+    {
+        const auto viewports = GetVisibleViewports();
+
+        auto it = _mapAnimations.begin();
+        while (it != _mapAnimations.end())
+        {
+            const auto& tile = *it;
+            const bool tileInView = IsTileInView(tile.first, viewports);
+            if (!tileInView && tile.second == UpdateType::invalidate)
+            {
+                ++it;
+                continue;
+            }
+
+            const auto result = tileInView ? UpdateTileAnimations<false>(tile.first) : UpdateTileAnimations<true>(tile.first);
+            if (result)
+            {
+                (*it).second = result.value();
+                ++it;
+            }
+            else
+            {
+                it = _mapAnimations.erase(it);
+            }
+        }
+    }
+
+    {
+        auto it = _temporaryMapAnimations.begin();
+        while (it != _temporaryMapAnimations.end())
+        {
+            if (UpdateTemporaryAnimation(*it))
+            {
+                ++it;
+            }
+            else
+            {
+                it = _temporaryMapAnimations.erase(it);
+            }
+        }
+    }
 }
 
 void MapAnimation::ClearAll()
@@ -521,10 +623,10 @@ void MapAnimation::ShiftAll(const CoordsXY amount)
     if (amount.x == 0 && amount.y == 0)
         return;
 
-    std::set<TileCoordsXY, TileCoordsXYCmp> newMapAnimations;
+    std::map<TileCoordsXY, UpdateType, TileCoordsXYCmp> newMapAnimations;
     for (const auto& a : _mapAnimations)
     {
-        newMapAnimations.insert(a + TileCoordsXY(amount));
+        newMapAnimations[a.first + TileCoordsXY(amount)] = a.second;
     }
     _mapAnimations = std::move(newMapAnimations);
 

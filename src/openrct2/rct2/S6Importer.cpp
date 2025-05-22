@@ -1051,7 +1051,7 @@ namespace OpenRCT2::RCT2
                             }
 
                             tileElement->AsWall()->SetIsAnimating(true);
-                            MapAnimation::Create(coords);
+                            MapAnimation::MarkTileForUpdate(coords);
                         } while (!(tileElement++)->IsLastForTile());
                         break;
                     }

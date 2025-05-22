@@ -14,7 +14,6 @@
 #include "../object/BannerSceneryEntry.h"
 #include "../object/ObjectEntryManager.h"
 #include "../world/Banner.h"
-#include "../world/MapAnimation.h"
 #include "../world/Scenery.h"
 #include "../world/TileElementsView.h"
 #include "../world/tile_element/BannerElement.h"

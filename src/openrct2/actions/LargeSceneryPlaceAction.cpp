@@ -314,7 +314,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
             newSceneryElement->SetBannerIndex(banner->id);
         }
 
-        MapAnimation::Create(curTile);
+        MapAnimation::MarkTileForInvalidation(curTile);
         MapInvalidateTileFull(curTile);
 
         if (tile.index == 0)

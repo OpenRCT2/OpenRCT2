@@ -161,7 +161,7 @@ GameActions::Result BannerPlaceAction::Execute() const
     bannerElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
     MapInvalidateTileFull(_loc);
-    MapAnimation::Create(_loc);
+    MapAnimation::MarkTileForInvalidation(_loc);
 
     res.Cost = bannerEntry->price;
     return res;

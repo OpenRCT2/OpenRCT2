@@ -18,7 +18,6 @@
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
 #include "../ride/TrackDesign.h"
-#include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/tile_element/SmallSceneryElement.h"
 

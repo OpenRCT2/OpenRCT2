@@ -1167,6 +1167,17 @@ namespace OpenRCT2
         return { mapCoords->ToTileStart() };
     }
 
+    [[nodiscard]] bool Viewport::ContainsTile(const TileCoordsXY coords) const noexcept
+    {
+        const auto centreCoords = coords.ToCoordsXY() + CoordsXY(16, 16);
+        const auto screenPos = Translate3DTo2DWithZ(rotation, CoordsXYZ{ centreCoords, 0 });
+        const auto left = screenPos.x - 32;
+        const auto top = screenPos.y - (kMaxTileElementHeight * kCoordsZStep) - 16;
+        const auto right = screenPos.x + 32;
+        const auto bottom = screenPos.y + 16;
+        return !(left > viewPos.x + ViewWidth() || top > viewPos.y + ViewHeight() || right < viewPos.x || bottom < viewPos.y);
+    }
+
     [[nodiscard]] ScreenCoordsXY Viewport::ScreenToViewportCoord(const ScreenCoordsXY& screenCoords) const
     {
         ScreenCoordsXY ret;
@@ -2064,6 +2075,19 @@ namespace OpenRCT2
             gameState.savedViewZoom = viewport->zoom;
             gameState.savedViewRotation = viewport->rotation;
         }
+    }
+
+    ViewportList GetVisibleViewports() noexcept
+    {
+        ViewportList viewports;
+        for (auto& viewport : _viewports)
+        {
+            if (viewport.isVisible)
+            {
+                viewports.push_back(&viewport);
+            }
+        };
+        return viewports;
     }
 } // namespace OpenRCT2
 
