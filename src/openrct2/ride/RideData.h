@@ -270,7 +270,7 @@ struct UpkeepCostsDescriptor
 using RideTrackGroups = OpenRCT2::BitSet<EnumValue(TrackGroup::count)>;
 using UpdateRideApproachVehicleWaypointsFunction = void (*)(Guest&, const CoordsXY&, int16_t&);
 using RideMusicUpdateFunction = void (*)(Ride&);
-using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest*, Ride&, CoordsXYZD&);
+using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest&, Ride&, CoordsXYZD&);
 using StartRideMusicFunction = void (*)(const OpenRCT2::RideAudio::ViewportRideMusicInstance&);
 using LightFXAddLightsMagicVehicleFunction = void (*)(const Vehicle* vehicle);
 using RideLocationFunction = CoordsXY (*)(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
