@@ -106,7 +106,7 @@ namespace OpenRCT2
         ScreenCoordsXY savedViewPos{};
         WindowClass classification{};
         ColourWithFlags colours[6]{};
-        VisibilityCache visibility{};
+        bool isVisible = true;
         EntityId viewport_smart_follow_sprite{ EntityId::GetNull() }; // Handles setting viewport target sprite etc
 
         void SetViewportLocation(const CoordsXYZ& coords);

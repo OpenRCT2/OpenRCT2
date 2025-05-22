@@ -115,11 +115,48 @@ static constexpr float kWindowScrollLocations[][2] = {
     void WindowUpdateAllViewports()
     {
         WindowVisitEach([&](WindowBase* w) {
-            if (w->viewport != nullptr && WindowIsVisible(*w))
+            if (w->viewport != nullptr && w->isVisible)
             {
                 ViewportUpdatePosition(w);
             }
         });
+    }
+
+    static void WindowUpdateVisibilities()
+    {
+        const auto itEnd = g_window_list.end();
+        for (auto it = g_window_list.begin(); it != itEnd; ++it)
+        {
+            auto& window = *(*it);
+            if (window.viewport == nullptr)
+            {
+                window.isVisible = true;
+                continue;
+            }
+            if (window.classification == WindowClass::MainWindow)
+            {
+                window.isVisible = true;
+                window.viewport->isVisible = true;
+                continue;
+            }
+            window.isVisible = true;
+            window.viewport->isVisible = true;
+            for (auto itOther = std::next(it); itOther != itEnd; ++itOther)
+            {
+                const auto& otherWindow = *(*itOther);
+                if (otherWindow.flags & WF_DEAD)
+                    continue;
+
+                if (otherWindow.windowPos.x <= window.windowPos.x && otherWindow.windowPos.y <= window.windowPos.y
+                    && otherWindow.windowPos.x + otherWindow.width >= window.windowPos.x + window.width
+                    && otherWindow.windowPos.y + otherWindow.height >= window.windowPos.y + window.height)
+                {
+                    window.isVisible = false;
+                    window.viewport->isVisible = false;
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -155,6 +192,8 @@ static constexpr float kWindowScrollLocations[][2] = {
 
         auto windowManager = Ui::GetWindowManager();
         windowManager->UpdateMouseWheel();
+
+        WindowUpdateVisibilities();
     }
 
     void WindowNotifyLanguageChange()
@@ -496,7 +535,7 @@ static constexpr float kWindowScrollLocations[][2] = {
      */
     void WindowDraw(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
-        if (!WindowIsVisible(w))
+        if (!w.isVisible)
             return;
 
         // Divide the draws up for only the visible regions of the window recursively
@@ -569,7 +608,7 @@ static constexpr float kWindowScrollLocations[][2] = {
             auto* v = (*it).get();
             if (v->flags & WF_DEAD)
                 continue;
-            if ((&w == v || (v->flags & WF_TRANSPARENT)) && WindowIsVisible(*v))
+            if ((&w == v || (v->flags & WF_TRANSPARENT)) && v->isVisible)
             {
                 WindowDrawSingle(rt, *v, left, top, right, bottom);
             }
@@ -855,48 +894,6 @@ static constexpr float kWindowScrollLocations[][2] = {
         windowMgr->CloseByClass(WindowClass::Textinput);
     }
 
-    bool WindowIsVisible(WindowBase& w)
-    {
-        // w->visibility is used to prevent repeat calculations within an iteration by caching the result
-
-        if (w.visibility == VisibilityCache::visible)
-            return true;
-        if (w.visibility == VisibilityCache::covered)
-            return false;
-
-        // only consider viewports, consider the main window always visible
-        if (w.viewport == nullptr || w.classification == WindowClass::MainWindow)
-        {
-            // default to previous behaviour
-            w.visibility = VisibilityCache::visible;
-            return true;
-        }
-
-        // start from the window above the current
-        auto itPos = WindowGetIterator(&w);
-        for (auto it = std::next(itPos); it != g_window_list.end(); it++)
-        {
-            auto& w_other = *(*it);
-            if (w_other.flags & WF_DEAD)
-                continue;
-
-            // if covered by a higher window, no rendering needed
-            if (w_other.windowPos.x <= w.windowPos.x && w_other.windowPos.y <= w.windowPos.y
-                && w_other.windowPos.x + w_other.width >= w.windowPos.x + w.width
-                && w_other.windowPos.y + w_other.height >= w.windowPos.y + w.height)
-            {
-                w.visibility = VisibilityCache::covered;
-                w.viewport->visibility = VisibilityCache::covered;
-                return false;
-            }
-        }
-
-        // default to previous behaviour
-        w.visibility = VisibilityCache::visible;
-        w.viewport->visibility = VisibilityCache::visible;
-        return true;
-    }
-
     /**
      *
      *  rct2: 0x006E7499
@@ -940,18 +937,6 @@ static constexpr float kWindowScrollLocations[][2] = {
             }
         }
         return nullptr;
-    }
-
-    void WindowResetVisibilities()
-    {
-        // reset window visibility status to unknown
-        WindowVisitEach([](WindowBase* w) {
-            w->visibility = VisibilityCache::unknown;
-            if (w->viewport != nullptr)
-            {
-                w->viewport->visibility = VisibilityCache::unknown;
-            }
-        });
     }
 
     void WindowInitAll()
