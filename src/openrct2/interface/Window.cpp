@@ -916,6 +916,18 @@ static constexpr float kWindowScrollLocations[][2] = {
         });
     }
 
+    std::vector<Viewport*> WindowGetActiveViewports()
+    {
+        std::vector<Viewport*> viewports;
+        WindowVisitEach([&viewports](WindowBase* w) {
+            if (w->viewport != nullptr && !(w->flags & WF_DEAD))
+            {
+                viewports.push_back(w->viewport);
+            }
+        });
+        return viewports;
+    }
+
     Viewport* WindowGetPreviousViewport(Viewport* current)
     {
         bool foundPrevious = (current == nullptr);

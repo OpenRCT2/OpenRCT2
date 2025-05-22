@@ -333,6 +333,7 @@ namespace OpenRCT2
 
     void TextinputCancel();
 
+    std::vector<Viewport*> WindowGetActiveViewports();
     Viewport* WindowGetPreviousViewport(Viewport* current);
     void WindowInitAll();
 
