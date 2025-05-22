@@ -675,7 +675,7 @@ static u8string getScenarioSHA256(u8string_view scenarioPath)
     auto scenarioHash = OpenRCT2::Crypt::SHA256(scenarioData.data(), scenarioData.size());
     auto scenarioStringHash = OpenRCT2::String::StringFromHex(scenarioHash);
 #endif
-    LOG_INFO("Fetching patch\n  Scenario: '%s'\n  SHA '%s'", scenarioPath.data(), scenarioStringHash.c_str());
+    LOG_VERBOSE("Fetching patch\n  Scenario: '%s'\n  SHA '%s'", scenarioPath.data(), scenarioStringHash.c_str());
     return scenarioStringHash;
 }
 
@@ -708,7 +708,7 @@ static bool ValidateSHA256(const json_t& scenarioPatch, u8string_view scenarioHa
 
     auto scenarioName = OpenRCT2::Json::GetString(scenarioPatch[_scenarioNameKey]);
     auto scenarioSHA = OpenRCT2::Json::GetString(scenarioPatch[_fullSHAKey]);
-    LOG_INFO(
+    LOG_VERBOSE(
         "\n  Scenario '%s'\n  SHA '%s'\n  SHA Valid: %d", scenarioName.c_str(), scenarioSHA.c_str(),
         (scenarioHash == scenarioSHA));
 
