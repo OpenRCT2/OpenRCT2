@@ -9,27 +9,38 @@
 
 #pragma once
 
+#include "../interface/Window.h"
 #include "EntityBase.h"
 
+#include <sfl/static_vector.hpp>
 #include <vector>
 
-class EntityTweener
+namespace OpenRCT2
 {
-    std::vector<EntityBase*> Entities;
-    std::vector<CoordsXYZ> PrePos;
-    std::vector<CoordsXYZ> PostPos;
+    struct Viewport;
 
-private:
-    void PopulateEntities();
-    void AddEntity(EntityBase* entity);
+    // TODO: Move this to somewhere else, currently filters also by zoom.
+    using ViewportList = sfl::static_vector<Viewport*, kWindowLimitMax>;
 
-public:
-    static EntityTweener& Get();
+    class EntityTweener
+    {
+        std::vector<EntityBase*> Entities;
+        std::vector<CoordsXYZ> PrePos;
+        std::vector<CoordsXYZ> PostPos;
 
-    void PreTick();
-    void PostTick();
-    void RemoveEntity(EntityBase* entity);
-    void Tween(float alpha);
-    void Restore();
-    void Reset();
-};
+    private:
+        void PopulateEntities();
+        void AddEntity(const ViewportList& vp, EntityBase* entity);
+
+    public:
+        static EntityTweener& Get();
+
+        void PreTick();
+        void PostTick();
+        void RemoveEntity(EntityBase* entity);
+        void Tween(float alpha);
+        void Restore();
+        void Reset();
+    };
+
+} // namespace OpenRCT2
