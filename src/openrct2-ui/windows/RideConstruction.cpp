@@ -274,6 +274,8 @@ namespace OpenRCT2::Ui::Windows
             _autoRotatingShop = true;
             _trackPlaceCtrlState = false;
             _trackPlaceShiftState = false;
+
+            UpdateTrackPieceWidgets();
         }
 
         void OnClose() override
@@ -330,7 +332,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnResize() override
+        void UpdateTrackPieceWidgets()
         {
             WindowRideConstructionUpdateEnabledTrackPieces();
 
@@ -1019,6 +1021,8 @@ namespace OpenRCT2::Ui::Windows
             }
 
             UpdateGhostTrackAndArrow();
+
+            UpdateTrackPieceWidgets();
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override

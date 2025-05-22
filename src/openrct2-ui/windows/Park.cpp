@@ -403,6 +403,14 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        void OnViewportRotate() override
+        {
+            if (page == WINDOW_PARK_PAGE_ENTRANCE)
+            {
+                InitViewport();
+            }
+        }
+
     private:
         void SetDisabledTabs()
         {

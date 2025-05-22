@@ -345,7 +345,7 @@ namespace OpenRCT2::Ui::Windows
                 _windowNewRideTabScroll[_currentTab] = scrolls[0].contentOffsetY;
 
                 // Remove highlight when mouse leaves rides list
-                if (!WidgetIsHighlighted(*this, WIDX_RIDE_LIST))
+                if (!WidgetIsHighlighted(*this, WIDX_RIDE_LIST) && _newRideVars.HighlightedRide.Type != kRideTypeNull)
                 {
                     _newRideVars.HighlightedRide = { kRideTypeNull, kObjectEntryIndexNull };
                     InvalidateWidget(WIDX_RIDE_LIST);
@@ -369,7 +369,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_GROUP_BY_TRACK_TYPE:
                     Config::Get().interface.ListRideVehiclesSeparately = !Config::Get().interface.ListRideVehiclesSeparately;
                     Config::Save();
-                    SetPage(_currentTab);
+                    PopulateRideList();
+                    Invalidate();
                     break;
                 case WIDX_FILTER_TEXT_BOX:
                     WindowStartTextbox(*this, widgetIndex, _filter, kTextInputSize);

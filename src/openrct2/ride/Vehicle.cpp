@@ -2318,6 +2318,7 @@ static void test_finish(Ride& ride)
 {
     ride.lifecycleFlags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
     ride.lifecycleFlags |= RIDE_LIFECYCLE_TESTED;
+    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_RATINGS;
 
     auto rideStations = ride.getStations();
     for (int32_t i = ride.numStations - 1; i >= 1; i--)
