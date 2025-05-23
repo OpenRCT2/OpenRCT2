@@ -2198,29 +2198,28 @@ namespace OpenRCT2::RCT1
             park.Name = std::move(parkName);
         }
 
-        std::vector<OpenRCT2::News::Item> convertNewsQueue(const RCT12NewsItem* queue, size_t size)
+        std::vector<OpenRCT2::News::Item> convertNewsQueue(std::span<const RCT12NewsItem> queue)
         {
             std::vector<OpenRCT2::News::Item> output{};
-            const RCT12NewsItem* src = queue;
 
-            for (uint8_t i = 0; i < size; i++)
+            for (const auto& src : queue)
             {
                 News::Item dst{};
 
-                if (src->Type == 0)
+                if (src.Type == 0)
                     break;
 
-                dst.Type = static_cast<News::ItemType>(src->Type);
-                dst.Flags = src->Flags;
-                dst.Ticks = src->Ticks;
-                dst.MonthYear = src->MonthYear;
-                dst.Day = src->Day;
-                dst.Text = ConvertFormattedStringToOpenRCT2(std::string_view(src->Text, sizeof(src->Text)));
+                dst.Type = static_cast<News::ItemType>(src.Type);
+                dst.Flags = src.Flags;
+                dst.Ticks = src.Ticks;
+                dst.MonthYear = src.MonthYear;
+                dst.Day = src.Day;
+                dst.Text = ConvertFormattedStringToOpenRCT2(std::string_view(src.Text, sizeof(src.Text)));
 
                 if (dst.Type == News::ItemType::Research)
                 {
-                    uint8_t researchItem = src->Assoc & 0x000000FF;
-                    uint8_t researchType = (src->Assoc & 0x00FF0000) >> 16;
+                    uint8_t researchItem = src.Assoc & 0x000000FF;
+                    uint8_t researchType = (src.Assoc & 0x00FF0000) >> 16;
 
                     ::ResearchItem tmpResearchItem = {};
                     ConvertResearchEntry(&tmpResearchItem, researchItem, researchType);
@@ -2228,11 +2227,10 @@ namespace OpenRCT2::RCT1
                 }
                 else
                 {
-                    dst.Assoc = src->Assoc;
+                    dst.Assoc = src.Assoc;
                 }
 
                 output.emplace_back(dst);
-                src++;
             }
 
             return output;
@@ -2287,8 +2285,8 @@ namespace OpenRCT2::RCT1
             }
 
             // News items
-            auto recentMessages = convertNewsQueue(_s4.recentMessages, std::size(_s4.recentMessages));
-            auto archivedMessages = convertNewsQueue(_s4.archivedMessages, std::size(_s4.archivedMessages));
+            auto recentMessages = convertNewsQueue(_s4.recentMessages);
+            auto archivedMessages = convertNewsQueue(_s4.archivedMessages);
             News::importNewsItems(gameState, recentMessages, archivedMessages);
 
             // Initial guest status
