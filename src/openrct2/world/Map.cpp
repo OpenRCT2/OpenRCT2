@@ -472,7 +472,7 @@ void MapInit(const TileCoordsXY& size)
     gameState.widePathTileLoopPosition = {};
     gameState.mapSize = size;
     MapRemoveOutOfRangeElements();
-    MapAnimation::ClearAll();
+    MapAnimations::ClearAll();
 
     auto intent = Intent(INTENT_ACTION_MAP);
     ContextBroadcastIntent(&intent);
@@ -2407,5 +2407,5 @@ void ShiftMap(const TileCoordsXY& amount)
         id = BannerIndex::FromUnderlying(id.ToUnderlying() + 1);
     }
 
-    MapAnimation::ShiftAll(amountToMove);
+    MapAnimations::ShiftAll(amountToMove);
 }

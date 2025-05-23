@@ -11,7 +11,7 @@
 
 #include "Location.hpp"
 
-namespace OpenRCT2::MapAnimation
+namespace OpenRCT2::MapAnimations
 {
     enum class TemporaryType : uint8_t
     {
@@ -26,4 +26,4 @@ namespace OpenRCT2::MapAnimation
     void InvalidateAndUpdateAll();
     void ClearAll();
     void ShiftAll(const CoordsXY amount);
-} // namespace OpenRCT2::MapAnimation
+} // namespace OpenRCT2::MapAnimations

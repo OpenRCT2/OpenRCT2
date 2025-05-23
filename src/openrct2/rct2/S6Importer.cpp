@@ -1029,9 +1029,9 @@ namespace OpenRCT2::RCT2
                 switch (mapAnimation.Type)
                 {
                     case kRCT12MapAnimationTypeOnRidePhoto:
-                        MapAnimation::CreateTemporary(
+                        MapAnimations::CreateTemporary(
                             { mapAnimation.x, mapAnimation.y, mapAnimation.BaseZ * kCoordsZStep },
-                            MapAnimation::TemporaryType::onRidePhoto);
+                            MapAnimations::TemporaryType::onRidePhoto);
                         break;
                     case kRCT12MapAnimationTypeWallDoor:
                     {
@@ -1051,7 +1051,7 @@ namespace OpenRCT2::RCT2
                             }
 
                             tileElement->AsWall()->SetIsAnimating(true);
-                            MapAnimation::MarkTileForUpdate(coords);
+                            MapAnimations::MarkTileForUpdate(coords);
                         } while (!(tileElement++)->IsLastForTile());
                         break;
                     }

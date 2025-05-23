@@ -452,11 +452,11 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     MapInvalidateTileFull(_loc);
     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_CLOCK))
     {
-        MapAnimation::MarkTileForUpdate(_loc);
+        MapAnimations::MarkTileForUpdate(_loc);
     }
     else if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
     {
-        MapAnimation::MarkTileForInvalidation(_loc);
+        MapAnimations::MarkTileForInvalidation(_loc);
     }
 
     return res;

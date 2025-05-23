@@ -1468,14 +1468,14 @@ namespace OpenRCT2::RCT1
                 switch (mapAnimation.Type)
                 {
                     case kRCT12MapAnimationTypeOnRidePhoto:
-                        MapAnimation::CreateTemporary(
+                        MapAnimations::CreateTemporary(
                             { mapAnimation.x, mapAnimation.y, (mapAnimation.BaseZ / 2) * kCoordsZStep },
-                            MapAnimation::TemporaryType::onRidePhoto);
+                            MapAnimations::TemporaryType::onRidePhoto);
                         break;
                     case kRCT12MapAnimationTypeLandEdgeDoor:
-                        MapAnimation::CreateTemporary(
+                        MapAnimations::CreateTemporary(
                             { mapAnimation.x, mapAnimation.y, (mapAnimation.BaseZ / 2) * kCoordsZStep },
-                            MapAnimation::TemporaryType::landEdgeDoor);
+                            MapAnimations::TemporaryType::landEdgeDoor);
                         break;
                 }
             }

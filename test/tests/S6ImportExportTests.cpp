@@ -67,7 +67,7 @@ static void GameInit(bool retainSpatialIndices)
     ResetAllSpriteQuadrantPlacements();
     LoadPalette();
     EntityTweener::Get().Reset();
-    MapAnimation::MarkAllTiles();
+    MapAnimations::MarkAllTiles();
     FixInvalidVehicleSpriteSizes();
 
     gGameSpeed = 1;
@@ -83,7 +83,7 @@ static bool ImportS6(MemoryStream& stream, std::unique_ptr<IContext>& context, b
     auto loadResult = importer->LoadFromStream(&stream, false);
     objManager.LoadObjects(loadResult.RequiredObjects);
 
-    MapAnimation::ClearAll();
+    MapAnimations::ClearAll();
     // TODO: Have a separate GameState and exchange once loaded.
     auto& gameState = getGameState();
     importer->Import(gameState);

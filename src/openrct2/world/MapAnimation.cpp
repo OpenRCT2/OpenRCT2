@@ -46,7 +46,7 @@ constexpr ZoomLevel kMaxZoom{ 1 };
 struct TemporaryMapAnimation
 {
     CoordsXYZ location{};
-    MapAnimation::TemporaryType type{};
+    MapAnimations::TemporaryType type{};
 
     bool operator<(const TemporaryMapAnimation& rhs) const
     {
@@ -429,7 +429,7 @@ static bool UpdateTemporaryAnimation(const TemporaryMapAnimation& animation)
     {
         switch (animation.type)
         {
-            case MapAnimation::TemporaryType::onRidePhoto:
+            case MapAnimations::TemporaryType::onRidePhoto:
             {
                 if (tileElement->GetType() == TileElementType::Track && tileElement->BaseHeight == tileCoords.z
                     && tileElement->AsTrack()->GetTrackType() == TrackElemType::OnRidePhoto)
@@ -438,7 +438,7 @@ static bool UpdateTemporaryAnimation(const TemporaryMapAnimation& animation)
                 }
                 break;
             }
-            case MapAnimation::TemporaryType::landEdgeDoor:
+            case MapAnimations::TemporaryType::landEdgeDoor:
             {
                 if (tileElement->GetType() == TileElementType::Track && tileElement->BaseHeight == tileCoords.z)
                 {
@@ -545,7 +545,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
     return std::nullopt;
 }
 
-void MapAnimation::MarkTileForInvalidation(const CoordsXY coords)
+void MapAnimations::MarkTileForInvalidation(const CoordsXY coords)
 {
     const TileCoordsXY tileCoords(coords);
     if (!_mapAnimationsUpdate.contains(tileCoords))
@@ -554,19 +554,19 @@ void MapAnimation::MarkTileForInvalidation(const CoordsXY coords)
     }
 }
 
-void MapAnimation::MarkTileForUpdate(const CoordsXY coords)
+void MapAnimations::MarkTileForUpdate(const CoordsXY coords)
 {
     const TileCoordsXY tileCoords(coords);
     _mapAnimationsInvalidate.erase(tileCoords);
     _mapAnimationsUpdate.insert(tileCoords);
 }
 
-void MapAnimation::CreateTemporary(const CoordsXYZ& coords, const TemporaryType type)
+void MapAnimations::CreateTemporary(const CoordsXYZ& coords, const TemporaryType type)
 {
     _temporaryMapAnimations.insert(TemporaryMapAnimation{ coords, type });
 }
 
-void MapAnimation::MarkAllTiles()
+void MapAnimations::MarkAllTiles()
 {
     TileElementIterator it;
     TileElementIteratorBegin(&it);
@@ -671,7 +671,7 @@ static void UpdateAll(const ViewportList& viewports)
     }
 }
 
-void MapAnimation::InvalidateAndUpdateAll()
+void MapAnimations::InvalidateAndUpdateAll()
 {
     PROFILED_FUNCTION();
 
@@ -695,14 +695,14 @@ void MapAnimation::InvalidateAndUpdateAll()
     }
 }
 
-void MapAnimation::ClearAll()
+void MapAnimations::ClearAll()
 {
     _mapAnimationsInvalidate.clear();
     _mapAnimationsUpdate.clear();
     _temporaryMapAnimations.clear();
 }
 
-void MapAnimation::ShiftAll(const CoordsXY amount)
+void MapAnimations::ShiftAll(const CoordsXY amount)
 {
     if (amount.x == 0 && amount.y == 0)
         return;

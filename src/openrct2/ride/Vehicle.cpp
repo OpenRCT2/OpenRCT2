@@ -6316,7 +6316,7 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
         door->SetIsAnimating(true);
         play_scenery_door_open_sound(trackLocation, door);
 
-        MapAnimation::MarkTileForUpdate(doorLocation);
+        MapAnimations::MarkTileForUpdate(doorLocation);
     }
 
     if (isLastVehicle)
@@ -6326,7 +6326,7 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
         door->SetIsAnimating(true);
         play_scenery_door_close_sound(trackLocation, door);
 
-        MapAnimation::MarkTileForUpdate(doorLocation);
+        MapAnimations::MarkTileForUpdate(doorLocation);
     }
 }
 
@@ -6357,7 +6357,7 @@ static void AnimateLandscapeDoor(const CoordsXYZ& doorLocation, TrackElement& tr
         else
             trackElement.SetDoorBState(kLandEdgeDoorFrameOpening);
 
-        MapAnimation::CreateTemporary(doorLocation, MapAnimation::TemporaryType::landEdgeDoor);
+        MapAnimations::CreateTemporary(doorLocation, MapAnimations::TemporaryType::landEdgeDoor);
     }
 
     if (isLastVehicle)
@@ -6367,7 +6367,7 @@ static void AnimateLandscapeDoor(const CoordsXYZ& doorLocation, TrackElement& tr
         else
             trackElement.SetDoorBState(kLandEdgeDoorFrameClosing);
 
-        MapAnimation::CreateTemporary(doorLocation, MapAnimation::TemporaryType::landEdgeDoor);
+        MapAnimations::CreateTemporary(doorLocation, MapAnimations::TemporaryType::landEdgeDoor);
     }
 }
 
@@ -7102,7 +7102,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     if (trackType == TrackElemType::OnRidePhoto)
     {
         tileElement->AsTrack()->SetPhotoTimeout();
-        MapAnimation::CreateTemporary(TrackLocation, MapAnimation::TemporaryType::onRidePhoto);
+        MapAnimations::CreateTemporary(TrackLocation, MapAnimations::TemporaryType::onRidePhoto);
     }
     if (trackType == TrackElemType::RotationControlToggle)
     {

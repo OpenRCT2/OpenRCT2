@@ -2848,13 +2848,13 @@ bool NetworkBase::LoadMap(IStream* stream)
         auto loadResult = importer->LoadFromStream(stream, false);
         objManager.LoadObjects(loadResult.RequiredObjects);
 
-        MapAnimation::ClearAll();
+        MapAnimations::ClearAll();
         // TODO: Have a separate GameState and exchange once loaded.
         auto& gameState = getGameState();
         importer->Import(gameState);
 
         EntityTweener::Get().Reset();
-        MapAnimation::MarkAllTiles();
+        MapAnimations::MarkAllTiles();
 
         gLastAutoSaveUpdate = kAutosavePause;
         result = true;
