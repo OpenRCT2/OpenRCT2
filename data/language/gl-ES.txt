@@ -2237,8 +2237,8 @@ STR_3228    :Establecer a posición inicial das persoas
 STR_3229    :O bloque de freada non debe usarse despois da estación
 STR_3230    :O bloque de freado non debe usarse despois do outro
 STR_3231    :O bloque de freo non debe usarse despois do final da cadea de elevación.
-STR_3232    :Opcións - Finanzas
-STR_3233    :Opcións - Visitantes
+STR_3232    :Opcións do escenario - Finanzas
+STR_3233    :Opcións do escenario - Visitantes
 STR_3235    :Opcións de financiamento
 STR_3236    :Opcións de visitante
 STR_3238    :Sen cartos
@@ -2282,7 +2282,7 @@ STR_3279    :Entrada gratuíta / Atraccións de pago
 STR_3280    :Pagar para entrar / Atraccións gratuítas
 STR_3281    :{WINDOW_COLOUR_2}Prezo de entrada:
 STR_3283    :Selecciona as atraccións para conservar
-STR_3285    :Atraccións preservadas
+STR_3285    :Opcións do escenario - Atraccións preservadas
 STR_3286    :Seleccione obxectivos para este escenario
 STR_3287    :{WINDOW_COLOUR_2}Obxecto:
 STR_3294    :Cambiar...
@@ -2511,7 +2511,7 @@ STR_5265    :Selecciona que contidos son visibles
 STR_5266    :Gráficos
 STR_5267    :Idioma e unidades
 STR_5268    :Audio
-STR_5269    :Interface e controis
+STR_5269    :Controis
 STR_5270    :Outras opcións
 STR_5272    :Pequena decoración
 STR_5273    :Decoración grande
@@ -3795,3 +3795,19 @@ STR_6747    :Preferencias variadas (por defecto)
 STR_6748    :Só atraccións pouco intensas
 STR_6749    :Só atraccións moi intensas
 STR_6750    :Selecciona a intensidade de atracción que prefiren os novos visitantes.
+STR_6751    :Non se poden usar camiños de cola para pasos a nivel!
+STR_6752    :Opcións do escenario - Obxectivo
+STR_6753    :Opcións do escenario - Detalles do escenario
+STR_6754    :Opcións do escenario - Restricións de terras
+STR_6755    :Amosa opcións do obxectivo
+STR_6756    :Amosa opcións de detalles do escenario
+STR_6757    :Amosa opcións de restricións de terras
+STR_6758    :Opcións de préstamo
+STR_6759    :Modelo de negocio
+STR_6760    :Ganancias:
+STR_6761    :Detalles do escenario
+STR_6762    :Interface
+STR_6763    :RollerCoaster Tycoon 1
+STR_6764    :Gardar e gardados automáticos
+STR_6765    :Avanzado
+
