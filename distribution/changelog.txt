@@ -24,6 +24,7 @@
 - Fix: [#24403] Park fences draw underneath and through opaque water.
 - Fix: [#24406] The network status window uses an undefined string for its title.
 - Fix: [#24444] In the object load error window, the guide text overlaps when the title bar is enlarged.
+- Fix: [#24447] Shortcut list is not refreshed when changing language.
 - Fix: [#24448] Shortcuts involving the Caps Lock key are wrongly localised to NumPad Dot.
 - Fix: [#24464] Window and viewport visibility is not calculated correctly causing minor performance issues.
 
