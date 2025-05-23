@@ -55,7 +55,7 @@ namespace OpenRCT2
             CompressionType Compression{};
             uint64_t CompressedSize{};
             std::array<uint8_t, 8> FNV1a{};
-            uint8_t padding[20];
+            uint8_t padding[20]{};
         };
         static_assert(sizeof(Header) == 64, "Header should be 64 bytes");
 
