@@ -244,12 +244,12 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = windowPos + ScreenCoordsXY{ middleOutsetWidget.midX(), middleOutsetWidget.top + 11 };
             int32_t itemWidth = middleOutsetWidget.width() - 62;
             DrawNewsTicker(
-                rt, screenCoords, itemWidth, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, newsItem->Text,
-                newsItem->Ticks);
+                rt, screenCoords, itemWidth, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, newsItem->text,
+                newsItem->ticks);
 
             const auto& newsSubjectWidget = widgets[WIDX_NEWS_SUBJECT];
             screenCoords = windowPos + ScreenCoordsXY{ newsSubjectWidget.left, newsSubjectWidget.top };
-            switch (newsItem->Type)
+            switch (newsItem->type)
             {
                 case News::ItemType::Ride:
                     GfxDrawSprite(rt, ImageId(SPR_RIDE), screenCoords);
@@ -257,7 +257,7 @@ namespace OpenRCT2::Ui::Windows
                 case News::ItemType::PeepOnRide:
                 case News::ItemType::Peep:
                 {
-                    if (newsItem->HasButton())
+                    if (newsItem->hasButton())
                         break;
 
                     RenderTarget clippedRT;
@@ -266,7 +266,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     }
 
-                    auto peep = TryGetEntity<Peep>(EntityId::FromUnderlying(newsItem->Assoc));
+                    auto peep = TryGetEntity<Peep>(EntityId::FromUnderlying(newsItem->assoc));
                     if (peep == nullptr)
                         return;
 
@@ -325,7 +325,7 @@ namespace OpenRCT2::Ui::Windows
                     GfxDrawSprite(rt, ImageId(SPR_FINANCE), screenCoords);
                     break;
                 case News::ItemType::Research:
-                    GfxDrawSprite(rt, ImageId(newsItem->Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
+                    GfxDrawSprite(rt, ImageId(newsItem->assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
                     break;
                 case News::ItemType::Peeps:
                     GfxDrawSprite(rt, ImageId(SPR_GUESTS), screenCoords);
@@ -452,7 +452,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_NEWS_SUBJECT:
                     newsItem = News::GetItem(0);
-                    News::OpenSubject(newsItem->Type, newsItem->Assoc);
+                    News::OpenSubject(newsItem->type, newsItem->assoc);
                     break;
                 case WIDX_NEWS_LOCATE:
                     if (News::IsQueueEmpty())
@@ -461,7 +461,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         newsItem = News::GetItem(0);
 
-                        auto subjectLoc = News::GetSubjectLocation(newsItem->Type, newsItem->Assoc);
+                        auto subjectLoc = News::GetSubjectLocation(newsItem->type, newsItem->assoc);
 
                         if (!subjectLoc.has_value())
                             break;
@@ -591,18 +591,18 @@ namespace OpenRCT2::Ui::Windows
                 disabled_widgets &= ~(1uLL << WIDX_NEWS_LOCATE);
 
                 // Find out if the news item is no longer valid
-                auto subjectLoc = News::GetSubjectLocation(newsItem->Type, newsItem->Assoc);
+                auto subjectLoc = News::GetSubjectLocation(newsItem->type, newsItem->assoc);
 
                 if (!subjectLoc.has_value())
                     disabled_widgets |= (1uLL << WIDX_NEWS_LOCATE);
 
-                if (!(newsItem->TypeHasSubject()))
+                if (!(newsItem->typeHasSubject()))
                 {
                     disabled_widgets |= (1uLL << WIDX_NEWS_SUBJECT);
                     widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
                 }
 
-                if (newsItem->HasButton())
+                if (newsItem->hasButton())
                 {
                     disabled_widgets |= (1uLL << WIDX_NEWS_SUBJECT);
                     disabled_widgets |= (1uLL << WIDX_NEWS_LOCATE);

@@ -52,12 +52,12 @@ namespace OpenRCT2::Scripting
     inline News::Item FromDuk(const DukValue& value)
     {
         News::Item result{};
-        result.Type = GetParkMessageType(value["type"].as_string());
-        result.Assoc = value["subject"].as_uint();
-        result.Ticks = value["tickCount"].as_uint();
-        result.MonthYear = value["month"].as_uint();
-        result.Day = value["day"].as_uint();
-        result.Text = value["text"].as_string();
+        result.type = GetParkMessageType(value["type"].as_string());
+        result.assoc = value["subject"].as_uint();
+        result.ticks = value["tickCount"].as_uint();
+        result.monthYear = value["month"].as_uint();
+        result.day = value["day"].as_uint();
+        result.text = value["text"].as_string();
         return result;
     }
 

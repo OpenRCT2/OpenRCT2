@@ -56,7 +56,7 @@ namespace OpenRCT2::Scripting
         auto msg = GetMessage();
         if (msg != nullptr)
         {
-            return msg->MonthYear;
+            return msg->monthYear;
         }
         return 0;
     }
@@ -67,7 +67,7 @@ namespace OpenRCT2::Scripting
         auto msg = GetMessage();
         if (msg != nullptr)
         {
-            msg->MonthYear = value;
+            msg->monthYear = value;
         }
     }
 
@@ -76,7 +76,7 @@ namespace OpenRCT2::Scripting
         auto msg = GetMessage();
         if (msg != nullptr)
         {
-            return msg->Day;
+            return msg->day;
         }
         return 0;
     }
@@ -87,7 +87,7 @@ namespace OpenRCT2::Scripting
         auto msg = GetMessage();
         if (msg != nullptr)
         {
-            msg->Day = value;
+            msg->day = value;
         }
     }
 
@@ -96,7 +96,7 @@ namespace OpenRCT2::Scripting
         auto msg = GetMessage();
         if (msg != nullptr)
         {
-            return msg->Ticks;
+            return msg->ticks;
         }
         return 0;
     }
@@ -107,7 +107,7 @@ namespace OpenRCT2::Scripting
         auto msg = GetMessage();
         if (msg != nullptr)
         {
-            msg->Ticks = value;
+            msg->ticks = value;
         }
     }
 
@@ -116,7 +116,7 @@ namespace OpenRCT2::Scripting
         auto msg = GetMessage();
         if (msg != nullptr)
         {
-            return GetParkMessageType(msg->Type);
+            return GetParkMessageType(msg->type);
         }
         return {};
     }
@@ -127,7 +127,7 @@ namespace OpenRCT2::Scripting
         auto msg = GetMessage();
         if (msg != nullptr)
         {
-            msg->Type = GetParkMessageType(value);
+            msg->type = GetParkMessageType(value);
         }
     }
 
@@ -136,7 +136,7 @@ namespace OpenRCT2::Scripting
         auto msg = GetMessage();
         if (msg != nullptr)
         {
-            return msg->Assoc;
+            return msg->assoc;
         }
         return 0;
     }
@@ -147,7 +147,7 @@ namespace OpenRCT2::Scripting
         auto msg = GetMessage();
         if (msg != nullptr)
         {
-            msg->Assoc = value;
+            msg->assoc = value;
         }
     }
 
@@ -156,7 +156,7 @@ namespace OpenRCT2::Scripting
         auto msg = GetMessage();
         if (msg != nullptr)
         {
-            return msg->Text;
+            return msg->text;
         }
         return {};
     }
@@ -167,7 +167,7 @@ namespace OpenRCT2::Scripting
         auto msg = GetMessage();
         if (msg != nullptr)
         {
-            msg->Text = value;
+            msg->text = value;
         }
     }
 

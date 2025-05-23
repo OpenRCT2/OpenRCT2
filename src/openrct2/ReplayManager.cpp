@@ -354,7 +354,7 @@ namespace OpenRCT2
             _currentRecording.reset();
 
             News::Item* news = News::AddItemToQueue(News::ItemType::Blank, "Replay recording stopped", 0);
-            news->SetFlags(News::ItemFlags::HasButton); // Has no subject.
+            news->setFlags(News::ItemFlags::HasButton); // Has no subject.
 
             return result;
         }
@@ -480,7 +480,7 @@ namespace OpenRCT2
             if (_mode == ReplayMode::PLAYING)
             {
                 News::Item* news = News::AddItemToQueue(News::ItemType::Blank, "Replay playback complete", 0);
-                news->SetFlags(News::ItemFlags::HasButton); // Has no subject.
+                news->setFlags(News::ItemFlags::HasButton); // Has no subject.
             }
 
             // When normalizing the output we don't touch the mode.

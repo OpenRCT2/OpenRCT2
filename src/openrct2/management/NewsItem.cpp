@@ -121,7 +121,7 @@ void News::InitQueue(GameState_t& gameState)
 
 uint16_t News::ItemQueues::IncrementTicks()
 {
-    return ++Current().Ticks;
+    return ++Current().ticks;
 }
 
 static void TickCurrent()
@@ -137,7 +137,7 @@ static void TickCurrent()
 
 int32_t News::ItemQueues::RemoveTime() const
 {
-    if (!Recent[5].IsEmpty() && !Recent[4].IsEmpty() && !Recent[3].IsEmpty() && !Recent[2].IsEmpty())
+    if (!Recent[5].isEmpty() && !Recent[4].isEmpty() && !Recent[3].isEmpty() && !Recent[2].isEmpty())
     {
         return 256;
     }
@@ -146,7 +146,7 @@ int32_t News::ItemQueues::RemoveTime() const
 
 bool News::ItemQueues::CurrentShouldBeArchived() const
 {
-    return Current().Ticks >= RemoveTime();
+    return Current().ticks >= RemoveTime();
 }
 
 /**
@@ -299,7 +299,7 @@ News::Item* News::ItemQueues::FirstOpenOrNewSlot()
     // The for loop above guarantees there is always an extra element to use
     assert(Recent.capacity() - Recent.size() >= 2);
     auto newsItem = res + 1;
-    newsItem->Type = News::ItemType::Null;
+    newsItem->type = News::ItemType::Null;
 
     return &*res;
 }
@@ -327,13 +327,13 @@ News::Item* News::AddItemToQueue(News::ItemType type, const utf8* text, uint32_t
 {
     auto& date = GetDate();
     News::Item* newsItem = getGameState().newsItems.FirstOpenOrNewSlot();
-    newsItem->Type = type;
-    newsItem->Flags = 0;
-    newsItem->Assoc = assoc; // Make optional for Award, Money, Graph and Null
-    newsItem->Ticks = 0;
-    newsItem->MonthYear = static_cast<uint16_t>(date.GetMonthsElapsed());
-    newsItem->Day = date.GetDay() + 1;
-    newsItem->Text = text;
+    newsItem->type = type;
+    newsItem->flags = 0;
+    newsItem->assoc = assoc; // Make optional for Award, Money, Graph and Null
+    newsItem->ticks = 0;
+    newsItem->monthYear = static_cast<uint16_t>(date.GetMonthsElapsed());
+    newsItem->day = date.GetDay() + 1;
+    newsItem->text = text;
 
     return newsItem;
 }
@@ -439,9 +439,9 @@ void News::DisableNewsItems(News::ItemType type, uint32_t assoc)
     auto& gameState = getGameState();
     // TODO: write test invalidating windows
     gameState.newsItems.ForeachRecentNews([type, assoc, &gameState](auto& newsItem) {
-        if (type == newsItem.Type && assoc == newsItem.Assoc)
+        if (type == newsItem.type && assoc == newsItem.assoc)
         {
-            newsItem.SetFlags(News::ItemFlags::HasButton);
+            newsItem.setFlags(News::ItemFlags::HasButton);
             if (&newsItem == &gameState.newsItems.Current())
             {
                 auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
@@ -451,9 +451,9 @@ void News::DisableNewsItems(News::ItemType type, uint32_t assoc)
     });
 
     gameState.newsItems.ForeachArchivedNews([type, assoc](auto& newsItem) {
-        if (type == newsItem.Type && assoc == newsItem.Assoc)
+        if (type == newsItem.type && assoc == newsItem.assoc)
         {
-            newsItem.SetFlags(News::ItemFlags::HasButton);
+            newsItem.setFlags(News::ItemFlags::HasButton);
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::RecentNews);
         }
@@ -473,7 +473,7 @@ void News::RemoveItem(int32_t index)
 
     auto& gameState = getGameState();
     // News item is already null, no need to remove it
-    if (gameState.newsItems[index].Type == News::ItemType::Null)
+    if (gameState.newsItems[index].type == News::ItemType::Null)
         return;
 
     size_t newsBoundary = index < News::ItemHistoryStart ? News::ItemHistoryStart : News::MaxItems;
@@ -481,7 +481,7 @@ void News::RemoveItem(int32_t index)
     {
         gameState.newsItems[i] = gameState.newsItems[i + 1];
     }
-    gameState.newsItems[newsBoundary - 1].Type = News::ItemType::Null;
+    gameState.newsItems[newsBoundary - 1].type = News::ItemType::Null;
 }
 
 void News::importNewsItems(

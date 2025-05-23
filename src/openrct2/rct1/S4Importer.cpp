@@ -2209,25 +2209,25 @@ namespace OpenRCT2::RCT1
                 if (src.Type == 0)
                     break;
 
-                dst.Type = static_cast<News::ItemType>(src.Type);
-                dst.Flags = src.Flags;
-                dst.Ticks = src.Ticks;
-                dst.MonthYear = src.MonthYear;
-                dst.Day = src.Day;
-                dst.Text = ConvertFormattedStringToOpenRCT2(std::string_view(src.Text, sizeof(src.Text)));
+                dst.type = static_cast<News::ItemType>(src.Type);
+                dst.flags = src.Flags;
+                dst.ticks = src.Ticks;
+                dst.monthYear = src.MonthYear;
+                dst.day = src.Day;
+                dst.text = ConvertFormattedStringToOpenRCT2(std::string_view(src.Text, sizeof(src.Text)));
 
-                if (dst.Type == News::ItemType::Research)
+                if (dst.type == News::ItemType::Research)
                 {
                     uint8_t researchItem = src.Assoc & 0x000000FF;
                     uint8_t researchType = (src.Assoc & 0x00FF0000) >> 16;
 
                     ::ResearchItem tmpResearchItem = {};
                     ConvertResearchEntry(&tmpResearchItem, researchItem, researchType);
-                    dst.Assoc = tmpResearchItem.rawValue;
+                    dst.assoc = tmpResearchItem.rawValue;
                 }
                 else
                 {
-                    dst.Assoc = src.Assoc;
+                    dst.assoc = src.Assoc;
                 }
 
                 output.emplace_back(dst);

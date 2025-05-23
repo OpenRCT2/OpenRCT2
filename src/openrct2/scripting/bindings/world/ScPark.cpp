@@ -370,11 +370,11 @@ namespace OpenRCT2::Scripting
         // End the lists by setting next item to null
         if (index < News::ItemHistoryStart)
         {
-            gameState.newsItems[index].Type = News::ItemType::Null;
+            gameState.newsItems[index].type = News::ItemType::Null;
         }
         if (archiveIndex < News::MaxItems)
         {
-            gameState.newsItems[archiveIndex].Type = News::ItemType::Null;
+            gameState.newsItems[archiveIndex].type = News::ItemType::Null;
         }
     }
 

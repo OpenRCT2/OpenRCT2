@@ -339,13 +339,13 @@ namespace OpenRCT2::RCT2
                 }
 
                 News::Item dst{};
-                dst.Type = static_cast<News::ItemType>(src.Type);
-                dst.Flags = src.Flags;
-                dst.Assoc = src.Assoc;
-                dst.Ticks = src.Ticks;
-                dst.MonthYear = src.MonthYear;
-                dst.Day = src.Day;
-                dst.Text = ConvertFormattedStringToOpenRCT2(std::string_view(src.Text, sizeof(src.Text)));
+                dst.type = static_cast<News::ItemType>(src.Type);
+                dst.flags = src.Flags;
+                dst.assoc = src.Assoc;
+                dst.ticks = src.Ticks;
+                dst.monthYear = src.MonthYear;
+                dst.day = src.Day;
+                dst.text = ConvertFormattedStringToOpenRCT2(std::string_view(src.Text, sizeof(src.Text)));
 
                 output.emplace_back(dst);
                 index++;
