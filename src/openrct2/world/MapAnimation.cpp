@@ -671,6 +671,22 @@ static void UpdateAll(const ViewportList& viewports)
     }
 }
 
+static void UpdateAllTemporary()
+{
+    auto it = _temporaryMapAnimations.begin();
+    while (it != _temporaryMapAnimations.end())
+    {
+        if (UpdateTemporaryAnimation(*it))
+        {
+            ++it;
+        }
+        else
+        {
+            it = _temporaryMapAnimations.erase(it);
+        }
+    }
+}
+
 void MapAnimations::InvalidateAndUpdateAll()
 {
     PROFILED_FUNCTION();
@@ -678,21 +694,7 @@ void MapAnimations::InvalidateAndUpdateAll()
     const auto viewports = GetVisibleViewports();
     InvalidateAll(viewports);
     UpdateAll(viewports);
-
-    {
-        auto it = _temporaryMapAnimations.begin();
-        while (it != _temporaryMapAnimations.end())
-        {
-            if (UpdateTemporaryAnimation(*it))
-            {
-                ++it;
-            }
-            else
-            {
-                it = _temporaryMapAnimations.erase(it);
-            }
-        }
-    }
+    UpdateAllTemporary();
 }
 
 void MapAnimations::ClearAll()
