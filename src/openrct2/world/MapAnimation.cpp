@@ -40,6 +40,8 @@
 
 using namespace OpenRCT2;
 
+constexpr ZoomLevel kMaxZoom{ 1 };
+
 struct TemporaryMapAnimation
 {
     CoordsXYZ location{};
@@ -76,7 +78,7 @@ static bool UpdateEntranceAnimation(const EntranceElement& entrance, const Coord
             const auto stationObj = ride->getStationObject();
             if (stationObj != nullptr)
             {
-                MapInvalidateTileZoom1({ loc, baseZ + stationObj->Height + 8, baseZ + stationObj->Height + 24 });
+                ViewportsInvalidate(loc.x, loc.y, baseZ + stationObj->Height + 8, baseZ + stationObj->Height + 24, kMaxZoom);
                 return true;
             }
         }
@@ -86,7 +88,7 @@ static bool UpdateEntranceAnimation(const EntranceElement& entrance, const Coord
         const int32_t direction = (entrance.GetDirection() + GetCurrentRotation()) & 3;
         if (direction == TILE_ELEMENT_DIRECTION_SOUTH || direction == TILE_ELEMENT_DIRECTION_WEST)
         {
-            MapInvalidateTileZoom1({ loc, baseZ + 32, baseZ + 64 });
+            ViewportsInvalidate(loc.x, loc.y, baseZ + 32, baseZ + 64, kMaxZoom);
         }
         return true;
     }
@@ -101,7 +103,7 @@ static bool UpdatePathAnimation(const PathElement& path, const CoordsXYZ& loc, c
         const int32_t direction = (path.GetQueueBannerDirection() + GetCurrentRotation()) & 3;
         if (direction == TILE_ELEMENT_DIRECTION_NORTH || direction == TILE_ELEMENT_DIRECTION_EAST)
         {
-            MapInvalidateTileZoom1({ loc, baseZ + 16, baseZ + 30 });
+            ViewportsInvalidate(loc.x, loc.y, baseZ + 16, baseZ + 30, kMaxZoom);
         }
         return true;
     }
@@ -141,7 +143,7 @@ static bool UpdateSmallSceneryAnimation(const SmallSceneryElement& scenery, cons
             }
         }
         const auto clearZ = scenery.GetClearanceZ();
-        MapInvalidateTileZoom1({ loc, baseZ, clearZ });
+        ViewportsInvalidate(loc.x, loc.y, baseZ, clearZ, kMaxZoom);
         return true;
     }
 
@@ -153,14 +155,14 @@ static bool UpdateTrackAnimation(TrackElement& track, const CoordsXYZ& loc, cons
     switch (track.GetTrackType())
     {
         case TrackElemType::Waterfall:
-            MapInvalidateTileZoom1({ loc, baseZ + 14, baseZ + 46 });
+            ViewportsInvalidate(loc.x, loc.y, baseZ + 14, baseZ + 46, kMaxZoom);
             return true;
         case TrackElemType::Rapids:
         case TrackElemType::Whirlpool:
-            MapInvalidateTileZoom1({ loc, baseZ + 14, baseZ + 18 });
+            ViewportsInvalidate(loc.x, loc.y, baseZ + 14, baseZ + 18, kMaxZoom);
             return true;
         case TrackElemType::SpinningTunnel:
-            MapInvalidateTileZoom1({ loc, baseZ + 14, baseZ + 32 });
+            ViewportsInvalidate(loc.x, loc.y, baseZ + 14, baseZ + 32, kMaxZoom);
             return true;
         default:
             break;
@@ -174,7 +176,7 @@ static bool UpdateLargeSceneryAnimation(const LargeSceneryElement& scenery, cons
     const auto entry = scenery.GetEntry();
     if (entry != nullptr && (entry->flags & LARGE_SCENERY_FLAG_ANIMATED))
     {
-        MapInvalidateTileZoom1({ loc, baseZ, baseZ + 16 });
+        ViewportsInvalidate(loc.x, loc.y, baseZ, baseZ + 16, kMaxZoom);
         return true;
     }
 
@@ -222,7 +224,7 @@ static bool UpdateWallAnimation(WallElement& wall, const CoordsXYZ& loc, const i
             if (currentFrame != newFrame)
             {
                 wall.SetAnimationFrame(newFrame);
-                MapInvalidateTileZoom1({ loc, baseZ, baseZ + 32 });
+                ViewportsInvalidate(loc.x, loc.y, baseZ, baseZ + 32, kMaxZoom);
             }
         }
 
@@ -230,7 +232,7 @@ static bool UpdateWallAnimation(WallElement& wall, const CoordsXYZ& loc, const i
     }
     else if ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != kScrollingModeNone)
     {
-        MapInvalidateTileZoom1({ loc, baseZ, baseZ + 16 });
+        ViewportsInvalidate(loc.x, loc.y, baseZ, baseZ + 16, kMaxZoom);
         return true;
     }
 
@@ -239,7 +241,7 @@ static bool UpdateWallAnimation(WallElement& wall, const CoordsXYZ& loc, const i
 
 static bool UpdateBannerAnimation([[maybe_unused]] const BannerElement& banner, const CoordsXYZ& loc, const int32_t baseZ)
 {
-    MapInvalidateTileZoom1({ loc, baseZ, baseZ + 16 });
+    ViewportsInvalidate(loc.x, loc.y, baseZ, baseZ + 16, kMaxZoom);
     return true;
 }
 
@@ -293,7 +295,7 @@ static bool UpdateOnRidePhotoAnimation(TrackElement& track, const CoordsXYZ& coo
     if (track.IsTakingPhoto())
     {
         track.DecrementPhotoTimeout();
-        MapInvalidateTileZoom1({ coords, track.GetClearanceZ() });
+        ViewportsInvalidate(coords.x, coords.y, coords.z, track.GetClearanceZ(), kMaxZoom);
         return true;
     }
     return false;
@@ -312,12 +314,12 @@ static bool UpdateLandEdgeDoorsAnimation(TrackElement& track, const CoordsXYZ& c
     if (doorAState >= kLandEdgeDoorFrameEnd)
     {
         track.SetDoorAState(kLandEdgeDoorFrameClosed);
-        MapInvalidateTileZoom1({ coords, coords.z + 32 });
+        ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
     }
     else if (doorAState != kLandEdgeDoorFrameClosed && doorAState != kLandEdgeDoorFrameOpen)
     {
         track.SetDoorAState(doorAState + 1);
-        MapInvalidateTileZoom1({ coords, coords.z + 32 });
+        ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
         isAnimating = true;
     }
 
@@ -325,12 +327,12 @@ static bool UpdateLandEdgeDoorsAnimation(TrackElement& track, const CoordsXYZ& c
     if (doorBState >= kLandEdgeDoorFrameEnd)
     {
         track.SetDoorBState(kLandEdgeDoorFrameClosed);
-        MapInvalidateTileZoom1({ coords, coords.z + 32 });
+        ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
     }
     else if (doorBState != kLandEdgeDoorFrameClosed && doorBState != kLandEdgeDoorFrameOpen)
     {
         track.SetDoorBState(doorBState + 1);
-        MapInvalidateTileZoom1({ coords, coords.z + 32 });
+        ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
         isAnimating = true;
     }
 
