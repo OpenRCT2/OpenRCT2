@@ -181,6 +181,7 @@ namespace OpenRCT2
             {
                 auto& context = GetContext();
                 context.SetActiveScene(context.GetTitleScene());
+                break;
             }
             default:
                 break;

@@ -328,7 +328,7 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawLeftButtonBack(RenderTarget& rt)
         {
-            auto previousWidget = widgets[WIDX_PREVIOUS_IMAGE];
+            const auto& previousWidget = widgets[WIDX_PREVIOUS_IMAGE];
             auto leftTop = windowPos + ScreenCoordsXY{ previousWidget.left, previousWidget.top };
             auto rightBottom = windowPos + ScreenCoordsXY{ previousWidget.right, previousWidget.bottom };
             GfxFilterRect(rt, { leftTop, rightBottom }, FilterPaletteID::Palette51);

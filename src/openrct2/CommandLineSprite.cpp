@@ -497,7 +497,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
             }
         }
 
-        uint8_t importFlags = EnumToFlag(ImportFlags::RLE);
+        constexpr uint8_t importFlags = EnumToFlag(ImportFlags::RLE);
         ImageImportMeta meta = { { xOffset, yOffset }, Palette::OpenRCT2, importFlags, gSpriteMode };
         auto importResult = SpriteImageImport(imagePath, meta);
         if (!importResult.has_value())

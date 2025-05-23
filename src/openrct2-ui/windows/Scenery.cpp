@@ -2237,7 +2237,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void RepaintSceneryToolDown(const ScreenCoordsXY& screenCoords, WidgetIndex widgetIndex)
         {
-            auto flag = EnumsToFlags(
+            constexpr auto flag = EnumsToFlags(
                 ViewportInteractionItem::Scenery, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
                 ViewportInteractionItem::Banner);
             auto info = GetMapCoordinatesFromPos(screenCoords, flag);
@@ -2314,7 +2314,7 @@ namespace OpenRCT2::Ui::Windows
 
         void SceneryEyedropperToolDown(const ScreenCoordsXY& screenCoords, WidgetIndex widgetIndex)
         {
-            auto flag = EnumsToFlags(
+            constexpr auto flag = EnumsToFlags(
                 ViewportInteractionItem::Scenery, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
                 ViewportInteractionItem::Banner, ViewportInteractionItem::PathAddition);
             auto info = GetMapCoordinatesFromPos(screenCoords, flag);

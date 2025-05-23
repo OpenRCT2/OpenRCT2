@@ -322,7 +322,7 @@ namespace OpenRCT2::Scripting
                 auto importMode = getImportModeFromPalette(pixelData.Palette);
                 auto pngData = DukGetDataFromBufferLikeObject(pixelData.Data);
                 auto image = Imaging::ReadFromBuffer(pngData, imageFormat);
-                uint8_t flags = EnumToFlag(ImportFlags::RLE);
+                constexpr uint8_t flags = EnumToFlag(ImportFlags::RLE);
                 ImageImportMeta meta = { { 0, 0 }, palette, flags, importMode };
 
                 ImageImporter importer;

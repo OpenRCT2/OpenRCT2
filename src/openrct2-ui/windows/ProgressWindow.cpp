@@ -71,12 +71,12 @@ namespace OpenRCT2::Ui::Windows
     private:
         CloseCallback _onClose = nullptr;
 
-        StringId _progressFormat;
+        StringId _progressFormat{ kStringIdEmpty };
         std::string _progressTitle;
         std::string _currentCaption;
 
-        uint32_t _currentProgress;
-        uint32_t _totalCount;
+        uint32_t _currentProgress{};
+        uint32_t _totalCount{};
         int8_t style = -1;
 
     public:

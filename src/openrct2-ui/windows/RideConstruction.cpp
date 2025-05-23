@@ -1503,6 +1503,7 @@ namespace OpenRCT2::Ui::Windows
                 case TrackElemType::BlockBrakes:
                 case TrackElemType::DiagBlockBrakes:
                     _currentBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
+                    break;
                 default:
                     break;
             }
@@ -2994,7 +2995,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (im.IsModifierKeyPressed(ModifierKey::ctrl))
             {
-                auto interactionFlags = EnumsToFlags(
+                constexpr auto interactionFlags = EnumsToFlags(
                     ViewportInteractionItem::Terrain, ViewportInteractionItem::Ride, ViewportInteractionItem::Footpath,
                     ViewportInteractionItem::PathAddition, ViewportInteractionItem::LargeScenery,
                     ViewportInteractionItem::Label, ViewportInteractionItem::Banner);

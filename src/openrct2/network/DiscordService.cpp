@@ -88,6 +88,8 @@ void DiscordService::RefreshPresence() const
 
     std::string state;
     std::string details;
+    std::string partyId;
+
     switch (gLegacyScene)
     {
         default:
@@ -116,8 +118,9 @@ void DiscordService::RefreshPresence() const
                 }
                 state = serverName;
 
+                partyId = NetworkGetServerName();
                 // NOTE: the party size is displayed next to state
-                discordPresence.partyId = NetworkGetServerName().c_str();
+                discordPresence.partyId = partyId.c_str();
                 discordPresence.partySize = NetworkGetNumPlayers();
                 discordPresence.partyMax = 256;
 

@@ -1192,7 +1192,7 @@ namespace OpenRCT2::Ui::Windows
                     constexpr auto numItems = EnumValue(CurrencyType::Count) + 1;
 
                     // All the currencies except custom currency
-                    size_t numOrdinaryCurrencies = EnumValue(CurrencyType::Count) - 1;
+                    constexpr size_t numOrdinaryCurrencies = EnumValue(CurrencyType::Count) - 1;
 
                     for (size_t i = 0; i < numOrdinaryCurrencies; i++)
                     {

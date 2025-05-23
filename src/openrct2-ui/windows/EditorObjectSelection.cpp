@@ -1139,7 +1139,7 @@ namespace OpenRCT2::Ui::Windows
             if (!tabWidgetsInitialised)
             {
                 tabWidgetsInitialised = true;
-                auto tabWidget = widgets[WIDX_TAB_1];
+                const auto& tabWidget = widgets[WIDX_TAB_1];
                 for (size_t i = 1; i < std::size(ObjectSelectionPages); i++)
                 {
                     widgets.insert(widgets.end() - 1, tabWidget);
