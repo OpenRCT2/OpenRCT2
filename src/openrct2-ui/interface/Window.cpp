@@ -322,23 +322,6 @@ namespace OpenRCT2
         Config::Get().general.DisableScreensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
     }
 
-    /**
-     *
-     *  rct2: 0x006EA776
-     */
-    static void WindowInvalidatePressedImageButton(const WindowBase& w)
-    {
-        for (WidgetIndex widgetIndex = 0; widgetIndex < w.widgets.size(); widgetIndex++)
-        {
-            auto& widget = w.widgets[widgetIndex];
-            if (widget.type != WindowWidgetType::ImgBtn)
-                continue;
-
-            if (WidgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
-                GfxSetDirtyBlocks({ w.windowPos, w.windowPos + ScreenCoordsXY{ w.width, w.height } });
-        }
-    }
-
     void Window::ScrollToViewport()
     {
         if (viewport == nullptr || !focus.has_value())
@@ -1027,11 +1010,7 @@ namespace OpenRCT2::Ui::Windows
      */
     void InvalidateAllWindowsAfterInput()
     {
-        WindowVisitEach([](WindowBase* w) {
-            Windows::WindowUpdateScrollWidgets(*w);
-            WindowInvalidatePressedImageButton(*w);
-            w->OnResize();
-        });
+        WindowVisitEach([](WindowBase* w) { Windows::WindowUpdateScrollWidgets(*w); });
     }
 
     /**

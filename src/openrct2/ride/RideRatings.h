@@ -39,6 +39,8 @@ struct RatingTuple
 
     bool isNull() const;
     void setNull();
+
+    bool operator==(const RatingTuple& rhs) const = default;
 };
 static_assert(sizeof(RatingTuple) == 6);
 

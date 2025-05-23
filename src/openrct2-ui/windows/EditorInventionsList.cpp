@@ -218,8 +218,6 @@ namespace OpenRCT2::Ui::Windows
 
             if (WindowEditorInventionsListDragGetItem() != nullptr)
                 return;
-
-            Invalidate();
         }
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override

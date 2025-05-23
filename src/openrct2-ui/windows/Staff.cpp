@@ -143,6 +143,8 @@ namespace OpenRCT2::Ui::Windows
 
             if (staff->AssignedStaffType == StaffType::Entertainer)
                 _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::Entertainer);
+
+            ViewportInit();
         }
 
         void OnOpen() override
@@ -531,6 +533,14 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_FIRE].left = width - 25;
             widgets[WIDX_FIRE].right = width - 2;
+
+            if (viewport != nullptr)
+            {
+                const Widget& viewportWidget = widgets[WIDX_VIEWPORT];
+                viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 };
+                viewport->width = widgets[WIDX_VIEWPORT].width() - 1;
+                viewport->height = widgets[WIDX_VIEWPORT].height() - 1;
+            }
         }
 
         void OverviewDraw(RenderTarget& rt)
@@ -605,21 +615,6 @@ namespace OpenRCT2::Ui::Windows
         {
             WindowSetResize(*this, { WW, WH }, { 500, 450 });
 
-            if (viewport != nullptr)
-            {
-                auto widget = widgets[WIDX_VIEWPORT];
-                auto newWidth = widget.width() - 1;
-                auto newHeight = widget.height() - 1;
-                viewport->pos = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
-
-                // Update the viewport size
-                if (viewport->width != newWidth || viewport->height != newHeight)
-                {
-                    viewport->width = newWidth;
-                    viewport->height = newHeight;
-                }
-            }
-
             ViewportInit();
         }
 
@@ -648,6 +643,13 @@ namespace OpenRCT2::Ui::Windows
             picked_peep_frame %= pickAnimLength * 4;
 
             InvalidateWidget(WIDX_TAB_1);
+
+            const std::optional<Focus> tempFocus = staff->State != PeepState::Picked ? std::optional(Focus(staff->Id))
+                                                                                     : std::nullopt;
+            if (focus != tempFocus)
+            {
+                ViewportInit();
+            }
         }
 
         void OverviewToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)

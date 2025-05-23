@@ -247,29 +247,24 @@ namespace OpenRCT2
         return mainWindow->viewport;
     }
 
-    void ViewportsInvalidate(int32_t x, int32_t y, int32_t z0, int32_t z1, ZoomLevel maxZoom)
+    void ViewportsInvalidate(const int32_t x, const int32_t y, const int32_t z0, const int32_t z1, const ZoomLevel maxZoom)
     {
         for (auto& vp : _viewports)
         {
             if (vp.isVisible && (maxZoom == ZoomLevel{ -1 } || vp.zoom <= ZoomLevel{ maxZoom }))
             {
-                int32_t x1, y1, x2, y2;
+                const auto screenCoord = Translate3DTo2DWithZ(vp.rotation, CoordsXYZ{ x + 16, y + 16, 0 });
 
-                x += 16;
-                y += 16;
-                auto screenCoord = Translate3DTo2DWithZ(vp.rotation, CoordsXYZ{ x, y, 0 });
+                const auto topLeft = screenCoord - ScreenCoordsXY(32, 32 + z1);
+                const auto bottomRight = screenCoord + ScreenCoordsXY(32, 32 - z0);
 
-                x1 = screenCoord.x - 32;
-                y1 = screenCoord.y - 32 - z1;
-                x2 = screenCoord.x + 32;
-                y2 = screenCoord.y + 32 - z0;
-
-                ViewportInvalidate(&vp, ScreenRect{ { x1, y1 }, { x2, y2 } });
+                ViewportInvalidate(&vp, ScreenRect{ topLeft, bottomRight });
             }
         }
     }
 
-    void ViewportsInvalidate(const CoordsXYZ& pos, int32_t width, int32_t minHeight, int32_t maxHeight, ZoomLevel maxZoom)
+    void ViewportsInvalidate(
+        const CoordsXYZ& pos, const int32_t width, const int32_t minHeight, const int32_t maxHeight, const ZoomLevel maxZoom)
     {
         for (auto& vp : _viewports)
         {
@@ -284,7 +279,7 @@ namespace OpenRCT2
         }
     }
 
-    void ViewportsInvalidate(const ScreenRect& screenRect, ZoomLevel maxZoom)
+    void ViewportsInvalidate(const ScreenRect& screenRect, const ZoomLevel maxZoom)
     {
         for (auto& vp : _viewports)
         {
@@ -589,7 +584,7 @@ namespace OpenRCT2
     // rct2: 0x006E7A15
     static void ViewportSetUndergroundFlag(int32_t underground, WindowBase* window, Viewport* viewport)
     {
-        if (window->classification != WindowClass::MainWindow
+        if ((window->classification != WindowClass::MainWindow && window->classification != WindowClass::Viewport)
             || (window->classification == WindowClass::MainWindow && !window->viewport_smart_follow_sprite.IsNull()))
         {
             if (!underground)
@@ -619,8 +614,6 @@ namespace OpenRCT2
         // Guard against any code attempting to call this at the wrong time.
         Guard::Assert(
             GetContext()->GetDrawingEngine()->GetDrawingContext() != nullptr, "We must be in a valid drawing context.");
-
-        window->OnResize();
 
         Viewport* viewport = window->viewport;
         if (viewport == nullptr)
