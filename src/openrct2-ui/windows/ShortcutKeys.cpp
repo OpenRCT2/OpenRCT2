@@ -335,6 +335,11 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        void OnLanguageChange() override
+        {
+            InitialiseList();
+        }
+
         void RefreshBindings()
         {
             InitialiseList();
