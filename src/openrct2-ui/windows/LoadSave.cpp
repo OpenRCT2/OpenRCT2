@@ -960,7 +960,7 @@ namespace OpenRCT2::Ui::Windows
 
                 case WIDX_FILENAME_TEXTBOX:
                 {
-                    std::string tempText = text.data();
+                    std::string tempText{ text };
                     const char* cStr = tempText.c_str();
                     if (strcmp(_currentFilename, cStr) == 0)
                         return;
