@@ -21,7 +21,7 @@ namespace OpenRCT2::MapAnimation
 
     void Create(const CoordsXY coords);
     void CreateTemporary(const CoordsXYZ& coords, const TemporaryType type);
-    void CreateAll();
+    void MarkAllTiles();
     void UpdateAll();
     void ClearAll();
     void ShiftAll(const CoordsXY amount);

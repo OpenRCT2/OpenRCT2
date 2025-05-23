@@ -67,7 +67,7 @@ static void GameInit(bool retainSpatialIndices)
     ResetAllSpriteQuadrantPlacements();
     LoadPalette();
     EntityTweener::Get().Reset();
-    MapAnimation::CreateAll();
+    MapAnimation::MarkAllTiles();
     FixInvalidVehicleSpriteSizes();
 
     gGameSpeed = 1;

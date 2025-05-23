@@ -2854,7 +2854,7 @@ bool NetworkBase::LoadMap(IStream* stream)
         importer->Import(gameState);
 
         EntityTweener::Get().Reset();
-        MapAnimation::CreateAll();
+        MapAnimation::MarkAllTiles();
 
         gLastAutoSaveUpdate = kAutosavePause;
         result = true;

@@ -470,7 +470,7 @@ void MapAnimation::CreateTemporary(const CoordsXYZ& coords, const TemporaryType 
     _temporaryMapAnimations.insert(TemporaryMapAnimation{ coords, type });
 }
 
-void MapAnimation::CreateAll()
+void MapAnimation::MarkAllTiles()
 {
     TileElementIterator it;
     TileElementIteratorBegin(&it);
