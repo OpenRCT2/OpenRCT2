@@ -131,7 +131,7 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
     RideClearLeftoverEntrances(ride);
 
     const auto rideId = ride.id;
-    News::DisableNewsItems(News::ItemType::Ride, rideId.ToUnderlying());
+    News::DisableNewsItems(News::ItemType::ride, rideId.ToUnderlying());
 
     UnlinkAllBannersForRide(ride.id);
 

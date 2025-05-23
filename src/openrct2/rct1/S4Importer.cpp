@@ -2216,7 +2216,7 @@ namespace OpenRCT2::RCT1
                 dst.day = src.Day;
                 dst.text = ConvertFormattedStringToOpenRCT2(std::string_view(src.Text, sizeof(src.Text)));
 
-                if (dst.type == News::ItemType::Research)
+                if (dst.type == News::ItemType::research)
                 {
                     uint8_t researchItem = src.Assoc & 0x000000FF;
                     uint8_t researchType = (src.Assoc & 0x00FF0000) >> 16;

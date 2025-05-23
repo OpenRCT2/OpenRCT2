@@ -1603,20 +1603,20 @@ static void ConsoleCommandAddNewsItem([[maybe_unused]] InteractiveConsole& conso
     if (argv.size() < 2)
     {
         console.WriteLineWarning("Too few arguments");
-        static_assert(News::ItemTypeCount == 11, "News::ItemType::Count changed, update console command!");
+        static_assert(News::ItemTypeCount == 11, "News::ItemType::count changed, update console command!");
         console.WriteLine("add_news_item <type> <message> [assoc]");
         console.WriteLine("type is one of:");
-        console.WriteLine("    0 (News::ItemType::Null)");
-        console.WriteLine("    1 (News::ItemType::Ride)");
-        console.WriteLine("    2 (News::ItemType::PeepOnRide)");
-        console.WriteLine("    3 (News::ItemType::Peep)");
-        console.WriteLine("    4 (News::ItemType::Money)");
-        console.WriteLine("    5 (News::ItemType::Blank)");
-        console.WriteLine("    6 (News::ItemType::Research)");
-        console.WriteLine("    7 (News::ItemType::Peeps)");
-        console.WriteLine("    8 (News::ItemType::Award)");
-        console.WriteLine("    9 (News::ItemType::Graph)");
-        console.WriteLine("   10 (News::ItemType::Campaign)");
+        console.WriteLine("    0 (News::ItemType::null)");
+        console.WriteLine("    1 (News::ItemType::ride)");
+        console.WriteLine("    2 (News::ItemType::peepOnRide)");
+        console.WriteLine("    3 (News::ItemType::peep)");
+        console.WriteLine("    4 (News::ItemType::money)");
+        console.WriteLine("    5 (News::ItemType::blank)");
+        console.WriteLine("    6 (News::ItemType::research)");
+        console.WriteLine("    7 (News::ItemType::peeps)");
+        console.WriteLine("    8 (News::ItemType::award)");
+        console.WriteLine("    9 (News::ItemType::graph)");
+        console.WriteLine("   10 (News::ItemType::campaign)");
         console.WriteLine("message is the message to display, wrapped in quotes for multiple words");
         console.WriteLine("assoc is the associated id of ride/peep/tile/etc. If the selected ItemType doesn't need an assoc "
                           "(Null, Money, Award, Graph), you can leave this field blank");

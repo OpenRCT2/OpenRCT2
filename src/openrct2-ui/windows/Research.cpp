@@ -320,7 +320,7 @@ namespace OpenRCT2::Ui::Windows
 
         if (widgetIndex == (WIDX_LAST_DEVELOPMENT_BUTTON + widgetOffset))
         {
-            News::OpenSubject(News::ItemType::Research, gameState.researchLastItem->rawValue);
+            News::OpenSubject(News::ItemType::research, gameState.researchLastItem->rawValue);
         }
     }
 

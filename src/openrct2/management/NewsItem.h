@@ -32,31 +32,31 @@ namespace OpenRCT2::News
 {
     enum class ItemType : uint8_t
     {
-        Null,
-        Ride,
-        PeepOnRide,
-        Peep,
-        Money,
-        Blank,
-        Research,
-        Peeps,
-        Award,
-        Graph,
-        Campaign,
-        Count
+        null,
+        ride,
+        peepOnRide,
+        peep,
+        money,
+        blank,
+        research,
+        peeps,
+        award,
+        graph,
+        campaign,
+        count
     };
 
-    constexpr size_t ItemTypeCount = static_cast<size_t>(News::ItemType::Count);
+    constexpr size_t ItemTypeCount = static_cast<size_t>(News::ItemType::count);
 
     enum ItemTypeProperty : uint8_t
     {
-        HasLocation = 1,
-        HasSubject = 2,
+        hasLocation = 1,
+        hasSubject = 2,
     };
 
     enum ItemFlags : uint8_t
     {
-        HasButton = 1 << 0,
+        hasButton = 1 << 0,
     };
 
     /**
@@ -64,7 +64,7 @@ namespace OpenRCT2::News
      */
     struct Item
     {
-        News::ItemType type = News::ItemType::Null;
+        News::ItemType type = News::ItemType::null;
         uint8_t flags{};
         uint32_t assoc{};
         uint16_t ticks{};
@@ -74,28 +74,28 @@ namespace OpenRCT2::News
 
         constexpr bool isEmpty() const noexcept
         {
-            return type == News::ItemType::Null;
+            return type == News::ItemType::null;
         }
 
         constexpr uint8_t getTypeProperties() const
         {
             switch (type)
             {
-                case News::ItemType::Blank:
-                    return News::ItemTypeProperty::HasLocation;
-                case News::ItemType::Money:
-                case News::ItemType::Research:
-                case News::ItemType::Peeps:
-                case News::ItemType::Award:
-                case News::ItemType::Graph:
-                case News::ItemType::Campaign:
-                    return News::ItemTypeProperty::HasSubject;
-                case News::ItemType::Ride:
-                case News::ItemType::PeepOnRide:
-                case News::ItemType::Peep:
-                    return News::ItemTypeProperty::HasLocation | News::ItemTypeProperty::HasSubject;
-                case News::ItemType::Null:
-                case News::ItemType::Count:
+                case News::ItemType::blank:
+                    return News::ItemTypeProperty::hasLocation;
+                case News::ItemType::money:
+                case News::ItemType::research:
+                case News::ItemType::peeps:
+                case News::ItemType::award:
+                case News::ItemType::graph:
+                case News::ItemType::campaign:
+                    return News::ItemTypeProperty::hasSubject;
+                case News::ItemType::ride:
+                case News::ItemType::peepOnRide:
+                case News::ItemType::peep:
+                    return News::ItemTypeProperty::hasLocation | News::ItemTypeProperty::hasSubject;
+                case News::ItemType::null:
+                case News::ItemType::count:
                 default:
                     return 0;
             }
@@ -108,17 +108,17 @@ namespace OpenRCT2::News
 
         constexpr bool typeHasSubject() const
         {
-            return this->getTypeProperties() & News::ItemTypeProperty::HasSubject;
+            return this->getTypeProperties() & News::ItemTypeProperty::hasSubject;
         }
 
         constexpr bool typeHasLocation() const
         {
-            return this->getTypeProperties() & News::ItemTypeProperty::HasLocation;
+            return this->getTypeProperties() & News::ItemTypeProperty::hasLocation;
         }
 
         constexpr bool hasButton() const noexcept
         {
-            return flags & News::ItemFlags::HasButton;
+            return flags & News::ItemFlags::hasButton;
         }
     };
 
@@ -146,7 +146,7 @@ namespace OpenRCT2::News
 
         ItemQueue()
         {
-            std::get<0>(Queue).type = News::ItemType::Null;
+            std::get<0>(Queue).type = News::ItemType::null;
         }
 
         constexpr iterator begin() noexcept
@@ -204,7 +204,7 @@ namespace OpenRCT2::News
         void pop_front()
         {
             std::move(std::begin(Queue) + 1, std::end(Queue), std::begin(Queue));
-            Queue[N - 1].type = News::ItemType::Null;
+            Queue[N - 1].type = News::ItemType::null;
         }
 
         void push_back(const_reference item)
@@ -221,7 +221,7 @@ namespace OpenRCT2::News
                 *it = item;
                 ++it;
                 if (std::distance(it, std::end(Queue)))
-                    it->type = News::ItemType::Null;
+                    it->type = News::ItemType::null;
             }
         }
 

@@ -230,11 +230,11 @@ namespace OpenRCT2::Ui::Windows
 
                     switch (newsItem.type)
                     {
-                        case News::ItemType::Ride:
+                        case News::ItemType::ride:
                             GfxDrawSprite(rt, ImageId(SPR_RIDE), screenCoords);
                             break;
-                        case News::ItemType::Peep:
-                        case News::ItemType::PeepOnRide:
+                        case News::ItemType::peep:
+                        case News::ItemType::peepOnRide:
                         {
                             RenderTarget clippedRT;
                             if (!ClipDrawPixelInfo(clippedRT, rt, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
@@ -271,25 +271,25 @@ namespace OpenRCT2::Ui::Windows
                             GfxDrawSprite(clippedRT, image, clipCoords);
                             break;
                         }
-                        case News::ItemType::Money:
-                        case News::ItemType::Campaign:
+                        case News::ItemType::money:
+                        case News::ItemType::campaign:
                             GfxDrawSprite(rt, ImageId(SPR_FINANCE), screenCoords);
                             break;
-                        case News::ItemType::Research:
+                        case News::ItemType::research:
                             GfxDrawSprite(rt, ImageId(newsItem.assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
                             break;
-                        case News::ItemType::Peeps:
+                        case News::ItemType::peeps:
                             GfxDrawSprite(rt, ImageId(SPR_GUESTS), screenCoords);
                             break;
-                        case News::ItemType::Award:
+                        case News::ItemType::award:
                             GfxDrawSprite(rt, ImageId(SPR_AWARD), screenCoords);
                             break;
-                        case News::ItemType::Graph:
+                        case News::ItemType::graph:
                             GfxDrawSprite(rt, ImageId(SPR_GRAPH), screenCoords);
                             break;
-                        case News::ItemType::Null:
-                        case News::ItemType::Blank:
-                        case News::ItemType::Count:
+                        case News::ItemType::null:
+                        case News::ItemType::blank:
+                        case News::ItemType::count:
                             break;
                     }
                 }

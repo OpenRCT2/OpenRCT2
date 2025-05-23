@@ -27,13 +27,13 @@ namespace OpenRCT2::Scripting
     inline News::ItemType GetParkMessageType(const std::string& key)
     {
         // Get the first ItemType that appears in ParkMessageTypeStrings that isn't Null
-        auto firstType = static_cast<uint8_t>(News::ItemType::Ride);
+        auto firstType = static_cast<uint8_t>(News::ItemType::ride);
 
         auto begin = std::begin(ParkMessageTypeStrings);
         auto end = std::end(ParkMessageTypeStrings);
 
         auto it = std::find(begin, end, key);
-        return it != end ? static_cast<News::ItemType>(firstType + std::distance(begin, it)) : News::ItemType::Blank;
+        return it != end ? static_cast<News::ItemType>(firstType + std::distance(begin, it)) : News::ItemType::blank;
     }
 
     inline std::string GetParkMessageType(News::ItemType type)

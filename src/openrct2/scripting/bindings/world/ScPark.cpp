@@ -370,11 +370,11 @@ namespace OpenRCT2::Scripting
         // End the lists by setting next item to null
         if (index < News::ItemHistoryStart)
         {
-            gameState.newsItems[index].type = News::ItemType::Null;
+            gameState.newsItems[index].type = News::ItemType::null;
         }
         if (archiveIndex < News::MaxItems)
         {
-            gameState.newsItems[archiveIndex].type = News::ItemType::Null;
+            gameState.newsItems[archiveIndex].type = News::ItemType::null;
         }
     }
 
@@ -384,7 +384,7 @@ namespace OpenRCT2::Scripting
         try
         {
             uint32_t assoc = std::numeric_limits<uint32_t>::max();
-            auto type = News::ItemType::Blank;
+            auto type = News::ItemType::blank;
             std::string text;
             if (message.type() == DukValue::Type::STRING)
             {
@@ -394,7 +394,7 @@ namespace OpenRCT2::Scripting
             {
                 type = GetParkMessageType(message["type"].as_string());
                 text = message["text"].as_string();
-                if (type == News::ItemType::Blank)
+                if (type == News::ItemType::blank)
                 {
                     assoc = static_cast<uint32_t>(((kCoordsNull & 0xFFFF) << 16) | (kCoordsNull & 0xFFFF));
                 }
