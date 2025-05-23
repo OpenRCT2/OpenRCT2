@@ -4,6 +4,7 @@
 - Feature: [#24313] [Plugin] Add API for setting a ride vehicle’s sprite to a smoke plume.
 - Improved: [#24364] Improve the fallback vehicle sprites for Zero G Rolls, and allow small ones to be built without cheats if the fallbacks are available.
 - Improved: [#24368] Clicking the in-game update notication now leads to a more user-friendly download page.
+- Improved: [#24400] Ride list in preservation window is now sorted alphabetically.
 - Improved: [#24409] Steam installs of RCT Classic are now detected automatically.
 - Improved: [#24413] Better performance when moving the viewport on Windows and Linux platforms.
 - Improved: [#24417] Improve the fallback vehicle sprites for Dive Loops.
