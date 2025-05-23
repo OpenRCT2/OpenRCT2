@@ -23,7 +23,7 @@ namespace OpenRCT2::MapAnimation
     void MarkTileForUpdate(const CoordsXY coords);
     void CreateTemporary(const CoordsXYZ& coords, const TemporaryType type);
     void MarkAllTiles();
-    void UpdateAll();
+    void InvalidateAndUpdateAll();
     void ClearAll();
     void ShiftAll(const CoordsXY amount);
 } // namespace OpenRCT2::MapAnimation
