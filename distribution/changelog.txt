@@ -12,7 +12,7 @@
 - Improved: [#24433] The ride, new ride, scenery, path, viewport, park and tool windows no longer redraw every frame if they have not changed.
 - Improved: [#24467] Apply tweening only to on-screen entities when not zoomed out for better performance with uncapped FPS.
 - Improved: [#24479] More descriptive error messages for `set` commands in the in-game console.
-- Change: [#24342] g2.dat is now split into g2.dat and fonts.dat.
+- Change: [#24342, #24484] g2.dat is now split into g2.dat, fonts.dat and tracks.dat.
 - Change: [#24362] The Windows installer now prevents installing to the same folder as RollerCoaster Tycoon 2 or Classic.
 - Change: [#24418] Small & Large Zero G Rolls can now be built on the LIM Launched RC without cheats if vehicle sprites are available.
 - Fix: [#5269] Font bugs when using the Russian release of RCT2 as the base game.

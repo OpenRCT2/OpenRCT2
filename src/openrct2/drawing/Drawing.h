@@ -533,7 +533,7 @@ void GfxFilterRect(RenderTarget& rt, const ScreenRect& rect, FilterPaletteID pal
 
 // sprite
 bool GfxLoadG1(const OpenRCT2::IPlatformEnvironment& env);
-bool GfxLoadG2AndFonts();
+void GfxLoadG2FontsAndTracks();
 bool GfxLoadCsg();
 void GfxUnloadG1();
 void GfxUnloadG2AndFonts();

@@ -168,6 +168,7 @@ jobs:
         run: |
           gxc build g2.dat OpenRCT2/resources/g2/sprites.json
           gxc build fonts.dat OpenRCT2/resources/fonts/sprites.json
+          gxc build tracks.dat OpenRCT2/resources/tracks/sprites.json
       - name: Upload graphics .dat files
         uses: actions/upload-artifact@v4
         with:
@@ -175,6 +176,7 @@ jobs:
           path: |
             g2.dat
             fonts.dat
+            tracks.dat
   windows:
     name: Windows
     runs-on: windows-latest

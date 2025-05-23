@@ -8,8 +8,7 @@
     <!-- CLI Configuration -->
     <CLIProjectName Condition="'$(CLIProjectName)' == ''">openrct2-cli</CLIProjectName>
     <CLIProjectPath Condition="'$(CLIProjectPath)' == ''">$(SolutionDir)src\$(CLIProjectName)\$(CLIProjectName).vcxproj</CLIProjectPath>
-    <G2CLIPath Condition="'$(G2CLIPath)' == ''">$(OutDir)$(CLIProjectName).exe</G2CLIPath>
-    <FontsCLIPath Condition="'$(FontsCLIPath)' == ''">$(OutDir)$(CLIProjectName).exe</FontsCLIPath>
+    <GraphicsCLIPath Condition="'$(GraphicsCLIPath)' == ''">$(OutDir)$(CLIProjectName).exe</GraphicsCLIPath>
 
     <!-- Data Configuration -->
     <DataOutputPath Condition="'$(DataOutputPath)' == ''">$(OutDir)data\</DataOutputPath>
@@ -17,10 +16,10 @@
     <DataLanguagePath Condition="'$(DataLanguagePath)' == ''">$(SolutionDir)data\language\</DataLanguagePath>
     <DataShadersPath Condition="'$(DataShadersPath)' == ''">$(SolutionDir)data\shaders\</DataShadersPath>
     <DataScenarioPath Condition="'$(DataScenarioPath)' == ''">$(SolutionDir)data\scenario_patches\</DataScenarioPath>
-    <ResourcesG2Path Condition="'$(ResourcesG2Path)' == ''">$(SolutionDir)resources\g2\</ResourcesG2Path>
-    <G2InputFile Condition="'$(G2InputFile)' == ''">$(ResourcesG2Path)sprites.json</G2InputFile>
-    <ResourcesFontsPath Condition="'$(ResourcesFontsPath)' == ''">$(SolutionDir)resources\fonts\</ResourcesFontsPath>
-    <FontsInputFile Condition="'$(FontsInputFile)' == ''">$(ResourcesFontsPath)sprites.json</FontsInputFile>
+    <ResourcesPath Condition="'$(ResourcesPath)' == ''">$(SolutionDir)resources\</ResourcesPath>
+    <G2InputFile Condition="'$(G2InputFile)' == ''">$(ResourcesPath)g2\sprites.json</G2InputFile>
+    <FontsInputFile Condition="'$(FontsInputFile)' == ''">$(ResourcesPath)fonts\sprites.json</FontsInputFile>
+    <TracksInputFile Condition="'$(TracksInputFile)' == ''">$(ResourcesPath)tracks\sprites.json</TracksInputFile>
     <DataOutputPath Condition="'$(DataOutputPath)' == ''">$(OutDir)data\</DataOutputPath>
   </PropertyGroup>
     
@@ -28,6 +27,7 @@
   <ItemGroup>
     <G2Input Include="$(G2InputFile)" />
     <FontsInput Include="$(FontsInputFile)" />
+    <TracksInput Include="$(TracksInputFile)" />
     
     <LanguageFiles Include="$(DataLanguagePath)**\*"
                    Exclude="$(DataLanguagePath)*.bak;
@@ -111,7 +111,7 @@
 
     <MakeDir Directories="$(DataOutputPath)" />
     
-    <Exec Command="&quot;$(G2CLIPath)&quot; sprite build &quot;$(DataOutputPath)g2.dat&quot; &quot;%(G2Input.FullPath)&quot;"
+    <Exec Command="&quot;$(GraphicsCLIPath)&quot; sprite build &quot;$(DataOutputPath)g2.dat&quot; &quot;%(G2Input.FullPath)&quot;"
           ConsoleToMSBuild="true"
           IgnoreExitCode="false">
       <Output TaskParameter="ConsoleOutput" PropertyName="G2BuildOutput" />
@@ -131,7 +131,7 @@
   
       <MakeDir Directories="$(DataOutputPath)" />
       
-      <Exec Command="&quot;$(FontsCLIPath)&quot; sprite build &quot;$(DataOutputPath)fonts.dat&quot; &quot;%(FontsInput.FullPath)&quot;"
+      <Exec Command="&quot;$(GraphicsCLIPath)&quot; sprite build &quot;$(DataOutputPath)fonts.dat&quot; &quot;%(FontsInput.FullPath)&quot;"
             ConsoleToMSBuild="true"
             IgnoreExitCode="false">
         <Output TaskParameter="ConsoleOutput" PropertyName="FontsBuildOutput" />
@@ -142,4 +142,24 @@
              AlwaysCreate="true" />
     </Target>
   <Target Name="fonts" DependsOnTargets="BuildFonts" />
+  
+  <Target Name="BuildTracks"
+          AfterTargets="Build"
+          Inputs="@(TracksInput)"
+          Outputs="$(DataOutputPath)tracks.dat"
+          Condition="'$(TestConfig)' != 'true' and ('$(Platform)' != 'ARM64' or '$(PROCESSOR_ARCHITECTURE)' == 'ARM64')">
+
+    <MakeDir Directories="$(DataOutputPath)" />
+    
+    <Exec Command="&quot;$(GraphicsCLIPath)&quot; sprite build &quot;$(DataOutputPath)tracks.dat&quot; &quot;%(TracksInput.FullPath)&quot;"
+          ConsoleToMSBuild="true"
+          IgnoreExitCode="false">
+      <Output TaskParameter="ConsoleOutput" PropertyName="TracksBuildOutput" />
+    </Exec>
+
+    <Touch Files="$(DataOutputPath)tracks.dat"
+           ForceTouch="true"
+           AlwaysCreate="true" />
+  </Target>
+  <Target Name="tracks" DependsOnTargets="BuildTracks" />
 </Project>
