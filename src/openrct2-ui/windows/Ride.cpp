@@ -4850,7 +4850,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    auto typeDescriptor = ride->getRideTypeDescriptor();
+                    const auto& typeDescriptor = ride->getRideTypeDescriptor();
                     int32_t spriteIndex = typeDescriptor.ColourPreview.Track;
                     if (spriteIndex != 0)
                     {
