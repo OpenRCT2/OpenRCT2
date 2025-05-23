@@ -961,6 +961,7 @@ void Vehicle::UpdateMeasurements()
                 {
                     curRide->specialTrackElements.set(SpecialElement::splash);
                 }
+                break;
             default:
                 break;
         }
@@ -1345,6 +1346,7 @@ void Vehicle::Update()
             break;
         case Vehicle::Status::DoingCircusShow:
             UpdateDoingCircusShow();
+            break;
         default:
             break;
     }

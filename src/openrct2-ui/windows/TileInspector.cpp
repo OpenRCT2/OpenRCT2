@@ -733,6 +733,7 @@ static uint64_t PageDisabledWidgets[] = {
                                 windowTileInspectorSelectedIndex, !tileElement->AsWall()->AnimationIsBackwards());
                             break;
                     }
+                    break;
                 default:
                     break;
             }

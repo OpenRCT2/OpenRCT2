@@ -2322,6 +2322,7 @@ void ShiftMap(const TileCoordsXY& amount)
                         fountain->TargetX += amountToMove.x;
                         fountain->TargetY += amountToMove.y;
                     }
+                    break;
                 }
                 default:
                     break;

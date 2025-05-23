@@ -225,6 +225,7 @@ void CheatsSerialise(DataSerialiser& ds)
                     break;
                 case CheatType::SetForcedParkRating:
                     ds << gameState.cheats.forcedParkRating;
+                    break;
                 default:
                     break;
             }

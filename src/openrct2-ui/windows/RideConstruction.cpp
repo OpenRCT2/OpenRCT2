@@ -1503,6 +1503,7 @@ namespace OpenRCT2::Ui::Windows
                 case TrackElemType::BlockBrakes:
                 case TrackElemType::DiagBlockBrakes:
                     _currentBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
+                    break;
                 default:
                     break;
             }
