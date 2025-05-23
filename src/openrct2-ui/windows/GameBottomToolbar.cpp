@@ -612,9 +612,9 @@ namespace OpenRCT2::Ui::Windows
 
         void OnDraw(RenderTarget& rt) override
         {
-            auto leftWidget = widgets[WIDX_LEFT_OUTSET];
-            auto rightWidget = widgets[WIDX_RIGHT_OUTSET];
-            auto middleWidget = widgets[WIDX_MIDDLE_OUTSET];
+            const auto& leftWidget = widgets[WIDX_LEFT_OUTSET];
+            const auto& rightWidget = widgets[WIDX_RIGHT_OUTSET];
+            const auto& middleWidget = widgets[WIDX_MIDDLE_OUTSET];
 
             // Draw panel grey backgrounds
             auto leftTop = windowPos + ScreenCoordsXY{ leftWidget.left, leftWidget.top };

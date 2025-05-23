@@ -619,9 +619,9 @@ namespace OpenRCT2::Ui::Windows
 
             if (viewport != nullptr)
             {
-                auto widget = widgets[WIDX_VIEWPORT];
-                auto reqViewportWidth = widget.width() - 1;
-                auto reqViewportHeight = widget.height() - 1;
+                const auto& widget = widgets[WIDX_VIEWPORT];
+                const auto reqViewportWidth = widget.width() - 1;
+                const auto reqViewportHeight = widget.height() - 1;
                 viewport->pos = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
                 if (viewport->width != reqViewportWidth || viewport->height != reqViewportHeight)
                 {
