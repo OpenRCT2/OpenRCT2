@@ -197,7 +197,7 @@ bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
             if (!Park::RidePricesUnlocked())
                 return false;
 
-            // fall-through
+            [[fallthrough]];
         case ADVERTISING_CAMPAIGN_RIDE:
             // Check if any rides exist
             for (auto& ride : GetRideManager())
