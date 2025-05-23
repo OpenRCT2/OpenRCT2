@@ -5552,7 +5552,7 @@ namespace OpenRCT2::Ui::Windows
             _lastSceneryX = screenCoords.x;
             _lastSceneryY = screenCoords.y;
 
-            auto interactionFlags = EnumsToFlags(
+            constexpr auto interactionFlags = EnumsToFlags(
                 ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall,
                 ViewportInteractionItem::LargeScenery);
             auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
