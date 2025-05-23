@@ -380,7 +380,7 @@ static uint8_t ViewportSurfacePaintSetupGetRelativeSlope(const SurfaceElement& s
  *  rct2: 0x0065E890, 0x0065E946, 0x0065E9FC, 0x0065EAB2
  */
 static void ViewportSurfaceSmoothenEdge(
-    PaintSession& session, enum edge_t edge, struct TileDescriptor self, struct TileDescriptor neighbour)
+    PaintSession& session, const edge_t edge, const TileDescriptor& self, const TileDescriptor& neighbour)
 {
     PROFILED_FUNCTION();
 
