@@ -167,9 +167,13 @@ static std::optional<UpdateType> UpdateSmallSceneryAnimation(
                     }
                     break;
                 }
+                if constexpr (invalidate)
+                {
+                    ViewportsInvalidate(loc.x, loc.y, baseZ, scenery.GetClearanceZ(), kMaxZoom);
+                }
             }
         }
-        if constexpr (invalidate)
+        else if constexpr (invalidate)
         {
             ViewportsInvalidate(loc.x, loc.y, baseZ, scenery.GetClearanceZ(), kMaxZoom);
         }
