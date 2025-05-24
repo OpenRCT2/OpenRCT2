@@ -76,7 +76,7 @@ static std::set<TileCoordsXY, TileCoordsXYCmp> _mapAnimationsUpdate;
 static std::set<TemporaryMapAnimation> _temporaryMapAnimations;
 
 template<bool invalidateAllViewports>
-static void Invalidate(const Viewport& viewport, const int32_t x, const int32_t y, const int32_t z0, const int32_t z1)
+static void Invalidate(const Viewport* const viewport, const int32_t x, const int32_t y, const int32_t z0, const int32_t z1)
 {
     if constexpr (invalidateAllViewports)
     {
@@ -84,13 +84,13 @@ static void Invalidate(const Viewport& viewport, const int32_t x, const int32_t 
     }
     else
     {
-        viewport.Invalidate(x, y, z0, z1, kMaxZoom);
+        viewport->Invalidate(x, y, z0, z1, kMaxZoom);
     }
 }
 
 template<bool invalidate, bool invalidateAllViewports>
 static bool UpdateEntranceAnimation(
-    const EntranceElement& entrance, const CoordsXYZ& loc, const int32_t baseZ, const Viewport& viewport)
+    const EntranceElement& entrance, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
     if (entrance.GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
     {
@@ -126,7 +126,8 @@ static bool UpdateEntranceAnimation(
 }
 
 template<bool invalidate, bool invalidateAllViewports>
-static bool UpdatePathAnimation(const PathElement& path, const CoordsXYZ& loc, const int32_t baseZ, const Viewport& viewport)
+static bool UpdatePathAnimation(
+    const PathElement& path, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
     if (path.IsQueue() && path.HasQueueBanner())
     {
@@ -145,7 +146,7 @@ static bool UpdatePathAnimation(const PathElement& path, const CoordsXYZ& loc, c
 
 template<bool invalidate, bool invalidateAllViewports>
 static std::optional<UpdateType> UpdateSmallSceneryAnimation(
-    const SmallSceneryElement& scenery, const CoordsXYZ& loc, const int32_t baseZ, const Viewport& viewport)
+    const SmallSceneryElement& scenery, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
     const auto entry = scenery.GetEntry();
     if (entry == nullptr)
@@ -198,7 +199,7 @@ static std::optional<UpdateType> UpdateSmallSceneryAnimation(
 }
 
 template<bool invalidate, bool invalidateAllViewports>
-static bool UpdateTrackAnimation(TrackElement& track, const CoordsXYZ& loc, const int32_t baseZ, const Viewport& viewport)
+static bool UpdateTrackAnimation(TrackElement& track, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
     switch (track.GetTrackType())
     {
@@ -230,7 +231,7 @@ static bool UpdateTrackAnimation(TrackElement& track, const CoordsXYZ& loc, cons
 
 template<bool invalidate, bool invalidateAllViewports>
 static bool UpdateLargeSceneryAnimation(
-    const LargeSceneryElement& scenery, const CoordsXYZ& loc, const int32_t baseZ, const Viewport& viewport)
+    const LargeSceneryElement& scenery, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
     const auto entry = scenery.GetEntry();
     if (entry != nullptr && (entry->flags & LARGE_SCENERY_FLAG_ANIMATED))
@@ -247,7 +248,7 @@ static bool UpdateLargeSceneryAnimation(
 
 template<bool invalidate, bool invalidateAllViewports>
 static std::optional<UpdateType> UpdateWallAnimation(
-    WallElement& wall, const CoordsXYZ& loc, const int32_t baseZ, const Viewport& viewport)
+    WallElement& wall, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
     const auto entry = wall.GetEntry();
     if (entry == nullptr)
@@ -311,7 +312,7 @@ static std::optional<UpdateType> UpdateWallAnimation(
 
 template<bool invalidate, bool invalidateAllViewports>
 static bool UpdateBannerAnimation(
-    [[maybe_unused]] const BannerElement& banner, const CoordsXYZ& loc, const int32_t baseZ, const Viewport& viewport)
+    [[maybe_unused]] const BannerElement& banner, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
     if constexpr (invalidate)
     {
@@ -321,7 +322,7 @@ static bool UpdateBannerAnimation(
 }
 
 template<bool invalidate, bool invalidateAllViewports>
-static std::optional<UpdateType> UpdateTile(const TileCoordsXY& coords, const Viewport& viewport)
+static std::optional<UpdateType> UpdateTile(const TileCoordsXY& coords, const Viewport* const viewport)
 {
     auto tileElement = MapGetFirstElementAt(coords);
     if (tileElement == nullptr)
@@ -668,7 +669,7 @@ static void InvalidateAll(const ViewportList& viewports)
             {
                 if (_mapAnimationsInvalidate.contains(tileCoords))
                 {
-                    if (!UpdateTile<true, false>(tileCoords, *viewport))
+                    if (!UpdateTile<true, false>(tileCoords, viewport))
                     {
                         _mapAnimationsInvalidate.erase(tileCoords);
                     }
@@ -701,8 +702,7 @@ static void UpdateAll(const ViewportList& viewports)
     while (it != _mapAnimationsUpdate.end())
     {
         const bool isVisible = IsTileVisible(viewports, *it);
-        const auto result = isVisible ? UpdateTile<true, true>(*it, *viewports.front())
-                                      : UpdateTile<false, true>(*it, *viewports.front());
+        const auto result = isVisible ? UpdateTile<true, true>(*it, nullptr) : UpdateTile<false, true>(*it, nullptr);
         if (result)
         {
             if (result.value() == UpdateType::invalidate)
