@@ -2815,7 +2815,7 @@ void Vehicle::CheckIfMissing()
         curRide->formatNameTo(ft);
         ft.Add<StringId>(GetRideComponentName(GetRideTypeDescriptor(curRide->type).NameConvention.station).singular);
 
-        News::AddItemToQueue(News::ItemType::Ride, STR_NEWS_VEHICLE_HAS_STALLED, ride.ToUnderlying(), ft);
+        News::AddItemToQueue(News::ItemType::ride, STR_NEWS_VEHICLE_HAS_STALLED, ride.ToUnderlying(), ft);
     }
 }
 
@@ -4562,7 +4562,7 @@ static void ride_train_crash(Ride& ride, uint16_t numFatalities)
         {
             ride.formatNameTo(ft);
             News::AddItemToQueue(
-                News::ItemType::Ride, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X,
+                News::ItemType::ride, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X,
                 ride.id.ToUnderlying(), ft);
         }
 

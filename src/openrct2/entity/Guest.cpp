@@ -1702,7 +1702,7 @@ static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopI
         ft.Add<StringId>(shopItemDescriptor.Naming.Indefinite);
         if (Config::Get().notifications.GuestBoughtItem)
         {
-            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, guest.Id, ft);
+            News::AddItemToQueue(News::ItemType::peepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, guest.Id, ft);
         }
     }
 
@@ -3627,7 +3627,7 @@ void PeepUpdateRideLeaveEntranceDefault(Guest& guest, Ride& ride, CoordsXYZD& en
         ride.formatNameTo(ft);
         if (Config::Get().notifications.RideWarnings)
         {
-            News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, guest.CurrentRide.ToUnderlying(), ft);
+            News::AddItemToQueue(News::ItemType::ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, guest.CurrentRide.ToUnderlying(), ft);
         }
     }
 }
@@ -3932,7 +3932,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
 
         if (Config::Get().notifications.GuestOnRide)
         {
-            News::AddItemToQueue(News::ItemType::PeepOnRide, msg_string, Id, ft);
+            News::AddItemToQueue(News::ItemType::peepOnRide, msg_string, Id, ft);
         }
     }
 
@@ -5086,7 +5086,7 @@ void Guest::UpdateRideLeaveExit()
 
             if (Config::Get().notifications.GuestLeftRide)
             {
-                News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, Id, ft);
+                News::AddItemToQueue(News::ItemType::peepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, Id, ft);
             }
         }
     }

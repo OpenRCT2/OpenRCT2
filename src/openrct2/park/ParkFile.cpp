@@ -1155,20 +1155,20 @@ namespace OpenRCT2
 
         static void ReadWriteNewsItem(OrcaStream::ChunkStream& cs, News::Item& item)
         {
-            cs.ReadWrite(item.Type);
-            cs.ReadWrite(item.Flags);
-            cs.ReadWrite(item.Assoc);
-            cs.ReadWrite(item.Ticks);
-            cs.ReadWrite(item.MonthYear);
-            cs.ReadWrite(item.Day);
+            cs.ReadWrite(item.type);
+            cs.ReadWrite(item.flags);
+            cs.ReadWrite(item.assoc);
+            cs.ReadWrite(item.ticks);
+            cs.ReadWrite(item.monthYear);
+            cs.ReadWrite(item.day);
             if (cs.GetMode() == OrcaStream::Mode::READING)
             {
                 auto s = cs.Read<std::string>();
-                item.Text = s;
+                item.text = s;
             }
             else
             {
-                cs.Write(std::string_view(item.Text));
+                cs.Write(std::string_view(item.text));
             }
         }
 

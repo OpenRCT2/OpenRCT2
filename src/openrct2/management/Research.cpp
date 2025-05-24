@@ -270,7 +270,7 @@ void ResearchFinishItem(const ResearchItem& researchItem)
             {
                 if (Config::Get().notifications.RideResearched)
                 {
-                    News::AddItemToQueue(News::ItemType::Research, availabilityString, researchItem.rawValue, ft);
+                    News::AddItemToQueue(News::ItemType::research, availabilityString, researchItem.rawValue, ft);
                 }
             }
 
@@ -293,7 +293,7 @@ void ResearchFinishItem(const ResearchItem& researchItem)
                 if (Config::Get().notifications.RideResearched)
                 {
                     News::AddItemToQueue(
-                        News::ItemType::Research, STR_NEWS_ITEM_RESEARCH_NEW_SCENERY_SET_AVAILABLE, researchItem.rawValue, ft);
+                        News::ItemType::research, STR_NEWS_ITEM_RESEARCH_NEW_SCENERY_SET_AVAILABLE, researchItem.rawValue, ft);
                 }
             }
 

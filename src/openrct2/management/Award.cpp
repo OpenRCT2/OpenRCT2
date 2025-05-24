@@ -650,7 +650,7 @@ void AwardUpdateAll()
                 currentAwards.push_back(Award{ 5u, awardType });
                 if (Config::Get().notifications.ParkAward)
                 {
-                    News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[EnumValue(awardType)], 0, {});
+                    News::AddItemToQueue(News::ItemType::award, AwardNewsStrings[EnumValue(awardType)], 0, {});
                 }
                 windowMgr->InvalidateByClass(WindowClass::ParkInformation);
             }

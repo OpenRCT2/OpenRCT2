@@ -1602,7 +1602,7 @@ void RideBreakdownAddNewsItem(const Ride& ride)
     {
         Formatter ft;
         ride.formatNameTo(ft);
-        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_BROKEN_DOWN, ride.id.ToUnderlying(), ft);
+        News::AddItemToQueue(News::ItemType::ride, STR_RIDE_IS_BROKEN_DOWN, ride.id.ToUnderlying(), ft);
     }
 }
 
@@ -1629,7 +1629,7 @@ static void RideBreakdownStatusUpdate(Ride& ride)
             {
                 Formatter ft;
                 ride.formatNameTo(ft);
-                News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_STILL_NOT_FIXED, ride.id.ToUnderlying(), ft);
+                News::AddItemToQueue(News::ItemType::ride, STR_RIDE_IS_STILL_NOT_FIXED, ride.id.ToUnderlying(), ft);
             }
         }
     }
@@ -2308,7 +2308,7 @@ static void RideEntranceExitConnected(Ride& ride)
             ride.formatNameTo(ft);
             if (Config::Get().notifications.RideWarnings)
             {
-                News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, ride.id.ToUnderlying(), ft);
+                News::AddItemToQueue(News::ItemType::ride, STR_ENTRANCE_NOT_CONNECTED, ride.id.ToUnderlying(), ft);
             }
             ride.connectedMessageThrottle = 3;
         }
@@ -2320,7 +2320,7 @@ static void RideEntranceExitConnected(Ride& ride)
             ride.formatNameTo(ft);
             if (Config::Get().notifications.RideWarnings)
             {
-                News::AddItemToQueue(News::ItemType::Ride, STR_EXIT_NOT_CONNECTED, ride.id.ToUnderlying(), ft);
+                News::AddItemToQueue(News::ItemType::ride, STR_EXIT_NOT_CONNECTED, ride.id.ToUnderlying(), ft);
             }
             ride.connectedMessageThrottle = 3;
         }
@@ -2387,7 +2387,7 @@ static void RideShopConnected(const Ride& ride)
     {
         Formatter ft;
         ride2->formatNameTo(ft);
-        News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, ride2->id.ToUnderlying(), ft);
+        News::AddItemToQueue(News::ItemType::ride, STR_ENTRANCE_NOT_CONNECTED, ride2->id.ToUnderlying(), ft);
     }
 
     ride2->connectedMessageThrottle = 3;
@@ -5278,7 +5278,7 @@ void Ride::crash(uint8_t vehicleIndex)
     {
         Formatter ft;
         formatNameTo(ft);
-        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_HAS_CRASHED, id.ToUnderlying(), ft);
+        News::AddItemToQueue(News::ItemType::ride, STR_RIDE_HAS_CRASHED, id.ToUnderlying(), ft);
     }
 }
 
