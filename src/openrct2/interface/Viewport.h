@@ -71,6 +71,8 @@ namespace OpenRCT2
         [[nodiscard]] ScreenCoordsXY ScreenToViewportCoord(const ScreenCoordsXY& screenCoord) const;
 
         void Invalidate() const;
+
+        void Invalidate(const int32_t x, const int32_t y, const int32_t z0, const int32_t z1, const ZoomLevel maxZoom) const;
     };
 
     struct Focus;

@@ -249,16 +249,11 @@ namespace OpenRCT2
 
     void ViewportsInvalidate(const int32_t x, const int32_t y, const int32_t z0, const int32_t z1, const ZoomLevel maxZoom)
     {
-        for (auto& vp : _viewports)
+        for (const auto& viewport : _viewports)
         {
-            if (vp.isVisible && (maxZoom == ZoomLevel{ -1 } || vp.zoom <= ZoomLevel{ maxZoom }))
+            if (viewport.isVisible)
             {
-                const auto screenCoord = Translate3DTo2DWithZ(vp.rotation, CoordsXYZ{ x + 16, y + 16, 0 });
-
-                const auto topLeft = screenCoord - ScreenCoordsXY(32, 32 + z1);
-                const auto bottomRight = screenCoord + ScreenCoordsXY(32, 32 - z0);
-
-                ViewportInvalidate(&vp, ScreenRect{ topLeft, bottomRight });
+                viewport.Invalidate(x, y, z0, z1, maxZoom);
             }
         }
     }
@@ -1189,6 +1184,20 @@ namespace OpenRCT2
     void Viewport::Invalidate() const
     {
         ViewportInvalidate(this, { viewPos, viewPos + ScreenCoordsXY{ ViewWidth(), ViewHeight() } });
+    }
+
+    void Viewport::Invalidate(
+        const int32_t x, const int32_t y, const int32_t z0, const int32_t z1, const ZoomLevel maxZoom) const
+    {
+        if ((maxZoom == ZoomLevel{ -1 } || zoom <= ZoomLevel{ maxZoom }))
+        {
+            const auto screenCoord = Translate3DTo2DWithZ(rotation, CoordsXYZ{ x + 16, y + 16, 0 });
+
+            const auto topLeft = screenCoord - ScreenCoordsXY(32, 32 + z1);
+            const auto bottomRight = screenCoord + ScreenCoordsXY(32, 32 - z0);
+
+            ViewportInvalidate(this, ScreenRect{ topLeft, bottomRight });
+        }
     }
 
     CoordsXY ViewportPosToMapPos(const ScreenCoordsXY& coords, int32_t z, uint8_t rotation)
