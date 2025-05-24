@@ -478,6 +478,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             objectManager.UnloadObjects({ descriptor });
                             objectManager.LoadObject(descriptor, entryIndex);
+                            GfxInvalidateScreen();
                         }
                     }
                     break;
