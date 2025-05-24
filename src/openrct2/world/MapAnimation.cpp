@@ -693,6 +693,10 @@ static bool IsTileVisible(const ViewportList& viewports, const TileCoordsXY tile
 
 static void UpdateAll(const ViewportList& viewports)
 {
+    // Currently nothing updates on odd ticks.
+    if (getGameState().currentTicks & 1)
+        return;
+
     auto it = _mapAnimationsUpdate.begin();
     while (it != _mapAnimationsUpdate.end())
     {
