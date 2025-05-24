@@ -1726,6 +1726,56 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
+    void WindowFootpathKeyboardShortcutPathDropdown(bool btnDown)
+    {
+        auto* windowMgr = GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
+        if (w != nullptr)
+        {
+            WindowDropdownShortcutEmulatePress(btnDown, w, WIDX_FOOTPATH_TYPE);
+        }
+    }
+
+    void WindowFootpathKeyboardShortcutQueueDropdown(bool btnDown)
+    {
+        auto* windowMgr = GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
+        if (w != nullptr)
+        {
+            WindowDropdownShortcutEmulatePress(btnDown, w, WIDX_QUEUELINE_TYPE);
+        }
+    }
+
+    void WindowFootpathKeyboardShortcutRailingDropdown(bool btnDown)
+    {
+        auto* windowMgr = GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
+        if (w != nullptr)
+        {
+            WindowDropdownShortcutEmulatePress(btnDown, w, WIDX_RAILINGS_TYPE);
+        }
+    }
+
+    void WindowFootpathKeyboardShortcutModeLand()
+    {
+        auto* windowMgr = GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
+        if (w != nullptr)
+        {
+            w->OnMouseUp(WIDX_CONSTRUCT_ON_LAND);
+        }
+    }
+
+    void WindowFootpathKeyboardShortcutModeBridgeAndTunnel()
+    {
+        auto* windowMgr = GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Footpath);
+        if (w != nullptr)
+        {
+            w->OnMouseUp(WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL);
+        }
+    }
+
     /**
      *
      *  rct2: 0x0066CCE7

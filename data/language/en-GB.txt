@@ -3825,3 +3825,8 @@ STR_6777    :more than 4 hours
 STR_6778    :Construction - Special track dropdown
 STR_6779    :Dropdown - Select next item
 STR_6780    :Dropdown - Select previous item
+STR_6781    :Footpath - Use land mode
+STR_6782    :Footpath - Use bridge/tunnel mode
+STR_6783    :Footpath - Path dropdown
+STR_6784    :Footpath - Queue dropdown
+STR_6785    :Footpath - Railing dropdown

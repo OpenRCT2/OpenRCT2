@@ -108,6 +108,13 @@ namespace OpenRCT2::Ui::ShortcutId
     constexpr std::string_view kWindowRideConstructionDemolish = "window.rideconstruction.demolish";
     constexpr std::string_view kWindowRideConstructionSpecial = "window.rideconstruction.special_dropdown";
 
+    // Window / footpath
+    constexpr std::string_view kWindowFootpathPath = "window.footpath.path_dropdown";
+    constexpr std::string_view kWindowFootpathQueue = "window.footpath.queue_dropdown";
+    constexpr std::string_view kWindowFootpathRailing = "window.footpath.railing_dropdown";
+    constexpr std::string_view kWindowFootpathModeLand = "window.footpath.mode_land";
+    constexpr std::string_view kWindowFootpathModeBrideAndTunnel = "window.footpath.mode_bridge_and_tunnel";
+
     // Window / tile inspector
     constexpr std::string_view kWindowTileInspectorToggleInvisibility = "window.tileinspector.toggle_invisibility";
     constexpr std::string_view kWindowTileInspectorCopy = "window.tileinspector.copy";

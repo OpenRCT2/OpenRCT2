@@ -744,6 +744,71 @@ static void ShortcutConstructionSpecialDropdown(bool btnDown)
     }
 }
 
+static void ShortcutFootpathPathDropdown(bool btnDown)
+{
+    if (gLegacyScene == LegacyScene::titleSequence)
+        return;
+
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
+    if (window != nullptr)
+    {
+        WindowFootpathKeyboardShortcutPathDropdown(btnDown);
+    }
+}
+
+static void ShortcutFootpathQueueDropdown(bool btnDown)
+{
+    if (gLegacyScene == LegacyScene::titleSequence)
+        return;
+
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
+    if (window != nullptr)
+    {
+        WindowFootpathKeyboardShortcutQueueDropdown(btnDown);
+    }
+}
+
+static void ShortcutFootpathRailingDropdown(bool btnDown)
+{
+    if (gLegacyScene == LegacyScene::titleSequence)
+        return;
+
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
+    if (window != nullptr)
+    {
+        WindowFootpathKeyboardShortcutRailingDropdown(btnDown);
+    }
+}
+
+static void ShortcutFootpathModeLand()
+{
+    if (gLegacyScene == LegacyScene::titleSequence)
+        return;
+
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
+    if (window != nullptr)
+    {
+        WindowFootpathKeyboardShortcutModeLand();
+    }
+}
+
+static void ShortcutFootpathModeBridgeAndTunnel()
+{
+    if (gLegacyScene == LegacyScene::titleSequence)
+        return;
+
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
+    if (window != nullptr)
+    {
+        WindowFootpathKeyboardShortcutModeBridgeAndTunnel();
+    }
+}
+
 static void ShortcutDropdownSelect(bool next)
 {
     if (gLegacyScene == LegacyScene::titleSequence)
@@ -910,6 +975,17 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::kWindowRideConstructionSpecial, STR_SHORTCUT_CONSTRUCTION_SPECIAL_DROPDOWN,
         std::bind(ShortcutConstructionSpecialDropdown, true),
         std::bind(ShortcutConstructionSpecialDropdown, false));
+    RegisterShortcut(ShortcutId::kWindowFootpathPath, STR_SHORTCUT_FOOTPATH_PATH_DROPDOWN,
+    std::bind(ShortcutFootpathPathDropdown, true),
+    std::bind(ShortcutFootpathPathDropdown, false));
+    RegisterShortcut(ShortcutId::kWindowFootpathQueue, STR_SHORTCUT_FOOTPATH_QUEUE_DROPDOWN,
+    std::bind(ShortcutFootpathQueueDropdown, true),
+    std::bind(ShortcutFootpathQueueDropdown, false));
+    RegisterShortcut(ShortcutId::kWindowFootpathRailing, STR_SHORTCUT_FOOTPATH_RAILING_DROPDOWN,
+    std::bind(ShortcutFootpathRailingDropdown, true),
+    std::bind(ShortcutFootpathRailingDropdown, false));
+    RegisterShortcut(ShortcutId::kWindowFootpathModeLand, STR_SHORTCUT_FOOTPATH_MODE_LAND, ShortcutFootpathModeLand);
+    RegisterShortcut(ShortcutId::kWindowFootpathModeBrideAndTunnel, STR_SHORTCUT_FOOTPATH_MODE_BRIDGE_AND_TUNNEL, ShortcutFootpathModeBridgeAndTunnel);
     RegisterShortcut(ShortcutId::kWindowTileInspectorToggleInvisibility, STR_SHORTCUT_TOGGLE_INVISIBILITY, WindowTileInspectorKeyboardShortcutToggleInvisibility);
     RegisterShortcut(ShortcutId::kWindowTileInspectorCopy, STR_SHORTCUT_COPY_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_COPY));
     RegisterShortcut(ShortcutId::kWindowTileInspectorPaste, STR_SHORTCUT_PASTE_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE));
