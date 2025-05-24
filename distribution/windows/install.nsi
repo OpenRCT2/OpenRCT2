@@ -133,8 +133,8 @@ ManifestDPIAware true
 !insertmacro MUI_LANGUAGE "TradChinese"
 !insertmacro MUI_RESERVEFILE_LANGDLL
 
-!include "install_en.nsi"
-!include "install_nl.nsi"
+!include "language\install_en.nsi"
+!include "language\install_nl.nsi"
 
 !macro Init thing
 uac_tryagain:
