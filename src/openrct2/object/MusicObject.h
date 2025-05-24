@@ -65,7 +65,14 @@ public:
     bool HasPreview() const;
 
     std::optional<uint8_t> GetOriginalStyleId() const;
-    bool SupportsRideType(ride_type_t rideType);
+    /**
+     *
+     * @param rideType
+     * @param onlyAllowIfExplicitlyListed If a music object does not provide a list of ride types,
+     *  it will be enabled for all ride types, unless this parameter is set to true.
+     * @return
+     */
+    bool SupportsRideType(ride_type_t rideType, bool onlyAllowIfExplicitlyListed);
     size_t GetTrackCount() const;
     const MusicObjectTrack* GetTrack(size_t trackIndex) const;
     OpenRCT2::Audio::IAudioSource* GetTrackSample(size_t trackIndex) const;
