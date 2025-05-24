@@ -18,7 +18,7 @@
     InstallDir "$PROGRAMFILES64\OpenRCT2\"
 !endif
 
-!define SUPPORTED_OS        "Windows 7 and later"
+!define SUPPORTED_OS        "$(lsSupportedOS)"
 
 ; Define root variable relative to installer
 !define PATH_ROOT "..\..\"
@@ -30,21 +30,21 @@
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_BITMAP "top.bmp"
 
-BrandingText "OpenRCT2 Installer"
+BrandingText "$(lsBrandingText)"
 SetCompressor LZMA
 
 ; Version Info
 VIProductVersion "${APPVERSIONINTERNAL}"
-VIAddVersionKey "ProductName" "OpenRCT2 ${PLATFORM} Installer for ${SUPPORTED_OS}"
-VIAddVersionKey "Comments" "Installs ${APPNAMEANDVERSION}"
-VIAddVersionKey "CompanyName" "OpenRCT2 Developers"
-VIAddVersionKey "FileDescription" "Installs ${APPNAMEANDVERSION}"
+VIAddVersionKey "ProductName" "$(lsProductName)"
+VIAddVersionKey "Comments" "$(lsVersionComments)"
+VIAddVersionKey "CompanyName" "$(lsCompanyName)"
+VIAddVersionKey "FileDescription" "$(lsVersionComments)"
 VIAddVersionKey "ProductVersion" "${APPVERSION}"
 VIAddVersionKey "InternalName" "InstOpenRCT2-${APPARCH}"
 VIAddVersionKey "FileVersion" "${APPVERSION}-${APPARCH}"
 VIAddVersionKey "LegalCopyright" " "
 ; Main Install settings
-Name "${APPNAMEANDVERSION} ${PLATFORM} for ${SUPPORTED_OS}"
+Name "$(lsInstallerName)"
 
 ; NOTE: Keep trailing backslash!
 InstallDirRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Install Folder"
@@ -92,10 +92,10 @@ ManifestDPIAware true
 !insertmacro MUI_PAGE_INSTFILES
 
 !define MUI_FINISHPAGE_TITLE_3LINES
-!define MUI_FINISHPAGE_RUN_TEXT "Run ${APPNAMEANDVERSION} now!"
+!define MUI_FINISHPAGE_RUN_TEXT "$(lsRunNow)"
 !define MUI_FINISHPAGE_RUN
 !define MUI_FINISHPAGE_RUN_FUNCTION PageFinishRun
-!define MUI_FINISHPAGE_LINK "Visit the OpenRCT2 site for more information"
+!define MUI_FINISHPAGE_LINK "$(lsFinishPageLink)"
 !define MUI_FINISHPAGE_LINK_LOCATION "${APPURLLINK}"
 !define MUI_FINISHPAGE_NOREBOOTSUPPORT
 !define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\readme.txt"
@@ -103,7 +103,7 @@ ManifestDPIAware true
 !define MUI_WELCOMEFINISHPAGE_CUSTOMFUNCTION_INIT DisableBack
 
 !insertmacro MUI_PAGE_FINISH
-!define MUI_PAGE_HEADER_TEXT "Uninstall ${APPNAMEANDVERSION}"
+!define MUI_PAGE_HEADER_TEXT "$(lsUninstall)"
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
 
@@ -136,6 +136,52 @@ ManifestDPIAware true
 !insertmacro MUI_LANGUAGE "TradChinese"
 !insertmacro MUI_RESERVEFILE_LANGDLL
 
+LangString ls32bitVersionOn64bitOS ${LANG_ENGLISH} "You are trying to install the 32-bit OpenRCT2 on a 64-bit operating system. This is not advised, but will work with reduced capabilities. We suggest that you download the correct version. Do you really want to continue?"
+LangString ls64bitVersionOn32bitOS ${LANG_ENGLISH} "You are trying to install the 64-bit OpenRCT2 on a 32-bit operating system. This is not going to work. Please download the correct version. Do you really want to continue?"
+LangString lsBrandingText ${LANG_ENGLISH} "OpenRCT2 Installer"
+LangString lsCannotInstallToRCT2Dir ${LANG_ENGLISH} "You cannot install OpenRCT2 to the same directory as RollerCoaster Tycoon 2."
+LangString lsCannotInstallToRCTClassicDir ${LANG_ENGLISH} "You cannot install OpenRCT2 to the same directory as RollerCoaster Tycoon Classic."
+LangString lsCompanyName ${LANG_ENGLISH} "OpenRCT2 Developers"
+LangString lsComponentDescription ${LANG_ENGLISH} "Minimal OpenRCT2 installation. You must have RollerCoaster Tycoon 2 or Classic installed."
+LangString lsFinishPageLink ${LANG_ENGLISH} "Visit the OpenRCT2 site for more information"
+LangString lsInstallerName ${LANG_ENGLISH} "${APPNAMEANDVERSION} ${PLATFORM} for ${SUPPORTED_OS}"
+LangString lsNewWindowsVersionOnOldWindows ${LANG_ENGLISH} "You are trying to install the Windows XP SP3, Vista and newer version on Windows 95, 98, ME, 2000 or XP without SP3. This is will not work. Please download the correct version. Do you really want to continue?"
+LangString lsOldWindowsVersionOnNewWindows ${LANG_ENGLISH} "You are trying to install the Windows 95, 98, 2000 and XP without SP3 version on Windows XP SP3, Vista or newer. This is not advised, but will work with reduced capabilities. We suggest that you download the correct version. Do you really want to continue?"
+LangString lsOpenRCT2IsRunning ${LANG_ENGLISH} "OpenRCT2 is running. Please close it and retry."
+LangString lsProductName ${LANG_ENGLISH} "OpenRCT2 ${PLATFORM} Installer for ${SUPPORTED_OS}"
+LangString lsRunNow ${LANG_ENGLISH} "Run ${APPNAMEANDVERSION} now!"
+LangString lsSupportedOS ${LANG_ENGLISH} "Windows 7 and later"
+LangString lsUACErrorDefault ${LANG_ENGLISH} "Unable to elevate, error $0"
+LangString lsUACError1062 ${LANG_ENGLISH} "Logon service not running, aborting!"
+LangString lsUACError1223 ${LANG_ENGLISH} "This ${thing} requires admin privileges, aborting!"
+LangString lsUACRequiresElevation ${LANG_ENGLISH} "This ${thing} requires admin privileges, try again"
+LangString lsUninstall ${LANG_ENGLISH} "Uninstall ${APPNAMEANDVERSION}"
+LangString lsUpgradeNotice ${LANG_ENGLISH} "Welcome to ${APPNAMEANDVERSION} Setup.$\nThis will allow you to upgrade from version $OLDVERSION."
+LangString lsVersionComments ${LANG_ENGLISH} "Installs ${APPNAMEANDVERSION}"
+
+LangString ls32bitVersionOn64bitOS ${LANG_DUTCH} "Je probeert een 32-bits versie van OpenRCT2 to installeren op een 64-bits besturingssysteem. Dit werkt wel, maar wordt afgeraden omdat er een versie bestaat die is geoptimaliseerd voor 64-bits. Wil je toch doorgaan?"
+LangString ls64bitVersionOn32bitOS ${LANG_DUTCH} "Je probeert een 64-bits versie van OpenRCT2 to installeren op een 32-bits besturingssysteem. Dit zal geen werkende installatie opleveren. Wil je toch doorgaan?"
+LangString lsBrandingText ${LANG_DUTCH} "Installatie van OpenRCT2"
+LangString lsCannotInstallToRCT2Dir ${LANG_DUTCH} "OpenRCT2 kan niet in dezelfde map als RollerCoaster Tycoon 2 geïnstalleerd worden."
+LangString lsCannotInstallToRCTClassicDir ${LANG_DUTCH} "OpenRCT2 kan niet in dezelfde map als RollerCoaster Tycoon Classic geïnstalleerd worden."
+LangString lsCompanyName ${LANG_DUTCH} "Ontwikkelaars van OpenRCT2"
+LangString lsComponentDescription ${LANG_DUTCH} "Minimale installatie van OpenRCT2. RollerCoaster Tycoon 2 (of Classic) is vereist."
+LangString lsFinishPageLink ${LANG_DUTCH} "Bezoek de website van OpenRCT2 voor meer informatie"
+LangString lsInstallerName ${LANG_DUTCH} "${APPNAMEANDVERSION} ${PLATFORM} voor ${SUPPORTED_OS}"
+LangString lsNewWindowsVersionOnOldWindows ${LANG_DUTCH} "Je probeert de versie voor Windows XP SP3, Vista en hoger te installeren op Windows 95, 98, ME, 2000 of XP zonder SP3. Dit zal geen werkende installatie opleveren. Wil je toch doorgaan?"
+LangString lsOldWindowsVersionOnNewWindows ${LANG_DUTCH} "Je probeert de versie voor Windows 95, 98, 2000 en XP zonder SP3 version te installeren op Windows XP SP3, Vista of een nieuwere Windows-versie. Dit werkt wel, maar wordt afgeraden omdat er een versie bestaat die is geoptimaliseerd voor nieuwere Windows-versies. Wil je toch doorgaan?"
+LangString lsOpenRCT2IsRunning ${LANG_DUTCH} "OpenRCT2 is nog actief. Sluit OpenRCT2 af en probeer het opnieuw."
+LangString lsProductName ${LANG_DUTCH} "Installatie van OpenRCT2 ${PLATFORM} voor ${SUPPORTED_OS}"
+LangString lsRunNow ${LANG_DUTCH} "${APPNAMEANDVERSION} direct starten"
+LangString lsSupportedOS ${LANG_DUTCH} "Windows 7 en nieuwere versies"
+LangString lsUACErrorDefault ${LANG_DUTCH} "Kan geen extra rechten krijgen, foutcode: $0"
+LangString lsUACError1062 ${LANG_DUTCH} "Logon-service is niet actief, kan niet doorgaan."
+LangString lsUACError1223 ${LANG_DUTCH} "${thing} vereist extra rechten, kan niet doorgaan."
+LangString lsUACRequiresElevation ${LANG_DUTCH} "${thing} vereist extra rechten, probeer het opnieuw."
+LangString lsUninstall ${LANG_DUTCH} "${APPNAMEANDVERSION} deïnstalleren"
+LangString lsUpgradeNotice ${LANG_DUTCH} "Dit is het installatieprogramma voor ${APPNAMEANDVERSION}.$\nHiermee kun je opwaarden vanaf de momenteel geïnstalleerde versie $OLDVERSION."
+LangString lsVersionComments ${LANG_DUTCH} "Installeert ${APPNAMEANDVERSION}"
+
 !macro Init thing
 uac_tryagain:
 !insertmacro UAC_RunElevated
@@ -144,17 +190,17 @@ ${Case} 0
 	${IfThen} $1 = 1 ${|} Quit ${|} ;we are the outer process, the inner process has done its work, we are done
 	${IfThen} $3 <> 0 ${|} ${Break} ${|} ;we are admin, let the show go on
 	${If} $1 = 3 ;RunAs completed successfully, but with a non-admin user
-		MessageBox mb_YesNo|mb_IconExclamation|mb_TopMost|mb_SetForeground "This ${thing} requires admin privileges, try again" /SD IDNO IDYES uac_tryagain IDNO 0
+		MessageBox mb_YesNo|mb_IconExclamation|mb_TopMost|mb_SetForeground "$(lsUACRequiresElevation)" /SD IDNO IDYES uac_tryagain IDNO 0
 	${EndIf}
 	;fall-through and die
 ${Case} 1223
-	MessageBox mb_IconStop|mb_TopMost|mb_SetForeground "This ${thing} requires admin privileges, aborting!"
+	MessageBox mb_IconStop|mb_TopMost|mb_SetForeground "$(lsUACError1223)"
 	Quit
 ${Case} 1062
-	MessageBox mb_IconStop|mb_TopMost|mb_SetForeground "Logon service not running, aborting!"
+	MessageBox mb_IconStop|mb_TopMost|mb_SetForeground "$(lsUACError1062)"
 	Quit
 ${Default}
-	MessageBox mb_IconStop|mb_TopMost|mb_SetForeground "Unable to elevate, error $0"
+	MessageBox mb_IconStop|mb_TopMost|mb_SetForeground "$(lsUACErrorDefault)"
 	Quit
 ${EndSwitch}
 
@@ -246,7 +292,7 @@ SectionEnd
 
 ; Modern install component descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-    !insertmacro MUI_DESCRIPTION_TEXT ${Section1} "Minimal OpenRCT2 installation. You must have RollerCoaster Tycoon 2 installed."
+    !insertmacro MUI_DESCRIPTION_TEXT ${Section1} "$(lsComponentDescription)"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;-----------------------------------------------
@@ -324,10 +370,10 @@ Function CheckProcessorArchitecture
     ClearErrors
     ${If} ${RunningX64}
         IntCmp ${APPBITS} 64 Done 0
-        MessageBox MB_YESNO|MB_ICONINFORMATION "You are trying to install the 32-bit OpenRCT2 on a 64-bit operating system. This is not advised, but will work with reduced capabilities. We suggest that you download the correct version. Do you really want to continue?" IDYES Done IDNO Abort
+        MessageBox MB_YESNO|MB_ICONINFORMATION "$(ls32bitVersionOn64bitOS)" IDYES Done IDNO Abort
     ${Else}
         IntCmp ${APPBITS} 64 0 Done
-        MessageBox MB_YESNO|MB_ICONSTOP "You are trying to install the 64-bit OpenRCT2 on a 32-bit operating system. This is not going to work. Please download the correct version. Do you really want to continue?" IDYES Done IDNO Abort
+        MessageBox MB_YESNO|MB_ICONSTOP "$(ls64bitVersionOn32bitOS)" IDYES Done IDNO Abort
     ${EndIf}
     GoTo Done
 Abort:
@@ -343,12 +389,12 @@ Function CheckWindowsVersion
     StrCmp $R0 "win9x" 0 WinNT
     ClearErrors
     StrCmp ${APPARCH} "win9x" Done 0
-    MessageBox MB_YESNO|MB_ICONSTOP "You are trying to install the Windows XP SP3, Vista, 7 and 8.1 version on Windows 95, 98, ME, 2000 and XP without SP3. This is will not work. Please download the correct version. Do you really want to continue?" IDYES Done IDNO Abort
+    MessageBox MB_YESNO|MB_ICONSTOP "$(lsNewWindowsVersionOnOldWindows)" IDYES Done IDNO Abort
     GoTo Done
 WinNT:
     ClearErrors
     StrCmp ${APPARCH} "win9x" 0 Done
-    MessageBox MB_YESNO|MB_ICONEXCLAMATION "You are trying to install the Windows 95, 98, 2000 and XP without SP3 version on Windows XP SP3, Vista, 7 and 8.1. This is not advised, but will work with reduced capabilities. We suggest that you download the correct version. Do you really want to continue?" IDYES Done IDNO Abort
+    MessageBox MB_YESNO|MB_ICONEXCLAMATION "$(lsOldWindowsVersionOnNewWindows)" IDYES Done IDNO Abort
 Abort:
     Quit
 Done:
@@ -366,7 +412,7 @@ Retry:
     Delete "$INSTDIR\${OPENRCT2_EXE}"
     IfErrors 0 Done
     ClearErrors
-    MessageBox MB_RETRYCANCEL|MB_ICONEXCLAMATION "OpenRCT2 is running. Please close it and retry." IDRETRY Retry
+    MessageBox MB_RETRYCANCEL|MB_ICONEXCLAMATION "$(lsOpenRCT2IsRunning)" IDRETRY Retry
     Abort
 Done:
 FunctionEnd
@@ -540,8 +586,7 @@ WelcomeToSetup:
     ; An older version was found.  Let's let the user know there's an upgrade that will take place.
     ReadRegStr $OLDVERSION HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "DisplayVersion"
     ; Gets the older version then displays it in a message box
-    MessageBox MB_OK|MB_ICONINFORMATION \
-        "Welcome to ${APPNAMEANDVERSION} Setup.$\nThis will allow you to upgrade from version $OLDVERSION."
+    MessageBox MB_OK|MB_ICONINFORMATION "$(lsUpgradeNotice)"
     Goto FinishCallback
 
 FinishCallback:
@@ -557,12 +602,12 @@ FunctionEnd
 Function DoNotInstallInRCT2Folder
     IfFileExists "$INSTDIR\Data\g1.dat" datag1exists datag1notexists
     datag1exists:
-    MessageBox MB_OK|MB_ICONSTOP `You cannot install OpenRCT2 to the same directory as RollerCoaster Tycoon 2.`
+    MessageBox MB_OK|MB_ICONSTOP "$(lsCannotInstallToRCT2Dir)"
     Abort
     datag1notexists:
     IfFileExists "$INSTDIR\Assets\g1.dat" assetsg1exists assetsg1notexists
     assetsg1exists:
-    MessageBox MB_OK|MB_ICONSTOP `You cannot install OpenRCT2 to the same directory as RollerCoaster Tycoon Classic.`
+    MessageBox MB_OK|MB_ICONSTOP "$(lsCannotInstallToRCTClassicDir)"
     Abort
     assetsg1notexists:
 FunctionEnd
