@@ -357,7 +357,8 @@ namespace OpenRCT2::Ui::Windows
         size_t num_items, int32_t width, size_t prefRowsPerColumn)
     {
         gInputFlags.unset(InputFlag::dropdownStayOpen, InputFlag::dropdownMouseUp);
-        if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.TouchEnhancements)
+        if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.TouchEnhancements
+            || gInputFlags.has(InputFlag::dropdownShortcutMode))
             gInputFlags.set(InputFlag::dropdownStayOpen);
 
         WindowDropdownClose();
@@ -392,7 +393,8 @@ namespace OpenRCT2::Ui::Windows
         int32_t itemHeight, int32_t numColumns)
     {
         gInputFlags.unset(InputFlag::dropdownStayOpen, InputFlag::dropdownMouseUp);
-        if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.TouchEnhancements)
+        if (flags & Dropdown::Flag::StayOpen || Config::Get().interface.TouchEnhancements
+            || gInputFlags.has(InputFlag::dropdownShortcutMode))
             gInputFlags.set(InputFlag::dropdownStayOpen);
 
         // Close existing dropdown
@@ -411,6 +413,80 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->CloseByClass(WindowClass::Dropdown);
+    }
+
+    void WindowDropdownShortcutSelectItem(bool next)
+    {
+        auto* windowMgr = GetWindowManager();
+        WindowBase* window = windowMgr->FindByClass(WindowClass::Dropdown);
+        if (window == nullptr)
+        {
+            return;
+        }
+
+        gInputFlags.set(InputFlag::dropdownShortcutMode);
+
+        if (gDropdownNumItems <= 0)
+        {
+            return;
+        }
+
+        auto initIdx = gDropdownHighlightedIndex;
+
+        if (initIdx == -1 && !next)
+        {
+            initIdx = 0;
+        }
+
+        for (int i = 1; i < gDropdownNumItems; i++)
+        {
+            auto delta = next ? i : -i;
+            auto nextIdx = (initIdx + delta) % gDropdownNumItems;
+            nextIdx = nextIdx < 0 ? nextIdx + gDropdownNumItems : nextIdx;
+            if (!Dropdown::IsDisabled(nextIdx) && !gDropdownItems[nextIdx].IsSeparator())
+            {
+                gDropdownHighlightedIndex = nextIdx;
+                break;
+            }
+        }
+
+        window->Invalidate();
+    }
+
+    void WindowDropdownShortcutEmulatePress(bool btnDown, WindowBase* window, WidgetIndex widx)
+    {
+        auto* windowMgr = GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::Dropdown);
+
+        if (gPressedWidget.widget_index == widx && gPressedWidget.window_classification == window->classification
+            && gPressedWidget.window_number == window->number && w != nullptr && !btnDown)
+        {
+            WindowDropdownClose();
+            gInputFlags.unset(InputFlag::widgetPressed, InputFlag::dropdownShortcutMode);
+            _inputState = InputState::Normal;
+
+            window->Invalidate();
+            window->OnDropdown(widx, gDropdownHighlightedIndex);
+        }
+        else if (btnDown)
+        {
+            gPressedWidget.widget_index = widx;
+            gPressedWidget.window_classification = window->classification;
+            gPressedWidget.window_number = window->number;
+
+            gInputFlags.set(InputFlag::widgetPressed, InputFlag::dropdownShortcutMode);
+            _inputState = InputState::WidgetPressed;
+
+            window->Invalidate();
+            window->OnMouseDown(widx);
+
+            gDropdownHighlightedIndex = gDropdownDefaultIndex;
+            WindowBase* dw = windowMgr->FindByClass(WindowClass::Dropdown);
+            if (dw != nullptr)
+            {
+                dw->Invalidate();
+            }
+        }
     }
 
     /**

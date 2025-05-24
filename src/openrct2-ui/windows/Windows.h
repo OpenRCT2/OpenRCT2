@@ -253,6 +253,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowRideConstructionKeyboardShortcutNextTrack();
     void WindowRideConstructionKeyboardShortcutBuildCurrent();
     void WindowRideConstructionKeyboardShortcutDemolishCurrent();
+    void WindowRideConstructionKeyboardShortcutSpecialDropdown(bool btnDown);
 
     // RideList
     WindowBase* RideListOpen();

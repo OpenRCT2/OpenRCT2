@@ -4645,6 +4645,18 @@ namespace OpenRCT2::Ui::Windows
         w->OnMouseDown(WIDX_DEMOLISH);
     }
 
+    void WindowRideConstructionKeyboardShortcutSpecialDropdown(bool btnDown)
+    {
+        auto* windowMgr = GetWindowManager();
+        WindowBase* w = windowMgr->FindByClass(WindowClass::RideConstruction);
+        if (w == nullptr || WidgetIsDisabled(*w, WIDX_SPECIAL_TRACK_DROPDOWN)
+            || w->widgets[WIDX_SPECIAL_TRACK_DROPDOWN].type == WindowWidgetType::Empty)
+        {
+            return;
+        }
+        WindowDropdownShortcutEmulatePress(btnDown, w, WIDX_SPECIAL_TRACK_DROPDOWN);
+    }
+
     static void WindowRideConstructionMouseUpDemolishNextPiece(const CoordsXYZD& piecePos, OpenRCT2::TrackElemType type)
     {
         if (_gotoStartPlacementMode)

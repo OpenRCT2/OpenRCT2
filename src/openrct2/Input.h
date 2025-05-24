@@ -37,8 +37,11 @@ namespace OpenRCT2
         unk6,
 
         viewportScrolling,
+
+        // Enables shortcut related behavior.
+        dropdownShortcutMode,
     };
-    using InputFlags = FlagHolder<uint8_t, InputFlag>;
+    using InputFlags = FlagHolder<uint16_t, InputFlag>;
 
     enum class InputState
     {

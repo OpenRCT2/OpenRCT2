@@ -3822,3 +3822,6 @@ STR_6774    :Time since last inspection
 STR_6775    :{COMMA16} minute
 STR_6776    :{COMMA16} minutes
 STR_6777    :more than 4 hours
+STR_6778    :Construction - Special track dropdown
+STR_6779    :Dropdown - Select next item
+STR_6780    :Dropdown - Select previous item

@@ -1244,10 +1244,8 @@ namespace OpenRCT2
     void InputStateWidgetPressed(
         const ScreenCoordsXY& screenCoords, MouseState state, WidgetIndex widgetIndex, WindowBase* w, Widget* widget)
     {
-        WindowClass cursor_w_class;
-        rct_windownumber cursor_w_number;
-        cursor_w_class = gPressedWidget.window_classification;
-        cursor_w_number = gPressedWidget.window_number;
+        WindowClass cursor_w_class = gPressedWidget.window_classification;
+        rct_windownumber cursor_w_number = gPressedWidget.window_number;
         WidgetIndex cursor_widgetIndex = gPressedWidget.widget_index;
 
         auto* windowMgr = GetWindowManager();
@@ -1318,8 +1316,11 @@ namespace OpenRCT2
                 {
                     if (_inputState == InputState::DropdownActive)
                     {
-                        gDropdownHighlightedIndex = gDropdownDefaultIndex;
-                        windowMgr->InvalidateByClass(WindowClass::Dropdown);
+                        if (!gInputFlags.has(InputFlag::dropdownShortcutMode))
+                        {
+                            gDropdownHighlightedIndex = gDropdownDefaultIndex;
+                            windowMgr->InvalidateByClass(WindowClass::Dropdown);
+                        }
                     }
                     return;
                 }
@@ -1391,7 +1392,11 @@ namespace OpenRCT2
 
                             if (dropdown_index == -1)
                             {
-                                if (!Dropdown::IsDisabled(gDropdownDefaultIndex))
+                                if (gInputFlags.has(InputFlag::dropdownShortcutMode) && gDropdownHighlightedIndex != -1)
+                                {
+                                    dropdown_index = gDropdownHighlightedIndex;
+                                }
+                                else if (!Dropdown::IsDisabled(gDropdownDefaultIndex))
                                 {
                                     dropdown_index = gDropdownDefaultIndex;
                                 }
@@ -1401,6 +1406,7 @@ namespace OpenRCT2
                     }
                 }
 
+                gInputFlags.unset(InputFlag::dropdownShortcutMode);
                 _inputState = InputState::Normal;
 
                 if (state == MouseState::RightPress)
@@ -1452,7 +1458,10 @@ namespace OpenRCT2
             InputUpdateTooltip(w, widgetIndex, screenCoords);
         }
 
-        gDropdownHighlightedIndex = -1;
+        if (!gInputFlags.has(InputFlag::dropdownShortcutMode))
+        {
+            gDropdownHighlightedIndex = -1;
+        }
         windowMgr->InvalidateByClass(WindowClass::Dropdown);
         if (w == nullptr)
         {

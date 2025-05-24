@@ -57,6 +57,10 @@ namespace OpenRCT2::Ui::ShortcutId
     constexpr std::string_view kInterfaceOpenTileInspector = "interface.open.tileinspector";
     constexpr std::string_view kInterfaceMultiplayerShow = "interface.open.multiplayer";
 
+    // Interface / Dropdown
+    constexpr std::string_view kDropdownSelectNext = "interface.dropdown.selectNext";
+    constexpr std::string_view kDropdownSelectPrev = "interface.dropdown.selectPrev";
+
     // View / general
     constexpr std::string_view kViewGeneralZoomOut = "view.general.zoom_out";
     constexpr std::string_view kViewGeneralZoomIn = "view.general.zoom_in";
@@ -102,6 +106,7 @@ namespace OpenRCT2::Ui::ShortcutId
     constexpr std::string_view kWindowRideConstructionNext = "window.rideconstruction.next";
     constexpr std::string_view kWindowRideConstructionBuild = "window.rideconstruction.build";
     constexpr std::string_view kWindowRideConstructionDemolish = "window.rideconstruction.demolish";
+    constexpr std::string_view kWindowRideConstructionSpecial = "window.rideconstruction.special_dropdown";
 
     // Window / tile inspector
     constexpr std::string_view kWindowTileInspectorToggleInvisibility = "window.tileinspector.toggle_invisibility";
