@@ -394,17 +394,22 @@ static std::optional<UpdateType> UpdateTile(const TileCoordsXY& coords, const Vi
     return hasAnimations ? std::optional(updateType) : std::nullopt;
 }
 
+template<bool invalidate>
 static bool UpdateOnRidePhotoAnimation(TrackElement& track, const CoordsXYZ& coords)
 {
     if (track.IsTakingPhoto())
     {
         track.DecrementPhotoTimeout();
-        ViewportsInvalidate(coords.x, coords.y, coords.z, track.GetClearanceZ(), kMaxZoom);
+        if constexpr (invalidate)
+        {
+            ViewportsInvalidate(coords.x, coords.y, coords.z, track.GetClearanceZ(), kMaxZoom);
+        }
         return true;
     }
     return false;
 }
 
+template<bool invalidate>
 static bool UpdateLandEdgeDoorsAnimation(TrackElement& track, const CoordsXYZ& coords)
 {
     if (getGameState().currentTicks & 3)
@@ -418,12 +423,18 @@ static bool UpdateLandEdgeDoorsAnimation(TrackElement& track, const CoordsXYZ& c
     if (doorAState >= kLandEdgeDoorFrameEnd)
     {
         track.SetDoorAState(kLandEdgeDoorFrameClosed);
-        ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
+        if constexpr (invalidate)
+        {
+            ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
+        }
     }
     else if (doorAState != kLandEdgeDoorFrameClosed && doorAState != kLandEdgeDoorFrameOpen)
     {
         track.SetDoorAState(doorAState + 1);
-        ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
+        if constexpr (invalidate)
+        {
+            ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
+        }
         isAnimating = true;
     }
 
@@ -431,18 +442,25 @@ static bool UpdateLandEdgeDoorsAnimation(TrackElement& track, const CoordsXYZ& c
     if (doorBState >= kLandEdgeDoorFrameEnd)
     {
         track.SetDoorBState(kLandEdgeDoorFrameClosed);
-        ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
+        if constexpr (invalidate)
+        {
+            ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
+        }
     }
     else if (doorBState != kLandEdgeDoorFrameClosed && doorBState != kLandEdgeDoorFrameOpen)
     {
         track.SetDoorBState(doorBState + 1);
-        ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
+        if constexpr (invalidate)
+        {
+            ViewportsInvalidate(coords.x, coords.y, coords.z, coords.z + 32, kMaxZoom);
+        }
         isAnimating = true;
     }
 
     return isAnimating;
 }
 
+template<bool invalidate>
 static bool UpdateTemporaryAnimation(const TemporaryMapAnimation& animation)
 {
     const TileCoordsXYZ tileCoords{ animation.location };
@@ -462,7 +480,7 @@ static bool UpdateTemporaryAnimation(const TemporaryMapAnimation& animation)
                 if (tileElement->GetType() == TileElementType::Track && tileElement->BaseHeight == tileCoords.z
                     && tileElement->AsTrack()->GetTrackType() == TrackElemType::OnRidePhoto)
                 {
-                    isAnimating |= UpdateOnRidePhotoAnimation(*tileElement->AsTrack(), animation.location);
+                    isAnimating |= UpdateOnRidePhotoAnimation<invalidate>(*tileElement->AsTrack(), animation.location);
                 }
                 break;
             }
@@ -470,7 +488,7 @@ static bool UpdateTemporaryAnimation(const TemporaryMapAnimation& animation)
             {
                 if (tileElement->GetType() == TileElementType::Track && tileElement->BaseHeight == tileCoords.z)
                 {
-                    isAnimating |= UpdateLandEdgeDoorsAnimation(*tileElement->AsTrack(), animation.location);
+                    isAnimating |= UpdateLandEdgeDoorsAnimation<invalidate>(*tileElement->AsTrack(), animation.location);
                 }
             }
         }
@@ -700,12 +718,15 @@ static void UpdateAll(const ViewportList& viewports)
     }
 }
 
-static void UpdateAllTemporary()
+static void UpdateAllTemporary(const ViewportList& viewports)
 {
     auto it = _temporaryMapAnimations.begin();
     while (it != _temporaryMapAnimations.end())
     {
-        if (UpdateTemporaryAnimation(*it))
+        const auto& animation = *it;
+        const bool isVisible = IsTileVisible(viewports, TileCoordsXY(animation.location));
+        const auto result = isVisible ? UpdateTemporaryAnimation<true>(*it) : UpdateTemporaryAnimation<false>(*it);
+        if (result)
         {
             ++it;
         }
@@ -723,7 +744,7 @@ void MapAnimations::InvalidateAndUpdateAll()
     const auto viewports = GetVisibleViewports();
     InvalidateAll(viewports);
     UpdateAll(viewports);
-    UpdateAllTemporary();
+    UpdateAllTemporary(viewports);
 }
 
 void MapAnimations::ClearAll()
