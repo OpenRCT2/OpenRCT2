@@ -205,10 +205,9 @@ namespace OpenRCT2::Ui::Windows
             auto& name = _highlightedScenario->InternalName;
 
             ClassifiedFileInfo info;
-            if (!TryClassifyFile(path, &info))
-                return;
+            bool isClassified = TryClassifyFile(path, &info);
 
-            if (info.Type == FileType::park)
+            if (isClassified && info.Type == FileType::park)
             {
                 _previewLoadJob = bgWorker.addJob(
                     [path, name]() {
@@ -237,7 +236,7 @@ namespace OpenRCT2::Ui::Windows
                         scenarioSelectWnd->UpdateParkPreview(preview);
                     });
             }
-            else if (info.Type == FileType::scenario)
+            else
             {
                 SourceDescriptor source{};
                 if (!ScenarioSources::TryGetByName(name, &source))
@@ -268,10 +267,6 @@ namespace OpenRCT2::Ui::Windows
                 preview.images.push_back(scenarioMetaObj->GetPreviewImage());
 
                 _preview = preview;
-            }
-            else
-            {
-                return;
             }
         }
 
