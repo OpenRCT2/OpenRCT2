@@ -42,6 +42,7 @@
 using namespace OpenRCT2;
 
 constexpr ZoomLevel kMaxZoom{ 2 };
+constexpr ZoomLevel kMaxScrollingTextZoom{ 0 };
 
 struct TemporaryMapAnimation
 {
@@ -76,15 +77,17 @@ static std::set<TileCoordsXY, TileCoordsXYCmp> _mapAnimationsUpdate;
 static std::set<TemporaryMapAnimation> _temporaryMapAnimations;
 
 template<bool invalidateAllViewports>
-static void Invalidate(const Viewport* const viewport, const int32_t x, const int32_t y, const int32_t z0, const int32_t z1)
+static void Invalidate(
+    const Viewport* const viewport, const int32_t x, const int32_t y, const int32_t z0, const int32_t z1,
+    const ZoomLevel maxZoom)
 {
     if constexpr (invalidateAllViewports)
     {
-        ViewportsInvalidate(x, y, z0, z1, kMaxZoom);
+        ViewportsInvalidate(x, y, z0, z1, maxZoom);
     }
     else
     {
-        viewport->Invalidate(x, y, z0, z1, kMaxZoom);
+        viewport->Invalidate(x, y, z0, z1, maxZoom);
     }
 }
 
@@ -103,7 +106,8 @@ static bool UpdateEntranceAnimation(
                 if constexpr (invalidate)
                 {
                     Invalidate<invalidateAllViewports>(
-                        viewport, loc.x, loc.y, baseZ + stationObj->Height + 8, baseZ + stationObj->Height + 24);
+                        viewport, loc.x, loc.y, baseZ + stationObj->Height + 8, baseZ + stationObj->Height + 24,
+                        kMaxScrollingTextZoom);
                 }
                 return true;
             }
@@ -116,7 +120,7 @@ static bool UpdateEntranceAnimation(
             const int32_t direction = (entrance.GetDirection() + GetCurrentRotation()) & 3;
             if (direction == TILE_ELEMENT_DIRECTION_SOUTH || direction == TILE_ELEMENT_DIRECTION_WEST)
             {
-                Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ + 32, baseZ + 64);
+                Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ + 32, baseZ + 64, kMaxScrollingTextZoom);
             }
         }
         return true;
@@ -136,7 +140,7 @@ static bool UpdatePathAnimation(
             const int32_t direction = (path.GetQueueBannerDirection() + GetCurrentRotation()) & 3;
             if (direction == TILE_ELEMENT_DIRECTION_NORTH || direction == TILE_ELEMENT_DIRECTION_EAST)
             {
-                Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ + 16, baseZ + 30);
+                Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ + 16, baseZ + 30, kMaxScrollingTextZoom);
             }
         }
         return true;
@@ -184,13 +188,13 @@ static std::optional<UpdateType> UpdateSmallSceneryAnimation(
                 }
                 if constexpr (invalidate)
                 {
-                    Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ, scenery.GetClearanceZ());
+                    Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ, scenery.GetClearanceZ(), kMaxZoom);
                 }
             }
         }
         else if constexpr (invalidate)
         {
-            Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ, scenery.GetClearanceZ());
+            Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ, scenery.GetClearanceZ(), kMaxZoom);
         }
         return std::optional(animationType);
     }
@@ -206,20 +210,20 @@ static bool UpdateTrackAnimation(TrackElement& track, const CoordsXYZ& loc, cons
         case TrackElemType::Waterfall:
             if constexpr (invalidate)
             {
-                Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ + 14, baseZ + 46);
+                Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ + 14, baseZ + 46, kMaxZoom);
             }
             return true;
         case TrackElemType::Rapids:
         case TrackElemType::Whirlpool:
             if constexpr (invalidate)
             {
-                Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ + 14, baseZ + 18);
+                Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ + 14, baseZ + 18, kMaxZoom);
             }
             return true;
         case TrackElemType::SpinningTunnel:
             if constexpr (invalidate)
             {
-                Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ + 14, baseZ + 32);
+                Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ + 14, baseZ + 32, kMaxZoom);
             }
             return true;
         default:
@@ -238,7 +242,7 @@ static bool UpdateLargeSceneryAnimation(
     {
         if constexpr (invalidate)
         {
-            Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ, baseZ + 16);
+            Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ, baseZ + 16, kMaxZoom);
         }
         return true;
     }
@@ -291,7 +295,7 @@ static std::optional<UpdateType> UpdateWallAnimation(
                 wall.SetAnimationFrame(newFrame);
                 if constexpr (invalidate)
                 {
-                    Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ, baseZ + 32);
+                    Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ, baseZ + 32, kMaxZoom);
                 }
             }
         }
@@ -302,7 +306,7 @@ static std::optional<UpdateType> UpdateWallAnimation(
     {
         if constexpr (invalidate)
         {
-            Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ, baseZ + 16);
+            Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ, baseZ + 16, kMaxZoom);
         }
         return std::optional(UpdateType::invalidate);
     }
@@ -316,7 +320,7 @@ static bool UpdateBannerAnimation(
 {
     if constexpr (invalidate)
     {
-        Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ, baseZ + 16);
+        Invalidate<invalidateAllViewports>(viewport, loc.x, loc.y, baseZ, baseZ + 16, kMaxScrollingTextZoom);
     }
     return true;
 }
