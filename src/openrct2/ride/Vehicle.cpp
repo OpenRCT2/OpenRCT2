@@ -6380,7 +6380,7 @@ void Vehicle::UpdateLandscapeDoor() const
     }
 
     const auto coords = CoordsXYZ{ x, y, TrackLocation.z }.ToTileStart();
-    const auto tileElement = MapGetTrackElementBeforeSurfaceAtFromRide(coords, ride);
+    auto* const tileElement = MapGetTrackElementBeforeSurfaceAtFromRide(coords, ride);
     if (tileElement != nullptr)
     {
         AnimateLandscapeDoor<false>(coords, *tileElement->AsTrack(), next_vehicle_on_train.IsNull());
@@ -6441,7 +6441,7 @@ void Vehicle::UpdateLandscapeDoorBackwards() const
     }
 
     const auto coords = CoordsXYZ{ TrackLocation, TrackLocation.z };
-    const auto tileElement = MapGetTrackElementBeforeSurfaceAtFromRide(coords, ride);
+    auto* const tileElement = MapGetTrackElementBeforeSurfaceAtFromRide(coords, ride);
     if (tileElement != nullptr)
     {
         AnimateLandscapeDoor<true>(coords, *tileElement->AsTrack(), next_vehicle_on_train.IsNull());

@@ -94,10 +94,10 @@ static bool UpdateEntranceAnimation(
 {
     if (entrance.GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
     {
-        const auto ride = GetRide(entrance.GetRideIndex());
+        const auto* const ride = GetRide(entrance.GetRideIndex());
         if (ride != nullptr)
         {
-            const auto stationObj = ride->getStationObject();
+            const auto* const stationObj = ride->getStationObject();
             if (stationObj != nullptr)
             {
                 if constexpr (invalidate)
@@ -148,7 +148,7 @@ template<bool invalidate, bool invalidateAllViewports>
 static std::optional<UpdateType> UpdateSmallSceneryAnimation(
     const SmallSceneryElement& scenery, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
-    const auto entry = scenery.GetEntry();
+    const auto* const entry = scenery.GetEntry();
     if (entry == nullptr)
     {
         return std::nullopt;
@@ -233,7 +233,7 @@ template<bool invalidate, bool invalidateAllViewports>
 static bool UpdateLargeSceneryAnimation(
     const LargeSceneryElement& scenery, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
-    const auto entry = scenery.GetEntry();
+    const auto* const entry = scenery.GetEntry();
     if (entry != nullptr && (entry->flags & LARGE_SCENERY_FLAG_ANIMATED))
     {
         if constexpr (invalidate)
@@ -250,7 +250,7 @@ template<bool invalidate, bool invalidateAllViewports>
 static std::optional<UpdateType> UpdateWallAnimation(
     WallElement& wall, const CoordsXYZ& loc, const int32_t baseZ, const Viewport* const viewport)
 {
-    const auto entry = wall.GetEntry();
+    const auto* const entry = wall.GetEntry();
     if (entry == nullptr)
     {
         return std::nullopt;
@@ -324,7 +324,7 @@ static bool UpdateBannerAnimation(
 template<bool invalidate, bool invalidateAllViewports>
 static std::optional<UpdateType> UpdateTile(const TileCoordsXY& coords, const Viewport* const viewport)
 {
-    auto tileElement = MapGetFirstElementAt(coords);
+    auto* tileElement = MapGetFirstElementAt(coords);
     if (tileElement == nullptr)
     {
         return std::nullopt;
@@ -506,8 +506,8 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
             return std::optional(UpdateType::invalidate);
         case TileElementType::Wall:
         {
-            const auto wall = element.AsWall();
-            const auto entry = wall->GetEntry();
+            const auto* const wall = element.AsWall();
+            const auto* const entry = wall->GetEntry();
             if (entry != nullptr)
             {
                 if ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != kScrollingModeNone)
@@ -523,8 +523,8 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         }
         case TileElementType::SmallScenery:
         {
-            const auto scenery = element.AsSmallScenery();
-            const auto entry = scenery->GetEntry();
+            const auto* const scenery = element.AsSmallScenery();
+            const auto* const entry = scenery->GetEntry();
             if (entry != nullptr && entry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
             {
                 if (entry->HasFlag(SMALL_SCENERY_FLAG_IS_CLOCK))
@@ -540,8 +540,8 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         }
         case TileElementType::LargeScenery:
         {
-            const auto scenery = element.AsLargeScenery();
-            const auto entry = scenery->GetEntry();
+            const auto* const scenery = element.AsLargeScenery();
+            const auto* const entry = scenery->GetEntry();
             if (entry != nullptr && (entry->flags & LARGE_SCENERY_FLAG_ANIMATED))
             {
                 return std::optional(UpdateType::invalidate);
@@ -550,7 +550,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         }
         case TileElementType::Path:
         {
-            const auto path = element.AsPath();
+            const auto* const path = element.AsPath();
             if (path->HasQueueBanner())
             {
                 return std::optional(UpdateType::invalidate);
@@ -559,7 +559,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         }
         case TileElementType::Entrance:
         {
-            const auto entrance = element.AsEntrance();
+            const auto* const entrance = element.AsEntrance();
             if (entrance->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE && entrance->GetSequenceIndex() == 0)
             {
                 return std::optional(UpdateType::invalidate);
@@ -572,7 +572,7 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
         }
         case TileElementType::Track:
         {
-            const auto track = element.AsTrack();
+            const auto* const track = element.AsTrack();
             switch (track->GetTrackType())
             {
                 case TrackElemType::Waterfall:
@@ -635,7 +635,7 @@ void MapAnimations::MarkAllTiles()
 
 static void InvalidateAll(const ViewportList& viewports)
 {
-    for (const auto viewport : viewports)
+    for (const auto* const viewport : viewports)
     {
         // Code adapted from PaintSessionGenerateRotate.
         // Ideally this would iterate over tiles in memory order.
@@ -680,7 +680,7 @@ static void InvalidateAll(const ViewportList& viewports)
 
 static bool IsTileVisible(const ViewportList& viewports, const TileCoordsXY tileCoords)
 {
-    for (const auto viewport : viewports)
+    for (const auto* const viewport : viewports)
     {
         if (viewport->ContainsTile(tileCoords))
         {
