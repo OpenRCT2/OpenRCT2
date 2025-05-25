@@ -465,6 +465,8 @@ void UpdateEntitiesSpatialIndex()
                     EntitySpatialRemove(*entity);
                 }
                 EntitySpatialInsert(*entity, { entity->x, entity->y });
+
+                entity->SpatialIndex &= ~kSpatialIndexDirtyMask;
             }
         }
     }
