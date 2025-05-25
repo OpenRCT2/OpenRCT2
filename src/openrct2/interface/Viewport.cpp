@@ -906,7 +906,7 @@ namespace OpenRCT2
             auto* viewport = w->viewport;
             if (viewport == nullptr)
                 return;
-            if (viewport->flags & VIEWPORT_FLAG_INDEPEDENT_ROTATION)
+            if (viewport->flags & VIEWPORT_FLAG_INDEPENDENT_ROTATION)
                 return;
             ViewportRotateSingleInternal(*w, direction);
         });
