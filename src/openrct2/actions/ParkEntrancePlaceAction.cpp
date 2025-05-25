@@ -186,7 +186,7 @@ GameActions::Result ParkEntrancePlaceAction::Execute() const
 
         if (index == 0)
         {
-            MapAnimations::MarkTileForInvalidation(entranceLoc);
+            MapAnimations::MarkTileForInvalidation(TileCoordsXY(entranceLoc));
         }
     }
 

@@ -592,12 +592,11 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
     return std::nullopt;
 }
 
-void MapAnimations::MarkTileForInvalidation(const CoordsXY coords)
+void MapAnimations::MarkTileForInvalidation(const TileCoordsXY coords)
 {
-    const TileCoordsXY tileCoords(coords);
-    if (!_mapAnimationsUpdate.contains(tileCoords))
+    if (!_mapAnimationsUpdate.contains(coords))
     {
-        _mapAnimationsInvalidate.insert(tileCoords);
+        _mapAnimationsInvalidate.insert(coords);
     }
 }
 
@@ -624,7 +623,7 @@ void MapAnimations::MarkAllTiles()
             switch (*isAnimated)
             {
                 case UpdateType::invalidate:
-                    MarkTileForInvalidation(TileCoordsXY(it.x, it.y).ToCoordsXY());
+                    MarkTileForInvalidation(TileCoordsXY(it.x, it.y));
                     break;
                 case UpdateType::update:
                     MarkTileForUpdate(TileCoordsXY(it.x, it.y));

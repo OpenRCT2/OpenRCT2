@@ -600,7 +600,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             case TrackElemType::Whirlpool:
                 [[fallthrough]];
             case TrackElemType::SpinningTunnel:
-                MapAnimations::MarkTileForInvalidation(mapLoc);
+                MapAnimations::MarkTileForInvalidation(TileCoordsXY(mapLoc));
                 break;
             case TrackElemType::Brakes:
                 [[fallthrough]];

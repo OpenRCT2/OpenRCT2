@@ -456,7 +456,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     }
     else if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
     {
-        MapAnimations::MarkTileForInvalidation(_loc);
+        MapAnimations::MarkTileForInvalidation(TileCoordsXY(_loc));
     }
 
     return res;

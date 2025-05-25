@@ -19,7 +19,7 @@ namespace OpenRCT2::MapAnimations
         landEdgeDoor,
     };
 
-    void MarkTileForInvalidation(const CoordsXY coords);
+    void MarkTileForInvalidation(const TileCoordsXY coords);
     void MarkTileForUpdate(const TileCoordsXY coords);
     void CreateTemporary(const CoordsXYZ& coords, const TemporaryType type);
     void MarkAllTiles();
