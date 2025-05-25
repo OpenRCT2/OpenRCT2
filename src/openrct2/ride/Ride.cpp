@@ -3308,7 +3308,7 @@ static Vehicle* VehicleCreateCar(
             chosenLoc.x = dodgemPos.x + (ScenarioRand() & 0xFF);
         } while (vehicle->DodgemsCarWouldCollideAt(chosenLoc).has_value());
 
-        vehicle->MoveTo({ chosenLoc, dodgemPos.z });
+        vehicle->MoveToAndUpdateSpatialIndex({ chosenLoc, dodgemPos.z });
     }
     else
     {
