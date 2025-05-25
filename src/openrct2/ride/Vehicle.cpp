@@ -6316,7 +6316,7 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
         door->SetIsAnimating(true);
         play_scenery_door_open_sound(trackLocation, door);
 
-        MapAnimations::MarkTileForUpdate(doorLocation);
+        MapAnimations::MarkTileForUpdate(TileCoordsXY(doorLocation));
     }
 
     if (isLastVehicle)
@@ -6326,7 +6326,7 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
         door->SetIsAnimating(true);
         play_scenery_door_close_sound(trackLocation, door);
 
-        MapAnimations::MarkTileForUpdate(doorLocation);
+        MapAnimations::MarkTileForUpdate(TileCoordsXY(doorLocation));
     }
 }
 

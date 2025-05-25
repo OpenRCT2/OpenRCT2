@@ -601,11 +601,10 @@ void MapAnimations::MarkTileForInvalidation(const CoordsXY coords)
     }
 }
 
-void MapAnimations::MarkTileForUpdate(const CoordsXY coords)
+void MapAnimations::MarkTileForUpdate(const TileCoordsXY coords)
 {
-    const TileCoordsXY tileCoords(coords);
-    _mapAnimationsInvalidate.erase(tileCoords);
-    _mapAnimationsUpdate.insert(tileCoords);
+    _mapAnimationsInvalidate.erase(coords);
+    _mapAnimationsUpdate.insert(coords);
 }
 
 void MapAnimations::CreateTemporary(const CoordsXYZ& coords, const TemporaryType type)
@@ -628,7 +627,7 @@ void MapAnimations::MarkAllTiles()
                     MarkTileForInvalidation(TileCoordsXY(it.x, it.y).ToCoordsXY());
                     break;
                 case UpdateType::update:
-                    MarkTileForUpdate(TileCoordsXY(it.x, it.y).ToCoordsXY());
+                    MarkTileForUpdate(TileCoordsXY(it.x, it.y));
                     break;
             }
         }

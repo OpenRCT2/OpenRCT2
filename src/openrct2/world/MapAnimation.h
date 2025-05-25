@@ -20,7 +20,7 @@ namespace OpenRCT2::MapAnimations
     };
 
     void MarkTileForInvalidation(const CoordsXY coords);
-    void MarkTileForUpdate(const CoordsXY coords);
+    void MarkTileForUpdate(const TileCoordsXY coords);
     void CreateTemporary(const CoordsXYZ& coords, const TemporaryType type);
     void MarkAllTiles();
     void InvalidateAndUpdateAll();

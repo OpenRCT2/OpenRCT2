@@ -349,7 +349,7 @@ namespace OpenRCT2::TileInspector
             *pastedElement = element;
             pastedElement->SetLastForTile(lastForTile);
 
-            MapAnimations::MarkTileForUpdate(tileLoc.ToCoordsXY());
+            MapAnimations::MarkTileForUpdate(tileLoc);
 
             if (IsTileSelected(loc))
             {
