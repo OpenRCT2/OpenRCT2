@@ -17,6 +17,7 @@
 - Change: [#24418] Small & Large Zero G Rolls can now be built on the LIM Launched RC without cheats if vehicle sprites are available.
 - Fix: [#5269] Font bugs when using the Russian release of RCT2 as the base game.
 - Fix: [#11071, #22958] The virtual floor does not always draw correctly.
+- Fix: [#18220] Some custom RCT1 scenarios are detected as competition DLC scenarios.
 - Fix: [#20158] Custom animated scenery .DATs with frame offsets draw a random sprite at the end of their animation.
 - Fix: [#23289] Dodgems and Flying Saucer cars can spawn on top of each other when the ride is opened.
 - Fix: [#24332] Banner font renders differently when using RCT Classic as the base game.
