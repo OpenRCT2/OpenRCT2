@@ -2096,23 +2096,16 @@ TileElement* MapGetTrackElementAtFromRide(const CoordsXYZ& trackPos, RideId ride
     return nullptr;
 };
 
-/**
- * Gets the track element at x, y, z that is the given track type and sequence, and whether it is underground.
- * @param x x units, not tiles.
- * @param y y units, not tiles.
- * @param z Base height.
- */
-std::pair<TileElement*, bool> MapGetTrackElementAtFromRideIsUnderground(const CoordsXYZ& trackPos, const RideId rideIndex)
+TileElement* MapGetTrackElementBeforeSurfaceAtFromRide(const CoordsXYZ& trackPos, const RideId rideIndex)
 {
     TileElement* tileElement = MapGetFirstElementAt(trackPos);
     if (tileElement == nullptr)
-        return std::pair(nullptr, false);
+        return nullptr;
     const auto trackTilePos = TileCoordsXYZ{ trackPos };
-    bool isUnderground = true;
     do
     {
         if (tileElement->GetType() == TileElementType::Surface)
-            isUnderground = false;
+            return nullptr;
         if (tileElement->GetType() != TileElementType::Track)
             continue;
         if (tileElement->BaseHeight != trackTilePos.z)
@@ -2120,10 +2113,10 @@ std::pair<TileElement*, bool> MapGetTrackElementAtFromRideIsUnderground(const Co
         if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;
 
-        return std::pair(tileElement, isUnderground);
+        return tileElement;
     } while (!(tileElement++)->IsLastForTile());
 
-    return std::pair(nullptr, false);
+    return nullptr;
 };
 
 /**
