@@ -41,7 +41,7 @@
 
 using namespace OpenRCT2;
 
-constexpr ZoomLevel kMaxZoom{ 1 };
+constexpr ZoomLevel kMaxZoom{ 2 };
 
 struct TemporaryMapAnimation
 {
