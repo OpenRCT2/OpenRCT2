@@ -641,6 +641,11 @@ static void InvalidateAll(const ViewportList& viewports)
 {
     for (const auto* const viewport : viewports)
     {
+        if (viewport->zoom > kMaxZoom)
+        {
+            continue;
+        }
+
         // Code adapted from PaintSessionGenerateRotate.
         // Ideally this would iterate over tiles in memory order.
         constexpr const int32_t kTileWidth = 64;
