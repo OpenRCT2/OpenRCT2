@@ -54,6 +54,8 @@ struct EntityBase
      */
     void MoveTo(const CoordsXYZ& newLocation);
 
+    void MoveToAndUpdateSpatialIndex(const CoordsXYZ& newLocation);
+
     /**
      * Sets the entity location without screen invalidation.
      */
