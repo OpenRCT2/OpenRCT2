@@ -2602,8 +2602,8 @@ namespace OpenRCT2
                 if (vehicle == nullptr)
                     continue;
 
-                if (vehicle->next_free_seat >= vehicle->num_seats)
-                    continue;
+            if (vehicle->next_free_seat >= (vehicle->num_seats & kVehicleSeatNumMask))
+                continue;
 
                 if (vehicle->status != Vehicle::Status::waitingForPassengers)
                     continue;
