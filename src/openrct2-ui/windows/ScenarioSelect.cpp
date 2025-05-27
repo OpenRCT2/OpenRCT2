@@ -145,6 +145,11 @@ namespace OpenRCT2::Ui::Windows
             InitScrollWidgets();
         }
 
+        void OnLanguageChange() override
+        {
+            ScenarioRepositoryScan();
+        }
+
         void OnMouseUp(WidgetIndex widgetIndex) override
         {
             if (widgetIndex == WIDX_CLOSE)
