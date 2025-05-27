@@ -334,7 +334,7 @@ namespace OpenRCT2::ScenarioSources
         { SC_MINE_TRAIN_COMPETITION,                    "Mine Train Roller Coaster Competition",      ScenarioCategory::competitions,   {}                                                            },
         { SC_STAND_UP_STEEL_ROLLER_COASTER_COMPETITION, "Stand-Up Steel Roller Coaster Competition",  ScenarioCategory::competitions,   {}                                                            },
         { SC_STEEL_CORKSCREW_COMPETITION,               "Steel Corkscrew Roller Coaster Competition", ScenarioCategory::competitions,   {}                                                            },
-        { SC_STEEL_MINI_ROLLER_COASTER_COMPETITION,     "Steel Mini Roller Coaster Competition",      ScenarioCategory::competitions,   {}                                                            },
+        { SC_STEEL_MINI_ROLLER_COASTER_COMPETITION,     "Steel Mini-Roller Coaster Competition",      ScenarioCategory::competitions,   {}                                                            },
         { SC_STEEL_ROLLER_COASTER_COMPETITION,          "Steel Roller Coaster Competition",           ScenarioCategory::competitions,   {}                                                            },
         { SC_STEEL_TWISTER_COMPETITION,                 "Steel Twister Roller Coaster Competition",   ScenarioCategory::competitions,   {}                                                            },
         { SC_SUSPENDED_ROLLER_COASTER_COMPETITION,      "Suspended Roller Coaster Competition",       ScenarioCategory::competitions,   {}                                                            },
