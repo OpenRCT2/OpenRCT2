@@ -244,29 +244,17 @@ namespace OpenRCT2::Ui::Windows
 
                 auto& objManager = GetContext()->GetObjectManager();
 
-                // Unload current scenario meta object if it's not the one we need
-                auto* loadedObject = objManager.GetLoadedObject(ObjectType::scenarioMeta, 0);
-                if (loadedObject != nullptr && loadedObject->GetIdentifier() != source.textObjectId)
+                if (auto obj = objManager.LoadTempObject(source.textObjectId); obj != nullptr)
                 {
-                    objManager.UnloadObjects({ loadedObject->GetDescriptor() });
-                    loadedObject = nullptr;
+                    auto& scenarioMetaObj = reinterpret_cast<ScenarioMetaObject&>(*obj);
+
+                    ParkPreview preview{};
+                    preview.images.push_back(scenarioMetaObj.GetMiniMapImage());
+                    preview.images.push_back(scenarioMetaObj.GetPreviewImage());
+                    _preview = preview;
+
+                    scenarioMetaObj.Unload();
                 }
-
-                // Load the relevant scenario meta file if it hasn't been loaded yet
-                if (loadedObject == nullptr)
-                {
-                    loadedObject = objManager.LoadObject(source.textObjectId);
-                    if (loadedObject == nullptr)
-                        return;
-                }
-
-                auto* scenarioMetaObj = reinterpret_cast<ScenarioMetaObject*>(loadedObject);
-
-                ParkPreview preview{};
-                preview.images.push_back(scenarioMetaObj->GetMiniMapImage());
-                preview.images.push_back(scenarioMetaObj->GetPreviewImage());
-
-                _preview = preview;
             }
         }
 
