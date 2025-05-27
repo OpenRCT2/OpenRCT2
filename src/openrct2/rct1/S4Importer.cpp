@@ -233,6 +233,10 @@ namespace OpenRCT2::RCT1
             // If no entry is found, this is a custom scenario.
             bool isOfficial = ScenarioSources::TryGetById(_s4.ScenarioSlotIndex, &desc);
 
+            // Perform an additional name check if this is detected to be a competition scenario
+            if (isOfficial && desc.category == ScenarioCategory::competitions)
+                isOfficial = ScenarioSources::TryGetByName(_s4.ScenarioName, &desc);
+
             dst->Category = desc.category;
             dst->SourceGame = ScenarioSource{ desc.source };
             dst->SourceIndex = desc.index;
