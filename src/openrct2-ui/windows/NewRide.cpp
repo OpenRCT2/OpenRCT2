@@ -527,6 +527,7 @@ namespace OpenRCT2::Ui::Windows
             _filter.assign(text);
 
             scrolls->contentOffsetY = 0;
+            PopulateRideList();
             Invalidate();
         }
 
