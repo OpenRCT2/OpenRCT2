@@ -163,6 +163,21 @@ public:
         return objectList;
     }
 
+    std::unique_ptr<Object> LoadTempObject(std::string_view id) override
+    {
+        const ObjectRepositoryItem* ori = _objectRepository.FindObject(id);
+        if (ori == nullptr)
+        {
+            LOG_ERROR("Object '%s' not found in repository.", std::string{ id }.c_str());
+            return nullptr;
+        }
+
+        auto object = _objectRepository.LoadObject(ori);
+        object->Load();
+
+        return object;
+    }
+
     Object* LoadObject(std::string_view identifier) override
     {
         const ObjectRepositoryItem* ori = _objectRepository.FindObject(identifier);
