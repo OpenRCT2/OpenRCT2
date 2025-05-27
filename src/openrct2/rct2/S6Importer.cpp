@@ -95,8 +95,6 @@ namespace OpenRCT2::RCT2
 {
 #define DECRYPT_MONEY(money) (static_cast<money32>(Numerics::rol32((money) ^ 0xF4EC9621, 13)))
 
-    static std::mutex mtx;
-
     /**
      * Class to import RollerCoaster Tycoon 2 scenarios (*.SC6) and saved games (*.SV6).
      */
@@ -298,19 +296,14 @@ namespace OpenRCT2::RCT2
             {
                 auto& objManager = GetContext()->GetObjectManager();
 
-                // Ensure only one thread talks to the object manager at a time
-                std::lock_guard lock(mtx);
-
-                // Unload loaded scenario text object, if any.
-                if (auto* obj = objManager.GetLoadedObject<ScenarioTextObject>(0); obj != nullptr)
-                    objManager.UnloadObjects({ obj->GetDescriptor() });
-
                 // Load the one specified
-                if (auto* obj = objManager.LoadObject(desc.textObjectId); obj != nullptr)
+                if (auto obj = objManager.LoadTempObject(desc.textObjectId); obj != nullptr)
                 {
-                    auto* textObject = reinterpret_cast<ScenarioTextObject*>(obj);
-                    dst->Name = textObject->GetScenarioName();
-                    dst->Details = textObject->GetScenarioDetails();
+                    auto& textObject = reinterpret_cast<ScenarioTextObject&>(*obj);
+                    dst->Name = textObject.GetScenarioName();
+                    dst->Details = textObject.GetScenarioDetails();
+
+                    obj->Unload();
                 }
             }
 

@@ -96,8 +96,6 @@ static constexpr ObjectEntryIndex ObjectEntryIndexIgnore = 254;
 
 namespace OpenRCT2::RCT1
 {
-    static std::mutex mtx;
-
     class S4Importer final : public IParkImporter
     {
     private:
@@ -272,19 +270,14 @@ namespace OpenRCT2::RCT1
             {
                 auto& objManager = GetContext()->GetObjectManager();
 
-                // Ensure only one thread talks to the object manager at a time
-                std::lock_guard lock(mtx);
-
-                // Unload loaded scenario text object, if any.
-                if (auto* obj = objManager.GetLoadedObject<ScenarioTextObject>(0); obj != nullptr)
-                    objManager.UnloadObjects({ obj->GetDescriptor() });
-
                 // Load the one specified
-                if (auto* obj = objManager.LoadObject(desc.textObjectId); obj != nullptr)
+                if (auto obj = objManager.LoadTempObject(desc.textObjectId); obj != nullptr)
                 {
-                    auto* textObject = reinterpret_cast<ScenarioTextObject*>(obj);
-                    name = textObject->GetScenarioName();
-                    details = textObject->GetScenarioDetails();
+                    auto& textObject = reinterpret_cast<ScenarioTextObject&>(*obj);
+                    name = textObject.GetScenarioName();
+                    details = textObject.GetScenarioDetails();
+
+                    obj->Unload();
                 }
             }
 
@@ -2415,20 +2408,13 @@ namespace OpenRCT2::RCT1
                 {
                     auto& objManager = GetContext()->GetObjectManager();
 
-                    // Ensure only one thread talks to the object manager at a time
-                    std::lock_guard lock(mtx);
-
-                    // Unload loaded scenario text object, if any.
-                    if (auto* obj = objManager.GetLoadedObject<ScenarioTextObject>(0); obj != nullptr)
-                        objManager.UnloadObjects({ obj->GetDescriptor() });
-
                     // Load the one specified
-                    if (auto* obj = objManager.LoadObject(desc.textObjectId); obj != nullptr)
+                    if (auto obj = objManager.LoadTempObject(desc.textObjectId); obj != nullptr)
                     {
-                        auto* textObject = reinterpret_cast<ScenarioTextObject*>(obj);
-                        name = textObject->GetScenarioName();
-                        parkName = textObject->GetParkName();
-                        details = textObject->GetScenarioDetails();
+                        auto& textObject = reinterpret_cast<ScenarioTextObject&>(*obj);
+                        name = textObject.GetScenarioName();
+                        parkName = textObject.GetParkName();
+                        details = textObject.GetScenarioDetails();
                     }
                 }
             }
