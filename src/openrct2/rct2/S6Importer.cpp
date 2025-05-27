@@ -301,8 +301,6 @@ namespace OpenRCT2::RCT2
                     auto& textObject = reinterpret_cast<ScenarioMetaObject&>(*obj);
                     dst->Name = textObject.GetScenarioName();
                     dst->Details = textObject.GetScenarioDetails();
-
-                    obj->Unload();
                 }
             }
 

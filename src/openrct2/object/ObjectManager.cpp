@@ -173,8 +173,6 @@ public:
         }
 
         auto object = _objectRepository.LoadObject(ori);
-        object->Load();
-
         return object;
     }
 
