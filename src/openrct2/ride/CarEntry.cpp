@@ -11,8 +11,19 @@
 
 #include "../drawing/Drawing.h"
 #include "../entity/Yaw.hpp"
+#include "Vehicle.h"
 
 #include <cstdint>
+
+uint8_t CarEntry::getNumSeats() const
+{
+    return num_seats & kVehicleSeatNumMask;
+}
+
+bool CarEntry::getUsedInPairs() const
+{
+    return num_seats & kVehicleSeatPairFlag;
+}
 
 uint32_t CarEntry::NumRotationSprites(SpriteGroupType spriteGroup) const
 {

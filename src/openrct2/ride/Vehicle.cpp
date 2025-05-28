@@ -1264,6 +1264,11 @@ Vehicle* Vehicle::TrainTail() const
     return const_cast<Vehicle*>(vehicle);
 }
 
+uint8_t Vehicle::getNumSeats() const
+{
+    return num_seats & kVehicleSeatNumMask;
+}
+
 int32_t Vehicle::IsUsedInPairs() const
 {
     return num_seats & kVehicleSeatPairFlag;

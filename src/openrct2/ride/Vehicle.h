@@ -286,6 +286,7 @@ struct Vehicle : OpenRCT2::EntityBase
     int32_t CableLiftUpdateTrackMotion();
     GForces GetGForces() const;
     void SetMapToolbar() const;
+    uint8_t getNumSeats() const;
     int32_t IsUsedInPairs() const;
     const RideObjectEntry* GetRideEntry() const;
     const CarEntry* Entry() const;
