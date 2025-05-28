@@ -3826,3 +3826,7 @@ STR_6770    :Limite de fréquence d’image :
 STR_6771    :Vitesse interne (par défaut)
 STR_6772    :Synchronisation verticale
 STR_6773    :Illimitée
+STR_6774    :Temps depuis la dernière inspection
+STR_6775    :{COMMA16} minute
+STR_6776    :{COMMA16} minutes
+STR_6777    :Plus de 4 heures
