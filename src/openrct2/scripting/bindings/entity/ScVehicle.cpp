@@ -67,6 +67,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScVehicle::vehicleObject_get, &ScVehicle::vehicleObject_set, "vehicleObject");
         dukglue_register_property(ctx, &ScVehicle::spriteType_get, &ScVehicle::spriteType_set, "spriteType");
         dukglue_register_property(ctx, &ScVehicle::numSeats_get, &ScVehicle::numSeats_set, "numSeats");
+        dukglue_register_property(ctx, &ScVehicle::usedInPairs_get, &ScVehicle::usedInPairs_set, "usedInPairs");
         dukglue_register_property(ctx, &ScVehicle::nextCarOnTrain_get, &ScVehicle::nextCarOnTrain_set, "nextCarOnTrain");
         dukglue_register_property(
             ctx, &ScVehicle::previousCarOnRide_get, &ScVehicle::previousCarOnRide_set, "previousCarOnRide");
@@ -169,7 +170,7 @@ namespace OpenRCT2::Scripting
     uint8_t ScVehicle::numSeats_get() const
     {
         auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->num_seats & kVehicleSeatNumMask : 0;
+        return vehicle != nullptr ? vehicle->getNumSeats() : 0;
     }
     void ScVehicle::numSeats_set(uint8_t value)
     {
@@ -179,6 +180,21 @@ namespace OpenRCT2::Scripting
         {
             vehicle->num_seats &= ~kVehicleSeatNumMask;
             vehicle->num_seats |= value & kVehicleSeatNumMask;
+        }
+    }
+
+    bool ScVehicle::usedInPairs_get() const
+    {
+        auto vehicle = GetVehicle();
+        return vehicle != nullptr ? vehicle->IsUsedInPairs() : 0;
+    }
+    void ScVehicle::usedInPairs_set(bool value)
+    {
+        auto vehicle = GetVehicle();
+        if (vehicle != nullptr)
+        {
+            vehicle->num_seats &= kVehicleSeatNumMask;
+            vehicle->num_seats |= value * kVehicleSeatPairFlag;
         }
     }
 
