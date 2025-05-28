@@ -233,6 +233,9 @@ struct CarEntry
     std::vector<std::array<CoordsXY, 3>> peep_loading_waypoints = {};
     std::vector<int8_t> peep_loading_positions = {};
 
+    uint8_t getNumSeats() const;
+    bool getUsedInPairs() const;
+
     uint32_t NumRotationSprites(SpriteGroupType rotationType) const;
     int32_t SpriteByYaw(int32_t yaw, SpriteGroupType rotationType) const;
     bool GroupEnabled(SpriteGroupType rotationType) const;

@@ -2585,7 +2585,7 @@ static bool FindVehicleToEnter(
             if (vehicle == nullptr)
                 continue;
 
-            if (vehicle->next_free_seat >= (vehicle->num_seats & kVehicleSeatNumMask))
+            if (vehicle->next_free_seat >= vehicle->getNumSeats())
                 continue;
 
             if (vehicle->status != Vehicle::Status::WaitingForPassengers)
@@ -2611,7 +2611,7 @@ static bool FindVehicleToEnter(
     for (Vehicle* vehicle = GetEntity<Vehicle>(vehicle_id); vehicle != nullptr;
          vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train), ++i)
     {
-        uint8_t num_seats = vehicle->num_seats;
+        uint8_t num_seats = vehicle->getNumSeats();
         if (vehicle->IsUsedInPairs())
         {
             if (vehicle->next_free_seat & 1)
@@ -2620,7 +2620,6 @@ static bool FindVehicleToEnter(
                 car_array.push_back(i);
                 return true;
             }
-            num_seats &= kVehicleSeatNumMask;
         }
         if (num_seats == vehicle->next_free_seat)
             continue;
