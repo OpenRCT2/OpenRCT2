@@ -27,8 +27,8 @@
 
 using namespace OpenRCT2;
 
-using OpenRCT2::RCT12::RCT12TrackDesignVersion;
 using OpenRCT2::RCT12::TD46MazeElement;
+using OpenRCT2::RCT12::TD46Version;
 
 namespace OpenRCT2::RCT2
 {
@@ -125,8 +125,8 @@ namespace OpenRCT2::RCT2
             td->operation.liftHillSpeed = td6.LiftHillSpeedNumCircuits & 0b00011111;
             td->operation.numCircuits = td6.LiftHillSpeedNumCircuits >> 5;
 
-            auto version = static_cast<RCT12TrackDesignVersion>((td6.VersionAndColourScheme >> 2) & 3);
-            if (version != RCT12TrackDesignVersion::TD6)
+            auto version = static_cast<TD46Version>((td6.VersionAndColourScheme >> 2) & 3);
+            if (version != TD46Version::td6)
             {
                 LOG_ERROR("Unsupported track design.");
                 return nullptr;
@@ -139,13 +139,13 @@ namespace OpenRCT2::RCT2
             if (rtd.specialType == RtdSpecialType::maze)
             {
                 TD46MazeElement t6MazeElement{};
-                t6MazeElement.All = !0;
-                while (t6MazeElement.All != 0)
+                t6MazeElement.all = !0;
+                while (t6MazeElement.all != 0)
                 {
                     _stream.Read(&t6MazeElement, sizeof(TD46MazeElement));
-                    if (t6MazeElement.All != 0)
+                    if (t6MazeElement.all != 0)
                     {
-                        ImportMazeElement(*td, t6MazeElement);
+                        importMazeElement(*td, t6MazeElement);
                     }
                 }
             }
@@ -171,7 +171,7 @@ namespace OpenRCT2::RCT2
                     }
 
                     trackElement.type = trackType;
-                    RCT12::ConvertFromTD46Flags(trackElement, t6TrackElement.Flags);
+                    RCT12::convertFromTD46Flags(trackElement, t6TrackElement.Flags);
                     td->trackElements.push_back(trackElement);
                 }
 

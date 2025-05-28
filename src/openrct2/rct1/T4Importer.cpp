@@ -25,8 +25,8 @@
 #include <cassert>
 
 using namespace OpenRCT2;
-using OpenRCT2::RCT12::RCT12TrackDesignVersion;
 using OpenRCT2::RCT12::TD46MazeElement;
+using OpenRCT2::RCT12::TD46Version;
 
 namespace OpenRCT2::RCT1
 {
@@ -71,15 +71,15 @@ namespace OpenRCT2::RCT1
             std::unique_ptr<TrackDesign> td = std::make_unique<TrackDesign>();
 
             _stream.SetPosition(7);
-            RCT12TrackDesignVersion version = static_cast<RCT12TrackDesignVersion>(_stream.ReadValue<uint8_t>() >> 2);
+            TD46Version version = static_cast<TD46Version>(_stream.ReadValue<uint8_t>() >> 2);
 
-            if (version != RCT12TrackDesignVersion::TD4 && version != RCT12TrackDesignVersion::TD4_AA)
+            if (version != TD46Version::td4 && version != TD46Version::td4AA)
             {
                 throw IOException("Version number incorrect.");
             }
             _stream.SetPosition(0);
 
-            if (version == RCT12TrackDesignVersion::TD4_AA)
+            if (version == TD46Version::td4AA)
             {
                 return ImportAA();
             }
@@ -241,13 +241,13 @@ namespace OpenRCT2::RCT1
             if (rtd.specialType == RtdSpecialType::maze)
             {
                 TD46MazeElement t4MazeElement{};
-                t4MazeElement.All = !0;
-                while (t4MazeElement.All != 0)
+                t4MazeElement.all = !0;
+                while (t4MazeElement.all != 0)
                 {
                     _stream.Read(&t4MazeElement, sizeof(TD46MazeElement));
-                    if (t4MazeElement.All != 0)
+                    if (t4MazeElement.all != 0)
                     {
-                        ImportMazeElement(*td, t4MazeElement);
+                        importMazeElement(*td, t4MazeElement);
                     }
                 }
             }
@@ -260,7 +260,7 @@ namespace OpenRCT2::RCT1
                     _stream.Read(&t4TrackElement, sizeof(TD46TrackElement));
                     TrackDesignTrackElement trackElement{};
                     trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.Type, td->trackAndVehicle.rtdIndex);
-                    RCT12::ConvertFromTD46Flags(trackElement, t4TrackElement.Flags);
+                    RCT12::convertFromTD46Flags(trackElement, t4TrackElement.Flags);
                     td->trackElements.push_back(trackElement);
                 }
             }

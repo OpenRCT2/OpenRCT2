@@ -142,7 +142,7 @@ namespace OpenRCT2::RCT2
                 tempStream.WriteValue<int8_t>(entranceElement.location.y);
                 tempStream.WriteValue<int8_t>(entranceElement.location.direction);
                 tempStream.WriteValue<int8_t>(
-                    EnumValue(entranceElement.isExit ? TD46MazeElementType::Exit : TD46MazeElementType::Entrance));
+                    EnumValue(entranceElement.isExit ? TD46MazeElementType::exit : TD46MazeElementType::entrance));
             }
 
             tempStream.WriteValue<uint32_t>(0);
@@ -157,7 +157,7 @@ namespace OpenRCT2::RCT2
                     trackType = OpenRCT2::RCT12::TrackElemType::InvertedUp90ToFlatQuarterLoopAlias;
                 }
                 tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(trackType));
-                auto flags = RCT12::ConvertToTD46Flags(trackElement);
+                auto flags = RCT12::convertToTD46Flags(trackElement);
                 tempStream.WriteValue<uint8_t>(flags);
             }
 

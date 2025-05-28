@@ -18,28 +18,28 @@ struct TrackDesignTrackElement;
 
 namespace OpenRCT2::RCT12
 {
-    enum class RCT12TrackDesignVersion : uint8_t
+    enum class TD46Version : uint8_t
     {
-        TD4,
-        TD4_AA,
-        TD6,
+        td4,
+        td4AA,
+        td6,
         unknown
     };
 
     enum class TD46Flags : uint8_t
     {
-        StationId = 0b00000011,
-        SpeedOrSeatRotation = 0b00001111,
-        ColourScheme = 0b00110000,
-        IsInverted = 0b01000000,
-        HasChain = 0b10000000,
+        stationId = 0b00000011,
+        speedOrSeatRotation = 0b00001111,
+        colourScheme = 0b00110000,
+        isInverted = 0b01000000,
+        hasChain = 0b10000000,
     };
 
 #pragma pack(push, 1)
     enum class TD46MazeElementType : uint8_t
     {
-        Entrance = (1 << 3),
-        Exit = (1 << 7)
+        entrance = (1 << 3),
+        exit = (1 << 7)
     };
 
     /* Maze Element entry   size: 0x04 */
@@ -47,37 +47,37 @@ namespace OpenRCT2::RCT12
     {
         union
         {
-            uint32_t All;
+            uint32_t all;
             struct
             {
                 int8_t x;
                 int8_t y;
                 union
                 {
-                    uint16_t MazeEntry;
+                    uint16_t mazeEntry;
                     struct
                     {
-                        uint8_t Direction;
-                        uint8_t Type;
+                        uint8_t direction;
+                        uint8_t type;
                     };
                 };
             };
         };
 
-        constexpr bool IsEntrance() const
+        constexpr bool isEntrance() const
         {
-            return Type == EnumValue(TD46MazeElementType::Entrance);
+            return type == EnumValue(TD46MazeElementType::entrance);
         }
 
-        constexpr bool IsExit() const
+        constexpr bool isExit() const
         {
-            return Type == EnumValue(TD46MazeElementType::Exit);
+            return type == EnumValue(TD46MazeElementType::exit);
         }
     };
     static_assert(sizeof(TD46MazeElement) == 0x04);
 #pragma pack(pop)
 
-    void ConvertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags);
-    uint8_t ConvertToTD46Flags(const TrackDesignTrackElement& source);
-    void ImportMazeElement(TrackDesign& td, const TD46MazeElement& td46MazeElement);
+    void convertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags);
+    uint8_t convertToTD46Flags(const TrackDesignTrackElement& source);
+    void importMazeElement(TrackDesign& td, const TD46MazeElement& td46MazeElement);
 } // namespace OpenRCT2::RCT12

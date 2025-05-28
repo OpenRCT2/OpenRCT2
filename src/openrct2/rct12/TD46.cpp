@@ -14,18 +14,18 @@
 
 namespace OpenRCT2::RCT12
 {
-    void ConvertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags)
+    void convertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags)
     {
         target.brakeBoosterSpeed = kRCT2DefaultBlockBrakeSpeed;
-        if (TrackTypeIsStation(target.type))
+        if (::TrackTypeIsStation(target.type))
         {
-            auto stationIndex = flags & EnumValue(TD46Flags::StationId);
+            auto stationIndex = flags & EnumValue(TD46Flags::stationId);
             target.stationIndex = StationIndex::FromUnderlying(stationIndex);
         }
         else
         {
-            auto speedOrSeatRotation = flags & EnumValue(TD46Flags::SpeedOrSeatRotation);
-            if (TrackTypeHasSpeedSetting(target.type) && target.type != TrackElemType::BlockBrakes)
+            auto speedOrSeatRotation = flags & EnumValue(TD46Flags::speedOrSeatRotation);
+            if (::TrackTypeHasSpeedSetting(target.type) && target.type != TrackElemType::BlockBrakes)
             {
                 target.brakeBoosterSpeed = speedOrSeatRotation << 1;
             }
@@ -35,21 +35,21 @@ namespace OpenRCT2::RCT12
             }
         }
 
-        target.colourScheme = (flags & EnumValue(TD46Flags::ColourScheme)) >> 4;
-        if (flags & EnumValue(TD46Flags::IsInverted))
+        target.colourScheme = (flags & EnumValue(TD46Flags::colourScheme)) >> 4;
+        if (flags & EnumValue(TD46Flags::isInverted))
             target.SetFlag(TrackDesignTrackElementFlag::isInverted);
-        if (flags & EnumValue(TD46Flags::HasChain))
+        if (flags & EnumValue(TD46Flags::hasChain))
             target.SetFlag(TrackDesignTrackElementFlag::hasChain);
     }
 
-    uint8_t ConvertToTD46Flags(const TrackDesignTrackElement& source)
+    uint8_t convertToTD46Flags(const TrackDesignTrackElement& source)
     {
         uint8_t trackFlags = 0;
-        if (TrackTypeIsStation(source.type))
+        if (::TrackTypeIsStation(source.type))
         {
-            trackFlags = (source.stationIndex.ToUnderlying() & EnumValue(TD46Flags::StationId));
+            trackFlags = (source.stationIndex.ToUnderlying() & EnumValue(TD46Flags::stationId));
         }
-        else if (TrackTypeHasSpeedSetting(source.type) && source.type != TrackElemType::BlockBrakes)
+        else if (::TrackTypeHasSpeedSetting(source.type) && source.type != TrackElemType::BlockBrakes)
         {
             trackFlags = (source.brakeBoosterSpeed >> 1);
         }
@@ -61,20 +61,20 @@ namespace OpenRCT2::RCT12
         trackFlags |= source.colourScheme << 4;
 
         if (source.HasFlag(TrackDesignTrackElementFlag::hasChain))
-            trackFlags |= EnumValue(TD46Flags::HasChain);
+            trackFlags |= EnumValue(TD46Flags::hasChain);
         if (source.HasFlag(TrackDesignTrackElementFlag::isInverted))
-            trackFlags |= EnumValue(TD46Flags::IsInverted);
+            trackFlags |= EnumValue(TD46Flags::isInverted);
 
         return trackFlags;
     }
 
-    void ImportMazeElement(TrackDesign& td, const TD46MazeElement& td46MazeElement)
+    void importMazeElement(TrackDesign& td, const TD46MazeElement& td46MazeElement)
     {
-        if (td46MazeElement.IsEntrance() || td46MazeElement.IsExit())
+        if (td46MazeElement.isEntrance() || td46MazeElement.isExit())
         {
             TrackDesignEntranceElement element{};
-            element.location = TileCoordsXYZD(td46MazeElement.x, td46MazeElement.y, 0, td46MazeElement.Direction);
-            element.isExit = td46MazeElement.IsExit();
+            element.location = TileCoordsXYZD(td46MazeElement.x, td46MazeElement.y, 0, td46MazeElement.direction);
+            element.isExit = td46MazeElement.isExit();
             td.entranceElements.push_back(element);
         }
         else
@@ -82,7 +82,7 @@ namespace OpenRCT2::RCT12
             TrackDesignMazeElement mazeElement{};
             mazeElement.location.x = td46MazeElement.x;
             mazeElement.location.y = td46MazeElement.y;
-            mazeElement.mazeEntry = td46MazeElement.MazeEntry;
+            mazeElement.mazeEntry = td46MazeElement.mazeEntry;
             td.mazeElements.push_back(mazeElement);
         }
     }
