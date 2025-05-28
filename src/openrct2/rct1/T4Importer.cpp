@@ -16,6 +16,7 @@
 #include "../rct1/RCT1.h"
 #include "../rct1/Tables.h"
 #include "../rct12/SawyerChunkReader.h"
+#include "../rct12/TD46.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/TrackDesign.h"
@@ -24,6 +25,8 @@
 #include <cassert>
 
 using namespace OpenRCT2;
+using OpenRCT2::RCT12::RCT12TrackDesignVersion;
+using OpenRCT2::RCT12::TD46MazeElement;
 
 namespace OpenRCT2::RCT1
 {
@@ -257,7 +260,7 @@ namespace OpenRCT2::RCT1
                     _stream.Read(&t4TrackElement, sizeof(TD46TrackElement));
                     TrackDesignTrackElement trackElement{};
                     trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.Type, td->trackAndVehicle.rtdIndex);
-                    ConvertFromTD46Flags(trackElement, t4TrackElement.Flags);
+                    RCT12::ConvertFromTD46Flags(trackElement, t4TrackElement.Flags);
                     td->trackElements.push_back(trackElement);
                 }
             }

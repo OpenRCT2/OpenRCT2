@@ -16,6 +16,7 @@
 #include "../localisation/StringIds.h"
 #include "../object/ObjectList.h"
 #include "../rct12/SawyerChunkWriter.h"
+#include "../rct12/TD46.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -27,6 +28,8 @@
 #include "../windows/Intent.h"
 
 #include <functional>
+
+using OpenRCT2::RCT12::TD46MazeElementType;
 
 namespace OpenRCT2::RCT2
 {
@@ -154,7 +157,7 @@ namespace OpenRCT2::RCT2
                     trackType = OpenRCT2::RCT12::TrackElemType::InvertedUp90ToFlatQuarterLoopAlias;
                 }
                 tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(trackType));
-                auto flags = ConvertToTD46Flags(trackElement);
+                auto flags = RCT12::ConvertToTD46Flags(trackElement);
                 tempStream.WriteValue<uint8_t>(flags);
             }
 

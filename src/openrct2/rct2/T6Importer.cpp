@@ -16,6 +16,7 @@
 #include "../object/ObjectRepository.h"
 #include "../object/RideObject.h"
 #include "../rct12/SawyerChunkReader.h"
+#include "../rct12/TD46.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -25,6 +26,9 @@
 #include <mutex>
 
 using namespace OpenRCT2;
+
+using OpenRCT2::RCT12::RCT12TrackDesignVersion;
+using OpenRCT2::RCT12::TD46MazeElement;
 
 namespace OpenRCT2::RCT2
 {
@@ -167,7 +171,7 @@ namespace OpenRCT2::RCT2
                     }
 
                     trackElement.type = trackType;
-                    ConvertFromTD46Flags(trackElement, t6TrackElement.Flags);
+                    RCT12::ConvertFromTD46Flags(trackElement, t6TrackElement.Flags);
                     td->trackElements.push_back(trackElement);
                 }
 
