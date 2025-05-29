@@ -933,6 +933,22 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
             }
+
+            const std::optional<Focus> currentFocus = peep->State != PeepState::Picked ? std::optional(Focus(peep->Id))
+                                                                                       : std::nullopt;
+            if (focus != currentFocus)
+            {
+                OnViewportRotate();
+            }
+
+            for (const auto& thought : peep->Thoughts)
+            {
+                if (thought.freshness == 1 || thought.freshness == 2)
+                {
+                    InvalidateWidget(WIDX_MARQUEE);
+                    break;
+                }
+            }
         }
 
         void OnTextInputOverview(WidgetIndex widgetIndex, std::string_view text)
