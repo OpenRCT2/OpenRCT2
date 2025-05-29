@@ -20,14 +20,11 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/FileStream.h>
-#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
-#include <openrct2/localisation/Localisation.Date.h>
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/object/ObjectRepository.h>
 #include <openrct2/object/ScenarioMetaObject.h>
 #include <openrct2/park/ParkPreview.h>
 #include <openrct2/ride/RideData.h>
