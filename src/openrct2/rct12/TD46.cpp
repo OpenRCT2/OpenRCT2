@@ -25,7 +25,7 @@ namespace OpenRCT2::RCT12
         else
         {
             auto speedOrSeatRotation = flags & EnumValue(TD46Flags::speedOrSeatRotation);
-            if (::TrackTypeHasSpeedSetting(target.type) && target.type != TrackElemType::BlockBrakes)
+            if (::TrackTypeHasSpeedSetting(target.type) && target.type != OpenRCT2::TrackElemType::BlockBrakes)
             {
                 target.brakeBoosterSpeed = speedOrSeatRotation << 1;
             }
@@ -49,7 +49,7 @@ namespace OpenRCT2::RCT12
         {
             trackFlags = (source.stationIndex.ToUnderlying() & EnumValue(TD46Flags::stationId));
         }
-        else if (::TrackTypeHasSpeedSetting(source.type) && source.type != TrackElemType::BlockBrakes)
+        else if (::TrackTypeHasSpeedSetting(source.type) && source.type != OpenRCT2::TrackElemType::BlockBrakes)
         {
             trackFlags = (source.brakeBoosterSpeed >> 1);
         }
