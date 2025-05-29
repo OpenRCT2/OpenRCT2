@@ -41,7 +41,6 @@
 #include "drawing/IDrawingEngine.h"
 #include "drawing/Image.h"
 #include "drawing/LightFX.h"
-#include "entity/EntityRegistry.h"
 #include "entity/EntityTweener.h"
 #include "interface/Chat.h"
 #include "interface/StdInOutConsole.h"
@@ -61,7 +60,6 @@
 #include "platform/Platform.h"
 #include "profiling/Profiling.h"
 #include "rct2/RCT2.h"
-#include "ride/TrackData.h"
 #include "ride/TrackDesignRepository.h"
 #include "scenario/ScenarioRepository.h"
 #include "scenes/game/GameScene.h"
@@ -74,7 +72,6 @@
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "world/MapAnimation.h"
-#include "world/Park.h"
 
 #include <chrono>
 #include <cmath>
