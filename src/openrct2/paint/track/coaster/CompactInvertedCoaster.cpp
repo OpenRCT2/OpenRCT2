@@ -33,24 +33,24 @@ static constexpr ImageIndex kCompactInvertedDiagFlatImages[2][kNumOrthogonalDire
 };
 
 static constexpr ImageIndex kCompactInvertedDiagBrakeImages[kNumOrthogonalDirections] = {
-    SPR_G2_SLC_DIAG_BRAKES,
-    SPR_G2_SLC_DIAG_BRAKES + 1,
-    SPR_G2_SLC_DIAG_BRAKES,
-    SPR_G2_SLC_DIAG_BRAKES + 1,
+    SPR_TRACKS_SLC_DIAG_BRAKES,
+    SPR_TRACKS_SLC_DIAG_BRAKES + 1,
+    SPR_TRACKS_SLC_DIAG_BRAKES,
+    SPR_TRACKS_SLC_DIAG_BRAKES + 1,
 };
 
 static constexpr ImageIndex kCompactInvertedDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
     {
-        SPR_G2_SLC_DIAG_BRAKES,
-        SPR_G2_SLC_DIAG_BRAKES + 1,
-        SPR_G2_SLC_DIAG_BRAKES,
-        SPR_G2_SLC_DIAG_BRAKES + 1,
+        SPR_TRACKS_SLC_DIAG_BRAKES,
+        SPR_TRACKS_SLC_DIAG_BRAKES + 1,
+        SPR_TRACKS_SLC_DIAG_BRAKES,
+        SPR_TRACKS_SLC_DIAG_BRAKES + 1,
     },
     {
-        SPR_G2_SLC_DIAG_BRAKES,
-        SPR_G2_SLC_DIAG_BRAKES + 2,
-        SPR_G2_SLC_DIAG_BRAKES,
-        SPR_G2_SLC_DIAG_BRAKES + 2,
+        SPR_TRACKS_SLC_DIAG_BRAKES,
+        SPR_TRACKS_SLC_DIAG_BRAKES + 2,
+        SPR_TRACKS_SLC_DIAG_BRAKES,
+        SPR_TRACKS_SLC_DIAG_BRAKES + 2,
     },
 };
 

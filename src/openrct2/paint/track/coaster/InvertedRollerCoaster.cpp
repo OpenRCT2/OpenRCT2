@@ -32,10 +32,10 @@ static constexpr ImageIndex kInvertedRCDiagFlatImages[2][kNumOrthogonalDirection
 };
 
 static constexpr ImageIndex kInvertedRCDiagBrakeImages[kNumOrthogonalDirections] = {
-    SPR_G2_BM_INVERT_DIAG_BRAKES,
-    SPR_G2_BM_INVERT_DIAG_BRAKES + 1,
-    SPR_G2_BM_INVERT_DIAG_BRAKES,
-    SPR_G2_BM_INVERT_DIAG_BRAKES + 1,
+    SPR_TRACKS_BM_INVERT_DIAG_BRAKES,
+    SPR_TRACKS_BM_INVERT_DIAG_BRAKES + 1,
+    SPR_TRACKS_BM_INVERT_DIAG_BRAKES,
+    SPR_TRACKS_BM_INVERT_DIAG_BRAKES + 1,
 };
 
 /** rct2: 0x008A92E8 */
@@ -11315,7 +11315,7 @@ static void InvertedRCTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    const auto imageId = (direction & 1) ? SPR_G2_BM_INVERT_BOOSTER_2 : SPR_G2_BM_INVERT_BOOSTER_1;
+    const auto imageId = (direction & 1) ? SPR_TRACKS_BM_INVERT_BOOSTER_2 : SPR_TRACKS_BM_INVERT_BOOSTER_1;
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(imageId), { 0, 0, height + 29 },
         { { 0, 6, height + 29 }, { 32, 20, 1 } });

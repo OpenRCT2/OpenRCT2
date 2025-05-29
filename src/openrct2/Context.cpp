@@ -1036,7 +1036,7 @@ namespace OpenRCT2
             {
                 return false;
             }
-            GfxLoadG2AndFonts();
+            GfxLoadG2FontsAndTracks();
             GfxLoadCsg();
             FontSpriteInitialiseCharacters();
             return true;

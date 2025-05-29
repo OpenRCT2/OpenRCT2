@@ -27,10 +27,10 @@ using namespace OpenRCT2;
 static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Standard;
 
 static constexpr const uint32_t SteeplechaseRCDiagBrakeImages[kNumOrthogonalDirections] = {
-    SPR_G2_STEEPLECHASE_DIAG_BRAKES,
-    SPR_G2_STEEPLECHASE_DIAG_BRAKES + 1,
-    SPR_G2_STEEPLECHASE_DIAG_BRAKES,
-    SPR_G2_STEEPLECHASE_DIAG_BRAKES + 1,
+    SPR_TRACKS_STEEPLECHASE_DIAG_BRAKES,
+    SPR_TRACKS_STEEPLECHASE_DIAG_BRAKES + 1,
+    SPR_TRACKS_STEEPLECHASE_DIAG_BRAKES,
+    SPR_TRACKS_STEEPLECHASE_DIAG_BRAKES + 1,
 };
 
 /** rct2: 0x008A59A8 */
