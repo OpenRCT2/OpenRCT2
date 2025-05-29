@@ -33,6 +33,7 @@
 - Fix: [#24448] Shortcuts involving the Caps Lock key are wrongly localised to NumPad Dot.
 - Fix: [#24464] Window and viewport visibility is not calculated correctly causing minor performance issues.
 - Fix: [#24488] Objects are not always redrawn immediately when they are reloaded from the Object Selection window.
+- Fix: [#24510] Ride vehicles that load in pairs do not load properly when the ride is in either Race or Dodgems mode.
 
 0.4.22 (2025-05-04)
 ------------------------------------------------------------------------
