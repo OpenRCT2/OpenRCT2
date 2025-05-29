@@ -235,5 +235,5 @@
                    '72cf3d220740fd64f7681d3533320598cf6d3b71dff484bc43045e8d9d7a1a4b'],
 
 // UCES Scenario names to hashes
-'Cemetery Ridge': ['9401f88',
-                   '9401f88e1dfdc5f7e6e4759271ac8dea3fc499c2fb21cdbf42567d876a91641a'],
+ 'Cemetery Ridge': ['9401f88',
+                    '9401f88e1dfdc5f7e6e4759271ac8dea3fc499c2fb21cdbf42567d876a91641a'],
