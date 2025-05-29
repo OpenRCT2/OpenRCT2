@@ -46,6 +46,7 @@
 #include "interface/Chat.h"
 #include "interface/StdInOutConsole.h"
 #include "interface/Viewport.h"
+#include "interface/WindowBase.h"
 #include "localisation/Formatter.h"
 #include "localisation/Localisation.Date.h"
 #include "localisation/LocalisationService.h"
@@ -708,8 +709,15 @@ namespace OpenRCT2
             {
                 _uiContext->ProcessMessages();
                 auto* windowMgr = Ui::GetWindowManager();
-                windowMgr->InvalidateByClass(WindowClass::ProgressWindow);
-                Draw();
+                if (auto* progressWindow = windowMgr->FindByClass(WindowClass::ProgressWindow))
+                {
+                    progressWindow->Invalidate();
+                    Draw();
+                }
+                else
+                {
+                    Guard::Fail("No progress bar window");
+                }
             }
         }
 
