@@ -18,6 +18,7 @@
 - Fix: [#5269] Font bugs when using the Russian release of RCT2 as the base game.
 - Fix: [#11071, #22958] The virtual floor does not always draw correctly.
 - Fix: [#18220] Some custom RCT1 scenarios are detected as competition DLC scenarios.
+- Fix: [#20095] UCES Halloween - Cemetery Ridge scenario has mismatched entrance/exit on haunted house.
 - Fix: [#20158] Custom animated scenery .DATs with frame offsets draw a random sprite at the end of their animation.
 - Fix: [#22628] Potential crash while rebuilding the scenario index.
 - Fix: [#23289] Dodgems and Flying Saucer cars can spawn on top of each other when the ride is opened.
