@@ -916,29 +916,6 @@ static constexpr float kWindowScrollLocations[][2] = {
         });
     }
 
-    Viewport* WindowGetPreviousViewport(Viewport* current)
-    {
-        bool foundPrevious = (current == nullptr);
-        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
-        {
-            auto& w = **it;
-            if (w.flags & WF_DEAD)
-                continue;
-            if (w.viewport != nullptr)
-            {
-                if (foundPrevious)
-                {
-                    return w.viewport;
-                }
-                if (w.viewport == current)
-                {
-                    foundPrevious = true;
-                }
-            }
-        }
-        return nullptr;
-    }
-
     void WindowInitAll()
     {
         auto* windowMgr = Ui::GetWindowManager();

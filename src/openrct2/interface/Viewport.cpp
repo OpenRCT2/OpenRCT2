@@ -1717,6 +1717,11 @@ namespace OpenRCT2
         return IsSpriteInteractedWithPaletteSet(rt, imageId, coords, paletteMap, imageType);
     }
 
+    const std::list<Viewport>& GetAllViewports()
+    {
+        return _viewports;
+    }
+
     /**
      *
      *  rct2: 0x0068862C
