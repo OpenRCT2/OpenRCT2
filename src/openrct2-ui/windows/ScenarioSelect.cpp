@@ -19,7 +19,6 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Console.hpp>
 #include <openrct2/core/FileStream.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
@@ -154,7 +153,7 @@ namespace OpenRCT2::Ui::Windows
             }
             catch (const std::exception& e)
             {
-                Console::Error::WriteLine("Error rebuilding scenario index: %s", e.what());
+                GetContext()->WriteLine("Error rebuilding scenario index: " + std::string(e.what()));
                 GetContext()->CloseProgress();
             }
         }
