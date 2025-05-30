@@ -377,7 +377,7 @@ namespace OpenRCT2::Config
             model->RandomTitleSequence = reader->GetBoolean("random_title_sequence", false);
             model->ObjectSelectionFilterFlags = reader->GetInt32("object_selection_filter_flags", 0x3FFF);
             model->scenarioSelectLastTab = reader->GetInt32("scenarioselect_last_tab", 0);
-            model->scenarioPreviewScreenshots = reader->GetBoolean("scenario_preview_screenshots", false);
+            model->scenarioPreviewScreenshots = reader->GetBoolean("scenario_preview_screenshots", true);
             model->ListRideVehiclesSeparately = reader->GetBoolean("list_ride_vehicles_separately", false);
             model->WindowButtonsOnTheLeft = reader->GetBoolean("window_buttons_on_the_left", kWindowButtonsOnTheLeftDefault);
             model->EnlargedUi = reader->GetBoolean("enlarged_ui", kEnlargedUiDefault);
