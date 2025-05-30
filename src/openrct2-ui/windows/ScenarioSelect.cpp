@@ -19,6 +19,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/audio/Audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/Console.hpp>
 #include <openrct2/core/FileStream.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
@@ -125,6 +126,38 @@ namespace OpenRCT2::Ui::Windows
         const ScenarioIndexEntry* _highlightedScenario = nullptr;
         ParkPreview _preview;
         BackgroundWorker::Job _previewLoadJob;
+        bool _initialLoadCommand = true;
+
+        void ReportProgress(uint8_t progress)
+        {
+            if (_initialLoadCommand)
+                return;
+
+            if (progress == 0)
+                GetContext()->OpenProgress(STR_CHECKING_SCENARIO_FILES);
+
+            GetContext()->SetProgress(progress, 100, STR_STRING_M_PERCENT);
+
+            if (progress == 100)
+                GetContext()->CloseProgress();
+        }
+
+        void LoadScenarioList()
+        {
+            try
+            {
+                ReportProgress(0);
+                ScenarioRepositoryScan();
+                ReportProgress(100);
+
+                _initialLoadCommand = false;
+            }
+            catch (const std::exception& e)
+            {
+                Console::Error::WriteLine("Error rebuilding scenario index: %s", e.what());
+                GetContext()->CloseProgress();
+            }
+        }
 
     public:
         ScenarioSelectWindow(std::function<void(std::string_view)> callback)
@@ -136,8 +169,8 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(_scenarioSelectWidgets);
 
-            // Load scenario list
-            ScenarioRepositoryScan();
+            _initialLoadCommand = true;
+            LoadScenarioList();
 
             _highlightedScenario = nullptr;
             InitTabs();
@@ -147,7 +180,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnLanguageChange() override
         {
-            ScenarioRepositoryScan();
+            LoadScenarioList();
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
