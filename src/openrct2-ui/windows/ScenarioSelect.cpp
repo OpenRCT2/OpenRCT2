@@ -125,13 +125,10 @@ namespace OpenRCT2::Ui::Windows
         const ScenarioIndexEntry* _highlightedScenario = nullptr;
         ParkPreview _preview;
         BackgroundWorker::Job _previewLoadJob;
-        bool _initialLoadCommand = true;
+        bool _needsRebuild;
 
         void ReportProgress(uint8_t progress)
         {
-            if (_initialLoadCommand)
-                return;
-
             if (progress == 0)
                 GetContext()->OpenProgress(STR_CHECKING_SCENARIO_FILES);
 
@@ -143,13 +140,16 @@ namespace OpenRCT2::Ui::Windows
 
         void LoadScenarioList()
         {
+            if (!_needsRebuild)
+                return;
+
             try
             {
                 ReportProgress(0);
                 ScenarioRepositoryScan();
                 ReportProgress(100);
 
-                _initialLoadCommand = false;
+                _needsRebuild = false;
             }
             catch (const std::exception& e)
             {
@@ -168,7 +168,6 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(_scenarioSelectWidgets);
 
-            _initialLoadCommand = true;
             LoadScenarioList();
 
             _highlightedScenario = nullptr;
@@ -179,6 +178,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnLanguageChange() override
         {
+            _needsRebuild = true;
             LoadScenarioList();
         }
 
