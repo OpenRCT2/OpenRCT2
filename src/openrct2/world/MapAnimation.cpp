@@ -71,7 +71,8 @@ struct TileCoordsXYCmp
     }
 };
 
-static std::set<TileCoordsXY, TileCoordsXYCmp> _mapAnimationsInvalidate;
+static std::vector<bool> _mapAnimationsInvalidate = std::vector<bool>(
+    kMaximumMapSizeTechnical * kMaximumMapSizeTechnical, false);
 static std::set<TileCoordsXY, TileCoordsXYCmp> _mapAnimationsUpdate;
 
 static std::set<TemporaryMapAnimation> _temporaryMapAnimations;
@@ -598,16 +599,19 @@ static std::optional<UpdateType> IsElementAnimated(const TileElementBase& elemen
 
 void MapAnimations::MarkTileForInvalidation(const TileCoordsXY coords)
 {
-    if (!_mapAnimationsUpdate.contains(coords))
+    if (!MapIsEdge(coords.ToCoordsXY()) && !_mapAnimationsUpdate.contains(coords))
     {
-        _mapAnimationsInvalidate.insert(coords);
+        _mapAnimationsInvalidate[coords.x + (coords.y * kMaximumMapSizeTechnical)] = true;
     }
 }
 
 void MapAnimations::MarkTileForUpdate(const TileCoordsXY coords)
 {
-    _mapAnimationsInvalidate.erase(coords);
-    _mapAnimationsUpdate.insert(coords);
+    if (!MapIsEdge(coords.ToCoordsXY()))
+    {
+        _mapAnimationsInvalidate[coords.x + (coords.y * kMaximumMapSizeTechnical)] = false;
+        _mapAnimationsUpdate.insert(coords);
+    }
 }
 
 void MapAnimations::CreateTemporary(const CoordsXYZ& coords, const TemporaryType type)
@@ -674,11 +678,12 @@ static void InvalidateAll(const ViewportList& viewports)
 
             for (int32_t i = 0; i < numVerticalTiles; ++i)
             {
-                if (_mapAnimationsInvalidate.contains(tileCoords))
+                if (!MapIsEdge(tileCoords.ToCoordsXY())
+                    && _mapAnimationsInvalidate[tileCoords.x + (tileCoords.y * kMaximumMapSizeTechnical)])
                 {
                     if (!UpdateTile<true, false>(tileCoords, viewport))
                     {
-                        _mapAnimationsInvalidate.erase(tileCoords);
+                        _mapAnimationsInvalidate[tileCoords.x + (tileCoords.y * kMaximumMapSizeTechnical)] = false;
                     }
                 }
                 tileCoords += nextVerticalTile;
@@ -714,7 +719,8 @@ static void UpdateAll(const ViewportList& viewports)
         {
             if (result.value() == UpdateType::invalidate)
             {
-                _mapAnimationsInvalidate.insert(*it);
+                const auto& coords = *it;
+                _mapAnimationsInvalidate[coords.x + (coords.y * kMaximumMapSizeTechnical)] = true;
                 it = _mapAnimationsUpdate.erase(it);
             }
             else
@@ -760,7 +766,7 @@ void MapAnimations::InvalidateAndUpdateAll()
 
 void MapAnimations::ClearAll()
 {
-    _mapAnimationsInvalidate.clear();
+    _mapAnimationsInvalidate.assign(_mapAnimationsInvalidate.size(), false);
     _mapAnimationsUpdate.clear();
     _temporaryMapAnimations.clear();
 }
@@ -770,17 +776,27 @@ void MapAnimations::ShiftAll(const CoordsXY amount)
     if (amount.x == 0 && amount.y == 0)
         return;
 
-    std::set<TileCoordsXY, TileCoordsXYCmp> newMapAnimationsInvalidate;
-    for (const auto a : _mapAnimationsInvalidate)
+    const auto tileAmount = TileCoordsXY(amount);
+
+    std::vector<bool> newMapAnimationsInvalidate(_mapAnimationsInvalidate.size(), false);
+    for (int32_t y = 0; y < kMaximumMapSizeTechnical; y++)
     {
-        newMapAnimationsInvalidate.insert(a + TileCoordsXY(amount));
+        for (int32_t x = 0; x < kMaximumMapSizeTechnical; x++)
+        {
+            const bool animated = _mapAnimationsInvalidate[x + (y * kMaximumMapSizeTechnical)];
+            const TileCoordsXY newCoords = TileCoordsXY(x, y) + tileAmount;
+            if (!MapIsEdge(newCoords.ToCoordsXY()))
+            {
+                newMapAnimationsInvalidate[newCoords.x + (newCoords.y * kMaximumMapSizeTechnical)] = animated;
+            }
+        }
     }
     _mapAnimationsInvalidate = std::move(newMapAnimationsInvalidate);
 
     std::set<TileCoordsXY, TileCoordsXYCmp> newMapAnimationsUpdate;
     for (const auto a : _mapAnimationsUpdate)
     {
-        newMapAnimationsUpdate.insert(a + TileCoordsXY(amount));
+        newMapAnimationsUpdate.insert(a + tileAmount);
     }
     _mapAnimationsUpdate = std::move(newMapAnimationsUpdate);
 
