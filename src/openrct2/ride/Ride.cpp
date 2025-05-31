@@ -375,7 +375,7 @@ void RideUpdateFavouritedStat()
             auto ride = GetRide(peep->FavouriteRide);
             if (ride != nullptr)
             {
-                ride->guestsFavourite++;
+                ride->guestsFavourite = AddClamp(ride->guestsFavourite, 1u);
                 ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
             }
         }
@@ -1305,9 +1305,8 @@ static void RideInspectionUpdate(Ride& ride)
     if (gLegacyScene == LegacyScene::trackDesigner)
         return;
 
-    ride.lastInspection++;
-    if (ride.lastInspection == 0)
-        ride.lastInspection--;
+    ride.lastInspection = AddClamp<decltype(ride.lastInspection)>(ride.lastInspection, 1);
+    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
     int32_t inspectionIntervalMinutes = RideInspectionInterval[ride.inspectionInterval];
     // An inspection interval of 0 minutes means the ride is set to never be inspected.
