@@ -1341,7 +1341,8 @@ void MapRemoveOutOfRangeElements()
     gameState.cheats.buildInPauseMode = buildState;
 }
 
-static void MapExtendBoundarySurfaceExtendTile(const SurfaceElement& sourceTile, SurfaceElement& destTile)
+static void MapExtendBoundarySurfaceExtendTile(
+    const SurfaceElement& sourceTile, SurfaceElement& destTile, const Direction direction)
 {
     destTile.SetSurfaceObjectIndex(sourceTile.GetSurfaceObjectIndex());
     destTile.SetEdgeObjectIndex(sourceTile.GetEdgeObjectIndex());
@@ -1350,18 +1351,20 @@ static void MapExtendBoundarySurfaceExtendTile(const SurfaceElement& sourceTile,
     destTile.SetWaterHeight(sourceTile.GetWaterHeight());
 
     auto z = sourceTile.BaseHeight;
-    auto slope = sourceTile.GetSlope() & kTileSlopeNWSideUp;
+    const auto originalSlope = Numerics::rol4(sourceTile.GetSlope(), direction)
+        | (sourceTile.GetSlope() & kTileSlopeDiagonalFlag);
+    auto slope = originalSlope & kTileSlopeNWSideUp;
     if (slope == kTileSlopeNWSideUp)
     {
         z += 2;
         slope = kTileSlopeFlat;
-        if (sourceTile.GetSlope() & kTileSlopeDiagonalFlag)
+        if (originalSlope & kTileSlopeDiagonalFlag)
         {
             slope = kTileSlopeNCornerUp;
-            if (sourceTile.GetSlope() & kTileSlopeSCornerUp)
+            if (originalSlope & kTileSlopeSCornerUp)
             {
                 slope = kTileSlopeWCornerUp;
-                if (sourceTile.GetSlope() & kTileSlopeECornerUp)
+                if (originalSlope & kTileSlopeECornerUp)
                 {
                     slope = kTileSlopeFlat;
                 }
@@ -1373,7 +1376,7 @@ static void MapExtendBoundarySurfaceExtendTile(const SurfaceElement& sourceTile,
     if (slope & kTileSlopeWCornerUp)
         slope |= kTileSlopeSCornerUp;
 
-    destTile.SetSlope(slope);
+    destTile.SetSlope(Numerics::ror4(slope, direction));
     destTile.BaseHeight = z;
     destTile.ClearanceHeight = z;
 }
@@ -1391,7 +1394,7 @@ void MapExtendBoundarySurfaceY()
 
         if (existingTileElement != nullptr && newTileElement != nullptr)
         {
-            MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement);
+            MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement, 0);
         }
 
         Park::UpdateFences({ x << 5, y << 5 });
@@ -1410,7 +1413,7 @@ void MapExtendBoundarySurfaceX()
         auto newTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
         if (existingTileElement != nullptr && newTileElement != nullptr)
         {
-            MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement);
+            MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement, 3);
         }
         Park::UpdateFences({ x << 5, y << 5 });
     }
