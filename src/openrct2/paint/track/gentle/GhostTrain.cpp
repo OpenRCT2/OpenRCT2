@@ -153,26 +153,24 @@ static constexpr uint32_t kGhostTrainTrackPiecesBrakes[4] = {
     SprGhostTrainTrackBrakesNwSe,
 };
 
-static constexpr std::array<TunnelType, kLandEdgeDoorFrameCount> kDoorOpeningOutwardsToImage = {
-    TunnelType::Doors2, // closed
-    TunnelType::Doors3, // opening
-    TunnelType::Doors3, // opening
-    TunnelType::Doors4, // open
-    TunnelType::Doors3, // closing
-    TunnelType::Doors3, // closing
-    TunnelType::Doors2, // closed
-    TunnelType::Doors2, // unused
+static constexpr TunnelType kDoorOpeningOutwardsToImage[] = {
+    TunnelType::Doors2, // Closed
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors3, // Half open
+    TunnelType::Doors4, // Fully open
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors2, // Unused?
 };
 
-static constexpr std::array<TunnelType, kLandEdgeDoorFrameCount> kDoorOpeningInwardsToImage = {
-    TunnelType::Doors2, // closed
-    TunnelType::Doors5, // opening
-    TunnelType::Doors5, // opening
-    TunnelType::Doors6, // open
-    TunnelType::Doors5, // closing
-    TunnelType::Doors5, // closing
-    TunnelType::Doors2, // closed
-    TunnelType::Doors2, // unused
+static constexpr TunnelType kDoorOpeningInwardsToImage[] = {
+    TunnelType::Doors2, // Closed
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors5, // Half open
+    TunnelType::Doors6, // Fully open
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors2, // Unused?
+    TunnelType::Doors2, // Unused?
 };
 
 static TunnelType GetTunnelDoorsImageStraightFlat(const TrackElement& trackElement, uint8_t direction)
@@ -191,26 +189,24 @@ static TunnelType GetTunnelDoorsImageStraightFlat(const TrackElement& trackEleme
     return TunnelType::Doors2;
 }
 
-static constexpr std::array<TunnelType, kLandEdgeDoorFrameCount> kDoorFlatTo25DegOpeningOutwardsToImage = {
-    TunnelType::DoorsFlatTo25Deg2, // closed
-    TunnelType::DoorsFlatTo25Deg3, // opening
-    TunnelType::DoorsFlatTo25Deg3, // opening
-    TunnelType::DoorsFlatTo25Deg4, // open
-    TunnelType::DoorsFlatTo25Deg3, // closing
-    TunnelType::DoorsFlatTo25Deg3, // closing
-    TunnelType::DoorsFlatTo25Deg2, // closed
-    TunnelType::DoorsFlatTo25Deg2, // unused
+static constexpr TunnelType kDoorFlatTo25DegOpeningOutwardsToImage[] = {
+    TunnelType::DoorsFlatTo25Deg2, // Closed
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+    TunnelType::DoorsFlatTo25Deg3, // Half open
+    TunnelType::DoorsFlatTo25Deg4, // Fully open
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
 };
 
-static constexpr std::array<TunnelType, kLandEdgeDoorFrameCount> kDoorFlatTo25DegOpeningInwardsToImage = {
-    TunnelType::DoorsFlatTo25Deg2, // closed
-    TunnelType::DoorsFlatTo25Deg5, // opening
-    TunnelType::DoorsFlatTo25Deg5, // opening
-    TunnelType::DoorsFlatTo25Deg6, // open
-    TunnelType::DoorsFlatTo25Deg5, // closing
-    TunnelType::DoorsFlatTo25Deg5, // closing
-    TunnelType::DoorsFlatTo25Deg2, // closed
-    TunnelType::DoorsFlatTo25Deg2, // unused
+static constexpr TunnelType kDoorFlatTo25DegOpeningInwardsToImage[] = {
+    TunnelType::DoorsFlatTo25Deg2, // Closed
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+    TunnelType::DoorsFlatTo25Deg5, // Half open
+    TunnelType::DoorsFlatTo25Deg6, // Fully open
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
+    TunnelType::DoorsFlatTo25Deg2, // Unused?
 };
 
 /** rct2: 0x00770BEC */

@@ -2096,29 +2096,6 @@ TileElement* MapGetTrackElementAtFromRide(const CoordsXYZ& trackPos, RideId ride
     return nullptr;
 };
 
-TileElement* MapGetTrackElementBeforeSurfaceAtFromRide(const CoordsXYZ& trackPos, const RideId rideIndex)
-{
-    TileElement* tileElement = MapGetFirstElementAt(trackPos);
-    if (tileElement == nullptr)
-        return nullptr;
-    const auto trackTilePos = TileCoordsXYZ{ trackPos };
-    do
-    {
-        if (tileElement->GetType() == TileElementType::Surface)
-            return nullptr;
-        if (tileElement->GetType() != TileElementType::Track)
-            continue;
-        if (tileElement->BaseHeight != trackTilePos.z)
-            continue;
-        if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
-            continue;
-
-        return tileElement;
-    } while (!(tileElement++)->IsLastForTile());
-
-    return nullptr;
-};
-
 /**
  * Gets the track element at x, y, z that is the given track type and sequence.
  * @param x x units, not tiles.

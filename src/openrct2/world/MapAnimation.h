@@ -16,7 +16,6 @@ namespace OpenRCT2::MapAnimations
     enum class TemporaryType : uint8_t
     {
         onRidePhoto,
-        landEdgeDoor,
     };
 
     void MarkTileForInvalidation(const TileCoordsXY coords);
