@@ -1043,15 +1043,14 @@ namespace OpenRCT2::Ui
         }
     }
 
-    Widget* GetWidgetByIndex(const WindowBase& w, WidgetIndex widgetIndex)
+    Widget* GetWidgetByIndex(WindowBase& w, WidgetIndex widgetIndex)
     {
         if (widgetIndex >= w.widgets.size())
         {
             LOG_ERROR("Widget index %i out of bounds for window class %u", widgetIndex, w.classification);
         }
 
-        // FIXME: This const_cast is bad.
-        return const_cast<Widget*>(w.widgets.data() + widgetIndex);
+        return &w.widgets[widgetIndex];
     }
 
     static void SafeSetWidgetFlag(WindowBase& w, WidgetIndex widgetIndex, WidgetFlags mask, bool value)

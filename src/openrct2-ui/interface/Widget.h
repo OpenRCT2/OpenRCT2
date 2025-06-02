@@ -32,7 +32,7 @@
 namespace OpenRCT2::Ui
 {
     ImageId GetColourButtonImage(colour_t colour);
-    Widget* GetWidgetByIndex(const WindowBase& w, WidgetIndex widgetIndex);
+    Widget* GetWidgetByIndex(WindowBase& w, WidgetIndex widgetIndex);
 
     constexpr uint32_t kWidgetContentEmpty = 0xFFFFFFFF;
     constexpr auto kBarBlink = (1u << 31);
