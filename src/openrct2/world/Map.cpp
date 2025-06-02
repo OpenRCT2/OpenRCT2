@@ -2407,5 +2407,5 @@ void ShiftMap(const TileCoordsXY& amount)
         id = BannerIndex::FromUnderlying(id.ToUnderlying() + 1);
     }
 
-    MapAnimations::ShiftAll(amountToMove);
+    MapAnimations::ShiftAll(amount);
 }

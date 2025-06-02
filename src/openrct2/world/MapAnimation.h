@@ -24,5 +24,5 @@ namespace OpenRCT2::MapAnimations
     void MarkAllTiles();
     void InvalidateAndUpdateAll();
     void ClearAll();
-    void ShiftAll(const CoordsXY amount);
+    void ShiftAll(const TileCoordsXY amount);
 } // namespace OpenRCT2::MapAnimations

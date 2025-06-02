@@ -713,12 +713,10 @@ void MapAnimations::ClearAll()
     _temporaryMapAnimations.clear();
 }
 
-void MapAnimations::ShiftAll(const CoordsXY amount)
+void MapAnimations::ShiftAll(const TileCoordsXY amount)
 {
     if (amount.x == 0 && amount.y == 0)
         return;
-
-    const auto tileAmount = TileCoordsXY(amount);
 
     std::vector<bool> newMapAnimationsInvalidate(_mapAnimationsInvalidate.size(), false);
     for (int32_t y = 0; y < kMaximumMapSizeTechnical; y++)
@@ -726,7 +724,7 @@ void MapAnimations::ShiftAll(const CoordsXY amount)
         for (int32_t x = 0; x < kMaximumMapSizeTechnical; x++)
         {
             const bool animated = _mapAnimationsInvalidate[x + (y * kMaximumMapSizeTechnical)];
-            const TileCoordsXY newCoords = TileCoordsXY(x, y) + tileAmount;
+            const TileCoordsXY newCoords = TileCoordsXY(x, y) + amount;
             if (!MapIsEdge(newCoords.ToCoordsXY()))
             {
                 newMapAnimationsInvalidate[newCoords.x + (newCoords.y * kMaximumMapSizeTechnical)] = animated;
@@ -738,14 +736,14 @@ void MapAnimations::ShiftAll(const CoordsXY amount)
     std::set<TileCoordsXY, TileCoordsXYCmp> newMapAnimationsUpdate;
     for (const auto a : _mapAnimationsUpdate)
     {
-        newMapAnimationsUpdate.insert(a + tileAmount);
+        newMapAnimationsUpdate.insert(a + amount);
     }
     _mapAnimationsUpdate = std::move(newMapAnimationsUpdate);
 
     std::set<TemporaryMapAnimation> newTemporaryMapAnimations;
     for (const auto& a : _temporaryMapAnimations)
     {
-        newTemporaryMapAnimations.insert(TemporaryMapAnimation{ a.location + CoordsXYZ(amount, 0), a.type });
+        newTemporaryMapAnimations.insert(TemporaryMapAnimation{ a.location + CoordsXYZ(amount.ToCoordsXY(), 0), a.type });
     }
     _temporaryMapAnimations = std::move(newTemporaryMapAnimations);
 }
