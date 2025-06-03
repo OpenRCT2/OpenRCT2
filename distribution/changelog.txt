@@ -14,6 +14,7 @@
 - Improved: [#24467] Apply tweening only to on-screen entities when not zoomed out for better performance with uncapped FPS.
 - Improved: [#24474] More efficiently search viewports when playing Audio.
 - Improved: [#24479] More descriptive error messages for `set` commands in the in-game console.
+- Improved: [#24563] The Linux .desktop file will now request the more powerful dedicated GPU on hybrid graphics systems.
 - Change: [#24342, #24484] g2.dat is now split into g2.dat, fonts.dat and tracks.dat.
 - Change: [#24362] The Windows installer now prevents installing to the same folder as RollerCoaster Tycoon 2 or Classic.
 - Change: [#24418] Small & Large Zero G Rolls can now be built on the LIM Launched RC without cheats if vehicle sprites are available.
