@@ -173,6 +173,84 @@ namespace OpenRCT2::Ui
         return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_DROPDOWN_GLYPH, tooltip);
     }
 
+    namespace Detail
+    {
+        template<typename T, typename Enable = void>
+        struct WidgetsCount
+        {
+            static constexpr size_t count = 0;
+        };
+
+        template<typename T>
+        struct WidgetsCount<T, std::enable_if_t<std::is_base_of_v<Widget, T>>>
+        {
+            static constexpr size_t count = 1;
+        };
+
+        template<typename T, std::size_t N>
+        struct WidgetsCount<std::array<T, N>, std::enable_if_t<std::is_base_of_v<Widget, T>>>
+        {
+            static constexpr size_t count = N;
+        };
+
+        template<typename T>
+        struct IsWidgetsArray : std::false_type
+        {
+        };
+
+        template<std::size_t N>
+        struct IsWidgetsArray<std::array<Widget, N>> : std::true_type
+        {
+        };
+    } // namespace Detail
+
+    template<typename... TArgs>
+    constexpr auto makeWidgets(TArgs&&... args)
+    {
+        constexpr auto totalCount = [&]() {
+            size_t count = 0;
+            ((count += Detail::WidgetsCount<std::decay_t<decltype(args)>>::count), ...);
+            return count;
+        }();
+
+        std::array<Widget, totalCount> res{};
+        size_t index = 0;
+
+        const auto append = [&](auto&& val) {
+            if constexpr (Detail::IsWidgetsArray<std::decay_t<decltype(val)>>::value)
+            {
+                for (auto&& widget : val)
+                {
+                    res[index] = std::move(widget);
+                    index++;
+                }
+            }
+            else
+            {
+                res[index] = std::move(val);
+                index++;
+            }
+        };
+
+        ((append(args)), ...);
+
+        return res;
+    }
+
+    constexpr std::array<Widget, 3> makeWindowShim(StringId title, int16_t width, int16_t height)
+    {
+        // clang-format off
+        std::array<Widget, 3> out = {
+            MakeWidget({ 0, 0 }, { width - 0, height - 0 }, WindowWidgetType::Frame, WindowColour::Primary),
+            MakeWidget({ 1, 1 }, { width - 1, height - 1 }, WindowWidgetType::Frame, WindowColour::Primary, title, STR_WINDOW_TITLE_TIP),
+            MakeWidget({ width - 13, 1 }, { 12, 12 }, WindowWidgetType::CloseBox, WindowColour::Primary, kWidgetContentEmpty, STR_CLOSE_WINDOW_TIP),
+        };
+        // clang-format on
+
+        out[2].string = kCloseBoxStringBlackNormal;
+        return out;
+    }
+
     void WidgetDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
 
     bool WidgetIsDisabled(const WindowBase& w, WidgetIndex widgetIndex);
