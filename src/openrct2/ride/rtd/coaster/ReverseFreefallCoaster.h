@@ -62,7 +62,7 @@ constexpr RideTypeDescriptor ReverseFreefallCoasterRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(2, 00), RideRating::make(3, 20), RideRating::make(2, 80) },
         25,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             327, 0, 0 },

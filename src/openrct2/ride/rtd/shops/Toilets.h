@@ -55,7 +55,7 @@ constexpr RideTypeDescriptor ToiletsRTD =
         RatingsCalculationType::Stall,
         { 1, 1, 1 },
         1,
-        -1,
+        kDynamicRideShelterRating,
         false,
         { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
     },

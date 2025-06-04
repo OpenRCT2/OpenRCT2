@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor SuspendedSwingingCoasterRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(3, 30), RideRating::make(2, 90), RideRating::make(3, 50) },
         18,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

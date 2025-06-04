@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor SideFrictionRollerCoasterRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(2, 50), RideRating::make(2, 00), RideRating::make(1, 50) },
         19,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             873, 0, 0 },

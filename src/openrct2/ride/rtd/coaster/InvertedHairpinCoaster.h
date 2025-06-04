@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor InvertedHairpinCoasterRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(3, 00), RideRating::make(2, 65), RideRating::make(2, 25) },
         14,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             873, 0, 0 },

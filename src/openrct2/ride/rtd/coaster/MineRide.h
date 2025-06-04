@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor MineRideRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(2, 75), RideRating::make(1, 00), RideRating::make(1, 80) },
         16,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

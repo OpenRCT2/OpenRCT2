@@ -67,7 +67,7 @@ constexpr RideTypeDescriptor HyperTwisterRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(3, 50), RideRating::make(0, 40), RideRating::make(0, 30) },
         15,
-        -1,
+        kDynamicRideShelterRating,
         true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

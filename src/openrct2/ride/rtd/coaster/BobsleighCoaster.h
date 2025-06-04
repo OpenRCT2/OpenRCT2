@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor BobsleighCoasterRTD =
         RatingsCalculationType::Normal,
         { RideRating::make(2, 80), RideRating::make(3, 20), RideRating::make(2, 50) },
         16,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
