@@ -98,41 +98,39 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
 #pragma region Widgets
 
-#define MAIN_FINANCES_WIDGETS(TITLE, RSW, RSH, WW, WH)                                          \
-    WINDOW_SHIM(TITLE, WW, WH),                                                                 \
-        MakeWidget({ 0, 43 }, { RSW, RSH }, WindowWidgetType::Resize, WindowColour::Secondary), \
-        MakeTab({ 3, 17 }, STR_FINANCES_SHOW_SUMMARY_TAB_TIP),                                  \
-        MakeTab({ 34, 17 }, STR_FINANCES_SHOW_CASH_TAB_TIP),                                    \
-        MakeTab({ 65, 17 }, STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP),                              \
-        MakeTab({ 96, 17 }, STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP),                           \
-        MakeTab({ 127, 17 }, STR_FINANCES_SHOW_MARKETING_TAB_TIP),                              \
-        MakeTab({ 158, 17 }, STR_FINANCES_RESEARCH_TIP)
+    static constexpr auto makeFinancesWidgets = [](StringId title, ScreenSize resizeSize, ScreenSize frameSize) {
+        return makeWidgets(
+            makeWindowShim(title, frameSize.width, frameSize.height),
+            MakeWidget({ 0, 43 }, resizeSize, WindowWidgetType::Resize, WindowColour::Secondary),
+            MakeTab({ 3, 17 }, STR_FINANCES_SHOW_SUMMARY_TAB_TIP),
+            MakeTab({ 34, 17 }, STR_FINANCES_SHOW_CASH_TAB_TIP),
+            MakeTab({ 65, 17 }, STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP),
+            MakeTab({ 96, 17 }, STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP),
+            MakeTab({ 127, 17 }, STR_FINANCES_SHOW_MARKETING_TAB_TIP),
+            MakeTab({ 158, 17 }, STR_FINANCES_RESEARCH_TIP)
+        );
+    };
 
-    static constexpr Widget _windowFinancesSummaryWidgets[] =
-    {
-        MAIN_FINANCES_WIDGETS(STR_FINANCIAL_SUMMARY, RSW_OTHER_TABS, RSH_SUMMARY, WW_OTHER_TABS, kHeightSummary),
+    static constexpr auto _windowFinancesSummaryWidgets = makeWidgets(
+        makeFinancesWidgets(STR_FINANCIAL_SUMMARY,{  RSW_OTHER_TABS, RSH_SUMMARY }, { WW_OTHER_TABS, kHeightSummary }),
         MakeWidget        ({130,  50}, {391, 211}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_HORIZONTAL              ),
-        MakeSpinnerWidgets({ 64, 279}, { 97,  14}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_FINANCES_SUMMARY_LOAN_VALUE), // NB: 3 widgets.
-    };
+        MakeSpinnerWidgets({ 64, 279}, { 97,  14}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_FINANCES_SUMMARY_LOAN_VALUE) // NB: 3 widgets
+    );
 
-    static constexpr Widget _windowFinancesCashWidgets[] =
-    {
-        MAIN_FINANCES_WIDGETS(STR_FINANCIAL_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, kHeightOtherTabs),
-    };
+    static constexpr auto _windowFinancesCashWidgets = makeWidgets(
+        makeFinancesWidgets(STR_FINANCIAL_GRAPH, { RSW_OTHER_TABS, RSH_OTHER_TABS }, { WW_OTHER_TABS, kHeightOtherTabs })
+    );
 
-    static constexpr Widget _windowFinancesParkValueWidgets[] =
-    {
-        MAIN_FINANCES_WIDGETS(STR_PARK_VALUE_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, kHeightOtherTabs),
-    };
+    static constexpr auto _windowFinancesParkValueWidgets = makeWidgets(
+        makeFinancesWidgets(STR_PARK_VALUE_GRAPH, { RSW_OTHER_TABS, RSH_OTHER_TABS }, { WW_OTHER_TABS, kHeightOtherTabs })
+    );
 
-    static constexpr Widget _windowFinancesProfitWidgets[] =
-    {
-        MAIN_FINANCES_WIDGETS(STR_PROFIT_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, kHeightOtherTabs),
-    };
+    static constexpr auto _windowFinancesProfitWidgets = makeWidgets(
+        makeFinancesWidgets(STR_PROFIT_GRAPH, { RSW_OTHER_TABS, RSH_OTHER_TABS }, { WW_OTHER_TABS, kHeightOtherTabs })
+    );
 
-    static constexpr Widget _windowFinancesMarketingWidgets[] =
-    {
-        MAIN_FINANCES_WIDGETS(STR_MARKETING, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, kHeightOtherTabs),
+    static constexpr auto _windowFinancesMarketingWidgets = makeWidgets(
+        makeFinancesWidgets(STR_MARKETING, { RSW_OTHER_TABS, RSH_OTHER_TABS }, { WW_OTHER_TABS, kHeightOtherTabs }),
         MakeWidget({3, 47}, { WW_OTHER_TABS - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_IN_OPERATION                                   ),
         MakeWidget({3, 47}, { WW_OTHER_TABS - 6, 206}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_AVAILABLE                                      ),
         MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
@@ -140,12 +138,11 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
         MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
         MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-        MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    };
+        MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN)
+    );
 
-    static constexpr Widget _windowFinancesResearchWidgets[] =
-    {
-        MAIN_FINANCES_WIDGETS(STR_RESEARCH_FUNDING, RSW_RESEARCH, RSH_RESEARCH, WW_RESEARCH, kHeightResearch),
+    static constexpr auto _windowFinancesResearchWidgets = makeWidgets(
+        makeFinancesWidgets(STR_RESEARCH_FUNDING, { RSW_RESEARCH, RSH_RESEARCH }, { WW_RESEARCH, kHeightResearch }),
         MakeWidget({  3,  47}, { WW_RESEARCH - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary, STR_RESEARCH_FUNDING_                                                             ),
         MakeWidget({  8,  59}, {             160,  14}, WindowWidgetType::DropdownMenu, WindowColour::Tertiary, 0xFFFFFFFF,                           STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
         MakeWidget({156,  60}, {              11,  12}, WindowWidgetType::Button,   WindowColour::Tertiary, STR_DROPDOWN_GLYPH,                   STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
@@ -156,8 +153,8 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({  8, 147}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_THRILL_RIDES,        STR_RESEARCH_NEW_THRILL_RIDES_TIP           ),
         MakeWidget({  8, 160}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
         MakeWidget({  8, 173}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
-        MakeWidget({  8, 186}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    ),
-    };
+        MakeWidget({  8, 186}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    )
+    );
     // clang-format on
 
     static constexpr std::span<const Widget> _windowFinancesPageWidgets[] = {

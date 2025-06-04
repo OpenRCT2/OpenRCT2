@@ -111,31 +111,32 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr int32_t TabWidth = 30;
 
-#define MAIN_GUEST_WIDGETS                                                                                                     \
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),                                                                                         \
-        MakeWidget({ 0, 43 }, { 192, 114 }, WindowWidgetType::Resize, WindowColour::Secondary), /* Resize */                   \
-        MakeTab({ 3, 17 }, STR_SHOW_GUEST_VIEW_TIP),                                            /* Tab 1 */                    \
-        MakeTab({ 34, 17 }, STR_SHOW_GUEST_NEEDS_TIP),                                          /* Tab 2 */                    \
-        MakeTab({ 65, 17 }, STR_SHOW_GUEST_VISITED_RIDES_TIP),                                  /* Tab 3 */                    \
-        MakeTab({ 96, 17 }, STR_SHOW_GUEST_FINANCE_TIP),                                        /* Tab 4 */                    \
-        MakeTab({ 127, 17 }, STR_SHOW_GUEST_THOUGHTS_TIP),                                      /* Tab 5 */                    \
-        MakeTab({ 158, 17 }, STR_SHOW_GUEST_ITEMS_TIP),                                         /* Tab 6 */                    \
-        MakeTab({ 189, 17 }, STR_DEBUG_TIP)                                                     /* Tab 7 */
-
     // clang-format off
-    static constexpr Widget _guestWindowWidgetsOverview[] = {
-        MAIN_GUEST_WIDGETS,
+    static constexpr auto kMainGuestWidgets = makeWidgets(
+        makeWindowShim(WINDOW_TITLE, WW, WH),                                                                                         \
+        MakeWidget({ 0, 43 }, { 192, 114 }, WindowWidgetType::Resize, WindowColour::Secondary), /* Resize */
+        MakeTab({ 3, 17 }, STR_SHOW_GUEST_VIEW_TIP),                                            /* Tab 1 */
+        MakeTab({ 34, 17 }, STR_SHOW_GUEST_NEEDS_TIP),                                          /* Tab 2 */
+        MakeTab({ 65, 17 }, STR_SHOW_GUEST_VISITED_RIDES_TIP),                                  /* Tab 3 */
+        MakeTab({ 96, 17 }, STR_SHOW_GUEST_FINANCE_TIP),                                        /* Tab 4 */
+        MakeTab({ 127, 17 }, STR_SHOW_GUEST_THOUGHTS_TIP),                                      /* Tab 5 */
+        MakeTab({ 158, 17 }, STR_SHOW_GUEST_ITEMS_TIP),                                         /* Tab 6 */
+        MakeTab({ 189, 17 }, STR_DEBUG_TIP)                                                     /* Tab 7 */
+    );
+
+    static constexpr auto _guestWindowWidgetsOverview = makeWidgets(
+        kMainGuestWidgets,
         MakeWidget({  3,  45}, {164, 12}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                               ), // Label Thought marquee
         MakeWidget({  3,  57}, {164, 87}, WindowWidgetType::Viewport,      WindowColour::Secondary                                               ), // Viewport
         MakeWidget({  3, 144}, {164, 11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                               ), // Label Action
         MakeWidget({167,  45}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_PICKUP_BTN), STR_PICKUP_TIP               ), // Pickup Button
         MakeWidget({167,  69}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),     STR_NAME_GUEST_TIP           ), // Rename Button
         MakeWidget({167,  93}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),     STR_LOCATE_SUBJECT_TIP       ), // Locate Button
-        MakeWidget({167, 117}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_TRACK_PEEP), STR_TOGGLE_GUEST_TRACKING_TIP), // Track Button
-    };
+        MakeWidget({167, 117}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_TRACK_PEEP), STR_TOGGLE_GUEST_TRACKING_TIP)  // Track Button
+    );
 
-    static constexpr Widget _guestWindowWidgetsStats[] = {
-        MAIN_GUEST_WIDGETS,
+    static constexpr auto _guestWindowWidgetsStats = makeWidgets(
+        kMainGuestWidgets,
         MakeWidget     ({  3, (kListRowHeight * 0) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_HAPPINESS_LABEL),
         MakeProgressBar({ 65, (kListRowHeight * 0) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN, 0, 19),
         MakeWidget     ({  3, (kListRowHeight * 1) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_ENERGY_LABEL),
@@ -148,32 +149,32 @@ namespace OpenRCT2::Ui::Windows
         MakeProgressBar({ 65, (kListRowHeight * 4) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 47, 100),
         MakeWidget     ({  3, (kListRowHeight * 5) + 4 + 43 }, { 62,  10 }, WindowWidgetType::Label, WindowColour::Secondary, STR_GUEST_STAT_TOILET_LABEL),
         MakeProgressBar({ 65, (kListRowHeight * 5) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 62, 100),
-        MakeWidget     ({  3, (kListRowHeight * 7) + 9 + 43 }, { 180, 2  }, WindowWidgetType::HorizontalSeparator, WindowColour::Secondary),
-    };
+        MakeWidget     ({  3, (kListRowHeight * 7) + 9 + 43 }, { 180, 2  }, WindowWidgetType::HorizontalSeparator, WindowColour::Secondary)
+    );
 
-    static constexpr Widget _guestWindowWidgetsRides[] = {
-        MAIN_GUEST_WIDGETS,
+    static constexpr auto _guestWindowWidgetsRides = makeWidgets(
+        kMainGuestWidgets,
         MakeWidget({ 3, 45 }, { 186, 10 }, WindowWidgetType::Label,  WindowColour::Secondary, STR_GUEST_LABEL_RIDES_BEEN_ON),
-        MakeWidget({ 3, 57  }, { 186, 87 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
-    };
+        MakeWidget({ 3, 57  }, { 186, 87 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL)
+    );
 
-    static constexpr Widget _guestWindowWidgetsFinance[] = {
-        MAIN_GUEST_WIDGETS,
-    };
+    static constexpr auto _guestWindowWidgetsFinance = makeWidgets(
+        kMainGuestWidgets
+    );
 
-    static constexpr Widget _guestWindowWidgetsThoughts[] = {
-        MAIN_GUEST_WIDGETS,
-        MakeWidget({ 3, 45 }, { 186, 10 }, WindowWidgetType::Label,  WindowColour::Secondary, STR_GUEST_RECENT_THOUGHTS_LABEL),
-    };
+    static constexpr auto _guestWindowWidgetsThoughts = makeWidgets(
+        kMainGuestWidgets,
+        MakeWidget({ 3, 45 }, { 186, 10 }, WindowWidgetType::Label,  WindowColour::Secondary, STR_GUEST_RECENT_THOUGHTS_LABEL)
+    );
 
-    static constexpr Widget _guestWindowWidgetsInventory[] = {
-        MAIN_GUEST_WIDGETS,
-        MakeWidget({ 3, 45 }, { 186, 10 }, WindowWidgetType::Label,  WindowColour::Secondary, STR_CARRYING),
-    };
+    static constexpr auto _guestWindowWidgetsInventory = makeWidgets(
+        kMainGuestWidgets,
+        MakeWidget({ 3, 45 }, { 186, 10 }, WindowWidgetType::Label,  WindowColour::Secondary, STR_CARRYING)
+    );
 
-    static constexpr Widget _guestWindowWidgetsDebug[] = {
-        MAIN_GUEST_WIDGETS,
-    };
+    static constexpr auto _guestWindowWidgetsDebug = makeWidgets(
+        kMainGuestWidgets
+    );
 
     static constexpr std::span<const Widget> _guestWindowPageWidgets[] = {
         _guestWindowWidgetsOverview,
