@@ -241,9 +241,9 @@ namespace OpenRCT2::Ui
     {
         // clang-format off
         std::array<Widget, 3> out = {
-            MakeWidget({ 0, 0 }, { width - 0, height - 0 }, WindowWidgetType::Frame, WindowColour::Primary),
-            MakeWidget({ 1, 1 }, { width - 1, height - 1 }, WindowWidgetType::Frame, WindowColour::Primary, title, STR_WINDOW_TITLE_TIP),
-            MakeWidget({ width - 13, 1 }, { 12, 12 }, WindowWidgetType::CloseBox, WindowColour::Primary, kWidgetContentEmpty, STR_CLOSE_WINDOW_TIP),
+            MakeWidget({ 0, 0 }, { width, height }, WindowWidgetType::Frame, WindowColour::Primary),
+            MakeWidget({ 1, 1 }, { width - 1, kTitleHeightNormal }, WindowWidgetType::Caption, WindowColour::Primary, title, STR_WINDOW_TITLE_TIP),
+            MakeWidget({ width - 12, 2 }, { 11, 11 }, WindowWidgetType::CloseBox, WindowColour::Primary, kWidgetContentEmpty, STR_CLOSE_WINDOW_TIP),
         };
         // clang-format on
 
