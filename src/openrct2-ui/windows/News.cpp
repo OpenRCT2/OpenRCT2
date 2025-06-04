@@ -13,6 +13,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/audio/Audio.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Peep.h>
@@ -26,7 +27,6 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_RECENT_MESSAGES;
     static constexpr int32_t WH = 300;
     static constexpr int32_t WW = 400;
 
@@ -35,38 +35,273 @@ namespace OpenRCT2::Ui::Windows
         WIDX_BACKGROUND,
         WIDX_TITLE,
         WIDX_CLOSE,
-        WIDX_SETTINGS,
-        WIDX_SCROLL
+        WIDX_TAB_BACKGROUND,
+        WIDX_TAB_NEWS,
+        WIDX_TAB_OPTIONS,
+        WIDX_TAB_CONTENT,
+
+        WIDX_SCROLL = WIDX_TAB_CONTENT,
+
+        WIDX_CHECKBOX_0 = WIDX_TAB_CONTENT,
     };
 
     // clang-format off
-    static constexpr auto window_news_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
-        makeWidget({372, 18}, { 24,  24}, WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_TAB_GEARS_0)), // settings
-        makeWidget({  4, 44}, {392, 252}, WidgetType::scroll,  WindowColour::primary, SCROLL_VERTICAL) // scroll
+    enum NewsWindowTab : uint8_t
+    {
+        NewsTab,
+        OptionsTab,
+    };
+
+    static constexpr auto makeNewsWidgets = [](StringId title) {
+        return makeWidgets(
+            makeWindowShim(title, WW, WH),
+            makeWidget({ 0, 43 }, { WW, 257 }, WidgetType::resize, WindowColour::secondary),
+            makeTab({ 3, 17 }, STR_RECENT_MESSAGES),
+            makeTab({ 34, 17 }, STR_NOTIFICATION_SETTINGS)
+        );
+    };
+
+    static constexpr auto kNewsTabWidgets = makeWidgets(
+        makeNewsWidgets(STR_RECENT_MESSAGES),
+        makeWidget({  4, 44 }, { 392, 252 }, WidgetType::scroll,  WindowColour::primary, SCROLL_VERTICAL)
     );
+
+    static constexpr auto kOptionsTabWidgets = makeWidgets(
+        makeNewsWidgets(STR_NOTIFICATION_SETTINGS),
+        makeWidget({ 10, 49 }, { 380,  14 }, WidgetType::checkbox, WindowColour::tertiary)
+    );
+    // clang-format on
+
+    struct NewsOption
+    {
+        StringId group;
+        StringId caption;
+        size_t config_offset;
+    };
+
+    // clang-format off
+    static constexpr NewsOption kNewsItemOptionDefinitions[] = {
+        { STR_NEWS_GROUP_PARK,  STR_NOTIFICATION_PARK_AWARD,                        offsetof(Config::Notification, ParkAward)                     },
+        { STR_NEWS_GROUP_PARK,  STR_NOTIFICATION_PARK_MARKETING_CAMPAIGN_FINISHED,  offsetof(Config::Notification, ParkMarketingCampaignFinished) },
+        { STR_NEWS_GROUP_PARK,  STR_NOTIFICATION_PARK_WARNINGS,                     offsetof(Config::Notification, ParkWarnings)                  },
+        { STR_NEWS_GROUP_PARK,  STR_NOTIFICATION_PARK_RATING_WARNINGS,              offsetof(Config::Notification, ParkRatingWarnings)            },
+        { STR_NEWS_GROUP_RIDE,  STR_NOTIFICATION_RIDE_BROKEN_DOWN,                  offsetof(Config::Notification, RideBrokenDown)                },
+        { STR_NEWS_GROUP_RIDE,  STR_NOTIFICATION_RIDE_CRASHED,                      offsetof(Config::Notification, RideCrashed)                   },
+        { STR_NEWS_GROUP_RIDE,  STR_NOTIFICATION_RIDE_CASUALTIES,                   offsetof(Config::Notification, RideCasualties)                },
+        { STR_NEWS_GROUP_RIDE,  STR_NOTIFICATION_RIDE_WARNINGS,                     offsetof(Config::Notification, RideWarnings)                  },
+        { STR_NEWS_GROUP_RIDE,  STR_NOTIFICATION_RIDE_RESEARCHED,                   offsetof(Config::Notification, RideResearched)                },
+        { STR_NEWS_GROUP_RIDE,  STR_NOTIFICATION_RIDE_VEHICLE_STALLED,              offsetof(Config::Notification, RideStalledVehicles)           },
+        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_WARNINGS,                    offsetof(Config::Notification, GuestWarnings)                 },
+        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_LEFT_PARK,                   offsetof(Config::Notification, GuestLeftPark)                 },
+        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_QUEUING_FOR_RIDE,            offsetof(Config::Notification, GuestQueuingForRide)           },
+        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_ON_RIDE,                     offsetof(Config::Notification, GuestOnRide)                   },
+        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_LEFT_RIDE,                   offsetof(Config::Notification, GuestLeftRide)                 },
+        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_BOUGHT_ITEM,                 offsetof(Config::Notification, GuestBoughtItem)               },
+        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_USED_FACILITY,               offsetof(Config::Notification, GuestUsedFacility)             },
+        { STR_NEWS_GROUP_GUEST, STR_NOTIFICATION_GUEST_DIED,                        offsetof(Config::Notification, GuestDied)                     },
+    };
     // clang-format on
 
     class NewsWindow final : public Window
     {
     private:
         int32_t _pressedNewsItemIndex{}, _pressedButtonIndex{}, _suspendUpdateTicks{};
-        static int32_t CalculateItemHeight()
+        WidgetIndex _baseCheckboxIndex;
+
+        static int32_t CalculateNewsItemHeight()
         {
             return 4 * FontGetLineHeight(FontStyle::Small) + 2;
+        }
+
+        void InitNewsWidgets()
+        {
+            Invalidate();
+            page = NewsTab;
+            height = WH;
+            SetWidgets(kNewsTabWidgets);
+
+            WindowInitScrollWidgets(*this);
+            _pressedNewsItemIndex = -1;
+
+            auto& widget = widgets[WIDX_SCROLL];
+            ScreenSize scrollSize = OnScrollGetSize(0);
+            scrolls[0].contentOffsetY = std::max(0, scrollSize.height - (widget.height() - 1));
+            WidgetScrollUpdateThumbs(*this, WIDX_SCROLL);
+        }
+
+        void InitOptionsWidgets()
+        {
+            Invalidate();
+            page = OptionsTab;
+            SetWidgets(kOptionsTabWidgets);
+
+            // Collect widgets to insert at the end
+            std::vector<Widget> groupWidgetsToInsert{};
+            std::vector<Widget> checkboxWidgetsToInsert{};
+
+            // Collect existing checkbox template, then remove it from the window
+            const auto& baseCheckBox = kOptionsTabWidgets[WIDX_CHECKBOX_0];
+            int16_t y = baseCheckBox.top;
+            widgets.pop_back();
+
+            StringId lastGroup = kStringIdNone;
+            uint16_t numGroupElements = 0;
+
+            for (const auto& def : kNewsItemOptionDefinitions)
+            {
+                // Create group elements as needed
+                if (def.group != lastGroup)
+                {
+                    // Fit previous group to its contents
+                    if (!groupWidgetsToInsert.empty())
+                    {
+                        auto& prevGroup = groupWidgetsToInsert.back();
+                        prevGroup.bottom += numGroupElements * (kListRowHeight + 5) + 2;
+                        numGroupElements = 0;
+                        y += 7;
+                    }
+
+                    Widget groupWidget = {
+                        .type = WidgetType::groupbox,
+                        .left = static_cast<int16_t>(baseCheckBox.left - 5),
+                        .right = static_cast<int16_t>(baseCheckBox.right + 5),
+                        .top = y,
+                        .bottom = static_cast<int16_t>(y + kListRowHeight),
+                        .text = def.group,
+                    };
+
+                    groupWidgetsToInsert.emplace_back(groupWidget);
+                    lastGroup = def.group;
+                    y += groupWidget.height();
+                }
+
+                // Create checkbox widgets
+                Widget checkboxWidget = {
+                    .type = WidgetType::checkbox,
+                    .left = baseCheckBox.left,
+                    .right = baseCheckBox.right,
+                    .top = y,
+                    .bottom = static_cast<int16_t>(y + kListRowHeight + 3),
+                    .text = def.caption,
+                };
+
+                checkboxWidgetsToInsert.emplace_back(checkboxWidget);
+                numGroupElements++;
+                y += kListRowHeight + 5;
+            }
+
+            // Fit final group to its contents
+            if (!groupWidgetsToInsert.empty())
+            {
+                auto& prevGroup = groupWidgetsToInsert.back();
+                prevGroup.bottom += numGroupElements * (kListRowHeight + 5) + 2;
+                numGroupElements = 0;
+            }
+
+            for (auto& widget : groupWidgetsToInsert)
+            {
+                widgets.emplace_back(widget);
+            }
+
+            _baseCheckboxIndex = static_cast<WidgetIndex>(WIDX_CHECKBOX_0 + groupWidgetsToInsert.size());
+
+            for (auto& widget : checkboxWidgetsToInsert)
+            {
+                widgets.emplace_back(widget);
+            }
+
+            // Fit panel to all widget elements, plus padding
+            y += 7;
+
+            if (height != y)
+            {
+                Invalidate();
+                height = y;
+                widgets[WIDX_BACKGROUND].bottom = y - 1;
+                widgets[WIDX_TAB_BACKGROUND].bottom = y - 1;
+                Invalidate();
+            }
+        }
+
+        bool& GetNotificationValueRef(const NewsOption& def)
+        {
+            bool& configValue = *reinterpret_cast<bool*>(
+                reinterpret_cast<size_t>(&Config::Get().notifications) + def.config_offset);
+            return configValue;
+        }
+
+        void SetPage(NewsWindowTab newPage)
+        {
+            if (page == newPage && !widgets.empty())
+                return;
+
+            switch (newPage)
+            {
+                case NewsTab:
+                    InitNewsWidgets();
+                    break;
+
+                case OptionsTab:
+                    InitOptionsWidgets();
+                    break;
+            }
+
+            SetWidgetPressed(WIDX_TAB_NEWS, page == NewsTab);
+            SetWidgetPressed(WIDX_TAB_OPTIONS, page == OptionsTab);
+        }
+
+        void DrawTabImages(RenderTarget& rt)
+        {
+            if (!IsWidgetDisabled(WIDX_TAB_NEWS))
+            {
+                auto imageId = ImageId(SPR_G2_TAB_NEWS);
+                auto& widget = widgets[WIDX_TAB_NEWS];
+                GfxDrawSprite(rt, imageId, windowPos + ScreenCoordsXY{ widget.left + 3, widget.top });
+            }
+
+            if (!IsWidgetDisabled(WIDX_TAB_OPTIONS))
+            {
+                auto imageId = ImageId(SPR_TAB_GEARS_0);
+                if (page == OptionsTab)
+                    imageId = imageId.WithIndexOffset((frame_no / 2) % 4);
+
+                auto& widget = widgets[WIDX_TAB_OPTIONS];
+                GfxDrawSprite(rt, imageId, windowPos + ScreenCoordsXY{ widget.left, widget.top });
+            }
         }
 
     public:
         void OnOpen() override
         {
-            SetWidgets(window_news_widgets);
-            WindowInitScrollWidgets(*this);
-            _pressedNewsItemIndex = -1;
+            SetPage(NewsTab);
+        }
 
-            Widget* widget = &widgets[WIDX_SCROLL];
-            ScreenSize scrollSize = OnScrollGetSize(0);
-            scrolls[0].contentOffsetY = std::max(0, scrollSize.height - (widget->height() - 1));
-            WidgetScrollUpdateThumbs(*this, WIDX_SCROLL);
+        void OnPrepareDraw() override
+        {
+            if (page != OptionsTab)
+                return;
+
+            uint16_t checkboxWidgetIndex = _baseCheckboxIndex;
+            for (const auto& def : kNewsItemOptionDefinitions)
+            {
+                auto& widget = widgets[checkboxWidgetIndex];
+                if (widget.type == WidgetType::groupbox)
+                {
+                    // Skip group box!
+                    checkboxWidgetIndex++;
+                    continue;
+                }
+
+                const bool& configValue = GetNotificationValueRef(def);
+                SetCheckboxValue(checkboxWidgetIndex, configValue);
+                checkboxWidgetIndex++;
+            }
+        }
+
+        void OnDraw(RenderTarget& rt) override
+        {
+            DrawWidgets(rt);
+            DrawTabImages(rt);
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -76,21 +311,46 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_CLOSE:
                     Close();
                     break;
-                case WIDX_SETTINGS:
-                    ContextOpenWindow(WindowClass::NotificationOptions);
+                case WIDX_TAB_NEWS:
+                    SetPage(NewsTab);
                     break;
+                case WIDX_TAB_OPTIONS:
+                    SetPage(OptionsTab);
+                    break;
+                default:
+                {
+                    if (page != OptionsTab)
+                        break;
+
+                    int32_t checkBoxIndex = widgetIndex - _baseCheckboxIndex;
+                    if (checkBoxIndex < 0)
+                        break;
+
+                    const auto& def = kNewsItemOptionDefinitions[checkBoxIndex];
+                    bool& configValue = GetNotificationValueRef(def);
+                    configValue = !configValue;
+                    Config::Save();
+
+                    InvalidateWidget(widgetIndex);
+                    break;
+                }
             }
         }
 
         void OnUpdate() override
         {
+            frame_no++;
+
+            if (page != NewsTab)
+                return;
+
             if (_pressedNewsItemIndex == -1 || --_suspendUpdateTicks != 0)
             {
                 return;
             }
 
             Invalidate();
-            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click2, 0, windowPos.x + (width / 2));
+            Audio::Play(Audio::SoundId::Click2, 0, windowPos.x + (width / 2));
 
             size_t j = _pressedNewsItemIndex;
             _pressedNewsItemIndex = -1;
@@ -124,13 +384,14 @@ namespace OpenRCT2::Ui::Windows
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            int32_t scrollHeight = static_cast<int32_t>(getGameState().newsItems.GetArchived().size()) * CalculateItemHeight();
+            int32_t scrollHeight = static_cast<int32_t>(getGameState().newsItems.GetArchived().size())
+                * CalculateNewsItemHeight();
             return { WW, scrollHeight };
         }
 
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            int32_t itemHeight = CalculateItemHeight();
+            int32_t itemHeight = CalculateNewsItemHeight();
             int32_t i = 0;
             int32_t buttonIndex = 0;
             auto mutableScreenCoords = screenCoords;
@@ -165,19 +426,14 @@ namespace OpenRCT2::Ui::Windows
                 _pressedButtonIndex = buttonIndex;
                 _suspendUpdateTicks = 4;
                 Invalidate();
-                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
+                Audio::Play(Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
             }
-        }
-
-        void OnDraw(RenderTarget& rt) override
-        {
-            DrawWidgets(rt);
         }
 
         void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             int32_t lineHeight = FontGetLineHeight(FontStyle::Small);
-            int32_t itemHeight = CalculateItemHeight();
+            int32_t itemHeight = CalculateNewsItemHeight();
             int32_t y = 0;
             int32_t i = 0;
 

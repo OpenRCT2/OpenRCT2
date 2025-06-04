@@ -170,9 +170,6 @@ namespace OpenRCT2::Ui::Windows
     // News
     WindowBase* NewsOpen();
 
-    // NewsOptions
-    WindowBase* NewsOptionsOpen();
-
     // NetworkStatus
     WindowBase* NetworkStatusOpen(const std::string& text, CloseCallback onClose);
     WindowBase* NetworkStatusOpenPassword();
