@@ -25,9 +25,9 @@ namespace OpenRCT2::Ui::Windows
         WIDX_BACKGROUND
     };
 
-    static constexpr Widget _tooltipWidgets[] = {
-        MakeWidget({ 0, 0 }, { 200, 32 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
-    };
+    static constexpr auto _tooltipWidgets = makeWidgets(
+        MakeWidget({ 0, 0 }, { 200, 32 }, WindowWidgetType::ImgBtn, WindowColour::Primary)
+    );
 
     class TooltipWindow final : public Window
     {

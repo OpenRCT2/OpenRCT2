@@ -44,16 +44,15 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
     // clang-format off
-    static constexpr Widget _viewportWidgets[] =
-    {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    static constexpr auto _viewportWidgets = makeWidgets(
+        makeWindowShim(WINDOW_TITLE, WW, WH),
         MakeWidget({      0, 14}, { WW - 1, WH - 1}, WindowWidgetType::Resize,   WindowColour::Secondary                                         ), // resize
         MakeWidget({      3, 17}, {WW - 26, WH - 3}, WindowWidgetType::Viewport, WindowColour::Primary                                           ), // viewport
         MakeWidget({WW - 25, 17}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_G2_ZOOM_IN),  STR_ZOOM_IN_TIP       ), // zoom in
         MakeWidget({WW - 25, 41}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_G2_ZOOM_OUT), STR_ZOOM_OUT_TIP      ), // zoom out
         MakeWidget({WW - 25, 65}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_LOCATE),      STR_LOCATE_SUBJECT_TIP), // locate
-        MakeWidget({WW - 25, 89}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_ROTATE_ARROW),STR_LOCATE_SUBJECT_TIP), // rotate
-    };
+        MakeWidget({WW - 25, 89}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , ImageId(SPR_ROTATE_ARROW),STR_LOCATE_SUBJECT_TIP)  // rotate
+    );
     // clang-format on
 
     class ViewportWindow final : public Window

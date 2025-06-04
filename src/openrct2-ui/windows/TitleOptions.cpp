@@ -19,9 +19,9 @@ namespace OpenRCT2::Ui::Windows
         WIDX_OPTIONS,
     };
 
-    static constexpr Widget _windowTitleOptionsWidgets[] = {
-        MakeWidget({ 0, 0 }, { 80, 15 }, WindowWidgetType::Button, WindowColour::Tertiary, STR_OPTIONS, STR_OPTIONS_TIP),
-    };
+    static constexpr auto _windowTitleOptionsWidgets = makeWidgets(
+        MakeWidget({ 0, 0 }, { 80, 15 }, WindowWidgetType::Button, WindowColour::Tertiary, STR_OPTIONS, STR_OPTIONS_TIP)
+    );
 
     class TitleOptionsWindow final : public Window
     {

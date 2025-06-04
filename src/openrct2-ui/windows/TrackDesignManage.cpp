@@ -41,17 +41,17 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static constexpr Widget _trackManageWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    static constexpr auto _trackManageWidgets = makeWidgets(
+        makeWindowShim(WINDOW_TITLE, WW, WH),
         MakeWidget({ 10, 24}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_RENAME),
-        MakeWidget({130, 24}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_DELETE),
-    };
+        MakeWidget({130, 24}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_DELETE)
+    );
 
-    static constexpr Widget _trackDeletePromptWidgets[] = {
-        WINDOW_SHIM(STR_DELETE_FILE, WW_DELETE_PROMPT, WH_DELETE_PROMPT),
+    static constexpr auto _trackDeletePromptWidgets = makeWidgets(
+        makeWindowShim(STR_DELETE_FILE, WW_DELETE_PROMPT, WH_DELETE_PROMPT),
         MakeWidget({ 10, 54}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_DELETE),
-        MakeWidget({130, 54}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL             ),
-    };
+        MakeWidget({130, 54}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL             )
+    );
     // clang-format on
 
 #pragma endregion
