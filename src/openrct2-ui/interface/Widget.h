@@ -108,57 +108,6 @@ namespace OpenRCT2::Ui
         return out;
     }
 
-// NOLINTBEGIN
-#define MakeSpinnerWidgets(...)                                                                                                \
-    MakeWidget(__VA_ARGS__), MakeSpinnerIncreaseWidget(__VA_ARGS__), MakeSpinnerDecreaseWidget(__VA_ARGS__)
-    // NOLINTEND
-
-    constexpr Widget MakeSpinnerDecreaseWidget(
-        const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
-        [[maybe_unused]] uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
-    {
-        const int16_t xPos = origin.x + size.width - 26;
-        const int16_t yPos = origin.y + 1;
-        const uint16_t width = 13;
-        const uint16_t height = size.height - 2;
-
-        return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_NUMERIC_DOWN, tooltip);
-    }
-
-    constexpr Widget MakeSpinnerIncreaseWidget(
-        const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
-        [[maybe_unused]] uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
-    {
-        const int16_t xPos = origin.x + size.width - 13;
-        const int16_t yPos = origin.y + 1;
-        const uint16_t width = 12;
-        const uint16_t height = size.height - 2;
-
-        return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_NUMERIC_UP, tooltip);
-    }
-
-// NOLINTNEXTLINE
-#define MakeDropdownWidgets(...) MakeDropdownBoxWidget(__VA_ARGS__), MakeDropdownButtonWidget(__VA_ARGS__)
-
-    constexpr Widget MakeDropdownBoxWidget(
-        const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
-        [[maybe_unused]] uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
-    {
-        return MakeWidget(origin, size, type, colour, content);
-    }
-
-    constexpr Widget MakeDropdownButtonWidget(
-        const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
-        [[maybe_unused]] uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
-    {
-        const int16_t xPos = origin.x + size.width - 11;
-        const int16_t yPos = origin.y + 1;
-        const uint16_t width = 11;
-        const uint16_t height = size.height - 2;
-
-        return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_DROPDOWN_GLYPH, tooltip);
-    }
-
     namespace Detail
     {
         template<typename T, typename Enable = void>
@@ -236,6 +185,68 @@ namespace OpenRCT2::Ui
         out[2].string = kCloseBoxStringBlackNormal;
         return out;
     }
+
+    constexpr Widget MakeSpinnerDecreaseWidget(
+        const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
+        [[maybe_unused]] uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
+    {
+        const int16_t xPos = origin.x + size.width - 26;
+        const int16_t yPos = origin.y + 1;
+        const uint16_t width = 13;
+        const uint16_t height = size.height - 2;
+
+        return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_NUMERIC_DOWN, tooltip);
+    }
+
+    constexpr Widget MakeSpinnerIncreaseWidget(
+        const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
+        [[maybe_unused]] uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
+    {
+        const int16_t xPos = origin.x + size.width - 13;
+        const int16_t yPos = origin.y + 1;
+        const uint16_t width = 12;
+        const uint16_t height = size.height - 2;
+
+        return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_NUMERIC_UP, tooltip);
+    }
+
+    static constexpr std::array<Widget, 3> MakeSpinnerWidgets(
+        const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour,
+        uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
+    {
+        return makeWidgets(
+            MakeWidget(origin, size, type, colour, content, tooltip),
+            MakeSpinnerIncreaseWidget(origin, size, type, colour, content, tooltip),
+            MakeSpinnerDecreaseWidget(origin, size, type, colour, content, tooltip));
+    };
+
+    constexpr Widget MakeDropdownBoxWidget(
+        const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
+        [[maybe_unused]] uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
+    {
+        return MakeWidget(origin, size, type, colour, content);
+    }
+
+    constexpr Widget MakeDropdownButtonWidget(
+        const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
+        [[maybe_unused]] uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
+    {
+        const int16_t xPos = origin.x + size.width - 11;
+        const int16_t yPos = origin.y + 1;
+        const uint16_t width = 11;
+        const uint16_t height = size.height - 2;
+
+        return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_DROPDOWN_GLYPH, tooltip);
+    }
+
+    static constexpr std::array<Widget, 2> MakeDropdownWidgets(
+        const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour, uint32_t content,
+        StringId tooltip = kStringIdNone)
+    {
+        return makeWidgets(
+            MakeDropdownBoxWidget(origin, size, type, colour, content, tooltip),
+            MakeDropdownButtonWidget(origin, size, type, colour, content, tooltip));
+    };
 
     void WidgetDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
 
