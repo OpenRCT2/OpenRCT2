@@ -34,6 +34,7 @@ namespace OpenRCT2::Ui::Windows
 {
 #ifndef DISABLE_HTTP
 
+    // TODO: move to its own compilation unit
     class ObjectDownloader
     {
     private:
@@ -279,18 +280,18 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t TYPE_COL_LEFT = 5 * WW_LESS_PADDING / 8 + 1;
 
     // clang-format off
-    static constexpr Widget window_object_load_error_widgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    static constexpr auto window_object_load_error_widgets = makeWidgets(
+        makeWindowShim(WINDOW_TITLE, WW, WH),
         MakeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_NAME                         ), // 'Object name' header
         MakeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_SOURCE                       ), // 'Object source' header
         MakeWidget({  TYPE_COL_LEFT,  57}, {166,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_TYPE                         ), // 'Object type' header
         MakeWidget({  NAME_COL_LEFT,  70}, {442, 298}, WindowWidgetType::Scroll,      WindowColour::Primary, SCROLL_VERTICAL                         ), // Scrollable list area
         MakeWidget({  NAME_COL_LEFT, 377}, {145,  14}, WindowWidgetType::Button,      WindowColour::Primary, STR_COPY_SELECTED, STR_COPY_SELECTED_TIP), // Copy selected button
-        MakeWidget({            152, 377}, {145,  14}, WindowWidgetType::Button,      WindowColour::Primary, STR_COPY_ALL,      STR_COPY_ALL_TIP     ), // Copy all button
+        MakeWidget({            152, 377}, {145,  14}, WindowWidgetType::Button,      WindowColour::Primary, STR_COPY_ALL,      STR_COPY_ALL_TIP     )  // Copy all button
     #ifndef DISABLE_HTTP
-        MakeWidget({            300, 377}, {146,  14}, WindowWidgetType::Button,      WindowColour::Primary, STR_DOWNLOAD_ALL,  STR_DOWNLOAD_ALL_TIP ), // Download all button
+      , MakeWidget({            300, 377}, {146,  14}, WindowWidgetType::Button,      WindowColour::Primary, STR_DOWNLOAD_ALL,  STR_DOWNLOAD_ALL_TIP )  // Download all button
     #endif
-    };
+    );
     // clang-format on
 
     /**

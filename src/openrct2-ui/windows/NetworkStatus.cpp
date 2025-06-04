@@ -25,9 +25,9 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static constexpr Widget window_network_status_widgets[] = {
-        WINDOW_SHIM(kStringIdEmpty, 320, 90)
-    };
+    static constexpr auto window_network_status_widgets = makeWidgets(
+        makeWindowShim(kStringIdEmpty, 320, 90)
+    );
     // clang-format on
 
     class NetworkStatusWindow final : public Window

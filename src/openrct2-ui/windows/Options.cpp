@@ -252,20 +252,21 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WW = 310;
     static constexpr int32_t WH = 332;
 
-    #define MAIN_OPTIONS_WIDGETS \
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-        MakeWidget({ 0, 43 }, { WW, 289 }, WindowWidgetType::Resize, WindowColour::Secondary), \
-        MakeTab({ 3, 17 }, STR_OPTIONS_DISPLAY_TIP), \
-        MakeTab({ 34, 17 }, STR_OPTIONS_RENDERING_TIP), \
-        MakeTab({ 65, 17 }, STR_OPTIONS_CULTURE_TIP), \
-        MakeTab({ 96, 17 }, STR_OPTIONS_AUDIO_TIP), \
-        MakeTab({ 127, 17 }, STR_OPTIONS_INTERFACE_TIP), \
-        MakeTab({ 158, 17 }, STR_OPTIONS_CONTROLS_TIP), \
-        MakeTab({ 189, 17 }, STR_OPTIONS_MISCELLANEOUS_TIP), \
+    static constexpr auto kMainOptionsWidgets = makeWidgets(
+        makeWindowShim(WINDOW_TITLE, WW, WH),
+        MakeWidget({ 0, 43 }, { WW, 289 }, WindowWidgetType::Resize, WindowColour::Secondary),
+        MakeTab({ 3, 17 }, STR_OPTIONS_DISPLAY_TIP),
+        MakeTab({ 34, 17 }, STR_OPTIONS_RENDERING_TIP),
+        MakeTab({ 65, 17 }, STR_OPTIONS_CULTURE_TIP),
+        MakeTab({ 96, 17 }, STR_OPTIONS_AUDIO_TIP),
+        MakeTab({ 127, 17 }, STR_OPTIONS_INTERFACE_TIP),
+        MakeTab({ 158, 17 }, STR_OPTIONS_CONTROLS_TIP),
+        MakeTab({ 189, 17 }, STR_OPTIONS_MISCELLANEOUS_TIP),
         MakeTab({ 220, 17 }, STR_OPTIONS_ADVANCED)
+    );
 
-    static constexpr Widget window_options_display_widgets[] = {
-        MAIN_OPTIONS_WIDGETS,
+    static constexpr auto window_options_display_widgets = makeWidgets(
+        kMainOptionsWidgets,
         MakeWidget        ({  5,  53}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_WINDOW                                                                ), // Window group
         MakeWidget        ({ 10,  67}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_FULLSCREEN_MODE,                   STR_FULLSCREEN_MODE_TIP                  ), // Fullscreen
         MakeWidget        ({155,  68}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ),
@@ -289,14 +290,14 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({  5, 188}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_BEHAVIOUR                                                             ), // Behaviour group
         MakeWidget        ({ 11, 203}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_STEAM_OVERLAY_PAUSE,               STR_STEAM_OVERLAY_PAUSE_TIP              ), // Pause on steam overlay
         MakeWidget        ({ 11, 218}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
-        MakeWidget        ({ 11, 233}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              ), // Disable screensaver
-    };
+        MakeWidget        ({ 11, 233}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              )  // Disable screensaver
+    );
 
     constexpr int32_t kFrameRenderingStart = 53;
     constexpr int32_t kFrameEffectStart = 163;
 
-    static constexpr Widget window_options_rendering_widgets[] = {
-        MAIN_OPTIONS_WIDGETS,
+    static constexpr auto window_options_rendering_widgets = makeWidgets(
+        kMainOptionsWidgets,
         MakeWidget({  5,  kFrameRenderingStart + 0}, {300, 108}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_RENDERING_GROUP                                       ), // Rendering group
         MakeWidget({ 10, kFrameRenderingStart + 15}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_TILE_SMOOTHING,         STR_TILE_SMOOTHING_TIP        ), // Landscape smoothing
         MakeWidget({ 10, kFrameRenderingStart + 30}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_GRIDLINES,              STR_GRIDLINES_TIP             ), // Gridlines
@@ -312,11 +313,11 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({25, kFrameEffectStart + 30}, {266, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ENABLE_LIGHTING_EFFECTS,  STR_ENABLE_LIGHTING_EFFECTS_TIP ), // Enable light fx
         MakeWidget({40, kFrameEffectStart + 45}, {251, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ENABLE_LIGHTING_VEHICLES, STR_ENABLE_LIGHTING_VEHICLES_TIP), // Enable light fx for vehicles
         MakeWidget({10, kFrameEffectStart + 60}, {281, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RENDER_WEATHER_EFFECTS,   STR_RENDER_WEATHER_EFFECTS_TIP  ), // Render weather effects
-        MakeWidget({25, kFrameEffectStart + 75}, {266, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DISABLE_LIGHTNING_EFFECT, STR_DISABLE_LIGHTNING_EFFECT_TIP), // Disable lightning effect
-    };
+        MakeWidget({25, kFrameEffectStart + 75}, {266, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DISABLE_LIGHTNING_EFFECT, STR_DISABLE_LIGHTNING_EFFECT_TIP)  // Disable lightning effect
+    );
 
-    static constexpr Widget window_options_culture_widgets[] = {
-        MAIN_OPTIONS_WIDGETS,
+    static constexpr auto window_options_culture_widgets = makeWidgets(
+        kMainOptionsWidgets,
         MakeWidget({ 10,  53}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_OPTIONS_LANGUAGE,   STR_LANGUAGE_TIP           ), // language
         MakeWidget({155,  53}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRING                                         ),
         MakeWidget({288,  54}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_LANGUAGE_TIP           ),
@@ -334,11 +335,11 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({288, 114}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_HEIGHT_LABELS_UNITS_TIP),
         MakeWidget({ 10, 128}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DATE_FORMAT,        STR_DATE_FORMAT_TIP        ), // Date format
         MakeWidget({155, 128}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                     ),
-        MakeWidget({288, 129}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_DATE_FORMAT_TIP        ),
-    };
+        MakeWidget({288, 129}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_DATE_FORMAT_TIP        )
+    );
 
-    static constexpr Widget window_options_audio_widgets[] = {
-        MAIN_OPTIONS_WIDGETS,
+    static constexpr auto window_options_audio_widgets = makeWidgets(
+        kMainOptionsWidgets,
         MakeWidget({ 10,  53}, {290, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                ), // Audio device
         MakeWidget({288,  54}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,      STR_AUDIO_DEVICE_TIP ),
         MakeWidget({ 10,  69}, {220, 12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MASTER_VOLUME,       STR_MASTER_VOLUME_TIP), // Enable / disable master sound
@@ -350,13 +351,13 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({288, 128}, { 11, 11}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,      STR_TITLE_MUSIC_TIP  ),
         MakeWidget({155,  68}, {145, 13}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Master volume
         MakeWidget({155,  83}, {145, 13}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Sound effect volume
-        MakeWidget({155,  98}, {145, 13}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Music volume
-    };
+        MakeWidget({155,  98}, {145, 13}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_HORIZONTAL                             )  // Music volume
+    );
 
     constexpr int32_t kControlsGroupStart = 53;
 
-    static constexpr Widget window_options_controls_widgets[] = {
-        MAIN_OPTIONS_WIDGETS,
+    static constexpr auto window_options_controls_widgets = makeWidgets(
+        kMainOptionsWidgets,
         MakeWidget({  5, kControlsGroupStart +  0},  {300,137}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CONTROLS_GROUP                                                ), // Controls group
         MakeWidget({ 10, kControlsGroupStart + 13},  {290, 14}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SCREEN_EDGE_SCROLLING,      STR_SCREEN_EDGE_SCROLLING_TIP     ), // Edge scrolling
         MakeWidget({ 10, kControlsGroupStart + 30},  {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_TRAP_MOUSE,                 STR_TRAP_MOUSE_TIP                ), // Trap mouse
@@ -365,14 +366,14 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 10, kControlsGroupStart + 75},  {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_WINDOW_BUTTONS_ON_THE_LEFT, STR_WINDOW_BUTTONS_ON_THE_LEFT_TIP), // Window buttons on the left
         MakeWidget({ 10, kControlsGroupStart + 90},  {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_ENLARGED_UI,                STR_ENLARGED_UI_TIP               ),
         MakeWidget({ 25, kControlsGroupStart + 105}, {275, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_TOUCH_ENHANCEMENTS,         STR_TOUCH_ENHANCEMENTS_TIP        ),
-        MakeWidget({155, kControlsGroupStart + 120}, {145, 13}, WindowWidgetType::Button,   WindowColour::Secondary, STR_HOTKEY,                     STR_HOTKEY_TIP                    ), // Set hotkeys buttons
-    };
+        MakeWidget({155, kControlsGroupStart + 120}, {145, 13}, WindowWidgetType::Button,   WindowColour::Secondary, STR_HOTKEY,                     STR_HOTKEY_TIP                    )  // Set hotkeys buttons
+    );
 
     constexpr int32_t kThemesGroupStart = 53;
     constexpr int32_t kToolbarGroupStart = kThemesGroupStart + 52;
 
-    static constexpr Widget window_options_interface_widgets[] = {
-        MAIN_OPTIONS_WIDGETS,
+    static constexpr auto window_options_interface_widgets = makeWidgets(
+        kMainOptionsWidgets,
         MakeWidget({  5, kThemesGroupStart +  0}, {300, 48}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_THEMES_GROUP                                          ), // Themes group
         MakeWidget({ 10, kThemesGroupStart + 14}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_THEMES_LABEL_CURRENT_THEME, STR_CURRENT_THEME_TIP     ), // Themes
         MakeWidget({155, kThemesGroupStart + 14}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRING                                                ),
@@ -389,16 +390,16 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 24, kToolbarGroupStart + 76}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP               ), // Mute
         MakeWidget({155, kToolbarGroupStart + 76}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP               ), // Chat
         MakeWidget({ 24, kToolbarGroupStart + 91}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP               ), // Zoom
-        MakeWidget({155, kToolbarGroupStart + 91}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ROTATE_ANTI_CLOCKWISE,           STR_ROTATE_VIEW_ANTI_CLOCKWISE_IN_TOOLBAR_TIP), // Rotate anti-clockwise
-    };
+        MakeWidget({155, kToolbarGroupStart + 91}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ROTATE_ANTI_CLOCKWISE,           STR_ROTATE_VIEW_ANTI_CLOCKWISE_IN_TOOLBAR_TIP)  // Rotate anti-clockwise
+    );
 
     constexpr int32_t kTitleSequenceStart = 53;
     constexpr int32_t kScenarioGroupStart = kTitleSequenceStart + 35;
     constexpr int32_t kScenarioOptionsGroupStart = kScenarioGroupStart + 55;
     constexpr int32_t kTweaksStart = kScenarioOptionsGroupStart + 39;
 
-    static constexpr Widget window_options_misc_widgets[] = {
-        MAIN_OPTIONS_WIDGETS,
+    static constexpr auto window_options_misc_widgets = makeWidgets(
+        kMainOptionsWidgets,
         MakeWidget(         {  5, kTitleSequenceStart +  0}, {300, 31}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_TITLE_SEQUENCE                        ),
         MakeDropdownWidgets({ 10, kTitleSequenceStart + 15}, {290, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRINGID,               STR_TITLE_SEQUENCE_TIP), // Title sequence dropdown
 
@@ -418,15 +419,15 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 10, kTweaksStart + 60}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_AUTO_OPEN_SHOPS,      STR_AUTO_OPEN_SHOPS_TIP                   ), // Automatically open shops & stalls
         MakeWidget({ 10, kTweaksStart + 77}, {165, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DEFAULT_INSPECTION_INTERVAL, STR_DEFAULT_INSPECTION_INTERVAL_TIP),
         MakeWidget({175, kTweaksStart + 76}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                      ), // Default inspection time dropdown
-        MakeWidget({288, kTweaksStart + 77}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       ), // Default inspection time dropdown button
-    };
+        MakeWidget({288, kTweaksStart + 77}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       )  // Default inspection time dropdown button
+    );
 
     constexpr int32_t kRCT1Start = 53;
     constexpr int32_t kSavingStart = kRCT1Start + 54;
     constexpr int32_t kAdvancedStart = kSavingStart + 84;
 
-    static constexpr Widget window_options_advanced_widgets[] = {
-        MAIN_OPTIONS_WIDGETS,
+    static constexpr auto window_options_advanced_widgets = makeWidgets(
+        kMainOptionsWidgets,
         MakeWidget        ({  5, kRCT1Start +  0}, {300, 50}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_RCT1                                                                          ),
         MakeWidget        ({ 10, kRCT1Start + 16}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path label
         MakeWidget        ({ 10, kRCT1Start + 30}, {290, 14}, WindowWidgetType::Label,        WindowColour::Secondary, kStringIdNone,                             STR_STRING_TOOLTIP                           ), // RCT 1 path path
@@ -449,8 +450,8 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({ 10, kAdvancedStart + 46}, {135, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EXPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data export
         MakeWidget        ({150, kAdvancedStart + 46}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_IMPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data import
 #endif
-        MakeWidget        ({150, kAdvancedStart + 64}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                ), // Asset packs
-    };
+        MakeWidget        ({150, kAdvancedStart + 64}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                )  // Asset packs
+    );
 
     static constexpr std::span<const Widget> window_options_page_widgets[] = {
         window_options_display_widgets,
