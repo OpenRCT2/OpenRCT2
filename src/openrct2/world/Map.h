@@ -21,6 +21,22 @@ constexpr uint8_t kMinimumLandHeight = 2;
 constexpr uint8_t kMaximumLandHeight = 254;
 constexpr uint8_t kMinimumWaterHeight = 2;
 constexpr uint8_t kMaximumWaterHeight = 254;
+
+constexpr uint8_t kMinNumRiverbeds = 0;
+constexpr uint8_t kMaxNumRiverbeds = 8;
+
+constexpr uint8_t kMinMinRiverWidth = 4;
+constexpr uint8_t kMaxMinRiverWidth = 20;
+
+constexpr uint8_t kMinMaxRiverWidth = 4;
+constexpr uint8_t kMaxMaxRiverWidth = 40;
+
+constexpr uint8_t kMinRiverbankWidth = 0;
+constexpr uint8_t kMaxRiverbankWidth = 20;
+
+constexpr uint8_t kMinRiverMeanderRate = 0;
+constexpr uint8_t kMaxRiverMeanderRate = 30;
+
 /**
  * The land height that counts as 0 metres/feet for the land height labels and altitude graphs.
  */

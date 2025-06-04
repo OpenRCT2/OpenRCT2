@@ -1,6 +1,7 @@
 0.4.23 (in development)
 ------------------------------------------------------------------------
 - Feature: [#22476] “Time since last inspection” statistic is available in the rides window.
+- Feature: [#23999] The map generator now allows carving out riverbeds.
 - Feature: [#24313] [Plugin] Add API for setting a ride vehicle’s sprite to a smoke plume.
 - Improved: [#24345] Vehicle fallback sprites are less likely to glitch with the track.
 - Improved: [#24362, #24491] The Windows installer is now translated as well.
