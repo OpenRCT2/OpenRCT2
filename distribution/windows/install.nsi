@@ -134,7 +134,16 @@ ManifestDPIAware true
 !insertmacro MUI_RESERVEFILE_LANGDLL
 
 !include "language\install_en.nsi"
+!include "language\install_de.nsi"
+!include "language\install_fi.nsi"
+!include "language\install_fr.nsi"
+!include "language\install_gl.nsi"
+!include "language\install_hu.nsi"
+!include "language\install_it.nsi"
+!include "language\install_ko.nsi"
 !include "language\install_nl.nsi"
+!include "language\install_pt.nsi"
+!include "language\install_ru.nsi"
 
 !macro Init thing
 uac_tryagain:
