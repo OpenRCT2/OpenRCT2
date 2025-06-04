@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor LaunchedFreefallRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(2, 70), MakeRideRating(3, 00), MakeRideRating(3, 50) },
         16,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusDownwardLaunch,          0, MakeRideRating(0, 30), MakeRideRating(0, 65), MakeRideRating(0, 45) },

@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor RotoDropRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(2, 80), MakeRideRating(3, 50), MakeRideRating(3, 50) },
         24,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusProximity,   0, 11183, 0, 0 },

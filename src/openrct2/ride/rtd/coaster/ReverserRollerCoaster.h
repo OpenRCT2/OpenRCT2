@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor ReverserRollerCoasterRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(2, 40), MakeRideRating(1, 80), MakeRideRating(1, 70) },
         19,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,     873, 0, 0 },

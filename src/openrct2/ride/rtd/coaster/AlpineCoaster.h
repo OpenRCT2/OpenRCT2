@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor AlpineCoasterRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(2, 30), MakeRideRating(2, 10), MakeRideRating(1, 4) },
         7,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             873, 0, 0 },

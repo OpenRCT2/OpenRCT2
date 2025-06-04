@@ -61,7 +61,7 @@ constexpr RideTypeDescriptor CorkscrewRollerCoasterRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(3, 00), MakeRideRating(0, 50), MakeRideRating(0, 20) },
         16,
-        -1,
+        kDynamicRideShelterRating,
         true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

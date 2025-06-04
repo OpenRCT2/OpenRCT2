@@ -63,7 +63,7 @@ constexpr RideTypeDescriptor GigaCoasterRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(3, 85), MakeRideRating(0, 40), MakeRideRating(0, 35) },
         14,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             819, 0, 0 },

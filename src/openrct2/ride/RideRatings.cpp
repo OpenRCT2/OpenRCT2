@@ -895,7 +895,7 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
     SetUnreliabilityFactor(ride);
 
     const auto shelteredEighths = GetNumOfShelteredEighths(ride);
-    ride.shelteredEighths = (rrd.RideShelter == -1) ? shelteredEighths.TotalShelteredEighths : rrd.RideShelter;
+    ride.shelteredEighths = (rrd.RideShelter == kDynamicRideShelterRating) ? shelteredEighths.TotalShelteredEighths : rrd.RideShelter;
 
     RatingTuple ratings = rrd.BaseRatings;
     // Apply Modifiers
