@@ -217,8 +217,8 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
 
     // clang-format off
-    static constexpr Widget _window_editor_object_selection_widgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    static constexpr auto _window_editor_object_selection_widgets = makeWidgets(
+        makeWindowShim     (WINDOW_TITLE, WW, WH),
         MakeWidget         ({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
         MakeWidget         ({  4, 60}, {288, 277}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
         MakeWidget         ({391, 45}, {114, 114}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                                  ),
@@ -237,9 +237,9 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget         ({  4, 80}, {145,  14}, WindowWidgetType::TableHeader, WindowColour::Secondary                                                                  ),
         MakeWidget         ({149, 80}, {143,  14}, WindowWidgetType::TableHeader, WindowColour::Secondary                                                                  ),
         MakeWidget         ({700, 50}, { 24,  24}, WindowWidgetType::ImgBtn,      WindowColour::Secondary,  SPR_G2_RELOAD,    STR_RELOAD_OBJECT_TIP ),
-        MakeTab            ({  3, 17},                                                                                       STR_STRING_DEFINED_TOOLTIP       ),
+        MakeTab            ({  3, 17},                                                                                        STR_STRING_DEFINED_TOOLTIP )
         // Copied object type times...
-    };
+    );
     // clang-format on
 
 #pragma endregion
