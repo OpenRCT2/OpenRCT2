@@ -64,7 +64,7 @@ constexpr RideTypeDescriptor HybridCoasterRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(3, 80), MakeRideRating(1, 00), MakeRideRating(0, 45) },
         16,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

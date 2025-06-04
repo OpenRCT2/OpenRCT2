@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor SplashBoatsRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(1, 46), MakeRideRating(0, 35), MakeRideRating(0, 30) },
         15,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           2000,             7208, 0, 0 },

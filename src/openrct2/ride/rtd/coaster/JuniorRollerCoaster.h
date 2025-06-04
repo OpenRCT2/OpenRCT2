@@ -62,7 +62,7 @@ constexpr RideTypeDescriptor JuniorRollerCoasterRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(2, 40), MakeRideRating(2, 50), MakeRideRating(1, 80) },
         13,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

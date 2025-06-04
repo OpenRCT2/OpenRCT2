@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor SpinningWildMouseRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(2, 80), MakeRideRating(2, 50), MakeRideRating(2, 10) },
         14,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             873, 0, 0 },
