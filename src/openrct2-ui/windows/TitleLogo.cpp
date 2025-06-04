@@ -25,8 +25,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr auto _titleLogoWidgets = makeWidgets(
-        MakeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary)
-    );
+        MakeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary));
 
     class TitleLogoWindow final : public Window
     {
