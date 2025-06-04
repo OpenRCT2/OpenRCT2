@@ -43,6 +43,7 @@
 - Fix: [#24464] Window and viewport visibility is not calculated correctly causing minor performance issues.
 - Fix: [#24488] Objects are not always redrawn immediately when they are reloaded from the Object Selection window.
 - Fix: [#24544] RCT1 Maze designs with wooden walls are not imported correctly.
+- Fix: [#24567] Long flat-to-steep wooden mine support sprites don't connect to flat supports exactly.
 
 0.4.22 (2025-05-04)
 ------------------------------------------------------------------------
