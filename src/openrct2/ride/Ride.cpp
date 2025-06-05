@@ -4703,7 +4703,7 @@ void RideFixBreakdown(Ride& ride, int32_t reliabilityIncreaseFactor)
     uint8_t unreliability = 100 - ride.reliabilityPercentage;
     ride.reliability += reliabilityIncreaseFactor * (unreliability / 2);
 
-#ifdef  ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING
     InvokeRideFixHook(ride);
 #endif
 }
