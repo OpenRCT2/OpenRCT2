@@ -36,6 +36,7 @@ namespace OpenRCT2::Scripting
         networkJoin,
         networkLeave,
         rideRatingsCalculate,
+        rideFix,
         actionLocation,
         guestGeneration,
         vehicleCrash,

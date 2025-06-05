@@ -47,6 +47,8 @@
 #include "../object/StationObject.h"
 #include "../profiling/Profiling.h"
 #include "../rct1/RCT1.h"
+#include "../scripting/HookEngine.h"
+#include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -1841,6 +1843,25 @@ Staff* RideGetAssignedMechanic(const Ride& ride)
 
     return nullptr;
 }
+
+#ifdef ENABLE_SCRIPTING
+void InvokeRideFixHook(const Ride& ride)
+{
+    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::rideFix))
+    {
+        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+        // Create event args object
+        auto obj = OpenRCT2::Scripting::DukObject(ctx);
+        obj.Set("ride", ride.id.ToUnderlying());
+
+        // Call the subscriptions
+        auto e = obj.Take();
+        hookEngine.Call(OpenRCT2::Scripting::HookType::rideFix, e, true);
+    }
+}
+#endif
 
 #pragma endregion
 
@@ -4681,6 +4702,10 @@ void RideFixBreakdown(Ride& ride, int32_t reliabilityIncreaseFactor)
 
     uint8_t unreliability = 100 - ride.reliabilityPercentage;
     ride.reliability += reliabilityIncreaseFactor * (unreliability / 2);
+
+#ifdef  ENABLE_SCRIPTING
+    InvokeRideFixHook(ride);
+#endif
 }
 
 /**
