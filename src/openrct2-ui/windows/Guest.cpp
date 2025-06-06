@@ -45,9 +45,8 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_STRINGID;
-    static constexpr int32_t WH = 157;
-    static constexpr int32_t WW = 192;
+    static constexpr StringId kWindowTitle = STR_STRINGID;
+    static constexpr ScreenSize kWindowSize = { 192, 157 };
 
     enum WindowGuestPage
     {
@@ -109,11 +108,11 @@ namespace OpenRCT2::Ui::Windows
 
     validate_global_widx(WC_PEEP, WIDX_PICKUP);
 
-    static constexpr int32_t TabWidth = 30;
+    static constexpr int32_t kTabWidth = 30;
 
     // clang-format off
     static constexpr auto kMainGuestWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWindowShim(kWindowTitle, kWindowSize),                                                                                         \
         makeWidget({ 0, 43 }, { 192, 114 }, WidgetType::resize, WindowColour::secondary), /* Resize */
         makeTab({ 3, 17 }, STR_SHOW_GUEST_VIEW_TIP),                                            /* Tab 1 */
         makeTab({ 34, 17 }, STR_SHOW_GUEST_NEEDS_TIP),                                          /* Tab 2 */
@@ -217,7 +216,7 @@ namespace OpenRCT2::Ui::Windows
             _marqueePosition = 0;
             picked_peep_frame = 0;
 
-            WindowSetResize(*this, { WW, WH }, { 500, 450 });
+            WindowSetResize(*this, kWindowSize, { 500, 450 });
 
             selected_list_item = -1;
         }
@@ -1912,11 +1911,11 @@ namespace OpenRCT2::Ui::Windows
         auto* window = static_cast<GuestWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
         if (window == nullptr)
         {
-            int32_t windowWidth = 192;
+            auto windowSize = kWindowSize;
             if (Config::Get().general.DebuggingTools)
-                windowWidth += TabWidth;
+                windowSize.width += kTabWidth;
 
-            window = windowMgr->Create<GuestWindow>(WindowClass::Peep, { windowWidth, 157 }, WF_RESIZABLE);
+            window = windowMgr->Create<GuestWindow>(WindowClass::Peep, windowSize, WF_RESIZABLE);
             if (window == nullptr)
             {
                 return nullptr;

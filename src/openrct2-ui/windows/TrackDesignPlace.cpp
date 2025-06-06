@@ -41,12 +41,11 @@ using namespace OpenRCT2::TrackMetaData;
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_STRING;
-    static constexpr int32_t WH = 124;
-    static constexpr int32_t WW = 200;
-    constexpr int16_t TRACK_MINI_PREVIEW_WIDTH = 168;
-    constexpr int16_t TRACK_MINI_PREVIEW_HEIGHT = 78;
-    constexpr uint16_t TRACK_MINI_PREVIEW_SIZE = TRACK_MINI_PREVIEW_WIDTH * TRACK_MINI_PREVIEW_HEIGHT;
+    static constexpr StringId kWindowTitle = STR_STRING;
+    static constexpr ScreenSize kWindowSize = { 200, 124 };
+    constexpr int16_t kTrackMiniPreviewWidth = 168;
+    constexpr int16_t kTrackMiniPreviewHeight = 78;
+    constexpr uint16_t kTrackMiniPreviewSize = kTrackMiniPreviewWidth * kTrackMiniPreviewHeight;
 
     static constexpr uint8_t kPaletteIndexColourEntrance = PaletteIndex::pi20; // White
     static constexpr uint8_t kPaletteIndexColourExit = PaletteIndex::pi10;     // Black
@@ -68,7 +67,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _trackPlaceWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({173,  83}, { 24, 24}, WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_ROTATE_ARROW),              STR_ROTATE_90_TIP                         ),
         makeWidget({173,  59}, { 24, 24}, WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_MIRROR_ARROW),              STR_MIRROR_IMAGE_TIP                      ),
         makeWidget({  4, 109}, {192, 12}, WidgetType::button,  WindowColour::primary, STR_SELECT_A_DIFFERENT_DESIGN, STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP),
@@ -107,7 +106,7 @@ namespace OpenRCT2::Ui::Windows
             gInputFlags.set(InputFlag::unk6);
             WindowPushOthersRight(*this);
             ShowGridlines();
-            _miniPreview.resize(TRACK_MINI_PREVIEW_SIZE);
+            _miniPreview.resize(kTrackMiniPreviewSize);
             _placementCost = kMoney64Undefined;
             _placementLoc.SetNull();
             _currentTrackPieceDirection = (2 - GetCurrentRotation()) & 3;
@@ -347,8 +346,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 G1Element g1temp = {};
                 g1temp.offset = _miniPreview.data();
-                g1temp.width = TRACK_MINI_PREVIEW_WIDTH;
-                g1temp.height = TRACK_MINI_PREVIEW_HEIGHT;
+                g1temp.width = kTrackMiniPreviewWidth;
+                g1temp.height = kTrackMiniPreviewHeight;
                 GfxSetG1Element(SPR_TEMP, &g1temp);
                 DrawingEngineInvalidateImage(SPR_TEMP);
                 GfxDrawSprite(clippedRT, ImageId(SPR_TEMP, this->colours[0].colour), { 0, 0 });
@@ -696,7 +695,7 @@ namespace OpenRCT2::Ui::Windows
 
         uint8_t* DrawMiniPreviewGetPixelPtr(const ScreenCoordsXY& pixel)
         {
-            return &_miniPreview[pixel.y * TRACK_MINI_PREVIEW_WIDTH + pixel.x];
+            return &_miniPreview[pixel.y * kTrackMiniPreviewWidth + pixel.x];
         }
 
         GameActions::Result FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uint32_t newFlags)
@@ -732,7 +731,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->CloseConstructionWindows();
 
-        auto* window = windowMgr->FocusOrCreate<TrackDesignPlaceWindow>(WindowClass::TrackDesignPlace, { WW, WH }, 0);
+        auto* window = windowMgr->FocusOrCreate<TrackDesignPlaceWindow>(WindowClass::TrackDesignPlace, kWindowSize, 0);
         if (window != nullptr)
         {
             window->Init(std::move(openTrackDesign));

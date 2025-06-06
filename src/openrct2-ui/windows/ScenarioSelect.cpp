@@ -49,8 +49,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t kTabsStart = kWidgetsStart;
     static constexpr int32_t kTabWidth = 92;
     static constexpr int32_t kTrueFontSize = 24;
-    static constexpr int32_t kWindowHeight = 384;
-    static constexpr int32_t kWindowWidth = 734;
+    static constexpr ScreenSize kWindowSize = { 734, 384 };
     static constexpr StringId kWindowTitle = STR_SELECT_SCENARIO;
 
     enum class ListItemType : uint8_t
@@ -104,8 +103,8 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _scenarioSelectWidgets = makeWidgets(
-        makeWindowShim(kWindowTitle, { kWindowWidth, kWindowHeight }),
-        makeWidget({ kTabWidth + 1, kWidgetsStart }, { kWindowWidth, 284 }, WidgetType::resize, WindowColour::secondary), // tab content panel
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({ kTabWidth + 1, kWidgetsStart }, { kWindowSize.width, 284 }, WidgetType::resize, WindowColour::secondary), // tab content panel
         makeRemapWidget({ 3, kTabsStart + (kTabHeight * 0) }, { kTabWidth, kTabHeight}, WidgetType::tab, WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 01
         makeRemapWidget({ 3, kTabsStart + (kTabHeight * 1) }, { kTabWidth, kTabHeight}, WidgetType::tab, WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 02
         makeRemapWidget({ 3, kTabsStart + (kTabHeight * 2) }, { kTabWidth, kTabHeight}, WidgetType::tab, WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 03
@@ -116,7 +115,7 @@ namespace OpenRCT2::Ui::Windows
         makeRemapWidget({ 3, kTabsStart + (kTabHeight * 7) }, { kTabWidth, kTabHeight}, WidgetType::tab, WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 08
         makeRemapWidget({ 3, kTabsStart + (kTabHeight * 8) }, { kTabWidth, kTabHeight}, WidgetType::tab, WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 09
         makeRemapWidget({ 3, kTabsStart + (kTabHeight * 8) }, { kTabWidth, kTabHeight}, WidgetType::tab, WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 10
-        makeWidget({ kTabWidth + 3, kWidgetsStart + 1 }, { kWindowWidth - kPreviewPaneWidthRegular, 362 }, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL) // level list
+        makeWidget({ kTabWidth + 3, kWidgetsStart + 1 }, { kWindowSize.width - kPreviewPaneWidthRegular, 362 }, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL) // level list
     );
     // clang-format on
 
@@ -460,7 +459,7 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            return { kWindowWidth, y };
+            return { kWindowSize.width, y };
         }
 
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
@@ -931,10 +930,9 @@ namespace OpenRCT2::Ui::Windows
 
         int32_t screenWidth = ContextGetWidth();
         int32_t screenHeight = ContextGetHeight();
-        ScreenCoordsXY screenPos = { (screenWidth - kWindowWidth) / 2,
-                                     std::max(kTopToolbarHeight + 1, (screenHeight - kWindowHeight) / 2) };
-        window = windowMgr->Create<ScenarioSelectWindow>(
-            WindowClass::ScenarioSelect, screenPos, { kWindowWidth, kWindowHeight }, 0, callback);
+        ScreenCoordsXY screenPos = { (screenWidth - kWindowSize.width) / 2,
+                                     std::max(kTopToolbarHeight + 1, (screenHeight - kWindowSize.height) / 2) };
+        window = windowMgr->Create<ScenarioSelectWindow>(WindowClass::ScenarioSelect, screenPos, kWindowSize, 0, callback);
         return window;
     }
 } // namespace OpenRCT2::Ui::Windows

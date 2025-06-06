@@ -33,9 +33,8 @@ namespace OpenRCT2::Ui::Windows
 {
 #pragma region Widgets
 
-    static constexpr StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
-    static constexpr int32_t WH = 200;
-    static constexpr int32_t WW = 166;
+    static constexpr StringId kWindowTitle = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
+    static constexpr ScreenSize kWindowSize = { 166, 200 };
 
     enum : WidgetIndex
     {
@@ -61,7 +60,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_maze_construction_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({ 3,  17}, {160, 55}, WidgetType::groupbox, WindowColour::primary  , STR_RIDE_CONSTRUCTION_MODE                                                            ),
         makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
         makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
@@ -443,7 +442,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<MazeConstructionWindow>(
-            WindowClass::RideConstruction, ScreenCoordsXY(0, 29), { WW, WH }, WF_NO_AUTO_CLOSE);
+            WindowClass::RideConstruction, ScreenCoordsXY(0, 29), kWindowSize, WF_NO_AUTO_CLOSE);
     }
 
     void WindowMazeConstructionUpdatePressedWidgets()

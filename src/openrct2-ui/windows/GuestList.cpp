@@ -34,9 +34,8 @@ using namespace OpenRCT2::Numerics;
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_GUESTS;
-    static constexpr int32_t WH = 330;
-    static constexpr int32_t WW = 350;
+    static constexpr StringId kWindowTitle = STR_GUESTS;
+    static constexpr ScreenSize kWindowSize = { 350, 330 };
 
     enum WindowGuestListWidgetIdx
     {
@@ -58,7 +57,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_guest_list_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({  0, 43}, {350, 287}, WidgetType::resize,   WindowColour::secondary                                                   ), // tab content panel
         makeWidget({  5, 59}, { 80,  12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_ARG_4_PAGE_X                                 ), // page dropdown
         makeWidget({ 73, 60}, { 11,  10}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH                               ), // page dropdown button
@@ -131,10 +130,10 @@ namespace OpenRCT2::Ui::Windows
             char Name[256];
         };
 
-        static constexpr uint8_t SUMMARISED_GUEST_ROW_HEIGHT = kScrollableRowHeight + 11;
-        static constexpr auto GUESTS_PER_PAGE = 2000;
-        static constexpr const auto GUEST_PAGE_HEIGHT = GUESTS_PER_PAGE * kScrollableRowHeight;
-        static constexpr size_t MaxGroups = 240;
+        static constexpr uint8_t kSummarisedGuestsRowHeight = kScrollableRowHeight + 11;
+        static constexpr auto kGuestsPerPage = 2000;
+        static constexpr const auto kGuestPageHeight = kGuestsPerPage * kScrollableRowHeight;
+        static constexpr size_t kMaxGroups = 240;
 
         TabId _selectedTab{};
         GuestViewType _selectedView{};
@@ -170,7 +169,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PAGE_DROPDOWN].type = WidgetType::empty;
             widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WidgetType::empty;
 
-            WindowSetResize(*this, { 350, 330 }, { 500, 450 });
+            WindowSetResize(*this, kWindowSize, { 500, 450 });
 
             RefreshList();
         }
@@ -407,12 +406,12 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_GUEST_LIST].right = width - 4;
             widgets[WIDX_GUEST_LIST].bottom = height - 15;
-            widgets[WIDX_MAP].left = 273 - 350 + width;
-            widgets[WIDX_MAP].right = 296 - 350 + width;
-            widgets[WIDX_FILTER_BY_NAME].left = 297 - 350 + width;
-            widgets[WIDX_FILTER_BY_NAME].right = 320 - 350 + width;
-            widgets[WIDX_TRACKING].left = 321 - 350 + width;
-            widgets[WIDX_TRACKING].right = 344 - 350 + width;
+            widgets[WIDX_MAP].left = 273 - kWindowSize.width + width;
+            widgets[WIDX_MAP].right = 296 - kWindowSize.width + width;
+            widgets[WIDX_FILTER_BY_NAME].left = 297 - kWindowSize.width + width;
+            widgets[WIDX_FILTER_BY_NAME].right = 320 - kWindowSize.width + width;
+            widgets[WIDX_TRACKING].left = 321 - kWindowSize.width + width;
+            widgets[WIDX_TRACKING].right = 344 - kWindowSize.width + width;
 
             if (_numPages > 1)
             {
@@ -485,7 +484,7 @@ namespace OpenRCT2::Ui::Windows
                 case TabId::Individual:
                     // Count the number of guests
                     y = static_cast<int32_t>(_guestList.size()) * kScrollableRowHeight;
-                    _numPages = (_guestList.size() + GUESTS_PER_PAGE - 1) / GUESTS_PER_PAGE;
+                    _numPages = (_guestList.size() + kGuestsPerPage - 1) / kGuestsPerPage;
                     if (_numPages == 0)
                         _selectedPage = 0;
                     else if (_selectedPage >= _numPages)
@@ -498,12 +497,12 @@ namespace OpenRCT2::Ui::Windows
                     {
                         RefreshGroups();
                     }
-                    y = static_cast<int32_t>(_groups.size() * SUMMARISED_GUEST_ROW_HEIGHT);
+                    y = static_cast<int32_t>(_groups.size() * kSummarisedGuestsRowHeight);
                     break;
             }
 
-            y -= static_cast<int32_t>(GUEST_PAGE_HEIGHT * _selectedPage);
-            y = std::max(0, std::min(y, GUEST_PAGE_HEIGHT));
+            y -= static_cast<int32_t>(kGuestPageHeight * _selectedPage);
+            y = std::max(0, std::min(y, kGuestPageHeight));
 
             if (_highlightedIndex)
             {
@@ -523,8 +522,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            auto i = screenCoords.y / (_selectedTab == TabId::Individual ? kScrollableRowHeight : SUMMARISED_GUEST_ROW_HEIGHT);
-            i += static_cast<int32_t>(_selectedPage * GUESTS_PER_PAGE);
+            auto i = screenCoords.y / (_selectedTab == TabId::Individual ? kScrollableRowHeight : kSummarisedGuestsRowHeight);
+            i += static_cast<int32_t>(_selectedPage * kGuestsPerPage);
             if (static_cast<size_t>(i) != _highlightedIndex)
             {
                 _highlightedIndex = i;
@@ -539,7 +538,7 @@ namespace OpenRCT2::Ui::Windows
                 case TabId::Individual:
                 {
                     auto i = screenCoords.y / kScrollableRowHeight;
-                    i += static_cast<int32_t>(_selectedPage * GUESTS_PER_PAGE);
+                    i += static_cast<int32_t>(_selectedPage * kGuestsPerPage);
                     for (const auto& guestItem : _guestList)
                     {
                         if (i == 0)
@@ -557,7 +556,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case TabId::Summarised:
                 {
-                    auto i = static_cast<size_t>(screenCoords.y / SUMMARISED_GUEST_ROW_HEIGHT);
+                    auto i = static_cast<size_t>(screenCoords.y / kSummarisedGuestsRowHeight);
                     if (i < _groups.size())
                     {
                         _filterArguments = _groups[i].Arguments;
@@ -648,7 +647,7 @@ namespace OpenRCT2::Ui::Windows
         void DrawScrollIndividual(RenderTarget& rt)
         {
             size_t index = 0;
-            auto y = static_cast<int32_t>(_selectedPage) * -GUEST_PAGE_HEIGHT;
+            auto y = static_cast<int32_t>(_selectedPage) * -kGuestPageHeight;
             for (const auto& guestItem : _guestList)
             {
                 // Check if y is beyond the scroll control
@@ -719,7 +718,7 @@ namespace OpenRCT2::Ui::Windows
             for (auto& group : _groups)
             {
                 // Check if y is beyond the scroll control
-                if (y + SUMMARISED_GUEST_ROW_HEIGHT + 1 >= rt.y)
+                if (y + kSummarisedGuestsRowHeight + 1 >= rt.y)
                 {
                     // Check if y is beyond the scroll control
                     if (y >= rt.y + rt.height)
@@ -729,7 +728,7 @@ namespace OpenRCT2::Ui::Windows
                     StringId format = STR_BLACK_STRING;
                     if (index == _highlightedIndex)
                     {
-                        GfxFilterRect(rt, { 0, y, 800, y + SUMMARISED_GUEST_ROW_HEIGHT }, FilterPaletteID::PaletteDarken1);
+                        GfxFilterRect(rt, { 0, y, 800, y + kSummarisedGuestsRowHeight }, FilterPaletteID::PaletteDarken1);
                         format = STR_WINDOW_COLOUR_2_STRINGID;
                     }
 
@@ -759,7 +758,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<uint32_t>(group.NumGuests);
                     DrawTextBasic(rt, { 326, y }, format, ft, { TextAlignment::RIGHT });
                 }
-                y += SUMMARISED_GUEST_ROW_HEIGHT;
+                y += kSummarisedGuestsRowHeight;
                 index++;
             }
         }
@@ -858,10 +857,10 @@ namespace OpenRCT2::Ui::Windows
                 return a.NumGuests > b.NumGuests;
             });
 
-            // Remove up to MaxGroups
-            if (_groups.size() > MaxGroups)
+            // Remove up to kMaxGroups
+            if (_groups.size() > kMaxGroups)
             {
-                _groups.resize(MaxGroups);
+                _groups.resize(kMaxGroups);
             }
         }
 
@@ -955,7 +954,7 @@ namespace OpenRCT2::Ui::Windows
         auto* window = windowMgr->BringToFrontByClass(WindowClass::GuestList);
         if (window == nullptr)
         {
-            window = windowMgr->Create<GuestListWindow>(WindowClass::GuestList, { 350, 330 }, WF_10 | WF_RESIZABLE);
+            window = windowMgr->Create<GuestListWindow>(WindowClass::GuestList, kWindowSize, WF_10 | WF_RESIZABLE);
         }
         return window;
     }

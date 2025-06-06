@@ -27,8 +27,7 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr int32_t WH = 300;
-    static constexpr int32_t WW = 400;
+    static constexpr ScreenSize kWindowSize = { 400, 300 };
 
     enum WindowNewsWidgetIdx
     {
@@ -54,8 +53,8 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto makeNewsWidgets = [](StringId title) {
         return makeWidgets(
-            makeWindowShim(title, { WW, WH }),
-            makeWidget({ 0, 43 }, { WW, 257 }, WidgetType::resize, WindowColour::secondary),
+            makeWindowShim(title, kWindowSize),
+            makeWidget({ 0, 43 }, { kWindowSize.width, 257 }, WidgetType::resize, WindowColour::secondary),
             makeTab({ 3, 17 }, STR_RECENT_MESSAGES),
             makeTab({ 34, 17 }, STR_NOTIFICATION_SETTINGS)
         );
@@ -117,7 +116,7 @@ namespace OpenRCT2::Ui::Windows
         {
             Invalidate();
             page = newsTab;
-            height = WH;
+            height = kWindowSize.height;
             SetWidgets(kNewsTabWidgets);
 
             WindowInitScrollWidgets(*this);
@@ -393,7 +392,7 @@ namespace OpenRCT2::Ui::Windows
         {
             int32_t scrollHeight = static_cast<int32_t>(getGameState().newsItems.GetArchived().size())
                 * CalculateNewsItemHeight();
-            return { WW, scrollHeight };
+            return { kWindowSize.width, scrollHeight };
         }
 
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
@@ -582,6 +581,6 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* NewsOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<NewsWindow>(WindowClass::RecentNews, { WW, WH }, 0);
+        return windowMgr->FocusOrCreate<NewsWindow>(WindowClass::RecentNews, kWindowSize, 0);
     }
 } // namespace OpenRCT2::Ui::Windows

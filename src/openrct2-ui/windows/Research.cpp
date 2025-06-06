@@ -27,10 +27,8 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr int32_t WH_DEVELOPMENT = 196;
-    static constexpr int32_t WW_DEVELOPMENT = 300;
-    static constexpr int32_t WH_FUNDING = 207;
-    static constexpr int32_t WW_FUNDING = 320;
+    static constexpr ScreenSize kWindowSizeDevelopment = { 300, 196 };
+    static constexpr ScreenSize kWindowSizeFunding = { 320, 207 };
 
     enum
     {
@@ -69,31 +67,31 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_research_development_widgets = makeWidgets(
-        makeWindowShim(STR_RESEARCH_AND_DEVELOPMENT, { WW_DEVELOPMENT, WH_DEVELOPMENT }),
-        makeWidget({  0,  43}, {     WW_DEVELOPMENT, 153}, WidgetType::resize,   WindowColour::secondary                                                                ),
+        makeWindowShim(STR_RESEARCH_AND_DEVELOPMENT, kWindowSizeDevelopment),
+        makeWidget({  0,  43}, {     kWindowSizeDevelopment.width, 153}, WidgetType::resize,   WindowColour::secondary                                                                ),
         makeTab   ({  3,  17},                                                                                                  STR_RESEARCH_AND_DEVELOPMENT_TIP),
         makeTab   ({ 34,  17},                                                                                                  STR_FINANCES_RESEARCH_TIP       ),
-        makeWidget({  3,  47}, {WW_DEVELOPMENT - 10,  70}, WidgetType::groupbox, WindowColour::tertiary , STR_CURRENTLY_IN_DEVELOPMENT                                  ),
-        makeWidget({  3, 124}, {WW_DEVELOPMENT - 10,  65}, WidgetType::groupbox, WindowColour::tertiary , STR_LAST_DEVELOPMENT                                          ),
+        makeWidget({  3,  47}, {kWindowSizeDevelopment.width - 10,  70}, WidgetType::groupbox, WindowColour::tertiary , STR_CURRENTLY_IN_DEVELOPMENT                                  ),
+        makeWidget({  3, 124}, {kWindowSizeDevelopment.width - 10,  65}, WidgetType::groupbox, WindowColour::tertiary , STR_LAST_DEVELOPMENT                                          ),
         makeWidget({265, 161}, {                 24,  24}, WidgetType::flatBtn,  WindowColour::tertiary , 0xFFFFFFFF,                   STR_RESEARCH_SHOW_DETAILS_TIP   )
     );
 
     static constexpr auto window_research_funding_widgets = makeWidgets(
-        makeWindowShim(STR_RESEARCH_FUNDING, { WW_FUNDING, WH_FUNDING }),
-        makeWidget({  0,  43}, {     WW_FUNDING, 164}, WidgetType::resize,   WindowColour::secondary                                                                                    ),
+        makeWindowShim(STR_RESEARCH_FUNDING, kWindowSizeFunding),
+        makeWidget({  0,  43}, {     kWindowSizeFunding.width, 164}, WidgetType::resize,   WindowColour::secondary                                                                                    ),
         makeTab   ({  3,  17},                                                                                                      STR_RESEARCH_AND_DEVELOPMENT_TIP            ),
         makeTab   ({ 34,  17},                                                                                                      STR_FINANCES_RESEARCH_TIP                   ),
-        makeWidget({  3,  47}, { WW_FUNDING - 6,  45}, WidgetType::groupbox, WindowColour::tertiary , STR_RESEARCH_FUNDING_                                                             ),
+        makeWidget({  3,  47}, { kWindowSizeFunding.width - 6,  45}, WidgetType::groupbox, WindowColour::tertiary , STR_RESEARCH_FUNDING_                                                             ),
         makeWidget({  8,  59}, {            160,  14}, WidgetType::dropdownMenu, WindowColour::tertiary , 0xFFFFFFFF,                           STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
         makeWidget({156,  60}, {             11,  12}, WidgetType::button,   WindowColour::tertiary , STR_DROPDOWN_GLYPH,                   STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
-        makeWidget({  3,  96}, { WW_FUNDING - 6, 107}, WidgetType::groupbox, WindowColour::tertiary , STR_RESEARCH_PRIORITIES                                                           ),
-        makeWidget({  8, 108}, {WW_FUNDING - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_TRANSPORT_RIDES,     STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP        ),
-        makeWidget({  8, 121}, {WW_FUNDING - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_GENTLE_RIDES,        STR_RESEARCH_NEW_GENTLE_RIDES_TIP           ),
-        makeWidget({  8, 134}, {WW_FUNDING - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_ROLLER_COASTERS,     STR_RESEARCH_NEW_ROLLER_COASTERS_TIP        ),
-        makeWidget({  8, 147}, {WW_FUNDING - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_THRILL_RIDES,        STR_RESEARCH_NEW_THRILL_RIDES_TIP           ),
-        makeWidget({  8, 160}, {WW_FUNDING - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
-        makeWidget({  8, 173}, {WW_FUNDING - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
-        makeWidget({  8, 186}, {WW_FUNDING - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    )
+        makeWidget({  3,  96}, { kWindowSizeFunding.width - 6, 107}, WidgetType::groupbox, WindowColour::tertiary , STR_RESEARCH_PRIORITIES                                                           ),
+        makeWidget({  8, 108}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_TRANSPORT_RIDES,     STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP        ),
+        makeWidget({  8, 121}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_GENTLE_RIDES,        STR_RESEARCH_NEW_GENTLE_RIDES_TIP           ),
+        makeWidget({  8, 134}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_ROLLER_COASTERS,     STR_RESEARCH_NEW_ROLLER_COASTERS_TIP        ),
+        makeWidget({  8, 147}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_THRILL_RIDES,        STR_RESEARCH_NEW_THRILL_RIDES_TIP           ),
+        makeWidget({  8, 160}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
+        makeWidget({  8, 173}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
+        makeWidget({  8, 186}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    )
     );
 
     static constexpr std::span<const Widget> window_research_page_widgets[] = {
@@ -136,13 +134,13 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
             if (newPageIndex == WINDOW_RESEARCH_PAGE_DEVELOPMENT)
             {
-                width = WW_DEVELOPMENT;
-                height = WH_DEVELOPMENT;
+                width = kWindowSizeDevelopment.width;
+                height = kWindowSizeDevelopment.height;
             }
             else
             {
-                width = WW_FUNDING;
-                height = WH_FUNDING;
+                width = kWindowSizeFunding.width;
+                height = kWindowSizeFunding.height;
             }
             Invalidate();
 
@@ -298,8 +296,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ResearchOpen()
     {
         auto* windowMgr = GetWindowManager();
-        auto* window = windowMgr->FocusOrCreate<ResearchWindow>(
-            WindowClass::Research, { WW_DEVELOPMENT, WH_DEVELOPMENT }, WF_10);
+        auto* window = windowMgr->FocusOrCreate<ResearchWindow>(WindowClass::Research, kWindowSizeDevelopment, WF_10);
         window->SetPage(WINDOW_RESEARCH_PAGE_DEVELOPMENT);
         return window;
     }

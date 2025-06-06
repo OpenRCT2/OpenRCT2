@@ -23,10 +23,9 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr int32_t WW = 400;
-    static constexpr int32_t WH = 450;
-    static constexpr StringId WINDOW_TITLE = STR_ABOUT;
-    static constexpr int32_t TABHEIGHT = 50;
+    static constexpr ScreenSize kWindowSize = { 400, 450 };
+    static constexpr StringId kWindowTitle = STR_ABOUT;
+    static constexpr int32_t kTabHeight = 50;
 
     static constexpr auto kPadding = 10;
 
@@ -59,15 +58,17 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr auto kMainWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
-        makeWidget({ 0, TABHEIGHT }, { WW, WH - TABHEIGHT }, WidgetType::frame, WindowColour::secondary),
-        makeRemapWidget({ 3, 17 }, { 91, TABHEIGHT - 16 }, WidgetType::tab, WindowColour::secondary, SPR_TAB_LARGE),
-        makeRemapWidget({ 94, 17 }, { 91, TABHEIGHT - 16 }, WidgetType::tab, WindowColour::secondary, SPR_TAB_LARGE));
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget(
+            { 0, kTabHeight }, { kWindowSize.width, kWindowSize.height - kTabHeight }, WidgetType::frame,
+            WindowColour::secondary),
+        makeRemapWidget({ 3, 17 }, { 91, kTabHeight - 16 }, WidgetType::tab, WindowColour::secondary, SPR_TAB_LARGE),
+        makeRemapWidget({ 94, 17 }, { 91, kTabHeight - 16 }, WidgetType::tab, WindowColour::secondary, SPR_TAB_LARGE));
 
     // clang-format off
     static constexpr auto _windowAboutOpenRCT2Widgets = makeWidgets(
         kMainWidgets,
-        makeWidget({10, 60},        {WW - 20, 20}, WidgetType::labelCentred, WindowColour::secondary, STR_ABOUT_OPENRCT2_DESCRIPTION), // Introduction
+        makeWidget({10, 60},        {kWindowSize.width - 20, 20}, WidgetType::labelCentred, WindowColour::secondary, STR_ABOUT_OPENRCT2_DESCRIPTION), // Introduction
         makeWidget({30, 90},        {128, 128},    WidgetType::placeholder,  WindowColour::secondary, kStringIdNone), // OpenRCT2 Logo
         makeWidget({168, 100},      {173, 24},     WidgetType::placeholder,  WindowColour::secondary, kStringIdNone), // Build version
         makeWidget({344, 100 },     {24, 24},      WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_COPY), STR_COPY_BUILD_HASH   ), // "Copy build info" button
@@ -205,7 +206,7 @@ namespace OpenRCT2::Ui::Windows
             frame_no = 0;
             pressed_widgets = 0;
 
-            WindowSetResize(*this, { WW, WH }, { WW, WH });
+            WindowSetResize(*this, kWindowSize, kWindowSize);
             SetWidgets(_windowAboutPageWidgets[p]);
 
             switch (p)
@@ -245,7 +246,7 @@ namespace OpenRCT2::Ui::Windows
             // Draw the rest of the text
             TextPaint tp{ colours[1], TextAlignment::CENTRE };
             auto textCoords = windowPos + ScreenCoordsXY((width / 2) - 1, 240);
-            auto textWidth = WW - (kPadding * 2);
+            auto textWidth = kWindowSize.width - (kPadding * 2);
             for (auto stringId : _OpenRCT2InfoStrings)
                 textCoords.y += DrawTextWrapped(rt, textCoords, textWidth, stringId, {}, tp) + 5;
 
@@ -256,7 +257,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto& backgroundWidget = widgets[WIDX_PAGE_BACKGROUND];
             auto textCoords = windowPos + ScreenCoordsXY{ backgroundWidget.midX(), backgroundWidget.top + kPadding };
-            auto textWidth = WW - 20;
+            auto textWidth = kWindowSize.width - 20;
             TextPaint tp{ colours[1], TextAlignment::CENTRE };
 
             // Draw credits
@@ -288,6 +289,6 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* AboutOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<AboutWindow>(WindowClass::About, { WW, WH }, WF_CENTRE_SCREEN);
+        return windowMgr->FocusOrCreate<AboutWindow>(WindowClass::About, kWindowSize, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows

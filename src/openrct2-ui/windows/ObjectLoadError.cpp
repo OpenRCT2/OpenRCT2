@@ -38,7 +38,7 @@ namespace OpenRCT2::Ui::Windows
     class ObjectDownloader
     {
     private:
-        static constexpr auto OPENRCT2_API_LEGACY_OBJECT_URL = "https://api.openrct2.io/objects/legacy/";
+        static constexpr auto kOpenRCT2ApiLegacyObjectURL = "https://api.openrct2.io/objects/legacy/";
 
         struct DownloadStatusInfo
         {
@@ -217,7 +217,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 Http::Request req;
                 req.method = Http::Method::GET;
-                req.url = OPENRCT2_API_LEGACY_OBJECT_URL + name;
+                req.url = kOpenRCT2ApiLegacyObjectURL + name;
                 Http::DoAsync(req, [this, entry, name](Http::Response response) {
                     if (response.status == Http::Status::Ok)
                     {
@@ -271,22 +271,21 @@ namespace OpenRCT2::Ui::Windows
         WIDX_DOWNLOAD_ALL
     };
 
-    static constexpr StringId WINDOW_TITLE = STR_OBJECT_LOAD_ERROR_TITLE;
-    static constexpr int32_t WW = 450;
-    static constexpr int32_t WH = 400;
-    static constexpr int32_t WW_LESS_PADDING = WW - 5;
-    constexpr int32_t NAME_COL_LEFT = 4;
-    constexpr int32_t SOURCE_COL_LEFT = (WW_LESS_PADDING / 4) + 1;
-    constexpr int32_t TYPE_COL_LEFT = 5 * WW_LESS_PADDING / 8 + 1;
+    static constexpr StringId kWindowTitle = STR_OBJECT_LOAD_ERROR_TITLE;
+    static constexpr ScreenSize kWindowSize = { 450, 400 };
+    static constexpr int32_t kWindowWidthLessPadding = kWindowSize.width - 5;
+    constexpr int32_t kNameColLeft = 4;
+    constexpr int32_t kSourceColLeft = (kWindowWidthLessPadding / 4) + 1;
+    constexpr int32_t kTypeColLeft = 5 * kWindowWidthLessPadding / 8 + 1;
 
     // clang-format off
     static constexpr auto window_object_load_error_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
-        makeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WidgetType::tableHeader, WindowColour::primary, STR_OBJECT_NAME                         ), // 'Object name' header
-        makeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WidgetType::tableHeader, WindowColour::primary, STR_OBJECT_SOURCE                       ), // 'Object source' header
-        makeWidget({  TYPE_COL_LEFT,  57}, {166,  14}, WidgetType::tableHeader, WindowColour::primary, STR_OBJECT_TYPE                         ), // 'Object type' header
-        makeWidget({  NAME_COL_LEFT,  70}, {442, 298}, WidgetType::scroll,      WindowColour::primary, SCROLL_VERTICAL                         ), // Scrollable list area
-        makeWidget({  NAME_COL_LEFT, 377}, {145,  14}, WidgetType::button,      WindowColour::primary, STR_COPY_SELECTED, STR_COPY_SELECTED_TIP), // Copy selected button
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({  kNameColLeft,  57}, {108,  14}, WidgetType::tableHeader, WindowColour::primary, STR_OBJECT_NAME                         ), // 'Object name' header
+        makeWidget({kSourceColLeft,  57}, {166,  14}, WidgetType::tableHeader, WindowColour::primary, STR_OBJECT_SOURCE                       ), // 'Object source' header
+        makeWidget({  kTypeColLeft,  57}, {166,  14}, WidgetType::tableHeader, WindowColour::primary, STR_OBJECT_TYPE                         ), // 'Object type' header
+        makeWidget({  kNameColLeft,  70}, {442, 298}, WidgetType::scroll,      WindowColour::primary, SCROLL_VERTICAL                         ), // Scrollable list area
+        makeWidget({  kNameColLeft, 377}, {145,  14}, WidgetType::button,      WindowColour::primary, STR_COPY_SELECTED, STR_COPY_SELECTED_TIP), // Copy selected button
         makeWidget({            152, 377}, {145,  14}, WidgetType::button,      WindowColour::primary, STR_COPY_ALL,      STR_COPY_ALL_TIP     )  // Copy all button
     #ifndef DISABLE_HTTP
       , makeWidget({            300, 377}, {146,  14}, WidgetType::button,      WindowColour::primary, STR_DOWNLOAD_ALL,  STR_DOWNLOAD_ALL_TIP )  // Download all button
@@ -499,13 +498,13 @@ namespace OpenRCT2::Ui::Windows
             // Draw explanatory message
             auto ft = Formatter();
             ft.Add<StringId>(STR_OBJECT_ERROR_WINDOW_EXPLANATION);
-            DrawTextWrapped(rt, screenPos + ScreenCoordsXY{ 0, 4 }, WW - 10, STR_BLACK_STRING, ft);
+            DrawTextWrapped(rt, screenPos + ScreenCoordsXY{ 0, 4 }, kWindowSize.width - 10, STR_BLACK_STRING, ft);
 
             // Draw file name
             ft = Formatter();
             ft.Add<StringId>(STR_OBJECT_ERROR_WINDOW_FILE);
             ft.Add<utf8*>(_filePath.c_str());
-            DrawTextEllipsised(rt, screenPos + ScreenCoordsXY{ 0, 29 }, WW - 5, STR_BLACK_STRING, ft);
+            DrawTextEllipsised(rt, screenPos + ScreenCoordsXY{ 0, 29 }, kWindowSize.width - 5, STR_BLACK_STRING, ft);
         }
 
         void OnScrollDraw(const int32_t scrollIndex, RenderTarget& rt) override
@@ -537,7 +536,7 @@ namespace OpenRCT2::Ui::Windows
                     GfxFillRect(rt, screenRect, ColourMapA[colours[1].colour].light);
 
                 // Draw the actual object entry's name...
-                screenCoords.x = NAME_COL_LEFT - 3;
+                screenCoords.x = kNameColLeft - 3;
 
                 const auto& entry = _invalidEntries[i];
 
@@ -550,12 +549,12 @@ namespace OpenRCT2::Ui::Windows
                 {
                     // ... source game ...
                     const auto sourceStringId = ObjectManagerGetSourceGameString(entry.Entry.GetSourceGame());
-                    DrawTextBasic(rt, { SOURCE_COL_LEFT - 3, screenCoords.y }, sourceStringId, {}, { COLOUR_DARK_GREEN });
+                    DrawTextBasic(rt, { kSourceColLeft - 3, screenCoords.y }, sourceStringId, {}, { COLOUR_DARK_GREEN });
                 }
 
                 // ... and type
                 const auto type = GetStringFromObjectType(entry.GetType());
-                DrawTextBasic(rt, { TYPE_COL_LEFT - 3, screenCoords.y }, type, {}, { COLOUR_DARK_GREEN });
+                DrawTextBasic(rt, { kTypeColLeft - 3, screenCoords.y }, type, {}, { COLOUR_DARK_GREEN });
             }
         }
 
@@ -578,7 +577,7 @@ namespace OpenRCT2::Ui::Windows
         auto* window = windowMgr->BringToFrontByClass(WindowClass::ObjectLoadError);
         if (window == nullptr)
         {
-            window = windowMgr->Create<ObjectLoadErrorWindow>(WindowClass::ObjectLoadError, { WW, WH }, 0);
+            window = windowMgr->Create<ObjectLoadErrorWindow>(WindowClass::ObjectLoadError, kWindowSize, 0);
         }
 
         static_cast<ObjectLoadErrorWindow*>(window)->Initialise(path, numMissingObjects, missingObjects);

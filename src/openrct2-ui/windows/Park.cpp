@@ -34,8 +34,8 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_STRINGID;
-    static constexpr int32_t WH = 224;
+    static constexpr StringId kWindowTitle = STR_STRINGID;
+    static constexpr int32_t kWindowHeight = 224;
 
     static constexpr ScreenCoordsXY kGraphTopLeftPadding{ 45, 20 };
     static constexpr ScreenCoordsXY kGraphBottomRightPadding{ 25, 10 };
@@ -89,7 +89,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto makeParkWidgets = [](int16_t width) {
         return makeWidgets(
-            makeWindowShim(WINDOW_TITLE, { width, WH }),
+            makeWindowShim(kWindowTitle, { width, kWindowHeight }),
             makeWidget({ 0, 43 }, { width, 131 }, WidgetType::resize, WindowColour::secondary),
             makeTab({ 3, 17 }, STR_PARK_ENTRANCE_TAB_TIP),
             makeTab({ 34, 17 }, STR_PARK_RATING_TAB_TIP),

@@ -251,13 +251,12 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static constexpr StringId WINDOW_TITLE = STR_OPTIONS_TITLE;
-    static constexpr int32_t WW = 310;
-    static constexpr int32_t WH = 332;
+    static constexpr StringId kWindowTitle = STR_OPTIONS_TITLE;
+    static constexpr ScreenSize kWindowSize = { 310, 332 };
 
     static constexpr auto kMainOptionsWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
-        makeWidget({ 0, 43 }, { WW, 289 }, WidgetType::resize, WindowColour::secondary),
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({ 0, 43 }, { kWindowSize.width, 289 }, WidgetType::resize, WindowColour::secondary),
         makeTab({ 3, 17 }, STR_OPTIONS_DISPLAY_TIP),
         makeTab({ 34, 17 }, STR_OPTIONS_RENDERING_TIP),
         makeTab({ 65, 17 }, STR_OPTIONS_CULTURE_TIP),
@@ -675,7 +674,7 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_OPTIONS_PAGE_MISC:
                 case WINDOW_OPTIONS_PAGE_ADVANCED:
                 default:
-                    return { WW, WH };
+                    return kWindowSize;
             }
         }
 
@@ -2430,6 +2429,6 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* OptionsOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<OptionsWindow>(WindowClass::Options, { WW, WH }, WF_CENTRE_SCREEN);
+        return windowMgr->FocusOrCreate<OptionsWindow>(WindowClass::Options, kWindowSize, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows

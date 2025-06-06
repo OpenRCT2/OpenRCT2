@@ -31,9 +31,8 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_SIGN;
-    static constexpr int32_t WW = 113;
-    static constexpr int32_t WH = 96;
+    static constexpr StringId kWindowTitle = STR_SIGN;
+    static constexpr ScreenSize kWindowSize = { 113, 96 };
 
     enum WindowSignWidgetIdx
     {
@@ -50,12 +49,12 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     // 0x9AEE00
     static constexpr auto _signWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({      3,      17}, {85, 60}, WidgetType::viewport,  WindowColour::secondary                                                        ), // Viewport
-        makeWidget({WW - 25,      19}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_RENAME),   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
-        makeWidget({WW - 25,      67}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_DEMOLISH), STR_DEMOLISH_SIGN_TIP          ), // demolish button
-        makeWidget({      5, WH - 16}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, kWidgetContentEmpty,   STR_SELECT_MAIN_SIGN_COLOUR_TIP), // Main colour
-        makeWidget({     17, WH - 16}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, kWidgetContentEmpty,   STR_SELECT_TEXT_COLOUR_TIP     )  // Text colour
+        makeWidget({kWindowSize.width - 25,      19}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_RENAME),   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
+        makeWidget({kWindowSize.width - 25,      67}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_DEMOLISH), STR_DEMOLISH_SIGN_TIP          ), // demolish button
+        makeWidget({      5, kWindowSize.height - 16}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, kWidgetContentEmpty,   STR_SELECT_MAIN_SIGN_COLOUR_TIP), // Main colour
+        makeWidget({     17, kWindowSize.height - 16}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, kWidgetContentEmpty,   STR_SELECT_TEXT_COLOUR_TIP     )  // Text colour
     );
     // clang-format on
 
@@ -336,7 +335,7 @@ namespace OpenRCT2::Ui::Windows
         if (w != nullptr)
             return w;
 
-        w = windowMgr->Create<SignWindow>(WindowClass::Banner, { WW, WH }, 0);
+        w = windowMgr->Create<SignWindow>(WindowClass::Banner, kWindowSize, 0);
 
         if (w == nullptr)
             return nullptr;
@@ -360,7 +359,7 @@ namespace OpenRCT2::Ui::Windows
         if (w != nullptr)
             return w;
 
-        w = windowMgr->Create<SignWindow>(WindowClass::Banner, { WW, WH }, 0);
+        w = windowMgr->Create<SignWindow>(WindowClass::Banner, kWindowSize, 0);
 
         if (w == nullptr)
             return nullptr;

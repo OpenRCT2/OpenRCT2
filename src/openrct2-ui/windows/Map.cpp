@@ -77,9 +77,8 @@ namespace OpenRCT2::Ui::Windows
         return gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode;
     }
 
-    static constexpr StringId WINDOW_TITLE = STR_MAP_LABEL;
-    static constexpr int32_t WH = 259;
-    static constexpr int32_t WW = 245;
+    static constexpr StringId kWindowTitle = STR_MAP_LABEL;
+    static constexpr ScreenSize kWindowSize = { 245, 259 };
 
     static constexpr uint16_t kReservedHSpace = 4;
     static constexpr uint16_t kReservedTopSpace = 46;
@@ -132,7 +131,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_map_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget        ({  0,  43}, {245, 215}, WidgetType::resize,    WindowColour::secondary                                                                ),
         makeRemapWidget   ({  3,  17}, { 31,  27}, WidgetType::colourBtn, WindowColour::secondary, SPR_TAB,                      STR_SHOW_PEOPLE_ON_MAP_TIP      ),
         makeRemapWidget   ({ 34,  17}, { 31,  27}, WidgetType::colourBtn, WindowColour::secondary, SPR_TAB,                      STR_SHOW_RIDES_STALLS_ON_MAP_TIP),
@@ -1210,15 +1209,15 @@ namespace OpenRCT2::Ui::Windows
 
         void ResetMaxWindowDimensions()
         {
-            auto newMaxWidth = std::clamp(getMiniMapWidth() + GetReservedRightSpace(), WW, ContextGetWidth());
+            auto newMaxWidth = std::clamp(getMiniMapWidth() + GetReservedRightSpace(), kWindowSize.width, ContextGetWidth());
             auto newMaxHeight = std::clamp(
-                getMiniMapWidth() + kReservedTopSpace + GetReservedBottomSpace(), WH, ContextGetHeight() - 68);
+                getMiniMapWidth() + kReservedTopSpace + GetReservedBottomSpace(), kWindowSize.height, ContextGetHeight() - 68);
 
             auto scrollbarSize = getMiniMapWidth() + GetReservedRightSpace() > ContextGetWidth() ? kScrollBarWidth : 2;
             newMaxWidth += scrollbarSize;
             newMaxHeight += scrollbarSize;
 
-            WindowSetResize(*this, { WW, WH }, { newMaxWidth, newMaxHeight });
+            WindowSetResize(*this, kWindowSize, { newMaxWidth, newMaxHeight });
         }
 
         void ResizeMiniMap()
@@ -1238,7 +1237,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             textOffset += _firstColumnWidth + 4;
-            min_width = WW;
+            min_width = kWindowSize.width;
             for (uint32_t i = 4; i < std::size(MapLabels); i++)
             {
                 const auto* labelStr = LanguageGetString(MapLabels[i]);
@@ -1255,7 +1254,7 @@ namespace OpenRCT2::Ui::Windows
         try
         {
             auto* windowMgr = GetWindowManager();
-            auto* w = windowMgr->FocusOrCreate<MapWindow>(WindowClass::Map, { 245, 259 }, WF_10);
+            auto* w = windowMgr->FocusOrCreate<MapWindow>(WindowClass::Map, kWindowSize, WF_10);
             w->selected_tab = 0;
             w->list_information_type = 0;
             return w;

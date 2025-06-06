@@ -35,9 +35,8 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region MEASUREMENTS
 
-    static constexpr StringId WINDOW_TITLE = STR_VIEWPORT_NO;
-    static constexpr int32_t WW = 200;
-    static constexpr int32_t WH = 200;
+    static constexpr StringId kWindowTitle = STR_VIEWPORT_NO;
+    static constexpr ScreenSize kWindowSize = { 200, 200 };
 
     static constexpr ScreenSize VIEWPORT_BUTTON = { 24, 24 };
 
@@ -45,13 +44,13 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _viewportWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
-        makeWidget({      0, 14}, { WW - 1, WH - 1}, WidgetType::resize,   WindowColour::secondary                                         ), // resize
-        makeWidget({      3, 17}, {WW - 26, WH - 3}, WidgetType::viewport, WindowColour::primary                                           ), // viewport
-        makeWidget({WW - 25, 17}, VIEWPORT_BUTTON,   WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_G2_ZOOM_IN),  STR_ZOOM_IN_TIP       ), // zoom in
-        makeWidget({WW - 25, 41}, VIEWPORT_BUTTON,   WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_G2_ZOOM_OUT), STR_ZOOM_OUT_TIP      ), // zoom out
-        makeWidget({WW - 25, 65}, VIEWPORT_BUTTON,   WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_LOCATE),      STR_LOCATE_SUBJECT_TIP), // locate
-        makeWidget({WW - 25, 89}, VIEWPORT_BUTTON,   WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_ROTATE_ARROW),STR_LOCATE_SUBJECT_TIP)  // rotate
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({      0, 14}, { kWindowSize.width - 1, kWindowSize.height - 1}, WidgetType::resize,   WindowColour::secondary                                         ), // resize
+        makeWidget({      3, 17}, {kWindowSize.width - 26, kWindowSize.height - 3}, WidgetType::viewport, WindowColour::primary                                           ), // viewport
+        makeWidget({kWindowSize.width - 25, 17}, VIEWPORT_BUTTON,   WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_G2_ZOOM_IN),  STR_ZOOM_IN_TIP       ), // zoom in
+        makeWidget({kWindowSize.width - 25, 41}, VIEWPORT_BUTTON,   WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_G2_ZOOM_OUT), STR_ZOOM_OUT_TIP      ), // zoom out
+        makeWidget({kWindowSize.width - 25, 65}, VIEWPORT_BUTTON,   WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_LOCATE),      STR_LOCATE_SUBJECT_TIP), // locate
+        makeWidget({kWindowSize.width - 25, 89}, VIEWPORT_BUTTON,   WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_ROTATE_ARROW),STR_LOCATE_SUBJECT_TIP)  // rotate
     );
     // clang-format on
 
@@ -97,7 +96,7 @@ namespace OpenRCT2::Ui::Windows
 
             viewport->flags |= VIEWPORT_FLAG_SOUND_ON | VIEWPORT_FLAG_INDEPENDENT_ROTATION;
 
-            WindowSetResize(*this, { WW, WH }, { (ContextGetWidth() * 4) / 5, (ContextGetHeight() * 4) / 5 });
+            WindowSetResize(*this, kWindowSize, { (ContextGetWidth() * 4) / 5, (ContextGetHeight() * 4) / 5 });
         }
 
         void OnUpdate() override
@@ -175,8 +174,8 @@ namespace OpenRCT2::Ui::Windows
             max_width = (screenWidth * 4) / 5;
             max_height = (screenHeight * 4) / 5;
 
-            min_width = WW;
-            min_height = WH;
+            min_width = kWindowSize.width;
+            min_height = kWindowSize.height;
 
             WindowSetResize(*this, { min_width, min_height }, { max_width, max_height });
         }
@@ -216,6 +215,6 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ViewportOpen()
     {
-        return GetWindowManager()->Create<ViewportWindow>(WindowClass::Viewport, { WW, WH }, WF_RESIZABLE);
+        return GetWindowManager()->Create<ViewportWindow>(WindowClass::Viewport, kWindowSize, WF_RESIZABLE);
     }
 } // namespace OpenRCT2::Ui::Windows
