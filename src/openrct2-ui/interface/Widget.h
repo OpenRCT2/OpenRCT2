@@ -210,7 +210,7 @@ namespace OpenRCT2::Ui
         return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_NUMERIC_UP, tooltip);
     }
 
-    static constexpr std::array<Widget, 3> MakeSpinnerWidgets(
+    constexpr std::array<Widget, 3> MakeSpinnerWidgets(
         const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour,
         uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
     {
@@ -239,7 +239,7 @@ namespace OpenRCT2::Ui
         return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_DROPDOWN_GLYPH, tooltip);
     }
 
-    static constexpr std::array<Widget, 2> MakeDropdownWidgets(
+    constexpr std::array<Widget, 2> MakeDropdownWidgets(
         const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour, uint32_t content,
         StringId tooltip = kStringIdNone)
     {
