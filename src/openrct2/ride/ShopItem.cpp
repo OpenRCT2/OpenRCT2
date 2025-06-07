@@ -150,6 +150,31 @@ bool ShopItemHasCommonPrice(const ShopItem shopItem)
     return (getGameState().samePriceThroughoutPark & EnumToFlag(shopItem)) != 0;
 }
 
+std::optional<std::pair<colour_t, bool>> ShopItemGetCommonColour(Ride* forRide, const ShopItem shopItem)
+{
+    for (const auto& ride : GetRideManager())
+    {
+        if (&ride == forRide)
+            continue;
+
+        auto optOtherShopItem = ride.getRecolourableShopItem();
+        if (optOtherShopItem.has_value() && optOtherShopItem.value() == shopItem)
+        {
+            auto colour = ride.trackColours[0].main;
+            auto rndFlag = ride.hasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS);
+            return std::optional(std::make_pair(colour, rndFlag));
+        }
+    }
+
+    return std::nullopt;
+}
+
+bool ShopItemHasCommonColour(const ShopItem shopItem)
+{
+    return GetShopItemDescriptor(shopItem).IsRecolourable()
+        && (getGameState().sameColourThroughoutPark & EnumToFlag(shopItem)) != 0;
+}
+
 bool ShopItemDescriptor::IsFood() const
 {
     return HasFlag(SHOP_ITEM_FLAG_IS_FOOD);

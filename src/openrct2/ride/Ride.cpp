@@ -5819,21 +5819,19 @@ void Ride::setLifecycleFlag(uint32_t flag, bool on)
         lifecycleFlags &= ~flag;
 }
 
-bool Ride::hasRecolourableShopItems() const
+std::optional<ShopItem> Ride::getRecolourableShopItem() const
 {
     const auto rideEntry = getRideEntry();
     if (rideEntry == nullptr)
-        return false;
+        return std::nullopt;
 
-    for (size_t itemIndex = 0; itemIndex < std::size(rideEntry->shop_item); itemIndex++)
+    for (auto shopItem : rideEntry->shop_item)
     {
-        const ShopItem currentItem = rideEntry->shop_item[itemIndex];
-        if (currentItem != ShopItem::None && GetShopItemDescriptor(currentItem).IsRecolourable())
-        {
-            return true;
-        }
+        if (shopItem != ShopItem::None && GetShopItemDescriptor(shopItem).IsRecolourable())
+            return std::optional(shopItem);
     }
-    return false;
+
+    return std::nullopt;
 }
 
 bool Ride::hasStation() const
