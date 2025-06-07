@@ -1,3 +1,5 @@
+0.4.24 (in development)
+
 0.4.23 (2025-06-07)
 ------------------------------------------------------------------------
 - Feature: [#22476] “Time since last inspection” statistic is available in the rides window.
