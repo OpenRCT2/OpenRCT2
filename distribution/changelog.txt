@@ -1,3 +1,50 @@
+0.4.23 (in development)
+------------------------------------------------------------------------
+- Feature: [#22476] “Time since last inspection” statistic is available in the rides window.
+- Feature: [#24313] [Plugin] Add API for setting a ride vehicle’s sprite to a smoke plume.
+- Improved: [#24345] Vehicle fallback sprites are less likely to glitch with the track.
+- Improved: [#24362, #24491] The Windows installer is now translated as well.
+- Improved: [#24364] Improve the fallback vehicle sprites for Zero G Rolls, and allow small ones to be built without cheats if the fallbacks are available.
+- Improved: [#24368] Clicking the in-game update notication now leads to a more user-friendly download page.
+- Improved: [#24400] Ride list in preservation window is now sorted alphabetically.
+- Improved: [#24409] Steam installs of RCT Classic are now detected automatically.
+- Improved: [#24413] Better performance when moving the viewport on Windows and Linux platforms.
+- Improved: [#24417] Improve the fallback vehicle sprites for Dive Loops.
+- Improved: [#24433] The ride, new ride, scenery, path, viewport, park and tool windows no longer redraw every frame if they have not changed.
+- Improved: [#24467] Apply tweening only to on-screen entities when not zoomed out for better performance with uncapped FPS.
+- Improved: [#24474] More efficiently search viewports when playing Audio.
+- Improved: [#24479] More descriptive error messages for `set` commands in the in-game console.
+- Improved: [#24563] The Linux .desktop file will now request the more powerful dedicated GPU on hybrid graphics systems.
+- Change: [#24342, #24484] g2.dat is now split into g2.dat, fonts.dat and tracks.dat.
+- Change: [#24362] The Windows installer now prevents installing to the same folder as RollerCoaster Tycoon 2 or Classic.
+- Change: [#24418] Small & Large Zero G Rolls can now be built on the LIM Launched RC without cheats if vehicle sprites are available.
+- Fix: [#5269] Font bugs when using the Russian release of RCT2 as the base game.
+- Fix: [#11071, #22958] The virtual floor does not always draw correctly.
+- Fix: [#18220] Some custom RCT1 scenarios are detected as competition DLC scenarios.
+- Fix: [#20095] UCES Halloween - Cemetery Ridge scenario has mismatched entrance/exit on haunted house.
+- Fix: [#20158] Custom animated scenery .DATs with frame offsets draw a random sprite at the end of their animation.
+- Fix: [#22628] Potential crash while rebuilding the scenario index.
+- Fix: [#23289] Dodgems and Flying Saucer cars can spawn on top of each other when the ride is opened.
+- Fix: [#24332] Banner font renders differently when using RCT Classic as the base game.
+- Fix: [#24343] Large gently sloped turns are buildable without cheats when the vehicles do not have sprites for them.
+- Fix: [#24346] Possible crash during line drawing in OpenGL mode.
+- Fix: [#24353] ‘Show dirty visuals’ is off by one pixel and does not work correctly with higher framerates.
+- Fix: [#24362] When upgrading from an older version on Windows, old versions of official objects are not always removed.  
+- Fix: [#24366] Zero G Rolls have some incorrect vehicle yaw rotations.
+- Fix: [#24371] Fix divide by zero in the scenery window when there is no scenery.
+- Fix: [#24378] Prevent ride and stall statistics from overflowing.
+- Fix: [#24388] Shortcut keys are not localised based on the user’s language settings.
+- Fix: [#24403] Park fences draw underneath and through opaque water.
+- Fix: [#24406] The network status window uses an undefined string for its title.
+- Fix: [#24444] In the object load error window, the guide text overlaps when the title bar is enlarged.
+- Fix: [#24446] [Plugin] Fix regression breaking the track iterator on specific track pieces.
+- Fix: [#24447] Shortcut list is not refreshed when changing language.
+- Fix: [#24448] Shortcuts involving the Caps Lock key are wrongly localised to NumPad Dot.
+- Fix: [#24464] Window and viewport visibility is not calculated correctly causing minor performance issues.
+- Fix: [#24488] Objects are not always redrawn immediately when they are reloaded from the Object Selection window.
+- Fix: [#24544] RCT1 Maze designs with wooden walls are not imported correctly.
+- Fix: [#24567] Long flat-to-steep wooden mine support sprites don't connect to flat supports exactly.
+
 0.4.22 (2025-05-04)
 ------------------------------------------------------------------------
 - Feature: [#24206] [Plugin] Add APIs for breaking down rides, reading the current breakdown, and for fixing broken down rides.

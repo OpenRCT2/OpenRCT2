@@ -13,7 +13,7 @@
 #include <cstdint>
 #include <string>
 
-struct DrawPixelInfo;
+struct RenderTarget;
 struct TextInputSession;
 
 enum class FormatToken : uint8_t;

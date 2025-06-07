@@ -92,7 +92,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_PAGE_START,
 
         // Display
-        WIDX_HARDWARE_GROUP = WIDX_PAGE_START,
+        WIDX_WINDOW_GROUP = WIDX_PAGE_START,
         WIDX_FULLSCREEN_LABEL,
         WIDX_FULLSCREEN,
         WIDX_FULLSCREEN_DROPDOWN,
@@ -103,19 +103,24 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SCALE,
         WIDX_SCALE_UP,
         WIDX_SCALE_DOWN,
+
+        WIDX_RENDERING_GROUP,
         WIDX_DRAWING_ENGINE_LABEL,
         WIDX_DRAWING_ENGINE,
         WIDX_DRAWING_ENGINE_DROPDOWN,
-        WIDX_STEAM_OVERLAY_PAUSE,
-        WIDX_UNCAP_FPS_CHECKBOX,
+        WIDX_FRAME_RATE_LIMIT_LABEL,
+        WIDX_FRAME_RATE_LIMIT,
+        WIDX_FRAME_RATE_LIMIT_DROPDOWN,
         WIDX_SHOW_FPS_CHECKBOX,
         WIDX_MULTITHREADING_CHECKBOX,
-        WIDX_USE_VSYNC_CHECKBOX,
+
+        WIDX_BEHAVIOUR_GROUP,
+        WIDX_STEAM_OVERLAY_PAUSE,
         WIDX_MINIMIZE_FOCUS_LOSS,
         WIDX_DISABLE_SCREENSAVER_LOCK,
 
-        // Rendering
-        WIDX_RENDERING_GROUP = WIDX_PAGE_START,
+        // Map rendering
+        WIDX_MAP_RENDERING_GROUP = WIDX_PAGE_START,
         WIDX_TILE_SMOOTHING_CHECKBOX,
         WIDX_GRIDLINES_CHECKBOX,
         WIDX_UPPER_CASE_BANNERS_CHECKBOX,
@@ -261,7 +266,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr Widget window_options_display_widgets[] = {
         MAIN_OPTIONS_WIDGETS,
-        MakeWidget        ({  5,  53}, {300, 170}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_HARDWARE_GROUP                                                              ), // Hardware group
+        MakeWidget        ({  5,  53}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_WINDOW                                                                ), // Window group
         MakeWidget        ({ 10,  67}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_FULLSCREEN_MODE,                   STR_FULLSCREEN_MODE_TIP                  ), // Fullscreen
         MakeWidget        ({155,  68}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ),
         MakeWidget        ({288,  69}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_FULLSCREEN_MODE_TIP                  ),
@@ -269,17 +274,22 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({155,  83}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_ARG_16_RESOLUTION_X_BY_Y                                                    ),
         MakeWidget        ({288,  84}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DISPLAY_RESOLUTION_TIP               ),
         MakeWidget        ({ 10,  98}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_UI_SCALING_DESC,                   STR_WINDOW_SCALE_TIP                     ), // Scale
-        MakeSpinnerWidgets({155,  98}, {145,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                              STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
-        MakeWidget        ({ 10, 113}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DRAWING_ENGINE,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine
-        MakeWidget        ({155, 113}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ), // Drawing engine
-        MakeWidget        ({288, 114}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DRAWING_ENGINE_TIP                   ),
-        MakeWidget        ({ 11, 144}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_STEAM_OVERLAY_PAUSE,               STR_STEAM_OVERLAY_PAUSE_TIP              ), // Pause on steam overlay
-        MakeWidget        ({ 11, 161}, {143,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_UNCAP_FPS,                         STR_UNCAP_FPS_TIP                        ), // Uncap fps
-        MakeWidget        ({155, 161}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
-        MakeWidget        ({155, 176}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
-        MakeWidget        ({ 11, 176}, {143,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_USE_VSYNC,                         STR_USE_VSYNC_TIP                        ), // Use vsync
-        MakeWidget        ({ 11, 191}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
-        MakeWidget        ({ 11, 206}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              ), // Disable screensaver
+        MakeSpinnerWidgets({155,  98}, {145,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                         STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
+
+        MakeWidget        ({  5, 121}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_RENDERING                                                             ), // Rendering group
+        MakeWidget        ({ 10, 135}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DRAWING_ENGINE,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (label)
+        MakeWidget        ({155, 135}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ), // Drawing engine (dropdown label)
+        MakeWidget        ({288, 136}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (chevron)
+        MakeWidget        ({ 10, 150}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_FRAME_RATE_LIMIT_LABEL                                                      ), // Frame rate limit (label)
+        MakeWidget        ({155, 150}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ), // Frame rate limit (dropdown label)
+        MakeWidget        ({288, 151}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                              ), // Frame rate limit (chevron)
+        MakeWidget        ({ 10, 166}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
+        MakeWidget        ({155, 166}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
+
+        MakeWidget        ({  5, 188}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_BEHAVIOUR                                                             ), // Behaviour group
+        MakeWidget        ({ 11, 203}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_STEAM_OVERLAY_PAUSE,               STR_STEAM_OVERLAY_PAUSE_TIP              ), // Pause on steam overlay
+        MakeWidget        ({ 11, 218}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
+        MakeWidget        ({ 11, 233}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              ), // Disable screensaver
     };
 
     constexpr int32_t kFrameRenderingStart = 53;
@@ -421,7 +431,7 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({ 10, kRCT1Start + 16}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path label
         MakeWidget        ({ 10, kRCT1Start + 30}, {290, 14}, WindowWidgetType::Label,        WindowColour::Secondary, kStringIdNone,                             STR_STRING_TOOLTIP                           ), // RCT 1 path path
         MakeWidget        ({239, kRCT1Start + 15}, { 60, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_BROWSE                                                                              ), // RCT 1 path browse
-        MakeWidget        ({249, kRCT1Start + 15}, { 50, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_SHORTCUT_CLEAR,                        STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear
+        MakeWidget        ({249, kRCT1Start + 15}, { 50, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_CLEAR_BUTTON,                          STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear
 
         MakeWidget        ({  5, kSavingStart +  0}, {300, 80}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_SAVING                                                                        ),
         MakeWidget        ({ 10, kSavingStart + 16}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_SAVE_PLUGIN_DATA,                      STR_SAVE_PLUGIN_DATA_TIP                     ), // Export plug-in objects with saved games
@@ -607,18 +617,18 @@ namespace OpenRCT2::Ui::Windows
             CommonPrepareDrawAfter();
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             switch (page)
             {
                 case WINDOW_OPTIONS_PAGE_DISPLAY:
-                    DisplayDraw(dpi);
+                    DisplayDraw(rt);
                     break;
                 case WINDOW_OPTIONS_PAGE_ADVANCED:
-                    AdvancedDraw(dpi);
+                    AdvancedDraw(rt);
                     break;
                 default:
                     break;
@@ -697,7 +707,7 @@ namespace OpenRCT2::Ui::Windows
             SetPressedTab();
 
             disabled_widgets = 0;
-            auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
+            auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext().HasFilePicker();
             const bool advancedTabSelected = (WIDX_FIRST_TAB + page) == WIDX_TAB_ADVANCED;
             if (!hasFilePicker && advancedTabSelected)
             {
@@ -739,18 +749,6 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
-                case WIDX_UNCAP_FPS_CHECKBOX:
-                    Config::Get().general.UncapFPS ^= 1;
-                    DrawingEngineSetVSync(Config::Get().general.UseVSync);
-                    Config::Save();
-                    Invalidate();
-                    break;
-                case WIDX_USE_VSYNC_CHECKBOX:
-                    Config::Get().general.UseVSync ^= 1;
-                    DrawingEngineSetVSync(Config::Get().general.UseVSync);
-                    Config::Save();
-                    Invalidate();
-                    break;
                 case WIDX_SHOW_FPS_CHECKBOX:
                     Config::Get().general.ShowFPS ^= 1;
                     Config::Save();
@@ -788,7 +786,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_RESOLUTION_DROPDOWN:
                 {
-                    const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
+                    const auto& resolutions = OpenRCT2::GetContext()->GetUiContext().GetFullscreenResolutions();
 
                     int32_t selectedResolution = -1;
                     for (size_t i = 0; i < resolutions.size(); i++)
@@ -857,6 +855,27 @@ namespace OpenRCT2::Ui::Windows
                     ContextTriggerResize();
                     ContextUpdateCursorScale();
                     break;
+                case WIDX_FRAME_RATE_LIMIT_DROPDOWN:
+                {
+                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[0].Args = STR_FRAME_RATE_LIMIT_DEFAULT;
+                    gDropdownItems[1].Args = STR_FRAME_RATE_LIMIT_VSYNC;
+                    gDropdownItems[2].Args = STR_FRAME_RATE_LIMIT_UNRESTRICTED;
+
+                    ShowDropdown(widget, 3);
+
+                    auto& config = Config::Get().general;
+                    auto activeItem = 0;
+                    if (config.UncapFPS)
+                    {
+                        activeItem = config.UseVSync ? 1 : 2;
+                    }
+
+                    Dropdown::SetChecked(activeItem, true);
+                    break;
+                }
             }
         }
 
@@ -866,7 +885,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_RESOLUTION_DROPDOWN:
                 {
-                    const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
+                    const auto& resolutions = OpenRCT2::GetContext()->GetUiContext().GetFullscreenResolutions();
 
                     const Resolution& resolution = resolutions[dropdownIndex];
                     if (resolution.Width != Config::Get().general.FullscreenWidth
@@ -882,8 +901,8 @@ namespace OpenRCT2::Ui::Windows
                         Config::Save();
                         GfxInvalidateScreen();
                     }
+                    break;
                 }
-                break;
                 case WIDX_FULLSCREEN_DROPDOWN:
                     if (dropdownIndex != Config::Get().general.FullscreenMode)
                     {
@@ -905,6 +924,30 @@ namespace OpenRCT2::Ui::Windows
                         Invalidate();
                     }
                     break;
+                case WIDX_FRAME_RATE_LIMIT_DROPDOWN:
+                {
+                    auto& config = Config::Get().general;
+                    switch (dropdownIndex)
+                    {
+                        case 0: // vanilla
+                            config.UncapFPS = 0;
+                            config.UseVSync = 0;
+                            break;
+                        case 1: // vsync
+                            config.UncapFPS = 1;
+                            config.UseVSync = 1;
+                            break;
+                        case 2: // uncapped
+                            config.UncapFPS = 1;
+                            config.UseVSync = 0;
+                            break;
+                    }
+
+                    DrawingEngineSetVSync(config.UseVSync);
+                    Config::Save();
+                    Invalidate();
+                    break;
+                }
             }
         }
 
@@ -930,8 +973,6 @@ namespace OpenRCT2::Ui::Windows
                 disabled_widgets &= ~(1uLL << WIDX_RESOLUTION_LABEL);
             }
 
-            SetCheckboxValue(WIDX_UNCAP_FPS_CHECKBOX, Config::Get().general.UncapFPS);
-            SetCheckboxValue(WIDX_USE_VSYNC_CHECKBOX, Config::Get().general.UseVSync);
             SetCheckboxValue(WIDX_SHOW_FPS_CHECKBOX, Config::Get().general.ShowFPS);
             SetCheckboxValue(WIDX_MULTITHREADING_CHECKBOX, Config::Get().general.MultiThreading);
             SetCheckboxValue(WIDX_MINIMIZE_FOCUS_LOSS, Config::Get().general.MinimizeFullscreenFocusLoss);
@@ -941,14 +982,28 @@ namespace OpenRCT2::Ui::Windows
             // Dropdown captions for straightforward strings.
             widgets[WIDX_FULLSCREEN].text = FullscreenModeNames[Config::Get().general.FullscreenMode];
             widgets[WIDX_DRAWING_ENGINE].text = kDrawingEngineStringIds[EnumValue(Config::Get().general.DrawingEngine)];
+
+            static constexpr StringId kFrameRateLimitStringIds[] = {
+                STR_FRAME_RATE_LIMIT_DEFAULT,
+                STR_FRAME_RATE_LIMIT_VSYNC,
+                STR_FRAME_RATE_LIMIT_UNRESTRICTED,
+            };
+
+            auto& config = Config::Get().general;
+            auto activeItem = 0;
+            if (config.UncapFPS)
+            {
+                activeItem = config.UseVSync ? 1 : 2;
+            }
+            widgets[WIDX_FRAME_RATE_LIMIT].text = kFrameRateLimitStringIds[activeItem];
         }
 
-        void DisplayDraw(DrawPixelInfo& dpi)
+        void DisplayDraw(RenderTarget& rt)
         {
             auto ft = Formatter();
             ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.WindowScale * 100));
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_SCALE].left + 1, widgets[WIDX_SCALE].top + 1 },
+                rt, windowPos + ScreenCoordsXY{ widgets[WIDX_SCALE].left + 1, widgets[WIDX_SCALE].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA2DP32, ft, { colours[1] });
         }
 #pragma endregion
@@ -1137,7 +1192,7 @@ namespace OpenRCT2::Ui::Windows
                     constexpr auto numItems = EnumValue(CurrencyType::Count) + 1;
 
                     // All the currencies except custom currency
-                    size_t numOrdinaryCurrencies = EnumValue(CurrencyType::Count) - 1;
+                    constexpr size_t numOrdinaryCurrencies = EnumValue(CurrencyType::Count) - 1;
 
                     for (size_t i = 0; i < numOrdinaryCurrencies; i++)
                     {
@@ -1420,16 +1475,16 @@ namespace OpenRCT2::Ui::Windows
                     OpenRCT2::Audio::InitRideSounds(dropdownIndex);
                     if (dropdownIndex < OpenRCT2::Audio::GetDeviceCount())
                     {
-                        auto audioContext = GetContext()->GetAudioContext();
+                        auto& audioContext = GetContext()->GetAudioContext();
                         if (dropdownIndex == 0)
                         {
-                            audioContext->SetOutputDevice("");
+                            audioContext.SetOutputDevice("");
                             Config::Get().sound.Device = "";
                         }
                         else
                         {
                             const auto& deviceName = GetDeviceName(dropdownIndex);
-                            audioContext->SetOutputDevice(deviceName);
+                            audioContext.SetOutputDevice(deviceName);
                             Config::Get().sound.Device = deviceName;
                         }
                         Config::Save();
@@ -1981,7 +2036,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_PATH_TO_RCT1_BROWSE:
                 {
-                    auto rct1path = OpenRCT2::GetContext()->GetUiContext()->ShowDirectoryDialog(
+                    auto rct1path = OpenRCT2::GetContext()->GetUiContext().ShowDirectoryDialog(
                         LanguageGetString(STR_PATH_TO_RCT1_BROWSER));
                     if (!rct1path.empty())
                     {
@@ -2096,7 +2151,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WindowWidgetType::Button;
 
                 // Get 'Clear' button string width
-                auto clearLabel = LanguageGetString(STR_SHORTCUT_CLEAR);
+                auto clearLabel = LanguageGetString(STR_CLEAR_BUTTON);
                 auto clearLabelWidth = GfxGetStringWidth(clearLabel, FontStyle::Medium) + 12;
 
                 widgets[WIDX_PATH_TO_RCT1_CLEAR].right = widgets[WIDX_PAGE_BACKGROUND].right - 12;
@@ -2133,13 +2188,12 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_ASSET_PACKS].bottom = widgets[WIDX_GROUP_ADVANCED].bottom - 6;
         }
 
-        void AdvancedDraw(DrawPixelInfo& dpi)
+        void AdvancedDraw(RenderTarget& rt)
         {
             auto ft = Formatter();
             ft.Add<int32_t>(static_cast<int32_t>(Config::Get().general.AutosaveAmount));
             DrawTextBasic(
-                dpi,
-                windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
+                rt, windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
                 STR_WINDOW_COLOUR_2_COMMA32, ft, { colours[1] });
 
             // Format RCT1 path
@@ -2156,7 +2210,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
 
             auto screenCoords = windowPos + ScreenCoordsXY{ pathWidget.left + 1, pathWidget.top + padding };
-            DrawTextEllipsised(dpi, screenCoords, pathWidget.width(), STR_BLACK_STRING, ft);
+            DrawTextEllipsised(rt, screenCoords, pathWidget.width(), STR_BLACK_STRING, ft);
         }
 
         OpenRCT2String AdvancedTooltip(WidgetIndex widgetIndex, StringId fallback)
@@ -2211,19 +2265,19 @@ namespace OpenRCT2::Ui::Windows
                 Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& rt)
         {
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_DISPLAY, SPR_G2_MONITOR_TAB_START);
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_RENDERING, SPR_G2_TAB_TREE);
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_CULTURE, SPR_TAB_TIMER_0);
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_AUDIO, SPR_TAB_MUSIC_0);
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_INTERFACE, SPR_TAB_PAINT_0);
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_CONTROLS, SPR_G2_CONTROLS_TAB_START);
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_MISC, SPR_TAB_RIDE_0);
-            DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
+            DrawTabImage(rt, WINDOW_OPTIONS_PAGE_DISPLAY, SPR_G2_MONITOR_TAB_START);
+            DrawTabImage(rt, WINDOW_OPTIONS_PAGE_RENDERING, SPR_G2_TAB_TREE);
+            DrawTabImage(rt, WINDOW_OPTIONS_PAGE_CULTURE, SPR_TAB_TIMER_0);
+            DrawTabImage(rt, WINDOW_OPTIONS_PAGE_AUDIO, SPR_TAB_MUSIC_0);
+            DrawTabImage(rt, WINDOW_OPTIONS_PAGE_INTERFACE, SPR_TAB_PAINT_0);
+            DrawTabImage(rt, WINDOW_OPTIONS_PAGE_CONTROLS, SPR_G2_CONTROLS_TAB_START);
+            DrawTabImage(rt, WINDOW_OPTIONS_PAGE_MISC, SPR_TAB_RIDE_0);
+            DrawTabImage(rt, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t p, int32_t spriteIndex)
+        void DrawTabImage(RenderTarget& rt, int32_t p, int32_t spriteIndex)
         {
             WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
             Widget* widget = &widgets[widgetIndex];
@@ -2239,7 +2293,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Draw normal, enabled sprite.
-                GfxDrawSprite(dpi, ImageId(spriteIndex), screenCoords);
+                GfxDrawSprite(rt, ImageId(spriteIndex), screenCoords);
             }
             else
             {
@@ -2248,10 +2302,10 @@ namespace OpenRCT2::Ui::Windows
 
                 // Draw greyed out (light border bottom right shadow)
                 GfxDrawSpriteSolid(
-                    dpi, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[windowColour].lighter);
+                    rt, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[windowColour].lighter);
 
                 // Draw greyed out (dark)
-                GfxDrawSpriteSolid(dpi, ImageId(spriteIndex), screenCoords, ColourMapA[windowColour].mid_light);
+                GfxDrawSpriteSolid(rt, ImageId(spriteIndex), screenCoords, ColourMapA[windowColour].mid_light);
             }
         }
 
@@ -2280,8 +2334,8 @@ namespace OpenRCT2::Ui::Windows
 
         static bool IsRCT1TitleMusicAvailable()
         {
-            auto env = GetContext()->GetPlatformEnvironment();
-            auto rct1path = env->GetDirectoryPath(DirBase::rct1);
+            auto& env = GetContext()->GetPlatformEnvironment();
+            auto rct1path = env.GetDirectoryPath(DirBase::rct1);
             return !rct1path.empty();
         }
 

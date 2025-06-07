@@ -737,9 +737,9 @@ public:
 
     static ScreenCoordsXY GetAutoPositionForNewWindow(int32_t width, int32_t height)
     {
-        auto uiContext = GetContext()->GetUiContext();
-        auto screenWidth = uiContext->GetWidth();
-        auto screenHeight = uiContext->GetHeight();
+        auto& uiContext = GetContext()->GetUiContext();
+        auto screenWidth = uiContext.GetWidth();
+        auto screenHeight = uiContext.GetHeight();
 
         // Place window in an empty corner of the screen
         const ScreenCoordsXY cornerPositions[] = {
@@ -827,9 +827,9 @@ public:
 
     static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t height)
     {
-        auto uiContext = GetContext()->GetUiContext();
-        auto screenWidth = uiContext->GetWidth();
-        auto screenHeight = uiContext->GetHeight();
+        auto& uiContext = GetContext()->GetUiContext();
+        auto screenWidth = uiContext.GetWidth();
+        auto screenHeight = uiContext.GetHeight();
         return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(kTopToolbarHeight + 1, (screenHeight - height) / 2) };
     }
 
@@ -1321,14 +1321,22 @@ public:
                 for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
                 {
                     auto& w2 = *it;
+                    if (w2->flags & WF_DEAD)
+                    {
+                        continue;
+                    }
                     if (!(w2->flags & WF_STICK_TO_FRONT))
                     {
-                        itDestPos = it.base();
+                        // base() returns the next element in the list, so we need to decrement it.
+                        itDestPos = std::prev(it.base());
                         break;
                     }
                 }
 
-                g_window_list.splice(itDestPos, g_window_list, itSourcePos);
+                if (itSourcePos != itDestPos)
+                {
+                    std::iter_swap(itSourcePos, itDestPos);
+                }
                 w.Invalidate();
 
                 if (w.windowPos.x + w.width < 20)

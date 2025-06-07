@@ -8967,13 +8967,13 @@ static void MiniRCTrackBooster(
         case 0:
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_G2_MINI_RC_BOOSTER_NE_SW), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINI_RC_BOOSTER_NE_SW), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours.WithIndex(SPR_G2_MINI_RC_BOOSTER_NW_SE), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINI_RC_BOOSTER_NW_SE), { 0, 0, height },
                 { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }

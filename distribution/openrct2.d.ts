@@ -2923,6 +2923,11 @@ declare global {
         isReversed: boolean;
 
         /**
+         * Whether to draw the car sprite as a smoke plume.
+         */
+        isCrashed: boolean;
+
+        /**
          * The colour of the car.
          */
         colours: VehicleColour;

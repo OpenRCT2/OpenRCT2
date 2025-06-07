@@ -433,9 +433,6 @@ static void ride_ratings_update_state_3(RideRatingUpdateState& state)
     RideRatingsCalculate(state, *ride);
     RideRatingsCalculateValue(*ride);
 
-    auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByNumber(WindowClass::Ride, state.CurrentRide.ToUnderlying());
-
     state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
 
@@ -1049,7 +1046,11 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
     // Universl ratings adjustments
     RideRatingsApplyIntensityPenalty(ratings);
     RideRatingsApplyAdjustments(ride, ratings);
-    ride.ratings = ratings;
+    if (ride.ratings != ratings)
+    {
+        ride.ratings = ratings;
+        ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_RATINGS;
+    }
 
     ride.upkeepCost = RideComputeUpkeep(state, ride);
     ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;

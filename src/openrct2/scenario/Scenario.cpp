@@ -120,8 +120,8 @@ void ScenarioReset(GameState_t& gameState)
     }
 
     // Set the last saved game path
-    auto env = GetContext()->GetPlatformEnvironment();
-    auto savePath = env->GetDirectoryPath(DirBase::user, DirId::saves);
+    auto& env = GetContext()->GetPlatformEnvironment();
+    auto savePath = env.GetDirectoryPath(DirBase::user, DirId::saves);
     gScenarioSavePath = Path::Combine(savePath, gameState.park.Name + u8".park");
 
     gameState.currentExpenditure = 0;
@@ -240,7 +240,7 @@ static void ScenarioCheckEntranceFeeTooHigh()
             uint32_t packed_xy = (y << 16) | x;
             if (Config::Get().notifications.ParkWarnings)
             {
-                News::AddItemToQueue(News::ItemType::Blank, STR_ENTRANCE_FEE_TOO_HI, packed_xy, {});
+                News::AddItemToQueue(News::ItemType::blank, STR_ENTRANCE_FEE_TOO_HI, packed_xy, {});
             }
         }
     }
@@ -692,33 +692,33 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
         {
             if (Config::Get().notifications.ParkRatingWarnings)
             {
-                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0, {});
+                News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0, {});
             }
         }
         else if (gameState.scenarioParkRatingWarningDays == 8)
         {
             if (Config::Get().notifications.ParkRatingWarnings)
             {
-                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0, {});
+                News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0, {});
             }
         }
         else if (gameState.scenarioParkRatingWarningDays == 15)
         {
             if (Config::Get().notifications.ParkRatingWarnings)
             {
-                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0, {});
+                News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0, {});
             }
         }
         else if (gameState.scenarioParkRatingWarningDays == 22)
         {
             if (Config::Get().notifications.ParkRatingWarnings)
             {
-                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0, {});
+                News::AddItemToQueue(News::ItemType::graph, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0, {});
             }
         }
         else if (gameState.scenarioParkRatingWarningDays == 29)
         {
-            News::AddItemToQueue(News::ItemType::Graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
+            News::AddItemToQueue(News::ItemType::graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
             gameState.park.Flags &= ~PARK_FLAGS_PARK_OPEN;
             gameState.guestInitialHappiness = 50;
             return ObjectiveStatus::Failure;

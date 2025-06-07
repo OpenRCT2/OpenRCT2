@@ -95,8 +95,6 @@ namespace OpenRCT2::RCT2
 {
 #define DECRYPT_MONEY(money) (static_cast<money32>(Numerics::rol32((money) ^ 0xF4EC9621, 13)))
 
-    static std::mutex mtx;
-
     /**
      * Class to import RollerCoaster Tycoon 2 scenarios (*.SC6) and saved games (*.SV6).
      */
@@ -298,19 +296,14 @@ namespace OpenRCT2::RCT2
             {
                 auto& objManager = GetContext()->GetObjectManager();
 
-                // Ensure only one thread talks to the object manager at a time
-                std::lock_guard lock(mtx);
-
-                // Unload loaded scenario text object, if any.
-                if (auto* obj = objManager.GetLoadedObject<ScenarioTextObject>(0); obj != nullptr)
-                    objManager.UnloadObjects({ obj->GetDescriptor() });
-
                 // Load the one specified
-                if (auto* obj = objManager.LoadObject(desc.textObjectId); obj != nullptr)
+                if (auto obj = objManager.LoadTempObject(desc.textObjectId); obj != nullptr)
                 {
-                    auto* textObject = reinterpret_cast<ScenarioTextObject*>(obj);
-                    dst->Name = textObject->GetScenarioName();
-                    dst->Details = textObject->GetScenarioDetails();
+                    auto& textObject = reinterpret_cast<ScenarioTextObject&>(*obj);
+                    dst->Name = textObject.GetScenarioName();
+                    dst->Details = textObject.GetScenarioDetails();
+
+                    obj->Unload();
                 }
             }
 
@@ -322,33 +315,33 @@ namespace OpenRCT2::RCT2
             return {};
         }
 
-        std::vector<OpenRCT2::News::Item> convertNewsQueue(const RCT12NewsItem* queue, size_t size)
+        std::vector<OpenRCT2::News::Item> convertNewsQueue(std::span<const RCT12NewsItem> queue)
         {
             std::vector<OpenRCT2::News::Item> output{};
-            const RCT12NewsItem* src = queue;
 
-            for (uint8_t i = 0; i < size; i++)
+            auto index = 0;
+            for (const auto& src : queue)
             {
-                if (src->Type == 0)
+                if (src.Type == 0)
                     break;
 
-                if (src->Type >= News::ItemTypeCount)
+                if (src.Type >= News::ItemTypeCount)
                 {
-                    LOG_ERROR("Invalid news type 0x%x for news item %d, ignoring remaining news items", src->Type, i);
+                    LOG_ERROR("Invalid news type 0x%x for news item %d, ignoring remaining news items", src.Type, index);
                     break;
                 }
 
                 News::Item dst{};
-                dst.Type = static_cast<News::ItemType>(src->Type);
-                dst.Flags = src->Flags;
-                dst.Assoc = src->Assoc;
-                dst.Ticks = src->Ticks;
-                dst.MonthYear = src->MonthYear;
-                dst.Day = src->Day;
-                dst.Text = ConvertFormattedStringToOpenRCT2(std::string_view(src->Text, sizeof(src->Text)));
+                dst.type = static_cast<News::ItemType>(src.Type);
+                dst.flags = src.Flags;
+                dst.assoc = src.Assoc;
+                dst.ticks = src.Ticks;
+                dst.monthYear = src.MonthYear;
+                dst.day = src.Day;
+                dst.text = ConvertFormattedStringToOpenRCT2(std::string_view(src.Text, sizeof(src.Text)));
 
                 output.emplace_back(dst);
-                src++;
+                index++;
             }
 
             return output;
@@ -607,8 +600,8 @@ namespace OpenRCT2::RCT2
             };
 
             // News items
-            auto recentMessages = convertNewsQueue(_s6.recentMessages, std::size(_s6.recentMessages));
-            auto archivedMessages = convertNewsQueue(_s6.archivedMessages, std::size(_s6.archivedMessages));
+            auto recentMessages = convertNewsQueue(_s6.recentMessages);
+            auto archivedMessages = convertNewsQueue(_s6.archivedMessages);
             News::importNewsItems(gameState, recentMessages, archivedMessages);
 
             // Pad13CE730
@@ -1125,23 +1118,23 @@ namespace OpenRCT2::RCT2
             *dst = {};
             dst->id = id;
             dst->type = RCTEntryIndexToOpenRCT2EntryIndex(src->Type);
-            dst->flags = src->Flags;
+            dst->flags = src->flags;
 
-            if (!(src->Flags & BANNER_FLAG_LINKED_TO_RIDE) && IsUserStringID(src->StringID))
+            if (!(src->flags.has(BannerFlag::linkedToRide)) && IsUserStringID(src->StringID))
             {
                 dst->text = GetUserString(src->StringID);
             }
 
-            if (src->Flags & BANNER_FLAG_LINKED_TO_RIDE)
+            if (src->flags.has(BannerFlag::linkedToRide))
             {
-                dst->ride_index = RCT12RideIdToOpenRCT2RideId(src->RideIndex);
+                dst->rideIndex = RCT12RideIdToOpenRCT2RideId(src->RideIndex);
             }
             else
             {
                 dst->colour = src->Colour;
             }
 
-            dst->text_colour = src->TextColour;
+            dst->textColour = src->textColour;
             dst->position.x = src->x;
             dst->position.y = src->y;
         }
@@ -1488,7 +1481,7 @@ namespace OpenRCT2::RCT2
                     // Import banner information
                     dst2->SetBannerIndex(BannerIndex::GetNull());
                     auto entry = dst2->GetEntry();
-                    if (entry != nullptr && entry->scrolling_mode != SCROLLING_MODE_NONE)
+                    if (entry != nullptr && entry->scrolling_mode != kScrollingModeNone)
                     {
                         auto bannerIndex = src2->GetBannerIndex();
                         if (bannerIndex < std::size(_s6.Banners))
@@ -1521,7 +1514,7 @@ namespace OpenRCT2::RCT2
                     // Import banner information
                     dst2->SetBannerIndex(BannerIndex::GetNull());
                     auto entry = dst2->GetEntry();
-                    if (entry != nullptr && entry->scrolling_mode != SCROLLING_MODE_NONE)
+                    if (entry != nullptr && entry->scrolling_mode != kScrollingModeNone)
                     {
                         auto bannerIndex = src2->GetBannerIndex();
                         if (bannerIndex < std::size(_s6.Banners))

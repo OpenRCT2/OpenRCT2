@@ -67,7 +67,7 @@ namespace OpenRCT2::Graph
         }
     };
 
-    void DrawFinanceGraph(DrawPixelInfo& dpi, const GraphProperties<money64>& p);
-    void DrawRatingGraph(DrawPixelInfo& dpi, const GraphProperties<uint16_t>& p);
-    void DrawGuestGraph(DrawPixelInfo& dpi, const GraphProperties<uint32_t>& p);
+    void DrawFinanceGraph(RenderTarget& rt, const GraphProperties<money64>& p);
+    void DrawRatingGraph(RenderTarget& rt, const GraphProperties<uint16_t>& p);
+    void DrawGuestGraph(RenderTarget& rt, const GraphProperties<uint32_t>& p);
 } // namespace OpenRCT2::Graph

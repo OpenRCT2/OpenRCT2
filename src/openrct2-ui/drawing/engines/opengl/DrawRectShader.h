@@ -19,31 +19,31 @@ namespace OpenRCT2::Ui
     class DrawRectShader final : public OpenGLShaderProgram
     {
     private:
-        GLuint uScreenSize;
-        GLuint uTexture;
-        GLuint uPaletteTex;
+        GLint uScreenSize{ -1 };
+        GLint uTexture{ -1 };
+        GLint uPaletteTex{ -1 };
 
-        GLuint uPeelingTex;
-        GLuint uPeeling;
+        GLint uPeelingTex{ -1 };
+        GLint uPeeling{ -1 };
 
-        GLuint vVertMat;
-        GLuint vVertVec;
+        GLint vVertMat{ -1 };
+        GLint vVertVec{ -1 };
 
-        GLuint vClip;
-        GLuint vTexColourAtlas;
-        GLuint vTexColourCoords;
-        GLuint vTexMaskAtlas;
-        GLuint vTexMaskCoords;
-        GLuint vPalettes;
-        GLuint vFlags;
-        GLuint vColour;
-        GLuint vBounds;
-        GLuint vDepth;
-        GLuint vZoom;
+        GLint vClip{ -1 };
+        GLint vTexColourAtlas{ -1 };
+        GLint vTexColourCoords{ -1 };
+        GLint vTexMaskAtlas{ -1 };
+        GLint vTexMaskCoords{ -1 };
+        GLint vPalettes{ -1 };
+        GLint vFlags{ -1 };
+        GLint vColour{ -1 };
+        GLint vBounds{ -1 };
+        GLint vDepth{ -1 };
+        GLint vZoom{ -1 };
 
-        GLuint _vbo;
-        GLuint _vboInstances;
-        GLuint _vao;
+        GLuint _vbo{ 0 };
+        GLuint _vboInstances{ 0 };
+        GLuint _vao{ 0 };
 
         GLsizei _instanceCount = 0;
         size_t _maxInstancesBufferSize;

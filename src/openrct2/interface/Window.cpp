@@ -36,7 +36,7 @@
 namespace OpenRCT2
 {
 
-    std::list<std::shared_ptr<WindowBase>> g_window_list;
+    std::vector<std::unique_ptr<WindowBase>> g_window_list;
     WindowBase* gWindowAudioExclusive;
 
     WindowCloseModifier gLastCloseModifier = { { WindowClass::Null, 0 }, CloseWindowModifier::none };
@@ -71,14 +71,12 @@ static constexpr float kWindowScrollLocations[][2] = {
 };
     // clang-format on
 
-    static void WindowDrawCore(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
-    static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+    static void WindowDrawCore(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+    static void WindowDrawSingle(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
-    std::list<std::shared_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w)
+    std::vector<std::unique_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w)
     {
-        return std::find_if(g_window_list.begin(), g_window_list.end(), [w](const std::shared_ptr<WindowBase>& w2) -> bool {
-            return w == w2.get();
-        });
+        return std::find_if(g_window_list.begin(), g_window_list.end(), [w](auto&& w2) { return w == w2.get(); });
     }
 
     void WindowVisitEach(std::function<void(WindowBase*)> func)
@@ -117,11 +115,48 @@ static constexpr float kWindowScrollLocations[][2] = {
     void WindowUpdateAllViewports()
     {
         WindowVisitEach([&](WindowBase* w) {
-            if (w->viewport != nullptr && WindowIsVisible(*w))
+            if (w->viewport != nullptr && w->isVisible)
             {
                 ViewportUpdatePosition(w);
             }
         });
+    }
+
+    static void WindowUpdateVisibilities()
+    {
+        const auto itEnd = g_window_list.end();
+        for (auto it = g_window_list.begin(); it != itEnd; ++it)
+        {
+            auto& window = *(*it);
+            if (window.viewport == nullptr)
+            {
+                window.isVisible = true;
+                continue;
+            }
+            if (window.classification == WindowClass::MainWindow)
+            {
+                window.isVisible = true;
+                window.viewport->isVisible = true;
+                continue;
+            }
+            window.isVisible = true;
+            window.viewport->isVisible = true;
+            for (auto itOther = std::next(it); itOther != itEnd; ++itOther)
+            {
+                const auto& otherWindow = *(*itOther);
+                if (otherWindow.flags & WF_DEAD)
+                    continue;
+
+                if (otherWindow.windowPos.x <= window.windowPos.x && otherWindow.windowPos.y <= window.windowPos.y
+                    && otherWindow.windowPos.x + otherWindow.width >= window.windowPos.x + window.width
+                    && otherWindow.windowPos.y + otherWindow.height >= window.windowPos.y + window.height)
+                {
+                    window.isVisible = false;
+                    window.viewport->isVisible = false;
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -131,7 +166,9 @@ static constexpr float kWindowScrollLocations[][2] = {
     void WindowUpdateAll()
     {
         // Remove all windows in g_window_list that have the WF_DEAD flag
-        g_window_list.remove_if([](auto&& w) -> bool { return w->flags & WF_DEAD; });
+        g_window_list.erase(
+            std::remove_if(g_window_list.begin(), g_window_list.end(), [](auto&& w) -> bool { return w->flags & WF_DEAD; }),
+            g_window_list.end());
 
         // Periodic update happens every second so 40 ticks.
         if (gCurrentRealTimeTicks >= gWindowUpdateTicks)
@@ -155,6 +192,8 @@ static constexpr float kWindowScrollLocations[][2] = {
 
         auto windowManager = Ui::GetWindowManager();
         windowManager->UpdateMouseWheel();
+
+        WindowUpdateVisibilities();
     }
 
     void WindowNotifyLanguageChange()
@@ -494,9 +533,9 @@ static constexpr float kWindowScrollLocations[][2] = {
      * Splits a drawing of a window into regions that can be seen and are not hidden
      * by other opaque overlapping windows.
      */
-    void WindowDraw(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    void WindowDraw(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
-        if (!WindowIsVisible(w))
+        if (!w.isVisible)
             return;
 
         // Divide the draws up for only the visible regions of the window recursively
@@ -518,26 +557,26 @@ static constexpr float kWindowScrollLocations[][2] = {
             if (topwindow->windowPos.x > left)
             {
                 // Split draw at topwindow.left
-                WindowDrawCore(dpi, w, left, top, topwindow->windowPos.x, bottom);
-                WindowDrawCore(dpi, w, topwindow->windowPos.x, top, right, bottom);
+                WindowDrawCore(rt, w, left, top, topwindow->windowPos.x, bottom);
+                WindowDrawCore(rt, w, topwindow->windowPos.x, top, right, bottom);
             }
             else if (topwindow->windowPos.x + topwindow->width < right)
             {
                 // Split draw at topwindow.right
-                WindowDrawCore(dpi, w, left, top, topwindow->windowPos.x + topwindow->width, bottom);
-                WindowDrawCore(dpi, w, topwindow->windowPos.x + topwindow->width, top, right, bottom);
+                WindowDrawCore(rt, w, left, top, topwindow->windowPos.x + topwindow->width, bottom);
+                WindowDrawCore(rt, w, topwindow->windowPos.x + topwindow->width, top, right, bottom);
             }
             else if (topwindow->windowPos.y > top)
             {
                 // Split draw at topwindow.top
-                WindowDrawCore(dpi, w, left, top, right, topwindow->windowPos.y);
-                WindowDrawCore(dpi, w, left, topwindow->windowPos.y, right, bottom);
+                WindowDrawCore(rt, w, left, top, right, topwindow->windowPos.y);
+                WindowDrawCore(rt, w, left, topwindow->windowPos.y, right, bottom);
             }
             else if (topwindow->windowPos.y + topwindow->height < bottom)
             {
                 // Split draw at topwindow.bottom
-                WindowDrawCore(dpi, w, left, top, right, topwindow->windowPos.y + topwindow->height);
-                WindowDrawCore(dpi, w, left, topwindow->windowPos.y + topwindow->height, right, bottom);
+                WindowDrawCore(rt, w, left, top, right, topwindow->windowPos.y + topwindow->height);
+                WindowDrawCore(rt, w, left, topwindow->windowPos.y + topwindow->height, right, bottom);
             }
 
             // Drawing for this region should be done now, exit
@@ -545,13 +584,13 @@ static constexpr float kWindowScrollLocations[][2] = {
         }
 
         // No windows overlap
-        WindowDrawCore(dpi, w, left, top, right, bottom);
+        WindowDrawCore(rt, w, left, top, right, bottom);
     }
 
     /**
      * Draws the given window and any other overlapping transparent windows.
      */
-    static void WindowDrawCore(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    static void WindowDrawCore(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
         // Clamp region
         left = std::max<int32_t>(left, w.windowPos.x);
@@ -569,18 +608,18 @@ static constexpr float kWindowScrollLocations[][2] = {
             auto* v = (*it).get();
             if (v->flags & WF_DEAD)
                 continue;
-            if ((&w == v || (v->flags & WF_TRANSPARENT)) && WindowIsVisible(*v))
+            if ((&w == v || (v->flags & WF_TRANSPARENT)) && v->isVisible)
             {
-                WindowDrawSingle(dpi, *v, left, top, right, bottom);
+                WindowDrawSingle(rt, *v, left, top, right, bottom);
             }
         }
     }
 
-    static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    static void WindowDrawSingle(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
-        assert(dpi.zoom_level == ZoomLevel{ 0 });
-        // Copy dpi so we can crop it
-        DrawPixelInfo copy = dpi;
+        assert(rt.zoom_level == ZoomLevel{ 0 });
+        // Copy render target so we can crop it
+        RenderTarget copy = rt;
 
         // Clamp left to 0
         int32_t overflow = left - copy.x;
@@ -855,48 +894,6 @@ static constexpr float kWindowScrollLocations[][2] = {
         windowMgr->CloseByClass(WindowClass::Textinput);
     }
 
-    bool WindowIsVisible(WindowBase& w)
-    {
-        // w->visibility is used to prevent repeat calculations within an iteration by caching the result
-
-        if (w.visibility == VisibilityCache::visible)
-            return true;
-        if (w.visibility == VisibilityCache::covered)
-            return false;
-
-        // only consider viewports, consider the main window always visible
-        if (w.viewport == nullptr || w.classification == WindowClass::MainWindow)
-        {
-            // default to previous behaviour
-            w.visibility = VisibilityCache::visible;
-            return true;
-        }
-
-        // start from the window above the current
-        auto itPos = WindowGetIterator(&w);
-        for (auto it = std::next(itPos); it != g_window_list.end(); it++)
-        {
-            auto& w_other = *(*it);
-            if (w_other.flags & WF_DEAD)
-                continue;
-
-            // if covered by a higher window, no rendering needed
-            if (w_other.windowPos.x <= w.windowPos.x && w_other.windowPos.y <= w.windowPos.y
-                && w_other.windowPos.x + w_other.width >= w.windowPos.x + w.width
-                && w_other.windowPos.y + w_other.height >= w.windowPos.y + w.height)
-            {
-                w.visibility = VisibilityCache::covered;
-                w.viewport->visibility = VisibilityCache::covered;
-                return false;
-            }
-        }
-
-        // default to previous behaviour
-        w.visibility = VisibilityCache::visible;
-        w.viewport->visibility = VisibilityCache::visible;
-        return true;
-    }
-
     /**
      *
      *  rct2: 0x006E7499
@@ -905,52 +902,17 @@ static constexpr float kWindowScrollLocations[][2] = {
      * right (dx)
      * bottom (bp)
      */
-    void WindowDrawAll(DrawPixelInfo& dpi, int32_t left, int32_t top, int32_t right, int32_t bottom)
+    void WindowDrawAll(RenderTarget& rt, int32_t left, int32_t top, int32_t right, int32_t bottom)
     {
-        auto windowDPI = dpi.Crop({ left, top }, { right - left, bottom - top });
-        WindowVisitEach([&windowDPI, left, top, right, bottom](WindowBase* w) {
+        auto windowRT = rt.Crop({ left, top }, { right - left, bottom - top });
+        WindowVisitEach([&windowRT, left, top, right, bottom](WindowBase* w) {
             if (w->flags & WF_TRANSPARENT)
                 return;
             if (right <= w->windowPos.x || bottom <= w->windowPos.y)
                 return;
             if (left >= w->windowPos.x + w->width || top >= w->windowPos.y + w->height)
                 return;
-            WindowDraw(windowDPI, *w, left, top, right, bottom);
-        });
-    }
-
-    Viewport* WindowGetPreviousViewport(Viewport* current)
-    {
-        bool foundPrevious = (current == nullptr);
-        for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
-        {
-            auto& w = **it;
-            if (w.flags & WF_DEAD)
-                continue;
-            if (w.viewport != nullptr)
-            {
-                if (foundPrevious)
-                {
-                    return w.viewport;
-                }
-                if (w.viewport == current)
-                {
-                    foundPrevious = true;
-                }
-            }
-        }
-        return nullptr;
-    }
-
-    void WindowResetVisibilities()
-    {
-        // reset window visibility status to unknown
-        WindowVisitEach([](WindowBase* w) {
-            w->visibility = VisibilityCache::unknown;
-            if (w->viewport != nullptr)
-            {
-                w->viewport->visibility = VisibilityCache::unknown;
-            }
+            WindowDraw(windowRT, *w, left, top, right, bottom);
         });
     }
 
@@ -987,6 +949,6 @@ static constexpr float kWindowScrollLocations[][2] = {
     // TODO: declared in WindowManager.h; move when refactors continue
     Ui::IWindowManager* Ui::GetWindowManager()
     {
-        return GetContext()->GetUiContext()->GetWindowManager();
+        return GetContext()->GetUiContext().GetWindowManager();
     }
 } // namespace OpenRCT2

@@ -59,7 +59,7 @@ public:
     };
     uint32_t StaffBinsEmptied;
 
-    void UpdateStaff(uint32_t stepsToTake);
+    void Update();
     void Tick128UpdateStaff();
     bool IsMechanic() const;
     bool IsPatrolAreaSet(const CoordsXY& coords) const;

@@ -3804,3 +3804,18 @@ STR_6759    :Bedrijfsmodel
 STR_6760    :Inkomen:
 STR_6761    :Scenariodetails
 STR_6762    :Interface
+STR_6763    :RollerCoaster Tycoon 1
+STR_6764    :Opslaan en autosaves
+STR_6765    :Geavanceerd
+STR_6766    :Wissen
+STR_6767    :Venster
+STR_6768    :Rendering
+STR_6769    :Gedrag
+STR_6770    :Frames beperken tot
+STR_6771    :Interne snelheid (standaard)
+STR_6772    :Verticale synchronisatie
+STR_6773    :Niet beperken
+STR_6774    :Laatste inspectie
+STR_6775    :{COMMA16} minuut geleden
+STR_6776    :{COMMA16} minuten geleden
+STR_6777    :meer dan 4 uur geleden

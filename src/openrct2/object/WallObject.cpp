@@ -70,7 +70,7 @@ void WallObject::Unload()
     _legacyType.image = 0;
 }
 
-void WallObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
+void WallObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
@@ -83,16 +83,16 @@ void WallObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) 
         imageId = imageId.WithSecondary(COLOUR_YELLOW);
     }
 
-    GfxDrawSprite(dpi, imageId, screenCoords);
+    GfxDrawSprite(rt, imageId, screenCoords);
 
     if (_legacyType.flags & WALL_SCENERY_HAS_GLASS)
     {
         auto glassImageId = imageId.WithTransparency(COLOUR_BORDEAUX_RED).WithIndexOffset(6);
-        GfxDrawSprite(dpi, glassImageId, screenCoords);
+        GfxDrawSprite(rt, glassImageId, screenCoords);
     }
     else if (_legacyType.flags & WALL_SCENERY_IS_DOOR)
     {
-        GfxDrawSprite(dpi, imageId.WithIndexOffset(1), screenCoords);
+        GfxDrawSprite(rt, imageId.WithIndexOffset(1), screenCoords);
     }
 }
 
@@ -108,7 +108,7 @@ void WallObject::ReadJson(IReadObjectContext* context, json_t& root)
         _legacyType.height = Json::GetNumber<uint8_t>(properties["height"]);
         _legacyType.price = Json::GetNumber<money64>(properties["price"]);
 
-        _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"], SCROLLING_MODE_NONE);
+        _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"], kScrollingModeNone);
 
         SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));
 

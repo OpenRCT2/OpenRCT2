@@ -16,7 +16,7 @@
 #include <sfl/segmented_vector.hpp>
 #include <vector>
 
-struct DrawPixelInfo;
+struct RenderTarget;
 
 namespace OpenRCT2
 {
@@ -35,7 +35,7 @@ namespace OpenRCT2
         struct Painter final
         {
         private:
-            std::shared_ptr<Ui::IUiContext> const _uiContext;
+            Ui::IUiContext& _uiContext;
             sfl::segmented_vector<PaintSession, 32> _paintSessionPool;
             std::vector<PaintSession*> _freePaintSessions;
             time_t _lastSecond = 0;
@@ -43,16 +43,16 @@ namespace OpenRCT2
             int32_t _frames = 0;
 
         public:
-            explicit Painter(const std::shared_ptr<Ui::IUiContext>& uiContext);
+            explicit Painter(Ui::IUiContext& uiContext);
             void Paint(Drawing::IDrawingEngine& de);
 
-            PaintSession* CreateSession(DrawPixelInfo& dpi, uint32_t viewFlags, uint8_t rotation);
+            PaintSession* CreateSession(RenderTarget& rt, uint32_t viewFlags, uint8_t rotation);
             void ReleaseSession(PaintSession* session);
             ~Painter();
 
         private:
-            void PaintReplayNotice(DrawPixelInfo& dpi, const char* text);
-            void PaintFPS(DrawPixelInfo& dpi);
+            void PaintReplayNotice(RenderTarget& rt, const char* text);
+            void PaintFPS(RenderTarget& rt);
             void MeasureFPS();
         };
     } // namespace Paint

@@ -118,7 +118,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
 
     res.Position.z = maxHeight;
 
-    if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
+    if (sceneryEntry->scrolling_mode != kScrollingModeNone)
     {
         if (HasReachedBannerLimit())
         {
@@ -238,7 +238,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
 
     // Allocate banner
     Banner* banner = nullptr;
-    if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
+    if (sceneryEntry->scrolling_mode != kScrollingModeNone)
     {
         banner = CreateBanner();
         if (banner == nullptr)
@@ -250,16 +250,16 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
 
         banner->text = {};
         banner->colour = 2;
-        banner->text_colour = 2;
-        banner->flags = BANNER_FLAG_IS_LARGE_SCENERY;
+        banner->textColour = TextColour::white;
+        banner->flags = { BannerFlag::isLargeScenery };
         banner->type = 0;
         banner->position = TileCoordsXY(_loc);
 
         RideId rideIndex = BannerGetClosestRideIndex({ _loc, maxHeight });
         if (!rideIndex.IsNull())
         {
-            banner->ride_index = rideIndex;
-            banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
+            banner->rideIndex = rideIndex;
+            banner->flags.set(BannerFlag::linkedToRide);
         }
 
         resultData.bannerId = banner->id;

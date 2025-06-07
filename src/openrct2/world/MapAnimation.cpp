@@ -567,7 +567,7 @@ static bool MapAnimationInvalidateWall(const CoordsXYZ& loc)
         auto* wallEntry = tileElement->AsWall()->GetEntry();
 
         if (wallEntry == nullptr
-            || (!(wallEntry->flags2 & WALL_SCENERY_2_ANIMATED) && wallEntry->scrolling_mode == SCROLLING_MODE_NONE))
+            || (!(wallEntry->flags2 & WALL_SCENERY_2_ANIMATED) && wallEntry->scrolling_mode == kScrollingModeNone))
             continue;
 
         MapInvalidateTileZoom1({ loc, loc.z, loc.z + 16 });
@@ -639,7 +639,7 @@ void MapAnimationAutoCreateAtTileElement(TileCoordsXY coords, TileElement* el)
         {
             auto wallEl = el->AsWall();
             auto* entry = wallEl->GetEntry();
-            if (entry != nullptr && ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != SCROLLING_MODE_NONE))
+            if (entry != nullptr && ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != kScrollingModeNone))
             {
                 MapAnimationCreate(MAP_ANIMATION_TYPE_WALL, loc);
             }

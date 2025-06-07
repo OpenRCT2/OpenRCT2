@@ -27,9 +27,9 @@ OpenGLShader::OpenGLShader(const char* name, GLenum type)
     auto sourceCode = ReadSourceCode(path);
     auto sourceCodeStr = sourceCode.c_str();
 
-    _id = glCreateShader(type);
-    glShaderSource(_id, 1, static_cast<const GLchar**>(&sourceCodeStr), nullptr);
-    glCompileShader(_id);
+    _id = glCall(glCreateShader, type);
+    glCall(glShaderSource, _id, 1, static_cast<const GLchar**>(&sourceCodeStr), nullptr);
+    glCall(glCompileShader, _id);
 
     GLint status;
     glGetShaderiv(_id, GL_COMPILE_STATUS, &status);
@@ -48,7 +48,7 @@ OpenGLShader::OpenGLShader(const char* name, GLenum type)
 
 OpenGLShader::~OpenGLShader()
 {
-    glDeleteShader(_id);
+    glCall(glDeleteShader, _id);
 }
 
 GLuint OpenGLShader::GetShaderId()
@@ -58,8 +58,8 @@ GLuint OpenGLShader::GetShaderId()
 
 std::string OpenGLShader::GetPath(const std::string& name)
 {
-    auto env = GetContext()->GetPlatformEnvironment();
-    auto shadersPath = env->GetDirectoryPath(DirBase::openrct2, DirId::shaders);
+    auto& env = GetContext()->GetPlatformEnvironment();
+    auto shadersPath = env.GetDirectoryPath(DirBase::openrct2, DirId::shaders);
     auto path = Path::Combine(shadersPath, name);
     if (_type == GL_VERTEX_SHADER)
     {
@@ -92,10 +92,10 @@ OpenGLShaderProgram::OpenGLShaderProgram(const char* name)
     _vertexShader = std::make_unique<OpenGLShader>(name, GL_VERTEX_SHADER);
     _fragmentShader = std::make_unique<OpenGLShader>(name, GL_FRAGMENT_SHADER);
 
-    _id = glCreateProgram();
-    glAttachShader(_id, _vertexShader->GetShaderId());
-    glAttachShader(_id, _fragmentShader->GetShaderId());
-    glBindFragDataLocation(_id, 0, "oColour");
+    _id = glCall(glCreateProgram);
+    glCall(glAttachShader, _id, _vertexShader->GetShaderId());
+    glCall(glAttachShader, _id, _fragmentShader->GetShaderId());
+    glCall(glBindFragDataLocation, _id, 0, "oColour");
 
     if (!Link())
     {
@@ -114,23 +114,33 @@ OpenGLShaderProgram::~OpenGLShaderProgram()
 {
     if (_vertexShader != nullptr)
     {
-        glDetachShader(_id, _vertexShader->GetShaderId());
+        glCall(glDetachShader, _id, _vertexShader->GetShaderId());
     }
     if (_fragmentShader != nullptr)
     {
-        glDetachShader(_id, _fragmentShader->GetShaderId());
+        glCall(glDetachShader, _id, _fragmentShader->GetShaderId());
     }
-    glDeleteProgram(_id);
+    glCall(glDeleteProgram, _id);
 }
 
-GLuint OpenGLShaderProgram::GetAttributeLocation(const char* name)
+GLint OpenGLShaderProgram::GetAttributeLocation(const char* name)
 {
-    return glGetAttribLocation(_id, name);
+    auto res = glCall(glGetAttribLocation, _id, name);
+    if (res == -1)
+    {
+        LOG_ERROR("Attribute \"%s\" not found in shader program", name);
+    }
+    return res;
 }
 
-GLuint OpenGLShaderProgram::GetUniformLocation(const char* name)
+GLint OpenGLShaderProgram::GetUniformLocation(const char* name)
 {
-    return glGetUniformLocation(_id, name);
+    auto res = glCall(glGetUniformLocation, _id, name);
+    if (res == -1)
+    {
+        LOG_ERROR("Uniform \"%s\" not found in shader program", name);
+    }
+    return res;
 }
 
 void OpenGLShaderProgram::Use()
@@ -138,13 +148,13 @@ void OpenGLShaderProgram::Use()
     if (OpenGLState::CurrentProgram != _id)
     {
         OpenGLState::CurrentProgram = _id;
-        glUseProgram(_id);
+        glCall(glUseProgram, _id);
     }
 }
 
 bool OpenGLShaderProgram::Link()
 {
-    glLinkProgram(_id);
+    glCall(glLinkProgram, _id);
 
     GLint linkStatus;
     glGetProgramiv(_id, GL_LINK_STATUS, &linkStatus);

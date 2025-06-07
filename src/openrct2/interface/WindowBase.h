@@ -106,7 +106,7 @@ namespace OpenRCT2
         ScreenCoordsXY savedViewPos{};
         WindowClass classification{};
         ColourWithFlags colours[6]{};
-        VisibilityCache visibility{};
+        bool isVisible = true;
         EntityId viewport_smart_follow_sprite{ EntityId::GetNull() }; // Handles setting viewport target sprite etc
 
         void SetViewportLocation(const CoordsXYZ& coords);
@@ -154,10 +154,10 @@ namespace OpenRCT2
         virtual void OnPrepareDraw()
         {
         }
-        virtual void OnDraw(DrawPixelInfo& dpi)
+        virtual void OnDraw(RenderTarget& rt)
         {
         }
-        virtual void OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi)
+        virtual void OnDrawWidget(WidgetIndex widgetIndex, RenderTarget& rt)
         {
         }
         virtual OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback)
@@ -192,7 +192,7 @@ namespace OpenRCT2
         virtual void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
         {
         }
-        virtual void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi)
+        virtual void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt)
         {
         }
         virtual void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -227,5 +227,5 @@ namespace OpenRCT2
 #endif
 
     // rct2: 0x01420078
-    extern std::list<std::shared_ptr<WindowBase>> g_window_list;
+    extern std::vector<std::unique_ptr<WindowBase>> g_window_list;
 } // namespace OpenRCT2

@@ -206,7 +206,7 @@ void TitleScene::TitleInitialise()
 {
     if (_sequencePlayer == nullptr)
     {
-        _sequencePlayer = GetContext().GetUiContext()->GetTitleSequencePlayer();
+        _sequencePlayer = GetContext().GetUiContext().GetTitleSequencePlayer();
     }
     if (Config::Get().interface.RandomTitleSequence)
     {
@@ -288,7 +288,7 @@ bool TitleScene::TryLoadSequence(bool loadPreview)
     {
         if (_sequencePlayer == nullptr)
         {
-            _sequencePlayer = GetContext().GetUiContext()->GetTitleSequencePlayer();
+            _sequencePlayer = GetContext().GetUiContext().GetTitleSequencePlayer();
         }
 
         size_t numSequences = TitleSequenceManager::GetCount();

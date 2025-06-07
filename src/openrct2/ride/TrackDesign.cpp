@@ -2120,16 +2120,16 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels)
     view.zoom = zoom_level;
     view.flags = VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_ENTITIES;
 
-    DrawPixelInfo dpi;
-    dpi.x = 0;
-    dpi.y = 0;
-    dpi.width = 370;
-    dpi.height = 217;
-    dpi.pitch = 0;
-    dpi.bits = pixels;
+    RenderTarget rt;
+    rt.x = 0;
+    rt.y = 0;
+    rt.width = 370;
+    rt.height = 217;
+    rt.pitch = 0;
+    rt.bits = pixels;
 
     auto drawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
-    dpi.DrawingEngine = drawingEngine.get();
+    rt.DrawingEngine = drawingEngine.get();
 
     drawingEngine->BeginDraw();
 
@@ -2138,9 +2138,9 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels)
     {
         view.viewPos = Translate3DTo2DWithZ(i, centre) - offset;
         view.rotation = i;
-        ViewportRender(dpi, &view);
+        ViewportRender(rt, &view);
 
-        dpi.bits += kTrackPreviewImageSize;
+        rt.bits += kTrackPreviewImageSize;
     }
 
     drawingEngine->EndDraw();

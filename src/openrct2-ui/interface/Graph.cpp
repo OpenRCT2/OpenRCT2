@@ -22,7 +22,7 @@ namespace OpenRCT2::Graph
 
     template<typename T>
     static void DrawYLabels(
-        DrawPixelInfo& dpi, const ScreenRect& internalBounds, const T min, const T max, const int32_t numYLabels,
+        RenderTarget& rt, const ScreenRect& internalBounds, const T min, const T max, const int32_t numYLabels,
         const int32_t yLabelStepPx, const ColourWithFlags lineCol, const FmtString& fmt)
     {
         T curLabel = max;
@@ -34,15 +34,15 @@ namespace OpenRCT2::Graph
             char buffer[64]{};
             FormatStringToBuffer(buffer, sizeof(buffer), fmt, curLabel);
             DrawText(
-                dpi, { internalBounds.GetLeft() - kYTickMarkPadding, curScreenPos }, { FontStyle::Small, TextAlignment::RIGHT },
+                rt, { internalBounds.GetLeft() - kYTickMarkPadding, curScreenPos }, { FontStyle::Small, TextAlignment::RIGHT },
                 buffer);
             // Draw Y label tick mark
             GfxFillRect(
-                dpi, { { internalBounds.GetLeft() - 5, curScreenPos + 5 }, { internalBounds.GetLeft(), curScreenPos + 5 } },
+                rt, { { internalBounds.GetLeft() - 5, curScreenPos + 5 }, { internalBounds.GetLeft(), curScreenPos + 5 } },
                 PaletteIndex::pi10);
             // Draw horizontal gridline
             GfxFillRectInset(
-                dpi, { { internalBounds.GetLeft(), curScreenPos + 5 }, { internalBounds.GetRight(), curScreenPos + 5 } },
+                rt, { { internalBounds.GetLeft(), curScreenPos + 5 }, { internalBounds.GetRight(), curScreenPos + 5 } },
                 lineCol, INSET_RECT_FLAG_BORDER_INSET);
             curScreenPos += yLabelStepPx;
             curLabel -= yLabelStep;
@@ -50,7 +50,7 @@ namespace OpenRCT2::Graph
     }
 
     template<typename T, T TkNoValue>
-    static void DrawMonths(DrawPixelInfo& dpi, const T* series, int32_t count, const ScreenRect& bounds, const int32_t xStep)
+    static void DrawMonths(RenderTarget& rt, const T* series, int32_t count, const ScreenRect& bounds, const int32_t xStep)
     {
         auto& date = GetDate();
         int32_t currentMonth = date.GetMonth();
@@ -65,11 +65,11 @@ namespace OpenRCT2::Graph
                 auto ft = Formatter();
                 ft.Add<StringId>(DateGameShortMonthNames[DateGetMonth((yearOver32 / 4) + MONTH_COUNT)]);
                 DrawTextBasic(
-                    dpi, screenCoords - ScreenCoordsXY{ 0, 14 }, STR_GRAPH_LABEL, ft,
+                    rt, screenCoords - ScreenCoordsXY{ 0, 14 }, STR_GRAPH_LABEL, ft,
                     { FontStyle::Small, TextAlignment::CENTRE });
                 // Draw month tick mark
                 GfxFillRect(
-                    dpi, { screenCoords - ScreenCoordsXY{ 0, 4 }, screenCoords - ScreenCoordsXY{ 0, 1 } }, PaletteIndex::pi10);
+                    rt, { screenCoords - ScreenCoordsXY{ 0, 4 }, screenCoords - ScreenCoordsXY{ 0, 1 } }, PaletteIndex::pi10);
             }
 
             yearOver32 = (yearOver32 + 1) % 32;
@@ -79,7 +79,7 @@ namespace OpenRCT2::Graph
 
     template<typename T>
     static void DrawHoveredValue(
-        DrawPixelInfo& dpi, const T value, const int32_t hoverIdx, const ScreenRect& bounds, const int32_t xStep,
+        RenderTarget& rt, const T value, const int32_t hoverIdx, const ScreenRect& bounds, const int32_t xStep,
         const T minValue, const T maxValue, const_utf8string text, ColourWithFlags textCol)
     {
         const T screenRange = bounds.GetHeight();
@@ -89,24 +89,24 @@ namespace OpenRCT2::Graph
         ScreenCoordsXY coords = { bounds.GetRight() - hoverIdx * xStep, yPosition };
 
         GfxDrawDashedLine(
-            dpi,
+            rt,
             {
                 { coords.x, bounds.GetTop() },
                 { coords.x, bounds.GetBottom() },
             },
             kDashLength, PaletteIndex::pi10);
-        GfxDrawDashedLine(dpi, { { bounds.GetLeft(), coords.y }, coords }, kDashLength, PaletteIndex::pi10);
+        GfxDrawDashedLine(rt, { { bounds.GetLeft(), coords.y }, coords }, kDashLength, PaletteIndex::pi10);
 
-        DrawText(dpi, coords - ScreenCoordsXY{ 0, 16 }, { textCol, TextAlignment::CENTRE }, text);
+        DrawText(rt, coords - ScreenCoordsXY{ 0, 16 }, { textCol, TextAlignment::CENTRE }, text);
 
-        GfxFillRect(dpi, { { coords - ScreenCoordsXY{ 2, 2 } }, coords + ScreenCoordsXY{ 2, 2 } }, PaletteIndex::pi10);
-        GfxFillRect(dpi, { { coords - ScreenCoordsXY{ 1, 1 } }, { coords + ScreenCoordsXY{ 1, 1 } } }, PaletteIndex::pi21);
+        GfxFillRect(rt, { { coords - ScreenCoordsXY{ 2, 2 } }, coords + ScreenCoordsXY{ 2, 2 } }, PaletteIndex::pi10);
+        GfxFillRect(rt, { { coords - ScreenCoordsXY{ 1, 1 } }, { coords + ScreenCoordsXY{ 1, 1 } } }, PaletteIndex::pi21);
     }
 
     template<typename T, T TkNoValue, bool TbackgroundLine>
     static void DrawLine(
-        DrawPixelInfo& dpi, const T* series, const int32_t count, const ScreenRect& bounds, const int32_t xStep,
-        const T minValue, const T maxValue)
+        RenderTarget& rt, const T* series, const int32_t count, const ScreenRect& bounds, const int32_t xStep, const T minValue,
+        const T maxValue)
     {
         const T screenRange = bounds.GetHeight();
         const T valueRange = maxValue - minValue;
@@ -129,12 +129,12 @@ namespace OpenRCT2::Graph
                         auto rightBottom1 = coords + ScreenCoordsXY{ 1, 1 };
                         auto leftTop2 = lastCoords + ScreenCoordsXY{ 0, 1 };
                         auto rightBottom2 = coords + ScreenCoordsXY{ 0, 1 };
-                        GfxDrawLine(dpi, { leftTop1, rightBottom1 }, PaletteIndex::pi10);
-                        GfxDrawLine(dpi, { leftTop2, rightBottom2 }, PaletteIndex::pi10);
+                        GfxDrawLine(rt, { leftTop1, rightBottom1 }, PaletteIndex::pi10);
+                        GfxDrawLine(rt, { leftTop2, rightBottom2 }, PaletteIndex::pi10);
                     }
                     if (i == 0)
                     {
-                        GfxFillRect(dpi, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PaletteIndex::pi10);
+                        GfxFillRect(rt, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PaletteIndex::pi10);
                     }
                 }
                 else
@@ -143,12 +143,12 @@ namespace OpenRCT2::Graph
                     {
                         auto leftTop = lastCoords;
                         auto rightBottom = coords;
-                        GfxDrawLine(dpi, { leftTop, rightBottom }, PaletteIndex::pi21);
+                        GfxDrawLine(rt, { leftTop, rightBottom }, PaletteIndex::pi21);
                     }
                     if (i == 0)
                     {
                         GfxFillRect(
-                            dpi, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PaletteIndex::pi21);
+                            rt, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PaletteIndex::pi21);
                     }
                 }
 
@@ -160,13 +160,12 @@ namespace OpenRCT2::Graph
     }
 
     template<typename T, T TkNoValue>
-    static void DrawGraph(
-        DrawPixelInfo& dpi, const GraphProperties<T>& p, const FmtString& labelFmt, const FmtString& tooltipFmt)
+    static void DrawGraph(RenderTarget& rt, const GraphProperties<T>& p, const FmtString& labelFmt, const FmtString& tooltipFmt)
     {
-        DrawYLabels<T>(dpi, p.internalBounds, p.min, p.max, p.numYLabels, p.yLabelStepPx, p.lineCol, labelFmt);
-        DrawMonths<T, TkNoValue>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx);
-        DrawLine<T, TkNoValue, true>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
-        DrawLine<T, TkNoValue, false>(dpi, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
+        DrawYLabels<T>(rt, p.internalBounds, p.min, p.max, p.numYLabels, p.yLabelStepPx, p.lineCol, labelFmt);
+        DrawMonths<T, TkNoValue>(rt, p.series, p.numPoints, p.internalBounds, p.xStepPx);
+        DrawLine<T, TkNoValue, true>(rt, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
+        DrawLine<T, TkNoValue, false>(rt, p.series, p.numPoints, p.internalBounds, p.xStepPx, p.min, p.max);
         if (p.hoverIdx >= 0 && p.hoverIdx < p.numPoints)
         {
             const T value = p.series[p.hoverIdx];
@@ -175,24 +174,24 @@ namespace OpenRCT2::Graph
                 char buffer[64]{};
                 FormatStringToBuffer(buffer, sizeof(buffer), tooltipFmt, value);
                 DrawHoveredValue<T>(
-                    dpi, value, p.hoverIdx, p.internalBounds, p.xStepPx, p.min, p.max, buffer,
+                    rt, value, p.hoverIdx, p.internalBounds, p.xStepPx, p.min, p.max, buffer,
                     p.lineCol.withFlag(ColourFlag::withOutline, true));
             }
         }
     }
 
-    void DrawFinanceGraph(DrawPixelInfo& dpi, const GraphProperties<money64>& p)
+    void DrawFinanceGraph(RenderTarget& rt, const GraphProperties<money64>& p)
     {
-        DrawGraph<money64, kMoney64Undefined>(dpi, p, "{BLACK}{CURRENCY2DP}", "{CURRENCY2DP}");
+        DrawGraph<money64, kMoney64Undefined>(rt, p, "{BLACK}{CURRENCY2DP}", "{CURRENCY2DP}");
     }
 
-    void DrawRatingGraph(DrawPixelInfo& dpi, const GraphProperties<uint16_t>& p)
+    void DrawRatingGraph(RenderTarget& rt, const GraphProperties<uint16_t>& p)
     {
-        DrawGraph<uint16_t, kParkRatingHistoryUndefined>(dpi, p, "{BLACK}{COMMA32}", "{COMMA32}");
+        DrawGraph<uint16_t, kParkRatingHistoryUndefined>(rt, p, "{BLACK}{COMMA32}", "{COMMA32}");
     }
 
-    void DrawGuestGraph(DrawPixelInfo& dpi, const GraphProperties<uint32_t>& p)
+    void DrawGuestGraph(RenderTarget& rt, const GraphProperties<uint32_t>& p)
     {
-        DrawGraph<uint32_t, kGuestsInParkHistoryUndefined>(dpi, p, "{BLACK}{COMMA32}", "{COMMA32}");
+        DrawGraph<uint32_t, kGuestsInParkHistoryUndefined>(rt, p, "{BLACK}{COMMA32}", "{COMMA32}");
     }
 } // namespace OpenRCT2::Graph

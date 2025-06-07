@@ -159,7 +159,7 @@ static void PaintWallScrollingText(
         return;
 
     auto scrollingMode = wallEntry.scrolling_mode;
-    if (scrollingMode == SCROLLING_MODE_NONE)
+    if (scrollingMode == kScrollingModeNone)
         return;
 
     scrollingMode = wallEntry.scrolling_mode + ((direction + 1) & 3);
@@ -174,7 +174,7 @@ static void PaintWallScrollingText(
     auto textPaletteIndex = direction == 0 ? ColourMapA[textColour].mid_dark : ColourMapA[textColour].light;
 
     auto ft = Formatter();
-    banner->FormatTextTo(ft);
+    banner->formatTextTo(ft);
     char signString[256];
     if (Config::Get().general.UpperCaseBanners)
     {

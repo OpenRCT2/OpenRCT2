@@ -100,7 +100,7 @@ static void MarketingRaiseFinishedNotification(const MarketingCampaign& campaign
             ft.Add<StringId>(GetShopItemDescriptor(campaign.ShopItemType).Naming.Plural);
         }
 
-        News::AddItemToQueue(News::ItemType::Campaign, kMarketingCampaignNames[campaign.Type][2], 0, ft);
+        News::AddItemToQueue(News::ItemType::campaign, kMarketingCampaignNames[campaign.Type][2], 0, ft);
     }
 }
 
@@ -197,7 +197,7 @@ bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
             if (!Park::RidePricesUnlocked())
                 return false;
 
-            // fall-through
+            [[fallthrough]];
         case ADVERTISING_CAMPAIGN_RIDE:
             // Check if any rides exist
             for (auto& ride : GetRideManager())

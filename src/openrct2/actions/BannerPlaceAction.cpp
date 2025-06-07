@@ -143,9 +143,9 @@ GameActions::Result BannerPlaceAction::Execute() const
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
     }
-    banner->flags = 0;
+    banner->flags = {};
     banner->text = {};
-    banner->text_colour = 2;
+    banner->textColour = TextColour::white;
     banner->type = _bannerType; // Banner must be deleted after this point in an early return
     banner->colour = _primaryColour;
     banner->position = TileCoordsXY(_loc);

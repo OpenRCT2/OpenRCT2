@@ -41,8 +41,7 @@ struct ITrackDesignRepository
     virtual std::string Install(const std::string& path, const std::string& name) = 0;
 };
 
-[[nodiscard]] std::unique_ptr<ITrackDesignRepository> CreateTrackDesignRepository(
-    const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
+[[nodiscard]] std::unique_ptr<ITrackDesignRepository> CreateTrackDesignRepository(OpenRCT2::IPlatformEnvironment& env);
 [[nodiscard]] std::string GetNameFromTrackPath(const std::string& path);
 
 void TrackRepositoryScan();

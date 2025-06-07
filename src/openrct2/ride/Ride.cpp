@@ -375,7 +375,7 @@ void RideUpdateFavouritedStat()
             auto ride = GetRide(peep->FavouriteRide);
             if (ride != nullptr)
             {
-                ride->guestsFavourite++;
+                ride->guestsFavourite = AddClamp(ride->guestsFavourite, 1u);
                 ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
             }
         }
@@ -1305,9 +1305,8 @@ static void RideInspectionUpdate(Ride& ride)
     if (gLegacyScene == LegacyScene::trackDesigner)
         return;
 
-    ride.lastInspection++;
-    if (ride.lastInspection == 0)
-        ride.lastInspection--;
+    ride.lastInspection = AddClamp<decltype(ride.lastInspection)>(ride.lastInspection, 1);
+    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
     int32_t inspectionIntervalMinutes = RideInspectionInterval[ride.inspectionInterval];
     // An inspection interval of 0 minutes means the ride is set to never be inspected.
@@ -1602,7 +1601,7 @@ void RideBreakdownAddNewsItem(const Ride& ride)
     {
         Formatter ft;
         ride.formatNameTo(ft);
-        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_BROKEN_DOWN, ride.id.ToUnderlying(), ft);
+        News::AddItemToQueue(News::ItemType::ride, STR_RIDE_IS_BROKEN_DOWN, ride.id.ToUnderlying(), ft);
     }
 }
 
@@ -1629,7 +1628,7 @@ static void RideBreakdownStatusUpdate(Ride& ride)
             {
                 Formatter ft;
                 ride.formatNameTo(ft);
-                News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_STILL_NOT_FIXED, ride.id.ToUnderlying(), ft);
+                News::AddItemToQueue(News::ItemType::ride, STR_RIDE_IS_STILL_NOT_FIXED, ride.id.ToUnderlying(), ft);
             }
         }
     }
@@ -2308,7 +2307,7 @@ static void RideEntranceExitConnected(Ride& ride)
             ride.formatNameTo(ft);
             if (Config::Get().notifications.RideWarnings)
             {
-                News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, ride.id.ToUnderlying(), ft);
+                News::AddItemToQueue(News::ItemType::ride, STR_ENTRANCE_NOT_CONNECTED, ride.id.ToUnderlying(), ft);
             }
             ride.connectedMessageThrottle = 3;
         }
@@ -2320,7 +2319,7 @@ static void RideEntranceExitConnected(Ride& ride)
             ride.formatNameTo(ft);
             if (Config::Get().notifications.RideWarnings)
             {
-                News::AddItemToQueue(News::ItemType::Ride, STR_EXIT_NOT_CONNECTED, ride.id.ToUnderlying(), ft);
+                News::AddItemToQueue(News::ItemType::ride, STR_EXIT_NOT_CONNECTED, ride.id.ToUnderlying(), ft);
             }
             ride.connectedMessageThrottle = 3;
         }
@@ -2387,7 +2386,7 @@ static void RideShopConnected(const Ride& ride)
     {
         Formatter ft;
         ride2->formatNameTo(ft);
-        News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, ride2->id.ToUnderlying(), ft);
+        News::AddItemToQueue(News::ItemType::ride, STR_ENTRANCE_NOT_CONNECTED, ride2->id.ToUnderlying(), ft);
     }
 
     ride2->connectedMessageThrottle = 3;
@@ -3308,7 +3307,7 @@ static Vehicle* VehicleCreateCar(
             chosenLoc.x = dodgemPos.x + (ScenarioRand() & 0xFF);
         } while (vehicle->DodgemsCarWouldCollideAt(chosenLoc).has_value());
 
-        vehicle->MoveTo({ chosenLoc, dodgemPos.z });
+        vehicle->MoveToAndUpdateSpatialIndex({ chosenLoc, dodgemPos.z });
     }
     else
     {
@@ -4888,8 +4887,9 @@ OpenRCT2::BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(
         { SpriteGroupType::Slopes60, SpritePrecision::Sprites4, SpriteGroupType::Slopes75, SpritePrecision::Sprites4,
           SpriteGroupType::Slopes90, SpritePrecision::Sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4,
           SpriteGroupType::SlopeInverted, SpritePrecision::Sprites4 }, // TrackGroup::halfLoopMedium
-        { SpriteGroupType::Slopes25Banked67, SpritePrecision::Sprites4, SpriteGroupType::Slopes25Banked90,
-          SpritePrecision::Sprites4, SpriteGroupType::Slopes25InlineTwists,
+        { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes12Banked22, SpritePrecision::Sprites4,
+          SpriteGroupType::Slopes25Banked22, SpritePrecision::Sprites4, SpriteGroupType::Slopes25Banked45,
+          SpritePrecision::Sprites4, SpriteGroupType::InlineTwists, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
           SpritePrecision::Sprites4 }, // TrackGroup::zeroGRoll
         { SpriteGroupType::Slopes42Banked22, SpritePrecision::Sprites4, SpriteGroupType::Slopes42Banked45,
           SpritePrecision::Sprites4, SpriteGroupType::Slopes42Banked67, SpritePrecision::Sprites4,
@@ -4914,13 +4914,13 @@ OpenRCT2::BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(
           SpritePrecision::Sprites4 }, // TrackGroup::flyingHalfLoopInvertedUp
         { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
           SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90,
-          SpritePrecision::Sprites4 },                             // TrackGroup::flyingHalfLoopUninvertedDown
-        {},                                                        // TrackGroup::slopeCurveLarge
-        {},                                                        // TrackGroup::slopeCurveLargeBanked
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBrakes
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBlockBrakes
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites8 },  // TrackGroup::inclinedBrakes
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBooster
+          SpritePrecision::Sprites4 },                                     // TrackGroup::flyingHalfLoopUninvertedDown
+        { SpriteGroupType::Slopes25, SpritePrecision::Sprites16 },         // TrackGroup::slopeCurveLarge
+        { SpriteGroupType::Slopes25Banked45, SpritePrecision::Sprites16 }, // TrackGroup::slopeCurveLargeBanked
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 },         // TrackGroup::diagBrakes
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 },         // TrackGroup::diagBlockBrakes
+        { SpriteGroupType::Slopes25, SpritePrecision::Sprites8 },          // TrackGroup::inclinedBrakes
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 },         // TrackGroup::diagBooster
         { SpriteGroupType::Slopes8, SpritePrecision::Sprites4, SpriteGroupType::Slopes16, SpritePrecision::Sprites4,
           SpriteGroupType::Slopes25, SpritePrecision::Sprites8, SpriteGroupType::Slopes42, SpritePrecision::Sprites8,
           SpriteGroupType::Slopes50, SpritePrecision::Sprites4 }, // TrackGroup::slopeSteepLong
@@ -5277,7 +5277,7 @@ void Ride::crash(uint8_t vehicleIndex)
     {
         Formatter ft;
         formatNameTo(ft);
-        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_HAS_CRASHED, id.ToUnderlying(), ft);
+        News::AddItemToQueue(News::ItemType::ride, STR_RIDE_HAS_CRASHED, id.ToUnderlying(), ft);
     }
 }
 

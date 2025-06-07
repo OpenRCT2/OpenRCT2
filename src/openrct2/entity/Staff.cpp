@@ -1680,41 +1680,90 @@ bool Staff::IsMechanic() const
     return AssignedStaffType == StaffType::Mechanic;
 }
 
-void Staff::UpdateStaff(uint32_t stepsToTake)
+void Staff::Update()
 {
-    switch (State)
+    if (PeepFlags & PEEP_FLAGS_POSITION_FROZEN)
     {
-        case PeepState::Patrolling:
-            UpdatePatrolling();
-            break;
-        case PeepState::Mowing:
-            UpdateMowing();
-            break;
-        case PeepState::Sweeping:
-            UpdateSweeping();
-            break;
-        case PeepState::Answering:
-            UpdateAnswering();
-            break;
-        case PeepState::Fixing:
-            UpdateFixing(stepsToTake);
-            break;
-        case PeepState::Inspecting:
-            UpdateFixing(stepsToTake);
-            break;
-        case PeepState::EmptyingBin:
-            UpdateEmptyingBin();
-            break;
-        case PeepState::Watering:
-            UpdateWatering();
-            break;
-        case PeepState::HeadingToInspection:
-            UpdateHeadingToInspect();
-            break;
-        default:
-            // TODO reset to default state
-            assert(false);
-            break;
+        if (!(PeepFlags & PEEP_FLAGS_ANIMATION_FROZEN))
+        {
+            // This is circumventing other logic, so only update every few ticks
+            if ((getGameState().currentTicks & 3) == 0)
+            {
+                if (IsActionWalking())
+                    UpdateWalkingAnimation();
+                else
+                    UpdateActionAnimation();
+                Invalidate();
+            }
+        }
+        return;
+    }
+    else if (PeepFlags & PEEP_FLAGS_ANIMATION_FROZEN)
+    {
+        // Animation is frozen while position is not. This allows a peep to walk
+        // around without its sprite being updated, which looks very glitchy.
+        // We'll just remove the flag and continue as normal, in this case.
+        PeepFlags &= ~PEEP_FLAGS_ANIMATION_FROZEN;
+    }
+
+    // Walking speed logic
+    const auto stepsToTake = GetStepsToTake();
+    const auto carryCheck = StepProgress + stepsToTake;
+    StepProgress = carryCheck;
+
+    if (carryCheck <= 255)
+    {
+        // No-op: Keep replay working for now, can be eliminate with a replay update.
+    }
+    else
+    {
+        // Loc68FD2F
+        switch (State)
+        {
+            case PeepState::Falling:
+                UpdateFalling();
+                break;
+            case PeepState::One:
+                Update1();
+                break;
+            case PeepState::OnRide:
+                // No action
+                break;
+            case PeepState::Picked:
+                UpdatePicked();
+                break;
+            case PeepState::Patrolling:
+                UpdatePatrolling();
+                break;
+            case PeepState::Mowing:
+                UpdateMowing();
+                break;
+            case PeepState::Sweeping:
+                UpdateSweeping();
+                break;
+            case PeepState::Answering:
+                UpdateAnswering();
+                break;
+            case PeepState::Fixing:
+                UpdateFixing(stepsToTake);
+                break;
+            case PeepState::Inspecting:
+                UpdateFixing(stepsToTake);
+                break;
+            case PeepState::EmptyingBin:
+                UpdateEmptyingBin();
+                break;
+            case PeepState::Watering:
+                UpdateWatering();
+                break;
+            case PeepState::HeadingToInspection:
+                UpdateHeadingToInspect();
+                break;
+            default:
+                // TODO reset to default state
+                assert(false);
+                break;
+        }
     }
 }
 

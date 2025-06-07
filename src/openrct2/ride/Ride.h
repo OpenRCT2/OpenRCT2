@@ -274,9 +274,9 @@ struct Ride
     uint8_t downtimeHistory[OpenRCT2::Limits::kDowntimeHistorySize]{};
     uint32_t numPrimaryItemsSold{};
     uint32_t numSecondaryItemsSold{};
-    uint8_t breakdownSoundModifier{};
     // Used to oscillate the sound when ride breaks down.
     // 0 = no change, 255 = max change
+    uint8_t breakdownSoundModifier{};
     uint8_t notFixedTimeout{};
     uint8_t lastCrashType{};
     uint8_t connectedMessageThrottle{};
@@ -797,6 +797,7 @@ enum
     RIDE_INVALIDATE_RIDE_OPERATING = 1 << 4,
     RIDE_INVALIDATE_RIDE_MAINTENANCE = 1 << 5,
     RIDE_INVALIDATE_RIDE_MUSIC = 1 << 6,
+    RIDE_INVALIDATE_RIDE_RATINGS = 1 << 7,
 };
 
 enum

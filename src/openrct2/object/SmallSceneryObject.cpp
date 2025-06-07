@@ -96,7 +96,7 @@ void SmallSceneryObject::Unload()
     _legacyType.image = 0;
 }
 
-void SmallSceneryObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
+void SmallSceneryObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
 {
     auto imageId = ImageId(_legacyType.image);
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
@@ -120,12 +120,12 @@ void SmallSceneryObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t 
         screenCoords.y -= 12;
     }
 
-    GfxDrawSprite(dpi, imageId, screenCoords);
+    GfxDrawSprite(rt, imageId, screenCoords);
 
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
     {
         imageId = ImageId(_legacyType.image + 4).WithTransparency(COLOUR_BORDEAUX_RED);
-        GfxDrawSprite(dpi, imageId, screenCoords);
+        GfxDrawSprite(rt, imageId, screenCoords);
     }
 
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_ANIMATED_FG))
@@ -135,7 +135,7 @@ void SmallSceneryObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t 
         {
             imageId = imageId.WithSecondary(COLOUR_YELLOW);
         }
-        GfxDrawSprite(dpi, imageId, screenCoords);
+        GfxDrawSprite(rt, imageId, screenCoords);
     }
 }
 
@@ -148,7 +148,6 @@ std::vector<uint8_t> SmallSceneryObject::ReadFrameOffsets(OpenRCT2::IStream* str
     {
         data.push_back(frameOffset);
     }
-    data.push_back(frameOffset);
     return data;
 }
 

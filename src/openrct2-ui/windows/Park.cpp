@@ -375,31 +375,39 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
             switch (page)
             {
                 case WINDOW_PARK_PAGE_ENTRANCE:
-                    OnDrawEntrance(dpi);
+                    OnDrawEntrance(rt);
                     break;
                 case WINDOW_PARK_PAGE_RATING:
-                    OnDrawRating(dpi);
+                    OnDrawRating(rt);
                     break;
                 case WINDOW_PARK_PAGE_GUESTS:
-                    OnDrawGuests(dpi);
+                    OnDrawGuests(rt);
                     break;
                 case WINDOW_PARK_PAGE_PRICE:
-                    OnDrawPrice(dpi);
+                    OnDrawPrice(rt);
                     break;
                 case WINDOW_PARK_PAGE_STATS:
-                    OnDrawStats(dpi);
+                    OnDrawStats(rt);
                     break;
                 case WINDOW_PARK_PAGE_OBJECTIVE:
-                    OnDrawObjective(dpi);
+                    OnDrawObjective(rt);
                     break;
                 case WINDOW_PARK_PAGE_AWARDS:
-                    OnDrawAwards(dpi);
+                    OnDrawAwards(rt);
                     break;
+            }
+        }
+
+        void OnViewportRotate() override
+        {
+            if (page == WINDOW_PARK_PAGE_ENTRANCE)
+            {
+                InitViewport();
             }
         }
 
@@ -597,17 +605,17 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDrawEntrance(DrawPixelInfo& dpi)
+        void OnDrawEntrance(RenderTarget& rt)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             // Draw viewport
             if (viewport != nullptr)
             {
-                WindowDrawViewport(dpi, *this);
+                WindowDrawViewport(rt, *this);
                 if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
-                    GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*this));
+                    GfxDrawSprite(rt, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*this));
             }
 
             // Draw park closed / open label
@@ -616,8 +624,8 @@ namespace OpenRCT2::Ui::Windows
 
             auto* labelWidget = &widgets[WIDX_STATUS];
             DrawTextEllipsised(
-                dpi, windowPos + ScreenCoordsXY{ labelWidget->midX(), labelWidget->top }, labelWidget->width(),
-                STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
+                rt, windowPos + ScreenCoordsXY{ labelWidget->midX(), labelWidget->top }, labelWidget->width(), STR_BLACK_STRING,
+                ft, { TextAlignment::CENTRE });
         }
 
         void InitViewport()
@@ -712,28 +720,28 @@ namespace OpenRCT2::Ui::Windows
                 kGraphNumYLabels, kParkRatingHistorySize);
         }
 
-        void OnDrawRating(DrawPixelInfo& dpi)
+        void OnDrawRating(RenderTarget& rt)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             Widget* widget = &widgets[WIDX_PAGE_BACKGROUND];
 
             // Current value
             Formatter ft;
             ft.Add<uint16_t>(getGameState().park.Rating);
-            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
+            DrawTextBasic(rt, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
 
             // Graph border
-            GfxFillRectInset(dpi, _ratingGraphBounds, colours[1], INSET_RECT_F_30);
+            GfxFillRectInset(rt, _ratingGraphBounds, colours[1], INSET_RECT_F_30);
             // hide resize widget on graph area
             constexpr ScreenCoordsXY offset{ 1, 1 };
             constexpr ScreenCoordsXY bigOffset{ 5, 5 };
             GfxFillRectInset(
-                dpi, { _ratingGraphBounds.Point2 - bigOffset, _ratingGraphBounds.Point2 - offset }, colours[1],
+                rt, { _ratingGraphBounds.Point2 - bigOffset, _ratingGraphBounds.Point2 - offset }, colours[1],
                 INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_BORDER_NONE);
 
-            Graph::DrawRatingGraph(dpi, _ratingProps);
+            Graph::DrawRatingGraph(rt, _ratingProps);
         }
 
 #pragma endregion
@@ -791,28 +799,28 @@ namespace OpenRCT2::Ui::Windows
                 kGraphNumYLabels, kGuestsInParkHistorySize);
         }
 
-        void OnDrawGuests(DrawPixelInfo& dpi)
+        void OnDrawGuests(RenderTarget& rt)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             Widget* widget = &widgets[WIDX_PAGE_BACKGROUND];
 
             // Current value
             Formatter ft;
             ft.Add<uint32_t>(getGameState().numGuestsInPark);
-            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
+            DrawTextBasic(rt, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
 
             // Graph border
-            GfxFillRectInset(dpi, _guestGraphBounds, colours[1], INSET_RECT_F_30);
+            GfxFillRectInset(rt, _guestGraphBounds, colours[1], INSET_RECT_F_30);
             // hide resize widget on graph area
             constexpr ScreenCoordsXY offset{ 1, 1 };
             constexpr ScreenCoordsXY bigOffset{ 5, 5 };
             GfxFillRectInset(
-                dpi, { _guestGraphBounds.Point2 - bigOffset, _guestGraphBounds.Point2 - offset }, colours[1],
+                rt, { _guestGraphBounds.Point2 - bigOffset, _guestGraphBounds.Point2 - offset }, colours[1],
                 INSET_RECT_FLAG_FILL_DONT_LIGHTEN | INSET_RECT_FLAG_BORDER_NONE);
 
-            Graph::DrawGuestGraph(dpi, _guestProps);
+            Graph::DrawGuestGraph(rt, _guestProps);
         }
 
 #pragma endregion
@@ -890,16 +898,16 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void OnDrawPrice(DrawPixelInfo& dpi)
+        void OnDrawPrice(RenderTarget& rt)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             auto screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 30 };
             auto ft = Formatter();
             ft.Add<money64>(getGameState().totalIncomeFromAdmissions);
-            DrawTextBasic(dpi, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
+            DrawTextBasic(rt, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
 
             money64 parkEntranceFee = Park::GetEntranceFee();
             ft = Formatter();
@@ -910,7 +918,7 @@ namespace OpenRCT2::Ui::Windows
                 stringId = STR_FREE;
 
             screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_PRICE].left + 1, widgets[WIDX_PRICE].top + 1 };
-            DrawTextBasic(dpi, screenCoords, stringId, ft, { colours[1] });
+            DrawTextBasic(rt, screenCoords, stringId, ft, { colours[1] });
         }
 #pragma endregion
 
@@ -950,10 +958,10 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void OnDrawStats(DrawPixelInfo& dpi)
+        void OnDrawStats(RenderTarget& rt)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             auto screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
@@ -969,7 +977,7 @@ namespace OpenRCT2::Ui::Windows
             }
             auto ft = Formatter();
             ft.Add<uint32_t>(parkSize);
-            DrawTextBasic(dpi, screenCoords, stringIndex, ft);
+            DrawTextBasic(rt, screenCoords, stringIndex, ft);
             screenCoords.y += kListRowHeight;
 
             // Draw number of rides / attractions
@@ -977,7 +985,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 ft = Formatter();
                 ft.Add<uint32_t>(_numberOfRides);
-                DrawTextBasic(dpi, screenCoords, STR_NUMBER_OF_RIDES_LABEL, ft);
+                DrawTextBasic(rt, screenCoords, STR_NUMBER_OF_RIDES_LABEL, ft);
             }
             screenCoords.y += kListRowHeight;
 
@@ -986,19 +994,19 @@ namespace OpenRCT2::Ui::Windows
             {
                 ft = Formatter();
                 ft.Add<uint32_t>(_numberOfStaff);
-                DrawTextBasic(dpi, screenCoords, STR_STAFF_LABEL, ft);
+                DrawTextBasic(rt, screenCoords, STR_STAFF_LABEL, ft);
             }
             screenCoords.y += kListRowHeight;
 
             // Draw number of guests in park
             ft = Formatter();
             ft.Add<uint32_t>(gameState.numGuestsInPark);
-            DrawTextBasic(dpi, screenCoords, STR_GUESTS_IN_PARK_LABEL, ft);
+            DrawTextBasic(rt, screenCoords, STR_GUESTS_IN_PARK_LABEL, ft);
             screenCoords.y += kListRowHeight;
 
             ft = Formatter();
             ft.Add<uint32_t>(gameState.totalAdmissions);
-            DrawTextBasic(dpi, screenCoords, STR_TOTAL_ADMISSIONS, ft);
+            DrawTextBasic(rt, screenCoords, STR_TOTAL_ADMISSIONS, ft);
         }
 #pragma endregion
 
@@ -1076,11 +1084,11 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void OnDrawObjective(DrawPixelInfo& dpi)
+        void OnDrawObjective(RenderTarget& rt)
         {
             auto& gameState = getGameState();
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             // Scenario description
             auto screenCoords = windowPos
@@ -1088,18 +1096,18 @@ namespace OpenRCT2::Ui::Windows
             auto ft = Formatter();
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(gameState.scenarioDetails.c_str());
-            screenCoords.y += DrawTextWrapped(dpi, screenCoords, 222, STR_BLACK_STRING, ft);
+            screenCoords.y += DrawTextWrapped(rt, screenCoords, 222, STR_BLACK_STRING, ft);
             screenCoords.y += 5;
 
             // Your objective:
-            DrawTextBasic(dpi, screenCoords, STR_OBJECTIVE_LABEL);
+            DrawTextBasic(rt, screenCoords, STR_OBJECTIVE_LABEL);
             screenCoords.y += kListRowHeight;
 
             // Objective
             ft = Formatter();
             formatObjective(ft, gameState.scenarioObjective);
 
-            screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, kObjectiveNames[gameState.scenarioObjective.Type], ft);
+            screenCoords.y += DrawTextWrapped(rt, screenCoords, 221, kObjectiveNames[gameState.scenarioObjective.Type], ft);
             screenCoords.y += 5;
 
             // Objective outcome
@@ -1108,14 +1116,14 @@ namespace OpenRCT2::Ui::Windows
                 if (gameState.scenarioCompletedCompanyValue == kCompanyValueOnFailedObjective)
                 {
                     // Objective failed
-                    DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_FAILED);
+                    DrawTextWrapped(rt, screenCoords, 222, STR_OBJECTIVE_FAILED);
                 }
                 else
                 {
                     // Objective completed
                     ft = Formatter();
                     ft.Add<money64>(gameState.scenarioCompletedCompanyValue);
-                    DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_ACHIEVED, ft);
+                    DrawTextWrapped(rt, screenCoords, 222, STR_OBJECTIVE_ACHIEVED, ft);
                 }
             }
         }
@@ -1141,10 +1149,10 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }
 
-        void OnDrawAwards(DrawPixelInfo& dpi)
+        void OnDrawAwards(RenderTarget& rt)
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             auto screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
@@ -1153,14 +1161,14 @@ namespace OpenRCT2::Ui::Windows
 
             for (const auto& award : currentAwards)
             {
-                GfxDrawSprite(dpi, ImageId(_parkAwards[EnumValue(award.Type)].sprite), screenCoords);
-                DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, _parkAwards[EnumValue(award.Type)].text);
+                GfxDrawSprite(rt, ImageId(_parkAwards[EnumValue(award.Type)].sprite), screenCoords);
+                DrawTextWrapped(rt, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, _parkAwards[EnumValue(award.Type)].text);
 
                 screenCoords.y += 32;
             }
 
             if (currentAwards.empty())
-                DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 6, 6 }, STR_NO_RECENT_AWARDS);
+                DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ 6, 6 }, STR_NO_RECENT_AWARDS);
         }
 #pragma endregion
 
@@ -1215,13 +1223,13 @@ namespace OpenRCT2::Ui::Windows
             pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& rt)
         {
             // Entrance tab
             if (!WidgetIsDisabled(*this, WIDX_TAB_1))
             {
                 GfxDrawSprite(
-                    dpi, ImageId(SPR_TAB_PARK_ENTRANCE),
+                    rt, ImageId(SPR_TAB_PARK_ENTRANCE),
                     windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
             }
 
@@ -1231,12 +1239,12 @@ namespace OpenRCT2::Ui::Windows
                 ImageId spriteIdx(SPR_TAB_GRAPH_0);
                 if (page == WINDOW_PARK_PAGE_RATING)
                     spriteIdx = spriteIdx.WithIndexOffset((frame_no / 8) % 8);
-                GfxDrawSprite(dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
+                GfxDrawSprite(rt, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
                 GfxDrawSprite(
-                    dpi, ImageId(SPR_RATING_HIGH),
+                    rt, ImageId(SPR_RATING_HIGH),
                     windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left + 7, widgets[WIDX_TAB_2].top + 1 });
                 GfxDrawSprite(
-                    dpi, ImageId(SPR_RATING_LOW),
+                    rt, ImageId(SPR_RATING_LOW),
                     windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left + 16, widgets[WIDX_TAB_2].top + 12 });
             }
 
@@ -1246,7 +1254,7 @@ namespace OpenRCT2::Ui::Windows
                 ImageId spriteIdx(SPR_TAB_GRAPH_0);
                 if (page == WINDOW_PARK_PAGE_GUESTS)
                     spriteIdx = spriteIdx.WithIndexOffset((frame_no / 8) % 8);
-                GfxDrawSprite(dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
+                GfxDrawSprite(rt, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
 
                 auto* animObj = findPeepAnimationsObjectForType(AnimationPeepType::Guest);
                 ImageId peepImage(
@@ -1255,7 +1263,7 @@ namespace OpenRCT2::Ui::Windows
                     peepImage = peepImage.WithIndexOffset(_peepAnimationFrame & 0xFFFFFFFC);
 
                 GfxDrawSprite(
-                    dpi, peepImage, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].midX(), widgets[WIDX_TAB_3].bottom - 9 });
+                    rt, peepImage, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].midX(), widgets[WIDX_TAB_3].bottom - 9 });
             }
 
             // Price tab
@@ -1264,7 +1272,7 @@ namespace OpenRCT2::Ui::Windows
                 ImageId spriteIdx(SPR_TAB_ADMISSION_0);
                 if (page == WINDOW_PARK_PAGE_PRICE)
                     spriteIdx = spriteIdx.WithIndexOffset((frame_no / 2) % 8);
-                GfxDrawSprite(dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
+                GfxDrawSprite(rt, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
             }
 
             // Statistics tab
@@ -1273,7 +1281,7 @@ namespace OpenRCT2::Ui::Windows
                 ImageId spriteIdx(SPR_TAB_STATS_0);
                 if (page == WINDOW_PARK_PAGE_STATS)
                     spriteIdx = spriteIdx.WithIndexOffset((frame_no / 4) % 7);
-                GfxDrawSprite(dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_5].left, widgets[WIDX_TAB_5].top });
+                GfxDrawSprite(rt, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_5].left, widgets[WIDX_TAB_5].top });
             }
 
             // Objective tab
@@ -1282,14 +1290,14 @@ namespace OpenRCT2::Ui::Windows
                 ImageId spriteIdx(SPR_TAB_OBJECTIVE_0);
                 if (page == WINDOW_PARK_PAGE_OBJECTIVE)
                     spriteIdx = spriteIdx.WithIndexOffset((frame_no / 4) % 16);
-                GfxDrawSprite(dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_6].left, widgets[WIDX_TAB_6].top });
+                GfxDrawSprite(rt, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_6].left, widgets[WIDX_TAB_6].top });
             }
 
             // Awards tab
             if (!WidgetIsDisabled(*this, WIDX_TAB_7))
             {
                 GfxDrawSprite(
-                    dpi, ImageId(SPR_TAB_AWARDS),
+                    rt, ImageId(SPR_TAB_AWARDS),
                     windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_7].left, widgets[WIDX_TAB_7].top });
             }
         }

@@ -401,7 +401,7 @@ static exitcode_t HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumer
     gOpenRCT2NoGraphics = true;
 
     auto context = OpenRCT2::CreateContext();
-    auto env = context->GetPlatformEnvironment();
+    auto& env = context->GetPlatformEnvironment();
     auto objectRepository = CreateObjectRepository(env);
     objectRepository->Construct(Config::Get().general.Language);
     return EXITCODE_OK;

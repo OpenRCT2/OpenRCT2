@@ -741,7 +741,8 @@ static void ConsoleSetVariableAction(InteractiveConsole& console, std::string va
     auto action = TAction(std::forward<TArgs>(args)...);
     action.SetCallback([&console, var](const GameAction*, const GameActions::Result* res) {
         if (res->Error != GameActions::Status::Ok)
-            console.WriteLineError(String::stdFormat("set %s command failed, likely due to permissions.", var.c_str()));
+            console.WriteLineError(String::stdFormat(
+                "set %s command failed: %s - %s.", var.c_str(), res->GetErrorTitle().c_str(), res->GetErrorMessage().c_str()));
         else
             console.Execute(String::stdFormat("get %s", var.c_str()));
         console.EndAsyncExecution();
@@ -1231,7 +1232,7 @@ static void ConsoleCommandShowLimits(InteractiveConsole& console, [[maybe_unused
 
     console.WriteFormatLine("Sprites: %d/%d", spriteCount, kMaxEntities);
     console.WriteFormatLine("Map Elements: %zu/%d", tileElementCount, kMaxTileElements);
-    console.WriteFormatLine("Banners: %d/%zu", bannerCount, MAX_BANNERS);
+    console.WriteFormatLine("Banners: %d/%zu", bannerCount, kMaxBanners);
     console.WriteFormatLine("Rides: %d/%d", rideCount, OpenRCT2::Limits::kMaxRidesInPark);
     console.WriteFormatLine("Images: %zu/%zu", ImageListGetUsedCount(), ImageListGetMaximum());
 }
@@ -1305,8 +1306,8 @@ static void ConsoleCommandLoadPark([[maybe_unused]] InteractiveConsole& console,
     if (String::indexOf(argv[0].c_str(), '/') == SIZE_MAX && String::indexOf(argv[0].c_str(), '\\') == SIZE_MAX)
     {
         // no / or \ was included. File should be in save dir.
-        auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
-        auto directory = env->GetDirectoryPath(OpenRCT2::DirBase::user, OpenRCT2::DirId::saves);
+        auto& env = OpenRCT2::GetContext()->GetPlatformEnvironment();
+        auto directory = env.GetDirectoryPath(OpenRCT2::DirBase::user, OpenRCT2::DirId::saves);
         savePath = Path::Combine(directory, argv[0]);
     }
     else
@@ -1378,7 +1379,7 @@ static void ConsoleCommandReplayStartRecord(InteractiveConsole& console, const a
     {
         name += ".parkrep";
     }
-    std::string outPath = OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
+    std::string outPath = OpenRCT2::GetContext()->GetPlatformEnvironment().GetDirectoryPath(
         OpenRCT2::DirBase::user, OpenRCT2::DirId::replayRecordings);
     name = Path::Combine(outPath, name);
 
@@ -1504,7 +1505,7 @@ static void ConsoleCommandReplayNormalise(InteractiveConsole& console, const arg
     {
         outputFile += ".parkrep";
     }
-    std::string outPath = OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
+    std::string outPath = OpenRCT2::GetContext()->GetPlatformEnvironment().GetDirectoryPath(
         OpenRCT2::DirBase::user, OpenRCT2::DirId::replayRecordings);
     outputFile = Path::Combine(outPath, outputFile);
 
@@ -1602,20 +1603,20 @@ static void ConsoleCommandAddNewsItem([[maybe_unused]] InteractiveConsole& conso
     if (argv.size() < 2)
     {
         console.WriteLineWarning("Too few arguments");
-        static_assert(News::ItemTypeCount == 11, "News::ItemType::Count changed, update console command!");
+        static_assert(News::ItemTypeCount == 11, "News::ItemType::count changed, update console command!");
         console.WriteLine("add_news_item <type> <message> [assoc]");
         console.WriteLine("type is one of:");
-        console.WriteLine("    0 (News::ItemType::Null)");
-        console.WriteLine("    1 (News::ItemType::Ride)");
-        console.WriteLine("    2 (News::ItemType::PeepOnRide)");
-        console.WriteLine("    3 (News::ItemType::Peep)");
-        console.WriteLine("    4 (News::ItemType::Money)");
-        console.WriteLine("    5 (News::ItemType::Blank)");
-        console.WriteLine("    6 (News::ItemType::Research)");
-        console.WriteLine("    7 (News::ItemType::Peeps)");
-        console.WriteLine("    8 (News::ItemType::Award)");
-        console.WriteLine("    9 (News::ItemType::Graph)");
-        console.WriteLine("   10 (News::ItemType::Campaign)");
+        console.WriteLine("    0 (News::ItemType::null)");
+        console.WriteLine("    1 (News::ItemType::ride)");
+        console.WriteLine("    2 (News::ItemType::peepOnRide)");
+        console.WriteLine("    3 (News::ItemType::peep)");
+        console.WriteLine("    4 (News::ItemType::money)");
+        console.WriteLine("    5 (News::ItemType::blank)");
+        console.WriteLine("    6 (News::ItemType::research)");
+        console.WriteLine("    7 (News::ItemType::peeps)");
+        console.WriteLine("    8 (News::ItemType::award)");
+        console.WriteLine("    9 (News::ItemType::graph)");
+        console.WriteLine("   10 (News::ItemType::campaign)");
         console.WriteLine("message is the message to display, wrapped in quotes for multiple words");
         console.WriteLine("assoc is the associated id of ride/peep/tile/etc. If the selected ItemType doesn't need an assoc "
                           "(Null, Money, Award, Graph), you can leave this field blank");

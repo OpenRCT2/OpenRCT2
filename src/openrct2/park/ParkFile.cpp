@@ -1155,20 +1155,20 @@ namespace OpenRCT2
 
         static void ReadWriteNewsItem(OrcaStream::ChunkStream& cs, News::Item& item)
         {
-            cs.ReadWrite(item.Type);
-            cs.ReadWrite(item.Flags);
-            cs.ReadWrite(item.Assoc);
-            cs.ReadWrite(item.Ticks);
-            cs.ReadWrite(item.MonthYear);
-            cs.ReadWrite(item.Day);
+            cs.ReadWrite(item.type);
+            cs.ReadWrite(item.flags);
+            cs.ReadWrite(item.assoc);
+            cs.ReadWrite(item.ticks);
+            cs.ReadWrite(item.monthYear);
+            cs.ReadWrite(item.day);
             if (cs.GetMode() == OrcaStream::Mode::READING)
             {
                 auto s = cs.Read<std::string>();
-                item.Text = s;
+                item.text = s;
             }
             else
             {
-                cs.Write(std::string_view(item.Text));
+                cs.Write(std::string_view(item.text));
             }
         }
 
@@ -1302,7 +1302,7 @@ namespace OpenRCT2
                     cs.Write(static_cast<uint32_t>(numBanners));
 
                     [[maybe_unused]] size_t numWritten = 0;
-                    for (BannerIndex::UnderlyingType i = 0; i < MAX_BANNERS; i++)
+                    for (BannerIndex::UnderlyingType i = 0; i < kMaxBanners; i++)
                     {
                         auto banner = GetBanner(BannerIndex::FromUnderlying(i));
                         if (banner != nullptr)
@@ -1361,11 +1361,11 @@ namespace OpenRCT2
                 cs.ReadWrite(banner.id);
             }
             cs.ReadWrite(banner.type);
-            cs.ReadWrite(banner.flags);
+            cs.ReadWrite(banner.flags.holder);
             cs.ReadWrite(banner.text);
             cs.ReadWrite(banner.colour);
-            cs.ReadWrite(banner.ride_index);
-            cs.ReadWrite(banner.text_colour);
+            cs.ReadWrite(banner.rideIndex);
+            cs.ReadWrite(banner.textColour);
             cs.ReadWrite(banner.position.x);
             cs.ReadWrite(banner.position.y);
         }

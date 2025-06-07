@@ -380,16 +380,16 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
             // Widgets
-            WindowDrawWidgets(*this, dpi);
-            WindowThemesDrawTabImages(dpi);
+            WindowDrawWidgets(*this, rt);
+            WindowThemesDrawTabImages(rt);
 
             if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
             {
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_THEMES_PRESETS].top + 1 }, STR_THEMES_LABEL_CURRENT_THEME,
+                    rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_THEMES_PRESETS].top + 1 }, STR_THEMES_LABEL_CURRENT_THEME,
                     {}, { colours[1] });
 
                 size_t activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
@@ -402,7 +402,7 @@ namespace OpenRCT2::Ui::Windows
                 auto newWidth = windowPos.x + widgets[WIDX_THEMES_PRESETS_DROPDOWN].left - widgets[WIDX_THEMES_PRESETS].left
                     - 4;
 
-                DrawTextEllipsised(dpi, screenPos, newWidth, STR_STRING, ft, { colours[1] });
+                DrawTextEllipsised(rt, screenPos, newWidth, STR_STRING, ft, { colours[1] });
             }
         }
 
@@ -695,7 +695,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             ScreenCoordsXY screenCoords;
 
@@ -705,7 +705,7 @@ namespace OpenRCT2::Ui::Windows
             if (!colours[1].hasFlag(ColourFlag::translucent))
                 // GfxFillRect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1,
                 // ColourMapA[colours[1].colour].mid_light);
-                GfxClear(dpi, ColourMapA[colours[1].colour].mid_light);
+                GfxClear(rt, ColourMapA[colours[1].colour].mid_light);
             screenCoords.y = 0;
             for (int32_t i = 0; i < GetColourSchemeTabCount(); i++)
             {
@@ -723,11 +723,11 @@ namespace OpenRCT2::Ui::Windows
                     emptyRow = true;
                 }
 
-                if (screenCoords.y > dpi.y + dpi.height)
+                if (screenCoords.y > rt.y + rt.height)
                 {
                     break;
                 }
-                if (screenCoords.y + _max_row_height >= dpi.y)
+                if (screenCoords.y + _max_row_height >= rt.y)
                 {
                     if (i + 1 < GetColourSchemeTabCount())
                     {
@@ -744,23 +744,23 @@ namespace OpenRCT2::Ui::Windows
                         {
                             TranslucentWindowPalette windowPalette = TranslucentWindowPalettes[colour.colour];
 
-                            GfxFilterRect(dpi, { leftTop, rightBottom }, windowPalette.highlight);
-                            GfxFilterRect(dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);
+                            GfxFilterRect(rt, { leftTop, rightBottom }, windowPalette.highlight);
+                            GfxFilterRect(rt, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);
                         }
                         else
                         {
                             colour = ColourMapA[colours[1].colour].mid_dark;
-                            GfxFillRect(dpi, { leftTop, rightBottom }, colour.colour);
+                            GfxFillRect(rt, { leftTop, rightBottom }, colour.colour);
 
                             colour = ColourMapA[colours[1].colour].lightest;
-                            GfxFillRect(dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour.colour);
+                            GfxFillRect(rt, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour.colour);
                         }
                     }
 
                     for (uint8_t j = 0; j < numColours; j++)
                     {
                         DrawTextWrapped(
-                            dpi, { 2, screenCoords.y + 4 }, kWindowHeaderWidth, ThemeDescGetName(wc), {}, { colours[1] });
+                            rt, { 2, screenCoords.y + 4 }, kWindowHeaderWidth, ThemeDescGetName(wc), {}, { colours[1] });
 
                         // Don't draw the empty row
                         if (emptyRow && j == 1)
@@ -772,16 +772,16 @@ namespace OpenRCT2::Ui::Windows
                         const bool isPressed = (i == _classIndex && j == _buttonIndex);
                         auto image = ImageId(isPressed ? SPR_PALETTE_BTN_PRESSED : SPR_PALETTE_BTN, colour.colour);
                         GfxDrawSprite(
-                            dpi, image, { _button_offset_x, screenCoords.y + _button_offset_y + _button_size * j + 1 });
+                            rt, image, { _button_offset_x, screenCoords.y + _button_offset_y + _button_size * j + 1 });
 
                         ScreenCoordsXY topLeft{ _check_offset_x, screenCoords.y + _check_offset_y + _button_size * j };
                         ScreenCoordsXY bottomRight{ _check_offset_x + 10,
                                                     screenCoords.y + _check_offset_y + 11 + _button_size * j };
-                        GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
+                        GfxFillRectInset(rt, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
                         if (colour.hasFlag(ColourFlag::translucent))
                         {
                             DrawText(
-                                dpi, topLeft, { colours[1].colour, FontStyle::Medium, TextDarkness::Dark }, kCheckMarkString);
+                                rt, topLeft, { colours[1].colour, FontStyle::Medium, TextDarkness::Dark }, kCheckMarkString);
                         }
                     }
                 }
@@ -884,7 +884,7 @@ namespace OpenRCT2::Ui::Windows
             return 0;
         }
 
-        void WindowThemesDrawTabImages(DrawPixelInfo& dpi)
+        void WindowThemesDrawTabImages(RenderTarget& rt)
         {
             for (int32_t i = 0; i < WINDOW_THEMES_TAB_COUNT; i++)
             {
@@ -892,7 +892,7 @@ namespace OpenRCT2::Ui::Windows
                 if (_selected_tab == i)
                     sprite_idx += frame_no / window_themes_tab_animation_divisor[_selected_tab];
                 GfxDrawSprite(
-                    dpi, ImageId(sprite_idx),
+                    rt, ImageId(sprite_idx),
                     windowPos
                         + ScreenCoordsXY{ widgets[WIDX_THEMES_SETTINGS_TAB + i].left,
                                           widgets[WIDX_THEMES_SETTINGS_TAB + i].top });

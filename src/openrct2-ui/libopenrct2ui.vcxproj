@@ -52,6 +52,7 @@
     <ClInclude Include="drawing\engines\DrawingEngineFactory.hpp" />
     <ClInclude Include="drawing\engines\opengl\ApplyPaletteShader.h" />
     <ClInclude Include="drawing\engines\opengl\ApplyTransparencyShader.h" />
+    <ClInclude Include="drawing\engines\opengl\CopyRectShader.h" />
     <ClInclude Include="drawing\engines\opengl\DrawCommands.h" />
     <ClInclude Include="drawing\engines\opengl\DrawLineShader.h" />
     <ClInclude Include="drawing\engines\opengl\DrawRectShader.h" />
@@ -119,6 +120,7 @@
     <ClCompile Include="drawing\engines\HardwareDisplayDrawingEngine.cpp" />
     <ClCompile Include="drawing\engines\opengl\ApplyPaletteShader.cpp" />
     <ClCompile Include="drawing\engines\opengl\ApplyTransparencyShader.cpp" />
+    <ClCompile Include="drawing\engines\opengl\CopyRectShader.cpp" />
     <ClCompile Include="drawing\engines\opengl\DrawLineShader.cpp" />
     <ClCompile Include="drawing\engines\opengl\DrawRectShader.cpp" />
     <ClCompile Include="drawing\engines\opengl\OpenGLAPI.cpp" />

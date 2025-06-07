@@ -29,7 +29,7 @@ void VirtualFloorSetHeight(int16_t height);
 
 void VirtualFloorEnable();
 void VirtualFloorDisable();
-void VirtualFloorInvalidate();
+void VirtualFloorInvalidate(const bool alwaysInvalidate);
 
 bool VirtualFloorTileIsFloor(const CoordsXY& loc);
 

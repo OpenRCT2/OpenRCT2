@@ -96,8 +96,6 @@ static constexpr ObjectEntryIndex ObjectEntryIndexIgnore = 254;
 
 namespace OpenRCT2::RCT1
 {
-    static std::mutex mtx;
-
     class S4Importer final : public IParkImporter
     {
     private:
@@ -233,6 +231,10 @@ namespace OpenRCT2::RCT1
             // If no entry is found, this is a custom scenario.
             bool isOfficial = ScenarioSources::TryGetById(_s4.ScenarioSlotIndex, &desc);
 
+            // Perform an additional name check if this is detected to be a competition scenario
+            if (isOfficial && desc.category == ScenarioCategory::competitions)
+                isOfficial = ScenarioSources::TryGetByName(_s4.ScenarioName, &desc);
+
             dst->Category = desc.category;
             dst->SourceGame = ScenarioSource{ desc.source };
             dst->SourceIndex = desc.index;
@@ -268,19 +270,14 @@ namespace OpenRCT2::RCT1
             {
                 auto& objManager = GetContext()->GetObjectManager();
 
-                // Ensure only one thread talks to the object manager at a time
-                std::lock_guard lock(mtx);
-
-                // Unload loaded scenario text object, if any.
-                if (auto* obj = objManager.GetLoadedObject<ScenarioTextObject>(0); obj != nullptr)
-                    objManager.UnloadObjects({ obj->GetDescriptor() });
-
                 // Load the one specified
-                if (auto* obj = objManager.LoadObject(desc.textObjectId); obj != nullptr)
+                if (auto obj = objManager.LoadTempObject(desc.textObjectId); obj != nullptr)
                 {
-                    auto* textObject = reinterpret_cast<ScenarioTextObject*>(obj);
-                    name = textObject->GetScenarioName();
-                    details = textObject->GetScenarioDetails();
+                    auto& textObject = reinterpret_cast<ScenarioTextObject&>(*obj);
+                    name = textObject.GetScenarioName();
+                    details = textObject.GetScenarioDetails();
+
+                    obj->Unload();
                 }
             }
 
@@ -2198,41 +2195,39 @@ namespace OpenRCT2::RCT1
             park.Name = std::move(parkName);
         }
 
-        std::vector<OpenRCT2::News::Item> convertNewsQueue(const RCT12NewsItem* queue, size_t size)
+        std::vector<OpenRCT2::News::Item> convertNewsQueue(std::span<const RCT12NewsItem> queue)
         {
             std::vector<OpenRCT2::News::Item> output{};
-            const RCT12NewsItem* src = queue;
 
-            for (uint8_t i = 0; i < size; i++)
+            for (const auto& src : queue)
             {
                 News::Item dst{};
 
-                if (src->Type == 0)
+                if (src.Type == 0)
                     break;
 
-                dst.Type = static_cast<News::ItemType>(src->Type);
-                dst.Flags = src->Flags;
-                dst.Ticks = src->Ticks;
-                dst.MonthYear = src->MonthYear;
-                dst.Day = src->Day;
-                dst.Text = ConvertFormattedStringToOpenRCT2(std::string_view(src->Text, sizeof(src->Text)));
+                dst.type = static_cast<News::ItemType>(src.Type);
+                dst.flags = src.Flags;
+                dst.ticks = src.Ticks;
+                dst.monthYear = src.MonthYear;
+                dst.day = src.Day;
+                dst.text = ConvertFormattedStringToOpenRCT2(std::string_view(src.Text, sizeof(src.Text)));
 
-                if (dst.Type == News::ItemType::Research)
+                if (dst.type == News::ItemType::research)
                 {
-                    uint8_t researchItem = src->Assoc & 0x000000FF;
-                    uint8_t researchType = (src->Assoc & 0x00FF0000) >> 16;
+                    uint8_t researchItem = src.Assoc & 0x000000FF;
+                    uint8_t researchType = (src.Assoc & 0x00FF0000) >> 16;
 
                     ::ResearchItem tmpResearchItem = {};
                     ConvertResearchEntry(&tmpResearchItem, researchItem, researchType);
-                    dst.Assoc = tmpResearchItem.rawValue;
+                    dst.assoc = tmpResearchItem.rawValue;
                 }
                 else
                 {
-                    dst.Assoc = src->Assoc;
+                    dst.assoc = src.Assoc;
                 }
 
                 output.emplace_back(dst);
-                src++;
             }
 
             return output;
@@ -2287,8 +2282,8 @@ namespace OpenRCT2::RCT1
             }
 
             // News items
-            auto recentMessages = convertNewsQueue(_s4.recentMessages, std::size(_s4.recentMessages));
-            auto archivedMessages = convertNewsQueue(_s4.archivedMessages, std::size(_s4.archivedMessages));
+            auto recentMessages = convertNewsQueue(_s4.recentMessages);
+            auto archivedMessages = convertNewsQueue(_s4.archivedMessages);
             News::importNewsItems(gameState, recentMessages, archivedMessages);
 
             // Initial guest status
@@ -2413,20 +2408,13 @@ namespace OpenRCT2::RCT1
                 {
                     auto& objManager = GetContext()->GetObjectManager();
 
-                    // Ensure only one thread talks to the object manager at a time
-                    std::lock_guard lock(mtx);
-
-                    // Unload loaded scenario text object, if any.
-                    if (auto* obj = objManager.GetLoadedObject<ScenarioTextObject>(0); obj != nullptr)
-                        objManager.UnloadObjects({ obj->GetDescriptor() });
-
                     // Load the one specified
-                    if (auto* obj = objManager.LoadObject(desc.textObjectId); obj != nullptr)
+                    if (auto obj = objManager.LoadTempObject(desc.textObjectId); obj != nullptr)
                     {
-                        auto* textObject = reinterpret_cast<ScenarioTextObject*>(obj);
-                        name = textObject->GetScenarioName();
-                        parkName = textObject->GetParkName();
-                        details = textObject->GetScenarioDetails();
+                        auto& textObject = reinterpret_cast<ScenarioTextObject&>(*obj);
+                        name = textObject.GetScenarioName();
+                        parkName = textObject.GetParkName();
+                        details = textObject.GetScenarioDetails();
                     }
                 }
             }
@@ -2510,10 +2498,10 @@ namespace OpenRCT2::RCT1
                 type = kObjectEntryIndexNull;
             dst->type = type;
 
-            dst->flags = 0;
-            if (src->Flags & BANNER_FLAG_NO_ENTRY)
+            dst->flags = {};
+            if (src->flags.has(BannerFlag::noEntry))
             {
-                dst->flags |= BANNER_FLAG_NO_ENTRY;
+                dst->flags.set(BannerFlag::noEntry);
             }
 
             if (IsUserStringID(src->StringID))
@@ -2522,7 +2510,7 @@ namespace OpenRCT2::RCT1
             }
 
             dst->colour = RCT1::GetColour(src->Colour);
-            dst->text_colour = src->TextColour;
+            dst->textColour = src->textColour;
             dst->position.x = src->x;
             dst->position.y = src->y;
         }

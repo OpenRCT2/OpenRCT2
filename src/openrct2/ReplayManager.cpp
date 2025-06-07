@@ -353,8 +353,8 @@ namespace OpenRCT2
 
             _currentRecording.reset();
 
-            News::Item* news = News::AddItemToQueue(News::ItemType::Blank, "Replay recording stopped", 0);
-            news->SetFlags(News::ItemFlags::HasButton); // Has no subject.
+            News::Item* news = News::AddItemToQueue(News::ItemType::blank, "Replay recording stopped", 0);
+            news->setFlags(News::ItemFlags::hasButton); // Has no subject.
 
             return result;
         }
@@ -413,7 +413,7 @@ namespace OpenRCT2
                 // If there are difference write a log to the desyncs folder
                 if (res != cmpData.spriteChanges.end())
                 {
-                    std::string outputPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
+                    std::string outputPath = GetContext()->GetPlatformEnvironment().GetDirectoryPath(
                         DirBase::user, DirId::desyncLogs);
                     char uniqueFileName[128] = {};
                     snprintf(uniqueFileName, sizeof(uniqueFileName), "replay_desync_%u.txt", currentTicks);
@@ -479,8 +479,8 @@ namespace OpenRCT2
             // During normal playback we pause the game if stopped.
             if (_mode == ReplayMode::PLAYING)
             {
-                News::Item* news = News::AddItemToQueue(News::ItemType::Blank, "Replay playback complete", 0);
-                news->SetFlags(News::ItemFlags::HasButton); // Has no subject.
+                News::Item* news = News::AddItemToQueue(News::ItemType::blank, "Replay playback complete", 0);
+                news->setFlags(News::ItemFlags::hasButton); // Has no subject.
             }
 
             // When normalizing the output we don't touch the mode.
@@ -624,7 +624,7 @@ namespace OpenRCT2
                 fileName += ".parkrep";
             }
 
-            std::string outPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
+            std::string outPath = GetContext()->GetPlatformEnvironment().GetDirectoryPath(
                 DirBase::user, DirId::replayRecordings);
             std::string outFile = Path::Combine(outPath, fileName);
 

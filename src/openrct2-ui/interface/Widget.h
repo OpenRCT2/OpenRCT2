@@ -32,7 +32,7 @@
 namespace OpenRCT2::Ui
 {
     ImageId GetColourButtonImage(colour_t colour);
-    Widget* GetWidgetByIndex(const WindowBase& w, WidgetIndex widgetIndex);
+    Widget* GetWidgetByIndex(WindowBase& w, WidgetIndex widgetIndex);
 
     constexpr uint32_t kWidgetContentEmpty = 0xFFFFFFFF;
     constexpr auto kBarBlink = (1u << 31);
@@ -173,7 +173,7 @@ namespace OpenRCT2::Ui
         return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_DROPDOWN_GLYPH, tooltip);
     }
 
-    void WidgetDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+    void WidgetDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
 
     bool WidgetIsDisabled(const WindowBase& w, WidgetIndex widgetIndex);
     bool WidgetIsHoldable(const WindowBase& w, WidgetIndex widgetIndex);

@@ -111,7 +111,7 @@ namespace OpenRCT2
 
         if (GameIsNotPaused() && gPreviewingTitleSequenceInGame)
         {
-            auto player = GetContext()->GetUiContext()->GetTitleSequencePlayer();
+            auto player = GetContext()->GetUiContext().GetTitleSequencePlayer();
             if (player != nullptr)
             {
                 player->Update();

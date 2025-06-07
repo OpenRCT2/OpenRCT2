@@ -279,7 +279,7 @@ namespace OpenRCT2
 
         uint8_t bitmap[kHeight][kWidth] = { 0 };
 
-        DrawPixelInfo dpi = {
+        RenderTarget rt = {
             .bits = reinterpret_cast<uint8_t*>(bitmap),
             .x = -(kWidth / 2),
             .y = -(kHeight / 2),
@@ -292,7 +292,7 @@ namespace OpenRCT2
         const auto numImages = *(std::max_element(anim.frame_offsets.begin(), anim.frame_offsets.end())) + 1;
         for (int32_t i = 0; i < numImages; ++i)
         {
-            GfxDrawSpriteSoftware(dpi, ImageId(anim.base_image + i), { 0, 0 });
+            GfxDrawSpriteSoftware(rt, ImageId(anim.base_image + i), { 0, 0 });
         }
 
         int32_t spriteWidth = -1;

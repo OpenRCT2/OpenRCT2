@@ -40,24 +40,24 @@ static constexpr uint32_t kMineTrainBlockBrakeImages[kNumOrthogonalDirections][2
 };
 
 static constexpr const uint32_t kMinetrainRCDiagBrakeImages[kNumOrthogonalDirections] = {
-    SPR_G2_MINETRAIN_DIAG_BRAKES,
-    SPR_G2_MINETRAIN_DIAG_BRAKES + 1,
-    SPR_G2_MINETRAIN_DIAG_BRAKES,
-    SPR_G2_MINETRAIN_DIAG_BRAKES + 1,
+    SPR_TRACKS_MINETRAIN_DIAG_BRAKES,
+    SPR_TRACKS_MINETRAIN_DIAG_BRAKES + 1,
+    SPR_TRACKS_MINETRAIN_DIAG_BRAKES,
+    SPR_TRACKS_MINETRAIN_DIAG_BRAKES + 1,
 };
 
 static constexpr const uint32_t kMinetrainRCDiagBlockBrakeImages[2][kNumOrthogonalDirections] = {
     {
-        SPR_G2_MINETRAIN_DIAG_BRAKES + 3,
-        SPR_G2_MINETRAIN_DIAG_BRAKES + 5,
-        SPR_G2_MINETRAIN_DIAG_BRAKES + 3,
-        SPR_G2_MINETRAIN_DIAG_BRAKES + 5,
+        SPR_TRACKS_MINETRAIN_DIAG_BRAKES + 3,
+        SPR_TRACKS_MINETRAIN_DIAG_BRAKES + 5,
+        SPR_TRACKS_MINETRAIN_DIAG_BRAKES + 3,
+        SPR_TRACKS_MINETRAIN_DIAG_BRAKES + 5,
     },
     {
-        SPR_G2_MINETRAIN_DIAG_BRAKES + 2,
-        SPR_G2_MINETRAIN_DIAG_BRAKES + 4,
-        SPR_G2_MINETRAIN_DIAG_BRAKES + 2,
-        SPR_G2_MINETRAIN_DIAG_BRAKES + 4,
+        SPR_TRACKS_MINETRAIN_DIAG_BRAKES + 2,
+        SPR_TRACKS_MINETRAIN_DIAG_BRAKES + 4,
+        SPR_TRACKS_MINETRAIN_DIAG_BRAKES + 2,
+        SPR_TRACKS_MINETRAIN_DIAG_BRAKES + 4,
     },
 };
 
@@ -6955,22 +6955,22 @@ static void MineTrainRCTrackFlatTo60DegUpLongBase(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 0),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 0),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 4),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 4),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 8),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 8),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 12),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 12),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
@@ -6990,22 +6990,22 @@ static void MineTrainRCTrackFlatTo60DegUpLongBase(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 1),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 1),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 5),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 5),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 9),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 9),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 13),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 13),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
@@ -7021,22 +7021,22 @@ static void MineTrainRCTrackFlatTo60DegUpLongBase(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 2),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 2),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 6),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 6),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 10),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 10),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 14),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 14),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
@@ -7052,22 +7052,22 @@ static void MineTrainRCTrackFlatTo60DegUpLongBase(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 3),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 3),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 7),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 7),
                         { 0, 0, height }, { { 28, 4, height }, { 2, 24, 56 } });
                     break;
                 case 2:
                     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 11),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 11),
                         { 0, 0, height }, { { 28, 4, height }, { 2, 24, 56 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 15),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 15),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
@@ -7100,22 +7100,22 @@ static void MineTrainRCTrack60DegUpToFlatLongBase(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 16),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 16),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 20),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 20),
                         { 0, 0, height }, { { 28, 4, height }, { 2, 24, 56 } });
                     break;
                 case 2:
                     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 24),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 24),
                         { 0, 0, height }, { { 28, 4, height }, { 2, 24, 56 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 28),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 28),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
@@ -7135,22 +7135,22 @@ static void MineTrainRCTrack60DegUpToFlatLongBase(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 17),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 17),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 21),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 21),
                         { 0, 0, height }, { { 28, 4, height }, { 2, 24, 56 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 25),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 25),
                         { 0, 0, height }, { { 28, 4, height }, { 2, 24, 56 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 29),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 29),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
@@ -7166,22 +7166,22 @@ static void MineTrainRCTrack60DegUpToFlatLongBase(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 18),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 18),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 22),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 22),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 26),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 26),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 30),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 30),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
@@ -7197,22 +7197,22 @@ static void MineTrainRCTrack60DegUpToFlatLongBase(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 19),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 19),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 23),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 23),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 27),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 27),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours.WithIndex(SPR_G2_MINETRAIN_RC_FLAT_TO_STEEP + 31),
+                        session, direction, session.TrackColours.WithIndex(SPR_TRACKS_MINETRAIN_RC_FLAT_TO_STEEP + 31),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }

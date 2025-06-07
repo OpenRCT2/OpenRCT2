@@ -27,13 +27,13 @@ namespace OpenRCT2::Scripting
     inline News::ItemType GetParkMessageType(const std::string& key)
     {
         // Get the first ItemType that appears in ParkMessageTypeStrings that isn't Null
-        auto firstType = static_cast<uint8_t>(News::ItemType::Ride);
+        auto firstType = static_cast<uint8_t>(News::ItemType::ride);
 
         auto begin = std::begin(ParkMessageTypeStrings);
         auto end = std::end(ParkMessageTypeStrings);
 
         auto it = std::find(begin, end, key);
-        return it != end ? static_cast<News::ItemType>(firstType + std::distance(begin, it)) : News::ItemType::Blank;
+        return it != end ? static_cast<News::ItemType>(firstType + std::distance(begin, it)) : News::ItemType::blank;
     }
 
     inline std::string GetParkMessageType(News::ItemType type)
@@ -52,12 +52,12 @@ namespace OpenRCT2::Scripting
     inline News::Item FromDuk(const DukValue& value)
     {
         News::Item result{};
-        result.Type = GetParkMessageType(value["type"].as_string());
-        result.Assoc = value["subject"].as_uint();
-        result.Ticks = value["tickCount"].as_uint();
-        result.MonthYear = value["month"].as_uint();
-        result.Day = value["day"].as_uint();
-        result.Text = value["text"].as_string();
+        result.type = GetParkMessageType(value["type"].as_string());
+        result.assoc = value["subject"].as_uint();
+        result.ticks = value["tickCount"].as_uint();
+        result.monthYear = value["month"].as_uint();
+        result.day = value["day"].as_uint();
+        result.text = value["text"].as_string();
         return result;
     }
 

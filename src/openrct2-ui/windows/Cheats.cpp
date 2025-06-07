@@ -600,10 +600,10 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             static constexpr int16_t _xLcol = 14;
             static constexpr int16_t _xRcol = 208;
@@ -620,36 +620,36 @@ static StringId window_cheats_page_titles[] = {
 
                 auto& widget = widgets[WIDX_MONEY_SPINNER];
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ _xLcol, widget.top + 2 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });
+                    rt, windowPos + ScreenCoordsXY{ _xLcol, widget.top + 2 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });
             }
             else if (page == WINDOW_CHEATS_PAGE_DATE)
             {
                 auto& yearBox = widgets[WIDX_YEAR_BOX];
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, yearBox.top + 2 }, STR_YEAR);
+                DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol, yearBox.top + 2 }, STR_YEAR);
 
                 auto& monthBox = widgets[WIDX_MONTH_BOX];
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, monthBox.top + 2 }, STR_MONTH);
+                DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol, monthBox.top + 2 }, STR_MONTH);
 
                 auto& dayBox = widgets[WIDX_DAY_BOX];
-                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, dayBox.top + 2 }, STR_DAY);
+                DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol, dayBox.top + 2 }, STR_DAY);
 
                 auto ft = Formatter();
                 ft.Add<int32_t>(_yearSpinnerValue);
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ _xRcol, yearBox.top + 2 }, STR_FORMAT_INTEGER, ft,
+                    rt, windowPos + ScreenCoordsXY{ _xRcol, yearBox.top + 2 }, STR_FORMAT_INTEGER, ft,
                     { colours[1], TextAlignment::RIGHT });
 
                 ft = Formatter();
                 int32_t actual_month = _monthSpinnerValue - 1;
                 ft.Add<int32_t>(actual_month);
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ _xRcol, monthBox.top + 2 }, STR_FORMAT_MONTH, ft,
+                    rt, windowPos + ScreenCoordsXY{ _xRcol, monthBox.top + 2 }, STR_FORMAT_MONTH, ft,
                     { colours[1], TextAlignment::RIGHT });
 
                 ft = Formatter();
                 ft.Add<int32_t>(_daySpinnerValue);
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ _xRcol, dayBox.top + 2 }, STR_FORMAT_INTEGER, ft,
+                    rt, windowPos + ScreenCoordsXY{ _xRcol, dayBox.top + 2 }, STR_FORMAT_INTEGER, ft,
                     { colours[1], TextAlignment::RIGHT });
             }
             else if (page == WINDOW_CHEATS_PAGE_PARK)
@@ -660,7 +660,7 @@ static StringId window_cheats_page_titles[] = {
 
                     auto& widget = widgets[WIDX_PARK_RATING_SPINNER];
                     DrawTextBasic(
-                        dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 2 }, STR_FORMAT_INTEGER, ft,
+                        rt, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 2 }, STR_FORMAT_INTEGER, ft,
                         { colours[1] });
                 }
             }
@@ -668,51 +668,51 @@ static StringId window_cheats_page_titles[] = {
             {
                 {
                     auto& widget = widgets[WIDX_STAFF_SPEED];
-                    DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHEAT_STAFF_SPEED);
+                    DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHEAT_STAFF_SPEED);
                 }
             }
             else if (page == WINDOW_CHEATS_PAGE_GUESTS)
             {
                 {
                     auto& widget = widgets[WIDX_GUEST_HAPPINESS_MIN];
-                    DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_HAPPINESS);
+                    DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_HAPPINESS);
                 }
                 {
                     auto& widget = widgets[WIDX_GUEST_ENERGY_MIN];
-                    DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_ENERGY);
+                    DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_ENERGY);
                 }
                 {
                     auto& widget = widgets[WIDX_GUEST_HUNGER_MIN];
-                    DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_HUNGER);
+                    DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_HUNGER);
                 }
                 {
                     auto& widget = widgets[WIDX_GUEST_THIRST_MIN];
-                    DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_THIRST);
+                    DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_THIRST);
                 }
                 {
                     auto& widget = widgets[WIDX_GUEST_NAUSEA_MIN];
-                    DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_NAUSEA);
+                    DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_NAUSEA);
                 }
                 {
                     auto& widget = widgets[WIDX_GUEST_NAUSEA_TOLERANCE_MIN];
                     DrawTextBasic(
-                        dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_NAUSEA_TOLERANCE);
+                        rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_NAUSEA_TOLERANCE);
                 }
                 {
                     auto& widget = widgets[WIDX_GUEST_TOILET_MIN];
-                    DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_TOILET);
+                    DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 2 }, STR_CHEAT_GUEST_TOILET);
                 }
                 {
                     auto& widget = widgets[WIDX_GUEST_RIDE_INTENSITY_LESS_THAN_15];
                     DrawTextBasic(
-                        dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top - 17 }, STR_CHEAT_GUEST_PREFERRED_INTENSITY);
+                        rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top - 17 }, STR_CHEAT_GUEST_PREFERRED_INTENSITY);
                 }
             }
             else if (page == WINDOW_CHEATS_PAGE_WEATHER)
             {
                 {
                     auto& widget = widgets[WIDX_WEATHER];
-                    DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHANGE_WEATHER);
+                    DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHANGE_WEATHER);
                 }
             }
         }
@@ -789,7 +789,7 @@ static StringId window_cheats_page_titles[] = {
             }
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& rt)
         {
             // Money tab
             if (!IsWidgetDisabled(WIDX_TAB_1))
@@ -798,7 +798,7 @@ static StringId window_cheats_page_titles[] = {
                 if (page == WINDOW_CHEATS_PAGE_MONEY)
                     sprite_idx += (frame_no / 2) % 8;
                 GfxDrawSprite(
-                    dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
+                    rt, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
             }
 
             // Date tab
@@ -808,7 +808,7 @@ static StringId window_cheats_page_titles[] = {
                 if (page == WINDOW_CHEATS_PAGE_DATE)
                     sprite_idx += (frame_no / 8) % 8;
                 GfxDrawSprite(
-                    dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
+                    rt, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
             }
 
             // Guests tab
@@ -818,7 +818,7 @@ static StringId window_cheats_page_titles[] = {
                 if (page == WINDOW_CHEATS_PAGE_GUESTS)
                     sprite_idx += (frame_no / 3) % 8;
                 GfxDrawSprite(
-                    dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
+                    rt, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
             }
 
             // Staff tab
@@ -826,7 +826,7 @@ static StringId window_cheats_page_titles[] = {
             {
                 uint32_t sprite_idx = SPR_MECHANIC;
                 GfxDrawSprite(
-                    dpi, ImageId(sprite_idx),
+                    rt, ImageId(sprite_idx),
                     windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left + 2, widgets[WIDX_TAB_4].top + 1 });
             }
 
@@ -834,8 +834,7 @@ static StringId window_cheats_page_titles[] = {
             if (!IsWidgetDisabled(WIDX_TAB_5))
             {
                 GfxDrawSprite(
-                    dpi, ImageId(SPR_TAB_PARK),
-                    windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_5].left, widgets[WIDX_TAB_5].top });
+                    rt, ImageId(SPR_TAB_PARK), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_5].left, widgets[WIDX_TAB_5].top });
             }
 
             // Rides tab
@@ -845,7 +844,7 @@ static StringId window_cheats_page_titles[] = {
                 if (page == WINDOW_CHEATS_PAGE_RIDES)
                     sprite_idx += (frame_no / 4) % 16;
                 GfxDrawSprite(
-                    dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_6].left, widgets[WIDX_TAB_6].top });
+                    rt, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_6].left, widgets[WIDX_TAB_6].top });
             }
 
             // Nature/weather tab
@@ -853,7 +852,7 @@ static StringId window_cheats_page_titles[] = {
             {
                 uint32_t sprite_idx = SPR_WEATHER_SUN_CLOUD;
                 GfxDrawSprite(
-                    dpi, ImageId(sprite_idx),
+                    rt, ImageId(sprite_idx),
                     windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_7].left + 2, widgets[WIDX_TAB_7].top + 4 });
             }
         }

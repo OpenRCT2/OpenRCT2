@@ -63,8 +63,8 @@ namespace OpenRCT2::Ui::Windows
          */
         const std::string GetText(PathId pathId)
         {
-            auto env = GetContext()->GetPlatformEnvironment();
-            auto path = env->GetFilePath(pathId);
+            auto& env = GetContext()->GetPlatformEnvironment();
+            auto path = env.GetFilePath(pathId);
             auto fs = std::ifstream(fs::u8path(path), std::ios::in);
             if (!fs.is_open())
             {
@@ -165,7 +165,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_OPEN_URL:
                     if (_newVersionInfo != nullptr)
                     {
-                        GetContext()->GetUiContext()->OpenURL(_newVersionInfo->url);
+                        GetContext()->GetUiContext().OpenURL("https://openrct2.io/download/release");
                     }
                     else
                     {
@@ -175,7 +175,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             const int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
 
@@ -183,10 +183,10 @@ namespace OpenRCT2::Ui::Windows
             for (const auto& line : _changelogLines)
             {
                 screenCoords.y += lineHeight;
-                if (screenCoords.y + lineHeight < dpi.y || screenCoords.y >= dpi.y + dpi.height)
+                if (screenCoords.y + lineHeight < rt.y || screenCoords.y >= rt.y + rt.height)
                     continue;
 
-                DrawText(dpi, screenCoords, { colours[0] }, line.c_str());
+                DrawText(rt, screenCoords, { colours[0] }, line.c_str());
             }
         }
 

@@ -568,12 +568,12 @@ static constexpr uint32_t miniature_railway_track_pieces_diag_25_deg_up[4] = {
 
 static ImageId MiniatureRailwayTrackToGravel(ImageId imageId)
 {
-    return ImageId(imageId.GetIndex() - SPR_MINIATURE_RAILWAY_FLAT_SW_NE + SPR_G2_MINIATURE_RAILWAY_GRAVEL_SW_NE);
+    return ImageId(imageId.GetIndex() - SPR_MINIATURE_RAILWAY_FLAT_SW_NE + SPR_TRACKS_MINIATURE_RAILWAY_GRAVEL_SW_NE);
 }
 
 static ImageId MiniatureRailwayTrackToGrooved(ImageId imageId)
 {
-    return ImageId(imageId.GetIndex() - SPR_MINIATURE_RAILWAY_FLAT_SW_NE + SPR_G2_MINIATURE_RAILWAY_GROOVED_SW_NE);
+    return ImageId(imageId.GetIndex() - SPR_MINIATURE_RAILWAY_FLAT_SW_NE + SPR_TRACKS_MINIATURE_RAILWAY_GROOVED_SW_NE);
 }
 
 static ImageId MiniatureRailwayTrackToGroovedIndent(const TileElement* path, uint8_t direction, uint8_t rotation)
@@ -583,7 +583,7 @@ static ImageId MiniatureRailwayTrackToGroovedIndent(const TileElement* path, uin
         return ImageId(0);
     }
 
-    uint32_t imageIdAlt = SPR_G2_MINIATURE_RAILWAY_GROOVED_SW_NE;
+    uint32_t imageIdAlt = SPR_TRACKS_MINIATURE_RAILWAY_GROOVED_SW_NE;
 
     uint8_t correctedEdges = path->AsPath()->GetEdges();
     correctedEdges |= correctedEdges << 4;
@@ -594,12 +594,12 @@ static ImageId MiniatureRailwayTrackToGroovedIndent(const TileElement* path, uin
     {
         static constexpr uint32_t imageIds[2][2] = {
             {
-                SPR_G2_MINIATURE_RAILWAY_INSET_NW_SE,
-                SPR_G2_MINIATURE_RAILWAY_INSET_END_NW,
+                SPR_TRACKS_MINIATURE_RAILWAY_INSET_NW_SE,
+                SPR_TRACKS_MINIATURE_RAILWAY_INSET_END_NW,
             },
             {
-                SPR_G2_MINIATURE_RAILWAY_INSET_END_SE,
-                SPR_G2_MINIATURE_RAILWAY_INSET_END_NW_SE,
+                SPR_TRACKS_MINIATURE_RAILWAY_INSET_END_SE,
+                SPR_TRACKS_MINIATURE_RAILWAY_INSET_END_NW_SE,
             },
         };
         imageIdAlt = imageIds[(correctedEdges & 0x2) ? 0 : 1][(correctedEdges & 0x8) ? 0 : 1];
@@ -608,12 +608,12 @@ static ImageId MiniatureRailwayTrackToGroovedIndent(const TileElement* path, uin
     {
         static constexpr uint32_t imageIds[2][2] = {
             {
-                SPR_G2_MINIATURE_RAILWAY_INSET_SW_NE,
-                SPR_G2_MINIATURE_RAILWAY_INSET_END_SW,
+                SPR_TRACKS_MINIATURE_RAILWAY_INSET_SW_NE,
+                SPR_TRACKS_MINIATURE_RAILWAY_INSET_END_SW,
             },
             {
-                SPR_G2_MINIATURE_RAILWAY_INSET_END_NE,
-                SPR_G2_MINIATURE_RAILWAY_INSET_END_SW_NE,
+                SPR_TRACKS_MINIATURE_RAILWAY_INSET_END_NE,
+                SPR_TRACKS_MINIATURE_RAILWAY_INSET_END_SW_NE,
             },
         };
         imageIdAlt = imageIds[(correctedEdges & 0x1) ? 0 : 1][(correctedEdges & 0x4) ? 0 : 1];
@@ -1381,7 +1381,7 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn3Tiles(
         // The following piece was missing in vanilla RCT2
         if (trackSequence == 1 && direction == 0)
         {
-            auto imageId = session.TrackColours.WithIndex(SPR_G2_MINIATURE_RAILWAY_QUARTER_TURN_3_TILES_SW_SE_PART_3);
+            auto imageId = session.TrackColours.WithIndex(SPR_TRACKS_MINIATURE_RAILWAY_QUARTER_TURN_3_TILES_SW_SE_PART_3);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 8, 8, 2 } });
         }
     }

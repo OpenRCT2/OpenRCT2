@@ -668,7 +668,6 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
 
 static u8string getScenarioSHA256(u8string_view scenarioPath)
 {
-    auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
     auto scenarioData = OpenRCT2::File::ReadAllBytes(scenarioPath);
 #ifdef DISABLE_NETWORK
     auto scenarioStringHash = picosha2::hash256_hex_string(scenarioData);
@@ -676,14 +675,14 @@ static u8string getScenarioSHA256(u8string_view scenarioPath)
     auto scenarioHash = OpenRCT2::Crypt::SHA256(scenarioData.data(), scenarioData.size());
     auto scenarioStringHash = OpenRCT2::String::StringFromHex(scenarioHash);
 #endif
-    LOG_INFO("Fetching patch\n  Scenario: '%s'\n  SHA '%s'", scenarioPath.data(), scenarioStringHash.c_str());
+    LOG_VERBOSE("Fetching patch\n  Scenario: '%s'\n  SHA '%s'", scenarioPath.data(), scenarioStringHash.c_str());
     return scenarioStringHash;
 }
 
 static u8string GetPatchFileName(u8string_view scenarioHash)
 {
-    auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
-    auto scenarioPatches = env->GetDirectoryPath(OpenRCT2::DirBase::openrct2, OpenRCT2::DirId::scenarioPatches);
+    auto& env = OpenRCT2::GetContext()->GetPlatformEnvironment();
+    auto scenarioPatches = env.GetDirectoryPath(OpenRCT2::DirBase::openrct2, OpenRCT2::DirId::scenarioPatches);
     auto scenarioPatchFile = OpenRCT2::Path::WithExtension(scenarioHash.substr(0, 7), ".parkpatch");
     return OpenRCT2::Path::Combine(scenarioPatches, scenarioPatchFile);
 }
@@ -709,7 +708,7 @@ static bool ValidateSHA256(const json_t& scenarioPatch, u8string_view scenarioHa
 
     auto scenarioName = OpenRCT2::Json::GetString(scenarioPatch[_scenarioNameKey]);
     auto scenarioSHA = OpenRCT2::Json::GetString(scenarioPatch[_fullSHAKey]);
-    LOG_INFO(
+    LOG_VERBOSE(
         "\n  Scenario '%s'\n  SHA '%s'\n  SHA Valid: %d", scenarioName.c_str(), scenarioSHA.c_str(),
         (scenarioHash == scenarioSHA));
 

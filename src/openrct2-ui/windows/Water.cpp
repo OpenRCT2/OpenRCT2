@@ -149,19 +149,19 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
             auto screenCoords = ScreenCoordsXY{ windowPos.x + widgets[WIDX_PREVIEW].midX(),
                                                 windowPos.y + widgets[WIDX_PREVIEW].midY() };
 
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
             // Draw number for tool sizes bigger than 7
             if (gLandToolSize > kLandToolMaximumSizeWithSprite)
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(gLandToolSize);
                 DrawTextBasic(
-                    dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+                    rt, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
             }
 
             if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
@@ -172,7 +172,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<money64>(_waterToolRaiseCost);
-                    DrawTextBasic(dpi, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                    DrawTextBasic(rt, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::CENTRE });
                 }
                 screenCoords.y += 10;
 
@@ -181,7 +181,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto ft = Formatter();
                     ft.Add<money64>(_waterToolLowerCost);
-                    DrawTextBasic(dpi, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                    DrawTextBasic(rt, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
                 }
             }
         }

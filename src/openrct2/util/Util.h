@@ -24,8 +24,8 @@ constexpr T AddClamp(T value, T valueToAdd)
     {
         static_assert(sizeof(money64) == sizeof(int64_t));
     }
-    auto maxCap = std::numeric_limits<T>::max();
-    auto minCap = std::numeric_limits<T>::lowest();
+    constexpr auto maxCap = std::numeric_limits<T>::max();
+    constexpr auto minCap = std::numeric_limits<T>::lowest();
     if ((valueToAdd > 0) && (value > (maxCap - (valueToAdd))))
     {
         return maxCap;

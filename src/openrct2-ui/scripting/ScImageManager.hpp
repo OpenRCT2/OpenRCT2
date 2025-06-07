@@ -54,6 +54,14 @@ namespace OpenRCT2::Scripting
             {
                 return CreateImageIndexRange(SPR_G2_BEGIN, SPR_G2_END - SPR_G2_BEGIN);
             }
+            else if (name == "fonts")
+            {
+                return CreateImageIndexRange(SPR_FONTS_BEGIN, SPR_FONTS_END - SPR_FONTS_BEGIN);
+            }
+            else if (name == "tracks")
+            {
+                return CreateImageIndexRange(SPR_TRACKS_BEGIN, SPR_TRACKS_END - SPR_TRACKS_BEGIN);
+            }
             else if (name == "csg")
             {
                 return CreateImageIndexRange(SPR_CSG_BEGIN, SPR_CSG_END - SPR_CSG_BEGIN);

@@ -482,6 +482,8 @@ namespace OpenRCT2::Ui::Windows
                 }
                 widgetIndex++;
             }
+
+            UpdateViewport();
         }
 
         void OnPrepareDraw() override
@@ -534,21 +536,21 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            WindowDrawWidgets(*this, dpi);
-            DrawTabImages(dpi);
+            WindowDrawWidgets(*this, rt);
+            DrawTabImages(rt);
             if (viewport != nullptr)
             {
                 auto widgetIndex = GetViewportWidgetIndex();
                 if (WidgetIsVisible(*this, widgetIndex.value_or(false)))
                 {
-                    WindowDrawViewport(dpi, *this);
+                    WindowDrawViewport(rt, *this);
                 }
             }
         }
 
-        void OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi) override
+        void OnDrawWidget(WidgetIndex widgetIndex, RenderTarget& rt) override
         {
             const auto& widget = widgets[widgetIndex];
             const auto widgetDesc = _info.GetCustomWidgetDesc(this, widgetIndex);
@@ -557,9 +559,9 @@ namespace OpenRCT2::Ui::Windows
                 auto& onDraw = widgetDesc->OnDraw;
                 if (onDraw.is_function())
                 {
-                    DrawPixelInfo widgetDpi;
+                    RenderTarget widgetDpi;
                     if (ClipDrawPixelInfo(
-                            widgetDpi, dpi, { windowPos.x + widget.left, windowPos.y + widget.top }, widget.width(),
+                            widgetDpi, rt, { windowPos.x + widget.left, windowPos.y + widget.top }, widget.width(),
                             widget.height()))
                     {
                         auto ctx = onDraw.context();
@@ -572,7 +574,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                Window::OnDrawWidget(widgetIndex, dpi);
+                Window::OnDrawWidget(widgetIndex, rt);
             }
         }
 
@@ -748,11 +750,11 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             if (scrollIndex < static_cast<int32_t>(_info.ListViews.size()))
             {
-                _info.ListViews[scrollIndex].Paint(this, dpi, &scrolls[scrollIndex]);
+                _info.ListViews[scrollIndex].Paint(this, rt, &scrolls[scrollIndex]);
             }
         }
 
@@ -854,7 +856,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& rt)
         {
             const auto& tabs = _info.Desc.Tabs;
             size_t tabIndex = 0;
@@ -872,7 +874,7 @@ namespace OpenRCT2::Ui::Windows
                         auto imageOffset = frame % tab.imageFrameCount;
                         image = image.WithIndex(image.GetIndex() + imageOffset);
                     }
-                    GfxDrawSprite(dpi, image, leftTop);
+                    GfxDrawSprite(rt, image, leftTop);
                 }
                 tabIndex++;
             }
@@ -1481,7 +1483,7 @@ namespace OpenRCT2::Ui::Windows
     void CloseWindowsOwnedByPlugin(std::shared_ptr<Plugin> plugin)
     {
         // Get all the windows that need closing
-        std::vector<std::shared_ptr<WindowBase>> customWindows;
+        std::vector<WindowBase*> customWindows;
         for (const auto& window : g_window_list)
         {
             if (window->classification == WindowClass::Custom)
@@ -1490,7 +1492,7 @@ namespace OpenRCT2::Ui::Windows
                 auto& customInfo = GetInfo(customWindow);
                 if (customInfo.Owner == plugin)
                 {
-                    customWindows.push_back(window);
+                    customWindows.push_back(window.get());
                 }
             }
         }
@@ -1498,7 +1500,7 @@ namespace OpenRCT2::Ui::Windows
         for (auto& window : customWindows)
         {
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->Close(*window.get());
+            windowMgr->Close(*window);
         }
     }
 

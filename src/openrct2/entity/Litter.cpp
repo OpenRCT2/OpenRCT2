@@ -184,8 +184,8 @@ void Litter::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-    DrawPixelInfo& dpi = session.DPI;
-    if (dpi.zoom_level > ZoomLevel{ 0 })
+    RenderTarget& rt = session.DPI;
+    if (rt.zoom_level > ZoomLevel{ 0 })
         return; // If zoomed at all no litter drawn
 
     // litter has no sprite direction so remove that

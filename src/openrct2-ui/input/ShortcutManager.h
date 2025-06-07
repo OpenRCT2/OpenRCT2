@@ -112,7 +112,7 @@ namespace OpenRCT2::Ui
     class ShortcutManager
     {
     private:
-        std::shared_ptr<IPlatformEnvironment> _env;
+        IPlatformEnvironment& _env;
         std::string _pendingShortcutChange;
 
         static std::optional<ShortcutInput> ConvertLegacyBinding(uint16_t binding);
@@ -126,7 +126,7 @@ namespace OpenRCT2::Ui
     public:
         std::unordered_map<std::string_view, RegisteredShortcut> Shortcuts;
 
-        ShortcutManager(const std::shared_ptr<IPlatformEnvironment>& env);
+        ShortcutManager(IPlatformEnvironment& env);
         ShortcutManager(const ShortcutManager&) = delete;
 
         void LoadUserBindings();

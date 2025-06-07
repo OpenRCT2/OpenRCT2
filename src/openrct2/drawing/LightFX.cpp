@@ -39,7 +39,7 @@ namespace OpenRCT2::Drawing::LightFx
     static uint8_t _bakedLightTexture_spot_1[64 * 64];
     static uint8_t _bakedLightTexture_spot_2[128 * 128];
     static uint8_t _bakedLightTexture_spot_3[256 * 256];
-    static DrawPixelInfo _pixelInfo;
+    static RenderTarget _pixelInfo;
     static bool _lightfxAvailable = false;
 
     static void* _light_rendered_buffer_back = nullptr;
@@ -182,7 +182,7 @@ namespace OpenRCT2::Drawing::LightFx
         CalcRescaleLightHalf(_bakedLightTexture_spot_0, _bakedLightTexture_spot_1, 32, 32);
     }
 
-    void UpdateBuffers(DrawPixelInfo& info)
+    void UpdateBuffers(RenderTarget& info)
     {
         _light_rendered_buffer_front = realloc(_light_rendered_buffer_front, info.width * info.height);
         _light_rendered_buffer_back = realloc(_light_rendered_buffer_back, info.width * info.height);
@@ -298,26 +298,26 @@ namespace OpenRCT2::Drawing::LightFx
                     if (w != nullptr)
                     {
                         // based on GetMapCoordinatesFromPosWindow
-                        DrawPixelInfo dpi;
-                        dpi.zoom_level = _current_view_zoom_front;
-                        dpi.x = _current_view_zoom_front.ApplyInversedTo(entry.viewCoords.x + offsetPattern[0 + pat * 2]);
-                        dpi.y = _current_view_zoom_front.ApplyInversedTo(entry.viewCoords.y + offsetPattern[1 + pat * 2]);
-                        dpi.height = 1;
-                        dpi.width = 1;
+                        RenderTarget rt;
+                        rt.zoom_level = _current_view_zoom_front;
+                        rt.x = _current_view_zoom_front.ApplyInversedTo(entry.viewCoords.x + offsetPattern[0 + pat * 2]);
+                        rt.y = _current_view_zoom_front.ApplyInversedTo(entry.viewCoords.y + offsetPattern[1 + pat * 2]);
+                        rt.height = 1;
+                        rt.width = 1;
 
-                        dpi.cullingX = dpi.x;
-                        dpi.cullingY = dpi.y;
-                        dpi.cullingWidth = dpi.width;
-                        dpi.cullingHeight = dpi.height;
+                        rt.cullingX = rt.x;
+                        rt.cullingY = rt.y;
+                        rt.cullingWidth = rt.width;
+                        rt.cullingHeight = rt.height;
 
-                        PaintSession* session = PaintSessionAlloc(dpi, w->viewport->flags, w->viewport->rotation);
+                        PaintSession* session = PaintSessionAlloc(rt, w->viewport->flags, w->viewport->rotation);
                         PaintSessionGenerate(*session);
                         PaintSessionArrange(*session);
                         auto info = SetInteractionInfoFromPaintSession(
                             session, w->viewport->flags, kViewportInteractionItemAll);
                         PaintSessionFree(session);
 
-                        //  LOG_WARNING("[%i, %i]", dpi->x, dpi->y);
+                        //  LOG_WARNING("[%i, %i]", rt.x, rt.y);
 
                         mapCoord = info.Loc;
                         mapCoord.x += tileOffsetX;

@@ -20,7 +20,7 @@ class BannerPlaceAction final : public GameActionBase<GameCommand::PlaceBanner>
 {
 private:
     CoordsXYZD _loc;
-    ObjectEntryIndex _bannerType{ BANNER_NULL };
+    ObjectEntryIndex _bannerType{ kBannerNull };
     uint8_t _primaryColour{};
 
 public:

@@ -143,7 +143,7 @@ void LargeSceneryObject::Unload()
     _baseImageId = _legacyType.image = 0;
 }
 
-void LargeSceneryObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
+void LargeSceneryObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, (height / 2) - 39 };
 
@@ -155,7 +155,7 @@ void LargeSceneryObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t 
     if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
         image = image.WithTertiary(COLOUR_DARK_BROWN);
 
-    GfxDrawSprite(dpi, image, screenCoords);
+    GfxDrawSprite(rt, image, screenCoords);
 }
 
 enum
@@ -208,7 +208,7 @@ void LargeSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
         _legacyType.price = Json::GetNumber<int16_t>(properties["price"]) * 10;
         _legacyType.removal_price = Json::GetNumber<int16_t>(properties["removalPrice"]) * 10;
 
-        _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"], SCROLLING_MODE_NONE);
+        _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"], kScrollingModeNone);
 
         _legacyType.flags = Json::GetFlags<uint8_t>(
             properties,

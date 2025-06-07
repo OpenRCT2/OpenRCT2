@@ -37,7 +37,7 @@ namespace OpenRCT2::Ui::FileBrowser
     {
         RegisterCallback(callback);
 
-        auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
+        auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext().HasFilePicker();
         auto& config = Config::Get().general;
 
         // Open system file picker?
@@ -144,11 +144,11 @@ namespace OpenRCT2::Ui::FileBrowser
                 break;
         }
 
-        auto env = GetContext()->GetPlatformEnvironment();
+        auto& env = GetContext()->GetPlatformEnvironment();
         if (subdir.has_value())
-            return env->GetDirectoryPath(DirBase::user, subdir.value());
+            return env.GetDirectoryPath(DirBase::user, subdir.value());
         else
-            return env->GetDirectoryPath(DirBase::user);
+            return env.GetDirectoryPath(DirBase::user);
     }
 
     const char* GetFilterPatternByType(const LoadSaveType type, const bool isSave)

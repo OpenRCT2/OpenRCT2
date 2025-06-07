@@ -10,6 +10,8 @@
 #pragma once
 
 #include "../Identifiers.h"
+#include "../core/FlagHolder.hpp"
+#include "../drawing/TextColour.h"
 #include "../ride/RideTypes.h"
 #include "Location.hpp"
 
@@ -24,39 +26,40 @@ namespace OpenRCT2
     struct GameState_t;
 }
 
-constexpr ObjectEntryIndex BANNER_NULL = kObjectEntryIndexNull;
-constexpr size_t MAX_BANNERS = 8192;
+constexpr ObjectEntryIndex kBannerNull = kObjectEntryIndexNull;
+constexpr size_t kMaxBanners = 8192;
 
-constexpr uint8_t SCROLLING_MODE_NONE = 255;
+constexpr uint8_t kScrollingModeNone = 255;
+
+enum class BannerFlag : uint8_t
+{
+    noEntry = 0,
+    isLargeScenery = 1,
+    linkedToRide = 2,
+    isWall = 3,
+};
+using BannerFlags = FlagHolder<uint8_t, BannerFlag>;
 
 struct Banner
 {
     BannerIndex id = BannerIndex::GetNull();
-    ObjectEntryIndex type = BANNER_NULL;
-    uint8_t flags{};
+    ObjectEntryIndex type = kBannerNull;
+    BannerFlags flags{};
     std::string text;
     mutable std::string formattedTextBuffer;
     uint8_t colour{};
-    RideId ride_index{};
-    uint8_t text_colour{};
+    RideId rideIndex{};
+    OpenRCT2::TextColour textColour{};
     TileCoordsXY position;
 
-    bool IsNull() const
+    bool isNull() const
     {
-        return type == BANNER_NULL;
+        return type == kBannerNull;
     }
 
-    std::string GetText() const;
-    void FormatTextTo(Formatter&, bool addColour) const;
-    void FormatTextTo(Formatter&) const;
-};
-
-enum BANNER_FLAGS
-{
-    BANNER_FLAG_NO_ENTRY = (1 << 0),
-    BANNER_FLAG_IS_LARGE_SCENERY = (1 << 1),
-    BANNER_FLAG_LINKED_TO_RIDE = (1 << 2),
-    BANNER_FLAG_IS_WALL = (1 << 3)
+    std::string getText() const;
+    void formatTextWithColourTo(Formatter&) const;
+    void formatTextTo(Formatter&) const;
 };
 
 void BannerInit(OpenRCT2::GameState_t& gameState);

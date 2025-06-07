@@ -140,6 +140,7 @@ namespace OpenRCT2::Platform
 
     u8string GetRCT1SteamDir();
     u8string GetRCT2SteamDir();
+    u8string GetRCTClassicSteamDir();
     datetime64 GetDatetimeNowUTC();
     uint32_t GetTicks();
 

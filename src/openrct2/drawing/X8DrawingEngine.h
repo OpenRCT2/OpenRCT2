@@ -45,9 +45,9 @@ namespace OpenRCT2
             X8WeatherDrawer();
             ~X8WeatherDrawer();
             void Draw(
-                DrawPixelInfo& dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+                RenderTarget& rt, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
                 const uint8_t* weatherpattern) override;
-            void Restore(DrawPixelInfo& dpi);
+            void Restore(RenderTarget& rt);
         };
 
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
@@ -63,7 +63,7 @@ namespace OpenRCT2
             size_t _bitsSize = 0;
             uint8_t* _bits = nullptr;
 
-            DrawPixelInfo _bitsDPI = {};
+            RenderTarget _mainRT = {};
 
             bool _lastLightFXenabled = false;
 
@@ -72,7 +72,7 @@ namespace OpenRCT2
             InvalidationGrid _invalidationGrid;
 
         public:
-            explicit X8DrawingEngine(const std::shared_ptr<Ui::IUiContext>& uiContext);
+            explicit X8DrawingEngine(Ui::IUiContext& uiContext);
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
     #pragma GCC diagnostic push
@@ -104,11 +104,11 @@ namespace OpenRCT2
             void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) override;
             std::string Screenshot() override;
             IDrawingContext* GetDrawingContext() override;
-            DrawPixelInfo* GetDrawingPixelInfo() override;
+            RenderTarget* GetDrawingPixelInfo() override;
             DrawingEngineFlags GetFlags() override;
             void InvalidateImage(uint32_t image) override;
 
-            DrawPixelInfo* GetDPI();
+            RenderTarget* GetDPI();
 
         protected:
             void ConfigureBits(uint32_t width, uint32_t height, uint32_t pitch);
@@ -134,19 +134,18 @@ namespace OpenRCT2
 
             void BeginDraw();
             void EndDraw();
-            void Clear(DrawPixelInfo& dpi, uint8_t paletteIndex) override;
-            void FillRect(DrawPixelInfo& dpi, uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
+            void Clear(RenderTarget& rt, uint8_t paletteIndex) override;
+            void FillRect(RenderTarget& rt, uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
             void FilterRect(
-                DrawPixelInfo& dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
-            void DrawLine(DrawPixelInfo& dpi, uint32_t colour, const ScreenLine& line) override;
-            void DrawSprite(DrawPixelInfo& dpi, const ImageId imageId, int32_t x, int32_t y) override;
+                RenderTarget& rt, FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
+            void DrawLine(RenderTarget& rt, uint32_t colour, const ScreenLine& line) override;
+            void DrawSprite(RenderTarget& rt, const ImageId imageId, int32_t x, int32_t y) override;
             void DrawSpriteRawMasked(
-                DrawPixelInfo& dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage) override;
-            void DrawSpriteSolid(DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
-            void DrawGlyph(
-                DrawPixelInfo& dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap) override;
+                RenderTarget& rt, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage) override;
+            void DrawSpriteSolid(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
+            void DrawGlyph(RenderTarget& rt, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap) override;
             void DrawTTFBitmap(
-                DrawPixelInfo& dpi, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y,
+                RenderTarget& rt, TextDrawInfo* info, TTFSurface* surface, int32_t x, int32_t y,
                 uint8_t hintingThreshold) override;
 
             bool IsActive() const noexcept

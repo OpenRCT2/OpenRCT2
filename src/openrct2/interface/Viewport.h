@@ -18,7 +18,7 @@
 
 struct PaintSession;
 struct PaintStruct;
-struct DrawPixelInfo;
+struct RenderTarget;
 struct TileElement;
 struct EntityBase;
 struct Guest;
@@ -38,7 +38,7 @@ namespace OpenRCT2
         uint32_t flags{};
         ZoomLevel zoom{};
         uint8_t rotation{};
-        VisibilityCache visibility{};
+        bool isVisible = false;
 
         [[nodiscard]] constexpr int32_t ViewWidth() const
         {
@@ -112,7 +112,7 @@ namespace OpenRCT2
         VIEWPORT_FLAG_INVISIBLE_PATHS = (1u << 28),
         VIEWPORT_FLAG_INVISIBLE_SUPPORTS = (1u << 29),
 
-        VIEWPORT_FLAG_INDEPEDENT_ROTATION = (1u << 30),
+        VIEWPORT_FLAG_INDEPENDENT_ROTATION = (1u << 30),
         VIEWPORT_FLAG_RENDERING_INHIBITED = (1u << 31),
     };
 } // namespace OpenRCT2
@@ -183,6 +183,8 @@ namespace OpenRCT2
     void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus);
     void ViewportRemove(Viewport* viewport);
 
+    const std::list<Viewport>& GetAllViewports();
+
     void ViewportsInvalidate(int32_t x, int32_t y, int32_t z0, int32_t z1, ZoomLevel maxZoom);
     void ViewportsInvalidate(const CoordsXYZ& pos, int32_t width, int32_t minHeight, int32_t maxHeight, ZoomLevel maxZoom);
     void ViewportsInvalidate(const ScreenRect& screenRect, ZoomLevel maxZoom = ZoomLevel{ -1 });
@@ -190,7 +192,7 @@ namespace OpenRCT2
     void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest& peep);
     void ViewportRotateSingle(WindowBase* window, int32_t direction);
     void ViewportRotateAll(int32_t direction);
-    void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport);
+    void ViewportRender(RenderTarget& rt, const Viewport* viewport);
 
     CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords, uint8_t rotation);
 

@@ -30,7 +30,7 @@ namespace OpenRCT2::Ui
         void Tick() override
         {
         }
-        void Draw(DrawPixelInfo& /*dpi*/) override
+        void Draw(RenderTarget& /*rt*/) override
         {
         }
 
@@ -160,8 +160,7 @@ namespace OpenRCT2::Ui
 
         class X8DrawingEngineFactory final : public IDrawingEngineFactory
         {
-            std::unique_ptr<IDrawingEngine> Create(
-                [[maybe_unused]] DrawingEngine type, const std::shared_ptr<IUiContext>& uiContext) override
+            std::unique_ptr<IDrawingEngine> Create([[maybe_unused]] DrawingEngine type, IUiContext& uiContext) override
             {
                 return std::make_unique<X8DrawingEngine>(uiContext);
             }
@@ -172,7 +171,7 @@ namespace OpenRCT2::Ui
         {
             return std::make_shared<X8DrawingEngineFactory>();
         }
-        void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, DrawPixelInfo& dpi, DrawWeatherFunc drawFunc) override
+        void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, RenderTarget& rt, DrawWeatherFunc drawFunc) override
         {
         }
 
@@ -213,7 +212,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    std::shared_ptr<IUiContext> CreateDummyUiContext()
+    std::unique_ptr<IUiContext> CreateDummyUiContext()
     {
         return std::make_unique<DummyUiContext>();
     }

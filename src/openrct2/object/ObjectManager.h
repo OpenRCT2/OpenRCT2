@@ -37,6 +37,7 @@ struct IObjectManager
     virtual ObjectEntryIndex GetLoadedObjectEntryIndex(const Object* object) = 0;
     virtual ObjectList GetLoadedObjects() = 0;
 
+    virtual std::unique_ptr<Object> LoadTempObject(std::string_view identifier) = 0;
     virtual Object* LoadObject(std::string_view identifier) = 0;
     virtual Object* LoadObject(const RCTObjectEntry* entry) = 0;
     virtual Object* LoadObject(const ObjectEntryDescriptor& descriptor) = 0;

@@ -961,6 +961,7 @@ void Vehicle::UpdateMeasurements()
                 {
                     curRide->specialTrackElements.set(SpecialElement::splash);
                 }
+                break;
             default:
                 break;
         }
@@ -1345,6 +1346,7 @@ void Vehicle::Update()
             break;
         case Vehicle::Status::DoingCircusShow:
             UpdateDoingCircusShow();
+            break;
         default:
             break;
     }
@@ -2318,6 +2320,7 @@ static void test_finish(Ride& ride)
 {
     ride.lifecycleFlags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
     ride.lifecycleFlags |= RIDE_LIFECYCLE_TESTED;
+    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_RATINGS;
 
     auto rideStations = ride.getStations();
     for (int32_t i = ride.numStations - 1; i >= 1; i--)
@@ -2812,7 +2815,7 @@ void Vehicle::CheckIfMissing()
         curRide->formatNameTo(ft);
         ft.Add<StringId>(GetRideComponentName(GetRideTypeDescriptor(curRide->type).NameConvention.station).singular);
 
-        News::AddItemToQueue(News::ItemType::Ride, STR_NEWS_VEHICLE_HAS_STALLED, ride.ToUnderlying(), ft);
+        News::AddItemToQueue(News::ItemType::ride, STR_NEWS_VEHICLE_HAS_STALLED, ride.ToUnderlying(), ft);
     }
 }
 
@@ -4559,7 +4562,7 @@ static void ride_train_crash(Ride& ride, uint16_t numFatalities)
         {
             ride.formatNameTo(ft);
             News::AddItemToQueue(
-                News::ItemType::Ride, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X,
+                News::ItemType::ride, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X,
                 ride.id.ToUnderlying(), ft);
         }
 

@@ -150,7 +150,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
 
             auto [key, scancode] = ProcessKeyPress(rawKey, rawScancode);
 
-            GetContext()->GetUiContext()->SetKeysPressed(key, scancode);
+            GetContext()->GetUiContext().SetKeysPressed(key, scancode);
 
             // Text input
             if (_session.Buffer == nullptr)
@@ -218,7 +218,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                 case SDLK_c:
                     if ((modifier & KB_PRIMARY_MODIFIER) && _session.Length)
                     {
-                        GetContext()->GetUiContext()->SetClipboardText(_session.Buffer->c_str());
+                        GetContext()->GetUiContext().SetClipboardText(_session.Buffer->c_str());
                         ContextShowError(STR_COPY_INPUT_TO_CLIPBOARD, kStringIdNone, {});
                     }
                     break;
@@ -234,7 +234,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                 case SDLK_x:
                     if ((modifier & KB_PRIMARY_MODIFIER) && _session.Length)
                     {
-                        GetContext()->GetUiContext()->SetClipboardText(_session.Buffer->c_str());
+                        GetContext()->GetUiContext().SetClipboardText(_session.Buffer->c_str());
                         Clear();
                         Windows::WindowUpdateTextbox();
                         ContextShowError(STR_COPY_INPUT_TO_CLIPBOARD, kStringIdNone, {});

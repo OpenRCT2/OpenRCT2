@@ -434,13 +434,14 @@ static void MaskMagnify(
 
 static Gx _g1 = {};
 static Gx _g2 = {};
+static Gx _fonts = {};
+static Gx _tracks = {};
 static Gx _csg = {};
 static G1Element _scrollingText[kMaxScrollingTextEntries]{};
 static bool _csgLoaded = false;
 
 static G1Element _g1Temp = {};
 static std::vector<G1Element> _imageListElements;
-bool gTinyFontAntiAliased = false;
 
 /**
  *
@@ -466,7 +467,6 @@ bool GfxLoadG1(const IPlatformEnvironment& env)
         bool is_rctc = _g1.header.num_entries == SPR_RCTC_G1_END;
         _g1.elements.resize(_g1.header.num_entries);
         ReadAndConvertGxDat(&fs, _g1.header.num_entries, is_rctc, _g1.elements.data());
-        gTinyFontAntiAliased = is_rctc;
 
         // Read element data
         _g1.data = fs.ReadArray<uint8_t>(_g1.header.total_size);
@@ -494,8 +494,8 @@ bool GfxLoadG1(const IPlatformEnvironment& env)
         LOG_FATAL("Unable to load g1 graphics");
         if (!gOpenRCT2Headless)
         {
-            auto uiContext = GetContext()->GetUiContext();
-            uiContext->ShowMessageBox("Unable to load g1.dat. Your RollerCoaster Tycoon 2 path may be incorrectly set.");
+            auto& uiContext = GetContext()->GetUiContext();
+            uiContext.ShowMessageBox("Unable to load g1.dat. Your RollerCoaster Tycoon 2 path may be incorrectly set.");
         }
         return false;
     }
@@ -508,11 +508,17 @@ void GfxUnloadG1()
     _g1.elements.shrink_to_fit();
 }
 
-void GfxUnloadG2()
+void GfxUnloadG2AndFonts()
 {
     _g2.data.reset();
     _g2.elements.clear();
     _g2.elements.shrink_to_fit();
+    _fonts.data.reset();
+    _fonts.elements.clear();
+    _fonts.elements.shrink_to_fit();
+    _tracks.data.reset();
+    _tracks.elements.clear();
+    _tracks.elements.shrink_to_fit();
 }
 
 void GfxUnloadCsg()
@@ -522,69 +528,78 @@ void GfxUnloadCsg()
     _csg.elements.shrink_to_fit();
 }
 
-bool GfxLoadG2()
+static bool GfxLoadOpenRCT2Gx(std::string filename, Gx& target, size_t expectedNumItems)
 {
-    LOG_VERBOSE("GfxLoadG2()");
+    LOG_VERBOSE("GfxLoadOpenRCT2Gx(\"%s\")", filename.c_str());
+    auto& env = GetContext()->GetPlatformEnvironment();
 
-    auto env = GetContext()->GetPlatformEnvironment();
-
-    std::string path = Path::Combine(env->GetDirectoryPath(DirBase::openrct2), u8"g2.dat");
+    std::string path = Path::Combine(env.GetDirectoryPath(DirBase::openrct2), filename.c_str());
 
     try
     {
         auto fs = FileStream(path, FileMode::open);
-        _g2.header = fs.ReadValue<RCTG1Header>();
+        target.header = fs.ReadValue<RCTG1Header>();
 
         // Read element headers
-        _g2.elements.resize(_g2.header.num_entries);
-        ReadAndConvertGxDat(&fs, _g2.header.num_entries, false, _g2.elements.data());
+        target.elements.resize(target.header.num_entries);
+        ReadAndConvertGxDat(&fs, target.header.num_entries, false, target.elements.data());
 
         // Read element data
-        _g2.data = fs.ReadArray<uint8_t>(_g2.header.total_size);
+        target.data = fs.ReadArray<uint8_t>(target.header.total_size);
 
-        if (_g2.header.num_entries != G2_SPRITE_COUNT)
+        if (target.header.num_entries != expectedNumItems)
         {
-            std::string errorMessage = "Mismatched g2.dat size.\nExpected: " + std::to_string(G2_SPRITE_COUNT) + "\nActual: "
-                + std::to_string(_g2.header.num_entries) + "\ng2.dat may be installed improperly.\nPath to g2.dat: " + path;
+            std::string errorMessage = "Mismatched " + filename + " size.\nExpected: " + std::to_string(expectedNumItems)
+                + "\nActual: " + std::to_string(target.header.num_entries) + "\n" + filename
+                + " may be installed improperly.\nPath to " + filename + ": " + path;
 
             LOG_ERROR(errorMessage.c_str());
 
             if (!gOpenRCT2Headless)
             {
-                auto uiContext = GetContext()->GetUiContext();
-                uiContext->ShowMessageBox(errorMessage);
-                uiContext->ShowMessageBox("Warning: You may experience graphical glitches if you continue. It's recommended "
-                                          "that you update g2.dat if you're seeing this message");
+                auto& uiContext = GetContext()->GetUiContext();
+                uiContext.ShowMessageBox(errorMessage);
+                uiContext.ShowMessageBox(
+                    "Warning: You may experience graphical glitches if you continue. It's recommended "
+                    "that you update "
+                    + filename + " if you're seeing this message");
             }
         }
 
         // Fix entry data offsets
-        for (uint32_t i = 0; i < _g2.header.num_entries; i++)
+        for (uint32_t i = 0; i < target.header.num_entries; i++)
         {
-            if (_g2.elements[i].offset == nullptr)
+            if (target.elements[i].offset == nullptr)
             {
-                _g2.elements[i].offset = _g2.data.get();
+                target.elements[i].offset = target.data.get();
             }
             else
             {
-                _g2.elements[i].offset += reinterpret_cast<uintptr_t>(_g2.data.get());
+                target.elements[i].offset += reinterpret_cast<uintptr_t>(target.data.get());
             }
         }
         return true;
     }
     catch (const std::exception&)
     {
-        _g2.elements.clear();
-        _g2.elements.shrink_to_fit();
+        target.elements.clear();
+        target.elements.shrink_to_fit();
 
-        LOG_FATAL("Unable to load g2 graphics");
+        LOG_FATAL("Unable to load %s graphics", filename.c_str());
         if (!gOpenRCT2Headless)
         {
-            auto uiContext = GetContext()->GetUiContext();
-            uiContext->ShowMessageBox("Unable to load g2.dat");
+            auto& uiContext = GetContext()->GetUiContext();
+            uiContext.ShowMessageBox("Unable to load " + filename);
         }
     }
     return false;
+}
+
+void GfxLoadG2FontsAndTracks()
+{
+    GfxLoadOpenRCT2Gx("g2.dat", _g2, kG2SpriteCount);
+    GfxLoadOpenRCT2Gx("fonts.dat", _fonts, kFontsDatSpriteCount);
+    GfxLoadOpenRCT2Gx("tracks.dat", _tracks, kTracksDatSpriteCount);
 }
 
 bool GfxLoadCsg()
@@ -717,7 +732,7 @@ static std::optional<PaletteMap> FASTCALL GfxDrawSpriteGetPalette(ImageId imageI
     return paletteMap;
 }
 
-void FASTCALL GfxDrawSpriteSoftware(DrawPixelInfo& dpi, const ImageId imageId, const ScreenCoordsXY& spriteCoords)
+void FASTCALL GfxDrawSpriteSoftware(RenderTarget& rt, const ImageId imageId, const ScreenCoordsXY& spriteCoords)
 {
     if (imageId.HasValue())
     {
@@ -726,7 +741,7 @@ void FASTCALL GfxDrawSpriteSoftware(DrawPixelInfo& dpi, const ImageId imageId, c
         {
             palette = PaletteMap::GetDefault();
         }
-        GfxDrawSpritePaletteSetSoftware(dpi, imageId, spriteCoords, *palette);
+        GfxDrawSpritePaletteSetSoftware(rt, imageId, spriteCoords, *palette);
     }
 }
 
@@ -740,9 +755,9 @@ void FASTCALL GfxDrawSpriteSoftware(DrawPixelInfo& dpi, const ImageId imageId, c
  * y (dx)
  */
 void FASTCALL GfxDrawSpritePaletteSetSoftware(
-    DrawPixelInfo& dpi, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
+    RenderTarget& rt, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
-    const auto zoomLevel = dpi.zoom_level;
+    const auto zoomLevel = rt.zoom_level;
     int32_t x = coords.x;
     int32_t y = coords.y;
 
@@ -754,18 +769,18 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
 
     if (zoomLevel > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE))
     {
-        DrawPixelInfo zoomed_dpi = dpi;
-        zoomed_dpi.bits = dpi.bits;
-        zoomed_dpi.x = dpi.x;
-        zoomed_dpi.y = dpi.y;
-        zoomed_dpi.height = dpi.height;
-        zoomed_dpi.width = dpi.width;
-        zoomed_dpi.pitch = dpi.pitch;
-        zoomed_dpi.zoom_level = zoomLevel - 1;
+        RenderTarget zoomedRT = rt;
+        zoomedRT.bits = rt.bits;
+        zoomedRT.x = rt.x;
+        zoomedRT.y = rt.y;
+        zoomedRT.height = rt.height;
+        zoomedRT.width = rt.width;
+        zoomedRT.pitch = rt.pitch;
+        zoomedRT.zoom_level = zoomLevel - 1;
 
         const auto spriteCoords = ScreenCoordsXY{ coords.x / 2, coords.y / 2 };
         GfxDrawSpritePaletteSetSoftware(
-            zoomed_dpi, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), spriteCoords, paletteMap);
+            zoomedRT, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), spriteCoords, paletteMap);
         return;
     }
 
@@ -785,20 +800,20 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
         ScreenCoordsXY spriteBottomLeft{ zoomLevel.ApplyInversedTo(coords.x + g1->x_offset + g1->width),
                                          zoomLevel.ApplyInversedTo(coords.y + g1->y_offset + g1->height) };
 
-        const int32_t width = std::min(spriteBottomLeft.x, dpi.x + dpi.width) - std::max(spriteTopLeft.x, dpi.x);
-        const int32_t height = std::min(spriteBottomLeft.y, dpi.y + dpi.height) - std::max(spriteTopLeft.y, dpi.y);
+        const int32_t width = std::min(spriteBottomLeft.x, rt.x + rt.width) - std::max(spriteTopLeft.x, rt.x);
+        const int32_t height = std::min(spriteBottomLeft.y, rt.y + rt.height) - std::max(spriteTopLeft.y, rt.y);
 
         if (width <= 0 || height <= 0)
             return;
 
-        const int32_t offsetX = dpi.x - spriteTopLeft.x;
-        const int32_t offsetY = dpi.y - spriteTopLeft.y;
+        const int32_t offsetX = rt.x - spriteTopLeft.x;
+        const int32_t offsetY = rt.y - spriteTopLeft.y;
         const int32_t srcX = std::max(0, offsetX);
         const int32_t srcY = std::max(0, offsetY);
-        uint8_t* dst = dpi.bits + std::max(0, -offsetX) + std::max(0, -offsetY) * dpi.LineStride();
+        uint8_t* dst = rt.bits + std::max(0, -offsetX) + std::max(0, -offsetY) * rt.LineStride();
 
         DrawSpriteArgs args(imageId, paletteMap, *g1, srcX, srcY, width, height, dst);
-        GfxSpriteToBuffer(dpi, args);
+        GfxSpriteToBuffer(rt, args);
         return;
     }
 
@@ -820,11 +835,11 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     // the zoom mask on the y coordinate but does on x.
     if (g1->flags & G1_FLAG_RLE_COMPRESSION)
     {
-        dest_start_y -= dpi.WorldY();
+        dest_start_y -= rt.WorldY();
     }
     else
     {
-        dest_start_y = (dest_start_y & zoom_mask) - dpi.WorldY();
+        dest_start_y = (dest_start_y & zoom_mask) - rt.WorldY();
     }
     // This is the start y coordinate on the source
     int32_t source_start_y = 0;
@@ -855,11 +870,11 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
 
     int32_t dest_end_y = dest_start_y + height;
 
-    if (dest_end_y > dpi.WorldHeight())
+    if (dest_end_y > rt.WorldHeight())
     {
         // If the destination y is outside of the drawing
         // image reduce the height of the image
-        height -= dest_end_y - dpi.WorldHeight();
+        height -= dest_end_y - rt.WorldHeight();
     }
     // If the image no longer has anything to draw
     if (height <= 0)
@@ -873,7 +888,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     // This is the source start x coordinate
     int32_t source_start_x = 0;
     // This is the destination start x coordinate
-    int16_t dest_start_x = ((x + g1->x_offset + ~zoom_mask) & zoom_mask) - dpi.WorldX();
+    int16_t dest_start_x = ((x + g1->x_offset + ~zoom_mask) & zoom_mask) - rt.WorldX();
 
     if (dest_start_x < 0)
     {
@@ -900,11 +915,11 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
 
     int32_t dest_end_x = dest_start_x + width;
 
-    if (dest_end_x > dpi.WorldWidth())
+    if (dest_end_x > rt.WorldWidth())
     {
         // If the destination x is outside of the drawing area
         // reduce the image width.
-        width -= dest_end_x - dpi.WorldWidth();
+        width -= dest_end_x - rt.WorldWidth();
         // If there is no image to draw.
         if (width <= 0)
             return;
@@ -912,23 +927,23 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
 
     dest_start_x = zoomLevel.ApplyInversedTo(dest_start_x);
 
-    uint8_t* dest_pointer = dpi.bits;
+    uint8_t* dest_pointer = rt.bits;
     // Move the pointer to the start point of the destination
-    dest_pointer += (zoomLevel.ApplyInversedTo(dpi.WorldWidth()) + dpi.pitch) * dest_start_y + dest_start_x;
+    dest_pointer += (zoomLevel.ApplyInversedTo(rt.WorldWidth()) + rt.pitch) * dest_start_y + dest_start_x;
 
     DrawSpriteArgs args(imageId, paletteMap, *g1, source_start_x, source_start_y, width, height, dest_pointer);
-    GfxSpriteToBuffer(dpi, args);
+    GfxSpriteToBuffer(rt, args);
 }
 
-void FASTCALL GfxSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
+void FASTCALL GfxSpriteToBuffer(RenderTarget& rt, const DrawSpriteArgs& args)
 {
     if (args.SourceImage.flags & G1_FLAG_RLE_COMPRESSION)
     {
-        GfxRleSpriteToBuffer(dpi, args);
+        GfxRleSpriteToBuffer(rt, args);
     }
     else if (!(args.SourceImage.flags & G1_FLAG_1))
     {
-        GfxBmpSpriteToBuffer(dpi, args);
+        GfxBmpSpriteToBuffer(rt, args);
     }
 }
 
@@ -939,7 +954,7 @@ void FASTCALL GfxSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
  *  rct2: 0x00681DE2
  */
 void FASTCALL GfxDrawSpriteRawMaskedSoftware(
-    DrawPixelInfo& dpi, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage)
+    RenderTarget& rt, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage)
 {
     int32_t left, top, right, bottom, width, height;
     auto imgMask = GfxGetG1Element(maskImage);
@@ -952,12 +967,12 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
     // Must have transparency in order to pass check
     if (!(imgMask->flags & G1_FLAG_HAS_TRANSPARENCY) || !(imgColour->flags & G1_FLAG_HAS_TRANSPARENCY))
     {
-        GfxDrawSpriteSoftware(dpi, colourImage, scrCoords);
+        GfxDrawSpriteSoftware(rt, colourImage, scrCoords);
         return;
     }
 
-    ZoomLevel zoom = dpi.zoom_level;
-    if (dpi.zoom_level > ZoomLevel{ 0 })
+    ZoomLevel zoom = rt.zoom_level;
+    if (rt.zoom_level > ZoomLevel{ 0 })
     {
         assert(false);
     }
@@ -969,23 +984,23 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
     offsetCoords.x = zoom.ApplyInversedTo(offsetCoords.x);
     offsetCoords.y = zoom.ApplyInversedTo(offsetCoords.y);
 
-    left = std::max(dpi.x, offsetCoords.x);
-    top = std::max(dpi.y, offsetCoords.y);
-    right = std::min(dpi.x + dpi.width, offsetCoords.x + width);
-    bottom = std::min(dpi.y + dpi.height, offsetCoords.y + height);
+    left = std::max(rt.x, offsetCoords.x);
+    top = std::max(rt.y, offsetCoords.y);
+    right = std::min(rt.x + rt.width, offsetCoords.x + width);
+    bottom = std::min(rt.y + rt.height, offsetCoords.y + height);
 
     width = right - left;
     height = bottom - top;
     if (width < 0 || height < 0)
         return;
 
-    uint8_t* dst = dpi.bits + (left - dpi.x) + ((top - dpi.y) * dpi.LineStride());
+    uint8_t* dst = rt.bits + (left - rt.x) + ((top - rt.y) * rt.LineStride());
     int32_t skipX = left - offsetCoords.x;
     int32_t skipY = top - offsetCoords.y;
     if (zoom < ZoomLevel{ 0 })
     {
         MaskMagnify(
-            zoom, width, height, imgMask->offset, imgColour->offset, dst, imgMask->width, imgColour->width, dpi.LineStride(),
+            zoom, width, height, imgMask->offset, imgColour->offset, dst, imgMask->width, imgColour->width, rt.LineStride(),
             skipX, skipY);
         return;
     }
@@ -995,7 +1010,7 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
 
     int32_t maskWrap = imgMask->width - width;
     int32_t colourWrap = imgColour->width - width;
-    int32_t dstWrap = dpi.LineStride() - width;
+    int32_t dstWrap = rt.LineStride() - width;
 
     MaskFn(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
 }
@@ -1036,6 +1051,26 @@ const G1Element* GfxGetG1Element(ImageIndex image_id)
         }
 
         LOG_WARNING("Invalid entry in g2.dat requested, idx = %u. You may have to update your g2.dat.", idx);
+    }
+    else if (offset < SPR_FONTS_END)
+    {
+        size_t idx = offset - SPR_FONTS_BEGIN;
+        if (idx < _fonts.header.num_entries)
+        {
+            return &_fonts.elements[idx];
+        }
+
+        LOG_WARNING("Invalid entry in fonts.dat requested, idx = %u. You may have to update your fonts.dat.", idx);
+    }
+    else if (offset < SPR_TRACKS_END)
+    {
+        size_t idx = offset - SPR_TRACKS_BEGIN;
+        if (idx < _tracks.header.num_entries)
+        {
+            return &_tracks.elements[idx];
+        }
+
+        LOG_WARNING("Invalid entry in tracks.dat requested, idx = %u. You may have to update your tracks.dat.", idx);
     }
     else if (offset < SPR_CSG_END)
     {

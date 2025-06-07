@@ -217,9 +217,7 @@ namespace OpenRCT2::World::MapGenerator
         if (settings->smoothTileEdges)
         {
             // Set the tile slopes so that there are no cliffs
-            while (MapSmooth(1, 1, mapSize.x - 1, mapSize.y - 1))
-            {
-            }
+            smoothMap(settings->mapSize, smoothTileStrong);
         }
 
         // Add the water

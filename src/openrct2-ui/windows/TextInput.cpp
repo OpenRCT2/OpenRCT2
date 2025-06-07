@@ -194,9 +194,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
 
             auto screenCoords = windowPos + ScreenCoordsXY{ WW / 2, widgets[WIDX_TITLE].bottom + 13 };
 
@@ -206,12 +206,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 ft.Add<const char*>(_description.c_str());
-                DrawTextWrapped(dpi, screenCoords, WW, STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
+                DrawTextWrapped(rt, screenCoords, WW, STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
             }
             else
             {
                 DrawTextWrapped(
-                    dpi, screenCoords, WW, _descriptionStringId, _descriptionArgs, { colours[1], TextAlignment::CENTRE });
+                    rt, screenCoords, WW, _descriptionStringId, _descriptionArgs, { colours[1], TextAlignment::CENTRE });
             }
 
             screenCoords.y += 25;
@@ -223,7 +223,7 @@ namespace OpenRCT2::Ui::Windows
                 u8string_view{ _buffer.data(), _buffer.size() }, WW - (24 + 13), FontStyle::Medium, &wrappedString, &no_lines);
 
             GfxFillRectInset(
-                dpi,
+                rt,
                 { { windowPos.x + 10, screenCoords.y }, { windowPos.x + WW - 10, screenCoords.y + 10 * (no_lines + 1) + 3 } },
                 colours[1], INSET_RECT_F_60);
 
@@ -239,7 +239,7 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t line = 0; line <= no_lines; line++)
             {
                 screenCoords.x = windowPos.x + 12;
-                DrawText(dpi, screenCoords, { colours[1], FontStyle::Medium, TextAlignment::LEFT }, wrapPointer, true);
+                DrawText(rt, screenCoords, { colours[1], FontStyle::Medium, TextAlignment::LEFT }, wrapPointer, true);
 
                 size_t string_length = GetStringSize(wrapPointer) - 1;
                 if (!cur_drawn && (textInput->SelectionStart <= char_count + string_length))
@@ -266,7 +266,7 @@ namespace OpenRCT2::Ui::Windows
                         uint8_t colour = ColourMapA[colours[1].colour].mid_light;
                         // TODO: palette index addition
                         GfxFillRect(
-                            dpi, { { cursorX, screenCoords.y + 9 }, { cursorX + textWidth, screenCoords.y + 9 } }, colour + 5);
+                            rt, { { cursorX, screenCoords.y + 9 }, { cursorX + textWidth, screenCoords.y + 9 } }, colour + 5);
                     }
 
                     cur_drawn++;
@@ -283,7 +283,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (!cur_drawn)
             {
-                cursorX = dpi.lastStringPos.x;
+                cursorX = rt.lastStringPos.x;
                 cursorY = screenCoords.y - 10;
             }
 

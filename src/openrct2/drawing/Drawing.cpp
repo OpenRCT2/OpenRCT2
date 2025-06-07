@@ -678,9 +678,9 @@ void MaskFn(
     MaskFunc(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
 }
 
-void GfxFilterPixel(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, FilterPaletteID palette)
+void GfxFilterPixel(RenderTarget& rt, const ScreenCoordsXY& coords, FilterPaletteID palette)
 {
-    GfxFilterRect(dpi, { coords, coords }, palette);
+    GfxFilterRect(rt, { coords, coords }, palette);
 }
 
 /**
@@ -770,7 +770,7 @@ void GfxInvalidateScreen()
  * height (dx)
  * drawpixelinfo (edi)
  */
-bool ClipDrawPixelInfo(DrawPixelInfo& dst, DrawPixelInfo& src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
+bool ClipDrawPixelInfo(RenderTarget& dst, RenderTarget& src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
 {
     assert(src.zoom_level == ZoomLevel{ 0 });
     int32_t right = coords.x + width;
@@ -837,11 +837,11 @@ void GfxInvalidatePickedUpPeep()
     }
 }
 
-void GfxDrawPickedUpPeep(DrawPixelInfo& dpi)
+void GfxDrawPickedUpPeep(RenderTarget& rt)
 {
     if (gPickupPeepImage.HasValue())
     {
-        GfxDrawSprite(dpi, gPickupPeepImage, { gPickupPeepX, gPickupPeepY });
+        GfxDrawSprite(rt, gPickupPeepImage, { gPickupPeepX, gPickupPeepY });
     }
 }
 
@@ -868,14 +868,14 @@ std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
     return std::nullopt;
 }
 
-uint8_t* DrawPixelInfo::GetBitsOffset(const ScreenCoordsXY& pos) const
+uint8_t* RenderTarget::GetBitsOffset(const ScreenCoordsXY& pos) const
 {
     return bits + pos.x + pos.y * LineStride();
 }
 
-DrawPixelInfo DrawPixelInfo::Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const
+RenderTarget RenderTarget::Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const
 {
-    DrawPixelInfo result = *this;
+    RenderTarget result = *this;
     result.bits = GetBitsOffset(pos);
     result.x = pos.x;
     result.y = pos.y;
@@ -1111,31 +1111,31 @@ void RefreshVideo()
 
 void ToggleWindowedMode()
 {
-    int32_t targetMode = Config::Get().general.FullscreenMode == 0 ? 2 : 0;
-    ContextSetFullscreenMode(targetMode);
-    Config::Get().general.FullscreenMode = targetMode;
+    int32_t rt = Config::Get().general.FullscreenMode == 0 ? 2 : 0;
+    ContextSetFullscreenMode(rt);
+    Config::Get().general.FullscreenMode = rt;
     Config::Save();
 }
 
-void DebugDPI(DrawPixelInfo& dpi)
+void DebugDPI(RenderTarget& rt)
 {
-    ScreenCoordsXY topLeft = { dpi.x, dpi.y };
-    ScreenCoordsXY bottomRight = { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 };
-    ScreenCoordsXY topRight = { dpi.x + dpi.width - 1, dpi.y };
-    ScreenCoordsXY bottomLeft = { dpi.x, dpi.y + dpi.height - 1 };
+    ScreenCoordsXY topLeft = { rt.x, rt.y };
+    ScreenCoordsXY bottomRight = { rt.x + rt.width - 1, rt.y + rt.height - 1 };
+    ScreenCoordsXY topRight = { rt.x + rt.width - 1, rt.y };
+    ScreenCoordsXY bottomLeft = { rt.x, rt.y + rt.height - 1 };
 
-    GfxDrawLine(dpi, { topLeft, bottomRight }, PaletteIndex::pi136);
-    GfxDrawLine(dpi, { bottomLeft, topRight }, PaletteIndex::pi136);
-    GfxDrawLine(dpi, { topLeft, topRight }, PaletteIndex::pi129);
-    GfxDrawLine(dpi, { topRight, bottomRight }, PaletteIndex::pi129);
-    GfxDrawLine(dpi, { bottomLeft, bottomRight }, PaletteIndex::pi129);
-    GfxDrawLine(dpi, { topLeft, bottomLeft }, PaletteIndex::pi129);
+    GfxDrawLine(rt, { topLeft, bottomRight }, PaletteIndex::pi136);
+    GfxDrawLine(rt, { bottomLeft, topRight }, PaletteIndex::pi136);
+    GfxDrawLine(rt, { topLeft, topRight }, PaletteIndex::pi129);
+    GfxDrawLine(rt, { topRight, bottomRight }, PaletteIndex::pi129);
+    GfxDrawLine(rt, { bottomLeft, bottomRight }, PaletteIndex::pi129);
+    GfxDrawLine(rt, { topLeft, bottomLeft }, PaletteIndex::pi129);
 
-    GfxDrawLine(dpi, { topLeft, topLeft + ScreenCoordsXY{ 4, 0 } }, PaletteIndex::pi136);
+    GfxDrawLine(rt, { topLeft, topLeft + ScreenCoordsXY{ 4, 0 } }, PaletteIndex::pi136);
 
-    const auto str = std::to_string(dpi.x);
-    DrawText(dpi, ScreenCoordsXY{ dpi.x, dpi.y }, { COLOUR_WHITE, FontStyle::Tiny }, str.c_str());
+    const auto str = std::to_string(rt.x);
+    DrawText(rt, ScreenCoordsXY{ rt.x, rt.y }, { COLOUR_WHITE, FontStyle::Tiny }, str.c_str());
 
-    const auto str2 = std::to_string(dpi.y);
-    DrawText(dpi, ScreenCoordsXY{ dpi.x, dpi.y + 6 }, { COLOUR_WHITE, FontStyle::Tiny }, str2.c_str());
+    const auto str2 = std::to_string(rt.y);
+    DrawText(rt, ScreenCoordsXY{ rt.x, rt.y + 6 }, { COLOUR_WHITE, FontStyle::Tiny }, str2.c_str());
 }

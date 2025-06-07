@@ -22,10 +22,10 @@ static constexpr TunnelGroup kTunnelGroup = TunnelGroup::Square;
 static constexpr uint8_t kSupportHeight = 39;
 
 static constexpr const uint32_t kInvertedRCDiagBrakeImages[kNumOrthogonalDirections] = {
-    SPR_G2_BM_INVERT_DIAG_BRAKES,
-    SPR_G2_BM_INVERT_DIAG_BRAKES + 1,
-    SPR_G2_BM_INVERT_DIAG_BRAKES,
-    SPR_G2_BM_INVERT_DIAG_BRAKES + 1,
+    SPR_TRACKS_BM_INVERT_DIAG_BRAKES,
+    SPR_TRACKS_BM_INVERT_DIAG_BRAKES + 1,
+    SPR_TRACKS_BM_INVERT_DIAG_BRAKES,
+    SPR_TRACKS_BM_INVERT_DIAG_BRAKES + 1,
 };
 
 /** rct2: 0x007C6FF4 */
@@ -2867,7 +2867,7 @@ static void InvertedFlyingRCTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    const auto imageId = (direction & 1) ? SPR_G2_BM_INVERT_BOOSTER_2 : SPR_G2_BM_INVERT_BOOSTER_1;
+    const auto imageId = (direction & 1) ? SPR_TRACKS_BM_INVERT_BOOSTER_2 : SPR_TRACKS_BM_INVERT_BOOSTER_1;
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours.WithIndex(imageId), { 0, 0, height + 24 },
         { { 0, 6, height + 22 }, { 32, 20, 1 } });

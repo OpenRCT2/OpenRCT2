@@ -9,12 +9,14 @@
 
 #include "ScVehicle.hpp"
 
+#include "../../../ride/TrackData.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../ride/ScRide.hpp"
 
 #ifdef ENABLE_SCRIPTING
 
 using namespace OpenRCT2::Drawing;
+using namespace OpenRCT2::TrackMetaData;
 
 namespace OpenRCT2::Scripting
 {
@@ -77,6 +79,8 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(
             ctx, &ScVehicle::flag_get<VehicleFlags::CarIsReversed>, &ScVehicle::flag_set<VehicleFlags::CarIsReversed>,
             "isReversed");
+        dukglue_register_property(
+            ctx, &ScVehicle::flag_get<VehicleFlags::Crashed>, &ScVehicle::flag_set<VehicleFlags::Crashed>, "isCrashed");
         dukglue_register_property(ctx, &ScVehicle::colours_get, &ScVehicle::colours_set, "colours");
         dukglue_register_property(ctx, &ScVehicle::trackLocation_get, nullptr, "trackLocation");
         dukglue_register_property(ctx, &ScVehicle::trackProgress_get, nullptr, "trackProgress");
@@ -546,11 +550,11 @@ namespace OpenRCT2::Scripting
 
     void ScVehicle::moveToTrack(int32_t x, int32_t y, int32_t elementIndex)
     {
-        CoordsXY coords = TileCoordsXY(x, y).ToCoordsXY();
         auto vehicle = GetVehicle();
         if (vehicle == nullptr)
             return;
 
+        CoordsXY coords = TileCoordsXY(x, y).ToCoordsXY();
         auto el = MapGetNthElementAt(coords, elementIndex);
         if (el == nullptr)
             return;
@@ -559,13 +563,16 @@ namespace OpenRCT2::Scripting
         if (!origin)
             return;
 
-        auto trackEl = el->AsTrack();
+        const auto& trackType = el->AsTrack()->GetTrackType();
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        const auto& seq0 = ted.sequences[0].clearance;
+        const auto trackLoc = CoordsXYZ(origin->x + seq0.x, origin->y + seq0.y, origin->z + seq0.z);
 
-        vehicle->TrackLocation.x = origin->x;
-        vehicle->TrackLocation.y = origin->y;
-        vehicle->TrackLocation.z = origin->z;
+        vehicle->TrackLocation.x = trackLoc.x;
+        vehicle->TrackLocation.y = trackLoc.y;
+        vehicle->TrackLocation.z = trackLoc.z;
         vehicle->SetTrackDirection(origin->direction);
-        vehicle->SetTrackType(trackEl->GetTrackType());
+        vehicle->SetTrackType(trackType);
 
         // Clip track progress to avoid being out of bounds of current piece
         uint16_t trackTotalProgress = vehicle->GetTrackProgress();

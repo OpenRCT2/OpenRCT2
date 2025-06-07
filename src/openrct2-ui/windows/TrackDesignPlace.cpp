@@ -335,15 +335,15 @@ namespace OpenRCT2::Ui::Windows
             DrawMiniPreview(*_trackDesign);
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
             auto ft = Formatter::Common();
             ft.Add<char*>(_trackDesign->gameStateData.name.c_str());
-            WindowDrawWidgets(*this, dpi);
+            WindowDrawWidgets(*this, rt);
 
             // Draw mini tile preview
-            DrawPixelInfo clippedDpi;
-            if (ClipDrawPixelInfo(clippedDpi, dpi, this->windowPos + ScreenCoordsXY{ 4, 18 }, 168, 78))
+            RenderTarget clippedRT;
+            if (ClipDrawPixelInfo(clippedRT, rt, this->windowPos + ScreenCoordsXY{ 4, 18 }, 168, 78))
             {
                 G1Element g1temp = {};
                 g1temp.offset = _miniPreview.data();
@@ -351,7 +351,7 @@ namespace OpenRCT2::Ui::Windows
                 g1temp.height = TRACK_MINI_PREVIEW_HEIGHT;
                 GfxSetG1Element(SPR_TEMP, &g1temp);
                 DrawingEngineInvalidateImage(SPR_TEMP);
-                GfxDrawSprite(clippedDpi, ImageId(SPR_TEMP, this->colours[0].colour), { 0, 0 });
+                GfxDrawSprite(clippedRT, ImageId(SPR_TEMP, this->colours[0].colour), { 0, 0 });
             }
 
             // Price
@@ -359,7 +359,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 ft = Formatter();
                 ft.Add<money64>(_placementCost);
-                DrawTextBasic(dpi, this->windowPos + ScreenCoordsXY{ 88, 94 }, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
+                DrawTextBasic(rt, this->windowPos + ScreenCoordsXY{ 88, 94 }, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
             }
         }
 

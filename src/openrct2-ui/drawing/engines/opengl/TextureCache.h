@@ -17,11 +17,10 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/DrawingLock.hpp>
-#include <shared_mutex>
 #include <unordered_map>
 #include <vector>
 
-struct DrawPixelInfo;
+struct RenderTarget;
 struct PaletteMap;
 enum class FilterPaletteID : int32_t;
 
@@ -201,10 +200,6 @@ namespace OpenRCT2::Ui
         GLuint _paletteTexture = 0;
         GLuint _blendPaletteTexture = 0;
 
-        std::shared_mutex _mutex;
-        using shared_lock = DrawingSharedLock<std::shared_mutex>;
-        using unique_lock = DrawingUniqueLock<std::shared_mutex>;
-
     public:
         TextureCache();
         ~TextureCache();
@@ -226,11 +221,11 @@ namespace OpenRCT2::Ui
         AtlasTextureInfo LoadGlyphTexture(const ImageId image, const PaletteMap& paletteMap);
         AtlasTextureInfo AllocateImage(int32_t imageWidth, int32_t imageHeight);
         AtlasTextureInfo LoadBitmapTexture(ImageIndex image, const void* pixels, size_t width, size_t height);
-        static DrawPixelInfo GetImageAsDPI(const ImageId imageId);
-        static DrawPixelInfo GetGlyphAsDPI(const ImageId imageId, const PaletteMap& paletteMap);
+        static RenderTarget GetImageAsDPI(const ImageId imageId);
+        static RenderTarget GetGlyphAsDPI(const ImageId imageId, const PaletteMap& paletteMap);
         void FreeTextures();
 
-        static DrawPixelInfo CreateDPI(int32_t width, int32_t height);
-        static void DeleteDPI(DrawPixelInfo dpi);
+        static RenderTarget CreateDPI(int32_t width, int32_t height);
+        static void DeleteDPI(RenderTarget rt);
     };
 } // namespace OpenRCT2::Ui

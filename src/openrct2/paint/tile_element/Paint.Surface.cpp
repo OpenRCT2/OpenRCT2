@@ -380,7 +380,7 @@ static uint8_t ViewportSurfacePaintSetupGetRelativeSlope(const SurfaceElement& s
  *  rct2: 0x0065E890, 0x0065E946, 0x0065E9FC, 0x0065EAB2
  */
 static void ViewportSurfaceSmoothenEdge(
-    PaintSession& session, enum edge_t edge, struct TileDescriptor self, struct TileDescriptor neighbour)
+    PaintSession& session, const edge_t edge, const TileDescriptor& self, const TileDescriptor& neighbour)
 {
     PROFILED_FUNCTION();
 
@@ -1298,6 +1298,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     const uint16_t waterHeight = tileElement.GetWaterHeight();
     const bool waterGetsClipped = (session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (waterHeight > gClipHeight * kCoordsZStep);
+    const bool waterIsTransparent = Config::Get().general.TransparentWater
+        || (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
 
     if (waterHeight > 0 && !gTrackDesignSaveMode && !waterGetsClipped)
     {
@@ -1317,9 +1319,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         const auto image_id = ImageId(SPR_WATER_MASK + image_offset, FilterPaletteID::PaletteWater).WithBlended(true);
         PaintAddImageAsParent(session, image_id, { 0, 0, waterHeight }, { 32, 32, -1 });
 
-        const bool transparent = Config::Get().general.TransparentWater
-            || (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
-        const uint32_t overlayStart = transparent ? EnumValue(SPR_WATER_OVERLAY) : EnumValue(SPR_G2_OPAQUE_WATER_OVERLAY);
+        const uint32_t overlayStart = waterIsTransparent ? EnumValue(SPR_WATER_OVERLAY)
+                                                         : EnumValue(SPR_G2_OPAQUE_WATER_OVERLAY);
         PaintAttachToPreviousPS(session, ImageId(overlayStart + image_offset), 0, 0);
 
         if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
@@ -1350,7 +1351,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             if (edgeHasFence == 0)
                 continue;
 
-            int32_t local_height = height;
+            int32_t fenceHeight = height;
             int32_t image_id = 0;
 
             if (!(surfaceShape & fenceData.bit_1))
@@ -1370,7 +1371,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             }
             else
             {
-                local_height += 16;
+                fenceHeight += 16;
 
                 if (!(surfaceShape & 0x10))
                 { // Loc6619B5 (first)
@@ -1390,9 +1391,14 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 }
             }
 
+            if (!waterIsTransparent && fenceHeight < waterHeight)
+            {
+                continue;
+            }
+
             PaintAddImageAsParent(
-                session, ImageId(image_id), { fenceData.offset, local_height },
-                { { fenceData.Boundbox.offset, local_height + 1 }, { fenceData.Boundbox.length, 9 } });
+                session, ImageId(image_id), { fenceData.offset, fenceHeight },
+                { { fenceData.Boundbox.offset, fenceHeight + 1 }, { fenceData.Boundbox.length, 9 } });
         }
     }
 

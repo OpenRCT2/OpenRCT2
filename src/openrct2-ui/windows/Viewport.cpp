@@ -96,9 +96,9 @@ namespace OpenRCT2::Ui::Windows
                 savedViewPos = { x - (viewport->ViewWidth() / 2), y - (viewport->ViewHeight() / 2) };
             }
 
-            viewport->flags |= VIEWPORT_FLAG_SOUND_ON | VIEWPORT_FLAG_INDEPEDENT_ROTATION;
+            viewport->flags |= VIEWPORT_FLAG_SOUND_ON | VIEWPORT_FLAG_INDEPENDENT_ROTATION;
 
-            WindowSetResize(*this, { WW, WH }, { WW, WH });
+            WindowSetResize(*this, { WW, WH }, { (ContextGetWidth() * 4) / 5, (ContextGetHeight() * 4) / 5 });
         }
 
         void OnUpdate() override
@@ -107,14 +107,11 @@ namespace OpenRCT2::Ui::Windows
             if (mainWindow == nullptr)
                 return;
 
-            if (viewport != nullptr && viewport->flags != mainWindow->viewport->flags)
+            if (viewport != nullptr && viewport->flags != (mainWindow->viewport->flags | VIEWPORT_FLAG_INDEPENDENT_ROTATION))
             {
-                viewport->flags = mainWindow->viewport->flags | VIEWPORT_FLAG_INDEPEDENT_ROTATION;
-                Invalidate();
+                viewport->flags = mainWindow->viewport->flags | VIEWPORT_FLAG_INDEPENDENT_ROTATION;
+                InvalidateWidget(WIDX_VIEWPORT);
             }
-
-            // Not sure how to invalidate part of the viewport that has changed, this will have to do for now
-            // widget_invalidate(*this, WIDX_VIEWPORT);
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -162,13 +159,13 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
 
             // Draw viewport
             if (viewport != nullptr)
-                WindowDrawViewport(dpi, *this);
+                WindowDrawViewport(rt, *this);
         }
 
         void OnResize() override
@@ -220,17 +217,6 @@ namespace OpenRCT2::Ui::Windows
 
     WindowBase* ViewportOpen()
     {
-        int32_t screenWidth = ContextGetWidth();
-        int32_t screenHeight = ContextGetHeight();
-        int32_t width = (screenWidth / 2);
-        int32_t height = (screenHeight / 2);
-
-        auto* windowMgr = GetWindowManager();
-        auto* w = windowMgr->Create<ViewportWindow>(
-            WindowClass::Viewport, std::max(WW, width), std::max(WH, height), WF_RESIZABLE);
-
-        if (w != nullptr)
-            return w;
-        return nullptr;
+        return GetWindowManager()->Create<ViewportWindow>(WindowClass::Viewport, WW, WH, WF_RESIZABLE);
     }
 } // namespace OpenRCT2::Ui::Windows

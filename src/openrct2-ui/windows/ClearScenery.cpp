@@ -171,7 +171,7 @@ namespace OpenRCT2::Ui::Windows
                 Close();
         }
 
-        void Invalidate()
+        void OnPrepareDraw() override
         {
             // Set the preview image button to be pressed down
             pressed_widgets = (1uLL << WIDX_PREVIEW) | (_clearSmallScenery ? (1uLL << WIDX_SMALL_SCENERY) : 0)
@@ -181,9 +181,9 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
 
             // Draw number for tool sizes bigger than 7
             ScreenCoordsXY screenCoords = { windowPos.x + widgets[WIDX_PREVIEW].midX(),
@@ -193,7 +193,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<uint16_t>(gLandToolSize);
                 DrawTextBasic(
-                    dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+                    rt, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
             }
 
             // Draw cost amount
@@ -204,7 +204,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<money64>(_clearSceneryCost);
                 screenCoords.x = widgets[WIDX_PREVIEW].midX() + windowPos.x;
                 screenCoords.y = widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 + 27;
-                DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                DrawTextBasic(rt, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
         }
 

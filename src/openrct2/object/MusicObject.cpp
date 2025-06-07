@@ -47,13 +47,13 @@ void MusicObject::Load()
     }
 
     // Load metadata of samples
-    auto audioContext = GetContext()->GetAudioContext();
+    auto& audioContext = GetContext()->GetAudioContext();
     for (auto& track : _tracks)
     {
         auto stream = track.Asset.GetStream();
         if (stream != nullptr)
         {
-            auto source = audioContext->CreateStreamFromWAV(std::move(stream));
+            auto source = audioContext.CreateStreamFromWAV(std::move(stream));
             if (source != nullptr)
             {
                 track.BytesPerTick = source->GetBytesPerSecond() / 40;
@@ -87,15 +87,15 @@ void MusicObject::Unload()
     NameStringId = 0;
 }
 
-void MusicObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
+void MusicObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
 {
     // Write (no image)
     int32_t x = width / 2;
     int32_t y = height / 2;
     if (_hasPreview)
-        GfxDrawSprite(dpi, ImageId(_previewImageId), { 0, 0 });
+        GfxDrawSprite(rt, ImageId(_previewImageId), { 0, 0 });
     else
-        DrawTextBasic(dpi, { x, y }, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
+        DrawTextBasic(rt, { x, y }, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
 }
 
 bool MusicObject::HasPreview() const
@@ -191,12 +191,12 @@ std::optional<uint8_t> MusicObject::GetOriginalStyleId() const
     return _originalStyleId;
 }
 
-bool MusicObject::SupportsRideType(ride_type_t rideType)
+bool MusicObject::SupportsRideType(ride_type_t rideType, bool onlyAllowIfExplicitlyListed)
 {
     if (_rideTypes.size() == 0)
     {
-        // Default behaviour for music is to only exclude from merry-go-round
-        return rideType != RIDE_TYPE_MERRY_GO_ROUND;
+        // Some rides, like the merry-go-round, need music objects to explicitly list them.
+        return !onlyAllowIfExplicitlyListed;
     }
 
     auto it = std::find(_rideTypes.begin(), _rideTypes.end(), rideType);
@@ -226,8 +226,8 @@ ObjectAsset MusicObject::GetAsset(IReadObjectContext& context, std::string_view 
 {
     if (path.find("$RCT2:DATA/") == 0)
     {
-        auto env = GetContext()->GetPlatformEnvironment();
-        auto path2 = env->FindFile(DirBase::rct2, DirId::data, path.substr(11));
+        auto& env = GetContext()->GetPlatformEnvironment();
+        auto path2 = env.FindFile(DirBase::rct2, DirId::data, path.substr(11));
         return ObjectAsset(path2);
     }
 

@@ -39,7 +39,7 @@ struct DrawScrollText
 };
 
 static DrawScrollText _drawScrollTextList[OpenRCT2::kMaxScrollingTextEntries];
-static uint8_t _characterBitmaps[kSpriteFontGlyphCount + SPR_G2_GLYPH_COUNT][8];
+static uint8_t _characterBitmaps[SPR_FONTS_GLYPH_COUNT][8];
 static uint32_t _drawSCrollNextIndex = 0;
 static std::mutex _scrollingTextMutex;
 
@@ -48,18 +48,18 @@ static void ScrollingTextSetBitmapForSprite(
 static void ScrollingTextSetBitmapForTTF(
     std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour);
 
-static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_t offset, uint16_t count, bool isAntiAliased)
+static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_t count)
 {
     uint8_t drawingSurface[64];
-    DrawPixelInfo dpi;
-    dpi.bits = reinterpret_cast<uint8_t*>(&drawingSurface);
-    dpi.width = 8;
-    dpi.height = 8;
+    RenderTarget rt;
+    rt.bits = reinterpret_cast<uint8_t*>(&drawingSurface);
+    rt.width = 8;
+    rt.height = 8;
 
     for (int32_t i = 0; i < count; i++)
     {
         std::fill_n(drawingSurface, sizeof(drawingSurface), 0x00);
-        GfxDrawSpriteSoftware(dpi, ImageId(glyphStart + (EnumValue(FontStyle::Tiny) * count) + i), { -1, 0 });
+        GfxDrawSpriteSoftware(rt, ImageId(glyphStart + (EnumValue(FontStyle::Tiny) * count) + i), { -1, 0 });
 
         for (int32_t x = 0; x < 8; x++)
         {
@@ -67,13 +67,13 @@ static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_
             for (int32_t y = 0; y < 8; y++)
             {
                 val >>= 1;
-                uint8_t pixel = dpi.bits[x + y * 8];
-                if (pixel == 1 || (isAntiAliased && pixel == 2))
+                uint8_t pixel = rt.bits[x + y * 8];
+                if (pixel == 1)
                 {
                     val |= 0x80;
                 }
             }
-            _characterBitmaps[offset + i][x] = val;
+            _characterBitmaps[i][x] = val;
         }
     }
 };
@@ -105,19 +105,13 @@ static void ScrollingTextInitialiseScrollingText()
 
 void ScrollingTextInitialiseBitmaps()
 {
-    ScrollingTextInitialiseCharacterBitmaps(SPR_CHAR_START, 0, kSpriteFontGlyphCount, gTinyFontAntiAliased);
-    ScrollingTextInitialiseCharacterBitmaps(SPR_G2_CHAR_BEGIN, kSpriteFontGlyphCount, SPR_G2_GLYPH_COUNT, false);
+    ScrollingTextInitialiseCharacterBitmaps(SPR_FONTS_BEGIN, SPR_FONTS_GLYPH_COUNT);
     ScrollingTextInitialiseScrollingText();
 }
 
 static uint8_t* FontSpriteGetCodepointBitmap(int32_t codepoint)
 {
     auto offset = FontSpriteGetCodepointOffset(codepoint);
-    if (offset >= kSpriteFontGlyphCount)
-    {
-        return _characterBitmaps[offset - (SPR_G2_CHAR_BEGIN - SPR_CHAR_START) + kSpriteFontGlyphCount];
-    }
-
     return _characterBitmaps[offset];
 }
 
@@ -1535,8 +1529,8 @@ static void ScrollingTextSetBitmapForSprite(
                 auto g1 = GfxGetG1Element(SPR_TEXT_PALETTE);
                 if (g1 != nullptr)
                 {
-                    auto colourIndex = FormatTokenGetTextColourIndex(token.kind);
-                    characterColour = g1->offset[colourIndex * 4];
+                    auto colourIndex = FormatTokenToTextColour(token.kind);
+                    characterColour = g1->offset[EnumValue(colourIndex) * 4];
                 }
             }
         }
@@ -1569,8 +1563,8 @@ static void ScrollingTextSetBitmapForTTF(
             auto g1 = GfxGetG1Element(SPR_TEXT_PALETTE);
             if (g1 != nullptr)
             {
-                auto colourIndex = FormatTokenGetTextColourIndex(token.kind);
-                colour = g1->offset[colourIndex * 4];
+                auto colourIndex = FormatTokenToTextColour(token.kind);
+                colour = g1->offset[EnumValue(colourIndex) * 4];
             }
         }
     }

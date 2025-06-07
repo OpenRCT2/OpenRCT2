@@ -50,6 +50,7 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ui/WindowManager.h"
+#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
 #include "../world/ConstructionClearance.h"
@@ -300,7 +301,7 @@ bool Peep::CheckForPath()
     return false;
 }
 
-bool Peep::ShouldWaitForLevelCrossing()
+bool Peep::ShouldWaitForLevelCrossing() const
 {
     if (IsOnPathBlockedByVehicle())
     {
@@ -318,13 +319,13 @@ bool Peep::ShouldWaitForLevelCrossing()
     return false;
 }
 
-bool Peep::IsOnLevelCrossing()
+bool Peep::IsOnLevelCrossing() const
 {
     auto trackElement = MapGetTrackElementAt(GetLocation());
     return trackElement != nullptr;
 }
 
-bool Peep::IsOnPathBlockedByVehicle()
+bool Peep::IsOnPathBlockedByVehicle() const
 {
     auto curPos = TileCoordsXYZ(GetLocation());
     return FootpathIsBlockedByVehicle(curPos);
@@ -728,14 +729,14 @@ void PeepEntityRemove(Peep* peep)
     bool wasGuest = staff == nullptr;
     if (wasGuest)
     {
-        News::DisableNewsItems(News::ItemType::PeepOnRide, peep->Id.ToUnderlying());
+        News::DisableNewsItems(News::ItemType::peepOnRide, peep->Id.ToUnderlying());
     }
     else
     {
         staff->ClearPatrolArea();
         UpdateConsolidatedPatrolAreas();
 
-        News::DisableNewsItems(News::ItemType::Peep, staff->Id.ToUnderlying());
+        News::DisableNewsItems(News::ItemType::peep, staff->Id.ToUnderlying());
     }
     EntityRemove(peep);
 
@@ -783,7 +784,7 @@ void Peep::UpdateFalling()
         {
             auto ft = Formatter();
             FormatNameTo(ft);
-            News::AddItemToQueue(News::ItemType::Blank, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16), ft);
+            News::AddItemToQueue(News::ItemType::blank, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16), ft);
         }
 
         auto& gameState = getGameState();
@@ -928,107 +929,8 @@ void Peep::UpdatePicked()
     }
 }
 
-/* From peep_update */
-static void GuestUpdateThoughts(Guest* peep)
+uint32_t Peep::GetStepsToTake() const
 {
-    // Thoughts must always have a gap of at least
-    // 220 ticks in age between them. In order to
-    // allow this when a thought is new it enters
-    // a holding zone. Before it becomes fresh.
-    int32_t add_fresh = 1;
-    int32_t fresh_thought = -1;
-    for (int32_t i = 0; i < kPeepMaxThoughts; i++)
-    {
-        if (peep->Thoughts[i].type == PeepThoughtType::None)
-            break;
-
-        if (peep->Thoughts[i].freshness == 1)
-        {
-            add_fresh = 0;
-            // If thought is fresh we wait 220 ticks
-            // before allowing a new thought to become fresh.
-            if (++peep->Thoughts[i].fresh_timeout >= 220)
-            {
-                peep->Thoughts[i].fresh_timeout = 0;
-                // Thought is no longer fresh
-                peep->Thoughts[i].freshness++;
-                add_fresh = 1;
-            }
-        }
-        else if (peep->Thoughts[i].freshness > 1)
-        {
-            if (++peep->Thoughts[i].fresh_timeout == 0)
-            {
-                // When thought is older than ~6900 ticks remove it
-                if (++peep->Thoughts[i].freshness >= 28)
-                {
-                    peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
-
-                    // Clear top thought, push others up
-                    if (i < kPeepMaxThoughts - 2)
-                    {
-                        memmove(&peep->Thoughts[i], &peep->Thoughts[i + 1], sizeof(PeepThought) * (kPeepMaxThoughts - i - 1));
-                    }
-                    peep->Thoughts[kPeepMaxThoughts - 1].type = PeepThoughtType::None;
-                }
-            }
-        }
-        else
-        {
-            fresh_thought = i;
-        }
-    }
-    // If there are no fresh thoughts
-    // a previously new thought can become
-    // fresh.
-    if (add_fresh && fresh_thought != -1)
-    {
-        peep->Thoughts[fresh_thought].freshness = 1;
-        peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
-    }
-}
-
-/**
- *
- *  rct2: 0x0068FC1E
- */
-void Peep::Update()
-{
-    if (PeepFlags & PEEP_FLAGS_POSITION_FROZEN)
-    {
-        if (!(PeepFlags & PEEP_FLAGS_ANIMATION_FROZEN))
-        {
-            // This is circumventing other logic, so only update every few ticks
-            if ((getGameState().currentTicks & 3) == 0)
-            {
-                if (IsActionWalking())
-                    UpdateWalkingAnimation();
-                else
-                    UpdateActionAnimation();
-                Invalidate();
-            }
-        }
-        return;
-    }
-    else if (PeepFlags & PEEP_FLAGS_ANIMATION_FROZEN)
-    {
-        // Animation is frozen while position is not. This allows a peep to walk
-        // around without its sprite being updated, which looks very glitchy.
-        // We'll just remove the flag and continue as normal, in this case.
-        PeepFlags &= ~PEEP_FLAGS_ANIMATION_FROZEN;
-    }
-
-    auto* guest = As<Guest>();
-    if (guest != nullptr)
-    {
-        if (!guest->PreviousRide.IsNull())
-            if (++guest->PreviousRideTimeOut >= 720)
-                guest->PreviousRide = RideId::GetNull();
-
-        GuestUpdateThoughts(guest);
-    }
-
-    // Walking speed logic
     uint32_t stepsToTake = Energy;
     if (stepsToTake < 95 && State == PeepState::Queuing)
         stepsToTake = 95;
@@ -1045,54 +947,7 @@ void Peep::Update()
     if (stepsToTake < minStepsForCrossing && IsOnPathBlockedByVehicle())
         stepsToTake = minStepsForCrossing;
 
-    uint32_t carryCheck = StepProgress + stepsToTake;
-    StepProgress = carryCheck;
-    if (carryCheck <= 255)
-    {
-        if (guest != nullptr)
-        {
-            guest->UpdateEasterEggInteractions();
-        }
-    }
-    else
-    {
-        // Loc68FD2F
-        switch (State)
-        {
-            case PeepState::Falling:
-                UpdateFalling();
-                break;
-            case PeepState::One:
-                Update1();
-                break;
-            case PeepState::OnRide:
-                // No action
-                break;
-            case PeepState::Picked:
-                UpdatePicked();
-                break;
-            default:
-            {
-                if (guest != nullptr)
-                {
-                    guest->UpdateGuest();
-                }
-                else
-                {
-                    auto* staff = As<Staff>();
-                    if (staff != nullptr)
-                    {
-                        staff->UpdateStaff(stepsToTake);
-                    }
-                    else
-                    {
-                        assert(false);
-                    }
-                }
-                break;
-            }
-        }
-    }
+    return stepsToTake;
 }
 
 /**
@@ -1192,7 +1047,7 @@ void PeepProblemWarningsUpdate()
         if (Config::Get().notifications.GuestWarnings)
         {
             constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Hungry);
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_HUNGRY, thoughtId, {});
+            News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_ARE_HUNGRY, thoughtId, {});
         }
     }
 
@@ -1204,7 +1059,7 @@ void PeepProblemWarningsUpdate()
         if (Config::Get().notifications.GuestWarnings)
         {
             constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Thirsty);
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_THIRSTY, thoughtId, {});
+            News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_ARE_THIRSTY, thoughtId, {});
         }
     }
 
@@ -1216,7 +1071,7 @@ void PeepProblemWarningsUpdate()
         if (Config::Get().notifications.GuestWarnings)
         {
             constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Toilet);
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_CANT_FIND_TOILET, thoughtId, {});
+            News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_CANT_FIND_TOILET, thoughtId, {});
         }
     }
 
@@ -1228,7 +1083,7 @@ void PeepProblemWarningsUpdate()
         if (Config::Get().notifications.GuestWarnings)
         {
             constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::BadLitter);
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_LITTER, thoughtId, {});
+            News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_DISLIKE_LITTER, thoughtId, {});
         }
     }
 
@@ -1240,7 +1095,7 @@ void PeepProblemWarningsUpdate()
         if (Config::Get().notifications.GuestWarnings)
         {
             constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::PathDisgusting);
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISGUSTED_BY_PATHS, thoughtId, {});
+            News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_DISGUSTED_BY_PATHS, thoughtId, {});
         }
     }
 
@@ -1252,7 +1107,7 @@ void PeepProblemWarningsUpdate()
         if (Config::Get().notifications.GuestWarnings)
         {
             constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Vandalism);
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_VANDALISM, thoughtId, {});
+            News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_DISLIKE_VANDALISM, thoughtId, {});
         }
     }
 
@@ -1264,7 +1119,7 @@ void PeepProblemWarningsUpdate()
         if (Config::Get().notifications.GuestWarnings)
         {
             constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::CantFindExit);
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, thoughtId, {});
+            News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, thoughtId, {});
         }
     }
     else if (lostCounter >= kPeepLostWarningThreshold)
@@ -1273,7 +1128,7 @@ void PeepProblemWarningsUpdate()
         if (Config::Get().notifications.GuestWarnings)
         {
             constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Lost);
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, thoughtId, {});
+            News::AddItemToQueue(News::ItemType::peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, thoughtId, {});
         }
     }
 
@@ -1289,7 +1144,7 @@ void PeepProblemWarningsUpdate()
                 queueComplainingGuestsMap.begin(), queueComplainingGuestsMap.end(),
                 [](auto& lhs, auto& rhs) { return lhs.second < rhs.second; });
             auto rideId = rideWithMostQueueComplaints->first.ToUnderlying();
-            News::AddItemToQueue(News::ItemType::Ride, STR_PEEPS_COMPLAINING_ABOUT_QUEUE_LENGTH_WARNING, rideId, {});
+            News::AddItemToQueue(News::ItemType::ride, STR_PEEPS_COMPLAINING_ABOUT_QUEUE_LENGTH_WARNING, rideId, {});
         }
     }
 }
@@ -1873,7 +1728,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             ride->formatNameTo(ft);
             if (Config::Get().notifications.GuestQueuingForRide)
             {
-                News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->Id, ft);
+                News::AddItemToQueue(News::ItemType::peepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->Id, ft);
             }
         }
     }
@@ -1934,7 +1789,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
                 guest->FormatNameTo(ft);
                 if (Config::Get().notifications.GuestLeftPark)
                 {
-                    News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_PARK, guest->Id, ft);
+                    News::AddItemToQueue(News::ItemType::peepOnRide, STR_PEEP_TRACKING_LEFT_PARK, guest->Id, ft);
                 }
             }
             return true;
@@ -2326,7 +2181,7 @@ static void PeepInteractWithPath(Peep* peep, const CoordsXYE& coords)
                         if (Config::Get().notifications.GuestQueuingForRide)
                         {
                             News::AddItemToQueue(
-                                News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->Id, ft);
+                                News::ItemType::peepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, guest->Id, ft);
                         }
                     }
 
@@ -2420,7 +2275,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         auto cost = ride->price[0];
         if (cost != 0 && !(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
         {
-            ride->totalProfit += cost;
+            ride->totalProfit = AddClamp(ride->totalProfit, cost);
             ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
             guest->SpendMoney(cost, ExpenditureType::ParkRideTickets);
         }
@@ -2443,7 +2298,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
                 : STR_PEEP_TRACKING_PEEP_IS_ON_X;
             if (Config::Get().notifications.GuestUsedFacility)
             {
-                News::AddItemToQueue(News::ItemType::PeepOnRide, string_id, guest->Id, ft);
+                News::AddItemToQueue(News::ItemType::peepOnRide, string_id, guest->Id, ft);
             }
         }
     }

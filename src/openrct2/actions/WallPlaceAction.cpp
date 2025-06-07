@@ -238,7 +238,7 @@ GameActions::Result WallPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
 
-    if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
+    if (wallEntry->scrolling_mode != kScrollingModeNone)
     {
         if (HasReachedBannerLimit())
         {
@@ -349,7 +349,7 @@ GameActions::Result WallPlaceAction::Execute() const
     }
 
     Banner* banner = nullptr;
-    if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
+    if (wallEntry->scrolling_mode != kScrollingModeNone)
     {
         banner = CreateBanner();
         if (banner == nullptr)
@@ -361,16 +361,16 @@ GameActions::Result WallPlaceAction::Execute() const
 
         banner->text = {};
         banner->colour = COLOUR_WHITE;
-        banner->text_colour = COLOUR_WHITE;
-        banner->flags = BANNER_FLAG_IS_WALL;
+        banner->textColour = TextColour::white;
+        banner->flags = { BannerFlag::isWall };
         banner->type = 0; // Banner must be deleted after this point in an early return
         banner->position = TileCoordsXY(_loc);
 
         RideId rideIndex = BannerGetClosestRideIndex(targetLoc);
         if (!rideIndex.IsNull())
         {
-            banner->ride_index = rideIndex;
-            banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
+            banner->rideIndex = rideIndex;
+            banner->flags.set(BannerFlag::linkedToRide);
         }
     }
 

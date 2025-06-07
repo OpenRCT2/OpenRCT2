@@ -356,7 +356,6 @@ struct Peep : EntityBase
     uint32_t PeepFlags;
 
 public: // Peep
-    void Update();
     std::optional<CoordsXY> UpdateAction(int16_t& xy_distance);
     std::optional<CoordsXY> UpdateAction();
     bool UpdateActionAnimation();
@@ -400,18 +399,19 @@ public: // Peep
     // TODO: Make these private again when done refactoring
 public: // Peep
     [[nodiscard]] bool CheckForPath();
-    bool ShouldWaitForLevelCrossing();
-    bool IsOnLevelCrossing();
-    bool IsOnPathBlockedByVehicle();
+    bool ShouldWaitForLevelCrossing() const;
+    bool IsOnLevelCrossing() const;
+    bool IsOnPathBlockedByVehicle() const;
     std::pair<uint8_t, TileElement*> PerformNextAction();
     [[nodiscard]] int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
     void SwitchNextAnimationType();
     [[nodiscard]] PeepAnimationType GetAnimationType();
 
-private:
+protected:
     void UpdateFalling();
     void Update1();
     void UpdatePicked();
+    uint32_t GetStepsToTake() const;
 };
 
 enum

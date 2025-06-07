@@ -22,11 +22,10 @@
 #include <list>
 #include <memory>
 
-struct DrawPixelInfo;
+struct RenderTarget;
 struct TrackDesignFileRef;
 struct ScenarioIndexEntry;
 
-enum class VisibilityCache : uint8_t;
 enum class CursorID : uint8_t;
 enum class CloseWindowModifier : uint8_t;
 
@@ -232,13 +231,6 @@ enum class ModalResult : int8_t
     ok,
 };
 
-enum class VisibilityCache : uint8_t
-{
-    unknown,
-    visible,
-    covered
-};
-
 enum class CloseWindowModifier : uint8_t
 {
     none,
@@ -294,7 +286,7 @@ namespace OpenRCT2
 
     extern colour_t gCurrentWindowColours[3];
 
-    std::list<std::shared_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w);
+    std::vector<std::unique_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w);
     void WindowVisitEach(std::function<void(WindowBase*)> func);
 
     void WindowSetFlagForAllViewports(uint32_t viewportFlag, bool enabled);
@@ -320,8 +312,8 @@ namespace OpenRCT2
     void WindowCheckAllValidZoom();
     void WindowZoomSet(WindowBase& w, ZoomLevel zoomLevel, bool atCursor);
 
-    void WindowDrawAll(DrawPixelInfo& dpi, int32_t left, int32_t top, int32_t right, int32_t bottom);
-    void WindowDraw(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+    void WindowDrawAll(RenderTarget& rt, int32_t left, int32_t top, int32_t right, int32_t bottom);
+    void WindowDraw(RenderTarget& rt, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
     bool isToolActive(WindowClass cls);
     bool isToolActive(WindowClass cls, rct_windownumber number);
@@ -341,10 +333,6 @@ namespace OpenRCT2
 
     void TextinputCancel();
 
-    bool WindowIsVisible(WindowBase& w);
-
-    Viewport* WindowGetPreviousViewport(Viewport* current);
-    void WindowResetVisibilities();
     void WindowInitAll();
 
     void WindowFollowSprite(WindowBase& w, EntityId spriteIndex);

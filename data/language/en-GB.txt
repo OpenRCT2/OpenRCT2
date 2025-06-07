@@ -3810,3 +3810,15 @@ STR_6762    :Interface
 STR_6763    :RollerCoaster Tycoon 1
 STR_6764    :Saving and autosaves
 STR_6765    :Advanced
+STR_6766    :Clear
+STR_6767    :Window
+STR_6768    :Rendering
+STR_6769    :Behaviour
+STR_6770    :Frame rate limit:
+STR_6771    :Internal speed (default)
+STR_6772    :Vertical sync
+STR_6773    :Unrestricted
+STR_6774    :Time since last inspection
+STR_6775    :{COMMA16} minute
+STR_6776    :{COMMA16} minutes
+STR_6777    :more than 4 hours

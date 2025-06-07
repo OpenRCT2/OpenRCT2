@@ -26,7 +26,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr Widget window_network_status_widgets[] = {
-        WINDOW_SHIM(320, 90, kStringIdEmpty)
+        WINDOW_SHIM(kStringIdEmpty, 320, 90)
     };
     // clang-format on
 
@@ -85,9 +85,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            WindowDrawWidgets(*this, dpi);
+            WindowDrawWidgets(*this, rt);
             thread_local std::string _buffer;
 
             _buffer.assign("{WHITE}");
@@ -96,7 +96,7 @@ namespace OpenRCT2::Ui::Windows
 
             ScreenCoordsXY screenCoords(windowPos.x + (width / 2), windowPos.y + (height / 2));
             screenCoords.x -= GfxGetStringWidth(_buffer, FontStyle::Medium) / 2;
-            DrawText(dpi, screenCoords, { COLOUR_BLACK }, _buffer.c_str());
+            DrawText(rt, screenCoords, { COLOUR_BLACK }, _buffer.c_str());
         }
 
         void SetCloseCallBack(CloseCallback onClose)

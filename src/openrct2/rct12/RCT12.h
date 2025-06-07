@@ -32,7 +32,8 @@ class ObjectList;
 namespace OpenRCT2
 {
     enum class TrackElemType : uint16_t;
-}
+    enum class TextColour : uint8_t;
+} // namespace OpenRCT2
 namespace OpenRCT2::RCT12
 {
     enum class ClimateType : uint8_t
@@ -376,17 +377,9 @@ constexpr uint8_t kTD46GForcesMultiplier = 32;
 constexpr uint8_t kRCT12InversionAndHoleMask = 0b00011111;
 constexpr uint8_t kRCT12RideNumDropsMask = 0b00111111;
 
-struct TrackDesign;
-struct TrackDesignTrackElement;
 enum class RideColourScheme : uint8_t;
-
-enum class RCT12TrackDesignVersion : uint8_t
-{
-    TD4,
-    TD4_AA,
-    TD6,
-    unknown
-};
+enum class BannerFlag : uint8_t;
+using BannerFlags = FlagHolder<uint8_t, BannerFlag>;
 
 enum
 {
@@ -505,46 +498,6 @@ struct RCT12xy8
     }
 };
 static_assert(sizeof(RCT12xy8) == 2);
-
-enum class TD46MazeElementType : uint8_t
-{
-    Entrance = (1 << 3),
-    Exit = (1 << 7)
-};
-
-/* Maze Element entry   size: 0x04 */
-struct TD46MazeElement
-{
-    union
-    {
-        uint32_t All;
-        struct
-        {
-            int8_t x;
-            int8_t y;
-            union
-            {
-                uint16_t MazeEntry;
-                struct
-                {
-                    uint8_t Direction;
-                    uint8_t Type;
-                };
-            };
-        };
-    };
-
-    constexpr bool IsEntrance() const
-    {
-        return Type == EnumValue(TD46MazeElementType::Entrance);
-    }
-
-    constexpr bool IsExit() const
-    {
-        return Type == EnumValue(TD46MazeElementType::Exit);
-    }
-};
-static_assert(sizeof(TD46MazeElement) == 0x04);
 
 /* Track Element entry  size: 0x02 */
 struct TD46TrackElement
@@ -1190,16 +1143,16 @@ static_assert(sizeof(RCT12RideMeasurement) == 0x4B0C);
 struct RCT12Banner
 {
     RCT12ObjectEntryIndex Type;
-    uint8_t Flags;       // 0x01
+    BannerFlags flags;   // 0x01
     ::StringId StringID; // 0x02
     union
     {
         uint8_t Colour;    // 0x04
         uint8_t RideIndex; // 0x04
     };
-    uint8_t TextColour; // 0x05
-    uint8_t x;          // 0x06
-    uint8_t y;          // 0x07
+    OpenRCT2::TextColour textColour; // 0x05
+    uint8_t x;                       // 0x06
+    uint8_t y;                       // 0x07
 };
 static_assert(sizeof(RCT12Banner) == 8);
 
@@ -1290,19 +1243,6 @@ std::vector<RideId> RCT12GetRidesBeenOn(T* srcPeep)
     }
     return ridesBeenOn;
 }
-
-enum class TD46Flags : uint8_t
-{
-    StationId = 0b00000011,
-    SpeedOrSeatRotation = 0b00001111,
-    ColourScheme = 0b00110000,
-    IsInverted = 0b01000000,
-    HasChain = 0b10000000,
-};
-
-void ConvertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags);
-uint8_t ConvertToTD46Flags(const TrackDesignTrackElement& source);
-void ImportMazeElement(TrackDesign& td, const TD46MazeElement& td46MazeElement);
 
 namespace OpenRCT2::RCT12
 {

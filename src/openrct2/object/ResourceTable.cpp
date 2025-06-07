@@ -71,6 +71,7 @@ ResourceTable::SourceInfo ResourceTable::ParseSource(std::string_view source)
         }
     }
 
+    auto& env = GetContext()->GetPlatformEnvironment();
     if (String::startsWith(base, "$LGX:"))
     {
         info.Kind = SourceKind::Gx;
@@ -78,35 +79,30 @@ ResourceTable::SourceInfo ResourceTable::ParseSource(std::string_view source)
     }
     else if (String::startsWith(base, "$G1"))
     {
-        auto env = GetContext()->GetPlatformEnvironment();
-        auto dataPath = env->GetDirectoryPath(DirBase::rct2, DirId::data);
+        auto dataPath = env.GetDirectoryPath(DirBase::rct2, DirId::data);
         info.Kind = SourceKind::G1;
         // info.Path = env->FindFile(DirBase::rct2, DirId::data, "g1.dat");
     }
     else if (String::startsWith(base, "$CSG"))
     {
-        auto env = GetContext()->GetPlatformEnvironment();
-        auto dataPath = env->GetDirectoryPath(DirBase::rct2, DirId::data);
+        auto dataPath = env.GetDirectoryPath(DirBase::rct2, DirId::data);
         info.Kind = SourceKind::Csg;
         // info.Path = env->FindFile(DirBase::rct2, DirId::data, "g1.dat");
     }
     else if (String::startsWith(base, "$RCT1:DATA/"))
     {
-        auto env = GetContext()->GetPlatformEnvironment();
         info.Kind = SourceKind::Data;
-        info.Path = env->FindFile(DirBase::rct1, DirId::data, fileName);
+        info.Path = env.FindFile(DirBase::rct1, DirId::data, fileName);
     }
     else if (String::startsWith(base, "$RCT2:DATA/"))
     {
-        auto env = GetContext()->GetPlatformEnvironment();
         info.Kind = SourceKind::Data;
-        info.Path = env->FindFile(DirBase::rct2, DirId::data, fileName);
+        info.Path = env.FindFile(DirBase::rct2, DirId::data, fileName);
     }
     else if (String::startsWith(base, "$RCT2:OBJDATA/"))
     {
-        auto env = GetContext()->GetPlatformEnvironment();
         info.Kind = SourceKind::ObjData;
-        info.Path = env->FindFile(DirBase::rct2, DirId::objects, fileName);
+        info.Path = env.FindFile(DirBase::rct2, DirId::objects, fileName);
     }
     else if (!String::startsWith(base, "$"))
     {

@@ -143,6 +143,8 @@ namespace OpenRCT2::Ui::Windows
 
             if (staff->AssignedStaffType == StaffType::Entertainer)
                 _availableCostumes = getAvailableCostumeStrings(AnimationPeepType::Entertainer);
+
+            ViewportInit();
         }
 
         void OnOpen() override
@@ -225,18 +227,18 @@ namespace OpenRCT2::Ui::Windows
             CommonPrepareDrawAfter();
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
-            DrawTabImages(dpi);
+            DrawWidgets(rt);
+            DrawTabImages(rt);
 
             switch (page)
             {
                 case WINDOW_STAFF_OVERVIEW:
-                    OverviewDraw(dpi);
+                    OverviewDraw(rt);
                     break;
                 case WINDOW_STAFF_STATISTICS:
-                    StatsDraw(dpi);
+                    StatsDraw(rt);
                     break;
             }
         }
@@ -531,18 +533,26 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_FIRE].left = width - 25;
             widgets[WIDX_FIRE].right = width - 2;
+
+            if (viewport != nullptr)
+            {
+                const Widget& viewportWidget = widgets[WIDX_VIEWPORT];
+                viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 };
+                viewport->width = widgets[WIDX_VIEWPORT].width() - 1;
+                viewport->height = widgets[WIDX_VIEWPORT].height() - 1;
+            }
         }
 
-        void OverviewDraw(DrawPixelInfo& dpi)
+        void OverviewDraw(RenderTarget& rt)
         {
             // Draw the viewport no sound sprite
             if (viewport != nullptr)
             {
-                WindowDrawViewport(dpi, *this);
+                WindowDrawViewport(rt, *this);
 
                 if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
                 {
-                    GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*this));
+                    GfxDrawSprite(rt, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*this));
                 }
             }
 
@@ -557,10 +567,10 @@ namespace OpenRCT2::Ui::Windows
             const auto& widget = widgets[WIDX_BTM_LABEL];
             auto screenPos = windowPos + ScreenCoordsXY{ widget.midX(), widget.top };
             int32_t widgetWidth = widget.width();
-            DrawTextEllipsised(dpi, screenPos, widgetWidth, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
+            DrawTextEllipsised(rt, screenPos, widgetWidth, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
         }
 
-        void DrawOverviewTabImage(DrawPixelInfo& dpi)
+        void DrawOverviewTabImage(RenderTarget& rt)
         {
             if (IsWidgetDisabled(WIDX_TAB_1))
                 return;
@@ -572,8 +582,8 @@ namespace OpenRCT2::Ui::Windows
             if (page == WINDOW_STAFF_OVERVIEW)
                 widgetHeight++;
 
-            DrawPixelInfo clip_dpi;
-            if (!ClipDrawPixelInfo(clip_dpi, dpi, screenCoords, widgetWidth, widgetHeight))
+            RenderTarget clippedRT;
+            if (!ClipDrawPixelInfo(clippedRT, rt, screenCoords, widgetWidth, widgetHeight))
             {
                 return;
             }
@@ -598,27 +608,12 @@ namespace OpenRCT2::Ui::Windows
                 animFrame = _tabAnimationOffset / 4;
 
             auto imageIndex = anim.base_image + 1 + anim.frame_offsets[animFrame] * 4;
-            GfxDrawSprite(clip_dpi, ImageId(imageIndex, staff->TshirtColour, staff->TrousersColour), screenCoords);
+            GfxDrawSprite(clippedRT, ImageId(imageIndex, staff->TshirtColour, staff->TrousersColour), screenCoords);
         }
 
         void OverviewResize()
         {
             WindowSetResize(*this, { WW, WH }, { 500, 450 });
-
-            if (viewport != nullptr)
-            {
-                auto widget = widgets[WIDX_VIEWPORT];
-                auto newWidth = widget.width() - 1;
-                auto newHeight = widget.height() - 1;
-                viewport->pos = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
-
-                // Update the viewport size
-                if (viewport->width != newWidth || viewport->height != newHeight)
-                {
-                    viewport->width = newWidth;
-                    viewport->height = newHeight;
-                }
-            }
 
             ViewportInit();
         }
@@ -648,6 +643,13 @@ namespace OpenRCT2::Ui::Windows
             picked_peep_frame %= pickAnimLength * 4;
 
             InvalidateWidget(WIDX_TAB_1);
+
+            const std::optional<Focus> tempFocus = staff->State != PeepState::Picked ? std::optional(Focus(staff->Id))
+                                                                                     : std::nullopt;
+            if (focus != tempFocus)
+            {
+                ViewportInit();
+            }
         }
 
         void OverviewToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -919,7 +921,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
 #pragma region Statistics tab events
-        void StatsDraw(DrawPixelInfo& dpi)
+        void StatsDraw(RenderTarget& rt)
         {
             auto staff = GetStaff();
             if (staff == nullptr)
@@ -933,13 +935,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 ft.Add<money64>(GetStaffWage(staff->AssignedStaffType));
-                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_WAGES, ft);
+                DrawTextBasic(rt, screenCoords, STR_STAFF_STAT_WAGES, ft);
                 screenCoords.y += kListRowHeight;
             }
 
             auto ft = Formatter();
             ft.Add<int32_t>(staff->GetHireDate());
-            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_EMPLOYED_FOR, ft);
+            DrawTextBasic(rt, screenCoords, STR_STAFF_STAT_EMPLOYED_FOR, ft);
             screenCoords.y += kListRowHeight;
 
             switch (staff->AssignedStaffType)
@@ -947,37 +949,37 @@ namespace OpenRCT2::Ui::Windows
                 case StaffType::Handyman:
                     ft = Formatter();
                     ft.Add<uint32_t>(staff->StaffLawnsMown);
-                    DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
+                    DrawTextBasic(rt, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
                     screenCoords.y += kListRowHeight;
 
                     ft = Formatter();
                     ft.Add<uint32_t>(staff->StaffGardensWatered);
-                    DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_GARDENS_WATERED, ft);
+                    DrawTextBasic(rt, screenCoords, STR_STAFF_STAT_GARDENS_WATERED, ft);
                     screenCoords.y += kListRowHeight;
 
                     ft = Formatter();
                     ft.Add<uint32_t>(staff->StaffLitterSwept);
-                    DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LITTER_SWEPT, ft);
+                    DrawTextBasic(rt, screenCoords, STR_STAFF_STAT_LITTER_SWEPT, ft);
                     screenCoords.y += kListRowHeight;
 
                     ft = Formatter();
                     ft.Add<uint32_t>(staff->StaffBinsEmptied);
-                    DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_BINS_EMPTIED, ft);
+                    DrawTextBasic(rt, screenCoords, STR_STAFF_STAT_BINS_EMPTIED, ft);
                     break;
                 case StaffType::Mechanic:
                     ft = Formatter();
                     ft.Add<uint32_t>(staff->StaffRidesInspected);
-                    DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
+                    DrawTextBasic(rt, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
                     screenCoords.y += kListRowHeight;
 
                     ft = Formatter();
                     ft.Add<uint32_t>(staff->StaffRidesFixed);
-                    DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
+                    DrawTextBasic(rt, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
                     break;
                 case StaffType::Security:
                     ft = Formatter();
                     ft.Add<uint32_t>(staff->StaffVandalsStopped);
-                    DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
+                    DrawTextBasic(rt, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
                     break;
                 case StaffType::Entertainer:
                 case StaffType::Count:
@@ -1176,14 +1178,14 @@ namespace OpenRCT2::Ui::Windows
             WindowFollowSprite(*main, EntityId::FromUnderlying(number));
         }
 
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& rt)
         {
-            DrawOverviewTabImage(dpi);
-            DrawTabImage(dpi, WINDOW_STAFF_OPTIONS, SPR_TAB_STAFF_OPTIONS_0);
-            DrawTabImage(dpi, WINDOW_STAFF_STATISTICS, SPR_TAB_STATS_0);
+            DrawOverviewTabImage(rt);
+            DrawTabImage(rt, WINDOW_STAFF_OPTIONS, SPR_TAB_STAFF_OPTIONS_0);
+            DrawTabImage(rt, WINDOW_STAFF_STATISTICS, SPR_TAB_STATS_0);
         }
 
-        void DrawTabImage(DrawPixelInfo& dpi, int32_t p, int32_t baseImageId)
+        void DrawTabImage(RenderTarget& rt, int32_t p, int32_t baseImageId)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + p;
             Widget* widget = &widgets[widgetIndex];
@@ -1199,7 +1201,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 // Draw normal, enabled sprite.
-                GfxDrawSprite(dpi, ImageId(baseImageId), screenCoords);
+                GfxDrawSprite(rt, ImageId(baseImageId), screenCoords);
             }
         }
 

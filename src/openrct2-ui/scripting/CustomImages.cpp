@@ -322,7 +322,7 @@ namespace OpenRCT2::Scripting
                 auto importMode = getImportModeFromPalette(pixelData.Palette);
                 auto pngData = DukGetDataFromBufferLikeObject(pixelData.Data);
                 auto image = Imaging::ReadFromBuffer(pngData, imageFormat);
-                uint8_t flags = EnumToFlag(ImportFlags::RLE);
+                constexpr uint8_t flags = EnumToFlag(ImportFlags::RLE);
                 ImageImportMeta meta = { { 0, 0 }, palette, flags, importMode };
 
                 ImageImporter importer;
@@ -434,10 +434,10 @@ namespace OpenRCT2::Scripting
         auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
 
         auto drawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
-        DrawPixelInfo dpi;
-        dpi.DrawingEngine = drawingEngine.get();
-        dpi.width = size.width;
-        dpi.height = size.height;
+        RenderTarget rt;
+        rt.DrawingEngine = drawingEngine.get();
+        rt.width = size.width;
+        rt.height = size.height;
 
         auto createNewImage = false;
         auto g1 = GfxGetG1Element(id);
@@ -449,22 +449,22 @@ namespace OpenRCT2::Scripting
         if (createNewImage)
         {
             auto bufferSize = size.width * size.height;
-            dpi.bits = new uint8_t[bufferSize];
-            std::memset(dpi.bits, 0, bufferSize);
+            rt.bits = new uint8_t[bufferSize];
+            std::memset(rt.bits, 0, bufferSize);
 
             drawingEngine->BeginDraw();
 
             // Draw the original image if we are creating a new one
-            GfxDrawSprite(dpi, ImageId(id), { 0, 0 });
+            GfxDrawSprite(rt, ImageId(id), { 0, 0 });
 
             drawingEngine->EndDraw();
         }
         else
         {
-            dpi.bits = g1->offset;
+            rt.bits = g1->offset;
         }
 
-        auto dukG = GetObjectAsDukValue(ctx, std::make_shared<ScGraphicsContext>(ctx, dpi));
+        auto dukG = GetObjectAsDukValue(ctx, std::make_shared<ScGraphicsContext>(ctx, rt));
         scriptEngine.ExecutePluginCall(plugin, callback, { dukG }, false);
 
         if (createNewImage)
@@ -475,7 +475,7 @@ namespace OpenRCT2::Scripting
                 delete[] g1->offset;
                 newg1 = *g1;
             }
-            newg1.offset = dpi.bits;
+            newg1.offset = rt.bits;
             newg1.width = size.width;
             newg1.height = size.height;
             newg1.flags = 0;

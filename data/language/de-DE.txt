@@ -2238,8 +2238,8 @@ STR_3228    :Legen Sie die Startpositionen{NEWLINE}der Besucher fest
 STR_3229    :Blockbremsen können nicht unmittelbar nach der Station eingesetzt werden
 STR_3230    :Blockbremsen können nicht unmittelbar hintereinander eingesetzt werden
 STR_3231    :Blockbremsen können nicht unmittelbar nach der Anstiegsspitze eingesetzt werden
-STR_3232    :Optionen - Finanzen
-STR_3233    :Optionen - Besucher
+STR_3232    :Szenariooptionen - Finanzen
+STR_3233    :Szenariooptionen - Besucher
 STR_3235    :Finanzoptionen anzeigen
 STR_3236    :Besucheroptionen anzeigen
 STR_3238    :Kein Geld
@@ -2283,7 +2283,7 @@ STR_3279    :Freier Eintritt/Pro Fahrt bezahlen
 STR_3280    :Für Eintritt bezahlen/Gratis fahren
 STR_3281    :{WINDOW_COLOUR_2}Eintrittspreis:
 STR_3283    :Bahnen auswählen, die beibehalten werden sollen
-STR_3285    :Beibehaltene Bahnen
+STR_3285    :Szenariooptionen - Beibehaltene Bahnen
 STR_3286    :Ziel für dieses Szenario auswählen
 STR_3287    :{WINDOW_COLOUR_2}Ziel:
 STR_3294    :Ändern …
@@ -2511,7 +2511,7 @@ STR_5265    :Auswählen, welche Inhaltsquellen{NEWLINE}angezeigt werden sollen
 STR_5266    :Anzeige
 STR_5267    :Sprache und Einheiten
 STR_5268    :Audio
-STR_5269    :Bedienung und Oberfläche
+STR_5269    :Steuerung
 STR_5270    :Sonstiges
 STR_5272    :Kleine Szenerie
 STR_5273    :Große Szenerie
@@ -3790,3 +3790,30 @@ STR_6747    :Präferenzen variieren (Standard)
 STR_6748    :Nur weniger intensive Fahrgeschäfte
 STR_6749    :Nur intensivere Fahrgeschäfte
 STR_6750    :Auswählen, welche Art von Fahrgeschäft die neu erzeugten Besucher bevorzugen.
+STR_6751    :Warteschlangen können nicht für Bahnübergänge benutzt werden!
+STR_6752    :Szenariooptionen - Ziel
+STR_6753    :Szenariooptionen - Szenariodetails
+STR_6754    :Szenariooptionen - Landeinschränkungen
+STR_6755    :Szenariooptionen anzeigen
+STR_6756    :Szenariodetailoptionen anzeigen
+STR_6757    :Landeinschränkungsoptionen anzeigen
+STR_6758    :Darlehensoptionen
+STR_6759    :Geschäftsmodell
+STR_6760    :Einkünfte:
+STR_6761    :Szenariodetails
+STR_6762    :Oberfläche
+STR_6763    :RollerCoaster Tycoon 1
+STR_6764    :Speichern und Autospeichern
+STR_6765    :Erweitert
+STR_6766    :Leeren
+STR_6767    :Fenster
+STR_6768    :Rendern
+STR_6769    :Verhalten
+STR_6770    :Bildwiederholratenbegr.:
+STR_6771    :Interne Geschw. (Standard)
+STR_6772    :Vertikale Synchronisation
+STR_6773    :Unbegrenzt
+STR_6774    :Zeit seit letzter Inspektion
+STR_6775    :{COMMA16} Minute
+STR_6776    :{COMMA16} Minuten
+STR_6777    :über 4 Stunden

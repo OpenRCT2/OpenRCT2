@@ -2166,7 +2166,6 @@ STR_3136    :Advertencia: este aspecto crearase cun tipo de vehículo alternativ
 STR_3137    :Seleccionar. Escenario próximo
 STR_3138    :Restablecer selección.
 STR_3139    :O cable de elevación non pode funcionar neste modo
-STR_3140    :O cable do telecadeira debe comezar inmediatamente despois da estación
 STR_3141    :Multicircuíto por atracción. non é posible cun cable de elevación
 STR_3142    :{WINDOW_COLOUR_2}Capacidade: {BLACK}{STRINGID}
 STR_3143    :Mostrar visitantes no mapa
@@ -2237,8 +2236,8 @@ STR_3228    :Establecer a posición inicial das persoas
 STR_3229    :O bloque de freada non debe usarse despois da estación
 STR_3230    :O bloque de freado non debe usarse despois do outro
 STR_3231    :O bloque de freo non debe usarse despois do final da cadea de elevación.
-STR_3232    :Opcións - Finanzas
-STR_3233    :Opcións - Visitantes
+STR_3232    :Opcións do escenario - Finanzas
+STR_3233    :Opcións do escenario - Visitantes
 STR_3235    :Opcións de financiamento
 STR_3236    :Opcións de visitante
 STR_3238    :Sen cartos
@@ -2282,7 +2281,7 @@ STR_3279    :Entrada gratuíta / Atraccións de pago
 STR_3280    :Pagar para entrar / Atraccións gratuítas
 STR_3281    :{WINDOW_COLOUR_2}Prezo de entrada:
 STR_3283    :Selecciona as atraccións para conservar
-STR_3285    :Atraccións preservadas
+STR_3285    :Opcións do escenario - Atraccións preservadas
 STR_3286    :Seleccione obxectivos para este escenario
 STR_3287    :{WINDOW_COLOUR_2}Obxecto:
 STR_3294    :Cambiar...
@@ -2511,7 +2510,7 @@ STR_5265    :Selecciona que contidos son visibles
 STR_5266    :Gráficos
 STR_5267    :Idioma e unidades
 STR_5268    :Audio
-STR_5269    :Interface e controis
+STR_5269    :Controis
 STR_5270    :Outras opcións
 STR_5272    :Pequena decoración
 STR_5273    :Decoración grande
@@ -3594,7 +3593,6 @@ STR_6547    :Todos os escenarios
 STR_6548    :Mostrar pasamáns nas interseccións
 STR_6549    :Non se poden seleccionar obxectos de compatibilidade!
 STR_6550    :Inclúese esta entrada para garantir a compatibilidade con obxectos antigos ou danados. Non se pode seleccionar, só deseleccionar.
-
 STR_6551    :Verde exército
 STR_6552    :Melón
 STR_6553    :Tan
@@ -3795,3 +3793,30 @@ STR_6747    :Preferencias variadas (por defecto)
 STR_6748    :Só atraccións pouco intensas
 STR_6749    :Só atraccións moi intensas
 STR_6750    :Selecciona a intensidade de atracción que prefiren os novos visitantes.
+STR_6751    :Non se poden usar camiños de cola para pasos a nivel!
+STR_6752    :Opcións do escenario - Obxectivo
+STR_6753    :Opcións do escenario - Detalles do escenario
+STR_6754    :Opcións do escenario - Restricións de terras
+STR_6755    :Amosa opcións do obxectivo
+STR_6756    :Amosa opcións de detalles do escenario
+STR_6757    :Amosa opcións de restricións de terras
+STR_6758    :Opcións de préstamo
+STR_6759    :Modelo de negocio
+STR_6760    :Ganancias:
+STR_6761    :Detalles do escenario
+STR_6762    :Interface
+STR_6763    :RollerCoaster Tycoon 1
+STR_6764    :Gardar e gardados automáticos
+STR_6765    :Avanzado
+STR_6766    :Limpar
+STR_6767    :Xanela
+STR_6768    :Renderizado
+STR_6769    :Comportamento
+STR_6770    :Límite de fotogramas:
+STR_6771    :Velocidade interna (por defecto)
+STR_6772    :Sincronización vertical
+STR_6773    :Sen restricións
+STR_6774    :Tempo desde a última inspección
+STR_6775    :{COMMA16} minuto
+STR_6776    :{COMMA16} minutos
+STR_6777    :máis de 4 horas

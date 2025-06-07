@@ -274,6 +274,8 @@ namespace OpenRCT2::Ui::Windows
             _autoRotatingShop = true;
             _trackPlaceCtrlState = false;
             _trackPlaceShiftState = false;
+
+            UpdateTrackPieceWidgets();
         }
 
         void OnClose() override
@@ -330,7 +332,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnResize() override
+        void UpdateTrackPieceWidgets()
         {
             WindowRideConstructionUpdateEnabledTrackPieces();
 
@@ -1019,6 +1021,8 @@ namespace OpenRCT2::Ui::Windows
             }
 
             UpdateGhostTrackAndArrow();
+
+            UpdateTrackPieceWidgets();
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -1075,13 +1079,11 @@ namespace OpenRCT2::Ui::Windows
                     MouseUpDemolish();
                     break;
                 case WIDX_NEXT_SECTION:
-                    VirtualFloorInvalidate();
                     RideSelectNextSection();
                     if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
                         VirtualFloorSetHeight(_currentTrackBegin.z);
                     break;
                 case WIDX_PREVIOUS_SECTION:
-                    VirtualFloorInvalidate();
                     RideSelectPreviousSection();
                     if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
                         VirtualFloorSetHeight(_currentTrackBegin.z);
@@ -1501,6 +1503,7 @@ namespace OpenRCT2::Ui::Windows
                 case TrackElemType::BlockBrakes:
                 case TrackElemType::DiagBlockBrakes:
                     _currentBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
+                    break;
                 default:
                     break;
             }
@@ -1623,13 +1626,13 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_O_TRACK].tooltip = trackDrawerDescriptor.Covered.tooltip;
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawPixelInfo clipdpi;
+            RenderTarget clippedRT;
             Widget* widget;
             int32_t widgetWidth, widgetHeight;
 
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
 
             widget = &widgets[WIDX_CONSTRUCT];
             if (widget->type == WindowWidgetType::Empty)
@@ -1647,23 +1650,23 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = ScreenCoordsXY{ windowPos.x + widget->left + 1, windowPos.y + widget->top + 1 };
             widgetWidth = widget->width() - 1;
             widgetHeight = widget->height() - 1;
-            if (ClipDrawPixelInfo(clipdpi, dpi, screenCoords, widgetWidth, widgetHeight))
+            if (ClipDrawPixelInfo(clippedRT, rt, screenCoords, widgetWidth, widgetHeight))
             {
                 DrawTrackPiece(
-                    clipdpi, rideIndex, trackType, trackDirection, liftHillAndInvertedState, widgetWidth, widgetHeight);
+                    clippedRT, rideIndex, trackType, trackDirection, liftHillAndInvertedState, widgetWidth, widgetHeight);
             }
 
             // Draw cost
             screenCoords = { windowPos.x + widget->midX(), windowPos.y + widget->bottom - 23 };
             if (_rideConstructionState != RideConstructionState::Place)
-                DrawTextBasic(dpi, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
+                DrawTextBasic(rt, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
 
             screenCoords.y += 11;
             if (_currentTrackPrice != kMoney64Undefined && !(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_currentTrackPrice);
-                DrawTextBasic(dpi, screenCoords, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
+                DrawTextBasic(rt, screenCoords, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
             }
         }
 
@@ -2638,7 +2641,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         void DrawTrackPiece(
-            DrawPixelInfo& dpi, RideId rideIndex, OpenRCT2::TrackElemType trackType, int32_t trackDirection,
+            RenderTarget& rt, RideId rideIndex, OpenRCT2::TrackElemType trackType, int32_t trackDirection,
             SelectedLiftAndInverted liftHillAndInvertedState, int32_t widgetWidth, int32_t widgetHeight)
         {
             auto currentRide = GetRide(rideIndex);
@@ -2667,25 +2670,25 @@ namespace OpenRCT2::Ui::Windows
 
             const ScreenCoordsXY rotatedScreenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), mapCoords);
 
-            dpi.x += rotatedScreenCoords.x - widgetWidth / 2;
-            dpi.y += rotatedScreenCoords.y - widgetHeight / 2 - 16;
+            rt.x += rotatedScreenCoords.x - widgetWidth / 2;
+            rt.y += rotatedScreenCoords.y - widgetHeight / 2 - 16;
 
-            dpi.cullingX = dpi.x;
-            dpi.cullingY = dpi.y;
-            dpi.cullingWidth = dpi.width;
-            dpi.cullingHeight = dpi.height;
+            rt.cullingX = rt.x;
+            rt.cullingY = rt.y;
+            rt.cullingWidth = rt.width;
+            rt.cullingHeight = rt.height;
 
-            DrawTrackPieceHelper(dpi, rideIndex, trackType, trackDirection, liftHillAndInvertedState, { 4096, 4096 }, 1024);
+            DrawTrackPieceHelper(rt, rideIndex, trackType, trackDirection, liftHillAndInvertedState, { 4096, 4096 }, 1024);
         }
 
         void DrawTrackPieceHelper(
-            DrawPixelInfo& dpi, RideId rideIndex, OpenRCT2::TrackElemType trackType, int32_t trackDirection,
+            RenderTarget& rt, RideId rideIndex, OpenRCT2::TrackElemType trackType, int32_t trackDirection,
             SelectedLiftAndInverted liftHillAndInvertedState, const CoordsXY& originCoords, int32_t originZ)
         {
             TileElement tempSideTrackTileElement{ 0x80, 0x8F, 128, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             TileElement tempTrackTileElement{};
             TileElement* backupTileElementArrays[5]{};
-            PaintSession* session = PaintSessionAlloc(dpi, 0, GetCurrentRotation());
+            PaintSession* session = PaintSessionAlloc(rt, 0, GetCurrentRotation());
             trackDirection &= 3;
 
             auto currentRide = GetRide(rideIndex);
@@ -2992,7 +2995,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (im.IsModifierKeyPressed(ModifierKey::ctrl))
             {
-                auto interactionFlags = EnumsToFlags(
+                constexpr auto interactionFlags = EnumsToFlags(
                     ViewportInteractionItem::Terrain, ViewportInteractionItem::Ride, ViewportInteractionItem::Footpath,
                     ViewportInteractionItem::PathAddition, ViewportInteractionItem::LargeScenery,
                     ViewportInteractionItem::Label, ViewportInteractionItem::Banner);
@@ -3196,9 +3199,6 @@ namespace OpenRCT2::Ui::Windows
                         _currentTrackPrice = PlaceProvisionalTrackPiece(
                             rideIndex, type, direction, liftHillAndAlternativeState, trackPos);
                         WindowRideConstructionUpdateActiveElements();
-
-                        // Invalidate previous track piece (we may not be changing height!)
-                        VirtualFloorInvalidate();
 
                         if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
                         {
@@ -3544,6 +3544,7 @@ namespace OpenRCT2::Ui::Windows
                     *ride, entranceOrExitCoords, entranceOrExitCoords.direction, gRideEntranceExitPlaceType, stationNum);
             }
             WindowRideConstructionUpdateActiveElements();
+            VirtualFloorSetHeight(entranceOrExitCoords.z);
         }
     }
 
@@ -4787,9 +4788,6 @@ namespace OpenRCT2::Ui::Windows
         ViewportSetVisibility(visiblity);
         if (_currentTrackPitchEnd != TrackPitch::None)
             ViewportSetVisibility(ViewportVisibility::TrackHeights);
-
-        // Invalidate previous track piece (we may not be changing height!)
-        VirtualFloorInvalidate();
 
         if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
         {

@@ -97,6 +97,7 @@ namespace OpenRCT2::Ui::Windows
         INFORMATION_TYPE_QUEUE_TIME,
         INFORMATION_TYPE_RELIABILITY,
         INFORMATION_TYPE_DOWN_TIME,
+        INFORMATION_TYPE_LAST_INSPECTION,
         INFORMATION_TYPE_GUESTS_FAVOURITE,
         INFORMATION_TYPE_EXCITEMENT,
         INFORMATION_TYPE_INTENSITY,
@@ -119,6 +120,7 @@ namespace OpenRCT2::Ui::Windows
         STR_QUEUE_TIME,
         STR_RELIABILITY,
         STR_DOWN_TIME,
+        STR_LAST_INSPECTION,
         STR_GUESTS_FAVOURITE,
         STR_RIDE_LIST_EXCITEMENT,
         STR_RIDE_LIST_INTENSITY,
@@ -146,6 +148,7 @@ namespace OpenRCT2::Ui::Windows
         false, // Queue time
         false, // Reliability
         false, // Down time
+        false, // Last inspection
         false, // Guests favourite
         false, // Excitement
         false, // Intensity
@@ -211,7 +214,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SORT].right = width - 60 + 54;
 
             auto dropdownStart = widgets[WIDX_CURRENT_INFORMATION_TYPE].top;
-            ResizeDropdown(WIDX_CURRENT_INFORMATION_TYPE, { 150, dropdownStart }, { width - 216, kDropdownHeight });
+            ResizeDropdown(WIDX_CURRENT_INFORMATION_TYPE, { 100, dropdownStart }, { width - 166, kDropdownHeight });
 
             // Refreshing the list can be a very intensive operation
             // owing to its use of ride_has_any_track_elements().
@@ -520,16 +523,16 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B3235
          */
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            WindowDrawWidgets(*this, dpi);
-            DrawTabImages(dpi);
+            WindowDrawWidgets(*this, rt);
+            DrawTabImages(rt);
 
             // Draw number of attractions on bottom
             auto ft = Formatter();
             ft.Add<uint16_t>(static_cast<uint16_t>(_rideList.size()));
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_LIST].bottom + 2 }, ride_list_statusbar_count_strings[page],
+                rt, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_LIST].bottom + 2 }, ride_list_statusbar_count_strings[page],
                 ft);
         }
 
@@ -537,12 +540,11 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B3240
          */
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
+            auto rtCoords = ScreenCoordsXY{ rt.x, rt.y };
             GfxFillRect(
-                dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width, dpi.height } },
-                ColourMapA[colours[1].colour].mid_light);
+                rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width, rt.height } }, ColourMapA[colours[1].colour].mid_light);
 
             auto y = 0;
             for (size_t i = 0; i < _rideList.size(); i++)
@@ -554,7 +556,7 @@ namespace OpenRCT2::Ui::Windows
                 if (i == static_cast<size_t>(selected_list_item))
                 {
                     // Background highlight
-                    GfxFilterRect(dpi, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(rt, { 0, y, 800, y + kScrollableRowHeight - 1 }, FilterPaletteID::PaletteDarken1);
                     format = STR_WINDOW_COLOUR_2_STRINGID;
                     if (_quickDemolishMode)
                         format = STR_LIGHTPINK_STRINGID;
@@ -568,7 +570,7 @@ namespace OpenRCT2::Ui::Windows
                 // Ride name
                 auto ft = Formatter();
                 ridePtr->formatNameTo(ft);
-                DrawTextEllipsised(dpi, { 0, y - 1 }, 159, format, ft);
+                DrawTextEllipsised(rt, { 0, y - 1 }, 159, format, ft);
 
                 // Ride information
                 ft = Formatter();
@@ -705,6 +707,25 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<uint16_t>(ridePtr->downtime);
                         formatSecondary = STR_DOWN_TIME_LABEL;
                         break;
+                    case INFORMATION_TYPE_LAST_INSPECTION:
+                    {
+                        const auto lastInspection = ridePtr->lastInspection;
+                        ft.Add<uint16_t>(lastInspection);
+
+                        if (lastInspection <= 1)
+                        {
+                            formatSecondary = STR_LAST_INSPECTION_LABEL_MINUTE;
+                        }
+                        else if (lastInspection <= 240)
+                        {
+                            formatSecondary = STR_LAST_INSPECTION_LABEL_MINUTES;
+                        }
+                        else
+                        {
+                            formatSecondary = STR_LAST_INSPECTION_LABEL_MORE_THAN_FOUR_HOURS;
+                        }
+                        break;
+                    }
                     case INFORMATION_TYPE_GUESTS_FAVOURITE:
                         formatSecondary = 0;
                         if (ridePtr->isRide())
@@ -745,7 +766,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Rewind();
                     ft.Add<StringId>(formatSecondary);
                 }
-                DrawTextEllipsised(dpi, { 160, y - 1 }, 157, format, ft);
+                DrawTextEllipsised(rt, { 160, y - 1 }, 157, format, ft);
                 y += kScrollableRowHeight;
             }
         }
@@ -760,7 +781,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x006B38EA
          */
-        void DrawTabImages(DrawPixelInfo& dpi)
+        void DrawTabImages(RenderTarget& rt)
         {
             int32_t sprite_idx;
 
@@ -769,21 +790,21 @@ namespace OpenRCT2::Ui::Windows
             if (page == PAGE_RIDES)
                 sprite_idx += frame_no / 4;
             GfxDrawSprite(
-                dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
+                rt, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
 
             // Shops and stalls tab
             sprite_idx = SPR_TAB_SHOPS_AND_STALLS_0;
             if (page == PAGE_SHOPS_AND_STALLS)
                 sprite_idx += frame_no / 4;
             GfxDrawSprite(
-                dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
+                rt, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
 
             // Information kiosks and facilities tab
             sprite_idx = SPR_TAB_KIOSKS_AND_FACILITIES_0;
             if (page == PAGE_KIOSKS_AND_FACILITIES)
                 sprite_idx += (frame_no / 4) % 8;
             GfxDrawSprite(
-                dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
+                rt, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
         }
 
         /**
@@ -906,6 +927,11 @@ namespace OpenRCT2::Ui::Windows
                 case INFORMATION_TYPE_DOWN_TIME:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
                         return thisRide.downtime <= otherRide.downtime;
+                    });
+                    break;
+                case INFORMATION_TYPE_LAST_INSPECTION:
+                    SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                        return thisRide.lastInspection <= otherRide.lastInspection;
                     });
                     break;
                 case INFORMATION_TYPE_GUESTS_FAVOURITE:

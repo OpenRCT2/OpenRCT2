@@ -30,7 +30,7 @@ namespace OpenRCT2::Localisation
     class LocalisationService
     {
     private:
-        const std::shared_ptr<IPlatformEnvironment> _env;
+        IPlatformEnvironment& _env;
         int32_t _currentLanguage{};
         bool _useTrueTypeFont{};
         std::vector<int32_t> _languageOrder;
@@ -53,7 +53,7 @@ namespace OpenRCT2::Localisation
             _useTrueTypeFont = value;
         }
 
-        LocalisationService(const std::shared_ptr<IPlatformEnvironment>& env);
+        LocalisationService(IPlatformEnvironment& env);
         ~LocalisationService();
 
         const char* GetString(StringId id) const;

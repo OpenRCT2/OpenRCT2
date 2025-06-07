@@ -189,8 +189,8 @@ std::vector<ServerListEntry> ServerList::ReadFavourites() const
     std::vector<ServerListEntry> entries;
     try
     {
-        auto env = GetContext()->GetPlatformEnvironment();
-        auto path = env->GetFilePath(PathId::networkServers);
+        auto& env = GetContext()->GetPlatformEnvironment();
+        auto path = env.GetFilePath(PathId::networkServers);
         if (File::Exists(path))
         {
             auto fs = FileStream(path, FileMode::open);
@@ -242,8 +242,8 @@ bool ServerList::WriteFavourites(const std::vector<ServerListEntry>& entries) co
 {
     LOG_VERBOSE("server_list_write(%d, 0x%p)", entries.size(), entries.data());
 
-    auto env = GetContext()->GetPlatformEnvironment();
-    auto path = Path::Combine(env->GetDirectoryPath(DirBase::user), u8"servers.cfg");
+    auto& env = GetContext()->GetPlatformEnvironment();
+    auto path = Path::Combine(env.GetDirectoryPath(DirBase::user), u8"servers.cfg");
 
     try
     {

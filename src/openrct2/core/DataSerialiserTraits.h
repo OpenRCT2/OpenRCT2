@@ -998,8 +998,8 @@ struct DataSerializerTraitsT<Banner>
         stream->WriteValue(banner.flags);
         stream->WriteString(banner.text);
         stream->WriteValue(banner.colour);
-        DataSerializerTraits<RideId>().encode(stream, banner.ride_index);
-        stream->WriteValue(banner.text_colour);
+        DataSerializerTraits<RideId>().encode(stream, banner.rideIndex);
+        stream->WriteValue(banner.textColour);
         DataSerializerTraits<TileCoordsXY>().encode(stream, banner.position);
     }
 
@@ -1010,8 +1010,8 @@ struct DataSerializerTraitsT<Banner>
         stream->Read(&banner.flags);
         banner.text = stream->ReadStdString();
         stream->Read(&banner.colour);
-        DataSerializerTraits<RideId>().decode(stream, banner.ride_index);
-        stream->Read(&banner.text_colour);
+        DataSerializerTraits<RideId>().decode(stream, banner.rideIndex);
+        stream->Read(&banner.textColour);
         DataSerializerTraits<TileCoordsXY>().decode(stream, banner.position);
     }
 

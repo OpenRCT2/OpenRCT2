@@ -132,7 +132,7 @@ namespace OpenRCT2::Ui::Windows
                     SetPage(widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
                     break;
                 case WIDX_JOIN_DISCORD:
-                    OpenRCT2::GetContext()->GetUiContext()->OpenURL("https://discord.gg/ZXZd8D8");
+                    OpenRCT2::GetContext()->GetUiContext().OpenURL("https://discord.gg/ZXZd8D8");
                     break;
                 case WIDX_CHANGELOG:
                     ContextOpenWindow(WindowClass::Changelog);
@@ -141,7 +141,7 @@ namespace OpenRCT2::Ui::Windows
                     ContextOpenWindowView(WV_NEW_VERSION_INFO);
                     break;
                 case WIDX_COPY_BUILD_INFO:
-                    OpenRCT2::GetContext()->GetUiContext()->SetClipboardText(gVersionInfoFull);
+                    OpenRCT2::GetContext()->GetUiContext().SetClipboardText(gVersionInfoFull);
                     break;
                 case WIDX_CONTRIBUTORS_BUTTON:
                     ContextOpenWindowView(WV_CONTRIBUTORS);
@@ -149,9 +149,9 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
 
             const auto& aboutOpenRCT2 = widgets[WIDX_TAB_ABOUT_OPENRCT2];
             const auto& aboutRCT2 = widgets[WIDX_TAB_ABOUT_RCT2];
@@ -166,7 +166,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_TITLE_SEQUENCE_OPENRCT2);
                 DrawTextWrapped(
-                    dpi, aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft,
+                    rt, aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft,
                     { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
             }
             {
@@ -174,17 +174,17 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_TITLE_SEQUENCE_RCT2);
                 DrawTextWrapped(
-                    dpi, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
+                    rt, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
             }
 
             int32_t newHeight = 0;
             if (page == WINDOW_ABOUT_PAGE_OPENRCT2)
             {
-                newHeight = DrawOpenRCT2Info(dpi) + kPadding;
+                newHeight = DrawOpenRCT2Info(rt) + kPadding;
             }
             else if (page == WINDOW_ABOUT_PAGE_RCT2)
             {
-                newHeight = DrawRCT2Info(dpi) + kPadding;
+                newHeight = DrawRCT2Info(rt) + kPadding;
             }
 
             if (newHeight != height)
@@ -221,12 +221,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        int32_t DrawOpenRCT2Info(DrawPixelInfo& dpi)
+        int32_t DrawOpenRCT2Info(RenderTarget& rt)
         {
             // Draw logo on placeholder widget
             const auto& logoWidget = widgets[WIDX_OPENRCT2_LOGO];
             auto logoCoords = windowPos + ScreenCoordsXY(logoWidget.left, logoWidget.top);
-            GfxDrawSprite(dpi, ImageId(SPR_G2_LOGO), logoCoords);
+            GfxDrawSprite(rt, ImageId(SPR_G2_LOGO), logoCoords);
 
             u8string versionInfo = gVersionInfoFull;
             auto ft = Formatter();
@@ -236,7 +236,7 @@ namespace OpenRCT2::Ui::Windows
             auto centreX = versionWidget.midX();
             auto centreY = versionWidget.midY() - FontGetLineHeight(FontStyle::Medium) / 2;
             auto centrePos = windowPos + ScreenCoordsXY(centreX, centreY);
-            DrawTextWrapped(dpi, centrePos, versionWidget.width(), STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
+            DrawTextWrapped(rt, centrePos, versionWidget.width(), STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
 
             // Shows the update available button
             if (OpenRCT2::GetContext()->HasNewVersionInfo())
@@ -249,12 +249,12 @@ namespace OpenRCT2::Ui::Windows
             auto textCoords = windowPos + ScreenCoordsXY((width / 2) - 1, 240);
             auto textWidth = WW - (kPadding * 2);
             for (auto stringId : _OpenRCT2InfoStrings)
-                textCoords.y += DrawTextWrapped(dpi, textCoords, textWidth, stringId, {}, tp) + 5;
+                textCoords.y += DrawTextWrapped(rt, textCoords, textWidth, stringId, {}, tp) + 5;
 
             return textCoords.y - windowPos.y;
         }
 
-        int32_t DrawRCT2Info(DrawPixelInfo& dpi)
+        int32_t DrawRCT2Info(RenderTarget& rt)
         {
             auto& backgroundWidget = widgets[WIDX_PAGE_BACKGROUND];
             auto textCoords = windowPos + ScreenCoordsXY{ backgroundWidget.midX(), backgroundWidget.top + kPadding };
@@ -270,14 +270,14 @@ namespace OpenRCT2::Ui::Windows
                     continue;
                 }
 
-                textCoords.y += DrawTextWrapped(dpi, textCoords, textWidth, stringId, {}, tp);
+                textCoords.y += DrawTextWrapped(rt, textCoords, textWidth, stringId, {}, tp);
                 if (stringId == STR_COPYRIGHT_CS)
                     textCoords.y += 74;
             }
 
             // Draw images
             auto imageCoords = windowPos + ScreenCoordsXY{ 92, backgroundWidget.top + 5 + 24 };
-            GfxDrawSprite(dpi, ImageId(SPR_CREDITS_CHRIS_SAWYER_SMALL), imageCoords);
+            GfxDrawSprite(rt, ImageId(SPR_CREDITS_CHRIS_SAWYER_SMALL), imageCoords);
 
             return textCoords.y - windowPos.y;
         }

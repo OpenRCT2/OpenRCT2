@@ -233,6 +233,8 @@ namespace OpenRCT2::Ui::Windows
             _sceneryPaintEnabled = false; // repaint coloured scenery tool state
             gWindowSceneryEyedropperEnabled = false;
 
+            _actualMinHeight = GetMinimumHeight();
+
             width = GetRequiredWidth();
             min_width = width;
             max_width = width;
@@ -450,6 +452,7 @@ namespace OpenRCT2::Ui::Windows
                 // This will happen when the mouse leaves the scroll window and is required so that the cost and description
                 // switch to the tool scenery selection.
                 _selectedScenery = {};
+                Invalidate();
             }
         }
 
@@ -489,6 +492,14 @@ namespace OpenRCT2::Ui::Windows
 
                             min_height = windowHeight;
                             max_height = windowHeight;
+
+                            if (height < min_height)
+                            {
+                                height = min_height;
+                                OnPrepareDraw();
+                                ContentUpdateScroll();
+                                Invalidate();
+                            }
                         }
                     }
                 }
@@ -503,13 +514,19 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
+            if (height > max_height)
+            {
+                Invalidate();
+                height = max_height;
+                OnPrepareDraw();
+                ContentUpdateScroll();
+            }
+
             if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
             {
                 WindowUpdateTextboxCaret();
                 InvalidateWidget(WIDX_FILTER_TEXT_BOX);
             }
-
-            Invalidate();
 
             if (!isToolActive(WindowClass::Scenery))
             {
@@ -639,10 +656,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            // Minimum window height: title, one scenery button, status bar, padding
-            _actualMinHeight = getTitleBarTargetHeight() + SCENERY_BUTTON_HEIGHT + kDescriptionHeight + 2 * kTabMargin;
-            _actualMinHeight += static_cast<int32_t>(1 + (_tabEntries.size() / GetMaxTabCountInARow())) * TabHeight;
-            _actualMinHeight += widgets[WIDX_FILTER_TEXT_BOX].height() + 2 * kInputMargin;
+            _actualMinHeight = GetMinimumHeight();
 
             // Set the window title
             StringId titleStringId = STR_MISCELLANEOUS;
@@ -834,10 +848,10 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = canFit ? WindowWidgetType::FlatBtn : WindowWidgetType::Empty;
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
-            DrawTabs(dpi, windowPos);
+            DrawWidgets(rt);
+            DrawTabs(rt, windowPos);
 
             auto selectedSceneryEntry = _selectedScenery;
             if (selectedSceneryEntry.IsUndefined())
@@ -860,12 +874,12 @@ namespace OpenRCT2::Ui::Windows
 
                 // -14
                 DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ width - 0x1A, height - 13 }, STR_COST_LABEL, ft, { TextAlignment::RIGHT });
+                    rt, windowPos + ScreenCoordsXY{ width - 0x1A, height - 13 }, STR_COST_LABEL, ft, { TextAlignment::RIGHT });
             }
 
             auto ft = Formatter();
             ft.Add<StringId>(name);
-            DrawTextEllipsised(dpi, { windowPos.x + 3, windowPos.y + height - 23 }, width - 19, STR_BLACK_STRING, ft);
+            DrawTextEllipsised(rt, { windowPos.x + 3, windowPos.y + height - 23 }, width - 19, STR_BLACK_STRING, ft);
 
             // Draw object author(s) if debugging tools are active
             if (Config::Get().general.DebuggingTools)
@@ -888,17 +902,17 @@ namespace OpenRCT2::Ui::Windows
                     ft = Formatter();
                     ft.Add<const char*>(authorsString.c_str());
                     DrawTextEllipsised(
-                        dpi, windowPos + ScreenCoordsXY{ 3, height - 13 }, width - 19,
+                        rt, windowPos + ScreenCoordsXY{ 3, height - 13 }, width - 19,
                         (sceneryObject->GetAuthors().size() == 1 ? STR_SCENERY_AUTHOR : STR_SCENERY_AUTHOR_PLURAL), ft);
                 }
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             if (scrollIndex == SceneryContentScrollIndex)
             {
-                ContentScrollDraw(dpi);
+                ContentScrollDraw(rt);
             }
         }
 
@@ -1090,6 +1104,15 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
+        int32_t GetMinimumHeight() const
+        {
+            // Minimum window height: title, one scenery button, status bar, padding
+            int32_t minHeight = getTitleBarTargetHeight() + SCENERY_BUTTON_HEIGHT + kDescriptionHeight + 2 * kTabMargin;
+            minHeight += static_cast<int32_t>(1 + (_tabEntries.size() / GetMaxTabCountInARow())) * TabHeight;
+            minHeight += widgets[WIDX_FILTER_TEXT_BOX].height() + 2 * kInputMargin;
+            return minHeight;
+        }
+
         int32_t GetNumColumns() const
         {
             const auto& listWidget = widgets[WIDX_SCENERY_LIST];
@@ -1369,10 +1392,10 @@ namespace OpenRCT2::Ui::Windows
             return std::max<int32_t>((static_cast<int32_t>(_tabEntries.size()) + MaxTabsPerRow - 1) / MaxTabsPerRow, 0);
         }
 
-        int32_t GetMaxTabCountInARow()
+        int32_t GetMaxTabCountInARow() const
         {
             int32_t tabEntries = static_cast<int32_t>(_tabEntries.size());
-            return std::min(tabEntries, MaxTabsPerRow);
+            return std::clamp(tabEntries, 1, MaxTabsPerRow);
         }
 
         void PrepareWidgets()
@@ -1501,7 +1524,7 @@ namespace OpenRCT2::Ui::Windows
         void ContentScrollMouseOver(const ScreenCoordsXY& screenCoords)
         {
             ScenerySelection scenery = GetSceneryIdByCursorPos(screenCoords);
-            if (!scenery.IsUndefined())
+            if (!scenery.IsUndefined() && _selectedScenery != scenery)
             {
                 _selectedScenery = scenery;
                 Invalidate();
@@ -1580,7 +1603,7 @@ namespace OpenRCT2::Ui::Windows
             return { name, price };
         }
 
-        void DrawTabs(DrawPixelInfo& dpi, const ScreenCoordsXY& offset)
+        void DrawTabs(RenderTarget& rt, const ScreenCoordsXY& offset)
         {
             for (size_t tabIndex = 0; tabIndex < _tabEntries.size(); tabIndex++)
             {
@@ -1590,19 +1613,19 @@ namespace OpenRCT2::Ui::Windows
                 if (_tabEntries[tabIndex].IsAll())
                 {
                     auto imageId = ImageId(SPR_G2_INFINITY, FilterPaletteID::PaletteNull);
-                    GfxDrawSprite(dpi, imageId, offset + widgetCoordsXY);
+                    GfxDrawSprite(rt, imageId, offset + widgetCoordsXY);
                 }
             }
         }
 
-        void DrawSceneryItem(DrawPixelInfo& dpi, ScenerySelection scenerySelection)
+        void DrawSceneryItem(RenderTarget& rt, ScenerySelection scenerySelection)
         {
             if (scenerySelection.SceneryType == SCENERY_TYPE_BANNER)
             {
                 auto bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(scenerySelection.EntryIndex);
                 auto imageId = ImageId(bannerEntry->image + gWindowSceneryRotation * 2, _sceneryPrimaryColour);
-                GfxDrawSprite(dpi, imageId, { 33, 40 });
-                GfxDrawSprite(dpi, imageId.WithIndexOffset(1), { 33, 40 });
+                GfxDrawSprite(rt, imageId, { 33, 40 });
+                GfxDrawSprite(rt, imageId.WithIndexOffset(1), { 33, 40 });
             }
             else if (scenerySelection.SceneryType == SCENERY_TYPE_LARGE)
             {
@@ -1614,7 +1637,7 @@ namespace OpenRCT2::Ui::Windows
                     imageId = imageId.WithSecondary(_scenerySecondaryColour);
                 if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
                     imageId = imageId.WithTertiary(_sceneryTertiaryColour);
-                GfxDrawSprite(dpi, imageId, { 33, 0 });
+                GfxDrawSprite(rt, imageId, { 33, 0 });
             }
             else if (scenerySelection.SceneryType == SCENERY_TYPE_WALL)
             {
@@ -1628,10 +1651,10 @@ namespace OpenRCT2::Ui::Windows
                     {
                         imageId = imageId.WithSecondary(_scenerySecondaryColour);
                     }
-                    GfxDrawSprite(dpi, imageId, { 47, spriteTop });
+                    GfxDrawSprite(rt, imageId, { 47, spriteTop });
 
                     auto glassImageId = ImageId(wallEntry->image + 6).WithTransparency(_sceneryPrimaryColour);
-                    GfxDrawSprite(dpi, glassImageId, { 47, spriteTop });
+                    GfxDrawSprite(rt, glassImageId, { 47, spriteTop });
                 }
                 else
                 {
@@ -1644,11 +1667,11 @@ namespace OpenRCT2::Ui::Windows
                             imageId = imageId.WithTertiary(_sceneryTertiaryColour);
                         }
                     }
-                    GfxDrawSprite(dpi, imageId, { 47, spriteTop });
+                    GfxDrawSprite(rt, imageId, { 47, spriteTop });
 
                     if (wallEntry->flags & WALL_SCENERY_IS_DOOR)
                     {
-                        GfxDrawSprite(dpi, imageId.WithIndexOffset(1), { 47, spriteTop });
+                        GfxDrawSprite(rt, imageId.WithIndexOffset(1), { 47, spriteTop });
                     }
                 }
             }
@@ -1657,7 +1680,7 @@ namespace OpenRCT2::Ui::Windows
                 auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(
                     scenerySelection.EntryIndex);
                 auto imageId = ImageId(pathAdditionEntry->image);
-                GfxDrawSprite(dpi, imageId, { 11, 16 });
+                GfxDrawSprite(rt, imageId, { 11, 16 });
             }
             else
             {
@@ -1683,25 +1706,25 @@ namespace OpenRCT2::Ui::Windows
                     spriteTop -= 12;
                 }
 
-                GfxDrawSprite(dpi, imageId, { 32, spriteTop });
+                GfxDrawSprite(rt, imageId, { 32, spriteTop });
 
                 if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
                 {
                     imageId = ImageId(sceneryEntry->image + 4 + gWindowSceneryRotation).WithTransparency(_sceneryPrimaryColour);
-                    GfxDrawSprite(dpi, imageId, { 32, spriteTop });
+                    GfxDrawSprite(rt, imageId, { 32, spriteTop });
                 }
 
                 if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED_FG))
                 {
                     imageId = ImageId(sceneryEntry->image + 4 + gWindowSceneryRotation);
-                    GfxDrawSprite(dpi, imageId, { 32, spriteTop });
+                    GfxDrawSprite(rt, imageId, { 32, spriteTop });
                 }
             }
         }
 
-        void ContentScrollDraw(DrawPixelInfo& dpi)
+        void ContentScrollDraw(RenderTarget& rt)
         {
-            GfxClear(dpi, ColourMapA[colours[1].colour].mid_light);
+            GfxClear(rt, ColourMapA[colours[1].colour].mid_light);
 
             auto numColumns = GetNumColumns();
             auto tabIndex = _activeTabIndex;
@@ -1722,7 +1745,7 @@ namespace OpenRCT2::Ui::Windows
                     if (_selectedScenery == currentSceneryGlobal)
                     {
                         GfxFillRectInset(
-                            dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                            rt, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
                             colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
                     }
                 }
@@ -1731,22 +1754,22 @@ namespace OpenRCT2::Ui::Windows
                     if (tabSelectedScenery == currentSceneryGlobal)
                     {
                         GfxFillRectInset(
-                            dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                            rt, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
                             colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_MID_LIGHT));
                     }
                     else if (_selectedScenery == currentSceneryGlobal)
                     {
                         GfxFillRectInset(
-                            dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                            rt, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
                             colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
                     }
                 }
 
-                DrawPixelInfo clipdpi;
+                RenderTarget clippedRT;
                 if (ClipDrawPixelInfo(
-                        clipdpi, dpi, topLeft + ScreenCoordsXY{ 1, 1 }, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2))
+                        clippedRT, rt, topLeft + ScreenCoordsXY{ 1, 1 }, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2))
                 {
-                    DrawSceneryItem(clipdpi, currentSceneryGlobal);
+                    DrawSceneryItem(clippedRT, currentSceneryGlobal);
                 }
 
                 topLeft.x += SCENERY_BUTTON_WIDTH;
@@ -1766,11 +1789,6 @@ namespace OpenRCT2::Ui::Windows
         {
             MapInvalidateSelectionRect();
             MapInvalidateMapSelectionTiles();
-
-            if (Config::Get().general.VirtualFloorStyle != VirtualFloorStyles::Off)
-            {
-                VirtualFloorInvalidate();
-            }
 
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -2219,7 +2237,7 @@ namespace OpenRCT2::Ui::Windows
          */
         void RepaintSceneryToolDown(const ScreenCoordsXY& screenCoords, WidgetIndex widgetIndex)
         {
-            auto flag = EnumsToFlags(
+            constexpr auto flag = EnumsToFlags(
                 ViewportInteractionItem::Scenery, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
                 ViewportInteractionItem::Banner);
             auto info = GetMapCoordinatesFromPos(screenCoords, flag);
@@ -2296,7 +2314,7 @@ namespace OpenRCT2::Ui::Windows
 
         void SceneryEyedropperToolDown(const ScreenCoordsXY& screenCoords, WidgetIndex widgetIndex)
         {
-            auto flag = EnumsToFlags(
+            constexpr auto flag = EnumsToFlags(
                 ViewportInteractionItem::Scenery, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
                 ViewportInteractionItem::Banner, ViewportInteractionItem::PathAddition);
             auto info = GetMapCoordinatesFromPos(screenCoords, flag);

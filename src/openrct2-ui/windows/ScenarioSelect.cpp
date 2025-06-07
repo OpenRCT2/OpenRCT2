@@ -124,6 +124,7 @@ namespace OpenRCT2::Ui::Windows
         std::vector<ScenarioListItem> _listItems;
         const ScenarioIndexEntry* _highlightedScenario = nullptr;
         ParkPreview _preview;
+        BackgroundWorker::Job _previewLoadJob;
 
     public:
         ScenarioSelectWindow(std::function<void(std::string_view)> callback)
@@ -142,6 +143,11 @@ namespace OpenRCT2::Ui::Windows
             InitTabs();
             InitialiseListItems();
             InitScrollWidgets();
+        }
+
+        void OnLanguageChange() override
+        {
+            ScenarioRepositoryScan();
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -179,32 +185,59 @@ namespace OpenRCT2::Ui::Windows
             if (_highlightedScenario == nullptr)
                 return;
 
+            if (_previewLoadJob.isValid())
+                _previewLoadJob.cancel();
+
+            auto& bgWorker = GetContext()->GetBackgroundWorker();
             auto& path = _highlightedScenario->Path;
-            try
-            {
-                auto fs = FileStream(path, FileMode::open);
 
-                ClassifiedFileInfo info;
-                if (!TryClassifyFile(&fs, &info) || info.Type != FileType::park)
-                {
-                    // TODO: try loading a preview from a 'scenario meta' object file
-                    return;
-                }
+            _previewLoadJob = bgWorker.addJob(
+                [path]() {
+                    try
+                    {
+                        auto fs = FileStream(path, FileMode::open);
 
-                auto& objectRepository = GetContext()->GetObjectRepository();
-                auto parkImporter = ParkImporter::CreateParkFile(objectRepository);
-                parkImporter->LoadFromStream(&fs, false, true, path.c_str());
-                _preview = parkImporter->GetParkPreview();
-            }
-            catch (const std::exception& e)
-            {
-                LOG_ERROR("Could not get preview for \"%s\" due to %s", path.c_str(), e.what());
-                _preview = {};
-                return;
-            }
+                        ClassifiedFileInfo info;
+                        if (!TryClassifyFile(&fs, &info))
+                            return ParkPreview{};
+
+                        if (info.Type == FileType::park)
+                        {
+                            auto& objectRepository = GetContext()->GetObjectRepository();
+                            auto parkImporter = ParkImporter::CreateParkFile(objectRepository);
+                            parkImporter->LoadFromStream(&fs, false, true, path.c_str());
+                            return parkImporter->GetParkPreview();
+                        }
+                        else
+                        {
+                            return ParkPreview{};
+                        }
+                    }
+                    catch (const std::exception& e)
+                    {
+                        LOG_ERROR("Could not get preview for \"%s\" due to %s", path.c_str(), e.what());
+                        return ParkPreview{};
+                    }
+                },
+                [](const ParkPreview preview) {
+                    auto* windowMgr = GetWindowManager();
+                    auto* wnd = windowMgr->FindByClass(WindowClass::ScenarioSelect);
+                    if (wnd == nullptr)
+                    {
+                        return;
+                    }
+                    auto* scenarioSelectWnd = static_cast<ScenarioSelectWindow*>(wnd);
+                    scenarioSelectWnd->UpdateParkPreview(preview);
+                });
         }
 
-        ScreenCoordsXY DrawPreview(DrawPixelInfo& dpi, ScreenCoordsXY screenPos)
+        void UpdateParkPreview(const ParkPreview& preview)
+        {
+            _preview = preview;
+            Invalidate();
+        }
+
+        ScreenCoordsXY DrawPreview(RenderTarget& rt, ScreenCoordsXY screenPos)
         {
             // Find minimap image to draw, if available
             PreviewImage* image = nullptr;
@@ -224,18 +257,18 @@ namespace OpenRCT2::Ui::Windows
             auto startFrameX = width - (kPreviewPaneWidth / 2) - (image->width / 2);
             auto frameStartPos = ScreenCoordsXY(windowPos.x + startFrameX, screenPos.y + 15);
             auto frameEndPos = frameStartPos + ScreenCoordsXY(image->width + 1, image->height + 1);
-            GfxFillRectInset(dpi, { frameStartPos, frameEndPos }, colours[1], INSET_RECT_F_60 | INSET_RECT_FLAG_FILL_MID_LIGHT);
+            GfxFillRectInset(rt, { frameStartPos, frameEndPos }, colours[1], INSET_RECT_F_60 | INSET_RECT_FLAG_FILL_MID_LIGHT);
 
             // Draw image, if available
             auto imagePos = frameStartPos + ScreenCoordsXY(1, 1);
-            drawPreviewImage(*image, dpi, imagePos);
+            drawPreviewImage(*image, rt, imagePos);
 
             return frameEndPos;
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
 
             StringId format = STR_WINDOW_COLOUR_2_STRINGID;
             FontStyle fontStyle = FontStyle::Medium;
@@ -264,7 +297,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 auto stringCoords = windowPos + ScreenCoordsXY{ widget.midX(), widget.midY() - 3 };
-                DrawTextWrapped(dpi, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontStyle, TextAlignment::CENTRE });
+                DrawTextWrapped(rt, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontStyle, TextAlignment::CENTRE });
             }
 
             // Return if no scenario highlighted
@@ -277,9 +310,9 @@ namespace OpenRCT2::Ui::Windows
                     auto screenPos = windowPos
                         + ScreenCoordsXY{ widgets[WIDX_SCENARIOLIST].right + 4, widgets[WIDX_TABCONTENT].top + 5 };
                     DrawTextEllipsised(
-                        dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_SCENARIO_LOCKED, {}, { TextAlignment::CENTRE });
+                        rt, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_SCENARIO_LOCKED, {}, { TextAlignment::CENTRE });
 
-                    DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 0, 15 }, 170, STR_SCENARIO_LOCKED_DESC);
+                    DrawTextWrapped(rt, screenPos + ScreenCoordsXY{ 0, 15 }, 170, STR_SCENARIO_LOCKED_DESC);
                 }
                 else
                 {
@@ -287,7 +320,7 @@ namespace OpenRCT2::Ui::Windows
                     auto screenPos = windowPos
                         + ScreenCoordsXY{ widgets[WIDX_SCENARIOLIST].right + 4, widgets[WIDX_TABCONTENT].top + 5 };
 
-                    DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 0, 15 }, 170, STR_SCENARIO_HOVER_HINT);
+                    DrawTextWrapped(rt, screenPos + ScreenCoordsXY{ 0, 15 }, 170, STR_SCENARIO_HOVER_HINT);
                 }
                 return;
             }
@@ -299,8 +332,7 @@ namespace OpenRCT2::Ui::Windows
 
                 auto ft = Formatter();
                 ft.Add<utf8*>(shortPath.c_str());
-                DrawTextBasic(
-                    dpi, windowPos + ScreenCoordsXY{ kTabWidth + 3, height - 3 - 11 }, STR_STRING, ft, { colours[1] });
+                DrawTextBasic(rt, windowPos + ScreenCoordsXY{ kTabWidth + 3, height - 3 - 11 }, STR_STRING, ft, { colours[1] });
             }
 
             // Scenario name
@@ -310,17 +342,17 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(scenario->Name.c_str());
             DrawTextEllipsised(
-                dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
+                rt, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
 
             // Draw preview
-            auto previewEnd = DrawPreview(dpi, screenPos);
+            auto previewEnd = DrawPreview(rt, screenPos);
             screenPos.y = previewEnd.y + 15;
 
             // Scenario details
             ft = Formatter();
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(scenario->Details.c_str());
-            screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_BLACK_STRING, ft) + 5;
+            screenPos.y += DrawTextWrapped(rt, screenPos, 170, STR_BLACK_STRING, ft) + 5;
 
             // Scenario objective
             Objective objective = { .Type = scenario->ObjectiveType,
@@ -331,7 +363,7 @@ namespace OpenRCT2::Ui::Windows
             ft = Formatter();
             ft.Add<StringId>(kObjectiveNames[scenario->ObjectiveType]);
             formatObjective(ft, objective);
-            screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_OBJECTIVE, ft) + 5;
+            screenPos.y += DrawTextWrapped(rt, screenPos, 170, STR_OBJECTIVE, ft) + 5;
 
             // Scenario score
             if (scenario->Highscore != nullptr)
@@ -346,7 +378,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const char*>(completedByName.c_str());
                 ft.Add<money64>(scenario->Highscore->company_value);
-                screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, ft);
+                screenPos.y += DrawTextWrapped(rt, screenPos, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, ft);
             }
         }
 
@@ -464,10 +496,10 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
             uint8_t paletteIndex = ColourMapA[colours[1].colour].mid_light;
-            GfxClear(dpi, paletteIndex);
+            GfxClear(rt, paletteIndex);
 
             StringId highlighted_format = STR_WINDOW_COLOUR_2_STRINGID;
             StringId unhighlighted_format = STR_BLACK_STRING;
@@ -488,7 +520,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t y = 0;
             for (const auto& listItem : _listItems)
             {
-                if (y > dpi.y + dpi.height)
+                if (y > rt.y + rt.height)
                 {
                     continue;
                 }
@@ -499,7 +531,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         const int32_t horizontalRuleMargin = 4;
                         DrawCategoryHeading(
-                            dpi, horizontalRuleMargin, listWidth - horizontalRuleMargin, y + 2, listItem.heading.string_id);
+                            rt, horizontalRuleMargin, listWidth - horizontalRuleMargin, y + 2, listItem.heading.string_id);
                         y += 18;
                         break;
                     }
@@ -510,7 +542,7 @@ namespace OpenRCT2::Ui::Windows
                         bool isHighlighted = _highlightedScenario == scenario;
                         if (isHighlighted)
                         {
-                            GfxFilterRect(dpi, { 0, y, width, y + scenarioItemHeight - 1 }, FilterPaletteID::PaletteDarken1);
+                            GfxFilterRect(rt, { 0, y, width, y + scenarioItemHeight - 1 }, FilterPaletteID::PaletteDarken1);
                         }
 
                         bool isCompleted = scenario->Highscore != nullptr;
@@ -528,14 +560,14 @@ namespace OpenRCT2::Ui::Windows
                         const auto scrollCentre = widgets[WIDX_SCENARIOLIST].width() / 2;
 
                         DrawTextBasic(
-                            dpi, { scrollCentre, y + 1 }, format, ft,
+                            rt, { scrollCentre, y + 1 }, format, ft,
                             { colour, FontStyle::Medium, TextAlignment::CENTRE, darkness });
 
                         // Check if scenario is completed
                         if (isCompleted)
                         {
                             // Draw completion tick
-                            GfxDrawSprite(dpi, ImageId(SPR_MENU_CHECKMARK), { widgets[WIDX_SCENARIOLIST].width() - 45, y + 1 });
+                            GfxDrawSprite(rt, ImageId(SPR_MENU_CHECKMARK), { widgets[WIDX_SCENARIOLIST].width() - 45, y + 1 });
 
                             // Draw completion score
                             u8string completedByName = "???";
@@ -548,7 +580,7 @@ namespace OpenRCT2::Ui::Windows
                             ft.Add<StringId>(STR_STRING);
                             ft.Add<const char*>(completedByName.c_str());
                             DrawTextBasic(
-                                dpi, { scrollCentre, y + scenarioTitleHeight + 1 }, format, ft,
+                                rt, { scrollCentre, y + scenarioTitleHeight + 1 }, format, ft,
                                 { FontStyle::Small, TextAlignment::CENTRE });
                         }
 
@@ -560,7 +592,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
     private:
-        void DrawCategoryHeading(DrawPixelInfo& dpi, int32_t left, int32_t right, int32_t y, StringId stringId) const
+        void DrawCategoryHeading(RenderTarget& rt, int32_t left, int32_t right, int32_t y, StringId stringId) const
         {
             auto baseColour = colours[1];
             colour_t lightColour = ColourMapA[baseColour.colour].lighter;
@@ -568,7 +600,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw string
             int32_t centreX = (left + right) / 2;
-            DrawTextBasic(dpi, { centreX, y }, stringId, {}, { baseColour, TextAlignment::CENTRE });
+            DrawTextBasic(rt, { centreX, y }, stringId, {}, { baseColour, TextAlignment::CENTRE });
 
             // Get string dimensions
             utf8 buffer[512];
@@ -582,21 +614,21 @@ namespace OpenRCT2::Ui::Windows
             int32_t lineY = y + 4;
             auto lightLineLeftTop1 = ScreenCoordsXY{ left, lineY };
             auto lightLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY };
-            GfxDrawLine(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
+            GfxDrawLine(rt, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
 
             auto lightLineLeftTop2 = ScreenCoordsXY{ strRight, lineY };
             auto lightLineRightBottom2 = ScreenCoordsXY{ right, lineY };
-            GfxDrawLine(dpi, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
+            GfxDrawLine(rt, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
 
             // Draw dark horizontal rule
             lineY++;
             auto darkLineLeftTop1 = ScreenCoordsXY{ left, lineY };
             auto darkLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY };
-            GfxDrawLine(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
+            GfxDrawLine(rt, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
 
             auto darkLineLeftTop2 = ScreenCoordsXY{ strRight, lineY };
             auto darkLineRightBottom2 = ScreenCoordsXY{ right, lineY };
-            GfxDrawLine(dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
+            GfxDrawLine(rt, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
         }
 
         void InitialiseListItems()

@@ -77,7 +77,7 @@ namespace OpenRCT2::Ui::Windows
             auto* banner = GetBanner(GetBannerIndex());
             if (banner != nullptr)
             {
-                auto bannerText = banner->GetText();
+                auto bannerText = banner->getText();
                 WindowTextInputRawOpen(
                     this, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, {}, bannerText.c_str(), 32);
             }
@@ -291,13 +291,13 @@ namespace OpenRCT2::Ui::Windows
             text_colour_btn->image = GetColourButtonImage(_textColour);
         }
 
-        void OnDraw(DrawPixelInfo& dpi) override
+        void OnDraw(RenderTarget& rt) override
         {
-            DrawWidgets(dpi);
+            DrawWidgets(rt);
 
             if (viewport != nullptr)
             {
-                WindowDrawViewport(dpi, *this);
+                WindowDrawViewport(rt, *this);
             }
         }
 
