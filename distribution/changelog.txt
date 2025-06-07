@@ -1,4 +1,4 @@
-0.4.23 (in development)
+0.4.23 (2025-06-07)
 ------------------------------------------------------------------------
 - Feature: [#22476] “Time since last inspection” statistic is available in the rides window.
 - Feature: [#24313] [Plugin] Add API for setting a ride vehicle’s sprite to a smoke plume.
