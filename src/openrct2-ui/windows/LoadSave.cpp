@@ -100,9 +100,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int16_t WH = kWindowSizeInit.height;
 
     // clang-format off
-    static constexpr Widget window_loadsave_widgets[] =
-    {
-        WINDOW_SHIM(kStringIdNone, WW, WH),
+    static constexpr auto window_loadsave_widgets = makeWidgets(
+        makeWindowShim(kStringIdNone, WW, WH),
         MakeWidget({                0,      15 }, {       WW,  WH - 15 }, WindowWidgetType::Resize,      WindowColour::Secondary                                                                ), // WIDX_RESIZE
         MakeWidget({     WW - 100 - 4,      20 }, {       20,       20 }, WindowWidgetType::FlatBtn,     WindowColour::Primary,   SPR_G2_FOLDER_PARENT,        STR_PARENT_FOLDER_TIP            ), // WIDX_PARENT_FOLDER
         MakeWidget({     WW -  50 - 4,      20 }, {       20,       20 }, WindowWidgetType::FlatBtn,     WindowColour::Primary,   SPR_G2_FOLDER_NEW,           STR_FILEBROWSER_ACTION_NEW_FOLDER), // WIDX_NEW_FOLDER
@@ -114,8 +113,8 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({        (WW - 19),      45 }, {       14,       14 }, WindowWidgetType::Button,      WindowColour::Primary,   STR_DROPDOWN_GLYPH                                            ), // WIDX_SORT_CUSTOMISE
         MakeWidget({                4,      58 }, {      342,      303 }, WindowWidgetType::Scroll,      WindowColour::Primary,   SCROLL_VERTICAL                                               ), // WIDX_SCROLL
         MakeWidget({               64, WH - 50 }, { WW - 133,       14 }, WindowWidgetType::TextBox,     WindowColour::Secondary                                                                ), // WIDX_FILENAME_TEXTBOX
-        MakeWidget({          WW - 65, WH - 50 }, {       60,       14 }, WindowWidgetType::Button,      WindowColour::Secondary, STR_FILEBROWSER_SAVE_BUTTON                                   ), // WIDX_SAVE
-    };
+        MakeWidget({          WW - 65, WH - 50 }, {       60,       14 }, WindowWidgetType::Button,      WindowColour::Secondary, STR_FILEBROWSER_SAVE_BUTTON                                   )  // WIDX_SAVE
+    );
     // clang-format on
 
 #pragma endregion

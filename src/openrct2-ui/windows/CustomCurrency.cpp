@@ -40,13 +40,13 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static Widget window_custom_currency_widgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    static constexpr auto window_custom_currency_widgets = makeWidgets(
+        makeWindowShim(WINDOW_TITLE, WW, WH),
         MakeSpinnerWidgets({100, 30}, {101, 11}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_CURRENCY_FORMAT), // NB: 3 widgets
         MakeWidget        ({120, 50}, { 81, 11}, WindowWidgetType::Button,   WindowColour::Secondary, kStringIdEmpty          ),
         MakeWidget        ({220, 50}, {131, 11}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                 ),
-        MakeWidget        ({339, 51}, { 11,  9}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH ),
-    };
+        MakeWidget        ({339, 51}, { 11,  9}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH )
+    );
     // clang-format on
 
     class CustomCurrencyWindow final : public Window

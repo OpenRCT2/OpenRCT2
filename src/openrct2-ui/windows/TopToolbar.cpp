@@ -235,7 +235,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma endregion
 
-    static constexpr Widget _topToolbarWidgets[] = {
+    static constexpr auto _topToolbarWidgets = makeWidgets(
         MakeRemapWidget({  0, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TOOLBAR_PAUSE,          STR_PAUSE_GAME_TIP                ), // Pause
         MakeRemapWidget({ 60, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TOOLBAR_FILE,           STR_DISC_AND_GAME_OPTIONS_TIP     ), // File menu
         MakeRemapWidget({250, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_G2_TOOLBAR_MUTE,        STR_TOOLBAR_MUTE_TIP              ), // Mute
@@ -263,8 +263,8 @@ namespace OpenRCT2::Ui::Windows
         MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_SHOW_RECENT_MESSAGES_TIP      ), // News
         MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_G2_TOOLBAR_MULTIPLAYER, STR_SHOW_MULTIPLAYER_STATUS_TIP   ), // Network
         MakeRemapWidget({ 30, 0}, {30, kTopToolbarHeight + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_TOOLBAR_CHAT_TIP              ), // Chat
-        MakeWidget     ({  0, 0}, {10,                     1}, WindowWidgetType::Empty,  WindowColour::Primary                                                                   ), // Artificial widget separator
-    };
+        MakeWidget     ({  0, 0}, {10,                     1}, WindowWidgetType::Empty,  WindowColour::Primary                                                                   )  // Artificial widget separator
+    );
     // clang-format on
 
     class TopToolbar final : public Window

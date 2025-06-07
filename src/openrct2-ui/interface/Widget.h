@@ -15,20 +15,6 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Widget.h>
 
-// clang-format off
-#define WINDOW_SHIM(TITLE, WIDTH, HEIGHT) \
-    { WindowWidgetType::Frame,    0,  0,  WIDTH - 1, 0, HEIGHT - 1, 0xFFFFFFFF,  kStringIdNone        }, \
-    { WindowWidgetType::Caption,  0,  1,  WIDTH - 2, 1, 14,         TITLE,       STR_WINDOW_TITLE_TIP }, \
-    { .type    = WindowWidgetType::CloseBox, \
-      .colour  = 0,                          \
-      .left    = WIDTH - 13,                 \
-      .right   = WIDTH - 3,                  \
-      .top     = 2,                          \
-      .bottom  = 13,                         \
-      .string  = kCloseBoxStringBlackNormal, \
-      .tooltip = STR_CLOSE_WINDOW_TIP }
-// clang-format on
-
 namespace OpenRCT2::Ui
 {
     ImageId GetColourButtonImage(colour_t colour);
@@ -122,10 +108,83 @@ namespace OpenRCT2::Ui
         return out;
     }
 
-// NOLINTBEGIN
-#define MakeSpinnerWidgets(...)                                                                                                \
-    MakeWidget(__VA_ARGS__), MakeSpinnerIncreaseWidget(__VA_ARGS__), MakeSpinnerDecreaseWidget(__VA_ARGS__)
-    // NOLINTEND
+    namespace Detail
+    {
+        template<typename T, typename Enable = void>
+        struct WidgetsCount
+        {
+            static constexpr size_t count = 0;
+        };
+
+        template<typename T>
+        struct WidgetsCount<T, std::enable_if_t<std::is_base_of_v<Widget, T>>>
+        {
+            static constexpr size_t count = 1;
+        };
+
+        template<typename T, std::size_t N>
+        struct WidgetsCount<std::array<T, N>, std::enable_if_t<std::is_base_of_v<Widget, T>>>
+        {
+            static constexpr size_t count = N;
+        };
+
+        template<typename T>
+        struct IsWidgetsArray : std::false_type
+        {
+        };
+
+        template<std::size_t N>
+        struct IsWidgetsArray<std::array<Widget, N>> : std::true_type
+        {
+        };
+    } // namespace Detail
+
+    template<typename... TArgs>
+    constexpr auto makeWidgets(TArgs&&... args)
+    {
+        constexpr auto totalCount = [&]() {
+            size_t count = 0;
+            ((count += Detail::WidgetsCount<std::decay_t<decltype(args)>>::count), ...);
+            return count;
+        }();
+
+        std::array<Widget, totalCount> res{};
+        size_t index = 0;
+
+        const auto append = [&](auto&& val) {
+            if constexpr (Detail::IsWidgetsArray<std::decay_t<decltype(val)>>::value)
+            {
+                for (auto&& widget : val)
+                {
+                    res[index] = std::move(widget);
+                    index++;
+                }
+            }
+            else
+            {
+                res[index] = std::move(val);
+                index++;
+            }
+        };
+
+        ((append(args)), ...);
+
+        return res;
+    }
+
+    constexpr std::array<Widget, 3> makeWindowShim(StringId title, int16_t width, int16_t height)
+    {
+        // clang-format off
+        std::array<Widget, 3> out = {
+            MakeWidget({ 0, 0 }, { width, height }, WindowWidgetType::Frame, WindowColour::Primary),
+            MakeWidget({ 1, 1 }, { width - 1, kTitleHeightNormal }, WindowWidgetType::Caption, WindowColour::Primary, title, STR_WINDOW_TITLE_TIP),
+            MakeWidget({ width - 12, 2 }, { 11, 11 }, WindowWidgetType::CloseBox, WindowColour::Primary, kWidgetContentEmpty, STR_CLOSE_WINDOW_TIP),
+        };
+        // clang-format on
+
+        out[2].string = kCloseBoxStringBlackNormal;
+        return out;
+    }
 
     constexpr Widget MakeSpinnerDecreaseWidget(
         const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
@@ -151,8 +210,15 @@ namespace OpenRCT2::Ui
         return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_NUMERIC_UP, tooltip);
     }
 
-// NOLINTNEXTLINE
-#define MakeDropdownWidgets(...) MakeDropdownBoxWidget(__VA_ARGS__), MakeDropdownButtonWidget(__VA_ARGS__)
+    constexpr std::array<Widget, 3> MakeSpinnerWidgets(
+        const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour,
+        uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
+    {
+        return makeWidgets(
+            MakeWidget(origin, size, type, colour, content, tooltip),
+            MakeSpinnerIncreaseWidget(origin, size, type, colour, content, tooltip),
+            MakeSpinnerDecreaseWidget(origin, size, type, colour, content, tooltip));
+    };
 
     constexpr Widget MakeDropdownBoxWidget(
         const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
@@ -172,6 +238,15 @@ namespace OpenRCT2::Ui
 
         return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_DROPDOWN_GLYPH, tooltip);
     }
+
+    constexpr std::array<Widget, 2> MakeDropdownWidgets(
+        const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour, uint32_t content,
+        StringId tooltip = kStringIdNone)
+    {
+        return makeWidgets(
+            MakeDropdownBoxWidget(origin, size, type, colour, content, tooltip),
+            MakeDropdownButtonWidget(origin, size, type, colour, content, tooltip));
+    };
 
     void WidgetDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
 

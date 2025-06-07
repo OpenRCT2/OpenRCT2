@@ -34,9 +34,9 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t kWindowHeight = 90;
 
     // clang-format off
-    static constexpr Widget kProgressWindowWidgets[] = {
-        WINDOW_SHIM(STR_STRINGID, kWindowWidth, kWindowHeight)
-    };
+    static constexpr auto kProgressWindowWidgets = makeWidgets(
+        makeWindowShim(STR_STRINGID, kWindowWidth, kWindowHeight)
+    );
 
     struct LoaderVehicleStyle
     {
