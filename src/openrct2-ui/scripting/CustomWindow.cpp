@@ -45,10 +45,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TAB_0,
     };
 
-    static Widget CustomDefaultWidgets[] = {
-        WINDOW_SHIM(STR_STRING, 50, 50),
-        MakeWidget({ 0, 14 }, { 50, 36 }, WindowWidgetType::Resize, WindowColour::Secondary), // content panel
-    };
+    static auto CustomDefaultWidgets = makeWidgets(
+        makeWindowShim(STR_STRING, 50, 50),
+        MakeWidget({ 0, 14 }, { 50, 36 }, WindowWidgetType::Resize, WindowColour::Secondary) // content panel
+    );
 
     struct CustomWidgetDesc
     {

@@ -58,15 +58,15 @@ namespace OpenRCT2::Ui::Windows
         WIDX_CONTRIBUTORS_BUTTON,
     };
 
-#define WIDGETS_MAIN                                                                                                           \
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),                                                                                         \
-        MakeWidget({ 0, TABHEIGHT }, { WW, WH - TABHEIGHT }, WindowWidgetType::Frame, WindowColour::Secondary),                \
-        MakeRemapWidget({ 3, 17 }, { 91, TABHEIGHT - 16 }, WindowWidgetType::Tab, WindowColour::Secondary, SPR_TAB_LARGE),     \
-        MakeRemapWidget({ 94, 17 }, { 91, TABHEIGHT - 16 }, WindowWidgetType::Tab, WindowColour::Secondary, SPR_TAB_LARGE)
+    static constexpr auto kMainWidgets = makeWidgets(
+        makeWindowShim(WINDOW_TITLE, WW, WH),
+        MakeWidget({ 0, TABHEIGHT }, { WW, WH - TABHEIGHT }, WindowWidgetType::Frame, WindowColour::Secondary),
+        MakeRemapWidget({ 3, 17 }, { 91, TABHEIGHT - 16 }, WindowWidgetType::Tab, WindowColour::Secondary, SPR_TAB_LARGE),
+        MakeRemapWidget({ 94, 17 }, { 91, TABHEIGHT - 16 }, WindowWidgetType::Tab, WindowColour::Secondary, SPR_TAB_LARGE));
 
     // clang-format off
-    static constexpr Widget _windowAboutOpenRCT2Widgets[] = {
-        WIDGETS_MAIN,
+    static constexpr auto _windowAboutOpenRCT2Widgets = makeWidgets(
+        kMainWidgets,
         MakeWidget({10, 60},        {WW - 20, 20}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION), // Introduction
         MakeWidget({30, 90},        {128, 128},    WindowWidgetType::Placeholder,  WindowColour::Secondary, kStringIdNone), // OpenRCT2 Logo
         MakeWidget({168, 100},      {173, 24},     WindowWidgetType::Placeholder,  WindowColour::Secondary, kStringIdNone), // Build version
@@ -74,13 +74,11 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({168, 115 + 20}, {200, 14},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_UPDATE_AVAILABLE  ), // "new version" button
         MakeWidget({168, 115 + 40}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
         MakeWidget({168, 115 + 60}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
-        MakeWidget({168, 115 + 80}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CONTRIBUTORS_WINDOW_BUTTON), // "contributors" button
-    };
+        MakeWidget({168, 115 + 80}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CONTRIBUTORS_WINDOW_BUTTON) // "contributors" button
+    );
     // clang-format on
 
-    static constexpr Widget _windowAboutRCT2Widgets[] = {
-        WIDGETS_MAIN,
-    };
+    static constexpr auto _windowAboutRCT2Widgets = makeWidgets(kMainWidgets);
 
     static constexpr std::span<const Widget> _windowAboutPageWidgets[] = {
         _windowAboutOpenRCT2Widgets,

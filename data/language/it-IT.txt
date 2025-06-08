@@ -2166,7 +2166,6 @@ STR_3136    :Attenzione: questo progetto verrà costruito con un veicolo alterna
 STR_3137    :Seleziona uno scenario vicino
 STR_3138    :Ripristina la selezione
 STR_3139    :Il cavo di traino non può funzionare in questa modalità operativa
-STR_3140    :La salita per il traino deve iniziare subito dopo la stazione
 STR_3141    :Con la salita per il traino non è possibile usare la modalità multi-circuito.
 STR_3142    :{WINDOW_COLOUR_2}Capienza: {BLACK}{STRINGID}
 STR_3143    :Mostra le persone sulla mappa
@@ -2198,7 +2197,7 @@ STR_3188    :Cartelli dei percorsi
 STR_3189    :Sentieri classici
 STR_3190    :Percorsi (extra)
 STR_3191    :Gruppi di scenari
-STR_3192    :Entrata del parco
+STR_3192    :Entrate del parco
 STR_3193    :Acqua
 STR_3195    :Lista delle invenzioni
 STR_3196    :{WINDOW_COLOUR_2}Gruppo di ricerca: {BLACK}{STRINGID}
@@ -2237,8 +2236,8 @@ STR_3228    :Fissa le posizioni iniziali delle persone
 STR_3229    :I freni di blocco non possono essere usati immediatamente dopo la stazione
 STR_3230    :I freni di blocco non possono essere usati l’uno immediatamente dopo l’altro
 STR_3231    :I freni di blocco non possono essere usati immediatamente dopo la cima di questa salita di traino
-STR_3232    :Opzioni - Finanze
-STR_3233    :Opzioni - Visitatori
+STR_3232    :Opzioni scenario - Finanze
+STR_3233    :Opzioni scenario - Visitatori
 STR_3235    :Mostra le opzioni sulle finanze
 STR_3236    :Mostra le opzioni sui visitatori
 STR_3238    :Niente denaro
@@ -2282,7 +2281,7 @@ STR_3279    :Ingresso gratis / Paga attrazioni
 STR_3280    :Paga ingresso / Attrazioni gratis
 STR_3281    :{WINDOW_COLOUR_2}Prezzo d’ingresso:
 STR_3283    :Seleziona le attrazioni da proteggere
-STR_3285    :Attrazioni protette
+STR_3285    :Opzioni scenario - Attrazioni protette
 STR_3286    :Seleziona l’obiettivo di questo scenario
 STR_3287    :{WINDOW_COLOUR_2}Obiettivo:
 STR_3294    :Modifica…
@@ -2515,7 +2514,7 @@ STR_5265    :Seleziona quali risorse sono visibili
 STR_5266    :Display
 STR_5267    :Cultura and Unità
 STR_5268    :Audio
-STR_5269    :Controlli e interfaccia
+STR_5269    :Controlli
 STR_5270    :Varie
 STR_5272    :Scenari piccoli
 STR_5273    :Scenari grandi
@@ -2593,7 +2592,7 @@ STR_5368    :Reset stato incidenti
 STR_5371    :Selezione oggetti
 STR_5372    :Inverti direzione trascinamento con clic destro
 STR_5373    :Nome {STRINGID}
-STR_5374    :Data {STRINGID}
+STR_5374    :Data di modifica {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Il nome è già utilizzato
@@ -3758,4 +3757,72 @@ STR_6706    :{WINDOW_COLOUR_2}File immagine attuale: {BLACK}{STRING}
 STR_6707    :(nessuno selezionato)
 STR_6708    :Forza addolcimento
 STR_6709    :Inserisci una forza addolcimento tra {COMMA16} e {COMMA16}
+STR_6710    :Ordinamento stabile
+STR_6711    :Nome file:
+STR_6712    :Salva
+STR_6713    :{COMMA32} {STRINGID}
+STR_6714    :Nome file
+STR_6715    :Data di modifica
+STR_6716    :Dimensione file
+STR_6717    :Dimensione file {STRINGID}
+STR_6718    :Animazioni persona
+STR_6719    :È necessario selezionare almeno un oggetto animazione persona per i visitatori
+STR_6720    :È necessario selezionare almeno un oggetto animazione persona per i tuttofare
+STR_6721    :È necessario selezionare almeno un oggetto animazione persona per i meccanici
+STR_6722    :È necessario selezionare almeno un oggetto animazione persona per le guardie di sicurezza
+STR_6723    :È necessario selezionare almeno un oggetto animazione persona per gli intrattenitori
+STR_6724    :Testi scenario
+STR_6725    :X:
+STR_6726    :Y:
+STR_6727    :Dive loop (sinistra)
+STR_6728    :Dive loop (destra)
+STR_6729    :La salita con catena di traino deve iniziare immediatamente dopo la stazione o un freno di blocco
+STR_6730    :Esporta i dati emscripten
+STR_6731    :Importa i dati emscripten
+STR_6732    :Mostra un bottone nella barra strumenti per ruotare la visuale in senso antiorario
+STR_6733    :Vedi attraverso
+STR_6734    :Gli elementi della mappa che sono all’altezza di taglio o più in alto sono mostrati traslucidi.
+STR_6735    :Sali alla cartella superiore
+STR_6736    :Anteprima
+STR_6737    :Nessuna anteprima disponibile
+STR_6738    :{WINDOW_COLOUR_2}Valore parco: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Data: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Contanti: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Num. attraz.: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Num. ospiti: {BLACK}{UINT16}
+STR_6743    :Clima
+STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6745    :{WINDOW_COLOUR_2}Preferenze intensità per gli ospiti:
+STR_6746    :Nessuna preferenza
+STR_6747    :Preferenze varie (predef.)
+STR_6748    :Solo attrazioni poco intense
+STR_6749    :Solo attrazioni più intense
+STR_6750    :Seleziona quale tipo di intensità attrazioni preferiscono i nuovi ospiti generati.
+STR_6751    :I percorsi per le code non possono essere usati per i passaggi a livello!
+STR_6752    :Opzioni scenario - Obiettivo
+STR_6753    :Opzioni scenario - Dettagli scenario
+STR_6754    :Opzioni scenario - Restrizioni terreno
+STR_6755    :Mostra opzioni obiettivo
+STR_6756    :Mostra opzioni dettagli scenario
+STR_6757    :Mostra opzioni restrizioni terreno
+STR_6758    :Opzioni prestito
+STR_6759    :Modello di business
+STR_6760    :Guadagni:
+STR_6761    :Dettagli scenario
+STR_6762    :Interfaccia
+STR_6763    :RollerCoaster Tycoon 1
+STR_6764    :Salvataggi e auto-salvataggi
+STR_6765    :Avanzate
+STR_6766    :Svuota
+STR_6767    :Finestra
+STR_6768    :Render
+STR_6769    :Comportamento
+STR_6770    :Limite freq. fotogrammi:
+STR_6771    :Velocità interna (predef.)
+STR_6772    :Sincr. verticale
+STR_6773    :Senza limiti
+STR_6774    :Tempo dall’ultima ispezione
+STR_6775    :{COMMA16} minuto
+STR_6776    :{COMMA16} minuti
+STR_6777    :più di 4 ore
 

@@ -42,12 +42,12 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static constexpr Widget _shortcutWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    static constexpr auto _shortcutWidgets = makeWidgets(
+        makeWindowShim(WINDOW_TITLE, WW, WH),
         MakeWidget({0,    43}, {350, 287}, WindowWidgetType::Resize, WindowColour::Secondary),
         MakeWidget({4,    47}, {412, 215}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
-        MakeWidget({4, WH-15}, {150,  12}, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP),
-    };
+        MakeWidget({4, WH-15}, {150,  12}, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP)
+    );
     // clang-format on
 
     static constexpr StringId CHANGE_WINDOW_TITLE = STR_SHORTCUT_CHANGE_TITLE;
@@ -60,10 +60,10 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static constexpr Widget window_shortcut_change_widgets[] = {
-        WINDOW_SHIM(CHANGE_WINDOW_TITLE, CHANGE_WW, CHANGE_WH),
-        MakeWidget({ 75, 56 }, { 100, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_REMOVE, STR_SHORTCUT_REMOVE_TIP),
-    };
+    static constexpr auto window_shortcut_change_widgets = makeWidgets(
+        makeWindowShim(CHANGE_WINDOW_TITLE, CHANGE_WW, CHANGE_WH),
+        MakeWidget({ 75, 56 }, { 100, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_REMOVE, STR_SHORTCUT_REMOVE_TIP)
+    );
     // clang-format on
 
     class ChangeShortcutWindow final : public Window
@@ -577,16 +577,14 @@ namespace OpenRCT2::Ui::Windows
         WIDX_RESET_PROMPT_CANCEL
     };
 
-    static constexpr Widget WindowResetShortcutKeysPromptWidgets[] = {
-        WINDOW_SHIM(STR_SHORTCUT_ACTION_RESET, RESET_PROMPT_WW, RESET_PROMPT_WH),
-        MakeWidget(
-            { 2, 30 }, { RESET_PROMPT_WW - 4, 12 }, WindowWidgetType::LabelCentred, WindowColour::Primary,
-            STR_RESET_SHORTCUT_KEYS_PROMPT),
+    // clang-format off
+    static constexpr auto WindowResetShortcutKeysPromptWidgets = makeWidgets(
+        makeWindowShim(STR_SHORTCUT_ACTION_RESET, RESET_PROMPT_WW, RESET_PROMPT_WH),
+        MakeWidget({ 2, 30 }, { RESET_PROMPT_WW - 4, 12 }, WindowWidgetType::LabelCentred, WindowColour::Primary, STR_RESET_SHORTCUT_KEYS_PROMPT),
         MakeWidget({ 8, RESET_PROMPT_WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_RESET),
-        MakeWidget(
-            { RESET_PROMPT_WW - 95, RESET_PROMPT_WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary,
-            STR_SAVE_PROMPT_CANCEL),
-    };
+        MakeWidget({ RESET_PROMPT_WW - 95, RESET_PROMPT_WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL)
+    );
+    // clang-format on
 
     class ResetShortcutKeysPrompt final : public Window
     {

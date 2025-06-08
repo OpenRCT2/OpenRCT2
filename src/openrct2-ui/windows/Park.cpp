@@ -86,20 +86,23 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
-#define MAIN_PARK_WIDGETS(WW)                                                                                                  \
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),                                                                                         \
-        MakeWidget({ 0, 43 }, { WW, 131 }, WindowWidgetType::Resize, WindowColour::Secondary), /* tab content panel */         \
-        MakeTab({ 3, 17 }, STR_PARK_ENTRANCE_TAB_TIP),                                         /* tab 1 */                     \
-        MakeTab({ 34, 17 }, STR_PARK_RATING_TAB_TIP),                                          /* tab 2 */                     \
-        MakeTab({ 65, 17 }, STR_PARK_GUESTS_TAB_TIP),                                          /* tab 3 */                     \
-        MakeTab({ 96, 17 }, STR_PARK_PRICE_TAB_TIP),                                           /* tab 4 */                     \
-        MakeTab({ 127, 17 }, STR_PARK_STATS_TAB_TIP),                                          /* tab 5 */                     \
-        MakeTab({ 158, 17 }, STR_PARK_OBJECTIVE_TAB_TIP),                                      /* tab 6 */                     \
-        MakeTab({ 189, 17 }, STR_PARK_AWARDS_TAB_TIP)                                          /* tab 7 */
-
     // clang-format off
-    static constexpr Widget _entranceWidgets[] = {
-        MAIN_PARK_WIDGETS(230),
+    static constexpr auto makeParkWidgets = [](int16_t width) {
+        return makeWidgets(
+            makeWindowShim(WINDOW_TITLE, width, WH),
+            MakeWidget({ 0, 43 }, { width, 131 }, WindowWidgetType::Resize, WindowColour::Secondary),
+            MakeTab({ 3, 17 }, STR_PARK_ENTRANCE_TAB_TIP),
+            MakeTab({ 34, 17 }, STR_PARK_RATING_TAB_TIP),
+            MakeTab({ 65, 17 }, STR_PARK_GUESTS_TAB_TIP),
+            MakeTab({ 96, 17 }, STR_PARK_PRICE_TAB_TIP),
+            MakeTab({ 127, 17 }, STR_PARK_STATS_TAB_TIP),
+            MakeTab({ 158, 17 }, STR_PARK_OBJECTIVE_TAB_TIP),
+            MakeTab({ 189, 17 }, STR_PARK_AWARDS_TAB_TIP)
+        );
+    };
+
+    static constexpr auto _entranceWidgets = makeWidgets(
+        makeParkWidgets(230),
         MakeWidget({  3,  46}, {202, 115}, WindowWidgetType::Viewport,      WindowColour::Secondary                                                                      ), // viewport
         MakeWidget({  3, 161}, {202,  11}, WindowWidgetType::LabelCentred,  WindowColour::Secondary                                                                      ), // status
         MakeWidget({205,  49}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                 STR_OPEN_OR_CLOSE_PARK_TIP              ), // open / close
@@ -107,35 +110,35 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({205,  97}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),                 STR_LOCATE_SUBJECT_TIP                  ), // locate
         MakeWidget({205, 121}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),                 STR_NAME_PARK_TIP                       ), // rename
         MakeWidget({210,  51}, { 14,  15}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0), STR_CLOSE_PARK_TIP                      ),
-        MakeWidget({210,  66}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_PARK_TIP                       ),
-    };
+        MakeWidget({210,  66}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_PARK_TIP                       )
+    );
 
-    static constexpr Widget _ratingWidgets[] = {
-        MAIN_PARK_WIDGETS(255),
-    };
+    static constexpr auto _ratingWidgets = makeWidgets(
+        makeParkWidgets(255)
+    );
 
-    static constexpr Widget _guestsWidgets[] = {
-        MAIN_PARK_WIDGETS(255),
-    };
+    static constexpr auto _guestsWidgets = makeWidgets(
+        makeParkWidgets(255)
+    );
 
-    static constexpr Widget _priceWidgets[] = {
-        MAIN_PARK_WIDGETS(230),
+    static constexpr auto _priceWidgets = makeWidgets(
+        makeParkWidgets(230),
         MakeWidget        ({ 21, 50}, {126, 14}, WindowWidgetType::Label,   WindowColour::Secondary, STR_ADMISSION_PRICE),
-        MakeSpinnerWidgets({147, 50}, { 76, 14}, WindowWidgetType::Spinner, WindowColour::Secondary                     ), // Price (3 widgets)
-    };
+        MakeSpinnerWidgets({147, 50}, { 76, 14}, WindowWidgetType::Spinner, WindowColour::Secondary                     ) // Price (3 widgets)
+    );
 
-    static constexpr Widget _statsWidgets[] = {
-        MAIN_PARK_WIDGETS(230),
-    };
+    static constexpr auto _statsWidgets = makeWidgets(
+        makeParkWidgets(230)
+    );
 
-    static constexpr Widget _objectiveWidgets[] = {
-        MAIN_PARK_WIDGETS(230),
-        MakeWidget({7, 207}, {216, 14}, WindowWidgetType::Button, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
-    };
+    static constexpr auto _objectiveWidgets = makeWidgets(
+        makeParkWidgets(230),
+        MakeWidget({7, 207}, {216, 14}, WindowWidgetType::Button, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART) // enter name
+    );
 
-    static constexpr Widget _awardsWidgets[] = {
-        MAIN_PARK_WIDGETS(230),
-    };
+    static constexpr auto _awardsWidgets = makeWidgets(
+        makeParkWidgets(230)
+    );
 
     static std::span<const Widget> _pagedWidgets[] = {
         _entranceWidgets,

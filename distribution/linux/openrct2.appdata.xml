@@ -404,6 +404,9 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+      <release version="0.4.23" date="2025-05-04">
+          <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.4.23</url>
+      </release>
       <release version="0.4.22" date="2025-05-04">
           <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.4.22</url>
       </release>

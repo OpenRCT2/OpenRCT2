@@ -54,16 +54,16 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
 
     // clang-format off
-    static constexpr Widget _trackListWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    static constexpr auto _trackListWidgets = makeWidgets(
+        makeWindowShim(WINDOW_TITLE, WW, WH),
         MakeWidget({  4,  18}, {218,  13}, WindowWidgetType::TableHeader,  WindowColour::Primary, STR_SELECT_OTHER_RIDE                                       ),
         MakeWidget({  4,  32}, {124,  13}, WindowWidgetType::TextBox,      WindowColour::Secondary                                                            ),
         MakeWidget({130,  32}, { 92,  13}, WindowWidgetType::Button,       WindowColour::Primary, STR_OBJECT_SEARCH_CLEAR                                     ),
         MakeWidget({  4,  46}, {218, 381}, WindowWidgetType::Scroll,       WindowColour::Primary, SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
         MakeWidget({224,  18}, {372, 219}, WindowWidgetType::FlatBtn,      WindowColour::Primary                                                              ),
         MakeWidget({572, 405}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary, ImageId(SPR_ROTATE_ARROW),        STR_ROTATE_90_TIP                  ),
-        MakeWidget({572, 381}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary, ImageId(SPR_SCENERY),             STR_TOGGLE_SCENERY_TIP             ),
-    };
+        MakeWidget({572, 381}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary, ImageId(SPR_SCENERY),             STR_TOGGLE_SCENERY_TIP             )
+    );
     // clang-format on
 
     constexpr uint16_t TRACK_DESIGN_INDEX_UNLOADED = UINT16_MAX;

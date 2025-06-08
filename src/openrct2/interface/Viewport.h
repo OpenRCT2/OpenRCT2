@@ -112,7 +112,7 @@ namespace OpenRCT2
         VIEWPORT_FLAG_INVISIBLE_PATHS = (1u << 28),
         VIEWPORT_FLAG_INVISIBLE_SUPPORTS = (1u << 29),
 
-        VIEWPORT_FLAG_INDEPEDENT_ROTATION = (1u << 30),
+        VIEWPORT_FLAG_INDEPENDENT_ROTATION = (1u << 30),
         VIEWPORT_FLAG_RENDERING_INHIBITED = (1u << 31),
     };
 } // namespace OpenRCT2
@@ -182,6 +182,8 @@ namespace OpenRCT2
     std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, Viewport* viewport);
     void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus);
     void ViewportRemove(Viewport* viewport);
+
+    const std::list<Viewport>& GetAllViewports();
 
     void ViewportsInvalidate(int32_t x, int32_t y, int32_t z0, int32_t z1, ZoomLevel maxZoom);
     void ViewportsInvalidate(const CoordsXYZ& pos, int32_t width, int32_t minHeight, int32_t maxHeight, ZoomLevel maxZoom);

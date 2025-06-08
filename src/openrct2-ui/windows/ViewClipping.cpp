@@ -53,8 +53,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WH = 172;
 
     // clang-format off
-    static constexpr Widget _viewClippingWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    static constexpr auto _viewClippingWidgets = makeWidgets(
+        makeWindowShim(WINDOW_TITLE, WW, WH),
         MakeWidget        ({     11,  19}, {    159,  11}, WindowWidgetType::Checkbox, WindowColour::Primary, STR_VIEW_CLIPPING_HEIGHT_ENABLE,                  STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP               ), // clip enable/disable check box
         MakeWidget        ({      5,  36}, {WW - 10,  65}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING                                                                 ),
         MakeSpinnerWidgets({     90,  51}, {     79,  12}, WindowWidgetType::Spinner,  WindowColour::Primary, kStringIdNone,                                    STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE             ), // clip height (3 widgets)
@@ -62,8 +62,8 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({     11,  83}, {    159,  11}, WindowWidgetType::Checkbox, WindowColour::Primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING_SEE_THROUGH, STR_VIEW_CLIPPING_VERTICAL_CLIPPING_SEE_THROUGH_TIP), // clip height enable/disable see-through check box
         MakeWidget        ({      5, 107}, {WW - 10,  60}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING                                                               ),
         MakeWidget        ({     11, 122}, {    158,  17}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_SELECT_AREA                                                                       ), // selector
-        MakeWidget        ({     11, 143}, {    158,  18}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_CLEAR_SELECTION                                                                   ), // clear
-    };
+        MakeWidget        ({     11, 143}, {    158,  18}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_CLEAR_SELECTION                                                                   )  // clear
+    );
     // clang-format on
 
 #pragma endregion

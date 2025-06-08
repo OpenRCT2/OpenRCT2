@@ -58,13 +58,13 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_EDITOR_PARK_ENTRANCE, WIDX_ROTATE_ENTRANCE_BUTTON);
 
     // clang-format off
-    static Widget _widgets[] = {
-        WINDOW_SHIM(kWindowTitle, kWindowWidth, kWindowHeight),
+    static constexpr auto _widgets = makeWidgets(
+        makeWindowShim(kWindowTitle, kWindowWidth, kWindowHeight),
         MakeWidget     ({                 0, 43 }, { kWindowWidth, kWindowHeight - 43 }, WindowWidgetType::Resize,  WindowColour::Secondary                                                   ),
         MakeTab        ({                 3, 17 },                                                                                           kStringIdNone                                         ),
         MakeWidget     ({                 2, 45 }, { kScrollWidth, kScrollHeight      }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                                  ),
-        MakeWidget     ({ kWindowWidth - 26, 59 }, {           24,            24      }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW), STR_ROTATE_OBJECTS_90 ),
-    };
+        MakeWidget     ({ kWindowWidth - 26, 59 }, {           24,            24      }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW), STR_ROTATE_OBJECTS_90 )
+    );
     // clang-format on
 
     class EditorParkEntrance final : public Window

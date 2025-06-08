@@ -393,7 +393,7 @@ endif()
 
 # graphics files (g2.dat and font.dat) 
 if (NOT CMAKE_CROSSCOMPILING)
-    set(graphics_files "g2" "fonts")
+    set(graphics_files "g2" "fonts" "tracks")
     
     foreach(graphics_file ${graphics_files})
         set(output_file "${graphics_file}.dat")
@@ -500,6 +500,7 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
     endif ()
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/g2.dat" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/fonts.dat" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/tracks.dat" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
     install(DIRECTORY "data/" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
 
     # even when building WITH_TESTS, none of the below install steps are required for OpenRCT2.app

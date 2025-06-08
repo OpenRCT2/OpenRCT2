@@ -115,17 +115,20 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kWindowSize = { 300, 220 };
 
     // clang-format off
-#define SHARED_WIDGETS(PAGE_TITLE) \
-    WINDOW_SHIM(PAGE_TITLE, kWindowSize.width, kWindowSize.height                                                          ), /* WIDX_BACKGROUND, WIDX_TITLE, WIDX_CLOSE */ \
-        MakeWidget({   0, 43 }, { kWindowSize.width, 177 }, WindowWidgetType::Resize, WindowColour::Secondary              ), /* WIDX_PAGE_BACKGROUND */ \
-        MakeTab   ({   3, 17 }                                                                                             ), /* WIDX_TAB_1 */ \
-        MakeTab   ({  34, 17 }                                                                                             ), /* WIDX_TAB_2 */ \
-        MakeTab   ({  65, 17 }                                                                                             ), /* WIDX_TAB_3 */ \
-        MakeTab   ({  96, 17 }                                                                                             ), /* WIDX_TAB_4 */ \
-        MakeWidget({ 185, 200 }, { 109, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE)
+    static constexpr auto makeMapGenWidgets = [](StringId title) {
+        return makeWidgets(
+            makeWindowShim(title, kWindowSize.width, kWindowSize.height),
+            MakeWidget({   0, 43 }, { kWindowSize.width, 177 }, WindowWidgetType::Resize, WindowColour::Secondary),
+            MakeTab   ({   3, 17 }),
+            MakeTab   ({  34, 17 }),
+            MakeTab   ({  65, 17 }),
+            MakeTab   ({  96, 17 }),
+            MakeWidget({ 185, 200 }, { 109, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE)
+        );
+    };
 
-    static constexpr Widget BaseWidgets[] = {
-        SHARED_WIDGETS(STR_MAPGEN_CAPTION_GENERATOR),
+    static constexpr auto BaseWidgets = makeWidgets(
+        makeMapGenWidgets(STR_MAPGEN_CAPTION_GENERATOR),
         MakeSpinnerWidgets ({165, 52}, { 50, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, STR_COMMA16                                                ), // NB: 3 widgets
         MakeWidget         ({216, 52}, { 21, 12}, WindowWidgetType::FlatBtn,      WindowColour::Secondary, ImageId(SPR_G2_LINK_CHAIN), STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
         MakeSpinnerWidgets ({238, 52}, { 50, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, STR_POP16_COMMA16                                          ), // NB: 3 widgets
@@ -139,32 +142,32 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({223, 107}, { 65, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_BROWSE                 ), // WIDX_HEIGHTMAP_BROWSE
         MakeWidget        ({ 10, 125}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
         MakeWidget        ({ 10, 141}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
-        MakeSpinnerWidgets({179, 157}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             ), // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
-    };
+        MakeSpinnerWidgets({179, 157}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                             )  // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
+    );
 
-    static constexpr Widget TerrainWidgets[] = {
-        SHARED_WIDGETS(STR_MAPGEN_CAPTION_TERRAIN),
+    static constexpr auto TerrainWidgets = makeWidgets(
+        makeMapGenWidgets(STR_MAPGEN_CAPTION_TERRAIN),
         MakeSpinnerWidgets({179,  52}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                        ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
         MakeSpinnerWidgets({179,  70}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                        ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
         MakeWidget        ({179,  88}, { 47, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
         MakeWidget        ({236,  88}, { 47, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP),
         MakeWidget        ({ 10, 106}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN        ),
-        MakeWidget        ({ 10, 122}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_TILE), // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
-    };
+        MakeWidget        ({ 10, 122}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_SMOOTH_TILE)  // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
+    );
 
-    static constexpr Widget WaterWidgets[] = {
-        SHARED_WIDGETS(STR_MAPGEN_CAPTION_WATER),
+    static constexpr auto WaterWidgets = makeWidgets(
+        makeMapGenWidgets(STR_MAPGEN_CAPTION_WATER),
         MakeSpinnerWidgets({179,  52}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary                          ), // NB: 3 widgets
-        MakeWidget        ({ 10,  70}, {255, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_BEACHES_WATER_BODIES),
-    };
+        MakeWidget        ({ 10,  70}, {255, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_BEACHES_WATER_BODIES)
+    );
 
-    static constexpr Widget ForestsWidgets[] = {
-        SHARED_WIDGETS(STR_MAPGEN_CAPTION_FORESTS),
+    static constexpr auto ForestsWidgets = makeWidgets(
+        makeMapGenWidgets(STR_MAPGEN_CAPTION_FORESTS),
         MakeWidget        ({ 10,  52}, {255, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAPGEN_OPTION_PLACE_TREES),
         MakeSpinnerWidgets({179,  70}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary), // WIDX_TREE_LAND_RATIO{,_UP,_DOWN}
         MakeSpinnerWidgets({179,  88}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary), // WIDX_TREE_ALTITUDE_MIN{,_UP,_DOWN}
-        MakeSpinnerWidgets({179, 106}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary), // WIDX_TREE_ALTITUDE_MAX{,_UP,_DOWN}
-    };
+        MakeSpinnerWidgets({179, 106}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary)  // WIDX_TREE_ALTITUDE_MAX{,_UP,_DOWN}
+    );
 
     static std::span<const Widget> PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
         BaseWidgets,

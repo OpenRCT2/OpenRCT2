@@ -418,6 +418,7 @@
     <ClInclude Include="rct12\SawyerChunk.h" />
     <ClInclude Include="rct12\SawyerChunkReader.h" />
     <ClInclude Include="rct12\SawyerChunkWriter.h" />
+    <ClInclude Include="rct12\TD46.h" />
     <ClInclude Include="rct1\Csg.h" />
     <ClInclude Include="rct1\Limits.h" />
     <ClInclude Include="rct1\RCT1.h" />
@@ -1044,6 +1045,7 @@
     <ClCompile Include="rct12\SawyerChunk.cpp" />
     <ClCompile Include="rct12\SawyerChunkReader.cpp" />
     <ClCompile Include="rct12\SawyerChunkWriter.cpp" />
+    <ClCompile Include="rct12\TD46.cpp" />
     <ClCompile Include="rct1\Csg.cpp" />
     <ClCompile Include="rct1\S4Importer.cpp" />
     <ClCompile Include="rct1\T4Importer.cpp" />

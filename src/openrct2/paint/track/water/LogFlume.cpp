@@ -870,10 +870,10 @@ static void LogFlumeTrack25Down60(
     const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr uint32_t imageIds[4][2] = {
-        { SPR_G2_FLUME_25_60_NW_SE_BACK, SPR_G2_FLUME_25_60_NW_SE_BACK_WATER },
-        { SPR_G2_EMPTY, SPR_G2_FLUME_25_60_NW_SE },
-        { SPR_G2_EMPTY, SPR_G2_FLUME_25_60_NE_SW },
-        { SPR_G2_FLUME_25_60_NE_SW_BACK, SPR_G2_FLUME_25_60_NE_SW_BACK_WATER },
+        { SPR_TRACKS_FLUME_25_60_NW_SE_BACK, SPR_TRACKS_FLUME_25_60_NW_SE_BACK_WATER },
+        { SPR_G2_EMPTY, SPR_TRACKS_FLUME_25_60_NW_SE },
+        { SPR_G2_EMPTY, SPR_TRACKS_FLUME_25_60_NE_SW },
+        { SPR_TRACKS_FLUME_25_60_NE_SW_BACK, SPR_TRACKS_FLUME_25_60_NE_SW_BACK_WATER },
     };
 
     auto imageId = session.TrackColours.WithIndex(imageIds[direction][0]);
@@ -910,10 +910,10 @@ static void LogFlumeTrack60Down(
     const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr uint32_t imageIds[4][2] = {
-        { SPR_G2_FLUME_60_NW_SE_BACK, SPR_G2_EMPTY },
-        { SPR_G2_EMPTY, SPR_G2_FLUME_60_NW_SE },
-        { SPR_G2_EMPTY, SPR_G2_FLUME_60_NE_SW },
-        { SPR_G2_FLUME_60_NE_SW_BACK, SPR_G2_EMPTY },
+        { SPR_TRACKS_FLUME_60_NW_SE_BACK, SPR_G2_EMPTY },
+        { SPR_G2_EMPTY, SPR_TRACKS_FLUME_60_NW_SE },
+        { SPR_G2_EMPTY, SPR_TRACKS_FLUME_60_NE_SW },
+        { SPR_TRACKS_FLUME_60_NE_SW_BACK, SPR_G2_EMPTY },
     };
 
     auto imageId = session.TrackColours.WithIndex(imageIds[direction][0]);
@@ -950,10 +950,10 @@ static void LogFlumeTrack60Down25(
     const TrackElement& trackElement, SupportType supportType)
 {
     static constexpr uint32_t imageIds[4][2] = {
-        { SPR_G2_FLUME_60_25_NW_SE_BACK, SPR_G2_FLUME_60_25_NW_SE_BACK_WATER },
-        { SPR_G2_EMPTY, SPR_G2_FLUME_60_25_NW_SE },
-        { SPR_G2_EMPTY, SPR_G2_FLUME_60_25_NE_SW },
-        { SPR_G2_FLUME_60_25_NE_SW_BACK, SPR_G2_FLUME_60_25_NE_SW_BACK_WATER },
+        { SPR_TRACKS_FLUME_60_25_NW_SE_BACK, SPR_TRACKS_FLUME_60_25_NW_SE_BACK_WATER },
+        { SPR_G2_EMPTY, SPR_TRACKS_FLUME_60_25_NW_SE },
+        { SPR_G2_EMPTY, SPR_TRACKS_FLUME_60_25_NE_SW },
+        { SPR_TRACKS_FLUME_60_25_NE_SW_BACK, SPR_TRACKS_FLUME_60_25_NE_SW_BACK_WATER },
     };
 
     auto imageId = session.TrackColours.WithIndex(imageIds[direction][0]);

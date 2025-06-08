@@ -7,7 +7,6 @@ Includes all git commit authors. Aliases are GitHub usernames or community nickn
 * Michał Janiszewski (janisozaur) - Programming
 * Hielke Morsink (Broxzier) - Programming
 * Tulio Paschoalin Leao (tupaschoal) - Programming
-* Olivier Wervers (Oli414) - Lead OpenGraphics - Programming
 * Matthias Moninger (ZehMatt) - Programming
 * Karst van Galen Last (AuraSpecs) - Lead OpenSoundEffects & OpenMusic
 * Michael Bernardi (mrmbernardi) - Programming
@@ -24,6 +23,7 @@ Includes all git commit authors. Aliases are GitHub usernames or community nickn
 * (zsilencer)
 * Richard Jenkins (rwjuk)
 * Rik Smeets (rik-smeets)
+* Olivier Wervers (Oli414)
 
 ## Long term contributors
 Appreciation for long term contributors to the project having provided substantial work.

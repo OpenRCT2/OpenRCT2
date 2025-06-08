@@ -63,9 +63,8 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
     // clang-format off
-    static constexpr Widget _transparancyWidgets[] =
-    {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    static constexpr auto _transparancyWidgets = makeWidgets(
+        makeWindowShim(WINDOW_TITLE, WW, WH),
         MakeWidget({  2, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_VEGETATION),  STR_SEE_THROUGH_VEGETATION),
         MakeWidget({ 27, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_SCENERY),     STR_SEE_THROUGH_SCENERY),
         MakeWidget({ 52, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_FOOTPATH),         STR_SEE_THROUGH_PATHS),
@@ -80,8 +79,8 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({ 52, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  kStringIdNone,                       STR_INVISIBLE_PATHS),
         MakeWidget({ 77, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  kStringIdNone,                       STR_INVISIBLE_RIDES),
         MakeWidget({102, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  kStringIdNone,                       STR_INVISIBLE_VEHICLES),
-        MakeWidget({127, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  kStringIdNone,                       STR_INVISIBLE_SUPPORTS),
-    };
+        MakeWidget({127, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  kStringIdNone,                       STR_INVISIBLE_SUPPORTS)
+    );
     // clang-format on
 
     class TransparencyWindow final : public Window

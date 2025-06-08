@@ -448,6 +448,18 @@ static void EntitySpatialRemove(EntityBase& entity)
     entity.SpatialIndex = kInvalidSpatialIndex;
 }
 
+static void UpdateEntitySpatialIndex(EntityBase& entity)
+{
+    if (entity.SpatialIndex & kSpatialIndexDirtyMask)
+    {
+        if (entity.SpatialIndex != kInvalidSpatialIndex)
+        {
+            EntitySpatialRemove(entity);
+        }
+        EntitySpatialInsert(entity, { entity.x, entity.y });
+    }
+}
+
 void UpdateEntitiesSpatialIndex()
 {
     for (auto& entityList : gEntityLists)
@@ -455,16 +467,9 @@ void UpdateEntitiesSpatialIndex()
         for (auto& entityId : entityList)
         {
             auto* entity = TryGetEntity(entityId);
-            if (entity == nullptr || entity->Type == EntityType::Null)
-                continue;
-
-            if (entity->SpatialIndex & kSpatialIndexDirtyMask)
+            if (entity != nullptr && entity->Type != EntityType::Null)
             {
-                if (entity->SpatialIndex != kInvalidSpatialIndex)
-                {
-                    EntitySpatialRemove(*entity);
-                }
-                EntitySpatialInsert(*entity, { entity->x, entity->y });
+                UpdateEntitySpatialIndex(*entity);
             }
         }
     }
@@ -536,6 +541,12 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
         EntitySetCoordinates(loc, this);
         Invalidate(); // Invalidate new position.
     }
+}
+
+void EntityBase::MoveToAndUpdateSpatialIndex(const CoordsXYZ& newLocation)
+{
+    MoveTo(newLocation);
+    UpdateEntitySpatialIndex(*this);
 }
 
 /**

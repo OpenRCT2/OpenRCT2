@@ -375,7 +375,7 @@ void RideUpdateFavouritedStat()
             auto ride = GetRide(peep->FavouriteRide);
             if (ride != nullptr)
             {
-                ride->guestsFavourite++;
+                ride->guestsFavourite = AddClamp(ride->guestsFavourite, 1u);
                 ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
             }
         }
@@ -1305,9 +1305,8 @@ static void RideInspectionUpdate(Ride& ride)
     if (gLegacyScene == LegacyScene::trackDesigner)
         return;
 
-    ride.lastInspection++;
-    if (ride.lastInspection == 0)
-        ride.lastInspection--;
+    ride.lastInspection = AddClamp<decltype(ride.lastInspection)>(ride.lastInspection, 1);
+    ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
     int32_t inspectionIntervalMinutes = RideInspectionInterval[ride.inspectionInterval];
     // An inspection interval of 0 minutes means the ride is set to never be inspected.
@@ -3308,7 +3307,7 @@ static Vehicle* VehicleCreateCar(
             chosenLoc.x = dodgemPos.x + (ScenarioRand() & 0xFF);
         } while (vehicle->DodgemsCarWouldCollideAt(chosenLoc).has_value());
 
-        vehicle->MoveTo({ chosenLoc, dodgemPos.z });
+        vehicle->MoveToAndUpdateSpatialIndex({ chosenLoc, dodgemPos.z });
     }
     else
     {
@@ -4915,13 +4914,13 @@ OpenRCT2::BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(
           SpritePrecision::Sprites4 }, // TrackGroup::flyingHalfLoopInvertedUp
         { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
           SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90,
-          SpritePrecision::Sprites4 },                             // TrackGroup::flyingHalfLoopUninvertedDown
-        {},                                                        // TrackGroup::slopeCurveLarge
-        {},                                                        // TrackGroup::slopeCurveLargeBanked
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBrakes
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBlockBrakes
-        { SpriteGroupType::Slopes25, SpritePrecision::Sprites8 },  // TrackGroup::inclinedBrakes
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TrackGroup::diagBooster
+          SpritePrecision::Sprites4 },                                     // TrackGroup::flyingHalfLoopUninvertedDown
+        { SpriteGroupType::Slopes25, SpritePrecision::Sprites16 },         // TrackGroup::slopeCurveLarge
+        { SpriteGroupType::Slopes25Banked45, SpritePrecision::Sprites16 }, // TrackGroup::slopeCurveLargeBanked
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 },         // TrackGroup::diagBrakes
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 },         // TrackGroup::diagBlockBrakes
+        { SpriteGroupType::Slopes25, SpritePrecision::Sprites8 },          // TrackGroup::inclinedBrakes
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 },         // TrackGroup::diagBooster
         { SpriteGroupType::Slopes8, SpritePrecision::Sprites4, SpriteGroupType::Slopes16, SpritePrecision::Sprites4,
           SpriteGroupType::Slopes25, SpritePrecision::Sprites8, SpriteGroupType::Slopes42, SpritePrecision::Sprites8,
           SpriteGroupType::Slopes50, SpritePrecision::Sprites4 }, // TrackGroup::slopeSteepLong

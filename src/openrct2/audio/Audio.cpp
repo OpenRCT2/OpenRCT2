@@ -159,19 +159,19 @@ namespace OpenRCT2::Audio
         uint8_t rotation = GetCurrentRotation();
         auto pos2 = Translate3DTo2DWithZ(rotation, location);
 
-        Viewport* viewport = nullptr;
-        while ((viewport = WindowGetPreviousViewport(viewport)) != nullptr)
+        const auto& activeViewports = GetAllViewports();
+        for (const auto& viewport : activeViewports)
         {
-            if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
+            if (viewport.flags & VIEWPORT_FLAG_SOUND_ON)
             {
-                int16_t vx = pos2.x - viewport->viewPos.x;
-                params.pan = viewport->pos.x + viewport->zoom.ApplyInversedTo(vx);
+                int16_t vx = pos2.x - viewport.viewPos.x;
+                params.pan = viewport.pos.x + viewport.zoom.ApplyInversedTo(vx);
 
                 auto sampleModifier = obj->GetSampleModifier(sampleIndex);
-                auto viewModifier = ((viewport->zoom.ApplyTo(-1024) - 1) * (1 << volumeDown)) + 1;
+                auto viewModifier = ((viewport.zoom.ApplyTo(-1024) - 1) * (1 << volumeDown)) + 1;
                 params.volume = sampleModifier + viewModifier;
 
-                if (!viewport->Contains(pos2) || params.volume < -10000)
+                if (!viewport.Contains(pos2) || params.volume < -10000)
                 {
                     params.in_range = false;
                     return params;

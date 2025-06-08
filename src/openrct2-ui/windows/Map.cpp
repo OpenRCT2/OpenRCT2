@@ -131,8 +131,8 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static constexpr Widget window_map_widgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    static constexpr auto window_map_widgets = makeWidgets(
+        makeWindowShim(WINDOW_TITLE, WW, WH),
         MakeWidget        ({  0,  43}, {245, 215}, WindowWidgetType::Resize,    WindowColour::Secondary                                                                ),
         MakeRemapWidget   ({  3,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::Secondary, SPR_TAB,                      STR_SHOW_PEOPLE_ON_MAP_TIP      ),
         MakeRemapWidget   ({ 34,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::Secondary, SPR_TAB,                      STR_SHOW_RIDES_STALLS_ON_MAP_TIP),
@@ -143,8 +143,8 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget        ({  4,  46}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_BUY_LAND_RIGHTS), STR_SELECT_PARK_OWNED_LAND_TIP  ),
         MakeWidget        ({  4,  70}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_PEEP_SPAWN),   STR_SET_STARTING_POSITIONS_TIP  ),
         MakeWidget        ({ 28,  94}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PARK_ENTRANCE),   STR_BUILD_PARK_ENTRANCE_TIP     ),
-        MakeWidget        ({110, 118}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_MAP_GEN_BTN),  STR_MAP_GENERATOR_TIP           ),
-    };
+        MakeWidget        ({110, 118}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_MAP_GEN_BTN),  STR_MAP_GENERATOR_TIP           )
+    );
     // clang-format on
 
     // These represent a coefficient for the map size to be multiplied

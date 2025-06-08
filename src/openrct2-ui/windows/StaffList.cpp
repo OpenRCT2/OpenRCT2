@@ -79,8 +79,8 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t MAX_WH = 450;
 
     // clang-format off
-    static constexpr Widget _staffListWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    static constexpr auto _staffListWidgets = makeWidgets(
+        makeWindowShim(WINDOW_TITLE, WW, WH),
         MakeWidget({  0, 43}, {    WW, WH - 43}, WindowWidgetType::Resize,    WindowColour::Secondary                                                     ), // tab content panel
         MakeTab   ({  3, 17},                                                                          STR_STAFF_HANDYMEN_TAB_TIP                         ), // handymen tab
         MakeTab   ({ 34, 17},                                                                          STR_STAFF_MECHANICS_TAB_TIP                        ), // mechanics tab
@@ -91,8 +91,8 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({165, 17}, {   145,      13}, WindowWidgetType::Button,    WindowColour::Primary  , kStringIdNone,        STR_HIRE_STAFF_TIP                ), // hire button
         MakeWidget({243, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_DEMOLISH),    STR_QUICK_FIRE_STAFF     ), // quick fire staff
         MakeWidget({267, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PATROL_BTN),  STR_SHOW_PATROL_AREA_TIP ), // show staff patrol area tool
-        MakeWidget({291, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_MAP),         STR_SHOW_STAFF_ON_MAP_TIP), // show staff on map button
-    };
+        MakeWidget({291, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_MAP),         STR_SHOW_STAFF_ON_MAP_TIP)  // show staff on map button
+    );
     // clang-format on
 
     class StaffListWindow final : public Window

@@ -203,14 +203,12 @@ if(MACOS_BUNDLE)
         )
 
     if (CMAKE_OSX_ARCHITECTURES MATCHES "${SYSTEM_MACOS_ARCH}")
-        target_sources(openrct2
-        PUBLIC ${CMAKE_BINARY_DIR}/g2.dat
-        )
+        target_sources(openrct2 PUBLIC ${CMAKE_BINARY_DIR}/g2.dat)
         list(APPEND BUNDLE_RESOURCES ${CMAKE_BINARY_DIR}/g2.dat)
-        target_sources(openrct2
-                PUBLIC ${CMAKE_BINARY_DIR}/fonts.dat
-        )
+        target_sources(openrct2 PUBLIC ${CMAKE_BINARY_DIR}/fonts.dat)
         list(APPEND BUNDLE_RESOURCES ${CMAKE_BINARY_DIR}/fonts.dat)
+        target_sources(openrct2 PUBLIC ${CMAKE_BINARY_DIR}/tracks.dat)
+        list(APPEND BUNDLE_RESOURCES ${CMAKE_BINARY_DIR}/tracks.dat)
     endif()
 
 

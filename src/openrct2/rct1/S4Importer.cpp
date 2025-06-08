@@ -96,8 +96,6 @@ static constexpr ObjectEntryIndex ObjectEntryIndexIgnore = 254;
 
 namespace OpenRCT2::RCT1
 {
-    static std::mutex mtx;
-
     class S4Importer final : public IParkImporter
     {
     private:
@@ -233,6 +231,10 @@ namespace OpenRCT2::RCT1
             // If no entry is found, this is a custom scenario.
             bool isOfficial = ScenarioSources::TryGetById(_s4.ScenarioSlotIndex, &desc);
 
+            // Perform an additional name check if this is detected to be a competition scenario
+            if (isOfficial && desc.category == ScenarioCategory::competitions)
+                isOfficial = ScenarioSources::TryGetByName(_s4.ScenarioName, &desc);
+
             dst->Category = desc.category;
             dst->SourceGame = ScenarioSource{ desc.source };
             dst->SourceIndex = desc.index;
@@ -268,19 +270,14 @@ namespace OpenRCT2::RCT1
             {
                 auto& objManager = GetContext()->GetObjectManager();
 
-                // Ensure only one thread talks to the object manager at a time
-                std::lock_guard lock(mtx);
-
-                // Unload loaded scenario text object, if any.
-                if (auto* obj = objManager.GetLoadedObject<ScenarioTextObject>(0); obj != nullptr)
-                    objManager.UnloadObjects({ obj->GetDescriptor() });
-
                 // Load the one specified
-                if (auto* obj = objManager.LoadObject(desc.textObjectId); obj != nullptr)
+                if (auto obj = objManager.LoadTempObject(desc.textObjectId); obj != nullptr)
                 {
-                    auto* textObject = reinterpret_cast<ScenarioTextObject*>(obj);
-                    name = textObject->GetScenarioName();
-                    details = textObject->GetScenarioDetails();
+                    auto& textObject = reinterpret_cast<ScenarioTextObject&>(*obj);
+                    name = textObject.GetScenarioName();
+                    details = textObject.GetScenarioDetails();
+
+                    obj->Unload();
                 }
             }
 
@@ -2411,20 +2408,13 @@ namespace OpenRCT2::RCT1
                 {
                     auto& objManager = GetContext()->GetObjectManager();
 
-                    // Ensure only one thread talks to the object manager at a time
-                    std::lock_guard lock(mtx);
-
-                    // Unload loaded scenario text object, if any.
-                    if (auto* obj = objManager.GetLoadedObject<ScenarioTextObject>(0); obj != nullptr)
-                        objManager.UnloadObjects({ obj->GetDescriptor() });
-
                     // Load the one specified
-                    if (auto* obj = objManager.LoadObject(desc.textObjectId); obj != nullptr)
+                    if (auto obj = objManager.LoadTempObject(desc.textObjectId); obj != nullptr)
                     {
-                        auto* textObject = reinterpret_cast<ScenarioTextObject*>(obj);
-                        name = textObject->GetScenarioName();
-                        parkName = textObject->GetParkName();
-                        details = textObject->GetScenarioDetails();
+                        auto& textObject = reinterpret_cast<ScenarioTextObject&>(*obj);
+                        name = textObject.GetScenarioName();
+                        parkName = textObject.GetParkName();
+                        details = textObject.GetScenarioDetails();
                     }
                 }
             }

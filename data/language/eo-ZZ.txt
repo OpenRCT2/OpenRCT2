@@ -3789,7 +3789,7 @@ STR_6743    :Klimato
 STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
 STR_6745    :{WINDOW_COLOUR_2}Intenseco-preferoj de gastoj:
 STR_6746    :Neniuj preferoj
-STR_6747    :Preferoj varias (defaŭlto)
+STR_6747    :Preferoj varias (defaŭlta)
 STR_6748    :Nur malpli intensaj atrakcioj
 STR_6749    :Nur pli intensaj atrakcioj
 STR_6750    :Elekti kian atrakcio-intensecon, ke nove generitaj gastoj preferas.
@@ -3809,3 +3809,14 @@ STR_6763    :RollerCoaster Tycoon 1
 STR_6764    :Konservado kaj aŭtokonservado
 STR_6765    :Altnivela
 STR_6766    :Vakigi
+STR_6767    :Fenestro
+STR_6768    :Bildigo
+STR_6769    :Konduto
+STR_6770    :Limo de bildrapido:
+STR_6771    :Interna rapideco (defaŭlta)
+STR_6772    :Vertikala sinkronigo
+STR_6773    :Senlimigita
+STR_6774    :Daŭro de lasta inspekto
+STR_6775    :{COMMA16} minuto
+STR_6776    :{COMMA16} minutoj
+STR_6777    :pli ol 4 horoj

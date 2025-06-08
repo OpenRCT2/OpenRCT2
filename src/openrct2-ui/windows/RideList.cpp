@@ -64,8 +64,8 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static constexpr Widget _rideListWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    static constexpr auto _rideListWidgets = makeWidgets(
+        makeWindowShim(WINDOW_TITLE, WW, WH),
         MakeWidget({  0, 43}, {340, 197}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ), // tab page background
         MakeWidget({315, 60}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_TOGGLE_OPEN_CLOSE),      STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
         MakeWidget({150, 46}, {124,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                ), // current information type
@@ -77,8 +77,8 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget({  3, 60}, {334, 177}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL                                               ), // list
         MakeWidget({320, 62}, { 14,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0)                                    ),
         MakeWidget({320, 76}, { 14,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0)                                     ),
-        MakeWidget({315, 90}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_DEMOLISH),               STR_QUICK_DEMOLISH_RIDE           ),
-    };
+        MakeWidget({315, 90}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_DEMOLISH),               STR_QUICK_DEMOLISH_RIDE           )
+    );
     // clang-format on
 
     enum

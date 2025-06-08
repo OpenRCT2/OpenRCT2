@@ -333,7 +333,6 @@ namespace OpenRCT2
 
     void TextinputCancel();
 
-    Viewport* WindowGetPreviousViewport(Viewport* current);
     void WindowInitAll();
 
     void WindowFollowSprite(WindowBase& w, EntityId spriteIndex);

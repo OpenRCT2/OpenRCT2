@@ -19,8 +19,6 @@ Unicode True
     InstallDir "$PROGRAMFILES64\OpenRCT2\"
 !endif
 
-!define SUPPORTED_OS        "$(lsSupportedOS)"
-
 ; Define root variable relative to installer
 !define PATH_ROOT "..\..\"
 !define BINARY_DIR      "${PATH_ROOT}bin"
@@ -41,7 +39,7 @@ VIAddVersionKey "InternalName" "InstOpenRCT2-${APPARCH}"
 VIAddVersionKey "FileVersion" "${APPVERSION}-${APPARCH}"
 VIAddVersionKey "LegalCopyright" " "
 ; Main Install settings
-Name "$(lsInstallerName)"
+Name "${APPNAMEANDVERSION}"
 
 ; NOTE: Keep trailing backslash!
 InstallDirRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Install Folder"

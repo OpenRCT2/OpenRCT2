@@ -2166,7 +2166,6 @@ STR_3136    :Advertencia: este aspecto crearase cun tipo de vehículo alternativ
 STR_3137    :Seleccionar. Escenario próximo
 STR_3138    :Restablecer selección.
 STR_3139    :O cable de elevación non pode funcionar neste modo
-STR_3140    :O cable do telecadeira debe comezar inmediatamente despois da estación
 STR_3141    :Multicircuíto por atracción. non é posible cun cable de elevación
 STR_3142    :{WINDOW_COLOUR_2}Capacidade: {BLACK}{STRINGID}
 STR_3143    :Mostrar visitantes no mapa
@@ -3594,7 +3593,6 @@ STR_6547    :Todos os escenarios
 STR_6548    :Mostrar pasamáns nas interseccións
 STR_6549    :Non se poden seleccionar obxectos de compatibilidade!
 STR_6550    :Inclúese esta entrada para garantir a compatibilidade con obxectos antigos ou danados. Non se pode seleccionar, só deseleccionar.
-
 STR_6551    :Verde exército
 STR_6552    :Melón
 STR_6553    :Tan
@@ -3810,4 +3808,15 @@ STR_6762    :Interface
 STR_6763    :RollerCoaster Tycoon 1
 STR_6764    :Gardar e gardados automáticos
 STR_6765    :Avanzado
-
+STR_6766    :Limpar
+STR_6767    :Xanela
+STR_6768    :Renderizado
+STR_6769    :Comportamento
+STR_6770    :Límite de fotogramas:
+STR_6771    :Velocidade interna (por defecto)
+STR_6772    :Sincronización vertical
+STR_6773    :Sen restricións
+STR_6774    :Tempo desde a última inspección
+STR_6775    :{COMMA16} minuto
+STR_6776    :{COMMA16} minutos
+STR_6777    :máis de 4 horas
