@@ -88,7 +88,6 @@ namespace OpenRCT2::SingleRailRC
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void TrackStation(
@@ -137,7 +136,6 @@ namespace OpenRCT2::SingleRailRC
         }
         TrackPaintUtilDrawStationTunnel(session, direction, height);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void Track25DegUp(
@@ -216,7 +214,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void Track60DegUp(
@@ -295,7 +292,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 104);
     }
 
     static void TrackFlatTo25DegUp(
@@ -374,7 +370,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 
     static void Track25DegUpTo60DegUp(
@@ -465,7 +460,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 72);
     }
 
     static void Track60DegUpTo25DegUp(
@@ -556,7 +550,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 72);
     }
 
     static void Track25DegUpToFlat(
@@ -635,7 +628,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 
     static void Track25DegDown(
@@ -713,7 +705,6 @@ namespace OpenRCT2::SingleRailRC
                 PaintUtilSetVerticalTunnel(session, height + 32);
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 break;
@@ -769,7 +760,6 @@ namespace OpenRCT2::SingleRailRC
                 PaintUtilSetVerticalTunnel(session, height + 56);
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 break;
@@ -821,7 +811,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 80);
     }
 
     static void Track60DegDownTo90DegDown(
@@ -860,7 +849,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 80);
                 break;
             case 1:
                 break;
@@ -909,10 +897,8 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -944,7 +930,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -988,7 +973,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -1045,10 +1029,8 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -1084,7 +1066,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -1119,10 +1100,8 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 5:
                 switch (direction)
@@ -1158,7 +1137,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 6:
                 switch (direction)
@@ -1204,7 +1182,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -1255,7 +1232,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -1289,7 +1265,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -1323,7 +1298,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -1332,7 +1306,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 switch (direction)
@@ -1374,7 +1347,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -1417,7 +1389,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -1451,7 +1422,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -1485,7 +1455,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -1495,7 +1464,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 switch (direction)
@@ -1537,7 +1505,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -1596,7 +1563,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -1614,7 +1580,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -1633,7 +1598,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -1665,7 +1629,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -1693,7 +1656,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -1711,7 +1673,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -1730,7 +1691,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -1762,7 +1722,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -1805,7 +1764,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -1838,7 +1796,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -1872,7 +1829,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -1933,7 +1889,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -1976,7 +1931,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -2009,7 +1963,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -2043,7 +1996,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -2104,7 +2056,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -2147,7 +2098,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -2180,7 +2130,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -2214,7 +2163,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -2277,7 +2225,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -2320,7 +2267,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -2353,7 +2299,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -2387,7 +2332,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -2448,7 +2392,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -2618,8 +2561,6 @@ namespace OpenRCT2::SingleRailRC
                     0xFFFF, 0);
                 break;
         }
-
-        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void TrackDiag25DegDownToFlat(
@@ -2660,7 +2601,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -2693,7 +2633,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -2727,7 +2666,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -2788,7 +2726,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -2831,7 +2768,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -2864,7 +2800,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -2898,7 +2833,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -2961,7 +2895,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
         }
     }
@@ -3004,7 +2937,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -3037,7 +2969,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -3071,7 +3002,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -3134,7 +3064,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -3177,7 +3106,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -3210,7 +3138,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -3244,7 +3171,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -3307,7 +3233,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -3350,7 +3275,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -3383,7 +3307,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -3417,7 +3340,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -3480,7 +3402,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
         }
     }
@@ -3523,7 +3444,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -3556,7 +3476,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -3590,7 +3509,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -3653,7 +3571,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -3696,7 +3613,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -3729,7 +3645,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -3763,7 +3678,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -3824,7 +3738,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -3869,7 +3782,6 @@ namespace OpenRCT2::SingleRailRC
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void TrackFlatToRightBank(
@@ -3912,7 +3824,6 @@ namespace OpenRCT2::SingleRailRC
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void TrackLeftBankToFlat(
@@ -3976,7 +3887,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 
     static void TrackRightBankTo25DegUp(
@@ -4026,7 +3936,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 
     static void Track25DegUpToLeftBank(
@@ -4076,7 +3985,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 
     static void Track25DegUpToRightBank(
@@ -4126,7 +4034,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 
     static void TrackLeftBankTo25DegDown(
@@ -4191,7 +4098,6 @@ namespace OpenRCT2::SingleRailRC
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void TrackRightBank(
@@ -4224,7 +4130,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -4246,7 +4151,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -4265,7 +4169,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -4297,7 +4200,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -4325,7 +4227,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -4343,7 +4244,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -4366,7 +4266,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -4398,7 +4297,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -4426,7 +4324,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -4448,7 +4345,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -4467,7 +4363,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -4499,7 +4394,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -4527,7 +4421,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -4545,7 +4438,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -4568,7 +4460,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -4600,7 +4491,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -4628,7 +4518,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -4650,7 +4539,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -4669,7 +4557,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -4701,7 +4588,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -4729,7 +4615,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -4747,7 +4632,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -4770,7 +4654,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -4802,7 +4685,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -4830,7 +4712,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -4852,7 +4733,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -4871,7 +4751,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -4903,7 +4782,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -4931,7 +4809,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -4949,7 +4826,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -4972,7 +4848,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -5004,7 +4879,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -5104,8 +4978,6 @@ namespace OpenRCT2::SingleRailRC
                     0xFFFF, 0);
                 break;
         }
-
-        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void TrackDiagRightBankTo25DegDown(
@@ -5203,8 +5075,6 @@ namespace OpenRCT2::SingleRailRC
                     0xFFFF, 0);
                 break;
         }
-
-        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void TrackDiag25DegDownToLeftBank(
@@ -5230,7 +5100,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -5252,7 +5121,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -5271,7 +5139,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -5303,7 +5170,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -5331,7 +5197,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -5349,7 +5214,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -5372,7 +5236,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -5404,7 +5267,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -5432,7 +5294,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -5450,7 +5311,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -5469,7 +5329,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -5501,7 +5360,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -5529,7 +5387,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -5547,7 +5404,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -5566,7 +5422,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -5598,7 +5453,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -5653,10 +5507,8 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -5692,7 +5544,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -5744,7 +5595,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -5807,10 +5657,8 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -5848,7 +5696,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -5885,10 +5732,8 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 5:
                 switch (direction)
@@ -5926,7 +5771,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 6:
                 switch (direction)
@@ -5978,7 +5822,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -6033,7 +5876,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -6071,7 +5913,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -6109,7 +5950,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -6118,7 +5958,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 switch (direction)
@@ -6164,7 +6003,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -6211,7 +6049,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -6249,7 +6086,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -6287,7 +6123,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -6297,7 +6132,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 switch (direction)
@@ -6343,7 +6177,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -6410,13 +6243,10 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -6464,7 +6294,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -6516,13 +6345,10 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -6576,7 +6402,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -6643,10 +6468,8 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -6684,7 +6507,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -6721,10 +6543,8 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 5:
                 switch (direction)
@@ -6762,7 +6582,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 6:
                 switch (direction)
@@ -6810,7 +6629,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -6862,10 +6680,8 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -6903,7 +6719,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -6939,10 +6754,8 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 5:
                 switch (direction)
@@ -6980,7 +6793,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 6:
                 switch (direction)
@@ -7028,7 +6840,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -7091,7 +6902,6 @@ namespace OpenRCT2::SingleRailRC
         TrackPaintUtilLeftQuarterTurn1TileTunnel(
             session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 104);
     }
 
     static void TrackRightQuarterTurn160DegUp(
@@ -7136,7 +6946,6 @@ namespace OpenRCT2::SingleRailRC
         TrackPaintUtilRightQuarterTurn1TileTunnel(
             session, kTunnelGroup, direction, height, -8, TunnelSubType::SlopeStart, +56, TunnelSubType::SlopeEnd);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 104);
     }
 
     static void TrackLeftQuarterTurn160DegDown(
@@ -7198,7 +7007,6 @@ namespace OpenRCT2::SingleRailRC
                 PaintUtilSetVerticalTunnel(session, height + 96);
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 96);
                 break;
             case 1:
                 break;
@@ -7250,7 +7058,6 @@ namespace OpenRCT2::SingleRailRC
                 PaintUtilSetVerticalTunnel(session, height + 96);
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 96);
                 break;
             case 1:
                 break;
@@ -7320,7 +7127,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void Track25DegUpToRightBanked25DegUp(
@@ -7372,7 +7178,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void TrackLeftBanked25DegUpTo25DegUp(
@@ -7424,7 +7229,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void TrackRightBanked25DegUpTo25DegUp(
@@ -7476,7 +7280,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void TrackLeftBanked25DegDownTo25DegDown(
@@ -7552,7 +7355,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 
     static void TrackRightBankedFlatToRightBanked25DegUp(
@@ -7600,7 +7402,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 
     static void TrackLeftBanked25DegUpToLeftBankedFlat(
@@ -7648,7 +7449,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 
     static void TrackRightBanked25DegUpToRightBankedFlat(
@@ -7696,7 +7496,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 
     static void TrackLeftBankedFlatToLeftBanked25DegDown(
@@ -7776,7 +7575,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void Track25DegUpRightBanked(
@@ -7824,7 +7622,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void Track25DegDownLeftBanked(
@@ -7890,7 +7687,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 
     static void TrackFlatToRightBanked25DegUp(
@@ -7942,7 +7738,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 48);
     }
 
     static void TrackLeftBanked25DegUpToFlat(
@@ -7994,7 +7789,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 
     static void TrackRightBanked25DegUpToFlat(
@@ -8046,7 +7840,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 40);
     }
 
     static void TrackFlatToLeftBanked25DegDown(
@@ -8123,13 +7916,10 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -8177,7 +7967,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -8229,13 +8018,10 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -8289,7 +8075,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -8358,10 +8143,8 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -8399,7 +8182,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -8436,10 +8218,8 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 5:
                 switch (direction)
@@ -8477,7 +8257,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 6:
                 switch (direction)
@@ -8525,7 +8304,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -8577,10 +8355,8 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -8618,7 +8394,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -8654,10 +8429,8 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 5:
                 switch (direction)
@@ -8695,7 +8468,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 6:
                 switch (direction)
@@ -8743,7 +8515,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -8807,7 +8578,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -8843,7 +8613,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -8879,7 +8648,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -8922,7 +8690,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -8969,7 +8736,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -9004,7 +8770,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -9039,7 +8804,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -9082,7 +8846,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::left, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -9134,10 +8897,8 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -9169,7 +8930,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -9217,7 +8977,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 switch (direction)
@@ -9265,10 +9024,8 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 5:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 6:
                 switch (direction)
@@ -9301,7 +9058,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 7:
                 switch (direction)
@@ -9344,7 +9100,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -9396,10 +9151,8 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -9432,7 +9185,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -9480,7 +9232,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
                 switch (direction)
@@ -9528,10 +9279,8 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 5:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 6:
                 switch (direction)
@@ -9563,7 +9312,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 7:
                 switch (direction)
@@ -9606,7 +9354,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -9684,10 +9431,8 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -9721,7 +9466,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -9754,10 +9498,8 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 5:
                 switch (direction)
@@ -9791,7 +9533,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 6:
                 switch (direction)
@@ -9839,7 +9580,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 7:
                 switch (direction)
@@ -9887,10 +9627,8 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 8:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 9:
                 switch (direction)
@@ -9924,7 +9662,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 10:
                 switch (direction)
@@ -9956,10 +9693,8 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 11:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 12:
                 switch (direction)
@@ -9993,7 +9728,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 13:
                 switch (direction)
@@ -10036,7 +9770,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -10087,10 +9820,8 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 2:
                 switch (direction)
@@ -10124,7 +9855,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 3:
                 switch (direction)
@@ -10156,10 +9886,8 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 4:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 5:
                 switch (direction)
@@ -10193,7 +9921,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 6:
                 switch (direction)
@@ -10247,7 +9974,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 7:
                 switch (direction)
@@ -10295,10 +10021,8 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 8:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 9:
                 switch (direction)
@@ -10332,7 +10056,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 10:
                 switch (direction)
@@ -10365,10 +10088,8 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 11:
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 12:
                 switch (direction)
@@ -10402,7 +10123,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 13:
                 switch (direction)
@@ -10451,7 +10171,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
         }
     }
@@ -10544,7 +10263,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -10590,7 +10308,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -10645,7 +10362,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -10712,7 +10428,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
                 break;
             case 1:
                 switch (direction)
@@ -10758,7 +10473,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -10813,7 +10527,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -10870,7 +10583,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -10905,7 +10617,6 @@ namespace OpenRCT2::SingleRailRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -10939,7 +10650,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 168);
                 break;
             case 3:
                 switch (direction)
@@ -10971,7 +10681,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -11009,7 +10718,6 @@ namespace OpenRCT2::SingleRailRC
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void TrackOnRidePhoto(
@@ -11089,7 +10797,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -11126,7 +10833,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -11163,7 +10869,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 3:
                 switch (direction)
@@ -11209,7 +10914,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 80);
                 break;
         }
     }
@@ -11258,7 +10962,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 80);
                 break;
             case 1:
                 switch (direction)
@@ -11295,7 +10998,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 80);
                 break;
             case 2:
                 switch (direction)
@@ -11332,7 +11034,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -11378,7 +11079,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
         }
     }
@@ -11423,7 +11123,6 @@ namespace OpenRCT2::SingleRailRC
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
     }
 
     static void TrackLeftCorkscrewUp(
@@ -11472,7 +11171,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -11499,7 +11197,6 @@ namespace OpenRCT2::SingleRailRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -11546,7 +11243,6 @@ namespace OpenRCT2::SingleRailRC
                         PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -11595,7 +11291,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -11622,7 +11317,6 @@ namespace OpenRCT2::SingleRailRC
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -11669,7 +11363,6 @@ namespace OpenRCT2::SingleRailRC
                         PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -11738,7 +11431,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
             case 1:
                 switch (direction)
@@ -11784,7 +11476,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -11820,10 +11511,8 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 4:
                 PaintUtilSetSegmentSupportHeight(
@@ -11873,7 +11562,6 @@ namespace OpenRCT2::SingleRailRC
                         break;
                 }
 
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 5:
                 switch (direction)
@@ -11921,7 +11609,6 @@ namespace OpenRCT2::SingleRailRC
                         PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -11976,7 +11663,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
             case 1:
                 switch (direction)
@@ -12022,7 +11708,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -12059,10 +11744,8 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 4:
                 PaintUtilSetSegmentSupportHeight(
@@ -12111,7 +11794,6 @@ namespace OpenRCT2::SingleRailRC
                             session.SupportColours);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 5:
                 switch (direction)
@@ -12159,7 +11841,6 @@ namespace OpenRCT2::SingleRailRC
                         PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -12222,7 +11903,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -12261,7 +11941,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::top),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -12305,7 +11984,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::centre, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 144);
                 break;
             case 3:
                 switch (direction)
@@ -12342,7 +12020,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 144);
                 break;
             case 4:
                 switch (direction)
@@ -12386,7 +12063,6 @@ namespace OpenRCT2::SingleRailRC
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -12435,7 +12111,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -12474,7 +12149,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight, PaintSegment::right),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -12519,7 +12193,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::bottomRight, PaintSegment::centre, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 144);
                 break;
             case 3:
                 switch (direction)
@@ -12556,7 +12229,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 144);
                 break;
             case 4:
                 switch (direction)
@@ -12599,7 +12271,6 @@ namespace OpenRCT2::SingleRailRC
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -12669,7 +12340,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
             case 1:
                 switch (direction)
@@ -12703,7 +12373,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::centre, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -12754,7 +12423,6 @@ namespace OpenRCT2::SingleRailRC
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
                     session, supportType.metal, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
-                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
         }
     }
@@ -12809,7 +12477,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
             case 1:
                 switch (direction)
@@ -12843,7 +12510,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::centre, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -12894,7 +12560,6 @@ namespace OpenRCT2::SingleRailRC
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
                     session, supportType.metal, MetalSupportPlace::Centre, 0, height + 38, session.SupportColours);
-                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
         }
     }
@@ -12959,7 +12624,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 88);
                 break;
             case 1:
                 switch (direction)
@@ -12995,7 +12659,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -13037,7 +12700,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::centre, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -13099,7 +12761,6 @@ namespace OpenRCT2::SingleRailRC
                         PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
         }
     }
@@ -13150,7 +12811,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 88);
                 break;
             case 1:
                 switch (direction)
@@ -13186,7 +12846,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -13229,7 +12888,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -13291,7 +12949,6 @@ namespace OpenRCT2::SingleRailRC
                         PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Flat);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
         }
     }
@@ -13345,7 +13002,6 @@ namespace OpenRCT2::SingleRailRC
                     PaintUtilRotateSegments(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 88);
                 break;
             case 1:
                 switch (direction)
@@ -13377,7 +13033,6 @@ namespace OpenRCT2::SingleRailRC
                     PaintUtilRotateSegments(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 2:
                 switch (direction)
@@ -13413,7 +13068,6 @@ namespace OpenRCT2::SingleRailRC
                     PaintUtilRotateSegments(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -13475,13 +13129,10 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -13529,7 +13180,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
         }
     }
@@ -13585,13 +13235,10 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -13639,7 +13286,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
         }
     }
@@ -13690,13 +13336,10 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -13748,7 +13391,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
         }
     }
@@ -13800,13 +13442,10 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -13858,7 +13497,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
         }
     }
@@ -13905,7 +13543,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -13945,7 +13582,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -13983,7 +13619,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 88);
                 break;
             case 3:
                 switch (direction)
@@ -14030,7 +13665,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 224);
                 break;
             case 4:
                 switch (direction)
@@ -14067,7 +13701,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 128);
                 break;
             case 5:
                 switch (direction)
@@ -14105,7 +13738,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 224);
                 break;
             case 6:
                 switch (direction)
@@ -14147,7 +13779,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
         }
     }
@@ -14194,7 +13825,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -14234,7 +13864,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -14272,7 +13901,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 88);
                 break;
             case 3:
                 switch (direction)
@@ -14319,7 +13947,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 224);
                 break;
             case 4:
                 switch (direction)
@@ -14355,7 +13982,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 128);
                 break;
             case 5:
                 switch (direction)
@@ -14393,7 +14019,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 224);
                 break;
             case 6:
                 switch (direction)
@@ -14435,7 +14060,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
         }
     }
@@ -14560,7 +14184,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 64);
     }
 
     static void Track60DegUpToFlat(
@@ -14655,7 +14278,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 72);
     }
 
     static void TrackFlatTo60DegDown(
@@ -14710,7 +14332,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -14743,7 +14364,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -14777,7 +14397,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -14838,7 +14457,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
         }
     }
@@ -14881,7 +14499,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -14914,7 +14531,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -14948,7 +14564,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -15011,7 +14626,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -15054,7 +14668,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -15087,7 +14700,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -15121,7 +14733,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -15184,7 +14795,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -15227,7 +14837,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 1:
                 if (trackElement.HasChain())
@@ -15260,7 +14869,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 2:
                 if (trackElement.HasChain())
@@ -15294,7 +14902,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 3:
                 if (trackElement.HasChain())
@@ -15355,7 +14962,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
         }
     }
@@ -15420,7 +15026,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -15458,7 +15063,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -15496,7 +15100,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -15505,7 +15108,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 4:
                 switch (direction)
@@ -15551,7 +15153,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -15598,7 +15199,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -15636,7 +15236,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -15674,7 +15273,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -15684,7 +15282,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 4:
                 switch (direction)
@@ -15730,7 +15327,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -15785,7 +15381,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -15823,7 +15418,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 PaintUtilSetSegmentSupportHeight(
@@ -15832,7 +15426,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -15870,7 +15463,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 4:
                 switch (direction)
@@ -15910,7 +15502,6 @@ namespace OpenRCT2::SingleRailRC
 
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -15965,7 +15556,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -16003,7 +15593,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 PaintUtilSetSegmentSupportHeight(
@@ -16013,7 +15602,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -16051,7 +15639,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 4:
                 switch (direction)
@@ -16092,7 +15679,6 @@ namespace OpenRCT2::SingleRailRC
                     PaintUtilRotateSegments(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -16154,7 +15740,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -16176,7 +15761,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -16195,7 +15779,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -16227,7 +15810,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -16255,7 +15837,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -16273,7 +15854,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -16296,7 +15876,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -16328,7 +15907,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -16356,7 +15934,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -16378,7 +15955,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -16397,7 +15973,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -16429,7 +16004,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -16457,7 +16031,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -16475,7 +16048,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -16498,7 +16070,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -16530,7 +16101,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -16588,7 +16158,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -16606,7 +16175,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -16625,7 +16193,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -16657,7 +16224,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -16685,7 +16251,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -16703,7 +16268,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -16722,7 +16286,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -16754,7 +16317,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -16782,7 +16344,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -16800,7 +16361,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -16819,7 +16379,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -16851,7 +16410,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -16879,7 +16437,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -16897,7 +16454,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -16916,7 +16472,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -16948,7 +16503,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -17008,7 +16562,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -17026,7 +16579,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -17045,7 +16597,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -17077,7 +16628,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -17105,7 +16655,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -17123,7 +16672,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -17142,7 +16690,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -17174,7 +16721,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -17216,7 +16762,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -17238,7 +16783,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -17257,7 +16801,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -17289,7 +16832,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -17317,7 +16859,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 1:
                 switch (direction)
@@ -17335,7 +16876,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -17358,7 +16898,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -17390,7 +16929,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
         }
     }
@@ -17418,7 +16956,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -17440,7 +16977,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -17459,7 +16995,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -17491,7 +17026,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -17519,7 +17053,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -17537,7 +17070,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -17560,7 +17092,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -17592,7 +17123,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -17669,7 +17199,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -17707,7 +17236,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -17745,7 +17273,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -17754,7 +17281,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 4:
                 switch (direction)
@@ -17800,7 +17326,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -17847,7 +17372,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -17885,7 +17409,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 switch (direction)
@@ -17923,7 +17446,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 PaintUtilSetSegmentSupportHeight(
@@ -17933,7 +17455,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 4:
                 switch (direction)
@@ -17979,7 +17500,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -18034,7 +17554,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -18072,7 +17591,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 PaintUtilSetSegmentSupportHeight(
@@ -18081,7 +17599,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -18119,7 +17636,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 4:
                 switch (direction)
@@ -18157,7 +17673,6 @@ namespace OpenRCT2::SingleRailRC
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -18212,7 +17727,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 1:
                 switch (direction)
@@ -18250,7 +17764,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 2:
                 PaintUtilSetSegmentSupportHeight(
@@ -18260,7 +17773,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 3:
                 switch (direction)
@@ -18298,7 +17810,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 4:
                 switch (direction)
@@ -18339,7 +17850,6 @@ namespace OpenRCT2::SingleRailRC
                     PaintUtilRotateSegments(
                         EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
         }
     }
@@ -18404,7 +17914,6 @@ namespace OpenRCT2::SingleRailRC
         }
         PaintUtilSetSegmentSupportHeight(
             session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
-        PaintUtilSetGeneralSupportHeight(session, height + 56);
     }
 
     static void TrackDiagFlatTo60DegUpLongBase(
@@ -18430,7 +17939,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 1:
                 switch (direction)
@@ -18448,7 +17956,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 2:
                 switch (direction)
@@ -18467,7 +17974,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 3:
                 switch (direction)
@@ -18505,7 +18011,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 4:
                 switch (direction)
@@ -18523,7 +18028,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 5:
                 switch (direction)
@@ -18542,7 +18046,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 6:
                 switch (direction)
@@ -18581,7 +18084,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 96);
                 break;
             case 7:
                 switch (direction)
@@ -18599,7 +18101,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 120);
                 break;
             case 8:
                 switch (direction)
@@ -18618,7 +18119,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 120);
                 break;
             case 9:
                 switch (direction)
@@ -18651,7 +18151,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 136);
                 break;
         }
     }
@@ -18679,7 +18178,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 96);
                 break;
             case 1:
                 switch (direction)
@@ -18697,7 +18195,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 2:
                 switch (direction)
@@ -18716,7 +18213,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 3:
                 switch (direction)
@@ -18755,7 +18251,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 112);
                 break;
             case 4:
                 switch (direction)
@@ -18773,7 +18268,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 5:
                 switch (direction)
@@ -18792,7 +18286,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 6:
                 switch (direction)
@@ -18831,7 +18324,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
             case 7:
                 switch (direction)
@@ -18849,7 +18341,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
             case 8:
                 switch (direction)
@@ -18868,7 +18359,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
             case 9:
                 switch (direction)
@@ -18900,7 +18390,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
         }
     }
@@ -18928,7 +18417,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
             case 1:
                 switch (direction)
@@ -18946,7 +18434,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
             case 2:
                 switch (direction)
@@ -18965,7 +18452,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
             case 3:
                 switch (direction)
@@ -19004,7 +18490,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 40);
                 break;
             case 4:
                 switch (direction)
@@ -19022,7 +18507,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 5:
                 switch (direction)
@@ -19041,7 +18525,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 6:
                 switch (direction)
@@ -19080,7 +18563,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 112);
                 break;
             case 7:
                 switch (direction)
@@ -19098,7 +18580,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 8:
                 switch (direction)
@@ -19117,7 +18598,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 104);
                 break;
             case 9:
                 switch (direction)
@@ -19150,7 +18630,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 96);
                 break;
         }
     }
@@ -19178,7 +18657,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 136);
                 break;
             case 1:
                 switch (direction)
@@ -19196,7 +18674,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 120);
                 break;
             case 2:
                 switch (direction)
@@ -19215,7 +18692,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 120);
                 break;
             case 3:
                 switch (direction)
@@ -19254,7 +18730,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 96);
                 break;
             case 4:
                 switch (direction)
@@ -19272,7 +18747,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 5:
                 switch (direction)
@@ -19291,7 +18765,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 6:
                 switch (direction)
@@ -19330,7 +18803,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
             case 7:
                 switch (direction)
@@ -19348,7 +18820,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 8:
                 switch (direction)
@@ -19367,7 +18838,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
             case 9:
                 switch (direction)
@@ -19399,7 +18869,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::topLeft, PaintSegment::bottomLeft, PaintSegment::centre),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
         }
     }
@@ -19431,7 +18900,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 96);
                 break;
             case 1:
                 switch (direction)
@@ -19448,7 +18916,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 120);
                 break;
             case 2:
                 switch (direction)
@@ -19466,7 +18933,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 120);
                 break;
             case 3:
                 switch (direction)
@@ -19508,7 +18974,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::centre, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 112);
                 break;
             case 4:
                 switch (direction)
@@ -19542,7 +19007,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::centre, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 80);
                 break;
             case 5:
                 PaintUtilSetSegmentSupportHeight(
@@ -19587,7 +19051,6 @@ namespace OpenRCT2::SingleRailRC
                             session.SupportColours);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -19619,7 +19082,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight, PaintSegment::right),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 96);
                 break;
             case 1:
                 switch (direction)
@@ -19637,7 +19099,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottomLeft, PaintSegment::centre, PaintSegment::bottom, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 120);
                 break;
             case 2:
                 switch (direction)
@@ -19654,7 +19115,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::topLeft, PaintSegment::top, PaintSegment::centre, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 120);
                 break;
             case 3:
                 switch (direction)
@@ -19696,7 +19156,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 112);
                 break;
             case 4:
                 switch (direction)
@@ -19730,7 +19189,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 80);
                 break;
             case 5:
                 PaintUtilSetSegmentSupportHeight(
@@ -19775,7 +19233,6 @@ namespace OpenRCT2::SingleRailRC
                             session.SupportColours);
                         break;
                 }
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
@@ -19818,7 +19275,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::right, PaintSegment::centre, PaintSegment::topRight, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 1:
                 switch (direction)
@@ -19835,7 +19291,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 2:
                 switch (direction)
@@ -19853,7 +19308,6 @@ namespace OpenRCT2::SingleRailRC
                             PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
             case 3:
                 switch (direction)
@@ -19884,7 +19338,6 @@ namespace OpenRCT2::SingleRailRC
                         EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
                         direction),
                     0xFFFF, 0);
-                PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
         }
     }
