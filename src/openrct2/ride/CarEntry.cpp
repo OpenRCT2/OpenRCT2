@@ -20,7 +20,7 @@ uint8_t CarEntry::getNumSeats() const
     return num_seats & kVehicleSeatNumMask;
 }
 
-bool CarEntry::getUsedInPairs() const
+bool CarEntry::getSeatedInPairs() const
 {
     return num_seats & kVehicleSeatPairFlag;
 }

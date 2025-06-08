@@ -183,7 +183,7 @@ namespace OpenRCT2::Scripting
                 JS_CGETSET_DEF("carMass", ScRideObjectVehicle::carMass_get, nullptr),
                 JS_CGETSET_DEF("tabHeight", ScRideObjectVehicle::tabHeight_get, nullptr),
                 JS_CGETSET_DEF("numSeats", ScRideObjectVehicle::numSeats_get, nullptr),
-                JS_CGETSET_DEF("usedInPairs", ScRideObjectVehicle::usedInPairs_get, nullptr),
+                JS_CGETSET_DEF("seatedInPairs", ScRideObjectVehicle::seatedInPairs_get, nullptr),
                 JS_CGETSET_DEF("spriteFlags", ScRideObjectVehicle::spriteFlags_get, nullptr),
                 JS_CGETSET_DEF("spriteWidth", ScRideObjectVehicle::spriteWidth_get, nullptr),
                 JS_CGETSET_DEF("spriteHeightNegative", ScRideObjectVehicle::spriteHeightNegative_get, nullptr),
@@ -258,7 +258,7 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        bool usedInPairs_get() const
+        bool seatedInPairs_get() const
         {
             auto carEntry = GetEntry();
             if (carEntry != nullptr)
@@ -268,7 +268,7 @@ namespace OpenRCT2::Scripting
             return false;
         }
 
-        bool usedInPairs_get() const
+        bool seatedInPairs_get() const
         {
             auto carEntry = GetEntry(thisVal);
             return JS_NewUint32(ctx, carEntry != nullptr ? carEntry->getNumSeats() : 0);
