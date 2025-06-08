@@ -229,7 +229,8 @@ struct Vehicle : EntityBase
     int32_t CableLiftUpdateTrackMotion();
     GForces GetGForces() const;
     void SetMapToolbar() const;
-    int32_t IsUsedInPairs() const;
+    uint8_t getNumSeats() const;
+    int32_t IsSeatedInPairs() const;
     const RideObjectEntry* GetRideEntry() const;
     const CarEntry* Entry() const;
     Ride* GetRide() const;

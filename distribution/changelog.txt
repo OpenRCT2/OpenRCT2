@@ -1,5 +1,7 @@
 0.4.24 (in development)
 ------------------------------------------------------------------------
+- Change: [#24511] [Plugin] Separated new seatedInPairs field from numSeats field on vehicles and vehicle objects; seatedInPairs can now be set on vehicle entities.
+- Fix: [#24510] Ride vehicles that load in pairs do not load properly when the ride is in either Race or Dodgems mode.
 
 0.4.23 (2025-06-07)
 ------------------------------------------------------------------------

@@ -1598,10 +1598,11 @@ void Vehicle::UpdateWaitingForPassengers()
         {
             num_peeps_on_train += trainCar->num_peeps;
             num_used_seats_on_train += trainCar->next_free_seat;
-            num_seats_on_train += trainCar->num_seats;
+            num_seats_on_train += trainCar->getNumSeats();
         }
 
-        num_seats_on_train &= 0x7F;
+        // Left in despite using the new getNumSeats to account for possible overflow
+        num_seats_on_train &= kVehicleSeatNumMask;
 
         if (curRide->supportsStatus(RideStatus::testing))
         {
@@ -5150,7 +5151,12 @@ Vehicle* Vehicle::TrainTail() const
     return const_cast<Vehicle*>(vehicle);
 }
 
-int32_t Vehicle::IsUsedInPairs() const
+uint8_t Vehicle::getNumSeats() const
+{
+    return num_seats & kVehicleSeatNumMask;
+}
+
+int32_t Vehicle::IsSeatedInPairs() const
 {
     return num_seats & kVehicleSeatPairFlag;
 }
