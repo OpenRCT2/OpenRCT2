@@ -57,12 +57,6 @@ bool RegisteredShortcut::Matches(const InputEvent& e) const
 
 bool RegisteredShortcut::IsSuitableInputEvent(const InputEvent& e) const
 {
-    // Do not intercept button releases
-    if (e.State == InputEventState::Release)
-    {
-        return false;
-    }
-
     if (e.DeviceKind == InputDeviceKind::Mouse)
     {
         // Do not allow LMB or RMB to be shortcut
@@ -149,15 +143,37 @@ void ShortcutManager::SetPendingShortcutChange(std::string_view id)
     _pendingShortcutChange = id;
 }
 
+void ShortcutManager::InvokeShortcutAction(const InputEvent& e, RegisteredShortcut& shortcut)
+{
+    if (e.State == InputEventState::Down)
+    {
+        if (shortcut.UpAction.has_value())
+        {
+            if (shortcut.AwaitUp)
+            {
+                return;
+            }
+            shortcut.AwaitUp = true;
+        }
+        shortcut.DownAction();
+    }
+    else if (e.State == InputEventState::Release && shortcut.UpAction.has_value())
+    {
+        auto action = shortcut.UpAction.value();
+        action();
+        shortcut.AwaitUp = false;
+    }
+}
+
 void ShortcutManager::ProcessEvent(const InputEvent& e)
 {
     if (!IsPendingShortcutChange())
     {
-        for (const auto& shortcut : Shortcuts)
+        for (auto& shortcut : Shortcuts)
         {
             if (shortcut.second.Matches(e))
             {
-                shortcut.second.Action();
+                InvokeShortcutAction(e, shortcut.second);
             }
         }
     }
@@ -186,7 +202,7 @@ bool ShortcutManager::ProcessEventForSpecificShortcut(const InputEvent& e, std::
     auto shortcut = GetShortcut(id);
     if (shortcut != nullptr && shortcut->Matches(e))
     {
-        shortcut->Action();
+        InvokeShortcutAction(e, *shortcut);
         return true;
     }
     return false;

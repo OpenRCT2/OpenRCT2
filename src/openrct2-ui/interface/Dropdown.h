@@ -49,6 +49,9 @@ namespace OpenRCT2::Ui::Windows
 
     void WindowDropdownClose();
 
+    void WindowDropdownShortcutSelectItem(bool next);
+    void WindowDropdownShortcutEmulatePress(bool btnDown, WindowBase* window, WidgetIndex widx);
+
     int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, WindowBase* w);
 
     void WindowDropdownShowColour(

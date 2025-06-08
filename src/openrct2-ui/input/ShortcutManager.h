@@ -61,21 +61,33 @@ namespace OpenRCT2::Ui
         std::string CustomName;
         std::vector<ShortcutInput> Default;
         std::vector<ShortcutInput> Current;
-        std::function<void()> Action;
+        std::function<void()> DownAction;
+        bool AwaitUp = false;
+        std::optional<std::function<void()>> UpAction = std::nullopt;
         size_t OrderIndex = static_cast<size_t>(-1);
 
         RegisteredShortcut() = default;
         RegisteredShortcut(std::string_view id, std::string_view name, const std::function<void()>& action)
             : Id(id)
             , CustomName(name)
-            , Action(action)
+            , DownAction(action)
         {
         }
 
         RegisteredShortcut(std::string_view id, StringId localisedName, const std::function<void()>& action)
             : Id(id)
             , LocalisedName(localisedName)
-            , Action(action)
+            , DownAction(action)
+        {
+        }
+
+        RegisteredShortcut(
+            std::string_view id, StringId localisedName, const std::function<void()>& downAction,
+            const std::function<void()>& upAction)
+            : Id(id)
+            , LocalisedName(localisedName)
+            , DownAction(downAction)
+            , UpAction(upAction)
         {
         }
 
@@ -85,7 +97,7 @@ namespace OpenRCT2::Ui
             , LocalisedName(localisedName)
             , Default({ defaultChord })
             , Current(Default)
-            , Action(action)
+            , DownAction(action)
         {
         }
 
@@ -96,7 +108,7 @@ namespace OpenRCT2::Ui
             , LocalisedName(localisedName)
             , Default({ defaultChordA, defaultChordB })
             , Current(Default)
-            , Action(action)
+            , DownAction(action)
         {
         }
 
@@ -147,5 +159,6 @@ namespace OpenRCT2::Ui
         bool ProcessEventForSpecificShortcut(const InputEvent& e, std::string_view id);
 
         static std::string_view GetLegacyShortcutId(size_t index);
+        static void InvokeShortcutAction(const InputEvent& e, RegisteredShortcut& shortcut);
     };
 } // namespace OpenRCT2::Ui

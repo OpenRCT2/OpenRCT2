@@ -13,6 +13,7 @@
 
 #include <functional>
 #include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/InGameConsole.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -730,6 +731,97 @@ static void ShortcutConstructionDemolishCurrent()
     }
 }
 
+static void ShortcutConstructionSpecialDropdown(bool btnDown)
+{
+    if (gLegacyScene == LegacyScene::titleSequence)
+        return;
+
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::RideConstruction);
+    if (window != nullptr)
+    {
+        WindowRideConstructionKeyboardShortcutSpecialDropdown(btnDown);
+    }
+}
+
+static void ShortcutFootpathPathDropdown(bool btnDown)
+{
+    if (gLegacyScene == LegacyScene::titleSequence)
+        return;
+
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
+    if (window != nullptr)
+    {
+        WindowFootpathKeyboardShortcutPathDropdown(btnDown);
+    }
+}
+
+static void ShortcutFootpathQueueDropdown(bool btnDown)
+{
+    if (gLegacyScene == LegacyScene::titleSequence)
+        return;
+
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
+    if (window != nullptr)
+    {
+        WindowFootpathKeyboardShortcutQueueDropdown(btnDown);
+    }
+}
+
+static void ShortcutFootpathRailingDropdown(bool btnDown)
+{
+    if (gLegacyScene == LegacyScene::titleSequence)
+        return;
+
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
+    if (window != nullptr)
+    {
+        WindowFootpathKeyboardShortcutRailingDropdown(btnDown);
+    }
+}
+
+static void ShortcutFootpathModeLand()
+{
+    if (gLegacyScene == LegacyScene::titleSequence)
+        return;
+
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
+    if (window != nullptr)
+    {
+        WindowFootpathKeyboardShortcutModeLand();
+    }
+}
+
+static void ShortcutFootpathModeBridgeAndTunnel()
+{
+    if (gLegacyScene == LegacyScene::titleSequence)
+        return;
+
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::Footpath);
+    if (window != nullptr)
+    {
+        WindowFootpathKeyboardShortcutModeBridgeAndTunnel();
+    }
+}
+
+static void ShortcutDropdownSelect(bool next)
+{
+    if (gLegacyScene == LegacyScene::titleSequence)
+        return;
+
+    auto* windowMgr = GetWindowManager();
+    WindowBase* window = windowMgr->FindByClass(WindowClass::Dropdown);
+    if (window != nullptr)
+    {
+        WindowDropdownShortcutSelectItem(next);
+    }
+}
+
 static void ShortcutToggleTransparentWater()
 {
     if (gLegacyScene == LegacyScene::titleSequence)
@@ -836,6 +928,8 @@ void ShortcutManager::RegisterDefaultShortcuts()
             OpenWindow(WindowClass::Multiplayer);
         }
     });
+    RegisterShortcut(ShortcutId::kDropdownSelectNext, STR_SHORTCUT_DROPDOWN_SELECT_NEXT_ITEM, std::bind(ShortcutDropdownSelect, true));
+    RegisterShortcut(ShortcutId::kDropdownSelectPrev, STR_SHORTCUT_DROPDOWN_SELECT_PREV_ITEM, std::bind(ShortcutDropdownSelect, false));
 
     // View
     RegisterShortcut(ShortcutId::kViewGeneralZoomOut, STR_SHORTCUT_ZOOM_VIEW_OUT, "PAGEUP", std::bind(MainWindowZoom, false, false));
@@ -878,6 +972,20 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::kWindowRideConstructionNext, STR_SHORTCUT_CONSTRUCTION_NEXT_TRACK, "NUMPAD 9", WindowRideConstructionKeyboardShortcutNextTrack);
     RegisterShortcut(ShortcutId::kWindowRideConstructionBuild, STR_SHORTCUT_CONSTRUCTION_BUILD_CURRENT, "NUMPAD 0", ShortcutConstructionBuildCurrent);
     RegisterShortcut(ShortcutId::kWindowRideConstructionDemolish, STR_SHORTCUT_CONSTRUCTION_DEMOLISH_CURRENT, "NUMPAD -", ShortcutConstructionDemolishCurrent);
+    RegisterShortcut(ShortcutId::kWindowRideConstructionSpecial, STR_SHORTCUT_CONSTRUCTION_SPECIAL_DROPDOWN,
+        std::bind(ShortcutConstructionSpecialDropdown, true),
+        std::bind(ShortcutConstructionSpecialDropdown, false));
+    RegisterShortcut(ShortcutId::kWindowFootpathPath, STR_SHORTCUT_FOOTPATH_PATH_DROPDOWN,
+    std::bind(ShortcutFootpathPathDropdown, true),
+    std::bind(ShortcutFootpathPathDropdown, false));
+    RegisterShortcut(ShortcutId::kWindowFootpathQueue, STR_SHORTCUT_FOOTPATH_QUEUE_DROPDOWN,
+    std::bind(ShortcutFootpathQueueDropdown, true),
+    std::bind(ShortcutFootpathQueueDropdown, false));
+    RegisterShortcut(ShortcutId::kWindowFootpathRailing, STR_SHORTCUT_FOOTPATH_RAILING_DROPDOWN,
+    std::bind(ShortcutFootpathRailingDropdown, true),
+    std::bind(ShortcutFootpathRailingDropdown, false));
+    RegisterShortcut(ShortcutId::kWindowFootpathModeLand, STR_SHORTCUT_FOOTPATH_MODE_LAND, ShortcutFootpathModeLand);
+    RegisterShortcut(ShortcutId::kWindowFootpathModeBrideAndTunnel, STR_SHORTCUT_FOOTPATH_MODE_BRIDGE_AND_TUNNEL, ShortcutFootpathModeBridgeAndTunnel);
     RegisterShortcut(ShortcutId::kWindowTileInspectorToggleInvisibility, STR_SHORTCUT_TOGGLE_INVISIBILITY, WindowTileInspectorKeyboardShortcutToggleInvisibility);
     RegisterShortcut(ShortcutId::kWindowTileInspectorCopy, STR_SHORTCUT_COPY_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_COPY));
     RegisterShortcut(ShortcutId::kWindowTileInspectorPaste, STR_SHORTCUT_PASTE_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE));
