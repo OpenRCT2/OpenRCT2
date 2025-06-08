@@ -162,7 +162,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScRideObjectVehicle::carMass_get, nullptr, "carMass");
             dukglue_register_property(ctx, &ScRideObjectVehicle::tabHeight_get, nullptr, "tabHeight");
             dukglue_register_property(ctx, &ScRideObjectVehicle::numSeats_get, nullptr, "numSeats");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::usedInPairs_get, nullptr, "usedInPairs");
+            dukglue_register_property(ctx, &ScRideObjectVehicle::seatedInPairs_get, nullptr, "seatedInPairs");
             dukglue_register_property(ctx, &ScRideObjectVehicle::spriteFlags_get, nullptr, "spriteFlags");
             dukglue_register_property(ctx, &ScRideObjectVehicle::spriteWidth_get, nullptr, "spriteWidth");
             dukglue_register_property(ctx, &ScRideObjectVehicle::spriteHeightNegative_get, nullptr, "spriteHeightNegative");
@@ -241,12 +241,12 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        bool usedInPairs_get() const
+        bool seatedInPairs_get() const
         {
             auto entry = GetEntry();
             if (entry != nullptr)
             {
-                return entry->getUsedInPairs();
+                return entry->getSeatedInPairs();
             }
             return false;
         }

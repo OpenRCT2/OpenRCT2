@@ -44,8 +44,8 @@ namespace OpenRCT2::Scripting
         uint8_t numSeats_get() const;
         void numSeats_set(uint8_t value);
 
-        bool usedInPairs_get() const;
-        void usedInPairs_set(bool value);
+        bool seatedInPairs_get() const;
+        void seatedInPairs_set(bool value);
 
         DukValue nextCarOnTrain_get() const;
         void nextCarOnTrain_set(DukValue value);

@@ -5156,7 +5156,7 @@ uint8_t Vehicle::getNumSeats() const
     return num_seats & kVehicleSeatNumMask;
 }
 
-int32_t Vehicle::IsUsedInPairs() const
+int32_t Vehicle::IsSeatedInPairs() const
 {
     return num_seats & kVehicleSeatPairFlag;
 }

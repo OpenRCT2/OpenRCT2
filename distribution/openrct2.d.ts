@@ -2154,7 +2154,7 @@ declare global {
         readonly carMass: number;
         readonly tabHeight: number;
         readonly numSeats: number;
-        readonly usedInPairs: boolean;
+        readonly seatedInPairs: boolean;
         readonly spriteFlags: number;
         readonly spriteWidth: number;
         readonly spriteHeightNegative: number;
@@ -2877,7 +2877,7 @@ declare global {
         /**
          * Whether this car seats guests in pairs (as opposed to single riders).
          */
-        usedInPairs: boolean;
+        seatedInPairs: boolean;
 
         /**
          * The next car on the same train. If this is the last or only car on the train,

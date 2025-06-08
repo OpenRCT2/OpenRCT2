@@ -2612,7 +2612,7 @@ static bool FindVehicleToEnter(
          vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train), ++i)
     {
         uint8_t num_seats = vehicle->getNumSeats();
-        if (vehicle->IsUsedInPairs())
+        if (vehicle->IsSeatedInPairs())
         {
             if (vehicle->next_free_seat & 1)
             {
@@ -4034,7 +4034,7 @@ void Guest::UpdateRideFreeVehicleCheck()
         }
     }
 
-    if (!vehicle->IsUsedInPairs())
+    if (!vehicle->IsSeatedInPairs())
     {
         UpdateRideFreeVehicleEnterRide(*ride);
         return;
@@ -4110,7 +4110,7 @@ void Guest::UpdateRideEnterVehicle()
                     return;
             }
 
-            if (vehicle->IsUsedInPairs())
+            if (vehicle->IsSeatedInPairs())
             {
                 auto* seatedGuest = GetEntity<Guest>(vehicle->peep[CurrentSeat ^ 1]);
                 if (seatedGuest != nullptr)
