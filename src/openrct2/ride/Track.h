@@ -152,6 +152,10 @@ enum class TrackGroup : uint8_t
     diagSlopeSteepLong,
     diveLoop,
 
+    diagSlope,
+    diagSlopeSteepUp,
+    diagSlopeSteepDown,
+
     count,
 };
 
