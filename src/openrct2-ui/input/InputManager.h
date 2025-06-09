@@ -67,8 +67,6 @@ namespace OpenRCT2::Ui
         uint8_t _modifierKeyState;
 
         // Gamepad configuration
-        static constexpr int16_t ANALOG_DEADZONE = 8000; // ~25% of max range
-        static constexpr float ANALOG_SENSITIVITY = 1.0f;
         static constexpr int ANALOG_SCROLL_LEFT_X = 0; // Left stick X axis
         static constexpr int ANALOG_SCROLL_LEFT_Y = 1; // Left stick Y axis
 

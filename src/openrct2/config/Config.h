@@ -87,6 +87,13 @@ namespace OpenRCT2::Config
         bool InvertViewportDrag;
         bool ZoomToCursor;
 
+        // Gamepad
+        bool GamepadAnalogScrolling;
+        int32_t GamepadDeadzone;
+        float GamepadSensitivity;
+        bool GamepadInvertX;
+        bool GamepadInvertY;
+
         // Miscellaneous
         bool PlayIntro;
         int32_t WindowSnapProximity;
