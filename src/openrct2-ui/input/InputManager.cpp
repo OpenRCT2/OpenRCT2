@@ -12,6 +12,7 @@
 #include "ShortcutIds.h"
 
 #include <SDL.h>
+#include <cmath>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/input/ShortcutManager.h>
@@ -151,18 +152,45 @@ void InputManager::ProcessAnalogInput()
             if (invertY)
                 leftY = -leftY;
 
-            if (abs(leftX) > deadzone)
-            {
-                // Normalize and apply sensitivity
-                float normalizedX = (leftX - (leftX > 0 ? deadzone : -deadzone)) / static_cast<float>(32767 - deadzone);
-                _analogScroll.x += static_cast<int>(normalizedX * sensitivity);
-            }
+            // Calculate the magnitude of the stick input vector
+            float magnitude = std::sqrt(static_cast<float>(leftX * leftX + leftY * leftY));
 
-            if (abs(leftY) > deadzone)
+            // Only process if the magnitude exceeds the deadzone
+            if (magnitude > deadzone)
             {
-                // Normalize and apply sensitivity (invert Y for natural scrolling)
-                float normalizedY = (leftY - (leftY > 0 ? deadzone : -deadzone)) / static_cast<float>(32767 - deadzone);
-                _analogScroll.y += static_cast<int>(normalizedY * sensitivity);
+                // Normalize the input vector to unit length
+                float normalizedX = leftX / magnitude;
+                float normalizedY = leftY / magnitude;
+
+                // Apply deadzone to the magnitude, not individual axes
+                float adjustedMagnitude = (magnitude - deadzone) / (32767.0f - deadzone);
+                adjustedMagnitude = std::min(adjustedMagnitude, 1.0f); // Clamp to max 1.0
+
+                // Calculate the movement vector with sensitivity applied
+                float moveX = normalizedX * adjustedMagnitude * sensitivity;
+                float moveY = normalizedY * adjustedMagnitude * sensitivity;
+
+                // Accumulate the movement with fractional precision
+                _analogScrollAccumX += moveX;
+                _analogScrollAccumY += moveY;
+
+                // Extract integer movement for this frame while maintaining diagonal ratios
+                float intPartX, intPartY;
+                float fracX = std::modf(_analogScrollAccumX, &intPartX);
+                float fracY = std::modf(_analogScrollAccumY, &intPartY);
+
+                // For smooth diagonal movement, we need to ensure that when we extract
+                // integer pixels, we maintain the proper ratio between X and Y movement
+                int pixelsX = static_cast<int>(intPartX);
+                int pixelsY = static_cast<int>(intPartY);
+
+                // Update accumulators with remaining fractional parts
+                _analogScrollAccumX = fracX;
+                _analogScrollAccumY = fracY;
+
+                // Add the calculated movement
+                _analogScroll.x += pixelsX;
+                _analogScroll.y += pixelsY;
             }
         }
     }
