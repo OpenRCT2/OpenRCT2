@@ -61,7 +61,9 @@ namespace OpenRCT2::Ui
         std::vector<SDL_Joystick*> _joysticks;
         std::queue<InputEvent> _events;
         ScreenCoordsXY _viewScroll;
-        ScreenCoordsXY _analogScroll; // Analog stick scroll values
+        ScreenCoordsXY _analogScroll;     // Analog stick scroll values
+        float _analogScrollAccumX = 0.0f; // Fractional accumulator for X axis
+        float _analogScrollAccumY = 0.0f; // Fractional accumulator for Y axis
         uint32_t _mouseState{};
         std::vector<uint8_t> _keyboardState;
         uint8_t _modifierKeyState;
