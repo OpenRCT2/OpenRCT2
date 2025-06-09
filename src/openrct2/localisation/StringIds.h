@@ -1728,6 +1728,19 @@ enum : StringId
     STR_OBJECT_SELECTION_CLIMATE = 6743,
     STR_CLIMATE_WEATHER_PERCENT = 6744,
 
+    // Gamepad settings
+    STR_GAMEPAD_GROUP = 6785,
+    STR_GAMEPAD_ANALOG_SCROLLING = 6786,
+    STR_GAMEPAD_ANALOG_SCROLLING_TIP = 6787,
+    STR_GAMEPAD_DEADZONE_LABEL = 6788,
+    STR_GAMEPAD_DEADZONE_TIP = 6789,
+    STR_GAMEPAD_SENSITIVITY_LABEL = 6790,
+    STR_GAMEPAD_SENSITIVITY_TIP = 6791,
+    STR_GAMEPAD_INVERT_X = 6792,
+    STR_GAMEPAD_INVERT_X_TIP = 6793,
+    STR_GAMEPAD_INVERT_Y = 6794,
+    STR_GAMEPAD_INVERT_Y_TIP = 6795,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

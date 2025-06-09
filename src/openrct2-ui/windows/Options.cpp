@@ -199,6 +199,18 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TOUCH_ENHANCEMENTS,
         WIDX_HOTKEY_DROPDOWN,
 
+        // Gamepad
+        WIDX_GAMEPAD_GROUP,
+        WIDX_GAMEPAD_ANALOG_SCROLLING,
+        WIDX_GAMEPAD_DEADZONE_LABEL,
+        WIDX_GAMEPAD_DEADZONE,
+        WIDX_GAMEPAD_DEADZONE_VALUE,
+        WIDX_GAMEPAD_SENSITIVITY_LABEL,
+        WIDX_GAMEPAD_SENSITIVITY,
+        WIDX_GAMEPAD_SENSITIVITY_VALUE,
+        WIDX_GAMEPAD_INVERT_X,
+        WIDX_GAMEPAD_INVERT_Y,
+
         // Misc
         WIDX_TITLE_SEQUENCE_GROUP = WIDX_PAGE_START,
         WIDX_TITLE_SEQUENCE,
@@ -358,6 +370,7 @@ namespace OpenRCT2::Ui::Windows
     );
 
     constexpr int32_t kControlsGroupStart = 53;
+    constexpr int32_t kGamepadGroupStart = kControlsGroupStart + 150;
 
     static constexpr auto window_options_controls_widgets = makeWidgets(
         kMainOptionsWidgets,
@@ -369,7 +382,19 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 10, kControlsGroupStart + 75},  {290, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_WINDOW_BUTTONS_ON_THE_LEFT, STR_WINDOW_BUTTONS_ON_THE_LEFT_TIP), // Window buttons on the left
         makeWidget({ 10, kControlsGroupStart + 90},  {290, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_ENLARGED_UI,                STR_ENLARGED_UI_TIP               ),
         makeWidget({ 25, kControlsGroupStart + 105}, {275, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_TOUCH_ENHANCEMENTS,         STR_TOUCH_ENHANCEMENTS_TIP        ),
-        makeWidget({155, kControlsGroupStart + 120}, {145, 13}, WidgetType::button,   WindowColour::secondary, STR_HOTKEY,                     STR_HOTKEY_TIP                    )  // Set hotkeys buttons
+        makeWidget({155, kControlsGroupStart + 120}, {145, 13}, WidgetType::button,   WindowColour::secondary, STR_HOTKEY,                     STR_HOTKEY_TIP                    ), // Set hotkeys buttons
+
+        // Gamepad group
+        makeWidget({  5, kGamepadGroupStart +  0},   {300, 88}, WidgetType::groupbox, WindowColour::secondary, STR_GAMEPAD_GROUP                                                 ), // Gamepad group
+        makeWidget({ 10, kGamepadGroupStart + 13},   {290, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_GAMEPAD_ANALOG_SCROLLING,   STR_GAMEPAD_ANALOG_SCROLLING_TIP  ), // Enable analog scrolling
+        makeWidget({ 10, kGamepadGroupStart + 28},   { 90, 12}, WidgetType::label,    WindowColour::secondary, STR_GAMEPAD_DEADZONE_LABEL,     STR_GAMEPAD_DEADZONE_TIP          ), // Deadzone label
+        makeWidget({105, kGamepadGroupStart + 28},   {145, 13}, WidgetType::scroll,   WindowColour::secondary, SCROLL_HORIZONTAL,              STR_GAMEPAD_DEADZONE_TIP          ), // Deadzone slider
+        makeWidget({255, kGamepadGroupStart + 28},   { 45, 12}, WidgetType::label,    WindowColour::secondary, kStringIdNone,                  STR_GAMEPAD_DEADZONE_TIP          ), // Deadzone value
+        makeWidget({ 10, kGamepadGroupStart + 43},   { 90, 12}, WidgetType::label,    WindowColour::secondary, STR_GAMEPAD_SENSITIVITY_LABEL,  STR_GAMEPAD_SENSITIVITY_TIP       ), // Sensitivity label
+        makeWidget({105, kGamepadGroupStart + 43},   {145, 13}, WidgetType::scroll,   WindowColour::secondary, SCROLL_HORIZONTAL,              STR_GAMEPAD_SENSITIVITY_TIP       ), // Sensitivity slider
+        makeWidget({255, kGamepadGroupStart + 43},   { 45, 12}, WidgetType::label,    WindowColour::secondary, kStringIdNone,                  STR_GAMEPAD_SENSITIVITY_TIP       ), // Sensitivity value
+        makeWidget({ 10, kGamepadGroupStart + 58},   {140, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_GAMEPAD_INVERT_X,           STR_GAMEPAD_INVERT_X_TIP          ), // Invert X axis
+        makeWidget({155, kGamepadGroupStart + 58},   {140, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_GAMEPAD_INVERT_Y,           STR_GAMEPAD_INVERT_Y_TIP          )  // Invert Y axis
     );
 
     constexpr int32_t kThemesGroupStart = 53;
@@ -537,6 +562,9 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_OPTIONS_PAGE_CULTURE:
                     CultureMouseDown(widgetIndex);
                     break;
+                case WINDOW_OPTIONS_PAGE_CONTROLS:
+                    ControlsMouseDown(widgetIndex);
+                    break;
                 case WINDOW_OPTIONS_PAGE_AUDIO:
                     AudioMouseDown(widgetIndex);
                     break;
@@ -634,6 +662,9 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_OPTIONS_PAGE_DISPLAY:
                     DisplayDraw(rt);
                     break;
+                case WINDOW_OPTIONS_PAGE_CONTROLS:
+                    ControlsDraw(rt);
+                    break;
                 case WINDOW_OPTIONS_PAGE_ADVANCED:
                     AdvancedDraw(rt);
                     break;
@@ -651,10 +682,12 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_OPTIONS_PAGE_AUDIO:
                     AudioUpdate();
                     break;
+                case WINDOW_OPTIONS_PAGE_CONTROLS:
+                    ControlsUpdate();
+                    break;
                 case WINDOW_OPTIONS_PAGE_DISPLAY:
                 case WINDOW_OPTIONS_PAGE_RENDERING:
                 case WINDOW_OPTIONS_PAGE_CULTURE:
-                case WINDOW_OPTIONS_PAGE_CONTROLS:
                 case WINDOW_OPTIONS_PAGE_MISC:
                 case WINDOW_OPTIONS_PAGE_ADVANCED:
                 default:
@@ -668,10 +701,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_OPTIONS_PAGE_AUDIO:
                     return AudioScrollGetSize(scrollIndex);
+                case WINDOW_OPTIONS_PAGE_CONTROLS:
+                    return ControlsScrollGetSize(scrollIndex);
                 case WINDOW_OPTIONS_PAGE_DISPLAY:
                 case WINDOW_OPTIONS_PAGE_RENDERING:
                 case WINDOW_OPTIONS_PAGE_CULTURE:
-                case WINDOW_OPTIONS_PAGE_CONTROLS:
                 case WINDOW_OPTIONS_PAGE_MISC:
                 case WINDOW_OPTIONS_PAGE_ADVANCED:
                 default:
@@ -1557,6 +1591,99 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        void ControlsMouseDown(WidgetIndex widgetIndex)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_GAMEPAD_ANALOG_SCROLLING:
+                    Config::Get().general.GamepadAnalogScrolling ^= 1;
+                    Config::Save();
+                    Invalidate();
+                    break;
+                case WIDX_GAMEPAD_INVERT_X:
+                    Config::Get().general.GamepadInvertX ^= 1;
+                    Config::Save();
+                    Invalidate();
+                    break;
+                case WIDX_GAMEPAD_INVERT_Y:
+                    Config::Get().general.GamepadInvertY ^= 1;
+                    Config::Save();
+                    Invalidate();
+                    break;
+            }
+        }
+
+        void ControlsUpdate()
+        {
+            const auto& deadzoneWidget = widgets[WIDX_GAMEPAD_DEADZONE];
+            const auto& deadzoneScroll = scrolls[0];
+            uint8_t deadzonePercent = GetScrollPercentage(deadzoneWidget, deadzoneScroll);
+            int32_t deadzoneValue = static_cast<int32_t>((deadzonePercent / 100.0f) * 32767);
+            if (deadzoneValue != Config::Get().general.GamepadDeadzone)
+            {
+                Config::Get().general.GamepadDeadzone = deadzoneValue;
+                Config::Save();
+                InvalidateWidget(WIDX_GAMEPAD_DEADZONE_VALUE);
+            }
+
+            const auto& sensitivityWidget = widgets[WIDX_GAMEPAD_SENSITIVITY];
+            const auto& sensitivityScroll = scrolls[1];
+            uint8_t sensitivityPercent = GetScrollPercentage(sensitivityWidget, sensitivityScroll);
+            float sensitivityValue = 1.0f + (sensitivityPercent / 100.0f) * 4.0f; // Map 0-100% to 1.0-5.0
+            if (std::abs(sensitivityValue - Config::Get().general.GamepadSensitivity) > 0.01f)
+            {
+                Config::Get().general.GamepadSensitivity = sensitivityValue;
+                Config::Save();
+                InvalidateWidget(WIDX_GAMEPAD_SENSITIVITY_VALUE);
+            }
+        }
+
+        ScreenSize ControlsScrollGetSize(int32_t scrollIndex)
+        {
+            switch (scrollIndex)
+            {
+                case 0:                // Deadzone slider
+                    return { 500, 0 }; // Range 0-500 (same as audio sliders)
+                case 1:                // Sensitivity slider
+                    return { 500, 0 }; // Range 0-500 (same as audio sliders)
+                default:
+                    return { 0, 0 };
+            }
+        }
+
+        void ControlsDraw(RenderTarget& rt)
+        {
+            // Only draw gamepad values if the config values are valid
+            const int32_t deadzone = Config::Get().general.GamepadDeadzone;
+            const float sensitivity = Config::Get().general.GamepadSensitivity;
+
+            // Validate config values before using them
+            if (deadzone >= 0 && deadzone <= 32767 && sensitivity >= 0.1f && sensitivity <= 10.0f)
+            {
+                // Draw deadzone percentage
+                auto ft = Formatter();
+                const int32_t deadzonePercent = static_cast<int32_t>((deadzone / 32767.0f) * 100);
+                ft.Add<int32_t>(deadzonePercent);
+                DrawTextBasic(
+                    rt,
+                    windowPos
+                        + ScreenCoordsXY{ widgets[WIDX_GAMEPAD_DEADZONE_VALUE].left + 1,
+                                          widgets[WIDX_GAMEPAD_DEADZONE_VALUE].top + 1 },
+                    STR_WINDOW_COLOUR_2_COMMA32, ft, { colours[1] });
+
+                // Draw sensitivity multiplier
+                ft = Formatter();
+                const int32_t sensitivityDisplay = static_cast<int32_t>(sensitivity * 100); // Show as 150 for 1.5x
+                ft.Add<int32_t>(sensitivityDisplay);
+                DrawTextBasic(
+                    rt,
+                    windowPos
+                        + ScreenCoordsXY{ widgets[WIDX_GAMEPAD_SENSITIVITY_VALUE].left + 1,
+                                          widgets[WIDX_GAMEPAD_SENSITIVITY_VALUE].top + 1 },
+                    STR_WINDOW_COLOUR_2_COMMA32, ft, { colours[1] });
+            }
+        }
+
         ScreenSize AudioScrollGetSize(int32_t scrollIndex)
         {
             return { 500, 0 };
@@ -1680,6 +1807,7 @@ namespace OpenRCT2::Ui::Windows
 
         void ControlsPrepareDraw()
         {
+            // Set checkbox values for controls
             SetCheckboxValue(WIDX_SCREEN_EDGE_SCROLLING, Config::Get().general.EdgeScrolling);
             SetCheckboxValue(WIDX_TRAP_CURSOR, Config::Get().general.TrapCursor);
             SetCheckboxValue(WIDX_INVERT_DRAG, Config::Get().general.InvertViewportDrag);
@@ -1689,6 +1817,24 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.TouchEnhancements);
 
             widgetSetEnabled(*this, WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.EnlargedUi);
+
+            // Set checkbox values for gamepad
+            SetCheckboxValue(WIDX_GAMEPAD_ANALOG_SCROLLING, Config::Get().general.GamepadAnalogScrolling);
+            SetCheckboxValue(WIDX_GAMEPAD_INVERT_X, Config::Get().general.GamepadInvertX);
+            SetCheckboxValue(WIDX_GAMEPAD_INVERT_Y, Config::Get().general.GamepadInvertY);
+
+            // Initialize scroll positions for sliders only on first frame
+            if (frame_no == 0)
+            {
+                // Convert deadzone (0-32767) to percentage (0-100), then to scroll position (0-500)
+                uint8_t deadzonePercent = static_cast<uint8_t>((Config::Get().general.GamepadDeadzone / 32767.0f) * 100);
+                InitializeScrollPosition(WIDX_GAMEPAD_DEADZONE, 0, deadzonePercent);
+
+                // Convert sensitivity (1.0-5.0) to percentage (0-100), then to scroll position (0-500)
+                uint8_t sensitivityPercent = static_cast<uint8_t>(
+                    ((Config::Get().general.GamepadSensitivity - 1.0f) / 4.0f) * 100);
+                InitializeScrollPosition(WIDX_GAMEPAD_SENSITIVITY, 1, sensitivityPercent);
+            }
         }
 
 #pragma endregion
