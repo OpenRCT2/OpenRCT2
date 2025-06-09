@@ -500,11 +500,11 @@ namespace OpenRCT2::Ui::Windows
             auto numTabs = _info.Desc.Tabs.size();
             if (canBeResized() || numTabs != 0)
             {
-                widgets[WIDX_CONTENT_PANEL].flags &= ~WIDGET_FLAGS::IS_HIDDEN;
+                widgets[WIDX_CONTENT_PANEL].flags.unset(WidgetFlag::isHidden);
             }
             else
             {
-                widgets[WIDX_CONTENT_PANEL].flags |= WIDGET_FLAGS::IS_HIDDEN;
+                widgets[WIDX_CONTENT_PANEL].flags.set(WidgetFlag::isHidden);
             }
 
             SetPressedTab();
@@ -607,8 +607,8 @@ namespace OpenRCT2::Ui::Windows
                         else if (widgetDesc->Type == "checkbox")
                         {
                             auto& widget = widgets[widgetIndex];
-                            widget.flags ^= WIDGET_FLAGS::IS_PRESSED;
-                            bool isChecked = widget.flags & WIDGET_FLAGS::IS_PRESSED;
+                            widget.flags.flip(WidgetFlag::isPressed);
+                            bool isChecked = widget.flags.has(WidgetFlag::isPressed);
 
                             WidgetSetCheckboxValue(*this, widgetIndex, isChecked);
 
@@ -969,11 +969,11 @@ namespace OpenRCT2::Ui::Windows
             widget.content = std::numeric_limits<uint32_t>::max();
             widget.tooltip = kStringIdNone;
             widget.sztooltip = const_cast<utf8*>(desc.Tooltip.c_str());
-            widget.flags |= WIDGET_FLAGS::TOOLTIP_IS_STRING;
+            widget.flags.set(WidgetFlag::tooltipIsString);
             if (desc.IsDisabled)
-                widget.flags |= WIDGET_FLAGS::IS_DISABLED;
+                widget.flags.set(WidgetFlag::isDisabled);
             if (!desc.IsVisible)
-                widget.flags |= WIDGET_FLAGS::IS_HIDDEN;
+                widget.flags.set(WidgetFlag::isHidden);
 
             if (desc.Type == "button")
             {
@@ -986,11 +986,11 @@ namespace OpenRCT2::Ui::Windows
                 {
                     widget.type = WidgetType::button;
                     widget.string = const_cast<utf8*>(desc.Text.c_str());
-                    widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+                    widget.flags.set(WidgetFlag::textIsString);
                 }
                 if (desc.IsPressed)
                 {
-                    widget.flags |= WIDGET_FLAGS::IS_PRESSED;
+                    widget.flags.set(WidgetFlag::isPressed);
                 }
                 widgetList.push_back(widget);
             }
@@ -998,10 +998,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 widget.type = WidgetType::checkbox;
                 widget.string = const_cast<utf8*>(desc.Text.c_str());
-                widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+                widget.flags.set(WidgetFlag::textIsString);
                 if (desc.IsChecked)
                 {
-                    widget.flags |= WIDGET_FLAGS::IS_PRESSED;
+                    widget.flags.set(WidgetFlag::isPressed);
                 }
                 widgetList.push_back(widget);
             }
@@ -1027,7 +1027,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     widget.string = const_cast<utf8*>("");
                 }
-                widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+                widget.flags.set(WidgetFlag::textIsString);
                 widgetList.push_back(widget);
 
                 // Add the dropdown button
@@ -1041,21 +1041,21 @@ namespace OpenRCT2::Ui::Windows
                 widget.text = STR_DROPDOWN_GLYPH;
                 widget.tooltip = kStringIdNone;
                 if (desc.IsDisabled)
-                    widget.flags |= WIDGET_FLAGS::IS_DISABLED;
+                    widget.flags.set(WidgetFlag::isDisabled);
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "groupbox")
             {
                 widget.type = WidgetType::groupbox;
                 widget.string = const_cast<utf8*>(desc.Text.c_str());
-                widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+                widget.flags.set(WidgetFlag::textIsString);
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "label")
             {
                 widget.type = WidgetType::label;
                 widget.string = const_cast<utf8*>(desc.Text.c_str());
-                widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+                widget.flags.set(WidgetFlag::textIsString);
                 if (desc.TextAlign == TextAlignment::CENTRE)
                 {
                     widget.type = WidgetType::labelCentred;
@@ -1078,7 +1078,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 widget.type = WidgetType::spinner;
                 widget.string = const_cast<utf8*>(desc.Text.c_str());
-                widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+                widget.flags.set(WidgetFlag::textIsString);
                 widgetList.push_back(widget);
 
                 // Add the increment button
@@ -1092,8 +1092,8 @@ namespace OpenRCT2::Ui::Windows
                 widget.text = STR_NUMERIC_UP;
                 widget.tooltip = kStringIdNone;
                 if (desc.IsDisabled)
-                    widget.flags |= WIDGET_FLAGS::IS_DISABLED;
-                widget.flags |= WIDGET_FLAGS::IS_HOLDABLE;
+                    widget.flags.set(WidgetFlag::isDisabled);
+                widget.flags.set(WidgetFlag::isHoldable);
                 widgetList.push_back(widget);
 
                 // Add the decrement button
@@ -1106,7 +1106,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 widget.type = WidgetType::textBox;
                 widget.string = const_cast<utf8*>(desc.Text.c_str());
-                widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+                widget.flags.set(WidgetFlag::textIsString);
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "viewport")

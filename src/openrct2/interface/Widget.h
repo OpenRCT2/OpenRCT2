@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/FlagHolder.hpp"
 #include "../core/StringTypes.h"
 #include "../drawing/ImageId.hpp"
 #include "../localisation/StringIdType.h"
@@ -50,16 +51,16 @@ namespace OpenRCT2
         horizontalSeparator = 30,
     };
 
-    using WidgetFlags = uint32_t;
-    namespace WIDGET_FLAGS
+    enum class WidgetFlag : uint8_t
     {
-        const WidgetFlags TEXT_IS_STRING = 1 << 0;
-        const WidgetFlags IS_PRESSED = 1 << 2;
-        const WidgetFlags IS_DISABLED = 1 << 3;
-        const WidgetFlags TOOLTIP_IS_STRING = 1 << 4;
-        const WidgetFlags IS_HIDDEN = 1 << 5;
-        const WidgetFlags IS_HOLDABLE = 1 << 6;
-    } // namespace WIDGET_FLAGS
+        textIsString = 0,
+        isPressed = 2,
+        isDisabled = 3,
+        tooltipIsString = 4,
+        isHidden = 5,
+        isHoldable = 6,
+    };
+    using WidgetFlags = FlagHolder<uint8_t, WidgetFlag>;
 
     enum
     {
@@ -152,7 +153,7 @@ namespace OpenRCT2
 
         bool IsVisible() const
         {
-            return !(flags & OpenRCT2::WIDGET_FLAGS::IS_HIDDEN);
+            return !(flags.has(OpenRCT2::WidgetFlag::isHidden));
         }
     };
 

@@ -363,7 +363,7 @@ namespace OpenRCT2::Ui
 
         auto stringId = widget.text;
         auto ft = Formatter::Common();
-        if (widget.flags & WIDGET_FLAGS::TEXT_IS_STRING)
+        if (widget.flags.has(WidgetFlag::textIsString))
         {
             stringId = STR_STRING;
             ft.Add<utf8*>(widget.string);
@@ -411,7 +411,7 @@ namespace OpenRCT2::Ui
 
         auto stringId = widget.text;
         auto ft = Formatter::Common();
-        if (widget.flags & WIDGET_FLAGS::TEXT_IS_STRING)
+        if (widget.flags.has(WidgetFlag::textIsString))
         {
             stringId = STR_STRING;
             ft.Add<utf8*>(widget.string);
@@ -464,7 +464,7 @@ namespace OpenRCT2::Ui
         // Text
         auto stringId = widget.text;
         auto rawFt = Formatter::Common();
-        if (widget.flags & WIDGET_FLAGS::TEXT_IS_STRING)
+        if (widget.flags.has(WidgetFlag::textIsString))
         {
             if (widget.string != nullptr && widget.string[0] != '\0')
             {
@@ -650,7 +650,7 @@ namespace OpenRCT2::Ui
 
         auto stringId = widget.text;
         auto ft = Formatter::Common();
-        if (widget.flags & WIDGET_FLAGS::TEXT_IS_STRING)
+        if (widget.flags.has(WidgetFlag::textIsString))
         {
             stringId = STR_STRING;
             ft.Add<utf8*>(widget.string);
@@ -863,14 +863,14 @@ namespace OpenRCT2::Ui
     bool WidgetIsDisabled(const WindowBase& w, WidgetIndex widgetIndex)
     {
         if (w.classification == WindowClass::Custom)
-            return w.widgets[widgetIndex].flags & WIDGET_FLAGS::IS_DISABLED;
+            return w.widgets[widgetIndex].flags.has(WidgetFlag::isDisabled);
         return (w.disabled_widgets & (1LL << widgetIndex)) != 0;
     }
 
     bool WidgetIsHoldable(const WindowBase& w, WidgetIndex widgetIndex)
     {
         if (w.classification == WindowClass::Custom)
-            return w.widgets[widgetIndex].flags & WIDGET_FLAGS::IS_HOLDABLE;
+            return w.widgets[widgetIndex].flags.has(WidgetFlag::isHoldable);
         return (w.hold_down_widgets & (1LL << widgetIndex)) != 0;
     }
 
@@ -883,7 +883,7 @@ namespace OpenRCT2::Ui
     {
         if (w.classification == WindowClass::Custom)
         {
-            if (w.widgets[widgetIndex].flags & WIDGET_FLAGS::IS_PRESSED)
+            if (w.widgets[widgetIndex].flags.has(WidgetFlag::isPressed))
             {
                 return true;
             }
@@ -1052,7 +1052,7 @@ namespace OpenRCT2::Ui
         return &w.widgets[widgetIndex];
     }
 
-    static void SafeSetWidgetFlag(WindowBase& w, WidgetIndex widgetIndex, WidgetFlags mask, bool value)
+    static void SafeSetWidgetFlag(WindowBase& w, WidgetIndex widgetIndex, WidgetFlag flag, bool value)
     {
         Widget* widget = GetWidgetByIndex(w, widgetIndex);
         if (widget == nullptr)
@@ -1060,10 +1060,7 @@ namespace OpenRCT2::Ui
             return;
         }
 
-        if (value)
-            widget->flags |= mask;
-        else
-            widget->flags &= ~mask;
+        widget->flags.set(flag, value);
     }
 
     void WidgetSetEnabled(WindowBase& w, WidgetIndex widgetIndex, bool enabled)
@@ -1073,7 +1070,7 @@ namespace OpenRCT2::Ui
 
     void WidgetSetDisabled(WindowBase& w, WidgetIndex widgetIndex, bool value)
     {
-        SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_DISABLED, value);
+        SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isDisabled, value);
         if (value)
         {
             w.disabled_widgets |= (1uLL << widgetIndex);
@@ -1086,7 +1083,7 @@ namespace OpenRCT2::Ui
 
     void WidgetSetHoldable(WindowBase& w, WidgetIndex widgetIndex, bool value)
     {
-        SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_HOLDABLE, value);
+        SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isHoldable, value);
         if (value)
         {
             w.hold_down_widgets |= (1uLL << widgetIndex);
@@ -1099,12 +1096,12 @@ namespace OpenRCT2::Ui
 
     void WidgetSetVisible(WindowBase& w, WidgetIndex widgetIndex, bool value)
     {
-        SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_HIDDEN, !value);
+        SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isHidden, !value);
     }
 
     void WidgetSetPressed(WindowBase& w, WidgetIndex widgetIndex, bool value)
     {
-        SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_PRESSED, value);
+        SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isPressed, value);
         if (value)
             w.pressed_widgets |= (1uLL << widgetIndex);
         else

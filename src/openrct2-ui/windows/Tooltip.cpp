@@ -180,7 +180,7 @@ namespace OpenRCT2::Ui::Windows
         widgetWindow->OnPrepareDraw();
 
         OpenRCT2String result;
-        if (widget->flags & WIDGET_FLAGS::TOOLTIP_IS_STRING)
+        if (widget->flags.has(WidgetFlag::tooltipIsString))
         {
             auto tooltipString = widget->sztooltip;
             if (*tooltipString == 0)

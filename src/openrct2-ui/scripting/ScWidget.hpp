@@ -370,7 +370,7 @@ namespace OpenRCT2::Scripting
             if (IsCustomWindow())
             {
                 auto widget = GetWidget();
-                if (widget != nullptr && (widget->flags & WIDGET_FLAGS::TEXT_IS_STRING) && widget->string != nullptr)
+                if (widget != nullptr && (widget->flags.has(WidgetFlag::textIsString)) && widget->string != nullptr)
                 {
                     return widget->string;
                 }
