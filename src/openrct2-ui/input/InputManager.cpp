@@ -38,6 +38,21 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
 {
     switch (e.type)
     {
+        case SDL_JOYAXISMOTION:
+        {
+            // Only process left stick axes for scrolling
+            if (e.jaxis.axis == ANALOG_SCROLL_LEFT_X || e.jaxis.axis == ANALOG_SCROLL_LEFT_Y)
+            {
+                InputEvent ie;
+                ie.DeviceKind = InputDeviceKind::JoyAxis;
+                ie.Modifiers = SDL_GetModState();
+                ie.Button = e.jaxis.axis;
+                ie.State = InputEventState::Down;
+                ie.AxisValue = e.jaxis.value;
+                QueueInputEvent(std::move(ie));
+            }
+            break;
+        }
         case SDL_JOYHATMOTION:
         {
             if (e.jhat.value != SDL_HAT_CENTERED)
@@ -47,6 +62,7 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
                 ie.Modifiers = SDL_GetModState();
                 ie.Button = e.jhat.value;
                 ie.State = InputEventState::Down;
+                ie.AxisValue = 0;
                 QueueInputEvent(std::move(ie));
             }
             break;
@@ -58,6 +74,7 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
             ie.Modifiers = SDL_GetModState();
             ie.Button = e.jbutton.button;
             ie.State = InputEventState::Down;
+            ie.AxisValue = 0;
             QueueInputEvent(std::move(ie));
             break;
         }
@@ -68,7 +85,15 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
             ie.Modifiers = SDL_GetModState();
             ie.Button = e.jbutton.button;
             ie.State = InputEventState::Release;
+            ie.AxisValue = 0;
             QueueInputEvent(std::move(ie));
+            break;
+        }
+        case SDL_JOYDEVICEADDED:
+        case SDL_JOYDEVICEREMOVED:
+        {
+            // Force joystick refresh on next check
+            _lastJoystickCheck = 0;
             break;
         }
     }
@@ -101,9 +126,48 @@ void InputManager::CheckJoysticks()
     }
 }
 
+void InputManager::ProcessAnalogInput()
+{
+    _analogScroll.x = 0;
+    _analogScroll.y = 0;
+
+    for (auto* joystick : _joysticks)
+    {
+        if (joystick != nullptr)
+        {
+            int16_t leftX = SDL_JoystickGetAxis(joystick, ANALOG_SCROLL_LEFT_X);
+            int16_t leftY = SDL_JoystickGetAxis(joystick, ANALOG_SCROLL_LEFT_Y);
+
+            if (abs(leftX) > ANALOG_DEADZONE)
+            {
+                // Normalize and apply sensitivity
+                float normalizedX = (leftX - (leftX > 0 ? ANALOG_DEADZONE : -ANALOG_DEADZONE))
+                    / static_cast<float>(32767 - ANALOG_DEADZONE);
+                _analogScroll.x += static_cast<int>(normalizedX * ANALOG_SENSITIVITY);
+            }
+
+            if (abs(leftY) > ANALOG_DEADZONE)
+            {
+                // Normalize and apply sensitivity (invert Y for natural scrolling)
+                float normalizedY = (leftY - (leftY > 0 ? ANALOG_DEADZONE : -ANALOG_DEADZONE))
+                    / static_cast<float>(32767 - ANALOG_DEADZONE);
+                _analogScroll.y += static_cast<int>(normalizedY * ANALOG_SENSITIVITY);
+            }
+        }
+    }
+}
+
+void InputManager::UpdateAnalogScroll()
+{
+    // Add analog scroll to the existing view scroll
+    _viewScroll.x += _analogScroll.x;
+    _viewScroll.y += _analogScroll.y;
+}
+
 void InputManager::Process()
 {
     CheckJoysticks();
+    ProcessAnalogInput();
     HandleModifiers();
     ProcessEvents();
     ProcessHoldEvents();
@@ -337,6 +401,8 @@ void InputManager::ProcessHoldEvents()
             ProcessViewScrollEvent(ShortcutId::kViewScrollLeft, { -1, 0 });
             ProcessViewScrollEvent(ShortcutId::kViewScrollRight, { 1, 0 });
         }
+
+        UpdateAnalogScroll();
     }
 }
 
@@ -414,6 +480,12 @@ bool InputManager::GetState(const ShortcutInput& shortcut) const
                     }
                 }
                 break;
+            }
+            case InputDeviceKind::JoyAxis:
+            {
+                // Analog axes don't have a simple "pressed" state like buttons
+                // Return false for shortcuts on analog axes as they're handled differently
+                return false;
             }
         }
     }

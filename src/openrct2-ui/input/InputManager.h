@@ -27,6 +27,7 @@ namespace OpenRCT2::Ui
         Keyboard,
         JoyButton,
         JoyHat,
+        JoyAxis,
     };
 
     enum class InputEventState
@@ -41,6 +42,7 @@ namespace OpenRCT2::Ui
         uint32_t Modifiers;
         uint32_t Button;
         InputEventState State;
+        int16_t AxisValue; // For analog stick values (-32768 to 32767)
     };
 
     enum class ModifierKey : uint8_t
@@ -59,11 +61,20 @@ namespace OpenRCT2::Ui
         std::vector<SDL_Joystick*> _joysticks;
         std::queue<InputEvent> _events;
         ScreenCoordsXY _viewScroll;
+        ScreenCoordsXY _analogScroll; // Analog stick scroll values
         uint32_t _mouseState{};
         std::vector<uint8_t> _keyboardState;
         uint8_t _modifierKeyState;
 
+        // Gamepad configuration
+        static constexpr int16_t ANALOG_DEADZONE = 8000; // ~25% of max range
+        static constexpr float ANALOG_SENSITIVITY = 1.0f;
+        static constexpr int ANALOG_SCROLL_LEFT_X = 0; // Left stick X axis
+        static constexpr int ANALOG_SCROLL_LEFT_Y = 1; // Left stick Y axis
+
         void CheckJoysticks();
+        void ProcessAnalogInput();
+        void UpdateAnalogScroll();
 
         void HandleViewScrolling();
         void HandleModifiers();
