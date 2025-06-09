@@ -131,6 +131,14 @@ void InputManager::ProcessAnalogInput()
     _analogScroll.x = 0;
     _analogScroll.y = 0;
 
+    if (!Config::Get().general.GamepadAnalogScrolling)
+        return;
+
+    const int32_t deadzone = Config::Get().general.GamepadDeadzone;
+    const float sensitivity = Config::Get().general.GamepadSensitivity;
+    const bool invertX = Config::Get().general.GamepadInvertX;
+    const bool invertY = Config::Get().general.GamepadInvertY;
+
     for (auto* joystick : _joysticks)
     {
         if (joystick != nullptr)
@@ -138,20 +146,23 @@ void InputManager::ProcessAnalogInput()
             int16_t leftX = SDL_JoystickGetAxis(joystick, ANALOG_SCROLL_LEFT_X);
             int16_t leftY = SDL_JoystickGetAxis(joystick, ANALOG_SCROLL_LEFT_Y);
 
-            if (abs(leftX) > ANALOG_DEADZONE)
+            if (invertX)
+                leftX = -leftX;
+            if (invertY)
+                leftY = -leftY;
+
+            if (abs(leftX) > deadzone)
             {
                 // Normalize and apply sensitivity
-                float normalizedX = (leftX - (leftX > 0 ? ANALOG_DEADZONE : -ANALOG_DEADZONE))
-                    / static_cast<float>(32767 - ANALOG_DEADZONE);
-                _analogScroll.x += static_cast<int>(normalizedX * ANALOG_SENSITIVITY);
+                float normalizedX = (leftX - (leftX > 0 ? deadzone : -deadzone)) / static_cast<float>(32767 - deadzone);
+                _analogScroll.x += static_cast<int>(normalizedX * sensitivity);
             }
 
-            if (abs(leftY) > ANALOG_DEADZONE)
+            if (abs(leftY) > deadzone)
             {
                 // Normalize and apply sensitivity (invert Y for natural scrolling)
-                float normalizedY = (leftY - (leftY > 0 ? ANALOG_DEADZONE : -ANALOG_DEADZONE))
-                    / static_cast<float>(32767 - ANALOG_DEADZONE);
-                _analogScroll.y += static_cast<int>(normalizedY * ANALOG_SENSITIVITY);
+                float normalizedY = (leftY - (leftY > 0 ? deadzone : -deadzone)) / static_cast<float>(32767 - deadzone);
+                _analogScroll.y += static_cast<int>(normalizedY * sensitivity);
             }
         }
     }
