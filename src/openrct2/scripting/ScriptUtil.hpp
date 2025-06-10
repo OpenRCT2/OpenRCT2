@@ -96,9 +96,8 @@ namespace OpenRCT2::Scripting
 
     inline std::string JSToStdString(JSContext* ctx, JSValue obj)
     {
-        if (JS_IsString(obj))
+        if (const char* buf = JS_ToCString(ctx, obj))
         {
-            const char* buf = JS_ToCString(ctx, obj);
             std::string str(buf);
             JS_FreeCString(ctx, buf);
             return str;
@@ -114,7 +113,7 @@ namespace OpenRCT2::Scripting
         return output;
     }
 
-    inline JSValue JSFromStdString(JSContext* ctx, std::string str)
+    inline JSValue JSFromStdString(JSContext* ctx, const std::string& str)
     {
         return JS_NewString(ctx, str.c_str());
     }
@@ -168,9 +167,8 @@ namespace OpenRCT2::Scripting
         return output;
     }
 
-    inline void JSIterateArray(JSContext* ctx, JSValue obj, const char* property, const std::function<void(JSValue)>& callback)
+    inline void JSIterateArray(JSContext* ctx, JSValue val, const std::function<void(JSValue)>& callback)
     {
-        JSValue val = JS_GetPropertyStr(ctx, obj, property);
         if (JS_IsArray(val))
         {
             int64_t arrayLen = -1;
@@ -182,6 +180,12 @@ namespace OpenRCT2::Scripting
                 JS_FreeValue(ctx, elem);
             }
         }
+    }
+
+    inline void JSIterateArray(JSContext* ctx, JSValue obj, const char* property, const std::function<void(JSValue)>& callback)
+    {
+        JSValue val = JS_GetPropertyStr(ctx, obj, property);
+        JSIterateArray(ctx, val, callback);
         JS_FreeValue(ctx, val);
     }
 
