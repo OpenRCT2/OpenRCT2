@@ -1419,6 +1419,40 @@ void MapExtendBoundarySurfaceX()
     }
 }
 
+static void MapExtendBoundarySurfaceShiftX(const int32_t amount, const int32_t mapSizeY)
+{
+    for (int32_t y = 1; y < mapSizeY - 1; y++)
+    {
+        for (int32_t x = amount; x > 0; x--)
+        {
+            const auto* const existingTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x + 1, y });
+            auto* const newTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
+            if (existingTileElement != nullptr && newTileElement != nullptr)
+            {
+                MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement, 1);
+            }
+            Park::UpdateFences(TileCoordsXY{ x, y }.ToCoordsXY());
+        }
+    }
+}
+
+static void MapExtendBoundarySurfaceShiftY(const int32_t amount, const int32_t mapSizeX)
+{
+    for (int32_t x = 1; x < mapSizeX - 1; x++)
+    {
+        for (int32_t y = amount; y > 0; y--)
+        {
+            const auto* const existingTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y + 1 });
+            auto* const newTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
+            if (existingTileElement != nullptr && newTileElement != nullptr)
+            {
+                MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement, 2);
+            }
+            Park::UpdateFences(TileCoordsXY{ x, y }.ToCoordsXY());
+        }
+    }
+}
+
 /**
  * Clears the provided element properly from a certain tile, and updates
  * the pointer (when needed) passed to this function to point to the next element.
@@ -2235,27 +2269,16 @@ void ShiftMap(const TileCoordsXY& amount)
             }
             else
             {
-                auto copyX = std::clamp(srcX, 1, gameState.mapSize.x - 2);
-                auto copyY = std::clamp(srcY, 1, gameState.mapSize.y - 2);
-                auto srcTile = MapGetSurfaceElementAt(TileCoordsXY(copyX, copyY));
-                if (srcTile != nullptr)
-                {
-                    auto tileEl = *srcTile;
-                    tileEl.SetOwner(OWNERSHIP_UNOWNED);
-                    tileEl.SetParkFences(0);
-                    tileEl.SetLastForTile(true);
-                    newElements.push_back(*reinterpret_cast<TileElement*>(&tileEl));
-                }
-                else
-                {
-                    newElements.push_back(GetDefaultSurfaceElement());
-                }
+                newElements.push_back(GetDefaultSurfaceElement());
             }
         }
     }
 
     SetTileElements(gameState, std::move(newElements));
     MapRemoveOutOfRangeElements();
+
+    MapExtendBoundarySurfaceShiftX(amount.x, gameState.mapSize.y);
+    MapExtendBoundarySurfaceShiftY(amount.y, gameState.mapSize.x);
 
     for (auto& spawn : gameState.peepSpawns)
         shiftIfNotNull(spawn, amountToMove);
