@@ -157,23 +157,23 @@ void InputManager::ProcessAnalogInput()
 
             if (magnitude > deadzone)
             {
-                // Normalize the input vector to unit length
-                float normalizedX = leftX / magnitude;
-                float normalizedY = leftY / magnitude;
-
-                // Apply deadzone to the magnitude, not individual axes
+                // Apply deadzone to the magnitude, creating a more linear response
                 float adjustedMagnitude = (magnitude - deadzone) / (32767.0f - deadzone);
                 adjustedMagnitude = std::min(adjustedMagnitude, 1.0f);
 
-                // Calculate the movement vector with sensitivity applied
-                float moveX = normalizedX * adjustedMagnitude * sensitivity;
-                float moveY = normalizedY * adjustedMagnitude * sensitivity;
+                float rawX = (leftX / 32767.0f) * adjustedMagnitude;
+                float rawY = (leftY / 32767.0f) * adjustedMagnitude;
+
+                // Use a quadratic curve for better fine control at low sensitivities
+                float sensitivityCurve = sensitivity * sensitivity;
+                float moveX = rawX * sensitivityCurve * 8.0f; // Reasonable base scale
+                float moveY = rawY * sensitivityCurve * 8.0f;
 
                 // Accumulate the movement with fractional precision
                 _analogScrollAccumX += moveX;
                 _analogScrollAccumY += moveY;
 
-                // Extract integer movement for this frame while maintaining diagonal ratios
+                // Extract integer movement for this frame
                 float intPartX, intPartY;
                 float fracX = std::modf(_analogScrollAccumX, &intPartX);
                 float fracY = std::modf(_analogScrollAccumY, &intPartY);
@@ -216,13 +216,28 @@ void InputManager::HandleViewScrolling()
     if (console.IsOpen())
         return;
 
-    // Shortcut scrolling
     auto mainWindow = WindowGetMain();
-    if (mainWindow != nullptr && (_viewScroll.x != 0 || _viewScroll.y != 0))
+
+    // Handle gamepad analog scrolling with smooth viewport scrolling
+    if (_analogScroll.x != 0 || _analogScroll.y != 0)
     {
-        WindowUnfollowSprite(*mainWindow);
+        if (mainWindow != nullptr)
+        {
+            WindowUnfollowSprite(*mainWindow);
+        }
+        InputScrollViewportSmooth(_analogScroll);
     }
-    InputScrollViewport(_viewScroll);
+
+    // Handle keyboard shortcut scrolling with edge-based scrolling (but ignore gamepad input)
+    ScreenCoordsXY keyboardScroll = { _viewScroll.x - _analogScroll.x, _viewScroll.y - _analogScroll.y };
+    if (keyboardScroll.x != 0 || keyboardScroll.y != 0)
+    {
+        if (mainWindow != nullptr)
+        {
+            WindowUnfollowSprite(*mainWindow);
+        }
+        InputScrollViewport(keyboardScroll);
+    }
 
     // Mouse edge scrolling
     if (Config::Get().general.EdgeScrolling)
