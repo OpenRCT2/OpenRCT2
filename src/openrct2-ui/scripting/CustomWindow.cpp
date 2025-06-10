@@ -107,7 +107,7 @@ namespace OpenRCT2::Ui::Windows
                 // auto dukImage = desc["image"];
                 // if (dukImage.type() == DukValue::Type::STRING || dukImage.type() == DukValue::Type::NUMBER)
                 // {
-                //     result.Image = ImageId(ImageFromDuk(dukImage));
+                //     result.Image = ImageId(ImageFromJSValue(dukImage));
                 //     result.HasBorder = false;
                 // }
                 // else
@@ -205,7 +205,7 @@ namespace OpenRCT2::Ui::Windows
             auto dukImage = desc["image"];
             if (dukImage.type() == DukValue::Type::STRING || dukImage.type() == DukValue::Type::NUMBER)
             {
-                result.imageFrameBase = ImageId(ImageFromDuk(dukImage));
+                result.imageFrameBase = ImageId(ImageFromJSValue(dukImage));
                 result.imageFrameCount = 0;
                 result.imageFrameDuration = 0;
             }

@@ -21,6 +21,7 @@
     #include <openrct2/Context.h>
     #include <openrct2/scripting/IconNames.hpp>
     #include <openrct2/scripting/ScriptEngine.h>
+    #include <openrct2/scripting/bindings/game/ScContext.hpp>
     #include <openrct2/ui/WindowManager.h>
 
 namespace OpenRCT2::Scripting
@@ -392,6 +393,7 @@ namespace OpenRCT2::Scripting
             return JS_UNDEFINED;
         }
 
+    protected:
         static JSValue text_get(JSContext* ctx, JSValue thisVal)
         {
             WidgetData* data = gScWidget.GetOpaque<WidgetData*>(thisVal);
@@ -420,6 +422,7 @@ namespace OpenRCT2::Scripting
             return JS_UNDEFINED;
         }
 
+    private:
         static constexpr JSCFunctionListEntry funcs[] = {
             JS_CGETSET_DEF("window", ScWidget::window_get, nullptr),
             JS_CGETSET_DEF("name", ScWidget::name_get, ScWidget::name_set),
@@ -434,45 +437,11 @@ namespace OpenRCT2::Scripting
         };
 
     public:
-        JSValue New(JSContext* ctx, WindowBase* w, WidgetIndex widgetIndex)
-        {
-            JSValue newObj = MakeWithOpaque(ctx, funcs, new WidgetData{ w->classification, w->number, widgetIndex });
-            /* TODO (mber) add the extra functions depending on type...
-            switch (w->widgets[widgetIndex])
-            {
-                case WindowWidgetType::Button:
-                case WindowWidgetType::FlatBtn:
-                case WindowWidgetType::ImgBtn:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScButtonWidget>(c, n, widgetIndex));
-                case WindowWidgetType::Checkbox:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScCheckBoxWidget>(c, n, widgetIndex));
-                case WindowWidgetType::ColourBtn:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScColourPickerWidget>(c, n, widgetIndex));
-                case WindowWidgetType::DropdownMenu:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScDropdownWidget>(c, n, widgetIndex));
-                case WindowWidgetType::Groupbox:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScGroupBoxWidget>(c, n, widgetIndex));
-                case WindowWidgetType::Label:
-                case WindowWidgetType::LabelCentred:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScLabelWidget>(c, n, widgetIndex));
-                case WindowWidgetType::Scroll:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScListViewWidget>(c, n, widgetIndex));
-                case WindowWidgetType::Spinner:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScSpinnerWidget>(c, n, widgetIndex));
-                case WindowWidgetType::TextBox:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScTextBoxWidget>(c, n, widgetIndex));
-                case WindowWidgetType::Viewport:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScViewportWidget>(c, n, widgetIndex));
-                default:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScWidget>(c, n, widgetIndex));
-            }
-            */
-            return newObj;
-        }
+        JSValue New(JSContext* ctx, WindowBase* w, WidgetIndex widgetIndex);
 
         void Register(JSContext* ctx)
         {
-            RegisterBaseStr(ctx, "Window", Finalize);
+            RegisterBaseStr(ctx, "Widget", Finalize);
         }
 
     private:
@@ -481,6 +450,12 @@ namespace OpenRCT2::Scripting
             WidgetData* data = gScWidget.GetOpaque<WidgetData*>(thisVal);
             if (data)
                 delete data;
+        }
+
+    protected:
+        static WidgetData GetWidgetData(JSValue thisVal)
+        {
+            return *gScWidget.GetOpaque<WidgetData*>(thisVal);
         }
 
         static WindowBase* GetWindow(const WindowClass wClass, const rct_windownumber number)
@@ -549,131 +524,137 @@ namespace OpenRCT2::Scripting
         }
     };
 
-    /* TODO (mber)
     class ScButtonWidget : public ScWidget
     {
     public:
-        ScButtonWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
-            : ScWidget(c, n, widgetIndex)
+        static void AddFuncs(JSContext* ctx, JSValue obj)
         {
-        }
-
-        static void Register(duk_context* ctx)
-        {
-            dukglue_set_base_class<ScWidget, ScButtonWidget>(ctx);
-            dukglue_register_property(ctx, &ScButtonWidget::border_get, &ScButtonWidget::border_set, "border");
-            dukglue_register_property(ctx, &ScButtonWidget::isPressed_get, &ScButtonWidget::isPressed_set, "isPressed");
-            dukglue_register_property(ctx, &ScButtonWidget::image_get, &ScButtonWidget::image_set, "image");
-            // Explicit template due to text being a base method
-            dukglue_register_property<ScButtonWidget, std::string, std::string>(
-                ctx, &ScButtonWidget::text_get, &ScButtonWidget::text_set, "text");
+            // In the future it might be worth properly subclassing the widget type here.
+            // Not just for this button class but also for all the other widget subclasses.
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("border", ScButtonWidget::border_get, ScButtonWidget::border_set),
+                JS_CGETSET_DEF("isPressed", ScButtonWidget::isPressed_get, ScButtonWidget::isPressed_set),
+                JS_CGETSET_DEF("image", ScButtonWidget::image_get, ScButtonWidget::image_set),
+                JS_CGETSET_DEF("text", ScWidget::text_get, ScWidget::text_set),
+            };
+            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
         }
 
     private:
-        bool border_get() const
+        static JSValue border_get(JSContext* ctx, JSValue thisVal)
         {
-            auto widget = GetWidget();
+            auto widget = GetWidget(thisVal);
             if (widget != nullptr)
             {
-                return widget->type == WindowWidgetType::ImgBtn;
+                return JS_NewBool(ctx, widget->type == WindowWidgetType::ImgBtn);
             }
-            return false;
+            return JS_NewBool(ctx, false);
         }
-        void border_set(bool value)
+        static JSValue border_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto widget = GetWidget();
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+
+            auto widget = GetWidget(thisVal);
             if (widget != nullptr && (widget->type == WindowWidgetType::FlatBtn || widget->type == WindowWidgetType::ImgBtn))
             {
-                if (value)
+                if (valueBool)
                     widget->type = WindowWidgetType::ImgBtn;
                 else
                     widget->type = WindowWidgetType::FlatBtn;
-                Invalidate();
+                Invalidate(thisVal);
             }
+            return JS_UNDEFINED;
         }
 
-        bool isPressed_get() const
+        static JSValue isPressed_get(JSContext* ctx, JSValue thisVal)
         {
-            auto w = GetWindow();
+            WidgetData data = GetWidgetData(thisVal);
+            auto w = GetWindow(data._class, data._number);
+
             if (w != nullptr)
             {
-                return Ui::WidgetIsPressed(*w, _widgetIndex);
+                return JS_NewBool(ctx, Ui::WidgetIsPressed(*w, data._widgetIndex));
             }
-            return false;
+            return JS_NewBool(ctx, false);
         }
-        void isPressed_set(bool value)
+        static JSValue isPressed_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto w = GetWindow();
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+
+            WidgetData data = GetWidgetData(thisVal);
+            auto w = GetWindow(data._class, data._number);
             if (w != nullptr)
             {
-                Ui::WidgetSetCheckboxValue(*w, _widgetIndex, value ? 1 : 0);
-                Invalidate();
+                Ui::WidgetSetCheckboxValue(*w, data._widgetIndex, valueBool ? 1 : 0);
+                Invalidate(thisVal);
             }
+            return JS_UNDEFINED;
         }
 
-        uint32_t image_get() const
+        static JSValue image_get(JSContext* ctx, JSValue thisVal)
         {
-            auto widget = GetWidget();
+            auto widget = GetWidget(thisVal);
             if (widget != nullptr && (widget->type == WindowWidgetType::FlatBtn || widget->type == WindowWidgetType::ImgBtn))
             {
                 if (GetTargetAPIVersion() <= kApiVersionG2Reorder)
                 {
-                    return LegacyIconIndex(widget->image.GetIndex());
+                    return JS_NewUint32(ctx, LegacyIconIndex(widget->image.GetIndex()));
                 }
-                return widget->image.GetIndex();
+                return JS_NewUint32(ctx, widget->image.GetIndex());
             }
-            return 0;
+            return JS_NewUint32(ctx, 0);
         }
 
-        void image_set(DukValue value)
+        static JSValue image_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto widget = GetWidget();
+            auto widget = GetWidget(thisVal);
             if (widget != nullptr && (widget->type == WindowWidgetType::FlatBtn || widget->type == WindowWidgetType::ImgBtn))
             {
-                widget->image = ImageId(ImageFromDuk(value));
-                Invalidate();
+                widget->image = ImageId(ImageFromJSValue(ctx, value));
+                Invalidate(thisVal);
             }
+            return JS_UNDEFINED;
         }
     };
 
     class ScCheckBoxWidget : public ScWidget
     {
     public:
-        ScCheckBoxWidget(WindowClass c, rct_windownumber n, WidgetIndex widgetIndex)
-            : ScWidget(c, n, widgetIndex)
+        static void AddFuncs(JSContext* ctx, JSValue obj)
         {
-        }
-
-        static void Register(duk_context* ctx)
-        {
-            dukglue_set_base_class<ScWidget, ScCheckBoxWidget>(ctx);
-            dukglue_register_property(ctx, &ScCheckBoxWidget::isChecked_get, &ScCheckBoxWidget::isChecked_set, "isChecked");
-            // Explicit template due to text being a base method
-            dukglue_register_property<ScCheckBoxWidget, std::string, std::string>(
-                ctx, &ScCheckBoxWidget::text_get, &ScCheckBoxWidget::text_set, "text");
+            static constexpr JSCFunctionListEntry funcs[] = {
+                JS_CGETSET_DEF("isChecked", ScCheckBoxWidget::isChecked_get, ScCheckBoxWidget::isChecked_set),
+                JS_CGETSET_DEF("text", ScWidget::text_get, ScWidget::text_set),
+            };
+            JS_SetPropertyFunctionList(ctx, obj, funcs, std::size(funcs));
         }
 
     private:
-        bool isChecked_get() const
+        static JSValue isChecked_get(JSContext* ctx, JSValue thisVal)
         {
-            auto w = GetWindow();
+            WidgetData data = GetWidgetData(thisVal);
+            auto w = GetWindow(data._class, data._number);
             if (w != nullptr)
             {
-                return Ui::WidgetIsPressed(*w, _widgetIndex);
+                return JS_NewBool(ctx, Ui::WidgetIsPressed(*w, data._widgetIndex));
             }
-            return false;
+            return JS_NewBool(ctx, false);
         }
-        void isChecked_set(bool value)
+        static JSValue isChecked_set(JSContext* ctx, JSValue thisVal, JSValue value)
         {
-            auto w = GetWindow();
+            JS_UNPACK_BOOL(valueBool, ctx, value);
+
+            WidgetData data = GetWidgetData(thisVal);
+            auto w = GetWindow(data._class, data._number);
             if (w != nullptr)
             {
-                Ui::WidgetSetCheckboxValue(*w, _widgetIndex, value ? 1 : 0);
-                Invalidate();
+                Ui::WidgetSetCheckboxValue(*w, data._widgetIndex, valueBool ? 1 : 0);
+                Invalidate(thisVal);
             }
+            return JS_UNDEFINED;
         }
     };
-
+    /* TODO (mber)
     class ScColourPickerWidget : public ScWidget
     {
     public:
@@ -1114,6 +1095,51 @@ namespace OpenRCT2::Scripting
         }
     };
     */
+    inline JSValue ScWidget::New(JSContext* ctx, WindowBase* w, WidgetIndex widgetIndex)
+    {
+        JSValue newObj = MakeWithOpaque(ctx, funcs, new WidgetData{ w->classification, w->number, widgetIndex });
+        switch (w->widgets[widgetIndex].type)
+        {
+            case WindowWidgetType::Button:
+            case WindowWidgetType::FlatBtn:
+            case WindowWidgetType::ImgBtn:
+                ScButtonWidget::AddFuncs(ctx, newObj);
+                break;
+            case WindowWidgetType::Checkbox:
+                ScCheckBoxWidget::AddFuncs(ctx, newObj);
+                break;
+            case WindowWidgetType::ColourBtn:
+                // return GetObjectAsDukValue(ctx, std::make_shared<ScColourPickerWidget>(c, n, widgetIndex));
+                break;
+            case WindowWidgetType::DropdownMenu:
+                // return GetObjectAsDukValue(ctx, std::make_shared<ScDropdownWidget>(c, n, widgetIndex));
+                break;
+            case WindowWidgetType::Groupbox:
+                // return GetObjectAsDukValue(ctx, std::make_shared<ScGroupBoxWidget>(c, n, widgetIndex));
+                break;
+            case WindowWidgetType::Label:
+            case WindowWidgetType::LabelCentred:
+                // return GetObjectAsDukValue(ctx, std::make_shared<ScLabelWidget>(c, n, widgetIndex));
+                break;
+            case WindowWidgetType::Scroll:
+                // return GetObjectAsDukValue(ctx, std::make_shared<ScListViewWidget>(c, n, widgetIndex));
+                break;
+            case WindowWidgetType::Spinner:
+                // return GetObjectAsDukValue(ctx, std::make_shared<ScSpinnerWidget>(c, n, widgetIndex));
+                break;
+            case WindowWidgetType::TextBox:
+                // return GetObjectAsDukValue(ctx, std::make_shared<ScTextBoxWidget>(c, n, widgetIndex));
+                break;
+            case WindowWidgetType::Viewport:
+                // return GetObjectAsDukValue(ctx, std::make_shared<ScViewportWidget>(c, n, widgetIndex));
+                break;
+            default:
+                // return GetObjectAsDukValue(ctx, std::make_shared<ScWidget>(c, n, widgetIndex));
+                break;
+        }
+        return newObj;
+    }
+
 } // namespace OpenRCT2::Scripting
 
 #endif
