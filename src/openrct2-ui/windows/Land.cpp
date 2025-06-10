@@ -53,7 +53,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_land_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget     ({19,  19}, {24, 24}, WidgetType::flatBtn, WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP), STR_ENABLE_MOUNTAIN_TOOL_TIP), // mountain mode
         makeWidget     ({55,  19}, {24, 24}, WidgetType::flatBtn, WindowColour::secondary, ImageId(SPR_PAINTBRUSH),                 STR_DISABLE_ELEVATION),        // paint mode
         makeWidget     ({27,  48}, {44, 32}, WidgetType::imgBtn,  WindowColour::primary  , ImageId(SPR_LAND_TOOL_SIZE_0),           kStringIdNone),                     // preview box

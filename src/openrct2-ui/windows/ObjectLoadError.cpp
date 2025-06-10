@@ -281,7 +281,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_object_load_error_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WidgetType::tableHeader, WindowColour::primary, STR_OBJECT_NAME                         ), // 'Object name' header
         makeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WidgetType::tableHeader, WindowColour::primary, STR_OBJECT_SOURCE                       ), // 'Object source' header
         makeWidget({  TYPE_COL_LEFT,  57}, {166,  14}, WidgetType::tableHeader, WindowColour::primary, STR_OBJECT_TYPE                         ), // 'Object type' header

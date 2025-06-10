@@ -45,7 +45,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_clear_scenery_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget     ({ 27, 17 }, { 44, 32 },           WidgetType::imgBtn,  WindowColour::primary,   SPR_LAND_TOOL_SIZE_0,        kStringIdNone                             ), // preview box
         makeRemapWidget({ 28, 18 }, { 16, 16 },           WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_LAND_TIP               ), // decrement size
         makeRemapWidget({ 54, 32 }, { 16, 16 },           WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_TIP                ), // increment size

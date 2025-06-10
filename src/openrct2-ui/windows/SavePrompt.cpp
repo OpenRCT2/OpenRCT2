@@ -41,7 +41,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _savePromptWidgets = makeWidgets(
-        makeWindowShim(kStringIdNone, WW_SAVE, WH_SAVE),
+        makeWindowShim(kStringIdNone, { WW_SAVE, WH_SAVE }),
         makeWidget({  2, 19}, {256, 12}, WidgetType::labelCentred, WindowColour::primary, kStringIdEmpty                ), // question/label
         makeWidget({  8, 35}, { 78, 14}, WidgetType::button,        WindowColour::primary, STR_SAVE_PROMPT_SAVE     ), // save
         makeWidget({ 91, 35}, { 78, 14}, WidgetType::button,        WindowColour::primary, STR_SAVE_PROMPT_DONT_SAVE), // don't save
@@ -60,7 +60,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _quitPromptWidgets = makeWidgets(
-        makeWindowShim(STR_QUIT_GAME_PROMPT_TITLE, WW_QUIT, WH_QUIT),
+        makeWindowShim(STR_QUIT_GAME_PROMPT_TITLE, { WW_QUIT, WH_QUIT }),
         makeWidget({ 8, 19}, {78, 14}, WidgetType::button, WindowColour::primary, STR_OK    ), // ok
         makeWidget({91, 19}, {78, 14}, WidgetType::button, WindowColour::primary, STR_CANCEL)  // cancel
     );

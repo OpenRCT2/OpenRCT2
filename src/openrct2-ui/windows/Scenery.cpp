@@ -110,7 +110,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto WindowSceneryBaseWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WINDOW_SCENERY_MIN_WIDTH, WINDOW_SCENERY_MIN_HEIGHT),
+        makeWindowShim(WINDOW_TITLE, { WINDOW_SCENERY_MIN_WIDTH, WINDOW_SCENERY_MIN_HEIGHT }),
         makeWidget     ({  0,  43}, {634, 99}, WidgetType::resize,    WindowColour::secondary                                                  ), // 8         0x009DE2C8
         makeWidget     ({  2,  62}, {607, 80}, WidgetType::scroll,    WindowColour::secondary, SCROLL_VERTICAL                                 ), // 1000000   0x009DE418
         makeWidget     ({609,  59}, { 24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_ROTATE_ARROW),    STR_ROTATE_OBJECTS_90      ), // 2000000   0x009DE428

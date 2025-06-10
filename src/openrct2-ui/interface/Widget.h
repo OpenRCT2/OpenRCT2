@@ -172,13 +172,13 @@ namespace OpenRCT2::Ui
         return res;
     }
 
-    constexpr std::array<Widget, 3> makeWindowShim(StringId title, int16_t width, int16_t height)
+    constexpr std::array<Widget, 3> makeWindowShim(StringId title, ScreenSize size)
     {
         // clang-format off
         std::array<Widget, 3> out = {
-            makeWidget({ 0, 0 }, { width, height }, WidgetType::frame, WindowColour::primary),
-            makeWidget({ 1, 1 }, { width - 1, kTitleHeightNormal }, WidgetType::caption, WindowColour::primary, title, STR_WINDOW_TITLE_TIP),
-            makeWidget({ width - 12, 2 }, { 11, 11 }, WidgetType::closeBox, WindowColour::primary, kWidgetContentEmpty, STR_CLOSE_WINDOW_TIP),
+            makeWidget({ 0, 0 }, { size.width, size.height }, WidgetType::frame, WindowColour::primary),
+            makeWidget({ 1, 1 }, { size.width - 1, kTitleHeightNormal }, WidgetType::caption, WindowColour::primary, title, STR_WINDOW_TITLE_TIP),
+            makeWidget({ size.width - 12, 2 }, { 11, 11 }, WidgetType::closeBox, WindowColour::primary, kWidgetContentEmpty, STR_CLOSE_WINDOW_TIP),
         };
         // clang-format on
 

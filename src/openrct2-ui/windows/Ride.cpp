@@ -243,7 +243,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t RCT1_LIGHT_OFFSET = 4;
 
     static constexpr auto kMainRideWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({  0, 43}, {kMinimumWindowWidth, 137}, WidgetType::resize, WindowColour::secondary),
         makeTab({ 3, 17 }, STR_VIEW_OF_RIDE_ATTRACTION_TIP),
         makeTab({ 34, 17 }, STR_VEHICLE_DETAILS_AND_OPTIONS_TIP),

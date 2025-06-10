@@ -46,7 +46,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static auto CustomDefaultWidgets = makeWidgets(
-        makeWindowShim(STR_STRING, 50, 50),
+        makeWindowShim(STR_STRING, { 50, 50 }),
         makeWidget({ 0, 14 }, { 50, 36 }, WidgetType::resize, WindowColour::secondary) // content panel
     );
 

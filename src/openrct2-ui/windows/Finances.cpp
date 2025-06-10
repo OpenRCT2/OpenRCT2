@@ -100,7 +100,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto makeFinancesWidgets = [](StringId title, ScreenSize resizeSize, ScreenSize frameSize) {
         return makeWidgets(
-            makeWindowShim(title, frameSize.width, frameSize.height),
+            makeWindowShim(title, frameSize),
             makeWidget({ 0, 43 }, resizeSize, WidgetType::resize, WindowColour::secondary),
             makeTab({ 3, 17 }, STR_FINANCES_SHOW_SUMMARY_TAB_TIP),
             makeTab({ 34, 17 }, STR_FINANCES_SHOW_CASH_TAB_TIP),

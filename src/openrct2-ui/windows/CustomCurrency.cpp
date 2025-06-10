@@ -41,7 +41,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_custom_currency_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeSpinnerWidgets({100, 30}, {101, 11}, WidgetType::spinner,  WindowColour::secondary, STR_CURRENCY_FORMAT), // NB: 3 widgets
         makeWidget        ({120, 50}, { 81, 11}, WidgetType::button,   WindowColour::secondary, kStringIdEmpty          ),
         makeWidget        ({220, 50}, {131, 11}, WidgetType::dropdownMenu, WindowColour::secondary                 ),

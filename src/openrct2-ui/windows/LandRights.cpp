@@ -59,7 +59,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_land_rights_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget     ({ 27, 17}, { 44, 32}, WidgetType::imgBtn, WindowColour::primary, ImageId(SPR_LAND_TOOL_SIZE_0)                                                   ), // preview box
         makeRemapWidget({ 28, 18}, { 16, 16}, WidgetType::trnBtn, WindowColour::primary, SPR_LAND_TOOL_DECREASE,          STR_ADJUST_SMALLER_LAND_RIGHTS_TIP             ), // decrement size
         makeRemapWidget({ 54, 32}, { 16, 16}, WidgetType::trnBtn, WindowColour::primary, SPR_LAND_TOOL_INCREASE,          STR_ADJUST_LARGER_LAND_RIGHTS_TIP              ), // increment size

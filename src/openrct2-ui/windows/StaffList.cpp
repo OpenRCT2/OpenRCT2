@@ -80,7 +80,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _staffListWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({  0, 43}, {    WW, WH - 43}, WidgetType::resize,    WindowColour::secondary                                                     ), // tab content panel
         makeTab   ({  3, 17},                                                                          STR_STAFF_HANDYMEN_TAB_TIP                         ), // handymen tab
         makeTab   ({ 34, 17},                                                                          STR_STAFF_MECHANICS_TAB_TIP                        ), // mechanics tab

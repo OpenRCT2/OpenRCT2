@@ -277,7 +277,7 @@ namespace OpenRCT2::Ui::Windows
     #define GBBB(GROUPTOP, row)     (GBBT((GROUPTOP), row) + PropertyButtonSize.height)
 
     static constexpr auto kMainTileInspectorWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({3, 57}, {WW - 6, WH - PADDING_BOTTOM - 58}, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL), /* Element list */
         /* X and Y spinners */
         makeWidget        ({ 4, 24}, {38, 14}, WidgetType::label,   WindowColour::secondary,  STR_TILE_INSPECTOR_X_LABEL),

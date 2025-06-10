@@ -58,7 +58,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_guest_list_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({  0, 43}, {350, 287}, WidgetType::resize,   WindowColour::secondary                                                   ), // tab content panel
         makeWidget({  5, 59}, { 80,  12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_ARG_4_PAGE_X                                 ), // page dropdown
         makeWidget({ 73, 60}, { 11,  10}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH                               ), // page dropdown button

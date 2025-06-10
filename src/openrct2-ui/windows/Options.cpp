@@ -256,7 +256,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t WH = 332;
 
     static constexpr auto kMainOptionsWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({ 0, 43 }, { WW, 289 }, WidgetType::resize, WindowColour::secondary),
         makeTab({ 3, 17 }, STR_OPTIONS_DISPLAY_TIP),
         makeTab({ 34, 17 }, STR_OPTIONS_RENDERING_TIP),

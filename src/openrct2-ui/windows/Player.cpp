@@ -51,7 +51,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto kCommonPlayerWidgets = makeWidgets(
-        makeWindowShim(STR_STRING, 192, 157),
+        makeWindowShim(STR_STRING, { 192, 157 }),
         makeWidget({ 0, 43 }, { 192, 114 }, WidgetType::resize, WindowColour::secondary),
         makeTab({ 3, 17 }),
         makeTab({ 34, 17 })

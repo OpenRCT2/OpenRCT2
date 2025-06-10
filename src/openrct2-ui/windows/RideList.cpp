@@ -65,7 +65,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _rideListWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({  0, 43}, {340, 197}, WidgetType::resize,   WindowColour::secondary                                                                ), // tab page background
         makeWidget({315, 60}, { 24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_TOGGLE_OPEN_CLOSE),      STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
         makeWidget({150, 46}, {124,  12}, WidgetType::dropdownMenu, WindowColour::secondary                                                                ), // current information type

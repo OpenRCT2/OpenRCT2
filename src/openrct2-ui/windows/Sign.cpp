@@ -50,7 +50,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     // 0x9AEE00
     static constexpr auto _signWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({      3,      17}, {85, 60}, WidgetType::viewport,  WindowColour::secondary                                                        ), // Viewport
         makeWidget({WW - 25,      19}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_RENAME),   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
         makeWidget({WW - 25,      67}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_DEMOLISH), STR_DEMOLISH_SIGN_TIP          ), // demolish button

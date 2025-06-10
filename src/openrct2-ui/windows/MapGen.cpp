@@ -117,7 +117,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto makeMapGenWidgets = [](StringId title) {
         return makeWidgets(
-            makeWindowShim(title, kWindowSize.width, kWindowSize.height),
+            makeWindowShim(title, kWindowSize),
             makeWidget({   0, 43 }, { kWindowSize.width, 177 }, WidgetType::resize, WindowColour::secondary),
             makeTab   ({   3, 17 }),
             makeTab   ({  34, 17 }),

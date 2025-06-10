@@ -43,7 +43,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _windowChangelogWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({0,  14}, {500, 382}, WidgetType::resize,      WindowColour::secondary                               ), // content panel
         makeWidget({3,  16}, {495, 366}, WidgetType::scroll,      WindowColour::secondary, SCROLL_BOTH                  ), // scroll area
         makeWidget({3, 473}, {300,  14}, WidgetType::placeholder, WindowColour::secondary, STR_NEW_RELEASE_DOWNLOAD_PAGE)  // changelog button

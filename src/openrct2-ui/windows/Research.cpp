@@ -69,7 +69,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_research_development_widgets = makeWidgets(
-        makeWindowShim(STR_RESEARCH_AND_DEVELOPMENT, WW_DEVELOPMENT, WH_DEVELOPMENT),
+        makeWindowShim(STR_RESEARCH_AND_DEVELOPMENT, { WW_DEVELOPMENT, WH_DEVELOPMENT }),
         makeWidget({  0,  43}, {     WW_DEVELOPMENT, 153}, WidgetType::resize,   WindowColour::secondary                                                                ),
         makeTab   ({  3,  17},                                                                                                  STR_RESEARCH_AND_DEVELOPMENT_TIP),
         makeTab   ({ 34,  17},                                                                                                  STR_FINANCES_RESEARCH_TIP       ),
@@ -79,7 +79,7 @@ namespace OpenRCT2::Ui::Windows
     );
 
     static constexpr auto window_research_funding_widgets = makeWidgets(
-        makeWindowShim(STR_RESEARCH_FUNDING, WW_FUNDING, WH_FUNDING),
+        makeWindowShim(STR_RESEARCH_FUNDING, { WW_FUNDING, WH_FUNDING }),
         makeWidget({  0,  43}, {     WW_FUNDING, 164}, WidgetType::resize,   WindowColour::secondary                                                                                    ),
         makeTab   ({  3,  17},                                                                                                      STR_RESEARCH_AND_DEVELOPMENT_TIP            ),
         makeTab   ({ 34,  17},                                                                                                      STR_FINANCES_RESEARCH_TIP                   ),

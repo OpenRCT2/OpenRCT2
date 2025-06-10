@@ -145,7 +145,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto kRideConstructionWidgets = makeWidgets(
-        makeWindowShim(kWindowTitle, WW, WH),
+        makeWindowShim(kWindowTitle, { WW, WH }),
         makeWidget        ({  3,  17}, {     GW,  57}, WidgetType::groupbox, WindowColour::primary  , STR_RIDE_CONSTRUCTION_DIRECTION                                                                       ),
         makeWidget        ({  3,  76}, {     GW,  41}, WidgetType::groupbox, WindowColour::primary  , STR_RIDE_CONSTRUCTION_SLOPE                                                                           ),
         makeWidget        ({  3, 120}, {     GW,  41}, WidgetType::groupbox, WindowColour::primary  , STR_RIDE_CONSTRUCTION_ROLL_BANKING                                                                    ),

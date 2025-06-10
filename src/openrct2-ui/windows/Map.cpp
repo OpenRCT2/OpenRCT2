@@ -132,7 +132,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_map_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget        ({  0,  43}, {245, 215}, WidgetType::resize,    WindowColour::secondary                                                                ),
         makeRemapWidget   ({  3,  17}, { 31,  27}, WidgetType::colourBtn, WindowColour::secondary, SPR_TAB,                      STR_SHOW_PEOPLE_ON_MAP_TIP      ),
         makeRemapWidget   ({ 34,  17}, { 31,  27}, WidgetType::colourBtn, WindowColour::secondary, SPR_TAB,                      STR_SHOW_RIDES_STALLS_ON_MAP_TIP),

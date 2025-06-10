@@ -210,7 +210,7 @@ static constexpr int32_t kTabStart = 3;
 #pragma endregion
 
 static constexpr auto kMainCheatWidgets = makeWidgets(
-    makeWindowShim(WINDOW_TITLE, WW, WH),
+    makeWindowShim(WINDOW_TITLE, { WW, WH }),
     makeWidget({  0, 43}, {WW, 257}, WidgetType::resize, WindowColour::secondary), /* tab content panel */
     makeTab   ({  3, 17}, STR_FINANCIAL_CHEATS_TIP                      ), /* tab 1 */
     makeTab   ({ 34, 17}, STR_DATE_CHEATS_TIP                           ), /* tab 2 */

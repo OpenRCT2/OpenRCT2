@@ -78,7 +78,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _themesWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({  0, 43}, {320,  64},               WidgetType::resize,       WindowColour::secondary                                                                                ), // tab content panel
         makeTab   ({  3, 17},                                                                                    STR_THEMES_TAB_SETTINGS_TIP                                                   ), // settings tab
         makeTab   ({ 34, 17},                                                                                    STR_THEMES_TAB_MAIN_TIP                                                       ), // main ui tab

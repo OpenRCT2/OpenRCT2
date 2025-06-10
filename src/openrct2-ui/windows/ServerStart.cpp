@@ -47,7 +47,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _windowServerStartWidgets = makeWidgets(
-        makeWindowShim(STR_START_SERVER, WW, WH),
+        makeWindowShim(STR_START_SERVER, { WW, WH }),
         makeWidget({ 120, 20 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary), // port text box
         makeWidget({ 120, 36 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary), // name text box
         makeWidget({ 120, 52 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary), // description text box

@@ -124,7 +124,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_footpath_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW_WINDOW, WH_WINDOW),
+        makeWindowShim(WINDOW_TITLE, { WW_WINDOW, WH_WINDOW }),
 
         // Type group
         makeWidget({ 3,  17}, {100, 95}, WidgetType::groupbox, WindowColour::primary  , STR_TYPE                                                                          ),

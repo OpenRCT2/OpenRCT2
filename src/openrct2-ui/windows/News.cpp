@@ -54,7 +54,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto makeNewsWidgets = [](StringId title) {
         return makeWidgets(
-            makeWindowShim(title, WW, WH),
+            makeWindowShim(title, { WW, WH }),
             makeWidget({ 0, 43 }, { WW, 257 }, WidgetType::resize, WindowColour::secondary),
             makeTab({ 3, 17 }, STR_RECENT_MESSAGES),
             makeTab({ 34, 17 }, STR_NOTIFICATION_SETTINGS)

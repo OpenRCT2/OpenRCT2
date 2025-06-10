@@ -89,7 +89,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto makeParkWidgets = [](int16_t width) {
         return makeWidgets(
-            makeWindowShim(WINDOW_TITLE, width, WH),
+            makeWindowShim(WINDOW_TITLE, { width, WH }),
             makeWidget({ 0, 43 }, { width, 131 }, WidgetType::resize, WindowColour::secondary),
             makeTab({ 3, 17 }, STR_PARK_ENTRANCE_TAB_TIP),
             makeTab({ 34, 17 }, STR_PARK_RATING_TAB_TIP),

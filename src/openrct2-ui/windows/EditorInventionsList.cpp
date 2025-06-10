@@ -53,7 +53,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _inventionListWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({  0,  43}, {600, 357}, WidgetType::resize,  WindowColour::secondary                                             ),
         makeTab   ({  3,  17}                                                                                               ),
         makeWidget({  4,  56}, {368, 161}, WidgetType::scroll,  WindowColour::secondary, SCROLL_VERTICAL                            ),

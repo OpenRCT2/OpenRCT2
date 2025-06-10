@@ -210,7 +210,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_new_ride_widgets = makeWidgets(
-        makeWindowShim(WindowTitle, WindowWidth, kWindowHeight),
+        makeWindowShim(WindowTitle, { WindowWidth, kWindowHeight }),
         makeWidget({  0,  43},             {601, 339},         WidgetType::resize,   WindowColour::secondary                                                                ),
         makeTab   ({  3,  17},                                                                                      STR_TRANSPORT_RIDES_TIP                                       ),
         makeTab   ({ 34,  17},                                                                                      STR_GENTLE_RIDES_TIP                                          ),
