@@ -48,8 +48,8 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     enum NewsWindowTab : uint8_t
     {
-        NewsTab,
-        OptionsTab,
+        newsTab,
+        optionsTab,
     };
 
     static constexpr auto makeNewsWidgets = [](StringId title) {
@@ -76,7 +76,7 @@ namespace OpenRCT2::Ui::Windows
     {
         StringId group;
         StringId caption;
-        size_t config_offset;
+        size_t configOffset;
     };
 
     // clang-format off
@@ -116,7 +116,7 @@ namespace OpenRCT2::Ui::Windows
         void InitNewsWidgets()
         {
             Invalidate();
-            page = NewsTab;
+            page = newsTab;
             height = WH;
             SetWidgets(kNewsTabWidgets);
 
@@ -132,7 +132,7 @@ namespace OpenRCT2::Ui::Windows
         void InitOptionsWidgets()
         {
             Invalidate();
-            page = OptionsTab;
+            page = optionsTab;
 
             widgets.clear();
             widgets.insert(widgets.end(), kOptionsTabWidgets.begin(), kOptionsTabWidgets.end());
@@ -231,7 +231,7 @@ namespace OpenRCT2::Ui::Windows
         bool& GetNotificationValueRef(const NewsOption& def)
         {
             bool& configValue = *reinterpret_cast<bool*>(
-                reinterpret_cast<size_t>(&Config::Get().notifications) + def.config_offset);
+                reinterpret_cast<size_t>(&Config::Get().notifications) + def.configOffset);
             return configValue;
         }
 
@@ -242,17 +242,17 @@ namespace OpenRCT2::Ui::Windows
 
             switch (newPage)
             {
-                case NewsTab:
+                case newsTab:
                     InitNewsWidgets();
                     break;
 
-                case OptionsTab:
+                case optionsTab:
                     InitOptionsWidgets();
                     break;
             }
 
-            SetWidgetPressed(WIDX_TAB_NEWS, page == NewsTab);
-            SetWidgetPressed(WIDX_TAB_OPTIONS, page == OptionsTab);
+            SetWidgetPressed(WIDX_TAB_NEWS, page == newsTab);
+            SetWidgetPressed(WIDX_TAB_OPTIONS, page == optionsTab);
         }
 
         void DrawTabImages(RenderTarget& rt)
@@ -267,7 +267,7 @@ namespace OpenRCT2::Ui::Windows
             if (!IsWidgetDisabled(WIDX_TAB_OPTIONS))
             {
                 auto imageId = ImageId(SPR_TAB_GEARS_0);
-                if (page == OptionsTab)
+                if (page == optionsTab)
                     imageId = imageId.WithIndexOffset((frame_no / 2) % 4);
 
                 auto& widget = widgets[WIDX_TAB_OPTIONS];
@@ -278,12 +278,12 @@ namespace OpenRCT2::Ui::Windows
     public:
         void OnOpen() override
         {
-            SetPage(NewsTab);
+            SetPage(newsTab);
         }
 
         void OnPrepareDraw() override
         {
-            if (page != OptionsTab)
+            if (page != optionsTab)
                 return;
 
             uint16_t checkboxWidgetIndex = _baseCheckboxIndex;
@@ -317,14 +317,14 @@ namespace OpenRCT2::Ui::Windows
                     Close();
                     break;
                 case WIDX_TAB_NEWS:
-                    SetPage(NewsTab);
+                    SetPage(newsTab);
                     break;
                 case WIDX_TAB_OPTIONS:
-                    SetPage(OptionsTab);
+                    SetPage(optionsTab);
                     break;
                 default:
                 {
-                    if (page != OptionsTab)
+                    if (page != optionsTab)
                         break;
 
                     int32_t checkBoxIndex = widgetIndex - _baseCheckboxIndex;
@@ -346,7 +346,7 @@ namespace OpenRCT2::Ui::Windows
         {
             frame_no++;
 
-            if (page != NewsTab)
+            if (page != newsTab)
                 return;
 
             if (_pressedNewsItemIndex == -1 || --_suspendUpdateTicks != 0)
