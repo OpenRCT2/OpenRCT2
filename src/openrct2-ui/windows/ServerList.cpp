@@ -545,7 +545,7 @@ namespace OpenRCT2::Ui::Windows
             return window;
 
         window = windowMgr->Create<ServerListWindow>(
-            WindowClass::ServerList, kWindowWidthMin, kWindowHeightMin, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
+            WindowClass::ServerList, { kWindowWidthMin, kWindowHeightMin }, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
 
         return window;
     }

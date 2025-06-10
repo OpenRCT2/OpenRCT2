@@ -592,6 +592,6 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<LandRightsWindow>(
-            WindowClass::LandRights, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
+            WindowClass::LandRights, ScreenCoordsXY(ContextGetWidth() - WW, 29), { WW, WH }, 0);
     }
 } // namespace OpenRCT2::Ui::Windows

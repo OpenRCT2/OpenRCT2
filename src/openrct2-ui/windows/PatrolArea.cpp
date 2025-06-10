@@ -292,7 +292,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         auto* w = windowMgr->FocusOrCreate<PatrolAreaWindow>(
-            WindowClass::PatrolArea, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
+            WindowClass::PatrolArea, ScreenCoordsXY(ContextGetWidth() - WW, 29), { WW, WH }, 0);
         if (w != nullptr)
         {
             w->SetStaffId(staffId);

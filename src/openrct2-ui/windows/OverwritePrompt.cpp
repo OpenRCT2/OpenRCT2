@@ -107,7 +107,7 @@ namespace OpenRCT2::Ui::Windows
         windowMgr->CloseByClass(WindowClass::LoadsaveOverwritePrompt);
 
         return windowMgr->Create<OverwritePromptWindow>(
-            WindowClass::LoadsaveOverwritePrompt, OVERWRITE_WW, OVERWRITE_WH,
+            WindowClass::LoadsaveOverwritePrompt, { OVERWRITE_WW, OVERWRITE_WH },
             WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN, name, path, action, type, trackDesignPtr);
     }
 

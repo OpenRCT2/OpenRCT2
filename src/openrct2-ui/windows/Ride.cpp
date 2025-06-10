@@ -6954,7 +6954,7 @@ namespace OpenRCT2::Ui::Windows
     static RideWindow* WindowRideOpen(const Ride& ride)
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->Create<RideWindow>(WindowClass::Ride, kMinimumWindowWidth, 207, WF_10 | WF_RESIZABLE, ride);
+        return windowMgr->Create<RideWindow>(WindowClass::Ride, { kMinimumWindowWidth, 207 }, WF_10 | WF_RESIZABLE, ride);
     }
 
     /**

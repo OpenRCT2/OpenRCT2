@@ -242,7 +242,7 @@ namespace OpenRCT2::Ui::Windows
         else
         {
             window = windowMgr->Create<ProgressWindow>(
-                WindowClass::ProgressWindow, kWindowWidth, kWindowHeight,
+                WindowClass::ProgressWindow, { kWindowWidth, kWindowHeight },
                 WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         }
 

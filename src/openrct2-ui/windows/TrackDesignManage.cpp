@@ -103,7 +103,7 @@ namespace OpenRCT2::Ui::Windows
         auto trackDesignManageWindow = std::make_unique<TrackDesignManageWindow>(tdFileRef);
 
         auto* window = windowMgr->Create(
-            std::move(trackDesignManageWindow), WindowClass::ManageTrackDesign, {}, WW, WH,
+            std::move(trackDesignManageWindow), WindowClass::ManageTrackDesign, {}, { WW, WH },
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_AUTO_POSITION);
 
         return window;
@@ -192,7 +192,7 @@ namespace OpenRCT2::Ui::Windows
         auto trackDeletePromptWindow = std::make_unique<TrackDeletePromptWindow>(tdFileRef);
 
         windowMgr->Create(
-            std::move(trackDeletePromptWindow), WindowClass::TrackDeletePrompt, {}, WW_DELETE_PROMPT, WH_DELETE_PROMPT,
+            std::move(trackDeletePromptWindow), WindowClass::TrackDeletePrompt, {}, { WW_DELETE_PROMPT, WH_DELETE_PROMPT },
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_AUTO_POSITION | WF_CENTRE_SCREEN);
     }
 

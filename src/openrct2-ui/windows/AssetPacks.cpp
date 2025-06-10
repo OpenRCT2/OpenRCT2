@@ -344,6 +344,6 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         auto flags = WF_AUTO_POSITION | WF_CENTRE_SCREEN;
 
-        return windowMgr->FocusOrCreate<AssetPacksWindow>(WindowClass::AssetPacks, WW, WH, flags);
+        return windowMgr->FocusOrCreate<AssetPacksWindow>(WindowClass::AssetPacks, { WW, WH }, flags);
     }
 } // namespace OpenRCT2::Ui::Windows

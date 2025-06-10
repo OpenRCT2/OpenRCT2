@@ -227,6 +227,6 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* CustomCurrencyOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<CustomCurrencyWindow>(WindowClass::CustomCurrencyConfig, WW, WH, WF_CENTRE_SCREEN);
+        return windowMgr->FocusOrCreate<CustomCurrencyWindow>(WindowClass::CustomCurrencyConfig, { WW, WH }, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows

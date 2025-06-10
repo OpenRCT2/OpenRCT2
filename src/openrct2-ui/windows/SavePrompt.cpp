@@ -253,7 +253,7 @@ namespace OpenRCT2::Ui::Windows
 
         auto savePromptWindow = std::make_unique<SavePromptWindow>(prompt_mode);
         return windowMgr->Create(
-            std::move(savePromptWindow), WindowClass::SavePrompt, {}, width, height,
+            std::move(savePromptWindow), WindowClass::SavePrompt, {}, { width, height },
             WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN | WF_AUTO_POSITION);
     }
 } // namespace OpenRCT2::Ui::Windows

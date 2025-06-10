@@ -1255,7 +1255,7 @@ namespace OpenRCT2::Ui::Windows
         try
         {
             auto* windowMgr = GetWindowManager();
-            auto* w = windowMgr->FocusOrCreate<MapWindow>(WindowClass::Map, 245, 259, WF_10);
+            auto* w = windowMgr->FocusOrCreate<MapWindow>(WindowClass::Map, { 245, 259 }, WF_10);
             w->selected_tab = 0;
             w->list_information_type = 0;
             return w;

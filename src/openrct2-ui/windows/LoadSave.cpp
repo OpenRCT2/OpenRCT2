@@ -1135,8 +1135,8 @@ namespace OpenRCT2::Ui::Windows
             auto height = config.FileBrowserHeight;
 
             w = windowMgr->Create<LoadSaveWindow>(
-                WindowClass::Loadsave, width, height, WF_STICK_TO_FRONT | WF_RESIZABLE | WF_AUTO_POSITION | WF_CENTRE_SCREEN,
-                action, type);
+                WindowClass::Loadsave, { width, height },
+                WF_STICK_TO_FRONT | WF_RESIZABLE | WF_AUTO_POSITION | WF_CENTRE_SCREEN, action, type);
         }
 
         bool isSave = action == LoadSaveAction::save;

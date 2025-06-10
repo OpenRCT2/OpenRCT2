@@ -629,7 +629,7 @@ namespace OpenRCT2::Ui::Windows
         auto* window = static_cast<PlayerWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Player, id));
         if (window == nullptr)
         {
-            window = windowMgr->Create<PlayerWindow>(WindowClass::Player, 240, 170, WF_RESIZABLE);
+            window = windowMgr->Create<PlayerWindow>(WindowClass::Player, { 240, 170 }, WF_RESIZABLE);
         }
 
         window->Init(id);

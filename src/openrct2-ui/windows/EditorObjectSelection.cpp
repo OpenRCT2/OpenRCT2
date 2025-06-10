@@ -1631,7 +1631,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<EditorObjectSelectionWindow>(
-            WindowClass::EditorObjectSelection, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
+            WindowClass::EditorObjectSelection, { 755, 400 }, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
     }
 
     // Used for forced closure

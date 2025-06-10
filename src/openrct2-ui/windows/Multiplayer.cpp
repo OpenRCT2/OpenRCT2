@@ -189,7 +189,7 @@ namespace OpenRCT2::Ui::Windows
         if (window == nullptr)
         {
             window = windowMgr->Create<MultiplayerWindow>(
-                WindowClass::Multiplayer, 320, 144, WF_10 | WF_RESIZABLE | WF_AUTO_POSITION);
+                WindowClass::Multiplayer, { 320, 144 }, WF_10 | WF_RESIZABLE | WF_AUTO_POSITION);
         }
 
         return window;

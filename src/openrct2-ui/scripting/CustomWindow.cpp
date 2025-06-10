@@ -1141,11 +1141,12 @@ namespace OpenRCT2::Ui::Windows
         if (desc.X && desc.Y)
         {
             window = windowMgr->Create<CustomWindow>(
-                WindowClass::Custom, { *desc.X, *desc.Y }, desc.Width, desc.Height, windowFlags, owner, desc);
+                WindowClass::Custom, { *desc.X, *desc.Y }, { desc.Width, desc.Height }, windowFlags, owner, desc);
         }
         else
         {
-            window = windowMgr->Create<CustomWindow>(WindowClass::Custom, desc.Width, desc.Height, windowFlags, owner, desc);
+            window = windowMgr->Create<CustomWindow>(
+                WindowClass::Custom, { desc.Width, desc.Height }, windowFlags, owner, desc);
         }
         return window;
     }

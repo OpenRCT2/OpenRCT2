@@ -2430,6 +2430,6 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* OptionsOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<OptionsWindow>(WindowClass::Options, WW, WH, WF_CENTRE_SCREEN);
+        return windowMgr->FocusOrCreate<OptionsWindow>(WindowClass::Options, { WW, WH }, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows

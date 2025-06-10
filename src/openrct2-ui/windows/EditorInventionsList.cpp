@@ -588,7 +588,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<InventionListWindow>(
-            WindowClass::EditorInventionList, WW, WH, WF_NO_SCROLLING | WF_RESIZABLE | WF_CENTRE_SCREEN);
+            WindowClass::EditorInventionList, { WW, WH }, WF_NO_SCROLLING | WF_RESIZABLE | WF_CENTRE_SCREEN);
     }
 #pragma endregion
 
@@ -686,7 +686,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->CloseByClass(WindowClass::EditorInventionListDrag);
         auto* wnd = windowMgr->Create<InventionDragWindow>(
-            WindowClass::EditorInventionListDrag, 10, 14, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
+            WindowClass::EditorInventionListDrag, { 10, 14 }, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
         if (wnd != nullptr)
         {
             wnd->Init(*researchItem, editorPos, objectSelectionScrollWidth);

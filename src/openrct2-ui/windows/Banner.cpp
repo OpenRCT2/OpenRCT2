@@ -317,7 +317,7 @@ namespace OpenRCT2::Ui::Windows
         if (w != nullptr)
             return w;
 
-        w = windowMgr->Create<BannerWindow>(WindowClass::Banner, WW, WH, 0);
+        w = windowMgr->Create<BannerWindow>(WindowClass::Banner, { WW, WH }, 0);
 
         if (w != nullptr)
             w->Initialise(number);

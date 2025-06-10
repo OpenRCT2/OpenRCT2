@@ -934,7 +934,7 @@ namespace OpenRCT2::Ui::Windows
         ScreenCoordsXY screenPos = { (screenWidth - kWindowWidth) / 2,
                                      std::max(kTopToolbarHeight + 1, (screenHeight - kWindowHeight) / 2) };
         window = windowMgr->Create<ScenarioSelectWindow>(
-            WindowClass::ScenarioSelect, screenPos, kWindowWidth, kWindowHeight, 0, callback);
+            WindowClass::ScenarioSelect, screenPos, { kWindowWidth, kWindowHeight }, 0, callback);
         return window;
     }
 } // namespace OpenRCT2::Ui::Windows

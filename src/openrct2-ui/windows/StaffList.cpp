@@ -725,7 +725,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* StaffListOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<StaffListWindow>(WindowClass::StaffList, WW, WH, WF_10 | WF_RESIZABLE);
+        return windowMgr->FocusOrCreate<StaffListWindow>(WindowClass::StaffList, { WW, WH }, WF_10 | WF_RESIZABLE);
     }
 
     void WindowStaffListRefresh()

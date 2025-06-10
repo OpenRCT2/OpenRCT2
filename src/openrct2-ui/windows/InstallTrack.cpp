@@ -424,7 +424,7 @@ namespace OpenRCT2::Ui::Windows
         _currentTrackPieceDirection = 2;
 
         auto* window = windowMgr->FocusOrCreate<InstallTrackWindow>(
-            WindowClass::InstallTrack, WW, WH, WF_AUTO_POSITION | WF_CENTRE_SCREEN);
+            WindowClass::InstallTrack, { WW, WH }, WF_AUTO_POSITION | WF_CENTRE_SCREEN);
         window->SetupTrack(path, std::move(trackDesign));
 
         return window;

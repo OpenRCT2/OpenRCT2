@@ -1085,7 +1085,7 @@ namespace OpenRCT2::Ui::Windows
         windowMgr->CloseByClass(WindowClass::TrackDesignPlace);
 
         window = windowMgr->Create<NewRideWindow>(
-            WindowClass::ConstructRide, WindowWidth, kWindowHeight, WF_10 | WF_AUTO_POSITION);
+            WindowClass::ConstructRide, { WindowWidth, kWindowHeight }, WF_10 | WF_AUTO_POSITION);
         return window;
     }
 

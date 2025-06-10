@@ -396,7 +396,7 @@ namespace OpenRCT2::Ui::Windows
             return window;
 
         window = windowMgr->Create<EditorParkEntrance>(
-            WindowClass::EditorParkEntrance, kWindowWidth, kWindowHeight, WF_10 | WF_RESIZABLE);
+            WindowClass::EditorParkEntrance, { kWindowWidth, kWindowHeight }, WF_10 | WF_RESIZABLE);
 
         return window;
     }

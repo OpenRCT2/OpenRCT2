@@ -1227,7 +1227,7 @@ namespace OpenRCT2::Ui::Windows
         if (w != nullptr)
             return w;
 
-        w = windowMgr->Create<StaffWindow>(WindowClass::Peep, WW, WH, WF_10 | WF_RESIZABLE);
+        w = windowMgr->Create<StaffWindow>(WindowClass::Peep, { WW, WH }, WF_10 | WF_RESIZABLE);
         if (w == nullptr)
             return nullptr;
 

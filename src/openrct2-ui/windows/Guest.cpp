@@ -1916,7 +1916,7 @@ namespace OpenRCT2::Ui::Windows
             if (Config::Get().general.DebuggingTools)
                 windowWidth += TabWidth;
 
-            window = windowMgr->Create<GuestWindow>(WindowClass::Peep, windowWidth, 157, WF_RESIZABLE);
+            window = windowMgr->Create<GuestWindow>(WindowClass::Peep, { windowWidth, 157 }, WF_RESIZABLE);
             if (window == nullptr)
             {
                 return nullptr;

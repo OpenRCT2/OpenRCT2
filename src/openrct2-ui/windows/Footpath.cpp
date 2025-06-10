@@ -1634,7 +1634,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<FootpathWindow>(WindowClass::Footpath, WW_WINDOW, WH_WINDOW, 0);
+        return windowMgr->FocusOrCreate<FootpathWindow>(WindowClass::Footpath, { WW_WINDOW, WH_WINDOW }, 0);
     }
 
     void WindowFootpathResetSelectedPath()
