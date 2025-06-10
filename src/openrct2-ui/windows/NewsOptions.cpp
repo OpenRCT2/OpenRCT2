@@ -75,19 +75,19 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto WindowNewsOptionsWidgets = makeWidgets(
         makeWindowShim(WINDOW_TITLE, WW, WH),
-        makeWidget({ 0, 43}, {400, 257}, WindowWidgetType::Resize,   WindowColour::Secondary), // Tab content panel
+        makeWidget({ 0, 43}, {400, 257}, WindowWidgetType::Resize,   WindowColour::secondary), // Tab content panel
         makeTab   ({ 3, 17}                                                                 ), // Park tab
         makeTab   ({34, 17}                                                                 ), // Ride tab
         makeTab   ({65, 17}                                                                 ), // Guest tab
-        makeWidget({ 7, 49}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-        makeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-        makeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-        makeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-        makeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-        makeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-        makeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-        makeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
-        makeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary )
+        makeWidget({ 7, 49}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::tertiary ),
+        makeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::tertiary ),
+        makeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::tertiary ),
+        makeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::tertiary ),
+        makeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::tertiary ),
+        makeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::tertiary ),
+        makeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::tertiary ),
+        makeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::tertiary ),
+        makeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::tertiary )
     );
     // clang-format on
 

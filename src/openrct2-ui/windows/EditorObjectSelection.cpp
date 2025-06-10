@@ -219,14 +219,14 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _window_editor_object_selection_widgets = makeWidgets(
         makeWindowShim     (WINDOW_TITLE, WW, WH),
-        makeWidget         ({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
-        makeWidget         ({  4, 60}, {288, 277}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
-        makeWidget         ({391, 45}, {114, 114}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                                  ),
-        makeWidget         ({340, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
-        makeDropdownWidgets({470, 22}, {114,  14}, WindowWidgetType::DropdownMenu, WindowColour::Primary,   STR_OBJECT_FILTER,             STR_OBJECT_FILTER_TIP            ),
-        makeWidget         ({  4, 45}, {211,  14}, WindowWidgetType::TextBox,      WindowColour::Secondary                                                                  ),
-        makeWidget         ({218, 45}, { 70,  14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR                                         ),
-        makeWidget         ({  3, 73}, {285,   4}, WindowWidgetType::ImgBtn,       WindowColour::Secondary                                                                  ),
+        makeWidget         ({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::secondary                                                                  ),
+        makeWidget         ({  4, 60}, {288, 277}, WindowWidgetType::Scroll,       WindowColour::secondary, SCROLL_VERTICAL                                                 ),
+        makeWidget         ({391, 45}, {114, 114}, WindowWidgetType::FlatBtn,      WindowColour::secondary                                                                  ),
+        makeWidget         ({340, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
+        makeDropdownWidgets({470, 22}, {114,  14}, WindowWidgetType::DropdownMenu, WindowColour::primary,   STR_OBJECT_FILTER,             STR_OBJECT_FILTER_TIP            ),
+        makeWidget         ({  4, 45}, {211,  14}, WindowWidgetType::TextBox,      WindowColour::secondary                                                                  ),
+        makeWidget         ({218, 45}, { 70,  14}, WindowWidgetType::Button,       WindowColour::secondary, STR_OBJECT_SEARCH_CLEAR                                         ),
+        makeWidget         ({  3, 73}, {285,   4}, WindowWidgetType::ImgBtn,       WindowColour::secondary                                                                  ),
         makeTab            ({  3, 47}),
         makeTab            ({ 34, 47}),
         makeTab            ({ 65, 47}),
@@ -234,9 +234,9 @@ namespace OpenRCT2::Ui::Windows
         makeTab            ({127, 47}),
         makeTab            ({158, 47}),
         makeTab            ({189, 47}),
-        makeWidget         ({  4, 80}, {145,  14}, WindowWidgetType::TableHeader, WindowColour::Secondary                                                                  ),
-        makeWidget         ({149, 80}, {143,  14}, WindowWidgetType::TableHeader, WindowColour::Secondary                                                                  ),
-        makeWidget         ({700, 50}, { 24,  24}, WindowWidgetType::ImgBtn,      WindowColour::Secondary,  SPR_G2_RELOAD,    STR_RELOAD_OBJECT_TIP ),
+        makeWidget         ({  4, 80}, {145,  14}, WindowWidgetType::TableHeader, WindowColour::secondary                                                                  ),
+        makeWidget         ({149, 80}, {143,  14}, WindowWidgetType::TableHeader, WindowColour::secondary                                                                  ),
+        makeWidget         ({700, 50}, { 24,  24}, WindowWidgetType::ImgBtn,      WindowColour::secondary,  SPR_G2_RELOAD,    STR_RELOAD_OBJECT_TIP ),
         makeTab            ({  3, 17},                                                                                        STR_STRING_DEFINED_TOOLTIP )
         // Copied object type times...
     );

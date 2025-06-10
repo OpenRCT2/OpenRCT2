@@ -257,7 +257,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto kMainOptionsWidgets = makeWidgets(
         makeWindowShim(WINDOW_TITLE, WW, WH),
-        makeWidget({ 0, 43 }, { WW, 289 }, WindowWidgetType::Resize, WindowColour::Secondary),
+        makeWidget({ 0, 43 }, { WW, 289 }, WindowWidgetType::Resize, WindowColour::secondary),
         makeTab({ 3, 17 }, STR_OPTIONS_DISPLAY_TIP),
         makeTab({ 34, 17 }, STR_OPTIONS_RENDERING_TIP),
         makeTab({ 65, 17 }, STR_OPTIONS_CULTURE_TIP),
@@ -270,30 +270,30 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto window_options_display_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget        ({  5,  53}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_WINDOW                                                                ), // Window group
-        makeWidget        ({ 10,  67}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_FULLSCREEN_MODE,                   STR_FULLSCREEN_MODE_TIP                  ), // Fullscreen
-        makeWidget        ({155,  68}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ),
-        makeWidget        ({288,  69}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_FULLSCREEN_MODE_TIP                  ),
-        makeWidget        ({ 24,  82}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DISPLAY_RESOLUTION,                STR_DISPLAY_RESOLUTION_TIP               ), // Resolution
-        makeWidget        ({155,  83}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_ARG_16_RESOLUTION_X_BY_Y                                                    ),
-        makeWidget        ({288,  84}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DISPLAY_RESOLUTION_TIP               ),
-        makeWidget        ({ 10,  98}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_UI_SCALING_DESC,                   STR_WINDOW_SCALE_TIP                     ), // Scale
-        makeSpinnerWidgets({155,  98}, {145,  12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                         STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
+        makeWidget        ({  5,  53}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::secondary, STR_GROUP_WINDOW                                                                ), // Window group
+        makeWidget        ({ 10,  67}, {145,  12}, WindowWidgetType::Label,        WindowColour::secondary, STR_FULLSCREEN_MODE,                   STR_FULLSCREEN_MODE_TIP                  ), // Fullscreen
+        makeWidget        ({155,  68}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::secondary                                                                                  ),
+        makeWidget        ({288,  69}, { 11,  10}, WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                    STR_FULLSCREEN_MODE_TIP                  ),
+        makeWidget        ({ 24,  82}, {145,  12}, WindowWidgetType::Label,        WindowColour::secondary, STR_DISPLAY_RESOLUTION,                STR_DISPLAY_RESOLUTION_TIP               ), // Resolution
+        makeWidget        ({155,  83}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::secondary, STR_ARG_16_RESOLUTION_X_BY_Y                                                    ),
+        makeWidget        ({288,  84}, { 11,  10}, WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                    STR_DISPLAY_RESOLUTION_TIP               ),
+        makeWidget        ({ 10,  98}, {145,  12}, WindowWidgetType::Label,        WindowColour::secondary, STR_UI_SCALING_DESC,                   STR_WINDOW_SCALE_TIP                     ), // Scale
+        makeSpinnerWidgets({155,  98}, {145,  12}, WindowWidgetType::Spinner,      WindowColour::secondary, kStringIdNone,                         STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
 
-        makeWidget        ({  5, 121}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_RENDERING                                                             ), // Rendering group
-        makeWidget        ({ 10, 135}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DRAWING_ENGINE,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (label)
-        makeWidget        ({155, 135}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ), // Drawing engine (dropdown label)
-        makeWidget        ({288, 136}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (chevron)
-        makeWidget        ({ 10, 150}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_FRAME_RATE_LIMIT_LABEL                                                      ), // Frame rate limit (label)
-        makeWidget        ({155, 150}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ), // Frame rate limit (dropdown label)
-        makeWidget        ({288, 151}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                              ), // Frame rate limit (chevron)
-        makeWidget        ({ 10, 166}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
-        makeWidget        ({155, 166}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
+        makeWidget        ({  5, 121}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::secondary, STR_GROUP_RENDERING                                                             ), // Rendering group
+        makeWidget        ({ 10, 135}, {145,  12}, WindowWidgetType::Label,        WindowColour::secondary, STR_DRAWING_ENGINE,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (label)
+        makeWidget        ({155, 135}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::secondary                                                                                  ), // Drawing engine (dropdown label)
+        makeWidget        ({288, 136}, { 11,  10}, WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                    STR_DRAWING_ENGINE_TIP                   ), // Drawing engine (chevron)
+        makeWidget        ({ 10, 150}, {145,  12}, WindowWidgetType::Label,        WindowColour::secondary, STR_FRAME_RATE_LIMIT_LABEL                                                      ), // Frame rate limit (label)
+        makeWidget        ({155, 150}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::secondary                                                                                  ), // Frame rate limit (dropdown label)
+        makeWidget        ({288, 151}, { 11,  10}, WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                              ), // Frame rate limit (chevron)
+        makeWidget        ({ 10, 166}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
+        makeWidget        ({155, 166}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
 
-        makeWidget        ({  5, 188}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_BEHAVIOUR                                                             ), // Behaviour group
-        makeWidget        ({ 11, 203}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_STEAM_OVERLAY_PAUSE,               STR_STEAM_OVERLAY_PAUSE_TIP              ), // Pause on steam overlay
-        makeWidget        ({ 11, 218}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
-        makeWidget        ({ 11, 233}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              )  // Disable screensaver
+        makeWidget        ({  5, 188}, {300,  64}, WindowWidgetType::Groupbox,     WindowColour::secondary, STR_GROUP_BEHAVIOUR                                                             ), // Behaviour group
+        makeWidget        ({ 11, 203}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::secondary, STR_STEAM_OVERLAY_PAUSE,               STR_STEAM_OVERLAY_PAUSE_TIP              ), // Pause on steam overlay
+        makeWidget        ({ 11, 218}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
+        makeWidget        ({ 11, 233}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              )  // Disable screensaver
     );
 
     constexpr int32_t kFrameRenderingStart = 53;
@@ -301,75 +301,75 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto window_options_rendering_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget({  5,  kFrameRenderingStart + 0}, {300, 108}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_RENDERING_GROUP                                       ), // Rendering group
-        makeWidget({ 10, kFrameRenderingStart + 15}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_TILE_SMOOTHING,         STR_TILE_SMOOTHING_TIP        ), // Landscape smoothing
-        makeWidget({ 10, kFrameRenderingStart + 30}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_GRIDLINES,              STR_GRIDLINES_TIP             ), // Gridlines
-        makeWidget({ 10, kFrameRenderingStart + 45}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_UPPERCASE_BANNERS,      STR_UPPERCASE_BANNERS_TIP     ), // Uppercase banners
-        makeWidget({ 10, kFrameRenderingStart + 60}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_GUEST_PURCHASES,   STR_SHOW_GUEST_PURCHASES_TIP  ), // Guest purchases
-        makeWidget({ 10, kFrameRenderingStart + 75}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_TRANSPARENT_SCREENSHOT, STR_TRANSPARENT_SCREENSHOT_TIP), // Transparent screenshot
-        makeWidget({ 10, kFrameRenderingStart + 90}, {281,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_VIRTUAL_FLOOR_STYLE,    STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor
-        makeWidget({155, kFrameRenderingStart + 90}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, kStringIdNone,                   STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
-        makeWidget({288, kFrameRenderingStart + 91}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,         STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
+        makeWidget({  5,  kFrameRenderingStart + 0}, {300, 108}, WindowWidgetType::Groupbox,     WindowColour::secondary, STR_RENDERING_GROUP                                       ), // Rendering group
+        makeWidget({ 10, kFrameRenderingStart + 15}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::secondary, STR_TILE_SMOOTHING,         STR_TILE_SMOOTHING_TIP        ), // Landscape smoothing
+        makeWidget({ 10, kFrameRenderingStart + 30}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::secondary, STR_GRIDLINES,              STR_GRIDLINES_TIP             ), // Gridlines
+        makeWidget({ 10, kFrameRenderingStart + 45}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::secondary, STR_UPPERCASE_BANNERS,      STR_UPPERCASE_BANNERS_TIP     ), // Uppercase banners
+        makeWidget({ 10, kFrameRenderingStart + 60}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::secondary, STR_SHOW_GUEST_PURCHASES,   STR_SHOW_GUEST_PURCHASES_TIP  ), // Guest purchases
+        makeWidget({ 10, kFrameRenderingStart + 75}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::secondary, STR_TRANSPARENT_SCREENSHOT, STR_TRANSPARENT_SCREENSHOT_TIP), // Transparent screenshot
+        makeWidget({ 10, kFrameRenderingStart + 90}, {281,  12}, WindowWidgetType::Label,        WindowColour::secondary, STR_VIRTUAL_FLOOR_STYLE,    STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor
+        makeWidget({155, kFrameRenderingStart + 90}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::secondary, kStringIdNone,                   STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
+        makeWidget({288, kFrameRenderingStart + 91}, { 11,  10}, WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,         STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
 
-        makeWidget({ 5,  kFrameEffectStart + 0}, {300, 94}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_EFFECTS_GROUP                                             ), // Rendering group
-        makeWidget({10, kFrameEffectStart + 15}, {281, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CYCLE_DAY_NIGHT,          STR_CYCLE_DAY_NIGHT_TIP         ), // Cycle day-night
-        makeWidget({25, kFrameEffectStart + 30}, {266, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ENABLE_LIGHTING_EFFECTS,  STR_ENABLE_LIGHTING_EFFECTS_TIP ), // Enable light fx
-        makeWidget({40, kFrameEffectStart + 45}, {251, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ENABLE_LIGHTING_VEHICLES, STR_ENABLE_LIGHTING_VEHICLES_TIP), // Enable light fx for vehicles
-        makeWidget({10, kFrameEffectStart + 60}, {281, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RENDER_WEATHER_EFFECTS,   STR_RENDER_WEATHER_EFFECTS_TIP  ), // Render weather effects
-        makeWidget({25, kFrameEffectStart + 75}, {266, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DISABLE_LIGHTNING_EFFECT, STR_DISABLE_LIGHTNING_EFFECT_TIP)  // Disable lightning effect
+        makeWidget({ 5,  kFrameEffectStart + 0}, {300, 94}, WindowWidgetType::Groupbox, WindowColour::secondary, STR_EFFECTS_GROUP                                             ), // Rendering group
+        makeWidget({10, kFrameEffectStart + 15}, {281, 12}, WindowWidgetType::Checkbox, WindowColour::secondary, STR_CYCLE_DAY_NIGHT,          STR_CYCLE_DAY_NIGHT_TIP         ), // Cycle day-night
+        makeWidget({25, kFrameEffectStart + 30}, {266, 12}, WindowWidgetType::Checkbox, WindowColour::secondary, STR_ENABLE_LIGHTING_EFFECTS,  STR_ENABLE_LIGHTING_EFFECTS_TIP ), // Enable light fx
+        makeWidget({40, kFrameEffectStart + 45}, {251, 12}, WindowWidgetType::Checkbox, WindowColour::secondary, STR_ENABLE_LIGHTING_VEHICLES, STR_ENABLE_LIGHTING_VEHICLES_TIP), // Enable light fx for vehicles
+        makeWidget({10, kFrameEffectStart + 60}, {281, 12}, WindowWidgetType::Checkbox, WindowColour::secondary, STR_RENDER_WEATHER_EFFECTS,   STR_RENDER_WEATHER_EFFECTS_TIP  ), // Render weather effects
+        makeWidget({25, kFrameEffectStart + 75}, {266, 12}, WindowWidgetType::Checkbox, WindowColour::secondary, STR_DISABLE_LIGHTNING_EFFECT, STR_DISABLE_LIGHTNING_EFFECT_TIP)  // Disable lightning effect
     );
 
     static constexpr auto window_options_culture_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget({ 10,  53}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_OPTIONS_LANGUAGE,   STR_LANGUAGE_TIP           ), // language
-        makeWidget({155,  53}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRING                                         ),
-        makeWidget({288,  54}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_LANGUAGE_TIP           ),
-        makeWidget({ 10,  68}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_CURRENCY,           STR_CURRENCY_TIP           ), // Currency
-        makeWidget({155,  68}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                     ),
-        makeWidget({288,  69}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_CURRENCY_TIP           ),
-        makeWidget({ 10,  83}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DISTANCE_AND_SPEED, STR_DISTANCE_AND_SPEED_TIP ), // Distance and speed
-        makeWidget({155,  83}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                     ),
-        makeWidget({288,  84}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_DISTANCE_AND_SPEED_TIP ),
-        makeWidget({ 10,  98}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_TEMPERATURE,        STR_TEMPERATURE_FORMAT_TIP ), // Temperature
-        makeWidget({155,  98}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                     ),
-        makeWidget({288,  99}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_TEMPERATURE_FORMAT_TIP ),
-        makeWidget({ 10, 113}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_HEIGHT_LABELS,      STR_HEIGHT_LABELS_UNITS_TIP), // Height labels
-        makeWidget({155, 113}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                     ),
-        makeWidget({288, 114}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_HEIGHT_LABELS_UNITS_TIP),
-        makeWidget({ 10, 128}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DATE_FORMAT,        STR_DATE_FORMAT_TIP        ), // Date format
-        makeWidget({155, 128}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                     ),
-        makeWidget({288, 129}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_DATE_FORMAT_TIP        )
+        makeWidget({ 10,  53}, {145, 12}, WindowWidgetType::Label,        WindowColour::secondary, STR_OPTIONS_LANGUAGE,   STR_LANGUAGE_TIP           ), // language
+        makeWidget({155,  53}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::secondary, STR_STRING                                         ),
+        makeWidget({288,  54}, { 11, 10}, WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_LANGUAGE_TIP           ),
+        makeWidget({ 10,  68}, {145, 12}, WindowWidgetType::Label,        WindowColour::secondary, STR_CURRENCY,           STR_CURRENCY_TIP           ), // Currency
+        makeWidget({155,  68}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::secondary                                                     ),
+        makeWidget({288,  69}, { 11, 10}, WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_CURRENCY_TIP           ),
+        makeWidget({ 10,  83}, {145, 12}, WindowWidgetType::Label,        WindowColour::secondary, STR_DISTANCE_AND_SPEED, STR_DISTANCE_AND_SPEED_TIP ), // Distance and speed
+        makeWidget({155,  83}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::secondary                                                     ),
+        makeWidget({288,  84}, { 11, 10}, WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_DISTANCE_AND_SPEED_TIP ),
+        makeWidget({ 10,  98}, {145, 12}, WindowWidgetType::Label,        WindowColour::secondary, STR_TEMPERATURE,        STR_TEMPERATURE_FORMAT_TIP ), // Temperature
+        makeWidget({155,  98}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::secondary                                                     ),
+        makeWidget({288,  99}, { 11, 10}, WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_TEMPERATURE_FORMAT_TIP ),
+        makeWidget({ 10, 113}, {145, 12}, WindowWidgetType::Label,        WindowColour::secondary, STR_HEIGHT_LABELS,      STR_HEIGHT_LABELS_UNITS_TIP), // Height labels
+        makeWidget({155, 113}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::secondary                                                     ),
+        makeWidget({288, 114}, { 11, 10}, WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_HEIGHT_LABELS_UNITS_TIP),
+        makeWidget({ 10, 128}, {145, 12}, WindowWidgetType::Label,        WindowColour::secondary, STR_DATE_FORMAT,        STR_DATE_FORMAT_TIP        ), // Date format
+        makeWidget({155, 128}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::secondary                                                     ),
+        makeWidget({288, 129}, { 11, 10}, WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,     STR_DATE_FORMAT_TIP        )
     );
 
     static constexpr auto window_options_audio_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget({ 10,  53}, {290, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                ), // Audio device
-        makeWidget({288,  54}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,      STR_AUDIO_DEVICE_TIP ),
-        makeWidget({ 10,  69}, {220, 12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MASTER_VOLUME,       STR_MASTER_VOLUME_TIP), // Enable / disable master sound
-        makeWidget({ 10,  84}, {220, 12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SOUND_EFFECTS,       STR_SOUND_EFFECTS_TIP), // Enable / disable sound effects
-        makeWidget({ 10,  99}, {220, 12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_RIDE_MUSIC,          STR_RIDE_MUSIC_TIP   ), // Enable / disable ride music
-        makeWidget({ 10, 113}, {290, 13}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_AUDIO_FOCUS,         STR_AUDIO_FOCUS_TIP  ), // Enable / disable audio disabled on focus lost
-        makeWidget({ 10, 128}, {145, 13}, WindowWidgetType::Label,        WindowColour::Secondary, STR_OPTIONS_MUSIC_LABEL, STR_TITLE_MUSIC_TIP  ), // Title music label
-        makeWidget({155, 127}, {145, 13}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                ), // Title music
-        makeWidget({288, 128}, { 11, 11}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,      STR_TITLE_MUSIC_TIP  ),
-        makeWidget({155,  68}, {145, 13}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Master volume
-        makeWidget({155,  83}, {145, 13}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Sound effect volume
-        makeWidget({155,  98}, {145, 13}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_HORIZONTAL                             )  // Music volume
+        makeWidget({ 10,  53}, {290, 12}, WindowWidgetType::DropdownMenu, WindowColour::secondary                                                ), // Audio device
+        makeWidget({288,  54}, { 11, 10}, WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,      STR_AUDIO_DEVICE_TIP ),
+        makeWidget({ 10,  69}, {220, 12}, WindowWidgetType::Checkbox,     WindowColour::secondary, STR_MASTER_VOLUME,       STR_MASTER_VOLUME_TIP), // Enable / disable master sound
+        makeWidget({ 10,  84}, {220, 12}, WindowWidgetType::Checkbox,     WindowColour::secondary, STR_SOUND_EFFECTS,       STR_SOUND_EFFECTS_TIP), // Enable / disable sound effects
+        makeWidget({ 10,  99}, {220, 12}, WindowWidgetType::Checkbox,     WindowColour::secondary, STR_RIDE_MUSIC,          STR_RIDE_MUSIC_TIP   ), // Enable / disable ride music
+        makeWidget({ 10, 113}, {290, 13}, WindowWidgetType::Checkbox,     WindowColour::secondary, STR_AUDIO_FOCUS,         STR_AUDIO_FOCUS_TIP  ), // Enable / disable audio disabled on focus lost
+        makeWidget({ 10, 128}, {145, 13}, WindowWidgetType::Label,        WindowColour::secondary, STR_OPTIONS_MUSIC_LABEL, STR_TITLE_MUSIC_TIP  ), // Title music label
+        makeWidget({155, 127}, {145, 13}, WindowWidgetType::DropdownMenu, WindowColour::secondary                                                ), // Title music
+        makeWidget({288, 128}, { 11, 11}, WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,      STR_TITLE_MUSIC_TIP  ),
+        makeWidget({155,  68}, {145, 13}, WindowWidgetType::Scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             ), // Master volume
+        makeWidget({155,  83}, {145, 13}, WindowWidgetType::Scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             ), // Sound effect volume
+        makeWidget({155,  98}, {145, 13}, WindowWidgetType::Scroll,       WindowColour::secondary, SCROLL_HORIZONTAL                             )  // Music volume
     );
 
     constexpr int32_t kControlsGroupStart = 53;
 
     static constexpr auto window_options_controls_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget({  5, kControlsGroupStart +  0},  {300,137}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CONTROLS_GROUP                                                ), // Controls group
-        makeWidget({ 10, kControlsGroupStart + 13},  {290, 14}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SCREEN_EDGE_SCROLLING,      STR_SCREEN_EDGE_SCROLLING_TIP     ), // Edge scrolling
-        makeWidget({ 10, kControlsGroupStart + 30},  {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_TRAP_MOUSE,                 STR_TRAP_MOUSE_TIP                ), // Trap mouse
-        makeWidget({ 10, kControlsGroupStart + 45},  {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_INVERT_RIGHT_MOUSE_DRAG,    STR_INVERT_RIGHT_MOUSE_DRAG_TIP   ), // Invert right mouse dragging
-        makeWidget({ 10, kControlsGroupStart + 60},  {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_TO_CURSOR,             STR_ZOOM_TO_CURSOR_TIP            ), // Zoom to cursor
-        makeWidget({ 10, kControlsGroupStart + 75},  {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_WINDOW_BUTTONS_ON_THE_LEFT, STR_WINDOW_BUTTONS_ON_THE_LEFT_TIP), // Window buttons on the left
-        makeWidget({ 10, kControlsGroupStart + 90},  {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_ENLARGED_UI,                STR_ENLARGED_UI_TIP               ),
-        makeWidget({ 25, kControlsGroupStart + 105}, {275, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_TOUCH_ENHANCEMENTS,         STR_TOUCH_ENHANCEMENTS_TIP        ),
-        makeWidget({155, kControlsGroupStart + 120}, {145, 13}, WindowWidgetType::Button,   WindowColour::Secondary, STR_HOTKEY,                     STR_HOTKEY_TIP                    )  // Set hotkeys buttons
+        makeWidget({  5, kControlsGroupStart +  0},  {300,137}, WindowWidgetType::Groupbox, WindowColour::secondary, STR_CONTROLS_GROUP                                                ), // Controls group
+        makeWidget({ 10, kControlsGroupStart + 13},  {290, 14}, WindowWidgetType::Checkbox, WindowColour::tertiary , STR_SCREEN_EDGE_SCROLLING,      STR_SCREEN_EDGE_SCROLLING_TIP     ), // Edge scrolling
+        makeWidget({ 10, kControlsGroupStart + 30},  {290, 12}, WindowWidgetType::Checkbox, WindowColour::tertiary , STR_TRAP_MOUSE,                 STR_TRAP_MOUSE_TIP                ), // Trap mouse
+        makeWidget({ 10, kControlsGroupStart + 45},  {290, 12}, WindowWidgetType::Checkbox, WindowColour::tertiary , STR_INVERT_RIGHT_MOUSE_DRAG,    STR_INVERT_RIGHT_MOUSE_DRAG_TIP   ), // Invert right mouse dragging
+        makeWidget({ 10, kControlsGroupStart + 60},  {290, 12}, WindowWidgetType::Checkbox, WindowColour::tertiary , STR_ZOOM_TO_CURSOR,             STR_ZOOM_TO_CURSOR_TIP            ), // Zoom to cursor
+        makeWidget({ 10, kControlsGroupStart + 75},  {290, 12}, WindowWidgetType::Checkbox, WindowColour::tertiary,  STR_WINDOW_BUTTONS_ON_THE_LEFT, STR_WINDOW_BUTTONS_ON_THE_LEFT_TIP), // Window buttons on the left
+        makeWidget({ 10, kControlsGroupStart + 90},  {290, 12}, WindowWidgetType::Checkbox, WindowColour::tertiary,  STR_ENLARGED_UI,                STR_ENLARGED_UI_TIP               ),
+        makeWidget({ 25, kControlsGroupStart + 105}, {275, 12}, WindowWidgetType::Checkbox, WindowColour::tertiary,  STR_TOUCH_ENHANCEMENTS,         STR_TOUCH_ENHANCEMENTS_TIP        ),
+        makeWidget({155, kControlsGroupStart + 120}, {145, 13}, WindowWidgetType::Button,   WindowColour::secondary, STR_HOTKEY,                     STR_HOTKEY_TIP                    )  // Set hotkeys buttons
     );
 
     constexpr int32_t kThemesGroupStart = 53;
@@ -377,23 +377,23 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto window_options_interface_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget({  5, kThemesGroupStart +  0}, {300, 48}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_THEMES_GROUP                                          ), // Themes group
-        makeWidget({ 10, kThemesGroupStart + 14}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_THEMES_LABEL_CURRENT_THEME, STR_CURRENT_THEME_TIP     ), // Themes
-        makeWidget({155, kThemesGroupStart + 14}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRING                                                ),
-        makeWidget({288, kThemesGroupStart + 15}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,             STR_CURRENT_THEME_TIP     ),
-        makeWidget({155, kThemesGroupStart + 30}, {145, 13}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_THEMES_BUTTON,         STR_EDIT_THEMES_BUTTON_TIP), // Themes button
+        makeWidget({  5, kThemesGroupStart +  0}, {300, 48}, WindowWidgetType::Groupbox,     WindowColour::secondary, STR_THEMES_GROUP                                          ), // Themes group
+        makeWidget({ 10, kThemesGroupStart + 14}, {145, 12}, WindowWidgetType::Label,        WindowColour::secondary, STR_THEMES_LABEL_CURRENT_THEME, STR_CURRENT_THEME_TIP     ), // Themes
+        makeWidget({155, kThemesGroupStart + 14}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::secondary, STR_STRING                                                ),
+        makeWidget({288, kThemesGroupStart + 15}, { 11, 10}, WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,             STR_CURRENT_THEME_TIP     ),
+        makeWidget({155, kThemesGroupStart + 30}, {145, 13}, WindowWidgetType::Button,       WindowColour::secondary, STR_EDIT_THEMES_BUTTON,         STR_EDIT_THEMES_BUTTON_TIP), // Themes button
 
-        makeWidget({  5, kToolbarGroupStart +  0}, {300,107}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                         ), // Toolbar buttons group
-        makeWidget({ 10, kToolbarGroupStart + 14}, {280, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED, STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED_TIP      ),
-        makeWidget({ 10, kToolbarGroupStart + 31}, {280, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_SHOW_TOOLBAR_BUTTONS_FOR                                                      ),
-        makeWidget({ 24, kToolbarGroupStart + 46}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP           ), // Finances
-        makeWidget({ 24, kToolbarGroupStart + 61}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_BUTTON_ON_TOOLBAR,      STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP           ), // Research
-        makeWidget({155, kToolbarGroupStart + 46}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHEATS_BUTTON_ON_TOOLBAR,        STR_CHEATS_BUTTON_ON_TOOLBAR_TIP             ), // Cheats
-        makeWidget({155, kToolbarGroupStart + 61}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR, STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP      ), // Recent messages
-        makeWidget({ 24, kToolbarGroupStart + 76}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP               ), // Mute
-        makeWidget({155, kToolbarGroupStart + 76}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP               ), // Chat
-        makeWidget({ 24, kToolbarGroupStart + 91}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP               ), // Zoom
-        makeWidget({155, kToolbarGroupStart + 91}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ROTATE_ANTI_CLOCKWISE,           STR_ROTATE_VIEW_ANTI_CLOCKWISE_IN_TOOLBAR_TIP)  // Rotate anti-clockwise
+        makeWidget({  5, kToolbarGroupStart +  0}, {300,107}, WindowWidgetType::Groupbox, WindowColour::secondary, STR_TOOLBAR_BUTTONS_GROUP                                                         ), // Toolbar buttons group
+        makeWidget({ 10, kToolbarGroupStart + 14}, {280, 12}, WindowWidgetType::Checkbox, WindowColour::tertiary,  STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED, STR_OPTIONS_TOOLBAR_BUTTONS_CENTRED_TIP      ),
+        makeWidget({ 10, kToolbarGroupStart + 31}, {280, 12}, WindowWidgetType::Label,    WindowColour::secondary, STR_SHOW_TOOLBAR_BUTTONS_FOR                                                      ),
+        makeWidget({ 24, kToolbarGroupStart + 46}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP           ), // Finances
+        makeWidget({ 24, kToolbarGroupStart + 61}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::tertiary , STR_RESEARCH_BUTTON_ON_TOOLBAR,      STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP           ), // Research
+        makeWidget({155, kToolbarGroupStart + 46}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::tertiary , STR_CHEATS_BUTTON_ON_TOOLBAR,        STR_CHEATS_BUTTON_ON_TOOLBAR_TIP             ), // Cheats
+        makeWidget({155, kToolbarGroupStart + 61}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::tertiary , STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR, STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP      ), // Recent messages
+        makeWidget({ 24, kToolbarGroupStart + 76}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP               ), // Mute
+        makeWidget({155, kToolbarGroupStart + 76}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP               ), // Chat
+        makeWidget({ 24, kToolbarGroupStart + 91}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP               ), // Zoom
+        makeWidget({155, kToolbarGroupStart + 91}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::tertiary , STR_ROTATE_ANTI_CLOCKWISE,           STR_ROTATE_VIEW_ANTI_CLOCKWISE_IN_TOOLBAR_TIP)  // Rotate anti-clockwise
     );
 
     constexpr int32_t kTitleSequenceStart = 53;
@@ -403,29 +403,29 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto window_options_misc_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget(         {  5, kTitleSequenceStart +  0}, {300, 31}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_TITLE_SEQUENCE                        ),
-        makeDropdownWidgets({ 10, kTitleSequenceStart + 15}, {290, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRINGID,               STR_TITLE_SEQUENCE_TIP), // Title sequence dropdown
+        makeWidget(         {  5, kTitleSequenceStart +  0}, {300, 31}, WindowWidgetType::Groupbox,     WindowColour::secondary, STR_OPTIONS_TITLE_SEQUENCE                        ),
+        makeDropdownWidgets({ 10, kTitleSequenceStart + 15}, {290, 12}, WindowWidgetType::DropdownMenu, WindowColour::secondary, STR_STRINGID,               STR_TITLE_SEQUENCE_TIP), // Title sequence dropdown
 
-        makeWidget({  5,  kScenarioGroupStart + 0}, {300, 66}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_SCENARIO_SELECTION                            ),
-        makeWidget({ 10, kScenarioGroupStart + 16}, {165, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_SCENARIO_PREVIEWS_LABEL,    STR_SCENARIO_PREVIEWS_TIP ),
-        makeWidget({175, kScenarioGroupStart + 15}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                            ), // Scenario previews
-        makeWidget({288, kScenarioGroupStart + 16}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,             STR_SCENARIO_PREVIEWS_TIP ),
-        makeWidget({ 10, kScenarioGroupStart + 31}, {165, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_OPTIONS_SCENARIO_GROUPING,  STR_SCENARIO_GROUPING_TIP ),
-        makeWidget({175, kScenarioGroupStart + 30}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                            ), // Scenario select mode
-        makeWidget({288, kScenarioGroupStart + 31}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,             STR_SCENARIO_GROUPING_TIP ),
-        makeWidget({ 25, kScenarioGroupStart + 45}, {275, 16}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_OPTIONS_SCENARIO_UNLOCKING, STR_SCENARIO_UNLOCKING_TIP), // Unlocking of scenarios
+        makeWidget({  5,  kScenarioGroupStart + 0}, {300, 66}, WindowWidgetType::Groupbox,     WindowColour::secondary, STR_OPTIONS_SCENARIO_SELECTION                            ),
+        makeWidget({ 10, kScenarioGroupStart + 16}, {165, 12}, WindowWidgetType::Label,        WindowColour::secondary, STR_SCENARIO_PREVIEWS_LABEL,    STR_SCENARIO_PREVIEWS_TIP ),
+        makeWidget({175, kScenarioGroupStart + 15}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::secondary                                                            ), // Scenario previews
+        makeWidget({288, kScenarioGroupStart + 16}, { 11, 10}, WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,             STR_SCENARIO_PREVIEWS_TIP ),
+        makeWidget({ 10, kScenarioGroupStart + 31}, {165, 12}, WindowWidgetType::Label,        WindowColour::secondary, STR_OPTIONS_SCENARIO_GROUPING,  STR_SCENARIO_GROUPING_TIP ),
+        makeWidget({175, kScenarioGroupStart + 30}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::secondary                                                            ), // Scenario select mode
+        makeWidget({288, kScenarioGroupStart + 31}, { 11, 10}, WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,             STR_SCENARIO_GROUPING_TIP ),
+        makeWidget({ 25, kScenarioGroupStart + 45}, {275, 16}, WindowWidgetType::Checkbox,     WindowColour::tertiary , STR_OPTIONS_SCENARIO_UNLOCKING, STR_SCENARIO_UNLOCKING_TIP), // Unlocking of scenarios
 
-        makeWidget({ 5,  kScenarioOptionsGroupStart + 0}, {300, 35}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_SCENARIO_OPTIONS                                ),
-        makeWidget({10, kScenarioOptionsGroupStart + 15}, {290, 15}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ALLOW_EARLY_COMPLETION, STR_EARLY_COMPLETION_TIP), // Allow early scenario completion
+        makeWidget({ 5,  kScenarioOptionsGroupStart + 0}, {300, 35}, WindowWidgetType::Groupbox, WindowColour::secondary, STR_SCENARIO_OPTIONS                                ),
+        makeWidget({10, kScenarioOptionsGroupStart + 15}, {290, 15}, WindowWidgetType::Checkbox, WindowColour::tertiary , STR_ALLOW_EARLY_COMPLETION, STR_EARLY_COMPLETION_TIP), // Allow early scenario completion
 
-        makeWidget({  5,  kTweaksStart + 0}, {300, 96}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_TWEAKS                                                  ),
-        makeWidget({ 10, kTweaksStart + 15}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_REAL_NAME_GUESTS,     STR_REAL_NAME_GUESTS_TIP                  ), // Show 'real' names of guests
-        makeWidget({ 10, kTweaksStart + 30}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_REAL_NAME_STAFF,      STR_REAL_NAME_STAFF_TIP                   ), // Show 'real' names of staff
-        makeWidget({ 10, kTweaksStart + 45}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_AUTO_STAFF_PLACEMENT, STR_AUTO_STAFF_PLACEMENT_TIP              ), // Auto staff placement
-        makeWidget({ 10, kTweaksStart + 60}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_AUTO_OPEN_SHOPS,      STR_AUTO_OPEN_SHOPS_TIP                   ), // Automatically open shops & stalls
-        makeWidget({ 10, kTweaksStart + 77}, {165, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DEFAULT_INSPECTION_INTERVAL, STR_DEFAULT_INSPECTION_INTERVAL_TIP),
-        makeWidget({175, kTweaksStart + 76}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                      ), // Default inspection time dropdown
-        makeWidget({288, kTweaksStart + 77}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       )  // Default inspection time dropdown button
+        makeWidget({  5,  kTweaksStart + 0}, {300, 96}, WindowWidgetType::Groupbox,     WindowColour::secondary, STR_OPTIONS_TWEAKS                                                  ),
+        makeWidget({ 10, kTweaksStart + 15}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::tertiary , STR_REAL_NAME_GUESTS,     STR_REAL_NAME_GUESTS_TIP                  ), // Show 'real' names of guests
+        makeWidget({ 10, kTweaksStart + 30}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::tertiary , STR_REAL_NAME_STAFF,      STR_REAL_NAME_STAFF_TIP                   ), // Show 'real' names of staff
+        makeWidget({ 10, kTweaksStart + 45}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::tertiary , STR_AUTO_STAFF_PLACEMENT, STR_AUTO_STAFF_PLACEMENT_TIP              ), // Auto staff placement
+        makeWidget({ 10, kTweaksStart + 60}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::tertiary , STR_AUTO_OPEN_SHOPS,      STR_AUTO_OPEN_SHOPS_TIP                   ), // Automatically open shops & stalls
+        makeWidget({ 10, kTweaksStart + 77}, {165, 12}, WindowWidgetType::Label,        WindowColour::secondary, STR_DEFAULT_INSPECTION_INTERVAL, STR_DEFAULT_INSPECTION_INTERVAL_TIP),
+        makeWidget({175, kTweaksStart + 76}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::secondary                                                                      ), // Default inspection time dropdown
+        makeWidget({288, kTweaksStart + 77}, { 11, 10}, WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       )  // Default inspection time dropdown button
     );
 
     constexpr int32_t kRCT1Start = 53;
@@ -434,29 +434,29 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto window_options_advanced_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget        ({  5, kRCT1Start +  0}, {300, 50}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_RCT1                                                                          ),
-        makeWidget        ({ 10, kRCT1Start + 16}, {276, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path label
-        makeWidget        ({ 10, kRCT1Start + 30}, {290, 14}, WindowWidgetType::Label,        WindowColour::Secondary, kStringIdNone,                             STR_STRING_TOOLTIP                           ), // RCT 1 path path
-        makeWidget        ({239, kRCT1Start + 15}, { 60, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_BROWSE                                                                              ), // RCT 1 path browse
-        makeWidget        ({249, kRCT1Start + 15}, { 50, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_CLEAR_BUTTON,                          STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear
+        makeWidget        ({  5, kRCT1Start +  0}, {300, 50}, WindowWidgetType::Groupbox,     WindowColour::secondary, STR_GROUP_RCT1                                                                          ),
+        makeWidget        ({ 10, kRCT1Start + 16}, {276, 12}, WindowWidgetType::Label,        WindowColour::secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path label
+        makeWidget        ({ 10, kRCT1Start + 30}, {290, 14}, WindowWidgetType::Label,        WindowColour::secondary, kStringIdNone,                             STR_STRING_TOOLTIP                           ), // RCT 1 path path
+        makeWidget        ({239, kRCT1Start + 15}, { 60, 14}, WindowWidgetType::Button,       WindowColour::secondary, STR_BROWSE                                                                              ), // RCT 1 path browse
+        makeWidget        ({249, kRCT1Start + 15}, { 50, 14}, WindowWidgetType::Button,       WindowColour::secondary, STR_CLEAR_BUTTON,                          STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear
 
-        makeWidget        ({  5, kSavingStart +  0}, {300, 80}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_SAVING                                                                        ),
-        makeWidget        ({ 10, kSavingStart + 16}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_SAVE_PLUGIN_DATA,                      STR_SAVE_PLUGIN_DATA_TIP                     ), // Export plug-in objects with saved games
-        makeWidget        ({ 10, kSavingStart + 30}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_ALWAYS_NATIVE_LOADSAVE,                STR_ALWAYS_NATIVE_LOADSAVE_TIP               ), // Use native load/save window
-        makeWidget        ({ 23, kSavingStart + 46}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL,      STR_AUTOSAVE_FREQUENCY_TIP                   ),
-        makeWidget        ({165, kSavingStart + 45}, {135, 13}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                          ), // Autosave dropdown
-        makeWidget        ({288, kSavingStart + 46}, { 11, 11}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
-        makeWidget        ({ 23, kSavingStart + 60}, {135, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_AUTOSAVE_AMOUNT,                       STR_AUTOSAVE_AMOUNT_TIP                      ),
-        makeSpinnerWidgets({165, kSavingStart + 60}, {135, 12}, WindowWidgetType::Spinner,      WindowColour::Secondary, kStringIdNone,                             STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
+        makeWidget        ({  5, kSavingStart +  0}, {300, 80}, WindowWidgetType::Groupbox,     WindowColour::secondary, STR_GROUP_SAVING                                                                        ),
+        makeWidget        ({ 10, kSavingStart + 16}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::tertiary,  STR_SAVE_PLUGIN_DATA,                      STR_SAVE_PLUGIN_DATA_TIP                     ), // Export plug-in objects with saved games
+        makeWidget        ({ 10, kSavingStart + 30}, {290, 12}, WindowWidgetType::Checkbox,     WindowColour::secondary, STR_ALWAYS_NATIVE_LOADSAVE,                STR_ALWAYS_NATIVE_LOADSAVE_TIP               ), // Use native load/save window
+        makeWidget        ({ 23, kSavingStart + 46}, {135, 12}, WindowWidgetType::Label,        WindowColour::secondary, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL,      STR_AUTOSAVE_FREQUENCY_TIP                   ),
+        makeWidget        ({165, kSavingStart + 45}, {135, 13}, WindowWidgetType::DropdownMenu, WindowColour::secondary                                                                                          ), // Autosave dropdown
+        makeWidget        ({288, kSavingStart + 46}, { 11, 11}, WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
+        makeWidget        ({ 23, kSavingStart + 60}, {135, 12}, WindowWidgetType::Label,        WindowColour::secondary, STR_AUTOSAVE_AMOUNT,                       STR_AUTOSAVE_AMOUNT_TIP                      ),
+        makeSpinnerWidgets({165, kSavingStart + 60}, {135, 12}, WindowWidgetType::Spinner,      WindowColour::secondary, kStringIdNone,                             STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
 
-        makeWidget        ({  5, kAdvancedStart +  0}, {300, 97}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_GROUP_ADVANCED                                                                      ),
-        makeWidget        ({ 10, kAdvancedStart + 16}, {295, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
-        makeWidget        ({ 10, kAdvancedStart + 30}, {295, 12}, WindowWidgetType::Checkbox,     WindowColour::Tertiary,  STR_STAY_CONNECTED_AFTER_DESYNC,           STR_STAY_CONNECTED_AFTER_DESYNC_TIP          ), // Do not disconnect after the client desynchronises with the server
+        makeWidget        ({  5, kAdvancedStart +  0}, {300, 97}, WindowWidgetType::Groupbox,     WindowColour::secondary, STR_GROUP_ADVANCED                                                                      ),
+        makeWidget        ({ 10, kAdvancedStart + 16}, {295, 12}, WindowWidgetType::Checkbox,     WindowColour::tertiary,  STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
+        makeWidget        ({ 10, kAdvancedStart + 30}, {295, 12}, WindowWidgetType::Checkbox,     WindowColour::tertiary,  STR_STAY_CONNECTED_AFTER_DESYNC,           STR_STAY_CONNECTED_AFTER_DESYNC_TIP          ), // Do not disconnect after the client desynchronises with the server
 #ifdef __EMSCRIPTEN__
-        makeWidget        ({ 10, kAdvancedStart + 46}, {135, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EXPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data export
-        makeWidget        ({150, kAdvancedStart + 46}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_IMPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data import
+        makeWidget        ({ 10, kAdvancedStart + 46}, {135, 14}, WindowWidgetType::Button,       WindowColour::secondary, STR_EXPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data export
+        makeWidget        ({150, kAdvancedStart + 46}, {150, 14}, WindowWidgetType::Button,       WindowColour::secondary, STR_IMPORT_EMSCRIPTEN,                     kStringIdNone                                ), // Emscripten data import
 #endif
-        makeWidget        ({150, kAdvancedStart + 64}, {150, 14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                )  // Asset packs
+        makeWidget        ({150, kAdvancedStart + 64}, {150, 14}, WindowWidgetType::Button,       WindowColour::secondary, STR_EDIT_ASSET_PACKS_BUTTON,               kStringIdNone                                )  // Asset packs
     );
 
     static constexpr std::span<const Widget> window_options_page_widgets[] = {

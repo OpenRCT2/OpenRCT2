@@ -21,7 +21,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr auto _titleExitWidgets = makeWidgets(
-        makeWidget({ 0, 0 }, { 40, 64 }, WindowWidgetType::ImgBtn, WindowColour::Tertiary, ImageId(SPR_MENU_EXIT), STR_EXIT));
+        makeWidget({ 0, 0 }, { 40, 64 }, WindowWidgetType::ImgBtn, WindowColour::tertiary, ImageId(SPR_MENU_EXIT), STR_EXIT));
 
     class TitleExitWindow final : public Window
     {

@@ -54,18 +54,18 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _inventionListWidgets = makeWidgets(
         makeWindowShim(WINDOW_TITLE, WW, WH),
-        makeWidget({  0,  43}, {600, 357}, WindowWidgetType::Resize,  WindowColour::Secondary                                             ),
+        makeWidget({  0,  43}, {600, 357}, WindowWidgetType::Resize,  WindowColour::secondary                                             ),
         makeTab   ({  3,  17}                                                                                               ),
-        makeWidget({  4,  56}, {368, 161}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                            ),
-        makeWidget({  4, 231}, {368, 157}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                            ),
-        makeWidget({431, 106}, {114, 114}, WindowWidgetType::FlatBtn, WindowColour::Secondary                                             ),
-        makeWidget({375, 343}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MOVE_ALL_TOP                           ),
-        makeWidget({375, 358}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MOVE_ALL_BOTTOM                        ),
-        makeWidget({375, 373}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_RANDOM_SHUFFLE,  STR_RANDOM_SHUFFLE_TIP)
+        makeWidget({  4,  56}, {368, 161}, WindowWidgetType::Scroll,  WindowColour::secondary, SCROLL_VERTICAL                            ),
+        makeWidget({  4, 231}, {368, 157}, WindowWidgetType::Scroll,  WindowColour::secondary, SCROLL_VERTICAL                            ),
+        makeWidget({431, 106}, {114, 114}, WindowWidgetType::FlatBtn, WindowColour::secondary                                             ),
+        makeWidget({375, 343}, {220,  14}, WindowWidgetType::Button,  WindowColour::secondary, STR_MOVE_ALL_TOP                           ),
+        makeWidget({375, 358}, {220,  14}, WindowWidgetType::Button,  WindowColour::secondary, STR_MOVE_ALL_BOTTOM                        ),
+        makeWidget({375, 373}, {220,  14}, WindowWidgetType::Button,  WindowColour::secondary, STR_RANDOM_SHUFFLE,  STR_RANDOM_SHUFFLE_TIP)
     );
 
     static constexpr auto _inventionListDragWidgets = makeWidgets(
-        makeWidget({0, 0}, {150, 14}, WindowWidgetType::ImgBtn, WindowColour::Primary)
+        makeWidget({0, 0}, {150, 14}, WindowWidgetType::ImgBtn, WindowColour::primary)
     );
     // clang-format on
 

@@ -34,10 +34,10 @@ namespace OpenRCT2::Ui
 
     enum class WindowColour : uint8_t
     {
-        Primary,
-        Secondary,
-        Tertiary,
-        Quaternary,
+        primary,
+        secondary,
+        tertiary,
+        quaternary,
     };
 
     constexpr Widget makeWidget(
@@ -85,7 +85,7 @@ namespace OpenRCT2::Ui
     {
         const ScreenSize size = kTabSize;
         const WindowWidgetType type = WindowWidgetType::Tab;
-        const WindowColour colour = WindowColour::Secondary;
+        const WindowColour colour = WindowColour::secondary;
         const auto content = ImageId(kImageIndexUndefined);
 
         return makeWidget(origin, size, type, colour, content, tooltip);
@@ -176,9 +176,9 @@ namespace OpenRCT2::Ui
     {
         // clang-format off
         std::array<Widget, 3> out = {
-            makeWidget({ 0, 0 }, { width, height }, WindowWidgetType::Frame, WindowColour::Primary),
-            makeWidget({ 1, 1 }, { width - 1, kTitleHeightNormal }, WindowWidgetType::Caption, WindowColour::Primary, title, STR_WINDOW_TITLE_TIP),
-            makeWidget({ width - 12, 2 }, { 11, 11 }, WindowWidgetType::CloseBox, WindowColour::Primary, kWidgetContentEmpty, STR_CLOSE_WINDOW_TIP),
+            makeWidget({ 0, 0 }, { width, height }, WindowWidgetType::Frame, WindowColour::primary),
+            makeWidget({ 1, 1 }, { width - 1, kTitleHeightNormal }, WindowWidgetType::Caption, WindowColour::primary, title, STR_WINDOW_TITLE_TIP),
+            makeWidget({ width - 12, 2 }, { 11, 11 }, WindowWidgetType::CloseBox, WindowColour::primary, kWidgetContentEmpty, STR_CLOSE_WINDOW_TIP),
         };
         // clang-format on
 

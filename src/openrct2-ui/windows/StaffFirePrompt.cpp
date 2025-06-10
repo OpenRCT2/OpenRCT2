@@ -37,8 +37,8 @@ namespace OpenRCT2::Ui::Windows
     // 0x9AFB4C
     static constexpr auto _staffFireWidgets = makeWidgets(
         makeWindowShim(WINDOW_TITLE, WW, WH),
-        makeWidget({     10, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_YES               ),
-        makeWidget({WW - 95, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL)
+        makeWidget({     10, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::primary, STR_YES               ),
+        makeWidget({WW - 95, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::primary, STR_SAVE_PROMPT_CANCEL)
     );
     // clang-format on
 

@@ -211,7 +211,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto window_new_ride_widgets = makeWidgets(
         makeWindowShim(WindowTitle, WindowWidth, kWindowHeight),
-        makeWidget({  0,  43},             {601, 339},         WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
+        makeWidget({  0,  43},             {601, 339},         WindowWidgetType::Resize,   WindowColour::secondary                                                                ),
         makeTab   ({  3,  17},                                                                                      STR_TRANSPORT_RIDES_TIP                                       ),
         makeTab   ({ 34,  17},                                                                                      STR_GENTLE_RIDES_TIP                                          ),
         makeTab   ({ 65,  17},                                                                                      STR_ROLLER_COASTERS_TIP                                       ),
@@ -219,14 +219,14 @@ namespace OpenRCT2::Ui::Windows
         makeTab   ({127,  17},                                                                                      STR_WATER_RIDES_TIP                                           ),
         makeTab   ({158,  17},                                                                                      STR_SHOPS_STALLS_TIP                                          ),
         makeTab   ({189,  17},                                                                                      STR_RESEARCH_AND_DEVELOPMENT_TIP                              ),
-        makeWidget({  3,  62},             {595, 256},         WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL                                               ),
-        makeWidget({  3,  47},             {290,  70},         WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_CURRENTLY_IN_DEVELOPMENT                                  ),
-        makeWidget({  3, 124},             {290,  65},         WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_LAST_DEVELOPMENT                                          ),
-        makeWidget({265, 161},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  0xFFFFFFFF,                      STR_RESEARCH_SHOW_DETAILS_TIP),
-        makeWidget({265,  68},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  ImageId(SPR_FINANCE),                     STR_FINANCES_RESEARCH_TIP    ),
-        makeWidget({  4,  46},             {211, 14},          WindowWidgetType::TextBox,  WindowColour::Secondary                          ),
-        makeWidget({218,  46},             { 70, 14},          WindowWidgetType::Button,   WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR ),
-        makeWidget(GroupByTrackTypeOrigin, GroupTrackTypeSize, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GROUP_BY_TRACK_TYPE,         STR_GROUP_BY_TRACK_TYPE_TIP  )
+        makeWidget({  3,  62},             {595, 256},         WindowWidgetType::Scroll,   WindowColour::secondary, SCROLL_VERTICAL                                               ),
+        makeWidget({  3,  47},             {290,  70},         WindowWidgetType::Groupbox, WindowColour::tertiary,  STR_CURRENTLY_IN_DEVELOPMENT                                  ),
+        makeWidget({  3, 124},             {290,  65},         WindowWidgetType::Groupbox, WindowColour::tertiary,  STR_LAST_DEVELOPMENT                                          ),
+        makeWidget({265, 161},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::tertiary,  0xFFFFFFFF,                      STR_RESEARCH_SHOW_DETAILS_TIP),
+        makeWidget({265,  68},             { 24,  24},         WindowWidgetType::FlatBtn,  WindowColour::tertiary,  ImageId(SPR_FINANCE),                     STR_FINANCES_RESEARCH_TIP    ),
+        makeWidget({  4,  46},             {211, 14},          WindowWidgetType::TextBox,  WindowColour::secondary                          ),
+        makeWidget({218,  46},             { 70, 14},          WindowWidgetType::Button,   WindowColour::secondary, STR_OBJECT_SEARCH_CLEAR ),
+        makeWidget(GroupByTrackTypeOrigin, GroupTrackTypeSize, WindowWidgetType::Checkbox, WindowColour::secondary, STR_GROUP_BY_TRACK_TYPE,         STR_GROUP_BY_TRACK_TYPE_TIP  )
     );
     // clang-format on
 

@@ -90,7 +90,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto makeParkWidgets = [](int16_t width) {
         return makeWidgets(
             makeWindowShim(WINDOW_TITLE, width, WH),
-            makeWidget({ 0, 43 }, { width, 131 }, WindowWidgetType::Resize, WindowColour::Secondary),
+            makeWidget({ 0, 43 }, { width, 131 }, WindowWidgetType::Resize, WindowColour::secondary),
             makeTab({ 3, 17 }, STR_PARK_ENTRANCE_TAB_TIP),
             makeTab({ 34, 17 }, STR_PARK_RATING_TAB_TIP),
             makeTab({ 65, 17 }, STR_PARK_GUESTS_TAB_TIP),
@@ -103,14 +103,14 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto _entranceWidgets = makeWidgets(
         makeParkWidgets(230),
-        makeWidget({  3,  46}, {202, 115}, WindowWidgetType::Viewport,      WindowColour::Secondary                                                                      ), // viewport
-        makeWidget({  3, 161}, {202,  11}, WindowWidgetType::LabelCentred,  WindowColour::Secondary                                                                      ), // status
-        makeWidget({205,  49}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                 STR_OPEN_OR_CLOSE_PARK_TIP              ), // open / close
-        makeWidget({205,  73}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_BUY_LAND_RIGHTS),        STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP), // buy land rights
-        makeWidget({205,  97}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),                 STR_LOCATE_SUBJECT_TIP                  ), // locate
-        makeWidget({205, 121}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),                 STR_NAME_PARK_TIP                       ), // rename
-        makeWidget({210,  51}, { 14,  15}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0), STR_CLOSE_PARK_TIP                      ),
-        makeWidget({210,  66}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_PARK_TIP                       )
+        makeWidget({  3,  46}, {202, 115}, WindowWidgetType::Viewport,      WindowColour::secondary                                                                      ), // viewport
+        makeWidget({  3, 161}, {202,  11}, WindowWidgetType::LabelCentred,  WindowColour::secondary                                                                      ), // status
+        makeWidget({205,  49}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::secondary, 0xFFFFFFFF,                 STR_OPEN_OR_CLOSE_PARK_TIP              ), // open / close
+        makeWidget({205,  73}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::secondary, ImageId(SPR_BUY_LAND_RIGHTS),        STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP), // buy land rights
+        makeWidget({205,  97}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::secondary, ImageId(SPR_LOCATE),                 STR_LOCATE_SUBJECT_TIP                  ), // locate
+        makeWidget({205, 121}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::secondary, ImageId(SPR_RENAME),                 STR_NAME_PARK_TIP                       ), // rename
+        makeWidget({210,  51}, { 14,  15}, WindowWidgetType::ImgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0), STR_CLOSE_PARK_TIP                      ),
+        makeWidget({210,  66}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_PARK_TIP                       )
     );
 
     static constexpr auto _ratingWidgets = makeWidgets(
@@ -123,8 +123,8 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto _priceWidgets = makeWidgets(
         makeParkWidgets(230),
-        makeWidget        ({ 21, 50}, {126, 14}, WindowWidgetType::Label,   WindowColour::Secondary, STR_ADMISSION_PRICE),
-        makeSpinnerWidgets({147, 50}, { 76, 14}, WindowWidgetType::Spinner, WindowColour::Secondary                     ) // Price (3 widgets)
+        makeWidget        ({ 21, 50}, {126, 14}, WindowWidgetType::Label,   WindowColour::secondary, STR_ADMISSION_PRICE),
+        makeSpinnerWidgets({147, 50}, { 76, 14}, WindowWidgetType::Spinner, WindowColour::secondary                     ) // Price (3 widgets)
     );
 
     static constexpr auto _statsWidgets = makeWidgets(
@@ -133,7 +133,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto _objectiveWidgets = makeWidgets(
         makeParkWidgets(230),
-        makeWidget({7, 207}, {216, 14}, WindowWidgetType::Button, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART) // enter name
+        makeWidget({7, 207}, {216, 14}, WindowWidgetType::Button, WindowColour::secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART) // enter name
     );
 
     static constexpr auto _awardsWidgets = makeWidgets(
