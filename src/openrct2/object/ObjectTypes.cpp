@@ -25,7 +25,7 @@ constexpr std::array kAllObjectTypes = {
     ObjectType::sceneryGroup,
     ObjectType::parkEntrance,
     ObjectType::water,
-    ObjectType::scenarioText,
+    ObjectType::scenarioMeta,
     ObjectType::terrainSurface,
     ObjectType::terrainEdge,
     ObjectType::station,
@@ -51,7 +51,7 @@ static constexpr std::array<const ObjectType, kNumTransientObjectTypes> kTransie
 
 // Object types that cannot be saved in a park file.
 static constexpr std::array<const ObjectType, kNumIntransientObjectTypes> kIntransientObjectTypes = {
-    ObjectType::scenarioText,
+    ObjectType::scenarioMeta,
     ObjectType::audio,
 };
 

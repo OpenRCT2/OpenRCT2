@@ -204,6 +204,9 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TITLE_SEQUENCE,
         WIDX_TITLE_SEQUENCE_DROPDOWN,
         WIDX_SCENARIO_GROUP,
+        WIDX_SCENARIO_PREVIEWS_LABEL,
+        WIDX_SCENARIO_PREVIEWS,
+        WIDX_SCENARIO_PREVIEWS_DROPDOWN,
         WIDX_SCENARIO_GROUPING_LABEL,
         WIDX_SCENARIO_GROUPING,
         WIDX_SCENARIO_GROUPING_DROPDOWN,
@@ -395,7 +398,7 @@ namespace OpenRCT2::Ui::Windows
 
     constexpr int32_t kTitleSequenceStart = 53;
     constexpr int32_t kScenarioGroupStart = kTitleSequenceStart + 35;
-    constexpr int32_t kScenarioOptionsGroupStart = kScenarioGroupStart + 55;
+    constexpr int32_t kScenarioOptionsGroupStart = kScenarioGroupStart + 70;
     constexpr int32_t kTweaksStart = kScenarioOptionsGroupStart + 39;
 
     static constexpr auto window_options_misc_widgets = makeWidgets(
@@ -403,11 +406,14 @@ namespace OpenRCT2::Ui::Windows
         MakeWidget(         {  5, kTitleSequenceStart +  0}, {300, 31}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_TITLE_SEQUENCE                        ),
         MakeDropdownWidgets({ 10, kTitleSequenceStart + 15}, {290, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRINGID,               STR_TITLE_SEQUENCE_TIP), // Title sequence dropdown
 
-        MakeWidget({  5,  kScenarioGroupStart + 0}, {300, 51}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_SCENARIO_SELECTION                            ),
-        MakeWidget({ 10, kScenarioGroupStart + 16}, {165, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_OPTIONS_SCENARIO_GROUPING,  STR_SCENARIO_GROUPING_TIP ),
-        MakeWidget({175, kScenarioGroupStart + 15}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                            ), // Scenario select mode
-        MakeWidget({288, kScenarioGroupStart + 16}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,             STR_SCENARIO_GROUPING_TIP ),
-        MakeWidget({ 25, kScenarioGroupStart + 30}, {275, 16}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_OPTIONS_SCENARIO_UNLOCKING, STR_SCENARIO_UNLOCKING_TIP), // Unlocking of scenarios
+        MakeWidget({  5,  kScenarioGroupStart + 0}, {300, 66}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_SCENARIO_SELECTION                            ),
+        MakeWidget({ 10, kScenarioGroupStart + 16}, {165, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_SCENARIO_PREVIEWS_LABEL,    STR_SCENARIO_PREVIEWS_TIP ),
+        MakeWidget({175, kScenarioGroupStart + 15}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                            ), // Scenario previews
+        MakeWidget({288, kScenarioGroupStart + 16}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,             STR_SCENARIO_PREVIEWS_TIP ),
+        MakeWidget({ 10, kScenarioGroupStart + 31}, {165, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_OPTIONS_SCENARIO_GROUPING,  STR_SCENARIO_GROUPING_TIP ),
+        MakeWidget({175, kScenarioGroupStart + 30}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                            ), // Scenario select mode
+        MakeWidget({288, kScenarioGroupStart + 31}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,             STR_SCENARIO_GROUPING_TIP ),
+        MakeWidget({ 25, kScenarioGroupStart + 45}, {275, 16}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_OPTIONS_SCENARIO_UNLOCKING, STR_SCENARIO_UNLOCKING_TIP), // Unlocking of scenarios
 
         MakeWidget({ 5,  kScenarioOptionsGroupStart + 0}, {300, 35}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_SCENARIO_OPTIONS                                ),
         MakeWidget({10, kScenarioOptionsGroupStart + 15}, {290, 15}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ALLOW_EARLY_COMPLETION, STR_EARLY_COMPLETION_TIP), // Allow early scenario completion
@@ -1822,7 +1828,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Get().general.ScenarioUnlockingEnabled ^= 1;
                     Config::Save();
                     auto* windowMgr = Ui::GetWindowManager();
-                    windowMgr->CloseByClass(WindowClass::ScenarioSelect);
+                    windowMgr->InvalidateByClass(WindowClass::ScenarioSelect);
                     break;
                 }
                 case WIDX_AUTO_OPEN_SHOPS:
@@ -1875,6 +1881,22 @@ namespace OpenRCT2::Ui::Windows
                         ? numItems - 1
                         : static_cast<int32_t>(TitleGetCurrentSequence());
                     Dropdown::SetChecked(selectedIndex, true);
+                    break;
+                }
+                case WIDX_SCENARIO_PREVIEWS_DROPDOWN:
+                {
+                    uint32_t numItems = 2;
+
+                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[0].Args = STR_SCENARIO_PREVIEWS_MINIMAPS;
+                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[1].Args = STR_SCENARIO_PREVIEWS_SCREENSHOTS;
+
+                    WindowDropdownShowTextCustomWidth(
+                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
+                        Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
+
+                    Dropdown::SetChecked(Config::Get().interface.scenarioPreviewScreenshots, true);
                     break;
                 }
                 case WIDX_SCENARIO_GROUPING_DROPDOWN:
@@ -1936,11 +1958,21 @@ namespace OpenRCT2::Ui::Windows
                         Invalidate();
                     }
                     break;
+                case WIDX_SCENARIO_PREVIEWS_DROPDOWN:
+                    if (dropdownIndex != static_cast<int32_t>(Config::Get().interface.scenarioPreviewScreenshots))
+                    {
+                        Config::Get().interface.scenarioPreviewScreenshots = dropdownIndex;
+                        Config::Save();
+                        Invalidate();
+                        auto* windowMgr = Ui::GetWindowManager();
+                        windowMgr->InvalidateByClass(WindowClass::ScenarioSelect);
+                    }
+                    break;
                 case WIDX_SCENARIO_GROUPING_DROPDOWN:
                     if (dropdownIndex != EnumValue(Config::Get().general.scenarioSelectMode))
                     {
                         Config::Get().general.scenarioSelectMode = static_cast<ScenarioSelectMode>(dropdownIndex);
-                        Config::Get().interface.ScenarioselectLastTab = 0;
+                        Config::Get().interface.scenarioSelectLastTab = 0;
                         Config::Save();
                         Invalidate();
                         auto* windowMgr = Ui::GetWindowManager();
@@ -1987,6 +2019,11 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_AUTO_STAFF_PLACEMENT, Config::Get().general.AutoStaffPlacement);
             SetCheckboxValue(WIDX_AUTO_OPEN_SHOPS, Config::Get().general.AutoOpenShops);
             SetCheckboxValue(WIDX_ALLOW_EARLY_COMPLETION, Config::Get().general.AllowEarlyCompletion);
+
+            if (Config::Get().interface.scenarioPreviewScreenshots)
+                widgets[WIDX_SCENARIO_PREVIEWS].text = STR_SCENARIO_PREVIEWS_SCREENSHOTS;
+            else
+                widgets[WIDX_SCENARIO_PREVIEWS].text = STR_SCENARIO_PREVIEWS_MINIMAPS;
 
             if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::difficulty)
                 widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_DIFFICULTY;
@@ -2049,7 +2086,7 @@ namespace OpenRCT2::Ui::Windows
                                 if (CsgAtLocationIsUsable(rct1path))
                                 {
                                     Config::Get().general.RCT1Path = std::move(rct1path);
-                                    Config::Get().interface.ScenarioselectLastTab = 0;
+                                    Config::Get().interface.scenarioSelectLastTab = 0;
                                     Config::Save();
                                     ContextShowError(STR_RESTART_REQUIRED, kStringIdNone, {});
                                 }

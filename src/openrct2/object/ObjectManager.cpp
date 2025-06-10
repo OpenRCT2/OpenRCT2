@@ -173,8 +173,6 @@ public:
         }
 
         auto object = _objectRepository.LoadObject(ori);
-        object->Load();
-
         return object;
     }
 
@@ -550,7 +548,7 @@ private:
                 if (entry.HasValue())
                 {
                     const auto* ori = _objectRepository.FindObject(entry);
-                    if (ori == nullptr && entry.GetType() == ObjectType::scenarioText)
+                    if (ori == nullptr && entry.GetType() == ObjectType::scenarioMeta)
                     {
                         continue;
                     }
