@@ -9,14 +9,13 @@
 
 #pragma once
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "../../../OpenRCT2.h"
     #include "../../../actions/GameAction.h"
     #include "../../../interface/Screenshot.h"
     #include "../../../localisation/Formatting.h"
     #include "../../../object/ObjectManager.h"
-    #include "../../Duktape.hpp"
     #include "../../HookEngine.h"
     #include "../../IconNames.hpp"
     #include "../../ScriptEngine.h"
@@ -30,6 +29,7 @@
 
 namespace OpenRCT2::Scripting
 {
+    /* TODO (mber)
     class ScContext
     {
     private:
@@ -464,21 +464,22 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScContext::getIcon, "getIcon");
         }
     };
+    */
 
-    uint32_t ImageFromDuk(const DukValue& d)
+    inline uint32_t ImageFromJSValue(JSContext* ctx, JSValue value)
     {
         uint32_t img{};
-        if (d.type() == DukValue::Type::NUMBER)
+        if (JS_IsNumber(value))
         {
-            img = d.as_uint();
+            JS_ToUint32(ctx, &img, value);
             if (GetTargetAPIVersion() <= kApiVersionG2Reorder)
             {
-                img = NewIconIndex(d.as_uint());
+                img = NewIconIndex(img);
             }
         }
-        else if (d.type() == DukValue::Type::STRING)
+        else if (JS_IsString(value))
         {
-            img = GetIconByName(d.as_c_string());
+            img = GetIconByName(JSToStdString(ctx, value));
         }
         return img;
     }
