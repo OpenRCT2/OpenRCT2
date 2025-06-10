@@ -47,11 +47,11 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _titleMenuWidgets = makeWidgets(
-        MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_MENU_NEW_GAME),       STR_START_NEW_GAME_TIP),
-        MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_MENU_LOAD_GAME),      STR_CONTINUE_SAVED_GAME_TIP),
-        MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_G2_MENU_MULTIPLAYER), STR_SHOW_MULTIPLAYER_TIP),
-        MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_MENU_TOOLBOX),        STR_GAME_TOOLS_TIP),
-        MakeWidget({0,                       0}, UpdateButtonDims, WindowWidgetType::Empty,  WindowColour::Secondary, STR_UPDATE_AVAILABLE)
+        makeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WidgetType::imgBtn, WindowColour::tertiary,  ImageId(SPR_MENU_NEW_GAME),       STR_START_NEW_GAME_TIP),
+        makeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WidgetType::imgBtn, WindowColour::tertiary,  ImageId(SPR_MENU_LOAD_GAME),      STR_CONTINUE_SAVED_GAME_TIP),
+        makeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WidgetType::imgBtn, WindowColour::tertiary,  ImageId(SPR_G2_MENU_MULTIPLAYER), STR_SHOW_MULTIPLAYER_TIP),
+        makeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WidgetType::imgBtn, WindowColour::tertiary,  ImageId(SPR_MENU_TOOLBOX),        STR_GAME_TOOLS_TIP),
+        makeWidget({0,                       0}, UpdateButtonDims, WidgetType::empty,  WindowColour::secondary, STR_UPDATE_AVAILABLE)
     );
     // clang-format on
 
@@ -94,13 +94,13 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(_titleMenuWidgets);
 
 #ifdef DISABLE_NETWORK
-            widgets[WIDX_MULTIPLAYER].type = WindowWidgetType::Empty;
+            widgets[WIDX_MULTIPLAYER].type = WidgetType::empty;
 #endif
 
             int32_t x = 0;
             for (Widget* widget = widgets.data(); widget != &widgets[WIDX_NEW_VERSION]; widget++)
             {
-                if (widget->type != WindowWidgetType::Empty)
+                if (widget->type != WidgetType::empty)
                 {
                     widget->left = x;
                     widget->right = x + MenuButtonDims.width - 1;
@@ -268,7 +268,7 @@ namespace OpenRCT2::Ui::Windows
                             windowPos + ScreenCoordsXY{ width - 1, MenuButtonDims.height + UpdateButtonDims.height - 1 } };
             if (OpenRCT2::GetContext()->HasNewVersionInfo())
             {
-                widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
+                widgets[WIDX_NEW_VERSION].type = WidgetType::button;
                 _filterRect.Point1.y = windowPos.y;
             }
         }

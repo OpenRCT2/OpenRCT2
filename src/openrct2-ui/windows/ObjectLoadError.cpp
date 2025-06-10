@@ -282,14 +282,14 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto window_object_load_error_widgets = makeWidgets(
         makeWindowShim(WINDOW_TITLE, WW, WH),
-        MakeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_NAME                         ), // 'Object name' header
-        MakeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_SOURCE                       ), // 'Object source' header
-        MakeWidget({  TYPE_COL_LEFT,  57}, {166,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_TYPE                         ), // 'Object type' header
-        MakeWidget({  NAME_COL_LEFT,  70}, {442, 298}, WindowWidgetType::Scroll,      WindowColour::Primary, SCROLL_VERTICAL                         ), // Scrollable list area
-        MakeWidget({  NAME_COL_LEFT, 377}, {145,  14}, WindowWidgetType::Button,      WindowColour::Primary, STR_COPY_SELECTED, STR_COPY_SELECTED_TIP), // Copy selected button
-        MakeWidget({            152, 377}, {145,  14}, WindowWidgetType::Button,      WindowColour::Primary, STR_COPY_ALL,      STR_COPY_ALL_TIP     )  // Copy all button
+        makeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WidgetType::tableHeader, WindowColour::primary, STR_OBJECT_NAME                         ), // 'Object name' header
+        makeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WidgetType::tableHeader, WindowColour::primary, STR_OBJECT_SOURCE                       ), // 'Object source' header
+        makeWidget({  TYPE_COL_LEFT,  57}, {166,  14}, WidgetType::tableHeader, WindowColour::primary, STR_OBJECT_TYPE                         ), // 'Object type' header
+        makeWidget({  NAME_COL_LEFT,  70}, {442, 298}, WidgetType::scroll,      WindowColour::primary, SCROLL_VERTICAL                         ), // Scrollable list area
+        makeWidget({  NAME_COL_LEFT, 377}, {145,  14}, WidgetType::button,      WindowColour::primary, STR_COPY_SELECTED, STR_COPY_SELECTED_TIP), // Copy selected button
+        makeWidget({            152, 377}, {145,  14}, WidgetType::button,      WindowColour::primary, STR_COPY_ALL,      STR_COPY_ALL_TIP     )  // Copy all button
     #ifndef DISABLE_HTTP
-      , MakeWidget({            300, 377}, {146,  14}, WindowWidgetType::Button,      WindowColour::Primary, STR_DOWNLOAD_ALL,  STR_DOWNLOAD_ALL_TIP )  // Download all button
+      , makeWidget({            300, 377}, {146,  14}, WidgetType::button,      WindowColour::primary, STR_DOWNLOAD_ALL,  STR_DOWNLOAD_ALL_TIP )  // Download all button
     #endif
     );
     // clang-format on

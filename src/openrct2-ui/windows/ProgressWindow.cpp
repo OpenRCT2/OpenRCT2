@@ -119,9 +119,9 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDraw() override
         {
             if (_onClose != nullptr)
-                widgets[WIDX_CLOSE].type = WindowWidgetType::CloseBox;
+                widgets[WIDX_CLOSE].type = WidgetType::closeBox;
             else
-                widgets[WIDX_CLOSE].type = WindowWidgetType::Empty;
+                widgets[WIDX_CLOSE].type = WidgetType::empty;
 
             PrepareCaption();
         }

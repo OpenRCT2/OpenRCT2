@@ -26,7 +26,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr auto _tooltipWidgets = makeWidgets(
-        MakeWidget({ 0, 0 }, { 200, 32 }, WindowWidgetType::ImgBtn, WindowColour::Primary));
+        makeWidget({ 0, 0 }, { 200, 32 }, WidgetType::imgBtn, WindowColour::primary));
 
     class TooltipWindow final : public Window
     {
@@ -180,7 +180,7 @@ namespace OpenRCT2::Ui::Windows
         widgetWindow->OnPrepareDraw();
 
         OpenRCT2String result;
-        if (widget->flags & WIDGET_FLAGS::TOOLTIP_IS_STRING)
+        if (widget->flags.has(WidgetFlag::tooltipIsString))
         {
             auto tooltipString = widget->sztooltip;
             if (*tooltipString == 0)

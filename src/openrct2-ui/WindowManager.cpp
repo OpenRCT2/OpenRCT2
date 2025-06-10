@@ -1184,7 +1184,7 @@ public:
         {
             const auto& widget = w.widgets[i];
 
-            if (widget.type != WindowWidgetType::Empty && widget.IsVisible())
+            if (widget.type != WidgetType::empty && widget.IsVisible())
             {
                 if (screenCoords.x >= w.windowPos.x + widget.left && screenCoords.x <= w.windowPos.x + widget.right
                     && screenCoords.y >= w.windowPos.y + widget.top && screenCoords.y <= w.windowPos.y + widget.bottom)
@@ -1198,7 +1198,7 @@ public:
         if (widget_index != kWidgetIndexNull)
         {
             const auto& widget = w.widgets[widget_index];
-            if (widget.type == WindowWidgetType::DropdownMenu)
+            if (widget.type == WidgetType::dropdownMenu)
                 widget_index++;
         }
 

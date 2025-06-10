@@ -60,21 +60,21 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto kMainWidgets = makeWidgets(
         makeWindowShim(WINDOW_TITLE, WW, WH),
-        MakeWidget({ 0, TABHEIGHT }, { WW, WH - TABHEIGHT }, WindowWidgetType::Frame, WindowColour::Secondary),
-        MakeRemapWidget({ 3, 17 }, { 91, TABHEIGHT - 16 }, WindowWidgetType::Tab, WindowColour::Secondary, SPR_TAB_LARGE),
-        MakeRemapWidget({ 94, 17 }, { 91, TABHEIGHT - 16 }, WindowWidgetType::Tab, WindowColour::Secondary, SPR_TAB_LARGE));
+        makeWidget({ 0, TABHEIGHT }, { WW, WH - TABHEIGHT }, WidgetType::frame, WindowColour::secondary),
+        makeRemapWidget({ 3, 17 }, { 91, TABHEIGHT - 16 }, WidgetType::tab, WindowColour::secondary, SPR_TAB_LARGE),
+        makeRemapWidget({ 94, 17 }, { 91, TABHEIGHT - 16 }, WidgetType::tab, WindowColour::secondary, SPR_TAB_LARGE));
 
     // clang-format off
     static constexpr auto _windowAboutOpenRCT2Widgets = makeWidgets(
         kMainWidgets,
-        MakeWidget({10, 60},        {WW - 20, 20}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION), // Introduction
-        MakeWidget({30, 90},        {128, 128},    WindowWidgetType::Placeholder,  WindowColour::Secondary, kStringIdNone), // OpenRCT2 Logo
-        MakeWidget({168, 100},      {173, 24},     WindowWidgetType::Placeholder,  WindowColour::Secondary, kStringIdNone), // Build version
-        MakeWidget({344, 100 },     {24, 24},      WindowWidgetType::ImgBtn,       WindowColour::Secondary, ImageId(SPR_G2_COPY), STR_COPY_BUILD_HASH   ), // "Copy build info" button
-        MakeWidget({168, 115 + 20}, {200, 14},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_UPDATE_AVAILABLE  ), // "new version" button
-        MakeWidget({168, 115 + 40}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
-        MakeWidget({168, 115 + 60}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
-        MakeWidget({168, 115 + 80}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CONTRIBUTORS_WINDOW_BUTTON) // "contributors" button
+        makeWidget({10, 60},        {WW - 20, 20}, WidgetType::labelCentred, WindowColour::secondary, STR_ABOUT_OPENRCT2_DESCRIPTION), // Introduction
+        makeWidget({30, 90},        {128, 128},    WidgetType::placeholder,  WindowColour::secondary, kStringIdNone), // OpenRCT2 Logo
+        makeWidget({168, 100},      {173, 24},     WidgetType::placeholder,  WindowColour::secondary, kStringIdNone), // Build version
+        makeWidget({344, 100 },     {24, 24},      WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_COPY), STR_COPY_BUILD_HASH   ), // "Copy build info" button
+        makeWidget({168, 115 + 20}, {200, 14},     WidgetType::placeholder,  WindowColour::secondary, STR_UPDATE_AVAILABLE  ), // "new version" button
+        makeWidget({168, 115 + 40}, {200, 14},     WidgetType::button,       WindowColour::secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
+        makeWidget({168, 115 + 60}, {200, 14},     WidgetType::button,       WindowColour::secondary, STR_JOIN_DISCORD      ), // "join discord" button
+        makeWidget({168, 115 + 80}, {200, 14},     WidgetType::button,       WindowColour::secondary, STR_CONTRIBUTORS_WINDOW_BUTTON) // "contributors" button
     );
     // clang-format on
 
@@ -239,7 +239,7 @@ namespace OpenRCT2::Ui::Windows
             // Shows the update available button
             if (OpenRCT2::GetContext()->HasNewVersionInfo())
             {
-                widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
+                widgets[WIDX_NEW_VERSION].type = WidgetType::button;
             }
 
             // Draw the rest of the text
