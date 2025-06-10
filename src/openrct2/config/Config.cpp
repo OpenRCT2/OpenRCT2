@@ -232,7 +232,7 @@ namespace OpenRCT2::Config
             // Gamepad settings
             model->GamepadAnalogScrolling = reader->GetBoolean("gamepad_analog_scrolling", true);
             model->GamepadDeadzone = reader->GetInt32("gamepad_deadzone", 3600);
-            model->GamepadSensitivity = reader->GetFloat("gamepad_sensitivity", 2.5f);
+            model->GamepadSensitivity = reader->GetFloat("gamepad_sensitivity", 1.75f);
             model->GamepadInvertX = reader->GetBoolean("gamepad_invert_x", false);
             model->GamepadInvertY = reader->GetBoolean("gamepad_invert_y", false);
             model->scenarioSelectMode = reader->GetEnum(

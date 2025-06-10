@@ -1629,7 +1629,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& sensitivityWidget = widgets[WIDX_GAMEPAD_SENSITIVITY];
             const auto& sensitivityScroll = scrolls[1];
             uint8_t sensitivityPercent = GetScrollPercentage(sensitivityWidget, sensitivityScroll);
-            float sensitivityValue = 1.0f + (sensitivityPercent / 100.0f) * 4.0f; // Map 0-100% to 1.0-5.0
+            float sensitivityValue = 0.5f + (sensitivityPercent / 100.0f) * 2.5f; // Map 0-100% to 0.5-3.0
             if (std::abs(sensitivityValue - Config::Get().general.GamepadSensitivity) > 0.01f)
             {
                 Config::Get().general.GamepadSensitivity = sensitivityValue;
@@ -1658,7 +1658,7 @@ namespace OpenRCT2::Ui::Windows
             const float sensitivity = Config::Get().general.GamepadSensitivity;
 
             // Validate config values before using them
-            if (deadzone >= 0 && deadzone <= 32767 && sensitivity >= 0.1f && sensitivity <= 10.0f)
+            if (deadzone >= 0 && deadzone <= 32767 && sensitivity >= 0.5f && sensitivity <= 3.0f)
             {
                 // Draw deadzone percentage
                 auto ft = Formatter();
@@ -1830,9 +1830,9 @@ namespace OpenRCT2::Ui::Windows
                 uint8_t deadzonePercent = static_cast<uint8_t>((Config::Get().general.GamepadDeadzone / 32767.0f) * 100);
                 InitializeScrollPosition(WIDX_GAMEPAD_DEADZONE, 0, deadzonePercent);
 
-                // Convert sensitivity (1.0-5.0) to percentage (0-100), then to scroll position (0-500)
+                // Convert sensitivity (0.5-3.0) to percentage (0-100), then to scroll position (0-500)
                 uint8_t sensitivityPercent = static_cast<uint8_t>(
-                    ((Config::Get().general.GamepadSensitivity - 1.0f) / 4.0f) * 100);
+                    ((Config::Get().general.GamepadSensitivity - 0.5f) / 2.5f) * 100);
                 InitializeScrollPosition(WIDX_GAMEPAD_SENSITIVITY, 1, sensitivityPercent);
             }
         }

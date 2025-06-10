@@ -1689,4 +1689,45 @@ namespace OpenRCT2
             gInputFlags.set(InputFlag::viewportScrolling);
         }
     }
+
+    void InputScrollViewportSmooth(const ScreenCoordsXY& scrollScreenCoords)
+    {
+        WindowBase* mainWindow = WindowGetMain();
+        if (mainWindow == nullptr)
+        {
+            return;
+        }
+
+        Viewport* viewport = mainWindow->viewport;
+        if (viewport == nullptr)
+        {
+            return;
+        }
+
+        if (mainWindow->flags & WF_NO_SCROLLING)
+        {
+            return;
+        }
+
+        if (scrollScreenCoords.x == 0 && scrollScreenCoords.y == 0)
+            return;
+
+        // Apply smooth scrolling similar to mouse drag behavior
+        // Use zoom-based scaling like mouse dragging does
+        ScreenCoordsXY differentialCoords = scrollScreenCoords;
+
+        // Apply zoom scaling (same logic as mouse drag)
+        const bool posX = differentialCoords.x > 0;
+        const bool posY = differentialCoords.y > 0;
+        differentialCoords.x = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.x));
+        differentialCoords.y = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.y));
+        differentialCoords.x = posX ? -differentialCoords.x : differentialCoords.x;
+        differentialCoords.y = posY ? -differentialCoords.y : differentialCoords.y;
+
+        // Apply the movement (note: we don't invert for gamepad like mouse drag does)
+        mainWindow->savedViewPos += differentialCoords;
+
+        WindowUnfollowSprite(*mainWindow);
+        gInputFlags.set(InputFlag::viewportScrolling);
+    }
 } // namespace OpenRCT2
