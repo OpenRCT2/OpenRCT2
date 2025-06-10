@@ -230,11 +230,12 @@ namespace OpenRCT2::Config
             model->AutoOpenShops = reader->GetBoolean("auto_open_shops", false);
 
             // Gamepad settings
-            model->GamepadAnalogScrolling = reader->GetBoolean("gamepad_analog_scrolling", true);
             model->GamepadDeadzone = reader->GetInt32("gamepad_deadzone", 3600);
-            model->GamepadSensitivity = reader->GetFloat("gamepad_sensitivity", 1.75f);
+            model->GamepadSensitivity = reader->GetFloat("gamepad_sensitivity", 1.5f);
             model->GamepadInvertX = reader->GetBoolean("gamepad_invert_x", false);
             model->GamepadInvertY = reader->GetBoolean("gamepad_invert_y", false);
+            model->SelectedGamepadStick = static_cast<GamepadStick>(
+                reader->GetInt32("gamepad_stick", static_cast<int32_t>(GamepadStick::Right)));
             model->scenarioSelectMode = reader->GetEnum(
                 "scenario_select_mode", ScenarioSelectMode::origin, Enum_ScenarioSelectMode);
             model->ScenarioUnlockingEnabled = reader->GetBoolean("scenario_unlocking_enabled", true);
@@ -331,11 +332,11 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("auto_open_shops", model->AutoOpenShops);
 
         // Gamepad settings
-        writer->WriteBoolean("gamepad_analog_scrolling", model->GamepadAnalogScrolling);
         writer->WriteInt32("gamepad_deadzone", model->GamepadDeadzone);
         writer->WriteFloat("gamepad_sensitivity", model->GamepadSensitivity);
         writer->WriteBoolean("gamepad_invert_x", model->GamepadInvertX);
         writer->WriteBoolean("gamepad_invert_y", model->GamepadInvertY);
+        writer->WriteInt32("gamepad_stick", static_cast<int32_t>(model->SelectedGamepadStick));
         writer->WriteEnum<ScenarioSelectMode>("scenario_select_mode", model->scenarioSelectMode, Enum_ScenarioSelectMode);
         writer->WriteBoolean("scenario_unlocking_enabled", model->ScenarioUnlockingEnabled);
         writer->WriteBoolean("scenario_hide_mega_park", model->ScenarioHideMegaPark);

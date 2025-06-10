@@ -22,6 +22,13 @@
 
 enum class ScenarioSelectMode : uint8_t;
 
+enum class GamepadStick : int32_t
+{
+    Left = 0,
+    Right = 1,
+    Disabled = 2
+};
+
 namespace OpenRCT2::Config
 {
     struct General
@@ -88,11 +95,11 @@ namespace OpenRCT2::Config
         bool ZoomToCursor;
 
         // Gamepad
-        bool GamepadAnalogScrolling;
         int32_t GamepadDeadzone;
         float GamepadSensitivity;
         bool GamepadInvertX;
         bool GamepadInvertY;
+        GamepadStick SelectedGamepadStick;
 
         // Miscellaneous
         bool PlayIntro;
