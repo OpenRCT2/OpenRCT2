@@ -527,7 +527,7 @@ static uint64_t PageDisabledWidgets[] = {
         void OnUpdate() override
         {
             // Check if the mouse is hovering over the list
-            if (!WidgetIsHighlighted(*this, WIDX_LIST))
+            if (!widgetIsHighlighted(*this, WIDX_LIST))
             {
                 if (_highlightedIndex != -1)
                     InvalidateWidget(WIDX_LIST);

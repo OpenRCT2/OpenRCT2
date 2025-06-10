@@ -357,9 +357,9 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_WEEKS_SPINNER].text = kStringIdNone;
 
             // Enable / disable start button based on ride dropdown
-            WidgetSetDisabled(*this, WIDX_START_BUTTON, false);
+            widgetSetDisabled(*this, WIDX_START_BUTTON, false);
             if (widgets[WIDX_RIDE_DROPDOWN].type == WidgetType::dropdownMenu && Campaign.RideId == RideId::GetNull())
-                WidgetSetDisabled(*this, WIDX_START_BUTTON, true);
+                widgetSetDisabled(*this, WIDX_START_BUTTON, true);
         }
 
         void OnDraw(RenderTarget& rt) override

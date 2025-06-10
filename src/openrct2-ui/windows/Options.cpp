@@ -1159,7 +1159,7 @@ namespace OpenRCT2::Ui::Windows
                 Config::Get().general.EnableLightFxForVehicles = false;
             }
 
-            WidgetSetCheckboxValue(
+            widgetSetCheckboxValue(
                 *this, WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX,
                 Config::Get().general.RenderWeatherEffects || Config::Get().general.RenderWeatherGloom);
             SetCheckboxValue(WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, Config::Get().general.DisableLightningEffect);
@@ -1607,8 +1607,8 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_MASTER_SOUND_CHECKBOX, Config::Get().sound.MasterSoundEnabled);
             SetCheckboxValue(WIDX_MUSIC_CHECKBOX, Config::Get().sound.RideMusicEnabled);
             SetCheckboxValue(WIDX_AUDIO_FOCUS_CHECKBOX, Config::Get().sound.audio_focus);
-            WidgetSetEnabled(*this, WIDX_SOUND_CHECKBOX, Config::Get().sound.MasterSoundEnabled);
-            WidgetSetEnabled(*this, WIDX_MUSIC_CHECKBOX, Config::Get().sound.MasterSoundEnabled);
+            widgetSetEnabled(*this, WIDX_SOUND_CHECKBOX, Config::Get().sound.MasterSoundEnabled);
+            widgetSetEnabled(*this, WIDX_MUSIC_CHECKBOX, Config::Get().sound.MasterSoundEnabled);
 
             // Initialize only on first frame, otherwise the scrollbars won't be able to be modified
             if (frame_no == 0)
@@ -1688,7 +1688,7 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_ENLARGED_UI, Config::Get().interface.EnlargedUi);
             SetCheckboxValue(WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.TouchEnhancements);
 
-            WidgetSetEnabled(*this, WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.EnlargedUi);
+            widgetSetEnabled(*this, WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.EnlargedUi);
         }
 
 #pragma endregion
@@ -2322,7 +2322,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
-            if (!WidgetIsDisabled(*this, widgetIndex))
+            if (!widgetIsDisabled(*this, widgetIndex))
             {
                 if (page == p)
                 {
@@ -2367,7 +2367,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t widgetSize = scroll.contentWidth - (widget.width() - 1);
             scroll.contentOffsetX = ceil(volume / 100.0f * widgetSize);
 
-            WidgetScrollUpdateThumbs(*this, widgetIndex);
+            widgetScrollUpdateThumbs(*this, widgetIndex);
         }
 
         static bool IsRCT1TitleMusicAvailable()

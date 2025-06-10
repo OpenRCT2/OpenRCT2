@@ -500,10 +500,10 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 const auto closeLightImage(
-                    SPR_G2_RCT1_CLOSE_BUTTON_0 + (allClosed ? 1 : 0) * 2 + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT));
+                    SPR_G2_RCT1_CLOSE_BUTTON_0 + (allClosed ? 1 : 0) * 2 + widgetIsPressed(*this, WIDX_CLOSE_LIGHT));
                 widgets[WIDX_CLOSE_LIGHT].image = ImageId(closeLightImage);
                 const auto openLightImage = SPR_G2_RCT1_OPEN_BUTTON_0 + (allOpen ? 1 : 0) * 2
-                    + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
+                    + widgetIsPressed(*this, WIDX_OPEN_LIGHT);
                 widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
                 widgets[WIDX_QUICK_DEMOLISH].top = widgets[WIDX_OPEN_LIGHT].bottom + 3;
             }

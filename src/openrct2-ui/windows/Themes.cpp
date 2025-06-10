@@ -354,11 +354,11 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WidgetType::empty;
                 widgets[WIDX_THEMES_COLOURBTN_MASK].type = WidgetType::empty;
 
-                WidgetSetCheckboxValue(*this, WIDX_THEMES_RCT1_RIDE_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE);
-                WidgetSetCheckboxValue(*this, WIDX_THEMES_RCT1_PARK_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK);
-                WidgetSetCheckboxValue(
+                widgetSetCheckboxValue(*this, WIDX_THEMES_RCT1_RIDE_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE);
+                widgetSetCheckboxValue(*this, WIDX_THEMES_RCT1_PARK_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK);
+                widgetSetCheckboxValue(
                     *this, WIDX_THEMES_RCT1_SCENARIO_FONT, ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
-                WidgetSetCheckboxValue(
+                widgetSetCheckboxValue(
                     *this, WIDX_THEMES_RCT1_BOTTOM_TOOLBAR, ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
             }
             else

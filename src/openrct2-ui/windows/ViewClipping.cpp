@@ -269,13 +269,13 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            WidgetScrollUpdateThumbs(*this, WIDX_CLIP_HEIGHT_SLIDER);
+            widgetScrollUpdateThumbs(*this, WIDX_CLIP_HEIGHT_SLIDER);
 
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                WidgetSetCheckboxValue(*this, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
-                WidgetSetCheckboxValue(
+                widgetSetCheckboxValue(*this, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
+                widgetSetCheckboxValue(
                     *this, WIDX_CLIP_SEE_THROUGH_CHECKBOX_ENABLE,
                     mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH);
             }

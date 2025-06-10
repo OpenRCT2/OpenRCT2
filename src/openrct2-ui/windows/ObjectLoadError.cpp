@@ -441,7 +441,7 @@ namespace OpenRCT2::Ui::Windows
             frame_no++;
 
             // Check if the mouse is hovering over the list
-            if (!WidgetIsHighlighted(*this, WIDX_SCROLL))
+            if (!widgetIsHighlighted(*this, WIDX_SCROLL))
             {
                 _highlightedIndex = -1;
                 InvalidateWidget(WIDX_SCROLL);

@@ -299,7 +299,7 @@ namespace OpenRCT2::Ui::Windows
                 disabled_widgets |= (1uLL << WIDX_BANNER_TEXT) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN)
                     | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
             }
-            colourBtn.image = GetColourButtonImage(banner->colour);
+            colourBtn.image = getColourButtonImage(banner->colour);
             Widget& dropDownWidget = widgets[WIDX_TEXT_COLOUR_DROPDOWN];
             dropDownWidget.text = kBannerColouredTextFormats[EnumValue(banner->textColour)];
         }

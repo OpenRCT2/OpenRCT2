@@ -17,8 +17,8 @@
 
 namespace OpenRCT2::Ui
 {
-    ImageId GetColourButtonImage(colour_t colour);
-    Widget* GetWidgetByIndex(WindowBase& w, WidgetIndex widgetIndex);
+    ImageId getColourButtonImage(colour_t colour);
+    Widget* getWidgetByIndex(WindowBase& w, WidgetIndex widgetIndex);
 
     constexpr uint32_t kWidgetContentEmpty = 0xFFFFFFFF;
     constexpr auto kBarBlink = (1u << 31);
@@ -248,25 +248,25 @@ namespace OpenRCT2::Ui
             makeDropdownButtonWidget(origin, size, type, colour, content, tooltip));
     };
 
-    void WidgetDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
+    void widgetDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
 
-    bool WidgetIsDisabled(const WindowBase& w, WidgetIndex widgetIndex);
-    bool WidgetIsHoldable(const WindowBase& w, WidgetIndex widgetIndex);
-    bool WidgetIsVisible(const WindowBase& w, WidgetIndex widgetIndex);
-    bool WidgetIsPressed(const WindowBase& w, WidgetIndex widgetIndex);
-    bool WidgetIsHighlighted(const WindowBase& w, WidgetIndex widgetIndex);
-    void WidgetScrollGetPart(
+    bool widgetIsDisabled(const WindowBase& w, WidgetIndex widgetIndex);
+    bool widgetIsHoldable(const WindowBase& w, WidgetIndex widgetIndex);
+    bool widgetIsVisible(const WindowBase& w, WidgetIndex widgetIndex);
+    bool widgetIsPressed(const WindowBase& w, WidgetIndex widgetIndex);
+    bool widgetIsHighlighted(const WindowBase& w, WidgetIndex widgetIndex);
+    void widgetScrollGetPart(
         WindowBase& w, const Widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
         int32_t* output_scroll_area, int32_t* scroll_id);
 
-    void WidgetSetEnabled(WindowBase& w, WidgetIndex widgetIndex, bool enabled);
-    void WidgetSetDisabled(WindowBase& w, WidgetIndex widgetIndex, bool value);
-    void WidgetSetHoldable(WindowBase& w, WidgetIndex widgetIndex, bool value);
-    void WidgetSetVisible(WindowBase& w, WidgetIndex widgetIndex, bool value);
-    void WidgetSetPressed(WindowBase& w, WidgetIndex widgetIndex, bool value);
-    void WidgetSetCheckboxValue(WindowBase& w, WidgetIndex widgetIndex, bool value);
+    void widgetSetEnabled(WindowBase& w, WidgetIndex widgetIndex, bool enabled);
+    void widgetSetDisabled(WindowBase& w, WidgetIndex widgetIndex, bool value);
+    void widgetSetHoldable(WindowBase& w, WidgetIndex widgetIndex, bool value);
+    void widgetSetVisible(WindowBase& w, WidgetIndex widgetIndex, bool value);
+    void widgetSetPressed(WindowBase& w, WidgetIndex widgetIndex, bool value);
+    void widgetSetCheckboxValue(WindowBase& w, WidgetIndex widgetIndex, bool value);
 
-    void WidgetProgressBarSetNewPercentage(Widget& widget, uint8_t newPercentage);
+    void widgetProgressBarSetNewPercentage(Widget& widget, uint8_t newPercentage);
 
-    void WidgetScrollUpdateThumbs(WindowBase& w, WidgetIndex widget_index);
+    void widgetScrollUpdateThumbs(WindowBase& w, WidgetIndex widget_index);
 } // namespace OpenRCT2::Ui

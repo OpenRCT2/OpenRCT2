@@ -145,7 +145,7 @@ namespace OpenRCT2::Ui::Windows
         {
             ColourSchemeUpdateByClass(this, WindowClass::ServerList);
 
-            WidgetSetCheckboxValue(*this, WIDX_ADVERTISE_CHECKBOX, Config::Get().network.Advertise);
+            widgetSetCheckboxValue(*this, WIDX_ADVERTISE_CHECKBOX, Config::Get().network.Advertise);
             auto ft = Formatter::Common();
             ft.Increment(18);
             ft.Add<uint16_t>(Config::Get().network.Maxplayers);

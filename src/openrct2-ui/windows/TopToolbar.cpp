@@ -887,7 +887,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 screenPos = { windowPos.x + widgets[WIDX_STAFF].left, windowPos.y + widgets[WIDX_STAFF].top };
                 imgId = SPR_TOOLBAR_STAFF;
-                if (WidgetIsPressed(*this, WIDX_STAFF))
+                if (widgetIsPressed(*this, WIDX_STAFF))
                     imgId++;
                 GfxDrawSprite(rt, ImageId(imgId, gameState.staffHandymanColour, gameState.staffMechanicColour), screenPos);
             }
@@ -897,7 +897,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 screenPos = { windowPos.x + widgets[WIDX_FASTFORWARD].left + 0,
                               windowPos.y + widgets[WIDX_FASTFORWARD].top + 0 };
-                if (WidgetIsPressed(*this, WIDX_FASTFORWARD))
+                if (widgetIsPressed(*this, WIDX_FASTFORWARD))
                     screenPos.y++;
                 GfxDrawSprite(rt, ImageId(SPR_G2_FASTFORWARD), screenPos + ScreenCoordsXY{ 6, 3 });
 
@@ -915,7 +915,7 @@ namespace OpenRCT2::Ui::Windows
             if (widgets[WIDX_CHEATS].type != WidgetType::empty)
             {
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_CHEATS].left - 1, widgets[WIDX_CHEATS].top - 1 };
-                if (WidgetIsPressed(*this, WIDX_CHEATS))
+                if (widgetIsPressed(*this, WIDX_CHEATS))
                     screenPos.y++;
                 GfxDrawSprite(rt, ImageId(SPR_G2_SANDBOX), screenPos);
 
@@ -933,7 +933,7 @@ namespace OpenRCT2::Ui::Windows
             if (widgets[WIDX_CHAT].type != WidgetType::empty)
             {
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_CHAT].left, widgets[WIDX_CHAT].top - 2 };
-                if (WidgetIsPressed(*this, WIDX_CHAT))
+                if (widgetIsPressed(*this, WIDX_CHAT))
                     screenPos.y++;
                 GfxDrawSprite(rt, ImageId(SPR_G2_CHAT), screenPos);
             }
@@ -942,7 +942,7 @@ namespace OpenRCT2::Ui::Windows
             if (widgets[WIDX_DEBUG].type != WidgetType::empty)
             {
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_DEBUG].left, widgets[WIDX_DEBUG].top - 1 };
-                if (WidgetIsPressed(*this, WIDX_DEBUG))
+                if (widgetIsPressed(*this, WIDX_DEBUG))
                     screenPos.y++;
                 GfxDrawSprite(rt, ImageId(SPR_TAB_GEARS_0), screenPos);
             }
@@ -951,7 +951,7 @@ namespace OpenRCT2::Ui::Windows
             if (widgets[WIDX_RESEARCH].type != WidgetType::empty)
             {
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_RESEARCH].left - 1, widgets[WIDX_RESEARCH].top };
-                if (WidgetIsPressed(*this, WIDX_RESEARCH))
+                if (widgetIsPressed(*this, WIDX_RESEARCH))
                     screenPos.y++;
                 GfxDrawSprite(rt, ImageId(SPR_TAB_FINANCES_RESEARCH_0), screenPos);
             }
@@ -960,7 +960,7 @@ namespace OpenRCT2::Ui::Windows
             if (widgets[WIDX_FINANCES].type != WidgetType::empty)
             {
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_FINANCES].left + 3, widgets[WIDX_FINANCES].top + 1 };
-                if (WidgetIsPressed(*this, WIDX_FINANCES))
+                if (widgetIsPressed(*this, WIDX_FINANCES))
                     screenPos.y++;
                 GfxDrawSprite(rt, ImageId(SPR_FINANCE), screenPos);
             }
@@ -969,7 +969,7 @@ namespace OpenRCT2::Ui::Windows
             if (widgets[WIDX_NEWS].type != WidgetType::empty)
             {
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_NEWS].left + 3, widgets[WIDX_NEWS].top + 0 };
-                if (WidgetIsPressed(*this, WIDX_NEWS))
+                if (widgetIsPressed(*this, WIDX_NEWS))
                     screenPos.y++;
                 GfxDrawSprite(rt, ImageId(SPR_G2_TAB_NEWS), screenPos);
             }
@@ -978,7 +978,7 @@ namespace OpenRCT2::Ui::Windows
             if (widgets[WIDX_NETWORK].type != WidgetType::empty)
             {
                 screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_NETWORK].left + 3, widgets[WIDX_NETWORK].top + 0 };
-                if (WidgetIsPressed(*this, WIDX_NETWORK))
+                if (widgetIsPressed(*this, WIDX_NETWORK))
                     screenPos.y++;
 
                 // Draw (de)sync icon.

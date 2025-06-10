@@ -656,7 +656,7 @@ namespace OpenRCT2::Ui::Windows
             }
             if (_recalculateScrollbars)
             {
-                WidgetScrollUpdateThumbs(*this, WIDX_MAP);
+                widgetScrollUpdateThumbs(*this, WIDX_MAP);
                 _recalculateScrollbars = false;
             }
         }
@@ -757,7 +757,7 @@ namespace OpenRCT2::Ui::Windows
 
             scrolls[0].contentOffsetX = cx;
             scrolls[0].contentOffsetY = dx;
-            WidgetScrollUpdateThumbs(*this, WIDX_MAP);
+            widgetScrollUpdateThumbs(*this, WIDX_MAP);
         }
 
         void IncreaseMapSize()

@@ -111,7 +111,7 @@ namespace OpenRCT2
             scroll.contentOffsetX = std::min(std::max(0, scroll.contentOffsetX + wheel), size);
         }
 
-        WidgetScrollUpdateThumbs(w, widgetIndex);
+        widgetScrollUpdateThumbs(w, widgetIndex);
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateWidget(w, widgetIndex);
@@ -247,7 +247,7 @@ namespace OpenRCT2
 
         assert(targetWidgetIndex >= 0 && targetWidgetIndex < w.widgets.size());
 
-        if (WidgetIsDisabled(w, targetWidgetIndex))
+        if (widgetIsDisabled(w, targetWidgetIndex))
         {
             return false;
         }
@@ -341,7 +341,7 @@ namespace OpenRCT2
 
     void Window::OnDrawWidget(WidgetIndex widgetIndex, RenderTarget& rt)
     {
-        WidgetDraw(rt, *this, widgetIndex);
+        widgetDraw(rt, *this, widgetIndex);
     }
 
     void Window::InitScrollWidgets()
@@ -357,22 +357,22 @@ namespace OpenRCT2
 
     bool Window::IsWidgetDisabled(WidgetIndex widgetIndex) const
     {
-        return WidgetIsDisabled(*this, widgetIndex);
+        return widgetIsDisabled(*this, widgetIndex);
     }
 
     bool Window::IsWidgetPressed(WidgetIndex widgetIndex) const
     {
-        return WidgetIsPressed(*this, widgetIndex);
+        return widgetIsPressed(*this, widgetIndex);
     }
 
     void Window::SetWidgetEnabled(WidgetIndex widgetIndex, bool value)
     {
-        WidgetSetEnabled(*this, widgetIndex, value);
+        widgetSetEnabled(*this, widgetIndex, value);
     }
 
     void Window::SetWidgetDisabled(WidgetIndex widgetIndex, bool value)
     {
-        WidgetSetDisabled(*this, widgetIndex, value);
+        widgetSetDisabled(*this, widgetIndex, value);
     }
 
     void Window::SetWidgetDisabledAndInvalidate(WidgetIndex widgetIndex, bool value)
@@ -380,14 +380,14 @@ namespace OpenRCT2
         bool oldState = IsWidgetDisabled(widgetIndex);
         if (oldState != value)
         {
-            WidgetSetDisabled(*this, widgetIndex, value);
+            widgetSetDisabled(*this, widgetIndex, value);
             InvalidateWidget(widgetIndex);
         }
     }
 
     void Window::SetWidgetPressed(WidgetIndex widgetIndex, bool value)
     {
-        WidgetSetPressed(*this, widgetIndex, value);
+        widgetSetPressed(*this, widgetIndex, value);
     }
 
     void Window::SetCheckboxValue(WidgetIndex widgetIndex, bool value)
@@ -501,7 +501,7 @@ namespace OpenRCT2
             auto& widget = w->widgets[i];
             assert(widget.type == WidgetType::tab);
 
-            if (!WidgetIsDisabled(*w, i))
+            if (!widgetIsDisabled(*w, i))
             {
                 widget.left = x;
                 widget.right = x + tab_width;
@@ -708,7 +708,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (scrollPositionChanged)
             {
-                WidgetScrollUpdateThumbs(w, widgetIndex);
+                widgetScrollUpdateThumbs(w, widgetIndex);
                 w.Invalidate();
             }
             scrollIndex++;
@@ -742,7 +742,7 @@ namespace OpenRCT2::Ui::Windows
             if (widget.content & SCROLL_VERTICAL)
                 scroll.flags |= VSCROLLBAR_VISIBLE;
 
-            WidgetScrollUpdateThumbs(w, widgetIndex);
+            widgetScrollUpdateThumbs(w, widgetIndex);
             scroll_index++;
         }
     }

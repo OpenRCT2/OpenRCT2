@@ -304,7 +304,7 @@ namespace OpenRCT2::Ui::Windows
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + newPage;
 
-            if (!WidgetIsDisabled(*this, widgetIndex))
+            if (!widgetIsDisabled(*this, widgetIndex))
             {
                 if (page == newPage)
                 {

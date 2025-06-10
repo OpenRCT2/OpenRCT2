@@ -408,7 +408,7 @@ namespace OpenRCT2::Ui::Windows
             const bool canKick = NetworkCanPerformAction(NetworkGetCurrentPlayerGroupIndex(), NetworkPermission::KickPlayer);
             const bool isServer = NetworkGetPlayerFlags(playerIndex) & NETWORK_PLAYER_FLAG_ISSERVER;
             const bool isOwnWindow = (NetworkGetCurrentPlayerId() == number);
-            WidgetSetEnabled(*this, WIDX_KICK, canKick && !isOwnWindow && !isServer);
+            widgetSetEnabled(*this, WIDX_KICK, canKick && !isOwnWindow && !isServer);
         }
 
         void OnDrawOverview(RenderTarget& rt)

@@ -253,7 +253,7 @@ namespace OpenRCT2::Ui::Windows
             if (GetSelectedStaffType() != StaffType::Entertainer)
             {
                 widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WidgetType::colourBtn;
-                widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = GetColourButtonImage(
+                widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = getColourButtonImage(
                     StaffGetColour(GetSelectedStaffType()));
             }
             SetWidgetPressed(WIDX_STAFF_LIST_QUICK_FIRE, _quickFireMode);

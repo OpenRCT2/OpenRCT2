@@ -846,7 +846,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& widget = this->widgets[widgetIndex];
             scrolls[scrollId].contentOffsetX = std::max(0, scrolls[scrollId].contentWidth - (widget.width() - 2));
 
-            WidgetScrollUpdateThumbs(*this, widgetIndex);
+            widgetScrollUpdateThumbs(*this, widgetIndex);
         }
 
         void DrawTabImage(RenderTarget& rt, int32_t tabPage, int32_t spriteIndex)

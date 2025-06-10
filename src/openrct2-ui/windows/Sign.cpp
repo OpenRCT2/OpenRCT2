@@ -287,8 +287,8 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            main_colour_btn->image = GetColourButtonImage(_mainColour);
-            text_colour_btn->image = GetColourButtonImage(_textColour);
+            main_colour_btn->image = getColourButtonImage(_mainColour);
+            text_colour_btn->image = getColourButtonImage(_textColour);
         }
 
         void OnDraw(RenderTarget& rt) override
