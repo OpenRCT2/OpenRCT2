@@ -36,8 +36,8 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto _textInputWidgets = makeWidgets(
         makeWindowShim(kStringIdNone, WW, WH),
-        makeWidget({ 170, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::secondary, STR_CANCEL),
-        makeWidget({ 10, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::secondary, STR_OK));
+        makeWidget({ 170, 68 }, { 71, 14 }, WidgetType::button, WindowColour::secondary, STR_CANCEL),
+        makeWidget({ 10, 68 }, { 71, 14 }, WidgetType::button, WindowColour::secondary, STR_OK));
 
     class TextInputWindow final : public Window
     {

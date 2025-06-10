@@ -44,9 +44,9 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _shortcutWidgets = makeWidgets(
         makeWindowShim(WINDOW_TITLE, WW, WH),
-        makeWidget({0,    43}, {350, 287}, WindowWidgetType::Resize, WindowColour::secondary),
-        makeWidget({4,    47}, {412, 215}, WindowWidgetType::Scroll, WindowColour::primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
-        makeWidget({4, WH-15}, {150,  12}, WindowWidgetType::Button, WindowColour::primary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP)
+        makeWidget({0,    43}, {350, 287}, WidgetType::resize, WindowColour::secondary),
+        makeWidget({4,    47}, {412, 215}, WidgetType::scroll, WindowColour::primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
+        makeWidget({4, WH-15}, {150,  12}, WidgetType::button, WindowColour::primary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP)
     );
     // clang-format on
 
@@ -62,7 +62,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto window_shortcut_change_widgets = makeWidgets(
         makeWindowShim(CHANGE_WINDOW_TITLE, CHANGE_WW, CHANGE_WH),
-        makeWidget({ 75, 56 }, { 100, 14 }, WindowWidgetType::Button, WindowColour::primary, STR_SHORTCUT_REMOVE, STR_SHORTCUT_REMOVE_TIP)
+        makeWidget({ 75, 56 }, { 100, 14 }, WidgetType::button, WindowColour::primary, STR_SHORTCUT_REMOVE, STR_SHORTCUT_REMOVE_TIP)
     );
     // clang-format on
 
@@ -580,9 +580,9 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto WindowResetShortcutKeysPromptWidgets = makeWidgets(
         makeWindowShim(STR_SHORTCUT_ACTION_RESET, RESET_PROMPT_WW, RESET_PROMPT_WH),
-        makeWidget({ 2, 30 }, { RESET_PROMPT_WW - 4, 12 }, WindowWidgetType::LabelCentred, WindowColour::primary, STR_RESET_SHORTCUT_KEYS_PROMPT),
-        makeWidget({ 8, RESET_PROMPT_WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::primary, STR_RESET),
-        makeWidget({ RESET_PROMPT_WW - 95, RESET_PROMPT_WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::primary, STR_SAVE_PROMPT_CANCEL)
+        makeWidget({ 2, 30 }, { RESET_PROMPT_WW - 4, 12 }, WidgetType::labelCentred, WindowColour::primary, STR_RESET_SHORTCUT_KEYS_PROMPT),
+        makeWidget({ 8, RESET_PROMPT_WH - 22 }, { 85, 14 }, WidgetType::button, WindowColour::primary, STR_RESET),
+        makeWidget({ RESET_PROMPT_WW - 95, RESET_PROMPT_WH - 22 }, { 85, 14 }, WidgetType::button, WindowColour::primary, STR_SAVE_PROMPT_CANCEL)
     );
     // clang-format on
 

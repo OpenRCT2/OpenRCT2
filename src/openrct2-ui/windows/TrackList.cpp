@@ -56,13 +56,13 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _trackListWidgets = makeWidgets(
         makeWindowShim(WINDOW_TITLE, WW, WH),
-        makeWidget({  4,  18}, {218,  13}, WindowWidgetType::TableHeader,  WindowColour::primary, STR_SELECT_OTHER_RIDE                                       ),
-        makeWidget({  4,  32}, {124,  13}, WindowWidgetType::TextBox,      WindowColour::secondary                                                            ),
-        makeWidget({130,  32}, { 92,  13}, WindowWidgetType::Button,       WindowColour::primary, STR_OBJECT_SEARCH_CLEAR                                     ),
-        makeWidget({  4,  46}, {218, 381}, WindowWidgetType::Scroll,       WindowColour::primary, SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
-        makeWidget({224,  18}, {372, 219}, WindowWidgetType::FlatBtn,      WindowColour::primary                                                              ),
-        makeWidget({572, 405}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::primary, ImageId(SPR_ROTATE_ARROW),        STR_ROTATE_90_TIP                  ),
-        makeWidget({572, 381}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::primary, ImageId(SPR_SCENERY),             STR_TOGGLE_SCENERY_TIP             )
+        makeWidget({  4,  18}, {218,  13}, WidgetType::tableHeader,  WindowColour::primary, STR_SELECT_OTHER_RIDE                                       ),
+        makeWidget({  4,  32}, {124,  13}, WidgetType::textBox,      WindowColour::secondary                                                            ),
+        makeWidget({130,  32}, { 92,  13}, WidgetType::button,       WindowColour::primary, STR_OBJECT_SEARCH_CLEAR                                     ),
+        makeWidget({  4,  46}, {218, 381}, WidgetType::scroll,       WindowColour::primary, SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
+        makeWidget({224,  18}, {372, 219}, WidgetType::flatBtn,      WindowColour::primary                                                              ),
+        makeWidget({572, 405}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WidgetType::flatBtn,      WindowColour::primary, ImageId(SPR_ROTATE_ARROW),        STR_ROTATE_90_TIP                  ),
+        makeWidget({572, 381}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WidgetType::flatBtn,      WindowColour::primary, ImageId(SPR_SCENERY),             STR_TOGGLE_SCENERY_TIP             )
     );
     // clang-format on
 
@@ -403,8 +403,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 pressed_widgets |= 1uLL << WIDX_TRACK_PREVIEW;
                 disabled_widgets &= ~(1uLL << WIDX_TRACK_PREVIEW);
-                widgets[WIDX_ROTATE].type = WindowWidgetType::FlatBtn;
-                widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_ROTATE].type = WidgetType::flatBtn;
+                widgets[WIDX_TOGGLE_SCENERY].type = WidgetType::flatBtn;
                 if (gTrackDesignSceneryToggle)
                 {
                     pressed_widgets &= ~(1uLL << WIDX_TOGGLE_SCENERY);
@@ -418,8 +418,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 pressed_widgets &= ~(1uLL << WIDX_TRACK_PREVIEW);
                 disabled_widgets |= (1uLL << WIDX_TRACK_PREVIEW);
-                widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
-                widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::Empty;
+                widgets[WIDX_ROTATE].type = WidgetType::empty;
+                widgets[WIDX_TOGGLE_SCENERY].type = WidgetType::empty;
             }
 
             // When debugging tools are on, shift everything up a bit to make room for displaying the path.

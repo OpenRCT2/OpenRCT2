@@ -44,9 +44,9 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _windowChangelogWidgets = makeWidgets(
         makeWindowShim(WINDOW_TITLE, WW, WH),
-        makeWidget({0,  14}, {500, 382}, WindowWidgetType::Resize,      WindowColour::secondary                               ), // content panel
-        makeWidget({3,  16}, {495, 366}, WindowWidgetType::Scroll,      WindowColour::secondary, SCROLL_BOTH                  ), // scroll area
-        makeWidget({3, 473}, {300,  14}, WindowWidgetType::Placeholder, WindowColour::secondary, STR_NEW_RELEASE_DOWNLOAD_PAGE)  // changelog button
+        makeWidget({0,  14}, {500, 382}, WidgetType::resize,      WindowColour::secondary                               ), // content panel
+        makeWidget({3,  16}, {495, 366}, WidgetType::scroll,      WindowColour::secondary, SCROLL_BOTH                  ), // scroll area
+        makeWidget({3, 473}, {300,  14}, WidgetType::placeholder, WindowColour::secondary, STR_NEW_RELEASE_DOWNLOAD_PAGE)  // changelog button
     );
     // clang-format on
 
@@ -95,7 +95,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     _personality = WV_NEW_VERSION_INFO;
                     NewVersionProcessInfo();
-                    widgets[WIDX_OPEN_URL].type = WindowWidgetType::Button;
+                    widgets[WIDX_OPEN_URL].type = WidgetType::button;
                     return true;
 
                 case WV_CHANGELOG:

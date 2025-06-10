@@ -118,55 +118,55 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto makeMapGenWidgets = [](StringId title) {
         return makeWidgets(
             makeWindowShim(title, kWindowSize.width, kWindowSize.height),
-            makeWidget({   0, 43 }, { kWindowSize.width, 177 }, WindowWidgetType::Resize, WindowColour::secondary),
+            makeWidget({   0, 43 }, { kWindowSize.width, 177 }, WidgetType::resize, WindowColour::secondary),
             makeTab   ({   3, 17 }),
             makeTab   ({  34, 17 }),
             makeTab   ({  65, 17 }),
             makeTab   ({  96, 17 }),
-            makeWidget({ 185, 200 }, { 109, 14 }, WindowWidgetType::Button, WindowColour::secondary, STR_MAPGEN_ACTION_GENERATE)
+            makeWidget({ 185, 200 }, { 109, 14 }, WidgetType::button, WindowColour::secondary, STR_MAPGEN_ACTION_GENERATE)
         );
     };
 
     static constexpr auto BaseWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_GENERATOR),
-        makeSpinnerWidgets ({165, 52}, { 50, 12}, WindowWidgetType::Spinner,      WindowColour::secondary, STR_COMMA16                                                ), // NB: 3 widgets
-        makeWidget         ({216, 52}, { 21, 12}, WindowWidgetType::FlatBtn,      WindowColour::secondary, ImageId(SPR_G2_LINK_CHAIN), STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
-        makeSpinnerWidgets ({238, 52}, { 50, 12}, WindowWidgetType::Spinner,      WindowColour::secondary, STR_POP16_COMMA16                                          ), // NB: 3 widgets
-        makeDropdownWidgets({155, 70}, {133, 14}, WindowWidgetType::DropdownMenu, WindowColour::secondary, STR_HEIGHTMAP_FLATLAND                                     ),
+        makeSpinnerWidgets ({165, 52}, { 50, 12}, WidgetType::spinner,      WindowColour::secondary, STR_COMMA16                                                ), // NB: 3 widgets
+        makeWidget         ({216, 52}, { 21, 12}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_G2_LINK_CHAIN), STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
+        makeSpinnerWidgets ({238, 52}, { 50, 12}, WidgetType::spinner,      WindowColour::secondary, STR_POP16_COMMA16                                          ), // NB: 3 widgets
+        makeDropdownWidgets({155, 70}, {133, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_HEIGHTMAP_FLATLAND                                     ),
 
-        makeWidget        ({  5,  90}, {290, 55}, WindowWidgetType::Groupbox, WindowColour::secondary, STR_MAPGEN_SIMPLEX_NOISE), // WIDX_SIMPLEX_GROUP
-        makeSpinnerWidgets({179, 107}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::secondary                          ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
-        makeSpinnerWidgets({179, 125}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::secondary                          ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
+        makeWidget        ({  5,  90}, {290, 55}, WidgetType::groupbox, WindowColour::secondary, STR_MAPGEN_SIMPLEX_NOISE), // WIDX_SIMPLEX_GROUP
+        makeSpinnerWidgets({179, 107}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                          ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
+        makeSpinnerWidgets({179, 125}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                          ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
 
-        makeWidget        ({  5,  90}, {290, 86}, WindowWidgetType::Groupbox, WindowColour::secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_GROUP
-        makeWidget        ({223, 107}, { 65, 14}, WindowWidgetType::Button,   WindowColour::secondary, STR_BROWSE                 ), // WIDX_HEIGHTMAP_BROWSE
-        makeWidget        ({ 10, 125}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
-        makeWidget        ({ 10, 141}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
-        makeSpinnerWidgets({179, 157}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::secondary                             )  // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
+        makeWidget        ({  5,  90}, {290, 86}, WidgetType::groupbox, WindowColour::secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_GROUP
+        makeWidget        ({223, 107}, { 65, 14}, WidgetType::button,   WindowColour::secondary, STR_BROWSE                 ), // WIDX_HEIGHTMAP_BROWSE
+        makeWidget        ({ 10, 125}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
+        makeWidget        ({ 10, 141}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
+        makeSpinnerWidgets({179, 157}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                             )  // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
     );
 
     static constexpr auto TerrainWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_TERRAIN),
-        makeSpinnerWidgets({179,  52}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::secondary                        ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
-        makeSpinnerWidgets({179,  70}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::secondary                        ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
-        makeWidget        ({179,  88}, { 47, 36}, WindowWidgetType::FlatBtn,  WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
-        makeWidget        ({236,  88}, { 47, 36}, WindowWidgetType::FlatBtn,  WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP),
-        makeWidget        ({ 10, 106}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN        ),
-        makeWidget        ({ 10, 122}, {150, 12}, WindowWidgetType::Checkbox, WindowColour::secondary, STR_MAPGEN_SMOOTH_TILE)  // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
+        makeSpinnerWidgets({179,  52}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                        ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
+        makeSpinnerWidgets({179,  70}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                        ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
+        makeWidget        ({179,  88}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
+        makeWidget        ({236,  88}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP),
+        makeWidget        ({ 10, 106}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN        ),
+        makeWidget        ({ 10, 122}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_SMOOTH_TILE)  // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
     );
 
     static constexpr auto WaterWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_WATER),
-        makeSpinnerWidgets({179,  52}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::secondary                          ), // NB: 3 widgets
-        makeWidget        ({ 10,  70}, {255, 12}, WindowWidgetType::Checkbox, WindowColour::secondary, STR_BEACHES_WATER_BODIES)
+        makeSpinnerWidgets({179,  52}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                          ), // NB: 3 widgets
+        makeWidget        ({ 10,  70}, {255, 12}, WidgetType::checkbox, WindowColour::secondary, STR_BEACHES_WATER_BODIES)
     );
 
     static constexpr auto ForestsWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_FORESTS),
-        makeWidget        ({ 10,  52}, {255, 12}, WindowWidgetType::Checkbox, WindowColour::secondary, STR_MAPGEN_OPTION_PLACE_TREES),
-        makeSpinnerWidgets({179,  70}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::secondary), // WIDX_TREE_LAND_RATIO{,_UP,_DOWN}
-        makeSpinnerWidgets({179,  88}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::secondary), // WIDX_TREE_ALTITUDE_MIN{,_UP,_DOWN}
-        makeSpinnerWidgets({179, 106}, {109, 12}, WindowWidgetType::Spinner,  WindowColour::secondary)  // WIDX_TREE_ALTITUDE_MAX{,_UP,_DOWN}
+        makeWidget        ({ 10,  52}, {255, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_OPTION_PLACE_TREES),
+        makeSpinnerWidgets({179,  70}, {109, 12}, WidgetType::spinner,  WindowColour::secondary), // WIDX_TREE_LAND_RATIO{,_UP,_DOWN}
+        makeSpinnerWidgets({179,  88}, {109, 12}, WidgetType::spinner,  WindowColour::secondary), // WIDX_TREE_ALTITUDE_MIN{,_UP,_DOWN}
+        makeSpinnerWidgets({179, 106}, {109, 12}, WidgetType::spinner,  WindowColour::secondary)  // WIDX_TREE_ALTITUDE_MAX{,_UP,_DOWN}
     );
 
     static std::span<const Widget> PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
@@ -575,26 +575,26 @@ namespace OpenRCT2::Ui::Windows
         void ToggleSimplexWidgets(bool state)
         {
             // clang-format off
-            widgets[WIDX_SIMPLEX_GROUP].type          = state ? WindowWidgetType::Groupbox : WindowWidgetType::Empty;
-            widgets[WIDX_SIMPLEX_BASE_FREQ].type      = state ? WindowWidgetType::Spinner  : WindowWidgetType::Empty;
-            widgets[WIDX_SIMPLEX_BASE_FREQ_UP].type   = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
-            widgets[WIDX_SIMPLEX_BASE_FREQ_DOWN].type = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
-            widgets[WIDX_SIMPLEX_OCTAVES].type        = state ? WindowWidgetType::Spinner  : WindowWidgetType::Empty;
-            widgets[WIDX_SIMPLEX_OCTAVES_UP].type     = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
-            widgets[WIDX_SIMPLEX_OCTAVES_DOWN].type   = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
+            widgets[WIDX_SIMPLEX_GROUP].type          = state ? WidgetType::groupbox : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_BASE_FREQ].type      = state ? WidgetType::spinner  : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_BASE_FREQ_UP].type   = state ? WidgetType::button   : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_BASE_FREQ_DOWN].type = state ? WidgetType::button   : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_OCTAVES].type        = state ? WidgetType::spinner  : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_OCTAVES_UP].type     = state ? WidgetType::button   : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_OCTAVES_DOWN].type   = state ? WidgetType::button   : WidgetType::empty;
             // clang-format on
         }
 
         void ToggleHeightmapWidgets(bool state)
         {
             // clang-format off
-            widgets[WIDX_HEIGHTMAP_GROUP].type            = state ? WindowWidgetType::Groupbox : WindowWidgetType::Empty;
-            widgets[WIDX_HEIGHTMAP_BROWSE].type           = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
-            widgets[WIDX_HEIGHTMAP_NORMALIZE].type        = state ? WindowWidgetType::Checkbox : WindowWidgetType::Empty;
-            widgets[WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP].type = state ? WindowWidgetType::Checkbox : WindowWidgetType::Empty;
-            widgets[WIDX_HEIGHTMAP_STRENGTH].type         = state ? WindowWidgetType::Spinner  : WindowWidgetType::Empty;
-            widgets[WIDX_HEIGHTMAP_STRENGTH_UP].type      = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
-            widgets[WIDX_HEIGHTMAP_STRENGTH_DOWN].type    = state ? WindowWidgetType::Button   : WindowWidgetType::Empty;
+            widgets[WIDX_HEIGHTMAP_GROUP].type            = state ? WidgetType::groupbox : WidgetType::empty;
+            widgets[WIDX_HEIGHTMAP_BROWSE].type           = state ? WidgetType::button   : WidgetType::empty;
+            widgets[WIDX_HEIGHTMAP_NORMALIZE].type        = state ? WidgetType::checkbox : WidgetType::empty;
+            widgets[WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP].type = state ? WidgetType::checkbox : WidgetType::empty;
+            widgets[WIDX_HEIGHTMAP_STRENGTH].type         = state ? WidgetType::spinner  : WidgetType::empty;
+            widgets[WIDX_HEIGHTMAP_STRENGTH_UP].type      = state ? WidgetType::button   : WidgetType::empty;
+            widgets[WIDX_HEIGHTMAP_STRENGTH_DOWN].type    = state ? WidgetType::button   : WidgetType::empty;
             // clang-format on
         }
 

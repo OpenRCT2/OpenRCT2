@@ -90,7 +90,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto makeParkWidgets = [](int16_t width) {
         return makeWidgets(
             makeWindowShim(WINDOW_TITLE, width, WH),
-            makeWidget({ 0, 43 }, { width, 131 }, WindowWidgetType::Resize, WindowColour::secondary),
+            makeWidget({ 0, 43 }, { width, 131 }, WidgetType::resize, WindowColour::secondary),
             makeTab({ 3, 17 }, STR_PARK_ENTRANCE_TAB_TIP),
             makeTab({ 34, 17 }, STR_PARK_RATING_TAB_TIP),
             makeTab({ 65, 17 }, STR_PARK_GUESTS_TAB_TIP),
@@ -103,14 +103,14 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto _entranceWidgets = makeWidgets(
         makeParkWidgets(230),
-        makeWidget({  3,  46}, {202, 115}, WindowWidgetType::Viewport,      WindowColour::secondary                                                                      ), // viewport
-        makeWidget({  3, 161}, {202,  11}, WindowWidgetType::LabelCentred,  WindowColour::secondary                                                                      ), // status
-        makeWidget({205,  49}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::secondary, 0xFFFFFFFF,                 STR_OPEN_OR_CLOSE_PARK_TIP              ), // open / close
-        makeWidget({205,  73}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::secondary, ImageId(SPR_BUY_LAND_RIGHTS),        STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP), // buy land rights
-        makeWidget({205,  97}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::secondary, ImageId(SPR_LOCATE),                 STR_LOCATE_SUBJECT_TIP                  ), // locate
-        makeWidget({205, 121}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::secondary, ImageId(SPR_RENAME),                 STR_NAME_PARK_TIP                       ), // rename
-        makeWidget({210,  51}, { 14,  15}, WindowWidgetType::ImgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0), STR_CLOSE_PARK_TIP                      ),
-        makeWidget({210,  66}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_PARK_TIP                       )
+        makeWidget({  3,  46}, {202, 115}, WidgetType::viewport,      WindowColour::secondary                                                                      ), // viewport
+        makeWidget({  3, 161}, {202,  11}, WidgetType::labelCentred,  WindowColour::secondary                                                                      ), // status
+        makeWidget({205,  49}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, 0xFFFFFFFF,                 STR_OPEN_OR_CLOSE_PARK_TIP              ), // open / close
+        makeWidget({205,  73}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_BUY_LAND_RIGHTS),        STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP), // buy land rights
+        makeWidget({205,  97}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_LOCATE),                 STR_LOCATE_SUBJECT_TIP                  ), // locate
+        makeWidget({205, 121}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_RENAME),                 STR_NAME_PARK_TIP                       ), // rename
+        makeWidget({210,  51}, { 14,  15}, WidgetType::imgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0), STR_CLOSE_PARK_TIP                      ),
+        makeWidget({210,  66}, { 14,  14}, WidgetType::imgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_PARK_TIP                       )
     );
 
     static constexpr auto _ratingWidgets = makeWidgets(
@@ -123,8 +123,8 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto _priceWidgets = makeWidgets(
         makeParkWidgets(230),
-        makeWidget        ({ 21, 50}, {126, 14}, WindowWidgetType::Label,   WindowColour::secondary, STR_ADMISSION_PRICE),
-        makeSpinnerWidgets({147, 50}, { 76, 14}, WindowWidgetType::Spinner, WindowColour::secondary                     ) // Price (3 widgets)
+        makeWidget        ({ 21, 50}, {126, 14}, WidgetType::label,   WindowColour::secondary, STR_ADMISSION_PRICE),
+        makeSpinnerWidgets({147, 50}, { 76, 14}, WidgetType::spinner, WindowColour::secondary                     ) // Price (3 widgets)
     );
 
     static constexpr auto _statsWidgets = makeWidgets(
@@ -133,7 +133,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto _objectiveWidgets = makeWidgets(
         makeParkWidgets(230),
-        makeWidget({7, 207}, {216, 14}, WindowWidgetType::Button, WindowColour::secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART) // enter name
+        makeWidget({7, 207}, {216, 14}, WidgetType::button, WindowColour::secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART) // enter name
     );
 
     static constexpr auto _awardsWidgets = makeWidgets(
@@ -553,9 +553,9 @@ namespace OpenRCT2::Ui::Windows
 
             // Only allow purchase of land when there is money
             if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
-                widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::Empty;
+                widgets[WIDX_BUY_LAND_RIGHTS].type = WidgetType::empty;
             else
-                widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_BUY_LAND_RIGHTS].type = WidgetType::flatBtn;
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
 
@@ -569,24 +569,24 @@ namespace OpenRCT2::Ui::Windows
             auto y = 0;
             if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK)
             {
-                widgets[WIDX_OPEN_OR_CLOSE].type = WindowWidgetType::Empty;
+                widgets[WIDX_OPEN_OR_CLOSE].type = WidgetType::empty;
                 if (gameState.scenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
                 {
-                    widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::FlatBtn;
-                    widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::FlatBtn;
+                    widgets[WIDX_CLOSE_LIGHT].type = WidgetType::flatBtn;
+                    widgets[WIDX_OPEN_LIGHT].type = WidgetType::flatBtn;
                 }
                 else
                 {
-                    widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::ImgBtn;
-                    widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::ImgBtn;
+                    widgets[WIDX_CLOSE_LIGHT].type = WidgetType::imgBtn;
+                    widgets[WIDX_OPEN_LIGHT].type = WidgetType::imgBtn;
                 }
                 y = widgets[WIDX_OPEN_LIGHT].bottom + 5;
             }
             else
             {
-                widgets[WIDX_OPEN_OR_CLOSE].type = WindowWidgetType::FlatBtn;
-                widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::Empty;
-                widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::Empty;
+                widgets[WIDX_OPEN_OR_CLOSE].type = WidgetType::flatBtn;
+                widgets[WIDX_CLOSE_LIGHT].type = WidgetType::empty;
+                widgets[WIDX_OPEN_LIGHT].type = WidgetType::empty;
                 y = widgets[WIDX_PAGE_BACKGROUND].top + 6;
             }
 
@@ -597,7 +597,7 @@ namespace OpenRCT2::Ui::Windows
             }
             for (int32_t i = WIDX_OPEN_OR_CLOSE; i <= WIDX_RENAME; i++)
             {
-                if (widgets[i].type == WindowWidgetType::Empty)
+                if (widgets[i].type == WidgetType::empty)
                     continue;
 
                 widgets[i].left = width - 25;
@@ -887,15 +887,15 @@ namespace OpenRCT2::Ui::Windows
             // If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
             if ((getGameState().park.Flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked())
             {
-                widgets[WIDX_PRICE].type = WindowWidgetType::LabelCentred;
-                widgets[WIDX_INCREASE_PRICE].type = WindowWidgetType::Empty;
-                widgets[WIDX_DECREASE_PRICE].type = WindowWidgetType::Empty;
+                widgets[WIDX_PRICE].type = WidgetType::labelCentred;
+                widgets[WIDX_INCREASE_PRICE].type = WidgetType::empty;
+                widgets[WIDX_DECREASE_PRICE].type = WidgetType::empty;
             }
             else
             {
-                widgets[WIDX_PRICE].type = WindowWidgetType::Spinner;
-                widgets[WIDX_INCREASE_PRICE].type = WindowWidgetType::Button;
-                widgets[WIDX_DECREASE_PRICE].type = WindowWidgetType::Button;
+                widgets[WIDX_PRICE].type = WidgetType::spinner;
+                widgets[WIDX_INCREASE_PRICE].type = WidgetType::button;
+                widgets[WIDX_DECREASE_PRICE].type = WidgetType::button;
             }
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
@@ -1077,12 +1077,12 @@ namespace OpenRCT2::Ui::Windows
             // Show name input button on scenario completion.
             if (getGameState().park.Flags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
             {
-                widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Button;
+                widgets[WIDX_ENTER_NAME].type = WidgetType::button;
                 widgets[WIDX_ENTER_NAME].top = height - 19;
                 widgets[WIDX_ENTER_NAME].bottom = height - 6;
             }
             else
-                widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Empty;
+                widgets[WIDX_ENTER_NAME].type = WidgetType::empty;
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
         }

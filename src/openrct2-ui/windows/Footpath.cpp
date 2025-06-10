@@ -127,30 +127,30 @@ namespace OpenRCT2::Ui::Windows
         makeWindowShim(WINDOW_TITLE, WW_WINDOW, WH_WINDOW),
 
         // Type group
-        makeWidget({ 3,  17}, {100, 95}, WindowWidgetType::Groupbox, WindowColour::primary  , STR_TYPE                                                                          ),
-        makeWidget({ 6,  30}, { 47, 36}, WindowWidgetType::FlatBtn,  WindowColour::secondary, 0xFFFFFFFF,                        STR_FOOTPATH_TIP                               ),
-        makeWidget({53,  30}, { 47, 36}, WindowWidgetType::FlatBtn,  WindowColour::secondary, 0xFFFFFFFF,                        STR_QUEUE_LINE_PATH_TIP                        ),
-        makeWidget({29,  69}, { 47, 36}, WindowWidgetType::FlatBtn,  WindowColour::secondary, 0xFFFFFFFF,                        STR_OBJECT_SELECTION_FOOTPATH_RAILINGS         ),
+        makeWidget({ 3,  17}, {100, 95}, WidgetType::groupbox, WindowColour::primary  , STR_TYPE                                                                          ),
+        makeWidget({ 6,  30}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF,                        STR_FOOTPATH_TIP                               ),
+        makeWidget({53,  30}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF,                        STR_QUEUE_LINE_PATH_TIP                        ),
+        makeWidget({29,  69}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF,                        STR_OBJECT_SELECTION_FOOTPATH_RAILINGS         ),
 
         // Direction group
-        makeWidget({ 3, 115}, {100, 77}, WindowWidgetType::Groupbox, WindowColour::primary  , STR_DIRECTION                                                                     ),
-        makeWidget({53, 127}, { 45, 29}, WindowWidgetType::FlatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_NE),     STR_DIRECTION_TIP                              ),
-        makeWidget({53, 156}, { 45, 29}, WindowWidgetType::FlatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_SE),     STR_DIRECTION_TIP                              ),
-        makeWidget({ 8, 156}, { 45, 29}, WindowWidgetType::FlatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_SW),     STR_DIRECTION_TIP                              ),
-        makeWidget({ 8, 127}, { 45, 29}, WindowWidgetType::FlatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_NW),     STR_DIRECTION_TIP                              ),
+        makeWidget({ 3, 115}, {100, 77}, WidgetType::groupbox, WindowColour::primary  , STR_DIRECTION                                                                     ),
+        makeWidget({53, 127}, { 45, 29}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_NE),     STR_DIRECTION_TIP                              ),
+        makeWidget({53, 156}, { 45, 29}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_SE),     STR_DIRECTION_TIP                              ),
+        makeWidget({ 8, 156}, { 45, 29}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_SW),     STR_DIRECTION_TIP                              ),
+        makeWidget({ 8, 127}, { 45, 29}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_NW),     STR_DIRECTION_TIP                              ),
 
         // Slope group
-        makeWidget({ 3, 195}, {100, 41}, WindowWidgetType::Groupbox, WindowColour::primary  , STR_SLOPE                                                                         ),
-        makeWidget({17, 207}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN),  STR_SLOPE_DOWN_TIP                             ),
-        makeWidget({41, 207}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL), STR_LEVEL_TIP                                  ),
-        makeWidget({65, 207}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP),    STR_SLOPE_UP_TIP                               ),
-        makeWidget({ 8, 242}, { 90, 90}, WindowWidgetType::FlatBtn,  WindowColour::secondary, 0xFFFFFFFF,                        STR_CONSTRUCT_THE_SELECTED_FOOTPATH_SECTION_TIP),
-        makeWidget({30, 335}, { 46, 24}, WindowWidgetType::FlatBtn,  WindowColour::secondary, ImageId(SPR_DEMOLISH_CURRENT_SECTION),      STR_REMOVE_PREVIOUS_FOOTPATH_SECTION_TIP       ),
+        makeWidget({ 3, 195}, {100, 41}, WidgetType::groupbox, WindowColour::primary  , STR_SLOPE                                                                         ),
+        makeWidget({17, 207}, { 24, 24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN),  STR_SLOPE_DOWN_TIP                             ),
+        makeWidget({41, 207}, { 24, 24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL), STR_LEVEL_TIP                                  ),
+        makeWidget({65, 207}, { 24, 24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP),    STR_SLOPE_UP_TIP                               ),
+        makeWidget({ 8, 242}, { 90, 90}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF,                        STR_CONSTRUCT_THE_SELECTED_FOOTPATH_SECTION_TIP),
+        makeWidget({30, 335}, { 46, 24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_DEMOLISH_CURRENT_SECTION),      STR_REMOVE_PREVIOUS_FOOTPATH_SECTION_TIP       ),
 
         // Mode group
-        makeWidget({ 3, 361}, {100, 54}, WindowWidgetType::Groupbox, WindowColour::primary                                                                                      ),
-        makeWidget({13, 372}, { 36, 36}, WindowWidgetType::FlatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_FOOTPATH_LAND),    STR_CONSTRUCT_FOOTPATH_ON_LAND_TIP             ),
-        makeWidget({57, 372}, { 36, 36}, WindowWidgetType::FlatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_FOOTPATH_BRIDGE),  STR_CONSTRUCT_BRIDGE_OR_TUNNEL_FOOTPATH_TIP    )
+        makeWidget({ 3, 361}, {100, 54}, WidgetType::groupbox, WindowColour::primary                                                                                      ),
+        makeWidget({13, 372}, { 36, 36}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_FOOTPATH_LAND),    STR_CONSTRUCT_FOOTPATH_ON_LAND_TIP             ),
+        makeWidget({57, 372}, { 36, 36}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_FOOTPATH_BRIDGE),  STR_CONSTRUCT_BRIDGE_OR_TUNNEL_FOOTPATH_TIP    )
     );
 
 #pragma endregion
@@ -452,16 +452,16 @@ namespace OpenRCT2::Ui::Windows
 
             // Enable / disable construct button
             widgets[WIDX_CONSTRUCT].type = _footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL
-                ? WindowWidgetType::ImgBtn
-                : WindowWidgetType::Empty;
+                ? WidgetType::imgBtn
+                : WidgetType::empty;
 
             if (gFootpathSelection.LegacyPath == kObjectEntryIndexNull)
             {
-                widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_RAILINGS_TYPE].type = WidgetType::flatBtn;
             }
             else
             {
-                widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::Empty;
+                widgets[WIDX_RAILINGS_TYPE].type = WidgetType::empty;
             }
         }
 
@@ -1545,7 +1545,7 @@ namespace OpenRCT2::Ui::Windows
         void KeyboardShortcutShortcutSlopeDown()
         {
             if (IsWidgetDisabled(WIDX_SLOPEDOWN) || IsWidgetDisabled(WIDX_LEVEL) || IsWidgetDisabled(WIDX_SLOPEUP)
-                || widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
+                || widgets[WIDX_LEVEL].type == WidgetType::empty)
             {
                 return;
             }
@@ -1567,7 +1567,7 @@ namespace OpenRCT2::Ui::Windows
         void KeyboardShortcutSlopeUp()
         {
             if (IsWidgetDisabled(WIDX_SLOPEDOWN) || IsWidgetDisabled(WIDX_LEVEL) || IsWidgetDisabled(WIDX_SLOPEUP)
-                || widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
+                || widgets[WIDX_LEVEL].type == WidgetType::empty)
             {
                 return;
             }
@@ -1589,7 +1589,7 @@ namespace OpenRCT2::Ui::Windows
         void KeyboardShortcutSlopeLevel()
         {
             if (IsWidgetDisabled(WIDX_SLOPEDOWN) || IsWidgetDisabled(WIDX_LEVEL) || IsWidgetDisabled(WIDX_SLOPEUP)
-                || widgets[WIDX_LEVEL].type == WindowWidgetType::Empty || gFootpathConstructSlope == 0)
+                || widgets[WIDX_LEVEL].type == WidgetType::empty || gFootpathConstructSlope == 0)
             {
                 return;
             }
@@ -1599,7 +1599,7 @@ namespace OpenRCT2::Ui::Windows
 
         void KeyboardShortcutDemolishCurrent()
         {
-            if (IsWidgetDisabled(WIDX_REMOVE) || widgets[WIDX_REMOVE].type == WindowWidgetType::Empty
+            if (IsWidgetDisabled(WIDX_REMOVE) || widgets[WIDX_REMOVE].type == WidgetType::empty
                 || (!getGameState().cheats.buildInPauseMode && GameIsPaused()))
             {
                 return;
@@ -1610,7 +1610,7 @@ namespace OpenRCT2::Ui::Windows
 
         void KeyboardShortcutBuildCurrent()
         {
-            if (IsWidgetDisabled(WIDX_CONSTRUCT) || widgets[WIDX_CONSTRUCT].type == WindowWidgetType::Empty)
+            if (IsWidgetDisabled(WIDX_CONSTRUCT) || widgets[WIDX_CONSTRUCT].type == WidgetType::empty)
             {
                 return;
             }

@@ -77,7 +77,7 @@ namespace OpenRCT2
 
         // Frame
         auto& frameWidget = widgets[0];
-        if (frameWidget.type == WindowWidgetType::Frame)
+        if (frameWidget.type == WidgetType::frame)
         {
             frameWidget.right = width - 1;
             frameWidget.bottom = height - 1;
@@ -85,13 +85,13 @@ namespace OpenRCT2
 
         // Title/caption
         auto& titleWidget = widgets[1];
-        bool hasTitleWidget = titleWidget.type == WindowWidgetType::Caption;
+        bool hasTitleWidget = titleWidget.type == WidgetType::caption;
         if (hasTitleWidget)
             titleWidget.right = width - 2;
 
         // Close button
         auto& closeButton = widgets[2];
-        if (closeButton.type == WindowWidgetType::CloseBox || closeButton.type == WindowWidgetType::Empty)
+        if (closeButton.type == WidgetType::closeBox || closeButton.type == WidgetType::empty)
         {
             bool translucent = colours[closeButton.colour].hasFlag(ColourFlag::translucent);
             repositionCloseButton(closeButton, width, translucent);
@@ -101,7 +101,7 @@ namespace OpenRCT2
         if (widgets.size() >= 4)
         {
             auto& pageWidget = widgets[3];
-            if (pageWidget.type == WindowWidgetType::Resize)
+            if (pageWidget.type == WidgetType::resize)
             {
                 pageWidget.right = width - 1;
                 pageWidget.bottom = height - 1;

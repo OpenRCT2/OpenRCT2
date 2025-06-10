@@ -42,9 +42,9 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _waterWidgets = makeWidgets(
         makeWindowShim(WINDOW_TITLE, WW, WH),
-        makeWidget     ({16, 17}, {44, 32}, WindowWidgetType::ImgBtn, WindowColour::primary , ImageId(SPR_LAND_TOOL_SIZE_0),   kStringIdNone),            // preview box
-        makeRemapWidget({17, 18}, {16, 16}, WindowWidgetType::TrnBtn, WindowColour::tertiary, SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_WATER_TIP), // decrement size
-        makeRemapWidget({43, 32}, {16, 16}, WindowWidgetType::TrnBtn, WindowColour::tertiary, SPR_LAND_TOOL_INCREASE, STR_ADJUST_LARGER_WATER_TIP) // increment size
+        makeWidget     ({16, 17}, {44, 32}, WidgetType::imgBtn, WindowColour::primary , ImageId(SPR_LAND_TOOL_SIZE_0),   kStringIdNone),            // preview box
+        makeRemapWidget({17, 18}, {16, 16}, WidgetType::trnBtn, WindowColour::tertiary, SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_WATER_TIP), // decrement size
+        makeRemapWidget({43, 32}, {16, 16}, WidgetType::trnBtn, WindowColour::tertiary, SPR_LAND_TOOL_INCREASE, STR_ADJUST_LARGER_WATER_TIP) // increment size
     );
     // clang-format on
 

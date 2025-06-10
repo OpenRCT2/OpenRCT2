@@ -65,11 +65,11 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _serverListWidgets = makeWidgets(
         makeWindowShim(STR_SERVER_LIST, 340, 90),
-        makeWidget({100, 20}, {245,  12}, WindowWidgetType::TextBox,  WindowColour::secondary                                         ), // player name text box
-        makeWidget({  6, 37}, {489, 226}, WindowWidgetType::Scroll,   WindowColour::secondary                                         ), // server list
-        makeWidget({  6, 53}, {101,  14}, WindowWidgetType::Button,   WindowColour::secondary, STR_FETCH_SERVERS                      ), // fetch servers button
-        makeWidget({112, 53}, {101,  14}, WindowWidgetType::Button,   WindowColour::secondary, STR_ADD_SERVER                         ), // add server button
-        makeWidget({218, 53}, {101,  14}, WindowWidgetType::Button,   WindowColour::secondary, STR_START_SERVER                       )  // start server button
+        makeWidget({100, 20}, {245,  12}, WidgetType::textBox,  WindowColour::secondary                                         ), // player name text box
+        makeWidget({  6, 37}, {489, 226}, WidgetType::scroll,   WindowColour::secondary                                         ), // server list
+        makeWidget({  6, 53}, {101,  14}, WidgetType::button,   WindowColour::secondary, STR_FETCH_SERVERS                      ), // fetch servers button
+        makeWidget({112, 53}, {101,  14}, WidgetType::button,   WindowColour::secondary, STR_ADD_SERVER                         ), // add server button
+        makeWidget({218, 53}, {101,  14}, WidgetType::button,   WindowColour::secondary, STR_START_SERVER                       )  // start server button
     );
     // clang-format on
 

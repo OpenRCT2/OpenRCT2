@@ -133,17 +133,17 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto window_map_widgets = makeWidgets(
         makeWindowShim(WINDOW_TITLE, WW, WH),
-        makeWidget        ({  0,  43}, {245, 215}, WindowWidgetType::Resize,    WindowColour::secondary                                                                ),
-        makeRemapWidget   ({  3,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::secondary, SPR_TAB,                      STR_SHOW_PEOPLE_ON_MAP_TIP      ),
-        makeRemapWidget   ({ 34,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::secondary, SPR_TAB,                      STR_SHOW_RIDES_STALLS_ON_MAP_TIP),
-        makeWidget        ({  3,  46}, {239, 180}, WindowWidgetType::Scroll,    WindowColour::secondary, SCROLL_BOTH                                                   ),
-        makeSpinnerWidgets({102, 229}, { 50,  12}, WindowWidgetType::Spinner,   WindowColour::secondary, STR_COMMA16                                                   ), // NB: 3 widgets
-        makeWidget        ({153, 230}, { 20,  12}, WindowWidgetType::FlatBtn,   WindowColour::secondary, ImageId(SPR_G2_LINK_CHAIN),   STR_MAINTAIN_SQUARE_MAP_TOOLTIP ),
-        makeSpinnerWidgets({174, 229}, { 50,  12}, WindowWidgetType::Spinner,   WindowColour::secondary, STR_POP16_COMMA16                                             ), // NB: 3 widgets
-        makeWidget        ({  4,  46}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::secondary, ImageId(SPR_BUY_LAND_RIGHTS), STR_SELECT_PARK_OWNED_LAND_TIP  ),
-        makeWidget        ({  4,  70}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::secondary, ImageId(SPR_G2_PEEP_SPAWN),   STR_SET_STARTING_POSITIONS_TIP  ),
-        makeWidget        ({ 28,  94}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::secondary, ImageId(SPR_PARK_ENTRANCE),   STR_BUILD_PARK_ENTRANCE_TIP     ),
-        makeWidget        ({110, 118}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::secondary, ImageId(SPR_G2_MAP_GEN_BTN),  STR_MAP_GENERATOR_TIP           )
+        makeWidget        ({  0,  43}, {245, 215}, WidgetType::resize,    WindowColour::secondary                                                                ),
+        makeRemapWidget   ({  3,  17}, { 31,  27}, WidgetType::colourBtn, WindowColour::secondary, SPR_TAB,                      STR_SHOW_PEOPLE_ON_MAP_TIP      ),
+        makeRemapWidget   ({ 34,  17}, { 31,  27}, WidgetType::colourBtn, WindowColour::secondary, SPR_TAB,                      STR_SHOW_RIDES_STALLS_ON_MAP_TIP),
+        makeWidget        ({  3,  46}, {239, 180}, WidgetType::scroll,    WindowColour::secondary, SCROLL_BOTH                                                   ),
+        makeSpinnerWidgets({102, 229}, { 50,  12}, WidgetType::spinner,   WindowColour::secondary, STR_COMMA16                                                   ), // NB: 3 widgets
+        makeWidget        ({153, 230}, { 20,  12}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_G2_LINK_CHAIN),   STR_MAINTAIN_SQUARE_MAP_TOOLTIP ),
+        makeSpinnerWidgets({174, 229}, { 50,  12}, WidgetType::spinner,   WindowColour::secondary, STR_POP16_COMMA16                                             ), // NB: 3 widgets
+        makeWidget        ({  4,  46}, { 24,  24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_BUY_LAND_RIGHTS), STR_SELECT_PARK_OWNED_LAND_TIP  ),
+        makeWidget        ({  4,  70}, { 24,  24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_G2_PEEP_SPAWN),   STR_SET_STARTING_POSITIONS_TIP  ),
+        makeWidget        ({ 28,  94}, { 24,  24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_PARK_ENTRANCE),   STR_BUILD_PARK_ENTRANCE_TIP     ),
+        makeWidget        ({110, 118}, { 24,  24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_G2_MAP_GEN_BTN),  STR_MAP_GENERATOR_TIP           )
     );
     // clang-format on
 
@@ -647,7 +647,7 @@ namespace OpenRCT2::Ui::Windows
             // Disable all scenario editor related widgets
             for (int32_t i = WIDX_MAP_SIZE_SPINNER_Y; i <= WIDX_MAP_GENERATOR; i++)
             {
-                widgets[i].type = WindowWidgetType::Empty;
+                widgets[i].type = WidgetType::empty;
             }
 
             if (isEditorOrSandbox())
@@ -1093,21 +1093,21 @@ namespace OpenRCT2::Ui::Windows
 
         void ShowDefaultScenarioEditorButtons()
         {
-            widgets[WIDX_SET_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
-            widgets[WIDX_BUILD_PARK_ENTRANCE].type = WindowWidgetType::FlatBtn;
-            widgets[WIDX_PEOPLE_STARTING_POSITION].type = WindowWidgetType::FlatBtn;
+            widgets[WIDX_SET_LAND_RIGHTS].type = WidgetType::flatBtn;
+            widgets[WIDX_BUILD_PARK_ENTRANCE].type = WidgetType::flatBtn;
+            widgets[WIDX_PEOPLE_STARTING_POSITION].type = WidgetType::flatBtn;
 
             // Only show this in the scenario editor, even when in sandbox mode.
             if (gLegacyScene == LegacyScene::scenarioEditor)
-                widgets[WIDX_MAP_GENERATOR].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_MAP_GENERATOR].type = WidgetType::flatBtn;
 
-            widgets[WIDX_MAP_SIZE_SPINNER_Y].type = WindowWidgetType::Spinner;
-            widgets[WIDX_MAP_SIZE_SPINNER_Y_UP].type = WindowWidgetType::Button;
-            widgets[WIDX_MAP_SIZE_SPINNER_Y_DOWN].type = WindowWidgetType::Button;
-            widgets[WIDX_MAP_SIZE_LINK].type = WindowWidgetType::FlatBtn;
-            widgets[WIDX_MAP_SIZE_SPINNER_X].type = WindowWidgetType::Spinner;
-            widgets[WIDX_MAP_SIZE_SPINNER_X_UP].type = WindowWidgetType::Button;
-            widgets[WIDX_MAP_SIZE_SPINNER_X_DOWN].type = WindowWidgetType::Button;
+            widgets[WIDX_MAP_SIZE_SPINNER_Y].type = WidgetType::spinner;
+            widgets[WIDX_MAP_SIZE_SPINNER_Y_UP].type = WidgetType::button;
+            widgets[WIDX_MAP_SIZE_SPINNER_Y_DOWN].type = WidgetType::button;
+            widgets[WIDX_MAP_SIZE_LINK].type = WidgetType::flatBtn;
+            widgets[WIDX_MAP_SIZE_SPINNER_X].type = WidgetType::spinner;
+            widgets[WIDX_MAP_SIZE_SPINNER_X_UP].type = WidgetType::button;
+            widgets[WIDX_MAP_SIZE_SPINNER_X_DOWN].type = WidgetType::button;
 
             // Push width (Y) and height (X) to the common formatter arguments for the map size spinners to use
             auto& gameState = getGameState();

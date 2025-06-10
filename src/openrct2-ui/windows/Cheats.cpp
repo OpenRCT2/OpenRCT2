@@ -211,7 +211,7 @@ static constexpr int32_t kTabStart = 3;
 
 static constexpr auto kMainCheatWidgets = makeWidgets(
     makeWindowShim(WINDOW_TITLE, WW, WH),
-    makeWidget({  0, 43}, {WW, 257}, WindowWidgetType::Resize, WindowColour::secondary), /* tab content panel */
+    makeWidget({  0, 43}, {WW, 257}, WidgetType::resize, WindowColour::secondary), /* tab content panel */
     makeTab   ({  3, 17}, STR_FINANCIAL_CHEATS_TIP                      ), /* tab 1 */
     makeTab   ({ 34, 17}, STR_DATE_CHEATS_TIP                           ), /* tab 2 */
     makeTab   ({ 65, 17}, STR_GUEST_CHEATS_TIP                          ), /* tab 3 */
@@ -223,131 +223,131 @@ static constexpr auto kMainCheatWidgets = makeWidgets(
 
 static constexpr auto window_cheats_money_widgets = makeWidgets(
     kMainCheatWidgets,
-    makeWidget        ({ 11,  48}, CHEAT_BUTTON,  WindowWidgetType::Checkbox, WindowColour::secondary, STR_MAKE_PARK_NO_MONEY), // No money
-    makeWidget        ({  5,  69}, {238, 69},     WindowWidgetType::Groupbox, WindowColour::secondary, STR_ADD_SET_MONEY     ), // add / set money group frame
-    makeSpinnerWidgets({ 11,  92}, CHEAT_SPINNER, WindowWidgetType::Spinner,  WindowColour::secondary                        ), // money value
-    makeWidget        ({ 11, 111}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::secondary, STR_ADD_MONEY         ), // add money
-    makeWidget        ({127, 111}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::secondary, STR_SET_MONEY         ), // set money
-    makeWidget        ({ 11, 145}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::secondary, STR_CHEAT_CLEAR_LOAN  )  // Clear loan
+    makeWidget        ({ 11,  48}, CHEAT_BUTTON,  WidgetType::checkbox, WindowColour::secondary, STR_MAKE_PARK_NO_MONEY), // No money
+    makeWidget        ({  5,  69}, {238, 69},     WidgetType::groupbox, WindowColour::secondary, STR_ADD_SET_MONEY     ), // add / set money group frame
+    makeSpinnerWidgets({ 11,  92}, CHEAT_SPINNER, WidgetType::spinner,  WindowColour::secondary                        ), // money value
+    makeWidget        ({ 11, 111}, CHEAT_BUTTON,  WidgetType::button,   WindowColour::secondary, STR_ADD_MONEY         ), // add money
+    makeWidget        ({127, 111}, CHEAT_BUTTON,  WidgetType::button,   WindowColour::secondary, STR_SET_MONEY         ), // set money
+    makeWidget        ({ 11, 145}, CHEAT_BUTTON,  WidgetType::button,   WindowColour::secondary, STR_CHEAT_CLEAR_LOAN  )  // Clear loan
 );
 
 static constexpr auto window_cheats_date_widgets = makeWidgets(
     kMainCheatWidgets,
-    makeWidget        ({  5,  48}, {238, 99} ,    WindowWidgetType::Groupbox, WindowColour::secondary, STR_DATE_SET  ), // Date group
-    makeSpinnerWidgets({120,  61}, CHEAT_SPINNER, WindowWidgetType::Spinner,  WindowColour::secondary                ), // Year box
-    makeSpinnerWidgets({120,  82}, CHEAT_SPINNER, WindowWidgetType::Spinner,  WindowColour::secondary                ), // Month box
-    makeSpinnerWidgets({120, 103}, CHEAT_SPINNER, WindowWidgetType::Spinner,  WindowColour::secondary                ), // Day box
-    makeWidget        ({ 11, 122}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::secondary, STR_DATE_SET  ), // Set Date
-    makeWidget        ({127, 122}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::secondary, STR_DATE_RESET)  // Reset Date
+    makeWidget        ({  5,  48}, {238, 99} ,    WidgetType::groupbox, WindowColour::secondary, STR_DATE_SET  ), // Date group
+    makeSpinnerWidgets({120,  61}, CHEAT_SPINNER, WidgetType::spinner,  WindowColour::secondary                ), // Year box
+    makeSpinnerWidgets({120,  82}, CHEAT_SPINNER, WidgetType::spinner,  WindowColour::secondary                ), // Month box
+    makeSpinnerWidgets({120, 103}, CHEAT_SPINNER, WidgetType::spinner,  WindowColour::secondary                ), // Day box
+    makeWidget        ({ 11, 122}, CHEAT_BUTTON,  WidgetType::button,   WindowColour::secondary, STR_DATE_SET  ), // Set Date
+    makeWidget        ({127, 122}, CHEAT_BUTTON,  WidgetType::button,   WindowColour::secondary, STR_DATE_RESET)  // Reset Date
 );
 
 static constexpr auto window_cheats_guests_widgets = makeWidgets(
     kMainCheatWidgets,
-    makeWidget({ 11,  48}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::secondary, STR_CHEAT_LARGE_TRAM_GUESTS,     STR_CHEAT_LARGE_TRAM_GUESTS_TIP), // large tram
-    makeWidget({127,  48}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::secondary, STR_CHEAT_REMOVE_ALL_GUESTS,     STR_CHEAT_REMOVE_ALL_GUESTS_TIP), // remove all guests
+    makeWidget({ 11,  48}, CHEAT_BUTTON,  WidgetType::button,   WindowColour::secondary, STR_CHEAT_LARGE_TRAM_GUESTS,     STR_CHEAT_LARGE_TRAM_GUESTS_TIP), // large tram
+    makeWidget({127,  48}, CHEAT_BUTTON,  WidgetType::button,   WindowColour::secondary, STR_CHEAT_REMOVE_ALL_GUESTS,     STR_CHEAT_REMOVE_ALL_GUESTS_TIP), // remove all guests
 
-    makeWidget({  5,  70}, {238, 206},    WindowWidgetType::Groupbox, WindowColour::secondary, STR_CHEAT_SET_GUESTS_PARAMETERS                                 ), // Guests parameters group frame
-    makeWidget({183,  84}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_MAX                                                         ), // happiness max
-    makeWidget({127,  84}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_MIN                                                         ), // happiness min
-    makeWidget({183, 105}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_MAX                                                         ), // energy max
-    makeWidget({127, 105}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_MIN                                                         ), // energy min
-    makeWidget({183, 126}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_MAX                                                         ), // hunger max
-    makeWidget({127, 126}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_MIN                                                         ), // hunger min
-    makeWidget({183, 147}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_MAX                                                         ), // thirst max
-    makeWidget({127, 147}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_MIN                                                         ), // thirst min
-    makeWidget({183, 168}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_MAX                                                         ), // nausea max
-    makeWidget({127, 168}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_MIN                                                         ), // nausea min
-    makeWidget({183, 189}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_MAX                                                         ), // nausea tolerance max
-    makeWidget({127, 189}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_MIN                                                         ), // nausea tolerance min
-    makeWidget({183, 210}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_MAX                                                         ), // toilet max
-    makeWidget({127, 210}, MINMAX_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_MIN                                                         ), // toilet min
-    makeWidget({127, 251}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::secondary, STR_CHEAT_MORE_THAN_1                                           ), // ride intensity > 1
-    makeWidget({ 11, 251}, CHEAT_BUTTON,  WindowWidgetType::Button,   WindowColour::secondary, STR_CHEAT_LESS_THAN_15                                          ), // ride intensity < 15
+    makeWidget({  5,  70}, {238, 206},    WidgetType::groupbox, WindowColour::secondary, STR_CHEAT_SET_GUESTS_PARAMETERS                                 ), // Guests parameters group frame
+    makeWidget({183,  84}, MINMAX_BUTTON, WidgetType::button,   WindowColour::secondary, STR_MAX                                                         ), // happiness max
+    makeWidget({127,  84}, MINMAX_BUTTON, WidgetType::button,   WindowColour::secondary, STR_MIN                                                         ), // happiness min
+    makeWidget({183, 105}, MINMAX_BUTTON, WidgetType::button,   WindowColour::secondary, STR_MAX                                                         ), // energy max
+    makeWidget({127, 105}, MINMAX_BUTTON, WidgetType::button,   WindowColour::secondary, STR_MIN                                                         ), // energy min
+    makeWidget({183, 126}, MINMAX_BUTTON, WidgetType::button,   WindowColour::secondary, STR_MAX                                                         ), // hunger max
+    makeWidget({127, 126}, MINMAX_BUTTON, WidgetType::button,   WindowColour::secondary, STR_MIN                                                         ), // hunger min
+    makeWidget({183, 147}, MINMAX_BUTTON, WidgetType::button,   WindowColour::secondary, STR_MAX                                                         ), // thirst max
+    makeWidget({127, 147}, MINMAX_BUTTON, WidgetType::button,   WindowColour::secondary, STR_MIN                                                         ), // thirst min
+    makeWidget({183, 168}, MINMAX_BUTTON, WidgetType::button,   WindowColour::secondary, STR_MAX                                                         ), // nausea max
+    makeWidget({127, 168}, MINMAX_BUTTON, WidgetType::button,   WindowColour::secondary, STR_MIN                                                         ), // nausea min
+    makeWidget({183, 189}, MINMAX_BUTTON, WidgetType::button,   WindowColour::secondary, STR_MAX                                                         ), // nausea tolerance max
+    makeWidget({127, 189}, MINMAX_BUTTON, WidgetType::button,   WindowColour::secondary, STR_MIN                                                         ), // nausea tolerance min
+    makeWidget({183, 210}, MINMAX_BUTTON, WidgetType::button,   WindowColour::secondary, STR_MAX                                                         ), // toilet max
+    makeWidget({127, 210}, MINMAX_BUTTON, WidgetType::button,   WindowColour::secondary, STR_MIN                                                         ), // toilet min
+    makeWidget({127, 251}, CHEAT_BUTTON,  WidgetType::button,   WindowColour::secondary, STR_CHEAT_MORE_THAN_1                                           ), // ride intensity > 1
+    makeWidget({ 11, 251}, CHEAT_BUTTON,  WidgetType::button,   WindowColour::secondary, STR_CHEAT_LESS_THAN_15                                          ), // ride intensity < 15
 
-    makeWidget({  5, 258+15+6+2}, {238, 62},    WindowWidgetType::Groupbox, WindowColour::secondary, STR_CHEAT_GIVE_ALL_GUESTS                                       ), // Guests inventory group frame
-    makeWidget({ 11, 279+15+6-3}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_CURRENCY_FORMAT                                             ), // give guests money
-    makeWidget({127, 279+15+6-3}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_SHOP_ITEM_PLURAL_PARK_MAP                                   ), // give guests park maps
-    makeWidget({ 11, 300+15+6-3}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_SHOP_ITEM_PLURAL_BALLOON                                    ), // give guests balloons
-    makeWidget({127, 300+15+6-3}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_SHOP_ITEM_PLURAL_UMBRELLA                                   ), // give guests umbrellas
+    makeWidget({  5, 258+15+6+2}, {238, 62},    WidgetType::groupbox, WindowColour::secondary, STR_CHEAT_GIVE_ALL_GUESTS                                       ), // Guests inventory group frame
+    makeWidget({ 11, 279+15+6-3}, CHEAT_BUTTON, WidgetType::button,   WindowColour::secondary, STR_CURRENCY_FORMAT                                             ), // give guests money
+    makeWidget({127, 279+15+6-3}, CHEAT_BUTTON, WidgetType::button,   WindowColour::secondary, STR_SHOP_ITEM_PLURAL_PARK_MAP                                   ), // give guests park maps
+    makeWidget({ 11, 300+15+6-3}, CHEAT_BUTTON, WidgetType::button,   WindowColour::secondary, STR_SHOP_ITEM_PLURAL_BALLOON                                    ), // give guests balloons
+    makeWidget({127, 300+15+6-3}, CHEAT_BUTTON, WidgetType::button,   WindowColour::secondary, STR_SHOP_ITEM_PLURAL_UMBRELLA                                   ), // give guests umbrellas
 
-    makeWidget({  5, 342+6}, {238,  85},    WindowWidgetType::Groupbox, WindowColour::secondary, STR_GUEST_BEHAVIOUR                                             ), // Guests behaviour group frame
-    makeWidget({ 11, 363+1}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_IGNORE_INTENSITY,      STR_CHEAT_IGNORE_INTENSITY_TIP ), // guests ignore intensity
-    makeWidget({ 11, 380+1}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_IGNORE_PRICE,          STR_CHEAT_IGNORE_PRICE_TIP     ), // guests ignore price
-    makeWidget({ 11, 397+1}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_VANDALISM,     STR_CHEAT_DISABLE_VANDALISM_TIP), // disable vandalism
-    makeWidget({ 11, 414+1}, CHEAT_CHECK,   WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_LITTERING,     STR_CHEAT_DISABLE_LITTERING_TIP)  // disable littering
+    makeWidget({  5, 342+6}, {238,  85},    WidgetType::groupbox, WindowColour::secondary, STR_GUEST_BEHAVIOUR                                             ), // Guests behaviour group frame
+    makeWidget({ 11, 363+1}, CHEAT_CHECK,   WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_IGNORE_INTENSITY,      STR_CHEAT_IGNORE_INTENSITY_TIP ), // guests ignore intensity
+    makeWidget({ 11, 380+1}, CHEAT_CHECK,   WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_IGNORE_PRICE,          STR_CHEAT_IGNORE_PRICE_TIP     ), // guests ignore price
+    makeWidget({ 11, 397+1}, CHEAT_CHECK,   WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_VANDALISM,     STR_CHEAT_DISABLE_VANDALISM_TIP), // disable vandalism
+    makeWidget({ 11, 414+1}, CHEAT_CHECK,   WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_LITTERING,     STR_CHEAT_DISABLE_LITTERING_TIP)  // disable littering
 );
 
 static constexpr auto window_cheats_staff_widgets = makeWidgets(
     kMainCheatWidgets,
-    makeWidget        ({  5, 357-309}, {238,  35},   WindowWidgetType::Groupbox,     WindowColour::secondary, STR_CHEAT_STAFF_GROUP                                           ), // Staff group
-    makeWidget        ({126, 371-309}, {111,  14},   WindowWidgetType::DropdownMenu, WindowColour::secondary                                                                  ), // Staff speed
-    makeWidget        ({225, 372-309}, { 11,  12},   WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                              ), // Staff speed
+    makeWidget        ({  5, 357-309}, {238,  35},   WidgetType::groupbox,     WindowColour::secondary, STR_CHEAT_STAFF_GROUP                                           ), // Staff group
+    makeWidget        ({126, 371-309}, {111,  14},   WidgetType::dropdownMenu, WindowColour::secondary                                                                  ), // Staff speed
+    makeWidget        ({225, 372-309}, { 11,  12},   WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                              ), // Staff speed
 
-    makeWidget        ({  5, 257-168}, {238,  99},   WindowWidgetType::Groupbox, WindowColour::secondary, STR_CHEAT_MAINTENANCE_GROUP                                         ), // Maintenance group
-    makeWidget        ({ 11, 271-168}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_CHEAT_REMOVE_LITTER                                             ), // Remove litter
-    makeWidget        ({127, 271-168}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_CHEAT_FIX_VANDALISM                                             ), // Fix vandalism
-    makeWidget        ({ 11, 292-168}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_CHEAT_CLEAR_GRASS                                               ), // Clear grass
-    makeWidget        ({127, 292-168}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_CHEAT_MOWED_GRASS                                               ), // Mowed grass
-    makeWidget        ({ 11, 313-168}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_CHEAT_WATER_PLANTS                                              ), // Water plants
-    makeWidget        ({ 11, 334-164}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_PLANT_AGING,   STR_CHEAT_DISABLE_PLANT_AGING_TIP  )  // Disable plant ageing
+    makeWidget        ({  5, 257-168}, {238,  99},   WidgetType::groupbox, WindowColour::secondary, STR_CHEAT_MAINTENANCE_GROUP                                         ), // Maintenance group
+    makeWidget        ({ 11, 271-168}, CHEAT_BUTTON, WidgetType::button,   WindowColour::secondary, STR_CHEAT_REMOVE_LITTER                                             ), // Remove litter
+    makeWidget        ({127, 271-168}, CHEAT_BUTTON, WidgetType::button,   WindowColour::secondary, STR_CHEAT_FIX_VANDALISM                                             ), // Fix vandalism
+    makeWidget        ({ 11, 292-168}, CHEAT_BUTTON, WidgetType::button,   WindowColour::secondary, STR_CHEAT_CLEAR_GRASS                                               ), // Clear grass
+    makeWidget        ({127, 292-168}, CHEAT_BUTTON, WidgetType::button,   WindowColour::secondary, STR_CHEAT_MOWED_GRASS                                               ), // Mowed grass
+    makeWidget        ({ 11, 313-168}, CHEAT_BUTTON, WidgetType::button,   WindowColour::secondary, STR_CHEAT_WATER_PLANTS                                              ), // Water plants
+    makeWidget        ({ 11, 334-164}, CHEAT_CHECK,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_PLANT_AGING,   STR_CHEAT_DISABLE_PLANT_AGING_TIP  )  // Disable plant ageing
 );
 
 static constexpr auto window_cheats_park_widgets = makeWidgets(
     kMainCheatWidgets,
-    makeWidget        ({  5,  48}, {238,  60},   WindowWidgetType::Groupbox, WindowColour::secondary, STR_CHEAT_GENERAL_GROUP                                             ), // General group
-    makeWidget        ({ 11,  62}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_CHEAT_OWN_ALL_LAND,          STR_CHEAT_OWN_ALL_LAND_TIP         ), // Own all land
-    makeWidget        ({127,  62}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_CHEAT_REMOVE_PARK_FENCES,    STR_CHEAT_REMOVE_PARK_FENCES_TIP   ), // Remove park fences
-    makeWidget        ({ 11,  83}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_CHEAT_OPEN_PARK,             STR_CHEAT_OPEN_PARK_TIP            ), // open / close park
+    makeWidget        ({  5,  48}, {238,  60},   WidgetType::groupbox, WindowColour::secondary, STR_CHEAT_GENERAL_GROUP                                             ), // General group
+    makeWidget        ({ 11,  62}, CHEAT_BUTTON, WidgetType::button,   WindowColour::secondary, STR_CHEAT_OWN_ALL_LAND,          STR_CHEAT_OWN_ALL_LAND_TIP         ), // Own all land
+    makeWidget        ({127,  62}, CHEAT_BUTTON, WidgetType::button,   WindowColour::secondary, STR_CHEAT_REMOVE_PARK_FENCES,    STR_CHEAT_REMOVE_PARK_FENCES_TIP   ), // Remove park fences
+    makeWidget        ({ 11,  83}, CHEAT_BUTTON, WidgetType::button,   WindowColour::secondary, STR_CHEAT_OPEN_PARK,             STR_CHEAT_OPEN_PARK_TIP            ), // open / close park
 
-    makeWidget        ({  5, 113}, {238,  75},   WindowWidgetType::Groupbox, WindowColour::secondary, STR_CHEAT_OBJECTIVE_GROUP                                           ), // Objective group
-    makeWidget        ({ 11, 128}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_NEVERENDING_MARKETING, STR_CHEAT_NEVERENDING_MARKETING_TIP), // never ending marketing campaigns
-    makeWidget        ({ 11, 145}, {281,  12},   WindowWidgetType::Checkbox, WindowColour::secondary, STR_FORCE_PARK_RATING                                               ), // Force park rating
-    makeSpinnerWidgets({156, 143}, { 81,  14},   WindowWidgetType::Spinner,  WindowColour::secondary                                                                      ), // park rating (3 widgets)
-    makeWidget        ({ 11, 163}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_CHEAT_WIN_SCENARIO                                              ), // Win scenario
-    makeWidget        ({127, 163}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_CHEAT_HAVE_FUN                                                  ), // Have fun!
+    makeWidget        ({  5, 113}, {238,  75},   WidgetType::groupbox, WindowColour::secondary, STR_CHEAT_OBJECTIVE_GROUP                                           ), // Objective group
+    makeWidget        ({ 11, 128}, CHEAT_CHECK,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_NEVERENDING_MARKETING, STR_CHEAT_NEVERENDING_MARKETING_TIP), // never ending marketing campaigns
+    makeWidget        ({ 11, 145}, {281,  12},   WidgetType::checkbox, WindowColour::secondary, STR_FORCE_PARK_RATING                                               ), // Force park rating
+    makeSpinnerWidgets({156, 143}, { 81,  14},   WidgetType::spinner,  WindowColour::secondary                                                                      ), // park rating (3 widgets)
+    makeWidget        ({ 11, 163}, CHEAT_BUTTON, WidgetType::button,   WindowColour::secondary, STR_CHEAT_WIN_SCENARIO                                              ), // Win scenario
+    makeWidget        ({127, 163}, CHEAT_BUTTON, WidgetType::button,   WindowColour::secondary, STR_CHEAT_HAVE_FUN                                                  ), // Have fun!
 
-    makeWidget        ({  5, 192}, {238,  68},   WindowWidgetType::Groupbox, WindowColour::secondary, STR_CHEAT_GROUP_CONSTRUCTION                                                      ), // Construction group
-    makeWidget        ({ 11, 207}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_BUILD_IN_PAUSE_MODE,          STR_CHEAT_BUILD_IN_PAUSE_MODE_TIP         ), // Build in pause mode
-    makeWidget        ({ 11, 224}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_ALLOW_PATH_AS_QUEUE,          STR_CHEAT_ALLOW_PATH_AS_QUEUE_TIP         ), // Allow regular footpaths as queue path
-    makeWidget        ({ 11, 241}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES, STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES_TIP)  // Allow special colours in dropdown
+    makeWidget        ({  5, 192}, {238,  68},   WidgetType::groupbox, WindowColour::secondary, STR_CHEAT_GROUP_CONSTRUCTION                                                      ), // Construction group
+    makeWidget        ({ 11, 207}, CHEAT_CHECK,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_BUILD_IN_PAUSE_MODE,          STR_CHEAT_BUILD_IN_PAUSE_MODE_TIP         ), // Build in pause mode
+    makeWidget        ({ 11, 224}, CHEAT_CHECK,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_ALLOW_PATH_AS_QUEUE,          STR_CHEAT_ALLOW_PATH_AS_QUEUE_TIP         ), // Allow regular footpaths as queue path
+    makeWidget        ({ 11, 241}, CHEAT_CHECK,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES, STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES_TIP)  // Allow special colours in dropdown
 );
 
 static constexpr auto window_cheats_rides_widgets = makeWidgets(
     kMainCheatWidgets,
-    makeWidget({ 11,  48}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_CHEAT_FIX_ALL_RIDES,                        STR_CHEAT_FIX_ALL_RIDES_TIP                    ), // Fix all rides
-    makeWidget({127,  48}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_CHEAT_RENEW_RIDES,                          STR_CHEAT_RENEW_RIDES_TIP                      ), // Renew rides
-    makeWidget({127,  69}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_CHEAT_RESET_CRASH_STATUS,                   STR_CHEAT_RESET_CRASH_STATUS_TIP               ), // Reset crash status
-    makeWidget({ 11,  69}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::secondary, STR_CHEAT_10_MINUTE_INSPECTIONS,                STR_CHEAT_10_MINUTE_INSPECTIONS_TIP            ), // 10 minute inspections
+    makeWidget({ 11,  48}, CHEAT_BUTTON, WidgetType::button,   WindowColour::secondary, STR_CHEAT_FIX_ALL_RIDES,                        STR_CHEAT_FIX_ALL_RIDES_TIP                    ), // Fix all rides
+    makeWidget({127,  48}, CHEAT_BUTTON, WidgetType::button,   WindowColour::secondary, STR_CHEAT_RENEW_RIDES,                          STR_CHEAT_RENEW_RIDES_TIP                      ), // Renew rides
+    makeWidget({127,  69}, CHEAT_BUTTON, WidgetType::button,   WindowColour::secondary, STR_CHEAT_RESET_CRASH_STATUS,                   STR_CHEAT_RESET_CRASH_STATUS_TIP               ), // Reset crash status
+    makeWidget({ 11,  69}, CHEAT_BUTTON, WidgetType::button,   WindowColour::secondary, STR_CHEAT_10_MINUTE_INSPECTIONS,                STR_CHEAT_10_MINUTE_INSPECTIONS_TIP            ), // 10 minute inspections
 
-    makeWidget({  5, 95},  {238, 87},    WindowWidgetType::Groupbox, WindowColour::secondary, STR_CHEAT_GROUP_CONSTRUCTION                                                                   ), // Construction group
-    makeWidget({ 11, 111}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES,     STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES_TIP ), // Show all drawable track pieces
-    makeWidget({ 11, 128}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,       STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP   ), // Enable chain lift on all track
-    makeWidget({ 11, 145}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS,    STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS_TIP), // Allow track place at invalid heights
-    makeWidget({ 11, 162}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_MAKE_DESTRUCTABLE,                    STR_CHEAT_MAKE_DESTRUCTABLE_TIP                ), // All destructible
+    makeWidget({  5, 95},  {238, 87},    WidgetType::groupbox, WindowColour::secondary, STR_CHEAT_GROUP_CONSTRUCTION                                                                   ), // Construction group
+    makeWidget({ 11, 111}, CHEAT_CHECK,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES,     STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES_TIP ), // Show all drawable track pieces
+    makeWidget({ 11, 128}, CHEAT_CHECK,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,       STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP   ), // Enable chain lift on all track
+    makeWidget({ 11, 145}, CHEAT_CHECK,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS,    STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS_TIP), // Allow track place at invalid heights
+    makeWidget({ 11, 162}, CHEAT_CHECK,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_MAKE_DESTRUCTABLE,                    STR_CHEAT_MAKE_DESTRUCTABLE_TIP                ), // All destructible
 
-    makeWidget({  5, 186}, {238, 102},   WindowWidgetType::Groupbox, WindowColour::secondary, STR_CHEAT_GROUP_OPERATION                                                                      ), // Operation group
-    makeWidget({ 11, 201}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_SHOW_ALL_OPERATING_MODES                                                             ), // Show all operating modes
-    makeWidget({ 11, 218}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_UNLOCK_OPERATING_LIMITS,              STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP          ), // 410 km/h lift hill etc.
-    makeWidget({ 11, 235}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_BRAKES_FAILURE,               STR_CHEAT_DISABLE_BRAKES_FAILURE_TIP           ), // Disable brakes failure
-    makeWidget({ 11, 252}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_BREAKDOWNS,                   STR_CHEAT_DISABLE_BREAKDOWNS_TIP               ), // Disable all breakdowns
-    makeWidget({ 11, 269}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_RIDE_VALUE_AGING,             STR_CHEAT_DISABLE_RIDE_VALUE_AGING_TIP         ), // Disable ride ageing
+    makeWidget({  5, 186}, {238, 102},   WidgetType::groupbox, WindowColour::secondary, STR_CHEAT_GROUP_OPERATION                                                                      ), // Operation group
+    makeWidget({ 11, 201}, CHEAT_CHECK,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_SHOW_ALL_OPERATING_MODES                                                             ), // Show all operating modes
+    makeWidget({ 11, 218}, CHEAT_CHECK,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_UNLOCK_OPERATING_LIMITS,              STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP          ), // 410 km/h lift hill etc.
+    makeWidget({ 11, 235}, CHEAT_CHECK,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_BRAKES_FAILURE,               STR_CHEAT_DISABLE_BRAKES_FAILURE_TIP           ), // Disable brakes failure
+    makeWidget({ 11, 252}, CHEAT_CHECK,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_BREAKDOWNS,                   STR_CHEAT_DISABLE_BREAKDOWNS_TIP               ), // Disable all breakdowns
+    makeWidget({ 11, 269}, CHEAT_CHECK,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_RIDE_VALUE_AGING,             STR_CHEAT_DISABLE_RIDE_VALUE_AGING_TIP         ), // Disable ride ageing
 
-    makeWidget({  5, 292}, {238, 86},    WindowWidgetType::Groupbox, WindowColour::secondary, STR_CHEAT_GROUP_AVAILABILITY                                                                   ), // Availability group
-    makeWidget({ 11, 308}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,    STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP), // Allow arbitrary ride type changes
-    makeWidget({ 11, 325}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES                                                 ), // Show vehicles from other track types
-    makeWidget({ 11, 342}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,           STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP       ), // Disable train length limits
-    makeWidget({ 11, 359}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::secondary, STR_CHEAT_IGNORE_RESEARCH_STATUS,               STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP           )  // Ignore Research Status
+    makeWidget({  5, 292}, {238, 86},    WidgetType::groupbox, WindowColour::secondary, STR_CHEAT_GROUP_AVAILABILITY                                                                   ), // Availability group
+    makeWidget({ 11, 308}, CHEAT_CHECK,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,    STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP), // Allow arbitrary ride type changes
+    makeWidget({ 11, 325}, CHEAT_CHECK,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES                                                 ), // Show vehicles from other track types
+    makeWidget({ 11, 342}, CHEAT_CHECK,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,           STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP       ), // Disable train length limits
+    makeWidget({ 11, 359}, CHEAT_CHECK,  WidgetType::checkbox, WindowColour::secondary, STR_CHEAT_IGNORE_RESEARCH_STATUS,               STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP           )  // Ignore Research Status
 );
 
 static constexpr auto window_cheats_weather_widgets = makeWidgets(
     kMainCheatWidgets,
-    makeWidget        ({  5,  48}, {238,  50},   WindowWidgetType::Groupbox,     WindowColour::secondary, STR_CHEAT_WEATHER_GROUP                                      ), // Weather group
-    makeWidget        ({126,  62}, {111,  14},   WindowWidgetType::DropdownMenu, WindowColour::secondary, kStringIdNone,                        STR_CHANGE_WEATHER_TOOLTIP  ), // Force weather
-    makeWidget        ({225,  63}, { 11,  12},   WindowWidgetType::Button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,              STR_CHANGE_WEATHER_TOOLTIP  ), // Force weather
-    makeWidget        ({ 11,  80}, CHEAT_CHECK,  WindowWidgetType::Checkbox,     WindowColour::secondary, STR_CHEAT_FREEZE_WEATHER,        STR_CHEAT_FREEZE_WEATHER_TIP), // Freeze weather
-    makeWidget        ({  5, 102}, {238,  37},   WindowWidgetType::Groupbox,     WindowColour::secondary, STR_FAUNA                                                    ), // Fauna group
-    makeWidget        ({ 11, 115}, CHEAT_BUTTON, WindowWidgetType::Button,       WindowColour::secondary, STR_CREATE_DUCKS,                STR_CREATE_DUCKS_TIP        ), // Create ducks
-    makeWidget        ({127, 115}, CHEAT_BUTTON, WindowWidgetType::Button,       WindowColour::secondary, STR_REMOVE_DUCKS,                STR_REMOVE_DUCKS_TIP        )  // Remove ducks
+    makeWidget        ({  5,  48}, {238,  50},   WidgetType::groupbox,     WindowColour::secondary, STR_CHEAT_WEATHER_GROUP                                      ), // Weather group
+    makeWidget        ({126,  62}, {111,  14},   WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,                        STR_CHANGE_WEATHER_TOOLTIP  ), // Force weather
+    makeWidget        ({225,  63}, { 11,  12},   WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,              STR_CHANGE_WEATHER_TOOLTIP  ), // Force weather
+    makeWidget        ({ 11,  80}, CHEAT_CHECK,  WidgetType::checkbox,     WindowColour::secondary, STR_CHEAT_FREEZE_WEATHER,        STR_CHEAT_FREEZE_WEATHER_TIP), // Freeze weather
+    makeWidget        ({  5, 102}, {238,  37},   WidgetType::groupbox,     WindowColour::secondary, STR_FAUNA                                                    ), // Fauna group
+    makeWidget        ({ 11, 115}, CHEAT_BUTTON, WidgetType::button,       WindowColour::secondary, STR_CREATE_DUCKS,                STR_CREATE_DUCKS_TIP        ), // Create ducks
+    makeWidget        ({127, 115}, CHEAT_BUTTON, WidgetType::button,       WindowColour::secondary, STR_REMOVE_DUCKS,                STR_REMOVE_DUCKS_TIP        )  // Remove ducks
 );
 
 static constexpr std::span<const Widget> window_cheats_page_widgets[] =

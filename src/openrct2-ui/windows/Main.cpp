@@ -21,7 +21,7 @@ namespace OpenRCT2::Ui::Windows
 {
     // clang-format off
     static constexpr Widget _mainWidgets[] = {
-        makeWidget({0, 0}, {0, 0}, WindowWidgetType::Viewport, WindowColour::primary),
+        makeWidget({0, 0}, {0, 0}, WidgetType::viewport, WindowColour::primary),
     };
     // clang-format on
 

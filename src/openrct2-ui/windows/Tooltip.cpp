@@ -26,7 +26,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr auto _tooltipWidgets = makeWidgets(
-        makeWidget({ 0, 0 }, { 200, 32 }, WindowWidgetType::ImgBtn, WindowColour::primary));
+        makeWidget({ 0, 0 }, { 200, 32 }, WidgetType::imgBtn, WindowColour::primary));
 
     class TooltipWindow final : public Window
     {

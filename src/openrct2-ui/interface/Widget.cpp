@@ -66,60 +66,60 @@ namespace OpenRCT2::Ui
 
         switch (widget->type)
         {
-            case WindowWidgetType::Frame:
+            case WidgetType::frame:
                 WidgetFrameDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::Resize:
+            case WidgetType::resize:
                 WidgetResizeDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::ImgBtn:
+            case WidgetType::imgBtn:
                 WidgetButtonDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::ColourBtn:
-            case WindowWidgetType::TrnBtn:
-            case WindowWidgetType::Tab:
+            case WidgetType::colourBtn:
+            case WidgetType::trnBtn:
+            case WidgetType::tab:
                 WidgetTabDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::FlatBtn:
+            case WidgetType::flatBtn:
                 WidgetFlatButtonDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::Button:
-            case WindowWidgetType::TableHeader:
+            case WidgetType::button:
+            case WidgetType::tableHeader:
                 WidgetTextButton(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::LabelCentred:
+            case WidgetType::labelCentred:
                 WidgetTextCentred(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::Label:
+            case WidgetType::label:
                 WidgetText(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::Spinner:
-            case WindowWidgetType::DropdownMenu:
-            case WindowWidgetType::Viewport:
+            case WidgetType::spinner:
+            case WidgetType::dropdownMenu:
+            case WidgetType::viewport:
                 WidgetTextInset(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::Groupbox:
+            case WidgetType::groupbox:
                 WidgetGroupboxDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::Caption:
+            case WidgetType::caption:
                 WidgetCaptionDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::CloseBox:
+            case WidgetType::closeBox:
                 WidgetCloseboxDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::Scroll:
+            case WidgetType::scroll:
                 WidgetScrollDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::Checkbox:
+            case WidgetType::checkbox:
                 WidgetCheckboxDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::TextBox:
+            case WidgetType::textBox:
                 WidgetTextBoxDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::ProgressBar:
+            case WidgetType::progressBar:
                 WidgetProgressBarDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::HorizontalSeparator:
+            case WidgetType::horizontalSeparator:
                 WidgetHorizontalSeparatorDraw(rt, w, *widget);
                 break;
             default:
@@ -225,10 +225,10 @@ namespace OpenRCT2::Ui
         // Get the widget
         auto& widget = w.widgets[widgetIndex];
 
-        if (widget.type != WindowWidgetType::Tab && widget.image.GetIndex() == kImageIndexUndefined)
+        if (widget.type != WidgetType::tab && widget.image.GetIndex() == kImageIndexUndefined)
             return;
 
-        if (widget.type == WindowWidgetType::Tab)
+        if (widget.type == WidgetType::tab)
         {
             if (WidgetIsDisabled(w, widgetIndex))
                 return;
@@ -247,7 +247,7 @@ namespace OpenRCT2::Ui
             return;
         }
 
-        if (widget.type != WindowWidgetType::TrnBtn)
+        if (widget.type != WidgetType::trnBtn)
         {
             WidgetDrawImage(rt, w, widgetIndex);
             return;
@@ -325,7 +325,7 @@ namespace OpenRCT2::Ui
         GfxFillRectInset(rt, rect, colour, press);
 
         // Button caption
-        if (widget.type != WindowWidgetType::TableHeader)
+        if (widget.type != WidgetType::tableHeader)
         {
             WidgetTextCentred(rt, w, widgetIndex);
         }
@@ -356,7 +356,7 @@ namespace OpenRCT2::Ui
         auto topLeft = w.windowPos + ScreenCoordsXY{ widget.left, 0 };
         int32_t r = w.windowPos.x + widget.right;
 
-        if (widget.type == WindowWidgetType::Button || widget.type == WindowWidgetType::TableHeader)
+        if (widget.type == WidgetType::button || widget.type == WidgetType::tableHeader)
             topLeft.y += widget.textTop();
         else
             topLeft.y += widget.top;
@@ -370,7 +370,7 @@ namespace OpenRCT2::Ui
         }
 
         ScreenCoordsXY coords = { (topLeft.x + r + 1) / 2 - 1, topLeft.y };
-        if (widget.type == WindowWidgetType::LabelCentred)
+        if (widget.type == WidgetType::labelCentred)
         {
             DrawTextWrapped(rt, coords, widget.width() - 2, stringId, ft, { colour, TextAlignment::CENTRE });
         }
@@ -401,8 +401,8 @@ namespace OpenRCT2::Ui
         int32_t r = w.windowPos.x + widget.right;
         int32_t t;
 
-        if (widget.type == WindowWidgetType::Button || widget.type == WindowWidgetType::DropdownMenu
-            || widget.type == WindowWidgetType::Spinner || widget.type == WindowWidgetType::TableHeader)
+        if (widget.type == WidgetType::button || widget.type == WidgetType::dropdownMenu || widget.type == WidgetType::spinner
+            || widget.type == WidgetType::tableHeader)
         {
             t = w.windowPos.y + widget.textTop();
         }
@@ -418,7 +418,7 @@ namespace OpenRCT2::Ui
         }
 
         ScreenCoordsXY coords = { l + 1, t };
-        if (widget.type == WindowWidgetType::LabelCentred)
+        if (widget.type == WidgetType::labelCentred)
         {
             DrawTextWrapped(rt, coords, r - l, stringId, ft, { colour, TextAlignment::CENTRE });
         }
@@ -559,10 +559,10 @@ namespace OpenRCT2::Ui
 
         topLeft = w.windowPos + ScreenCoordsXY{ widget->left + 2, widget->top + 1 };
         int32_t width = widget->width() - 4;
-        if ((widget + 1)->type == WindowWidgetType::CloseBox)
+        if ((widget + 1)->type == WidgetType::closeBox)
         {
             width -= kCloseButtonSize;
-            if ((widget + 2)->type == WindowWidgetType::CloseBox)
+            if ((widget + 2)->type == WidgetType::closeBox)
                 width -= kCloseButtonSize;
         }
         topLeft.x += width / 2;
@@ -829,8 +829,7 @@ namespace OpenRCT2::Ui
         // Resolve the absolute ltrb
         auto screenCoords = w.windowPos + ScreenCoordsXY{ widget.left, widget.top };
 
-        if (widget.type == WindowWidgetType::ColourBtn || widget.type == WindowWidgetType::TrnBtn
-            || widget.type == WindowWidgetType::Tab)
+        if (widget.type == WidgetType::colourBtn || widget.type == WidgetType::trnBtn || widget.type == WidgetType::tab)
             if (WidgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
                 image = image.WithIndexOffset(1);
 
@@ -942,7 +941,7 @@ namespace OpenRCT2::Ui
             w.widgets.begin(), w.widgets.end(), [&](auto& otherWidget) { return &otherWidget == widget; });
         for (auto it = w.widgets.begin(); it != itLast; it++)
         {
-            if (it->type == WindowWidgetType::Scroll)
+            if (it->type == WidgetType::scroll)
             {
                 *scroll_id += 1;
             }

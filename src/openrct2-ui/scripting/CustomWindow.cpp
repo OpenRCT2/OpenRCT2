@@ -47,7 +47,7 @@ namespace OpenRCT2::Ui::Windows
 
     static auto CustomDefaultWidgets = makeWidgets(
         makeWindowShim(STR_STRING, 50, 50),
-        makeWidget({ 0, 14 }, { 50, 36 }, WindowWidgetType::Resize, WindowColour::secondary) // content panel
+        makeWidget({ 0, 14 }, { 50, 36 }, WidgetType::resize, WindowColour::secondary) // content panel
     );
 
     struct CustomWidgetDesc
@@ -476,7 +476,7 @@ namespace OpenRCT2::Ui::Windows
             WidgetIndex widgetIndex = 0;
             for (auto& widget : widgets)
             {
-                if (widget.type == WindowWidgetType::Scroll)
+                if (widget.type == WidgetType::scroll)
                 {
                     WidgetScrollUpdateThumbs(*this, widgetIndex);
                 }
@@ -516,7 +516,7 @@ namespace OpenRCT2::Ui::Windows
             size_t scrollIndex = 0;
             for (const auto& widget : widgets)
             {
-                if (widget.type == WindowWidgetType::Scroll)
+                if (widget.type == WidgetType::scroll)
                 {
                     auto& listView = _info.ListViews[scrollIndex];
                     auto wwidth = widget.width() + 1 - 2;
@@ -791,7 +791,7 @@ namespace OpenRCT2::Ui::Windows
             WidgetIndex widgetIndex = 0;
             for (auto& widget : widgets)
             {
-                if (widget.type == WindowWidgetType::Viewport)
+                if (widget.type == WidgetType::viewport)
                 {
                     return widgetIndex;
                 }
@@ -903,7 +903,7 @@ namespace OpenRCT2::Ui::Windows
             for (size_t tabDescIndex = 0; tabDescIndex < _info.Desc.Tabs.size(); tabDescIndex++)
             {
                 Widget widget{};
-                widget.type = WindowWidgetType::Tab;
+                widget.type = WidgetType::tab;
                 widget.colour = 1;
                 widget.left = static_cast<int16_t>(3 + (tabDescIndex * 31));
                 widget.right = widget.left + 30;
@@ -979,12 +979,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (desc.Image.HasValue())
                 {
-                    widget.type = desc.HasBorder ? WindowWidgetType::ImgBtn : WindowWidgetType::FlatBtn;
+                    widget.type = desc.HasBorder ? WidgetType::imgBtn : WidgetType::flatBtn;
                     widget.image = desc.Image;
                 }
                 else
                 {
-                    widget.type = WindowWidgetType::Button;
+                    widget.type = WidgetType::button;
                     widget.string = const_cast<utf8*>(desc.Text.c_str());
                     widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
                 }
@@ -996,7 +996,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (desc.Type == "checkbox")
             {
-                widget.type = WindowWidgetType::Checkbox;
+                widget.type = WidgetType::checkbox;
                 widget.string = const_cast<utf8*>(desc.Text.c_str());
                 widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
                 if (desc.IsChecked)
@@ -1007,18 +1007,18 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (desc.Type == "colourpicker")
             {
-                widget.type = WindowWidgetType::ColourBtn;
+                widget.type = WidgetType::colourBtn;
                 widget.image = GetColourButtonImage(desc.Colour);
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "custom")
             {
-                widget.type = WindowWidgetType::Custom;
+                widget.type = WidgetType::custom;
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "dropdown")
             {
-                widget.type = WindowWidgetType::DropdownMenu;
+                widget.type = WidgetType::dropdownMenu;
                 if (desc.SelectedIndex >= 0 && static_cast<size_t>(desc.SelectedIndex) < desc.Items.size())
                 {
                     widget.string = const_cast<utf8*>(desc.Items[desc.SelectedIndex].c_str());
@@ -1032,7 +1032,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Add the dropdown button
                 widget = {};
-                widget.type = WindowWidgetType::Button;
+                widget.type = WidgetType::button;
                 widget.colour = 1;
                 widget.left = desc.X + desc.Width - 12;
                 widget.right = desc.X + desc.Width - 2;
@@ -1046,25 +1046,25 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (desc.Type == "groupbox")
             {
-                widget.type = WindowWidgetType::Groupbox;
+                widget.type = WidgetType::groupbox;
                 widget.string = const_cast<utf8*>(desc.Text.c_str());
                 widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "label")
             {
-                widget.type = WindowWidgetType::Label;
+                widget.type = WidgetType::label;
                 widget.string = const_cast<utf8*>(desc.Text.c_str());
                 widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
                 if (desc.TextAlign == TextAlignment::CENTRE)
                 {
-                    widget.type = WindowWidgetType::LabelCentred;
+                    widget.type = WidgetType::labelCentred;
                 }
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "listview")
             {
-                widget.type = WindowWidgetType::Scroll;
+                widget.type = WidgetType::scroll;
                 widget.content = 0;
                 if (desc.Scrollbars == ScrollbarType::Horizontal)
                     widget.content = SCROLL_HORIZONTAL;
@@ -1076,14 +1076,14 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (desc.Type == "spinner")
             {
-                widget.type = WindowWidgetType::Spinner;
+                widget.type = WidgetType::spinner;
                 widget.string = const_cast<utf8*>(desc.Text.c_str());
                 widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
                 widgetList.push_back(widget);
 
                 // Add the increment button
                 widget = {};
-                widget.type = WindowWidgetType::Button;
+                widget.type = WidgetType::button;
                 widget.colour = 1;
                 widget.left = desc.X + desc.Width - 13;
                 widget.right = widget.left + 11;
@@ -1104,14 +1104,14 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (desc.Type == "textbox")
             {
-                widget.type = WindowWidgetType::TextBox;
+                widget.type = WidgetType::textBox;
                 widget.string = const_cast<utf8*>(desc.Text.c_str());
                 widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "viewport")
             {
-                widget.type = WindowWidgetType::Viewport;
+                widget.type = WidgetType::viewport;
                 widget.text = kStringIdNone;
                 widgetList.push_back(widget);
             }
