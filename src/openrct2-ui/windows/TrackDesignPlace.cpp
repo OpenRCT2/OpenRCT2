@@ -68,7 +68,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _trackPlaceWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({173,  83}, { 24, 24}, WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_ROTATE_ARROW),              STR_ROTATE_90_TIP                         ),
         makeWidget({173,  59}, { 24, 24}, WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_MIRROR_ARROW),              STR_MIRROR_IMAGE_TIP                      ),
         makeWidget({  4, 109}, {192, 12}, WidgetType::button,  WindowColour::primary, STR_SELECT_A_DIFFERENT_DESIGN, STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP),
@@ -732,7 +732,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->CloseConstructionWindows();
 
-        auto* window = windowMgr->FocusOrCreate<TrackDesignPlaceWindow>(WindowClass::TrackDesignPlace, WW, WH, 0);
+        auto* window = windowMgr->FocusOrCreate<TrackDesignPlaceWindow>(WindowClass::TrackDesignPlace, { WW, WH }, 0);
         if (window != nullptr)
         {
             window->Init(std::move(openTrackDesign));

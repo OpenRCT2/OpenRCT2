@@ -101,7 +101,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_loadsave_widgets = makeWidgets(
-        makeWindowShim(kStringIdNone, WW, WH),
+        makeWindowShim(kStringIdNone, { WW, WH }),
         makeWidget({                0,      15 }, {       WW,  WH - 15 }, WidgetType::resize,      WindowColour::secondary                                                                ), // WIDX_RESIZE
         makeWidget({     WW - 100 - 4,      20 }, {       20,       20 }, WidgetType::flatBtn,     WindowColour::primary,   SPR_G2_FOLDER_PARENT,        STR_PARENT_FOLDER_TIP            ), // WIDX_PARENT_FOLDER
         makeWidget({     WW -  50 - 4,      20 }, {       20,       20 }, WidgetType::flatBtn,     WindowColour::primary,   SPR_G2_FOLDER_NEW,           STR_FILEBROWSER_ACTION_NEW_FOLDER), // WIDX_NEW_FOLDER
@@ -1135,8 +1135,8 @@ namespace OpenRCT2::Ui::Windows
             auto height = config.FileBrowserHeight;
 
             w = windowMgr->Create<LoadSaveWindow>(
-                WindowClass::Loadsave, width, height, WF_STICK_TO_FRONT | WF_RESIZABLE | WF_AUTO_POSITION | WF_CENTRE_SCREEN,
-                action, type);
+                WindowClass::Loadsave, { width, height },
+                WF_STICK_TO_FRONT | WF_RESIZABLE | WF_AUTO_POSITION | WF_CENTRE_SCREEN, action, type);
         }
 
         bool isSave = action == LoadSaveAction::save;

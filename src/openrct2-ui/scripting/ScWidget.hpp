@@ -303,7 +303,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return Ui::WidgetIsDisabled(*w, _widgetIndex);
+                return Ui::widgetIsDisabled(*w, _widgetIndex);
             }
             return false;
         }
@@ -312,19 +312,19 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                Ui::WidgetSetDisabled(*w, _widgetIndex, value);
+                Ui::widgetSetDisabled(*w, _widgetIndex, value);
 
                 auto widget = GetWidget();
                 if (widget != nullptr)
                 {
                     if (widget->type == WidgetType::dropdownMenu)
                     {
-                        Ui::WidgetSetDisabled(*w, _widgetIndex + 1, value);
+                        Ui::widgetSetDisabled(*w, _widgetIndex + 1, value);
                     }
                     else if (widget->type == WidgetType::spinner)
                     {
-                        Ui::WidgetSetDisabled(*w, _widgetIndex + 1, value);
-                        Ui::WidgetSetDisabled(*w, _widgetIndex + 2, value);
+                        Ui::widgetSetDisabled(*w, _widgetIndex + 1, value);
+                        Ui::widgetSetDisabled(*w, _widgetIndex + 2, value);
                     }
                 }
                 Invalidate(widget);
@@ -336,7 +336,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return Ui::WidgetIsVisible(*w, _widgetIndex);
+                return Ui::widgetIsVisible(*w, _widgetIndex);
             }
             return false;
         }
@@ -345,19 +345,19 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                Ui::WidgetSetVisible(*w, _widgetIndex, value);
+                Ui::widgetSetVisible(*w, _widgetIndex, value);
 
                 auto widget = GetWidget();
                 if (widget != nullptr)
                 {
                     if (widget->type == WidgetType::dropdownMenu)
                     {
-                        Ui::WidgetSetVisible(*w, _widgetIndex + 1, value);
+                        Ui::widgetSetVisible(*w, _widgetIndex + 1, value);
                     }
                     else if (widget->type == WidgetType::spinner)
                     {
-                        Ui::WidgetSetVisible(*w, _widgetIndex + 1, value);
-                        Ui::WidgetSetVisible(*w, _widgetIndex + 2, value);
+                        Ui::widgetSetVisible(*w, _widgetIndex + 1, value);
+                        Ui::widgetSetVisible(*w, _widgetIndex + 2, value);
                     }
                 }
                 Invalidate(widget);
@@ -492,7 +492,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return Ui::WidgetIsPressed(*w, _widgetIndex);
+                return Ui::widgetIsPressed(*w, _widgetIndex);
             }
             return false;
         }
@@ -501,7 +501,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                Ui::WidgetSetCheckboxValue(*w, _widgetIndex, value ? 1 : 0);
+                Ui::widgetSetCheckboxValue(*w, _widgetIndex, value ? 1 : 0);
                 Invalidate();
             }
         }
@@ -554,7 +554,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return Ui::WidgetIsPressed(*w, _widgetIndex);
+                return Ui::widgetIsPressed(*w, _widgetIndex);
             }
             return false;
         }
@@ -563,7 +563,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                Ui::WidgetSetCheckboxValue(*w, _widgetIndex, value ? 1 : 0);
+                Ui::widgetSetCheckboxValue(*w, _widgetIndex, value ? 1 : 0);
                 Invalidate();
             }
         }

@@ -78,7 +78,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _themesWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({  0, 43}, {320,  64},               WidgetType::resize,       WindowColour::secondary                                                                                ), // tab content panel
         makeTab   ({  3, 17},                                                                                    STR_THEMES_TAB_SETTINGS_TIP                                                   ), // settings tab
         makeTab   ({ 34, 17},                                                                                    STR_THEMES_TAB_MAIN_TIP                                                       ), // main ui tab
@@ -354,11 +354,11 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WidgetType::empty;
                 widgets[WIDX_THEMES_COLOURBTN_MASK].type = WidgetType::empty;
 
-                WidgetSetCheckboxValue(*this, WIDX_THEMES_RCT1_RIDE_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE);
-                WidgetSetCheckboxValue(*this, WIDX_THEMES_RCT1_PARK_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK);
-                WidgetSetCheckboxValue(
+                widgetSetCheckboxValue(*this, WIDX_THEMES_RCT1_RIDE_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE);
+                widgetSetCheckboxValue(*this, WIDX_THEMES_RCT1_PARK_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK);
+                widgetSetCheckboxValue(
                     *this, WIDX_THEMES_RCT1_SCENARIO_FONT, ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
-                WidgetSetCheckboxValue(
+                widgetSetCheckboxValue(
                     *this, WIDX_THEMES_RCT1_BOTTOM_TOOLBAR, ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
             }
             else
@@ -908,7 +908,7 @@ namespace OpenRCT2::Ui::Windows
         if (window != nullptr)
             return window;
 
-        window = windowMgr->Create<ThemesWindow>(WindowClass::Themes, 320, 107, WF_10 | WF_RESIZABLE);
+        window = windowMgr->Create<ThemesWindow>(WindowClass::Themes, { 320, 107 }, WF_10 | WF_RESIZABLE);
 
         return window;
     }

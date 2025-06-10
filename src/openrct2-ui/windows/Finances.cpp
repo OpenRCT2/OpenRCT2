@@ -100,7 +100,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto makeFinancesWidgets = [](StringId title, ScreenSize resizeSize, ScreenSize frameSize) {
         return makeWidgets(
-            makeWindowShim(title, frameSize.width, frameSize.height),
+            makeWindowShim(title, frameSize),
             makeWidget({ 0, 43 }, resizeSize, WidgetType::resize, WindowColour::secondary),
             makeTab({ 3, 17 }, STR_FINANCES_SHOW_SUMMARY_TAB_TIP),
             makeTab({ 34, 17 }, STR_FINANCES_SHOW_CASH_TAB_TIP),
@@ -846,7 +846,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& widget = this->widgets[widgetIndex];
             scrolls[scrollId].contentOffsetX = std::max(0, scrolls[scrollId].contentWidth - (widget.width() - 2));
 
-            WidgetScrollUpdateThumbs(*this, widgetIndex);
+            widgetScrollUpdateThumbs(*this, widgetIndex);
         }
 
         void DrawTabImage(RenderTarget& rt, int32_t tabPage, int32_t spriteIndex)
@@ -881,7 +881,8 @@ namespace OpenRCT2::Ui::Windows
     static FinancesWindow* FinancesWindowOpen(uint8_t page)
     {
         auto* windowMgr = Ui::GetWindowManager();
-        auto* window = windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, kHeightSummary, WF_10);
+        auto* window = windowMgr->FocusOrCreate<FinancesWindow>(
+            WindowClass::Finances, { WW_OTHER_TABS, kHeightSummary }, WF_10);
 
         if (window != nullptr && page != WINDOW_FINANCES_PAGE_SUMMARY)
             window->SetPage(page);
@@ -892,7 +893,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* FinancesOpen()
     {
         auto* windowMgr = Ui::GetWindowManager();
-        return windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, kHeightSummary, WF_10);
+        return windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, { WW_OTHER_TABS, kHeightSummary }, WF_10);
     }
 
     WindowBase* FinancesResearchOpen()

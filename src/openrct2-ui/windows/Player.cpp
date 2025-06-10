@@ -51,7 +51,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto kCommonPlayerWidgets = makeWidgets(
-        makeWindowShim(STR_STRING, 192, 157),
+        makeWindowShim(STR_STRING, { 192, 157 }),
         makeWidget({ 0, 43 }, { 192, 114 }, WidgetType::resize, WindowColour::secondary),
         makeTab({ 3, 17 }),
         makeTab({ 34, 17 })
@@ -408,7 +408,7 @@ namespace OpenRCT2::Ui::Windows
             const bool canKick = NetworkCanPerformAction(NetworkGetCurrentPlayerGroupIndex(), NetworkPermission::KickPlayer);
             const bool isServer = NetworkGetPlayerFlags(playerIndex) & NETWORK_PLAYER_FLAG_ISSERVER;
             const bool isOwnWindow = (NetworkGetCurrentPlayerId() == number);
-            WidgetSetEnabled(*this, WIDX_KICK, canKick && !isOwnWindow && !isServer);
+            widgetSetEnabled(*this, WIDX_KICK, canKick && !isOwnWindow && !isServer);
         }
 
         void OnDrawOverview(RenderTarget& rt)
@@ -629,7 +629,7 @@ namespace OpenRCT2::Ui::Windows
         auto* window = static_cast<PlayerWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Player, id));
         if (window == nullptr)
         {
-            window = windowMgr->Create<PlayerWindow>(WindowClass::Player, 240, 170, WF_RESIZABLE);
+            window = windowMgr->Create<PlayerWindow>(WindowClass::Player, { 240, 170 }, WF_RESIZABLE);
         }
 
         window->Init(id);

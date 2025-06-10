@@ -104,7 +104,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _scenarioSelectWidgets = makeWidgets(
-        makeWindowShim(kWindowTitle, kWindowWidth, kWindowHeight),
+        makeWindowShim(kWindowTitle, { kWindowWidth, kWindowHeight }),
         makeWidget({ kTabWidth + 1, kWidgetsStart }, { kWindowWidth, 284 }, WidgetType::resize, WindowColour::secondary), // tab content panel
         makeRemapWidget({ 3, kTabsStart + (kTabHeight * 0) }, { kTabWidth, kTabHeight}, WidgetType::tab, WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 01
         makeRemapWidget({ 3, kTabsStart + (kTabHeight * 1) }, { kTabWidth, kTabHeight}, WidgetType::tab, WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 02
@@ -934,7 +934,7 @@ namespace OpenRCT2::Ui::Windows
         ScreenCoordsXY screenPos = { (screenWidth - kWindowWidth) / 2,
                                      std::max(kTopToolbarHeight + 1, (screenHeight - kWindowHeight) / 2) };
         window = windowMgr->Create<ScenarioSelectWindow>(
-            WindowClass::ScenarioSelect, screenPos, kWindowWidth, kWindowHeight, 0, callback);
+            WindowClass::ScenarioSelect, screenPos, { kWindowWidth, kWindowHeight }, 0, callback);
         return window;
     }
 } // namespace OpenRCT2::Ui::Windows

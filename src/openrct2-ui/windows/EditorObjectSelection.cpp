@@ -218,7 +218,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _window_editor_object_selection_widgets = makeWidgets(
-        makeWindowShim     (WINDOW_TITLE, WW, WH),
+        makeWindowShim     (WINDOW_TITLE, { WW, WH }),
         makeWidget         ({  0, 43}, {WW,  357}, WidgetType::resize,       WindowColour::secondary                                                                  ),
         makeWidget         ({  4, 60}, {288, 277}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                                                 ),
         makeWidget         ({391, 45}, {114, 114}, WidgetType::flatBtn,      WindowColour::secondary                                                                  ),
@@ -1631,7 +1631,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<EditorObjectSelectionWindow>(
-            WindowClass::EditorObjectSelection, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
+            WindowClass::EditorObjectSelection, { 755, 400 }, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
     }
 
     // Used for forced closure

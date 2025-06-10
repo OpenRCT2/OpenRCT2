@@ -42,7 +42,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto WindowAssetPacksWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({ 0, 0 }, { 0,   0 }, WidgetType::labelCentred,  WindowColour::secondary, STR_HIGH_PRIORITY),
         makeWidget({ 0, 0 }, { 0, 147 }, WidgetType::scroll,  WindowColour::secondary, SCROLL_VERTICAL),
         makeWidget({ 0, 0 }, { 0,   0 }, WidgetType::labelCentred,  WindowColour::secondary, STR_LOW_PRIORITY),
@@ -344,6 +344,6 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         auto flags = WF_AUTO_POSITION | WF_CENTRE_SCREEN;
 
-        return windowMgr->FocusOrCreate<AssetPacksWindow>(WindowClass::AssetPacks, WW, WH, flags);
+        return windowMgr->FocusOrCreate<AssetPacksWindow>(WindowClass::AssetPacks, { WW, WH }, flags);
     }
 } // namespace OpenRCT2::Ui::Windows

@@ -34,7 +34,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_ride_demolish_widgets = makeWidgets(
-        makeWindowShim(STR_DEMOLISH_RIDE, WW, WH),
+        makeWindowShim(STR_DEMOLISH_RIDE, { WW, WH }),
         makeWidget({     10, WH - 22}, {85, 14}, WidgetType::button, WindowColour::primary, STR_DEMOLISH          ),
         makeWidget({WW - 95, WH - 22}, {85, 14}, WidgetType::button, WindowColour::primary, STR_SAVE_PROMPT_CANCEL)
     );
@@ -105,12 +105,12 @@ namespace OpenRCT2::Ui::Windows
             windowMgr->Close(*w);
 
             newWindow = windowMgr->Create<DemolishRidePromptWindow>(
-                WindowClass::DemolishRidePrompt, windowPos, WW, WH, WF_TRANSPARENT);
+                WindowClass::DemolishRidePrompt, windowPos, { WW, WH }, WF_TRANSPARENT);
         }
         else
         {
             newWindow = windowMgr->Create<DemolishRidePromptWindow>(
-                WindowClass::DemolishRidePrompt, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+                WindowClass::DemolishRidePrompt, { WW, WH }, WF_CENTRE_SCREEN | WF_TRANSPARENT);
         }
 
         newWindow->SetRide(ride);

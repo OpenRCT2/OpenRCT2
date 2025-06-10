@@ -80,7 +80,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _staffListWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({  0, 43}, {    WW, WH - 43}, WidgetType::resize,    WindowColour::secondary                                                     ), // tab content panel
         makeTab   ({  3, 17},                                                                          STR_STAFF_HANDYMEN_TAB_TIP                         ), // handymen tab
         makeTab   ({ 34, 17},                                                                          STR_STAFF_MECHANICS_TAB_TIP                        ), // mechanics tab
@@ -253,7 +253,7 @@ namespace OpenRCT2::Ui::Windows
             if (GetSelectedStaffType() != StaffType::Entertainer)
             {
                 widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WidgetType::colourBtn;
-                widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = GetColourButtonImage(
+                widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = getColourButtonImage(
                     StaffGetColour(GetSelectedStaffType()));
             }
             SetWidgetPressed(WIDX_STAFF_LIST_QUICK_FIRE, _quickFireMode);
@@ -725,7 +725,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* StaffListOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<StaffListWindow>(WindowClass::StaffList, WW, WH, WF_10 | WF_RESIZABLE);
+        return windowMgr->FocusOrCreate<StaffListWindow>(WindowClass::StaffList, { WW, WH }, WF_10 | WF_RESIZABLE);
     }
 
     void WindowStaffListRefresh()

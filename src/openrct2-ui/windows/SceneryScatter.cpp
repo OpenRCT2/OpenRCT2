@@ -39,7 +39,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _sceneryScatterWidgets = makeWidgets(
-        makeWindowShim(STR_SCENERY_SCATTER, 86, 100),
+        makeWindowShim(STR_SCENERY_SCATTER, { 86, 100 }),
 
         makeWidget     ({20, 17}, {44,  32}, WidgetType::imgBtn,   WindowColour::secondary, ImageId(SPR_LAND_TOOL_SIZE_0)                                 ), // preview box
         makeRemapWidget({21, 18}, {16,  16}, WidgetType::trnBtn,   WindowColour::secondary, SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_TIP    ), // decrement size
@@ -203,7 +203,7 @@ namespace OpenRCT2::Ui::Windows
         auto* window = windowMgr->FindByClass(WindowClass::SceneryScatter);
         if (window == nullptr)
         {
-            window = windowMgr->Create<SceneryScatterWindow>(WindowClass::SceneryScatter, 86, 100, 0);
+            window = windowMgr->Create<SceneryScatterWindow>(WindowClass::SceneryScatter, { 86, 100 }, 0);
         }
 
         return window;

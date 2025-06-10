@@ -89,7 +89,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto makeParkWidgets = [](int16_t width) {
         return makeWidgets(
-            makeWindowShim(WINDOW_TITLE, width, WH),
+            makeWindowShim(WINDOW_TITLE, { width, WH }),
             makeWidget({ 0, 43 }, { width, 131 }, WidgetType::resize, WindowColour::secondary),
             makeTab({ 3, 17 }, STR_PARK_ENTRANCE_TAB_TIP),
             makeTab({ 34, 17 }, STR_PARK_RATING_TAB_TIP),
@@ -540,9 +540,9 @@ namespace OpenRCT2::Ui::Windows
             const bool parkIsOpen = gameState.park.IsOpen();
             widgets[WIDX_OPEN_OR_CLOSE].image = ImageId(parkIsOpen ? SPR_OPEN : SPR_CLOSED);
             const auto closeLightImage = SPR_G2_RCT1_CLOSE_BUTTON_0 + !parkIsOpen * 2
-                + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT);
+                + widgetIsPressed(*this, WIDX_CLOSE_LIGHT);
             widgets[WIDX_CLOSE_LIGHT].image = ImageId(closeLightImage);
-            const auto openLightImage = SPR_G2_RCT1_OPEN_BUTTON_0 + parkIsOpen * 2 + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
+            const auto openLightImage = SPR_G2_RCT1_OPEN_BUTTON_0 + parkIsOpen * 2 + widgetIsPressed(*this, WIDX_OPEN_LIGHT);
             widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
             // Only allow closing of park for guest / rating objective
@@ -1229,7 +1229,7 @@ namespace OpenRCT2::Ui::Windows
         void DrawTabImages(RenderTarget& rt)
         {
             // Entrance tab
-            if (!WidgetIsDisabled(*this, WIDX_TAB_1))
+            if (!widgetIsDisabled(*this, WIDX_TAB_1))
             {
                 GfxDrawSprite(
                     rt, ImageId(SPR_TAB_PARK_ENTRANCE),
@@ -1237,7 +1237,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Rating tab
-            if (!WidgetIsDisabled(*this, WIDX_TAB_2))
+            if (!widgetIsDisabled(*this, WIDX_TAB_2))
             {
                 ImageId spriteIdx(SPR_TAB_GRAPH_0);
                 if (page == WINDOW_PARK_PAGE_RATING)
@@ -1252,7 +1252,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Guests tab
-            if (!WidgetIsDisabled(*this, WIDX_TAB_3))
+            if (!widgetIsDisabled(*this, WIDX_TAB_3))
             {
                 ImageId spriteIdx(SPR_TAB_GRAPH_0);
                 if (page == WINDOW_PARK_PAGE_GUESTS)
@@ -1270,7 +1270,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Price tab
-            if (!WidgetIsDisabled(*this, WIDX_TAB_4))
+            if (!widgetIsDisabled(*this, WIDX_TAB_4))
             {
                 ImageId spriteIdx(SPR_TAB_ADMISSION_0);
                 if (page == WINDOW_PARK_PAGE_PRICE)
@@ -1279,7 +1279,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Statistics tab
-            if (!WidgetIsDisabled(*this, WIDX_TAB_5))
+            if (!widgetIsDisabled(*this, WIDX_TAB_5))
             {
                 ImageId spriteIdx(SPR_TAB_STATS_0);
                 if (page == WINDOW_PARK_PAGE_STATS)
@@ -1288,7 +1288,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Objective tab
-            if (!WidgetIsDisabled(*this, WIDX_TAB_6))
+            if (!widgetIsDisabled(*this, WIDX_TAB_6))
             {
                 ImageId spriteIdx(SPR_TAB_OBJECTIVE_0);
                 if (page == WINDOW_PARK_PAGE_OBJECTIVE)
@@ -1297,7 +1297,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Awards tab
-            if (!WidgetIsDisabled(*this, WIDX_TAB_7))
+            if (!widgetIsDisabled(*this, WIDX_TAB_7))
             {
                 GfxDrawSprite(
                     rt, ImageId(SPR_TAB_AWARDS),
@@ -1310,7 +1310,7 @@ namespace OpenRCT2::Ui::Windows
     static ParkWindow* ParkWindowOpen(uint8_t page)
     {
         auto* windowMgr = GetWindowManager();
-        auto* wnd = windowMgr->FocusOrCreate<ParkWindow>(WindowClass::ParkInformation, 230, 174 + 9, WF_10);
+        auto* wnd = windowMgr->FocusOrCreate<ParkWindow>(WindowClass::ParkInformation, { 230, 174 + 9 }, WF_10);
         if (wnd != nullptr && page != WINDOW_PARK_PAGE_ENTRANCE)
         {
             wnd->OnMouseUp(WIDX_TAB_1 + page);

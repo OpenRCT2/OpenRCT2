@@ -226,7 +226,7 @@ namespace OpenRCT2
             scroll.contentOffsetY = std::min<uint16_t>(std::max(0, scroll.contentOffsetY + differentialCoords.y), size);
         }
 
-        WidgetScrollUpdateThumbs(*w, widgetIndex);
+        widgetScrollUpdateThumbs(*w, widgetIndex);
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByNumber(w->classification, w->number);
@@ -651,7 +651,7 @@ namespace OpenRCT2
         int32_t scroll_area, scroll_id;
         ScreenCoordsXY scrollCoords;
         scroll_id = 0; // safety
-        WidgetScrollGetPart(w, &widget, screenCoords, scrollCoords, &scroll_area, &scroll_id);
+        widgetScrollGetPart(w, &widget, screenCoords, scrollCoords, &scroll_area, &scroll_id);
 
         _currentScrollArea = scroll_area;
         _currentScrollIndex = scroll_id;
@@ -704,7 +704,7 @@ namespace OpenRCT2
             default:
                 break;
         }
-        WidgetScrollUpdateThumbs(w, widgetIndex);
+        widgetScrollUpdateThumbs(w, widgetIndex);
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByNumber(w.classification, w.number);
@@ -723,7 +723,7 @@ namespace OpenRCT2
         }
 
         ScreenCoordsXY newScreenCoords;
-        WidgetScrollGetPart(w, &widget, screenCoords, newScreenCoords, &scroll_part, &scroll_id);
+        widgetScrollGetPart(w, &widget, screenCoords, newScreenCoords, &scroll_part, &scroll_id);
 
         if (_currentScrollArea == SCROLL_PART_HSCROLLBAR_THUMB)
         {
@@ -808,7 +808,7 @@ namespace OpenRCT2
             if (newLeft > x)
                 newLeft = x;
             scroll.contentOffsetX = newLeft;
-            WidgetScrollUpdateThumbs(w, widgetIndex);
+            widgetScrollUpdateThumbs(w, widgetIndex);
             windowMgr->InvalidateWidgetByNumber(w.classification, w.number, widgetIndex);
         }
     }
@@ -848,7 +848,7 @@ namespace OpenRCT2
             if (newTop > y)
                 newTop = y;
             scroll.contentOffsetY = newTop;
-            WidgetScrollUpdateThumbs(w, widgetIndex);
+            widgetScrollUpdateThumbs(w, widgetIndex);
             windowMgr->InvalidateWidgetByNumber(w.classification, w.number, widgetIndex);
         }
     }
@@ -866,7 +866,7 @@ namespace OpenRCT2
             scroll.flags |= HSCROLLBAR_LEFT_PRESSED;
             if (scroll.contentOffsetX >= 3)
                 scroll.contentOffsetX -= 3;
-            WidgetScrollUpdateThumbs(w, widgetIndex);
+            widgetScrollUpdateThumbs(w, widgetIndex);
             windowMgr->InvalidateWidgetByNumber(w.classification, w.number, widgetIndex);
         }
     }
@@ -894,7 +894,7 @@ namespace OpenRCT2
                 newLeft = 0;
             if (scroll.contentOffsetX > newLeft)
                 scroll.contentOffsetX = newLeft;
-            WidgetScrollUpdateThumbs(w, widgetIndex);
+            widgetScrollUpdateThumbs(w, widgetIndex);
             windowMgr->InvalidateWidgetByNumber(w.classification, w.number, widgetIndex);
         }
     }
@@ -912,7 +912,7 @@ namespace OpenRCT2
             scroll.flags |= VSCROLLBAR_UP_PRESSED;
             if (scroll.contentOffsetY >= 3)
                 scroll.contentOffsetY -= 3;
-            WidgetScrollUpdateThumbs(w, widgetIndex);
+            widgetScrollUpdateThumbs(w, widgetIndex);
             windowMgr->InvalidateWidgetByNumber(w.classification, w.number, widgetIndex);
         }
     }
@@ -940,7 +940,7 @@ namespace OpenRCT2
                 newTop = 0;
             if (scroll.contentOffsetY > newTop)
                 scroll.contentOffsetY = newTop;
-            WidgetScrollUpdateThumbs(w, widgetIndex);
+            widgetScrollUpdateThumbs(w, widgetIndex);
             windowMgr->InvalidateWidgetByNumber(w.classification, w.number, widgetIndex);
         }
     }
@@ -972,7 +972,7 @@ namespace OpenRCT2
         {
             int32_t scroll_part, scrollId;
             ScreenCoordsXY newScreenCoords;
-            WidgetScrollGetPart(*w, widget, screenCoords, newScreenCoords, &scroll_part, &scrollId);
+            widgetScrollGetPart(*w, widget, screenCoords, newScreenCoords, &scroll_part, &scrollId);
 
             if (scroll_part != SCROLL_PART_VIEW)
                 WindowTooltipClose();
@@ -1122,7 +1122,7 @@ namespace OpenRCT2
             case WidgetType::checkbox:
             case WidgetType::textBox:
             case WidgetType::custom:
-                if (!WidgetIsDisabled(*w, widgetIndex))
+                if (!widgetIsDisabled(*w, widgetIndex))
                 {
                     OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + widget.midX());
 
@@ -1193,7 +1193,7 @@ namespace OpenRCT2
                     {
                         int32_t output_scroll_area, scroll_id;
                         ScreenCoordsXY scrollCoords;
-                        WidgetScrollGetPart(
+                        widgetScrollGetPart(
                             *window, &window->widgets[widgetId], screenCoords, scrollCoords, &output_scroll_area, &scroll_id);
                         if (output_scroll_area != SCROLL_PART_VIEW)
                         {
@@ -1286,7 +1286,7 @@ namespace OpenRCT2
                     || widgetIndex != cursor_widgetIndex)
                     break;
 
-                if (WidgetIsDisabled(*w, widgetIndex))
+                if (widgetIsDisabled(*w, widgetIndex))
                     break;
 
                 // If this variable is non-zero then its the last tick the mouse down event was fired.
@@ -1304,7 +1304,7 @@ namespace OpenRCT2
                     // Handle click repeat, only start this when at least 16 ticks elapsed.
                     if (clickRepeatsDelta >= kTicksUntilRepeats && (clickRepeatsDelta & kEventDelayInTicks) == 0)
                     {
-                        if (WidgetIsHoldable(*w, widgetIndex))
+                        if (widgetIsHoldable(*w, widgetIndex))
                         {
                             w->OnMouseDown(widgetIndex);
                         }
@@ -1424,7 +1424,7 @@ namespace OpenRCT2
                 if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
                     break;
 
-                if (WidgetIsDisabled(*w, widgetIndex))
+                if (widgetIsDisabled(*w, widgetIndex))
                     break;
 
                 windowMgr->InvalidateWidgetByNumber(cursor_w_class, cursor_w_number, widgetIndex);
@@ -1502,7 +1502,7 @@ namespace OpenRCT2
             if (gTooltipCursor == screenCoords)
             {
                 if (gCurrentRealTimeTicks >= _tooltipNotShownTimeout && w != nullptr && widgetIndex != kWidgetIndexNull
-                    && WidgetIsVisible(*w, widgetIndex))
+                    && widgetIsVisible(*w, widgetIndex))
                 {
                     gTooltipCloseTimeout = gCurrentRealTimeTicks + 8000;
                     WindowTooltipOpen(w, widgetIndex, screenCoords);
@@ -1523,7 +1523,7 @@ namespace OpenRCT2
 
             if (w == nullptr || gTooltipWidget.window_classification != w->classification
                 || gTooltipWidget.window_number != w->number || gTooltipWidget.widget_index != widgetIndex
-                || !WidgetIsVisible(*w, widgetIndex))
+                || !widgetIsVisible(*w, widgetIndex))
             {
                 WindowTooltipClose();
             }

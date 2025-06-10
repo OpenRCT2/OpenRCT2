@@ -64,7 +64,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _serverListWidgets = makeWidgets(
-        makeWindowShim(STR_SERVER_LIST, 340, 90),
+        makeWindowShim(STR_SERVER_LIST, { 340, 90 }),
         makeWidget({100, 20}, {245,  12}, WidgetType::textBox,  WindowColour::secondary                                         ), // player name text box
         makeWidget({  6, 37}, {489, 226}, WidgetType::scroll,   WindowColour::secondary                                         ), // server list
         makeWidget({  6, 53}, {101,  14}, WidgetType::button,   WindowColour::secondary, STR_FETCH_SERVERS                      ), // fetch servers button
@@ -545,7 +545,7 @@ namespace OpenRCT2::Ui::Windows
             return window;
 
         window = windowMgr->Create<ServerListWindow>(
-            WindowClass::ServerList, kWindowWidthMin, kWindowHeightMin, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
+            WindowClass::ServerList, { kWindowWidthMin, kWindowHeightMin }, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
 
         return window;
     }

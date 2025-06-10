@@ -132,7 +132,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_map_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget        ({  0,  43}, {245, 215}, WidgetType::resize,    WindowColour::secondary                                                                ),
         makeRemapWidget   ({  3,  17}, { 31,  27}, WidgetType::colourBtn, WindowColour::secondary, SPR_TAB,                      STR_SHOW_PEOPLE_ON_MAP_TIP      ),
         makeRemapWidget   ({ 34,  17}, { 31,  27}, WidgetType::colourBtn, WindowColour::secondary, SPR_TAB,                      STR_SHOW_RIDES_STALLS_ON_MAP_TIP),
@@ -656,7 +656,7 @@ namespace OpenRCT2::Ui::Windows
             }
             if (_recalculateScrollbars)
             {
-                WidgetScrollUpdateThumbs(*this, WIDX_MAP);
+                widgetScrollUpdateThumbs(*this, WIDX_MAP);
                 _recalculateScrollbars = false;
             }
         }
@@ -757,7 +757,7 @@ namespace OpenRCT2::Ui::Windows
 
             scrolls[0].contentOffsetX = cx;
             scrolls[0].contentOffsetY = dx;
-            WidgetScrollUpdateThumbs(*this, WIDX_MAP);
+            widgetScrollUpdateThumbs(*this, WIDX_MAP);
         }
 
         void IncreaseMapSize()
@@ -1255,7 +1255,7 @@ namespace OpenRCT2::Ui::Windows
         try
         {
             auto* windowMgr = GetWindowManager();
-            auto* w = windowMgr->FocusOrCreate<MapWindow>(WindowClass::Map, 245, 259, WF_10);
+            auto* w = windowMgr->FocusOrCreate<MapWindow>(WindowClass::Map, { 245, 259 }, WF_10);
             w->selected_tab = 0;
             w->list_information_type = 0;
             return w;

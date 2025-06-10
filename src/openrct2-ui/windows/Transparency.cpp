@@ -64,7 +64,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _transparancyWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({  2, 17}, HIDE_SIZE,      WidgetType::flatBtn, WindowColour::secondary, ImageId(SPR_G2_BUTTON_HIDE_VEGETATION),  STR_SEE_THROUGH_VEGETATION),
         makeWidget({ 27, 17}, HIDE_SIZE,      WidgetType::flatBtn, WindowColour::secondary, ImageId(SPR_G2_BUTTON_HIDE_SCENERY),     STR_SEE_THROUGH_SCENERY),
         makeWidget({ 52, 17}, HIDE_SIZE,      WidgetType::flatBtn, WindowColour::secondary, ImageId(SPR_G2_BUTTON_FOOTPATH),         STR_SEE_THROUGH_PATHS),
@@ -246,7 +246,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->BringToFrontByClass(WindowClass::Transparency);
         if (window == nullptr)
-            window = windowMgr->Create<TransparencyWindow>(WindowClass::Transparency, ScreenCoordsXY(32, 32), WW, WH);
+            window = windowMgr->Create<TransparencyWindow>(WindowClass::Transparency, ScreenCoordsXY(32, 32), { WW, WH });
 
         return window;
     }

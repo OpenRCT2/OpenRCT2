@@ -210,7 +210,7 @@ static constexpr int32_t kTabStart = 3;
 #pragma endregion
 
 static constexpr auto kMainCheatWidgets = makeWidgets(
-    makeWindowShim(WINDOW_TITLE, WW, WH),
+    makeWindowShim(WINDOW_TITLE, { WW, WH }),
     makeWidget({  0, 43}, {WW, 257}, WidgetType::resize, WindowColour::secondary), /* tab content panel */
     makeTab   ({  3, 17}, STR_FINANCIAL_CHEATS_TIP                      ), /* tab 1 */
     makeTab   ({ 34, 17}, STR_DATE_CHEATS_TIP                           ), /* tab 2 */
@@ -1352,7 +1352,7 @@ static StringId window_cheats_page_titles[] = {
         auto* window = windowMgr->BringToFrontByClass(WindowClass::Cheats);
         if (window == nullptr)
         {
-            window = windowMgr->Create<CheatsWindow>(WindowClass::Cheats, ScreenCoordsXY(32, 32), WW, WH);
+            window = windowMgr->Create<CheatsWindow>(WindowClass::Cheats, ScreenCoordsXY(32, 32), { WW, WH });
         }
         return window;
     }

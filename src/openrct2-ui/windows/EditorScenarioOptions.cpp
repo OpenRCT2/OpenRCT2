@@ -201,7 +201,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto makeOptionsWidgets = [](StringId title, ScreenSize size) {
         return makeWidgets(
-            makeWindowShim(title, size.width, size.height),
+            makeWindowShim(title, size),
             makeWidget({  0, 43}, { size.width, 106 }, WidgetType::resize, WindowColour::secondary),
             makeTab   ({  3, 17}, STR_SCENARIO_OPTIONS_OBJECTIVE_TIP             ),
             makeTab   ({ 34, 17}, STR_SCENARIO_OPTIONS_SCENARIO_DETAILS_TIP      ),
@@ -2370,6 +2370,6 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<EditorScenarioOptionsWindow>(
-            WindowClass::EditorScenarioOptions, 280, 148, WF_NO_SCROLLING | WF_CENTRE_SCREEN);
+            WindowClass::EditorScenarioOptions, { 280, 148 }, WF_NO_SCROLLING | WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows

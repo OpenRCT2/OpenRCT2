@@ -46,7 +46,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static auto CustomDefaultWidgets = makeWidgets(
-        makeWindowShim(STR_STRING, 50, 50),
+        makeWindowShim(STR_STRING, { 50, 50 }),
         makeWidget({ 0, 14 }, { 50, 36 }, WidgetType::resize, WindowColour::secondary) // content panel
     );
 
@@ -478,7 +478,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (widget.type == WidgetType::scroll)
                 {
-                    WidgetScrollUpdateThumbs(*this, widgetIndex);
+                    widgetScrollUpdateThumbs(*this, widgetIndex);
                 }
                 widgetIndex++;
             }
@@ -543,7 +543,7 @@ namespace OpenRCT2::Ui::Windows
             if (viewport != nullptr)
             {
                 auto widgetIndex = GetViewportWidgetIndex();
-                if (WidgetIsVisible(*this, widgetIndex.value_or(false)))
+                if (widgetIsVisible(*this, widgetIndex.value_or(false)))
                 {
                     WindowDrawViewport(rt, *this);
                 }
@@ -610,7 +610,7 @@ namespace OpenRCT2::Ui::Windows
                             widget.flags.flip(WidgetFlag::isPressed);
                             bool isChecked = widget.flags.has(WidgetFlag::isPressed);
 
-                            WidgetSetCheckboxValue(*this, widgetIndex, isChecked);
+                            widgetSetCheckboxValue(*this, widgetIndex, isChecked);
 
                             std::vector<DukValue> args;
                             auto ctx = widgetDesc->OnChange.context();
@@ -864,7 +864,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto widgetIndex = static_cast<WidgetIndex>(WIDX_TAB_0 + tabIndex);
                 auto widget = &widgets[widgetIndex];
-                if (WidgetIsVisible(*this, widgetIndex))
+                if (widgetIsVisible(*this, widgetIndex))
                 {
                     auto leftTop = windowPos + tab.offset + ScreenCoordsXY{ widget->left, widget->top };
                     auto image = tab.imageFrameBase;
@@ -1008,7 +1008,7 @@ namespace OpenRCT2::Ui::Windows
             else if (desc.Type == "colourpicker")
             {
                 widget.type = WidgetType::colourBtn;
-                widget.image = GetColourButtonImage(desc.Colour);
+                widget.image = getColourButtonImage(desc.Colour);
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "custom")
@@ -1141,11 +1141,12 @@ namespace OpenRCT2::Ui::Windows
         if (desc.X && desc.Y)
         {
             window = windowMgr->Create<CustomWindow>(
-                WindowClass::Custom, { *desc.X, *desc.Y }, desc.Width, desc.Height, windowFlags, owner, desc);
+                WindowClass::Custom, { *desc.X, *desc.Y }, { desc.Width, desc.Height }, windowFlags, owner, desc);
         }
         else
         {
-            window = windowMgr->Create<CustomWindow>(WindowClass::Custom, desc.Width, desc.Height, windowFlags, owner, desc);
+            window = windowMgr->Create<CustomWindow>(
+                WindowClass::Custom, { desc.Width, desc.Height }, windowFlags, owner, desc);
         }
         return window;
     }
@@ -1244,7 +1245,7 @@ namespace OpenRCT2::Ui::Windows
                 if (lastColour != colour && colour < COLOUR_COUNT)
                 {
                     customWidgetInfo->Colour = colour;
-                    widget.image = GetColourButtonImage(colour);
+                    widget.image = getColourButtonImage(colour);
 
                     auto* windowMgr = Ui::GetWindowManager();
                     windowMgr->InvalidateWidget(*w, widgetIndex);

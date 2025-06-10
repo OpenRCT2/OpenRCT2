@@ -210,7 +210,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_new_ride_widgets = makeWidgets(
-        makeWindowShim(WindowTitle, WindowWidth, kWindowHeight),
+        makeWindowShim(WindowTitle, { WindowWidth, kWindowHeight }),
         makeWidget({  0,  43},             {601, 339},         WidgetType::resize,   WindowColour::secondary                                                                ),
         makeTab   ({  3,  17},                                                                                      STR_TRANSPORT_RIDES_TIP                                       ),
         makeTab   ({ 34,  17},                                                                                      STR_GENTLE_RIDES_TIP                                          ),
@@ -345,7 +345,7 @@ namespace OpenRCT2::Ui::Windows
                 _windowNewRideTabScroll[_currentTab] = scrolls[0].contentOffsetY;
 
                 // Remove highlight when mouse leaves rides list
-                if (!WidgetIsHighlighted(*this, WIDX_RIDE_LIST) && _newRideVars.HighlightedRide.Type != kRideTypeNull)
+                if (!widgetIsHighlighted(*this, WIDX_RIDE_LIST) && _newRideVars.HighlightedRide.Type != kRideTypeNull)
                 {
                     _newRideVars.HighlightedRide = { kRideTypeNull, kObjectEntryIndexNull };
                     InvalidateWidget(WIDX_RIDE_LIST);
@@ -918,7 +918,7 @@ namespace OpenRCT2::Ui::Windows
             currentTabScroll = std::min<uint16_t>(currentTabScroll, std::max(0, scrollSize.height - listWidgetHeight));
 
             scrolls[0].contentOffsetY = currentTabScroll;
-            WidgetScrollUpdateThumbs(*this, WIDX_RIDE_LIST);
+            widgetScrollUpdateThumbs(*this, WIDX_RIDE_LIST);
         }
 
         void DrawRideInformation(RenderTarget& rt, RideSelection item, const ScreenCoordsXY& screenPos, int32_t textWidth)
@@ -1008,7 +1008,7 @@ namespace OpenRCT2::Ui::Windows
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(tab);
 
-            if (widgets[widgetIndex].type != WidgetType::empty && !WidgetIsDisabled(*this, widgetIndex))
+            if (widgets[widgetIndex].type != WidgetType::empty && !widgetIsDisabled(*this, widgetIndex))
             {
                 int32_t frame = 0;
                 if (_currentTab == tab)
@@ -1085,7 +1085,7 @@ namespace OpenRCT2::Ui::Windows
         windowMgr->CloseByClass(WindowClass::TrackDesignPlace);
 
         window = windowMgr->Create<NewRideWindow>(
-            WindowClass::ConstructRide, WindowWidth, kWindowHeight, WF_10 | WF_AUTO_POSITION);
+            WindowClass::ConstructRide, { WindowWidth, kWindowHeight }, WF_10 | WF_AUTO_POSITION);
         return window;
     }
 

@@ -86,7 +86,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto kMainStaffWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({ 0, 43 }, { 190, 137 }, WidgetType::resize, WindowColour::secondary),
         makeTab({ 3, 17 }, STR_STAFF_OVERVIEW_TIP),
         makeTab({ 34, 17 }, STR_STAFF_OPTIONS_TIP),
@@ -1227,7 +1227,7 @@ namespace OpenRCT2::Ui::Windows
         if (w != nullptr)
             return w;
 
-        w = windowMgr->Create<StaffWindow>(WindowClass::Peep, WW, WH, WF_10 | WF_RESIZABLE);
+        w = windowMgr->Create<StaffWindow>(WindowClass::Peep, { WW, WH }, WF_10 | WF_RESIZABLE);
         if (w == nullptr)
             return nullptr;
 

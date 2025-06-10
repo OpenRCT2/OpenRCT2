@@ -110,7 +110,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto WindowSceneryBaseWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WINDOW_SCENERY_MIN_WIDTH, WINDOW_SCENERY_MIN_HEIGHT),
+        makeWindowShim(WINDOW_TITLE, { WINDOW_SCENERY_MIN_WIDTH, WINDOW_SCENERY_MIN_HEIGHT }),
         makeWidget     ({  0,  43}, {634, 99}, WidgetType::resize,    WindowColour::secondary                                                  ), // 8         0x009DE2C8
         makeWidget     ({  2,  62}, {607, 80}, WidgetType::scroll,    WindowColour::secondary, SCROLL_VERTICAL                                 ), // 1000000   0x009DE418
         makeWidget     ({609,  59}, { 24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_ROTATE_ARROW),    STR_ROTATE_OBJECTS_90      ), // 2000000   0x009DE428
@@ -437,7 +437,7 @@ namespace OpenRCT2::Ui::Windows
                     ScreenCoordsXY scrollPos = {};
                     int32_t scrollArea = 0;
                     int32_t scrollId = 0;
-                    WidgetScrollGetPart(*this, &widgets[WIDX_SCENERY_LIST], state->position, scrollPos, &scrollArea, &scrollId);
+                    widgetScrollGetPart(*this, &widgets[WIDX_SCENERY_LIST], state->position, scrollPos, &scrollArea, &scrollId);
                     if (scrollArea == SCROLL_PART_VIEW)
                     {
                         const ScenerySelection scenery = GetSceneryIdByCursorPos(scrollPos);
@@ -722,9 +722,9 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].image = GetColourButtonImage(_sceneryPrimaryColour);
-            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].image = GetColourButtonImage(_scenerySecondaryColour);
-            widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].image = GetColourButtonImage(_sceneryTertiaryColour);
+            widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].image = getColourButtonImage(_sceneryPrimaryColour);
+            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].image = getColourButtonImage(_scenerySecondaryColour);
+            widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].image = getColourButtonImage(_sceneryTertiaryColour);
 
             widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::empty;
             widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WidgetType::empty;
@@ -1192,7 +1192,7 @@ namespace OpenRCT2::Ui::Windows
             scrolls[SceneryContentScrollIndex].contentOffsetY = std::min<int32_t>(
                 maxTop, scrolls[SceneryContentScrollIndex].contentOffsetY);
 
-            WidgetScrollUpdateThumbs(*this, WIDX_SCENERY_LIST);
+            widgetScrollUpdateThumbs(*this, WIDX_SCENERY_LIST);
         }
 
         SceneryItem ContentCountRowsWithSelectedItem(const size_t tabIndex)

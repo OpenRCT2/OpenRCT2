@@ -243,7 +243,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t RCT1_LIGHT_OFFSET = 4;
 
     static constexpr auto kMainRideWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({  0, 43}, {kMinimumWindowWidth, 137}, WidgetType::resize, WindowColour::secondary),
         makeTab({ 3, 17 }, STR_VIEW_OF_RIDE_ATTRACTION_TIP),
         makeTab({ 34, 17 }, STR_VEHICLE_DETAILS_AND_OPTIONS_TIP),
@@ -1205,7 +1205,7 @@ namespace OpenRCT2::Ui::Windows
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + tab;
 
-            if (!WidgetIsDisabled(*this, widgetIndex))
+            if (!widgetIsDisabled(*this, widgetIndex))
             {
                 if (page == tab)
                 {
@@ -1221,7 +1221,7 @@ namespace OpenRCT2::Ui::Windows
         void DrawTabMain(RenderTarget& rt)
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_MAIN);
-            if (!WidgetIsDisabled(*this, widgetIndex))
+            if (!widgetIsDisabled(*this, widgetIndex))
             {
                 auto ride = GetRide(rideId);
                 if (ride != nullptr)
@@ -1257,7 +1257,7 @@ namespace OpenRCT2::Ui::Windows
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_VEHICLE);
             const auto& widget = widgets[widgetIndex];
 
-            if (!WidgetIsDisabled(*this, widgetIndex))
+            if (!widgetIsDisabled(*this, widgetIndex))
             {
                 const Ride* const ride = GetRide(rideId);
                 if (ride == nullptr)
@@ -1319,7 +1319,7 @@ namespace OpenRCT2::Ui::Windows
         {
             WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_CUSTOMER);
 
-            if (!WidgetIsDisabled(*this, widgetIndex))
+            if (!widgetIsDisabled(*this, widgetIndex))
             {
                 const auto& widget = widgets[widgetIndex];
                 int32_t spriteIndex = 0;
@@ -2343,25 +2343,25 @@ namespace OpenRCT2::Ui::Windows
 
 #ifdef __SIMULATE_IN_RIDE_WINDOW__
             widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RideStatus::closed) * 2
-                + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT);
+                + widgetIsPressed(*this, WIDX_CLOSE_LIGHT);
             widgets[WIDX_SIMULATE_LIGHT].image = SPR_G2_RCT1_SIMULATE_BUTTON_0 + (ride->status == RideStatus::simulating) * 2
-                + WidgetIsPressed(*w, WIDX_SIMULATE_LIGHT);
+                + widgetIsPressed(*w, WIDX_SIMULATE_LIGHT);
             widgets[WIDX_TEST_LIGHT].image = SPR_G2_RCT1_TEST_BUTTON_0 + (ride->status == RideStatus::testing) * 2
-                + WidgetIsPressed(*this, WIDX_TEST_LIGHT);
+                + widgetIsPressed(*this, WIDX_TEST_LIGHT);
 #else
             const auto closeLightImage = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RideStatus::closed) * 2
-                + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT);
+                + widgetIsPressed(*this, WIDX_CLOSE_LIGHT);
             widgets[WIDX_CLOSE_LIGHT].image = ImageId(closeLightImage);
 
             auto baseSprite = ride->status == RideStatus::simulating ? SPR_G2_RCT1_SIMULATE_BUTTON_0
                                                                      : SPR_G2_RCT1_TEST_BUTTON_0;
             const auto testLightImage = baseSprite
                 + (ride->status == RideStatus::testing || ride->status == RideStatus::simulating) * 2
-                + WidgetIsPressed(*this, WIDX_TEST_LIGHT);
+                + widgetIsPressed(*this, WIDX_TEST_LIGHT);
             widgets[WIDX_TEST_LIGHT].image = ImageId(testLightImage);
 #endif
             const auto openLightImage = SPR_G2_RCT1_OPEN_BUTTON_0 + (ride->status == RideStatus::open) * 2
-                + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
+                + widgetIsPressed(*this, WIDX_OPEN_LIGHT);
             widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
             const int32_t offset = gameState.cheats.allowArbitraryRideTypeChanges ? 15 : 0;
@@ -4033,10 +4033,10 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             uint16_t reliability = ride->reliabilityPercentage;
-            WidgetProgressBarSetNewPercentage(widgets[WIDX_RELIABILITY_BAR], std::max<uint8_t>(10, reliability));
+            widgetProgressBarSetNewPercentage(widgets[WIDX_RELIABILITY_BAR], std::max<uint8_t>(10, reliability));
 
             uint16_t downTime = ride->downtime;
-            WidgetProgressBarSetNewPercentage(widgets[WIDX_DOWN_TIME_BAR], downTime);
+            widgetProgressBarSetNewPercentage(widgets[WIDX_DOWN_TIME_BAR], downTime);
 
             DrawWidgets(rt);
             DrawTabImages(rt);
@@ -4624,7 +4624,7 @@ namespace OpenRCT2::Ui::Windows
             if (HasTrackColour(*ride, 0))
             {
                 widgets[WIDX_TRACK_MAIN_COLOUR].type = WidgetType::colourBtn;
-                widgets[WIDX_TRACK_MAIN_COLOUR].image = GetColourButtonImage(trackColour.main);
+                widgets[WIDX_TRACK_MAIN_COLOUR].image = getColourButtonImage(trackColour.main);
             }
             else
             {
@@ -4635,7 +4635,7 @@ namespace OpenRCT2::Ui::Windows
             if (HasTrackColour(*ride, 1))
             {
                 widgets[WIDX_TRACK_ADDITIONAL_COLOUR].type = WidgetType::colourBtn;
-                widgets[WIDX_TRACK_ADDITIONAL_COLOUR].image = GetColourButtonImage(trackColour.additional);
+                widgets[WIDX_TRACK_ADDITIONAL_COLOUR].image = getColourButtonImage(trackColour.additional);
             }
             else
             {
@@ -4664,7 +4664,7 @@ namespace OpenRCT2::Ui::Windows
             if (HasTrackColour(*ride, 2) && rtd.specialType != RtdSpecialType::maze)
             {
                 widgets[WIDX_TRACK_SUPPORT_COLOUR].type = WidgetType::colourBtn;
-                widgets[WIDX_TRACK_SUPPORT_COLOUR].image = GetColourButtonImage(trackColour.supports);
+                widgets[WIDX_TRACK_SUPPORT_COLOUR].image = getColourButtonImage(trackColour.supports);
             }
             else
             {
@@ -4718,7 +4718,7 @@ namespace OpenRCT2::Ui::Windows
 
                 widgets[WIDX_VEHICLE_PREVIEW].type = WidgetType::scroll;
                 widgets[WIDX_VEHICLE_BODY_COLOUR].type = WidgetType::colourBtn;
-                widgets[WIDX_VEHICLE_BODY_COLOUR].image = GetColourButtonImage(vehicleColour.Body);
+                widgets[WIDX_VEHICLE_BODY_COLOUR].image = getColourButtonImage(vehicleColour.Body);
 
                 bool allowChangingBodyColour = false;
                 bool allowChangingTrimColour = false;
@@ -4745,17 +4745,17 @@ namespace OpenRCT2::Ui::Windows
                 if (allowChangingBodyColour)
                 {
                     widgets[WIDX_VEHICLE_BODY_COLOUR].type = WidgetType::colourBtn;
-                    widgets[WIDX_VEHICLE_BODY_COLOUR].image = GetColourButtonImage(vehicleColour.Body);
+                    widgets[WIDX_VEHICLE_BODY_COLOUR].image = getColourButtonImage(vehicleColour.Body);
                 }
                 if (allowChangingTrimColour)
                 {
                     widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WidgetType::colourBtn;
-                    widgets[WIDX_VEHICLE_TRIM_COLOUR].image = GetColourButtonImage(vehicleColour.Trim);
+                    widgets[WIDX_VEHICLE_TRIM_COLOUR].image = getColourButtonImage(vehicleColour.Trim);
                 }
                 if (allowChangingTertiaryColour)
                 {
                     widgets[WIDX_VEHICLE_TERTIARY_COLOUR].type = WidgetType::colourBtn;
-                    widgets[WIDX_VEHICLE_TERTIARY_COLOUR].image = GetColourButtonImage(vehicleColour.Tertiary);
+                    widgets[WIDX_VEHICLE_TERTIARY_COLOUR].image = getColourButtonImage(vehicleColour.Tertiary);
                 }
 
                 // Vehicle colour scheme type
@@ -5138,7 +5138,7 @@ namespace OpenRCT2::Ui::Windows
                 Invalidate();
             }
 
-            WidgetScrollUpdateThumbs(*this, WIDX_MUSIC_DATA);
+            widgetScrollUpdateThumbs(*this, WIDX_MUSIC_DATA);
         }
 
         ScreenSize MusicScrollGetSize(int32_t scrollIndex)
@@ -5207,8 +5207,8 @@ namespace OpenRCT2::Ui::Windows
             auto isMusicActivated = (ride->lifecycleFlags & RIDE_LIFECYCLE_MUSIC) != 0;
             bool hasPreviewImage = musicObj != nullptr && musicObj->HasPreview();
 
-            WidgetSetVisible(*this, WIDX_MUSIC_DATA, isMusicActivated);
-            WidgetSetVisible(*this, WIDX_MUSIC_IMAGE, isMusicActivated && hasPreviewImage);
+            widgetSetVisible(*this, WIDX_MUSIC_DATA, isMusicActivated);
+            widgetSetVisible(*this, WIDX_MUSIC_IMAGE, isMusicActivated && hasPreviewImage);
 
             if (isMusicActivated)
             {
@@ -5954,7 +5954,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             scrolls[0].contentOffsetX = std::clamp(x, 0, scrolls[0].contentWidth - (widget->width() - 2));
-            WidgetScrollUpdateThumbs(*this, WIDX_GRAPH);
+            widgetScrollUpdateThumbs(*this, WIDX_GRAPH);
         }
 
         ScreenSize GraphsScrollGetSize(int32_t scrollIndex)
@@ -6954,7 +6954,7 @@ namespace OpenRCT2::Ui::Windows
     static RideWindow* WindowRideOpen(const Ride& ride)
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->Create<RideWindow>(WindowClass::Ride, kMinimumWindowWidth, 207, WF_10 | WF_RESIZABLE, ride);
+        return windowMgr->Create<RideWindow>(WindowClass::Ride, { kMinimumWindowWidth, 207 }, WF_10 | WF_RESIZABLE, ride);
     }
 
     /**

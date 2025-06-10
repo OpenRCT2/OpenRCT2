@@ -65,7 +65,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _rideListWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({  0, 43}, {340, 197}, WidgetType::resize,   WindowColour::secondary                                                                ), // tab page background
         makeWidget({315, 60}, { 24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_TOGGLE_OPEN_CLOSE),      STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
         makeWidget({150, 46}, {124,  12}, WidgetType::dropdownMenu, WindowColour::secondary                                                                ), // current information type
@@ -500,10 +500,10 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 const auto closeLightImage(
-                    SPR_G2_RCT1_CLOSE_BUTTON_0 + (allClosed ? 1 : 0) * 2 + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT));
+                    SPR_G2_RCT1_CLOSE_BUTTON_0 + (allClosed ? 1 : 0) * 2 + widgetIsPressed(*this, WIDX_CLOSE_LIGHT));
                 widgets[WIDX_CLOSE_LIGHT].image = ImageId(closeLightImage);
                 const auto openLightImage = SPR_G2_RCT1_OPEN_BUTTON_0 + (allOpen ? 1 : 0) * 2
-                    + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
+                    + widgetIsPressed(*this, WIDX_OPEN_LIGHT);
                 widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
                 widgets[WIDX_QUICK_DEMOLISH].top = widgets[WIDX_OPEN_LIGHT].bottom + 3;
             }
@@ -1007,7 +1007,7 @@ namespace OpenRCT2::Ui::Windows
         if (window == nullptr)
         {
             window = windowMgr->Create<RideListWindow>(
-                WindowClass::RideList, ScreenCoordsXY(32, 32), WW, WH, WF_10 | WF_RESIZABLE);
+                WindowClass::RideList, ScreenCoordsXY(32, 32), { WW, WH }, WF_10 | WF_RESIZABLE);
         }
         return window;
     }

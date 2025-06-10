@@ -59,7 +59,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr auto kMainWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({ 0, TABHEIGHT }, { WW, WH - TABHEIGHT }, WidgetType::frame, WindowColour::secondary),
         makeRemapWidget({ 3, 17 }, { 91, TABHEIGHT - 16 }, WidgetType::tab, WindowColour::secondary, SPR_TAB_LARGE),
         makeRemapWidget({ 94, 17 }, { 91, TABHEIGHT - 16 }, WidgetType::tab, WindowColour::secondary, SPR_TAB_LARGE));
@@ -288,6 +288,6 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* AboutOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<AboutWindow>(WindowClass::About, WW, WH, WF_CENTRE_SCREEN);
+        return windowMgr->FocusOrCreate<AboutWindow>(WindowClass::About, { WW, WH }, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows

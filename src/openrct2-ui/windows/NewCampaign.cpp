@@ -49,7 +49,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_new_campaign_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget        ({ 14, 24}, {126, 12}, WidgetType::label,    WindowColour::primary, kStringIdEmpty                                  ), // ride label
         makeWidget        ({100, 24}, {242, 12}, WidgetType::dropdownMenu, WindowColour::primary, kStringIdEmpty                                  ), // ride dropdown
         makeWidget        ({330, 25}, { 11, 10}, WidgetType::button,   WindowColour::primary, STR_DROPDOWN_GLYPH                         ), // ride dropdown button
@@ -357,9 +357,9 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_WEEKS_SPINNER].text = kStringIdNone;
 
             // Enable / disable start button based on ride dropdown
-            WidgetSetDisabled(*this, WIDX_START_BUTTON, false);
+            widgetSetDisabled(*this, WIDX_START_BUTTON, false);
             if (widgets[WIDX_RIDE_DROPDOWN].type == WidgetType::dropdownMenu && Campaign.RideId == RideId::GetNull())
-                WidgetSetDisabled(*this, WIDX_START_BUTTON, true);
+                widgetSetDisabled(*this, WIDX_START_BUTTON, true);
         }
 
         void OnDraw(RenderTarget& rt) override
@@ -408,7 +408,7 @@ namespace OpenRCT2::Ui::Windows
             w->Close();
         }
 
-        w = windowMgr->Create<NewCampaignWindow>(WindowClass::NewCampaign, WW, WH, 0);
+        w = windowMgr->Create<NewCampaignWindow>(WindowClass::NewCampaign, { WW, WH }, 0);
         if (w != nullptr)
         {
             w->SetCampaign(campaignType);

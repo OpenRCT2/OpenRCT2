@@ -167,7 +167,7 @@ namespace OpenRCT2::Ui::Windows
 
         auto* windowMgr = GetWindowManager();
         windowMgr->Create(
-            std::move(tooltipWindow), WindowClass::Tooltip, windowPos, width, height,
+            std::move(tooltipWindow), WindowClass::Tooltip, windowPos, { width, height },
             WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_NO_TITLE_BAR);
     }
 

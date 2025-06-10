@@ -54,7 +54,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _viewClippingWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget        ({     11,  19}, {    159,  11}, WidgetType::checkbox, WindowColour::primary, STR_VIEW_CLIPPING_HEIGHT_ENABLE,                  STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP               ), // clip enable/disable check box
         makeWidget        ({      5,  36}, {WW - 10,  65}, WidgetType::groupbox, WindowColour::primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING                                                                 ),
         makeSpinnerWidgets({     90,  51}, {     79,  12}, WidgetType::spinner,  WindowColour::primary, kStringIdNone,                                    STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE             ), // clip height (3 widgets)
@@ -269,13 +269,13 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            WidgetScrollUpdateThumbs(*this, WIDX_CLIP_HEIGHT_SLIDER);
+            widgetScrollUpdateThumbs(*this, WIDX_CLIP_HEIGHT_SLIDER);
 
             WindowBase* mainWindow = WindowGetMain();
             if (mainWindow != nullptr)
             {
-                WidgetSetCheckboxValue(*this, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
-                WidgetSetCheckboxValue(
+                widgetSetCheckboxValue(*this, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
+                widgetSetCheckboxValue(
                     *this, WIDX_CLIP_SEE_THROUGH_CHECKBOX_ENABLE,
                     mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW_SEE_THROUGH);
             }
@@ -417,7 +417,7 @@ namespace OpenRCT2::Ui::Windows
         auto* window = windowMgr->BringToFrontByClass(WindowClass::ViewClipping);
         if (window == nullptr)
         {
-            window = windowMgr->Create<ViewClippingWindow>(WindowClass::ViewClipping, ScreenCoordsXY(32, 32), WW, WH);
+            window = windowMgr->Create<ViewClippingWindow>(WindowClass::ViewClipping, ScreenCoordsXY(32, 32), { WW, WH });
         }
         return window;
     }

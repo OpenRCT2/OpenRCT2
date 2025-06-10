@@ -281,7 +281,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_object_load_error_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WidgetType::tableHeader, WindowColour::primary, STR_OBJECT_NAME                         ), // 'Object name' header
         makeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WidgetType::tableHeader, WindowColour::primary, STR_OBJECT_SOURCE                       ), // 'Object source' header
         makeWidget({  TYPE_COL_LEFT,  57}, {166,  14}, WidgetType::tableHeader, WindowColour::primary, STR_OBJECT_TYPE                         ), // 'Object type' header
@@ -441,7 +441,7 @@ namespace OpenRCT2::Ui::Windows
             frame_no++;
 
             // Check if the mouse is hovering over the list
-            if (!WidgetIsHighlighted(*this, WIDX_SCROLL))
+            if (!widgetIsHighlighted(*this, WIDX_SCROLL))
             {
                 _highlightedIndex = -1;
                 InvalidateWidget(WIDX_SCROLL);
@@ -578,7 +578,7 @@ namespace OpenRCT2::Ui::Windows
         auto* window = windowMgr->BringToFrontByClass(WindowClass::ObjectLoadError);
         if (window == nullptr)
         {
-            window = windowMgr->Create<ObjectLoadErrorWindow>(WindowClass::ObjectLoadError, WW, WH, 0);
+            window = windowMgr->Create<ObjectLoadErrorWindow>(WindowClass::ObjectLoadError, { WW, WH }, 0);
         }
 
         static_cast<ObjectLoadErrorWindow*>(window)->Initialise(path, numMissingObjects, missingObjects);

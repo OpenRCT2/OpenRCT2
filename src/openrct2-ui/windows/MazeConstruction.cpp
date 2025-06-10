@@ -61,7 +61,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_maze_construction_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({ 3,  17}, {160, 55}, WidgetType::groupbox, WindowColour::primary  , STR_RIDE_CONSTRUCTION_MODE                                                            ),
         makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
         makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
@@ -443,7 +443,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<MazeConstructionWindow>(
-            WindowClass::RideConstruction, ScreenCoordsXY(0, 29), WW, WH, WF_NO_AUTO_CLOSE);
+            WindowClass::RideConstruction, ScreenCoordsXY(0, 29), { WW, WH }, WF_NO_AUTO_CLOSE);
     }
 
     void WindowMazeConstructionUpdatePressedWidgets()

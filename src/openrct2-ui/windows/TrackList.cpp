@@ -55,7 +55,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _trackListWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({  4,  18}, {218,  13}, WidgetType::tableHeader,  WindowColour::primary, STR_SELECT_OTHER_RIDE                                       ),
         makeWidget({  4,  32}, {124,  13}, WidgetType::textBox,      WindowColour::secondary                                                            ),
         makeWidget({130,  32}, { 92,  13}, WidgetType::button,       WindowColour::primary, STR_OBJECT_SEARCH_CLEAR                                     ),
@@ -767,7 +767,7 @@ namespace OpenRCT2::Ui::Windows
             screenPos = { 0, kTopToolbarHeight + 2 };
         }
 
-        return windowMgr->Create<TrackListWindow>(WindowClass::TrackDesignList, screenPos, WW, WH, flags, item);
+        return windowMgr->Create<TrackListWindow>(WindowClass::TrackDesignList, screenPos, { WW, WH }, flags, item);
     }
 
     void WindowTrackDesignListReloadTracks()

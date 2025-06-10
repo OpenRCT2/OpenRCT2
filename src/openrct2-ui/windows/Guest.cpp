@@ -113,7 +113,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto kMainGuestWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),                                                                                         \
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({ 0, 43 }, { 192, 114 }, WidgetType::resize, WindowColour::secondary), /* Resize */
         makeTab({ 3, 17 }, STR_SHOW_GUEST_VIEW_TIP),                                            /* Tab 1 */
         makeTab({ 34, 17 }, STR_SHOW_GUEST_NEEDS_TIP),                                          /* Tab 2 */
@@ -445,7 +445,7 @@ namespace OpenRCT2::Ui::Windows
             // Ensure min size is large enough for all tabs to fit
             for (int32_t i = WIDX_TAB_1; i <= WIDX_TAB_7; i++)
             {
-                if (!WidgetIsDisabled(*this, i))
+                if (!widgetIsDisabled(*this, i))
                 {
                     minSize.width = std::max(minSize.width, widgets[i].right + 3);
                 }
@@ -481,13 +481,13 @@ namespace OpenRCT2::Ui::Windows
 
             if (peep->CanBePickedUp())
             {
-                if (WidgetIsDisabled(*this, WIDX_PICKUP))
+                if (widgetIsDisabled(*this, WIDX_PICKUP))
                     Invalidate();
             }
             else
             {
                 newDisabledWidgets = (1uLL << WIDX_PICKUP);
-                if (!WidgetIsDisabled(*this, WIDX_PICKUP))
+                if (!widgetIsDisabled(*this, WIDX_PICKUP))
                     Invalidate();
             }
             if (getGameState().park.Flags & PARK_FLAGS_NO_MONEY)
@@ -542,7 +542,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OverviewTabDraw(RenderTarget& rt)
         {
-            if (WidgetIsDisabled(*this, WIDX_TAB_1))
+            if (widgetIsDisabled(*this, WIDX_TAB_1))
                 return;
 
             const auto& widget = widgets[WIDX_TAB_1];
@@ -1046,7 +1046,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Stats
         void StatsTabDraw(RenderTarget& rt)
         {
-            if (WidgetIsDisabled(*this, WIDX_TAB_2))
+            if (widgetIsDisabled(*this, WIDX_TAB_2))
                 return;
 
             const auto& widget = widgets[WIDX_TAB_2];
@@ -1111,25 +1111,25 @@ namespace OpenRCT2::Ui::Windows
             }
 
             int32_t happinessPercentage = NormalizeGuestStatValue(peep->Happiness, kPeepMaxHappiness, 10);
-            WidgetProgressBarSetNewPercentage(widgets[WIDX_HAPPINESS_BAR], happinessPercentage);
+            widgetProgressBarSetNewPercentage(widgets[WIDX_HAPPINESS_BAR], happinessPercentage);
 
             int32_t energyPercentage = NormalizeGuestStatValue(
                 peep->Energy - kPeepMinEnergy, kPeepMaxEnergy - kPeepMinEnergy, 10);
-            WidgetProgressBarSetNewPercentage(widgets[WIDX_ENERGY_BAR], energyPercentage);
+            widgetProgressBarSetNewPercentage(widgets[WIDX_ENERGY_BAR], energyPercentage);
 
             int32_t hungerPercentage = NormalizeGuestStatValue(peep->Hunger - 32, 158, 0);
             hungerPercentage = 100 - hungerPercentage; // the bar should be longer when peep->Hunger is low
-            WidgetProgressBarSetNewPercentage(widgets[WIDX_HUNGER_BAR], hungerPercentage);
+            widgetProgressBarSetNewPercentage(widgets[WIDX_HUNGER_BAR], hungerPercentage);
 
             int32_t thirstPercentage = NormalizeGuestStatValue(peep->Thirst - 32, 158, 0);
             thirstPercentage = 100 - thirstPercentage; // the bar should be longer when peep->Thirst is low
-            WidgetProgressBarSetNewPercentage(widgets[WIDX_THIRST_BAR], thirstPercentage);
+            widgetProgressBarSetNewPercentage(widgets[WIDX_THIRST_BAR], thirstPercentage);
 
             int32_t nauseaPercentage = NormalizeGuestStatValue(peep->Nausea - 32, 223, 0);
-            WidgetProgressBarSetNewPercentage(widgets[WIDX_NAUSEA_BAR], nauseaPercentage);
+            widgetProgressBarSetNewPercentage(widgets[WIDX_NAUSEA_BAR], nauseaPercentage);
 
             int32_t toiletPercentage = NormalizeGuestStatValue(peep->Toilet - 64, 178, 0);
-            WidgetProgressBarSetNewPercentage(widgets[WIDX_TOILET_BAR], toiletPercentage);
+            widgetProgressBarSetNewPercentage(widgets[WIDX_TOILET_BAR], toiletPercentage);
 
             DrawWidgets(rt);
             OverviewTabDraw(rt);
@@ -1202,7 +1202,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Rides
         void RidesTabDraw(RenderTarget& rt)
         {
-            if (WidgetIsDisabled(*this, WIDX_TAB_3))
+            if (widgetIsDisabled(*this, WIDX_TAB_3))
                 return;
 
             const auto& widget = widgets[WIDX_TAB_3];
@@ -1373,7 +1373,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Finance
         void FinanceTabDraw(RenderTarget& rt)
         {
-            if (WidgetIsDisabled(*this, WIDX_TAB_4))
+            if (widgetIsDisabled(*this, WIDX_TAB_4))
                 return;
 
             const auto& widget = widgets[WIDX_TAB_4];
@@ -1511,7 +1511,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Thoughts
         void ThoughtsTabDraw(RenderTarget& rt)
         {
-            if (WidgetIsDisabled(*this, WIDX_TAB_5))
+            if (widgetIsDisabled(*this, WIDX_TAB_5))
                 return;
 
             const auto& widget = widgets[WIDX_TAB_5];
@@ -1589,7 +1589,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Inventory
         void InventoryTabDraw(RenderTarget& rt)
         {
-            if (WidgetIsDisabled(*this, WIDX_TAB_6))
+            if (widgetIsDisabled(*this, WIDX_TAB_6))
                 return;
 
             const auto& widget = widgets[WIDX_TAB_6];
@@ -1779,7 +1779,7 @@ namespace OpenRCT2::Ui::Windows
 #pragma region Debug
         void DebugTabDraw(RenderTarget& rt)
         {
-            if (WidgetIsDisabled(*this, WIDX_TAB_7))
+            if (widgetIsDisabled(*this, WIDX_TAB_7))
                 return;
 
             const auto& widget = widgets[WIDX_TAB_7];
@@ -1916,7 +1916,7 @@ namespace OpenRCT2::Ui::Windows
             if (Config::Get().general.DebuggingTools)
                 windowWidth += TabWidth;
 
-            window = windowMgr->Create<GuestWindow>(WindowClass::Peep, windowWidth, 157, WF_RESIZABLE);
+            window = windowMgr->Create<GuestWindow>(WindowClass::Peep, { windowWidth, 157 }, WF_RESIZABLE);
             if (window == nullptr)
             {
                 return nullptr;

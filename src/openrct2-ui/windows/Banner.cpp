@@ -66,7 +66,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr auto window_banner_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({      3,      17}, {85, 60}, WidgetType::viewport,  WindowColour::secondary, 0x0FFFFFFFE                                        ), // tab content panel
         makeWidget({WW - 25,      19}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_RENAME),         STR_CHANGE_BANNER_TEXT_TIP     ), // change banner button
         makeWidget({WW - 25,      43}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_NO_ENTRY),       STR_SET_AS_NO_ENTRY_BANNER_TIP ), // no entry button
@@ -299,7 +299,7 @@ namespace OpenRCT2::Ui::Windows
                 disabled_widgets |= (1uLL << WIDX_BANNER_TEXT) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN)
                     | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
             }
-            colourBtn.image = GetColourButtonImage(banner->colour);
+            colourBtn.image = getColourButtonImage(banner->colour);
             Widget& dropDownWidget = widgets[WIDX_TEXT_COLOUR_DROPDOWN];
             dropDownWidget.text = kBannerColouredTextFormats[EnumValue(banner->textColour)];
         }
@@ -317,7 +317,7 @@ namespace OpenRCT2::Ui::Windows
         if (w != nullptr)
             return w;
 
-        w = windowMgr->Create<BannerWindow>(WindowClass::Banner, WW, WH, 0);
+        w = windowMgr->Create<BannerWindow>(WindowClass::Banner, { WW, WH }, 0);
 
         if (w != nullptr)
             w->Initialise(number);

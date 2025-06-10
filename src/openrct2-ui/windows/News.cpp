@@ -54,7 +54,7 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto makeNewsWidgets = [](StringId title) {
         return makeWidgets(
-            makeWindowShim(title, WW, WH),
+            makeWindowShim(title, { WW, WH }),
             makeWidget({ 0, 43 }, { WW, 257 }, WidgetType::resize, WindowColour::secondary),
             makeTab({ 3, 17 }, STR_RECENT_MESSAGES),
             makeTab({ 34, 17 }, STR_NOTIFICATION_SETTINGS)
@@ -126,7 +126,7 @@ namespace OpenRCT2::Ui::Windows
             auto& widget = widgets[WIDX_SCROLL];
             ScreenSize scrollSize = OnScrollGetSize(0);
             scrolls[0].contentOffsetY = std::max(0, scrollSize.height - (widget.height() - 1));
-            WidgetScrollUpdateThumbs(*this, WIDX_SCROLL);
+            widgetScrollUpdateThumbs(*this, WIDX_SCROLL);
         }
 
         void InitOptionsWidgets()
@@ -582,6 +582,6 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* NewsOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<NewsWindow>(WindowClass::RecentNews, WW, WH, 0);
+        return windowMgr->FocusOrCreate<NewsWindow>(WindowClass::RecentNews, { WW, WH }, 0);
     }
 } // namespace OpenRCT2::Ui::Windows

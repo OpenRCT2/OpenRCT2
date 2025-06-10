@@ -47,7 +47,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _windowServerStartWidgets = makeWidgets(
-        makeWindowShim(STR_START_SERVER, WW, WH),
+        makeWindowShim(STR_START_SERVER, { WW, WH }),
         makeWidget({ 120, 20 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary), // port text box
         makeWidget({ 120, 36 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary), // name text box
         makeWidget({ 120, 52 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary), // description text box
@@ -145,7 +145,7 @@ namespace OpenRCT2::Ui::Windows
         {
             ColourSchemeUpdateByClass(this, WindowClass::ServerList);
 
-            WidgetSetCheckboxValue(*this, WIDX_ADVERTISE_CHECKBOX, Config::Get().network.Advertise);
+            widgetSetCheckboxValue(*this, WIDX_ADVERTISE_CHECKBOX, Config::Get().network.Advertise);
             auto ft = Formatter::Common();
             ft.Increment(18);
             ft.Add<uint16_t>(Config::Get().network.Maxplayers);
@@ -276,7 +276,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ServerStartOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<ServerStartWindow>(WindowClass::ServerStart, WW, WH, WF_CENTRE_SCREEN);
+        return windowMgr->FocusOrCreate<ServerStartWindow>(WindowClass::ServerStart, { WW, WH }, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows
 

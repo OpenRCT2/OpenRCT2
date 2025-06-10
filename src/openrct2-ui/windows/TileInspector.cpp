@@ -277,7 +277,7 @@ namespace OpenRCT2::Ui::Windows
     #define GBBB(GROUPTOP, row)     (GBBT((GROUPTOP), row) + PropertyButtonSize.height)
 
     static constexpr auto kMainTileInspectorWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({3, 57}, {WW - 6, WH - PADDING_BOTTOM - 58}, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL), /* Element list */
         /* X and Y spinners */
         makeWidget        ({ 4, 24}, {38, 14}, WidgetType::label,   WindowColour::secondary,  STR_TILE_INSPECTOR_X_LABEL),
@@ -527,7 +527,7 @@ static uint64_t PageDisabledWidgets[] = {
         void OnUpdate() override
         {
             // Check if the mouse is hovering over the list
-            if (!WidgetIsHighlighted(*this, WIDX_LIST))
+            if (!widgetIsHighlighted(*this, WIDX_LIST))
             {
                 if (_highlightedIndex != -1)
                     InvalidateWidget(WIDX_LIST);
@@ -2440,7 +2440,8 @@ static uint64_t PageDisabledWidgets[] = {
         auto* windowMgr = GetWindowManager();
         WindowBase* window = windowMgr->BringToFrontByClass(WindowClass::TileInspector);
         if (window == nullptr)
-            window = windowMgr->Create<TileInspector>(WindowClass::TileInspector, ScreenCoordsXY(0, 29), WW, WH, WF_RESIZABLE);
+            window = windowMgr->Create<TileInspector>(
+                WindowClass::TileInspector, ScreenCoordsXY(0, 29), { WW, WH }, WF_RESIZABLE);
         return window;
     }
 

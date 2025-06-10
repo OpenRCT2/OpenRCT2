@@ -33,7 +33,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_overwrite_prompt_widgets = makeWidgets(
-        makeWindowShim(STR_FILEBROWSER_OVERWRITE_TITLE, OVERWRITE_WW, OVERWRITE_WH),
+        makeWindowShim(STR_FILEBROWSER_OVERWRITE_TITLE, { OVERWRITE_WW, OVERWRITE_WH }),
         makeWidget({                10, OVERWRITE_WH - 20 }, { 84, 11 }, WidgetType::button, WindowColour::primary, STR_FILEBROWSER_OVERWRITE_TITLE),
         makeWidget({ OVERWRITE_WW - 95, OVERWRITE_WH - 20 }, { 85, 11 }, WidgetType::button, WindowColour::primary, STR_SAVE_PROMPT_CANCEL)
     );
@@ -107,7 +107,7 @@ namespace OpenRCT2::Ui::Windows
         windowMgr->CloseByClass(WindowClass::LoadsaveOverwritePrompt);
 
         return windowMgr->Create<OverwritePromptWindow>(
-            WindowClass::LoadsaveOverwritePrompt, OVERWRITE_WW, OVERWRITE_WH,
+            WindowClass::LoadsaveOverwritePrompt, { OVERWRITE_WW, OVERWRITE_WH },
             WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN, name, path, action, type, trackDesignPtr);
     }
 

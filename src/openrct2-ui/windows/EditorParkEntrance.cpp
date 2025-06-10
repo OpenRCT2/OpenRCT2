@@ -59,7 +59,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _widgets = makeWidgets(
-        makeWindowShim(kWindowTitle, kWindowWidth, kWindowHeight),
+        makeWindowShim(kWindowTitle, { kWindowWidth, kWindowHeight }),
         makeWidget     ({                 0, 43 }, { kWindowWidth, kWindowHeight - 43 }, WidgetType::resize,  WindowColour::secondary                                                   ),
         makeTab        ({                 3, 17 },                                                                                           kStringIdNone                                         ),
         makeWidget     ({                 2, 45 }, { kScrollWidth, kScrollHeight      }, WidgetType::scroll,  WindowColour::secondary, SCROLL_VERTICAL                                  ),
@@ -396,7 +396,7 @@ namespace OpenRCT2::Ui::Windows
             return window;
 
         window = windowMgr->Create<EditorParkEntrance>(
-            WindowClass::EditorParkEntrance, kWindowWidth, kWindowHeight, WF_10 | WF_RESIZABLE);
+            WindowClass::EditorParkEntrance, { kWindowWidth, kWindowHeight }, WF_10 | WF_RESIZABLE);
 
         return window;
     }

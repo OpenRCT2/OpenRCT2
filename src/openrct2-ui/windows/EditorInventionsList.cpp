@@ -53,7 +53,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _inventionListWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
         makeWidget({  0,  43}, {600, 357}, WidgetType::resize,  WindowColour::secondary                                             ),
         makeTab   ({  3,  17}                                                                                               ),
         makeWidget({  4,  56}, {368, 161}, WidgetType::scroll,  WindowColour::secondary, SCROLL_VERTICAL                            ),
@@ -491,7 +491,7 @@ namespace OpenRCT2::Ui::Windows
                     int32_t outScrollArea{};
                     ScreenCoordsXY outScrollCoords{};
                     int32_t outScrollId{};
-                    WidgetScrollGetPart(*this, &widget, screenCoords, outScrollCoords, &outScrollArea, &outScrollId);
+                    widgetScrollGetPart(*this, &widget, screenCoords, outScrollCoords, &outScrollArea, &outScrollId);
                     if (outScrollArea == SCROLL_PART_VIEW)
                     {
                         const auto isInvented = outScrollId == 0;
@@ -588,7 +588,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<InventionListWindow>(
-            WindowClass::EditorInventionList, WW, WH, WF_NO_SCROLLING | WF_RESIZABLE | WF_CENTRE_SCREEN);
+            WindowClass::EditorInventionList, { WW, WH }, WF_NO_SCROLLING | WF_RESIZABLE | WF_CENTRE_SCREEN);
     }
 #pragma endregion
 
@@ -686,7 +686,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->CloseByClass(WindowClass::EditorInventionListDrag);
         auto* wnd = windowMgr->Create<InventionDragWindow>(
-            WindowClass::EditorInventionListDrag, 10, 14, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
+            WindowClass::EditorInventionListDrag, { 10, 14 }, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
         if (wnd != nullptr)
         {
             wnd->Init(*researchItem, editorPos, objectSelectionScrollWidth);
