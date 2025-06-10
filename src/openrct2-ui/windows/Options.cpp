@@ -200,7 +200,6 @@ namespace OpenRCT2::Ui::Windows
 
         // Gamepad
         WIDX_GAMEPAD_GROUP,
-        WIDX_GAMEPAD_ANALOG_SCROLLING,
         WIDX_GAMEPAD_DEADZONE_LABEL,
         WIDX_GAMEPAD_DEADZONE,
         WIDX_GAMEPAD_DEADZONE_VALUE,
@@ -209,6 +208,9 @@ namespace OpenRCT2::Ui::Windows
         WIDX_GAMEPAD_SENSITIVITY_VALUE,
         WIDX_GAMEPAD_INVERT_X,
         WIDX_GAMEPAD_INVERT_Y,
+        WIDX_GAMEPAD_STICK_LABEL,
+        WIDX_GAMEPAD_STICK,
+        WIDX_GAMEPAD_STICK_DROPDOWN,
 
         // Misc
         WIDX_TITLE_SEQUENCE_GROUP = WIDX_PAGE_START,
@@ -378,16 +380,18 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({155, kControlsGroupStart + 120}, {145, 13}, WidgetType::button,   WindowColour::secondary, STR_HOTKEY,                     STR_HOTKEY_TIP                    ), // Set hotkeys buttons
 
         // Gamepad group
-        makeWidget({  5, kGamepadGroupStart +  0},   {300, 88}, WidgetType::groupbox, WindowColour::secondary, STR_GAMEPAD_GROUP                                                 ), // Gamepad group
-        makeWidget({ 10, kGamepadGroupStart + 13},   {290, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_GAMEPAD_ANALOG_SCROLLING,   STR_GAMEPAD_ANALOG_SCROLLING_TIP  ), // Enable analog scrolling
-        makeWidget({ 10, kGamepadGroupStart + 28},   { 90, 12}, WidgetType::label,    WindowColour::secondary, STR_GAMEPAD_DEADZONE_LABEL,     STR_GAMEPAD_DEADZONE_TIP          ), // Deadzone label
-        makeWidget({105, kGamepadGroupStart + 28},   {145, 13}, WidgetType::scroll,   WindowColour::secondary, SCROLL_HORIZONTAL,              STR_GAMEPAD_DEADZONE_TIP          ), // Deadzone slider
-        makeWidget({255, kGamepadGroupStart + 28},   { 45, 12}, WidgetType::label,    WindowColour::secondary, kStringIdNone,                  STR_GAMEPAD_DEADZONE_TIP          ), // Deadzone value
-        makeWidget({ 10, kGamepadGroupStart + 43},   { 90, 12}, WidgetType::label,    WindowColour::secondary, STR_GAMEPAD_SENSITIVITY_LABEL,  STR_GAMEPAD_SENSITIVITY_TIP       ), // Sensitivity label
-        makeWidget({105, kGamepadGroupStart + 43},   {145, 13}, WidgetType::scroll,   WindowColour::secondary, SCROLL_HORIZONTAL,              STR_GAMEPAD_SENSITIVITY_TIP       ), // Sensitivity slider
-        makeWidget({255, kGamepadGroupStart + 43},   { 45, 12}, WidgetType::label,    WindowColour::secondary, kStringIdNone,                  STR_GAMEPAD_SENSITIVITY_TIP       ), // Sensitivity value
-        makeWidget({ 10, kGamepadGroupStart + 58},   {140, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_GAMEPAD_INVERT_X,           STR_GAMEPAD_INVERT_X_TIP          ), // Invert X axis
-        makeWidget({155, kGamepadGroupStart + 58},   {140, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_GAMEPAD_INVERT_Y,           STR_GAMEPAD_INVERT_Y_TIP          )  // Invert Y axis
+        makeWidget({  5, kGamepadGroupStart +  0},   {300,  88}, WidgetType::groupbox, WindowColour::secondary, STR_GAMEPAD_GROUP                                                 ), // Gamepad group
+        makeWidget({ 10, kGamepadGroupStart + 13},   { 90, 12}, WidgetType::label,    WindowColour::secondary, STR_GAMEPAD_DEADZONE_LABEL,     STR_GAMEPAD_DEADZONE_TIP          ), // Deadzone label
+        makeWidget({105, kGamepadGroupStart + 13},   {145, 13}, WidgetType::scroll,   WindowColour::secondary, SCROLL_HORIZONTAL,              STR_GAMEPAD_DEADZONE_TIP          ), // Deadzone slider
+        makeWidget({255, kGamepadGroupStart + 13},   { 45, 12}, WidgetType::label,    WindowColour::secondary, kStringIdNone,                  STR_GAMEPAD_DEADZONE_TIP          ), // Deadzone value
+        makeWidget({ 10, kGamepadGroupStart + 28},   { 90, 12}, WidgetType::label,    WindowColour::secondary, STR_GAMEPAD_SENSITIVITY_LABEL,  STR_GAMEPAD_SENSITIVITY_TIP       ), // Sensitivity label
+        makeWidget({105, kGamepadGroupStart + 28},   {145, 13}, WidgetType::scroll,   WindowColour::secondary, SCROLL_HORIZONTAL,              STR_GAMEPAD_SENSITIVITY_TIP       ), // Sensitivity slider
+        makeWidget({255, kGamepadGroupStart + 28},   { 45, 12}, WidgetType::label,    WindowColour::secondary, kStringIdNone,                  STR_GAMEPAD_SENSITIVITY_TIP       ), // Sensitivity value
+        makeWidget({ 10, kGamepadGroupStart + 43},   {140, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_GAMEPAD_INVERT_X,           STR_GAMEPAD_INVERT_X_TIP          ), // Invert X axis
+        makeWidget({155, kGamepadGroupStart + 43},   {140, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_GAMEPAD_INVERT_Y,           STR_GAMEPAD_INVERT_Y_TIP          ), // Invert Y axis
+        makeWidget({ 10, kGamepadGroupStart + 58},   { 90, 12}, WidgetType::label,    WindowColour::secondary, STR_GAMEPAD_STICK_LABEL,        STR_GAMEPAD_STICK_TIP             ), // Stick selection label
+        makeWidget({105, kGamepadGroupStart + 58},   {130, 12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,                STR_GAMEPAD_STICK_TIP             ), // Stick selection dropdown
+        makeWidget({223, kGamepadGroupStart + 59},   { 11, 10}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH,             STR_GAMEPAD_STICK_TIP             )  // Stick selection dropdown button
     );
 
     constexpr int32_t kThemesGroupStart = 53;
@@ -590,6 +594,9 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WINDOW_OPTIONS_PAGE_INTERFACE:
                     InterfaceDropdown(widgetIndex, dropdownIndex);
+                    break;
+                case WINDOW_OPTIONS_PAGE_CONTROLS:
+                    ControlsDropdown(widgetIndex, dropdownIndex);
                     break;
                 case WINDOW_OPTIONS_PAGE_MISC:
                     MiscDropdown(widgetIndex, dropdownIndex);
@@ -1576,11 +1583,6 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
-                case WIDX_GAMEPAD_ANALOG_SCROLLING:
-                    Config::Get().general.GamepadAnalogScrolling ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    break;
                 case WIDX_GAMEPAD_INVERT_X:
                     Config::Get().general.GamepadInvertX ^= 1;
                     Config::Save();
@@ -1591,6 +1593,24 @@ namespace OpenRCT2::Ui::Windows
                     Config::Save();
                     Invalidate();
                     break;
+                case WIDX_GAMEPAD_STICK_DROPDOWN:
+                {
+                    const auto* widget = &widgets[WIDX_GAMEPAD_STICK];
+
+                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[0].Args = STR_GAMEPAD_STICK_LEFT;
+                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[1].Args = STR_GAMEPAD_STICK_RIGHT;
+                    gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[2].Args = STR_GAMEPAD_STICK_DISABLED;
+
+                    WindowDropdownShowText(
+                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1],
+                        Dropdown::Flag::StayOpen, 3);
+
+                    Dropdown::SetChecked(static_cast<int32_t>(Config::Get().general.SelectedGamepadStick), true);
+                    break;
+                }
             }
         }
 
@@ -1798,9 +1818,26 @@ namespace OpenRCT2::Ui::Windows
 
             widgetSetEnabled(*this, WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.EnlargedUi);
 
-            SetCheckboxValue(WIDX_GAMEPAD_ANALOG_SCROLLING, Config::Get().general.GamepadAnalogScrolling);
             SetCheckboxValue(WIDX_GAMEPAD_INVERT_X, Config::Get().general.GamepadInvertX);
             SetCheckboxValue(WIDX_GAMEPAD_INVERT_Y, Config::Get().general.GamepadInvertY);
+
+            StringId stickStringId;
+            switch (Config::Get().general.SelectedGamepadStick)
+            {
+                case GamepadStick::Left:
+                    stickStringId = STR_GAMEPAD_STICK_LEFT;
+                    break;
+                case GamepadStick::Right:
+                    stickStringId = STR_GAMEPAD_STICK_RIGHT;
+                    break;
+                case GamepadStick::Disabled:
+                    stickStringId = STR_GAMEPAD_STICK_DISABLED;
+                    break;
+                default:
+                    stickStringId = STR_GAMEPAD_STICK_RIGHT;
+                    break;
+            }
+            widgets[WIDX_GAMEPAD_STICK].text = stickStringId;
 
             // Initialize scroll positions for sliders only on first frame
             if (frame_no == 0)
@@ -1902,6 +1939,22 @@ namespace OpenRCT2::Ui::Windows
                         ThemeManagerSetActiveAvailableTheme(dropdownIndex);
                     }
                     Config::Save();
+                    break;
+            }
+        }
+
+        void ControlsDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_GAMEPAD_STICK:
+                case WIDX_GAMEPAD_STICK_DROPDOWN:
+                    if (dropdownIndex != -1 && dropdownIndex <= 2)
+                    {
+                        Config::Get().general.SelectedGamepadStick = static_cast<GamepadStick>(dropdownIndex);
+                        Config::Save();
+                        Invalidate();
+                    }
                     break;
             }
         }

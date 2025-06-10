@@ -41,8 +41,9 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
     {
         case SDL_JOYAXISMOTION:
         {
-            // Only process left stick axes for scrolling
-            if (e.jaxis.axis == ANALOG_SCROLL_LEFT_X || e.jaxis.axis == ANALOG_SCROLL_LEFT_Y)
+            // Process both left and right stick axes for scrolling
+            if (e.jaxis.axis == ANALOG_SCROLL_LEFT_X || e.jaxis.axis == ANALOG_SCROLL_LEFT_Y
+                || e.jaxis.axis == ANALOG_SCROLL_RIGHT_X || e.jaxis.axis == ANALOG_SCROLL_RIGHT_Y)
             {
                 InputEvent ie;
                 ie.DeviceKind = InputDeviceKind::JoyAxis;
@@ -132,7 +133,8 @@ void InputManager::ProcessAnalogInput()
     _analogScroll.x = 0;
     _analogScroll.y = 0;
 
-    if (!Config::Get().general.GamepadAnalogScrolling)
+    const GamepadStick gamepadStick = Config::Get().general.SelectedGamepadStick;
+    if (gamepadStick == GamepadStick::Disabled)
         return;
 
     const int32_t deadzone = Config::Get().general.GamepadDeadzone;
@@ -144,16 +146,25 @@ void InputManager::ProcessAnalogInput()
     {
         if (joystick != nullptr)
         {
-            int16_t leftX = SDL_JoystickGetAxis(joystick, ANALOG_SCROLL_LEFT_X);
-            int16_t leftY = SDL_JoystickGetAxis(joystick, ANALOG_SCROLL_LEFT_Y);
+            int16_t stickX, stickY;
+            if (gamepadStick == GamepadStick::Right)
+            {
+                stickX = SDL_JoystickGetAxis(joystick, ANALOG_SCROLL_RIGHT_X);
+                stickY = SDL_JoystickGetAxis(joystick, ANALOG_SCROLL_RIGHT_Y);
+            }
+            else
+            {
+                stickX = SDL_JoystickGetAxis(joystick, ANALOG_SCROLL_LEFT_X);
+                stickY = SDL_JoystickGetAxis(joystick, ANALOG_SCROLL_LEFT_Y);
+            }
 
             if (invertX)
-                leftX = -leftX;
+                stickX = -stickX;
             if (invertY)
-                leftY = -leftY;
+                stickY = -stickY;
 
             // Calculate the magnitude of the stick input vector
-            float magnitude = std::sqrt(static_cast<float>(leftX * leftX + leftY * leftY));
+            float magnitude = std::sqrt(static_cast<float>(stickX * stickX + stickY * stickY));
 
             if (magnitude > deadzone)
             {
@@ -161,8 +172,8 @@ void InputManager::ProcessAnalogInput()
                 float adjustedMagnitude = (magnitude - deadzone) / (32767.0f - deadzone);
                 adjustedMagnitude = std::min(adjustedMagnitude, 1.0f);
 
-                float rawX = (leftX / 32767.0f) * adjustedMagnitude;
-                float rawY = (leftY / 32767.0f) * adjustedMagnitude;
+                float rawX = (stickX / 32767.0f) * adjustedMagnitude;
+                float rawY = (stickY / 32767.0f) * adjustedMagnitude;
 
                 // Use a quadratic curve for better fine control at low sensitivities
                 float sensitivityCurve = sensitivity * sensitivity;

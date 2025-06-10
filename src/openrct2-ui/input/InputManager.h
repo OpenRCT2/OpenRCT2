@@ -69,8 +69,10 @@ namespace OpenRCT2::Ui
         uint8_t _modifierKeyState;
 
         // Gamepad configuration
-        static constexpr int ANALOG_SCROLL_LEFT_X = 0; // Left stick X axis
-        static constexpr int ANALOG_SCROLL_LEFT_Y = 1; // Left stick Y axis
+        static constexpr int ANALOG_SCROLL_LEFT_X = 0;  // Left stick X axis
+        static constexpr int ANALOG_SCROLL_LEFT_Y = 1;  // Left stick Y axis
+        static constexpr int ANALOG_SCROLL_RIGHT_X = 2; // Right stick X axis (typically axis 2)
+        static constexpr int ANALOG_SCROLL_RIGHT_Y = 3; // Right stick Y axis (typically axis 3)
 
         void CheckJoysticks();
         void ProcessAnalogInput();

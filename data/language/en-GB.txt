@@ -3824,13 +3824,16 @@ STR_6782    :Park notifications
 STR_6783    :Ride notifications
 STR_6784    :Guest notifications
 STR_6785    :Gamepad
-STR_6786    :Enable analog scrolling
-STR_6787    :Use gamepad analog stick for smooth scrolling
-STR_6788    :Deadzone:
-STR_6789    :Analog stick deadzone (minimum movement required)
-STR_6790    :Sensitivity:
-STR_6791    :Analog stick sensitivity multiplier
-STR_6792    :Invert X axis
-STR_6793    :Invert horizontal analog stick movement
-STR_6794    :Invert Y axis
-STR_6795    :Invert vertical analog stick movement
+STR_6786    :Deadzone:
+STR_6787    :Analog stick deadzone (minimum movement required)
+STR_6788    :Sensitivity:
+STR_6789    :Analog stick sensitivity multiplier
+STR_6790    :Invert X axis
+STR_6791    :Invert horizontal analog stick movement
+STR_6792    :Invert Y axis
+STR_6793    :Invert vertical analog stick movement
+STR_6794    :Analog stick:
+STR_6795    :Select which analog stick to use for scrolling
+STR_6796    :Left stick
+STR_6797    :Right stick
+STR_6798    :Disabled
