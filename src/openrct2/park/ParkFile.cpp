@@ -44,6 +44,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../peep/RideUseSystem.h"
+#include "../rct2/RCT2.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/ShopItem.h"
 #include "../ride/Vehicle.h"
@@ -313,12 +314,14 @@ namespace OpenRCT2
                 const auto version = os.GetHeader().TargetVersion;
 
                 ObjectList requiredObjects;
+                struct LegacyFootpathMapping
+                {
+                    ObjectEntryIndex originalEntryIndex;
+                    const RCT2::FootpathMapping& mapping;
+                };
+                std::vector<LegacyFootpathMapping> legacyPathMappings;
                 os.ReadWriteChunk(
-                    ParkFileChunkType::OBJECTS,
-                    [&requiredObjects, pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap,
-                     version](OrcaStream::ChunkStream& cs) {
-                        ObjectEntryIndex surfaceCount = 0;
-                        ObjectEntryIndex railingsCount = 0;
+                    ParkFileChunkType::OBJECTS, [&requiredObjects, version, &legacyPathMappings](OrcaStream::ChunkStream& cs) {
                         auto numSubLists = cs.Read<uint16_t>();
                         for (size_t i = 0; i < numSubLists; i++)
                         {
@@ -342,10 +345,7 @@ namespace OpenRCT2
                                             auto footpathMapping = GetFootpathMapping(desc);
                                             if (footpathMapping != nullptr)
                                             {
-                                                UpdateFootpathsFromMapping(
-                                                    pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, requiredObjects,
-                                                    surfaceCount, railingsCount, j, footpathMapping);
-
+                                                legacyPathMappings.push_back(LegacyFootpathMapping{ j, *footpathMapping });
                                                 continue;
                                             }
                                         }
@@ -392,10 +392,7 @@ namespace OpenRCT2
                                             auto footpathMapping = GetFootpathMapping(desc);
                                             if (footpathMapping != nullptr)
                                             {
-                                                // We have surface objects for this footpath
-                                                UpdateFootpathsFromMapping(
-                                                    pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, requiredObjects,
-                                                    surfaceCount, railingsCount, j, footpathMapping);
+                                                legacyPathMappings.push_back(LegacyFootpathMapping{ j, *footpathMapping });
 
                                                 continue;
                                             }
@@ -410,6 +407,13 @@ namespace OpenRCT2
                             }
                         }
                     });
+
+                for (const auto& mapping : legacyPathMappings)
+                {
+                    UpdateFootpathsFromMapping(
+                        pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, requiredObjects, mapping.originalEntryIndex,
+                        &mapping.mapping);
+                }
 
                 if (version < kPeepNamesObjectsVersion)
                 {

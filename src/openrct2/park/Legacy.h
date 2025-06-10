@@ -45,8 +45,7 @@ std::optional<std::string_view> GetDATPathName(std::string_view newPathName);
 const OpenRCT2::RCT2::FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& desc);
 void UpdateFootpathsFromMapping(
     ObjectEntryIndex* pathToSurfaceMap, ObjectEntryIndex* pathToQueueSurfaceMap, ObjectEntryIndex* pathToRailingsMap,
-    ObjectList& requiredObjects, ObjectEntryIndex& surfaceCount, ObjectEntryIndex& railingCount, ObjectEntryIndex entryIndex,
-    const OpenRCT2::RCT2::FootpathMapping* footpathMapping);
+    ObjectList& requiredObjects, ObjectEntryIndex entryIndex, const OpenRCT2::RCT2::FootpathMapping* footpathMapping);
 
 std::span<const std::string_view> GetLegacyPeepAnimationObjects();
 void ConvertPeepAnimationTypeToObjects(OpenRCT2::GameState_t& gameState);
