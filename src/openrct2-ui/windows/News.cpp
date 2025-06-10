@@ -133,7 +133,9 @@ namespace OpenRCT2::Ui::Windows
         {
             Invalidate();
             page = OptionsTab;
-            SetWidgets(kOptionsTabWidgets);
+
+            widgets.clear();
+            widgets.insert(widgets.end(), kOptionsTabWidgets.begin(), kOptionsTabWidgets.end());
 
             // Collect widgets to insert at the end
             std::vector<Widget> groupWidgetsToInsert{};
@@ -221,6 +223,9 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_TAB_BACKGROUND].bottom = y - 1;
                 Invalidate();
             }
+
+            // We're not using SetWidgets, so invoke ResizeFrame manually
+            ResizeFrame();
         }
 
         bool& GetNotificationValueRef(const NewsOption& def)
