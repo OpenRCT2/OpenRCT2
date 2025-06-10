@@ -55,14 +55,14 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _viewClippingWidgets = makeWidgets(
         makeWindowShim(WINDOW_TITLE, WW, WH),
-        MakeWidget        ({     11,  19}, {    159,  11}, WindowWidgetType::Checkbox, WindowColour::Primary, STR_VIEW_CLIPPING_HEIGHT_ENABLE,                  STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP               ), // clip enable/disable check box
-        MakeWidget        ({      5,  36}, {WW - 10,  65}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING                                                                 ),
-        MakeSpinnerWidgets({     90,  51}, {     79,  12}, WindowWidgetType::Spinner,  WindowColour::Primary, kStringIdNone,                                    STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE             ), // clip height (3 widgets)
-        MakeWidget        ({     11,  66}, {    158,  13}, WindowWidgetType::Scroll,   WindowColour::Primary, SCROLL_HORIZONTAL,                                STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP               ), // clip height scrollbar
-        MakeWidget        ({     11,  83}, {    159,  11}, WindowWidgetType::Checkbox, WindowColour::Primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING_SEE_THROUGH, STR_VIEW_CLIPPING_VERTICAL_CLIPPING_SEE_THROUGH_TIP), // clip height enable/disable see-through check box
-        MakeWidget        ({      5, 107}, {WW - 10,  60}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING                                                               ),
-        MakeWidget        ({     11, 122}, {    158,  17}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_SELECT_AREA                                                                       ), // selector
-        MakeWidget        ({     11, 143}, {    158,  18}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_CLEAR_SELECTION                                                                   )  // clear
+        makeWidget        ({     11,  19}, {    159,  11}, WindowWidgetType::Checkbox, WindowColour::Primary, STR_VIEW_CLIPPING_HEIGHT_ENABLE,                  STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP               ), // clip enable/disable check box
+        makeWidget        ({      5,  36}, {WW - 10,  65}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING                                                                 ),
+        makeSpinnerWidgets({     90,  51}, {     79,  12}, WindowWidgetType::Spinner,  WindowColour::Primary, kStringIdNone,                                    STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE             ), // clip height (3 widgets)
+        makeWidget        ({     11,  66}, {    158,  13}, WindowWidgetType::Scroll,   WindowColour::Primary, SCROLL_HORIZONTAL,                                STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP               ), // clip height scrollbar
+        makeWidget        ({     11,  83}, {    159,  11}, WindowWidgetType::Checkbox, WindowColour::Primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING_SEE_THROUGH, STR_VIEW_CLIPPING_VERTICAL_CLIPPING_SEE_THROUGH_TIP), // clip height enable/disable see-through check box
+        makeWidget        ({      5, 107}, {WW - 10,  60}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING                                                               ),
+        makeWidget        ({     11, 122}, {    158,  17}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_SELECT_AREA                                                                       ), // selector
+        makeWidget        ({     11, 143}, {    158,  18}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_CLEAR_SELECTION                                                                   )  // clear
     );
     // clang-format on
 

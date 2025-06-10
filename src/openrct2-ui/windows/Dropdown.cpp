@@ -43,7 +43,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr Widget kWindowDropdownWidgets[] = {
-        MakeWidget({ 0, 0 }, { 1, 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
+        makeWidget({ 0, 0 }, { 1, 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
     };
 
     std::array<Dropdown::Item, Dropdown::kItemsMaxSize> gDropdownItems;

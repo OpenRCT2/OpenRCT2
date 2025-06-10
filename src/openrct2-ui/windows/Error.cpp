@@ -32,7 +32,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto kPadding = 4;
 
     static constexpr Widget window_error_widgets[] = {
-        MakeWidget({ 0, 0 }, { 200, 42 }, WindowWidgetType::Frame, WindowColour::Primary),
+        makeWidget({ 0, 0 }, { 200, 42 }, WindowWidgetType::Frame, WindowColour::Primary),
     };
 
     class ErrorWindow final : public Window

@@ -65,11 +65,11 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto kMainMultiplayerWidgets = makeWidgets(
         makeWindowShim(kStringIdNone, 340, 240),
-        MakeWidget({  0, 43}, {340, 197}, WindowWidgetType::Resize, WindowColour::Secondary                          ),
-        MakeTab   ({  3, 17},                                                                STR_SHOW_SERVER_INFO_TIP),
-        MakeTab   ({ 34, 17},                                                                STR_PLAYERS_TIP         ),
-        MakeTab   ({ 65, 17},                                                                STR_GROUPS_TIP          ),
-        MakeTab   ({ 96, 17},                                                                STR_OPTIONS_TIP         )
+        makeWidget({  0, 43}, {340, 197}, WindowWidgetType::Resize, WindowColour::Secondary                          ),
+        makeTab   ({  3, 17},                                                                STR_SHOW_SERVER_INFO_TIP),
+        makeTab   ({ 34, 17},                                                                STR_PLAYERS_TIP         ),
+        makeTab   ({ 65, 17},                                                                STR_GROUPS_TIP          ),
+        makeTab   ({ 96, 17},                                                                STR_OPTIONS_TIP         )
     );
 
     static constexpr auto window_multiplayer_information_widgets = makeWidgets(
@@ -78,30 +78,30 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto window_multiplayer_players_widgets = makeWidgets(
         kMainMultiplayerWidgets,
-        MakeWidget({  3, 46}, {173,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_PLAYER     ), // Player name
-        MakeWidget({176, 46}, { 83,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_GROUP      ), // Player name
-        MakeWidget({259, 46}, {100,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_LAST_ACTION), // Player name
-        MakeWidget({359, 46}, { 42,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_PING       ), // Player name
-        MakeWidget({  3, 60}, {334, 177}, WindowWidgetType::Scroll,      WindowColour::Secondary, SCROLL_VERTICAL) // list
+        makeWidget({  3, 46}, {173,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_PLAYER     ), // Player name
+        makeWidget({176, 46}, { 83,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_GROUP      ), // Player name
+        makeWidget({259, 46}, {100,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_LAST_ACTION), // Player name
+        makeWidget({359, 46}, { 42,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_PING       ), // Player name
+        makeWidget({  3, 60}, {334, 177}, WindowWidgetType::Scroll,      WindowColour::Secondary, SCROLL_VERTICAL) // list
     );
 
     static constexpr auto window_multiplayer_groups_widgets = makeWidgets(
         kMainMultiplayerWidgets,
-        MakeWidget({141, 46}, {175,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                    ), // default group
-        MakeWidget({305, 47}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH),
-        MakeWidget({ 11, 65}, { 92,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_ADD_GROUP     ), // add group button
-        MakeWidget({113, 65}, { 92,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_REMOVE_GROUP  ), // remove group button
-        MakeWidget({215, 65}, { 92,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_RENAME_GROUP  ), // rename group button
-        MakeWidget({ 72, 80}, {175,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                    ), // selected group
-        MakeWidget({236, 81}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH),
-        MakeWidget({  3, 94}, {314, 207}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL   ) // permissions list
+        makeWidget({141, 46}, {175,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                    ), // default group
+        makeWidget({305, 47}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH),
+        makeWidget({ 11, 65}, { 92,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_ADD_GROUP     ), // add group button
+        makeWidget({113, 65}, { 92,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_REMOVE_GROUP  ), // remove group button
+        makeWidget({215, 65}, { 92,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_RENAME_GROUP  ), // rename group button
+        makeWidget({ 72, 80}, {175,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                    ), // selected group
+        makeWidget({236, 81}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH),
+        makeWidget({  3, 94}, {314, 207}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL   ) // permissions list
     );
 
     static constexpr auto window_multiplayer_options_widgets = makeWidgets(
         kMainMultiplayerWidgets,
-        MakeWidget({3, 50}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_LOG_CHAT,              STR_LOG_CHAT_TIP             ),
-        MakeWidget({3, 64}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_LOG_SERVER_ACTIONS,    STR_LOG_SERVER_ACTIONS_TIP   ),
-        MakeWidget({3, 78}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ALLOW_KNOWN_KEYS_ONLY, STR_ALLOW_KNOWN_KEYS_ONLY_TIP)
+        makeWidget({3, 50}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_LOG_CHAT,              STR_LOG_CHAT_TIP             ),
+        makeWidget({3, 64}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_LOG_SERVER_ACTIONS,    STR_LOG_SERVER_ACTIONS_TIP   ),
+        makeWidget({3, 78}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ALLOW_KNOWN_KEYS_ONLY, STR_ALLOW_KNOWN_KEYS_ONLY_TIP)
     );
 
     static std::span<const Widget> window_multiplayer_page_widgets[] = {

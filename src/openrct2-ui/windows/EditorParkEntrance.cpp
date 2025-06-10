@@ -60,10 +60,10 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _widgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowWidth, kWindowHeight),
-        MakeWidget     ({                 0, 43 }, { kWindowWidth, kWindowHeight - 43 }, WindowWidgetType::Resize,  WindowColour::Secondary                                                   ),
-        MakeTab        ({                 3, 17 },                                                                                           kStringIdNone                                         ),
-        MakeWidget     ({                 2, 45 }, { kScrollWidth, kScrollHeight      }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                                  ),
-        MakeWidget     ({ kWindowWidth - 26, 59 }, {           24,            24      }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW), STR_ROTATE_OBJECTS_90 )
+        makeWidget     ({                 0, 43 }, { kWindowWidth, kWindowHeight - 43 }, WindowWidgetType::Resize,  WindowColour::Secondary                                                   ),
+        makeTab        ({                 3, 17 },                                                                                           kStringIdNone                                         ),
+        makeWidget     ({                 2, 45 }, { kScrollWidth, kScrollHeight      }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                                  ),
+        makeWidget     ({ kWindowWidth - 26, 59 }, {           24,            24      }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW), STR_ROTATE_OBJECTS_90 )
     );
     // clang-format on
 
