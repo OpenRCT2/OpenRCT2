@@ -148,10 +148,19 @@ const ObjectEntryDescriptor& ObjectList::GetObject(ObjectType type, ObjectEntryI
     return placeholder;
 }
 
-void ObjectList::Add(const ObjectEntryDescriptor& entry)
+ObjectEntryIndex ObjectList::Add(const ObjectEntryDescriptor& entry)
 {
     auto& subList = GetList(entry.GetType());
+    auto index = subList.size();
     subList.push_back(entry);
+    return static_cast<ObjectEntryIndex>(index);
+}
+
+ObjectEntryIndex ObjectList::Add(ObjectType type, std::string_view identifier)
+{
+    auto entry = ObjectEntryDescriptor(identifier);
+    entry.Type = type;
+    return Add(entry);
 }
 
 void ObjectList::SetObject(ObjectEntryIndex index, const ObjectEntryDescriptor& entry)

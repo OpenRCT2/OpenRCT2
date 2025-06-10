@@ -19,7 +19,8 @@ private:
     std::vector<std::vector<ObjectEntryDescriptor>> _subLists;
 
 public:
-    void Add(const ObjectEntryDescriptor& entry);
+    ObjectEntryIndex Add(const ObjectEntryDescriptor& entry);
+    ObjectEntryIndex Add(ObjectType type, std::string_view identifier);
     std::vector<ObjectEntryDescriptor>& GetList(ObjectType type);
     std::vector<ObjectEntryDescriptor>& GetList(ObjectType type) const;
     const ObjectEntryDescriptor& GetObject(ObjectType type, ObjectEntryIndex index) const;
