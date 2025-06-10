@@ -63,12 +63,12 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto kNewsTabWidgets = makeWidgets(
         makeNewsWidgets(STR_RECENT_MESSAGES),
-        makeWidget({  4, 44 }, { 392, 252 }, WidgetType::scroll,  WindowColour::primary, SCROLL_VERTICAL)
+        makeWidget({  4, 44 }, { 392, 252 }, WidgetType::scroll,  WindowColour::secondary, SCROLL_VERTICAL)
     );
 
     static constexpr auto kOptionsTabWidgets = makeWidgets(
         makeNewsWidgets(STR_NOTIFICATION_SETTINGS),
-        makeWidget({ 10, 49 }, { 380,  14 }, WidgetType::checkbox, WindowColour::tertiary)
+        makeWidget({ 10, 49 }, { 380,  14 }, WidgetType::checkbox, WindowColour::secondary)
     );
     // clang-format on
 
@@ -165,6 +165,7 @@ namespace OpenRCT2::Ui::Windows
 
                     Widget groupWidget = {
                         .type = WidgetType::groupbox,
+                        .colour = colours[1].colour,
                         .left = static_cast<int16_t>(baseCheckBox.left - 5),
                         .right = static_cast<int16_t>(baseCheckBox.right + 5),
                         .top = y,
@@ -180,6 +181,7 @@ namespace OpenRCT2::Ui::Windows
                 // Create checkbox widgets
                 Widget checkboxWidget = {
                     .type = WidgetType::checkbox,
+                    .colour = colours[1].colour,
                     .left = baseCheckBox.left,
                     .right = baseCheckBox.right,
                     .top = y,
