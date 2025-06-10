@@ -3826,3 +3826,6 @@ STR_6778    :Preview scenarios using:
 STR_6779    :Select the kind of preview image to use in the scenario selection screen.
 STR_6780    :Mini maps
 STR_6781    :Screenshots
+STR_6782    :Park notifications
+STR_6783    :Ride notifications
+STR_6784    :Guest notifications

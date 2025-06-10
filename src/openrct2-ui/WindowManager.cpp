@@ -112,8 +112,6 @@ public:
                 return ResearchOpen();
             case WindowClass::RideList:
                 return RideListOpen();
-            case WindowClass::NotificationOptions:
-                return NewsOptionsOpen();
             case WindowClass::Options:
                 return OptionsOpen();
             case WindowClass::SavePrompt:
