@@ -154,7 +154,9 @@ void InputManager::ProcessAnalogInput()
     {
         if (gameController != nullptr)
         {
-            int16_t stickX, stickY;
+            // Get stick X and Y values based on selected stick
+            // Note: these have to be **32-bit** integers, otherwise axis inversion would overflow
+            int32_t stickX, stickY;
             if (gamepadStick == GamepadStick::Right)
             {
                 stickX = SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_RIGHTX);
