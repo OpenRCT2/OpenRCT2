@@ -1164,12 +1164,12 @@ namespace OpenRCT2
 
     [[nodiscard]] bool Viewport::ContainsTile(const TileCoordsXY coords) const noexcept
     {
-        const auto centreCoords = coords.ToCoordsXY() + CoordsXY(16, 16);
+        const auto centreCoords = coords.ToCoordsXY() + CoordsXY(kCoordsXYHalfTile, kCoordsXYHalfTile);
         const auto screenPos = Translate3DTo2DWithZ(rotation, CoordsXYZ{ centreCoords, 0 });
-        const auto left = screenPos.x - 32;
-        const auto top = screenPos.y - (kMaxTileElementHeight * kCoordsZStep) - 16;
-        const auto right = screenPos.x + 32;
-        const auto bottom = screenPos.y + 16;
+        const auto left = screenPos.x - kScreenCoordsTileWidthHalf;
+        const auto top = screenPos.y - (kMaxTileElementHeight * kCoordsZStep) - kScreenCoordsTileHeightHalf;
+        const auto right = screenPos.x + kScreenCoordsTileWidthHalf;
+        const auto bottom = screenPos.y + kScreenCoordsTileHeightHalf;
         return !(left > viewPos.x + ViewWidth() || top > viewPos.y + ViewHeight() || right < viewPos.x || bottom < viewPos.y);
     }
 
@@ -1191,7 +1191,8 @@ namespace OpenRCT2
     {
         if ((maxZoom == ZoomLevel{ -1 } || zoom <= ZoomLevel{ maxZoom }))
         {
-            const auto screenCoord = Translate3DTo2DWithZ(rotation, CoordsXYZ{ x + 16, y + 16, 0 });
+            const auto screenCoord = Translate3DTo2DWithZ(
+                rotation, CoordsXYZ{ x + kCoordsXYHalfTile, y + kCoordsXYHalfTile, 0 });
 
             const auto topLeft = screenCoord - ScreenCoordsXY(32, 32 + z1);
             const auto bottomRight = screenCoord + ScreenCoordsXY(32, 32 - z0);

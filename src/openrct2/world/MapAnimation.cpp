@@ -594,26 +594,24 @@ static void InvalidateAll(const ViewportList& viewports)
 
         // Code adapted from PaintSessionGenerateRotate.
         // Ideally this would iterate over tiles in memory order.
-        constexpr const int32_t kTileWidth = 64;
-        constexpr const int32_t kTileWidthHalf = kTileWidth / 2;
-        constexpr const int32_t kTileHeightHalf = 16;
-
         constexpr const int32_t maxTileHeightModifier = 88; // from magic value in PaintSessionGenerateRotate
         constexpr const int32_t maxTileHeight = (kMaxTileElementHeight * kCoordsZStep) + maxTileHeightModifier;
 
         const auto direction = DirectionFlipXAxis(viewport->rotation);
-        const int32_t numVerticalTiles = (viewport->ViewHeight() + maxTileHeight) >> 5;
+        const int32_t numVerticalTiles = (viewport->ViewHeight() + maxTileHeight) / kScreenCoordsTileHeight;
         const TileCoordsXY nextVerticalTile = TileCoordsXY{ 1, 1 }.Rotate(direction);
-        const int32_t screenCoordY = Numerics::floor2((viewport->viewPos.y - kTileHeightHalf), kTileWidthHalf);
+        const int32_t screenCoordY = Numerics::floor2(
+            (viewport->viewPos.y - kScreenCoordsTileHeightHalf), kScreenCoordsTileWidthHalf);
 
-        for (int32_t x = viewport->viewPos.x; x < viewport->viewPos.x + viewport->ViewWidth() + kTileWidth; x += kTileWidthHalf)
+        for (int32_t x = viewport->viewPos.x; x < viewport->viewPos.x + viewport->ViewWidth() + kScreenCoordsTileWidth;
+             x += kScreenCoordsTileWidthHalf)
         {
-            const ScreenCoordsXY screenCoord = { Numerics::floor2(x, kTileWidthHalf), screenCoordY };
+            const ScreenCoordsXY screenCoord = { Numerics::floor2(x, kScreenCoordsTileWidthHalf), screenCoordY };
             CoordsXY mapTile = { screenCoord.y - screenCoord.x / 2, screenCoord.y + screenCoord.x / 2 };
             mapTile = mapTile.Rotate(direction);
             if (direction & 1)
             {
-                mapTile.y -= 16;
+                mapTile.y -= kCoordsXYHalfTile;
             }
             mapTile = mapTile.ToTileStart();
             TileCoordsXY tileCoords(mapTile);
