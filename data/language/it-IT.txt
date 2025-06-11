@@ -2242,14 +2242,14 @@ STR_3235    :Mostra le opzioni sulle finanze
 STR_3236    :Mostra le opzioni sui visitatori
 STR_3238    :Niente denaro
 STR_3239    :Rendi questo parco un parco “senza denaro” e senza restrizioni finanziarie
-STR_3240    :{WINDOW_COLOUR_2}Denaro iniziale:
-STR_3241    :{WINDOW_COLOUR_2}Prestito iniziale:
-STR_3242    :{WINDOW_COLOUR_2}Prestito massimo:
-STR_3243    :{WINDOW_COLOUR_2}Tasso d’interessi annuo:
+STR_3240    :Denaro iniziale:
+STR_3241    :Prestito iniziale:
+STR_3242    :Prestito massimo:
+STR_3243    :Tasso d’interessi annuo:
 STR_3244    :Vieta le campagne di marketing
 STR_3245    :Vieta la pubblicità, le campagne promozionali e le altre campagne di marketing
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Impossibile aumentare ulteriormente il denaro iniziale!
 STR_3249    :Impossibile ridurre ulteriormente il denaro iniziale!
 STR_3250    :Impossibile aumentare ulteriormente il prestito iniziale!
@@ -2258,10 +2258,10 @@ STR_3252    :Impossibile aumentare ulteriormente il prestito massimo!
 STR_3253    :Impossibile ridurre ulteriormente il prestito massimo!
 STR_3254    :Impossibile aumentare ulteriormente il tasso d’interessi!
 STR_3255    :Impossibile ridurre ulteriormente il tasso d’interessi!
-STR_3260    :{WINDOW_COLOUR_2}Denaro per visitatore (media):
-STR_3261    :{WINDOW_COLOUR_2}Felicità iniziale visitatori:
-STR_3262    :{WINDOW_COLOUR_2}Fame iniziale visitatori:
-STR_3263    :{WINDOW_COLOUR_2}Sete iniziale visitatori:
+STR_3260    :Denaro per visitatore (media):
+STR_3261    :Felicità iniziale visitatori:
+STR_3262    :Fame iniziale visitatori:
+STR_3263    :Sete iniziale visitatori:
 STR_3264    :Impossibile aumentarlo ulteriormente!
 STR_3265    :Impossibile ridurlo ulteriormente!
 STR_3266    :Stabilisci il prezzo dell’ingresso e delle attrazioni
@@ -2275,11 +2275,11 @@ STR_3273    :Valutazione del parco a un livello di difficoltà più elevato
 STR_3274    :Rendi la valutazione del parco più impegnativa
 STR_3275    :Generazione dei visitatori a un livello di difficoltà più elevato
 STR_3276    :Rendi più difficile attrarre visitatori al parco
-STR_3277    :{WINDOW_COLOUR_2}Costo del terreno:
-STR_3278    :{WINDOW_COLOUR_2}Costo dei diritti di costruzione:
+STR_3277    :Costo del terreno:
+STR_3278    :Costo dei diritti di costruzione:
 STR_3279    :Ingresso gratis / Paga attrazioni
 STR_3280    :Paga ingresso / Attrazioni gratis
-STR_3281    :{WINDOW_COLOUR_2}Prezzo d’ingresso:
+STR_3281    :Prezzo d’ingresso:
 STR_3283    :Seleziona le attrazioni da proteggere
 STR_3285    :Opzioni scenario - Attrazioni protette
 STR_3286    :Seleziona l’obiettivo di questo scenario

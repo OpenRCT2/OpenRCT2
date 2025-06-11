@@ -2242,14 +2242,14 @@ STR_3235    :Visa finansiella inställningar
 STR_3236    :Visa besökarinställningar
 STR_3238    :Inga pengar
 STR_3239    :Gör detta till en ’inga pengar’-park utan finansiella begränsningar
-STR_3240    :{WINDOW_COLOUR_2}Startpengar:
-STR_3241    :{WINDOW_COLOUR_2}Startlån:
-STR_3242    :{WINDOW_COLOUR_2}Maxlån:
-STR_3243    :{WINDOW_COLOUR_2}Årlig ränta:
+STR_3240    :Startpengar:
+STR_3241    :Startlån:
+STR_3242    :Maxlån:
+STR_3243    :Årlig ränta:
 STR_3244    :Förbjud kampanjer
 STR_3245    :Förbjud kampanjer och marknadsföring
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Kan inte höja startpengar mer!
 STR_3249    :Kan inte sänka startpengar mer!
 STR_3250    :Kan inte höja startlån mer!
@@ -2258,10 +2258,10 @@ STR_3252    :Kan inte höja maxlån mer!
 STR_3253    :Kan inte sänka maxlån mer!
 STR_3254    :Kan inte höja räntan mer!
 STR_3255    :Kan inte sänka räntan mer!
-STR_3260    :{WINDOW_COLOUR_2}Pengar per besökare (genomsnitt):
-STR_3261    :{WINDOW_COLOUR_2}Besökares startglädje:
-STR_3262    :{WINDOW_COLOUR_2}Besökares starthunger:
-STR_3263    :{WINDOW_COLOUR_2}Besökares starttörst:
+STR_3260    :Pengar per besökare (genomsnitt):
+STR_3261    :Besökares startglädje:
+STR_3262    :Besökares starthunger:
+STR_3263    :Besökares starttörst:
 STR_3264    :Kan inte höja detta mer!
 STR_3265    :Kan inte sänka detta mer!
 STR_3266    :Välj hur den här parken tar betalt för entré och åkturer
@@ -2275,11 +2275,11 @@ STR_3273    :Svårare parkomdöme
 STR_3274    :Gör så att bra parkomdöme är svårare att få
 STR_3275    :Svårare besökare
 STR_3276    :Gör så att det blir svårare att få besökare
-STR_3277    :{WINDOW_COLOUR_2}Kostnad för att köpa mark:
-STR_3278    :{WINDOW_COLOUR_2}Kostnad för att köpa bygglov:
+STR_3277    :Kostnad för att köpa mark:
+STR_3278    :Kostnad för att köpa bygglov:
 STR_3279    :Gratis parkentré och betala per åktur
 STR_3280    :Gratis åkturer och betala för parkentré
-STR_3281    :{WINDOW_COLOUR_2}Entrépris:
+STR_3281    :Entrépris:
 STR_3283    :Välj åkturer som ska bevaras
 STR_3285    :Bevarade åkturer
 STR_3286    :Välj uppdrag för detta scenario

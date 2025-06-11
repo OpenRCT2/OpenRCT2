@@ -2246,14 +2246,14 @@ STR_3235    :Näytä taloustiedot
 STR_3236    :Näytä kävijätiedot
 STR_3238    :Ei rahaa
 STR_3239    :Tee tästä puistosta ”ei rahaa” -puisto, jolla ei ole mitään taloudellisia rajoitteita
-STR_3240    :{WINDOW_COLOUR_2}Varat pelin alussa:
-STR_3241    :{WINDOW_COLOUR_2}Laina pelin alussa:
-STR_3242    :{WINDOW_COLOUR_2}Enimmäislainamäärä:
-STR_3243    :{WINDOW_COLOUR_2}Vuosittaiskorko:
+STR_3240    :Varat pelin alussa:
+STR_3241    :Laina pelin alussa:
+STR_3242    :Enimmäislainamäärä:
+STR_3243    :Vuosittaiskorko:
 STR_3244    :Kiellä markkinointikampanjat
 STR_3245    :Kiellä mainonta, myynninedistämiskeinot ja muut markkinointikampanjat
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Alkuvaroja ei voi korottaa enempää!
 STR_3249    :Alkuvaroja ei voi laskea enempää!
 STR_3250    :Alkulainaa ei voi korottaa enempää!
@@ -2262,10 +2262,10 @@ STR_3252    :Enimmäislainamäärää ei voi korottaa enempää!
 STR_3253    :Enimmäislainamäärää ei voi laskea enempää!
 STR_3254    :Vuosittaiskorkoa ei voi korottaa enempää!
 STR_3255    :Vuosittaiskorkoa ei voi laskea enempää!
-STR_3260    :{WINDOW_COLOUR_2}Kävijöiden varat (keskiarvo):
-STR_3261    :{WINDOW_COLOUR_2}Kävijöiden alustava iloisuus:
-STR_3262    :{WINDOW_COLOUR_2}Kävijöiden alustava nälkä:
-STR_3263    :{WINDOW_COLOUR_2}Kävijöiden alustava jano:
+STR_3260    :Kävijöiden varat (keskiarvo):
+STR_3261    :Kävijöiden alustava iloisuus:
+STR_3262    :Kävijöiden alustava nälkä:
+STR_3263    :Kävijöiden alustava jano:
 STR_3264    :Tätä ei voi korottaa enempää!
 STR_3265    :Tätä ei voi laskea enempää!
 STR_3266    :Valitse kuinka tämä puisto veloittaa sisäänpääsystä ja laitteista
@@ -2279,11 +2279,11 @@ STR_3273    :Puiston tason korkeampi vaikeusaste
 STR_3274    :Tee puiston tason nostosta haastavampaa
 STR_3275    :Kävijöiden houkutuksen korkeampi vaikeusaste
 STR_3276    :Tee kävijöiden houkutuksesta puistoon haastavampaa
-STR_3277    :{WINDOW_COLOUR_2}Maan ostohinta:
-STR_3278    :{WINDOW_COLOUR_2}Rakennusluvan hinta:
+STR_3277    :Maan ostohinta:
+STR_3278    :Rakennusluvan hinta:
 STR_3279    :Ilm. sisäänpääsy / maks. laitteet
 STR_3280    :Maks. sisäänpääsy / ilm. laitteet
-STR_3281    :{WINDOW_COLOUR_2}Sisäänpääsymaksu:
+STR_3281    :Sisäänpääsymaksu:
 STR_3283    :Valitse suojeltavat laitteet
 STR_3285    :Suojellut laitteet
 STR_3286    :Valitse tavoite tälle skenaariolle

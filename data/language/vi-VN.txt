@@ -2189,14 +2189,14 @@ STR_3235    :Hiện tùy chọn tài chính
 STR_3236    :Hiện tùy chọn khách
 STR_3238    :Không tiền
 STR_3239    :Đặt công viên này thành công viên ‘không tiền’ mà không có hạn chế tài chính
-STR_3240    :{WINDOW_COLOUR_2}Tiền mặt ban đầu:
-STR_3241    :{WINDOW_COLOUR_2}Khoản vay ban đầu:
-STR_3242    :{WINDOW_COLOUR_2}Kích thước khoản vay tối đa:
-STR_3243    :{WINDOW_COLOUR_2}Lãi suất hàng năm:
+STR_3240    :Tiền mặt ban đầu:
+STR_3241    :Khoản vay ban đầu:
+STR_3242    :Kích thước khoản vay tối đa:
+STR_3243    :Lãi suất hàng năm:
 STR_3244    :Cấm các chiến dịch marketing
 STR_3245    :Cấm quảng cáo, chương trình khuyến mãi và các chiến dịch marketing khác
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Không thể tăng tiền mặt ban đầu thêm nữa!
 STR_3249    :Không thể giảm tiền mặt ban đầu thêm nữa!
 STR_3250    :Không thể tăng khoản vay ban đầu thêm nữa!
@@ -2205,10 +2205,10 @@ STR_3252    :Không thể tăng kích thước khoản vay tối đa thêm nữa
 STR_3253    :Không thể giảm kích thước khoản vay tối đa thêm nữa!
 STR_3254    :Không thể tăng lãi suất thêm nữa!
 STR_3255    :Không thể giảm lãi suất thêm nữa!
-STR_3260    :{WINDOW_COLOUR_2}Tiền mặt mỗi khách (trung bình):
-STR_3261    :{WINDOW_COLOUR_2}Hạnh phúc ban đầu của khách:
-STR_3262    :{WINDOW_COLOUR_2}Mức độ đói ban đầu của khách:
-STR_3263    :{WINDOW_COLOUR_2}Mức độ khát ban đầu của khách:
+STR_3260    :Tiền mặt mỗi khách (trung bình):
+STR_3261    :Hạnh phúc ban đầu của khách:
+STR_3262    :Mức độ đói ban đầu của khách:
+STR_3263    :Mức độ khát ban đầu của khách:
 STR_3264    :Không thể tăng cái này thêm nữa!
 STR_3265    :Không thể giảm cái này thêm nữa!
 STR_3266    :Chọn cách công viên này tính phí vào cửa và trò chơi
@@ -2222,11 +2222,11 @@ STR_3273    :Đánh giá công viên khó tăng và duy trì hơn
 STR_3274    :Làm cho giá trị đánh giá công viên khó hơn
 STR_3275    :Khách khó thu hút hơn
 STR_3276    :Làm cho việc thu hút khách đến công viên khó khăn hơn
-STR_3277    :{WINDOW_COLOUR_2}Chi phí mua đất:
-STR_3278    :{WINDOW_COLOUR_2}Chi phí mua quyền xây dựng:
+STR_3277    :Chi phí mua đất:
+STR_3278    :Chi phí mua quyền xây dựng:
 STR_3279    :Vào cửa công viên miễn phí / Trả tiền cho mỗi trò chơi
 STR_3280    :Trả tiền vào công viên / Trò chơi miễn phí
-STR_3281    :{WINDOW_COLOUR_2}Giá vào cửa:
+STR_3281    :Giá vào cửa:
 STR_3283    :Chọn các trò chơi cần bảo tồn
 STR_3285    :Tùy chọn kịch bản - Các trò chơi được bảo tồn
 STR_3286    :Chọn mục tiêu cho kịch bản này

@@ -2244,14 +2244,14 @@ STR_3235    :Mostra les opcions financeres.
 STR_3236    :Mostra les opcions dels visitants.
 STR_3238    :Sense diners
 STR_3239    :Estableix que el parc no tingui restriccions financeres.
-STR_3240    :{WINDOW_COLOUR_2}Efectiu inicial:
-STR_3241    :{WINDOW_COLOUR_2}Préstec inicial:
-STR_3242    :{WINDOW_COLOUR_2}Préstec màxim:
-STR_3243    :{WINDOW_COLOUR_2}Taxa d’interès anual:
+STR_3240    :Efectiu inicial:
+STR_3241    :Préstec inicial:
+STR_3242    :Préstec màxim:
+STR_3243    :Taxa d’interès anual:
 STR_3244    :Sense campanyes de màrqueting
 STR_3245    :Prohibeix la publicitat, promocions i altres campanyes de màrqueting.
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16} %
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16} %
 STR_3248    :L’efectiu inicial no es pot augmentar més!
 STR_3249    :L’efectiu inicial no es pot reduir més!
 STR_3250    :El préstec inicial no es pot augmentar més!
@@ -2260,10 +2260,10 @@ STR_3252    :El préstec màxim no es pot augmentar més!
 STR_3253    :El préstec màxim no es pot reduir més!
 STR_3254    :La taxa d’interès anual no es pot augmentar més!
 STR_3255    :La taxa d’interès anual no es pot reduir més!
-STR_3260    :{WINDOW_COLOUR_2}Efectiu per visitant (mitjana):
-STR_3261    :{WINDOW_COLOUR_2}Felicitat inicial dels visitants:
-STR_3262    :{WINDOW_COLOUR_2}Gana inicial dels visitants:
-STR_3263    :{WINDOW_COLOUR_2}Set inicial dels visitants:
+STR_3260    :Efectiu per visitant (mitjana):
+STR_3261    :Felicitat inicial dels visitants:
+STR_3262    :Gana inicial dels visitants:
+STR_3263    :Set inicial dels visitants:
 STR_3264    :No es pot pujar més!
 STR_3265    :No es pot reduir més!
 STR_3266    :Seleccioneu per quins conceptes cal pagar al parc.
@@ -2277,11 +2277,11 @@ STR_3273    :Fes més difícil aconseguir i mantenir una bona valoració
 STR_3274    :Fes que sigui més difícil obtenir una bona valoració del parc.
 STR_3275    :Fes més difícil atreure visitants
 STR_3276    :Fes que sigui més difícil atreure visitants al parc.
-STR_3277    :{WINDOW_COLOUR_2}Preu de compra de terreny:
-STR_3278    :{WINDOW_COLOUR_2}Preu dels drets de construcció:
+STR_3277    :Preu de compra de terreny:
+STR_3278    :Preu dels drets de construcció:
 STR_3279    :Entrada gratis / Atraccions de pagament
 STR_3280    :Entrada de pagament / Atraccions gratis
-STR_3281    :{WINDOW_COLOUR_2}Preu de l’entrada:
+STR_3281    :Preu de l’entrada:
 STR_3283    :Seleccioneu les atraccions protegides. Aquestes s’hauran de preservar i no es podran modificar.
 STR_3285    :Atraccions protegides
 STR_3286    :Seleccioneu l’objectiu d’aquest escenari.

@@ -2242,14 +2242,14 @@ STR_3235    :Pokaż opcje finansowe
 STR_3236    :Wyświetl opcje gości
 STR_3238    :Bez pieniędzy
 STR_3239    :Ta opcja pozwala znieść wszelkie ograniczenia finansowe dla parku
-STR_3240    :{WINDOW_COLOUR_2}Początkowa gotówka:
-STR_3241    :{WINDOW_COLOUR_2}Początkowe zadłużenie:
-STR_3242    :{WINDOW_COLOUR_2}Maksymalne zadłużenie:
-STR_3243    :{WINDOW_COLOUR_2}Oprocentowanie pożyczek:
+STR_3240    :Początkowa gotówka:
+STR_3241    :Początkowe zadłużenie:
+STR_3242    :Maksymalne zadłużenie:
+STR_3243    :Oprocentowanie pożyczek:
 STR_3244    :Zakaz kampanii reklamowych
 STR_3245    :Zakaż przeprowadzania kampanii reklamowych, promocji i innych działań marketingowych
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Nie można bardziej zwiększyć ilości początkowej gotówki!
 STR_3249    :Nie można bardziej zmniejszyć ilości początkowej gotówki!
 STR_3250    :Nie można bardziej zwiększyć początkowego zadłużenia!
@@ -2258,10 +2258,10 @@ STR_3252    :Nie można bardziej zwiększyć maksymalnego zadłużenia!
 STR_3253    :Nie można bardziej zmniejszyć maksymalnego zadłużenia!
 STR_3254    :Nie można bardziej zwiększyć oprocentowania pożyczek!
 STR_3255    :Nie można bardziej zmniejszyć oprocentowania pożyczek!
-STR_3260    :{WINDOW_COLOUR_2}Gotówka na gościa (średnia):
-STR_3261    :{WINDOW_COLOUR_2}Początkowe zadowolenie gości:
-STR_3262    :{WINDOW_COLOUR_2}Początkowy głód gości:
-STR_3263    :{WINDOW_COLOUR_2}Początkowe pragnienie gości:
+STR_3260    :Gotówka na gościa (średnia):
+STR_3261    :Początkowe zadowolenie gości:
+STR_3262    :Początkowy głód gości:
+STR_3263    :Początkowe pragnienie gości:
 STR_3264    :Nie można tego bardziej zwiększyć!
 STR_3265    :Nie można tego bardziej zmniejszyć!
 STR_3266    :Wybierz ile park pobiera za wstęp i atrakcje
@@ -2275,11 +2275,11 @@ STR_3273    :Ocena parku trudna do zwiększenia i utrzymania
 STR_3274    :Zwiększenie i utrzymanie oceny parku staje się prawdziwym wyzwaniem
 STR_3275    :Goście są trudniejsi do przyciągnięcia
 STR_3276    :Trudniej jest przyciągnąć gości do parku
-STR_3277    :{WINDOW_COLOUR_2}Koszt zakupu ziemi:
-STR_3278    :{WINDOW_COLOUR_2}Koszt zakupu planów budowy:
+STR_3277    :Koszt zakupu ziemi:
+STR_3278    :Koszt zakupu planów budowy:
 STR_3279    :Darmowe wejście i płatne atrakcje
 STR_3280    :Płatne wejście i darmowe atrakcje
-STR_3281    :{WINDOW_COLOUR_2}Cena za wejście:
+STR_3281    :Cena za wejście:
 STR_3283    :Wybierz atrakcje, które mają zostać zachowane
 STR_3285    :Zachowane atrakcje
 STR_3286    :Wybierz cele dla tego scenariusza

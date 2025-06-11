@@ -2242,14 +2242,14 @@ STR_3235    :Zobrazit nastavení financí
 STR_3236    :Zobrazit nastavení návštěvníků
 STR_3238    :Bez peněz
 STR_3239    :Nebrat ohled na peníze - bez finančních omezení
-STR_3240    :{WINDOW_COLOUR_2}Počáteční kapitál:
-STR_3241    :{WINDOW_COLOUR_2}Počáteční půjčka:
-STR_3242    :{WINDOW_COLOUR_2}Maximální půjčka:
-STR_3243    :{WINDOW_COLOUR_2}Každoroční úrok:
+STR_3240    :Počáteční kapitál:
+STR_3241    :Počáteční půjčka:
+STR_3242    :Maximální půjčka:
+STR_3243    :Každoroční úrok:
 STR_3244    :Zákaz reklamních kampaní
 STR_3245    :Zákaz reklamy, kuponů a ostatních marketingových kampaní
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Nelze zvýšit základní kapitál!
 STR_3249    :Nelze snížit základní kapitál!
 STR_3250    :Nelze zvýšit základní půjčku!
@@ -2258,10 +2258,10 @@ STR_3252    :Nelze zvýšit maximální půjčku!
 STR_3253    :Nelze snížit maximální půjčku!
 STR_3254    :Nelze zvýšit úrok půjčky!
 STR_3255    :Nelze snížit úrok půjčky!
-STR_3260    :{WINDOW_COLOUR_2}Průměrná hotovost návštěvníků:
-STR_3261    :{WINDOW_COLOUR_2}Počáteční nálada návštěvníků:
-STR_3262    :{WINDOW_COLOUR_2}Počáteční hlad návštěvníků:
-STR_3263    :{WINDOW_COLOUR_2}Počáteční žízeň návštěvníků:
+STR_3260    :Průměrná hotovost návštěvníků:
+STR_3261    :Počáteční nálada návštěvníků:
+STR_3262    :Počáteční hlad návštěvníků:
+STR_3263    :Počáteční žízeň návštěvníků:
 STR_3264    :Toto nastavení již nelze více zvýšit!
 STR_3265    :Toto nastavení již nelze více snížit!
 STR_3266    :Vyberte systém zpoplatnění parku
@@ -2275,11 +2275,11 @@ STR_3273    :Těžší zisk hodnocení parku
 STR_3274    :Těžší získat dobré hodnocení parku
 STR_3275    :Těžší lákání zákazníků
 STR_3276    :Těžší nalákání zákazníků do parku
-STR_3277    :{WINDOW_COLOUR_2}Cena zakoupení pozemku:
-STR_3278    :{WINDOW_COLOUR_2}Cena zakoupení staveních práv:
+STR_3277    :Cena zakoupení pozemku:
+STR_3278    :Cena zakoupení staveních práv:
 STR_3279    :Vstup zdarma / placené atrakce
 STR_3280    :Placený vstup / atrakce zdarma
-STR_3281    :{WINDOW_COLOUR_2}Cena za vstup:
+STR_3281    :Cena za vstup:
 STR_3283    :Vyberte atrakce, které zůstanou zachovány
 STR_3285    :Zachované atrakce
 STR_3286    :Vývěr cíle scénáře

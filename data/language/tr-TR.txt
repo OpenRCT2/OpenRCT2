@@ -2230,14 +2230,14 @@ STR_3235    :Finansal ayarlarını göster
 STR_3236    :Müşteri ayarlarını göster
 STR_3238    :Parasız
 STR_3239    :Bu ayar ile para ve finansal uygulamalar tamamen sıra dışı bırakılıyor
-STR_3240    :{WINDOW_COLOUR_2}Ana para:
-STR_3241    :{WINDOW_COLOUR_2}Ana kredi:
-STR_3242    :{WINDOW_COLOUR_2}En fazla kredi miktarı:
-STR_3243    :{WINDOW_COLOUR_2}Senelik faiz oranı:
+STR_3240    :Ana para:
+STR_3241    :Ana kredi:
+STR_3242    :En fazla kredi miktarı:
+STR_3243    :Senelik faiz oranı:
 STR_3244    :Pazarlama kampanyalarını yasakla
 STR_3245    :Tüm pazarlamayı yasaklayınız
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}%{COMMA16}
+STR_3246    :{CURRENCY}
+STR_3247    :%{COMMA16}
 STR_3248    :Ana para daha fazla yükseltilemiyor!
 STR_3249    :Ana para daha fazla düşürülemiyor!
 STR_3250    :Ana kredi daha fazla yükseltilemiyor!
@@ -2246,10 +2246,10 @@ STR_3252    :Kredi miktarı daha fazla yükseltilemiyor!
 STR_3253    :Kredi miktarı daha fazla düşürülemiyor!
 STR_3254    :Faiz oranı daha fazla yükseltilemiyor!
 STR_3255    :Faiz oranı daha fazla düşürülemiyor!
-STR_3260    :{WINDOW_COLOUR_2}Müşteri başı para (yaklaşık):
-STR_3261    :{WINDOW_COLOUR_2}Ana müşteri mutluluğu:
-STR_3262    :{WINDOW_COLOUR_2}Ana müşteri açlığı:
-STR_3263    :{WINDOW_COLOUR_2}Ana müşteri susuzluğu:
+STR_3260    :Müşteri başı para (yaklaşık):
+STR_3261    :Ana müşteri mutluluğu:
+STR_3262    :Ana müşteri açlığı:
+STR_3263    :Ana müşteri susuzluğu:
 STR_3264    :Bu daha fazla yükseltilemiyor!
 STR_3265    :Bu daha fazla düşürülemiyor!
 STR_3266    :Parka ve aletlere giriş fiyatları ayarlarını seçiniz
@@ -2263,11 +2263,11 @@ STR_3273    :Park değerlendirmesinin yükselmesini zorlaştır
 STR_3274    :Senaryoyu zorlaştırmak için bu ayarı seçiniz
 STR_3275    :Müşteri kazanmayı zorlaştır
 STR_3276    :Senaryoyu zorlaştırmak için bu ayarı seçiniz
-STR_3277    :{WINDOW_COLOUR_2}Alan satın alma fiyatı:
-STR_3278    :{WINDOW_COLOUR_2}İnşa izni satın alma fiyatı:
+STR_3277    :Alan satın alma fiyatı:
+STR_3278    :İnşa izni satın alma fiyatı:
 STR_3279    :Ücretsiz park girişi / Ücretli aletler
 STR_3280    :Ücretli park girişi / Ücretsiz aletler
-STR_3281    :{WINDOW_COLOUR_2}Giriş fiyatı:
+STR_3281    :Giriş fiyatı:
 STR_3283    :Korunmasını istediğiniz aletleri seçiniz{NEWLINE}(bu aletler silinemiyor veya değiştirilemiyor)
 STR_3285    :Koruma altında olan aletler
 STR_3286    :Bu senaryo için hedef seçiniz

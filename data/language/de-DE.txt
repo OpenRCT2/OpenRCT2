@@ -2244,14 +2244,14 @@ STR_3235    :Finanzoptionen anzeigen
 STR_3236    :Besucheroptionen anzeigen
 STR_3238    :Kein Geld
 STR_3239    :Machen Sie diesen Park zu einem Park, bei dem keine finanziellen Einschränkungen gelten
-STR_3240    :{WINDOW_COLOUR_2}Kontostand zu Beginn:
-STR_3241    :{WINDOW_COLOUR_2}Darlehen zu Beginn:
-STR_3242    :{WINDOW_COLOUR_2}Maximales Darlehen:
-STR_3243    :{WINDOW_COLOUR_2}Jährliche Zinsrate:
+STR_3240    :Kontostand zu Beginn:
+STR_3241    :Darlehen zu Beginn:
+STR_3242    :Maximales Darlehen:
+STR_3243    :Jährliche Zinsrate:
 STR_3244    :Marketingkampagnen verbieten
 STR_3245    :Werbung, Werbeschemas und sonstige Marketingkampagnen verbieten
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Anfangskontostand kann nicht{NEWLINE}weiter erhöht werden!
 STR_3249    :Anfangskontostand kann nicht{NEWLINE}weiter reduziert werden!
 STR_3250    :Anfangsdarlehen kann nicht{NEWLINE}weiter erhöht werden!
@@ -2260,10 +2260,10 @@ STR_3252    :Maximales Darlehen kann nicht{NEWLINE}weiter erhöht werden!
 STR_3253    :Maximales Darlehen kann nicht{NEWLINE}weiter reduziert werden!
 STR_3254    :Zinsrate kann nicht weiter{NEWLINE}erhöht werden!
 STR_3255    :Zinsrate kann nicht weiter{NEWLINE}reduziert werden!
-STR_3260    :{WINDOW_COLOUR_2}Durchschnittliches Geld pro Besucher:
-STR_3261    :{WINDOW_COLOUR_2}Vergnügen der Besucher zu Beginn:
-STR_3262    :{WINDOW_COLOUR_2}Hunger der Besucher zu Beginn:
-STR_3263    :{WINDOW_COLOUR_2}Durst der Besucher zu Beginn:
+STR_3260    :Durchschnittliches Geld pro Besucher:
+STR_3261    :Vergnügen der Besucher zu Beginn:
+STR_3262    :Hunger der Besucher zu Beginn:
+STR_3263    :Durst der Besucher zu Beginn:
 STR_3264    :Dies kann nicht weiter{NEWLINE}erhöht werden!
 STR_3265    :Dies kann nicht weiter{NEWLINE}reduziert werden!
 STR_3266    :Wählen Sie aus, was der Park für{NEWLINE}Eintritt und Fahrten verlangt
@@ -2277,11 +2277,11 @@ STR_3273    :Höherer Schwierigkeitsgrad für Parkbewertung
 STR_3274    :Machen Sie die Parkbewertung schwieriger
 STR_3275    :Höherer Schwierigkeitsgrad für Besuchergewinnung
 STR_3276    :Machen Sie das Anlocken von{NEWLINE}Besuchern schwieriger
-STR_3277    :{WINDOW_COLOUR_2}Kosten für Landkauf:
-STR_3278    :{WINDOW_COLOUR_2}Kosten für Erwerb v. Baurechten:
+STR_3277    :Kosten für Landkauf:
+STR_3278    :Kosten für Erwerb v. Baurechten:
 STR_3279    :Freier Eintritt/Pro Fahrt bezahlen
 STR_3280    :Für Eintritt bezahlen/Gratis fahren
-STR_3281    :{WINDOW_COLOUR_2}Eintrittspreis:
+STR_3281    :Eintrittspreis:
 STR_3283    :Bahnen auswählen, die beibehalten werden sollen
 STR_3285    :Szenariooptionen - Beibehaltene Bahnen
 STR_3286    :Ziel für dieses Szenario auswählen

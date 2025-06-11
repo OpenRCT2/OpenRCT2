@@ -2242,10 +2242,10 @@ STR_3235    :Opcións de financiamento
 STR_3236    :Opcións de visitante
 STR_3238    :Sen cartos
 STR_3239    :Eliminar as restricións financeiras deste parque
-STR_3240    :{WINDOW_COLOUR_2}Efectivo inicial:
-STR_3241    :{WINDOW_COLOUR_2}Préstamo inicial:
-STR_3242    :{WINDOW_COLOUR_2}Préstamo máximo:
-STR_3243    :{WINDOW_COLOUR_2}Interese anual:
+STR_3240    :Efectivo inicial:
+STR_3241    :Préstamo inicial:
+STR_3242    :Préstamo máximo:
+STR_3243    :Interese anual:
 STR_3244    :Prohibir campañas de mercadotecnia
 STR_3245    :Prohibir anuncios, promocións e outras campañas de mercadotecnia
 STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
@@ -2258,10 +2258,10 @@ STR_3252    :O préstamo máximo non se pode aumentar máis!
 STR_3253    :O préstamo máximo non se pode reducir máis!
 STR_3254    :O tipo de interese non se pode aumentar máis!
 STR_3255    :O tipo de interese non se pode reducir máis!
-STR_3260    :{WINDOW_COLOUR_2}Efectivo por visitante (media):
-STR_3261    :{WINDOW_COLOUR_2}Felicidade inicial do visitante:
-STR_3262    :{WINDOW_COLOUR_2}Fame inicial do visitante:
-STR_3263    :{WINDOW_COLOUR_2}Sede inicial do visitante:
+STR_3260    :Efectivo por visitante (media):
+STR_3261    :Felicidade inicial do visitante:
+STR_3262    :Fame inicial do visitante:
+STR_3263    :Sede inicial do visitante:
 STR_3264    :Non se pode aumentar máis!
 STR_3265    :Non se pode reducir máis!
 STR_3266    :Selecciona como gastan os visitantes neste parque
@@ -2275,11 +2275,11 @@ STR_3273    :Dificulta a valoración do parque
 STR_3274    :Fai que a valoración do parque medre máis lentamente
 STR_3275    :Dificulta a xeración de visitantes
 STR_3276    :diminúe a frecuencia coa que aparecen os visitantes
-STR_3277    :{WINDOW_COLOUR_2}Custo do terreo:
-STR_3278    :{WINDOW_COLOUR_2}Custo dos dereitos de construción:
+STR_3277    :Custo do terreo:
+STR_3278    :Custo dos dereitos de construción:
 STR_3279    :Entrada gratuíta / Atraccións de pago
 STR_3280    :Pagar para entrar / Atraccións gratuítas
-STR_3281    :{WINDOW_COLOUR_2}Prezo de entrada:
+STR_3281    :Prezo de entrada:
 STR_3283    :Selecciona as atraccións para conservar
 STR_3285    :Opcións do escenario - Atraccións preservadas
 STR_3286    :Seleccione obxectivos para este escenario
