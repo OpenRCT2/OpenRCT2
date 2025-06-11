@@ -12,6 +12,7 @@
 #include "ShortcutIds.h"
 
 #include <SDL.h>
+#include <SDL_gamecontroller.h>
 #include <cmath>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/MouseInput.h>
@@ -39,18 +40,18 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
 {
     switch (e.type)
     {
-        case SDL_JOYAXISMOTION:
+        case SDL_CONTROLLERAXISMOTION:
         {
-            // Process both left and right stick axes for scrolling
-            if (e.jaxis.axis == ANALOG_SCROLL_LEFT_X || e.jaxis.axis == ANALOG_SCROLL_LEFT_Y
-                || e.jaxis.axis == ANALOG_SCROLL_RIGHT_X || e.jaxis.axis == ANALOG_SCROLL_RIGHT_Y)
+            // Process only the stick axes for scrolling (ignore triggers)
+            if (e.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX || e.caxis.axis == SDL_CONTROLLER_AXIS_LEFTY
+                || e.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTX || e.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTY)
             {
                 InputEvent ie;
                 ie.DeviceKind = InputDeviceKind::JoyAxis;
                 ie.Modifiers = SDL_GetModState();
-                ie.Button = e.jaxis.axis;
+                ie.Button = e.caxis.axis;
                 ie.State = InputEventState::Down;
-                ie.AxisValue = e.jaxis.value;
+                ie.AxisValue = e.caxis.value;
                 QueueInputEvent(std::move(ie));
             }
             break;
@@ -69,28 +70,32 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
             }
             break;
         }
+        case SDL_CONTROLLERBUTTONDOWN:
         case SDL_JOYBUTTONDOWN:
         {
             InputEvent ie;
             ie.DeviceKind = InputDeviceKind::JoyButton;
             ie.Modifiers = SDL_GetModState();
-            ie.Button = e.jbutton.button;
+            ie.Button = e.cbutton.button;
             ie.State = InputEventState::Down;
             ie.AxisValue = 0;
             QueueInputEvent(std::move(ie));
             break;
         }
+        case SDL_CONTROLLERBUTTONUP:
         case SDL_JOYBUTTONUP:
         {
             InputEvent ie;
             ie.DeviceKind = InputDeviceKind::JoyButton;
             ie.Modifiers = SDL_GetModState();
-            ie.Button = e.jbutton.button;
+            ie.Button = e.cbutton.button;
             ie.State = InputEventState::Release;
             ie.AxisValue = 0;
             QueueInputEvent(std::move(ie));
             break;
         }
+        case SDL_CONTROLLERDEVICEADDED:
+        case SDL_CONTROLLERDEVICEREMOVED:
         case SDL_JOYDEVICEADDED:
         case SDL_JOYDEVICEREMOVED:
         {
@@ -115,14 +120,17 @@ void InputManager::CheckJoysticks()
     {
         _lastJoystickCheck = tick;
 
-        _joysticks.clear();
+        _gameControllers.clear();
         auto numJoysticks = SDL_NumJoysticks();
         for (auto i = 0; i < numJoysticks; i++)
         {
-            auto joystick = SDL_JoystickOpen(i);
-            if (joystick != nullptr)
+            if (SDL_IsGameController(i))
             {
-                _joysticks.push_back(joystick);
+                auto gameController = SDL_GameControllerOpen(i);
+                if (gameController != nullptr)
+                {
+                    _gameControllers.push_back(gameController);
+                }
             }
         }
     }
@@ -142,20 +150,20 @@ void InputManager::ProcessAnalogInput()
     const bool invertX = Config::Get().general.GamepadInvertX;
     const bool invertY = Config::Get().general.GamepadInvertY;
 
-    for (auto* joystick : _joysticks)
+    for (auto* gameController : _gameControllers)
     {
-        if (joystick != nullptr)
+        if (gameController != nullptr)
         {
             int16_t stickX, stickY;
             if (gamepadStick == GamepadStick::Right)
             {
-                stickX = SDL_JoystickGetAxis(joystick, ANALOG_SCROLL_RIGHT_X);
-                stickY = SDL_JoystickGetAxis(joystick, ANALOG_SCROLL_RIGHT_Y);
+                stickX = SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_RIGHTX);
+                stickY = SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_RIGHTY);
             }
             else
             {
-                stickX = SDL_JoystickGetAxis(joystick, ANALOG_SCROLL_LEFT_X);
-                stickY = SDL_JoystickGetAxis(joystick, ANALOG_SCROLL_LEFT_Y);
+                stickX = SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_LEFTX);
+                stickY = SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_LEFTY);
             }
 
             if (invertX)
@@ -522,9 +530,11 @@ bool InputManager::GetState(const ShortcutInput& shortcut) const
             }
             case InputDeviceKind::JoyButton:
             {
-                for (auto* joystick : _joysticks)
+                for (auto* gameController : _gameControllers)
                 {
-                    if (SDL_JoystickGetButton(joystick, shortcut.Button))
+                    // Get the underlying joystick to maintain compatibility with raw button numbers
+                    auto* joystick = SDL_GameControllerGetJoystick(gameController);
+                    if (joystick && SDL_JoystickGetButton(joystick, shortcut.Button))
                     {
                         return true;
                     }
@@ -533,15 +543,20 @@ bool InputManager::GetState(const ShortcutInput& shortcut) const
             }
             case InputDeviceKind::JoyHat:
             {
-                for (auto* joystick : _joysticks)
+                for (auto* gameController : _gameControllers)
                 {
-                    auto numHats = SDL_JoystickNumHats(joystick);
-                    for (int i = 0; i < numHats; i++)
+                    // Get the underlying joystick to maintain compatibility with hat functionality
+                    auto* joystick = SDL_GameControllerGetJoystick(gameController);
+                    if (joystick)
                     {
-                        auto hat = SDL_JoystickGetHat(joystick, i);
-                        if (hat & shortcut.Button)
+                        auto numHats = SDL_JoystickNumHats(joystick);
+                        for (int i = 0; i < numHats; i++)
                         {
-                            return true;
+                            auto hat = SDL_JoystickGetHat(joystick, i);
+                            if (hat & shortcut.Button)
+                            {
+                                return true;
+                            }
                         }
                     }
                 }

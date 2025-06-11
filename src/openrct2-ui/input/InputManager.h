@@ -13,7 +13,7 @@
 #include <queue>
 #include <string_view>
 
-typedef struct _SDL_Joystick SDL_Joystick;
+typedef struct _SDL_GameController SDL_GameController;
 typedef union SDL_Event SDL_Event;
 
 namespace OpenRCT2::Ui
@@ -58,7 +58,7 @@ namespace OpenRCT2::Ui
     {
     private:
         uint32_t _lastJoystickCheck{};
-        std::vector<SDL_Joystick*> _joysticks;
+        std::vector<SDL_GameController*> _gameControllers;
         std::queue<InputEvent> _events;
         ScreenCoordsXY _viewScroll;
         ScreenCoordsXY _analogScroll;     // Analog stick scroll values
@@ -67,12 +67,6 @@ namespace OpenRCT2::Ui
         uint32_t _mouseState{};
         std::vector<uint8_t> _keyboardState;
         uint8_t _modifierKeyState;
-
-        // Gamepad configuration
-        static constexpr int ANALOG_SCROLL_LEFT_X = 0;  // Left stick X axis
-        static constexpr int ANALOG_SCROLL_LEFT_Y = 1;  // Left stick Y axis
-        static constexpr int ANALOG_SCROLL_RIGHT_X = 2; // Right stick X axis (typically axis 2)
-        static constexpr int ANALOG_SCROLL_RIGHT_Y = 3; // Right stick Y axis (typically axis 3)
 
         void CheckJoysticks();
         void ProcessAnalogInput();
