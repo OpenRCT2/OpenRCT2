@@ -112,7 +112,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto kMainGuestWidgets = makeWidgets(
-        makeWindowShim(kWindowTitle, kWindowSize),                                                                                         \
+        makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({ 0, 43 }, { 192, 114 }, WidgetType::resize, WindowColour::secondary), /* Resize */
         makeTab({ 3, 17 }, STR_SHOW_GUEST_VIEW_TIP),                                            /* Tab 1 */
         makeTab({ 34, 17 }, STR_SHOW_GUEST_NEEDS_TIP),                                          /* Tab 2 */

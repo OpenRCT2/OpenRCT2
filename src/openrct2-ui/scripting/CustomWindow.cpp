@@ -897,7 +897,7 @@ namespace OpenRCT2::Ui::Windows
             // Add window tabs
             if (_info.Desc.Tabs.size() != 0)
             {
-                widgetList[WIDX_CONTENT_PANEL].top = 43;
+                widgetList[WIDX_CONTENT_PANEL].top = kTabBarHeight;
             }
             for (size_t tabDescIndex = 0; tabDescIndex < _info.Desc.Tabs.size(); tabDescIndex++)
             {
@@ -907,7 +907,7 @@ namespace OpenRCT2::Ui::Windows
                 widget.left = static_cast<int16_t>(3 + (tabDescIndex * 31));
                 widget.right = widget.left + 30;
                 widget.top = 17;
-                widget.bottom = 43;
+                widget.bottom = kTabBarHeight;
                 widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull);
                 widget.tooltip = kStringIdNone;
                 widgetList.push_back(widget);

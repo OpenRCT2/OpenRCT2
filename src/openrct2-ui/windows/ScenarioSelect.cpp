@@ -928,11 +928,8 @@ namespace OpenRCT2::Ui::Windows
             return window;
         }
 
-        int32_t screenWidth = ContextGetWidth();
-        int32_t screenHeight = ContextGetHeight();
-        ScreenCoordsXY screenPos = { (screenWidth - kWindowSize.width) / 2,
-                                     std::max(kTopToolbarHeight + 1, (screenHeight - kWindowSize.height) / 2) };
-        window = windowMgr->Create<ScenarioSelectWindow>(WindowClass::ScenarioSelect, screenPos, kWindowSize, 0, callback);
+        window = windowMgr->Create<ScenarioSelectWindow>(
+            WindowClass::ScenarioSelect, {}, kWindowSize, WF_AUTO_POSITION | WF_CENTRE_SCREEN, callback);
         return window;
     }
 } // namespace OpenRCT2::Ui::Windows

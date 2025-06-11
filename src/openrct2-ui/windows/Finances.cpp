@@ -81,17 +81,16 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Measurements
 
+    static constexpr ScreenSize kWindowSizeResearch = { 320, 207 };
+    static constexpr ScreenSize kTabContentSizeResearch = kWindowSizeResearch - ScreenSize(0, kTabBarHeight);
+
+    static constexpr ScreenSize kWindowSizeSummary = { 530, 309 };
+    static constexpr ScreenSize kTabContentSizeSummary = kWindowSizeSummary - ScreenSize(0, kTabBarHeight);
+
+    static constexpr ScreenSize kWindowSizeGraphsMarketing = { 530, 257 };
+    static constexpr ScreenSize kTabContentSizeGraphsMarketing = kWindowSizeGraphsMarketing - ScreenSize(0, kTabBarHeight);
+
     static constexpr int32_t kCostPerWeekOffset = 321;
-    static constexpr int32_t kHeightSummary = 309;
-    static constexpr int32_t kHeightResearch = 207;
-    static constexpr int32_t kHeightOtherTabs = 257;
-    static constexpr int32_t kWindowWidthResearch = 320;
-    static constexpr int32_t kWindowWidthOtherTabs = 530;
-    static constexpr int32_t kResizeHeightSummary = 266;
-    static constexpr int32_t kResizeHeightResearch = 164;
-    static constexpr int32_t kResizeHeightOtherTabs = 214;
-    static constexpr int32_t kResizeWidthResearch = kWindowWidthResearch;
-    static constexpr int32_t kResizeWidthOtherTabs = kWindowWidthOtherTabs;
 
 #pragma endregion
 
@@ -112,48 +111,48 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr auto _windowFinancesSummaryWidgets = makeWidgets(
-        makeFinancesWidgets(STR_FINANCIAL_SUMMARY,{  kResizeWidthOtherTabs, kResizeHeightSummary }, { kWindowWidthOtherTabs, kHeightSummary }),
+        makeFinancesWidgets(STR_FINANCIAL_SUMMARY, kTabContentSizeSummary, kWindowSizeSummary),
         makeWidget        ({130,  50}, {391, 211}, WidgetType::scroll,  WindowColour::secondary, SCROLL_HORIZONTAL              ),
         makeSpinnerWidgets({ 64, 279}, { 97,  14}, WidgetType::spinner, WindowColour::secondary, STR_FINANCES_SUMMARY_LOAN_VALUE) // NB: 3 widgets
     );
 
     static constexpr auto _windowFinancesCashWidgets = makeWidgets(
-        makeFinancesWidgets(STR_FINANCIAL_GRAPH, { kResizeWidthOtherTabs, kResizeHeightOtherTabs }, { kWindowWidthOtherTabs, kHeightOtherTabs })
+        makeFinancesWidgets(STR_FINANCIAL_GRAPH, kTabContentSizeGraphsMarketing, kWindowSizeGraphsMarketing)
     );
 
     static constexpr auto _windowFinancesParkValueWidgets = makeWidgets(
-        makeFinancesWidgets(STR_PARK_VALUE_GRAPH, { kResizeWidthOtherTabs, kResizeHeightOtherTabs }, { kWindowWidthOtherTabs, kHeightOtherTabs })
+        makeFinancesWidgets(STR_PARK_VALUE_GRAPH, kTabContentSizeGraphsMarketing, kWindowSizeGraphsMarketing)
     );
 
     static constexpr auto _windowFinancesProfitWidgets = makeWidgets(
-        makeFinancesWidgets(STR_PROFIT_GRAPH, { kResizeWidthOtherTabs, kResizeHeightOtherTabs }, { kWindowWidthOtherTabs, kHeightOtherTabs })
+        makeFinancesWidgets(STR_PROFIT_GRAPH, kTabContentSizeGraphsMarketing, kWindowSizeGraphsMarketing)
     );
 
     static constexpr auto _windowFinancesMarketingWidgets = makeWidgets(
-        makeFinancesWidgets(STR_MARKETING, { kResizeWidthOtherTabs, kResizeHeightOtherTabs }, { kWindowWidthOtherTabs, kHeightOtherTabs }),
-        makeWidget({3, 47}, { kWindowWidthOtherTabs - 6,  45}, WidgetType::groupbox, WindowColour::tertiary , STR_MARKETING_CAMPAIGNS_IN_OPERATION                                   ),
-        makeWidget({3, 47}, { kWindowWidthOtherTabs - 6, 206}, WidgetType::groupbox, WindowColour::tertiary , STR_MARKETING_CAMPAIGNS_AVAILABLE                                      ),
-        makeWidget({8,  0}, {kWindowWidthOtherTabs - 16,  14}, WidgetType::imgBtn,   WindowColour::secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-        makeWidget({8,  0}, {kWindowWidthOtherTabs - 16,  14}, WidgetType::imgBtn,   WindowColour::secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-        makeWidget({8,  0}, {kWindowWidthOtherTabs - 16,  14}, WidgetType::imgBtn,   WindowColour::secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-        makeWidget({8,  0}, {kWindowWidthOtherTabs - 16,  14}, WidgetType::imgBtn,   WindowColour::secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-        makeWidget({8,  0}, {kWindowWidthOtherTabs - 16,  14}, WidgetType::imgBtn,   WindowColour::secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-        makeWidget({8,  0}, {kWindowWidthOtherTabs - 16,  14}, WidgetType::imgBtn,   WindowColour::secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN)
+        makeFinancesWidgets(STR_MARKETING, kTabContentSizeGraphsMarketing, kWindowSizeGraphsMarketing),
+        makeWidget({3, 47}, {kWindowSizeGraphsMarketing.width - 6,   45}, WidgetType::groupbox, WindowColour::tertiary , STR_MARKETING_CAMPAIGNS_IN_OPERATION                                   ),
+        makeWidget({3, 47}, {kWindowSizeGraphsMarketing.width - 6,  206}, WidgetType::groupbox, WindowColour::tertiary , STR_MARKETING_CAMPAIGNS_AVAILABLE                                      ),
+        makeWidget({8,  0}, {kWindowSizeGraphsMarketing.width - 16,  14}, WidgetType::imgBtn,   WindowColour::secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+        makeWidget({8,  0}, {kWindowSizeGraphsMarketing.width - 16,  14}, WidgetType::imgBtn,   WindowColour::secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+        makeWidget({8,  0}, {kWindowSizeGraphsMarketing.width - 16,  14}, WidgetType::imgBtn,   WindowColour::secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+        makeWidget({8,  0}, {kWindowSizeGraphsMarketing.width - 16,  14}, WidgetType::imgBtn,   WindowColour::secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+        makeWidget({8,  0}, {kWindowSizeGraphsMarketing.width - 16,  14}, WidgetType::imgBtn,   WindowColour::secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+        makeWidget({8,  0}, {kWindowSizeGraphsMarketing.width - 16,  14}, WidgetType::imgBtn,   WindowColour::secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN)
     );
 
     static constexpr auto _windowFinancesResearchWidgets = makeWidgets(
-        makeFinancesWidgets(STR_RESEARCH_FUNDING, { kResizeWidthResearch, kResizeHeightResearch }, { kWindowWidthResearch, kHeightResearch }),
-        makeWidget({  3,  47}, { kWindowWidthResearch - 6,  45}, WidgetType::groupbox, WindowColour::tertiary, STR_RESEARCH_FUNDING_                                                             ),
+        makeFinancesWidgets(STR_RESEARCH_FUNDING, kTabContentSizeResearch, kWindowSizeResearch),
+        makeWidget({  3,  47}, { kWindowSizeResearch.width - 6,  45}, WidgetType::groupbox, WindowColour::tertiary, STR_RESEARCH_FUNDING_                                                             ),
         makeWidget({  8,  59}, {             160,  14}, WidgetType::dropdownMenu, WindowColour::tertiary, 0xFFFFFFFF,                           STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
         makeWidget({156,  60}, {              11,  12}, WidgetType::button,   WindowColour::tertiary, STR_DROPDOWN_GLYPH,                   STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
-        makeWidget({  3,  96}, {kWindowWidthResearch -  6, 107}, WidgetType::groupbox, WindowColour::tertiary, STR_RESEARCH_PRIORITIES                                                           ),
-        makeWidget({  8, 108}, {kWindowWidthResearch - 14,  12}, WidgetType::checkbox, WindowColour::tertiary, STR_RESEARCH_NEW_TRANSPORT_RIDES,     STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP        ),
-        makeWidget({  8, 121}, {kWindowWidthResearch - 14,  12}, WidgetType::checkbox, WindowColour::tertiary, STR_RESEARCH_NEW_GENTLE_RIDES,        STR_RESEARCH_NEW_GENTLE_RIDES_TIP           ),
-        makeWidget({  8, 134}, {kWindowWidthResearch - 14,  12}, WidgetType::checkbox, WindowColour::tertiary, STR_RESEARCH_NEW_ROLLER_COASTERS,     STR_RESEARCH_NEW_ROLLER_COASTERS_TIP        ),
-        makeWidget({  8, 147}, {kWindowWidthResearch - 14,  12}, WidgetType::checkbox, WindowColour::tertiary, STR_RESEARCH_NEW_THRILL_RIDES,        STR_RESEARCH_NEW_THRILL_RIDES_TIP           ),
-        makeWidget({  8, 160}, {kWindowWidthResearch - 14,  12}, WidgetType::checkbox, WindowColour::tertiary, STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
-        makeWidget({  8, 173}, {kWindowWidthResearch - 14,  12}, WidgetType::checkbox, WindowColour::tertiary, STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
-        makeWidget({  8, 186}, {kWindowWidthResearch - 14,  12}, WidgetType::checkbox, WindowColour::tertiary, STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    )
+        makeWidget({  3,  96}, {kWindowSizeResearch.width -  6, 107}, WidgetType::groupbox, WindowColour::tertiary, STR_RESEARCH_PRIORITIES                                                           ),
+        makeWidget({  8, 108}, {kWindowSizeResearch.width - 14,  12}, WidgetType::checkbox, WindowColour::tertiary, STR_RESEARCH_NEW_TRANSPORT_RIDES,     STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP        ),
+        makeWidget({  8, 121}, {kWindowSizeResearch.width - 14,  12}, WidgetType::checkbox, WindowColour::tertiary, STR_RESEARCH_NEW_GENTLE_RIDES,        STR_RESEARCH_NEW_GENTLE_RIDES_TIP           ),
+        makeWidget({  8, 134}, {kWindowSizeResearch.width - 14,  12}, WidgetType::checkbox, WindowColour::tertiary, STR_RESEARCH_NEW_ROLLER_COASTERS,     STR_RESEARCH_NEW_ROLLER_COASTERS_TIP        ),
+        makeWidget({  8, 147}, {kWindowSizeResearch.width - 14,  12}, WidgetType::checkbox, WindowColour::tertiary, STR_RESEARCH_NEW_THRILL_RIDES,        STR_RESEARCH_NEW_THRILL_RIDES_TIP           ),
+        makeWidget({  8, 160}, {kWindowSizeResearch.width - 14,  12}, WidgetType::checkbox, WindowColour::tertiary, STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
+        makeWidget({  8, 173}, {kWindowSizeResearch.width - 14,  12}, WidgetType::checkbox, WindowColour::tertiary, STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
+        makeWidget({  8, 186}, {kWindowSizeResearch.width - 14,  12}, WidgetType::checkbox, WindowColour::tertiary, STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    )
     );
     // clang-format on
 
@@ -487,14 +486,14 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
             if (p == WINDOW_FINANCES_PAGE_RESEARCH)
             {
-                width = kWindowWidthResearch;
-                height = kHeightResearch;
+                width = kWindowSizeResearch.width;
+                height = kWindowSizeResearch.height;
                 flags &= ~WF_RESIZABLE;
             }
             else if (p == WINDOW_FINANCES_PAGE_SUMMARY)
             {
-                width = kWindowWidthOtherTabs;
-                height = kHeightSummary;
+                width = kWindowSizeSummary.width;
+                height = kWindowSizeSummary.height;
                 flags &= ~WF_RESIZABLE;
             }
             else if (
@@ -507,12 +506,12 @@ namespace OpenRCT2::Ui::Windows
                 // constrain the window height between tabs (e.g. chart tabs)
                 height -= getTitleBarDiffNormal();
 
-                WindowSetResize(*this, { kWindowWidthOtherTabs, kHeightOtherTabs }, kMaxWindowSize);
+                WindowSetResize(*this, kWindowSizeGraphsMarketing, kMaxWindowSize);
             }
             else
             {
-                width = kWindowWidthOtherTabs;
-                height = kHeightOtherTabs;
+                width = kWindowSizeGraphsMarketing.width;
+                height = kWindowSizeGraphsMarketing.height;
                 flags &= ~WF_RESIZABLE;
             }
 
@@ -881,8 +880,7 @@ namespace OpenRCT2::Ui::Windows
     static FinancesWindow* FinancesWindowOpen(uint8_t page)
     {
         auto* windowMgr = Ui::GetWindowManager();
-        auto* window = windowMgr->FocusOrCreate<FinancesWindow>(
-            WindowClass::Finances, { kWindowWidthOtherTabs, kHeightSummary }, WF_10);
+        auto* window = windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, kWindowSizeSummary, WF_10);
 
         if (window != nullptr && page != WINDOW_FINANCES_PAGE_SUMMARY)
             window->SetPage(page);
@@ -893,8 +891,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* FinancesOpen()
     {
         auto* windowMgr = Ui::GetWindowManager();
-        return windowMgr->FocusOrCreate<FinancesWindow>(
-            WindowClass::Finances, { kWindowWidthOtherTabs, kHeightSummary }, WF_10);
+        return windowMgr->FocusOrCreate<FinancesWindow>(WindowClass::Finances, kWindowSizeSummary, WF_10);
     }
 
     WindowBase* FinancesResearchOpen()

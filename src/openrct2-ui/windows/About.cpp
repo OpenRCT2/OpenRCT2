@@ -57,15 +57,14 @@ namespace OpenRCT2::Ui::Windows
         WIDX_CONTRIBUTORS_BUTTON,
     };
 
-    static constexpr auto kMainWidgets = makeWidgets(
-        makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget(
-            { 0, kTabHeight }, { kWindowSize.width, kWindowSize.height - kTabHeight }, WidgetType::frame,
-            WindowColour::secondary),
-        makeRemapWidget({ 3, 17 }, { 91, kTabHeight - 16 }, WidgetType::tab, WindowColour::secondary, SPR_TAB_LARGE),
-        makeRemapWidget({ 94, 17 }, { 91, kTabHeight - 16 }, WidgetType::tab, WindowColour::secondary, SPR_TAB_LARGE));
-
     // clang-format off
+    static constexpr auto kMainWidgets = makeWidgets(
+        makeWindowShim (kWindowTitle, kWindowSize),
+        makeWidget     ({  0, kTabHeight }, { kWindowSize.width, kWindowSize.height - kTabHeight }, WidgetType::frame, WindowColour::secondary),
+        makeRemapWidget({  3, 17         }, { 91,                kTabHeight - 16                 }, WidgetType::tab,   WindowColour::secondary, SPR_TAB_LARGE),
+        makeRemapWidget({ 94, 17         }, { 91,                kTabHeight - 16                 }, WidgetType::tab,   WindowColour::secondary, SPR_TAB_LARGE)
+    );
+
     static constexpr auto _windowAboutOpenRCT2Widgets = makeWidgets(
         kMainWidgets,
         makeWidget({10, 60},        {kWindowSize.width - 20, 20}, WidgetType::labelCentred, WindowColour::secondary, STR_ABOUT_OPENRCT2_DESCRIPTION), // Introduction

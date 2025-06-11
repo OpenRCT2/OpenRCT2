@@ -233,7 +233,7 @@ namespace OpenRCT2::Ui::Windows
         auto ft = Formatter();
         ft.Add<const utf8*>(_trackDesignFileReference->name.c_str());
         DrawTextWrapped(
-            rt, { windowPos.x + (kWindowSizeDeletePrompt.width / 2), windowPos.y + ((kWindowSizeDeletePrompt.height / 2) - 9) },
+            rt, windowPos + ScreenCoordsXY{ (kWindowSizeDeletePrompt.width / 2), ((kWindowSizeDeletePrompt.height / 2) - 9) },
             (kWindowSizeDeletePrompt.width - 4), STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, ft,
             { TextAlignment::CENTRE });
     }

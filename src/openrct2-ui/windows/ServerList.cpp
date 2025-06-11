@@ -30,9 +30,9 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr ScreenSize kWindowSize = { 340, 90 };
     static constexpr ScreenSize kMinimumWindowSize = { 500, 288 };
     static constexpr ScreenSize kMaximumWindowSize = { 1200, 788 };
+    static constexpr ScreenSize kWindowSize = kMinimumWindowSize;
     static constexpr int32_t kItemHeight = (3 + 9 + 3);
 
     static constexpr size_t kMaxPlayerNameLength = 32;
