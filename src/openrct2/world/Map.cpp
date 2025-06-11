@@ -1341,7 +1341,8 @@ void MapRemoveOutOfRangeElements()
     gameState.cheats.buildInPauseMode = buildState;
 }
 
-static void MapExtendBoundarySurfaceExtendTile(const SurfaceElement& sourceTile, SurfaceElement& destTile)
+static void MapExtendBoundarySurfaceExtendTile(
+    const SurfaceElement& sourceTile, SurfaceElement& destTile, const Direction direction)
 {
     destTile.SetSurfaceObjectIndex(sourceTile.GetSurfaceObjectIndex());
     destTile.SetEdgeObjectIndex(sourceTile.GetEdgeObjectIndex());
@@ -1350,18 +1351,20 @@ static void MapExtendBoundarySurfaceExtendTile(const SurfaceElement& sourceTile,
     destTile.SetWaterHeight(sourceTile.GetWaterHeight());
 
     auto z = sourceTile.BaseHeight;
-    auto slope = sourceTile.GetSlope() & kTileSlopeNWSideUp;
+    const auto originalSlope = Numerics::rol4(sourceTile.GetSlope(), direction)
+        | (sourceTile.GetSlope() & kTileSlopeDiagonalFlag);
+    auto slope = originalSlope & kTileSlopeNWSideUp;
     if (slope == kTileSlopeNWSideUp)
     {
         z += 2;
         slope = kTileSlopeFlat;
-        if (sourceTile.GetSlope() & kTileSlopeDiagonalFlag)
+        if (originalSlope & kTileSlopeDiagonalFlag)
         {
             slope = kTileSlopeNCornerUp;
-            if (sourceTile.GetSlope() & kTileSlopeSCornerUp)
+            if (originalSlope & kTileSlopeSCornerUp)
             {
                 slope = kTileSlopeWCornerUp;
-                if (sourceTile.GetSlope() & kTileSlopeECornerUp)
+                if (originalSlope & kTileSlopeECornerUp)
                 {
                     slope = kTileSlopeFlat;
                 }
@@ -1373,7 +1376,7 @@ static void MapExtendBoundarySurfaceExtendTile(const SurfaceElement& sourceTile,
     if (slope & kTileSlopeWCornerUp)
         slope |= kTileSlopeSCornerUp;
 
-    destTile.SetSlope(slope);
+    destTile.SetSlope(Numerics::ror4(slope, direction));
     destTile.BaseHeight = z;
     destTile.ClearanceHeight = z;
 }
@@ -1391,7 +1394,7 @@ void MapExtendBoundarySurfaceY()
 
         if (existingTileElement != nullptr && newTileElement != nullptr)
         {
-            MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement);
+            MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement, 0);
         }
 
         Park::UpdateFences({ x << 5, y << 5 });
@@ -1410,9 +1413,43 @@ void MapExtendBoundarySurfaceX()
         auto newTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
         if (existingTileElement != nullptr && newTileElement != nullptr)
         {
-            MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement);
+            MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement, 3);
         }
         Park::UpdateFences({ x << 5, y << 5 });
+    }
+}
+
+static void MapExtendBoundarySurfaceShiftX(const int32_t amount, const int32_t mapSizeY)
+{
+    for (int32_t y = 1; y < mapSizeY - 1; y++)
+    {
+        for (int32_t x = amount; x > 0; x--)
+        {
+            const auto* const existingTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x + 1, y });
+            auto* const newTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
+            if (existingTileElement != nullptr && newTileElement != nullptr)
+            {
+                MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement, 1);
+            }
+            Park::UpdateFences(TileCoordsXY{ x, y }.ToCoordsXY());
+        }
+    }
+}
+
+static void MapExtendBoundarySurfaceShiftY(const int32_t amount, const int32_t mapSizeX)
+{
+    for (int32_t x = 1; x < mapSizeX - 1; x++)
+    {
+        for (int32_t y = amount; y > 0; y--)
+        {
+            const auto* const existingTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y + 1 });
+            auto* const newTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
+            if (existingTileElement != nullptr && newTileElement != nullptr)
+            {
+                MapExtendBoundarySurfaceExtendTile(*existingTileElement, *newTileElement, 2);
+            }
+            Park::UpdateFences(TileCoordsXY{ x, y }.ToCoordsXY());
+        }
     }
 }
 
@@ -2232,27 +2269,16 @@ void ShiftMap(const TileCoordsXY& amount)
             }
             else
             {
-                auto copyX = std::clamp(srcX, 1, gameState.mapSize.x - 2);
-                auto copyY = std::clamp(srcY, 1, gameState.mapSize.y - 2);
-                auto srcTile = MapGetSurfaceElementAt(TileCoordsXY(copyX, copyY));
-                if (srcTile != nullptr)
-                {
-                    auto tileEl = *srcTile;
-                    tileEl.SetOwner(OWNERSHIP_UNOWNED);
-                    tileEl.SetParkFences(0);
-                    tileEl.SetLastForTile(true);
-                    newElements.push_back(*reinterpret_cast<TileElement*>(&tileEl));
-                }
-                else
-                {
-                    newElements.push_back(GetDefaultSurfaceElement());
-                }
+                newElements.push_back(GetDefaultSurfaceElement());
             }
         }
     }
 
     SetTileElements(gameState, std::move(newElements));
     MapRemoveOutOfRangeElements();
+
+    MapExtendBoundarySurfaceShiftX(amount.x, gameState.mapSize.y);
+    MapExtendBoundarySurfaceShiftY(amount.y, gameState.mapSize.x);
 
     for (auto& spawn : gameState.peepSpawns)
         shiftIfNotNull(spawn, amountToMove);
