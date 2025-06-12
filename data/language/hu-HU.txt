@@ -3821,3 +3821,10 @@ STR_6774    :Ellenőrzés óta eltelt idő
 STR_6775    :{COMMA16} perc
 STR_6776    :{COMMA16} perc
 STR_6777    :több mint 4 óra
+STR_6778    :Pályák előnézete:
+STR_6779    :Válaszd ki, milyen típusú előnézeti képet szeretnél a pályaválasztó képernyőn.
+STR_6780    :Mini térképek
+STR_6781    :Képernyőképek
+STR_6782    :Park értesítések  
+STR_6783    :Játék értesítések  
+STR_6784    :Látogatói értesítések

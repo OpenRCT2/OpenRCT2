@@ -3825,4 +3825,11 @@ STR_6774    :Tempo dall’ultima ispezione
 STR_6775    :{COMMA16} minuto
 STR_6776    :{COMMA16} minuti
 STR_6777    :più di 4 ore
+STR_6778    :Usa per le anteprime scenari:
+STR_6779    :Seleziona il tipo di immagine di anteprima da usare nella schermata di selezione scenario.
+STR_6780    :Mini-mappe
+STR_6781    :Schermate
+STR_6782    :Notifiche parco
+STR_6783    :Notifiche attrazioni
+STR_6784    :Notifiche visitatori
 
