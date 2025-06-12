@@ -594,16 +594,12 @@ GameActions::Result TrackPlaceAction::Execute() const
         switch (_trackType)
         {
             case TrackElemType::Waterfall:
-                [[fallthrough]];
             case TrackElemType::Rapids:
-                [[fallthrough]];
             case TrackElemType::Whirlpool:
-                [[fallthrough]];
             case TrackElemType::SpinningTunnel:
                 MapAnimations::MarkTileForInvalidation(TileCoordsXY(mapLoc));
                 break;
             case TrackElemType::Brakes:
-                [[fallthrough]];
             case TrackElemType::DiagBrakes:
                 trackElement->SetBrakeClosed(true);
                 break;
