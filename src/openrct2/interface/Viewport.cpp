@@ -1194,8 +1194,8 @@ namespace OpenRCT2
             const auto screenCoord = Translate3DTo2DWithZ(
                 rotation, CoordsXYZ{ x + kCoordsXYHalfTile, y + kCoordsXYHalfTile, 0 });
 
-            const auto topLeft = screenCoord - ScreenCoordsXY(32, 32 + z1);
-            const auto bottomRight = screenCoord + ScreenCoordsXY(32, 32 - z0);
+            const auto topLeft = screenCoord - ScreenCoordsXY(kScreenCoordsTileWidthHalf, kScreenCoordsTileHeight + z1);
+            const auto bottomRight = screenCoord + ScreenCoordsXY(kScreenCoordsTileWidthHalf, kScreenCoordsTileHeight - z0);
 
             ViewportInvalidate(this, ScreenRect{ topLeft, bottomRight });
         }
