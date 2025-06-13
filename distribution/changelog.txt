@@ -1,6 +1,7 @@
 0.4.24 (in development)
 ------------------------------------------------------------------------
 - Feature: [#24411] Vanilla scenarios now also have previews in the scenario selection window.
+- Feature: [#24616] Add ability to scroll map with gamepad sticks.
 - Feature: [#24662] Add optional screenshot argument for Z coord.
 - Improved: [#22684] The limit of 2000 animated tile elements has been removed.
 - Improved: [#23228] Landscape edge doors now animate opening and closing and play a sound.
