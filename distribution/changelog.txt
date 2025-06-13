@@ -1,6 +1,7 @@
 0.4.24 (in development)
 ------------------------------------------------------------------------
 - Feature: [#24411] Vanilla scenarios now also have previews in the scenario selection window.
+- Feature: [#24616] Add ability to scroll map with gamepad sticks.
 - Improved: [#22684] The limit of 2000 animated tile elements has been removed.
 - Improved: [#24026] Notification settings have been made into a tab of the Recent Messages window.
 - Change: [#24559] Scenario options are now disabled rather than hidden when disabling money makes them non-applicable.
