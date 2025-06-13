@@ -194,6 +194,7 @@ namespace OpenRCT2::RCT1
             ImportRideMeasurements();
             ImportEntities();
             ImportTileElements(gameState);
+            ImportMapAnimations();
             ImportPeepSpawns(gameState);
             ImportFinance(gameState);
             ImportResearch(gameState);
@@ -1458,6 +1459,21 @@ namespace OpenRCT2::RCT1
             dst->x = src->x;
             dst->y = src->y;
             dst->z = src->z;
+        }
+
+        void ImportMapAnimations()
+        {
+            for (const auto& mapAnimation : std::span(_s4.MapAnimations, _s4.NumMapAnimations))
+            {
+                switch (mapAnimation.Type)
+                {
+                    case kRCT12MapAnimationTypeOnRidePhoto:
+                        MapAnimations::CreateTemporary(
+                            { mapAnimation.x, mapAnimation.y, (mapAnimation.BaseZ / 2) * kCoordsZStep },
+                            MapAnimations::TemporaryType::onRidePhoto);
+                        break;
+                }
+            }
         }
 
         void ImportPeepSpawns(GameState_t& gameState)

@@ -56,7 +56,6 @@
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
-#include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/TileElementsView.h"
