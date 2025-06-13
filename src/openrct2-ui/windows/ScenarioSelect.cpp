@@ -129,6 +129,38 @@ namespace OpenRCT2::Ui::Windows
         const ScenarioIndexEntry* _highlightedScenario = nullptr;
         ParkPreview _preview;
         BackgroundWorker::Job _previewLoadJob;
+        bool _initialLoadCommand = true;
+
+        void ReportProgress(uint8_t progress)
+        {
+            if (_initialLoadCommand)
+                return;
+
+            if (progress == 0)
+                GetContext()->OpenProgress(STR_CHECKING_SCENARIO_FILES);
+
+            GetContext()->SetProgress(progress, 100, STR_STRING_M_PERCENT);
+
+            if (progress == 100)
+                GetContext()->CloseProgress();
+        }
+
+        void LoadScenarioList()
+        {
+            try
+            {
+                ReportProgress(0);
+                ScenarioRepositoryScan();
+                ReportProgress(100);
+
+                _initialLoadCommand = false;
+            }
+            catch (const std::exception& e)
+            {
+                GetContext()->WriteLine("Error rebuilding scenario index: " + std::string(e.what()));
+                GetContext()->CloseProgress();
+            }
+        }
 
     public:
         ScenarioSelectWindow(std::function<void(std::string_view)> callback)
@@ -140,8 +172,8 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(_scenarioSelectWidgets);
 
-            // Load scenario list
-            ScenarioRepositoryScan();
+            _initialLoadCommand = true;
+            LoadScenarioList();
 
             _highlightedScenario = nullptr;
             InitTabs();
@@ -151,7 +183,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnLanguageChange() override
         {
-            ScenarioRepositoryScan();
+            LoadScenarioList();
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
