@@ -23,10 +23,8 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr int32_t WH_SAVE = 54;
-    static constexpr int32_t WW_SAVE = 260;
-    static constexpr int32_t WH_QUIT = 38;
-    static constexpr int32_t WW_QUIT = 177;
+    static constexpr ScreenSize kWindowSizeSave = { 260, 54 };
+    static constexpr ScreenSize kWindowSizeQuit = { 177, 38 };
 
     enum WindowSavePromptWidgetIdx
     {
@@ -41,7 +39,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _savePromptWidgets = makeWidgets(
-        makeWindowShim(kStringIdNone, { WW_SAVE, WH_SAVE }),
+        makeWindowShim(kStringIdNone, kWindowSizeSave),
         makeWidget({  2, 19}, {256, 12}, WidgetType::labelCentred, WindowColour::primary, kStringIdEmpty                ), // question/label
         makeWidget({  8, 35}, { 78, 14}, WidgetType::button,        WindowColour::primary, STR_SAVE_PROMPT_SAVE     ), // save
         makeWidget({ 91, 35}, { 78, 14}, WidgetType::button,        WindowColour::primary, STR_SAVE_PROMPT_DONT_SAVE), // don't save
@@ -60,7 +58,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _quitPromptWidgets = makeWidgets(
-        makeWindowShim(STR_QUIT_GAME_PROMPT_TITLE, { WW_QUIT, WH_QUIT }),
+        makeWindowShim(STR_QUIT_GAME_PROMPT_TITLE, kWindowSizeQuit),
         makeWidget({ 8, 19}, {78, 14}, WidgetType::button, WindowColour::primary, STR_OK    ), // ok
         makeWidget({91, 19}, {78, 14}, WidgetType::button, WindowColour::primary, STR_CANCEL)  // cancel
     );
@@ -243,17 +241,15 @@ namespace OpenRCT2::Ui::Windows
             return nullptr;
         }
 
-        int32_t width = WW_SAVE;
-        int32_t height = WH_SAVE;
+        auto windowSize = kWindowSizeSave;
         if (isInTrackDesignerOrManager())
         {
-            width = WW_QUIT;
-            height = WH_QUIT;
+            windowSize = kWindowSizeQuit;
         }
 
         auto savePromptWindow = std::make_unique<SavePromptWindow>(prompt_mode);
         return windowMgr->Create(
-            std::move(savePromptWindow), WindowClass::SavePrompt, {}, { width, height },
+            std::move(savePromptWindow), WindowClass::SavePrompt, {}, windowSize,
             WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN | WF_AUTO_POSITION);
     }
 } // namespace OpenRCT2::Ui::Windows

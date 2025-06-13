@@ -48,19 +48,18 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
-    static constexpr StringId WINDOW_TITLE = STR_VIEW_CLIPPING_TITLE;
-    static constexpr int32_t WW = 180;
-    static constexpr int32_t WH = 172;
+    static constexpr StringId kWindowTitle = STR_VIEW_CLIPPING_TITLE;
+    static constexpr ScreenSize kWindowSize = { 180, 172 };
 
     // clang-format off
     static constexpr auto _viewClippingWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget        ({     11,  19}, {    159,  11}, WidgetType::checkbox, WindowColour::primary, STR_VIEW_CLIPPING_HEIGHT_ENABLE,                  STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP               ), // clip enable/disable check box
-        makeWidget        ({      5,  36}, {WW - 10,  65}, WidgetType::groupbox, WindowColour::primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING                                                                 ),
+        makeWidget        ({      5,  36}, {kWindowSize.width - 10,  65}, WidgetType::groupbox, WindowColour::primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING                                                                 ),
         makeSpinnerWidgets({     90,  51}, {     79,  12}, WidgetType::spinner,  WindowColour::primary, kStringIdNone,                                    STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE             ), // clip height (3 widgets)
         makeWidget        ({     11,  66}, {    158,  13}, WidgetType::scroll,   WindowColour::primary, SCROLL_HORIZONTAL,                                STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP               ), // clip height scrollbar
         makeWidget        ({     11,  83}, {    159,  11}, WidgetType::checkbox, WindowColour::primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING_SEE_THROUGH, STR_VIEW_CLIPPING_VERTICAL_CLIPPING_SEE_THROUGH_TIP), // clip height enable/disable see-through check box
-        makeWidget        ({      5, 107}, {WW - 10,  60}, WidgetType::groupbox, WindowColour::primary, STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING                                                               ),
+        makeWidget        ({      5, 107}, {kWindowSize.width - 10,  60}, WidgetType::groupbox, WindowColour::primary, STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING                                                               ),
         makeWidget        ({     11, 122}, {    158,  17}, WidgetType::button,   WindowColour::primary, STR_VIEW_CLIPPING_SELECT_AREA                                                                       ), // selector
         makeWidget        ({     11, 143}, {    158,  18}, WidgetType::button,   WindowColour::primary, STR_VIEW_CLIPPING_CLEAR_SELECTION                                                                   )  // clear
     );
@@ -417,7 +416,7 @@ namespace OpenRCT2::Ui::Windows
         auto* window = windowMgr->BringToFrontByClass(WindowClass::ViewClipping);
         if (window == nullptr)
         {
-            window = windowMgr->Create<ViewClippingWindow>(WindowClass::ViewClipping, ScreenCoordsXY(32, 32), { WW, WH });
+            window = windowMgr->Create<ViewClippingWindow>(WindowClass::ViewClipping, ScreenCoordsXY(32, 32), kWindowSize);
         }
         return window;
     }

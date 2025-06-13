@@ -217,53 +217,49 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region MEASUREMENTS
 
-    static constexpr StringId WINDOW_TITLE = STR_TILE_INSPECTOR_TITLE;
+    static constexpr StringId kWindowTitle = STR_TILE_INSPECTOR_TITLE;
 
     // Window sizes
-    static constexpr int32_t WW = 400;
-    static constexpr int32_t WH = 170;
-
-    constexpr int32_t MIN_WW = WW;
-    constexpr int32_t MAX_WW = WW;
-    constexpr int32_t MIN_WH = 130;
-    constexpr int32_t MAX_WH = 800;
+    static constexpr ScreenSize kWindowSize = { 400, 170 };
+    static constexpr ScreenSize kMinimumWindowSize = { 400, 130 };
+    static constexpr ScreenSize kMaximumWindowSize = { 400, 800 };
 
     // Button space for top buttons
-    constexpr auto ToolbarButtonAnchor = ScreenCoordsXY{ WW - 27, 17 };
-    constexpr auto ToolbarButtonSize = ScreenSize{ 24, 24 };
-    constexpr auto ToolbarButtonHalfSize = ScreenSize{ 24, 12 };
-    constexpr auto ToolbarButtonOffsetX = ScreenSize{ -24, 0 };
+    constexpr auto kToolbarButtonAnchor = ScreenCoordsXY{ kWindowSize.width - 27, 17 };
+    constexpr auto kToolbarButtonSize = ScreenSize{ 24, 24 };
+    constexpr auto kToolbarButtonHalfSize = ScreenSize{ 24, 12 };
+    constexpr auto kToolbarButtonOffsetX = ScreenSize{ -24, 0 };
 
     // List's column offsets
-    constexpr auto InvisibleFlagColumnXY = ScreenCoordsXY{ 3, 42 };
-    constexpr auto InvisibleFlagColumnSize = ScreenSize{ 20, 14 };
-    constexpr auto TypeColumnXY = InvisibleFlagColumnXY + ScreenSize{ InvisibleFlagColumnSize.width, 0 };
-    constexpr auto TypeColumnSize = ScreenSize{ 252, 14 };
-    constexpr auto BaseHeightColumnXY = TypeColumnXY + ScreenSize{ TypeColumnSize.width, 0 };
-    constexpr auto BaseHeightColumnSize = ScreenSize{ 30, 14 };
-    constexpr auto ClearanceHeightColumnXY = BaseHeightColumnXY + ScreenCoordsXY{ BaseHeightColumnSize.width, 0 };
-    constexpr auto ClearanceHeightColumnSize = ScreenSize{ 30, 14 };
-    constexpr auto DirectionColumnXY = ClearanceHeightColumnXY + ScreenCoordsXY{ ClearanceHeightColumnSize.width, 0 };
-    constexpr auto DirectionColumnSize = ScreenSize{ 15, 14 };
-    constexpr auto GhostFlagColumnXY = DirectionColumnXY + ScreenCoordsXY{ DirectionColumnSize.width, 0 };
-    constexpr auto GhostFlagColumnSize = ScreenSize{ 15, 14 };
-    constexpr auto LastFlagColumnXY = GhostFlagColumnXY + ScreenCoordsXY{ GhostFlagColumnSize.width, 0 };
-    constexpr auto LastFlagColumnSize = ScreenSize{ 32, 14 };
+    constexpr auto kInvisibleFlagColumnXY = ScreenCoordsXY{ 3, 42 };
+    constexpr auto kInvisibleFlagColumnSize = ScreenSize{ 20, 14 };
+    constexpr auto kTypeColumnXY = kInvisibleFlagColumnXY + ScreenSize{ kInvisibleFlagColumnSize.width, 0 };
+    constexpr auto kTypeColumnSize = ScreenSize{ 252, 14 };
+    constexpr auto kBaseHeightColumnXY = kTypeColumnXY + ScreenSize{ kTypeColumnSize.width, 0 };
+    constexpr auto kBaseHeightColumnSize = ScreenSize{ 30, 14 };
+    constexpr auto kClearanceHeightColumnXY = kBaseHeightColumnXY + ScreenCoordsXY{ kBaseHeightColumnSize.width, 0 };
+    constexpr auto kClearanceHeightColumnSize = ScreenSize{ 30, 14 };
+    constexpr auto kDirectionColumnXY = kClearanceHeightColumnXY + ScreenCoordsXY{ kClearanceHeightColumnSize.width, 0 };
+    constexpr auto kDirectionColumnSize = ScreenSize{ 15, 14 };
+    constexpr auto kGhostFlagColumnXY = kDirectionColumnXY + ScreenCoordsXY{ kDirectionColumnSize.width, 0 };
+    constexpr auto kGhostFlagColumnSize = ScreenSize{ 15, 14 };
+    constexpr auto kLastFlagColumnXY = kGhostFlagColumnXY + ScreenCoordsXY{ kGhostFlagColumnSize.width, 0 };
+    constexpr auto kLastFlagColumnSize = ScreenSize{ 32, 14 };
 
-    constexpr int32_t PADDING_BOTTOM = 15;
-    constexpr int32_t GROUPBOX_PADDING = 6;
-    constexpr int32_t HORIZONTAL_GROUPBOX_PADDING = 5;
-    constexpr int32_t VERTICAL_GROUPBOX_PADDING = 4;
-    constexpr auto PropertyButtonSize = ScreenSize{ 130, 18 };
-    constexpr auto PropertyFullWidth = ScreenSize{ 370, 18 };
+    constexpr int32_t kBottomPadding = 15;
+    constexpr int32_t kGroupboxPadding = 6;
+    constexpr int32_t kHorizontalGroupboxPadding = 5;
+    constexpr int32_t kVerticalGroupboxPadding = 4;
+    constexpr auto kPropertyButtonSize = ScreenSize{ 130, 18 };
+    constexpr auto kPropertyFullWidth = ScreenSize{ 370, 18 };
 
 #pragma endregion
 
     // clang-format off
     constexpr ScreenCoordsXY PropertyRowCol(ScreenCoordsXY anchor, int32_t row, int32_t column)
     {
-        return anchor + ScreenCoordsXY{ column * (PropertyButtonSize.width + HORIZONTAL_GROUPBOX_PADDING),
-                                        row * (PropertyButtonSize.height + VERTICAL_GROUPBOX_PADDING) };
+        return anchor + ScreenCoordsXY{ column * (kPropertyButtonSize.width + kHorizontalGroupboxPadding),
+                                        row * (kPropertyButtonSize.height + kVerticalGroupboxPadding) };
     }
 
     constexpr ScreenCoordsXY CheckboxGroupOffset(
@@ -273,36 +269,36 @@ namespace OpenRCT2::Ui::Windows
     }
 
     // Macros for easily obtaining the top and bottom of a widget inside a properties group box
-    #define GBBT(GROUPTOP, row)     ((GROUPTOP) + 14 + row * (PropertyButtonSize.height + VERTICAL_GROUPBOX_PADDING))
-    #define GBBB(GROUPTOP, row)     (GBBT((GROUPTOP), row) + PropertyButtonSize.height)
+    #define GBBT(GROUPTOP, row)     ((GROUPTOP) + 14 + row * (kPropertyButtonSize.height + kVerticalGroupboxPadding))
+    #define GBBB(GROUPTOP, row)     (GBBT((GROUPTOP), row) + kPropertyButtonSize.height)
 
     static constexpr auto kMainTileInspectorWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
-        makeWidget({3, 57}, {WW - 6, WH - PADDING_BOTTOM - 58}, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL), /* Element list */
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({3, 57}, {kWindowSize.width - 6, kWindowSize.height - kBottomPadding - 58}, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL), /* Element list */
         /* X and Y spinners */
         makeWidget        ({ 4, 24}, {38, 14}, WidgetType::label,   WindowColour::secondary,  STR_TILE_INSPECTOR_X_LABEL),
         makeSpinnerWidgets({20, 23}, {51, 12}, WidgetType::spinner, WindowColour::secondary), /* Spinner X (3 widgets) */
         makeWidget        ({74, 24}, {38, 14}, WidgetType::label,   WindowColour::secondary,  STR_TILE_INSPECTOR_Y_LABEL),
         makeSpinnerWidgets({90, 23}, {51, 12}, WidgetType::spinner, WindowColour::secondary), /* Spinner Y (3 widgets) */
         /* Top buttons */
-        makeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 0,                     ToolbarButtonSize,     WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_DEMOLISH),     STR_REMOVE_SELECTED_ELEMENT_TIP ),    /* Remove button */
-        makeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 1,                     ToolbarButtonHalfSize, WidgetType::button,      WindowColour::secondary, STR_UP,           STR_MOVE_SELECTED_ELEMENT_UP_TIP),    /* Move up */
-        makeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 1 + ScreenSize{0, 12}, ToolbarButtonHalfSize, WidgetType::button,      WindowColour::secondary, STR_DOWN,         STR_MOVE_SELECTED_ELEMENT_DOWN_TIP),  /* Move down */
-        makeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 2,                     ToolbarButtonSize,     WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_ROTATE_ARROW), STR_ROTATE_SELECTED_ELEMENT_TIP),     /* Rotate button */
-        makeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 3,                     ToolbarButtonSize,     WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_G2_SORT),      STR_TILE_INSPECTOR_SORT_TIP),         /* Sort button */
-        makeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 4,                     ToolbarButtonSize,     WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_G2_PASTE),     STR_TILE_INSPECTOR_PASTE_TIP),        /* Paste button */
-        makeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 5,                     ToolbarButtonSize,     WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_G2_COPY),      STR_TILE_INSPECTOR_COPY_TIP),         /* Copy button */
+        makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 0,                     kToolbarButtonSize,     WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_DEMOLISH),     STR_REMOVE_SELECTED_ELEMENT_TIP ),    /* Remove button */
+        makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 1,                     kToolbarButtonHalfSize, WidgetType::button,      WindowColour::secondary, STR_UP,           STR_MOVE_SELECTED_ELEMENT_UP_TIP),    /* Move up */
+        makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 1 + ScreenSize{0, 12}, kToolbarButtonHalfSize, WidgetType::button,      WindowColour::secondary, STR_DOWN,         STR_MOVE_SELECTED_ELEMENT_DOWN_TIP),  /* Move down */
+        makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 2,                     kToolbarButtonSize,     WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_ROTATE_ARROW), STR_ROTATE_SELECTED_ELEMENT_TIP),     /* Rotate button */
+        makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 3,                     kToolbarButtonSize,     WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_G2_SORT),      STR_TILE_INSPECTOR_SORT_TIP),         /* Sort button */
+        makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 4,                     kToolbarButtonSize,     WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_G2_PASTE),     STR_TILE_INSPECTOR_PASTE_TIP),        /* Paste button */
+        makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 5,                     kToolbarButtonSize,     WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_G2_COPY),      STR_TILE_INSPECTOR_COPY_TIP),         /* Copy button */
         /* Column headers */
-        makeWidget(InvisibleFlagColumnXY,   InvisibleFlagColumnSize,   WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_INVISIBLE_SHORT,        STR_TILE_INSPECTOR_FLAG_INVISIBLE),   /* Invisible flag */
-        makeWidget(TypeColumnXY,            TypeColumnSize,            WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_ELEMENT_TYPE),                                                /* Type */
-        makeWidget(BaseHeightColumnXY,      BaseHeightColumnSize,      WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT,      STR_TILE_INSPECTOR_BASE_HEIGHT),      /* Base height */
-        makeWidget(ClearanceHeightColumnXY, ClearanceHeightColumnSize, WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, STR_TILE_INSPECTOR_CLEARANCE_HEIGHT), /* Clearance height */
-        makeWidget(DirectionColumnXY,       DirectionColumnSize,       WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_DIRECTION_SHORT,        STR_TILE_INSPECTOR_DIRECTION),        /* Direction */
-        makeWidget(GhostFlagColumnXY,       GhostFlagColumnSize,       WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_FLAG_GHOST_SHORT,       STR_TILE_INSPECTOR_FLAG_GHOST),       /* Ghost flag */
-        makeWidget(LastFlagColumnXY,        LastFlagColumnSize,        WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_FLAG_LAST_SHORT,        STR_TILE_INSPECTOR_FLAG_LAST),        /* Last of tile flag */
+        makeWidget(kInvisibleFlagColumnXY,   kInvisibleFlagColumnSize,   WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_INVISIBLE_SHORT,        STR_TILE_INSPECTOR_FLAG_INVISIBLE),   /* Invisible flag */
+        makeWidget(kTypeColumnXY,            kTypeColumnSize,            WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_ELEMENT_TYPE),                                                /* Type */
+        makeWidget(kBaseHeightColumnXY,      kBaseHeightColumnSize,      WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT,      STR_TILE_INSPECTOR_BASE_HEIGHT),      /* Base height */
+        makeWidget(kClearanceHeightColumnXY, kClearanceHeightColumnSize, WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, STR_TILE_INSPECTOR_CLEARANCE_HEIGHT), /* Clearance height */
+        makeWidget(kDirectionColumnXY,       kDirectionColumnSize,       WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_DIRECTION_SHORT,        STR_TILE_INSPECTOR_DIRECTION),        /* Direction */
+        makeWidget(kGhostFlagColumnXY,       kGhostFlagColumnSize,       WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_FLAG_GHOST_SHORT,       STR_TILE_INSPECTOR_FLAG_GHOST),       /* Ghost flag */
+        makeWidget(kLastFlagColumnXY,        kLastFlagColumnSize,        WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_FLAG_LAST_SHORT,        STR_TILE_INSPECTOR_FLAG_LAST),        /* Last of tile flag */
         /* Group boxes */
-        makeWidget({6, 0},             {WW - 12, 0}, WidgetType::groupbox,    WindowColour::secondary, kStringIdNone,                               kStringIdNone ), /* Details group box */
-        makeWidget({6, 0},             {WW - 12, 0}, WidgetType::groupbox,    WindowColour::secondary, STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES, kStringIdNone )  /* Properties group box */
+        makeWidget({6, 0},             {kWindowSize.width - 12, 0}, WidgetType::groupbox,    WindowColour::secondary, kStringIdNone,                               kStringIdNone ), /* Details group box */
+        makeWidget({6, 0},             {kWindowSize.width - 12, 0}, WidgetType::groupbox,    WindowColour::secondary, STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES, kStringIdNone )  /* Properties group box */
     );
 
     static constexpr auto DefaultWidgets = makeWidgets(
@@ -315,14 +311,14 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t SurfaceDetailsHeight = 20 + NumSurfaceDetails * 11;
     static constexpr auto SurfaceWidgets = makeWidgets(
         kMainTileInspectorWidgets,
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), PropertyButtonSize, WidgetType::spinner, WindowColour::secondary), // WIDX_SURFACE_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
-        makeWidget(PropertyRowCol({ 12, 0 }, 1, 0),         PropertyButtonSize, WidgetType::button,  WindowColour::secondary, STR_TILE_INSPECTOR_SURFACE_REMOVE_FENCES), // WIDX_SURFACE_BUTTON_REMOVE_FENCES
-        makeWidget(PropertyRowCol({ 12, 0 }, 1, 1),         PropertyButtonSize, WidgetType::button,  WindowColour::secondary, STR_TILE_INSPECTOR_SURFACE_RESTORE_FENCES), // WIDX_SURFACE_BUTTON_RESTORE_FENCES
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertyButtonSize, WidgetType::spinner, WindowColour::secondary), // WIDX_SURFACE_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
+        makeWidget(PropertyRowCol({ 12, 0 }, 1, 0),         kPropertyButtonSize, WidgetType::button,  WindowColour::secondary, STR_TILE_INSPECTOR_SURFACE_REMOVE_FENCES), // WIDX_SURFACE_BUTTON_REMOVE_FENCES
+        makeWidget(PropertyRowCol({ 12, 0 }, 1, 1),         kPropertyButtonSize, WidgetType::button,  WindowColour::secondary, STR_TILE_INSPECTOR_SURFACE_RESTORE_FENCES), // WIDX_SURFACE_BUTTON_RESTORE_FENCES
         makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 1, 0), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_N
         makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 2, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_E
         makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 1, 2), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_S
         makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 3, 1), 0, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SURFACE_CHECK_CORNER_W
-        makeWidget(PropertyRowCol({ 12, 0 }, 4, 0), PropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_SURFACE_DIAGONAL) // WIDX_SURFACE_CHECK_DIAGONAL
+        makeWidget(PropertyRowCol({ 12, 0 }, 4, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_SURFACE_DIAGONAL) // WIDX_SURFACE_CHECK_DIAGONAL
     );
 
     constexpr int32_t NumPathProperties = 6;
@@ -331,10 +327,10 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t PathDetailsHeight = 20 + NumPathDetails * 11;
     static constexpr auto PathWidgets = makeWidgets(
         kMainTileInspectorWidgets,
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), PropertyButtonSize, WidgetType::spinner, WindowColour::secondary), // WIDX_PATH_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
-        makeWidget(PropertyRowCol({ 12, 0 }, 1, 0), PropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_PATH_BROKEN), // WIDX_PATH_CHECK_BROKEN
-        makeWidget(PropertyRowCol({ 12, 0 }, 2, 0), PropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_PATH_SLOPED), // WIDX_PATH_CHECK_SLOPED
-        makeWidget(PropertyRowCol({ 12, 0 }, 3, 0), PropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_PATH_JUNCTION_RAILINGS), // WIDX_PATH_CHECK_JUNCTION_RAILINGS
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertyButtonSize, WidgetType::spinner, WindowColour::secondary), // WIDX_PATH_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
+        makeWidget(PropertyRowCol({ 12, 0 }, 1, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_PATH_BROKEN), // WIDX_PATH_CHECK_BROKEN
+        makeWidget(PropertyRowCol({ 12, 0 }, 2, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_PATH_SLOPED), // WIDX_PATH_CHECK_SLOPED
+        makeWidget(PropertyRowCol({ 12, 0 }, 3, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_PATH_JUNCTION_RAILINGS), // WIDX_PATH_CHECK_JUNCTION_RAILINGS
         makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 3, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_PATH_CHECK_EDGE_NE
         makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 4, 2), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_PATH_CHECK_EDGE_E
         makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 4, 1), 3, 3), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_PATH_CHECK_EDGE_SE
@@ -351,11 +347,11 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t TrackDetailsHeight = 20 + NumTrackDetails * 11;
     static constexpr auto TrackWidgets = makeWidgets(
         kMainTileInspectorWidgets,
-        makeWidget(PropertyRowCol({ 12, 0}, 0, 0), PropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_ENTIRE_TRACK_PIECE), // WIDX_TRACK_CHECK_APPLY_TO_ALL
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 1, 1), PropertyButtonSize, WidgetType::spinner, WindowColour::secondary), // WIDX_TRACK_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
-        makeWidget(PropertyRowCol({ 12, 0}, 2, 0), PropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_CHAIN_LIFT), // WIDX_TRACK_CHECK_CHAIN_LIFT
-        makeWidget(PropertyRowCol({ 12, 0}, 3, 0), PropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_BRAKE_CLOSED), // WIDX_TRACK_CHECK_BRAKE_CLOSED
-        makeWidget(PropertyRowCol({ 12, 0}, 4, 0), PropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_IS_INDESTRUCTIBLE) // WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE
+        makeWidget(PropertyRowCol({ 12, 0}, 0, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_ENTIRE_TRACK_PIECE), // WIDX_TRACK_CHECK_APPLY_TO_ALL
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 1, 1), kPropertyButtonSize, WidgetType::spinner, WindowColour::secondary), // WIDX_TRACK_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
+        makeWidget(PropertyRowCol({ 12, 0}, 2, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_CHAIN_LIFT), // WIDX_TRACK_CHECK_CHAIN_LIFT
+        makeWidget(PropertyRowCol({ 12, 0}, 3, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_BRAKE_CLOSED), // WIDX_TRACK_CHECK_BRAKE_CLOSED
+        makeWidget(PropertyRowCol({ 12, 0}, 4, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_IS_INDESTRUCTIBLE) // WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE
     );
 
     constexpr int32_t NumSceneryProperties = 4; // The checkbox groups both count for 2 rows
@@ -364,7 +360,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t SceneryDetailsHeight = 20 + NumSceneryDetails * 11;
     static constexpr auto SceneryWidgets = makeWidgets(
         kMainTileInspectorWidgets,
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), PropertyButtonSize, WidgetType::spinner, WindowColour::secondary), // WIDX_SCENERY_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertyButtonSize, WidgetType::spinner, WindowColour::secondary), // WIDX_SCENERY_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
         makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 0), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_QUARTER_N
         makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 2, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_QUARTER_E
         makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 2), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_SCENERY_CHECK_QUARTER_S
@@ -381,8 +377,8 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t EntranceDetailsHeight = 20 + NumEntranceDetails * 11;
     static constexpr auto EntranceWidgets = makeWidgets(
         kMainTileInspectorWidgets,
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), PropertyButtonSize, WidgetType::spinner, WindowColour::secondary), // WIDX_ENTRANCE_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
-        makeWidget(PropertyRowCol({ 12, 0 }, 1, 0),         PropertyButtonSize, WidgetType::button,  WindowColour::secondary, STR_TILE_INSPECTOR_ENTRANCE_MAKE_USABLE, STR_TILE_INSPECTOR_ENTRANCE_MAKE_USABLE_TIP) // WIDX_ENTRANCE_BUTTON_MAKE_USABLE
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertyButtonSize, WidgetType::spinner, WindowColour::secondary), // WIDX_ENTRANCE_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
+        makeWidget(PropertyRowCol({ 12, 0 }, 1, 0),         kPropertyButtonSize, WidgetType::button,  WindowColour::secondary, STR_TILE_INSPECTOR_ENTRANCE_MAKE_USABLE, STR_TILE_INSPECTOR_ENTRANCE_MAKE_USABLE_TIP) // WIDX_ENTRANCE_BUTTON_MAKE_USABLE
     );
 
     constexpr int32_t NumWallProperties = 4;
@@ -391,11 +387,11 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t WallDetailsHeight = 20 + NumWallDetails * 11;
     static constexpr auto WallWidgets = makeWidgets(
         kMainTileInspectorWidgets,
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1),                 PropertyButtonSize, WidgetType::spinner,      WindowColour::secondary), // WIDX_WALL_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
-        makeWidget(PropertyRowCol({ 12, 0 }, 1, 1),                         PropertyButtonSize, WidgetType::dropdownMenu, WindowColour::secondary), // WIDX_WALL_DROPDOWN_SLOPE
-        makeWidget(PropertyRowCol({ 12 + PropertyButtonSize.width - 12, 0 }, 1, 1), { 11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH), // WIDX_WALL_DROPDOWN_SLOPE_BUTTON
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 2, 1),                 PropertyButtonSize, WidgetType::spinner,      WindowColour::secondary), // WIDX_WALL_SPINNER_ANIMATION_FRAME{,_INCREASE,_DECREASE}
-        makeWidget(PropertyRowCol({ 12, 0 }, 3, 0),                         PropertyFullWidth,  WidgetType::checkbox,     WindowColour::secondary, STR_TILE_INSPECTOR_WALL_ANIMATION_IS_BACKWARDS) // WIDX_WALL_ANIMATION_IS_BACKWARDS
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1),                 kPropertyButtonSize, WidgetType::spinner,      WindowColour::secondary), // WIDX_WALL_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
+        makeWidget(PropertyRowCol({ 12, 0 }, 1, 1),                         kPropertyButtonSize, WidgetType::dropdownMenu, WindowColour::secondary), // WIDX_WALL_DROPDOWN_SLOPE
+        makeWidget(PropertyRowCol({ 12 + kPropertyButtonSize.width - 12, 0 }, 1, 1), { 11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH), // WIDX_WALL_DROPDOWN_SLOPE_BUTTON
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 2, 1),                 kPropertyButtonSize, WidgetType::spinner,      WindowColour::secondary), // WIDX_WALL_SPINNER_ANIMATION_FRAME{,_INCREASE,_DECREASE}
+        makeWidget(PropertyRowCol({ 12, 0 }, 3, 0),                         kPropertyFullWidth,  WidgetType::checkbox,     WindowColour::secondary, STR_TILE_INSPECTOR_WALL_ANIMATION_IS_BACKWARDS) // WIDX_WALL_ANIMATION_IS_BACKWARDS
     );
 
     constexpr int32_t NumLargeSceneryProperties = 1;
@@ -404,7 +400,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t LargeSceneryDetailsHeight = 20 + NumLargeSceneryDetails * 11;
     static constexpr auto LargeSceneryWidgets = makeWidgets(
         kMainTileInspectorWidgets,
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), PropertyButtonSize, WidgetType::spinner, WindowColour::secondary) // WIDX_LARGE_SCENERY_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertyButtonSize, WidgetType::spinner, WindowColour::secondary) // WIDX_LARGE_SCENERY_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
     );
 
     constexpr int32_t NumBannerProperties = 3;
@@ -413,7 +409,7 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t BannerDetailsHeight = 20 + NumBannerDetails * 11;
     static constexpr auto BannerWidgets = makeWidgets(
         kMainTileInspectorWidgets,
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), PropertyButtonSize, WidgetType::spinner, WindowColour::secondary), // WIDX_BANNER_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1), kPropertyButtonSize, WidgetType::spinner, WindowColour::secondary), // WIDX_BANNER_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
         makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 3, 1), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_BANNER_CHECK_BLOCK_NE
         makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 3, 3), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_BANNER_CHECK_BLOCK_SE
         makeWidget(CheckboxGroupOffset(PropertyRowCol({ 12, 0 }, 1, 1), 1, 3), { 12, 12 }, WidgetType::checkbox, WindowColour::secondary), // WIDX_BANNER_CHECK_BLOCK_SW
@@ -447,9 +443,9 @@ namespace OpenRCT2::Ui::Windows
     {
         TileInspectorGroupboxSettings settings{};
         decltype(settings.properties_bottom_offset) offsetSum = 0;
-        settings.properties_bottom_offset = (offsetSum += PADDING_BOTTOM);
+        settings.properties_bottom_offset = (offsetSum += kBottomPadding);
         settings.properties_top_offset = (offsetSum += propertiesHeight);
-        settings.details_bottom_offset = (offsetSum += GROUPBOX_PADDING);
+        settings.details_bottom_offset = (offsetSum += kGroupboxPadding);
         settings.details_top_offset = (offsetSum += detailsHeight);
         settings.string_id = stringId;
         return settings;
@@ -514,7 +510,7 @@ static uint64_t PageDisabledWidgets[] = {
     public:
         void OnOpen() override
         {
-            WindowSetResize(*this, { MIN_WW, MIN_WH }, { MAX_WW, MAX_WH });
+            WindowSetResize(*this, kMinimumWindowSize, kMaximumWindowSize);
 
             windowTileInspectorSelectedIndex = -1;
             SetPage(TileInspectorPage::Default);
@@ -1015,7 +1011,7 @@ static uint64_t PageDisabledWidgets[] = {
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            return ScreenSize(WW - 30, windowTileInspectorElementCount * kScrollableRowHeight);
+            return ScreenSize(kWindowSize.width - 30, windowTileInspectorElementCount * kScrollableRowHeight);
         }
 
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
@@ -1714,31 +1710,32 @@ static uint64_t PageDisabledWidgets[] = {
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<char*>(typeName);
                 DrawTextEllipsised(
-                    rt, screenCoords + ScreenCoordsXY{ TypeColumnXY.x, 0 }, TypeColumnSize.width, stringFormat, ft);
+                    rt, screenCoords + ScreenCoordsXY{ kTypeColumnXY.x, 0 }, kTypeColumnSize.width, stringFormat, ft);
 
                 // Base height
                 ft = Formatter();
                 ft.Add<StringId>(STR_FORMAT_INTEGER);
                 ft.Add<int32_t>(tileElement->BaseHeight);
-                DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ BaseHeightColumnXY.x, 0 }, stringFormat, ft);
+                DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ kBaseHeightColumnXY.x, 0 }, stringFormat, ft);
 
                 // Clearance height
                 ft = Formatter();
                 ft.Add<StringId>(STR_FORMAT_INTEGER);
                 ft.Add<int32_t>(clearanceHeight);
-                DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ ClearanceHeightColumnXY.x, 0 }, stringFormat, ft);
+                DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ kClearanceHeightColumnXY.x, 0 }, stringFormat, ft);
 
                 // Direction
                 ft = Formatter();
                 ft.Add<StringId>(STR_FORMAT_INTEGER);
                 ft.Add<int32_t>(tileElement->GetDirection());
-                DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ DirectionColumnXY.x, 0 }, stringFormat, ft);
+                DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ kDirectionColumnXY.x, 0 }, stringFormat, ft);
 
                 // Checkmarks for ghost and last for tile
                 if (ghost)
-                    DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ GhostFlagColumnXY.x, 0 }, stringFormat, checkboxFormatter);
+                    DrawTextBasic(
+                        rt, screenCoords + ScreenCoordsXY{ kGhostFlagColumnXY.x, 0 }, stringFormat, checkboxFormatter);
                 if (last)
-                    DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ LastFlagColumnXY.x, 0 }, stringFormat, checkboxFormatter);
+                    DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ kLastFlagColumnXY.x, 0 }, stringFormat, checkboxFormatter);
 
                 screenCoords.y -= kScrollableRowHeight;
                 i++;
@@ -1770,14 +1767,14 @@ static uint64_t PageDisabledWidgets[] = {
             if (tileInspectorPage != TileInspectorPage::Default)
             {
                 auto index = EnumValue(tileInspectorPage) - 1;
-                height -= PageGroupBoxSettings[index].details_top_offset - GROUPBOX_PADDING - 3;
-                min_height -= PageGroupBoxSettings[index].details_top_offset - GROUPBOX_PADDING - 3;
+                height -= PageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
+                min_height -= PageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
             }
             if (p != TileInspectorPage::Default)
             {
                 auto index = EnumValue(p) - 1;
-                height += PageGroupBoxSettings[index].details_top_offset - GROUPBOX_PADDING - 3;
-                min_height += PageGroupBoxSettings[index].details_top_offset - GROUPBOX_PADDING - 3;
+                height += PageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
+                min_height += PageGroupBoxSettings[index].details_top_offset - kGroupboxPadding - 3;
             }
             tileInspectorPage = p;
             auto pageIndex = EnumValue(p);
@@ -2144,7 +2141,7 @@ static uint64_t PageDisabledWidgets[] = {
             {
                 widgets[WIDX_GROUPBOX_DETAILS].type = WidgetType::empty;
                 widgets[WIDX_GROUPBOX_PROPERTIES].type = WidgetType::empty;
-                widgets[WIDX_LIST].bottom = height - PADDING_BOTTOM;
+                widgets[WIDX_LIST].bottom = height - kBottomPadding;
             }
             else
             {
@@ -2156,7 +2153,7 @@ static uint64_t PageDisabledWidgets[] = {
                 widgets[WIDX_GROUPBOX_DETAILS].bottom = height - PageGroupBoxSettings[pageIndex].details_bottom_offset;
                 widgets[WIDX_GROUPBOX_PROPERTIES].top = height - PageGroupBoxSettings[pageIndex].properties_top_offset;
                 widgets[WIDX_GROUPBOX_PROPERTIES].bottom = height - PageGroupBoxSettings[pageIndex].properties_bottom_offset;
-                widgets[WIDX_LIST].bottom = widgets[WIDX_GROUPBOX_DETAILS].top - GROUPBOX_PADDING;
+                widgets[WIDX_LIST].bottom = widgets[WIDX_GROUPBOX_DETAILS].top - kGroupboxPadding;
             }
 
             // The default page doesn't need further invalidation
@@ -2441,7 +2438,7 @@ static uint64_t PageDisabledWidgets[] = {
         WindowBase* window = windowMgr->BringToFrontByClass(WindowClass::TileInspector);
         if (window == nullptr)
             window = windowMgr->Create<TileInspector>(
-                WindowClass::TileInspector, ScreenCoordsXY(0, 29), { WW, WH }, WF_RESIZABLE);
+                WindowClass::TileInspector, ScreenCoordsXY(0, 29), kWindowSize, WF_RESIZABLE);
         return window;
     }
 

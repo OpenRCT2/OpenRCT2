@@ -30,13 +30,12 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr int32_t kWindowWidthMin = 500;
-    static constexpr int32_t kWindowHeightMin = 288;
-    static constexpr int32_t kWindowWidthMax = 1200;
-    static constexpr int32_t kWindowHeightMax = 788;
+    static constexpr ScreenSize kMinimumWindowSize = { 500, 288 };
+    static constexpr ScreenSize kMaximumWindowSize = { 1200, 788 };
+    static constexpr ScreenSize kWindowSize = kMinimumWindowSize;
     static constexpr int32_t kItemHeight = (3 + 9 + 3);
 
-    constexpr size_t MaxPlayerNameLength = 32;
+    static constexpr size_t kMaxPlayerNameLength = 32;
 
     enum
     {
@@ -64,7 +63,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _serverListWidgets = makeWidgets(
-        makeWindowShim(STR_SERVER_LIST, { 340, 90 }),
+        makeWindowShim(STR_SERVER_LIST, kWindowSize),
         makeWidget({100, 20}, {245,  12}, WidgetType::textBox,  WindowColour::secondary                                         ), // player name text box
         makeWidget({  6, 37}, {489, 226}, WidgetType::scroll,   WindowColour::secondary                                         ), // server list
         makeWidget({  6, 53}, {101,  14}, WidgetType::button,   WindowColour::secondary, STR_FETCH_SERVERS                      ), // fetch servers button
@@ -103,7 +102,7 @@ namespace OpenRCT2::Ui::Windows
             page = 0;
             list_information_type = 0;
 
-            WindowSetResize(*this, { kWindowWidthMin, kWindowHeightMin }, { kWindowWidthMax, kWindowHeightMax });
+            WindowSetResize(*this, kMinimumWindowSize, kMaximumWindowSize);
 
             no_list_items = static_cast<uint16_t>(_serverList.GetCount());
 
@@ -125,7 +124,7 @@ namespace OpenRCT2::Ui::Windows
                     Close();
                     break;
                 case WIDX_PLAYER_NAME_INPUT:
-                    WindowStartTextbox(*this, widgetIndex, _playerName, MaxPlayerNameLength);
+                    WindowStartTextbox(*this, widgetIndex, _playerName, kMaxPlayerNameLength);
                     break;
                 case WIDX_LIST:
                 {
@@ -160,7 +159,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            WindowSetResize(*this, { kWindowWidthMin, kWindowHeightMin }, { kWindowWidthMax, kWindowHeightMax });
+            WindowSetResize(*this, kMinimumWindowSize, kMaximumWindowSize);
         }
 
         void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
@@ -545,7 +544,7 @@ namespace OpenRCT2::Ui::Windows
             return window;
 
         window = windowMgr->Create<ServerListWindow>(
-            WindowClass::ServerList, { kWindowWidthMin, kWindowHeightMin }, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
+            WindowClass::ServerList, kMinimumWindowSize, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
 
         return window;
     }

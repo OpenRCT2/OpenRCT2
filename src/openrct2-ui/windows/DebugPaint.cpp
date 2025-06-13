@@ -31,12 +31,11 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TOGGLE_STABLE_PAINT_SORT,
     };
 
-    constexpr int32_t WINDOW_WIDTH = 200;
-    constexpr int32_t WINDOW_HEIGHT = 8 + (15 * 6) + 8;
+    static constexpr ScreenSize kWindowSize = { 200, 8 + (15 * 6) + 8 };
 
     // clang-format off
     static constexpr Widget window_debug_paint_widgets[] = {
-        makeWidget({0,          0}, {WINDOW_WIDTH, WINDOW_HEIGHT}, WidgetType::frame,    WindowColour::primary                                        ),
+        makeWidget({0,          0}, kWindowSize,                   WidgetType::frame,    WindowColour::primary                                        ),
         makeWidget({8, 8 + 15 * 0}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_WIDE_PATHS     ),
         makeWidget({8, 8 + 15 * 1}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_BLOCKED_TILES  ),
         makeWidget({8, 8 + 15 * 2}, {         185,            12}, WidgetType::checkbox, WindowColour::secondary, STR_DEBUG_PAINT_SHOW_SEGMENT_HEIGHTS),
@@ -156,7 +155,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<DebugPaintWindow>(
-            WindowClass::DebugPaint, { 16, ContextGetHeight() - 16 - 33 - WINDOW_HEIGHT }, { WINDOW_WIDTH, WINDOW_HEIGHT },
+            WindowClass::DebugPaint, { 16, ContextGetHeight() - 16 - 33 - kWindowSize.height }, kWindowSize,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_TITLE_BAR);
 
         return window;

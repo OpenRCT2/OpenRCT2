@@ -17,8 +17,7 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr int32_t WW = 500;
-    static constexpr int32_t WH = 30;
+    static constexpr ScreenSize kWindowSize = { 500, 30 };
 
     static constexpr uint8_t kTextOffset = 8;
 
@@ -45,7 +44,7 @@ namespace OpenRCT2::Ui::Windows
         if (window == nullptr)
         {
             window = windowMgr->Create<TitleVersionWindow>(
-                WindowClass::TitleVersion, ScreenCoordsXY(kTextOffset, ContextGetHeight() - 30), { WW, WH },
+                WindowClass::TitleVersion, ScreenCoordsXY(kTextOffset, ContextGetHeight() - 30), kWindowSize,
                 WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_TITLE_BAR);
         }
         return window;

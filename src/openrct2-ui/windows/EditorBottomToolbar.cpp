@@ -31,6 +31,8 @@
 
 namespace OpenRCT2::Ui::Windows
 {
+    static constexpr int32_t kToolbarHeight = 32;
+
     enum
     {
         WIDX_PREVIOUS_IMAGE,       // 1
@@ -446,8 +448,8 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->Create<EditorBottomToolbarWindow>(
-            WindowClass::BottomToolbar, ScreenCoordsXY(0, ContextGetHeight() - 32), { ContextGetWidth(), 32 },
-            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
+            WindowClass::BottomToolbar, ScreenCoordsXY(0, ContextGetHeight() - kToolbarHeight),
+            { ContextGetWidth(), kToolbarHeight }, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
 
         return window;
     }

@@ -55,14 +55,14 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
-    static constexpr ScreenSize kWindowSizeInit = { 400, 350 };
-    static constexpr ScreenSize kWindowSizeMin = { 300, kWindowSizeInit.height / 2 };
-    static constexpr ScreenSize kWindowSizeMax = kWindowSizeInit * 3;
+    static constexpr ScreenSize kWindowSize = { 400, 350 };
+    static constexpr ScreenSize kWindowSizeMin = { 300, kWindowSize.height / 2 };
+    static constexpr ScreenSize kWindowSizeMax = kWindowSize * 3;
 
     static constexpr auto kPadding = 5;
 
     static constexpr auto kPreviewWidth = 250;
-    static constexpr auto kWindowSizeMinPreview = ScreenSize{ kWindowSizeInit.width + kPreviewWidth, kWindowSizeInit.height };
+    static constexpr auto kWindowSizeMinPreview = ScreenSize{ kWindowSize.width + kPreviewWidth, kWindowSize.height };
 
     static constexpr int kKibiByte = 1024;
     static constexpr int kMebiByte = kKibiByte * 1024;
@@ -96,24 +96,21 @@ namespace OpenRCT2::Ui::Windows
         WIDX_SAVE,
     };
 
-    static constexpr int16_t WW = kWindowSizeInit.width;
-    static constexpr int16_t WH = kWindowSizeInit.height;
-
     // clang-format off
     static constexpr auto window_loadsave_widgets = makeWidgets(
-        makeWindowShim(kStringIdNone, { WW, WH }),
-        makeWidget({                0,      15 }, {       WW,  WH - 15 }, WidgetType::resize,      WindowColour::secondary                                                                ), // WIDX_RESIZE
-        makeWidget({     WW - 100 - 4,      20 }, {       20,       20 }, WidgetType::flatBtn,     WindowColour::primary,   SPR_G2_FOLDER_PARENT,        STR_PARENT_FOLDER_TIP            ), // WIDX_PARENT_FOLDER
-        makeWidget({     WW -  50 - 4,      20 }, {       20,       20 }, WidgetType::flatBtn,     WindowColour::primary,   SPR_G2_FOLDER_NEW,           STR_FILEBROWSER_ACTION_NEW_FOLDER), // WIDX_NEW_FOLDER
-        makeWidget({     WW -  75 - 4,      20 }, {       20,       20 }, WidgetType::flatBtn,     WindowColour::primary,   SPR_G2_FOLDER_DEFAULT,       STR_LOADSAVE_DEFAULT_TIP         ), // WIDX_DEFAULT_FOLDER
-        makeWidget({     WW -  25 - 4,      20 }, {       20,       20 }, WidgetType::flatBtn,     WindowColour::primary,   SPR_G2_SYSTEM_BROWSER,       STR_FILEBROWSER_USE_SYSTEM_WINDOW), // WIDX_SYSTEM_BROWSER
+        makeWindowShim(kStringIdNone, kWindowSize),
+        makeWidget({                0,      15 }, {       kWindowSize.width,  kWindowSize.height - 15 }, WidgetType::resize,      WindowColour::secondary                                                                ), // WIDX_RESIZE
+        makeWidget({     kWindowSize.width - 100 - 4,      20 }, {       20,       20 }, WidgetType::flatBtn,     WindowColour::primary,   SPR_G2_FOLDER_PARENT,        STR_PARENT_FOLDER_TIP            ), // WIDX_PARENT_FOLDER
+        makeWidget({     kWindowSize.width -  50 - 4,      20 }, {       20,       20 }, WidgetType::flatBtn,     WindowColour::primary,   SPR_G2_FOLDER_NEW,           STR_FILEBROWSER_ACTION_NEW_FOLDER), // WIDX_NEW_FOLDER
+        makeWidget({     kWindowSize.width -  75 - 4,      20 }, {       20,       20 }, WidgetType::flatBtn,     WindowColour::primary,   SPR_G2_FOLDER_DEFAULT,       STR_LOADSAVE_DEFAULT_TIP         ), // WIDX_DEFAULT_FOLDER
+        makeWidget({     kWindowSize.width -  25 - 4,      20 }, {       20,       20 }, WidgetType::flatBtn,     WindowColour::primary,   SPR_G2_SYSTEM_BROWSER,       STR_FILEBROWSER_USE_SYSTEM_WINDOW), // WIDX_SYSTEM_BROWSER
         makeWidget({                4,      45 }, {      160,       14 }, WidgetType::tableHeader, WindowColour::primary                                                                  ), // WIDX_SORT_NAME
-        makeWidget({ (WW - 5) / 3 + 1,      45 }, {      160,       14 }, WidgetType::tableHeader, WindowColour::primary                                                                  ), // WIDX_SORT_SIZE
-        makeWidget({ (WW - 5) / 3 + 1,      45 }, {      160,       14 }, WidgetType::tableHeader, WindowColour::primary                                                                  ), // WIDX_SORT_DATE
-        makeWidget({        (WW - 19),      45 }, {       14,       14 }, WidgetType::button,      WindowColour::primary,   STR_DROPDOWN_GLYPH                                            ), // WIDX_SORT_CUSTOMISE
+        makeWidget({ (kWindowSize.width - 5) / 3 + 1,      45 }, {      160,       14 }, WidgetType::tableHeader, WindowColour::primary                                                                  ), // WIDX_SORT_SIZE
+        makeWidget({ (kWindowSize.width - 5) / 3 + 1,      45 }, {      160,       14 }, WidgetType::tableHeader, WindowColour::primary                                                                  ), // WIDX_SORT_DATE
+        makeWidget({        (kWindowSize.width - 19),      45 }, {       14,       14 }, WidgetType::button,      WindowColour::primary,   STR_DROPDOWN_GLYPH                                            ), // WIDX_SORT_CUSTOMISE
         makeWidget({                4,      58 }, {      342,      303 }, WidgetType::scroll,      WindowColour::primary,   SCROLL_VERTICAL                                               ), // WIDX_SCROLL
-        makeWidget({               64, WH - 50 }, { WW - 133,       14 }, WidgetType::textBox,     WindowColour::secondary                                                                ), // WIDX_FILENAME_TEXTBOX
-        makeWidget({          WW - 65, WH - 50 }, {       60,       14 }, WidgetType::button,      WindowColour::secondary, STR_FILEBROWSER_SAVE_BUTTON                                   )  // WIDX_SAVE
+        makeWidget({               64, kWindowSize.height - 50 }, { kWindowSize.width - 133,       14 }, WidgetType::textBox,     WindowColour::secondary                                                                ), // WIDX_FILENAME_TEXTBOX
+        makeWidget({          kWindowSize.width - 65, kWindowSize.height - 50 }, {       60,       14 }, WidgetType::button,      WindowColour::secondary, STR_FILEBROWSER_SAVE_BUTTON                                   )  // WIDX_SAVE
     );
     // clang-format on
 
@@ -1126,17 +1123,16 @@ namespace OpenRCT2::Ui::Windows
             if (config.FileBrowserWidth < kWindowSizeMin.width || config.FileBrowserHeight < kWindowSizeMin.height
                 || config.FileBrowserWidth > kWindowSizeMax.width || config.FileBrowserHeight > kWindowSizeMax.height)
             {
-                config.FileBrowserWidth = kWindowSizeInit.width;
-                config.FileBrowserHeight = kWindowSizeInit.height;
+                config.FileBrowserWidth = kWindowSize.width;
+                config.FileBrowserHeight = kWindowSize.height;
                 Config::Save();
             }
 
-            auto width = config.FileBrowserWidth;
-            auto height = config.FileBrowserHeight;
+            ScreenSize windowSize = { config.FileBrowserWidth, config.FileBrowserHeight };
 
             w = windowMgr->Create<LoadSaveWindow>(
-                WindowClass::Loadsave, { width, height },
-                WF_STICK_TO_FRONT | WF_RESIZABLE | WF_AUTO_POSITION | WF_CENTRE_SCREEN, action, type);
+                WindowClass::Loadsave, windowSize, WF_STICK_TO_FRONT | WF_RESIZABLE | WF_AUTO_POSITION | WF_CENTRE_SCREEN,
+                action, type);
         }
 
         bool isSave = action == LoadSaveAction::save;

@@ -85,9 +85,8 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Measurements
 
-    static constexpr StringId WINDOW_TITLE = STR_FOOTPATHS;
-    static constexpr int32_t WH_WINDOW = 421;
-    static constexpr int32_t WW_WINDOW = 106;
+    static constexpr StringId kWindowTitle = STR_FOOTPATHS;
+    static constexpr ScreenSize kWindowSize = { 106, 421 };
 
 #pragma endregion
 
@@ -124,7 +123,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_footpath_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW_WINDOW, WH_WINDOW }),
+        makeWindowShim(kWindowTitle, kWindowSize),
 
         // Type group
         makeWidget({ 3,  17}, {100, 95}, WidgetType::groupbox, WindowColour::primary  , STR_TYPE                                                                          ),
@@ -1634,7 +1633,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<FootpathWindow>(WindowClass::Footpath, { WW_WINDOW, WH_WINDOW }, 0);
+        return windowMgr->FocusOrCreate<FootpathWindow>(WindowClass::Footpath, kWindowSize, 0);
     }
 
     void WindowFootpathResetSelectedPath()

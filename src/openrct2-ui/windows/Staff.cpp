@@ -42,10 +42,9 @@ using namespace OpenRCT2::Numerics;
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_STRINGID;
+    static constexpr StringId kWindowTitle = STR_STRINGID;
 
-    static constexpr int32_t WW = 190;
-    static constexpr int32_t WH = 180;
+    static constexpr ScreenSize kWindowSize = { 190, 180 };
 
     enum WindowStaffPage
     {
@@ -86,7 +85,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto kMainStaffWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({ 0, 43 }, { 190, 137 }, WidgetType::resize, WindowColour::secondary),
         makeTab({ 3, 17 }, STR_STAFF_OVERVIEW_TIP),
         makeTab({ 34, 17 }, STR_STAFF_OPTIONS_TIP),
@@ -96,12 +95,12 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto _staffOverviewWidgets = makeWidgets(
         kMainStaffWidgets,
         makeWidget     ({      3,      47}, {162, 120}, WidgetType::viewport,      WindowColour::secondary                                        ), // Viewport
-        makeWidget     ({      3, WH - 13}, {162,  11}, WidgetType::labelCentred, WindowColour::secondary                                        ), // Label at bottom of viewport
-        makeWidget     ({WW - 25,      45}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_PICKUP_BTN), STR_PICKUP_TIP        ), // Pickup Button
-        makeWidget     ({WW - 25,      69}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_PATROL_BTN), STR_SET_PATROL_TIP    ), // Patrol Button
-        makeWidget     ({WW - 25,      93}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_RENAME),     STR_NAME_STAFF_TIP    ), // Rename Button
-        makeWidget     ({WW - 25,     117}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_LOCATE),     STR_LOCATE_SUBJECT_TIP), // Locate Button
-        makeWidget     ({WW - 25,     141}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_DEMOLISH),   STR_FIRE_STAFF_TIP    )  // Fire Button
+        makeWidget     ({      3, kWindowSize.height - 13}, {162,  11}, WidgetType::labelCentred, WindowColour::secondary                                        ), // Label at bottom of viewport
+        makeWidget     ({kWindowSize.width - 25,      45}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_PICKUP_BTN), STR_PICKUP_TIP        ), // Pickup Button
+        makeWidget     ({kWindowSize.width - 25,      69}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_PATROL_BTN), STR_SET_PATROL_TIP    ), // Patrol Button
+        makeWidget     ({kWindowSize.width - 25,      93}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_RENAME),     STR_NAME_STAFF_TIP    ), // Rename Button
+        makeWidget     ({kWindowSize.width - 25,     117}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_LOCATE),     STR_LOCATE_SUBJECT_TIP), // Locate Button
+        makeWidget     ({kWindowSize.width - 25,     141}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_DEMOLISH),   STR_FIRE_STAFF_TIP    )  // Fire Button
     );
 
     //0x9AF910
@@ -112,7 +111,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget     ({      5,  84}, {180,  12}, WidgetType::checkbox, WindowColour::secondary                                            ), // Checkbox 3
         makeWidget     ({      5, 101}, {180,  12}, WidgetType::checkbox, WindowColour::secondary                                            ), // Checkbox 4
         makeWidget     ({      5,  50}, {180,  12}, WidgetType::dropdownMenu, WindowColour::secondary                                            ), // Costume Dropdown
-        makeWidget     ({WW - 17,  51}, { 11,  10}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP) // Costume Dropdown Button
+        makeWidget     ({kWindowSize.width - 17,  51}, { 11,  10}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP) // Costume Dropdown Button
     );
 
     // 0x9AF9F4
@@ -614,7 +613,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OverviewResize()
         {
-            WindowSetResize(*this, { WW, WH }, { 500, 450 });
+            WindowSetResize(*this, kWindowSize, { 500, 450 });
 
             ViewportInit();
         }
@@ -1227,7 +1226,7 @@ namespace OpenRCT2::Ui::Windows
         if (w != nullptr)
             return w;
 
-        w = windowMgr->Create<StaffWindow>(WindowClass::Peep, { WW, WH }, WF_10 | WF_RESIZABLE);
+        w = windowMgr->Create<StaffWindow>(WindowClass::Peep, kWindowSize, WF_10 | WF_RESIZABLE);
         if (w == nullptr)
             return nullptr;
 
