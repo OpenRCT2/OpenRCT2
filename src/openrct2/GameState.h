@@ -156,5 +156,6 @@ namespace OpenRCT2
     void gameStateInitAll(GameState_t& gameState, const TileCoordsXY& mapSize);
     void gameStateTick();
     void gameStateUpdateLogic();
+    void updateViewportScrollingTimestamp();
 
 } // namespace OpenRCT2

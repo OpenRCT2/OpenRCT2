@@ -24,6 +24,7 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/Audio.h>
@@ -1620,7 +1621,10 @@ namespace OpenRCT2
         else if (cursorState->position.y >= ContextGetHeight() - 1)
             scrollY = 1;
 
-        InputScrollViewport(ScreenCoordsXY(scrollX, scrollY));
+        if (scrollX != 0 || scrollY != 0)
+        {
+            InputScrollViewport(ScreenCoordsXY(scrollX, scrollY));
+        }
     }
 
     void InputScrollViewport(const ScreenCoordsXY& scrollScreenCoords)
@@ -1682,11 +1686,13 @@ namespace OpenRCT2
 
             mainWindow->savedViewPos.x += dx;
             gInputFlags.set(InputFlag::viewportScrolling);
+            updateViewportScrollingTimestamp();
         }
         if (scrollScreenCoords.y != 0)
         {
             mainWindow->savedViewPos.y += dy;
             gInputFlags.set(InputFlag::viewportScrolling);
+            updateViewportScrollingTimestamp();
         }
     }
 
@@ -1729,5 +1735,6 @@ namespace OpenRCT2
 
         WindowUnfollowSprite(*mainWindow);
         gInputFlags.set(InputFlag::viewportScrolling);
+        updateViewportScrollingTimestamp();
     }
 } // namespace OpenRCT2

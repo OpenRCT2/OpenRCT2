@@ -30,11 +30,24 @@
 #include "world/MapAnimation.h"
 #include "world/Scenery.h"
 
+#include <chrono>
+
 using namespace OpenRCT2::Scripting;
 
 namespace OpenRCT2
 {
     static auto _gameState = std::make_unique<GameState_t>();
+
+    // Track viewport scrolling timing to prevent premature flag clearing during Steam overlay detection
+    static uint32_t _lastViewportScrollTime = 0;
+    static constexpr uint32_t VIEWPORT_SCROLL_FLAG_DELAY_MS = 50; // Keep flag set for 50ms after scrolling
+
+    static uint32_t GetCurrentTimeMs()
+    {
+        auto now = std::chrono::steady_clock::now();
+        auto duration = now.time_since_epoch();
+        return static_cast<uint32_t>(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count());
+    }
 
     GameState_t& getGameState()
     {
@@ -188,8 +201,19 @@ namespace OpenRCT2
                 {
                     if (gInputFlags.has(InputFlag::viewportScrolling))
                     {
-                        gInputFlags.unset(InputFlag::viewportScrolling);
-                        break;
+                        // Check if enough time has passed since scrolling was last active to allow Steam overlay detection
+                        uint32_t currentTime = GetCurrentTimeMs();
+                        if (_lastViewportScrollTime == 0)
+                        {
+                            // First time detecting the flag, initialize timestamp but don't clear yet
+                            _lastViewportScrollTime = currentTime;
+                        }
+                        else if (currentTime - _lastViewportScrollTime >= VIEWPORT_SCROLL_FLAG_DELAY_MS)
+                        {
+                            gInputFlags.unset(InputFlag::viewportScrolling);
+                            _lastViewportScrollTime = 0; // Reset for next time
+                            break;
+                        }
                     }
                 }
                 else
@@ -207,7 +231,16 @@ namespace OpenRCT2
 
         if (!gOpenRCT2Headless)
         {
-            gInputFlags.unset(InputFlag::viewportScrolling);
+            // Only clear viewport scrolling flag if enough time has passed since last scrolling activity
+            if (gInputFlags.has(InputFlag::viewportScrolling) && _lastViewportScrollTime > 0)
+            {
+                uint32_t currentTime = GetCurrentTimeMs();
+                if (currentTime - _lastViewportScrollTime >= VIEWPORT_SCROLL_FLAG_DELAY_MS)
+                {
+                    gInputFlags.unset(InputFlag::viewportScrolling);
+                    _lastViewportScrollTime = 0; // Reset for next time
+                }
+            }
         }
 
         // Always perform autosave check, even when paused
@@ -356,5 +389,10 @@ namespace OpenRCT2
 #endif
 
         gInUpdateCode = false;
+    }
+
+    void updateViewportScrollingTimestamp()
+    {
+        _lastViewportScrollTime = GetCurrentTimeMs();
     }
 } // namespace OpenRCT2

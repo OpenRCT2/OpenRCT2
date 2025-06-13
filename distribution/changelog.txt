@@ -14,6 +14,7 @@
 - Fix: [#24456] Zoomed out vehicles on the ride window tab can sometimes draw incorrectly.
 - Fix: [#24458] Vehicles in the ride window vehicle tab are offset differently than vanilla RCT2, and the sprites are cut off at the bottom.
 - Fix: [#24576] It is possible to edit open rides in certain circumstances.
+- Fix: [#24618] "Pause game when Steam overlay is open" could rapidly flip game pause when scrolling.
 
 0.4.23 (2025-06-07)
 ------------------------------------------------------------------------
