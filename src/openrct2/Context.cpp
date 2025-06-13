@@ -41,11 +41,11 @@
 #include "drawing/IDrawingEngine.h"
 #include "drawing/Image.h"
 #include "drawing/LightFX.h"
-#include "entity/EntityRegistry.h"
 #include "entity/EntityTweener.h"
 #include "interface/Chat.h"
 #include "interface/StdInOutConsole.h"
 #include "interface/Viewport.h"
+#include "interface/WindowBase.h"
 #include "localisation/Formatter.h"
 #include "localisation/Localisation.Date.h"
 #include "localisation/LocalisationService.h"
@@ -60,7 +60,6 @@
 #include "platform/Platform.h"
 #include "profiling/Profiling.h"
 #include "rct2/RCT2.h"
-#include "ride/TrackData.h"
 #include "ride/TrackDesignRepository.h"
 #include "scenario/ScenarioRepository.h"
 #include "scenes/game/GameScene.h"
@@ -73,7 +72,6 @@
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "world/MapAnimation.h"
-#include "world/Park.h"
 
 #include <chrono>
 #include <cmath>
@@ -708,8 +706,15 @@ namespace OpenRCT2
             {
                 _uiContext->ProcessMessages();
                 auto* windowMgr = Ui::GetWindowManager();
-                windowMgr->InvalidateByClass(WindowClass::ProgressWindow);
-                Draw();
+                if (auto* progressWindow = windowMgr->FindByClass(WindowClass::ProgressWindow))
+                {
+                    progressWindow->Invalidate();
+                    Draw();
+                }
+                else
+                {
+                    Guard::Fail("No progress bar window");
+                }
             }
         }
 
