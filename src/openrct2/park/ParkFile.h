@@ -53,6 +53,7 @@ namespace OpenRCT2
     constexpr uint16_t kClimateObjectsVersion = 53;
     constexpr uint16_t kExtendedGoKartsVersion = 54;
     constexpr uint16_t kHigherInversionsHolesHelicesStatsVersion = 55;
+
 } // namespace OpenRCT2
 
 class ParkFileExporter
