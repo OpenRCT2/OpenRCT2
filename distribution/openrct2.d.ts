@@ -4677,6 +4677,9 @@ declare global {
         registerToolboxMenuItem(text: string, callback: () => void): void;
 
         registerShortcut(desc: ShortcutDesc): void;
+
+        showGridlines(): void;
+        hideGridlines(): void;
     }
 
     /**
