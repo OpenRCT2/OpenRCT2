@@ -1239,7 +1239,6 @@ void TrackPaintUtilDiagTilesPaintExtra(
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(BlockedSegments::kDiagStraightFlat[trackSequence], direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
 }
 
 const uint8_t kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = {
@@ -2045,6 +2044,19 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         trackType = UncoverTrackElement(trackType);
         TrackPaintFunction paintFunction = GetTrackPaintFunction(trackDrawerEntry.trackStyle, trackType);
         paintFunction(session, *ride, trackSequence, direction, height, trackElement, trackDrawerEntry.supportType);
+
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        if (paintFunction != TrackPaintFunctionDummy && rtd.specialType != RtdSpecialType::maze
+            && !(ted.sequences[trackSequence].flags & TRACK_SEQUENCE_FLAG_DO_NOT_SET_GENERAL_SUPPORT_HEIGHT))
+        {
+            const int32_t rideClearance = rtd.Heights.ClearanceHeight;
+            const int32_t trackClearance = ted.sequences[trackSequence].clearance.clearanceZ;
+            const int32_t supportClearance = ted.sequences[trackSequence].clearance.supportClearanceZ;
+            const int32_t clearance = std::max<int32_t>(
+                rideClearance + trackClearance + supportClearance,
+                ted.sequences[trackSequence].clearance.minimumSupportClearanceZ);
+            PaintUtilSetGeneralSupportHeight(session, (height + Numerics::floor2(clearance, kCoordsZStep)));
+        }
     }
 }
 
@@ -2055,7 +2067,6 @@ void TrackPaintUtilOnridePhotoPaint2(
     TrackPaintUtilOnridePhotoPaint(session, direction, height + trackHeightOffset, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + supportsAboveHeightOffset);
 }
 
 void DrawSBendLeftSupports(
