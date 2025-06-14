@@ -14,6 +14,7 @@
 #include <memory>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/Game.h>
+#include <openrct2/Input.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
@@ -404,11 +405,30 @@ private:
     // Should be called after SDL_RenderPresent, when Steam overlay has had the chance to be drawn.
     void OverlayPostRenderCheck()
     {
+        bool isScrolling = gInputFlags.has(InputFlag::viewportScrolling);
+
+        // Skip overlay detection during scrolling to prevent false positives
+        if (isScrolling)
+            return;
+
         ReadCentrePixel(&_pixelAfterOverlay);
 
         // Detect an active Steam overlay by checking if the centre pixel is changed by the grey fade.
         // Will not be triggered by applications rendering to corners, like FRAPS, MSI Afterburner and Friends popups.
         bool newOverlayActive = _pixelBeforeOverlay != _pixelAfterOverlay;
+
+        // Additional validation: ignore very large pixel differences that are likely caused by viewport changes
+        // rather than actual Steam overlay detection
+        if (newOverlayActive)
+        {
+            uint32_t pixelDiff = (_pixelBeforeOverlay > _pixelAfterOverlay) ? (_pixelBeforeOverlay - _pixelAfterOverlay)
+                                                                            : (_pixelAfterOverlay - _pixelBeforeOverlay);
+
+            if (pixelDiff > 100000000)
+            {
+                return;
+            }
+        }
 
         // Toggle game pause state consistently with base pause state
         if (!_overlayActive && newOverlayActive)

@@ -24,6 +24,7 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/Audio.h>
@@ -1620,7 +1621,10 @@ namespace OpenRCT2
         else if (cursorState->position.y >= ContextGetHeight() - 1)
             scrollY = 1;
 
-        InputScrollViewport(ScreenCoordsXY(scrollX, scrollY));
+        if (scrollX != 0 || scrollY != 0)
+        {
+            InputScrollViewport(ScreenCoordsXY(scrollX, scrollY));
+        }
     }
 
     void InputScrollViewport(const ScreenCoordsXY& scrollScreenCoords)
@@ -1682,11 +1686,55 @@ namespace OpenRCT2
 
             mainWindow->savedViewPos.x += dx;
             gInputFlags.set(InputFlag::viewportScrolling);
+            updateViewportScrollingTimestamp();
         }
         if (scrollScreenCoords.y != 0)
         {
             mainWindow->savedViewPos.y += dy;
             gInputFlags.set(InputFlag::viewportScrolling);
+            updateViewportScrollingTimestamp();
         }
+    }
+
+    void InputScrollViewportSmooth(const ScreenCoordsXY& scrollScreenCoords)
+    {
+        WindowBase* mainWindow = WindowGetMain();
+        if (mainWindow == nullptr)
+        {
+            return;
+        }
+
+        Viewport* viewport = mainWindow->viewport;
+        if (viewport == nullptr)
+        {
+            return;
+        }
+
+        if (mainWindow->flags & WF_NO_SCROLLING)
+        {
+            return;
+        }
+
+        if (scrollScreenCoords.x == 0 && scrollScreenCoords.y == 0)
+            return;
+
+        // Apply smooth scrolling similar to mouse drag behavior
+        // Use zoom-based scaling like mouse dragging does
+        ScreenCoordsXY differentialCoords = scrollScreenCoords;
+
+        // Apply zoom scaling (same logic as mouse drag)
+        const bool posX = differentialCoords.x > 0;
+        const bool posY = differentialCoords.y > 0;
+        differentialCoords.x = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.x));
+        differentialCoords.y = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.y));
+        differentialCoords.x = posX ? -differentialCoords.x : differentialCoords.x;
+        differentialCoords.y = posY ? -differentialCoords.y : differentialCoords.y;
+
+        // Apply the movement (note: we don't invert for gamepad like mouse drag does)
+        mainWindow->savedViewPos += differentialCoords;
+
+        WindowUnfollowSprite(*mainWindow);
+        gInputFlags.set(InputFlag::viewportScrolling);
+        updateViewportScrollingTimestamp();
     }
 } // namespace OpenRCT2
