@@ -377,8 +377,7 @@ private:
     void UpdateGoKartAttemptSwitchLanes();
     void UpdateSceneryDoor() const;
     void UpdateSceneryDoorBackwards() const;
-    void UpdateLandscapeDoorA(const int32_t previousTrackHeight) const;
-    void UpdateLandscapeDoorB(const int32_t previousTrackHeight) const;
+    void UpdateLandscapeDoors(const int32_t previousTrackHeight) const;
     int32_t CalculateRiderBraking() const;
     uint8_t ChooseBrakeSpeed() const;
     void PopulateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, TrackElement& brake);

@@ -6371,7 +6371,7 @@ static void AnimateLandscapeDoor(const CoordsXYZ& doorLocation, TrackElement& tr
     }
 }
 
-void Vehicle::UpdateLandscapeDoorA(const int32_t previousTrackHeight) const
+void Vehicle::UpdateLandscapeDoors(const int32_t previousTrackHeight) const
 {
     const auto* currentRide = GetRide();
     if (currentRide == nullptr || !currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::hasLandscapeDoors))
@@ -6380,32 +6380,15 @@ void Vehicle::UpdateLandscapeDoorA(const int32_t previousTrackHeight) const
     }
 
     const CoordsXYZ previousTrackLocation = CoordsXYZ(x, y, previousTrackHeight).ToTileStart();
-    if (MapGetTrackElementAtBeforeSurfaceFromRide(previousTrackLocation, ride) != nullptr)
-        return;
-
-    auto* const tileElement = MapGetTrackElementAtBeforeSurfaceFromRide(TrackLocation, ride);
-    if (tileElement != nullptr)
+    auto* const previousTrackElement = MapGetTrackElementAtBeforeSurfaceFromRide(previousTrackLocation, ride);
+    auto* const currentTrackElement = MapGetTrackElementAtBeforeSurfaceFromRide(TrackLocation, ride);
+    if (previousTrackElement != nullptr && currentTrackElement == nullptr)
     {
-        AnimateLandscapeDoor<true>(TrackLocation, *tileElement->AsTrack(), next_vehicle_on_train.IsNull());
+        AnimateLandscapeDoor<false>(previousTrackLocation, *previousTrackElement->AsTrack(), next_vehicle_on_train.IsNull());
     }
-}
-
-void Vehicle::UpdateLandscapeDoorB(const int32_t previousTrackHeight) const
-{
-    const auto* currentRide = GetRide();
-    if (currentRide == nullptr || !currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::hasLandscapeDoors))
+    else if (previousTrackElement == nullptr && currentTrackElement != nullptr)
     {
-        return;
-    }
-
-    if (MapGetTrackElementAtBeforeSurfaceFromRide(TrackLocation, ride) != nullptr)
-        return;
-
-    const CoordsXYZ previousTrackLocation = CoordsXYZ(x, y, previousTrackHeight).ToTileStart();
-    auto* const tileElement = MapGetTrackElementAtBeforeSurfaceFromRide(previousTrackLocation, ride);
-    if (tileElement != nullptr)
-    {
-        AnimateLandscapeDoor<false>(previousTrackLocation, *tileElement->AsTrack(), next_vehicle_on_train.IsNull());
+        AnimateLandscapeDoor<true>(TrackLocation, *currentTrackElement->AsTrack(), next_vehicle_on_train.IsNull());
     }
 }
 
@@ -7116,8 +7099,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(
     }
     // Change from original: this used to check if the vehicle allowed doors.
     UpdateSceneryDoorBackwards();
-    UpdateLandscapeDoorA(previousTrackHeight);
-    UpdateLandscapeDoorB(previousTrackHeight);
+    UpdateLandscapeDoors(previousTrackHeight);
 
     return true;
 }
