@@ -6371,6 +6371,25 @@ static void AnimateLandscapeDoor(const CoordsXYZ& doorLocation, TrackElement& tr
     }
 }
 
+void Vehicle::UpdateLandscapeDoorA(const int32_t previousTrackHeight) const
+{
+    const auto* currentRide = GetRide();
+    if (currentRide == nullptr || !currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::hasLandscapeDoors))
+    {
+        return;
+    }
+
+    const CoordsXYZ previousTrackLocation = CoordsXYZ(x, y, previousTrackHeight).ToTileStart();
+    if (MapGetTrackElementAtBeforeSurfaceFromRide(previousTrackLocation, ride) != nullptr)
+        return;
+
+    auto* const tileElement = MapGetTrackElementAtBeforeSurfaceFromRide(TrackLocation, ride);
+    if (tileElement != nullptr)
+    {
+        AnimateLandscapeDoor<true>(TrackLocation, *tileElement->AsTrack(), next_vehicle_on_train.IsNull());
+    }
+}
+
 void Vehicle::UpdateLandscapeDoorB(const int32_t previousTrackHeight) const
 {
     const auto* currentRide = GetRide();
@@ -6433,25 +6452,6 @@ void Vehicle::UpdateSceneryDoorBackwards() const
     direction = DirectionReverse(direction);
 
     AnimateSceneryDoor<true>({ wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train.IsNull());
-}
-
-void Vehicle::UpdateLandscapeDoorA(const int32_t previousTrackHeight) const
-{
-    const auto* currentRide = GetRide();
-    if (currentRide == nullptr || !currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::hasLandscapeDoors))
-    {
-        return;
-    }
-
-    const CoordsXYZ previousTrackLocation = CoordsXYZ(x, y, previousTrackHeight).ToTileStart();
-    if (MapGetTrackElementAtBeforeSurfaceFromRide(previousTrackLocation, ride) != nullptr)
-        return;
-
-    auto* const tileElement = MapGetTrackElementAtBeforeSurfaceFromRide(TrackLocation, ride);
-    if (tileElement != nullptr)
-    {
-        AnimateLandscapeDoor<true>(TrackLocation, *tileElement->AsTrack(), next_vehicle_on_train.IsNull());
-    }
 }
 
 static void vehicle_update_play_water_splash_sound()
