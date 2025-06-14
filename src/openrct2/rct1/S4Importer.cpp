@@ -1472,6 +1472,11 @@ namespace OpenRCT2::RCT1
                             { mapAnimation.x, mapAnimation.y, (mapAnimation.BaseZ / 2) * kCoordsZStep },
                             MapAnimations::TemporaryType::onRidePhoto);
                         break;
+                    case kRCT12MapAnimationTypeLandEdgeDoor:
+                        MapAnimations::CreateTemporary(
+                            { mapAnimation.x, mapAnimation.y, (mapAnimation.BaseZ / 2) * kCoordsZStep },
+                            MapAnimations::TemporaryType::landEdgeDoor);
+                        break;
                 }
             }
         }

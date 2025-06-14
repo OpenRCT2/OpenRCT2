@@ -6347,25 +6347,27 @@ void Vehicle::UpdateSceneryDoor() const
 }
 
 template<bool isBackwards>
-static void AnimateLandscapeDoor(TrackElement* trackElement, bool isLastVehicle)
+static void AnimateLandscapeDoor(const CoordsXYZ& doorLocation, TrackElement& trackElement, const bool isLastVehicle)
 {
-    auto doorState = isBackwards ? trackElement->GetDoorAState() : trackElement->GetDoorBState();
-    if (!isLastVehicle && doorState == LANDSCAPE_DOOR_CLOSED)
+    const auto doorState = isBackwards ? trackElement.GetDoorAState() : trackElement.GetDoorBState();
+    if (!isLastVehicle && doorState == kLandEdgeDoorFrameClosed)
     {
         if (isBackwards)
-            trackElement->SetDoorAState(LANDSCAPE_DOOR_OPEN);
+            trackElement.SetDoorAState(kLandEdgeDoorFrameOpening);
         else
-            trackElement->SetDoorBState(LANDSCAPE_DOOR_OPEN);
-        // TODO: play door open sound
+            trackElement.SetDoorBState(kLandEdgeDoorFrameOpening);
+
+        MapAnimations::CreateTemporary(doorLocation, MapAnimations::TemporaryType::landEdgeDoor);
     }
 
     if (isLastVehicle)
     {
         if (isBackwards)
-            trackElement->SetDoorAState(LANDSCAPE_DOOR_CLOSED);
+            trackElement.SetDoorAState(kLandEdgeDoorFrameClosing);
         else
-            trackElement->SetDoorBState(LANDSCAPE_DOOR_CLOSED);
-        // TODO: play door close sound
+            trackElement.SetDoorBState(kLandEdgeDoorFrameClosing);
+
+        MapAnimations::CreateTemporary(doorLocation, MapAnimations::TemporaryType::landEdgeDoor);
     }
 }
 
@@ -6377,11 +6379,11 @@ void Vehicle::UpdateLandscapeDoor() const
         return;
     }
 
-    auto coords = CoordsXYZ{ x, y, TrackLocation.z }.ToTileStart();
-    auto* tileElement = MapGetTrackElementAtFromRide(coords, ride);
-    if (tileElement != nullptr && tileElement->GetType() == TileElementType::Track)
+    const auto coords = CoordsXYZ{ x, y, TrackLocation.z }.ToTileStart();
+    auto* const tileElement = MapGetTrackElementBeforeSurfaceAtFromRide(coords, ride);
+    if (tileElement != nullptr)
     {
-        AnimateLandscapeDoor<false>(tileElement->AsTrack(), next_vehicle_on_train.IsNull());
+        AnimateLandscapeDoor<false>(coords, *tileElement->AsTrack(), next_vehicle_on_train.IsNull());
     }
 }
 
@@ -6438,11 +6440,11 @@ void Vehicle::UpdateLandscapeDoorBackwards() const
         return;
     }
 
-    auto coords = CoordsXYZ{ TrackLocation, TrackLocation.z };
-    auto* tileElement = MapGetTrackElementAtFromRide(coords, ride);
-    if (tileElement != nullptr && tileElement->GetType() == TileElementType::Track)
+    const auto coords = CoordsXYZ{ TrackLocation, TrackLocation.z };
+    auto* const tileElement = MapGetTrackElementBeforeSurfaceAtFromRide(coords, ride);
+    if (tileElement != nullptr)
     {
-        AnimateLandscapeDoor<true>(tileElement->AsTrack(), next_vehicle_on_train.IsNull());
+        AnimateLandscapeDoor<true>(coords, *tileElement->AsTrack(), next_vehicle_on_train.IsNull());
     }
 }
 

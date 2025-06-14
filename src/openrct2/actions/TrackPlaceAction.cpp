@@ -613,8 +613,8 @@ GameActions::Result TrackPlaceAction::Execute() const
 
         if (rtd.HasFlag(RtdFlag::hasLandscapeDoors))
         {
-            trackElement->SetDoorAState(LANDSCAPE_DOOR_CLOSED);
-            trackElement->SetDoorBState(LANDSCAPE_DOOR_CLOSED);
+            trackElement->SetDoorAState(kLandEdgeDoorFrameClosed);
+            trackElement->SetDoorBState(kLandEdgeDoorFrameClosed);
         }
         else
         {
