@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor MiniGolfRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(1, 50), MakeRideRating(0, 90), MakeRideRating(0, 00) },
         0,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,      6000, 873, 0, 0 },

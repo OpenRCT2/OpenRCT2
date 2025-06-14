@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor FlyingSaucersRTD =
         RatingsCalculationType::FlatRide,
         { MakeRideRating(2, 40), MakeRideRating(0, 55), MakeRideRating(0, 39) },
         32,
-        0,
+        kDynamicRideShelterRating,
         false,
         {
             // Special case, passing -2 to represent division by 2
