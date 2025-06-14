@@ -895,11 +895,24 @@ namespace OpenRCT2::Ui::Windows
                 _info.WidgetIndexMap.push_back(std::numeric_limits<size_t>::max());
             }
 
+            /* Resize the caption and close button to match the title bar size in runtime.
+               when the static UI shim got recreated, causing the stale value to be updated again. */
+            widgetList[WIDX_TITLE].bottom = WindowBase::getTitleBarTargetHeight() + 1;
+            widgetList[WIDX_CLOSE].bottom = WindowBase::getTitleBarTargetHeight();
+
+            // WindowBase::getTitleBarCurrentHeight() is not returning the right value when first time OnOpen()
+            const int16_t titleOffset = WindowBase::getTitleBarTargetHeight() - kTitleHeightNormal;
+            // Since we changed the caption and close button's bottom,
+            // we will need to retrieve where the content starts at dynamically now
+            const int16_t tabTop = widgetList[WIDX_TITLE].bottom + 1;
+            const int16_t tabBottom = tabTop + 26;
+
             // Add window tabs
             if (_info.Desc.Tabs.size() != 0)
             {
-                widgetList[WIDX_CONTENT_PANEL].top = 43;
+                widgetList[WIDX_CONTENT_PANEL].top = tabBottom;
             }
+
             for (size_t tabDescIndex = 0; tabDescIndex < _info.Desc.Tabs.size(); tabDescIndex++)
             {
                 Widget widget{};
@@ -907,8 +920,8 @@ namespace OpenRCT2::Ui::Windows
                 widget.colour = 1;
                 widget.left = static_cast<int16_t>(3 + (tabDescIndex * 31));
                 widget.right = widget.left + 30;
-                widget.top = 17;
-                widget.bottom = 43;
+                widget.top = tabTop;
+                widget.bottom = tabBottom;
                 widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull);
                 widget.tooltip = kStringIdNone;
                 widgetList.push_back(widget);
@@ -916,8 +929,8 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Add custom widgets
-            auto totalWidgets = _info.Desc.Widgets.size();
-            auto tabWidgetsOffset = totalWidgets;
+            size_t totalWidgets = _info.Desc.Widgets.size();
+            size_t tabWidgetsOffset = totalWidgets;
             if (_info.Desc.Tabs.size() != 0)
             {
                 totalWidgets += _info.Desc.Tabs[page].Widgets.size();
@@ -932,6 +945,9 @@ namespace OpenRCT2::Ui::Windows
                 auto numWidgetsAdded = widgetList.size() - preWidgetSize;
                 for (size_t i = 0; i < numWidgetsAdded; i++)
                 {
+                    Widget& widget = widgetList[preWidgetSize + i];
+                    widget.top += titleOffset;
+                    widget.bottom += titleOffset;
                     _info.WidgetIndexMap.push_back(widgetDescIndex);
                 }
 
@@ -951,6 +967,22 @@ namespace OpenRCT2::Ui::Windows
                     _info.ListViews.push_back(std::move(listView));
                 }
             }
+
+            // This is to get the current max height of the current plugin window created before getting resized,
+            // So that when we switching the tab it will know what the bottom height of the UI is going to be
+            int16_t maxBottom = 0;
+            for (const auto& widget : widgetList)
+            {
+                // Bitmask to only acquire the max bottom for the visible widgets
+                if (!(widget.flags & WIDGET_FLAGS::IS_HIDDEN))
+                {
+                    maxBottom = std::max(maxBottom, widget.bottom);
+                }
+            }
+
+            // +5 just for extra padding at the bottom
+            const int16_t newHeight = maxBottom + 5;
+            height = newHeight;
 
             SetWidgets(widgetList);
 
