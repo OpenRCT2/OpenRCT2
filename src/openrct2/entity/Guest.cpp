@@ -2602,7 +2602,7 @@ namespace OpenRCT2
                 if (vehicle == nullptr)
                     continue;
 
-                if (vehicle->next_free_seat >= vehicle->getNumSeats())
+                if (vehicle->next_free_seat >= vehicle->getNumSeatsWithPairing())
                     continue;
 
                 if (vehicle->status != Vehicle::Status::waitingForPassengers)
@@ -2628,7 +2628,7 @@ namespace OpenRCT2
         for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle_id); vehicle != nullptr;
              vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train), ++i)
         {
-            uint8_t num_seats = vehicle->getNumSeats();
+            uint8_t num_seats = vehicle->getNumSeatsWithPairing();
             if (vehicle->IsSeatedInPairs())
             {
                 if (vehicle->next_free_seat & 1)

@@ -564,7 +564,7 @@ void Vehicle::UpdateWaitingForPassengers()
         {
             num_peeps_on_train += trainCar->num_peeps;
             num_used_seats_on_train += trainCar->next_free_seat;
-            num_seats_on_train += trainCar->getNumSeats();
+            num_seats_on_train += trainCar->getNumSeatsWithPairing();
         }
 
         // Left in despite using the new getNumSeats to account for possible overflow
