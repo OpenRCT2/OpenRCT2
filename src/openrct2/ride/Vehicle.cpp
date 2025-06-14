@@ -6371,6 +6371,17 @@ static void AnimateLandscapeDoor(const CoordsXYZ& doorLocation, TrackElement& tr
     }
 }
 
+static const SurfaceElement* GetSurfaceElementAfterElement(const TileElement* tileElement)
+{
+    while (tileElement->GetType() != TileElementType::Surface)
+    {
+        if (tileElement->IsLastForTile())
+            return nullptr;
+        tileElement++;
+    }
+    return tileElement->AsSurface();
+}
+
 void Vehicle::UpdateLandscapeDoors(const int32_t previousTrackHeight) const
 {
     const auto* currentRide = GetRide();
@@ -6384,11 +6395,20 @@ void Vehicle::UpdateLandscapeDoors(const int32_t previousTrackHeight) const
     auto* const currentTrackElement = MapGetTrackElementAtBeforeSurfaceFromRide(TrackLocation, ride);
     if (previousTrackElement != nullptr && currentTrackElement == nullptr)
     {
-        AnimateLandscapeDoor<false>(previousTrackLocation, *previousTrackElement->AsTrack(), next_vehicle_on_train.IsNull());
+        const auto* const surfaceElement = GetSurfaceElementAfterElement(previousTrackElement);
+        if (surfaceElement != nullptr && surfaceElement->GetBaseZ() > previousTrackLocation.z)
+        {
+            AnimateLandscapeDoor<false>(
+                previousTrackLocation, *previousTrackElement->AsTrack(), next_vehicle_on_train.IsNull());
+        }
     }
     else if (previousTrackElement == nullptr && currentTrackElement != nullptr)
     {
-        AnimateLandscapeDoor<true>(TrackLocation, *currentTrackElement->AsTrack(), next_vehicle_on_train.IsNull());
+        const auto* const surfaceElement = GetSurfaceElementAfterElement(currentTrackElement);
+        if (surfaceElement != nullptr && surfaceElement->GetBaseZ() > TrackLocation.z)
+        {
+            AnimateLandscapeDoor<true>(TrackLocation, *currentTrackElement->AsTrack(), next_vehicle_on_train.IsNull());
+        }
     }
 }
 
