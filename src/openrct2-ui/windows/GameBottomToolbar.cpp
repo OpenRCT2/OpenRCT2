@@ -55,20 +55,20 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr Widget window_game_bottom_toolbar_widgets[] =
     {
-        MakeWidget({  0,  0}, {142, 34}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Left outset panel
-        MakeWidget({  2,  2}, {138, 30}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Left inset panel
-        MakeWidget({  2,  1}, {138, 12}, WindowWidgetType::FlatBtn,     WindowColour::Primary , 0xFFFFFFFF, STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP), // Money window
-        MakeWidget({  2, 11}, {138, 12}, WindowWidgetType::FlatBtn,     WindowColour::Primary                                                     ), // Guests window
-        MakeWidget({  2, 21}, {138, 11}, WindowWidgetType::FlatBtn,     WindowColour::Primary , 0xFFFFFFFF, STR_PARK_RATING_TIP                   ), // Park rating window
+        makeWidget({  0,  0}, {142, 34}, WidgetType::imgBtn,      WindowColour::primary                                                     ), // Left outset panel
+        makeWidget({  2,  2}, {138, 30}, WidgetType::imgBtn,      WindowColour::primary                                                     ), // Left inset panel
+        makeWidget({  2,  1}, {138, 12}, WidgetType::flatBtn,     WindowColour::primary , 0xFFFFFFFF, STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP), // Money window
+        makeWidget({  2, 11}, {138, 12}, WidgetType::flatBtn,     WindowColour::primary                                                     ), // Guests window
+        makeWidget({  2, 21}, {138, 11}, WidgetType::flatBtn,     WindowColour::primary , 0xFFFFFFFF, STR_PARK_RATING_TIP                   ), // Park rating window
 
-        MakeWidget({142,  0}, {356, 34}, WindowWidgetType::ImgBtn,      WindowColour::Tertiary                                                    ), // Middle outset panel
-        MakeWidget({144,  2}, {352, 30}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary                                                    ), // Middle inset panel
-        MakeWidget({147,  5}, { 24, 24}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary, 0xFFFFFFFF, STR_SHOW_SUBJECT_TIP                  ), // Associated news item window
-        MakeWidget({469,  5}, { 24, 24}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary, ImageId(SPR_LOCATE), STR_LOCATE_SUBJECT_TIP                ), // Scroll to news item target
+        makeWidget({142,  0}, {356, 34}, WidgetType::imgBtn,      WindowColour::tertiary                                                    ), // Middle outset panel
+        makeWidget({144,  2}, {352, 30}, WidgetType::flatBtn,     WindowColour::tertiary                                                    ), // Middle inset panel
+        makeWidget({147,  5}, { 24, 24}, WidgetType::flatBtn,     WindowColour::tertiary, 0xFFFFFFFF, STR_SHOW_SUBJECT_TIP                  ), // Associated news item window
+        makeWidget({469,  5}, { 24, 24}, WidgetType::flatBtn,     WindowColour::tertiary, ImageId(SPR_LOCATE), STR_LOCATE_SUBJECT_TIP                ), // Scroll to news item target
 
-        MakeWidget({498,  0}, {142, 34}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Right outset panel
-        MakeWidget({500,  2}, {138, 30}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Right inset panel
-        MakeWidget({500,  2}, {138, 12}, WindowWidgetType::FlatBtn,     WindowColour::Primary                                                     ), // Date
+        makeWidget({498,  0}, {142, 34}, WidgetType::imgBtn,      WindowColour::primary                                                     ), // Right outset panel
+        makeWidget({500,  2}, {138, 30}, WidgetType::imgBtn,      WindowColour::primary                                                     ), // Right inset panel
+        makeWidget({500,  2}, {138, 12}, WidgetType::flatBtn,     WindowColour::primary                                                     ), // Date
     };
     // clang-format on
 
@@ -420,7 +420,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Reset the middle widget to not show by default.
             // If it is required to be shown news_update will reshow it.
-            widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::Empty;
+            widgets[WIDX_MIDDLE_OUTSET].type = WidgetType::empty;
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
@@ -515,7 +515,7 @@ namespace OpenRCT2::Ui::Windows
             // Reposition left widgets in accordance with line height... depending on whether there is money in play.
             if (getGameState().park.Flags & PARK_FLAGS_NO_MONEY)
             {
-                widgets[WIDX_MONEY].type = WindowWidgetType::Empty;
+                widgets[WIDX_MONEY].type = WidgetType::empty;
                 widgets[WIDX_GUESTS].top = 1;
                 widgets[WIDX_GUESTS].bottom = line_height + 7;
                 widgets[WIDX_PARK_RATING].top = line_height + 8;
@@ -523,7 +523,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                widgets[WIDX_MONEY].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_MONEY].type = WidgetType::flatBtn;
                 widgets[WIDX_MONEY].bottom = widgets[WIDX_MONEY].top + line_height;
                 widgets[WIDX_GUESTS].top = widgets[WIDX_MONEY].bottom + 1;
                 widgets[WIDX_GUESTS].bottom = widgets[WIDX_GUESTS].top + line_height;
@@ -556,24 +556,24 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_DATE].left = widgets[WIDX_RIGHT_OUTSET].left + 2;
             widgets[WIDX_DATE].right = widgets[WIDX_RIGHT_OUTSET].right - 2;
 
-            widgets[WIDX_LEFT_INSET].type = WindowWidgetType::Empty;
-            widgets[WIDX_RIGHT_INSET].type = WindowWidgetType::Empty;
+            widgets[WIDX_LEFT_INSET].type = WidgetType::empty;
+            widgets[WIDX_RIGHT_INSET].type = WidgetType::empty;
 
             if (News::IsQueueEmpty())
             {
                 if (!(ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR))
                 {
-                    widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::Empty;
-                    widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::Empty;
-                    widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
-                    widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_MIDDLE_OUTSET].type = WidgetType::empty;
+                    widgets[WIDX_MIDDLE_INSET].type = WidgetType::empty;
+                    widgets[WIDX_NEWS_SUBJECT].type = WidgetType::empty;
+                    widgets[WIDX_NEWS_LOCATE].type = WidgetType::empty;
                 }
                 else
                 {
-                    widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
-                    widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::FlatBtn;
-                    widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
-                    widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::Empty;
+                    widgets[WIDX_MIDDLE_OUTSET].type = WidgetType::imgBtn;
+                    widgets[WIDX_MIDDLE_INSET].type = WidgetType::flatBtn;
+                    widgets[WIDX_NEWS_SUBJECT].type = WidgetType::empty;
+                    widgets[WIDX_NEWS_LOCATE].type = WidgetType::empty;
                     widgets[WIDX_MIDDLE_OUTSET].colour = 0;
                     widgets[WIDX_MIDDLE_INSET].colour = 0;
                 }
@@ -581,10 +581,10 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 News::Item* newsItem = News::GetItem(0);
-                widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
-                widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::FlatBtn;
-                widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::FlatBtn;
-                widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_MIDDLE_OUTSET].type = WidgetType::imgBtn;
+                widgets[WIDX_MIDDLE_INSET].type = WidgetType::flatBtn;
+                widgets[WIDX_NEWS_SUBJECT].type = WidgetType::flatBtn;
+                widgets[WIDX_NEWS_LOCATE].type = WidgetType::flatBtn;
                 widgets[WIDX_MIDDLE_OUTSET].colour = 2;
                 widgets[WIDX_MIDDLE_INSET].colour = 2;
                 disabled_widgets &= ~(1uLL << WIDX_NEWS_SUBJECT);
@@ -599,7 +599,7 @@ namespace OpenRCT2::Ui::Windows
                 if (!(newsItem->typeHasSubject()))
                 {
                     disabled_widgets |= (1uLL << WIDX_NEWS_SUBJECT);
-                    widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
+                    widgets[WIDX_NEWS_SUBJECT].type = WidgetType::empty;
                 }
 
                 if (newsItem->hasButton())
@@ -687,11 +687,11 @@ namespace OpenRCT2::Ui::Windows
 
         // Figure out how much line height we have to work with.
         uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
-        uint32_t toolbar_height = line_height * 2 + 12;
+        int32_t toolbar_height = line_height * 2 + 12;
 
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->Create<GameBottomToolbar>(
-            WindowClass::BottomToolbar, ScreenCoordsXY(0, screenHeight - toolbar_height), screenWidth, toolbar_height,
+            WindowClass::BottomToolbar, ScreenCoordsXY(0, screenHeight - toolbar_height), { screenWidth, toolbar_height },
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
 
         return window;

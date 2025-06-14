@@ -11,40 +11,18 @@
 
 #include "Location.hpp"
 
-#include <cstdint>
-#include <vector>
-
-struct TileElement;
-
-struct MapAnimation
+namespace OpenRCT2::MapAnimations
 {
-    uint8_t type{};
-    CoordsXYZ location{};
-};
+    enum class TemporaryType : uint8_t
+    {
+        onRidePhoto,
+    };
 
-enum
-{
-    MAP_ANIMATION_TYPE_RIDE_ENTRANCE,
-    MAP_ANIMATION_TYPE_QUEUE_BANNER,
-    MAP_ANIMATION_TYPE_SMALL_SCENERY,
-    MAP_ANIMATION_TYPE_PARK_ENTRANCE,
-    MAP_ANIMATION_TYPE_TRACK_WATERFALL,
-    MAP_ANIMATION_TYPE_TRACK_RAPIDS,
-    MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO,
-    MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL,
-    MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL,
-    MAP_ANIMATION_TYPE_REMOVE,
-    MAP_ANIMATION_TYPE_BANNER,
-    MAP_ANIMATION_TYPE_LARGE_SCENERY,
-    MAP_ANIMATION_TYPE_WALL_DOOR,
-    MAP_ANIMATION_TYPE_WALL,
-    MAP_ANIMATION_TYPE_COUNT
-};
-
-void MapAnimationCreate(int32_t type, const CoordsXYZ& loc);
-void MapAnimationInvalidateAll();
-const std::vector<MapAnimation>& GetMapAnimations();
-void ClearMapAnimations();
-void MapAnimationAutoCreate();
-void MapAnimationAutoCreateAtTileElement(TileCoordsXY coords, TileElement* el);
-void ShiftAllMapAnimations(CoordsXY amount);
+    void MarkTileForInvalidation(const TileCoordsXY coords);
+    void MarkTileForUpdate(const TileCoordsXY coords);
+    void CreateTemporary(const CoordsXYZ& coords, const TemporaryType type);
+    void MarkAllTiles();
+    void InvalidateAndUpdateAll();
+    void ClearAll();
+    void ShiftAll(const TileCoordsXY amount);
+} // namespace OpenRCT2::MapAnimations

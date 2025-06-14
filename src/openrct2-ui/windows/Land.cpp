@@ -53,14 +53,14 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_land_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
-        MakeWidget     ({19,  19}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP), STR_ENABLE_MOUNTAIN_TOOL_TIP), // mountain mode
-        MakeWidget     ({55,  19}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_PAINTBRUSH),                 STR_DISABLE_ELEVATION),        // paint mode
-        MakeWidget     ({27,  48}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary  , ImageId(SPR_LAND_TOOL_SIZE_0),           kStringIdNone),                     // preview box
-        MakeRemapWidget({28,  49}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,         STR_ADJUST_SMALLER_LAND_TIP),  // decrement size
-        MakeRemapWidget({54,  63}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,         STR_ADJUST_LARGER_LAND_TIP),   // increment size
-        MakeWidget     ({ 2, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                     STR_CHANGE_BASE_LAND_TIP),     // floor texture
-        MakeWidget     ({49, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                     STR_CHANGE_VERTICAL_LAND_TIP)  // wall texture
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWidget     ({19,  19}, {24, 24}, WidgetType::flatBtn, WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP), STR_ENABLE_MOUNTAIN_TOOL_TIP), // mountain mode
+        makeWidget     ({55,  19}, {24, 24}, WidgetType::flatBtn, WindowColour::secondary, ImageId(SPR_PAINTBRUSH),                 STR_DISABLE_ELEVATION),        // paint mode
+        makeWidget     ({27,  48}, {44, 32}, WidgetType::imgBtn,  WindowColour::primary  , ImageId(SPR_LAND_TOOL_SIZE_0),           kStringIdNone),                     // preview box
+        makeRemapWidget({28,  49}, {16, 16}, WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_DECREASE,         STR_ADJUST_SMALLER_LAND_TIP),  // decrement size
+        makeRemapWidget({54,  63}, {16, 16}, WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_INCREASE,         STR_ADJUST_LARGER_LAND_TIP),   // increment size
+        makeWidget     ({ 2, 106}, {47, 36}, WidgetType::flatBtn, WindowColour::secondary, 0xFFFFFFFF,                     STR_CHANGE_BASE_LAND_TIP),     // floor texture
+        makeWidget     ({49, 106}, {47, 36}, WidgetType::flatBtn, WindowColour::secondary, 0xFFFFFFFF,                     STR_CHANGE_VERTICAL_LAND_TIP)  // wall texture
     );
     // clang-format on
 
@@ -275,8 +275,8 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords = { windowPos.x + previewWidget->left, windowPos.y + previewWidget->top };
                 auto sprite = ImageId(gLandToolSize % 2 == 0 ? SPR_G2_MOUNTAIN_TOOL_EVEN : SPR_G2_MOUNTAIN_TOOL_ODD);
                 GfxDrawSprite(rt, sprite, screenCoords);
-                WidgetDraw(rt, *this, WIDX_DECREMENT);
-                WidgetDraw(rt, *this, WIDX_INCREMENT);
+                widgetDraw(rt, *this, WIDX_DECREMENT);
+                widgetDraw(rt, *this, WIDX_INCREMENT);
             }
 
             screenCoords = { windowPos.x + previewWidget->midX(), windowPos.y + previewWidget->bottom + 5 };
@@ -405,7 +405,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             const auto& widget = window->widgets[widget_index];
-            if (widget.type != WindowWidgetType::Viewport)
+            if (widget.type != WidgetType::viewport)
                 return;
 
             const auto* selectedViewport = window->viewport;
@@ -868,7 +868,8 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* LandOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<LandWindow>(WindowClass::Land, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
+        return windowMgr->FocusOrCreate<LandWindow>(
+            WindowClass::Land, ScreenCoordsXY(ContextGetWidth() - WW, 29), { WW, WH }, 0);
     }
 
     /**

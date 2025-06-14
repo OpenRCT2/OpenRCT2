@@ -21,7 +21,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr auto _titleExitWidgets = makeWidgets(
-        MakeWidget({ 0, 0 }, { 40, 64 }, WindowWidgetType::ImgBtn, WindowColour::Tertiary, ImageId(SPR_MENU_EXIT), STR_EXIT));
+        makeWidget({ 0, 0 }, { 40, 64 }, WidgetType::imgBtn, WindowColour::tertiary, ImageId(SPR_MENU_EXIT), STR_EXIT));
 
     class TitleExitWindow final : public Window
     {
@@ -56,7 +56,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->Create<TitleExitWindow>(
-            WindowClass::TitleExit, ScreenCoordsXY(ContextGetWidth() - 40, ContextGetHeight() - 64), 40, 64,
+            WindowClass::TitleExit, ScreenCoordsXY(ContextGetWidth() - 40, ContextGetHeight() - 64), { 40, 64 },
             WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_TITLE_BAR);
     }
 } // namespace OpenRCT2::Ui::Windows

@@ -86,33 +86,33 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto kMainStaffWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
-        MakeWidget({ 0, 43 }, { 190, 137 }, WindowWidgetType::Resize, WindowColour::Secondary),
-        MakeTab({ 3, 17 }, STR_STAFF_OVERVIEW_TIP),
-        MakeTab({ 34, 17 }, STR_STAFF_OPTIONS_TIP),
-        MakeTab({ 65, 17 }, STR_STAFF_STATS_TIP)
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWidget({ 0, 43 }, { 190, 137 }, WidgetType::resize, WindowColour::secondary),
+        makeTab({ 3, 17 }, STR_STAFF_OVERVIEW_TIP),
+        makeTab({ 34, 17 }, STR_STAFF_OPTIONS_TIP),
+        makeTab({ 65, 17 }, STR_STAFF_STATS_TIP)
     );
 
     static constexpr auto _staffOverviewWidgets = makeWidgets(
         kMainStaffWidgets,
-        MakeWidget     ({      3,      47}, {162, 120}, WindowWidgetType::Viewport,      WindowColour::Secondary                                        ), // Viewport
-        MakeWidget     ({      3, WH - 13}, {162,  11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                        ), // Label at bottom of viewport
-        MakeWidget     ({WW - 25,      45}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_PICKUP_BTN), STR_PICKUP_TIP        ), // Pickup Button
-        MakeWidget     ({WW - 25,      69}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_PATROL_BTN), STR_SET_PATROL_TIP    ), // Patrol Button
-        MakeWidget     ({WW - 25,      93}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_RENAME),     STR_NAME_STAFF_TIP    ), // Rename Button
-        MakeWidget     ({WW - 25,     117}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_LOCATE),     STR_LOCATE_SUBJECT_TIP), // Locate Button
-        MakeWidget     ({WW - 25,     141}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, ImageId(SPR_DEMOLISH),   STR_FIRE_STAFF_TIP    )  // Fire Button
+        makeWidget     ({      3,      47}, {162, 120}, WidgetType::viewport,      WindowColour::secondary                                        ), // Viewport
+        makeWidget     ({      3, WH - 13}, {162,  11}, WidgetType::labelCentred, WindowColour::secondary                                        ), // Label at bottom of viewport
+        makeWidget     ({WW - 25,      45}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_PICKUP_BTN), STR_PICKUP_TIP        ), // Pickup Button
+        makeWidget     ({WW - 25,      69}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_PATROL_BTN), STR_SET_PATROL_TIP    ), // Patrol Button
+        makeWidget     ({WW - 25,      93}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_RENAME),     STR_NAME_STAFF_TIP    ), // Rename Button
+        makeWidget     ({WW - 25,     117}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_LOCATE),     STR_LOCATE_SUBJECT_TIP), // Locate Button
+        makeWidget     ({WW - 25,     141}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_DEMOLISH),   STR_FIRE_STAFF_TIP    )  // Fire Button
     );
 
     //0x9AF910
     static constexpr auto _staffOptionsWidgets = makeWidgets(
         kMainStaffWidgets,
-        MakeWidget     ({      5,  50}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 1
-        MakeWidget     ({      5,  67}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 2
-        MakeWidget     ({      5,  84}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 3
-        MakeWidget     ({      5, 101}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 4
-        MakeWidget     ({      5,  50}, {180,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                            ), // Costume Dropdown
-        MakeWidget     ({WW - 17,  51}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP) // Costume Dropdown Button
+        makeWidget     ({      5,  50}, {180,  12}, WidgetType::checkbox, WindowColour::secondary                                            ), // Checkbox 1
+        makeWidget     ({      5,  67}, {180,  12}, WidgetType::checkbox, WindowColour::secondary                                            ), // Checkbox 2
+        makeWidget     ({      5,  84}, {180,  12}, WidgetType::checkbox, WindowColour::secondary                                            ), // Checkbox 3
+        makeWidget     ({      5, 101}, {180,  12}, WidgetType::checkbox, WindowColour::secondary                                            ), // Checkbox 4
+        makeWidget     ({      5,  50}, {180,  12}, WidgetType::dropdownMenu, WindowColour::secondary                                            ), // Costume Dropdown
+        makeWidget     ({WW - 17,  51}, { 11,  10}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP) // Costume Dropdown Button
     );
 
     // 0x9AF9F4
@@ -829,12 +829,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 case StaffType::Entertainer:
                 {
-                    widgets[WIDX_CHECKBOX_1].type = WindowWidgetType::Empty;
-                    widgets[WIDX_CHECKBOX_2].type = WindowWidgetType::Empty;
-                    widgets[WIDX_CHECKBOX_3].type = WindowWidgetType::Empty;
-                    widgets[WIDX_CHECKBOX_4].type = WindowWidgetType::Empty;
-                    widgets[WIDX_COSTUME_BOX].type = WindowWidgetType::DropdownMenu;
-                    widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Button;
+                    widgets[WIDX_CHECKBOX_1].type = WidgetType::empty;
+                    widgets[WIDX_CHECKBOX_2].type = WidgetType::empty;
+                    widgets[WIDX_CHECKBOX_3].type = WidgetType::empty;
+                    widgets[WIDX_CHECKBOX_4].type = WidgetType::empty;
+                    widgets[WIDX_COSTUME_BOX].type = WidgetType::dropdownMenu;
+                    widgets[WIDX_COSTUME_BTN].type = WidgetType::button;
 
                     auto pos = std::find_if(_availableCostumes.begin(), _availableCostumes.end(), [staff](auto costume) {
                         return costume.index == staff->AnimationObjectIndex;
@@ -845,39 +845,39 @@ namespace OpenRCT2::Ui::Windows
                         auto index = std::distance(_availableCostumes.begin(), pos);
                         auto name = _availableCostumes[index].friendlyName.c_str();
                         widgets[WIDX_COSTUME_BOX].string = const_cast<utf8*>(name);
-                        widgets[WIDX_COSTUME_BOX].flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+                        widgets[WIDX_COSTUME_BOX].flags.set(WidgetFlag::textIsString);
                     }
                     else
                     {
                         widgets[WIDX_COSTUME_BOX].text = kStringIdEmpty;
-                        widgets[WIDX_COSTUME_BOX].flags &= ~WIDGET_FLAGS::TEXT_IS_STRING;
+                        widgets[WIDX_COSTUME_BOX].flags.unset(WidgetFlag::textIsString);
                     }
 
                     break;
                 }
                 case StaffType::Handyman:
-                    widgets[WIDX_CHECKBOX_1].type = WindowWidgetType::Checkbox;
+                    widgets[WIDX_CHECKBOX_1].type = WidgetType::checkbox;
                     widgets[WIDX_CHECKBOX_1].text = STR_STAFF_OPTION_SWEEP_FOOTPATHS;
-                    widgets[WIDX_CHECKBOX_2].type = WindowWidgetType::Checkbox;
+                    widgets[WIDX_CHECKBOX_2].type = WidgetType::checkbox;
                     widgets[WIDX_CHECKBOX_2].text = STR_STAFF_OPTION_WATER_GARDENS;
-                    widgets[WIDX_CHECKBOX_3].type = WindowWidgetType::Checkbox;
+                    widgets[WIDX_CHECKBOX_3].type = WidgetType::checkbox;
                     widgets[WIDX_CHECKBOX_3].text = STR_STAFF_OPTION_EMPTY_LITTER;
-                    widgets[WIDX_CHECKBOX_4].type = WindowWidgetType::Checkbox;
+                    widgets[WIDX_CHECKBOX_4].type = WidgetType::checkbox;
                     widgets[WIDX_CHECKBOX_4].text = STR_STAFF_OPTION_MOW_GRASS;
-                    widgets[WIDX_COSTUME_BOX].type = WindowWidgetType::Empty;
-                    widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Empty;
+                    widgets[WIDX_COSTUME_BOX].type = WidgetType::empty;
+                    widgets[WIDX_COSTUME_BTN].type = WidgetType::empty;
                     OptionsSetCheckboxValues();
                     break;
                 case StaffType::Mechanic:
-                    widgets[WIDX_CHECKBOX_1].type = WindowWidgetType::Checkbox;
+                    widgets[WIDX_CHECKBOX_1].type = WidgetType::checkbox;
                     widgets[WIDX_CHECKBOX_1].text = STR_INSPECT_RIDES;
-                    widgets[WIDX_CHECKBOX_2].type = WindowWidgetType::Checkbox;
+                    widgets[WIDX_CHECKBOX_2].type = WidgetType::checkbox;
                     widgets[WIDX_CHECKBOX_2].text = STR_FIX_RIDES;
-                    widgets[WIDX_CHECKBOX_3].type = WindowWidgetType::Empty;
-                    widgets[WIDX_CHECKBOX_4].type = WindowWidgetType::Empty;
-                    widgets[WIDX_COSTUME_BOX].type = WindowWidgetType::Empty;
-                    widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Empty;
-                    widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Empty;
+                    widgets[WIDX_CHECKBOX_3].type = WidgetType::empty;
+                    widgets[WIDX_CHECKBOX_4].type = WidgetType::empty;
+                    widgets[WIDX_COSTUME_BOX].type = WidgetType::empty;
+                    widgets[WIDX_COSTUME_BTN].type = WidgetType::empty;
+                    widgets[WIDX_COSTUME_BTN].type = WidgetType::empty;
                     OptionsSetCheckboxValues();
                     break;
                 case StaffType::Security:
@@ -1227,7 +1227,7 @@ namespace OpenRCT2::Ui::Windows
         if (w != nullptr)
             return w;
 
-        w = windowMgr->Create<StaffWindow>(WindowClass::Peep, WW, WH, WF_10 | WF_RESIZABLE);
+        w = windowMgr->Create<StaffWindow>(WindowClass::Peep, { WW, WH }, WF_10 | WF_RESIZABLE);
         if (w == nullptr)
             return nullptr;
 

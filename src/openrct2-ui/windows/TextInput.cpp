@@ -35,9 +35,9 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr auto _textInputWidgets = makeWidgets(
-        makeWindowShim(kStringIdNone, WW, WH),
-        MakeWidget({ 170, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_CANCEL),
-        MakeWidget({ 10, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_OK));
+        makeWindowShim(kStringIdNone, { WW, WH }),
+        makeWidget({ 170, 68 }, { 71, 14 }, WidgetType::button, WindowColour::secondary, STR_CANCEL),
+        makeWidget({ 10, 68 }, { 71, 14 }, WidgetType::button, WindowColour::secondary, STR_OK));
 
     class TextInputWindow final : public Window
     {
@@ -369,7 +369,8 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::Textinput);
 
-        auto w = windowMgr->Create<TextInputWindow>(WindowClass::Textinput, WW, WH + 10, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+        auto w = windowMgr->Create<TextInputWindow>(
+            WindowClass::Textinput, { WW, WH + 10 }, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
             w->SetParentWindow(call_w, call_widget);
@@ -383,7 +384,8 @@ namespace OpenRCT2::Ui::Windows
         std::function<void(std::string_view)> callback, std::function<void()> cancelCallback)
     {
         auto* windowMgr = GetWindowManager();
-        auto w = windowMgr->Create<TextInputWindow>(WindowClass::Textinput, WW, WH + 10, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+        auto w = windowMgr->Create<TextInputWindow>(
+            WindowClass::Textinput, { WW, WH + 10 }, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
             w->SetTitle(title, description);

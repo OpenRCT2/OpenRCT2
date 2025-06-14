@@ -2242,14 +2242,14 @@ STR_3235    :Montri financiajn agordojn
 STR_3236    :Montri agordojn de gastoj
 STR_3238    :Neniu Mono
 STR_3239    :Agordi ĉi tiun parkon kiel parko de ‘neniu mono’, kun neniuj limigoj financaj
-STR_3240    :{WINDOW_COLOUR_2}Komenca mono:
-STR_3241    :{WINDOW_COLOUR_2}Komenca prunto:
-STR_3242    :{WINDOW_COLOUR_2}Maksumima prunto:
-STR_3243    :{WINDOW_COLOUR_2}Jara procento de interezo:
+STR_3240    :Komenca mono:
+STR_3241    :Komenca prunto:
+STR_3242    :Maksumima prunto:
+STR_3243    :Jara procento de interezo:
 STR_3244    :Malpermesi kampanjojn surmerkatigajn
 STR_3245    :Malpermesi kampanjojn de reklamado kaj aliajn kampanjojn surmerkatigajn
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Ne eblas pliigi komencan monon plu!
 STR_3249    :Ne eblas malpliigi komencan monon plu!
 STR_3250    :Ne eblas pliigi komencan prunton plu!
@@ -2258,10 +2258,10 @@ STR_3252    :Ne eblas pliigi maksimuman prunton plu!
 STR_3253    :Ne eblas malpliigi maksimuman prunton plu!
 STR_3254    :Ne eblas pliigi procenton de interezo plu!
 STR_3255    :Ne eblas malpliigi procenton de interezo plu!
-STR_3260    :{WINDOW_COLOUR_2}Mono por ĉiu gasto (meznombro):
-STR_3261    :{WINDOW_COLOUR_2}Komenca feliĉeco de gastoj:
-STR_3262    :{WINDOW_COLOUR_2}Komenca malsateco de gastoj:
-STR_3263    :{WINDOW_COLOUR_2}Komenca soifeco de gastoj:
+STR_3260    :Mono por ĉiu gasto (meznombro):
+STR_3261    :Komenca feliĉeco de gastoj:
+STR_3262    :Komenca malsateco de gastoj:
+STR_3263    :Komenca soifeco de gastoj:
 STR_3264    :Ne eblas pliigi ĉi tion plu!
 STR_3265    :Ne eblas malpliigi ĉi tion plu!
 STR_3266    :Elekti kiel ĉi tiu parko pagigas eniron kaj atrakciojn
@@ -2275,11 +2275,11 @@ STR_3273    :Plibonigado kaj konservado de pritakso de parko estas pli malfacila
 STR_3274    :Fari, ke la pritakso de la parko malfaciliĝas
 STR_3275    :Allogado de la gastoj estas pli malfacila
 STR_3276    :Fari, ke estas pli malfacila por allogi gastojn al la parko
-STR_3277    :{WINDOW_COLOUR_2}Kosto por aĉeti bienon:
-STR_3278    :{WINDOW_COLOUR_2}Kosto por aĉeti konstruado-rajtojn:
+STR_3277    :Kosto por aĉeti bienon:
+STR_3278    :Kosto por aĉeti konstruado-rajtojn:
 STR_3279    :Senpaga parkeniro / Pagi po atrakcio
 STR_3280    :Pagi po parkeniro / Senpagaj atrakcioj
-STR_3281    :{WINDOW_COLOUR_2}Kosto de parkeniro:
+STR_3281    :Kosto de parkeniro:
 STR_3283    :Elekti atrakciojn neŝanĝeblajn
 STR_3285    :Agordoj de scenaro - Atrakcioj Neŝanĝeblaj
 STR_3286    :Elekti celon de ĉi tiu scenaro

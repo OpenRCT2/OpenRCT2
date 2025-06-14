@@ -17,8 +17,8 @@
 
 namespace OpenRCT2::Ui
 {
-    ImageId GetColourButtonImage(colour_t colour);
-    Widget* GetWidgetByIndex(WindowBase& w, WidgetIndex widgetIndex);
+    ImageId getColourButtonImage(colour_t colour);
+    Widget* getWidgetByIndex(WindowBase& w, WidgetIndex widgetIndex);
 
     constexpr uint32_t kWidgetContentEmpty = 0xFFFFFFFF;
     constexpr auto kBarBlink = (1u << 31);
@@ -34,14 +34,14 @@ namespace OpenRCT2::Ui
 
     enum class WindowColour : uint8_t
     {
-        Primary,
-        Secondary,
-        Tertiary,
-        Quaternary,
+        primary,
+        secondary,
+        tertiary,
+        quaternary,
     };
 
-    constexpr Widget MakeWidget(
-        const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour,
+    constexpr Widget makeWidget(
+        const ScreenCoordsXY& origin, const ScreenSize& size, WidgetType type, WindowColour colour,
         uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
     {
         Widget out = {};
@@ -57,8 +57,8 @@ namespace OpenRCT2::Ui
         return out;
     }
 
-    constexpr Widget MakeWidget(
-        const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour, ImageId image,
+    constexpr Widget makeWidget(
+        const ScreenCoordsXY& origin, const ScreenSize& size, WidgetType type, WindowColour colour, ImageId image,
         StringId tooltip = kStringIdNone)
     {
         Widget out = {};
@@ -74,24 +74,24 @@ namespace OpenRCT2::Ui
         return out;
     }
 
-    constexpr Widget MakeRemapWidget(
-        const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour, ImageIndex content,
+    constexpr Widget makeRemapWidget(
+        const ScreenCoordsXY& origin, const ScreenSize& size, WidgetType type, WindowColour colour, ImageIndex content,
         StringId tooltip = kStringIdNone)
     {
-        return MakeWidget(origin, size, type, colour, ImageId(content, FilterPaletteID::PaletteNull), tooltip);
+        return makeWidget(origin, size, type, colour, ImageId(content, FilterPaletteID::PaletteNull), tooltip);
     }
 
-    constexpr Widget MakeTab(const ScreenCoordsXY& origin, StringId tooltip = kStringIdNone)
+    constexpr Widget makeTab(const ScreenCoordsXY& origin, StringId tooltip = kStringIdNone)
     {
         const ScreenSize size = kTabSize;
-        const WindowWidgetType type = WindowWidgetType::Tab;
-        const WindowColour colour = WindowColour::Secondary;
+        const WidgetType type = WidgetType::tab;
+        const WindowColour colour = WindowColour::secondary;
         const auto content = ImageId(kImageIndexUndefined);
 
-        return MakeWidget(origin, size, type, colour, content, tooltip);
+        return makeWidget(origin, size, type, colour, content, tooltip);
     }
 
-    constexpr Widget MakeProgressBar(
+    constexpr Widget makeProgressBar(
         const ScreenCoordsXY& origin, const ScreenSize& size, colour_t colour, uint8_t lowerBlinkBound = 0,
         uint8_t upperBlinkBound = 0)
     {
@@ -100,7 +100,7 @@ namespace OpenRCT2::Ui
         out.right = origin.x + size.width - 1;
         out.top = origin.y;
         out.bottom = origin.y + size.height - 1;
-        out.type = WindowWidgetType::ProgressBar;
+        out.type = WidgetType::progressBar;
         out.colour = colour;
         out.content = 0 | (lowerBlinkBound << 8) | (upperBlinkBound << 16);
         out.tooltip = kStringIdNone;
@@ -172,13 +172,13 @@ namespace OpenRCT2::Ui
         return res;
     }
 
-    constexpr std::array<Widget, 3> makeWindowShim(StringId title, int16_t width, int16_t height)
+    constexpr std::array<Widget, 3> makeWindowShim(StringId title, ScreenSize size)
     {
         // clang-format off
         std::array<Widget, 3> out = {
-            MakeWidget({ 0, 0 }, { width, height }, WindowWidgetType::Frame, WindowColour::Primary),
-            MakeWidget({ 1, 1 }, { width - 1, kTitleHeightNormal }, WindowWidgetType::Caption, WindowColour::Primary, title, STR_WINDOW_TITLE_TIP),
-            MakeWidget({ width - 12, 2 }, { 11, 11 }, WindowWidgetType::CloseBox, WindowColour::Primary, kWidgetContentEmpty, STR_CLOSE_WINDOW_TIP),
+            makeWidget({ 0, 0 }, { size.width, size.height }, WidgetType::frame, WindowColour::primary),
+            makeWidget({ 1, 1 }, { size.width - 1, kTitleHeightNormal }, WidgetType::caption, WindowColour::primary, title, STR_WINDOW_TITLE_TIP),
+            makeWidget({ size.width - 12, 2 }, { 11, 11 }, WidgetType::closeBox, WindowColour::primary, kWidgetContentEmpty, STR_CLOSE_WINDOW_TIP),
         };
         // clang-format on
 
@@ -186,8 +186,8 @@ namespace OpenRCT2::Ui
         return out;
     }
 
-    constexpr Widget MakeSpinnerDecreaseWidget(
-        const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
+    constexpr Widget makeSpinnerDecreaseWidget(
+        const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WidgetType type, WindowColour colour,
         [[maybe_unused]] uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
     {
         const int16_t xPos = origin.x + size.width - 26;
@@ -195,11 +195,11 @@ namespace OpenRCT2::Ui
         const uint16_t width = 13;
         const uint16_t height = size.height - 2;
 
-        return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_NUMERIC_DOWN, tooltip);
+        return makeWidget({ xPos, yPos }, { width, height }, WidgetType::button, colour, STR_NUMERIC_DOWN, tooltip);
     }
 
-    constexpr Widget MakeSpinnerIncreaseWidget(
-        const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
+    constexpr Widget makeSpinnerIncreaseWidget(
+        const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WidgetType type, WindowColour colour,
         [[maybe_unused]] uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
     {
         const int16_t xPos = origin.x + size.width - 13;
@@ -207,28 +207,28 @@ namespace OpenRCT2::Ui
         const uint16_t width = 12;
         const uint16_t height = size.height - 2;
 
-        return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_NUMERIC_UP, tooltip);
+        return makeWidget({ xPos, yPos }, { width, height }, WidgetType::button, colour, STR_NUMERIC_UP, tooltip);
     }
 
-    constexpr std::array<Widget, 3> MakeSpinnerWidgets(
-        const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour,
+    constexpr std::array<Widget, 3> makeSpinnerWidgets(
+        const ScreenCoordsXY& origin, const ScreenSize& size, WidgetType type, WindowColour colour,
         uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
     {
         return makeWidgets(
-            MakeWidget(origin, size, type, colour, content, tooltip),
-            MakeSpinnerIncreaseWidget(origin, size, type, colour, content, tooltip),
-            MakeSpinnerDecreaseWidget(origin, size, type, colour, content, tooltip));
+            makeWidget(origin, size, type, colour, content, tooltip),
+            makeSpinnerIncreaseWidget(origin, size, type, colour, content, tooltip),
+            makeSpinnerDecreaseWidget(origin, size, type, colour, content, tooltip));
     };
 
-    constexpr Widget MakeDropdownBoxWidget(
-        const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
+    constexpr Widget makeDropdownBoxWidget(
+        const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WidgetType type, WindowColour colour,
         [[maybe_unused]] uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
     {
-        return MakeWidget(origin, size, type, colour, content);
+        return makeWidget(origin, size, type, colour, content);
     }
 
-    constexpr Widget MakeDropdownButtonWidget(
-        const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
+    constexpr Widget makeDropdownButtonWidget(
+        const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WidgetType type, WindowColour colour,
         [[maybe_unused]] uint32_t content = kWidgetContentEmpty, StringId tooltip = kStringIdNone)
     {
         const int16_t xPos = origin.x + size.width - 11;
@@ -236,37 +236,37 @@ namespace OpenRCT2::Ui
         const uint16_t width = 11;
         const uint16_t height = size.height - 2;
 
-        return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_DROPDOWN_GLYPH, tooltip);
+        return makeWidget({ xPos, yPos }, { width, height }, WidgetType::button, colour, STR_DROPDOWN_GLYPH, tooltip);
     }
 
-    constexpr std::array<Widget, 2> MakeDropdownWidgets(
-        const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour, uint32_t content,
+    constexpr std::array<Widget, 2> makeDropdownWidgets(
+        const ScreenCoordsXY& origin, const ScreenSize& size, WidgetType type, WindowColour colour, uint32_t content,
         StringId tooltip = kStringIdNone)
     {
         return makeWidgets(
-            MakeDropdownBoxWidget(origin, size, type, colour, content, tooltip),
-            MakeDropdownButtonWidget(origin, size, type, colour, content, tooltip));
+            makeDropdownBoxWidget(origin, size, type, colour, content, tooltip),
+            makeDropdownButtonWidget(origin, size, type, colour, content, tooltip));
     };
 
-    void WidgetDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
+    void widgetDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex);
 
-    bool WidgetIsDisabled(const WindowBase& w, WidgetIndex widgetIndex);
-    bool WidgetIsHoldable(const WindowBase& w, WidgetIndex widgetIndex);
-    bool WidgetIsVisible(const WindowBase& w, WidgetIndex widgetIndex);
-    bool WidgetIsPressed(const WindowBase& w, WidgetIndex widgetIndex);
-    bool WidgetIsHighlighted(const WindowBase& w, WidgetIndex widgetIndex);
-    void WidgetScrollGetPart(
+    bool widgetIsDisabled(const WindowBase& w, WidgetIndex widgetIndex);
+    bool widgetIsHoldable(const WindowBase& w, WidgetIndex widgetIndex);
+    bool widgetIsVisible(const WindowBase& w, WidgetIndex widgetIndex);
+    bool widgetIsPressed(const WindowBase& w, WidgetIndex widgetIndex);
+    bool widgetIsHighlighted(const WindowBase& w, WidgetIndex widgetIndex);
+    void widgetScrollGetPart(
         WindowBase& w, const Widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
         int32_t* output_scroll_area, int32_t* scroll_id);
 
-    void WidgetSetEnabled(WindowBase& w, WidgetIndex widgetIndex, bool enabled);
-    void WidgetSetDisabled(WindowBase& w, WidgetIndex widgetIndex, bool value);
-    void WidgetSetHoldable(WindowBase& w, WidgetIndex widgetIndex, bool value);
-    void WidgetSetVisible(WindowBase& w, WidgetIndex widgetIndex, bool value);
-    void WidgetSetPressed(WindowBase& w, WidgetIndex widgetIndex, bool value);
-    void WidgetSetCheckboxValue(WindowBase& w, WidgetIndex widgetIndex, bool value);
+    void widgetSetEnabled(WindowBase& w, WidgetIndex widgetIndex, bool enabled);
+    void widgetSetDisabled(WindowBase& w, WidgetIndex widgetIndex, bool value);
+    void widgetSetHoldable(WindowBase& w, WidgetIndex widgetIndex, bool value);
+    void widgetSetVisible(WindowBase& w, WidgetIndex widgetIndex, bool value);
+    void widgetSetPressed(WindowBase& w, WidgetIndex widgetIndex, bool value);
+    void widgetSetCheckboxValue(WindowBase& w, WidgetIndex widgetIndex, bool value);
 
-    void WidgetProgressBarSetNewPercentage(Widget& widget, uint8_t newPercentage);
+    void widgetProgressBarSetNewPercentage(Widget& widget, uint8_t newPercentage);
 
-    void WidgetScrollUpdateThumbs(WindowBase& w, WidgetIndex widget_index);
+    void widgetScrollUpdateThumbs(WindowBase& w, WidgetIndex widget_index);
 } // namespace OpenRCT2::Ui

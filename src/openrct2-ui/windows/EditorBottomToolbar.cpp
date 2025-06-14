@@ -41,10 +41,10 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr Widget kEditorBottomToolbarWidgets[] = {
-        MakeWidget({  0, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
-        MakeWidget({  2, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
-        MakeWidget({440, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
-        MakeWidget({442, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
+        makeWidget({  0, 0}, {200, 34}, WidgetType::imgBtn,  WindowColour::primary),
+        makeWidget({  2, 2}, {196, 30}, WidgetType::flatBtn, WindowColour::primary),
+        makeWidget({440, 0}, {200, 34}, WidgetType::imgBtn,  WindowColour::primary),
+        makeWidget({442, 2}, {196, 30}, WidgetType::flatBtn, WindowColour::primary),
     };
     // clang-format on
 
@@ -92,10 +92,10 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_NEXT_STEP_BUTTON].left = screenWidth - 198;
             widgets[WIDX_NEXT_STEP_BUTTON].right = screenWidth - 3;
 
-            widgets[WIDX_PREVIOUS_STEP_BUTTON].type = WindowWidgetType::FlatBtn;
-            widgets[WIDX_NEXT_STEP_BUTTON].type = WindowWidgetType::FlatBtn;
-            widgets[WIDX_PREVIOUS_IMAGE].type = WindowWidgetType::ImgBtn;
-            widgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::ImgBtn;
+            widgets[WIDX_PREVIOUS_STEP_BUTTON].type = WidgetType::flatBtn;
+            widgets[WIDX_NEXT_STEP_BUTTON].type = WidgetType::flatBtn;
+            widgets[WIDX_PREVIOUS_IMAGE].type = WidgetType::imgBtn;
+            widgets[WIDX_NEXT_IMAGE].type = WidgetType::imgBtn;
 
             auto& gameState = getGameState();
             if (gLegacyScene == LegacyScene::trackDesignsManager || gameState.editorStep == EditorStep::SaveScenario)
@@ -119,8 +119,8 @@ namespace OpenRCT2::Ui::Windows
 
         void OnDraw(RenderTarget& rt) override
         {
-            auto drawPreviousButton = widgets[WIDX_PREVIOUS_STEP_BUTTON].type != WindowWidgetType::Empty;
-            auto drawNextButton = widgets[WIDX_NEXT_STEP_BUTTON].type != WindowWidgetType::Empty;
+            auto drawPreviousButton = widgets[WIDX_PREVIOUS_STEP_BUTTON].type != WidgetType::empty;
+            auto drawNextButton = widgets[WIDX_NEXT_STEP_BUTTON].type != WidgetType::empty;
 
             if (drawPreviousButton)
                 DrawLeftButtonBack(rt);
@@ -316,14 +316,14 @@ namespace OpenRCT2::Ui::Windows
 
         void HidePreviousStepButton()
         {
-            widgets[WIDX_PREVIOUS_STEP_BUTTON].type = WindowWidgetType::Empty;
-            widgets[WIDX_PREVIOUS_IMAGE].type = WindowWidgetType::Empty;
+            widgets[WIDX_PREVIOUS_STEP_BUTTON].type = WidgetType::empty;
+            widgets[WIDX_PREVIOUS_IMAGE].type = WidgetType::empty;
         }
 
         void HideNextStepButton()
         {
-            widgets[WIDX_NEXT_STEP_BUTTON].type = WindowWidgetType::Empty;
-            widgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::Empty;
+            widgets[WIDX_NEXT_STEP_BUTTON].type = WidgetType::empty;
+            widgets[WIDX_NEXT_IMAGE].type = WidgetType::empty;
         }
 
         void DrawLeftButtonBack(RenderTarget& rt)
@@ -446,7 +446,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->Create<EditorBottomToolbarWindow>(
-            WindowClass::BottomToolbar, ScreenCoordsXY(0, ContextGetHeight() - 32), ContextGetWidth(), 32,
+            WindowClass::BottomToolbar, ScreenCoordsXY(0, ContextGetHeight() - 32), { ContextGetWidth(), 32 },
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
 
         return window;

@@ -26,7 +26,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_network_status_widgets = makeWidgets(
-        makeWindowShim(kStringIdEmpty, 320, 90)
+        makeWindowShim(kStringIdEmpty, { 320, 90 })
     );
     // clang-format on
 
@@ -135,7 +135,7 @@ namespace OpenRCT2::Ui::Windows
         else
         {
             window = windowMgr->Create<NetworkStatusWindow>(
-                WindowClass::NetworkStatus, 400, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+                WindowClass::NetworkStatus, { 400, 90 }, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         }
 
         window->SetCloseCallBack(onClose);
@@ -163,7 +163,7 @@ namespace OpenRCT2::Ui::Windows
 
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<NetworkStatusWindow>(
-            WindowClass::NetworkStatus, 400, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);
+            WindowClass::NetworkStatus, { 400, 90 }, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);
 
         char password[33]{};
         WindowTextInputRawOpen(window, WIDX_PASSWORD, STR_PASSWORD_REQUIRED, STR_PASSWORD_REQUIRED_DESC, {}, password, 32);

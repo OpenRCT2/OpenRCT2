@@ -53,19 +53,19 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _inventionListWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
-        MakeWidget({  0,  43}, {600, 357}, WindowWidgetType::Resize,  WindowColour::Secondary                                             ),
-        MakeTab   ({  3,  17}                                                                                               ),
-        MakeWidget({  4,  56}, {368, 161}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                            ),
-        MakeWidget({  4, 231}, {368, 157}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                            ),
-        MakeWidget({431, 106}, {114, 114}, WindowWidgetType::FlatBtn, WindowColour::Secondary                                             ),
-        MakeWidget({375, 343}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MOVE_ALL_TOP                           ),
-        MakeWidget({375, 358}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MOVE_ALL_BOTTOM                        ),
-        MakeWidget({375, 373}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_RANDOM_SHUFFLE,  STR_RANDOM_SHUFFLE_TIP)
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWidget({  0,  43}, {600, 357}, WidgetType::resize,  WindowColour::secondary                                             ),
+        makeTab   ({  3,  17}                                                                                               ),
+        makeWidget({  4,  56}, {368, 161}, WidgetType::scroll,  WindowColour::secondary, SCROLL_VERTICAL                            ),
+        makeWidget({  4, 231}, {368, 157}, WidgetType::scroll,  WindowColour::secondary, SCROLL_VERTICAL                            ),
+        makeWidget({431, 106}, {114, 114}, WidgetType::flatBtn, WindowColour::secondary                                             ),
+        makeWidget({375, 343}, {220,  14}, WidgetType::button,  WindowColour::secondary, STR_MOVE_ALL_TOP                           ),
+        makeWidget({375, 358}, {220,  14}, WidgetType::button,  WindowColour::secondary, STR_MOVE_ALL_BOTTOM                        ),
+        makeWidget({375, 373}, {220,  14}, WidgetType::button,  WindowColour::secondary, STR_RANDOM_SHUFFLE,  STR_RANDOM_SHUFFLE_TIP)
     );
 
     static constexpr auto _inventionListDragWidgets = makeWidgets(
-        MakeWidget({0, 0}, {150, 14}, WindowWidgetType::ImgBtn, WindowColour::Primary)
+        makeWidget({0, 0}, {150, 14}, WidgetType::imgBtn, WindowColour::primary)
     );
     // clang-format on
 
@@ -445,8 +445,7 @@ namespace OpenRCT2::Ui::Windows
             pressed_widgets |= 1uLL << WIDX_PREVIEW;
             pressed_widgets |= 1uLL << WIDX_TAB_1;
 
-            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WindowWidgetType::Empty
-                                                                                   : WindowWidgetType::CloseBox;
+            widgets[WIDX_CLOSE].type = gLegacyScene == LegacyScene::scenarioEditor ? WidgetType::empty : WidgetType::closeBox;
 
             int16_t scrollListHeight = (height - 88) / 2;
 
@@ -492,7 +491,7 @@ namespace OpenRCT2::Ui::Windows
                     int32_t outScrollArea{};
                     ScreenCoordsXY outScrollCoords{};
                     int32_t outScrollId{};
-                    WidgetScrollGetPart(*this, &widget, screenCoords, outScrollCoords, &outScrollArea, &outScrollId);
+                    widgetScrollGetPart(*this, &widget, screenCoords, outScrollCoords, &outScrollArea, &outScrollId);
                     if (outScrollArea == SCROLL_PART_VIEW)
                     {
                         const auto isInvented = outScrollId == 0;
@@ -589,7 +588,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<InventionListWindow>(
-            WindowClass::EditorInventionList, WW, WH, WF_NO_SCROLLING | WF_RESIZABLE | WF_CENTRE_SCREEN);
+            WindowClass::EditorInventionList, { WW, WH }, WF_NO_SCROLLING | WF_RESIZABLE | WF_CENTRE_SCREEN);
     }
 #pragma endregion
 
@@ -687,7 +686,7 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->CloseByClass(WindowClass::EditorInventionListDrag);
         auto* wnd = windowMgr->Create<InventionDragWindow>(
-            WindowClass::EditorInventionListDrag, 10, 14, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
+            WindowClass::EditorInventionListDrag, { 10, 14 }, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
         if (wnd != nullptr)
         {
             wnd->Init(*researchItem, editorPos, objectSelectionScrollWidth);

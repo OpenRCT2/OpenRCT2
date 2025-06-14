@@ -41,11 +41,11 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _savePromptWidgets = makeWidgets(
-        makeWindowShim(kStringIdNone, WW_SAVE, WH_SAVE),
-        MakeWidget({  2, 19}, {256, 12}, WindowWidgetType::LabelCentred, WindowColour::Primary, kStringIdEmpty                ), // question/label
-        MakeWidget({  8, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_SAVE     ), // save
-        MakeWidget({ 91, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_DONT_SAVE), // don't save
-        MakeWidget({174, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_CANCEL   ) // cancel
+        makeWindowShim(kStringIdNone, { WW_SAVE, WH_SAVE }),
+        makeWidget({  2, 19}, {256, 12}, WidgetType::labelCentred, WindowColour::primary, kStringIdEmpty                ), // question/label
+        makeWidget({  8, 35}, { 78, 14}, WidgetType::button,        WindowColour::primary, STR_SAVE_PROMPT_SAVE     ), // save
+        makeWidget({ 91, 35}, { 78, 14}, WidgetType::button,        WindowColour::primary, STR_SAVE_PROMPT_DONT_SAVE), // don't save
+        makeWidget({174, 35}, { 78, 14}, WidgetType::button,        WindowColour::primary, STR_SAVE_PROMPT_CANCEL   ) // cancel
     );
     // clang-format on
 
@@ -60,9 +60,9 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _quitPromptWidgets = makeWidgets(
-        makeWindowShim(STR_QUIT_GAME_PROMPT_TITLE, WW_QUIT, WH_QUIT),
-        MakeWidget({ 8, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_OK    ), // ok
-        MakeWidget({91, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL)  // cancel
+        makeWindowShim(STR_QUIT_GAME_PROMPT_TITLE, { WW_QUIT, WH_QUIT }),
+        makeWidget({ 8, 19}, {78, 14}, WidgetType::button, WindowColour::primary, STR_OK    ), // ok
+        makeWidget({91, 19}, {78, 14}, WidgetType::button, WindowColour::primary, STR_CANCEL)  // cancel
     );
     // clang-format on
 
@@ -253,7 +253,7 @@ namespace OpenRCT2::Ui::Windows
 
         auto savePromptWindow = std::make_unique<SavePromptWindow>(prompt_mode);
         return windowMgr->Create(
-            std::move(savePromptWindow), WindowClass::SavePrompt, {}, width, height,
+            std::move(savePromptWindow), WindowClass::SavePrompt, {}, { width, height },
             WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN | WF_AUTO_POSITION);
     }
 } // namespace OpenRCT2::Ui::Windows

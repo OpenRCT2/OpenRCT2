@@ -820,6 +820,7 @@ namespace OpenRCT2
                 _objectManager->LoadObjects(result.RequiredObjects, true);
                 SetProgress(90, 100, STR_STRING_M_PERCENT);
 
+                MapAnimations::ClearAll();
                 // TODO: Have a separate GameState and exchange once loaded.
                 auto& gameState = ::getGameState();
                 parkImporter->Import(gameState);
@@ -832,7 +833,7 @@ namespace OpenRCT2
                 gCurrentLoadedPath = path;
                 gFirstTimeSaving = true;
                 GameFixSaveVars();
-                MapAnimationAutoCreate();
+                MapAnimations::MarkAllTiles();
                 EntityTweener::Get().Reset();
                 gScreenAge = 0;
                 gLastAutoSaveUpdate = kAutosavePause;

@@ -155,7 +155,7 @@ static std::optional<std::string> ScreenshotGetNextPath()
     // Generate a path with a `tries` number
     auto pathComposer = [&screenshotDirectory, &name](int tries) {
         auto composedFilename = Platform::SanitiseFilename(
-            name + ((tries > 0) ? " ("s + std::to_string(tries) + ")" : ""s) + ".png");
+            name + ((tries > 0) ? " ("s + std::to_string(tries) + ")"s : ""s) + ".png"s);
         return screenshotDirectory + PATH_SEPARATOR + composedFilename;
     };
 

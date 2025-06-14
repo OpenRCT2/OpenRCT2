@@ -227,7 +227,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         for (i = 0; i < widget_index; i++)
         {
             const auto& widget = w.widgets[i];
-            if (widget.type == WindowWidgetType::Scroll)
+            if (widget.type == WidgetType::scroll)
                 result++;
         }
         return result;
@@ -832,7 +832,7 @@ static constexpr float kWindowScrollLocations[][2] = {
             mainWind->height = height;
             viewport->width = width;
             viewport->height = height;
-            if (!mainWind->widgets.empty() && mainWind->widgets[WC_MAIN_WINDOW__0].type == WindowWidgetType::Viewport)
+            if (!mainWind->widgets.empty() && mainWind->widgets[WC_MAIN_WINDOW__0].type == WidgetType::viewport)
             {
                 mainWind->widgets[WC_MAIN_WINDOW__0].right = width;
                 mainWind->widgets[WC_MAIN_WINDOW__0].bottom = height;

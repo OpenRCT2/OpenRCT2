@@ -2241,14 +2241,14 @@ STR_3235    :Vis finansindstillinger
 STR_3236    :Vis gæsteindstillinger
 STR_3238    :Ingen penge
 STR_3239    :Gør denne park til en ‘pengeløs’ park, unde finansielle restriktioner
-STR_3240    :{WINDOW_COLOUR_2}Startkapital:
-STR_3241    :{WINDOW_COLOUR_2}Startlån:
-STR_3242    :{WINDOW_COLOUR_2}Maksimum lånstørrelse:
-STR_3243    :{WINDOW_COLOUR_2}Årlig rentesats:
+STR_3240    :Startkapital:
+STR_3241    :Startlån:
+STR_3242    :Maksimum lånstørrelse:
+STR_3243    :Årlig rentesats:
 STR_3244    :Forbyd markedsføringskampagner
 STR_3245    :Forbyd reklamer, salgsfremmende ordninger, og andre marketingkampagner
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Kan ikke forøge startkapital yderligere!
 STR_3249    :Kan ikke reducere startkapital yderligere!
 STR_3250    :Kan ikke forøge startlån yderligere!
@@ -2257,10 +2257,10 @@ STR_3252    :Kan ikke forøge maksimum lånestørrelse yderligere!
 STR_3253    :Kan ikke reducere maksimum lånestørrelse yderligere!
 STR_3254    :Kan ikke forøge rentesats yderligere!
 STR_3255    :Kan ikke reducere rentesats yderligere!
-STR_3260    :{WINDOW_COLOUR_2}Penge per gæst (gennemsnit):
-STR_3261    :{WINDOW_COLOUR_2}Gæsters start-glæde:
-STR_3262    :{WINDOW_COLOUR_2}Gæsters start-sult:
-STR_3263    :{WINDOW_COLOUR_2}Gæsters start-tørst:
+STR_3260    :Penge per gæst (gennemsnit):
+STR_3261    :Gæsters start-glæde:
+STR_3262    :Gæsters start-sult:
+STR_3263    :Gæsters start-tørst:
 STR_3264    :Kan ikke forøge dette yderligere!
 STR_3265    :Kan ikke reducere dette yderligere!
 STR_3266    :Vælg hvordan parken tager penge for entré og forlystelser
@@ -2274,11 +2274,11 @@ STR_3273    :Park vurdering er svære at forøge og vedligeholde
 STR_3274    :gør park vurderingen mere udfordrende
 STR_3275    :Gæster er svære at tiltrække
 STR_3276    :Gør det svære at tiltrække og beholde gæster i parken
-STR_3277    :{WINDOW_COLOUR_2}Pris for at købe land:
-STR_3278    :{WINDOW_COLOUR_2}Pris for at købe byggerettigheder:
+STR_3277    :Pris for at købe land:
+STR_3278    :Pris for at købe byggerettigheder:
 STR_3279    :Gratis park entré / Betal for forlystelser
 STR_3280    :Betal Park entré / Gratis forlystelser
-STR_3281    :{WINDOW_COLOUR_2}Entré pris:
+STR_3281    :Entré pris:
 STR_3283    :vælg forlystelser der skal bevares
 STR_3285    :Bevarede forlystelser
 STR_3286    :Vælg mål for dette scenarie

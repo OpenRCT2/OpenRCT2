@@ -55,9 +55,9 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EB2A8
      */
-    void WidgetDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
+    void widgetDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
-        const auto* widget = GetWidgetByIndex(w, widgetIndex);
+        const auto* widget = getWidgetByIndex(w, widgetIndex);
         if (widget == nullptr)
         {
             LOG_ERROR("Tried drawing an out-of-bounds widget index!");
@@ -66,60 +66,60 @@ namespace OpenRCT2::Ui
 
         switch (widget->type)
         {
-            case WindowWidgetType::Frame:
+            case WidgetType::frame:
                 WidgetFrameDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::Resize:
+            case WidgetType::resize:
                 WidgetResizeDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::ImgBtn:
+            case WidgetType::imgBtn:
                 WidgetButtonDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::ColourBtn:
-            case WindowWidgetType::TrnBtn:
-            case WindowWidgetType::Tab:
+            case WidgetType::colourBtn:
+            case WidgetType::trnBtn:
+            case WidgetType::tab:
                 WidgetTabDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::FlatBtn:
+            case WidgetType::flatBtn:
                 WidgetFlatButtonDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::Button:
-            case WindowWidgetType::TableHeader:
+            case WidgetType::button:
+            case WidgetType::tableHeader:
                 WidgetTextButton(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::LabelCentred:
+            case WidgetType::labelCentred:
                 WidgetTextCentred(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::Label:
+            case WidgetType::label:
                 WidgetText(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::Spinner:
-            case WindowWidgetType::DropdownMenu:
-            case WindowWidgetType::Viewport:
+            case WidgetType::spinner:
+            case WidgetType::dropdownMenu:
+            case WidgetType::viewport:
                 WidgetTextInset(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::Groupbox:
+            case WidgetType::groupbox:
                 WidgetGroupboxDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::Caption:
+            case WidgetType::caption:
                 WidgetCaptionDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::CloseBox:
+            case WidgetType::closeBox:
                 WidgetCloseboxDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::Scroll:
+            case WidgetType::scroll:
                 WidgetScrollDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::Checkbox:
+            case WidgetType::checkbox:
                 WidgetCheckboxDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::TextBox:
+            case WidgetType::textBox:
                 WidgetTextBoxDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::ProgressBar:
+            case WidgetType::progressBar:
                 WidgetProgressBarDraw(rt, w, widgetIndex);
                 break;
-            case WindowWidgetType::HorizontalSeparator:
+            case WidgetType::horizontalSeparator:
                 WidgetHorizontalSeparatorDraw(rt, w, *widget);
                 break;
             default:
@@ -198,7 +198,7 @@ namespace OpenRCT2::Ui
                          w.windowPos + ScreenCoordsXY{ widget.right, widget.bottom } };
 
         // Check if the button is pressed down
-        uint8_t press = WidgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
+        uint8_t press = widgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         auto colour = w.colours[widget.colour];
 
@@ -225,12 +225,12 @@ namespace OpenRCT2::Ui
         // Get the widget
         auto& widget = w.widgets[widgetIndex];
 
-        if (widget.type != WindowWidgetType::Tab && widget.image.GetIndex() == kImageIndexUndefined)
+        if (widget.type != WidgetType::tab && widget.image.GetIndex() == kImageIndexUndefined)
             return;
 
-        if (widget.type == WindowWidgetType::Tab)
+        if (widget.type == WidgetType::tab)
         {
-            if (WidgetIsDisabled(w, widgetIndex))
+            if (widgetIsDisabled(w, widgetIndex))
                 return;
 
             if (widget.image.GetIndex() == kImageIndexUndefined)
@@ -241,13 +241,13 @@ namespace OpenRCT2::Ui
         }
 
         // Draw widgets that aren't explicitly disabled.
-        if (!WidgetIsDisabled(w, widgetIndex))
+        if (!widgetIsDisabled(w, widgetIndex))
         {
             WidgetDrawImage(rt, w, widgetIndex);
             return;
         }
 
-        if (widget.type != WindowWidgetType::TrnBtn)
+        if (widget.type != WidgetType::trnBtn)
         {
             WidgetDrawImage(rt, w, widgetIndex);
             return;
@@ -271,7 +271,7 @@ namespace OpenRCT2::Ui
      */
     static void WidgetFlatButtonDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
     {
-        if (!WidgetIsDisabled(w, widgetIndex) && WidgetIsHighlighted(w, widgetIndex))
+        if (!widgetIsDisabled(w, widgetIndex) && widgetIsHighlighted(w, widgetIndex))
         {
             WidgetButtonDraw(rt, w, widgetIndex);
             return;
@@ -287,7 +287,7 @@ namespace OpenRCT2::Ui
         auto colour = w.colours[widget.colour];
 
         // Check if the button is pressed down
-        if (WidgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
+        if (widgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
         {
             // Dead code?
             if (static_cast<int32_t>(widget.image.GetIndex()) == -2)
@@ -321,11 +321,11 @@ namespace OpenRCT2::Ui
         auto colour = w.colours[widget.colour];
 
         // Border
-        uint8_t press = WidgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
+        uint8_t press = widgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
         GfxFillRectInset(rt, rect, colour, press);
 
         // Button caption
-        if (widget.type != WindowWidgetType::TableHeader)
+        if (widget.type != WidgetType::tableHeader)
         {
             WidgetTextCentred(rt, w, widgetIndex);
         }
@@ -349,28 +349,28 @@ namespace OpenRCT2::Ui
 
         auto colour = w.colours[widget.colour];
         colour.setFlag(ColourFlag::translucent, false);
-        if (WidgetIsDisabled(w, widgetIndex))
+        if (widgetIsDisabled(w, widgetIndex))
             colour.setFlag(ColourFlag::inset, true);
 
         // Resolve the absolute ltrb
         auto topLeft = w.windowPos + ScreenCoordsXY{ widget.left, 0 };
         int32_t r = w.windowPos.x + widget.right;
 
-        if (widget.type == WindowWidgetType::Button || widget.type == WindowWidgetType::TableHeader)
+        if (widget.type == WidgetType::button || widget.type == WidgetType::tableHeader)
             topLeft.y += widget.textTop();
         else
             topLeft.y += widget.top;
 
         auto stringId = widget.text;
         auto ft = Formatter::Common();
-        if (widget.flags & WIDGET_FLAGS::TEXT_IS_STRING)
+        if (widget.flags.has(WidgetFlag::textIsString))
         {
             stringId = STR_STRING;
             ft.Add<utf8*>(widget.string);
         }
 
         ScreenCoordsXY coords = { (topLeft.x + r + 1) / 2 - 1, topLeft.y };
-        if (widget.type == WindowWidgetType::LabelCentred)
+        if (widget.type == WidgetType::labelCentred)
         {
             DrawTextWrapped(rt, coords, widget.width() - 2, stringId, ft, { colour, TextAlignment::CENTRE });
         }
@@ -393,7 +393,7 @@ namespace OpenRCT2::Ui
             return;
 
         auto colour = w.colours[widget.colour];
-        if (WidgetIsDisabled(w, widgetIndex))
+        if (widgetIsDisabled(w, widgetIndex))
             colour.setFlag(ColourFlag::inset, true);
 
         // Resolve the absolute ltrb
@@ -401,8 +401,8 @@ namespace OpenRCT2::Ui
         int32_t r = w.windowPos.x + widget.right;
         int32_t t;
 
-        if (widget.type == WindowWidgetType::Button || widget.type == WindowWidgetType::DropdownMenu
-            || widget.type == WindowWidgetType::Spinner || widget.type == WindowWidgetType::TableHeader)
+        if (widget.type == WidgetType::button || widget.type == WidgetType::dropdownMenu || widget.type == WidgetType::spinner
+            || widget.type == WidgetType::tableHeader)
         {
             t = w.windowPos.y + widget.textTop();
         }
@@ -411,14 +411,14 @@ namespace OpenRCT2::Ui
 
         auto stringId = widget.text;
         auto ft = Formatter::Common();
-        if (widget.flags & WIDGET_FLAGS::TEXT_IS_STRING)
+        if (widget.flags.has(WidgetFlag::textIsString))
         {
             stringId = STR_STRING;
             ft.Add<utf8*>(widget.string);
         }
 
         ScreenCoordsXY coords = { l + 1, t };
-        if (widget.type == WindowWidgetType::LabelCentred)
+        if (widget.type == WidgetType::labelCentred)
         {
             DrawTextWrapped(rt, coords, r - l, stringId, ft, { colour, TextAlignment::CENTRE });
         }
@@ -464,7 +464,7 @@ namespace OpenRCT2::Ui
         // Text
         auto stringId = widget.text;
         auto rawFt = Formatter::Common();
-        if (widget.flags & WIDGET_FLAGS::TEXT_IS_STRING)
+        if (widget.flags.has(WidgetFlag::textIsString))
         {
             if (widget.string != nullptr && widget.string[0] != '\0')
             {
@@ -480,7 +480,7 @@ namespace OpenRCT2::Ui
         if (stringId != kStringIdNone)
         {
             auto colour = w.colours[widget.colour].withFlag(ColourFlag::translucent, false);
-            if (WidgetIsDisabled(w, widgetIndex))
+            if (widgetIsDisabled(w, widgetIndex))
                 colour.setFlag(ColourFlag::inset, true);
 
             utf8 buffer[512] = { 0 };
@@ -559,10 +559,10 @@ namespace OpenRCT2::Ui
 
         topLeft = w.windowPos + ScreenCoordsXY{ widget->left + 2, widget->top + 1 };
         int32_t width = widget->width() - 4;
-        if ((widget + 1)->type == WindowWidgetType::CloseBox)
+        if ((widget + 1)->type == WidgetType::closeBox)
         {
             width -= kCloseButtonSize;
-            if ((widget + 2)->type == WindowWidgetType::CloseBox)
+            if ((widget + 2)->type == WidgetType::closeBox)
                 width -= kCloseButtonSize;
         }
         topLeft.x += width / 2;
@@ -593,7 +593,7 @@ namespace OpenRCT2::Ui
         uint8_t press = 0;
         if (w.flags & WF_10)
             press |= INSET_RECT_FLAG_FILL_MID_LIGHT;
-        if (WidgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
+        if (widgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
             press |= INSET_RECT_FLAG_BORDER_INSET;
 
         auto colour = w.colours[widget.colour];
@@ -606,7 +606,7 @@ namespace OpenRCT2::Ui
 
         topLeft = w.windowPos + ScreenCoordsXY{ widget.midX() - 1, std::max<int32_t>(widget.top, widget.midY() - 5) };
 
-        if (WidgetIsDisabled(w, widgetIndex))
+        if (widgetIsDisabled(w, widgetIndex))
             colour.setFlag(ColourFlag::inset, true);
 
         DrawText(rt, topLeft, { colour, TextAlignment::CENTRE }, widget.string);
@@ -631,13 +631,13 @@ namespace OpenRCT2::Ui
         // checkbox
         GfxFillRectInset(rt, { midLeft - ScreenCoordsXY{ 0, 5 }, midLeft + ScreenCoordsXY{ 9, 4 } }, colour, INSET_RECT_F_60);
 
-        if (WidgetIsDisabled(w, widgetIndex))
+        if (widgetIsDisabled(w, widgetIndex))
         {
             colour.setFlag(ColourFlag::inset, true);
         }
 
         // fill it when checkbox is pressed
-        if (WidgetIsPressed(w, widgetIndex))
+        if (widgetIsPressed(w, widgetIndex))
         {
             DrawText(
                 rt, { midLeft - ScreenCoordsXY{ 0, 5 } }, { colour.withFlag(ColourFlag::translucent, false) },
@@ -650,7 +650,7 @@ namespace OpenRCT2::Ui
 
         auto stringId = widget.text;
         auto ft = Formatter::Common();
-        if (widget.flags & WIDGET_FLAGS::TEXT_IS_STRING)
+        if (widget.flags.has(WidgetFlag::textIsString))
         {
             stringId = STR_STRING;
             ft.Add<utf8*>(widget.string);
@@ -829,13 +829,12 @@ namespace OpenRCT2::Ui
         // Resolve the absolute ltrb
         auto screenCoords = w.windowPos + ScreenCoordsXY{ widget.left, widget.top };
 
-        if (widget.type == WindowWidgetType::ColourBtn || widget.type == WindowWidgetType::TrnBtn
-            || widget.type == WindowWidgetType::Tab)
-            if (WidgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
+        if (widget.type == WidgetType::colourBtn || widget.type == WidgetType::trnBtn || widget.type == WidgetType::tab)
+            if (widgetIsPressed(w, widgetIndex) || isToolActive(w, widgetIndex))
                 image = image.WithIndexOffset(1);
 
         const auto colour = w.colours[widget.colour].colour;
-        if (WidgetIsDisabled(w, widgetIndex))
+        if (widgetIsDisabled(w, widgetIndex))
         {
             // Draw greyed out (light border bottom right shadow)
             auto mappedColour = ColourMapA[colour].lighter;
@@ -861,30 +860,30 @@ namespace OpenRCT2::Ui
         }
     }
 
-    bool WidgetIsDisabled(const WindowBase& w, WidgetIndex widgetIndex)
+    bool widgetIsDisabled(const WindowBase& w, WidgetIndex widgetIndex)
     {
         if (w.classification == WindowClass::Custom)
-            return w.widgets[widgetIndex].flags & WIDGET_FLAGS::IS_DISABLED;
+            return w.widgets[widgetIndex].flags.has(WidgetFlag::isDisabled);
         return (w.disabled_widgets & (1LL << widgetIndex)) != 0;
     }
 
-    bool WidgetIsHoldable(const WindowBase& w, WidgetIndex widgetIndex)
+    bool widgetIsHoldable(const WindowBase& w, WidgetIndex widgetIndex)
     {
         if (w.classification == WindowClass::Custom)
-            return w.widgets[widgetIndex].flags & WIDGET_FLAGS::IS_HOLDABLE;
+            return w.widgets[widgetIndex].flags.has(WidgetFlag::isHoldable);
         return (w.hold_down_widgets & (1LL << widgetIndex)) != 0;
     }
 
-    bool WidgetIsVisible(const WindowBase& w, WidgetIndex widgetIndex)
+    bool widgetIsVisible(const WindowBase& w, WidgetIndex widgetIndex)
     {
         return w.widgets[widgetIndex].IsVisible();
     }
 
-    bool WidgetIsPressed(const WindowBase& w, WidgetIndex widgetIndex)
+    bool widgetIsPressed(const WindowBase& w, WidgetIndex widgetIndex)
     {
         if (w.classification == WindowClass::Custom)
         {
-            if (w.widgets[widgetIndex].flags & WIDGET_FLAGS::IS_PRESSED)
+            if (w.widgets[widgetIndex].flags.has(WidgetFlag::isPressed))
             {
                 return true;
             }
@@ -912,7 +911,7 @@ namespace OpenRCT2::Ui
         return false;
     }
 
-    bool WidgetIsHighlighted(const WindowBase& w, WidgetIndex widgetIndex)
+    bool widgetIsHighlighted(const WindowBase& w, WidgetIndex widgetIndex)
     {
         if (gHoverWidget.window_classification != w.classification)
             return false;
@@ -933,7 +932,7 @@ namespace OpenRCT2::Ui
      *  esi: w
      *  edi: widget
      */
-    void WidgetScrollGetPart(
+    void widgetScrollGetPart(
         WindowBase& w, const Widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
         int32_t* output_scroll_area, int32_t* scroll_id)
     {
@@ -942,7 +941,7 @@ namespace OpenRCT2::Ui
             w.widgets.begin(), w.widgets.end(), [&](auto& otherWidget) { return &otherWidget == widget; });
         for (auto it = w.widgets.begin(); it != itLast; it++)
         {
-            if (it->type == WindowWidgetType::Scroll)
+            if (it->type == WidgetType::scroll)
             {
                 *scroll_id += 1;
             }
@@ -1043,7 +1042,7 @@ namespace OpenRCT2::Ui
         }
     }
 
-    Widget* GetWidgetByIndex(WindowBase& w, WidgetIndex widgetIndex)
+    Widget* getWidgetByIndex(WindowBase& w, WidgetIndex widgetIndex)
     {
         if (widgetIndex >= w.widgets.size())
         {
@@ -1053,28 +1052,25 @@ namespace OpenRCT2::Ui
         return &w.widgets[widgetIndex];
     }
 
-    static void SafeSetWidgetFlag(WindowBase& w, WidgetIndex widgetIndex, WidgetFlags mask, bool value)
+    static void SafeSetWidgetFlag(WindowBase& w, WidgetIndex widgetIndex, WidgetFlag flag, bool value)
     {
-        Widget* widget = GetWidgetByIndex(w, widgetIndex);
+        Widget* widget = getWidgetByIndex(w, widgetIndex);
         if (widget == nullptr)
         {
             return;
         }
 
-        if (value)
-            widget->flags |= mask;
-        else
-            widget->flags &= ~mask;
+        widget->flags.set(flag, value);
     }
 
-    void WidgetSetEnabled(WindowBase& w, WidgetIndex widgetIndex, bool enabled)
+    void widgetSetEnabled(WindowBase& w, WidgetIndex widgetIndex, bool enabled)
     {
-        WidgetSetDisabled(w, widgetIndex, !enabled);
+        widgetSetDisabled(w, widgetIndex, !enabled);
     }
 
-    void WidgetSetDisabled(WindowBase& w, WidgetIndex widgetIndex, bool value)
+    void widgetSetDisabled(WindowBase& w, WidgetIndex widgetIndex, bool value)
     {
-        SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_DISABLED, value);
+        SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isDisabled, value);
         if (value)
         {
             w.disabled_widgets |= (1uLL << widgetIndex);
@@ -1085,9 +1081,9 @@ namespace OpenRCT2::Ui
         }
     }
 
-    void WidgetSetHoldable(WindowBase& w, WidgetIndex widgetIndex, bool value)
+    void widgetSetHoldable(WindowBase& w, WidgetIndex widgetIndex, bool value)
     {
-        SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_HOLDABLE, value);
+        SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isHoldable, value);
         if (value)
         {
             w.hold_down_widgets |= (1uLL << widgetIndex);
@@ -1098,23 +1094,23 @@ namespace OpenRCT2::Ui
         }
     }
 
-    void WidgetSetVisible(WindowBase& w, WidgetIndex widgetIndex, bool value)
+    void widgetSetVisible(WindowBase& w, WidgetIndex widgetIndex, bool value)
     {
-        SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_HIDDEN, !value);
+        SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isHidden, !value);
     }
 
-    void WidgetSetPressed(WindowBase& w, WidgetIndex widgetIndex, bool value)
+    void widgetSetPressed(WindowBase& w, WidgetIndex widgetIndex, bool value)
     {
-        SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_PRESSED, value);
+        SafeSetWidgetFlag(w, widgetIndex, WidgetFlag::isPressed, value);
         if (value)
             w.pressed_widgets |= (1uLL << widgetIndex);
         else
             w.pressed_widgets &= ~(1uLL << widgetIndex);
     }
 
-    void WidgetSetCheckboxValue(WindowBase& w, WidgetIndex widgetIndex, bool value)
+    void widgetSetCheckboxValue(WindowBase& w, WidgetIndex widgetIndex, bool value)
     {
-        WidgetSetPressed(w, widgetIndex, value);
+        widgetSetPressed(w, widgetIndex, value);
     }
 
     static void WidgetTextBoxDraw(RenderTarget& rt, WindowBase& w, WidgetIndex widgetIndex)
@@ -1220,7 +1216,7 @@ namespace OpenRCT2::Ui
         GfxFillRectInset(rt, { topLeft, bottomRight }, w.colours[1], INSET_RECT_FLAG_BORDER_INSET);
     }
 
-    ImageId GetColourButtonImage(colour_t colour)
+    ImageId getColourButtonImage(colour_t colour)
     {
         if (colour == COLOUR_INVISIBLE)
         {
@@ -1232,7 +1228,7 @@ namespace OpenRCT2::Ui
         }
     }
 
-    void WidgetProgressBarSetNewPercentage(Widget& widget, uint8_t newPercentage)
+    void widgetProgressBarSetNewPercentage(Widget& widget, uint8_t newPercentage)
     {
         widget.content &= ~0xFF;
         widget.content |= newPercentage;
@@ -1242,7 +1238,7 @@ namespace OpenRCT2::Ui
      *
      *  rct2: 0x006EAF26
      */
-    void WidgetScrollUpdateThumbs(WindowBase& w, WidgetIndex widget_index)
+    void widgetScrollUpdateThumbs(WindowBase& w, WidgetIndex widget_index)
     {
         const auto& widget = w.widgets[widget_index];
         auto& scroll = w.scrolls[WindowGetScrollDataIndex(w, widget_index)];

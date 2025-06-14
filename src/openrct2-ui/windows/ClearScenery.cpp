@@ -45,13 +45,13 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_clear_scenery_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
-        MakeWidget     ({ 27, 17 }, { 44, 32 },           WindowWidgetType::ImgBtn,  WindowColour::Primary,   SPR_LAND_TOOL_SIZE_0,        kStringIdNone                             ), // preview box
-        MakeRemapWidget({ 28, 18 }, { 16, 16 },           WindowWidgetType::TrnBtn,  WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_LAND_TIP               ), // decrement size
-        MakeRemapWidget({ 54, 32 }, { 16, 16 },           WindowWidgetType::TrnBtn,  WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_TIP                ), // increment size
-        MakeRemapWidget({  7, 53 }, CLEAR_SCENERY_BUTTON, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_TREES,         STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP), // small scenery
-        MakeRemapWidget({ 37, 53 }, CLEAR_SCENERY_BUTTON, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_LARGE_SCENERY, STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP), // large scenery
-        MakeRemapWidget({ 67, 53 }, CLEAR_SCENERY_BUTTON, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,      STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP    )  // footpaths
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWidget     ({ 27, 17 }, { 44, 32 },           WidgetType::imgBtn,  WindowColour::primary,   SPR_LAND_TOOL_SIZE_0,        kStringIdNone                             ), // preview box
+        makeRemapWidget({ 28, 18 }, { 16, 16 },           WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_LAND_TIP               ), // decrement size
+        makeRemapWidget({ 54, 32 }, { 16, 16 },           WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_TIP                ), // increment size
+        makeRemapWidget({  7, 53 }, CLEAR_SCENERY_BUTTON, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_TREES,         STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP), // small scenery
+        makeRemapWidget({ 37, 53 }, CLEAR_SCENERY_BUTTON, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_LARGE_SCENERY, STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP), // large scenery
+        makeRemapWidget({ 67, 53 }, CLEAR_SCENERY_BUTTON, WidgetType::flatBtn, WindowColour::secondary, SPR_G2_BUTTON_FOOTPATH,      STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP    )  // footpaths
     );
     // clang-format on
 
@@ -369,7 +369,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<CleanSceneryWindow>(
-            WindowClass::ClearScenery, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
+            WindowClass::ClearScenery, ScreenCoordsXY(ContextGetWidth() - WW, 29), { WW, WH }, 0);
     }
 
     /**

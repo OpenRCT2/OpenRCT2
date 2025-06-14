@@ -41,7 +41,7 @@
 #include "PeepAnimationsObject.h"
 #include "PeepNamesObject.h"
 #include "RideObject.h"
-#include "ScenarioTextObject.h"
+#include "ScenarioMetaObject.h"
 #include "SceneryGroupObject.h"
 #include "SmallSceneryObject.h"
 #include "StationObject.h"
@@ -272,7 +272,7 @@ namespace OpenRCT2::ObjectFactory
 
             RCTObjectEntry entry = fs.ReadValue<RCTObjectEntry>();
 
-            if (entry.GetType() != ObjectType::scenarioText)
+            if (entry.GetType() != ObjectType::scenarioMeta)
             {
                 result = CreateObject(entry.GetType());
                 result->SetDescriptor(ObjectEntryDescriptor(entry));
@@ -366,8 +366,8 @@ namespace OpenRCT2::ObjectFactory
             case ObjectType::water:
                 result = std::make_unique<WaterObject>();
                 break;
-            case ObjectType::scenarioText:
-                result = std::make_unique<ScenarioTextObject>();
+            case ObjectType::scenarioMeta:
+                result = std::make_unique<ScenarioMetaObject>();
                 break;
             case ObjectType::terrainSurface:
                 result = std::make_unique<TerrainSurfaceObject>();
@@ -416,7 +416,7 @@ namespace OpenRCT2::ObjectFactory
         { "scenery_group", ObjectType::sceneryGroup },
         { "park_entrance", ObjectType::parkEntrance },
         { "water", ObjectType::water },
-        { "scenario_text", ObjectType::scenarioText },
+        { "scenario_meta", ObjectType::scenarioMeta },
         { "terrain_surface", ObjectType::terrainSurface },
         { "terrain_edge", ObjectType::terrainEdge },
         { "station", ObjectType::station },

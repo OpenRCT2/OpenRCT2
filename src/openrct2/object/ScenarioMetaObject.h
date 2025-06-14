@@ -10,14 +10,18 @@
 #pragma once
 
 #include "../core/IStream.hpp"
+#include "../park/ParkPreview.h"
 #include "Object.h"
 
 #include <string>
 
-class ScenarioTextObject final : public Object
+class ScenarioMetaObject final : public Object
 {
+private:
+    ImageIndex _imageOffsetId;
+
 public:
-    static constexpr ObjectType kObjectType = ObjectType::scenarioText;
+    static constexpr ObjectType kObjectType = ObjectType::scenarioMeta;
 
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;
@@ -26,4 +30,7 @@ public:
     std::string GetScenarioName();
     std::string GetParkName();
     std::string GetScenarioDetails();
+
+    OpenRCT2::PreviewImage GetMiniMapImage() const;
+    OpenRCT2::PreviewImage GetPreviewImage() const;
 };

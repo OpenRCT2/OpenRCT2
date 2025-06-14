@@ -25,7 +25,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr auto _titleLogoWidgets = makeWidgets(
-        MakeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary));
+        makeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WidgetType::imgBtn, WindowColour::primary));
 
     class TitleLogoWindow final : public Window
     {
@@ -72,7 +72,7 @@ namespace OpenRCT2::Ui::Windows
         if (window == nullptr)
         {
             window = windowMgr->Create<TitleLogoWindow>(
-                WindowClass::TitleLogo, ScreenCoordsXY(0, 0), WW, WH, WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_TITLE_BAR);
+                WindowClass::TitleLogo, ScreenCoordsXY(0, 0), { WW, WH }, WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_TITLE_BAR);
         }
         return window;
     }

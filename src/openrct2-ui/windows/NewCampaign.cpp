@@ -49,13 +49,13 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_new_campaign_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
-        MakeWidget        ({ 14, 24}, {126, 12}, WindowWidgetType::Label,    WindowColour::Primary, kStringIdEmpty                                  ), // ride label
-        MakeWidget        ({100, 24}, {242, 12}, WindowWidgetType::DropdownMenu, WindowColour::Primary, kStringIdEmpty                                  ), // ride dropdown
-        MakeWidget        ({330, 25}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Primary, STR_DROPDOWN_GLYPH                         ), // ride dropdown button
-        MakeWidget        ({ 14, 41}, {126, 14}, WindowWidgetType::Label,    WindowColour::Primary, STR_LENGTH_OF_TIME                         ), // weeks label
-        MakeSpinnerWidgets({120, 41}, {100, 14}, WindowWidgetType::Spinner,  WindowColour::Primary, kStringIdEmpty                                  ), // weeks (3 widgets)
-        MakeWidget        ({ 14, 89}, {322, 14}, WindowWidgetType::Button,   WindowColour::Primary, STR_MARKETING_START_THIS_MARKETING_CAMPAIGN) // start button
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWidget        ({ 14, 24}, {126, 12}, WidgetType::label,    WindowColour::primary, kStringIdEmpty                                  ), // ride label
+        makeWidget        ({100, 24}, {242, 12}, WidgetType::dropdownMenu, WindowColour::primary, kStringIdEmpty                                  ), // ride dropdown
+        makeWidget        ({330, 25}, { 11, 10}, WidgetType::button,   WindowColour::primary, STR_DROPDOWN_GLYPH                         ), // ride dropdown button
+        makeWidget        ({ 14, 41}, {126, 14}, WidgetType::label,    WindowColour::primary, STR_LENGTH_OF_TIME                         ), // weeks label
+        makeSpinnerWidgets({120, 41}, {100, 14}, WidgetType::spinner,  WindowColour::primary, kStringIdEmpty                                  ), // weeks (3 widgets)
+        makeWidget        ({ 14, 89}, {322, 14}, WidgetType::button,   WindowColour::primary, STR_MARKETING_START_THIS_MARKETING_CAMPAIGN) // start button
     );
     // clang-format on
 
@@ -317,17 +317,17 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            widgets[WIDX_RIDE_LABEL].type = WindowWidgetType::Empty;
-            widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::Empty;
-            widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
+            widgets[WIDX_RIDE_LABEL].type = WidgetType::empty;
+            widgets[WIDX_RIDE_DROPDOWN].type = WidgetType::empty;
+            widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WidgetType::empty;
             widgets[WIDX_RIDE_DROPDOWN].text = STR_MARKETING_NOT_SELECTED;
             switch (Campaign.campaign_type)
             {
                 case ADVERTISING_CAMPAIGN_RIDE_FREE:
                 case ADVERTISING_CAMPAIGN_RIDE:
-                    widgets[WIDX_RIDE_LABEL].type = WindowWidgetType::Label;
-                    widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::DropdownMenu;
-                    widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
+                    widgets[WIDX_RIDE_LABEL].type = WidgetType::label;
+                    widgets[WIDX_RIDE_DROPDOWN].type = WidgetType::dropdownMenu;
+                    widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WidgetType::button;
                     widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_RIDE;
                     if (Campaign.RideId != RideId::GetNull())
                     {
@@ -342,9 +342,9 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-                    widgets[WIDX_RIDE_LABEL].type = WindowWidgetType::Label;
-                    widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::DropdownMenu;
-                    widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
+                    widgets[WIDX_RIDE_LABEL].type = WidgetType::label;
+                    widgets[WIDX_RIDE_DROPDOWN].type = WidgetType::dropdownMenu;
+                    widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WidgetType::button;
                     widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_ITEM;
                     if (Campaign.ShopItemId != SELECTED_ITEM_UNDEFINED)
                     {
@@ -357,9 +357,9 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_WEEKS_SPINNER].text = kStringIdNone;
 
             // Enable / disable start button based on ride dropdown
-            WidgetSetDisabled(*this, WIDX_START_BUTTON, false);
-            if (widgets[WIDX_RIDE_DROPDOWN].type == WindowWidgetType::DropdownMenu && Campaign.RideId == RideId::GetNull())
-                WidgetSetDisabled(*this, WIDX_START_BUTTON, true);
+            widgetSetDisabled(*this, WIDX_START_BUTTON, false);
+            if (widgets[WIDX_RIDE_DROPDOWN].type == WidgetType::dropdownMenu && Campaign.RideId == RideId::GetNull())
+                widgetSetDisabled(*this, WIDX_START_BUTTON, true);
         }
 
         void OnDraw(RenderTarget& rt) override
@@ -408,7 +408,7 @@ namespace OpenRCT2::Ui::Windows
             w->Close();
         }
 
-        w = windowMgr->Create<NewCampaignWindow>(WindowClass::NewCampaign, WW, WH, 0);
+        w = windowMgr->Create<NewCampaignWindow>(WindowClass::NewCampaign, { WW, WH }, 0);
         if (w != nullptr)
         {
             w->SetCampaign(campaignType);

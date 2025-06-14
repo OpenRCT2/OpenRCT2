@@ -58,18 +58,18 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_guest_list_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
-        MakeWidget({  0, 43}, {350, 287}, WindowWidgetType::Resize,   WindowColour::Secondary                                                   ), // tab content panel
-        MakeWidget({  5, 59}, { 80,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_ARG_4_PAGE_X                                 ), // page dropdown
-        MakeWidget({ 73, 60}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                               ), // page dropdown button
-        MakeWidget({120, 59}, {142,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, 0xFFFFFFFF,         STR_INFORMATION_TYPE_TIP     ), // information type dropdown
-        MakeWidget({250, 60}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_INFORMATION_TYPE_TIP     ), // information type dropdown button
-        MakeWidget({273, 46}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_MAP),            STR_SHOW_GUESTS_ON_MAP_TIP   ), // map
-        MakeWidget({297, 46}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_G2_SEARCH),      STR_GUESTS_FILTER_BY_NAME_TIP), // filter by name
-        MakeWidget({321, 46}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_TRACK_PEEP),     STR_TRACKED_GUESTS_ONLY_TIP  ), // tracking
-        MakeTab   ({  3, 17},                                                                        STR_INDIVIDUAL_GUESTS_TIP    ), // tab 1
-        MakeTab   ({ 34, 17},                                                                        STR_SUMMARISED_GUESTS_TIP    ), // tab 2
-        MakeWidget({  3, 72}, {344, 255}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_BOTH                                      ) // guest list
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWidget({  0, 43}, {350, 287}, WidgetType::resize,   WindowColour::secondary                                                   ), // tab content panel
+        makeWidget({  5, 59}, { 80,  12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_ARG_4_PAGE_X                                 ), // page dropdown
+        makeWidget({ 73, 60}, { 11,  10}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH                               ), // page dropdown button
+        makeWidget({120, 59}, {142,  12}, WidgetType::dropdownMenu, WindowColour::secondary, 0xFFFFFFFF,         STR_INFORMATION_TYPE_TIP     ), // information type dropdown
+        makeWidget({250, 60}, { 11,  10}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH, STR_INFORMATION_TYPE_TIP     ), // information type dropdown button
+        makeWidget({273, 46}, { 24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_MAP),            STR_SHOW_GUESTS_ON_MAP_TIP   ), // map
+        makeWidget({297, 46}, { 24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_G2_SEARCH),      STR_GUESTS_FILTER_BY_NAME_TIP), // filter by name
+        makeWidget({321, 46}, { 24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_TRACK_PEEP),     STR_TRACKED_GUESTS_ONLY_TIP  ), // tracking
+        makeTab   ({  3, 17},                                                                        STR_INDIVIDUAL_GUESTS_TIP    ), // tab 1
+        makeTab   ({ 34, 17},                                                                        STR_SUMMARISED_GUESTS_TIP    ), // tab 2
+        makeWidget({  3, 72}, {344, 255}, WidgetType::scroll,   WindowColour::secondary, SCROLL_BOTH                                      ) // guest list
     );
     // clang-format on
 
@@ -165,10 +165,10 @@ namespace OpenRCT2::Ui::Windows
             _selectedTab = TabId::Summarised;
             _selectedView = GuestViewType::Thoughts;
             _numPages = 1;
-            widgets[WIDX_TRACKING].type = WindowWidgetType::FlatBtn;
-            widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::FlatBtn;
-            widgets[WIDX_PAGE_DROPDOWN].type = WindowWidgetType::Empty;
-            widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
+            widgets[WIDX_TRACKING].type = WidgetType::flatBtn;
+            widgets[WIDX_FILTER_BY_NAME].type = WidgetType::flatBtn;
+            widgets[WIDX_PAGE_DROPDOWN].type = WidgetType::empty;
+            widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WidgetType::empty;
 
             WindowSetResize(*this, { 350, 330 }, { 500, 450 });
 
@@ -308,20 +308,20 @@ namespace OpenRCT2::Ui::Windows
                     _selectedTab = static_cast<TabId>(widgetIndex - WIDX_TAB_1);
                     _selectedPage = 0;
                     _numPages = 1;
-                    widgets[WIDX_TRACKING].type = WindowWidgetType::Empty;
+                    widgets[WIDX_TRACKING].type = WidgetType::empty;
                     if (_selectedTab == TabId::Summarised)
                     {
-                        widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::Empty;
+                        widgets[WIDX_FILTER_BY_NAME].type = WidgetType::empty;
                         SetWidgetPressed(WIDX_FILTER_BY_NAME, false);
                         _filterName.clear();
                     }
                     else if (_selectedTab == TabId::Individual)
                     {
-                        widgets[WIDX_TRACKING].type = WindowWidgetType::FlatBtn;
-                        widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::FlatBtn;
+                        widgets[WIDX_TRACKING].type = WidgetType::flatBtn;
+                        widgets[WIDX_FILTER_BY_NAME].type = WidgetType::flatBtn;
                     }
-                    widgets[WIDX_PAGE_DROPDOWN].type = WindowWidgetType::Empty;
-                    widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
+                    widgets[WIDX_PAGE_DROPDOWN].type = WidgetType::empty;
+                    widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WidgetType::empty;
                     _tabAnimationIndex = 0;
                     _selectedFilter = {};
                     Invalidate();
@@ -401,9 +401,9 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetPressed(WIDX_TAB_1 + static_cast<int32_t>(_selectedTab), true);
 
             widgets[WIDX_INFO_TYPE_DROPDOWN].text = GetViewName(_selectedView);
-            widgets[WIDX_MAP].type = WindowWidgetType::Empty;
+            widgets[WIDX_MAP].type = WidgetType::empty;
             if (_selectedTab == TabId::Individual && _selectedFilter)
-                widgets[WIDX_MAP].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_MAP].type = WidgetType::flatBtn;
 
             widgets[WIDX_GUEST_LIST].right = width - 4;
             widgets[WIDX_GUEST_LIST].bottom = height - 15;
@@ -416,16 +416,16 @@ namespace OpenRCT2::Ui::Windows
 
             if (_numPages > 1)
             {
-                widgets[WIDX_PAGE_DROPDOWN].type = WindowWidgetType::DropdownMenu;
-                widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
+                widgets[WIDX_PAGE_DROPDOWN].type = WidgetType::dropdownMenu;
+                widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WidgetType::button;
                 auto ft = Formatter::Common();
                 ft.Increment(4);
                 ft.Add<uint16_t>(_selectedPage + 1);
             }
             else
             {
-                widgets[WIDX_PAGE_DROPDOWN].type = WindowWidgetType::Empty;
-                widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
+                widgets[WIDX_PAGE_DROPDOWN].type = WidgetType::empty;
+                widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WidgetType::empty;
             }
         }
 
@@ -564,9 +564,9 @@ namespace OpenRCT2::Ui::Windows
                         _selectedFilter = _selectedView == GuestViewType::Actions ? GuestFilterType::Guests
                                                                                   : GuestFilterType::GuestsThinking;
                         _selectedTab = TabId::Individual;
-                        widgets[WIDX_TRACKING].type = WindowWidgetType::FlatBtn;
+                        widgets[WIDX_TRACKING].type = WidgetType::flatBtn;
                         Invalidate();
-                        widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::FlatBtn;
+                        widgets[WIDX_FILTER_BY_NAME].type = WidgetType::flatBtn;
                         scrolls[0].contentOffsetY = 0;
                         RefreshList();
                     }
@@ -955,7 +955,7 @@ namespace OpenRCT2::Ui::Windows
         auto* window = windowMgr->BringToFrontByClass(WindowClass::GuestList);
         if (window == nullptr)
         {
-            window = windowMgr->Create<GuestListWindow>(WindowClass::GuestList, 350, 330, WF_10 | WF_RESIZABLE);
+            window = windowMgr->Create<GuestListWindow>(WindowClass::GuestList, { 350, 330 }, WF_10 | WF_RESIZABLE);
         }
         return window;
     }

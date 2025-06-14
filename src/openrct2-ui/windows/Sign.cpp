@@ -50,12 +50,12 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     // 0x9AEE00
     static constexpr auto _signWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
-        MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary                                                        ), // Viewport
-        MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_RENAME),   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
-        MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_DEMOLISH), STR_DEMOLISH_SIGN_TIP          ), // demolish button
-        MakeWidget({      5, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, kWidgetContentEmpty,   STR_SELECT_MAIN_SIGN_COLOUR_TIP), // Main colour
-        MakeWidget({     17, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, kWidgetContentEmpty,   STR_SELECT_TEXT_COLOUR_TIP     )  // Text colour
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWidget({      3,      17}, {85, 60}, WidgetType::viewport,  WindowColour::secondary                                                        ), // Viewport
+        makeWidget({WW - 25,      19}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_RENAME),   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
+        makeWidget({WW - 25,      67}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_DEMOLISH), STR_DEMOLISH_SIGN_TIP          ), // demolish button
+        makeWidget({      5, WH - 16}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, kWidgetContentEmpty,   STR_SELECT_MAIN_SIGN_COLOUR_TIP), // Main colour
+        makeWidget({     17, WH - 16}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, kWidgetContentEmpty,   STR_SELECT_TEXT_COLOUR_TIP     )  // Text colour
     );
     // clang-format on
 
@@ -252,43 +252,43 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto* wallEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(_sceneryEntry);
 
-                main_colour_btn->type = WindowWidgetType::Empty;
-                text_colour_btn->type = WindowWidgetType::Empty;
+                main_colour_btn->type = WidgetType::empty;
+                text_colour_btn->type = WidgetType::empty;
                 if (wallEntry == nullptr)
                 {
                     return;
                 }
                 if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
                 {
-                    main_colour_btn->type = WindowWidgetType::ColourBtn;
+                    main_colour_btn->type = WidgetType::colourBtn;
                 }
                 if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
                 {
-                    text_colour_btn->type = WindowWidgetType::ColourBtn;
+                    text_colour_btn->type = WidgetType::colourBtn;
                 }
             }
             else
             {
                 auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(_sceneryEntry);
 
-                main_colour_btn->type = WindowWidgetType::Empty;
-                text_colour_btn->type = WindowWidgetType::Empty;
+                main_colour_btn->type = WidgetType::empty;
+                text_colour_btn->type = WidgetType::empty;
                 if (sceneryEntry == nullptr)
                 {
                     return;
                 }
                 if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
                 {
-                    main_colour_btn->type = WindowWidgetType::ColourBtn;
+                    main_colour_btn->type = WidgetType::colourBtn;
                 }
                 if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
                 {
-                    text_colour_btn->type = WindowWidgetType::ColourBtn;
+                    text_colour_btn->type = WidgetType::colourBtn;
                 }
             }
 
-            main_colour_btn->image = GetColourButtonImage(_mainColour);
-            text_colour_btn->image = GetColourButtonImage(_textColour);
+            main_colour_btn->image = getColourButtonImage(_mainColour);
+            text_colour_btn->image = getColourButtonImage(_textColour);
         }
 
         void OnDraw(RenderTarget& rt) override
@@ -336,7 +336,7 @@ namespace OpenRCT2::Ui::Windows
         if (w != nullptr)
             return w;
 
-        w = windowMgr->Create<SignWindow>(WindowClass::Banner, WW, WH, 0);
+        w = windowMgr->Create<SignWindow>(WindowClass::Banner, { WW, WH }, 0);
 
         if (w == nullptr)
             return nullptr;
@@ -360,7 +360,7 @@ namespace OpenRCT2::Ui::Windows
         if (w != nullptr)
             return w;
 
-        w = windowMgr->Create<SignWindow>(WindowClass::Banner, WW, WH, 0);
+        w = windowMgr->Create<SignWindow>(WindowClass::Banner, { WW, WH }, 0);
 
         if (w == nullptr)
             return nullptr;

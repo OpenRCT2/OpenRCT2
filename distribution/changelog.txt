@@ -1,7 +1,20 @@
 0.4.24 (in development)
 ------------------------------------------------------------------------
+- Feature: [#24411] Vanilla scenarios now also have previews in the scenario selection window.
+- Improved: [#22684] The limit of 2000 animated tile elements has been removed.
+- Improved: [#24026] Notification settings have been made into a tab of the Recent Messages window.
 - Change: [#24511] [Plugin] Separated new seatedInPairs field from numSeats field on vehicles and vehicle objects; seatedInPairs can now be set on vehicle entities.
+- Change: [#24559] Scenario options are now disabled rather than hidden when disabling money makes them non-applicable.
+- Change: [objects#383] Disable all base colours on non-remappable WWTT vehicles, change black to light_blue.
+- Change: [objects#384] Remove erroneously enabled WWTT third remaps.
+- Fix: [#15846] Rightclicking on track piece when there is construction below does not work.
+- Fix: [#16176, #23113] Animated tile elements do not always redraw when there is over 2000.
+- Fix: [#17365] The slope of new land surfaces is only correct on one side when shifting and resizing the map.
+- Fix: [#21703] Scenery wall doors get stuck open if the game is saved and loaded whilst they are open.
+- Fix: [#24456] Zoomed out vehicles on the ride window tab can sometimes draw incorrectly.
+- Fix: [#24458] Vehicles in the ride window vehicle tab are offset differently than vanilla RCT2, and the sprites are cut off at the bottom.
 - Fix: [#24510] Ride vehicles that load in pairs do not load properly when the ride is in either Race or Dodgems mode.
+- Fix: [#24576] It is possible to edit open rides in certain circumstances.
 
 0.4.23 (2025-06-07)
 ------------------------------------------------------------------------

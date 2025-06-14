@@ -32,7 +32,6 @@
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
-#include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/TileElementsView.h"
@@ -986,13 +985,8 @@ bool RideModify(const CoordsXYE& input)
     if (tileElement.element->GetType() == TileElementType::Entrance)
         return ride_modify_entrance_or_exit(tileElement);
 
-    ride_create_or_find_construction_window(rideIndex);
-
-    const auto& rtd = ride->getRideTypeDescriptor();
-    if (rtd.specialType == RtdSpecialType::maze)
-    {
-        return ride_modify_maze(tileElement);
-    }
+    if (tileElement.element->GetType() != TileElementType::Track)
+        return false;
 
     if (ride->getRideTypeDescriptor().HasFlag(RtdFlag::cannotHaveGaps))
     {
@@ -1001,12 +995,18 @@ bool RideModify(const CoordsXYE& input)
             tileElement = endOfTrackElement;
     }
 
-    if (tileElement.element == nullptr || tileElement.element->GetType() != TileElementType::Track)
-        return false;
+    const auto tileCoords = CoordsXYZ{ tileElement, tileElement.element->GetBaseZ() };
+    const auto direction = tileElement.element->GetDirection();
+    const auto type = tileElement.element->AsTrack()->GetTrackType();
 
-    auto tileCoords = CoordsXYZ{ tileElement, tileElement.element->GetBaseZ() };
-    auto direction = tileElement.element->GetDirection();
-    auto type = tileElement.element->AsTrack()->GetTrackType();
+    ride_create_or_find_construction_window(rideIndex);
+
+    const auto& rtd = ride->getRideTypeDescriptor();
+    if (rtd.specialType == RtdSpecialType::maze)
+    {
+        return ride_modify_maze(tileElement);
+    }
+
     auto newCoords = GetTrackElementOriginAndApplyChanges({ tileCoords, direction }, type, 0, nullptr, {});
     if (!newCoords.has_value())
         return false;

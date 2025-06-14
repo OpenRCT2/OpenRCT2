@@ -20,7 +20,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static constexpr auto _windowTitleOptionsWidgets = makeWidgets(
-        MakeWidget({ 0, 0 }, { 80, 15 }, WindowWidgetType::Button, WindowColour::Tertiary, STR_OPTIONS, STR_OPTIONS_TIP));
+        makeWidget({ 0, 0 }, { 80, 15 }, WidgetType::button, WindowColour::tertiary, STR_OPTIONS, STR_OPTIONS_TIP));
 
     class TitleOptionsWindow final : public Window
     {
@@ -57,7 +57,7 @@ namespace OpenRCT2::Ui::Windows
         if (window == nullptr)
         {
             window = windowMgr->Create<TitleOptionsWindow>(
-                WindowClass::TitleOptions, ScreenCoordsXY(ContextGetWidth() - 80, 0), 80, 15,
+                WindowClass::TitleOptions, ScreenCoordsXY(ContextGetWidth() - 80, 0), { 80, 15 },
                 WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_TITLE_BAR);
         }
 

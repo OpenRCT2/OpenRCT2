@@ -42,13 +42,13 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto WindowAssetPacksWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, WW, WH),
-        MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_HIGH_PRIORITY),
-        MakeWidget({ 0, 0 }, { 0, 147 }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL),
-        MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_LOW_PRIORITY),
-        MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_ARROW_UP), STR_INCREASE_PRIOTITY_TIP),
-        MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_ARROW_DOWN), STR_DECREASE_PRIOTITY_TIP),
-        MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_RELOAD), STR_RELOAD_ASSET_PACKS_TIP)
+        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWidget({ 0, 0 }, { 0,   0 }, WidgetType::labelCentred,  WindowColour::secondary, STR_HIGH_PRIORITY),
+        makeWidget({ 0, 0 }, { 0, 147 }, WidgetType::scroll,  WindowColour::secondary, SCROLL_VERTICAL),
+        makeWidget({ 0, 0 }, { 0,   0 }, WidgetType::labelCentred,  WindowColour::secondary, STR_LOW_PRIORITY),
+        makeWidget({ 0, 0 }, { 0,   0 }, WidgetType::flatBtn, WindowColour::secondary, ImageId(SPR_G2_ARROW_UP), STR_INCREASE_PRIOTITY_TIP),
+        makeWidget({ 0, 0 }, { 0,   0 }, WidgetType::flatBtn, WindowColour::secondary, ImageId(SPR_G2_ARROW_DOWN), STR_DECREASE_PRIOTITY_TIP),
+        makeWidget({ 0, 0 }, { 0,   0 }, WidgetType::flatBtn, WindowColour::secondary, ImageId(SPR_G2_RELOAD), STR_RELOAD_ASSET_PACKS_TIP)
     );
     // clang-format on
 
@@ -344,6 +344,6 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         auto flags = WF_AUTO_POSITION | WF_CENTRE_SCREEN;
 
-        return windowMgr->FocusOrCreate<AssetPacksWindow>(WindowClass::AssetPacks, WW, WH, flags);
+        return windowMgr->FocusOrCreate<AssetPacksWindow>(WindowClass::AssetPacks, { WW, WH }, flags);
     }
 } // namespace OpenRCT2::Ui::Windows

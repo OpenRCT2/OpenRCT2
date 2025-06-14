@@ -249,16 +249,11 @@ namespace OpenRCT2
 
     void ViewportsInvalidate(const int32_t x, const int32_t y, const int32_t z0, const int32_t z1, const ZoomLevel maxZoom)
     {
-        for (auto& vp : _viewports)
+        for (const auto& viewport : _viewports)
         {
-            if (vp.isVisible && (maxZoom == ZoomLevel{ -1 } || vp.zoom <= ZoomLevel{ maxZoom }))
+            if (viewport.isVisible)
             {
-                const auto screenCoord = Translate3DTo2DWithZ(vp.rotation, CoordsXYZ{ x + 16, y + 16, 0 });
-
-                const auto topLeft = screenCoord - ScreenCoordsXY(32, 32 + z1);
-                const auto bottomRight = screenCoord + ScreenCoordsXY(32, 32 - z0);
-
-                ViewportInvalidate(&vp, ScreenRect{ topLeft, bottomRight });
+                viewport.Invalidate(x, y, z0, z1, maxZoom);
             }
         }
     }
@@ -1167,6 +1162,17 @@ namespace OpenRCT2
         return { mapCoords->ToTileStart() };
     }
 
+    [[nodiscard]] bool Viewport::ContainsTile(const TileCoordsXY coords) const noexcept
+    {
+        const auto centreCoords = coords.ToCoordsXY() + CoordsXY(kCoordsXYHalfTile, kCoordsXYHalfTile);
+        const auto screenPos = Translate3DTo2DWithZ(rotation, CoordsXYZ{ centreCoords, 0 });
+        const auto left = screenPos.x - kScreenCoordsTileWidthHalf;
+        const auto top = screenPos.y - (kMaxTileElementHeight * kCoordsZStep) - kScreenCoordsTileHeightHalf;
+        const auto right = screenPos.x + kScreenCoordsTileWidthHalf;
+        const auto bottom = screenPos.y + kScreenCoordsTileHeightHalf;
+        return !(left > viewPos.x + ViewWidth() || top > viewPos.y + ViewHeight() || right < viewPos.x || bottom < viewPos.y);
+    }
+
     [[nodiscard]] ScreenCoordsXY Viewport::ScreenToViewportCoord(const ScreenCoordsXY& screenCoords) const
     {
         ScreenCoordsXY ret;
@@ -1178,6 +1184,21 @@ namespace OpenRCT2
     void Viewport::Invalidate() const
     {
         ViewportInvalidate(this, { viewPos, viewPos + ScreenCoordsXY{ ViewWidth(), ViewHeight() } });
+    }
+
+    void Viewport::Invalidate(
+        const int32_t x, const int32_t y, const int32_t z0, const int32_t z1, const ZoomLevel maxZoom) const
+    {
+        if ((maxZoom == ZoomLevel{ -1 } || zoom <= ZoomLevel{ maxZoom }))
+        {
+            const auto screenCoord = Translate3DTo2DWithZ(
+                rotation, CoordsXYZ{ x + kCoordsXYHalfTile, y + kCoordsXYHalfTile, 0 });
+
+            const auto topLeft = screenCoord - ScreenCoordsXY(kScreenCoordsTileWidthHalf, kScreenCoordsTileHeight + z1);
+            const auto bottomRight = screenCoord + ScreenCoordsXY(kScreenCoordsTileWidthHalf, kScreenCoordsTileHeight - z0);
+
+            ViewportInvalidate(this, ScreenRect{ topLeft, bottomRight });
+        }
     }
 
     CoordsXY ViewportPosToMapPos(const ScreenCoordsXY& coords, int32_t z, uint8_t rotation)
@@ -2064,6 +2085,19 @@ namespace OpenRCT2
             gameState.savedViewZoom = viewport->zoom;
             gameState.savedViewRotation = viewport->rotation;
         }
+    }
+
+    ViewportList GetVisibleViewports() noexcept
+    {
+        ViewportList viewports;
+        for (auto& viewport : _viewports)
+        {
+            if (viewport.isVisible)
+            {
+                viewports.push_back(&viewport);
+            }
+        };
+        return viewports;
     }
 } // namespace OpenRCT2
 

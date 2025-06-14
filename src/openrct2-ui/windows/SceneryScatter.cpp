@@ -39,16 +39,16 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _sceneryScatterWidgets = makeWidgets(
-        makeWindowShim(STR_SCENERY_SCATTER, 86, 100),
+        makeWindowShim(STR_SCENERY_SCATTER, { 86, 100 }),
 
-        MakeWidget     ({20, 17}, {44,  32}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, ImageId(SPR_LAND_TOOL_SIZE_0)                                 ), // preview box
-        MakeRemapWidget({21, 18}, {16,  16}, WindowWidgetType::TrnBtn,   WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_TIP    ), // decrement size
-        MakeRemapWidget({47, 32}, {16,  16}, WindowWidgetType::TrnBtn,   WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,        STR_ADJUST_LARGER_LAND_TIP     ), // increment size
+        makeWidget     ({20, 17}, {44,  32}, WidgetType::imgBtn,   WindowColour::secondary, ImageId(SPR_LAND_TOOL_SIZE_0)                                 ), // preview box
+        makeRemapWidget({21, 18}, {16,  16}, WidgetType::trnBtn,   WindowColour::secondary, SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_TIP    ), // decrement size
+        makeRemapWidget({47, 32}, {16,  16}, WidgetType::trnBtn,   WindowColour::secondary, SPR_LAND_TOOL_INCREASE,        STR_ADJUST_LARGER_LAND_TIP     ), // increment size
 
-        MakeWidget     ({ 3, 55}, {80,  42}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_SCATTER_TOOL_DENSITY                                      ),
-        MakeRemapWidget({ 7, 68}, {24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_G2_SCENERY_SCATTER_LOW,    STR_SCATTER_TOOL_DENSITY_LOW   ), // low amount
-        MakeRemapWidget({31, 68}, {24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_G2_SCENERY_SCATTER_MEDIUM, STR_SCATTER_TOOL_DENSITY_MEDIUM), // medium amount
-        MakeRemapWidget({55, 68}, {24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_G2_SCENERY_SCATTER_HIGH,   STR_SCATTER_TOOL_DENSITY_HIGH  )  // high amount
+        makeWidget     ({ 3, 55}, {80,  42}, WidgetType::groupbox, WindowColour::secondary, STR_SCATTER_TOOL_DENSITY                                      ),
+        makeRemapWidget({ 7, 68}, {24,  24}, WidgetType::flatBtn,  WindowColour::secondary, SPR_G2_SCENERY_SCATTER_LOW,    STR_SCATTER_TOOL_DENSITY_LOW   ), // low amount
+        makeRemapWidget({31, 68}, {24,  24}, WidgetType::flatBtn,  WindowColour::secondary, SPR_G2_SCENERY_SCATTER_MEDIUM, STR_SCATTER_TOOL_DENSITY_MEDIUM), // medium amount
+        makeRemapWidget({55, 68}, {24,  24}, WidgetType::flatBtn,  WindowColour::secondary, SPR_G2_SCENERY_SCATTER_HIGH,   STR_SCATTER_TOOL_DENSITY_HIGH  )  // high amount
     );
     // clang-format on
 
@@ -203,7 +203,7 @@ namespace OpenRCT2::Ui::Windows
         auto* window = windowMgr->FindByClass(WindowClass::SceneryScatter);
         if (window == nullptr)
         {
-            window = windowMgr->Create<SceneryScatterWindow>(WindowClass::SceneryScatter, 86, 100, 0);
+            window = windowMgr->Create<SceneryScatterWindow>(WindowClass::SceneryScatter, { 86, 100 }, 0);
         }
 
         return window;

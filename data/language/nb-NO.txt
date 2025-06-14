@@ -2237,14 +2237,14 @@ STR_3235    :Vis økonomiske alternativer
 STR_3236    :Vis gjestalternativer
 STR_3238    :Ingen Penger
 STR_3239    :Lag denne parken som en 'ingen penger' park uten økonomiske begrensninger
-STR_3240    :{WINDOW_COLOUR_2}Innledende penger:
-STR_3241    :{WINDOW_COLOUR_2}Innledende lån:
-STR_3242    :{WINDOW_COLOUR_2}Maksimal lånstørrelse:
-STR_3243    :{WINDOW_COLOUR_2}Årlige renter:
+STR_3240    :Innledende penger:
+STR_3241    :Innledende lån:
+STR_3242    :Maksimal lånstørrelse:
+STR_3243    :Årlige renter:
 STR_3244    :Forby markedsføringskampanjer
 STR_3245    :Forby reklame, salgsfremmende taktikker, og andre markedsføringskampanjer
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Kan ikke øke innledende penger videre!
 STR_3249    :Kan ikke senke innledende penger videre!
 STR_3250    :Kan ikke øke innledende lån videre!
@@ -2253,10 +2253,10 @@ STR_3252    :Kan ikke øke maksimal lånstørrelse videre!
 STR_3253    :Kan ikke senke maksimal lånstørrelse videre!
 STR_3254    :Kan ikke øke renter videre!
 STR_3255    :Kan ikke senke renter videre!
-STR_3260    :{WINDOW_COLOUR_2}Penger per gjest (gjennomsnitt):
-STR_3261    :{WINDOW_COLOUR_2}Gjester's innledende glede:
-STR_3262    :{WINDOW_COLOUR_2}Gjester's innledende sult:
-STR_3263    :{WINDOW_COLOUR_2}Gjester's innledende tørste:
+STR_3260    :Penger per gjest (gjennomsnitt):
+STR_3261    :Gjester's innledende glede:
+STR_3262    :Gjester's innledende sult:
+STR_3263    :Gjester's innledende tørste:
 STR_3264    :Kan ikke øke dette videre!
 STR_3265    :Kan ikke senke dette videre!
 STR_3266    :Velg hvordan denne parken tar betalt for inngang og attraksjoner
@@ -2270,11 +2270,11 @@ STR_3273    :Vanskeligere å øke parkvurderingen
 STR_3274    :Gjør parkvurderingens verdi mer utfordrende
 STR_3275    :Vanskeligere nivå på tiltrekning av gjester
 STR_3276    :Gjør det vanskeligere å tiltrekke gjester til parken
-STR_3277    :{WINDOW_COLOUR_2}Kostnad for å kjøpe land:
-STR_3278    :{WINDOW_COLOUR_2}Kostnad for å kjøpe byggerettigheter:
+STR_3277    :Kostnad for å kjøpe land:
+STR_3278    :Kostnad for å kjøpe byggerettigheter:
 STR_3279    :Gratis parkinngang / Betal for tur
 STR_3280    :Betal for parkinngang / Gratis tur
-STR_3281    :{WINDOW_COLOUR_2}Inngangspris:
+STR_3281    :Inngangspris:
 STR_3283    :Velg attraksjoner som er bevart
 STR_3285    :Bevarte Attraksjoner
 STR_3286    :Velg oppdrag for dette scenariet
