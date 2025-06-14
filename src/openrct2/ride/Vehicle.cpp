@@ -5153,7 +5153,8 @@ Vehicle* Vehicle::TrainTail() const
 
 uint8_t Vehicle::getNumSeats() const
 {
-    return num_seats & kVehicleSeatNumMask;
+    // If the vehicle is seated in pairs, force the reported number of seats to an even number
+    return num_seats & kVehicleSeatNumMask & ~(IsSeatedInPairs() >> 7);
 }
 
 int32_t Vehicle::IsSeatedInPairs() const
