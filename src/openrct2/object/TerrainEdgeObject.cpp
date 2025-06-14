@@ -57,6 +57,11 @@ void TerrainEdgeObject::ReadJson(IReadObjectContext* context, json_t& root)
     if (properties.is_object())
     {
         HasDoors = Json::GetBoolean(properties["hasDoors"]);
+        const uint32_t doorSoundNumber = Json::GetNumber<uint32_t>(properties["doorSound"]);
+        if (doorSoundNumber < OpenRCT2::Audio::kDoorSoundTypeCount)
+        {
+            doorSound = static_cast<OpenRCT2::Audio::DoorSoundType>(doorSoundNumber);
+        }
     }
 
     PopulateTablesFromJson(context, root);
