@@ -515,6 +515,7 @@ declare global {
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "park.guest.softcap.calculate", callback: (e: ParkCalculateGuestCapArgs) => void): IDisposable;
         subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
+        subscribe(hook: "ride.fix", callback: (e: RideFixArgs) => void): IDisposable;
         subscribe(hook: "vehicle.crash", callback: (e: VehicleCrashArgs) => void): IDisposable;
 
         /**
@@ -645,6 +646,7 @@ declare global {
         "network.join" |
         "network.leave" |
         "park.guest.softcap.calculate" |
+        "ride.fix" |
         "ride.ratings.calculate" |
         "vehicle.crash";
 
@@ -1666,6 +1668,10 @@ declare global {
     interface VehicleCrashArgs {
         readonly id: number;
         readonly crashIntoType: VehicleCrashIntoType;
+    }
+
+    interface RideFixArgs {
+        readonly ride: number;
     }
 
     /**
