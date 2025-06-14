@@ -154,6 +154,14 @@ namespace OpenRCT2::Audio
 
     extern VehicleSound gVehicleSoundList[kMaxVehicleSounds];
 
+    enum class DoorSoundType : uint8_t
+    {
+        none,
+        door,
+        portcullis,
+    };
+    constexpr uint8_t kDoorSoundTypeCount = 3;
+
     /**
      * Returns false when no audio device is available or when audio is turned off, otherwise true.
      */

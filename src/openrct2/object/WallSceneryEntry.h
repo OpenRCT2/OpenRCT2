@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../audio/Audio.h"
 #include "../core/Money.hpp"
 #include "../localisation/StringIdType.h"
 #include "ObjectTypes.h"
@@ -36,13 +37,6 @@ enum WALL_SCENERY_2_FLAGS
     WALL_SCENERY_2_ANIMATED = (1 << 4),  // 0x10
 };
 
-enum class DoorSoundType : uint8_t
-{
-    none,
-    door,
-    portcullis,
-};
-
 struct WallSceneryEntry
 {
     static constexpr auto kObjectType = ObjectType::walls;
@@ -57,5 +51,5 @@ struct WallSceneryEntry
     ObjectEntryIndex scenery_tab_id;
     uint8_t scrolling_mode;
 
-    DoorSoundType getDoorSoundType() const;
+    OpenRCT2::Audio::DoorSoundType getDoorSoundType() const;
 };
