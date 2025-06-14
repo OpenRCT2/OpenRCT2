@@ -17,6 +17,11 @@
 
 uint8_t CarEntry::getNumSeats() const
 {
+    return num_seats & kVehicleSeatNumMask;
+}
+
+uint8_t CarEntry::getNumSeatsWithPairing() const
+{
     // If the vehicle is seated in pairs, force the reported number of seats to an even number
     return num_seats & kVehicleSeatNumMask & ~(getSeatedInPairs() >> 7);
 }

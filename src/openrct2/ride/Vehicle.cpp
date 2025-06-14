@@ -1598,7 +1598,7 @@ void Vehicle::UpdateWaitingForPassengers()
         {
             num_peeps_on_train += trainCar->num_peeps;
             num_used_seats_on_train += trainCar->next_free_seat;
-            num_seats_on_train += trainCar->getNumSeats();
+            num_seats_on_train += trainCar->getNumSeatsWithPairing();
         }
 
         // Left in despite using the new getNumSeats to account for possible overflow
@@ -5152,6 +5152,11 @@ Vehicle* Vehicle::TrainTail() const
 }
 
 uint8_t Vehicle::getNumSeats() const
+{
+    return num_seats & kVehicleSeatNumMask;
+}
+
+uint8_t Vehicle::getNumSeatsWithPairing() const
 {
     // If the vehicle is seated in pairs, force the reported number of seats to an even number
     return num_seats & kVehicleSeatNumMask & ~(IsSeatedInPairs() >> 7);

@@ -234,6 +234,7 @@ struct CarEntry
     std::vector<int8_t> peep_loading_positions = {};
 
     uint8_t getNumSeats() const;
+    uint8_t getNumSeatsWithPairing() const;
     bool getSeatedInPairs() const;
 
     uint32_t NumRotationSprites(SpriteGroupType rotationType) const;
