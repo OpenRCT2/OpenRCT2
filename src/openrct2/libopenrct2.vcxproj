@@ -563,6 +563,7 @@
     <ClInclude Include="scenes\preloader\PreloaderScene.h" />
     <ClInclude Include="scenes\title\Command\End.h" />
     <ClInclude Include="scenes\title\Command\FollowEntity.h" />
+    <ClInclude Include="scenes\title\Command\FollowRandom.h" />
     <ClInclude Include="scenes\title\Command\LoadPark.h" />
     <ClInclude Include="scenes\title\Command\LoadScenario.h" />
     <ClInclude Include="scenes\title\Command\Restart.h" />
@@ -570,6 +571,7 @@
     <ClInclude Include="scenes\title\Command\SetLocation.h" />
     <ClInclude Include="scenes\title\Command\SetSpeed.h" />
     <ClInclude Include="scenes\title\Command\SetZoom.h" />
+    <ClInclude Include="scenes\title\Command\Visibility.h" />
     <ClInclude Include="scenes\title\Command\Wait.h" />
     <ClInclude Include="scenes\title\TitleScene.h" />
     <ClInclude Include="scenes\title\TitleSequence.h" />
@@ -1112,6 +1114,7 @@
     <ClCompile Include="scenes\preloader\PreloaderScene.cpp" />
     <ClCompile Include="scenes\title\Command\End.cpp" />
     <ClCompile Include="scenes\title\Command\FollowEntity.cpp" />
+    <ClCompile Include="scenes\title\Command\FollowRandom.cpp" />
     <ClCompile Include="scenes\title\Command\LoadPark.cpp" />
     <ClCompile Include="scenes\title\Command\LoadScenario.cpp" />
     <ClCompile Include="scenes\title\Command\Restart.cpp" />
@@ -1119,6 +1122,7 @@
     <ClCompile Include="scenes\title\Command\SetLocation.cpp" />
     <ClCompile Include="scenes\title\Command\SetSpeed.cpp" />
     <ClCompile Include="scenes\title\Command\SetZoom.cpp" />
+    <ClCompile Include="scenes\title\Command\Visibility.cpp" />
     <ClCompile Include="scenes\title\Command\Wait.cpp" />
     <ClCompile Include="scenes\title\TitleScene.cpp" />
     <ClCompile Include="scenes\title\TitleSequence.cpp" />

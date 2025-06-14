@@ -39,6 +39,7 @@ namespace OpenRCT2::Scripting
         Rotate,
         Zoom,
         Follow,
+        Random,
         Restart,
         Load,
         End,
@@ -46,6 +47,7 @@ namespace OpenRCT2::Scripting
         Loop,
         EndLoop,
         LoadSc,
+        Visibility,
     };
 
     static const DukEnumMap<TitleScript> TitleScriptMap(
@@ -60,6 +62,8 @@ namespace OpenRCT2::Scripting
             { OpenRCT2::Title::LoadScenarioCommand::ScriptingName, TitleScript::LoadSc },
             { OpenRCT2::Title::RestartCommand::ScriptingName, TitleScript::Restart },
             { OpenRCT2::Title::EndCommand::ScriptingName, TitleScript::End },
+            { OpenRCT2::Title::VisibilityCommand::ScriptingName, TitleScript::Visibility },
+            { OpenRCT2::Title::FollowRandomCommand::ScriptingName, TitleScript::Random },
         });
 
     template<>
@@ -100,6 +104,26 @@ namespace OpenRCT2::Scripting
                         obj.Set("id", nullptr);
                     else
                         obj.Set("id", command.Follow.SpriteIndex.ToUnderlying());
+                    obj.Set("scrollToLocation", command.Follow.ScrollToLocation);
+                }
+                else if constexpr (std::is_same_v<T, FollowRandomCommand>)
+                {
+                    switch (command.Follow.Type)
+                    {
+                        case EntityType::vehicle:
+                            obj.Set("entityType", "car");
+                            break;
+                        case EntityType::guest:
+                            obj.Set("entityType", "guest");
+                            break;
+                        case EntityType::staff:
+                            obj.Set("entityType", "staff");
+                            break;
+                        default:
+                            obj.Set("entityType", nullptr);
+                            break;
+                    }
+                    obj.Set("scrollToLocation", command.Follow.ScrollToLocation);
                 }
                 else if constexpr (std::is_same_v<T, SetSpeedCommand>)
                 {
@@ -112,6 +136,10 @@ namespace OpenRCT2::Scripting
                 else if constexpr (std::is_same_v<T, LoadScenarioCommand>)
                 {
                     obj.Set("scenario", String::toStringView(command.Scenario, sizeof(command.Scenario)));
+                }
+                else if constexpr (std::is_same_v<T, VisibilityCommand>)
+                {
+                    obj.Set("flags", command.Flags);
                 }
             },
             value);
@@ -154,11 +182,33 @@ namespace OpenRCT2::Scripting
                 auto dukId = value["id"];
                 if (dukId.type() == DukValue::Type::NUMBER)
                 {
-                    command = FollowEntityCommand{ EntityId::FromUnderlying(dukId.as_uint()) };
+                    command = FollowEntityCommand{ EntityId::FromUnderlying(dukId.as_uint()),
+                                                   value["scrollToLocation"].as_bool() };
                 }
                 else
                 {
-                    command = FollowEntityCommand{ EntityId::GetNull() };
+                    command = FollowEntityCommand{ EntityId::GetNull(), false };
+                }
+                break;
+            }
+            case TitleScript::Random:
+            {
+                auto dukType = value["entityType"];
+                if (dukType.type() == DukValue::Type::STRING)
+                {
+                    EntityType entity = EntityType::null;
+                    const char* strType = dukType.as_c_string();
+                    if (!strcmp(strType, "car"))
+                        entity = EntityType::vehicle;
+                    else if (!strcmp(strType, "guest"))
+                        entity = EntityType::guest;
+                    else if (!strcmp(strType, "staff"))
+                        entity = EntityType::staff;
+                    command = FollowRandomCommand{ entity, value["scrollToLocation"].as_bool() };
+                }
+                else
+                {
+                    command = FollowRandomCommand{ EntityType::null, false };
                 }
                 break;
             }
@@ -181,6 +231,9 @@ namespace OpenRCT2::Scripting
                 break;
             case TitleScript::End:
                 command = EndCommand{};
+                break;
+            case TitleScript::Visibility:
+                command = VisibilityCommand{ static_cast<uint32_t>(value["flags"].as_uint()) };
                 break;
             default:
                 break;

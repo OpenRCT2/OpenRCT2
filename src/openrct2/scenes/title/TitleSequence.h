@@ -12,6 +12,7 @@
 #include "../../core/IStream.hpp"
 #include "Command/End.h"
 #include "Command/FollowEntity.h"
+#include "Command/FollowRandom.h"
 #include "Command/LoadPark.h"
 #include "Command/LoadScenario.h"
 #include "Command/Restart.h"
@@ -19,6 +20,7 @@
 #include "Command/SetLocation.h"
 #include "Command/SetSpeed.h"
 #include "Command/SetZoom.h"
+#include "Command/Visibility.h"
 #include "Command/Wait.h"
 
 #include <memory>
@@ -28,8 +30,8 @@
 namespace OpenRCT2::Title
 {
     using TitleCommand = std::variant<
-        WaitCommand, SetLocationCommand, RotateViewCommand, SetZoomCommand, FollowEntityCommand, RestartCommand,
-        LoadParkCommand, EndCommand, SetSpeedCommand, LoadScenarioCommand>;
+        WaitCommand, SetLocationCommand, RotateViewCommand, SetZoomCommand, FollowEntityCommand, FollowRandomCommand,
+        RestartCommand, LoadParkCommand, EndCommand, SetSpeedCommand, LoadScenarioCommand, VisibilityCommand>;
 
     struct TitleSequence
     {

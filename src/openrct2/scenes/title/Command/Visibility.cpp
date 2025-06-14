@@ -7,20 +7,23 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "FollowEntity.h"
+#include "Visibility.h"
 
+#include "../../../interface/Viewport.h"
 #include "../../../interface/WindowBase.h"
+#include "../../../interface/ZoomLevel.h"
 
 namespace OpenRCT2::Title
 {
-    int16_t FollowEntityCommand::operator()(int16_t timer)
+    int16_t VisibilityCommand::operator()(int16_t timer)
     {
-        auto* w = WindowGetMain();
+        WindowBase* w = WindowGetMain();
         if (w != nullptr)
         {
-            if (Follow.ScrollToLocation)
-                w->flags.set(WindowFlag::scrollingToLocation);
-            WindowFollowSprite(*w, Follow.SpriteIndex);
+            const uint32_t allowedFlags = VIEWPORT_HIDDEN_FLAGS | VIEWPORT_VISIBILITY_FLAGS;
+            w->viewport->flags &= ~allowedFlags;
+            w->viewport->flags |= Flags & allowedFlags;
+            w->invalidate();
         }
 
         return 0;

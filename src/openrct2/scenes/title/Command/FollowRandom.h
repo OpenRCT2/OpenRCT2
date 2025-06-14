@@ -18,16 +18,15 @@
 
 namespace OpenRCT2::Title
 {
-    struct FollowEntityCommand
+    struct FollowRandomCommand
     {
-        static constexpr const char* Name = "Follow Entity Command";
-        static constexpr const char* ScriptingName = "follow";
+        static constexpr const char* Name = "Follow Random Command";
+        static constexpr const char* ScriptingName = "random";
 
         struct
         {
-            EntityId SpriteIndex{ EntityId::GetNull() };
+            EntityType Type{ EntityType::null };
             bool ScrollToLocation{ false };
-            utf8 SpriteName[kUserStringMaxLength]{};
         } Follow;
 
         int16_t operator()(int16_t timer);

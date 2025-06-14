@@ -5149,7 +5149,7 @@ declare global {
         image?: number | IconName;
         isPressed?: boolean;
         text?: string;
-        onClick?: () => void;
+        onClick?: (index: number) => void;
     }
 
     interface CheckboxDesc extends WidgetBaseDesc {
@@ -5456,8 +5456,10 @@ declare global {
         "location" |
         "rotate" |
         "zoom" |
+        "visibility" |
         "speed" |
         "follow" |
+        "random" |
         "wait" |
         "restart" |
         "end";
@@ -5483,9 +5485,21 @@ declare global {
         zoom: number;
     }
 
+    interface VisibilityTitleSequenceCommand {
+        type: "visibility";
+        flags: number;
+    }
+
     interface FollowTitleSequenceCommand {
         type: "follow";
         id: number | null;
+        scrollToLocation: boolean;
+    }
+
+    interface RandomTitleSequenceCommand {
+        type: "random";
+        entityType: EntityType | null;
+        scrollToLocation: boolean;
     }
 
     interface SpeedTitleSequenceCommand {
@@ -5516,7 +5530,9 @@ declare global {
         LocationTitleSequenceCommand |
         RotateTitleSequenceCommand |
         ZoomTitleSequenceCommand |
+        VisibilityTitleSequenceCommand |
         FollowTitleSequenceCommand |
+        RandomTitleSequenceCommand |
         SpeedTitleSequenceCommand |
         WaitTitleSequenceCommand |
         LoadScenarioTitleSequenceCommand |
