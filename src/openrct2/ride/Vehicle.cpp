@@ -3920,7 +3920,10 @@ void Vehicle::UpdateMotionBoatHire()
             }
             eax -= velocity;
             edx = powered_acceleration * 2;
-            ecx += (eax * edx) / ebx;
+            if (ebx != 0)
+            {
+                ecx += (eax * edx) / ebx;
+            }
         }
         acceleration = ecx;
     }
