@@ -1732,7 +1732,6 @@ namespace OpenRCT2
         // Apply the movement (note: we don't invert for gamepad like mouse drag does)
         targetWindow->savedViewPos += differentialCoords;
 
-        WindowUnfollowSprite(*targetWindow);
         gInputFlags.set(InputFlag::viewportScrolling);
     }
 } // namespace OpenRCT2

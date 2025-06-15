@@ -263,7 +263,12 @@ void InputManager::HandleViewScrolling()
 
         if (targetWindow != nullptr)
         {
-            WindowUnfollowSprite(*targetWindow);
+            // Only unfollow sprites for the main window or viewport windows
+            // Don't unfollow for ride windows that might be following vehicles
+            if (targetWindow == mainWindow || targetWindow->classification == WindowClass::Viewport)
+            {
+                WindowUnfollowSprite(*targetWindow);
+            }
             InputScrollViewportSmooth(_analogScroll, targetWindow);
         }
     }
