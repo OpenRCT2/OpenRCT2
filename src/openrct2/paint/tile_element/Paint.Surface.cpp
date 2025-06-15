@@ -168,36 +168,32 @@ struct TunnelDescriptor
     uint8_t imageOffset;
 };
 static constexpr TunnelDescriptor kTunnels[] = {
-    { 2, 2, 0,   15, TunnelType::StandardFlat,        36 },  // TunnelType::StandardFlat
-    { 3, 3, 0,   15, TunnelType::StandardFlat,        40 },  // TunnelType::StandardSlopeStart
-    { 3, 5, -32,  4, TunnelType::StandardFlat,        44 },  // TunnelType::StandardSlopeEnd
-    { 3, 3, 0,   15, TunnelType::InvertedFlat,        48 },  // TunnelType::InvertedFlat
-    { 4, 4, 0,   15, TunnelType::InvertedFlat,        52 },  // TunnelType::InvertedSlopeStart
-    { 4, 7, -48,  4, TunnelType::InvertedFlat,        56 },  // TunnelType::InvertedSlopeEnd
-    { 2, 2, 0,   15, TunnelType::SquareFlat,          60 },  // TunnelType::SquareFlat
-    { 3, 3, 0,   15, TunnelType::SquareFlat,          64 },  // TunnelType::SquareSlopeStart
-    { 3, 5, -32,  4, TunnelType::SquareFlat,          68 },  // TunnelType::SquareSlopeEnd
-    { 3, 3, 0,   15, TunnelType::SquareFlat,          72 },  // TunnelType::InvertedSquare
-    { 2, 3, -16, 15, TunnelType::PathAndMiniGolf,     76 },  // TunnelType::PathAndMiniGolf
-    { 2, 3, -16, 15, TunnelType::Path11,              80 },  // TunnelType::Path11
-    { 2, 3, -16,  4, TunnelType::StandardFlatTo25Deg, 36 },  // TunnelType::StandardFlatTo25Deg
-    { 3, 4, -16,  4, TunnelType::InvertedFlatTo25Deg, 48 },  // TunnelType::InvertedFlatTo25Deg
-    { 2, 3, -16,  4, TunnelType::SquareFlatTo25Deg,   60 },  // TunnelType::SquareFlatTo25Deg
-    { 3, 4, -16,  4, TunnelType::SquareFlatTo25Deg,   72 },  // TunnelType::InvertedSquareFlatTo25Deg
-    { 2, 2, 0,   15, TunnelType::Doors0,              76 },  // TunnelType::Doors0
-    { 2, 2, 0,   15, TunnelType::Doors1,              80 },  // TunnelType::Doors1
-    { 2, 2, 0,   15, TunnelType::Doors2,              84 },  // TunnelType::Doors2
-    { 2, 2, 0,   15, TunnelType::Doors3,              88 },  // TunnelType::Doors3
-    { 2, 2, 0,   15, TunnelType::Doors4,              92 },  // TunnelType::Doors4
-    { 2, 2, 0,   15, TunnelType::Doors5,              96 },  // TunnelType::Doors5
-    { 2, 2, 0,   15, TunnelType::Doors6,              100 }, // TunnelType::Doors6
-    { 2, 3, -16,  4, TunnelType::Doors0,              76 },  // TunnelType::DoorsFlatTo25Deg0
-    { 2, 3, -16,  4, TunnelType::Doors1,              80 },  // TunnelType::DoorsFlatTo25Deg1
-    { 2, 3, -16,  4, TunnelType::Doors2,              84 },  // TunnelType::DoorsFlatTo25Deg2
-    { 2, 3, -16,  4, TunnelType::Doors3,              88 },  // TunnelType::DoorsFlatTo25Deg3
-    { 2, 3, -16,  4, TunnelType::Doors4,              92 },  // TunnelType::DoorsFlatTo25Deg4
-    { 2, 3, -16,  4, TunnelType::Doors5,              96 },  // TunnelType::DoorsFlatTo25Deg5
-    { 2, 3, -16,  4, TunnelType::Doors6,              100 }, // TunnelType::DoorsFlatTo25Deg6
+    { 2, 2, 0,   15, TunnelType::StandardFlat,                    36 }, // TunnelType::StandardFlat
+    { 3, 3, 0,   15, TunnelType::StandardFlat,                    40 }, // TunnelType::StandardSlopeStart
+    { 3, 5, -32,  4, TunnelType::StandardFlat,                    44 }, // TunnelType::StandardSlopeEnd
+    { 3, 3, 0,   15, TunnelType::InvertedFlat,                    48 }, // TunnelType::InvertedFlat
+    { 4, 4, 0,   15, TunnelType::InvertedFlat,                    52 }, // TunnelType::InvertedSlopeStart
+    { 4, 7, -48,  4, TunnelType::InvertedFlat,                    56 }, // TunnelType::InvertedSlopeEnd
+    { 2, 2, 0,   15, TunnelType::SquareFlat,                      60 }, // TunnelType::SquareFlat
+    { 3, 3, 0,   15, TunnelType::SquareFlat,                      64 }, // TunnelType::SquareSlopeStart
+    { 3, 5, -32,  4, TunnelType::SquareFlat,                      68 }, // TunnelType::SquareSlopeEnd
+    { 3, 3, 0,   15, TunnelType::SquareFlat,                      72 }, // TunnelType::InvertedSquare
+    { 2, 3, -16, 15, TunnelType::PathAndMiniGolf,                 76 }, // TunnelType::PathAndMiniGolf
+    { 2, 3, -16, 15, TunnelType::Path11,                          80 }, // TunnelType::Path11
+    { 2, 3, -16,  4, TunnelType::StandardFlatTo25Deg,             36 }, // TunnelType::StandardFlatTo25Deg
+    { 3, 4, -16,  4, TunnelType::InvertedFlatTo25Deg,             48 }, // TunnelType::InvertedFlatTo25Deg
+    { 2, 3, -16,  4, TunnelType::SquareFlatTo25Deg,               60 }, // TunnelType::SquareFlatTo25Deg
+    { 3, 4, -16,  4, TunnelType::SquareFlatTo25Deg,               72 }, // TunnelType::InvertedSquareFlatTo25Deg
+    { 2, 2, 0,   15, TunnelType::doorClosed,                      84 }, // TunnelType::doorClosed
+    { 2, 2, 0,   15, TunnelType::doorOpeningOutward,              88 }, // TunnelType::doorOpeningOutward
+    { 2, 2, 0,   15, TunnelType::doorOpenOutward,                 92 }, // TunnelType::doorOpenOutward
+    { 2, 2, 0,   15, TunnelType::doorOpeningInward,               96 }, // TunnelType::doorOpeningInward
+    { 2, 2, 0,   15, TunnelType::doorOpenInward,                 100 }, // TunnelType::doorOpenInward
+    { 2, 3, -16,  4, TunnelType::doorClosedFlatToDown25,          84 }, // TunnelType::doorClosedFlatToDown25
+    { 2, 3, -16,  4, TunnelType::doorOpeningOutwardFlatToDown25,  88 }, // TunnelType::doorOpeningOutwardFlatToDown25
+    { 2, 3, -16,  4, TunnelType::doorOpenOutwardFlatToDown25,     92 }, // TunnelType::doorOpenOutwardFlatToDown25
+    { 2, 3, -16,  4, TunnelType::doorOpeningInwardFlatToDown25,   96 }, // TunnelType::doorOpeningInwardFlatToDown25
+    { 2, 3, -16,  4, TunnelType::doorOpenInwardFlatToDown25,     100 }, // TunnelType::doorOpenInwardFlatToDown25
 };
 static_assert(std::size(kTunnels) == kTunnelTypeCount);
 
