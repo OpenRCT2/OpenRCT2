@@ -4,9 +4,9 @@
 - Improved: [#22684] The limit of 2000 animated tile elements has been removed.
 - Improved: [#24026] Notification settings have been made into a tab of the Recent Messages window.
 - Change: [#24559] Scenario options are now disabled rather than hidden when disabling money makes them non-applicable.
+- Change: [#24628] Remove broken "Pause game when Steam overlay is open" feature.
 - Change: [objects#383] Disable all base colours on non-remappable WWTT vehicles, change black to light_blue.
 - Change: [objects#384] Remove erroneously enabled WWTT third remaps.
-- Change: [#24628] Remove broken "Pause game when Steam overlay is open" feature.
 - Fix: [#15846] Rightclicking on track piece when there is construction below does not work.
 - Fix: [#16176, #23113] Animated tile elements do not always redraw when there is over 2000.
 - Fix: [#17365] The slope of new land surfaces is only correct on one side when shifting and resizing the map.
