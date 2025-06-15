@@ -1726,7 +1726,8 @@ namespace OpenRCT2
         // Apply the movement (note: we don't invert for gamepad like mouse drag does)
         targetWindow->savedViewPos += differentialCoords;
 
-        WindowUnfollowSprite(*targetWindow);
+        // Note: WindowUnfollowSprite is handled by the caller to allow more granular control
+        // over when to break sprite following behavior
         gInputFlags.set(InputFlag::viewportScrolling);
     }
 } // namespace OpenRCT2
