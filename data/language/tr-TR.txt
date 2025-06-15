@@ -2683,7 +2683,6 @@ STR_5549    :Yıl/Ay/Gün
 STR_5550    :{POP16}{POP16}Yıl {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Yıl/Gün/Ay
 STR_5552    :{POP16}{POP16}Yıl {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Steam arayüzü açıkken oyunu durdur
 STR_5554    :Dağ modunu aç/kapat
 STR_5555    :Tüm araçları her trende göster
 STR_5556    :Oyuncuyu atınız
@@ -2906,7 +2905,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :FPS’i göster
 STR_5816    :Oyunu ölçekleme oranı{NEWLINE}Yüksek çözünürlükte tavsiye edilir
-STR_5819    :[Hardware Desteği gerektirir]{NEWLINE}Steam arayüzü kullanıldığında oyun durdurulsun
 STR_5820    :Tam ekran modunda oyun penceresi ön plandan giderse{NEWLINE}oyunu simge durumuna getir
 STR_5822    :Gece ve gündüz değişimi uygulansın
 STR_5823    :Alet giriş kulübelerindeki afişlerin metini RCT1’deki gibi büyük harfler ile yazılsın

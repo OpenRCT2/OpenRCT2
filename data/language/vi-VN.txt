@@ -2640,7 +2640,6 @@ STR_5549    :Năm/Tháng/Ngày
 STR_5550    :{POP16}{POP16}Năm {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Năm/Ngày/Tháng
 STR_5552    :{POP16}{POP16}Năm {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Tạm dừng trò chơi khi lớp phủ Steam mở
 STR_5554    :Bật công cụ núi
 STR_5555    :Hiện phương tiện từ các loại đường ray khác
 STR_5556    :Đuổi người chơi
@@ -2860,7 +2859,6 @@ STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 STR_5815    :Hiển thị bộ đếm FPS trong trò chơi
 STR_5816    :Đặt tỷ lệ để điều chỉnh kích thước trò chơi. Hữu ích nhất khi chơi ở độ phân giải cao
-STR_5819    :[Yêu cầu hiển thị phần cứng] Tạm dừng trò chơi nếu lớp phủ trong trò chơi của Steam được mở
 STR_5820    :Thu nhỏ trò chơi nếu mất tiêu điểm khi ở chế độ toàn màn hình
 STR_5822    :Chuyển đổi giữa ngày và đêm. Một chu kỳ đầy đủ mất một tháng trong trò chơi
 STR_5823    :Hiển thị biểu ngữ bằng chữ hoa (hành vi của RCT1)

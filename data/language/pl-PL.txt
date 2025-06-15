@@ -2695,7 +2695,6 @@ STR_5549    :rok/miesiąc/dzień
 STR_5550    :{POP16}{POP16}Rok {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :rok/dzień/miesiąc
 STR_5552    :{POP16}{POP16}Rok {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Wstrzymaj grę, gdy nakładka Steam jest otwarta
 STR_5554    :Uruchom narzędzie tworzenia gór
 STR_5555    :Pokaż pojazdy z innych typów torów
 STR_5556    :Wyrzuć gracza
@@ -2919,7 +2918,6 @@ STR_5814    :{WINDOW_COLOUR_1}„{STRING}”
 #Wskazówki
 STR_5815    :Pokaż licznik FPS w grze
 STR_5816    :Ustawia stosunek skalowania grafiki.{NEWLINE}Przydatne szczególnie przy grze{NEWLINE}w wysokiej rozdzielczości
-STR_5819    :[Wymaga silnika sprzętowego]{NEWLINE}Zatrzymuje grę, jeśli nakładka Steam jest otwarta
 STR_5820    :Zmniejsza okno gry w przypadku{NEWLINE}utraty ostrości w trybie pełnoekranowym
 STR_5822    :Cykl dnia i nocy.{NEWLINE}Pełny cykl trwa jeden miesiąc w grze.
 STR_5823    :Wyświetlaj banery z dużych liter (zachowanie RCT1)

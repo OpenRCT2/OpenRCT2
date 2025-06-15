@@ -216,7 +216,6 @@ namespace OpenRCT2::Config
             model->EnableLightFxForVehicles = supportsLightFx && reader->GetBoolean("enable_light_fx_for_vehicles", false);
             model->UpperCaseBanners = reader->GetBoolean("upper_case_banners", false);
             model->DisableLightningEffect = reader->GetBoolean("disable_lightning_effect", false);
-            model->SteamOverlayPause = reader->GetBoolean("steam_overlay_pause", true);
             model->WindowScale = reader->GetFloat("window_scale", Platform::GetDefaultScale());
             model->InferDisplayDPI = reader->GetBoolean("infer_display_dpi", true);
             model->ShowFPS = reader->GetBoolean("show_fps", false);
@@ -315,7 +314,6 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("enable_light_fx_for_vehicles", model->EnableLightFxForVehicles);
         writer->WriteBoolean("upper_case_banners", model->UpperCaseBanners);
         writer->WriteBoolean("disable_lightning_effect", model->DisableLightningEffect);
-        writer->WriteBoolean("steam_overlay_pause", model->SteamOverlayPause);
         writer->WriteFloat("window_scale", model->WindowScale);
         writer->WriteBoolean("infer_display_dpi", model->InferDisplayDPI);
         writer->WriteBoolean("show_fps", model->ShowFPS);

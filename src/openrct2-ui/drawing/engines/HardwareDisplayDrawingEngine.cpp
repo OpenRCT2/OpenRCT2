@@ -42,11 +42,6 @@ private:
     uint32_t _paletteHWMapped[256] = { 0 };
     uint32_t _lightPaletteHWMapped[256] = { 0 };
 
-    // Steam overlay checking
-    uint32_t _pixelBeforeOverlay = 0;
-    uint32_t _pixelAfterOverlay = 0;
-    bool _overlayActive = false;
-    bool _pausedBeforeOverlay = false;
     bool _useVsync = true;
 
     std::vector<uint32_t> _dirtyVisualsTime;
@@ -270,18 +265,7 @@ private:
             RenderDirtyVisuals();
         }
 
-        bool isSteamOverlayActive = GetContext()->GetUiContext().IsSteamOverlayActive();
-        if (isSteamOverlayActive && Config::Get().general.SteamOverlayPause)
-        {
-            OverlayPreRenderCheck();
-        }
-
         SDL_RenderPresent(_sdlRenderer);
-
-        if (isSteamOverlayActive && Config::Get().general.SteamOverlayPause)
-        {
-            OverlayPostRenderCheck();
-        }
     }
 
     void CopyBitsToTexture(SDL_Texture* texture, uint8_t* src, int32_t width, int32_t height, const uint32_t* palette)
@@ -387,44 +371,6 @@ private:
                 }
             }
         }
-    }
-
-    void ReadCentrePixel(uint32_t* pixel)
-    {
-        SDL_Rect centrePixelRegion = { static_cast<int32_t>(_width / 2), static_cast<int32_t>(_height / 2), 1, 1 };
-        SDL_RenderReadPixels(_sdlRenderer, &centrePixelRegion, SDL_PIXELFORMAT_RGBA8888, pixel, sizeof(uint32_t));
-    }
-
-    // Should be called before SDL_RenderPresent to capture frame buffer before Steam overlay is drawn.
-    void OverlayPreRenderCheck()
-    {
-        ReadCentrePixel(&_pixelBeforeOverlay);
-    }
-
-    // Should be called after SDL_RenderPresent, when Steam overlay has had the chance to be drawn.
-    void OverlayPostRenderCheck()
-    {
-        ReadCentrePixel(&_pixelAfterOverlay);
-
-        // Detect an active Steam overlay by checking if the centre pixel is changed by the grey fade.
-        // Will not be triggered by applications rendering to corners, like FRAPS, MSI Afterburner and Friends popups.
-        bool newOverlayActive = _pixelBeforeOverlay != _pixelAfterOverlay;
-
-        // Toggle game pause state consistently with base pause state
-        if (!_overlayActive && newOverlayActive)
-        {
-            _pausedBeforeOverlay = gGamePaused & GAME_PAUSED_NORMAL;
-            if (!_pausedBeforeOverlay)
-            {
-                PauseToggle();
-            }
-        }
-        else if (_overlayActive && !newOverlayActive && !_pausedBeforeOverlay)
-        {
-            PauseToggle();
-        }
-
-        _overlayActive = newOverlayActive;
     }
 };
 

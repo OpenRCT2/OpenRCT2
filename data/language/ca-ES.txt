@@ -2699,7 +2699,6 @@ STR_5549    :Any/Mes/Dia
 STR_5550    :{POP16}{POP16}Any {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Any/Dia/Mes
 STR_5552    :{POP16}{POP16}Any {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Posa la partida en pausa quan s’obri l’Steam
 STR_5554    :Activa l’eina muntanya
 STR_5555    :Mostra els vehicles d’altres tipus de via
 STR_5556    :Expulsa al jugador
@@ -2923,7 +2922,6 @@ STR_5814    :{WINDOW_COLOUR_1}«{STRING}»
 #tooltips
 STR_5815    :Mostra el comptador de FPS del joc.
 STR_5816    :Estableix la relació d’escala del joc.{NEWLINE}Sol ser útil quan es juga amb{NEWLINE}pantalles d’alta resolució.
-STR_5819    :[Requereix renderitzat per maquinari]{NEWLINE}Posa la partida en pausa{NEWLINE}si s’activa l’Steam.
 STR_5820    :Minimitza el joc si es perd el focus{NEWLINE}en mode de pantalla completa.
 STR_5822    :Mostra el cicle dia/nit.{NEWLINE}El cicle sencer equival a un mes a la partida.
 STR_5823    :Mostra els textos dels cartells en majúscula (com al RCT1).

@@ -2696,7 +2696,6 @@ STR_5549    :Jaar/maand/dag
 STR_5550    :{POP16}{POP16}Jaar {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Jaar/dag/maand
 STR_5552    :{POP16}{POP16}Jaar {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Spel pauzeren als de Steam-overlay open staat
 STR_5554    :Overgangen met omringend land gladstrijken
 STR_5555    :Voertuigen van andere baantypen tonen
 STR_5556    :Speler verwijderen
@@ -2918,7 +2917,6 @@ STR_5813    :‘{STRING}’
 STR_5814    :{WINDOW_COLOUR_1}‘{STRING}’
 STR_5815    :Toont FPS-teller aan de bovenkant van het scherm.
 STR_5816    :Stelt de factor in waarmee alles vergroot moet worden.{NEWLINE}Vooral handig als je met een hoge schermresolutie speelt.
-STR_5819    :[Vereist ‘Weergave uitgevoerd door hardware’]{NEWLINE}Pauzeert het spel als de Steam-overlay wordt geopend.
 STR_5820    :Minimaliseert het spel als het de focus verliest tijdens het spelen op volledig scherm.
 STR_5822    :Activeert de dag/nachtcyclus. Een volledige cyclus neemt ongeveer één maand in het spel in beslag.
 STR_5823    :Toont de tekst op lichtkranten altijd in hoofdletters (zoals RCT1).

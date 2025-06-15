@@ -115,7 +115,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MULTITHREADING_CHECKBOX,
 
         WIDX_BEHAVIOUR_GROUP,
-        WIDX_STEAM_OVERLAY_PAUSE,
         WIDX_MINIMIZE_FOCUS_LOSS,
         WIDX_DISABLE_SCREENSAVER_LOCK,
 
@@ -290,10 +289,9 @@ namespace OpenRCT2::Ui::Windows
         makeWidget        ({ 10, 166}, {136,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
         makeWidget        ({155, 166}, {136,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
 
-        makeWidget        ({  5, 188}, {300,  64}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_BEHAVIOUR                                                             ), // Behaviour group
-        makeWidget        ({ 11, 203}, {280,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_STEAM_OVERLAY_PAUSE,               STR_STEAM_OVERLAY_PAUSE_TIP              ), // Pause on steam overlay
-        makeWidget        ({ 11, 218}, {280,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
-        makeWidget        ({ 11, 233}, {280,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              )  // Disable screensaver
+        makeWidget        ({  5, 188}, {300,  49}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_BEHAVIOUR                                                             ), // Behaviour group
+        makeWidget        ({ 11, 203}, {280,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
+        makeWidget        ({ 11, 218}, {280,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              )  // Disable screensaver
     );
 
     constexpr int32_t kFrameRenderingStart = 53;
@@ -771,11 +769,6 @@ namespace OpenRCT2::Ui::Windows
                     Config::Save();
                     Invalidate();
                     break;
-                case WIDX_STEAM_OVERLAY_PAUSE:
-                    Config::Get().general.SteamOverlayPause ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    break;
                 case WIDX_DISABLE_SCREENSAVER_LOCK:
                     Config::Get().general.DisableScreensaver ^= 1;
                     ApplyScreenSaverLockSetting();
@@ -983,7 +976,6 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_SHOW_FPS_CHECKBOX, Config::Get().general.ShowFPS);
             SetCheckboxValue(WIDX_MULTITHREADING_CHECKBOX, Config::Get().general.MultiThreading);
             SetCheckboxValue(WIDX_MINIMIZE_FOCUS_LOSS, Config::Get().general.MinimizeFullscreenFocusLoss);
-            SetCheckboxValue(WIDX_STEAM_OVERLAY_PAUSE, Config::Get().general.SteamOverlayPause);
             SetCheckboxValue(WIDX_DISABLE_SCREENSAVER_LOCK, Config::Get().general.DisableScreensaver);
 
             // Dropdown captions for straightforward strings.

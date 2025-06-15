@@ -2695,7 +2695,6 @@ STR_5549    :السنة/الشهر/اليوم
 STR_5550    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :السنة/اليوم/الشهر
 STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Pause game when Steam overlay is open
 STR_5554    :تفعيل أدوات الجبال
 STR_5555    :Show vehicles from other track types
 STR_5556    :طرد اللاعب
@@ -2919,7 +2918,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :أظهر عداد معدل الإطارات بداخل اللعبة
 STR_5816    :Sets ratio to scale the game by.{NEWLINE}Most useful when playing in{NEWLINE}high resolutions
-STR_5819    :[Requires hardware display]{NEWLINE}Pause the game if Steam{NEWLINE}in-game overlay is opened
 STR_5820    :Minimise the game if focus is{NEWLINE}lost while in fullscreen mode
 STR_5822    :Cycle between day and night.{NEWLINE}Full cycle takes one in-game month
 STR_5823    :Display banners in uppercase (RCT1 behaviour)

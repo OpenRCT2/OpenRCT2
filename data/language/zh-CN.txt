@@ -2692,7 +2692,6 @@ STR_5549    :年/月/日
 STR_5550    :{POP16}{POP16}第{COMMA16}年，{PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :年/日/月
 STR_5552    :{POP16}{POP16}第{COMMA16}年，{PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :当Steam overlay打开时暂停游戏
 STR_5554    :启用山丘工具
 STR_5555    :显示来自其他类型轨道的车辆种类
 STR_5556    :踢除玩家
@@ -2916,7 +2915,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :游戏内显示FPS帧数
 STR_5816    :设置比例去缩放游戏。{NEWLINE}高分辨率时很有用
-STR_5819    :[需要开启硬件渲染]{NEWLINE}暂停游戏当游戏内{NEWLINE}Steam overlay打开时
 STR_5820    :全屏模式时若游戏失焦{NEWLINE}则最小化游戏
 STR_5822    :日夜循环。{NEWLINE}完成一个循环花费游戏内一个月时间
 STR_5823    :横幅上显示全大写英文（RCT1效果）
