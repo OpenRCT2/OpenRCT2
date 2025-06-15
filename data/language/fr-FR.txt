@@ -2704,7 +2704,6 @@ STR_5549    :Année/Mois/Jour
 STR_5550    :{POP16}{POP16}Année {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Année/Jour/Mois
 STR_5552    :{POP16}{POP16}Année {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Mettre en pause quand l’overlay Steam est ouvert
 STR_5554    :Outil montagne
 STR_5555    :Afficher véhicules d’autres types de voie
 STR_5556    :Sortir le joueur
@@ -2928,7 +2927,6 @@ STR_5814    :{WINDOW_COLOUR_1}« {STRING} »
 #tooltips
 STR_5815    :Affiche le nombre d’images par seconde durant le jeu
 STR_5816    :Définit le ratio de mise à l’échelle du jeu.{NEWLINE}Utile lors de l’utilisation de résolutions élevées.
-STR_5819    :[Requiert l’affichage matériel]{NEWLINE}Met le jeu en pause quand l’overlay Steam est ouvert
 STR_5820    :Minimise le jeu si le focus est perdu en plein écran
 STR_5822    :Active le cycle jour/nuit.{NEWLINE}Chaque cycle dure un mois de jeu.
 STR_5823    :Affiche le texte des bannières en majuscule (comme dans RCT1)
