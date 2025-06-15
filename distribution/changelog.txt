@@ -13,6 +13,7 @@
 - Fix: [#24456] Zoomed out vehicles on the ride window tab can sometimes draw incorrectly.
 - Fix: [#24458] Vehicles in the ride window vehicle tab are offset differently than vanilla RCT2, and the sprites are cut off at the bottom.
 - Fix: [#24576] It is possible to edit open rides in certain circumstances.
+- Fix: [#24626] Prevent unfollowing sprites in viewports that only follow sprites.
 
 0.4.23 (2025-06-07)
 ------------------------------------------------------------------------
