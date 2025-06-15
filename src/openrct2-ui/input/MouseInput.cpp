@@ -1696,21 +1696,20 @@ namespace OpenRCT2
         }
     }
 
-    void InputScrollViewportSmooth(const ScreenCoordsXY& scrollScreenCoords)
+    void InputScrollViewportSmooth(const ScreenCoordsXY& scrollScreenCoords, WindowBase* targetWindow)
     {
-        WindowBase* mainWindow = WindowGetMain();
-        if (mainWindow == nullptr)
+        if (targetWindow == nullptr)
         {
             return;
         }
 
-        Viewport* viewport = mainWindow->viewport;
+        Viewport* viewport = targetWindow->viewport;
         if (viewport == nullptr)
         {
             return;
         }
 
-        if (mainWindow->flags & WF_NO_SCROLLING)
+        if (targetWindow->flags & WF_NO_SCROLLING)
         {
             return;
         }
@@ -1731,9 +1730,9 @@ namespace OpenRCT2
         differentialCoords.y = posY ? -differentialCoords.y : differentialCoords.y;
 
         // Apply the movement (note: we don't invert for gamepad like mouse drag does)
-        mainWindow->savedViewPos += differentialCoords;
+        targetWindow->savedViewPos += differentialCoords;
 
-        WindowUnfollowSprite(*mainWindow);
+        WindowUnfollowSprite(*targetWindow);
         gInputFlags.set(InputFlag::viewportScrolling);
     }
 } // namespace OpenRCT2

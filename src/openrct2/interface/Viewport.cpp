@@ -1880,7 +1880,7 @@ namespace OpenRCT2
         GfxSetDirtyBlocks(invalidRect);
     }
 
-    static Viewport* ViewportFindFromPoint(const ScreenCoordsXY& screenCoords)
+    Viewport* ViewportFindFromPoint(const ScreenCoordsXY& screenCoords)
     {
         auto* windowMgr = Ui::GetWindowManager();
         WindowBase* w = windowMgr->FindFromPoint(screenCoords);

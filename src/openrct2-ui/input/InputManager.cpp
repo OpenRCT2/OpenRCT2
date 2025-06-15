@@ -24,6 +24,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Chat.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Window.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/ui/UiContext.h>
@@ -239,14 +240,32 @@ void InputManager::HandleViewScrolling()
 
     auto mainWindow = WindowGetMain();
 
-    // Handle gamepad analog scrolling with smooth viewport scrolling
+    // Handle gamepad analog scrolling with cursor-based viewport targeting
     if (_analogScroll.x != 0 || _analogScroll.y != 0)
     {
-        if (mainWindow != nullptr)
+        // Get cursor position to find target viewport
+        const CursorState* cursorState = ContextGetCursorState();
+        Viewport* targetViewport = ViewportFindFromPoint(cursorState->position);
+
+        WindowBase* targetWindow = nullptr;
+        if (targetViewport != nullptr)
         {
-            WindowUnfollowSprite(*mainWindow);
+            // Find the window that owns this viewport
+            auto* windowMgr = GetWindowManager();
+            targetWindow = windowMgr->GetOwner(targetViewport);
         }
-        InputScrollViewportSmooth(_analogScroll);
+
+        // Fallback to main window if no viewport found under cursor
+        if (targetWindow == nullptr)
+        {
+            targetWindow = mainWindow;
+        }
+
+        if (targetWindow != nullptr)
+        {
+            WindowUnfollowSprite(*targetWindow);
+            InputScrollViewportSmooth(_analogScroll, targetWindow);
+        }
     }
 
     // Handle keyboard shortcut scrolling with edge-based scrolling (but ignore gamepad input)
