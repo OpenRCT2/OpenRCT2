@@ -43,9 +43,8 @@ using namespace OpenRCT2::TrackMetaData;
 namespace OpenRCT2::Ui::Windows
 {
     static constexpr StringId WindowTitle = kStringIdNone;
-    static constexpr int32_t kWindowHeight = 382;
+    static constexpr ScreenSize kWindowSize = { 601, 382 };
     static constexpr int32_t kWindowHeightResearch = 194;
-    static constexpr int32_t WindowWidth = 601;
     static constexpr int32_t RideListItemsMax = 384;
     static constexpr int32_t RideTabCount = 6;
     static constexpr int32_t GroupByTrackTypeWidth = 172;
@@ -205,28 +204,28 @@ namespace OpenRCT2::Ui::Windows
         WIDX_GROUP_BY_TRACK_TYPE,
     };
 
-    static constexpr ScreenCoordsXY GroupByTrackTypeOrigin{ WindowWidth - 8 - GroupByTrackTypeWidth, 47 };
+    static constexpr ScreenCoordsXY GroupByTrackTypeOrigin{ kWindowSize.width - 8 - GroupByTrackTypeWidth, 47 };
     static constexpr ScreenSize GroupTrackTypeSize{ GroupByTrackTypeWidth, 14 };
 
     // clang-format off
     static constexpr auto window_new_ride_widgets = makeWidgets(
-        makeWindowShim(WindowTitle, { WindowWidth, kWindowHeight }),
-        makeWidget({  0,  43},             {601, 339},         WidgetType::resize,   WindowColour::secondary                                                                ),
-        makeTab   ({  3,  17},                                                                                      STR_TRANSPORT_RIDES_TIP                                       ),
-        makeTab   ({ 34,  17},                                                                                      STR_GENTLE_RIDES_TIP                                          ),
-        makeTab   ({ 65,  17},                                                                                      STR_ROLLER_COASTERS_TIP                                       ),
-        makeTab   ({ 96,  17},                                                                                      STR_THRILL_RIDES_TIP                                          ),
-        makeTab   ({127,  17},                                                                                      STR_WATER_RIDES_TIP                                           ),
-        makeTab   ({158,  17},                                                                                      STR_SHOPS_STALLS_TIP                                          ),
-        makeTab   ({189,  17},                                                                                      STR_RESEARCH_AND_DEVELOPMENT_TIP                              ),
-        makeWidget({  3,  62},             {595, 256},         WidgetType::scroll,   WindowColour::secondary, SCROLL_VERTICAL                                               ),
-        makeWidget({  3,  47},             {290,  70},         WidgetType::groupbox, WindowColour::tertiary,  STR_CURRENTLY_IN_DEVELOPMENT                                  ),
-        makeWidget({  3, 124},             {290,  65},         WidgetType::groupbox, WindowColour::tertiary,  STR_LAST_DEVELOPMENT                                          ),
-        makeWidget({265, 161},             { 24,  24},         WidgetType::flatBtn,  WindowColour::tertiary,  0xFFFFFFFF,                      STR_RESEARCH_SHOW_DETAILS_TIP),
-        makeWidget({265,  68},             { 24,  24},         WidgetType::flatBtn,  WindowColour::tertiary,  ImageId(SPR_FINANCE),                     STR_FINANCES_RESEARCH_TIP    ),
-        makeWidget({  4,  46},             {211, 14},          WidgetType::textBox,  WindowColour::secondary                          ),
-        makeWidget({218,  46},             { 70, 14},          WidgetType::button,   WindowColour::secondary, STR_OBJECT_SEARCH_CLEAR ),
-        makeWidget(GroupByTrackTypeOrigin, GroupTrackTypeSize, WidgetType::checkbox, WindowColour::secondary, STR_GROUP_BY_TRACK_TYPE,         STR_GROUP_BY_TRACK_TYPE_TIP  )
+        makeWindowShim(WindowTitle, kWindowSize),
+        makeWidget({  0,  43},             {601, 339},         WidgetType::resize,   WindowColour::secondary                                                                 ),
+        makeTab   ({  3,  17},                                                                                STR_TRANSPORT_RIDES_TIP                                        ),
+        makeTab   ({ 34,  17},                                                                                STR_GENTLE_RIDES_TIP                                           ),
+        makeTab   ({ 65,  17},                                                                                STR_ROLLER_COASTERS_TIP                                        ),
+        makeTab   ({ 96,  17},                                                                                STR_THRILL_RIDES_TIP                                           ),
+        makeTab   ({127,  17},                                                                                STR_WATER_RIDES_TIP                                            ),
+        makeTab   ({158,  17},                                                                                STR_SHOPS_STALLS_TIP                                           ),
+        makeTab   ({189,  17},                                                                                STR_RESEARCH_AND_DEVELOPMENT_TIP                               ),
+        makeWidget({  3,  62},             {595, 256},         WidgetType::scroll,   WindowColour::secondary, SCROLL_VERTICAL                                                ),
+        makeWidget({  3,  47},             {290,  70},         WidgetType::groupbox, WindowColour::tertiary,  STR_CURRENTLY_IN_DEVELOPMENT                                   ),
+        makeWidget({  3, 124},             {290,  65},         WidgetType::groupbox, WindowColour::tertiary,  STR_LAST_DEVELOPMENT                                           ),
+        makeWidget({265, 161},             { 24,  24},         WidgetType::flatBtn,  WindowColour::tertiary,  0xFFFFFFFF,                       STR_RESEARCH_SHOW_DETAILS_TIP),
+        makeWidget({265,  68},             { 24,  24},         WidgetType::flatBtn,  WindowColour::tertiary,  ImageId(SPR_FINANCE),             STR_FINANCES_RESEARCH_TIP    ),
+        makeWidget({  4,  46},             {211, 14},          WidgetType::textBox,  WindowColour::secondary                                                                 ),
+        makeWidget({218,  46},             { 70, 14},          WidgetType::button,   WindowColour::secondary, STR_OBJECT_SEARCH_CLEAR                                        ),
+        makeWidget(GroupByTrackTypeOrigin, GroupTrackTypeSize, WidgetType::checkbox, WindowColour::secondary, STR_GROUP_BY_TRACK_TYPE,          STR_GROUP_BY_TRACK_TYPE_TIP  )
     );
     // clang-format on
 
@@ -843,8 +842,8 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WidgetType::empty;
                 widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WidgetType::empty;
 
-                newWidth = WindowWidth;
-                newHeight = kWindowHeight;
+                newWidth = kWindowSize.width;
+                newHeight = kWindowSize.height;
             }
             else
             {
@@ -942,13 +941,15 @@ namespace OpenRCT2::Ui::Windows
                 {
                     ft = Formatter();
                     ft.Add<StringId>(rideEntry.naming.Name);
-                    DrawTextEllipsised(rt, screenPos + ScreenCoordsXY{ 0, 39 }, WindowWidth - 2, STR_NEW_RIDE_VEHICLE_NAME, ft);
+                    DrawTextEllipsised(
+                        rt, screenPos + ScreenCoordsXY{ 0, 39 }, kWindowSize.width - 2, STR_NEW_RIDE_VEHICLE_NAME, ft);
                 }
                 else
                 {
                     ft = Formatter();
                     ft.Add<const utf8*>(_vehicleAvailability.c_str());
-                    DrawTextEllipsised(rt, screenPos + ScreenCoordsXY{ 0, 39 }, WindowWidth - 2, STR_AVAILABLE_VEHICLES, ft);
+                    DrawTextEllipsised(
+                        rt, screenPos + ScreenCoordsXY{ 0, 39 }, kWindowSize.width - 2, STR_AVAILABLE_VEHICLES, ft);
                 }
             }
 
@@ -999,7 +1000,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<const char*>(authorsString.c_str());
 
                 DrawTextEllipsised(
-                    rt, screenPos + ScreenCoordsXY{ textWidth, 0 }, WindowWidth - 2, STR_WINDOW_COLOUR_2_STRINGID, ft,
+                    rt, screenPos + ScreenCoordsXY{ textWidth, 0 }, kWindowSize.width - 2, STR_WINDOW_COLOUR_2_STRINGID, ft,
                     { TextAlignment::RIGHT });
             }
         }
@@ -1084,8 +1085,7 @@ namespace OpenRCT2::Ui::Windows
         windowMgr->CloseByClass(WindowClass::TrackDesignList);
         windowMgr->CloseByClass(WindowClass::TrackDesignPlace);
 
-        window = windowMgr->Create<NewRideWindow>(
-            WindowClass::ConstructRide, { WindowWidth, kWindowHeight }, WF_10 | WF_AUTO_POSITION);
+        window = windowMgr->Create<NewRideWindow>(WindowClass::ConstructRide, kWindowSize, WF_10 | WF_AUTO_POSITION);
         return window;
     }
 
