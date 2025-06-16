@@ -54,7 +54,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto _inventionListWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({  0,  43}, {600, 357}, WidgetType::resize,  WindowColour::secondary                                             ),
-        makeTab   ({  3,  17}                                                                                               ),
+        makeTab   ({  3,  17}                                                                                                       ),
         makeWidget({  4,  56}, {368, 161}, WidgetType::scroll,  WindowColour::secondary, SCROLL_VERTICAL                            ),
         makeWidget({  4, 231}, {368, 157}, WidgetType::scroll,  WindowColour::secondary, SCROLL_VERTICAL                            ),
         makeWidget({431, 106}, {114, 114}, WidgetType::flatBtn, WindowColour::secondary                                             ),

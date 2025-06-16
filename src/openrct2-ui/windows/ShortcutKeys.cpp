@@ -41,9 +41,9 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _shortcutWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget({0,                 43}, {350, 287}, WidgetType::resize, WindowColour::secondary),
-        makeWidget({4,                 47}, {412, 215}, WidgetType::scroll, WindowColour::primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
-        makeWidget({4, kWindowSize.height-15}, {150,  12}, WidgetType::button, WindowColour::primary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP)
+        makeWidget({0,                      43}, {350, 287}, WidgetType::resize, WindowColour::secondary                                                        ),
+        makeWidget({4,                      47}, {412, 215}, WidgetType::scroll, WindowColour::primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
+        makeWidget({4, kWindowSize.height - 15}, {150,  12}, WidgetType::button, WindowColour::primary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP)
     );
     // clang-format on
 
@@ -575,9 +575,9 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto WindowResetShortcutKeysPromptWidgets = makeWidgets(
         makeWindowShim(STR_SHORTCUT_ACTION_RESET, kWindowSizeReset),
-        makeWidget({ 2, 30 }, { kWindowSizeReset.width - 4, 12 }, WidgetType::labelCentred, WindowColour::primary, STR_RESET_SHORTCUT_KEYS_PROMPT),
-        makeWidget({ 8, kWindowSizeReset.height - 22 }, { 85, 14 }, WidgetType::button, WindowColour::primary, STR_RESET),
-        makeWidget({ kWindowSizeReset.width - 95, kWindowSizeReset.height - 22 }, { 85, 14 }, WidgetType::button, WindowColour::primary, STR_SAVE_PROMPT_CANCEL)
+        makeWidget({                           2,                           30 }, { kWindowSizeReset.width - 4, 12 }, WidgetType::labelCentred, WindowColour::primary, STR_RESET_SHORTCUT_KEYS_PROMPT),
+        makeWidget({                           8, kWindowSizeReset.height - 22 }, {                         85, 14 }, WidgetType::button,       WindowColour::primary, STR_RESET),
+        makeWidget({ kWindowSizeReset.width - 95, kWindowSizeReset.height - 22 }, {                         85, 14 }, WidgetType::button,       WindowColour::primary, STR_SAVE_PROMPT_CANCEL)
     );
     // clang-format on
 

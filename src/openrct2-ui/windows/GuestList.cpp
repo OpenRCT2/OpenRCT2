@@ -58,17 +58,17 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto window_guest_list_widgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget({  0, 43}, {350, 287}, WidgetType::resize,   WindowColour::secondary                                                   ), // tab content panel
-        makeWidget({  5, 59}, { 80,  12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_ARG_4_PAGE_X                                 ), // page dropdown
-        makeWidget({ 73, 60}, { 11,  10}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH                               ), // page dropdown button
-        makeWidget({120, 59}, {142,  12}, WidgetType::dropdownMenu, WindowColour::secondary, 0xFFFFFFFF,         STR_INFORMATION_TYPE_TIP     ), // information type dropdown
-        makeWidget({250, 60}, { 11,  10}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH, STR_INFORMATION_TYPE_TIP     ), // information type dropdown button
-        makeWidget({273, 46}, { 24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_MAP),            STR_SHOW_GUESTS_ON_MAP_TIP   ), // map
-        makeWidget({297, 46}, { 24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_G2_SEARCH),      STR_GUESTS_FILTER_BY_NAME_TIP), // filter by name
-        makeWidget({321, 46}, { 24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_TRACK_PEEP),     STR_TRACKED_GUESTS_ONLY_TIP  ), // tracking
-        makeTab   ({  3, 17},                                                                        STR_INDIVIDUAL_GUESTS_TIP    ), // tab 1
-        makeTab   ({ 34, 17},                                                                        STR_SUMMARISED_GUESTS_TIP    ), // tab 2
-        makeWidget({  3, 72}, {344, 255}, WidgetType::scroll,   WindowColour::secondary, SCROLL_BOTH                                      ) // guest list
+        makeWidget({  0, 43}, {350, 287}, WidgetType::resize,       WindowColour::secondary                                                        ), // tab content panel
+        makeWidget({  5, 59}, { 80,  12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_ARG_4_PAGE_X                                      ), // page dropdown
+        makeWidget({ 73, 60}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                    ), // page dropdown button
+        makeWidget({120, 59}, {142,  12}, WidgetType::dropdownMenu, WindowColour::secondary, 0xFFFFFFFF,              STR_INFORMATION_TYPE_TIP     ), // information type dropdown
+        makeWidget({250, 60}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,      STR_INFORMATION_TYPE_TIP     ), // information type dropdown button
+        makeWidget({273, 46}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_MAP),        STR_SHOW_GUESTS_ON_MAP_TIP   ), // map
+        makeWidget({297, 46}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_G2_SEARCH),  STR_GUESTS_FILTER_BY_NAME_TIP), // filter by name
+        makeWidget({321, 46}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_TRACK_PEEP), STR_TRACKED_GUESTS_ONLY_TIP  ), // tracking
+        makeTab   ({  3, 17},                                                                                         STR_INDIVIDUAL_GUESTS_TIP    ), // tab 1
+        makeTab   ({ 34, 17},                                                                                         STR_SUMMARISED_GUESTS_TIP    ), // tab 2
+        makeWidget({  3, 72}, {344, 255}, WidgetType::scroll,       WindowColour::secondary, SCROLL_BOTH                                           ) // guest list
     );
     // clang-format on
 

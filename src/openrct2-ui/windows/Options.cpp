@@ -256,15 +256,15 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto kMainOptionsWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget({ 0, 43 }, { kWindowSize.width, 289 }, WidgetType::resize, WindowColour::secondary),
-        makeTab({ 3, 17 }, STR_OPTIONS_DISPLAY_TIP),
-        makeTab({ 34, 17 }, STR_OPTIONS_RENDERING_TIP),
-        makeTab({ 65, 17 }, STR_OPTIONS_CULTURE_TIP),
-        makeTab({ 96, 17 }, STR_OPTIONS_AUDIO_TIP),
-        makeTab({ 127, 17 }, STR_OPTIONS_INTERFACE_TIP),
-        makeTab({ 158, 17 }, STR_OPTIONS_CONTROLS_TIP),
-        makeTab({ 189, 17 }, STR_OPTIONS_MISCELLANEOUS_TIP),
-        makeTab({ 220, 17 }, STR_OPTIONS_ADVANCED)
+        makeWidget({   0, 43 }, { kWindowSize.width, 289 }, WidgetType::resize, WindowColour::secondary),
+        makeTab   ({   3, 17 }, STR_OPTIONS_DISPLAY_TIP),
+        makeTab   ({  34, 17 }, STR_OPTIONS_RENDERING_TIP),
+        makeTab   ({  65, 17 }, STR_OPTIONS_CULTURE_TIP),
+        makeTab   ({  96, 17 }, STR_OPTIONS_AUDIO_TIP),
+        makeTab   ({ 127, 17 }, STR_OPTIONS_INTERFACE_TIP),
+        makeTab   ({ 158, 17 }, STR_OPTIONS_CONTROLS_TIP),
+        makeTab   ({ 189, 17 }, STR_OPTIONS_MISCELLANEOUS_TIP),
+        makeTab   ({ 220, 17 }, STR_OPTIONS_ADVANCED)
     );
 
     static constexpr auto window_options_display_widgets = makeWidgets(
@@ -307,7 +307,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 10, kFrameRenderingStart + 60}, {281,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_SHOW_GUEST_PURCHASES,   STR_SHOW_GUEST_PURCHASES_TIP  ), // Guest purchases
         makeWidget({ 10, kFrameRenderingStart + 75}, {281,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_TRANSPARENT_SCREENSHOT, STR_TRANSPARENT_SCREENSHOT_TIP), // Transparent screenshot
         makeWidget({ 10, kFrameRenderingStart + 90}, {281,  12}, WidgetType::label,        WindowColour::secondary, STR_VIRTUAL_FLOOR_STYLE,    STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor
-        makeWidget({155, kFrameRenderingStart + 90}, {145,  12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,                   STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
+        makeWidget({155, kFrameRenderingStart + 90}, {145,  12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,              STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
         makeWidget({288, kFrameRenderingStart + 91}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,         STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
 
         makeWidget({ 5,  kFrameEffectStart + 0}, {300, 94}, WidgetType::groupbox, WindowColour::secondary, STR_EFFECTS_GROUP                                             ), // Rendering group

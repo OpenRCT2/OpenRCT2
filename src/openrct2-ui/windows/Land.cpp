@@ -55,11 +55,11 @@ namespace OpenRCT2::Ui::Windows
         makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget     ({19,  19}, {24, 24}, WidgetType::flatBtn, WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP), STR_ENABLE_MOUNTAIN_TOOL_TIP), // mountain mode
         makeWidget     ({55,  19}, {24, 24}, WidgetType::flatBtn, WindowColour::secondary, ImageId(SPR_PAINTBRUSH),                 STR_DISABLE_ELEVATION),        // paint mode
-        makeWidget     ({27,  48}, {44, 32}, WidgetType::imgBtn,  WindowColour::primary  , ImageId(SPR_LAND_TOOL_SIZE_0),           kStringIdNone),                     // preview box
-        makeRemapWidget({28,  49}, {16, 16}, WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_DECREASE,         STR_ADJUST_SMALLER_LAND_TIP),  // decrement size
-        makeRemapWidget({54,  63}, {16, 16}, WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_INCREASE,         STR_ADJUST_LARGER_LAND_TIP),   // increment size
-        makeWidget     ({ 2, 106}, {47, 36}, WidgetType::flatBtn, WindowColour::secondary, 0xFFFFFFFF,                     STR_CHANGE_BASE_LAND_TIP),     // floor texture
-        makeWidget     ({49, 106}, {47, 36}, WidgetType::flatBtn, WindowColour::secondary, 0xFFFFFFFF,                     STR_CHANGE_VERTICAL_LAND_TIP)  // wall texture
+        makeWidget     ({27,  48}, {44, 32}, WidgetType::imgBtn,  WindowColour::primary  , ImageId(SPR_LAND_TOOL_SIZE_0),           kStringIdNone),                // preview box
+        makeRemapWidget({28,  49}, {16, 16}, WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_DECREASE,                  STR_ADJUST_SMALLER_LAND_TIP),  // decrement size
+        makeRemapWidget({54,  63}, {16, 16}, WidgetType::trnBtn,  WindowColour::secondary, SPR_LAND_TOOL_INCREASE,                  STR_ADJUST_LARGER_LAND_TIP),   // increment size
+        makeWidget     ({ 2, 106}, {47, 36}, WidgetType::flatBtn, WindowColour::secondary, 0xFFFFFFFF,                              STR_CHANGE_BASE_LAND_TIP),     // floor texture
+        makeWidget     ({49, 106}, {47, 36}, WidgetType::flatBtn, WindowColour::secondary, 0xFFFFFFFF,                              STR_CHANGE_VERTICAL_LAND_TIP)  // wall texture
     );
     // clang-format on
 

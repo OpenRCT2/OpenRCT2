@@ -68,30 +68,30 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto window_research_development_widgets = makeWidgets(
         makeWindowShim(STR_RESEARCH_AND_DEVELOPMENT, kWindowSizeDevelopment),
-        makeWidget({  0,  43}, {     kWindowSizeDevelopment.width, 153}, WidgetType::resize,   WindowColour::secondary                                                                ),
-        makeTab   ({  3,  17},                                                                                                  STR_RESEARCH_AND_DEVELOPMENT_TIP),
-        makeTab   ({ 34,  17},                                                                                                  STR_FINANCES_RESEARCH_TIP       ),
-        makeWidget({  3,  47}, {kWindowSizeDevelopment.width - 10,  70}, WidgetType::groupbox, WindowColour::tertiary , STR_CURRENTLY_IN_DEVELOPMENT                                  ),
-        makeWidget({  3, 124}, {kWindowSizeDevelopment.width - 10,  65}, WidgetType::groupbox, WindowColour::tertiary , STR_LAST_DEVELOPMENT                                          ),
-        makeWidget({265, 161}, {                 24,  24}, WidgetType::flatBtn,  WindowColour::tertiary , 0xFFFFFFFF,                   STR_RESEARCH_SHOW_DETAILS_TIP   )
+        makeWidget({  0,  43}, {     kWindowSizeDevelopment.width, 153}, WidgetType::resize,   WindowColour::secondary                                                                 ),
+        makeTab   ({  3,  17},                                                                                          STR_RESEARCH_AND_DEVELOPMENT_TIP                               ),
+        makeTab   ({ 34,  17},                                                                                          STR_FINANCES_RESEARCH_TIP                                      ),
+        makeWidget({  3,  47}, {kWindowSizeDevelopment.width - 10,  70}, WidgetType::groupbox, WindowColour::tertiary,  STR_CURRENTLY_IN_DEVELOPMENT                                   ),
+        makeWidget({  3, 124}, {kWindowSizeDevelopment.width - 10,  65}, WidgetType::groupbox, WindowColour::tertiary,  STR_LAST_DEVELOPMENT                                           ),
+        makeWidget({265, 161}, {                               24,  24}, WidgetType::flatBtn,  WindowColour::tertiary,  0xFFFFFFFF,                       STR_RESEARCH_SHOW_DETAILS_TIP)
     );
 
     static constexpr auto window_research_funding_widgets = makeWidgets(
         makeWindowShim(STR_RESEARCH_FUNDING, kWindowSizeFunding),
-        makeWidget({  0,  43}, {     kWindowSizeFunding.width, 164}, WidgetType::resize,   WindowColour::secondary                                                                                    ),
-        makeTab   ({  3,  17},                                                                                                      STR_RESEARCH_AND_DEVELOPMENT_TIP            ),
-        makeTab   ({ 34,  17},                                                                                                      STR_FINANCES_RESEARCH_TIP                   ),
-        makeWidget({  3,  47}, { kWindowSizeFunding.width - 6,  45}, WidgetType::groupbox, WindowColour::tertiary , STR_RESEARCH_FUNDING_                                                             ),
-        makeWidget({  8,  59}, {            160,  14}, WidgetType::dropdownMenu, WindowColour::tertiary , 0xFFFFFFFF,                           STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
-        makeWidget({156,  60}, {             11,  12}, WidgetType::button,   WindowColour::tertiary , STR_DROPDOWN_GLYPH,                   STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
-        makeWidget({  3,  96}, { kWindowSizeFunding.width - 6, 107}, WidgetType::groupbox, WindowColour::tertiary , STR_RESEARCH_PRIORITIES                                                           ),
-        makeWidget({  8, 108}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_TRANSPORT_RIDES,     STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP        ),
-        makeWidget({  8, 121}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_GENTLE_RIDES,        STR_RESEARCH_NEW_GENTLE_RIDES_TIP           ),
-        makeWidget({  8, 134}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_ROLLER_COASTERS,     STR_RESEARCH_NEW_ROLLER_COASTERS_TIP        ),
-        makeWidget({  8, 147}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_THRILL_RIDES,        STR_RESEARCH_NEW_THRILL_RIDES_TIP           ),
-        makeWidget({  8, 160}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
-        makeWidget({  8, 173}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
-        makeWidget({  8, 186}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox, WindowColour::tertiary , STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    )
+        makeWidget({  0,  43}, {     kWindowSizeFunding.width, 164}, WidgetType::resize,       WindowColour::secondary                                                                                   ),
+        makeTab   ({  3,  17},                                                                                         STR_RESEARCH_AND_DEVELOPMENT_TIP                                                  ),
+        makeTab   ({ 34,  17},                                                                                         STR_FINANCES_RESEARCH_TIP                                                         ),
+        makeWidget({  3,  47}, { kWindowSizeFunding.width - 6,  45}, WidgetType::groupbox,     WindowColour::tertiary, STR_RESEARCH_FUNDING_                                                             ),
+        makeWidget({  8,  59}, {                          160,  14}, WidgetType::dropdownMenu, WindowColour::tertiary, 0xFFFFFFFF,                           STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
+        makeWidget({156,  60}, {                           11,  12}, WidgetType::button,       WindowColour::tertiary, STR_DROPDOWN_GLYPH,                   STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
+        makeWidget({  3,  96}, { kWindowSizeFunding.width - 6, 107}, WidgetType::groupbox,     WindowColour::tertiary, STR_RESEARCH_PRIORITIES                                                           ),
+        makeWidget({  8, 108}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox,     WindowColour::tertiary, STR_RESEARCH_NEW_TRANSPORT_RIDES,     STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP        ),
+        makeWidget({  8, 121}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox,     WindowColour::tertiary, STR_RESEARCH_NEW_GENTLE_RIDES,        STR_RESEARCH_NEW_GENTLE_RIDES_TIP           ),
+        makeWidget({  8, 134}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox,     WindowColour::tertiary, STR_RESEARCH_NEW_ROLLER_COASTERS,     STR_RESEARCH_NEW_ROLLER_COASTERS_TIP        ),
+        makeWidget({  8, 147}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox,     WindowColour::tertiary, STR_RESEARCH_NEW_THRILL_RIDES,        STR_RESEARCH_NEW_THRILL_RIDES_TIP           ),
+        makeWidget({  8, 160}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox,     WindowColour::tertiary, STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
+        makeWidget({  8, 173}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox,     WindowColour::tertiary, STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
+        makeWidget({  8, 186}, {kWindowSizeFunding.width - 16,  12}, WidgetType::checkbox,     WindowColour::tertiary, STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    )
     );
 
     static constexpr std::span<const Widget> window_research_page_widgets[] = {

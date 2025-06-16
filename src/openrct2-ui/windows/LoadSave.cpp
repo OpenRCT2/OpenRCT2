@@ -99,18 +99,18 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto window_loadsave_widgets = makeWidgets(
         makeWindowShim(kStringIdNone, kWindowSize),
-        makeWidget({                0,      15 }, {       kWindowSize.width,  kWindowSize.height - 15 }, WidgetType::resize,      WindowColour::secondary                                                                ), // WIDX_RESIZE
-        makeWidget({     kWindowSize.width - 100 - 4,      20 }, {       20,       20 }, WidgetType::flatBtn,     WindowColour::primary,   SPR_G2_FOLDER_PARENT,        STR_PARENT_FOLDER_TIP            ), // WIDX_PARENT_FOLDER
-        makeWidget({     kWindowSize.width -  50 - 4,      20 }, {       20,       20 }, WidgetType::flatBtn,     WindowColour::primary,   SPR_G2_FOLDER_NEW,           STR_FILEBROWSER_ACTION_NEW_FOLDER), // WIDX_NEW_FOLDER
-        makeWidget({     kWindowSize.width -  75 - 4,      20 }, {       20,       20 }, WidgetType::flatBtn,     WindowColour::primary,   SPR_G2_FOLDER_DEFAULT,       STR_LOADSAVE_DEFAULT_TIP         ), // WIDX_DEFAULT_FOLDER
-        makeWidget({     kWindowSize.width -  25 - 4,      20 }, {       20,       20 }, WidgetType::flatBtn,     WindowColour::primary,   SPR_G2_SYSTEM_BROWSER,       STR_FILEBROWSER_USE_SYSTEM_WINDOW), // WIDX_SYSTEM_BROWSER
-        makeWidget({                4,      45 }, {      160,       14 }, WidgetType::tableHeader, WindowColour::primary                                                                  ), // WIDX_SORT_NAME
-        makeWidget({ (kWindowSize.width - 5) / 3 + 1,      45 }, {      160,       14 }, WidgetType::tableHeader, WindowColour::primary                                                                  ), // WIDX_SORT_SIZE
-        makeWidget({ (kWindowSize.width - 5) / 3 + 1,      45 }, {      160,       14 }, WidgetType::tableHeader, WindowColour::primary                                                                  ), // WIDX_SORT_DATE
-        makeWidget({        (kWindowSize.width - 19),      45 }, {       14,       14 }, WidgetType::button,      WindowColour::primary,   STR_DROPDOWN_GLYPH                                            ), // WIDX_SORT_CUSTOMISE
-        makeWidget({                4,      58 }, {      342,      303 }, WidgetType::scroll,      WindowColour::primary,   SCROLL_VERTICAL                                               ), // WIDX_SCROLL
-        makeWidget({               64, kWindowSize.height - 50 }, { kWindowSize.width - 133,       14 }, WidgetType::textBox,     WindowColour::secondary                                                                ), // WIDX_FILENAME_TEXTBOX
-        makeWidget({          kWindowSize.width - 65, kWindowSize.height - 50 }, {       60,       14 }, WidgetType::button,      WindowColour::secondary, STR_FILEBROWSER_SAVE_BUTTON                                   )  // WIDX_SAVE
+        makeWidget({                               0,                      15 }, {       kWindowSize.width, kWindowSize.height - 15 }, WidgetType::resize,      WindowColour::secondary                                                                ), // WIDX_RESIZE
+        makeWidget({     kWindowSize.width - 100 - 4,                      20 }, {                      20,                      20 }, WidgetType::flatBtn,     WindowColour::primary,   SPR_G2_FOLDER_PARENT,        STR_PARENT_FOLDER_TIP            ), // WIDX_PARENT_FOLDER
+        makeWidget({     kWindowSize.width -  50 - 4,                      20 }, {                      20,                      20 }, WidgetType::flatBtn,     WindowColour::primary,   SPR_G2_FOLDER_NEW,           STR_FILEBROWSER_ACTION_NEW_FOLDER), // WIDX_NEW_FOLDER
+        makeWidget({     kWindowSize.width -  75 - 4,                      20 }, {                      20,                      20 }, WidgetType::flatBtn,     WindowColour::primary,   SPR_G2_FOLDER_DEFAULT,       STR_LOADSAVE_DEFAULT_TIP         ), // WIDX_DEFAULT_FOLDER
+        makeWidget({     kWindowSize.width -  25 - 4,                      20 }, {                      20,                      20 }, WidgetType::flatBtn,     WindowColour::primary,   SPR_G2_SYSTEM_BROWSER,       STR_FILEBROWSER_USE_SYSTEM_WINDOW), // WIDX_SYSTEM_BROWSER
+        makeWidget({                               4,                      45 }, {                     160,                      14 }, WidgetType::tableHeader, WindowColour::primary                                                                  ), // WIDX_SORT_NAME
+        makeWidget({ (kWindowSize.width - 5) / 3 + 1,                      45 }, {                     160,                      14 }, WidgetType::tableHeader, WindowColour::primary                                                                  ), // WIDX_SORT_SIZE
+        makeWidget({ (kWindowSize.width - 5) / 3 + 1,                      45 }, {                     160,                      14 }, WidgetType::tableHeader, WindowColour::primary                                                                  ), // WIDX_SORT_DATE
+        makeWidget({          kWindowSize.width - 19,                      45 }, {                      14,                      14 }, WidgetType::button,      WindowColour::primary,   STR_DROPDOWN_GLYPH                                            ), // WIDX_SORT_CUSTOMISE
+        makeWidget({                               4,                      58 }, {                     342,                     303 }, WidgetType::scroll,      WindowColour::primary,   SCROLL_VERTICAL                                               ), // WIDX_SCROLL
+        makeWidget({                              64, kWindowSize.height - 50 }, { kWindowSize.width - 133,                      14 }, WidgetType::textBox,     WindowColour::secondary                                                                ), // WIDX_FILENAME_TEXTBOX
+        makeWidget({          kWindowSize.width - 65, kWindowSize.height - 50 }, {                      60,                      14 }, WidgetType::button,      WindowColour::secondary, STR_FILEBROWSER_SAVE_BUTTON                                   )  // WIDX_SAVE
     );
     // clang-format on
 

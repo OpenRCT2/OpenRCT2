@@ -50,11 +50,11 @@ namespace OpenRCT2::Ui::Windows
     // 0x9AEE00
     static constexpr auto _signWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget({      3,      17}, {85, 60}, WidgetType::viewport,  WindowColour::secondary                                                        ), // Viewport
-        makeWidget({kWindowSize.width - 25,      19}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_RENAME),   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
-        makeWidget({kWindowSize.width - 25,      67}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_DEMOLISH), STR_DEMOLISH_SIGN_TIP          ), // demolish button
-        makeWidget({      5, kWindowSize.height - 16}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, kWidgetContentEmpty,   STR_SELECT_MAIN_SIGN_COLOUR_TIP), // Main colour
-        makeWidget({     17, kWindowSize.height - 16}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, kWidgetContentEmpty,   STR_SELECT_TEXT_COLOUR_TIP     )  // Text colour
+        makeWidget({                     3,                      17}, {85, 60}, WidgetType::viewport,  WindowColour::secondary                                                        ), // Viewport
+        makeWidget({kWindowSize.width - 25,                      19}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_RENAME),   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
+        makeWidget({kWindowSize.width - 25,                      67}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_DEMOLISH), STR_DEMOLISH_SIGN_TIP          ), // demolish button
+        makeWidget({                     5, kWindowSize.height - 16}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, kWidgetContentEmpty,   STR_SELECT_MAIN_SIGN_COLOUR_TIP), // Main colour
+        makeWidget({                    17, kWindowSize.height - 16}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, kWidgetContentEmpty,   STR_SELECT_TEXT_COLOUR_TIP     )  // Text colour
     );
     // clang-format on
 

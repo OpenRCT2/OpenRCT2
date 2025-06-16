@@ -79,15 +79,15 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto _themesWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({  0, 43}, {320,  64},               WidgetType::resize,       WindowColour::secondary                                                                                ), // tab content panel
-        makeTab   ({  3, 17},                                                                                    STR_THEMES_TAB_SETTINGS_TIP                                                   ), // settings tab
-        makeTab   ({ 34, 17},                                                                                    STR_THEMES_TAB_MAIN_TIP                                                       ), // main ui tab
-        makeTab   ({ 65, 17},                                                                                    STR_THEMES_TAB_PARK_TIP                                                       ), // park tab
-        makeTab   ({ 96, 17},                                                                                    STR_THEMES_TAB_TOOLS_TIP                                                      ), // tools tab
-        makeTab   ({127, 17},                                                                                    STR_THEMES_TAB_RIDES_AND_GUESTS_TIP                                           ), // rides and peeps tab
-        makeTab   ({158, 17},                                                                                    STR_THEMES_TAB_EDITORS_TIP                                                    ), // editors tab
-        makeTab   ({189, 17},                                                                                    STR_THEMES_TAB_MISC_TIP                                                       ), // misc tab
-        makeTab   ({220, 17},                                                                                    STR_THEMES_TAB_PROMPTS_TIP                                                    ), // prompts tab
-        makeTab   ({251, 17},                                                                                    STR_THEMES_TAB_FEATURES_TIP                                                   ), // features tab
+        makeTab   ({  3, 17},                                                                              STR_THEMES_TAB_SETTINGS_TIP                                                   ), // settings tab
+        makeTab   ({ 34, 17},                                                                              STR_THEMES_TAB_MAIN_TIP                                                       ), // main ui tab
+        makeTab   ({ 65, 17},                                                                              STR_THEMES_TAB_PARK_TIP                                                       ), // park tab
+        makeTab   ({ 96, 17},                                                                              STR_THEMES_TAB_TOOLS_TIP                                                      ), // tools tab
+        makeTab   ({127, 17},                                                                              STR_THEMES_TAB_RIDES_AND_GUESTS_TIP                                           ), // rides and peeps tab
+        makeTab   ({158, 17},                                                                              STR_THEMES_TAB_EDITORS_TIP                                                    ), // editors tab
+        makeTab   ({189, 17},                                                                              STR_THEMES_TAB_MISC_TIP                                                       ), // misc tab
+        makeTab   ({220, 17},                                                                              STR_THEMES_TAB_PROMPTS_TIP                                                    ), // prompts tab
+        makeTab   ({251, 17},                                                                              STR_THEMES_TAB_FEATURES_TIP                                                   ), // features tab
         makeWidget({  5, 46}, {kWindowHeaderWidth, 15}, WidgetType::tableHeader,  WindowColour::secondary, STR_THEMES_HEADER_WINDOW                                                      ), // Window header
         makeWidget({157, 46}, { 79,                15}, WidgetType::tableHeader,  WindowColour::secondary, STR_THEMES_HEADER_PALETTE                                                     ), // Palette header
         makeWidget({236, 46}, { 80,                15}, WidgetType::tableHeader,  WindowColour::secondary, STR_THEMES_HEADER_TRANSPARENCY                                                ), // Transparency header

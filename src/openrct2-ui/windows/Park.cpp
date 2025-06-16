@@ -90,27 +90,27 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto makeParkWidgets = [](int16_t width) {
         return makeWidgets(
             makeWindowShim(kWindowTitle, { width, kWindowHeight }),
-            makeWidget({ 0, 43 }, { width, 131 }, WidgetType::resize, WindowColour::secondary),
-            makeTab({ 3, 17 }, STR_PARK_ENTRANCE_TAB_TIP),
-            makeTab({ 34, 17 }, STR_PARK_RATING_TAB_TIP),
-            makeTab({ 65, 17 }, STR_PARK_GUESTS_TAB_TIP),
-            makeTab({ 96, 17 }, STR_PARK_PRICE_TAB_TIP),
-            makeTab({ 127, 17 }, STR_PARK_STATS_TAB_TIP),
-            makeTab({ 158, 17 }, STR_PARK_OBJECTIVE_TAB_TIP),
-            makeTab({ 189, 17 }, STR_PARK_AWARDS_TAB_TIP)
+            makeWidget({   0, 43 }, { width, 131 }, WidgetType::resize, WindowColour::secondary),
+            makeTab   ({   3, 17 }, STR_PARK_ENTRANCE_TAB_TIP                                  ),
+            makeTab   ({  34, 17 }, STR_PARK_RATING_TAB_TIP                                    ),
+            makeTab   ({  65, 17 }, STR_PARK_GUESTS_TAB_TIP                                    ),
+            makeTab   ({  96, 17 }, STR_PARK_PRICE_TAB_TIP                                     ),
+            makeTab   ({ 127, 17 }, STR_PARK_STATS_TAB_TIP                                     ),
+            makeTab   ({ 158, 17 }, STR_PARK_OBJECTIVE_TAB_TIP                                 ),
+            makeTab   ({ 189, 17 }, STR_PARK_AWARDS_TAB_TIP                                    )
         );
     };
 
     static constexpr auto _entranceWidgets = makeWidgets(
         makeParkWidgets(230),
-        makeWidget({  3,  46}, {202, 115}, WidgetType::viewport,      WindowColour::secondary                                                                      ), // viewport
-        makeWidget({  3, 161}, {202,  11}, WidgetType::labelCentred,  WindowColour::secondary                                                                      ), // status
-        makeWidget({205,  49}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, 0xFFFFFFFF,                 STR_OPEN_OR_CLOSE_PARK_TIP              ), // open / close
-        makeWidget({205,  73}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_BUY_LAND_RIGHTS),        STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP), // buy land rights
-        makeWidget({205,  97}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_LOCATE),                 STR_LOCATE_SUBJECT_TIP                  ), // locate
-        makeWidget({205, 121}, { 24,  24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_RENAME),                 STR_NAME_PARK_TIP                       ), // rename
-        makeWidget({210,  51}, { 14,  15}, WidgetType::imgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0), STR_CLOSE_PARK_TIP                      ),
-        makeWidget({210,  66}, { 14,  14}, WidgetType::imgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_PARK_TIP                       )
+        makeWidget({  3,  46}, {202, 115}, WidgetType::viewport,     WindowColour::secondary                                                                               ), // viewport
+        makeWidget({  3, 161}, {202,  11}, WidgetType::labelCentred, WindowColour::secondary                                                                               ), // status
+        makeWidget({205,  49}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, 0xFFFFFFFF,                          STR_OPEN_OR_CLOSE_PARK_TIP              ), // open / close
+        makeWidget({205,  73}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_BUY_LAND_RIGHTS),        STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP), // buy land rights
+        makeWidget({205,  97}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_LOCATE),                 STR_LOCATE_SUBJECT_TIP                  ), // locate
+        makeWidget({205, 121}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_RENAME),                 STR_NAME_PARK_TIP                       ), // rename
+        makeWidget({210,  51}, { 14,  15}, WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0), STR_CLOSE_PARK_TIP                      ),
+        makeWidget({210,  66}, { 14,  14}, WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_PARK_TIP                       )
     );
 
     static constexpr auto _ratingWidgets = makeWidgets(

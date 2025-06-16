@@ -52,9 +52,9 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto window_install_track_widgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget({                   4,  18}, {372, 219}, WidgetType::flatBtn, WindowColour::primary                                                              ),
-        makeWidget({kPreviewButtonsLeft, 422}, { 22,  24}, WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_ROTATE_ARROW),                     STR_ROTATE_90_TIP     ),
-        makeWidget({kPreviewButtonsLeft, 398}, { 22,  24}, WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_SCENERY),                          STR_TOGGLE_SCENERY_TIP),
+        makeWidget({                  4,  18}, {372, 219}, WidgetType::flatBtn, WindowColour::primary                                                              ),
+        makeWidget({kPreviewButtonsLeft, 422}, { 22,  24}, WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_ROTATE_ARROW),            STR_ROTATE_90_TIP     ),
+        makeWidget({kPreviewButtonsLeft, 398}, { 22,  24}, WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_SCENERY),                 STR_TOGGLE_SCENERY_TIP),
         makeWidget({ kActionButtonsLeft, 241}, { 97,  15}, WidgetType::button,  WindowColour::primary, STR_INSTALL_NEW_TRACK_DESIGN_INSTALL                        ),
         makeWidget({ kActionButtonsLeft, 259}, { 97,  15}, WidgetType::button,  WindowColour::primary, STR_INSTALL_NEW_TRACK_DESIGN_CANCEL                         )
     );

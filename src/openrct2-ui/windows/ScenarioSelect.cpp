@@ -104,18 +104,18 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto _scenarioSelectWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget({ kTabWidth + 1, kWidgetsStart }, { kWindowSize.width, 284 }, WidgetType::resize, WindowColour::secondary), // tab content panel
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 0) }, { kTabWidth, kTabHeight}, WidgetType::tab, WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 01
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 1) }, { kTabWidth, kTabHeight}, WidgetType::tab, WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 02
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 2) }, { kTabWidth, kTabHeight}, WidgetType::tab, WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 03
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 3) }, { kTabWidth, kTabHeight}, WidgetType::tab, WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 04
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 4) }, { kTabWidth, kTabHeight}, WidgetType::tab, WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 05
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 5) }, { kTabWidth, kTabHeight}, WidgetType::tab, WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 06
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 6) }, { kTabWidth, kTabHeight}, WidgetType::tab, WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 07
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 7) }, { kTabWidth, kTabHeight}, WidgetType::tab, WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 08
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 8) }, { kTabWidth, kTabHeight}, WidgetType::tab, WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 09
-        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 8) }, { kTabWidth, kTabHeight}, WidgetType::tab, WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 10
-        makeWidget({ kTabWidth + 3, kWidgetsStart + 1 }, { kWindowSize.width - kPreviewPaneWidthRegular, 362 }, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL) // level list
+        makeWidget({ kTabWidth + 1, kWidgetsStart }, { kWindowSize.width, 284 },         WidgetType::resize, WindowColour::secondary                     ), // tab content panel
+        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 0) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 01
+        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 1) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 02
+        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 2) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 03
+        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 3) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 04
+        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 4) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 05
+        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 5) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 06
+        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 6) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 07
+        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 7) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 08
+        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 8) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 09
+        makeRemapWidget({ 3, kTabsStart + (kTabHeight * 8) }, { kTabWidth, kTabHeight }, WidgetType::tab,    WindowColour::secondary, SPR_G2_SIDEWAYS_TAB), // tab 10
+        makeWidget({ kTabWidth + 3, kWidgetsStart + 1 }, { kWindowSize.width - kPreviewPaneWidthRegular, 362 }, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL    ) // level list
     );
     // clang-format on
 

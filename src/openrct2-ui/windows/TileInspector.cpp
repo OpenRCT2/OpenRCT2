@@ -282,8 +282,8 @@ namespace OpenRCT2::Ui::Windows
         makeSpinnerWidgets({90, 23}, {51, 12}, WidgetType::spinner, WindowColour::secondary), /* Spinner Y (3 widgets) */
         /* Top buttons */
         makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 0,                     kToolbarButtonSize,     WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_DEMOLISH),     STR_REMOVE_SELECTED_ELEMENT_TIP ),    /* Remove button */
-        makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 1,                     kToolbarButtonHalfSize, WidgetType::button,      WindowColour::secondary, STR_UP,           STR_MOVE_SELECTED_ELEMENT_UP_TIP),    /* Move up */
-        makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 1 + ScreenSize{0, 12}, kToolbarButtonHalfSize, WidgetType::button,      WindowColour::secondary, STR_DOWN,         STR_MOVE_SELECTED_ELEMENT_DOWN_TIP),  /* Move down */
+        makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 1,                     kToolbarButtonHalfSize, WidgetType::button,      WindowColour::secondary, STR_UP,                    STR_MOVE_SELECTED_ELEMENT_UP_TIP),    /* Move up */
+        makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 1 + ScreenSize{0, 12}, kToolbarButtonHalfSize, WidgetType::button,      WindowColour::secondary, STR_DOWN,                  STR_MOVE_SELECTED_ELEMENT_DOWN_TIP),  /* Move down */
         makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 2,                     kToolbarButtonSize,     WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_ROTATE_ARROW), STR_ROTATE_SELECTED_ELEMENT_TIP),     /* Rotate button */
         makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 3,                     kToolbarButtonSize,     WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_G2_SORT),      STR_TILE_INSPECTOR_SORT_TIP),         /* Sort button */
         makeWidget(kToolbarButtonAnchor + kToolbarButtonOffsetX * 4,                     kToolbarButtonSize,     WidgetType::flatBtn,     WindowColour::secondary, ImageId(SPR_G2_PASTE),     STR_TILE_INSPECTOR_PASTE_TIP),        /* Paste button */
@@ -297,7 +297,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget(kGhostFlagColumnXY,       kGhostFlagColumnSize,       WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_FLAG_GHOST_SHORT,       STR_TILE_INSPECTOR_FLAG_GHOST),       /* Ghost flag */
         makeWidget(kLastFlagColumnXY,        kLastFlagColumnSize,        WidgetType::tableHeader, WindowColour::secondary, STR_TILE_INSPECTOR_FLAG_LAST_SHORT,        STR_TILE_INSPECTOR_FLAG_LAST),        /* Last of tile flag */
         /* Group boxes */
-        makeWidget({6, 0},             {kWindowSize.width - 12, 0}, WidgetType::groupbox,    WindowColour::secondary, kStringIdNone,                               kStringIdNone ), /* Details group box */
+        makeWidget({6, 0},             {kWindowSize.width - 12, 0}, WidgetType::groupbox,    WindowColour::secondary, kStringIdNone,                          kStringIdNone ), /* Details group box */
         makeWidget({6, 0},             {kWindowSize.width - 12, 0}, WidgetType::groupbox,    WindowColour::secondary, STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES, kStringIdNone )  /* Properties group box */
     );
 
@@ -347,11 +347,11 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t TrackDetailsHeight = 20 + NumTrackDetails * 11;
     static constexpr auto TrackWidgets = makeWidgets(
         kMainTileInspectorWidgets,
-        makeWidget(PropertyRowCol({ 12, 0}, 0, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_ENTIRE_TRACK_PIECE), // WIDX_TRACK_CHECK_APPLY_TO_ALL
+        makeWidget(PropertyRowCol({ 12, 0}, 0, 0),          kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_ENTIRE_TRACK_PIECE), // WIDX_TRACK_CHECK_APPLY_TO_ALL
         makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 1, 1), kPropertyButtonSize, WidgetType::spinner, WindowColour::secondary), // WIDX_TRACK_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
-        makeWidget(PropertyRowCol({ 12, 0}, 2, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_CHAIN_LIFT), // WIDX_TRACK_CHECK_CHAIN_LIFT
-        makeWidget(PropertyRowCol({ 12, 0}, 3, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_BRAKE_CLOSED), // WIDX_TRACK_CHECK_BRAKE_CLOSED
-        makeWidget(PropertyRowCol({ 12, 0}, 4, 0), kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_IS_INDESTRUCTIBLE) // WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE
+        makeWidget(PropertyRowCol({ 12, 0}, 2, 0),          kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_CHAIN_LIFT), // WIDX_TRACK_CHECK_CHAIN_LIFT
+        makeWidget(PropertyRowCol({ 12, 0}, 3, 0),          kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_BRAKE_CLOSED), // WIDX_TRACK_CHECK_BRAKE_CLOSED
+        makeWidget(PropertyRowCol({ 12, 0}, 4, 0),          kPropertyFullWidth, WidgetType::checkbox, WindowColour::secondary, STR_TILE_INSPECTOR_TRACK_IS_INDESTRUCTIBLE) // WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE
     );
 
     constexpr int32_t NumSceneryProperties = 4; // The checkbox groups both count for 2 rows
@@ -387,11 +387,11 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t WallDetailsHeight = 20 + NumWallDetails * 11;
     static constexpr auto WallWidgets = makeWidgets(
         kMainTileInspectorWidgets,
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1),                 kPropertyButtonSize, WidgetType::spinner,      WindowColour::secondary), // WIDX_WALL_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
-        makeWidget(PropertyRowCol({ 12, 0 }, 1, 1),                         kPropertyButtonSize, WidgetType::dropdownMenu, WindowColour::secondary), // WIDX_WALL_DROPDOWN_SLOPE
-        makeWidget(PropertyRowCol({ 12 + kPropertyButtonSize.width - 12, 0 }, 1, 1), { 11,  12}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH), // WIDX_WALL_DROPDOWN_SLOPE_BUTTON
-        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 2, 1),                 kPropertyButtonSize, WidgetType::spinner,      WindowColour::secondary), // WIDX_WALL_SPINNER_ANIMATION_FRAME{,_INCREASE,_DECREASE}
-        makeWidget(PropertyRowCol({ 12, 0 }, 3, 0),                         kPropertyFullWidth,  WidgetType::checkbox,     WindowColour::secondary, STR_TILE_INSPECTOR_WALL_ANIMATION_IS_BACKWARDS) // WIDX_WALL_ANIMATION_IS_BACKWARDS
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 0, 1),                          kPropertyButtonSize, WidgetType::spinner,      WindowColour::secondary), // WIDX_WALL_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
+        makeWidget(PropertyRowCol({ 12, 0 }, 1, 1),                                  kPropertyButtonSize, WidgetType::dropdownMenu, WindowColour::secondary), // WIDX_WALL_DROPDOWN_SLOPE
+        makeWidget(PropertyRowCol({ 12 + kPropertyButtonSize.width - 12, 0 }, 1, 1), { 11,  12},          WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH), // WIDX_WALL_DROPDOWN_SLOPE_BUTTON
+        makeSpinnerWidgets(PropertyRowCol({ 12, 0 }, 2, 1),                          kPropertyButtonSize, WidgetType::spinner,      WindowColour::secondary), // WIDX_WALL_SPINNER_ANIMATION_FRAME{,_INCREASE,_DECREASE}
+        makeWidget(PropertyRowCol({ 12, 0 }, 3, 0),                                  kPropertyFullWidth,  WidgetType::checkbox,     WindowColour::secondary, STR_TILE_INSPECTOR_WALL_ANIMATION_IS_BACKWARDS) // WIDX_WALL_ANIMATION_IS_BACKWARDS
     );
 
     constexpr int32_t NumLargeSceneryProperties = 1;

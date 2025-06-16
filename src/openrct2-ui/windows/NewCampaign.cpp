@@ -49,12 +49,12 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto window_new_campaign_widgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget        ({ 14, 24}, {126, 12}, WidgetType::label,    WindowColour::primary, kStringIdEmpty                                  ), // ride label
-        makeWidget        ({100, 24}, {242, 12}, WidgetType::dropdownMenu, WindowColour::primary, kStringIdEmpty                                  ), // ride dropdown
-        makeWidget        ({330, 25}, { 11, 10}, WidgetType::button,   WindowColour::primary, STR_DROPDOWN_GLYPH                         ), // ride dropdown button
-        makeWidget        ({ 14, 41}, {126, 14}, WidgetType::label,    WindowColour::primary, STR_LENGTH_OF_TIME                         ), // weeks label
-        makeSpinnerWidgets({120, 41}, {100, 14}, WidgetType::spinner,  WindowColour::primary, kStringIdEmpty                                  ), // weeks (3 widgets)
-        makeWidget        ({ 14, 89}, {322, 14}, WidgetType::button,   WindowColour::primary, STR_MARKETING_START_THIS_MARKETING_CAMPAIGN) // start button
+        makeWidget        ({ 14, 24}, {126, 12}, WidgetType::label,        WindowColour::primary, kStringIdEmpty                             ), // ride label
+        makeWidget        ({100, 24}, {242, 12}, WidgetType::dropdownMenu, WindowColour::primary, kStringIdEmpty                             ), // ride dropdown
+        makeWidget        ({330, 25}, { 11, 10}, WidgetType::button,       WindowColour::primary, STR_DROPDOWN_GLYPH                         ), // ride dropdown button
+        makeWidget        ({ 14, 41}, {126, 14}, WidgetType::label,        WindowColour::primary, STR_LENGTH_OF_TIME                         ), // weeks label
+        makeSpinnerWidgets({120, 41}, {100, 14}, WidgetType::spinner,      WindowColour::primary, kStringIdEmpty                             ), // weeks (3 widgets)
+        makeWidget        ({ 14, 89}, {322, 14}, WidgetType::button,       WindowColour::primary, STR_MARKETING_START_THIS_MARKETING_CAMPAIGN) // start button
     );
     // clang-format on
 

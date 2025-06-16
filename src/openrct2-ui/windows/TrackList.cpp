@@ -53,15 +53,16 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
 
     // clang-format off
+    static constexpr auto kFlatBtnSize = ScreenSize{kRotateAndSceneryButtonSize, kRotateAndSceneryButtonSize};
     static constexpr auto _trackListWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget({  4,  18}, {218,  13}, WidgetType::tableHeader,  WindowColour::primary, STR_SELECT_OTHER_RIDE                                       ),
-        makeWidget({  4,  32}, {124,  13}, WidgetType::textBox,      WindowColour::secondary                                                            ),
-        makeWidget({130,  32}, { 92,  13}, WidgetType::button,       WindowColour::primary, STR_OBJECT_SEARCH_CLEAR                                     ),
-        makeWidget({  4,  46}, {218, 381}, WidgetType::scroll,       WindowColour::primary, SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
-        makeWidget({224,  18}, {372, 219}, WidgetType::flatBtn,      WindowColour::primary                                                              ),
-        makeWidget({572, 405}, {kRotateAndSceneryButtonSize, kRotateAndSceneryButtonSize}, WidgetType::flatBtn,      WindowColour::primary, ImageId(SPR_ROTATE_ARROW),        STR_ROTATE_90_TIP                  ),
-        makeWidget({572, 381}, {kRotateAndSceneryButtonSize, kRotateAndSceneryButtonSize}, WidgetType::flatBtn,      WindowColour::primary, ImageId(SPR_SCENERY),             STR_TOGGLE_SCENERY_TIP             )
+        makeWidget({  4,  18}, {218,  13},   WidgetType::tableHeader,  WindowColour::primary, STR_SELECT_OTHER_RIDE                                       ),
+        makeWidget({  4,  32}, {124,  13},   WidgetType::textBox,      WindowColour::secondary                                                            ),
+        makeWidget({130,  32}, { 92,  13},   WidgetType::button,       WindowColour::primary, STR_OBJECT_SEARCH_CLEAR                                     ),
+        makeWidget({  4,  46}, {218, 381},   WidgetType::scroll,       WindowColour::primary, SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
+        makeWidget({224,  18}, {372, 219},   WidgetType::flatBtn,      WindowColour::primary                                                              ),
+        makeWidget({572, 405}, kFlatBtnSize, WidgetType::flatBtn,      WindowColour::primary, ImageId(SPR_ROTATE_ARROW),        STR_ROTATE_90_TIP                  ),
+        makeWidget({572, 381}, kFlatBtnSize, WidgetType::flatBtn,      WindowColour::primary, ImageId(SPR_SCENERY),             STR_TOGGLE_SCENERY_TIP             )
     );
     // clang-format on
 

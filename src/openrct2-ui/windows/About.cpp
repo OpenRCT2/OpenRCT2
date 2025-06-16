@@ -67,14 +67,14 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto _windowAboutOpenRCT2Widgets = makeWidgets(
         kMainWidgets,
-        makeWidget({10, 60},        {kWindowSize.width - 20, 20}, WidgetType::labelCentred, WindowColour::secondary, STR_ABOUT_OPENRCT2_DESCRIPTION), // Introduction
-        makeWidget({30, 90},        {128, 128},    WidgetType::placeholder,  WindowColour::secondary, kStringIdNone), // OpenRCT2 Logo
-        makeWidget({168, 100},      {173, 24},     WidgetType::placeholder,  WindowColour::secondary, kStringIdNone), // Build version
-        makeWidget({344, 100 },     {24, 24},      WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_COPY), STR_COPY_BUILD_HASH   ), // "Copy build info" button
-        makeWidget({168, 115 + 20}, {200, 14},     WidgetType::placeholder,  WindowColour::secondary, STR_UPDATE_AVAILABLE  ), // "new version" button
-        makeWidget({168, 115 + 40}, {200, 14},     WidgetType::button,       WindowColour::secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
-        makeWidget({168, 115 + 60}, {200, 14},     WidgetType::button,       WindowColour::secondary, STR_JOIN_DISCORD      ), // "join discord" button
-        makeWidget({168, 115 + 80}, {200, 14},     WidgetType::button,       WindowColour::secondary, STR_CONTRIBUTORS_WINDOW_BUTTON) // "contributors" button
+        makeWidget({10, 60},        {kWindowSize.width - 20, 20}, WidgetType::labelCentred, WindowColour::secondary, STR_ABOUT_OPENRCT2_DESCRIPTION           ), // Introduction
+        makeWidget({30, 90},        {128, 128},                   WidgetType::placeholder,  WindowColour::secondary, kStringIdNone                            ), // OpenRCT2 Logo
+        makeWidget({168, 100},      {173, 24},                    WidgetType::placeholder,  WindowColour::secondary, kStringIdNone                            ), // Build version
+        makeWidget({344, 100 },     {24, 24},                     WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_COPY), STR_COPY_BUILD_HASH), // "Copy build info" button
+        makeWidget({168, 115 + 20}, {200, 14},                    WidgetType::placeholder,  WindowColour::secondary, STR_UPDATE_AVAILABLE                     ), // "new version" button
+        makeWidget({168, 115 + 40}, {200, 14},                    WidgetType::button,       WindowColour::secondary, STR_CHANGELOG_ELLIPSIS                   ), // changelog button
+        makeWidget({168, 115 + 60}, {200, 14},                    WidgetType::button,       WindowColour::secondary, STR_JOIN_DISCORD                         ), // "join discord" button
+        makeWidget({168, 115 + 80}, {200, 14},                    WidgetType::button,       WindowColour::secondary, STR_CONTRIBUTORS_WINDOW_BUTTON           ) // "contributors" button
     );
     // clang-format on
 

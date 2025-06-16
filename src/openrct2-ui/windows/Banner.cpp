@@ -66,13 +66,13 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto window_banner_widgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
-        makeWidget({      3,      17}, {85, 60}, WidgetType::viewport,  WindowColour::secondary, 0x0FFFFFFFE                                        ), // tab content panel
-        makeWidget({kWindowSize.width - 25,      19}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_RENAME),         STR_CHANGE_BANNER_TEXT_TIP     ), // change banner button
-        makeWidget({kWindowSize.width - 25,      43}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_NO_ENTRY),       STR_SET_AS_NO_ENTRY_BANNER_TIP ), // no entry button
-        makeWidget({kWindowSize.width - 25,      67}, {24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_DEMOLISH),       STR_DEMOLISH_BANNER_TIP        ), // demolish button
-        makeWidget({      5, kWindowSize.height - 16}, {12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,         STR_SELECT_MAIN_SIGN_COLOUR_TIP), // high money
-        makeWidget({     43, kWindowSize.height - 16}, {39, 12}, WidgetType::dropdownMenu,  WindowColour::secondary                                                     ), // high money
-        makeWidget({     70, kWindowSize.height - 15}, {11, 10}, WidgetType::button,    WindowColour::secondary, STR_DROPDOWN_GLYPH, STR_SELECT_TEXT_COLOUR_TIP     ) // high money
+        makeWidget({                     3,                      17}, {85, 60}, WidgetType::viewport,     WindowColour::secondary, 0x0FFFFFFFE                                           ), // tab content panel
+        makeWidget({kWindowSize.width - 25,                      19}, {24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_RENAME),   STR_CHANGE_BANNER_TEXT_TIP     ), // change banner button
+        makeWidget({kWindowSize.width - 25,                      43}, {24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_NO_ENTRY), STR_SET_AS_NO_ENTRY_BANNER_TIP ), // no entry button
+        makeWidget({kWindowSize.width - 25,                      67}, {24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_DEMOLISH), STR_DEMOLISH_BANNER_TIP        ), // demolish button
+        makeWidget({                     5, kWindowSize.height - 16}, {12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,            STR_SELECT_MAIN_SIGN_COLOUR_TIP), // high money
+        makeWidget({                    43, kWindowSize.height - 16}, {39, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                        ), // high money
+        makeWidget({                    70, kWindowSize.height - 15}, {11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,    STR_SELECT_TEXT_COLOUR_TIP     ) // high money
     );
     // clang-format on
 

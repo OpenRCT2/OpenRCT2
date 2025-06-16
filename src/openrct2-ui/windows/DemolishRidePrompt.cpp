@@ -34,7 +34,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto window_ride_demolish_widgets = makeWidgets(
         makeWindowShim(STR_DEMOLISH_RIDE, kWindowSize),
-        makeWidget({     10, kWindowSize.height - 22}, {85, 14}, WidgetType::button, WindowColour::primary, STR_DEMOLISH          ),
+        makeWidget({                    10, kWindowSize.height - 22}, {85, 14}, WidgetType::button, WindowColour::primary, STR_DEMOLISH          ),
         makeWidget({kWindowSize.width - 95, kWindowSize.height - 22}, {85, 14}, WidgetType::button, WindowColour::primary, STR_SAVE_PROMPT_CANCEL)
     );
     // clang-format on

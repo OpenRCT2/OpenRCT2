@@ -33,7 +33,7 @@ namespace OpenRCT2::Ui::Windows
     // clang-format off
     static constexpr auto window_overwrite_prompt_widgets = makeWidgets(
         makeWindowShim(STR_FILEBROWSER_OVERWRITE_TITLE, kWindowSize),
-        makeWidget({                10, kWindowSize.height - 20 }, { 84, 11 }, WidgetType::button, WindowColour::primary, STR_FILEBROWSER_OVERWRITE_TITLE),
+        makeWidget({                     10, kWindowSize.height - 20 }, { 84, 11 }, WidgetType::button, WindowColour::primary, STR_FILEBROWSER_OVERWRITE_TITLE),
         makeWidget({ kWindowSize.width - 95, kWindowSize.height - 20 }, { 85, 11 }, WidgetType::button, WindowColour::primary, STR_SAVE_PROMPT_CANCEL)
     );
     // clang-format on
