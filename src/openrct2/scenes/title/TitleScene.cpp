@@ -23,6 +23,7 @@
 #include "../../interface/Viewport.h"
 #include "../../network/Network.h"
 #include "../../network/NetworkBase.h"
+#include "../../scenario/Scenario.h"
 #include "../../scenario/ScenarioRepository.h"
 #include "../../ui/UiContext.h"
 #include "../../ui/WindowManager.h"
@@ -101,6 +102,9 @@ void TitleScene::Load()
     gLegacyScene = LegacyScene::titleSequence;
     gScreenAge = 0;
     gCurrentLoadedPath.clear();
+
+    // Reset cheats button visibility when returning to title screen
+    getGameState().scenarioHideCheats = false;
 
 #ifndef DISABLE_NETWORK
     GetContext().GetNetwork().Close();

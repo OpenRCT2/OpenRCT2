@@ -88,6 +88,7 @@ namespace OpenRCT2
         std::string scenarioDetails;
         std::string scenarioCompletedBy;
         std::string scenarioFileName;
+        bool scenarioHideCheats{};
 
         std::vector<Banner> banners;
         Entity_t entities[kMaxEntities]{};

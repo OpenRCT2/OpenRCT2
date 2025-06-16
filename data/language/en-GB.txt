@@ -2939,7 +2939,7 @@ STR_5836    :Select music to use on the main menu.{NEWLINE}Selecting the RCT1 th
 STR_5837    :Create and manage custom UI themes
 STR_5838    :Show a separate button for the finance window in the toolbar
 STR_5839    :Show a separate button for the research and development window in the toolbar
-STR_5840    :Show a separate button for the cheats window in the toolbar
+STR_5840    :Show a separate button for the cheats window in the toolbar.{NEWLINE}Unavailable in scenarios
 STR_5841    :Show a separate button for the recent news window in the toolbar
 STR_5842    :Sort scenarios into tabs by their difficulty (RCT2 behaviour) or their source game (RCT1 behaviour)
 STR_5843    :Enables progressive unlocking of scenarios (RCT1 behaviour)

@@ -90,6 +90,9 @@ void ScenarioBegin(GameState_t& gameState)
         ContextOpenWindowView(WV_PARK_OBJECTIVE);
 
     gScreenAge = 0;
+
+    // Hide cheats button when scenario begins to prevent cheating during scenario play
+    gameState.scenarioHideCheats = true;
 }
 
 void ScenarioReset(GameState_t& gameState)
