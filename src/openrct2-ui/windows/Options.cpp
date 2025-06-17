@@ -1892,7 +1892,8 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_SCENARIO_GROUPING_DROPDOWN:
                 {
-                    uint32_t numItems = 3;
+                    auto& env = OpenRCT2::GetContext()->GetPlatformEnvironment();
+                    uint32_t numItems = env.IsUsingClassic() ? 3 : 2;
 
                     gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
                     gDropdownItems[0].Args = STR_OPTIONS_SCENARIO_DIFFICULTY;
