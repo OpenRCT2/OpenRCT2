@@ -229,7 +229,7 @@ namespace OpenRCT2::Config
             model->TrapCursor = reader->GetBoolean("trap_cursor", false);
             model->AutoOpenShops = reader->GetBoolean("auto_open_shops", false);
             model->scenarioSelectMode = reader->GetEnum(
-                "scenario_select_mode", ScenarioSelectMode::origin, Enum_ScenarioSelectMode);
+                "scenario_select_mode", ScenarioSelectMode::group, Enum_ScenarioSelectMode);
             model->ScenarioUnlockingEnabled = reader->GetBoolean("scenario_unlocking_enabled", true);
             model->ScenarioHideMegaPark = reader->GetBoolean("scenario_hide_mega_park", true);
             model->ScenarioHideTycoonPark = reader->GetBoolean("scenario_hide_tycoon_park", true);
