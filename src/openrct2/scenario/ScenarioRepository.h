@@ -16,6 +16,7 @@
 #include <memory>
 
 struct RCTObjectEntry;
+enum class FileExtension;
 enum class ScenarioCategory : uint8_t;
 enum class ScenarioGroup : uint8_t;
 
@@ -45,6 +46,7 @@ struct ScenarioIndexEntry
 {
     u8string Path;
     uint64_t Timestamp;
+    FileExtension Extension;
 
     // Category / Group / sequence
     ScenarioCategory Category;

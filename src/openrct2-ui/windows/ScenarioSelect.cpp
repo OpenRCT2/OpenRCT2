@@ -877,9 +877,17 @@ namespace OpenRCT2::Ui::Windows
             switch (Config::Get().general.scenarioSelectMode)
             {
                 case ScenarioSelectMode::origin:
+                    if (scenario.SourceGame < ScenarioSource::RCT2 && scenario.Extension == FileExtension::SEA)
+                    {
+                        return false;
+                    }
                     return static_cast<uint8_t>(scenario.SourceGame) == selected_tab;
                 default:
                 case ScenarioSelectMode::difficulty:
+                    if (scenario.SourceGame < ScenarioSource::RCT2 && scenario.Extension == FileExtension::SEA)
+                    {
+                        return false;
+                    }
                     if (category > ScenarioCategory::other)
                     {
                         category = ScenarioCategory::other;
@@ -892,7 +900,7 @@ namespace OpenRCT2::Ui::Windows
                         // so we'll include it in the tab for the gold group instead
                         group = ScenarioGroup::gold;
                     }
-                    return EnumValue(group) == selected_tab;
+                    return scenario.Extension == FileExtension::SEA && EnumValue(group) == selected_tab;
             }
         }
 

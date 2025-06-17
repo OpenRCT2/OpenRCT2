@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
+#include "../FileClassifier.h"
 #include "../Game.h"
 #include "../ParkImporter.h"
 #include "../PlatformEnvironment.h"
@@ -202,6 +203,7 @@ protected:
             }
         }
         ds << item.Timestamp;
+        ds << item.Extension;
         ds << item.Category;
         ds << item.Group;
         ds << item.GroupIndex;
@@ -245,14 +247,14 @@ private:
         {
             auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
             std::unique_ptr<IParkImporter> importer;
-            std::string extension = Path::GetExtension(path);
+            FileExtension extension = GetFileExtensionType(path);
 
-            if (String::iequals(extension, ".park"))
+            if (extension == FileExtension::PARK)
             {
                 importer = ParkImporter::CreateParkFile(objRepository);
                 importer->LoadScenario(path, true);
             }
-            else if (String::iequals(extension, ".sc4"))
+            else if (extension == FileExtension::SC4)
             {
                 importer = ParkImporter::CreateS4();
                 importer->LoadScenario(path, true);
@@ -269,6 +271,7 @@ private:
                 *entry = {};
                 entry->Path = path;
                 entry->Timestamp = timestamp;
+                entry->Extension = extension;
                 if (importer->PopulateIndexEntry(entry))
                 {
                     return true;
