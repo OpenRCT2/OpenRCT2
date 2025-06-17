@@ -146,6 +146,7 @@
 - Fix: [#24009] [Plugin] The object manager API does not identify recently introduced object types.
 - Fix: [#24028] Giga and LSM Launched Coaster booster sprites have pixels that draw over transparent pixels.
 - Fix: [#24077] Track Designer crashes when clicking the park fence.
+- Fix: [#24527] Minor string artefacts when rebuilding scenario index.
 
 0.4.20 (2025-02-25)
 ------------------------------------------------------------------------

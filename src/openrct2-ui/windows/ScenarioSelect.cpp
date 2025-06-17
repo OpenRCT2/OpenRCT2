@@ -147,7 +147,9 @@ namespace OpenRCT2::Ui::Windows
 
         void OnLanguageChange() override
         {
+            _listItems.clear();
             ScenarioRepositoryScan();
+            InitialiseListItems();
         }
 
         void OnMouseUp(WidgetIndex widgetIndex) override
