@@ -1583,16 +1583,6 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
-                case WIDX_GAMEPAD_INVERT_X:
-                    Config::Get().general.GamepadInvertX ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    break;
-                case WIDX_GAMEPAD_INVERT_Y:
-                    Config::Get().general.GamepadInvertY ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    break;
                 case WIDX_GAMEPAD_STICK_DROPDOWN:
                 {
                     const auto* widget = &widgets[WIDX_GAMEPAD_STICK];
@@ -1817,9 +1807,6 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.TouchEnhancements);
 
             widgetSetEnabled(*this, WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.EnlargedUi);
-
-            SetCheckboxValue(WIDX_GAMEPAD_INVERT_X, Config::Get().general.GamepadInvertX);
-            SetCheckboxValue(WIDX_GAMEPAD_INVERT_Y, Config::Get().general.GamepadInvertY);
 
             StringId stickStringId;
             switch (Config::Get().general.SelectedGamepadStick)

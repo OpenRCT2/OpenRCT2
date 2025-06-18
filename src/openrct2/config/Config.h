@@ -95,8 +95,6 @@ namespace OpenRCT2::Config
         // Gamepad
         int32_t GamepadDeadzone;
         float GamepadSensitivity;
-        bool GamepadInvertX;
-        bool GamepadInvertY;
         GamepadStick SelectedGamepadStick;
 
         // Miscellaneous

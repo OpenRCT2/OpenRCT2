@@ -148,8 +148,6 @@ void InputManager::ProcessAnalogInput()
 
     const int32_t deadzone = Config::Get().general.GamepadDeadzone;
     const float sensitivity = Config::Get().general.GamepadSensitivity;
-    const bool invertX = Config::Get().general.GamepadInvertX;
-    const bool invertY = Config::Get().general.GamepadInvertY;
 
     for (auto* gameController : _gameControllers)
     {
@@ -168,11 +166,6 @@ void InputManager::ProcessAnalogInput()
                 stickX = SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_LEFTX);
                 stickY = SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_LEFTY);
             }
-
-            if (invertX)
-                stickX = -stickX;
-            if (invertY)
-                stickY = -stickY;
 
             // Calculate the magnitude of the stick input vector
             float magnitude = std::sqrt(static_cast<float>(stickX * stickX + stickY * stickY));
