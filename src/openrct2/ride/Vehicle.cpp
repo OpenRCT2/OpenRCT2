@@ -3909,7 +3909,7 @@ void Vehicle::UpdateMotionBoatHire()
         int32_t curMass = mass == 0 ? 1 : mass;
 
         int32_t eax = ((velocity >> 1) + edx) / curMass;
-        int32_t ecx = -eax;
+        int32_t newAcceleration = -eax;
         if (carEntry->flags & CAR_ENTRY_FLAG_POWERED)
         {
             eax = speed << 14;
@@ -3922,10 +3922,10 @@ void Vehicle::UpdateMotionBoatHire()
             edx = powered_acceleration * 2;
             if (ebx != 0)
             {
-                ecx += (eax * edx) / ebx;
+                newAcceleration += (eax * edx) / ebx;
             }
         }
-        acceleration = ecx;
+        acceleration = newAcceleration;
     }
     // eax = _vehicleMotionTrackFlags;
     // ebx = _vehicleStationIndex;
