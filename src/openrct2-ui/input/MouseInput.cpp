@@ -551,7 +551,13 @@ namespace OpenRCT2
             ContextHideCursor();
         }
 
-        WindowUnfollowSprite(w);
+        // Only unfollow sprites for the main window or ‘extra viewport’ windows.
+        // Don’t unfollow for windows where the viewport is always supposed to follow (e.g. Ride, Guest, Staff).
+        auto mainWindow = WindowGetMain();
+        if (&w == mainWindow || w.classification == WindowClass::Viewport)
+        {
+            WindowUnfollowSprite(w);
+        }
         // gInputFlags.set(InputFlag::unk5);
     }
 

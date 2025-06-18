@@ -17,6 +17,7 @@
 - Fix: [#24589] Music tab doesn’t fully render in multiplayer.
 - Fix: [#24615] Blank strings in Windows installer.
 - Fix: [#24617] ‘Divide by zero’ error when updating boat hire acceleration.
+- Fix: [#24626] Viewports that only follow sprites (e.g. in the Ride and Guest windows) can be made to unfollow them.
 
 0.4.23 (2025-06-07)
 ------------------------------------------------------------------------
