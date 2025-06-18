@@ -2695,7 +2695,6 @@ STR_5549    :Ano/Mes/Día
 STR_5550    :{POP16}{POP16}Ano {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Ano/Día/Mes
 STR_5552    :{POP16}{POP16}Ano {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Pausa o xogo cando se abra Steam
 STR_5554    :Activar ferramenta de montaña
 STR_5555    :Mostra vehículos doutro tipo de estradas
 STR_5556    :Expulsar o reprodutor
@@ -2919,7 +2918,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :Mostra a cantidade de FPS no xogo.
 STR_5816    :Configura a escala da IU.{NEWLINE}Adoita ser útil cando se xoga en pantallas de alta resolución.
-STR_5819    :[Requírese renderización de hardware]{NEWLINE}Pausa o xogo se Steam se superpón durante o xogo.
 STR_5820    : Minimiza o xogo se se perde o foco no modo de pantalla completa.
 STR_5822    :Activa os ciclos de día e de noite.{NEWLINE}Un ciclo completo leva un mes no xogo.
 STR_5823    :Mostra o texto do signo en maiúsculas (como en RCT1)

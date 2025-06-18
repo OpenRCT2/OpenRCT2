@@ -2700,7 +2700,6 @@ STR_5549    :vuosi/kuukausi/päivä
 STR_5550    :{POP16}{POP16}Vuosi {COMMA16}, {PUSH16}{PUSH16}{MONTH}n {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :vuosi/päivä/kuukausi
 STR_5552    :{POP16}{POP16}Vuosi {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}ta
-STR_5553    :Pysäytä peli kun Steam-yhteisönäkymä on auki
 STR_5554    :Ota vuorityökalu käyttöön
 STR_5555    :Näytä muiden ratatyyppien ajoneuvotyypit
 STR_5556    :Potkaise pelaaja
@@ -2924,7 +2923,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :Näytä kuvataajuusmittari pelissä
 STR_5816    :Asettaa pelin skaalaussuhteen. Kaikista kätevin suurella resoluutiolla pelattaessa.
-STR_5819    :[Edellyttää laitteistopiirtoa]{NEWLINE}Pysäytä peli jos Steam-yhteisönäkymä on avattu
 STR_5820    :Pienennä peli jos ikkunan kohdistus poistuu kokonäyttötilassa pelatessa
 STR_5822    :Näytä vuorokauden vaihtuminen. Yksi vuorokausi kestää yhden pelikuukauden
 STR_5823    :Näytä bannerit isoilla kirjaimilla (kuten RCT1:ssä)

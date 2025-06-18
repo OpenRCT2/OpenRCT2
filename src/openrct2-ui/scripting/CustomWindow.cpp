@@ -254,8 +254,7 @@ namespace OpenRCT2::Ui::Windows
         std::string Classification;
         std::optional<int32_t> X;
         std::optional<int32_t> Y;
-        int32_t Width{};
-        int32_t Height{};
+        ScreenSize size{};
         std::optional<int32_t> MinWidth;
         std::optional<int32_t> MinHeight;
         std::optional<int32_t> MaxWidth;
@@ -285,8 +284,8 @@ namespace OpenRCT2::Ui::Windows
             result.Classification = desc["classification"].as_string();
             result.X = GetOptionalInt(desc["x"]);
             result.Y = GetOptionalInt(desc["y"]);
-            result.Width = desc["width"].as_int();
-            result.Height = desc["height"].as_int();
+            result.size.width = desc["width"].as_int();
+            result.size.height = desc["height"].as_int();
             result.MinWidth = GetOptionalInt(desc["minWidth"]);
             result.MaxWidth = GetOptionalInt(desc["maxWidth"]);
             result.MinHeight = GetOptionalInt(desc["minHeight"]);
@@ -898,7 +897,7 @@ namespace OpenRCT2::Ui::Windows
             // Add window tabs
             if (_info.Desc.Tabs.size() != 0)
             {
-                widgetList[WIDX_CONTENT_PANEL].top = 43;
+                widgetList[WIDX_CONTENT_PANEL].top = kTabBarHeight;
             }
             for (size_t tabDescIndex = 0; tabDescIndex < _info.Desc.Tabs.size(); tabDescIndex++)
             {
@@ -908,7 +907,7 @@ namespace OpenRCT2::Ui::Windows
                 widget.left = static_cast<int16_t>(3 + (tabDescIndex * 31));
                 widget.right = widget.left + 30;
                 widget.top = 17;
-                widget.bottom = 43;
+                widget.bottom = kTabBarHeight;
                 widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull);
                 widget.tooltip = kStringIdNone;
                 widgetList.push_back(widget);
@@ -1141,12 +1140,11 @@ namespace OpenRCT2::Ui::Windows
         if (desc.X && desc.Y)
         {
             window = windowMgr->Create<CustomWindow>(
-                WindowClass::Custom, { *desc.X, *desc.Y }, { desc.Width, desc.Height }, windowFlags, owner, desc);
+                WindowClass::Custom, { *desc.X, *desc.Y }, desc.size, windowFlags, owner, desc);
         }
         else
         {
-            window = windowMgr->Create<CustomWindow>(
-                WindowClass::Custom, { desc.Width, desc.Height }, windowFlags, owner, desc);
+            window = windowMgr->Create<CustomWindow>(WindowClass::Custom, desc.size, windowFlags, owner, desc);
         }
         return window;
     }

@@ -35,15 +35,14 @@ namespace OpenRCT2::Ui::Windows
         WIDX_OPEN_URL,
     };
 
-    static constexpr int32_t WW = 500;
-    static constexpr int32_t WH = 400;
-    static constexpr StringId WINDOW_TITLE = STR_CHANGELOG_TITLE;
-    constexpr int32_t MIN_WW = 300;
-    constexpr int32_t MIN_WH = 250;
+    static constexpr ScreenSize kWindowSize = { 500, 400 };
+    static constexpr StringId kWindowTitle = STR_CHANGELOG_TITLE;
+    constexpr int32_t kMinimumWindowWidth = 300;
+    constexpr int32_t kMinimumWindowHeight = 250;
 
     // clang-format off
     static constexpr auto _windowChangelogWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({0,  14}, {500, 382}, WidgetType::resize,      WindowColour::secondary                               ), // content panel
         makeWidget({3,  16}, {495, 366}, WidgetType::scroll,      WindowColour::secondary, SCROLL_BOTH                  ), // scroll area
         makeWidget({3, 473}, {300,  14}, WidgetType::placeholder, WindowColour::secondary, STR_NEW_RELEASE_DOWNLOAD_PAGE)  // changelog button
@@ -127,7 +126,8 @@ namespace OpenRCT2::Ui::Windows
             int32_t screenWidth = ContextGetWidth();
             int32_t screenHeight = ContextGetHeight();
 
-            WindowSetResize(*this, { MIN_WW, MIN_WH }, { (screenWidth * 4) / 5, (screenHeight * 4) / 5 });
+            WindowSetResize(
+                *this, { kMinimumWindowWidth, kMinimumWindowHeight }, { (screenWidth * 4) / 5, (screenHeight * 4) / 5 });
         }
 
         void OnOpen() override

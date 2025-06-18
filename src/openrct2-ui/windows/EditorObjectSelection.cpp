@@ -107,9 +107,10 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr uint8_t _numSourceGameItems = 8;
 
-    static constexpr StringId WINDOW_TITLE = STR_OBJECT_SELECTION;
-    static constexpr int32_t WH = 400;
-    static constexpr int32_t WW = 600;
+    static constexpr StringId kWindowTitle = STR_OBJECT_SELECTION;
+    static constexpr ScreenSize kWindowSize = { 755, 400 };
+    static constexpr ScreenSize kMinimumWindowSize = { 600, 400 };
+    static constexpr ScreenSize kMaximumWindowSize = { 1200, 1000 };
     static constexpr auto kFilterWidth = 150;
     static constexpr auto kPreviewSize = 113;
 
@@ -218,26 +219,26 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _window_editor_object_selection_widgets = makeWidgets(
-        makeWindowShim     (WINDOW_TITLE, { WW, WH }),
-        makeWidget         ({  0, 43}, {WW,  357}, WidgetType::resize,       WindowColour::secondary                                                                  ),
-        makeWidget         ({  4, 60}, {288, 277}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                                                 ),
-        makeWidget         ({391, 45}, {114, 114}, WidgetType::flatBtn,      WindowColour::secondary                                                                  ),
-        makeWidget         ({340, 22}, {122,  14}, WidgetType::button,       WindowColour::primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
-        makeDropdownWidgets({470, 22}, {114,  14}, WidgetType::dropdownMenu, WindowColour::primary,   STR_OBJECT_FILTER,             STR_OBJECT_FILTER_TIP            ),
-        makeWidget         ({  4, 45}, {211,  14}, WidgetType::textBox,      WindowColour::secondary                                                                  ),
-        makeWidget         ({218, 45}, { 70,  14}, WidgetType::button,       WindowColour::secondary, STR_OBJECT_SEARCH_CLEAR                                         ),
-        makeWidget         ({  3, 73}, {285,   4}, WidgetType::imgBtn,       WindowColour::secondary                                                                  ),
-        makeTab            ({  3, 47}),
-        makeTab            ({ 34, 47}),
-        makeTab            ({ 65, 47}),
-        makeTab            ({ 96, 47}),
-        makeTab            ({127, 47}),
-        makeTab            ({158, 47}),
-        makeTab            ({189, 47}),
-        makeWidget         ({  4, 80}, {145,  14}, WidgetType::tableHeader, WindowColour::secondary                                                                  ),
-        makeWidget         ({149, 80}, {143,  14}, WidgetType::tableHeader, WindowColour::secondary                                                                  ),
-        makeWidget         ({700, 50}, { 24,  24}, WidgetType::imgBtn,      WindowColour::secondary,  SPR_G2_RELOAD,    STR_RELOAD_OBJECT_TIP ),
-        makeTab            ({  3, 17},                                                                                        STR_STRING_DEFINED_TOOLTIP )
+        makeWindowShim     (kWindowTitle, kWindowSize),
+        makeWidget         ({  0, 43}, {kWindowSize.width, 357}, WidgetType::resize,       WindowColour::secondary                                                                 ),
+        makeWidget         ({  4, 60}, {              288, 277}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                                                ),
+        makeWidget         ({391, 45}, {              114, 114}, WidgetType::flatBtn,      WindowColour::secondary                                                                 ),
+        makeWidget         ({340, 22}, {              122,  14}, WidgetType::button,       WindowColour::primary,   STR_INSTALL_NEW_TRACK_DESIGN, STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
+        makeDropdownWidgets({470, 22}, {              114,  14}, WidgetType::dropdownMenu, WindowColour::primary,   STR_OBJECT_FILTER,            STR_OBJECT_FILTER_TIP            ),
+        makeWidget         ({  4, 45}, {              211,  14}, WidgetType::textBox,      WindowColour::secondary                                                                 ),
+        makeWidget         ({218, 45}, {               70,  14}, WidgetType::button,       WindowColour::secondary, STR_OBJECT_SEARCH_CLEAR                                        ),
+        makeWidget         ({  3, 73}, {              285,   4}, WidgetType::imgBtn,       WindowColour::secondary                                                                 ),
+        makeTab            ({  3, 47}                                                                                                                                              ),
+        makeTab            ({ 34, 47}                                                                                                                                              ),
+        makeTab            ({ 65, 47}                                                                                                                                              ),
+        makeTab            ({ 96, 47}                                                                                                                                              ),
+        makeTab            ({127, 47}                                                                                                                                              ),
+        makeTab            ({158, 47}                                                                                                                                              ),
+        makeTab            ({189, 47}                                                                                                                                              ),
+        makeWidget         ({  4, 80}, {              145,  14}, WidgetType::tableHeader, WindowColour::secondary                                                                  ),
+        makeWidget         ({149, 80}, {              143,  14}, WidgetType::tableHeader, WindowColour::secondary                                                                  ),
+        makeWidget         ({700, 50}, {               24,  24}, WidgetType::imgBtn,      WindowColour::secondary,  SPR_G2_RELOAD,                STR_RELOAD_OBJECT_TIP            ),
+        makeTab            ({  3, 17},                                                                                                            STR_STRING_DEFINED_TOOLTIP       )
         // Copied object type times...
     );
     // clang-format on
@@ -283,7 +284,7 @@ namespace OpenRCT2::Ui::Windows
             selected_tab = 0;
             selected_list_item = -1;
 
-            WindowSetResize(*this, { WW, WH }, { 1200, 1000 });
+            WindowSetResize(*this, kMinimumWindowSize, kMaximumWindowSize);
 
             _listSortType = RIDE_SORT_TYPE;
             _listSortDescending = false;
@@ -494,7 +495,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            WindowSetResize(*this, { WW, WH }, { 1200, 1000 });
+            WindowSetResize(*this, kMinimumWindowSize, kMaximumWindowSize);
         }
 
         static constexpr StringId kSourceStringIds[] = {
@@ -1631,7 +1632,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<EditorObjectSelectionWindow>(
-            WindowClass::EditorObjectSelection, { 755, 400 }, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
+            WindowClass::EditorObjectSelection, kWindowSize, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
     }
 
     // Used for forced closure

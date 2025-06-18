@@ -60,6 +60,16 @@ struct ScreenSize
     {
         return ScreenSize{ width / scalar, height / scalar };
     }
+
+    constexpr ScreenSize operator+(const ScreenSize& other) const
+    {
+        return ScreenSize{ width + other.width, height + other.height };
+    }
+
+    constexpr ScreenSize operator-(const ScreenSize& other) const
+    {
+        return ScreenSize{ width - other.width, height - other.height };
+    }
 };
 
 struct ScreenCoordsXY

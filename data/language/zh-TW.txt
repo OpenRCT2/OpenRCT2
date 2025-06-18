@@ -2700,7 +2700,6 @@ STR_5549    :年/月/日
 STR_5550    :{POP16}{POP16}第{COMMA16}年, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :年/日/月
 STR_5552    :{POP16}{POP16}第{COMMA16}年, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :當Steam內嵌介面開啟時暫停遊戲
 STR_5554    :啟用山丘工具
 STR_5555    :顯示來自其他類型軌道的車輛種類
 STR_5556    :踢除玩家
@@ -2923,7 +2922,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :在遊戲中顯示每秒顯示張數數目
 STR_5816    :設置縮放遊戲的比例.{NEWLINE}於高解析度時遊玩非常有用
-STR_5819    :[需先啟用硬體渲染]{NEWLINE}當Steam遊戲內的內嵌介面開啟時{NEWLINE}暫停遊戲
 STR_5820    :當焦點在全螢幕模式{NEWLINE}失去時最小化遊戲
 STR_5822    :循環日與夜.{NEWLINE}一個完整的循環需時一個遊戲月
 STR_5823    :在橫額中顥示大階英文 (為夢幻遊樂園1((RCT1)的特色)
