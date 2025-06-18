@@ -215,8 +215,6 @@ GameActions::Result RideSetSettingAction::Execute() const
             {
                 ride->lifecycleFlags |= RIDE_LIFECYCLE_MUSIC;
             }
-            // Set invalidation flag to trigger window redraw
-            // https://github.com/OpenRCT2/OpenRCT2/issues/24589
             ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MUSIC;
             break;
         case RideSetSetting::MusicType:
