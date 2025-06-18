@@ -81,9 +81,8 @@ namespace OpenRCT2::Ui::Windows
 {
     static constexpr int32_t kMinimumWindowWidth = 316;
 
-    static constexpr StringId WINDOW_TITLE = STR_RIDE_WINDOW_TITLE;
-    static constexpr int32_t WH = 207;
-    static constexpr int32_t WW = kMinimumWindowWidth;
+    static constexpr StringId kWindowTitle = STR_RIDE_WINDOW_TITLE;
+    static constexpr ScreenSize kWindowSize = { kMinimumWindowWidth, 207 };
 
     enum
     {
@@ -243,12 +242,12 @@ namespace OpenRCT2::Ui::Windows
     constexpr int32_t RCT1_LIGHT_OFFSET = 4;
 
     static constexpr auto kMainRideWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({  0, 43}, {kMinimumWindowWidth, 137}, WidgetType::resize, WindowColour::secondary),
-        makeTab({ 3, 17 }, STR_VIEW_OF_RIDE_ATTRACTION_TIP),
-        makeTab({ 34, 17 }, STR_VEHICLE_DETAILS_AND_OPTIONS_TIP),
-        makeTab({ 65, 17 }, STR_OPERATING_OPTIONS_TIP),
-        makeTab({ 96, 17 }, STR_MAINTENANCE_OPTIONS_TIP),
+        makeTab({   3, 17 }, STR_VIEW_OF_RIDE_ATTRACTION_TIP),
+        makeTab({  34, 17 }, STR_VEHICLE_DETAILS_AND_OPTIONS_TIP),
+        makeTab({  65, 17 }, STR_OPERATING_OPTIONS_TIP),
+        makeTab({  96, 17 }, STR_MAINTENANCE_OPTIONS_TIP),
         makeTab({ 127, 17 }, STR_COLOUR_SCHEME_OPTIONS_TIP),
         makeTab({ 158, 17 }, STR_SOUND_AND_MUSIC_OPTIONS_TIP),
         makeTab({ 189, 17 }, STR_MEASUREMENTS_AND_TEST_DATA_TIP),
@@ -273,87 +272,87 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({296,  62}, { 14,  14}, WidgetType::imgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_TEST_BUTTON_0),  STR_SIMULATE_RIDE_TIP      ),
         makeWidget({296,  62}, { 14,  14}, WidgetType::imgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_TEST_BUTTON_0),  STR_TEST_RIDE_TIP          ),
         makeWidget({296,  76}, { 14,  14}, WidgetType::imgBtn,        WindowColour::secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0),  STR_OPEN_RIDE_TIP          ),
-        makeWidget({  3, 180}, {305,  12}, WidgetType::dropdownMenu,      WindowColour::secondary, STR_ARG_6_STRINGID                                     ),
-        makeWidget({297, 180}, { 11,  12}, WidgetType::button,        WindowColour::secondary, STR_DROPDOWN_GLYPH                                     )
+        makeWidget({  3, 180}, {305,  12}, WidgetType::dropdownMenu,  WindowColour::secondary, STR_ARG_6_STRINGID                                              ),
+        makeWidget({297, 180}, { 11,  12}, WidgetType::button,        WindowColour::secondary, STR_DROPDOWN_GLYPH                                              )
     );
 
     // 0x009ADDA8
     static constexpr auto _vehicleWidgets = makeWidgets(
         kMainRideWidgets,
-        makeWidget        ({  7,  50}, {302, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                    ),
-        makeWidget        ({297,  51}, { 11, 10}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH                                ),
-        makeWidget        ({  7, 137}, {302, 12}, WidgetType::checkbox, WindowColour::secondary, STR_OPTION_REVERSE_TRAINS, STR_OPTION_REVERSE_TRAINS_TIP  ),
-        makeWidget        ({  7, 154}, {302, 43}, WidgetType::scroll,   WindowColour::secondary, kStringIdEmpty                                         ),
-        makeSpinnerWidgets({  7, 203}, {145, 12}, WidgetType::spinner,  WindowColour::secondary, STR_RIDE_VEHICLE_COUNT, STR_MAX_VEHICLES_TIP      ),
-        makeSpinnerWidgets({164, 203}, {145, 12}, WidgetType::spinner,  WindowColour::secondary, STR_1_CAR_PER_TRAIN,    STR_MAX_CARS_PER_TRAIN_TIP)
+        makeWidget        ({  7,  50}, {302, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                          ),
+        makeWidget        ({297,  51}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                      ),
+        makeWidget        ({  7, 137}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_OPTION_REVERSE_TRAINS, STR_OPTION_REVERSE_TRAINS_TIP),
+        makeWidget        ({  7, 154}, {302, 43}, WidgetType::scroll,       WindowColour::secondary, kStringIdEmpty                                          ),
+        makeSpinnerWidgets({  7, 203}, {145, 12}, WidgetType::spinner,      WindowColour::secondary, STR_RIDE_VEHICLE_COUNT, STR_MAX_VEHICLES_TIP            ),
+        makeSpinnerWidgets({164, 203}, {145, 12}, WidgetType::spinner,      WindowColour::secondary, STR_1_CAR_PER_TRAIN,    STR_MAX_CARS_PER_TRAIN_TIP      )
     );
 
     // 0x009ADEFC
     static constexpr auto _operatingWidgets = makeWidgets(
         kMainRideWidgets,
-        makeSpinnerWidgets({157,  61}, {152, 12}, WidgetType::spinner,  WindowColour::secondary, STR_ARG_18_STRINGID                                                                 ), // NB: 3 widgets
-        makeSpinnerWidgets({157,  75}, {152, 12}, WidgetType::spinner,  WindowColour::secondary, STR_LIFT_HILL_CHAIN_SPEED_VALUE                                                     ), // NB: 3 widgets
-        makeWidget        ({  7, 109}, { 80, 12}, WidgetType::checkbox, WindowColour::secondary, STR_WAIT_FOR,                           STR_WAIT_FOR_PASSENGERS_BEFORE_DEPARTING_TIP),
-        makeWidget        ({  7, 124}, {302, 12}, WidgetType::checkbox, WindowColour::secondary                                                                                      ),
-        makeWidget        ({  7, 139}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MINIMUM_WAITING_TIME,               STR_MINIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
-        makeSpinnerWidgets({157, 139}, {152, 12}, WidgetType::spinner,  WindowColour::secondary, STR_ARG_10_STRINGID                                                                 ), // NB: 3 widgets
-        makeWidget        ({  7, 154}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAXIMUM_WAITING_TIME,               STR_MAXIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
-        makeSpinnerWidgets({157, 154}, {152, 12}, WidgetType::spinner,  WindowColour::secondary, STR_ARG_14_STRINGID                                                                 ), // NB: 3 widgets
-        makeWidget        ({  7, 169}, {302, 12}, WidgetType::checkbox, WindowColour::secondary, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP  ),
-        makeWidget        ({ 21,  61}, {129, 12}, WidgetType::label,    WindowColour::secondary                                                                                      ),
-        makeWidget        ({ 21,  75}, {129, 12}, WidgetType::label,    WindowColour::secondary, STR_LIFT_HILL_CHAIN_SPEED                                                           ),
+        makeSpinnerWidgets({157,  61}, {152, 12}, WidgetType::spinner,      WindowColour::secondary, STR_ARG_18_STRINGID                                                                 ), // NB: 3 widgets
+        makeSpinnerWidgets({157,  75}, {152, 12}, WidgetType::spinner,      WindowColour::secondary, STR_LIFT_HILL_CHAIN_SPEED_VALUE                                                     ), // NB: 3 widgets
+        makeWidget        ({  7, 109}, { 80, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_WAIT_FOR,                           STR_WAIT_FOR_PASSENGERS_BEFORE_DEPARTING_TIP),
+        makeWidget        ({  7, 124}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary                                                                                      ),
+        makeWidget        ({  7, 139}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MINIMUM_WAITING_TIME,               STR_MINIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
+        makeSpinnerWidgets({157, 139}, {152, 12}, WidgetType::spinner,      WindowColour::secondary, STR_ARG_10_STRINGID                                                                 ), // NB: 3 widgets
+        makeWidget        ({  7, 154}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAXIMUM_WAITING_TIME,               STR_MAXIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
+        makeSpinnerWidgets({157, 154}, {152, 12}, WidgetType::spinner,      WindowColour::secondary, STR_ARG_14_STRINGID                                                                 ), // NB: 3 widgets
+        makeWidget        ({  7, 169}, {302, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP  ),
+        makeWidget        ({ 21,  61}, {129, 12}, WidgetType::label,        WindowColour::secondary                                                                                      ),
+        makeWidget        ({ 21,  75}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_LIFT_HILL_CHAIN_SPEED                                                           ),
         makeWidget        ({  7,  47}, {302, 12}, WidgetType::dropdownMenu, WindowColour::secondary, 0xFFFFFFFF,                             STR_SELECT_OPERATING_MODE                   ),
-        makeWidget        ({297,  48}, { 11, 10}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH,                     STR_SELECT_OPERATING_MODE                   ),
+        makeWidget        ({297,  48}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                     STR_SELECT_OPERATING_MODE                   ),
         makeWidget        ({ 87, 109}, {222, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                      ),
-        makeWidget        ({297, 110}, { 11, 10}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH                                                                  ),
-        makeWidget        ({ 21,  89}, {129, 12}, WidgetType::label,    WindowColour::secondary, STR_NUMBER_OF_CIRCUITS,                 STR_NUMBER_OF_CIRCUITS_TIP                  ),
-        makeSpinnerWidgets({157,  89}, {152, 12}, WidgetType::spinner,  WindowColour::secondary, STR_NUMBER_OF_CIRCUITS_VALUE                                                        )  // NB: 3 widgets
+        makeWidget        ({297, 110}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                                  ),
+        makeWidget        ({ 21,  89}, {129, 12}, WidgetType::label,        WindowColour::secondary, STR_NUMBER_OF_CIRCUITS,                 STR_NUMBER_OF_CIRCUITS_TIP                  ),
+        makeSpinnerWidgets({157,  89}, {152, 12}, WidgetType::spinner,      WindowColour::secondary, STR_NUMBER_OF_CIRCUITS_VALUE                                                        )  // NB: 3 widgets
     );
 
     // 0x009AE190
     static constexpr auto _maintenanceWidgets = makeWidgets(
         kMainRideWidgets,
-        makeWidget({107,  71}, {202, 12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty,          STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE),
-        makeWidget({297,  72}, { 11, 10}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH, STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE),
-        makeWidget({289, 108}, { 24, 24}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF,         STR_LOCATE_NEAREST_AVAILABLE_MECHANIC_TIP             ),
-        makeWidget({265, 108}, { 24, 24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION),   STR_REFURBISH_RIDE_TIP                                ),
-        makeWidget({241, 108}, { 24, 24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_NO_ENTRY),       STR_DEBUG_FORCE_BREAKDOWN_TIP                         ),
-        makeProgressBar({107, 47}, { 147, 10}, COLOUR_BRIGHT_GREEN),
-        makeProgressBar({107, 58}, { 147, 10}, COLOUR_BRIGHT_RED)
+        makeWidget     ({107,  71}, {202,  12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty,            STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE),
+        makeWidget     ({297,  72}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,        STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE),
+        makeWidget     ({289, 108}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, 0xFFFFFFFF,                STR_LOCATE_NEAREST_AVAILABLE_MECHANIC_TIP             ),
+        makeWidget     ({265, 108}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_CONSTRUCTION), STR_REFURBISH_RIDE_TIP                                ),
+        makeWidget     ({241, 108}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_NO_ENTRY),     STR_DEBUG_FORCE_BREAKDOWN_TIP                         ),
+        makeProgressBar({107,  47}, { 147, 10}, COLOUR_BRIGHT_GREEN                                                                                                                 ),
+        makeProgressBar({107,  58}, { 147, 10}, COLOUR_BRIGHT_RED                                                                                                                   )
     );
 
     // 0x009AE2A4
     static constexpr auto _colourWidgets = makeWidgets(
         kMainRideWidgets,
-        makeWidget({  3,  47}, { 68, 47}, WidgetType::spinner,   WindowColour::secondary                                                                    ),
-        makeWidget({ 74,  49}, {239, 12}, WidgetType::dropdownMenu,  WindowColour::secondary, STR_ARG_14_STRINGID                                               ),
-        makeWidget({301,  50}, { 11, 10}, WidgetType::button,    WindowColour::secondary, STR_DROPDOWN_GLYPH,  STR_COLOUR_SCHEME_TO_CHANGE_TIP              ),
-        makeWidget({ 79,  74}, { 12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,          STR_SELECT_MAIN_COLOUR_TIP                   ),
-        makeWidget({ 99,  74}, { 12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,          STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
-        makeWidget({119,  74}, { 12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,          STR_SELECT_SUPPORT_STRUCTURE_COLOUR_TIP      ),
-        makeWidget({ 74,  49}, {239, 12}, WidgetType::dropdownMenu,  WindowColour::secondary                                                                    ),
-        makeWidget({301,  50}, { 11, 10}, WidgetType::button,    WindowColour::secondary, STR_DROPDOWN_GLYPH                                                ),
-        makeWidget({289,  68}, { 24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_PAINTBRUSH),      STR_PAINT_INDIVIDUAL_AREA_TIP                ),
-        makeWidget({245, 101}, { 68, 47}, WidgetType::spinner,   WindowColour::secondary                                                                    ),
-        makeWidget({103, 103}, {139, 12}, WidgetType::dropdownMenu,  WindowColour::secondary, kStringIdEmpty                                                         ),
-        makeWidget({230, 104}, { 11, 10}, WidgetType::button,    WindowColour::secondary, STR_DROPDOWN_GLYPH,  STR_SELECT_STYLE_OF_ENTRANCE_EXIT_STATION_TIP),
-        makeWidget({  3, 157}, { 68, 47}, WidgetType::scroll,    WindowColour::secondary, kStringIdEmpty                                                         ),
-        makeWidget({ 74, 157}, {239, 12}, WidgetType::dropdownMenu,  WindowColour::secondary, STR_ARG_6_STRINGID                                                ),
-        makeWidget({301, 158}, { 11, 10}, WidgetType::button,    WindowColour::secondary, STR_DROPDOWN_GLYPH,  STR_SELECT_VEHICLE_COLOUR_SCHEME_TIP         ),
-        makeWidget({ 74, 173}, {239, 12}, WidgetType::dropdownMenu,  WindowColour::secondary                                                                    ),
-        makeWidget({301, 174}, { 11, 10}, WidgetType::button,    WindowColour::secondary, STR_DROPDOWN_GLYPH,  STR_SELECT_VEHICLE_TO_MODIFY_TIP             ),
-        makeWidget({ 79, 190}, { 12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,          STR_SELECT_MAIN_COLOUR_TIP                   ),
-        makeWidget({ 99, 190}, { 12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,          STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
-        makeWidget({119, 190}, { 12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,          STR_SELECT_ADDITIONAL_COLOUR_2_TIP           ),
-        makeWidget({100,  74}, {239, 12}, WidgetType::checkbox,  WindowColour::secondary, STR_RANDOM_COLOUR                                                 ),
-        makeWidget({139, 190}, {110, 12}, WidgetType::button,    WindowColour::secondary, STR_RANDOMISE_VEHICLE_COLOURS, STR_RANDOMISE_VEHICLE_COLOURS_TIP  )
+        makeWidget({  3,  47}, { 68, 47}, WidgetType::spinner,      WindowColour::secondary                                                                              ),
+        makeWidget({ 74,  49}, {239, 12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_ARG_14_STRINGID                                                         ),
+        makeWidget({301,  50}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_COLOUR_SCHEME_TO_CHANGE_TIP              ),
+        makeWidget({ 79,  74}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_MAIN_COLOUR_TIP                   ),
+        makeWidget({ 99,  74}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
+        makeWidget({119,  74}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_SUPPORT_STRUCTURE_COLOUR_TIP      ),
+        makeWidget({ 74,  49}, {239, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                                              ),
+        makeWidget({301,  50}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                          ),
+        makeWidget({289,  68}, { 24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_PAINTBRUSH),       STR_PAINT_INDIVIDUAL_AREA_TIP                ),
+        makeWidget({245, 101}, { 68, 47}, WidgetType::spinner,      WindowColour::secondary                                                                              ),
+        makeWidget({103, 103}, {139, 12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                              ),
+        makeWidget({230, 104}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_SELECT_STYLE_OF_ENTRANCE_EXIT_STATION_TIP),
+        makeWidget({  3, 157}, { 68, 47}, WidgetType::scroll,       WindowColour::secondary, kStringIdEmpty                                                              ),
+        makeWidget({ 74, 157}, {239, 12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_ARG_6_STRINGID                                                          ),
+        makeWidget({301, 158}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_SELECT_VEHICLE_COLOUR_SCHEME_TIP         ),
+        makeWidget({ 74, 173}, {239, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                                              ),
+        makeWidget({301, 174}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,            STR_SELECT_VEHICLE_TO_MODIFY_TIP             ),
+        makeWidget({ 79, 190}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_MAIN_COLOUR_TIP                   ),
+        makeWidget({ 99, 190}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
+        makeWidget({119, 190}, { 12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,                    STR_SELECT_ADDITIONAL_COLOUR_2_TIP           ),
+        makeWidget({100,  74}, {239, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_RANDOM_COLOUR                                                           ),
+        makeWidget({139, 190}, {110, 12}, WidgetType::button,       WindowColour::secondary, STR_RANDOMISE_VEHICLE_COLOURS, STR_RANDOMISE_VEHICLE_COLOURS_TIP            )
     );
 
     // 0x009AE4C8
     static constexpr auto _musicWidgets = makeWidgets(
         kMainRideWidgets,
         makeWidget({  7, 47}, {302,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_PLAY_MUSIC,     STR_SELECT_MUSIC_TIP      ),
-        makeWidget({  7, 62}, {302,  12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                     ),
+        makeWidget({  7, 62}, {302,  12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                ),
         makeWidget({297, 63}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH, STR_SELECT_MUSIC_STYLE_TIP),
         makeWidget({154, 90}, {114, 114}, WidgetType::flatBtn,      WindowColour::secondary                                                ),
         makeWidget({  7, 90}, {500, 450}, WidgetType::scroll,       WindowColour::secondary, SCROLL_BOTH                                   )
@@ -362,7 +361,7 @@ namespace OpenRCT2::Ui::Windows
     // 0x009AE5DC
     static constexpr auto _measurementWidgets = makeWidgets(
         kMainRideWidgets,
-        makeWidget({288, 194}, { 24, 24}, WidgetType::flatBtn, WindowColour::secondary, ImageId(SPR_FLOPPY),                STR_SAVE_TRACK_DESIGN),
+        makeWidget({288, 194}, { 24, 24}, WidgetType::flatBtn, WindowColour::secondary, ImageId(SPR_FLOPPY),       STR_SAVE_TRACK_DESIGN),
         makeWidget({  4, 127}, {154, 14}, WidgetType::button,  WindowColour::secondary, STR_SELECT_NEARBY_SCENERY                       ),
         makeWidget({158, 127}, {154, 14}, WidgetType::button,  WindowColour::secondary, STR_RESET_SELECTION                             ),
         makeWidget({  4, 177}, {154, 14}, WidgetType::button,  WindowColour::secondary, STR_DESIGN_SAVE                                 ),
@@ -6954,7 +6953,7 @@ namespace OpenRCT2::Ui::Windows
     static RideWindow* WindowRideOpen(const Ride& ride)
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->Create<RideWindow>(WindowClass::Ride, { kMinimumWindowWidth, 207 }, WF_10 | WF_RESIZABLE, ride);
+        return windowMgr->Create<RideWindow>(WindowClass::Ride, kWindowSize, WF_10 | WF_RESIZABLE, ride);
     }
 
     /**

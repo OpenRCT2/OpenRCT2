@@ -85,9 +85,8 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Measurements
 
-    static constexpr StringId WINDOW_TITLE = STR_FOOTPATHS;
-    static constexpr int32_t WH_WINDOW = 421;
-    static constexpr int32_t WW_WINDOW = 106;
+    static constexpr StringId kWindowTitle = STR_FOOTPATHS;
+    static constexpr ScreenSize kWindowSize = { 106, 421 };
 
 #pragma endregion
 
@@ -124,31 +123,31 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_footpath_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW_WINDOW, WH_WINDOW }),
+        makeWindowShim(kWindowTitle, kWindowSize),
 
         // Type group
-        makeWidget({ 3,  17}, {100, 95}, WidgetType::groupbox, WindowColour::primary  , STR_TYPE                                                                          ),
-        makeWidget({ 6,  30}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF,                        STR_FOOTPATH_TIP                               ),
-        makeWidget({53,  30}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF,                        STR_QUEUE_LINE_PATH_TIP                        ),
-        makeWidget({29,  69}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF,                        STR_OBJECT_SELECTION_FOOTPATH_RAILINGS         ),
+        makeWidget({ 3,  17}, {100, 95}, WidgetType::groupbox, WindowColour::primary  , STR_TYPE                                                                                   ),
+        makeWidget({ 6,  30}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF,                             STR_FOOTPATH_TIP                                   ),
+        makeWidget({53,  30}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF,                             STR_QUEUE_LINE_PATH_TIP                            ),
+        makeWidget({29,  69}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF,                             STR_OBJECT_SELECTION_FOOTPATH_RAILINGS             ),
 
         // Direction group
-        makeWidget({ 3, 115}, {100, 77}, WidgetType::groupbox, WindowColour::primary  , STR_DIRECTION                                                                     ),
+        makeWidget({ 3, 115}, {100, 77}, WidgetType::groupbox, WindowColour::primary  , STR_DIRECTION                                                                              ),
         makeWidget({53, 127}, { 45, 29}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_NE),     STR_DIRECTION_TIP                              ),
         makeWidget({53, 156}, { 45, 29}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_SE),     STR_DIRECTION_TIP                              ),
         makeWidget({ 8, 156}, { 45, 29}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_SW),     STR_DIRECTION_TIP                              ),
         makeWidget({ 8, 127}, { 45, 29}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_NW),     STR_DIRECTION_TIP                              ),
 
         // Slope group
-        makeWidget({ 3, 195}, {100, 41}, WidgetType::groupbox, WindowColour::primary  , STR_SLOPE                                                                         ),
+        makeWidget({ 3, 195}, {100, 41}, WidgetType::groupbox, WindowColour::primary  , STR_SLOPE                                                                                  ),
         makeWidget({17, 207}, { 24, 24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_DOWN),  STR_SLOPE_DOWN_TIP                             ),
         makeWidget({41, 207}, { 24, 24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL), STR_LEVEL_TIP                                  ),
         makeWidget({65, 207}, { 24, 24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP),    STR_SLOPE_UP_TIP                               ),
-        makeWidget({ 8, 242}, { 90, 90}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF,                        STR_CONSTRUCT_THE_SELECTED_FOOTPATH_SECTION_TIP),
+        makeWidget({ 8, 242}, { 90, 90}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF,                                 STR_CONSTRUCT_THE_SELECTED_FOOTPATH_SECTION_TIP),
         makeWidget({30, 335}, { 46, 24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_DEMOLISH_CURRENT_SECTION),      STR_REMOVE_PREVIOUS_FOOTPATH_SECTION_TIP       ),
 
         // Mode group
-        makeWidget({ 3, 361}, {100, 54}, WidgetType::groupbox, WindowColour::primary                                                                                      ),
+        makeWidget({ 3, 361}, {100, 54}, WidgetType::groupbox, WindowColour::primary                                                                                               ),
         makeWidget({13, 372}, { 36, 36}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_FOOTPATH_LAND),    STR_CONSTRUCT_FOOTPATH_ON_LAND_TIP             ),
         makeWidget({57, 372}, { 36, 36}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_FOOTPATH_BRIDGE),  STR_CONSTRUCT_BRIDGE_OR_TUNNEL_FOOTPATH_TIP    )
     );
@@ -1634,7 +1633,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<FootpathWindow>(WindowClass::Footpath, { WW_WINDOW, WH_WINDOW }, 0);
+        return windowMgr->FocusOrCreate<FootpathWindow>(WindowClass::Footpath, kWindowSize, 0);
     }
 
     void WindowFootpathResetSelectedPath()

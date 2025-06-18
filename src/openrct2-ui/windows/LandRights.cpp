@@ -32,9 +32,8 @@ namespace OpenRCT2::Ui::Windows
     static constexpr ScreenSize kInGameSize = { 94, 94 };
     static constexpr ScreenSize kEditorSize = { 280, 104 };
 
-    static constexpr StringId WINDOW_TITLE = STR_LAND_RIGHTS;
-    static constexpr int32_t WW = kInGameSize.width;
-    static constexpr int32_t WH = kInGameSize.height;
+    static constexpr ScreenSize kWindowSize = kInGameSize;
+    static constexpr StringId kWindowTitle = STR_LAND_RIGHTS;
 
     enum WindowLandRightsWidgetIdx
     {
@@ -59,7 +58,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_land_rights_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget     ({ 27, 17}, { 44, 32}, WidgetType::imgBtn, WindowColour::primary, ImageId(SPR_LAND_TOOL_SIZE_0)                                                   ), // preview box
         makeRemapWidget({ 28, 18}, { 16, 16}, WidgetType::trnBtn, WindowColour::primary, SPR_LAND_TOOL_DECREASE,          STR_ADJUST_SMALLER_LAND_RIGHTS_TIP             ), // decrement size
         makeRemapWidget({ 54, 32}, { 16, 16}, WidgetType::trnBtn, WindowColour::primary, SPR_LAND_TOOL_INCREASE,          STR_ADJUST_LARGER_LAND_RIGHTS_TIP              ), // increment size
@@ -592,6 +591,6 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<LandRightsWindow>(
-            WindowClass::LandRights, ScreenCoordsXY(ContextGetWidth() - WW, 29), { WW, WH }, 0);
+            WindowClass::LandRights, ScreenCoordsXY(ContextGetWidth() - kWindowSize.width, 29), kWindowSize, 0);
     }
 } // namespace OpenRCT2::Ui::Windows

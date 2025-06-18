@@ -686,12 +686,12 @@ namespace OpenRCT2::Ui::Windows
         int32_t screenHeight = ContextGetHeight();
 
         // Figure out how much line height we have to work with.
-        uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
-        int32_t toolbar_height = line_height * 2 + 12;
+        uint32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
+        int32_t toolbarHeight = lineHeight * 2 + 12;
 
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->Create<GameBottomToolbar>(
-            WindowClass::BottomToolbar, ScreenCoordsXY(0, screenHeight - toolbar_height), { screenWidth, toolbar_height },
+            WindowClass::BottomToolbar, ScreenCoordsXY(0, screenHeight - toolbarHeight), { screenWidth, toolbarHeight },
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND | WF_NO_TITLE_BAR);
 
         return window;

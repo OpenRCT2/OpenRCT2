@@ -115,7 +115,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MULTITHREADING_CHECKBOX,
 
         WIDX_BEHAVIOUR_GROUP,
-        WIDX_STEAM_OVERLAY_PAUSE,
         WIDX_MINIMIZE_FOCUS_LOSS,
         WIDX_DISABLE_SCREENSAVER_LOCK,
 
@@ -251,21 +250,20 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static constexpr StringId WINDOW_TITLE = STR_OPTIONS_TITLE;
-    static constexpr int32_t WW = 310;
-    static constexpr int32_t WH = 332;
+    static constexpr StringId kWindowTitle = STR_OPTIONS_TITLE;
+    static constexpr ScreenSize kWindowSize = { 310, 332 };
 
     static constexpr auto kMainOptionsWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
-        makeWidget({ 0, 43 }, { WW, 289 }, WidgetType::resize, WindowColour::secondary),
-        makeTab({ 3, 17 }, STR_OPTIONS_DISPLAY_TIP),
-        makeTab({ 34, 17 }, STR_OPTIONS_RENDERING_TIP),
-        makeTab({ 65, 17 }, STR_OPTIONS_CULTURE_TIP),
-        makeTab({ 96, 17 }, STR_OPTIONS_AUDIO_TIP),
-        makeTab({ 127, 17 }, STR_OPTIONS_INTERFACE_TIP),
-        makeTab({ 158, 17 }, STR_OPTIONS_CONTROLS_TIP),
-        makeTab({ 189, 17 }, STR_OPTIONS_MISCELLANEOUS_TIP),
-        makeTab({ 220, 17 }, STR_OPTIONS_ADVANCED)
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({   0, 43 }, { kWindowSize.width, 289 }, WidgetType::resize, WindowColour::secondary),
+        makeTab   ({   3, 17 }, STR_OPTIONS_DISPLAY_TIP),
+        makeTab   ({  34, 17 }, STR_OPTIONS_RENDERING_TIP),
+        makeTab   ({  65, 17 }, STR_OPTIONS_CULTURE_TIP),
+        makeTab   ({  96, 17 }, STR_OPTIONS_AUDIO_TIP),
+        makeTab   ({ 127, 17 }, STR_OPTIONS_INTERFACE_TIP),
+        makeTab   ({ 158, 17 }, STR_OPTIONS_CONTROLS_TIP),
+        makeTab   ({ 189, 17 }, STR_OPTIONS_MISCELLANEOUS_TIP),
+        makeTab   ({ 220, 17 }, STR_OPTIONS_ADVANCED)
     );
 
     static constexpr auto window_options_display_widgets = makeWidgets(
@@ -290,10 +288,9 @@ namespace OpenRCT2::Ui::Windows
         makeWidget        ({ 10, 166}, {136,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
         makeWidget        ({155, 166}, {136,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
 
-        makeWidget        ({  5, 188}, {300,  64}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_BEHAVIOUR                                                             ), // Behaviour group
-        makeWidget        ({ 11, 203}, {280,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_STEAM_OVERLAY_PAUSE,               STR_STEAM_OVERLAY_PAUSE_TIP              ), // Pause on steam overlay
-        makeWidget        ({ 11, 218}, {280,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
-        makeWidget        ({ 11, 233}, {280,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              )  // Disable screensaver
+        makeWidget        ({  5, 188}, {300,  49}, WidgetType::groupbox,     WindowColour::secondary, STR_GROUP_BEHAVIOUR                                                             ), // Behaviour group
+        makeWidget        ({ 11, 203}, {280,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
+        makeWidget        ({ 11, 218}, {280,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              )  // Disable screensaver
     );
 
     constexpr int32_t kFrameRenderingStart = 53;
@@ -308,7 +305,7 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 10, kFrameRenderingStart + 60}, {281,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_SHOW_GUEST_PURCHASES,   STR_SHOW_GUEST_PURCHASES_TIP  ), // Guest purchases
         makeWidget({ 10, kFrameRenderingStart + 75}, {281,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_TRANSPARENT_SCREENSHOT, STR_TRANSPARENT_SCREENSHOT_TIP), // Transparent screenshot
         makeWidget({ 10, kFrameRenderingStart + 90}, {281,  12}, WidgetType::label,        WindowColour::secondary, STR_VIRTUAL_FLOOR_STYLE,    STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor
-        makeWidget({155, kFrameRenderingStart + 90}, {145,  12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,                   STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
+        makeWidget({155, kFrameRenderingStart + 90}, {145,  12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdNone,              STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
         makeWidget({288, kFrameRenderingStart + 91}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,         STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
 
         makeWidget({ 5,  kFrameEffectStart + 0}, {300, 94}, WidgetType::groupbox, WindowColour::secondary, STR_EFFECTS_GROUP                                             ), // Rendering group
@@ -675,7 +672,7 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_OPTIONS_PAGE_MISC:
                 case WINDOW_OPTIONS_PAGE_ADVANCED:
                 default:
-                    return { WW, WH };
+                    return kWindowSize;
             }
         }
 
@@ -768,11 +765,6 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_MINIMIZE_FOCUS_LOSS:
                     Config::Get().general.MinimizeFullscreenFocusLoss ^= 1;
-                    Config::Save();
-                    Invalidate();
-                    break;
-                case WIDX_STEAM_OVERLAY_PAUSE:
-                    Config::Get().general.SteamOverlayPause ^= 1;
                     Config::Save();
                     Invalidate();
                     break;
@@ -983,7 +975,6 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_SHOW_FPS_CHECKBOX, Config::Get().general.ShowFPS);
             SetCheckboxValue(WIDX_MULTITHREADING_CHECKBOX, Config::Get().general.MultiThreading);
             SetCheckboxValue(WIDX_MINIMIZE_FOCUS_LOSS, Config::Get().general.MinimizeFullscreenFocusLoss);
-            SetCheckboxValue(WIDX_STEAM_OVERLAY_PAUSE, Config::Get().general.SteamOverlayPause);
             SetCheckboxValue(WIDX_DISABLE_SCREENSAVER_LOCK, Config::Get().general.DisableScreensaver);
 
             // Dropdown captions for straightforward strings.
@@ -2430,6 +2421,6 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* OptionsOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<OptionsWindow>(WindowClass::Options, { WW, WH }, WF_CENTRE_SCREEN);
+        return windowMgr->FocusOrCreate<OptionsWindow>(WindowClass::Options, kWindowSize, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows

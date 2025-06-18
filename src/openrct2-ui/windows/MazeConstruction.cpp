@@ -33,9 +33,8 @@ namespace OpenRCT2::Ui::Windows
 {
 #pragma region Widgets
 
-    static constexpr StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
-    static constexpr int32_t WH = 200;
-    static constexpr int32_t WW = 166;
+    static constexpr StringId kWindowTitle = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
+    static constexpr ScreenSize kWindowSize = { 166, 200 };
 
     enum : WidgetIndex
     {
@@ -61,40 +60,40 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_maze_construction_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
-        makeWidget({ 3,  17}, {160, 55}, WidgetType::groupbox, WindowColour::primary  , STR_RIDE_CONSTRUCTION_MODE                                                            ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({35,  29}, { 32, 32}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_MAZE_CONSTRUCTION_BUILD),    STR_RIDE_CONSTRUCTION_BUILD_MODE                      ),
-        makeWidget({67,  29}, { 32, 32}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_MAZE_CONSTRUCTION_MOVE),     STR_RIDE_CONSTRUCTION_MOVE_MODE                       ),
-        makeWidget({99,  29}, { 32, 32}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_MAZE_CONSTRUCTION_FILL_IN),  STR_RIDE_CONSTRUCTION_FILL_IN_MODE                    ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({ 3, 168}, {160, 28}, WidgetType::groupbox, WindowColour::primary                                                                                          ),
-        makeWidget({ 3,  80}, {160, 87}, WidgetType::groupbox, WindowColour::primary  , STR_RIDE_CONSTRUCTION_BUILD                                                           ),
-        makeWidget({83,  96}, { 45, 29}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_NE),  STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
-        makeWidget({83, 125}, { 45, 29}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_SE),  STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
-        makeWidget({38, 125}, { 45, 29}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_SW),  STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
-        makeWidget({38,  96}, { 45, 29}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_NW),  STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
-        makeWidget({ 9, 178}, { 70, 12}, WidgetType::button,   WindowColour::secondary, STR_RIDE_CONSTRUCTION_ENTRANCE, STR_RIDE_CONSTRUCTION_ENTRANCE_TIP                    ),
-        makeWidget({87, 178}, { 70, 12}, WidgetType::button,   WindowColour::secondary, STR_RIDE_CONSTRUCTION_EXIT,     STR_RIDE_CONSTRUCTION_EXIT_TIP                        ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          ),
-        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                          )
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({ 3,  17}, {160, 55}, WidgetType::groupbox, WindowColour::primary,   STR_RIDE_CONSTRUCTION_MODE                                                                    ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({35,  29}, { 32, 32}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_MAZE_CONSTRUCTION_BUILD),   STR_RIDE_CONSTRUCTION_BUILD_MODE                      ),
+        makeWidget({67,  29}, { 32, 32}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_MAZE_CONSTRUCTION_MOVE),    STR_RIDE_CONSTRUCTION_MOVE_MODE                       ),
+        makeWidget({99,  29}, { 32, 32}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_MAZE_CONSTRUCTION_FILL_IN), STR_RIDE_CONSTRUCTION_FILL_IN_MODE                    ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({ 3, 168}, {160, 28}, WidgetType::groupbox, WindowColour::primary                                                                                                  ),
+        makeWidget({ 3,  80}, {160, 87}, WidgetType::groupbox, WindowColour::primary,   STR_RIDE_CONSTRUCTION_BUILD                                                                   ),
+        makeWidget({83,  96}, { 45, 29}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_NE), STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
+        makeWidget({83, 125}, { 45, 29}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_SE), STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
+        makeWidget({38, 125}, { 45, 29}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_SW), STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
+        makeWidget({38,  96}, { 45, 29}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_CONSTRUCTION_DIRECTION_NW), STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
+        makeWidget({ 9, 178}, { 70, 12}, WidgetType::button,   WindowColour::secondary, STR_RIDE_CONSTRUCTION_ENTRANCE,         STR_RIDE_CONSTRUCTION_ENTRANCE_TIP                    ),
+        makeWidget({87, 178}, { 70, 12}, WidgetType::button,   WindowColour::secondary, STR_RIDE_CONSTRUCTION_EXIT,             STR_RIDE_CONSTRUCTION_EXIT_TIP                        ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  ),
+        makeWidget({ 0,   0}, {  1,  1}, WidgetType::empty,    WindowColour::primary                                                                                                  )
     );
     // clang-format on
 
@@ -443,7 +442,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<MazeConstructionWindow>(
-            WindowClass::RideConstruction, ScreenCoordsXY(0, 29), { WW, WH }, WF_NO_AUTO_CLOSE);
+            WindowClass::RideConstruction, ScreenCoordsXY(0, 29), kWindowSize, WF_NO_AUTO_CLOSE);
     }
 
     void WindowMazeConstructionUpdatePressedWidgets()

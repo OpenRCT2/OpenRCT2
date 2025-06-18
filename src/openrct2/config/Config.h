@@ -102,7 +102,6 @@ namespace OpenRCT2::Config
         ScenarioSelectMode scenarioSelectMode;
         bool ScenarioUnlockingEnabled;
         bool ScenarioHideMegaPark;
-        bool SteamOverlayPause;
         bool ShowRealNamesOfGuests;
         bool ShowRealNamesOfStaff;
         bool AllowEarlyCompletion;

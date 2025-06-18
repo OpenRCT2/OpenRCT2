@@ -32,9 +32,8 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = kStringIdNone;
-    static constexpr int32_t WH = 240;
-    static constexpr int32_t WW = 340;
+    static constexpr StringId kWindowTitle = kStringIdNone;
+    static constexpr ScreenSize kWindowSize = { 340, 240 };
 
     enum
     {
@@ -65,19 +64,19 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _rideListWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
-        makeWidget({  0, 43}, {340, 197}, WidgetType::resize,   WindowColour::secondary                                                                ), // tab page background
-        makeWidget({315, 60}, { 24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_TOGGLE_OPEN_CLOSE),      STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
-        makeWidget({150, 46}, {124,  12}, WidgetType::dropdownMenu, WindowColour::secondary                                                                ), // current information type
-        makeWidget({262, 47}, { 11,  10}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH,         STR_RIDE_LIST_INFORMATION_TYPE_TIP), // information type dropdown button
-        makeWidget({280, 46}, { 54,  12}, WidgetType::button,   WindowColour::secondary, STR_SORT,                   STR_RIDE_LIST_SORT_TIP            ), // sort button
-        makeTab   ({  3, 17},                                                                                STR_LIST_RIDES_TIP                ), // tab 1
-        makeTab   ({ 34, 17},                                                                                STR_LIST_SHOPS_AND_STALLS_TIP     ), // tab 2
-        makeTab   ({ 65, 17},                                                                                STR_LIST_KIOSKS_AND_FACILITIES_TIP), // tab 3
-        makeWidget({  3, 60}, {334, 177}, WidgetType::scroll,   WindowColour::secondary, SCROLL_VERTICAL                                               ), // list
-        makeWidget({320, 62}, { 14,  14}, WidgetType::imgBtn,   WindowColour::secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0)                                    ),
-        makeWidget({320, 76}, { 14,  14}, WidgetType::imgBtn,   WindowColour::secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0)                                     ),
-        makeWidget({315, 90}, { 24,  24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_DEMOLISH),               STR_QUICK_DEMOLISH_RIDE           )
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({  0, 43}, {340, 197}, WidgetType::resize,       WindowColour::secondary                                                                        ), // tab page background
+        makeWidget({315, 60}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_TOGGLE_OPEN_CLOSE),     STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
+        makeWidget({150, 46}, {124,  12}, WidgetType::dropdownMenu, WindowColour::secondary                                                                        ), // current information type
+        makeWidget({262, 47}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                 STR_RIDE_LIST_INFORMATION_TYPE_TIP), // information type dropdown button
+        makeWidget({280, 46}, { 54,  12}, WidgetType::button,       WindowColour::secondary, STR_SORT,                           STR_RIDE_LIST_SORT_TIP            ), // sort button
+        makeTab   ({  3, 17},                                                                STR_LIST_RIDES_TIP                                                    ), // tab 1
+        makeTab   ({ 34, 17},                                                                STR_LIST_SHOPS_AND_STALLS_TIP                                         ), // tab 2
+        makeTab   ({ 65, 17},                                                                STR_LIST_KIOSKS_AND_FACILITIES_TIP                                    ), // tab 3
+        makeWidget({  3, 60}, {334, 177}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                                                       ), // list
+        makeWidget({320, 62}, { 14,  14}, WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0)                                   ),
+        makeWidget({320, 76}, { 14,  14}, WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0)                                    ),
+        makeWidget({315, 90}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_DEMOLISH),              STR_QUICK_DEMOLISH_RIDE           )
     );
     // clang-format on
 
@@ -1007,7 +1006,7 @@ namespace OpenRCT2::Ui::Windows
         if (window == nullptr)
         {
             window = windowMgr->Create<RideListWindow>(
-                WindowClass::RideList, ScreenCoordsXY(32, 32), { WW, WH }, WF_10 | WF_RESIZABLE);
+                WindowClass::RideList, ScreenCoordsXY(32, 32), kWindowSize, WF_10 | WF_RESIZABLE);
         }
         return window;
     }

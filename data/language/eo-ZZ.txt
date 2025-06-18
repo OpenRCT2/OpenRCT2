@@ -2695,7 +2695,6 @@ STR_5549    :Jaro/Monato/Tago
 STR_5550    :{POP16}{POP16}Jaro {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Jaro/Tago/Monato
 STR_5552    :{POP16}{POP16}Jaro {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Paŭzi ludon kiam plustavolo de Steam estas malfermita
 STR_5554    :Ŝalti montilon
 STR_5555    :Montri veturilojn de aliaj traktipoj
 STR_5556    :Forigi ludanton
@@ -2919,7 +2918,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :Montri kadrojn ĉiusekunde enlude
 STR_5816    :Agordas proporcion por skali la ludon per.{NEWLINE}Plej utila ludante en{NEWLINE}altaj distingivoj
-STR_5819    :[Bezonas aparataran ekranon]{NEWLINE}Paŭzi la ludon se enluda plustavolo{NEWLINE}de Steam estas malfermita
 STR_5820    :Minimumigi la ludon se fokuso{NEWLINE}perdiĝas dum plenekrana reĝimo
 STR_5822    :Cikli inter tago kaj nokto.{NEWLINE}Plena ciklo daŭras unu enludan monaton
 STR_5823    :Montri rubandojn majuskle (RCT1-konduto)
