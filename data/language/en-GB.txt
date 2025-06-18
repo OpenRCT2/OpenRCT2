@@ -2766,9 +2766,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :“Real” Parks
 STR_5626    :Other Parks
-STR_5627    :Group scenario list by:
-STR_5628    :Source game
-STR_5629    :Difficulty level
 STR_5630    :Enable progressive unlocking
 STR_5631    :Original DLC Parks
 STR_5632    :Build your own…
@@ -3252,7 +3249,6 @@ STR_6165    :Use vertical sync
 STR_6166    :Synchronises each frame displayed to the monitor’s refresh rate, preventing screen tearing.
 STR_6167    :Advanced
 STR_6168    :Title Sequence
-STR_6169    :Scenario selection
 STR_6170    :Interface Tweaks
 STR_6171    :Search
 STR_6172    :Search

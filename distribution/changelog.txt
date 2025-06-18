@@ -10,6 +10,7 @@
 - Change: [objects#383] Disable all base colours on non-remappable WWTT vehicles, change black to light_blue.
 - Change: [objects#384] Remove erroneously enabled WWTT third remaps.
 - Removed: [#24628] “Pause game when Steam overlay is open” feature (already broken for a long time).
+- Removed: [#24640] Grouping by difficulty (instead of per campaign) in the scenario selector.
 - Fix: [#15846] Rightclicking on track piece when there is construction below does not work.
 - Fix: [#16176, #23113] Animated tile elements do not always redraw when there is over 2000.
 - Fix: [#17365] The slope of new land surfaces is only correct on one side when shifting and resizing the map.

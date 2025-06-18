@@ -508,20 +508,9 @@ private:
 
     void Sort()
     {
-        if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
-        {
-            std::sort(
-                _scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
-                    return ScenarioIndexEntryCompareByIndex(a, b) < 0;
-                });
-        }
-        else
-        {
-            std::sort(
-                _scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
-                    return ScenarioIndexEntryCompareByCategory(a, b) < 0;
-                });
-        }
+        std::sort(_scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
+            return ScenarioIndexEntryCompareByIndex(a, b) < 0;
+        });
     }
 
     void LoadScores()
