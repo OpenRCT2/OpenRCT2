@@ -20,13 +20,6 @@
     #undef interface
 #endif
 
-enum class GamepadStick : int32_t
-{
-    Left = 0,
-    Right = 1,
-    Disabled = 2
-};
-
 namespace OpenRCT2::Config
 {
     struct General
@@ -95,7 +88,6 @@ namespace OpenRCT2::Config
         // Gamepad
         int32_t GamepadDeadzone;
         float GamepadSensitivity;
-        GamepadStick SelectedGamepadStick;
 
         // Miscellaneous
         bool PlayIntro;

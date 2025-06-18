@@ -226,8 +226,6 @@ namespace OpenRCT2::Config
             // Gamepad settings
             model->GamepadDeadzone = reader->GetInt32("gamepad_deadzone", 3600);
             model->GamepadSensitivity = reader->GetFloat("gamepad_sensitivity", 1.5f);
-            model->SelectedGamepadStick = static_cast<GamepadStick>(
-                reader->GetInt32("gamepad_stick", static_cast<int32_t>(GamepadStick::Right)));
             model->ScenarioUnlockingEnabled = reader->GetBoolean("scenario_unlocking_enabled", true);
             model->ScenarioHideMegaPark = reader->GetBoolean("scenario_hide_mega_park", true);
             model->LastSaveGameDirectory = reader->GetString("last_game_directory", "");
@@ -323,7 +321,6 @@ namespace OpenRCT2::Config
         // Gamepad settings
         writer->WriteInt32("gamepad_deadzone", model->GamepadDeadzone);
         writer->WriteFloat("gamepad_sensitivity", model->GamepadSensitivity);
-        writer->WriteInt32("gamepad_stick", static_cast<int32_t>(model->SelectedGamepadStick));
         writer->WriteBoolean("scenario_unlocking_enabled", model->ScenarioUnlockingEnabled);
         writer->WriteBoolean("scenario_hide_mega_park", model->ScenarioHideMegaPark);
         writer->WriteString("last_game_directory", model->LastSaveGameDirectory);

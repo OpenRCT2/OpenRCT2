@@ -142,10 +142,6 @@ void InputManager::ProcessAnalogInput()
     _analogScroll.x = 0;
     _analogScroll.y = 0;
 
-    const GamepadStick gamepadStick = Config::Get().general.SelectedGamepadStick;
-    if (gamepadStick == GamepadStick::Disabled)
-        return;
-
     const int32_t deadzone = Config::Get().general.GamepadDeadzone;
     const float sensitivity = Config::Get().general.GamepadSensitivity;
 
@@ -153,19 +149,8 @@ void InputManager::ProcessAnalogInput()
     {
         if (gameController != nullptr)
         {
-            // Get stick X and Y values based on selected stick
-            // Note: these have to be **32-bit** integers, otherwise axis inversion would overflow
-            int32_t stickX, stickY;
-            if (gamepadStick == GamepadStick::Right)
-            {
-                stickX = SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_RIGHTX);
-                stickY = SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_RIGHTY);
-            }
-            else
-            {
-                stickX = SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_LEFTX);
-                stickY = SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_LEFTY);
-            }
+            int32_t stickX = SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_LEFTX);
+            int32_t stickY = SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_LEFTY);
 
             // Calculate the magnitude of the stick input vector
             float magnitude = std::sqrt(static_cast<float>(stickX * stickX + stickY * stickY));
