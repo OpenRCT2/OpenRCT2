@@ -16,6 +16,7 @@
 - Fix: [#24576] It is possible to edit open rides in certain circumstances.
 - Fix: [#24589] Music tab doesn’t fully render in multiplayer.
 - Fix: [#24615] Blank strings in Windows installer.
+- Fix: [#24617] ‘Divide by zero’ error when updating boat hire acceleration.
 
 0.4.23 (2025-06-07)
 ------------------------------------------------------------------------
