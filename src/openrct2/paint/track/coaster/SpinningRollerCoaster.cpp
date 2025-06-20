@@ -1160,7 +1160,7 @@ namespace OpenRCT2::SpinningRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::centre, 8, height, session.SupportColours);
+                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::centre, 5, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::StandardFlat);
@@ -1304,7 +1304,7 @@ namespace OpenRCT2::SpinningRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::centre, 8, height, session.SupportColours);
+                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::centre, 5, height, session.SupportColours);
                 switch (direction)
                 {
                     case 2:
