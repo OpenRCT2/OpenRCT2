@@ -21,7 +21,7 @@ namespace OpenRCT2::Ui::Windows
 {
     // clang-format off
     static constexpr Widget _mainWidgets[] = {
-        MakeWidget({0, 0}, {0, 0}, WindowWidgetType::Viewport, WindowColour::Primary),
+        makeWidget({0, 0}, {0, 0}, WidgetType::viewport, WindowColour::primary),
     };
     // clang-format on
 
@@ -78,6 +78,6 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->Create<MainWindow>(
-            WindowClass::MainWindow, { 0, 0 }, ContextGetWidth(), ContextGetHeight(), WF_STICK_TO_BACK | WF_NO_TITLE_BAR);
+            WindowClass::MainWindow, { 0, 0 }, { ContextGetWidth(), ContextGetHeight() }, WF_STICK_TO_BACK | WF_NO_TITLE_BAR);
     }
 } // namespace OpenRCT2::Ui::Windows

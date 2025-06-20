@@ -102,7 +102,6 @@ namespace OpenRCT2::Config
         ScenarioSelectMode scenarioSelectMode;
         bool ScenarioUnlockingEnabled;
         bool ScenarioHideMegaPark;
-        bool SteamOverlayPause;
         bool ShowRealNamesOfGuests;
         bool ShowRealNamesOfStaff;
         bool AllowEarlyCompletion;
@@ -142,7 +141,8 @@ namespace OpenRCT2::Config
         u8string CurrentThemePreset;
         u8string CurrentTitleSequencePreset;
         int32_t ObjectSelectionFilterFlags;
-        int32_t ScenarioselectLastTab;
+        int32_t scenarioSelectLastTab;
+        bool scenarioPreviewScreenshots;
         bool ListRideVehiclesSeparately;
         bool WindowButtonsOnTheLeft;
         bool EnlargedUi;

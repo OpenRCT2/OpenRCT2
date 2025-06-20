@@ -34,6 +34,8 @@ using ScenarioSelectCallback = void (*)(const utf8* path);
 
 namespace OpenRCT2::Ui::Windows
 {
+    constexpr int32_t kTabBarHeight = 43;
+
     extern bool gWindowSceneryScatterEnabled;
     extern uint16_t gWindowSceneryScatterSize;
     extern ScatterToolDensity gWindowSceneryScatterDensity;
@@ -169,9 +171,6 @@ namespace OpenRCT2::Ui::Windows
 
     // News
     WindowBase* NewsOpen();
-
-    // NewsOptions
-    WindowBase* NewsOptionsOpen();
 
     // NetworkStatus
     WindowBase* NetworkStatusOpen(const std::string& text, CloseCallback onClose);

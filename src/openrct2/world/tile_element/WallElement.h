@@ -20,10 +20,12 @@
 
 enum
 {
+    WALL_ANIMATION_FLAG_IS_ANIMATING = (1 << 1),
     WALL_ANIMATION_FLAG_ACROSS_TRACK = (1 << 2),
     // 3 - 6 animation frame number
     WALL_ANIMATION_FLAG_DIRECTION_BACKWARD = (1 << 7),
-    WALL_ANIMATION_FLAG_ALL_FLAGS = WALL_ANIMATION_FLAG_ACROSS_TRACK | WALL_ANIMATION_FLAG_DIRECTION_BACKWARD
+    WALL_ANIMATION_FLAG_ALL_FLAGS = WALL_ANIMATION_FLAG_IS_ANIMATING | WALL_ANIMATION_FLAG_ACROSS_TRACK
+        | WALL_ANIMATION_FLAG_DIRECTION_BACKWARD
 };
 
 #pragma pack(push, 1)
@@ -37,7 +39,7 @@ private:
     colour_t colour_2;           // 08
     colour_t colour_3;           // 09
     BannerIndex banner_index;    // 0A
-    uint8_t animation;           // 0C 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
+    uint8_t animation; // 0C 0b_dfff_fta0 d = direction, f = frame num, t = across track flag (not used), a = animating
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t Pad0D[3];
@@ -60,6 +62,9 @@ public:
 
     uint8_t GetAnimationFrame() const;
     void SetAnimationFrame(uint8_t frameNum);
+
+    bool IsAnimating() const;
+    void SetIsAnimating(const bool isAnimating);
 
     Banner* GetBanner() const;
     BannerIndex GetBannerIndex() const;

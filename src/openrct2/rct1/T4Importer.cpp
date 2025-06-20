@@ -100,6 +100,12 @@ namespace OpenRCT2::RCT1
                 td->appearance.trackColours[i].additional = RCT1::GetColour(td4aa.TrackRailColour[i]);
                 td->appearance.trackColours[i].supports = RCT1::GetColour(td4aa.TrackSupportColour[i]);
             }
+            // The maze style is saved in the support colour, but taking it through the conversion function
+            // will mess up style 3 (wooden fences).
+            if (td4aa.Type == RideType::HedgeMaze)
+            {
+                td->appearance.trackColours[0].supports = td4aa.TrackSupportColour[0];
+            }
 
             return ImportTD4Base(std::move(td), td4aa);
         }

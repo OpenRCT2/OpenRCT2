@@ -91,8 +91,8 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate scenery
     WindowBase* w = windowMgr->FindByClass(WindowClass::Scenery);
-    if (w != nullptr && !WidgetIsDisabled(*w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
-        && w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type != WindowWidgetType::Empty)
+    if (w != nullptr && !widgetIsDisabled(*w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
+        && w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type != WidgetType::empty)
     {
         w->OnMouseUp(WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
         return;
@@ -100,8 +100,8 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate construction track piece
     w = windowMgr->FindByClass(WindowClass::RideConstruction);
-    if (w != nullptr && !WidgetIsDisabled(*w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE)
-        && w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].type != WindowWidgetType::Empty)
+    if (w != nullptr && !widgetIsDisabled(*w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE)
+        && w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].type != WidgetType::empty)
     {
         // Check if building a maze...
         if (w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].tooltip != STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP)
@@ -113,8 +113,8 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate track design preview
     w = windowMgr->FindByClass(WindowClass::TrackDesignList);
-    if (w != nullptr && !WidgetIsDisabled(*w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE)
-        && w->widgets[WC_TRACK_DESIGN_LIST__WIDX_ROTATE].type != WindowWidgetType::Empty)
+    if (w != nullptr && !widgetIsDisabled(*w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE)
+        && w->widgets[WC_TRACK_DESIGN_LIST__WIDX_ROTATE].type != WidgetType::empty)
     {
         w->OnMouseUp(WC_TRACK_DESIGN_LIST__WIDX_ROTATE);
         return;
@@ -122,8 +122,8 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate track design placement
     w = windowMgr->FindByClass(WindowClass::TrackDesignPlace);
-    if (w != nullptr && !WidgetIsDisabled(*w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE)
-        && w->widgets[WC_TRACK_DESIGN_PLACE__WIDX_ROTATE].type != WindowWidgetType::Empty)
+    if (w != nullptr && !widgetIsDisabled(*w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE)
+        && w->widgets[WC_TRACK_DESIGN_PLACE__WIDX_ROTATE].type != WidgetType::empty)
     {
         w->OnMouseUp(WC_TRACK_DESIGN_PLACE__WIDX_ROTATE);
         return;
@@ -131,8 +131,8 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate park entrance
     w = windowMgr->FindByClass(WindowClass::EditorParkEntrance);
-    if (w != nullptr && !WidgetIsDisabled(*w, WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON)
-        && w->widgets[WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON].type != WindowWidgetType::Empty)
+    if (w != nullptr && !widgetIsDisabled(*w, WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON)
+        && w->widgets[WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON].type != WidgetType::empty)
     {
         w->OnMouseUp(WC_EDITOR_PARK_ENTRANCE__WIDX_ROTATE_ENTRANCE_BUTTON);
         return;
@@ -140,8 +140,8 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate selected element in tile inspector
     w = windowMgr->FindByClass(WindowClass::TileInspector);
-    if (w != nullptr && !WidgetIsDisabled(*w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE)
-        && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE].type != WindowWidgetType::Empty)
+    if (w != nullptr && !widgetIsDisabled(*w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE)
+        && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE].type != WidgetType::empty)
     {
         w->OnMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE);
         return;
@@ -447,7 +447,7 @@ static void ShortcutOpenSceneryPicker()
         ToggleSceneryWindow();
 
     window_scenery = windowMgr->FindByClass(WindowClass::Scenery);
-    if (window_scenery != nullptr && !WidgetIsDisabled(*window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
+    if (window_scenery != nullptr && !widgetIsDisabled(*window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
         && !gWindowSceneryEyedropperEnabled)
     {
         window_scenery->OnMouseUp(WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON);
@@ -479,7 +479,7 @@ static void TileInspectorMouseUp(WidgetIndex widgetIndex)
 {
     auto* windowMgr = GetWindowManager();
     auto w = windowMgr->FindByClass(WindowClass::TileInspector);
-    if (w != nullptr && !WidgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)
+    if (w != nullptr && !widgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WidgetType::empty)
     {
         w->OnMouseUp(widgetIndex);
     }
@@ -489,7 +489,7 @@ static void TileInspectorMouseDown(WidgetIndex widgetIndex)
 {
     auto* windowMgr = GetWindowManager();
     auto w = windowMgr->FindByClass(WindowClass::TileInspector);
-    if (w != nullptr && !WidgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WindowWidgetType::Empty)
+    if (w != nullptr && !widgetIsDisabled(*w, widgetIndex) && w->widgets[widgetIndex].type != WidgetType::empty)
     {
         w->OnMouseDown(widgetIndex);
     }
@@ -561,7 +561,7 @@ static void ShortcutIncreaseElementHeight()
                 action = WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_INCREASE;
                 break;
         }
-        if (action != -1 && !WidgetIsDisabled(*w, action) && w->widgets[action].type != WindowWidgetType::Empty)
+        if (action != -1 && !widgetIsDisabled(*w, action) && w->widgets[action].type != WidgetType::empty)
             w->OnMouseDown(action);
         return;
     }
@@ -601,7 +601,7 @@ static void ShortcutDecreaseElementHeight()
                 action = WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_DECREASE;
                 break;
         }
-        if (action != -1 && !WidgetIsDisabled(*w, action) && w->widgets[action].type != WindowWidgetType::Empty)
+        if (action != -1 && !widgetIsDisabled(*w, action) && w->widgets[action].type != WidgetType::empty)
             w->OnMouseDown(action);
         return;
     }

@@ -19,8 +19,7 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr int32_t WW = 200;
-    static constexpr int32_t WH = 100;
+    static constexpr ScreenSize kWindowSize = { 200, 100 };
 
     enum WindowRideRefurbishWidgetIdx
     {
@@ -32,12 +31,11 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static constexpr Widget window_ride_refurbish_widgets[] =
-    {
-        WINDOW_SHIM(STR_REFURBISH_RIDE, WW, WH),
-        MakeWidget({ 10, WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_REFURBISH),
-        MakeWidget({ WW - 95, WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
-    };
+    static constexpr auto window_ride_refurbish_widgets = makeWidgets(
+        makeWindowShim(STR_REFURBISH_RIDE, kWindowSize                                                                                                   ),
+        makeWidget    ({                     10, kWindowSize.height - 22 }, { 85, 14 }, WidgetType::button, WindowColour::primary, STR_REFURBISH         ),
+        makeWidget    ({ kWindowSize.width - 95, kWindowSize.height - 22 }, { 85, 14 }, WidgetType::button, WindowColour::primary, STR_SAVE_PROMPT_CANCEL)
+    );
     // clang-format on
 
     class RefurbishRidePromptWindow final : public Window
@@ -87,8 +85,8 @@ namespace OpenRCT2::Ui::Windows
                 currentRide->formatNameTo(ft);
                 ft.Add<money64>(_demolishRideCost / 2);
 
-                ScreenCoordsXY stringCoords(windowPos.x + WW / 2, windowPos.y + (WH / 2) - 3);
-                DrawTextWrapped(rt, stringCoords, WW - 4, stringId, ft, { TextAlignment::CENTRE });
+                ScreenCoordsXY stringCoords(windowPos.x + kWindowSize.width / 2, windowPos.y + (kWindowSize.height / 2) - 3);
+                DrawTextWrapped(rt, stringCoords, kWindowSize.width - 4, stringId, ft, { TextAlignment::CENTRE });
             }
         }
     };
@@ -105,12 +103,12 @@ namespace OpenRCT2::Ui::Windows
             windowMgr->Close(*w);
 
             newWindow = windowMgr->Create<RefurbishRidePromptWindow>(
-                WindowClass::DemolishRidePrompt, windowPos, WW, WH, WF_TRANSPARENT);
+                WindowClass::DemolishRidePrompt, windowPos, kWindowSize, WF_TRANSPARENT);
         }
         else
         {
             newWindow = windowMgr->Create<RefurbishRidePromptWindow>(
-                WindowClass::DemolishRidePrompt, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+                WindowClass::DemolishRidePrompt, kWindowSize, WF_CENTRE_SCREEN | WF_TRANSPARENT);
         }
 
         newWindow->SetRide(ride);

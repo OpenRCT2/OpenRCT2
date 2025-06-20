@@ -19,12 +19,10 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_STRING;
-    static constexpr int32_t WH = 44;
-    static constexpr int32_t WW = 250;
-    static constexpr int32_t WH_DELETE_PROMPT = 74;
-    static constexpr int32_t WW_DELETE_PROMPT = 250;
-    static constexpr int32_t TrackDesignNameMaxLength = 127;
+    static constexpr StringId kWindowTitle = STR_STRING;
+    static constexpr ScreenSize kWindowSize = { 250, 44 };
+    static constexpr ScreenSize kWindowSizeDeletePrompt = { 250, 74 };
+    static constexpr int32_t kTrackDesignNameMaxLength = 127;
 
 #pragma region Widgets
 
@@ -41,17 +39,17 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static constexpr Widget _trackManageWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget({ 10, 24}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_RENAME),
-        MakeWidget({130, 24}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_DELETE),
-    };
+    static constexpr auto _trackManageWidgets = makeWidgets(
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({ 10, 24}, {110, 12}, WidgetType::button, WindowColour::primary, STR_TRACK_MANAGE_RENAME),
+        makeWidget({130, 24}, {110, 12}, WidgetType::button, WindowColour::primary, STR_TRACK_MANAGE_DELETE)
+    );
 
-    static constexpr Widget _trackDeletePromptWidgets[] = {
-        WINDOW_SHIM(STR_DELETE_FILE, WW_DELETE_PROMPT, WH_DELETE_PROMPT),
-        MakeWidget({ 10, 54}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_DELETE),
-        MakeWidget({130, 54}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL             ),
-    };
+    static constexpr auto _trackDeletePromptWidgets = makeWidgets(
+        makeWindowShim(STR_DELETE_FILE, kWindowSizeDeletePrompt),
+        makeWidget({ 10, 54}, {110, 12}, WidgetType::button, WindowColour::primary, STR_TRACK_MANAGE_DELETE),
+        makeWidget({130, 54}, {110, 12}, WidgetType::button, WindowColour::primary, STR_CANCEL             )
+    );
     // clang-format on
 
 #pragma endregion
@@ -103,7 +101,7 @@ namespace OpenRCT2::Ui::Windows
         auto trackDesignManageWindow = std::make_unique<TrackDesignManageWindow>(tdFileRef);
 
         auto* window = windowMgr->Create(
-            std::move(trackDesignManageWindow), WindowClass::ManageTrackDesign, {}, WW, WH,
+            std::move(trackDesignManageWindow), WindowClass::ManageTrackDesign, {}, kWindowSize,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_AUTO_POSITION);
 
         return window;
@@ -136,7 +134,7 @@ namespace OpenRCT2::Ui::Windows
             case WIDX_RENAME:
                 WindowTextInputRawOpen(
                     this, widgetIndex, STR_TRACK_DESIGN_RENAME_TITLE, STR_TRACK_DESIGN_RENAME_DESC, {},
-                    _trackDesignFileReference->name.c_str(), TrackDesignNameMaxLength);
+                    _trackDesignFileReference->name.c_str(), kTrackDesignNameMaxLength);
                 break;
             case WIDX_DELETE:
                 WindowTrackDeletePromptOpen(_trackDesignFileReference);
@@ -192,7 +190,7 @@ namespace OpenRCT2::Ui::Windows
         auto trackDeletePromptWindow = std::make_unique<TrackDeletePromptWindow>(tdFileRef);
 
         windowMgr->Create(
-            std::move(trackDeletePromptWindow), WindowClass::TrackDeletePrompt, {}, WW_DELETE_PROMPT, WH_DELETE_PROMPT,
+            std::move(trackDeletePromptWindow), WindowClass::TrackDeletePrompt, {}, kWindowSizeDeletePrompt,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_AUTO_POSITION | WF_CENTRE_SCREEN);
     }
 
@@ -235,7 +233,8 @@ namespace OpenRCT2::Ui::Windows
         auto ft = Formatter();
         ft.Add<const utf8*>(_trackDesignFileReference->name.c_str());
         DrawTextWrapped(
-            rt, { windowPos.x + (WW_DELETE_PROMPT / 2), windowPos.y + ((WH_DELETE_PROMPT / 2) - 9) }, (WW_DELETE_PROMPT - 4),
-            STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, ft, { TextAlignment::CENTRE });
+            rt, windowPos + ScreenCoordsXY{ (kWindowSizeDeletePrompt.width / 2), ((kWindowSizeDeletePrompt.height / 2) - 9) },
+            (kWindowSizeDeletePrompt.width - 4), STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, ft,
+            { TextAlignment::CENTRE });
     }
 } // namespace OpenRCT2::Ui::Windows

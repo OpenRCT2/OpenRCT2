@@ -833,7 +833,7 @@ OpenRCT2::Widget* CustomListView::GetWidget() const
     for (WidgetIndex widgetIndex = 0; widgetIndex < ParentWindow->widgets.size(); widgetIndex++)
     {
         auto& widget = ParentWindow->widgets[widgetIndex];
-        if (widget.type == WindowWidgetType::Scroll)
+        if (widget.type == WidgetType::scroll)
         {
             if (scrollIndex == ScrollIndex)
             {

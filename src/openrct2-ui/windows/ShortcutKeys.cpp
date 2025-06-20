@@ -23,12 +23,9 @@ namespace OpenRCT2::Ui::Windows
 {
     WindowBase* ResetShortcutKeysPromptOpen();
 
-    static constexpr StringId WINDOW_TITLE = STR_SHORTCUTS_TITLE;
-    static constexpr int32_t WW = 420;
-    static constexpr int32_t WH = 280;
-
-    static constexpr int32_t WW_SC_MAX = 1200;
-    static constexpr int32_t WH_SC_MAX = 800;
+    static constexpr StringId kWindowTitle = STR_SHORTCUTS_TITLE;
+    static constexpr ScreenSize kWindowSize = { 420, 280 };
+    static constexpr ScreenSize kMaximumWindowSize = { 1200, 800 };
 
     enum WindowShortcutWidgetIdx
     {
@@ -42,17 +39,16 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static constexpr Widget _shortcutWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget({0,    43}, {350, 287}, WindowWidgetType::Resize, WindowColour::Secondary),
-        MakeWidget({4,    47}, {412, 215}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
-        MakeWidget({4, WH-15}, {150,  12}, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP),
-    };
+    static constexpr auto _shortcutWidgets = makeWidgets(
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({0,                      43}, {350, 287}, WidgetType::resize, WindowColour::secondary                                                        ),
+        makeWidget({4,                      47}, {412, 215}, WidgetType::scroll, WindowColour::primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
+        makeWidget({4, kWindowSize.height - 15}, {150,  12}, WidgetType::button, WindowColour::primary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP)
+    );
     // clang-format on
 
-    static constexpr StringId CHANGE_WINDOW_TITLE = STR_SHORTCUT_CHANGE_TITLE;
-    static constexpr int32_t CHANGE_WW = 250;
-    static constexpr int32_t CHANGE_WH = 80;
+    static constexpr StringId kWindowTitleChange = STR_SHORTCUT_CHANGE_TITLE;
+    static constexpr ScreenSize kWindowSizeChange = { 250, 80 };
 
     enum
     {
@@ -60,10 +56,10 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static constexpr Widget window_shortcut_change_widgets[] = {
-        WINDOW_SHIM(CHANGE_WINDOW_TITLE, CHANGE_WW, CHANGE_WH),
-        MakeWidget({ 75, 56 }, { 100, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_REMOVE, STR_SHORTCUT_REMOVE_TIP),
-    };
+    static constexpr auto window_shortcut_change_widgets = makeWidgets(
+        makeWindowShim(kWindowTitleChange, kWindowSizeChange),
+        makeWidget({ 75, 56 }, { 100, 14 }, WidgetType::button, WindowColour::primary, STR_SHORTCUT_REMOVE, STR_SHORTCUT_REMOVE_TIP)
+    );
     // clang-format on
 
     class ChangeShortcutWindow final : public Window
@@ -83,7 +79,7 @@ namespace OpenRCT2::Ui::Windows
                 auto* windowMgr = GetWindowManager();
                 windowMgr->CloseByClass(WindowClass::ChangeKeyboardShortcut);
                 auto* w = windowMgr->Create<ChangeShortcutWindow>(
-                    WindowClass::ChangeKeyboardShortcut, CHANGE_WW, CHANGE_WH, WF_CENTRE_SCREEN);
+                    WindowClass::ChangeKeyboardShortcut, kWindowSizeChange, WF_CENTRE_SCREEN);
                 if (w != nullptr)
                 {
                     w->_shortcutId = shortcutId;
@@ -199,13 +195,13 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            WindowSetResize(*this, { WW, WH }, { WW_SC_MAX, WH_SC_MAX });
+            WindowSetResize(*this, kWindowSize, kMaximumWindowSize);
         }
 
         void OnUpdate() override
         {
             // Remove highlight when the mouse is not hovering over the list
-            if (_highlightedItem != -1 && !WidgetIsHighlighted(*this, WIDX_SCROLL))
+            if (_highlightedItem != -1 && !widgetIsHighlighted(*this, WIDX_SCROLL))
             {
                 _highlightedItem = -1;
                 InvalidateWidget(WIDX_SCROLL);
@@ -454,7 +450,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t x = 3;
             for (size_t i = 0; i < _tabs.size(); i++)
             {
-                auto tab = MakeTab({ x, 17 }, kStringIdNone);
+                auto tab = makeTab({ x, 17 }, kStringIdNone);
                 widgets.push_back(tab);
                 x += 31;
             }
@@ -558,14 +554,13 @@ namespace OpenRCT2::Ui::Windows
         auto w = windowMgr->BringToFrontByClass(WindowClass::KeyboardShortcutList);
         if (w == nullptr)
         {
-            w = windowMgr->Create<ShortcutKeysWindow>(WindowClass::KeyboardShortcutList, WW, WH, WF_RESIZABLE);
+            w = windowMgr->Create<ShortcutKeysWindow>(WindowClass::KeyboardShortcutList, kWindowSize, WF_RESIZABLE);
         }
         return w;
     }
 
 #pragma region Reset prompt
-    static constexpr int32_t RESET_PROMPT_WW = 200;
-    static constexpr int32_t RESET_PROMPT_WH = 80;
+    static constexpr ScreenSize kWindowSizeReset = { 200, 80 };
 
     enum
     {
@@ -577,16 +572,14 @@ namespace OpenRCT2::Ui::Windows
         WIDX_RESET_PROMPT_CANCEL
     };
 
-    static constexpr Widget WindowResetShortcutKeysPromptWidgets[] = {
-        WINDOW_SHIM(STR_SHORTCUT_ACTION_RESET, RESET_PROMPT_WW, RESET_PROMPT_WH),
-        MakeWidget(
-            { 2, 30 }, { RESET_PROMPT_WW - 4, 12 }, WindowWidgetType::LabelCentred, WindowColour::Primary,
-            STR_RESET_SHORTCUT_KEYS_PROMPT),
-        MakeWidget({ 8, RESET_PROMPT_WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_RESET),
-        MakeWidget(
-            { RESET_PROMPT_WW - 95, RESET_PROMPT_WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary,
-            STR_SAVE_PROMPT_CANCEL),
-    };
+    // clang-format off
+    static constexpr auto WindowResetShortcutKeysPromptWidgets = makeWidgets(
+        makeWindowShim(STR_SHORTCUT_ACTION_RESET, kWindowSizeReset),
+        makeWidget({                           2,                           30 }, { kWindowSizeReset.width - 4, 12 }, WidgetType::labelCentred, WindowColour::primary, STR_RESET_SHORTCUT_KEYS_PROMPT),
+        makeWidget({                           8, kWindowSizeReset.height - 22 }, {                         85, 14 }, WidgetType::button,       WindowColour::primary, STR_RESET),
+        makeWidget({ kWindowSizeReset.width - 95, kWindowSizeReset.height - 22 }, {                         85, 14 }, WidgetType::button,       WindowColour::primary, STR_SAVE_PROMPT_CANCEL)
+    );
+    // clang-format on
 
     class ResetShortcutKeysPrompt final : public Window
     {
@@ -622,7 +615,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<ResetShortcutKeysPrompt>(
-            WindowClass::ResetShortcutKeysPrompt, RESET_PROMPT_WW, RESET_PROMPT_WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+            WindowClass::ResetShortcutKeysPrompt, kWindowSizeReset, WF_CENTRE_SCREEN | WF_TRANSPARENT);
     }
 #pragma endregion
 } // namespace OpenRCT2::Ui::Windows

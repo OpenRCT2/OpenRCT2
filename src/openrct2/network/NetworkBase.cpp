@@ -49,7 +49,7 @@ using namespace OpenRCT2;
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-constexpr uint8_t kNetworkStreamVersion = 2;
+constexpr uint8_t kNetworkStreamVersion = 0;
 
 const std::string kNetworkStreamID = std::string(kOpenRCT2Version) + "-" + std::to_string(kNetworkStreamVersion);
 
@@ -2848,12 +2848,13 @@ bool NetworkBase::LoadMap(IStream* stream)
         auto loadResult = importer->LoadFromStream(stream, false);
         objManager.LoadObjects(loadResult.RequiredObjects);
 
+        MapAnimations::ClearAll();
         // TODO: Have a separate GameState and exchange once loaded.
         auto& gameState = getGameState();
         importer->Import(gameState);
 
         EntityTweener::Get().Reset();
-        MapAnimationAutoCreate();
+        MapAnimations::MarkAllTiles();
 
         gLastAutoSaveUpdate = kAutosavePause;
         result = true;

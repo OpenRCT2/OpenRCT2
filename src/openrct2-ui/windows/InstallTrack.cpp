@@ -44,21 +44,20 @@ namespace OpenRCT2::Ui::Windows
         WIDX_CANCEL
     };
 
-    static constexpr StringId WINDOW_TITLE = STR_TRACK_DESIGN_INSTALL_WINDOW_TITLE;
-    static constexpr int32_t WW = 380;
-    static constexpr int32_t WH = 460;
-    constexpr int32_t PREVIEW_BUTTONS_LEFT = WW - 25;
-    constexpr int32_t ACTION_BUTTONS_LEFT = WW - 100;
+    static constexpr StringId kWindowTitle = STR_TRACK_DESIGN_INSTALL_WINDOW_TITLE;
+    static constexpr ScreenSize kWindowSize = { 380, 460 };
+    constexpr int32_t kPreviewButtonsLeft = kWindowSize.width - 25;
+    constexpr int32_t kActionButtonsLeft = kWindowSize.width - 100;
 
     // clang-format off
-    static constexpr Widget window_install_track_widgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget({                   4,  18}, {372, 219}, WindowWidgetType::FlatBtn, WindowColour::Primary                                                              ),
-        MakeWidget({PREVIEW_BUTTONS_LEFT, 422}, { 22,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_ROTATE_ARROW),                     STR_ROTATE_90_TIP     ),
-        MakeWidget({PREVIEW_BUTTONS_LEFT, 398}, { 22,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_SCENERY),                          STR_TOGGLE_SCENERY_TIP),
-        MakeWidget({ ACTION_BUTTONS_LEFT, 241}, { 97,  15}, WindowWidgetType::Button,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_INSTALL                        ),
-        MakeWidget({ ACTION_BUTTONS_LEFT, 259}, { 97,  15}, WindowWidgetType::Button,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_CANCEL                         ),
-    };
+    static constexpr auto window_install_track_widgets = makeWidgets(
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({                  4,  18}, {372, 219}, WidgetType::flatBtn, WindowColour::primary                                                              ),
+        makeWidget({kPreviewButtonsLeft, 422}, { 22,  24}, WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_ROTATE_ARROW),            STR_ROTATE_90_TIP     ),
+        makeWidget({kPreviewButtonsLeft, 398}, { 22,  24}, WidgetType::flatBtn, WindowColour::primary, ImageId(SPR_SCENERY),                 STR_TOGGLE_SCENERY_TIP),
+        makeWidget({ kActionButtonsLeft, 241}, { 97,  15}, WidgetType::button,  WindowColour::primary, STR_INSTALL_NEW_TRACK_DESIGN_INSTALL                        ),
+        makeWidget({ kActionButtonsLeft, 259}, { 97,  15}, WidgetType::button,  WindowColour::primary, STR_INSTALL_NEW_TRACK_DESIGN_CANCEL                         )
+    );
     // clang-format on
 
     class InstallTrackWindow final : public Window
@@ -424,7 +423,7 @@ namespace OpenRCT2::Ui::Windows
         _currentTrackPieceDirection = 2;
 
         auto* window = windowMgr->FocusOrCreate<InstallTrackWindow>(
-            WindowClass::InstallTrack, WW, WH, WF_AUTO_POSITION | WF_CENTRE_SCREEN);
+            WindowClass::InstallTrack, kWindowSize, WF_AUTO_POSITION | WF_CENTRE_SCREEN);
         window->SetupTrack(path, std::move(trackDesign));
 
         return window;

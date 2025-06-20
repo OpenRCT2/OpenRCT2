@@ -72,8 +72,7 @@ namespace OpenRCT2::Ui
         }
 
         WindowBase* Create(
-            std::unique_ptr<WindowBase>&& w, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height,
-            WindowFlags flags) override
+            std::unique_ptr<WindowBase>&& w, WindowClass cls, ScreenCoordsXY pos, ScreenSize size, WindowFlags flags) override
         {
             return nullptr;
         }

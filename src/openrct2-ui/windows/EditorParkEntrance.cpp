@@ -34,8 +34,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr int32_t kScrollPadding = 2;
     static constexpr int32_t kScrollWidth = (kImageSize * kNumColumns) + kScrollBarWidth + 4;
     static constexpr int32_t kScrollHeight = (kImageSize * kNumRows);
-    static constexpr int32_t kWindowWidth = kScrollWidth + 28;
-    static constexpr int32_t kWindowHeight = kScrollHeight + 51;
+    static constexpr ScreenSize kWindowSize = { kScrollWidth + 28, kScrollHeight + 51 };
 
     struct EntranceSelection
     {
@@ -58,13 +57,13 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_EDITOR_PARK_ENTRANCE, WIDX_ROTATE_ENTRANCE_BUTTON);
 
     // clang-format off
-    static Widget _widgets[] = {
-        WINDOW_SHIM(kWindowTitle, kWindowWidth, kWindowHeight),
-        MakeWidget     ({                 0, 43 }, { kWindowWidth, kWindowHeight - 43 }, WindowWidgetType::Resize,  WindowColour::Secondary                                                   ),
-        MakeTab        ({                 3, 17 },                                                                                           kStringIdNone                                         ),
-        MakeWidget     ({                 2, 45 }, { kScrollWidth, kScrollHeight      }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                                  ),
-        MakeWidget     ({ kWindowWidth - 26, 59 }, {           24,            24      }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW), STR_ROTATE_OBJECTS_90 ),
-    };
+    static constexpr auto _widgets = makeWidgets(
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget     ({                      0, 43 }, { kWindowSize.width, kWindowSize.height - 43 }, WidgetType::resize,  WindowColour::secondary                                                   ),
+        makeTab        ({                      3, 17 },                                                                                               kStringIdNone                                    ),
+        makeWidget     ({                      2, 45 }, {      kScrollWidth,           kScrollHeight }, WidgetType::scroll,  WindowColour::secondary, SCROLL_VERTICAL                                  ),
+        makeWidget     ({ kWindowSize.width - 26, 59 }, {                24,                      24 }, WidgetType::flatBtn, WindowColour::secondary, ImageId(SPR_ROTATE_ARROW), STR_ROTATE_OBJECTS_90 )
+    );
     // clang-format on
 
     class EditorParkEntrance final : public Window
@@ -247,8 +246,8 @@ namespace OpenRCT2::Ui::Windows
 
             list_information_type = 0;
 
-            auto maxHeight = static_cast<int16_t>(kWindowHeight + kImageSize * (GetNumRows() - 1));
-            WindowSetResize(*this, { kWindowWidth, kWindowHeight }, { kWindowWidth, maxHeight });
+            auto maxHeight = static_cast<int16_t>(kWindowSize.height + kImageSize * (GetNumRows() - 1));
+            WindowSetResize(*this, kWindowSize, { kWindowSize.width, maxHeight });
 
             pressed_widgets |= 1LL << WIDX_TAB;
 
@@ -395,8 +394,7 @@ namespace OpenRCT2::Ui::Windows
         if (window != nullptr)
             return window;
 
-        window = windowMgr->Create<EditorParkEntrance>(
-            WindowClass::EditorParkEntrance, kWindowWidth, kWindowHeight, WF_10 | WF_RESIZABLE);
+        window = windowMgr->Create<EditorParkEntrance>(WindowClass::EditorParkEntrance, kWindowSize, WF_10 | WF_RESIZABLE);
 
         return window;
     }

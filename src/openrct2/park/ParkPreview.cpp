@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
+#include "../SpriteIds.h"
 #include "../core/Numerics.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/X8DrawingEngine.h"
@@ -244,27 +245,14 @@ namespace OpenRCT2
 
     void drawPreviewImage(const PreviewImage& image, RenderTarget& rt, ScreenCoordsXY screenPos)
     {
-        auto* drawingEngine = GetContext()->GetDrawingEngine();
-        if (drawingEngine == nullptr)
-            return;
+        G1Element g1temp = {};
+        g1temp.offset = const_cast<uint8_t*>(image.pixels);
+        g1temp.width = image.width;
+        g1temp.height = image.height;
 
-        const auto imageId = ImageId(0);
-        auto* g1 = const_cast<G1Element*>(GfxGetG1Element(imageId));
-        if (g1 != nullptr)
-        {
-            // Temporarily substitute a G1 image with the data in the preview image
-            const auto backupG1 = *g1;
-            *g1 = {};
-            g1->offset = const_cast<uint8_t*>(image.pixels);
-            g1->width = image.width;
-            g1->height = image.height;
-            drawingEngine->InvalidateImage(imageId.GetIndex());
-
-            // Draw preview image and restore original G1 image
-            GfxDrawSprite(rt, imageId, screenPos);
-            *g1 = backupG1;
-            drawingEngine->InvalidateImage(imageId.GetIndex());
-        }
+        GfxSetG1Element(SPR_TEMP, &g1temp);
+        DrawingEngineInvalidateImage(SPR_TEMP);
+        GfxDrawSprite(rt, ImageId(SPR_TEMP), screenPos);
     }
 
 } // namespace OpenRCT2

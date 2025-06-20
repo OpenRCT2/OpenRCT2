@@ -112,8 +112,6 @@ public:
                 return ResearchOpen();
             case WindowClass::RideList:
                 return RideListOpen();
-            case WindowClass::NotificationOptions:
-                return NewsOptionsOpen();
             case WindowClass::Options:
                 return OptionsOpen();
             case WindowClass::SavePrompt:
@@ -660,7 +658,7 @@ public:
         return nullptr;
     }
 
-    static bool WindowFitsBetweenOthers(const ScreenCoordsXY& loc, int32_t width, int32_t height)
+    static bool WindowFitsBetweenOthers(const ScreenCoordsXY& loc, const ScreenSize windowSize)
     {
         for (auto& w : g_window_list)
         {
@@ -669,11 +667,11 @@ public:
             if (w->flags & WF_STICK_TO_BACK)
                 continue;
 
-            if (loc.x + width <= w->windowPos.x)
+            if (loc.x + windowSize.width <= w->windowPos.x)
                 continue;
             if (loc.x >= w->windowPos.x + w->width)
                 continue;
-            if (loc.y + height <= w->windowPos.y)
+            if (loc.y + windowSize.height <= w->windowPos.y)
                 continue;
             if (loc.y >= w->windowPos.y + w->height)
                 continue;
@@ -683,26 +681,26 @@ public:
         return true;
     }
 
-    static bool WindowFitsWithinSpace(const ScreenCoordsXY& loc, int32_t width, int32_t height)
+    static bool WindowFitsWithinSpace(const ScreenCoordsXY& loc, ScreenSize windowSize)
     {
         if (loc.x < 0)
             return false;
         if (loc.y <= kTopToolbarHeight && gLegacyScene != LegacyScene::titleSequence)
             return false;
-        if (loc.x + width > ContextGetWidth())
+        if (loc.x + windowSize.width > ContextGetWidth())
             return false;
-        if (loc.y + height > ContextGetHeight())
+        if (loc.y + windowSize.height > ContextGetHeight())
             return false;
-        return WindowFitsBetweenOthers(loc, width, height);
+        return WindowFitsBetweenOthers(loc, windowSize);
     }
 
-    static bool WindowFitsOnScreen(const ScreenCoordsXY& loc, int32_t width, int32_t height)
+    static bool WindowFitsOnScreen(const ScreenCoordsXY& loc, const ScreenSize windowSize)
     {
         uint16_t screenWidth = ContextGetWidth();
         uint16_t screenHeight = ContextGetHeight();
         int32_t unk;
 
-        unk = -(width / 4);
+        unk = -(windowSize.width / 4);
         if (loc.x < unk)
             return false;
         unk = screenWidth + (unk * 2);
@@ -710,50 +708,48 @@ public:
             return false;
         if (loc.y <= kTopToolbarHeight && gLegacyScene != LegacyScene::titleSequence)
             return false;
-        unk = screenHeight - (height / 4);
+        unk = screenHeight - (windowSize.height / 4);
         if (loc.y > unk)
             return false;
-        return WindowFitsBetweenOthers(loc, width, height);
+        return WindowFitsBetweenOthers(loc, windowSize);
     }
 
     static ScreenCoordsXY ClampWindowToScreen(
-        const ScreenCoordsXY& pos, const int32_t screenWidth, const int32_t screenHeight, const int32_t width,
-        const int32_t height)
+        const ScreenCoordsXY& pos, const ScreenSize screenSize, const ScreenSize windowSize)
     {
         auto screenPos = pos;
-        if (width > screenWidth || screenPos.x < 0)
+        if (windowSize.width > screenSize.width || screenPos.x < 0)
             screenPos.x = 0;
-        else if (screenPos.x + width > screenWidth)
-            screenPos.x = screenWidth - width;
+        else if (screenPos.x + windowSize.width > screenSize.width)
+            screenPos.x = screenSize.width - windowSize.width;
 
         auto toolbarAllowance = gLegacyScene == LegacyScene::titleSequence ? 0 : (kTopToolbarHeight + 1);
-        if (height - toolbarAllowance > screenHeight || screenPos.y < toolbarAllowance)
+        if (windowSize.height - toolbarAllowance > screenSize.height || screenPos.y < toolbarAllowance)
             screenPos.y = toolbarAllowance;
-        else if (screenPos.y + height - toolbarAllowance > screenHeight)
-            screenPos.y = screenHeight + toolbarAllowance - height;
+        else if (screenPos.y + windowSize.height - toolbarAllowance > screenSize.height)
+            screenPos.y = screenSize.height + toolbarAllowance - windowSize.height;
 
         return screenPos;
     }
 
-    static ScreenCoordsXY GetAutoPositionForNewWindow(int32_t width, int32_t height)
+    static ScreenCoordsXY GetAutoPositionForNewWindow(const ScreenSize windowSize)
     {
         auto& uiContext = GetContext()->GetUiContext();
-        auto screenWidth = uiContext.GetWidth();
-        auto screenHeight = uiContext.GetHeight();
+        ScreenSize screenSize = { uiContext.GetWidth(), uiContext.GetHeight() };
 
         // Place window in an empty corner of the screen
         const ScreenCoordsXY cornerPositions[] = {
-            { 0, 30 },                                           // topLeft
-            { screenWidth - width, 30 },                         // topRight
-            { 0, screenHeight - 34 - height },                   // bottomLeft
-            { screenWidth - width, screenHeight - 34 - height }, // bottomRight
+            { 0, 30 },                                                                           // topLeft
+            { screenSize.width - windowSize.width, 30 },                                         // topRight
+            { 0, screenSize.height - 34 - windowSize.height },                                   // bottomLeft
+            { screenSize.width - windowSize.width, screenSize.height - 34 - windowSize.height }, // bottomRight
         };
 
         for (const auto& cornerPos : cornerPositions)
         {
-            if (WindowFitsWithinSpace(cornerPos, width, height))
+            if (WindowFitsWithinSpace(cornerPos, windowSize))
             {
-                return ClampWindowToScreen(cornerPos, screenWidth, screenHeight, width, height);
+                return ClampWindowToScreen(cornerPos, screenSize, windowSize);
             }
         }
 
@@ -779,9 +775,9 @@ public:
             for (const auto& offset : offsets)
             {
                 auto screenPos = w->windowPos + offset;
-                if (WindowFitsWithinSpace(screenPos, width, height))
+                if (WindowFitsWithinSpace(screenPos, windowSize))
                 {
-                    return ClampWindowToScreen(screenPos, screenWidth, screenHeight, width, height);
+                    return ClampWindowToScreen(screenPos, screenSize, windowSize);
                 }
             }
         }
@@ -804,9 +800,9 @@ public:
             for (const auto& offset : offsets)
             {
                 auto screenPos = w->windowPos + offset;
-                if (WindowFitsOnScreen(screenPos, width, height))
+                if (WindowFitsOnScreen(screenPos, windowSize))
                 {
-                    return ClampWindowToScreen(screenPos, screenWidth, screenHeight, width, height);
+                    return ClampWindowToScreen(screenPos, screenSize, windowSize);
                 }
             }
         }
@@ -822,36 +818,37 @@ public:
             }
         }
 
-        return ClampWindowToScreen(screenPos, screenWidth, screenHeight, width, height);
+        return ClampWindowToScreen(screenPos, screenSize, windowSize);
     }
 
-    static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t height)
+    static ScreenCoordsXY GetCentrePositionForNewWindow(ScreenSize size)
     {
         auto& uiContext = GetContext()->GetUiContext();
         auto screenWidth = uiContext.GetWidth();
         auto screenHeight = uiContext.GetHeight();
-        return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(kTopToolbarHeight + 1, (screenHeight - height) / 2) };
+        return ScreenCoordsXY{ (screenWidth - size.width) / 2,
+                               std::max(kTopToolbarHeight + 1, (screenHeight - size.height) / 2) };
     }
 
     WindowBase* Create(
-        std::unique_ptr<WindowBase>&& wp, WindowClass cls, ScreenCoordsXY pos, int32_t width, int32_t height,
+        std::unique_ptr<WindowBase>&& wp, WindowClass cls, ScreenCoordsXY pos, ScreenSize windowSize,
         WindowFlags flags) override
     {
-        height += wp->getTitleBarDiffTarget();
+        windowSize.height += wp->getTitleBarDiffTarget();
 
         if (flags & WF_AUTO_POSITION)
         {
             if (flags & WF_CENTRE_SCREEN)
             {
-                pos = GetCentrePositionForNewWindow(width, height);
+                pos = GetCentrePositionForNewWindow(windowSize);
             }
             else
             {
-                pos = GetAutoPositionForNewWindow(width, height);
+                pos = GetAutoPositionForNewWindow(windowSize);
             }
         }
 
-        height -= wp->getTitleBarDiffTarget();
+        windowSize.height -= wp->getTitleBarDiffTarget();
 
         // Check if there are any window slots left
         // include kWindowLimitReserved for items such as the main viewport and toolbars to not appear to be counted.
@@ -909,16 +906,16 @@ public:
         if (!(flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
         {
             w->flags |= WF_WHITE_BORDER_MASK;
-            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 0, pos.x + (width / 2));
+            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 0, pos.x + (windowSize.width / 2));
         }
 
         w->windowPos = pos;
-        w->width = width;
-        w->height = height;
-        w->min_width = width;
-        w->max_width = width;
-        w->min_height = height;
-        w->max_height = height;
+        w->width = windowSize.width;
+        w->height = windowSize.height;
+        w->min_width = windowSize.width;
+        w->max_width = windowSize.width;
+        w->min_height = windowSize.height;
+        w->max_height = windowSize.height;
 
         w->focus = std::nullopt;
 
@@ -1184,7 +1181,7 @@ public:
         {
             const auto& widget = w.widgets[i];
 
-            if (widget.type != WindowWidgetType::Empty && widget.IsVisible())
+            if (widget.type != WidgetType::empty && widget.IsVisible())
             {
                 if (screenCoords.x >= w.windowPos.x + widget.left && screenCoords.x <= w.windowPos.x + widget.right
                     && screenCoords.y >= w.windowPos.y + widget.top && screenCoords.y <= w.windowPos.y + widget.bottom)
@@ -1198,7 +1195,7 @@ public:
         if (widget_index != kWidgetIndexNull)
         {
             const auto& widget = w.widgets[widget_index];
-            if (widget.type == WindowWidgetType::DropdownMenu)
+            if (widget.type == WidgetType::dropdownMenu)
                 widget_index++;
         }
 

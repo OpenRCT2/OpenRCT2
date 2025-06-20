@@ -41,7 +41,7 @@ namespace OpenRCT2::RCT2
         Limits::kMaxSceneryGroupObjects +
         Limits::kMaxParkEntranceObjects +
         Limits::kMaxWaterObjects +
-        Limits::kMaxScenarioTextObjects;
+        Limits::kMaxScenarioMetaObjects;
     // clang-format on
     static_assert(kRCT2ObjectEntryCount == 721);
 
@@ -57,7 +57,7 @@ namespace OpenRCT2::RCT2
         Limits::kMaxSceneryGroupObjects,
         Limits::kMaxParkEntranceObjects,
         Limits::kMaxWaterObjects,
-        Limits::kMaxScenarioTextObjects,
+        Limits::kMaxScenarioMetaObjects,
     };
     // clang-format on
 
@@ -797,7 +797,7 @@ namespace OpenRCT2::RCT2
                 RCTObjectEntry SceneryGroupObjects[Limits::kMaxSceneryGroupObjects];
                 RCTObjectEntry ParkEntranceObjects[Limits::kMaxParkEntranceObjects];
                 RCTObjectEntry WaterObjects[Limits::kMaxWaterObjects];
-                RCTObjectEntry ScenarioTextObjects[Limits::kMaxScenarioTextObjects];
+                RCTObjectEntry ScenarioMetaObjects[Limits::kMaxScenarioMetaObjects];
             };
         };
 

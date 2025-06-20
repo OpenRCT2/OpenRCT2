@@ -42,22 +42,21 @@ namespace OpenRCT2::Ui::Windows
         WIDX_LOAD_SERVER
     };
 
-    static constexpr int32_t WW = 300;
-    static constexpr int32_t WH = 154;
+    static constexpr ScreenSize kWindowSize = { 300, 154 };
 
     // clang-format off
-    static constexpr Widget _windowServerStartWidgets[] = {
-        WINDOW_SHIM(STR_START_SERVER, WW, WH),
-        MakeWidget({ 120, 20 }, { 173, 13 }, WindowWidgetType::TextBox, WindowColour::Secondary), // port text box
-        MakeWidget({ 120, 36 }, { 173, 13 }, WindowWidgetType::TextBox, WindowColour::Secondary), // name text box
-        MakeWidget({ 120, 52 }, { 173, 13 }, WindowWidgetType::TextBox, WindowColour::Secondary), // description text box
-        MakeWidget({ 120, 68 }, { 173, 13 }, WindowWidgetType::TextBox, WindowColour::Secondary), // greeting text box
-        MakeWidget({ 120, 84 }, { 173, 13 }, WindowWidgetType::TextBox, WindowColour::Secondary), // password text box
-        MakeSpinnerWidgets({ 120, 100 }, { 173, 12 }, WindowWidgetType::Spinner, WindowColour::Secondary,STR_SERVER_MAX_PLAYERS_VALUE), // max players (3 widgets)
-        MakeWidget({ 6, 117 }, { 287, 14 }, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ADVERTISE,STR_ADVERTISE_SERVER_TIP), // advertise checkbox
-        MakeWidget({ 6, WH - 6 - 13 }, { 101, 14 }, WindowWidgetType::Button, WindowColour::Secondary,STR_NEW_GAME), // start server button
-        MakeWidget({ 112, WH - 6 - 13 }, { 101, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_LOAD_GAME), // None
-    };
+    static constexpr auto _windowServerStartWidgets = makeWidgets(
+        makeWindowShim(STR_START_SERVER, kWindowSize),
+        makeWidget({ 120, 20 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary), // port text box
+        makeWidget({ 120, 36 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary), // name text box
+        makeWidget({ 120, 52 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary), // description text box
+        makeWidget({ 120, 68 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary), // greeting text box
+        makeWidget({ 120, 84 }, { 173, 13 }, WidgetType::textBox, WindowColour::secondary), // password text box
+        makeSpinnerWidgets({ 120, 100 }, { 173, 12 }, WidgetType::spinner, WindowColour::secondary,STR_SERVER_MAX_PLAYERS_VALUE), // max players (3 widgets)
+        makeWidget({ 6, 117 }, { 287, 14 }, WidgetType::checkbox, WindowColour::secondary, STR_ADVERTISE,STR_ADVERTISE_SERVER_TIP), // advertise checkbox
+        makeWidget({ 6, kWindowSize.height - 6 - 13 }, { 101, 14 }, WidgetType::button, WindowColour::secondary,STR_NEW_GAME), // start server button
+        makeWidget({ 112, kWindowSize.height - 6 - 13 }, { 101, 14 }, WidgetType::button, WindowColour::secondary, STR_LOAD_GAME) // None
+    );
     // clang-format on
 
     class ServerStartWindow final : public Window
@@ -145,7 +144,7 @@ namespace OpenRCT2::Ui::Windows
         {
             ColourSchemeUpdateByClass(this, WindowClass::ServerList);
 
-            WidgetSetCheckboxValue(*this, WIDX_ADVERTISE_CHECKBOX, Config::Get().network.Advertise);
+            widgetSetCheckboxValue(*this, WIDX_ADVERTISE_CHECKBOX, Config::Get().network.Advertise);
             auto ft = Formatter::Common();
             ft.Increment(18);
             ft.Add<uint16_t>(Config::Get().network.Maxplayers);
@@ -276,7 +275,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* ServerStartOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<ServerStartWindow>(WindowClass::ServerStart, WW, WH, WF_CENTRE_SCREEN);
+        return windowMgr->FocusOrCreate<ServerStartWindow>(WindowClass::ServerStart, kWindowSize, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows
 

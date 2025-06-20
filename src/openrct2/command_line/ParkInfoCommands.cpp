@@ -92,7 +92,7 @@ static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
 
     constexpr std::array typeToName = {
         "Ride",          "SmallScenery", "LargeScenery", "Walls",           "Banners",          "Paths",
-        "PathAdditions", "SceneryGroup", "ParkEntrance", "Water",           "ScenarioText",     "TerrainSurface",
+        "PathAdditions", "SceneryGroup", "ParkEntrance", "Water",           "ScenarioMeta",     "TerrainSurface",
         "TerrainEdge",   "Station",      "Music",        "FootpathSurface", "FootpathRailings",
     };
     constexpr std::array sourceGameToName = {
@@ -110,7 +110,7 @@ static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
              ObjectType::sceneryGroup,
              ObjectType::parkEntrance,
              ObjectType::water,
-             ObjectType::scenarioText,
+             ObjectType::scenarioMeta,
              ObjectType::terrainSurface,
              ObjectType::terrainEdge,
              ObjectType::station,

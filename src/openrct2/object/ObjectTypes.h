@@ -31,7 +31,7 @@ enum class ObjectType : uint8_t
     sceneryGroup,
     parkEntrance,
     water,
-    scenarioText,
+    scenarioMeta,
     terrainSurface,
     terrainEdge,
     station,

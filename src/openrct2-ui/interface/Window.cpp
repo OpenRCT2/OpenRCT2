@@ -52,7 +52,7 @@ namespace OpenRCT2
 
     static int32_t WindowGetScrollIndex(const WindowBase& w, int32_t targetWidgetIndex)
     {
-        if (w.widgets[targetWidgetIndex].type != WindowWidgetType::Scroll)
+        if (w.widgets[targetWidgetIndex].type != WidgetType::scroll)
             return -1;
 
         int32_t scrollIndex = 0;
@@ -61,7 +61,7 @@ namespace OpenRCT2
             if (widgetIndex == targetWidgetIndex)
                 break;
             auto& widget = w.widgets[widgetIndex];
-            if (widget.type == WindowWidgetType::Scroll)
+            if (widget.type == WidgetType::scroll)
                 scrollIndex++;
         }
 
@@ -73,7 +73,7 @@ namespace OpenRCT2
         for (WidgetIndex widgetIndex = 0; widgetIndex < w.widgets.size(); widgetIndex++)
         {
             auto& widget = w.widgets[widgetIndex];
-            if (widget.type != WindowWidgetType::Scroll)
+            if (widget.type != WidgetType::scroll)
                 continue;
 
             if (scrollIndex == 0)
@@ -111,7 +111,7 @@ namespace OpenRCT2
             scroll.contentOffsetX = std::min(std::max(0, scroll.contentOffsetX + wheel), size);
         }
 
-        WidgetScrollUpdateThumbs(w, widgetIndex);
+        widgetScrollUpdateThumbs(w, widgetIndex);
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateWidget(w, widgetIndex);
@@ -127,7 +127,7 @@ namespace OpenRCT2
         for (WidgetIndex widgetIndex = 0; widgetIndex < w.widgets.size(); widgetIndex++)
         {
             const auto& widget = w.widgets[widgetIndex];
-            if (widget.type != WindowWidgetType::Scroll)
+            if (widget.type != WidgetType::scroll)
                 continue;
 
             // Originally always checked first scroll view, bug maybe?
@@ -158,11 +158,11 @@ namespace OpenRCT2
             Windows::WindowZoomOut(w, true);
     }
 
-    static bool isSpinnerGroup(WindowBase& w, WidgetIndex index, WindowWidgetType buttonType)
+    static bool isSpinnerGroup(WindowBase& w, WidgetIndex index, WidgetType buttonType)
     {
         const auto& widgets = w.widgets;
 
-        if (widgets[index].type != WindowWidgetType::Spinner && widgets[index].type != WindowWidgetType::ImgBtn)
+        if (widgets[index].type != WidgetType::spinner && widgets[index].type != WidgetType::imgBtn)
             return false;
 
         if (static_cast<size_t>(index + 2) >= widgets.size())
@@ -188,12 +188,12 @@ namespace OpenRCT2
                 break;
             }
 
-            if (isSpinnerGroup(w, reverseIndex, WindowWidgetType::TrnBtn))
+            if (isSpinnerGroup(w, reverseIndex, WidgetType::trnBtn))
             {
                 return reverseIndex;
             }
 
-            if (isSpinnerGroup(w, reverseIndex, WindowWidgetType::Button))
+            if (isSpinnerGroup(w, reverseIndex, WidgetType::button))
             {
                 return reverseIndex;
             }
@@ -217,7 +217,7 @@ namespace OpenRCT2
         const auto entryWidgetType = w.widgets[*spinnerGroupIndex].type;
         auto targetWidgetIndex = *spinnerGroupIndex;
 
-        if (entryWidgetType == WindowWidgetType::ImgBtn)
+        if (entryWidgetType == WidgetType::imgBtn)
         {
             auto expectedContent1 = ImageId(SPR_LAND_TOOL_DECREASE, FilterPaletteID::PaletteNull);
             auto expectedContent2 = ImageId(SPR_LAND_TOOL_INCREASE, FilterPaletteID::PaletteNull);
@@ -232,7 +232,7 @@ namespace OpenRCT2
             // Expected widget order: decrease, increase
             targetWidgetIndex += wheel < 0 ? 2 : 1;
         }
-        else if (entryWidgetType == WindowWidgetType::Spinner)
+        else if (entryWidgetType == WidgetType::spinner)
         {
             auto button1StringId = w.widgets[*spinnerGroupIndex + 1].text;
             auto button2StringId = w.widgets[*spinnerGroupIndex + 2].text;
@@ -247,7 +247,7 @@ namespace OpenRCT2
 
         assert(targetWidgetIndex >= 0 && targetWidgetIndex < w.widgets.size());
 
-        if (WidgetIsDisabled(w, targetWidgetIndex))
+        if (widgetIsDisabled(w, targetWidgetIndex))
         {
             return false;
         }
@@ -291,7 +291,7 @@ namespace OpenRCT2
                 if (widgetIndex != kWidgetIndexNull)
                 {
                     const auto& widget = w->widgets[widgetIndex];
-                    if (widget.type == WindowWidgetType::Scroll)
+                    if (widget.type == WidgetType::scroll)
                     {
                         int32_t scrollIndex = WindowGetScrollIndex(*w, widgetIndex);
                         const auto& scroll = w->scrolls[scrollIndex];
@@ -341,7 +341,7 @@ namespace OpenRCT2
 
     void Window::OnDrawWidget(WidgetIndex widgetIndex, RenderTarget& rt)
     {
-        WidgetDraw(rt, *this, widgetIndex);
+        widgetDraw(rt, *this, widgetIndex);
     }
 
     void Window::InitScrollWidgets()
@@ -357,22 +357,22 @@ namespace OpenRCT2
 
     bool Window::IsWidgetDisabled(WidgetIndex widgetIndex) const
     {
-        return WidgetIsDisabled(*this, widgetIndex);
+        return widgetIsDisabled(*this, widgetIndex);
     }
 
     bool Window::IsWidgetPressed(WidgetIndex widgetIndex) const
     {
-        return WidgetIsPressed(*this, widgetIndex);
+        return widgetIsPressed(*this, widgetIndex);
     }
 
     void Window::SetWidgetEnabled(WidgetIndex widgetIndex, bool value)
     {
-        WidgetSetEnabled(*this, widgetIndex, value);
+        widgetSetEnabled(*this, widgetIndex, value);
     }
 
     void Window::SetWidgetDisabled(WidgetIndex widgetIndex, bool value)
     {
-        WidgetSetDisabled(*this, widgetIndex, value);
+        widgetSetDisabled(*this, widgetIndex, value);
     }
 
     void Window::SetWidgetDisabledAndInvalidate(WidgetIndex widgetIndex, bool value)
@@ -380,14 +380,14 @@ namespace OpenRCT2
         bool oldState = IsWidgetDisabled(widgetIndex);
         if (oldState != value)
         {
-            WidgetSetDisabled(*this, widgetIndex, value);
+            widgetSetDisabled(*this, widgetIndex, value);
             InvalidateWidget(widgetIndex);
         }
     }
 
     void Window::SetWidgetPressed(WidgetIndex widgetIndex, bool value)
     {
-        WidgetSetPressed(*this, widgetIndex, value);
+        widgetSetPressed(*this, widgetIndex, value);
     }
 
     void Window::SetCheckboxValue(WidgetIndex widgetIndex, bool value)
@@ -499,9 +499,9 @@ namespace OpenRCT2
         for (i = start_tab_id; i <= end_tab_id; i++)
         {
             auto& widget = w->widgets[i];
-            assert(widget.type == WindowWidgetType::Tab);
+            assert(widget.type == WidgetType::tab);
 
-            if (!WidgetIsDisabled(*w, i))
+            if (!widgetIsDisabled(*w, i))
             {
                 widget.left = x;
                 widget.right = x + tab_width;
@@ -674,7 +674,7 @@ namespace OpenRCT2::Ui::Windows
         for (WidgetIndex widgetIndex = 0; widgetIndex < w.widgets.size(); widgetIndex++)
         {
             auto& widget = w.widgets[widgetIndex];
-            if (widget.type != WindowWidgetType::Scroll)
+            if (widget.type != WidgetType::scroll)
                 continue;
 
             auto& scroll = w.scrolls[scrollIndex];
@@ -708,7 +708,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (scrollPositionChanged)
             {
-                WidgetScrollUpdateThumbs(w, widgetIndex);
+                widgetScrollUpdateThumbs(w, widgetIndex);
                 w.Invalidate();
             }
             scrollIndex++;
@@ -724,7 +724,7 @@ namespace OpenRCT2::Ui::Windows
         for (WidgetIndex widgetIndex = 0; widgetIndex < w.widgets.size(); widgetIndex++)
         {
             auto& widget = w.widgets[widgetIndex];
-            if (widget.type != WindowWidgetType::Scroll)
+            if (widget.type != WidgetType::scroll)
             {
                 continue;
             }
@@ -742,7 +742,7 @@ namespace OpenRCT2::Ui::Windows
             if (widget.content & SCROLL_VERTICAL)
                 scroll.flags |= VSCROLLBAR_VISIBLE;
 
-            WidgetScrollUpdateThumbs(w, widgetIndex);
+            widgetScrollUpdateThumbs(w, widgetIndex);
             scroll_index++;
         }
     }

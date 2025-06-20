@@ -61,7 +61,7 @@ enum class WindowClass : uint8_t
     InstallTrack = 49,
     ClearScenery = 50,
     SceneryScatter = 51,
-    NotificationOptions = 109,
+
     Cheats = 110,
     Research = 111,
     Viewport = 112,

@@ -32,7 +32,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto kPadding = 4;
 
     static constexpr Widget window_error_widgets[] = {
-        MakeWidget({ 0, 0 }, { 200, 42 }, WindowWidgetType::Frame, WindowColour::Primary),
+        makeWidget({ 0, 0 }, { 200, 42 }, WidgetType::frame, WindowColour::primary),
     };
 
     class ErrorWindow final : public Window
@@ -142,7 +142,7 @@ namespace OpenRCT2::Ui::Windows
         auto errorWindow = std::make_unique<ErrorWindow>(std::move(buffer), numLines, autoClose);
 
         return windowMgr->Create(
-            std::move(errorWindow), WindowClass::Error, windowPosition, width, height,
+            std::move(errorWindow), WindowClass::Error, windowPosition, { width, height },
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_TITLE_BAR);
     }
 

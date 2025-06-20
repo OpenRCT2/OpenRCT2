@@ -216,7 +216,6 @@ namespace OpenRCT2::Config
             model->EnableLightFxForVehicles = supportsLightFx && reader->GetBoolean("enable_light_fx_for_vehicles", false);
             model->UpperCaseBanners = reader->GetBoolean("upper_case_banners", false);
             model->DisableLightningEffect = reader->GetBoolean("disable_lightning_effect", false);
-            model->SteamOverlayPause = reader->GetBoolean("steam_overlay_pause", true);
             model->WindowScale = reader->GetFloat("window_scale", Platform::GetDefaultScale());
             model->InferDisplayDPI = reader->GetBoolean("infer_display_dpi", true);
             model->ShowFPS = reader->GetBoolean("show_fps", false);
@@ -315,7 +314,6 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("enable_light_fx_for_vehicles", model->EnableLightFxForVehicles);
         writer->WriteBoolean("upper_case_banners", model->UpperCaseBanners);
         writer->WriteBoolean("disable_lightning_effect", model->DisableLightningEffect);
-        writer->WriteBoolean("steam_overlay_pause", model->SteamOverlayPause);
         writer->WriteFloat("window_scale", model->WindowScale);
         writer->WriteBoolean("infer_display_dpi", model->InferDisplayDPI);
         writer->WriteBoolean("show_fps", model->ShowFPS);
@@ -376,7 +374,8 @@ namespace OpenRCT2::Config
             model->CurrentTitleSequencePreset = reader->GetString("current_title_sequence", "*OPENRCT2");
             model->RandomTitleSequence = reader->GetBoolean("random_title_sequence", false);
             model->ObjectSelectionFilterFlags = reader->GetInt32("object_selection_filter_flags", 0x3FFF);
-            model->ScenarioselectLastTab = reader->GetInt32("scenarioselect_last_tab", 0);
+            model->scenarioSelectLastTab = reader->GetInt32("scenarioselect_last_tab", 0);
+            model->scenarioPreviewScreenshots = reader->GetBoolean("scenario_preview_screenshots", true);
             model->ListRideVehiclesSeparately = reader->GetBoolean("list_ride_vehicles_separately", false);
             model->WindowButtonsOnTheLeft = reader->GetBoolean("window_buttons_on_the_left", kWindowButtonsOnTheLeftDefault);
             model->EnlargedUi = reader->GetBoolean("enlarged_ui", kEnlargedUiDefault);
@@ -402,7 +401,8 @@ namespace OpenRCT2::Config
         writer->WriteString("current_title_sequence", model->CurrentTitleSequencePreset);
         writer->WriteBoolean("random_title_sequence", model->RandomTitleSequence);
         writer->WriteInt32("object_selection_filter_flags", model->ObjectSelectionFilterFlags);
-        writer->WriteInt32("scenarioselect_last_tab", model->ScenarioselectLastTab);
+        writer->WriteInt32("scenarioselect_last_tab", model->scenarioSelectLastTab);
+        writer->WriteBoolean("scenario_preview_screenshots", model->scenarioPreviewScreenshots);
         writer->WriteBoolean("list_ride_vehicles_separately", model->ListRideVehiclesSeparately);
         writer->WriteBoolean("window_buttons_on_the_left", model->WindowButtonsOnTheLeft);
         writer->WriteBoolean("enlarged_ui", model->EnlargedUi);

@@ -450,9 +450,13 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     res.SetData(SmallSceneryPlaceActionResult{ groundFlags, sceneryElement->GetBaseZ(), sceneryElement->GetSceneryQuadrant() });
 
     MapInvalidateTileFull(_loc);
-    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
+    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_CLOCK))
     {
-        MapAnimationCreate(MAP_ANIMATION_TYPE_SMALL_SCENERY, CoordsXYZ{ _loc, sceneryElement->GetBaseZ() });
+        MapAnimations::MarkTileForUpdate(TileCoordsXY(_loc));
+    }
+    else if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
+    {
+        MapAnimations::MarkTileForInvalidation(TileCoordsXY(_loc));
     }
 
     return res;

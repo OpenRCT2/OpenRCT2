@@ -66,22 +66,21 @@ using namespace OpenRCT2::Numerics;
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = kStringIdNone;
-    constexpr int32_t WINDOW_SCENERY_MIN_WIDTH = 634;
-    constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 195 - kTitleHeightNormal;
-    constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
-    constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
+    static constexpr StringId kWindowTitle = kStringIdNone;
+    static constexpr ScreenSize kMinimumWindowSize = { 634, 195 - kTitleHeightNormal };
+    constexpr int32_t kSceneryButtonWidth = 66;
+    constexpr int32_t kSceneryButtonHeight = 80;
     constexpr int32_t kDescriptionHeight = 24;
     constexpr int32_t kInputMargin = 2;
     constexpr int32_t kMaxWindowHeight = 473;
     constexpr int32_t kTabMargin = 3;
-    constexpr int32_t TabWidth = 31;
-    constexpr int32_t TabHeight = 28;
-    constexpr int32_t ReservedTabCount = 2;
-    constexpr int32_t MaxTabs = 257; // 255 selected tabs + misc + all
-    constexpr int32_t MaxTabsPerRow = 20;
+    constexpr int32_t kTabWidth = 31;
+    constexpr int32_t kTabHeight = 28;
+    constexpr int32_t kReservedTabCount = 2;
+    constexpr int32_t kMaxTabs = 257; // 255 selected tabs + misc + all
+    constexpr int32_t kMaxTabsPerRow = 20;
 
-    constexpr uint8_t SceneryContentScrollIndex = 0;
+    constexpr uint8_t kSceneryContentScrollIndex = 0;
 
     enum WindowSceneryListWidgetIdx : WidgetIndex
     {
@@ -109,21 +108,21 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_SCENERY, WIDX_SCENERY_EYEDROPPER_BUTTON);
 
     // clang-format off
-    static constexpr Widget WindowSceneryBaseWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WINDOW_SCENERY_MIN_WIDTH, WINDOW_SCENERY_MIN_HEIGHT),
-        MakeWidget     ({  0,  43}, {634, 99}, WindowWidgetType::Resize,    WindowColour::Secondary                                                  ), // 8         0x009DE2C8
-        MakeWidget     ({  2,  62}, {607, 80}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                 ), // 1000000   0x009DE418
-        MakeWidget     ({609,  59}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_ROTATE_ARROW),    STR_ROTATE_OBJECTS_90      ), // 2000000   0x009DE428
-        MakeWidget     ({609,  83}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PAINTBRUSH),      STR_SCENERY_PAINTBRUSH_TIP ), // 4000000   0x009DE438
-        MakeWidget     ({615, 108}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_COLOUR          ), // 8000000   0x009DE448
-        MakeWidget     ({615, 120}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_SECONDARY_COLOUR), // 10000000  0x009DE458
-        MakeWidget     ({615, 132}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_TERTIARY_COLOUR  ), // 20000000  0x009DE468
-        MakeWidget     ({609, 145}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_EYEDROPPER),   STR_SCENERY_EYEDROPPER_TIP ), // 40000000  0x009DE478
-        MakeWidget     ({609, 169}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_SCENERY_CLUSTER), STR_SCENERY_CLUSTER_TIP    ), // 40000000  0x009DE478
-        MakeWidget     ({  4,  46}, {211, 14}, WindowWidgetType::TextBox,   WindowColour::Secondary                          ),
-        MakeWidget     ({218,  46}, { 70, 14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR ),
-        MakeWidget     ({539,  46}, { 70, 14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_RESTRICT_SCENERY,   STR_RESTRICT_SCENERY_TIP ),
-    };
+    static constexpr auto WindowSceneryBaseWidgets = makeWidgets(
+        makeWindowShim(kWindowTitle, kMinimumWindowSize),
+        makeWidget({  0,  43}, {634, 99}, WidgetType::resize,    WindowColour::secondary                                                           ), // 8         0x009DE2C8
+        makeWidget({  2,  62}, {607, 80}, WidgetType::scroll,    WindowColour::secondary, SCROLL_VERTICAL                                          ), // 1000000   0x009DE418
+        makeWidget({609,  59}, { 24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_ROTATE_ARROW),    STR_ROTATE_OBJECTS_90      ), // 2000000   0x009DE428
+        makeWidget({609,  83}, { 24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_PAINTBRUSH),      STR_SCENERY_PAINTBRUSH_TIP ), // 4000000   0x009DE438
+        makeWidget({615, 108}, { 12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,                   STR_SELECT_COLOUR          ), // 8000000   0x009DE448
+        makeWidget({615, 120}, { 12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,                   STR_SELECT_SECONDARY_COLOUR), // 10000000  0x009DE458
+        makeWidget({615, 132}, { 12, 12}, WidgetType::colourBtn, WindowColour::secondary, 0xFFFFFFFF,                   STR_SELECT_TERTIARY_COLOUR ), // 20000000  0x009DE468
+        makeWidget({609, 145}, { 24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_G2_EYEDROPPER),   STR_SCENERY_EYEDROPPER_TIP ), // 40000000  0x009DE478
+        makeWidget({609, 169}, { 24, 24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_SCENERY_CLUSTER), STR_SCENERY_CLUSTER_TIP    ), // 40000000  0x009DE478
+        makeWidget({  4,  46}, {211, 14}, WidgetType::textBox,   WindowColour::secondary                                                           ),
+        makeWidget({218,  46}, { 70, 14}, WidgetType::button,    WindowColour::secondary, STR_OBJECT_SEARCH_CLEAR                                  ),
+        makeWidget({539,  46}, { 70, 14}, WidgetType::button,    WindowColour::secondary, STR_RESTRICT_SCENERY,   STR_RESTRICT_SCENERY_TIP         )
+    );
     // clang-format on
 
     // Persistent between window instances
@@ -437,7 +436,7 @@ namespace OpenRCT2::Ui::Windows
                     ScreenCoordsXY scrollPos = {};
                     int32_t scrollArea = 0;
                     int32_t scrollId = 0;
-                    WidgetScrollGetPart(*this, &widgets[WIDX_SCENERY_LIST], state->position, scrollPos, &scrollArea, &scrollId);
+                    widgetScrollGetPart(*this, &widgets[WIDX_SCENERY_LIST], state->position, scrollPos, &scrollArea, &scrollId);
                     if (scrollArea == SCROLL_PART_VIEW)
                     {
                         const ScenerySelection scenery = GetSceneryIdByCursorPos(scrollPos);
@@ -486,7 +485,7 @@ namespace OpenRCT2::Ui::Windows
                             const auto nonListHeight = height - listWidget.height() + 2;
 
                             const auto numRows = static_cast<int32_t>(CountRows());
-                            const auto maxContentHeight = numRows * SCENERY_BUTTON_HEIGHT;
+                            const auto maxContentHeight = numRows * kSceneryButtonHeight;
                             const auto expandedWindowHeight = maxContentHeight + nonListHeight;
                             const auto windowHeight = std::clamp(expandedWindowHeight, _actualMinHeight, kMaxWindowHeight);
 
@@ -597,7 +596,7 @@ namespace OpenRCT2::Ui::Windows
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            if (scrollIndex == SceneryContentScrollIndex)
+            if (scrollIndex == kSceneryContentScrollIndex)
             {
                 return ContentScrollGetSize();
             }
@@ -606,7 +605,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            if (scrollIndex == SceneryContentScrollIndex)
+            if (scrollIndex == kSceneryContentScrollIndex)
             {
                 ContentScrollMouseDown(screenCoords);
             }
@@ -614,7 +613,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            if (scrollIndex == SceneryContentScrollIndex)
+            if (scrollIndex == kSceneryContentScrollIndex)
             {
                 ContentScrollMouseOver(screenCoords);
             }
@@ -689,32 +688,32 @@ namespace OpenRCT2::Ui::Windows
             if (gWindowSceneryScatterEnabled)
                 pressed_widgets |= (1uLL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 
-            widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::Empty;
-            widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WindowWidgetType::Empty;
-            widgets[WIDX_RESTRICT_SCENERY].type = WindowWidgetType::Empty;
+            widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WidgetType::empty;
+            widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WidgetType::empty;
+            widgets[WIDX_RESTRICT_SCENERY].type = WidgetType::empty;
 
             const auto tabSelectedScenery = GetSelectedScenery(tabIndex);
             if (!tabSelectedScenery.IsUndefined())
             {
                 if (tabSelectedScenery.SceneryType == SCENERY_TYPE_SMALL)
                 {
-                    widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WindowWidgetType::FlatBtn;
+                    widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WidgetType::flatBtn;
 
                     auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(
                         tabSelectedScenery.EntryIndex);
                     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ROTATABLE))
                     {
-                        widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::FlatBtn;
+                        widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WidgetType::flatBtn;
                     }
                 }
                 else if (tabSelectedScenery.SceneryType >= SCENERY_TYPE_LARGE)
                 {
-                    widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::FlatBtn;
+                    widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WidgetType::flatBtn;
                 }
 
                 if (gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode)
                 {
-                    widgets[WIDX_RESTRICT_SCENERY].type = WindowWidgetType::Button;
+                    widgets[WIDX_RESTRICT_SCENERY].type = WidgetType::button;
                     if (IsSceneryItemRestricted(tabSelectedScenery))
                         pressed_widgets |= (1uLL << WIDX_RESTRICT_SCENERY);
                     else
@@ -722,19 +721,19 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].image = GetColourButtonImage(_sceneryPrimaryColour);
-            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].image = GetColourButtonImage(_scenerySecondaryColour);
-            widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].image = GetColourButtonImage(_sceneryTertiaryColour);
+            widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].image = getColourButtonImage(_sceneryPrimaryColour);
+            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].image = getColourButtonImage(_scenerySecondaryColour);
+            widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].image = getColourButtonImage(_sceneryTertiaryColour);
 
-            widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::Empty;
-            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WindowWidgetType::Empty;
-            widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WindowWidgetType::Empty;
+            widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::empty;
+            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WidgetType::empty;
+            widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WidgetType::empty;
 
             if (_sceneryPaintEnabled)
             { // repaint coloured scenery tool is on
-                widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
-                widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
-                widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
+                widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
+                widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
+                widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
             }
             else if (!tabSelectedScenery.IsUndefined())
             {
@@ -744,7 +743,7 @@ namespace OpenRCT2::Ui::Windows
                         tabSelectedScenery.EntryIndex);
                     if (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
                     {
-                        widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
+                        widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
                     }
                 }
                 else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_LARGE)
@@ -754,28 +753,28 @@ namespace OpenRCT2::Ui::Windows
 
                     if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR
                         && !(sceneryEntry->flags & LARGE_SCENERY_FLAG_HIDE_PRIMARY_REMAP_BUTTON))
-                        widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
+                        widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
                     if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR
                         && !(sceneryEntry->flags & LARGE_SCENERY_FLAG_HIDE_SECONDARY_REMAP_BUTTON))
-                        widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
+                        widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
                     if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
-                        widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
+                        widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
                 }
                 else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_WALL)
                 {
                     auto* wallEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(tabSelectedScenery.EntryIndex);
                     if (wallEntry->flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS))
                     {
-                        widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
+                        widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
 
                         if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
                         {
-                            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
+                            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
 
                             if (wallEntry->flags2 & WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR)
-                                widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::Empty;
+                                widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::empty;
                             if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
-                                widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
+                                widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
                         }
                     }
                 }
@@ -786,12 +785,12 @@ namespace OpenRCT2::Ui::Windows
 
                     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS))
                     {
-                        widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
+                        widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
 
                         if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
-                            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
+                            widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
                         if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR))
-                            widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
+                            widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WidgetType::colourBtn;
                     }
                 }
             }
@@ -799,7 +798,8 @@ namespace OpenRCT2::Ui::Windows
             auto windowWidth = width;
             if (_tabEntries.size() > 0)
             {
-                const auto lastTabIndex = GetMaxTabCountInARow() == MaxTabsPerRow ? MaxTabsPerRow - 1 : _tabEntries.size() - 1;
+                const auto lastTabIndex = GetMaxTabCountInARow() == kMaxTabsPerRow ? kMaxTabsPerRow - 1
+                                                                                   : _tabEntries.size() - 1;
                 const auto lastTabWidget = &widgets[WIDX_SCENERY_TAB_1 + lastTabIndex];
                 windowWidth = std::max<int32_t>(windowWidth, lastTabWidget->right + 3);
 
@@ -807,19 +807,19 @@ namespace OpenRCT2::Ui::Windows
                 if (GetSceneryTabInfoForMisc() != nullptr)
                 {
                     auto miscTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 2];
-                    miscTabWidget->left = windowWidth - 2 * TabWidth - 6;
-                    miscTabWidget->right = windowWidth - TabWidth - 7;
+                    miscTabWidget->left = windowWidth - 2 * kTabWidth - 6;
+                    miscTabWidget->right = windowWidth - kTabWidth - 7;
                     miscTabWidget->top = tabTop;
-                    miscTabWidget->bottom = tabTop + TabHeight;
+                    miscTabWidget->bottom = tabTop + kTabHeight;
                 }
 
                 if (_tabEntries.back().IsAll())
                 {
                     auto allTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 1];
-                    allTabWidget->left = windowWidth - TabWidth - 6;
+                    allTabWidget->left = windowWidth - kTabWidth - 6;
                     allTabWidget->right = windowWidth - 7;
                     allTabWidget->top = tabTop;
-                    allTabWidget->bottom = tabTop + TabHeight;
+                    allTabWidget->bottom = tabTop + kTabHeight;
                 }
             }
 
@@ -844,8 +844,8 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].right = windowWidth - 8;
 
             const bool canFit = widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].top < height;
-            widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = canFit ? WindowWidgetType::FlatBtn : WindowWidgetType::Empty;
-            widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = canFit ? WindowWidgetType::FlatBtn : WindowWidgetType::Empty;
+            widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = canFit ? WidgetType::flatBtn : WidgetType::empty;
+            widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = canFit ? WidgetType::flatBtn : WidgetType::empty;
         }
 
         void OnDraw(RenderTarget& rt) override
@@ -910,7 +910,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
         {
-            if (scrollIndex == SceneryContentScrollIndex)
+            if (scrollIndex == kSceneryContentScrollIndex)
             {
                 ContentScrollDraw(rt);
             }
@@ -1005,7 +1005,7 @@ namespace OpenRCT2::Ui::Windows
         {
             _tabEntries.clear();
 
-            for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < MaxTabs - ReservedTabCount; scenerySetIndex++)
+            for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < kMaxTabs - kReservedTabCount; scenerySetIndex++)
             {
                 const auto* sceneryGroupEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(scenerySetIndex);
                 if (sceneryGroupEntry != nullptr && SceneryGroupIsInvented(scenerySetIndex))
@@ -1090,7 +1090,7 @@ namespace OpenRCT2::Ui::Windows
                 _tabEntries.end());
 
             // Set required width
-            _requiredWidth = std::min(static_cast<int32_t>(_tabEntries.size()), MaxTabsPerRow) * TabWidth + 5;
+            _requiredWidth = std::min(static_cast<int32_t>(_tabEntries.size()), kMaxTabsPerRow) * kTabWidth + 5;
 
             PrepareWidgets();
 
@@ -1100,15 +1100,15 @@ namespace OpenRCT2::Ui::Windows
 
         int32_t GetRequiredWidth() const
         {
-            return std::max(_requiredWidth, WINDOW_SCENERY_MIN_WIDTH);
+            return std::max(_requiredWidth, kMinimumWindowSize.width);
         }
 
     private:
         int32_t GetMinimumHeight() const
         {
             // Minimum window height: title, one scenery button, status bar, padding
-            int32_t minHeight = getTitleBarTargetHeight() + SCENERY_BUTTON_HEIGHT + kDescriptionHeight + 2 * kTabMargin;
-            minHeight += static_cast<int32_t>(1 + (_tabEntries.size() / GetMaxTabCountInARow())) * TabHeight;
+            int32_t minHeight = getTitleBarTargetHeight() + kSceneryButtonHeight + kDescriptionHeight + 2 * kTabMargin;
+            minHeight += static_cast<int32_t>(1 + (_tabEntries.size() / GetMaxTabCountInARow())) * kTabHeight;
             minHeight += widgets[WIDX_FILTER_TEXT_BOX].height() + 2 * kInputMargin;
             return minHeight;
         }
@@ -1117,7 +1117,7 @@ namespace OpenRCT2::Ui::Windows
         {
             const auto& listWidget = widgets[WIDX_SCENERY_LIST];
             const auto contentWidth = listWidget.width() - kScrollBarWidth;
-            return contentWidth / SCENERY_BUTTON_WIDTH;
+            return contentWidth / kSceneryButtonWidth;
         }
 
         template<typename T>
@@ -1143,7 +1143,7 @@ namespace OpenRCT2::Ui::Windows
 
         int32_t constexpr ContentRowsHeight(const size_t rows) const
         {
-            return static_cast<int32_t>(rows * SCENERY_BUTTON_HEIGHT);
+            return static_cast<int32_t>(rows * kSceneryButtonHeight);
         }
 
         void ContentUpdateScroll()
@@ -1159,9 +1159,9 @@ namespace OpenRCT2::Ui::Windows
             const int32_t listHeight = height - 14 - widgets[WIDX_SCENERY_LIST].top - 1;
 
             const auto sceneryItem = ContentCountRowsWithSelectedItem(tabIndex);
-            scrolls[SceneryContentScrollIndex].contentHeight = ContentRowsHeight(sceneryItem.allRows) + 1;
+            scrolls[kSceneryContentScrollIndex].contentHeight = ContentRowsHeight(sceneryItem.allRows) + 1;
 
-            const int32_t maxTop = std::max(0, scrolls[SceneryContentScrollIndex].contentHeight - listHeight);
+            const int32_t maxTop = std::max(0, scrolls[kSceneryContentScrollIndex].contentHeight - listHeight);
             auto rowSelected = CountRows(sceneryItem.selected_item);
             if (sceneryItem.scenerySelection.IsUndefined())
             {
@@ -1188,11 +1188,11 @@ namespace OpenRCT2::Ui::Windows
                 }
             }
 
-            scrolls[SceneryContentScrollIndex].contentOffsetY = ContentRowsHeight(rowSelected);
-            scrolls[SceneryContentScrollIndex].contentOffsetY = std::min<int32_t>(
-                maxTop, scrolls[SceneryContentScrollIndex].contentOffsetY);
+            scrolls[kSceneryContentScrollIndex].contentOffsetY = ContentRowsHeight(rowSelected);
+            scrolls[kSceneryContentScrollIndex].contentOffsetY = std::min<int32_t>(
+                maxTop, scrolls[kSceneryContentScrollIndex].contentOffsetY);
 
-            WidgetScrollUpdateThumbs(*this, WIDX_SCENERY_LIST);
+            widgetScrollUpdateThumbs(*this, WIDX_SCENERY_LIST);
         }
 
         SceneryItem ContentCountRowsWithSelectedItem(const size_t tabIndex)
@@ -1389,13 +1389,13 @@ namespace OpenRCT2::Ui::Windows
 
         int32_t GetTabRowCount()
         {
-            return std::max<int32_t>((static_cast<int32_t>(_tabEntries.size()) + MaxTabsPerRow - 1) / MaxTabsPerRow, 0);
+            return std::max<int32_t>((static_cast<int32_t>(_tabEntries.size()) + kMaxTabsPerRow - 1) / kMaxTabsPerRow, 0);
         }
 
         int32_t GetMaxTabCountInARow() const
         {
             int32_t tabEntries = static_cast<int32_t>(_tabEntries.size());
-            return std::clamp(tabEntries, 1, MaxTabsPerRow);
+            return std::clamp(tabEntries, 1, kMaxTabsPerRow);
         }
 
         void PrepareWidgets()
@@ -1404,15 +1404,15 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(WindowSceneryBaseWidgets);
 
             auto hasMisc = GetSceneryTabInfoForMisc() != nullptr;
-            auto maxTabsInThisRow = MaxTabsPerRow - 1 - (hasMisc ? 1 : 0);
+            auto kMaxTabsInThisRow = kMaxTabsPerRow - 1 - (hasMisc ? 1 : 0);
 
             // Add tabs
             int32_t tabsInThisRow = 0;
             ScreenCoordsXY pos = { kTabMargin, widgets[WIDX_SCENERY_TITLE].bottom + kTabMargin };
             for (const auto& tabInfo : _tabEntries)
             {
-                auto widget = MakeTab(pos, STR_STRING_DEFINED_TOOLTIP);
-                pos.x += TabWidth;
+                auto widget = makeTab(pos, STR_STRING_DEFINED_TOOLTIP);
+                pos.x += kTabWidth;
 
                 if (tabInfo.IsMisc())
                 {
@@ -1438,18 +1438,18 @@ namespace OpenRCT2::Ui::Windows
                 widgets.push_back(widget);
 
                 tabsInThisRow++;
-                if (tabsInThisRow >= maxTabsInThisRow)
+                if (tabsInThisRow >= kMaxTabsInThisRow)
                 {
                     pos.x = kTabMargin;
-                    pos.y += TabHeight;
+                    pos.y += kTabHeight;
                     tabsInThisRow = 0;
-                    _actualMinHeight += TabHeight;
-                    maxTabsInThisRow = MaxTabsPerRow;
+                    _actualMinHeight += kTabHeight;
+                    kMaxTabsInThisRow = kMaxTabsPerRow;
                 }
             }
 
             // Shift base widgets based on number of tab rows
-            int32_t shiftAmount = (GetTabRowCount() - 1) * TabHeight;
+            int32_t shiftAmount = (GetTabRowCount() - 1) * kTabHeight;
             if (shiftAmount > 0)
             {
                 widgets[WIDX_SCENERY_LIST].top += shiftAmount;
@@ -1480,8 +1480,8 @@ namespace OpenRCT2::Ui::Windows
             ScenerySelection scenery{};
 
             const auto numColumns = GetNumColumns();
-            const auto colIndex = screenCoords.x / SCENERY_BUTTON_WIDTH;
-            const auto rowIndex = screenCoords.y / SCENERY_BUTTON_HEIGHT;
+            const auto colIndex = screenCoords.x / kSceneryButtonWidth;
+            const auto rowIndex = screenCoords.y / kSceneryButtonHeight;
             if (colIndex >= 0 && colIndex < numColumns && rowIndex >= 0)
             {
                 const auto tabSceneryIndex = static_cast<size_t>((rowIndex * numColumns) + colIndex);
@@ -1745,7 +1745,7 @@ namespace OpenRCT2::Ui::Windows
                     if (_selectedScenery == currentSceneryGlobal)
                     {
                         GfxFillRectInset(
-                            rt, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                            rt, { topLeft, topLeft + ScreenCoordsXY{ kSceneryButtonWidth - 1, kSceneryButtonHeight - 1 } },
                             colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
                     }
                 }
@@ -1754,28 +1754,28 @@ namespace OpenRCT2::Ui::Windows
                     if (tabSelectedScenery == currentSceneryGlobal)
                     {
                         GfxFillRectInset(
-                            rt, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                            rt, { topLeft, topLeft + ScreenCoordsXY{ kSceneryButtonWidth - 1, kSceneryButtonHeight - 1 } },
                             colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_MID_LIGHT));
                     }
                     else if (_selectedScenery == currentSceneryGlobal)
                     {
                         GfxFillRectInset(
-                            rt, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                            rt, { topLeft, topLeft + ScreenCoordsXY{ kSceneryButtonWidth - 1, kSceneryButtonHeight - 1 } },
                             colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
                     }
                 }
 
                 RenderTarget clippedRT;
                 if (ClipDrawPixelInfo(
-                        clippedRT, rt, topLeft + ScreenCoordsXY{ 1, 1 }, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2))
+                        clippedRT, rt, topLeft + ScreenCoordsXY{ 1, 1 }, kSceneryButtonWidth - 2, kSceneryButtonHeight - 2))
                 {
                     DrawSceneryItem(clippedRT, currentSceneryGlobal);
                 }
 
-                topLeft.x += SCENERY_BUTTON_WIDTH;
-                if (topLeft.x >= numColumns * SCENERY_BUTTON_WIDTH)
+                topLeft.x += kSceneryButtonWidth;
+                if (topLeft.x >= numColumns * kSceneryButtonWidth)
                 {
-                    topLeft.y += SCENERY_BUTTON_HEIGHT;
+                    topLeft.y += kSceneryButtonHeight;
                     topLeft.x = 0;
                 }
             }

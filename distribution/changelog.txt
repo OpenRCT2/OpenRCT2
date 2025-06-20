@@ -1,4 +1,26 @@
-0.4.23 (in development)
+0.4.24 (in development)
+------------------------------------------------------------------------
+- Feature: [#24411] Vanilla scenarios now also have previews in the scenario selection window.
+- Improved: [#22684] The limit of 2000 animated tile elements has been removed.
+- Improved: [#24026] Notification settings have been made into a tab of the Recent Messages window.
+- Improved: [#24569] Add nine additional translations to the Windows installer.
+- Change: [#24559] Scenario options are now disabled rather than hidden when disabling money makes them non-applicable.
+- Change: [objects#383] Disable all base colours on non-remappable WWTT vehicles, change black to light_blue.
+- Change: [objects#384] Remove erroneously enabled WWTT third remaps.
+- Removed: [#24628] “Pause game when Steam overlay is open” feature (already broken for a long time).
+- Fix: [#15846] Rightclicking on track piece when there is construction below does not work.
+- Fix: [#16176, #23113] Animated tile elements do not always redraw when there is over 2000.
+- Fix: [#17365] The slope of new land surfaces is only correct on one side when shifting and resizing the map.
+- Fix: [#21703] Scenery wall doors get stuck open if the game is saved and loaded whilst they are open.
+- Fix: [#24456] Zoomed out vehicles on the ride window tab can sometimes draw incorrectly.
+- Fix: [#24458] Vehicles in the ride window vehicle tab are offset differently than vanilla RCT2, and the sprites are cut off at the bottom.
+- Fix: [#24576] It is possible to edit open rides in certain circumstances.
+- Fix: [#24589] Music tab doesn’t fully render in multiplayer.
+- Fix: [#24615] Blank strings in Windows installer.
+- Fix: [#24617] ‘Divide by zero’ error when updating boat hire acceleration.
+- Fix: [#24626] Viewports that only follow sprites (e.g. in the Ride and Guest windows) can be made to unfollow them.
+
+0.4.23 (2025-06-07)
 ------------------------------------------------------------------------
 - Feature: [#22476] “Time since last inspection” statistic is available in the rides window.
 - Feature: [#24313] [Plugin] Add API for setting a ride vehicle’s sprite to a smoke plume.
@@ -14,6 +36,7 @@
 - Improved: [#24467] Apply tweening only to on-screen entities when not zoomed out for better performance with uncapped FPS.
 - Improved: [#24474] More efficiently search viewports when playing Audio.
 - Improved: [#24479] More descriptive error messages for `set` commands in the in-game console.
+- Improved: [#24563] The Linux .desktop file will now request the more powerful dedicated GPU on hybrid graphics systems.
 - Change: [#24342, #24484] g2.dat is now split into g2.dat, fonts.dat and tracks.dat.
 - Change: [#24362] The Windows installer now prevents installing to the same folder as RollerCoaster Tycoon 2 or Classic.
 - Change: [#24418] Small & Large Zero G Rolls can now be built on the LIM Launched RC without cheats if vehicle sprites are available.
@@ -25,6 +48,7 @@
 - Fix: [#22628] Potential crash while rebuilding the scenario index.
 - Fix: [#23289] Dodgems and Flying Saucer cars can spawn on top of each other when the ride is opened.
 - Fix: [#24332] Banner font renders differently when using RCT Classic as the base game.
+- Fix: [#24343] Large gently sloped turns are buildable without cheats when the vehicles do not have sprites for them.
 - Fix: [#24346] Possible crash during line drawing in OpenGL mode.
 - Fix: [#24353] ‘Show dirty visuals’ is off by one pixel and does not work correctly with higher framerates.
 - Fix: [#24362] When upgrading from an older version on Windows, old versions of official objects are not always removed.  
@@ -40,6 +64,8 @@
 - Fix: [#24448] Shortcuts involving the Caps Lock key are wrongly localised to NumPad Dot.
 - Fix: [#24464] Window and viewport visibility is not calculated correctly causing minor performance issues.
 - Fix: [#24488] Objects are not always redrawn immediately when they are reloaded from the Object Selection window.
+- Fix: [#24544] RCT1 Maze designs with wooden walls are not imported correctly.
+- Fix: [#24567] Long flat-to-steep wooden mine support sprites don't connect to flat supports exactly.
 
 0.4.22 (2025-05-04)
 ------------------------------------------------------------------------
@@ -124,6 +150,7 @@
 - Fix: [#24009] [Plugin] The object manager API does not identify recently introduced object types.
 - Fix: [#24028] Giga and LSM Launched Coaster booster sprites have pixels that draw over transparent pixels.
 - Fix: [#24077] Track Designer crashes when clicking the park fence.
+- Fix: [#24527] Minor string artefacts when rebuilding scenario index.
 
 0.4.20 (2025-02-25)
 ------------------------------------------------------------------------

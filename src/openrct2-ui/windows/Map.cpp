@@ -77,9 +77,8 @@ namespace OpenRCT2::Ui::Windows
         return gLegacyScene == LegacyScene::scenarioEditor || getGameState().cheats.sandboxMode;
     }
 
-    static constexpr StringId WINDOW_TITLE = STR_MAP_LABEL;
-    static constexpr int32_t WH = 259;
-    static constexpr int32_t WW = 245;
+    static constexpr StringId kWindowTitle = STR_MAP_LABEL;
+    static constexpr ScreenSize kWindowSize = { 245, 259 };
 
     static constexpr uint16_t kReservedHSpace = 4;
     static constexpr uint16_t kReservedTopSpace = 46;
@@ -131,20 +130,20 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static constexpr Widget window_map_widgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget        ({  0,  43}, {245, 215}, WindowWidgetType::Resize,    WindowColour::Secondary                                                                ),
-        MakeRemapWidget   ({  3,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::Secondary, SPR_TAB,                      STR_SHOW_PEOPLE_ON_MAP_TIP      ),
-        MakeRemapWidget   ({ 34,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::Secondary, SPR_TAB,                      STR_SHOW_RIDES_STALLS_ON_MAP_TIP),
-        MakeWidget        ({  3,  46}, {239, 180}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_BOTH                                                   ),
-        MakeSpinnerWidgets({102, 229}, { 50,  12}, WindowWidgetType::Spinner,   WindowColour::Secondary, STR_COMMA16                                                   ), // NB: 3 widgets
-        MakeWidget        ({153, 230}, { 20,  12}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_LINK_CHAIN),   STR_MAINTAIN_SQUARE_MAP_TOOLTIP ),
-        MakeSpinnerWidgets({174, 229}, { 50,  12}, WindowWidgetType::Spinner,   WindowColour::Secondary, STR_POP16_COMMA16                                             ), // NB: 3 widgets
-        MakeWidget        ({  4,  46}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_BUY_LAND_RIGHTS), STR_SELECT_PARK_OWNED_LAND_TIP  ),
-        MakeWidget        ({  4,  70}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_PEEP_SPAWN),   STR_SET_STARTING_POSITIONS_TIP  ),
-        MakeWidget        ({ 28,  94}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PARK_ENTRANCE),   STR_BUILD_PARK_ENTRANCE_TIP     ),
-        MakeWidget        ({110, 118}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_G2_MAP_GEN_BTN),  STR_MAP_GENERATOR_TIP           ),
-    };
+    static constexpr auto window_map_widgets = makeWidgets(
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget        ({  0,  43}, {245, 215}, WidgetType::resize,    WindowColour::secondary                                                                ),
+        makeRemapWidget   ({  3,  17}, { 31,  27}, WidgetType::colourBtn, WindowColour::secondary, SPR_TAB,                      STR_SHOW_PEOPLE_ON_MAP_TIP      ),
+        makeRemapWidget   ({ 34,  17}, { 31,  27}, WidgetType::colourBtn, WindowColour::secondary, SPR_TAB,                      STR_SHOW_RIDES_STALLS_ON_MAP_TIP),
+        makeWidget        ({  3,  46}, {239, 180}, WidgetType::scroll,    WindowColour::secondary, SCROLL_BOTH                                                   ),
+        makeSpinnerWidgets({102, 229}, { 50,  12}, WidgetType::spinner,   WindowColour::secondary, STR_COMMA16                                                   ), // NB: 3 widgets
+        makeWidget        ({153, 230}, { 20,  12}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_G2_LINK_CHAIN),   STR_MAINTAIN_SQUARE_MAP_TOOLTIP ),
+        makeSpinnerWidgets({174, 229}, { 50,  12}, WidgetType::spinner,   WindowColour::secondary, STR_POP16_COMMA16                                             ), // NB: 3 widgets
+        makeWidget        ({  4,  46}, { 24,  24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_BUY_LAND_RIGHTS), STR_SELECT_PARK_OWNED_LAND_TIP  ),
+        makeWidget        ({  4,  70}, { 24,  24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_G2_PEEP_SPAWN),   STR_SET_STARTING_POSITIONS_TIP  ),
+        makeWidget        ({ 28,  94}, { 24,  24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_PARK_ENTRANCE),   STR_BUILD_PARK_ENTRANCE_TIP     ),
+        makeWidget        ({110, 118}, { 24,  24}, WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_G2_MAP_GEN_BTN),  STR_MAP_GENERATOR_TIP           )
+    );
     // clang-format on
 
     // These represent a coefficient for the map size to be multiplied
@@ -647,7 +646,7 @@ namespace OpenRCT2::Ui::Windows
             // Disable all scenario editor related widgets
             for (int32_t i = WIDX_MAP_SIZE_SPINNER_Y; i <= WIDX_MAP_GENERATOR; i++)
             {
-                widgets[i].type = WindowWidgetType::Empty;
+                widgets[i].type = WidgetType::empty;
             }
 
             if (isEditorOrSandbox())
@@ -656,7 +655,7 @@ namespace OpenRCT2::Ui::Windows
             }
             if (_recalculateScrollbars)
             {
-                WidgetScrollUpdateThumbs(*this, WIDX_MAP);
+                widgetScrollUpdateThumbs(*this, WIDX_MAP);
                 _recalculateScrollbars = false;
             }
         }
@@ -757,7 +756,7 @@ namespace OpenRCT2::Ui::Windows
 
             scrolls[0].contentOffsetX = cx;
             scrolls[0].contentOffsetY = dx;
-            WidgetScrollUpdateThumbs(*this, WIDX_MAP);
+            widgetScrollUpdateThumbs(*this, WIDX_MAP);
         }
 
         void IncreaseMapSize()
@@ -1093,21 +1092,21 @@ namespace OpenRCT2::Ui::Windows
 
         void ShowDefaultScenarioEditorButtons()
         {
-            widgets[WIDX_SET_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
-            widgets[WIDX_BUILD_PARK_ENTRANCE].type = WindowWidgetType::FlatBtn;
-            widgets[WIDX_PEOPLE_STARTING_POSITION].type = WindowWidgetType::FlatBtn;
+            widgets[WIDX_SET_LAND_RIGHTS].type = WidgetType::flatBtn;
+            widgets[WIDX_BUILD_PARK_ENTRANCE].type = WidgetType::flatBtn;
+            widgets[WIDX_PEOPLE_STARTING_POSITION].type = WidgetType::flatBtn;
 
             // Only show this in the scenario editor, even when in sandbox mode.
             if (gLegacyScene == LegacyScene::scenarioEditor)
-                widgets[WIDX_MAP_GENERATOR].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_MAP_GENERATOR].type = WidgetType::flatBtn;
 
-            widgets[WIDX_MAP_SIZE_SPINNER_Y].type = WindowWidgetType::Spinner;
-            widgets[WIDX_MAP_SIZE_SPINNER_Y_UP].type = WindowWidgetType::Button;
-            widgets[WIDX_MAP_SIZE_SPINNER_Y_DOWN].type = WindowWidgetType::Button;
-            widgets[WIDX_MAP_SIZE_LINK].type = WindowWidgetType::FlatBtn;
-            widgets[WIDX_MAP_SIZE_SPINNER_X].type = WindowWidgetType::Spinner;
-            widgets[WIDX_MAP_SIZE_SPINNER_X_UP].type = WindowWidgetType::Button;
-            widgets[WIDX_MAP_SIZE_SPINNER_X_DOWN].type = WindowWidgetType::Button;
+            widgets[WIDX_MAP_SIZE_SPINNER_Y].type = WidgetType::spinner;
+            widgets[WIDX_MAP_SIZE_SPINNER_Y_UP].type = WidgetType::button;
+            widgets[WIDX_MAP_SIZE_SPINNER_Y_DOWN].type = WidgetType::button;
+            widgets[WIDX_MAP_SIZE_LINK].type = WidgetType::flatBtn;
+            widgets[WIDX_MAP_SIZE_SPINNER_X].type = WidgetType::spinner;
+            widgets[WIDX_MAP_SIZE_SPINNER_X_UP].type = WidgetType::button;
+            widgets[WIDX_MAP_SIZE_SPINNER_X_DOWN].type = WidgetType::button;
 
             // Push width (Y) and height (X) to the common formatter arguments for the map size spinners to use
             auto& gameState = getGameState();
@@ -1210,15 +1209,15 @@ namespace OpenRCT2::Ui::Windows
 
         void ResetMaxWindowDimensions()
         {
-            auto newMaxWidth = std::clamp(getMiniMapWidth() + GetReservedRightSpace(), WW, ContextGetWidth());
+            auto newMaxWidth = std::clamp(getMiniMapWidth() + GetReservedRightSpace(), kWindowSize.width, ContextGetWidth());
             auto newMaxHeight = std::clamp(
-                getMiniMapWidth() + kReservedTopSpace + GetReservedBottomSpace(), WH, ContextGetHeight() - 68);
+                getMiniMapWidth() + kReservedTopSpace + GetReservedBottomSpace(), kWindowSize.height, ContextGetHeight() - 68);
 
             auto scrollbarSize = getMiniMapWidth() + GetReservedRightSpace() > ContextGetWidth() ? kScrollBarWidth : 2;
             newMaxWidth += scrollbarSize;
             newMaxHeight += scrollbarSize;
 
-            WindowSetResize(*this, { WW, WH }, { newMaxWidth, newMaxHeight });
+            WindowSetResize(*this, kWindowSize, { newMaxWidth, newMaxHeight });
         }
 
         void ResizeMiniMap()
@@ -1238,7 +1237,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             textOffset += _firstColumnWidth + 4;
-            min_width = WW;
+            min_width = kWindowSize.width;
             for (uint32_t i = 4; i < std::size(MapLabels); i++)
             {
                 const auto* labelStr = LanguageGetString(MapLabels[i]);
@@ -1255,7 +1254,7 @@ namespace OpenRCT2::Ui::Windows
         try
         {
             auto* windowMgr = GetWindowManager();
-            auto* w = windowMgr->FocusOrCreate<MapWindow>(WindowClass::Map, 245, 259, WF_10);
+            auto* w = windowMgr->FocusOrCreate<MapWindow>(WindowClass::Map, kWindowSize, WF_10);
             w->selected_tab = 0;
             w->list_information_type = 0;
             return w;

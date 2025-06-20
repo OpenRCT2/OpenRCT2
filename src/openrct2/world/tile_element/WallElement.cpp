@@ -64,6 +64,19 @@ void WallElement::SetAnimationFrame(uint8_t frameNum)
     animation |= (frameNum & 0xF) << 3;
 }
 
+bool WallElement::IsAnimating() const
+{
+    return (animation & WALL_ANIMATION_FLAG_IS_ANIMATING) != 0;
+}
+
+void WallElement::SetIsAnimating(const bool isAnimating)
+{
+    if (isAnimating)
+        animation |= WALL_ANIMATION_FLAG_IS_ANIMATING;
+    else
+        animation &= ~WALL_ANIMATION_FLAG_IS_ANIMATING;
+}
+
 uint16_t WallElement::GetEntryIndex() const
 {
     return entryIndex;

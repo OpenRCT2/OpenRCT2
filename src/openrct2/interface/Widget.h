@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/FlagHolder.hpp"
 #include "../core/StringTypes.h"
 #include "../drawing/ImageId.hpp"
 #include "../localisation/StringIdType.h"
@@ -21,45 +22,45 @@ namespace OpenRCT2
     using WidgetIndex = uint16_t;
     constexpr WidgetIndex kWidgetIndexNull = 0xFFFF;
 
-    enum class WindowWidgetType : uint8_t
+    enum class WidgetType : uint8_t
     {
-        Empty = 0,
-        Frame = 1,
-        Resize = 2,
-        ImgBtn = 3,
-        ColourBtn = 6,
-        TrnBtn = 7,
-        Tab = 8,
-        FlatBtn = 9,
-        Button = 10,
-        LabelCentred = 12, // Centred text
-        TableHeader = 13,  // Left-aligned textual button
-        Label = 14,        // Left-aligned text
-        Spinner = 15,
-        DropdownMenu = 16,
-        Viewport = 17,
-        Groupbox = 19,
-        Caption = 20,
-        CloseBox = 21,
-        Scroll = 22,
-        Checkbox = 23,
-        Placeholder = 25,
-        ProgressBar = 29,
-        Custom = 28,
-        TextBox = 27,
-        HorizontalSeparator = 30,
+        empty = 0,
+        frame = 1,
+        resize = 2,
+        imgBtn = 3,
+        colourBtn = 6,
+        trnBtn = 7,
+        tab = 8,
+        flatBtn = 9,
+        button = 10,
+        labelCentred = 12, // Centred text
+        tableHeader = 13,  // Left-aligned textual button
+        label = 14,        // Left-aligned text
+        spinner = 15,
+        dropdownMenu = 16,
+        viewport = 17,
+        groupbox = 19,
+        caption = 20,
+        closeBox = 21,
+        scroll = 22,
+        checkbox = 23,
+        placeholder = 25,
+        progressBar = 29,
+        custom = 28,
+        textBox = 27,
+        horizontalSeparator = 30,
     };
 
-    using WidgetFlags = uint32_t;
-    namespace WIDGET_FLAGS
+    enum class WidgetFlag : uint8_t
     {
-        const WidgetFlags TEXT_IS_STRING = 1 << 0;
-        const WidgetFlags IS_PRESSED = 1 << 2;
-        const WidgetFlags IS_DISABLED = 1 << 3;
-        const WidgetFlags TOOLTIP_IS_STRING = 1 << 4;
-        const WidgetFlags IS_HIDDEN = 1 << 5;
-        const WidgetFlags IS_HOLDABLE = 1 << 6;
-    } // namespace WIDGET_FLAGS
+        textIsString = 0,
+        isPressed = 2,
+        isDisabled = 3,
+        tooltipIsString = 4,
+        isHidden = 5,
+        isHoldable = 6,
+    };
+    using WidgetFlags = FlagHolder<uint8_t, WidgetFlag>;
 
     enum
     {
@@ -75,7 +76,7 @@ namespace OpenRCT2
 
     struct Widget
     {
-        WindowWidgetType type{};
+        WidgetType type{};
         uint8_t colour{};
         int16_t left{};
         int16_t right{};
@@ -152,7 +153,7 @@ namespace OpenRCT2
 
         bool IsVisible() const
         {
-            return !(flags & OpenRCT2::WIDGET_FLAGS::IS_HIDDEN);
+            return !(flags.has(OpenRCT2::WidgetFlag::isHidden));
         }
     };
 
