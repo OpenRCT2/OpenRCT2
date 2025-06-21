@@ -722,26 +722,42 @@ namespace OpenRCT2::SpinningRC
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_SPINNING_LIFT_TRACK_GENTLE + 4)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+                    {
+                        MetalASupportsPaintSetup(
+                            session, kSupportType, MetalSupportPlace::centre, 12, height, session.SupportColours);
+                    }
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_SPINNING_LIFT_TRACK_GENTLE + 5)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+                    {
+                        MetalASupportsPaintSetup(
+                            session, kSupportType, MetalSupportPlace::centre, 10, height, session.SupportColours);
+                    }
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_SPINNING_LIFT_TRACK_GENTLE + 6)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+                    {
+                        MetalASupportsPaintSetup(
+                            session, kSupportType, MetalSupportPlace::centre, 10, height, session.SupportColours);
+                    }
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_SPINNING_LIFT_TRACK_GENTLE + 7)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+                    {
+                        MetalASupportsPaintSetup(
+                            session, kSupportType, MetalSupportPlace::centre, 12, height, session.SupportColours);
+                    }
                     break;
-            }
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::centre, 10, height, session.SupportColours);
             }
         }
         else
@@ -752,26 +768,42 @@ namespace OpenRCT2::SpinningRC
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_SPINNING_TRACK_GENTLE + 4)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+                    {
+                        MetalASupportsPaintSetup(
+                            session, kSupportType, MetalSupportPlace::centre, 12, height, session.SupportColours);
+                    }
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_SPINNING_TRACK_GENTLE + 5)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+                    {
+                        MetalASupportsPaintSetup(
+                            session, kSupportType, MetalSupportPlace::centre, 10, height, session.SupportColours);
+                    }
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_SPINNING_TRACK_GENTLE + 6)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+                    {
+                        MetalASupportsPaintSetup(
+                            session, kSupportType, MetalSupportPlace::centre, 10, height, session.SupportColours);
+                    }
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_SPINNING_TRACK_GENTLE + 7)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+                    {
+                        MetalASupportsPaintSetup(
+                            session, kSupportType, MetalSupportPlace::centre, 12, height, session.SupportColours);
+                    }
                     break;
-            }
-            if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-            {
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::centre, 10, height, session.SupportColours);
             }
         }
         if (direction == 0 || direction == 3)
