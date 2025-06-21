@@ -153,7 +153,7 @@ static void MineTrainRCTrackStation(
     }
     if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2))
     {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::boxed);
     }
     else
     {

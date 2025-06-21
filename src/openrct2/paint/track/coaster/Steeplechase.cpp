@@ -92,7 +92,7 @@ static void SteeplechaseTrackStation(
         { { 0, 6, height + 1 }, { 32, 20, 3 } });
     if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2))
     {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::boxed);
     }
     else
     {

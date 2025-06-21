@@ -116,7 +116,7 @@ namespace OpenRCT2::AlpineRC
         }
         if (TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::b, -2, 4, 7))
         {
-            DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
+            DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::boxed);
         }
         else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {

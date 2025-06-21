@@ -138,7 +138,7 @@ static void PaintSwingingInverterShip(
 
     if (relativeTrackSequence != 1 && relativeTrackSequence != 3)
     {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::tubes);
 
         if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
         {

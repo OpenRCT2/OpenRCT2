@@ -2323,7 +2323,7 @@ static void LoopingRCTrackLeftVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(15364), { 16, 0, height },
                         { { 16, 0, height }, { 3, 16, 119 } });
                     MetalASupportsPaintSetupRotated(
-                        session, MetalSupportType::Thick, MetalSupportPlace::rightCorner, DirectionReverse(direction), 0,
+                        session, MetalSupportType::thick, MetalSupportPlace::rightCorner, DirectionReverse(direction), 0,
                         height - 8, session.TrackColours);
                     break;
                 case 1:
@@ -2334,7 +2334,7 @@ static void LoopingRCTrackLeftVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(15366), { 12, 0, height },
                         { { 12, 0, height }, { 3, 16, 119 } });
                     MetalASupportsPaintSetupRotated(
-                        session, MetalSupportType::Thick, MetalSupportPlace::rightCorner, DirectionReverse(direction), 0,
+                        session, MetalSupportType::thick, MetalSupportPlace::rightCorner, DirectionReverse(direction), 0,
                         height - 8, session.TrackColours);
                     break;
                 case 2:
@@ -2345,7 +2345,7 @@ static void LoopingRCTrackLeftVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(15365), { 10, 16, height },
                         { { 10, 16, height }, { 4, 16, 119 } });
                     MetalASupportsPaintSetupRotated(
-                        session, MetalSupportType::Thick, MetalSupportPlace::rightCorner, DirectionReverse(direction), 0,
+                        session, MetalSupportType::thick, MetalSupportPlace::rightCorner, DirectionReverse(direction), 0,
                         height - 8, session.TrackColours);
                     break;
                 case 3:
@@ -2356,7 +2356,7 @@ static void LoopingRCTrackLeftVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(15367), { 16, 16, height },
                         { { 16, 16, height }, { 2, 16, 119 } });
                     MetalASupportsPaintSetupRotated(
-                        session, MetalSupportType::Thick, MetalSupportPlace::rightCorner, DirectionReverse(direction), 0,
+                        session, MetalSupportType::thick, MetalSupportPlace::rightCorner, DirectionReverse(direction), 0,
                         height - 8, session.TrackColours);
                     break;
             }
@@ -2445,7 +2445,7 @@ static void LoopingRCTrackLeftVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(15365), { 10, 16, height },
                         { { 10, 16, height }, { 4, 16, 119 } });
                     MetalASupportsPaintSetupRotated(
-                        session, MetalSupportType::Thick, MetalSupportPlace::rightCorner, direction, 0, height - 8,
+                        session, MetalSupportType::thick, MetalSupportPlace::rightCorner, direction, 0, height - 8,
                         session.TrackColours);
                     break;
                 case 1:
@@ -2456,7 +2456,7 @@ static void LoopingRCTrackLeftVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(15367), { 16, 16, height },
                         { { 16, 16, height }, { 2, 16, 119 } });
                     MetalASupportsPaintSetupRotated(
-                        session, MetalSupportType::Thick, MetalSupportPlace::rightCorner, direction, 0, height - 8,
+                        session, MetalSupportType::thick, MetalSupportPlace::rightCorner, direction, 0, height - 8,
                         session.TrackColours);
                     break;
                 case 2:
@@ -2467,7 +2467,7 @@ static void LoopingRCTrackLeftVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(15364), { 16, 0, height },
                         { { 16, 0, height }, { 3, 16, 119 } });
                     MetalASupportsPaintSetupRotated(
-                        session, MetalSupportType::Thick, MetalSupportPlace::rightCorner, direction, 0, height - 8,
+                        session, MetalSupportType::thick, MetalSupportPlace::rightCorner, direction, 0, height - 8,
                         session.TrackColours);
                     break;
                 case 3:
@@ -2478,7 +2478,7 @@ static void LoopingRCTrackLeftVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(15366), { 12, 0, height },
                         { { 12, 0, height }, { 3, 16, 119 } });
                     MetalASupportsPaintSetupRotated(
-                        session, MetalSupportType::Thick, MetalSupportPlace::rightCorner, direction, 0, height - 8,
+                        session, MetalSupportType::thick, MetalSupportPlace::rightCorner, direction, 0, height - 8,
                         session.TrackColours);
                     break;
             }
@@ -2628,7 +2628,7 @@ static void LoopingRCTrackRightVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(15384), { 16, 16, height },
                         { { 16, 16, height }, { 2, 16, 119 } });
                     MetalASupportsPaintSetupRotated(
-                        session, MetalSupportType::Thick, MetalSupportPlace::bottomCorner, direction, 0, height - 8,
+                        session, MetalSupportType::thick, MetalSupportPlace::bottomCorner, direction, 0, height - 8,
                         session.TrackColours);
                     break;
                 case 1:
@@ -2639,7 +2639,7 @@ static void LoopingRCTrackRightVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(15386), { 10, 16, height },
                         { { 10, 16, height }, { 4, 16, 119 } });
                     MetalASupportsPaintSetupRotated(
-                        session, MetalSupportType::Thick, MetalSupportPlace::bottomCorner, direction, 0, height - 8,
+                        session, MetalSupportType::thick, MetalSupportPlace::bottomCorner, direction, 0, height - 8,
                         session.TrackColours);
                     break;
                 case 2:
@@ -2650,7 +2650,7 @@ static void LoopingRCTrackRightVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(15385), { 12, 0, height },
                         { { 12, 0, height }, { 3, 16, 119 } });
                     MetalASupportsPaintSetupRotated(
-                        session, MetalSupportType::Thick, MetalSupportPlace::bottomCorner, direction, 0, height - 8,
+                        session, MetalSupportType::thick, MetalSupportPlace::bottomCorner, direction, 0, height - 8,
                         session.TrackColours);
                     break;
                 case 3:
@@ -2661,7 +2661,7 @@ static void LoopingRCTrackRightVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(15387), { 16, 0, height },
                         { { 16, 0, height }, { 2, 16, 119 } });
                     MetalASupportsPaintSetupRotated(
-                        session, MetalSupportType::Thick, MetalSupportPlace::bottomCorner, direction, 0, height - 8,
+                        session, MetalSupportType::thick, MetalSupportPlace::bottomCorner, direction, 0, height - 8,
                         session.TrackColours);
                     break;
             }
@@ -2728,7 +2728,7 @@ static void LoopingRCTrackRightVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(15385), { 12, 0, height },
                         { { 12, 0, height }, { 3, 16, 119 } });
                     MetalASupportsPaintSetupRotated(
-                        session, MetalSupportType::Thick, MetalSupportPlace::bottomCorner, DirectionReverse(direction), 0,
+                        session, MetalSupportType::thick, MetalSupportPlace::bottomCorner, DirectionReverse(direction), 0,
                         height - 8, session.TrackColours);
                     break;
                 case 1:
@@ -2739,7 +2739,7 @@ static void LoopingRCTrackRightVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(15387), { 16, 0, height },
                         { { 16, 0, height }, { 2, 16, 119 } });
                     MetalASupportsPaintSetupRotated(
-                        session, MetalSupportType::Thick, MetalSupportPlace::bottomCorner, DirectionReverse(direction), 0,
+                        session, MetalSupportType::thick, MetalSupportPlace::bottomCorner, DirectionReverse(direction), 0,
                         height - 8, session.TrackColours);
                     break;
                 case 2:
@@ -2750,7 +2750,7 @@ static void LoopingRCTrackRightVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(15384), { 16, 16, height },
                         { { 16, 16, height }, { 2, 16, 119 } });
                     MetalASupportsPaintSetupRotated(
-                        session, MetalSupportType::Thick, MetalSupportPlace::bottomCorner, DirectionReverse(direction), 0,
+                        session, MetalSupportType::thick, MetalSupportPlace::bottomCorner, DirectionReverse(direction), 0,
                         height - 8, session.TrackColours);
                     break;
                 case 3:
@@ -2761,7 +2761,7 @@ static void LoopingRCTrackRightVerticalLoop(
                         session, direction, session.TrackColours.WithIndex(15386), { 10, 16, height },
                         { { 10, 16, height }, { 4, 16, 119 } });
                     MetalASupportsPaintSetupRotated(
-                        session, MetalSupportType::Thick, MetalSupportPlace::bottomCorner, DirectionReverse(direction), 0,
+                        session, MetalSupportType::thick, MetalSupportPlace::bottomCorner, DirectionReverse(direction), 0,
                         height - 8, session.TrackColours);
                     break;
             }

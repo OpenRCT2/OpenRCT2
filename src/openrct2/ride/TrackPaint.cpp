@@ -1929,7 +1929,7 @@ void TrackPaintUtilLeftCorkscrewUpSupports(PaintSession& session, Direction dire
             0xFFFF, 0);
     }
     MetalASupportsPaintSetupRotated(
-        session, MetalSupportType::Tubes, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
+        session, MetalSupportType::tubes, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
     if (direction != 2)
     {
         PaintUtilSetSegmentSupportHeight(

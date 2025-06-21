@@ -123,7 +123,7 @@ static void MiniRCTrackStation(
     }
     if (TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::a, 0, 9, 11))
     {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::tubes);
     }
     else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {

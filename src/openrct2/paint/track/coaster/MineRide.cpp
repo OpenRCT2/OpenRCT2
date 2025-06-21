@@ -63,7 +63,7 @@ static void MineRideTrackStation(
         { { 0, 6, height + 3 }, { 32, 20, 1 } });
     if (TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, StationBaseType::a, 0, 9, 11))
     {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::tubes);
     }
     else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
