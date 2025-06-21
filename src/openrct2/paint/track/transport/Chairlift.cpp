@@ -203,7 +203,7 @@ static void ChairliftPaintStationNeSw(
     const auto* stationObj = ride.getStationObject();
     auto stationColour = GetStationColourScheme(session, trackElement);
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
+        session, WoodenSupportType::truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
 
     if (!isStart && !isEnd)
     {
@@ -295,7 +295,7 @@ static void ChairliftPaintStationSeNw(
     auto stationColour = GetStationColourScheme(session, trackElement);
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        session, WoodenSupportType::truss, WoodenSupportSubType::NeSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
     if (!isStart && !isEnd)

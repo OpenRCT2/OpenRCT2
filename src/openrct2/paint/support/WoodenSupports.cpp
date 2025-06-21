@@ -36,7 +36,7 @@ struct SupportsIdDescriptor
 
 /* 0x0097B1C4 */
 static constexpr SupportsIdDescriptor WoodenSupportImageIds[kNumWoodenSupportTypes][kNumWoodenSupportSubTypes] = {
-    // WoodenSupportType::Truss
+    // WoodenSupportType::truss
     {
         { 3392, 3393, 3394, 3536 }, // WoodenSupportSubType::NeSw
         { 3390, 3391, 3394, 3514 }, // WoodenSupportSubType::NwSe
@@ -45,7 +45,7 @@ static constexpr SupportsIdDescriptor WoodenSupportImageIds[kNumWoodenSupportTyp
         { 3564, 3565, 3566, 3614 }, // WoodenSupportSubType::Corner2
         { 3567, 3568, 3569, 3636 }, // WoodenSupportSubType::Corner3
     },
-    // WoodenSupportType::Mine
+    // WoodenSupportType::mine
     {
         { 3677, 3678, 3680, 3739 }, // WoodenSupportSubType::NeSw
         { 3675, 3676, 3679, 3717 }, // WoodenSupportSubType::NwSe
@@ -130,7 +130,7 @@ static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds1 = { {
 // clang-format off
 /* 0x0097B224 */
 static constexpr const ImagesByTransitionTypeArray::const_pointer WoodenCurveSupportImageIds[kNumWoodenSupportTypes][kNumWoodenSupportSubTypes] = {
-    // WoodenSupportType::Truss
+    // WoodenSupportType::truss
     { 
         WoodenCurveSupportImageIds0.data(), // WoodenSupportSubType::NeSw
         WoodenCurveSupportImageIds0.data(), // WoodenSupportSubType::NwSe
@@ -139,7 +139,7 @@ static constexpr const ImagesByTransitionTypeArray::const_pointer WoodenCurveSup
         nullptr,                            // WoodenSupportSubType::Corner2
         nullptr,                            // WoodenSupportSubType::Corner3
     }, 
-    // WoodenSupportType::Mine
+    // WoodenSupportType::mine
     { 
         WoodenCurveSupportImageIds1.data(), // WoodenSupportSubType::NeSw
         WoodenCurveSupportImageIds1.data(), // WoodenSupportSubType::NwSe

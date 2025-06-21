@@ -21,7 +21,7 @@ constexpr RideTypeDescriptor ClassicWoodenTwisterRollerCoasterRTD =
    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
    .TrackPaintFunctions = TrackDrawerDescriptor({
        .trackStyle = TrackStyle::classicWoodenTwisterRollerCoaster,
-       .supportType = WoodenSupportType::Truss,
+       .supportType = WoodenSupportType::truss,
        .enabledTrackGroups = { TrackGroup::flat, TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::blockBrakes, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::slopeSteepLong, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::slopeCurveSteep, TrackGroup::slopeCurveBanked },
        .extraTrackGroups = { TrackGroup::verticalLoop, TrackGroup::waterSplash, TrackGroup::booster, TrackGroup::halfLoopMedium, TrackGroup::halfLoopLarge },
    }),

@@ -21,8 +21,8 @@ namespace OpenRCT2
 
 enum class WoodenSupportType : uint8_t
 {
-    Truss = 0,
-    Mine = 1,
+    truss = 0,
+    mine = 1,
 };
 
 enum class WoodenSupportSubType : uint8_t
