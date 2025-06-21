@@ -6904,6 +6904,8 @@ namespace OpenRCT2::SpinningRC
         switch (trackSequence)
         {
             case 0:
+            {
+                int32_t supportExtraHeight = 12;
                 switch (direction)
                 {
                     case 0:
@@ -6911,6 +6913,7 @@ namespace OpenRCT2::SpinningRC
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_SPINNING_TRACK_GENTLE_MEDIUM_CURVE + 0)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        supportExtraHeight = 14;
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -6931,7 +6934,8 @@ namespace OpenRCT2::SpinningRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::centre, 12, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, kSupportType, MetalSupportPlace::centre, supportExtraHeight, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
@@ -6944,6 +6948,7 @@ namespace OpenRCT2::SpinningRC
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
+            }
             case 1:
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
@@ -7064,6 +7069,8 @@ namespace OpenRCT2::SpinningRC
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 6:
+            {
+                int32_t supportExtraHeight = 12;
                 switch (direction)
                 {
                     case 0:
@@ -7071,12 +7078,14 @@ namespace OpenRCT2::SpinningRC
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_SPINNING_TRACK_GENTLE_MEDIUM_CURVE + 4)),
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
+                        supportExtraHeight = 15;
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_SPINNING_TRACK_GENTLE_MEDIUM_CURVE + 9)),
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
+                        supportExtraHeight = 18;
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -7091,7 +7100,8 @@ namespace OpenRCT2::SpinningRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::centre, 12, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, kSupportType, MetalSupportPlace::centre, supportExtraHeight, height, session.SupportColours);
                 switch (direction)
                 {
                     case 2:
@@ -7110,6 +7120,7 @@ namespace OpenRCT2::SpinningRC
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
+            }
         }
     }
 
@@ -7120,6 +7131,8 @@ namespace OpenRCT2::SpinningRC
         switch (trackSequence)
         {
             case 0:
+            {
+                int32_t supportExtraHeight = 12;
                 switch (direction)
                 {
                     case 0:
@@ -7127,6 +7140,7 @@ namespace OpenRCT2::SpinningRC
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_SPINNING_TRACK_GENTLE_MEDIUM_CURVE + 20)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        supportExtraHeight = 14;
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -7147,7 +7161,8 @@ namespace OpenRCT2::SpinningRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::centre, 12, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, kSupportType, MetalSupportPlace::centre, supportExtraHeight, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
@@ -7161,6 +7176,7 @@ namespace OpenRCT2::SpinningRC
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
+            }
             case 1:
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
@@ -7280,6 +7296,8 @@ namespace OpenRCT2::SpinningRC
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
             case 6:
+            {
+                int32_t supportExtraHeight = 12;
                 switch (direction)
                 {
                     case 0:
@@ -7299,15 +7317,18 @@ namespace OpenRCT2::SpinningRC
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_SPINNING_TRACK_GENTLE_MEDIUM_CURVE + 34)),
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
+                        supportExtraHeight = 14;
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_SPINNING_TRACK_GENTLE_MEDIUM_CURVE + 39)),
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
+                        supportExtraHeight = 16;
                         break;
                 }
-                MetalASupportsPaintSetup(session, kSupportType, MetalSupportPlace::centre, 12, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, kSupportType, MetalSupportPlace::centre, supportExtraHeight, height, session.SupportColours);
                 switch (direction)
                 {
                     case 0:
@@ -7326,6 +7347,7 @@ namespace OpenRCT2::SpinningRC
                     0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72);
                 break;
+            }
         }
     }
 
