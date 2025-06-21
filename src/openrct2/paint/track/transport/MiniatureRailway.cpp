@@ -750,7 +750,7 @@ static void PaintMiniatureRailwayTrack25DegUp(
 
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::Up25DegRailway);
+        WoodenSupportTransitionType::up25DegRailway);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56);
@@ -783,7 +783,7 @@ static void PaintMiniatureRailwayTrackFlatTo25DegUp(
 
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::FlatToUp25DegRailway);
+        WoodenSupportTransitionType::flatToUp25DegRailway);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);
@@ -816,7 +816,7 @@ static void PaintMiniatureRailwayTrack25DegUpToFlat(
 
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::Up25DegToFlatRailway);
+        WoodenSupportTransitionType::up25DegToFlatRailway);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40);

@@ -139,7 +139,7 @@ static void WoodenRCTrack25DegUpToBank(
     WoodenRCTrackStraightBankTrack<isClassic, imageIds>(session, direction, height);
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::Up25DegToFlat);
+        WoodenSupportTransitionType::up25DegToFlat);
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
@@ -161,7 +161,7 @@ static void WoodenRCTrackBankTo25DegUp(
     WoodenRCTrackStraightBankTrack<isClassic, imageIds>(session, direction, height);
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::FlatToUp25Deg);
+        WoodenSupportTransitionType::flatToUp25Deg);
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);

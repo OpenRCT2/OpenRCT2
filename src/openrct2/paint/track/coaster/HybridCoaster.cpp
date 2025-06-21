@@ -108,7 +108,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::Up25Deg);
+            WoodenSupportTransitionType::up25Deg);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -165,7 +165,7 @@ namespace OpenRCT2::HybridRC
 
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::Up60Deg);
+            WoodenSupportTransitionType::up60Deg);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -196,7 +196,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::FlatToUp25Deg);
+            WoodenSupportTransitionType::flatToUp25Deg);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -279,7 +279,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::Up25DegToUp60Deg);
+            WoodenSupportTransitionType::up25DegToUp60Deg);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -363,7 +363,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::Up60DegToUp25Deg);
+            WoodenSupportTransitionType::up60DegToUp25Deg);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -394,7 +394,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::Up25DegToFlat);
+            WoodenSupportTransitionType::up25DegToFlat);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
@@ -3248,7 +3248,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::FlatToUp25Deg);
+            WoodenSupportTransitionType::flatToUp25Deg);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -3296,7 +3296,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::FlatToUp25Deg);
+            WoodenSupportTransitionType::flatToUp25Deg);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -3344,7 +3344,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::Up25DegToFlat);
+            WoodenSupportTransitionType::up25DegToFlat);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
@@ -3392,7 +3392,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::Up25DegToFlat);
+            WoodenSupportTransitionType::up25DegToFlat);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
@@ -5330,7 +5330,7 @@ namespace OpenRCT2::HybridRC
                             { 32, 20, 3 });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5339,7 +5339,7 @@ namespace OpenRCT2::HybridRC
                             { 34, 20, 3 });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -5348,7 +5348,7 @@ namespace OpenRCT2::HybridRC
                             { 32, 20, 3 });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -5357,7 +5357,7 @@ namespace OpenRCT2::HybridRC
                             { 32, 20, 3 });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -5429,7 +5429,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, DirectionPrev(direction), height,
-                    session.SupportColours, WoodenSupportTransitionType::Up25Deg);
+                    session.SupportColours, WoodenSupportTransitionType::up25Deg);
                 switch (direction)
                 {
                     case 2:
@@ -5461,7 +5461,7 @@ namespace OpenRCT2::HybridRC
                             { 32, 20, 3 });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5470,7 +5470,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 6, height }, { 32, 20, 3 });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -5479,7 +5479,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 6, height }, { 34, 20, 3 });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -5488,7 +5488,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 6, height }, { 32, 20, 3 });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -5560,7 +5560,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, DirectionNext(direction), height,
-                    session.SupportColours, WoodenSupportTransitionType::Up25Deg);
+                    session.SupportColours, WoodenSupportTransitionType::up25Deg);
                 switch (direction)
                 {
                     case 0:
@@ -5608,7 +5608,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5617,7 +5617,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 0, 6, height }, { 34, 20, 3 } });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -5626,7 +5626,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -5635,7 +5635,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -5829,7 +5829,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, DirectionPrev(direction), height,
-                    session.SupportColours, WoodenSupportTransitionType::Up25Deg);
+                    session.SupportColours, WoodenSupportTransitionType::up25Deg);
                 switch (direction)
                 {
                     case 2:
@@ -5861,7 +5861,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5870,7 +5870,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -5879,7 +5879,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 0, 6, height }, { 34, 20, 3 } });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -5888,7 +5888,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -6082,7 +6082,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, DirectionNext(direction), height,
-                    session.SupportColours, WoodenSupportTransitionType::Up25Deg);
+                    session.SupportColours, WoodenSupportTransitionType::up25Deg);
                 switch (direction)
                 {
                     case 0:
@@ -6370,7 +6370,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::Up25Deg);
+            WoodenSupportTransitionType::up25Deg);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -6415,7 +6415,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::Up25Deg);
+            WoodenSupportTransitionType::up25Deg);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -6460,7 +6460,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::Up25Deg);
+            WoodenSupportTransitionType::up25Deg);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -6505,7 +6505,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::Up25Deg);
+            WoodenSupportTransitionType::up25Deg);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -6581,7 +6581,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::FlatToUp25Deg);
+            WoodenSupportTransitionType::flatToUp25Deg);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -6629,7 +6629,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::FlatToUp25Deg);
+            WoodenSupportTransitionType::flatToUp25Deg);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -6677,7 +6677,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::Up25DegToFlat);
+            WoodenSupportTransitionType::up25DegToFlat);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
@@ -6725,7 +6725,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::Up25DegToFlat);
+            WoodenSupportTransitionType::up25DegToFlat);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
@@ -6799,7 +6799,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::Up25Deg);
+            WoodenSupportTransitionType::up25Deg);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -6841,7 +6841,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::Up25Deg);
+            WoodenSupportTransitionType::up25Deg);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -6900,7 +6900,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::FlatToUp25Deg);
+            WoodenSupportTransitionType::flatToUp25Deg);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -6945,7 +6945,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::FlatToUp25Deg);
+            WoodenSupportTransitionType::flatToUp25Deg);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -6990,7 +6990,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::Up25DegToFlat);
+            WoodenSupportTransitionType::up25DegToFlat);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
@@ -7035,7 +7035,7 @@ namespace OpenRCT2::HybridRC
         }
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::Up25DegToFlat);
+            WoodenSupportTransitionType::up25DegToFlat);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Flat);
@@ -7092,7 +7092,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 6, height }, { 32, 20, 3 });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -7105,7 +7105,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 6, height }, { { 0, 27, height }, { 34, 1, 34 } });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -7114,7 +7114,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 6, height }, { 32, 20, 3 });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -7123,7 +7123,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 6, height }, { 32, 20, 3 });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -7202,7 +7202,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, DirectionPrev(direction), height,
-                    session.SupportColours, WoodenSupportTransitionType::Up25Deg);
+                    session.SupportColours, WoodenSupportTransitionType::up25Deg);
                 switch (direction)
                 {
                     case 2:
@@ -7258,7 +7258,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, DirectionNext(direction), height,
-                    session.SupportColours, WoodenSupportTransitionType::Up25Deg);
+                    session.SupportColours, WoodenSupportTransitionType::up25Deg);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -7336,7 +7336,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, DirectionNext(direction), height,
-                    session.SupportColours, WoodenSupportTransitionType::Up25Deg);
+                    session.SupportColours, WoodenSupportTransitionType::up25Deg);
                 switch (direction)
                 {
                     case 0:
@@ -7386,7 +7386,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -7399,7 +7399,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 0, 27, height }, { 34, 1, 34 } });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -7408,7 +7408,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -7417,7 +7417,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -7631,7 +7631,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, DirectionPrev(direction), height,
-                    session.SupportColours, WoodenSupportTransitionType::Up25Deg);
+                    session.SupportColours, WoodenSupportTransitionType::up25Deg);
                 switch (direction)
                 {
                     case 2:
@@ -7663,7 +7663,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -7672,7 +7672,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -7685,7 +7685,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 0, 27, height }, { 34, 1, 34 } });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -7694,7 +7694,7 @@ namespace OpenRCT2::HybridRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         WoodenASupportsPaintSetupRotated(
                             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                            WoodenSupportTransitionType::Up25Deg);
+                            WoodenSupportTransitionType::up25Deg);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -7908,7 +7908,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, DirectionNext(direction), height,
-                    session.SupportColours, WoodenSupportTransitionType::Up25Deg);
+                    session.SupportColours, WoodenSupportTransitionType::up25Deg);
                 switch (direction)
                 {
                     case 0:
@@ -11249,7 +11249,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                    WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq0);
+                    WoodenSupportTransitionType::flatToUp60DegLongBaseSeq0);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -11283,7 +11283,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                    WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq1);
+                    WoodenSupportTransitionType::flatToUp60DegLongBaseSeq1);
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48);
                 break;
@@ -11313,7 +11313,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                    WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq2);
+                    WoodenSupportTransitionType::flatToUp60DegLongBaseSeq2);
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 64);
                 break;
@@ -11343,7 +11343,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                    WoodenSupportTransitionType::FlatToUp60DegLongBaseSeq3);
+                    WoodenSupportTransitionType::flatToUp60DegLongBaseSeq3);
                 switch (direction)
                 {
                     case 1:
@@ -11391,7 +11391,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                    WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq0);
+                    WoodenSupportTransitionType::up60DegToFlatLongBaseSeq0);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -11425,7 +11425,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                    WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq1);
+                    WoodenSupportTransitionType::up60DegToFlatLongBaseSeq1);
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 80);
                 break;
@@ -11455,7 +11455,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                    WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq2);
+                    WoodenSupportTransitionType::up60DegToFlatLongBaseSeq2);
                 PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56);
                 break;
@@ -11485,7 +11485,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                    WoodenSupportTransitionType::Up60DegToFlatLongBaseSeq3);
+                    WoodenSupportTransitionType::up60DegToFlatLongBaseSeq3);
                 switch (direction)
                 {
                     case 1:
@@ -11552,7 +11552,7 @@ namespace OpenRCT2::HybridRC
             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::Up25Deg);
+            WoodenSupportTransitionType::up25Deg);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -12138,7 +12138,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                    WoodenSupportTransitionType::Up25Deg);
+                    WoodenSupportTransitionType::up25Deg);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -12288,7 +12288,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                    WoodenSupportTransitionType::Up25Deg);
+                    WoodenSupportTransitionType::up25Deg);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -12542,7 +12542,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                    WoodenSupportTransitionType::Up25Deg);
+                    WoodenSupportTransitionType::up25Deg);
 
                 if (direction == 1 || direction == 2)
                 {
@@ -12694,7 +12694,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::nwSe, DirectionNext(direction), height,
-                    session.SupportColours, WoodenSupportTransitionType::Up25Deg);
+                    session.SupportColours, WoodenSupportTransitionType::up25Deg);
                 if (direction == 0 || direction == 1)
                 {
                     PaintUtilPushTunnelRotated(session, direction + 1, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
@@ -13931,7 +13931,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                    WoodenSupportTransitionType::Up25Deg);
+                    WoodenSupportTransitionType::up25Deg);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -14081,7 +14081,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                    WoodenSupportTransitionType::Up25Deg);
+                    WoodenSupportTransitionType::up25Deg);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -14350,7 +14350,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-                    WoodenSupportTransitionType::Up25Deg);
+                    WoodenSupportTransitionType::up25Deg);
                 if (direction == 1 || direction == 2)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
@@ -14516,7 +14516,7 @@ namespace OpenRCT2::HybridRC
                 }
                 WoodenASupportsPaintSetupRotated(
                     session, supportType.wooden, WoodenSupportSubType::nwSe, DirectionNext(direction), height,
-                    session.SupportColours, WoodenSupportTransitionType::Up25Deg);
+                    session.SupportColours, WoodenSupportTransitionType::up25Deg);
                 if (direction == 0 || direction == 1)
                 {
                     PaintUtilPushTunnelRotated(session, direction + 1, height + 8, kTunnelGroup, TunnelSubType::SlopeEnd);
@@ -14574,7 +14574,7 @@ namespace OpenRCT2::HybridRC
             { { 0, 6, height + 3 }, { 32, 20, 2 } });
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::Up25Deg);
+            WoodenSupportTransitionType::up25Deg);
         if (direction == 0 || direction == 3)
         {
             PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::SquareSlopeStart);

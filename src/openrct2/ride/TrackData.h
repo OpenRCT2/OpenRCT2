@@ -79,7 +79,7 @@ namespace OpenRCT2::TrackMetaData
     struct SequenceWoodenSupport
     {
         WoodenSupportSubType subType = WoodenSupportSubType::null;
-        WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None;
+        WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::none;
     };
 
     struct SequenceMetalSupport

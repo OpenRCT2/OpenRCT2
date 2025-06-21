@@ -532,7 +532,7 @@ inline bool WoodenABSupportsPaintSetupCommon(
         return false;
     }
 
-    if (transitionType != WoodenSupportTransitionType::None)
+    if (transitionType != WoodenSupportTransitionType::none)
     {
         hasSupports = WoodenABPaintSlopeTransitions(
             session, supportType, subType, transitionType, direction, imageTemplate, baseHeight);

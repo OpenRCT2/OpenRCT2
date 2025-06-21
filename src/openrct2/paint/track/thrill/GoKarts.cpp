@@ -1762,7 +1762,7 @@ static void TrackUp60(
 
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::Up60Deg);
+        WoodenSupportTransitionType::up60Deg);
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -1788,7 +1788,7 @@ static void TrackUp25ToUp60(
 
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::Up25DegToUp60Deg);
+        WoodenSupportTransitionType::up25DegToUp60Deg);
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -1814,7 +1814,7 @@ static void TrackUp60ToUp25(
 
     WoodenASupportsPaintSetupRotated(
         session, supportType.wooden, WoodenSupportSubType::neSw, direction, height, session.SupportColours,
-        WoodenSupportTransitionType::Up60DegToUp25Deg);
+        WoodenSupportTransitionType::up60DegToUp25Deg);
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -1936,7 +1936,7 @@ static void TrackLeftQuarterTurn3Tiles(
     {
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, woodenSupportSubType, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::None);
+            WoodenSupportTransitionType::none);
     }
     TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, kTunnelGroup, TunnelSubType::Flat, height, direction, trackSequence);
     static constexpr std::array<int32_t, 4> blockedSegments = {
@@ -2265,10 +2265,10 @@ static void TrackLeftQuarterTurn3TilesUp25(
         WoodenSupportSubType::neSw,
     };
     static constexpr std::array<WoodenSupportTransitionType, 4> woodenSupportTransitionTypes = {
-        WoodenSupportTransitionType::Up25Deg,
-        WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::Up25Deg,
+        WoodenSupportTransitionType::up25Deg,
+        WoodenSupportTransitionType::none,
+        WoodenSupportTransitionType::none,
+        WoodenSupportTransitionType::up25Deg,
     };
     static constexpr std::array woodenSupportExtraRotation = {
         0,
@@ -2323,10 +2323,10 @@ static void TrackRightQuarterTurn3TilesUp25(
         WoodenSupportSubType::neSw,
     };
     static constexpr std::array<WoodenSupportTransitionType, 4> woodenSupportTransitionTypes = {
-        WoodenSupportTransitionType::Up25Deg,
-        WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::Up25Deg,
+        WoodenSupportTransitionType::up25Deg,
+        WoodenSupportTransitionType::none,
+        WoodenSupportTransitionType::none,
+        WoodenSupportTransitionType::up25Deg,
     };
     static constexpr std::array woodenSupportExtraRotation = {
         0,
@@ -2397,9 +2397,9 @@ static void TrackLeftQuarterTurn5TilesUp25(
         WoodenSupportSubType::null, WoodenSupportSubType::corner3, WoodenSupportSubType::neSw,
     };
     static constexpr std::array<WoodenSupportTransitionType, 7> woodenSupportTransitionTypes = {
-        WoodenSupportTransitionType::Up25Deg, WoodenSupportTransitionType::None, WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::None,    WoodenSupportTransitionType::None, WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::None,
+        WoodenSupportTransitionType::up25Deg, WoodenSupportTransitionType::none, WoodenSupportTransitionType::none,
+        WoodenSupportTransitionType::none,    WoodenSupportTransitionType::none, WoodenSupportTransitionType::none,
+        WoodenSupportTransitionType::none,
     };
     static constexpr std::array woodenSupportHeight = { 0, 0, 0, -16, 0, 0, 0 };
     static constexpr std::array woodenSupportExtraRotation = { 0, 0, 0, 0, 0, 0, -1 };
@@ -2457,9 +2457,9 @@ static void TrackRightQuarterTurn5TilesUp25(
         WoodenSupportSubType::null, WoodenSupportSubType::corner2, WoodenSupportSubType::neSw,
     };
     static constexpr std::array<WoodenSupportTransitionType, 7> woodenSupportTransitionTypes = {
-        WoodenSupportTransitionType::Up25Deg, WoodenSupportTransitionType::None, WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::None,    WoodenSupportTransitionType::None, WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::None,
+        WoodenSupportTransitionType::up25Deg, WoodenSupportTransitionType::none, WoodenSupportTransitionType::none,
+        WoodenSupportTransitionType::none,    WoodenSupportTransitionType::none, WoodenSupportTransitionType::none,
+        WoodenSupportTransitionType::none,
     };
     static constexpr std::array woodenSupportHeight = { 0, 0, 0, -16, 0, 0, 0 };
     static constexpr std::array woodenSupportExtraRotation = { 0, 0, 0, 0, 0, 0, 1 };
@@ -2535,8 +2535,8 @@ static void TrackLeftEighthToDiagUp25(
         WoodenSupportSubType::corner3, WoodenSupportSubType::corner2,
     };
     static constexpr std::array<WoodenSupportTransitionType, 5> woodenSupportTransitionTypes = {
-        WoodenSupportTransitionType::Up25Deg, WoodenSupportTransitionType::None, WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::None,    WoodenSupportTransitionType::None,
+        WoodenSupportTransitionType::up25Deg, WoodenSupportTransitionType::none, WoodenSupportTransitionType::none,
+        WoodenSupportTransitionType::none,    WoodenSupportTransitionType::none,
     };
     static constexpr std::array woodenSupportHeight = { 0, 0, -16, 0, 0 };
     const WoodenSupportSubType woodenSupportSubType = woodenSupportSubTypes[trackSequence];
@@ -2572,8 +2572,8 @@ static void TrackRightEighthToDiagUp25(
         WoodenSupportSubType::corner2, WoodenSupportSubType::corner3,
     };
     static constexpr std::array<WoodenSupportTransitionType, 5> woodenSupportTransitionTypes = {
-        WoodenSupportTransitionType::Up25Deg, WoodenSupportTransitionType::None, WoodenSupportTransitionType::None,
-        WoodenSupportTransitionType::None,    WoodenSupportTransitionType::None,
+        WoodenSupportTransitionType::up25Deg, WoodenSupportTransitionType::none, WoodenSupportTransitionType::none,
+        WoodenSupportTransitionType::none,    WoodenSupportTransitionType::none,
     };
     static constexpr std::array woodenSupportHeight = { 0, 0, -16, 0, 0 };
     const WoodenSupportSubType woodenSupportSubType = woodenSupportSubTypes[trackSequence];
@@ -2613,7 +2613,7 @@ static void TrackLeftEighthToOrthogonalUp25(
     {
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, woodenSupportSubType, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::None);
+            WoodenSupportTransitionType::none);
     }
 
     if (trackSequence == 4 && (direction == 1 || direction == 2))
@@ -2645,7 +2645,7 @@ static void TrackRightEighthToOrthogonalUp25(
     {
         WoodenASupportsPaintSetupRotated(
             session, supportType.wooden, woodenSupportSubType, direction, height, session.SupportColours,
-            WoodenSupportTransitionType::None);
+            WoodenSupportTransitionType::none);
     }
 
     if (trackSequence == 4 && (direction == 0 || direction == 1))
