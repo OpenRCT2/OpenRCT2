@@ -29,47 +29,47 @@ enum class MetalSupportGraphic : uint8_t
     /**
      * Used by the Steel Twister, Looping RC, and other rides.
      */
-    Tubes = 0,
+    tubes = 0,
     /**
      * Used by the Junior RC and other rides.
      */
-    Fork = 1,
+    fork = 1,
     /**
      * Rotated version of `Fork`.
      */
-    ForkAlt = 2,
+    forkAlt = 2,
     /**
      * Used by the vertical roller coasters, the Log Flume and other rides.
      */
-    Boxed = 3,
+    boxed = 3,
     /**
      * Used by the Steeplechase.
      */
-    Stick = 4,
+    stick = 4,
     /**
      * No visible difference from `Stick`, also used by the Steeplechase
      */
-    StickAlt = 5,
+    stickAlt = 5,
     /**
      * Every “Thick” type seems to be used for the Looping Roller Coaster’s loop, and only for that specific part.
      */
-    ThickCentred = 6,
-    Thick = 7,
-    ThickAlt = 8,
-    ThickAltCentred = 9,
+    thickCentred = 6,
+    thick = 7,
+    thickAlt = 8,
+    thickAltCentred = 9,
     /**
      * Used by the chairlift.
      */
-    Truss = 10,
+    truss = 10,
     /**
      * Used by inverted rcs like the flying, lay-down, compact inverted.
      * Mostly the same as `Tubes`, but with a thinner crossbeam.
      */
-    TubesInverted = 11,
+    tubesInverted = 11,
     /**
      * Does not seem to be used in RCT2, but it was used in RCT1 for one of the path support types.
      */
-    BoxedCoated,
+    boxedCoated,
 };
 
 /** rct2: 0x0097AF20, 0x0097AF21 */
@@ -155,36 +155,36 @@ static constexpr CoordsXY _97B062[] = {
 
 /** rct2: 0x0097B072 */
 static constexpr uint32_t _metalSupportTypeToCrossbeamImages[][8] = {
-    { 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 }, // MetalSupportGraphic::Tubes
-    { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // MetalSupportGraphic::Fork
-    { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // MetalSupportGraphic::ForkAlt
-    { 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 }, // MetalSupportGraphic::Boxed
-    { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // MetalSupportGraphic::Stick
-    { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // MetalSupportGraphic::StickAlt
-    { 3378, 3383, 3378, 3383, 3380, 3385, 3380, 3385 }, // MetalSupportGraphic::ThickCentred
-    { 3378, 3383, 3378, 3383, 3380, 3385, 3380, 3385 }, // MetalSupportGraphic::Thick
-    { 3382, 3379, 3382, 3379, 3384, 3381, 3384, 3381 }, // MetalSupportGraphic::ThickAlt
-    { 3382, 3379, 3382, 3379, 3384, 3381, 3384, 3381 }, // MetalSupportGraphic::ThickAltCentred
-    { 3378, 3379, 3378, 3379, 3380, 3381, 3380, 3381 }, // MetalSupportGraphic::Truss
-    { 3386, 3387, 3386, 3387, 3388, 3389, 3388, 3389 }, // MetalSupportGraphic::TubesInverted
-    { 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 }, // MetalSupportGraphic::BoxedCoated
+    { 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 }, // MetalSupportGraphic::tubes
+    { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // MetalSupportGraphic::fork
+    { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // MetalSupportGraphic::forkAlt
+    { 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 }, // MetalSupportGraphic::boxed
+    { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // MetalSupportGraphic::stick
+    { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // MetalSupportGraphic::stickAlt
+    { 3378, 3383, 3378, 3383, 3380, 3385, 3380, 3385 }, // MetalSupportGraphic::thickCentred
+    { 3378, 3383, 3378, 3383, 3380, 3385, 3380, 3385 }, // MetalSupportGraphic::thick
+    { 3382, 3379, 3382, 3379, 3384, 3381, 3384, 3381 }, // MetalSupportGraphic::thickAlt
+    { 3382, 3379, 3382, 3379, 3384, 3381, 3384, 3381 }, // MetalSupportGraphic::thickAltCentred
+    { 3378, 3379, 3378, 3379, 3380, 3381, 3380, 3381 }, // MetalSupportGraphic::truss
+    { 3386, 3387, 3386, 3387, 3388, 3389, 3388, 3389 }, // MetalSupportGraphic::tubesInverted
+    { 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 }, // MetalSupportGraphic::boxedCoated
 };
 
 /** rct2: 0x0097B142 */
 static constexpr uint8_t supportTypeToHeight[] = {
-    6, // MetalSupportGraphic::Tubes
-    3, // MetalSupportGraphic::Fork
-    3, // MetalSupportGraphic::ForkAlt
-    6, // MetalSupportGraphic::Boxed
-    3, // MetalSupportGraphic::Stick
-    3, // MetalSupportGraphic::StickAlt
-    6, // MetalSupportGraphic::ThickCentred
-    6, // MetalSupportGraphic::Thick
-    6, // MetalSupportGraphic::ThickAlt
-    6, // MetalSupportGraphic::ThickAltCentred
-    4, // MetalSupportGraphic::Truss
-    3, // MetalSupportGraphic::TubesInverted
-    6, // MetalSupportGraphic::BoxedCoated
+    6, // MetalSupportGraphic::tubes
+    3, // MetalSupportGraphic::fork
+    3, // MetalSupportGraphic::forkAlt
+    6, // MetalSupportGraphic::boxed
+    3, // MetalSupportGraphic::stick
+    3, // MetalSupportGraphic::stickAlt
+    6, // MetalSupportGraphic::thickCentred
+    6, // MetalSupportGraphic::thick
+    6, // MetalSupportGraphic::thickAlt
+    6, // MetalSupportGraphic::thickAltCentred
+    4, // MetalSupportGraphic::truss
+    3, // MetalSupportGraphic::tubesInverted
+    6, // MetalSupportGraphic::boxedCoated
 };
 
 struct MetalSupportsImages {
@@ -195,19 +195,19 @@ struct MetalSupportsImages {
 
 /** rct2: 0x0097B15C, 0x0097B190 */
 static constexpr MetalSupportsImages kSupportBasesAndBeams[] = {
-    { 3243, 3209, 3226 }, // MetalSupportGraphic::Tubes
-    { 3279, 3262, 3262 }, // MetalSupportGraphic::Fork
-    { 3298, 3262, 3262 }, // MetalSupportGraphic::ForkAlt
-    { 3334, 3317, 3317 }, // MetalSupportGraphic::Boxed
-    { kImageIndexUndefined, 3658, 3658 }, // MetalSupportGraphic::Stick
-    { kImageIndexUndefined, 3658, 3658 }, // MetalSupportGraphic::StickAlt
-    { kImageIndexUndefined, 3141, 3141 }, // MetalSupportGraphic::ThickCentred
-    { kImageIndexUndefined, 3158, 3158 }, // MetalSupportGraphic::Thick
-    { kImageIndexUndefined, 3175, 3175 }, // MetalSupportGraphic::ThickAlt
-    { kImageIndexUndefined, 3192, 3192 }, // MetalSupportGraphic::ThickAltCentred
-    { kImageIndexUndefined, 3124, 3124 }, // MetalSupportGraphic::Truss
-    { 3243, 3209, 3226 }, // MetalSupportGraphic::TubesInverted
-    { 3334, 3353, 3353 }, // MetalSupportGraphic::BoxedCoated
+    { 3243, 3209, 3226 }, // MetalSupportGraphic::tubes
+    { 3279, 3262, 3262 }, // MetalSupportGraphic::fork
+    { 3298, 3262, 3262 }, // MetalSupportGraphic::forkAlt
+    { 3334, 3317, 3317 }, // MetalSupportGraphic::boxed
+    { kImageIndexUndefined, 3658, 3658 }, // MetalSupportGraphic::stick
+    { kImageIndexUndefined, 3658, 3658 }, // MetalSupportGraphic::stickAlt
+    { kImageIndexUndefined, 3141, 3141 }, // MetalSupportGraphic::thickCentred
+    { kImageIndexUndefined, 3158, 3158 }, // MetalSupportGraphic::thick
+    { kImageIndexUndefined, 3175, 3175 }, // MetalSupportGraphic::thickAlt
+    { kImageIndexUndefined, 3192, 3192 }, // MetalSupportGraphic::thickAltCentred
+    { kImageIndexUndefined, 3124, 3124 }, // MetalSupportGraphic::truss
+    { 3243, 3209, 3226 }, // MetalSupportGraphic::tubesInverted
+    { 3334, 3353, 3353 }, // MetalSupportGraphic::boxedCoated
 };
 
 /** rct2: 0x0097B404 */
@@ -248,37 +248,37 @@ static constexpr uint8_t kMetalSupportsSlopeImageOffsetMap[] = {
 // clang-format on
 
 static constexpr MetalSupportPlace kMetalSupportPlacementRotated[][kNumOrthogonalDirections] = {
-    { MetalSupportPlace::TopCorner, MetalSupportPlace::RightCorner, MetalSupportPlace::BottomCorner,
-      MetalSupportPlace::LeftCorner },
-    { MetalSupportPlace::LeftCorner, MetalSupportPlace::TopCorner, MetalSupportPlace::RightCorner,
-      MetalSupportPlace::BottomCorner },
-    { MetalSupportPlace::RightCorner, MetalSupportPlace::BottomCorner, MetalSupportPlace::LeftCorner,
-      MetalSupportPlace::TopCorner },
-    { MetalSupportPlace::BottomCorner, MetalSupportPlace::LeftCorner, MetalSupportPlace::TopCorner,
-      MetalSupportPlace::RightCorner },
-    { MetalSupportPlace::Centre, MetalSupportPlace::Centre, MetalSupportPlace::Centre, MetalSupportPlace::Centre },
-    { MetalSupportPlace::TopLeftSide, MetalSupportPlace::TopRightSide, MetalSupportPlace::BottomRightSide,
-      MetalSupportPlace::BottomLeftSide },
-    { MetalSupportPlace::TopRightSide, MetalSupportPlace::BottomRightSide, MetalSupportPlace::BottomLeftSide,
-      MetalSupportPlace::TopLeftSide },
-    { MetalSupportPlace::BottomLeftSide, MetalSupportPlace::TopLeftSide, MetalSupportPlace::TopRightSide,
-      MetalSupportPlace::BottomRightSide },
-    { MetalSupportPlace::BottomRightSide, MetalSupportPlace::BottomLeftSide, MetalSupportPlace::TopLeftSide,
-      MetalSupportPlace::TopRightSide },
+    { MetalSupportPlace::topCorner, MetalSupportPlace::rightCorner, MetalSupportPlace::bottomCorner,
+      MetalSupportPlace::leftCorner },
+    { MetalSupportPlace::leftCorner, MetalSupportPlace::topCorner, MetalSupportPlace::rightCorner,
+      MetalSupportPlace::bottomCorner },
+    { MetalSupportPlace::rightCorner, MetalSupportPlace::bottomCorner, MetalSupportPlace::leftCorner,
+      MetalSupportPlace::topCorner },
+    { MetalSupportPlace::bottomCorner, MetalSupportPlace::leftCorner, MetalSupportPlace::topCorner,
+      MetalSupportPlace::rightCorner },
+    { MetalSupportPlace::centre, MetalSupportPlace::centre, MetalSupportPlace::centre, MetalSupportPlace::centre },
+    { MetalSupportPlace::topLeftSide, MetalSupportPlace::topRightSide, MetalSupportPlace::bottomRightSide,
+      MetalSupportPlace::bottomLeftSide },
+    { MetalSupportPlace::topRightSide, MetalSupportPlace::bottomRightSide, MetalSupportPlace::bottomLeftSide,
+      MetalSupportPlace::topLeftSide },
+    { MetalSupportPlace::bottomLeftSide, MetalSupportPlace::topLeftSide, MetalSupportPlace::topRightSide,
+      MetalSupportPlace::bottomRightSide },
+    { MetalSupportPlace::bottomRightSide, MetalSupportPlace::bottomLeftSide, MetalSupportPlace::topLeftSide,
+      MetalSupportPlace::topRightSide },
 };
 
 constexpr MetalSupportGraphic kMetalSupportGraphicRotated[kMetalSupportTypeCount][kNumOrthogonalDirections] = {
-    { MetalSupportGraphic::Tubes, MetalSupportGraphic::Tubes, MetalSupportGraphic::Tubes, MetalSupportGraphic::Tubes },
-    { MetalSupportGraphic::Fork, MetalSupportGraphic::ForkAlt, MetalSupportGraphic::Fork, MetalSupportGraphic::ForkAlt },
-    { MetalSupportGraphic::Boxed, MetalSupportGraphic::Boxed, MetalSupportGraphic::Boxed, MetalSupportGraphic::Boxed },
-    { MetalSupportGraphic::Stick, MetalSupportGraphic::StickAlt, MetalSupportGraphic::Stick, MetalSupportGraphic::StickAlt },
-    { MetalSupportGraphic::Thick, MetalSupportGraphic::ThickAlt, MetalSupportGraphic::ThickCentred,
-      MetalSupportGraphic::ThickAltCentred },
-    { MetalSupportGraphic::Truss, MetalSupportGraphic::Truss, MetalSupportGraphic::Truss, MetalSupportGraphic::Truss },
-    { MetalSupportGraphic::TubesInverted, MetalSupportGraphic::TubesInverted, MetalSupportGraphic::TubesInverted,
-      MetalSupportGraphic::TubesInverted },
-    { MetalSupportGraphic::BoxedCoated, MetalSupportGraphic::BoxedCoated, MetalSupportGraphic::BoxedCoated,
-      MetalSupportGraphic::BoxedCoated },
+    { MetalSupportGraphic::tubes, MetalSupportGraphic::tubes, MetalSupportGraphic::tubes, MetalSupportGraphic::tubes },
+    { MetalSupportGraphic::fork, MetalSupportGraphic::forkAlt, MetalSupportGraphic::fork, MetalSupportGraphic::forkAlt },
+    { MetalSupportGraphic::boxed, MetalSupportGraphic::boxed, MetalSupportGraphic::boxed, MetalSupportGraphic::boxed },
+    { MetalSupportGraphic::stick, MetalSupportGraphic::stickAlt, MetalSupportGraphic::stick, MetalSupportGraphic::stickAlt },
+    { MetalSupportGraphic::thick, MetalSupportGraphic::thickAlt, MetalSupportGraphic::thickCentred,
+      MetalSupportGraphic::thickAltCentred },
+    { MetalSupportGraphic::truss, MetalSupportGraphic::truss, MetalSupportGraphic::truss, MetalSupportGraphic::truss },
+    { MetalSupportGraphic::tubesInverted, MetalSupportGraphic::tubesInverted, MetalSupportGraphic::tubesInverted,
+      MetalSupportGraphic::tubesInverted },
+    { MetalSupportGraphic::boxedCoated, MetalSupportGraphic::boxedCoated, MetalSupportGraphic::boxedCoated,
+      MetalSupportGraphic::boxedCoated },
 };
 
 static bool MetalASupportsPaintSetup(
@@ -713,13 +713,13 @@ void DrawSupportsSideBySide(
 
     if (direction & 1)
     {
-        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::TopRightSide, special, height, colour);
-        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::BottomLeftSide, special, height, colour);
+        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::topRightSide, special, height, colour);
+        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::bottomLeftSide, special, height, colour);
     }
     else
     {
-        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::TopLeftSide, special, height, colour);
-        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::BottomRightSide, special, height, colour);
+        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::topLeftSide, special, height, colour);
+        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::bottomRightSide, special, height, colour);
     }
 }
 

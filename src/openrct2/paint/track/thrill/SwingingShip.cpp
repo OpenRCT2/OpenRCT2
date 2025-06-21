@@ -167,11 +167,11 @@ static void PaintSwingingShip(
     if (relativeTrackSequence == 1 || relativeTrackSequence == 4)
     {
         WoodenASupportsPaintSetupRotated(
-            session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+            session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
     }
     else
     {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::tubes);
         if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))
         {
             ImageIndex base = (direction & 1) ? SPR_STATION_BASE_A_NW_SE : SPR_STATION_BASE_A_SW_NE;

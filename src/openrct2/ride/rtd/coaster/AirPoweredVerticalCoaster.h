@@ -21,7 +21,7 @@ constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::airPoweredVerticalCoaster,
-        .supportType = WoodenSupportType::Truss,
+        .supportType = WoodenSupportType::truss,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHillSteep, TrackGroup::liftHillCurve, TrackGroup::flatRollBanking, TrackGroup::curve, TrackGroup::brakes, TrackGroup::reverseFreefall, TrackGroup::slopeToFlat, TrackGroup::onridePhoto},
         .extraTrackGroups = {TrackGroup::booster},
     }),

@@ -182,7 +182,7 @@ static void PaintMonorailCyclesTrackFlat(
     }
 
     MetalASupportsPaintSetupRotated(
-        session, supportType.metal, MetalSupportPlace::Centre, direction, -1, height, session.SupportColours);
+        session, supportType.metal, MetalSupportPlace::centre, direction, -1, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(
         session,
@@ -214,12 +214,12 @@ static void PaintMonorailCyclesStation(
 
     if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, -2))
     {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::boxed);
     }
     else
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, -1, height, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, direction, -1, height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -238,7 +238,7 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
     switch (trackSequence)
     {
         case 0:
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -1, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, -1, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -255,7 +255,7 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
                 0xFFFF, 0);
             break;
         case 3:
-            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, -1, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, -1, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -314,22 +314,22 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
     {
         case 0:
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, supportSpecial, supportHeight,
+                session, supportType.metal, MetalSupportPlace::centre, direction, supportSpecial, supportHeight,
                 session.SupportColours);
             break;
         case 2:
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::BottomRightSide, direction, supportSpecial, supportHeight,
+                session, supportType.metal, MetalSupportPlace::bottomRightSide, direction, supportSpecial, supportHeight,
                 session.SupportColours);
             break;
         case 5:
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::BottomRightSide, DirectionNext(direction), supportSpecial,
+                session, supportType.metal, MetalSupportPlace::bottomRightSide, DirectionNext(direction), supportSpecial,
                 supportHeight, session.SupportColours);
             break;
         case 6:
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), supportSpecial, supportHeight,
+                session, supportType.metal, MetalSupportPlace::centre, DirectionNext(direction), supportSpecial, supportHeight,
                 session.SupportColours);
             break;
     }

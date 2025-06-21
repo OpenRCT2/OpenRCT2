@@ -23,7 +23,7 @@ constexpr RideTypeDescriptor DinghySlideRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor(
         {
             .trackStyle = TrackStyle::dinghySlide,
-            .supportType = MetalSupportType::Tubes,
+            .supportType = MetalSupportType::tubes,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve },
             .extraTrackGroups = {},
             .icon = SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK,
@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor DinghySlideRTD =
         }, 
         {
             .trackStyle = TrackStyle::dinghySlideCovered,
-            .supportType = MetalSupportType::Tubes,
+            .supportType = MetalSupportType::tubes,
             .enabledTrackGroups = { TrackGroup::straight, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::curve, TrackGroup::sBend, TrackGroup::curveSmall },
             .extraTrackGroups = {},
             .icon = SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK,
