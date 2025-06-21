@@ -114,7 +114,7 @@ static void PaintMerryGoRound(
     int32_t edges = kEdges3x3[trackSequence];
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::truss, WoodenSupportSubType::NeSw, direction, height,
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.getStationObject();

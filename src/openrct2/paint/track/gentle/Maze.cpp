@@ -66,7 +66,7 @@ static void MazePaintSetup(
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 0 });
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::truss, WoodenSupportSubType::NwSe, rotation, height,
+        session, WoodenSupportType::truss, WoodenSupportSubType::nwSe, rotation, height,
         GetShopSupportColourScheme(session, trackElement));
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll & ~EnumToFlag(PaintSegment::centre), 0xFFFF, 0);

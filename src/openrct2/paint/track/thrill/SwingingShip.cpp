@@ -167,7 +167,7 @@ static void PaintSwingingShip(
     if (relativeTrackSequence == 1 || relativeTrackSequence == 4)
     {
         WoodenASupportsPaintSetupRotated(
-            session, WoodenSupportType::truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+            session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
     }
     else
     {

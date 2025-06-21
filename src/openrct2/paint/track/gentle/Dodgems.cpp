@@ -55,7 +55,7 @@ static void PaintDodgems(
     int32_t edges = kEdges4x4[relativeTrackSequence];
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::truss, WoodenSupportSubType::NeSw, direction, height,
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.getStationObject();

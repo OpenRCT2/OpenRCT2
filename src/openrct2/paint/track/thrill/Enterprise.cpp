@@ -101,7 +101,7 @@ static void PaintEnterprise(
     int32_t edges = kEdges4x4[trackSequence];
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::truss, WoodenSupportSubType::NeSw, direction, height,
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.getStationObject();

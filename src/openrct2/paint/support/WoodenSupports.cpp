@@ -38,21 +38,21 @@ struct SupportsIdDescriptor
 static constexpr SupportsIdDescriptor WoodenSupportImageIds[kNumWoodenSupportTypes][kNumWoodenSupportSubTypes] = {
     // WoodenSupportType::truss
     {
-        { 3392, 3393, 3394, 3536 }, // WoodenSupportSubType::NeSw
-        { 3390, 3391, 3394, 3514 }, // WoodenSupportSubType::NwSe
-        { 3558, 3559, 3560, 3570 }, // WoodenSupportSubType::Corner0
-        { 3561, 3562, 3563, 3592 }, // WoodenSupportSubType::Corner1
-        { 3564, 3565, 3566, 3614 }, // WoodenSupportSubType::Corner2
-        { 3567, 3568, 3569, 3636 }, // WoodenSupportSubType::Corner3
+        { 3392, 3393, 3394, 3536 }, // WoodenSupportSubType::neSw
+        { 3390, 3391, 3394, 3514 }, // WoodenSupportSubType::nwSe
+        { 3558, 3559, 3560, 3570 }, // WoodenSupportSubType::corner0
+        { 3561, 3562, 3563, 3592 }, // WoodenSupportSubType::corner1
+        { 3564, 3565, 3566, 3614 }, // WoodenSupportSubType::corner2
+        { 3567, 3568, 3569, 3636 }, // WoodenSupportSubType::corner3
     },
     // WoodenSupportType::mine
     {
-        { 3677, 3678, 3680, 3739 }, // WoodenSupportSubType::NeSw
-        { 3675, 3676, 3679, 3717 }, // WoodenSupportSubType::NwSe
-        { 3761, 3762, 3763, 3773 }, // WoodenSupportSubType::Corner0
-        { 3764, 3765, 3766, 3795 }, // WoodenSupportSubType::Corner1
-        { 3767, 3768, 3769, 3817 }, // WoodenSupportSubType::Corner2
-        { 3770, 3771, 3772, 3839 }, // WoodenSupportSubType::Corner3
+        { 3677, 3678, 3680, 3739 }, // WoodenSupportSubType::neSw
+        { 3675, 3676, 3679, 3717 }, // WoodenSupportSubType::nwSe
+        { 3761, 3762, 3763, 3773 }, // WoodenSupportSubType::corner0
+        { 3764, 3765, 3766, 3795 }, // WoodenSupportSubType::corner1
+        { 3767, 3768, 3769, 3817 }, // WoodenSupportSubType::corner2
+        { 3770, 3771, 3772, 3839 }, // WoodenSupportSubType::corner3
     },
 };
 
@@ -132,21 +132,21 @@ static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds1 = { {
 static constexpr const ImagesByTransitionTypeArray::const_pointer WoodenCurveSupportImageIds[kNumWoodenSupportTypes][kNumWoodenSupportSubTypes] = {
     // WoodenSupportType::truss
     { 
-        WoodenCurveSupportImageIds0.data(), // WoodenSupportSubType::NeSw
-        WoodenCurveSupportImageIds0.data(), // WoodenSupportSubType::NwSe
-        nullptr,                            // WoodenSupportSubType::Corner0
-        nullptr,                            // WoodenSupportSubType::Corner1
-        nullptr,                            // WoodenSupportSubType::Corner2
-        nullptr,                            // WoodenSupportSubType::Corner3
+        WoodenCurveSupportImageIds0.data(), // WoodenSupportSubType::neSw
+        WoodenCurveSupportImageIds0.data(), // WoodenSupportSubType::nwSe
+        nullptr,                            // WoodenSupportSubType::corner0
+        nullptr,                            // WoodenSupportSubType::corner1
+        nullptr,                            // WoodenSupportSubType::corner2
+        nullptr,                            // WoodenSupportSubType::corner3
     }, 
     // WoodenSupportType::mine
     { 
-        WoodenCurveSupportImageIds1.data(), // WoodenSupportSubType::NeSw
-        WoodenCurveSupportImageIds1.data(), // WoodenSupportSubType::NwSe
-        nullptr,                            // WoodenSupportSubType::Corner0
-        nullptr,                            // WoodenSupportSubType::Corner1
-        nullptr,                            // WoodenSupportSubType::Corner2
-        nullptr,                            // WoodenSupportSubType::Corner3
+        WoodenCurveSupportImageIds1.data(), // WoodenSupportSubType::neSw
+        WoodenCurveSupportImageIds1.data(), // WoodenSupportSubType::nwSe
+        nullptr,                            // WoodenSupportSubType::corner0
+        nullptr,                            // WoodenSupportSubType::corner1
+        nullptr,                            // WoodenSupportSubType::corner2
+        nullptr,                            // WoodenSupportSubType::corner3
     }, 
 };
 
@@ -285,40 +285,40 @@ static constexpr uint16_t word_97B3C4[] = {
 
 static WoodenSupportSubType rotatedWoodenSupportSubTypes[kNumWoodenSupportSubTypes][kNumOrthogonalDirections] = {
     {
-        WoodenSupportSubType::NeSw,
-        WoodenSupportSubType::NwSe,
-        WoodenSupportSubType::NeSw,
-        WoodenSupportSubType::NwSe,
+        WoodenSupportSubType::neSw,
+        WoodenSupportSubType::nwSe,
+        WoodenSupportSubType::neSw,
+        WoodenSupportSubType::nwSe,
     },
     {
-        WoodenSupportSubType::NwSe,
-        WoodenSupportSubType::NeSw,
-        WoodenSupportSubType::NwSe,
-        WoodenSupportSubType::NeSw,
+        WoodenSupportSubType::nwSe,
+        WoodenSupportSubType::neSw,
+        WoodenSupportSubType::nwSe,
+        WoodenSupportSubType::neSw,
     },
     {
-        WoodenSupportSubType::Corner0,
-        WoodenSupportSubType::Corner1,
-        WoodenSupportSubType::Corner2,
-        WoodenSupportSubType::Corner3,
+        WoodenSupportSubType::corner0,
+        WoodenSupportSubType::corner1,
+        WoodenSupportSubType::corner2,
+        WoodenSupportSubType::corner3,
     },
     {
-        WoodenSupportSubType::Corner1,
-        WoodenSupportSubType::Corner2,
-        WoodenSupportSubType::Corner3,
-        WoodenSupportSubType::Corner0,
+        WoodenSupportSubType::corner1,
+        WoodenSupportSubType::corner2,
+        WoodenSupportSubType::corner3,
+        WoodenSupportSubType::corner0,
     },
     {
-        WoodenSupportSubType::Corner2,
-        WoodenSupportSubType::Corner3,
-        WoodenSupportSubType::Corner0,
-        WoodenSupportSubType::Corner1,
+        WoodenSupportSubType::corner2,
+        WoodenSupportSubType::corner3,
+        WoodenSupportSubType::corner0,
+        WoodenSupportSubType::corner1,
     },
     {
-        WoodenSupportSubType::Corner3,
-        WoodenSupportSubType::Corner0,
-        WoodenSupportSubType::Corner1,
-        WoodenSupportSubType::Corner2,
+        WoodenSupportSubType::corner3,
+        WoodenSupportSubType::corner0,
+        WoodenSupportSubType::corner1,
+        WoodenSupportSubType::corner2,
     },
 };
 
@@ -520,7 +520,7 @@ inline bool WoodenABSupportsPaintSetupCommon(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
     WoodenSupportTransitionType transitionType, Direction direction)
 {
-    assert(subType != WoodenSupportSubType::Null);
+    assert(subType != WoodenSupportSubType::null);
 
     uint16_t baseHeight = 0;
     bool hasSupports = false;
@@ -563,7 +563,7 @@ bool WoodenASupportsPaintSetupRotated(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, Direction direction, int32_t height,
     ImageId imageTemplate, WoodenSupportTransitionType transitionType)
 {
-    assert(subType != WoodenSupportSubType::Null);
+    assert(subType != WoodenSupportSubType::null);
     subType = rotatedWoodenSupportSubTypes[EnumValue(subType)][direction];
     return WoodenASupportsPaintSetup(session, supportType, subType, height, imageTemplate, transitionType, direction);
 }
@@ -592,7 +592,7 @@ bool WoodenBSupportsPaintSetupRotated(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, Direction direction, int32_t height,
     ImageId imageTemplate, WoodenSupportTransitionType transitionType)
 {
-    assert(subType != WoodenSupportSubType::Null);
+    assert(subType != WoodenSupportSubType::null);
     subType = rotatedWoodenSupportSubTypes[EnumValue(subType)][direction];
     return WoodenBSupportsPaintSetup(session, supportType, subType, height, imageTemplate, transitionType, direction);
 }
@@ -613,7 +613,7 @@ bool PathBoxSupportsPaintSetup(
     PaintSession& session, WoodenSupportSubType supportType, bool isSloped, Direction slopeRotation, int32_t height,
     ImageId imageTemplate, const FootpathPaintInfo& pathPaintInfo)
 {
-    auto supportOrientationOffset = (supportType == WoodenSupportSubType::NwSe) ? 24 : 0;
+    auto supportOrientationOffset = (supportType == WoodenSupportSubType::nwSe) ? 24 : 0;
 
     uint16_t baseHeight = 0;
     bool hasSupports = false;
@@ -647,7 +647,7 @@ bool DrawSupportForSequenceA(
     const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
     const auto& desc = ted.sequences[sequence].woodenSupports;
 
-    if (desc.subType == WoodenSupportSubType::Null)
+    if (desc.subType == WoodenSupportSubType::null)
         return false;
 
     return WoodenASupportsPaintSetupRotated(
@@ -661,7 +661,7 @@ bool DrawSupportForSequenceB(
     const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
     const auto& desc = ted.sequences[sequence].woodenSupports;
 
-    if (desc.subType == WoodenSupportSubType::Null)
+    if (desc.subType == WoodenSupportSubType::null)
         return false;
 
     return WoodenBSupportsPaintSetupRotated(

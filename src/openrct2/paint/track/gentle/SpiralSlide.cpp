@@ -209,7 +209,7 @@ static void PaintSpiralSlide(
     int32_t edges = kEdges2x2[trackSequence];
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::truss, WoodenSupportSubType::NeSw, direction, height,
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
     // Base

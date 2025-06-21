@@ -27,14 +27,14 @@ enum class WoodenSupportType : uint8_t
 
 enum class WoodenSupportSubType : uint8_t
 {
-    NeSw = 0,
-    NwSe = 1,
-    Corner0 = 2,
-    Corner1 = 3,
-    Corner2 = 4,
-    Corner3 = 5,
+    neSw = 0,
+    nwSe = 1,
+    corner0 = 2,
+    corner1 = 3,
+    corner2 = 4,
+    corner3 = 5,
 
-    Null,
+    null,
 };
 
 enum class WoodenSupportTransitionType : uint8_t

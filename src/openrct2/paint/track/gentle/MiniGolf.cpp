@@ -747,7 +747,7 @@ static void PaintMiniGolfStation(
     TrackPaintUtilDrawStationTunnel(session, direction, height);
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -852,7 +852,7 @@ static void PaintMiniGolfHoleAb(
     CoordsXY boundBox, boundBoxOffset;
 
     bool drewSupports = WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -925,7 +925,7 @@ static void PaintMiniGolfHoleC(
     CoordsXY boundBox, boundBoxOffset;
 
     bool drewSupports = WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -989,9 +989,9 @@ static void PaintMiniGolfHoleD(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto supportSubType = (direction & 1) ? WoodenSupportSubType::NwSe : WoodenSupportSubType::NeSw;
+    auto supportSubType = (direction & 1) ? WoodenSupportSubType::nwSe : WoodenSupportSubType::neSw;
     if (trackSequence == 2)
-        supportSubType = (direction & 1) ? WoodenSupportSubType::NeSw : WoodenSupportSubType::NwSe;
+        supportSubType = (direction & 1) ? WoodenSupportSubType::neSw : WoodenSupportSubType::nwSe;
     const bool drewSupports = WoodenASupportsPaintSetup(
         session, WoodenSupportType::truss, supportSubType, height, session.SupportColours);
 
@@ -1002,7 +1002,7 @@ static void PaintMiniGolfHoleD(
     if (drewSupports)
     {
         const auto supportImageId = session.SupportColours.WithIndex(
-            ((supportSubType == WoodenSupportSubType::NeSw) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS));
+            ((supportSubType == WoodenSupportSubType::neSw) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS));
         PaintAddImageAsParent(session, supportImageId, { 0, 0, height }, boundBox);
 
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, boundBox);
@@ -1039,9 +1039,9 @@ static void PaintMiniGolfHoleE(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, SupportType supportType)
 {
-    auto supportSubType = (direction & 1) ? WoodenSupportSubType::NwSe : WoodenSupportSubType::NeSw;
+    auto supportSubType = (direction & 1) ? WoodenSupportSubType::nwSe : WoodenSupportSubType::neSw;
     if (trackSequence == 2)
-        supportSubType = (direction & 1) ? WoodenSupportSubType::NeSw : WoodenSupportSubType::NwSe;
+        supportSubType = (direction & 1) ? WoodenSupportSubType::neSw : WoodenSupportSubType::nwSe;
     const bool drewSupports = WoodenASupportsPaintSetup(
         session, WoodenSupportType::truss, supportSubType, height, session.SupportColours);
 
@@ -1052,7 +1052,7 @@ static void PaintMiniGolfHoleE(
     if (drewSupports)
     {
         const auto supportImageId = session.SupportColours.WithIndex(
-            ((supportSubType == WoodenSupportSubType::NwSe) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS));
+            ((supportSubType == WoodenSupportSubType::nwSe) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS));
         PaintAddImageAsParent(session, supportImageId, { 0, 0, height }, boundBox);
 
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, boundBox);
