@@ -818,7 +818,7 @@ namespace OpenRCT2::Ui::Windows
                 const Ride* rideRhs = GetRide(rhs.Id);
                 if (rideLhs == nullptr || rideRhs == nullptr)
                 {
-                    return false;
+                    return rideLhs != nullptr;
                 }
                 return !pred(*rideLhs, *rideRhs);
             });
