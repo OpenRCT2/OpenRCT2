@@ -84,7 +84,7 @@ namespace OpenRCT2::TrackMetaData
 
     struct SequenceMetalSupport
     {
-        MetalSupportPlace place = MetalSupportPlace::None;
+        MetalSupportPlace place = MetalSupportPlace::none;
         uint8_t alternates = false;
     };
 

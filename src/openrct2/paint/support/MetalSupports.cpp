@@ -248,23 +248,23 @@ static constexpr uint8_t kMetalSupportsSlopeImageOffsetMap[] = {
 // clang-format on
 
 static constexpr MetalSupportPlace kMetalSupportPlacementRotated[][kNumOrthogonalDirections] = {
-    { MetalSupportPlace::TopCorner, MetalSupportPlace::RightCorner, MetalSupportPlace::BottomCorner,
-      MetalSupportPlace::LeftCorner },
-    { MetalSupportPlace::LeftCorner, MetalSupportPlace::TopCorner, MetalSupportPlace::RightCorner,
-      MetalSupportPlace::BottomCorner },
-    { MetalSupportPlace::RightCorner, MetalSupportPlace::BottomCorner, MetalSupportPlace::LeftCorner,
-      MetalSupportPlace::TopCorner },
-    { MetalSupportPlace::BottomCorner, MetalSupportPlace::LeftCorner, MetalSupportPlace::TopCorner,
-      MetalSupportPlace::RightCorner },
-    { MetalSupportPlace::Centre, MetalSupportPlace::Centre, MetalSupportPlace::Centre, MetalSupportPlace::Centre },
-    { MetalSupportPlace::TopLeftSide, MetalSupportPlace::TopRightSide, MetalSupportPlace::BottomRightSide,
-      MetalSupportPlace::BottomLeftSide },
-    { MetalSupportPlace::TopRightSide, MetalSupportPlace::BottomRightSide, MetalSupportPlace::BottomLeftSide,
-      MetalSupportPlace::TopLeftSide },
-    { MetalSupportPlace::BottomLeftSide, MetalSupportPlace::TopLeftSide, MetalSupportPlace::TopRightSide,
-      MetalSupportPlace::BottomRightSide },
-    { MetalSupportPlace::BottomRightSide, MetalSupportPlace::BottomLeftSide, MetalSupportPlace::TopLeftSide,
-      MetalSupportPlace::TopRightSide },
+    { MetalSupportPlace::topCorner, MetalSupportPlace::rightCorner, MetalSupportPlace::bottomCorner,
+      MetalSupportPlace::leftCorner },
+    { MetalSupportPlace::leftCorner, MetalSupportPlace::topCorner, MetalSupportPlace::rightCorner,
+      MetalSupportPlace::bottomCorner },
+    { MetalSupportPlace::rightCorner, MetalSupportPlace::bottomCorner, MetalSupportPlace::leftCorner,
+      MetalSupportPlace::topCorner },
+    { MetalSupportPlace::bottomCorner, MetalSupportPlace::leftCorner, MetalSupportPlace::topCorner,
+      MetalSupportPlace::rightCorner },
+    { MetalSupportPlace::centre, MetalSupportPlace::centre, MetalSupportPlace::centre, MetalSupportPlace::centre },
+    { MetalSupportPlace::topLeftSide, MetalSupportPlace::topRightSide, MetalSupportPlace::bottomRightSide,
+      MetalSupportPlace::bottomLeftSide },
+    { MetalSupportPlace::topRightSide, MetalSupportPlace::bottomRightSide, MetalSupportPlace::bottomLeftSide,
+      MetalSupportPlace::topLeftSide },
+    { MetalSupportPlace::bottomLeftSide, MetalSupportPlace::topLeftSide, MetalSupportPlace::topRightSide,
+      MetalSupportPlace::bottomRightSide },
+    { MetalSupportPlace::bottomRightSide, MetalSupportPlace::bottomLeftSide, MetalSupportPlace::topLeftSide,
+      MetalSupportPlace::topRightSide },
 };
 
 constexpr MetalSupportGraphic kMetalSupportGraphicRotated[kMetalSupportTypeCount][kNumOrthogonalDirections] = {
@@ -713,13 +713,13 @@ void DrawSupportsSideBySide(
 
     if (direction & 1)
     {
-        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::TopRightSide, special, height, colour);
-        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::BottomLeftSide, special, height, colour);
+        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::topRightSide, special, height, colour);
+        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::bottomLeftSide, special, height, colour);
     }
     else
     {
-        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::TopLeftSide, special, height, colour);
-        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::BottomRightSide, special, height, colour);
+        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::topLeftSide, special, height, colour);
+        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::bottomRightSide, special, height, colour);
     }
 }
 

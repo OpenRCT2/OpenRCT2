@@ -59,7 +59,7 @@ namespace OpenRCT2::AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
             }
         }
         else
@@ -82,7 +82,7 @@ namespace OpenRCT2::AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
             }
         }
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -121,7 +121,7 @@ namespace OpenRCT2::AlpineRC
         else if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
         }
         TrackPaintUtilDrawStationTunnel(session, direction, height);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
@@ -160,7 +160,7 @@ namespace OpenRCT2::AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 8, height, session.SupportColours);
             }
         }
         else
@@ -191,7 +191,7 @@ namespace OpenRCT2::AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 8, height, session.SupportColours);
             }
         }
         if (direction == 0 || direction == 3)
@@ -239,7 +239,7 @@ namespace OpenRCT2::AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 3, height, session.SupportColours);
             }
         }
         else
@@ -270,7 +270,7 @@ namespace OpenRCT2::AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 3, height, session.SupportColours);
             }
         }
         if (direction == 0 || direction == 3)
@@ -318,7 +318,7 @@ namespace OpenRCT2::AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 6, height, session.SupportColours);
             }
         }
         else
@@ -349,7 +349,7 @@ namespace OpenRCT2::AlpineRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 6, height, session.SupportColours);
             }
         }
         if (direction == 0 || direction == 3)
@@ -417,7 +417,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -490,7 +490,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 0, height,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionPrev(direction), 0, height,
                     session.SupportColours);
                 switch (direction)
                 {
@@ -552,7 +552,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -697,7 +697,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 0, height,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionPrev(direction), 0, height,
                     session.SupportColours);
                 switch (direction)
                 {
@@ -759,7 +759,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -870,7 +870,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, DirectionPrev(direction), 0, height,
+                    session, supportType.metal, MetalSupportPlace::leftCorner, DirectionPrev(direction), 0, height,
                     session.SupportColours);
 
                 PaintUtilSetSegmentSupportHeight(
@@ -917,7 +917,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -1029,7 +1029,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::BottomCorner, DirectionNext(direction), 0, height,
+                    session, supportType.metal, MetalSupportPlace::bottomCorner, DirectionNext(direction), 0, height,
                     session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -1208,7 +1208,7 @@ namespace OpenRCT2::AlpineRC
                     }
                 }
                 MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 9, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 9, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -1353,7 +1353,7 @@ namespace OpenRCT2::AlpineRC
                     }
                 }
                 MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 6, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 6, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -1485,7 +1485,7 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                     MetalBSupportsPaintSetupRotated(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0,
+                        session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0,
                         height + (direction & 1) ? 0 : 2, session.SupportColours);
                 }
                 else
@@ -1500,7 +1500,7 @@ namespace OpenRCT2::AlpineRC
                             break;
                     }
                     MetalBSupportsPaintSetupRotated(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 2, height,
+                        session, supportType.metal, MetalSupportPlace::leftCorner, direction, 2, height,
                         session.SupportColours);
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -1647,7 +1647,7 @@ namespace OpenRCT2::AlpineRC
                     }
                 }
                 MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 8, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 8, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -1789,7 +1789,7 @@ namespace OpenRCT2::AlpineRC
                     }
                 }
                 MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 4, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -1935,7 +1935,7 @@ namespace OpenRCT2::AlpineRC
                     }
                 }
                 MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -1983,7 +1983,7 @@ namespace OpenRCT2::AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
         }
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetSegmentSupportHeight(
@@ -2027,7 +2027,7 @@ namespace OpenRCT2::AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
         }
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetSegmentSupportHeight(
@@ -2085,7 +2085,7 @@ namespace OpenRCT2::AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, direction, 3, height, session.SupportColours);
         }
         if (direction == 0 || direction == 3)
         {
@@ -2136,7 +2136,7 @@ namespace OpenRCT2::AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, direction, 3, height, session.SupportColours);
         }
         if (direction == 0 || direction == 3)
         {
@@ -2187,7 +2187,7 @@ namespace OpenRCT2::AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, direction, 6, height, session.SupportColours);
         }
         if (direction == 0 || direction == 3)
         {
@@ -2238,7 +2238,7 @@ namespace OpenRCT2::AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 6, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, direction, 6, height, session.SupportColours);
         }
         if (direction == 0 || direction == 3)
         {
@@ -2311,7 +2311,7 @@ namespace OpenRCT2::AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
         }
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetSegmentSupportHeight(
@@ -2403,7 +2403,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -2492,7 +2492,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -2581,7 +2581,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -2670,7 +2670,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -2759,7 +2759,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -2848,7 +2848,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -2937,7 +2937,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 4, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -3026,7 +3026,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 4, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -3112,7 +3112,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 4, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -3199,7 +3199,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 4, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 4, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -3289,7 +3289,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -3378,7 +3378,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalBSupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -3463,7 +3463,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -3548,7 +3548,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -3599,7 +3599,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 2, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 2, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -3684,7 +3684,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 2, height,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionPrev(direction), 2, height,
                     session.SupportColours);
                 switch (direction)
                 {
@@ -3754,7 +3754,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 1, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 1, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -3919,7 +3919,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 1, height,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionPrev(direction), 1, height,
                     session.SupportColours);
                 switch (direction)
                 {
@@ -3985,7 +3985,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -4108,7 +4108,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::LeftCorner, DirectionPrev(direction), 0, height,
+                    session, supportType.metal, MetalSupportPlace::leftCorner, DirectionPrev(direction), 0, height,
                     session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -4158,7 +4158,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -4282,7 +4282,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::BottomCorner, DirectionNext(direction), 0, height,
+                    session, supportType.metal, MetalSupportPlace::bottomCorner, DirectionNext(direction), 0, height,
                     session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -4348,7 +4348,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -4396,7 +4396,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 8, height,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionPrev(direction), 8, height,
                     session.SupportColours);
                 switch (direction)
                 {
@@ -4454,7 +4454,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -4503,7 +4503,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), direction == 2 ? 10 : 8,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionNext(direction), direction == 2 ? 10 : 8,
                     height, session.SupportColours);
                 switch (direction)
                 {
@@ -4577,7 +4577,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -4738,7 +4738,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 8, height,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionPrev(direction), 8, height,
                     session.SupportColours);
                 switch (direction)
                 {
@@ -4796,7 +4796,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 8, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -4957,7 +4957,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 8, height,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionNext(direction), 8, height,
                     session.SupportColours);
                 switch (direction)
                 {
@@ -5351,7 +5351,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 5, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 5, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -5429,7 +5429,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 9, height,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionPrev(direction), 9, height,
                     session.SupportColours);
                 switch (direction)
                 {
@@ -5478,7 +5478,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 5, height,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionPrev(direction), 5, height,
                     session.SupportColours);
                 switch (direction)
                 {
@@ -5563,7 +5563,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 9, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 9, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
@@ -5615,7 +5615,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 5, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 5, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -5694,7 +5694,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 9, height,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionNext(direction), 9, height,
                     session.SupportColours);
                 switch (direction)
                 {
@@ -5743,7 +5743,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 5, height,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionNext(direction), 5, height,
                     session.SupportColours);
                 switch (direction)
                 {
@@ -5827,7 +5827,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 9, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 9, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
@@ -5905,7 +5905,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 3, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -6055,7 +6055,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 9, height,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionPrev(direction), 9, height,
                     session.SupportColours);
                 switch (direction)
                 {
@@ -6104,7 +6104,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 3, height,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionPrev(direction), 3, height,
                     session.SupportColours);
                 switch (direction)
                 {
@@ -6259,7 +6259,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 9, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 9, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
@@ -6310,7 +6310,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 3, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -6459,7 +6459,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), direction == 1 ? 5 : 9,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionNext(direction), direction == 1 ? 5 : 9,
                     height, session.SupportColours);
                 switch (direction)
                 {
@@ -6508,7 +6508,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 3, height,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionNext(direction), 3, height,
                     session.SupportColours);
                 switch (direction)
                 {
@@ -6664,7 +6664,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, direction == 0 ? 5 : 9, height,
+                    session, supportType.metal, MetalSupportPlace::centre, direction, direction == 0 ? 5 : 9, height,
                     session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
@@ -6731,7 +6731,7 @@ namespace OpenRCT2::AlpineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
         }
         PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
         PaintUtilSetSegmentSupportHeight(
@@ -6778,7 +6778,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 3, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -6826,7 +6826,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 10, height - 6,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionPrev(direction), 10, height - 6,
                     session.SupportColours);
                 switch (direction)
                 {
@@ -6888,7 +6888,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 3, height, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 3, height, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -6937,7 +6937,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 10, height - 6,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionNext(direction), 10, height - 6,
                     session.SupportColours);
                 switch (direction)
                 {
@@ -6995,7 +6995,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height - 6, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 8, height - 6, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
@@ -7047,7 +7047,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionPrev(direction), 5, height,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionPrev(direction), 5, height,
                     session.SupportColours);
                 switch (direction)
                 {
@@ -7105,7 +7105,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, direction, 8, height - 6, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 8, height - 6, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::SlopeEnd);
@@ -7158,7 +7158,7 @@ namespace OpenRCT2::AlpineRC
                         break;
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::Centre, DirectionNext(direction), 5, height,
+                    session, supportType.metal, MetalSupportPlace::centre, DirectionNext(direction), 5, height,
                     session.SupportColours);
                 switch (direction)
                 {

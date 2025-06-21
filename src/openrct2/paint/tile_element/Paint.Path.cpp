@@ -1049,10 +1049,10 @@ void PathPaintPoleSupport(
         hasSupports); // TODO: arguments
 
     MetalSupportPlace supports[] = {
-        MetalSupportPlace::TopRightSide,
-        MetalSupportPlace::BottomRightSide,
-        MetalSupportPlace::BottomLeftSide,
-        MetalSupportPlace::TopLeftSide,
+        MetalSupportPlace::topRightSide,
+        MetalSupportPlace::bottomRightSide,
+        MetalSupportPlace::bottomLeftSide,
+        MetalSupportPlace::topLeftSide,
     };
 
     for (int8_t i = 3; i > -1; --i)

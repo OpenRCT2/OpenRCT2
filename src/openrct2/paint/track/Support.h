@@ -47,6 +47,6 @@ struct SupportType
 
 namespace OpenRCT2::SupportedSequences
 {
-    constexpr MetalSupportPlace kDiagStraightFlat[] = { MetalSupportPlace::None, MetalSupportPlace::None,
-                                                        MetalSupportPlace::None, MetalSupportPlace::LeftCorner };
+    constexpr MetalSupportPlace kDiagStraightFlat[] = { MetalSupportPlace::none, MetalSupportPlace::none,
+                                                        MetalSupportPlace::none, MetalSupportPlace::leftCorner };
 }

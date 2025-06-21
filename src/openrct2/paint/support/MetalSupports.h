@@ -73,17 +73,17 @@ constexpr uint8_t kMetalSupportTypeCount = 8;
  */
 enum class MetalSupportPlace : uint8_t
 {
-    TopCorner = 0,
-    LeftCorner = 1,
-    RightCorner = 2,
-    BottomCorner = 3,
-    Centre = 4,
-    TopLeftSide = 5,
-    TopRightSide = 6,
-    BottomLeftSide = 7,
-    BottomRightSide = 8,
+    topCorner = 0,
+    leftCorner = 1,
+    rightCorner = 2,
+    bottomCorner = 3,
+    centre = 4,
+    topLeftSide = 5,
+    topRightSide = 6,
+    bottomLeftSide = 7,
+    bottomRightSide = 8,
 
-    None = 255,
+    none = 255,
 };
 
 struct FootpathPaintInfo;

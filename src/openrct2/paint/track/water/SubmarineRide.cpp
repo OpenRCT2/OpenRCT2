@@ -73,7 +73,7 @@ static void SubmarineRidePaintTrackFlat(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::Centre, direction, -1, heightLower, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::centre, direction, -1, heightLower, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -98,7 +98,7 @@ static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, -1, height - 16, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, -1, height - 16, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
@@ -116,7 +116,7 @@ static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
             break;
         case 3:
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, -1, height - 16, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, -1, height - 16, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session,
                 PaintUtilRotateSegments(
