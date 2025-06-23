@@ -51,6 +51,21 @@ namespace OpenRCT2::Scripting
         { "competitions", ScenarioCategory::competitions },
     });
 
+    static const DukEnumMap<ScenarioGroup> ScenarioGroupMap({
+        { "graphite", ScenarioGroup::graphite },
+        { "emerald", ScenarioGroup::emerald },
+        { "ruby", ScenarioGroup::ruby },
+        { "sapphire", ScenarioGroup::sapphire },
+        { "amethyst", ScenarioGroup::amethyst },
+        { "coral", ScenarioGroup::coral },
+        { "ivory", ScenarioGroup::ivory },
+        { "bronze", ScenarioGroup::bronze },
+        { "silver", ScenarioGroup::silver },
+        { "gold", ScenarioGroup::gold },
+        { "other", ScenarioGroup::other },
+        { "bonus", ScenarioGroup::bonus },
+    });
+
     static const DukEnumMap<ScenarioSource> ScenarioSourceMap({
         { "rct1", ScenarioSource::RCT1 },
         { "rct1_aa", ScenarioSource::RCT1_AA },
@@ -70,6 +85,15 @@ namespace OpenRCT2::Scripting
         if (entry != ScenarioCategoryMap.end())
             return ToDuk(ctx, entry->first);
         return ToDuk(ctx, ScenarioCategoryMap[ScenarioCategory::other]);
+    }
+
+    template<>
+    inline DukValue ToDuk(duk_context* ctx, const ScenarioGroup& value)
+    {
+        const auto& entry = ScenarioGroupMap.find(value);
+        if (entry != ScenarioGroupMap.end())
+            return ToDuk(ctx, entry->first);
+        return ToDuk(ctx, ScenarioGroupMap[ScenarioGroup::other]);
     }
 
     template<>
@@ -413,6 +437,7 @@ namespace OpenRCT2::Scripting
             {
                 obj.Set("id", entry->ScenarioId);
                 obj.Set("category", ToDuk(ctx, entry->Category));
+                obj.Set("group", ToDuk(ctx, entry->Group));
                 obj.Set("sourceGame", ToDuk(ctx, entry->SourceGame));
                 obj.Set("internalName", entry->InternalName);
                 obj.Set("name", entry->Name);

@@ -10,6 +10,7 @@
 #include "../Context.h"
 #include "../Diagnostic.h"
 #include "../Editor.h"
+#include "../FileClassifier.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
@@ -245,8 +246,6 @@ namespace OpenRCT2::RCT2
 
         bool PopulateIndexEntry(ScenarioIndexEntry* dst) override
         {
-            *dst = {};
-
             dst->Category = _s6.Info.Category;
             dst->ObjectiveType = _s6.Info.ObjectiveType;
             dst->ObjectiveArg1 = _s6.Info.ObjectiveArg1;
@@ -273,6 +272,8 @@ namespace OpenRCT2::RCT2
                 dst->SourceIndex = desc.index;
                 dst->SourceGame = ScenarioSource{ desc.source };
                 dst->Category = desc.category;
+                dst->Group = desc.group;
+                dst->GroupIndex = desc.groupIndex;
             }
             else
             {
@@ -286,6 +287,8 @@ namespace OpenRCT2::RCT2
                 {
                     dst->SourceGame = ScenarioSource::Other;
                 }
+                dst->Group = ScenarioGroup::other;
+                dst->GroupIndex = -1;
             }
 
             // dst->name will be translated later so keep the untranslated name here

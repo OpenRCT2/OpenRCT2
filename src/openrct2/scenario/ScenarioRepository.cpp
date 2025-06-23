@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
+#include "../FileClassifier.h"
 #include "../Game.h"
 #include "../ParkImporter.h"
 #include "../PlatformEnvironment.h"
@@ -115,6 +116,43 @@ static int32_t ScenarioIndexEntryCompareByIndex(const ScenarioIndexEntry& entryA
     }
 }
 
+static int32_t ScenarioIndexEntryCompareByGroup(const ScenarioIndexEntry& entryA, const ScenarioIndexEntry& entryB)
+{
+    // Order by group
+    if (entryA.Group != entryB.Group)
+    {
+        return static_cast<int32_t>(entryA.Group) - static_cast<int32_t>(entryB.Group);
+    }
+
+    // Then by index / category / name
+    ScenarioGroup scenarioGroup = ScenarioGroup{ entryA.Group };
+    switch (scenarioGroup)
+    {
+        default:
+            if (entryA.GroupIndex == -1 && entryB.GroupIndex == -1)
+            {
+                if (entryA.Category == entryB.Category)
+                {
+                    return ScenarioIndexEntryCompareByCategory(entryA, entryB);
+                }
+
+                return ScenarioCategoryCompare(entryA.Category, entryB.Category);
+            }
+            if (entryA.GroupIndex == -1)
+            {
+                return 1;
+            }
+            if (entryB.GroupIndex == -1)
+            {
+                return -1;
+            }
+            return entryA.GroupIndex - entryB.GroupIndex;
+
+        case ScenarioGroup::other:
+            return ScenarioIndexEntryCompareByIndex(entryA, entryB);
+    }
+}
+
 static void ScenarioHighscoreFree(ScenarioHighscoreEntry* highscore)
 {
     delete highscore;
@@ -124,7 +162,7 @@ class ScenarioFileIndex final : public FileIndex<ScenarioIndexEntry>
 {
 private:
     static constexpr uint32_t kMagicNumber = 0x58444953; // SIDX
-    static constexpr uint16_t kVersion = 9;
+    static constexpr uint16_t kVersion = 10;
     static constexpr auto kPattern = "*.sc4;*.sc6;*.sea;*.park";
 
 public:
@@ -165,7 +203,10 @@ protected:
             }
         }
         ds << item.Timestamp;
+        ds << item.Extension;
         ds << item.Category;
+        ds << item.Group;
+        ds << item.GroupIndex;
         ds << item.SourceGame;
         ds << item.SourceIndex;
         ds << item.ScenarioId;
@@ -206,14 +247,14 @@ private:
         {
             auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
             std::unique_ptr<IParkImporter> importer;
-            std::string extension = Path::GetExtension(path);
+            FileExtension extension = GetFileExtensionType(path);
 
-            if (String::iequals(extension, ".park"))
+            if (extension == FileExtension::PARK)
             {
                 importer = ParkImporter::CreateParkFile(objRepository);
                 importer->LoadScenario(path, true);
             }
-            else if (String::iequals(extension, ".sc4"))
+            else if (extension == FileExtension::SC4)
             {
                 importer = ParkImporter::CreateS4();
                 importer->LoadScenario(path, true);
@@ -227,10 +268,12 @@ private:
 
             if (importer)
             {
+                *entry = {};
+                entry->Path = path;
+                entry->Timestamp = timestamp;
+                entry->Extension = extension;
                 if (importer->PopulateIndexEntry(entry))
                 {
-                    entry->Path = path;
-                    entry->Timestamp = timestamp;
                     return true;
                 }
             }
@@ -508,19 +551,27 @@ private:
 
     void Sort()
     {
-        if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
+        switch (Config::Get().general.scenarioSelectMode)
         {
-            std::sort(
-                _scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
-                    return ScenarioIndexEntryCompareByIndex(a, b) < 0;
-                });
-        }
-        else
-        {
-            std::sort(
-                _scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
-                    return ScenarioIndexEntryCompareByCategory(a, b) < 0;
-                });
+            case ScenarioSelectMode::origin:
+                std::sort(
+                    _scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
+                        return ScenarioIndexEntryCompareByIndex(a, b) < 0;
+                    });
+                break;
+            case ScenarioSelectMode::group:
+                std::sort(
+                    _scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
+                        return ScenarioIndexEntryCompareByGroup(a, b) < 0;
+                    });
+                break;
+            default:
+            case ScenarioSelectMode::difficulty:
+                std::sort(
+                    _scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
+                        return ScenarioIndexEntryCompareByCategory(a, b) < 0;
+                    });
+                break;
         }
     }
 

@@ -17,6 +17,7 @@
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "platform/Platform.h"
+#include "scenario/Scenario.h"
 
 using namespace OpenRCT2;
 
@@ -290,6 +291,12 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
     if (gCustomRCT2DataPath.empty())
     {
         env->SetBasePath(DirBase::rct2, Config::Get().general.RCT2Path);
+    }
+
+    // Check if the current scenario select mode is valid for the RCT2 variant
+    if (!env->IsUsingClassic() && Config::Get().general.scenarioSelectMode == ScenarioSelectMode::group)
+    {
+        Config::Get().general.scenarioSelectMode = ScenarioSelectMode::origin;
     }
 
     // Log base paths
