@@ -41,7 +41,7 @@ static void PaintLaunchedFreefallBase(
     int32_t edges = kEdges3x3[trackSequence];
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.getStationObject();

@@ -2694,7 +2694,6 @@ STR_5549    :År/Måned/Dag
 STR_5550    :{POP16}{POP16}År {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :År/Dag/Måned
 STR_5552    :{POP16}{POP16}År {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Sæt spillet på pause når ‘Steam’ er åben
 STR_5554    :Aktiver bjergværktøj
 STR_5555    :Vis vogne fra andre spor type
 STR_5556    :Smid spiller ud
@@ -2918,7 +2917,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :Vis billeder-per-sekund (FPS) i spillet
 STR_5816    :Indstiller forholdet til at skalere spillet efter.{NEWLINE} Mest nyttigt, når du spiller i {NEWLINE} høje opløsninger
-STR_5819    :[kræver hardware-visning]{NEWLINE}sæt spillet på pause, hvis Steam(NEWLINE)in-game overlay er åbnet
 STR_5820    :Minimer spillet, hvis fokus{NEWLINE}tabes i fuldskærmstilstand
 STR_5822    :Skift imellem dag og nat.{NEWLINE}Et døgn tager en ‘i spil måned’
 STR_5823    :Vis bannere med store bogstaver (RCT1 opførsel)

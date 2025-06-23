@@ -45,9 +45,8 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_STRINGID;
-    static constexpr int32_t WH = 157;
-    static constexpr int32_t WW = 192;
+    static constexpr StringId kWindowTitle = STR_STRINGID;
+    static constexpr ScreenSize kWindowSize = { 192, 157 };
 
     enum WindowGuestPage
     {
@@ -109,53 +108,53 @@ namespace OpenRCT2::Ui::Windows
 
     validate_global_widx(WC_PEEP, WIDX_PICKUP);
 
-    static constexpr int32_t TabWidth = 30;
+    static constexpr int32_t kTabWidth = 30;
 
     // clang-format off
     static constexpr auto kMainGuestWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({ 0, 43 }, { 192, 114 }, WidgetType::resize, WindowColour::secondary), /* Resize */
-        makeTab({ 3, 17 }, STR_SHOW_GUEST_VIEW_TIP),                                            /* Tab 1 */
-        makeTab({ 34, 17 }, STR_SHOW_GUEST_NEEDS_TIP),                                          /* Tab 2 */
-        makeTab({ 65, 17 }, STR_SHOW_GUEST_VISITED_RIDES_TIP),                                  /* Tab 3 */
-        makeTab({ 96, 17 }, STR_SHOW_GUEST_FINANCE_TIP),                                        /* Tab 4 */
-        makeTab({ 127, 17 }, STR_SHOW_GUEST_THOUGHTS_TIP),                                      /* Tab 5 */
-        makeTab({ 158, 17 }, STR_SHOW_GUEST_ITEMS_TIP),                                         /* Tab 6 */
-        makeTab({ 189, 17 }, STR_DEBUG_TIP)                                                     /* Tab 7 */
+        makeTab({ 3, 17 }, STR_SHOW_GUEST_VIEW_TIP),                                      /* Tab 1 */
+        makeTab({ 34, 17 }, STR_SHOW_GUEST_NEEDS_TIP),                                    /* Tab 2 */
+        makeTab({ 65, 17 }, STR_SHOW_GUEST_VISITED_RIDES_TIP),                            /* Tab 3 */
+        makeTab({ 96, 17 }, STR_SHOW_GUEST_FINANCE_TIP),                                  /* Tab 4 */
+        makeTab({ 127, 17 }, STR_SHOW_GUEST_THOUGHTS_TIP),                                /* Tab 5 */
+        makeTab({ 158, 17 }, STR_SHOW_GUEST_ITEMS_TIP),                                   /* Tab 6 */
+        makeTab({ 189, 17 }, STR_DEBUG_TIP)                                               /* Tab 7 */
     );
 
     static constexpr auto _guestWindowWidgetsOverview = makeWidgets(
         kMainGuestWidgets,
-        makeWidget({  3,  45}, {164, 12}, WidgetType::labelCentred, WindowColour::secondary                                               ), // Label Thought marquee
-        makeWidget({  3,  57}, {164, 87}, WidgetType::viewport,      WindowColour::secondary                                               ), // Viewport
-        makeWidget({  3, 144}, {164, 11}, WidgetType::labelCentred, WindowColour::secondary                                               ), // Label Action
-        makeWidget({167,  45}, { 24, 24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_PICKUP_BTN), STR_PICKUP_TIP               ), // Pickup Button
-        makeWidget({167,  69}, { 24, 24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_RENAME),     STR_NAME_GUEST_TIP           ), // Rename Button
-        makeWidget({167,  93}, { 24, 24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_LOCATE),     STR_LOCATE_SUBJECT_TIP       ), // Locate Button
-        makeWidget({167, 117}, { 24, 24}, WidgetType::flatBtn,       WindowColour::secondary, ImageId(SPR_TRACK_PEEP), STR_TOGGLE_GUEST_TRACKING_TIP)  // Track Button
+        makeWidget({  3,  45}, {164, 12}, WidgetType::labelCentred, WindowColour::secondary                                                        ), // Label Thought marquee
+        makeWidget({  3,  57}, {164, 87}, WidgetType::viewport,     WindowColour::secondary                                                        ), // Viewport
+        makeWidget({  3, 144}, {164, 11}, WidgetType::labelCentred, WindowColour::secondary                                                        ), // Label Action
+        makeWidget({167,  45}, { 24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_PICKUP_BTN), STR_PICKUP_TIP               ), // Pickup Button
+        makeWidget({167,  69}, { 24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_RENAME),     STR_NAME_GUEST_TIP           ), // Rename Button
+        makeWidget({167,  93}, { 24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_LOCATE),     STR_LOCATE_SUBJECT_TIP       ), // Locate Button
+        makeWidget({167, 117}, { 24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_TRACK_PEEP), STR_TOGGLE_GUEST_TRACKING_TIP)  // Track Button
     );
 
     static constexpr auto _guestWindowWidgetsStats = makeWidgets(
         kMainGuestWidgets,
-        makeWidget     ({  3, (kListRowHeight * 0) + 4 + 43 }, { 62,  10 }, WidgetType::label, WindowColour::secondary, STR_GUEST_STAT_HAPPINESS_LABEL),
-        makeProgressBar({ 65, (kListRowHeight * 0) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN, 0, 19),
-        makeWidget     ({  3, (kListRowHeight * 1) + 4 + 43 }, { 62,  10 }, WidgetType::label, WindowColour::secondary, STR_GUEST_STAT_ENERGY_LABEL),
-        makeProgressBar({ 65, (kListRowHeight * 1) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN, 0, 19),
-        makeWidget     ({  3, (kListRowHeight * 2) + 4 + 43 }, { 62,  10 }, WidgetType::label, WindowColour::secondary, STR_GUEST_STAT_HUNGER_LABEL),
-        makeProgressBar({ 65, (kListRowHeight * 2) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 67, 100),
-        makeWidget     ({  3, (kListRowHeight * 3) + 4 + 43 }, { 62,  10 }, WidgetType::label, WindowColour::secondary, STR_GUEST_STAT_THIRST_LABEL),
-        makeProgressBar({ 65, (kListRowHeight * 3) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 67, 100),
-        makeWidget     ({  3, (kListRowHeight * 4) + 4 + 43 }, { 62,  10 }, WidgetType::label, WindowColour::secondary, STR_GUEST_STAT_NAUSEA_LABEL),
-        makeProgressBar({ 65, (kListRowHeight * 4) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 47, 100),
-        makeWidget     ({  3, (kListRowHeight * 5) + 4 + 43 }, { 62,  10 }, WidgetType::label, WindowColour::secondary, STR_GUEST_STAT_TOILET_LABEL),
-        makeProgressBar({ 65, (kListRowHeight * 5) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED, 62, 100),
+        makeWidget     ({  3, (kListRowHeight * 0) + 4 + 43 }, { 62,  10 }, WidgetType::label,               WindowColour::secondary, STR_GUEST_STAT_HAPPINESS_LABEL),
+        makeProgressBar({ 65, (kListRowHeight * 0) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN,             0,                       19),
+        makeWidget     ({  3, (kListRowHeight * 1) + 4 + 43 }, { 62,  10 }, WidgetType::label,               WindowColour::secondary, STR_GUEST_STAT_ENERGY_LABEL),
+        makeProgressBar({ 65, (kListRowHeight * 1) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_GREEN,             0,                       19),
+        makeWidget     ({  3, (kListRowHeight * 2) + 4 + 43 }, { 62,  10 }, WidgetType::label,               WindowColour::secondary, STR_GUEST_STAT_HUNGER_LABEL),
+        makeProgressBar({ 65, (kListRowHeight * 2) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED,               67,                      100),
+        makeWidget     ({  3, (kListRowHeight * 3) + 4 + 43 }, { 62,  10 }, WidgetType::label,               WindowColour::secondary, STR_GUEST_STAT_THIRST_LABEL),
+        makeProgressBar({ 65, (kListRowHeight * 3) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED,               67,                      100),
+        makeWidget     ({  3, (kListRowHeight * 4) + 4 + 43 }, { 62,  10 }, WidgetType::label,               WindowColour::secondary, STR_GUEST_STAT_NAUSEA_LABEL),
+        makeProgressBar({ 65, (kListRowHeight * 4) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED,               47,                      100),
+        makeWidget     ({  3, (kListRowHeight * 5) + 4 + 43 }, { 62,  10 }, WidgetType::label,               WindowColour::secondary, STR_GUEST_STAT_TOILET_LABEL),
+        makeProgressBar({ 65, (kListRowHeight * 5) + 4 + 43 }, { 119, 10 }, COLOUR_BRIGHT_RED,               62,                      100),
         makeWidget     ({  3, (kListRowHeight * 7) + 9 + 43 }, { 180, 2  }, WidgetType::horizontalSeparator, WindowColour::secondary)
     );
 
     static constexpr auto _guestWindowWidgetsRides = makeWidgets(
         kMainGuestWidgets,
         makeWidget({ 3, 45 }, { 186, 10 }, WidgetType::label,  WindowColour::secondary, STR_GUEST_LABEL_RIDES_BEEN_ON),
-        makeWidget({ 3, 57  }, { 186, 87 }, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL)
+        makeWidget({ 3, 57 }, { 186, 87 }, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL)
     );
 
     static constexpr auto _guestWindowWidgetsFinance = makeWidgets(
@@ -217,7 +216,7 @@ namespace OpenRCT2::Ui::Windows
             _marqueePosition = 0;
             picked_peep_frame = 0;
 
-            WindowSetResize(*this, { WW, WH }, { 500, 450 });
+            WindowSetResize(*this, kWindowSize, { 500, 450 });
 
             selected_list_item = -1;
         }
@@ -1912,11 +1911,11 @@ namespace OpenRCT2::Ui::Windows
         auto* window = static_cast<GuestWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Peep, peep->Id.ToUnderlying()));
         if (window == nullptr)
         {
-            int32_t windowWidth = 192;
+            auto windowSize = kWindowSize;
             if (Config::Get().general.DebuggingTools)
-                windowWidth += TabWidth;
+                windowSize.width += kTabWidth;
 
-            window = windowMgr->Create<GuestWindow>(WindowClass::Peep, { windowWidth, 157 }, WF_RESIZABLE);
+            window = windowMgr->Create<GuestWindow>(WindowClass::Peep, windowSize, WF_RESIZABLE);
             if (window == nullptr)
             {
                 return nullptr;

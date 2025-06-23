@@ -61,15 +61,16 @@ namespace OpenRCT2::Ui::Windows
         WIDX_KNOWN_KEYS_ONLY_CHECKBOX,
     };
 
+    static constexpr ScreenSize kWindowSize = { 340, 240 };
     // clang-format off
 
     static constexpr auto kMainMultiplayerWidgets = makeWidgets(
-        makeWindowShim(kStringIdNone, { 340, 240 }),
+        makeWindowShim(kStringIdNone, kWindowSize),
         makeWidget({  0, 43}, {340, 197}, WidgetType::resize, WindowColour::secondary                          ),
-        makeTab   ({  3, 17},                                                                STR_SHOW_SERVER_INFO_TIP),
-        makeTab   ({ 34, 17},                                                                STR_PLAYERS_TIP         ),
-        makeTab   ({ 65, 17},                                                                STR_GROUPS_TIP          ),
-        makeTab   ({ 96, 17},                                                                STR_OPTIONS_TIP         )
+        makeTab   ({  3, 17},                                                          STR_SHOW_SERVER_INFO_TIP),
+        makeTab   ({ 34, 17},                                                          STR_PLAYERS_TIP         ),
+        makeTab   ({ 65, 17},                                                          STR_GROUPS_TIP          ),
+        makeTab   ({ 96, 17},                                                          STR_OPTIONS_TIP         )
     );
 
     static constexpr auto window_multiplayer_information_widgets = makeWidgets(
@@ -88,13 +89,13 @@ namespace OpenRCT2::Ui::Windows
     static constexpr auto window_multiplayer_groups_widgets = makeWidgets(
         kMainMultiplayerWidgets,
         makeWidget({141, 46}, {175,  12}, WidgetType::dropdownMenu, WindowColour::secondary                    ), // default group
-        makeWidget({305, 47}, { 11,  10}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH),
-        makeWidget({ 11, 65}, { 92,  12}, WidgetType::button,   WindowColour::secondary, STR_ADD_GROUP     ), // add group button
-        makeWidget({113, 65}, { 92,  12}, WidgetType::button,   WindowColour::secondary, STR_REMOVE_GROUP  ), // remove group button
-        makeWidget({215, 65}, { 92,  12}, WidgetType::button,   WindowColour::secondary, STR_RENAME_GROUP  ), // rename group button
+        makeWidget({305, 47}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH),
+        makeWidget({ 11, 65}, { 92,  12}, WidgetType::button,       WindowColour::secondary, STR_ADD_GROUP     ), // add group button
+        makeWidget({113, 65}, { 92,  12}, WidgetType::button,       WindowColour::secondary, STR_REMOVE_GROUP  ), // remove group button
+        makeWidget({215, 65}, { 92,  12}, WidgetType::button,       WindowColour::secondary, STR_RENAME_GROUP  ), // rename group button
         makeWidget({ 72, 80}, {175,  12}, WidgetType::dropdownMenu, WindowColour::secondary                    ), // selected group
-        makeWidget({236, 81}, { 11,  10}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH),
-        makeWidget({  3, 94}, {314, 207}, WidgetType::scroll,   WindowColour::secondary, SCROLL_VERTICAL   ) // permissions list
+        makeWidget({236, 81}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH),
+        makeWidget({  3, 94}, {314, 207}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL   ) // permissions list
     );
 
     static constexpr auto window_multiplayer_options_widgets = makeWidgets(

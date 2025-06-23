@@ -32,9 +32,8 @@ namespace OpenRCT2::Ui::Windows
 {
 #pragma region Widgets
 
-    static constexpr int32_t WW = 600;
-    static constexpr int32_t WH = 400;
-    static constexpr StringId WINDOW_TITLE = STR_INVENTION_LIST;
+    static constexpr ScreenSize kWindowSize = { 600, 400 };
+    static constexpr StringId kWindowTitle = STR_INVENTION_LIST;
 
     enum
     {
@@ -53,9 +52,9 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _inventionListWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({  0,  43}, {600, 357}, WidgetType::resize,  WindowColour::secondary                                             ),
-        makeTab   ({  3,  17}                                                                                               ),
+        makeTab   ({  3,  17}                                                                                                       ),
         makeWidget({  4,  56}, {368, 161}, WidgetType::scroll,  WindowColour::secondary, SCROLL_VERTICAL                            ),
         makeWidget({  4, 231}, {368, 157}, WidgetType::scroll,  WindowColour::secondary, SCROLL_VERTICAL                            ),
         makeWidget({431, 106}, {114, 114}, WidgetType::flatBtn, WindowColour::secondary                                             ),
@@ -155,7 +154,7 @@ namespace OpenRCT2::Ui::Windows
             selected_tab = 0;
             _selectedResearchItem = nullptr;
 
-            WindowSetResize(*this, { WW, WH }, { WW * 2, WH * 2 });
+            WindowSetResize(*this, kWindowSize, { kWindowSize.width * 2, kWindowSize.height * 2 });
         }
 
         void OnClose() override
@@ -588,7 +587,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<InventionListWindow>(
-            WindowClass::EditorInventionList, { WW, WH }, WF_NO_SCROLLING | WF_RESIZABLE | WF_CENTRE_SCREEN);
+            WindowClass::EditorInventionList, kWindowSize, WF_NO_SCROLLING | WF_RESIZABLE | WF_CENTRE_SCREEN);
     }
 #pragma endregion
 

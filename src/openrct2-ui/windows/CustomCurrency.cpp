@@ -22,9 +22,8 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_CUSTOM_CURRENCY_WINDOW_TITLE;
-    static constexpr int32_t WH = 100;
-    static constexpr int32_t WW = 400;
+    static constexpr StringId kWindowTitle = STR_CUSTOM_CURRENCY_WINDOW_TITLE;
+    static constexpr ScreenSize kWindowSize = { 400, 100 };
 
     enum WindowCustomCurrencyWidgetIdx
     {
@@ -41,11 +40,11 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_custom_currency_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
-        makeSpinnerWidgets({100, 30}, {101, 11}, WidgetType::spinner,  WindowColour::secondary, STR_CURRENCY_FORMAT), // NB: 3 widgets
-        makeWidget        ({120, 50}, { 81, 11}, WidgetType::button,   WindowColour::secondary, kStringIdEmpty          ),
-        makeWidget        ({220, 50}, {131, 11}, WidgetType::dropdownMenu, WindowColour::secondary                 ),
-        makeWidget        ({339, 51}, { 11,  9}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH )
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeSpinnerWidgets({100, 30}, {101, 11}, WidgetType::spinner,      WindowColour::secondary, STR_CURRENCY_FORMAT), // NB: 3 widgets
+        makeWidget        ({120, 50}, { 81, 11}, WidgetType::button,       WindowColour::secondary, kStringIdEmpty     ),
+        makeWidget        ({220, 50}, {131, 11}, WidgetType::dropdownMenu, WindowColour::secondary                     ),
+        makeWidget        ({339, 51}, { 11,  9}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH )
     );
     // clang-format on
 
@@ -227,6 +226,6 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* CustomCurrencyOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<CustomCurrencyWindow>(WindowClass::CustomCurrencyConfig, { WW, WH }, WF_CENTRE_SCREEN);
+        return windowMgr->FocusOrCreate<CustomCurrencyWindow>(WindowClass::CustomCurrencyConfig, kWindowSize, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows

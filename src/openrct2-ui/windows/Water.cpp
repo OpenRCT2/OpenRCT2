@@ -25,9 +25,8 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_WATER;
-    static constexpr int32_t WH = 77;
-    static constexpr int32_t WW = 76;
+    static constexpr StringId kWindowTitle = STR_WATER;
+    static constexpr ScreenSize kWindowSize = { 76, 77 };
 
     enum WindowWaterWidgetIdx : WidgetIndex
     {
@@ -41,7 +40,7 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto _waterWidgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
+        makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget     ({16, 17}, {44, 32}, WidgetType::imgBtn, WindowColour::primary , ImageId(SPR_LAND_TOOL_SIZE_0),   kStringIdNone),            // preview box
         makeRemapWidget({17, 18}, {16, 16}, WidgetType::trnBtn, WindowColour::tertiary, SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_WATER_TIP), // decrement size
         makeRemapWidget({43, 32}, {16, 16}, WidgetType::trnBtn, WindowColour::tertiary, SPR_LAND_TOOL_INCREASE, STR_ADJUST_LARGER_WATER_TIP) // increment size
@@ -426,7 +425,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<WaterWindow>(
-            WindowClass::Water, ScreenCoordsXY(ContextGetWidth() - WW, 29), { WW, WH }, 0);
+            WindowClass::Water, ScreenCoordsXY(ContextGetWidth() - kWindowSize.width, 29), kWindowSize, 0);
     }
 
     /**

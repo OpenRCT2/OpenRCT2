@@ -21,7 +21,7 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::miniGolf,
-        .supportType = MetalSupportType::Boxed,
+        .supportType = MetalSupportType::boxed,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::curveVerySmall, TrackGroup::miniGolfHole},
         .extraTrackGroups = {},
     }),

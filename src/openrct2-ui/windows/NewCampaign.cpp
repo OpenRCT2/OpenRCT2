@@ -26,11 +26,10 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = kStringIdNone;
-    static constexpr int32_t WH = 109;
-    static constexpr int32_t WW = 350;
+    static constexpr StringId kWindowTitle = kStringIdNone;
+    static constexpr ScreenSize kWindowSize = { 350, 109 };
 
-    constexpr uint16_t SELECTED_ITEM_UNDEFINED = 0xFFFF;
+    constexpr uint16_t kSelectedItemUndefined = 0xFFFF;
 
     enum WindowNewCampaignWidgetIdx
     {
@@ -49,13 +48,13 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     static constexpr auto window_new_campaign_widgets = makeWidgets(
-        makeWindowShim(WINDOW_TITLE, { WW, WH }),
-        makeWidget        ({ 14, 24}, {126, 12}, WidgetType::label,    WindowColour::primary, kStringIdEmpty                                  ), // ride label
-        makeWidget        ({100, 24}, {242, 12}, WidgetType::dropdownMenu, WindowColour::primary, kStringIdEmpty                                  ), // ride dropdown
-        makeWidget        ({330, 25}, { 11, 10}, WidgetType::button,   WindowColour::primary, STR_DROPDOWN_GLYPH                         ), // ride dropdown button
-        makeWidget        ({ 14, 41}, {126, 14}, WidgetType::label,    WindowColour::primary, STR_LENGTH_OF_TIME                         ), // weeks label
-        makeSpinnerWidgets({120, 41}, {100, 14}, WidgetType::spinner,  WindowColour::primary, kStringIdEmpty                                  ), // weeks (3 widgets)
-        makeWidget        ({ 14, 89}, {322, 14}, WidgetType::button,   WindowColour::primary, STR_MARKETING_START_THIS_MARKETING_CAMPAIGN) // start button
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget        ({ 14, 24}, {126, 12}, WidgetType::label,        WindowColour::primary, kStringIdEmpty                             ), // ride label
+        makeWidget        ({100, 24}, {242, 12}, WidgetType::dropdownMenu, WindowColour::primary, kStringIdEmpty                             ), // ride dropdown
+        makeWidget        ({330, 25}, { 11, 10}, WidgetType::button,       WindowColour::primary, STR_DROPDOWN_GLYPH                         ), // ride dropdown button
+        makeWidget        ({ 14, 41}, {126, 14}, WidgetType::label,        WindowColour::primary, STR_LENGTH_OF_TIME                         ), // weeks label
+        makeSpinnerWidgets({120, 41}, {100, 14}, WidgetType::spinner,      WindowColour::primary, kStringIdEmpty                             ), // weeks (3 widgets)
+        makeWidget        ({ 14, 89}, {322, 14}, WidgetType::button,       WindowColour::primary, STR_MARKETING_START_THIS_MARKETING_CAMPAIGN) // start button
     );
     // clang-format on
 
@@ -346,7 +345,7 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_RIDE_DROPDOWN].type = WidgetType::dropdownMenu;
                     widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WidgetType::button;
                     widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_ITEM;
-                    if (Campaign.ShopItemId != SELECTED_ITEM_UNDEFINED)
+                    if (Campaign.ShopItemId != kSelectedItemUndefined)
                     {
                         widgets[WIDX_RIDE_DROPDOWN].text = GetShopItemDescriptor(ShopItem(Campaign.ShopItemId)).Naming.Plural;
                     }
@@ -408,7 +407,7 @@ namespace OpenRCT2::Ui::Windows
             w->Close();
         }
 
-        w = windowMgr->Create<NewCampaignWindow>(WindowClass::NewCampaign, { WW, WH }, 0);
+        w = windowMgr->Create<NewCampaignWindow>(WindowClass::NewCampaign, kWindowSize, 0);
         if (w != nullptr)
         {
             w->SetCampaign(campaignType);

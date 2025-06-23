@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../audio/Audio.h"
 #include "Object.h"
 
 class TerrainEdgeObject final : public Object
@@ -21,6 +22,7 @@ public:
     uint32_t IconImageId{};
     uint32_t BaseImageId{};
     bool HasDoors{};
+    OpenRCT2::Audio::DoorSoundType doorSound{};
 
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;

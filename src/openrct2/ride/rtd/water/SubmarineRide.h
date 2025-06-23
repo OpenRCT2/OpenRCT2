@@ -22,7 +22,7 @@ constexpr RideTypeDescriptor SubmarineRideRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::submarineRide,
-        .supportType = MetalSupportType::Stick,
+        .supportType = MetalSupportType::stick,
         .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::curveVerySmall, TrackGroup::curveSmall},
         .extraTrackGroups = {},
     }),

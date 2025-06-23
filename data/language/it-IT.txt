@@ -2699,7 +2699,6 @@ STR_5549    :Anno/Mese/Giorno
 STR_5550    :{POP16}{POP16}Anno {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Anno/Giorno/Mese
 STR_5552    :{POP16}{POP16}Anno {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Gioco in pausa quando l’overlay di Steam è aperto
 STR_5554    :Attiva lo strumento montagna
 STR_5555    :Mostra i veicoli di altre attrazioni
 STR_5556    :Caccia giocatore
@@ -2922,7 +2921,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :Mostra il contatore FPS mentre si gioca
 STR_5816    :Imposta il rapporto a cui il gioco viene scalato.{NEWLINE}Utile quando si gioca ad alte risoluzioni
-STR_5819    :[Richiede rendering hardware]{NEWLINE}Mette in pausa il gioco{NEWLINE}se l’overlay di Steam è aperto
 STR_5820    :Riduce a icona il gioco{NEWLINE}se il focus viene perso in modalità schermo intero
 STR_5822    :Alterna tra giorno e notte.{NEWLINE}Un ciclo dura un mese di gioco.
 STR_5823    :Mostra il testo dei cartelli in maiuscolo (come in RCT1)

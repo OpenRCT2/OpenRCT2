@@ -49,21 +49,23 @@ namespace OpenRCT2::Ui::Windows
         WIDX_VIEWPORT,
     };
 
+    static constexpr ScreenSize kWindowSize = { 192, 157 };
     // clang-format off
+    
     static constexpr auto kCommonPlayerWidgets = makeWidgets(
-        makeWindowShim(STR_STRING, { 192, 157 }),
-        makeWidget({ 0, 43 }, { 192, 114 }, WidgetType::resize, WindowColour::secondary),
-        makeTab({ 3, 17 }),
-        makeTab({ 34, 17 })
+        makeWindowShim(STR_STRING, kWindowSize),
+        makeWidget({ 0, 43}, {192, 114}, WidgetType::resize, WindowColour::secondary),
+        makeTab   ({ 3, 17}                                                         ),
+        makeTab   ({34, 17}                                                         )
     );
 
     static constexpr auto window_player_overview_widgets = makeWidgets(
         kCommonPlayerWidgets,
-        makeWidget({  3, 46}, {175, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                          ), // Permission group
-        makeWidget({167, 47}, { 11, 10}, WidgetType::button,   WindowColour::secondary, STR_DROPDOWN_GLYPH                          ),
-        makeWidget({179, 45}, { 12, 24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_LOCATE),   STR_LOCATE_PLAYER_TIP), // Locate button
-        makeWidget({179, 69}, { 12, 24}, WidgetType::flatBtn,  WindowColour::secondary, ImageId(SPR_DEMOLISH), STR_KICK_PLAYER_TIP  ), // Kick button
-        makeWidget({  3, 60}, {175, 61}, WidgetType::viewport, WindowColour::secondary                                              )  // Viewport
+        makeWidget({  3, 46}, {175, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                              ), // Permission group
+        makeWidget({167, 47}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                          ),
+        makeWidget({179, 45}, { 12, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_LOCATE),   STR_LOCATE_PLAYER_TIP), // Locate button
+        makeWidget({179, 69}, { 12, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_DEMOLISH), STR_KICK_PLAYER_TIP  ), // Kick button
+        makeWidget({  3, 60}, {175, 61}, WidgetType::viewport,     WindowColour::secondary                                              )  // Viewport
     );
 
     static constexpr auto window_player_statistics_widgets = makeWidgets(

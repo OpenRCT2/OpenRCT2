@@ -2696,7 +2696,6 @@ STR_5549    :Jahr/Monat/Tag
 STR_5550    :{POP16}{POP16}Jahr {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Jahr/Tag/Monat
 STR_5552    :{POP16}{POP16}Jahr {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Spiel bei geöffnetem Steam-Overlay pausieren
 STR_5554    :Gebirgswerkzeug aktivieren
 STR_5555    :Fahrzeuge anderer Streckentyp. anzeigen
 STR_5556    :Spieler entfernen
@@ -2916,7 +2915,6 @@ STR_5813    :„{STRING}“
 STR_5814    :{WINDOW_COLOUR_1}„{STRING}“
 STR_5815    :FPS-Zähler im Spiel anzeigen
 STR_5816    :Stellt den Faktor für die Skalierung des{NEWLINE}Spiels ein. Besonders für hohe{NEWLINE}Auflösungen sinnvoll
-STR_5819    :[Benötigt Hardwareanzeige]{NEWLINE}Pausiert das Spiel, wenn das Steam-Overlay geöffnet wird
 STR_5820    :Minimiert das Spiel, wenn das Spiel{NEWLINE}im Vollbildmodus nicht im{NEWLINE}Vordergrund ist
 STR_5822    :Wechselt zwischen Tag und Nacht.{NEWLINE}Ein kompletter Zyklus dauert einen Monat im Spiel
 STR_5823    :Zeigt Text auf Bannern in Großbuchstaben an (RCT1-Verhalten)

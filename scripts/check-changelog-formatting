@@ -7,7 +7,7 @@ output=$(node scripts/format-changelog.js distribution/changelog.txt)
 if [ $? -eq 0 ]; then
     echo "Script ran successfully. Running diff..."
     # Run diff on the original file and the output
-    diff --color=always -b <(echo "$output") distribution/changelog.txt
+    diff --color=always -b -U3 <(echo "$output") distribution/changelog.txt
     # If diff finds differences, exit with a non-zero status
     if [ $? -ne 0 ]; then
         echo "Differences found. Exiting with status 1."
