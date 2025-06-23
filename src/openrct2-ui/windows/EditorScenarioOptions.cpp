@@ -2235,7 +2235,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Sort the rides alphabetically
-            std::stable_sort(_rideableRides.begin(), _rideableRides.end(), [](const RideId& a, const RideId& b) {
+            std::sort(_rideableRides.begin(), _rideableRides.end(), [](const RideId& a, const RideId& b) {
                 return String::compare(GetRideString(a), GetRideString(b), false) < 0;
             });
 
