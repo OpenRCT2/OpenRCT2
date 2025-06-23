@@ -183,21 +183,23 @@ namespace OpenRCT2
         const auto mainWindow = WindowGetMain();
         const auto mainViewport = WindowGetViewport(mainWindow);
 
-        CoordsXYZ mapPosXYZ{};
+        CoordsXYZD mapPosXYZD{};
         if (mainViewport != nullptr)
         {
             const auto centre = mainViewport->viewPos
                 + ScreenCoordsXY{ mainViewport->ViewWidth() / 2, mainViewport->ViewHeight() / 2 };
             const auto mapPos = ViewportPosToMapPos(centre, 24, mainViewport->rotation);
-            mapPosXYZ = CoordsXYZ(mapPos.x, mapPos.y, int32_t{ TileElementHeight(mapPos) });
+            mapPosXYZD = CoordsXYZD(mapPos.x, mapPos.y, int32_t{ TileElementHeight(mapPos) }, mainViewport->rotation);
         }
         else if (!gameState.park.Entrances.empty())
         {
             const auto& entrance = gameState.park.Entrances[0];
-            mapPosXYZ = CoordsXYZ{ entrance.x + 16, entrance.y + 16, entrance.z + 32 };
+            mapPosXYZD = CoordsXYZD(entrance.x + 16, entrance.y + 16, entrance.z + 32, DirectionReverse(entrance.direction));
         }
         else
+        {
             return std::nullopt;
+        }
 
         PreviewImage image{
             .type = PreviewImageType::screenshot,
@@ -210,10 +212,10 @@ namespace OpenRCT2
             .height = image.height,
             .flags = 0,
             .zoom = ZoomLevel{ 1 },
-            .rotation = mainViewport->rotation,
+            .rotation = mapPosXYZD.direction,
         };
 
-        auto viewPos = centre_2d_coordinates(mapPosXYZ, &saveVp);
+        auto viewPos = centre_2d_coordinates(mapPosXYZD, &saveVp);
         if (viewPos == std::nullopt)
             return std::nullopt;
 
