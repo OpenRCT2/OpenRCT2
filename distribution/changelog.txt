@@ -22,6 +22,7 @@
 - Fix: [#24617] ‘Divide by zero’ error when updating boat hire acceleration.
 - Fix: [#24626] Viewports that only follow sprites (e.g. in the Ride and Guest windows) can be made to unfollow them.
 - Fix: [#24661] `convert` console command always crashes with a segmentation fault.
+- Fix: [#24666] `convert` console command rejects files with an SV7 extension.
 
 0.4.23 (2025-06-07)
 ------------------------------------------------------------------------
