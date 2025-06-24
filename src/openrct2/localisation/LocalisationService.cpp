@@ -40,7 +40,7 @@ const char* LocalisationService::GetString(StringId id) const
 {
     if (id == kStringIdEmpty)
     {
-        return "";
+        return {};
     }
     else if (id >= kBaseObjectStringID && id < kBaseObjectStringID + kMaxObjectCachedStrings)
     {

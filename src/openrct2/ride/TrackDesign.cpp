@@ -107,7 +107,7 @@ static u8string_view TrackDesignGetStationObjectIdentifier(const Ride& ride)
 {
     const auto* stationObject = ride.getStationObject();
     if (stationObject == nullptr)
-        return "";
+        return {};
 
     return stationObject->GetIdentifier();
 }

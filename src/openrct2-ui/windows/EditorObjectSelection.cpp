@@ -1559,7 +1559,7 @@ namespace OpenRCT2::Ui::Windows
                     return rideObject->GetDescription();
                 }
                 default:
-                    return "";
+                    return {};
             }
         }
 

@@ -63,7 +63,7 @@ const utf8* StringBuilder::GetBuffer() const
 {
     // buffer may be empty, so return an immutable empty string
     if (_buffer.empty())
-        return "";
+        return {};
     return _buffer.c_str();
 }
 
