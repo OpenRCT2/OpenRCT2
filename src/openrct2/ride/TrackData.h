@@ -78,13 +78,13 @@ namespace OpenRCT2::TrackMetaData
 
     struct SequenceWoodenSupport
     {
-        WoodenSupportSubType subType = WoodenSupportSubType::Null;
-        WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None;
+        WoodenSupportSubType subType = WoodenSupportSubType::null;
+        WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::none;
     };
 
     struct SequenceMetalSupport
     {
-        MetalSupportPlace place = MetalSupportPlace::None;
+        MetalSupportPlace place = MetalSupportPlace::none;
         uint8_t alternates = false;
     };
 

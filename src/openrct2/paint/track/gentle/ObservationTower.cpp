@@ -43,7 +43,7 @@ static void PaintObservationTowerBase(
     CoordsXY position = session.MapPosition;
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height,
         GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.getStationObject();

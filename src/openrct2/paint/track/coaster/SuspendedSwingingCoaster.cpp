@@ -75,7 +75,7 @@ static void SuspendedSwingingRCTrackFlat(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -175,19 +175,19 @@ static void SuspendedSwingingRCTrack25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 62, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 62, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 62, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 62, session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 62, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 62, session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 62, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 62, session.SupportColours);
                 break;
         }
     }
@@ -308,19 +308,19 @@ static void SuspendedSwingingRCTrackFlatTo25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 54, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 54, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 54, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 54, session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 54, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 54, session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 54, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 54, session.SupportColours);
                 break;
         }
     }
@@ -459,19 +459,19 @@ static void SuspendedSwingingRCTrack60DegUpTo25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 76, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 76, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 76, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 76, session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 76, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 76, session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 76, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 76, session.SupportColours);
                 break;
         }
     }
@@ -552,19 +552,19 @@ static void SuspendedSwingingRCTrack25DegUpToFlat(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 52, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 52, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 52, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 52, session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 52, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 52, session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 52, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 52, session.SupportColours);
                 break;
         }
     }
@@ -671,7 +671,7 @@ static void SuspendedSwingingRCTrackLeftQuarterTurn5(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -814,7 +814,7 @@ static void SuspendedSwingingRCTrackLeftQuarterTurn5(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.SupportColours);
 
             switch (direction)
             {
@@ -877,7 +877,7 @@ static void SuspendedSwingingRCTrackLeftQuarterTurn525DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 54, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -1010,7 +1010,7 @@ static void SuspendedSwingingRCTrackLeftQuarterTurn525DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 54, session.SupportColours);
 
             switch (direction)
             {
@@ -1063,7 +1063,7 @@ static void SuspendedSwingingRCTrackRightQuarterTurn525DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 54, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -1196,7 +1196,7 @@ static void SuspendedSwingingRCTrackRightQuarterTurn525DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 54, session.SupportColours);
 
             switch (direction)
             {
@@ -1575,7 +1575,7 @@ static void SuspendedSwingingRCTrackLeftQuarterTurn3(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -1651,7 +1651,7 @@ static void SuspendedSwingingRCTrackLeftQuarterTurn3(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.SupportColours);
 
             switch (direction)
             {
@@ -1714,7 +1714,7 @@ static void SuspendedSwingingRCTrackLeftQuarterTurn325DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 54, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -1758,7 +1758,7 @@ static void SuspendedSwingingRCTrackLeftQuarterTurn325DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 54, session.SupportColours);
 
             switch (direction)
             {
@@ -1811,7 +1811,7 @@ static void SuspendedSwingingRCTrackRightQuarterTurn325DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 54, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -1855,7 +1855,7 @@ static void SuspendedSwingingRCTrackRightQuarterTurn325DegUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 54, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 54, session.SupportColours);
 
             switch (direction)
             {
@@ -1915,7 +1915,7 @@ static void SuspendedSwingingRCTrackBrakes(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
@@ -1963,7 +1963,7 @@ static void SuspendedSwingingRCTrackLeftQuarterHelixLargeUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 46, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 46, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -2111,7 +2111,7 @@ static void SuspendedSwingingRCTrackLeftQuarterHelixLargeUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 58, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 58, session.SupportColours);
 
             switch (direction)
             {
@@ -2168,7 +2168,7 @@ static void SuspendedSwingingRCTrackRightQuarterHelixLargeUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 46, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 46, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -2316,7 +2316,7 @@ static void SuspendedSwingingRCTrackRightQuarterHelixLargeUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 58, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 58, session.SupportColours);
 
             switch (direction)
             {
@@ -2373,7 +2373,7 @@ static void SuspendedSwingingRCTrackLeftQuarterHelixLargeDown(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 58, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 58, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -2521,7 +2521,7 @@ static void SuspendedSwingingRCTrackLeftQuarterHelixLargeDown(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 46, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 46, session.SupportColours);
 
             switch (direction)
             {
@@ -2578,7 +2578,7 @@ static void SuspendedSwingingRCTrackRightQuarterHelixLargeDown(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 58, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 58, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -2726,7 +2726,7 @@ static void SuspendedSwingingRCTrackRightQuarterHelixLargeDown(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 46, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 46, session.SupportColours);
 
             switch (direction)
             {
@@ -2782,7 +2782,7 @@ static void SuspendedSwingingRCTrackLeftEighthToDiag(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -2904,19 +2904,19 @@ static void SuspendedSwingingRCTrackLeftEighthToDiag(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 44, session.SupportColours);
                     break;
             }
 
@@ -2964,7 +2964,7 @@ static void SuspendedSwingingRCTrackRightEighthToDiag(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -3087,19 +3087,19 @@ static void SuspendedSwingingRCTrackRightEighthToDiag(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 44, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 44, session.SupportColours);
                     break;
             }
 
@@ -3142,7 +3142,7 @@ static void SuspendedSwingingRCTrackDiagFlat(
 
     if (trackSequence == 3)
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 44, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height + 44, session.SupportColours);
 
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -3282,19 +3282,19 @@ static void SuspendedSwingingRCTrackDiag25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 56, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 56, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 56, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 56, session.SupportColours);
                     break;
             }
 
@@ -3382,19 +3382,19 @@ static void SuspendedSwingingRCTrackDiag60DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 32, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 32, height + 44, session.SupportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 36, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 36, height + 44, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 32, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 32, height + 44, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 36, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 36, height + 44, session.SupportColours);
                     break;
             }
 
@@ -3538,19 +3538,19 @@ static void SuspendedSwingingRCTrackDiagFlatTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 48, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 48, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 48, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 48, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 48, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 48, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 48, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 48, session.SupportColours);
                     break;
             }
 
@@ -3638,19 +3638,19 @@ static void SuspendedSwingingRCTrackDiag25DegUpTo60DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 16, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 16, height + 44, session.SupportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 16, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 16, height + 44, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 16, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 16, height + 44, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 16, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 16, height + 44, session.SupportColours);
                     break;
             }
 
@@ -3738,19 +3738,19 @@ static void SuspendedSwingingRCTrackDiag60DegUpTo25DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 21, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 21, height + 44, session.SupportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 21, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 21, height + 44, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 21, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 21, height + 44, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 21, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 21, height + 44, session.SupportColours);
                     break;
             }
 
@@ -3894,19 +3894,19 @@ static void SuspendedSwingingRCTrackDiag25DegUpToFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 50, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 50, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 50, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 50, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 50, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 50, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 50, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 50, session.SupportColours);
                     break;
             }
 
@@ -4050,19 +4050,19 @@ static void SuspendedSwingingRCTrackDiag25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 56, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 56, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 56, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 56, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 56, session.SupportColours);
                     break;
             }
 
@@ -4282,19 +4282,19 @@ static void SuspendedSwingingRCTrackDiagFlatTo25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 50, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 50, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 50, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 50, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 50, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 50, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 50, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 50, session.SupportColours);
                     break;
             }
             break;
@@ -4382,19 +4382,19 @@ static void SuspendedSwingingRCTrackDiag25DegDownTo60DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 17, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 17, height + 44, session.SupportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 17, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 17, height + 44, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 17, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 17, height + 44, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 17, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 17, height + 44, session.SupportColours);
                     break;
             }
 
@@ -4482,19 +4482,19 @@ static void SuspendedSwingingRCTrackDiag60DegDownTo25DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 8, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 8, height + 44, session.SupportColours);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 8, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 8, height + 44, session.SupportColours);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 8, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 8, height + 44, session.SupportColours);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 8, height + 44, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 8, height + 44, session.SupportColours);
                     break;
             }
 
@@ -4638,19 +4638,19 @@ static void SuspendedSwingingRCTrackDiag25DegDownToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 48, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 48, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 48, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 48, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 48, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 48, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 48, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 48, session.SupportColours);
                     break;
             }
 
@@ -4683,7 +4683,7 @@ static void SuspendedSwingingRCTrackBlockBrakes(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height + 44, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height + 44, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);

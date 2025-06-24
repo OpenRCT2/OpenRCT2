@@ -224,7 +224,7 @@ static void PaintMagicCarpet(
     {
         case 0:
         case 2:
-            DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
+            DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::tubes);
             const StationObject* stationObject = ride.getStationObject();
 
             if (stationObject != nullptr && !(stationObject->Flags & StationObjectFlags::noPlatforms))

@@ -118,7 +118,7 @@ static void HeartlineTwisterRCTrackStation(
         { { 0, 6, height + 3 }, { 32, 20, 1 } });
     if (TrackPaintUtilDrawStation(session, ride, direction, height, trackElement, StationBaseType::b, 0))
     {
-        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
+        DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::tubes);
     }
     else
     {

@@ -3818,3 +3818,10 @@ STR_6774    :Daŭro de lasta inspekto
 STR_6775    :{COMMA16} minuto
 STR_6776    :{COMMA16} minutoj
 STR_6777    :pli ol 4 horoj
+STR_6778    :Antaŭrigardi scenarojn per:
+STR_6779    :Electi kian antaŭrigardo-bildon uzi je la fenestro de scenaro-elektaro.
+STR_6780    :Etaj mapoj
+STR_6781    :Ekrankopioj
+STR_6782    :Sciigoj de parko
+STR_6783    :Sciigoj de atrakcioj
+STR_6784    :Sciigoj de gastoj

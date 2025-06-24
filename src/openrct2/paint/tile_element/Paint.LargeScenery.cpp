@@ -67,16 +67,16 @@ static void PaintLargeScenerySupports(
     if (!tile.hasSupports)
         return;
 
-    auto transitionType = WoodenSupportTransitionType::None;
+    auto transitionType = WoodenSupportTransitionType::none;
     auto supportHeight = height;
     if (supportHeight & 0xF)
     {
         supportHeight &= ~0xF;
-        transitionType = WoodenSupportTransitionType::Scenery;
+        transitionType = WoodenSupportTransitionType::scenery;
     }
 
     WoodenBSupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, supportHeight, imageTemplate, transitionType);
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, supportHeight, imageTemplate, transitionType);
 
     int32_t clearanceHeight = ceil2(tileElement.GetClearanceZ() + 15, 16);
     if (tile.allowSupportsAbove)

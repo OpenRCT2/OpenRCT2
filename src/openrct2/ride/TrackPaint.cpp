@@ -1230,7 +1230,7 @@ void TrackPaintUtilDiagTilesPaintExtra(
         session, thickness, height, direction, trackSequence, sprites, defaultDiagTileOffsets, defaultDiagBoundLengths,
         nullptr);
 
-    if (SupportedSequences::kDiagStraightFlat[trackSequence] != MetalSupportPlace::None)
+    if (SupportedSequences::kDiagStraightFlat[trackSequence] != MetalSupportPlace::none)
     {
         MetalASupportsPaintSetupRotated(
             session, supportType, SupportedSequences::kDiagStraightFlat[trackSequence], direction, 0, height,
@@ -1929,7 +1929,7 @@ void TrackPaintUtilLeftCorkscrewUpSupports(PaintSession& session, Direction dire
             0xFFFF, 0);
     }
     MetalASupportsPaintSetupRotated(
-        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, direction, 0, height, session.SupportColours);
+        session, MetalSupportType::tubes, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
     if (direction != 2)
     {
         PaintUtilSetSegmentSupportHeight(
@@ -2066,28 +2066,28 @@ void DrawSBendLeftSupports(
     {
         case 0:
             MetalASupportsPaintSetupRotated(
-                session, supportType, MetalSupportPlace::Centre, direction, specialA, height, session.SupportColours);
+                session, supportType, MetalSupportPlace::centre, direction, specialA, height, session.SupportColours);
             break;
         case 1:
             if (direction == 0)
                 MetalASupportsPaintSetupRotated(
-                    session, supportType, MetalSupportPlace::TopLeftSide, direction, specialA, height, session.SupportColours);
+                    session, supportType, MetalSupportPlace::topLeftSide, direction, specialA, height, session.SupportColours);
             if (direction == 1)
                 MetalASupportsPaintSetupRotated(
-                    session, supportType, MetalSupportPlace::TopLeftSide, direction, specialB, height, session.SupportColours);
+                    session, supportType, MetalSupportPlace::topLeftSide, direction, specialB, height, session.SupportColours);
             break;
         case 2:
             if (direction == 2)
                 MetalASupportsPaintSetupRotated(
-                    session, supportType, MetalSupportPlace::BottomRightSide, direction, specialA, height,
+                    session, supportType, MetalSupportPlace::bottomRightSide, direction, specialA, height,
                     session.SupportColours);
             if (direction == 3)
                 MetalASupportsPaintSetupRotated(
-                    session, supportType, MetalSupportPlace::BottomRightSide, direction, specialB, height,
+                    session, supportType, MetalSupportPlace::bottomRightSide, direction, specialB, height,
                     session.SupportColours);
             break;
         case 3:
-            MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::Centre, specialA, height, session.SupportColours);
+            MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::centre, specialA, height, session.SupportColours);
             break;
     }
 }
@@ -2100,29 +2100,29 @@ void DrawSBendRightSupports(
     {
         case 0:
             MetalASupportsPaintSetupRotated(
-                session, supportType, MetalSupportPlace::Centre, direction, specialA, height, session.SupportColours);
+                session, supportType, MetalSupportPlace::centre, direction, specialA, height, session.SupportColours);
             break;
         case 1:
             if (direction == 0)
                 MetalASupportsPaintSetupRotated(
-                    session, supportType, MetalSupportPlace::BottomRightSide, direction, specialA, height,
+                    session, supportType, MetalSupportPlace::bottomRightSide, direction, specialA, height,
                     session.SupportColours);
             if (direction == 1)
                 MetalASupportsPaintSetupRotated(
-                    session, supportType, MetalSupportPlace::BottomRightSide, direction, specialB, height,
+                    session, supportType, MetalSupportPlace::bottomRightSide, direction, specialB, height,
                     session.SupportColours);
             break;
         case 2:
             if (direction == 2)
                 MetalASupportsPaintSetupRotated(
-                    session, supportType, MetalSupportPlace::TopLeftSide, direction, specialA, height, session.SupportColours);
+                    session, supportType, MetalSupportPlace::topLeftSide, direction, specialA, height, session.SupportColours);
             if (direction == 3)
                 MetalASupportsPaintSetupRotated(
-                    session, supportType, MetalSupportPlace::TopLeftSide, direction, specialB, height, session.SupportColours);
+                    session, supportType, MetalSupportPlace::topLeftSide, direction, specialB, height, session.SupportColours);
             break;
         case 3:
             MetalASupportsPaintSetupRotated(
-                session, supportType, MetalSupportPlace::Centre, direction, specialA, height, session.SupportColours);
+                session, supportType, MetalSupportPlace::centre, direction, specialA, height, session.SupportColours);
             break;
     }
 }

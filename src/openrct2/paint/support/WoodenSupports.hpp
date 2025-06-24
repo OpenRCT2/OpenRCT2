@@ -19,7 +19,7 @@ bool DrawSupportForSequenceA(
     const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
     const auto& desc = ted.sequences[sequence].woodenSupports;
 
-    if (desc.subType == WoodenSupportSubType::Null)
+    if (desc.subType == WoodenSupportSubType::null)
         return false;
 
     return WoodenASupportsPaintSetupRotated(
@@ -34,7 +34,7 @@ bool DrawSupportForSequenceB(
     const auto& ted = OpenRCT2::TrackMetaData::GetTrackElementDescriptor(trackType);
     const auto& desc = ted.sequences[sequence].woodenSupports;
 
-    if (desc.subType == WoodenSupportSubType::Null)
+    if (desc.subType == WoodenSupportSubType::null)
         return false;
 
     return WoodenBSupportsPaintSetupRotated(
