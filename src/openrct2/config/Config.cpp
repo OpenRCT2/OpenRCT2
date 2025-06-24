@@ -123,11 +123,6 @@ namespace OpenRCT2::Config
         ConfigEnumEntry<VirtualFloorStyles>("GLASSY", VirtualFloorStyles::Glassy),
     });
 
-    static const auto Enum_ScenarioSelectMode = ConfigEnum<ScenarioSelectMode>({
-        ConfigEnumEntry<ScenarioSelectMode>("ORIGIN", ScenarioSelectMode::origin),
-        ConfigEnumEntry<ScenarioSelectMode>("DIFFICULTY", ScenarioSelectMode::difficulty),
-    });
-
     /**
      * Config enum wrapping LanguagesDescriptors.
      */
@@ -227,8 +222,6 @@ namespace OpenRCT2::Config
 #endif // _DEBUG
             model->TrapCursor = reader->GetBoolean("trap_cursor", false);
             model->AutoOpenShops = reader->GetBoolean("auto_open_shops", false);
-            model->scenarioSelectMode = reader->GetEnum(
-                "scenario_select_mode", ScenarioSelectMode::origin, Enum_ScenarioSelectMode);
             model->ScenarioUnlockingEnabled = reader->GetBoolean("scenario_unlocking_enabled", true);
             model->ScenarioHideMegaPark = reader->GetBoolean("scenario_hide_mega_park", true);
             model->LastSaveGameDirectory = reader->GetString("last_game_directory", "");
@@ -320,7 +313,6 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("multithreading", model->MultiThreading);
         writer->WriteBoolean("trap_cursor", model->TrapCursor);
         writer->WriteBoolean("auto_open_shops", model->AutoOpenShops);
-        writer->WriteEnum<ScenarioSelectMode>("scenario_select_mode", model->scenarioSelectMode, Enum_ScenarioSelectMode);
         writer->WriteBoolean("scenario_unlocking_enabled", model->ScenarioUnlockingEnabled);
         writer->WriteBoolean("scenario_hide_mega_park", model->ScenarioHideMegaPark);
         writer->WriteString("last_game_directory", model->LastSaveGameDirectory);

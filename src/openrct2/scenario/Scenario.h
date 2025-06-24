@@ -127,12 +127,6 @@ private:
     ObjectiveStatus CheckMonthlyFoodIncome() const;
 };
 
-enum class ScenarioSelectMode : uint8_t
-{
-    difficulty,
-    origin,
-};
-
 enum
 {
     AUTOSAVE_EVERY_MINUTE,
