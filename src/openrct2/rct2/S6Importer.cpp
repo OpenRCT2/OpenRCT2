@@ -128,7 +128,7 @@ namespace OpenRCT2::RCT2
             {
                 return LoadScenario(path, skipObjectCheck);
             }
-            if (String::iequals(extension, ".sv6"))
+            if (String::iequals(extension, ".sv6") || String::iequals(extension, ".sv7"))
             {
                 return LoadSavedGame(path, skipObjectCheck);
             }
