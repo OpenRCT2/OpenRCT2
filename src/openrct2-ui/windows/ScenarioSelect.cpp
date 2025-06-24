@@ -933,7 +933,11 @@ namespace OpenRCT2::Ui::Windows
                 switch (Config::Get().general.scenarioSelectMode)
                 {
                     case ScenarioSelectMode::origin:
-                        showPages |= 1 << static_cast<uint8_t>(scenario->SourceGame);
+                        if (scenario->SourceGame >= ScenarioSource::RCT2 || scenario->Extension != FileExtension::SEA &&
+                            scenario->ScenarioId != SC_MEGA_PARK)
+                        {
+                            showPages |= 1 << static_cast<uint8_t>(scenario->SourceGame);
+                        }
                         break;
                     default:
                     case ScenarioSelectMode::difficulty:
@@ -941,7 +945,10 @@ namespace OpenRCT2::Ui::Windows
                         {
                             category = ScenarioCategory::other;
                         }
-                        showPages |= 1 << EnumValue(category);
+                        if (scenario->SourceGame >= ScenarioSource::RCT2 || scenario->Extension != FileExtension::SEA)
+                        {
+                            showPages |= 1 << EnumValue(category);
+                        }
                         break;
                     case ScenarioSelectMode::group:
                         if (group == ScenarioGroup::bonus)
