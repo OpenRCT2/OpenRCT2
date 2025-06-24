@@ -2197,7 +2197,7 @@ STR_3188    :Cedule u cest
 STR_3189    :Původní cesty
 STR_3190    :Doplňky cest
 STR_3191    :Skupiny kulis
-STR_3192    :Vstup do parku
+STR_3192    :Vstupy do parku
 STR_3193    :Voda
 STR_3195    :Seznam výzkumů
 STR_3196    :{WINDOW_COLOUR_2}Skupina výzkumu: {BLACK}{STRINGID}
@@ -2236,8 +2236,8 @@ STR_3228    :Nastavit počáteční pozice návštěvníků
 STR_3229    :Brzdící bloky nelze použít hned za stanicí
 STR_3230    :Brzdící bloky nelze použít v řadě za sebou
 STR_3231    :Brzdící bloky nelze použít hned za řetězovým výtahem
-STR_3232    :Nastavení - Finance
-STR_3233    :Nastavení - Návštěvníci
+STR_3232    :Nastavení scénaře - Finance
+STR_3233    :Nastavení scénáře - Návštěvníci
 STR_3235    :Zobrazit nastavení financí
 STR_3236    :Zobrazit nastavení návštěvníků
 STR_3238    :Bez peněz
@@ -2281,7 +2281,7 @@ STR_3279    :Vstup zdarma / placené atrakce
 STR_3280    :Placený vstup / atrakce zdarma
 STR_3281    :Cena za vstup:
 STR_3283    :Vyberte atrakce, které zůstanou zachovány
-STR_3285    :Zachované atrakce
+STR_3285    :Nastavení scénáře - Zachované atrakce
 STR_3286    :Vývěr cíle scénáře
 STR_3287    :{WINDOW_COLOUR_2}Cíl:
 STR_3294    :Změnit…
@@ -3195,7 +3195,7 @@ STR_6102    :Hodnota atrakce nebude s postupem času klesat, takže návštěvn�
 STR_6103    :Tato volba není ve hře více hráčů dostupná.
 STR_6105    :Hyper horská dráha
 STR_6107    :Monster Trucks
-STR_6109    :Hyper-Twister
+STR_6109    :Hyper-Twister horská dráha
 STR_6111    :Klasická malá horská dráha
 STR_6113    :Vysoká horská dráha s dlouhými pády, velkou rychlostí a pohodlnými vlaky, kde se jezdí s opěrkou v klíně
 STR_6115    :Obří auta s pohonem 4x4, které jsou schopna vyjíždět velmi strmé svahy
@@ -3531,9 +3531,9 @@ STR_6489    :Chyba: Nekompatibilní verze parku
 STR_6490    :Varování: Částečne kompatibilní verze parku
 STR_6491    :Tenhle park byl uložen v novější verzi OpenRCT2. Park je verze {INT32} a vyžaduje alespoň verzi {INT32}.
 STR_6492    :Tenhle park byl uložen v staré verzi OpenRCT2, a nemůže být otevřen touhle verzí. Park je verze {INT32}.
-STR_6493    :Tenhle park byl uložen v novější verzi OpenRCT2, některá data mohou být stracena. Park je verze {INT32} a vyžaduje alespoň verzi {INT32}.
-STR_6494    :Zoskupit podle typu atrakce
-STR_6495    :Zoskupit atrakce podle druhu místo zobrazení každé odděleně.
+STR_6493    :Tenhle park byl uložen v novější verzi OpenRCT2, některá data mohou být ztracena. Park je verze {INT32} a vyžaduje alespoň verzi {INT32}.
+STR_6494    :Seskupit podle typu atrakce
+STR_6495    :Seskupit atrakce podle druhu místo zobrazení každé odděleně.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Kliknutím na dlaždici zobrazíte její části.{NEWLINE}Ctrl + kliknutí a části dlaždice pro její příme zvolení.
 STR_6498    :Zapnout pro udržování čtvercové mapy
@@ -3566,3 +3566,64 @@ STR_6524    :Zvýšit prioritu zvoleného balíčku doplňků.
 STR_6525    :Znovu načítat všechny doplňky ve hře se zapnutými balíčkami doplňků.
 STR_6526    :(základní grafika, hudba a zvukové efekty)
 STR_6527    :Soutěže
+STR_6724    :Texty scénáře
+STR_6725    :X:
+STR_6726    :Y:
+STR_6727    :Smyčka (levá)
+STR_6728    :Smyčka (pravá)
+STR_6729    :Řetězový výtah musí začít hned za stanicí nebo brzdícím blokem
+STR_6730    :Exportovat data emscripten
+STR_6731    :Importovat data emscripten
+STR_6732    :Zobrazit v nástrojové liště tlačítko pro otočení pohledu proti směru hodinových ručiček
+STR_6733    :Průhledný
+STR_6734    :Prvky mapy které jsou v nebo nad výškou řezu jsou zobrazeny průhledně.
+STR_6735    :Přejde do nadřazené složky
+STR_6736    :Náhled
+STR_6737    :Náhled není k dispozici
+STR_6738    :{WINDOW_COLOUR_2}Hodnocení parku: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Datum: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Hotovost: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Poč. atrakcí: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Poč. návštěvníků: {BLACK}{UINT16}
+STR_6743    :Podnebí
+STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6745    :{WINDOW_COLOUR_2}Návštěvníky upřednostňovaná intenzita:
+STR_6746    :Bez upřednostnění
+STR_6747    :Upřednostnění se liší (výchozí)
+STR_6748    :Pouze méně intenzivní atrakce
+STR_6749    :Pouze více intenzivní atrakce
+STR_6750    :Vyberte jakou intenzitu nově vzniklí návštěvníci upřednostní.
+STR_6751    :Chodník pro frontu nemůže být použit jako přechod!
+STR_6752    : - Cíl
+STR_6753    :Nastavení scénáře - Detaily scénáře
+STR_6754    :Nastavení scénáře - Omezení pozemku
+STR_6755    :Ukaž možnosti cíle
+STR_6756    :Ukaž možnosti detailů scénáře
+STR_6757    :Ukaž možnosti omezení pozemku
+STR_6758    :Možnosti půjčky
+STR_6759    :Obchodní model
+STR_6760    :Výdělky:
+STR_6761    :Detaily scénáře
+STR_6762    :Rozhraní
+STR_6763    :RollerCoaster Tycoon 1
+STR_6764    :Ukládání a automatické ukládání
+STR_6765    :Pokročilé
+STR_6767    :Okno
+STR_6768    :Vykreslení
+STR_6769    :Chování
+STR_6770    :Limit snímků za vteřinu:
+STR_6771    :Vnitřní rychlost (základní)
+STR_6772    :Vertikální synchronizace
+STR_6773    :Neomezený
+STR_6774    :Doba od poslední inspekce
+STR_6775    :{COMMA16} minuta
+STR_6776    :{COMMA16} minut
+STR_6777    :více než 4 hodiny
+STR_6778    :Náhled scénařů pomocí:
+STR_6779    :Vyberte typ náhledu k použití na obrazovce pro výběr scénaře.
+STR_6780    :Mini mapy
+STR_6781    :Snímky obrazovky
+STR_6782    :Upozornění o parku
+STR_6783    :Upozornění o atrakcích
+STR_6784    :Upozornění o návštěvnících
+
