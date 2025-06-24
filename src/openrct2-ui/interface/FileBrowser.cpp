@@ -174,7 +174,7 @@ namespace OpenRCT2::Ui::FileBrowser
                 Guard::Fail("Unsupported load/save directory type.");
         }
 
-        return {};
+        return nullptr;
     }
 
     u8string RemovePatternWildcard(u8string_view pattern)
