@@ -22,7 +22,7 @@ constexpr RideTypeDescriptor SpinningRollerCoasterRTD =
     .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::spinningRollerCoaster,
-        .supportType = MetalSupportType::Tubes,
+        .supportType = MetalSupportType::tubes,
         .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::liftHillSteep, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::flatToSteepSlope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::slopeVertical, TrackGroup::slopeCurveBanked, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::curveVertical, TrackGroup::slopeCurveLarge, TrackGroup::slopeCurveLargeBanked, TrackGroup::booster, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::curveVerySmall, TrackGroup::rotationControlToggle},
         .extraTrackGroups = { TrackGroup::poweredLift, TrackGroup::slopeSteepLong, TrackGroup::corkscrew, TrackGroup::barrelRoll, TrackGroup::quarterLoop, TrackGroup::halfLoop, TrackGroup::halfLoopMedium, TrackGroup::halfLoopLarge, TrackGroup::verticalLoop, TrackGroup::corkscrewLarge, TrackGroup::zeroGRoll, TrackGroup::zeroGRollLarge, TrackGroup::twist},
     }),
