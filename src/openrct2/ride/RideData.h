@@ -41,7 +41,7 @@ enum class ResearchCategory : uint8_t;
 
 // Gentle Rides
 constexpr uint8_t kDefaultCircusHeight = 16 * kCoordsZStep;
-constexpr uint8_t kDefaultCrookedHouseHeight = 12 * kCoordsZStep;
+constexpr uint8_t kDefaultCrookedHouseHeight = 16 * kCoordsZStep;
 constexpr uint8_t kDefaultFlyingSaucersHeight = 6 * kCoordsZStep;
 constexpr uint8_t kDefaultMerryGoRoundHeight = 8 * kCoordsZStep;
 constexpr uint8_t kDefaultSpaceRingsHeight = 6 * kCoordsZStep;
