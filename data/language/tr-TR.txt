@@ -2753,9 +2753,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :Gerçek parklar
 STR_5626    :Diğer parklar
-STR_5627    :Senaryo listesi sıralaması:
-STR_5628    :Standart
-STR_5629    :Zorluk seviyesi
 STR_5630    :Aşamalı ilerleme
 STR_5631    :Orijinal DLC Parkları
 STR_5632    :Kendiniz inşa ediniz…
@@ -3237,7 +3234,6 @@ STR_6165    :Vertical sync aç/kapat
 STR_6166    :Ekranın yırtılmasını önleyerek monitörün yenileme hızına göre her kareyi senkronize eder.
 STR_6167    :Gelişmiş
 STR_6168    :Başlık dizisi
-STR_6169    :Senaryo listesi ayarları
 STR_6170    :Kolaylaştırmalar
 STR_6171    :Arama
 STR_6172    :Arama

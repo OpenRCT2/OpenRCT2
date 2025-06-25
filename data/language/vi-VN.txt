@@ -2710,9 +2710,6 @@ STR_5623    :Thế giới kỳ quặc
 STR_5624    :Kẻ xoay thời gian
 STR_5625    :Công viên “Thực tế”
 STR_5626    :Các công viên khác
-STR_5627    :Nhóm danh sách kịch bản theo:
-STR_5628    :Trò chơi gốc
-STR_5629    :Mức độ khó
 STR_5630    :Cho phép mở khóa lũy tiến
 STR_5631    :Các công viên DLC gốc
 STR_5632    :Tự xây dựng…
@@ -3191,7 +3188,6 @@ STR_6165    :Sử dụng đồng bộ dọc
 STR_6166    :Đồng bộ hóa mỗi khung hình hiển thị với tần số làm mới của màn hình, ngăn chặn hiện tượng xé hình.
 STR_6167    :Nâng cao
 STR_6168    :Chuỗi tiêu đề
-STR_6169    :Chọn kịch bản
 STR_6170    :Chỉnh sửa giao diện
 STR_6171    :Tìm kiếm
 STR_6172    :Tìm kiếm

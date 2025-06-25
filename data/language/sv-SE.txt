@@ -2768,9 +2768,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :”Riktiga” Parker
 STR_5626    :Andra parker
-STR_5627    :Sortera scenarion via:
-STR_5628    :Spelpaket
-STR_5629    :Svårighetsgrad
 STR_5630    :Tillåt progressiv upplåsning
 STR_5631    :Original DLC parker
 STR_5632    :Bygg din egna…
@@ -3252,7 +3249,6 @@ STR_6165    :Använd vertikal synk
 STR_6166    :Synkroniserar varje bild som ritas med skärmens uppdateringshastighet, vilket förhindrar så kallad ’screen tearing’.
 STR_6167    :Avancerat
 STR_6168    :Titelsekvens
-STR_6169    :Scenarioväljaren
 STR_6170    :Anpassa gränssnittet
 STR_6171    :Sök
 STR_6172    :Sök

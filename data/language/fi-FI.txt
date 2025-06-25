@@ -2770,9 +2770,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :“Oikeat” puistot
 STR_5626    :Muut puistot
-STR_5627    :Skenaarioiden ryhmitys:
-STR_5628    :Lähdepelin mukaan
-STR_5629    :Vaikeusasteen mukaan
 STR_5630    :Edistyksen mukainen skenaarioiden avaus
 STR_5631    :Alkuperäiset DLC-puistot
 STR_5632    :Rakenna oma…
@@ -3255,7 +3252,6 @@ STR_6165    :Pystytahdistus
 STR_6166    :Tahdista jokaisen kuvan piirto näytön virkistystaajuuteen, estäen screen tearing -ilmiön
 STR_6167    :Lisäasetukset
 STR_6168    :Päävalikon tausta
-STR_6169    :Skenaarion valinta
 STR_6170    :Käyttöliittymän asetukset
 STR_6171    :Haku
 STR_6172    :Haku

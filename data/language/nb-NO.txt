@@ -2760,9 +2760,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :“Ekte” Parker
 STR_5626    :Andre Parker
-STR_5627    :Gruppér scenarioliste etter:
-STR_5628    :Kildespill
-STR_5629    :Vanskelighetsgrad
 STR_5630    :Skru på progressiv opplåsing
 STR_5631    :Originale DLC Parker
 STR_5632    :Bygg din egen…
@@ -3245,7 +3242,6 @@ STR_6165    :Bruk Vertical Sync
 STR_6166    :Synkroniserer visning av bilder med skjermens oppdateringsfrekvens; forhindrer “screen tearing”.
 STR_6167    :Avansert
 STR_6168    :Startskjermsekvens
-STR_6169    :Scenariovalg
 STR_6170    :Tilpass brukergrensesnitt
 STR_6171    :Søk
 STR_6172    :Søk

@@ -2765,9 +2765,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :“Faktaj” Parkoj
 STR_5626    :Aliaj Parkoj
-STR_5627    :Grupigi scenaroliston laŭ:
-STR_5628    :Ludo-fonto
-STR_5629    :Malfacileco-nivelo
 STR_5630    :Ŝalti progresivan malŝlosadon
 STR_5631    :Originala Elŝutebla-Enhavo-Parkoj
 STR_5632    :Konstrui vian propran…
@@ -3250,7 +3247,6 @@ STR_6165    :Uzi vertikalan sinkronigon
 STR_6166    :Sinkronigas ĉiun kadron montritan laŭ la ofteco de ekrano-aktualigo, por preventi ekrano-ŝiron.
 STR_6167    :Altnivela
 STR_6168    :Titolosekvenco
-STR_6169    :Elektado de Scenaro
 STR_6170    :Optimumigoj de Interfacoj
 STR_6171    :Serĉi
 STR_6172    :Serĉi

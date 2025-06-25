@@ -2765,9 +2765,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :Parques “Reais”
 STR_5626    :Outros parques
-STR_5627    :Agrupar lista de cenário por:
-STR_5628    :Origem do jogo
-STR_5629    :Nível de dificuldade
 STR_5630    :Habilitar destravamento progressivo
 STR_5631    :Parques Originais Baixados (DLC)
 STR_5632    :Construa seu próprio…
@@ -3250,7 +3247,6 @@ STR_6165    :Usar sincronização vertical
 STR_6166    :Sincroniza cada quadro mostrado com a taxa de atualização do monitor, prevenindo cortes na tela.
 STR_6167    :Avançado
 STR_6168    :Sequência de Título
-STR_6169    :Seleção de Cenários
 STR_6170    :Melhoras de Interface
 STR_6171    :Procurar
 STR_6172    :Procura

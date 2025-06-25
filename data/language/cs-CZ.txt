@@ -2765,9 +2765,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :„Reálné“ parky
 STR_5626    :Ostatní parky
-STR_5627    :Seskupit scénáře podle:
-STR_5628    :Původní hry
-STR_5629    :Obtížnosti
 STR_5630    :Zapnout progresivní odemykání scénářů
 STR_5631    :Originální DLC parky
 STR_5632    :Postav si vlastní…
@@ -3248,7 +3245,6 @@ STR_6165    :Vertikální synchronizace obrazu
 STR_6166    :Synchonizuje každý zobrazený snímek dle obnovovací frekvence monitoru. Zamezuje trhání obrazu.
 STR_6167    :Pokročilé
 STR_6168    :Úvodní herní sekvence
-STR_6169    :Výběr scénáře
 STR_6170    :Vychytávky
 STR_6171    :Vyhledávání
 STR_6172    :Vyhledávání

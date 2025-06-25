@@ -2771,9 +2771,6 @@ STR_5624    :Time Twister
 #
 STR_5625    :Parques “Reales”
 STR_5626    :Otros parques
-STR_5627    :Agrupar lista de escenarios:
-STR_5628    :Juego original
-STR_5629    :Nivel de dificultad
 STR_5630    :Activa el desbloqueo progresivo
 STR_5631    :DLC de parques originales
 STR_5632    :Construye tu propio…
@@ -3255,7 +3252,6 @@ STR_6165    :Usar sincronización vertical
 STR_6166    :Sincroniza cada cuadro mostrado a la tasa de refresco del monitor, evitando la imagen distorsionada.
 STR_6167    :Avanzado
 STR_6168    :Secuencia de la pantalla de inicio
-STR_6169    :Selección de escenario
 STR_6170    :Ajustes de interfaz
 STR_6171    :Buscar
 STR_6172    :Buscar

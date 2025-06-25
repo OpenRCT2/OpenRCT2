@@ -2766,9 +2766,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :‘Echte’ parken
 STR_5626    :Overige parken
-STR_5627    :Scenariolijst groeperen op:
-STR_5628    :Oorsprong
-STR_5629    :Moeilijkheidsgraad
 STR_5630    :Moeilijke scenario’s ontgrendelden met makkelijke
 STR_5631    :Originele DLC
 STR_5632    :Bouw je eigen…
@@ -3249,7 +3246,6 @@ STR_6165    :Verticale synchronisatie
 STR_6166    :Synchroniseert het aantal frames per seconde met de frequentie van de monitor. Dit voorkomt tearing en zorgt zo voor een beter beeld.
 STR_6167    :Geavanceerd
 STR_6168    :Titelpresentatie
-STR_6169    :Scenarioselectie
 STR_6170    :Overig
 STR_6171    :Zoeken
 STR_6172    :Zoeken

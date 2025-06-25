@@ -2765,9 +2765,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :“Real” Parks
 STR_5626    :Other Parks
-STR_5627    :Group scenario list by:
-STR_5628    :اللعبة المصدر
-STR_5629    :مستوي الصعوبة
 STR_5630    :تفعيل الإفراج التدريجي
 STR_5631    :Original DLC Parks
 STR_5632    :Build your own…
@@ -3250,7 +3247,6 @@ STR_6165    :إستخدام المزامنة العمودية
 STR_6166    :مزامنة كل فريم إلي معدل تحديث الشاشة، مما يمنع تمزيق وتمييع الشاشة.
 STR_6167    :متقدم
 STR_6168    :تسلسل العنوان
-STR_6169    :تحديد السيناريو
 STR_6170    :ضبط الواجهة
 STR_6171    :البحث
 STR_6172    :بحث

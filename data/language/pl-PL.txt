@@ -2765,9 +2765,6 @@ STR_5623    :Zakręcone Światy
 STR_5624    :Zakręcone Czasy
 STR_5625    :„Prawdziwe” parki
 STR_5626    :Inne parki
-STR_5627    :Grupuj scenariusze według:
-STR_5628    :Gra źródłowa
-STR_5629    :Poziom trudności
 STR_5630    :Włącz odblokowywanie scenariuszy
 STR_5631    :Oryginalne parki z dodatku
 STR_5632    :Zbuduj własny…
@@ -3250,7 +3247,6 @@ STR_6165    :Synchronizacja pionowa
 STR_6166    :Synchronizuje każdą wyświetlaną klatkę z częstotliwością odświeżania monitora, zapobiegając rozrywaniu ekranu
 STR_6167    :Zaawansowane
 STR_6168    :Sekwencja tytułowa
-STR_6169    :Wybór scenariusza
 STR_6170    :Dostosowanie interfejsu
 STR_6171    :Szukaj
 STR_6172    :Szukaj
