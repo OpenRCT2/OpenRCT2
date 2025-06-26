@@ -98,6 +98,9 @@ STR_0093    :Hybridní horská dráha
 STR_0094    :Jednokolejná horská dráha
 STR_0095    :Alpská horská dráha
 STR_0096    :Klasická dřevěná horská dráha
+STR_0097    :Klasická horská dráha ve stoje
+STR_0098    :Horská dráha s lineárními motory
+STR_0099    :Klasická dřevěná horská dráha „Twister“
 STR_0512    :Malá ocelová horská dráha se spirálovitým profilem a vozy se sedadly za sebou
 STR_0513    :Návštěvníci jedou po horské dráze s loopingy ve stoje
 STR_0514    :Vlaky zavěšené pod kolejí se v zatáčkách houpají do stran
@@ -181,6 +184,9 @@ STR_0603    :Dřevěná horská dráha s ocelovými kolejemi, umožňující str
 STR_0604    :Jezdci jedou v jednom radě na úzké, jednokolejové dráze, při závodě úzkými obrátkami a změnami směru.
 STR_0605    :Jezdci se kloužou zauzlenou ocelovou dráhou, brzdíc pro ovládání rychlosti
 STR_0606    :Dřevěná horská dráha staršího stylu s drsnou a rychlou jízdou, koupou času ve vzduchu, bočným přetížením, navrhnutá pro pocit ‘ztracené kontroly’
+STR_0607    :Intenzivní horská dráha staršího stylu, na které návštěvníci jedou vestoje
+STR_0608    :Vozy poháněné lineárními synchronními elektromotory sviští skrze těsné vývrtky a zatáčky
+STR_0609    :Dřevěná horská dráha staršího stylu s drsnou a rychlou jízdou, kloubovými vozy, spoustou času ve vzduchu a zakroucenou dráhou
 STR_0767    :Návštěvník {INT32}
 STR_0768    :Údržbář {INT32}
 STR_0769    :Mechanik {INT32}
@@ -1244,7 +1250,6 @@ STR_1870    :Počet celých otoček
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Příjem: {BLACK}{CURRENCY2DP} za hodinu
 STR_1874    :{WINDOW_COLOUR_2}Zisk: {BLACK}{CURRENCY2DP} za hodinu
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspekce atrakcí
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Opravy atrakcí
 STR_1878    :{WINDOW_COLOUR_2}Inspekce:
@@ -1902,8 +1907,8 @@ STR_2670    :Scroll
 STR_2680    :Všechen výzkum byl dokončen
 STR_2684    :Dorazí velká skupina návštěvníků
 STR_2685    :Parametry simplex noise
-STR_2686    :Hloubky:
-STR_2687    :Výšky:
+STR_2686    :Min. výška země:
+STR_2687    :Max. výška země:
 STR_2688    :Základní frekvence:
 STR_2689    :Oktávy:
 STR_2690    :Generování mapy
@@ -2577,8 +2582,8 @@ STR_5357    :{BLACK}Tolerance nevolnosti:
 STR_5358    :{BLACK}Toaleta:
 STR_5359    :Vyhnat návštěvníky
 STR_5360    :Vyžene všechny návštěvníky z mapy
-STR_5361    :Rozdat všem návštěvníkům:
-STR_5362    :{BLACK}Nastav preferovanou intenzitu návštěvníků na:
+STR_5361    :Přidat návštěvníkům
+STR_5362    :{BLACK}Preferovaná intenzita atrakcí:
 STR_5363    :Více než 1
 STR_5364    :Méně než 15
 STR_5365    :{BLACK}Rychlost personálu:
@@ -2588,7 +2593,7 @@ STR_5368    :Vymazat havárii
 STR_5371    :Výběr objektů
 STR_5372    :Obrátit směr posouvání pohledu pravým tlačítkem
 STR_5373    :Název {STRINGID}
-STR_5374    :Datum {STRINGID}
+STR_5374    :Změněno {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Název již existuje
@@ -2608,7 +2613,7 @@ STR_5457    :Vypnout limity podpěr
 STR_5458    :Otočit po směru hod. ruč.
 STR_5459    :Otočit proti směru hod. ruč.
 STR_5460    :Otočit pohled proti směru hod. ruč.
-STR_5461    :Nastavit parametry návštěvníka
+STR_5461    :Nastavit parametry všech návštěvníků
 STR_5462    :{CURRENCY}
 STR_5463    :Cíl: Příjemná zábava!
 STR_5464    :Obecné
@@ -3132,9 +3137,9 @@ STR_6041    :{BLACK}Nemáte najmuté žádné mechaniky!
 STR_6042    :Načíst výškovou mapu
 STR_6043    :Vybrat výškovou mapu
 STR_6044    :Vyhladit výškovou mapu
-STR_6045    :Síla
+STR_6045    :Síla:
 STR_6046    :Normalizovat výškovou mapu
-STR_6047    :Vyhladit dlaždice
+STR_6047    :Vyhladit okraje dlaždic
 STR_6048    :Chyba výškové mapy
 STR_6049    :Chyba při čtení PNG
 STR_6050    :Chyba při čtení bitmapy
@@ -3562,6 +3567,148 @@ STR_6524    :Zvýšit prioritu zvoleného balíčku doplňků.
 STR_6525    :Znovu načítat všechny doplňky ve hře se zapnutými balíčkami doplňků.
 STR_6526    :(základní grafika, hudba a zvukové efekty)
 STR_6527    :Soutěže
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG, Intamin Amusement Rides Int. Corp. Est.
+STR_6551    :Vojenská zelená
+STR_6552    :Honeydew zelená
+STR_6553    :Světle hnědá
+STR_6554    :Vínově červená
+STR_6555    :Korálově růžová
+STR_6556    :Lesní zelená
+STR_6557    :Chartreuse zelená
+STR_6558    :Lovecká zelená
+STR_6559    :Celadonově zelená
+STR_6560    :Limetková zelená
+STR_6561    :Sépiová
+STR_6562    :Broskvová
+STR_6563    :Barvínková modrá
+STR_6564    :Zelenomodrá
+STR_6565    :Mořská pěna
+STR_6566    :Fialová
+STR_6567    :Levandulová
+STR_6568    :Pastelově oranžová
+STR_6569    :Hluboká voda
+STR_6570    :Pastelově růžová
+STR_6571    :Okrová
+STR_6572    :Béžová
+STR_6573    :Neviditelná
+STR_6574    :Prázdná
+STR_6575    :Povolit speciální barvy
+STR_6576    :Přidá speciální barvy do rozbalovacího seznamu barev
+STR_6595    :{WINDOW_COLOUR_2}Tvůrce: {BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}Tvůrci: {BLACK}{STRING}
+STR_6597    :Neplatný parametr
+STR_6598    :Hodnota mimo povolený rozsah
+STR_6599    :Nebyl nalezen ghost-element
+STR_6600    :Nebyl nalezen balón
+STR_6601    :Nebyl nalezen zaměstnanec
+STR_6602    :Nebyla nalezena atrakce 
+STR_6603    :Nebyl nalezen záznam objektu atrakce
+STR_6604    :Nebyl nalezen hráč
+STR_6605    :Nebyl nalezen vstupní prvek
+STR_6606    :Nebyl nalezen prvek povrchu terénu
+STR_6607    :Nebyl nalezen prvek dlaždice
+STR_6608    :Nebyl nalezen prvek tratě
+STR_6609    :Nebyl nalezen blok tratě
+STR_6610    :Nebyl nalezen prvek cesty
+STR_6611    :Nebyl nalezen prvek zdi
+STR_6612    :Nebyl nalezen prvek banneru
+STR_6613    :Znovu načíst objekt
+STR_6614    :Nelze změnit cenu vstupného do parku
+STR_6615    :Díl trati na této dlaždici potřebuje vodu
+STR_6616    :Neplatná akce pro tento typ personálu
+STR_6617    :Nelze vyměnit element dlaždice za sebe samého
+STR_6618    :Nelze omezit nebo zrušit omezení objektu…
+STR_6619    :Tento typ objektu nelze omezit!
+STR_6620    :Objekt nenalezen!
+STR_6621    :Omezit
+STR_6622    :Omezit objekt na Editor scénáře a Sandbox.
+STR_6623    :Napište ‘help’ pro zobrazení seznamu dostupných příkazů. Napište ‘hide’ to hide the console.
+STR_6624    :Průzkumník dlaždic: Seřadit elementy
+STR_6625    :Neplatná barva
+STR_6626    :Animace je obrácená
+STR_6627    :Rychlost na trati je příliš vysoká!
+STR_6628    :Toto lze umístit pouze na okraje cest!
+STR_6629    :Zarovnat tlačítka nástrojové lišty vodorovně na střed
+STR_6630    :Toto nastavení zarovná tlačítka nástrojové lišty vodorovně ke středu obrazovky. Klasicky jsou zarovnána k levému a pravému rohu.
+STR_6631    :Načítání…
+STR_6632    :Kontrola souborů objektů…
+STR_6633    :Kontrola souborů scénářů…
+STR_6634    :Kontrola souborů návrhů tratí…
+STR_6635    :Kontrola souborů balíčků doplňků…
+STR_6636    :Kontrola souborů úvodních herních sekvencí…
+STR_6637    :Načítání úvodní herní sekvence…
+STR_6646    :Tvůrce: {STRING}
+STR_6647    :Tvůrci: {STRING}
+STR_6648    :Načítání plug-in enginu…
+STR_6649    :Načítání scénáře…
+STR_6650    :Načítání uložené hry…
+STR_6651    :{STRING} ({COMMA32}%)
+STR_6652    :Okno s chybou
+STR_6653    :Zobrazení všech zdrojů
+STR_6654    :Zobrazení {POP16}{UINT16} zdrojů
+STR_6655    :Pouze ‘{POP16}{STRINGID}’
+STR_6656    :Odstraní všechny ploty okolo parku
+STR_6657    :Nevlastněné pozemky
+STR_6658    :Nastavit pozemky na nevlastněné parkem, bez možnosti zakoupení 
+STR_6659    :Návštěvníci ignorují ceny
+STR_6660    :Návštěvnící nebudou hledět na ceny na atrakcích a stáncích
+STR_6661    :Všechny náhodně
+STR_6662    :Nastaví náhodné barvy pro každý vlak nebo vozidlo
+STR_6663    :Cheaty data
+STR_6664    :Zobrazit cheaty data
+STR_6665    :Cheaty přírody/počasí
+STR_6666    :Zobrazit cheaty přírody/počasí
+STR_6667    :Fauna
+STR_6668    :Cheaty personálu
+STR_6669    :Zobrazit cheaty personálu
+STR_6670    :Chování návštěvníků
+STR_6671    :Zobrazit „skutečná“ jména personálu
+STR_6672    :Přepíná mezi zobrazením „skutečného“ jména a čísla zaměstnance 
+STR_6673    :Průsvitné
+STR_6674    :{MONTH}, rok {COMMA16} 
+STR_6675    :Jména človíčků
+STR_6676    :Alespoň jeden objekt se jmény človíčků musí být vybrán
+STR_6677    :Přidat pláže okolo vody
+STR_6678    :Zdroj výškové mapy:
+STR_6679    :Plochá země
+STR_6680    :Simplexový šum
+STR_6681    :Soubor s výškovou mapou
+STR_6682    :Generování mapy - Generátor
+STR_6683    :Generování mapy - Terén
+STR_6684    :Generování mapy - Voda
+STR_6685    :Generování mapy - Lesy
+STR_6686    :Poměr stromů k zemi:
+STR_6687    :Min. výška stromů:
+STR_6688    :Max. výška stromů:
+STR_6689    :{UINT16}%
+STR_6690    :Minimální výška země
+STR_6691    :Zadejte min. výšku země mezi {COMMA16} a {COMMA16}
+STR_6692    :Maximální výška země
+STR_6693    :Zadejte max. výšku země mezi  {COMMA16} a {COMMA16}
+STR_6694    :Minimální výška stromů
+STR_6695    :Zadejte min. výšku stromů mezi {COMMA16} a {COMMA16}
+STR_6696    :Maximmální výška stromů
+STR_6697    :Zadejte max. výšku stromů mezi {COMMA16} a {COMMA16}
+STR_6698    :Poměr stromů k zemi
+STR_6699    :Zadejte poměr stromů k zemi mezi {COMMA16} a {COMMA16}
+STR_6700    :Simplex základní frekvence
+STR_6701    :Zadejte základní frekvenci mezi {COMMA2DP32} a {COMMA2DP32}
+STR_6702    :Simplex oktávy
+STR_6703    :Zadejte oktávy mezi {COMMA16} a {COMMA16}
+STR_6704    :{COMMA2DP32}
+STR_6705    :Procházet…
+STR_6706    :{WINDOW_COLOUR_2}Aktuální soubor s obrázkem: {BLACK}{STRING}
+STR_6707    :(nevybráno)
+STR_6708    :Síla vyhlazení
+STR_6709    :Zadejte sílu vyhlazení mezi {COMMA16} a {COMMA16}
+STR_6710    :Pevné řazení
+STR_6711    :Název:
+STR_6712    :Uložit
+STR_6713    :{COMMA32} {STRINGID}
+STR_6714    :Název
+STR_6715    :Změněno
+STR_6716    :Velikost
+STR_6717    :Velikost {STRINGID}
 STR_6724    :Texty scénáře
 STR_6725    :X:
 STR_6726    :Y:
