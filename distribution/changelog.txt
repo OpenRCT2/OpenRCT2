@@ -14,6 +14,7 @@
 - Fix: [#15846] Rightclicking on track piece when there is construction below does not work.
 - Fix: [#16176, #23113] Animated tile elements do not always redraw when there is over 2000.
 - Fix: [#17365] The slope of new land surfaces is only correct on one side when shifting and resizing the map.
+- Fix: [#18080] Obsolete official .DAT files can be loaded accidentally.
 - Fix: [#21703] Scenery wall doors get stuck open if the game is saved and loaded whilst they are open.
 - Fix: [#24456] Zoomed out vehicles on the ride window tab can sometimes draw incorrectly.
 - Fix: [#24458] Vehicles in the ride window vehicle tab are offset differently than vanilla RCT2, and the sprites are cut off at the bottom.
