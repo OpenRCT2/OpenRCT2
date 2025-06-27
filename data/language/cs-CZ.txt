@@ -123,10 +123,10 @@ STR_0530    :Kabiny visí na ocelovém laně, které nepřetržitě jede z jedno
 STR_0531    :Malá ocelová horská dráha, na které vlak projíždí smyčky a vývrtky
 STR_0532    :Bludiště z šest stop vysokých zdí nebo živého plotu. Návštěvníci bloudí dokud nenajdou východ
 STR_0533    :Dřevěná budova s krytým schodištěm a venkovní skluzavkou s koberečky
-STR_0534    :Návštěvníci závodí na benzínových motokárách po asfaltovém okruhu
-STR_0535    :Lodě ve tvaru klády se plaví po vodním kanále a sjíždí strmé úseky. Nikdo nezůstane suchý!
+STR_0534    :Návštěvníci závodí v motokárách po asfaltovém okruhu
+STR_0535    :Lodě plují ve vodním kanále a sjíždejí strmé klesání, až z toho jsou návštěvníci mokří.
 STR_0536    :Loď pluje po širokých meandrech, přes stříkající vodopády a po vzrušujících pěnících peřejích
-STR_0537    :Autodrom
+STR_0537    :Návštěvníci do sebe bourají v autíčcích na autodromu
 STR_0538    :Velká houpající se pirátská kocábka
 STR_0539    :Loď je připevněna k rameni s protiváhou. Loď se houpe a může se zhoupnout až o 360 stupňů
 STR_0540    :Stánek, kde si návštěvníci mohou koupit něco k jídlu
@@ -165,7 +165,7 @@ STR_0578    :Horská dráha, která se točí dokola tak, že návštěvníci js
 STR_0579    :Pohodový minigolf
 STR_0580    :Gigantická ocelová horská dráha schopna volných pádů a kopců přes 90 metrů dlouhých
 STR_0581    :Kruh sedadel je za pomalé rotace vytažen na vrchol vysoké věže, spuštěn volným pádem k zemi a opatrně zastaven pomocí magnetických brzd
-STR_0582    :Půjčovna vznášedel
+STR_0582    :Návštevníci volně jezdí na vznášedlech.
 STR_0583    :Budova s pokřivenými chodbami a zvláštními místnostmi, která dezorientuje návštěvníky
 STR_0584    :Speciální kola jezdí po ocelové koleji, poháněná šlapáním jezdců
 STR_0585    :Návštěvníci sedí po dvou zavěšení pod tratí a jedou skrze loopingy a ostré zatáčky
@@ -2325,8 +2325,8 @@ STR_3329    :Není postaven vstup do parku
 STR_3330    :Park nevlastní žádné pozemky
 STR_3331    :Cesta od vstupu do parku k hraně mapy není kompletní, nebo je příliš složitá - Cesta musí být široká jednu dlaždici a mít co nejméně zatáček a křižovatek
 STR_3332    :Vstup do parku je špatně otočený, nebo z něj nevede cesta k hraně mapy
-STR_3333    :Exportovat plug-in objekty s uložením hry
-STR_3334    :Vyberte, zda ukládat data plug-in objektů (add-in data nejsou dodána s hlavním produktem) do souborů uložených her a scénářů, což dovolí jejích načítání na těmi, kdo nemají tyto dodatečná data objektů.
+STR_3333    :Exportovat uživatelské objekty s uložením hry
+STR_3334    :Vyberte, zda ukládat data uživatelských objektů (data nedodané s hlavním produktem) do souborů uložených her a scénářů, což dovolí jejích načítání těmi, kdo nemají tato dodatečná data objektů.
 STR_3335    :Návrhář trati - Vyberte typ atrakce a vozů
 STR_3336    :Správa návrhu trati - Vyberte typ trati
 STR_3338    :{BLACK}Vlastnoručně navržené
@@ -2704,7 +2704,7 @@ STR_5554    :Zapnout nástroj pro kopce
 STR_5555    :Zobrazovat vozidla i jiných typů atrakcí
 STR_5556    :Vyhodit hráče
 STR_5557    :Zůstat připojen při desynchronizaci (Hra více hráčů)
-STR_5558    :Změna tohoto nastavení vyžaduje restart
+STR_5558    :Toto nastavení se projeví až po restartu OpenRCT2
 STR_5559    :10 minutové inspekce
 STR_5560    :Nastaví interval inspekcí „Každých 10 minut“ pro všechny atrakce
 STR_5561    :Nahrání souborů jazyka selhalo
@@ -2933,7 +2933,7 @@ STR_5832    :Výškové jednotky zobrazit pouze číslem, bez jednotek uvedenýc
 STR_5833    :Změní formát data
 STR_5834    :Vyberte zvukové zařízení pro použití v OpenRCT2
 STR_5835    :Zakázat zvuky, pokud herní okno přestane být aktivní
-STR_5836    :Vyberte hudbu, která bude hrát na úvodní obrazovce.{NEWLINE}Výběr RCT1 znělky vyžaduje zkopírování a přejmenování „data/css17.dat“ ze složky RCT1 jako „data/css50.dat“ do vaší RCT2 složky, nebo nastavení cesty k RCT1 v nastavení.
+STR_5836    :Vyberte hudbu, která bude hrát na úvodní obrazovce.{NEWLINE}Výběr RCT1 znělky vyžaduje nastavení RCT1 adresáře v záložce „Pokročilé“.
 STR_5837    :Vytvořit a spravovat vlastní barevné palety UI
 STR_5838    :Zobrazit samostatné tlačítko pro financí na nástrojové liště
 STR_5839    :Zobrazit samostatné tlačítko pro výzkum a vývoj na nástrojové liště
@@ -3554,9 +3554,9 @@ STR_6511    :Nula G Kotoul (pravý)
 STR_6512    :Velký Nula G Kotoul (levý)
 STR_6513    :Velký Nula G Kotoul (pravý)
 STR_6514    :Chybná vejška!
-STR_6515    :{BLACK}RCT1 není nalinkováno - budou použity záložné obrázky.
-STR_6516    :Jeden nebo více přidaných objektů vyžaduje nalinkované RCT1 pro správné zobrazení. Budou použity záložné obrázky.
-STR_6517    :Jeden nebo více přidaných objektů v tomto parku vyžaduje nalinkované RCT1 pro správné zobrazení. Budou použity záložné obrázky.
+STR_6515    :{BLACK}Není nastaveno propojení s RCT1 - budou použity záložní obrázky.
+STR_6516    :Jeden nebo více přidaných objektů vyžaduje propojení s RCT1 pro správné zobrazení. Budou použity záložní obrázky.
+STR_6517    :Jeden nebo více přidaných objektů v tomto parku vyžaduje propojení s RCT1 pro správné zobrazení. Budou použity záložní obrázky.
 STR_6518    :{BLACK}Přejeď nad scenářem pro zobrazení popisu a cíle. Klikni pro začatí hry.
 STR_6519    :Extra
 STR_6520    :Balíčky doplňků
@@ -3567,6 +3567,11 @@ STR_6524    :Zvýšit prioritu zvoleného balíčku doplňků.
 STR_6525    :Znovu načítat všechny doplňky ve hře se zapnutými balíčkami doplňků.
 STR_6526    :(základní grafika, hudba a zvukové efekty)
 STR_6527    :Soutěže
+STR_6528    :Neplatné parametry trati!
+STR_6529    :Neplatný parametr barevných kombinací!
+STR_6533    :{WINDOW_COLOUR_2}Faktor nadšení: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Faktor intenzity: {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}Faktor nevolnosti: {BLACK}-{COMMA16}%
 STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG, Intamin Amusement Rides Int. Corp. Est.
 STR_6551    :Vojenská zelená
 STR_6552    :Honeydew zelená
