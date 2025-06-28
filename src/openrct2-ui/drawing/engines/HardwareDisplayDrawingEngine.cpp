@@ -10,6 +10,7 @@
 #include "DrawingEngineFactory.hpp"
 
 #include <SDL.h>
+#include <atomic>
 #include <cmath>
 #include <condition_variable>
 #include <cstring>
@@ -238,8 +239,14 @@ struct EncodeThreadData
     uint32_t width{};
     uint32_t height{};
     uint32_t scale{};
-    std::unique_ptr<uint8_t[]> pixelBuffer{};
+
+    // Double buffering: A/B pixel buffers
+    std::unique_ptr<uint8_t[]> pixelBufferA{};
+    std::unique_ptr<uint8_t[]> pixelBufferB{};
     size_t bufferSize{};
+
+    // Which buffer is currently being used by the encoding thread
+    std::atomic<int> activeBuffer{ 0 }; // 0 = A, 1 = B
 };
 
 static void EncodeThreadFunc(EncodeThreadData& etd)
@@ -256,15 +263,17 @@ static void EncodeThreadFunc(EncodeThreadData& etd)
         }
         *etd.Ready = 0;
 
-        // Use the pixel data that was copied in the main thread
-        if (etd.pixelBuffer && etd.bufferSize > 0)
+        // Get the current buffer to encode
+        uint8_t* currentPixelBuffer = (etd.activeBuffer == 0) ? etd.pixelBufferA.get() : etd.pixelBufferB.get();
+
+        if (currentPixelBuffer && etd.bufferSize > 0)
         {
             auto scaledWidth = etd.width * etd.scale;
             auto scaledHeight = etd.height * etd.scale;
 
-            // Create source surface from the copied pixel data
+            // Create source surface from the pixel buffer
             SDL_Surface* tempSurface = SDL_CreateRGBSurfaceWithFormatFrom(
-                etd.pixelBuffer.get(), etd.width, etd.height, 32, etd.width * 4, SDL_PIXELFORMAT_ARGB8888);
+                currentPixelBuffer, etd.width, etd.height, 32, etd.width * 4, SDL_PIXELFORMAT_ARGB8888);
 
             if (tempSurface != nullptr)
             {
@@ -541,9 +550,11 @@ public:
         etd.height = height;
         etd.scale = Config::Get().general.WindowScale;
 
-        // Allocate pixel buffer for copying texture data
+        // Allocate A/B pixel buffers for double buffering
         etd.bufferSize = width * height * 4; // RGBA
-        etd.pixelBuffer = std::make_unique<uint8_t[]>(etd.bufferSize);
+        etd.pixelBufferA = std::make_unique<uint8_t[]>(etd.bufferSize);
+        etd.pixelBufferB = std::make_unique<uint8_t[]>(etd.bufferSize);
+        etd.activeBuffer = 0; // Start with buffer A
     }
 
     void SetPalette(const GamePalette& palette) override
@@ -640,20 +651,33 @@ private:
 
         if (gShouldRender)
         {
-            std::unique_lock lock(SurfaceMutex);
+            // Determine which buffer to write to (opposite of the one being encoded)
+            int writeBuffer = (etd.activeBuffer == 0) ? 1 : 0;
+            uint8_t* writePixelBuffer = (writeBuffer == 0) ? etd.pixelBufferA.get() : etd.pixelBufferB.get();
 
-            // Copy pixel data from texture to buffer in the main thread
-            if (etd.pixelBuffer && etd.bufferSize > 0)
+            if (writePixelBuffer && etd.bufferSize > 0)
             {
                 int pitch;
                 void* pixels;
                 if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
                 {
-                    // Copy pixel data to our buffer
-                    const size_t bytesToCopy = std::min(etd.bufferSize, static_cast<size_t>(pitch * _height));
-                    std::memcpy(etd.pixelBuffer.get(), pixels, bytesToCopy);
+                    // Calculate how much data to copy based on actual pitch
+                    const size_t rowSize = std::min(static_cast<size_t>(etd.width * 4), static_cast<size_t>(pitch));
+                    const uint8_t* srcPixels = static_cast<const uint8_t*>(pixels);
+
+                    // Copy row by row to handle pitch correctly
+                    for (uint32_t y = 0; y < etd.height; ++y)
+                    {
+                        std::memcpy(writePixelBuffer + y * etd.width * 4, srcPixels + y * pitch, rowSize);
+                    }
+
                     SDL_UnlockTexture(_screenTexture);
 
+                    // Swap buffers atomically
+                    etd.activeBuffer = writeBuffer;
+
+                    // Notify encoding thread
+                    std::unique_lock lock(SurfaceMutex);
                     Ready = 1;
                     NotifyCV.notify_one();
                 }
