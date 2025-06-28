@@ -375,6 +375,6 @@ namespace OpenRCT2::Platform
     {
         return u8"app_285330" PATH_SEPARATOR u8"depot_285331";
     }
-} // namespace Platform
+} // namespace OpenRCT2::Platform
 
 #endif
