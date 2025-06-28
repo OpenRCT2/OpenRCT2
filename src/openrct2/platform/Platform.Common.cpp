@@ -149,12 +149,6 @@ namespace OpenRCT2::Platform
 
     static const auto _processStartTime = std::chrono::high_resolution_clock::now();
 
-    uint32_t GetTicks()
-    {
-        const auto processTime = std::chrono::high_resolution_clock::now() - _processStartTime;
-        return static_cast<uint32_t>(std::chrono::duration_cast<std::chrono::milliseconds>(processTime).count());
-    }
-
 #ifdef OPENRCT2_X86
     static bool CPUIDX86(uint32_t* cpuid_outdata, int32_t eax)
     {

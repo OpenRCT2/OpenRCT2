@@ -32,7 +32,6 @@
 #ifdef _WIN32
 static constexpr std::array _prohibitedCharacters = { '<', '>', '*', '\\', ':', '|', '?', '"', '/' };
 #else
-static constexpr std::array _prohibitedCharacters = { '/' };
 #endif
 
 namespace OpenRCT2::Platform
@@ -49,72 +48,4 @@ namespace OpenRCT2::Platform
         // ms to advance ticks by. 16.67 => 1000/16.67 = 60fps
         _ticks += 16.67;
     }
-
-    CurrencyType GetCurrencyValue(const char* currCode)
-    {
-        if (currCode == nullptr || strlen(currCode) < 3)
-        {
-            return CurrencyType::Pounds;
-        }
-
-        for (int32_t currency = 0; currency < EnumValue(CurrencyType::Count); ++currency)
-        {
-            if (strncmp(currCode, CurrencyDescriptors[currency].isoCode, 3) == 0)
-            {
-                return static_cast<CurrencyType>(currency);
-            }
-        }
-
-        return CurrencyType::Pounds;
-    }
-
-    RealWorldDate GetDateLocal()
-    {
-        auto time = std::time(nullptr);
-        auto localTime = std::localtime(&time);
-
-        RealWorldDate outDate;
-        outDate.day = localTime->tm_mday;
-        outDate.day_of_week = localTime->tm_wday;
-        outDate.month = localTime->tm_mon + 1;
-        outDate.year = localTime->tm_year + 1900;
-        return outDate;
-    }
-
-    RealWorldTime GetTimeLocal()
-    {
-        auto time = std::time(nullptr);
-        auto localTime = std::localtime(&time);
-
-        RealWorldTime outTime;
-        outTime.hour = localTime->tm_hour;
-        outTime.minute = localTime->tm_min;
-        outTime.second = localTime->tm_sec;
-        return outTime;
-    }
-
-    std::string SanitiseFilename(std::string_view originalName)
-    {
-        auto sanitised = std::string(originalName);
-        std::replace_if(
-            sanitised.begin(), sanitised.end(),
-            [](const std::string::value_type& ch) -> bool {
-                return std::find(_prohibitedCharacters.begin(), _prohibitedCharacters.end(), ch) != _prohibitedCharacters.end();
-            },
-            '_');
-        sanitised = String::trim(sanitised);
-        return sanitised;
-    }
-
-    bool IsFilenameValid(u8string_view fileName)
-    {
-        return fileName.find_first_of(_prohibitedCharacters.data(), 0, _prohibitedCharacters.size()) == fileName.npos;
-    }
-
-#ifndef __ANDROID__
-    float GetDefaultScale()
-    {
-        return 1;
-    }
-#endif
 } // namespace OpenRCT2::Platform
