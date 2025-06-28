@@ -25,8 +25,11 @@
 #include <openrct2/drawing/LightFX.h>
 #include <openrct2/drawing/X8DrawingEngine.h>
 #include <openrct2/paint/Paint.h>
+#include <openrct2/scenes/title/TitleScene.h>
+#include <openrct2/scenes/title/TitleSequencePlayer.h>
 #include <openrct2/scenes/title/TitleSequenceRender.h>
 #include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <thread>
 #ifdef _WIN32
     #include <direct.h>
@@ -343,6 +346,7 @@ private:
     std::condition_variable NotifyCV{};
     int Ready{};
     EncodeThreadData etd{};
+    bool _videoInitialized = false;
 
 public:
     explicit HardwareDisplayDrawingEngine(IUiContext& uiContext)
@@ -498,6 +502,27 @@ public:
 
         X8DrawingEngine::Resize(width, height);
 
+        // Update encode thread data with new dimensions
+        etd.width = width;
+        etd.height = height;
+        etd.scale = Config::Get().general.WindowScale;
+
+        // Allocate A/B pixel buffers for double buffering
+        etd.bufferSize = width * height * 4; // RGBA
+        etd.pixelBufferA = std::make_unique<uint8_t[]>(etd.bufferSize);
+        etd.pixelBufferB = std::make_unique<uint8_t[]>(etd.bufferSize);
+        etd.activeBuffer = 0; // Start with buffer A
+    }
+
+private:
+    void InitializeVideoEncoding()
+    {
+        if (_videoInitialized)
+            return;
+
+        auto width = etd.width;
+        auto height = etd.height;
+
         info.codec_fourcc = encoder->fourcc;
         info.frame_width = width * Config::Get().general.WindowScale;
         info.frame_height = height * Config::Get().general.WindowScale;
@@ -556,16 +581,7 @@ public:
             die_codec(&codec, "Failed to use lossless mode");
         }
 
-        // Update encode thread data with new dimensions
-        etd.width = width;
-        etd.height = height;
-        etd.scale = Config::Get().general.WindowScale;
-
-        // Allocate A/B pixel buffers for double buffering
-        etd.bufferSize = width * height * 4; // RGBA
-        etd.pixelBufferA = std::make_unique<uint8_t[]>(etd.bufferSize);
-        etd.pixelBufferB = std::make_unique<uint8_t[]>(etd.bufferSize);
-        etd.activeBuffer = 0; // Start with buffer A
+        _videoInitialized = true;
     }
 
     void SetPalette(const GamePalette& palette) override
@@ -659,39 +675,68 @@ private:
 
         if (gShouldRender)
         {
-            // Determine which buffer to write to (opposite of the one being encoded)
-            int writeBuffer = (etd.activeBuffer == 0) ? 1 : 0;
-            uint8_t* writePixelBuffer = (writeBuffer == 0) ? etd.pixelBufferA.get() : etd.pixelBufferB.get();
-
-            if (writePixelBuffer && etd.bufferSize > 0)
+            // Initialize video encoding only when title sequence starts playing
+            // and UI elements are hidden
+            if (!_videoInitialized)
             {
-                int pitch;
-                void* pixels;
-                if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
+                // Check if we're in title sequence scene and if the title sequence has started
+                // We need to ensure UI elements are no longer visible before starting recording
+                auto* player = static_cast<ITitleSequencePlayer*>(TitleGetSequencePlayer());
+                // Only start recording if the player exists and has advanced past the initial setup
+                // Position > 1 ensures we've moved past initial loading commands
+                if (player != nullptr && player->GetCurrentPosition() > 1)
                 {
-                    // Calculate how much data to copy based on actual pitch
-                    const size_t rowSize = std::min(static_cast<size_t>(etd.width * 4), static_cast<size_t>(pitch));
-                    const uint8_t* srcPixels = static_cast<const uint8_t*>(pixels);
-
-                    // Copy row by row to handle pitch correctly
-                    for (uint32_t y = 0; y < etd.height; ++y)
+                    // Additionally, close all title-related UI windows to ensure clean recording
+                    auto* windowMgr = Ui::GetWindowManager();
+                    if (windowMgr != nullptr)
                     {
-                        std::memcpy(writePixelBuffer + y * etd.width * 4, srcPixels + y * pitch, rowSize);
+                        windowMgr->CloseByClass(WindowClass::TitleLogo);
+                        windowMgr->CloseByClass(WindowClass::TitleMenu);
+                        windowMgr->CloseByClass(WindowClass::TitleVersion);
+                        windowMgr->CloseByClass(WindowClass::TitleExit);
+                        windowMgr->CloseByClass(WindowClass::TitleOptions);
                     }
-
-                    SDL_UnlockTexture(_screenTexture);
-
-                    // Swap buffers atomically
-                    etd.activeBuffer = writeBuffer;
-
-                    // Notify encoding thread
-                    std::unique_lock lock(SurfaceMutex);
-                    Ready = 1;
-                    NotifyCV.notify_one();
+                    InitializeVideoEncoding();
                 }
-                else
+            }
+
+            // Only proceed with encoding if video is initialized
+            if (_videoInitialized)
+            {
+                // Determine which buffer to write to (opposite of the one being encoded)
+                int writeBuffer = (etd.activeBuffer == 0) ? 1 : 0;
+                uint8_t* writePixelBuffer = (writeBuffer == 0) ? etd.pixelBufferA.get() : etd.pixelBufferB.get();
+
+                if (writePixelBuffer && etd.bufferSize > 0)
                 {
-                    LOG_WARNING("Failed to lock texture for encoding: %s", SDL_GetError());
+                    int pitch;
+                    void* pixels;
+                    if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
+                    {
+                        // Calculate how much data to copy based on actual pitch
+                        const size_t rowSize = std::min(static_cast<size_t>(etd.width * 4), static_cast<size_t>(pitch));
+                        const uint8_t* srcPixels = static_cast<const uint8_t*>(pixels);
+
+                        // Copy row by row to handle pitch correctly
+                        for (uint32_t y = 0; y < etd.height; ++y)
+                        {
+                            std::memcpy(writePixelBuffer + y * etd.width * 4, srcPixels + y * pitch, rowSize);
+                        }
+
+                        SDL_UnlockTexture(_screenTexture);
+
+                        // Swap buffers atomically
+                        etd.activeBuffer = writeBuffer;
+
+                        // Notify encoding thread
+                        std::unique_lock lock(SurfaceMutex);
+                        Ready = 1;
+                        NotifyCV.notify_one();
+                    }
+                    else
+                    {
+                        LOG_WARNING("Failed to lock texture for encoding: %s", SDL_GetError());
+                    }
                 }
             }
         }
