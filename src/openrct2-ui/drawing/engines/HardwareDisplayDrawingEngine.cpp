@@ -323,7 +323,6 @@ private:
     vpx_image_t raw{};
     VpxVideoWriter* writer = NULL;
     vpx_codec_ctx_t codec{};
-    FILE* file{};
     std::thread EncodeThread{};
     std::mutex SurfaceMutex{};
     std::condition_variable NotifyCV{};
