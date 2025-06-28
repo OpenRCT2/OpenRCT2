@@ -8,7 +8,6 @@
  *****************************************************************************/
 
 #include "../Date.h"
-#include "../common.h"
 
 #ifdef _WIN32
 #    include <windows.h>
@@ -17,9 +16,12 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../config/Config.h"
+#include "../core/EnumUtils.hpp"
 #include "../core/File.h"
 #include "../core/Path.hpp"
-#include "../localisation/Localisation.h"
+#include "../core/String.hpp"
+#include "../localisation/Currency.h"
+#include "../localisation/Formatting.h"
 #include "Platform.h"
 
 #include <algorithm>
@@ -33,26 +35,9 @@ static constexpr std::array _prohibitedCharacters = { '<', '>', '*', '\\', ':', 
 static constexpr std::array _prohibitedCharacters = { '/' };
 #endif
 
-namespace Platform
+namespace OpenRCT2::Platform
 {
     static double _ticks = 0;
-
-    void CoreInit()
-    {
-        static bool initialised = false;
-        if (!initialised)
-        {
-            initialised = true;
-
-#ifdef __ANDROID__
-            Platform::AndroidInitClassLoader();
-#endif // __ANDROID__
-
-            InitTicks();
-            BitCountInit();
-            MaskInit();
-        }
-    }
 
     uint32_t GetTicks()
     {
@@ -108,23 +93,6 @@ namespace Platform
         return outTime;
     }
 
-    bool IsRCT2Path(std::string_view path)
-    {
-        auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"g1.dat"));
-        return File::Exists(combinedPath);
-    }
-
-    bool IsRCTClassicPath(std::string_view path)
-    {
-        auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Assets", u8"g1.dat"));
-        return File::Exists(combinedPath);
-    }
-
-    bool OriginalGameDataExists(std::string_view path)
-    {
-        return IsRCT2Path(path) || IsRCTClassicPath(path);
-    }
-
     std::string SanitiseFilename(std::string_view originalName)
     {
         auto sanitised = std::string(originalName);
@@ -134,7 +102,7 @@ namespace Platform
                 return std::find(_prohibitedCharacters.begin(), _prohibitedCharacters.end(), ch) != _prohibitedCharacters.end();
             },
             '_');
-        sanitised = String::Trim(sanitised);
+        sanitised = String::trim(sanitised);
         return sanitised;
     }
 
@@ -149,4 +117,4 @@ namespace Platform
         return 1;
     }
 #endif
-} // namespace Platform
+} // namespace OpenRCT2::Platform
