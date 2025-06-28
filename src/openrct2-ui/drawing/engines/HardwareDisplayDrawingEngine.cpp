@@ -29,6 +29,12 @@
 #include <openrct2/scenes/title/TitleSequenceRender.h>
 #include <openrct2/ui/UiContext.h>
 #include <thread>
+#ifdef _WIN32
+    #include <direct.h>
+    #define getcwd _getcwd
+#else
+    #include <unistd.h>
+#endif
 #include <vector>
 #include <vpx/vp8cx.h>
 #include <vpx/vpx_encoder.h>
@@ -530,11 +536,17 @@ public:
             titleSequenceNameStr = titleSeqName;
         }
         std::string filename = "out"s + titleSequenceNameStr + ".webm";
-        printf("Rendering to file %s\n", filename.c_str());
+
+        // Get absolute path for logging
+        char* cwd = getcwd(nullptr, 0);
+        std::string absolutePath = std::string(cwd) + "/" + filename;
+        free(cwd);
+
+        LOG_INFO("Starting video encoding to file: %s", absolutePath.c_str());
         writer = vpx_video_writer_open(filename.c_str(), kContainerIVF, &info);
         if (!writer)
         {
-            LOG_FATAL("Failed to open %s for writing.", "/tmp/out.webm");
+            LOG_FATAL("Failed to open %s for writing.", absolutePath.c_str());
         }
         if (vpx_codec_enc_init(&codec, encoder->codec_interface(), &cfg, 0))
         {
