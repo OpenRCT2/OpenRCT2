@@ -24,6 +24,7 @@
 #include <openrct2/drawing/X8DrawingEngine.h>
 #include <openrct2/interface/Window.h>
 #include <openrct2/paint/Paint.h>
+#include <openrct2/scenes/title/TitleSequenceRender.h>
 #include <openrct2/ui/UiContext.h>
 #include <thread>
 #include <vector>
@@ -33,7 +34,6 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Ui;
-
 
 bool gShouldRender = true;
 struct VpxRational
@@ -230,20 +230,28 @@ struct EncodeThreadData
 {
     std::mutex* SurfaceMutex;
     std::condition_variable* NotifyCV;
-    SDL_Surface** Surface;
-    SDL_Surface** ScaledSurface;
+    SDL_Renderer** renderer;
+    SDL_Texture** screenTexture;
     int* Ready;
     VpxVideoWriter** writer;
     vpx_codec_ctx_t* codec{};
     vpx_image_t* raw{};
+    uint32_t width{};
+    uint32_t height{};
+    uint32_t scale{};
 };
 
 static void EncodeThreadFunc(EncodeThreadData& etd)
 {
+    // Create a temporary buffer for pixel data
+    auto scaledWidth = etd.width * etd.scale;
+    auto scaledHeight = etd.height * etd.scale;
+    auto pixelBuffer = std::make_unique<uint8_t[]>(scaledWidth * scaledHeight * 4); // RGBA
+
     while (true)
     {
         std::unique_lock lock(*etd.SurfaceMutex);
-        (*etd.NotifyCV).wait(lock, [etd] { return *etd.Ready != 0; });
+        (*etd.NotifyCV).wait(lock, [&etd] { return *etd.Ready != 0; });
         if (*etd.Ready == 2)
         {
             printf("closing down thread");
@@ -251,17 +259,50 @@ static void EncodeThreadFunc(EncodeThreadData& etd)
             break;
         }
         *etd.Ready = 0;
-        if (SDL_BlitScaled(*etd.Surface, nullptr, *etd.ScaledSurface, nullptr))
+
+        // Read pixels from the screen texture
+        int pitch;
+        void* pixels;
+        if (SDL_LockTexture(*etd.screenTexture, nullptr, &pixels, &pitch) == 0)
         {
-            LOG_FATAL("SDL_BlitScaled %s", SDL_GetError());
-            exit(1);
+            // Create a temporary surface for scaling
+            SDL_Surface* tempSurface = SDL_CreateRGBSurfaceWithFormatFrom(
+                pixels, etd.width, etd.height, 32, pitch, SDL_PIXELFORMAT_ARGB8888);
+
+            if (tempSurface != nullptr)
+            {
+                // Create scaled surface buffer
+                SDL_Surface* scaledSurface = SDL_CreateRGBSurfaceWithFormat(
+                    0, scaledWidth, scaledHeight, 32, SDL_PIXELFORMAT_ARGB8888);
+
+                if (scaledSurface != nullptr)
+                {
+                    // Scale the surface
+                    if (SDL_BlitScaled(tempSurface, nullptr, scaledSurface, nullptr) == 0)
+                    {
+                        // Convert to YUV for encoding
+                        libyuv::ARGBToI420(
+                            static_cast<uint8_t*>(scaledSurface->pixels), scaledSurface->pitch, etd.raw->planes[0],
+                            etd.raw->stride[0], etd.raw->planes[1], etd.raw->stride[1], etd.raw->planes[2], etd.raw->stride[1],
+                            scaledWidth, scaledHeight);
+
+                        static int frame_count;
+                        encode_frame(etd.codec, etd.raw, frame_count++, 0, *etd.writer);
+                    }
+                    else
+                    {
+                        LOG_ERROR("SDL_BlitScaled failed: %s", SDL_GetError());
+                    }
+                    SDL_FreeSurface(scaledSurface);
+                }
+                SDL_FreeSurface(tempSurface);
+            }
+            SDL_UnlockTexture(*etd.screenTexture);
         }
-        libyuv::ARGBToI420(
-            static_cast<uint8_t*>((*etd.ScaledSurface)->pixels), (*etd.ScaledSurface)->pitch, etd.raw->planes[0],
-            etd.raw->stride[0], etd.raw->planes[1], etd.raw->stride[1], etd.raw->planes[2], etd.raw->stride[1],
-            (*etd.ScaledSurface)->w, (*etd.ScaledSurface)->h);
-        static int frame_count;
-        encode_frame(etd.codec, etd.raw, frame_count++, 0, *etd.writer);
+        else
+        {
+            LOG_ERROR("SDL_LockTexture failed: %s", SDL_GetError());
+        }
     }
 }
 
@@ -347,8 +388,8 @@ public:
         etd.NotifyCV = &NotifyCV;
         etd.raw = &raw;
         etd.Ready = &Ready;
-        etd.ScaledSurface = &_ScaledRGBASurface;
-        etd.Surface = &_RGBASurface;
+        etd.renderer = &_sdlRenderer;
+        etd.screenTexture = &_screenTexture;
         etd.writer = &writer;
         etd.SurfaceMutex = &SurfaceMutex;
         EncodeThread = std::thread(EncodeThreadFunc, std::ref(etd));
@@ -455,8 +496,8 @@ public:
         X8DrawingEngine::Resize(width, height);
 
         info.codec_fourcc = encoder->fourcc;
-        info.frame_width = width * gConfigGeneral.WindowScale;
-        info.frame_height = height * gConfigGeneral.WindowScale;
+        info.frame_width = width * Config::Get().general.WindowScale;
+        info.frame_height = height * Config::Get().general.WindowScale;
         info.time_base.numerator = 1;
         info.time_base.denominator = FPS;
         if (info.frame_width <= 0 || info.frame_height <= 0 || (info.frame_width % 2) != 0 || (info.frame_height % 2) != 0)
@@ -505,6 +546,11 @@ public:
         {
             die_codec(&codec, "Failed to use lossless mode");
         }
+
+        // Update encode thread data with new dimensions
+        etd.width = width;
+        etd.height = height;
+        etd.scale = Config::Get().general.WindowScale;
     }
 
     void SetPalette(const GamePalette& palette) override
@@ -599,21 +645,9 @@ private:
             RenderDirtyVisuals();
         }
 
-        SDL_Surface* windowSurface = SDL_GetWindowSurface(_window);
-        if (SDL_BlitSurface(_surface, nullptr, windowSurface, nullptr))
-        {
-            LOG_FATAL("SDL_BlitSurface %s", SDL_GetError());
-            exit(1);
-        }
-
         if (gShouldRender)
         {
             std::unique_lock lock(SurfaceMutex);
-            if (SDL_BlitSurface(_surface, nullptr, _RGBASurface, nullptr))
-            {
-                LOG_FATAL("SDL_BlitSurface %s", SDL_GetError());
-                exit(1);
-            }
             Ready = 1;
             NotifyCV.notify_one();
         }
