@@ -12,6 +12,7 @@
 #include <SDL.h>
 #include <cmath>
 #include <condition_variable>
+#include <cstring>
 #include <libyuv.h>
 #include <memory>
 #include <mutex>
@@ -230,8 +231,6 @@ struct EncodeThreadData
 {
     std::mutex* SurfaceMutex;
     std::condition_variable* NotifyCV;
-    SDL_Renderer** renderer;
-    SDL_Texture** screenTexture;
     int* Ready;
     VpxVideoWriter** writer;
     vpx_codec_ctx_t* codec{};
@@ -239,15 +238,12 @@ struct EncodeThreadData
     uint32_t width{};
     uint32_t height{};
     uint32_t scale{};
+    std::unique_ptr<uint8_t[]> pixelBuffer{};
+    size_t bufferSize{};
 };
 
 static void EncodeThreadFunc(EncodeThreadData& etd)
 {
-    // Create a temporary buffer for pixel data
-    auto scaledWidth = etd.width * etd.scale;
-    auto scaledHeight = etd.height * etd.scale;
-    auto pixelBuffer = std::make_unique<uint8_t[]>(scaledWidth * scaledHeight * 4); // RGBA
-
     while (true)
     {
         std::unique_lock lock(*etd.SurfaceMutex);
@@ -260,14 +256,15 @@ static void EncodeThreadFunc(EncodeThreadData& etd)
         }
         *etd.Ready = 0;
 
-        // Read pixels from the screen texture
-        int pitch;
-        void* pixels;
-        if (SDL_LockTexture(*etd.screenTexture, nullptr, &pixels, &pitch) == 0)
+        // Use the pixel data that was copied in the main thread
+        if (etd.pixelBuffer && etd.bufferSize > 0)
         {
-            // Create a temporary surface for scaling
+            auto scaledWidth = etd.width * etd.scale;
+            auto scaledHeight = etd.height * etd.scale;
+
+            // Create source surface from the copied pixel data
             SDL_Surface* tempSurface = SDL_CreateRGBSurfaceWithFormatFrom(
-                pixels, etd.width, etd.height, 32, pitch, SDL_PIXELFORMAT_ARGB8888);
+                etd.pixelBuffer.get(), etd.width, etd.height, 32, etd.width * 4, SDL_PIXELFORMAT_ARGB8888);
 
             if (tempSurface != nullptr)
             {
@@ -297,11 +294,6 @@ static void EncodeThreadFunc(EncodeThreadData& etd)
                 }
                 SDL_FreeSurface(tempSurface);
             }
-            SDL_UnlockTexture(*etd.screenTexture);
-        }
-        else
-        {
-            LOG_ERROR("SDL_LockTexture failed: %s", SDL_GetError());
         }
     }
 }
@@ -388,8 +380,6 @@ public:
         etd.NotifyCV = &NotifyCV;
         etd.raw = &raw;
         etd.Ready = &Ready;
-        etd.renderer = &_sdlRenderer;
-        etd.screenTexture = &_screenTexture;
         etd.writer = &writer;
         etd.SurfaceMutex = &SurfaceMutex;
         EncodeThread = std::thread(EncodeThreadFunc, std::ref(etd));
@@ -551,6 +541,10 @@ public:
         etd.width = width;
         etd.height = height;
         etd.scale = Config::Get().general.WindowScale;
+
+        // Allocate pixel buffer for copying texture data
+        etd.bufferSize = width * height * 4; // RGBA
+        etd.pixelBuffer = std::make_unique<uint8_t[]>(etd.bufferSize);
     }
 
     void SetPalette(const GamePalette& palette) override
@@ -648,8 +642,27 @@ private:
         if (gShouldRender)
         {
             std::unique_lock lock(SurfaceMutex);
-            Ready = 1;
-            NotifyCV.notify_one();
+
+            // Copy pixel data from texture to buffer in the main thread
+            if (etd.pixelBuffer && etd.bufferSize > 0)
+            {
+                int pitch;
+                void* pixels;
+                if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
+                {
+                    // Copy pixel data to our buffer
+                    const size_t bytesToCopy = std::min(etd.bufferSize, static_cast<size_t>(pitch * _height));
+                    std::memcpy(etd.pixelBuffer.get(), pixels, bytesToCopy);
+                    SDL_UnlockTexture(_screenTexture);
+
+                    Ready = 1;
+                    NotifyCV.notify_one();
+                }
+                else
+                {
+                    LOG_WARNING("Failed to lock texture for encoding: %s", SDL_GetError());
+                }
+            }
         }
         SDL_RenderPresent(_sdlRenderer);
     }
