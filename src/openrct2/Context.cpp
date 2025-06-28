@@ -1283,12 +1283,13 @@ namespace OpenRCT2
 
         void RunFrame()
         {
-            WindowClose(*WindowFindByClass(WindowClass::TitleLogo));
-            WindowClose(*WindowFindByClass(WindowClass::TitleOptions));
-            WindowClose(*WindowFindByClass(WindowClass::TitleMenu));
-            WindowClose(*WindowFindByClass(WindowClass::TitleExit));
-            TitleSetHideVersionInfo(true);
-            gConfigGeneral.ShowFPS = false;
+            auto* windowMgr = GetContext()->GetUiContext().GetWindowManager();
+            windowMgr->CloseByClass(WindowClass::TitleLogo);
+            windowMgr->CloseByClass(WindowClass::TitleOptions);
+            windowMgr->CloseByClass(WindowClass::TitleMenu);
+            windowMgr->CloseByClass(WindowClass::TitleExit);
+            windowMgr->CloseByClass(WindowClass::TitleVersion);
+            Config::Get().general.ShowFPS = true;
             Platform::AdvanceTicks();
             PROFILED_FUNCTION();
 
