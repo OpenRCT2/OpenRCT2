@@ -15,12 +15,12 @@
 #include <libyuv.h>
 #include <mutex>
 #include <openrct2/Game.h>
-#include <openrct2/common.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/X8DrawingEngine.h>
-#include <openrct2/title/TitleSequenceRender.h>
+#include <openrct2/scenes/title/TitleSequenceRender.h>
+#include <openrct2/Diagnostic.h>
 #include <openrct2/ui/UiContext.h>
 #include <thread>
 #include <vpx/vp8cx.h>

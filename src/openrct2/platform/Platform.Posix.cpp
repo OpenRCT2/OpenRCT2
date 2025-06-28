@@ -375,11 +375,6 @@ namespace OpenRCT2::Platform
     {
         return u8"app_285330" PATH_SEPARATOR u8"depot_285331";
     }
-
-    void Sleep(uint32_t ms)
-    {
-        usleep(ms * 1000);
-    }
 } // namespace Platform
 
 #endif
