@@ -1038,6 +1038,7 @@
     <ClCompile Include="platform\Platform.Linux.cpp" />
     <ClCompile Include="platform\Platform.Posix.cpp" />
     <ClCompile Include="platform\Platform.Win32.cpp" />
+    <ClCompile Include="platform\Shared.cpp" />
     <ClCompile Include="profiling\Profiling.cpp" />
     <ClCompile Include="rct12\CSStringConverter.cpp" />
     <ClCompile Include="rct12\RCT12.cpp" />
