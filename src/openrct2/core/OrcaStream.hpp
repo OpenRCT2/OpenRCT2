@@ -41,6 +41,7 @@ namespace OpenRCT2
         {
             none,
             gzip,
+            zstd,
         };
 
     private:
@@ -76,7 +77,7 @@ namespace OpenRCT2
         int16_t _compressionLevel;
 
     public:
-        OrcaStream(IStream& stream, const Mode mode, int16_t compressionLevel = Compression::kZlibDefaultCompressionLevel)
+        OrcaStream(IStream& stream, const Mode mode, int16_t compressionLevel = Compression::kNoCompressionLevel)
         {
             _stream = &stream;
             _mode = mode;
@@ -103,6 +104,10 @@ namespace OpenRCT2
                             decompressStatus = Compression::zlibDecompress(
                                 *_stream, _header.CompressedSize, _buffer, _header.UncompressedSize,
                                 Compression::ZlibHeaderType::gzip);
+                            break;
+                        case CompressionType::zstd:
+                            decompressStatus = Compression::zstdDecompress(
+                                *_stream, _header.CompressedSize, _buffer, _header.UncompressedSize);
                             break;
                         default:
                             throw IOException("Unknown Park Compression Type");
@@ -131,7 +136,7 @@ namespace OpenRCT2
             {
                 _header = {};
                 _header.Compression = _compressionLevel == Compression::kNoCompressionLevel ? CompressionType::none
-                                                                                            : CompressionType::gzip;
+                                                                                            : CompressionType::zstd;
                 _buffer = MemoryStream{};
             }
         }
@@ -162,6 +167,11 @@ namespace OpenRCT2
                         case CompressionType::gzip:
                             compressStatus = Compression::zlibCompress(
                                 _buffer, _buffer.GetLength(), compressed, Compression::ZlibHeaderType::gzip, _compressionLevel);
+                            break;
+                        case CompressionType::zstd:
+                            // PARK header already has length and checksum, so exclude them in the compression frame
+                            compressStatus = Compression::zstdCompress(
+                                _buffer, _buffer.GetLength(), compressed, Compression::ZstdMetadata::none, _compressionLevel);
                             break;
                         default:
                             break;
