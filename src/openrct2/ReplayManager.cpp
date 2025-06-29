@@ -103,9 +103,10 @@ namespace OpenRCT2
 
     class ReplayManager final : public IReplayManager
     {
-        static constexpr uint16_t kReplayVersion = 10;
+        static constexpr uint16_t kReplayVersion = 11;
+        static constexpr uint16_t kReplayMinCompatVersion = 10;
         static constexpr uint32_t kReplayMagic = 0x5243524F; // ORCR.
-        static constexpr int kReplayCompressionLevel = Compression::kZlibMaxCompressionLevel;
+        static constexpr int kReplayCompressionLevel = 18;
         static constexpr int kNormalRecordingChecksumTicks = 1;
         static constexpr int kSilentRecordingChecksumTicks = 40; // Same as network server
 
@@ -313,8 +314,9 @@ namespace OpenRCT2
 
             MemoryStream compressed;
             stream.SetPosition(0);
-            bool compressStatus = Compression::zlibCompress(
-                stream, stream.GetLength(), compressed, Compression::ZlibHeaderType::zlib, kReplayCompressionLevel);
+            // header already has decompressed length, but no checksum, so use the ZStandard checksum
+            bool compressStatus = Compression::zstdCompress(
+                stream, stream.GetLength(), compressed, Compression::ZstdMetadata::checksum, kReplayCompressionLevel);
             if (!compressStatus)
                 throw IOException("Compression Error");
 
@@ -563,12 +565,18 @@ namespace OpenRCT2
 
                 MemoryStream decompressed;
                 bool decompressStatus = true;
-
                 recFile.data.SetPosition(0);
-                decompressStatus = Compression::zlibDecompress(
-                    recFile.data, recFile.data.GetLength(), decompressed, recFile.uncompressedSize,
-                    Compression::ZlibHeaderType::zlib);
-
+                if (recFile.version <= 10)
+                {
+                    decompressStatus = Compression::zlibDecompress(
+                        recFile.data, recFile.data.GetLength(), decompressed, recFile.uncompressedSize,
+                        Compression::ZlibHeaderType::zlib);
+                }
+                else
+                {
+                    decompressStatus = Compression::zstdDecompress(
+                        recFile.data, recFile.data.GetLength(), decompressed, recFile.uncompressedSize);
+                }
                 if (!decompressStatus)
                     throw IOException("Decompression Error");
 
@@ -683,7 +691,7 @@ namespace OpenRCT2
 
         bool Compatible(ReplayRecordData& data)
         {
-            return data.version == kReplayVersion;
+            return data.version >= kReplayMinCompatVersion;
         }
 
         bool Serialise(DataSerialiser& serialiser, ReplayRecordData& data)
