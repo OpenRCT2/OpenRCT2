@@ -202,10 +202,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_GAMEPAD_GROUP,
         WIDX_GAMEPAD_DEADZONE_LABEL,
         WIDX_GAMEPAD_DEADZONE,
-        WIDX_GAMEPAD_DEADZONE_VALUE,
         WIDX_GAMEPAD_SENSITIVITY_LABEL,
         WIDX_GAMEPAD_SENSITIVITY,
-        WIDX_GAMEPAD_SENSITIVITY_VALUE,
 
         // Misc
         WIDX_TITLE_SEQUENCE_GROUP = WIDX_PAGE_START,
@@ -377,11 +375,9 @@ namespace OpenRCT2::Ui::Windows
         // Gamepad group
         makeWidget({  5, kGamepadGroupStart +  0},   {300, 45}, WidgetType::groupbox, WindowColour::secondary, STR_GAMEPAD_GROUP                                                 ), // Gamepad group
         makeWidget({ 10, kGamepadGroupStart + 13},   { 90, 12}, WidgetType::label,    WindowColour::secondary, STR_GAMEPAD_DEADZONE_LABEL,     STR_GAMEPAD_DEADZONE_TIP          ), // Deadzone label
-        makeWidget({105, kGamepadGroupStart + 13},   {145, 13}, WidgetType::scroll,   WindowColour::secondary, SCROLL_HORIZONTAL,              STR_GAMEPAD_DEADZONE_TIP          ), // Deadzone slider
-        makeWidget({255, kGamepadGroupStart + 13},   { 45, 12}, WidgetType::label,    WindowColour::secondary, kStringIdNone,                  STR_GAMEPAD_DEADZONE_TIP          ), // Deadzone value
+        makeWidget({105, kGamepadGroupStart + 13},   {190, 13}, WidgetType::scroll,   WindowColour::secondary, SCROLL_HORIZONTAL,              STR_GAMEPAD_DEADZONE_TOOLTIP_FORMAT), // Deadzone slider
         makeWidget({ 10, kGamepadGroupStart + 28},   { 90, 12}, WidgetType::label,    WindowColour::secondary, STR_GAMEPAD_SENSITIVITY_LABEL,  STR_GAMEPAD_SENSITIVITY_TIP       ), // Sensitivity label
-        makeWidget({105, kGamepadGroupStart + 28},   {145, 13}, WidgetType::scroll,   WindowColour::secondary, SCROLL_HORIZONTAL,              STR_GAMEPAD_SENSITIVITY_TIP       ), // Sensitivity slider
-        makeWidget({255, kGamepadGroupStart + 28},   { 45, 12}, WidgetType::label,    WindowColour::secondary, kStringIdNone,                  STR_GAMEPAD_SENSITIVITY_TIP       )  // Sensitivity value
+        makeWidget({105, kGamepadGroupStart + 28},   {190, 13}, WidgetType::scroll,   WindowColour::secondary, SCROLL_HORIZONTAL,              STR_GAMEPAD_SENSITIVITY_TOOLTIP_FORMAT)  // Sensitivity slider
     );
 
     constexpr int32_t kThemesGroupStart = 53;
@@ -640,9 +636,6 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_OPTIONS_PAGE_DISPLAY:
                     DisplayDraw(rt);
                     break;
-                case WINDOW_OPTIONS_PAGE_CONTROLS:
-                    ControlsDraw(rt);
-                    break;
                 case WINDOW_OPTIONS_PAGE_ADVANCED:
                     AdvancedDraw(rt);
                     break;
@@ -695,6 +688,28 @@ namespace OpenRCT2::Ui::Windows
         {
             if (page == WINDOW_OPTIONS_PAGE_ADVANCED)
                 return AdvancedTooltip(widgetIndex, fallback);
+
+            if (page == WINDOW_OPTIONS_PAGE_CONTROLS)
+            {
+                if (widgetIndex == WIDX_GAMEPAD_DEADZONE)
+                {
+                    const int32_t deadzone = Config::Get().general.GamepadDeadzone;
+                    const int32_t deadzonePercent = static_cast<int32_t>((deadzone / 32767.0f) * 100);
+
+                    auto ft = Formatter();
+                    ft.Add<int32_t>(deadzonePercent);
+                    return { STR_GAMEPAD_DEADZONE_TOOLTIP_FORMAT, ft };
+                }
+                else if (widgetIndex == WIDX_GAMEPAD_SENSITIVITY)
+                {
+                    const float sensitivity = Config::Get().general.GamepadSensitivity;
+                    const int32_t sensitivityDisplay = static_cast<int32_t>(sensitivity * 100);
+
+                    auto ft = Formatter();
+                    ft.Add<int32_t>(sensitivityDisplay);
+                    return { STR_GAMEPAD_SENSITIVITY_TOOLTIP_FORMAT, ft };
+                }
+            }
 
             return WindowBase::OnTooltip(widgetIndex, fallback);
         }
@@ -1571,7 +1586,6 @@ namespace OpenRCT2::Ui::Windows
             {
                 Config::Get().general.GamepadDeadzone = deadzoneValue;
                 Config::Save();
-                InvalidateWidget(WIDX_GAMEPAD_DEADZONE_VALUE);
             }
 
             const auto& sensitivityWidget = widgets[WIDX_GAMEPAD_SENSITIVITY];
@@ -1582,7 +1596,6 @@ namespace OpenRCT2::Ui::Windows
             {
                 Config::Get().general.GamepadSensitivity = sensitivityValue;
                 Config::Save();
-                InvalidateWidget(WIDX_GAMEPAD_SENSITIVITY_VALUE);
             }
         }
 
@@ -1596,39 +1609,6 @@ namespace OpenRCT2::Ui::Windows
                     return { 500, 0 }; // Range 0-500 (same as audio sliders)
                 default:
                     return { 0, 0 };
-            }
-        }
-
-        void ControlsDraw(RenderTarget& rt)
-        {
-            // Only draw gamepad values if the config values are valid
-            const int32_t deadzone = Config::Get().general.GamepadDeadzone;
-            const float sensitivity = Config::Get().general.GamepadSensitivity;
-
-            // Validate config values before using them
-            if (deadzone >= 0 && deadzone <= 32767 && sensitivity >= 0.5f && sensitivity <= 3.0f)
-            {
-                // Draw deadzone percentage
-                auto ft = Formatter();
-                const int32_t deadzonePercent = static_cast<int32_t>((deadzone / 32767.0f) * 100);
-                ft.Add<int32_t>(deadzonePercent);
-                DrawTextBasic(
-                    rt,
-                    windowPos
-                        + ScreenCoordsXY{ widgets[WIDX_GAMEPAD_DEADZONE_VALUE].left + 1,
-                                          widgets[WIDX_GAMEPAD_DEADZONE_VALUE].top + 1 },
-                    STR_WINDOW_COLOUR_2_COMMA32, ft, { colours[1] });
-
-                // Draw sensitivity multiplier
-                ft = Formatter();
-                const int32_t sensitivityDisplay = static_cast<int32_t>(sensitivity * 100); // Show as 150 for 1.5x
-                ft.Add<int32_t>(sensitivityDisplay);
-                DrawTextBasic(
-                    rt,
-                    windowPos
-                        + ScreenCoordsXY{ widgets[WIDX_GAMEPAD_SENSITIVITY_VALUE].left + 1,
-                                          widgets[WIDX_GAMEPAD_SENSITIVITY_VALUE].top + 1 },
-                    STR_WINDOW_COLOUR_2_COMMA32, ft, { colours[1] });
             }
         }
 

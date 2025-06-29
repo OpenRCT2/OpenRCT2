@@ -980,18 +980,13 @@ namespace OpenRCT2
             ScreenCoordsXY newScreenCoords;
             widgetScrollGetPart(*w, widget, screenCoords, newScreenCoords, &scroll_part, &scrollId);
 
-            if (scroll_part != SCROLL_PART_VIEW)
-                WindowTooltipClose();
-            else
+            if (scroll_part == SCROLL_PART_VIEW)
             {
                 w->OnScrollMouseOver(scrollId, newScreenCoords);
-                InputUpdateTooltip(w, widgetIndex, screenCoords);
             }
         }
-        else
-        {
-            InputUpdateTooltip(w, widgetIndex, screenCoords);
-        }
+
+        InputUpdateTooltip(w, widgetIndex, screenCoords);
     }
 
     /**

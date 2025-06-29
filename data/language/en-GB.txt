@@ -3837,3 +3837,5 @@ STR_6795    :Select which analog stick to use for scrolling
 STR_6796    :Left stick
 STR_6797    :Right stick
 STR_6798    :Disabled
+STR_6799    :Deadzone: {COMMA32}%
+STR_6800    :Sensitivity: {COMMA32}%

@@ -1743,6 +1743,8 @@ enum : StringId
     STR_GAMEPAD_STICK_LEFT = 6796,
     STR_GAMEPAD_STICK_RIGHT = 6797,
     STR_GAMEPAD_STICK_DISABLED = 6798,
+    STR_GAMEPAD_DEADZONE_TOOLTIP_FORMAT = 6799,
+    STR_GAMEPAD_SENSITIVITY_TOOLTIP_FORMAT = 6800,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
