@@ -169,7 +169,7 @@ namespace OpenRCT2
 
                 for (size_t n = 0; n < count; n++)
                 {
-                    buf.Write1(src8 + i);
+                    buf.WriteValue(src8[i]);
                 }
             }
             else
@@ -213,7 +213,7 @@ namespace OpenRCT2
                     throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_RLE);
                 }
                 i++;
-                buf.Write1(src8 + i);
+                buf.WriteValue(src8[i]);
             }
             else
             {
@@ -253,8 +253,7 @@ namespace OpenRCT2
         uint8_t code = 1;
         for (size_t i = 0; i < srcLength; i++)
         {
-            uint8_t temp = Numerics::ror8(src8[i], code);
-            buf.Write1(&temp);
+            buf.WriteValue(Numerics::ror8(src8[i], code));
             code = (code + 2) % 8;
         }
 

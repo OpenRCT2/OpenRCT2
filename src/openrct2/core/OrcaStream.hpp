@@ -90,35 +90,46 @@ namespace OpenRCT2
                     _chunks.push_back(entry);
                 }
 
-                // Read compressed data into buffer (read in blocks)
-                _buffer = MemoryStream{};
-                uint8_t temp[2048];
-                uint64_t bytesLeft = _header.CompressedSize;
-                do
-                {
-                    auto readLen = std::min(size_t(bytesLeft), sizeof(temp));
-                    _stream->Read(temp, readLen);
-                    _buffer.Write(temp, readLen);
-                    bytesLeft -= readLen;
-                } while (bytesLeft > 0);
-
                 // Uncompress
-                if (_header.Compression == CompressionType::gzip)
+                if (_header.Compression != CompressionType::none)
                 {
-                    auto uncompressedData = Compression::ungzip(_buffer.GetData(), _buffer.GetLength());
-                    if (_header.UncompressedSize != uncompressedData.size())
+                    size_t compressedSize = static_cast<size_t>(_header.CompressedSize);
+                    size_t uncompressedSize = static_cast<size_t>(_header.UncompressedSize);
+                    bool decompressStatus = false;
+
+                    switch (_header.Compression)
                     {
-                        // Warning?
+                        case CompressionType::gzip:
+                            decompressStatus = Compression::zlibDecompress(
+                                *_stream, compressedSize, _buffer, uncompressedSize, Compression::ZlibHeaderType::gzip);
+                            break;
+                        default:
+                            throw IOException("Unknown Park Compression Type");
                     }
-                    _buffer.Clear();
-                    _buffer.Write(uncompressedData.data(), uncompressedData.size());
+
+                    if (!decompressStatus)
+                        throw IOException("Decompression Error");
+                }
+                else
+                {
+                    if (_header.UncompressedSize != _header.CompressedSize)
+                        throw IOException("None Compression Sizes Don't Match");
+                    _buffer.CopyFromStream(*_stream, _header.UncompressedSize);
+                }
+
+                // early in-dev versions used SHA1 instead of FNV1a, so just assume any file
+                // with a verison number of 0 may be one of these, and don't check their hashes.
+                if (_header.TargetVersion > 0)
+                {
+                    auto checksum = Crypt::FNV1a(_buffer.GetData(), _buffer.GetLength());
+                    if (checksum != _header.FNV1a)
+                        throw IOException("Checksum Is Not Valid");
                 }
             }
             else
             {
                 _header = {};
                 _header.Compression = CompressionType::gzip;
-
                 _buffer = MemoryStream{};
             }
         }
@@ -129,26 +140,37 @@ namespace OpenRCT2
         {
             if (_mode == Mode::WRITING)
             {
-                const void* uncompressedData = _buffer.GetData();
-                const uint64_t uncompressedSize = _buffer.GetLength();
-
                 _header.NumChunks = static_cast<uint32_t>(_chunks.size());
-                _header.UncompressedSize = uncompressedSize;
-                _header.CompressedSize = uncompressedSize;
-                _header.FNV1a = Crypt::FNV1a(uncompressedData, uncompressedSize);
+                _header.UncompressedSize = _buffer.GetLength();
+                _header.CompressedSize = _buffer.GetLength();
+                _header.FNV1a = Crypt::FNV1a(_buffer.GetData(), _buffer.GetLength());
 
                 // Compress data
-                std::optional<std::vector<uint8_t>> compressedBytes;
-                if (_header.Compression == CompressionType::gzip)
+                if (_header.Compression != CompressionType::none)
                 {
-                    compressedBytes = Compression::gzip(uncompressedData, uncompressedSize);
-                    if (compressedBytes)
+                    MemoryStream compressed;
+                    size_t bufferLength = static_cast<size_t>(_buffer.GetLength());
+                    bool compressStatus = false;
+
+                    _buffer.SetPosition(0);
+                    switch (_header.Compression)
                     {
-                        _header.CompressedSize = compressedBytes->size();
+                        case CompressionType::gzip:
+                            compressStatus = Compression::zlibCompress(
+                                _buffer, bufferLength, compressed, Compression::ZlibHeaderType::gzip);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    if (compressStatus && compressed.GetLength() < _buffer.GetLength())
+                    {
+                        _buffer = std::move(compressed);
+                        _header.CompressedSize = _buffer.GetLength();
                     }
                     else
                     {
-                        // Compression failed
+                        // Compression increases filesize, so just store uncompressed data
                         _header.Compression = CompressionType::none;
                     }
                 }
@@ -156,19 +178,9 @@ namespace OpenRCT2
                 // Write header and chunk table
                 _stream->WriteValue(_header);
                 for (const auto& chunk : _chunks)
-                {
                     _stream->WriteValue(chunk);
-                }
-
                 // Write chunk data
-                if (compressedBytes)
-                {
-                    _stream->Write(compressedBytes->data(), compressedBytes->size());
-                }
-                else
-                {
-                    _stream->Write(uncompressedData, uncompressedSize);
-                }
+                _stream->Write(_buffer.GetData(), _buffer.GetLength());
             }
         }
 

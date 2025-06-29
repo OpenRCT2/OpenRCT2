@@ -33,6 +33,7 @@
     #include "../config/Config.h"
     #include "../core/Compression.h"
     #include "../core/Console.hpp"
+    #include "../core/FileStream.h"
     #include "../core/Guard.hpp"
     #include "../core/Path.hpp"
     #include "../core/SawyerCoding.h"
@@ -134,10 +135,10 @@ static bool OnCrash(
 
     // Compress the dump
     {
-        FILE* input = _wfopen(dumpFilePath, L"rb");
-        FILE* dest = _wfopen(dumpFilePathGZIP, L"wb");
+        FileStream source(dumpFilePath, FileMode::open);
+        FileStream dest(dumpFilePathGZIP, FileMode::write);
 
-        if (Compression::gzipCompress(input, dest))
+        if (Compression::zlibCompress(source, source.GetLength(), dest, Compression::ZlibHeaderType::gzip))
         {
             // TODO: enable upload of gzip-compressed dumps once supported on
             // backtrace.io (uncomment the line below). For now leave compression
@@ -148,8 +149,6 @@ static bool OnCrash(
             _uploadFiles[L"upload_file_minidump"] = dumpFilePathGZIP;
             */
         }
-        fclose(input);
-        fclose(dest);
     }
 
     bool with_record = StopSilentRecord();

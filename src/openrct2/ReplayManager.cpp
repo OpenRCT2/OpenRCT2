@@ -25,7 +25,10 @@
 #include "actions/TileModifyAction.h"
 #include "actions/TrackPlaceAction.h"
 #include "config/Config.h"
+#include "core/Compression.h"
 #include "core/DataSerialiser.h"
+#include "core/FileStream.h"
+#include "core/FileSystem.hpp"
 #include "core/Path.hpp"
 #include "entity/EntityRegistry.h"
 #include "entity/EntityTweener.h"
@@ -35,7 +38,6 @@
 #include "object/ObjectRepository.h"
 #include "park/ParkFile.h"
 #include "world/Park.h"
-#include "zlib.h"
 
 #include <chrono>
 #include <memory>
@@ -103,7 +105,7 @@ namespace OpenRCT2
     {
         static constexpr uint16_t kReplayVersion = 10;
         static constexpr uint32_t kReplayMagic = 0x5243524F; // ORCR.
-        static constexpr int kReplayCompressionLevel = 9;
+        static constexpr int kReplayCompressionLevel = Compression::kZlibMaxCompressionLevel;
         static constexpr int kNormalRecordingChecksumTicks = 1;
         static constexpr int kSilentRecordingChecksumTicks = 40; // Same as network server
 
@@ -307,44 +309,24 @@ namespace OpenRCT2
             // Serialise Body.
             DataSerialiser recSerialiser(true);
             Serialise(recSerialiser, *_currentRecording);
+            auto& stream = recSerialiser.GetStream();
 
-            const auto& stream = recSerialiser.GetStream();
-            unsigned long streamLength = static_cast<unsigned long>(stream.GetLength());
-            unsigned long compressLength = compressBound(streamLength);
-
-            MemoryStream data(compressLength);
-
-            ReplayRecordFile file{ _currentRecording->magic, _currentRecording->version, streamLength, data };
-
-            auto compressBuf = std::make_unique<unsigned char[]>(compressLength);
-            compress2(
-                compressBuf.get(), &compressLength, static_cast<const unsigned char*>(stream.GetData()), stream.GetLength(),
+            MemoryStream compressed;
+            bool compressStatus = Compression::zlibCompress(
+                stream, static_cast<size_t>(stream.GetLength()), compressed, Compression::ZlibHeaderType::zlib,
                 kReplayCompressionLevel);
-            file.data.Write(compressBuf.get(), compressLength);
+            if (!compressStatus)
+                throw IOException("Compression Error");
 
-            DataSerialiser fileSerialiser(true);
-            fileSerialiser << file.magic;
-            fileSerialiser << file.version;
-            fileSerialiser << file.uncompressedSize;
-            fileSerialiser << file.data;
-
-            bool result = false;
-
-            const std::string& outFile = _currentRecording->filePath;
-
-            FILE* fp = fopen(outFile.c_str(), "wb");
-            if (fp != nullptr)
             {
-                const auto& fileStream = fileSerialiser.GetStream();
-                fwrite(fileStream.GetData(), 1, fileStream.GetLength(), fp);
-                fclose(fp);
+                ReplayRecordFile file{ _currentRecording->magic, _currentRecording->version, stream.GetLength(), compressed };
 
-                result = true;
-            }
-            else
-            {
-                LOG_ERROR("Unable to write to file '%s'", outFile.c_str());
-                result = false;
+                FileStream filestream(_currentRecording->filePath, FileMode::write);
+                DataSerialiser fileSerialiser(true, filestream);
+                fileSerialiser << file.magic;
+                fileSerialiser << file.version;
+                fileSerialiser << file.uncompressedSize;
+                fileSerialiser << file.data;
             }
 
             // When normalizing the output we don't touch the mode.
@@ -356,7 +338,7 @@ namespace OpenRCT2
             News::Item* news = News::AddItemToQueue(News::ItemType::blank, "Replay recording stopped", 0);
             news->setFlags(News::ItemFlags::hasButton); // Has no subject.
 
-            return result;
+            return true;
         }
 
         virtual bool GetCurrentReplayInfo(ReplayRecordInfo& info) const override
@@ -561,35 +543,16 @@ namespace OpenRCT2
             return true;
         }
 
-        bool ReadReplayFromFile(const std::string& file, MemoryStream& stream)
-        {
-            FILE* fp = fopen(file.c_str(), "rb");
-            if (fp == nullptr)
-                return false;
-
-            char buffer[128];
-            while (feof(fp) == 0)
-            {
-                size_t numBytesRead = fread(buffer, 1, 128, fp);
-                if (numBytesRead == 0)
-                    break;
-                stream.Write(buffer, numBytesRead);
-            }
-
-            fclose(fp);
-            return true;
-        }
-
         /**
          * Returns true if decompression was not needed or succeeded
          * @param stream
          * @return
          */
-        bool TryDecompress(MemoryStream& stream)
+        MemoryStream DecompressFile(FileStream& fileStream)
         {
             ReplayRecordFile recFile;
-            stream.SetPosition(0);
-            DataSerialiser fileSerializer(false, stream);
+            fileStream.SetPosition(0);
+            DataSerialiser fileSerializer(false, fileStream);
             fileSerializer << recFile.magic;
             fileSerializer << recFile.version;
 
@@ -598,52 +561,49 @@ namespace OpenRCT2
                 fileSerializer << recFile.uncompressedSize;
                 fileSerializer << recFile.data;
 
-                auto buff = std::make_unique<unsigned char[]>(recFile.uncompressedSize);
-                unsigned long outSize = recFile.uncompressedSize;
-                uncompress(
-                    static_cast<unsigned char*>(buff.get()), &outSize,
-                    static_cast<const unsigned char*>(recFile.data.GetData()), recFile.data.GetLength());
-                if (outSize != recFile.uncompressedSize)
-                {
-                    return false;
-                }
-                stream.SetPosition(0);
-                stream.Write(buff.get(), outSize);
+                MemoryStream decompressed;
+                bool decompressStatus = true;
+
+                recFile.data.SetPosition(0);
+                decompressStatus = Compression::zlibDecompress(
+                    recFile.data, static_cast<size_t>(recFile.data.GetLength()), decompressed,
+                    static_cast<size_t>(recFile.uncompressedSize), Compression::ZlibHeaderType::zlib);
+
+                if (!decompressStatus)
+                    throw IOException("Decompression Error");
+
+                recFile.data = std::move(decompressed);
+            }
+            else
+            {
+                // Read whole file into memory
+                fileStream.SetPosition(0);
+                recFile.data.CopyFromStream(fileStream, fileStream.GetLength());
             }
 
-            return true;
+            return recFile.data;
         }
 
         bool ReadReplayData(const std::string& file, ReplayRecordData& data)
         {
-            MemoryStream stream;
+            fs::path filePath = file;
+            if (filePath.extension() != ".parkrep")
+                filePath += ".parkrep";
 
-            std::string fileName = file;
-            if (fileName.size() < 5 || fileName.substr(fileName.size() - 5) != ".parkrep")
+            if (filePath.is_relative())
             {
-                fileName += ".parkrep";
+                fs::path replayPath = GetContext()->GetPlatformEnvironment().GetDirectoryPath(
+                                          DirBase::user, DirId::replayRecordings)
+                    / filePath;
+                if (fs::is_regular_file(replayPath))
+                    filePath = replayPath;
             }
 
-            std::string outPath = GetContext()->GetPlatformEnvironment().GetDirectoryPath(
-                DirBase::user, DirId::replayRecordings);
-            std::string outFile = Path::Combine(outPath, fileName);
-
-            bool loaded = false;
-            if (ReadReplayFromFile(outFile, stream))
-            {
-                data.filePath = outFile;
-                loaded = true;
-            }
-            else if (ReadReplayFromFile(file, stream))
-            {
-                data.filePath = file;
-                loaded = true;
-            }
-            if (!loaded)
+            if (!fs::is_regular_file(filePath))
                 return false;
 
-            if (!TryDecompress(stream))
-                return false;
+            FileStream fileStream(filePath, FileMode::open);
+            MemoryStream stream = DecompressFile(fileStream);
 
             stream.SetPosition(0);
             DataSerialiser serialiser(false, stream);

@@ -9,13 +9,26 @@
 
 #include "IStream.hpp"
 
+#include "StreamBuffer.hpp"
 #include "String.hpp"
 
 #include <vector>
 
 namespace OpenRCT2
 {
-    std::string IStream::ReadStdString()
+    constexpr size_t kIStreamCopyBufferLength = 16 * 1024;
+
+    void IStream::CopyFromStream(IStream& stream, uint64_t length)
+    {
+        StreamReadBuffer buffer(stream, length, kIStreamCopyBufferLength);
+        while (buffer)
+        {
+            auto block = buffer.ReadBlock(stream);
+            this->Write(block.first, block.second);
+        }
+    }
+
+    std::string IStream::ReadString()
     {
         std::string result;
         uint8_t ch;
@@ -26,32 +39,11 @@ namespace OpenRCT2
         return result;
     }
 
-    void IStream::WriteString(const utf8* str)
+    void IStream::WriteString(std::string_view str)
     {
-        if (str == nullptr)
-        {
-            WriteValue<uint8_t>(0);
-        }
-        else
-        {
-            size_t numBytes = String::sizeOf(str) + 1;
-            Write(str, numBytes);
-        }
-    }
-
-    void IStream::WriteString(const std::string_view str)
-    {
-        for (const auto c : str)
-        {
-            if (c == '\0')
-                break;
-            WriteValue<uint8_t>(c);
-        }
+        // if the string contains any null characters, then stop the write at the first one
+        str = String::toStringView(str.data(), str.size());
+        Write(str.data(), str.size());
         WriteValue<uint8_t>(0);
-    }
-
-    void IStream::WriteString(const std::string& str)
-    {
-        WriteString(str.c_str());
     }
 } // namespace OpenRCT2
