@@ -4224,7 +4224,7 @@ int32_t NetworkGetNumGroups()
 }
 const char* NetworkGetGroupName(uint32_t index)
 {
-    return nullptr;
+    return "";
 };
 
 GameActions::Result NetworkSetPlayerGroup(
