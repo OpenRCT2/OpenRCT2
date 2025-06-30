@@ -489,9 +489,9 @@ STR_1091    :Mód cirkusového představení
 STR_1092    :Start dolů
 STR_1093    :Mód křivého domu
 STR_1094    :Mód volného pádu
-STR_1095    :Mód okruhu se sekcemi
+STR_1095    :Mód okruhu rozděleného na bloky
 STR_1096    :Rychlý start (bez průjezdu stanicí)
-STR_1097    :Rychlý start módu se sekcemi
+STR_1097    :Rychlý start do módu rozděl. na bloky
 STR_1098    :Přesouvá se na konec {POP16}{STRINGID}
 STR_1099    :Čeká na návštěvníky na {POP16}{STRINGID}
 STR_1100    :Čeká na odjezd {POP16}{STRINGID}
@@ -522,7 +522,7 @@ STR_1124    :Startuje
 STR_1125    :V provozu
 STR_1126    :Zastavuje
 STR_1127    :Vykládá návštěvníky
-STR_1128    :Zastavuje na brzdících blocích
+STR_1128    :Zastavuje na blokových brzdách
 STR_1129    :Všechny vozidla mají stejnou barvu
 STR_1130    :Rozdílné barvy pro každý {STRINGID}
 STR_1131    :Rozdílné barvy pro každé vozidlo
@@ -1083,7 +1083,7 @@ STR_1685    :Velikost podstavy 2 × 4
 STR_1686    :Velikost podstavy 5 × 1
 STR_1687    :Průjezd vodou
 STR_1688    :Velikost podstavy 4 × 1
-STR_1689    :Brzdící blok
+STR_1689    :Bloková brzda
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Cena: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Cena: {BLACK}již od {CURRENCY}
@@ -2140,7 +2140,7 @@ STR_3106    :Seznam kiosků a jiných zařízení
 STR_3107    :Zavřít
 STR_3108    :Testovat
 STR_3109    :Otevřít
-STR_3110    :{WINDOW_COLOUR_2}Sekce: {BLACK}{COMMA16}
+STR_3110    :{WINDOW_COLOUR_2}Bloková sekce: {BLACK}{COMMA16}
 STR_3111    :Pro postavení klikněte na návrh
 STR_3112    :Pro přejmenování nebo smazaní klikněte na návrh
 STR_3113    :Vybrat jiný návrh
@@ -2238,9 +2238,9 @@ STR_3225    :Přepnout stavění skupiny náhodných objektů okolo vybrané poz
 STR_3226    :Postavit vstup do parku
 STR_3227    :Příliš mnoho vstupů do parku
 STR_3228    :Nastavit počáteční pozice návštěvníků
-STR_3229    :Brzdící bloky nelze použít hned za stanicí
-STR_3230    :Brzdící bloky nelze použít v řadě za sebou
-STR_3231    :Brzdící bloky nelze použít hned za řetězovým výtahem
+STR_3229    :Blokové brzdy nelze použít hned za stanicí
+STR_3230    :Blokové brzdy nelze použít v řadě za sebou
+STR_3231    :Blokové brzdy nelze použít hned za řetězovým výtahem
 STR_3232    :Nastavení scénaře - Finance
 STR_3233    :Nastavení scénáře - Návštěvníci
 STR_3235    :Zobrazit nastavení financí
@@ -2418,7 +2418,7 @@ STR_5152    :,
 STR_5153    :Upravit motivy…
 STR_5154    :Hardwarové zobrazování
 STR_5155    :Povolit testování nedostavěných atrakcí
-STR_5156    :Povolí testování většiny typů atrakcí, i přesto, že atrakce není dostavěna. Netýká se módu sekcí
+STR_5156    :Povolí testování většiny typů atrakcí, i přesto, že atrakce není dostavěna. Netýká se módu okruhu rozděleného na bloky
 STR_5158    :Odejít do menu
 STR_5159    :Vypnout OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Rok {POP16}{COMMA16}
@@ -3220,8 +3220,8 @@ STR_6133    :Povolí přístup k atrakcím a kulisám, které ještě nebyly vyz
 STR_6134    :Odstranit kulisy
 STR_6135    :Klient zaslal neplatný požadavek
 STR_6136    :Server zaslal neplatný požadavek
-STR_6137    :OpenRCT2 je zdarma dostupný open source klon hry Roller Coaster Tycoon 2.
-STR_6138    :OpenRCT2 je dílem mnoha lidí. Seznam všech přispěvatelů je dostupný v souboru „contributors.md“. Pro více informací navštivte http://github.com/OpenRCT2/OpenRCT2
+STR_6137    :OpenRCT2, zdarma dostupný software s otevřeným zdrojovým kódem, replikující a rozšiřující Roller Coaster Tycoon 2.
+STR_6138    :OpenRCT2 je dílem mnoha lidí, úplný seznam zobrazíte tlačítkem „Přispěvatelé“. Pro více informací navštivte http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Všechny názvy produktů a společností jsou vlastnictvím jejich příslušných vlastníků. Jejich užití neimplikuje vazbu ani podporu příslušných vlastníků a tohoto projektu.
 STR_6140    :Seznam změn…
 STR_6141    :RCT1 dolní nástrojová lišta
@@ -3361,7 +3361,7 @@ STR_6315    :{WINDOW_COLOUR_2}Cíl hledání cesty: {BLACK}{INT32}, {INT32}, {IN
 STR_6316    :{WINDOW_COLOUR_2}Historie hledání cest:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} směr {INT32}
 STR_6318    :Detekována síťová desynchronizace.{NEWLINE}Log: {STRING}
-STR_6319    :Uzavřený brzdný blok
+STR_6319    :Bloková brzda zavřena
 STR_6320    :Nezničitelné
 STR_6321    :Rozbitá část
 STR_6322    :{WINDOW_COLOUR_2}Entity ID: {BLACK}{INT32}
@@ -3530,9 +3530,9 @@ STR_6487    :Skrýt přepnutí zaměstnanců
 STR_6488    :{RED}Hosté si stěžují na dlouhé fronty v parku.{NEWLINE}Zvažte zkrácení front, nebo zvýšení kapacit atrakcí.
 STR_6489    :Chyba: Nekompatibilní verze parku
 STR_6490    :Varování: Částečne kompatibilní verze parku
-STR_6491    :Tenhle park byl uložen v novější verzi OpenRCT2. Park je verze {INT32} a vyžaduje alespoň verzi {INT32}.
+STR_6491    :Tenhle park byl uložen v novější verzi OpenRCT2. Park byl uložen ve ver. {INT32} a vyžaduje alespoň ver. {INT32}. Momentálně používáte ver. {INT32}.
 STR_6492    :Tenhle park byl uložen v staré verzi OpenRCT2, a nemůže být otevřen touhle verzí. Park je verze {INT32}.
-STR_6493    :Tenhle park byl uložen v novější verzi OpenRCT2, některá data mohou být ztracena. Park je verze {INT32} a vyžaduje alespoň verzi {INT32}.
+STR_6493    :Tenhle park byl uložen v novější verzi OpenRCT2, některá data mohou být ztracena. Park byl uložen ve ver. {INT32}. Momentálně používáte ver. {INT32}.
 STR_6494    :Seskupit podle typu atrakce
 STR_6495    :Seskupit atrakce podle druhu místo zobrazení každé odděleně.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3559,12 +3559,12 @@ STR_6516    :Jeden nebo více přidaných objektů vyžaduje propojení s RCT1 p
 STR_6517    :Jeden nebo více přidaných objektů v tomto parku vyžaduje propojení s RCT1 pro správné zobrazení. Budou použity záložní obrázky.
 STR_6518    :{BLACK}Přejeď nad scenářem pro zobrazení popisu a cíle. Klikni pro začatí hry.
 STR_6519    :Extra
-STR_6520    :Balíčky doplňků
+STR_6520    :Balíky součástí
 STR_6521    :Nízká priorita
 STR_6522    :Vysoká priorita
-STR_6523    :Znížit prioritu zvoleného balíčku doplňků.
-STR_6524    :Zvýšit prioritu zvoleného balíčku doplňků.
-STR_6525    :Znovu načítat všechny doplňky ve hře se zapnutými balíčkami doplňků.
+STR_6523    :Znížit prioritu zvoleného balíku součástí.
+STR_6524    :Zvýšit prioritu zvoleného balíčku součástí.
+STR_6525    :Znovu načíst všechny součásti hry ze zvolených balíků.
 STR_6526    :(základní grafika, hudba a zvukové efekty)
 STR_6527    :Soutěže
 STR_6528    :Neplatné parametry trati!
@@ -3572,7 +3572,21 @@ STR_6529    :Neplatný parametr barevných kombinací!
 STR_6533    :{WINDOW_COLOUR_2}Faktor nadšení: {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}Faktor intenzity: {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Faktor nevolnosti: {BLACK}-{COMMA16}%
+STR_6536    :Tenhle park byl uložen v novější verzi OpenRCT2. Park byl uložen ve ver. {INT32}, momentálně používáte ver. {INT32}.
+STR_6537    :Povolit použití běžných cest pro fronty
+STR_6538    :V okně Cesty zobrazí běžné cesty v rozbalovacím seznamu front.
+STR_6539    :Uzavřené brzdy
+STR_6540    :{WINDOW_COLOUR_2}Zvláštní poděkování za povolení k využití designu patří společnostem:
 STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG, Intamin Amusement Rides Int. Corp. Est.
+STR_6542    :Přispěvatelé
+STR_6543    :Přispěvatelé…
+STR_6544    :Půjčka nemůže být záporná!
+STR_6545    :Použít výpočet úroku RCT1
+STR_6546    :Použije algoritmus výpočtu úroku z RollerCoaster Tycoon 1, který použivá pevný úrok přibližně 1.33%.
+STR_6547    :Všechny kulisy
+STR_6548    :Zobrazit zábradlí na křižovatkách
+STR_6549    :Nelze vybrat objekty pro kompatibilitu!
+STR_6550    :Tato položka je zahrnuta pro zpětnou kompatibilitu se starými nebo poškozenými objekty. Nemůže být vybrána, lze ji pouze odebrat z výběru.
 STR_6551    :Vojenská zelená
 STR_6552    :Honeydew zelená
 STR_6553    :Světle hnědá
@@ -3599,6 +3613,24 @@ STR_6573    :Neviditelná
 STR_6574    :Prázdná
 STR_6575    :Povolit speciální barvy
 STR_6576    :Přidá speciální barvy do rozbalovacího seznamu barev
+STR_6577    :Rychlost blokových brzd
+STR_6578    :Nastaví rychlostní omezení blokových brzd. V módu okruhu rozděleného na bloky jsou přiléhající brzdy s nižší rychlostí spojeny s blokovou brzdou.
+STR_6579    :Při uložení jako návrh tratě se blokové brzdy nastaví na výchozí rychlost
+STR_6580    :Obnovit
+STR_6581    :Opravdu chcete obnovit všechny klávesové zkratky na této záložce?
+STR_6582    :Otevřít okno Klávesové zkratky
+STR_6583    :{WINDOW_COLOUR_2}Obrácené vlaky
+STR_6584    :Zvolte pro vlaky jezdící pozpátku
+STR_6585    :Nelze změnit…
+STR_6586    :OpenRCT2
+STR_6587    :Úvodní znělka OpenRCT2 je dílem Allistera Brimblea,{NEWLINE}licencováno CC BY-SA 4.0.
+STR_6588    :Poděkování Hermanu Ridderingovi za svolení k nahrání 35er Voigt.
+STR_6589    :Zobrazit tlačítka oken vlevo
+STR_6590    :Zobrazit tlačítka oken (např. Zavřít) na levé straně titulku okna namísto pravé.
+STR_6591    :Zaměstnanec právě opravuje atrakci a nelze jej propustit.
+STR_6592    :Zaměstnanec právě provádí inspekci atrakce a nelze jej propustit.
+STR_6593    :Odstranit plot parku
+STR_6594    :Průzkumník dlaždic: Přepnout sklon zdi
 STR_6595    :{WINDOW_COLOUR_2}Tvůrce: {BLACK}{STRING}
 STR_6596    :{WINDOW_COLOUR_2}Tvůrci: {BLACK}{STRING}
 STR_6597    :Neplatný parametr
@@ -3639,9 +3671,15 @@ STR_6631    :Načítání…
 STR_6632    :Kontrola souborů objektů…
 STR_6633    :Kontrola souborů scénářů…
 STR_6634    :Kontrola souborů návrhů tratí…
-STR_6635    :Kontrola souborů balíčků doplňků…
+STR_6635    :Kontrola balíků součástí…
 STR_6636    :Kontrola souborů úvodních herních sekvencí…
 STR_6637    :Načítání úvodní herní sekvence…
+STR_6640    :Balíky součástí…
+STR_6641    :Okno načítání/postupu
+STR_6642    :{STRING} ({COMMA32} / {COMMA32})
+STR_6643    :{STRING} ({COMMA32} / {COMMA32} KiB)
+STR_6644    :Vylepšení dotyku
+STR_6645    :Zvětší některé prvky rozhraní, aby se na ně lépe klepalo nebo klikalo. 
 STR_6646    :Tvůrce: {STRING}
 STR_6647    :Tvůrci: {STRING}
 STR_6648    :Načítání plug-in enginu…
@@ -3719,7 +3757,7 @@ STR_6725    :X:
 STR_6726    :Y:
 STR_6727    :Smyčka (levá)
 STR_6728    :Smyčka (pravá)
-STR_6729    :Řetězový výtah musí začít hned za stanicí nebo brzdícím blokem
+STR_6729    :Řetězový výtah musí začít hned za stanicí nebo blokovou brzdou
 STR_6730    :Exportovat data emscripten
 STR_6731    :Importovat data emscripten
 STR_6732    :Zobrazit v nástrojové liště tlačítko pro otočení pohledu proti směru hodinových ručiček
