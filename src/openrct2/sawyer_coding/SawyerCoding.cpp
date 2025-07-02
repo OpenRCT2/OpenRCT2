@@ -9,8 +9,8 @@
 
 #include "SawyerCoding.h"
 
+#include "../core/Numerics.hpp"
 #include "../platform/Platform.h"
-#include "Numerics.hpp"
 
 #include <cassert>
 #include <cstdint>

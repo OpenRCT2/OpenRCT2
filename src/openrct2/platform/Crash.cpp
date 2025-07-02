@@ -36,12 +36,12 @@
     #include "../core/FileStream.h"
     #include "../core/Guard.hpp"
     #include "../core/Path.hpp"
-    #include "../core/SawyerCoding.h"
     #include "../core/String.hpp"
     #include "../drawing/IDrawingEngine.h"
     #include "../interface/Screenshot.h"
     #include "../object/ObjectManager.h"
     #include "../park/ParkFile.h"
+    #include "../sawyer_coding/SawyerCoding.h"
     #include "Platform.h"
 
     #define WSZ(x) L"" x

@@ -11,7 +11,7 @@
 
 #include "../core/IStream.hpp"
 #include "../core/Numerics.hpp"
-#include "../core/SawyerCoding.h"
+#include "../sawyer_coding/SawyerCoding.h"
 
 using namespace OpenRCT2::SawyerCoding;
 

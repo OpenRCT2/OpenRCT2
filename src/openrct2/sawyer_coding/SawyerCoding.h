@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../rct12/SawyerChunk.h"
+#include "SawyerChunk.h"
 
 #include <cstddef>
 #include <cstdint>

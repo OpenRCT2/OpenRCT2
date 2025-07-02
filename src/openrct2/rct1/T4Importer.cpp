@@ -15,12 +15,12 @@
 #include "../core/String.hpp"
 #include "../rct1/RCT1.h"
 #include "../rct1/Tables.h"
-#include "../rct12/SawyerChunkReader.h"
 #include "../rct12/TD46.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/TrackDesign.h"
 #include "../ride/TrackDesignRepository.h"
+#include "../sawyer_coding/SawyerChunkReader.h"
 
 #include <cassert>
 
