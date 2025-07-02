@@ -58,10 +58,10 @@ namespace OpenRCT2
 
             switch (header.encoding)
             {
-                case CHUNK_ENCODING_NONE:
-                case CHUNK_ENCODING_RLE:
-                case CHUNK_ENCODING_RLECOMPRESSED:
-                case CHUNK_ENCODING_ROTATE:
+                case SawyerEncoding::none:
+                case SawyerEncoding::rle:
+                case SawyerEncoding::rleCompressed:
+                case SawyerEncoding::rotate:
                 {
                     auto compressedData = std::make_unique<uint8_t[]>(header.length);
                     if (_stream->TryRead(compressedData.get(), header.length) != header.length)
@@ -108,7 +108,7 @@ namespace OpenRCT2
                 throw SawyerChunkException(kExceptionMessageCorruptChunkSize);
             }
 
-            SawyerCoding::ChunkHeader header{ CHUNK_ENCODING_RLE, compressedDataLength };
+            SawyerCoding::ChunkHeader header{ SawyerEncoding::rle, compressedDataLength };
             auto buffer = DecodeChunk(compressedData.get(), header);
             if (buffer.GetLength() == 0)
             {
@@ -266,16 +266,16 @@ namespace OpenRCT2
 
         switch (header.encoding)
         {
-            case CHUNK_ENCODING_NONE:
+            case SawyerEncoding::none:
                 buf.Write(src, header.length);
                 break;
-            case CHUNK_ENCODING_RLE:
+            case SawyerEncoding::rle:
                 buf = DecodeChunkRLE(src, header.length);
                 break;
-            case CHUNK_ENCODING_RLECOMPRESSED:
+            case SawyerEncoding::rleCompressed:
                 buf = DecodeChunkRLERepeat(src, header.length);
                 break;
-            case CHUNK_ENCODING_ROTATE:
+            case SawyerEncoding::rotate:
                 buf = DecodeChunkRotate(src, header.length);
                 break;
             default:

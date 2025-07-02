@@ -9,20 +9,13 @@
 
 #pragma once
 
+#include "../rct12/SawyerChunk.h"
+
 #include <cstddef>
 #include <cstdint>
 
 namespace OpenRCT2
 {
-    // TODO: make enum class in SawyerCoding namespace
-    enum
-    {
-        CHUNK_ENCODING_NONE,
-        CHUNK_ENCODING_RLE,
-        CHUNK_ENCODING_RLECOMPRESSED,
-        CHUNK_ENCODING_ROTATE
-    };
-
     // TODO: make enum class in SawyerCoding namespace
     enum
     {
@@ -43,7 +36,7 @@ namespace OpenRCT2::SawyerCoding
 #pragma pack(push, 1)
     struct ChunkHeader
     {
-        uint8_t encoding;
+        SawyerEncoding encoding;
         uint32_t length;
     };
     static_assert(sizeof(ChunkHeader) == 5);

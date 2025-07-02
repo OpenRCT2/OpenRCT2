@@ -45,14 +45,14 @@ namespace OpenRCT2::SawyerCoding
     {
         switch (chunkHeader.encoding)
         {
-            case CHUNK_ENCODING_NONE:
+            case SawyerEncoding::none:
                 std::memcpy(dst_file, &chunkHeader, sizeof(ChunkHeader));
                 dst_file += sizeof(ChunkHeader);
                 std::memcpy(dst_file, buffer, chunkHeader.length);
                 // fwrite(&chunkHeader, sizeof(ChunkHeader), 1, file);
                 // fwrite(buffer, 1, chunkHeader.length, file);
                 break;
-            case CHUNK_ENCODING_RLE:
+            case SawyerEncoding::rle:
             {
                 auto encode_buffer = std::make_unique<uint8_t[]>(0x600000);
                 chunkHeader.length = static_cast<uint32_t>(EncodeChunkRLE(buffer, encode_buffer.get(), chunkHeader.length));
@@ -61,7 +61,7 @@ namespace OpenRCT2::SawyerCoding
                 std::memcpy(dst_file, encode_buffer.get(), chunkHeader.length);
             }
             break;
-            case CHUNK_ENCODING_RLECOMPRESSED:
+            case SawyerEncoding::rleCompressed:
             {
                 auto encode_buffer = std::make_unique<uint8_t[]>(chunkHeader.length * 2);
                 auto encode_buffer2 = std::make_unique<uint8_t[]>(0x600000);
@@ -73,7 +73,7 @@ namespace OpenRCT2::SawyerCoding
                 std::memcpy(dst_file, encode_buffer2.get(), chunkHeader.length);
             }
             break;
-            case CHUNK_ENCODING_ROTATE:
+            case SawyerEncoding::rotate:
             {
                 auto encode_buffer = std::make_unique<uint8_t[]>(chunkHeader.length);
                 std::memcpy(encode_buffer.get(), buffer, chunkHeader.length);

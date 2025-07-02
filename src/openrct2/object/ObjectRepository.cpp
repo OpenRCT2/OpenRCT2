@@ -475,10 +475,10 @@ private:
     }
 
     // 0x0098DA2C
-    static constexpr std::array<int32_t, 11> kLegacyObjectEntryGroupEncoding = {
-        CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE,    CHUNK_ENCODING_RLE,
-        CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE,    CHUNK_ENCODING_RLE,
-        CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE, CHUNK_ENCODING_ROTATE,
+    static constexpr std::array<SawyerEncoding, 11> kLegacyObjectEntryGroupEncoding = {
+        SawyerEncoding::rle, SawyerEncoding::rle, SawyerEncoding::rle,    SawyerEncoding::rle,
+        SawyerEncoding::rle, SawyerEncoding::rle, SawyerEncoding::rle,    SawyerEncoding::rle,
+        SawyerEncoding::rle, SawyerEncoding::rle, SawyerEncoding::rotate,
     };
 
     static void SaveObject(
