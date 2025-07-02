@@ -6,6 +6,7 @@
 - Improved: [#23228] Landscape edge doors now animate opening and closing and play a sound.
 - Improved: [#24026] Notification settings have been made into a tab of the Recent Messages window.
 - Improved: [#24569] Add nine additional translations to the Windows installer.
+- Change: [#24511] [Plugin] Separated new seatedInPairs field from numSeats field on vehicles and vehicle objects; seatedInPairs can now be set on vehicle entities.
 - Change: [#24559] Scenario options are now disabled rather than hidden when disabling money makes them non-applicable.
 - Change: [objects#383] Disable all base colours on non-remappable WWTT vehicles, change black to light_blue.
 - Change: [objects#384] Remove erroneously enabled WWTT third remaps.
@@ -18,6 +19,7 @@
 - Fix: [#21703] Scenery wall doors get stuck open if the game is saved and loaded whilst they are open.
 - Fix: [#24456] Zoomed out vehicles on the ride window tab can sometimes draw incorrectly.
 - Fix: [#24458] Vehicles in the ride window vehicle tab are offset differently than vanilla RCT2, and the sprites are cut off at the bottom.
+- Fix: [#24510] Ride vehicles that load in pairs do not load properly when the ride is in either Race or Dodgems mode.
 - Fix: [#24576] It is possible to edit open rides in certain circumstances.
 - Fix: [#24589] Music tab doesn’t fully render in multiplayer.
 - Fix: [#24615] Blank strings in Windows installer.
