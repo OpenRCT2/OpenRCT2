@@ -365,7 +365,7 @@ namespace OpenRCT2::RCT1
             const ScenarioIndexEntry* scenarioEntry = _scenarioRepository->GetByInternalName(_s4.ScenarioName);
             if (scenarioEntry == nullptr)
             {
-                return "";
+                return {};
             }
 
             return Path::GetFileName(scenarioEntry->Path);

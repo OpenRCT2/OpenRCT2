@@ -167,7 +167,7 @@ namespace OpenRCT2::Ui
                 else
                 {
                     SDL_RaiseWindow(window);
-                    return "";
+                    return {};
                 }
             }
         }

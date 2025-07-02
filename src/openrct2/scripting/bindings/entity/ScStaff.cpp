@@ -65,7 +65,7 @@ namespace OpenRCT2::Scripting
                     break;
             }
         }
-        return "";
+        return {};
     }
 
     void ScStaff::staffType_set(const std::string& value)
@@ -163,7 +163,7 @@ namespace OpenRCT2::Scripting
         auto peep = GetStaff();
         if (peep == nullptr)
         {
-            return "";
+            return {};
         }
 
         auto& costumes = costumesByStaffType(peep->AssignedStaffType);
