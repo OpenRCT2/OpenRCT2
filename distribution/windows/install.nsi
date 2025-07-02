@@ -107,7 +107,7 @@ ManifestDPIAware true
 !insertmacro MUI_LANGUAGE "English"
 ;!insertmacro MUI_LANGUAGE "Arabic"
 ;!insertmacro MUI_LANGUAGE "Catalan"
-;!insertmacro MUI_LANGUAGE "Czech"
+!insertmacro MUI_LANGUAGE "Czech"
 ;!insertmacro MUI_LANGUAGE "Danish"
 !insertmacro MUI_LANGUAGE "German"
 ;!insertmacro MUI_LANGUAGE "Esperanto"
@@ -133,6 +133,7 @@ ManifestDPIAware true
 !insertmacro MUI_RESERVEFILE_LANGDLL
 
 !include "language\install_en.nsi"
+!include "language\install_cs.nsi"
 !include "language\install_de.nsi"
 !include "language\install_fi.nsi"
 !include "language\install_fr.nsi"
