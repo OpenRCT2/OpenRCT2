@@ -15,23 +15,22 @@
 
 namespace OpenRCT2
 {
-    /**
-     * The type of encoding / compression for a sawyer encoded chunk.
-     */
-    enum class SawyerEncoding : uint8_t
-    {
-        none,
-        rle,
-        rleCompressed,
-        rotate,
-    };
-
     namespace SawyerCoding
     {
+        /**
+         * The type of encoding / compression for a sawyer encoded chunk.
+         */
+        enum class ChunkEncoding : uint8_t
+        {
+            none,
+            rle,
+            rleCompressed,
+            rotate,
+        };
 #pragma pack(push, 1)
         struct ChunkHeader
         {
-            SawyerEncoding encoding;
+            ChunkEncoding encoding;
             uint32_t length;
         };
         static_assert(sizeof(ChunkHeader) == 5);
@@ -45,7 +44,7 @@ namespace OpenRCT2
     {
     private:
         OpenRCT2::MemoryStream _data;
-        SawyerEncoding _encoding = SawyerEncoding::none;
+        SawyerCoding::ChunkEncoding _encoding = SawyerCoding::ChunkEncoding::none;
 
     public:
         const void* GetData() const
@@ -56,11 +55,11 @@ namespace OpenRCT2
         {
             return _data.GetLength();
         }
-        SawyerEncoding GetEncoding() const
+        SawyerCoding::ChunkEncoding GetEncoding() const
         {
             return _encoding;
         }
 
-        SawyerChunk(SawyerEncoding encoding, OpenRCT2::MemoryStream&& data);
+        SawyerChunk(SawyerCoding::ChunkEncoding encoding, OpenRCT2::MemoryStream&& data);
     };
 } // namespace OpenRCT2

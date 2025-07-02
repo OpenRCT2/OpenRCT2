@@ -47,6 +47,7 @@
 #undef CP_UTF8
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::SawyerCoding;
 
 struct ObjectEntryHash
 {
@@ -475,10 +476,10 @@ private:
     }
 
     // 0x0098DA2C
-    static constexpr std::array<SawyerEncoding, 11> kLegacyObjectEntryGroupEncoding = {
-        SawyerEncoding::rle, SawyerEncoding::rle, SawyerEncoding::rle,    SawyerEncoding::rle,
-        SawyerEncoding::rle, SawyerEncoding::rle, SawyerEncoding::rle,    SawyerEncoding::rle,
-        SawyerEncoding::rle, SawyerEncoding::rle, SawyerEncoding::rotate,
+    static constexpr std::array<ChunkEncoding, 11> kLegacyObjectEntryGroupEncoding = {
+        ChunkEncoding::rle, ChunkEncoding::rle, ChunkEncoding::rle,    ChunkEncoding::rle,
+        ChunkEncoding::rle, ChunkEncoding::rle, ChunkEncoding::rle,    ChunkEncoding::rle,
+        ChunkEncoding::rle, ChunkEncoding::rle, ChunkEncoding::rotate,
     };
 
     static void SaveObject(

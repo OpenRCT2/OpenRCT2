@@ -39,7 +39,7 @@ namespace OpenRCT2
          * @param src The source buffer.
          * @param length The size of the source buffer.
          */
-        void WriteChunk(const void* src, size_t length, SawyerEncoding encoding);
+        void WriteChunk(const void* src, size_t length, SawyerCoding::ChunkEncoding encoding);
 
         /**
          * Writes a track chunk to the stream containing the given buffer.
@@ -52,7 +52,7 @@ namespace OpenRCT2
          * Writes a chunk to the stream containing the given type.
          */
         template<typename T>
-        void WriteChunk(const T* src, SawyerEncoding encoding)
+        void WriteChunk(const T* src, SawyerCoding::ChunkEncoding encoding)
         {
             WriteChunk(src, sizeof(T), encoding);
         }

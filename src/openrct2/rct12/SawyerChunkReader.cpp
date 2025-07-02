@@ -13,6 +13,8 @@
 #include "../core/MemoryStream.h"
 #include "../core/Numerics.hpp"
 
+using namespace OpenRCT2::SawyerCoding;
+
 namespace OpenRCT2
 {
     // Allow chunks to be uncompressed to a maximum of 16 MiB
@@ -58,10 +60,10 @@ namespace OpenRCT2
 
             switch (header.encoding)
             {
-                case SawyerEncoding::none:
-                case SawyerEncoding::rle:
-                case SawyerEncoding::rleCompressed:
-                case SawyerEncoding::rotate:
+                case ChunkEncoding::none:
+                case ChunkEncoding::rle:
+                case ChunkEncoding::rleCompressed:
+                case ChunkEncoding::rotate:
                 {
                     auto compressedData = std::make_unique<uint8_t[]>(header.length);
                     if (_stream->TryRead(compressedData.get(), header.length) != header.length)
@@ -75,7 +77,7 @@ namespace OpenRCT2
                         throw SawyerChunkException(kExceptionMessageZeroSizedChunk);
                     }
 
-                    return std::make_shared<SawyerChunk>(static_cast<SawyerEncoding>(header.encoding), std::move(buffer));
+                    return std::make_shared<SawyerChunk>(static_cast<ChunkEncoding>(header.encoding), std::move(buffer));
                 }
                 default:
                     throw SawyerChunkException(kExceptionMessageInvalidChunkEncoding);
@@ -108,13 +110,13 @@ namespace OpenRCT2
                 throw SawyerChunkException(kExceptionMessageCorruptChunkSize);
             }
 
-            SawyerCoding::ChunkHeader header{ SawyerEncoding::rle, compressedDataLength };
+            SawyerCoding::ChunkHeader header{ ChunkEncoding::rle, compressedDataLength };
             auto buffer = DecodeChunk(compressedData.get(), header);
             if (buffer.GetLength() == 0)
             {
                 throw SawyerChunkException(kExceptionMessageZeroSizedChunk);
             }
-            return std::make_shared<SawyerChunk>(SawyerEncoding::rle, std::move(buffer));
+            return std::make_shared<SawyerChunk>(ChunkEncoding::rle, std::move(buffer));
         }
         catch (const std::exception&)
         {
@@ -266,16 +268,16 @@ namespace OpenRCT2
 
         switch (header.encoding)
         {
-            case SawyerEncoding::none:
+            case ChunkEncoding::none:
                 buf.Write(src, header.length);
                 break;
-            case SawyerEncoding::rle:
+            case ChunkEncoding::rle:
                 buf = DecodeChunkRLE(src, header.length);
                 break;
-            case SawyerEncoding::rleCompressed:
+            case ChunkEncoding::rleCompressed:
                 buf = DecodeChunkRLERepeat(src, header.length);
                 break;
-            case SawyerEncoding::rotate:
+            case ChunkEncoding::rotate:
                 buf = DecodeChunkRotate(src, header.length);
                 break;
             default:
