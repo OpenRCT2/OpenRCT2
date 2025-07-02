@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Cheats.h"
+#include "../core/FlagHolder.hpp"
 #include "../localisation/StringIdType.h"
 #include "../ride/RideTypes.h"
 #include "../ride/ShopItem.h"
@@ -41,22 +42,26 @@ enum
     CAMPAIGN_ACTIVE_FLAG = (1 << 7)
 };
 
+namespace OpenRCT2
+{
+    enum class MarketingCampaignFlag : uint8_t
+    {
+        firstWeek,
+    };
+    using MarketingCampaignFlags = FlagHolder<uint8_t, MarketingCampaignFlag>;
+} // namespace OpenRCT2
+
 struct MarketingCampaign
 {
     uint8_t Type{};
     uint8_t WeeksLeft{};
-    uint8_t Flags{};
+    OpenRCT2::MarketingCampaignFlags flags{};
     union
     {
         ::RideId RideId{};
         ShopItemIndex ShopItemType;
     };
 };
-
-namespace OpenRCT2::MarketingCampaignFlags
-{
-    constexpr uint8_t FIRST_WEEK = 1 << 0;
-}
 
 extern const money64 AdvertisingCampaignPricePerWeek[ADVERTISING_CAMPAIGN_COUNT];
 
