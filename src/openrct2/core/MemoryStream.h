@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/FlagHolder.hpp"
 #include "IStream.hpp"
 
 #include <algorithm>
@@ -17,12 +18,13 @@
 
 namespace OpenRCT2
 {
-    namespace MEMORY_ACCESS
+    enum class MemoryAccess : uint8_t
     {
-        constexpr uint8_t READ = 1 << 0;
-        constexpr uint8_t WRITE = 1 << 1;
-        constexpr uint8_t OWNER = 1 << 2;
-    }; // namespace MEMORY_ACCESS
+        read,
+        write,
+        owner,
+    };
+    using AccessFlags = FlagHolder<uint8_t, MemoryAccess>;
 
     /**
      * A stream for reading and writing to a buffer in memory. By default this buffer can grow.
@@ -30,7 +32,7 @@ namespace OpenRCT2
     class MemoryStream final : public IStream
     {
     private:
-        uint8_t _access = MEMORY_ACCESS::READ | MEMORY_ACCESS::WRITE | MEMORY_ACCESS::OWNER;
+        AccessFlags _access = { MemoryAccess::read, MemoryAccess::write, MemoryAccess::owner };
         size_t _dataCapacity = 0;
         size_t _dataSize = 0;
         uint8_t* _data = nullptr;
@@ -42,9 +44,9 @@ namespace OpenRCT2
         MemoryStream(MemoryStream&& mv) noexcept;
         explicit MemoryStream(size_t capacity);
         MemoryStream(const std::vector<uint8_t>& v);
-        MemoryStream(void* data, size_t dataSize, uint8_t access = MEMORY_ACCESS::READ);
+        MemoryStream(void* data, size_t dataSize, AccessFlags access = { MemoryAccess::read });
         MemoryStream(const void* data, size_t dataSize)
-            : MemoryStream(const_cast<void*>(data), dataSize, MEMORY_ACCESS::READ)
+            : MemoryStream(const_cast<void*>(data), dataSize, MemoryAccess::read)
         {
         }
         virtual ~MemoryStream();
@@ -62,11 +64,11 @@ namespace OpenRCT2
 
         bool CanRead() const override
         {
-            return (_access & MEMORY_ACCESS::READ) != 0;
+            return _access.has(MemoryAccess::read);
         }
         bool CanWrite() const override
         {
-            return (_access & MEMORY_ACCESS::WRITE) != 0;
+            return _access.has(MemoryAccess::write);
         }
 
         uint64_t GetLength() const override

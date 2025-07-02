@@ -22,7 +22,7 @@ namespace OpenRCT2
         _dataCapacity = copy._dataCapacity;
         _dataSize = copy._dataSize;
 
-        if (_access & MEMORY_ACCESS::OWNER)
+        if (_access.has(MemoryAccess::owner))
         {
             _data = Memory::Allocate<uint8_t>(_dataCapacity);
             std::memcpy(_data, copy._data, _dataCapacity);
@@ -43,7 +43,7 @@ namespace OpenRCT2
         std::memcpy(_data, v.data(), v.size());
     }
 
-    MemoryStream::MemoryStream(void* data, size_t dataSize, uint8_t access)
+    MemoryStream::MemoryStream(void* data, size_t dataSize, AccessFlags access)
     {
         _access = access;
         _dataCapacity = dataSize;
@@ -66,7 +66,7 @@ namespace OpenRCT2
 
     MemoryStream::~MemoryStream()
     {
-        if (_access & MEMORY_ACCESS::OWNER)
+        if (_access.has(MemoryAccess::owner))
             Memory::Free(_data);
 
         _data = nullptr;
@@ -79,7 +79,7 @@ namespace OpenRCT2
     {
         if (this != &mv)
         {
-            if (_access & MEMORY_ACCESS::OWNER)
+            if (_access.has(MemoryAccess::owner))
                 Memory::Free(_data);
 
             _access = mv._access;
@@ -188,7 +188,7 @@ namespace OpenRCT2
     {
         if (_position + static_cast<size_t>(length) > _dataCapacity)
         {
-            if (_access & MEMORY_ACCESS::OWNER)
+            if (_access.has(MemoryAccess::owner))
             {
                 // resize to the larger of the requested capacity and double the current capacity, with a minimum of 8.
                 size_t newCapacity = std::max(_position + static_cast<size_t>(length), _dataCapacity * 2);
