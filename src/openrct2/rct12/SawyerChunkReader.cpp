@@ -16,13 +16,13 @@
 namespace OpenRCT2
 {
     // Allow chunks to be uncompressed to a maximum of 16 MiB
-    constexpr size_t MAX_UNCOMPRESSED_CHUNK_SIZE = 16 * 1024 * 1024;
+    constexpr size_t kMaxUncompressedChunkSize = 16 * 1024 * 1024;
 
-    constexpr const char* EXCEPTION_MSG_CORRUPT_CHUNK_SIZE = "Corrupt chunk size.";
-    constexpr const char* EXCEPTION_MSG_CORRUPT_RLE = "Corrupt RLE compression data.";
-    constexpr const char* EXCEPTION_MSG_DESTINATION_TOO_SMALL = "Chunk data larger than allocated destination capacity.";
-    constexpr const char* EXCEPTION_MSG_INVALID_CHUNK_ENCODING = "Invalid chunk encoding.";
-    constexpr const char* EXCEPTION_MSG_ZERO_SIZED_CHUNK = "Encountered zero-sized chunk.";
+    constexpr const char* kExceptionMessageCorruptChunkSize = "Corrupt chunk size.";
+    constexpr const char* kExceptionMessageCorruptRLE = "Corrupt RLE compression data.";
+    constexpr const char* kExceptionMessageDestinationTooSmall = "Chunk data larger than allocated destination capacity.";
+    constexpr const char* kExceptionMessageInvalidChunkEncoding = "Invalid chunk encoding.";
+    constexpr const char* kExceptionMessageZeroSizedChunk = "Encountered zero-sized chunk.";
 
     static MemoryStream DecodeChunk(const void* src, const SawyerCoding::ChunkHeader& header);
 
@@ -53,8 +53,8 @@ namespace OpenRCT2
         try
         {
             auto header = _stream->ReadValue<SawyerCoding::ChunkHeader>();
-            if (header.length >= MAX_UNCOMPRESSED_CHUNK_SIZE)
-                throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_CHUNK_SIZE);
+            if (header.length >= kMaxUncompressedChunkSize)
+                throw SawyerChunkException(kExceptionMessageCorruptChunkSize);
 
             switch (header.encoding)
             {
@@ -66,19 +66,19 @@ namespace OpenRCT2
                     auto compressedData = std::make_unique<uint8_t[]>(header.length);
                     if (_stream->TryRead(compressedData.get(), header.length) != header.length)
                     {
-                        throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_CHUNK_SIZE);
+                        throw SawyerChunkException(kExceptionMessageCorruptChunkSize);
                     }
 
                     auto buffer = DecodeChunk(compressedData.get(), header);
                     if (buffer.GetLength() == 0)
                     {
-                        throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
+                        throw SawyerChunkException(kExceptionMessageZeroSizedChunk);
                     }
 
                     return std::make_shared<SawyerChunk>(static_cast<SawyerEncoding>(header.encoding), std::move(buffer));
                 }
                 default:
-                    throw SawyerChunkException(EXCEPTION_MSG_INVALID_CHUNK_ENCODING);
+                    throw SawyerChunkException(kExceptionMessageInvalidChunkEncoding);
             }
         }
         catch (const std::exception&)
@@ -98,21 +98,21 @@ namespace OpenRCT2
             int64_t compressedDataLength64 = _stream->GetLength() - _stream->GetPosition() - 4;
             if (compressedDataLength64 < 0 || compressedDataLength64 > std::numeric_limits<uint32_t>::max())
             {
-                throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
+                throw SawyerChunkException(kExceptionMessageZeroSizedChunk);
             }
             uint32_t compressedDataLength = compressedDataLength64;
             auto compressedData = std::make_unique<uint8_t[]>(compressedDataLength);
 
             if (_stream->TryRead(compressedData.get(), compressedDataLength) != compressedDataLength)
             {
-                throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_CHUNK_SIZE);
+                throw SawyerChunkException(kExceptionMessageCorruptChunkSize);
             }
 
             SawyerCoding::ChunkHeader header{ CHUNK_ENCODING_RLE, compressedDataLength };
             auto buffer = DecodeChunk(compressedData.get(), header);
             if (buffer.GetLength() == 0)
             {
-                throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
+                throw SawyerChunkException(kExceptionMessageZeroSizedChunk);
             }
             return std::make_shared<SawyerChunk>(SawyerEncoding::rle, std::move(buffer));
         }
@@ -160,11 +160,11 @@ namespace OpenRCT2
 
                 if (i >= srcLength)
                 {
-                    throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_RLE);
+                    throw SawyerChunkException(kExceptionMessageCorruptRLE);
                 }
-                if (buf.GetLength() + count > MAX_UNCOMPRESSED_CHUNK_SIZE)
+                if (buf.GetLength() + count > kMaxUncompressedChunkSize)
                 {
-                    throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
+                    throw SawyerChunkException(kExceptionMessageDestinationTooSmall);
                 }
 
                 for (size_t n = 0; n < count; n++)
@@ -178,15 +178,15 @@ namespace OpenRCT2
 
                 if (i + 1 >= srcLength)
                 {
-                    throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_RLE);
+                    throw SawyerChunkException(kExceptionMessageCorruptRLE);
                 }
-                if (buf.GetLength() + len > MAX_UNCOMPRESSED_CHUNK_SIZE)
+                if (buf.GetLength() + len > kMaxUncompressedChunkSize)
                 {
-                    throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
+                    throw SawyerChunkException(kExceptionMessageDestinationTooSmall);
                 }
                 if (i + 1 + len > srcLength)
                 {
-                    throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_RLE);
+                    throw SawyerChunkException(kExceptionMessageCorruptRLE);
                 }
 
                 const auto* pos = src8 + i + 1;
@@ -210,7 +210,7 @@ namespace OpenRCT2
             {
                 if (i + 1 >= srcLength)
                 {
-                    throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_RLE);
+                    throw SawyerChunkException(kExceptionMessageCorruptRLE);
                 }
                 i++;
                 buf.WriteValue(src8[i]);
@@ -224,7 +224,7 @@ namespace OpenRCT2
                 if (copySrc < static_cast<const uint8_t*>(buf.GetData())
                     || copySrc + count > static_cast<const uint8_t*>(buf.GetData()) + buf.GetLength())
                 {
-                    throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_RLE);
+                    throw SawyerChunkException(kExceptionMessageCorruptRLE);
                 }
 
                 // We need a temporary buffer as the vector might invalidate the pointer.
@@ -279,7 +279,7 @@ namespace OpenRCT2
                 buf = DecodeChunkRotate(src, header.length);
                 break;
             default:
-                throw SawyerChunkException(EXCEPTION_MSG_INVALID_CHUNK_ENCODING);
+                throw SawyerChunkException(kExceptionMessageInvalidChunkEncoding);
         }
 
         // Return the stream with the position at the beginning.
