@@ -33,15 +33,6 @@ namespace OpenRCT2
 
 namespace OpenRCT2::SawyerCoding
 {
-#pragma pack(push, 1)
-    struct ChunkHeader
-    {
-        SawyerEncoding encoding;
-        uint32_t length;
-    };
-    static_assert(sizeof(ChunkHeader) == 5);
-#pragma pack(pop)
-
     uint32_t CalculateChecksum(const uint8_t* buffer, size_t length);
     size_t WriteChunkBuffer(uint8_t* dst_file, const uint8_t* src_buffer, ChunkHeader chunkHeader);
     size_t DecodeSV4(const uint8_t* src, uint8_t* dst, size_t length, size_t bufferLength);

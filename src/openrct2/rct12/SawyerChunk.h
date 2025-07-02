@@ -26,6 +26,18 @@ namespace OpenRCT2
         rotate,
     };
 
+    namespace SawyerCoding
+    {
+#pragma pack(push, 1)
+        struct ChunkHeader
+        {
+            SawyerEncoding encoding;
+            uint32_t length;
+        };
+        static_assert(sizeof(ChunkHeader) == 5);
+#pragma pack(pop)
+    } // namespace SawyerCoding
+
     /**
      * Represents a sawyer encoded chunk.
      */
