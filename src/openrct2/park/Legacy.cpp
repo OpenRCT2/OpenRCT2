@@ -2985,7 +2985,6 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
                 break;
         }
     }
-
     return false;
 }
 
