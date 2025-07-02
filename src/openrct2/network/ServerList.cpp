@@ -268,8 +268,8 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
 {
     auto broadcastAddress = broadcastEndpoint.GetHostname();
     return std::async(std::launch::async, [broadcastAddress] {
-        constexpr auto RECV_DELAY_MS = 10;
-        constexpr auto RECV_WAIT_MS = 2000;
+        constexpr auto kReceiveDelayInMs = 10;
+        constexpr auto kReceiveWaitInMs = 2000;
 
         std::string_view msg = kNetworkLanBroadcastMsg;
         auto udpSocket = CreateUdpSocket();
@@ -282,7 +282,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
         }
 
         std::vector<ServerListEntry> entries;
-        for (int i = 0; i < (RECV_WAIT_MS / RECV_DELAY_MS); i++)
+        for (int i = 0; i < (kReceiveWaitInMs / kReceiveDelayInMs); i++)
         {
             try
             {
@@ -314,7 +314,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
             {
                 LOG_WARNING("Error receiving data: %s", e.what());
             }
-            Platform::Sleep(RECV_DELAY_MS);
+            Platform::Sleep(kReceiveDelayInMs);
         }
         return entries;
     });
