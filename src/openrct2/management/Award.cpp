@@ -24,27 +24,29 @@
 
 using namespace OpenRCT2;
 
-constexpr uint8_t NEGATIVE = 0;
-constexpr uint8_t POSITIVE = 1;
-
-static constexpr uint8_t AwardPositiveMap[] = {
-    NEGATIVE, // AwardType::MostUntidy
-    POSITIVE, // AwardType::MostTidy
-    POSITIVE, // AwardType::BestRollerCoasters
-    POSITIVE, // AwardType::BestValue
-    POSITIVE, // AwardType::MostBeautiful
-    NEGATIVE, // AwardType::WorstValue
-    POSITIVE, // AwardType::Safest
-    POSITIVE, // AwardType::BestStaff
-    POSITIVE, // AwardType::BestFood
-    NEGATIVE, // AwardType::WorstFood
-    POSITIVE, // AwardType::BestToilets
-    NEGATIVE, // AwardType::MostDisappointing
-    POSITIVE, // AwardType::BestWaterRides
-    POSITIVE, // AwardType::BestCustomDesignedRides
-    POSITIVE, // AwardType::MostDazzlingRideColours
-    NEGATIVE, // AwardType::MostConfusingLayout
-    POSITIVE, // AwardType::BestGentleRides
+enum class AwardEffect : uint8_t
+{
+    negative,
+    positive
+};
+static constexpr AwardEffect kAwardPositiveMap[] = {
+    AwardEffect::negative, // AwardType::MostUntidy
+    AwardEffect::positive, // AwardType::MostTidy
+    AwardEffect::positive, // AwardType::BestRollerCoasters
+    AwardEffect::positive, // AwardType::BestValue
+    AwardEffect::positive, // AwardType::MostBeautiful
+    AwardEffect::negative, // AwardType::WorstValue
+    AwardEffect::positive, // AwardType::Safest
+    AwardEffect::positive, // AwardType::BestStaff
+    AwardEffect::positive, // AwardType::BestFood
+    AwardEffect::negative, // AwardType::WorstFood
+    AwardEffect::positive, // AwardType::BestToilets
+    AwardEffect::negative, // AwardType::MostDisappointing
+    AwardEffect::positive, // AwardType::BestWaterRides
+    AwardEffect::positive, // AwardType::BestCustomDesignedRides
+    AwardEffect::positive, // AwardType::MostDazzlingRideColours
+    AwardEffect::negative, // AwardType::MostConfusingLayout
+    AwardEffect::positive, // AwardType::BestGentleRides
 };
 
 static constexpr StringId AwardNewsStrings[] = {
@@ -69,7 +71,7 @@ static constexpr StringId AwardNewsStrings[] = {
 
 bool AwardIsPositive(AwardType type)
 {
-    return AwardPositiveMap[EnumValue(type)];
+    return kAwardPositiveMap[EnumValue(type)] == AwardEffect::positive;
 }
 
 #pragma region Award checks
