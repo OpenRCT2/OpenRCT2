@@ -842,11 +842,7 @@ private:
         GfxInvalidateScreen();
 
         // Check if the window has been resized in windowed mode and update the config file accordingly
-        int32_t nonWindowFlags =
-#ifndef __MACOSX__
-            SDL_WINDOW_MAXIMIZED |
-#endif
-            SDL_WINDOW_MINIMIZED | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP;
+        int32_t nonWindowFlags = SDL_WINDOW_MAXIMIZED | SDL_WINDOW_MINIMIZED | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP;
 
         if (!(flags & nonWindowFlags))
         {
