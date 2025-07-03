@@ -2327,7 +2327,7 @@ STR_3332    :Vstup do parku je špatně otočený, nebo z něj nevede cesta k hr
 STR_3333    :Exportovat uživatelské objekty s uložením hry
 STR_3334    :Vyberte, zda ukládat data uživatelských objektů (data nedodané s hlavním produktem) do souborů uložených her a scénářů, což dovolí jejích načítání těmi, kdo nemají tato dodatečná data objektů.
 STR_3335    :Návrhář trati - Vyberte typ atrakce a vozů
-STR_3336    :Správa návrhu trati - Vyberte typ trati
+STR_3336    :Správa návrhů trati - Vyberte typ trati
 STR_3338    :{BLACK}Vlastnoručně navržené
 STR_3339    :{BLACK}{COMMA16} návrh dostupný nebo vlastnoručně navržený
 STR_3340    :{BLACK}{COMMA16} návrhy dostupné nebo vlastnoručně navržené
@@ -2335,7 +2335,7 @@ STR_3341    :Herní nástroje
 STR_3342    :Editor scénáře
 STR_3343    :Konvertovat uloženou hru na scénář
 STR_3344    :Návrhář trati
-STR_3345    :Správa návrhu trati
+STR_3345    :Správa návrhů trati
 STR_3346    :Nelze uložit návrh trati…
 STR_3347    :Trať je příliš velká, obsahuje příliš mnoho prvků, nebo příliš rozsáhlé kulisy
 STR_3348    :Přejmenovat

@@ -2514,7 +2514,7 @@ STR_5265    :Seleccioneu quins continguts voleu veure.
 STR_5266    :Gràfics
 STR_5267    :Idioma i unitats
 STR_5268    :Música i so
-STR_5269    :Controls i interfície
+STR_5269    :Controls
 STR_5270    :Altres
 STR_5272    :Decoració petita
 STR_5273    :Decoració gran
@@ -3791,3 +3791,37 @@ STR_6747    :Les preferències varien (per defecte)
 STR_6748    :Només les atraccions menys intenses
 STR_6749    :Només les atraccions més intenses
 STR_6750    :Trieu quin tipus d’intensitat d’atraccions han de preferir els visitants nous.
+STR_6751    :No es poden fer servir cues com a cruïlles a nivell.
+STR_6752    :Opcions d’escenari - Objectiu
+STR_6753    :Opcions d’escenari - Detalls de l’escenari
+STR_6754    :Opcions d’escenari - Restriccions de terreny
+STR_6755    :Mostra les opcions d’objectiu
+STR_6756    :Mostra les opcions de detalls d’escenari
+STR_6757    :Mostra les opcions de restriccions de terreny
+STR_6758    :Opcions de préstecs
+STR_6759    :Model de negoci
+STR_6760    :Ingressos:
+STR_6761    :Detalls d’escenari
+STR_6762    :Interfície
+STR_6763    :RollerCoaster Tycoon 1
+STR_6764    :Desades
+STR_6765    :Avançat
+STR_6766    :Esborra
+STR_6767    :Finestra
+STR_6768    :Renderitzat
+STR_6769    :Comportament
+STR_6770    :Límit de FPS:
+STR_6771    :Velocitat interna (per defecte)
+STR_6772    :Sincronització vertical
+STR_6773    :Sense límit
+STR_6774    :Temps des de l’última inspecció
+STR_6775    :{COMMA16} minut
+STR_6776    :{COMMA16} minuts
+STR_6777    :més de 4 hores
+STR_6778    :Vistes prèvies d’escenaris:
+STR_6779    :Trieu el tipus d’imatge prèvia que s’ha de fer servir a la finestra de selecció d’escenari.
+STR_6780    :Minimapes
+STR_6781    :Captures de pantalla
+STR_6782    :Notificacions de parc
+STR_6783    :Notificacions d’atraccions
+STR_6784    :Notificacions de visitants
