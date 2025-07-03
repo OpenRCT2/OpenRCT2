@@ -3823,3 +3823,10 @@ STR_6781    :Screenshots
 STR_6782    :Park notifications
 STR_6783    :Ride notifications
 STR_6784    :Guest notifications
+STR_6785    :Gamepad
+STR_6786    :Deadzone:
+STR_6787    :Analogue stick deadzone (minimum movement required)
+STR_6788    :Sensitivity:
+STR_6789    :Analogue stick sensitivity multiplier
+STR_6790    :Deadzone: {COMMA32}%
+STR_6791    :Sensitivity: {COMMA32}%
