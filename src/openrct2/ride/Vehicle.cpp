@@ -94,18 +94,17 @@ uint8_t _vehicleF64E2C;
 Vehicle* _vehicleFrontVehicle;
 CoordsXYZ _vehicleCurPosition;
 
-static constexpr OpenRCT2::Audio::SoundId _screamSetNonCoaster[] = {
+static constexpr OpenRCT2::Audio::SoundId _screamSet0[] = {
+    OpenRCT2::Audio::SoundId::Scream8,
     OpenRCT2::Audio::SoundId::Scream1,
 };
-static constexpr OpenRCT2::Audio::SoundId _screamSetWooden[] = {
+static constexpr OpenRCT2::Audio::SoundId _screamSet1Wooden[] = {
     OpenRCT2::Audio::SoundId::Scream3, OpenRCT2::Audio::SoundId::Scream1, OpenRCT2::Audio::SoundId::Scream5,
     OpenRCT2::Audio::SoundId::Scream6, OpenRCT2::Audio::SoundId::Scream7, OpenRCT2::Audio::SoundId::Scream2,
     OpenRCT2::Audio::SoundId::Scream4,
 };
-static constexpr OpenRCT2::Audio::SoundId _screamSetSteel[] = {
-    OpenRCT2::Audio::SoundId::Scream4,
+static constexpr OpenRCT2::Audio::SoundId _screamSet2[] = {
     OpenRCT2::Audio::SoundId::Scream1,
-    OpenRCT2::Audio::SoundId::Scream2,
     OpenRCT2::Audio::SoundId::Scream6,
 };
 
@@ -5035,14 +5034,14 @@ OpenRCT2::Audio::SoundId Vehicle::ProduceScreamSound(const int32_t totalNumPeeps
         {
             switch (carEntry.sound_range)
             {
-                case SOUND_RANGE_SCREAMS_NON_COASTER:
-                    scream_sound_id = _screamSetNonCoaster[r % std::size(_screamSetNonCoaster)];
+                case SOUND_RANGE_SCREAMS_0:
+                    scream_sound_id = _screamSet0[r % std::size(_screamSet0)];
                     break;
-                case SOUND_RANGE_SCREAMS_WOODEN_COASTERS:
-                    scream_sound_id = _screamSetWooden[r % std::size(_screamSetWooden)];
+                case SOUND_RANGE_SCREAMS_1_WOODEN_COASTERS:
+                    scream_sound_id = _screamSet1Wooden[r % std::size(_screamSet1Wooden)];
                     break;
-                case SOUND_RANGE_SCREAMS_STEEL:
-                    scream_sound_id = _screamSetSteel[r % std::size(_screamSetSteel)];
+                case SOUND_RANGE_SCREAMS_2:
+                    scream_sound_id = _screamSet2[r % std::size(_screamSet2)];
                     break;
                 default:
                     scream_sound_id = OpenRCT2::Audio::SoundId::NoScream;

@@ -121,7 +121,7 @@ namespace OpenRCT2::Audio
         LiftWildMouse,
         LiftBM,
         TrackFrictionBM,
-        Scream8, // Blood-curdling, Haunted House-like scream
+        Scream8,
         Tram,
         DoorOpen,
         DoorClose,
