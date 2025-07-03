@@ -90,6 +90,7 @@
 #include <mutex>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::SawyerCoding;
 
 namespace OpenRCT2::RCT2
 {

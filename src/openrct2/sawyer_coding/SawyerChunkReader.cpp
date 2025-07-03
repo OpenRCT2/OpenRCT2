@@ -13,9 +13,7 @@
 #include "../core/MemoryStream.h"
 #include "../core/Numerics.hpp"
 
-using namespace OpenRCT2::SawyerCoding;
-
-namespace OpenRCT2
+namespace OpenRCT2::SawyerCoding
 {
     // Allow chunks to be uncompressed to a maximum of 16 MiB
     constexpr size_t kMaxUncompressedChunkSize = 16 * 1024 * 1024;
@@ -289,4 +287,4 @@ namespace OpenRCT2
 
         return buf;
     }
-} // namespace OpenRCT2
+} // namespace OpenRCT2::SawyerCoding

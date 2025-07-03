@@ -30,6 +30,7 @@
 #include <functional>
 
 using OpenRCT2::RCT12::TD46MazeElementType;
+using OpenRCT2::SawyerCoding::SawyerChunkWriter;
 
 namespace OpenRCT2::RCT2
 {

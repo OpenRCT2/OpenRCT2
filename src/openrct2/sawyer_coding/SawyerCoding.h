@@ -14,7 +14,7 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace OpenRCT2
+namespace OpenRCT2::SawyerCoding
 {
     // TODO: make enum class in SawyerCoding namespace
     enum
@@ -29,10 +29,7 @@ namespace OpenRCT2
         FILE_TYPE_SV4 = (1 << 2),
         FILE_TYPE_SC4 = (2 << 2)
     };
-} // namespace OpenRCT2
 
-namespace OpenRCT2::SawyerCoding
-{
     uint32_t CalculateChecksum(const uint8_t* buffer, size_t length);
     size_t WriteChunkBuffer(uint8_t* dst_file, const uint8_t* src_buffer, ChunkHeader chunkHeader);
     size_t DecodeSV4(const uint8_t* src, uint8_t* dst, size_t length, size_t bufferLength);

@@ -20,7 +20,10 @@
 namespace OpenRCT2
 {
     struct IStream;
+}
 
+namespace OpenRCT2::SawyerCoding
+{
     class SawyerChunkException : public IOException
     {
     public:
@@ -86,4 +89,4 @@ namespace OpenRCT2
             return result;
         }
     };
-} // namespace OpenRCT2
+} // namespace OpenRCT2::SawyerCoding

@@ -91,6 +91,7 @@
 #include <vector>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::SawyerCoding;
 
 static constexpr ObjectEntryIndex ObjectEntryIndexIgnore = 254;
 

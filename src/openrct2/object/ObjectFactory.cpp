@@ -54,6 +54,7 @@
 #include <unordered_map>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::SawyerCoding;
 
 struct IFileDataRetriever
 {

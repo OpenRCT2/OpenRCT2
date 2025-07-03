@@ -13,9 +13,7 @@
 #include "../core/Numerics.hpp"
 #include "../sawyer_coding/SawyerCoding.h"
 
-using namespace OpenRCT2::SawyerCoding;
-
-namespace OpenRCT2
+namespace OpenRCT2::SawyerCoding
 {
     // Maximum buffer size to store compressed data, maximum of 16 MiB
     constexpr size_t MAX_COMPRESSED_CHUNK_SIZE = 16 * 1024 * 1024;
@@ -32,12 +30,12 @@ namespace OpenRCT2
 
     void SawyerChunkWriter::WriteChunk(const void* src, size_t length, ChunkEncoding encoding)
     {
-        SawyerCoding::ChunkHeader header;
+        ChunkHeader header;
         header.encoding = encoding;
         header.length = static_cast<uint32_t>(length);
 
         auto data = std::make_unique<uint8_t[]>(MAX_COMPRESSED_CHUNK_SIZE);
-        size_t dataLength = SawyerCoding::WriteChunkBuffer(data.get(), static_cast<const uint8_t*>(src), header);
+        size_t dataLength = WriteChunkBuffer(data.get(), static_cast<const uint8_t*>(src), header);
 
         _stream->Write(data.get(), dataLength);
     }
@@ -111,4 +109,4 @@ namespace OpenRCT2
         _stream->Write(data.get(), dataLength);
         _stream->WriteValue<uint32_t>(checksum);
     }
-} // namespace OpenRCT2
+} // namespace OpenRCT2::SawyerCoding
