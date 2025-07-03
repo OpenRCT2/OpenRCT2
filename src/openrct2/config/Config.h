@@ -86,8 +86,8 @@ namespace OpenRCT2::Config
         bool ZoomToCursor;
 
         // Gamepad
-        int32_t GamepadDeadzone;
-        float GamepadSensitivity;
+        int32_t gamepadDeadzone;
+        float gamepadSensitivity;
 
         // Miscellaneous
         bool PlayIntro;

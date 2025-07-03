@@ -42,7 +42,7 @@ namespace OpenRCT2::Ui
         uint32_t Modifiers;
         uint32_t Button;
         InputEventState State;
-        int16_t AxisValue; // For analog stick values (-32768 to 32767)
+        int16_t AxisValue; // For analogue stick values (-32768 to 32767)
     };
 
     enum class ModifierKey : uint8_t
@@ -61,16 +61,16 @@ namespace OpenRCT2::Ui
         std::vector<SDL_GameController*> _gameControllers;
         std::queue<InputEvent> _events;
         ScreenCoordsXY _viewScroll;
-        ScreenCoordsXY _analogScroll;     // Analog stick scroll values
-        float _analogScrollAccumX = 0.0f; // Fractional accumulator for X axis
-        float _analogScrollAccumY = 0.0f; // Fractional accumulator for Y axis
+        ScreenCoordsXY _analogueScroll;     // analogue stick scroll values
+        float _analogueScrollAccumX = 0.0f; // Fractional accumulator for X axis
+        float _analogueScrollAccumY = 0.0f; // Fractional accumulator for Y axis
         uint32_t _mouseState{};
         std::vector<uint8_t> _keyboardState;
         uint8_t _modifierKeyState;
 
         void CheckJoysticks();
-        void ProcessAnalogInput();
-        void UpdateAnalogScroll();
+        void processAnalogueInput();
+        void updateAnalogueScroll();
 
         void HandleViewScrolling();
         void HandleModifiers();

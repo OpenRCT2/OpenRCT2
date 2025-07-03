@@ -137,13 +137,13 @@ void InputManager::CheckJoysticks()
     }
 }
 
-void InputManager::ProcessAnalogInput()
+void InputManager::processAnalogueInput()
 {
-    _analogScroll.x = 0;
-    _analogScroll.y = 0;
+    _analogueScroll.x = 0;
+    _analogueScroll.y = 0;
 
-    const int32_t deadzone = Config::Get().general.GamepadDeadzone;
-    const float sensitivity = Config::Get().general.GamepadSensitivity;
+    const int32_t deadzone = Config::Get().general.gamepadDeadzone;
+    const float sensitivity = Config::Get().general.gamepadSensitivity;
 
     for (auto* gameController : _gameControllers)
     {
@@ -170,37 +170,37 @@ void InputManager::ProcessAnalogInput()
                 float moveY = rawY * sensitivityCurve * 8.0f;
 
                 // Accumulate the movement with fractional precision
-                _analogScrollAccumX += moveX;
-                _analogScrollAccumY += moveY;
+                _analogueScrollAccumX += moveX;
+                _analogueScrollAccumY += moveY;
 
                 // Extract integer movement for this frame
                 float intPartX, intPartY;
-                float fracX = std::modf(_analogScrollAccumX, &intPartX);
-                float fracY = std::modf(_analogScrollAccumY, &intPartY);
+                float fracX = std::modf(_analogueScrollAccumX, &intPartX);
+                float fracY = std::modf(_analogueScrollAccumY, &intPartY);
 
                 int pixelsX = static_cast<int>(intPartX);
                 int pixelsY = static_cast<int>(intPartY);
 
-                _analogScrollAccumX = fracX;
-                _analogScrollAccumY = fracY;
+                _analogueScrollAccumX = fracX;
+                _analogueScrollAccumY = fracY;
 
-                _analogScroll.x += pixelsX;
-                _analogScroll.y += pixelsY;
+                _analogueScroll.x += pixelsX;
+                _analogueScroll.y += pixelsY;
             }
         }
     }
 }
 
-void InputManager::UpdateAnalogScroll()
+void InputManager::updateAnalogueScroll()
 {
-    _viewScroll.x += _analogScroll.x;
-    _viewScroll.y += _analogScroll.y;
+    _viewScroll.x += _analogueScroll.x;
+    _viewScroll.y += _analogueScroll.y;
 }
 
 void InputManager::Process()
 {
     CheckJoysticks();
-    ProcessAnalogInput();
+    processAnalogueInput();
     HandleModifiers();
     ProcessEvents();
     ProcessHoldEvents();
@@ -218,8 +218,8 @@ void InputManager::HandleViewScrolling()
 
     auto mainWindow = WindowGetMain();
 
-    // Handle gamepad analog scrolling with cursor-based viewport targeting
-    if (_analogScroll.x != 0 || _analogScroll.y != 0)
+    // Handle gamepad analogue scrolling with cursor-based viewport targeting
+    if (_analogueScroll.x != 0 || _analogueScroll.y != 0)
     {
         // Get cursor position to find target viewport
         const CursorState* cursorState = ContextGetCursorState();
@@ -247,12 +247,12 @@ void InputManager::HandleViewScrolling()
             {
                 WindowUnfollowSprite(*targetWindow);
             }
-            InputScrollViewportSmooth(_analogScroll, targetWindow);
+            InputScrollViewportSmooth(_analogueScroll, targetWindow);
         }
     }
 
     // Handle keyboard shortcut scrolling with edge-based scrolling (but ignore gamepad input)
-    ScreenCoordsXY keyboardScroll = { _viewScroll.x - _analogScroll.x, _viewScroll.y - _analogScroll.y };
+    ScreenCoordsXY keyboardScroll = { _viewScroll.x - _analogueScroll.x, _viewScroll.y - _analogueScroll.y };
     if (keyboardScroll.x != 0 || keyboardScroll.y != 0)
     {
         if (mainWindow != nullptr)
@@ -473,7 +473,7 @@ void InputManager::ProcessHoldEvents()
             ProcessViewScrollEvent(ShortcutId::kViewScrollRight, { 1, 0 });
         }
 
-        UpdateAnalogScroll();
+        updateAnalogueScroll();
     }
 }
 
@@ -561,8 +561,8 @@ bool InputManager::GetState(const ShortcutInput& shortcut) const
             }
             case InputDeviceKind::JoyAxis:
             {
-                // Analog axes don't have a simple "pressed" state like buttons
-                // Return false for shortcuts on analog axes as they're handled differently
+                // analogue axes don't have a simple "pressed" state like buttons
+                // Return false for shortcuts on analogue axes as they're handled differently
                 return false;
             }
         }
