@@ -417,7 +417,7 @@ void RideObject::ReadLegacyCar([[maybe_unused]] IReadObjectContext* context, ISt
     car->spinning_friction = stream->ReadValue<uint8_t>();
     car->friction_sound_id = stream->ReadValue<OpenRCT2::Audio::SoundId>();
     car->ReversedCarIndex = stream->ReadValue<uint8_t>();
-    car->sound_range = stream->ReadValue<uint8_t>();
+    car->soundRange = stream->ReadValue<SoundRange>();
     car->double_sound_frequency = stream->ReadValue<uint8_t>();
     car->powered_acceleration = stream->ReadValue<uint8_t>();
     car->powered_max_speed = stream->ReadValue<uint8_t>();
@@ -561,7 +561,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
             car.flags = CAR_ENTRY_FLAG_SPINNING;
             car.PaintStyle = VEHICLE_VISUAL_FLAT_RIDE_OR_CAR_RIDE;
             car.friction_sound_id = OpenRCT2::Audio::SoundId::Null;
-            car.sound_range = 0xFF;
+            car.soundRange = SoundRange::none;
             car.draw_order = 6;
 
             // Shop item
@@ -719,7 +719,7 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
     car.spinning_friction = Json::GetNumber<uint8_t>(jCar["spinningFriction"]);
     car.friction_sound_id = Json::GetEnum<OpenRCT2::Audio::SoundId>(jCar["frictionSoundId"], OpenRCT2::Audio::SoundId::Null);
     car.ReversedCarIndex = Json::GetNumber<uint8_t>(jCar["logFlumeReverserVehicleType"]);
-    car.sound_range = Json::GetNumber<uint8_t>(jCar["soundRange"], 255);
+    car.soundRange = Json::GetEnum<SoundRange>(jCar["soundRange"], SoundRange::none);
     car.double_sound_frequency = Json::GetNumber<uint8_t>(jCar["doubleSoundFrequency"]);
     car.powered_acceleration = Json::GetNumber<uint8_t>(jCar["poweredAcceleration"]);
     car.powered_max_speed = Json::GetNumber<uint8_t>(jCar["poweredMaxSpeed"]);
