@@ -99,7 +99,7 @@ STR_0094    :Jednokolejná horská dráha
 STR_0095    :Alpská horská dráha
 STR_0096    :Klasická dřevěná horská dráha
 STR_0097    :Klasická horská dráha ve stoje
-STR_0098    :Horská dráha s lineárními motory
+STR_0098    :Horská dráha s LSM
 STR_0099    :Klasická dřevěná horská dráha „Twister“
 STR_0512    :Malá ocelová horská dráha se spirálovitým profilem a vozy se sedadly za sebou
 STR_0513    :Návštěvníci jedou po horské dráze s loopingy ve stoje
@@ -768,17 +768,17 @@ STR_1369    :Poloviční vývrtka (pravá)
 STR_1370    :Sudový výkrut (levý)
 STR_1371    :Sudový výkrut (pravý)
 STR_1372    :Řetězový vlek s vypuštěním
-STR_1373    :Velká poloviční vývrtka (levá)
-STR_1374    :Velká poloviční vývrtka (pravá)
+STR_1373    :Velká poloviční smyčka (levá)
+STR_1374    :Velká poloviční smyčka (pravá)
 STR_1375    :Přechod vzhůru
 STR_1376    :Přechod dolů
-STR_1377    :Otočka kolem těla (levá)
-STR_1378    :Otočka kolem těla (pravá)
+STR_1377    :Otočka kolem vlastní osy (levá)
+STR_1378    :Otočka kolem vlastní osy (pravá)
 STR_1379    :Obrat (levý)
 STR_1380    :Obrat (Pravý)
 STR_1381    :Zahnutý vlečný svah (vlevo)
 STR_1382    :Zahnutý vlečný svah (vpravo)
-STR_1383    :Čtvrt smyčky
+STR_1383    :Čtvrtinová smyčka
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :Jiné možnosti tratě
 STR_1386    :Speciální…
@@ -3546,12 +3546,12 @@ STR_6504    :Alespoň jeden povrch terénu musí být vybrán
 STR_6505    :Alespoň jedna hrana terénu musí být vybrána
 STR_6506    :Velká poloviční vývrtka (levá)
 STR_6507    :Velká poloviční vývrtka (pravá)
-STR_6508    :Střední polovičná slučka (levá)
-STR_6509    :Střední polovičná slučka (pravá)
-STR_6510    :Nula G Kotoul (levý)
-STR_6511    :Nula G Kotoul (pravý)
-STR_6512    :Velký Nula G Kotoul (levý)
-STR_6513    :Velký Nula G Kotoul (pravý)
+STR_6508    :Střední poloviční smyčka (levá)
+STR_6509    :Střední poloviční smyčka (pravá)
+STR_6510    :Výkrut do nula G (levý)
+STR_6511    :Výkrut do nula G (pravý)
+STR_6512    :Velký výkrut do nula G (levý)
+STR_6513    :Velký výkrut do nula G (pravý)
 STR_6514    :Neplatná výška!
 STR_6515    :{BLACK}Není nastaveno propojení s RCT1 - budou použity záložní obrázky.
 STR_6516    :Jeden nebo více přidaných objektů vyžaduje propojení s RCT1 pro správné zobrazení. Budou použity záložní obrázky.
@@ -3765,8 +3765,8 @@ STR_6723    :Alespoň jeden objekt s animací človíčka maskota musí být vyb
 STR_6724    :Texty scénáře
 STR_6725    :X:
 STR_6726    :Y:
-STR_6727    :Smyčka (levá)
-STR_6728    :Smyčka (pravá)
+STR_6727    :Smyčka „dive“ (levá)
+STR_6728    :Smyčka „dive“ (pravá)
 STR_6729    :Řetězový výtah musí začít hned za stanicí nebo blokovou brzdou
 STR_6730    :Exportovat data emscripten
 STR_6731    :Importovat data emscripten
