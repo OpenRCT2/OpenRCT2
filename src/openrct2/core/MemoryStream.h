@@ -11,6 +11,7 @@
 
 #include "IStream.hpp"
 
+#include <algorithm>
 #include <cstring>
 #include <vector>
 
@@ -32,89 +33,130 @@ namespace OpenRCT2
         uint8_t _access = MEMORY_ACCESS::READ | MEMORY_ACCESS::WRITE | MEMORY_ACCESS::OWNER;
         size_t _dataCapacity = 0;
         size_t _dataSize = 0;
-        void* _data = nullptr;
-        void* _position = nullptr;
+        uint8_t* _data = nullptr;
+        size_t _position = 0;
 
     public:
         MemoryStream() = default;
         MemoryStream(const MemoryStream& copy);
         MemoryStream(MemoryStream&& mv) noexcept;
         explicit MemoryStream(size_t capacity);
+        MemoryStream(const std::vector<uint8_t>& v);
         MemoryStream(void* data, size_t dataSize, uint8_t access = MEMORY_ACCESS::READ);
-        MemoryStream(const void* data, size_t dataSize);
-        MemoryStream(std::vector<uint8_t>&& v);
+        MemoryStream(const void* data, size_t dataSize)
+            : MemoryStream(const_cast<void*>(data), dataSize, MEMORY_ACCESS::READ)
+        {
+        }
         virtual ~MemoryStream();
 
         MemoryStream& operator=(MemoryStream&& mv) noexcept;
 
-        const void* GetData() const override;
-
         ///////////////////////////////////////////////////////////////////////////
         // ISteam methods
         ///////////////////////////////////////////////////////////////////////////
-        bool CanRead() const override;
-        bool CanWrite() const override;
 
-        uint64_t GetLength() const override;
-        uint64_t GetPosition() const override;
+        const void* GetData() const override
+        {
+            return _data;
+        }
+
+        bool CanRead() const override
+        {
+            return (_access & MEMORY_ACCESS::READ) != 0;
+        }
+        bool CanWrite() const override
+        {
+            return (_access & MEMORY_ACCESS::WRITE) != 0;
+        }
+
+        uint64_t GetLength() const override
+        {
+            return _dataSize;
+        }
+        uint64_t GetPosition() const override
+        {
+            return _position;
+        }
+
         void SetPosition(uint64_t position) override;
         void Seek(int64_t offset, int32_t origin) override;
 
         void Read(void* buffer, uint64_t length) override;
-        void Read1(void* buffer) override;
-        void Read2(void* buffer) override;
-        void Read4(void* buffer) override;
-        void Read8(void* buffer) override;
-        void Read16(void* buffer) override;
+        uint64_t TryRead(void* buffer, uint64_t length) override;
 
         template<size_t N>
         void Read(void* buffer)
         {
-            uint64_t position = GetPosition();
-            if (position + N > _dataSize)
-            {
+            if (_position + N > _dataSize)
                 throw IOException("Attempted to read past end of stream.");
-            }
 
-            std::memcpy(buffer, _position, N);
-            _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_position) + N);
+            std::memcpy(buffer, _data + _position, N);
+            _position += static_cast<size_t>(N);
         }
 
         void Write(const void* buffer, uint64_t length) override;
-        void Write1(const void* buffer) override;
-        void Write2(const void* buffer) override;
-        void Write4(const void* buffer) override;
-        void Write8(const void* buffer) override;
-        void Write16(const void* buffer) override;
 
         template<size_t N>
         void Write(const void* buffer)
         {
-            uint64_t position = GetPosition();
-            uint64_t nextPosition = position + N;
-            if (nextPosition > _dataCapacity)
-            {
-                if (_access & MEMORY_ACCESS::OWNER)
-                {
-                    EnsureCapacity(static_cast<size_t>(nextPosition));
-                }
-                else
-                {
-                    throw IOException("Attempted to write past end of stream.");
-                }
-            }
-
-            std::memcpy(_position, buffer, N);
-            _position = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(_position) + N);
-            _dataSize = std::max<size_t>(_dataSize, static_cast<size_t>(nextPosition));
+            EnsureWriteCapacity(N);
+            std::memcpy(_data + _position, buffer, N);
+            _position += static_cast<size_t>(N);
+            _dataSize = std::max(_dataSize, _position);
         }
 
-        uint64_t TryRead(void* buffer, uint64_t length) override;
+        const void* ReadDirect(size_t length) override;
+        void* WriteDirectStart(size_t maxLength) override;
+        void WriteDirectCommit(size_t length) override;
+
+        void CopyFromStream(IStream& stream, uint64_t length) override;
 
         void Clear();
 
     private:
-        void EnsureCapacity(size_t capacity);
+        void Read1(void* buffer) override
+        {
+            Read<1>(buffer);
+        }
+        void Read2(void* buffer) override
+        {
+            Read<2>(buffer);
+        }
+        void Read4(void* buffer) override
+        {
+            Read<4>(buffer);
+        }
+        void Read8(void* buffer) override
+        {
+            Read<8>(buffer);
+        }
+        void Read16(void* buffer) override
+        {
+            Read<16>(buffer);
+        }
+
+        void Write1(const void* buffer) override
+        {
+            Write<1>(buffer);
+        }
+        void Write2(const void* buffer) override
+        {
+            Write<2>(buffer);
+        }
+        void Write4(const void* buffer) override
+        {
+            Write<4>(buffer);
+        }
+        void Write8(const void* buffer) override
+        {
+            Write<8>(buffer);
+        }
+        void Write16(const void* buffer) override
+        {
+            Write<16>(buffer);
+        }
+
+        void EnsureWriteCapacity(uint64_t length);
     };
 
 } // namespace OpenRCT2

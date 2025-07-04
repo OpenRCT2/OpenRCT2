@@ -198,10 +198,10 @@ std::vector<ServerListEntry> ServerList::ReadFavourites() const
             for (size_t i = 0; i < numEntries; i++)
             {
                 ServerListEntry serverInfo;
-                serverInfo.Address = fs.ReadStdString();
-                serverInfo.Name = fs.ReadStdString();
+                serverInfo.Address = fs.ReadString();
+                serverInfo.Name = fs.ReadString();
                 serverInfo.RequiresPassword = false;
-                serverInfo.Description = fs.ReadStdString();
+                serverInfo.Description = fs.ReadString();
                 serverInfo.Version.clear();
                 serverInfo.Favourite = true;
                 serverInfo.Players = 0;

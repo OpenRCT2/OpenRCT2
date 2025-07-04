@@ -81,6 +81,21 @@ namespace OpenRCT2
         {
             return _base->GetData();
         }
+
+        const void* ReadDirect(size_t length) override
+        {
+            return _base->ReadDirect(length);
+        }
+
+        void* WriteDirectStart(size_t maxLength) override
+        {
+            return _base->WriteDirectStart(maxLength);
+        }
+
+        void WriteDirectCommit(size_t length) override
+        {
+            _base->WriteDirectCommit(length);
+        }
     };
 
 } // namespace OpenRCT2
