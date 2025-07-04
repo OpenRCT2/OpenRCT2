@@ -1918,11 +1918,16 @@ void CircusMusicUpdate(Ride& ride)
         return;
     }
 
-    CoordsXYZ rideCoords = ride.getStation().GetStart().ToTileCentre();
-
     const auto sampleRate = RideMusicSampleRate(ride);
 
-    OpenRCT2::RideAudio::UpdateMusicInstance(ride, rideCoords, sampleRate);
+    for (const auto& station : ride.getStations())
+    {
+        if (!station.Start.IsNull())
+        {
+            CoordsXYZ rideCoords = station.GetStart().ToTileCentre();
+            OpenRCT2::RideAudio::UpdateMusicInstance(ride, rideCoords, sampleRate);
+        }
+    }
 }
 
 /**
@@ -1956,11 +1961,16 @@ void DefaultMusicUpdate(Ride& ride)
         return;
     }
 
-    CoordsXYZ rideCoords = ride.getStation().GetStart().ToTileCentre();
-
     int32_t sampleRate = RideMusicSampleRate(ride);
 
-    OpenRCT2::RideAudio::UpdateMusicInstance(ride, rideCoords, sampleRate);
+    for (const auto& station : ride.getStations())
+    {
+        if (!station.Start.IsNull())
+        {
+            CoordsXYZ rideCoords = station.GetStart().ToTileCentre();
+            OpenRCT2::RideAudio::UpdateMusicInstance(ride, rideCoords, sampleRate);
+        }
+    }
 }
 
 static void RideMusicUpdate(Ride& ride)
