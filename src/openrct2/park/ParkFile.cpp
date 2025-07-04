@@ -947,7 +947,7 @@ namespace OpenRCT2
                     cs.ReadWriteVector(gameState.marketingCampaigns, [&cs](MarketingCampaign& campaign) {
                         cs.ReadWrite(campaign.Type);
                         cs.ReadWrite(campaign.WeeksLeft);
-                        cs.ReadWrite(campaign.Flags);
+                        cs.ReadWrite(campaign.flags.holder);
                         cs.ReadWrite(campaign.RideId);
                     });
 

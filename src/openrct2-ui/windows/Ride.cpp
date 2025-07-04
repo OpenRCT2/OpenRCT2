@@ -239,7 +239,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    constexpr int32_t RCT1_LIGHT_OFFSET = 4;
+    constexpr int32_t kRCT1LightOffset = 4;
 
     static constexpr auto kMainRideWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
@@ -1684,7 +1684,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t minHeight = 180;
             if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
             {
-                minHeight += 20 + RCT1_LIGHT_OFFSET;
+                minHeight += 20 + kRCT1LightOffset;
 
                 auto ride = GetRide(rideId);
                 if (ride != nullptr)
@@ -2423,7 +2423,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 widgets[WIDX_OPEN_LIGHT].top = widgetHeight;
                 widgets[WIDX_OPEN_LIGHT].bottom = widgetHeight + 13;
-                widgetHeight += 14 - 24 + RCT1_LIGHT_OFFSET;
+                widgetHeight += 14 - 24 + kRCT1LightOffset;
             }
             else
             {

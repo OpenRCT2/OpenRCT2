@@ -2400,8 +2400,8 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
     uint32_t totalObjects = 0;
     packet >> index >> totalObjects;
 
-    static constexpr uint32_t OBJECT_START_INDEX = 0;
-    if (index == OBJECT_START_INDEX)
+    static constexpr uint32_t kObjectStartIndex = 0;
+    if (index == kObjectStartIndex)
     {
         _missingObjects.clear();
     }

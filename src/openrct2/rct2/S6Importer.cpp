@@ -1615,7 +1615,7 @@ namespace OpenRCT2::RCT2
                     campaign.WeeksLeft = _s6.CampaignWeeksLeft[i] & ~(CAMPAIGN_ACTIVE_FLAG | CAMPAIGN_FIRST_WEEK_FLAG);
                     if ((_s6.CampaignWeeksLeft[i] & CAMPAIGN_FIRST_WEEK_FLAG) != 0)
                     {
-                        campaign.Flags |= MarketingCampaignFlags::FIRST_WEEK;
+                        campaign.flags.set(MarketingCampaignFlag::firstWeek);
                     }
                     if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
                     {

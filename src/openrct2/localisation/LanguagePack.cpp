@@ -27,7 +27,7 @@
 using namespace OpenRCT2;
 
 // Don't try to load more than language files that exceed 64 MiB
-constexpr uint64_t MAX_LANGUAGE_SIZE = 64 * 1024 * 1024;
+static constexpr uint64_t kMaxLanguageSize = 64 * 1024 * 1024;
 
 class LanguagePack final : public ILanguagePack
 {
@@ -48,7 +48,7 @@ public:
             OpenRCT2::FileStream fs = OpenRCT2::FileStream(path, OpenRCT2::FileMode::open);
 
             size_t fileLength = static_cast<size_t>(fs.GetLength());
-            if (fileLength > MAX_LANGUAGE_SIZE)
+            if (fileLength > kMaxLanguageSize)
             {
                 throw IOException("Language file too large.");
             }

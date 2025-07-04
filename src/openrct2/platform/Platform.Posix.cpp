@@ -32,7 +32,7 @@
     #include <unistd.h>
 
 // The name of the mutex used to prevent multiple instances of the game from running
-static constexpr const utf8* SINGLE_INSTANCE_MUTEX_NAME = u8"openrct2.lock";
+static constexpr const utf8* kSingleInstanceMutexName = u8"openrct2.lock";
 
 namespace OpenRCT2::Platform
 {
@@ -308,7 +308,7 @@ namespace OpenRCT2::Platform
         // take care of that, because flock keeps the lock as long as the
         // file is open and closes it automatically on file close.
         // This is intentional.
-        int32_t pidFile = open(SINGLE_INSTANCE_MUTEX_NAME, O_CREAT | O_RDWR, 0666);
+        int32_t pidFile = open(kSingleInstanceMutexName, O_CREAT | O_RDWR, 0666);
 
         if (pidFile == -1)
         {

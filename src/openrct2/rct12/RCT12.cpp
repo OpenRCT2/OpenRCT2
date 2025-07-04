@@ -874,12 +874,12 @@ namespace OpenRCT2::RCT12
 {
     size_t GetRCTStringBufferLen(const char* buffer, size_t maxBufferLen)
     {
-        constexpr char MULTIBYTE = static_cast<char>(255);
+        constexpr char kMultibyte = static_cast<char>(255);
         size_t len = 0;
         for (size_t i = 0; i < maxBufferLen; i++)
         {
             auto ch = buffer[i];
-            if (ch == MULTIBYTE)
+            if (ch == kMultibyte)
             {
                 i += 2;
 
