@@ -4589,6 +4589,7 @@ declare global {
 
     interface Cheats {
         allowArbitraryRideTypeChanges: boolean;
+        allowSpecialColourSchemes: boolean;
         allowTrackPlaceInvalidHeights: boolean;
         buildInPauseMode: boolean;
         disableAllBreakdowns: boolean;
@@ -4603,10 +4604,13 @@ declare global {
         enableAllDrawableTrackPieces: boolean;
         enableChainLiftOnAllTrack: boolean;
         fastLiftHill: boolean;
+        forcedParkRating: number;
         freezeWeather: boolean;
         ignoreResearchStatus: boolean;
         ignoreRideIntensity: boolean;
+        ignoreRidePrice: boolean;
         neverendingMarketing: boolean;
+        makeAllDestructible: boolean;
         sandboxMode: boolean;
         showAllOperatingModes: boolean;
         showVehiclesFromOtherTrackTypes: boolean;
