@@ -188,7 +188,7 @@ STR_0606    :An older-style wooden roller coaster with a fast and rough ride, wi
 STR_0607    :An intense, older-style steel looping roller coaster where the riders ride in a standing position
 STR_0608    :Roller coaster trains are accelerated by linear synchronous motors, speeding through tight twists and turns
 STR_0609    :An older-style wooden roller coaster with a fast and rough ride featuring articulated trains, plenty of air-time and twisting track
-STR_0610    :Description TBD
+STR_0610    :Roller coaster trains ride within a semicircular track, traversing steep drops and barrel rolling inversions.
 STR_0767    :Guest {INT32}
 STR_0768    :Handyman {INT32}
 STR_0769    :Mechanic {INT32}
