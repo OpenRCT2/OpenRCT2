@@ -312,6 +312,7 @@ namespace OpenRCT2
             auto& stream = recSerialiser.GetStream();
 
             MemoryStream compressed;
+            stream.SetPosition(0);
             bool compressStatus = Compression::zlibCompress(
                 stream, static_cast<size_t>(stream.GetLength()), compressed, Compression::ZlibHeaderType::zlib,
                 kReplayCompressionLevel);
