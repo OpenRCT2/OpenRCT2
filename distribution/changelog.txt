@@ -1,4 +1,4 @@
-0.4.24 (in development)
+0.4.24 (2025-07-05)
 ------------------------------------------------------------------------
 - Feature: [#24411] Vanilla scenarios now also have previews in the scenario selection window.
 - Feature: [#24616] Add ability to scroll map with gamepad sticks.
