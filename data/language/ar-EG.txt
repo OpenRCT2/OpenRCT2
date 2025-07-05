@@ -1242,7 +1242,6 @@ STR_1870    :Number of complete rotations
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Income: {BLACK}{CURRENCY2DP} per hour
 STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY2DP} per hour
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect Rides
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix Rides
 STR_1878    :{WINDOW_COLOUR_2}Inspection:
@@ -2240,14 +2239,14 @@ STR_3235    :Show financial options
 STR_3236    :Show guest options
 STR_3238    :لا نقود
 STR_3239    :Make this park a ‘no money’ park with no financial restrictions
-STR_3240    :{WINDOW_COLOUR_2}Initial cash:
-STR_3241    :{WINDOW_COLOUR_2}Initial loan:
-STR_3242    :{WINDOW_COLOUR_2}Maximum loan size:
-STR_3243    :{WINDOW_COLOUR_2}Annual interest rate:
+STR_3240    :Initial cash:
+STR_3241    :Initial loan:
+STR_3242    :Maximum loan size:
+STR_3243    :Annual interest rate:
 STR_3244    :Forbid marketing campaigns
 STR_3245    :Forbid advertising, promotional schemes, and other marketing campaigns
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Can’t increase initial cash any further!
 STR_3249    :Can’t reduce initial cash any further!
 STR_3250    :Can’t increase initial loan any further!
@@ -2256,10 +2255,10 @@ STR_3252    :Can’t increase maximum loan size any further!
 STR_3253    :Can’t reduce maximum loan size any further!
 STR_3254    :Can’t increase interest rate any further!
 STR_3255    :Can’t reduce interest rate any further!
-STR_3260    :{WINDOW_COLOUR_2}Cash per guest (average):
-STR_3261    :{WINDOW_COLOUR_2}Guests initial happiness:
-STR_3262    :{WINDOW_COLOUR_2}Guests initial hunger:
-STR_3263    :{WINDOW_COLOUR_2}Guests initial thirst:
+STR_3260    :Cash per guest (average):
+STR_3261    :Guests initial happiness:
+STR_3262    :Guests initial hunger:
+STR_3263    :Guests initial thirst:
 STR_3264    :Can’t increase this any further!
 STR_3265    :Can’t reduce this any further!
 STR_3266    :Select how this park charges for entrance and rides
@@ -2273,11 +2272,11 @@ STR_3273    :Park rating is harder to increase and maintain
 STR_3274    :Make the park rating value more challenging
 STR_3275    :Guests are more difficult to attract
 STR_3276    :Make it more difficult to attract guests to the park
-STR_3277    :{WINDOW_COLOUR_2}Cost to buy land:
-STR_3278    :{WINDOW_COLOUR_2}Cost to buy construction rights:
+STR_3277    :Cost to buy land:
+STR_3278    :Cost to buy construction rights:
 STR_3279    :Free park entry / Pay per ride
 STR_3280    :Pay to enter park / Free rides
-STR_3281    :{WINDOW_COLOUR_2}Entry price:
+STR_3281    :Entry price:
 STR_3283    :Select rides to be preserved
 STR_3285    :Preserved Rides
 STR_3286    :Select objective for this scenario
@@ -2695,7 +2694,6 @@ STR_5549    :السنة/الشهر/اليوم
 STR_5550    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :السنة/اليوم/الشهر
 STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Pause game when Steam overlay is open
 STR_5554    :تفعيل أدوات الجبال
 STR_5555    :Show vehicles from other track types
 STR_5556    :طرد اللاعب
@@ -2766,9 +2764,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :“Real” Parks
 STR_5626    :Other Parks
-STR_5627    :Group scenario list by:
-STR_5628    :اللعبة المصدر
-STR_5629    :مستوي الصعوبة
 STR_5630    :تفعيل الإفراج التدريجي
 STR_5631    :Original DLC Parks
 STR_5632    :Build your own…
@@ -2919,7 +2914,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :أظهر عداد معدل الإطارات بداخل اللعبة
 STR_5816    :Sets ratio to scale the game by.{NEWLINE}Most useful when playing in{NEWLINE}high resolutions
-STR_5819    :[Requires hardware display]{NEWLINE}Pause the game if Steam{NEWLINE}in-game overlay is opened
 STR_5820    :Minimise the game if focus is{NEWLINE}lost while in fullscreen mode
 STR_5822    :Cycle between day and night.{NEWLINE}Full cycle takes one in-game month
 STR_5823    :Display banners in uppercase (RCT1 behaviour)
@@ -3252,7 +3246,6 @@ STR_6165    :إستخدام المزامنة العمودية
 STR_6166    :مزامنة كل فريم إلي معدل تحديث الشاشة، مما يمنع تمزيق وتمييع الشاشة.
 STR_6167    :متقدم
 STR_6168    :تسلسل العنوان
-STR_6169    :تحديد السيناريو
 STR_6170    :ضبط الواجهة
 STR_6171    :البحث
 STR_6172    :بحث

@@ -1241,7 +1241,6 @@ STR_1870    :Кількість повних обертів
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Дохід: {BLACK}{CURRENCY2DP} за годину
 STR_1874    :{WINDOW_COLOUR_2}Прибуток: {BLACK}{CURRENCY2DP} за годину
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Перевірити атракціони
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Полагодити атракціони
 STR_1878    :{WINDOW_COLOUR_2}Перевірка:
@@ -2270,14 +2269,14 @@ STR_3235    :Показати фінансові параметри
 STR_3236    :Показати параметри гостів
 STR_3238    :Безгрошовий
 STR_3239    :Зробити цей парк «безгрошовим» без фінансових обмежень
-STR_3240    :{WINDOW_COLOUR_2}Початкова готівка:
-STR_3241    :{WINDOW_COLOUR_2}Початкова позика:
-STR_3242    :{WINDOW_COLOUR_2}Макс. розмір позики:
-STR_3243    :{WINDOW_COLOUR_2}Річна процентна ставка:
+STR_3240    :Початкова готівка:
+STR_3241    :Початкова позика:
+STR_3242    :Макс. розмір позики:
+STR_3243    :Річна процентна ставка:
 STR_3244    :Forbid marketing campaigns
 STR_3245    :Forbid advertising, promotional schemes, and other marketing campaigns
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Can’t increase initial cash any further!
 STR_3249    :Can’t reduce initial cash any further!
 STR_3250    :Can’t increase initial loan any further!
@@ -2286,10 +2285,10 @@ STR_3252    :Can’t increase maximum loan size any further!
 STR_3253    :Can’t reduce maximum loan size any further!
 STR_3254    :Can’t increase interest rate any further!
 STR_3255    :Can’t reduce interest rate any further!
-STR_3260    :{WINDOW_COLOUR_2}Готівка на гостя (в середньому):
-STR_3261    :{WINDOW_COLOUR_2}Початкове щастя гостей:
-STR_3262    :{WINDOW_COLOUR_2}Початковий голод гостей:
-STR_3263    :{WINDOW_COLOUR_2}Початкова спрага гостей:
+STR_3260    :Готівка на гостя (в середньому):
+STR_3261    :Початкове щастя гостей:
+STR_3262    :Початковий голод гостей:
+STR_3263    :Початкова спрага гостей:
 STR_3264    :Can’t increase this any further!
 STR_3265    :Can’t reduce this any further!
 STR_3266    :Select how this park charges for entrance and rides
@@ -2303,11 +2302,11 @@ STR_3273    :Park rating is harder to increase and maintain
 STR_3274    :Make the park rating value more challenging
 STR_3275    :Guests are more difficult to attract
 STR_3276    :Make it more difficult to attract guests to the park
-STR_3277    :{WINDOW_COLOUR_2}Вартість купівлі ділянки:
-STR_3278    :{WINDOW_COLOUR_2}Вартість купівлі прав на будівництво:
+STR_3277    :Вартість купівлі ділянки:
+STR_3278    :Вартість купівлі прав на будівництво:
 STR_3279    :Безплатний вхід до парку / Платні атракціони
 STR_3280    :Платний вхід до парку / Безплатні атракціони
-STR_3281    :{WINDOW_COLOUR_2}Ціна входу:
+STR_3281    :Ціна входу:
 STR_3283    :Оберіть атракціони, які потрібно зберегти
 STR_3285    :Збережені атракціони
 STR_3286    :Обрати мету для цього сценарію
@@ -2723,7 +2722,6 @@ STR_5549    :Рік/Місяць/День
 STR_5550    :{POP16}{POP16}Рік {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Рік/День/Місяць
 STR_5552    :{POP16}{POP16}Рік {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Ставити гру на паузу при відкритті оверлею Steam
 STR_5554    :Увімкнути інструмент для гір
 STR_5555    :Показати транспорт з інших типів рейок
 STR_5556    :Вигнати гравця
@@ -2794,9 +2792,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :“Справжні” парки
 STR_5626    :Інші парки
-STR_5627    :Групувати сценарії за:
-STR_5628    :Грою походження
-STR_5629    :Складністю
 STR_5630    :Прогресивне розблокування
 STR_5631    :Оригінальні DLC парки
 STR_5632    :Збудуйте свій власний…
@@ -2947,7 +2942,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :Показувати лічильник кадрів/с у грі
 STR_5816    :Задає співвідношення для масштабування гри.{NEWLINE}Корисно під час гри{NEWLINE}у високій роздільності
-STR_5819    :[Потрібен апаратний режим]{NEWLINE}Поставити гру на паузу якщо{NEWLINE}відкрито перекриття Steam
 STR_5820    :Згорнути гру, якщо фокус втрачено в{NEWLINE}режимі на весь екран
 STR_5822    :Цикл між днем і ніччю.{NEWLINE}Повний цикл займає один ігровий місяць
 STR_5823    :Відображати банери великими літерами (як у RCT1)
@@ -3280,7 +3274,6 @@ STR_6165    :Верт. синхронізація
 STR_6166    :Синхронізовує кожен кадр із частотою оновлення монітора, запобігаючи розриву кадрів екрана.
 STR_6167    :Розширені
 STR_6168    :Послідовність меню
-STR_6169    :Вибір сценарію
 STR_6170    :Коригування інтерфейсу
 STR_6171    :Пошук
 STR_6172    :Пошук

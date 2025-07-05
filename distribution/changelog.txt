@@ -1,3 +1,33 @@
+0.4.24 (in development)
+------------------------------------------------------------------------
+- Feature: [#24411] Vanilla scenarios now also have previews in the scenario selection window.
+- Feature: [#24616] Add ability to scroll map with gamepad sticks.
+- Feature: [#24662] Add optional screenshot argument for Z coord.
+- Improved: [#22684] The limit of 2000 animated tile elements has been removed.
+- Improved: [#23228] Landscape edge doors now animate opening and closing and play a sound.
+- Improved: [#24026] Notification settings have been made into a tab of the Recent Messages window.
+- Improved: [#24569, #24710] Add ten additional translations to the Windows installer.
+- Change: [#24559] Scenario options are now disabled rather than hidden when disabling money makes them non-applicable.
+- Change: [objects#383] Disable all base colours on non-remappable WWTT vehicles, change black to light_blue.
+- Change: [objects#384] Remove erroneously enabled WWTT third remaps.
+- Removed: [#24628] “Pause game when Steam overlay is open” feature (already broken for a long time).
+- Removed: [#24640] Grouping by difficulty (instead of per campaign) in the scenario selector.
+- Fix: [#15846] Rightclicking on track piece when there is construction below does not work.
+- Fix: [#16176, #23113] Animated tile elements do not always redraw when there is over 2000.
+- Fix: [#17365] The slope of new land surfaces is only correct on one side when shifting and resizing the map.
+- Fix: [#18080] Obsolete official .DAT files can be loaded accidentally.
+- Fix: [#21703] Scenery wall doors get stuck open if the game is saved and loaded whilst they are open.
+- Fix: [#24456] Zoomed out vehicles on the ride window tab can sometimes draw incorrectly.
+- Fix: [#24458] Vehicles in the ride window vehicle tab are offset differently than vanilla RCT2, and the sprites are cut off at the bottom.
+- Fix: [#24576] It is possible to edit open rides in certain circumstances.
+- Fix: [#24589] Music tab doesn’t fully render in multiplayer.
+- Fix: [#24615] Blank strings in Windows installer.
+- Fix: [#24617] ‘Divide by zero’ error when updating boat hire acceleration.
+- Fix: [#24626] Viewports that only follow sprites (e.g. in the Ride and Guest windows) can be made to unfollow them.
+- Fix: [#24661] `convert` console command always crashes with a segmentation fault.
+- Fix: [#24666] `convert` console command rejects files with an SV7 extension.
+- Fix: [objects#388] ‘Italian Police Ride’ has a non-functional first remap colour.
+
 0.4.23 (2025-06-07)
 ------------------------------------------------------------------------
 - Feature: [#22476] “Time since last inspection” statistic is available in the rides window.
@@ -21,7 +51,7 @@
 - Fix: [#5269] Font bugs when using the Russian release of RCT2 as the base game.
 - Fix: [#11071, #22958] The virtual floor does not always draw correctly.
 - Fix: [#18220] Some custom RCT1 scenarios are detected as competition DLC scenarios.
-- Fix: [#20095] UCES Halloween - Cemetery Ridge scenario has mismatched entrance/exit on haunted house.
+- Fix: [#20095] UCES Halloween - Cemetery Ridge scenario has mismatched entrance/exit on the haunted house (bug in the original scenario).
 - Fix: [#20158] Custom animated scenery .DATs with frame offsets draw a random sprite at the end of their animation.
 - Fix: [#22628] Potential crash while rebuilding the scenario index.
 - Fix: [#23289] Dodgems and Flying Saucer cars can spawn on top of each other when the ride is opened.
@@ -128,6 +158,7 @@
 - Fix: [#24009] [Plugin] The object manager API does not identify recently introduced object types.
 - Fix: [#24028] Giga and LSM Launched Coaster booster sprites have pixels that draw over transparent pixels.
 - Fix: [#24077] Track Designer crashes when clicking the park fence.
+- Fix: [#24527] Minor string artefacts when rebuilding scenario index.
 
 0.4.20 (2025-02-25)
 ------------------------------------------------------------------------

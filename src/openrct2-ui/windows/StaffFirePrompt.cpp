@@ -20,9 +20,8 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_SACK_STAFF;
-    static constexpr int32_t WW = 200;
-    static constexpr int32_t WH = 100;
+    static constexpr StringId kWindowTitle = STR_SACK_STAFF;
+    static constexpr ScreenSize kWindowSize = { 200, 100 };
 
     enum WindowStaffFireWidgetIdx
     {
@@ -35,11 +34,11 @@ namespace OpenRCT2::Ui::Windows
 
     // clang-format off
     // 0x9AFB4C
-    static constexpr Widget _staffFireWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget({     10, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_YES               ),
-        MakeWidget({WW - 95, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
-    };
+    static constexpr auto _staffFireWidgets = makeWidgets(
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({                    10, kWindowSize.height - 20}, {85, 14}, WidgetType::button, WindowColour::primary, STR_YES               ),
+        makeWidget({kWindowSize.width - 95, kWindowSize.height - 20}, {85, 14}, WidgetType::button, WindowColour::primary, STR_SAVE_PROMPT_CANCEL)
+    );
     // clang-format on
 
     class StaffFirePromptWindow final : public Window
@@ -86,8 +85,8 @@ namespace OpenRCT2::Ui::Windows
             auto ft = Formatter();
             peep->FormatNameTo(ft);
 
-            ScreenCoordsXY textCoords(windowPos + ScreenCoordsXY{ WW / 2, (WH / 2) - 3 });
-            DrawTextWrapped(rt, textCoords, WW - 4, STR_FIRE_STAFF_ID, ft, { TextAlignment::CENTRE });
+            ScreenCoordsXY textCoords(windowPos + ScreenCoordsXY{ kWindowSize.width / 2, (kWindowSize.height / 2) - 3 });
+            DrawTextWrapped(rt, textCoords, kWindowSize.width - 4, STR_FIRE_STAFF_ID, ft, { TextAlignment::CENTRE });
         }
     };
 
@@ -96,7 +95,7 @@ namespace OpenRCT2::Ui::Windows
         // Check if the confirm window already exists
         auto* windowMgr = GetWindowManager();
         auto* window = windowMgr->FocusOrCreate<StaffFirePromptWindow>(
-            WindowClass::FirePrompt, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+            WindowClass::FirePrompt, kWindowSize, WF_CENTRE_SCREEN | WF_TRANSPARENT);
         window->SetWindowNumber(peep->Id.ToUnderlying());
         return window;
     }

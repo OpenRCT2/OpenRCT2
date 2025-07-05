@@ -30,12 +30,11 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = STR_SELECT_DESIGN;
-    static constexpr int32_t WH = 441;
-    static constexpr int32_t WW = 600;
-    static constexpr int32_t DEBUG_PATH_HEIGHT = 12;
-    static constexpr int32_t ROTATE_AND_SCENERY_BUTTON_SIZE = 24;
-    static constexpr int32_t WINDOW_PADDING = 5;
+    static constexpr StringId kWindowTitle = STR_SELECT_DESIGN;
+    static constexpr ScreenSize kWindowSize = { 600, 441 };
+    static constexpr int32_t kDebugPathHeight = 12;
+    static constexpr int32_t kRotateAndSceneryButtonSize = 24;
+    static constexpr int32_t kWindowPadding = 5;
 
     enum
     {
@@ -54,16 +53,17 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
 
     // clang-format off
-    static constexpr Widget _trackListWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget({  4,  18}, {218,  13}, WindowWidgetType::TableHeader,  WindowColour::Primary, STR_SELECT_OTHER_RIDE                                       ),
-        MakeWidget({  4,  32}, {124,  13}, WindowWidgetType::TextBox,      WindowColour::Secondary                                                            ),
-        MakeWidget({130,  32}, { 92,  13}, WindowWidgetType::Button,       WindowColour::Primary, STR_OBJECT_SEARCH_CLEAR                                     ),
-        MakeWidget({  4,  46}, {218, 381}, WindowWidgetType::Scroll,       WindowColour::Primary, SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
-        MakeWidget({224,  18}, {372, 219}, WindowWidgetType::FlatBtn,      WindowColour::Primary                                                              ),
-        MakeWidget({572, 405}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary, ImageId(SPR_ROTATE_ARROW),        STR_ROTATE_90_TIP                  ),
-        MakeWidget({572, 381}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary, ImageId(SPR_SCENERY),             STR_TOGGLE_SCENERY_TIP             ),
-    };
+    static constexpr auto kFlatBtnSize = ScreenSize{kRotateAndSceneryButtonSize, kRotateAndSceneryButtonSize};
+    static constexpr auto _trackListWidgets = makeWidgets(
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({  4,  18}, {218,  13},   WidgetType::tableHeader,  WindowColour::primary, STR_SELECT_OTHER_RIDE                                       ),
+        makeWidget({  4,  32}, {124,  13},   WidgetType::textBox,      WindowColour::secondary                                                            ),
+        makeWidget({130,  32}, { 92,  13},   WidgetType::button,       WindowColour::primary, STR_OBJECT_SEARCH_CLEAR                                     ),
+        makeWidget({  4,  46}, {218, 381},   WidgetType::scroll,       WindowColour::primary, SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
+        makeWidget({224,  18}, {372, 219},   WidgetType::flatBtn,      WindowColour::primary                                                              ),
+        makeWidget({572, 405}, kFlatBtnSize, WidgetType::flatBtn,      WindowColour::primary, ImageId(SPR_ROTATE_ARROW),        STR_ROTATE_90_TIP                  ),
+        makeWidget({572, 381}, kFlatBtnSize, WidgetType::flatBtn,      WindowColour::primary, ImageId(SPR_SCENERY),             STR_TOGGLE_SCENERY_TIP             )
+    );
     // clang-format on
 
     constexpr uint16_t TRACK_DESIGN_INDEX_UNLOADED = UINT16_MAX;
@@ -403,8 +403,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 pressed_widgets |= 1uLL << WIDX_TRACK_PREVIEW;
                 disabled_widgets &= ~(1uLL << WIDX_TRACK_PREVIEW);
-                widgets[WIDX_ROTATE].type = WindowWidgetType::FlatBtn;
-                widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_ROTATE].type = WidgetType::flatBtn;
+                widgets[WIDX_TOGGLE_SCENERY].type = WidgetType::flatBtn;
                 if (gTrackDesignSceneryToggle)
                 {
                     pressed_widgets &= ~(1uLL << WIDX_TOGGLE_SCENERY);
@@ -418,18 +418,18 @@ namespace OpenRCT2::Ui::Windows
             {
                 pressed_widgets &= ~(1uLL << WIDX_TRACK_PREVIEW);
                 disabled_widgets |= (1uLL << WIDX_TRACK_PREVIEW);
-                widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
-                widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::Empty;
+                widgets[WIDX_ROTATE].type = WidgetType::empty;
+                widgets[WIDX_TOGGLE_SCENERY].type = WidgetType::empty;
             }
 
             // When debugging tools are on, shift everything up a bit to make room for displaying the path.
-            const int32_t bottomMargin = Config::Get().general.DebuggingTools ? (WINDOW_PADDING + DEBUG_PATH_HEIGHT)
-                                                                              : WINDOW_PADDING;
+            const int32_t bottomMargin = Config::Get().general.DebuggingTools ? (kWindowPadding + kDebugPathHeight)
+                                                                              : kWindowPadding;
             widgets[WIDX_TRACK_LIST].bottom = height - bottomMargin;
             widgets[WIDX_ROTATE].bottom = height - bottomMargin;
-            widgets[WIDX_ROTATE].top = widgets[WIDX_ROTATE].bottom - ROTATE_AND_SCENERY_BUTTON_SIZE;
+            widgets[WIDX_ROTATE].top = widgets[WIDX_ROTATE].bottom - kRotateAndSceneryButtonSize;
             widgets[WIDX_TOGGLE_SCENERY].bottom = widgets[WIDX_ROTATE].top;
-            widgets[WIDX_TOGGLE_SCENERY].top = widgets[WIDX_TOGGLE_SCENERY].bottom - ROTATE_AND_SCENERY_BUTTON_SIZE;
+            widgets[WIDX_TOGGLE_SCENERY].top = widgets[WIDX_TOGGLE_SCENERY].bottom - kRotateAndSceneryButtonSize;
         }
 
         void OnUpdate() override
@@ -477,7 +477,7 @@ namespace OpenRCT2::Ui::Windows
                 auto ft = Formatter();
                 ft.Add<utf8*>(shortPath.c_str());
                 DrawTextBasic(
-                    rt, windowPos + ScreenCoordsXY{ 0, height - DEBUG_PATH_HEIGHT - 3 }, STR_STRING, ft,
+                    rt, windowPos + ScreenCoordsXY{ 0, height - kDebugPathHeight - 3 }, STR_STRING, ft,
                     { colours[1] }); // TODO Check dpi
             }
 
@@ -767,7 +767,7 @@ namespace OpenRCT2::Ui::Windows
             screenPos = { 0, kTopToolbarHeight + 2 };
         }
 
-        return windowMgr->Create<TrackListWindow>(WindowClass::TrackDesignList, screenPos, WW, WH, flags, item);
+        return windowMgr->Create<TrackListWindow>(WindowClass::TrackDesignList, screenPos, kWindowSize, flags, item);
     }
 
     void WindowTrackDesignListReloadTracks()

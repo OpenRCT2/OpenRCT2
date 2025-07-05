@@ -58,7 +58,7 @@ namespace OpenRCT2::Scripting
                 return std::string{ it->first };
             }
         }
-        return "";
+        return {};
     }
 
     void ScLitter::litterType_set(const std::string& litterType)

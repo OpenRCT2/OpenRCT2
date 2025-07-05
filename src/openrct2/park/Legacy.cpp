@@ -2192,7 +2192,7 @@ std::string_view MapToNewObjectIdentifier(std::string_view s)
     {
         return it->second;
     }
-    return "";
+    return {};
 }
 
 static const std::unordered_map<std::string_view, std::string_view> kDATPathNames = {

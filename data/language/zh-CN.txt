@@ -1243,7 +1243,6 @@ STR_1870    :完整旋转次数
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}收入：{BLACK}每小时{CURRENCY2DP}
 STR_1874    :{WINDOW_COLOUR_2}盈利：{BLACK}每小时{CURRENCY2DP}
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}检查游乐设施
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}维修游乐设施
 STR_1878    :{WINDOW_COLOUR_2}检查间隔：
@@ -2239,14 +2238,14 @@ STR_3235    :显示财政选项
 STR_3236    :显示游客选项
 STR_3238    :无金钱限制
 STR_3239    :将这个游乐园设置为无金钱限制的游乐园
-STR_3240    :{WINDOW_COLOUR_2}初始现金：
-STR_3241    :{WINDOW_COLOUR_2}初始贷款额：
-STR_3242    :{WINDOW_COLOUR_2}最高贷款额：
-STR_3243    :{WINDOW_COLOUR_2}贷款年利率：
+STR_3240    :初始现金：
+STR_3241    :初始贷款额：
+STR_3242    :最高贷款额：
+STR_3243    :贷款年利率：
 STR_3244    :禁止营销计划
 STR_3245    :禁止推销，推广计划以及其他营销计划
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :不能再增加初始现金！
 STR_3249    :不能再减少初始现金！
 STR_3250    :不能再增加初始贷款额！
@@ -2255,10 +2254,10 @@ STR_3252    :不能再增加最高贷款额！
 STR_3253    :不能再减少最高贷款额！
 STR_3254    :不能再增加贷款利率！
 STR_3255    :不能再减少贷款利率！
-STR_3260    :{WINDOW_COLOUR_2}游客身上现金（平均值）：
-STR_3261    :{WINDOW_COLOUR_2}游客初始快乐度：
-STR_3262    :{WINDOW_COLOUR_2}游客初始饥饿度：
-STR_3263    :{WINDOW_COLOUR_2}游客初始口渴度：
+STR_3260    :游客身上现金（平均值）：
+STR_3261    :游客初始快乐度：
+STR_3262    :游客初始饥饿度：
+STR_3263    :游客初始口渴度：
 STR_3264    :不能再增加这个选项！
 STR_3265    :不能再减少这个选项！
 STR_3266    :选择这个游乐园的收费策略
@@ -2272,11 +2271,11 @@ STR_3273    :游乐园评分更难提高和保持
 STR_3274    :使提升游乐园评分更具挑战性
 STR_3275    :更难吸引游客
 STR_3276    :使吸引游客更具挑战性
-STR_3277    :{WINDOW_COLOUR_2}购买土地的费用：
-STR_3278    :{WINDOW_COLOUR_2}购买建造权利的费用：
+STR_3277    :购买土地的费用：
+STR_3278    :购买建造权利的费用：
 STR_3279    :免费进入 / 游乐设施单独付费
 STR_3280    :付费进入 / 免费乘搭游乐设施
-STR_3281    :{WINDOW_COLOUR_2}游乐园门票价格：
+STR_3281    :游乐园门票价格：
 STR_3283    :选择要保留的游乐设施/店铺
 STR_3285    :保留游乐设施/店铺
 STR_3286    :选择此剧情的目标
@@ -2692,7 +2691,6 @@ STR_5549    :年/月/日
 STR_5550    :{POP16}{POP16}第{COMMA16}年，{PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :年/日/月
 STR_5552    :{POP16}{POP16}第{COMMA16}年，{PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :当Steam overlay打开时暂停游戏
 STR_5554    :启用山丘工具
 STR_5555    :显示来自其他类型轨道的车辆种类
 STR_5556    :踢除玩家
@@ -2763,9 +2761,6 @@ STR_5623    :过山车大亨2：{NEWLINE}异国风情
 STR_5624    :过山车大亨2：{NEWLINE}欢乐时光
 STR_5625    :“真实的”游乐园
 STR_5626    :其他游乐园
-STR_5627    :剧情列表排序方法：
-STR_5628    :游戏出处
-STR_5629    :困难度
 STR_5630    :允许逐步解锁
 STR_5631    :原版DLC游乐园
 STR_5632    :修建你自己的……
@@ -2916,7 +2911,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :游戏内显示FPS帧数
 STR_5816    :设置比例去缩放游戏。{NEWLINE}高分辨率时很有用
-STR_5819    :[需要开启硬件渲染]{NEWLINE}暂停游戏当游戏内{NEWLINE}Steam overlay打开时
 STR_5820    :全屏模式时若游戏失焦{NEWLINE}则最小化游戏
 STR_5822    :日夜循环。{NEWLINE}完成一个循环花费游戏内一个月时间
 STR_5823    :横幅上显示全大写英文（RCT1效果）
@@ -3249,7 +3243,6 @@ STR_6165    :使用垂直同步
 STR_6166    :将每帧图像与显示器刷新率同步，以避免画面撕裂。
 STR_6167    :高级
 STR_6168    :主菜单动画
-STR_6169    :剧情选项
 STR_6170    :界面设定
 STR_6171    :查找
 STR_6172    :查找

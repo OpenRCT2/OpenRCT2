@@ -1248,7 +1248,6 @@ STR_1870    :Número de vueltas completas
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Ingresos: {BLACK}{CURRENCY2DP} por hora
 STR_1874    :{WINDOW_COLOUR_2}Beneficios: {BLACK}{CURRENCY2DP} por hora
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspeccionar atracciones
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Reparar atracciones
 STR_1878    :{WINDOW_COLOUR_2}Inspección:
@@ -2244,14 +2243,14 @@ STR_3235    :Opciones de finanzas
 STR_3236    :Opciones de visitantes
 STR_3238    :Sin dinero
 STR_3239    :Elimina las restricciones financieras de este parque
-STR_3240    :{WINDOW_COLOUR_2}Efectivo inicial:
-STR_3241    :{WINDOW_COLOUR_2}Préstamo inicial:
-STR_3242    :{WINDOW_COLOUR_2}Préstamo máximo:
-STR_3243    :{WINDOW_COLOUR_2}Interés anual:
+STR_3240    :Efectivo inicial:
+STR_3241    :Préstamo inicial:
+STR_3242    :Préstamo máximo:
+STR_3243    :Interés anual:
 STR_3244    :Prohibir campañas de marketing
 STR_3245    :Prohibir anuncios, promociones y otras campañas de marketing
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :¡No se puede incrementar más el dinero inicial!
 STR_3249    :¡No se puede reducir más el dinero inicial!
 STR_3250    :¡No se puede incrementar más el préstamo inicial!
@@ -2260,10 +2259,10 @@ STR_3252    :¡No se puede incrementar más el préstamo máximo!
 STR_3253    :¡No se puede reducir más el préstamo máximo!
 STR_3254    :¡No se puede incrementar más la tasa de interés!
 STR_3255    :¡No se puede reducir más la tasa de interés!
-STR_3260    :{WINDOW_COLOUR_2}Efectivo por visitante (media):
-STR_3261    :{WINDOW_COLOUR_2}Felicidad inicial de visitantes:
-STR_3262    :{WINDOW_COLOUR_2}Hambre inicial de visitantes:
-STR_3263    :{WINDOW_COLOUR_2}Sed inicial de visitantes:
+STR_3260    :Efectivo por visitante (media):
+STR_3261    :Felicidad inicial de visitantes:
+STR_3262    :Hambre inicial de visitantes:
+STR_3263    :Sed inicial de visitantes:
 STR_3264    :¡No se puede aumentar más!
 STR_3265    :¡No se puede reducir más!
 STR_3266    :Selecciona cómo se gastan los visitantes el dinero en este parque
@@ -2277,11 +2276,11 @@ STR_3273    :Dificultar la valoración del parque
 STR_3274    :Hacer que la valoración del parque crezca más lentamente
 STR_3275    :Dificultar la generación de visitantes
 STR_3276    :Disminuye la frecuencia con la que aparecen visitantes
-STR_3277    :{WINDOW_COLOUR_2}Coste de terreno:
-STR_3278    :{WINDOW_COLOUR_2}Coste derechos de construcción:
+STR_3277    :Coste de terreno:
+STR_3278    :Coste derechos de construcción:
 STR_3279    :Entrada libre / Atracciones de pago
 STR_3280    :Pagar por entrar / Atracciones gratis
-STR_3281    :{WINDOW_COLOUR_2}Precio de entrada:
+STR_3281    :Precio de entrada:
 STR_3283    :Seleccionar atracciones a preservar
 STR_3285    :Atracciones preservadas
 STR_3286    :Seleccionar objetivos para este escenario
@@ -2699,7 +2698,6 @@ STR_5549    :Año/Mes/Día
 STR_5550    :{POP16}{POP16}Año {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Año/Día/Mes
 STR_5552    :{POP16}{POP16}Año {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Pausar juego cuando Steam se abra
 STR_5554    :Activar herramienta de montaña
 STR_5555    :Muestra vehículos de otros tipos de vía
 STR_5556    :Expulsar jugador
@@ -2772,9 +2770,6 @@ STR_5624    :Time Twister
 #
 STR_5625    :Parques “Reales”
 STR_5626    :Otros parques
-STR_5627    :Agrupar lista de escenarios:
-STR_5628    :Juego original
-STR_5629    :Nivel de dificultad
 STR_5630    :Activa el desbloqueo progresivo
 STR_5631    :DLC de parques originales
 STR_5632    :Construye tu propio…
@@ -2924,7 +2919,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :Muestra la cantidad de FPS en el juego.
 STR_5816    :Establece la escala de la UI.{NEWLINE}Suele ser útil cuando se juega en pantallas con resoluciones altas.
-STR_5819    :[Requiere renderizado por hardware]{NEWLINE}Pausa el juego si Steam se superpone durante el juego.
 STR_5820    :Minimizar el juego si se pierde el foco en el modo de pantalla completa.
 STR_5822    :Habilita los ciclos de día y noche.{NEWLINE}Un ciclo completo tarda un mes en el juego.
 STR_5823    :Muestra el texto de los letreros en mayúsculas (como en RCT1)
@@ -3257,7 +3251,6 @@ STR_6165    :Usar sincronización vertical
 STR_6166    :Sincroniza cada cuadro mostrado a la tasa de refresco del monitor, evitando la imagen distorsionada.
 STR_6167    :Avanzado
 STR_6168    :Secuencia de la pantalla de inicio
-STR_6169    :Selección de escenario
 STR_6170    :Ajustes de interfaz
 STR_6171    :Buscar
 STR_6172    :Buscar

@@ -16,17 +16,15 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr int32_t WW = 232;
-    static constexpr int32_t WH = 136;
+    static constexpr ScreenSize kWindowSize = { 232, 136 };
 
     enum
     {
         WIDX_LOGO
     };
 
-    static constexpr Widget _titleLogoWidgets[] = {
-        MakeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
-    };
+    static constexpr auto _titleLogoWidgets = makeWidgets(
+        makeWidget({ 0, 0 }, kWindowSize, WidgetType::imgBtn, WindowColour::primary));
 
     class TitleLogoWindow final : public Window
     {
@@ -73,7 +71,7 @@ namespace OpenRCT2::Ui::Windows
         if (window == nullptr)
         {
             window = windowMgr->Create<TitleLogoWindow>(
-                WindowClass::TitleLogo, ScreenCoordsXY(0, 0), WW, WH, WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_TITLE_BAR);
+                WindowClass::TitleLogo, ScreenCoordsXY(0, 0), kWindowSize, WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_TITLE_BAR);
         }
         return window;
     }

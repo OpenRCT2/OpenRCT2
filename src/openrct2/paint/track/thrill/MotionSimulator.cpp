@@ -114,7 +114,7 @@ static void PaintMotionSimulator(
 
     auto stationColour = GetStationColourScheme(session, trackElement);
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
+        session, WoodenSupportType::truss, WoodenSupportSubType::neSw, direction, height, stationColour);
 
     const StationObject* stationObject = ride.getStationObject();
 

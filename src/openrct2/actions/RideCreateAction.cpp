@@ -275,7 +275,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->buildDate = GetDate().GetMonthsElapsed();
     ride->musicTuneId = kTuneIDNull;
 
-    ride->breakdownReason = 255;
+    ride->breakdownReason = BREAKDOWN_NONE;
     ride->upkeepCost = kMoney64Undefined;
     ride->reliability = kRideInitialReliability;
     ride->unreliabilityFactor = 1;

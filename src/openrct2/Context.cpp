@@ -41,7 +41,6 @@
 #include "drawing/IDrawingEngine.h"
 #include "drawing/Image.h"
 #include "drawing/LightFX.h"
-#include "entity/EntityRegistry.h"
 #include "entity/EntityTweener.h"
 #include "interface/Chat.h"
 #include "interface/StdInOutConsole.h"
@@ -60,7 +59,6 @@
 #include "platform/Platform.h"
 #include "profiling/Profiling.h"
 #include "rct2/RCT2.h"
-#include "ride/TrackData.h"
 #include "ride/TrackDesignRepository.h"
 #include "scenario/ScenarioRepository.h"
 #include "scenes/game/GameScene.h"
@@ -73,7 +71,6 @@
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "world/MapAnimation.h"
-#include "world/Park.h"
 
 #include <chrono>
 #include <cmath>
@@ -820,6 +817,7 @@ namespace OpenRCT2
                 _objectManager->LoadObjects(result.RequiredObjects, true);
                 SetProgress(90, 100, STR_STRING_M_PERCENT);
 
+                MapAnimations::ClearAll();
                 // TODO: Have a separate GameState and exchange once loaded.
                 auto& gameState = ::getGameState();
                 parkImporter->Import(gameState);
@@ -832,7 +830,7 @@ namespace OpenRCT2
                 gCurrentLoadedPath = path;
                 gFirstTimeSaving = true;
                 GameFixSaveVars();
-                MapAnimationAutoCreate();
+                MapAnimations::MarkAllTiles();
                 EntityTweener::Get().Reset();
                 gScreenAge = 0;
                 gLastAutoSaveUpdate = kAutosavePause;

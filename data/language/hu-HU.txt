@@ -1247,7 +1247,6 @@ STR_1870    :A teljes körforgások száma
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Bevétel: {BLACK}{CURRENCY2DP} óránként
 STR_1874    :{WINDOW_COLOUR_2}Nyereség: {BLACK}{CURRENCY2DP} óránként
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Játékok ellenőrzése
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Játékok javítása
 STR_1878    :{WINDOW_COLOUR_2}Ellenőrzés:
@@ -2243,14 +2242,14 @@ STR_3235    :Pénzügyi beállítások
 STR_3236    :A vendégek beállításai
 STR_3238    :Nem kell pénz
 STR_3239    :Legyen ez a park egy „pénz nélküli” park, pénzügyi korlátozások nélkül
-STR_3240    :{WINDOW_COLOUR_2}Kezdőtőke:
-STR_3241    :{WINDOW_COLOUR_2}Kezdeti kölcsön:
-STR_3242    :{WINDOW_COLOUR_2}Maximális kölcsönösszeg:
-STR_3243    :{WINDOW_COLOUR_2}Éves kamatláb:
+STR_3240    :Kezdőtőke:
+STR_3241    :Kezdeti kölcsön:
+STR_3242    :Maximális kölcsönösszeg:
+STR_3243    :Éves kamatláb:
 STR_3244    :Marketingkampányok tiltása
 STR_3245    :A hirdetések, promóciós programok és egyéb marketingkampányok tiltása
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :A kezdőtőke nem növelhető tovább!
 STR_3249    :A kezdőtőke nem csökkenthető tovább!
 STR_3250    :A kezdeti kölcsön nem növelhető tovább!
@@ -2259,10 +2258,10 @@ STR_3252    :A maximum kölcsön összege nem növelhető tovább!
 STR_3253    :A maximum kölcsön összege nem csökkenthető tovább!
 STR_3254    :A kamatláb nem növelhető tovább!
 STR_3255    :A kamatláb nem csökkenthető tovább!
-STR_3260    :{WINDOW_COLOUR_2}Készpénz/vendég (átlagosan):
-STR_3261    :{WINDOW_COLOUR_2}Vendégek kezdeti boldogsága:
-STR_3262    :{WINDOW_COLOUR_2}Vendégek kezdeti éhsége:
-STR_3263    :{WINDOW_COLOUR_2}Vendégek kezdeti szomjúsága:
+STR_3260    :Készpénz/vendég (átlagosan):
+STR_3261    :Vendégek kezdeti boldogsága:
+STR_3262    :Vendégek kezdeti éhsége:
+STR_3263    :Vendégek kezdeti szomjúsága:
 STR_3264    :Nem növelhető jobban!
 STR_3265    :Nem csökkenthető jobban!
 STR_3266    :Válaszd ki a park belépőjének és játékainak fizetési módját
@@ -2276,11 +2275,11 @@ STR_3273    :A park értékelését nehezebb növelni és megtartani
 STR_3274    :A park értékelése jelentsen nagyobb kihívást
 STR_3275    :A vendégeket nehezebb bevonzani
 STR_3276    :Legyen nehezebb bevonzani a vendégeket a parkba
-STR_3277    :{WINDOW_COLOUR_2}Földvásárlás költsége:
-STR_3278    :{WINDOW_COLOUR_2}Építési jogok vásárlási költsége:
+STR_3277    :Földvásárlás költsége:
+STR_3278    :Építési jogok vásárlási költsége:
 STR_3279    :Ingyenes parkbelépő / Fizetős játékok
 STR_3280    :Fizetős parkbelépő / Ingyenes játékok
-STR_3281    :{WINDOW_COLOUR_2}Belépési díj:
+STR_3281    :Belépési díj:
 STR_3283    :A műemlékvédelem alá eső játékok kiválasztása
 STR_3285    :Pálya beállítások - Védett játékok
 STR_3286    :A pálya céljának kiválasztása
@@ -2696,7 +2695,6 @@ STR_5549    :Év/hónap/nap
 STR_5550    :{POP16}{POP16}{COMMA16}. év {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Év/nap/hónap
 STR_5552    :{POP16}{POP16}{COMMA16}. év {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Játék megállítása, ha a Steam Átfedés nyitva van
 STR_5554    :A hegy-eszköz bekapcsolása
 STR_5555    :Más pályatípusok járműveinek mutatása
 STR_5556    :Játékos kirúgása
@@ -2767,9 +2765,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :„Igazi” parkok
 STR_5626    :Egyéb parkok
-STR_5627    :Pályák csoportosítása:
-STR_5628    :Forrásjáték
-STR_5629    :Nehézségi szint
 STR_5630    :Fokozatos feloldás bekapcsolása
 STR_5631    :Eredeti DLC parkok
 STR_5632    :Építsd meg a saját…
@@ -2920,7 +2915,6 @@ STR_5814    :{WINDOW_COLOUR_1}„{STRING}”
 #tooltips
 STR_5815    :FPS-számláló megjelenítése a játékban
 STR_5816    :A játék méretezési tényezőjének beállítása.{NEWLINE}Főleg akkor hasznos, ha magasabb{NEWLINE} felbontásokban játszol
-STR_5819    :[Hardveres megjelenítés szükséges]{NEWLINE}A játék megállítása, ha a Steam{NEWLINE}Átfedés megnyílik
 STR_5820    :A játék minimalizálása, ha elveszti a fókuszt{NEWLINE}teljes képernyős módban
 STR_5822    :A nap és az éjszaka váltakozásának bekapcsolása.{NEWLINE}A teljes ciklus egy játékbeli hónapig tart
 STR_5823    :Nagybetűs megjelenítés a hirdetőtáblákon (RCT1-beli viselkedés)
@@ -3253,7 +3247,6 @@ STR_6165    :Vertikális szinkron
 STR_6166    :A megjelenített képkockákat a kijelző frissítési gyakoriságához igazítja, így megakadályozza a kép szétcsúszását.
 STR_6167    :Haladó
 STR_6168    :Nyitójelenetek
-STR_6169    :Pályaválasztás
 STR_6170    :Felület finomhangolása
 STR_6171    :Keresés
 STR_6172    :Keresés
@@ -3821,3 +3814,10 @@ STR_6774    :Ellenőrzés óta eltelt idő
 STR_6775    :{COMMA16} perc
 STR_6776    :{COMMA16} perc
 STR_6777    :több mint 4 óra
+STR_6778    :Pályák előnézete:
+STR_6779    :Válaszd ki, milyen típusú előnézeti képet szeretnél a pályaválasztó képernyőn.
+STR_6780    :Mini térképek
+STR_6781    :Képernyőképek
+STR_6782    :Park értesítések  
+STR_6783    :Játék értesítések  
+STR_6784    :Látogatói értesítések

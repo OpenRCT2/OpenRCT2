@@ -49,7 +49,7 @@ static void SuspendedMonorailTrackFlat(
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::Centre, 0, height + 42, session.SupportColours);
+        MetalASupportsPaintSetup(session, supportType.metal, MetalSupportPlace::centre, 0, height + 42, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TunnelType::InvertedSquare);
@@ -120,19 +120,19 @@ static void SuspendedMonorailTrack25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 60, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 60, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 60, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 60, session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 60, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 60, session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 60, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 60, session.SupportColours);
                 break;
         }
     }
@@ -184,19 +184,19 @@ static void SuspendedMonorailTrackFlatTo25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 52, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 52, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 52, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 52, session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 52, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 52, session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 52, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 52, session.SupportColours);
                 break;
         }
     }
@@ -248,19 +248,19 @@ static void SuspendedMonorailTrack25DegUpToFlat(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopRightSide, 0, height + 50, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 50, session.SupportColours);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomRightSide, 0, height + 50, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomRightSide, 0, height + 50, session.SupportColours);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::BottomLeftSide, 0, height + 50, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::bottomLeftSide, 0, height + 50, session.SupportColours);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, supportType.metal, MetalSupportPlace::TopLeftSide, 0, height + 50, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 50, session.SupportColours);
                 break;
         }
     }
@@ -341,7 +341,7 @@ static void SuspendedMonorailTrackLeftQuarterTurn5(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 42, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 42, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -484,7 +484,7 @@ static void SuspendedMonorailTrackLeftQuarterTurn5(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 42, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 42, session.SupportColours);
 
             switch (direction)
             {
@@ -877,7 +877,7 @@ static void SuspendedMonorailTrackLeftQuarterTurn3(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 42, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 42, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -953,7 +953,7 @@ static void SuspendedMonorailTrackLeftQuarterTurn3(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 42, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 42, session.SupportColours);
 
             switch (direction)
             {
@@ -1014,7 +1014,7 @@ static void SuspendedMonorailTrackLeftEighthToDiag(
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 42, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 42, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -1136,19 +1136,19 @@ static void SuspendedMonorailTrackLeftEighthToDiag(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.SupportColours);
                     break;
             }
 
@@ -1192,7 +1192,7 @@ static void SuspendedMonorailTrackRightEighthToDiag(
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, supportType.metal, MetalSupportPlace::Centre, 0, height + 42, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, 0, height + 42, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -1315,19 +1315,19 @@ static void SuspendedMonorailTrackRightEighthToDiag(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 42, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 42, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 42, session.SupportColours);
                     break;
             }
 
@@ -1370,7 +1370,7 @@ static void SuspendedMonorailTrackDiagFlat(
 
     if (trackSequence == 3)
         MetalASupportsPaintSetupRotated(
-            session, supportType.metal, MetalSupportPlace::LeftCorner, direction, 0, height + 42, session.SupportColours);
+            session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height + 42, session.SupportColours);
 
     PaintUtilSetGeneralSupportHeight(session, height + 48);
 }
@@ -1454,19 +1454,19 @@ static void SuspendedMonorailTrackDiag25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 55, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 55, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 55, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 55, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 55, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 55, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 57, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 57, session.SupportColours);
                     break;
             }
 
@@ -1554,19 +1554,19 @@ static void SuspendedMonorailTrackDiagFlatTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 48, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 48, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 48, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 48, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 48, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 48, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 50, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 50, session.SupportColours);
                     break;
             }
 
@@ -1654,19 +1654,19 @@ static void SuspendedMonorailTrackDiag25DegUpToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 51, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 51, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 51, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 51, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 51, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 51, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 51, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 51, session.SupportColours);
                     break;
             }
 
@@ -1754,19 +1754,19 @@ static void SuspendedMonorailTrackDiag25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 54, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 54, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 54, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 54, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 51, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 51, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 58, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 58, session.SupportColours);
                     break;
             }
 
@@ -1851,19 +1851,19 @@ static void SuspendedMonorailTrackDiagFlatTo25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 48, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 48, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 48, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 48, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 48, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 48, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 48, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 48, session.SupportColours);
                     break;
             }
             break;
@@ -1951,19 +1951,19 @@ static void SuspendedMonorailTrackDiag25DegDownToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::LeftCorner, 0, height + 46, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::leftCorner, 0, height + 46, session.SupportColours);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::TopCorner, 0, height + 46, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::topCorner, 0, height + 46, session.SupportColours);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::RightCorner, 0, height + 46, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::rightCorner, 0, height + 46, session.SupportColours);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, supportType.metal, MetalSupportPlace::BottomCorner, 0, height + 46, session.SupportColours);
+                        session, supportType.metal, MetalSupportPlace::bottomCorner, 0, height + 46, session.SupportColours);
                     break;
             }
 

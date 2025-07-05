@@ -22,8 +22,7 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr int32_t WW = 250;
-    static constexpr int32_t WH = 90;
+    static constexpr ScreenSize kWindowSize = { 250, 90 };
 
     enum WindowTextInputWidgetIdx
     {
@@ -34,11 +33,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_OKAY
     };
 
-    static constexpr Widget _textInputWidgets[] = {
-        WINDOW_SHIM(kStringIdNone, WW, WH),
-        MakeWidget({ 170, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_CANCEL),
-        MakeWidget({ 10, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_OK),
-    };
+    static constexpr auto _textInputWidgets = makeWidgets(
+        makeWindowShim(kStringIdNone, kWindowSize),
+        makeWidget({ 170, 68 }, { 71, 14 }, WidgetType::button, WindowColour::secondary, STR_CANCEL),
+        makeWidget({ 10, 68 }, { 71, 14 }, WidgetType::button, WindowColour::secondary, STR_OK));
 
     class TextInputWindow final : public Window
     {
@@ -172,7 +170,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t newHeight = CalculateWindowHeight(_buffer.data());
             if (newHeight != height)
             {
-                WindowSetResize(*this, { WW, newHeight }, { WW, newHeight });
+                WindowSetResize(*this, { kWindowSize.width, newHeight }, { kWindowSize.width, newHeight });
             }
 
             widgets[WIDX_OKAY].top = newHeight - 22;
@@ -198,7 +196,7 @@ namespace OpenRCT2::Ui::Windows
         {
             DrawWidgets(rt);
 
-            auto screenCoords = windowPos + ScreenCoordsXY{ WW / 2, widgets[WIDX_TITLE].bottom + 13 };
+            auto screenCoords = windowPos + ScreenCoordsXY{ kWindowSize.width / 2, widgets[WIDX_TITLE].bottom + 13 };
 
             int32_t no_lines = 0;
 
@@ -206,12 +204,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto ft = Formatter();
                 ft.Add<const char*>(_description.c_str());
-                DrawTextWrapped(rt, screenCoords, WW, STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
+                DrawTextWrapped(rt, screenCoords, kWindowSize.width, STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
             }
             else
             {
                 DrawTextWrapped(
-                    rt, screenCoords, WW, _descriptionStringId, _descriptionArgs, { colours[1], TextAlignment::CENTRE });
+                    rt, screenCoords, kWindowSize.width, _descriptionStringId, _descriptionArgs,
+                    { colours[1], TextAlignment::CENTRE });
             }
 
             screenCoords.y += 25;
@@ -220,11 +219,13 @@ namespace OpenRCT2::Ui::Windows
             // +13 for cursor when max length.
             u8string wrappedString;
             GfxWrapString(
-                u8string_view{ _buffer.data(), _buffer.size() }, WW - (24 + 13), FontStyle::Medium, &wrappedString, &no_lines);
+                u8string_view{ _buffer.data(), _buffer.size() }, kWindowSize.width - (24 + 13), FontStyle::Medium,
+                &wrappedString, &no_lines);
 
             GfxFillRectInset(
                 rt,
-                { { windowPos.x + 10, screenCoords.y }, { windowPos.x + WW - 10, screenCoords.y + 10 * (no_lines + 1) + 3 } },
+                { { windowPos.x + 10, screenCoords.y },
+                  { windowPos.x + kWindowSize.width - 10, screenCoords.y + 10 * (no_lines + 1) + 3 } },
                 colours[1], INSET_RECT_F_60);
 
             screenCoords.y += 1;
@@ -305,10 +306,10 @@ namespace OpenRCT2::Ui::Windows
         {
             // String length needs to add 12 either side of box +13 for cursor when max length.
             int32_t numLines{};
-            GfxWrapString(text, WW - (24 + 13), FontStyle::Medium, nullptr, &numLines);
+            GfxWrapString(text, kWindowSize.width - (24 + 13), FontStyle::Medium, nullptr, &numLines);
 
             const auto textHeight = numLines * 10;
-            return WH + textHeight + getTitleBarDiffNormal();
+            return kWindowSize.height + textHeight + getTitleBarDiffNormal();
         }
 
     private:
@@ -370,7 +371,8 @@ namespace OpenRCT2::Ui::Windows
         auto* windowMgr = GetWindowManager();
         windowMgr->CloseByClass(WindowClass::Textinput);
 
-        auto w = windowMgr->Create<TextInputWindow>(WindowClass::Textinput, WW, WH + 10, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+        auto w = windowMgr->Create<TextInputWindow>(
+            WindowClass::Textinput, { kWindowSize.width, kWindowSize.height + 10 }, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
             w->SetParentWindow(call_w, call_widget);
@@ -384,7 +386,8 @@ namespace OpenRCT2::Ui::Windows
         std::function<void(std::string_view)> callback, std::function<void()> cancelCallback)
     {
         auto* windowMgr = GetWindowManager();
-        auto w = windowMgr->Create<TextInputWindow>(WindowClass::Textinput, WW, WH + 10, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+        auto w = windowMgr->Create<TextInputWindow>(
+            WindowClass::Textinput, { kWindowSize.width, kWindowSize.height + 10 }, WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         if (w != nullptr)
         {
             w->SetTitle(title, description);

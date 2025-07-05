@@ -29,9 +29,8 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr int32_t WW = 113;
-    static constexpr int32_t WH = 96;
-    static constexpr StringId WINDOW_TITLE = STR_BANNER_WINDOW_TITLE;
+    static constexpr StringId kWindowTitle = STR_BANNER_WINDOW_TITLE;
+    static constexpr ScreenSize kWindowSize = { 113, 96 };
 
     enum WindowBannerWidgetIdx
     {
@@ -65,16 +64,16 @@ namespace OpenRCT2::Ui::Windows
         STR_TEXT_COLOUR_PALESILVER,   // TextColour::paleSilver 
     };
 
-    static constexpr Widget window_banner_widgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary, 0x0FFFFFFFE                                        ), // tab content panel
-        MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_RENAME),         STR_CHANGE_BANNER_TEXT_TIP     ), // change banner button
-        MakeWidget({WW - 25,      43}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_NO_ENTRY),       STR_SET_AS_NO_ENTRY_BANNER_TIP ), // no entry button
-        MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_DEMOLISH),       STR_DEMOLISH_BANNER_TIP        ), // demolish button
-        MakeWidget({      5, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,         STR_SELECT_MAIN_SIGN_COLOUR_TIP), // high money
-        MakeWidget({     43, WH - 16}, {39, 12}, WindowWidgetType::DropdownMenu,  WindowColour::Secondary                                                     ), // high money
-        MakeWidget({     70, WH - 15}, {11, 10}, WindowWidgetType::Button,    WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_TEXT_COLOUR_TIP     ), // high money
-    };
+    static constexpr auto window_banner_widgets = makeWidgets(
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({                     3,                      17}, {85, 60}, WidgetType::viewport,     WindowColour::secondary, 0x0FFFFFFFE                                           ), // tab content panel
+        makeWidget({kWindowSize.width - 25,                      19}, {24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_RENAME),   STR_CHANGE_BANNER_TEXT_TIP     ), // change banner button
+        makeWidget({kWindowSize.width - 25,                      43}, {24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_NO_ENTRY), STR_SET_AS_NO_ENTRY_BANNER_TIP ), // no entry button
+        makeWidget({kWindowSize.width - 25,                      67}, {24, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_DEMOLISH), STR_DEMOLISH_BANNER_TIP        ), // demolish button
+        makeWidget({                     5, kWindowSize.height - 16}, {12, 12}, WidgetType::colourBtn,    WindowColour::secondary, 0xFFFFFFFF,            STR_SELECT_MAIN_SIGN_COLOUR_TIP), // high money
+        makeWidget({                    43, kWindowSize.height - 16}, {39, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                        ), // high money
+        makeWidget({                    70, kWindowSize.height - 15}, {11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,    STR_SELECT_TEXT_COLOUR_TIP     ) // high money
+    );
     // clang-format on
 
     class BannerWindow final : public Window
@@ -283,12 +282,12 @@ namespace OpenRCT2::Ui::Windows
             }
 
             Widget& colourBtn = widgets[WIDX_MAIN_COLOUR];
-            colourBtn.type = WindowWidgetType::Empty;
+            colourBtn.type = WidgetType::empty;
 
             auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
             if (bannerEntry != nullptr && (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR))
             {
-                colourBtn.type = WindowWidgetType::ColourBtn;
+                colourBtn.type = WidgetType::colourBtn;
             }
             pressed_widgets &= ~(1uLL << WIDX_BANNER_NO_ENTRY);
             disabled_widgets &= ~(
@@ -299,7 +298,7 @@ namespace OpenRCT2::Ui::Windows
                 disabled_widgets |= (1uLL << WIDX_BANNER_TEXT) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN)
                     | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
             }
-            colourBtn.image = GetColourButtonImage(banner->colour);
+            colourBtn.image = getColourButtonImage(banner->colour);
             Widget& dropDownWidget = widgets[WIDX_TEXT_COLOUR_DROPDOWN];
             dropDownWidget.text = kBannerColouredTextFormats[EnumValue(banner->textColour)];
         }
@@ -317,7 +316,7 @@ namespace OpenRCT2::Ui::Windows
         if (w != nullptr)
             return w;
 
-        w = windowMgr->Create<BannerWindow>(WindowClass::Banner, WW, WH, 0);
+        w = windowMgr->Create<BannerWindow>(WindowClass::Banner, kWindowSize, 0);
 
         if (w != nullptr)
             w->Initialise(number);

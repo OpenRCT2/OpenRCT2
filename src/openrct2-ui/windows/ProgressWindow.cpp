@@ -30,13 +30,12 @@ namespace OpenRCT2::Ui::Windows
         WIDX_CLOSE,
     };
 
-    static constexpr int32_t kWindowWidth = 400;
-    static constexpr int32_t kWindowHeight = 90;
+    static constexpr ScreenSize kWindowSize = { 400, 90 };
 
     // clang-format off
-    static constexpr Widget kProgressWindowWidgets[] = {
-        WINDOW_SHIM(STR_STRINGID, kWindowWidth, kWindowHeight)
-    };
+    static constexpr auto kProgressWindowWidgets = makeWidgets(
+        makeWindowShim(STR_STRINGID, kWindowSize)
+    );
 
     struct LoaderVehicleStyle
     {
@@ -85,7 +84,7 @@ namespace OpenRCT2::Ui::Windows
             Audio::StopSFX();
 
             SetWidgets(kProgressWindowWidgets);
-            WindowSetResize(*this, { kWindowWidth, kWindowHeight }, { kWindowWidth, kWindowHeight });
+            WindowSetResize(*this, kWindowSize, kWindowSize);
 
             frame_no = 0;
 
@@ -119,9 +118,9 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDraw() override
         {
             if (_onClose != nullptr)
-                widgets[WIDX_CLOSE].type = WindowWidgetType::CloseBox;
+                widgets[WIDX_CLOSE].type = WidgetType::closeBox;
             else
-                widgets[WIDX_CLOSE].type = WindowWidgetType::Empty;
+                widgets[WIDX_CLOSE].type = WidgetType::empty;
 
             PrepareCaption();
         }
@@ -242,8 +241,7 @@ namespace OpenRCT2::Ui::Windows
         else
         {
             window = windowMgr->Create<ProgressWindow>(
-                WindowClass::ProgressWindow, kWindowWidth, kWindowHeight,
-                WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
+                WindowClass::ProgressWindow, kWindowSize, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN | WF_STICK_TO_FRONT);
         }
 
         window->SetCaption(text);

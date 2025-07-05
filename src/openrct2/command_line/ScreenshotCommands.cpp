@@ -35,7 +35,7 @@ static exitcode_t HandleScreenshot(CommandLineArgEnumerator *argEnumerator);
 const CommandLineCommand CommandLine::kScreenshotCommands[]
 {
     // Main commands
-    DefineCommand("", "<file> <output_image> <width> <height> [<x> <y> <zoom> <rotation>]", kScreenshotOptionsDef, HandleScreenshot),
+    DefineCommand("", "<file> <output_image> <width> <height> [<x> <y>  [<z>] <zoom> <rotation>]", kScreenshotOptionsDef, HandleScreenshot),
     DefineCommand("", "<file> <output_image> giant <zoom> <rotation>",                      kScreenshotOptionsDef, HandleScreenshot),
     kCommandTableEnd
 };

@@ -78,9 +78,9 @@ namespace OpenRCT2::Scripting
                 case WeatherType::Blizzard:
                     return "blizzard";
                 case WeatherType::Count:
-                    return "";
+                    return {};
             }
-            return "";
+            return {};
         }
 
         std::string type_get() const
@@ -88,7 +88,7 @@ namespace OpenRCT2::Scripting
             auto& objManager = GetContext()->GetObjectManager();
             auto* climateObj = objManager.GetLoadedObject<ClimateObject>(0);
             if (climateObj == nullptr)
-                return "";
+                return {};
 
             return climateObj->getScriptName();
         }

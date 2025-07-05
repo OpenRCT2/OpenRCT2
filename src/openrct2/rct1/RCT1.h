@@ -1287,13 +1287,6 @@ namespace OpenRCT2::RCT1
 
     enum
     {
-        RCT1_LANDSCAPE_DOOR_CLOSED = 0,
-        RCT1_LANDSCAPE_DOOR_HALF_OPEN = 2,
-        RCT1_LANDSCAPE_DOOR_OPEN = 3,
-    };
-
-    enum
-    {
         RCT1_PATH_SUPPORT_TYPE_TRUSS,
         RCT1_PATH_SUPPORT_TYPE_COATED_WOOD,
         RCT1_PATH_SUPPORT_TYPE_SPACE,

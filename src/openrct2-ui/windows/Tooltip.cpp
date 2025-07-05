@@ -25,9 +25,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_BACKGROUND
     };
 
-    static constexpr Widget _tooltipWidgets[] = {
-        MakeWidget({ 0, 0 }, { 200, 32 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
-    };
+    static constexpr auto _tooltipWidgets = makeWidgets(
+        makeWidget({ 0, 0 }, { 200, 32 }, WidgetType::imgBtn, WindowColour::primary));
 
     class TooltipWindow final : public Window
     {
@@ -168,7 +167,7 @@ namespace OpenRCT2::Ui::Windows
 
         auto* windowMgr = GetWindowManager();
         windowMgr->Create(
-            std::move(tooltipWindow), WindowClass::Tooltip, windowPos, width, height,
+            std::move(tooltipWindow), WindowClass::Tooltip, windowPos, { width, height },
             WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_NO_TITLE_BAR);
     }
 
@@ -181,7 +180,7 @@ namespace OpenRCT2::Ui::Windows
         widgetWindow->OnPrepareDraw();
 
         OpenRCT2String result;
-        if (widget->flags & WIDGET_FLAGS::TOOLTIP_IS_STRING)
+        if (widget->flags.has(WidgetFlag::tooltipIsString))
         {
             auto tooltipString = widget->sztooltip;
             if (*tooltipString == 0)

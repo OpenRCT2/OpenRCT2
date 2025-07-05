@@ -23,10 +23,9 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr int32_t WW = 400;
-    static constexpr int32_t WH = 450;
-    static constexpr StringId WINDOW_TITLE = STR_ABOUT;
-    static constexpr int32_t TABHEIGHT = 50;
+    static constexpr ScreenSize kWindowSize = { 400, 450 };
+    static constexpr StringId kWindowTitle = STR_ABOUT;
+    static constexpr int32_t kTabHeight = 50;
 
     static constexpr auto kPadding = 10;
 
@@ -58,29 +57,28 @@ namespace OpenRCT2::Ui::Windows
         WIDX_CONTRIBUTORS_BUTTON,
     };
 
-#define WIDGETS_MAIN                                                                                                           \
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),                                                                                         \
-        MakeWidget({ 0, TABHEIGHT }, { WW, WH - TABHEIGHT }, WindowWidgetType::Frame, WindowColour::Secondary),                \
-        MakeRemapWidget({ 3, 17 }, { 91, TABHEIGHT - 16 }, WindowWidgetType::Tab, WindowColour::Secondary, SPR_TAB_LARGE),     \
-        MakeRemapWidget({ 94, 17 }, { 91, TABHEIGHT - 16 }, WindowWidgetType::Tab, WindowColour::Secondary, SPR_TAB_LARGE)
-
     // clang-format off
-    static constexpr Widget _windowAboutOpenRCT2Widgets[] = {
-        WIDGETS_MAIN,
-        MakeWidget({10, 60},        {WW - 20, 20}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION), // Introduction
-        MakeWidget({30, 90},        {128, 128},    WindowWidgetType::Placeholder,  WindowColour::Secondary, kStringIdNone), // OpenRCT2 Logo
-        MakeWidget({168, 100},      {173, 24},     WindowWidgetType::Placeholder,  WindowColour::Secondary, kStringIdNone), // Build version
-        MakeWidget({344, 100 },     {24, 24},      WindowWidgetType::ImgBtn,       WindowColour::Secondary, ImageId(SPR_G2_COPY), STR_COPY_BUILD_HASH   ), // "Copy build info" button
-        MakeWidget({168, 115 + 20}, {200, 14},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_UPDATE_AVAILABLE  ), // "new version" button
-        MakeWidget({168, 115 + 40}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
-        MakeWidget({168, 115 + 60}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
-        MakeWidget({168, 115 + 80}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CONTRIBUTORS_WINDOW_BUTTON), // "contributors" button
-    };
+    static constexpr auto kMainWidgets = makeWidgets(
+        makeWindowShim (kWindowTitle, kWindowSize),
+        makeWidget     ({  0, kTabHeight }, { kWindowSize.width, kWindowSize.height - kTabHeight }, WidgetType::frame, WindowColour::secondary),
+        makeRemapWidget({  3, 17         }, { 91,                kTabHeight - 16                 }, WidgetType::tab,   WindowColour::secondary, SPR_TAB_LARGE),
+        makeRemapWidget({ 94, 17         }, { 91,                kTabHeight - 16                 }, WidgetType::tab,   WindowColour::secondary, SPR_TAB_LARGE)
+    );
+
+    static constexpr auto _windowAboutOpenRCT2Widgets = makeWidgets(
+        kMainWidgets,
+        makeWidget({10, 60},        {kWindowSize.width - 20, 20}, WidgetType::labelCentred, WindowColour::secondary, STR_ABOUT_OPENRCT2_DESCRIPTION           ), // Introduction
+        makeWidget({30, 90},        {128, 128},                   WidgetType::placeholder,  WindowColour::secondary, kStringIdNone                            ), // OpenRCT2 Logo
+        makeWidget({168, 100},      {173, 24},                    WidgetType::placeholder,  WindowColour::secondary, kStringIdNone                            ), // Build version
+        makeWidget({344, 100 },     {24, 24},                     WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_COPY), STR_COPY_BUILD_HASH), // "Copy build info" button
+        makeWidget({168, 115 + 20}, {200, 14},                    WidgetType::placeholder,  WindowColour::secondary, STR_UPDATE_AVAILABLE                     ), // "new version" button
+        makeWidget({168, 115 + 40}, {200, 14},                    WidgetType::button,       WindowColour::secondary, STR_CHANGELOG_ELLIPSIS                   ), // changelog button
+        makeWidget({168, 115 + 60}, {200, 14},                    WidgetType::button,       WindowColour::secondary, STR_JOIN_DISCORD                         ), // "join discord" button
+        makeWidget({168, 115 + 80}, {200, 14},                    WidgetType::button,       WindowColour::secondary, STR_CONTRIBUTORS_WINDOW_BUTTON           ) // "contributors" button
+    );
     // clang-format on
 
-    static constexpr Widget _windowAboutRCT2Widgets[] = {
-        WIDGETS_MAIN,
-    };
+    static constexpr auto _windowAboutRCT2Widgets = makeWidgets(kMainWidgets);
 
     static constexpr std::span<const Widget> _windowAboutPageWidgets[] = {
         _windowAboutOpenRCT2Widgets,
@@ -207,7 +205,7 @@ namespace OpenRCT2::Ui::Windows
             frame_no = 0;
             pressed_widgets = 0;
 
-            WindowSetResize(*this, { WW, WH }, { WW, WH });
+            WindowSetResize(*this, kWindowSize, kWindowSize);
             SetWidgets(_windowAboutPageWidgets[p]);
 
             switch (p)
@@ -241,13 +239,13 @@ namespace OpenRCT2::Ui::Windows
             // Shows the update available button
             if (OpenRCT2::GetContext()->HasNewVersionInfo())
             {
-                widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
+                widgets[WIDX_NEW_VERSION].type = WidgetType::button;
             }
 
             // Draw the rest of the text
             TextPaint tp{ colours[1], TextAlignment::CENTRE };
             auto textCoords = windowPos + ScreenCoordsXY((width / 2) - 1, 240);
-            auto textWidth = WW - (kPadding * 2);
+            auto textWidth = kWindowSize.width - (kPadding * 2);
             for (auto stringId : _OpenRCT2InfoStrings)
                 textCoords.y += DrawTextWrapped(rt, textCoords, textWidth, stringId, {}, tp) + 5;
 
@@ -258,7 +256,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto& backgroundWidget = widgets[WIDX_PAGE_BACKGROUND];
             auto textCoords = windowPos + ScreenCoordsXY{ backgroundWidget.midX(), backgroundWidget.top + kPadding };
-            auto textWidth = WW - 20;
+            auto textWidth = kWindowSize.width - 20;
             TextPaint tp{ colours[1], TextAlignment::CENTRE };
 
             // Draw credits
@@ -290,6 +288,6 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* AboutOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<AboutWindow>(WindowClass::About, WW, WH, WF_CENTRE_SCREEN);
+        return windowMgr->FocusOrCreate<AboutWindow>(WindowClass::About, kWindowSize, WF_CENTRE_SCREEN);
     }
 } // namespace OpenRCT2::Ui::Windows

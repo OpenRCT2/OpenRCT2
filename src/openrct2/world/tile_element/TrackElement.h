@@ -41,12 +41,13 @@ enum
     TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK = 0b11110000,
 };
 
-enum
-{
-    LANDSCAPE_DOOR_CLOSED = 0,
-    LANDSCAPE_DOOR_HALF_OPEN = 2,
-    LANDSCAPE_DOOR_OPEN = 3,
-};
+constexpr const int32_t kLandEdgeDoorFrameClosed = 0;
+constexpr const int32_t kLandEdgeDoorFrameOpening = 1;
+constexpr const int32_t kLandEdgeDoorFrameOpen = 3;
+constexpr const int32_t kLandEdgeDoorFrameClosing = 4;
+constexpr const int32_t kLandEdgeDoorFrameEnd = 6;
+
+constexpr const int32_t kLandEdgeDoorFrameCount = 8;
 
 #pragma pack(push, 1)
 

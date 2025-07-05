@@ -70,40 +70,39 @@ namespace OpenRCT2::Ui::Windows
         WIDX_THEMES_RCT1_BOTTOM_TOOLBAR
     };
 
-    static constexpr StringId WINDOW_TITLE = STR_THEMES_TITLE;
-    static constexpr int32_t WW = 320;
-    static constexpr int32_t WH = 107;
+    static constexpr StringId kWindowTitle = STR_THEMES_TITLE;
+    static constexpr ScreenSize kWindowSize = { 320, 107 };
 
     const uint16_t kWindowHeaderWidth = 152;
 
     // clang-format off
-    static constexpr Widget _themesWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget({  0, 43}, {320,  64},               WindowWidgetType::Resize,       WindowColour::Secondary                                                                                ), // tab content panel
-        MakeTab   ({  3, 17},                                                                                    STR_THEMES_TAB_SETTINGS_TIP                                                   ), // settings tab
-        MakeTab   ({ 34, 17},                                                                                    STR_THEMES_TAB_MAIN_TIP                                                       ), // main ui tab
-        MakeTab   ({ 65, 17},                                                                                    STR_THEMES_TAB_PARK_TIP                                                       ), // park tab
-        MakeTab   ({ 96, 17},                                                                                    STR_THEMES_TAB_TOOLS_TIP                                                      ), // tools tab
-        MakeTab   ({127, 17},                                                                                    STR_THEMES_TAB_RIDES_AND_GUESTS_TIP                                           ), // rides and peeps tab
-        MakeTab   ({158, 17},                                                                                    STR_THEMES_TAB_EDITORS_TIP                                                    ), // editors tab
-        MakeTab   ({189, 17},                                                                                    STR_THEMES_TAB_MISC_TIP                                                       ), // misc tab
-        MakeTab   ({220, 17},                                                                                    STR_THEMES_TAB_PROMPTS_TIP                                                    ), // prompts tab
-        MakeTab   ({251, 17},                                                                                    STR_THEMES_TAB_FEATURES_TIP                                                   ), // features tab
-        MakeWidget({  5, 46}, {kWindowHeaderWidth, 15}, WindowWidgetType::TableHeader,  WindowColour::Secondary, STR_THEMES_HEADER_WINDOW                                                      ), // Window header
-        MakeWidget({157, 46}, { 79,                15}, WindowWidgetType::TableHeader,  WindowColour::Secondary, STR_THEMES_HEADER_PALETTE                                                     ), // Palette header
-        MakeWidget({236, 46}, { 80,                15}, WindowWidgetType::TableHeader,  WindowColour::Secondary, STR_THEMES_HEADER_TRANSPARENCY                                                ), // Transparency header
-        MakeWidget({125, 60}, {175,                12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                ), // Preset colour schemes
-        MakeWidget({288, 61}, { 11,                10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                            ),
-        MakeWidget({ 10, 82}, { 91,                12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_THEMES_ACTION_DUPLICATE,                   STR_THEMES_ACTION_DUPLICATE_TIP), // Duplicate button
-        MakeWidget({110, 82}, { 91,                12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,                       STR_THEMES_ACTION_DELETE_TIP   ), // Delete button
-        MakeWidget({210, 82}, { 91,                12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,                       STR_THEMES_ACTION_RENAME_TIP   ), // Rename button
-        MakeWidget({  0,  0}, {  1,                 1}, WindowWidgetType::ColourBtn,    WindowColour::Secondary                                                                                ), // colour button mask
-        MakeWidget({  3, 60}, {314,                44}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                               ), // staff list
-        MakeWidget({ 10, 54}, {290,                12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_RIDE_CONTROLS                                          ), // rct1 ride lights
-        MakeWidget({ 10, 69}, {290,                12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_PARK_CONTROLS                                          ), // rct1 park lights
-        MakeWidget({ 10, 84}, {290,                12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT                                ), // rct1 scenario font
-        MakeWidget({ 10, 99}, {290,                12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR                                         ), // rct1 bottom toolbar
-    };
+    static constexpr auto _themesWidgets = makeWidgets(
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({  0, 43}, {320,  64},               WidgetType::resize,       WindowColour::secondary                                                                                ), // tab content panel
+        makeTab   ({  3, 17},                                                                              STR_THEMES_TAB_SETTINGS_TIP                                                   ), // settings tab
+        makeTab   ({ 34, 17},                                                                              STR_THEMES_TAB_MAIN_TIP                                                       ), // main ui tab
+        makeTab   ({ 65, 17},                                                                              STR_THEMES_TAB_PARK_TIP                                                       ), // park tab
+        makeTab   ({ 96, 17},                                                                              STR_THEMES_TAB_TOOLS_TIP                                                      ), // tools tab
+        makeTab   ({127, 17},                                                                              STR_THEMES_TAB_RIDES_AND_GUESTS_TIP                                           ), // rides and peeps tab
+        makeTab   ({158, 17},                                                                              STR_THEMES_TAB_EDITORS_TIP                                                    ), // editors tab
+        makeTab   ({189, 17},                                                                              STR_THEMES_TAB_MISC_TIP                                                       ), // misc tab
+        makeTab   ({220, 17},                                                                              STR_THEMES_TAB_PROMPTS_TIP                                                    ), // prompts tab
+        makeTab   ({251, 17},                                                                              STR_THEMES_TAB_FEATURES_TIP                                                   ), // features tab
+        makeWidget({  5, 46}, {kWindowHeaderWidth, 15}, WidgetType::tableHeader,  WindowColour::secondary, STR_THEMES_HEADER_WINDOW                                                      ), // Window header
+        makeWidget({157, 46}, { 79,                15}, WidgetType::tableHeader,  WindowColour::secondary, STR_THEMES_HEADER_PALETTE                                                     ), // Palette header
+        makeWidget({236, 46}, { 80,                15}, WidgetType::tableHeader,  WindowColour::secondary, STR_THEMES_HEADER_TRANSPARENCY                                                ), // Transparency header
+        makeWidget({125, 60}, {175,                12}, WidgetType::dropdownMenu, WindowColour::secondary                                                                                ), // Preset colour schemes
+        makeWidget({288, 61}, { 11,                10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                            ),
+        makeWidget({ 10, 82}, { 91,                12}, WidgetType::button,       WindowColour::secondary, STR_THEMES_ACTION_DUPLICATE,                   STR_THEMES_ACTION_DUPLICATE_TIP), // Duplicate button
+        makeWidget({110, 82}, { 91,                12}, WidgetType::button,       WindowColour::secondary, STR_TRACK_MANAGE_DELETE,                       STR_THEMES_ACTION_DELETE_TIP   ), // Delete button
+        makeWidget({210, 82}, { 91,                12}, WidgetType::button,       WindowColour::secondary, STR_TRACK_MANAGE_RENAME,                       STR_THEMES_ACTION_RENAME_TIP   ), // Rename button
+        makeWidget({  0,  0}, {  1,                 1}, WidgetType::colourBtn,    WindowColour::secondary                                                                                ), // colour button mask
+        makeWidget({  3, 60}, {314,                44}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                                                               ), // staff list
+        makeWidget({ 10, 54}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_RIDE_CONTROLS                                          ), // rct1 ride lights
+        makeWidget({ 10, 69}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_PARK_CONTROLS                                          ), // rct1 park lights
+        makeWidget({ 10, 84}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT                                ), // rct1 scenario font
+        makeWidget({ 10, 99}, {290,                12}, WidgetType::checkbox,     WindowColour::secondary, STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR                                         )  // rct1 bottom toolbar
+    );
     // clang-format on
 
 #pragma region Tabs
@@ -266,7 +265,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowThemesInitVars();
             WindowInitScrollWidgets(*this);
-            WindowSetResize(*this, { 320, 107 }, { 320, 107 });
+            WindowSetResize(*this, kWindowSize, kWindowSize);
 
             list_information_type = 0;
             _classIndex = -1;
@@ -277,7 +276,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
             {
-                if (WindowSetResize(*this, { 320, 107 }, { 320, 107 }))
+                if (WindowSetResize(*this, kWindowSize, kWindowSize))
                     GfxInvalidateScreen();
             }
             else if (_selected_tab == WINDOW_THEMES_TAB_FEATURES)
@@ -322,61 +321,61 @@ namespace OpenRCT2::Ui::Windows
 
             if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
             {
-                widgets[WIDX_THEMES_HEADER_WINDOW].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_HEADER_PALETTE].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_HEADER_TRANSPARENCY].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_LIST].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WindowWidgetType::Button;
-                widgets[WIDX_THEMES_DELETE_BUTTON].type = WindowWidgetType::Button;
-                widgets[WIDX_THEMES_RENAME_BUTTON].type = WindowWidgetType::Button;
-                widgets[WIDX_THEMES_PRESETS].type = WindowWidgetType::DropdownMenu;
-                widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WindowWidgetType::Button;
-                widgets[WIDX_THEMES_COLOURBTN_MASK].type = WindowWidgetType::Empty;
+                widgets[WIDX_THEMES_HEADER_WINDOW].type = WidgetType::empty;
+                widgets[WIDX_THEMES_HEADER_PALETTE].type = WidgetType::empty;
+                widgets[WIDX_THEMES_HEADER_TRANSPARENCY].type = WidgetType::empty;
+                widgets[WIDX_THEMES_LIST].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WidgetType::empty;
+                widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WidgetType::button;
+                widgets[WIDX_THEMES_DELETE_BUTTON].type = WidgetType::button;
+                widgets[WIDX_THEMES_RENAME_BUTTON].type = WidgetType::button;
+                widgets[WIDX_THEMES_PRESETS].type = WidgetType::dropdownMenu;
+                widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WidgetType::button;
+                widgets[WIDX_THEMES_COLOURBTN_MASK].type = WidgetType::empty;
             }
             else if (_selected_tab == WINDOW_THEMES_TAB_FEATURES)
             {
-                widgets[WIDX_THEMES_HEADER_WINDOW].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_HEADER_PALETTE].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_HEADER_TRANSPARENCY].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_LIST].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WindowWidgetType::Checkbox;
-                widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WindowWidgetType::Checkbox;
-                widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WindowWidgetType::Checkbox;
-                widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WindowWidgetType::Checkbox;
-                widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_DELETE_BUTTON].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_RENAME_BUTTON].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_PRESETS].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_COLOURBTN_MASK].type = WindowWidgetType::Empty;
+                widgets[WIDX_THEMES_HEADER_WINDOW].type = WidgetType::empty;
+                widgets[WIDX_THEMES_HEADER_PALETTE].type = WidgetType::empty;
+                widgets[WIDX_THEMES_HEADER_TRANSPARENCY].type = WidgetType::empty;
+                widgets[WIDX_THEMES_LIST].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WidgetType::checkbox;
+                widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WidgetType::checkbox;
+                widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WidgetType::checkbox;
+                widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WidgetType::checkbox;
+                widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WidgetType::empty;
+                widgets[WIDX_THEMES_DELETE_BUTTON].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RENAME_BUTTON].type = WidgetType::empty;
+                widgets[WIDX_THEMES_PRESETS].type = WidgetType::empty;
+                widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WidgetType::empty;
+                widgets[WIDX_THEMES_COLOURBTN_MASK].type = WidgetType::empty;
 
-                WidgetSetCheckboxValue(*this, WIDX_THEMES_RCT1_RIDE_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE);
-                WidgetSetCheckboxValue(*this, WIDX_THEMES_RCT1_PARK_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK);
-                WidgetSetCheckboxValue(
+                widgetSetCheckboxValue(*this, WIDX_THEMES_RCT1_RIDE_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE);
+                widgetSetCheckboxValue(*this, WIDX_THEMES_RCT1_PARK_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK);
+                widgetSetCheckboxValue(
                     *this, WIDX_THEMES_RCT1_SCENARIO_FONT, ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
-                WidgetSetCheckboxValue(
+                widgetSetCheckboxValue(
                     *this, WIDX_THEMES_RCT1_BOTTOM_TOOLBAR, ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
             }
             else
             {
-                widgets[WIDX_THEMES_HEADER_WINDOW].type = WindowWidgetType::TableHeader;
-                widgets[WIDX_THEMES_HEADER_PALETTE].type = WindowWidgetType::TableHeader;
-                widgets[WIDX_THEMES_HEADER_TRANSPARENCY].type = WindowWidgetType::TableHeader;
-                widgets[WIDX_THEMES_LIST].type = WindowWidgetType::Scroll;
-                widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_DELETE_BUTTON].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_RENAME_BUTTON].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_PRESETS].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WindowWidgetType::Empty;
-                widgets[WIDX_THEMES_COLOURBTN_MASK].type = WindowWidgetType::Empty;
+                widgets[WIDX_THEMES_HEADER_WINDOW].type = WidgetType::tableHeader;
+                widgets[WIDX_THEMES_HEADER_PALETTE].type = WidgetType::tableHeader;
+                widgets[WIDX_THEMES_HEADER_TRANSPARENCY].type = WidgetType::tableHeader;
+                widgets[WIDX_THEMES_LIST].type = WidgetType::scroll;
+                widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WidgetType::empty;
+                widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WidgetType::empty;
+                widgets[WIDX_THEMES_DELETE_BUTTON].type = WidgetType::empty;
+                widgets[WIDX_THEMES_RENAME_BUTTON].type = WidgetType::empty;
+                widgets[WIDX_THEMES_PRESETS].type = WidgetType::empty;
+                widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WidgetType::empty;
+                widgets[WIDX_THEMES_COLOURBTN_MASK].type = WidgetType::empty;
             }
         }
 
@@ -657,7 +656,7 @@ namespace OpenRCT2::Ui::Windows
                         }
                         else
                         {
-                            widgets[WIDX_THEMES_COLOURBTN_MASK].type = WindowWidgetType::ColourBtn;
+                            widgets[WIDX_THEMES_COLOURBTN_MASK].type = WidgetType::colourBtn;
                             widgets[WIDX_THEMES_COLOURBTN_MASK].left = _button_offset_x + widgets[WIDX_THEMES_LIST].left
                                 + _button_size;
                             widgets[WIDX_THEMES_COLOURBTN_MASK].top = GetTotalColoursUpTo(_classIndex) * (_button_size + 2)
@@ -908,7 +907,7 @@ namespace OpenRCT2::Ui::Windows
         if (window != nullptr)
             return window;
 
-        window = windowMgr->Create<ThemesWindow>(WindowClass::Themes, 320, 107, WF_10 | WF_RESIZABLE);
+        window = windowMgr->Create<ThemesWindow>(WindowClass::Themes, kWindowSize, WF_10 | WF_RESIZABLE);
 
         return window;
     }

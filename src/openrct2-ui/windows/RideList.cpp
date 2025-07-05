@@ -32,9 +32,8 @@
 
 namespace OpenRCT2::Ui::Windows
 {
-    static constexpr StringId WINDOW_TITLE = kStringIdNone;
-    static constexpr int32_t WH = 240;
-    static constexpr int32_t WW = 340;
+    static constexpr StringId kWindowTitle = kStringIdNone;
+    static constexpr ScreenSize kWindowSize = { 340, 240 };
 
     enum
     {
@@ -64,21 +63,21 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    static constexpr Widget _rideListWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget({  0, 43}, {340, 197}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ), // tab page background
-        MakeWidget({315, 60}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_TOGGLE_OPEN_CLOSE),      STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
-        MakeWidget({150, 46}, {124,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                ), // current information type
-        MakeWidget({262, 47}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,         STR_RIDE_LIST_INFORMATION_TYPE_TIP), // information type dropdown button
-        MakeWidget({280, 46}, { 54,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_SORT,                   STR_RIDE_LIST_SORT_TIP            ), // sort button
-        MakeTab   ({  3, 17},                                                                                STR_LIST_RIDES_TIP                ), // tab 1
-        MakeTab   ({ 34, 17},                                                                                STR_LIST_SHOPS_AND_STALLS_TIP     ), // tab 2
-        MakeTab   ({ 65, 17},                                                                                STR_LIST_KIOSKS_AND_FACILITIES_TIP), // tab 3
-        MakeWidget({  3, 60}, {334, 177}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL                                               ), // list
-        MakeWidget({320, 62}, { 14,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0)                                    ),
-        MakeWidget({320, 76}, { 14,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0)                                     ),
-        MakeWidget({315, 90}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_DEMOLISH),               STR_QUICK_DEMOLISH_RIDE           ),
-    };
+    static constexpr auto _rideListWidgets = makeWidgets(
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({  0, 43}, {340, 197}, WidgetType::resize,       WindowColour::secondary                                                                        ), // tab page background
+        makeWidget({315, 60}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_TOGGLE_OPEN_CLOSE),     STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
+        makeWidget({150, 46}, {124,  12}, WidgetType::dropdownMenu, WindowColour::secondary                                                                        ), // current information type
+        makeWidget({262, 47}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                 STR_RIDE_LIST_INFORMATION_TYPE_TIP), // information type dropdown button
+        makeWidget({280, 46}, { 54,  12}, WidgetType::button,       WindowColour::secondary, STR_SORT,                           STR_RIDE_LIST_SORT_TIP            ), // sort button
+        makeTab   ({  3, 17},                                                                STR_LIST_RIDES_TIP                                                    ), // tab 1
+        makeTab   ({ 34, 17},                                                                STR_LIST_SHOPS_AND_STALLS_TIP                                         ), // tab 2
+        makeTab   ({ 65, 17},                                                                STR_LIST_KIOSKS_AND_FACILITIES_TIP                                    ), // tab 3
+        makeWidget({  3, 60}, {334, 177}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                                                       ), // list
+        makeWidget({320, 62}, { 14,  14}, WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0)                                   ),
+        makeWidget({320, 76}, { 14,  14}, WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0)                                    ),
+        makeWidget({315, 90}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_DEMOLISH),              STR_QUICK_DEMOLISH_RIDE           )
+    );
     // clang-format on
 
     enum
@@ -481,9 +480,9 @@ namespace OpenRCT2::Ui::Windows
 
             if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
             {
-                widgets[WIDX_OPEN_CLOSE_ALL].type = WindowWidgetType::Empty;
-                widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::ImgBtn;
-                widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::ImgBtn;
+                widgets[WIDX_OPEN_CLOSE_ALL].type = WidgetType::empty;
+                widgets[WIDX_CLOSE_LIGHT].type = WidgetType::imgBtn;
+                widgets[WIDX_OPEN_LIGHT].type = WidgetType::imgBtn;
 
                 const auto& rideManager = GetRideManager();
                 auto allClosed = true;
@@ -500,23 +499,23 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 const auto closeLightImage(
-                    SPR_G2_RCT1_CLOSE_BUTTON_0 + (allClosed ? 1 : 0) * 2 + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT));
+                    SPR_G2_RCT1_CLOSE_BUTTON_0 + (allClosed ? 1 : 0) * 2 + widgetIsPressed(*this, WIDX_CLOSE_LIGHT));
                 widgets[WIDX_CLOSE_LIGHT].image = ImageId(closeLightImage);
                 const auto openLightImage = SPR_G2_RCT1_OPEN_BUTTON_0 + (allOpen ? 1 : 0) * 2
-                    + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
+                    + widgetIsPressed(*this, WIDX_OPEN_LIGHT);
                 widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
                 widgets[WIDX_QUICK_DEMOLISH].top = widgets[WIDX_OPEN_LIGHT].bottom + 3;
             }
             else
             {
-                widgets[WIDX_OPEN_CLOSE_ALL].type = WindowWidgetType::FlatBtn;
-                widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::Empty;
-                widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::Empty;
+                widgets[WIDX_OPEN_CLOSE_ALL].type = WidgetType::flatBtn;
+                widgets[WIDX_CLOSE_LIGHT].type = WidgetType::empty;
+                widgets[WIDX_OPEN_LIGHT].type = WidgetType::empty;
                 widgets[WIDX_QUICK_DEMOLISH].top = widgets[WIDX_OPEN_CLOSE_ALL].bottom + 3;
             }
             widgets[WIDX_QUICK_DEMOLISH].bottom = widgets[WIDX_QUICK_DEMOLISH].top + 23;
-            widgets[WIDX_QUICK_DEMOLISH].type = NetworkGetMode() != NETWORK_MODE_CLIENT ? WindowWidgetType::FlatBtn
-                                                                                        : WindowWidgetType::Empty;
+            widgets[WIDX_QUICK_DEMOLISH].type = NetworkGetMode() != NETWORK_MODE_CLIENT ? WidgetType::flatBtn
+                                                                                        : WidgetType::empty;
         }
 
         /**
@@ -819,7 +818,7 @@ namespace OpenRCT2::Ui::Windows
                 const Ride* rideRhs = GetRide(rhs.Id);
                 if (rideLhs == nullptr || rideRhs == nullptr)
                 {
-                    return false;
+                    return rideLhs != nullptr;
                 }
                 return !pred(*rideLhs, *rideRhs);
             });
@@ -1007,7 +1006,7 @@ namespace OpenRCT2::Ui::Windows
         if (window == nullptr)
         {
             window = windowMgr->Create<RideListWindow>(
-                WindowClass::RideList, ScreenCoordsXY(32, 32), WW, WH, WF_10 | WF_RESIZABLE);
+                WindowClass::RideList, ScreenCoordsXY(32, 32), kWindowSize, WF_10 | WF_RESIZABLE);
         }
         return window;
     }

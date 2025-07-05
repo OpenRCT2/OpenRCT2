@@ -215,6 +215,7 @@ GameActions::Result RideSetSettingAction::Execute() const
             {
                 ride->lifecycleFlags |= RIDE_LIFECYCLE_MUSIC;
             }
+            ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MUSIC;
             break;
         case RideSetSetting::MusicType:
             if (_value != ride->music)

@@ -13,7 +13,7 @@
 #include <queue>
 #include <string_view>
 
-typedef struct _SDL_Joystick SDL_Joystick;
+typedef struct _SDL_GameController SDL_GameController;
 typedef union SDL_Event SDL_Event;
 
 namespace OpenRCT2::Ui
@@ -27,6 +27,7 @@ namespace OpenRCT2::Ui
         Keyboard,
         JoyButton,
         JoyHat,
+        JoyAxis,
     };
 
     enum class InputEventState
@@ -41,6 +42,7 @@ namespace OpenRCT2::Ui
         uint32_t Modifiers;
         uint32_t Button;
         InputEventState State;
+        int16_t AxisValue; // For analogue stick values (-32768 to 32767)
     };
 
     enum class ModifierKey : uint8_t
@@ -56,14 +58,19 @@ namespace OpenRCT2::Ui
     {
     private:
         uint32_t _lastJoystickCheck{};
-        std::vector<SDL_Joystick*> _joysticks;
+        std::vector<SDL_GameController*> _gameControllers;
         std::queue<InputEvent> _events;
         ScreenCoordsXY _viewScroll;
+        ScreenCoordsXY _analogueScroll;     // analogue stick scroll values
+        float _analogueScrollAccumX = 0.0f; // Fractional accumulator for X axis
+        float _analogueScrollAccumY = 0.0f; // Fractional accumulator for Y axis
         uint32_t _mouseState{};
         std::vector<uint8_t> _keyboardState;
         uint8_t _modifierKeyState;
 
         void CheckJoysticks();
+        void processAnalogueInput();
+        void updateAnalogueScroll();
 
         void HandleViewScrolling();
         void HandleModifiers();

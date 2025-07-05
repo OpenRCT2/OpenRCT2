@@ -72,27 +72,26 @@ namespace OpenRCT2::Ui::Windows
         WIDX_STAFF_LIST_MAP,
     };
 
-    static constexpr StringId WINDOW_TITLE = STR_STAFF;
-    static constexpr int32_t WW = 320;
-    static constexpr int32_t WH = 270;
-    constexpr int32_t MAX_WW = 500;
-    constexpr int32_t MAX_WH = 450;
+    static constexpr StringId kWindowTitle = STR_STAFF;
+    static constexpr ScreenSize kWindowSize = { 320, 270 };
+    constexpr int32_t kMaximumWindowWidth = 500;
+    constexpr int32_t kMaximumWindowHeight = 450;
 
     // clang-format off
-    static constexpr Widget _staffListWidgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget({  0, 43}, {    WW, WH - 43}, WindowWidgetType::Resize,    WindowColour::Secondary                                                     ), // tab content panel
-        MakeTab   ({  3, 17},                                                                          STR_STAFF_HANDYMEN_TAB_TIP                         ), // handymen tab
-        MakeTab   ({ 34, 17},                                                                          STR_STAFF_MECHANICS_TAB_TIP                        ), // mechanics tab
-        MakeTab   ({ 65, 17},                                                                          STR_STAFF_SECURITY_TAB_TIP                         ), // security guards tab
-        MakeTab   ({ 96, 17},                                                                          STR_STAFF_ENTERTAINERS_TAB_TIP                     ), // entertainers tab
-        MakeWidget({  3, 72}, {WW - 6,     195}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                    ), // staff list
-        MakeWidget({130, 58}, {    12,      12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, kStringIdNone,        STR_UNIFORM_COLOUR_TIP            ), // uniform colour picker
-        MakeWidget({165, 17}, {   145,      13}, WindowWidgetType::Button,    WindowColour::Primary  , kStringIdNone,        STR_HIRE_STAFF_TIP                ), // hire button
-        MakeWidget({243, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_DEMOLISH),    STR_QUICK_FIRE_STAFF     ), // quick fire staff
-        MakeWidget({267, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_PATROL_BTN),  STR_SHOW_PATROL_AREA_TIP ), // show staff patrol area tool
-        MakeWidget({291, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_MAP),         STR_SHOW_STAFF_ON_MAP_TIP), // show staff on map button
-    };
+    static constexpr auto _staffListWidgets = makeWidgets(
+        makeWindowShim(kWindowTitle, kWindowSize),
+        makeWidget({  0, 43}, { kWindowSize.width, kWindowSize.height - 43}, WidgetType::resize,    WindowColour::secondary                                                    ), // tab content panel
+        makeTab   ({  3, 17},                                                                                                STR_STAFF_HANDYMEN_TAB_TIP                        ), // handymen tab
+        makeTab   ({ 34, 17},                                                                                                STR_STAFF_MECHANICS_TAB_TIP                       ), // mechanics tab
+        makeTab   ({ 65, 17},                                                                                                STR_STAFF_SECURITY_TAB_TIP                        ), // security guards tab
+        makeTab   ({ 96, 17},                                                                                                STR_STAFF_ENTERTAINERS_TAB_TIP                    ), // entertainers tab
+        makeWidget({  3, 72}, {kWindowSize.width - 6, 195},                  WidgetType::scroll,    WindowColour::secondary, SCROLL_VERTICAL                                   ), // staff list
+        makeWidget({130, 58}, {    12,      12},                             WidgetType::colourBtn, WindowColour::secondary, kStringIdNone,           STR_UNIFORM_COLOUR_TIP   ), // uniform colour picker
+        makeWidget({165, 17}, {   145,      13},                             WidgetType::button,    WindowColour::primary  , kStringIdNone,           STR_HIRE_STAFF_TIP       ), // hire button
+        makeWidget({243, 46}, {    24,      24},                             WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_DEMOLISH),   STR_QUICK_FIRE_STAFF     ), // quick fire staff
+        makeWidget({267, 46}, {    24,      24},                             WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_PATROL_BTN), STR_SHOW_PATROL_AREA_TIP ), // show staff patrol area tool
+        makeWidget({291, 46}, {    24,      24},                             WidgetType::flatBtn,   WindowColour::secondary, ImageId(SPR_MAP),        STR_SHOW_STAFF_ON_MAP_TIP)  // show staff on map button
+    );
     // clang-format on
 
     class StaffListWindow final : public Window
@@ -122,9 +121,9 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(_staffListWidgets);
             WindowInitScrollWidgets(*this);
-            WindowSetResize(*this, { WW, WH }, { MAX_WW, MAX_WH });
+            WindowSetResize(*this, kWindowSize, { kMaximumWindowWidth, kMaximumWindowHeight });
 
-            widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::Empty;
+            widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WidgetType::empty;
 
             RefreshList();
         }
@@ -248,12 +247,12 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetPressed(_selectedTab + WIDX_STAFF_LIST_HANDYMEN_TAB, true);
 
             widgets[WIDX_STAFF_LIST_HIRE_BUTTON].text = GetStaffNamingConvention(GetSelectedStaffType()).ActionHire;
-            widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::Empty;
+            widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WidgetType::empty;
 
             if (GetSelectedStaffType() != StaffType::Entertainer)
             {
-                widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::ColourBtn;
-                widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = GetColourButtonImage(
+                widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WidgetType::colourBtn;
+                widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = getColourButtonImage(
                     StaffGetColour(GetSelectedStaffType()));
             }
             SetWidgetPressed(WIDX_STAFF_LIST_QUICK_FIRE, _quickFireMode);
@@ -725,7 +724,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* StaffListOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<StaffListWindow>(WindowClass::StaffList, WW, WH, WF_10 | WF_RESIZABLE);
+        return windowMgr->FocusOrCreate<StaffListWindow>(WindowClass::StaffList, kWindowSize, WF_10 | WF_RESIZABLE);
     }
 
     void WindowStaffListRefresh()

@@ -1247,7 +1247,6 @@ STR_1870    :Nombro de plenaj turnadoj
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Enspezo: {BLACK}po {CURRENCY2DP} por horo
 STR_1874    :{WINDOW_COLOUR_2}Profito: {BLACK}po {CURRENCY2DP} por horo
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspekti Atrakciojn
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Ripari Atrakciojn
 STR_1878    :{WINDOW_COLOUR_2}Inspekto:
@@ -2242,14 +2241,14 @@ STR_3235    :Montri financiajn agordojn
 STR_3236    :Montri agordojn de gastoj
 STR_3238    :Neniu Mono
 STR_3239    :Agordi ĉi tiun parkon kiel parko de ‘neniu mono’, kun neniuj limigoj financaj
-STR_3240    :{WINDOW_COLOUR_2}Komenca mono:
-STR_3241    :{WINDOW_COLOUR_2}Komenca prunto:
-STR_3242    :{WINDOW_COLOUR_2}Maksumima prunto:
-STR_3243    :{WINDOW_COLOUR_2}Jara procento de interezo:
+STR_3240    :Komenca mono:
+STR_3241    :Komenca prunto:
+STR_3242    :Maksumima prunto:
+STR_3243    :Jara procento de interezo:
 STR_3244    :Malpermesi kampanjojn surmerkatigajn
 STR_3245    :Malpermesi kampanjojn de reklamado kaj aliajn kampanjojn surmerkatigajn
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Ne eblas pliigi komencan monon plu!
 STR_3249    :Ne eblas malpliigi komencan monon plu!
 STR_3250    :Ne eblas pliigi komencan prunton plu!
@@ -2258,10 +2257,10 @@ STR_3252    :Ne eblas pliigi maksimuman prunton plu!
 STR_3253    :Ne eblas malpliigi maksimuman prunton plu!
 STR_3254    :Ne eblas pliigi procenton de interezo plu!
 STR_3255    :Ne eblas malpliigi procenton de interezo plu!
-STR_3260    :{WINDOW_COLOUR_2}Mono por ĉiu gasto (meznombro):
-STR_3261    :{WINDOW_COLOUR_2}Komenca feliĉeco de gastoj:
-STR_3262    :{WINDOW_COLOUR_2}Komenca malsateco de gastoj:
-STR_3263    :{WINDOW_COLOUR_2}Komenca soifeco de gastoj:
+STR_3260    :Mono por ĉiu gasto (meznombro):
+STR_3261    :Komenca feliĉeco de gastoj:
+STR_3262    :Komenca malsateco de gastoj:
+STR_3263    :Komenca soifeco de gastoj:
 STR_3264    :Ne eblas pliigi ĉi tion plu!
 STR_3265    :Ne eblas malpliigi ĉi tion plu!
 STR_3266    :Elekti kiel ĉi tiu parko pagigas eniron kaj atrakciojn
@@ -2275,11 +2274,11 @@ STR_3273    :Plibonigado kaj konservado de pritakso de parko estas pli malfacila
 STR_3274    :Fari, ke la pritakso de la parko malfaciliĝas
 STR_3275    :Allogado de la gastoj estas pli malfacila
 STR_3276    :Fari, ke estas pli malfacila por allogi gastojn al la parko
-STR_3277    :{WINDOW_COLOUR_2}Kosto por aĉeti bienon:
-STR_3278    :{WINDOW_COLOUR_2}Kosto por aĉeti konstruado-rajtojn:
+STR_3277    :Kosto por aĉeti bienon:
+STR_3278    :Kosto por aĉeti konstruado-rajtojn:
 STR_3279    :Senpaga parkeniro / Pagi po atrakcio
 STR_3280    :Pagi po parkeniro / Senpagaj atrakcioj
-STR_3281    :{WINDOW_COLOUR_2}Kosto de parkeniro:
+STR_3281    :Kosto de parkeniro:
 STR_3283    :Elekti atrakciojn neŝanĝeblajn
 STR_3285    :Agordoj de scenaro - Atrakcioj Neŝanĝeblaj
 STR_3286    :Elekti celon de ĉi tiu scenaro
@@ -2695,7 +2694,6 @@ STR_5549    :Jaro/Monato/Tago
 STR_5550    :{POP16}{POP16}Jaro {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Jaro/Tago/Monato
 STR_5552    :{POP16}{POP16}Jaro {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Paŭzi ludon kiam plustavolo de Steam estas malfermita
 STR_5554    :Ŝalti montilon
 STR_5555    :Montri veturilojn de aliaj traktipoj
 STR_5556    :Forigi ludanton
@@ -2766,9 +2764,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :“Faktaj” Parkoj
 STR_5626    :Aliaj Parkoj
-STR_5627    :Grupigi scenaroliston laŭ:
-STR_5628    :Ludo-fonto
-STR_5629    :Malfacileco-nivelo
 STR_5630    :Ŝalti progresivan malŝlosadon
 STR_5631    :Originala Elŝutebla-Enhavo-Parkoj
 STR_5632    :Konstrui vian propran…
@@ -2919,7 +2914,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :Montri kadrojn ĉiusekunde enlude
 STR_5816    :Agordas proporcion por skali la ludon per.{NEWLINE}Plej utila ludante en{NEWLINE}altaj distingivoj
-STR_5819    :[Bezonas aparataran ekranon]{NEWLINE}Paŭzi la ludon se enluda plustavolo{NEWLINE}de Steam estas malfermita
 STR_5820    :Minimumigi la ludon se fokuso{NEWLINE}perdiĝas dum plenekrana reĝimo
 STR_5822    :Cikli inter tago kaj nokto.{NEWLINE}Plena ciklo daŭras unu enludan monaton
 STR_5823    :Montri rubandojn majuskle (RCT1-konduto)
@@ -3252,7 +3246,6 @@ STR_6165    :Uzi vertikalan sinkronigon
 STR_6166    :Sinkronigas ĉiun kadron montritan laŭ la ofteco de ekrano-aktualigo, por preventi ekrano-ŝiron.
 STR_6167    :Altnivela
 STR_6168    :Titolosekvenco
-STR_6169    :Elektado de Scenaro
 STR_6170    :Optimumigoj de Interfacoj
 STR_6171    :Serĉi
 STR_6172    :Serĉi
@@ -3820,3 +3813,10 @@ STR_6774    :Daŭro de lasta inspekto
 STR_6775    :{COMMA16} minuto
 STR_6776    :{COMMA16} minutoj
 STR_6777    :pli ol 4 horoj
+STR_6778    :Antaŭrigardi scenarojn per:
+STR_6779    :Electi kian antaŭrigardo-bildon uzi je la fenestro de scenaro-elektaro.
+STR_6780    :Etaj mapoj
+STR_6781    :Ekrankopioj
+STR_6782    :Sciigoj de parko
+STR_6783    :Sciigoj de atrakcioj
+STR_6784    :Sciigoj de gastoj

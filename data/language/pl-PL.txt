@@ -1247,7 +1247,6 @@ STR_1870    :Liczba pełnych obrotów
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Przychód: {BLACK}{CURRENCY2DP} na godzinę
 STR_1874    :{WINDOW_COLOUR_2}Zysk: {BLACK}{CURRENCY2DP} na godzinę
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspekcja atrakcji
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Naprawa atrakcji
 STR_1878    :{WINDOW_COLOUR_2}Inspekcja:
@@ -2242,14 +2241,14 @@ STR_3235    :Pokaż opcje finansowe
 STR_3236    :Wyświetl opcje gości
 STR_3238    :Bez pieniędzy
 STR_3239    :Ta opcja pozwala znieść wszelkie ograniczenia finansowe dla parku
-STR_3240    :{WINDOW_COLOUR_2}Początkowa gotówka:
-STR_3241    :{WINDOW_COLOUR_2}Początkowe zadłużenie:
-STR_3242    :{WINDOW_COLOUR_2}Maksymalne zadłużenie:
-STR_3243    :{WINDOW_COLOUR_2}Oprocentowanie pożyczek:
+STR_3240    :Początkowa gotówka:
+STR_3241    :Początkowe zadłużenie:
+STR_3242    :Maksymalne zadłużenie:
+STR_3243    :Oprocentowanie pożyczek:
 STR_3244    :Zakaz kampanii reklamowych
 STR_3245    :Zakaż przeprowadzania kampanii reklamowych, promocji i innych działań marketingowych
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Nie można bardziej zwiększyć ilości początkowej gotówki!
 STR_3249    :Nie można bardziej zmniejszyć ilości początkowej gotówki!
 STR_3250    :Nie można bardziej zwiększyć początkowego zadłużenia!
@@ -2258,10 +2257,10 @@ STR_3252    :Nie można bardziej zwiększyć maksymalnego zadłużenia!
 STR_3253    :Nie można bardziej zmniejszyć maksymalnego zadłużenia!
 STR_3254    :Nie można bardziej zwiększyć oprocentowania pożyczek!
 STR_3255    :Nie można bardziej zmniejszyć oprocentowania pożyczek!
-STR_3260    :{WINDOW_COLOUR_2}Gotówka na gościa (średnia):
-STR_3261    :{WINDOW_COLOUR_2}Początkowe zadowolenie gości:
-STR_3262    :{WINDOW_COLOUR_2}Początkowy głód gości:
-STR_3263    :{WINDOW_COLOUR_2}Początkowe pragnienie gości:
+STR_3260    :Gotówka na gościa (średnia):
+STR_3261    :Początkowe zadowolenie gości:
+STR_3262    :Początkowy głód gości:
+STR_3263    :Początkowe pragnienie gości:
 STR_3264    :Nie można tego bardziej zwiększyć!
 STR_3265    :Nie można tego bardziej zmniejszyć!
 STR_3266    :Wybierz ile park pobiera za wstęp i atrakcje
@@ -2275,11 +2274,11 @@ STR_3273    :Ocena parku trudna do zwiększenia i utrzymania
 STR_3274    :Zwiększenie i utrzymanie oceny parku staje się prawdziwym wyzwaniem
 STR_3275    :Goście są trudniejsi do przyciągnięcia
 STR_3276    :Trudniej jest przyciągnąć gości do parku
-STR_3277    :{WINDOW_COLOUR_2}Koszt zakupu ziemi:
-STR_3278    :{WINDOW_COLOUR_2}Koszt zakupu planów budowy:
+STR_3277    :Koszt zakupu ziemi:
+STR_3278    :Koszt zakupu planów budowy:
 STR_3279    :Darmowe wejście i płatne atrakcje
 STR_3280    :Płatne wejście i darmowe atrakcje
-STR_3281    :{WINDOW_COLOUR_2}Cena za wejście:
+STR_3281    :Cena za wejście:
 STR_3283    :Wybierz atrakcje, które mają zostać zachowane
 STR_3285    :Zachowane atrakcje
 STR_3286    :Wybierz cele dla tego scenariusza
@@ -2695,7 +2694,6 @@ STR_5549    :rok/miesiąc/dzień
 STR_5550    :{POP16}{POP16}Rok {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :rok/dzień/miesiąc
 STR_5552    :{POP16}{POP16}Rok {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Wstrzymaj grę, gdy nakładka Steam jest otwarta
 STR_5554    :Uruchom narzędzie tworzenia gór
 STR_5555    :Pokaż pojazdy z innych typów torów
 STR_5556    :Wyrzuć gracza
@@ -2766,9 +2764,6 @@ STR_5623    :Zakręcone Światy
 STR_5624    :Zakręcone Czasy
 STR_5625    :„Prawdziwe” parki
 STR_5626    :Inne parki
-STR_5627    :Grupuj scenariusze według:
-STR_5628    :Gra źródłowa
-STR_5629    :Poziom trudności
 STR_5630    :Włącz odblokowywanie scenariuszy
 STR_5631    :Oryginalne parki z dodatku
 STR_5632    :Zbuduj własny…
@@ -2919,7 +2914,6 @@ STR_5814    :{WINDOW_COLOUR_1}„{STRING}”
 #Wskazówki
 STR_5815    :Pokaż licznik FPS w grze
 STR_5816    :Ustawia stosunek skalowania grafiki.{NEWLINE}Przydatne szczególnie przy grze{NEWLINE}w wysokiej rozdzielczości
-STR_5819    :[Wymaga silnika sprzętowego]{NEWLINE}Zatrzymuje grę, jeśli nakładka Steam jest otwarta
 STR_5820    :Zmniejsza okno gry w przypadku{NEWLINE}utraty ostrości w trybie pełnoekranowym
 STR_5822    :Cykl dnia i nocy.{NEWLINE}Pełny cykl trwa jeden miesiąc w grze.
 STR_5823    :Wyświetlaj banery z dużych liter (zachowanie RCT1)
@@ -3252,7 +3246,6 @@ STR_6165    :Synchronizacja pionowa
 STR_6166    :Synchronizuje każdą wyświetlaną klatkę z częstotliwością odświeżania monitora, zapobiegając rozrywaniu ekranu
 STR_6167    :Zaawansowane
 STR_6168    :Sekwencja tytułowa
-STR_6169    :Wybór scenariusza
 STR_6170    :Dostosowanie interfejsu
 STR_6171    :Szukaj
 STR_6172    :Szukaj

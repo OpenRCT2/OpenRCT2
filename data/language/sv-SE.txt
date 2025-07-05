@@ -1244,7 +1244,6 @@ STR_1870    :Antal hela rotationer
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Inkomst: {BLACK}{CURRENCY2DP} per timme
 STR_1874    :{WINDOW_COLOUR_2}Vinst: {BLACK}{CURRENCY2DP} per timme
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspektera åkturer
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fixa åkturer
 STR_1878    :{WINDOW_COLOUR_2}Inspektion:
@@ -2242,14 +2241,14 @@ STR_3235    :Visa finansiella inställningar
 STR_3236    :Visa besökarinställningar
 STR_3238    :Inga pengar
 STR_3239    :Gör detta till en ’inga pengar’-park utan finansiella begränsningar
-STR_3240    :{WINDOW_COLOUR_2}Startpengar:
-STR_3241    :{WINDOW_COLOUR_2}Startlån:
-STR_3242    :{WINDOW_COLOUR_2}Maxlån:
-STR_3243    :{WINDOW_COLOUR_2}Årlig ränta:
+STR_3240    :Startpengar:
+STR_3241    :Startlån:
+STR_3242    :Maxlån:
+STR_3243    :Årlig ränta:
 STR_3244    :Förbjud kampanjer
 STR_3245    :Förbjud kampanjer och marknadsföring
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Kan inte höja startpengar mer!
 STR_3249    :Kan inte sänka startpengar mer!
 STR_3250    :Kan inte höja startlån mer!
@@ -2258,10 +2257,10 @@ STR_3252    :Kan inte höja maxlån mer!
 STR_3253    :Kan inte sänka maxlån mer!
 STR_3254    :Kan inte höja räntan mer!
 STR_3255    :Kan inte sänka räntan mer!
-STR_3260    :{WINDOW_COLOUR_2}Pengar per besökare (genomsnitt):
-STR_3261    :{WINDOW_COLOUR_2}Besökares startglädje:
-STR_3262    :{WINDOW_COLOUR_2}Besökares starthunger:
-STR_3263    :{WINDOW_COLOUR_2}Besökares starttörst:
+STR_3260    :Pengar per besökare (genomsnitt):
+STR_3261    :Besökares startglädje:
+STR_3262    :Besökares starthunger:
+STR_3263    :Besökares starttörst:
 STR_3264    :Kan inte höja detta mer!
 STR_3265    :Kan inte sänka detta mer!
 STR_3266    :Välj hur den här parken tar betalt för entré och åkturer
@@ -2275,11 +2274,11 @@ STR_3273    :Svårare parkomdöme
 STR_3274    :Gör så att bra parkomdöme är svårare att få
 STR_3275    :Svårare besökare
 STR_3276    :Gör så att det blir svårare att få besökare
-STR_3277    :{WINDOW_COLOUR_2}Kostnad för att köpa mark:
-STR_3278    :{WINDOW_COLOUR_2}Kostnad för att köpa bygglov:
+STR_3277    :Kostnad för att köpa mark:
+STR_3278    :Kostnad för att köpa bygglov:
 STR_3279    :Gratis parkentré och betala per åktur
 STR_3280    :Gratis åkturer och betala för parkentré
-STR_3281    :{WINDOW_COLOUR_2}Entrépris:
+STR_3281    :Entrépris:
 STR_3283    :Välj åkturer som ska bevaras
 STR_3285    :Bevarade åkturer
 STR_3286    :Välj uppdrag för detta scenario
@@ -2697,7 +2696,6 @@ STR_5549    :År/Månad/Dag
 STR_5550    :{POP16}{POP16}År {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :År/Dag/Månad
 STR_5552    :{POP16}{POP16}År {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Pausa spelet när Steam overlay är uppe
 STR_5554    :Tillåt bergverktyget
 STR_5555    :Visa fordon från andra karuseller
 STR_5556    :Sparka ut spelare
@@ -2769,9 +2767,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :”Riktiga” Parker
 STR_5626    :Andra parker
-STR_5627    :Sortera scenarion via:
-STR_5628    :Spelpaket
-STR_5629    :Svårighetsgrad
 STR_5630    :Tillåt progressiv upplåsning
 STR_5631    :Original DLC parker
 STR_5632    :Bygg din egna…
@@ -2921,7 +2916,6 @@ STR_5814    :{WINDOW_COLOUR_1}”{STRING}”
 #tooltips
 STR_5815    :Visa bildhastighetsmätare i spelet
 STR_5816    :Sätter skalan i spelet.{NEWLINE}Mest användbar när du spelar i{NEWLINE}hög upplösning
-STR_5819    :[Kräver Hårdvaruhantering]{NEWLINE}Pausa spelet om Steam{NEWLINE}in-game overlay är öppet
 STR_5820    :Minimera spelet om fokusen{NEWLINE}tappas medan du är i fullskärmsläge
 STR_5822    :Växla mellan natt och dag.{NEWLINE}En full växling tar 1 månad i spelet.
 STR_5823    :Visa banderoller med versaler{NEWLINE}(Som i RCT1)
@@ -3254,7 +3248,6 @@ STR_6165    :Använd vertikal synk
 STR_6166    :Synkroniserar varje bild som ritas med skärmens uppdateringshastighet, vilket förhindrar så kallad ’screen tearing’.
 STR_6167    :Avancerat
 STR_6168    :Titelsekvens
-STR_6169    :Scenarioväljaren
 STR_6170    :Anpassa gränssnittet
 STR_6171    :Sök
 STR_6172    :Sök

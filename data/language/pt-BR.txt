@@ -1247,7 +1247,6 @@ STR_1870    :Número de rotações completas
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Receita: {BLACK}{CURRENCY2DP} por hora
 STR_1874    :{WINDOW_COLOUR_2}Lucro: {BLACK}{CURRENCY2DP} por hora
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspecionar Atrações
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Consertar Atrações
 STR_1878    :{WINDOW_COLOUR_2}Inspeção:
@@ -2242,14 +2241,14 @@ STR_3235    :Mostrar opções financeiras
 STR_3236    :Mostrar opções de visitante
 STR_3238    :Não necessita dinheiro
 STR_3239    :Fazer este parque sem restrições financeiras
-STR_3240    :{WINDOW_COLOUR_2}Dinheiro inicial:
-STR_3241    :{WINDOW_COLOUR_2}Empréstimo inicial:
-STR_3242    :{WINDOW_COLOUR_2}Empréstimo máximo:
-STR_3243    :{WINDOW_COLOUR_2}Taxa de juros anual:
+STR_3240    :Dinheiro inicial:
+STR_3241    :Empréstimo inicial:
+STR_3242    :Empréstimo máximo:
+STR_3243    :Taxa de juros anual:
 STR_3244    :Proibir campanhas de marketing
 STR_3245    :Proibir publicidade, esquemas promocionais, e outras campanhas de marketing
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Impossível aumentar ainda mais o dinheiro inicial!
 STR_3249    :Impossível reduzir ainda mais o dinheiro inicial!
 STR_3250    :Impossível aumentar ainda mais o empréstimo inicial!
@@ -2258,10 +2257,10 @@ STR_3252    :Impossível aumentar ainda mais o tamanho do empréstimo!
 STR_3253    :Impossível diminuir ainda mais o tamanho do empréstimo!
 STR_3254    :Impossível aumentar ainda mais a taxa de juros!
 STR_3255    :Impossível diminuir ainda mais a taxa de juros!
-STR_3260    :{WINDOW_COLOUR_2}Dinheiro por visitante (em média):
-STR_3261    :{WINDOW_COLOUR_2}Felicidade inicial dos visitantes:
-STR_3262    :{WINDOW_COLOUR_2}Fome inicial dos visitantes:
-STR_3263    :{WINDOW_COLOUR_2}Sede inicial dos visitantes:
+STR_3260    :Dinheiro por visitante (em média):
+STR_3261    :Felicidade inicial dos visitantes:
+STR_3262    :Fome inicial dos visitantes:
+STR_3263    :Sede inicial dos visitantes:
 STR_3264    :Impossível aumentar isto ainda mais!
 STR_3265    :Impossível diminuir isto ainda mais!
 STR_3266    :Selecionar como este parque cobra por entrada e atrações
@@ -2275,11 +2274,11 @@ STR_3273    :Classificação do parque com alto nível de dificuldade
 STR_3274    :Fazer o valor de classificação do parque mais desafiador
 STR_3275    :Geração de visitantes com maior nível de dificuldade
 STR_3276    :Tornar mais difícil atrair clientes para o parque
-STR_3277    :{WINDOW_COLOUR_2}Custo para comprar terreno:
-STR_3278    :{WINDOW_COLOUR_2}Custo para comprar direitos:
+STR_3277    :Custo para comprar terreno:
+STR_3278    :Custo para comprar direitos:
 STR_3279    :Entrada gratuita / Atrações pagas
 STR_3280    :Entrada paga / Atrações gratuitas
-STR_3281    :{WINDOW_COLOUR_2}Preço de entrada:
+STR_3281    :Preço de entrada:
 STR_3283    :Selecione as atrações a serem preservadas
 STR_3285    :Opções de cenário - Atrações Preservadas
 STR_3286    :Selecione o objetivo para este cenário
@@ -2695,7 +2694,6 @@ STR_5549    :Ano/Mês/Dia
 STR_5550    :{POP16}{POP16}Ano {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Ano/Dia/Mês
 STR_5552    :{POP16}{POP16}Ano {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Pausar jogo quando a Steam estiver sobrepondo
 STR_5554    :Habilitar ferramenta de montanha
 STR_5555    :Exibir veículos de outras atrações
 STR_5556    :Remover Jogador
@@ -2766,9 +2764,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :Parques “Reais”
 STR_5626    :Outros parques
-STR_5627    :Agrupar lista de cenário por:
-STR_5628    :Origem do jogo
-STR_5629    :Nível de dificuldade
 STR_5630    :Habilitar destravamento progressivo
 STR_5631    :Parques Originais Baixados (DLC)
 STR_5632    :Construa seu próprio…
@@ -2919,7 +2914,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :Mostra o contador de FPS dentro do jogo
 STR_5816    :Define a proporção de dimensionamento do jogo.{NEWLINE}Mais útil quando está jogando em{NEWLINE}alta resolução
-STR_5819    :[Requer exibição por hardware]{NEWLINE}Pausa o jogo quando a interface da Steam{NEWLINE}estiver sobrepondo durante o jogo
 STR_5820    :Minimiza o jogo se o foco for{NEWLINE}perdido enquanto estiver em modo tela cheia
 STR_5822    :Alterna entre dia e noite.{NEWLINE}Ciclo completo leva um mês do jogo
 STR_5823    :Mostra banners em caixa alta (como no RCT1)
@@ -3252,7 +3246,6 @@ STR_6165    :Usar sincronização vertical
 STR_6166    :Sincroniza cada quadro mostrado com a taxa de atualização do monitor, prevenindo cortes na tela.
 STR_6167    :Avançado
 STR_6168    :Sequência de Título
-STR_6169    :Seleção de Cenários
 STR_6170    :Melhoras de Interface
 STR_6171    :Procurar
 STR_6172    :Procura
@@ -3820,3 +3813,10 @@ STR_6774    :Tempo desde a última inspeção
 STR_6775    :{COMMA16} minuto
 STR_6776    :{COMMA16} minutos
 STR_6777    :mais de 4 horas
+STR_6778    :Pré-visualizar cenários usando:
+STR_6779    :Selecione o tipo de imagem de pré-visualização a ser utilizado na tela de seleção de cenários.
+STR_6780    :Mini mapas
+STR_6781    :Capturas de tela
+STR_6782    :Notificações de Parque
+STR_6783    :Notificações de Atração
+STR_6784    :Notificações de Visitantes

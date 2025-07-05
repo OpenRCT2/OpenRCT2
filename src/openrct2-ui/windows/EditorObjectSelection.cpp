@@ -107,9 +107,10 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr uint8_t _numSourceGameItems = 8;
 
-    static constexpr StringId WINDOW_TITLE = STR_OBJECT_SELECTION;
-    static constexpr int32_t WH = 400;
-    static constexpr int32_t WW = 600;
+    static constexpr StringId kWindowTitle = STR_OBJECT_SELECTION;
+    static constexpr ScreenSize kWindowSize = { 755, 400 };
+    static constexpr ScreenSize kMinimumWindowSize = { 600, 400 };
+    static constexpr ScreenSize kMaximumWindowSize = { 1200, 1000 };
     static constexpr auto kFilterWidth = 150;
     static constexpr auto kPreviewSize = 113;
 
@@ -217,29 +218,29 @@ namespace OpenRCT2::Ui::Windows
     validate_global_widx(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
 
     // clang-format off
-    static constexpr Widget _window_editor_object_selection_widgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-        MakeWidget         ({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
-        MakeWidget         ({  4, 60}, {288, 277}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
-        MakeWidget         ({391, 45}, {114, 114}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                                  ),
-        MakeWidget         ({340, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
-        MakeDropdownWidgets({470, 22}, {114,  14}, WindowWidgetType::DropdownMenu, WindowColour::Primary,   STR_OBJECT_FILTER,             STR_OBJECT_FILTER_TIP            ),
-        MakeWidget         ({  4, 45}, {211,  14}, WindowWidgetType::TextBox,      WindowColour::Secondary                                                                  ),
-        MakeWidget         ({218, 45}, { 70,  14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR                                         ),
-        MakeWidget         ({  3, 73}, {285,   4}, WindowWidgetType::ImgBtn,       WindowColour::Secondary                                                                  ),
-        MakeTab            ({  3, 47}),
-        MakeTab            ({ 34, 47}),
-        MakeTab            ({ 65, 47}),
-        MakeTab            ({ 96, 47}),
-        MakeTab            ({127, 47}),
-        MakeTab            ({158, 47}),
-        MakeTab            ({189, 47}),
-        MakeWidget         ({  4, 80}, {145,  14}, WindowWidgetType::TableHeader, WindowColour::Secondary                                                                  ),
-        MakeWidget         ({149, 80}, {143,  14}, WindowWidgetType::TableHeader, WindowColour::Secondary                                                                  ),
-        MakeWidget         ({700, 50}, { 24,  24}, WindowWidgetType::ImgBtn,      WindowColour::Secondary,  SPR_G2_RELOAD,    STR_RELOAD_OBJECT_TIP ),
-        MakeTab            ({  3, 17},                                                                                       STR_STRING_DEFINED_TOOLTIP       ),
+    static constexpr auto _window_editor_object_selection_widgets = makeWidgets(
+        makeWindowShim     (kWindowTitle, kWindowSize),
+        makeWidget         ({  0, 43}, {kWindowSize.width, 357}, WidgetType::resize,       WindowColour::secondary                                                                 ),
+        makeWidget         ({  4, 60}, {              288, 277}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                                                ),
+        makeWidget         ({391, 45}, {              114, 114}, WidgetType::flatBtn,      WindowColour::secondary                                                                 ),
+        makeWidget         ({340, 22}, {              122,  14}, WidgetType::button,       WindowColour::primary,   STR_INSTALL_NEW_TRACK_DESIGN, STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
+        makeDropdownWidgets({470, 22}, {              114,  14}, WidgetType::dropdownMenu, WindowColour::primary,   STR_OBJECT_FILTER,            STR_OBJECT_FILTER_TIP            ),
+        makeWidget         ({  4, 45}, {              211,  14}, WidgetType::textBox,      WindowColour::secondary                                                                 ),
+        makeWidget         ({218, 45}, {               70,  14}, WidgetType::button,       WindowColour::secondary, STR_OBJECT_SEARCH_CLEAR                                        ),
+        makeWidget         ({  3, 73}, {              285,   4}, WidgetType::imgBtn,       WindowColour::secondary                                                                 ),
+        makeTab            ({  3, 47}                                                                                                                                              ),
+        makeTab            ({ 34, 47}                                                                                                                                              ),
+        makeTab            ({ 65, 47}                                                                                                                                              ),
+        makeTab            ({ 96, 47}                                                                                                                                              ),
+        makeTab            ({127, 47}                                                                                                                                              ),
+        makeTab            ({158, 47}                                                                                                                                              ),
+        makeTab            ({189, 47}                                                                                                                                              ),
+        makeWidget         ({  4, 80}, {              145,  14}, WidgetType::tableHeader, WindowColour::secondary                                                                  ),
+        makeWidget         ({149, 80}, {              143,  14}, WidgetType::tableHeader, WindowColour::secondary                                                                  ),
+        makeWidget         ({700, 50}, {               24,  24}, WidgetType::imgBtn,      WindowColour::secondary,  SPR_G2_RELOAD,                STR_RELOAD_OBJECT_TIP            ),
+        makeTab            ({  3, 17},                                                                                                            STR_STRING_DEFINED_TOOLTIP       )
         // Copied object type times...
-    };
+    );
     // clang-format on
 
 #pragma endregion
@@ -283,7 +284,7 @@ namespace OpenRCT2::Ui::Windows
             selected_tab = 0;
             selected_list_item = -1;
 
-            WindowSetResize(*this, { WW, WH }, { 1200, 1000 });
+            WindowSetResize(*this, kMinimumWindowSize, kMaximumWindowSize);
 
             _listSortType = RIDE_SORT_TYPE;
             _listSortDescending = false;
@@ -494,7 +495,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            WindowSetResize(*this, { WW, WH }, { 1200, 1000 });
+            WindowSetResize(*this, kMinimumWindowSize, kMaximumWindowSize);
         }
 
         static constexpr StringId kSourceStringIds[] = {
@@ -866,17 +867,17 @@ namespace OpenRCT2::Ui::Windows
             if (gLegacyScene == LegacyScene::trackDesignsManager)
             {
                 titleWidget.text = STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE;
-                installTrackWidget.type = WindowWidgetType::Button;
+                installTrackWidget.type = WidgetType::button;
             }
             else if (gLegacyScene == LegacyScene::trackDesigner)
             {
                 titleWidget.text = STR_ROLLER_COASTER_DESIGNER_SELECT_RIDE_TYPES_VEHICLES;
-                installTrackWidget.type = WindowWidgetType::Empty;
+                installTrackWidget.type = WidgetType::empty;
             }
             else
             {
                 titleWidget.text = STR_OBJECT_SELECTION;
-                installTrackWidget.type = WindowWidgetType::Empty;
+                installTrackWidget.type = WidgetType::empty;
             }
 
             // Set title parameters for current page
@@ -915,25 +916,25 @@ namespace OpenRCT2::Ui::Windows
                 auto& widget = widgets[WIDX_TAB_1 + i];
                 if (ObjectSelectionPages[i].Image != kSpriteIdNull)
                 {
-                    widget.type = WindowWidgetType::Tab;
+                    widget.type = WidgetType::tab;
                     widget.left = x;
                     widget.right = x + 30;
                     x += 31;
                 }
                 else
-                    widget.type = WindowWidgetType::Empty;
+                    widget.type = WidgetType::empty;
             }
 
             if (Config::Get().general.DebuggingTools)
-                widgets[WIDX_RELOAD_OBJECT].type = WindowWidgetType::ImgBtn;
+                widgets[WIDX_RELOAD_OBJECT].type = WidgetType::imgBtn;
             else
-                widgets[WIDX_RELOAD_OBJECT].type = WindowWidgetType::Empty;
+                widgets[WIDX_RELOAD_OBJECT].type = WidgetType::empty;
 
             if (gLegacyScene == LegacyScene::trackDesignsManager || gLegacyScene == LegacyScene::trackDesigner)
             {
                 for (size_t i = 1; i < std::size(ObjectSelectionPages); i++)
                 {
-                    widgets[WIDX_TAB_1 + i].type = WindowWidgetType::Empty;
+                    widgets[WIDX_TAB_1 + i].type = WidgetType::empty;
                 }
             }
 
@@ -957,7 +958,7 @@ namespace OpenRCT2::Ui::Windows
             for (int8_t i = 0; i <= 6; i++)
             {
                 widgets[WIDX_SUB_TAB_0 + i].tooltip = i < numSubTabs ? currentPage.subTabs[i].tooltip : kStringIdNone;
-                widgets[WIDX_SUB_TAB_0 + i].type = i < numSubTabs ? WindowWidgetType::Tab : WindowWidgetType::Empty;
+                widgets[WIDX_SUB_TAB_0 + i].type = i < numSubTabs ? WidgetType::tab : WidgetType::empty;
                 pressed_widgets &= ~(1uLL << (WIDX_SUB_TAB_0 + i));
             }
 
@@ -965,10 +966,10 @@ namespace OpenRCT2::Ui::Windows
             if (hasSubTabs)
             {
                 pressed_widgets |= (1uLL << (WIDX_SUB_TAB_0 + _selectedSubTab));
-                widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WindowWidgetType::ImgBtn;
+                widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WidgetType::imgBtn;
             }
             else
-                widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WindowWidgetType::Empty;
+                widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WidgetType::empty;
 
             // The ride tab has two headers for the list
             bool isRideTab = GetSelectedObjectType() == ObjectType::ride;
@@ -976,13 +977,13 @@ namespace OpenRCT2::Ui::Windows
             {
                 int32_t width_limit = (widgets[WIDX_LIST].width() - 15) / 2;
 
-                widgets[WIDX_LIST_SORT_TYPE].type = WindowWidgetType::TableHeader;
+                widgets[WIDX_LIST_SORT_TYPE].type = WidgetType::tableHeader;
                 widgets[WIDX_LIST_SORT_TYPE].top = widgets[WIDX_FILTER_TEXT_BOX].bottom + 3;
                 widgets[WIDX_LIST_SORT_TYPE].bottom = widgets[WIDX_LIST_SORT_TYPE].top + 13;
                 widgets[WIDX_LIST_SORT_TYPE].left = 4;
                 widgets[WIDX_LIST_SORT_TYPE].right = widgets[WIDX_LIST_SORT_TYPE].left + width_limit;
 
-                widgets[WIDX_LIST_SORT_RIDE].type = WindowWidgetType::TableHeader;
+                widgets[WIDX_LIST_SORT_RIDE].type = WidgetType::tableHeader;
                 widgets[WIDX_LIST_SORT_RIDE].top = widgets[WIDX_LIST_SORT_TYPE].top;
                 widgets[WIDX_LIST_SORT_RIDE].bottom = widgets[WIDX_LIST_SORT_TYPE].bottom;
                 widgets[WIDX_LIST_SORT_RIDE].left = widgets[WIDX_LIST_SORT_TYPE].right + 1;
@@ -992,8 +993,8 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                widgets[WIDX_LIST_SORT_TYPE].type = WindowWidgetType::Empty;
-                widgets[WIDX_LIST_SORT_RIDE].type = WindowWidgetType::Empty;
+                widgets[WIDX_LIST_SORT_TYPE].type = WidgetType::empty;
+                widgets[WIDX_LIST_SORT_RIDE].type = WidgetType::empty;
 
                 widgets[WIDX_LIST].top = widgets[WIDX_FILTER_TEXT_BOX].bottom + 2;
             }
@@ -1012,7 +1013,7 @@ namespace OpenRCT2::Ui::Windows
             for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
             {
                 const auto& widget = widgets[WIDX_TAB_1 + i];
-                if (widget.type != WindowWidgetType::Empty)
+                if (widget.type != WidgetType::empty)
                 {
                     auto image = ImageId(ObjectSelectionPages[i].Image);
                     auto screenPos = windowPos + ScreenCoordsXY{ widget.left, widget.top };
@@ -1031,7 +1032,7 @@ namespace OpenRCT2::Ui::Windows
                 for (auto i = 0u; i < currentPage.subTabs.size(); i++)
                 {
                     const auto& widget = widgets[WIDX_SUB_TAB_0 + i];
-                    if (widget.type == WindowWidgetType::Empty)
+                    if (widget.type == WidgetType::empty)
                         continue;
 
                     auto& subTabDef = currentPage.subTabs[i];
@@ -1080,7 +1081,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw sort button text
             const auto& listSortTypeWidget = widgets[WIDX_LIST_SORT_TYPE];
-            if (listSortTypeWidget.type != WindowWidgetType::Empty)
+            if (listSortTypeWidget.type != WidgetType::empty)
             {
                 auto ft = Formatter();
                 auto stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<StringId>(_listSortDescending ? STR_DOWN : STR_UP)
@@ -1090,7 +1091,7 @@ namespace OpenRCT2::Ui::Windows
                 DrawTextEllipsised(rt, screenPos, listSortTypeWidget.width(), STR_OBJECTS_SORT_TYPE, ft, { colours[1] });
             }
             const auto& listSortRideWidget = widgets[WIDX_LIST_SORT_RIDE];
-            if (listSortRideWidget.type != WindowWidgetType::Empty)
+            if (listSortRideWidget.type != WidgetType::empty)
             {
                 auto ft = Formatter();
                 auto stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<StringId>(_listSortDescending ? STR_DOWN : STR_UP)
@@ -1558,7 +1559,7 @@ namespace OpenRCT2::Ui::Windows
                     return rideObject->GetDescription();
                 }
                 default:
-                    return "";
+                    return {};
             }
         }
 
@@ -1631,7 +1632,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<EditorObjectSelectionWindow>(
-            WindowClass::EditorObjectSelection, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
+            WindowClass::EditorObjectSelection, kWindowSize, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
     }
 
     // Used for forced closure

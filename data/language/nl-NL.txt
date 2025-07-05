@@ -1246,7 +1246,6 @@ STR_1870    :Aantal complete rotaties
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Inkomsten: {BLACK}{CURRENCY2DP} per uur
 STR_1874    :{WINDOW_COLOUR_2}Winst: {BLACK}{CURRENCY2DP} per uur
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Attracties inspecteren
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Attracties repareren
 STR_1878    :{WINDOW_COLOUR_2}Inspectie:
@@ -2241,14 +2240,14 @@ STR_3235    :Toon financiële opties
 STR_3236    :Toon bezoekersopties
 STR_3238    :Zonder geld
 STR_3239    :Schakel geld compleet uit, zodat het park geen financiële beperkingen heeft
-STR_3240    :{WINDOW_COLOUR_2}Startsaldo:
-STR_3241    :{WINDOW_COLOUR_2}Startlening:
-STR_3242    :{WINDOW_COLOUR_2}Maximale lening:
-STR_3243    :{WINDOW_COLOUR_2}Jaarlijkse rente:
+STR_3240    :Startsaldo:
+STR_3241    :Startlening:
+STR_3242    :Maximale lening:
+STR_3243    :Jaarlijkse rente:
 STR_3244    :Marketingcampagnes niet toestaan
 STR_3245    :Geen advertenties, promoties of andere marketingacties toestaan
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Kan het startsaldo niet verder verhogen!
 STR_3249    :Kan het startsaldo niet verder verlagen!
 STR_3250    :Kan de startlening niet verder verhogen!
@@ -2257,10 +2256,10 @@ STR_3252    :Kan de maximumlening niet verder verhogen!
 STR_3253    :Kan de maximumlening niet verder verlagen!
 STR_3254    :Kan de rente niet verder verhogen!
 STR_3255    :Kan de rente niet verder verlagen!
-STR_3260    :{WINDOW_COLOUR_2}Geld per bezoeker (gemiddeld):
-STR_3261    :{WINDOW_COLOUR_2}Aanvankelijke stemming bezoekers:
-STR_3262    :{WINDOW_COLOUR_2}Aanvankelijke honger bezoekers:
-STR_3263    :{WINDOW_COLOUR_2}Aanvankelijke dorst bezoekers:
+STR_3260    :Geld per bezoeker (gemiddeld):
+STR_3261    :Aanvankelijke stemming bezoekers:
+STR_3262    :Aanvankelijke honger bezoekers:
+STR_3263    :Aanvankelijke dorst bezoekers:
 STR_3264    :Kan dit niet verder verhogen!
 STR_3265    :Kan dit niet verder verlagen!
 STR_3266    :Selecteer hoe dit park geld vraagt voor entree en attracties
@@ -2274,11 +2273,11 @@ STR_3273    :Hogere eisen voor goede parkwaardering
 STR_3274    :Maakt het krijgen van een goede parkwaardering uitdagender
 STR_3275    :Hogere eisen voor trekken bezoekers
 STR_3276    :Maakt het moeilijker om bezoekers aan te trekken
-STR_3277    :{WINDOW_COLOUR_2}Prijs landaankoop:
-STR_3278    :{WINDOW_COLOUR_2}Prijs bouwrechten:
+STR_3277    :Prijs landaankoop:
+STR_3278    :Prijs bouwrechten:
 STR_3279    :Gratis entree / Per rit betalen
 STR_3280    :Betaalde entree / Attracties gratis
-STR_3281    :{WINDOW_COLOUR_2}Entreeprijs:
+STR_3281    :Entreeprijs:
 STR_3283    :Beschermde attracties selecteren
 STR_3285    :Beschermde attracties
 STR_3286    :Selecteer doelstelling voor dit scenario
@@ -2696,7 +2695,6 @@ STR_5549    :Jaar/maand/dag
 STR_5550    :{POP16}{POP16}Jaar {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Jaar/dag/maand
 STR_5552    :{POP16}{POP16}Jaar {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Spel pauzeren als de Steam-overlay open staat
 STR_5554    :Overgangen met omringend land gladstrijken
 STR_5555    :Voertuigen van andere baantypen tonen
 STR_5556    :Speler verwijderen
@@ -2767,9 +2765,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :‘Echte’ parken
 STR_5626    :Overige parken
-STR_5627    :Scenariolijst groeperen op:
-STR_5628    :Oorsprong
-STR_5629    :Moeilijkheidsgraad
 STR_5630    :Moeilijke scenario’s ontgrendelden met makkelijke
 STR_5631    :Originele DLC
 STR_5632    :Bouw je eigen…
@@ -2918,7 +2913,6 @@ STR_5813    :‘{STRING}’
 STR_5814    :{WINDOW_COLOUR_1}‘{STRING}’
 STR_5815    :Toont FPS-teller aan de bovenkant van het scherm.
 STR_5816    :Stelt de factor in waarmee alles vergroot moet worden.{NEWLINE}Vooral handig als je met een hoge schermresolutie speelt.
-STR_5819    :[Vereist ‘Weergave uitgevoerd door hardware’]{NEWLINE}Pauzeert het spel als de Steam-overlay wordt geopend.
 STR_5820    :Minimaliseert het spel als het de focus verliest tijdens het spelen op volledig scherm.
 STR_5822    :Activeert de dag/nachtcyclus. Een volledige cyclus neemt ongeveer één maand in het spel in beslag.
 STR_5823    :Toont de tekst op lichtkranten altijd in hoofdletters (zoals RCT1).
@@ -3054,7 +3048,7 @@ STR_5957    :Noordwest
 STR_5958    :Noordoost
 STR_5959    :Zuidoost
 STR_5960    :Gekozen hoek:
-STR_5961    :Volgnummer: {BLACK}{COMMA16}
+STR_5961    :Objectindex: {BLACK}{COMMA16}
 STR_5962    :Botsingsdetectie:
 STR_5963    :Verhoogde hoeken:
 STR_5964    :Diagonaal
@@ -3251,7 +3245,6 @@ STR_6165    :Verticale synchronisatie
 STR_6166    :Synchroniseert het aantal frames per seconde met de frequentie van de monitor. Dit voorkomt tearing en zorgt zo voor een beter beeld.
 STR_6167    :Geavanceerd
 STR_6168    :Titelpresentatie
-STR_6169    :Scenarioselectie
 STR_6170    :Overig
 STR_6171    :Zoeken
 STR_6172    :Zoeken
@@ -3819,3 +3812,17 @@ STR_6774    :Laatste inspectie
 STR_6775    :{COMMA16} minuut geleden
 STR_6776    :{COMMA16} minuten geleden
 STR_6777    :meer dan 4 uur geleden
+STR_6778    :Scenariopreview:
+STR_6779    :Selecteer wat er moet worden gebruikt voor de previews in de scenarioselector.
+STR_6780    :Bovenaanzicht
+STR_6781    :Screenshots
+STR_6782    :Park
+STR_6783    :Attracties
+STR_6784    :Bezoekers
+STR_6785    :Gamepad
+STR_6786    :Dode zone:
+STR_6787    :Dode zone voor de analogue stick (minimaal vereiste beweging voordat het spel reageert)
+STR_6788    :Gevoeligheid:
+STR_6789    :Gevoeligheidsfactor voor de analoge stick
+STR_6790    :Dode zone: {COMMA32}%
+STR_6791    :Gevoeligheid: {COMMA32}%

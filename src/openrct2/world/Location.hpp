@@ -24,6 +24,11 @@ constexpr auto kNumOrthogonalDirections = 4;
 
 constexpr int32_t kCoordsNull = 0xFFFF8000;
 
+constexpr int32_t kScreenCoordsTileWidth = 64;
+constexpr int32_t kScreenCoordsTileWidthHalf = kScreenCoordsTileWidth / 2;
+constexpr int32_t kScreenCoordsTileHeight = 32;
+constexpr int32_t kScreenCoordsTileHeightHalf = kScreenCoordsTileHeight / 2;
+
 struct ScreenSize
 {
     int32_t width{};
@@ -54,6 +59,16 @@ struct ScreenSize
     constexpr ScreenSize operator/(int32_t scalar) const
     {
         return ScreenSize{ width / scalar, height / scalar };
+    }
+
+    constexpr ScreenSize operator+(const ScreenSize& other) const
+    {
+        return ScreenSize{ width + other.width, height + other.height };
+    }
+
+    constexpr ScreenSize operator-(const ScreenSize& other) const
+    {
+        return ScreenSize{ width - other.width, height - other.height };
     }
 };
 

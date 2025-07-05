@@ -1245,7 +1245,6 @@ STR_1870    :Komplet antal af rotationer
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Indkomst: {BLACK}{CURRENCY2DP} per time
 STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY2DP} per time
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspicerer forlystelse
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Reparerer forlystelse
 STR_1878    :{WINDOW_COLOUR_2}Inspektion:
@@ -2241,14 +2240,14 @@ STR_3235    :Vis finansindstillinger
 STR_3236    :Vis gæsteindstillinger
 STR_3238    :Ingen penge
 STR_3239    :Gør denne park til en ‘pengeløs’ park, unde finansielle restriktioner
-STR_3240    :{WINDOW_COLOUR_2}Startkapital:
-STR_3241    :{WINDOW_COLOUR_2}Startlån:
-STR_3242    :{WINDOW_COLOUR_2}Maksimum lånstørrelse:
-STR_3243    :{WINDOW_COLOUR_2}Årlig rentesats:
+STR_3240    :Startkapital:
+STR_3241    :Startlån:
+STR_3242    :Maksimum lånstørrelse:
+STR_3243    :Årlig rentesats:
 STR_3244    :Forbyd markedsføringskampagner
 STR_3245    :Forbyd reklamer, salgsfremmende ordninger, og andre marketingkampagner
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Kan ikke forøge startkapital yderligere!
 STR_3249    :Kan ikke reducere startkapital yderligere!
 STR_3250    :Kan ikke forøge startlån yderligere!
@@ -2257,10 +2256,10 @@ STR_3252    :Kan ikke forøge maksimum lånestørrelse yderligere!
 STR_3253    :Kan ikke reducere maksimum lånestørrelse yderligere!
 STR_3254    :Kan ikke forøge rentesats yderligere!
 STR_3255    :Kan ikke reducere rentesats yderligere!
-STR_3260    :{WINDOW_COLOUR_2}Penge per gæst (gennemsnit):
-STR_3261    :{WINDOW_COLOUR_2}Gæsters start-glæde:
-STR_3262    :{WINDOW_COLOUR_2}Gæsters start-sult:
-STR_3263    :{WINDOW_COLOUR_2}Gæsters start-tørst:
+STR_3260    :Penge per gæst (gennemsnit):
+STR_3261    :Gæsters start-glæde:
+STR_3262    :Gæsters start-sult:
+STR_3263    :Gæsters start-tørst:
 STR_3264    :Kan ikke forøge dette yderligere!
 STR_3265    :Kan ikke reducere dette yderligere!
 STR_3266    :Vælg hvordan parken tager penge for entré og forlystelser
@@ -2274,11 +2273,11 @@ STR_3273    :Park vurdering er svære at forøge og vedligeholde
 STR_3274    :gør park vurderingen mere udfordrende
 STR_3275    :Gæster er svære at tiltrække
 STR_3276    :Gør det svære at tiltrække og beholde gæster i parken
-STR_3277    :{WINDOW_COLOUR_2}Pris for at købe land:
-STR_3278    :{WINDOW_COLOUR_2}Pris for at købe byggerettigheder:
+STR_3277    :Pris for at købe land:
+STR_3278    :Pris for at købe byggerettigheder:
 STR_3279    :Gratis park entré / Betal for forlystelser
 STR_3280    :Betal Park entré / Gratis forlystelser
-STR_3281    :{WINDOW_COLOUR_2}Entré pris:
+STR_3281    :Entré pris:
 STR_3283    :vælg forlystelser der skal bevares
 STR_3285    :Bevarede forlystelser
 STR_3286    :Vælg mål for dette scenarie
@@ -2694,7 +2693,6 @@ STR_5549    :År/Måned/Dag
 STR_5550    :{POP16}{POP16}År {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :År/Dag/Måned
 STR_5552    :{POP16}{POP16}År {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Sæt spillet på pause når ‘Steam’ er åben
 STR_5554    :Aktiver bjergværktøj
 STR_5555    :Vis vogne fra andre spor type
 STR_5556    :Smid spiller ud
@@ -2765,9 +2763,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :“Rigtige ” Parker
 STR_5626    :Andre Parker
-STR_5627    :Grupper scenarie lister efter:
-STR_5628    :Kilde spil
-STR_5629    :Sværhedsgrad
 STR_5630    :Aktiver progressiv frigørelse
 STR_5631    :Originale DLC parker
 STR_5632    :Byg din egen…
@@ -2918,7 +2913,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :Vis billeder-per-sekund (FPS) i spillet
 STR_5816    :Indstiller forholdet til at skalere spillet efter.{NEWLINE} Mest nyttigt, når du spiller i {NEWLINE} høje opløsninger
-STR_5819    :[kræver hardware-visning]{NEWLINE}sæt spillet på pause, hvis Steam(NEWLINE)in-game overlay er åbnet
 STR_5820    :Minimer spillet, hvis fokus{NEWLINE}tabes i fuldskærmstilstand
 STR_5822    :Skift imellem dag og nat.{NEWLINE}Et døgn tager en ‘i spil måned’
 STR_5823    :Vis bannere med store bogstaver (RCT1 opførsel)
@@ -3251,7 +3245,6 @@ STR_6165    :Brug vertikal synk.
 STR_6166    :Synkroniserer hvert billede, som vises, til skærmens opdateringshastighed, hvilket forhindrer, udrivninger i grafikken.
 STR_6167    :Avanceret
 STR_6168    :Titel Sekvens
-STR_6169    :Scenarie valg
 STR_6170    :Interface Tilretninger
 STR_6171    :Søg
 STR_6172    :Søg

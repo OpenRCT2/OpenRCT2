@@ -45,10 +45,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TAB_0,
     };
 
-    static Widget CustomDefaultWidgets[] = {
-        WINDOW_SHIM(STR_STRING, 50, 50),
-        MakeWidget({ 0, 14 }, { 50, 36 }, WindowWidgetType::Resize, WindowColour::Secondary), // content panel
-    };
+    static auto CustomDefaultWidgets = makeWidgets(
+        makeWindowShim(STR_STRING, { 50, 50 }),
+        makeWidget({ 0, 14 }, { 50, 36 }, WidgetType::resize, WindowColour::secondary) // content panel
+    );
 
     struct CustomWidgetDesc
     {
@@ -254,8 +254,7 @@ namespace OpenRCT2::Ui::Windows
         std::string Classification;
         std::optional<int32_t> X;
         std::optional<int32_t> Y;
-        int32_t Width{};
-        int32_t Height{};
+        ScreenSize size{};
         std::optional<int32_t> MinWidth;
         std::optional<int32_t> MinHeight;
         std::optional<int32_t> MaxWidth;
@@ -285,8 +284,8 @@ namespace OpenRCT2::Ui::Windows
             result.Classification = desc["classification"].as_string();
             result.X = GetOptionalInt(desc["x"]);
             result.Y = GetOptionalInt(desc["y"]);
-            result.Width = desc["width"].as_int();
-            result.Height = desc["height"].as_int();
+            result.size.width = desc["width"].as_int();
+            result.size.height = desc["height"].as_int();
             result.MinWidth = GetOptionalInt(desc["minWidth"]);
             result.MaxWidth = GetOptionalInt(desc["maxWidth"]);
             result.MinHeight = GetOptionalInt(desc["minHeight"]);
@@ -476,9 +475,9 @@ namespace OpenRCT2::Ui::Windows
             WidgetIndex widgetIndex = 0;
             for (auto& widget : widgets)
             {
-                if (widget.type == WindowWidgetType::Scroll)
+                if (widget.type == WidgetType::scroll)
                 {
-                    WidgetScrollUpdateThumbs(*this, widgetIndex);
+                    widgetScrollUpdateThumbs(*this, widgetIndex);
                 }
                 widgetIndex++;
             }
@@ -500,11 +499,11 @@ namespace OpenRCT2::Ui::Windows
             auto numTabs = _info.Desc.Tabs.size();
             if (canBeResized() || numTabs != 0)
             {
-                widgets[WIDX_CONTENT_PANEL].flags &= ~WIDGET_FLAGS::IS_HIDDEN;
+                widgets[WIDX_CONTENT_PANEL].flags.unset(WidgetFlag::isHidden);
             }
             else
             {
-                widgets[WIDX_CONTENT_PANEL].flags |= WIDGET_FLAGS::IS_HIDDEN;
+                widgets[WIDX_CONTENT_PANEL].flags.set(WidgetFlag::isHidden);
             }
 
             SetPressedTab();
@@ -516,7 +515,7 @@ namespace OpenRCT2::Ui::Windows
             size_t scrollIndex = 0;
             for (const auto& widget : widgets)
             {
-                if (widget.type == WindowWidgetType::Scroll)
+                if (widget.type == WidgetType::scroll)
                 {
                     auto& listView = _info.ListViews[scrollIndex];
                     auto wwidth = widget.width() + 1 - 2;
@@ -543,7 +542,7 @@ namespace OpenRCT2::Ui::Windows
             if (viewport != nullptr)
             {
                 auto widgetIndex = GetViewportWidgetIndex();
-                if (WidgetIsVisible(*this, widgetIndex.value_or(false)))
+                if (widgetIsVisible(*this, widgetIndex.value_or(false)))
                 {
                     WindowDrawViewport(rt, *this);
                 }
@@ -607,10 +606,10 @@ namespace OpenRCT2::Ui::Windows
                         else if (widgetDesc->Type == "checkbox")
                         {
                             auto& widget = widgets[widgetIndex];
-                            widget.flags ^= WIDGET_FLAGS::IS_PRESSED;
-                            bool isChecked = widget.flags & WIDGET_FLAGS::IS_PRESSED;
+                            widget.flags.flip(WidgetFlag::isPressed);
+                            bool isChecked = widget.flags.has(WidgetFlag::isPressed);
 
-                            WidgetSetCheckboxValue(*this, widgetIndex, isChecked);
+                            widgetSetCheckboxValue(*this, widgetIndex, isChecked);
 
                             std::vector<DukValue> args;
                             auto ctx = widgetDesc->OnChange.context();
@@ -791,7 +790,7 @@ namespace OpenRCT2::Ui::Windows
             WidgetIndex widgetIndex = 0;
             for (auto& widget : widgets)
             {
-                if (widget.type == WindowWidgetType::Viewport)
+                if (widget.type == WidgetType::viewport)
                 {
                     return widgetIndex;
                 }
@@ -864,7 +863,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto widgetIndex = static_cast<WidgetIndex>(WIDX_TAB_0 + tabIndex);
                 auto widget = &widgets[widgetIndex];
-                if (WidgetIsVisible(*this, widgetIndex))
+                if (widgetIsVisible(*this, widgetIndex))
                 {
                     auto leftTop = windowPos + tab.offset + ScreenCoordsXY{ widget->left, widget->top };
                     auto image = tab.imageFrameBase;
@@ -898,17 +897,17 @@ namespace OpenRCT2::Ui::Windows
             // Add window tabs
             if (_info.Desc.Tabs.size() != 0)
             {
-                widgetList[WIDX_CONTENT_PANEL].top = 43;
+                widgetList[WIDX_CONTENT_PANEL].top = kTabBarHeight;
             }
             for (size_t tabDescIndex = 0; tabDescIndex < _info.Desc.Tabs.size(); tabDescIndex++)
             {
                 Widget widget{};
-                widget.type = WindowWidgetType::Tab;
+                widget.type = WidgetType::tab;
                 widget.colour = 1;
                 widget.left = static_cast<int16_t>(3 + (tabDescIndex * 31));
                 widget.right = widget.left + 30;
                 widget.top = 17;
-                widget.bottom = 43;
+                widget.bottom = kTabBarHeight;
                 widget.image = ImageId(SPR_TAB, FilterPaletteID::PaletteNull);
                 widget.tooltip = kStringIdNone;
                 widgetList.push_back(widget);
@@ -969,56 +968,56 @@ namespace OpenRCT2::Ui::Windows
             widget.content = std::numeric_limits<uint32_t>::max();
             widget.tooltip = kStringIdNone;
             widget.sztooltip = const_cast<utf8*>(desc.Tooltip.c_str());
-            widget.flags |= WIDGET_FLAGS::TOOLTIP_IS_STRING;
+            widget.flags.set(WidgetFlag::tooltipIsString);
             if (desc.IsDisabled)
-                widget.flags |= WIDGET_FLAGS::IS_DISABLED;
+                widget.flags.set(WidgetFlag::isDisabled);
             if (!desc.IsVisible)
-                widget.flags |= WIDGET_FLAGS::IS_HIDDEN;
+                widget.flags.set(WidgetFlag::isHidden);
 
             if (desc.Type == "button")
             {
                 if (desc.Image.HasValue())
                 {
-                    widget.type = desc.HasBorder ? WindowWidgetType::ImgBtn : WindowWidgetType::FlatBtn;
+                    widget.type = desc.HasBorder ? WidgetType::imgBtn : WidgetType::flatBtn;
                     widget.image = desc.Image;
                 }
                 else
                 {
-                    widget.type = WindowWidgetType::Button;
+                    widget.type = WidgetType::button;
                     widget.string = const_cast<utf8*>(desc.Text.c_str());
-                    widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+                    widget.flags.set(WidgetFlag::textIsString);
                 }
                 if (desc.IsPressed)
                 {
-                    widget.flags |= WIDGET_FLAGS::IS_PRESSED;
+                    widget.flags.set(WidgetFlag::isPressed);
                 }
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "checkbox")
             {
-                widget.type = WindowWidgetType::Checkbox;
+                widget.type = WidgetType::checkbox;
                 widget.string = const_cast<utf8*>(desc.Text.c_str());
-                widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+                widget.flags.set(WidgetFlag::textIsString);
                 if (desc.IsChecked)
                 {
-                    widget.flags |= WIDGET_FLAGS::IS_PRESSED;
+                    widget.flags.set(WidgetFlag::isPressed);
                 }
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "colourpicker")
             {
-                widget.type = WindowWidgetType::ColourBtn;
-                widget.image = GetColourButtonImage(desc.Colour);
+                widget.type = WidgetType::colourBtn;
+                widget.image = getColourButtonImage(desc.Colour);
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "custom")
             {
-                widget.type = WindowWidgetType::Custom;
+                widget.type = WidgetType::custom;
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "dropdown")
             {
-                widget.type = WindowWidgetType::DropdownMenu;
+                widget.type = WidgetType::dropdownMenu;
                 if (desc.SelectedIndex >= 0 && static_cast<size_t>(desc.SelectedIndex) < desc.Items.size())
                 {
                     widget.string = const_cast<utf8*>(desc.Items[desc.SelectedIndex].c_str());
@@ -1027,12 +1026,12 @@ namespace OpenRCT2::Ui::Windows
                 {
                     widget.string = const_cast<utf8*>("");
                 }
-                widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+                widget.flags.set(WidgetFlag::textIsString);
                 widgetList.push_back(widget);
 
                 // Add the dropdown button
                 widget = {};
-                widget.type = WindowWidgetType::Button;
+                widget.type = WidgetType::button;
                 widget.colour = 1;
                 widget.left = desc.X + desc.Width - 12;
                 widget.right = desc.X + desc.Width - 2;
@@ -1041,30 +1040,30 @@ namespace OpenRCT2::Ui::Windows
                 widget.text = STR_DROPDOWN_GLYPH;
                 widget.tooltip = kStringIdNone;
                 if (desc.IsDisabled)
-                    widget.flags |= WIDGET_FLAGS::IS_DISABLED;
+                    widget.flags.set(WidgetFlag::isDisabled);
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "groupbox")
             {
-                widget.type = WindowWidgetType::Groupbox;
+                widget.type = WidgetType::groupbox;
                 widget.string = const_cast<utf8*>(desc.Text.c_str());
-                widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+                widget.flags.set(WidgetFlag::textIsString);
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "label")
             {
-                widget.type = WindowWidgetType::Label;
+                widget.type = WidgetType::label;
                 widget.string = const_cast<utf8*>(desc.Text.c_str());
-                widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+                widget.flags.set(WidgetFlag::textIsString);
                 if (desc.TextAlign == TextAlignment::CENTRE)
                 {
-                    widget.type = WindowWidgetType::LabelCentred;
+                    widget.type = WidgetType::labelCentred;
                 }
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "listview")
             {
-                widget.type = WindowWidgetType::Scroll;
+                widget.type = WidgetType::scroll;
                 widget.content = 0;
                 if (desc.Scrollbars == ScrollbarType::Horizontal)
                     widget.content = SCROLL_HORIZONTAL;
@@ -1076,14 +1075,14 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (desc.Type == "spinner")
             {
-                widget.type = WindowWidgetType::Spinner;
+                widget.type = WidgetType::spinner;
                 widget.string = const_cast<utf8*>(desc.Text.c_str());
-                widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+                widget.flags.set(WidgetFlag::textIsString);
                 widgetList.push_back(widget);
 
                 // Add the increment button
                 widget = {};
-                widget.type = WindowWidgetType::Button;
+                widget.type = WidgetType::button;
                 widget.colour = 1;
                 widget.left = desc.X + desc.Width - 13;
                 widget.right = widget.left + 11;
@@ -1092,8 +1091,8 @@ namespace OpenRCT2::Ui::Windows
                 widget.text = STR_NUMERIC_UP;
                 widget.tooltip = kStringIdNone;
                 if (desc.IsDisabled)
-                    widget.flags |= WIDGET_FLAGS::IS_DISABLED;
-                widget.flags |= WIDGET_FLAGS::IS_HOLDABLE;
+                    widget.flags.set(WidgetFlag::isDisabled);
+                widget.flags.set(WidgetFlag::isHoldable);
                 widgetList.push_back(widget);
 
                 // Add the decrement button
@@ -1104,14 +1103,14 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (desc.Type == "textbox")
             {
-                widget.type = WindowWidgetType::TextBox;
+                widget.type = WidgetType::textBox;
                 widget.string = const_cast<utf8*>(desc.Text.c_str());
-                widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+                widget.flags.set(WidgetFlag::textIsString);
                 widgetList.push_back(widget);
             }
             else if (desc.Type == "viewport")
             {
-                widget.type = WindowWidgetType::Viewport;
+                widget.type = WidgetType::viewport;
                 widget.text = kStringIdNone;
                 widgetList.push_back(widget);
             }
@@ -1141,11 +1140,11 @@ namespace OpenRCT2::Ui::Windows
         if (desc.X && desc.Y)
         {
             window = windowMgr->Create<CustomWindow>(
-                WindowClass::Custom, { *desc.X, *desc.Y }, desc.Width, desc.Height, windowFlags, owner, desc);
+                WindowClass::Custom, { *desc.X, *desc.Y }, desc.size, windowFlags, owner, desc);
         }
         else
         {
-            window = windowMgr->Create<CustomWindow>(WindowClass::Custom, desc.Width, desc.Height, windowFlags, owner, desc);
+            window = windowMgr->Create<CustomWindow>(WindowClass::Custom, desc.size, windowFlags, owner, desc);
         }
         return window;
     }
@@ -1244,7 +1243,7 @@ namespace OpenRCT2::Ui::Windows
                 if (lastColour != colour && colour < COLOUR_COUNT)
                 {
                     customWidgetInfo->Colour = colour;
-                    widget.image = GetColourButtonImage(colour);
+                    widget.image = getColourButtonImage(colour);
 
                     auto* windowMgr = Ui::GetWindowManager();
                     windowMgr->InvalidateWidget(*w, widgetIndex);

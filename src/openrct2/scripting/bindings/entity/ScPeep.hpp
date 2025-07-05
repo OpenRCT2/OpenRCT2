@@ -74,7 +74,7 @@ namespace OpenRCT2::Scripting
             {
                 return peep->Is<Staff>() ? "staff" : "guest";
             }
-            return "";
+            return {};
         }
 
         std::string name_get() const

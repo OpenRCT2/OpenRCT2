@@ -226,7 +226,7 @@ namespace OpenRCT2
             scroll.contentOffsetY = std::min<uint16_t>(std::max(0, scroll.contentOffsetY + differentialCoords.y), size);
         }
 
-        WidgetScrollUpdateThumbs(*w, widgetIndex);
+        widgetScrollUpdateThumbs(*w, widgetIndex);
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByNumber(w->classification, w->number);
@@ -318,14 +318,14 @@ namespace OpenRCT2
                         {
                             switch (widget->type)
                             {
-                                case WindowWidgetType::Viewport:
+                                case WidgetType::viewport:
                                     if (!(gLegacyScene == LegacyScene::trackDesignsManager
                                           || gLegacyScene == LegacyScene::titleSequence))
                                     {
                                         InputViewportDragBegin(*w);
                                     }
                                     break;
-                                case WindowWidgetType::Scroll:
+                                case WidgetType::scroll:
                                     InputScrollDragBegin(screenCoords, w, widgetIndex);
                                     break;
                                 default:
@@ -551,7 +551,13 @@ namespace OpenRCT2
             ContextHideCursor();
         }
 
-        WindowUnfollowSprite(w);
+        // Only unfollow sprites for the main window or ‘extra viewport’ windows.
+        // Don’t unfollow for windows where the viewport is always supposed to follow (e.g. Ride, Guest, Staff).
+        auto mainWindow = WindowGetMain();
+        if (&w == mainWindow || w.classification == WindowClass::Viewport)
+        {
+            WindowUnfollowSprite(w);
+        }
         // gInputFlags.set(InputFlag::unk5);
     }
 
@@ -651,7 +657,7 @@ namespace OpenRCT2
         int32_t scroll_area, scroll_id;
         ScreenCoordsXY scrollCoords;
         scroll_id = 0; // safety
-        WidgetScrollGetPart(w, &widget, screenCoords, scrollCoords, &scroll_area, &scroll_id);
+        widgetScrollGetPart(w, &widget, screenCoords, scrollCoords, &scroll_area, &scroll_id);
 
         _currentScrollArea = scroll_area;
         _currentScrollIndex = scroll_id;
@@ -704,7 +710,7 @@ namespace OpenRCT2
             default:
                 break;
         }
-        WidgetScrollUpdateThumbs(w, widgetIndex);
+        widgetScrollUpdateThumbs(w, widgetIndex);
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByNumber(w.classification, w.number);
@@ -723,7 +729,7 @@ namespace OpenRCT2
         }
 
         ScreenCoordsXY newScreenCoords;
-        WidgetScrollGetPart(w, &widget, screenCoords, newScreenCoords, &scroll_part, &scroll_id);
+        widgetScrollGetPart(w, &widget, screenCoords, newScreenCoords, &scroll_part, &scroll_id);
 
         if (_currentScrollArea == SCROLL_PART_HSCROLLBAR_THUMB)
         {
@@ -808,7 +814,7 @@ namespace OpenRCT2
             if (newLeft > x)
                 newLeft = x;
             scroll.contentOffsetX = newLeft;
-            WidgetScrollUpdateThumbs(w, widgetIndex);
+            widgetScrollUpdateThumbs(w, widgetIndex);
             windowMgr->InvalidateWidgetByNumber(w.classification, w.number, widgetIndex);
         }
     }
@@ -848,7 +854,7 @@ namespace OpenRCT2
             if (newTop > y)
                 newTop = y;
             scroll.contentOffsetY = newTop;
-            WidgetScrollUpdateThumbs(w, widgetIndex);
+            widgetScrollUpdateThumbs(w, widgetIndex);
             windowMgr->InvalidateWidgetByNumber(w.classification, w.number, widgetIndex);
         }
     }
@@ -866,7 +872,7 @@ namespace OpenRCT2
             scroll.flags |= HSCROLLBAR_LEFT_PRESSED;
             if (scroll.contentOffsetX >= 3)
                 scroll.contentOffsetX -= 3;
-            WidgetScrollUpdateThumbs(w, widgetIndex);
+            widgetScrollUpdateThumbs(w, widgetIndex);
             windowMgr->InvalidateWidgetByNumber(w.classification, w.number, widgetIndex);
         }
     }
@@ -894,7 +900,7 @@ namespace OpenRCT2
                 newLeft = 0;
             if (scroll.contentOffsetX > newLeft)
                 scroll.contentOffsetX = newLeft;
-            WidgetScrollUpdateThumbs(w, widgetIndex);
+            widgetScrollUpdateThumbs(w, widgetIndex);
             windowMgr->InvalidateWidgetByNumber(w.classification, w.number, widgetIndex);
         }
     }
@@ -912,7 +918,7 @@ namespace OpenRCT2
             scroll.flags |= VSCROLLBAR_UP_PRESSED;
             if (scroll.contentOffsetY >= 3)
                 scroll.contentOffsetY -= 3;
-            WidgetScrollUpdateThumbs(w, widgetIndex);
+            widgetScrollUpdateThumbs(w, widgetIndex);
             windowMgr->InvalidateWidgetByNumber(w.classification, w.number, widgetIndex);
         }
     }
@@ -940,7 +946,7 @@ namespace OpenRCT2
                 newTop = 0;
             if (scroll.contentOffsetY > newTop)
                 scroll.contentOffsetY = newTop;
-            WidgetScrollUpdateThumbs(w, widgetIndex);
+            widgetScrollUpdateThumbs(w, widgetIndex);
             windowMgr->InvalidateWidgetByNumber(w.classification, w.number, widgetIndex);
         }
     }
@@ -968,24 +974,19 @@ namespace OpenRCT2
 
         InputWidgetOverChangeCheck(windowClass, windowNumber, widgetIndex);
 
-        if (w != nullptr && widgetIndex != kWidgetIndexNull && widget->type == WindowWidgetType::Scroll)
+        if (w != nullptr && widgetIndex != kWidgetIndexNull && widget->type == WidgetType::scroll)
         {
             int32_t scroll_part, scrollId;
             ScreenCoordsXY newScreenCoords;
-            WidgetScrollGetPart(*w, widget, screenCoords, newScreenCoords, &scroll_part, &scrollId);
+            widgetScrollGetPart(*w, widget, screenCoords, newScreenCoords, &scroll_part, &scrollId);
 
-            if (scroll_part != SCROLL_PART_VIEW)
-                WindowTooltipClose();
-            else
+            if (scroll_part == SCROLL_PART_VIEW)
             {
                 w->OnScrollMouseOver(scrollId, newScreenCoords);
-                InputUpdateTooltip(w, widgetIndex, screenCoords);
             }
         }
-        else
-        {
-            InputUpdateTooltip(w, widgetIndex, screenCoords);
-        }
+
+        InputUpdateTooltip(w, widgetIndex, screenCoords);
     }
 
     /**
@@ -1027,7 +1028,7 @@ namespace OpenRCT2
         if (w != nullptr)
         {
             w->OnPrepareDraw();
-            if (w->widgets[gHoverWidget.widget_index].type == WindowWidgetType::FlatBtn)
+            if (w->widgets[gHoverWidget.widget_index].type == WidgetType::flatBtn)
             {
                 windowMgr->InvalidateWidgetByNumber(
                     gHoverWidget.window_classification, gHoverWidget.window_number, gHoverWidget.widget_index);
@@ -1073,13 +1074,13 @@ namespace OpenRCT2
 
         switch (widget.type)
         {
-            case WindowWidgetType::Frame:
-            case WindowWidgetType::Resize:
+            case WidgetType::frame:
+            case WidgetType::resize:
                 if (WindowCanResize(*w)
                     && (screenCoords.x >= w->windowPos.x + w->width - 19 && screenCoords.y >= w->windowPos.y + w->height - 19))
                     InputWindowResizeBegin(*w, widgetIndex, screenCoords);
                 break;
-            case WindowWidgetType::Viewport:
+            case WidgetType::viewport:
                 _inputState = InputState::ViewportLeft;
                 gInputDragLast = screenCoords;
                 _dragWidget.window_classification = windowClass;
@@ -1094,35 +1095,35 @@ namespace OpenRCT2
                     }
                 }
                 break;
-            case WindowWidgetType::Caption:
+            case WidgetType::caption:
                 InputWindowPositionBegin(*w, widgetIndex, screenCoords);
                 break;
-            case WindowWidgetType::Scroll:
+            case WidgetType::scroll:
                 InputScrollBegin(*w, widgetIndex, screenCoords);
                 break;
-            case WindowWidgetType::Empty:
-            case WindowWidgetType::LabelCentred:
-            case WindowWidgetType::Label:
-            case WindowWidgetType::Groupbox:
-            case WindowWidgetType::ProgressBar:
-            case WindowWidgetType::Placeholder:
-            case WindowWidgetType::HorizontalSeparator:
+            case WidgetType::empty:
+            case WidgetType::labelCentred:
+            case WidgetType::label:
+            case WidgetType::groupbox:
+            case WidgetType::progressBar:
+            case WidgetType::placeholder:
+            case WidgetType::horizontalSeparator:
                 // Non-interactive widget type
                 break;
-            case WindowWidgetType::ImgBtn:
-            case WindowWidgetType::ColourBtn:
-            case WindowWidgetType::TrnBtn:
-            case WindowWidgetType::Tab:
-            case WindowWidgetType::FlatBtn:
-            case WindowWidgetType::Button:
-            case WindowWidgetType::TableHeader:
-            case WindowWidgetType::Spinner:
-            case WindowWidgetType::DropdownMenu:
-            case WindowWidgetType::CloseBox:
-            case WindowWidgetType::Checkbox:
-            case WindowWidgetType::TextBox:
-            case WindowWidgetType::Custom:
-                if (!WidgetIsDisabled(*w, widgetIndex))
+            case WidgetType::imgBtn:
+            case WidgetType::colourBtn:
+            case WidgetType::trnBtn:
+            case WidgetType::tab:
+            case WidgetType::flatBtn:
+            case WidgetType::button:
+            case WidgetType::tableHeader:
+            case WidgetType::spinner:
+            case WidgetType::dropdownMenu:
+            case WidgetType::closeBox:
+            case WidgetType::checkbox:
+            case WidgetType::textBox:
+            case WidgetType::custom:
+                if (!widgetIsDisabled(*w, widgetIndex))
                 {
                     OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + widget.midX());
 
@@ -1162,7 +1163,7 @@ namespace OpenRCT2
             {
                 switch (window->widgets[widgetId].type)
                 {
-                    case WindowWidgetType::Viewport:
+                    case WidgetType::viewport:
                         if (!gInputFlags.has(InputFlag::toolActive))
                         {
                             if (ViewportInteractionLeftOver(screenCoords))
@@ -1175,8 +1176,8 @@ namespace OpenRCT2
                         cursorId = static_cast<CursorID>(gCurrentToolId);
                         break;
 
-                    case WindowWidgetType::Frame:
-                    case WindowWidgetType::Resize:
+                    case WidgetType::frame:
+                    case WidgetType::resize:
                         if (!window->canBeResized())
                             break;
 
@@ -1189,11 +1190,11 @@ namespace OpenRCT2
                         cursorId = CursorID::DiagonalArrows;
                         break;
 
-                    case WindowWidgetType::Scroll:
+                    case WidgetType::scroll:
                     {
                         int32_t output_scroll_area, scroll_id;
                         ScreenCoordsXY scrollCoords;
-                        WidgetScrollGetPart(
+                        widgetScrollGetPart(
                             *window, &window->widgets[widgetId], screenCoords, scrollCoords, &output_scroll_area, &scroll_id);
                         if (output_scroll_area != SCROLL_PART_VIEW)
                         {
@@ -1260,7 +1261,7 @@ namespace OpenRCT2
 
         if (w != nullptr && state == MouseState::LeftRelease)
         {
-            if (w->widgets[widgetIndex].type == WindowWidgetType::CloseBox && cursor_w_class == w->classification
+            if (w->widgets[widgetIndex].type == WidgetType::closeBox && cursor_w_class == w->classification
                 && cursor_w_number == w->number && widgetIndex == cursor_widgetIndex)
             {
                 auto& im = GetInputManager();
@@ -1286,7 +1287,7 @@ namespace OpenRCT2
                     || widgetIndex != cursor_widgetIndex)
                     break;
 
-                if (WidgetIsDisabled(*w, widgetIndex))
+                if (widgetIsDisabled(*w, widgetIndex))
                     break;
 
                 // If this variable is non-zero then its the last tick the mouse down event was fired.
@@ -1304,7 +1305,7 @@ namespace OpenRCT2
                     // Handle click repeat, only start this when at least 16 ticks elapsed.
                     if (clickRepeatsDelta >= kTicksUntilRepeats && (clickRepeatsDelta & kEventDelayInTicks) == 0)
                     {
-                        if (WidgetIsHoldable(*w, widgetIndex))
+                        if (widgetIsHoldable(*w, widgetIndex))
                         {
                             w->OnMouseDown(widgetIndex);
                         }
@@ -1424,7 +1425,7 @@ namespace OpenRCT2
                 if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
                     break;
 
-                if (WidgetIsDisabled(*w, widgetIndex))
+                if (widgetIsDisabled(*w, widgetIndex))
                     break;
 
                 windowMgr->InvalidateWidgetByNumber(cursor_w_class, cursor_w_number, widgetIndex);
@@ -1502,7 +1503,7 @@ namespace OpenRCT2
             if (gTooltipCursor == screenCoords)
             {
                 if (gCurrentRealTimeTicks >= _tooltipNotShownTimeout && w != nullptr && widgetIndex != kWidgetIndexNull
-                    && WidgetIsVisible(*w, widgetIndex))
+                    && widgetIsVisible(*w, widgetIndex))
                 {
                     gTooltipCloseTimeout = gCurrentRealTimeTicks + 8000;
                     WindowTooltipOpen(w, widgetIndex, screenCoords);
@@ -1523,7 +1524,7 @@ namespace OpenRCT2
 
             if (w == nullptr || gTooltipWidget.window_classification != w->classification
                 || gTooltipWidget.window_number != w->number || gTooltipWidget.widget_index != widgetIndex
-                || !WidgetIsVisible(*w, widgetIndex))
+                || !widgetIsVisible(*w, widgetIndex))
             {
                 WindowTooltipClose();
             }
@@ -1688,5 +1689,44 @@ namespace OpenRCT2
             mainWindow->savedViewPos.y += dy;
             gInputFlags.set(InputFlag::viewportScrolling);
         }
+    }
+
+    void InputScrollViewportSmooth(const ScreenCoordsXY& scrollScreenCoords, WindowBase* targetWindow)
+    {
+        if (targetWindow == nullptr)
+        {
+            return;
+        }
+
+        Viewport* viewport = targetWindow->viewport;
+        if (viewport == nullptr)
+        {
+            return;
+        }
+
+        if (targetWindow->flags & WF_NO_SCROLLING)
+        {
+            return;
+        }
+
+        if (scrollScreenCoords.x == 0 && scrollScreenCoords.y == 0)
+            return;
+
+        // Apply smooth scrolling similar to mouse drag behavior
+        // Use zoom-based scaling like mouse dragging does
+        ScreenCoordsXY differentialCoords = scrollScreenCoords;
+
+        // Apply zoom scaling (same logic as mouse drag)
+        const bool posX = differentialCoords.x > 0;
+        const bool posY = differentialCoords.y > 0;
+        differentialCoords.x = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.x));
+        differentialCoords.y = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.y));
+        differentialCoords.x = posX ? -differentialCoords.x : differentialCoords.x;
+        differentialCoords.y = posY ? -differentialCoords.y : differentialCoords.y;
+
+        // Apply the movement (note: we don't invert for gamepad like mouse drag does)
+        targetWindow->savedViewPos += differentialCoords;
+
+        gInputFlags.set(InputFlag::viewportScrolling);
     }
 } // namespace OpenRCT2

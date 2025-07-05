@@ -49,25 +49,28 @@ namespace OpenRCT2::Ui::Windows
         WIDX_VIEWPORT,
     };
 
+    static constexpr ScreenSize kWindowSize = { 192, 157 };
     // clang-format off
-#define WINDOW_PLAYER_COMMON_WIDGETS                                                            \
-        WINDOW_SHIM(STR_STRING, 192, 157),                                                      \
-        MakeWidget({ 0, 43 }, { 192, 114 }, WindowWidgetType::Resize, WindowColour::Secondary), \
-        MakeTab({ 3, 17 }),                                                                     \
-        MakeTab({ 34, 17 })
+    
+    static constexpr auto kCommonPlayerWidgets = makeWidgets(
+        makeWindowShim(STR_STRING, kWindowSize),
+        makeWidget({ 0, 43}, {192, 114}, WidgetType::resize, WindowColour::secondary),
+        makeTab   ({ 3, 17}                                                         ),
+        makeTab   ({34, 17}                                                         )
+    );
 
-    static constexpr Widget window_player_overview_widgets[] = {
-        WINDOW_PLAYER_COMMON_WIDGETS,
-        MakeWidget({  3, 46}, {175, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                          ), // Permission group
-        MakeWidget({167, 47}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                          ),
-        MakeWidget({179, 45}, { 12, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_LOCATE),   STR_LOCATE_PLAYER_TIP), // Locate button
-        MakeWidget({179, 69}, { 12, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_DEMOLISH), STR_KICK_PLAYER_TIP  ), // Kick button
-        MakeWidget({  3, 60}, {175, 61}, WindowWidgetType::Viewport, WindowColour::Secondary                                              ), // Viewport
-    };
+    static constexpr auto window_player_overview_widgets = makeWidgets(
+        kCommonPlayerWidgets,
+        makeWidget({  3, 46}, {175, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                              ), // Permission group
+        makeWidget({167, 47}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                          ),
+        makeWidget({179, 45}, { 12, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_LOCATE),   STR_LOCATE_PLAYER_TIP), // Locate button
+        makeWidget({179, 69}, { 12, 24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_DEMOLISH), STR_KICK_PLAYER_TIP  ), // Kick button
+        makeWidget({  3, 60}, {175, 61}, WidgetType::viewport,     WindowColour::secondary                                              )  // Viewport
+    );
 
-    static constexpr Widget window_player_statistics_widgets[] = {
-        WINDOW_PLAYER_COMMON_WIDGETS,
-    };
+    static constexpr auto window_player_statistics_widgets = makeWidgets(
+        kCommonPlayerWidgets
+    );
 
     static constexpr std::span<const Widget> window_player_page_widgets[] = {
         window_player_overview_widgets,
@@ -407,7 +410,7 @@ namespace OpenRCT2::Ui::Windows
             const bool canKick = NetworkCanPerformAction(NetworkGetCurrentPlayerGroupIndex(), NetworkPermission::KickPlayer);
             const bool isServer = NetworkGetPlayerFlags(playerIndex) & NETWORK_PLAYER_FLAG_ISSERVER;
             const bool isOwnWindow = (NetworkGetCurrentPlayerId() == number);
-            WidgetSetEnabled(*this, WIDX_KICK, canKick && !isOwnWindow && !isServer);
+            widgetSetEnabled(*this, WIDX_KICK, canKick && !isOwnWindow && !isServer);
         }
 
         void OnDrawOverview(RenderTarget& rt)
@@ -628,7 +631,7 @@ namespace OpenRCT2::Ui::Windows
         auto* window = static_cast<PlayerWindow*>(windowMgr->BringToFrontByNumber(WindowClass::Player, id));
         if (window == nullptr)
         {
-            window = windowMgr->Create<PlayerWindow>(WindowClass::Player, 240, 170, WF_RESIZABLE);
+            window = windowMgr->Create<PlayerWindow>(WindowClass::Player, { 240, 170 }, WF_RESIZABLE);
         }
 
         window->Init(id);

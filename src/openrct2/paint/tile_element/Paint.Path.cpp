@@ -89,22 +89,22 @@ static constexpr BoundBoxXY stru_98D804[] = {
 };
 
 static constexpr WoodenSupportSubType PathSupportOrientation[] = {
-    WoodenSupportSubType::NeSw, 
-    WoodenSupportSubType::NeSw, 
-    WoodenSupportSubType::NwSe, 
-    WoodenSupportSubType::NeSw,
-    WoodenSupportSubType::NeSw, 
-    WoodenSupportSubType::NeSw, 
-    WoodenSupportSubType::NwSe, 
-    WoodenSupportSubType::NeSw,
-    WoodenSupportSubType::NwSe, 
-    WoodenSupportSubType::NwSe, 
-    WoodenSupportSubType::NwSe, 
-    WoodenSupportSubType::NwSe,
-    WoodenSupportSubType::NeSw, 
-    WoodenSupportSubType::NeSw, 
-    WoodenSupportSubType::NwSe, 
-    WoodenSupportSubType::NeSw,
+    WoodenSupportSubType::neSw, 
+    WoodenSupportSubType::neSw, 
+    WoodenSupportSubType::nwSe, 
+    WoodenSupportSubType::neSw,
+    WoodenSupportSubType::neSw, 
+    WoodenSupportSubType::neSw, 
+    WoodenSupportSubType::nwSe, 
+    WoodenSupportSubType::neSw,
+    WoodenSupportSubType::nwSe, 
+    WoodenSupportSubType::nwSe, 
+    WoodenSupportSubType::nwSe, 
+    WoodenSupportSubType::nwSe,
+    WoodenSupportSubType::neSw, 
+    WoodenSupportSubType::neSw, 
+    WoodenSupportSubType::nwSe, 
+    WoodenSupportSubType::neSw,
 };
 // clang-format on
 
@@ -1049,10 +1049,10 @@ void PathPaintPoleSupport(
         hasSupports); // TODO: arguments
 
     MetalSupportPlace supports[] = {
-        MetalSupportPlace::TopRightSide,
-        MetalSupportPlace::BottomRightSide,
-        MetalSupportPlace::BottomLeftSide,
-        MetalSupportPlace::TopLeftSide,
+        MetalSupportPlace::topRightSide,
+        MetalSupportPlace::bottomRightSide,
+        MetalSupportPlace::bottomLeftSide,
+        MetalSupportPlace::topLeftSide,
     };
 
     for (int8_t i = 3; i > -1; --i)

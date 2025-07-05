@@ -2189,14 +2189,14 @@ STR_3235    :Hiện tùy chọn tài chính
 STR_3236    :Hiện tùy chọn khách
 STR_3238    :Không tiền
 STR_3239    :Đặt công viên này thành công viên ‘không tiền’ mà không có hạn chế tài chính
-STR_3240    :{WINDOW_COLOUR_2}Tiền mặt ban đầu:
-STR_3241    :{WINDOW_COLOUR_2}Khoản vay ban đầu:
-STR_3242    :{WINDOW_COLOUR_2}Kích thước khoản vay tối đa:
-STR_3243    :{WINDOW_COLOUR_2}Lãi suất hàng năm:
+STR_3240    :Tiền mặt ban đầu:
+STR_3241    :Khoản vay ban đầu:
+STR_3242    :Kích thước khoản vay tối đa:
+STR_3243    :Lãi suất hàng năm:
 STR_3244    :Cấm các chiến dịch marketing
 STR_3245    :Cấm quảng cáo, chương trình khuyến mãi và các chiến dịch marketing khác
-STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
-STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
+STR_3246    :{CURRENCY}
+STR_3247    :{COMMA16}%
 STR_3248    :Không thể tăng tiền mặt ban đầu thêm nữa!
 STR_3249    :Không thể giảm tiền mặt ban đầu thêm nữa!
 STR_3250    :Không thể tăng khoản vay ban đầu thêm nữa!
@@ -2205,10 +2205,10 @@ STR_3252    :Không thể tăng kích thước khoản vay tối đa thêm nữa
 STR_3253    :Không thể giảm kích thước khoản vay tối đa thêm nữa!
 STR_3254    :Không thể tăng lãi suất thêm nữa!
 STR_3255    :Không thể giảm lãi suất thêm nữa!
-STR_3260    :{WINDOW_COLOUR_2}Tiền mặt mỗi khách (trung bình):
-STR_3261    :{WINDOW_COLOUR_2}Hạnh phúc ban đầu của khách:
-STR_3262    :{WINDOW_COLOUR_2}Mức độ đói ban đầu của khách:
-STR_3263    :{WINDOW_COLOUR_2}Mức độ khát ban đầu của khách:
+STR_3260    :Tiền mặt mỗi khách (trung bình):
+STR_3261    :Hạnh phúc ban đầu của khách:
+STR_3262    :Mức độ đói ban đầu của khách:
+STR_3263    :Mức độ khát ban đầu của khách:
 STR_3264    :Không thể tăng cái này thêm nữa!
 STR_3265    :Không thể giảm cái này thêm nữa!
 STR_3266    :Chọn cách công viên này tính phí vào cửa và trò chơi
@@ -2222,11 +2222,11 @@ STR_3273    :Đánh giá công viên khó tăng và duy trì hơn
 STR_3274    :Làm cho giá trị đánh giá công viên khó hơn
 STR_3275    :Khách khó thu hút hơn
 STR_3276    :Làm cho việc thu hút khách đến công viên khó khăn hơn
-STR_3277    :{WINDOW_COLOUR_2}Chi phí mua đất:
-STR_3278    :{WINDOW_COLOUR_2}Chi phí mua quyền xây dựng:
+STR_3277    :Chi phí mua đất:
+STR_3278    :Chi phí mua quyền xây dựng:
 STR_3279    :Vào cửa công viên miễn phí / Trả tiền cho mỗi trò chơi
 STR_3280    :Trả tiền vào công viên / Trò chơi miễn phí
-STR_3281    :{WINDOW_COLOUR_2}Giá vào cửa:
+STR_3281    :Giá vào cửa:
 STR_3283    :Chọn các trò chơi cần bảo tồn
 STR_3285    :Tùy chọn kịch bản - Các trò chơi được bảo tồn
 STR_3286    :Chọn mục tiêu cho kịch bản này
@@ -2640,7 +2640,6 @@ STR_5549    :Năm/Tháng/Ngày
 STR_5550    :{POP16}{POP16}Năm {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Năm/Ngày/Tháng
 STR_5552    :{POP16}{POP16}Năm {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Tạm dừng trò chơi khi lớp phủ Steam mở
 STR_5554    :Bật công cụ núi
 STR_5555    :Hiện phương tiện từ các loại đường ray khác
 STR_5556    :Đuổi người chơi
@@ -2711,9 +2710,6 @@ STR_5623    :Thế giới kỳ quặc
 STR_5624    :Kẻ xoay thời gian
 STR_5625    :Công viên “Thực tế”
 STR_5626    :Các công viên khác
-STR_5627    :Nhóm danh sách kịch bản theo:
-STR_5628    :Trò chơi gốc
-STR_5629    :Mức độ khó
 STR_5630    :Cho phép mở khóa lũy tiến
 STR_5631    :Các công viên DLC gốc
 STR_5632    :Tự xây dựng…
@@ -2860,7 +2856,6 @@ STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 STR_5815    :Hiển thị bộ đếm FPS trong trò chơi
 STR_5816    :Đặt tỷ lệ để điều chỉnh kích thước trò chơi. Hữu ích nhất khi chơi ở độ phân giải cao
-STR_5819    :[Yêu cầu hiển thị phần cứng] Tạm dừng trò chơi nếu lớp phủ trong trò chơi của Steam được mở
 STR_5820    :Thu nhỏ trò chơi nếu mất tiêu điểm khi ở chế độ toàn màn hình
 STR_5822    :Chuyển đổi giữa ngày và đêm. Một chu kỳ đầy đủ mất một tháng trong trò chơi
 STR_5823    :Hiển thị biểu ngữ bằng chữ hoa (hành vi của RCT1)
@@ -3193,7 +3188,6 @@ STR_6165    :Sử dụng đồng bộ dọc
 STR_6166    :Đồng bộ hóa mỗi khung hình hiển thị với tần số làm mới của màn hình, ngăn chặn hiện tượng xé hình.
 STR_6167    :Nâng cao
 STR_6168    :Chuỗi tiêu đề
-STR_6169    :Chọn kịch bản
 STR_6170    :Chỉnh sửa giao diện
 STR_6171    :Tìm kiếm
 STR_6172    :Tìm kiếm
