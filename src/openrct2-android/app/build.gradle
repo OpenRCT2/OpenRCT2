@@ -10,8 +10,8 @@ android {
         minSdkVersion 24
         targetSdkVersion 28
 
-        versionCode 11
-        versionName '0.4.23'
+        versionCode 12
+        versionName '0.4.24'
         externalNativeBuild {
             cmake {
                 arguments '-DANDROID_STL=c++_shared'

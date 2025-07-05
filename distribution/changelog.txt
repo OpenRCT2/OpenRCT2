@@ -1,4 +1,4 @@
-0.4.24 (in development)
+0.4.24 (2025-07-05)
 ------------------------------------------------------------------------
 - Feature: [#24411] Vanilla scenarios now also have previews in the scenario selection window.
 - Feature: [#24616] Add ability to scroll map with gamepad sticks.
@@ -26,6 +26,7 @@
 - Fix: [#24626] Viewports that only follow sprites (e.g. in the Ride and Guest windows) can be made to unfollow them.
 - Fix: [#24661] `convert` console command always crashes with a segmentation fault.
 - Fix: [#24666] `convert` console command rejects files with an SV7 extension.
+- Fix: [objects#388] ‘Italian Police Ride’ has a non-functional first remap colour.
 
 0.4.23 (2025-06-07)
 ------------------------------------------------------------------------
