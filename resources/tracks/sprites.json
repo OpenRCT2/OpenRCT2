@@ -48358,8 +48358,8 @@
     },
     {
         "path": "track/pipeline/flat_to_steep_diag_2_6.png",
-        "x": 0,
-        "y": 0,
+        "x": -13,
+        "y": -41,
         "palette": "keep"
     },
     {
@@ -48400,7 +48400,7 @@
     },
     {
         "path": "track/pipeline/flat_to_steep_diag_4_1.png",
-        "x": -13,
+        "x": -19,
         "y": -16,
         "palette": "keep"
     },
@@ -48412,7 +48412,7 @@
     },
     {
         "path": "track/pipeline/flat_to_steep_diag_4_3.png",
-        "x": -13,
+        "x": -19,
         "y": -48,
         "palette": "keep"
     },
@@ -48424,7 +48424,7 @@
     },
     {
         "path": "track/pipeline/flat_to_steep_diag_4_5.png",
-        "x": -13,
+        "x": -19,
         "y": -96,
         "palette": "keep"
     },
@@ -48484,26 +48484,26 @@
     },
     {
         "path": "track/pipeline/steep_to_flat_diag_2_3.png",
-        "x": 0,
-        "y": 0,
+        "x": -14,
+        "y": -13,
         "palette": "keep"
     },
     {
         "path": "track/pipeline/steep_to_flat_diag_2_4.png",
-        "x": 0,
-        "y": 0,
+        "x": -19,
+        "y": -13,
         "palette": "keep"
     },
     {
         "path": "track/pipeline/steep_to_flat_diag_2_5.png",
-        "x": -13,
-        "y": -20,
+        "x": -14,
+        "y": -4,
         "palette": "keep"
     },
     {
         "path": "track/pipeline/steep_to_flat_diag_2_6.png",
         "x": -19,
-        "y": -21,
+        "y": -14,
         "palette": "keep"
     },
     {
