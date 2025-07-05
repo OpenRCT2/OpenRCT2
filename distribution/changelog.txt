@@ -1,3 +1,7 @@
+0.4.25 (in development)
+------------------------------------------------------------------------
+- Fix: [#24598] Cannot load .park files that use official legacy footpaths by accident.
+
 0.4.24 (2025-07-05)
 ------------------------------------------------------------------------
 - Feature: [#24411] Vanilla scenarios now also have previews in the scenario selection window.
