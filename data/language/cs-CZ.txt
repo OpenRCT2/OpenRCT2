@@ -3823,4 +3823,10 @@ STR_6781    :Snímky obrazovky
 STR_6782    :Upozornění o parku
 STR_6783    :Upozornění o atrakcích
 STR_6784    :Upozornění o návštěvnících
-
+STR_6785    :Gamepad
+STR_6786    :Mrtvá zóna:
+STR_6787    :Mrtvá zóna analogové páčky (minimální vyžadovaný pohyb)
+STR_6788    :Citlivost:
+STR_6789    :Násobitel citlivosti analogové páčky
+STR_6790    :Mrtvá zóna: {COMMA32}%
+STR_6791    :Citlivost: {COMMA32}%
