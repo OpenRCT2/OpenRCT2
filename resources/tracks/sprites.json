@@ -44302,13 +44302,13 @@
     },
     {
         "path": "track/pipeline/small_turn_left_gentle_3_2.png",
-        "x": 0,
-        "y": 0,
+        "x": 8,
+        "y": -4,
         "palette": "keep"
     },
     {
         "path": "track/pipeline/small_turn_left_gentle_3_3.png",
-        "x": -16,
+        "x": -12,
         "y": -15,
         "palette": "keep"
     },
@@ -44368,14 +44368,14 @@
     },
     {
         "path": "track/pipeline/small_turn_right_gentle_2_1.png",
-        "x": -27,
+        "x": -7,
         "y": -14,
         "palette": "keep"
     },
     {
         "path": "track/pipeline/small_turn_right_gentle_2_2.png",
-        "x": 0,
-        "y": 0,
+        "x": -27,
+        "y": -4,
         "palette": "keep"
     },
     {
@@ -44560,20 +44560,20 @@
     },
     {
         "path": "track/pipeline/medium_turn_left_gentle_3_1.png",
-        "x": -16,
+        "x": -19,
         "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/pipeline/medium_turn_left_gentle_3_2.png",
         "x": 0,
-        "y": 0,
+        "y": -5,
         "palette": "keep"
     },
     {
         "path": "track/pipeline/medium_turn_left_gentle_3_3.png",
         "x": 2,
-        "y": -13,
+        "y": -10,
         "palette": "keep"
     },
     {
@@ -44596,8 +44596,8 @@
     },
     {
         "path": "track/pipeline/medium_turn_left_gentle_3_7.png",
-        "x": 5,
-        "y": -15,
+        "x": 8,
+        "y": -5,
         "palette": "keep"
     },
     {
@@ -44609,7 +44609,7 @@
     {
         "path": "track/pipeline/medium_turn_left_gentle_3_9.png",
         "x": -16,
-        "y": -15,
+        "y": -19,
         "palette": "keep"
     },
     {
@@ -44740,20 +44740,20 @@
     },
     {
         "path": "track/pipeline/medium_turn_right_gentle_2_1.png",
-        "x": -27,
+        "x": -21,
         "y": -15,
         "palette": "keep"
     },
     {
         "path": "track/pipeline/medium_turn_right_gentle_2_2.png",
-        "x": 0,
-        "y": 0,
+        "x": -27,
+        "y": -5,
         "palette": "keep"
     },
     {
         "path": "track/pipeline/medium_turn_right_gentle_2_3.png",
-        "x": -16,
-        "y": -13,
+        "x": -13,
+        "y": -10,
         "palette": "keep"
     },
     {
@@ -44777,7 +44777,7 @@
     {
         "path": "track/pipeline/medium_turn_right_gentle_2_7.png",
         "x": -16,
-        "y": -15,
+        "y": -6,
         "palette": "keep"
     },
     {
@@ -44789,7 +44789,7 @@
     {
         "path": "track/pipeline/medium_turn_right_gentle_2_9.png",
         "x": -27,
-        "y": -15,
+        "y": -19,
         "palette": "keep"
     },
     {
@@ -46096,13 +46096,13 @@
     },
     {
         "path": "track/pipeline/medium_turn_left_bank_gentle_3_1.png",
-        "x": -16,
+        "x": -30,
         "y": -24,
         "palette": "keep"
     },
     {
         "path": "track/pipeline/medium_turn_left_bank_gentle_3_2.png",
-        "x": -16,
+        "x": -12,
         "y": -25,
         "palette": "keep"
     },
@@ -46144,14 +46144,14 @@
     },
     {
         "path": "track/pipeline/medium_turn_left_bank_gentle_3_9.png",
-        "x": -15,
-        "y": -14,
+        "x": -13,
+        "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/pipeline/medium_turn_left_bank_gentle_3_10.png",
         "x": -24,
-        "y": -15,
+        "y": -19,
         "palette": "keep"
     },
     {
@@ -46325,13 +46325,13 @@
     {
         "path": "track/pipeline/medium_turn_right_bank_gentle_2_9.png",
         "x": -26,
-        "y": -14,
+        "y": -12,
         "palette": "keep"
     },
     {
         "path": "track/pipeline/medium_turn_right_bank_gentle_2_10.png",
         "x": -17,
-        "y": -15,
+        "y": -19,
         "palette": "keep"
     },
     {
@@ -49294,8 +49294,8 @@
     },
     {
         "path": "track/pipeline/small_turn_left_bank_to_gentle_3_6.png",
-        "x": -22,
-        "y": -5,
+        "x": -23,
+        "y": -12,
         "palette": "keep"
     },
     {
@@ -49403,7 +49403,7 @@
     {
         "path": "track/pipeline/small_turn_right_bank_to_gentle_2_6.png",
         "x": -23,
-        "y": -5,
+        "y": -12,
         "palette": "keep"
     },
     {
