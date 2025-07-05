@@ -199,6 +199,7 @@ static constexpr ImageIndex kStationBaseTypeSpriteIndexes[][2] = {
     { SPR_STATION_BASE_A_SW_NE, SPR_STATION_BASE_A_NW_SE },
     { SPR_STATION_BASE_B_SW_NE, SPR_STATION_BASE_B_NW_SE },
     { SPR_STATION_BASE_C_SW_NE, SPR_STATION_BASE_C_NW_SE },
+    { SPR_TRACKS_STATION_BASE_D_SW_NE, SPR_TRACKS_STATION_BASE_D_NW_SE },
 };
 static_assert(std::size(kStationBaseTypeSpriteIndexes) == kStationBaseTypeCount);
 
@@ -743,6 +744,12 @@ bool TrackPaintUtilDrawNarrowStationPlatform(
         PaintAddImageAsParent(
             session, colour.WithIndex(kStationBaseTypeSpriteIndexes[EnumValue(baseType)][1]), { 0, 0, height + baseOffsetZ },
             { { 0, 2, height }, { 32, 28, 1 } });
+        if (baseType == StationBaseType::d)
+        {
+            PaintAddImageAsParent(
+                session, colour.WithIndex(kStationBaseTypeSpriteIndexes[EnumValue(baseType)][1] + 1),
+                { 0, 0, height + baseOffsetZ }, { { 28, 2, height }, { 2, 28, 6 } });
+        }
 
         bool hasFence = TrackPaintUtilHasFence(EDGE_NE, position, trackElement, ride, session.CurrentRotation);
         ImageId imageId = session.SupportColours.WithIndex(
@@ -766,6 +773,12 @@ bool TrackPaintUtilDrawNarrowStationPlatform(
         PaintAddImageAsParent(
             session, colour.WithIndex(kStationBaseTypeSpriteIndexes[EnumValue(baseType)][0]), { 0, 0, height + baseOffsetZ },
             { { 2, 0, height }, { 28, 32, 1 } });
+        if (baseType == StationBaseType::d)
+        {
+            PaintAddImageAsParent(
+                session, colour.WithIndex(kStationBaseTypeSpriteIndexes[EnumValue(baseType)][0] + 1),
+                { 0, 0, height + baseOffsetZ }, { { 2, 28, height }, { 28, 2, 6 } });
+        }
 
         bool hasFence = TrackPaintUtilHasFence(EDGE_NW, position, trackElement, ride, session.CurrentRotation);
         ImageId imageId = session.SupportColours.WithIndex(

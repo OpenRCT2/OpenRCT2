@@ -44,27 +44,27 @@ namespace OpenRCT2::PipelineRC
         const TrackElement& trackElement, SupportType supportType)
     {
         static constexpr const uint32_t imageIds[4][3] = {
-            { (SPR_TRACKS_PIPELINE_TRACK_STATION + 0), (SPR_TRACKS_PIPELINE_TRACK_STATION + 0),
-              SPR_TRACKS_STATION_BASE_E_SW_NE },
-            { (SPR_TRACKS_PIPELINE_TRACK_STATION + 2), (SPR_TRACKS_PIPELINE_TRACK_STATION + 2),
-              SPR_TRACKS_STATION_BASE_E_NW_SE },
-            { (SPR_TRACKS_PIPELINE_TRACK_STATION + 0), (SPR_TRACKS_PIPELINE_TRACK_STATION + 0),
-              SPR_TRACKS_STATION_BASE_E_SW_NE },
-            { (SPR_TRACKS_PIPELINE_TRACK_STATION + 2), (SPR_TRACKS_PIPELINE_TRACK_STATION + 2),
-              SPR_TRACKS_STATION_BASE_E_NW_SE },
+            { (SPR_TRACKS_PIPELINE_TRACK_BRAKE + 0), (SPR_TRACKS_PIPELINE_TRACK_BLOCK_BRAKE + 0),
+              (SPR_TRACKS_PIPELINE_TRACK_STATION + 0) },
+            { (SPR_TRACKS_PIPELINE_TRACK_BRAKE + 2), (SPR_TRACKS_PIPELINE_TRACK_BLOCK_BRAKE + 2),
+              (SPR_TRACKS_PIPELINE_TRACK_STATION + 1) },
+            { (SPR_TRACKS_PIPELINE_TRACK_BRAKE + 0), (SPR_TRACKS_PIPELINE_TRACK_BLOCK_BRAKE + 0),
+              (SPR_TRACKS_PIPELINE_TRACK_STATION + 0) },
+            { (SPR_TRACKS_PIPELINE_TRACK_BRAKE + 2), (SPR_TRACKS_PIPELINE_TRACK_BLOCK_BRAKE + 2),
+              (SPR_TRACKS_PIPELINE_TRACK_STATION + 1) },
         };
         int sprite = trackElement.GetTrackType() == TrackElemType::EndStation ? 1 : 0;
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours.WithIndex(imageIds[direction][sprite]), { 0, 0, height },
-            { { 0, 7, height + 3 }, { 32, 1, 21 } });
+            { { 0, 6, height + 4 }, { 32, 2, 8 } });
+        PaintAddImageAsParentRotated(
+            session, direction, session.TrackColours.WithIndex(imageIds[direction][2]), { 0, 0, height },
+            { { 0, 6, height + 16 }, { 32, 1, 8 } });
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours.WithIndex(imageIds[direction][sprite] + 1), { 0, 0, height },
-            { { 0, 27, height + 3 }, { 32, 1, 21 } });
-        PaintAddImageAsParentRotated(
-            session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][2]),
-            { 0, 0, height }, { { 0, 2, height }, { 32, 28, 2 } });
+            { { 0, 24, height + 3 }, { 32, 1, 21 } });
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::tubes);
-        TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 13, trackElement, StationBaseType::none, 0);
+        TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 13, trackElement, StationBaseType::d, 0);
         PaintUtilPushTunnelRotated(session, direction, height, TunnelType::SquareFlat);
         PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32);
