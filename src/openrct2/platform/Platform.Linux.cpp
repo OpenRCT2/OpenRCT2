@@ -119,14 +119,13 @@ namespace OpenRCT2::Platform
             "/"
         };
 
-        static const utf8* searchLocations[] = {
+        static constexpr u8string_view searchLocations[] = {
             "./doc",
             "/usr/share/doc/openrct2",
             "../share/doc/openrct2",
             DOCDIR,
         };
-        // clang-format on
-
+        // clang-format on      
         for (const auto& prefix : prefixes)
         {
             for (const auto searchLocation : searchLocations)
