@@ -18,7 +18,6 @@
 #include "../interface/Viewport.h"
 #include "../management/Finance.h"
 #include "../network/Network.h"
-#include "../park/ParkFile.h"
 #include "../platform/Platform.h"
 #include "../rct1/RCT1.h"
 #include "../ride/RideColour.h"
