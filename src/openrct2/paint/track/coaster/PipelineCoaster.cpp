@@ -599,7 +599,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_FLAT_DIAGONAL + 6)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_FLAT_DIAGONAL + 7)),
@@ -612,7 +612,7 @@ namespace OpenRCT2::PipelineRC
                     {
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_FLAT_DIAGONAL + 6)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_FLAT_DIAGONAL + 7)),
                             { -16, -16, height }, { { -16, -16, height + 22 }, { 32, 32, 0 } });
@@ -635,7 +635,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_FLAT_DIAGONAL + 0)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_FLAT_DIAGONAL + 1)),
@@ -648,7 +648,7 @@ namespace OpenRCT2::PipelineRC
                     {
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_FLAT_DIAGONAL + 0)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_FLAT_DIAGONAL + 1)),
                             { -16, -16, height }, { { -16, -16, height + 22 }, { 32, 32, 0 } });
@@ -670,7 +670,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_FLAT_DIAGONAL + 4)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_FLAT_DIAGONAL + 5)),
@@ -683,7 +683,7 @@ namespace OpenRCT2::PipelineRC
                     {
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_FLAT_DIAGONAL + 4)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_FLAT_DIAGONAL + 5)),
                             { -16, -16, height }, { { -16, -16, height + 22 }, { 32, 32, 0 } });
@@ -706,7 +706,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_FLAT_DIAGONAL + 2)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_FLAT_DIAGONAL + 3)),
@@ -719,7 +719,7 @@ namespace OpenRCT2::PipelineRC
                     {
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_FLAT_DIAGONAL + 2)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_FLAT_DIAGONAL + 3)),
                             { -16, -16, height }, { { -16, -16, height + 22 }, { 32, 32, 0 } });
@@ -750,7 +750,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BRAKE_DIAGONAL + 6)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BRAKE_DIAGONAL + 7)),
                         { -16, -16, height }, { { -16, -16, height + 22 }, { 32, 32, 0 } });
@@ -769,7 +769,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BRAKE_DIAGONAL + 0)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BRAKE_DIAGONAL + 1)),
                         { -16, -16, height }, { { -16, -16, height + 22 }, { 32, 32, 0 } });
@@ -787,7 +787,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BRAKE_DIAGONAL + 4)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BRAKE_DIAGONAL + 5)),
                         { -16, -16, height }, { { -16, -16, height + 22 }, { 32, 32, 0 } });
@@ -806,7 +806,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BRAKE_DIAGONAL + 2)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BRAKE_DIAGONAL + 3)),
                         { -16, -16, height }, { { -16, -16, height + 22 }, { 32, 32, 0 } });
@@ -837,7 +837,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BLOCK_BRAKE_DIAGONAL + 6)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BLOCK_BRAKE_DIAGONAL + 7)),
@@ -858,7 +858,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BLOCK_BRAKE_DIAGONAL + 0)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BLOCK_BRAKE_DIAGONAL + 1)),
@@ -878,7 +878,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BLOCK_BRAKE_DIAGONAL + 4)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BLOCK_BRAKE_DIAGONAL + 5)),
@@ -899,7 +899,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BLOCK_BRAKE_DIAGONAL + 2)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BLOCK_BRAKE_DIAGONAL + 3)),
@@ -933,7 +933,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 6)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 7)),
@@ -946,7 +946,7 @@ namespace OpenRCT2::PipelineRC
                     {
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 6)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 7)),
                             { -16, -16, height }, { { -16, -16, height + 38 }, { 32, 32, 0 } });
@@ -969,7 +969,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 0)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 1)),
@@ -982,7 +982,7 @@ namespace OpenRCT2::PipelineRC
                     {
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 0)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 1)),
                             { -16, -16, height }, { { -16, -16, height + 38 }, { 32, 32, 0 } });
@@ -1004,7 +1004,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 4)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 5)),
@@ -1017,7 +1017,7 @@ namespace OpenRCT2::PipelineRC
                     {
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 4)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 5)),
                             { -16, -16, height }, { { -16, -16, height + 38 }, { 32, 32, 0 } });
@@ -1040,7 +1040,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 2)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 3)),
@@ -1053,7 +1053,7 @@ namespace OpenRCT2::PipelineRC
                     {
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 2)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 3)),
                             { -16, -16, height }, { { -16, -16, height + 38 }, { 32, 32, 0 } });
@@ -1087,7 +1087,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 14)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 15)),
@@ -1101,7 +1101,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 14)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 15)),
@@ -1125,7 +1125,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 8)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 9)),
@@ -1138,7 +1138,7 @@ namespace OpenRCT2::PipelineRC
                     {
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 8)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 9)),
                             { -16, -16, height }, { { -16, -16, height + 30 }, { 32, 32, 0 } });
@@ -1160,7 +1160,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 12)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 13)),
@@ -1174,7 +1174,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 12)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 13)),
@@ -1198,7 +1198,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 10)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 11)),
@@ -1212,7 +1212,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 10)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 11)),
@@ -1247,7 +1247,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 22)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 23)),
@@ -1261,7 +1261,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 22)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 23)),
@@ -1285,7 +1285,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 16)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 17)),
@@ -1299,7 +1299,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 16)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 17)),
@@ -1322,7 +1322,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 20)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 21)),
@@ -1336,7 +1336,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 20)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 21)),
@@ -1360,7 +1360,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 18)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 19)),
@@ -1374,7 +1374,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 18)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 19)),
@@ -1409,7 +1409,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 10)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 11)),
@@ -1423,7 +1423,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 10)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 11)),
@@ -1447,7 +1447,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 12)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 13)),
@@ -1461,7 +1461,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 12)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 13)),
@@ -1484,7 +1484,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 8)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 9)),
@@ -1497,7 +1497,7 @@ namespace OpenRCT2::PipelineRC
                     {
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 8)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 9)),
                             { -16, -16, height }, { { -16, -16, height + 30 }, { 32, 32, 0 } });
@@ -1520,7 +1520,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 14)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 15)),
@@ -1534,7 +1534,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 14)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 15)),
@@ -1569,7 +1569,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 2)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 3)),
@@ -1582,7 +1582,7 @@ namespace OpenRCT2::PipelineRC
                     {
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 2)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 3)),
                             { -16, -16, height }, { { -16, -16, height + 38 }, { 32, 32, 0 } });
@@ -1605,7 +1605,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 4)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 5)),
@@ -1618,7 +1618,7 @@ namespace OpenRCT2::PipelineRC
                     {
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 4)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 5)),
                             { -16, -16, height }, { { -16, -16, height + 38 }, { 32, 32, 0 } });
@@ -1640,7 +1640,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 0)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 1)),
@@ -1653,7 +1653,7 @@ namespace OpenRCT2::PipelineRC
                     {
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 0)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 1)),
                             { -16, -16, height }, { { -16, -16, height + 38 }, { 32, 32, 0 } });
@@ -1676,7 +1676,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 6)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 7)),
@@ -1689,7 +1689,7 @@ namespace OpenRCT2::PipelineRC
                     {
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 6)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 7)),
                             { -16, -16, height }, { { -16, -16, height + 38 }, { 32, 32, 0 } });
@@ -1723,7 +1723,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 18)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 19)),
@@ -1737,7 +1737,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 18)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 19)),
@@ -1761,7 +1761,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 20)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 21)),
@@ -1775,7 +1775,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 20)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 21)),
@@ -1798,7 +1798,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 16)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 17)),
@@ -1812,7 +1812,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 16)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 17)),
@@ -1836,7 +1836,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 22)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_LIFT_TRACK_GENTLE_DIAGONAL + 23)),
@@ -1850,7 +1850,7 @@ namespace OpenRCT2::PipelineRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 22)),
-                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                            { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_DIAGONAL + 23)),
@@ -1882,7 +1882,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 6)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 7)),
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
@@ -1901,7 +1901,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 0)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 1)),
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
@@ -1919,7 +1919,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 4)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 5)),
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
@@ -1938,7 +1938,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 2)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 3)),
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
@@ -1968,7 +1968,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 14)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 15)),
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
@@ -1987,7 +1987,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 8)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 9)),
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
@@ -2005,7 +2005,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 12)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 13)),
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
@@ -2024,7 +2024,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 10)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 11)),
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
@@ -2054,7 +2054,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 22)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 23)),
                         { -16, -16, height }, { { -16, -16, height + 95 }, { 32, 32, 0 } });
@@ -2073,7 +2073,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 16)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 17)),
                         { -16, -16, height }, { { -16, -16, height + 95 }, { 32, 32, 0 } });
@@ -2091,7 +2091,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 20)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 21)),
                         { -16, -16, height }, { { -16, -16, height + 95 }, { 32, 32, 0 } });
@@ -2110,7 +2110,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 18)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 19)),
                         { -16, -16, height }, { { -16, -16, height + 95 }, { 32, 32, 0 } });
@@ -2140,7 +2140,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 10)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 11)),
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
@@ -2159,7 +2159,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 12)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 13)),
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
@@ -2177,7 +2177,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 8)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 9)),
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
@@ -2196,7 +2196,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 14)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 15)),
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
@@ -2226,7 +2226,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 2)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 3)),
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
@@ -2245,7 +2245,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 4)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 5)),
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
@@ -2263,7 +2263,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 0)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 1)),
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
@@ -2282,7 +2282,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 6)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 7)),
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
@@ -2312,7 +2312,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 18)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 19)),
                         { -16, -16, height }, { { -16, -16, height + 95 }, { 32, 32, 0 } });
@@ -2331,7 +2331,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 20)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 21)),
                         { -16, -16, height }, { { -16, -16, height + 95 }, { 32, 32, 0 } });
@@ -2349,7 +2349,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 16)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 17)),
                         { -16, -16, height }, { { -16, -16, height + 95 }, { 32, 32, 0 } });
@@ -2368,7 +2368,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 22)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 23)),
                         { -16, -16, height }, { { -16, -16, height + 95 }, { 32, 32, 0 } });
@@ -3135,7 +3135,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 6)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 7)),
@@ -3156,7 +3156,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 0)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 1)),
@@ -3179,7 +3179,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 4)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 5)),
@@ -3200,7 +3200,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 2)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 3)),
@@ -3229,7 +3229,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 14)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 15)),
@@ -3250,7 +3250,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 8)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 9)),
@@ -3270,7 +3270,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 12)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 13)),
@@ -3294,7 +3294,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 10)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 11)),
@@ -3337,7 +3337,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 22)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 23)),
@@ -3358,7 +3358,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 16)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 17)),
@@ -3381,7 +3381,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 20)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 21)),
@@ -3402,7 +3402,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 18)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 19)),
@@ -3431,7 +3431,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 30)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 31)),
@@ -3452,7 +3452,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 24)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 25)),
@@ -3472,7 +3472,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 28)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 29)),
@@ -3496,7 +3496,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 26)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 27)),
@@ -3525,7 +3525,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 38)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 39)),
@@ -3546,7 +3546,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 32)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 33)),
@@ -3569,7 +3569,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 36)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 37)),
@@ -3590,7 +3590,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 34)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 35)),
@@ -3619,7 +3619,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 46)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 47)),
@@ -3640,7 +3640,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 40)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 41)),
@@ -3660,7 +3660,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 44)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 45)),
@@ -3684,7 +3684,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 42)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 43)),
@@ -3742,7 +3742,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 54)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 55)),
@@ -3763,7 +3763,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 48)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 49)),
@@ -3786,7 +3786,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 52)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 53)),
@@ -3807,7 +3807,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 50)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION_DIAGONAL + 51)),
@@ -5582,7 +5582,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 6)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 7)),
@@ -5603,7 +5603,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 0)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 1)),
@@ -5626,7 +5626,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 4)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 5)),
@@ -5647,7 +5647,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 2)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 3)),
@@ -5676,7 +5676,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 14)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 15)),
@@ -5697,7 +5697,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 8)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 9)),
@@ -5717,7 +5717,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 12)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 13)),
@@ -5741,7 +5741,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 10)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 11)),
@@ -5771,7 +5771,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 22)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 23)),
@@ -5792,7 +5792,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 16)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 17)),
@@ -5815,7 +5815,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 20)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 21)),
@@ -5836,7 +5836,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 18)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 19)),
@@ -5866,7 +5866,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 30)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 31)),
@@ -5887,7 +5887,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 24)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 25)),
@@ -5907,7 +5907,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 28)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 29)),
@@ -5931,7 +5931,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 26)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 27)),
@@ -5991,7 +5991,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 38)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 39)),
@@ -6012,7 +6012,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 32)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 33)),
@@ -6035,7 +6035,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 36)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 37)),
@@ -6056,7 +6056,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 34)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 35)),
@@ -6086,7 +6086,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 46)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 47)),
@@ -6107,7 +6107,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 40)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 41)),
@@ -6127,7 +6127,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 44)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 45)),
@@ -6151,7 +6151,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 42)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 43)),
@@ -6181,7 +6181,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 54)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 55)),
@@ -6202,7 +6202,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 48)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 49)),
@@ -6225,7 +6225,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 52)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 53)),
@@ -6246,7 +6246,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 50)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 51)),
@@ -6276,7 +6276,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 62)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 63)),
@@ -6297,7 +6297,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 56)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 57)),
@@ -6317,7 +6317,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 60)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 61)),
@@ -6341,7 +6341,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 58)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 59)),
@@ -6403,7 +6403,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 70)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 71)),
@@ -6424,7 +6424,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 64)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 65)),
@@ -6447,7 +6447,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 68)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 69)),
@@ -6468,7 +6468,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 66)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 67)),
@@ -6498,7 +6498,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 78)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 79)),
@@ -6519,7 +6519,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 72)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 73)),
@@ -6539,7 +6539,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 76)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 77)),
@@ -6563,7 +6563,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 74)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 75)),
@@ -6607,7 +6607,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 86)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 87)),
@@ -6628,7 +6628,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 80)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 81)),
@@ -6651,7 +6651,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 84)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 85)),
@@ -6672,7 +6672,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 82)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 83)),
@@ -6702,7 +6702,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 94)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 95)),
@@ -6723,7 +6723,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 88)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 89)),
@@ -6743,7 +6743,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 92)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 93)),
@@ -6767,7 +6767,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 90)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 91)),
@@ -6797,7 +6797,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 102)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 103)),
@@ -6818,7 +6818,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 96)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 97)),
@@ -6841,7 +6841,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 100)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 101)),
@@ -6862,7 +6862,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 98)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 99)),
@@ -6892,7 +6892,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 110)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 111)),
@@ -6913,7 +6913,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 104)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 105)),
@@ -6933,7 +6933,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 108)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 109)),
@@ -6957,7 +6957,7 @@ namespace OpenRCT2::PipelineRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 106)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 8 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_GENTLE_LARGE_CURVE_BANKED + 107)),
@@ -8010,7 +8010,7 @@ namespace OpenRCT2::PipelineRC
                                         { { 0, 27, 0 + height }, { 32, 1, 30 } },   { { 0, 27, 0 + height }, { 32, 1, 30 } },
                                         { { 0, 6, 50 + height }, { 32, 20, 0 } },   { { 0, 6, 50 + height }, { 32, 20, 0 } },
                                         { { 0, 16, 0 + height }, { 16, 16, 2 } },   { { 16, 16, 0 + height }, { 16, 16, 2 } },
-                                        { { 16, 0, 0 + height }, { 16, 16, 2 } },   { { 0, 0, 0 + height }, { 16, 16, 2 } },
+                                        { { 16, 0, 0 + height }, { 16, 16, 2 } },   { { 0, -4, 0 + height }, { 20, 20, 2 } },
                                         { { 0, 16, 42 + height }, { 16, 16, 0 } },  { { 16, 16, 42 + height }, { 16, 16, 0 } },
                                         { { 16, 0, 42 + height }, { 16, 16, 0 } },  { { 0, 0, 42 + height }, { 16, 16, 0 } },
                                         { { 16, 16, 0 + height }, { 16, 16, 2 } },  { { 0, 16, 0 + height }, { 16, 16, 2 } },
