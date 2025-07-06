@@ -1666,11 +1666,10 @@ int16_t Staff::CountNearbyPeeps() const
                     continue;
 
                 int16_t xDist = std::abs(x - guest->x);
-                int16_t yDist = std::abs(y - guest->y);
-
                 if (xDist > kLookupRadius)
                     continue;
 
+                int16_t yDist = std::abs(y - guest->y);
                 if (yDist > kLookupRadius)
                     continue;
 
@@ -1687,7 +1686,7 @@ void Staff::Tick128UpdateStaff()
     if (AssignedStaffType != StaffType::Security)
         return;
 
-    // Periodically alternate between walking animations
+    // Alternate between walking animations based on crowd size
     auto newAnimationGroup = PeepAnimationGroup::Normal;
     if (State == PeepState::Patrolling)
     {
