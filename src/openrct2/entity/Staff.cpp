@@ -1649,9 +1649,14 @@ void Staff::Tick128UpdateStaff()
     if (AssignedStaffType != StaffType::Security)
         return;
 
-    PeepAnimationGroup newAnimationGroup = PeepAnimationGroup::Alternate;
-    if (State != PeepState::Patrolling)
-        newAnimationGroup = PeepAnimationGroup::Normal;
+    // Periodically alternate between walking animations
+    auto newAnimationGroup = PeepAnimationGroup::Normal;
+    if (State == PeepState::Patrolling)
+    {
+        bool useAlternative = (ScenarioRand() & 8) > 0;
+        if (useAlternative)
+            newAnimationGroup = PeepAnimationGroup::Alternate;
+    }
 
     if (AnimationGroup == newAnimationGroup)
         return;
@@ -1665,6 +1670,7 @@ void Staff::Tick128UpdateStaff()
     auto& objManager = GetContext()->GetObjectManager();
     auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
 
+    // NB: security staff have two animations groups: one regular, and one slow-walking
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
     if (animObj->IsSlowWalking(newAnimationGroup))
     {
