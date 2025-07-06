@@ -3821,3 +3821,10 @@ STR_6781    :Képernyőképek
 STR_6782    :Park értesítések  
 STR_6783    :Játék értesítések  
 STR_6784    :Látogatói értesítések
+STR_6785    :Kontroller
+STR_6786    :Holtzóna:
+STR_6787    :Analóg kar holtzónája (a minimális szükséges elmozdulás)
+STR_6788    :Érzékenység:
+STR_6789    :Analóg kar érzékenységi szorzó
+STR_6790    :Holtzóna: {COMMA32}%
+STR_6791    :Érzékenység: {COMMA32}%
