@@ -1644,6 +1644,48 @@ bool Staff::UpdatePatrollingFindSweeping()
     return false;
 }
 
+/**
+ *
+ *  rct2: 0x006C086D
+ */
+int16_t Staff::CountNearbyPeeps() const
+{
+    // Iterate over tiles within a 3-tile radius (96 units)
+    constexpr auto kTileRadius = 3;
+    constexpr auto kLookupRadius = kCoordsXYStep * kTileRadius;
+
+    int16_t guestCount = 0;
+
+    for (int32_t tileX = x - kLookupRadius; tileX <= x + kLookupRadius; tileX += kCoordsXYStep)
+    {
+        for (int32_t tileY = y - kLookupRadius; tileY <= y + kLookupRadius; tileY += kCoordsXYStep)
+        {
+            for (auto* guest : EntityTileList<Guest>({ tileX, tileY }))
+            {
+                if (guest->x == kLocationNull)
+                    continue;
+
+                int16_t zDist = std::abs(z - guest->z);
+                if (zDist > 48)
+                    continue;
+
+                int16_t xDist = std::abs(x - guest->x);
+                int16_t yDist = std::abs(y - guest->y);
+
+                if (xDist > kLookupRadius)
+                    continue;
+
+                if (yDist > kLookupRadius)
+                    continue;
+
+                guestCount++;
+            }
+        }
+    }
+
+    return guestCount;
+}
+
 void Staff::Tick128UpdateStaff()
 {
     if (AssignedStaffType != StaffType::Security)
@@ -1653,7 +1695,8 @@ void Staff::Tick128UpdateStaff()
     auto newAnimationGroup = PeepAnimationGroup::Normal;
     if (State == PeepState::Patrolling)
     {
-        bool useAlternative = (ScenarioRand() & 8) > 0;
+        constexpr auto kSecurityAltThreshold = 20;
+        bool useAlternative = CountNearbyPeeps() > kSecurityAltThreshold;
         if (useAlternative)
             newAnimationGroup = PeepAnimationGroup::Alternate;
     }
