@@ -112,6 +112,7 @@ namespace OpenRCT2::Platform
 
     std::string GetDocsPath()
     {
+        // clang-format off
         const std::string prefixes[]{
             Path::GetDirectory(Platform::GetCurrentExecutablePath()),
             GetCurrentWorkingDirectory(),
@@ -124,6 +125,8 @@ namespace OpenRCT2::Platform
             "../share/doc/openrct2",
             DOCDIR,
         };
+        // clang-format on
+
         for (const auto& prefix : prefixes)
         {
             for (const auto searchLocation : searchLocations)
