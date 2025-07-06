@@ -1644,10 +1644,6 @@ bool Staff::UpdatePatrollingFindSweeping()
     return false;
 }
 
-/**
- *
- *  rct2: 0x006C086D
- */
 int16_t Staff::CountNearbyPeeps() const
 {
     // Iterate over tiles within a 3-tile radius (96 units)
