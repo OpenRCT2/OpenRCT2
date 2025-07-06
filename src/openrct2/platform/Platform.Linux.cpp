@@ -100,24 +100,6 @@ namespace OpenRCT2::Platform
         }
     }
 
-    std::string GetDocsPath()
-    {
-        static const utf8* searchLocations[] = {
-            "./doc",
-            "/usr/share/doc/openrct2",
-            DOCDIR,
-        };
-        for (auto searchLocation : searchLocations)
-        {
-            LOG_VERBOSE("Looking for OpenRCT2 doc path at %s", searchLocation);
-            if (Path::DirectoryExists(searchLocation))
-            {
-                return searchLocation;
-            }
-        }
-        return std::string();
-    }
-
     static std::string GetCurrentWorkingDirectory()
     {
         char cwdPath[PATH_MAX];
@@ -127,6 +109,36 @@ namespace OpenRCT2::Platform
         }
         return std::string();
     }
+
+    std::string GetDocsPath()
+    {
+        const std::string prefixes[]{
+            Path::GetDirectory(Platform::GetCurrentExecutablePath()),
+            GetCurrentWorkingDirectory(),
+            "/"
+        };
+
+        static const utf8* searchLocations[] = {
+            "./doc",
+            "/usr/share/doc/openrct2",
+            "../share/doc/openrct2",
+            DOCDIR,
+        };
+        for (const auto& prefix : prefixes)
+        {
+            for (const auto searchLocation : searchLocations)
+            {
+                auto prefixedPath = Path::Combine(prefix, searchLocation);
+                LOG_VERBOSE("Looking for OpenRCT2 doc path in %s", prefixedPath.c_str());
+                if (Path::DirectoryExists(prefixedPath))
+                {
+                    return prefixedPath;
+                }
+            }
+        }
+        return std::string();
+    }
+
 
     std::string GetInstallPath()
     {
