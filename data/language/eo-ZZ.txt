@@ -3820,3 +3820,10 @@ STR_6781    :Ekrankopioj
 STR_6782    :Sciigoj de parko
 STR_6783    :Sciigoj de atrakcioj
 STR_6784    :Sciigoj de gastoj
+STR_6785    :Ludregilo
+STR_6786    :Morta zono:
+STR_6787    :Morta zono de stirstango (minimuma movado bezonata)
+STR_6788    :Sentemo:
+STR_6789    :Sentema obligilo de stirstango
+STR_6790    :Morta zono: {COMMA32}%
+STR_6791    :Sentemo: {COMMA32}%
