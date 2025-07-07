@@ -271,8 +271,8 @@ namespace OpenRCT2::PipelineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 46 } },
-                                        { { 0, 4, 0 + height }, { 32, 1, 46 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
+        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 20, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 46 } },
+                                        { { 0, 4, 0 + height }, { 32, 1, 46 } },  { { 0, 6, 0 + height }, { 20, 20, 8 } },
                                         { { 0, 27, 0 + height }, { 32, 1, 46 } }, { { 0, 27, 0 + height }, { 32, 1, 46 } },
                                         { { 0, 27, 0 + height }, { 32, 1, 46 } }, { { 0, 27, 0 + height }, { 32, 1, 46 } } };
         if (trackElement.HasChain())
@@ -2617,7 +2617,7 @@ namespace OpenRCT2::PipelineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        BoundBoxXYZ boundingBoxes[] = { { { 0, 0, 0 + height }, { 32, 16, 8 } },    { { 0, 0, 0 + height }, { 32, 16, 8 } },
+        BoundBoxXYZ boundingBoxes[] = { { { 0, 0, 0 + height }, { 32, 16, 8 } },    { { 0, 0, 0 + height }, { 34, 16, 8 } },
                                         { { 0, 16, 0 + height }, { 32, 16, 8 } },   { { 0, 16, 0 + height }, { 32, 16, 8 } },
                                         { { 0, 0, 22 + height }, { 32, 16, 0 } },   { { 0, 0, 22 + height }, { 32, 16, 0 } },
                                         { { 0, 16, 22 + height }, { 32, 16, 0 } },  { { 0, 16, 22 + height }, { 32, 16, 0 } },
@@ -2625,7 +2625,7 @@ namespace OpenRCT2::PipelineRC
                                         { { 16, 0, 0 + height }, { 16, 16, 8 } },   { { 0, 0, 0 + height }, { 16, 16, 8 } },
                                         { { 0, 16, 22 + height }, { 16, 16, 0 } },  { { 16, 16, 22 + height }, { 16, 16, 0 } },
                                         { { 16, 0, 22 + height }, { 16, 16, 0 } },  { { 0, 0, 22 + height }, { 16, 16, 0 } },
-                                        { { 16, 16, 0 + height }, { 16, 16, 8 } },  { { 0, 16, 0 + height }, { 16, 16, 8 } },
+                                        { { 16, 16, 0 + height }, { 16, 16, 8 } },  { { 0, 16, 0 + height }, { 16, 18, 8 } },
                                         { { 0, 0, 0 + height }, { 16, 16, 8 } },    { { 16, 0, 0 + height }, { 16, 16, 8 } },
                                         { { 16, 16, 22 + height }, { 16, 16, 0 } }, { { 0, 16, 22 + height }, { 16, 16, 0 } },
                                         { { 0, 0, 22 + height }, { 16, 16, 0 } },   { { 16, 0, 22 + height }, { 16, 16, 0 } } };
@@ -2733,7 +2733,7 @@ namespace OpenRCT2::PipelineRC
     {
         BoundBoxXYZ boundingBoxes[] = {
             { { 0, 16, 0 + height }, { 32, 16, 8 } },   { { 0, 16, 0 + height }, { 32, 16, 8 } },
-            { { 0, 0, 0 + height }, { 32, 16, 8 } },    { { 0, 0, 0 + height }, { 32, 16, 8 } },
+            { { 0, 0, 0 + height }, { 34, 16, 8 } },    { { 0, 0, 0 + height }, { 32, 16, 8 } },
             { { 0, 16, 22 + height }, { 32, 16, 0 } },  { { 0, 16, 22 + height }, { 32, 16, 0 } },
             { { 0, 0, 22 + height }, { 32, 16, 0 } },   { { 0, 0, 22 + height }, { 32, 16, 0 } },
             { { 0, 0, 0 + height }, { 16, 16, 8 } },    { { 16, 0, 0 + height }, { 16, 16, 8 } },
@@ -2741,7 +2741,7 @@ namespace OpenRCT2::PipelineRC
             { { 0, 0, 22 + height }, { 16, 16, 0 } },   { { 16, 0, 22 + height }, { 16, 16, 0 } },
             { { 16, 16, 22 + height }, { 16, 16, 0 } }, { { 0, 16, 22 + height }, { 16, 16, 0 } },
             { { 16, 0, 0 + height }, { 16, 16, 8 } },   { { 0, 0, 0 + height }, { 16, 16, 8 } },
-            { { 0, 16, 0 + height }, { 16, 16, 8 } },   { { 16, 16, 0 + height }, { 16, 16, 8 } },
+            { { 0, 16, 0 + height }, { 16, 18, 8 } },   { { 16, 16, 0 + height }, { 16, 16, 8 } },
             { { 16, 0, 22 + height }, { 16, 16, 0 } },  { { 0, 0, 22 + height }, { 16, 16, 0 } },
             { { 0, 16, 22 + height }, { 16, 16, 0 } },  { { 16, 16, 22 + height }, { 16, 16, 0 } }
         };
@@ -4068,7 +4068,7 @@ namespace OpenRCT2::PipelineRC
         const TrackElement& trackElement, SupportType supportType)
     {
         int8_t supportHeights[] = { 2, 1, -3, -3 };
-        BoundBoxXYZ boundingBoxes[] = { { { 0, 0, 0 + height }, { 32, 16, 8 } },    { { 0, 0, 0 + height }, { 32, 16, 8 } },
+        BoundBoxXYZ boundingBoxes[] = { { { 0, 0, 0 + height }, { 32, 16, 8 } },    { { 0, 0, 0 + height }, { 34, 16, 8 } },
                                         { { 0, 16, 0 + height }, { 32, 16, 8 } },   { { 0, 16, 0 + height }, { 32, 16, 8 } },
                                         { { 0, 0, 22 + height }, { 32, 16, 0 } },   { { 0, 0, 22 + height }, { 32, 16, 0 } },
                                         { { 0, 16, 22 + height }, { 32, 16, 0 } },  { { 0, 16, 22 + height }, { 32, 16, 0 } },
@@ -4076,7 +4076,7 @@ namespace OpenRCT2::PipelineRC
                                         { { 16, 0, 0 + height }, { 16, 16, 8 } },   { { 0, 0, 0 + height }, { 16, 16, 8 } },
                                         { { 0, 16, 22 + height }, { 16, 16, 0 } },  { { 16, 16, 22 + height }, { 16, 16, 0 } },
                                         { { 16, 0, 22 + height }, { 16, 16, 0 } },  { { 0, 0, 22 + height }, { 16, 16, 0 } },
-                                        { { 16, 16, 0 + height }, { 16, 16, 8 } },  { { 0, 16, 0 + height }, { 16, 16, 8 } },
+                                        { { 16, 16, 0 + height }, { 16, 16, 8 } },  { { 0, 16, 0 + height }, { 16, 18, 8 } },
                                         { { 0, 0, 0 + height }, { 16, 16, 8 } },    { { 16, 0, 0 + height }, { 16, 16, 8 } },
                                         { { 16, 16, 22 + height }, { 16, 16, 0 } }, { { 0, 16, 22 + height }, { 16, 16, 0 } },
                                         { { 0, 0, 22 + height }, { 16, 16, 0 } },   { { 16, 0, 22 + height }, { 16, 16, 0 } } };
@@ -4186,7 +4186,7 @@ namespace OpenRCT2::PipelineRC
         int8_t supportHeights[] = { -3, -3, 1, 2 };
         BoundBoxXYZ boundingBoxes[] = {
             { { 0, 16, 0 + height }, { 32, 16, 8 } },   { { 0, 16, 0 + height }, { 32, 16, 8 } },
-            { { 0, 0, 0 + height }, { 32, 16, 8 } },    { { 0, 0, 0 + height }, { 32, 16, 8 } },
+            { { 0, 0, 0 + height }, { 34, 16, 8 } },    { { 0, 0, 0 + height }, { 32, 16, 8 } },
             { { 0, 16, 22 + height }, { 32, 16, 0 } },  { { 0, 16, 22 + height }, { 32, 16, 0 } },
             { { 0, 0, 22 + height }, { 32, 16, 0 } },   { { 0, 0, 22 + height }, { 32, 16, 0 } },
             { { 0, 0, 0 + height }, { 16, 16, 8 } },    { { 16, 0, 0 + height }, { 16, 16, 8 } },
@@ -4194,7 +4194,7 @@ namespace OpenRCT2::PipelineRC
             { { 0, 0, 22 + height }, { 16, 16, 0 } },   { { 16, 0, 22 + height }, { 16, 16, 0 } },
             { { 16, 16, 22 + height }, { 16, 16, 0 } }, { { 0, 16, 22 + height }, { 16, 16, 0 } },
             { { 16, 0, 0 + height }, { 16, 16, 8 } },   { { 0, 0, 0 + height }, { 16, 16, 8 } },
-            { { 0, 16, 0 + height }, { 16, 16, 8 } },   { { 16, 16, 0 + height }, { 16, 16, 8 } },
+            { { 0, 16, 0 + height }, { 16, 18, 8 } },   { { 16, 16, 0 + height }, { 16, 16, 8 } },
             { { 16, 0, 22 + height }, { 16, 16, 0 } },  { { 0, 0, 22 + height }, { 16, 16, 0 } },
             { { 0, 16, 22 + height }, { 16, 16, 0 } },  { { 16, 16, 22 + height }, { 16, 16, 0 } }
         };
