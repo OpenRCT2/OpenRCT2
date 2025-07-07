@@ -1677,6 +1677,7 @@ namespace OpenRCT2
         STR_WAITING_TO_START = 1123,
         STR_WAIT_FOR = 1206,
         STR_WAIT_FOR_PASSENGERS_BEFORE_DEPARTING_TIP = 1209,
+        STR_WALKING_PACE = 6792,
         STR_X_CARS_PER_TRAIN = 1023,
 
         // Window: RideConstruction

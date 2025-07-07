@@ -3001,3 +3001,27 @@ std::pair<uint8_t, uint8_t> splitCombinedNumDropsPoweredLifts(uint8_t combinedVa
 
     return std::make_pair(numDrops, numPoweredLifts);
 }
+
+bool RideTypeHasConvertibleRollers(ride_type_t rideType)
+{
+    return (
+        rideType == RIDE_TYPE_LOG_FLUME || rideType == RIDE_TYPE_SPLASH_BOATS || rideType == RIDE_TYPE_RIVER_RAFTS
+        || rideType == RIDE_TYPE_RIVER_RAPIDS);
+}
+
+bool TrackTypeMustBeMadeChained(ride_type_t rideType, OpenRCT2::TrackElemType trackType, int32_t parkFileVersion)
+{
+    if (parkFileVersion >= kWaterRidesWithLiftsVersion)
+        return false;
+
+    if (!RideTypeHasConvertibleRollers(rideType))
+        return false;
+
+    const bool trackTypeHasRollers
+        = (trackType == TrackElemType::FlatToUp25 || trackType == TrackElemType::Up25
+           || trackType == TrackElemType::Up25ToFlat);
+    if (!trackTypeHasRollers)
+        return false;
+
+    return true;
+}
