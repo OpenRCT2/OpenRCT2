@@ -4067,7 +4067,7 @@ namespace OpenRCT2::PipelineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        int8_t supportHeights[] = { 2, 1, -3, -3 };
+        int8_t supportHeights[] = { 2, 1, -3, -3, 0, 0, 3, 4 };
         BoundBoxXYZ boundingBoxes[] = { { { 0, 0, 0 + height }, { 32, 16, 8 } },    { { 0, 0, 0 + height }, { 34, 16, 8 } },
                                         { { 0, 16, 0 + height }, { 32, 16, 8 } },   { { 0, 16, 0 + height }, { 32, 16, 8 } },
                                         { { 0, 0, 22 + height }, { 32, 16, 0 } },   { { 0, 0, 22 + height }, { 32, 16, 0 } },
@@ -4144,6 +4144,10 @@ namespace OpenRCT2::PipelineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
+                MetalASupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, supportHeights[direction + 4],
+                    height + -3, session.SupportColours);
+
                 PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
@@ -4155,9 +4159,6 @@ namespace OpenRCT2::PipelineRC
                     session, direction,
                     session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_LARGE_CURVE_BANKED + 8 * direction + 7)),
                     { 0, 0, height }, boundingBoxes[direction + 20]);
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::bottomCorner, direction, 0, height + -3,
-                    session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -4183,7 +4184,7 @@ namespace OpenRCT2::PipelineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        int8_t supportHeights[] = { -3, -3, 1, 2 };
+        int8_t supportHeights[] = { -3, -3, 1, 2, 4, 3, 0, 0 };
         BoundBoxXYZ boundingBoxes[] = {
             { { 0, 16, 0 + height }, { 32, 16, 8 } },   { { 0, 16, 0 + height }, { 32, 16, 8 } },
             { { 0, 0, 0 + height }, { 34, 16, 8 } },    { { 0, 0, 0 + height }, { 32, 16, 8 } },
@@ -4262,6 +4263,10 @@ namespace OpenRCT2::PipelineRC
                 PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 3:
+                MetalASupportsPaintSetupRotated(
+                    session, supportType.metal, MetalSupportPlace::bottomCorner, direction, supportHeights[direction + 4],
+                    height + -3, session.SupportColours);
+
                 PaintUtilSetGeneralSupportHeight(session, height + 32);
                 break;
             case 4:
@@ -4273,9 +4278,6 @@ namespace OpenRCT2::PipelineRC
                     session, direction,
                     session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_LARGE_CURVE_BANKED + 8 * direction + 39)),
                     { 0, 0, height }, boundingBoxes[direction + 20]);
-                MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height + -3,
-                    session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
