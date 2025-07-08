@@ -4862,7 +4862,7 @@ namespace OpenRCT2::PipelineRC
                     session, direction,
                     session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_VERTICAL_TWIST + 2 * direction + 1)),
                     { 0, 0, height }, boundingBoxes[direction + 4]);
-                PaintUtilSetVerticalTunnel(session, height + 48);
+                PaintUtilSetVerticalTunnel(session, height + 96);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -4900,7 +4900,7 @@ namespace OpenRCT2::PipelineRC
                     session, direction,
                     session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_VERTICAL_TWIST + 2 * direction + 9)),
                     { 0, 0, height }, boundingBoxes[direction + 4]);
-                PaintUtilSetVerticalTunnel(session, height + 48);
+                PaintUtilSetVerticalTunnel(session, height + 96);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -11437,7 +11437,7 @@ namespace OpenRCT2::PipelineRC
                     { 0, 0, height }, { { 0, 6, height + 16 }, { 32, 20, 0 } });
                 if (direction == 1 || direction == 2)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 16, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Tall);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -11516,7 +11516,7 @@ namespace OpenRCT2::PipelineRC
                     { 0, 0, height }, { { 0, 6, height + 16 }, { 32, 20, 0 } });
                 if (direction == 1 || direction == 2)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 16, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Tall);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -11632,7 +11632,7 @@ namespace OpenRCT2::PipelineRC
                     { { 0, 6, height + 40 }, { 32, 20, 1 } });
                 if (direction == 3 || direction == 0)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height + 136, kTunnelGroup, TunnelSubType::FlatTo25Deg);
+                    PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Tall);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -11976,7 +11976,7 @@ namespace OpenRCT2::PipelineRC
                     { 0, 0, height }, { { 0, 27, height + 0 }, { 32, 1, 32 } });
                 if (direction == 3 || direction == 0)
                 {
-                    PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::Tall);
+                    PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Tall);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -12107,7 +12107,7 @@ namespace OpenRCT2::PipelineRC
                     { 0, 0, height }, { { 6, 0, height + 54 }, { 20, 32, 0 } });
                 if (direction == 2 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction + 1, height + 24, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRotated(session, direction + 1, height + 24, kTunnelGroup, TunnelSubType::Tall);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -12234,7 +12234,7 @@ namespace OpenRCT2::PipelineRC
                     { 0, 0, height }, { { 6, 0, height + 54 }, { 20, 32, 0 } });
                 if (direction == 0 || direction == 1)
                 {
-                    PaintUtilPushTunnelRotated(session, direction + 1, height + 24, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRotated(session, direction + 1, height + 24, kTunnelGroup, TunnelSubType::Tall);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
