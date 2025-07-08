@@ -20476,7 +20476,7 @@
     {
         "path": "track/boat_hire/large_turn_left_to_diag_3_7.png",
         "x": -10,
-        "y": -4,
+        "y": -8,
         "palette": "keep"
     },
     {
@@ -42125,7 +42125,7 @@
     {
         "path": "track/pipeline/large_turn_left_to_diag_3_7.png",
         "x": -13,
-        "y": -7,
+        "y": -11,
         "palette": "keep"
     },
     {
@@ -42269,7 +42269,7 @@
     {
         "path": "track/pipeline/large_turn_right_to_diag_2_7.png",
         "x": -13,
-        "y": -7,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -42389,7 +42389,7 @@
     {
         "path": "track/pipeline/flat_diag_2_1.png",
         "x": -13,
-        "y": -16,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -42413,7 +42413,7 @@
     {
         "path": "track/pipeline/flat_diag_4_1.png",
         "x": -13,
-        "y": -16,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -42437,7 +42437,7 @@
     {
         "path": "track/pipeline/brake_diag_2_1.png",
         "x": -13,
-        "y": -16,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -42461,7 +42461,7 @@
     {
         "path": "track/pipeline/brake_diag_4_1.png",
         "x": -13,
-        "y": -16,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -42485,7 +42485,7 @@
     {
         "path": "track/pipeline/block_brake_diag_2_1.png",
         "x": -13,
-        "y": -16,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -42509,7 +42509,7 @@
     {
         "path": "track/pipeline/block_brake_diag_4_1.png",
         "x": -13,
-        "y": -16,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -42533,7 +42533,7 @@
     {
         "path": "track/pipeline/flat_to_gentle_diag_2_1.png",
         "x": -13,
-        "y": -16,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -42581,7 +42581,7 @@
     {
         "path": "track/pipeline/gentle_to_flat_diag_2_1.png",
         "x": -13,
-        "y": -16,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -42605,7 +42605,7 @@
     {
         "path": "track/pipeline/gentle_to_flat_diag_4_1.png",
         "x": -13,
-        "y": -24,
+        "y": -25,
         "palet32": "keep"
     },
     {
@@ -42629,7 +42629,7 @@
     {
         "path": "track/pipeline/gentle_diag_2_1.png",
         "x": -13,
-        "y": -16,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -50236,14 +50236,14 @@
     },
     {
         "path": "track/pipeline/large_turn_right_to_diag_gentle_2_7.png",
-        "x": -11,
+        "x": -16,
         "y": -26,
         "palette": "keep"
     },
     {
         "path": "track/pipeline/large_turn_right_to_diag_gentle_2_8.png",
         "x": -16,
-        "y": -23,
+        "y": 8,
         "palette": "keep"
     },
     {
@@ -52373,7 +52373,7 @@
     {
         "path": "track/pipeline/flat_diag_lift_2_1.png",
         "x": -13,
-        "y": -16,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -52397,7 +52397,7 @@
     {
         "path": "track/pipeline/flat_diag_lift_4_1.png",
         "x": -13,
-        "y": -16,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -52421,7 +52421,7 @@
     {
         "path": "track/pipeline/flat_to_gentle_diag_lift_2_1.png",
         "x": -13,
-        "y": -16,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -52469,7 +52469,7 @@
     {
         "path": "track/pipeline/gentle_to_flat_diag_lift_2_1.png",
         "x": -13,
-        "y": -16,
+        "y": -17,
         "palette": "keep"
     },
     {
@@ -52493,7 +52493,7 @@
     {
         "path": "track/pipeline/gentle_to_flat_diag_lift_4_1.png",
         "x": -13,
-        "y": -24,
+        "y": -25,
         "palette": "keep"
     },
     {
@@ -52517,7 +52517,7 @@
     {
         "path": "track/pipeline/gentle_diag_lift_2_1.png",
         "x": -13,
-        "y": -16,
+        "y": -17,
         "palette": "keep"
     },
     {
