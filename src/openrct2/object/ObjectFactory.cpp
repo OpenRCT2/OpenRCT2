@@ -24,7 +24,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Zip.h"
-#include "../rct12/SawyerChunkReader.h"
+#include "../sawyer_coding/SawyerChunkReader.h"
 #include "AudioObject.h"
 #include "BannerObject.h"
 #include "ClimateObject.h"
@@ -54,6 +54,7 @@
 #include <unordered_map>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::SawyerCoding;
 
 struct IFileDataRetriever
 {

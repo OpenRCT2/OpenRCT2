@@ -14,14 +14,15 @@
 #include "core/FileStream.h"
 #include "core/Memory.hpp"
 #include "core/Path.hpp"
-#include "core/SawyerCoding.h"
 #include "core/String.hpp"
 #include "park/ParkFile.h"
-#include "rct12/SawyerChunkReader.h"
 #include "rct2/RCT2.h"
+#include "sawyer_coding/SawyerChunkReader.h"
+#include "sawyer_coding/SawyerCoding.h"
 #include "scenario/Scenario.h"
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::SawyerCoding;
 
 static bool TryClassifyAsPark(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 static bool TryClassifyAsS6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);

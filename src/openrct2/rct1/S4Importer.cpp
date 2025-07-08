@@ -25,7 +25,6 @@
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
-#include "../core/SawyerCoding.h"
 #include "../core/String.hpp"
 #include "../entity/Balloon.h"
 #include "../entity/Duck.h"
@@ -63,6 +62,7 @@
 #include "../ride/Track.h"
 #include "../ride/TrainManager.h"
 #include "../ride/Vehicle.h"
+#include "../sawyer_coding/SawyerCoding.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
 #include "../world/Climate.h"
@@ -91,6 +91,7 @@
 #include <vector>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::SawyerCoding;
 
 static constexpr ObjectEntryIndex ObjectEntryIndexIgnore = 254;
 

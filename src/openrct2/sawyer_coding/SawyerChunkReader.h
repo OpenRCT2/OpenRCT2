@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../core/IStream.hpp"
-#include "../core/SawyerCoding.h"
+#include "../sawyer_coding/SawyerCoding.h"
 #include "SawyerChunk.h"
 
 #include <cstdint>
@@ -20,7 +20,10 @@
 namespace OpenRCT2
 {
     struct IStream;
+}
 
+namespace OpenRCT2::SawyerCoding
+{
     class SawyerChunkException : public IOException
     {
     public:
@@ -86,4 +89,4 @@ namespace OpenRCT2
             return result;
         }
     };
-} // namespace OpenRCT2
+} // namespace OpenRCT2::SawyerCoding

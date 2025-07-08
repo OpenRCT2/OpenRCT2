@@ -27,8 +27,8 @@
 #include "../platform/Platform.h"
 #include "../rct12/CSStringConverter.h"
 #include "../rct12/RCT12.h"
-#include "../rct12/SawyerChunkReader.h"
 #include "../rct2/RCT2.h"
+#include "../sawyer_coding/SawyerChunkReader.h"
 #include "Scenario.h"
 #include "ScenarioSources.h"
 
