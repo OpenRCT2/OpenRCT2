@@ -2195,7 +2195,7 @@ STR_3188    :Stiskilte
 STR_3189    :Klassiske Gangstier
 STR_3190    :Sti udstyr
 STR_3191    :Sceneri Grupper
-STR_3192    :Park indgang
+STR_3192    :Park indgange
 STR_3193    :Vand
 STR_3195    :Opfindelses liste
 STR_3196    :{WINDOW_COLOUR_2}forskningsgruppe: {BLACK}{STRINGID}
@@ -3746,3 +3746,85 @@ STR_6706    :{WINDOW_COLOUR_2}Nuværende billedfil: {BLACK}{STRING}
 STR_6707    :(Ingen valgt)
 STR_6708    :Udglatnings Styrke
 STR_6709    :Angiv udglatnings styrke imellem {COMMA16} og {COMMA16}
+STR_6710    :Stable sort
+STR_6711    :Filename:
+STR_6712    :Save
+STR_6713    :{COMMA32} {STRINGID}
+STR_6714    :Filename
+STR_6715    :Date modified
+STR_6716    :File size
+STR_6717    :File size {STRINGID}
+STR_6718    :Peep Animations
+STR_6719    :At least one guest peep animations object must be selected
+STR_6720    :At least one handyman peep animations object must be selected
+STR_6721    :At least one mechanic peep animations object must be selected
+STR_6722    :At least one security peep animations object must be selected
+STR_6723    :At least one entertainer peep animations object must be selected
+STR_6724    :Scenarie Tekster
+STR_6725    :X:
+STR_6726    :Y:
+STR_6727    :Dive Loop (left)
+STR_6728    :Dive Loop (right)
+STR_6729    :Cable lift hill must start immediately after station or block brake
+STR_6730    :Export emscripten data
+STR_6731    :Import emscripten data
+STR_6732    :Show a button in the toolbar to rotate the view anti-clockwise
+STR_6733    :See-Through
+STR_6734    :Map elements that are at or above the cutting height are rendered translucent.
+STR_6735    :Go up to parent folder
+STR_6736    :Preview
+STR_6737    :No preview available
+STR_6738    :{WINDOW_COLOUR_2}Park rating: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Date: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Cash: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Num. rides: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Num. guests: {BLACK}{UINT16}
+STR_6743    :Climate
+STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6745    :{WINDOW_COLOUR_2}Guests’ intensity preferences:
+STR_6746    :No preferences
+STR_6747    :Preferences vary (default)
+STR_6748    :Only less intense rides
+STR_6749    :Only more intense rides
+STR_6750    :Select what kind of ride intensity newly spawned guests prefer.
+STR_6751    :Queue paths cannot be used for level crossings!
+STR_6752    :Scenario options - Objective
+STR_6753    :Scenario options - Scenario Details
+STR_6754    :Scenario options - Land Restrictions
+STR_6755    :Show objective options
+STR_6756    :Show scenario details options
+STR_6757    :Show land restriction options
+STR_6758    :Loan options
+STR_6759    :Business model
+STR_6760    :Earnings:
+STR_6761    :Scenario Details
+STR_6762    :Interface
+STR_6763    :RollerCoaster Tycoon 1
+STR_6764    :Saving and autosaves
+STR_6765    :Advanced
+STR_6766    :Clear
+STR_6767    :Window
+STR_6768    :Rendering
+STR_6769    :Behaviour
+STR_6770    :Frame rate limit:
+STR_6771    :Internal speed (default)
+STR_6772    :Vertical sync
+STR_6773    :Unrestricted
+STR_6774    :Time since last inspection
+STR_6775    :{COMMA16} minute
+STR_6776    :{COMMA16} minutes
+STR_6777    :more than 4 hours
+STR_6778    :Preview scenarios using:
+STR_6779    :Select the kind of preview image to use in the scenario selection screen.
+STR_6780    :Mini maps
+STR_6781    :Screenshots
+STR_6782    :Park notifications
+STR_6783    :Ride notifications
+STR_6784    :Guest notifications
+STR_6785    :Gamepad
+STR_6786    :Deadzone:
+STR_6787    :Analogue stick deadzone (minimum movement required)
+STR_6788    :Sensitivity:
+STR_6789    :Analogue stick sensitivity multiplier
+STR_6790    :Deadzone: {COMMA32}%
+STR_6791    :Sensitivity: {COMMA32}%

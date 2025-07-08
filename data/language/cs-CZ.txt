@@ -1735,28 +1735,28 @@ STR_2381    :Upravit větší vodní plochu
 STR_2382    :Země
 STR_2383    :Voda
 STR_2384    :{WINDOW_COLOUR_2}Cíl scénáře:
-STR_2385    :{BLACK}žádný
+STR_2385    :{BLACK}Žádný
 STR_2386    :{BLACK}Mít v parku alespoň {COMMA32} návštěvníků na konci {MONTHYEAR}, s hodnocením parku alespoň 600
 STR_2387    :{BLACK}Dosáhnout hodnoty parku alespoň {POP16}{POP16}{CURRENCY} na konci {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Příjemnou zábavu!
 STR_2389    :{BLACK}Postav ten nejlepší {STRINGID}!
-STR_2390    :{BLACK}Mít v parku 10 druhů kolotočů v provozu, každý s hodnotou zábavnosti alespoň 6.00
+STR_2390    :{BLACK}Mít v parku 10 různých druhů horských drah v provozu, každý s hodnotou nadšení alespoň 6.00
 STR_2391    :{BLACK}Mít v parku alespoň {COMMA32} návštěvníků a zároveň nikdy nenechat hodnocení parku spadnout pod 700!
 STR_2392    :{BLACK}Dosáhnout měsíčního příjmu z lístků na atrakce alespoň {POP16}{POP16}{CURRENCY}
-STR_2393    :{BLACK}{BLACK}Mít v parku 10 druhů kolotočů v provozu, každý s hodnotou zábavnosti alespoň 7.00 a délkou alespoň {LENGHT}
-STR_2394    :{BLACK}Dokončit všech 5 rozestavěných horských drah tak, aby každá dosahovala hodnocení vzrušení alespoň {POP16}{POP16}{COMMA2DP32}
+STR_2393    :{BLACK}Mít v parku 10 různých druhů horských drah v provozu, každý s délkou alespoň {LENGTH} a hodnotou nadšení alespoň 7.00  
+STR_2394    :{BLACK}Dokončit všech 5 rozestavěných horských drah tak, aby každá dosahovala hodnocení nadšení alespoň {POP16}{POP16}{COMMA2DP32}
 STR_2395    :{BLACK}Vrátit půjčku a dosáhnout hodnoty parku alespoň {POP16}{POP16}{CURRENCY}
 STR_2396    :{BLACK}Dosáhnout měsíčního zisku z jídla, pití a suvenýrů alespoň {POP16}{POP16}{CURRENCY}
 STR_2397    :Nic
 STR_2398    :Počet návštěvníků v daný čas
-STR_2399    :Hodnotu praku v dané datum
+STR_2399    :Hodnotu parku v dané datum
 STR_2400    :Volná zábava
 STR_2401    :Postav nejlepší atrakci co dokážeš
-STR_2402    :Postavit 10 kolotočů
+STR_2402    :Postavit 10 horských drah
 STR_2403    :Počet návštěvníků v parku
-STR_2404    :Měsíční příjem z
+STR_2404    :Měsíční příjem z lístků
 STR_2405    :Postavit 10 drah zadané délky
-STR_2406    :Dokončit stavbu 5 kolotočů
+STR_2406    :Dokončit stavbu 5ti horských drah
 STR_2407    :Vrátit půjčku a dosáhnout dané hodnoty parku
 STR_2408    :Měsíční zisk z prodeje jídla a suvenýrů
 STR_2409    :{WINDOW_COLOUR_2}Probíhající reklamní kampaně
@@ -2178,7 +2178,7 @@ STR_3160    :Vyberte počet kol za jednu jízdu
 STR_3162    :Nepodařilo se alokovat dostatek paměti
 STR_3163    :Instaluji nová data: 
 STR_3164    :{BLACK}{COMMA16} vybráno (maximum {COMMA16})
-STR_3167    :{WINDOW_COLOUR_2}Včetně: {BLACK}{COMMA16} objektů
+STR_3167    :{WINDOW_COLOUR_2}Obsahuje: {BLACK}{COMMA16} objektů
 STR_3169    :Nebyly nalezeny data pro následující objekt: 
 STR_3170    :Nedostatek místa pro grafiku
 STR_3171    :Vybráno příliš mnoho objektů tohoto typu
@@ -3210,7 +3210,7 @@ STR_6124    :Název objektu
 STR_6125    :Typ objektu
 STR_6126    :Neznámý typ
 STR_6127    :Soubor: {STRING}
-STR_6128    :Soubor se nepodařilo načíst, protože využívá objekty, z nichž některé jsou porušené nebo zcela chybí. Seznam takových objektů je k dispozici níže.
+STR_6128    :Soubor se nepodařilo načíst, protože využívá objekty, z nichž některé jsou porušené nebo zcela chybí. Seznam těchto objektů je k dispozici níže.
 STR_6129    :Kopírovat
 STR_6130    :Kopírovat vše
 STR_6131    :Zdroj objektu
@@ -3235,7 +3235,7 @@ STR_6149    :Nepodařilo se připojit k master serveru
 STR_6150    :Neplatná odpověď master serveru (chybí JSON číslo)
 STR_6151    :Master server neposlal seznam herních serverů
 STR_6152    :Neplatná odpověď master serveru (chybí JSON pole)
-STR_6153    :Zpoplatněné vstupné / Zpoplatněné atrakce
+STR_6153    :Placené vstupné / placené atrakce
 STR_6154    :Z bezpečnostních důvodů se nedoporučuje spouštět OpenRCT2 v řežimu zvýšených oprávnění.
 STR_6155    :Není nainstalován KDialog ani Zenity. Jeden z nich prosím nainstalujte, nebo konfigurujte z příkazové řádky.
 STR_6156    :Tento název je rezervován a nelze jej použít.
@@ -3783,7 +3783,7 @@ STR_6741    :{WINDOW_COLOUR_2}Poč. atrakcí: {BLACK}{UINT16}
 STR_6742    :{WINDOW_COLOUR_2}Poč. návštěvníků: {BLACK}{UINT16}
 STR_6743    :Podnebí
 STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
-STR_6745    :{WINDOW_COLOUR_2}Návštěvníky upřednostňovaná intenzita:
+STR_6745    :{WINDOW_COLOUR_2}Upřednostňovaná intenzita:
 STR_6746    :Bez upřednostnění
 STR_6747    :Upřednostnění se liší (výchozí)
 STR_6748    :Pouze méně intenzivní atrakce
