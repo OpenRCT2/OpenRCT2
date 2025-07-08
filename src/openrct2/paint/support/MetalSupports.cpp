@@ -282,25 +282,25 @@ constexpr MetalSupportGraphic kMetalSupportGraphicRotated[kMetalSupportTypeCount
 };
 
 static bool MetalASupportsPaintSetup(
-    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
-    ImageId imageTemplate);
+    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, int32_t heightExtra,
+    int32_t height, ImageId imageTemplate);
 static bool MetalBSupportsPaintSetup(
-    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
-    ImageId imageTemplate);
+    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, int32_t heightExtra,
+    int32_t height, ImageId imageTemplate);
 static inline MetalSupportGraphic RotateMetalSupportGraphic(MetalSupportType supportType, Direction direction);
 
 /**
  * Metal pole supports
  * @param supportType (edi)
  * @param segment (ebx)
- * @param special (ax)
+ * @param heightExtra (ax)
  * @param height (edx)
  * @param imageTemplate (ebp)
  *  rct2: 0x00663105
  */
 static bool MetalASupportsPaintSetup(
-    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
-    ImageId imageTemplate)
+    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, int32_t heightExtra,
+    int32_t height, ImageId imageTemplate)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
@@ -444,17 +444,17 @@ static bool MetalASupportsPaintSetup(
 
     height = originalHeight;
     segment = originalSegment;
-    if (special == 0)
+    if (heightExtra == 0)
         return true;
 
-    if (special < 0)
+    if (heightExtra < 0)
     {
-        special = -special;
+        heightExtra = -heightExtra;
         height--;
     }
 
     CoordsXYZ boundBoxOffset = CoordsXYZ(kMetalSupportBoundBoxOffsets[segment], height);
-    const auto combinedHeight = height + special;
+    const auto combinedHeight = height + heightExtra;
 
     while (1)
     {
@@ -484,20 +484,20 @@ static bool MetalASupportsPaintSetup(
 }
 
 bool MetalASupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t special, int32_t height,
+    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t heightExtra, int32_t height,
     ImageId imageTemplate)
 {
     auto supportGraphic = RotateMetalSupportGraphic(supportType, 0);
-    return MetalASupportsPaintSetup(session, supportGraphic, placement, special, height, imageTemplate);
+    return MetalASupportsPaintSetup(session, supportGraphic, placement, heightExtra, height, imageTemplate);
 }
 
 bool MetalASupportsPaintSetupRotated(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t special,
+    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t heightExtra,
     int32_t height, ImageId imageTemplate)
 {
     auto supportGraphic = RotateMetalSupportGraphic(supportType, direction);
     placement = kMetalSupportPlacementRotated[EnumValue(placement)][direction];
-    return MetalASupportsPaintSetup(session, supportGraphic, placement, special, height, imageTemplate);
+    return MetalASupportsPaintSetup(session, supportGraphic, placement, heightExtra, height, imageTemplate);
 }
 
 /**
@@ -506,15 +506,15 @@ bool MetalASupportsPaintSetupRotated(
  *
  * @param supportType (edi)
  * @param segment (ebx)
- * @param special (ax)
+ * @param heightExtra (ax)
  * @param height (edx)
  * @param imageTemplate (ebp)
  *
  * @return (Carry Flag)
  */
 static bool MetalBSupportsPaintSetup(
-    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
-    ImageId imageTemplate)
+    PaintSession& session, MetalSupportGraphic supportTypeMember, MetalSupportPlace placement, int32_t heightExtra,
+    int32_t height, ImageId imageTemplate)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
@@ -656,10 +656,10 @@ static bool MetalBSupportsPaintSetup(
     supportSegments[segment].height = unk9E3294;
     supportSegments[segment].slope = kTileSlopeAboveTrackOrScenery;
 
-    if (special != 0)
+    if (heightExtra != 0)
     {
         baseHeight = height;
-        const auto si2 = height + special;
+        const auto si2 = height + heightExtra;
         while (true)
         {
             endHeight = baseHeight + 16;
@@ -686,20 +686,20 @@ static bool MetalBSupportsPaintSetup(
 }
 
 bool MetalBSupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t special, int32_t height,
+    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t heightExtra, int32_t height,
     ImageId imageTemplate)
 {
     auto supportGraphic = RotateMetalSupportGraphic(supportType, 0);
-    return MetalBSupportsPaintSetup(session, supportGraphic, placement, special, height, imageTemplate);
+    return MetalBSupportsPaintSetup(session, supportGraphic, placement, heightExtra, height, imageTemplate);
 }
 
 bool MetalBSupportsPaintSetupRotated(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t special,
+    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t heightExtra,
     int32_t height, ImageId imageTemplate)
 {
     auto supportGraphic = RotateMetalSupportGraphic(supportType, direction);
     placement = kMetalSupportPlacementRotated[EnumValue(placement)][direction];
-    return MetalBSupportsPaintSetup(session, supportGraphic, placement, special, height, imageTemplate);
+    return MetalBSupportsPaintSetup(session, supportGraphic, placement, heightExtra, height, imageTemplate);
 }
 
 static inline MetalSupportGraphic RotateMetalSupportGraphic(MetalSupportType supportType, Direction direction)
@@ -709,19 +709,20 @@ static inline MetalSupportGraphic RotateMetalSupportGraphic(MetalSupportType sup
 }
 
 void DrawSupportsSideBySide(
-    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType supportType, int32_t special)
+    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType supportType,
+    int32_t heightExtra)
 {
     auto graphic = RotateMetalSupportGraphic(supportType, direction);
 
     if (direction & 1)
     {
-        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::topRightSide, special, height, colour);
-        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::bottomLeftSide, special, height, colour);
+        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::topRightSide, heightExtra, height, colour);
+        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::bottomLeftSide, heightExtra, height, colour);
     }
     else
     {
-        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::topLeftSide, special, height, colour);
-        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::bottomRightSide, special, height, colour);
+        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::topLeftSide, heightExtra, height, colour);
+        MetalASupportsPaintSetup(session, graphic, MetalSupportPlace::bottomRightSide, heightExtra, height, colour);
     }
 }
 
@@ -730,7 +731,7 @@ void DrawSupportsSideBySide(
  *  rct2: 0x006A326B
  *
  * @param segment (ebx)
- * @param special (ax)
+ * @param heightExtra (ax)
  * @param height (dx)
  * @param imageTemplate (ebp)
  * @param railingsDescriptor (0x00F3EF6C)
