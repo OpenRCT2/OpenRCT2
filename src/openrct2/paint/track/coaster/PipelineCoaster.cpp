@@ -202,7 +202,7 @@ namespace OpenRCT2::PipelineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::centre, direction, 2, height + -3, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height + -2, session.SupportColours);
         }
         if (direction == 0 || direction == 3)
         {
@@ -298,7 +298,7 @@ namespace OpenRCT2::PipelineRC
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::centre, direction, 8, height + -3, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, direction, 8, height + -2, session.SupportColours);
         }
         if (direction == 0 || direction == 3)
         {
@@ -1382,7 +1382,7 @@ namespace OpenRCT2::PipelineRC
                     }
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 8, height + -3,
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 8, height + -2,
                     session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -9993,7 +9993,7 @@ namespace OpenRCT2::PipelineRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetupRotated(
-                        session, supportType.metal, MetalSupportPlace::centre, direction, 7, height + -3,
+                        session, supportType.metal, MetalSupportPlace::centre, direction, 6, height + -2,
                         session.SupportColours);
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -11177,7 +11177,7 @@ namespace OpenRCT2::PipelineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        int8_t supportHeights[] = { 7, 3, -1, 1 };
+        int8_t supportHeights[] = { 8, 3, -1, 1 };
         BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },   { { 0, 6, 0 + height }, { 32, 20, 8 } },
                                         { { 0, 6, 0 + height }, { 32, 20, 8 } },   { { 0, 6, 0 + height }, { 32, 20, 8 } },
                                         { { 0, 27, 0 + height }, { 32, 1, 30 } },  { { 0, 27, 0 + height }, { 32, 1, 30 } },
@@ -11267,7 +11267,7 @@ namespace OpenRCT2::PipelineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        int8_t supportHeights[] = { 1, -1, 3, 7 };
+        int8_t supportHeights[] = { 1, -1, 3, 8 };
         BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },    { { 0, 6, 0 + height }, { 32, 20, 8 } },
                                         { { 0, 6, 0 + height }, { 32, 20, 8 } },    { { 0, 6, 0 + height }, { 32, 20, 8 } },
                                         { { 16, 27, 0 + height }, { 16, 1, 30 } },  { { 0, 27, 0 + height }, { 16, 1, 30 } },
@@ -11568,7 +11568,7 @@ namespace OpenRCT2::PipelineRC
                     session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_HALF_LOOP + 8 * direction + 1)), { 0, 0, height },
                     { { 0, 27, height + 0 }, { 32, 1, 31 } });
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::centre, direction, 8, height + -3, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 7, height + -2, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -11684,7 +11684,7 @@ namespace OpenRCT2::PipelineRC
                     session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_MEDIUM_HALF_LOOP + 10 * direction + 1)),
                     { 0, 0, height }, boundingBoxes[direction + 4]);
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::centre, direction, 7, height + -3, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 6, height + -2, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -11814,7 +11814,7 @@ namespace OpenRCT2::PipelineRC
                     session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_MEDIUM_HALF_LOOP + 10 * direction + 41)),
                     { 0, 0, height }, boundingBoxes[direction + 4]);
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::centre, direction, 7, height + -3, session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::centre, direction, 6, height + -2, session.SupportColours);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
@@ -12000,7 +12000,7 @@ namespace OpenRCT2::PipelineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        int8_t supportHeights[] = { 21, 19, 19, 16 };
+        int8_t supportHeights[] = { 12, 18, 18, 22 };
         BoundBoxXYZ boundingBoxes[] = { { { 16, 0, 0 + height }, { 16, 16, 0 } },  { { 0, 0, 0 + height }, { 16, 16, 0 } },
                                         { { 0, 16, 0 + height }, { 16, 16, 0 } },  { { 16, 16, 0 + height }, { 16, 16, 0 } },
                                         { { 16, 0, 70 + height }, { 16, 16, 0 } }, { { 0, 0, 70 + height }, { 16, 16, 0 } },
@@ -12043,7 +12043,7 @@ namespace OpenRCT2::PipelineRC
                     { 0, 0, height }, { { 0, 27, height + 0 }, { 32, 1, 30 } });
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::topRightSide, direction, supportHeights[direction + 0],
-                    height + -3, session.SupportColours);
+                    height + -2, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -12126,7 +12126,7 @@ namespace OpenRCT2::PipelineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        int8_t supportHeights[] = { 16, 19, 19, 21 };
+        int8_t supportHeights[] = { 22, 18, 18, 12 };
         BoundBoxXYZ boundingBoxes[] = { { { 16, 16, 0 + height }, { 16, 16, 0 } },  { { 0, 16, 0 + height }, { 16, 16, 0 } },
                                         { { 0, 0, 0 + height }, { 16, 16, 0 } },    { { 16, 0, 0 + height }, { 16, 16, 0 } },
                                         { { 16, 16, 70 + height }, { 16, 16, 0 } }, { { 0, 16, 70 + height }, { 16, 16, 0 } },
@@ -12169,7 +12169,7 @@ namespace OpenRCT2::PipelineRC
                     { 0, 0, height }, { { 0, 27, height + 0 }, { 32, 1, 30 } });
                 MetalASupportsPaintSetupRotated(
                     session, supportType.metal, MetalSupportPlace::topRightSide, direction, supportHeights[direction + 0],
-                    height + -3, session.SupportColours);
+                    height + -2, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
