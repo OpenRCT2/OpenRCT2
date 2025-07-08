@@ -1,5 +1,6 @@
 0.4.25 (in development)
 ------------------------------------------------------------------------
+- Feature: [#24702] [Plugin] Add bindings for missing cheats (forcedParkRating, ignoreRidePrice, makeAllDestructible).
 - Fix: [#24598] Cannot load .park files that use official legacy footpaths by accident.
 
 0.4.24 (2025-07-05)
