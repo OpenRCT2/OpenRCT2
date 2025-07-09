@@ -408,34 +408,23 @@ static bool MetalASupportsPaintSetup(
     }
 
     currentHeight += heightDiff;
-    // 6632e6
 
-    for (uint8_t count = 0;; count++)
+    const auto supportBeamImageIndex = kSupportBasesAndBeams[supportType].beamUncapped;
+
+    // Draw main support segments
+    for (uint8_t count = 1;; count++)
     {
-        if (count >= 4)
-            count = 0;
-
-        int16_t beamLength = currentHeight + 16;
-        if (beamLength > crossbeamHeight)
-        {
-            beamLength = crossbeamHeight;
-        }
-
-        beamLength -= currentHeight;
+        const int16_t beamLength = std::min<int16_t>(currentHeight + 16, crossbeamHeight) - currentHeight;
         if (beamLength <= 0)
             break;
 
-        int8_t xOffset = kMetalSupportBoundBoxOffsets[segment].x;
-        int8_t yOffset = kMetalSupportBoundBoxOffsets[segment].y;
-
-        uint32_t imageIndex = kSupportBasesAndBeams[supportType].beamUncapped;
-        imageIndex += beamLength - 1;
-
-        if (count == 3 && beamLength == 0x10)
+        uint32_t imageIndex = supportBeamImageIndex + beamLength - 1;
+        if (count % 4 == 0 && beamLength == 16)
             imageIndex++;
 
-        auto image_id = imageTemplate.WithIndex(imageIndex);
-        PaintAddImageAsParent(session, image_id, { xOffset, yOffset, currentHeight }, { 0, 0, beamLength - 1 });
+        PaintAddImageAsParent(
+            session, imageTemplate.WithIndex(imageIndex), { kMetalSupportBoundBoxOffsets[segment], currentHeight },
+            { 0, 0, beamLength - 1 });
 
         currentHeight += beamLength;
     }
@@ -597,41 +586,24 @@ static bool MetalBSupportsPaintSetup(
 
     currentHeight += heightDiff;
 
-    int16_t endHeight;
+    const auto supportBeamImageIndex = kSupportBasesAndBeams[supportType].beamUncapped;
 
-    int32_t i = 1;
-    while (true)
+    // Draw main support segments
+    for (uint8_t count = 1;; count++)
     {
-        endHeight = currentHeight + 16;
-        if (endHeight > crossbeamHeight)
-        {
-            endHeight = crossbeamHeight;
-        }
-
-        int16_t beamLength = endHeight - currentHeight;
-
+        const int16_t beamLength = std::min<int16_t>(currentHeight + 16, crossbeamHeight) - currentHeight;
         if (beamLength <= 0)
-        {
             break;
-        }
 
-        uint32_t imageId = kSupportBasesAndBeams[supportType].beamUncapped + (beamLength - 1);
-
-        if (i % 4 == 0)
-        {
-            // Each fourth run, draw a special image
-            if (beamLength == 16)
-            {
-                imageId += 1;
-            }
-        }
+        uint32_t imageIndex = supportBeamImageIndex + beamLength - 1;
+        if (count % 4 == 0 && beamLength == 16)
+            imageIndex++;
 
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(imageId), { kMetalSupportBoundBoxOffsets[segment], currentHeight },
+            session, imageTemplate.WithIndex(imageIndex), { kMetalSupportBoundBoxOffsets[segment], currentHeight },
             { 0, 0, beamLength - 1 });
 
         currentHeight += beamLength;
-        i++;
     }
 
     supportSegments[segment].height = segmentHeight;
