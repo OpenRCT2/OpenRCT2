@@ -365,7 +365,7 @@ static bool MetalASupportsPaintSetup(
 
         segment = newSegment;
     }
-    int16_t si = currentHeight;
+    const int16_t crossbeamHeight = currentHeight;
     if (supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery || currentHeight - supportSegments[segment].height < 6
         || kSupportBasesAndBeams[supportType].base == kImageIndexUndefined)
     {
@@ -388,9 +388,9 @@ static bool MetalASupportsPaintSetup(
     // Work out if a small support segment required to bring support to normal
     // size (aka floor2(x, 16))
     int16_t heightDiff = floor2(currentHeight + 16, 16);
-    if (heightDiff > si)
+    if (heightDiff > crossbeamHeight)
     {
-        heightDiff = si;
+        heightDiff = crossbeamHeight;
     }
 
     heightDiff -= currentHeight;
@@ -416,9 +416,9 @@ static bool MetalASupportsPaintSetup(
             count = 0;
 
         int16_t beamLength = currentHeight + 16;
-        if (beamLength > si)
+        if (beamLength > crossbeamHeight)
         {
-            beamLength = si;
+            beamLength = crossbeamHeight;
         }
 
         beamLength -= currentHeight;
@@ -561,7 +561,7 @@ static bool MetalBSupportsPaintSetup(
             { kMetalSupportCrossBeamBoundBoxLengths[ebp], 1 });
     }
 
-    int32_t si = currentHeight;
+    const int32_t crossbeamHeight = currentHeight;
 
     if ((supportSegments[segment].slope & kTileSlopeAboveTrackOrScenery)
         || (currentHeight - supportSegments[segment].height < 6)
@@ -582,9 +582,9 @@ static bool MetalBSupportsPaintSetup(
     }
 
     int16_t heightDiff = floor2(currentHeight + 16, 16);
-    if (heightDiff > si)
+    if (heightDiff > crossbeamHeight)
     {
-        heightDiff = si;
+        heightDiff = crossbeamHeight;
     }
 
     heightDiff -= currentHeight;
@@ -603,9 +603,9 @@ static bool MetalBSupportsPaintSetup(
     while (true)
     {
         endHeight = currentHeight + 16;
-        if (endHeight > si)
+        if (endHeight > crossbeamHeight)
         {
-            endHeight = si;
+            endHeight = crossbeamHeight;
         }
 
         int16_t beamLength = endHeight - currentHeight;
