@@ -189,8 +189,8 @@ static constexpr uint8_t kMetalSupportTypeToHeight[] = {
 
 struct MetalSupportsImages {
     ImageIndex base;
-    ImageIndex beamA;
-    ImageIndex beamB;
+    ImageIndex beamUncapped;
+    ImageIndex beamCapped;
 };
 
 /** rct2: 0x0097B15C, 0x0097B190 */
@@ -400,7 +400,7 @@ static bool MetalASupportsPaintSetup(
         int8_t xOffset = kMetalSupportBoundBoxOffsets[segment].x;
         int8_t yOffset = kMetalSupportBoundBoxOffsets[segment].y;
 
-        uint32_t imageIndex = kSupportBasesAndBeams[supportType].beamA;
+        uint32_t imageIndex = kSupportBasesAndBeams[supportType].beamUncapped;
         imageIndex += heightDiff - 1;
         auto image_id = imageTemplate.WithIndex(imageIndex);
 
@@ -428,7 +428,7 @@ static bool MetalASupportsPaintSetup(
         int8_t xOffset = kMetalSupportBoundBoxOffsets[segment].x;
         int8_t yOffset = kMetalSupportBoundBoxOffsets[segment].y;
 
-        uint32_t imageIndex = kSupportBasesAndBeams[supportType].beamA;
+        uint32_t imageIndex = kSupportBasesAndBeams[supportType].beamUncapped;
         imageIndex += beamLength - 1;
 
         if (count == 3 && beamLength == 0x10)
@@ -472,7 +472,7 @@ static bool MetalASupportsPaintSetup(
         int8_t xOffset = kMetalSupportBoundBoxOffsets[segment].x;
         int8_t yOffset = kMetalSupportBoundBoxOffsets[segment].y;
 
-        auto imageIndex = kSupportBasesAndBeams[supportType].beamB;
+        auto imageIndex = kSupportBasesAndBeams[supportType].beamCapped;
         imageIndex += beamLength - 1;
         auto image_id = imageTemplate.WithIndex(imageIndex);
 
@@ -612,7 +612,7 @@ static bool MetalBSupportsPaintSetup(
     if (heightDiff > 0)
     {
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(kSupportBasesAndBeams[supportType].beamA + (heightDiff - 1)),
+            session, imageTemplate.WithIndex(kSupportBasesAndBeams[supportType].beamUncapped + (heightDiff - 1)),
             { kMetalSupportBoundBoxOffsets[segment], currentHeight }, { 0, 0, heightDiff - 1 });
     }
 
@@ -636,7 +636,7 @@ static bool MetalBSupportsPaintSetup(
             break;
         }
 
-        uint32_t imageId = kSupportBasesAndBeams[supportType].beamA + (beamLength - 1);
+        uint32_t imageId = kSupportBasesAndBeams[supportType].beamUncapped + (beamLength - 1);
 
         if (i % 4 == 0)
         {
@@ -676,7 +676,7 @@ static bool MetalBSupportsPaintSetup(
                 break;
             }
 
-            uint32_t imageId = kSupportBasesAndBeams[supportType].beamA + (beamLength - 1);
+            uint32_t imageId = kSupportBasesAndBeams[supportType].beamUncapped + (beamLength - 1);
             PaintAddImageAsParent(
                 session, imageTemplate.WithIndex(imageId), { kMetalSupportBoundBoxOffsets[segment], currentHeight },
                 { { kMetalSupportBoundBoxOffsets[segment], height }, { 0, 0, 0 } });
