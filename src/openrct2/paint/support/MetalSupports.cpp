@@ -282,6 +282,7 @@ constexpr MetalSupportGraphic kMetalSupportGraphicRotated[kMetalSupportTypeCount
 };
 
 constexpr const int32_t kMetalSupportBaseHeight = 6;
+constexpr const int32_t kMetalSupportMaxSegmentHeight = 16;
 
 static inline MetalSupportGraphic RotateMetalSupportGraphic(MetalSupportType supportType, Direction direction);
 
@@ -379,8 +380,11 @@ static bool MetalSupportsPaintSetupCommon(
 
     const auto supportBeamImageIndex = kSupportBasesAndBeams[supportType].beamUncapped;
 
-    // Draw an initial support segment to get the main segment height to a multiple of 16
-    const int16_t heightDiff = std::min<int16_t>(floor2(currentHeight + 16, 16), crossbeamHeight) - currentHeight;
+    // Draw an initial support segment to get the main segment height to a multiple of kMetalSupportMaxSegmentHeight
+    const int16_t heightDiff = std::min<int16_t>(
+                                   floor2(currentHeight + kMetalSupportMaxSegmentHeight, kMetalSupportMaxSegmentHeight),
+                                   crossbeamHeight)
+        - currentHeight;
     if (heightDiff > 0)
     {
         PaintAddImageAsParent(
@@ -393,12 +397,13 @@ static bool MetalSupportsPaintSetupCommon(
     // Draw main support segments
     for (uint8_t count = 1;; count++)
     {
-        const int16_t beamLength = std::min<int16_t>(currentHeight + 16, crossbeamHeight) - currentHeight;
+        const int16_t beamLength = std::min<int16_t>(currentHeight + kMetalSupportMaxSegmentHeight, crossbeamHeight)
+            - currentHeight;
         if (beamLength <= 0)
             break;
 
         uint32_t imageIndex = supportBeamImageIndex + beamLength - 1;
-        if (count % 4 == 0 && beamLength == 16)
+        if (count % 4 == 0 && beamLength == kMetalSupportMaxSegmentHeight)
             imageIndex++;
 
         PaintAddImageAsParent(
@@ -419,7 +424,7 @@ static bool MetalSupportsPaintSetupCommon(
     const CoordsXYZ boundBoxOffset = CoordsXYZ(kMetalSupportBoundBoxOffsets[originalSegment], currentHeight);
     while (true)
     {
-        const int16_t beamLength = std::min(currentHeight + 16, totalHeightExtra) - currentHeight;
+        const int16_t beamLength = std::min(currentHeight + kMetalSupportMaxSegmentHeight, totalHeightExtra) - currentHeight;
         if (beamLength <= 0)
             break;
 
@@ -551,7 +556,7 @@ bool PathPoleSupportsPaintSetup(
     // si = height
     // dx = baseHeight
 
-    int16_t heightDiff = floor2(baseHeight + 16, 16);
+    int16_t heightDiff = floor2(baseHeight + kMetalSupportMaxSegmentHeight, kMetalSupportMaxSegmentHeight);
     if (heightDiff > height)
     {
         heightDiff = height;
@@ -575,7 +580,7 @@ bool PathPoleSupportsPaintSetup(
 
         for (int32_t i = 0; i < 4; ++i)
         {
-            z = baseHeight + 16;
+            z = baseHeight + kMetalSupportMaxSegmentHeight;
             if (z > height)
             {
                 z = height;
@@ -607,7 +612,7 @@ bool PathPoleSupportsPaintSetup(
         }
 
         ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 20 + (z - 1);
-        if (z == 16)
+        if (z == kMetalSupportMaxSegmentHeight)
         {
             imageIndex += 1;
         }
