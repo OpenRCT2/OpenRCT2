@@ -385,31 +385,18 @@ static bool MetalASupportsPaintSetup(
         currentHeight = supportSegments[segment].height + 6;
     }
 
-    // Work out if a small support segment required to bring support to normal
-    // size (aka floor2(x, 16))
-    int16_t heightDiff = floor2(currentHeight + 16, 16);
-    if (heightDiff > crossbeamHeight)
-    {
-        heightDiff = crossbeamHeight;
-    }
+    const auto supportBeamImageIndex = kSupportBasesAndBeams[supportType].beamUncapped;
 
-    heightDiff -= currentHeight;
-
+    // Draw an initial support segment to get the main segment height to a multiple of 16
+    const int16_t heightDiff = std::min<int16_t>(floor2(currentHeight + 16, 16), crossbeamHeight) - currentHeight;
     if (heightDiff > 0)
     {
-        int8_t xOffset = kMetalSupportBoundBoxOffsets[segment].x;
-        int8_t yOffset = kMetalSupportBoundBoxOffsets[segment].y;
-
-        uint32_t imageIndex = kSupportBasesAndBeams[supportType].beamUncapped;
-        imageIndex += heightDiff - 1;
-        auto image_id = imageTemplate.WithIndex(imageIndex);
-
-        PaintAddImageAsParent(session, image_id, { xOffset, yOffset, currentHeight }, { 0, 0, heightDiff - 1 });
+        PaintAddImageAsParent(
+            session, imageTemplate.WithIndex(supportBeamImageIndex + heightDiff - 1),
+            { kMetalSupportBoundBoxOffsets[segment], currentHeight }, { 0, 0, heightDiff - 1 });
     }
 
     currentHeight += heightDiff;
-
-    const auto supportBeamImageIndex = kSupportBasesAndBeams[supportType].beamUncapped;
 
     // Draw main support segments
     for (uint8_t count = 1;; count++)
@@ -570,23 +557,18 @@ static bool MetalBSupportsPaintSetup(
         currentHeight = supportSegments[segment].height + 6;
     }
 
-    int16_t heightDiff = floor2(currentHeight + 16, 16);
-    if (heightDiff > crossbeamHeight)
-    {
-        heightDiff = crossbeamHeight;
-    }
+    const auto supportBeamImageIndex = kSupportBasesAndBeams[supportType].beamUncapped;
 
-    heightDiff -= currentHeight;
+    // Draw an initial support segment to get the main segment height to a multiple of 16
+    const int16_t heightDiff = std::min<int16_t>(floor2(currentHeight + 16, 16), crossbeamHeight) - currentHeight;
     if (heightDiff > 0)
     {
         PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(kSupportBasesAndBeams[supportType].beamUncapped + (heightDiff - 1)),
+            session, imageTemplate.WithIndex(supportBeamImageIndex + heightDiff - 1),
             { kMetalSupportBoundBoxOffsets[segment], currentHeight }, { 0, 0, heightDiff - 1 });
     }
 
     currentHeight += heightDiff;
-
-    const auto supportBeamImageIndex = kSupportBasesAndBeams[supportType].beamUncapped;
 
     // Draw main support segments
     for (uint8_t count = 1;; count++)
