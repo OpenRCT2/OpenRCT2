@@ -6,6 +6,7 @@
 - Improved: [#24921] The command line sprite build command now prints out the images table entry for the compiled sprite file.
 - Improved: [#24953] Opening the Scenario Editor, Track Designer or Track Designs Manager now display the progress bar.
 - Fix: [#16988] AppImage version does not show changelog.
+- Fix: [#24001] Sloped diagonal metal supports that are offset with a crossbeam draw incorrectly.
 - Fix: [#24173] Allow all game speeds between 1 and 8 if developer mode is on.
 - Fix: [#24745] Potential crash when lighting effects are enabled and loading a save or a new scenario.
 - Fix: [#24915] LIM Launched (original bug), Corkscrew and Twister Roller Coaster inline twists have some incorrect tunnels.
