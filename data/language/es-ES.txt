@@ -2166,7 +2166,6 @@ STR_3136    :Advertencia: Este diseño se construirá con un tipo de vehículo a
 STR_3137    :Selecc. Escenario Cercano
 STR_3138    :Reiniciar Selecc.
 STR_3139    :Cable de elevación no puede funcionar en este modo
-STR_3140    :Cable de elevación debe comenzar después de la estación
 STR_3141    :Multi-circuito por attracc. no es posible con un cable de elevación
 STR_3142    :{WINDOW_COLOUR_2}Capacidad: {BLACK}{STRINGID}
 STR_3143    :Mostrar visitantes en el mapa
@@ -2198,7 +2197,7 @@ STR_3188    :Señales de Sendero
 STR_3189    :Senderos Legacy
 STR_3190    :Decoración Senderos
 STR_3191    :Escenarios
-STR_3192    :Entrada del parque
+STR_3192    :Entradas del parque
 STR_3193    :Agua
 STR_3195    :Lista de inventos
 STR_3196    :{WINDOW_COLOUR_2}Grupo Investigación: {BLACK}{STRINGID}
@@ -3198,7 +3197,7 @@ STR_6102    :El valor de una atracción no disminuye con el tiempo, así los vis
 STR_6103    :Esta opción está des-habilitada durante una partida multijugador.
 STR_6105    :Hiper-montaña Rusa
 STR_6107    :Camiones Monstruo
-STR_6109    :Hiper-Twister
+STR_6109    :Montaña Rusa Hiper-Twister
 STR_6111    :Mini Montaña Rusa Clásica
 STR_6113    :Una montaña rusa alta y que no se invierte con grandes caídas, alta velocidad y vagones confortables con sólo unas barras para sujetarse
 STR_6115    :Camiones gigantes autopropulsados 4x4 que pueden subir cuestas impresionantes
@@ -3758,3 +3757,18 @@ STR_6714    :Nombre de archivo
 STR_6715    :Fecha de modificación
 STR_6716    :Tamaño de archivo
 STR_6717    :Tamaño de archivo {STRINGID}
+STR_6718    :Animaciones de Personitas
+STR_6719    :Se debe seleccionar al menos un objeto de animaciones de personita invitado
+STR_6720    :Se debe seleccionar al menos un objeto de animaciones de personita jardinero
+STR_6721    :Se debe seleccionar al menos un objeto de animaciones de personita mecánico
+STR_6722    :Se debe seleccionar al menos un objeto de animaciones de personita de seguridad
+STR_6723    :Se debe seleccionar al menos un objeto de animaciones de personita animador
+STR_6724    :Textos de escenario
+STR_6725    :X:
+STR_6726    :Y:
+STR_6727    :Rizo de inmersión (izq)
+STR_6728    :Rizo de inmersión (der)
+STR_6729    :El cable de elevación debe comenzar inmediatamente después de la estación o del bloque de frenado
+STR_6730    :Exportar datos de emscripten
+STR_6731    :Importar datos de emscripten
+STR_6732    :Mostrar un botón en la barra de herramientas para girar la vista en sentido antihorario
