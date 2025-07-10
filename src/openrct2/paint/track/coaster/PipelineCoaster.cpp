@@ -11249,7 +11249,7 @@ namespace OpenRCT2::PipelineRC
                     session, supportType.metal, MetalSupportPlace::centre, direction, 0, height + -6, session.SupportColours);
                 if (direction == 2 || direction == 3)
                 {
-                    PaintUtilPushTunnelRotated(session, direction + 1, height - 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelRotated(session, direction + 1, height, kTunnelGroup, TunnelSubType::SlopeEnd);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -11341,7 +11341,7 @@ namespace OpenRCT2::PipelineRC
                     session, supportType.metal, MetalSupportPlace::centre, direction, 0, height + -6, session.SupportColours);
                 if (direction == 0 || direction == 1)
                 {
-                    PaintUtilPushTunnelRotated(session, direction + 1, height - 8, kTunnelGroup, TunnelSubType::SlopeEnd);
+                    PaintUtilPushTunnelRotated(session, direction + 1, height, kTunnelGroup, TunnelSubType::SlopeEnd);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session,
