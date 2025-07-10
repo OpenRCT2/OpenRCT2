@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(2, 50), MakeRideRating(0, 00), MakeRideRating(0, 00) },
         11,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,            6000,     764, 0, 0 },

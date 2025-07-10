@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
         RatingsCalculationType::FlatRide,
         { MakeRideRating(1, 50), MakeRideRating(1, 40), MakeRideRating(0, 90) },
         8,
-        2,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusSlideUnlimitedRides, 0, MakeRideRating(0, 40), MakeRideRating(0, 20), MakeRideRating(0, 25) },

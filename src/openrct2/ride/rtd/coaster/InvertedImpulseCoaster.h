@@ -62,7 +62,7 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(4, 00), MakeRideRating(3, 00), MakeRideRating(3, 20) },
         20,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

@@ -54,7 +54,7 @@ constexpr RideTypeDescriptor EnterpriseRTD =
         RatingsCalculationType::FlatRide,
         { MakeRideRating(3, 60), MakeRideRating(4, 55), MakeRideRating(5, 72) },
         22,
-        3,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusOperationOption, 0, 1, 16, 16 }, 

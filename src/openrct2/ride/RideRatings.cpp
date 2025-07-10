@@ -100,6 +100,7 @@ static void RideRatingsCalculateValue(Ride& ride);
 static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, TileElement* inputTileElement);
 static void RideRatingsAdd(RatingTuple& ratings, int32_t excitement, int32_t intensity, int32_t nausea);
 
+static void FlatRideShelterCalculate(Ride& ride);
 static ShelteredEights GetNumOfShelteredEighths(const Ride& ride);
 static money64 RideComputeUpkeep(RideRatingUpdateState& state, const Ride& ride);
 static void SetUnreliabilityFactor(Ride& ride);
@@ -872,7 +873,8 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
 
 static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
 {
-    const auto& rrd = ride.getRideTypeDescriptor().RatingsData;
+    const auto& ted = ride.getRideTypeDescriptor();
+    const auto& rrd = ted.RatingsData;
 
     switch (rrd.Type)
     {
@@ -894,8 +896,14 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
     ride.unreliabilityFactor = rrd.Unreliability;
     SetUnreliabilityFactor(ride);
 
+    if (ted.HasFlag(RtdFlag::isFlatRide) && rrd.RideShelter == kDynamicRideShelterRating)
+    {
+        FlatRideShelterCalculate(ride);
+    }
+
     const auto shelteredEighths = GetNumOfShelteredEighths(ride);
-    ride.shelteredEighths = (rrd.RideShelter == -1) ? shelteredEighths.TotalShelteredEighths : rrd.RideShelter;
+    ride.shelteredEighths = (rrd.RideShelter == kDynamicRideShelterRating) ? shelteredEighths.TotalShelteredEighths
+                                                                           : rrd.RideShelter;
 
     RatingTuple ratings = rrd.BaseRatings;
     // Apply Modifiers
@@ -1426,23 +1434,51 @@ static uint32_t ride_ratings_get_proximity_score(RideRatingUpdateState& state)
     return result;
 }
 
+static void FlatRideShelterCalculate(Ride& ride)
+{
+    auto stationIndex = RideGetFirstValidStationStart(ride);
+    auto startCoords = ride.getStation(stationIndex).GetStart();
+    auto* originElement = MapGetTrackElementAtFromRide(startCoords, ride.id);
+
+    uint16_t shelteredCount = 0;
+    CoordsXYE input = { startCoords, originElement };
+    do
+    {
+        if (TrackGetIsSheltered({ input, input.element->GetBaseZ() }))
+        {
+            shelteredCount++;
+        }
+    } while (TrackSequenceGetNext(input, &input));
+
+    ride.shelteredLength = shelteredCount;
+}
+
 /**
  * Calculates how much of the track is sheltered in eighths.
  *  rct2: 0x0065E72D
  */
 static ShelteredEights GetNumOfShelteredEighths(const Ride& ride)
 {
-    int32_t totalLength = ride.getTotalLength();
     int32_t shelteredLength = ride.shelteredLength;
-    int32_t lengthEighth = totalLength / 8;
-    int32_t lengthCounter = lengthEighth;
     uint8_t numShelteredEighths = 0;
-    for (int32_t i = 0; i < 7; i++)
+    const auto& rtd = ride.getRideTypeDescriptor();
+    if (rtd.HasFlag(RtdFlag::isFlatRide))
     {
-        if (shelteredLength >= lengthCounter)
+        uint8_t length = GetTrackElementDescriptor(rtd.StartTrackPiece).numSequences;
+        numShelteredEighths = (shelteredLength * 10) / (length * 10 / 8);
+    }
+    else
+    {
+        int32_t totalLength = ride.getTotalLength();
+        int32_t lengthEighth = totalLength / 8;
+        int32_t lengthCounter = lengthEighth;
+        for (int32_t i = 0; i < 7; i++)
         {
-            lengthCounter += lengthEighth;
-            numShelteredEighths++;
+            if (shelteredLength >= lengthCounter)
+            {
+                lengthCounter += lengthEighth;
+                numShelteredEighths++;
+            }
         }
     }
 

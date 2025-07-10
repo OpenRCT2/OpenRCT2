@@ -61,7 +61,7 @@ constexpr RideTypeDescriptor ClassicWoodenTwisterRollerCoasterRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(3, 20), MakeRideRating(2, 60), MakeRideRating(2, 00) },
         19,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             873, 0, 0 },

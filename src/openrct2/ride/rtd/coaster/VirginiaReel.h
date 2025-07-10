@@ -56,7 +56,7 @@ constexpr RideTypeDescriptor VirginiaReelRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(2, 10), MakeRideRating(1, 90), MakeRideRating(3, 70) },
         19,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             873, 0, 0 },

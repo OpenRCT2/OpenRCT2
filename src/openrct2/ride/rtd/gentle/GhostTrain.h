@@ -63,7 +63,7 @@ constexpr RideTypeDescriptor GhostTrainRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(2, 00), MakeRideRating(0, 20), MakeRideRating(0, 03) },
         12,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
