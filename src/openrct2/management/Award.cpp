@@ -603,6 +603,17 @@ void AwardReset()
     getGameState().currentAwards.clear();
 }
 
+void AwardAdd(AwardType type);
+void AwardAdd(AwardType type)
+{
+    getGameState().currentAwards.push_back(Award{ 5u, type });
+    if (Config::Get().notifications.ParkAward)
+    {
+        News::AddItemToQueue(News::ItemType::award, AwardGetNews(type), 0, {});
+    }
+    Ui::GetWindowManager()->InvalidateByClass(WindowClass::ParkInformation);
+}
+
 /**
  *
  *  rct2: 0x0066A86C
@@ -654,12 +665,7 @@ void AwardUpdateAll()
             if (AwardIsDeserved(awardType, activeAwardTypes))
             {
                 // Add award
-                currentAwards.push_back(Award{ 5u, awardType });
-                if (Config::Get().notifications.ParkAward)
-                {
-                    News::AddItemToQueue(News::ItemType::award, AwardGetNews(awardType), 0, {});
-                }
-                windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+                AwardAdd(awardType);
             }
         }
     }
@@ -667,17 +673,10 @@ void AwardUpdateAll()
 
 void AwardGrant(AwardType type)
 {
-    auto& gameState = getGameState();
-    auto& currentAwards = gameState.currentAwards;
-    auto* windowMgr = Ui::GetWindowManager();
+    auto& currentAwards = getGameState().currentAwards;
 
     // Remove award type if already granted
-    auto res = std::remove_if(
-        std::begin(currentAwards), std::end(currentAwards), [type](const Award& award) { return award.Type == type; });
-    if (res != std::end(currentAwards))
-    {
-        currentAwards.erase(res, std::end(currentAwards));
-    }
+    std::erase_if(currentAwards, [type](const Award& award) { return award.Type == type; });
 
     // Ensure there is space for the award
     if (currentAwards.size() >= OpenRCT2::Limits::kMaxAwards)
@@ -686,10 +685,5 @@ void AwardGrant(AwardType type)
     }
 
     // Add award
-    currentAwards.push_back(Award{ 5u, type });
-    if (Config::Get().notifications.ParkAward)
-    {
-        News::AddItemToQueue(News::ItemType::Award, AwardGetNews(type), 0, {});
-    }
-    windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+    AwardAdd(type);
 }
