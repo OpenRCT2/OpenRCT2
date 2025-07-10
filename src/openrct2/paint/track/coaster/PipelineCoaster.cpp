@@ -2282,13 +2282,13 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 6)),
-                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
+                        { -16, -16, height }, { { -17, -17, height + 0 }, { 33, 33, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 7)),
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 2, height + -3,
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height + -13,
                     session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -2401,7 +2401,7 @@ namespace OpenRCT2::PipelineRC
                 PaintAddImageAsParentRotated(
                     session, direction,
                     session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_SMALL_CURVE + 6 * direction + 0)),
-                    { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 20, 8 } });
+                    { 0, 0, height }, { { 0, 6, height + 0 }, { 32, 27, 8 } });
                 PaintAddImageAsParentRotated(
                     session, direction,
                     session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_SMALL_CURVE + 6 * direction + 1)),
@@ -2444,7 +2444,7 @@ namespace OpenRCT2::PipelineRC
                 PaintAddImageAsParentRotated(
                     session, direction,
                     session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_SMALL_CURVE + 6 * direction + 4)),
-                    { 0, 0, height }, { { 6, 0, height + 0 }, { 20, 32, 8 } });
+                    { 0, 0, height }, { { 6, 0, height + 0 }, { 27, 32, 8 } });
                 PaintAddImageAsParentRotated(
                     session, direction,
                     session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_SMALL_CURVE + 6 * direction + 5)),
