@@ -177,10 +177,10 @@ namespace OpenRCT2::PipelineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 38 } },
-                                        { { 0, 4, 0 + height }, { 32, 1, 38 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 38 } }, { { 0, 27, 0 + height }, { 32, 1, 38 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 38 } }, { { 0, 27, 0 + height }, { 32, 1, 38 } } };
+        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 4, 0 + height }, { 32, 1, 32 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } } };
         if (trackElement.HasChain())
         {
             PaintAddImageAsParentRotated(
@@ -271,10 +271,10 @@ namespace OpenRCT2::PipelineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 20, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 46 } },
-                                        { { 0, 4, 0 + height }, { 32, 1, 46 } },  { { 0, 6, 0 + height }, { 20, 20, 8 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 46 } }, { { 0, 27, 0 + height }, { 32, 1, 46 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 46 } }, { { 0, 27, 0 + height }, { 32, 1, 46 } } };
+        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 20, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 4, 0 + height }, { 32, 1, 32 } },  { { 0, 6, 0 + height }, { 20, 20, 8 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } } };
         if (trackElement.HasChain())
         {
             PaintAddImageAsParentRotated(
@@ -2912,10 +2912,10 @@ namespace OpenRCT2::PipelineRC
         const TrackElement& trackElement, SupportType supportType)
     {
         int8_t supportHeights[] = { -3, 1, 2, 2 };
-        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 38 } },
-                                        { { 0, 4, 0 + height }, { 32, 1, 38 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 38 } }, { { 0, 27, 0 + height }, { 32, 1, 38 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 38 } }, { { 0, 27, 0 + height }, { 32, 1, 38 } } };
+        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 4, 0 + height }, { 32, 1, 32 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } } };
         PaintAddImageAsParentRotated(
             session, direction,
             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION + 2 * direction + 16)), { 0, 0, height },
@@ -2951,10 +2951,10 @@ namespace OpenRCT2::PipelineRC
         const TrackElement& trackElement, SupportType supportType)
     {
         int8_t supportHeights[] = { 2, 2, 1, -3 };
-        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 38 } },
-                                        { { 0, 4, 0 + height }, { 32, 1, 38 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 38 } }, { { 0, 27, 0 + height }, { 32, 1, 38 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 38 } }, { { 0, 27, 0 + height }, { 32, 1, 38 } } };
+        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 4, 0 + height }, { 32, 1, 32 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } } };
         PaintAddImageAsParentRotated(
             session, direction,
             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_BANK_TRANSITION + 2 * direction + 24)), { 0, 0, height },
@@ -4482,15 +4482,15 @@ namespace OpenRCT2::PipelineRC
                                         { { 0, 27, 0 + height }, { 32, 1, 30 } },  { { 0, 27, 0 + height }, { 32, 1, 30 } },
                                         { { 0, 6, 39 + height }, { 32, 20, 0 } },  { { 0, 6, 39 + height }, { 32, 20, 0 } },
                                         { { 0, 4, 0 + height }, { 32, 22, 8 } },   { { 0, 4, 0 + height }, { 32, 22, 8 } },
-                                        { { 0, 6, 0 + height }, { 32, 22, 8 } },   { { 0, 6, 0 + height }, { 32, 22, 8 } },
+                                        { { 0, 6, 0 + height }, { 32, 22, 8 } },   { { 0, 6, 0 + height }, { 32, 22, 12 } },
                                         { { 0, 27, 0 + height }, { 32, 1, 30 } },  { { 0, 27, 0 + height }, { 32, 1, 30 } },
                                         { { 0, 6, 42 + height }, { 32, 22, 0 } },  { { 0, 6, 42 + height }, { 32, 22, 0 } },
                                         { { 0, 16, 0 + height }, { 16, 16, 8 } },  { { 16, 16, 0 + height }, { 16, 16, 8 } },
                                         { { 16, 0, 0 + height }, { 16, 16, 8 } },  { { 0, 0, 0 + height }, { 16, 16, 8 } },
                                         { { 0, 16, 42 + height }, { 16, 16, 0 } }, { { 16, 16, 42 + height }, { 16, 16, 0 } },
                                         { { 16, 0, 42 + height }, { 16, 16, 0 } }, { { 0, 0, 42 + height }, { 16, 16, 0 } },
-                                        { { 6, 0, 0 + height }, { 26, 32, 8 } },   { { 0, 0, 0 + height }, { 26, 32, 8 } },
-                                        { { 0, 0, 0 + height }, { 26, 32, 8 } },   { { 6, 0, 0 + height }, { 26, 32, 8 } },
+                                        { { 6, 0, 0 + height }, { 26, 32, 8 } },   { { 0, 0, 0 + height }, { 26, 26, 12 } },
+                                        { { 0, 0, 0 + height }, { 26, 32, 8 } },   { { 6, 6, 0 + height }, { 26, 26, 12 } },
                                         { { 6, 0, 50 + height }, { 26, 32, 0 } },  { { 0, 0, 50 + height }, { 26, 32, 0 } },
                                         { { 0, 0, 50 + height }, { 26, 32, 0 } },  { { 6, 0, 50 + height }, { 26, 32, 0 } },
                                         { { 6, 0, 0 + height }, { 20, 32, 2 } },   { { 6, 0, 0 + height }, { 20, 32, 2 } },
@@ -4619,7 +4619,7 @@ namespace OpenRCT2::PipelineRC
                                         { { 0, 6, 0 + height }, { 32, 20, 8 } },    { { 0, 6, 0 + height }, { 32, 20, 8 } },
                                         { { 0, 6, 39 + height }, { 32, 20, 0 } },   { { 0, 6, 39 + height }, { 32, 20, 0 } },
                                         { { 0, 27, 0 + height }, { 32, 1, 30 } },   { { 0, 27, 0 + height }, { 32, 1, 30 } },
-                                        { { 0, 6, 0 + height }, { 32, 22, 8 } },    { { 0, 6, 0 + height }, { 32, 22, 8 } },
+                                        { { 0, 6, 0 + height }, { 32, 22, 12 } },   { { 0, 6, 0 + height }, { 32, 22, 8 } },
                                         { { 0, 4, 0 + height }, { 32, 22, 8 } },    { { 0, 4, 0 + height }, { 32, 22, 8 } },
                                         { { 0, 6, 42 + height }, { 32, 22, 0 } },   { { 0, 6, 42 + height }, { 32, 22, 0 } },
                                         { { 0, 27, 0 + height }, { 32, 1, 30 } },   { { 0, 27, 0 + height }, { 32, 1, 30 } },
@@ -4627,8 +4627,8 @@ namespace OpenRCT2::PipelineRC
                                         { { 16, 16, 0 + height }, { 16, 16, 8 } },  { { 0, 16, 0 + height }, { 16, 16, 8 } },
                                         { { 0, 0, 42 + height }, { 16, 16, 0 } },   { { 16, 0, 42 + height }, { 16, 16, 0 } },
                                         { { 16, 16, 42 + height }, { 16, 16, 0 } }, { { 0, 16, 42 + height }, { 16, 16, 0 } },
-                                        { { 6, 0, 0 + height }, { 26, 32, 8 } },    { { 0, 0, 0 + height }, { 26, 32, 8 } },
-                                        { { 0, 0, 0 + height }, { 26, 32, 8 } },    { { 6, 0, 0 + height }, { 26, 32, 8 } },
+                                        { { 6, 6, 0 + height }, { 26, 26, 12 } },   { { 0, 6, 0 + height }, { 26, 32, 8 } },
+                                        { { 0, 0, 0 + height }, { 26, 26, 8 } },    { { 6, 0, 0 + height }, { 26, 32, 8 } },
                                         { { 6, 0, 50 + height }, { 26, 32, 0 } },   { { 0, 0, 50 + height }, { 26, 32, 0 } },
                                         { { 0, 0, 50 + height }, { 26, 32, 0 } },   { { 6, 0, 50 + height }, { 26, 32, 0 } },
                                         { { 6, 0, 0 + height }, { 20, 32, 2 } },    { { 6, 0, 0 + height }, { 20, 32, 2 } },
@@ -4938,10 +4938,10 @@ namespace OpenRCT2::PipelineRC
         const TrackElement& trackElement, SupportType supportType)
     {
         int8_t supportHeights[] = { -3, -6, -6, -3 };
-        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 46 } },
-                                        { { 0, 4, 0 + height }, { 32, 1, 46 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 46 } }, { { 0, 27, 0 + height }, { 32, 1, 46 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 46 } }, { { 0, 27, 0 + height }, { 32, 1, 46 } } };
+        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 4, 0 + height }, { 32, 1, 32 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } } };
         PaintAddImageAsParentRotated(
             session, direction,
             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_SLOPE_BANK_TRANSITION + 2 * direction + 0)),
@@ -4977,10 +4977,10 @@ namespace OpenRCT2::PipelineRC
         const TrackElement& trackElement, SupportType supportType)
     {
         int8_t supportHeights[] = { -3, -6, -6, -3 };
-        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 46 } },
-                                        { { 0, 4, 0 + height }, { 32, 1, 46 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 46 } }, { { 0, 27, 0 + height }, { 32, 1, 46 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 46 } }, { { 0, 27, 0 + height }, { 32, 1, 46 } } };
+        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 4, 0 + height }, { 32, 1, 32 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } } };
         PaintAddImageAsParentRotated(
             session, direction,
             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_SLOPE_BANK_TRANSITION + 2 * direction + 8)),
@@ -5016,10 +5016,10 @@ namespace OpenRCT2::PipelineRC
         const TrackElement& trackElement, SupportType supportType)
     {
         int8_t supportHeights[] = { 3, 5, 9, 9 };
-        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 46 } },
-                                        { { 0, 4, 0 + height }, { 32, 1, 46 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 46 } }, { { 0, 27, 0 + height }, { 32, 1, 46 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 46 } }, { { 0, 27, 0 + height }, { 32, 1, 46 } } };
+        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 4, 0 + height }, { 32, 1, 32 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } } };
         PaintAddImageAsParentRotated(
             session, direction,
             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_SLOPE_BANK_TRANSITION + 2 * direction + 16)),
@@ -5055,10 +5055,10 @@ namespace OpenRCT2::PipelineRC
         const TrackElement& trackElement, SupportType supportType)
     {
         int8_t supportHeights[] = { 9, 9, 5, 3 };
-        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 46 } },
-                                        { { 0, 4, 0 + height }, { 32, 1, 46 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 46 } }, { { 0, 27, 0 + height }, { 32, 1, 46 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 46 } }, { { 0, 27, 0 + height }, { 32, 1, 46 } } };
+        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 4, 0 + height }, { 32, 1, 32 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } } };
         PaintAddImageAsParentRotated(
             session, direction,
             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_SLOPE_BANK_TRANSITION + 2 * direction + 24)),
@@ -5121,10 +5121,10 @@ namespace OpenRCT2::PipelineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 38 } },
-                                        { { 0, 4, 0 + height }, { 32, 1, 38 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 38 } }, { { 0, 27, 0 + height }, { 32, 1, 38 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 38 } }, { { 0, 27, 0 + height }, { 32, 1, 38 } } };
+        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 4, 0 + height }, { 32, 1, 32 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } } };
         PaintAddImageAsParentRotated(
             session, direction,
             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_SLOPE_BANK_TRANSITION + 2 * direction + 32)),
@@ -5159,10 +5159,10 @@ namespace OpenRCT2::PipelineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 38 } },
-                                        { { 0, 4, 0 + height }, { 32, 1, 38 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 38 } }, { { 0, 27, 0 + height }, { 32, 1, 38 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 38 } }, { { 0, 27, 0 + height }, { 32, 1, 38 } } };
+        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 4, 0 + height }, { 32, 1, 32 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } } };
         PaintAddImageAsParentRotated(
             session, direction,
             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_SLOPE_BANK_TRANSITION + 2 * direction + 40)),
@@ -5303,10 +5303,10 @@ namespace OpenRCT2::PipelineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 46 } },
-                                        { { 0, 4, 0 + height }, { 32, 1, 46 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 46 } }, { { 0, 27, 0 + height }, { 32, 1, 46 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 46 } }, { { 0, 27, 0 + height }, { 32, 1, 46 } } };
+        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 4, 0 + height }, { 32, 1, 32 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } } };
         PaintAddImageAsParentRotated(
             session, direction,
             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_SLOPE_BANK_TRANSITION + 2 * direction + 64)),
@@ -5341,10 +5341,10 @@ namespace OpenRCT2::PipelineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
-        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 46 } },
-                                        { { 0, 4, 0 + height }, { 32, 1, 46 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 46 } }, { { 0, 27, 0 + height }, { 32, 1, 46 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 46 } }, { { 0, 27, 0 + height }, { 32, 1, 46 } } };
+        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 4, 0 + height }, { 32, 1, 32 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } } };
         PaintAddImageAsParentRotated(
             session, direction,
             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_SLOPE_BANK_TRANSITION + 2 * direction + 72)),
@@ -5393,10 +5393,10 @@ namespace OpenRCT2::PipelineRC
         const TrackElement& trackElement, SupportType supportType)
     {
         int8_t supportHeights[] = { -3, -3, -3, -3 };
-        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 38 } },
-                                        { { 0, 4, 0 + height }, { 32, 1, 38 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 38 } }, { { 0, 27, 0 + height }, { 32, 1, 38 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 38 } }, { { 0, 27, 0 + height }, { 32, 1, 38 } } };
+        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 4, 0 + height }, { 32, 1, 32 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } } };
         PaintAddImageAsParentRotated(
             session, direction,
             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_SLOPE_BANK_TRANSITION + 2 * direction + 80)),
@@ -5432,10 +5432,10 @@ namespace OpenRCT2::PipelineRC
         const TrackElement& trackElement, SupportType supportType)
     {
         int8_t supportHeights[] = { -3, -3, -3, -3 };
-        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 38 } },
-                                        { { 0, 4, 0 + height }, { 32, 1, 38 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 38 } }, { { 0, 27, 0 + height }, { 32, 1, 38 } },
-                                        { { 0, 27, 0 + height }, { 32, 1, 38 } }, { { 0, 27, 0 + height }, { 32, 1, 38 } } };
+        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },  { { 0, 4, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 4, 0 + height }, { 32, 1, 32 } },  { { 0, 6, 0 + height }, { 32, 20, 8 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 32 } }, { { 0, 27, 0 + height }, { 32, 1, 32 } } };
         PaintAddImageAsParentRotated(
             session, direction,
             session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_SLOPE_BANK_TRANSITION + 2 * direction + 88)),
@@ -7694,7 +7694,7 @@ namespace OpenRCT2::PipelineRC
     {
         int8_t supportHeights[] = { 10, 7, 7, 7, 7, 11, 7, 7 };
         BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 8 } },   { { 0, 6, 0 + height }, { 32, 20, 8 } },
-                                        { { 0, 6, 0 + height }, { 32, 20, 8 } },   { { 0, 6, 0 + height }, { 32, 20, 8 } },
+                                        { { 0, 6, 0 + height }, { 32, 20, 8 } },   { { 0, 6, 0 + height }, { 32, 20, 12 } },
                                         { { 0, 27, 0 + height }, { 32, 1, 30 } },  { { 0, 27, 0 + height }, { 32, 1, 30 } },
                                         { { 0, 6, 39 + height }, { 32, 20, 0 } },  { { 0, 6, 39 + height }, { 32, 20, 0 } },
                                         { { 0, 4, 0 + height }, { 32, 22, 8 } },   { { 0, 4, 0 + height }, { 32, 22, 8 } },
@@ -7706,7 +7706,7 @@ namespace OpenRCT2::PipelineRC
                                         { { 0, 16, 42 + height }, { 16, 16, 0 } }, { { 16, 16, 42 + height }, { 16, 16, 0 } },
                                         { { 16, 0, 42 + height }, { 16, 16, 0 } }, { { 0, 0, 42 + height }, { 16, 16, 0 } },
                                         { { 6, 0, 0 + height }, { 26, 32, 8 } },   { { 0, 0, 0 + height }, { 26, 32, 8 } },
-                                        { { 0, 0, 0 + height }, { 26, 32, 8 } },   { { 6, 0, 0 + height }, { 26, 32, 8 } },
+                                        { { 0, 0, 0 + height }, { 26, 32, 8 } },   { { 6, 6, 0 + height }, { 26, 26, 12 } },
                                         { { 6, 0, 50 + height }, { 26, 32, 0 } },  { { 0, 0, 50 + height }, { 26, 32, 0 } },
                                         { { 0, 0, 50 + height }, { 26, 32, 0 } },  { { 6, 0, 50 + height }, { 26, 32, 0 } },
                                         { { 6, 0, 0 + height }, { 20, 32, 2 } },   { { 6, 0, 0 + height }, { 20, 32, 2 } },
@@ -7838,7 +7838,7 @@ namespace OpenRCT2::PipelineRC
                                         { { 0, 6, 0 + height }, { 32, 20, 8 } },    { { 0, 6, 0 + height }, { 32, 20, 8 } },
                                         { { 0, 6, 39 + height }, { 32, 20, 0 } },   { { 0, 6, 39 + height }, { 32, 20, 0 } },
                                         { { 0, 27, 0 + height }, { 32, 1, 30 } },   { { 0, 27, 0 + height }, { 32, 1, 30 } },
-                                        { { 0, 6, 0 + height }, { 32, 22, 8 } },    { { 0, 6, 0 + height }, { 32, 22, 8 } },
+                                        { { 0, 6, 0 + height }, { 32, 22, 12 } },   { { 0, 6, 0 + height }, { 32, 22, 8 } },
                                         { { 0, 4, 0 + height }, { 32, 22, 8 } },    { { 0, 4, 0 + height }, { 32, 22, 8 } },
                                         { { 0, 6, 42 + height }, { 32, 22, 0 } },   { { 0, 6, 42 + height }, { 32, 22, 0 } },
                                         { { 0, 27, 0 + height }, { 32, 1, 30 } },   { { 0, 27, 0 + height }, { 32, 1, 30 } },
@@ -7846,7 +7846,7 @@ namespace OpenRCT2::PipelineRC
                                         { { 16, 16, 0 + height }, { 16, 16, 8 } },  { { 0, 16, 0 + height }, { 16, 16, 8 } },
                                         { { 0, 0, 42 + height }, { 16, 16, 0 } },   { { 16, 0, 42 + height }, { 16, 16, 0 } },
                                         { { 16, 16, 42 + height }, { 16, 16, 0 } }, { { 0, 16, 42 + height }, { 16, 16, 0 } },
-                                        { { 6, 0, 0 + height }, { 26, 32, 8 } },    { { 0, 0, 0 + height }, { 26, 32, 8 } },
+                                        { { 6, 6, 0 + height }, { 26, 26, 12 } },   { { 0, 0, 0 + height }, { 26, 32, 8 } },
                                         { { 0, 0, 0 + height }, { 26, 32, 8 } },    { { 6, 0, 0 + height }, { 26, 32, 8 } },
                                         { { 6, 0, 50 + height }, { 26, 32, 0 } },   { { 0, 0, 50 + height }, { 26, 32, 0 } },
                                         { { 0, 0, 50 + height }, { 26, 32, 0 } },   { { 6, 0, 50 + height }, { 26, 32, 0 } },
