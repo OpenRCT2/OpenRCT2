@@ -1644,14 +1644,57 @@ bool Staff::UpdatePatrollingFindSweeping()
     return false;
 }
 
+int16_t Staff::CountNearbyPeeps() const
+{
+    // Iterate over tiles within a 3-tile radius (96 units)
+    constexpr auto kTileRadius = 3;
+    constexpr auto kLookupRadius = kCoordsXYStep * kTileRadius;
+
+    int16_t guestCount = 0;
+
+    for (int32_t tileX = x - kLookupRadius; tileX <= x + kLookupRadius; tileX += kCoordsXYStep)
+    {
+        for (int32_t tileY = y - kLookupRadius; tileY <= y + kLookupRadius; tileY += kCoordsXYStep)
+        {
+            for (auto* guest : EntityTileList<Guest>({ tileX, tileY }))
+            {
+                if (guest->x == kLocationNull)
+                    continue;
+
+                int16_t zDist = std::abs(z - guest->z);
+                if (zDist > 48)
+                    continue;
+
+                int16_t xDist = std::abs(x - guest->x);
+                if (xDist > kLookupRadius)
+                    continue;
+
+                int16_t yDist = std::abs(y - guest->y);
+                if (yDist > kLookupRadius)
+                    continue;
+
+                guestCount++;
+            }
+        }
+    }
+
+    return guestCount;
+}
+
 void Staff::Tick128UpdateStaff()
 {
     if (AssignedStaffType != StaffType::Security)
         return;
 
-    PeepAnimationGroup newAnimationGroup = PeepAnimationGroup::Alternate;
-    if (State != PeepState::Patrolling)
-        newAnimationGroup = PeepAnimationGroup::Normal;
+    // Alternate between walking animations based on crowd size
+    auto newAnimationGroup = PeepAnimationGroup::Normal;
+    if (State == PeepState::Patrolling)
+    {
+        constexpr auto kSecurityAltThreshold = 20;
+        bool useAlternative = CountNearbyPeeps() > kSecurityAltThreshold;
+        if (useAlternative)
+            newAnimationGroup = PeepAnimationGroup::Alternate;
+    }
 
     if (AnimationGroup == newAnimationGroup)
         return;
@@ -1665,6 +1708,7 @@ void Staff::Tick128UpdateStaff()
     auto& objManager = GetContext()->GetObjectManager();
     auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
 
+    // NB: security staff have two animations groups: one regular, and one slow-walking
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
     if (animObj->IsSlowWalking(newAnimationGroup))
     {
