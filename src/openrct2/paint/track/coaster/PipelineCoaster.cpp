@@ -1858,7 +1858,7 @@ namespace OpenRCT2::PipelineRC
                     }
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 2, height + -3,
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 1, height + -2,
                     session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -1944,7 +1944,7 @@ namespace OpenRCT2::PipelineRC
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 16, height + -3,
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 11, height + -2,
                     session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
@@ -2288,8 +2288,7 @@ namespace OpenRCT2::PipelineRC
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
                 }
                 MetalASupportsPaintSetupRotated(
-                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height + -13,
-                    session.SupportColours);
+                    session, supportType.metal, MetalSupportPlace::leftCorner, direction, 0, height, session.SupportColours);
                 PaintUtilSetSegmentSupportHeight(
                     session,
                     PaintUtilRotateSegments(
@@ -11670,7 +11669,7 @@ namespace OpenRCT2::PipelineRC
                                         { { 0, 44, 0 + height }, { 32, 1, 112 } },  { { 0, 44, 0 + height }, { 32, 1, 112 } },
                                         { { 0, 2, 0 + height }, { 32, 0, 150 } },   { { 0, 2, 0 + height }, { 32, 0, 150 } },
                                         { { 0, -8, 0 + height }, { 32, 0, 150 } },  { { 0, -8, 0 + height }, { 32, 0, 150 } },
-                                        { { 0, 40, 112 + height }, { 32, 0, 38 } }, { { 0, 40, 112 + height }, { 32, 0, 38 } },
+                                        { { 0, 40, 112 + height }, { 32, 0, 38 } }, { { 0, 48, height }, { 32, 0, 150 } },
                                         { { 0, 30, 0 + height }, { 32, 0, 150 } },  { { 0, 30, 0 + height }, { 32, 0, 150 } } };
         switch (trackSequence)
         {
@@ -11784,24 +11783,22 @@ namespace OpenRCT2::PipelineRC
         const TrackElement& trackElement, SupportType supportType)
     {
         int8_t supportHeights[] = { 21, 21, -3, -3, 0, 9, 28, 24 };
-        BoundBoxXYZ boundingBoxes[] = {
-            { { 0, 6, 0 + height }, { 32, 20, 3 } },    { { 0, 6, 0 + height }, { 32, 20, 3 } },
-            { { 0, 6, 0 + height }, { 32, 20, 3 } },    { { 0, 6, 0 + height }, { 32, 20, 3 } },
-            { { 0, 6, 64 + height }, { 32, 20, 1 } },   { { 0, 6, 64 + height }, { 32, 20, 1 } },
-            { { 0, 27, 0 + height }, { 32, 1, 64 } },   { { 0, 27, 0 + height }, { 32, 1, 64 } },
-            { { 0, 6, 0 + height }, { 32, 20, 3 } },    { { 0, 6, 0 + height }, { 32, 20, 3 } },
-            { { 0, 6, 0 + height }, { 32, 20, 3 } },    { { 0, 6, 0 + height }, { 32, 20, 3 } },
-            { { 0, 6, 80 + height }, { 32, 20, 1 } },   { { 0, 6, 80 + height }, { 32, 20, 1 } },
-            { { 0, 27, 0 + height }, { 32, 1, 64 } },   { { 0, 27, 0 + height }, { 32, 1, 64 } },
-            { { 8, 6, 0 + height }, { 24, 26, 3 } },    { { 0, 6, 0 + height }, { 32, 20, 3 } },
-            { { 0, 6, -4 + height }, { 32, 20, 0 } },   { { 6, 0, 0 + height }, { 10, 26, 24 } },
-            { { 0, 44, 0 + height }, { 32, 1, 112 } },  { { 0, 44, 0 + height }, { 32, 1, 112 } },
-            { { 0, 27, 0 + height }, { 32, 1, 112 } },  { { 0, 27, 0 + height }, { 32, 1, 112 } },
-            { { 0, -8, 0 + height }, { 32, 0, 150 } },  { { 0, -8, 0 + height }, { 32, 0, 150 } },
-            { { 0, 2, 0 + height }, { 32, 0, 150 } },   { { 0, 2, 0 + height }, { 32, 0, 150 } },
-            { { 0, 30, 0 + height }, { 32, 0, 150 } },  { { 0, 30, 0 + height }, { 32, 0, 150 } },
-            { { 0, 40, 112 + height }, { 32, 0, 38 } }, { { 0, 40, 112 + height }, { 32, 0, 38 } }
-        };
+        BoundBoxXYZ boundingBoxes[] = { { { 0, 6, 0 + height }, { 32, 20, 3 } },   { { 0, 6, 0 + height }, { 32, 20, 3 } },
+                                        { { 0, 6, 0 + height }, { 32, 20, 3 } },   { { 0, 6, 0 + height }, { 32, 20, 3 } },
+                                        { { 0, 6, 64 + height }, { 32, 20, 1 } },  { { 0, 6, 64 + height }, { 32, 20, 1 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 64 } },  { { 0, 27, 0 + height }, { 32, 1, 64 } },
+                                        { { 0, 6, 0 + height }, { 32, 20, 3 } },   { { 0, 6, 0 + height }, { 32, 20, 3 } },
+                                        { { 0, 6, 0 + height }, { 32, 20, 3 } },   { { 0, 6, 0 + height }, { 32, 20, 3 } },
+                                        { { 0, 6, 80 + height }, { 32, 20, 1 } },  { { 0, 6, 80 + height }, { 32, 20, 1 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 64 } },  { { 0, 27, 0 + height }, { 32, 1, 64 } },
+                                        { { 8, 6, 0 + height }, { 24, 26, 3 } },   { { 0, 6, 0 + height }, { 32, 20, 3 } },
+                                        { { 0, 6, -4 + height }, { 32, 20, 0 } },  { { 6, 0, 0 + height }, { 10, 26, 24 } },
+                                        { { 0, 44, 0 + height }, { 32, 1, 112 } }, { { 0, 44, 0 + height }, { 32, 1, 112 } },
+                                        { { 0, 27, 0 + height }, { 32, 1, 112 } }, { { 0, 27, 0 + height }, { 32, 1, 112 } },
+                                        { { 0, -8, 0 + height }, { 32, 0, 150 } }, { { 0, -8, 0 + height }, { 32, 0, 150 } },
+                                        { { 0, 2, 0 + height }, { 32, 0, 150 } },  { { 0, 2, 0 + height }, { 32, 0, 150 } },
+                                        { { 0, 30, 0 + height }, { 32, 0, 150 } }, { { 0, 30, 0 + height }, { 32, 0, 150 } },
+                                        { { 0, 48, 0 + height }, { 32, 0, 150 } }, { { 0, 40, 112 + height }, { 32, 0, 38 } } };
         switch (trackSequence)
         {
             case 0:
