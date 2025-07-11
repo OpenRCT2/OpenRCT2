@@ -260,6 +260,11 @@ namespace OpenRCT2::Config
             model->FileBrowserShowSizeColumn = reader->GetBoolean("file_browser_show_size_column", true);
             model->FileBrowserShowDateColumn = reader->GetBoolean("file_browser_show_date_column", true);
             model->FileBrowserShowPreviews = reader->GetBoolean("file_browser_show_previews", true);
+
+            model->SaveCompressLevelFile = reader->GetInt32("save_compress_level_file", 7);
+            model->SaveCompressLevelAuto = reader->GetInt32("save_compress_level_auto", 4);
+            model->SaveCompressLevelNet = reader->GetInt32("save_compress_level_net", 4);
+            model->ReplayCompressLevel = reader->GetInt32("replay_compress_level", 18);
         }
     }
 
@@ -353,6 +358,10 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("file_browser_show_size_column", model->FileBrowserShowSizeColumn);
         writer->WriteBoolean("file_browser_show_date_column", model->FileBrowserShowDateColumn);
         writer->WriteBoolean("file_browser_show_previews", model->FileBrowserShowPreviews);
+        writer->WriteInt32("save_compress_level_file", model->SaveCompressLevelFile);
+        writer->WriteInt32("save_compress_level_auto", model->SaveCompressLevelAuto);
+        writer->WriteInt32("save_compress_level_net", model->SaveCompressLevelNet);
+        writer->WriteInt32("replay_compress_level", model->ReplayCompressLevel);
     }
 
     static void ReadInterface(IIniReader* reader)

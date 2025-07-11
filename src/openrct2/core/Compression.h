@@ -17,7 +17,7 @@
 
 namespace OpenRCT2::Compression
 {
-    // zlib doesn't use 0 as a real compression level, so use it to mean no compression
+    // both zlib and zstd don't use 0 as a real compression level, so use it to mean no compression
     constexpr int16_t kNoCompressionLevel = 0;
 
     // Zlib methods, using the DEFLATE compression algorithm
@@ -36,4 +36,22 @@ namespace OpenRCT2::Compression
         int16_t level = kZlibDefaultCompressionLevel);
     bool zlibDecompress(
         IStream& source, uint64_t sourceLength, IStream& dest, uint64_t decompressLength, ZlibHeaderType header);
+
+    // Zstd methods, using the ZStandard compression algorithm
+    constexpr int16_t kZstdDefaultCompressionLevel = 3;
+
+    // Options for optional metadata to attach to a ZStandard frame. Zstd default is length-only,
+    // but callers to zstdCompress should use whatever is not already duplicated by other headers.
+    enum class ZstdMetadata
+    {
+        none = 0,
+        length = 1,
+        checksum = 2,
+        both = 3,
+    };
+
+    bool zstdCompress(
+        IStream& source, uint64_t sourceLength, IStream& dest, ZstdMetadata metadata,
+        int16_t level = kZstdDefaultCompressionLevel);
+    bool zstdDecompress(IStream& source, uint64_t sourceLength, IStream& dest, uint64_t decompressLength);
 } // namespace OpenRCT2::Compression

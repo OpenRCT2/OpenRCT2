@@ -17,6 +17,7 @@
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../Version.h"
+#include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/Crypt.h"
 #include "../core/DataSerialiser.h"
@@ -177,9 +178,9 @@ namespace OpenRCT2
             gameState.initialCash = gameState.cash;
         }
 
-        void Save(GameState_t& gameState, IStream& stream)
+        void Save(GameState_t& gameState, IStream& stream, int16_t compressionLevel)
         {
-            OrcaStream os(stream, OrcaStream::Mode::WRITING);
+            OrcaStream os(stream, OrcaStream::Mode::WRITING, compressionLevel);
 
             auto& header = os.GetHeader();
             header.Magic = kParkFileMagic;
@@ -206,10 +207,10 @@ namespace OpenRCT2
             ReadWritePackedObjectsChunk(os);
         }
 
-        void Save(GameState_t& gameState, const std::string_view path)
+        void Save(GameState_t& gameState, const std::string_view path, int16_t compressionLevel)
         {
             FileStream fs(path, FileMode::write);
-            Save(gameState, fs);
+            Save(gameState, fs, compressionLevel);
         }
 
         ScenarioIndexEntry ReadScenarioChunk()
@@ -2706,20 +2707,20 @@ namespace OpenRCT2
             }
         });
     }
+
+    void ParkFileExporter::Export(GameState_t& gameState, std::string_view path, int16_t compressionLevel)
+    {
+        auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
+        parkFile->Save(gameState, path, compressionLevel);
+    }
+
+    void ParkFileExporter::Export(GameState_t& gameState, IStream& stream, int16_t compressionLevel)
+    {
+        auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
+        parkFile->ExportObjectsList = ExportObjectsList;
+        parkFile->Save(gameState, stream, compressionLevel);
+    }
 } // namespace OpenRCT2
-
-void ParkFileExporter::Export(GameState_t& gameState, std::string_view path)
-{
-    auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
-    parkFile->Save(gameState, path);
-}
-
-void ParkFileExporter::Export(GameState_t& gameState, IStream& stream)
-{
-    auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
-    parkFile->ExportObjectsList = ExportObjectsList;
-    parkFile->Save(gameState, stream);
-}
 
 enum : uint32_t
 {
@@ -2766,7 +2767,8 @@ int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
         {
             // s6exporter->SaveGame(path);
         }
-        parkFile->Save(gameState, path);
+        auto& config = Config::Get().general;
+        parkFile->Save(gameState, path, gIsAutosave ? config.SaveCompressLevelAuto : config.SaveCompressLevelFile);
         result = true;
     }
     catch (const std::exception& e)

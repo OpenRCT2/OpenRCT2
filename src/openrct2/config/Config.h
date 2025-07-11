@@ -124,6 +124,10 @@ namespace OpenRCT2::Config
         bool FileBrowserShowSizeColumn;
         bool FileBrowserShowDateColumn;
         bool FileBrowserShowPreviews;
+        int16_t SaveCompressLevelFile;
+        int16_t SaveCompressLevelAuto;
+        int16_t SaveCompressLevelNet;
+        int16_t ReplayCompressLevel;
     };
 
     struct Interface

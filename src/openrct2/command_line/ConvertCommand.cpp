@@ -12,6 +12,8 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
+#include "../PlatformEnvironment.h"
+#include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/Path.hpp"
 #include "../object/ObjectManager.h"
@@ -20,14 +22,33 @@
 #include "CommandLine.hpp"
 
 #include <cassert>
+#include <limits>
 #include <memory>
 
 using namespace OpenRCT2;
 
+static int32_t _compressLevel = std::numeric_limits<int32_t>::min();
+
+// clang-format off
+static constexpr CommandLineOptionDefinition kConvertOptions[]
+{
+    { CMDLINE_TYPE_INTEGER, &_compressLevel, 'l', "compress-level", "The compression level to use when writing the converted file" },
+    kOptionTableEnd
+};
+
+static exitcode_t HandleCommandConvert(CommandLineArgEnumerator* argEnumerator);
+
+const CommandLineCommand CommandLine::kConvertCommands[]{
+    // Main commands
+    DefineCommand("", "<source> [destination]", kConvertOptions, HandleCommandConvert),
+    kCommandTableEnd
+};
+// clang-format on
+
 static void WriteConvertFromAndToMessage(FileExtension sourceFileType, FileExtension destinationFileType);
 static u8string GetFileTypeFriendlyName(FileExtension fileType);
 
-exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerator)
+static exitcode_t HandleCommandConvert(CommandLineArgEnumerator* enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
     if (result != EXITCODE_CONTINUE)
@@ -48,10 +69,10 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
 
     // Get the destination path
     const utf8* rawDestinationPath;
-    if (!enumerator->TryPopString(&rawDestinationPath))
+    if (!enumerator->TryPopString(&rawDestinationPath) || String::startsWith(rawDestinationPath, "-"))
     {
-        Console::Error::WriteLine("Expected a destination path.");
-        return EXITCODE_FAIL;
+        // if no destination path is provided, convert the park file in-place
+        rawDestinationPath = rawSourcePath;
     }
 
     const auto destinationPath = Path::GetAbsolute(rawDestinationPath);
@@ -75,13 +96,30 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
         case FileExtension::PARK:
             if (destinationFileType == FileExtension::PARK)
             {
-                Console::Error::WriteLine("File is already an OpenRCT2 saved game or scenario.");
-                return EXITCODE_FAIL;
+                Console::Error::WriteLine(
+                    "File is already an OpenRCT2 saved game or scenario. Updating file version and recompressing.");
             }
             break;
         default:
-            Console::Error::WriteLine("Only conversion from .SC4, .SV4, .SC6 or .SV6 is supported.");
+            Console::Error::WriteLine("Only conversion from .SC4, .SV4, .SC6, .SV6, or .PARK is supported.");
             return EXITCODE_FAIL;
+    }
+
+    int16_t compressLevel;
+    if (_compressLevel >= std::numeric_limits<int16_t>::min() && _compressLevel <= std::numeric_limits<int16_t>::max())
+    {
+        compressLevel = static_cast<int16_t>(_compressLevel);
+    }
+    else
+    {
+        // treat invalid values as the default value from the config file
+        auto env = OpenRCT2::CreatePlatformEnvironment();
+        auto configPath = env->GetFilePath(OpenRCT2::PathId::config);
+        Config::SetDefaults();
+        Config::OpenFromPath(configPath);
+
+        auto& config = Config::Get().general;
+        compressLevel = config.SaveCompressLevelFile;
     }
 
     // Perform conversion
@@ -125,7 +163,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->CloseByClass(WindowClass::MainWindow);
 
-        exporter->Export(gameState, destinationPath);
+        exporter->Export(gameState, destinationPath, compressLevel);
     }
     catch (const std::exception& ex)
     {

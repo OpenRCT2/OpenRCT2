@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "../core/Compression.h"
+
 #include <cstdint>
 #include <string_view>
 #include <vector>
@@ -20,10 +22,10 @@ namespace OpenRCT2
     struct GameState_t;
 
     // Current version that is saved.
-    constexpr uint32_t kParkFileCurrentVersion = 56;
+    constexpr uint32_t kParkFileCurrentVersion = 57;
 
     // The minimum version that is forwards compatible with the current version.
-    constexpr uint32_t kParkFileMinVersion = 55;
+    constexpr uint32_t kParkFileMinVersion = 57;
 
     // The minimum version that is backwards compatible with the current version.
     // If this is increased beyond 0, uncomment the checks in ParkFile.cpp and Context.cpp!
@@ -54,13 +56,13 @@ namespace OpenRCT2
     constexpr uint16_t kExtendedGoKartsVersion = 54;
     constexpr uint16_t kHigherInversionsHolesHelicesStatsVersion = 55;
     constexpr uint16_t kFixedObsoleteFootpathsVersion = 56;
+
+    class ParkFileExporter
+    {
+    public:
+        std::vector<const ObjectRepositoryItem*> ExportObjectsList;
+
+        void Export(OpenRCT2::GameState_t& gameState, std::string_view path, int16_t compressionLevel);
+        void Export(OpenRCT2::GameState_t& gameState, OpenRCT2::IStream& stream, int16_t compressionLevel);
+    };
 } // namespace OpenRCT2
-
-class ParkFileExporter
-{
-public:
-    std::vector<const ObjectRepositoryItem*> ExportObjectsList;
-
-    void Export(OpenRCT2::GameState_t& gameState, std::string_view path);
-    void Export(OpenRCT2::GameState_t& gameState, OpenRCT2::IStream& stream);
-};

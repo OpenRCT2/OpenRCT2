@@ -155,6 +155,7 @@ zlib             | zlib licence.
 Google Test      | BSD 3 clause licence.
 Google Benchmark | Apache 2.0 licence.
 sfl              | zlib licence.
+zstd             | BSD 3 clause license.
 
 Licences for sub-libraries used by the above may vary. For more information, visit the libraries' respective official websites.
 

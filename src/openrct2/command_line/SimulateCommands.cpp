@@ -23,26 +23,36 @@
 
 using namespace OpenRCT2;
 
+// clang-format off
+static constexpr CommandLineOptionDefinition kNoOptions[]
+{
+    kOptionTableEnd
+};
+
 static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator);
 
-const CommandLineCommand CommandLine::kSimulateCommands[]{ // Main commands
-                                                           DefineCommand("", "<ticks>", nullptr, HandleSimulate),
-                                                           kCommandTableEnd
+const CommandLineCommand CommandLine::kSimulateCommands[]{
+    // Main commands
+    DefineCommand("", "<park file> <ticks>", kNoOptions, HandleSimulate),
+    kCommandTableEnd
 };
+// clang-format on
 
 static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator)
 {
-    const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex();
-    int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
-
-    if (argc < 2)
+    const utf8* inputPath;
+    if (!argEnumerator->TryPopString(&inputPath))
     {
-        Console::Error::WriteLine("Missing arguments <sv6-file> <ticks>.");
+        Console::Error::WriteLine("Expected a save file path");
         return EXITCODE_FAIL;
     }
 
-    const char* inputPath = argv[0];
-    uint32_t ticks = atol(argv[1]);
+    int32_t ticks;
+    if (!argEnumerator->TryPopInteger(&ticks))
+    {
+        Console::Error::WriteLine("Expected a number of ticks to simulate");
+        return EXITCODE_FAIL;
+    }
 
     gOpenRCT2Headless = true;
 
@@ -59,7 +69,7 @@ static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator)
         }
 
         Console::WriteLine("Running %d ticks...", ticks);
-        for (uint32_t i = 0; i < ticks; i++)
+        for (int32_t i = 0; i < ticks; i++)
         {
             gameStateUpdateLogic();
         }
