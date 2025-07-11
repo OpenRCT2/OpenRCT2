@@ -56,13 +56,19 @@ const char gVersionInfoFull[] = OPENRCT2_NAME ", "
     ;
 
 #ifdef __EMSCRIPTEN__
-// This must be wrapped in extern "C", according to the emscripten docs, "to prevent C++ name mangling"
+    // This must be wrapped in extern "C", according to the emscripten docs, "to prevent C++ name mangling"
+    // Ignore -Wmissing-prototypes here, see https://github.com/llvm/llvm-project/issues/94138
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wmissing-prototypes"
+
 extern "C" {
 const char* GetVersion()
 {
     return gVersionInfoFull;
 }
 }
+
+    #pragma clang diagnostic pop
 #endif
 
 NewVersionInfo GetLatestVersion()

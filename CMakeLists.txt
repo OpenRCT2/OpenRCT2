@@ -358,6 +358,11 @@ else ()
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error=objc-method-access")
     endif()
 
+    # Clang -Wmissing-declarations differs from GCC, set -Wmissing-prototypes for parity
+    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wmissing-prototypes")
+    endif()
+
     # On mingw all code is already PIC, this will avoid compiler error on redefining this option
     if (NOT MINGW)
         set(CMAKE_POSITION_INDEPENDENT_CODE ON)
