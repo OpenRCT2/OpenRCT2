@@ -603,8 +603,7 @@ void AwardReset()
     getGameState().currentAwards.clear();
 }
 
-void AwardAdd(AwardType type);
-void AwardAdd(AwardType type)
+static void AwardAdd(AwardType type)
 {
     getGameState().currentAwards.push_back(Award{ 5u, type });
     if (Config::Get().notifications.ParkAward)
@@ -664,7 +663,6 @@ void AwardUpdateAll()
             // Check if award is deserved
             if (AwardIsDeserved(awardType, activeAwardTypes))
             {
-                // Add award
                 AwardAdd(awardType);
             }
         }
@@ -684,6 +682,5 @@ void AwardGrant(AwardType type)
         currentAwards.erase(currentAwards.begin());
     }
 
-    // Add award
     AwardAdd(type);
 }
