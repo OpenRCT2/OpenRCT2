@@ -43,6 +43,7 @@ namespace OpenRCT2::Scripting
         mapChanged,
         mapSave,
         parkCalculateGuestCap,
+        rideBreakDown,
         count,
         notDefined = -1,
     };
