@@ -2634,7 +2634,16 @@ namespace OpenRCT2
     template<typename T>
     void ParkFile::WriteEntitiesOfType(OrcaStream& os, OrcaStream::ChunkStream& cs)
     {
-        uint16_t count = GetEntityListCount(T::cEntityType);
+        const auto entityList = EntityList<T>();
+        // We do not rely on GetEntityListCount as there is a potential issue (#23636) that needs investigating.
+        const auto count = [&]() -> uint16_t {
+            uint16_t res = 0;
+            for ([[maybe_unused]] auto* _ : entityList)
+            {
+                res++;
+            }
+            return res;
+        }();
         cs.Write(T::cEntityType);
         cs.Write(count);
         for (auto* ent : EntityList<T>())
@@ -2642,6 +2651,9 @@ namespace OpenRCT2
             cs.Write(ent->Id);
             ReadWriteEntity(os, cs, *ent);
         }
+        Guard::Assert(
+            count == GetEntityListCount(T::cEntityType),
+            "Please submit a new issue on GitHub with the latest working auto save file");
     }
 
     template<typename... T>
