@@ -3893,6 +3893,12 @@ namespace OpenRCT2::Ui::Windows
                     if (dropdownIndex == 0)
                     {
                         Vehicle* vehicle;
+
+#ifdef ENABLE_SCRIPTING
+                        if (ride->breakdownReasonPending != BREAKDOWN_NONE)
+                            InvokeRideFixHook(*ride);
+#endif
+
                         switch (ride->breakdownReasonPending)
                         {
                             case BREAKDOWN_SAFETY_CUT_OUT:
