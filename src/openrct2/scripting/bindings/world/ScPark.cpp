@@ -430,6 +430,35 @@ namespace OpenRCT2::Scripting
         return result;
     }
 
+    std::vector<std::shared_ptr<ScAward>> ScPark::awards_get() const
+    {
+        std::vector<std::shared_ptr<ScAward>> result;
+
+        auto& gameState = getGameState();
+        for (size_t i = 0; i < gameState.currentAwards.size(); i++)
+        {
+            result.push_back(std::make_shared<ScAward>(i));
+        }
+
+        return result;
+    }
+
+    void ScPark::clearAwards() const
+    {
+        ThrowIfGameStateNotMutable();
+        AwardReset();
+    }
+
+    void ScPark::grantAward(const std::string& awardType) const
+    {
+        ThrowIfGameStateNotMutable();
+        auto optType = StringToAwardType(awardType);
+        if (optType.has_value())
+        {
+            AwardGrant(optType.value());
+        }
+    }
+
     void ScPark::Register(duk_context* ctx)
     {
         dukglue_register_property(ctx, &ScPark::cash_get, &ScPark::cash_set, "cash");
@@ -463,6 +492,9 @@ namespace OpenRCT2::Scripting
         dukglue_register_method(ctx, &ScPark::setFlag, "setFlag");
         dukglue_register_method(ctx, &ScPark::postMessage, "postMessage");
         dukglue_register_method(ctx, &ScPark::getMonthlyExpenditure, "getMonthlyExpenditure");
+        dukglue_register_property(ctx, &ScPark::awards_get, nullptr, "awards");
+        dukglue_register_method(ctx, &ScPark::clearAwards, "clearAwards");
+        dukglue_register_method(ctx, &ScPark::grantAward, "grantAward");
     }
 
 } // namespace OpenRCT2::Scripting

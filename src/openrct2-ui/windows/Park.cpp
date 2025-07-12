@@ -164,31 +164,6 @@ namespace OpenRCT2::Ui::Windows
         0,
         0,
     };
-
-    struct WindowParkAward {
-        StringId text;
-        uint32_t sprite;
-    };
-
-    static constexpr WindowParkAward _parkAwards[] = {
-        { STR_AWARD_MOST_UNTIDY,                SPR_AWARD_MOST_UNTIDY },
-        { STR_AWARD_MOST_TIDY,                  SPR_AWARD_MOST_TIDY },
-        { STR_AWARD_BEST_ROLLERCOASTERS,        SPR_AWARD_BEST_ROLLERCOASTERS },
-        { STR_AWARD_BEST_VALUE,                 SPR_AWARD_BEST_VALUE },
-        { STR_AWARD_MOST_BEAUTIFUL,             SPR_AWARD_MOST_BEAUTIFUL },
-        { STR_AWARD_WORST_VALUE,                SPR_AWARD_WORST_VALUE },
-        { STR_AWARD_SAFEST,                     SPR_AWARD_SAFEST },
-        { STR_AWARD_BEST_STAFF,                 SPR_AWARD_BEST_STAFF },
-        { STR_AWARD_BEST_FOOD,                  SPR_AWARD_BEST_FOOD },
-        { STR_AWARD_WORST_FOOD,                 SPR_AWARD_WORST_FOOD },
-        { STR_AWARD_BEST_TOILETS,               SPR_AWARD_BEST_TOILETS },
-        { STR_AWARD_MOST_DISAPPOINTING,         SPR_AWARD_MOST_DISAPPOINTING },
-        { STR_AWARD_BEST_WATER_RIDES,           SPR_AWARD_BEST_WATER_RIDES },
-        { STR_AWARD_BEST_CUSTOM_DESIGNED_RIDES, SPR_AWARD_BEST_CUSTOM_DESIGNED_RIDES },
-        { STR_AWARD_MOST_DAZZLING_RIDE_COLOURS, SPR_AWARD_MOST_DAZZLING_RIDE_COLOURS },
-        { STR_AWARD_MOST_CONFUSING_LAYOUT,      SPR_AWARD_MOST_CONFUSING_LAYOUT },
-        { STR_AWARD_BEST_GENTLE_RIDES,          SPR_AWARD_BEST_GENTLE_RIDES },
-    };
     // clang-format on
 
     class ParkWindow final : public Window
@@ -1164,8 +1139,8 @@ namespace OpenRCT2::Ui::Windows
 
             for (const auto& award : currentAwards)
             {
-                GfxDrawSprite(rt, ImageId(_parkAwards[EnumValue(award.Type)].sprite), screenCoords);
-                DrawTextWrapped(rt, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, _parkAwards[EnumValue(award.Type)].text);
+                GfxDrawSprite(rt, ImageId(AwardGetSprite(award.Type)), screenCoords);
+                DrawTextWrapped(rt, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, AwardGetText(award.Type));
 
                 screenCoords.y += 32;
             }

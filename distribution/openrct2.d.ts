@@ -4179,6 +4179,53 @@ declare global {
         "scenarioCompleteNameInput" |
         "unlockAllPrices";
 
+    type AwardType =
+        "mostUntidy" |
+        "mostTidy" |
+        "bestRollerCoasters" |
+        "bestValue" |
+        "mostBeautiful" |
+        "worstValue" |
+        "safest" |
+        "bestStaff" |
+        "bestFood" |
+        "worstFood" |
+        "bestToilets" |
+        "mostDisappointing" |
+        "bestWaterRides" |
+        "bestCustomDesignedRides" |
+        "mostDazzlingRideColours" |
+        "mostConfusingLayout" |
+        "bestGentleRides";
+
+    interface Award {
+        /**
+         * The type of the award.
+         */
+        readonly type: AwardType;
+
+        /**
+         * The award description.
+         */
+        readonly text: string;
+
+        /**
+         * Number of months this award will remain active.
+         * Starts at 5, expires at 0.
+         */
+        readonly monthsRemaining: number;
+
+        /**
+         * The sprite of the award.
+         */
+        readonly imageId: number;
+
+        /**
+         * Whether this is a positive or negative award.
+         */
+        readonly positive: boolean;
+    }
+
     interface Park {
         cash: number;
         rating: number;
@@ -4326,6 +4373,25 @@ declare global {
          * @param type The type of expenditure to get.
          */
         getMonthlyExpenditure(type: ExpenditureType): number[]
+
+        /**
+         * The current awards of the park.
+         */
+        readonly awards: Award[]
+
+        /**
+         *  Clear all awards.
+         */
+        clearAwards(): void
+
+        /**
+         * Grant the given award type to the park.
+         * Does not check eligibility.
+         * If the park already has an active award of the given type, the old award will be removed.
+         * If the park already has 4 active awards, the oldest award will be removed.
+         * @param type the award type to grant
+         */
+        grantAward(type: AwardType): void
     }
 
     interface Research {
