@@ -23,7 +23,7 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::miniatureRailway,
         .supportType = WoodenSupportType::truss,
-        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::diagSlope},
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},

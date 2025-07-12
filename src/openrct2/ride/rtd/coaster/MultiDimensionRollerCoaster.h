@@ -22,13 +22,13 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::multiDimensionRollerCoaster,
         .supportType = MetalSupportType::tubesInverted,
-        .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::slopeVertical, TrackGroup::blockBrakes, TrackGroup::inlineTwistUninverted,TrackGroup::quarterLoopUninvertedUp, TrackGroup::quarterLoopUninvertedDown, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
+        .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::slopeVertical, TrackGroup::blockBrakes, TrackGroup::inlineTwistUninverted,TrackGroup::quarterLoopUninvertedUp, TrackGroup::quarterLoopUninvertedDown, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::diagSlope, TrackGroup::diagSlopeSteepUp, TrackGroup::diagSlopeSteepDown},
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::multiDimensionRollerCoasterInverted,
         .supportType = MetalSupportType::tubesInverted,
-        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::slopeVertical, TrackGroup::blockBrakes, TrackGroup::inlineTwistInverted, TrackGroup::quarterLoopInvertedUp, TrackGroup::quarterLoopInvertedDown, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::slopeVertical, TrackGroup::blockBrakes, TrackGroup::inlineTwistInverted, TrackGroup::quarterLoopInvertedUp, TrackGroup::quarterLoopInvertedDown, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::diagSlope, TrackGroup::diagSlopeSteepUp, TrackGroup::diagSlopeSteepDown},
         .extraTrackGroups = {},
     }),
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt | 

@@ -22,7 +22,7 @@ constexpr RideTypeDescriptor SideFrictionRollerCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::sideFrictionRollerCoaster,
         .supportType = WoodenSupportType::truss,
-        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::diagSlope, TrackGroup::diagSlopeSteepUp, TrackGroup::diagSlopeSteepDown},
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
