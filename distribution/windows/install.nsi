@@ -105,7 +105,7 @@ ManifestDPIAware true
 ; Set languages (first is default language). Other languages are sorted by ISO code.
 ; Only specify languages for which we actually have translations, because otherwise strings will show up blank.
 !insertmacro MUI_LANGUAGE "English"
-;!insertmacro MUI_LANGUAGE "Arabic"
+!insertmacro MUI_LANGUAGE "Arabic"
 ;!insertmacro MUI_LANGUAGE "Catalan"
 !insertmacro MUI_LANGUAGE "Czech"
 ;!insertmacro MUI_LANGUAGE "Danish"
@@ -133,6 +133,7 @@ ManifestDPIAware true
 !insertmacro MUI_RESERVEFILE_LANGDLL
 
 !include "language\install_en.nsi"
+!include "language\install_ar.nsi"
 !include "language\install_cs.nsi"
 !include "language\install_de.nsi"
 !include "language\install_fi.nsi"
