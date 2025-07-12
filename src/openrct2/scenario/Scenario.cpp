@@ -90,6 +90,12 @@ void ScenarioBegin(GameState_t& gameState)
         ContextOpenWindowView(WV_PARK_OBJECTIVE);
 
     gScreenAge = 0;
+
+    // Hide cheats button only for original scenarios to prevent cheating during scenario play
+    // User-provided scenarios should allow cheats
+    SourceDescriptor sourceDesc;
+    bool isOriginalScenario = ScenarioSources::TryGetByName(gameState.scenarioName, &sourceDesc);
+    gameState.scenarioHideCheats = isOriginalScenario;
 }
 
 void ScenarioReset(GameState_t& gameState)

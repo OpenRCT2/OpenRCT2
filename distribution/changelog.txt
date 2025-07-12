@@ -13,6 +13,7 @@
 - Improved: [#24026] Notification settings have been made into a tab of the Recent Messages window.
 - Improved: [#24569, #24710] Add ten additional translations to the Windows installer.
 - Change: [#24559] Scenario options are now disabled rather than hidden when disabling money makes them non-applicable.
+- Change: [#24633] Disable cheats in scenarios.
 - Change: [objects#383] Disable all base colours on non-remappable WWTT vehicles, change black to light_blue.
 - Change: [objects#384] Remove erroneously enabled WWTT third remaps.
 - Removed: [#24628] “Pause game when Steam overlay is open” feature (already broken for a long time).
