@@ -74,6 +74,7 @@ static constexpr TrackPaintFunctionGetter kPaintFunctionMap[] = {
     GetTrackPaintFunctionMultiDimensionRC,         // multiDimensionRollerCoaster
     GetTrackPaintFunctionMultiDimensionRC,         // multiDimensionRollerCoasterInverted
     GetTrackPaintFunctionObservationTower,         // observationTower
+    OpenRCT2::PipelineRC::GetTrackPaintFunction,   // pipelineCoaster
     GetTrackPaintFunctionReverseFreefallRC,        // reverseFreefallCoaster
     GetTrackPaintFunctionReverserRC,               // reverserRollerCoaster
     GetTrackPaintFunctionRiverRapids,              // riverRapids
@@ -100,7 +101,6 @@ static constexpr TrackPaintFunctionGetter kPaintFunctionMap[] = {
     GetTrackPaintFunctionWoodenRC,                 // woodenRollerCoaster
     GetTrackPaintFunctionWoodenWildMouse,          // woodenWildMouse
 
-    DummyGetter,
     DummyGetter,
     DummyGetter,
     DummyGetter,
