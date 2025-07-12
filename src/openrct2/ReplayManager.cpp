@@ -261,7 +261,7 @@ namespace OpenRCT2
 
             auto exporter = std::make_unique<ParkFileExporter>();
             exporter->ExportObjectsList = objects;
-            exporter->Export(gameState, replayData->parkData);
+            exporter->Export(gameState, replayData->parkData, Compression::kNoCompressionLevel);
 
             replayData->timeRecorded = std::chrono::seconds(std::time(nullptr)).count();
 
@@ -314,8 +314,7 @@ namespace OpenRCT2
             MemoryStream compressed;
             stream.SetPosition(0);
             bool compressStatus = Compression::zlibCompress(
-                stream, static_cast<size_t>(stream.GetLength()), compressed, Compression::ZlibHeaderType::zlib,
-                kReplayCompressionLevel);
+                stream, stream.GetLength(), compressed, Compression::ZlibHeaderType::zlib, kReplayCompressionLevel);
             if (!compressStatus)
                 throw IOException("Compression Error");
 
@@ -567,8 +566,8 @@ namespace OpenRCT2
 
                 recFile.data.SetPosition(0);
                 decompressStatus = Compression::zlibDecompress(
-                    recFile.data, static_cast<size_t>(recFile.data.GetLength()), decompressed,
-                    static_cast<size_t>(recFile.uncompressedSize), Compression::ZlibHeaderType::zlib);
+                    recFile.data, recFile.data.GetLength(), decompressed, recFile.uncompressedSize,
+                    Compression::ZlibHeaderType::zlib);
 
                 if (!decompressStatus)
                     throw IOException("Decompression Error");
