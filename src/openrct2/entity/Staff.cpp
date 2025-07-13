@@ -1674,6 +1674,9 @@ bool Staff::SecurityGuardPathIsCrowded() const
                 if (yDist > kLookupRadius)
                     continue;
 
+                if (!guest->IsActionWalking())
+                    continue;
+
                 guestCount++;
                 if (guestCount >= kSecurityPathCrowdedThreshold)
                     return true;
