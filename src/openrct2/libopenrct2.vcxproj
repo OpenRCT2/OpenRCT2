@@ -595,6 +595,7 @@
     <ClInclude Include="scripting\bindings\ride\ScRideStation.hpp" />
     <ClInclude Include="scripting\bindings\ride\ScTrackIterator.h" />
     <ClInclude Include="scripting\bindings\ride\ScTrackSegment.h" />
+    <ClInclude Include="scripting\bindings\world\ScAward.hpp" />
     <ClInclude Include="scripting\bindings\world\ScClimate.hpp" />
     <ClInclude Include="scripting\bindings\world\ScDate.hpp" />
     <ClInclude Include="scripting\bindings\world\ScMap.hpp" />
@@ -1117,6 +1118,7 @@
     <ClCompile Include="scripting\bindings\ride\ScRideStation.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScTrackIterator.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScTrackSegment.cpp" />
+    <ClCompile Include="scripting\bindings\world\ScAward.cpp" />
     <ClCompile Include="scripting\bindings\world\ScMap.cpp" />
     <ClCompile Include="scripting\bindings\world\ScPark.cpp" />
     <ClCompile Include="scripting\bindings\world\ScParkMessage.cpp" />
