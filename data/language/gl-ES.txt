@@ -3821,3 +3821,10 @@ STR_6781    :Capturas de pantalla
 STR_6782    :Notificacións do parque
 STR_6783    :Notificacións das atraccións
 STR_6784    :Notificacións dos visitantes
+STR_6785    :Mando
+STR_6786    :Zona morta:
+STR_6787    :Zona morta do mando analóxico (movemento mínimo requirido)
+STR_6788    :Sensibilidade:
+STR_6789    :Multiplicador de sensibilidade do mando analóxico
+STR_6790    :Zona morta: {COMMA32}%
+STR_6791    :Sensibilidade: {COMMA32}%
