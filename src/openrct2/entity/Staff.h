@@ -112,7 +112,7 @@ private:
     Direction HandymanDirectionRandSurface(uint8_t validDirections) const;
 
     void EntertainerUpdateNearbyPeeps() const;
-    int16_t CountNearbyPeeps() const;
+    bool SecurityGuardPathIsCrowded() const;
 
     uint8_t GetValidPatrolDirections(const CoordsXY& loc) const;
     Direction HandymanDirectionToNearestLitter() const;

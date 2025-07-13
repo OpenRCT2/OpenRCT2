@@ -1644,11 +1644,12 @@ bool Staff::UpdatePatrollingFindSweeping()
     return false;
 }
 
-int16_t Staff::CountNearbyPeeps() const
+bool Staff::SecurityGuardPathIsCrowded() const
 {
     // Iterate over tiles within a 3-tile radius (96 units)
     constexpr auto kTileRadius = 3;
     constexpr auto kLookupRadius = kCoordsXYStep * kTileRadius;
+    constexpr auto kSecurityPathCrowdedThreshold = 20;
 
     int16_t guestCount = 0;
 
@@ -1674,11 +1675,13 @@ int16_t Staff::CountNearbyPeeps() const
                     continue;
 
                 guestCount++;
+                if (guestCount >= kSecurityPathCrowdedThreshold)
+                    return true;
             }
         }
     }
 
-    return guestCount;
+    return false;
 }
 
 void Staff::Tick128UpdateStaff()
@@ -1690,8 +1693,7 @@ void Staff::Tick128UpdateStaff()
     auto newAnimationGroup = PeepAnimationGroup::Normal;
     if (State == PeepState::Patrolling)
     {
-        constexpr auto kSecurityAltThreshold = 20;
-        bool useAlternative = CountNearbyPeeps() > kSecurityAltThreshold;
+        bool useAlternative = SecurityGuardPathIsCrowded();
         if (useAlternative)
             newAnimationGroup = PeepAnimationGroup::Alternate;
     }
