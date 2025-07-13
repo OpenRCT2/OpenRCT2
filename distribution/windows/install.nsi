@@ -124,7 +124,7 @@ ManifestDPIAware true
 ;!insertmacro MUI_LANGUAGE "Polish"
 !insertmacro MUI_LANGUAGE "PortugueseBR"
 !insertmacro MUI_LANGUAGE "Russian"
-;!insertmacro MUI_LANGUAGE "Swedish"
+!insertmacro MUI_LANGUAGE "Swedish"
 ;!insertmacro MUI_LANGUAGE "Turkish"
 ;!insertmacro MUI_LANGUAGE "Ukrainian"
 ;!insertmacro MUI_LANGUAGE "Vietnamese"
@@ -145,6 +145,7 @@ ManifestDPIAware true
 !include "language\install_nl.nsi"
 !include "language\install_pt.nsi"
 !include "language\install_ru.nsi"
+!include "language\install_sv.nsi"
 
 !macro Init thing
 uac_tryagain:
