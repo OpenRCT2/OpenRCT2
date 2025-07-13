@@ -118,6 +118,7 @@ namespace OpenRCT2::Scripting
         return output;
     }
 
+    // TODO (mber) remove this. It's superfluous
     inline JSValue JSFromStdString(JSContext* ctx, const std::string& str)
     {
         return JS_NewString(ctx, str.c_str());
@@ -131,6 +132,22 @@ namespace OpenRCT2::Scripting
         {
             int32_t intVal = -1;
             if (JS_ToInt32(ctx, &intVal, val) >= 0)
+            {
+                output = std::make_optional(intVal);
+            }
+        }
+        JS_FreeValue(ctx, val);
+        return output;
+    }
+
+    inline std::optional<int64_t> JSToOptionalInt64(JSContext* ctx, JSValue obj, const char* property)
+    {
+        JSValue val = JS_GetPropertyStr(ctx, obj, property);
+        std::optional<int64_t> output = std::nullopt;
+        if (JS_IsNumber(val))
+        {
+            int64_t intVal = -1;
+            if (JS_ToInt64(ctx, &intVal, val) >= 0)
             {
                 output = std::make_optional(intVal);
             }
@@ -208,6 +225,24 @@ namespace OpenRCT2::Scripting
     {
         JSValue val = JS_GetPropertyStr(ctx, obj, property);
         int32_t output = JSToInt(ctx, val);
+        JS_FreeValue(ctx, val);
+        return output;
+    }
+
+    inline int64_t JSToInt64(JSContext* ctx, JSValue val)
+    {
+        int64_t output = -1;
+        if (JS_IsNumber(val))
+        {
+            JS_ToInt64(ctx, &output, val);
+        }
+        return output;
+    }
+
+    inline int64_t JSToInt64(JSContext* ctx, JSValue obj, const char* property)
+    {
+        JSValue val = JS_GetPropertyStr(ctx, obj, property);
+        int64_t output = JSToInt64(ctx, val);
         JS_FreeValue(ctx, val);
         return output;
     }

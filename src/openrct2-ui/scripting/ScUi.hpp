@@ -160,10 +160,7 @@ namespace OpenRCT2::Scripting
 
         static JSValue imageManager_get(JSContext* ctx, JSValue thisVal)
         {
-            // TODO (mber)
-            return JS_NewString(ctx, "not yet implemented");
-
-            // return std::make_shared<ScImageManager>(_scriptEngine.GetContext());
+            return gScImageManager.New(ctx);
         }
 
         static JSValue openWindow(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
@@ -372,22 +369,37 @@ namespace OpenRCT2::Scripting
 
             return JS_UNDEFINED;
         }
-        /*
-        void registerToolboxMenuItem(const std::string& text, DukValue callback)
+
+        static JSValue registerToolboxMenuItem(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto& execInfo = _scriptEngine.GetExecInfo();
+            ScriptEngine* scriptEngine = gScUi.GetOpaque<ScriptEngine*>(thisVal);
+            if (!scriptEngine)
+            {
+                JS_ThrowInternalError(ctx, "No script engine");
+                return JS_EXCEPTION;
+            }
+            if (argc < 2 || !JS_IsString(argv[0]) || !JS_IsFunction(ctx, argv[1]))
+            {
+                JS_ThrowTypeError(ctx, "Invalid arguments");
+                return JS_EXCEPTION;
+            }
+
+            auto& execInfo = scriptEngine->GetExecInfo();
             auto owner = execInfo.GetCurrentPlugin();
             if (owner->GetMetadata().Type == PluginType::Intransient)
             {
-                CustomMenuItems.emplace_back(owner, CustomToolbarMenuItemKind::Toolbox, text, callback);
+                CustomMenuItems.emplace_back(
+                    owner, CustomToolbarMenuItemKind::Toolbox, JSToStdString(ctx, argv[0]), JSCallback(ctx, argv[1]));
                 std::ranges::sort(CustomMenuItems, [](auto&& a, auto&& b) { return a.Text < b.Text; });
             }
             else
             {
-                duk_error(_scriptEngine.GetContext(), DUK_ERR_ERROR, "Plugin must be intransient.");
+                JS_ThrowPlainError(ctx, "Plugin must be intransient.");
+                return JS_EXCEPTION;
             }
+            return JS_UNDEFINED;
         }
-
+        /*
         void registerShortcut(DukValue desc)
         {
             try
@@ -432,7 +444,7 @@ namespace OpenRCT2::Scripting
             // dukglue_register_method(ctx, &ScUi::showFileBrowse, "showFileBrowse"),
             // dukglue_register_method(ctx, &ScUi::showScenarioSelect, "showScenarioSelect"),
             JS_CFUNC_DEF("activateTool", 1, ScUi::activateTool), JS_CFUNC_DEF("registerMenuItem", 2, ScUi::registerMenuItem),
-            // dukglue_register_method(ctx, &ScUi::registerToolboxMenuItem, "registerToolboxMenuItem"),
+            JS_CFUNC_DEF("registerToolboxMenuItem", 2, ScUi::registerToolboxMenuItem),
             // dukglue_register_method(ctx, &ScUi::registerShortcut, "registerShortcut"),
         };
 

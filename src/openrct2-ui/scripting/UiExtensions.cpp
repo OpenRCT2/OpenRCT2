@@ -26,6 +26,7 @@
 using namespace OpenRCT2::Scripting;
 
 ScGraphicsContext OpenRCT2::Scripting::gScGraphicsContext;
+ScImageManager OpenRCT2::Scripting::gScImageManager;
 ScTool OpenRCT2::Scripting::gScTool;
 ScUi OpenRCT2::Scripting::gScUi;
 
@@ -46,7 +47,7 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     JSContext* ctx = scriptEngine.GetContext();
 
     gScGraphicsContext.Register(ctx);
-    // ScImageManager::Register(ctx);
+    gScImageManager.Register(ctx);
     // ScTileSelection::Register(ctx);
     gScTool.Register(ctx);
     gScUi.Register(ctx);
@@ -69,7 +70,7 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     // ScTitleSequencePark::Register(ctx);
     gScWindow.Register(ctx);
 
-    // InitialiseCustomImages(scriptEngine);
+    InitialiseCustomImages(scriptEngine);
     InitialiseCustomMenuItems(scriptEngine);
     scriptEngine.SubscribeToPluginStoppedEvent(
         [](std::shared_ptr<Plugin> plugin) -> void { Ui::Windows::CloseWindowsOwnedByPlugin(plugin); });

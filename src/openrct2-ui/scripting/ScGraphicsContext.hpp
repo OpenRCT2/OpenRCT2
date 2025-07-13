@@ -187,9 +187,7 @@ namespace OpenRCT2::Scripting
         {
             JS_UNPACK_UINT32(id, ctx, argv[0]);
 
-            return JS_UNDEFINED; // not implemented really.
-            // TODO (mber)
-            // return DukGetImageInfo(_ctx, id);
+            return JSGetImageInfo(ctx, id);
         }
 
         static JSValue measureText(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
