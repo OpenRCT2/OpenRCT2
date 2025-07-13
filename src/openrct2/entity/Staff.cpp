@@ -889,7 +889,7 @@ void Staff::EntertainerUpdateNearbyPeeps() const
                     continue;
 
                 int16_t z_dist = std::abs(z - guest->z);
-                if (z_dist > 48)
+                if (z_dist > kTileRadius / 2)
                     continue;
 
                 int16_t x_dist = std::abs(x - guest->x);
@@ -1663,7 +1663,7 @@ bool Staff::SecurityGuardPathIsCrowded() const
                     continue;
 
                 int16_t zDist = std::abs(z - guest->z);
-                if (zDist > 48)
+                if (zDist > kTileRadius / 2)
                     continue;
 
                 int16_t xDist = std::abs(x - guest->x);
@@ -1694,12 +1694,8 @@ void Staff::Tick128UpdateStaff()
 
     // Alternate between walking animations based on crowd size
     auto newAnimationGroup = PeepAnimationGroup::Normal;
-    if (State == PeepState::Patrolling)
-    {
-        bool useAlternative = SecurityGuardPathIsCrowded();
-        if (useAlternative)
-            newAnimationGroup = PeepAnimationGroup::Alternate;
-    }
+    if (State == PeepState::Patrolling && SecurityGuardPathIsCrowded())
+        newAnimationGroup = PeepAnimationGroup::Alternate;
 
     if (AnimationGroup == newAnimationGroup)
         return;
