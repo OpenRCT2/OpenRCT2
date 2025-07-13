@@ -945,3 +945,7 @@ std::vector<RideId> GetTracklessRides();
 
 void CircusMusicUpdate(Ride& ride);
 void DefaultMusicUpdate(Ride& ride);
+
+#ifdef ENABLE_SCRIPTING
+void InvokeRideFixHook(const Ride& ride);
+#endif

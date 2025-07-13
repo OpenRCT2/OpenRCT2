@@ -107,7 +107,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Keith Stellyes (keithstellyes) - Misc.
 * Bas Cantrijn (Basssiiie) - Various plugin additions, misc.
 * Adrian Zdanowicz (CookiePLMonster) - Misc.
-* Andrew Pratt (andrewpratt64) - Added api hook for vehicle crashes, api function to get entities on a tile
+* Andrew Pratt (andrewpratt0x40) - Added api hooks and functions
 * Karst van Galen Last (AuraSpecs) - Ride paint (bounding boxes, extra track pieces), soundtrack, sound effects, misc.
 * (8street) - Misc.
 * Umar Ahmed (umar-ahmed) - MacOS file watcher
