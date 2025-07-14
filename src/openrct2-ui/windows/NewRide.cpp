@@ -980,7 +980,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Draw object author(s) if debugging tools are active
-            if (Config::Get().general.DebuggingTools && rideObj->GetAuthors().size() > 0)
+            if (Config::Get().general.DebuggingTools && !rideObj->GetAuthors().empty())
             {
                 const auto& authors = rideObj->GetAuthors();
 
