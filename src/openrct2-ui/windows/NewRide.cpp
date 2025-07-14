@@ -980,14 +980,12 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Draw object author(s) if debugging tools are active
-            if (Config::Get().general.DebuggingTools)
+            if (Config::Get().general.DebuggingTools && rideObj->GetAuthors().size() > 0)
             {
-                auto repoItem = ObjectRepositoryFindObjectByEntry(&(rideObj->GetObjectEntry()));
-
-                StringId authorStringId = repoItem->Authors.size() > 1 ? STR_AUTHORS_STRING : STR_AUTHOR_STRING;
+                const auto& authors = rideObj->GetAuthors();
 
                 std::string authorsString;
-                for (auto& author : repoItem->Authors)
+                for (auto& author : authors)
                 {
                     if (!authorsString.empty())
                         authorsString.append(", ");
@@ -996,7 +994,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 ft = Formatter();
-                ft.Add<StringId>(authorStringId);
+                ft.Add<StringId>(authors.size() > 1 ? STR_AUTHORS_STRING : STR_AUTHOR_STRING);
                 ft.Add<const char*>(authorsString.c_str());
 
                 DrawTextEllipsised(
