@@ -3820,3 +3820,10 @@ STR_6781    :Capturas de tela
 STR_6782    :Notificações de Parque
 STR_6783    :Notificações de Atração
 STR_6784    :Notificações de Visitantes
+STR_6785    :Controle de videogame
+STR_6786    :Zona morta:
+STR_6787    :Zona morta do direcional analógico (movimento mínimo requerido)
+STR_6788    :Sensibilidade:
+STR_6789    :Multiplicador de sensibilidade do direcional analógico
+STR_6790    :Zona morta: {COMMA32}%
+STR_6791    :Sensibilidade: {COMMA32}%

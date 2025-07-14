@@ -26,7 +26,7 @@ STR_0020    :Linbana
 STR_0021    :Korkskruvsberg- och dalbana
 STR_0022    :Labyrint
 STR_0023    :Spiralrutschkana
-STR_0024    :Gokart
+STR_0024    :Gokarter
 STR_0025    :Stockfors
 STR_0026    :Forsränning
 STR_0027    :Radiobilar
@@ -100,6 +100,8 @@ STR_0094    :Enkelspårig berg- och dalbana
 STR_0095    :Alpin berg- och dalbana
 STR_0096    :Klassisk berg- och dalbana i trä
 STR_0097    :Klassisk stående berg- och dalbana
+STR_0098    :LSM-accelererad berg-och-dalbana
+STR_0099    :Klassisk träberg-och-dalbana i twister-stil
 STR_0512    :En kompakt berg- och dalbana med en spiralvriden kedjelift och mjuka, vridna stup.
 STR_0513    :En ringlande berg- och dalbana där passagerarna åker stående
 STR_0514    :Tåg hängande under banan som svingar ut åt sidan i kurvorna
@@ -184,6 +186,8 @@ STR_0604    :Passagerare åker i singelled längs en stålbalk, som tar dem geno
 STR_0605    :Passagerare åker släde nerför ett slingrande stålspår och bromsar för att reglera hastigheten
 STR_0606    :Den här berg- och dalbanan i trä är i äldre stil. Den är snabb, tuff, högljudd och ger en känsla av att förlora kontrollen. Dessutom spenderar man mycket tid flygandes över topparna
 STR_0607    :En intensiv berg- och dalbana i äldre stil där passagerarna åker stående
+STR_0608    :Berg-och-dalbanetågen accelereras med linjära synkronmotorer och far genom snäva svängar och kurvor
+STR_0609    :En träberg-och-dalbana i äldre stil med en snabb och skakig åktur, ledade tåg, mycket airtime och slingrande spår
 STR_0767    :Besökare {INT32}
 STR_0768    :Vaktmästare {INT32}
 STR_0769    :Mekaniker {INT32}
@@ -2196,7 +2200,7 @@ STR_3188    :Gångvägsskyltar
 STR_3189    :Utfasade gångvägar
 STR_3190    :Gångvägsdetaljer
 STR_3191    :Dekorationsgrupper
-STR_3192    :Parkentré
+STR_3192    :Parkingångar
 STR_3193    :Vatten
 STR_3195    :Uppfinningslista
 STR_3196    :{WINDOW_COLOUR_2}Forskningsgrupp: {BLACK}{STRINGID}
@@ -3410,7 +3414,7 @@ STR_6367    :Animationsruta:
 STR_6368    :Av kompatibilitetsskäl är det inte rekommenderat att köra OpenRCT2 med Wine. OpenRCT2 har direkt stöd för macOS, Linux, FreeBSD och OpenBSD.
 STR_6369    :Tillåt spårbygge på ogiltiga höjder
 STR_6370    :Tillåter bygge av spårdelar på alla höjdintervall
-STR_6371    :Den angivna sökvägen innehåller en installation av RollerCoaster Tycoon 1, men filen ”csg1i.dat” saknas. Filen måste kopieras från RollerCoaster Tycoon 1-skivan till ”Data”-mappen under RollerCoaster Tycoon 1-installationen på din hårddisk.
+STR_6371    :Den angivna sökvägen innehåller en installation av RollerCoaster Tycoon 1, men filen “csg1i.dat” saknas. Filen måste kopieras från Loopy Landscapes- eller RCT Deluxe-skivan till “Data”-mappen under RollerCoaster Tycoon 1-installationen på din hårddisk.
 STR_6372    :Den angivna sökvägen innehåller en installation av RollerCoaster Tycoon 1, men av en version som inte är lämplig. OpenRCT2 behöver en installation av Loopy Landscapes eller RCT Deluxe för att använda resurser från RollerCoaster Tycoon 1.
 STR_6373    :Aktivera eller avaktivera kontroller för fri höjd
 STR_6374    :F
@@ -3579,7 +3583,7 @@ STR_6537    :Tillåt normala gångvägar som köer
 STR_6538    :Visar normala gångvägar i kölistan i gångvägsfönstret
 STR_6539    :Bromsen stängd
 STR_6540    :{WINDOW_COLOUR_2}Särskilt tack till följande företag för att de tillåter oss att använda deras likhet:
-STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG, Intamin Amusement Rides Int. Corp. Est.
 STR_6542    :Medverkande
 STR_6543    :Medverkande …
 STR_6544    :Lånet kan inte vara negativt!
