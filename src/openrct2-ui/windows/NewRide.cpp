@@ -793,8 +793,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsFilterInFilename(const RideObject& rideObject)
         {
-            auto repoItem = ObjectRepositoryFindObjectByEntry(&(rideObject.GetObjectEntry()));
-
+            const auto* const repoItem = OpenRCT2::GetContext()->GetObjectRepository().FindObject(rideObject.GetIdentifier());
             return String::contains(repoItem->Path, _filter, true);
         }
 
