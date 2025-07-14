@@ -3099,9 +3099,9 @@ STR_6006    :Cut-away view only displays map elements at or below the cut height
 STR_6007    :Cut height
 STR_6008    :Click to toggle raw value<->value in measurement units
 STR_6009    :Select cut height
-STR_6010    :{COMMA2DP32}m
-STR_6011    :{COMMA1DP16}ft
-STR_6012    :{COMMA1DP16}
+STR_6010    :{HEIGHT2DP}m
+STR_6011    :{HEIGHT2DP}ft
+STR_6012    :{HEIGHT2DP}
 STR_6013    :Guests will only pay the ticket to enter the park and services.{NEWLINE}Ride entry is free.
 STR_6014    :Guests will only pay entrance tickets for rides and services.{NEWLINE}They won’t pay anything to enter the park.
 STR_6015    :Sloped

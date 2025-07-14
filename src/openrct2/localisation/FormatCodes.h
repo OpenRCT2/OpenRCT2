@@ -47,6 +47,7 @@ enum class FormatToken : uint8_t
     DurationLong,
     Length,
     Height,
+    Height2dp,
     Sprite,
     Pop16,
     Push16,
