@@ -786,9 +786,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsFilterInIdentifier(const RideObject& rideObject)
         {
-            auto objectName = rideObject.GetObjectEntry().GetName();
-
-            return String::contains(objectName, _filter, true);
+            return String::contains(rideObject.GetIdentifier(), _filter, true);
         }
 
         bool IsFilterInFilename(const RideObject& rideObject)
