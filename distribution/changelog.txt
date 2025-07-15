@@ -2,7 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#24468] [Plugin] Add awards to plugin API.
 - Feature: [#24702] [Plugin] Add bindings for missing cheats (forcedParkRating, ignoreRidePrice, makeAllDestructible).
-- Change: [#25967] Security guards now only walk slowly in crowded areas.
+- Change: [#24730] Security guards now only walk slowly in crowded areas.
 - Fix: [#24598] Cannot load .park files that use official legacy footpaths by accident.
 
 0.4.24 (2025-07-05)
