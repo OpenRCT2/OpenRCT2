@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#24468] [Plugin] Add awards to plugin API.
 - Feature: [#24702] [Plugin] Add bindings for missing cheats (forcedParkRating, ignoreRidePrice, makeAllDestructible).
+- Fix: [#24001] Sloped diagonal metal supports that are offset with a crossbeam draw incorrectly.
 - Fix: [#24598] Cannot load .park files that use official legacy footpaths by accident.
 
 0.4.24 (2025-07-05)
