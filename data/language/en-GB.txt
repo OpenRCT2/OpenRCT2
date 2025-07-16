@@ -2196,7 +2196,7 @@ STR_3187    :Walls/Fences
 STR_3188    :Path Signs
 STR_3189    :Legacy footpaths
 STR_3190    :Path Extras
-STR_3191    :Scenery Groups
+STR_3191    :Scenery and Themes
 STR_3192    :Park Entrances
 STR_3193    :Water
 STR_3195    :Invention List
@@ -3830,5 +3830,5 @@ STR_6788    :Sensitivity:
 STR_6789    :Analogue stick sensitivity multiplier
 STR_6790    :Deadzone: {COMMA32}%
 STR_6791    :Sensitivity: {COMMA32}%
-STR_6792    :Entrances
-STR_6793    :Peep profiles
+STR_6792    :Entrances Buildings
+STR_6793    :Guests and Staff
