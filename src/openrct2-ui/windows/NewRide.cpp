@@ -791,8 +791,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsFilterInFilename(const RideObject& rideObject)
         {
-            const auto* const repoItem = OpenRCT2::GetContext()->GetObjectRepository().FindObject(rideObject.GetIdentifier());
-            return String::contains(repoItem->Path, _filter, true);
+            return String::contains(rideObject.GetFileName(), _filter, true);
         }
 
         void SetPressedTab()

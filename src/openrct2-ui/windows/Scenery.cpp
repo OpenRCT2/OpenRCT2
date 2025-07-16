@@ -1366,8 +1366,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsFilterInFilename(const Object& object)
         {
-            const auto* const repoItem = OpenRCT2::GetContext()->GetObjectRepository().FindObject(object.GetIdentifier());
-            return String::contains(repoItem->Path, _filteredSceneryTab.Filter, true);
+            return String::contains(object.GetFileName(), _filteredSceneryTab.Filter, true);
         }
 
         void SortTabs()
