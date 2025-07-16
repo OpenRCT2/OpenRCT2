@@ -2282,7 +2282,7 @@ namespace OpenRCT2::PipelineRC
                 {
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 6)),
-                        { -16, -16, height }, { { -17, -17, height + 0 }, { 33, 33, 3 } });
+                        { -16, -16, height }, { { -16, -16, height + 0 }, { 32, 32, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex((SPR_TRACKS_PIPELINE_TRACK_STEEP_DIAGONAL + 7)),
                         { -16, -16, height }, { { -16, -16, height + 62 }, { 32, 32, 0 } });
