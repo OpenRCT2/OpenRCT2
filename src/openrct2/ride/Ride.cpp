@@ -910,7 +910,7 @@ bool Ride::supportsStatus(RideStatus s) const
         case RideStatus::simulating:
             return (!rtd.HasFlag(RtdFlag::noTestMode) && rtd.HasFlag(RtdFlag::hasTrack));
         case RideStatus::testing:
-            return !rtd.HasFlag(RtdFlag::noTestMode) && mode != RideMode::waterSlide;
+            return !rtd.HasFlag(RtdFlag::noTestMode);
         case RideStatus::count: // Meaningless but necessary to satisfy -Wswitch
             return false;
     }

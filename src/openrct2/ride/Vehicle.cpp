@@ -1490,6 +1490,14 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
 
     if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
+        if (curRide->mode == RideMode::waterSlide && curRide->status != RideStatus::closed)
+        {
+            if (curRide->status != RideStatus::open || num_peeps_on_train > 0)
+            {
+                waterSlideSetReady();
+            }
+        }
+
         // Original code did not check if the ride was a boat hire, causing empty boats to leave the platform when closing a
         // Boat Hire with passengers on it.
         if (curRide->status != RideStatus::closed || (curRide->numRiders != 0 && curRide->type != RIDE_TYPE_BOAT_HIRE))
