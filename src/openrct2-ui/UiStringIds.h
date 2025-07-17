@@ -1629,7 +1629,6 @@ namespace OpenRCT2
         STR_SPEED_TIP = 1472,
         STR_STARTING = 1124,
         STR_STATION_STYLE = 6275,
-        STR_STATUS_WAITING = 6730,
         STR_STOPPED_BY_BLOCK_BRAKES = 1128,
         STR_STOPPING_0 = 1121,
         STR_STOPPING_1 = 1126,
@@ -1665,6 +1664,7 @@ namespace OpenRCT2
         STR_WAIT_FOR = 1206,
         STR_WAIT_FOR_PASSENGERS_BEFORE_DEPARTING_TIP = 1209,
         STR_X_CARS_PER_TRAIN = 1023,
+        STR_STATUS_WAITING = 6796,
 
         // Window: RideConstruction
         STR_LOG_BUMPS = 1764,
