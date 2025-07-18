@@ -113,6 +113,8 @@ namespace OpenRCT2::Config
     static const auto Enum_FileBrowserSort = ConfigEnum<FileBrowserSort>({
         ConfigEnumEntry<FileBrowserSort>("NAME_ASCENDING", FileBrowserSort::NameAscending),
         ConfigEnumEntry<FileBrowserSort>("NAME_DESCENDING", FileBrowserSort::NameDescending),
+        ConfigEnumEntry<FileBrowserSort>("SIZE_ASCENDING", FileBrowserSort::SizeAscending),
+        ConfigEnumEntry<FileBrowserSort>("SIZE_DESCENDING", FileBrowserSort::SizeDescending),
         ConfigEnumEntry<FileBrowserSort>("DATE_ASCENDING", FileBrowserSort::DateAscending),
         ConfigEnumEntry<FileBrowserSort>("DATE_DESCENDING", FileBrowserSort::DateDescending),
     });
