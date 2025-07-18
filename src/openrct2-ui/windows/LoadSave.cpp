@@ -918,6 +918,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 Config::Save();
                 Invalidate();
+                ResizeFrame();
+                OnResize();
             }
         }
 
