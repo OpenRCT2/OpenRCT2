@@ -3833,3 +3833,8 @@ STR_6791    :Sensitivity: {COMMA32}%
 STR_6792    :Entrance Buildings
 STR_6793    :Guests and Staff
 STR_6794    :Scenery and Themes
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :No preview
+STR_6798    :Screenshot
+STR_6799    :Mini map

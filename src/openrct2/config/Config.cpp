@@ -119,6 +119,12 @@ namespace OpenRCT2::Config
         ConfigEnumEntry<FileBrowserSort>("DATE_DESCENDING", FileBrowserSort::DateDescending),
     });
 
+    static const auto Enum_ParkPreviewPref = ConfigEnum<ParkPreviewPref>({
+        ConfigEnumEntry<ParkPreviewPref>("DISABLED", ParkPreviewPref::disabled),
+        ConfigEnumEntry<ParkPreviewPref>("SCREENSHOT", ParkPreviewPref::screenshot),
+        ConfigEnumEntry<ParkPreviewPref>("MINIMAP", ParkPreviewPref::miniMap),
+    });
+
     static const auto Enum_VirtualFloorStyle = ConfigEnum<VirtualFloorStyles>({
         ConfigEnumEntry<VirtualFloorStyles>("OFF", VirtualFloorStyles::Off),
         ConfigEnumEntry<VirtualFloorStyles>("CLEAR", VirtualFloorStyles::Clear),
@@ -261,7 +267,8 @@ namespace OpenRCT2::Config
             model->FileBrowserHeight = reader->GetInt32("file_browser_height", 0);
             model->FileBrowserShowSizeColumn = reader->GetBoolean("file_browser_show_size_column", true);
             model->FileBrowserShowDateColumn = reader->GetBoolean("file_browser_show_date_column", true);
-            model->FileBrowserShowPreviews = reader->GetBoolean("file_browser_show_previews", true);
+            model->FileBrowserPreviewType = reader->GetEnum<ParkPreviewPref>(
+                "file_browser_preview_type", ParkPreviewPref::screenshot, Enum_ParkPreviewPref);
         }
     }
 
@@ -354,7 +361,7 @@ namespace OpenRCT2::Config
         writer->WriteInt32("file_browser_height", model->FileBrowserHeight);
         writer->WriteBoolean("file_browser_show_size_column", model->FileBrowserShowSizeColumn);
         writer->WriteBoolean("file_browser_show_date_column", model->FileBrowserShowDateColumn);
-        writer->WriteBoolean("file_browser_show_previews", model->FileBrowserShowPreviews);
+        writer->WriteEnum<ParkPreviewPref>("file_browser_preview_type", model->FileBrowserPreviewType, Enum_ParkPreviewPref);
     }
 
     static void ReadInterface(IIniReader* reader)
