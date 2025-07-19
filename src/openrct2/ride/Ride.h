@@ -675,7 +675,7 @@ enum class RideMode : uint8_t
     continuousCircuitBlockSectioned,
     poweredLaunch, // RCT1 style, don't pass through station
     poweredLaunchBlockSectioned,
-    waterSlide,
+    oneWay,
 
     count,
     nullMode = 255,

@@ -1757,7 +1757,7 @@ enum : StringId
     STR_RIDE_MODE_WATER_SLIDE = 6795,
     STR_UNABLE_TO_OPERATE_WITHOUT_TWO_STATIONS_IN_THIS_MODE = 6797,
     STR_ONLY_ONE_ENTRANCE_ALLOWED_IN_THIS_MODE = 6798,
-    STR_ENTRANCE_MUST_BE_HIGHER_THAN_EXIT_IN_THIS_MODE = 6799,
+    STR_ENTRANCE_DOES_NOT_CONNECT_TO_EXIT = 6799,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

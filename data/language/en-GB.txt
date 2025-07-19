@@ -3833,8 +3833,8 @@ STR_6791    :Sensitivity: {COMMA32}%
 STR_6792    :Entrance Buildings
 STR_6793    :Guests and Staff
 STR_6794    :Scenery and Themes
-STR_6795    :Water slide mode
+STR_6795    :One-way mode
 STR_6796    :Waiting
 STR_6797    :Unable to operate without exactly two stations in this mode
 STR_6798    :Only one entrance is allowed in this mode
-STR_6799    :Entrance must be higher than exit in this mode
+STR_6799    :Entrance station does not connect to an exit

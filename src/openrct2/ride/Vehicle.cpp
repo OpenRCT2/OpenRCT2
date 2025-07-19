@@ -1349,8 +1349,8 @@ void Vehicle::Update()
         case Vehicle::Status::DoingCircusShow:
             UpdateDoingCircusShow();
             break;
-        case Vehicle::Status::WaterSlideWaiting:
-            UpdateWaterSlideWaiting();
+        case Vehicle::Status::WaitingToRespawn:
+            UpdateWaitingToRespawn();
         default:
             break;
     }
@@ -1490,11 +1490,11 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
 
     if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
-        if (curRide->mode == RideMode::waterSlide && curRide->status != RideStatus::closed)
+        if (curRide->mode == RideMode::oneWay && curRide->status != RideStatus::closed)
         {
             if (curRide->status != RideStatus::open || num_peeps_on_train > 0)
             {
-                waterSlideSetReady();
+                oneWayModeSetReady();
             }
         }
 
@@ -2601,7 +2601,7 @@ void Vehicle::UpdateDeparting()
         case RideMode::rotatingLift:
         case RideMode::freefallDrop:
         case RideMode::boatHire:
-        case RideMode::waterSlide:
+        case RideMode::oneWay:
             if (carEntry.flags & CAR_ENTRY_FLAG_POWERED)
                 break;
 
@@ -3511,9 +3511,9 @@ void Vehicle::UpdateUnloadingPassengers()
         UpdateTestFinish();
     }
 
-    if (curRide->mode == RideMode::waterSlide)
+    if (curRide->mode == RideMode::oneWay)
     {
-        waterSlideSetWaiting();
+        oneWayModeSetWaiting();
         return;
     }
 
@@ -4527,12 +4527,12 @@ void Vehicle::UpdateDoingCircusShow()
     }
 }
 
-void Vehicle::UpdateWaterSlideWaiting()
+void Vehicle::UpdateWaitingToRespawn()
 {
     auto prevTrain = GetEntity<Vehicle>(GetHead()->prev_vehicle_on_ride)->GetHead();
     if ((prevTrain != nullptr && prevTrain->status == Status::Travelling) || GetRide()->numTrains == 1)
     {
-        waterSlideRespawnVehicle();
+        respawnVehicleAtStart();
     }
 }
 
@@ -9011,14 +9011,14 @@ void Vehicle::EnableCollisionsForTrain()
     }
 }
 
-void Vehicle::waterSlideSetWaiting()
+void Vehicle::oneWayModeSetWaiting()
 {
     for (auto vehicle = GetHead(); vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         vehicle->SetFlag(VehicleFlags::CollisionDisabled);
         vehicle->SetFlag(VehicleFlags::Invisible);
     }
-    GetHead()->SetState(Vehicle::Status::WaterSlideWaiting);
+    GetHead()->SetState(Vehicle::Status::WaitingToRespawn);
 
     // Bypass station count check for test results
     // If this is not done, each boat has to cycle twice before results appear
@@ -9028,7 +9028,7 @@ void Vehicle::waterSlideSetWaiting()
     }
 }
 
-void Vehicle::waterSlideRespawnVehicle()
+void Vehicle::respawnVehicleAtStart()
 {
     RideStation* entranceStation = nullptr;
     for (auto& station : GetRide()->getStations())
@@ -9048,7 +9048,7 @@ void Vehicle::waterSlideRespawnVehicle()
     }
 }
 
-void Vehicle::waterSlideSetReady()
+void Vehicle::oneWayModeSetReady()
 {
     for (auto vehicle = GetHead(); vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {

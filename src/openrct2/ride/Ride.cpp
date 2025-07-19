@@ -2567,7 +2567,7 @@ static ResultWithMessage RideModeCheckValidStationNumbers(const Ride& ride)
             if (numStations >= 2)
                 return { true };
             return { false, STR_UNABLE_TO_OPERATE_WITH_LESS_THAN_TWO_STATIONS_IN_THIS_MODE };
-        case RideMode::waterSlide:
+        case RideMode::oneWay:
             if (numStations == 2)
                 return { true };
             return { false, STR_UNABLE_TO_OPERATE_WITHOUT_TWO_STATIONS_IN_THIS_MODE };
@@ -2608,6 +2608,32 @@ static StationIndexWithMessage RideModeCheckStationPresent(const Ride& ride)
     return { stationIndex };
 }
 
+static bool RideCheckEntranceExitConnect(Ride& ride, const RideStation& station)
+{
+    CoordsXYZ trackStart;
+    TileElement* tileElement = nullptr;
+
+    trackStart = station.GetStart();
+    if (trackStart.IsNull())
+        return false;
+    tileElement = MapGetTrackElementAtOfType(trackStart, TrackElemType::EndStation);
+    if (tileElement == nullptr)
+        return false;
+
+    TrackCircuitIterator it;
+    TrackCircuitIteratorBegin(&it, { trackStart.x, trackStart.y, tileElement });
+    TrackElement* trackElement;
+    while (TrackCircuitIteratorNext(&it))
+    {
+        if (it.looped)
+            return false;
+        trackElement = it.current.element->AsTrack();
+        if (TrackTypeIsStation(trackElement->GetTrackType()) && !ride.getStation(trackElement->GetStationIndex()).Exit.IsNull())
+            return true;
+    }
+    return false;
+}
+
 /**
  *
  *  rct2: 0x006B5872
@@ -2623,8 +2649,6 @@ static ResultWithMessage RideCheckForEntranceExit(RideId rideIndex)
 
     auto hasEntrance = false;
     auto hasExit = false;
-    auto entranceZ = -1;
-    auto lowestExitZ = -1;
     for (const auto& station : ride->getStations())
     {
         if (station.Start.IsNull())
@@ -2632,20 +2656,22 @@ static ResultWithMessage RideCheckForEntranceExit(RideId rideIndex)
 
         if (!station.Entrance.IsNull())
         {
-            if (hasEntrance && ride->mode == RideMode::waterSlide)
+            if (ride->mode == RideMode::oneWay)
             {
-                return { false, STR_ONLY_ONE_ENTRANCE_ALLOWED_IN_THIS_MODE };
+                if (hasEntrance)
+                {
+                    return { false, STR_ONLY_ONE_ENTRANCE_ALLOWED_IN_THIS_MODE };
+                }
+                else if (!RideCheckEntranceExitConnect(*ride, station))
+                {
+                    return { false, STR_ENTRANCE_DOES_NOT_CONNECT_TO_EXIT };
+                }
             }
-            entranceZ = station.Entrance.z;
             hasEntrance = true;
         }
 
         if (!station.Exit.IsNull())
         {
-            // Water slide mode allows for two exits (to make the entrance station easier to access for mechanics).
-            if (lowestExitZ < 0 || lowestExitZ > station.Exit.z)
-                lowestExitZ = station.Exit.z;
-
             hasExit = true;
         }
 
@@ -2667,9 +2693,6 @@ static ResultWithMessage RideCheckForEntranceExit(RideId rideIndex)
     {
         return { false, STR_EXIT_NOT_YET_BUILT };
     }
-
-    if (ride->mode == RideMode::waterSlide && entranceZ <= lowestExitZ)
-        return { false, STR_ENTRANCE_MUST_BE_HIGHER_THAN_EXIT_IN_THIS_MODE };
 
     return { true };
 }
@@ -3671,12 +3694,12 @@ ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying
                     vehicle->UpdateTrackMotion(nullptr);
                 }
 
-                if (mode == RideMode::waterSlide)
+                if (mode == RideMode::oneWay)
                 {
-                    vehicle->waterSlideSetWaiting();
+                    vehicle->oneWayModeSetWaiting();
                     if (i == 0)
                     {
-                        vehicle->waterSlideRespawnVehicle();
+                        vehicle->respawnVehicleAtStart();
                     }
                 }
                 else
@@ -5036,7 +5059,7 @@ static int32_t RideGetTrackLength(const Ride& ride)
     for (const auto& station : ride.getStations())
     {
         trackStart = station.GetStart();
-        if (trackStart.IsNull() || (ride.mode == RideMode::waterSlide && station.Entrance.IsNull()))
+        if (trackStart.IsNull() || (ride.mode == RideMode::oneWay && station.Entrance.IsNull()))
             continue;
 
         tileElement = MapGetFirstElementAt(trackStart);
@@ -5172,7 +5195,7 @@ void Ride::updateMaxVehicles()
             case RideMode::poweredLaunch:
                 maxNumTrains = 1;
                 break;
-            case RideMode::waterSlide:
+            case RideMode::oneWay:
             {
                 int32_t trainLength = 0;
                 for (int32_t i = 0; i < newCarsPerTrain; i++)
