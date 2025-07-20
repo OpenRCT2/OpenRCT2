@@ -3,6 +3,7 @@
 - Feature: [#24468] [Plugin] Add awards to plugin API.
 - Feature: [#24702] [Plugin] Add bindings for missing cheats (forcedParkRating, ignoreRidePrice, makeAllDestructible).
 - Fix: [#24598] Cannot load .park files that use official legacy footpaths by accident.
+- Fix: [#24761] Reliability bar in the ride inspector now acts consistently with the Down-Time bar, it no longer has a minimum value of 10.
 
 0.4.24 (2025-07-05)
 ------------------------------------------------------------------------
