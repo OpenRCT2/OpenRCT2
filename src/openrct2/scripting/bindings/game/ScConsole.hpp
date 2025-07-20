@@ -49,14 +49,8 @@ namespace OpenRCT2::Scripting
         {
             if (const auto console = gScConsole.GetOpaque<InteractiveConsole*>(thisVal))
             {
-                if (!JS_IsString(argv[0]))
-                {
-                    JS_ThrowTypeError(ctx, "Argument 0: expected string");
-                    return JS_EXCEPTION;
-                }
-                auto str = JS_ToCString(ctx, argv[0]);
+                JS_UNPACK_STR(str, ctx, argv[0]);
                 console->Execute(str);
-                JS_FreeCString(ctx, str);
             }
             return JS_UNDEFINED;
         }

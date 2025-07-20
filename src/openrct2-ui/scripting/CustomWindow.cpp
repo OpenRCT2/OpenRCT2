@@ -139,8 +139,9 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (result.Type == "dropdown")
             {
-                JSIterateArray(
-                    ctx, desc, "items", [&result, ctx](JSValue val) { result.Items.push_back(JSToStdString(ctx, val)); });
+                JSIterateArray(ctx, desc, "items", [&result](JSContext* ctx, JSValue val) {
+                    result.Items.push_back(JSToStdString(ctx, val));
+                });
                 result.SelectedIndex = AsOrDefault(ctx, desc, "selectedIndex", 0);
                 result.OnChange = JSToCallback(ctx, desc, "onChange");
             }
@@ -293,7 +294,7 @@ namespace OpenRCT2::Ui::Windows
             result.Id = JSToOptionalInt(ctx, desc, "id");
             result.TabIndex = JSToOptionalInt(ctx, desc, "tabIndex");
 
-            JSIterateArray(ctx, desc, "widgets", [&result, ctx](JSValue val) {
+            JSIterateArray(ctx, desc, "widgets", [&result](JSContext* ctx, JSValue val) {
                 result.Widgets.push_back(CustomWidgetDesc::FromJSValue(ctx, val));
             });
 
@@ -702,7 +703,7 @@ namespace OpenRCT2::Ui::Windows
 
                     std::vector<JSValue> args;
                     std::string textStr(text);
-                    args.push_back(JS_NewString(widgetDesc->OnChange.context, textStr.c_str()));
+                    args.push_back(JSFromStdString(widgetDesc->OnChange.context, textStr));
                     InvokeEventHandler(_info.Owner, widgetDesc->OnChange, args);
                 }
             }

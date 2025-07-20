@@ -51,9 +51,9 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow(data->_class, data->_number);
             if (w != nullptr && IsCustomWindow(w))
             {
-                return JS_NewString(ctx, OpenRCT2::Ui::Windows::GetWidgetName(w, data->_widgetIndex).c_str());
+                return JSFromStdString(ctx, OpenRCT2::Ui::Windows::GetWidgetName(w, data->_widgetIndex));
             }
-            return JS_NewString(ctx, std::string().c_str());
+            return JSFromStdString(ctx, "");
         }
 
         static JSValue name_set(JSContext* ctx, JSValue thisVal, JSValue value)
@@ -406,7 +406,7 @@ namespace OpenRCT2::Scripting
                     return JSFromStdString(ctx, widget->string);
                 }
             }
-            return JS_NewString(ctx, "");
+            return JSFromStdString(ctx, "");
         }
 
         static JSValue text_set(JSContext* ctx, JSValue thisVal, JSValue value)
@@ -758,7 +758,8 @@ namespace OpenRCT2::Scripting
             if (w != nullptr)
             {
                 std::vector<std::string> items;
-                JSIterateArray(ctx, value, "items", [&items, ctx](JSValue val) { items.push_back(JSToStdString(ctx, val)); });
+                JSIterateArray(
+                    ctx, value, "items", [&items](JSContext* ctx, JSValue val) { items.push_back(JSToStdString(ctx, val)); });
                 Ui::Windows::UpdateWidgetItems(w, data._widgetIndex, items);
             }
             return JS_UNDEFINED;
@@ -797,10 +798,10 @@ namespace OpenRCT2::Scripting
             {
                 if (widget->type == WidgetType::labelCentred)
                 {
-                    return JS_NewString(ctx, "centred");
+                    return JSFromStdString(ctx, "centred");
                 }
             }
-            return JS_NewString(ctx, "left");
+            return JSFromStdString(ctx, "left");
         }
 
         static JSValue textAlign_set(JSContext* ctx, JSValue thisVal, JSValue value)

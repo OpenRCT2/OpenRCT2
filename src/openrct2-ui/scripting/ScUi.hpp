@@ -85,7 +85,7 @@ namespace OpenRCT2::Scripting
     private:
         static JSValue id_get(JSContext* ctx, JSValue thisVal)
         {
-            return JS_NewString(ctx, ActiveCustomTool ? ActiveCustomTool->Id.c_str() : "");
+            return JSFromStdString(ctx, ActiveCustomTool ? ActiveCustomTool->Id : "");
         }
 
         static JSValue cursor_get(JSContext* ctx, JSValue thisVal)
@@ -136,7 +136,7 @@ namespace OpenRCT2::Scripting
         static JSValue mainViewport_get(JSContext* ctx, JSValue thisVal)
         {
             // TODO (mber)
-            return JS_NewString(ctx, "not yet implemented");
+            return JSFromStdString(ctx, "not yet implemented");
 
             // return std::make_shared<ScViewport>(WindowClass::MainWindow);
         }
@@ -144,7 +144,7 @@ namespace OpenRCT2::Scripting
         static JSValue tileSelection_get(JSContext* ctx, JSValue thisVal)
         {
             // TODO (mber)
-            return JS_NewString(ctx, "not yet implemented");
+            return JSFromStdString(ctx, "not yet implemented");
 
             // return std::make_shared<ScTileSelection>(_scriptEngine.GetContext());
         }
@@ -250,11 +250,9 @@ namespace OpenRCT2::Scripting
                 JS_ThrowTypeError(ctx, "Invalid arguments");
                 return JS_EXCEPTION;
             }
-            const char* title = JS_ToCString(ctx, argv[0]);
-            const char* message = JS_ToCString(ctx, argv[1]);
+            std::string title = JSToStdString(ctx, argv[0]);
+            std::string message = JSToStdString(ctx, argv[1]);
             Ui::Windows::ErrorOpen(title, message);
-            JS_FreeCString(ctx, title);
-            JS_FreeCString(ctx, message);
             return JS_UNDEFINED;
         }
         /*
@@ -361,11 +359,10 @@ namespace OpenRCT2::Scripting
             }
             auto& execInfo = scriptEngine->GetExecInfo();
             auto owner = execInfo.GetCurrentPlugin();
-            const char* text = JS_ToCString(ctx, argv[0]);
+            std::string text = JSToStdString(ctx, argv[0]);
             assert(owner->GetContext() == ctx);
             CustomMenuItems.emplace_back(owner, CustomToolbarMenuItemKind::Standard, text, JSCallback(ctx, argv[1]));
             std::ranges::sort(CustomMenuItems, [](auto&& a, auto&& b) { return a.Text < b.Text; });
-            JS_FreeCString(ctx, text);
 
             return JS_UNDEFINED;
         }

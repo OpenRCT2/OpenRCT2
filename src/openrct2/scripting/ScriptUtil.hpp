@@ -101,9 +101,10 @@ namespace OpenRCT2::Scripting
 
     inline std::string JSToStdString(JSContext* ctx, JSValue obj)
     {
-        if (const char* buf = JS_ToCString(ctx, obj))
+        size_t len;
+        if (const char* buf = JS_ToCStringLen(ctx, &len, obj))
         {
-            std::string str(buf);
+            std::string str(buf, len);
             JS_FreeCString(ctx, buf);
             return str;
         }
@@ -118,10 +119,9 @@ namespace OpenRCT2::Scripting
         return output;
     }
 
-    // TODO (mber) remove this. It's superfluous
-    inline JSValue JSFromStdString(JSContext* ctx, const std::string& str)
+    inline JSValue JSFromStdString(JSContext* ctx, const std::string_view str)
     {
-        return JS_NewString(ctx, str.c_str());
+        return JS_NewStringLen(ctx, str.data(), str.length());
     }
 
     inline std::optional<int32_t> JSToOptionalInt(JSContext* ctx, JSValue obj, const char* property)
@@ -189,7 +189,7 @@ namespace OpenRCT2::Scripting
         return output;
     }
 
-    inline void JSIterateArray(JSContext* ctx, JSValue val, const std::function<void(JSValue)>& callback)
+    inline void JSIterateArray(JSContext* ctx, JSValue val, const std::function<void(JSContext*, JSValue)>& callback)
     {
         if (JS_IsArray(val))
         {
@@ -198,13 +198,14 @@ namespace OpenRCT2::Scripting
             for (int64_t i = 0; i < arrayLen; i++)
             {
                 JSValue elem = JS_GetPropertyInt64(ctx, val, i);
-                callback(elem);
+                callback(ctx, elem);
                 JS_FreeValue(ctx, elem);
             }
         }
     }
 
-    inline void JSIterateArray(JSContext* ctx, JSValue obj, const char* property, const std::function<void(JSValue)>& callback)
+    inline void JSIterateArray(
+        JSContext* ctx, JSValue obj, const char* property, const std::function<void(JSContext*, JSValue)>& callback)
     {
         JSValue val = JS_GetPropertyStr(ctx, obj, property);
         JSIterateArray(ctx, val, callback);
@@ -335,14 +336,17 @@ namespace OpenRCT2::Scripting
             JS_ThrowTypeError(ctx, "Expected string");                                                                         \
             return JS_EXCEPTION;                                                                                               \
         }                                                                                                                      \
-        if (const char* buf = JS_ToCString(ctx, val))                                                                          \
         {                                                                                                                      \
-            var = std::string(buf);                                                                                            \
-            JS_FreeCString(ctx, buf);                                                                                          \
-        }                                                                                                                      \
-        else                                                                                                                   \
-        {                                                                                                                      \
-            return JS_EXCEPTION;                                                                                               \
+            size_t len;                                                                                                        \
+            if (const char* buf = JS_ToCStringLen(ctx, &len, val))                                                             \
+            {                                                                                                                  \
+                var = std::string(buf, len);                                                                                   \
+                JS_FreeCString(ctx, buf);                                                                                      \
+            }                                                                                                                  \
+            else                                                                                                               \
+            {                                                                                                                  \
+                return JS_EXCEPTION;                                                                                           \
+            }                                                                                                                  \
         }
 
     #define JS_UNPACK_BOOL(var, ctx, val)                                                                                      \

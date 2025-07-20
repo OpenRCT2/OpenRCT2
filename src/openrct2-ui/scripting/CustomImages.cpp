@@ -172,7 +172,7 @@ namespace OpenRCT2::Scripting
         return obj;
     }
 
-    static const char* GetPixelDataTypeForG1(const G1Element& g1)
+    static std::string_view GetPixelDataTypeForG1(const G1Element& g1)
     {
         if (g1.flags & G1_FLAG_RLE_COMPRESSION)
             return "rle";
@@ -189,13 +189,13 @@ namespace OpenRCT2::Scripting
             return JS_UNDEFINED;
         }
         auto dataSize = G1CalculateDataSize(g1);
-        auto* type = GetPixelDataTypeForG1(*g1);
+        auto type = GetPixelDataTypeForG1(*g1);
 
         // Copy the G1 data to a JS buffer wrapped in a Uint8Array
         JSValue data = JS_NewUint8ArrayCopy(ctx, g1->offset, dataSize);
 
         JSValue obj = JS_NewObject(ctx);
-        JS_SetPropertyStr(ctx, obj, "type", JS_NewString(ctx, type));
+        JS_SetPropertyStr(ctx, obj, "type", JSFromStdString(ctx, type));
         JS_SetPropertyStr(ctx, obj, "width", JS_NewInt32(ctx, g1->width));
         JS_SetPropertyStr(ctx, obj, "height", JS_NewInt32(ctx, g1->height));
         JS_SetPropertyStr(ctx, obj, "data", data);
@@ -213,7 +213,7 @@ namespace OpenRCT2::Scripting
             if (arrSz > 0)
             {
                 result.resize(arrSz);
-                JSIterateArray(ctx, data, [&result, ctx](JSValue val) { result.push_back(JSToInt(ctx, val)); });
+                JSIterateArray(ctx, data, [&result](JSContext* ctx, JSValue val) { result.push_back(JSToInt(ctx, val)); });
             }
         }
         else if (JS_IsString(data))

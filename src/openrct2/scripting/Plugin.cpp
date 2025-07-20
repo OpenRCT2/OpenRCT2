@@ -148,11 +148,9 @@ std::string Plugin::TryGetString(const JSValue value, const char* property, cons
         JS_FreeValue(_context, res);
         throw std::runtime_error(message);
     }
-    const char* cStr = JS_ToCString(_context, res);
-    std::string output(cStr);
-    JS_FreeCString(_context, cStr);
+    std::string str = JSToStdString(_context, res);
     JS_FreeValue(_context, res);
-    return output;
+    return str;
 }
 
 void Plugin::SetMetadata(const JSValue obj)
@@ -199,25 +197,14 @@ void Plugin::SetMetadata(const JSValue obj)
         const JSValue authors = JS_GetPropertyStr(_context, obj, "authors");
         if (JS_IsArray(authors))
         {
-            int64_t authorsLen = -1;
-            JS_GetLength(_context, authors, &authorsLen);
-            for (int64_t i = 0; i < authorsLen; i++)
-            {
-                const JSValue elem = JS_GetPropertyInt64(_context, authors, i);
-                if (JS_IsString(elem))
-                {
-                    const char* author = JS_ToCString(_context, elem);
-                    metadata.Authors.emplace_back(author);
-                    JS_FreeCString(_context, author);
-                }
-                JS_FreeValue(_context, elem);
-            }
+            JSIterateArray(_context, authors, [&metadata](JSContext* ctx, JSValue val) {
+                if (JS_IsString(val))
+                    metadata.Authors.emplace_back(JSToStdString(ctx, val));
+            });
         }
         else if (JS_IsString(authors))
         {
-            const char* author = JS_ToCString(_context, authors);
-            metadata.Authors = { std::string(author) };
-            JS_FreeCString(_context, author);
+            metadata.Authors = { JSToStdString(_context, authors) };
         }
         JS_FreeValue(_context, authors);
 

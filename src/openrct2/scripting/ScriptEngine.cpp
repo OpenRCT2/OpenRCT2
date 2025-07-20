@@ -318,10 +318,11 @@ private:
 
     void StringifyString(const JSValue val)
     {
-        const char* str = JS_ToCString(_context, val);
+        size_t len;
+        const char* str = JS_ToCStringLen(_context, &len, val);
         if (str)
         {
-            _ss << "'" << str << "'";
+            _ss << "'" << std::string_view(str, len) << "'";
             JS_FreeCString(_context, str);
         }
         else

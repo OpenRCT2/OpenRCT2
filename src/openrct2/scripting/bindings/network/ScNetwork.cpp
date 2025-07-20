@@ -25,12 +25,12 @@ namespace OpenRCT2::Scripting
         switch (NetworkGetMode())
         {
             case NETWORK_MODE_SERVER:
-                return JS_NewString(ctx, "server");
+                return JSFromStdString(ctx, "server");
             case NETWORK_MODE_CLIENT:
-                return JS_NewString(ctx, "client");
+                return JSFromStdString(ctx, "client");
         }
     #endif
-        return JS_NewString(ctx, "none");
+        return JSFromStdString(ctx, "none");
     }
 
     JSValue ScNetwork::numPlayers_get(JSContext* ctx, JSValue thisVal)
@@ -288,7 +288,7 @@ namespace OpenRCT2::Scripting
             if (NetworkGetMode() == NETWORK_MODE_SERVER)
             {
                 std::vector<uint8_t> playerIds;
-                JSIterateArray(ctx, players, [&playerIds, ctx](JSValue val) {
+                JSIterateArray(ctx, players, [&playerIds](JSContext* ctx, JSValue val) {
                     playerIds.push_back(static_cast<uint8_t>(JSToInt(ctx, val)));
                 });
                 if (!playerIds.empty())

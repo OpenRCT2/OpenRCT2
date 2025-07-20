@@ -62,7 +62,7 @@ namespace OpenRCT2::Scripting
         scriptEngine.ExecutePluginCall(Owner, Callback.callback, {}, false);
     }
 
-    static constexpr std::array<std::string, EnumValue(CursorID::Count)> CursorNames = {
+    static constexpr std::array<std::string_view, EnumValue(CursorID::Count)> CursorNames = {
         "arrow",         "blank",      "up_arrow",      "up_down_arrow", "hand_point", "zzz",         "diagonal_arrows",
         "picker",        "tree_down",  "fountain_down", "statue_down",   "bench_down", "cross_hair",  "bin_down",
         "lamppost_down", "fence_down", "flower_down",   "path_down",     "dig_down",   "water_down",  "house_down",
@@ -74,7 +74,7 @@ namespace OpenRCT2::Scripting
         auto idVal = EnumValue(id);
         if (idVal < CursorNames.size())
         {
-            return JS_NewString(ctx, CursorNames[idVal].c_str());
+            return JSFromStdString(ctx, CursorNames[idVal]);
         }
         return JS_UNDEFINED;
     }
@@ -83,17 +83,14 @@ namespace OpenRCT2::Scripting
     {
         if (JS_IsString(value))
         {
-            const char* valueStr = JS_ToCString(ctx, value);
-            std::string_view valueStrView(valueStr);
+            std::string valueStr = JSToStdString(ctx, value);
             for (uint8_t i = 0; i < EnumValue(CursorID::Count); i++)
             {
-                if (CursorNames[i] == valueStrView)
+                if (CursorNames[i] == valueStr)
                 {
-                    JS_FreeCString(ctx, valueStr);
                     return static_cast<CursorID>(i);
                 }
             }
-            JS_FreeCString(ctx, valueStr);
         }
         return CursorID::Arrow;
     }
@@ -118,17 +115,14 @@ namespace OpenRCT2::Scripting
     {
         if (JS_IsString(value))
         {
-            const char* valueStr = JS_ToCString(ctx, value);
-            std::string_view valueStrView(valueStr);
+            std::string valueStr = JSToStdString(ctx, value);
             for (uint8_t i = 0; i < ToolFilterMap.size(); i++)
             {
-                if (std::get<0>(ToolFilterMap[i]) == valueStrView)
+                if (std::get<0>(ToolFilterMap[i]) == valueStr)
                 {
-                    JS_FreeCString(ctx, valueStr);
                     return std::get<1>(ToolFilterMap[i]);
                 }
             }
-            JS_FreeCString(ctx, valueStr);
         }
         return ViewportInteractionItem::None;
     }
@@ -265,9 +259,7 @@ namespace OpenRCT2::Scripting
             CustomTool customTool;
             customTool.Owner = currentPlugin;
 
-            const char* id = JS_ToCString(ctx, idVal);
-            customTool.Id = std::string(id);
-            JS_FreeCString(ctx, id);
+            customTool.Id = JSToStdString(ctx, idVal);
             JS_FreeValue(ctx, idVal);
 
             JSValue cursorVal = JS_GetPropertyStr(ctx, value, "cursor");
