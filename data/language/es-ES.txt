@@ -3772,3 +3772,15 @@ STR_6729    :El cable de elevación debe comenzar inmediatamente después de la 
 STR_6730    :Exportar datos de emscripten
 STR_6731    :Importar datos de emscripten
 STR_6732    :Mostrar un botón en la barra de herramientas para girar la vista en sentido antihorario
+STR_6733    :Ver através
+STR_6734    :Los elementos del mapa que están a la altura de corte o por encima se renderizan de forma translúcida.
+STR_6735    :Ir a la carpeta superior
+STR_6736    :Vista previa
+STR_6737    :No hay vista previa disponible
+STR_6738    :{WINDOW_COLOUR_2}Valoración del parque: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Fecha: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Dinero: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Num. atracciones: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Num. visitantes: {BLACK}{UINT16}
+STR_6743    :Clima
+STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
