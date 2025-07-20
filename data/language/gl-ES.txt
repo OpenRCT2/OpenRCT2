@@ -3828,3 +3828,6 @@ STR_6788    :Sensibilidade:
 STR_6789    :Multiplicador de sensibilidade do mando analóxico
 STR_6790    :Zona morta: {COMMA32}%
 STR_6791    :Sensibilidade: {COMMA32}%
+STR_6792    :Edificios de entrada
+STR_6793    :Visitantes e persoal
+STR_6794    :Decoración e temáticas
