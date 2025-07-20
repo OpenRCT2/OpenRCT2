@@ -324,7 +324,7 @@ namespace OpenRCT2::Scripting
         */
     }
     #else
-    void ScNetwork::createListener()
+    void ScNetwork::createListener(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
         JS_ThrowPlainError(ctx, "Networking has been disabled.");
         return JS_EXCEPTION;
@@ -345,7 +345,7 @@ namespace OpenRCT2::Scripting
         */
     }
     #else
-    void ScNetwork::createSocket()
+    void ScNetwork::createSocket(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
         JS_ThrowPlainError(ctx, "Networking has been disabled.");
         return JS_EXCEPTION;
