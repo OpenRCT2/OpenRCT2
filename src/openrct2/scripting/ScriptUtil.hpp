@@ -189,6 +189,24 @@ namespace OpenRCT2::Scripting
         return output;
     }
 
+    // Note the default parameter needs to be const char*
+    // If you use a type like string_view, calls can instead resolve to the boolean version of the function.
+    inline std::string AsOrDefault(JSContext* ctx, JSValue obj, const char* property, const char* def)
+    {
+        JSValue val = JS_GetPropertyStr(ctx, obj, property);
+        std::string output;
+        if (!JS_IsString(val))
+        {
+            output = std::string(def);
+        }
+        else
+        {
+            output = JSToStdString(ctx, val);
+        }
+        JS_FreeValue(ctx, val);
+        return output;
+    }
+
     inline void JSIterateArray(JSContext* ctx, JSValue val, const std::function<void(JSContext*, JSValue)>& callback)
     {
         if (JS_IsArray(val))

@@ -99,8 +99,8 @@ namespace OpenRCT2::Ui::Windows
             result.Height = JSToInt(ctx, desc, "height");
             result.IsDisabled = AsOrDefault(ctx, desc, "isDisabled", false);
             result.IsVisible = AsOrDefault(ctx, desc, "isVisible", true);
-            result.Name = JSToStdString(ctx, desc, "name");
-            result.Tooltip = JSToStdString(ctx, desc, "tooltip");
+            result.Name = AsOrDefault(ctx, desc, "name", "");
+            result.Tooltip = AsOrDefault(ctx, desc, "tooltip", "");
             if (result.Type == "button")
             {
                 // TODO (mber)
