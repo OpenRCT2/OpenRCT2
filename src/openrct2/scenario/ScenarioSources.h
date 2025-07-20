@@ -74,6 +74,7 @@ enum
     // Special
     SC_ALTON_TOWERS,
     SC_FORT_ANACHRONISM,
+    SC_TAIWAN_PARK,
 
     // Added Attractions
     SC_WHISPERING_CLIFFS = 40,
