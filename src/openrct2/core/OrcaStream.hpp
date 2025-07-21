@@ -73,12 +73,14 @@ namespace OpenRCT2
         sfl::small_vector<ChunkEntry, 32> _chunks;
         MemoryStream _buffer;
         ChunkEntry _currentChunk;
+        int16_t _compressionLevel;
 
     public:
-        OrcaStream(IStream& stream, const Mode mode)
+        OrcaStream(IStream& stream, const Mode mode, int16_t compressionLevel = Compression::kZlibDefaultCompressionLevel)
         {
             _stream = &stream;
             _mode = mode;
+            _compressionLevel = compressionLevel;
             if (mode == Mode::READING)
             {
                 _header = _stream->ReadValue<Header>();
@@ -93,15 +95,14 @@ namespace OpenRCT2
                 // Uncompress
                 if (_header.Compression != CompressionType::none)
                 {
-                    size_t compressedSize = static_cast<size_t>(_header.CompressedSize);
-                    size_t uncompressedSize = static_cast<size_t>(_header.UncompressedSize);
                     bool decompressStatus = false;
 
                     switch (_header.Compression)
                     {
                         case CompressionType::gzip:
                             decompressStatus = Compression::zlibDecompress(
-                                *_stream, compressedSize, _buffer, uncompressedSize, Compression::ZlibHeaderType::gzip);
+                                *_stream, _header.CompressedSize, _buffer, _header.UncompressedSize,
+                                Compression::ZlibHeaderType::gzip);
                             break;
                         default:
                             throw IOException("Unknown Park Compression Type");
@@ -129,7 +130,8 @@ namespace OpenRCT2
             else
             {
                 _header = {};
-                _header.Compression = CompressionType::gzip;
+                _header.Compression = _compressionLevel == Compression::kNoCompressionLevel ? CompressionType::none
+                                                                                            : CompressionType::gzip;
                 _buffer = MemoryStream{};
             }
         }
@@ -145,11 +147,13 @@ namespace OpenRCT2
                 _header.CompressedSize = _buffer.GetLength();
                 _header.FNV1a = Crypt::FNV1a(_buffer.GetData(), _buffer.GetLength());
 
+                if (_compressionLevel == Compression::kNoCompressionLevel)
+                    _header.Compression = CompressionType::none;
+
                 // Compress data
                 if (_header.Compression != CompressionType::none)
                 {
                     MemoryStream compressed;
-                    size_t bufferLength = static_cast<size_t>(_buffer.GetLength());
                     bool compressStatus = false;
 
                     _buffer.SetPosition(0);
@@ -157,7 +161,7 @@ namespace OpenRCT2
                     {
                         case CompressionType::gzip:
                             compressStatus = Compression::zlibCompress(
-                                _buffer, bufferLength, compressed, Compression::ZlibHeaderType::gzip);
+                                _buffer, _buffer.GetLength(), compressed, Compression::ZlibHeaderType::gzip, _compressionLevel);
                             break;
                         default:
                             break;
@@ -197,6 +201,16 @@ namespace OpenRCT2
         const Header& GetHeader() const
         {
             return _header;
+        }
+
+        int16_t GetCompressionLevel() const
+        {
+            return _compressionLevel;
+        }
+
+        void SetCompressionLevel(int16_t compressionLevel)
+        {
+            _compressionLevel = compressionLevel;
         }
 
         template<typename TFunc>
