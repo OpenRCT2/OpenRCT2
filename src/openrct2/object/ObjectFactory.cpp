@@ -226,7 +226,8 @@ namespace OpenRCT2::ObjectFactory
      * @note jRoot is deliberately left non-const: json_t behaviour changes when const
      */
     static std::unique_ptr<Object> CreateObjectFromJson(
-        IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable);
+        IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable,
+        const std::string_view path);
 
     static ObjectSourceGame ParseSourceGame(const std::string_view s)
     {
@@ -277,6 +278,7 @@ namespace OpenRCT2::ObjectFactory
             {
                 result = CreateObject(entry.GetType());
                 result->SetDescriptor(ObjectEntryDescriptor(entry));
+                result->SetFileName(OpenRCT2::Path::GetFileNameWithoutExtension(path));
 
                 utf8 objectName[kDatNameLength + 1] = { 0 };
                 ObjectEntryGetNameFixed(objectName, sizeof(objectName), &entry);
@@ -446,7 +448,7 @@ namespace OpenRCT2::ObjectFactory
             if (jRoot.is_object())
             {
                 auto fileDataRetriever = ZipDataRetriever(path, *archive);
-                return CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever, loadImages);
+                return CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever, loadImages, path);
             }
         }
         catch (const std::exception& e)
@@ -465,7 +467,7 @@ namespace OpenRCT2::ObjectFactory
         {
             json_t jRoot = Json::ReadFromFile(path.c_str());
             auto fileDataRetriever = FileSystemDataRetriever(Path::GetDirectory(path));
-            return CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever, loadImages);
+            return CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever, loadImages, path);
         }
         catch (const std::runtime_error& err)
         {
@@ -514,7 +516,8 @@ namespace OpenRCT2::ObjectFactory
     }
 
     std::unique_ptr<Object> CreateObjectFromJson(
-        IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable)
+        IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable,
+        const std::string_view path)
     {
         if (!jRoot.is_object())
         {
@@ -573,6 +576,7 @@ namespace OpenRCT2::ObjectFactory
             result->SetVersion(version);
             result->SetIdentifier(id);
             result->SetDescriptor(descriptor);
+            result->SetFileName(OpenRCT2::Path::GetFileNameWithoutExtension(path));
             result->MarkAsJsonObject();
             auto readContext = ReadObjectContext(objectRepository, id, loadImageTable, fileRetriever);
             result->ReadJson(&readContext, jRoot);
