@@ -11,6 +11,7 @@
 - Fix: [#24824] The Air Powered Vertical Coaster top section track piece has vertical tunnels (original bug).
 - Fix: [#24825] The River Rapids flat-to-gentle track piece tunnels are incorrect on the gentle side.
 - Fix: [#24826] The Junior Roller Coaster flat-to-steep track piece tunnels are incorrect.
+- Fix: [#24829] The pattern of long grass across tiles is different to RCT1 and RCT2.
 
 0.4.24 (2025-07-05)
 ------------------------------------------------------------------------

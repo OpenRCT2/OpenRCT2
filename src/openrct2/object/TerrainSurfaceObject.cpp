@@ -157,7 +157,7 @@ ImageId TerrainSurfaceObject::GetImageId(
     }
 
     TileCoordsXY tilePos(position);
-    uint8_t variation = ((tilePos.x << 1) & 0b10) | (tilePos.y & 0b01);
+    const uint8_t variation = (tilePos.x & 0b01) | ((tilePos.y << 1) & 0b10);
 
     // Look for a matching special
     for (const SpecialEntry& special : entries)
