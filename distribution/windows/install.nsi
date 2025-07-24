@@ -106,7 +106,7 @@ ManifestDPIAware true
 ; Only specify languages for which we actually have translations, because otherwise strings will show up blank.
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "Arabic"
-;!insertmacro MUI_LANGUAGE "Catalan"
+!insertmacro MUI_LANGUAGE "Catalan"
 !insertmacro MUI_LANGUAGE "Czech"
 ;!insertmacro MUI_LANGUAGE "Danish"
 !insertmacro MUI_LANGUAGE "German"
@@ -128,12 +128,13 @@ ManifestDPIAware true
 ;!insertmacro MUI_LANGUAGE "Turkish"
 ;!insertmacro MUI_LANGUAGE "Ukrainian"
 ;!insertmacro MUI_LANGUAGE "Vietnamese"
-;!insertmacro MUI_LANGUAGE "SimpChinese"
+!insertmacro MUI_LANGUAGE "SimpChinese"
 ;!insertmacro MUI_LANGUAGE "TradChinese"
 !insertmacro MUI_RESERVEFILE_LANGDLL
 
 !include "language\install_en.nsi"
 !include "language\install_ar.nsi"
+!include "language\install_ca.nsi"
 !include "language\install_cs.nsi"
 !include "language\install_de.nsi"
 !include "language\install_es.nsi"
@@ -147,6 +148,7 @@ ManifestDPIAware true
 !include "language\install_pt.nsi"
 !include "language\install_ru.nsi"
 !include "language\install_sv.nsi"
+!include "language\install_zh_cn.nsi"
 
 !macro Init thing
 uac_tryagain:
