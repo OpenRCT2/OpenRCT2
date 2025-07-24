@@ -67,7 +67,7 @@ GameActions::Result PeepSpawnPlaceAction::Query() const
     if (pathElement == nullptr)
     {
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
+            GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ON_PATHS);
     }
 
     // Verify location is unowned
