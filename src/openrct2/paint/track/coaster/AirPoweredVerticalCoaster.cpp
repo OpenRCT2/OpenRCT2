@@ -903,7 +903,6 @@ static void AirPoweredVerticalRCTrackVerticalTop(
                 PaintAddImageAsParentRotated(
                     session, direction, imageIdT, { 0, 0, height }, { { 33, 6, height }, { 2, 20, 1 } });
             }
-            PaintUtilSetVerticalTunnel(session, height + 80);
             break;
         case 2:
             imageIdT = session.TrackColours.WithIndex(imageIds[direction][3]);
@@ -917,7 +916,6 @@ static void AirPoweredVerticalRCTrackVerticalTop(
                 PaintAddImageAsParentRotated(
                     session, direction, imageIdT, { 0, 0, height }, { { 0, 6, height }, { 2, 20, 15 } });
             }
-            PaintUtilSetVerticalTunnel(session, height + 80);
             break;
         case 3:
             imageIdS = session.SupportColours.WithIndex(imageIds[direction][4]);
