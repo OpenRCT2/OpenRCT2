@@ -4032,7 +4032,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             uint16_t reliability = ride->reliabilityPercentage;
-            widgetProgressBarSetNewPercentage(widgets[WIDX_RELIABILITY_BAR], std::max<uint8_t>(10, reliability));
+            widgetProgressBarSetNewPercentage(widgets[WIDX_RELIABILITY_BAR], reliability);
 
             uint16_t downTime = ride->downtime;
             widgetProgressBarSetNewPercentage(widgets[WIDX_DOWN_TIME_BAR], downTime);

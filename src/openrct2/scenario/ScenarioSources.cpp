@@ -316,6 +316,7 @@ namespace OpenRCT2::ScenarioSources
     static constexpr ScenarioTitleDescriptor kScenarioTitlesExtrasParks[] =
     {
         { SC_FORT_ANACHRONISM,                          "Fort Anachronism",                           ScenarioCategory::dlc,            "rct1dlc.scenario_meta.fort_anachronism"                           },
+        { SC_TAIWAN_PARK,                               "Taiwan Park",                                ScenarioCategory::dlc,            "rct1tw.scenario_meta.taiwan_park"                                 },
         { SC_PCPLAYER,                                  "PC Player",                                  ScenarioCategory::dlc,            "rct1dlc.scenario_meta.pc_player"                                  },
         { SC_PCGW,                                      "PC Gaming World",                            ScenarioCategory::dlc,            "rct1dlc.scenario_meta.pc_gaming_world"                            },
         { SC_GAMEPLAY,                                  "gameplay",                                   ScenarioCategory::dlc,            "rct1dlc.scenario_meta.gameplay"                                   },
