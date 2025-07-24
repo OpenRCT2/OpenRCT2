@@ -2424,7 +2424,14 @@ namespace OpenRCT2::RCT1
             if (scNumber != -1)
             {
                 SourceDescriptor desc;
-                if (ScenarioSources::TryGetById(scNumber, &desc) && !desc.textObjectId.empty())
+                // If no entry is found, this is a custom scenario
+                bool isOfficial = ScenarioSources::TryGetById(_s4.ScenarioSlotIndex, &desc);
+
+                // Perform an additional name check if this is detected to be a competition scenario
+                if (isOfficial && desc.category == ScenarioCategory::competitions)
+                    isOfficial = ScenarioSources::TryGetByName(_s4.ScenarioName, &desc);
+
+                if (isOfficial && !desc.textObjectId.empty())
                 {
                     auto& objManager = GetContext()->GetObjectManager();
 
