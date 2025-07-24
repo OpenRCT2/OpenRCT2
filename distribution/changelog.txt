@@ -9,6 +9,7 @@
 - Fix: [#24773] The new ride window debug authors does not show the correct authors for non legacy ride objects.
 - Fix: [#24775] The scenery and new ride windows do not filter by file name or identifier correctly for non legacy objects.
 - Fix: [#24824] The Air Powered Vertical Coaster top section track piece has vertical tunnels (original bug).
+- Fix: [#24825] The River Rapids flat-to-gentle track piece tunnels are incorrect on the gentle side.
 
 0.4.24 (2025-07-05)
 ------------------------------------------------------------------------
