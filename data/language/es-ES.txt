@@ -2236,8 +2236,8 @@ STR_3228    :Establecer posición inicial de las personas
 STR_3229    :El bloque de frenado no debe ser usado después de la estación.
 STR_3230    :El bloque de frenado no debe ser usado después de otro.
 STR_3231    :El bloque de frenado no debe ser usado después del final de la cadena de elevación.
-STR_3232    :Opciones - Finanzas
-STR_3233    :Opciones - Visitantes
+STR_3232    :Opciones de Escenario - Finanzas
+STR_3233    :Opciones de Escenario - Visitantes
 STR_3235    :Opciones de finanzas
 STR_3236    :Opciones de visitantes
 STR_3238    :Sin dinero
@@ -2281,7 +2281,7 @@ STR_3279    :Entrada libre / Atracciones de pago
 STR_3280    :Pagar por entrar / Atracciones gratis
 STR_3281    :Precio de entrada:
 STR_3283    :Seleccionar atracciones a preservar
-STR_3285    :Atracciones preservadas
+STR_3285    :Opciones de Escenario - Atracciones preservadas
 STR_3286    :Seleccionar objetivos para este escenario
 STR_3287    :{WINDOW_COLOUR_2}Objetivo:
 STR_3294    :Cambiar…
@@ -2512,7 +2512,7 @@ STR_5265    :Selecciona que contenidos son visibles
 STR_5266    :Gráficos
 STR_5267    :Idioma y unidades
 STR_5268    :Audio
-STR_5269    :Interfaz y controles
+STR_5269    :Controles
 STR_5270    :Otras opciones
 STR_5272    :Decorado pequeño
 STR_5273    :Decorado grande
@@ -2654,7 +2654,7 @@ STR_5503    :Escribe el nombre del host o la IP:
 STR_5504    :Mostrar estado multijugador
 STR_5505    :No se pudo conectar al servidor.
 STR_5506    :Visitantes ignoran intensidad de atracc.
-STR_5510    :Dispositivo de sonido predeterminado
+STR_5510    :Dispositivo de sonido por defecto
 STR_5511    :(DESCONOCIDO)
 STR_5512    :Guardar Partida como…
 STR_5513    :Guardar juego de forma rápida
@@ -3618,7 +3618,7 @@ STR_6575    :Permitir esquemas de colores especiales
 STR_6576    :Agrega colores especiales al menú desplegable de colores
 STR_6577    :Velocidad del freno bloqueante
 STR_6578    :Establece el límite de velocidad para los frenos bloqueantes. En el modo de sección de bloque, los frenos adyacentes con una velocidad más lenta se vinculan al freno bloqueante.
-STR_6579    :Los frenos bloqueantes se establecerán a la velocidad predeterminada al guardarlos como diseño de vía.
+STR_6579    :Los frenos bloqueantes se establecerán a la velocidad por defecto al guardarlos como diseño de vía.
 STR_6580    :Restablecer
 STR_6581    :¿Estás seguro de que quieres restablecer todos los atajos de teclado en esta pestaña?
 STR_6582    :Abrir ventana de atajos de teclado
@@ -3784,3 +3784,36 @@ STR_6741    :{WINDOW_COLOUR_2}Num. atracciones: {BLACK}{UINT16}
 STR_6742    :{WINDOW_COLOUR_2}Num. visitantes: {BLACK}{UINT16}
 STR_6743    :Clima
 STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6745    :{WINDOW_COLOUR_2}Preferencias de intensidad de los visitantes:
+STR_6746    :Sin preferencias
+STR_6747    :Las preferencias varían (por defecto)
+STR_6748    :Solo atracciones menos intensas
+STR_6749    :Solo atracciones más intensas
+STR_6750    :Selecciona qué tipo de intensidad de atracción prefieren los nuevos visitantes.
+STR_6751    :¡Las colas no pueden usarse como cruces a nivel!
+STR_6752    :Opciones de Escenario - Objetivo
+STR_6753    :Opciones de Escenario - Detalles del escenario
+STR_6754    :Opciones de Escenario - Restricciones de terreno
+STR_6755    :Mostrar opciones de objetivo
+STR_6756    :Mostrar opciones de detalles del escenario
+STR_6757    :Mostrar opciones de restricciones de terreno
+STR_6758    :Opciones de préstamo
+STR_6759    :Modelo de negocio
+STR_6760    :Ganancias:
+STR_6761    :Detalles del escenario
+STR_6762    :Interfaz
+STR_6763    :RollerCoaster Tycoon 1
+STR_6764    :Guardado y autoguardados
+STR_6765    :Avanzado
+STR_6766    :Limpiar
+STR_6767    :Ventana
+STR_6768    :Renderizado
+STR_6769    :Comportamiento
+STR_6770    :Límite de FPS:
+STR_6771    :Velocidad interna (por defecto)
+STR_6772    :Sincronización vertical
+STR_6773    :Sin límite
+STR_6774    :Tiempo desde la última inspección
+STR_6775    :{COMMA16} minuto
+STR_6776    :{COMMA16} minutos
+STR_6777    :más de 4 horas

@@ -2238,8 +2238,8 @@ STR_3228    :Estableix la posició inicial dels visitants.
 STR_3229    :Els frens de bloc no es poden usar just després de l’estació.
 STR_3230    :No es poden usar dos frens de bloc consecutius.
 STR_3231    :Els frens de bloc no es poden usar directament després de la cadena d’elevació.
-STR_3232    :Opcions - Finances
-STR_3233    :Opcions - Visitants
+STR_3232    :Opcions d’escenari - Finances
+STR_3233    :Opcions d’escenari - Visitants
 STR_3235    :Mostra les opcions financeres.
 STR_3236    :Mostra les opcions dels visitants.
 STR_3238    :Sense diners
@@ -2283,7 +2283,7 @@ STR_3279    :Entrada gratis / Atraccions de pagament
 STR_3280    :Entrada de pagament / Atraccions gratis
 STR_3281    :Preu de l’entrada:
 STR_3283    :Seleccioneu les atraccions protegides. Aquestes s’hauran de preservar i no es podran modificar.
-STR_3285    :Atraccions protegides
+STR_3285    :Opcions d’escenari - Atraccions protegides
 STR_3286    :Seleccioneu l’objectiu d’aquest escenari.
 STR_3287    :{WINDOW_COLOUR_2}Objectiu:
 STR_3294    :Canvia…

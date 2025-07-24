@@ -3831,3 +3831,6 @@ STR_6788    :Citlivost:
 STR_6789    :Násobitel citlivosti analogové páčky
 STR_6790    :Mrtvá zóna: {COMMA32}%
 STR_6791    :Citlivost: {COMMA32}%
+STR_6792    :Budovy vstupů
+STR_6793    :Návštěvníci a personál
+STR_6794    :Kulisy a motivy

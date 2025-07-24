@@ -3834,3 +3834,6 @@ STR_6788    :Känslighet:
 STR_6789    :Känslighet multiplikator för analog spak
 STR_6790    :Dödzon: {COMMA32}%
 STR_6791    :Känslighet: {COMMA32}%
+STR_6792    :Entrébyggnader
+STR_6793    :Gäster och Personal
+STR_6794    :Landskap och Teman
