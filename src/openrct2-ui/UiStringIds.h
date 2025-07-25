@@ -274,6 +274,7 @@ namespace OpenRCT2
         STR_SHORTCUT_WINDOWED_MODE_TOGGLE = 5806,
         STR_SHORTCUT_ZOOM_VIEW_IN = 2498,
         STR_SHORTCUT_ZOOM_VIEW_OUT = 2497,
+        STR_OR = 7000,
 
         // Widgets
         STR_CLOSE_X = 824,
