@@ -12,6 +12,7 @@
 #include "ShortcutIds.h"
 
 #include <SDL.h>
+#include <openrct2-ui/UiStringIds.h>
 #include <openrct2/Context.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/core/Console.hpp>
@@ -21,7 +22,6 @@
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/ui/WindowManager.h>
-#include <openrct2-ui/UiStringIds.h>
 
 using namespace OpenRCT2::Ui;
 
