@@ -3817,3 +3817,20 @@ STR_6774    :Tiempo desde la última inspección
 STR_6775    :{COMMA16} minuto
 STR_6776    :{COMMA16} minutos
 STR_6777    :más de 4 horas
+STR_6778    :Previsualizar escenarios usando:
+STR_6779    :Selecciona el tipo de imagen de previsualización para usar en la pantalla de selección de escenarios.
+STR_6780    :Mini mapas
+STR_6781    :Capturas de pantalla
+STR_6782    :Notificaciones de parque
+STR_6783    :Notificaciones de atracciones
+STR_6784    :Notificaciones de visitantes
+STR_6785    :Mando
+STR_6786    :Zona muerta:
+STR_6787    :Zona muerta del stick analógico (movimiento mínimo requerido)
+STR_6788    :Sensibilidad:
+STR_6789    :Multiplicador de la sensibilidad del stick analógico
+STR_6790    :Zona muerta: {COMMA32}%
+STR_6791    :Sensibilidad: {COMMA32}%
+STR_6792    :Edificios de entrada
+STR_6793    :Visitantes y personal
+STR_6794    :Decoración y temas

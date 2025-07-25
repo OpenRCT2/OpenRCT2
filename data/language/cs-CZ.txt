@@ -183,7 +183,7 @@ STR_0602    :Horská dráha s vozy poháněnými elektromotorem, které sviští
 STR_0603    :Dřevěná horská dráha s ocelovými kolejemi, umožňující strmé přepady a obraty.
 STR_0604    :Jezdci jedou v jednom radě na úzké, jednokolejové dráze, při závodě úzkými obrátkami a změnami směru.
 STR_0605    :Jezdci se kloužou zauzlenou ocelovou drahou, ovládají brzdy a tím svou rychlost
-STR_0606    :Dřevěná horská dráha staršího stylu s drsnou a rychlou jízdou, koupou času ve vzduchu, bočným přetížením, navržená pro pocit ‘ztracené kontroly’
+STR_0606    :Dřevěná horská dráha staršího stylu s drsnou a rychlou jízdou, koupou času ve vzduchu, bočným přetížením, navržená pro pocit „ztracené kontroly„“
 STR_0607    :Intenzivní horská dráha staršího stylu, na které návštěvníci jedou vestoje
 STR_0608    :Vozy poháněné lineárními synchronními elektromotory sviští skrze těsné vývrtky a zatáčky
 STR_0609    :Dřevěná horská dráha staršího stylu s drsnou a rychlou jízdou, kloubovými vozy, spoustou času ve vzduchu a zakroucenou dráhou
@@ -342,9 +342,9 @@ STR_0943    :Průhledná výzdoba
 STR_0944    :Uložit
 STR_0945    :Neukládat
 STR_0946    :Zrušit
-STR_0947    :Uložit před zavřením ?
-STR_0948    :Uložit před ukončením ?
-STR_0949    :Uložit před ukončením ?
+STR_0947    :Uložit před zavřením?
+STR_0948    :Uložit před ukončením?
+STR_0949    :Uložit před ukončením?
 STR_0950    :Nahrát hru
 STR_0951    :Ukončit hru
 STR_0952    :Ukončit hru
@@ -1865,20 +1865,20 @@ STR_2524    :Snímek obrazovky
 STR_2533    :Backspace
 STR_2534    :Tab
 STR_2537    :Clear
-STR_2538    :Return
+STR_2538    :Enter
 STR_2543    :Alt/Menu
 STR_2544    :Pause
 STR_2545    :Caps
 STR_2552    :Escape
-STR_2557    :Spacebar
+STR_2557    :Mezerník
 STR_2558    :PgUp
 STR_2559    :PgDn
 STR_2560    :End
 STR_2561    :Home
-STR_2562    :Left
-STR_2563    :Up
-STR_2564    :Right
-STR_2565    :Down
+STR_2562    :Vlevo
+STR_2563    :Nahoru
+STR_2564    :Doprava
+STR_2565    :Dolů
 STR_2566    :Select
 STR_2567    :Print
 STR_2568    :Execute
@@ -2047,7 +2047,7 @@ STR_2850    :Nový návrh tratě úspěšně nainstalován
 STR_2851    :Scénář už je nainstalovaný
 STR_2852    :Návrh trati už je nainstalován
 STR_2853    :Zakázáno místní správnou!
-STR_2854    :{RED}Návštěvníci nemohou najít vstup do {STRINGID} !{NEWLINE}Postavte cestu k vstupu
+STR_2854    :{RED}Návštěvníci nemohou najít vstup do {STRINGID}!{NEWLINE}Postavte cestu k vstupu
 STR_2855    :{RED}{STRINGID} nemá postavenou vestu z východu!{NEWLINE}Postavte cestu z východu atrakce
 STR_2858    :Nelze zahájit reklamní kampaň…
 STR_2861    :{WINDOW_COLOUR_2}Licencováno Infogrames Interactive Inc.
@@ -2347,7 +2347,7 @@ STR_3353    :Nový název obsahuje neplatné znaky
 STR_3354    :Existuje soubor se stejným jménem, nebo je soubor jen pro čtení
 STR_3355    :Soubor je jen pro čtení, nebo zamčený
 STR_3356    :Smazat soubor
-STR_3357    :{WINDOW_COLOUR_2}Opravdu chcete nevratně odstranit {STRING} ?
+STR_3357    :{WINDOW_COLOUR_2}Opravdu chcete nevratně odstranit {STRING}?
 STR_3358    :Nelze odstranit návrh trati…
 STR_3359    :{BLACK}Žádné návrhy tratí tohoto typu
 STR_3360    :Pozor!
@@ -2814,7 +2814,7 @@ STR_5705    :Nelze nastavit tuto skupinu
 STR_5706    :Nelze odebrat skupinu, ke které hráč patří
 STR_5707    :Tato skupina nemůže být upravena
 STR_5708    :Nelze odebrat skupinu, ke které patří zakladatel hry
-STR_5709    :Přejmenovat skupinu
+STR_5709    :Přejmen. skup.
 STR_5710    :Název skupiny
 STR_5711    :Zadejte nový název skupiny:
 STR_5712    :Nelze upravit oprávnění, které nemáte
@@ -3123,7 +3123,7 @@ STR_6028    :Stavba - postavit aktivní část
 STR_6029    :Stavba - odebrat aktivní část
 STR_6030    :Výběr kulis. Klikněte na jakoukoliv kulisu na mapě pro postavení její kopie.
 STR_6031    :Popis serveru:
-STR_6032    :Uvítací zpráva serveru:
+STR_6032    :Uvítací zpráva serv.:
 STR_6033    :Cesta k RCT1 instalaci:
 STR_6034    :{BLACK}{STRING}
 STR_6035    :Prosím vyberte složku s RCT1
@@ -3435,8 +3435,8 @@ STR_6392    :Ve zvolené složce se nepodařilo nalézt {STRING}.
 STR_6393    :Výběr cíle
 STR_6394    :Cíl
 STR_6395    :Údržba
-STR_6396    :Vypnout šetřič a úsporu energie monitoru
-STR_6397    :{SMALLFONT}{BLACK}Při zvolení, šetřič obrazovky a funkce úspory energie monitoru budou pozastaveny pokud je OpenRCT2 spuštěno.
+STR_6396    :Vypnout spořič a úsporu energie monitoru
+STR_6397    :{SMALLFONT}{BLACK}Při zaškrtnutí budou spořič obrazovky a funkce úspory energie monitoru pozastaveny pokud je OpenRCT2 spuštěno.
 STR_6398    :Soubor obsahuje nepodporované atrakce. Prosím aktualizujte na novější verzi OpenRCT2.
 STR_6399    :OpenRCT2 vyžaduje k fungování soubory původního RollerCoaster Tycoon 2. Nastavte “game_path” hodnotu v config.ini na složku instalace RollerCoaster Tycoon 2, poté restartujte OpenRCT2.
 STR_6400    :Mám stažený GOG offline instalátor pro RollerCoaster Tycoon 2, ale není nainstalován
@@ -3447,9 +3447,9 @@ STR_6404    :Prosím vyberte GOG RollerCoaster Tycoon 2 instalátor.
 STR_6405    :Vyberte GOG Instalátor
 STR_6406    :GOG RollerCoaster Tycoon 2 Instalátor
 STR_6407    :Tohle může zabrat několik minut.
-STR_6408    :Prosím nainstalujte “innoextract” pro extrakci GOG Instalátoru, pak restartujte OpenRCT2.
+STR_6408    :Prosím nainstalujte „innoextract“ pro extrakci GOG Instalátoru, pak restartujte OpenRCT2.
 STR_6409    :Vybraný soubor není offline GOG Instalátor pro RollerCoaster Tycoon 2. Možná jste stáhnuli GOG Galaxy stahovací základ nebo vybrali špatný soubor.
-STR_6410    :Přiblížit /Oddálit
+STR_6410    :Přiblížit / Oddálit
 STR_6411    :Zobrazit tlačítka přiblížení a oddálení na nástrojové liště
 STR_6412    :Číselník Enter
 STR_6413    :Shift
@@ -3661,7 +3661,7 @@ STR_6619    :Tento typ objektu nelze omezit!
 STR_6620    :Objekt nenalezen!
 STR_6621    :Omezit
 STR_6622    :Omezit objekt na Editor scénáře a Sandbox.
-STR_6623    :Napište ‘help’ pro zobrazení seznamu dostupných příkazů. Napište ‘hide’ to hide the console.
+STR_6623    :Napište „help“ pro zobrazení seznamu dostupných příkazů. Napište „hide“ to hide the console.
 STR_6624    :Průzkumník dlaždic: Seřadit elementy
 STR_6625    :Neplatná barva
 STR_6626    :Animace je obrácená
@@ -3693,7 +3693,7 @@ STR_6651    :{STRING} ({COMMA32}%)
 STR_6652    :Okno s chybou
 STR_6653    :Zobrazení všech zdrojů
 STR_6654    :Zobrazení {POP16}{UINT16} zdrojů
-STR_6655    :Pouze ‘{POP16}{STRINGID}’
+STR_6655    :Pouze „{POP16}{STRINGID}“
 STR_6656    :Odstraní všechny ploty okolo parku
 STR_6657    :Nevlastněné pozemky
 STR_6658    :Nastavit pozemky na nevlastněné parkem, bez možnosti zakoupení 
