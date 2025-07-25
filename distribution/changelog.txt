@@ -3,6 +3,7 @@
 - Feature: [#24468] [Plugin] Add awards to plugin API.
 - Feature: [#24702] [Plugin] Add bindings for missing cheats (forcedParkRating, ignoreRidePrice, makeAllDestructible).
 - Improved: [#24812] Taiwan Park has been added to the Extras tab if it is present.
+- Improved: [OpenSFX#12] Add Brake Fix, Buy and Dinghy Slide running sounds.
 - Change: [#24730] Security guards now only walk slowly in crowded areas.
 - Fix: [#24598] Cannot load .park files that use official legacy footpaths by accident.
 - Fix: [#24611] The confirmation prompt for track file deletion is not vertically aligned.
