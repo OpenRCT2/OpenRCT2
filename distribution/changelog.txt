@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#24468] [Plugin] Add awards to plugin API.
 - Feature: [#24702] [Plugin] Add bindings for missing cheats (forcedParkRating, ignoreRidePrice, makeAllDestructible).
+- Feature: [#24794] The load/save browser can now optionally show mini map previews instead of screenshots.
 - Improved: [#24812] Taiwan Park has been added to the Extras tab if it is present.
 - Improved: [OpenSFX#12] Add Brake Fix, Buy and Dinghy Slide running sounds.
 - Change: [#24730] Security guards now only walk slowly in crowded areas.
@@ -11,6 +12,7 @@
 - Fix: [#24761] The reliability bar in the ride window visually does not go below 10%.
 - Fix: [#24773] The new ride window debug authors does not show the correct authors for non legacy ride objects.
 - Fix: [#24775] The scenery and new ride windows do not filter by file name or identifier correctly for non legacy objects.
+- Fix: [#24794] The load/save browser does not resize cleanly when toggling the preview sidebar.
 - Fix: [#24824] The Air Powered Vertical Coaster top section track piece has vertical tunnels (original bug).
 - Fix: [#24825] The River Rapids flat-to-gentle track piece tunnels are incorrect on the gentle side.
 - Fix: [#24826] The Junior Roller Coaster flat-to-steep track piece tunnels are incorrect.
