@@ -569,8 +569,9 @@ namespace OpenRCT2::Ui::Windows
         STR_STOPPING_1,                // Vehicle::Status::Stopping1B
         STR_UNLOADING_PASSENGERS,      // Vehicle::Status::UnloadingPassengers1C
         STR_STOPPED_BY_BLOCK_BRAKES,   // Vehicle::Status::StoppedByBlockBrakes
+        STR_STATUS_WAITING,            // Vehicle::Status::Waiting
     };
-    static_assert(std::size(VehicleStatusNames) == 31);
+    static_assert(std::size(VehicleStatusNames) == 32);
 
     static constexpr std::array SingleSessionVehicleStatusNames = {
         STR_STOPPING_0,             // Vehicle::Status::MovingToEndOfStation
@@ -2511,8 +2512,8 @@ namespace OpenRCT2::Ui::Windows
 
             if (stringId != STR_CRASHING && stringId != STR_CRASHED_0)
                 return STR_BLACK_STRING;
-            else
-                return STR_RED_OUTLINED_STRING;
+
+            return STR_RED_OUTLINED_STRING;
         }
 
         StringId GetStatusStation(Formatter& ft) const

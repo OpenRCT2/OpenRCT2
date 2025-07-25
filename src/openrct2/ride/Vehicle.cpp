@@ -1349,6 +1349,8 @@ void Vehicle::Update()
         case Vehicle::Status::DoingCircusShow:
             UpdateDoingCircusShow();
             break;
+        case Vehicle::Status::WaitingToRespawn:
+            UpdateWaitingToRespawn();
         default:
             break;
     }
@@ -1488,6 +1490,14 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
 
     if (!(curRide->lifecycleFlags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
+        if (curRide->mode == RideMode::oneWay && curRide->status != RideStatus::closed)
+        {
+            if (curRide->status != RideStatus::open || num_peeps_on_train > 0)
+            {
+                oneWayModeSetReady();
+            }
+        }
+
         // Original code did not check if the ride was a boat hire, causing empty boats to leave the platform when closing a
         // Boat Hire with passengers on it.
         if (curRide->status != RideStatus::closed || (curRide->numRiders != 0 && curRide->type != RIDE_TYPE_BOAT_HIRE))
@@ -2591,6 +2601,7 @@ void Vehicle::UpdateDeparting()
         case RideMode::rotatingLift:
         case RideMode::freefallDrop:
         case RideMode::boatHire:
+        case RideMode::oneWay:
             if (carEntry.flags & CAR_ENTRY_FLAG_POWERED)
                 break;
 
@@ -3499,6 +3510,13 @@ void Vehicle::UpdateUnloadingPassengers()
     {
         UpdateTestFinish();
     }
+
+    if (curRide->mode == RideMode::oneWay)
+    {
+        oneWayModeSetWaiting();
+        return;
+    }
+
     SetState(Vehicle::Status::MovingToEndOfStation);
 }
 
@@ -4506,6 +4524,15 @@ void Vehicle::UpdateDoingCircusShow()
     {
         SetState(Vehicle::Status::Arriving);
         var_C0 = 0;
+    }
+}
+
+void Vehicle::UpdateWaitingToRespawn()
+{
+    auto prevTrain = GetEntity<Vehicle>(GetHead()->prev_vehicle_on_ride)->GetHead();
+    if ((prevTrain != nullptr && prevTrain->status == Status::Travelling) || GetRide()->numTrains == 1)
+    {
+        respawnVehicleAtStart();
     }
 }
 
@@ -6589,7 +6616,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
             return false;
 
         Vehicle* collideVehicle = GetEntity<Vehicle>(*otherVehicleIndex);
-        if (collideVehicle == nullptr)
+        if (collideVehicle == nullptr || collideVehicle->HasFlag(VehicleFlags::CollisionDisabled))
             return false;
 
         if (this == collideVehicle)
@@ -6709,7 +6736,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
         }
     }
 
-    if (!mayCollide || collideVehicle == nullptr)
+    if (!mayCollide || collideVehicle == nullptr || collideVehicle->HasFlag(VehicleFlags::CollisionDisabled))
     {
         CollisionDetectionTimer = 0;
         return false;
@@ -8980,6 +9007,52 @@ void Vehicle::EnableCollisionsForTrain()
     assert(this->IsHead());
     for (auto vehicle = this; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
+        vehicle->ClearFlag(VehicleFlags::CollisionDisabled);
+    }
+}
+
+void Vehicle::oneWayModeSetWaiting()
+{
+    for (auto vehicle = GetHead(); vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    {
+        vehicle->SetFlag(VehicleFlags::CollisionDisabled);
+        vehicle->SetFlag(VehicleFlags::Invisible);
+    }
+    GetHead()->SetState(Vehicle::Status::WaitingToRespawn);
+
+    // Bypass station count check for test results
+    // If this is not done, each boat has to cycle twice before results appear
+    if (!(GetRide()->lifecycleFlags & RIDE_LIFECYCLE_TESTED) && (HasFlag(VehicleFlags::Testing)))
+    {
+        UpdateTestFinish();
+    }
+}
+
+void Vehicle::respawnVehicleAtStart()
+{
+    RideStation* entranceStation = nullptr;
+    for (auto& station : GetRide()->getStations())
+    {
+        if (!station.Entrance.IsNull() && station.TrainAtStation == RideStation::kNoTrain)
+        {
+            entranceStation = &station;
+            break;
+        }
+    }
+    if (entranceStation != nullptr)
+    {
+        CoordsXYZ stationCoords = { entranceStation->Start, entranceStation->GetBaseZ() };
+        auto trackElement = MapGetTrackElementAt(stationCoords);
+
+        GetRide()->VehicleRespawnTrain(*GetRide(), GetHead(), stationCoords, trackElement);
+    }
+}
+
+void Vehicle::oneWayModeSetReady()
+{
+    for (auto vehicle = GetHead(); vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    {
+        vehicle->ClearFlag(VehicleFlags::Invisible);
         vehicle->ClearFlag(VehicleFlags::CollisionDisabled);
     }
 }

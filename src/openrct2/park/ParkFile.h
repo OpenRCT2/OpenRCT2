@@ -22,10 +22,10 @@ namespace OpenRCT2
     struct GameState_t;
 
     // Current version that is saved.
-    constexpr uint32_t kParkFileCurrentVersion = 56;
+    constexpr uint32_t kParkFileCurrentVersion = 57;
 
     // The minimum version that is forwards compatible with the current version.
-    constexpr uint32_t kParkFileMinVersion = 55;
+    constexpr uint32_t kParkFileMinVersion = 57;
 
     // The minimum version that is backwards compatible with the current version.
     // If this is increased beyond 0, uncomment the checks in ParkFile.cpp and Context.cpp!

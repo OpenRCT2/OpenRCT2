@@ -407,6 +407,7 @@ public:
     void increaseNumShelteredSections();
 
     void removeVehicles();
+    void VehicleRespawnTrain(const Ride& ride, Vehicle* trainHead, CoordsXYZ trainPos, TrackElement* trackElement);
     /**
      * Updates all pieces of the ride to match the internal ride type. (Track pieces can have different ride types from the ride
      * they belong to, to enable “merging”.)
@@ -674,6 +675,7 @@ enum class RideMode : uint8_t
     continuousCircuitBlockSectioned,
     poweredLaunch, // RCT1 style, don't pass through station
     poweredLaunchBlockSectioned,
+    oneWay,
 
     count,
     nullMode = 255,

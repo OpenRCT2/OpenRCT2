@@ -113,7 +113,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Umar Ahmed (umar-ahmed) - MacOS file watcher
 * Andrew Arnold (fidwell) - Misc.
 * Josh Trzebiatowski (trzejos) - Ride and scenery filtering
-* (kyphii) - Extended color selection, reversed ride vehicles, misc.
+* (kyphii) - Extended color selection, reversed ride vehicles, water slide operating mode, misc.
 * Phumdol Lookthipnapha (beam41) - Misc.
 * Nikolas Parshook (nparshook) - Misc.
 * Wenzhao Qiu (qwzhaox) - Misc.
