@@ -21,6 +21,7 @@
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/ui/WindowManager.h>
+#include <openrct2-ui/UiStringIds.h>
 
 using namespace OpenRCT2::Ui;
 
@@ -101,8 +102,9 @@ std::string RegisteredShortcut::GetDisplayString() const
         result += kc.ToLocalisedString();
         if (i < numChords - 1)
         {
-            // TODO localise...
-            result += " or ";
+            result += " ";
+            result += LanguageGetString(STR_OR);
+            result += " ";
         }
     }
     return result;
