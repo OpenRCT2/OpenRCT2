@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -94,22 +95,45 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         if (!hasRequiredPermissions()) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.addCategory("android.intent.category.DEFAULT");
+                intent.setData(Uri.fromParts("package", getPackageName(), null));
+                startActivity(intent);
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            }
         } else {
             startGame();
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0) {
+            if (!hasRequiredPermissions()) {
+                Log.d(TAG, "User denied storage permission!");
+            } else {
+                startGame();
+            }
+        }
+    }
+
     private boolean hasRequiredPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-            return false;
-        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return Environment.isExternalStorageManager();
+        } else {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                return false;
+            }
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-            return false;
-        }
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                return false;
+            }
 
-        return true;
+            return true;
+        }
     }
 
     private void startGame() {
@@ -162,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (String fileName : list) {
             // This ternary expression makes sure that this string does not begin with a slash
-            String destination = destPath + (destPath.equals("") ? "" : File.separator) + fileName;
+            String destination = destPath + (destPath.isEmpty() ? "" : File.separator) + fileName;
             copyAsset(assets, srcPath + File.separator + fileName, dataDir, destination);
         }
     }
