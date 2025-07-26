@@ -3834,3 +3834,8 @@ STR_6791    :Citlivost: {COMMA32}%
 STR_6792    :Budovy vstupů
 STR_6793    :Návštěvníci a personál
 STR_6794    :Kulisy a motivy
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :Bez náhledu
+STR_6798    :Snímek obr.
+STR_6799    :Mini mapa

@@ -3831,3 +3831,8 @@ STR_6791    :Érzékenység: {COMMA32}%
 STR_6792    :Bejárati épületek
 STR_6793    :Vendégek és személyzet
 STR_6794    :Díszletek és témák
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :Nincs előnézet
+STR_6798    :Képernyőkép
+STR_6799    :Mini térkép

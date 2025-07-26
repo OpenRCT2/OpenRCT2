@@ -3830,3 +3830,8 @@ STR_6791    :Sensibilidade: {COMMA32}%
 STR_6792    :Edifícios de entrada
 STR_6793    :Visitantes e funcionários
 STR_6794    :Cenários e Temas
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :Sem pré-visualização
+STR_6798    :Captura de tela
+STR_6799    :Mini mapa
