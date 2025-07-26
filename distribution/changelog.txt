@@ -11,6 +11,7 @@
 - Change: [#24974] Raise the Go-Karts maximum support height to allow 2 large sloped turns to be built on flat ground.
 - Fix: [#16988] AppImage version does not show changelog.
 - Fix: [#18048] Play music from all ride's stations.
+- Fix: [#23440] Quarter loops do not block metal supports correctly (original bug).
 - Fix: [#24001] Sloped diagonal metal supports that are offset with a crossbeam draw incorrectly.
 - Fix: [#24151] Sprites are cut off by 1 row of pixels when using OpenGL on Intel Macs.
 - Fix: [#24173] Allow all game speeds between 1 and 8 if developer mode is on.
