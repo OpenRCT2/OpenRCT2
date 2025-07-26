@@ -1071,11 +1071,9 @@ static void ClassicWoodenRCTrackRightQuarterTurn3Bank(
 
     static constexpr int blockedSegments[4] = {
         kSegmentsAll,
-        0,
-        EnumsToFlags(PaintSegment::left, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomLeft),
-        EnumsToFlags(
-            PaintSegment::top, PaintSegment::left, PaintSegment::right, PaintSegment::centre, PaintSegment::topLeft,
-            PaintSegment::topRight, PaintSegment::bottomLeft, PaintSegment::bottomRight),
+        kSegmentsAll,
+        EnumsToFlags(PaintSegment::bottom, PaintSegment::centre, PaintSegment::bottomLeft, PaintSegment::bottomRight),
+        kSegmentsAll,
     };
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
