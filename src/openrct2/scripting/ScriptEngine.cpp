@@ -27,6 +27,9 @@
     #include "../interface/InteractiveConsole.h"
     #include "../platform/Platform.h"
     #include "Duktape.hpp"
+    #include "bindings/editor/ScEditor.h"
+    #include "bindings/editor/ScLandscape.h"
+    #include "bindings/editor/ScNoiseFn.h"
     #include "bindings/entity/ScBalloon.hpp"
     #include "bindings/entity/ScEntity.hpp"
     #include "bindings/entity/ScGuest.hpp"
@@ -413,6 +416,9 @@ void ScriptEngine::Initialise()
     ScContext::Register(ctx);
     ScDate::Register(ctx);
     ScDisposable::Register(ctx);
+    ScEditor::Register(ctx);
+    ScLandscape::Register(ctx);
+    ScNoiseFn::Register(ctx);
     ScMap::Register(ctx);
     ScNetwork::Register(ctx);
     ScObjectManager::Register(ctx);
@@ -467,6 +473,7 @@ void ScriptEngine::Initialise()
     dukglue_register_global(ctx, std::make_shared<ScConsole>(_console), "console");
     dukglue_register_global(ctx, std::make_shared<ScContext>(_execInfo, _hookEngine), "context");
     dukglue_register_global(ctx, std::make_shared<ScDate>(), "date");
+    dukglue_register_global(ctx, std::make_shared<ScEditor>(), "editor");
     dukglue_register_global(ctx, std::make_shared<ScMap>(ctx), "map");
     dukglue_register_global(ctx, std::make_shared<ScNetwork>(ctx), "network");
     dukglue_register_global(ctx, std::make_shared<ScPark>(ctx), "park");

@@ -29,6 +29,8 @@ declare global {
     var context: Context;
     /** APIs for getting or setting the in-game date. */
     var date: GameDate;
+    /** APIs for the scenario editor. */
+    var editor: Editor;
     /** APIs for manipulating the map. */
     var map: GameMap;
     /** APIs for managing the server or interacting with the server or clients. */
@@ -1843,6 +1845,62 @@ declare global {
         readonly year: number;
     }
 
+    /**
+     * Generic representation of a noise function.
+     */
+    interface NoiseFn {
+        /**
+         * Call the backing 2D noise function with the given coordinates and return the generated value.
+         *
+         * The returned value typically lies within [-1, 1].
+         */
+        generate(x: number, y: number): number;
+    }
+
+    /**
+     * Utility functions related to the scenario map editor.
+     *
+     * The functions here provide access to the noise functions OpenRCT2 uses internally. For more advanced use cases
+     * consider a third party noise library.
+     *
+     * For general information on noise functions and map generation see the links below (and refs therein).
+     *
+     * @see https://www.redblobgames.com/maps/terrain-from-noise/
+     * @see https://thebookofshaders.com/11/
+     */
+    interface Landscape {
+
+        /**
+         * Returns a seedable 2D simplex noise function.
+         * If no seed is provided the seed is randomized.
+         *
+         * @see https://en.wikipedia.org/wiki/Simplex_noise
+         */
+        getSimplexNoiseFn(): NoiseFn;
+        getSimplexNoiseFn(seed: number): NoiseFn;
+
+        /**
+         * Returns a seedable 2D fractal (fBm) aggregation of simplex noise.
+         * If no seed is provided the seed is randomized.
+         *
+         * @param frequency The base frequency
+         * @param octaves The number of octaves
+         * @param lacunarity The octave scaling factor
+         * @param persistence The amplitude gain for each octave
+         *
+         * @see https://en.wikipedia.org/wiki/Fractional_Brownian_motion
+         * @see https://thebookofshaders.com/13/
+         */
+        getSimplexFbmNoiseFn(frequency: number, octaves: number, lacunarity: number, persistence: number): NoiseFn;
+        getSimplexFbmNoiseFn(frequency: number, octaves: number, lacunarity: number, persistence: number, seed: number): NoiseFn;
+    }
+
+    /**
+     * APIs for the scenario editor.
+     */
+    interface Editor {
+        readonly landscape: Landscape;
+    }
 
     /**
      * APIs for the map.
