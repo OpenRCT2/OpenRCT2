@@ -3827,3 +3827,11 @@ STR_6788    :Sentemo:
 STR_6789    :Sentema obligilo de stirstango
 STR_6790    :Morta zono: {COMMA32}%
 STR_6791    :Sentemo: {COMMA32}%
+STR_6792    :Enirejo-Konstruaĵoj
+STR_6793    :Gastoj kaj Dungitaro
+STR_6794    :Pejzaĝo kaj Temoj
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :Neniu antaŭrigardo
+STR_6798    :Ekrankopio
+STR_6799    :Eta mapo
