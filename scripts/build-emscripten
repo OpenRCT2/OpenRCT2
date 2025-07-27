@@ -12,6 +12,7 @@ JSON_DIR=/usr/include/nlohmann/
 emcmake cmake ../ \
     -G Ninja \
 	-DDISABLE_NETWORK=ON \
+	-DDISABLE_OPENGL=ON \
 	-DDISABLE_HTTP=ON \
 	-DDISABLE_TTF=ON \
 	-DDISABLE_FLAC=ON \
