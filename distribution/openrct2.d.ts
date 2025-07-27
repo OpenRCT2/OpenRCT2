@@ -516,6 +516,7 @@ declare global {
         subscribe(hook: "park.guest.softcap.calculate", callback: (e: ParkCalculateGuestCapArgs) => void): IDisposable;
         subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
         subscribe(hook: "vehicle.crash", callback: (e: VehicleCrashArgs) => void): IDisposable;
+        subscribe(hook: "editor.landscape.generate", callback: (e: EditorLandscapeGenerateArgs) => void): IDisposable;
 
         /**
          * Can only be used in intransient plugins.
@@ -1669,6 +1670,138 @@ declare global {
     }
 
     /**
+     *The generator settings as set in the UI window.
+     */
+    interface EditorLandscapeSettings {
+        readonly sizeX: number;
+        readonly sizeY: number;
+        readonly waterLevel: number;
+        readonly landTexture: number;
+        readonly edgeTexture: number;
+        readonly minHeight: number;
+        readonly maxHeight: number;
+        readonly beaches: boolean;
+        readonly trees: boolean;
+        readonly treeToLandRatio: number;
+        readonly minTreeAltitude: number;
+        readonly maxTreeAltitude: number;
+        readonly smoothTileEdges: boolean;
+    }
+
+    /**
+     * Place a scenery object on the tile.
+     */
+    interface EditorLandscapeTileScenery {
+        /**
+         * small_scenery only for now.
+         */
+        type: 'small_scenery';
+
+        /**
+         * the `small_scenery` object id to place.
+         */
+        object: number;
+
+        /**
+         * the direction of the object.
+         */
+        direction?: Direction;
+
+        /**
+         * The colours of the object.
+         * @see `colour_t` in https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/interface/Colour.h
+         */
+        primaryColour?: number;
+        secondaryColour?: number;
+        tertiaryColour?: number;
+    }
+
+    /**
+     * Map generator state for a single tile.
+     */
+    interface EditorLandscapeTile {
+        /**
+         * The surface height, should be within [2, 254].
+         */
+        surfaceLevel: number;
+
+        /**
+         * The `terrain_surface` object id of the tile.
+         */
+        landTexture?: number;
+
+        /**
+         * The `terrain_edge` object id of the tile.
+         */
+        edgeTexture?: number;
+
+        /**
+         * The height of water on this tile, should be within [0, 254].
+         * Only has an effect if waterLevel > surfaceLevel.
+         */
+        waterLevel?: number;
+
+        /**
+         * Controls the grass length if landTexture is set to grass, range [0, 6].
+         */
+        grassLength?: number;
+
+        /**
+         * The slope of the tile.
+         *
+         * @see https://github.com/OpenRCT2/OpenRCT2/blob/develop/src/openrct2/world/tile_element/Slope.h
+         */
+        slope?: number;
+
+        /**
+         * Place the given scenery on the tile at surfaceLevel (adjusted for slope and quadrant).
+         *
+         * If the value is an array (length 4), places the objects in the corresponding tile quadrant. In this case
+         * scenery objects must have the SMALL_SCENERY_FLAG_FULL_TILE flag (1 << 0) set to 0 or will be ignored.
+         *
+         * If the value isn't an array and SMALL_SCENERY_FLAG_FULL_TILE is 0 the object will be placed on quadrant 0.
+         */
+        scenery?: null | EditorLandscapeTileScenery | (EditorLandscapeTileScenery | null)[];
+    }
+
+    /**
+     * Provides access to the map generator settings and the output tiles array.
+     *
+     * The tiles array should contain `settings.sizeX * settings.SizeY` tiles and be indexed as
+     * `tiles[y * settings.sizeX + x]`. The other settings don't have to be followed by plugins.
+     *
+     * A basic example generator hook:
+     * ```
+     * var generate_hook_example = function (args) {
+     *     for (var y = 0; y < args.settings.sizeY; y++) {
+     *         for (var x = 0; x < args.settings.sizeX; x++) {
+     *             args.tiles[y * args.settings.sizeX + x] = {
+     *                 surfaceLevel: 4 + Math.sin(x) * Math.sin(y) * 2,
+     *             };
+     *         }
+     *     }
+     * }
+     * ```
+     *
+     * Note that if there are multiple hooks they will be called in the order they were registered and that the tiles
+     * array is initially empty. After the hook(s) complete the resulting tiles are converted into the internal map
+     * representation. If the "Smooth edge tiles" option is checked the smoothing algorithm will be applied
+     * <i>before</i> scenery objects are placed. The native "Add beaches around water bodies" and "Place trees" options
+     * will be applied <i>after</i> scenery is placed.
+     */
+    interface EditorLandscapeGenerateArgs {
+        /**
+         * The map editor settings.
+         */
+        readonly settings: EditorLandscapeSettings;
+
+        /**
+         * The tiles of the generated map.
+         */
+        tiles: EditorLandscapeTile[];
+    }
+
+    /**
      * The 'suggestedGuestMaximum' field in this interface can be used to override
      * the park's suggested guest cap.
      */
@@ -1756,6 +1889,12 @@ declare global {
     type TileElementType =
         "surface" | "footpath" | "track" | "small_scenery" | "wall" | "entrance" | "large_scenery" | "banner";
 
+    /**
+     * 0 is X-decreasing
+     * 1 is Y-increasing
+     * 2 is X-increasing
+     * 3 is Y-decreasing
+     */
     type Direction = 0 | 1 | 2 | 3;
     type Direction8 = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 

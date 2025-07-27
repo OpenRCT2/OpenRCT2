@@ -52,6 +52,18 @@ namespace OpenRCT2::Scripting
     }
 
     template<>
+    inline uint32_t AsOrDefault(const DukValue& value, const uint32_t& defaultValue)
+    {
+        return value.type() == DukValue::NUMBER ? value.as_uint() : defaultValue;
+    }
+
+    template<>
+    inline float AsOrDefault(const DukValue& value, const float& defaultValue)
+    {
+        return value.type() == DukValue::NUMBER ? value.as_float() : defaultValue;
+    }
+
+    template<>
     inline bool AsOrDefault(const DukValue& value, const bool& defaultValue)
     {
         return value.type() == DukValue::BOOLEAN ? value.as_bool() : defaultValue;

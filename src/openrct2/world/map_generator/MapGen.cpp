@@ -11,11 +11,10 @@
 
 #include "../../Context.h"
 #include "../../GameState.h"
-#include "../../object/ObjectManager.h"
-#include "../../util/Util.h"
 #include "../tile_element/Slope.h"
 #include "../tile_element/SurfaceElement.h"
 #include "HeightMap.hpp"
+#include "PluginMapGen.h"
 #include "PngTerrainGenerator.h"
 #include "SimplexNoise.h"
 #include "SurfaceSelection.h"
@@ -45,6 +44,11 @@ namespace OpenRCT2::World::MapGenerator
             case Algorithm::heightmapImage:
                 GenerateFromHeightmapImage(settings);
                 break;
+#ifdef ENABLE_SCRIPTING
+            case Algorithm::plugin:
+                generateViaPlugin(settings);
+                break;
+#endif
         }
 
         // Add beaches?
