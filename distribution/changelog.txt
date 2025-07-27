@@ -19,6 +19,7 @@
 - Fix: [#24829] The pattern of long grass across tiles is different to RCT1 and RCT2.
 - Fix: [#24831] Park names are being overwritten for custom RCT1 scenarios that use competition id slots.
 - Fix: [#24838] Not using localized word for conjunction when having multiple shortcuts for the same action.
+- Fix: [#24841] Fullscreen options do not work correctly with Emscripten.
 
 0.4.24 (2025-07-05)
 ------------------------------------------------------------------------
