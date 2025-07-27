@@ -19569,6 +19569,7 @@ namespace OpenRCT2::SingleRailRC
                             { -16, -16, height }, { { 0, 6, height + 26 }, { 32, 20, 1 } });
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 33, session.SupportColours);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Tall);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -19577,6 +19578,7 @@ namespace OpenRCT2::SingleRailRC
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 33,
                             session.SupportColours);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Tall);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -19749,6 +19751,7 @@ namespace OpenRCT2::SingleRailRC
                             { -16, -16, height }, { { 6, 0, height + 26 }, { 20, 32, 1 } });
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 33, session.SupportColours);
+                        PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Tall);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -19757,6 +19760,7 @@ namespace OpenRCT2::SingleRailRC
                         MetalASupportsPaintSetup(
                             session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 33,
                             session.SupportColours);
+                        PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Tall);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
