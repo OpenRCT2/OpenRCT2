@@ -25,6 +25,8 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
+#include <openrct2/scripting/HookEngine.h>
+#include <openrct2/scripting/ScriptEngine.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/map_generator/MapGen.h>
@@ -398,6 +400,9 @@ namespace OpenRCT2::Ui::Windows
                         ToggleOption(0, STR_HEIGHTMAP_FLATLAND),
                         ToggleOption(1, STR_HEIGHTMAP_SIMPLEX_NOISE),
                         ToggleOption(2, STR_HEIGHTMAP_FILE),
+#ifdef ENABLE_SCRIPTING
+                        ToggleOption(3, STR_HEIGHTMAP_PLUGIN),
+#endif
                     };
 
                     SetItems(items);
@@ -408,6 +413,12 @@ namespace OpenRCT2::Ui::Windows
                         Dropdown::Flag::StayOpen, std::size(items), ddWidget->width() - 3);
 
                     gDropdown.items[EnumValue(_settings.algorithm)].setChecked(true);
+
+#ifdef ENABLE_SCRIPTING
+                    bool hasGeneratorHook = GetContext()->GetScriptEngine().GetHookEngine().HasSubscriptions(
+                        Scripting::HookType::editorLandscapeGenerate);
+                    gDropdown.items[EnumValue(MapGenerator::Algorithm::plugin)].setDisabled(!hasGeneratorHook);
+#endif
                     break;
                 }
             }
@@ -507,6 +518,14 @@ namespace OpenRCT2::Ui::Windows
                     ToggleHeightmapWidgets(true);
                     HeightmapPrepareDraw();
                     break;
+
+#ifdef ENABLE_SCRIPTING
+                case MapGenerator::Algorithm::plugin:
+                    sourceWidget.text = STR_HEIGHTMAP_PLUGIN;
+                    ToggleSimplexWidgets(false);
+                    ToggleHeightmapWidgets(false);
+                    break;
+#endif
             }
         }
 

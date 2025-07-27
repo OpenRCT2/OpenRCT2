@@ -44,6 +44,7 @@ namespace OpenRCT2::Scripting
         mapSave,
         parkCalculateGuestCap,
         rideBreakDown,
+        editorLandscapeGenerate,
         count,
         notDefined = -1,
     };
