@@ -267,6 +267,22 @@ namespace OpenRCT2::Scripting
         return output;
     }
 
+    inline double AsOrDefault(JSContext* ctx, JSValue obj, const char* property, double def)
+    {
+        JSValue val = JS_GetPropertyStr(ctx, obj, property);
+        double output;
+        if (!JS_IsNumber(val))
+        {
+            output = def;
+        }
+        else if (JS_ToFloat64(ctx, &output, val) < 0)
+        {
+            output = def;
+        }
+        JS_FreeValue(ctx, val);
+        return output;
+    }
+
     // Note the default parameter needs to be const char*
     // If you use a type like string_view, calls can instead resolve to the boolean version of the function.
     inline std::string AsOrDefault(JSContext* ctx, JSValue obj, const char* property, const char* def)
@@ -358,6 +374,24 @@ namespace OpenRCT2::Scripting
     {
         JSValue val = JS_GetPropertyStr(ctx, obj, property);
         uint32_t output = JSToUint(ctx, val);
+        JS_FreeValue(ctx, val);
+        return output;
+    }
+
+    inline double JSToFloat64(JSContext* ctx, JSValue val)
+    {
+        double output = 0;
+        if (JS_IsNumber(val))
+        {
+            JS_ToFloat64(ctx, &output, val);
+        }
+        return output;
+    }
+
+    inline double JSToFloat64(JSContext* ctx, JSValue obj, const char* property)
+    {
+        JSValue val = JS_GetPropertyStr(ctx, obj, property);
+        double output = JSToFloat64(ctx, val);
         JS_FreeValue(ctx, val);
         return output;
     }
