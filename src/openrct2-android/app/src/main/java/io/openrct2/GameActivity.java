@@ -1,5 +1,6 @@
 package io.openrct2;
 
+import android.annotation.SuppressLint;
 import android.icu.util.Currency;
 import android.icu.util.LocaleData;
 import android.icu.util.ULocale;
@@ -16,13 +17,16 @@ public class GameActivity extends SDLActivity {
         return getResources().getDisplayMetrics().density;
     }
 
-    public String getDefaultLocale(String[] supportedTags) {
-        Locale deviceLocale;
+    @SuppressLint("ObsoleteSdkInt")
+    private Locale getDeviceLocale() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            deviceLocale = getResources().getConfiguration().getLocales().get(0);
+            return getResources().getConfiguration().getLocales().get(0);
         } else {
-            deviceLocale = getResources().getConfiguration().locale;
+            return getResources().getConfiguration().locale;
         }
+    }
+    public String getDefaultLocale(String[] supportedTags) {
+        Locale deviceLocale = getDeviceLocale();
 
         for (String supportedTag : supportedTags) {
             if (supportedTag.isEmpty()) continue;
@@ -51,26 +55,19 @@ public class GameActivity extends SDLActivity {
     }
 
     public String getLocaleCurrency() {
-        Locale deviceLocale;
+        Locale deviceLocale = getDeviceLocale();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            deviceLocale = getResources().getConfiguration().getLocales().get(0);
             return Currency.getInstance(deviceLocale).getCurrencyCode();
         } else {
-            deviceLocale = getResources().getConfiguration().locale;
             return java.util.Currency.getInstance(deviceLocale).getCurrencyCode();
         }
     }
 
     public boolean isImperialLocaleMeasurementFormat() {
-        Locale deviceLocale;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             return LocaleData.getMeasurementSystem(ULocale.forLocale(getResources().getConfiguration().getLocales().get(0))) == LocaleData.MeasurementSystem.US;
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            deviceLocale = getResources().getConfiguration().getLocales().get(0);
-        } else {
-            deviceLocale = getResources().getConfiguration().locale;
-        }
+        Locale deviceLocale = getDeviceLocale();
         String localeCountry = deviceLocale.getCountry();
         return localeCountry.equals(Locale.US.getCountry()) || localeCountry.equals(new Locale("xx", "LR").getCountry()) || localeCountry.equals(new Locale("xx", "MM").getCountry());
     }
