@@ -18,6 +18,7 @@
 - Fix: [#24826] The Junior Roller Coaster flat-to-steep track piece tunnels are incorrect.
 - Fix: [#24829] The pattern of long grass across tiles is different to RCT1 and RCT2.
 - Fix: [#24831] Park names are being overwritten for custom RCT1 scenarios that use competition id slots.
+- Fix: [#24838] Not using localized word for conjunction when having multiple shortcuts for the same action.
 
 0.4.24 (2025-07-05)
 ------------------------------------------------------------------------

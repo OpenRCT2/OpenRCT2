@@ -3838,3 +3838,4 @@ STR_6796    :•{MOVE_X}{10}{STRINGID}
 STR_6797    :No preview
 STR_6798    :Screenshot
 STR_6799    :Mini map
+STR_7000    :or
