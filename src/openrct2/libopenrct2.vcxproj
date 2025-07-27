@@ -632,6 +632,9 @@
     <ClInclude Include="scenes\title\TitleSequence.h" />
     <ClInclude Include="scenes\title\TitleSequenceManager.h" />
     <ClInclude Include="scenes\title\TitleSequencePlayer.h" />
+    <ClInclude Include="scripting\bindings\editor\ScEditor.hpp" />
+    <ClInclude Include="scripting\bindings\editor\ScLandscape.hpp" />
+    <ClInclude Include="scripting\bindings\editor\ScNoiseFn.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScBalloon.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScEntity.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScGuest.hpp" />
@@ -708,6 +711,8 @@
     <ClInclude Include="world\map_generator\HeightMap.hpp" />
     <ClInclude Include="world\map_generator\MapGen.h" />
     <ClInclude Include="world\map_generator\MapHelpers.h" />
+    <ClInclude Include="world\map_generator\Noise.h" />
+    <ClInclude Include="world\map_generator\PluginMapGen.h" />
     <ClInclude Include="world\map_generator\PngTerrainGenerator.h" />
     <ClInclude Include="world\map_generator\SimplexNoise.h" />
     <ClInclude Include="world\map_generator\SurfaceSelection.h" />
@@ -1271,6 +1276,7 @@
     <ClCompile Include="world\Weather.cpp" />
     <ClCompile Include="world\map_generator\MapGen.cpp" />
     <ClCompile Include="world\map_generator\MapHelpers.cpp" />
+    <ClCompile Include="world\map_generator\PluginMapGen.cpp" />
     <ClCompile Include="world\map_generator\PngTerrainGenerator.cpp" />
     <ClCompile Include="world\map_generator\SimplexNoise.cpp" />
     <ClCompile Include="world\map_generator\SurfaceSelection.cpp" />
