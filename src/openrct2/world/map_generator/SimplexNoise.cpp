@@ -15,6 +15,7 @@
 #include "MapHelpers.h"
 
 #include <algorithm>
+#include <random>
 
 namespace OpenRCT2::World::MapGenerator
 {
@@ -25,34 +26,41 @@ namespace OpenRCT2::World::MapGenerator
      *   - https://code.google.com/p/fractalterraingeneration/wiki/Fractional_Brownian_Motion
      */
 
-    static float Generate(float x, float y);
     static int32_t FastFloor(float x);
     static float Grad(int32_t hash, float x, float y);
 
-    static uint8_t perm[512];
-
-    void NoiseRand()
+    SimplexNoise::SimplexNoise()
     {
-        for (auto& i : perm)
+        for (auto& i : _perm)
         {
             i = UtilRand() & 0xFF;
         }
     }
 
-    float FractalNoise(int32_t x, int32_t y, float frequency, int32_t octaves, float lacunarity, float persistence)
+    SimplexNoise::SimplexNoise(const uint32_t seed)
+    {
+        std::mt19937 prng(seed);
+        for (auto& i : _perm)
+        {
+            i = prng() & 0xFF;
+        }
+    }
+
+    float SimplexFbmNoise::Generate(float x, float y)
     {
         float total = 0.0f;
-        float amplitude = persistence;
-        for (int32_t i = 0; i < octaves; i++)
+        float amplitude = _persistence;
+        float frequency = _frequency;
+        for (int32_t i = 0; i < _octaves; i++)
         {
-            total += Generate(x * frequency, y * frequency) * amplitude;
-            frequency *= lacunarity;
-            amplitude *= persistence;
+            total += SimplexNoise::Generate(x * frequency, y * frequency) * amplitude;
+            frequency *= _lacunarity;
+            amplitude *= _persistence;
         }
         return total;
     }
 
-    static float Generate(float x, float y)
+    float SimplexNoise::Generate(float x, float y)
     {
         const float F2 = 0.366025403f; // F2 = 0.5*(sqrt(3.0)-1.0)
         const float G2 = 0.211324865f; // G2 = (3.0-sqrt(3.0))/6.0
@@ -108,7 +116,7 @@ namespace OpenRCT2::World::MapGenerator
         else
         {
             t0 *= t0;
-            n0 = t0 * t0 * Grad(perm[ii + perm[jj]], x0, y0);
+            n0 = t0 * t0 * Grad(_perm[ii + _perm[jj]], x0, y0);
         }
 
         float t1 = 0.5f - x1 * x1 - y1 * y1;
@@ -119,7 +127,7 @@ namespace OpenRCT2::World::MapGenerator
         else
         {
             t1 *= t1;
-            n1 = t1 * t1 * Grad(perm[ii + i1 + perm[jj + j1]], x1, y1);
+            n1 = t1 * t1 * Grad(_perm[ii + i1 + _perm[jj + j1]], x1, y1);
         }
 
         float t2 = 0.5f - x2 * x2 - y2 * y2;
@@ -130,7 +138,7 @@ namespace OpenRCT2::World::MapGenerator
         else
         {
             t2 *= t2;
-            n2 = t2 * t2 * Grad(perm[ii + 1 + perm[jj + 1]], x2, y2);
+            n2 = t2 * t2 * Grad(_perm[ii + 1 + _perm[jj + 1]], x2, y2);
         }
 
         // Add contributions from each corner to get the final noise value.
@@ -186,12 +194,12 @@ namespace OpenRCT2::World::MapGenerator
         int32_t low = settings->heightmapLow / 2;
         int32_t high = settings->heightmapHigh / 2 - low;
 
-        NoiseRand();
+        SimplexFbmNoise simplex_fbm{ freq, octaves, 2.0f, 0.65f };
         for (int32_t y = 0; y < heightMap.height; y++)
         {
             for (int32_t x = 0; x < heightMap.width; x++)
             {
-                float noiseValue = std::clamp(FractalNoise(x, y, freq, octaves, 2.0f, 0.65f), -1.0f, 1.0f);
+                float noiseValue = std::clamp(simplex_fbm.Generate(x, y), -1.0f, 1.0f);
                 float normalisedNoiseValue = (noiseValue + 1.0f) / 2.0f;
 
                 heightMap[{ x, y }] = low + static_cast<int32_t>(normalisedNoiseValue * high);
