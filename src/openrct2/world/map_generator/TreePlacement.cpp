@@ -147,8 +147,7 @@ namespace OpenRCT2::World::MapGenerator
         // Place trees
         float treeToLandRatio = static_cast<float>(settings->treeToLandRatio) / 100.0f;
 
-        // Randomise simplex noise
-        NoiseRand();
+        SimplexFbmNoise simplex_fbm{ 0.025f, 2, 2.0f, 0.65f };
 
         auto& gameState = getGameState();
         for (int32_t y = 1; y < gameState.mapSize.y - 1; y++)
@@ -205,7 +204,7 @@ namespace OpenRCT2::World::MapGenerator
                     continue;
 
                 // Use fractal noise to group tiles that are likely to spawn trees together
-                float noiseValue = FractalNoise(x, y, 0.025f, 2, 2.0f, 0.65f);
+                float noiseValue = simplex_fbm.Generate(x, y);
                 // Reduces the range to rarely stray further than 0.5 from the mean.
                 float noiseOffset = UtilRandNormalDistributed() * 0.25f;
                 if (noiseValue + oasisScore < noiseOffset)
