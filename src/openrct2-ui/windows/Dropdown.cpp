@@ -621,9 +621,17 @@ namespace OpenRCT2::Ui::Windows
             if (selectedColour == orderedColour)
                 defaultIndex = i;
 
-            // Use special graphic for Invisible colour
-            auto imageId = (orderedColour == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_WHITE)
-                                                               : ImageId(SPR_PALETTE_BTN, orderedColour);
+            ImageId imageId;
+            if (Config::Get().interface.enlargedUi)
+            {
+                imageId = (orderedColour == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE_LARGE, COLOUR_WHITE)
+                                                              : ImageId(SPR_G2_ICON_PALETTE_LARGE, orderedColour);
+            }
+            else
+            {
+                imageId = (orderedColour == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_WHITE)
+                                                              : ImageId(SPR_PALETTE_BTN, orderedColour);
+            }
 
             gDropdown.items[i] = { .type = Dropdown::ItemType::colour, .image = imageId, .tooltip = kColourTooltips[i] };
         }

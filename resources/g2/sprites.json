@@ -325,6 +325,18 @@
         "path": "icons/colour_invisible_pressed.png"
     },
     {
+        "path": "icons/colour_large.png"
+    },
+    {
+        "path": "icons/colour_pressed_large.png"
+    },
+    {
+        "path": "icons/colour_invisible_large.png"
+    },
+    {
+        "path": "icons/colour_invisible_pressed_large.png"
+    },
+    {
         "path": "icons/folder.png"
     },
     {
