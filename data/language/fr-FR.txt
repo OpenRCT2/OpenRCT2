@@ -3837,3 +3837,12 @@ STR_6788    :Sensibilité :
 STR_6789    :Multiplicateur de sensibilité du stick analogique
 STR_6790    :Zone morte : {COMMA32}%
 STR_6791    :Sensibilité : {COMMA32}%
+STR_6792    :Bâtiments d’entrée
+STR_6793    :Visiteurs et employés
+STR_6794    :Décor et thèmes
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :Pas d’aperçu
+STR_6798    :Capture d’écran
+STR_6799    :Mini-carte
+STR_7000    :ou
