@@ -43,17 +43,16 @@ namespace OpenRCT2::Scripting
 
         static JSValue configuration_get(JSContext* ctx, JSValue thisVal)
         {
-            // TODO (mber)
-            return JS_NULL;
-            // return std::make_shared<ScConfiguration>();
+            return gScConfiguration.New(ctx);
         }
 
         static JSValue sharedStorage_get(JSContext* ctx, JSValue thisVal)
         {
             throw std::runtime_error("not implemented."); // this requires support in ScriptEngine.cpp
-            // TODO (mber)
-            // auto& scriptEngine = GetContext()->GetScriptEngine();
-            // return std::make_shared<ScConfiguration>(ScConfigurationKind::Shared, scriptEngine.GetSharedStorage());
+            /* TODO (mber)
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            return std::make_shared<ScConfiguration>(ScConfigurationKind::Shared, scriptEngine.GetSharedStorage());
+            */
         }
 
         static JSValue GetParkStorageForPlugin(std::string_view pluginName)

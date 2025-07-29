@@ -445,6 +445,7 @@ void ScriptEngine::Initialise()
 }
 
 JSRuntime* ScriptEngine::_runtime = nullptr;
+ScConfiguration Scripting::gScConfiguration;
 ScConsole Scripting::gScConsole;
 ScContext Scripting::gScContext;
 ScDisposable Scripting::gScDisposable;
@@ -457,7 +458,7 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     // ScCheats::Register(ctx);
     // ScClimate::Register(ctx);
     // ScClimateState::Register(ctx);
-    // ScConfiguration::Register(ctx);
+    gScConfiguration.Register(ctx);
     gScConsole.Register(ctx);
     gScContext.Register(ctx);
     // ScDate::Register(ctx);

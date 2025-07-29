@@ -159,16 +159,21 @@ static constexpr float kWindowScrollLocations[][2] = {
         }
     }
 
+    void WindowCullDead()
+    {
+        // Remove all windows in g_window_list that have the WF_DEAD flag
+        g_window_list.erase(
+            std::remove_if(g_window_list.begin(), g_window_list.end(), [](auto&& w) -> bool { return w->flags & WF_DEAD; }),
+            g_window_list.end());
+    }
+
     /**
      *
      *  rct2: 0x006E77A1
      */
     void WindowUpdateAll()
     {
-        // Remove all windows in g_window_list that have the WF_DEAD flag
-        g_window_list.erase(
-            std::remove_if(g_window_list.begin(), g_window_list.end(), [](auto&& w) -> bool { return w->flags & WF_DEAD; }),
-            g_window_list.end());
+        WindowCullDead();
 
         // Periodic update happens every second so 40 ticks.
         if (gCurrentRealTimeTicks >= gWindowUpdateTicks)

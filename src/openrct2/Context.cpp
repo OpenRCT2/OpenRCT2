@@ -207,6 +207,7 @@ namespace OpenRCT2
 
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->CloseAll();
+            WindowCullDead();
 
             // Unload objects after closing all windows, this is to overcome windows like
             // the object selection window which loads objects when closed.
