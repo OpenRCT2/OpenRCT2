@@ -323,6 +323,13 @@ namespace OpenRCT2::Scripting
         return value ? ToJSValue(ctx, *value) : JS_NULL;
     }
 
+    #define JS_THROW_IF_GAME_STATE_NOT_MUTABLE()                                                                               \
+        if (!Scripting::IsGameStateMutable())                                                                                  \
+        {                                                                                                                      \
+            JS_ThrowPlainError(ctx, "Game state is not mutable in this context.");                                             \
+            return JS_EXCEPTION;                                                                                               \
+        }
+
     #define JS_UNPACK_INT32(var, ctx, val)                                                                                     \
         int32_t var;                                                                                                           \
         if (!JS_IsNumber(val))                                                                                                 \
@@ -388,6 +395,22 @@ namespace OpenRCT2::Scripting
         if (!JS_IsArray(val))                                                                                                  \
         {                                                                                                                      \
             JS_ThrowTypeError(ctx, "Expected number");                                                                         \
+            return JS_EXCEPTION;                                                                                               \
+        }
+
+    #define JS_UNPACK_CALLBACK(var, ctx, val)                                                                                  \
+        JSCallback var(ctx, val);                                                                                              \
+        if (!var.IsValid())                                                                                                    \
+        {                                                                                                                      \
+            JS_ThrowTypeError(ctx, "Expected function");                                                                       \
+            return JS_EXCEPTION;                                                                                               \
+        }
+
+    #define JS_UNPACK_OBJECT(var, ctx, val)                                                                                    \
+        JSValue var = val;                                                                                                     \
+        if (!JS_IsObject(var))                                                                                                 \
+        {                                                                                                                      \
+            JS_ThrowTypeError(ctx, "Expected object");                                                                         \
             return JS_EXCEPTION;                                                                                               \
         }
 } // namespace OpenRCT2::Scripting

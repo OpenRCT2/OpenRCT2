@@ -446,6 +446,8 @@ void ScriptEngine::Initialise()
 
 JSRuntime* ScriptEngine::_runtime = nullptr;
 ScConsole Scripting::gScConsole;
+ScContext Scripting::gScContext;
+ScDisposable Scripting::gScDisposable;
 ScNetwork Scripting::gScNetwork;
 
 void ScriptEngine::RegisterClasses(JSContext* ctx)
@@ -457,9 +459,9 @@ void ScriptEngine::RegisterClasses(JSContext* ctx)
     // ScClimateState::Register(ctx);
     // ScConfiguration::Register(ctx);
     gScConsole.Register(ctx);
-    // ScContext::Register(ctx);
+    gScContext.Register(ctx);
     // ScDate::Register(ctx);
-    // ScDisposable::Register(ctx);
+    gScDisposable.Register(ctx);
     // ScMap::Register(ctx);
     gScNetwork.Register(ctx);
     // ScObjectManager::Register(ctx);
@@ -537,7 +539,7 @@ void ScriptEngine::InitialiseContext(JSContext* ctx) const
     // dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
     // dukglue_register_global(ctx, std::make_shared<ScClimate>(), "climate");
     JS_SetPropertyStr(ctx, glb, "console", gScConsole.New(ctx, _console));
-    // dukglue_register_global(ctx, std::make_shared<ScContext>(_execInfo, _hookEngine), "context");
+    JS_SetPropertyStr(ctx, glb, "context", gScContext.New(ctx));
     // dukglue_register_global(ctx, std::make_shared<ScDate>(), "date");
     // dukglue_register_global(ctx, std::make_shared<ScMap>(ctx), "map");
     JS_SetPropertyStr(ctx, glb, "network", gScNetwork.New(ctx));
@@ -1143,7 +1145,7 @@ void ScriptEngine::RemoveNetworkPlugins()
 
 GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAction& customAction, bool isExecute)
 {
-    /*
+    /* TODO (mber)
     std::string actionz = customAction.GetId();
     auto kvp = _customActions.find(actionz);
     if (kvp != _customActions.end())
@@ -1204,7 +1206,7 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAct
 
 GameActions::Result ScriptEngine::DukToGameActionResult(const JSValue d)
 {
-    /*
+    /* TODO (mber)
     auto result = GameActions::Result();
     if (d.type() == DUK_TYPE_OBJECT)
     {
@@ -1272,7 +1274,7 @@ ExpenditureType ScriptEngine::StringToExpenditureType(std::string_view expenditu
 
 JSValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const GameActions::Result& result)
 {
-    /*
+    /* TODO (mber)
     DukStackFrame frame(_context);
     DukObject obj(_context);
 
@@ -1344,7 +1346,7 @@ JSValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Game
 }
 
 bool ScriptEngine::RegisterCustomAction(
-    const std::shared_ptr<Plugin>& plugin, std::string_view action, const JSValue query, const JSValue execute)
+    const std::shared_ptr<Plugin>& plugin, std::string_view action, const JSCallback& query, const JSCallback& execute)
 {
     std::string actionz = std::string(action);
     if (_customActions.find(actionz) != _customActions.end())
@@ -1376,7 +1378,7 @@ void ScriptEngine::RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin
     }
 }
 
-/*
+/* TODO (mber)
 class DukToGameActionParameterVisitor : public GameActionParameterVisitor
 {
 private:
@@ -1521,7 +1523,7 @@ const static EnumMap<GameCommand> ActionNameToType = {
 };
 // clang-format on
 
-/*
+/* TODO (mber)
 static std::string GetActionName(GameCommand commandId)
 {
     auto it = ActionNameToType.find(commandId);
@@ -1545,7 +1547,7 @@ static std::unique_ptr<GameAction> CreateGameActionFromActionId(const std::strin
 
 void ScriptEngine::RunGameActionHooks(const GameAction& action, GameActions::Result& result, bool isExecute)
 {
-    /*
+    /* TODO (mber)
     DukStackFrame frame(_context);
 
     auto hookType = isExecute ? HookType::actionExecute : HookType::actionQuery;
@@ -1617,7 +1619,7 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, GameActions::Res
 std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(
     const std::string& actionid, const JSValue args, const std::string& pluginName)
 {
-    /*
+    /* TODO (mber)
     auto action = CreateGameActionFromActionId(actionid);
     if (action != nullptr)
     {
@@ -1657,7 +1659,7 @@ std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(
 
 void ScriptEngine::InitSharedStorage()
 {
-    /*
+    /* TODO (mber)
     duk_push_object(_context);
     _sharedStorage = std::move(DukValue::take_from_stack(_context));
     */
@@ -1665,7 +1667,7 @@ void ScriptEngine::InitSharedStorage()
 
 void ScriptEngine::LoadSharedStorage()
 {
-    /*
+    /* TODO (mber)
     InitSharedStorage();
 
     auto path = _env.GetFilePath(PathId::pluginStore);
@@ -1691,7 +1693,7 @@ void ScriptEngine::LoadSharedStorage()
 
 void ScriptEngine::SaveSharedStorage()
 {
-    /*
+    /* TODO (mber)
     auto path = _env.GetFilePath(PathId::pluginStore);
     try
     {
@@ -1710,7 +1712,7 @@ void ScriptEngine::SaveSharedStorage()
 
 void ScriptEngine::ClearParkStorage()
 {
-    /*
+    /* TODO (mber)
     duk_push_object(_context);
     _parkStorage = std::move(DukValue::take_from_stack(_context));
     */
@@ -1718,7 +1720,7 @@ void ScriptEngine::ClearParkStorage()
 
 std::string ScriptEngine::GetParkStorageAsJSON()
 {
-    /*
+    /* TODO (mber)
     _parkStorage.push();
     auto json = std::string(duk_json_encode(_context, -1));
     duk_pop(_context);
@@ -1729,7 +1731,7 @@ std::string ScriptEngine::GetParkStorageAsJSON()
 
 void ScriptEngine::SetParkStorageFromJSON(std::string_view value)
 {
-    /*
+    /* TODO (mber)
     auto result = DuktapeTryParseJson(_context, value);
     if (result)
     {
@@ -1748,7 +1750,8 @@ IntervalHandle ScriptEngine::AllocateHandle()
     return nextHandle;
 }
 
-IntervalHandle ScriptEngine::AddInterval(const std::shared_ptr<Plugin>& plugin, int32_t delay, bool repeat, JSValue callback)
+IntervalHandle ScriptEngine::AddInterval(
+    const std::shared_ptr<Plugin>& plugin, int32_t delay, bool repeat, const JSCallback& callback)
 {
     auto handle = AllocateHandle();
     assert(handle != 0);
@@ -1757,7 +1760,7 @@ IntervalHandle ScriptEngine::AddInterval(const std::shared_ptr<Plugin>& plugin, 
     interval.Owner = plugin;
     interval.Delay = delay;
     interval.LastTimestamp = _lastIntervalTimestamp;
-    interval.Callback = std::move(callback);
+    interval.Callback = callback;
     interval.Repeat = repeat;
 
     return handle;
@@ -1777,8 +1780,6 @@ void ScriptEngine::RemoveInterval(const std::shared_ptr<Plugin>& plugin, Interva
     // Only allow owner or REPL (nullptr) to remove intervals
     if (plugin == nullptr || interval.Owner == plugin)
     {
-        // TODO (mber) remember to get context and free the interval.Callback JSValue
-        throw std::runtime_error("RemoveInterval() not implemented");
         interval.Deleted = true;
     }
 }
@@ -1829,7 +1830,7 @@ void ScriptEngine::UpdateIntervals()
             continue;
         }
 
-        ExecutePluginCall(interval.Owner, interval.Callback, {}, false);
+        ExecutePluginCall(interval.Owner, interval.Callback.callback, {}, false);
 
         interval.LastTimestamp = timestamp;
         if (!interval.Repeat)
@@ -1865,7 +1866,7 @@ void ScriptEngine::AddSocket(const std::shared_ptr<ScSocketBase>& socket)
 
 void ScriptEngine::UpdateSockets()
 {
-    /*
+    /* TODO (mber)
     #ifndef DISABLE_NETWORK
     // Use simple for i loop as Update calls can modify the list
     auto it = _sockets.begin();
@@ -1888,7 +1889,7 @@ void ScriptEngine::UpdateSockets()
 
 void ScriptEngine::RemoveSockets(const std::shared_ptr<Plugin>& plugin)
 {
-    /*
+    /* TODO (mber)
     #ifndef DISABLE_NETWORK
     auto it = _sockets.begin();
     while (it != _sockets.end())
@@ -1924,25 +1925,6 @@ bool OpenRCT2::Scripting::IsGameStateMutable()
     auto& scriptEngine = GetContext()->GetScriptEngine();
     auto& execInfo = scriptEngine.GetExecInfo();
     return execInfo.IsGameStateMutable();
-}
-
-void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()
-{
-    // TODO (mber) find out how to do something similar in quickjs.
-    throw std::runtime_error("ThrowIfGameStateNotMutable() not implemented");
-    /*
-    // Allow single player to alter game state anywhere
-    if (NetworkGetMode() != NETWORK_MODE_NONE)
-    {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto& execInfo = scriptEngine.GetExecInfo();
-        if (!execInfo.IsGameStateMutable())
-        {
-            auto ctx = scriptEngine.GetContext();
-            duk_error(ctx, DUK_ERR_ERROR, "Game state is not mutable in this context.");
-        }
-    }
-    */
 }
 
 int32_t OpenRCT2::Scripting::GetTargetAPIVersion()

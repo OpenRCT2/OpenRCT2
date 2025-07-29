@@ -107,7 +107,7 @@ namespace OpenRCT2::Scripting
         std::shared_ptr<Plugin> Owner;
         uint32_t Delay{};
         int64_t LastTimestamp{};
-        JSValue Callback;
+        JSCallback Callback;
         bool Repeat{};
         bool Deleted{};
     };
@@ -146,8 +146,8 @@ namespace OpenRCT2::Scripting
         {
             std::shared_ptr<Plugin> Owner;
             std::string Name;
-            JSValue Query;
-            JSValue Execute;
+            JSCallback Query;
+            JSCallback Execute;
         };
 
         std::unordered_map<std::string, CustomActionInfo> _customActions;
@@ -238,7 +238,7 @@ namespace OpenRCT2::Scripting
 
         [[nodiscard]] GameActions::Result QueryOrExecuteCustomGameAction(const CustomAction& action, bool isExecute);
         bool RegisterCustomAction(
-            const std::shared_ptr<Plugin>& plugin, std::string_view action, JSValue query, JSValue execute);
+            const std::shared_ptr<Plugin>& plugin, std::string_view action, const JSCallback& query, const JSCallback& execute);
         void RunGameActionHooks(const GameAction& action, GameActions::Result& result, bool isExecute);
         [[nodiscard]] std::unique_ptr<GameAction> CreateGameAction(
             const std::string& actionid, JSValue args, const std::string& pluginName);
@@ -246,7 +246,8 @@ namespace OpenRCT2::Scripting
 
         void SaveSharedStorage();
 
-        IntervalHandle AddInterval(const std::shared_ptr<Plugin>& plugin, int32_t delay, bool repeat, JSValue callback);
+        IntervalHandle AddInterval(
+            const std::shared_ptr<Plugin>& plugin, int32_t delay, bool repeat, const JSCallback& callback);
         void RemoveInterval(const std::shared_ptr<Plugin>& plugin, IntervalHandle handle);
 
         static std::string_view ExpenditureTypeToString(ExpenditureType expenditureType);
@@ -293,7 +294,6 @@ namespace OpenRCT2::Scripting
     };
 
     bool IsGameStateMutable();
-    void ThrowIfGameStateNotMutable();
     int32_t GetTargetAPIVersion();
 
     std::string Stringify(JSContext* context, JSValue value);

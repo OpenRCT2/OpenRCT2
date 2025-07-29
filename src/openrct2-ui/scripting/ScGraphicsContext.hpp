@@ -21,7 +21,7 @@ namespace OpenRCT2::Scripting
 {
     class ScGraphicsContext;
     extern ScGraphicsContext gScGraphicsContext;
-    class ScGraphicsContext : public ScBase
+    class ScGraphicsContext final : public ScBase
     {
     private:
         struct GraphicsData

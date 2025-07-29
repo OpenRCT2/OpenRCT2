@@ -22,7 +22,7 @@ namespace OpenRCT2::Scripting
     class ScImageManager;
     extern ScImageManager gScImageManager;
 
-    class ScImageManager : public ScBase
+    class ScImageManager final : public ScBase
     {
     public:
         void Register(JSContext* ctx)
