@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING_REFACTOR
 
     #include "ScNetwork.hpp"
 
@@ -19,101 +19,109 @@
 
 namespace OpenRCT2::Scripting
 {
-    ScNetwork::ScNetwork(duk_context* ctx)
-        : _context(ctx)
-    {
-    }
-
-    std::string ScNetwork::mode_get() const
+    JSValue ScNetwork::mode_get(JSContext* ctx, JSValue thisVal)
     {
     #ifndef DISABLE_NETWORK
         switch (NetworkGetMode())
         {
             case NETWORK_MODE_SERVER:
-                return "server";
+                return JSFromStdString(ctx, "server");
             case NETWORK_MODE_CLIENT:
-                return "client";
+                return JSFromStdString(ctx, "client");
         }
     #endif
-        return "none";
+        return JSFromStdString(ctx, "none");
     }
 
-    int32_t ScNetwork::numPlayers_get() const
+    JSValue ScNetwork::numPlayers_get(JSContext* ctx, JSValue thisVal)
     {
     #ifndef DISABLE_NETWORK
-        return NetworkGetNumPlayers();
+        return JS_NewInt32(ctx, NetworkGetNumPlayers());
     #else
-        return 0;
+        return JS_NewInt32(ctx, 0);
     #endif
     }
 
-    int32_t ScNetwork::numGroups_get() const
+    JSValue ScNetwork::numGroups_get(JSContext* ctx, JSValue thisVal)
     {
     #ifndef DISABLE_NETWORK
-        return NetworkGetNumGroups();
+        return JS_NewInt32(ctx, NetworkGetNumGroups());
     #else
-        return 0;
+        return JS_NewInt32(ctx, 0);
     #endif
     }
 
-    int32_t ScNetwork::defaultGroup_get() const
+    JSValue ScNetwork::defaultGroup_get(JSContext* ctx, JSValue thisVal)
     {
     #ifndef DISABLE_NETWORK
-        return NetworkGetDefaultGroup();
+        return JS_NewInt32(ctx, NetworkGetDefaultGroup());
     #else
-        return 0;
+        return JS_NewInt32(ctx, 0);
     #endif
     }
 
-    void ScNetwork::defaultGroup_set(int32_t value)
+    JSValue ScNetwork::defaultGroup_set(JSContext* ctx, JSValue thisVal, JSValue value)
     {
     #ifndef DISABLE_NETWORK
-        auto action = NetworkModifyGroupAction(ModifyGroupType::SetDefault, value);
+        JS_UNPACK_INT32(valueInt, ctx, value);
+
+        auto action = NetworkModifyGroupAction(ModifyGroupType::SetDefault, valueInt);
         GameActions::Execute(&action);
     #endif
+        return JS_UNDEFINED;
     }
 
-    std::vector<std::shared_ptr<ScPlayerGroup>> ScNetwork::groups_get() const
+    JSValue ScNetwork::groups_get(JSContext* ctx, JSValue thisVal)
     {
-        std::vector<std::shared_ptr<ScPlayerGroup>> groups;
+        JSValue groups = JS_NewArray(ctx);
     #ifndef DISABLE_NETWORK
         auto numGroups = NetworkGetNumGroups();
         for (int32_t i = 0; i < numGroups; i++)
         {
-            auto groupId = NetworkGetGroupID(i);
-            groups.push_back(std::make_shared<ScPlayerGroup>(groupId));
+            // TODO (mber)
+            // auto groupId = NetworkGetGroupID(i);
+            // groups.push_back(std::make_shared<ScPlayerGroup>(groupId));
         }
     #endif
         return groups;
     }
 
-    std::vector<std::shared_ptr<ScPlayer>> ScNetwork::players_get() const
+    JSValue ScNetwork::players_get(JSContext* ctx, JSValue thisVal)
     {
-        std::vector<std::shared_ptr<ScPlayer>> players;
+        JSValue players = JS_NewArray(ctx);
     #ifndef DISABLE_NETWORK
         auto numPlayers = NetworkGetNumPlayers();
         for (int32_t i = 0; i < numPlayers; i++)
         {
-            auto playerId = NetworkGetPlayerID(i);
-            players.push_back(std::make_shared<ScPlayer>(playerId));
+            // TODO (mber)
+            // auto playerId = NetworkGetPlayerID(i);
+            // players.push_back(std::make_shared<ScPlayer>(playerId));
         }
     #endif
         return players;
     }
 
-    std::shared_ptr<ScPlayer> ScNetwork::currentPlayer_get() const
+    JSValue ScNetwork::currentPlayer_get(JSContext* ctx, JSValue thisVal)
     {
+        // TODO (mber)
+        JS_ThrowInternalError(ctx, "not implemented");
+        return JS_EXCEPTION;
+        /*
         std::shared_ptr<ScPlayer> player;
     #ifndef DISABLE_NETWORK
         auto playerId = NetworkGetCurrentPlayerId();
         player = std::make_shared<ScPlayer>(playerId);
     #endif
         return player;
+        */
     }
 
-    std::shared_ptr<ScPlayer> ScNetwork::getPlayer(int32_t id) const
+    JSValue ScNetwork::getPlayer(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
+        // TODO (mber)
+        /*
     #ifndef DISABLE_NETWORK
+        JS_UNPACK_INT32(id, ctx, argv[0]);
         if (GetTargetAPIVersion() < kApiVersionNetworkIDs)
         {
             auto index = id;
@@ -134,53 +142,57 @@ namespace OpenRCT2::Scripting
         }
 
     #endif
-        return nullptr;
+    */
+        return JS_NULL;
     }
 
-    DukValue ScNetwork::stats_get() const
+    JSValue ScNetwork::stats_get(JSContext* ctx, JSValue thisVal)
     {
     #ifndef DISABLE_NETWORK
-        auto obj = OpenRCT2::Scripting::DukObject(_context);
+        JSValue obj = JS_NewObject(ctx);
         auto networkStats = NetworkGetStats();
         {
-            duk_push_array(_context);
-            duk_uarridx_t index = 0;
-            for (auto v : networkStats.bytesReceived)
+            JSValue recvStatsArr = JS_NewArray(ctx);
+            uint32_t index = 0;
+            for (const auto v : networkStats.bytesReceived)
             {
-                duk_push_number(_context, v);
-                duk_put_prop_index(_context, -2, index);
+                JS_SetPropertyUint32(ctx, recvStatsArr, index, JS_NewInt64(ctx, static_cast<int64_t>(v)));
                 index++;
             }
-            obj.Set("bytesReceived", DukValue::take_from_stack(_context));
+            JS_SetPropertyStr(ctx, obj, "bytesReceived", recvStatsArr);
         }
         {
-            duk_push_array(_context);
-            duk_uarridx_t index = 0;
+            JSValue sentStatsArr = JS_NewArray(ctx);
+            uint32_t index = 0;
             for (auto v : networkStats.bytesSent)
             {
-                duk_push_number(_context, v);
-                duk_put_prop_index(_context, -2, index);
+                JS_SetPropertyUint32(ctx, sentStatsArr, index, JS_NewInt64(ctx, static_cast<int64_t>(v)));
                 index++;
             }
-            obj.Set("bytesSent", DukValue::take_from_stack(_context));
+            JS_SetPropertyStr(ctx, obj, "bytesSent", sentStatsArr);
         }
-        return obj.Take();
+        return obj;
     #else
-        return ToDuk(_context, nullptr);
+        return JS_NULL;
     #endif
     }
 
-    std::shared_ptr<ScPlayerGroup> ScNetwork::getGroup(int32_t id) const
+    JSValue ScNetwork::getGroup(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
     #ifndef DISABLE_NETWORK
+        JS_UNPACK_INT32(id, ctx, argv[0])
+
         if (GetTargetAPIVersion() < kApiVersionNetworkIDs)
         {
             auto index = id;
             auto numGroups = NetworkGetNumGroups();
             if (index < numGroups)
             {
+                // TODO (mber)
+                /*
                 auto groupId = NetworkGetGroupID(index);
                 return std::make_shared<ScPlayerGroup>(groupId);
+                */
             }
         }
         else
@@ -188,24 +200,30 @@ namespace OpenRCT2::Scripting
             auto index = NetworkGetGroupIndex(id);
             if (index != -1)
             {
+                // TODO (mber)
+                /*
                 return std::make_shared<ScPlayerGroup>(id);
+                */
             }
         }
     #endif
-        return nullptr;
+        return JS_NULL;
     }
 
-    void ScNetwork::addGroup()
+    JSValue ScNetwork::addGroup(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
     #ifndef DISABLE_NETWORK
         auto networkModifyGroup = NetworkModifyGroupAction(ModifyGroupType::AddGroup);
         GameActions::Execute(&networkModifyGroup);
     #endif
+        return JS_UNDEFINED;
     }
 
-    void ScNetwork::removeGroup(int32_t id)
+    JSValue ScNetwork::removeGroup(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
     #ifndef DISABLE_NETWORK
+        JS_UNPACK_INT32(id, ctx, argv[0]);
+
         if (GetTargetAPIVersion() < kApiVersionNetworkIDs)
         {
             auto index = id;
@@ -227,11 +245,14 @@ namespace OpenRCT2::Scripting
             }
         }
     #endif
+        return JS_UNDEFINED;
     }
 
-    void ScNetwork::kickPlayer(int32_t id)
+    JSValue ScNetwork::kickPlayer(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
     #ifndef DISABLE_NETWORK
+        JS_UNPACK_INT32(id, ctx, argv[0]);
+
         if (GetTargetAPIVersion() < kApiVersionNetworkIDs)
         {
             auto index = id;
@@ -253,32 +274,32 @@ namespace OpenRCT2::Scripting
             }
         }
     #endif
+        return JS_UNDEFINED;
     }
 
-    void ScNetwork::sendMessage(std::string message, DukValue players)
+    JSValue ScNetwork::sendMessage(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
     #ifndef DISABLE_NETWORK
-        if (players.is_array())
+        JS_UNPACK_STR(message, ctx, argv[0]);
+        JSValue players = argv[1];
+
+        if (JS_IsArray(players))
         {
             if (NetworkGetMode() == NETWORK_MODE_SERVER)
             {
                 std::vector<uint8_t> playerIds;
-                auto playerArray = players.as_array();
-                for (const auto& item : playerArray)
-                {
-                    if (item.type() == DukValue::Type::NUMBER)
-                    {
-                        playerIds.push_back(static_cast<uint8_t>(item.as_uint()));
-                    }
-                }
-                if (!playerArray.empty())
+                JSIterateArray(ctx, players, [&playerIds](JSContext* ctx, JSValue val) {
+                    playerIds.push_back(static_cast<uint8_t>(JSToInt(ctx, val)));
+                });
+                if (!playerIds.empty())
                 {
                     NetworkSendChat(message.c_str(), playerIds);
                 }
             }
             else
             {
-                duk_error(players.context(), DUK_ERR_ERROR, "Only servers can send private messages.");
+                JS_ThrowPlainError(ctx, "Only servers can send private messages.");
+                return JS_EXCEPTION;
             }
         }
         else
@@ -286,59 +307,75 @@ namespace OpenRCT2::Scripting
             NetworkSendChat(message.c_str());
         }
     #endif
+        return JS_UNDEFINED;
     }
 
     #ifndef DISABLE_NETWORK
-    std::shared_ptr<ScListener> ScNetwork::createListener()
+    JSValue ScNetwork::createListener(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
+        return JS_UNDEFINED;
+        // TODO (mber)
+        /*
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
         auto socket = std::make_shared<ScListener>(plugin);
         scriptEngine.AddSocket(socket);
         return socket;
+        */
     }
     #else
-    void ScNetwork::createListener()
+    void ScNetwork::createListener(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        duk_error(_context, DUK_ERR_ERROR, "Networking has been disabled.");
+        JS_ThrowPlainError(ctx, "Networking has been disabled.");
+        return JS_EXCEPTION;
     }
     #endif
 
     #ifndef DISABLE_NETWORK
-    std::shared_ptr<ScSocket> ScNetwork::createSocket()
+    JSValue ScNetwork::createSocket(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
+        return JS_UNDEFINED;
+        // TODO (mber)
+        /*
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
         auto socket = std::make_shared<ScSocket>(plugin);
         scriptEngine.AddSocket(socket);
         return socket;
+        */
     }
     #else
-    void ScNetwork::createSocket()
+    void ScNetwork::createSocket(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
     {
-        duk_error(_context, DUK_ERR_ERROR, "Networking has been disabled.");
+        JS_ThrowPlainError(ctx, "Networking has been disabled.");
+        return JS_EXCEPTION;
     }
     #endif
 
-    void ScNetwork::Register(duk_context* ctx)
+    JSValue ScNetwork::New(JSContext* ctx)
     {
-        dukglue_register_property(ctx, &ScNetwork::mode_get, nullptr, "mode");
-        dukglue_register_property(ctx, &ScNetwork::numGroups_get, nullptr, "numGroups");
-        dukglue_register_property(ctx, &ScNetwork::numPlayers_get, nullptr, "numPlayers");
-        dukglue_register_property(ctx, &ScNetwork::groups_get, nullptr, "groups");
-        dukglue_register_property(ctx, &ScNetwork::players_get, nullptr, "players");
-        dukglue_register_property(ctx, &ScNetwork::currentPlayer_get, nullptr, "currentPlayer");
-        dukglue_register_property(ctx, &ScNetwork::defaultGroup_get, &ScNetwork::defaultGroup_set, "defaultGroup");
-        dukglue_register_property(ctx, &ScNetwork::stats_get, nullptr, "stats");
-        dukglue_register_method(ctx, &ScNetwork::addGroup, "addGroup");
-        dukglue_register_method(ctx, &ScNetwork::getGroup, "getGroup");
-        dukglue_register_method(ctx, &ScNetwork::removeGroup, "removeGroup");
-        dukglue_register_method(ctx, &ScNetwork::getPlayer, "getPlayer");
-        dukglue_register_method(ctx, &ScNetwork::kickPlayer, "kickPlayer");
-        dukglue_register_method(ctx, &ScNetwork::sendMessage, "sendMessage");
+        static constexpr JSCFunctionListEntry funcs[] = {
+            JS_CGETSET_DEF("mode", ScNetwork::mode_get, nullptr),
+            JS_CGETSET_DEF("numGroups", ScNetwork::numGroups_get, nullptr),
+            JS_CGETSET_DEF("numPlayers", ScNetwork::numPlayers_get, nullptr),
+            JS_CGETSET_DEF("groups", ScNetwork::groups_get, nullptr),
+            JS_CGETSET_DEF("players", ScNetwork::players_get, nullptr),
+            JS_CGETSET_DEF("currentPlayer", ScNetwork::currentPlayer_get, nullptr),
+            JS_CGETSET_DEF("defaultGroup", ScNetwork::defaultGroup_get, ScNetwork::defaultGroup_set),
+            JS_CGETSET_DEF("stats", ScNetwork::stats_get, nullptr),
 
-        dukglue_register_method(ctx, &ScNetwork::createListener, "createListener");
-        dukglue_register_method(ctx, &ScNetwork::createSocket, "createSocket");
+            JS_CFUNC_DEF("addGroup", 0, ScNetwork::addGroup),
+            JS_CFUNC_DEF("getGroup", 1, ScNetwork::getGroup),
+            JS_CFUNC_DEF("removeGroup", 1, ScNetwork::removeGroup),
+            JS_CFUNC_DEF("getPlayer", 1, ScNetwork::getPlayer),
+            JS_CFUNC_DEF("kickPlayer", 1, ScNetwork::kickPlayer),
+            JS_CFUNC_DEF("sendMessage", 2, ScNetwork::sendMessage),
+
+            JS_CFUNC_DEF("createListener", 0, ScNetwork::createListener),
+            JS_CFUNC_DEF("createSocket", 0, ScNetwork::createSocket)
+        };
+
+        return MakeWithOpaque(ctx, funcs, nullptr);
     }
 
 } // namespace OpenRCT2::Scripting
