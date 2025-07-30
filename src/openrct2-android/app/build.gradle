@@ -34,6 +34,7 @@ android {
     }
     externalNativeBuild {
         cmake {
+            version "4.0.3"
             path 'src/main/CMakeLists.txt'
         }
     }
@@ -44,7 +45,7 @@ android {
 }
 
 dependencies {
-    implementation 'commons-io:commons-io:2.16.1'
+    implementation 'commons-io:commons-io:2.20.0'
     implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 }
