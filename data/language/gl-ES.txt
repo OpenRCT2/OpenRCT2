@@ -1855,7 +1855,7 @@ STR_2519    :Amosar información do parque
 STR_2520    :Amosar lista de visitantes
 STR_2521    :Amosar lista de persoal
 STR_2522    :Amosar mensaxes recentes
-STR_2523 ​​​​   :Amosar mapa
+STR_2523    :Amosar mapa
 STR_2524    :captura de pantalla
 STR_2533    :tecla RETROCESO
 STR_2534    :Tab
@@ -3831,3 +3831,9 @@ STR_6791    :Sensibilidade: {COMMA32}%
 STR_6792    :Edificios de entrada
 STR_6793    :Visitantes e persoal
 STR_6794    :Decoración e temáticas
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :Sen vista previa
+STR_6798    :Captura de pantalla
+STR_6799    :Minimapa
+STR_7000    :ou
