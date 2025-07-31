@@ -96,6 +96,13 @@ public class MainActivity extends AppCompatActivity {
 
         if (!hasRequiredPermissions()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                /*
+                TODO - This is a temporary solution
+                Ideally, OpenRCT2 assets should be shipped in the apk and we should ask
+                the user for their rct2 assets directory on boot (similar to windows).
+                Save data should be stored under the "external data directory",
+                which you can get via `getExternalFilesDir(null).getAbsolutePath()`
+                 */
                 Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
                 intent.addCategory("android.intent.category.DEFAULT");
                 intent.setData(Uri.fromParts("package", getPackageName(), null));
