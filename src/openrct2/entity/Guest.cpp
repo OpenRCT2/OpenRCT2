@@ -795,7 +795,7 @@ void Guest::UpdateMotivesIdle()
         Toilet--;
     }
 
-    if (State == PeepState::Walking && NauseaTarget >= 128)
+    if (State == PeepState::Walking && NauseaTarget >= 128 && !IsOnLevelCrossing())
     {
         if ((ScenarioRand() & 0xFF) <= static_cast<uint8_t>((Nausea - 128) / 2))
         {
@@ -5492,7 +5492,7 @@ void Guest::UpdateWalking()
 
     if (PeepFlags & PEEP_FLAGS_LITTER)
     {
-        if (!GetNextIsSurface())
+        if (!GetNextIsSurface() && !IsOnLevelCrossing())
         {
             if ((0xFFFF & ScenarioRand()) <= 4096)
             {
@@ -5514,7 +5514,8 @@ void Guest::UpdateWalking()
     }
     else if (HasEmptyContainer())
     {
-        if ((!GetNextIsSurface()) && (static_cast<uint32_t>(Id.ToUnderlying() & 0x1FF) == (currentTicks & 0x1FF))
+        if (!GetNextIsSurface() && !IsOnLevelCrossing()
+            && (static_cast<uint32_t>(Id.ToUnderlying() & 0x1FF) == (currentTicks & 0x1FF))
             && ((0xFFFF & ScenarioRand()) <= 4096))
         {
             int32_t container = Numerics::bitScanForward(GetEmptyContainerFlags());
