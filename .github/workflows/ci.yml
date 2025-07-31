@@ -605,7 +605,7 @@ jobs:
     name: Android
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:18-android
+    container: openrct2/openrct2-build:20-android
     steps:
       - name: Checkout
         uses: actions/checkout@v4
