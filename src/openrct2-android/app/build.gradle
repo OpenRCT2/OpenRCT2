@@ -34,7 +34,12 @@ android {
     }
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            if (System.getenv('OPENRCT2_KEYSTORE_FILE') && System.getenv('OPENRCT2_KEYSTORE_PASSWORD')) {
+                signingConfig signingConfigs.release
+            } else {
+                // Fallback to ephemeral debug signing when keystore is not available
+                signingConfig signingConfigs.debug
+            }
         }
     }
 
