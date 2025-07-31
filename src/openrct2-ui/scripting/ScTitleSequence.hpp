@@ -47,18 +47,19 @@ namespace OpenRCT2::Scripting
         LoadSc,
     };
 
-    static const DukEnumMap<TitleScript> TitleScriptMap({
-        { OpenRCT2::Title::LoadParkCommand::ScriptingName, TitleScript::Load },
-        { OpenRCT2::Title::SetLocationCommand::ScriptingName, TitleScript::Location },
-        { OpenRCT2::Title::RotateViewCommand::ScriptingName, TitleScript::Rotate },
-        { OpenRCT2::Title::SetZoomCommand::ScriptingName, TitleScript::Zoom },
-        { OpenRCT2::Title::FollowEntityCommand::ScriptingName, TitleScript::Follow },
-        { OpenRCT2::Title::SetSpeedCommand::ScriptingName, TitleScript::Speed },
-        { OpenRCT2::Title::WaitCommand::ScriptingName, TitleScript::Wait },
-        { OpenRCT2::Title::LoadScenarioCommand::ScriptingName, TitleScript::LoadSc },
-        { OpenRCT2::Title::RestartCommand::ScriptingName, TitleScript::Restart },
-        { OpenRCT2::Title::EndCommand::ScriptingName, TitleScript::End },
-    });
+    static const DukEnumMap<TitleScript> TitleScriptMap(
+        {
+            { OpenRCT2::Title::LoadParkCommand::ScriptingName, TitleScript::Load },
+            { OpenRCT2::Title::SetLocationCommand::ScriptingName, TitleScript::Location },
+            { OpenRCT2::Title::RotateViewCommand::ScriptingName, TitleScript::Rotate },
+            { OpenRCT2::Title::SetZoomCommand::ScriptingName, TitleScript::Zoom },
+            { OpenRCT2::Title::FollowEntityCommand::ScriptingName, TitleScript::Follow },
+            { OpenRCT2::Title::SetSpeedCommand::ScriptingName, TitleScript::Speed },
+            { OpenRCT2::Title::WaitCommand::ScriptingName, TitleScript::Wait },
+            { OpenRCT2::Title::LoadScenarioCommand::ScriptingName, TitleScript::LoadSc },
+            { OpenRCT2::Title::RestartCommand::ScriptingName, TitleScript::Restart },
+            { OpenRCT2::Title::EndCommand::ScriptingName, TitleScript::End },
+        });
 
     template<>
     DukValue ToDuk(duk_context* ctx, const TitleScript& value)

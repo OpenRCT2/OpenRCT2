@@ -741,8 +741,10 @@ static void ConsoleSetVariableAction(InteractiveConsole& console, std::string va
     auto action = TAction(std::forward<TArgs>(args)...);
     action.SetCallback([&console, var](const GameAction*, const GameActions::Result* res) {
         if (res->Error != GameActions::Status::Ok)
-            console.WriteLineError(String::stdFormat(
-                "set %s command failed: %s - %s.", var.c_str(), res->GetErrorTitle().c_str(), res->GetErrorMessage().c_str()));
+            console.WriteLineError(
+                String::stdFormat(
+                    "set %s command failed: %s - %s.", var.c_str(), res->GetErrorTitle().c_str(),
+                    res->GetErrorMessage().c_str()));
         else
             console.Execute(String::stdFormat("get %s", var.c_str()));
         console.EndAsyncExecution();
@@ -1618,8 +1620,9 @@ static void ConsoleCommandAddNewsItem([[maybe_unused]] InteractiveConsole& conso
         console.WriteLine("    9 (News::ItemType::graph)");
         console.WriteLine("   10 (News::ItemType::campaign)");
         console.WriteLine("message is the message to display, wrapped in quotes for multiple words");
-        console.WriteLine("assoc is the associated id of ride/peep/tile/etc. If the selected ItemType doesn't need an assoc "
-                          "(Null, Money, Award, Graph), you can leave this field blank");
+        console.WriteLine(
+            "assoc is the associated id of ride/peep/tile/etc. If the selected ItemType doesn't need an assoc "
+            "(Null, Money, Award, Graph), you can leave this field blank");
         return;
     }
 
