@@ -71,8 +71,9 @@ static bool UploadMinidump(const std::map<std::wstring, std::wstring>& files, in
     {
         wprintf(L"files[%s] = %s\n", file.first.c_str(), file.second.c_str());
     }
-    std::wstring url(L"https://openrct2.sp.backtrace.io:6098/"
-                     L"post?format=minidump&token=" BACKTRACE_TOKEN);
+    std::wstring url(
+        L"https://openrct2.sp.backtrace.io:6098/"
+        L"post?format=minidump&token=" BACKTRACE_TOKEN);
     std::map<std::wstring, std::wstring> parameters;
     parameters[L"product_name"] = L"openrct2";
     parameters[L"version"] = String::toWideChar(gVersionInfoFull);

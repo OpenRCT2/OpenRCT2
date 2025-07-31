@@ -410,14 +410,15 @@ namespace OpenRCT2::RCT1
         void AddDefaultEntries()
         {
             // Add default scenery groups
-            _sceneryGroupEntries.AddRange({
-                "rct2.scenery_group.scgtrees",
-                "rct2.scenery_group.scgshrub",
-                "rct2.scenery_group.scggardn",
-                "rct2.scenery_group.scgfence",
-                "rct2.scenery_group.scgwalls",
-                "rct2.scenery_group.scgpathx",
-            });
+            _sceneryGroupEntries.AddRange(
+                {
+                    "rct2.scenery_group.scgtrees",
+                    "rct2.scenery_group.scgshrub",
+                    "rct2.scenery_group.scggardn",
+                    "rct2.scenery_group.scgfence",
+                    "rct2.scenery_group.scgwalls",
+                    "rct2.scenery_group.scgpathx",
+                });
 
             // Add default footpaths
             _footpathSurfaceEntries.AddRange(
@@ -428,8 +429,9 @@ namespace OpenRCT2::RCT1
                   "rct1ll.footpath_surface.tiles_red", "rct1.footpath_surface.queue_blue", "rct1aa.footpath_surface.queue_red",
                   "rct1aa.footpath_surface.queue_yellow", "rct1aa.footpath_surface.queue_green" });
 
-            _footpathRailingsEntries.AddRange({ "rct2.footpath_railings.wood", "rct1ll.footpath_railings.space",
-                                                "rct1ll.footpath_railings.bamboo", "rct2.footpath_railings.concrete" });
+            _footpathRailingsEntries.AddRange(
+                { "rct2.footpath_railings.wood", "rct1ll.footpath_railings.space", "rct1ll.footpath_railings.bamboo",
+                  "rct2.footpath_railings.concrete" });
 
             // Add default surfaces
             _terrainSurfaceEntries.AddRange(
@@ -441,12 +443,12 @@ namespace OpenRCT2::RCT1
                   "rct1ll.terrain_surface.roof_grey", "rct1ll.terrain_surface.rust", "rct1ll.terrain_surface.wood" });
 
             // Add default edges
-            _terrainEdgeEntries.AddRange({ "rct2.terrain_edge.rock", "rct2.terrain_edge.wood_red",
-                                           "rct2.terrain_edge.wood_black", "rct2.terrain_edge.ice", "rct1.terrain_edge.brick",
-                                           "rct1.terrain_edge.iron", "rct1aa.terrain_edge.grey", "rct1aa.terrain_edge.yellow",
-                                           "rct1aa.terrain_edge.red", "rct1ll.terrain_edge.purple", "rct1ll.terrain_edge.green",
-                                           "rct1ll.terrain_edge.stone_brown", "rct1ll.terrain_edge.stone_grey",
-                                           "rct1ll.terrain_edge.skyscraper_a", "rct1ll.terrain_edge.skyscraper_b" });
+            _terrainEdgeEntries.AddRange(
+                { "rct2.terrain_edge.rock", "rct2.terrain_edge.wood_red", "rct2.terrain_edge.wood_black",
+                  "rct2.terrain_edge.ice", "rct1.terrain_edge.brick", "rct1.terrain_edge.iron", "rct1aa.terrain_edge.grey",
+                  "rct1aa.terrain_edge.yellow", "rct1aa.terrain_edge.red", "rct1ll.terrain_edge.purple",
+                  "rct1ll.terrain_edge.green", "rct1ll.terrain_edge.stone_brown", "rct1ll.terrain_edge.stone_grey",
+                  "rct1ll.terrain_edge.skyscraper_a", "rct1ll.terrain_edge.skyscraper_b" });
         }
 
         void AddAvailableEntriesFromResearchList()

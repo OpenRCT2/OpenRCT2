@@ -28,21 +28,22 @@
 
 namespace OpenRCT2::Scripting
 {
-    static const DukEnumMap<uint64_t> ParkFlagMap({
-        { "open", PARK_FLAGS_PARK_OPEN },
-        { "scenarioCompleteNameInput", PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT },
-        { "forbidLandscapeChanges", PARK_FLAGS_FORBID_LANDSCAPE_CHANGES },
-        { "forbidTreeRemoval", PARK_FLAGS_FORBID_TREE_REMOVAL },
-        { "forbidHighConstruction", PARK_FLAGS_FORBID_HIGH_CONSTRUCTION },
-        { "preferLessIntenseRides", PARK_FLAGS_PREF_LESS_INTENSE_RIDES },
-        { "forbidMarketingCampaigns", PARK_FLAGS_FORBID_MARKETING_CAMPAIGN },
-        { "preferMoreIntenseRides", PARK_FLAGS_PREF_MORE_INTENSE_RIDES },
-        { "noMoney", PARK_FLAGS_NO_MONEY },
-        { "difficultGuestGeneration", PARK_FLAGS_DIFFICULT_GUEST_GENERATION },
-        { "freeParkEntry", PARK_FLAGS_PARK_FREE_ENTRY },
-        { "difficultParkRating", PARK_FLAGS_DIFFICULT_PARK_RATING },
-        { "unlockAllPrices", PARK_FLAGS_UNLOCK_ALL_PRICES },
-    });
+    static const DukEnumMap<uint64_t> ParkFlagMap(
+        {
+            { "open", PARK_FLAGS_PARK_OPEN },
+            { "scenarioCompleteNameInput", PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT },
+            { "forbidLandscapeChanges", PARK_FLAGS_FORBID_LANDSCAPE_CHANGES },
+            { "forbidTreeRemoval", PARK_FLAGS_FORBID_TREE_REMOVAL },
+            { "forbidHighConstruction", PARK_FLAGS_FORBID_HIGH_CONSTRUCTION },
+            { "preferLessIntenseRides", PARK_FLAGS_PREF_LESS_INTENSE_RIDES },
+            { "forbidMarketingCampaigns", PARK_FLAGS_FORBID_MARKETING_CAMPAIGN },
+            { "preferMoreIntenseRides", PARK_FLAGS_PREF_MORE_INTENSE_RIDES },
+            { "noMoney", PARK_FLAGS_NO_MONEY },
+            { "difficultGuestGeneration", PARK_FLAGS_DIFFICULT_GUEST_GENERATION },
+            { "freeParkEntry", PARK_FLAGS_PARK_FREE_ENTRY },
+            { "difficultParkRating", PARK_FLAGS_DIFFICULT_PARK_RATING },
+            { "unlockAllPrices", PARK_FLAGS_UNLOCK_ALL_PRICES },
+        });
 
     ScPark::ScPark(duk_context* ctx)
         : _context(ctx)

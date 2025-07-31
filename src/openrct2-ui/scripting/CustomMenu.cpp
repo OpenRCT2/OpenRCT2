@@ -68,20 +68,21 @@ namespace OpenRCT2::Scripting
         "volcano_down",  "walk_down",  "paint_down",    "entrance_down", "hand_open",  "hand_closed",
     };
 
-    static const DukEnumMap<ViewportInteractionItem> ToolFilterMap({
-        { "terrain", ViewportInteractionItem::Terrain },
-        { "entity", ViewportInteractionItem::Entity },
-        { "ride", ViewportInteractionItem::Ride },
-        { "water", ViewportInteractionItem::Water },
-        { "scenery", ViewportInteractionItem::Scenery },
-        { "footpath", ViewportInteractionItem::Footpath },
-        { "footpath_item", ViewportInteractionItem::PathAddition },
-        { "park_entrance", ViewportInteractionItem::ParkEntrance },
-        { "wall", ViewportInteractionItem::Wall },
-        { "large_scenery", ViewportInteractionItem::LargeScenery },
-        { "label", ViewportInteractionItem::Label },
-        { "banner", ViewportInteractionItem::Banner },
-    });
+    static const DukEnumMap<ViewportInteractionItem> ToolFilterMap(
+        {
+            { "terrain", ViewportInteractionItem::Terrain },
+            { "entity", ViewportInteractionItem::Entity },
+            { "ride", ViewportInteractionItem::Ride },
+            { "water", ViewportInteractionItem::Water },
+            { "scenery", ViewportInteractionItem::Scenery },
+            { "footpath", ViewportInteractionItem::Footpath },
+            { "footpath_item", ViewportInteractionItem::PathAddition },
+            { "park_entrance", ViewportInteractionItem::ParkEntrance },
+            { "wall", ViewportInteractionItem::Wall },
+            { "large_scenery", ViewportInteractionItem::LargeScenery },
+            { "label", ViewportInteractionItem::Label },
+            { "banner", ViewportInteractionItem::Banner },
+        });
 
     template<>
     DukValue ToDuk(duk_context* ctx, const CursorID& cursorId)

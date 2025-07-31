@@ -129,7 +129,7 @@ jobs:
   check-code-formatting:
     name: Check code formatting
     runs-on: ubuntu-latest
-    container: openrct2/openrct2-build:18-format
+    container: openrct2/openrct2-build:20-format
     defaults:
       run:
         shell: sh
