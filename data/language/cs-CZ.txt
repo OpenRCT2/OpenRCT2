@@ -82,7 +82,7 @@ STR_0077    :Svislá dráha na stlačený vzduch
 STR_0078    :Ostrá zavěšená horská dráha
 STR_0079    :Kouzelný koberec
 STR_0080    :Podmořská jízda
-STR_0081    :Říční rafty
+STR_0081    :Říční vory
 STR_0082    :Neznámá atrakce (50)
 STR_0083    :Loď Enterprise
 STR_0084    :Neznámá atrakce (52)
@@ -124,8 +124,8 @@ STR_0531    :Malá ocelová horská dráha, na které vlak projíždí smyčky a
 STR_0532    :Bludiště z šest stop vysokých zdí nebo živého plotu. Návštěvníci bloudí dokud nenajdou východ
 STR_0533    :Dřevěná budova s krytým schodištěm a venkovní skluzavkou s koberečky
 STR_0534    :Návštěvníci závodí v motokárách po asfaltovém okruhu
-STR_0535    :Lodě plují ve vodním kanále a sjíždí strmé klesání, až z toho jsou návštěvníci mokří.
-STR_0536    :Loď pluje po širokých meandrech, přes stříkající vodopády a po vzrušujících pěnících peřejích
+STR_0535    :Lodě plují ve vodním kanále a sjíždí strmé klesání, voda při tom stříká na všechny strany a smáčí návštěvníky
+STR_0536    :Lodě plují po širokých meandrech, přes stříkající vodopády a po divokých pěnících peřejích
 STR_0537    :Návštěvníci do sebe bourají v autíčcích na autodromu
 STR_0538    :Velká houpající se pirátská kocábka
 STR_0539    :Loď je připevněna k rameni s protiváhou. Loď se houpe a může se zhoupnout až o 360 stupňů
@@ -156,7 +156,7 @@ STR_0566    :Malá horská dráha, na které vozy po jednom projíždí cik-cak 
 STR_0567    :Vozy se sedadly schopny otáčet návštěvníky vzhůru nohama
 STR_0569    :Jízda ve speciálních postrojích zavěšených pod tratí, poskytuje pocit letu jako pták
 STR_0571    :Kulaté vozy se otáčejí dokola při jízdě klikatou dřevěnou tratí
-STR_0572    :Lodě s velkou kapacitou jedou po širokém vodním kanále, vzhůru poháněné běžícím pásem, zrychlují z prudkých svahů, aby obrovským šplouchnutím namočily všechny návštěvníky
+STR_0572    :Velkokapacitní lodě se plaví po širokém kanále, stoupání vyjíždí po dopravníkovém pásu, na konci klesání pořádně šplouchnou a smáčí návštěvníky 
 STR_0573    :Vozy ve tvaru helikoptér, poháněné šlapáním, jezdí po ocelové dráze
 STR_0574    :Návštěvníci ve speciálních postrojích zavěšení v leže pod tratí, jedou přes zatáčky a obraty pozadu nebo čelem k zemi
 STR_0575    :Trakční vlaky zavěšné pod kolejí převážejí návštěvníky po parku
@@ -173,8 +173,8 @@ STR_0586    :Vozy ve tvaru lodí jedou po trati horské dráhy, což umožňuje 
 STR_0587    :Po mocném startu na stlačený vzduch se vozy rozjedou po svislé dráze, přes vrchol a svisle dolů zpět do stanice
 STR_0588    :Vozy po jednom jedou pod cik-cak tratí s ostrými zatáčkami a pády
 STR_0589    :Vozy připomínající létající koberce se pohybují nahoru a dolů
-STR_0590    :Návštěvníci vyrazí na podvodní jízdu v ponorce
-STR_0591    :Rafty se plaví po meandrech na vodním kanále
+STR_0590    :Návštěvníci vyrazí na podvodní plavbu v ponorce
+STR_0591    :Vory se plaví po meandrech na vodním kanále
 STR_0593    :Řetízkáč s náklonem
 STR_0598    :Vozy vyrazí vstříc jednomu konci trati, poté prosviští pozpátku stanicí a vyletí až na druhý konec trati
 STR_0599    :Malá horská dráha, na které vozy po jednom projíždí trať s kroucenými pády
