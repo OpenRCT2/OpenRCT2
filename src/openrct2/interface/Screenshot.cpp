@@ -179,7 +179,7 @@ std::string ScreenshotDumpPNG(RenderTarget& rt)
 
     if (!path.has_value())
     {
-        return "";
+        return {};
     }
 
     if (WriteDpiToFile(path.value(), rt, gPalette))
@@ -187,7 +187,7 @@ std::string ScreenshotDumpPNG(RenderTarget& rt)
         return path.value();
     }
 
-    return "";
+    return {};
 }
 
 static int32_t GetHighestBaseClearanceZ(const CoordsXY& location, const bool useViewClipping)

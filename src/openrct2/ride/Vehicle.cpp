@@ -94,16 +94,16 @@ uint8_t _vehicleF64E2C;
 Vehicle* _vehicleFrontVehicle;
 CoordsXYZ _vehicleCurPosition;
 
-static constexpr OpenRCT2::Audio::SoundId _screamSet0[] = {
+static constexpr OpenRCT2::Audio::SoundId _screamSetMisc[] = {
     OpenRCT2::Audio::SoundId::Scream8,
     OpenRCT2::Audio::SoundId::Scream1,
 };
-static constexpr OpenRCT2::Audio::SoundId _screamSet1Wooden[] = {
+static constexpr OpenRCT2::Audio::SoundId _screamSetWooden[] = {
     OpenRCT2::Audio::SoundId::Scream3, OpenRCT2::Audio::SoundId::Scream1, OpenRCT2::Audio::SoundId::Scream5,
     OpenRCT2::Audio::SoundId::Scream6, OpenRCT2::Audio::SoundId::Scream7, OpenRCT2::Audio::SoundId::Scream2,
     OpenRCT2::Audio::SoundId::Scream4,
 };
-static constexpr OpenRCT2::Audio::SoundId _screamSet2[] = {
+static constexpr OpenRCT2::Audio::SoundId _screamSetSteel[] = {
     OpenRCT2::Audio::SoundId::Scream1,
     OpenRCT2::Audio::SoundId::Scream6,
 };
@@ -2528,8 +2528,8 @@ void Vehicle::UpdateDeparting()
 
         if (rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND)
         {
-            auto soundId = (rideEntry->Cars[0].sound_range == 4) ? OpenRCT2::Audio::SoundId::Tram
-                                                                 : OpenRCT2::Audio::SoundId::TrainDeparting;
+            auto soundId = (rideEntry->Cars[0].soundRange == SoundRange::tramBell) ? OpenRCT2::Audio::SoundId::Tram
+                                                                                   : OpenRCT2::Audio::SoundId::TrainDeparting;
 
             OpenRCT2::Audio::Play3D(soundId, GetLocation());
         }
@@ -4884,9 +4884,9 @@ void Vehicle::UpdateSound()
     }
 
     const auto currentTicks = getGameState().currentTicks;
-    switch (carEntry.sound_range)
+    switch (carEntry.soundRange)
     {
-        case SOUND_RANGE_WHISTLE:
+        case SoundRange::steamWhistle:
             screamSound.id = scream_sound_id;
             if (!(currentTicks & 0x7F))
             {
@@ -4908,7 +4908,7 @@ void Vehicle::UpdateSound()
             screamSound.volume = 255;
             break;
 
-        case SOUND_RANGE_BELL:
+        case SoundRange::tramBell:
             screamSound.id = scream_sound_id;
             if (!(currentTicks & 0x7F))
             {
@@ -5032,16 +5032,16 @@ OpenRCT2::Audio::SoundId Vehicle::ProduceScreamSound(const int32_t totalNumPeeps
         auto r = ScenarioRand();
         if (totalNumPeeps >= static_cast<int32_t>(r % 16))
         {
-            switch (carEntry.sound_range)
+            switch (carEntry.soundRange)
             {
-                case SOUND_RANGE_SCREAMS_0:
-                    scream_sound_id = _screamSet0[r % std::size(_screamSet0)];
+                case SoundRange::screamsMisc:
+                    scream_sound_id = _screamSetMisc[r % std::size(_screamSetMisc)];
                     break;
-                case SOUND_RANGE_SCREAMS_1_WOODEN_COASTERS:
-                    scream_sound_id = _screamSet1Wooden[r % std::size(_screamSet1Wooden)];
+                case SoundRange::screamsWoodenRollerCoaster:
+                    scream_sound_id = _screamSetWooden[r % std::size(_screamSetWooden)];
                     break;
-                case SOUND_RANGE_SCREAMS_2:
-                    scream_sound_id = _screamSet2[r % std::size(_screamSet2)];
+                case SoundRange::screamSteelRollerCoaster:
+                    scream_sound_id = _screamSetSteel[r % std::size(_screamSetSteel)];
                     break;
                 default:
                     scream_sound_id = OpenRCT2::Audio::SoundId::NoScream;
@@ -8919,13 +8919,15 @@ void Vehicle::UpdateCrossings() const
 void Vehicle::Claxon() const
 {
     const auto* rideEntry = GetRideEntry();
-    switch (rideEntry->Cars[vehicle_type].sound_range)
+    switch (rideEntry->Cars[vehicle_type].soundRange)
     {
-        case SOUND_RANGE_WHISTLE:
+        case SoundRange::steamWhistle:
             OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::TrainWhistle, { x, y, z });
             break;
-        case SOUND_RANGE_BELL:
+        case SoundRange::tramBell:
             OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Tram, { x, y, z });
+            break;
+        default:
             break;
     }
 }

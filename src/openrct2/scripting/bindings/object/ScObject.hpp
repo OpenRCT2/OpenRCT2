@@ -398,7 +398,7 @@ namespace OpenRCT2::Scripting
             auto entry = GetEntry();
             if (entry != nullptr)
             {
-                return entry->sound_range;
+                return EnumValue(entry->soundRange);
             }
             return 0;
         }

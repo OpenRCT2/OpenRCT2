@@ -316,14 +316,7 @@ namespace OpenRCT2::Ui::Windows
                     continue;
 
                 auto ft = Formatter();
-                if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
-                {
-                    ft.Add<StringId>(kScenarioOriginStringIds[i]);
-                }
-                else
-                { // old-style
-                    ft.Add<StringId>(kScenarioCategoryStringIds[i]);
-                }
+                ft.Add<StringId>(kScenarioOriginStringIds[i]);
 
                 auto stringCoords = windowPos + ScreenCoordsXY{ widget.midX(), widget.midY() - 3 };
                 DrawTextWrapped(rt, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontStyle, TextAlignment::CENTRE });
@@ -701,37 +694,10 @@ namespace OpenRCT2::Ui::Windows
 
                 // Category heading
                 StringId headingStringId = kStringIdNone;
-                if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
+                if (selected_tab != EnumValue(ScenarioSource::Real) && currentHeading.category != scenario->Category)
                 {
-                    if (selected_tab != EnumValue(ScenarioSource::Real) && currentHeading.category != scenario->Category)
-                    {
-                        currentHeading.category = scenario->Category;
-                        headingStringId = kScenarioCategoryStringIds[currentHeading.raw];
-                    }
-                }
-                else
-                {
-                    if (selected_tab <= EnumValue(ScenarioCategory::expert))
-                    {
-                        if (currentHeading.source != scenario->SourceGame)
-                        {
-                            currentHeading.source = scenario->SourceGame;
-                            headingStringId = kScenarioOriginStringIds[currentHeading.raw];
-                        }
-                    }
-                    else if (selected_tab == EnumValue(ScenarioCategory::other))
-                    {
-                        auto category = scenario->Category;
-                        if (category <= ScenarioCategory::real)
-                        {
-                            category = ScenarioCategory::other;
-                        }
-                        if (currentHeading.category != category)
-                        {
-                            currentHeading.category = category;
-                            headingStringId = kScenarioCategoryStringIds[currentHeading.raw];
-                        }
-                    }
+                    currentHeading.category = scenario->Category;
+                    headingStringId = kScenarioCategoryStringIds[currentHeading.raw];
                 }
 
                 if (headingStringId != kStringIdNone)
@@ -807,32 +773,16 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsScenarioVisible(const ScenarioIndexEntry& scenario) const
         {
-            if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
+            if (static_cast<uint8_t>(scenario.SourceGame) != selected_tab)
             {
-                if (static_cast<uint8_t>(scenario.SourceGame) != selected_tab)
-                {
-                    return false;
-                }
+                return false;
             }
-            else
-            {
-                auto category = scenario.Category;
-                if (category > ScenarioCategory::other)
-                {
-                    category = ScenarioCategory::other;
-                }
-                if (EnumValue(category) != selected_tab)
-                {
-                    return false;
-                }
-            }
+
             return true;
         }
 
         bool IsLockingEnabled() const
         {
-            if (Config::Get().general.scenarioSelectMode != ScenarioSelectMode::origin)
-                return false;
             if (!Config::Get().general.ScenarioUnlockingEnabled)
                 return false;
             if (selected_tab >= 6)
@@ -848,19 +798,7 @@ namespace OpenRCT2::Ui::Windows
             for (size_t i = 0; i < numScenarios; i++)
             {
                 const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
-                if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
-                {
-                    showPages |= 1 << static_cast<uint8_t>(scenario->SourceGame);
-                }
-                else
-                {
-                    auto category = scenario->Category;
-                    if (category > ScenarioCategory::other)
-                    {
-                        category = ScenarioCategory::other;
-                    }
-                    showPages |= 1 << EnumValue(category);
-                }
+                showPages |= 1 << static_cast<uint8_t>(scenario->SourceGame);
             }
 
             if (showPages & (1 << Config::Get().interface.scenarioSelectLastTab))

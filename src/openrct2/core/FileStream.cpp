@@ -195,9 +195,4 @@ namespace OpenRCT2
         return readBytes;
     }
 
-    const void* FileStream::GetData() const
-    {
-        return nullptr;
-    }
-
 } // namespace OpenRCT2

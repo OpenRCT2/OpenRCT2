@@ -52,7 +52,6 @@ namespace OpenRCT2
         void Read(void* buffer, uint64_t length) override;
         void Write(const void* buffer, uint64_t length) override;
         uint64_t TryRead(void* buffer, uint64_t length) override;
-        const void* GetData() const override;
     };
 
 } // namespace OpenRCT2

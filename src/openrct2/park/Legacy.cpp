@@ -2192,7 +2192,7 @@ std::string_view MapToNewObjectIdentifier(std::string_view s)
     {
         return it->second;
     }
-    return "";
+    return {};
 }
 
 static const std::unordered_map<std::string_view, std::string_view> kDATPathNames = {
@@ -2248,30 +2248,27 @@ const RCT2::FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& des
 
 void UpdateFootpathsFromMapping(
     ObjectEntryIndex* pathToSurfaceMap, ObjectEntryIndex* pathToQueueSurfaceMap, ObjectEntryIndex* pathToRailingsMap,
-    ObjectList& requiredObjects, ObjectEntryIndex& surfaceCount, ObjectEntryIndex& railingCount, ObjectEntryIndex entryIndex,
-    const RCT2::FootpathMapping* footpathMapping)
+    ObjectList& requiredObjects, ObjectEntryIndex entryIndex, const RCT2::FootpathMapping* footpathMapping)
 {
     auto surfaceIndex = requiredObjects.Find(ObjectType::footpathSurface, footpathMapping->NormalSurface);
     if (surfaceIndex == kObjectEntryIndexNull)
     {
-        requiredObjects.SetObject(ObjectType::footpathSurface, surfaceCount, footpathMapping->NormalSurface);
-        surfaceIndex = surfaceCount++;
+        surfaceIndex = requiredObjects.Add(ObjectEntryDescriptor(ObjectType::footpathSurface, footpathMapping->NormalSurface));
     }
     pathToSurfaceMap[entryIndex] = surfaceIndex;
 
-    surfaceIndex = requiredObjects.Find(ObjectType::footpathSurface, footpathMapping->QueueSurface);
-    if (surfaceIndex == kObjectEntryIndexNull)
+    auto queueSurfaceIndex = requiredObjects.Find(ObjectType::footpathSurface, footpathMapping->QueueSurface);
+    if (queueSurfaceIndex == kObjectEntryIndexNull)
     {
-        requiredObjects.SetObject(ObjectType::footpathSurface, surfaceCount, footpathMapping->QueueSurface);
-        surfaceIndex = surfaceCount++;
+        queueSurfaceIndex = requiredObjects.Add(
+            ObjectEntryDescriptor(ObjectType::footpathSurface, footpathMapping->QueueSurface));
     }
-    pathToQueueSurfaceMap[entryIndex] = surfaceIndex;
+    pathToQueueSurfaceMap[entryIndex] = queueSurfaceIndex;
 
     auto railingIndex = requiredObjects.Find(ObjectType::footpathRailings, footpathMapping->Railing);
     if (railingIndex == kObjectEntryIndexNull)
     {
-        requiredObjects.SetObject(ObjectType::footpathRailings, railingCount, footpathMapping->Railing);
-        railingIndex = railingCount++;
+        railingIndex = requiredObjects.Add(ObjectEntryDescriptor(ObjectType::footpathRailings, footpathMapping->Railing));
     }
     pathToRailingsMap[entryIndex] = railingIndex;
 }

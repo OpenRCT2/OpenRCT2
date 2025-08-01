@@ -30,7 +30,7 @@ namespace OpenRCT2::Http
         auto jstringToString = [](JNIEnv* env, jstring jstr) -> std::string {
             if (jstr == nullptr)
             {
-                return "";
+                return {};
             }
             const char* cstr = env->GetStringUTFChars(jstr, nullptr);
             std::string str = cstr;

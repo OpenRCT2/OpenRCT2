@@ -535,14 +535,14 @@ enum
     FRICTION_SOUND_NONE = 255
 };
 
-enum
+enum class SoundRange : uint8_t
 {
-    SOUND_RANGE_SCREAMS_0 = 0,
-    SOUND_RANGE_SCREAMS_1_WOODEN_COASTERS = 1,
-    SOUND_RANGE_SCREAMS_2 = 2,
-    SOUND_RANGE_WHISTLE = 3,
-    SOUND_RANGE_BELL = 4,
-    SOUND_RANGE_NONE = 255
+    screamsMisc = 0, // Used by rides where the screams should not include rolling sounds.
+    screamsWoodenRollerCoaster = 1,
+    screamSteelRollerCoaster = 2,
+    steamWhistle = 3,
+    tramBell = 4,
+    none = 255,
 };
 
 constexpr uint8_t kVehicleSeatPairFlag = 0x80;

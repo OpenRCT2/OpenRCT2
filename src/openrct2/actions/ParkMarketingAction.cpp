@@ -70,7 +70,7 @@ GameActions::Result ParkMarketingAction::Execute() const
     MarketingCampaign campaign{};
     campaign.Type = _type;
     campaign.WeeksLeft = _numWeeks;
-    campaign.Flags = MarketingCampaignFlags::FIRST_WEEK;
+    campaign.flags = { MarketingCampaignFlag::firstWeek };
     if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
     {
         campaign.RideId = RideId::FromUnderlying(_item);

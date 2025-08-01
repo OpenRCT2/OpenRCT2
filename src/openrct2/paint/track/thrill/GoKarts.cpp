@@ -1568,7 +1568,7 @@ static void PaintGoKartsStation(
 
     bool hasFence;
     ImageId imageId;
-    const uint32_t(*sprites)[2] = go_karts_track_pieces_starting_grid;
+    const uint32_t (*sprites)[2] = go_karts_track_pieces_starting_grid;
 
     if (trackElement.GetTrackType() == TrackElemType::EndStation)
     {

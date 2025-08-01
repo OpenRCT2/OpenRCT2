@@ -375,7 +375,7 @@ namespace OpenRCT2::Scripting
                     return widget->string;
                 }
             }
-            return "";
+            return {};
         }
 
         void text_set(std::string value)

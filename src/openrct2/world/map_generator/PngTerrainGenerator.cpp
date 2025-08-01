@@ -156,9 +156,9 @@ namespace OpenRCT2::World::MapGenerator
         HeightMap dest = _heightMapData;
 
         // Get technical map size, +2 for the black tiles around the map
-        auto maxWidth = static_cast<int32_t>(dest.width + 2);
-        auto maxHeight = static_cast<int32_t>(dest.height + 2);
-        MapInit({ maxHeight, maxWidth });
+        auto mapWidth = static_cast<int32_t>(dest.width + 2);
+        auto mapHeight = static_cast<int32_t>(dest.height + 2);
+        MapInit({ mapHeight, mapWidth });
 
         if (settings->smooth_height_map)
         {
@@ -236,7 +236,7 @@ namespace OpenRCT2::World::MapGenerator
         if (settings->smoothTileEdges)
         {
             // Set the tile slopes so that there are no cliffs
-            smoothMap(settings->mapSize, smoothTileWeak);
+            smoothMap({ mapWidth, mapHeight }, smoothTileWeak);
         }
     }
 } // namespace OpenRCT2::World::MapGenerator

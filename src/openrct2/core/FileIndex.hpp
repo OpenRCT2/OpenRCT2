@@ -106,10 +106,10 @@ public:
         std::vector<TItem> items;
         auto scanResult = Scan();
         auto readIndexResult = ReadIndexFile(language, scanResult.Stats);
-        if (std::get<0>(readIndexResult))
+        if (readIndexResult.first)
         {
             // Index was loaded
-            items = std::get<1>(readIndexResult);
+            items = std::move(readIndexResult.second);
         }
         else
         {

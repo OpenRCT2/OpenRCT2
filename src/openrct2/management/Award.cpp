@@ -13,7 +13,6 @@
 #include "../config/Config.h"
 #include "../entity/EntityList.h"
 #include "../entity/Guest.h"
-#include "../localisation/StringIds.h"
 #include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -24,52 +23,60 @@
 
 using namespace OpenRCT2;
 
-constexpr uint8_t NEGATIVE = 0;
-constexpr uint8_t POSITIVE = 1;
-
-static constexpr uint8_t AwardPositiveMap[] = {
-    NEGATIVE, // AwardType::MostUntidy
-    POSITIVE, // AwardType::MostTidy
-    POSITIVE, // AwardType::BestRollerCoasters
-    POSITIVE, // AwardType::BestValue
-    POSITIVE, // AwardType::MostBeautiful
-    NEGATIVE, // AwardType::WorstValue
-    POSITIVE, // AwardType::Safest
-    POSITIVE, // AwardType::BestStaff
-    POSITIVE, // AwardType::BestFood
-    NEGATIVE, // AwardType::WorstFood
-    POSITIVE, // AwardType::BestToilets
-    NEGATIVE, // AwardType::MostDisappointing
-    POSITIVE, // AwardType::BestWaterRides
-    POSITIVE, // AwardType::BestCustomDesignedRides
-    POSITIVE, // AwardType::MostDazzlingRideColours
-    NEGATIVE, // AwardType::MostConfusingLayout
-    POSITIVE, // AwardType::BestGentleRides
+enum class AwardEffect : uint8_t
+{
+    negative,
+    positive
 };
 
-static constexpr StringId AwardNewsStrings[] = {
-    STR_NEWS_ITEM_AWARD_MOST_UNTIDY,
-    STR_NEWS_ITEM_MOST_TIDY,
-    STR_NEWS_ITEM_BEST_ROLLERCOASTERS,
-    STR_NEWS_ITEM_BEST_VALUE,
-    STR_NEWS_ITEM_MOST_BEAUTIFUL,
-    STR_NEWS_ITEM_WORST_VALUE,
-    STR_NEWS_ITEM_SAFEST,
-    STR_NEWS_ITEM_BEST_STAFF,
-    STR_NEWS_ITEM_BEST_FOOD,
-    STR_NEWS_ITEM_WORST_FOOD,
-    STR_NEWS_ITEM_BEST_TOILETS,
-    STR_NEWS_ITEM_MOST_DISAPPOINTING,
-    STR_NEWS_ITEM_BEST_WATER_RIDES,
-    STR_NEWS_ITEM_BEST_CUSTOM_DESIGNED_RIDES,
-    STR_NEWS_ITEM_MOST_DAZZLING_RIDE_COLOURS,
-    STR_NEWS_ITEM_MOST_CONFUSING_LAYOUT,
-    STR_NEWS_ITEM_BEST_GENTLE_RIDES,
+struct AwardData_t
+{
+    StringId text;
+    StringId news;
+    ImageIndex sprite;
+    AwardEffect effect;
 };
+
+// clang-format off
+static constexpr AwardData_t AwardData[] = {
+    { STR_AWARD_MOST_UNTIDY,                STR_NEWS_ITEM_AWARD_MOST_UNTIDY,          SPR_AWARD_MOST_UNTIDY,                AwardEffect::negative },
+    { STR_AWARD_MOST_TIDY,                  STR_NEWS_ITEM_MOST_TIDY,                  SPR_AWARD_MOST_TIDY,                  AwardEffect::positive },
+    { STR_AWARD_BEST_ROLLERCOASTERS,        STR_NEWS_ITEM_BEST_ROLLERCOASTERS,        SPR_AWARD_BEST_ROLLERCOASTERS,        AwardEffect::positive },
+    { STR_AWARD_BEST_VALUE,                 STR_NEWS_ITEM_BEST_VALUE,                 SPR_AWARD_BEST_VALUE,                 AwardEffect::positive },
+    { STR_AWARD_MOST_BEAUTIFUL,             STR_NEWS_ITEM_MOST_BEAUTIFUL,             SPR_AWARD_MOST_BEAUTIFUL,             AwardEffect::positive },
+    { STR_AWARD_WORST_VALUE,                STR_NEWS_ITEM_WORST_VALUE,                SPR_AWARD_WORST_VALUE,                AwardEffect::negative },
+    { STR_AWARD_SAFEST,                     STR_NEWS_ITEM_SAFEST,                     SPR_AWARD_SAFEST,                     AwardEffect::positive },
+    { STR_AWARD_BEST_STAFF,                 STR_NEWS_ITEM_BEST_STAFF,                 SPR_AWARD_BEST_STAFF,                 AwardEffect::positive },
+    { STR_AWARD_BEST_FOOD,                  STR_NEWS_ITEM_BEST_FOOD,                  SPR_AWARD_BEST_FOOD,                  AwardEffect::positive },
+    { STR_AWARD_WORST_FOOD,                 STR_NEWS_ITEM_WORST_FOOD,                 SPR_AWARD_WORST_FOOD,                 AwardEffect::negative },
+    { STR_AWARD_BEST_TOILETS,               STR_NEWS_ITEM_BEST_TOILETS,               SPR_AWARD_BEST_TOILETS,               AwardEffect::positive },
+    { STR_AWARD_MOST_DISAPPOINTING,         STR_NEWS_ITEM_MOST_DISAPPOINTING,         SPR_AWARD_MOST_DISAPPOINTING,         AwardEffect::negative },
+    { STR_AWARD_BEST_WATER_RIDES,           STR_NEWS_ITEM_BEST_WATER_RIDES,           SPR_AWARD_BEST_WATER_RIDES,           AwardEffect::positive },
+    { STR_AWARD_BEST_CUSTOM_DESIGNED_RIDES, STR_NEWS_ITEM_BEST_CUSTOM_DESIGNED_RIDES, SPR_AWARD_BEST_CUSTOM_DESIGNED_RIDES, AwardEffect::positive },
+    { STR_AWARD_MOST_DAZZLING_RIDE_COLOURS, STR_NEWS_ITEM_MOST_DAZZLING_RIDE_COLOURS, SPR_AWARD_MOST_DAZZLING_RIDE_COLOURS, AwardEffect::positive },
+    { STR_AWARD_MOST_CONFUSING_LAYOUT,      STR_NEWS_ITEM_MOST_CONFUSING_LAYOUT,      SPR_AWARD_MOST_CONFUSING_LAYOUT,      AwardEffect::negative },
+    { STR_AWARD_BEST_GENTLE_RIDES,          STR_NEWS_ITEM_BEST_GENTLE_RIDES,          SPR_AWARD_BEST_GENTLE_RIDES,          AwardEffect::positive },
+};
+// clang-format on
 
 bool AwardIsPositive(AwardType type)
 {
-    return AwardPositiveMap[EnumValue(type)];
+    return AwardData[EnumValue(type)].effect == AwardEffect::positive;
+}
+
+ImageIndex AwardGetSprite(AwardType type)
+{
+    return AwardData[EnumValue(type)].sprite;
+}
+
+StringId AwardGetText(AwardType type)
+{
+    return AwardData[EnumValue(type)].text;
+}
+
+StringId AwardGetNews(AwardType type)
+{
+    return AwardData[EnumValue(type)].news;
 }
 
 #pragma region Award checks
@@ -596,6 +603,16 @@ void AwardReset()
     getGameState().currentAwards.clear();
 }
 
+static void AwardAdd(AwardType type)
+{
+    getGameState().currentAwards.push_back(Award{ 5u, type });
+    if (Config::Get().notifications.ParkAward)
+    {
+        News::AddItemToQueue(News::ItemType::award, AwardGetNews(type), 0, {});
+    }
+    Ui::GetWindowManager()->InvalidateByClass(WindowClass::ParkInformation);
+}
+
 /**
  *
  *  rct2: 0x0066A86C
@@ -646,14 +663,24 @@ void AwardUpdateAll()
             // Check if award is deserved
             if (AwardIsDeserved(awardType, activeAwardTypes))
             {
-                // Add award
-                currentAwards.push_back(Award{ 5u, awardType });
-                if (Config::Get().notifications.ParkAward)
-                {
-                    News::AddItemToQueue(News::ItemType::award, AwardNewsStrings[EnumValue(awardType)], 0, {});
-                }
-                windowMgr->InvalidateByClass(WindowClass::ParkInformation);
+                AwardAdd(awardType);
             }
         }
     }
+}
+
+void AwardGrant(AwardType type)
+{
+    auto& currentAwards = getGameState().currentAwards;
+
+    // Remove award type if already granted
+    std::erase_if(currentAwards, [type](const Award& award) { return award.Type == type; });
+
+    // Ensure there is space for the award
+    if (currentAwards.size() >= OpenRCT2::Limits::kMaxAwards)
+    {
+        currentAwards.erase(currentAwards.begin());
+    }
+
+    AwardAdd(type);
 }

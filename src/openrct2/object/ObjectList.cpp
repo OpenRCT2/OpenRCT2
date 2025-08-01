@@ -12,8 +12,8 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../core/EnumUtils.hpp"
-#include "../core/SawyerCoding.h"
 #include "../object/Object.h"
+#include "../sawyer_coding/SawyerCoding.h"
 #include "ObjectLimits.h"
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
@@ -148,10 +148,12 @@ const ObjectEntryDescriptor& ObjectList::GetObject(ObjectType type, ObjectEntryI
     return placeholder;
 }
 
-void ObjectList::Add(const ObjectEntryDescriptor& entry)
+ObjectEntryIndex ObjectList::Add(const ObjectEntryDescriptor& entry)
 {
     auto& subList = GetList(entry.GetType());
+    auto index = subList.size();
     subList.push_back(entry);
+    return static_cast<ObjectEntryIndex>(index);
 }
 
 void ObjectList::SetObject(ObjectEntryIndex index, const ObjectEntryDescriptor& entry)

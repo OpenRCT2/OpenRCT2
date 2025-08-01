@@ -20,8 +20,6 @@
     #undef interface
 #endif
 
-enum class ScenarioSelectMode : uint8_t;
-
 namespace OpenRCT2::Config
 {
     struct General
@@ -87,6 +85,10 @@ namespace OpenRCT2::Config
         bool InvertViewportDrag;
         bool ZoomToCursor;
 
+        // Gamepad
+        int32_t gamepadDeadzone;
+        float gamepadSensitivity;
+
         // Miscellaneous
         bool PlayIntro;
         int32_t WindowSnapProximity;
@@ -99,7 +101,6 @@ namespace OpenRCT2::Config
         bool AutoOpenShops;
         int32_t DefaultInspectionInterval;
         int32_t WindowLimit;
-        ScenarioSelectMode scenarioSelectMode;
         bool ScenarioUnlockingEnabled;
         bool ScenarioHideMegaPark;
         bool ShowRealNamesOfGuests;
@@ -122,7 +123,7 @@ namespace OpenRCT2::Config
         int16_t FileBrowserHeight;
         bool FileBrowserShowSizeColumn;
         bool FileBrowserShowDateColumn;
-        bool FileBrowserShowPreviews;
+        ParkPreviewPref FileBrowserPreviewType;
     };
 
     struct Interface

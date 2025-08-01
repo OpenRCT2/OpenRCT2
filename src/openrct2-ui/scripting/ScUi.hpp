@@ -40,28 +40,30 @@ namespace OpenRCT2::Ui::Windows
 
 namespace OpenRCT2::Scripting
 {
-    static const DukEnumMap<ScenarioCategory> ScenarioCategoryMap({
-        { "beginner", ScenarioCategory::beginner },
-        { "challenging", ScenarioCategory::challenging },
-        { "expert", ScenarioCategory::expert },
-        { "real", ScenarioCategory::real },
-        { "other", ScenarioCategory::other },
-        { "dlc", ScenarioCategory::dlc },
-        { "build_your_own", ScenarioCategory::buildYourOwn },
-        { "competitions", ScenarioCategory::competitions },
-    });
+    static const DukEnumMap<ScenarioCategory> ScenarioCategoryMap(
+        {
+            { "beginner", ScenarioCategory::beginner },
+            { "challenging", ScenarioCategory::challenging },
+            { "expert", ScenarioCategory::expert },
+            { "real", ScenarioCategory::real },
+            { "other", ScenarioCategory::other },
+            { "dlc", ScenarioCategory::dlc },
+            { "build_your_own", ScenarioCategory::buildYourOwn },
+            { "competitions", ScenarioCategory::competitions },
+        });
 
-    static const DukEnumMap<ScenarioSource> ScenarioSourceMap({
-        { "rct1", ScenarioSource::RCT1 },
-        { "rct1_aa", ScenarioSource::RCT1_AA },
-        { "rct1_ll", ScenarioSource::RCT1_LL },
-        { "rct2", ScenarioSource::RCT2 },
-        { "rct2_ww", ScenarioSource::RCT2_WW },
-        { "rct2_tt", ScenarioSource::RCT2_TT },
-        { "real", ScenarioSource::Real },
-        { "extras", ScenarioSource::Extras },
-        { "other", ScenarioSource::Other },
-    });
+    static const DukEnumMap<ScenarioSource> ScenarioSourceMap(
+        {
+            { "rct1", ScenarioSource::RCT1 },
+            { "rct1_aa", ScenarioSource::RCT1_AA },
+            { "rct1_ll", ScenarioSource::RCT1_LL },
+            { "rct2", ScenarioSource::RCT2 },
+            { "rct2_ww", ScenarioSource::RCT2_WW },
+            { "rct2_tt", ScenarioSource::RCT2_TT },
+            { "real", ScenarioSource::Real },
+            { "extras", ScenarioSource::Extras },
+            { "other", ScenarioSource::Other },
+        });
 
     template<>
     inline DukValue ToDuk(duk_context* ctx, const ScenarioCategory& value)

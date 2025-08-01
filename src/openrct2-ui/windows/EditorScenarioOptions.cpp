@@ -2209,7 +2209,7 @@ namespace OpenRCT2::Ui::Windows
         {
             const auto* ride = GetRide(rideId);
             if (ride == nullptr)
-                return "";
+                return {};
             return ride->getName();
         }
 

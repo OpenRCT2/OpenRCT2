@@ -47,7 +47,7 @@
         linker,                                                                                                                \
         "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 // The name of the mutex used to prevent multiple instances of the game from running
-static constexpr wchar_t SINGLE_INSTANCE_MUTEX_NAME[] = L"RollerCoaster Tycoon 2_GSKMUTEX";
+static constexpr wchar_t kSingleInstanceMutexName[] = L"RollerCoaster Tycoon 2_GSKMUTEX";
 
     #define SOFTWARE_CLASSES L"Software\\Classes"
     #define MUI_CACHE L"Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache"
@@ -776,7 +776,7 @@ namespace OpenRCT2::Platform
     bool LockSingleInstance()
     {
         // Check if operating system mutex exists
-        HANDLE mutex = CreateMutexW(nullptr, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
+        HANDLE mutex = CreateMutexW(nullptr, FALSE, kSingleInstanceMutexName);
         if (mutex == nullptr)
         {
             LOG_ERROR("unable to create mutex");

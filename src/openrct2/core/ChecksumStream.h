@@ -11,7 +11,9 @@
 
 #include "IStream.hpp"
 
+#include <algorithm>
 #include <array>
+#include <cstring>
 
 namespace OpenRCT2
 {
@@ -34,7 +36,7 @@ namespace OpenRCT2
         const void* GetData() const override
         {
             return _checksum.data();
-        };
+        }
 
         ///////////////////////////////////////////////////////////////////////////
         // ISteam methods
@@ -72,41 +74,61 @@ namespace OpenRCT2
 
         void Write(const void* buffer, uint64_t length) override;
 
-        void Write1(const void* buffer) override
-        {
-            Write<1>(buffer);
-        }
-
-        void Write2(const void* buffer) override
-        {
-            Write<2>(buffer);
-        }
-
-        void Write4(const void* buffer) override
-        {
-            Write<4>(buffer);
-        }
-
-        void Write8(const void* buffer) override
-        {
-            Write<8>(buffer);
-        }
-
-        void Write16(const void* buffer) override
-        {
-            Write<16>(buffer);
-        }
-
         template<size_t N>
         void Write(const void* buffer)
         {
-            Write(buffer, N);
+            for (size_t i = 0; i < N; i += sizeof(uint64_t))
+            {
+                const auto maxLen = std::min<size_t>(sizeof(uint64_t), N - i);
+
+                uint64_t value{};
+                std::memcpy(&value, reinterpret_cast<const std::byte*>(buffer) + i, maxLen);
+
+                Step(value);
+            }
         }
 
         uint64_t TryRead(void* buffer, uint64_t length) override
         {
             return 0;
         }
+
+    private:
+        void Write1(const void* buffer) override
+        {
+            Step(*static_cast<const uint8_t*>(buffer));
+        }
+
+        void Write2(const void* buffer) override
+        {
+            WriteUnaligned<uint16_t>(buffer);
+        }
+
+        void Write4(const void* buffer) override
+        {
+            WriteUnaligned<uint32_t>(buffer);
+        }
+
+        void Write8(const void* buffer) override
+        {
+            WriteUnaligned<uint64_t>(buffer);
+        }
+
+        void Write16(const void* buffer) override
+        {
+            WriteUnaligned<uint64_t>(static_cast<const std::byte*>(buffer) + 0);
+            WriteUnaligned<uint64_t>(static_cast<const std::byte*>(buffer) + 8);
+        }
+
+        template<typename T>
+        void WriteUnaligned(const void* buffer)
+        {
+            T value;
+            std::memcpy(&value, buffer, sizeof(T));
+            Step(value);
+        }
+
+        void Step(uint64_t value);
     };
 
 } // namespace OpenRCT2

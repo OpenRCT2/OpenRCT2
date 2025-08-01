@@ -23,6 +23,8 @@ namespace OpenRCT2::Audio
     enum class SoundId : uint8_t;
 }
 
+enum class SoundRange : uint8_t;
+
 enum class CarEntryAnimation : uint8_t
 {
     None = 0,
@@ -213,7 +215,7 @@ struct CarEntry
     uint8_t spinning_friction;
     OpenRCT2::Audio::SoundId friction_sound_id; // Only valid for front/default car of train
     uint8_t ReversedCarIndex; // When the car is reversed (using a turntable or reverser), it will be changed to this car.
-    uint8_t sound_range;
+    SoundRange soundRange;
     uint8_t double_sound_frequency; // (Doubles the velocity when working out the sound frequency {used on go karts})
     uint8_t powered_acceleration;
     uint8_t powered_max_speed;

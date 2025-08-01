@@ -15,13 +15,14 @@
 
 namespace OpenRCT2::Scripting
 {
-    static const DukEnumMap<uint8_t> CrashParticleTypeMap({
-        { "corner", 0 },
-        { "rod", 1 },
-        { "wheel", 2 },
-        { "panel", 3 },
-        { "seat", 4 },
-    });
+    static const DukEnumMap<uint8_t> CrashParticleTypeMap(
+        {
+            { "corner", 0 },
+            { "rod", 1 },
+            { "wheel", 2 },
+            { "panel", 3 },
+            { "seat", 4 },
+        });
 
     ScCrashedVehicleParticle::ScCrashedVehicleParticle(EntityId id)
         : ScEntity(id)

@@ -31,4 +31,6 @@ namespace OpenRCT2
     void StoreMouseInput(MouseState state, const ScreenCoordsXY& screenCoords);
 
     void InputScrollViewport(const ScreenCoordsXY& screenCoords);
+    void InputScrollViewportSmooth(const ScreenCoordsXY& screenCoords);
+    void InputScrollViewportSmooth(const ScreenCoordsXY& screenCoords, WindowBase* targetWindow);
 } // namespace OpenRCT2

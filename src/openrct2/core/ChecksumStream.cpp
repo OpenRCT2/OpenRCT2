@@ -11,8 +11,6 @@
 
 #include "Endianness.h"
 
-#include <cstddef>
-
 namespace OpenRCT2
 {
 #ifndef DISABLE_NETWORK
@@ -25,22 +23,23 @@ namespace OpenRCT2
 
     void ChecksumStream::Write(const void* buffer, uint64_t length)
     {
-        uint64_t* hash = reinterpret_cast<uint64_t*>(_checksum.data());
         for (size_t i = 0; i < length; i += sizeof(uint64_t))
         {
             const auto maxLen = std::min<size_t>(sizeof(uint64_t), length - i);
 
-            uint64_t temp{};
-            std::memcpy(&temp, reinterpret_cast<const std::byte*>(buffer) + i, maxLen);
+            uint64_t value{};
+            std::memcpy(&value, reinterpret_cast<const std::byte*>(buffer) + i, maxLen);
 
-            // Always use value as little endian, most common systems are little.
-    #if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
-            temp = ByteSwapBE(temp);
-    #endif
-
-            *hash ^= temp;
-            *hash *= kPrime;
+            Step(value);
         }
+    }
+
+    void ChecksumStream::Step(uint64_t value)
+    {
+        uint64_t* hash = reinterpret_cast<uint64_t*>(_checksum.data());
+
+        *hash ^= value;
+        *hash *= kPrime;
     }
 
 #endif

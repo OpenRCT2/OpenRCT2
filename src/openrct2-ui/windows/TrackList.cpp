@@ -66,7 +66,7 @@ namespace OpenRCT2::Ui::Windows
     );
     // clang-format on
 
-    constexpr uint16_t TRACK_DESIGN_INDEX_UNLOADED = UINT16_MAX;
+    constexpr uint16_t kTrackDesignIndexUnloaded = UINT16_MAX;
 
     RideSelection _window_track_list_item;
 
@@ -151,7 +151,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                if (_loadedTrackDesignIndex != TRACK_DESIGN_INDEX_UNLOADED
+                if (_loadedTrackDesignIndex != kTrackDesignIndexUnloaded
                     && (_loadedTrackDesign->gameStateData.hasFlag(TrackDesignGameStateFlag::VehicleUnavailable)))
                 {
                     ContextShowError(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, kStringIdNone, {});
@@ -236,7 +236,7 @@ namespace OpenRCT2::Ui::Windows
             _trackDesignPreviewPixels.resize(4 * kTrackPreviewImageSize);
 
             _loadedTrackDesign = nullptr;
-            _loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
+            _loadedTrackDesignIndex = kTrackDesignIndexUnloaded;
         }
 
         void ReopenTrackManager()
@@ -282,7 +282,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_TOGGLE_SCENERY:
                     gTrackDesignSceneryToggle = !gTrackDesignSceneryToggle;
-                    _loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
+                    _loadedTrackDesignIndex = kTrackDesignIndexUnloaded;
                     Invalidate();
                     break;
                 case WIDX_BACK:
@@ -492,7 +492,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    _loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
+                    _loadedTrackDesignIndex = kTrackDesignIndexUnloaded;
                 }
             }
 

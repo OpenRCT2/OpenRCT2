@@ -177,7 +177,7 @@ namespace OpenRCT2::Platform
             return expectedPath;
         }
 
-        return "";
+        return {};
     }
     #endif
 

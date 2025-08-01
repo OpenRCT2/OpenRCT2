@@ -245,3 +245,6 @@ STR_6662    :Randomize colors for every train or vehicle
 STR_6670    :Guest behavior
 
 STR_6732    :Show a button in the toolbar to rotate the view counterclockwise
+
+STR_6787    :Analog stick deadzone (minimum movement required)
+STR_6789    :Analog stick sensitivity multiplier

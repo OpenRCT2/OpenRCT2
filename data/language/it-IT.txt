@@ -1246,7 +1246,6 @@ STR_1870    :Numero di rotazioni complete
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Entrate: {BLACK}{CURRENCY} all’ora
 STR_1874    :{WINDOW_COLOUR_2}Profitto: {BLACK}{CURRENCY} all’ora
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Ispeziona le attrazioni
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Ripara le attrazioni
 STR_1878    :{WINDOW_COLOUR_2}Ispezione:
@@ -2769,9 +2768,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :Parchi “veri”
 STR_5626    :Altri parchi
-STR_5627    :Raggruppa lista scenari per:
-STR_5628    :Gioco di origine
-STR_5629    :Livello di difficoltà
 STR_5630    :Attiva sblocco progressivo
 STR_5631    :Parchi scaricabili originali
 STR_5632    :Costruisci il tuo…
@@ -3254,7 +3250,6 @@ STR_6165    :Usa sincronizz. verticale
 STR_6166    :Sincronizza i frame alla frequenza di aggiornamento dello schermo, per prevenire gli artefatti grafici (tearing).
 STR_6167    :Avanzate
 STR_6168    :Sequenza del titolo
-STR_6169    :Selezione scenario
 STR_6170    :Personalizzazione interfaccia
 STR_6171    :Cerca
 STR_6172    :Cerca

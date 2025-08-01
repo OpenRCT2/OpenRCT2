@@ -113,19 +113,22 @@ namespace OpenRCT2::Config
     static const auto Enum_FileBrowserSort = ConfigEnum<FileBrowserSort>({
         ConfigEnumEntry<FileBrowserSort>("NAME_ASCENDING", FileBrowserSort::NameAscending),
         ConfigEnumEntry<FileBrowserSort>("NAME_DESCENDING", FileBrowserSort::NameDescending),
+        ConfigEnumEntry<FileBrowserSort>("SIZE_ASCENDING", FileBrowserSort::SizeAscending),
+        ConfigEnumEntry<FileBrowserSort>("SIZE_DESCENDING", FileBrowserSort::SizeDescending),
         ConfigEnumEntry<FileBrowserSort>("DATE_ASCENDING", FileBrowserSort::DateAscending),
         ConfigEnumEntry<FileBrowserSort>("DATE_DESCENDING", FileBrowserSort::DateDescending),
+    });
+
+    static const auto Enum_ParkPreviewPref = ConfigEnum<ParkPreviewPref>({
+        ConfigEnumEntry<ParkPreviewPref>("DISABLED", ParkPreviewPref::disabled),
+        ConfigEnumEntry<ParkPreviewPref>("SCREENSHOT", ParkPreviewPref::screenshot),
+        ConfigEnumEntry<ParkPreviewPref>("MINIMAP", ParkPreviewPref::miniMap),
     });
 
     static const auto Enum_VirtualFloorStyle = ConfigEnum<VirtualFloorStyles>({
         ConfigEnumEntry<VirtualFloorStyles>("OFF", VirtualFloorStyles::Off),
         ConfigEnumEntry<VirtualFloorStyles>("CLEAR", VirtualFloorStyles::Clear),
         ConfigEnumEntry<VirtualFloorStyles>("GLASSY", VirtualFloorStyles::Glassy),
-    });
-
-    static const auto Enum_ScenarioSelectMode = ConfigEnum<ScenarioSelectMode>({
-        ConfigEnumEntry<ScenarioSelectMode>("ORIGIN", ScenarioSelectMode::origin),
-        ConfigEnumEntry<ScenarioSelectMode>("DIFFICULTY", ScenarioSelectMode::difficulty),
     });
 
     /**
@@ -227,8 +230,10 @@ namespace OpenRCT2::Config
 #endif // _DEBUG
             model->TrapCursor = reader->GetBoolean("trap_cursor", false);
             model->AutoOpenShops = reader->GetBoolean("auto_open_shops", false);
-            model->scenarioSelectMode = reader->GetEnum(
-                "scenario_select_mode", ScenarioSelectMode::origin, Enum_ScenarioSelectMode);
+
+            // Gamepad settings
+            model->gamepadDeadzone = reader->GetInt32("gamepad_deadzone", 3600);
+            model->gamepadSensitivity = reader->GetFloat("gamepad_sensitivity", 1.5f);
             model->ScenarioUnlockingEnabled = reader->GetBoolean("scenario_unlocking_enabled", true);
             model->ScenarioHideMegaPark = reader->GetBoolean("scenario_hide_mega_park", true);
             model->LastSaveGameDirectory = reader->GetString("last_game_directory", "");
@@ -262,7 +267,8 @@ namespace OpenRCT2::Config
             model->FileBrowserHeight = reader->GetInt32("file_browser_height", 0);
             model->FileBrowserShowSizeColumn = reader->GetBoolean("file_browser_show_size_column", true);
             model->FileBrowserShowDateColumn = reader->GetBoolean("file_browser_show_date_column", true);
-            model->FileBrowserShowPreviews = reader->GetBoolean("file_browser_show_previews", true);
+            model->FileBrowserPreviewType = reader->GetEnum<ParkPreviewPref>(
+                "file_browser_preview_type", ParkPreviewPref::screenshot, Enum_ParkPreviewPref);
         }
     }
 
@@ -320,7 +326,10 @@ namespace OpenRCT2::Config
         writer->WriteBoolean("multithreading", model->MultiThreading);
         writer->WriteBoolean("trap_cursor", model->TrapCursor);
         writer->WriteBoolean("auto_open_shops", model->AutoOpenShops);
-        writer->WriteEnum<ScenarioSelectMode>("scenario_select_mode", model->scenarioSelectMode, Enum_ScenarioSelectMode);
+
+        // Gamepad settings
+        writer->WriteInt32("gamepad_deadzone", model->gamepadDeadzone);
+        writer->WriteFloat("gamepad_sensitivity", model->gamepadSensitivity);
         writer->WriteBoolean("scenario_unlocking_enabled", model->ScenarioUnlockingEnabled);
         writer->WriteBoolean("scenario_hide_mega_park", model->ScenarioHideMegaPark);
         writer->WriteString("last_game_directory", model->LastSaveGameDirectory);
@@ -352,7 +361,7 @@ namespace OpenRCT2::Config
         writer->WriteInt32("file_browser_height", model->FileBrowserHeight);
         writer->WriteBoolean("file_browser_show_size_column", model->FileBrowserShowSizeColumn);
         writer->WriteBoolean("file_browser_show_date_column", model->FileBrowserShowDateColumn);
-        writer->WriteBoolean("file_browser_show_previews", model->FileBrowserShowPreviews);
+        writer->WriteEnum<ParkPreviewPref>("file_browser_preview_type", model->FileBrowserPreviewType, Enum_ParkPreviewPref);
     }
 
     static void ReadInterface(IIniReader* reader)

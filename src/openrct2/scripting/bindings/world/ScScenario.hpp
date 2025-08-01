@@ -20,20 +20,21 @@
 
 namespace OpenRCT2::Scripting
 {
-    static const DukEnumMap<uint32_t> ScenarioObjectiveTypeMap({
-        { "none", OBJECTIVE_NONE },
-        { "guestsBy", OBJECTIVE_GUESTS_BY },
-        { "parkValueBy", OBJECTIVE_PARK_VALUE_BY },
-        { "haveFun", OBJECTIVE_HAVE_FUN },
-        { "buildTheBest", OBJECTIVE_BUILD_THE_BEST },
-        { "10Rollercoasters", OBJECTIVE_10_ROLLERCOASTERS },
-        { "guestsAndRating", OBJECTIVE_GUESTS_AND_RATING },
-        { "monthlyRideIncome", OBJECTIVE_MONTHLY_RIDE_INCOME },
-        { "10RollercoastersLength", OBJECTIVE_10_ROLLERCOASTERS_LENGTH },
-        { "finish5Rollercoasters", OBJECTIVE_FINISH_5_ROLLERCOASTERS },
-        { "repayLoanAndParkValue", OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE },
-        { "monthlyFoodIncome", OBJECTIVE_MONTHLY_FOOD_INCOME },
-    });
+    static const DukEnumMap<uint32_t> ScenarioObjectiveTypeMap(
+        {
+            { "none", OBJECTIVE_NONE },
+            { "guestsBy", OBJECTIVE_GUESTS_BY },
+            { "parkValueBy", OBJECTIVE_PARK_VALUE_BY },
+            { "haveFun", OBJECTIVE_HAVE_FUN },
+            { "buildTheBest", OBJECTIVE_BUILD_THE_BEST },
+            { "10Rollercoasters", OBJECTIVE_10_ROLLERCOASTERS },
+            { "guestsAndRating", OBJECTIVE_GUESTS_AND_RATING },
+            { "monthlyRideIncome", OBJECTIVE_MONTHLY_RIDE_INCOME },
+            { "10RollercoastersLength", OBJECTIVE_10_ROLLERCOASTERS_LENGTH },
+            { "finish5Rollercoasters", OBJECTIVE_FINISH_5_ROLLERCOASTERS },
+            { "repayLoanAndParkValue", OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE },
+            { "monthlyFoodIncome", OBJECTIVE_MONTHLY_FOOD_INCOME },
+        });
 
     class ScScenarioObjective
     {

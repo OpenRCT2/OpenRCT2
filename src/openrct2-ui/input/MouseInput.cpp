@@ -980,18 +980,13 @@ namespace OpenRCT2
             ScreenCoordsXY newScreenCoords;
             widgetScrollGetPart(*w, widget, screenCoords, newScreenCoords, &scroll_part, &scrollId);
 
-            if (scroll_part != SCROLL_PART_VIEW)
-                WindowTooltipClose();
-            else
+            if (scroll_part == SCROLL_PART_VIEW)
             {
                 w->OnScrollMouseOver(scrollId, newScreenCoords);
-                InputUpdateTooltip(w, widgetIndex, screenCoords);
             }
         }
-        else
-        {
-            InputUpdateTooltip(w, widgetIndex, screenCoords);
-        }
+
+        InputUpdateTooltip(w, widgetIndex, screenCoords);
     }
 
     /**
@@ -1694,5 +1689,44 @@ namespace OpenRCT2
             mainWindow->savedViewPos.y += dy;
             gInputFlags.set(InputFlag::viewportScrolling);
         }
+    }
+
+    void InputScrollViewportSmooth(const ScreenCoordsXY& scrollScreenCoords, WindowBase* targetWindow)
+    {
+        if (targetWindow == nullptr)
+        {
+            return;
+        }
+
+        Viewport* viewport = targetWindow->viewport;
+        if (viewport == nullptr)
+        {
+            return;
+        }
+
+        if (targetWindow->flags & WF_NO_SCROLLING)
+        {
+            return;
+        }
+
+        if (scrollScreenCoords.x == 0 && scrollScreenCoords.y == 0)
+            return;
+
+        // Apply smooth scrolling similar to mouse drag behavior
+        // Use zoom-based scaling like mouse dragging does
+        ScreenCoordsXY differentialCoords = scrollScreenCoords;
+
+        // Apply zoom scaling (same logic as mouse drag)
+        const bool posX = differentialCoords.x > 0;
+        const bool posY = differentialCoords.y > 0;
+        differentialCoords.x = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.x));
+        differentialCoords.y = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.y));
+        differentialCoords.x = posX ? -differentialCoords.x : differentialCoords.x;
+        differentialCoords.y = posY ? -differentialCoords.y : differentialCoords.y;
+
+        // Apply the movement (note: we don't invert for gamepad like mouse drag does)
+        targetWindow->savedViewPos += differentialCoords;
+
+        gInputFlags.set(InputFlag::viewportScrolling);
     }
 } // namespace OpenRCT2

@@ -1750,7 +1750,7 @@ declare global {
          * @param elementIndex The index of the track element on the tile.
          */
         getTrackIterator(location: CoordsXY, elementIndex: number): TrackIterator | null;
-		
+
     }
 
     type TileElementType =
@@ -2501,30 +2501,30 @@ declare global {
          * Highest drop height in height units. Use `context.formatString()` to convert into metres/feet. Ex: `formatString('{HEIGHT}', ride.highestDropHeight)`.
          */
         readonly highestDropHeight: number;
-		
-		 /**
-         * The current breakdown of the ride.
-         */
+
+        /**
+        * The current breakdown of the ride.
+        */
         readonly breakdown: BreakdownType;
-		 
-		/**
+
+        /**
          * Set a breakdown on a ride.
          * @param breakdown The type of breakdown to set.
          */
         setBreakdown(breakdown: BreakdownType): void;
-		
-		/**
+
+        /**
          * Fix a ride / clear the breakdown.
          */
         fixBreakdown(): void;
-		
+
     }
 
     type RideClassification = "ride" | "stall" | "facility";
 
     type RideStatus = "closed" | "open" | "testing" | "simulating";
-	
-	type BreakdownType =  "brakes_failure" | "control_failure" | "doors_stuck_closed" | "doors_stuck_open" | "restraints_stuck_closed" | "restraints_stuck_open"  | "safety_cut_out" | "vehicle_malfunction";
+
+    type BreakdownType = "brakes_failure" | "control_failure" | "doors_stuck_closed" | "doors_stuck_open" | "restraints_stuck_closed" | "restraints_stuck_open" | "safety_cut_out" | "vehicle_malfunction";
 
     interface TrackColour {
         main: number;
@@ -3874,26 +3874,26 @@ declare global {
         "empty_juice_cup" |
         "empty_bowl_blue";
 
-	/**
+    /**
      * Represents balloon entity.
      */
     interface Balloon extends Entity {
         /**
          * The colour of the balloon.
          */
-        colour: number;      
-	}
-	
-	/**
+        colour: number;
+    }
+
+    /**
      * Represents money_effect entity.
      */
     interface MoneyEffect extends Entity {
         /**
          * The value of the money effect.
          */
-        value: number;  
-	}
-	
+        value: number;
+    }
+
     /**
      * Network APIs
      * Use `network.mode` to determine whether the current game is a client, server or in single player mode.
@@ -4179,6 +4179,53 @@ declare global {
         "scenarioCompleteNameInput" |
         "unlockAllPrices";
 
+    type AwardType =
+        "mostUntidy" |
+        "mostTidy" |
+        "bestRollerCoasters" |
+        "bestValue" |
+        "mostBeautiful" |
+        "worstValue" |
+        "safest" |
+        "bestStaff" |
+        "bestFood" |
+        "worstFood" |
+        "bestToilets" |
+        "mostDisappointing" |
+        "bestWaterRides" |
+        "bestCustomDesignedRides" |
+        "mostDazzlingRideColours" |
+        "mostConfusingLayout" |
+        "bestGentleRides";
+
+    interface Award {
+        /**
+         * The type of the award.
+         */
+        readonly type: AwardType;
+
+        /**
+         * The award description.
+         */
+        readonly text: string;
+
+        /**
+         * Number of months this award will remain active.
+         * Starts at 5, expires at 0.
+         */
+        readonly monthsRemaining: number;
+
+        /**
+         * The sprite of the award.
+         */
+        readonly imageId: number;
+
+        /**
+         * Whether this is a positive or negative award.
+         */
+        readonly positive: boolean;
+    }
+
     interface Park {
         cash: number;
         rating: number;
@@ -4326,6 +4373,25 @@ declare global {
          * @param type The type of expenditure to get.
          */
         getMonthlyExpenditure(type: ExpenditureType): number[]
+
+        /**
+         * The current awards of the park.
+         */
+        readonly awards: Award[]
+
+        /**
+         *  Clear all awards.
+         */
+        clearAwards(): void
+
+        /**
+         * Grant the given award type to the park.
+         * Does not check eligibility.
+         * If the park already has an active award of the given type, the old award will be removed.
+         * If the park already has 4 active awards, the oldest award will be removed.
+         * @param type the award type to grant
+         */
+        grantAward(type: AwardType): void
     }
 
     interface Research {
@@ -4589,6 +4655,7 @@ declare global {
 
     interface Cheats {
         allowArbitraryRideTypeChanges: boolean;
+        allowSpecialColourSchemes: boolean;
         allowTrackPlaceInvalidHeights: boolean;
         buildInPauseMode: boolean;
         disableAllBreakdowns: boolean;
@@ -4603,10 +4670,13 @@ declare global {
         enableAllDrawableTrackPieces: boolean;
         enableChainLiftOnAllTrack: boolean;
         fastLiftHill: boolean;
+        forcedParkRating: number;
         freezeWeather: boolean;
         ignoreResearchStatus: boolean;
         ignoreRideIntensity: boolean;
+        ignoreRidePrice: boolean;
         neverendingMarketing: boolean;
+        makeAllDestructible: boolean;
         sandboxMode: boolean;
         showAllOperatingModes: boolean;
         showVehiclesFromOtherTrackTypes: boolean;

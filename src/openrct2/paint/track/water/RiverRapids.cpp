@@ -348,7 +348,8 @@ static void PaintRiverRapidsTrack25DegToFlatB(
     DrawSupportForSequenceA<TrackElemType::FlatToUp25>(
         session, supportType.wooden, 0, direction, height, session.SupportColours);
 
-    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+    const auto tunnelType = direction == 0 || direction == 3 ? TunnelSubType::Flat : TunnelSubType::SlopeEnd;
+    PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, tunnelType);
 
     PaintUtilSetSegmentSupportHeight(session, kSegmentsAll, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48);

@@ -182,6 +182,7 @@ public:
 
     void SetFullscreenMode(FullscreenMode mode) override
     {
+#ifndef __EMSCRIPTEN__
         static constexpr int32_t kSDLFullscreenFlags[] = {
             0,
             SDL_WINDOW_FULLSCREEN,
@@ -212,6 +213,16 @@ public:
 
             // TODO try another display mode rather than just exiting the game
         }
+#else
+        if (mode == FullscreenMode::fullscreen)
+        {
+            emscripten_request_fullscreen("!canvas", false);
+        }
+        else if (mode == FullscreenMode::windowed)
+        {
+            emscripten_exit_fullscreen();
+        }
+#endif // __EMSCRIPTEN__
     }
 
     const std::vector<Resolution>& GetFullscreenResolutions() override

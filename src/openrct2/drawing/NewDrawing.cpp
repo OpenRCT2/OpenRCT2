@@ -275,5 +275,5 @@ std::string ScreenshotDump()
     {
         return drawingEngine->Screenshot();
     }
-    return "";
+    return {};
 }

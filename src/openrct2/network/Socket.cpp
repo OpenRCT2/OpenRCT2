@@ -930,8 +930,9 @@ std::vector<std::unique_ptr<INetworkEndpoint>> GetBroadcastAddresses()
         memcpy(&address, &ifo.iiAddress.Address, sizeof(sockaddr));
         (reinterpret_cast<sockaddr_in*>(&address))->sin_addr.s_addr = ifo.iiAddress.AddressIn.sin_addr.s_addr
             | ~ifo.iiNetmask.AddressIn.sin_addr.s_addr;
-        baddresses.push_back(std::make_unique<NetworkEndpoint>(
-            reinterpret_cast<const sockaddr*>(&address), static_cast<socklen_t>(sizeof(sockaddr))));
+        baddresses.push_back(
+            std::make_unique<NetworkEndpoint>(
+                reinterpret_cast<const sockaddr*>(&address), static_cast<socklen_t>(sizeof(sockaddr))));
     }
     #else
     int sock = socket(AF_INET, SOCK_DGRAM, 0);

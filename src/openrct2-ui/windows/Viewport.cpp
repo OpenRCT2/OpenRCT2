@@ -38,7 +38,7 @@ namespace OpenRCT2::Ui::Windows
     static constexpr StringId kWindowTitle = STR_VIEWPORT_NO;
     static constexpr ScreenSize kWindowSize = { 200, 200 };
 
-    static constexpr ScreenSize VIEWPORT_BUTTON = { 24, 24 };
+    static constexpr ScreenSize kButtonSize = { 24, 24 };
 
 #pragma endregion
 
@@ -47,10 +47,10 @@ namespace OpenRCT2::Ui::Windows
         makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({      0, 14}, kWindowSize - ScreenSize( 1, 1),  WidgetType::resize,   WindowColour::secondary                                         ), // resize
         makeWidget({      3, 17}, kWindowSize - ScreenSize(26, 3),  WidgetType::viewport, WindowColour::primary                                           ), // viewport
-        makeWidget({kWindowSize.width - 25, 17}, VIEWPORT_BUTTON,   WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_G2_ZOOM_IN),  STR_ZOOM_IN_TIP       ), // zoom in
-        makeWidget({kWindowSize.width - 25, 41}, VIEWPORT_BUTTON,   WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_G2_ZOOM_OUT), STR_ZOOM_OUT_TIP      ), // zoom out
-        makeWidget({kWindowSize.width - 25, 65}, VIEWPORT_BUTTON,   WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_LOCATE),      STR_LOCATE_SUBJECT_TIP), // locate
-        makeWidget({kWindowSize.width - 25, 89}, VIEWPORT_BUTTON,   WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_ROTATE_ARROW),STR_LOCATE_SUBJECT_TIP)  // rotate
+        makeWidget({kWindowSize.width - 25, 17}, kButtonSize,       WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_G2_ZOOM_IN),  STR_ZOOM_IN_TIP       ), // zoom in
+        makeWidget({kWindowSize.width - 25, 41}, kButtonSize,       WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_G2_ZOOM_OUT), STR_ZOOM_OUT_TIP      ), // zoom out
+        makeWidget({kWindowSize.width - 25, 65}, kButtonSize,       WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_LOCATE),      STR_LOCATE_SUBJECT_TIP), // locate
+        makeWidget({kWindowSize.width - 25, 89}, kButtonSize,       WidgetType::flatBtn,  WindowColour::primary  , ImageId(SPR_ROTATE_ARROW),STR_LOCATE_SUBJECT_TIP)  // rotate
     );
     // clang-format on
 

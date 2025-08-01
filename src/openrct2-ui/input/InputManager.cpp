@@ -12,6 +12,8 @@
 #include "ShortcutIds.h"
 
 #include <SDL.h>
+#include <SDL_gamecontroller.h>
+#include <cmath>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/input/ShortcutManager.h>
@@ -22,6 +24,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Chat.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Window.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/ui/UiContext.h>
@@ -38,6 +41,22 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
 {
     switch (e.type)
     {
+        case SDL_CONTROLLERAXISMOTION:
+        {
+            // Process only the stick axes for scrolling (ignore triggers)
+            if (e.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX || e.caxis.axis == SDL_CONTROLLER_AXIS_LEFTY
+                || e.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTX || e.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTY)
+            {
+                InputEvent ie;
+                ie.DeviceKind = InputDeviceKind::JoyAxis;
+                ie.Modifiers = SDL_GetModState();
+                ie.Button = e.caxis.axis;
+                ie.State = InputEventState::Down;
+                ie.AxisValue = e.caxis.value;
+                QueueInputEvent(std::move(ie));
+            }
+            break;
+        }
         case SDL_JOYHATMOTION:
         {
             if (e.jhat.value != SDL_HAT_CENTERED)
@@ -47,28 +66,42 @@ void InputManager::QueueInputEvent(const SDL_Event& e)
                 ie.Modifiers = SDL_GetModState();
                 ie.Button = e.jhat.value;
                 ie.State = InputEventState::Down;
+                ie.AxisValue = 0;
                 QueueInputEvent(std::move(ie));
             }
             break;
         }
+        case SDL_CONTROLLERBUTTONDOWN:
         case SDL_JOYBUTTONDOWN:
         {
             InputEvent ie;
             ie.DeviceKind = InputDeviceKind::JoyButton;
             ie.Modifiers = SDL_GetModState();
-            ie.Button = e.jbutton.button;
+            ie.Button = e.cbutton.button;
             ie.State = InputEventState::Down;
+            ie.AxisValue = 0;
             QueueInputEvent(std::move(ie));
             break;
         }
+        case SDL_CONTROLLERBUTTONUP:
         case SDL_JOYBUTTONUP:
         {
             InputEvent ie;
             ie.DeviceKind = InputDeviceKind::JoyButton;
             ie.Modifiers = SDL_GetModState();
-            ie.Button = e.jbutton.button;
+            ie.Button = e.cbutton.button;
             ie.State = InputEventState::Release;
+            ie.AxisValue = 0;
             QueueInputEvent(std::move(ie));
+            break;
+        }
+        case SDL_CONTROLLERDEVICEADDED:
+        case SDL_CONTROLLERDEVICEREMOVED:
+        case SDL_JOYDEVICEADDED:
+        case SDL_JOYDEVICEREMOVED:
+        {
+            // Force joystick refresh on next check
+            _lastJoystickCheck = 0;
             break;
         }
     }
@@ -88,22 +121,86 @@ void InputManager::CheckJoysticks()
     {
         _lastJoystickCheck = tick;
 
-        _joysticks.clear();
+        _gameControllers.clear();
         auto numJoysticks = SDL_NumJoysticks();
         for (auto i = 0; i < numJoysticks; i++)
         {
-            auto joystick = SDL_JoystickOpen(i);
-            if (joystick != nullptr)
+            if (SDL_IsGameController(i))
             {
-                _joysticks.push_back(joystick);
+                auto gameController = SDL_GameControllerOpen(i);
+                if (gameController != nullptr)
+                {
+                    _gameControllers.push_back(gameController);
+                }
             }
         }
     }
 }
 
+void InputManager::processAnalogueInput()
+{
+    _analogueScroll.x = 0;
+    _analogueScroll.y = 0;
+
+    const int32_t deadzone = Config::Get().general.gamepadDeadzone;
+    const float sensitivity = Config::Get().general.gamepadSensitivity;
+
+    for (auto* gameController : _gameControllers)
+    {
+        if (gameController != nullptr)
+        {
+            int32_t stickX = SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_LEFTX);
+            int32_t stickY = SDL_GameControllerGetAxis(gameController, SDL_CONTROLLER_AXIS_LEFTY);
+
+            // Calculate the magnitude of the stick input vector
+            float magnitude = std::sqrt(static_cast<float>(stickX * stickX + stickY * stickY));
+
+            if (magnitude > deadzone)
+            {
+                // Apply deadzone to the magnitude, creating a more linear response
+                float adjustedMagnitude = (magnitude - deadzone) / (32767.0f - deadzone);
+                adjustedMagnitude = std::min(adjustedMagnitude, 1.0f);
+
+                float rawX = (stickX / 32767.0f) * adjustedMagnitude;
+                float rawY = (stickY / 32767.0f) * adjustedMagnitude;
+
+                // Use a quadratic curve for better fine control at low sensitivities
+                float sensitivityCurve = sensitivity * sensitivity;
+                float moveX = rawX * sensitivityCurve * 8.0f; // Reasonable base scale
+                float moveY = rawY * sensitivityCurve * 8.0f;
+
+                // Accumulate the movement with fractional precision
+                _analogueScrollAccumX += moveX;
+                _analogueScrollAccumY += moveY;
+
+                // Extract integer movement for this frame
+                float intPartX, intPartY;
+                float fracX = std::modf(_analogueScrollAccumX, &intPartX);
+                float fracY = std::modf(_analogueScrollAccumY, &intPartY);
+
+                int pixelsX = static_cast<int>(intPartX);
+                int pixelsY = static_cast<int>(intPartY);
+
+                _analogueScrollAccumX = fracX;
+                _analogueScrollAccumY = fracY;
+
+                _analogueScroll.x += pixelsX;
+                _analogueScroll.y += pixelsY;
+            }
+        }
+    }
+}
+
+void InputManager::updateAnalogueScroll()
+{
+    _viewScroll.x += _analogueScroll.x;
+    _viewScroll.y += _analogueScroll.y;
+}
+
 void InputManager::Process()
 {
     CheckJoysticks();
+    processAnalogueInput();
     HandleModifiers();
     ProcessEvents();
     ProcessHoldEvents();
@@ -119,13 +216,51 @@ void InputManager::HandleViewScrolling()
     if (console.IsOpen())
         return;
 
-    // Shortcut scrolling
     auto mainWindow = WindowGetMain();
-    if (mainWindow != nullptr && (_viewScroll.x != 0 || _viewScroll.y != 0))
+
+    // Handle gamepad analogue scrolling with cursor-based viewport targeting
+    if (_analogueScroll.x != 0 || _analogueScroll.y != 0)
     {
-        WindowUnfollowSprite(*mainWindow);
+        // Get cursor position to find target viewport
+        const CursorState* cursorState = ContextGetCursorState();
+        Viewport* targetViewport = ViewportFindFromPoint(cursorState->position);
+
+        WindowBase* targetWindow = nullptr;
+        if (targetViewport != nullptr)
+        {
+            // Find the window that owns this viewport
+            auto* windowMgr = GetWindowManager();
+            targetWindow = windowMgr->GetOwner(targetViewport);
+        }
+
+        // Fallback to main window if no viewport found under cursor
+        if (targetWindow == nullptr)
+        {
+            targetWindow = mainWindow;
+        }
+
+        if (targetWindow != nullptr)
+        {
+            // Only unfollow sprites for the main window or viewport windows
+            // Don't unfollow for ride windows that might be following vehicles
+            if (targetWindow == mainWindow || targetWindow->classification == WindowClass::Viewport)
+            {
+                WindowUnfollowSprite(*targetWindow);
+            }
+            InputScrollViewportSmooth(_analogueScroll, targetWindow);
+        }
     }
-    InputScrollViewport(_viewScroll);
+
+    // Handle keyboard shortcut scrolling with edge-based scrolling (but ignore gamepad input)
+    ScreenCoordsXY keyboardScroll = { _viewScroll.x - _analogueScroll.x, _viewScroll.y - _analogueScroll.y };
+    if (keyboardScroll.x != 0 || keyboardScroll.y != 0)
+    {
+        if (mainWindow != nullptr)
+        {
+            WindowUnfollowSprite(*mainWindow);
+        }
+        InputScrollViewport(keyboardScroll);
+    }
 
     // Mouse edge scrolling
     if (Config::Get().general.EdgeScrolling)
@@ -337,6 +472,8 @@ void InputManager::ProcessHoldEvents()
             ProcessViewScrollEvent(ShortcutId::kViewScrollLeft, { -1, 0 });
             ProcessViewScrollEvent(ShortcutId::kViewScrollRight, { 1, 0 });
         }
+
+        updateAnalogueScroll();
     }
 }
 
@@ -390,9 +527,11 @@ bool InputManager::GetState(const ShortcutInput& shortcut) const
             }
             case InputDeviceKind::JoyButton:
             {
-                for (auto* joystick : _joysticks)
+                for (auto* gameController : _gameControllers)
                 {
-                    if (SDL_JoystickGetButton(joystick, shortcut.Button))
+                    // Get the underlying joystick to maintain compatibility with raw button numbers
+                    auto* joystick = SDL_GameControllerGetJoystick(gameController);
+                    if (joystick && SDL_JoystickGetButton(joystick, shortcut.Button))
                     {
                         return true;
                     }
@@ -401,19 +540,30 @@ bool InputManager::GetState(const ShortcutInput& shortcut) const
             }
             case InputDeviceKind::JoyHat:
             {
-                for (auto* joystick : _joysticks)
+                for (auto* gameController : _gameControllers)
                 {
-                    auto numHats = SDL_JoystickNumHats(joystick);
-                    for (int i = 0; i < numHats; i++)
+                    // Get the underlying joystick to maintain compatibility with hat functionality
+                    auto* joystick = SDL_GameControllerGetJoystick(gameController);
+                    if (joystick)
                     {
-                        auto hat = SDL_JoystickGetHat(joystick, i);
-                        if (hat & shortcut.Button)
+                        auto numHats = SDL_JoystickNumHats(joystick);
+                        for (int i = 0; i < numHats; i++)
                         {
-                            return true;
+                            auto hat = SDL_JoystickGetHat(joystick, i);
+                            if (hat & shortcut.Button)
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
                 break;
+            }
+            case InputDeviceKind::JoyAxis:
+            {
+                // analogue axes don't have a simple "pressed" state like buttons
+                // Return false for shortcuts on analogue axes as they're handled differently
+                return false;
             }
         }
     }

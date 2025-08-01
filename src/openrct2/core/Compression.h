@@ -9,13 +9,31 @@
 
 #pragma once
 
+#include "IStream.hpp"
+
 #include <cstdint>
 #include <cstdio>
 #include <vector>
 
 namespace OpenRCT2::Compression
 {
-    bool gzipCompress(FILE* source, FILE* dest);
-    std::vector<uint8_t> gzip(const void* data, const size_t dataLen);
-    std::vector<uint8_t> ungzip(const void* data, const size_t dataLen);
+    // zlib doesn't use 0 as a real compression level, so use it to mean no compression
+    constexpr int16_t kNoCompressionLevel = 0;
+
+    // Zlib methods, using the DEFLATE compression algorithm
+    constexpr int16_t kZlibDefaultCompressionLevel = -1; // zlib value for "default level"
+    constexpr int16_t kZlibMaxCompressionLevel = 9;
+
+    enum class ZlibHeaderType
+    {
+        none = 0,
+        zlib = 1,
+        gzip = 2,
+    };
+
+    bool zlibCompress(
+        IStream& source, uint64_t sourceLength, IStream& dest, ZlibHeaderType header,
+        int16_t level = kZlibDefaultCompressionLevel);
+    bool zlibDecompress(
+        IStream& source, uint64_t sourceLength, IStream& dest, uint64_t decompressLength, ZlibHeaderType header);
 } // namespace OpenRCT2::Compression

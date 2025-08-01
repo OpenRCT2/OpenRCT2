@@ -1248,7 +1248,6 @@ STR_1870    :Número de vueltas completas
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Ingresos: {BLACK}{CURRENCY2DP} por hora
 STR_1874    :{WINDOW_COLOUR_2}Beneficios: {BLACK}{CURRENCY2DP} por hora
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspeccionar atracciones
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Reparar atracciones
 STR_1878    :{WINDOW_COLOUR_2}Inspección:
@@ -2167,7 +2166,6 @@ STR_3136    :Advertencia: Este diseño se construirá con un tipo de vehículo a
 STR_3137    :Selecc. Escenario Cercano
 STR_3138    :Reiniciar Selecc.
 STR_3139    :Cable de elevación no puede funcionar en este modo
-STR_3140    :Cable de elevación debe comenzar después de la estación
 STR_3141    :Multi-circuito por attracc. no es posible con un cable de elevación
 STR_3142    :{WINDOW_COLOUR_2}Capacidad: {BLACK}{STRINGID}
 STR_3143    :Mostrar visitantes en el mapa
@@ -2199,7 +2197,7 @@ STR_3188    :Señales de Sendero
 STR_3189    :Senderos Legacy
 STR_3190    :Decoración Senderos
 STR_3191    :Escenarios
-STR_3192    :Entrada del parque
+STR_3192    :Entradas del parque
 STR_3193    :Agua
 STR_3195    :Lista de inventos
 STR_3196    :{WINDOW_COLOUR_2}Grupo Investigación: {BLACK}{STRINGID}
@@ -2238,8 +2236,8 @@ STR_3228    :Establecer posición inicial de las personas
 STR_3229    :El bloque de frenado no debe ser usado después de la estación.
 STR_3230    :El bloque de frenado no debe ser usado después de otro.
 STR_3231    :El bloque de frenado no debe ser usado después del final de la cadena de elevación.
-STR_3232    :Opciones - Finanzas
-STR_3233    :Opciones - Visitantes
+STR_3232    :Opciones de Escenario - Finanzas
+STR_3233    :Opciones de Escenario - Visitantes
 STR_3235    :Opciones de finanzas
 STR_3236    :Opciones de visitantes
 STR_3238    :Sin dinero
@@ -2283,7 +2281,7 @@ STR_3279    :Entrada libre / Atracciones de pago
 STR_3280    :Pagar por entrar / Atracciones gratis
 STR_3281    :Precio de entrada:
 STR_3283    :Seleccionar atracciones a preservar
-STR_3285    :Atracciones preservadas
+STR_3285    :Opciones de Escenario - Atracciones preservadas
 STR_3286    :Seleccionar objetivos para este escenario
 STR_3287    :{WINDOW_COLOUR_2}Objetivo:
 STR_3294    :Cambiar…
@@ -2514,7 +2512,7 @@ STR_5265    :Selecciona que contenidos son visibles
 STR_5266    :Gráficos
 STR_5267    :Idioma y unidades
 STR_5268    :Audio
-STR_5269    :Interfaz y controles
+STR_5269    :Controles
 STR_5270    :Otras opciones
 STR_5272    :Decorado pequeño
 STR_5273    :Decorado grande
@@ -2656,7 +2654,7 @@ STR_5503    :Escribe el nombre del host o la IP:
 STR_5504    :Mostrar estado multijugador
 STR_5505    :No se pudo conectar al servidor.
 STR_5506    :Visitantes ignoran intensidad de atracc.
-STR_5510    :Dispositivo de sonido predeterminado
+STR_5510    :Dispositivo de sonido por defecto
 STR_5511    :(DESCONOCIDO)
 STR_5512    :Guardar Partida como…
 STR_5513    :Guardar juego de forma rápida
@@ -2771,9 +2769,6 @@ STR_5624    :Time Twister
 #
 STR_5625    :Parques “Reales”
 STR_5626    :Otros parques
-STR_5627    :Agrupar lista de escenarios:
-STR_5628    :Juego original
-STR_5629    :Nivel de dificultad
 STR_5630    :Activa el desbloqueo progresivo
 STR_5631    :DLC de parques originales
 STR_5632    :Construye tu propio…
@@ -3202,7 +3197,7 @@ STR_6102    :El valor de una atracción no disminuye con el tiempo, así los vis
 STR_6103    :Esta opción está des-habilitada durante una partida multijugador.
 STR_6105    :Hiper-montaña Rusa
 STR_6107    :Camiones Monstruo
-STR_6109    :Hiper-Twister
+STR_6109    :Montaña Rusa Hiper-Twister
 STR_6111    :Mini Montaña Rusa Clásica
 STR_6113    :Una montaña rusa alta y que no se invierte con grandes caídas, alta velocidad y vagones confortables con sólo unas barras para sujetarse
 STR_6115    :Camiones gigantes autopropulsados 4x4 que pueden subir cuestas impresionantes
@@ -3255,7 +3250,6 @@ STR_6165    :Usar sincronización vertical
 STR_6166    :Sincroniza cada cuadro mostrado a la tasa de refresco del monitor, evitando la imagen distorsionada.
 STR_6167    :Avanzado
 STR_6168    :Secuencia de la pantalla de inicio
-STR_6169    :Selección de escenario
 STR_6170    :Ajustes de interfaz
 STR_6171    :Buscar
 STR_6172    :Buscar
@@ -3624,7 +3618,7 @@ STR_6575    :Permitir esquemas de colores especiales
 STR_6576    :Agrega colores especiales al menú desplegable de colores
 STR_6577    :Velocidad del freno bloqueante
 STR_6578    :Establece el límite de velocidad para los frenos bloqueantes. En el modo de sección de bloque, los frenos adyacentes con una velocidad más lenta se vinculan al freno bloqueante.
-STR_6579    :Los frenos bloqueantes se establecerán a la velocidad predeterminada al guardarlos como diseño de vía.
+STR_6579    :Los frenos bloqueantes se establecerán a la velocidad por defecto al guardarlos como diseño de vía.
 STR_6580    :Restablecer
 STR_6581    :¿Estás seguro de que quieres restablecer todos los atajos de teclado en esta pestaña?
 STR_6582    :Abrir ventana de atajos de teclado
@@ -3763,3 +3757,80 @@ STR_6714    :Nombre de archivo
 STR_6715    :Fecha de modificación
 STR_6716    :Tamaño de archivo
 STR_6717    :Tamaño de archivo {STRINGID}
+STR_6718    :Animaciones de Personitas
+STR_6719    :Se debe seleccionar al menos un objeto de animaciones de personita invitado
+STR_6720    :Se debe seleccionar al menos un objeto de animaciones de personita jardinero
+STR_6721    :Se debe seleccionar al menos un objeto de animaciones de personita mecánico
+STR_6722    :Se debe seleccionar al menos un objeto de animaciones de personita de seguridad
+STR_6723    :Se debe seleccionar al menos un objeto de animaciones de personita animador
+STR_6724    :Textos de escenario
+STR_6725    :X:
+STR_6726    :Y:
+STR_6727    :Rizo de inmersión (izq)
+STR_6728    :Rizo de inmersión (der)
+STR_6729    :El cable de elevación debe comenzar inmediatamente después de la estación o del bloque de frenado
+STR_6730    :Exportar datos de emscripten
+STR_6731    :Importar datos de emscripten
+STR_6732    :Mostrar un botón en la barra de herramientas para girar la vista en sentido antihorario
+STR_6733    :Ver através
+STR_6734    :Los elementos del mapa que están a la altura de corte o por encima se renderizan de forma translúcida.
+STR_6735    :Ir a la carpeta superior
+STR_6736    :Vista previa
+STR_6737    :No hay vista previa disponible
+STR_6738    :{WINDOW_COLOUR_2}Valoración del parque: {BLACK}{UINT16}
+STR_6739    :{WINDOW_COLOUR_2}Fecha: {BLACK}{STRINGID}
+STR_6740    :{WINDOW_COLOUR_2}Dinero: {BLACK}{CURRENCY2DP}
+STR_6741    :{WINDOW_COLOUR_2}Num. atracciones: {BLACK}{UINT16}
+STR_6742    :{WINDOW_COLOUR_2}Num. visitantes: {BLACK}{UINT16}
+STR_6743    :Clima
+STR_6744    :{WINDOW_COLOUR_2}{UINT16}%
+STR_6745    :{WINDOW_COLOUR_2}Preferencias de intensidad de los visitantes:
+STR_6746    :Sin preferencias
+STR_6747    :Las preferencias varían (por defecto)
+STR_6748    :Solo atracciones menos intensas
+STR_6749    :Solo atracciones más intensas
+STR_6750    :Selecciona qué tipo de intensidad de atracción prefieren los nuevos visitantes.
+STR_6751    :¡Las colas no pueden usarse como cruces a nivel!
+STR_6752    :Opciones de Escenario - Objetivo
+STR_6753    :Opciones de Escenario - Detalles del escenario
+STR_6754    :Opciones de Escenario - Restricciones de terreno
+STR_6755    :Mostrar opciones de objetivo
+STR_6756    :Mostrar opciones de detalles del escenario
+STR_6757    :Mostrar opciones de restricciones de terreno
+STR_6758    :Opciones de préstamo
+STR_6759    :Modelo de negocio
+STR_6760    :Ganancias:
+STR_6761    :Detalles del escenario
+STR_6762    :Interfaz
+STR_6763    :RollerCoaster Tycoon 1
+STR_6764    :Guardado y autoguardados
+STR_6765    :Avanzado
+STR_6766    :Limpiar
+STR_6767    :Ventana
+STR_6768    :Renderizado
+STR_6769    :Comportamiento
+STR_6770    :Límite de FPS:
+STR_6771    :Velocidad interna (por defecto)
+STR_6772    :Sincronización vertical
+STR_6773    :Sin límite
+STR_6774    :Tiempo desde la última inspección
+STR_6775    :{COMMA16} minuto
+STR_6776    :{COMMA16} minutos
+STR_6777    :más de 4 horas
+STR_6778    :Previsualizar escenarios usando:
+STR_6779    :Selecciona el tipo de imagen de previsualización para usar en la pantalla de selección de escenarios.
+STR_6780    :Mini mapas
+STR_6781    :Capturas de pantalla
+STR_6782    :Notificaciones de parque
+STR_6783    :Notificaciones de atracciones
+STR_6784    :Notificaciones de visitantes
+STR_6785    :Mando
+STR_6786    :Zona muerta:
+STR_6787    :Zona muerta del stick analógico (movimiento mínimo requerido)
+STR_6788    :Sensibilidad:
+STR_6789    :Multiplicador de la sensibilidad del stick analógico
+STR_6790    :Zona muerta: {COMMA32}%
+STR_6791    :Sensibilidad: {COMMA32}%
+STR_6792    :Edificios de entrada
+STR_6793    :Visitantes y personal
+STR_6794    :Decoración y temas

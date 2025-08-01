@@ -45,5 +45,5 @@ fi
 
 nsispath=$(cygpath -w $basedir/distribution/windows/install.nsi)
 echo -e "\033[0;36mCreating installer for OpenRCT2 $OPENRCT2_VERSION-$OPENRCT2_VERSION_EXTRA ($PLATFORM)...\033[0m"
-makensis "/DOUTFILE=$output" "//DAPPV_MAIN=$OPENRCT2_VERSION" "//DAPPV_EXTRA=${OPENRCT2_VERSION_EXTRA//\//\\}" "//DPLATFORM=$PLATFORM" "$nsispath"
+makensis -INPUTCHARSET UTF8 "/DOUTFILE=$output" "//DAPPV_MAIN=$OPENRCT2_VERSION" "//DAPPV_EXTRA=${OPENRCT2_VERSION_EXTRA//\//\\}" "//DPLATFORM=$PLATFORM" "$nsispath"
 printf '\033[0;32m%s\033[0m\n' "${output} created successfully"

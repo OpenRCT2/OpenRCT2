@@ -319,11 +319,6 @@ private:
             return static_cast<uint64_t>(readBytes);
         }
 
-        const void* GetData() const override
-        {
-            return nullptr;
-        }
-
     private:
         void Close()
         {

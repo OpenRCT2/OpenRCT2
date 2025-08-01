@@ -155,7 +155,7 @@ namespace OpenRCT2::Platform
         return false;
     }
 
-    bool HasMatchingLanguage(NSString* preferredLocale, uint16_t* languageIdentifier)
+    static bool HasMatchingLanguage(NSString* preferredLocale, uint16_t* languageIdentifier)
     {
         @autoreleasepool
         {

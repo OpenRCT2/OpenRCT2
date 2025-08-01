@@ -739,7 +739,7 @@ namespace OpenRCT2
                 if (String::iequals(Path::GetExtension(path), ".sea"))
                 {
                     auto data = DecryptSea(fs::u8path(path));
-                    auto ms = MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
+                    auto ms = MemoryStream(data.data(), data.size(), MemoryAccess::read);
                     if (!LoadParkFromStream(&ms, path, loadTitleScreenOnFail, asScenario))
                     {
                         throw std::runtime_error(".sea file may have been renamed.");
@@ -1088,7 +1088,7 @@ namespace OpenRCT2
                             break;
                         }
 
-                        auto ms = MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
+                        auto ms = MemoryStream(data.data(), data.size(), MemoryAccess::read);
                         if (!LoadParkFromStream(&ms, gOpenRCT2StartupActionPath, true))
                         {
                             Console::Error::WriteLine("Failed to load '%s'", gOpenRCT2StartupActionPath);
