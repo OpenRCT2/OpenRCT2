@@ -256,7 +256,6 @@ extern bool gShowDirtyVisuals;
 extern bool gPaintBoundingBoxes;
 extern bool gPaintBlockedTiles;
 extern bool gPaintWidePathsAsGhost;
-extern bool gPaintStableSort;
 
 PaintStruct* PaintAddImageAsParent(
     PaintSession& session, const ImageId image_id, const CoordsXYZ& offset, const BoundBoxXYZ& boundBox);

@@ -168,6 +168,13 @@ namespace OpenRCT2
             ReadWriteCheatsChunk(gameState, os);
             ReadWriteRestrictedObjectsChunk(gameState, os);
             ReadWritePluginStorageChunk(gameState, os);
+
+            if (os.GetHeader().TargetVersion < 57)
+            {
+                // For older park files, preserve existing behaviour (legacy sort)
+                gameState.useStablePaintSort = false;
+            }
+
             if (os.GetHeader().TargetVersion < 0x4)
             {
                 UpdateTrackElementsRideType();
@@ -662,6 +669,11 @@ namespace OpenRCT2
                 if (os.GetHeader().TargetVersion >= 14)
                 {
                     cs.ReadWrite(gIsAutosave);
+                }
+
+                if (os.GetHeader().TargetVersion >= 57)
+                {
+                    cs.ReadWrite(gameState.useStablePaintSort);
                 }
             });
             if (!found)
