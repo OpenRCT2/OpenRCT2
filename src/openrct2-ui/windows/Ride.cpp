@@ -4873,16 +4873,7 @@ namespace OpenRCT2::Ui::Windows
                                                                               : rideEntry->shop_item[1];
                 if (ride->hasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS))
                 {
-                    colour_t spriteColour = COLOUR_BLACK;
-                    // Limit update rate of preview to avoid making people dizzy.
-                    if ((getGameState().currentTicks % 64) == 0)
-                    {
-                        spriteColour++;
-                        if (spriteColour >= kColourNumNormal)
-                        {
-                            spriteColour = COLOUR_BLACK;
-                        }
-                    }
+                    colour_t spriteColour = (getGameState().currentTicks / 32) % COLOUR_COUNT;
 
                     GfxDrawSprite(rt, ImageId(GetShopItemDescriptor(shopItem).Image, spriteColour), screenCoords);
                 }
