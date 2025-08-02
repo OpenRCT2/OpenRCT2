@@ -32,7 +32,9 @@
         <activity
             android:name=".GameActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:preferMinimalPostProcessing="true"
+            >
 
         </activity>
     </application>
