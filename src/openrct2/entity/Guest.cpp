@@ -5696,44 +5696,6 @@ void Guest::UpdateWalking()
     }
 }
 
-void Guest::UpdateWaitingAtCrossing()
-{
-    if (!IsActionInterruptable())
-    {
-        UpdateAction();
-        Invalidate();
-        if (!IsActionWalking())
-            return;
-    }
-
-    Action = PeepActionType::Idle;
-    NextAnimationType = PeepAnimationType::WatchRide;
-    SwitchNextAnimationType();
-
-    if (HasFoodOrDrink())
-    {
-        if ((ScenarioRand() & 0xFFFF) <= 1310)
-        {
-            Action = PeepActionType::EatFood;
-            AnimationFrameNum = 0;
-            AnimationImageIdOffset = 0;
-        }
-
-        UpdateCurrentAnimationType();
-
-        return;
-    }
-
-    if ((ScenarioRand() & 0xFFFF) <= 64)
-    {
-        Action = PeepActionType::Wave2;
-        AnimationFrameNum = 0;
-        AnimationImageIdOffset = 0;
-    }
-
-    UpdateCurrentAnimationType();
-}
-
 /**
  *
  *  rct2: 0x69185D
