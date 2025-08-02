@@ -1010,11 +1010,6 @@ namespace OpenRCT2::SpinningRC
                                 { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                             break;
                     }
-                if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-                {
-                    MetalASupportsPaintSetup(
-                        session, kSupportType, MetalSupportPlace::centre, 40, height, session.SupportColours);
-                }
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TunnelType::StandardSlopeStart);
@@ -1158,7 +1153,7 @@ namespace OpenRCT2::SpinningRC
         }
     }
 
-    static void SpinningRCTrackLeftQuarterTurn3(
+    static void SpinningRCTrackLeftQuarterTurn3Tiles(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
@@ -1282,15 +1277,16 @@ namespace OpenRCT2::SpinningRC
         }
     }
 
-    static void SpinningRCTrackRightQuarterTurn3(
+    static void SpinningRCTrackRightQuarterTurn3Tiles(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
         trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-        SpinningRCTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
+        SpinningRCTrackLeftQuarterTurn3Tiles(
+            session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
     }
 
-    static void SpinningRCTrackLeftQuarterTurn5(
+    static void SpinningRCTrackLeftQuarterTurn5Tiles(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
@@ -1486,12 +1482,13 @@ namespace OpenRCT2::SpinningRC
         }
     }
 
-    static void SpinningRCTrackRightQuarterTurn5(
+    static void SpinningRCTrackRightQuarterTurn5Tiles(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
         trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-        SpinningRCTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
+        SpinningRCTrackLeftQuarterTurn5Tiles(
+            session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
     }
 
     static void SpinningRCTrackLeftEighthToDiag(
@@ -1621,14 +1618,14 @@ namespace OpenRCT2::SpinningRC
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_SPINNING_TRACK_LARGE_CURVE + 3)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::bottomCorner, 4, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::bottomCorner, 6, height, session.SupportColours);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_SPINNING_TRACK_LARGE_CURVE + 7)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::leftCorner, 1, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::leftCorner, 6, height, session.SupportColours);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -1642,7 +1639,7 @@ namespace OpenRCT2::SpinningRC
                             session, direction, session.TrackColours.WithIndex((SPR_TRACKS_SPINNING_TRACK_LARGE_CURVE + 15)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, kSupportType, MetalSupportPlace::rightCorner, 0, height, session.SupportColours);
+                            session, kSupportType, MetalSupportPlace::rightCorner, 4, height, session.SupportColours);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -2150,7 +2147,7 @@ namespace OpenRCT2::SpinningRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, kSupportType, MetalSupportPlace::leftCorner, 9, height, session.SupportColours);
+                                session, kSupportType, MetalSupportPlace::leftCorner, 13, height, session.SupportColours);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -5886,7 +5883,7 @@ namespace OpenRCT2::SpinningRC
         }
     }
 
-    static void SpinningRCTrackLeftQuarterTurn3Bank(
+    static void SpinningRCTrackLeftQuarterTurn3TilesBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
@@ -6030,16 +6027,16 @@ namespace OpenRCT2::SpinningRC
         }
     }
 
-    static void SpinningRCTrackRightQuarterTurn3Bank(
+    static void SpinningRCTrackRightQuarterTurn3TilesBank(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
         trackSequence = kMapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-        SpinningRCTrackLeftQuarterTurn3Bank(
+        SpinningRCTrackLeftQuarterTurn3TilesBank(
             session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
     }
 
-    static void SpinningRCTrackBankedLeftQuarterTurn5(
+    static void SpinningRCTrackBankedLeftQuarterTurn5Tiles(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
@@ -6277,12 +6274,12 @@ namespace OpenRCT2::SpinningRC
         }
     }
 
-    static void SpinningRCTrackBankedRightQuarterTurn5(
+    static void SpinningRCTrackBankedRightQuarterTurn5Tiles(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement, SupportType supportType)
     {
         trackSequence = kMapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-        SpinningRCTrackBankedLeftQuarterTurn5(
+        SpinningRCTrackBankedLeftQuarterTurn5Tiles(
             session, ride, trackSequence, (direction - 1) & 3, height, trackElement, supportType);
     }
 
@@ -19843,9 +19840,9 @@ namespace OpenRCT2::SpinningRC
             case TrackElemType::Down60ToDown90:
                 return SpinningRCTrack60DegDownTo90DegDown;
             case TrackElemType::LeftQuarterTurn5Tiles:
-                return SpinningRCTrackLeftQuarterTurn5;
+                return SpinningRCTrackLeftQuarterTurn5Tiles;
             case TrackElemType::RightQuarterTurn5Tiles:
-                return SpinningRCTrackRightQuarterTurn5;
+                return SpinningRCTrackRightQuarterTurn5Tiles;
             case TrackElemType::FlatToLeftBank:
                 return SpinningRCTrackFlatToLeftBank;
             case TrackElemType::FlatToRightBank:
@@ -19855,9 +19852,9 @@ namespace OpenRCT2::SpinningRC
             case TrackElemType::RightBankToFlat:
                 return SpinningRCTrackRightBankToFlat;
             case TrackElemType::BankedLeftQuarterTurn5Tiles:
-                return SpinningRCTrackBankedLeftQuarterTurn5;
+                return SpinningRCTrackBankedLeftQuarterTurn5Tiles;
             case TrackElemType::BankedRightQuarterTurn5Tiles:
-                return SpinningRCTrackBankedRightQuarterTurn5;
+                return SpinningRCTrackBankedRightQuarterTurn5Tiles;
             case TrackElemType::LeftBankToUp25:
                 return SpinningRCTrackLeftBankTo25DegUp;
             case TrackElemType::RightBankToUp25:
@@ -19891,13 +19888,13 @@ namespace OpenRCT2::SpinningRC
             case TrackElemType::SBendRight:
                 return SpinningRCTrackSBendRight;
             case TrackElemType::LeftQuarterTurn3Tiles:
-                return SpinningRCTrackLeftQuarterTurn3;
+                return SpinningRCTrackLeftQuarterTurn3Tiles;
             case TrackElemType::RightQuarterTurn3Tiles:
-                return SpinningRCTrackRightQuarterTurn3;
+                return SpinningRCTrackRightQuarterTurn3Tiles;
             case TrackElemType::LeftBankedQuarterTurn3Tiles:
-                return SpinningRCTrackLeftQuarterTurn3Bank;
+                return SpinningRCTrackLeftQuarterTurn3TilesBank;
             case TrackElemType::RightBankedQuarterTurn3Tiles:
-                return SpinningRCTrackRightQuarterTurn3Bank;
+                return SpinningRCTrackRightQuarterTurn3TilesBank;
             case TrackElemType::LeftQuarterTurn3TilesUp25:
                 return SpinningRCTrackLeftQuarterTurn3Tile25DegUp;
             case TrackElemType::RightQuarterTurn3TilesUp25:
