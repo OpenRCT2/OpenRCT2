@@ -6,6 +6,7 @@
 - Improved: [#24812] Taiwan Park has been added to the Extras tab if it is present.
 - Improved: [OpenSFX#12] Add Brake Fix, Buy and Dinghy Slide running sounds.
 - Change: [#24730] Security guards now only walk slowly in crowded areas.
+- Change: [#24843] Update android targetSDK to 36.
 - Fix: [#24598] Cannot load .park files that use official legacy footpaths by accident.
 - Fix: [#24611] The confirmation prompt for track file deletion is not vertically aligned.
 - Fix: [#24711] The map smoothing function only partially works for custom height map image files.
