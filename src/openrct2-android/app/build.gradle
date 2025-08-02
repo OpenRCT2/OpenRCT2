@@ -4,6 +4,18 @@ android {
     compileSdk 36
     ndkVersion "27.3.13750724" // Latest r27d (LTS), to be synced with CI container image
     namespace "io.openrct2"
+
+    signingConfigs {
+        release {
+            if (System.getenv('OPENRCT2_KEYSTORE_FILE') && System.getenv('OPENRCT2_KEYSTORE_PASSWORD')) {
+                storeFile file(System.getenv('OPENRCT2_KEYSTORE_FILE'))
+                storePassword System.getenv('OPENRCT2_KEYSTORE_PASSWORD')
+                keyAlias "openrct2"
+                keyPassword System.getenv('OPENRCT2_KEYSTORE_PASSWORD')  // Same as keystore password in PKCS12
+            }
+        }
+    }
+
     defaultConfig {
         applicationId 'io.openrct2'
         minSdkVersion 24
@@ -22,7 +34,12 @@ android {
     }
     buildTypes {
         release {
-            signingConfig signingConfigs.debug
+            if (System.getenv('OPENRCT2_KEYSTORE_FILE') && System.getenv('OPENRCT2_KEYSTORE_PASSWORD')) {
+                signingConfig signingConfigs.release
+            } else {
+                // Fallback to ephemeral debug signing when keystore is not available
+                signingConfig signingConfigs.debug
+            }
         }
     }
 
