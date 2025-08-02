@@ -670,11 +670,11 @@ jobs:
       - name: Remove unsigned artifacts
         run: |
           rm -rf *unsigned*
-      - name: Concatenate sha1 files
+      - name: Concatenate sha256 files
         run: |
           ls -lR
           pushd ${{ github.workspace }}
-          sha1sum OpenRCT2-* > OpenRCT2-${{ needs.build_variables.outputs.name }}-sha1sums.txt
+          sha256sum OpenRCT2-* > OpenRCT2-${{ needs.build_variables.outputs.name }}-sha256sums.txt
           popd
       - name: Create release notes
         run: |
@@ -685,9 +685,9 @@ jobs:
           echo "Release created in ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> release_notes.txt
           echo "" >> release_notes.txt
 
-          echo "SHA1 checksums:" >> release_notes.txt
+          echo "SHA256 checksums:" >> release_notes.txt
           echo "\`\`\`" >> release_notes.txt
-          cat OpenRCT2-${{ needs.build_variables.outputs.name }}-sha1sums.txt >> release_notes.txt
+          cat OpenRCT2-${{ needs.build_variables.outputs.name }}-sha256sums.txt >> release_notes.txt
           echo "\`\`\`" >> release_notes.txt
           echo "" >> release_notes.txt
 
@@ -722,7 +722,7 @@ jobs:
           repository: OpenRCT2/OpenRCT2-binaries
           token: ${{ secrets.OPENRCT2_BINARIES_CI_UPLOAD }}
           files: |
-            openrct2-${{ needs.build_variables.outputs.name }}-sha1sums.txt
+            openrct2-${{ needs.build_variables.outputs.name }}-sha256sums.txt
             OpenRCT2-${{ needs.build_variables.outputs.name }}-*
           body_path: release_notes.txt
           tag_name: ${{ needs.build_variables.outputs.name }}
