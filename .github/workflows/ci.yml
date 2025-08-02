@@ -315,7 +315,7 @@ jobs:
     name: Windows (${{ matrix.platform_name }}) using mingw
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:18-mingw
+    container: openrct2/openrct2-build:20-mingw
     strategy:
       fail-fast: false
       matrix:
@@ -453,12 +453,12 @@ jobs:
           - platform: x86_64
             distro: Ubuntu
             release: noble
-            image: openrct2/openrct2-build:18-noble
+            image: openrct2/openrct2-build:20-noble
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments"
           - platform: x86_64
             distro: Debian
             release: bookworm
-            image: openrct2/openrct2-build:18-bookworm
+            image: openrct2/openrct2-build:20-bookworm
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
     steps:
       - name: Checkout
@@ -548,7 +548,7 @@ jobs:
     name: Ubuntu Linux (noble, debug, [http, network, flac, vorbis OpenGL] disabled) using clang
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:18-noble
+    container: openrct2/openrct2-build:20-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -564,7 +564,7 @@ jobs:
     name: Ubuntu Linux (debug) using clang, coverage enabled
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:18-noble
+    container: openrct2/openrct2-build:20-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -633,7 +633,7 @@ jobs:
     name: Emscripten
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:19-emscripten
+    container: openrct2/openrct2-build:20-emscripten
     steps:
       - name: Checkout
         uses: actions/checkout@v4
