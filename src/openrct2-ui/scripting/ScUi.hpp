@@ -65,6 +65,8 @@ namespace OpenRCT2::Scripting
             { "other", ScenarioSource::Other },
         });
 
+    static std::unordered_set<std::shared_ptr<Plugin>> _pluginsShowingGridlines;
+
     template<>
     inline DukValue ToDuk(duk_context* ctx, const ScenarioCategory& value)
     {
@@ -373,17 +375,39 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        void showGridlines()
+        void showCurrentPluginGridlines()
         {
-            ShowGridlines();
+            auto& execInfo = _scriptEngine.GetExecInfo();
+            auto owner = execInfo.GetCurrentPlugin();
+
+            auto result = _pluginsShowingGridlines.insert(owner);
+
+            if (result.second)
+            {
+                // Plugin was not yet in the set; increment internal counter
+                ShowGridlines();
+            }
         }
 
-        void hideGridlines()
+        void hideCurrentPluginGridlines()
         {
-            HideGridlines();
+            auto& execInfo = _scriptEngine.GetExecInfo();
+            auto plugin = execInfo.GetCurrentPlugin();
+            hidePluginGridlines(plugin);
         }
 
     public:
+        static void hidePluginGridlines(std::shared_ptr<Plugin> plugin)
+        {
+            auto result = _pluginsShowingGridlines.erase(plugin);
+
+            if (result == 1)
+            {
+                // Plugin was in the set before removal; decrement internal counter
+                HideGridlines();
+            }
+        }
+
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScUi::height_get, nullptr, "height");
@@ -405,8 +429,8 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScUi::registerMenuItem, "registerMenuItem");
             dukglue_register_method(ctx, &ScUi::registerToolboxMenuItem, "registerToolboxMenuItem");
             dukglue_register_method(ctx, &ScUi::registerShortcut, "registerShortcut");
-            dukglue_register_method(ctx, &ScUi::showGridlines, "showGridlines");
-            dukglue_register_method(ctx, &ScUi::hideGridlines, "hideGridlines");
+            dukglue_register_method(ctx, &ScUi::showCurrentPluginGridlines, "showGridlines");
+            dukglue_register_method(ctx, &ScUi::hideCurrentPluginGridlines, "hideGridlines");
         }
 
     private:
