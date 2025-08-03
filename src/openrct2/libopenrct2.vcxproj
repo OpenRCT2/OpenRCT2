@@ -638,9 +638,11 @@
     <ClInclude Include="world\TileElementsView.h" />
     <ClInclude Include="world\TileInspector.h" />
     <ClInclude Include="world\TilePointerIndex.hpp" />
+    <ClInclude Include="world\map_generator\Erosion.h" />
     <ClInclude Include="world\map_generator\HeightMap.hpp" />
     <ClInclude Include="world\map_generator\MapGen.h" />
     <ClInclude Include="world\map_generator\MapHelpers.h" />
+    <ClInclude Include="world\map_generator\Noise.h" />
     <ClInclude Include="world\map_generator\PngTerrainGenerator.h" />
     <ClInclude Include="world\map_generator\SimplexNoise.h" />
     <ClInclude Include="world\map_generator\SurfaceSelection.h" />
@@ -1147,6 +1149,7 @@
     <ClCompile Include="world\Scenery.cpp" />
     <ClCompile Include="world\SurfaceData.cpp" />
     <ClCompile Include="world\TileInspector.cpp" />
+    <ClCompile Include="world\map_generator\Erosion.cpp" />
     <ClCompile Include="world\map_generator\MapGen.cpp" />
     <ClCompile Include="world\map_generator\MapHelpers.cpp" />
     <ClCompile Include="world\map_generator\PngTerrainGenerator.cpp" />
