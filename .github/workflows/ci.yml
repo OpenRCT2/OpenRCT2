@@ -727,7 +727,7 @@ jobs:
           repository: OpenRCT2/OpenRCT2-binaries
           token: ${{ secrets.OPENRCT2_BINARIES_CI_UPLOAD }}
           files: |
-            openrct2-${{ needs.build_variables.outputs.name }}-sha256sums.txt
+            OpenRCT2-${{ needs.build_variables.outputs.name }}-sha256sums.txt
             OpenRCT2-${{ needs.build_variables.outputs.name }}-*
           body_path: release_notes.txt
           tag_name: ${{ needs.build_variables.outputs.name }}
