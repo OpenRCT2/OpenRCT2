@@ -54,7 +54,6 @@ namespace OpenRCT2::Scripting
         { "real", ScenarioSource::Real }, { "extras", ScenarioSource::Extras },   { "other", ScenarioSource::Other },
     };
 
-    
     static std::unordered_set<std::shared_ptr<Plugin>> _pluginsShowingGridlines;
 
     inline JSValue ScenarioCategoryToJS(JSContext* ctx, Scenario::Category value)
@@ -112,19 +111,6 @@ namespace OpenRCT2::Scripting
     class ScUi final : public ScBase
     {
     private:
-        static std::shared_ptr<Plugin> getCurrentPlugin(JSContext* ctx, JSValue thisVal)
-        {
-            ScriptEngine* scriptEngine = gScUi.GetOpaque<ScriptEngine*>(thisVal);
-            if (!scriptEngine)
-            {
-                JS_ThrowInternalError(ctx, "No script engine");
-                return nullptr;
-            }
-
-            auto& execInfo = scriptEngine->GetExecInfo();
-            return execInfo.GetCurrentPlugin();
-        }
-
         static JSValue width_get(JSContext* ctx, JSValue thisVal)
         {
             return JS_NewInt32(ctx, ContextGetWidth());
@@ -461,14 +447,14 @@ namespace OpenRCT2::Scripting
 
         static JSValue showCurrentPluginGridlines(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto plugin = getCurrentPlugin(ctx, thisVal);
-            if (!plugin)
+            ScriptEngine* scriptEngine = gScUi.GetOpaque<ScriptEngine*>(thisVal);
+            if (!scriptEngine)
             {
-                return JS_EXCEPTION;
+                return JS_ThrowInternalError(ctx, "No script engine");
             }
 
+            auto plugin = scriptEngine->GetExecInfo().GetCurrentPlugin();
             auto result = _pluginsShowingGridlines.insert(plugin);
-
             if (result.second)
             {
                 // Plugin was not yet in the set; increment internal counter
@@ -479,7 +465,13 @@ namespace OpenRCT2::Scripting
 
         static JSValue hideCurrentPluginGridlines(JSContext* ctx, JSValue thisVal, int argc, JSValue* argv)
         {
-            auto plugin = getCurrentPlugin(ctx, thisVal);
+            ScriptEngine* scriptEngine = gScUi.GetOpaque<ScriptEngine*>(thisVal);
+            if (!scriptEngine)
+            {
+                return JS_ThrowInternalError(ctx, "No script engine");
+            }
+
+            auto plugin = scriptEngine->GetExecInfo().GetCurrentPlugin();
             hidePluginGridlines(plugin);
             return JS_UNDEFINED;
         }
@@ -488,7 +480,6 @@ namespace OpenRCT2::Scripting
         static void hidePluginGridlines(std::shared_ptr<Plugin> plugin)
         {
             auto result = _pluginsShowingGridlines.erase(plugin);
-
             if (result == 1)
             {
                 // Plugin was in the set before removal; decrement internal counter
