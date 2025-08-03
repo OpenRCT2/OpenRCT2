@@ -1,4 +1,4 @@
-0.4.25 (in development)
+0.4.25 (2025-08-03)
 ------------------------------------------------------------------------
 - Feature: [#24468] [Plugin] Add awards to plugin API.
 - Feature: [#24702] [Plugin] Add bindings for missing cheats (forcedParkRating, ignoreRidePrice, makeAllDestructible).

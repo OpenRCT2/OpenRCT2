@@ -22,7 +22,7 @@ android {
         targetSdkVersion 36
 
         versionCode 12
-        versionName '0.4.24'
+        versionName '0.4.25'
         externalNativeBuild {
             cmake {
                 arguments '-DANDROID_STL=c++_shared'
