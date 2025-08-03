@@ -47,6 +47,10 @@ namespace OpenRCT2::World::MapGenerator
         bool smooth_height_map = true;
         uint32_t smooth_strength = 1;
         bool normalize_height = true;
+
+        // Erosion settings
+        bool simulate_erosion = false;
+        int32_t particles_per_tile = 305;
     };
 
     class HeightMap;
