@@ -208,6 +208,7 @@ namespace OpenRCT2::World::MapGenerator
         const uint8_t rangeIn = maxValue - minValue;
         const uint8_t rangeOut = (settings->heightmapHigh - settings->heightmapLow) * 2;
 
+        MapInit(flippedMapSize);
         for (auto y = 0; y < dest.height; y++)
         {
             for (auto x = 0; x < dest.width; x++)
