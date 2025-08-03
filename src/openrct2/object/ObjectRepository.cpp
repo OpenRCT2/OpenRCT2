@@ -24,14 +24,14 @@
 #include "../core/MemoryStream.h"
 #include "../core/Numerics.hpp"
 #include "../core/Path.hpp"
-#include "../core/SawyerCoding.h"
 #include "../core/String.hpp"
 #include "../localisation/LocalisationService.h"
 #include "../object/Object.h"
 #include "../park/Legacy.h"
 #include "../platform/Platform.h"
-#include "../rct12/SawyerChunkReader.h"
-#include "../rct12/SawyerChunkWriter.h"
+#include "../sawyer_coding/SawyerChunkReader.h"
+#include "../sawyer_coding/SawyerChunkWriter.h"
+#include "../sawyer_coding/SawyerCoding.h"
 #include "../scenario/ScenarioRepository.h"
 #include "Object.h"
 #include "ObjectFactory.h"
@@ -47,6 +47,7 @@
 #undef CP_UTF8
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::SawyerCoding;
 
 struct ObjectEntryHash
 {
@@ -475,10 +476,10 @@ private:
     }
 
     // 0x0098DA2C
-    static constexpr std::array<int32_t, 11> kLegacyObjectEntryGroupEncoding = {
-        CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE,    CHUNK_ENCODING_RLE,
-        CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE,    CHUNK_ENCODING_RLE,
-        CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE, CHUNK_ENCODING_ROTATE,
+    static constexpr std::array<ChunkEncoding, 11> kLegacyObjectEntryGroupEncoding = {
+        ChunkEncoding::rle, ChunkEncoding::rle, ChunkEncoding::rle,    ChunkEncoding::rle,
+        ChunkEncoding::rle, ChunkEncoding::rle, ChunkEncoding::rle,    ChunkEncoding::rle,
+        ChunkEncoding::rle, ChunkEncoding::rle, ChunkEncoding::rotate,
     };
 
     static void SaveObject(

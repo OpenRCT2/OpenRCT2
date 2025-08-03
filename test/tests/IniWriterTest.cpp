@@ -47,7 +47,7 @@ TEST_F(IniWriterTest, create_one_section)
     ASSERT_LE(ms.GetPosition(), 13); // Accommodate for varying-sized newline (Windows)
     ASSERT_EQ(ms.GetLength(), ms.GetPosition());
     ms.SetPosition(0);
-    auto ini = ms.ReadStdString();
+    auto ini = ms.ReadString();
     ASSERT_STREQ(ini.c_str(), "[OpenRCT2]" PLATFORM_NEWLINE);
 }
 
@@ -66,7 +66,7 @@ TEST_F(IniWriterTest, create_multiple_sections)
     ASSERT_LE(ms.GetPosition(), 55); // Accommodate for varying-sized newline (Windows)
     ASSERT_EQ(ms.GetLength(), ms.GetPosition());
     ms.SetPosition(0);
-    auto ini = ms.ReadStdString();
+    auto ini = ms.ReadString();
     ASSERT_STREQ(
         ini.c_str(),
         "[OpenRCT1]" PLATFORM_NEWLINE PLATFORM_NEWLINE "[OpenRCT2]" PLATFORM_NEWLINE PLATFORM_NEWLINE
@@ -85,7 +85,7 @@ TEST_F(IniWriterTest, create_loose_bool_entry)
     ASSERT_LE(ms.GetPosition(), 17); // Accommodate for varying-sized newline (Windows)
     ASSERT_EQ(ms.GetLength(), ms.GetPosition());
     ms.SetPosition(0);
-    auto ini = ms.ReadStdString();
+    auto ini = ms.ReadString();
     ASSERT_STREQ(ini.c_str(), "boolval = true" PLATFORM_NEWLINE);
 }
 
@@ -102,7 +102,7 @@ TEST_F(IniWriterTest, create_loose_enum_entry)
     ASSERT_LE(ms.GetPosition(), 37); // Accommodate for varying-sized newline (Windows)
     ASSERT_EQ(ms.GetLength(), ms.GetPosition());
     ms.SetPosition(0);
-    auto ini = ms.ReadStdString();
+    auto ini = ms.ReadString();
     ASSERT_STREQ(ini.c_str(), "by_string = stringval" PLATFORM_NEWLINE "int32_t = 0" PLATFORM_NEWLINE);
 }
 
@@ -118,7 +118,7 @@ TEST_F(IniWriterTest, create_loose_float_entry)
     ASSERT_LE(ms.GetPosition(), 17); // Accommodate for varying-sized newline (Windows)
     ASSERT_EQ(ms.GetLength(), ms.GetPosition());
     ms.SetPosition(0);
-    auto ini = ms.ReadStdString();
+    auto ini = ms.ReadString();
     // This will be non-fatal due to float.
     EXPECT_STREQ(ini.c_str(), "one = 1.000000" PLATFORM_NEWLINE);
 }
@@ -139,7 +139,7 @@ TEST_F(IniWriterTest, create_loose_int32_t_entry)
     ASSERT_LE(ms.GetPosition(), 78); // Accommodate for varying-sized newline (Windows)
     ASSERT_EQ(ms.GetLength(), ms.GetPosition());
     ms.SetPosition(0);
-    auto ini = ms.ReadStdString();
+    auto ini = ms.ReadString();
     ASSERT_STREQ(
         ini.c_str(),
         "one = 1" PLATFORM_NEWLINE "zero = 0" PLATFORM_NEWLINE "minusone = -1" PLATFORM_NEWLINE
@@ -158,7 +158,7 @@ TEST_F(IniWriterTest, create_loose_string_entry)
     ASSERT_LE(ms.GetPosition(), 44); // Accommodate for varying-sized newline (Windows)
     ASSERT_EQ(ms.GetLength(), ms.GetPosition());
     ms.SetPosition(0);
-    auto ini = ms.ReadStdString();
+    auto ini = ms.ReadString();
     ASSERT_STREQ(
         ini.c_str(), "path = \"C:'\\\\some/dir\\\\here/\xE7\xA5\x9E\xE9\xB7\xB9\xE6\x9A\xA2\xE9\x81\x8A\"" PLATFORM_NEWLINE);
 }
@@ -181,7 +181,7 @@ TEST_F(IniWriterTest, create_multiple_section_with_values)
     ASSERT_LE(ms.GetPosition(), 108); // Accommodate for varying-sized newline (Windows)
     ASSERT_EQ(ms.GetLength(), ms.GetPosition());
     ms.SetPosition(0);
-    auto ini = ms.ReadStdString();
+    auto ini = ms.ReadString();
     ASSERT_STREQ(
         ini.c_str(),
         "[bool]" PLATFORM_NEWLINE "boolval = true" PLATFORM_NEWLINE PLATFORM_NEWLINE "[int]" PLATFORM_NEWLINE
@@ -203,7 +203,7 @@ TEST_F(IniWriterTest, create_duplicate_sections)
     ASSERT_LE(ms.GetPosition(), 43); // Accommodate for varying-sized newline (Windows)
     ASSERT_EQ(ms.GetLength(), ms.GetPosition());
     ms.SetPosition(0);
-    auto ini = ms.ReadStdString();
+    auto ini = ms.ReadString();
     ASSERT_STREQ(
         ini.c_str(),
         "[section]" PLATFORM_NEWLINE PLATFORM_NEWLINE "[section]" PLATFORM_NEWLINE PLATFORM_NEWLINE

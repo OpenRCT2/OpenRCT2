@@ -239,7 +239,7 @@ namespace OpenRCT2::Ui::Windows
     };
 
     // clang-format off
-    constexpr int32_t RCT1_LIGHT_OFFSET = 4;
+    constexpr int32_t kRCT1LightOffset = 4;
 
     static constexpr auto kMainRideWidgets = makeWidgets(
         makeWindowShim(kWindowTitle, kWindowSize),
@@ -1684,7 +1684,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t minHeight = 180;
             if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
             {
-                minHeight += 20 + RCT1_LIGHT_OFFSET;
+                minHeight += 20 + kRCT1LightOffset;
 
                 auto ride = GetRide(rideId);
                 if (ride != nullptr)
@@ -2423,7 +2423,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 widgets[WIDX_OPEN_LIGHT].top = widgetHeight;
                 widgets[WIDX_OPEN_LIGHT].bottom = widgetHeight + 13;
-                widgetHeight += 14 - 24 + RCT1_LIGHT_OFFSET;
+                widgetHeight += 14 - 24 + kRCT1LightOffset;
             }
             else
             {
@@ -4032,7 +4032,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             uint16_t reliability = ride->reliabilityPercentage;
-            widgetProgressBarSetNewPercentage(widgets[WIDX_RELIABILITY_BAR], std::max<uint8_t>(10, reliability));
+            widgetProgressBarSetNewPercentage(widgets[WIDX_RELIABILITY_BAR], reliability);
 
             uint16_t downTime = ride->downtime;
             widgetProgressBarSetNewPercentage(widgets[WIDX_DOWN_TIME_BAR], downTime);
@@ -4873,16 +4873,7 @@ namespace OpenRCT2::Ui::Windows
                                                                               : rideEntry->shop_item[1];
                 if (ride->hasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS))
                 {
-                    colour_t spriteColour = COLOUR_BLACK;
-                    // Limit update rate of preview to avoid making people dizzy.
-                    if ((getGameState().currentTicks % 64) == 0)
-                    {
-                        spriteColour++;
-                        if (spriteColour >= kColourNumNormal)
-                        {
-                            spriteColour = COLOUR_BLACK;
-                        }
-                    }
+                    colour_t spriteColour = (getGameState().currentTicks / 32) % COLOUR_COUNT;
 
                     GfxDrawSprite(rt, ImageId(GetShopItemDescriptor(shopItem).Image, spriteColour), screenCoords);
                 }

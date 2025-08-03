@@ -70,21 +70,21 @@ set(TITLE_SEQUENCE_VERSION "0.4.14")
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v${TITLE_SEQUENCE_VERSION}/title-sequences.zip")
 set(TITLE_SEQUENCE_SHA1 "6c04781b959b468e1f65ec2d2f21f5aaa5e5724d")
 
-set(OBJECTS_VERSION "1.7.1")
+set(OBJECTS_VERSION "1.7.2")
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
-set(OBJECTS_SHA1 "6bfcb5f8dbd87b049071088baba029d8215f969c")
+set(OBJECTS_SHA1 "ab0f05744105528067c6403a9e837fb6a2c52f74")
 
-set(OPENSFX_VERSION "1.0.5")
+set(OPENSFX_VERSION "1.0.6")
 set(OPENSFX_URL  "https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v${OPENSFX_VERSION}/opensound.zip")
-set(OPENSFX_SHA1 "b1b1f1b241d2cbff63a1889c4dc5a09bdf769bfb")
+set(OPENSFX_SHA1 "e8b6f24b3fb9d1ed5dc27022a50aaea98923d872")
 
-set(OPENMSX_VERSION "1.6")
+set(OPENMSX_VERSION "1.6.1")
 set(OPENMSX_URL  "https://github.com/OpenRCT2/OpenMusic/releases/download/v${OPENMSX_VERSION}/openmusic.zip")
-set(OPENMSX_SHA1 "ba170fa6d777b309c15420f4b6eb3fa25082a9d1")
+set(OPENMSX_SHA1 "5168c852b1a10b623c10f0ff2a590ba494df4edb")
 
-set(REPLAYS_VERSION "0.0.87")
+set(REPLAYS_VERSION "0.0.89")
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
-set(REPLAYS_SHA1 "6061B53DE346BD853BB997E635AC7374B1A7D2F0")
+set(REPLAYS_SHA1 "089CB8EEA76A98028367FDDE72675E9309AB9036")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
@@ -356,6 +356,11 @@ else ()
 
     if(APPLE)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error=objc-method-access")
+    endif()
+
+    # Clang -Wmissing-declarations differs from GCC, set -Wmissing-prototypes for parity
+    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wmissing-prototypes")
     endif()
 
     # On mingw all code is already PIC, this will avoid compiler error on redefining this option

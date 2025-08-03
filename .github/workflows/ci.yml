@@ -129,7 +129,7 @@ jobs:
   check-code-formatting:
     name: Check code formatting
     runs-on: ubuntu-latest
-    container: openrct2/openrct2-build:18-format
+    container: openrct2/openrct2-build:20-format
     defaults:
       run:
         shell: sh
@@ -315,7 +315,7 @@ jobs:
     name: Windows (${{ matrix.platform_name }}) using mingw
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:18-mingw
+    container: openrct2/openrct2-build:20-mingw
     strategy:
       fail-fast: false
       matrix:
@@ -453,12 +453,12 @@ jobs:
           - platform: x86_64
             distro: Ubuntu
             release: noble
-            image: openrct2/openrct2-build:18-noble
+            image: openrct2/openrct2-build:20-noble
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments"
           - platform: x86_64
             distro: Debian
             release: bookworm
-            image: openrct2/openrct2-build:18-bookworm
+            image: openrct2/openrct2-build:20-bookworm
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
     steps:
       - name: Checkout
@@ -548,7 +548,7 @@ jobs:
     name: Ubuntu Linux (noble, debug, [http, network, flac, vorbis OpenGL] disabled) using clang
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:18-noble
+    container: openrct2/openrct2-build:20-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -564,7 +564,7 @@ jobs:
     name: Ubuntu Linux (debug) using clang, coverage enabled
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:18-noble
+    container: openrct2/openrct2-build:20-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -605,7 +605,7 @@ jobs:
     name: Android
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:18-android
+    container: openrct2/openrct2-build:20-android
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -613,6 +613,11 @@ jobs:
         uses: hendrikmuhs/ccache-action@v1.2.18
         with:
           key: android
+      - name: Setup keystore
+        run: |
+          echo "${{ secrets.OPENRCT2_KEYSTORE_CONTENTS }}" | base64 -d > keystore.jks
+          echo "OPENRCT2_KEYSTORE_FILE=${{ github.workspace }}/keystore.jks" >> $GITHUB_ENV
+          echo "OPENRCT2_KEYSTORE_PASSWORD=${{ secrets.OPENRCT2_KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
       - name: Install GCC problem matcher
         uses: ammaraskar/gcc-problem-matcher@master
       - name: Build OpenRCT2
@@ -633,7 +638,7 @@ jobs:
     name: Emscripten
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:19-emscripten
+    container: openrct2/openrct2-build:20-emscripten
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -670,11 +675,11 @@ jobs:
       - name: Remove unsigned artifacts
         run: |
           rm -rf *unsigned*
-      - name: Concatenate sha1 files
+      - name: Concatenate sha256 files
         run: |
           ls -lR
           pushd ${{ github.workspace }}
-          sha1sum OpenRCT2-* > OpenRCT2-${{ needs.build_variables.outputs.name }}-sha1sums.txt
+          sha256sum OpenRCT2-* > OpenRCT2-${{ needs.build_variables.outputs.name }}-sha256sums.txt
           popd
       - name: Create release notes
         run: |
@@ -685,9 +690,9 @@ jobs:
           echo "Release created in ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> release_notes.txt
           echo "" >> release_notes.txt
 
-          echo "SHA1 checksums:" >> release_notes.txt
+          echo "SHA256 checksums:" >> release_notes.txt
           echo "\`\`\`" >> release_notes.txt
-          cat OpenRCT2-${{ needs.build_variables.outputs.name }}-sha1sums.txt >> release_notes.txt
+          cat OpenRCT2-${{ needs.build_variables.outputs.name }}-sha256sums.txt >> release_notes.txt
           echo "\`\`\`" >> release_notes.txt
           echo "" >> release_notes.txt
 
@@ -722,7 +727,7 @@ jobs:
           repository: OpenRCT2/OpenRCT2-binaries
           token: ${{ secrets.OPENRCT2_BINARIES_CI_UPLOAD }}
           files: |
-            openrct2-${{ needs.build_variables.outputs.name }}-sha1sums.txt
+            openrct2-${{ needs.build_variables.outputs.name }}-sha256sums.txt
             OpenRCT2-${{ needs.build_variables.outputs.name }}-*
           body_path: release_notes.txt
           tag_name: ${{ needs.build_variables.outputs.name }}

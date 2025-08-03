@@ -197,7 +197,7 @@ namespace OpenRCT2::Ui::Windows
     };
     static_assert(std::size(_windowFinancesTabAnimationFrames) == WINDOW_FINANCES_PAGE_COUNT);
 
-    static constexpr int32_t EXPENDITURE_COLUMN_WIDTH = 80;
+    static constexpr int32_t kExpenditureColumnWidth = 80;
 
     static constexpr uint32_t _windowFinancesPageHoldDownWidgets[] = {
         (1uLL << WIDX_LOAN_INCREASE) | (1uLL << WIDX_LOAN_DECREASE), // WINDOW_FINANCES_PAGE_SUMMARY
@@ -387,7 +387,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (page == WINDOW_FINANCES_PAGE_SUMMARY)
             {
-                return { EXPENDITURE_COLUMN_WIDTH * (SummaryMaxAvailableMonth() + 1), 0 };
+                return { kExpenditureColumnWidth * (SummaryMaxAvailableMonth() + 1), 0 };
             }
 
             return {};
@@ -431,7 +431,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(STR_FINANCES_SUMMARY_MONTH_HEADING);
                 ft.Add<uint16_t>(monthyear);
                 DrawTextBasic(
-                    rt, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 },
+                    rt, screenCoords + ScreenCoordsXY{ kExpenditureColumnWidth, 0 },
                     monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, ft,
                     { TextUnderline::On, TextAlignment::RIGHT });
                 screenCoords.y += 14;
@@ -449,7 +449,7 @@ namespace OpenRCT2::Ui::Windows
                         ft = Formatter();
                         ft.Add<money64>(expenditure);
                         DrawTextBasic(
-                            rt, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft,
+                            rt, screenCoords + ScreenCoordsXY{ kExpenditureColumnWidth, 0 }, format, ft,
                             { TextAlignment::RIGHT });
                     }
                     screenCoords.y += kTableCellHeight;
@@ -461,14 +461,14 @@ namespace OpenRCT2::Ui::Windows
                 ft = Formatter();
                 ft.Add<money64>(profit);
                 DrawTextBasic(
-                    rt, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, { TextAlignment::RIGHT });
+                    rt, screenCoords + ScreenCoordsXY{ kExpenditureColumnWidth, 0 }, format, ft, { TextAlignment::RIGHT });
 
                 GfxFillRect(
                     rt,
-                    { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, -2 } },
+                    { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ kExpenditureColumnWidth, -2 } },
                     PaletteIndex::pi10);
 
-                screenCoords.x += EXPENDITURE_COLUMN_WIDTH;
+                screenCoords.x += kExpenditureColumnWidth;
             }
 
             _lastPaintedMonth = currentMonthYear;

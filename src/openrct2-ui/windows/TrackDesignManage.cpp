@@ -230,11 +230,17 @@ namespace OpenRCT2::Ui::Windows
     {
         DrawWidgets(rt);
 
+        const auto titleBarBottom = widgets[WIDX_TITLE].bottom;
+        const auto buttonTop = widgets[WIDX_PROMPT_DELETE].top;
+        const auto fontHeight = FontGetLineHeight(FontStyle::Medium);
+
+        const auto maxMessageHeight = buttonTop - titleBarBottom;
+        const auto messageTop = titleBarBottom + (maxMessageHeight - fontHeight) / 2;
+
         auto ft = Formatter();
         ft.Add<const utf8*>(_trackDesignFileReference->name.c_str());
         DrawTextWrapped(
-            rt, windowPos + ScreenCoordsXY{ (kWindowSizeDeletePrompt.width / 2), ((kWindowSizeDeletePrompt.height / 2) - 9) },
-            (kWindowSizeDeletePrompt.width - 4), STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, ft,
-            { TextAlignment::CENTRE });
+            rt, windowPos + ScreenCoordsXY{ width / 2, messageTop }, (width - 4),
+            STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, ft, { TextAlignment::CENTRE });
     }
 } // namespace OpenRCT2::Ui::Windows

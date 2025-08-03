@@ -51,6 +51,7 @@
     #include "bindings/object/ScObjectManager.h"
     #include "bindings/ride/ScRide.hpp"
     #include "bindings/ride/ScRideStation.hpp"
+    #include "bindings/world/ScAward.hpp"
     #include "bindings/world/ScClimate.hpp"
     #include "bindings/world/ScDate.hpp"
     #include "bindings/world/ScMap.hpp"
@@ -403,6 +404,7 @@ void ScriptEngine::Initialise()
         throw std::runtime_error("Script engine already initialised.");
 
     auto ctx = static_cast<duk_context*>(_context);
+    ScAward::Register(ctx);
     ScCheats::Register(ctx);
     ScClimate::Register(ctx);
     ScWeatherState::Register(ctx);

@@ -3611,7 +3611,7 @@ STR_6563    :Bleu pervenche
 STR_6564    :Viride
 STR_6565    :Vert écume
 STR_6566    :Violette
-STR_6567    :Lavende
+STR_6567    :Lavande
 STR_6568    :Orange pastel
 STR_6569    :Grands fonds
 STR_6570    :Rose pastel
@@ -3823,3 +3823,26 @@ STR_6774    :Temps depuis la dernière inspection
 STR_6775    :{COMMA16} minute
 STR_6776    :{COMMA16} minutes
 STR_6777    :Plus de 4 heures
+STR_6778    :Type d’aperçu de scénario :
+STR_6779    :Sélectionne le type d’image d’aperçu affiché dans la fenêtre de sélection de scénario
+STR_6780    :Mini-carte
+STR_6781    :Capture d’écran
+STR_6782    :Notifications du parc
+STR_6783    :Notifications des attractions
+STR_6784    :Notifications des visiteurs
+STR_6785    :Manette de jeu
+STR_6786    :Zone morte :
+STR_6787    :Zone morte du stick analogique (mouvement minimum requis)
+STR_6788    :Sensibilité :
+STR_6789    :Multiplicateur de sensibilité du stick analogique
+STR_6790    :Zone morte : {COMMA32}%
+STR_6791    :Sensibilité : {COMMA32}%
+STR_6792    :Bâtiments d’entrée
+STR_6793    :Visiteurs et employés
+STR_6794    :Décor et thèmes
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :Pas d’aperçu
+STR_6798    :Capture d’écran
+STR_6799    :Mini-carte
+STR_7000    :ou

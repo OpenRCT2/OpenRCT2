@@ -61,8 +61,8 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto kPadding = 5;
 
-    static constexpr auto kPreviewWidth = 250;
-    static constexpr auto kWindowSizeMinPreview = ScreenSize{ kWindowSize.width + kPreviewWidth, kWindowSize.height };
+    static constexpr auto kPreviewWidthScreenshot = 250;
+    static constexpr auto kPreviewWidthMiniMap = 180;
 
     static constexpr int kKibiByte = 1024;
     static constexpr int kMebiByte = kKibiByte * 1024;
@@ -136,7 +136,27 @@ namespace OpenRCT2::Ui::Windows
         bool ShowPreviews()
         {
             auto& config = Config::Get().general;
-            return config.FileBrowserShowPreviews;
+            return config.FileBrowserPreviewType != ParkPreviewPref::disabled;
+        }
+
+        ScreenSize GetPreviewSize() const
+        {
+            auto& config = Config::Get().general;
+            switch (config.FileBrowserPreviewType)
+            {
+                case ParkPreviewPref::screenshot:
+                    return { kPreviewWidthScreenshot, kPreviewWidthScreenshot / 5 * 4 };
+                case ParkPreviewPref::miniMap:
+                    return { kPreviewWidthMiniMap, kPreviewWidthMiniMap };
+                case ParkPreviewPref::disabled:
+                default:
+                    return { 0, 0 };
+            }
+        }
+
+        ScreenSize GetMinimumWindowSize() const
+        {
+            return kWindowSizeMin + GetPreviewSize();
         }
 
         void PopulateList(const u8string& directory, std::string_view extensionPattern)
@@ -383,44 +403,66 @@ namespace OpenRCT2::Ui::Windows
 
         void DrawPreview(RenderTarget& rt)
         {
-            constexpr auto kPreviewHeight = kPreviewWidth / 5 * 4;
-
-            // Draw frame
-            auto& widget = widgets[WIDX_SCROLL];
-            auto frameStartPos = windowPos + ScreenCoordsXY(width - kPreviewWidth - kPadding - 1, widget.top);
-            auto frameEndPos = frameStartPos + ScreenCoordsXY(kPreviewWidth + 1, kPreviewHeight + 1);
-            GfxFillRectInset(rt, { frameStartPos, frameEndPos }, colours[1], INSET_RECT_F_60 | INSET_RECT_FLAG_FILL_MID_LIGHT);
-
-            // Draw park name
+            // Find preview image to draw
+            PreviewImage* image = nullptr;
+            auto targetPref = Config::Get().general.FileBrowserPreviewType;
+            auto targetType = targetPref == ParkPreviewPref::screenshot ? PreviewImageType::screenshot
+                                                                        : PreviewImageType::miniMap;
+            for (auto& candidate : _preview.images)
             {
-                auto namePos = frameStartPos + ScreenCoordsXY{ kPreviewWidth / 2, -kButtonFaceHeight };
-                auto ft = Formatter();
-                ft.Add<StringId>(STR_STRING);
-                ft.Add<const char*>(_preview.parkName.c_str());
-                DrawTextEllipsised(rt, namePos, kPreviewWidth, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
-            }
-
-            // Draw image, if available
-            bool foundImage = false;
-            for (auto& image : _preview.images)
-            {
-                if (image.type == PreviewImageType::screenshot)
+                if (candidate.type == targetType)
                 {
-                    auto imagePos = frameStartPos + ScreenCoordsXY(1, 1);
-                    drawPreviewImage(image, rt, imagePos);
-                    foundImage = true;
+                    image = &candidate;
                     break;
                 }
             }
 
-            // Draw OpenRCT2 logo if no preview was found
-            if (!foundImage)
+            const auto previewPaneSize = GetPreviewSize();
+            auto& widget = widgets[WIDX_SCROLL];
+
+            // Draw park name
+            {
+                auto namePos = windowPos
+                    + ScreenCoordsXY(width - previewPaneSize.width / 2 - kPadding, widget.top - kButtonFaceHeight);
+                auto ft = Formatter();
+                ft.Add<StringId>(STR_STRING);
+                ft.Add<const char*>(_preview.parkName.c_str());
+                DrawTextEllipsised(
+                    rt, namePos, previewPaneSize.width - kPadding * 2, STR_WINDOW_COLOUR_2_STRINGID, ft,
+                    { TextAlignment::CENTRE });
+            }
+
+            const bool drawFrame = image != nullptr || targetType == PreviewImageType::screenshot;
+            const auto previewWidth = image != nullptr ? image->width : previewPaneSize.width;
+            const auto previewHeight = image != nullptr ? image->height : previewPaneSize.height;
+
+            auto hCentre = (previewPaneSize.width - previewWidth) / 2 - kPadding;
+            auto frameStartPos = windowPos + ScreenCoordsXY(width - previewPaneSize.width + hCentre - 1, widget.top);
+            auto frameEndPos = frameStartPos + ScreenCoordsXY(previewWidth + 1, previewHeight + 1);
+
+            if (drawFrame)
+            {
+                GfxFillRectInset(
+                    rt, { frameStartPos, frameEndPos }, colours[1], INSET_RECT_F_60 | INSET_RECT_FLAG_FILL_MID_LIGHT);
+            }
+
+            // Draw image, or placeholder if no preview was found
+            if (image != nullptr)
             {
                 auto imagePos = frameStartPos + ScreenCoordsXY(1, 1);
-                auto colour = ColourMapA[colours[1].colour].dark;
-                GfxDrawSpriteSolid(rt, ImageId(SPR_G2_LOGO_MONO_DITHERED), imagePos, colour);
+                drawPreviewImage(*image, rt, imagePos);
+            }
+            else
+            {
+                auto imagePos = frameStartPos + ScreenCoordsXY(1, 1);
 
-                auto textPos = imagePos + ScreenCoordsXY(kPreviewWidth / 2, kPreviewHeight / 2 - 6);
+                if (targetType == PreviewImageType::screenshot)
+                {
+                    auto colour = ColourMapA[colours[1].colour].dark;
+                    GfxDrawSpriteSolid(rt, ImageId(SPR_G2_LOGO_MONO_DITHERED), imagePos, colour);
+                }
+
+                auto textPos = imagePos + ScreenCoordsXY(previewWidth / 2, previewHeight / 2 - 6);
 
                 // NOTE: Can't simplify this as the compiler complains about different enumeration types.
                 StringId previewText = STR_NO_PREVIEW_AVAILABLE;
@@ -435,7 +477,8 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto summaryCoords = frameStartPos + ScreenCoordsXY(0, kPreviewHeight + kListRowHeight);
+            auto summaryCoords = windowPos
+                + ScreenCoordsXY(width - previewPaneSize.width - kPadding, widget.top + previewHeight + kListRowHeight);
 
             // Date
             {
@@ -538,8 +581,7 @@ namespace OpenRCT2::Ui::Windows
             InitScrollWidgets();
             ComputeMaxDateWidth();
 
-            auto minSize = ShowPreviews() ? kWindowSizeMinPreview : kWindowSizeMin;
-            WindowSetResize(*this, minSize, kWindowSizeMax);
+            WindowSetResize(*this, GetMinimumWindowSize(), kWindowSizeMax);
         }
 
         void OnClose() override
@@ -561,8 +603,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnResize() override
         {
-            auto minSize = ShowPreviews() ? kWindowSizeMinPreview : kWindowSizeMin;
-            WindowSetResize(*this, minSize, kWindowSizeMax);
+            WindowSetResize(*this, GetMinimumWindowSize(), kWindowSizeMax);
 
             auto& config = Config::Get().general;
             config.FileBrowserWidth = width;
@@ -594,7 +635,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_SCROLL].right = width - kPadding;
             widgets[WIDX_SCROLL].bottom = height - paddingBottom;
             if (ShowPreviews())
-                widgets[WIDX_SCROLL].right -= kPreviewWidth + kPadding;
+                widgets[WIDX_SCROLL].right -= GetPreviewSize().width + kPadding;
 
             Widget& customiseWidget = widgets[WIDX_SORT_CUSTOMISE];
             customiseWidget.right = widgets[WIDX_SCROLL].right;
@@ -864,24 +905,32 @@ namespace OpenRCT2::Ui::Windows
             gDropdownItems[0].Format = STR_TOGGLE_OPTION;
             gDropdownItems[1].Format = STR_TOGGLE_OPTION;
             gDropdownItems[2].Format = STR_TOGGLE_OPTION;
-            gDropdownItems[3].Format = STR_TOGGLE_OPTION;
+            gDropdownItems[3].Format = kStringIdEmpty;
+            gDropdownItems[4].Format = STR_DROPDOWN_BULLET_OPTION;
+            gDropdownItems[5].Format = STR_DROPDOWN_BULLET_OPTION;
+            gDropdownItems[6].Format = STR_DROPDOWN_BULLET_OPTION;
+
             gDropdownItems[0].Args = STR_FILEBROWSER_CUSTOMISE_FILENAME;
             gDropdownItems[1].Args = STR_FILEBROWSER_CUSTOMISE_SIZE;
             gDropdownItems[2].Args = STR_FILEBROWSER_CUSTOMISE_DATE;
-            gDropdownItems[3].Args = STR_FILEBROWSER_CUSTOMISE_PREVIEW;
+            gDropdownItems[4].Args = STR_FILEBROWSER_PREVIEW_DISABLED;
+            gDropdownItems[5].Args = STR_FILEBROWSER_PREVIEW_MINIMAP;
+            gDropdownItems[6].Args = STR_FILEBROWSER_PREVIEW_SCREENSHOT;
 
             Widget* widget = &widgets[WIDX_SORT_CUSTOMISE];
 
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + widget->left - 70, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
-                Dropdown::Flag::StayOpen, 4, 90);
+                Dropdown::Flag::StayOpen, 7, 90);
 
             auto& config = Config::Get().general;
 
             Dropdown::SetChecked(0, true);
             Dropdown::SetChecked(1, config.FileBrowserShowSizeColumn);
             Dropdown::SetChecked(2, config.FileBrowserShowDateColumn);
-            Dropdown::SetChecked(3, config.FileBrowserShowPreviews);
+            Dropdown::SetChecked(4, config.FileBrowserPreviewType == ParkPreviewPref::disabled);
+            Dropdown::SetChecked(5, config.FileBrowserPreviewType == ParkPreviewPref::miniMap);
+            Dropdown::SetChecked(6, config.FileBrowserPreviewType == ParkPreviewPref::screenshot);
         }
 
         void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
@@ -901,23 +950,27 @@ namespace OpenRCT2::Ui::Windows
                 config.FileBrowserShowDateColumn ^= true;
                 changed = true;
             }
-            else if (selectedIndex == 3)
+            else if (selectedIndex >= 4 && selectedIndex <= 6)
             {
-                config.FileBrowserShowPreviews ^= true;
+                auto newPref = ParkPreviewPref(selectedIndex - 4);
+                if (config.FileBrowserPreviewType != newPref)
+                {
+                    Invalidate();
+                    width -= GetPreviewSize().width;
 
-                Invalidate();
-                if (config.FileBrowserShowPreviews)
-                    width += kPreviewWidth;
-                else
-                    width -= kPreviewWidth;
+                    config.FileBrowserPreviewType = newPref;
+                    width += GetPreviewSize().width;
 
-                changed = true;
+                    changed = true;
+                }
             }
 
             if (changed)
             {
                 Config::Save();
                 Invalidate();
+                ResizeFrame();
+                OnResize();
             }
         }
 

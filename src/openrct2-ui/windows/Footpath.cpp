@@ -1420,8 +1420,9 @@ namespace OpenRCT2::Ui::Windows
 
                 int32_t direction = _footpathConstructDirection;
                 gMapSelectionTiles.clear();
-                gMapSelectionTiles.push_back({ gFootpathConstructFromPosition.x + CoordsDirectionDelta[direction].x,
-                                               gFootpathConstructFromPosition.y + CoordsDirectionDelta[direction].y });
+                gMapSelectionTiles.push_back(
+                    { gFootpathConstructFromPosition.x + CoordsDirectionDelta[direction].x,
+                      gFootpathConstructFromPosition.y + CoordsDirectionDelta[direction].y });
                 MapInvalidateMapSelectionTiles();
             }
 

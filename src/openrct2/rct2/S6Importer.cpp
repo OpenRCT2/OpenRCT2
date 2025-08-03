@@ -22,7 +22,6 @@
 #include "../core/Numerics.hpp"
 #include "../core/Path.hpp"
 #include "../core/Random.hpp"
-#include "../core/SawyerCoding.h"
 #include "../core/String.hpp"
 #include "../entity/Balloon.h"
 #include "../entity/Duck.h"
@@ -57,7 +56,6 @@
 #include "../rct12/CSStringConverter.h"
 #include "../rct12/EntryList.h"
 #include "../rct12/RCT12.h"
-#include "../rct12/SawyerChunkReader.h"
 #include "../rct12/ScenarioPatcher.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
@@ -68,6 +66,8 @@
 #include "../ride/Track.h"
 #include "../ride/TrainManager.h"
 #include "../ride/Vehicle.h"
+#include "../sawyer_coding/SawyerChunkReader.h"
+#include "../sawyer_coding/SawyerCoding.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
 #include "../world/Climate.h"
@@ -90,6 +90,7 @@
 #include <mutex>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::SawyerCoding;
 
 namespace OpenRCT2::RCT2
 {
@@ -1615,7 +1616,7 @@ namespace OpenRCT2::RCT2
                     campaign.WeeksLeft = _s6.CampaignWeeksLeft[i] & ~(CAMPAIGN_ACTIVE_FLAG | CAMPAIGN_FIRST_WEEK_FLAG);
                     if ((_s6.CampaignWeeksLeft[i] & CAMPAIGN_FIRST_WEEK_FLAG) != 0)
                     {
-                        campaign.Flags |= MarketingCampaignFlags::FIRST_WEEK;
+                        campaign.flags.set(MarketingCampaignFlag::firstWeek);
                     }
                     if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
                     {

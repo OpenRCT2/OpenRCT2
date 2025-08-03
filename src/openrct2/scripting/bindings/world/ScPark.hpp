@@ -13,6 +13,7 @@
 
     #include "../../../Context.h"
     #include "../../Duktape.hpp"
+    #include "ScAward.hpp"
     #include "ScParkMessage.hpp"
     #include "ScResearch.hpp"
 
@@ -100,6 +101,12 @@ namespace OpenRCT2::Scripting
         void postMessage(DukValue message);
 
         std::vector<int32_t> getMonthlyExpenditure(const std::string& expenditureType) const;
+
+        std::vector<std::shared_ptr<ScAward>> awards_get() const;
+
+        void clearAwards() const;
+
+        void grantAward(const std::string& awardType) const;
 
         static void Register(duk_context* ctx);
     };

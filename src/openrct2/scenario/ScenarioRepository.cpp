@@ -27,8 +27,8 @@
 #include "../platform/Platform.h"
 #include "../rct12/CSStringConverter.h"
 #include "../rct12/RCT12.h"
-#include "../rct12/SawyerChunkReader.h"
 #include "../rct2/RCT2.h"
+#include "../sawyer_coding/SawyerChunkReader.h"
 #include "Scenario.h"
 #include "ScenarioSources.h"
 
@@ -537,8 +537,8 @@ private:
             for (uint32_t i = 0; i < numHighscores; i++)
             {
                 ScenarioHighscoreEntry* highscore = InsertHighscore();
-                highscore->fileName = fs.ReadStdString();
-                highscore->name = fs.ReadStdString();
+                highscore->fileName = fs.ReadString();
+                highscore->name = fs.ReadString();
                 highscore->company_value = fileVersion == 1 ? fs.ReadValue<money32>() : fs.ReadValue<money64>();
                 highscore->timestamp = fs.ReadValue<datetime64>();
             }

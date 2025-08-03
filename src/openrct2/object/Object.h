@@ -197,6 +197,7 @@ private:
     bool _usesFallbackImages{};
     bool _isCompatibilityObject{};
     ImageIndex _baseImageId{ kImageIndexUndefined };
+    std::string _fileName;
 
 protected:
     StringTable& GetStringTable()
@@ -257,6 +258,15 @@ public:
     void SetDescriptor(const ObjectEntryDescriptor& value)
     {
         _descriptor = value;
+    }
+
+    std::string_view GetFileName() const
+    {
+        return _fileName;
+    }
+    void SetFileName(const std::string_view fileName)
+    {
+        _fileName = fileName;
     }
 
     constexpr bool UsesFallbackImages() const

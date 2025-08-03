@@ -1,14 +1,25 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdk 35
-    buildToolsVersion "35.0.0"
-    ndkVersion "27.2.12479018" // Latest r27c (LTS), to be synced with CI container image
+    compileSdk 36
+    ndkVersion "27.3.13750724" // Latest r27d (LTS), to be synced with CI container image
     namespace "io.openrct2"
+
+    signingConfigs {
+        release {
+            if (System.getenv('OPENRCT2_KEYSTORE_FILE') && System.getenv('OPENRCT2_KEYSTORE_PASSWORD')) {
+                storeFile file(System.getenv('OPENRCT2_KEYSTORE_FILE'))
+                storePassword System.getenv('OPENRCT2_KEYSTORE_PASSWORD')
+                keyAlias "openrct2"
+                keyPassword System.getenv('OPENRCT2_KEYSTORE_PASSWORD')  // Same as keystore password in PKCS12
+            }
+        }
+    }
+
     defaultConfig {
         applicationId 'io.openrct2'
         minSdkVersion 24
-        targetSdkVersion 28
+        targetSdkVersion 36
 
         versionCode 12
         versionName '0.4.24'
@@ -23,7 +34,12 @@ android {
     }
     buildTypes {
         release {
-            signingConfig signingConfigs.debug
+            if (System.getenv('OPENRCT2_KEYSTORE_FILE') && System.getenv('OPENRCT2_KEYSTORE_PASSWORD')) {
+                signingConfig signingConfigs.release
+            } else {
+                // Fallback to ephemeral debug signing when keystore is not available
+                signingConfig signingConfigs.debug
+            }
         }
     }
 
@@ -35,6 +51,7 @@ android {
     }
     externalNativeBuild {
         cmake {
+            version "4.0.3"
             path 'src/main/CMakeLists.txt'
         }
     }
@@ -45,8 +62,12 @@ android {
 }
 
 dependencies {
-    implementation 'commons-io:commons-io:2.13.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'commons-io:commons-io:2.20.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+}
+
+configurations.implementation {
+    exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
 }
 

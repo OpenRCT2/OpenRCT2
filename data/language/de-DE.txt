@@ -3810,3 +3810,17 @@ STR_6774    :Zeit seit letzter Inspektion
 STR_6775    :{COMMA16} Minute
 STR_6776    :{COMMA16} Minuten
 STR_6777    :über 4 Stunden
+STR_6778    :Szenariovorschau mit:
+STR_6779    :Die Art des Vorschaubilds im Szenarioauswahlbildschirm auswählen.
+STR_6780    :Übersichtskarten
+STR_6781    :Screenshots
+STR_6782    :Parkbenachrichtigungen
+STR_6783    :Fahrgeschäftsbenachrichtigungen
+STR_6784    :Besucherbenachrichtigungen
+STR_6785    :Gamepad
+STR_6786    :Tote Zone:
+STR_6787    :Analogstick-Totzone (minimale Bewegung benötigt)
+STR_6788    :Empfindlichkeit:
+STR_6789    :Analogstickempfindlichkeitsfaktor
+STR_6790    :Tote Zone {COMMA32}%
+STR_6791    :Empfindlichkeit: {COMMA32}%
