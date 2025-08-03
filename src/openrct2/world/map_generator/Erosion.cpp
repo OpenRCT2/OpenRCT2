@@ -70,11 +70,14 @@ namespace OpenRCT2::World::MapGenerator
      */
     void simulateErosion(ErosionSettings& settings, HeightMap& heightMap)
     {
+        GetContext()->OpenProgress(STR_EROSION_PROGRESS);
+
         for (auto i = 0; i < settings.particles; ++i)
         {
             if (i % UPDATE_EVERY_N_PARTICLES == 0)
             {
                 LOG_VERBOSE("Erosion particle %i/%i", i, settings.particles);
+                GetContext()->SetProgress(i, settings.particles);
             }
 
             // spawn new particle at a random location, border of 1 for normal calculation
@@ -118,5 +121,7 @@ namespace OpenRCT2::World::MapGenerator
                 particle.volume *= 1.0f - settings.dt * settings.evaporationRate;
             }
         }
+
+        GetContext()->CloseProgress();
     }
 } // namespace OpenRCT2::World::MapGenerator
