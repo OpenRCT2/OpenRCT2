@@ -179,7 +179,7 @@ namespace OpenRCT2::World::MapGenerator
                             avg += copyHeight[{ y + yy, x + xx }];
                         }
                     }
-                    avg /= 9;
+                    avg /= 9.0f;
                     heightMap[{ x, y }] = avg;
                 }
             }
@@ -214,7 +214,7 @@ namespace OpenRCT2::World::MapGenerator
         // Create the temporary height map and initialise
         const auto& mapSize = settings->mapSize;
         const auto density = 2;
-        auto heightMap = HeightMap(mapSize.x, mapSize.y, density);
+        auto heightMap = HeightMap<uint8_t>(mapSize.x, mapSize.y, density);
 
         generateSimplexNoise(settings, heightMap);
         smoothHeightMap(2 + (UtilRand() % 6), heightMap);
