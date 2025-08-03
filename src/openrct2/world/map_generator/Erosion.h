@@ -14,8 +14,8 @@
 
 namespace OpenRCT2::World::MapGenerator
 {
-    constexpr uint32_t kMinimumParticleCount = 5000;
-    constexpr uint32_t kMaximumParticleCount = 500000;
+    constexpr int32_t kMinParticlesPerTile = 5;
+    constexpr int32_t kMaxParticlesPerTile = 1000;
 
     struct ErosionSettings
     {
