@@ -10,6 +10,7 @@
 #include "SimplexNoise.h"
 
 #include "../../util/Util.h"
+#include "Erosion.h"
 #include "HeightMap.hpp"
 #include "MapGen.h"
 #include "MapHelpers.h"
@@ -191,8 +192,8 @@ namespace OpenRCT2::World::MapGenerator
         float freq = settings->simplex_base_freq / 100.0f * (1.0f / heightMap.width);
         int32_t octaves = settings->simplex_octaves;
 
-        int32_t low = settings->heightmapLow / 2;
-        int32_t high = settings->heightmapHigh / 2 - low;
+        float low = settings->heightmapLow;
+        float high = settings->heightmapHigh - low;
 
         SimplexFbmNoise simplex_fbm{ freq, octaves, 2.0f, 0.65f };
         for (int32_t y = 0; y < heightMap.height; y++)
@@ -202,7 +203,7 @@ namespace OpenRCT2::World::MapGenerator
                 float noiseValue = std::clamp(simplex_fbm.Generate(x, y), -1.0f, 1.0f);
                 float normalisedNoiseValue = (noiseValue + 1.0f) / 2.0f;
 
-                heightMap[{ x, y }] = low + static_cast<int32_t>(normalisedNoiseValue * high);
+                heightMap[{ x, y }] = low + normalisedNoiseValue * high;
             }
         }
     }
@@ -213,19 +214,27 @@ namespace OpenRCT2::World::MapGenerator
 
         // Create the temporary height map and initialise
         const auto& mapSize = settings->mapSize;
-        const auto density = 2;
-        auto heightMap = HeightMap<uint8_t>(mapSize.x, mapSize.y, density);
+        auto heightMap = HeightMap(mapSize.x, mapSize.y);
 
         generateSimplexNoise(settings, heightMap);
-        smoothHeightMap(2 + (UtilRand() % 6), heightMap);
+
+        if (settings->simulate_erosion)
+        {
+            auto erosionSettings = ErosionSettings(settings);
+            simulateErosion(erosionSettings, heightMap);
+        }
+        else
+        {
+            smoothHeightMap(2 + (UtilRand() % 6), heightMap);
+        }
 
         // Set the game map to the height map
         setMapHeight(settings, heightMap);
 
         if (settings->smoothTileEdges)
         {
-            // Set the tile slopes so that there are no cliffs
-            smoothMap(settings->mapSize, smoothTileStrong);
+            // Set the tile slopes so that there are no cliffs, use the weak version with erosion.
+            smoothMap(settings->mapSize, settings->simulate_erosion ? smoothTileWeak : smoothTileStrong);
         }
 
         // Add the water
