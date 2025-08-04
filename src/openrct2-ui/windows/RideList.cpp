@@ -561,7 +561,7 @@ namespace OpenRCT2::Ui::Windows
                 auto cdpi = const_cast<const RenderTarget&>(rt);
                 DrawTextEllipsised(
                     cdpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, widget.width(), strId, ft,
-                    { COLOUR_GREY }); // TODO: use window colour
+                    { colours[1] });
             };
 
             drawButtonCaption(widgets[WIDX_HEADER_NAME], STR_NAME_COLUMN, INFORMATION_TYPE_STATUS);
