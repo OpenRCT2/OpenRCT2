@@ -52,6 +52,8 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TAB_1,
         WIDX_TAB_2,
         WIDX_TAB_3,
+        WIDX_SEARCH_TEXT_BOX,
+        WIDX_SEARCH_CLEAR_BUTTON,
         WIDX_HEADER_NAME,
         WIDX_HEADER_OTHER,
         WIDX_HEADER_CUSTOMISE,
@@ -69,13 +71,15 @@ namespace OpenRCT2::Ui::Windows
         makeTab   ({  3, 17},                                                                STR_LIST_RIDES_TIP                                                    ), // tab 1
         makeTab   ({ 34, 17},                                                                STR_LIST_SHOPS_AND_STALLS_TIP                                         ), // tab 2
         makeTab   ({ 65, 17},                                                                STR_LIST_KIOSKS_AND_FACILITIES_TIP                                    ), // tab 3
-        makeWidget({  3, 47}, {150,  14}, WidgetType::tableHeader,  WindowColour::secondary                                                                        ), // name header
-        makeWidget({153, 47}, {147,  14}, WidgetType::tableHeader,  WindowColour::secondary                                                                        ), // other header
-        makeWidget({300, 47}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                    ), // customise button
-        makeWidget({  3, 60}, {334, 177}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                                                       ), // list
-        makeWidget({320, 62}, { 14,  14}, WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0)                                   ),
-        makeWidget({320, 76}, { 14,  14}, WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0)                                    ),
-        makeWidget({315, 90}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_DEMOLISH),              STR_QUICK_DEMOLISH_RIDE           )
+        makeWidget({  3, 47}, {284,  14}, WidgetType::textBox,      WindowColour::secondary                                                                        ), // search text box
+        makeWidget({284, 47}, { 50,  14}, WidgetType::button,       WindowColour::secondary, STR_OBJECT_SEARCH_CLEAR,            STR_CLEAR_SCENERY_TIP             ), // search clear button
+        makeWidget({  3, 62}, {150,  14}, WidgetType::tableHeader,  WindowColour::secondary                                                                        ), // name header
+        makeWidget({153, 62}, {147,  14}, WidgetType::tableHeader,  WindowColour::secondary                                                                        ), // other header
+        makeWidget({300, 62}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                    ), // customise button
+        makeWidget({  3, 75}, {334, 177}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                                                       ), // list
+        makeWidget({320, 77}, { 14,  14}, WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0)                                   ),
+        makeWidget({320, 91}, { 14,  14}, WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0)                                    ),
+        makeWidget({315,105}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_DEMOLISH),              STR_QUICK_DEMOLISH_RIDE           )
     );
     // clang-format on
 
@@ -165,6 +169,7 @@ namespace OpenRCT2::Ui::Windows
         bool _quickDemolishMode = false;
         InformationType _windowRideListInformationType = INFORMATION_TYPE_STATUS;
         bool _windowListSortDescending = false;
+        u8string _searchFilter;
 
         struct RideListEntry
         {
@@ -188,6 +193,7 @@ namespace OpenRCT2::Ui::Windows
 
             _windowRideListInformationType = INFORMATION_TYPE_STATUS;
             _quickDemolishMode = false;
+            _searchFilter.clear();
         }
 
         /**
@@ -256,6 +262,14 @@ namespace OpenRCT2::Ui::Windows
                         }
                         RefreshList();
                     }
+                    break;
+                case WIDX_SEARCH_TEXT_BOX:
+                    WindowStartTextbox(*this, widgetIndex, _searchFilter, kTextInputSize);
+                    break;
+                case WIDX_SEARCH_CLEAR_BUTTON:
+                    _searchFilter.clear();
+                    RefreshList();
+                    InvalidateWidget(WIDX_SEARCH_TEXT_BOX);
                     break;
                 case WIDX_CLOSE_LIGHT:
                     CloseAllRides();
@@ -399,6 +413,18 @@ namespace OpenRCT2::Ui::Windows
             SortList();
         }
 
+        void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+        {
+            if (widgetIndex != WIDX_SEARCH_TEXT_BOX)
+                return;
+
+            if (text == _searchFilter)
+                return;
+
+            _searchFilter.assign(text);
+            RefreshList();
+        }
+
         /**
          *
          *  rct2: 0x006B35A1
@@ -479,6 +505,11 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_LIST].right = width - 26;
             widgets[WIDX_LIST].bottom = height - 15;
+
+            widgets[WIDX_SEARCH_CLEAR_BUTTON].right = widgets[WIDX_LIST].right - 1;
+            widgets[WIDX_SEARCH_CLEAR_BUTTON].left = widgets[WIDX_SEARCH_CLEAR_BUTTON].right - 40;
+            widgets[WIDX_SEARCH_TEXT_BOX].right = widgets[WIDX_SEARCH_CLEAR_BUTTON].left - 2;
+            widgets[WIDX_SEARCH_TEXT_BOX].string = _searchFilter.data();
 
             widgets[WIDX_HEADER_CUSTOMISE].right = widgets[WIDX_LIST].right - 1;
             widgets[WIDX_HEADER_CUSTOMISE].left = widgets[WIDX_HEADER_CUSTOMISE].right - 14;
@@ -882,6 +913,15 @@ namespace OpenRCT2::Ui::Windows
             });
         }
 
+        bool IsFiltered(const Ride& ride)
+        {
+            if (_searchFilter.empty())
+                return true;
+
+            // Check if the filter matches the ride name
+            return String::contains(u8string_view(ride.getName()), _searchFilter, true);
+        }
+
         /**
          *
          *  rct2: 0x006B39A8
@@ -893,6 +933,12 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (rideRef.getClassification() != static_cast<RideClassification>(page)
                     || (rideRef.status == RideStatus::closed && !RideHasAnyTrackElements(rideRef)))
+                {
+                    continue;
+                }
+
+                // Apply search filter
+                if (!IsFiltered(rideRef))
                 {
                     continue;
                 }
