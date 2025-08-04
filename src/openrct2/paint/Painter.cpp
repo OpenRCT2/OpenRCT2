@@ -16,6 +16,7 @@
 #include "../core/Guard.hpp"
 #include "../drawing/IDrawingEngine.h"
 #include "../drawing/Text.h"
+#include "../interface/Viewport.h"
 #include "../localisation/Formatting.h"
 #include "../paint/Paint.h"
 #include "../paint/VirtualFloor.h"
@@ -151,6 +152,8 @@ PaintSession* Painter::CreateSession(RenderTarget& rt, uint32_t viewFlags, uint8
 {
     PROFILED_FUNCTION();
 
+    std::lock_guard lock(_mtx);
+
     PaintSession* session = nullptr;
 
     if (_freePaintSessions.empty() == false)
@@ -185,6 +188,9 @@ PaintSession* Painter::CreateSession(RenderTarget& rt, uint32_t viewFlags, uint8
     session->CurrentlyDrawnTileElement = nullptr;
     session->Surface = nullptr;
     session->SelectedElement = OpenRCT2::TileInspector::GetSelectedElement();
+    session->PathElementOnSameHeight = nullptr;
+    session->TrackElementOnSameHeight = nullptr;
+    session->InteractionType = ViewportInteractionItem::None;
 
     return session;
 }
@@ -192,6 +198,8 @@ PaintSession* Painter::CreateSession(RenderTarget& rt, uint32_t viewFlags, uint8
 void Painter::ReleaseSession(PaintSession* session)
 {
     PROFILED_FUNCTION();
+
+    std::lock_guard lock(_mtx);
 
     session->paintEntries.clear();
 

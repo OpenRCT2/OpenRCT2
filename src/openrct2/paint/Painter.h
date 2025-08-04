@@ -13,6 +13,7 @@
 
 #include <ctime>
 #include <memory>
+#include <mutex>
 #include <sfl/segmented_vector.hpp>
 #include <vector>
 
@@ -34,6 +35,8 @@ namespace OpenRCT2
     {
         struct Painter final
         {
+            std::mutex _mtx;
+
         private:
             Ui::IUiContext& _uiContext;
             sfl::segmented_vector<PaintSession, 32> _paintSessionPool;
