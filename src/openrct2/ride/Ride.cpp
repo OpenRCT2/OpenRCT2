@@ -2067,12 +2067,13 @@ void RideMeasurementsUpdate()
     // For each ride measurement
     for (auto& ride : GetRideManager())
     {
-        auto measurement = ride.measurement.get();
-        if (measurement != nullptr && (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK) && ride.status != RideStatus::simulating)
+        if (ride.measurement.has_value() && (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
+            && ride.status != RideStatus::simulating)
         {
-            if (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING)
+            auto& measurement = ride.measurement.value();
+            if (measurement.flags & RIDE_MEASUREMENT_FLAG_RUNNING)
             {
-                RideMeasurementUpdate(ride, *measurement);
+                RideMeasurementUpdate(ride, measurement);
             }
             else
             {
@@ -2086,11 +2087,11 @@ void RideMeasurementsUpdate()
                         if (vehicle->status == Vehicle::Status::Departing
                             || vehicle->status == Vehicle::Status::TravellingCableLift)
                         {
-                            measurement->vehicle_index = j;
-                            measurement->current_station = vehicle->current_station;
-                            measurement->flags |= RIDE_MEASUREMENT_FLAG_RUNNING;
-                            measurement->flags &= ~RIDE_MEASUREMENT_FLAG_UNLOADING;
-                            RideMeasurementUpdate(ride, *measurement);
+                            measurement.vehicle_index = j;
+                            measurement.current_station = vehicle->current_station;
+                            measurement.flags |= RIDE_MEASUREMENT_FLAG_RUNNING;
+                            measurement.flags &= ~RIDE_MEASUREMENT_FLAG_UNLOADING;
+                            RideMeasurementUpdate(ride, measurement);
                             break;
                         }
                     }
@@ -2112,7 +2113,7 @@ static void RideFreeOldMeasurements()
         numRideMeasurements = 0;
         for (auto& ride : GetRideManager())
         {
-            if (ride.measurement != nullptr)
+            if (ride.measurement.has_value())
             {
                 if (lruRide == nullptr || ride.measurement->last_use_tick > lruRide->measurement->last_use_tick)
                 {
@@ -2123,7 +2124,7 @@ static void RideFreeOldMeasurements()
         }
         if (numRideMeasurements > kMaxRideMeasurements && lruRide != nullptr)
         {
-            lruRide->measurement = {};
+            lruRide->measurement = std::nullopt;
             numRideMeasurements--;
         }
     } while (numRideMeasurements > kMaxRideMeasurements);
@@ -2140,21 +2141,20 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::getMeasurement()
     }
 
     // Check if a measurement already exists for this ride
-    if (measurement == nullptr)
+    if (!measurement.has_value())
     {
-        measurement = std::make_unique<RideMeasurement>();
+        measurement = std::make_optional<RideMeasurement>();
         if (rtd.HasFlag(RtdFlag::hasGForces))
         {
             measurement->flags |= RIDE_MEASUREMENT_FLAG_G_FORCES;
         }
         RideFreeOldMeasurements();
-        assert(measurement != nullptr);
     }
 
     measurement->last_use_tick = getGameState().currentTicks;
     if (measurement->flags & 1)
     {
-        return { measurement.get(), { kStringIdEmpty, {} } };
+        return { &measurement.value(), { kStringIdEmpty, {} } };
     }
 
     auto ft = Formatter();

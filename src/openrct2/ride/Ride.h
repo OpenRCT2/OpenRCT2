@@ -310,7 +310,8 @@ public:
     uint8_t numHoles{};
     uint8_t shelteredEighths{};
 
-    std::unique_ptr<RideMeasurement> measurement;
+    // TODO: Even when not active it still uses sizeof(RideMeasurement) bytes which is wasteful.
+    std::optional<RideMeasurement> measurement;
 
 public:
     RideStation& getStation(StationIndex stationIndex = StationIndex::FromUnderlying(0));
