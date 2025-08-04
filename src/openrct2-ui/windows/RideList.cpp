@@ -165,6 +165,7 @@ namespace OpenRCT2::Ui::Windows
     private:
         bool _quickDemolishMode = false;
         InformationType _windowRideListInformationType = INFORMATION_TYPE_STATUS;
+        bool _windowListSortDescending = false;
 
         struct RideListEntry
         {
@@ -229,14 +230,30 @@ namespace OpenRCT2::Ui::Windows
                     Close();
                     break;
                 case WIDX_HEADER_NAME:
-                    // TODO: click twice for descending sort
-                    list_information_type = INFORMATION_TYPE_STATUS;
+                    if (list_information_type != INFORMATION_TYPE_STATUS)
+                    {
+                        list_information_type = INFORMATION_TYPE_STATUS;
+                        _windowListSortDescending = false;
+                    }
+                    else
+                    {
+                        _windowListSortDescending ^= true;
+                    }
+
                     selected_list_item = -1;
                     RefreshList();
                     break;
                 case WIDX_HEADER_OTHER:
-                    // TODO: click twice for descending sort
-                    list_information_type = _windowRideListInformationType;
+                    if (list_information_type != _windowRideListInformationType)
+                    {
+                        list_information_type = _windowRideListInformationType;
+                        _windowListSortDescending = false;
+                    }
+                    else
+                    {
+                        _windowListSortDescending ^= true;
+                    }
+
                     selected_list_item = -1;
                     RefreshList();
                     break;
@@ -553,7 +570,7 @@ namespace OpenRCT2::Ui::Windows
             const auto drawButtonCaption = [rt, this](Widget& widget, StringId strId, InformationType sortType) {
                 StringId indicatorId = kStringIdNone;
                 if (list_information_type == sortType && !(strId == STR_STATUS && sortType == INFORMATION_TYPE_STATUS))
-                    indicatorId = STR_UP;
+                    indicatorId = _windowListSortDescending ? STR_DOWN : STR_UP;
 
                 auto ft = Formatter();
                 ft.Add<StringId>(strId);
@@ -862,21 +879,23 @@ namespace OpenRCT2::Ui::Windows
         template<typename TSortPred>
         void SortListByPredicate(const TSortPred& pred)
         {
-            std::sort(_rideList.begin(), _rideList.end(), [&pred](const auto& lhs, const auto& rhs) {
+            std::sort(_rideList.begin(), _rideList.end(), [&pred, this](const auto& lhs, const auto& rhs) {
                 const Ride* rideLhs = GetRide(lhs.Id);
                 const Ride* rideRhs = GetRide(rhs.Id);
                 if (rideLhs == nullptr || rideRhs == nullptr)
                 {
                     return rideLhs != nullptr;
                 }
-                return !pred(*rideLhs, *rideRhs);
+                auto result = !pred(*rideLhs, *rideRhs);
+                return _windowListSortDescending ? !result : result;
             });
         }
 
         void SortListByName()
         {
-            std::sort(_rideList.begin(), _rideList.end(), [](const auto& lhs, const auto& rhs) {
-                return !(0 <= String::logicalCmp(lhs.Name.c_str(), rhs.Name.c_str()));
+            std::sort(_rideList.begin(), _rideList.end(), [this](const auto& lhs, const auto& rhs) {
+                auto result = (0 <= String::logicalCmp(lhs.Name.c_str(), rhs.Name.c_str()));
+                return _windowListSortDescending ? result : !result;
             });
         }
 
