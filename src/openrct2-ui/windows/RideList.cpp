@@ -879,7 +879,8 @@ namespace OpenRCT2::Ui::Windows
         template<typename TSortPred>
         void SortListByPredicate(const TSortPred& pred)
         {
-            std::sort(_rideList.begin(), _rideList.end(), [&pred, this](const auto& lhs, const auto& rhs) {
+            bool desc = _windowListSortDescending;
+            std::sort(_rideList.begin(), _rideList.end(), [&pred, desc](const auto& lhs, const auto& rhs) {
                 const Ride* rideLhs = GetRide(lhs.Id);
                 const Ride* rideRhs = GetRide(rhs.Id);
                 if (rideLhs == nullptr || rideRhs == nullptr)
@@ -887,15 +888,16 @@ namespace OpenRCT2::Ui::Windows
                     return rideLhs != nullptr;
                 }
                 auto result = !pred(*rideLhs, *rideRhs);
-                return _windowListSortDescending ? !result : result;
+                return desc ? !result : result;
             });
         }
 
         void SortListByName()
         {
-            std::sort(_rideList.begin(), _rideList.end(), [this](const auto& lhs, const auto& rhs) {
+            bool desc = _windowListSortDescending;
+            std::sort(_rideList.begin(), _rideList.end(), [desc](const auto& lhs, const auto& rhs) {
                 auto result = (0 <= String::logicalCmp(lhs.Name.c_str(), rhs.Name.c_str()));
-                return _windowListSortDescending ? result : !result;
+                return desc ? result : !result;
             });
         }
 
