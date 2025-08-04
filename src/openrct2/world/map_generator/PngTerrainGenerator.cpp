@@ -17,6 +17,7 @@
 #include "../../localisation/StringIds.h"
 #include "../Map.h"
 #include "../tile_element/SurfaceElement.h"
+#include "Erosion.h"
 #include "HeightMap.hpp"
 #include "MapGen.h"
 #include "MapHelpers.h"
@@ -163,6 +164,12 @@ namespace OpenRCT2::World::MapGenerator
         if (settings->smooth_height_map)
         {
             SmoothHeightmap(dest, settings->smooth_strength);
+        }
+
+        if (settings->simulate_erosion)
+        {
+            auto erosionSettings = ErosionSettings(settings);
+            simulateErosion(erosionSettings, dest);
         }
 
         uint8_t maxValue = 255;
