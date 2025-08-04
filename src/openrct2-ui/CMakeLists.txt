@@ -236,14 +236,14 @@ if(MACOS_BUNDLE)
         ZIP_VERSION ${OBJECTS_VERSION}
         DOWNLOAD_DIR ${OBJECTS_DIR}
         ZIP_URL ${OBJECTS_URL}
-        SHA1 ${OBJECTS_SHA1}
+        SHA256 ${OBJECTS_SHA256}
     )
 
     download_openrct2_zip(
         ZIP_VERSION ${TITLE_SEQUENCE_VERSION}
         DOWNLOAD_DIR ${TITLE_SEQUENCE_DIR}
         ZIP_URL ${TITLE_SEQUENCE_URL}
-        SHA1 ${TITLE_SEQUENCE_SHA1}
+        SHA256 ${TITLE_SEQUENCE_SHA256}
     )
 
     # Download opensfx and openmsx
@@ -252,13 +252,13 @@ if(MACOS_BUNDLE)
         ZIP_VERSION ${OPENSFX_VERSION}
         DOWNLOAD_DIR ${CMAKE_BINARY_DIR}
         ZIP_URL ${OPENSFX_URL}
-        SHA1 ${OPENSFX_SHA1}
+        SHA256 ${OPENSFX_SHA256}
     )
     download_openrct2_zip(
         ZIP_VERSION ${OPENMSX_VERSION}
         DOWNLOAD_DIR ${CMAKE_BINARY_DIR}
         ZIP_URL ${OPENMSX_URL}
-        SHA1 ${OPENMSX_SHA1}
+        SHA256 ${OPENMSX_SHA256}
     )
 
     # Copy downloaded data
