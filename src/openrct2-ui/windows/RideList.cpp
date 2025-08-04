@@ -50,12 +50,12 @@ namespace OpenRCT2::Ui::Windows
         WIDX_CLOSE,
         WIDX_PAGE_BACKGROUND,
         WIDX_OPEN_CLOSE_ALL,
-        WIDX_CURRENT_INFORMATION_TYPE,
-        WIDX_INFORMATION_TYPE_DROPDOWN,
-        WIDX_SORT,
         WIDX_TAB_1,
         WIDX_TAB_2,
         WIDX_TAB_3,
+        WIDX_HEADER_NAME,
+        WIDX_HEADER_OTHER,
+        WIDX_HEADER_CUSTOMISE,
         WIDX_LIST,
         WIDX_CLOSE_LIGHT,
         WIDX_OPEN_LIGHT,
@@ -67,20 +67,20 @@ namespace OpenRCT2::Ui::Windows
         makeWindowShim(kWindowTitle, kWindowSize),
         makeWidget({  0, 43}, {340, 197}, WidgetType::resize,       WindowColour::secondary                                                                        ), // tab page background
         makeWidget({315, 60}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_TOGGLE_OPEN_CLOSE),     STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
-        makeWidget({150, 46}, {124,  12}, WidgetType::dropdownMenu, WindowColour::secondary                                                                        ), // current information type
-        makeWidget({262, 47}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,                 STR_RIDE_LIST_INFORMATION_TYPE_TIP), // information type dropdown button
-        makeWidget({280, 46}, { 54,  12}, WidgetType::button,       WindowColour::secondary, STR_SORT,                           STR_RIDE_LIST_SORT_TIP            ), // sort button
         makeTab   ({  3, 17},                                                                STR_LIST_RIDES_TIP                                                    ), // tab 1
         makeTab   ({ 34, 17},                                                                STR_LIST_SHOPS_AND_STALLS_TIP                                         ), // tab 2
         makeTab   ({ 65, 17},                                                                STR_LIST_KIOSKS_AND_FACILITIES_TIP                                    ), // tab 3
-        makeWidget({  3, 60}, {334, 177}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                                                       ), // list
+        makeWidget({  3, 46}, {150,  14}, WidgetType::tableHeader,  WindowColour::secondary                                                                        ), // name header
+        makeWidget({153, 46}, {147,  14}, WidgetType::tableHeader,  WindowColour::secondary                                                                        ), // other header
+        makeWidget({300, 46}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                    ), // customise button
+        makeWidget({  3, 59}, {334, 177}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                                                       ), // list
         makeWidget({320, 62}, { 14,  14}, WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0)                                   ),
-        makeWidget({320, 76}, { 14,  14}, WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0)                                    ),
+        makeWidget({320, 75}, { 14,  14}, WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0)                                    ),
         makeWidget({315, 90}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_DEMOLISH),              STR_QUICK_DEMOLISH_RIDE           )
     );
     // clang-format on
 
-    enum
+    enum InformationType
     {
         INFORMATION_TYPE_STATUS,
         INFORMATION_TYPE_POPULARITY,
@@ -164,7 +164,7 @@ namespace OpenRCT2::Ui::Windows
     {
     private:
         bool _quickDemolishMode = false;
-        int32_t _windowRideListInformationType = INFORMATION_TYPE_STATUS;
+        InformationType _windowRideListInformationType = INFORMATION_TYPE_STATUS;
 
         struct RideListEntry
         {
@@ -178,15 +178,14 @@ namespace OpenRCT2::Ui::Windows
         {
             SetWidgets(_rideListWidgets);
             WindowInitScrollWidgets(*this);
-            WindowSetResize(*this, { 340, 240 }, { 400, 700 });
+            WindowSetResize(*this, kWindowSize, kWindowSize * 2);
 
             page = PAGE_RIDES;
             selected_list_item = -1;
             frame_no = 0;
 
+            list_information_type = INFORMATION_TYPE_STATUS;
             RefreshList();
-
-            list_information_type = 0;
 
             _windowRideListInformationType = INFORMATION_TYPE_STATUS;
             _quickDemolishMode = false;
@@ -209,12 +208,6 @@ namespace OpenRCT2::Ui::Windows
                 height = min_height;
             }
 
-            widgets[WIDX_SORT].left = width - 60;
-            widgets[WIDX_SORT].right = width - 60 + 54;
-
-            auto dropdownStart = widgets[WIDX_CURRENT_INFORMATION_TYPE].top;
-            ResizeDropdown(WIDX_CURRENT_INFORMATION_TYPE, { 100, dropdownStart }, { width - 166, kDropdownHeight });
-
             // Refreshing the list can be a very intensive operation
             // owing to its use of ride_has_any_track_elements().
             // This makes sure it's only refreshed every 64 ticks.
@@ -235,7 +228,14 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_CLOSE:
                     Close();
                     break;
-                case WIDX_SORT:
+                case WIDX_HEADER_NAME:
+                    // TODO: click twice for descending sort
+                    list_information_type = INFORMATION_TYPE_STATUS;
+                    selected_list_item = -1;
+                    RefreshList();
+                    break;
+                case WIDX_HEADER_OTHER:
+                    // TODO: click twice for descending sort
                     list_information_type = _windowRideListInformationType;
                     selected_list_item = -1;
                     RefreshList();
@@ -289,10 +289,8 @@ namespace OpenRCT2::Ui::Windows
                 WindowDropdownShowText(
                     { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], 0, 2);
             }
-            else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN)
+            else if (widgetIndex == WIDX_HEADER_CUSTOMISE)
             {
-                const auto& widget = widgets[widgetIndex - 1];
-
                 int32_t lastType;
                 if (page == PAGE_RIDES)
                     lastType = INFORMATION_TYPE_NAUSEA;
@@ -321,9 +319,14 @@ namespace OpenRCT2::Ui::Windows
                     numItems++;
                 }
 
+                const auto& headerWidget = widgets[WIDX_HEADER_OTHER];
+                const auto& customWidget = widgets[WIDX_HEADER_CUSTOMISE];
+                auto totalWidth = headerWidget.width() + customWidget.width();
+
                 WindowDropdownShowTextCustomWidth(
-                    { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], 0,
-                    Dropdown::Flag::StayOpen, numItems, widget.width() - 3);
+                    { windowPos.x + headerWidget.left, windowPos.y + headerWidget.top }, headerWidget.height(), colours[1], 0,
+                    Dropdown::Flag::StayOpen, numItems, totalWidth);
+
                 if (selectedIndex != -1)
                 {
                     Dropdown::SetChecked(selectedIndex, true);
@@ -350,7 +353,7 @@ namespace OpenRCT2::Ui::Windows
 
                 Invalidate();
             }
-            else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN)
+            else if (widgetIndex == WIDX_HEADER_CUSTOMISE)
             {
                 if (dropdownIndex == -1)
                     return;
@@ -365,8 +368,16 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                _windowRideListInformationType = informationType;
+                _windowRideListInformationType = InformationType(informationType);
                 Invalidate();
+
+                // Automatically change sort if we're sorting by the custom/info column
+                if (list_information_type != INFORMATION_TYPE_STATUS)
+                {
+                    list_information_type = _windowRideListInformationType;
+                    selected_list_item = -1;
+                    RefreshList();
+                }
             }
         }
 
@@ -453,7 +464,8 @@ namespace OpenRCT2::Ui::Windows
          */
         void OnPrepareDraw() override
         {
-            widgets[WIDX_CURRENT_INFORMATION_TYPE].text = ride_info_type_string_mapping[_windowRideListInformationType];
+            auto ft = Formatter();
+            ft.Add<StringId>(STR_UP);
 
             // Set correct active tab
             for (int32_t i = 0; i < 3; i++)
@@ -469,6 +481,17 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_LIST].right = width - 26;
             widgets[WIDX_LIST].bottom = height - 15;
+
+            widgets[WIDX_HEADER_CUSTOMISE].right = widgets[WIDX_LIST].right - 1;
+            widgets[WIDX_HEADER_CUSTOMISE].left = widgets[WIDX_HEADER_CUSTOMISE].right - 14;
+
+            auto columnWidth = (widgets[WIDX_LIST].width() - widgets[WIDX_HEADER_CUSTOMISE].width()) / 2;
+
+            widgets[WIDX_HEADER_OTHER].right = widgets[WIDX_HEADER_CUSTOMISE].left - 1;
+            widgets[WIDX_HEADER_OTHER].left = widgets[WIDX_HEADER_OTHER].right - columnWidth + 1;
+
+            widgets[WIDX_HEADER_NAME].right = widgets[WIDX_HEADER_NAME].left + columnWidth - 1;
+
             widgets[WIDX_OPEN_CLOSE_ALL].right = width - 2;
             widgets[WIDX_OPEN_CLOSE_ALL].left = width - 25;
             widgets[WIDX_CLOSE_LIGHT].right = width - 7;
@@ -527,6 +550,26 @@ namespace OpenRCT2::Ui::Windows
             WindowDrawWidgets(*this, rt);
             DrawTabImages(rt);
 
+            const auto drawButtonCaption = [rt, this](Widget& widget, StringId strId, InformationType sortType) {
+                StringId indicatorId = kStringIdNone;
+                if (list_information_type == sortType)
+                    indicatorId = STR_UP;
+
+                auto ft = Formatter();
+                ft.Add<StringId>(indicatorId);
+
+                auto cdpi = const_cast<const RenderTarget&>(rt);
+                DrawTextEllipsised(
+                    cdpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, widget.width(), strId, ft,
+                    { COLOUR_GREY }); // TODO: use window colour
+            };
+
+            drawButtonCaption(widgets[WIDX_HEADER_NAME], STR_NAME_COLUMN, INFORMATION_TYPE_STATUS);
+
+            // TODO: no glyph support in these strings
+            auto otherStringId = ride_info_type_string_mapping[_windowRideListInformationType];
+            drawButtonCaption(widgets[WIDX_HEADER_OTHER], otherStringId, _windowRideListInformationType);
+
             // Draw number of attractions on bottom
             auto ft = Formatter();
             ft.Add<uint16_t>(static_cast<uint16_t>(_rideList.size()));
@@ -569,7 +612,9 @@ namespace OpenRCT2::Ui::Windows
                 // Ride name
                 auto ft = Formatter();
                 ridePtr->formatNameTo(ft);
-                DrawTextEllipsised(rt, { 0, y - 1 }, 159, format, ft);
+
+                auto& nameHeader = widgets[WIDX_HEADER_NAME];
+                DrawTextEllipsised(rt, { 0, y - 1 }, nameHeader.width() - 2, format, ft);
 
                 // Ride information
                 ft = Formatter();
@@ -758,6 +803,8 @@ namespace OpenRCT2::Ui::Windows
                             ft.Add<uint16_t>(ridePtr->ratings.nausea);
                         }
                         break;
+                    default:
+                        break;
                 }
 
                 if (formatSecondaryEnabled)
@@ -765,7 +812,9 @@ namespace OpenRCT2::Ui::Windows
                     ft.Rewind();
                     ft.Add<StringId>(formatSecondary);
                 }
-                DrawTextEllipsised(rt, { 160, y - 1 }, 157, format, ft);
+
+                auto infoHeader = widgets[WIDX_HEADER_OTHER];
+                DrawTextEllipsised(rt, { infoHeader.left - 4, y - 1 }, infoHeader.width() - 2, format, ft);
                 y += kScrollableRowHeight;
             }
         }
