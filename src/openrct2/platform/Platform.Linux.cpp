@@ -102,7 +102,11 @@ namespace OpenRCT2::Platform
 
     std::string GetDocsPath()
     {
-        static const utf8* searchLocations[] = {
+        std::string relative = Path::GetDirectory(Platform::GetCurrentExecutablePath());
+        relative = Path::Combine(relative, u8"../share/doc/openrct2");
+        const utf8* searchLocations[] = {
+            // First try the directory relative to the executable
+            relative.c_str(),
             "./doc",
             "/usr/share/doc/openrct2",
             DOCDIR,
@@ -112,6 +116,7 @@ namespace OpenRCT2::Platform
             LOG_VERBOSE("Looking for OpenRCT2 doc path at %s", searchLocation);
             if (Path::DirectoryExists(searchLocation))
             {
+                LOG_VERBOSE("Found OpenRCT2 doc path at %s", searchLocation);
                 return searchLocation;
             }
         }
