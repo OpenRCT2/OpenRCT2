@@ -1258,7 +1258,7 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        auto tileElements = GetReorganisedTileElementsWithoutGhosts();
+                        auto tileElements = GetReorganisedTileElementsWithoutGhosts(gameState);
                         cs.Write(static_cast<uint32_t>(tileElements.size()));
                         cs.Write(tileElements.data(), tileElements.size() * sizeof(TileElement));
                     }

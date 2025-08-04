@@ -176,10 +176,10 @@ static TileElement GetDefaultSurfaceElement()
     return el;
 }
 
-std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts()
+std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts(GameState_t& gameState)
 {
     std::vector<TileElement> newElements;
-    newElements.reserve(std::max(MIN_TILE_ELEMENTS, getGameState().tileElements.size()));
+    newElements.reserve(std::max(MIN_TILE_ELEMENTS, gameState.tileElements.size()));
     for (int32_t y = 0; y < kMaximumMapSizeTechnical; y++)
     {
         for (int32_t x = 0; x < kMaximumMapSizeTechnical; x++)
