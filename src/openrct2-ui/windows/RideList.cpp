@@ -552,21 +552,21 @@ namespace OpenRCT2::Ui::Windows
 
             const auto drawButtonCaption = [rt, this](Widget& widget, StringId strId, InformationType sortType) {
                 StringId indicatorId = kStringIdNone;
-                if (list_information_type == sortType)
+                if (list_information_type == sortType && !(strId == STR_STATUS && sortType == INFORMATION_TYPE_STATUS))
                     indicatorId = STR_UP;
 
                 auto ft = Formatter();
+                ft.Add<StringId>(strId);
                 ft.Add<StringId>(indicatorId);
 
                 auto cdpi = const_cast<const RenderTarget&>(rt);
                 DrawTextEllipsised(
-                    cdpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, widget.width(), strId, ft,
-                    { colours[1] });
+                    cdpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, widget.width(),
+                    STR_RIDE_LIST_HEADER_FORMAT, ft, { colours[1] });
             };
 
-            drawButtonCaption(widgets[WIDX_HEADER_NAME], STR_NAME_COLUMN, INFORMATION_TYPE_STATUS);
+            drawButtonCaption(widgets[WIDX_HEADER_NAME], STR_RIDE_LIST_NAME, INFORMATION_TYPE_STATUS);
 
-            // TODO: no glyph support in these strings
             auto otherStringId = ride_info_type_string_mapping[_windowRideListInformationType];
             drawButtonCaption(widgets[WIDX_HEADER_OTHER], otherStringId, _windowRideListInformationType);
 
