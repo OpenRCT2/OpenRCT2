@@ -7,10 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../interface/Theme.h"
-
 #include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2-ui/interface/Theme.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
@@ -70,12 +69,12 @@ namespace OpenRCT2::Ui::Windows
         makeTab   ({  3, 17},                                                                STR_LIST_RIDES_TIP                                                    ), // tab 1
         makeTab   ({ 34, 17},                                                                STR_LIST_SHOPS_AND_STALLS_TIP                                         ), // tab 2
         makeTab   ({ 65, 17},                                                                STR_LIST_KIOSKS_AND_FACILITIES_TIP                                    ), // tab 3
-        makeWidget({  3, 46}, {150,  14}, WidgetType::tableHeader,  WindowColour::secondary                                                                        ), // name header
-        makeWidget({153, 46}, {147,  14}, WidgetType::tableHeader,  WindowColour::secondary                                                                        ), // other header
-        makeWidget({300, 46}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                    ), // customise button
-        makeWidget({  3, 59}, {334, 177}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                                                       ), // list
+        makeWidget({  3, 47}, {150,  14}, WidgetType::tableHeader,  WindowColour::secondary                                                                        ), // name header
+        makeWidget({153, 47}, {147,  14}, WidgetType::tableHeader,  WindowColour::secondary                                                                        ), // other header
+        makeWidget({300, 47}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                    ), // customise button
+        makeWidget({  3, 60}, {334, 177}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                                                       ), // list
         makeWidget({320, 62}, { 14,  14}, WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_RCT1_CLOSE_BUTTON_0)                                   ),
-        makeWidget({320, 75}, { 14,  14}, WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0)                                    ),
+        makeWidget({320, 76}, { 14,  14}, WidgetType::imgBtn,       WindowColour::secondary, ImageId(SPR_G2_RCT1_OPEN_BUTTON_0)                                    ),
         makeWidget({315, 90}, { 24,  24}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_DEMOLISH),              STR_QUICK_DEMOLISH_RIDE           )
     );
     // clang-format on
