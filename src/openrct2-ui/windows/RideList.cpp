@@ -909,7 +909,7 @@ namespace OpenRCT2::Ui::Windows
                 entry.Id = rideRef.id;
                 entry.Name = rideRef.getName();
 
-                _rideList.emplace_back(entry);
+                _rideList.push_back(std::move(entry));
             }
 
             switch (list_information_type)
