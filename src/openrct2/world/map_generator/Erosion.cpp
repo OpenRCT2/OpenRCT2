@@ -28,7 +28,7 @@ namespace OpenRCT2::World::MapGenerator
             position = _position;
         }
         VecXY position;
-        VecXY speed = VecXY(0.0f, 0.0f);
+        VecXY velocity = VecXY(0.0f, 0.0f);
         float volume = 1.0f;
         float sediment = 0.0f;
     };
@@ -72,6 +72,12 @@ namespace OpenRCT2::World::MapGenerator
     {
         GetContext()->OpenProgress(STR_EROSION_PROGRESS);
 
+        // TODO init with map seed (once made configurable)
+        // border of 1 for normal calculation
+        std::mt19937 prng{ std::random_device{}() };
+        std::uniform_real_distribution<float> uniDistWidth(1, heightMap.width - 2);
+        std::uniform_real_distribution<float> uniDistHeight(1, heightMap.height - 2);
+
         for (auto i = 0; i < settings.particles; ++i)
         {
             if (i % UPDATE_EVERY_N_PARTICLES == 0)
@@ -80,10 +86,8 @@ namespace OpenRCT2::World::MapGenerator
                 GetContext()->SetProgress(i, settings.particles);
             }
 
-            // spawn new particle at a random location, border of 1 for normal calculation
-            // TODO use a dedicated prng initialized by the map seed (once made configurable)
-            auto particle = Particle(
-                VecXY(1 + ScenarioRandMax(heightMap.width - 2), 1 + ScenarioRandMax(heightMap.height - 2)));
+            // spawn new particle at a random location
+            auto particle = Particle(VecXY(uniDistWidth(prng), uniDistHeight(prng)));
 
             // abort if the particle has evaporated
             while (particle.volume > settings.minVolume)
@@ -92,9 +96,9 @@ namespace OpenRCT2::World::MapGenerator
                 auto normal = surfaceNormal(heightMap, initialPosition);
 
                 // accelerate particle and update position
-                particle.speed += VecXY{ normal.x, normal.y } / (particle.volume * settings.density);
-                particle.position += particle.speed * settings.dt;
-                particle.speed *= 1.0f - settings.dt * settings.friction * particle.volume;
+                particle.velocity += VecXY{ normal.x, normal.y } / (particle.volume * settings.density);
+                particle.position += particle.velocity * settings.dt;
+                particle.velocity *= 1.0f - settings.dt * settings.friction * particle.volume;
 
                 auto updatedPosition = particle.position.AsTileCoordsXY();
 
@@ -109,7 +113,7 @@ namespace OpenRCT2::World::MapGenerator
                 // capacity, scales positively with speed and downward slope) with how much sediment is currently dissolved in
                 // the particle. If the delta is positive dissolve more sediment, if it is negative deposit sediment.
                 auto heightDelta = heightMap[initialPosition] - heightMap[updatedPosition];
-                auto sedimentEquilibrium = std::max(0.0f, particle.volume * particle.speed.Length() * heightDelta);
+                auto sedimentEquilibrium = std::max(0.0f, particle.volume * particle.velocity.Length() * heightDelta);
                 auto sedimentDelta = sedimentEquilibrium - particle.sediment;
                 auto sedimentTransfer = settings.dt * settings.depositionRate * sedimentDelta;
 

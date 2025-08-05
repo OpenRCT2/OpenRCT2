@@ -13,12 +13,6 @@
 
 #include <cstdint>
 
-#ifdef __WARN_SUGGEST_FINAL_METHODS__
-    #pragma GCC diagnostic push
-    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
-    #pragma GCC diagnostic ignored "-Wsuggest-final-types"
-#endif
-
 namespace OpenRCT2::World::MapGenerator
 {
     struct Settings;
@@ -34,7 +28,7 @@ namespace OpenRCT2::World::MapGenerator
         float Generate(float x, float y) override;
     };
 
-    class SimplexFbmNoise : public SimplexNoise
+    class SimplexFbmNoise final : public SimplexNoise
     {
     private:
         float _frequency;
@@ -63,7 +57,3 @@ namespace OpenRCT2::World::MapGenerator
 
     void generateSimplexMap(Settings* settings);
 } // namespace OpenRCT2::World::MapGenerator
-
-#ifdef __WARN_SUGGEST_FINAL_METHODS__
-    #pragma GCC diagnostic pop
-#endif
