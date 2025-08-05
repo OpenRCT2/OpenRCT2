@@ -3839,3 +3839,5 @@ STR_6797    :No preview
 STR_6798    :Screenshot
 STR_6799    :Mini map
 STR_7000    :or
+STR_7001    :Ride name
+STR_7002    :{STRINGID} {STRINGID}
