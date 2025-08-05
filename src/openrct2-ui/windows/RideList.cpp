@@ -865,23 +865,23 @@ namespace OpenRCT2::Ui::Windows
         void SortListByPredicate(const TSortPred& pred)
         {
             bool desc = _windowListSortDescending;
-            std::sort(_rideList.begin(), _rideList.end(), [&pred, desc](const auto& lhs, const auto& rhs) {
+            std::stable_sort(_rideList.begin(), _rideList.end(), [desc, pred](const auto& lhs, const auto& rhs) {
                 const Ride* rideLhs = GetRide(lhs.Id);
                 const Ride* rideRhs = GetRide(rhs.Id);
                 if (rideLhs == nullptr || rideRhs == nullptr)
                 {
                     return rideLhs != nullptr;
                 }
-                auto result = !pred(*rideLhs, *rideRhs);
-                return desc ? !result : result;
+                bool result = !pred(*rideLhs, *rideRhs);
+                return desc ? result : !result;
             });
         }
 
         void SortListByName()
         {
             bool desc = _windowListSortDescending;
-            std::sort(_rideList.begin(), _rideList.end(), [desc](const auto& lhs, const auto& rhs) {
-                auto result = (0 <= String::logicalCmp(lhs.Name.c_str(), rhs.Name.c_str()));
+            std::stable_sort(_rideList.begin(), _rideList.end(), [desc](const auto& lhs, const auto& rhs) {
+                bool result = (0 <= String::logicalCmp(lhs.Name.c_str(), rhs.Name.c_str()));
                 return desc ? result : !result;
             });
         }
@@ -910,7 +910,7 @@ namespace OpenRCT2::Ui::Windows
                 entry.Id = rideRef.id;
                 entry.Name = rideRef.getName();
 
-                _rideList.push_back(std::move(entry));
+                _rideList.emplace_back(entry);
             }
 
             switch (list_information_type)
