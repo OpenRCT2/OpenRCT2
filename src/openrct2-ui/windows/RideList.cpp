@@ -871,8 +871,8 @@ namespace OpenRCT2::Ui::Windows
                 {
                     return rideLhs != nullptr;
                 }
-                bool result = !pred(*rideLhs, *rideRhs);
-                return desc ? result : !result;
+                bool result = pred(*rideLhs, *rideRhs);
+                return desc ? !result : result;
             });
         }
 
@@ -880,8 +880,8 @@ namespace OpenRCT2::Ui::Windows
         {
             bool desc = _windowListSortDescending;
             std::stable_sort(_rideList.begin(), _rideList.end(), [desc](const auto& lhs, const auto& rhs) {
-                bool result = (0 <= String::logicalCmp(lhs.Name.c_str(), rhs.Name.c_str()));
-                return desc ? result : !result;
+                bool result = (0 > String::logicalCmp(lhs.Name.c_str(), rhs.Name.c_str()));
+                return desc ? !result : result;
             });
         }
 
