@@ -50,7 +50,7 @@ namespace OpenRCT2::World::MapGenerator
 
         // Erosion settings
         bool simulate_erosion = false;
-        int32_t particles_per_tile = 305;
+        int32_t particles_per_tile = 300;
     };
 
     class HeightMap;

@@ -170,7 +170,7 @@ namespace OpenRCT2::World::MapGenerator
 
         if (settings->simulate_erosion)
         {
-            auto erosionSettings = ErosionSettings(settings);
+            auto erosionSettings = ErosionSettings(*settings);
             simulateErosion(erosionSettings, dest);
         }
 

@@ -3841,4 +3841,4 @@ STR_7043    :Can’t change land height here…
 STR_7051    :Simulate erosion
 STR_7052    :Particles per tile:
 STR_7053    :Enter particles per tile between {COMMA2DP32} and {COMMA2DP32}
-STR_7054    :All those mountains will be lost in time, like sediment in rain
+STR_7054    :Simulating erosion

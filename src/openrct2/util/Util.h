@@ -16,6 +16,7 @@
 
 uint32_t UtilRand();
 float UtilRandNormalDistributed();
+uint8_t UtilRandUniformDistributedByte();
 
 template<typename T>
 constexpr T AddClamp(T value, T valueToAdd)
