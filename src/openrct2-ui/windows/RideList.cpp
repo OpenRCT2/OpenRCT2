@@ -182,7 +182,6 @@ namespace OpenRCT2::Ui::Windows
             WindowSetResize(*this, kWindowSize, kWindowSize * 2);
 
             page = PAGE_RIDES;
-            selected_list_item = -1;
             frame_no = 0;
 
             list_information_type = INFORMATION_TYPE_STATUS;
@@ -239,22 +238,18 @@ namespace OpenRCT2::Ui::Windows
                     {
                         _windowListSortDescending ^= true;
                     }
-
-                    selected_list_item = -1;
                     RefreshList();
                     break;
                 case WIDX_HEADER_OTHER:
                     if (list_information_type != _windowRideListInformationType)
                     {
                         list_information_type = _windowRideListInformationType;
-                        _windowListSortDescending = false;
+                        _windowListSortDescending = true;
                     }
                     else
                     {
                         _windowListSortDescending ^= true;
                     }
-
-                    selected_list_item = -1;
                     RefreshList();
                     break;
                 case WIDX_TAB_1:
@@ -264,7 +259,6 @@ namespace OpenRCT2::Ui::Windows
                     {
                         page = widgetIndex - WIDX_TAB_1;
                         frame_no = 0;
-                        selected_list_item = -1;
                         if (page != PAGE_RIDES && _windowRideListInformationType > INFORMATION_TYPE_RUNNING_COST)
                         {
                             _windowRideListInformationType = INFORMATION_TYPE_STATUS;
@@ -392,7 +386,6 @@ namespace OpenRCT2::Ui::Windows
                 if (list_information_type != INFORMATION_TYPE_STATUS)
                 {
                     list_information_type = _windowRideListInformationType;
-                    selected_list_item = -1;
                     RefreshList();
                 }
             }
@@ -417,15 +410,7 @@ namespace OpenRCT2::Ui::Windows
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
             const auto newHeight = static_cast<int32_t>(_rideList.size() * kScrollableRowHeight);
-            if (selected_list_item != -1)
-            {
-                selected_list_item = -1;
-                Invalidate();
-            }
-
-            auto top = newHeight - widgets[WIDX_LIST].bottom + widgets[WIDX_LIST].top + 21;
-            if (top < 0)
-                top = 0;
+            auto top = std::max(0, newHeight - widgets[WIDX_LIST].bottom + widgets[WIDX_LIST].top + 21);
             if (top < scrolls[0].contentOffsetY)
             {
                 scrolls[0].contentOffsetY = top;
