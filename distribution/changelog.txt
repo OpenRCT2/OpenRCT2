@@ -1,5 +1,6 @@
 0.4.26 (in development)
 ------------------------------------------------------------------------
+- Improved: [#24893] The ride list now has headers, and can be sorted in both directions.
 - Fix: [#16988] AppImage version does not show changelog.
 
 0.4.25 (2025-08-03)
