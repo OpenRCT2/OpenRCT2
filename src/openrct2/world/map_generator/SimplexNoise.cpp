@@ -34,16 +34,18 @@ namespace OpenRCT2::World::MapGenerator
     {
         for (auto& i : _perm)
         {
-            i = UtilRand() & 0xFF;
+            i = UtilRandUniformDistributedByte();
         }
     }
 
     SimplexNoise::SimplexNoise(const uint32_t seed)
     {
         std::mt19937 prng(seed);
+        // char types are not permitted as type params of uniform_int_distribution...
+        std::uniform_int_distribution<uint16_t> uniDist(0, 255);
         for (auto& i : _perm)
         {
-            i = prng() & 0xFF;
+            i = static_cast<uint8_t>(uniDist(prng));
         }
     }
 
@@ -218,7 +220,7 @@ namespace OpenRCT2::World::MapGenerator
 
         if (settings->simulate_erosion)
         {
-            auto erosionSettings = ErosionSettings(settings);
+            auto erosionSettings = ErosionSettings(*settings);
             simulateErosion(erosionSettings, heightMap);
         }
         else

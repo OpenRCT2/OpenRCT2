@@ -3845,4 +3845,4 @@ STR_7003    :Audio file ‘{STRING}’ is truncated. Expected sample {INT32}, bu
 STR_7011    :Simulate erosion
 STR_7012    :Particles per tile:
 STR_7013    :Enter particles per tile between {COMMA2DP32} and {COMMA2DP32}
-STR_7014    :All those mountains will be lost in time, like sediment in rain
+STR_7014    :Simulating erosion
