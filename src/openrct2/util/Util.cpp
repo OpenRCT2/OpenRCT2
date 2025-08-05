@@ -27,6 +27,14 @@ float UtilRandNormalDistributed()
     return _distributor(_prng);
 }
 
+uint8_t UtilRandUniformDistributedByte()
+{
+    thread_local std::mt19937 _prng{ std::random_device{}() };
+    // char types are not permitted as type params of uniform_int_distribution...
+    thread_local std::uniform_int_distribution<uint16_t> _distributor{ 0, 255 };
+    return static_cast<uint8_t>(_distributor(_prng));
+}
+
 uint8_t Lerp(uint8_t a, uint8_t b, float t)
 {
     if (t <= 0)
