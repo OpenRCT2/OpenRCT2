@@ -1525,9 +1525,8 @@ static money64 getItemValue(const ShopItemDescriptor& shopItemDescriptor)
  */
 static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopItem, money64 price)
 {
-    const bool isPrecipitating = ClimateIsRaining() || ClimateIsSnowingHeavily();
-    const bool isUmbrella = shopItem == ShopItem::Umbrella;
-    const bool isRainingAndUmbrella = isPrecipitating && isUmbrella;
+    const bool isPrecipitating = ClimateIsPrecipitating();
+    const bool isRainingAndUmbrella = isPrecipitating && (shopItem == ShopItem::Umbrella);
 
     bool hasVoucher = false;
     if ((guest.HasItem(ShopItem::Voucher)) && (guest.VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
@@ -2092,7 +2091,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 }
                 else
                 {
-                    const bool isPrecipitating = ClimateIsRaining() || ClimateIsSnowingHeavily();
+                    const bool isPrecipitating = ClimateIsPrecipitating();
                     if (isPrecipitating && !GuestShouldRideWhileRaining(*this, ride))
                     {
                         if (peepAtRide)
@@ -6982,8 +6981,7 @@ void Guest::UpdateAnimationGroup()
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
 
-    const bool isPrecipitating = ClimateIsRaining() || ClimateIsSnowingHeavily();
-    if (isPrecipitating && (HasItem(ShopItem::Umbrella)) && x != kLocationNull)
+    if (ClimateIsPrecipitating() && (HasItem(ShopItem::Umbrella)) && x != kLocationNull)
     {
         CoordsXY loc = { x, y };
         if (MapIsLocationValid(loc.ToTileStart()))

@@ -283,6 +283,11 @@ bool ClimateIsSnowingHeavily()
     return weather == WeatherType::HeavySnow || weather == WeatherType::Blizzard;
 }
 
+bool ClimateIsPrecipitating()
+{
+    return ClimateIsRaining() || ClimateIsSnowingHeavily();
+}
+
 bool WeatherIsDry(WeatherType weather)
 {
     return weather == WeatherType::Sunny || weather == WeatherType::PartiallyCloudy || weather == WeatherType::Cloudy;
