@@ -69,7 +69,7 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(3, 75), MakeRideRating(1, 95), MakeRideRating(4, 79) },
         18,
-        -1,
+        kDynamicRideShelterRating,
         true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
@@ -140,7 +140,7 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(3, 75), MakeRideRating(1, 95), MakeRideRating(4, 79) },
         18,
-        -1,
+        kDynamicRideShelterRating,
         true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

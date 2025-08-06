@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor LogFlumeRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(1, 50), MakeRideRating(0, 55), MakeRideRating(0, 30) },
         15,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           2000,             7208, 0, 0 },

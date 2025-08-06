@@ -57,7 +57,7 @@ constexpr RideTypeDescriptor MineTrainCoasterRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(2, 90), MakeRideRating(2, 30), MakeRideRating(2, 10) },
         16,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

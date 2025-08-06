@@ -61,7 +61,7 @@ constexpr RideTypeDescriptor StandUpRollerCoasterRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(2, 50), MakeRideRating(3, 00), MakeRideRating(3, 00) },
         17,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },

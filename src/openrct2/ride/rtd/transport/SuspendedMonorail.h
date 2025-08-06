@@ -61,7 +61,7 @@ constexpr RideTypeDescriptor SuspendedMonorailRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(2, 15), MakeRideRating(0, 23), MakeRideRating(0, 8) },
         14,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,            6000,             764, 0, 0 },

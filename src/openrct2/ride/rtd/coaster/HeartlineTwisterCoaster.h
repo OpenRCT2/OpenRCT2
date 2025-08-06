@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
         RatingsCalculationType::Normal,
         { MakeRideRating(3, 00), MakeRideRating(1, 70), MakeRideRating(1, 65) },
         18,
-        -1,
+        kDynamicRideShelterRating,
         false,
         {
             { RatingsModifierType::BonusLength,           6000, 764, 0, 0 },
