@@ -49,7 +49,7 @@ using namespace OpenRCT2;
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-constexpr uint8_t kNetworkStreamVersion = 0;
+constexpr uint8_t kNetworkStreamVersion = 1;
 
 const std::string kNetworkStreamID = std::string(kOpenRCT2Version) + "-" + std::to_string(kNetworkStreamVersion);
 
@@ -2876,7 +2876,7 @@ bool NetworkBase::SaveMap(IStream* stream, const std::vector<const ObjectReposit
         exporter->ExportObjectsList = objects;
 
         auto& gameState = getGameState();
-        exporter->Export(gameState, *stream);
+        exporter->Export(gameState, *stream, kParkFileNetCompressionLevel);
         result = true;
     }
     catch (const std::exception& e)

@@ -139,6 +139,8 @@ static bool OnCrash(
         FileStream source(dumpFilePath, FileMode::open);
         FileStream dest(dumpFilePathGZIP, FileMode::write);
 
+        // We could switch this to zstdCompress() if supported by backtrace.io. If you switch it,
+        // use the extension .zst and ZstdMetadataType::both to use the appropriate metadata.
         if (Compression::zlibCompress(source, source.GetLength(), dest, Compression::ZlibHeaderType::gzip))
         {
             // TODO: enable upload of gzip-compressed dumps once supported on
@@ -183,7 +185,7 @@ static bool OnCrash(
         exporter->ExportObjectsList = objManager.GetPackableObjects();
 
         auto& gameState = getGameState();
-        exporter->Export(gameState, saveFilePathUTF8.c_str());
+        exporter->Export(gameState, saveFilePathUTF8.c_str(), kParkFileSaveCompressionLevel);
         savedGameDumped = true;
     }
     catch (const std::exception& e)

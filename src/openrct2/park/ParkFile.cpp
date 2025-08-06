@@ -17,6 +17,7 @@
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../Version.h"
+#include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/Crypt.h"
 #include "../core/DataSerialiser.h"
@@ -2766,7 +2767,7 @@ int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
         {
             // s6exporter->SaveGame(path);
         }
-        parkFile->Save(gameState, path, Compression::kZlibDefaultCompressionLevel);
+        parkFile->Save(gameState, path, gIsAutosave ? kParkFileAutoCompressionLevel : kParkFileSaveCompressionLevel);
         result = true;
     }
     catch (const std::exception& e)

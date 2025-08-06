@@ -19,12 +19,13 @@
 
 #include <limits>
 #include <zlib.h>
+#include <zstd.h>
 
 namespace OpenRCT2::Compression
 {
-    constexpr size_t kZlibChunkSize = 128 * 1024;
-    constexpr size_t kZlibMaxChunkSize = static_cast<size_t>(std::numeric_limits<uInt>::max());
-    constexpr int kZlibWindowBits[] = { -15, 15, 15 + 16 };
+    static constexpr size_t kZlibChunkSize = 128 * 1024;
+    static constexpr size_t kZlibMaxChunkSize = static_cast<size_t>(std::numeric_limits<uInt>::max());
+    static constexpr int kZlibWindowBits[] = { -15, 15, 15 + 16 };
 
     /*
      * Modified copy of compressBound() from zlib 1.3.1, with the argument type changed from ULong
@@ -32,7 +33,7 @@ namespace OpenRCT2::Compression
      */
     static uint64_t zlibCompressBound(uint64_t length)
     {
-        return length + (length >> 12) + (length >> 14) + (length >> 25) + 13 + (18 - 6);
+        return length + (length >> 12) + (length >> 14) + (length >> 25) + 13uLL + (18uLL - 6uLL);
     }
 
     bool zlibCompress(IStream& source, uint64_t sourceLength, IStream& dest, ZlibHeaderType header, int16_t level)
@@ -136,6 +137,139 @@ namespace OpenRCT2::Compression
         }
 
         inflateEnd(&strm);
+        return true;
+    }
+
+    /*
+     * Modified copy of ZSTD_COMPRESSBOUND / ZSTD_compressBound() from zstd 1.5.7, with the argument
+     * type changed from size_t (which may be only 32 bits) to uint64_t, and removes the error handling.
+     */
+    static uint64_t zstdCompressBound(uint64_t length)
+    {
+        return length + (length >> 8)
+            + ((length < (128uLL << 10)) ? (((128uLL << 10) - length) >> 11) /* margin, from 64 to 0 */ : 0uLL);
+    }
+
+    bool zstdCompress(IStream& source, uint64_t sourceLength, IStream& dest, ZstdMetadata metadata, int16_t level)
+    {
+        Guard::Assert(sourceLength <= source.GetLength() - source.GetPosition());
+
+        size_t ret;
+        StreamReadBuffer sourceBuf(source, sourceLength, ZSTD_CStreamInSize());
+        StreamWriteBuffer destBuf(dest, zstdCompressBound(sourceLength), ZSTD_CStreamOutSize());
+        unsigned metaFlags = static_cast<unsigned>(metadata);
+
+        const auto deleter = [](ZSTD_CCtx* ptr) { ZSTD_freeCCtx(ptr); };
+        std::unique_ptr<ZSTD_CCtx, decltype(deleter)> ctx(ZSTD_createCCtx(), deleter);
+        if (ctx == nullptr)
+        {
+            LOG_ERROR("Failed to create zstd context");
+            return false;
+        }
+
+        ret = ZSTD_CCtx_setParameter(ctx.get(), ZSTD_c_compressionLevel, level);
+        if (ZSTD_isError(ret))
+        {
+            LOG_ERROR("Failed to set compression level with error: %s", ZSTD_getErrorName(ret));
+            return false;
+        }
+        // set options for content size (default on) and checksum (default off)
+        ret = ZSTD_CCtx_setParameter(ctx.get(), ZSTD_c_contentSizeFlag, (metaFlags & 1) != 0);
+        if (ZSTD_isError(ret))
+        {
+            LOG_ERROR("Failed to set content size flag with error: %s", ZSTD_getErrorName(ret));
+            return false;
+        }
+        ret = ZSTD_CCtx_setParameter(ctx.get(), ZSTD_c_checksumFlag, (metaFlags & 2) != 0);
+        if (ZSTD_isError(ret))
+        {
+            LOG_ERROR("Failed to set checksum flag with error: %s", ZSTD_getErrorName(ret));
+            return false;
+        }
+        // unlike gzip, zstd puts the decompressed content size at the start of the file,
+        // so we need to tell zstd how big the input is before we start compressing.
+        ret = ZSTD_CCtx_setPledgedSrcSize(ctx.get(), sourceLength);
+        if (ZSTD_isError(ret))
+        {
+            LOG_ERROR("Failed to set file length with error: %s", ZSTD_getErrorName(ret));
+            return false;
+        }
+
+        do
+        {
+            auto readBlock = sourceBuf.ReadBlock(source);
+            ZSTD_inBuffer input = { readBlock.first, readBlock.second, 0 };
+
+            do
+            {
+                Guard::Assert(destBuf, "Compression Overruns Ouput Size");
+
+                auto writeBlock = destBuf.WriteBlockStart();
+                ZSTD_outBuffer output = { writeBlock.first, writeBlock.second, 0 };
+
+                ret = ZSTD_compressStream2(ctx.get(), &output, &input, sourceBuf ? ZSTD_e_continue : ZSTD_e_end);
+                if (ZSTD_isError(ret))
+                {
+                    LOG_ERROR("Failed to compress data with error: %s", ZSTD_getErrorName(ret));
+                    return false;
+                }
+
+                destBuf.WriteBlockCommit(dest, output.pos);
+            } while (input.pos < input.size || (!sourceBuf && ret > 0));
+        } while (sourceBuf);
+
+        return true;
+    }
+
+    bool zstdDecompress(IStream& source, uint64_t sourceLength, IStream& dest, uint64_t decompressLength)
+    {
+        Guard::Assert(sourceLength <= source.GetLength() - source.GetPosition());
+
+        size_t ret;
+        StreamReadBuffer sourceBuf(source, sourceLength, ZSTD_DStreamInSize());
+        StreamWriteBuffer destBuf(dest, decompressLength, ZSTD_DStreamOutSize());
+
+        const auto deleter = [](ZSTD_DCtx* ptr) { ZSTD_freeDCtx(ptr); };
+        std::unique_ptr<ZSTD_DCtx, decltype(deleter)> ctx(ZSTD_createDCtx(), deleter);
+        if (ctx == nullptr)
+        {
+            LOG_ERROR("Failed to create zstd context");
+            return false;
+        }
+
+        do
+        {
+            auto readBlock = sourceBuf.ReadBlock(source);
+            ZSTD_inBuffer input = { readBlock.first, readBlock.second, 0 };
+
+            do
+            {
+                if (!destBuf)
+                {
+                    LOG_ERROR("Decompressed data larger than expected");
+                    return false;
+                }
+
+                auto writeBlock = destBuf.WriteBlockStart();
+                ZSTD_outBuffer output = { writeBlock.first, writeBlock.second, 0 };
+
+                ret = ZSTD_decompressStream(ctx.get(), &output, &input);
+                if (ZSTD_isError(ret))
+                {
+                    LOG_ERROR("Failed to compress data with error: %s", ZSTD_getErrorName(ret));
+                    return false;
+                }
+
+                destBuf.WriteBlockCommit(dest, output.pos);
+            } while (input.pos < input.size || (!sourceBuf && ret > 0));
+        } while (sourceBuf);
+
+        if (destBuf)
+        {
+            LOG_ERROR("Decompressed data smaller than expected");
+            return false;
+        }
+
         return true;
     }
 } // namespace OpenRCT2::Compression

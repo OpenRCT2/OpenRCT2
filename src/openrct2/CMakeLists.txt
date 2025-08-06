@@ -121,12 +121,14 @@ if (EMSCRIPTEN)
 elseif (MSVC)
     find_package(png 1.6 REQUIRED)
     find_package(zlib REQUIRED)
+    find_package(zstd REQUIRED)
 
     find_path(LIBZIP_INCLUDE_DIRS zip.h)
     find_library(LIBZIP_LIBRARIES zip)
 else ()
     PKG_CHECK_MODULES(LIBZIP REQUIRED IMPORTED_TARGET libzip>=1.0)
     PKG_CHECK_MODULES(ZLIB REQUIRED IMPORTED_TARGET zlib)
+    PKG_CHECK_MODULES(ZSTD REQUIRED IMPORTED_TARGET libzstd)
 
     PKG_CHECK_MODULES(PNG IMPORTED_TARGET libpng>=1.6)
     if (NOT PNG_FOUND)
@@ -144,18 +146,21 @@ if (STATIC)
     target_link_libraries(libopenrct2
                                      ${PNG_STATIC_LIBRARIES}
                                      ${ZLIB_STATIC_LIBRARIES}
-                                     ${LIBZIP_STATIC_LIBRARIES})
+                                     ${LIBZIP_STATIC_LIBRARIES}
+                                     ${ZSTD_STATIC_LIBRARIES})
 else ()
     if (NOT MSVC AND NOT EMSCRIPTEN)
         target_link_libraries(libopenrct2
                                      PkgConfig::PNG
                                      PkgConfig::ZLIB
-                                     PkgConfig::LIBZIP)
+                                     PkgConfig::LIBZIP
+                                     PkgConfig::ZSTD)
     else ()
         target_link_libraries(libopenrct2
                                      ${PNG_LIBRARIES}
                                      ${ZLIB_LIBRARIES}
-                                     ${LIBZIP_LIBRARIES})
+                                     ${LIBZIP_LIBRARIES}
+                                     ${ZSTD_LIBRARIES})
     endif ()
 endif ()
 
@@ -235,6 +240,7 @@ endif()
 target_include_directories(libopenrct2 SYSTEM PRIVATE ${LIBZIP_INCLUDE_DIRS})
 target_include_directories(libopenrct2 SYSTEM PRIVATE ${PNG_INCLUDE_DIRS}
                                                           ${ZLIB_INCLUDE_DIRS})
+target_include_directories(libopenrct2 SYSTEM PRIVATE ${ZSTD_INCLUDE_DIRS})
 include_directories(libopenrct2 SYSTEM ${CMAKE_CURRENT_LIST_DIR}/../thirdparty)
 
 # To avoid unnecessary rebuilds set the current branch and
