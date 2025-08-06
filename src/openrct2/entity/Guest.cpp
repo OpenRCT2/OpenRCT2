@@ -3605,6 +3605,7 @@ void PeepUpdateRideLeaveEntranceSpiralSlide(Guest& guest, Ride& ride, CoordsXYZD
     entrance_loc += kSpiralSlideWalkingPath[guest.Var37];
 
     guest.SetDestination(entrance_loc);
+    // For the Spiral Slide, the CurrentCar attribute counts how many times the guest has slid down
     guest.CurrentCar = 0;
 
     ride.curNumCustomers++;
@@ -4705,7 +4706,7 @@ void Guest::UpdateRideApproachSpiralSlide()
     if (waypoint == 2)
     {
         bool lastRide = false;
-        if (ride->status != RideStatus::open)
+        if (ride->status != RideStatus::open || ride->numRiders > ride->operationOption)
             lastRide = true;
         else if (CurrentCar++ != 0)
         {
