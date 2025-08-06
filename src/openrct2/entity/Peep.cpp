@@ -1290,7 +1290,8 @@ void PeepApplause()
         GuestReleaseBalloon(peep, peep->z + 9);
 
         // Clap
-        if ((peep->State == PeepState::Walking || peep->State == PeepState::Queuing) && peep->IsActionInterruptable())
+        if ((peep->State == PeepState::Walking || peep->State == PeepState::Queuing) && peep->IsActionInterruptable()
+            && !peep->IsOnLevelCrossing())
         {
             peep->Action = PeepActionType::Clap;
             peep->AnimationFrameNum = 0;

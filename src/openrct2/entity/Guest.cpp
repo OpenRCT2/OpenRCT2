@@ -531,7 +531,7 @@ void Guest::GivePassingGuestPizza(Guest& passingPeep)
     int32_t otherPeepOppositeDirection = passingPeep.Orientation >> 3;
     if (peepDirection == otherPeepOppositeDirection)
     {
-        if (passingPeep.IsActionInterruptable() && !IsOnLevelCrossing())
+        if (passingPeep.IsActionInterruptable() && !passingPeep.IsOnLevelCrossing())
         {
             passingPeep.Action = PeepActionType::Wave2;
             passingPeep.AnimationFrameNum = 0;
@@ -546,7 +546,7 @@ void Guest::MakePassingGuestSick(Guest& passingPeep)
     if (passingPeep.State != PeepState::Walking)
         return;
 
-    if (passingPeep.IsActionInterruptable() && !IsOnLevelCrossing())
+    if (passingPeep.IsActionInterruptable() && !passingPeep.IsOnLevelCrossing())
     {
         passingPeep.Action = PeepActionType::ThrowUp;
         passingPeep.AnimationFrameNum = 0;
