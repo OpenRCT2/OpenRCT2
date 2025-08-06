@@ -721,13 +721,13 @@ namespace OpenRCT2::Ui::Windows
             if (mainWindow == nullptr)
                 return;
 
-            Viewport* viewport = mainWindow->viewport;
-            if (viewport == nullptr)
+            Viewport* vp = mainWindow->viewport;
+            if (vp == nullptr)
                 return;
 
             // calculate centre view point of viewport and transform it to minimap coordinates
-            auto centreX = ((viewport->ViewWidth() / 2) + viewport->viewPos.x) / kCoordsXYStep;
-            auto centreY = ((viewport->ViewHeight() / 2) + viewport->viewPos.y) / kCoordsXYHalfTile;
+            auto centreX = ((vp->ViewWidth() / 2) + vp->viewPos.x) / kCoordsXYStep;
+            auto centreY = ((vp->ViewHeight() / 2) + vp->viewPos.y) / kCoordsXYHalfTile;
 
             auto& offset = MiniMapOffsetFactors[GetCurrentRotation()];
             centreX += offset.x * getPracticalMapSize();
