@@ -149,10 +149,8 @@ struct PaintSessionCore
     SupportHeight SupportSegments[9];
     SupportHeight Support;
     uint16_t WaterHeight;
-    TunnelEntry LeftTunnels[kTunnelMaxCount];
-    TunnelEntry RightTunnels[kTunnelMaxCount];
-    uint8_t LeftTunnelCount;
-    uint8_t RightTunnelCount;
+    sfl::static_vector<TunnelEntry, kTunnelMaxCount> LeftTunnels;
+    sfl::static_vector<TunnelEntry, kTunnelMaxCount> RightTunnels;
     uint8_t VerticalTunnelHeight;
     uint8_t CurrentRotation;
     uint8_t Flags;
