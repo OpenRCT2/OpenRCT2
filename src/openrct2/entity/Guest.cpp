@@ -4710,9 +4710,8 @@ void Guest::UpdateRideApproachSpiralSlide()
             lastRide = true;
         else if (CurrentCar++ != 0)
         {
-            if (ride->mode == RideMode::singleRidePerAdmission)
-                lastRide = true;
-            if (static_cast<uint8_t>(CurrentCar - 1) > (ScenarioRand() & 0xF))
+            if (ride->mode == RideMode::singleRidePerAdmission || static_cast<uint8_t>(CurrentCar - 1) > (ScenarioRand() & 0xF)
+                || ClimateIsRaining() || ClimateIsSnowingHeavily() || GuestTimeOnRide > 15)
                 lastRide = true;
         }
 
