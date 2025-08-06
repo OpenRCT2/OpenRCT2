@@ -1525,9 +1525,7 @@ static money64 getItemValue(const ShopItemDescriptor& shopItemDescriptor)
  */
 static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopItem, money64 price)
 {
-    const bool isPrecipitating = ClimateIsRaining() || ClimateIsSnowingHeavily();
-    const bool isUmbrella = shopItem == ShopItem::Umbrella;
-    const bool isRainingAndUmbrella = isPrecipitating && isUmbrella;
+    const bool isRainingAndUmbrella = ClimateIsPrecipitating() && (shopItem == ShopItem::Umbrella);
 
     bool hasVoucher = false;
     if ((guest.HasItem(ShopItem::Voucher)) && (guest.VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
@@ -1558,7 +1556,7 @@ static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopI
 
     if ((shopItem == ShopItem::Balloon || shopItem == ShopItem::IceCream || shopItem == ShopItem::Candyfloss
          || shopItem == ShopItem::Sunglasses)
-        && isPrecipitating)
+        && ClimateIsPrecipitating())
     {
         return false;
     }
@@ -2092,8 +2090,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 }
                 else
                 {
-                    const bool isPrecipitating = ClimateIsRaining() || ClimateIsSnowingHeavily();
-                    if (isPrecipitating && !GuestShouldRideWhileRaining(*this, ride))
+                    if (ClimateIsPrecipitating() && !GuestShouldRideWhileRaining(*this, ride))
                     {
                         if (peepAtRide)
                         {
@@ -2109,7 +2106,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                     }
                     // If it is raining and the ride provides shelter skip the
                     // ride intensity check and get me on a sheltered ride!
-                    if (!isPrecipitating || !GuestShouldRideWhileRaining(*this, ride))
+                    if (!ClimateIsPrecipitating() || !GuestShouldRideWhileRaining(*this, ride))
                     {
                         if (!getGameState().cheats.ignoreRideIntensity)
                         {
@@ -4946,7 +4943,8 @@ void Guest::UpdateRideMazePathfinding()
 
     if (IsActionInterruptable())
     {
-        if (Energy > 80 && !(PeepFlags & PEEP_FLAGS_SLOW_WALK) && !ClimateIsRaining() && (ScenarioRand() & 0xFFFF) <= 2427)
+        if (Energy > 80 && !(PeepFlags & PEEP_FLAGS_SLOW_WALK) && !ClimateIsPrecipitating()
+            && (ScenarioRand() & 0xFFFF) <= 2427)
         {
             Action = PeepActionType::Jump;
             AnimationFrameNum = 0;
@@ -6982,8 +6980,7 @@ void Guest::UpdateAnimationGroup()
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
 
-    const bool isPrecipitating = ClimateIsRaining() || ClimateIsSnowingHeavily();
-    if (isPrecipitating && (HasItem(ShopItem::Umbrella)) && x != kLocationNull)
+    if (ClimateIsPrecipitating() && (HasItem(ShopItem::Umbrella)) && x != kLocationNull)
     {
         CoordsXY loc = { x, y };
         if (MapIsLocationValid(loc.ToTileStart()))
