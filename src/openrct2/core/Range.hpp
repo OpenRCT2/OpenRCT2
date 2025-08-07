@@ -10,6 +10,7 @@
 #pragma once
 
 #include <cmath>
+#include <cstdlib>
 #include <type_traits>
 
 template<typename T>
