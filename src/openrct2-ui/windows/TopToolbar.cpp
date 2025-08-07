@@ -905,7 +905,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     GfxDrawSprite(rt, ImageId(SPR_G2_SPEED_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 5, 15 });
                 }
-                for (int32_t i = 0; i < 3 && i < gGameSpeed - 4 && gGameSpeed >= 5; i++)
+                for (int32_t i = 0; i < 3 && gGameSpeed >= 5; i++)
                 {
                     GfxDrawSprite(rt, ImageId(SPR_G2_HYPER_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 6, 15 });
                 }
