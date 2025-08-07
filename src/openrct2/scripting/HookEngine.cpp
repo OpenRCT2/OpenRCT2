@@ -18,7 +18,8 @@
 
 using namespace OpenRCT2::Scripting;
 
-static const EnumMap<HookType> HooksLookupTable({
+static const EnumMap<HookType> HooksLookupTable(
+{
     { "action.query", HookType::actionQuery },
     { "action.execute", HookType::actionExecute },
     { "interval.tick", HookType::intervalTick },
