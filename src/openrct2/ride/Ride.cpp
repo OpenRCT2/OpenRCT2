@@ -77,6 +77,7 @@
 #include "TrainManager.h"
 #include "Vehicle.h"
 
+#include "RideBreakdownMap.h"
 #include <cassert>
 #include <climits>
 #include <cstdlib>

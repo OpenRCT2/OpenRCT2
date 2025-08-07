@@ -18,7 +18,6 @@
 #include "../object/MusicObject.h"
 #include "../rct2/DATLimits.h"
 #include "../rct2/Limits.h"
-#include "../scripting/Duktape.hpp"
 #include "../world/Map.h"
 #include "RideColour.h"
 #include "RideEntry.h"
@@ -731,33 +730,6 @@ enum
     MUSIC_STYLE_CANDY_STYLE,
     MUSIC_STYLE_COUNT
 };
-
-enum
-{
-    BREAKDOWN_NONE = 255,
-    BREAKDOWN_SAFETY_CUT_OUT = 0,
-    BREAKDOWN_RESTRAINTS_STUCK_CLOSED,
-    BREAKDOWN_RESTRAINTS_STUCK_OPEN,
-    BREAKDOWN_DOORS_STUCK_CLOSED,
-    BREAKDOWN_DOORS_STUCK_OPEN,
-    BREAKDOWN_VEHICLE_MALFUNCTION,
-    BREAKDOWN_BRAKES_FAILURE,
-    BREAKDOWN_CONTROL_FAILURE,
-
-    BREAKDOWN_COUNT
-};
-
-#ifdef ENABLE_SCRIPTING
-static const OpenRCT2::Scripting::DukEnumMap<uint8_t> BreakdownMap // The types of breakdowns.
-    ({ { "safety_cut_out", BREAKDOWN_SAFETY_CUT_OUT },
-       { "restraints_stuck_closed", BREAKDOWN_RESTRAINTS_STUCK_CLOSED },
-       { "restraints_stuck_open", BREAKDOWN_RESTRAINTS_STUCK_OPEN },
-       { "doors_stuck_closed", BREAKDOWN_DOORS_STUCK_CLOSED },
-       { "doors_stuck_open", BREAKDOWN_DOORS_STUCK_OPEN },
-       { "vehicle_malfunction", BREAKDOWN_VEHICLE_MALFUNCTION },
-       { "brakes_failure", BREAKDOWN_BRAKES_FAILURE },
-       { "control_failure", BREAKDOWN_CONTROL_FAILURE } });
-#endif
 
 enum
 {
