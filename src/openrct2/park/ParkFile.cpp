@@ -1259,7 +1259,7 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        auto tileElements = GetReorganisedTileElementsWithoutGhosts();
+                        auto tileElements = GetReorganisedTileElementsWithoutGhosts(gameState);
                         cs.Write(static_cast<uint32_t>(tileElements.size()));
                         cs.Write(tileElements.data(), tileElements.size() * sizeof(TileElement));
                     }
@@ -1536,13 +1536,13 @@ namespace OpenRCT2
                         auto hasMeasurement = cs.Read<uint8_t>();
                         if (hasMeasurement != 0)
                         {
-                            ride.measurement = std::make_unique<RideMeasurement>();
+                            ride.measurement = std::make_optional<RideMeasurement>();
                             ReadWriteRideMeasurement(cs, *ride.measurement);
                         }
                     }
                     else
                     {
-                        if (ride.measurement == nullptr)
+                        if (!ride.measurement.has_value())
                         {
                             cs.Write<uint8_t>(0);
                         }

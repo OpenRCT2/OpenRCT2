@@ -239,8 +239,6 @@ struct FootpathPaintInfo
     colour_t SupportColour = 255;
 };
 
-extern PaintSession gPaintSession;
-
 // Globals for paint clipping
 extern uint8_t gClipHeight;
 extern CoordsXY gClipSelectionA;

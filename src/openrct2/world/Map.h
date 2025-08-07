@@ -138,7 +138,7 @@ const std::vector<TileElement>& GetTileElements();
 void SetTileElements(OpenRCT2::GameState_t& gameState, std::vector<TileElement>&& tileElements);
 void StashMap();
 void UnstashMap();
-std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts();
+std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts(OpenRCT2::GameState_t& gameState);
 
 void MapInit(const TileCoordsXY& size);
 
