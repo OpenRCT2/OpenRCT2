@@ -19,25 +19,25 @@
 using namespace OpenRCT2::Scripting;
 
 static const EnumMap<HookType> HooksLookupTable(
-{
-    { "action.query", HookType::actionQuery },
-    { "action.execute", HookType::actionExecute },
-    { "interval.tick", HookType::intervalTick },
-    { "interval.day", HookType::intervalDay },
-    { "network.chat", HookType::networkChat },
-    { "network.authenticate", HookType::networkAuthenticate },
-    { "network.join", HookType::networkJoin },
-    { "network.leave", HookType::networkLeave },
-    { "ride.ratings.calculate", HookType::rideRatingsCalculate },
-    { "action.location", HookType::actionLocation },
-    { "guest.generation", HookType::guestGeneration },
-    { "vehicle.crash", HookType::vehicleCrash },
-    { "map.change", HookType::mapChange },
-    { "map.changed", HookType::mapChanged },
-    { "map.save", HookType::mapSave },
-    { "park.guest.softcap.calculate", HookType::parkCalculateGuestCap },
-    { "ride.breakdown", HookType::rideBreakDown },
-});
+    {
+        { "action.query", HookType::actionQuery },
+        { "action.execute", HookType::actionExecute },
+        { "interval.tick", HookType::intervalTick },
+        { "interval.day", HookType::intervalDay },
+        { "network.chat", HookType::networkChat },
+        { "network.authenticate", HookType::networkAuthenticate },
+        { "network.join", HookType::networkJoin },
+        { "network.leave", HookType::networkLeave },
+        { "ride.ratings.calculate", HookType::rideRatingsCalculate },
+        { "action.location", HookType::actionLocation },
+        { "guest.generation", HookType::guestGeneration },
+        { "vehicle.crash", HookType::vehicleCrash },
+        { "map.change", HookType::mapChange },
+        { "map.changed", HookType::mapChanged },
+        { "map.save", HookType::mapSave },
+        { "park.guest.softcap.calculate", HookType::parkCalculateGuestCap },
+        { "ride.breakdown", HookType::rideBreakDown },
+    });
 
 HookType OpenRCT2::Scripting::GetHookType(const std::string& name)
 {
