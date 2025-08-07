@@ -24,6 +24,11 @@ struct VecXY
         , y(_y)
     {
     }
+    constexpr VecXY(int32_t _x, int32_t _y)
+        : x(static_cast<float>(_x))
+        , y(static_cast<float>(_y))
+    {
+    }
 
     constexpr VecXY& operator+=(const VecXY& rhs)
     {
@@ -61,6 +66,16 @@ struct VecXY
     constexpr VecXY operator-(const VecXY& rhs) const
     {
         return { x - rhs.x, y - rhs.y };
+    }
+
+    constexpr VecXY operator+(const float rhs) const
+    {
+        return { x + rhs, y + rhs };
+    }
+
+    constexpr VecXY operator-(const float rhs) const
+    {
+        return { x - rhs, y - rhs };
     }
 
     constexpr VecXY operator*(const float rhs) const

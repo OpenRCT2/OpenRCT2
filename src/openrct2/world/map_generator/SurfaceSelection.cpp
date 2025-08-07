@@ -13,11 +13,11 @@
 #include "../../object/ObjectManager.h"
 #include "../../object/TerrainEdgeObject.h"
 #include "../../object/TerrainSurfaceObject.h"
-#include "../../util/Util.h"
 #include "MapGen.h"
 
 #include <algorithm>
 #include <iterator>
+#include <random>
 
 namespace OpenRCT2::World::MapGenerator
 {
@@ -42,10 +42,16 @@ namespace OpenRCT2::World::MapGenerator
                 [&](auto terrain) { return objectManager.GetLoadedObject(ObjectEntryDescriptor(terrain)) != nullptr; });
 
             if (availableTerrains.empty())
+            {
                 // Fall back to the first available surface texture that is available in the park
                 surfaceTexture = TerrainSurfaceObject::GetById(0)->GetIdentifier();
+            }
             else
-                surfaceTexture = availableTerrains[UtilRand() % availableTerrains.size()];
+            {
+                std::mt19937 prng(settings->seed);
+                std::uniform_int_distribution<size_t> dist(0, availableTerrains.size() - 1);
+                surfaceTexture = availableTerrains[dist(prng)];
+            }
         }
 
         auto surfaceTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(surfaceTexture));
@@ -81,7 +87,7 @@ namespace OpenRCT2::World::MapGenerator
         return edgeTextureId;
     }
 
-    ObjectEntryIndex generateBeachTextureId()
+    ObjectEntryIndex generateBeachTextureId(Settings* settings)
     {
         auto& objectManager = GetContext()->GetObjectManager();
 
@@ -95,7 +101,10 @@ namespace OpenRCT2::World::MapGenerator
         if (availableBeachTextures.empty())
             return kObjectEntryIndexNull;
 
-        std::string_view beachTexture = availableBeachTextures[UtilRand() % availableBeachTextures.size()];
+        std::mt19937 prng(settings->seed);
+        std::uniform_int_distribution<size_t> dist(0, availableBeachTextures.size() - 1);
+
+        std::string_view beachTexture = availableBeachTextures[dist(prng)];
         return objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(beachTexture));
     }
 } // namespace OpenRCT2::World::MapGenerator
