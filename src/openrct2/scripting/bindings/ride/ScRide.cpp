@@ -15,6 +15,7 @@
     #include "../../../core/EnumMap.hpp"
     #include "../../../core/UnitConversion.h"
     #include "../../../ride/Ride.h"
+    #include "../../../ride/RideBreakdownMap.h"
     #include "../../../ride/RideData.h"
     #include "../../ScriptEngine.h"
     #include "../object/ScObject.hpp"

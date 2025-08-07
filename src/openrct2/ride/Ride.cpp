@@ -73,6 +73,7 @@
 #include "Vehicle.h"
 #include "ted/TrackElementDescriptor.h"
 
+#include "RideBreakdownMap.h"
 #include <cassert>
 #include <iterator>
 #include <limits>
