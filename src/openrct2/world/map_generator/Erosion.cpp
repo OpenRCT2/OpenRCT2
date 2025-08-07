@@ -72,9 +72,9 @@ namespace OpenRCT2::World::MapGenerator
     {
         GetContext()->OpenProgress(STR_EROSION_PROGRESS);
 
-        // TODO init with map seed (once made configurable)
+        std::mt19937 prng(settings.seed);
+
         // border of 1 for normal calculation
-        std::mt19937 prng{ std::random_device{}() };
         std::uniform_real_distribution<float> uniDistWidth(1, heightMap.width - 2);
         std::uniform_real_distribution<float> uniDistHeight(1, heightMap.height - 2);
 

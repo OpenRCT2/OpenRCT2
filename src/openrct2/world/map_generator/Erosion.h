@@ -12,6 +12,8 @@
 #include "HeightMap.hpp"
 #include "MapGen.h"
 
+#include <random>
+
 namespace OpenRCT2::World::MapGenerator
 {
     constexpr int32_t kMinParticlesPerTile = 5;
@@ -19,13 +21,14 @@ namespace OpenRCT2::World::MapGenerator
 
     struct ErosionSettings
     {
-        ErosionSettings() = default;
         ErosionSettings(const Settings& settings)
         {
             particles = static_cast<uint32_t>(settings.particles_per_tile * settings.mapSize.x * settings.mapSize.y) / 100;
+            seed = settings.seed;
         }
 
         int32_t particles = 200000;
+        uint32_t seed = std::random_device{}();
 
         float density = 2.0f;
         float evaporationRate = 0.001f;

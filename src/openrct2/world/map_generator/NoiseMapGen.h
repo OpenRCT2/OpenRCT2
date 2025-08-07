@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -8,14 +8,10 @@
  *****************************************************************************/
 
 #pragma once
-
-#include "../../object/ObjectTypes.h"
+#include "MapGen.h"
 
 namespace OpenRCT2::World::MapGenerator
 {
-    struct Settings;
-
-    ObjectEntryIndex generateSurfaceTextureId(Settings* settings);
-    ObjectEntryIndex generateEdgeTextureId(Settings* settings, ObjectEntryIndex surfaceTextureId);
-    ObjectEntryIndex generateBeachTextureId(Settings* settings);
+    void generateSimplexMap(Settings* settings);
+    void generateWarpedMap(Settings* settings);
 } // namespace OpenRCT2::World::MapGenerator

@@ -104,6 +104,7 @@ namespace OpenRCT2::World::MapGenerator
 
     /**
      * Applies box blur to the surface N times
+     * TODO deduplicate smoothing functions
      */
     static void SmoothHeightmap(HeightMap& src, int32_t strength)
     {

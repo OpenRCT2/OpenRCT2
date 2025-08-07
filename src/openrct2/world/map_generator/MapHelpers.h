@@ -23,6 +23,7 @@ namespace OpenRCT2::World::MapGenerator
         SLOPE_E_THRESHOLD_FLAGS = (1 << 3)
     };
 
+    // TODO deduplicate smoothing functions
     using SmoothFunction = std::function<int32_t(const TileCoordsXY)>;
 
     int32_t smoothTileStrong(TileCoordsXY tileCoord);

@@ -1901,7 +1901,7 @@ STR_2669    :NumLock
 STR_2670    :Scroll
 STR_2680    :All research complete
 STR_2684    :Large group of guests arrive
-STR_2685    :Simplex Noise Parameters
+STR_2685    :Noise Parameters
 STR_2686    :Min. land height:
 STR_2687    :Max. land height:
 STR_2688    :Base Frequency:
@@ -3845,4 +3845,19 @@ STR_7003    :Audio file ‘{STRING}’ is truncated. Expected sample {INT32}, bu
 STR_7011    :Simulate erosion
 STR_7012    :Particles per tile:
 STR_7013    :Enter particles per tile between {COMMA2DP32} and {COMMA2DP32}
-STR_7014    :All those mountains will be lost in time, like sediment in rain
+STR_7014    :Simulating erosion
+STR_7015    :Warped noise
+STR_7016    :None
+STR_7017    :Island
+STR_7018    :Valley
+STR_7019    :Coastal
+STR_7020    :River
+STR_7021    :Canyon
+STR_7022    :Noise bias
+STR_7023    :Type:
+STR_7024    :Strength:
+STR_7025    :Seed
+STR_7026    :Randomize
+STR_7027    :Enter bias strength between {COMMA2DP32} and {COMMA2DP32}
+STR_7028    :{COMMA2DP32}
+STR_7029    :Mountain
