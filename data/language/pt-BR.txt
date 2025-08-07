@@ -3836,3 +3836,5 @@ STR_6797    :Sem pré-visualização
 STR_6798    :Captura de tela
 STR_6799    :Mini mapa
 STR_7000    :ou
+STR_7001    :Nome da atração
+STR_7002    :{STRINGID} {STRINGID}
