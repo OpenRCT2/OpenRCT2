@@ -12,17 +12,13 @@
 #include "../../Context.h"
 #include "../../GameState.h"
 #include "../../object/ObjectManager.h"
-#include "../../util/Util.h"
 #include "../Map.h"
-#include "../tile_element/Slope.h"
 #include "../tile_element/SurfaceElement.h"
 #include "HeightMap.hpp"
+#include "NoiseMapGen.h"
 #include "PngTerrainGenerator.h"
-#include "SimplexNoise.h"
 #include "SurfaceSelection.h"
 #include "TreePlacement.h"
-
-#include <vector>
 
 namespace OpenRCT2::World::MapGenerator
 {
@@ -41,6 +37,10 @@ namespace OpenRCT2::World::MapGenerator
 
             case Algorithm::simplexNoise:
                 generateSimplexMap(settings);
+                break;
+
+            case Algorithm::warpedNoise:
+                generateWarpedMap(settings);
                 break;
 
             case Algorithm::heightmapImage:
@@ -89,7 +89,7 @@ namespace OpenRCT2::World::MapGenerator
 
     static void addBeaches(Settings* settings)
     {
-        auto beachTextureId = generateBeachTextureId();
+        auto beachTextureId = generateBeachTextureId(settings);
         if (beachTextureId == kObjectEntryIndexNull)
             return;
 

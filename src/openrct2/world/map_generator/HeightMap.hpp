@@ -28,6 +28,14 @@ namespace OpenRCT2::World::MapGenerator
         uint16_t height{};
         uint8_t density{};
 
+        HeightMap(TileCoordsXY mapSize)
+            : _height(mapSize.x * mapSize.y)
+            , width(mapSize.x)
+            , height(mapSize.y)
+            , density(1)
+        {
+        }
+
         HeightMap(int32_t targetWidth, int32_t targetHeight)
             : _height(targetWidth * targetHeight)
             , width(targetWidth)
