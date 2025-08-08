@@ -497,15 +497,11 @@ jobs:
         uses: hendrikmuhs/ccache-action@v1.2.18
         with:
           key: linux-appimage
-      - name: Install Clang 15
-        run: apt update && apt install -y clang-15 software-properties-common
-      - name: Install CMake 3.25
-        run: add-apt-repository -y ppa:ecal/cmake-3.25 && apt install -y cmake
       - name: Get pre-reqs
         run: . scripts/setenv -q && get-discord-rpc
       - name: Build OpenRCT2
         run: |
-          . scripts/setenv -q && build -DCMAKE_C_COMPILER=clang-15 -DCMAKE_CXX_COMPILER=clang++-15 -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=on
+          . scripts/setenv -q && build -DCMAKE_CXX_COMPILER=clang++-20 -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=on
           strip bin/install/usr/bin/openrct2
       - name: Build AppImage
         env:
