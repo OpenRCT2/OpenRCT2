@@ -12,6 +12,16 @@
     #include <windows.h>
 #endif
 
+#if defined(_MSC_VER)
+    #include <intrin.h>
+    #define debug_break() __debugbreak()
+#elif defined(__GNUC__) || defined(__clang__)
+    #define debug_break() __builtin_trap()
+#else
+    #include <signal.h>
+    #define debug_break() raise(SIGTRAP)
+#endif
+
 #include "../Version.h"
 #include "Console.hpp"
 #include "Diagnostics.hpp"
@@ -158,12 +168,7 @@ namespace OpenRCT2::Guard
 
     static void ForceCrash()
     {
-    #ifdef USE_BREAKPAD
-        // Force a crash that breakpad will handle allowing us to get a dump
-        *((void**)0) = 0;
-    #else
-        assert(false);
-    #endif
+        debug_break();
     }
 #endif
 } // namespace OpenRCT2::Guard
