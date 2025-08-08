@@ -419,6 +419,11 @@ struct TileCoordsXY
         return rotatedCoords;
     }
 
+    constexpr TileCoordsXY Offset(int32_t _x, int32_t _y) const
+    {
+        return { x + _x, y + _y };
+    }
+
     constexpr bool operator==(const TileCoordsXY& other) const
     {
         return x == other.x && y == other.y;
