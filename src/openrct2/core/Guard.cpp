@@ -12,6 +12,7 @@
     #include <windows.h>
 #endif
 
+// NOLINTBEGIN
 #if defined(_MSC_VER)
     #include <intrin.h>
     #define debug_break() __debugbreak()
@@ -21,6 +22,7 @@
     #include <signal.h>
     #define debug_break() raise(SIGTRAP)
 #endif
+// NOLINTEND
 
 #include "../Version.h"
 #include "Console.hpp"
