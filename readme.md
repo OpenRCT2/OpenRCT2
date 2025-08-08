@@ -135,7 +135,7 @@ We sign our releases with a digital certificate provided by SignPath Foundation.
 
 Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/).
 
-Signed releases can only be done by member of the [development team](https://github.com/OpenRCT2/OpenRCT2/blob/develop/contributors.md#development-team).
+Signed releases can only be done by members of the [development team](https://github.com/OpenRCT2/OpenRCT2/blob/develop/contributors.md#development-team).
 
 ## 5.3 Privacy policy
 
