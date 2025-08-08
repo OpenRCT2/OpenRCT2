@@ -650,8 +650,12 @@ static void ViewportSurfaceDrawTileSideBottom(
 
             if (isWater || curHeight != tunnelArray[tunnelIndex].height)
             {
-                const auto td = kTunnels[EnumValue(tunnelArray[tunnelIndex].type)];
-                const auto boundBoxZ = curHeight == tunnelArray[tunnelIndex].height - 1 ? td.lowerEdgeBoundingBoxZ : 15;
+                int32_t boundBoxZ = kCoordsZPerTinyZ - 1;
+                if (EnumValue(tunnelArray[tunnelIndex].type) < std::size(kTunnels)
+                    && curHeight == tunnelArray[tunnelIndex].height - 1)
+                {
+                    boundBoxZ = kTunnels[EnumValue(tunnelArray[tunnelIndex].type)].lowerEdgeBoundingBoxZ;
+                }
                 PaintAddImageAsParent(session, baseImageId, { offset, curHeight * kCoordsZPerTinyZ }, { bounds, boundBoxZ });
 
                 curHeight++;
