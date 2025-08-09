@@ -55,6 +55,7 @@
 #include "../world/tile_element/WallElement.h"
 #include "CableLift.h"
 #include "Ride.h"
+#include "RideBreakdownMap.h"
 #include "RideData.h"
 #include "Station.h"
 #include "Track.h"

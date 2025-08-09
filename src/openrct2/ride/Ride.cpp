@@ -47,6 +47,7 @@
 #include "../object/StationObject.h"
 #include "../profiling/Profiling.h"
 #include "../rct1/RCT1.h"
+#include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -64,6 +65,7 @@
 #include "../world/tile_element/TrackElement.h"
 #include "CableLift.h"
 #include "RideAudio.h"
+#include "RideBreakdownMap.h"
 #include "RideConstruction.h"
 #include "RideData.h"
 #include "RideEntry.h"
@@ -86,6 +88,7 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
+using namespace OpenRCT2::Scripting;
 
 RideMode& operator++(RideMode& d, int)
 {
@@ -1588,6 +1591,24 @@ void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason)
             }
             break;
     }
+#ifdef ENABLE_SCRIPTING
+    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(HookType::rideBreakDown))
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto obj = DukObject(ctx);
+        obj.Set("rideId", ride.id.ToUnderlying());
+
+        auto it = BreakdownMap.find(breakdownReason);
+        if (it != BreakdownMap.end())
+            obj.Set("breakdownReason", it->first);
+        else
+            obj.Set("breadownReason", "none");
+
+        auto e = obj.Take();
+        hookEngine.Call(HookType::rideBreakDown, e, true);
+    }
+#endif
 }
 
 /**

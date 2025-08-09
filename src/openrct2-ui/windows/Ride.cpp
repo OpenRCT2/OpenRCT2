@@ -9,6 +9,7 @@
 
 #include "../UiStringIds.h"
 #include "../interface/Theme.h"
+#include "openrct2/ride/RideBreakdownMap.h"
 
 #include <cassert>
 #include <cmath>

@@ -14,6 +14,7 @@
     #include "../../../Context.h"
     #include "../../../core/UnitConversion.h"
     #include "../../../ride/Ride.h"
+    #include "../../../ride/RideBreakdownMap.h"
     #include "../../../ride/RideData.h"
     #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
@@ -21,16 +22,6 @@
 
 namespace OpenRCT2::Scripting
 {
-    static const DukEnumMap<uint8_t> BreakdownMap // The types of breakdowns.
-        ({ { "safety_cut_out", BREAKDOWN_SAFETY_CUT_OUT },
-           { "restraints_stuck_closed", BREAKDOWN_RESTRAINTS_STUCK_CLOSED },
-           { "restraints_stuck_open", BREAKDOWN_RESTRAINTS_STUCK_OPEN },
-           { "doors_stuck_closed", BREAKDOWN_DOORS_STUCK_CLOSED },
-           { "doors_stuck_open", BREAKDOWN_DOORS_STUCK_OPEN },
-           { "vehicle_malfunction", BREAKDOWN_VEHICLE_MALFUNCTION },
-           { "brakes_failure", BREAKDOWN_BRAKES_FAILURE },
-           { "control_failure", BREAKDOWN_CONTROL_FAILURE } });
-
     ScRide::ScRide(RideId rideId)
         : _rideId(rideId)
     {

@@ -21,6 +21,7 @@
 #include "../object/ObjectManager.h"
 #include "../rct1/RCT1.h"
 #include "../ride/Ride.h"
+#include "../ride/RideBreakdownMap.h"
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
 #include "../ride/Station.h"
