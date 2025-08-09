@@ -48,6 +48,13 @@
 #include <openrct2/world/Scenery.h>
 #include <string>
 
+#ifdef __EMSCRIPTEN__
+    #include <emscripten.h>
+extern "C" {
+extern void EmscriptenLoadGame();
+}
+#endif
+
 using namespace OpenRCT2::Numerics;
 
 namespace OpenRCT2::Ui::Windows

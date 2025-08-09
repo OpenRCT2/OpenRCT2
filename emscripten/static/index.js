@@ -52,33 +52,32 @@
         document.body.appendChild(script);
     })
 
-    window.Module = await window.OPENRCT2_WEB(
+    window.Module = await window.OPENRCT2_WEB({
+        noInitialRun: true,
+        arguments: [],
+        preRun: [],
+        postRun: [],
+        canvas: document.getElementById("canvas"),
+        print: function(msg)
         {
-            noInitialRun: true,
-            arguments: [],
-            preRun: [],
-            postRun: [],
-            canvas: document.getElementById("canvas"),
-            print: function(msg)
+            console.log(msg);
+        },
+        printErr: function(msg)
+        {
+            console.log(msg);
+        },
+        totalDependencies: 0,
+        monitorRunDependencies: () => {},
+        locateFile: function(fileName)
+        {
+            if (assets !== null && fileName === "openrct2.wasm")
             {
-                console.log(msg);
-            },
-            printErr: function(msg)
-            {
-                console.log(msg);
-            },
-            totalDependencies: 0,
-            monitorRunDependencies: () => {},
-            locateFile: function(fileName)
-            {
-                if (assets !== null && fileName === "openrct2.wasm")
-                {
-                    return assets.wasm;
-                }
-                console.log("loading", fileName);
-                return fileName;
+                return assets.wasm;
             }
-        });
+            console.log("loading", fileName);
+            return fileName;
+        }
+    });
 
     Module.FS.mkdir("/persistent");
     Module.FS.mount(Module.FS.filesystems.IDBFS, {autoPersist: true}, '/persistent');
@@ -91,31 +90,23 @@
 
     await new Promise(res => Module.FS.syncfs(true, res));
 
-    let configExists = fileExists("/persistent/config.ini");
-    if (!configExists)
-    {
-        Module.FS.writeFile("/persistent/config.ini", `
-[general]
-game_path = "/RCT"
-uncap_fps = true
-window_scale = 1.750000
-`);
-    }
-
     const assetsOK = await updateAssets();
     if (!assetsOK)
     {
-        return
+        return;
     }
-    
-    Module.FS.writeFile("/OpenRCT2/changelog.txt", `EMSCRIPTEN --- README
 
-Since we're running in the web browser, we don't have direct access to the file system.
-All save data is saved under the directory /persistent.
+    let changelog = "";
+    try {
+        const request = await fetch("https://api.github.com/repos/OpenRCT2/OpenRCT2/releases/latest");
+        const json = JSON.parse(await request.text());
+        changelog = json.body;
+    } catch(e) {
+        console.log("Failed to fetch changelog with error:", e);
+    }
 
-ALWAYS be sure to save to /persistent/saves when saving a game! Otherwise it will be wiped!
+    Module.FS.writeFile("/OpenRCT2/changelog.txt", changelog);
 
-You can import/export the /persistent folder in the options menu.`);
     document.getElementById("loadingWebassembly").remove();
 
     let filesFound = fileExists("/RCT/Data/ch.dat");
