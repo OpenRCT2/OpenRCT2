@@ -86,7 +86,7 @@ namespace OpenRCT2::Compression
     bool zlibDecompress(IStream& source, uint64_t sourceLength, IStream& dest, uint64_t decompressLength, ZlibHeaderType header)
     {
         if (sourceLength > source.GetLength() - source.GetPosition())
-            throw IOException("Not Enough Data to Deompress");
+            throw IOException("Not Enough Data to Decompress");
 
         int ret;
         StreamReadBuffer sourceBuf(source, sourceLength, kZlibChunkSize);
