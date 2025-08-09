@@ -419,8 +419,9 @@ enum class StationBaseType
     a,
     b,
     c,
+    d,
 };
-constexpr uint32_t kStationBaseTypeCount = 4;
+constexpr uint32_t kStationBaseTypeCount = 5;
 
 bool TrackPaintUtilDrawStationCovers(
     PaintSession& session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height,
@@ -651,3 +652,7 @@ namespace OpenRCT2::AlpineRC
 TrackPaintFunction GetTrackPaintFunctionClassicWoodenRC(OpenRCT2::TrackElemType trackType);
 TrackPaintFunction GetTrackPaintFunctionClassicStandUpRC(OpenRCT2::TrackElemType trackType);
 TrackPaintFunction GetTrackPaintFunctionClassicWoodenTwisterRC(OpenRCT2::TrackElemType trackType);
+namespace OpenRCT2::PipelineRC
+{
+    TrackPaintFunction GetTrackPaintFunction(OpenRCT2::TrackElemType trackType);
+}
