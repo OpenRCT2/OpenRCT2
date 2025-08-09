@@ -531,7 +531,7 @@ void Guest::GivePassingGuestPizza(Guest& passingPeep)
     int32_t otherPeepOppositeDirection = passingPeep.Orientation >> 3;
     if (peepDirection == otherPeepOppositeDirection)
     {
-        if (passingPeep.IsActionInterruptable())
+        if (passingPeep.IsActionInterruptable() && !passingPeep.IsOnLevelCrossing())
         {
             passingPeep.Action = PeepActionType::Wave2;
             passingPeep.AnimationFrameNum = 0;
@@ -546,7 +546,7 @@ void Guest::MakePassingGuestSick(Guest& passingPeep)
     if (passingPeep.State != PeepState::Walking)
         return;
 
-    if (passingPeep.IsActionInterruptable())
+    if (passingPeep.IsActionInterruptable() && !passingPeep.IsOnLevelCrossing())
     {
         passingPeep.Action = PeepActionType::ThrowUp;
         passingPeep.AnimationFrameNum = 0;
@@ -594,7 +594,7 @@ void Guest::UpdateEasterEggInteractions()
     {
         if ((ScenarioRand() & 0xFFFF) <= 1456)
         {
-            if (IsActionInterruptable())
+            if (IsActionInterruptable() && !IsOnLevelCrossing())
             {
                 Action = PeepActionType::Joy;
                 AnimationFrameNum = 0;
@@ -799,7 +799,7 @@ void Guest::UpdateMotivesIdle()
     {
         if ((ScenarioRand() & 0xFF) <= static_cast<uint8_t>((Nausea - 128) / 2))
         {
-            if (IsActionInterruptable())
+            if (IsActionInterruptable() && !IsOnLevelCrossing())
             {
                 Action = PeepActionType::ThrowUp;
                 AnimationFrameNum = 0;
@@ -5492,7 +5492,7 @@ void Guest::UpdateWalking()
 
     if (PeepFlags & PEEP_FLAGS_LITTER)
     {
-        if (!GetNextIsSurface())
+        if (!GetNextIsSurface() && !IsOnLevelCrossing())
         {
             if ((0xFFFF & ScenarioRand()) <= 4096)
             {
@@ -5514,7 +5514,8 @@ void Guest::UpdateWalking()
     }
     else if (HasEmptyContainer())
     {
-        if ((!GetNextIsSurface()) && (static_cast<uint32_t>(Id.ToUnderlying() & 0x1FF) == (currentTicks & 0x1FF))
+        if (!GetNextIsSurface() && !IsOnLevelCrossing()
+            && (static_cast<uint32_t>(Id.ToUnderlying() & 0x1FF) == (currentTicks & 0x1FF))
             && ((0xFFFF & ScenarioRand()) <= 4096))
         {
             int32_t container = Numerics::bitScanForward(GetEmptyContainerFlags());
@@ -5693,44 +5694,6 @@ void Guest::UpdateWalking()
     {
         InsertNewThought(PeepThoughtType::Scenery);
     }
-}
-
-void Guest::UpdateWaitingAtCrossing()
-{
-    if (!IsActionInterruptable())
-    {
-        UpdateAction();
-        Invalidate();
-        if (!IsActionWalking())
-            return;
-    }
-
-    Action = PeepActionType::Idle;
-    NextAnimationType = PeepAnimationType::WatchRide;
-    SwitchNextAnimationType();
-
-    if (HasFoodOrDrink())
-    {
-        if ((ScenarioRand() & 0xFFFF) <= 1310)
-        {
-            Action = PeepActionType::EatFood;
-            AnimationFrameNum = 0;
-            AnimationImageIdOffset = 0;
-        }
-
-        UpdateCurrentAnimationType();
-
-        return;
-    }
-
-    if ((ScenarioRand() & 0xFFFF) <= 64)
-    {
-        Action = PeepActionType::Wave2;
-        AnimationFrameNum = 0;
-        AnimationImageIdOffset = 0;
-    }
-
-    UpdateCurrentAnimationType();
 }
 
 /**
@@ -7117,7 +7080,7 @@ void Guest::InsertNewThought(PeepThoughtType thought_type, RideId rideId)
 void Guest::InsertNewThought(PeepThoughtType thoughtType, uint16_t thoughtArguments)
 {
     PeepActionType newAction = PeepThoughtToActionMap[EnumValue(thoughtType)].action;
-    if (newAction != PeepActionType::Walking && IsActionInterruptable())
+    if (newAction != PeepActionType::Walking && IsActionInterruptable() && !IsOnLevelCrossing())
     {
         Action = newAction;
         AnimationFrameNum = 0;

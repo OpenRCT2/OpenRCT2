@@ -921,7 +921,7 @@ void Staff::EntertainerUpdateNearbyPeeps() const
  */
 bool Staff::DoEntertainerPathFinding()
 {
-    if (((ScenarioRand() & 0xFFFF) <= 0x4000) && IsActionInterruptable())
+    if (((ScenarioRand() & 0xFFFF) <= 0x4000) && IsActionInterruptable() && !IsOnLevelCrossing())
     {
         Action = (ScenarioRand() & 1) ? PeepActionType::Wave2 : PeepActionType::Joy;
         AnimationFrameNum = 0;
@@ -1822,7 +1822,10 @@ void Staff::UpdatePatrolling()
         return;
 
     if (ShouldWaitForLevelCrossing() && !IsMechanicHeadingToFixRideBlockingPath())
+    {
+        UpdateWaitingAtCrossing();
         return;
+    }
 
     const auto [pathingResult, _] = PerformNextAction();
     if (!(pathingResult & PATHING_DESTINATION_REACHED))

@@ -175,7 +175,8 @@ static std::optional<UpdateType> UpdateSmallSceneryAnimation(
                 auto quad = EntityTileList<Peep>(CoordsXY{ loc.x, loc.y } - CoordsDirectionDelta[direction]);
                 for (auto peep : quad)
                 {
-                    if (peep->State != PeepState::Walking || peep->z != baseZ || peep->Action < PeepActionType::Idle)
+                    if (peep->State != PeepState::Walking || peep->z != baseZ || peep->Action < PeepActionType::Idle
+                        || peep->IsOnLevelCrossing())
                         continue;
                     peep->Action = PeepActionType::CheckTime;
                     peep->AnimationFrameNum = 0;
