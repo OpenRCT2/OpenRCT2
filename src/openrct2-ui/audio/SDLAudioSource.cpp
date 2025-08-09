@@ -130,12 +130,14 @@ std::unique_ptr<SDLAudioSource> OpenRCT2::Audio::CreateAudioSource(SDL_RWops* rw
     auto pcmLength = SDL_ReadLE32(rw);
 
     AudioFormat format;
-    [[maybe_unused]] auto encoding = SDL_ReadLE16(rw);
+    // encoding, 16 bits
+    rw->seek(rw, 2, RW_SEEK_CUR);
     format.channels = SDL_ReadLE16(rw);
     format.freq = SDL_ReadLE32(rw);
-    [[maybe_unused]] auto byterate = SDL_ReadLE32(rw);
-    [[maybe_unused]] auto blockalign = SDL_ReadLE16(rw);
-    [[maybe_unused]] auto bitspersample = SDL_ReadLE16(rw);
+    // byterate, 32 bits
+    // blockalign, 16 bits
+    rw->seek(rw, 6, RW_SEEK_CUR);
+    auto bitspersample = SDL_ReadLE16(rw);
     switch (bitspersample)
     {
         case 8:
@@ -147,7 +149,8 @@ std::unique_ptr<SDLAudioSource> OpenRCT2::Audio::CreateAudioSource(SDL_RWops* rw
         default:
             throw std::runtime_error("Unsupported bits per sample");
     }
-    [[maybe_unused]] auto extrasize = SDL_ReadLE16(rw);
+    // extrasize, 16 bits
+    rw->seek(rw, 2, RW_SEEK_CUR);
 
     std::vector<uint8_t> pcmData;
     pcmData.resize(pcmLength);
