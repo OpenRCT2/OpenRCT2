@@ -687,7 +687,7 @@ STR_1290    :{COMMA16} barcos
 STR_1291    :Barco {COMMA16}
 STR_1292    :cabina
 STR_1293    :cabinas
-STR_1294    ​​​​:Cabina
+STR_1294    :Cabina
 STR_1295    :Cabinas
 STR_1296    :{COMMA16} cabina
 STR_1297    :{COMMA16} cabinas

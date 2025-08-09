@@ -3837,3 +3837,5 @@ STR_6797    :Nincs előnézet
 STR_6798    :Képernyőkép
 STR_6799    :Mini térkép
 STR_7000    :vagy
+STR_7001    :Játéknév
+STR_7002    :{STRINGID} {STRINGID}
