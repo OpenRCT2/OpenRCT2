@@ -38,7 +38,8 @@ namespace OpenRCT2::Compression
 
     bool zlibCompress(IStream& source, uint64_t sourceLength, IStream& dest, ZlibHeaderType header, int16_t level)
     {
-        Guard::Assert(sourceLength <= source.GetLength() - source.GetPosition());
+        if (sourceLength > source.GetLength() - source.GetPosition())
+            throw IOException("Not Enough Data to Compress");
 
         int ret;
         StreamReadBuffer sourceBuf(source, sourceLength, kZlibChunkSize);
@@ -84,7 +85,8 @@ namespace OpenRCT2::Compression
 
     bool zlibDecompress(IStream& source, uint64_t sourceLength, IStream& dest, uint64_t decompressLength, ZlibHeaderType header)
     {
-        Guard::Assert(sourceLength <= source.GetLength() - source.GetPosition());
+        if (sourceLength > source.GetLength() - source.GetPosition())
+            throw IOException("Not Enough Data to Deompress");
 
         int ret;
         StreamReadBuffer sourceBuf(source, sourceLength, kZlibChunkSize);
@@ -152,7 +154,8 @@ namespace OpenRCT2::Compression
 
     bool zstdCompress(IStream& source, uint64_t sourceLength, IStream& dest, ZstdMetadata metadata, int16_t level)
     {
-        Guard::Assert(sourceLength <= source.GetLength() - source.GetPosition());
+        if (sourceLength > source.GetLength() - source.GetPosition())
+            throw IOException("Not Enough Data to Compress");
 
         size_t ret;
         StreamReadBuffer sourceBuf(source, sourceLength, ZSTD_CStreamInSize());
@@ -223,7 +226,8 @@ namespace OpenRCT2::Compression
 
     bool zstdDecompress(IStream& source, uint64_t sourceLength, IStream& dest, uint64_t decompressLength)
     {
-        Guard::Assert(sourceLength <= source.GetLength() - source.GetPosition());
+        if (sourceLength > source.GetLength() - source.GetPosition())
+            throw IOException("Not Enough Data to Decompress");
 
         size_t ret;
         StreamReadBuffer sourceBuf(source, sourceLength, ZSTD_DStreamInSize());
