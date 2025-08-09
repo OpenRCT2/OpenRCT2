@@ -1,5 +1,6 @@
 0.4.26 (in development)
 ------------------------------------------------------------------------
+- Feature: [#24949] Add an option to the command line screenshot function to draw debug bounding boxes.
 - Improved: [#24734] Save files now use Zstd compression for faster saving and smaller files.
 - Improved: [#24893] The ride list now has headers, and can be sorted in both directions.
 - Improved: [#24921] The command line sprite build command now prints out the images table entry for the compiled sprite file.
