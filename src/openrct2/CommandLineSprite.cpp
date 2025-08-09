@@ -604,6 +604,14 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         }
 
         fprintf(stdout, "Finished building graphics repository with %u images\n", numSuccessful);
+
+        if (numSuccessful > 0)
+        {
+            printf("Replace the object's images table entries with this:\n");
+            const auto spriteFileName = OpenRCT2::Path::GetFileName(spriteFilePath);
+            fprintf(stdout, "\"$LGX:%s[0..%u]\"\n", spriteFileName.c_str(), numSuccessful - 1);
+        }
+
         return 1;
     }
 
