@@ -147,6 +147,9 @@ namespace OpenRCT2
          */
         uint32_t suggestedGuestMaximum;
 
+        /** Whether to use stable paint sort (true) or legacy paint sort (false) */
+        bool useStablePaintSort;
+
         CheatsState cheats;
     };
 

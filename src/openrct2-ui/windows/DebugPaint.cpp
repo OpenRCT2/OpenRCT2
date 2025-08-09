@@ -10,6 +10,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
+#include <openrct2/GameState.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/LocalisationService.h>
@@ -94,7 +95,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
 
                 case WIDX_TOGGLE_STABLE_PAINT_SORT:
-                    gPaintStableSort = !gPaintStableSort;
+                    getGameState().useStablePaintSort = !getGameState().useStablePaintSort;
                     GfxInvalidateScreen();
                     break;
             }
@@ -142,7 +143,7 @@ namespace OpenRCT2::Ui::Windows
             widgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
             widgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
             widgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
-            widgetSetCheckboxValue(*this, WIDX_TOGGLE_STABLE_PAINT_SORT, gPaintStableSort);
+            widgetSetCheckboxValue(*this, WIDX_TOGGLE_STABLE_PAINT_SORT, getGameState().useStablePaintSort);
         }
 
         void OnDraw(RenderTarget& rt) override

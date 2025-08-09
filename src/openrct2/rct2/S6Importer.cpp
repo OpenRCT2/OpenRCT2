@@ -626,6 +626,9 @@ namespace OpenRCT2::RCT2
 
             CheatsReset();
             ClearRestrictedScenery();
+
+            // Default to stable paint sort for RCT2 imports
+            gameState.useStablePaintSort = true;
         }
 
         void AddDefaultEntries()

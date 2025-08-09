@@ -111,6 +111,7 @@ namespace OpenRCT2::Editor
         gameState.editorStep = EditorStep::ObjectSelection;
         gameState.park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gameState.scenarioCategory = ScenarioCategory::other;
+        gameState.useStablePaintSort = true; // Default to stable paint sort for new scenarios
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -154,6 +155,7 @@ namespace OpenRCT2::Editor
         gLegacyScene = LegacyScene::scenarioEditor;
         gameState.editorStep = EditorStep::OptionsSelection;
         gameState.scenarioCategory = ScenarioCategory::other;
+        gameState.useStablePaintSort = true; // Default to stable paint sort for converted scenarios
         ViewportInitAll();
         OpenEditorWindows();
         FinaliseMainView();

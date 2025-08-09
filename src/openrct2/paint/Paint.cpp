@@ -10,6 +10,7 @@
 #include "Paint.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/Money.hpp"
@@ -57,7 +58,6 @@ static constexpr uint8_t BoundBoxDebugColours[] = {
 bool gShowDirtyVisuals;
 bool gPaintBoundingBoxes;
 bool gPaintBlockedTiles;
-bool gPaintStableSort;
 
 static void PaintPSImageWithBoundingBoxes(PaintSession& session, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y);
 static ImageId PaintPSColourifyImage(const PaintStruct* ps, ImageId imageId, uint32_t viewFlags);
@@ -676,7 +676,8 @@ constexpr std::array _paintArrangeFuncsStable = {
 void PaintSessionArrange(PaintSessionCore& session)
 {
     PROFILED_FUNCTION();
-    if (gPaintStableSort)
+    auto& gameState = getGameState();
+    if (gameState.useStablePaintSort)
     {
         return _paintArrangeFuncsStable[session.CurrentRotation](session);
     }

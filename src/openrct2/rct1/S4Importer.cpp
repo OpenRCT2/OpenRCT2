@@ -223,6 +223,9 @@ namespace OpenRCT2::RCT1
             CheatsReset();
             ClearRestrictedScenery();
             RestrictAllMiscScenery();
+
+            // Default to stable paint sort for RCT1 imports
+            gameState.useStablePaintSort = true;
         }
 
         bool PopulateIndexEntry(ScenarioIndexEntry* dst) override
