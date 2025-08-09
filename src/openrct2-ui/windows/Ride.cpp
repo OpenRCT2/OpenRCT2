@@ -9,6 +9,7 @@
 
 #include "../UiStringIds.h"
 #include "../interface/Theme.h"
+#include "openrct2/ride/RideBreakdownMap.h"
 
 #include <cassert>
 #include <cmath>
@@ -55,7 +56,6 @@
 #include <openrct2/object/StationObject.h>
 #include <openrct2/rct1/RCT1.h>
 #include <openrct2/rct2/T6Exporter.h>
-#include "openrct2/ride/RideBreakdownMap.h"
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
