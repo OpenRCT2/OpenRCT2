@@ -129,7 +129,7 @@ jobs:
   check-code-formatting:
     name: Check code formatting
     runs-on: ubuntu-latest
-    container: openrct2/openrct2-build:20-format
+    container: openrct2/openrct2-build:22-format
     defaults:
       run:
         shell: sh
@@ -315,7 +315,7 @@ jobs:
     name: Windows (${{ matrix.platform_name }}) using mingw
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:20-mingw
+    container: openrct2/openrct2-build:22-mingw
     strategy:
       fail-fast: false
       matrix:
@@ -453,12 +453,12 @@ jobs:
           - platform: x86_64
             distro: Ubuntu
             release: noble
-            image: openrct2/openrct2-build:20-noble
+            image: openrct2/openrct2-build:22-noble
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments"
           - platform: x86_64
             distro: Debian
             release: bookworm
-            image: openrct2/openrct2-build:20-bookworm
+            image: openrct2/openrct2-build:22-bookworm
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
     steps:
       - name: Checkout
@@ -489,7 +489,7 @@ jobs:
     name: Ubuntu Linux (AppImage, x86_64)
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:21-jammy
+    container: openrct2/openrct2-build:22-jammy
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -497,15 +497,11 @@ jobs:
         uses: hendrikmuhs/ccache-action@v1.2.18
         with:
           key: linux-appimage
-      - name: Install Clang 15
-        run: apt update && apt install -y clang-15 software-properties-common
-      - name: Install CMake 3.25
-        run: add-apt-repository -y ppa:ecal/cmake-3.25 && apt install -y cmake
       - name: Get pre-reqs
         run: . scripts/setenv -q && get-discord-rpc
       - name: Build OpenRCT2
         run: |
-          . scripts/setenv -q && build -DCMAKE_C_COMPILER=clang-15 -DCMAKE_CXX_COMPILER=clang++-15 -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=on
+          . scripts/setenv -q && build -DCMAKE_CXX_COMPILER=clang++-20 -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=on
           strip bin/install/usr/bin/openrct2
       - name: Build AppImage
         env:
@@ -548,7 +544,7 @@ jobs:
     name: Ubuntu Linux (noble, debug, [http, network, flac, vorbis OpenGL] disabled) using clang
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:20-noble
+    container: openrct2/openrct2-build:22-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -564,7 +560,7 @@ jobs:
     name: Ubuntu Linux (debug) using clang, coverage enabled
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:20-noble
+    container: openrct2/openrct2-build:22-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -605,7 +601,7 @@ jobs:
     name: Android
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:20-android
+    container: openrct2/openrct2-build:22-android
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -638,7 +634,7 @@ jobs:
     name: Emscripten
     runs-on: ubuntu-latest
     needs: [check-code-formatting, build_variables]
-    container: openrct2/openrct2-build:20-emscripten
+    container: openrct2/openrct2-build:22-emscripten
     steps:
       - name: Checkout
         uses: actions/checkout@v4
