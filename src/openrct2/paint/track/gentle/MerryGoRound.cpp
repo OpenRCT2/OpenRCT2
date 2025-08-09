@@ -10,6 +10,7 @@
 #include "../../../entity/EntityRegistry.h"
 #include "../../../interface/Viewport.h"
 #include "../../../ride/Ride.h"
+#include "../../../ride/RideBreakdownMap.h"
 #include "../../../ride/RideEntry.h"
 #include "../../../ride/Track.h"
 #include "../../../ride/TrackPaint.h"
