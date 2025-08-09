@@ -15,6 +15,9 @@
 #include "../core/File.h"
 #include "../core/Json.hpp"
 #include "../core/Path.hpp"
+#include "../localisation/Formatting.h"
+#include "../localisation/StringIds.h"
+#include "../ui/UiContext.h"
 #include "Object.h"
 
 using namespace OpenRCT2;
@@ -160,6 +163,17 @@ IAudioSource* AudioSampleTable::LoadSample(uint32_t index) const
                 auto& audioContext = GetContext()->GetAudioContext();
                 if (entry.PathIndex)
                 {
+                    auto originalPosition = stream->GetPosition();
+                    auto numSounds = stream->ReadValue<uint32_t>();
+                    stream->SetPosition(originalPosition);
+
+                    if (*entry.PathIndex >= numSounds)
+                    {
+                        auto& ui = GetContext()->GetUiContext();
+                        ui.ShowMessageBox(FormatStringID(
+                            STR_AUDIO_FILE_TRUNCATED, entry.Asset->GetPath().c_str(), *entry.PathIndex, numSounds));
+                    }
+
                     result = audioContext.CreateStreamFromCSS(std::move(stream), *entry.PathIndex);
                 }
                 else

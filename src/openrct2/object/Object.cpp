@@ -375,6 +375,26 @@ std::unique_ptr<IStream> ObjectAsset::GetStream() const
     return {};
 }
 
+const std::string& ObjectAsset::GetZipPath() const
+{
+    return _zipPath;
+}
+
+const std::string& ObjectAsset::GetPath() const
+{
+    return _path;
+}
+
+size_t ObjectAsset::GetHash() const
+{
+    // Combine hashes of zipPath and path
+    std::hash<std::string> hasher;
+    auto h1 = hasher(_zipPath);
+    auto h2 = hasher(_path);
+    // Combine the hashes based on example from https://en.cppreference.com/w/cpp/utility/hash.html
+    return h1 ^ (h2 << 1);
+}
+
 u8string VersionString(const ObjectVersion& version)
 {
     return std::to_string(std::get<0>(version)) + "." + std::to_string(std::get<1>(version)) + "."
