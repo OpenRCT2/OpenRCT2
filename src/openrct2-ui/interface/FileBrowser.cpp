@@ -31,7 +31,7 @@
 #ifdef __EMSCRIPTEN__
 extern "C" {
 extern void EmscriptenLoadGame(LoadSaveType type);
-extern void EmscriptenSaveGame(bool isTrackDesign, bool isAutosave, bool saveAs, LoadSaveType type);
+extern void EmscriptenSaveGame(bool isTrackDesign, bool isAutosave, LoadSaveType type);
 }
 #endif
 
@@ -48,7 +48,7 @@ namespace OpenRCT2::Ui::FileBrowser
         if (action == LoadSaveAction::save)
         {
             Select("/save.park", action, type, trackDesign);
-            EmscriptenSaveGame(type == LoadSaveType::track, false, true, type);
+            EmscriptenSaveGame(type == LoadSaveType::track, false, type);
         }
         else
         {

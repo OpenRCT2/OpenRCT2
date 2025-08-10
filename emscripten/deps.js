@@ -21,14 +21,13 @@ var EmscriptenDeps = {
             return data;
         }
     },
-    EmscriptenSaveGame: async (isTrackDesign, isAutosave, isSaveAs, type) => {
+    EmscriptenSaveGame: async (isTrackDesign, isAutosave, type) => {
         isTrackDesign = isTrackDesign === 1;
         isAutosave = isAutosave === 1;
-        isSaveAs = isSaveAs === 1;
         const data = SAVE.readFileData(isTrackDesign);
         try {
             if (window.showSaveFilePicker) {
-                if (SAVE.filehandle === null || isSaveAs) {
+                if (SAVE.filehandle === null) {
                     SAVE.filehandle = null;
                     const file = await showSaveFilePicker({
                         id: "OpenRCT2-" + type,
@@ -75,7 +74,6 @@ var EmscriptenDeps = {
     EmscriptenLoadGame: async (type) => {
         try {
             if (window.showOpenFilePicker) {
-                SAVE.filehandle = null;
                 const [file] = await showOpenFilePicker({
                     id: "OpenRCT2-" + type,
                     types: [

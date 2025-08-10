@@ -78,7 +78,7 @@
 
 #ifdef __EMSCRIPTEN__
 extern "C" {
-extern void EmscriptenSaveGame(bool isTrackDesign, bool isAutosave, bool saveAs, LoadSaveType type);
+extern void EmscriptenSaveGame(bool isTrackDesign, bool isAutosave, LoadSaveType type);
 extern void EmscriptenResetAutosave();
 }
 #endif
@@ -468,7 +468,7 @@ void SaveGame()
 #else
         const auto savePath = Path::WithExtension("save", ".park");
         SaveGameWithName(savePath);
-        EmscriptenSaveGame(false, false, false, LoadSaveType::park);
+        EmscriptenSaveGame(false, false, LoadSaveType::park);
 #endif
     }
     else
@@ -521,6 +521,9 @@ std::unique_ptr<Intent> CreateSaveGameAsIntent()
 
 void SaveGameAs()
 {
+#ifdef __EMSCRIPTEN__
+    EmscriptenResetAutosave();
+#endif
     auto intent = CreateSaveGameAsIntent();
     ContextOpenIntent(intent.get());
 }
@@ -632,7 +635,7 @@ void GameAutosave()
 {
     const auto savePath = Path::WithExtension("save", ".park");
     SaveGameWithName(savePath);
-    EmscriptenSaveGame(false, true, false, LoadSaveType::park);
+    EmscriptenSaveGame(false, true, LoadSaveType::park);
 }
 #endif // __EMSCRIPTEN__
 
