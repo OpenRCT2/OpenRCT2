@@ -206,14 +206,6 @@ namespace OpenRCT2::Ui::Windows
                 Invalidate();
                 height = min_height;
             }
-
-            // Refreshing the list can be a very intensive operation
-            // owing to its use of ride_has_any_track_elements().
-            // This makes sure it's only refreshed every 64 ticks.
-            if (!(gCurrentRealTimeTicks & 0x3f))
-            {
-                RefreshList();
-            }
         }
 
         /**
@@ -237,7 +229,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         _windowListSortDescending ^= true;
                     }
-                    RefreshList();
+                    SortList();
                     break;
                 case WIDX_HEADER_OTHER:
                     if (list_information_type != _windowRideListInformationType)
@@ -249,7 +241,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         _windowListSortDescending ^= true;
                     }
-                    RefreshList();
+                    SortList();
                     break;
                 case WIDX_TAB_1:
                 case WIDX_TAB_2:
@@ -385,7 +377,7 @@ namespace OpenRCT2::Ui::Windows
                 if (list_information_type != INFORMATION_TYPE_STATUS)
                 {
                     list_information_type = _windowRideListInformationType;
-                    RefreshList();
+                    SortList();
                 }
             }
         }
@@ -400,6 +392,11 @@ namespace OpenRCT2::Ui::Windows
             InvalidateWidget(WIDX_TAB_1 + page);
             if (_windowRideListInformationType != INFORMATION_TYPE_STATUS)
                 Invalidate();
+        }
+
+        void OnPeriodicUpdate() override
+        {
+            SortList();
         }
 
         /**
@@ -857,7 +854,7 @@ namespace OpenRCT2::Ui::Windows
         }
 
         /**
-         * Used in RefreshList() to handle the sorting of the list.
+         * Used in SortList() to handle the sorting of the list.
          * Uses a lambda function (predicate) as exit criteria for the algorithm.
          */
         template<typename TSortPred>
@@ -912,6 +909,12 @@ namespace OpenRCT2::Ui::Windows
                 _rideList.push_back(std::move(entry));
             }
 
+            selected_list_item = -1;
+            SortList();
+        }
+
+        void SortList()
+        {
             switch (list_information_type)
             {
                 case INFORMATION_TYPE_STATUS:
