@@ -888,10 +888,10 @@ static void LimLaunchedRCTrackRightTwistDownToUp(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height + 32, kTunnelGroup, TunnelSubType::Tall);
+                    PaintUtilPushTunnelRight(session, height - 32, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height + 32, kTunnelGroup, TunnelSubType::Tall);
+                    PaintUtilPushTunnelLeft(session, height - 32, kTunnelGroup, TunnelSubType::Tall);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1114,7 +1114,7 @@ static void LimLaunchedRCTrackRightTwistUpToDown(
             }
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height + 32, kTunnelGroup, TunnelSubType::Tall);
+                PaintUtilPushTunnelRotated(session, direction, height - 32, kTunnelGroup, TunnelSubType::Tall);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,

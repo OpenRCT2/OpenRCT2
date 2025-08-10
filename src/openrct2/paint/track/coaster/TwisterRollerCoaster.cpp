@@ -13502,10 +13502,10 @@ static void TwisterRCTrackLeftTwistDownToUp(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height - 32, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height - 32, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height - 32, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height - 32, kTunnelGroup, TunnelSubType::Tall);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -13623,10 +13623,10 @@ static void TwisterRCTrackRightTwistDownToUp(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height - 16, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height - 32, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height - 16, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height - 32, kTunnelGroup, TunnelSubType::Tall);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -13673,7 +13673,7 @@ static void TwisterRCTrackLeftTwistUpToDown(
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height - 24, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height - 32, kTunnelGroup, TunnelSubType::Tall);
             }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -13794,7 +13794,7 @@ static void TwisterRCTrackRightTwistUpToDown(
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height - 32, kTunnelGroup, TunnelSubType::Tall);
             }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -13857,10 +13857,10 @@ static void TwisterRCTrackRightTwistUpToDown(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height - 16, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height - 16, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
