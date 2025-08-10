@@ -690,6 +690,9 @@ namespace OpenRCT2::Ui::Windows
                 case MapGenerator::Bias::mountain:
                     widgets[WIDX_BIAS_TYPE].text = STR_MAPGEN_BIAS_TYPE_MOUNTAIN;
                     break;
+                case MapGenerator::Bias::cliff:
+                    widgets[WIDX_BIAS_TYPE].text = STR_MAPGEN_BIAS_TYPE_CLIFF;
+                    break;
             }
         }
 
@@ -1093,6 +1096,7 @@ namespace OpenRCT2::Ui::Windows
                         ToggleOption(4, STR_MAPGEN_BIAS_TYPE_RIVER),
                         ToggleOption(5, STR_MAPGEN_BIAS_TYPE_CANYON),
                         ToggleOption(7, STR_MAPGEN_BIAS_TYPE_MOUNTAIN),
+                        ToggleOption(8, STR_MAPGEN_BIAS_TYPE_CLIFF),
                         //clang-format on
                     };
 

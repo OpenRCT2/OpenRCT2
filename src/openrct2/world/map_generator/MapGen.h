@@ -34,7 +34,8 @@ namespace OpenRCT2::World::MapGenerator
         coastal,
         river,
         canyon,
-        mountain
+        mountain,
+        cliff
     };
 
     struct Settings
