@@ -2152,7 +2152,6 @@ STR_3136    :Uyarı: Bu tasarım alternatif bir araç tipi ile inşa edilecek ve
 STR_3137    :Yakındaki cisimleri seçiniz
 STR_3138    :Seçiminizi sıfırlayınız
 STR_3139    :Asansörlü tırmanma zinciri bu çalışma modunda kullanılamıyor
-STR_3140    :Asansörlü tırmanma zinciri istasyondan hemen sonra bulunması lazım
 STR_3141    :Asansörlü tırmanma zinciri ile tur modu uygulanamıyor
 STR_3142    :{WINDOW_COLOUR_2}Kapasite: {BLACK}{STRINGID}
 STR_3143    :Müşterileri göster
