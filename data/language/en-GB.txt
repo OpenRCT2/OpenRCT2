@@ -3846,3 +3846,4 @@ STR_7066    :Randomize
 STR_7067    :Enter bias strength between {COMMA2DP32} and {COMMA2DP32}
 STR_7068    :{COMMA2DP32}
 STR_7069    :Mountain
+STR_7070    :Cliff

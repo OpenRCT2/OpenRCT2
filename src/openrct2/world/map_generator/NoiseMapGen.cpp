@@ -73,6 +73,10 @@ namespace OpenRCT2::World::MapGenerator
         {
             ctx = std::make_unique<RidgeFbmNoise>(settings->seed + 1, 1.0f / 768.0f, 7, 2.5f, .5f);
         }
+        else if (settings->bias == Bias::cliff)
+        {
+            ctx = std::make_unique<SimplexFbmNoise>(settings->seed + 1, 1.0f / 512.0f, 6, 2.25f, .5f);
+        }
 
         return ctx;
     }
@@ -139,7 +143,12 @@ namespace OpenRCT2::World::MapGenerator
             {
                 auto mountainScale = 2.0f + biasStrength * 2.0f;
                 auto mountainNoise = mountainScale * std::pow(std::get<std::unique_ptr<Noise>>(ctx)->Generate(pos), 2);
-                return Smoothstep(0.0f, 1.0f, 1.0f - (1 - mountainNoise) * biasStrength) * noise;
+                return Smoothstep(0.0f, 1.0f, 1.0f - (1.0f - mountainNoise) * biasStrength) * noise;
+            }
+            case Bias::cliff:
+            {
+                auto cliffBias = std::get<std::unique_ptr<Noise>>(ctx)->Generate(pos) > 0.2f ? 1.0f : 0.0f;
+                return noise * (1 - biasStrength) + cliffBias * biasStrength;
             }
             default:
             {
