@@ -404,7 +404,7 @@ jobs:
         if: ${{matrix.run_tests}}
   macos-universal:
     name: macOS universal app bundle
-    runs-on: macos-14
+    runs-on: macos-15
     needs: [macos-cmake, build_variables]
     steps:
       - name: Checkout
