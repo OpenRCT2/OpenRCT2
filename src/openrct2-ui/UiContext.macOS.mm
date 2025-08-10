@@ -9,22 +9,22 @@
 
 #if defined(__APPLE__) && defined(__MACH__)
 
-#    include "UiContext.h"
+    #include "UiContext.h"
 
-#    include <openrct2/Diagnostic.h>
-#    include <openrct2/core/String.hpp>
-#    include <openrct2/ui/UiContext.h>
+    #include <openrct2/Diagnostic.h>
+    #include <openrct2/core/String.hpp>
+    #include <openrct2/ui/UiContext.h>
 
-// undefine `interface` and `abstract`, because it's causing conflicts with Objective-C's keywords
-#    undef interface
-#    undef abstract
+    // undefine `interface` and `abstract`, because it's causing conflicts with Objective-C's keywords
+    #undef interface
+    #undef abstract
 
-#    include <ApplicationServices/ApplicationServices.h>
-#    import <Cocoa/Cocoa.h>
-#    include <CoreFoundation/CFBundle.h>
-#    include <SDL.h>
-#    include <mach-o/dyld.h>
-#    include <string>
+    #include <ApplicationServices/ApplicationServices.h>
+    #import <Cocoa/Cocoa.h>
+    #include <CoreFoundation/CFBundle.h>
+    #include <SDL.h>
+    #include <mach-o/dyld.h>
+    #include <string>
 
 namespace OpenRCT2::Ui
 {
