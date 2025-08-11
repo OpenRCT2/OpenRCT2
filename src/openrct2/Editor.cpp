@@ -65,6 +65,7 @@ namespace OpenRCT2::Editor
     static void ObjectListLoad()
     {
         auto* context = GetContext();
+        context->OpenProgress(STR_LOADING_GENERIC);
 
         // Unload objects first, the repository is re-populated which owns the objects.
         auto& objectManager = context->GetObjectManager();
@@ -83,6 +84,8 @@ namespace OpenRCT2::Editor
         {
             objectManager.LoadObject(entry);
         }
+
+        context->CloseProgress();
     }
 
     static WindowBase* OpenEditorWindows()
@@ -105,12 +108,12 @@ namespace OpenRCT2::Editor
 
         auto& gameState = getGameState();
         Audio::StopAll();
-        ObjectListLoad();
         gameStateInitAll(gameState, kDefaultMapSize);
         gLegacyScene = LegacyScene::scenarioEditor;
         gameState.editorStep = EditorStep::ObjectSelection;
         gameState.park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gameState.scenarioCategory = ScenarioCategory::other;
+        ObjectListLoad();
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -183,11 +186,11 @@ namespace OpenRCT2::Editor
         gLegacyScene = LegacyScene::trackDesigner;
         gScreenAge = 0;
 
-        ObjectManagerUnloadAllObjects();
-        ObjectListLoad();
-        gameStateInitAll(getGameState(), kDefaultMapSize);
+        auto& gameState = getGameState();
+        gameStateInitAll(gameState, kDefaultMapSize);
+        gameState.editorStep = EditorStep::ObjectSelection;
         SetAllLandOwned();
-        getGameState().editorStep = EditorStep::ObjectSelection;
+        ObjectListLoad();
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -211,11 +214,11 @@ namespace OpenRCT2::Editor
         gLegacyScene = LegacyScene::trackDesignsManager;
         gScreenAge = 0;
 
-        ObjectManagerUnloadAllObjects();
-        ObjectListLoad();
-        gameStateInitAll(getGameState(), kDefaultMapSize);
+        auto& gameState = getGameState();
+        gameStateInitAll(gameState, kDefaultMapSize);
         SetAllLandOwned();
-        getGameState().editorStep = EditorStep::ObjectSelection;
+        gameState.editorStep = EditorStep::ObjectSelection;
+        ObjectListLoad();
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
