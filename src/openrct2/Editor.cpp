@@ -65,6 +65,7 @@ namespace OpenRCT2::Editor
     static void ObjectListLoad()
     {
         auto* context = GetContext();
+        context->OpenProgress(STR_LOADING_GENERIC);
 
         // Unload objects first, the repository is re-populated which owns the objects.
         auto& objectManager = context->GetObjectManager();
@@ -83,6 +84,8 @@ namespace OpenRCT2::Editor
         {
             objectManager.LoadObject(entry);
         }
+
+        context->CloseProgress();
     }
 
     static WindowBase* OpenEditorWindows()
