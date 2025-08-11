@@ -189,7 +189,7 @@ namespace OpenRCT2::Drawing::LightFx
         _pixelInfo = info;
     }
 
-    void PrepareLightList()
+    void PrepareLightList(const Viewport* vp)
     {
         for (uint32_t light = 0; light < LightListCurrentCountFront; light++)
         {
@@ -294,8 +294,7 @@ namespace OpenRCT2::Drawing::LightFx
 
                     ViewportInteractionItem interactionType = ViewportInteractionItem::None;
 
-                    auto* w = WindowGetMain();
-                    if (w != nullptr)
+                    if ((vp->flags & VIEWPORT_FLAG_RENDERING_INHIBITED) == 0)
                     {
                         // based on GetMapCoordinatesFromPosWindow
                         RenderTarget rt;
@@ -310,14 +309,11 @@ namespace OpenRCT2::Drawing::LightFx
                         rt.cullingWidth = rt.width;
                         rt.cullingHeight = rt.height;
 
-                        PaintSession* session = PaintSessionAlloc(rt, w->viewport->flags, w->viewport->rotation);
+                        PaintSession* session = PaintSessionAlloc(rt, vp->flags, vp->rotation);
                         PaintSessionGenerate(*session);
                         PaintSessionArrange(*session);
-                        auto info = SetInteractionInfoFromPaintSession(
-                            session, w->viewport->flags, kViewportInteractionItemAll);
+                        auto info = SetInteractionInfoFromPaintSession(session, vp->flags, kViewportInteractionItemAll);
                         PaintSessionFree(session);
-
-                        //  LOG_WARNING("[%i, %i]", rt.x, rt.y);
 
                         mapCoord = info.Loc;
                         mapCoord.x += tileOffsetX;
@@ -434,17 +430,12 @@ namespace OpenRCT2::Drawing::LightFx
         _current_view_zoom_back_delay = _current_view_zoom_back;
     }
 
-    void UpdateViewportSettings()
+    void UpdateViewportSettings(const Viewport* vp)
     {
-        WindowBase* mainWindow = WindowGetMain();
-        if (mainWindow != nullptr)
-        {
-            Viewport* viewport = WindowGetViewport(mainWindow);
-            _current_view_x_back = viewport->viewPos.x;
-            _current_view_y_back = viewport->viewPos.y;
-            _current_view_rotation_back = viewport->rotation;
-            _current_view_zoom_back = viewport->zoom;
-        }
+        _current_view_x_back = vp->viewPos.x;
+        _current_view_y_back = vp->viewPos.y;
+        _current_view_rotation_back = vp->rotation;
+        _current_view_zoom_back = vp->zoom;
     }
 
     void RenderLightsToFrontBuffer()
@@ -1024,12 +1015,12 @@ namespace OpenRCT2::Drawing::LightFx
     }
 
     void RenderToTexture(
-        void* dstPixels, uint32_t dstPitch, uint8_t* bits, uint32_t width, uint32_t height, const uint32_t* palette,
-        const uint32_t* lightPalette)
+        const Viewport* vp, void* dstPixels, uint32_t dstPitch, uint8_t* bits, uint32_t width, uint32_t height,
+        const uint32_t* palette, const uint32_t* lightPalette)
     {
-        UpdateViewportSettings();
+        UpdateViewportSettings(vp);
         SwapBuffers();
-        PrepareLightList();
+        PrepareLightList(vp);
         RenderLightsToFrontBuffer();
 
         uint8_t* lightBits = static_cast<uint8_t*>(GetFrontBuffer());

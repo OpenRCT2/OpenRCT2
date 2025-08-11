@@ -19,6 +19,7 @@
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/LightFX.h>
 #include <openrct2/drawing/X8DrawingEngine.h>
+#include <openrct2/interface/Window.h>
 #include <openrct2/paint/Paint.h>
 #include <openrct2/ui/UiContext.h>
 #include <vector>
@@ -232,13 +233,16 @@ protected:
 private:
     void Display()
     {
-        if (Config::Get().general.EnableLightFx)
+        auto* viewport = WindowGetViewport(WindowGetMain());
+
+        if (Config::Get().general.EnableLightFx && viewport != nullptr)
         {
             void* pixels;
             int32_t pitch;
             if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
             {
-                LightFx::RenderToTexture(pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
+                LightFx::RenderToTexture(
+                    viewport, pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
                 SDL_UnlockTexture(_screenTexture);
             }
         }
