@@ -2779,6 +2779,11 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
     auto& objManager = GetContext()->GetObjectManager();
     auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
 
+    if (animObj == nullptr)
+    {
+        return;
+    }
+
     uint32_t baseImageId = animObj->GetPeepAnimation(AnimationGroup, actionAnimationGroup).base_image;
 
     // Offset frame onto the base image, using rotation except for the 'picked up' state
