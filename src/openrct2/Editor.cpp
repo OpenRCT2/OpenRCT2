@@ -105,12 +105,12 @@ namespace OpenRCT2::Editor
 
         auto& gameState = getGameState();
         Audio::StopAll();
-        ObjectListLoad();
         gameStateInitAll(gameState, kDefaultMapSize);
         gLegacyScene = LegacyScene::scenarioEditor;
         gameState.editorStep = EditorStep::ObjectSelection;
         gameState.park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gameState.scenarioCategory = ScenarioCategory::other;
+        ObjectListLoad();
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -183,11 +183,12 @@ namespace OpenRCT2::Editor
         gLegacyScene = LegacyScene::trackDesigner;
         gScreenAge = 0;
 
+        auto& gameState = getGameState();
         ObjectManagerUnloadAllObjects();
-        ObjectListLoad();
-        gameStateInitAll(getGameState(), kDefaultMapSize);
+        gameStateInitAll(gameState, kDefaultMapSize);
+        gameState.editorStep = EditorStep::ObjectSelection;
         SetAllLandOwned();
-        getGameState().editorStep = EditorStep::ObjectSelection;
+        ObjectListLoad();
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -212,10 +213,10 @@ namespace OpenRCT2::Editor
         gScreenAge = 0;
 
         ObjectManagerUnloadAllObjects();
-        ObjectListLoad();
         gameStateInitAll(getGameState(), kDefaultMapSize);
         SetAllLandOwned();
         getGameState().editorStep = EditorStep::ObjectSelection;
+        ObjectListLoad();
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
