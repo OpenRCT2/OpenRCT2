@@ -184,7 +184,6 @@ namespace OpenRCT2::Editor
         gScreenAge = 0;
 
         auto& gameState = getGameState();
-        ObjectManagerUnloadAllObjects();
         gameStateInitAll(gameState, kDefaultMapSize);
         gameState.editorStep = EditorStep::ObjectSelection;
         SetAllLandOwned();
@@ -212,10 +211,10 @@ namespace OpenRCT2::Editor
         gLegacyScene = LegacyScene::trackDesignsManager;
         gScreenAge = 0;
 
-        ObjectManagerUnloadAllObjects();
-        gameStateInitAll(getGameState(), kDefaultMapSize);
+        auto& gameState = getGameState();
+        gameStateInitAll(gameState, kDefaultMapSize);
         SetAllLandOwned();
-        getGameState().editorStep = EditorStep::ObjectSelection;
+        gameState.editorStep = EditorStep::ObjectSelection;
         ObjectListLoad();
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
