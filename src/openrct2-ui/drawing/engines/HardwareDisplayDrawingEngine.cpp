@@ -242,7 +242,7 @@ private:
             if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
             {
                 LightFx::RenderToTexture(
-                    viewport, pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
+                    *viewport, pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
                 SDL_UnlockTexture(_screenTexture);
             }
         }

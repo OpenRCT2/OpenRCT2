@@ -41,15 +41,6 @@ namespace OpenRCT2::Drawing::LightFx
         Spot3 = 11,
     };
 
-    constexpr uint8_t GetLightTypeSize(LightType type)
-    {
-        return static_cast<uint8_t>(type) & 0x3;
-    }
-    constexpr LightType SetLightTypeSize(LightType type, uint8_t size)
-    {
-        return static_cast<LightType>((static_cast<uint8_t>(type) & ~0x3) | size);
-    }
-
     void SetAvailable(bool available);
     bool IsAvailable();
     bool ForVehiclesIsAvailable();
@@ -57,13 +48,6 @@ namespace OpenRCT2::Drawing::LightFx
     void Init();
 
     void UpdateBuffers(RenderTarget&);
-
-    void PrepareLightList();
-    void SwapBuffers();
-    void RenderLightsToFrontBuffer();
-    void UpdateViewportSettings();
-
-    void* GetFrontBuffer();
     const GamePalette& GetPalette();
 
     void Add3DLight(const EntityBase& entity, const uint8_t id, const CoordsXYZ& loc, const LightType lightType);
@@ -82,11 +66,9 @@ namespace OpenRCT2::Drawing::LightFx
     void AddKioskLights(const CoordsXY& mapPosition, const int32_t height, const uint8_t zOffset);
     void AddShopLights(const CoordsXY& mapPosition, const uint8_t direction, const int32_t height, const uint8_t zOffset);
 
-    uint32_t GetLightPolution();
-
     void ApplyPaletteFilter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b);
     void RenderToTexture(
-        const Viewport* vp, void* dstPixels, uint32_t dstPitch, uint8_t* bits, uint32_t width, uint32_t height,
+        const Viewport& vp, void* dstPixels, uint32_t dstPitch, uint8_t* bits, uint32_t width, uint32_t height,
         const uint32_t* palette, const uint32_t* lightPalette);
 
 } // namespace OpenRCT2::Drawing::LightFx

@@ -87,6 +87,16 @@ namespace OpenRCT2::Drawing::LightFx
 
     static GamePalette gPalette_light;
 
+    constexpr uint8_t GetLightTypeSize(LightType type)
+    {
+        return static_cast<uint8_t>(type) & 0x3;
+    }
+
+    constexpr LightType SetLightTypeSize(LightType type, uint8_t size)
+    {
+        return static_cast<LightType>((static_cast<uint8_t>(type) & ~0x3) | size);
+    }
+
     static uint8_t CalcLightIntensityLantern(int32_t x, int32_t y)
     {
         double distance = static_cast<double>(x * x + y * y);
@@ -189,7 +199,7 @@ namespace OpenRCT2::Drawing::LightFx
         _pixelInfo = info;
     }
 
-    void PrepareLightList(const Viewport* vp)
+    static void PrepareLightList(const Viewport& vp)
     {
         for (uint32_t light = 0; light < LightListCurrentCountFront; light++)
         {
@@ -294,7 +304,8 @@ namespace OpenRCT2::Drawing::LightFx
 
                     ViewportInteractionItem interactionType = ViewportInteractionItem::None;
 
-                    if ((vp->flags & VIEWPORT_FLAG_RENDERING_INHIBITED) == 0)
+                    // NOTE: When the flag VIEWPORT_FLAG_RENDERING_INHIBITED is set we can not create a paint graph.
+                    if ((vp.flags & VIEWPORT_FLAG_RENDERING_INHIBITED) == 0)
                     {
                         // based on GetMapCoordinatesFromPosWindow
                         RenderTarget rt;
@@ -309,10 +320,10 @@ namespace OpenRCT2::Drawing::LightFx
                         rt.cullingWidth = rt.width;
                         rt.cullingHeight = rt.height;
 
-                        PaintSession* session = PaintSessionAlloc(rt, vp->flags, vp->rotation);
+                        PaintSession* session = PaintSessionAlloc(rt, vp.flags, vp.rotation);
                         PaintSessionGenerate(*session);
                         PaintSessionArrange(*session);
-                        auto info = SetInteractionInfoFromPaintSession(session, vp->flags, kViewportInteractionItemAll);
+                        auto info = SetInteractionInfoFromPaintSession(session, vp.flags, kViewportInteractionItemAll);
                         PaintSessionFree(session);
 
                         mapCoord = info.Loc;
@@ -402,7 +413,7 @@ namespace OpenRCT2::Drawing::LightFx
         }
     }
 
-    void SwapBuffers()
+    static void SwapBuffers()
     {
         void* tmp = _light_rendered_buffer_back;
         _light_rendered_buffer_back = _light_rendered_buffer_front;
@@ -430,15 +441,15 @@ namespace OpenRCT2::Drawing::LightFx
         _current_view_zoom_back_delay = _current_view_zoom_back;
     }
 
-    void UpdateViewportSettings(const Viewport* vp)
+    static void UpdateViewportSettings(const Viewport& vp)
     {
-        _current_view_x_back = vp->viewPos.x;
-        _current_view_y_back = vp->viewPos.y;
-        _current_view_rotation_back = vp->rotation;
-        _current_view_zoom_back = vp->zoom;
+        _current_view_x_back = vp.viewPos.x;
+        _current_view_y_back = vp.viewPos.y;
+        _current_view_rotation_back = vp.rotation;
+        _current_view_zoom_back = vp.zoom;
     }
 
-    void RenderLightsToFrontBuffer()
+    static void RenderLightsToFrontBuffer()
     {
         if (_light_rendered_buffer_front == nullptr)
         {
@@ -610,7 +621,7 @@ namespace OpenRCT2::Drawing::LightFx
         }
     }
 
-    void* GetFrontBuffer()
+    static void* GetFrontBuffer()
     {
         return _light_rendered_buffer_front;
     }
@@ -685,7 +696,7 @@ namespace OpenRCT2::Drawing::LightFx
         Add3DLight({ x, y, offsetZ }, lightType);
     }
 
-    uint32_t GetLightPolution()
+    static uint32_t GetLightPolution()
     {
         return _lightPolution_front;
     }
@@ -1015,7 +1026,7 @@ namespace OpenRCT2::Drawing::LightFx
     }
 
     void RenderToTexture(
-        const Viewport* vp, void* dstPixels, uint32_t dstPitch, uint8_t* bits, uint32_t width, uint32_t height,
+        const Viewport& vp, void* dstPixels, uint32_t dstPitch, uint8_t* bits, uint32_t width, uint32_t height,
         const uint32_t* palette, const uint32_t* lightPalette)
     {
         UpdateViewportSettings(vp);
