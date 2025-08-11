@@ -696,7 +696,7 @@ namespace OpenRCT2::Drawing::LightFx
         Add3DLight({ x, y, offsetZ }, lightType);
     }
 
-    static uint32_t GetLightPolution()
+    static uint32_t GetLightPollution()
     {
         return _lightPolution_front;
     }
@@ -925,7 +925,7 @@ namespace OpenRCT2::Drawing::LightFx
         reduceColourLit *= night / static_cast<float>(std::pow(std::max(1.01f, 0.4f + lightAvg), 2.0));
 
         float targetLightPollution = reduceColourLit
-            * std::max(0.0f, 0.0f + 0.000001f * static_cast<float>(GetLightPolution()));
+            * std::max(0.0f, 0.0f + 0.000001f * static_cast<float>(GetLightPollution()));
         lightPolution -= (lightPolution - targetLightPollution) * 0.001f;
 
         //  lightPollution /= 1.0f + fogginess * 1.0f;
