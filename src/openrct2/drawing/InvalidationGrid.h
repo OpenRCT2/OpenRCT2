@@ -3,12 +3,15 @@
 #include <algorithm>
 #include <cstdint>
 #include <limits>
+#include <mutex>
 #include <vector>
 
 namespace OpenRCT2::Drawing
 {
     class InvalidationGrid
     {
+        mutable std::mutex _mutex;
+
         uint16_t _blockWidth{};
         uint16_t _blockHeight{};
         uint32_t _columnCount{};
@@ -40,6 +43,8 @@ namespace OpenRCT2::Drawing
         template<typename F>
         void traverseDirtyCells(F&& func)
         {
+            std::lock_guard<std::mutex> lock(_mutex);
+
             const uint32_t columnCount = _columnCount;
             const uint32_t rowCount = _rowCount;
             const uint32_t blockWidth = _blockWidth;

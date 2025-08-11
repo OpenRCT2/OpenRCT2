@@ -7,26 +7,32 @@ namespace OpenRCT2::Drawing
 {
     uint32_t InvalidationGrid::getRowCount() const noexcept
     {
+        std::lock_guard<std::mutex> lock(_mutex);
         return _rowCount;
     }
 
     uint32_t InvalidationGrid::getColumnCount() const noexcept
     {
+        std::lock_guard<std::mutex> lock(_mutex);
         return _columnCount;
     }
 
     uint32_t InvalidationGrid::getBlockWidth() const noexcept
     {
+        std::lock_guard<std::mutex> lock(_mutex);
         return _blockWidth;
     }
 
     uint32_t InvalidationGrid::getBlockHeight() const noexcept
     {
+        std::lock_guard<std::mutex> lock(_mutex);
         return _blockHeight;
     }
 
     void InvalidationGrid::reset(int32_t width, int32_t height, uint32_t blockWidth, uint32_t blockHeight) noexcept
     {
+        std::lock_guard<std::mutex> lock(_mutex);
+
         _blockWidth = blockWidth;
         _blockHeight = blockHeight;
         _columnCount = (width / blockWidth) + 1;
@@ -47,6 +53,8 @@ namespace OpenRCT2::Drawing
 
     void InvalidationGrid::invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) noexcept
     {
+        std::lock_guard<std::mutex> lock(_mutex);
+
         // Clamp to screen bounds
         left = std::max(left, 0);
         top = std::max(top, 0);
