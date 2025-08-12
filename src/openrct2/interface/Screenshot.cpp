@@ -422,6 +422,11 @@ static void ApplyOptions(const ScreenshotOptions* options, Viewport& viewport)
     {
         viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
     }
+
+    if (options->draw_bounding_boxes)
+    {
+        gPaintBoundingBoxes = true;
+    }
 }
 
 int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOptions* options)
