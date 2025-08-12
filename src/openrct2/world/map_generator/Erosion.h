@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "HeightMap.hpp"
+#include "BaseMap.hpp"
 #include "MapGen.h"
 
 #include <random>

@@ -666,5 +666,10 @@
         "path": "icons/walls.png",
         "x": 1,
         "y": 1
+    },
+    {
+        "path": "mask/mapgen_texture_rule_scroll_mask.png",
+        "palette": "keep",
+        "format": "raw"
     }
 ]

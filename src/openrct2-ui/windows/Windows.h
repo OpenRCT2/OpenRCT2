@@ -15,6 +15,7 @@
 #include <openrct2/interface/WindowTypes.h>
 #include <openrct2/localisation/StringIdType.h>
 #include <openrct2/world/ScenerySelection.h>
+#include <openrct2/world/map_generator/rule/Rule.h>
 #include <optional>
 #include <string_view>
 
@@ -167,7 +168,11 @@ namespace OpenRCT2::Ui::Windows
     void WindowMapReset();
 
     // MapGen
-    WindowBase* MapgenOpen();
+    WindowBase* MapGenOpen();
+    WindowBase* MapGenRuleConditionOpen(
+        WindowBase* callWindow, WidgetIndex callWidget, World::MapGenerator::Rule::Condition& condition,
+        std::function<void(World::MapGenerator::Rule::Condition&)> callback);
+    void WindowGenRuleConditionCloseByCalling(WindowBase* call_w, WidgetIndex call_widget);
 
     // MapTooltip
     void SetMapTooltip(Formatter& ft);
@@ -340,7 +345,7 @@ namespace OpenRCT2::Ui::Windows
     void WindowTextInputOpen(
         std::string_view title, std::string_view description, std::string_view initialValue, size_t maxLength,
         std::function<void(std::string_view)> okCallback, std::function<void()> cancelCallback);
-
+    void WindowTextInputCloseByCalling(WindowBase* call_w, WidgetIndex call_widget);
     // Themes
     WindowBase* ThemesOpen();
 

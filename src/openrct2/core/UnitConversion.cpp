@@ -59,6 +59,11 @@ namespace OpenRCT2
         return (heightUnit * 3) >> 2;
     }
 
+    int32_t MetresToHeightUnits(int32_t metres)
+    {
+        return (metres << 2) / 3;
+    }
+
     int32_t ToHumanReadableSpeed(int32_t baseSpeed)
     {
         // Divide this value by 29127 to get the human-readable max speed
