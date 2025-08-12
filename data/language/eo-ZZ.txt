@@ -3836,3 +3836,5 @@ STR_6797    :Neniu antaŭrigardo
 STR_6798    :Ekrankopio
 STR_6799    :Eta mapo
 STR_7000    :aŭ
+STR_7001    :Nomo de atrakcio
+STR_7002    :{STRINGID} {STRINGID}
