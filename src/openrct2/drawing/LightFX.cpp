@@ -87,6 +87,16 @@ namespace OpenRCT2::Drawing::LightFx
 
     static GamePalette gPalette_light;
 
+    constexpr uint8_t GetLightTypeSize(LightType type)
+    {
+        return static_cast<uint8_t>(type) & 0x3;
+    }
+
+    constexpr LightType SetLightTypeSize(LightType type, uint8_t size)
+    {
+        return static_cast<LightType>((static_cast<uint8_t>(type) & ~0x3) | size);
+    }
+
     static uint8_t CalcLightIntensityLantern(int32_t x, int32_t y)
     {
         double distance = static_cast<double>(x * x + y * y);
@@ -189,7 +199,7 @@ namespace OpenRCT2::Drawing::LightFx
         _pixelInfo = info;
     }
 
-    void PrepareLightList()
+    static void PrepareLightList(const Viewport& vp)
     {
         for (uint32_t light = 0; light < LightListCurrentCountFront; light++)
         {
@@ -294,8 +304,8 @@ namespace OpenRCT2::Drawing::LightFx
 
                     ViewportInteractionItem interactionType = ViewportInteractionItem::None;
 
-                    auto* w = WindowGetMain();
-                    if (w != nullptr)
+                    // NOTE: When the flag VIEWPORT_FLAG_RENDERING_INHIBITED is set we can not create a paint graph.
+                    if ((vp.flags & VIEWPORT_FLAG_RENDERING_INHIBITED) == 0)
                     {
                         // based on GetMapCoordinatesFromPosWindow
                         RenderTarget rt;
@@ -310,14 +320,11 @@ namespace OpenRCT2::Drawing::LightFx
                         rt.cullingWidth = rt.width;
                         rt.cullingHeight = rt.height;
 
-                        PaintSession* session = PaintSessionAlloc(rt, w->viewport->flags, w->viewport->rotation);
+                        PaintSession* session = PaintSessionAlloc(rt, vp.flags, vp.rotation);
                         PaintSessionGenerate(*session);
                         PaintSessionArrange(*session);
-                        auto info = SetInteractionInfoFromPaintSession(
-                            session, w->viewport->flags, kViewportInteractionItemAll);
+                        auto info = SetInteractionInfoFromPaintSession(session, vp.flags, kViewportInteractionItemAll);
                         PaintSessionFree(session);
-
-                        //  LOG_WARNING("[%i, %i]", rt.x, rt.y);
 
                         mapCoord = info.Loc;
                         mapCoord.x += tileOffsetX;
@@ -406,7 +413,7 @@ namespace OpenRCT2::Drawing::LightFx
         }
     }
 
-    void SwapBuffers()
+    static void SwapBuffers()
     {
         void* tmp = _light_rendered_buffer_back;
         _light_rendered_buffer_back = _light_rendered_buffer_front;
@@ -434,20 +441,15 @@ namespace OpenRCT2::Drawing::LightFx
         _current_view_zoom_back_delay = _current_view_zoom_back;
     }
 
-    void UpdateViewportSettings()
+    static void UpdateViewportSettings(const Viewport& vp)
     {
-        WindowBase* mainWindow = WindowGetMain();
-        if (mainWindow != nullptr)
-        {
-            Viewport* viewport = WindowGetViewport(mainWindow);
-            _current_view_x_back = viewport->viewPos.x;
-            _current_view_y_back = viewport->viewPos.y;
-            _current_view_rotation_back = viewport->rotation;
-            _current_view_zoom_back = viewport->zoom;
-        }
+        _current_view_x_back = vp.viewPos.x;
+        _current_view_y_back = vp.viewPos.y;
+        _current_view_rotation_back = vp.rotation;
+        _current_view_zoom_back = vp.zoom;
     }
 
-    void RenderLightsToFrontBuffer()
+    static void RenderLightsToFrontBuffer()
     {
         if (_light_rendered_buffer_front == nullptr)
         {
@@ -619,7 +621,7 @@ namespace OpenRCT2::Drawing::LightFx
         }
     }
 
-    void* GetFrontBuffer()
+    static void* GetFrontBuffer()
     {
         return _light_rendered_buffer_front;
     }
@@ -694,7 +696,7 @@ namespace OpenRCT2::Drawing::LightFx
         Add3DLight({ x, y, offsetZ }, lightType);
     }
 
-    uint32_t GetLightPolution()
+    static uint32_t GetLightPollution()
     {
         return _lightPolution_front;
     }
@@ -923,7 +925,7 @@ namespace OpenRCT2::Drawing::LightFx
         reduceColourLit *= night / static_cast<float>(std::pow(std::max(1.01f, 0.4f + lightAvg), 2.0));
 
         float targetLightPollution = reduceColourLit
-            * std::max(0.0f, 0.0f + 0.000001f * static_cast<float>(GetLightPolution()));
+            * std::max(0.0f, 0.0f + 0.000001f * static_cast<float>(GetLightPollution()));
         lightPolution -= (lightPolution - targetLightPollution) * 0.001f;
 
         //  lightPollution /= 1.0f + fogginess * 1.0f;
@@ -1024,12 +1026,12 @@ namespace OpenRCT2::Drawing::LightFx
     }
 
     void RenderToTexture(
-        void* dstPixels, uint32_t dstPitch, uint8_t* bits, uint32_t width, uint32_t height, const uint32_t* palette,
-        const uint32_t* lightPalette)
+        const Viewport& vp, void* dstPixels, uint32_t dstPitch, uint8_t* bits, uint32_t width, uint32_t height,
+        const uint32_t* palette, const uint32_t* lightPalette)
     {
-        UpdateViewportSettings();
+        UpdateViewportSettings(vp);
         SwapBuffers();
-        PrepareLightList();
+        PrepareLightList(vp);
         RenderLightsToFrontBuffer();
 
         uint8_t* lightBits = static_cast<uint8_t*>(GetFrontBuffer());
