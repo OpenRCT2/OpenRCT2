@@ -827,5 +827,10 @@
     },
     {
         "path": "icons/rotate_view_anti-clockwise.png"
+    },
+    {
+        "path": "mask/mapgen_texture_rule_scroll_mask.png",
+        "palette": "keep",
+        "format": "raw"
     }
 ]

@@ -204,4 +204,14 @@ struct VecXYZ : VecXY
     {
         return { static_cast<int32_t>(x), static_cast<int32_t>(y), static_cast<int32_t>(z) };
     }
+
+    float Dot(const VecXYZ& rhs) const
+    {
+        return x * rhs.x + y * rhs.y + z * rhs.z;
+    }
+
+    float Angle(const VecXYZ& rhs) const
+    {
+        return std::acos(Dot(rhs) / (Length() * rhs.Length()));
+    }
 };

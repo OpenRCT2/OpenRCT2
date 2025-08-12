@@ -3862,3 +3862,55 @@ STR_7027    :Enter bias strength between {COMMA2DP32} and {COMMA2DP32}
 STR_7028    :{COMMA2DP32}
 STR_7029    :Mountain
 STR_7030    :Cliff
+STR_7039    :Default
+STR_7040    :Map Generator - Land Style
+STR_7041    :New
+STR_7042    :{MOVE_X}{4}✓
+STR_7043    :Rule
+STR_7045    :Land
+STR_7046    :Edge
+STR_7047    :If
+STR_7048    :Then
+STR_7049    :New rule {UINT16}
+STR_7050    :Remove
+STR_7051    :Height
+STR_7054    :Height - WaterLevel
+STR_7055    :DistanceToWater
+STR_7056    :Noise
+STR_7057    :NormalAngle
+STR_7058    :Random
+STR_7059    :=
+STR_7060    :!=
+STR_7061    :<
+STR_7062    :>
+STR_7063    :<=
+STR_7064    :>=
+STR_7065    :{STRINGID} {STRINGID} {INT32}
+STR_7066    :{STRINGID} {STRINGID} {COMMA2DP32}
+STR_7067    :Small rock patches
+STR_7068    :Medium dirt patches
+STR_7069    :Large grass clumps patches
+STR_7070    :Mountain peaks
+STR_7071    :Mountain peak rock
+STR_7072    :Mountain peak snow
+STR_7073    :Rename
+STR_7074    :Enter rule name
+STR_7075    :Rule name
+STR_7076    :Remove
+STR_7077    :Edit
+STR_7078    :Add ▼
+STR_7079    :For each tile the rules are evaluated top to bottom, applying the land and edge style of the first matching rule or, if unset, the respective default rule style.
+STR_7080    :Edit condition
+STR_7081    :{STRINGID} {STRINGID} {LENGTH}
+STR_7082    :Seed offset:
+STR_7083    :BlendNoise
+STR_7084    :BlendHeight
+STR_7085    :{STRINGID}[{LENGTH}..{LENGTH}] {STRINGID} {STRINGID}
+STR_7086    :{STRINGID}[{COMMA2DP32}..{COMMA2DP32}] {STRINGID} {STRINGID}
+STR_7087    :Low:
+STR_7088    :High:
+STR_7089    :BlendHeight[Low..High]
+STR_7090    :BlendNoise[Low..High]
+STR_7091    :Enter {STRINGID} [{INT32}..{INT32}]
+STR_7092    :Enter {STRINGID} [{LENGTH}..{LENGTH}]
+STR_7093    :Enter {STRINGID} [{COMMA2DP32}..{COMMA2DP32}]

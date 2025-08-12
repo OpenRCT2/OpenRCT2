@@ -90,6 +90,7 @@ enum class WindowClass : uint8_t
     ProgressWindow = 137,
     TitleVersion = 138,
     EditorParkEntrance = 139,
+    MapgenRuleCondition = 140,
 
     // Only used for colour schemes
     Staff = 220,

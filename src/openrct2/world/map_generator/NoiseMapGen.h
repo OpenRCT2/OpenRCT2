@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #pragma once
+
 #include "MapGen.h"
 
 namespace OpenRCT2::World::MapGenerator
