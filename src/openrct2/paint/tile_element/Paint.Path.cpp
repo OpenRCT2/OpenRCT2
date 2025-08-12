@@ -958,9 +958,9 @@ void PathPaintBoxSupport(
     PROFILED_FUNCTION();
 
     auto [edges, corners] = PathPaintGetRotatedEdgesAndCorners(session, pathElement);
-    uint16_t edi = edges | (corners << 4);
+    const uint8_t edgesAndCorners = pathElement.IsQueue() ? edges : edges | (corners << 4);
 
-    auto surfaceBaseImageIndex = PathPaintGetBaseImage(session, pathElement, pathPaintInfo, edi);
+    const auto surfaceBaseImageIndex = PathPaintGetBaseImage(session, pathElement, pathPaintInfo, edgesAndCorners);
     auto boundbox = PathPaintGetBoundbox(session, height, edges);
 
     const bool hasPassedSurface = (session.Flags & PaintSessionFlags::PassedSurface) != 0;
@@ -990,7 +990,7 @@ void PathPaintBoxSupport(
         }
     }
 
-    Sub6A3F61(session, pathElement, edi, height, pathPaintInfo, imageTemplate, sceneryImageTemplate, hasSupports);
+    Sub6A3F61(session, pathElement, edgesAndCorners, height, pathPaintInfo, imageTemplate, sceneryImageTemplate, hasSupports);
 
     Direction slopeDirection{};
     if (pathElement.IsSloped())
@@ -1011,9 +1011,9 @@ void PathPaintPoleSupport(
     PROFILED_FUNCTION();
 
     auto [edges, corners] = PathPaintGetRotatedEdgesAndCorners(session, pathElement);
-    uint16_t edi = edges | (corners << 4);
+    const uint8_t edgesAndCorners = pathElement.IsQueue() ? edges : edges | (corners << 4);
 
-    auto surfaceBaseImageIndex = PathPaintGetBaseImage(session, pathElement, pathPaintInfo, edi);
+    const auto surfaceBaseImageIndex = PathPaintGetBaseImage(session, pathElement, pathPaintInfo, edgesAndCorners);
     auto boundbox = PathPaintGetBoundbox(session, height, edges);
 
     // Below Surface
@@ -1045,7 +1045,7 @@ void PathPaintPoleSupport(
     }
 
     Sub6A3F61(
-        session, pathElement, edi, height, pathPaintInfo, imageTemplate, sceneryImageTemplate,
+        session, pathElement, edgesAndCorners, height, pathPaintInfo, imageTemplate, sceneryImageTemplate,
         hasSupports); // TODO: arguments
 
     MetalSupportPlace supports[] = {
