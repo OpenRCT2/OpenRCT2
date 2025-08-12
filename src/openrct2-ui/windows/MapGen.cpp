@@ -20,8 +20,11 @@
 #include <openrct2/core/UnitConversion.h>
 #include <openrct2/drawing/ColourMap.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Rectangle.h>
 #include <openrct2/drawing/Text.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
+#include <openrct2/localisation/StringIds.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
@@ -42,6 +45,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_MAPGEN_PAGE_BASE,
         WINDOW_MAPGEN_PAGE_TERRAIN,
         WINDOW_MAPGEN_PAGE_WATER,
+        WINDOW_MAPGEN_PAGE_TEXTURE,
         WINDOW_MAPGEN_PAGE_FORESTS,
         WINDOW_MAPGEN_PAGE_COUNT
     };
@@ -56,6 +60,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TAB_2,
         WIDX_TAB_3,
         WIDX_TAB_4,
+        WIDX_TAB_5,
         WIDX_MAP_GENERATE,
 
         TAB_BEGIN,
@@ -102,9 +107,6 @@ namespace OpenRCT2::Ui::Windows
         WIDX_HEIGHTMAP_HIGH,
         WIDX_HEIGHTMAP_HIGH_UP,
         WIDX_HEIGHTMAP_HIGH_DOWN,
-        WIDX_FLOOR_TEXTURE,
-        WIDX_WALL_TEXTURE,
-        WIDX_RANDOM_TERRAIN,
         WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES,
         WIDX_HEIGHTMAP_EROSION,
         WIDX_HEIGHTMAP_EROSION_PPT,
@@ -114,7 +116,29 @@ namespace OpenRCT2::Ui::Windows
         WIDX_WATER_LEVEL = TAB_BEGIN,
         WIDX_WATER_LEVEL_UP,
         WIDX_WATER_LEVEL_DOWN,
-        WIDX_ADD_BEACHES,
+
+        WIDX_RULE_NEW = TAB_BEGIN,
+        WIDX_RULE_NEW_PRESET,
+        WIDX_RULE_RENAME,
+        WIDX_RULE_REMOVE,
+        WIDX_RULE_MOVE_UP,
+        WIDX_RULE_MOVE_DOWN,
+        WIDX_RULE_HEADER_ENABLED,
+        WIDX_RULE_HEADER_NAME,
+        WIDX_RULE_HEADER_SURFACE,
+        WIDX_RULE_HEADER_EDGE,
+        WIDX_RULE_SCROLL,
+        WIDX_RULE_CONDITION_GROUP,
+        WIDX_RULE_CONDITION_SCROLL,
+        WIDX_RULE_CONDITION_REMOVE,
+        WIDX_RULE_CONDITION_EDIT,
+        WIDX_RULE_CONDITION_ADD,
+
+        WIDX_RULE_OUTCOME_GROUP,
+        WIDX_RULE_FLOOR_TEXTURE_CHECK,
+        WIDX_RULE_FLOOR_TEXTURE,
+        WIDX_RULE_WALL_TEXTURE_CHECK,
+        WIDX_RULE_WALL_TEXTURE,
 
         WIDX_FORESTS_PLACE_TREES = TAB_BEGIN,
         WIDX_TREE_LAND_RATIO,
@@ -141,6 +165,7 @@ namespace OpenRCT2::Ui::Windows
             makeTab   ({  34,  17 }),
             makeTab   ({  65,  17 }),
             makeTab   ({  96,  17 }),
+            makeTab   ({ 127,  17 }),
             makeWidget({ 185, 256 }, { 109, 14 }, WidgetType::button, WindowColour::secondary, STR_MAPGEN_ACTION_GENERATE)
         );
     };
@@ -174,20 +199,43 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto kTerrainWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_TERRAIN),
-        makeHoldableSpinnerWidgets({179,  52}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                                  ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
-        makeHoldableSpinnerWidgets({179,  70}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                                  ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
-        makeWidget                ({179,  88}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
-        makeWidget                ({236,  88}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP),
-        makeWidget                ({ 10, 106}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN        ),
+        makeHoldableSpinnerWidgets({179,  52}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                                          ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
+        makeHoldableSpinnerWidgets({179,  70}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                                          ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
         makeWidget                ({ 10, 122}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_SMOOTH_TILE                  ), // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
         makeWidget                ({ 10, 138}, {255, 12}, WidgetType::checkbox, WindowColour::secondary, STR_EROSION                             ), // WIDX_HEIGHTMAP_EROSION
-        makeSpinnerWidgets        ({179, 154}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                                          )  // WIDX_HEIGHTMAP_EROSION_PARTICLES
+        makeHoldableSpinnerWidgets({179, 154}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                                          )  // WIDX_HEIGHTMAP_EROSION_PARTICLES
     );
 
     static constexpr auto kWaterWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_WATER),
-        makeHoldableSpinnerWidgets({179,  52}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                          ), // NB: 3 widgets
-        makeWidget                ({ 10,  70}, {255, 12}, WidgetType::checkbox, WindowColour::secondary, STR_BEACHES_WATER_BODIES)
+        makeHoldableSpinnerWidgets({179,  52}, {109, 14}, WidgetType::spinner,  WindowColour::secondary                          ) // NB: 3 widgets
+    );
+    
+    static constexpr auto kTextureWidgets = makeWidgets(
+        makeMapGenWidgets(STR_MAPGEN_RULE_TITLE),
+        makeWidget({226,  52}, { 55,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_NEW                     ),
+        makeWidget({281,  52}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_DOWN                                ),
+        makeWidget({152,  52}, { 69,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_RENAME                  ),
+        makeWidget({ 78,  52}, { 69,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_REMOVE                  ),
+        makeWidget({  5,  52}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_UP                                  ),
+        makeWidget({ 22,  52}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_DOWN                                ),
+        makeWidget({  5,  70}, { 20,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_ENABLED          ),
+        makeWidget({ 25,  70}, {190,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_NAME             ),
+        makeWidget({215,  70}, { 40,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_SURFACE          ),
+        makeWidget({255,  70}, { 40,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_EDGE             ),
+        makeWidget({  5,  83}, {290,  72}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
+
+        makeWidget({  5, 158}, {202,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_IF                ),
+        makeWidget({ 10, 170}, {191,  59}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
+        makeWidget({ 10, 233}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_REMOVE             ),
+        makeWidget({ 76, 233}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_EDIT               ),
+        makeWidget({142, 233}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_ADD                ),
+
+        makeWidget({212, 158}, { 83,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_THEN              ),
+        makeWidget({222, 180}, { 12,  12}, WidgetType::checkbox,     WindowColour::secondary                                          ),
+        makeWidget({241, 168}, { 47,  36}, WidgetType::flatBtn,      WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
+        makeWidget({222, 222}, { 12,  12}, WidgetType::checkbox,     WindowColour::secondary                                          ),
+        makeWidget({241, 210}, { 47,  36}, WidgetType::flatBtn,      WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP)
     );
 
     static constexpr auto kForestsWidgets = makeWidgets(
@@ -202,6 +250,7 @@ namespace OpenRCT2::Ui::Windows
         kBaseWidgets,
         kTerrainWidgets,
         kWaterWidgets,
+        kTextureWidgets,
         kForestsWidgets,
     };
     // clang-format on
@@ -214,15 +263,18 @@ namespace OpenRCT2::Ui::Windows
         1,
         1,
         1,
+        1,
     };
     static constexpr int32_t TabAnimationFrames[WINDOW_MAPGEN_PAGE_COUNT] = {
         4,
         1,
         1,
         1,
+        1,
     };
     static constexpr int32_t TabAnimationLoops[WINDOW_MAPGEN_PAGE_COUNT] = {
         16,
+        1,
         1,
         1,
         1,
@@ -246,12 +298,17 @@ namespace OpenRCT2::Ui::Windows
         u8string _seed = std::to_string(std::random_device{}());
         bool _random_seed = true;
         MapGenerator::Settings _settings{};
-        bool _randomTerrain = true;
         bool _heightmapLoaded = false;
         std::string _heightmapFilename{};
 
         u8string _xSpinnerCaption{};
         u8string _ySpinnerCaption{};
+
+        int32_t _selectedRule = -1;
+        int32_t _highlightedRule = -1;
+
+        int32_t _selectedCondition = -1;
+        int32_t _highlightedCondition = -1;
 
         void setPage(int32_t newPage)
         {
@@ -294,6 +351,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTabImage(rt, WINDOW_MAPGEN_PAGE_BASE, SPR_TAB_GEARS_0);
             DrawTabImage(rt, WINDOW_MAPGEN_PAGE_TERRAIN, SPR_G2_MAP_GEN_TERRAIN_TAB);
             DrawTabImage(rt, WINDOW_MAPGEN_PAGE_WATER, SPR_TAB_WATER);
+            DrawTabImage(rt, WINDOW_MAPGEN_PAGE_TEXTURE, SPR_G2_TERRAIN_EDGE_TAB);
             DrawTabImage(rt, WINDOW_MAPGEN_PAGE_FORESTS, SPR_TAB_SCENERY_TREES);
         }
 
@@ -338,6 +396,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_TAB_2:
                 case WIDX_TAB_3:
                 case WIDX_TAB_4:
+                case WIDX_TAB_5:
                     setPage(widgetIndex - WIDX_TAB_1);
                     break;
                 case WIDX_MAP_GENERATE:
@@ -352,11 +411,6 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             MapGenerator::Settings mapgenSettings = _settings;
-            if (_randomTerrain)
-            {
-                mapgenSettings.landTexture = -1;
-                mapgenSettings.edgeTexture = -1;
-            }
 
             if (_random_seed)
             {
@@ -1240,16 +1294,6 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
-                case WIDX_RANDOM_TERRAIN:
-                    _randomTerrain = !_randomTerrain;
-                    invalidate();
-                    break;
-                case WIDX_FLOOR_TEXTURE:
-                    LandTool::ShowSurfaceStyleDropdown(this, widget, _settings.landTexture);
-                    break;
-                case WIDX_WALL_TEXTURE:
-                    LandTool::ShowEdgeStyleDropdown(this, widget, _settings.edgeTexture);
-                    break;
                 case WIDX_HEIGHTMAP_LOW_UP:
                     _settings.heightmapLow = std::min(_settings.heightmapLow + 2, kMaximumLandHeight / 2 - 1);
                     _settings.heightmapHigh = std::max(_settings.heightmapHigh, _settings.heightmapLow + 2);
@@ -1313,45 +1357,6 @@ namespace OpenRCT2::Ui::Windows
 
         void TerrainDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
-            int32_t type;
-
-            switch (widgetIndex)
-            {
-                case WIDX_FLOOR_TEXTURE:
-                    if (dropdownIndex == -1)
-                        dropdownIndex = gDropdown.highlightedIndex;
-
-                    type = (dropdownIndex == -1) ? _settings.landTexture : dropdownIndex;
-
-                    if (gLandToolTerrainSurface == type)
-                    {
-                        gLandToolTerrainSurface = kObjectEntryIndexNull;
-                    }
-                    else
-                    {
-                        gLandToolTerrainSurface = type;
-                        _settings.landTexture = type;
-                    }
-                    invalidate();
-                    break;
-                case WIDX_WALL_TEXTURE:
-                    if (dropdownIndex == -1)
-                        dropdownIndex = gDropdown.highlightedIndex;
-
-                    type = (dropdownIndex == -1) ? _settings.edgeTexture : dropdownIndex;
-
-                    if (gLandToolTerrainEdge == type)
-                    {
-                        gLandToolTerrainEdge = kObjectEntryIndexNull;
-                    }
-                    else
-                    {
-                        gLandToolTerrainEdge = type;
-                        _settings.edgeTexture = type;
-                    }
-                    invalidate();
-                    break;
-            }
         }
 
         void DrawDropdownButton(RenderTarget& rt, WidgetIndex widgetIndex, ImageId image)
@@ -1376,10 +1381,10 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void DrawDropdownButtons(RenderTarget& rt, WidgetIndex floorWidgetIndex, WidgetIndex edgeWidgetIndex)
+        ImageId LookupSurfaceImage(uint32_t surfaceTexture)
         {
             auto& objManager = GetContext()->GetObjectManager();
-            const auto* surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(_settings.landTexture);
+            const auto* surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(surfaceTexture);
             ImageId surfaceImage;
             if (surfaceObj != nullptr)
             {
@@ -1389,29 +1394,27 @@ namespace OpenRCT2::Ui::Windows
                     surfaceImage = surfaceImage.WithPrimary(surfaceObj->Colour);
                 }
             }
+            return surfaceImage;
+        }
 
+        ImageId LookupEdgeImage(uint32_t edgeTexture)
+        {
+            auto& objManager = GetContext()->GetObjectManager();
             ImageId edgeImage;
-            const auto* edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(_settings.edgeTexture);
+            const auto* edgeObj = objManager.GetLoadedObject<TerrainEdgeObject>(edgeTexture);
             if (edgeObj != nullptr)
             {
                 edgeImage = ImageId(edgeObj->IconImageId);
             }
-
-            DrawDropdownButton(rt, floorWidgetIndex, surfaceImage);
-            DrawDropdownButton(rt, edgeWidgetIndex, edgeImage);
+            return edgeImage;
         }
 
         void TerrainPrepareDraw()
         {
             bool isNotFlatland = _settings.algorithm != MapGenerator::Algorithm::blank;
 
-            setCheckboxValue(WIDX_RANDOM_TERRAIN, _randomTerrain != 0);
             setCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
             setCheckboxValue(WIDX_HEIGHTMAP_EROSION, _settings.simulate_erosion);
-
-            // only allow floor and wall texture options if random terrain is disabled
-            setWidgetEnabled(WIDX_FLOOR_TEXTURE, !_randomTerrain);
-            setWidgetEnabled(WIDX_WALL_TEXTURE, !_randomTerrain);
 
             // Max land height option is irrelevant for flatland
             setWidgetEnabled(WIDX_HEIGHTMAP_HIGH, isNotFlatland);
@@ -1428,15 +1431,9 @@ namespace OpenRCT2::Ui::Windows
         {
             drawWidgets(rt);
             DrawTabImages(rt);
-            DrawDropdownButtons(rt, WIDX_FLOOR_TEXTURE, WIDX_WALL_TEXTURE);
 
             const auto enabledColour = colours[1];
             const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
-
-            // Floor texture label
-            drawText(
-                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_FLOOR_TEXTURE].top + 1 }, STR_TERRAIN_LABEL,
-                { enabledColour });
 
             // Minimum land height label and value
             drawText(
@@ -1482,6 +1479,775 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma endregion
 
+#pragma region Texture page
+
+        void SetSelectedRule(int32_t roleIdx)
+        {
+            if (roleIdx != _selectedRule)
+            {
+                WindowTextInputCloseByCalling(this, WIDX_RULE_RENAME);
+                SetSelectedCondition(-1);
+            }
+            _selectedRule = roleIdx;
+        }
+
+        void SetSelectedCondition(int32_t conditionIdx)
+        {
+            if (conditionIdx != _selectedCondition)
+            {
+                WindowGenRuleConditionCloseByCalling(this, WIDX_RULE_CONDITION_ADD);
+                WindowGenRuleConditionCloseByCalling(this, WIDX_RULE_CONDITION_EDIT);
+            }
+            _selectedCondition = conditionIdx;
+        }
+
+        void TextureMouseUp(WidgetIndex widgetIndex)
+        {
+            SharedMouseUp(widgetIndex);
+
+            switch (widgetIndex)
+            {
+                case WIDX_RULE_FLOOR_TEXTURE_CHECK:
+                {
+                    if (_selectedRule != -1)
+                    {
+                        auto& selectedRule = _settings.textureRules[_selectedRule];
+                        selectedRule.result.applyLandTexture = !selectedRule.result.applyLandTexture;
+                        invalidate();
+                    }
+                    break;
+                }
+                case WIDX_RULE_WALL_TEXTURE_CHECK:
+                {
+                    if (_selectedRule != -1)
+                    {
+                        auto& selectedRule = _settings.textureRules[_selectedRule];
+                        selectedRule.result.applyEdgeTexture = !selectedRule.result.applyEdgeTexture;
+                        invalidate();
+                    }
+                    break;
+                }
+                case WIDX_RULE_NEW:
+                {
+                    MapGenerator::Rule::createNewTextureRule(_settings);
+                    SetSelectedRule(static_cast<int32_t>(_settings.textureRules.size() - 1));
+                    invalidate();
+                    break;
+                }
+                case WIDX_RULE_REMOVE:
+                {
+                    if (_selectedRule != -1 && !_settings.textureRules[_selectedRule].isDefault)
+                    {
+                        _settings.textureRules.erase(_settings.textureRules.begin() + _selectedRule);
+                        SetSelectedRule(_selectedRule - 1);
+                        invalidate();
+                    }
+                    break;
+                }
+                case WIDX_RULE_RENAME:
+                {
+                    if (_selectedRule != -1 && !_settings.textureRules[_selectedRule].isDefault)
+                    {
+                        auto& selectedRule = _settings.textureRules[_selectedRule];
+                        auto* qqq = selectedRule.name.c_str();
+                        WindowTextInputOpen(
+                            this, widgetIndex, STR_MAPGEN_RULE_RENAME_TITLE, STR_MAPGEN_RULE_ENTER_NAME, {}, STR_STRING,
+                            reinterpret_cast<uintptr_t>(qqq), 32);
+                    }
+                    break;
+                }
+                case WIDX_RULE_MOVE_UP:
+                {
+                    if (_selectedRule != -1 && !_settings.textureRules[_selectedRule].isDefault
+                        && _selectedRule < static_cast<int32_t>(_settings.textureRules.size() - 1))
+                    {
+                        std::swap(_settings.textureRules[_selectedRule], _settings.textureRules[_selectedRule + 1]);
+                        SetSelectedRule(_selectedRule + 1);
+                        invalidate();
+                    }
+                    break;
+                }
+                case WIDX_RULE_MOVE_DOWN:
+                {
+                    if (_selectedRule != -1 && !_settings.textureRules[_selectedRule].isDefault && _selectedRule > 1)
+                    {
+                        std::swap(_settings.textureRules[_selectedRule], _settings.textureRules[_selectedRule - 1]);
+                        SetSelectedRule(_selectedRule - 1);
+                        invalidate();
+                    }
+                    break;
+                }
+                case WIDX_RULE_CONDITION_REMOVE:
+                {
+                    if (_selectedRule != -1 && !_settings.textureRules[_selectedRule].isDefault && _selectedCondition != -1)
+                    {
+                        auto& selectedRule = _settings.textureRules[_selectedRule];
+                        selectedRule.conditions.erase(selectedRule.conditions.begin() + _selectedCondition);
+                        auto nextIdx = _selectedCondition - 1;
+                        if (nextIdx == -1 && !selectedRule.conditions.empty())
+                        {
+                            nextIdx = 0;
+                        }
+                        SetSelectedCondition(nextIdx);
+                        invalidate();
+                    }
+                    break;
+                }
+                case WIDX_RULE_CONDITION_EDIT:
+                {
+                    if (_selectedRule != -1 && !_settings.textureRules[_selectedRule].isDefault && _selectedCondition != -1)
+                    {
+                        auto& selectedRule = _settings.textureRules[_selectedRule];
+                        auto& selectedCondition = selectedRule.conditions[_selectedCondition];
+
+                        auto callback = [this](MapGenerator::Rule::Condition& condition) {
+                            if (_selectedRule == -1 || _settings.textureRules[_selectedRule].isDefault
+                                || _selectedCondition == -1)
+                            {
+                                return;
+                            }
+                            _settings.textureRules[_selectedRule].conditions[_selectedCondition] = condition;
+                            invalidate();
+                        };
+
+                        MapGenRuleConditionOpen(this, WIDX_RULE_CONDITION_ADD, selectedCondition, callback);
+                    }
+                    break;
+                }
+            }
+        }
+
+        void TextureMouseDown(WidgetIndex widgetIndex, Widget* widget)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_RULE_FLOOR_TEXTURE:
+                {
+                    if (_selectedRule == -1)
+                    {
+                        return;
+                    }
+                    auto& selectedRule = _settings.textureRules[_selectedRule];
+                    LandTool::ShowSurfaceStyleDropdown(this, widget, selectedRule.result.landTexture);
+                    break;
+                }
+                case WIDX_RULE_WALL_TEXTURE:
+                {
+                    if (_selectedRule == -1)
+                    {
+                        return;
+                    }
+                    auto& selectedRule = _settings.textureRules[_selectedRule];
+                    LandTool::ShowEdgeStyleDropdown(this, widget, selectedRule.result.edgeTexture);
+                    break;
+                }
+                case WIDX_RULE_NEW_PRESET:
+                {
+                    using namespace Dropdown;
+
+                    constexpr ItemExt items[] = {
+                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_PRESET_SMALL_ROCK_PATCHES),
+                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_PRESET_MEDIUM_DIRT_PATCHES),
+                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_PRESET_LARGE_GRASS_CLUMP_PATCHES),
+                        ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_PRESET_MOUNTAIN_PEAKS),
+                    };
+
+                    SetItems(items);
+
+                    Widget* ddWidget = &widgets[widgetIndex - 1];
+                    WindowDropdownShowText(
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
+                        Dropdown::Flag::StayOpen, std::size(items));
+                    break;
+                }
+                case WIDX_RULE_CONDITION_ADD:
+                {
+                    using namespace Dropdown;
+
+                    constexpr ItemExt items[] = {
+                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE),
+                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_ELEVATION_RELATIVE_TO_WATER),
+                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_WATER),
+                        ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NOISE),
+                        ItemExt(4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NORMAL_ANGLE),
+                        ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_PRNG),
+                        ItemExt(6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_HEIGHT),
+                        ItemExt(7, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_NOISE),
+                    };
+
+                    SetItems(items);
+
+                    Widget* ddWidget = &widgets[widgetIndex];
+                    WindowDropdownShowText(
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
+                        Dropdown::Flag::StayOpen, std::size(items));
+
+                    // TODO implement
+                    gDropdown.items[4].setDisabled(true);
+
+                    break;
+                }
+            }
+        }
+
+        void TextureUpdate()
+        {
+            // Tab animation
+            if (++currentFrame >= TabAnimationLoops[page])
+                currentFrame = 0;
+            invalidateWidget(WIDX_TAB_4);
+
+            // Check if the mouse is hovering over the list
+            if (!widgetIsHighlighted(*this, WIDX_RULE_SCROLL))
+            {
+                if (_highlightedRule != -1)
+                    invalidateWidget(WIDX_RULE_SCROLL);
+                _highlightedRule = -1;
+            }
+
+            // Check if the mouse is hovering over the list
+            if (!widgetIsHighlighted(*this, WIDX_RULE_CONDITION_SCROLL))
+            {
+                if (_highlightedCondition != -1)
+                    invalidateWidget(WIDX_RULE_CONDITION_SCROLL);
+                _highlightedCondition = -1;
+            }
+        }
+
+        void TextureTextInput(WidgetIndex widgetIndex, std::string_view& value)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_RULE_RENAME:
+                {
+                    if (_selectedRule == -1 || _settings.textureRules[_selectedRule].isDefault)
+                    {
+                        return;
+                    }
+
+                    // TODO trim + check not empty?
+
+                    auto& selectedRule = _settings.textureRules[_selectedRule];
+                    selectedRule.name = std::string(value);
+                    break;
+                }
+            }
+
+            invalidate();
+        }
+
+        void TexturePrepareDraw()
+        {
+
+            bool ruleSelected = _selectedRule != -1;
+            bool condSelected = ruleSelected && _selectedCondition != -1;
+
+            widgets[WIDX_RULE_MOVE_UP].type = ruleSelected ? WidgetType::button : WidgetType::empty;
+            widgets[WIDX_RULE_MOVE_DOWN].type = ruleSelected ? WidgetType::button : WidgetType::empty;
+            widgets[WIDX_RULE_REMOVE].type = ruleSelected ? WidgetType::button : WidgetType::empty;
+            widgets[WIDX_RULE_RENAME].type = ruleSelected ? WidgetType::button : WidgetType::empty;
+
+            widgets[WIDX_RULE_CONDITION_GROUP].type = ruleSelected ? WidgetType::groupbox : WidgetType::empty;
+            widgets[WIDX_RULE_CONDITION_SCROLL].type = ruleSelected ? WidgetType::scroll : WidgetType::empty;
+            widgets[WIDX_RULE_CONDITION_REMOVE].type = condSelected ? WidgetType::button : WidgetType::empty;
+            widgets[WIDX_RULE_CONDITION_EDIT].type = condSelected ? WidgetType::button : WidgetType::empty;
+            widgets[WIDX_RULE_CONDITION_ADD].type = ruleSelected ? WidgetType::button : WidgetType::empty;
+
+            widgets[WIDX_RULE_OUTCOME_GROUP].type = ruleSelected ? WidgetType::groupbox : WidgetType::empty;
+            widgets[WIDX_RULE_FLOOR_TEXTURE_CHECK].type = ruleSelected ? WidgetType::checkbox : WidgetType::empty;
+            widgets[WIDX_RULE_FLOOR_TEXTURE].type = ruleSelected ? WidgetType::flatBtn : WidgetType::empty;
+            widgets[WIDX_RULE_WALL_TEXTURE_CHECK].type = ruleSelected ? WidgetType::checkbox : WidgetType::empty;
+            widgets[WIDX_RULE_WALL_TEXTURE].type = ruleSelected ? WidgetType::flatBtn : WidgetType::empty;
+
+            if (ruleSelected)
+            {
+                auto& selectedRule = _settings.textureRules[_selectedRule];
+                setCheckboxValue(WIDX_RULE_FLOOR_TEXTURE_CHECK, selectedRule.result.applyLandTexture);
+                setCheckboxValue(WIDX_RULE_WALL_TEXTURE_CHECK, selectedRule.result.applyEdgeTexture);
+
+                setWidgetEnabled(WIDX_RULE_FLOOR_TEXTURE, selectedRule.result.applyLandTexture);
+                setWidgetEnabled(WIDX_RULE_WALL_TEXTURE, selectedRule.result.applyEdgeTexture);
+
+                setWidgetEnabled(WIDX_RULE_FLOOR_TEXTURE_CHECK, !selectedRule.isDefault);
+                setWidgetEnabled(WIDX_RULE_WALL_TEXTURE_CHECK, !selectedRule.isDefault);
+
+                setWidgetEnabled(WIDX_RULE_REMOVE, !selectedRule.isDefault);
+                setWidgetEnabled(WIDX_RULE_RENAME, !selectedRule.isDefault);
+
+                setWidgetEnabled(WIDX_RULE_MOVE_UP, !selectedRule.isDefault
+                    && _selectedRule < static_cast<int32_t>(_settings.textureRules.size() - 1));
+                setWidgetEnabled(WIDX_RULE_MOVE_DOWN, !selectedRule.isDefault &&  _selectedRule > 1);
+
+                setWidgetEnabled(WIDX_RULE_CONDITION_REMOVE, !selectedRule.isDefault && condSelected);
+                setWidgetEnabled(WIDX_RULE_CONDITION_EDIT, !selectedRule.isDefault && condSelected);
+                setWidgetEnabled(WIDX_RULE_CONDITION_ADD, !selectedRule.isDefault);
+            }
+        }
+
+        void TextureDraw(RenderTarget& rt)
+        {
+            drawWidgets(rt);
+            DrawTabImages(rt);
+
+            if (_selectedRule != -1)
+            {
+                auto& selectedRule = _settings.textureRules[_selectedRule];
+                DrawDropdownButton(rt, WIDX_RULE_FLOOR_TEXTURE, LookupSurfaceImage(selectedRule.result.landTexture));
+                DrawDropdownButton(rt, WIDX_RULE_WALL_TEXTURE, LookupEdgeImage(selectedRule.result.edgeTexture));
+            }
+            else
+            {
+                auto& ruleScroll = widgets[WIDX_RULE_SCROLL];
+                auto centrePos = windowPos + ScreenCoordsXY{ ruleScroll.left, ruleScroll.bottom + 5 };
+                auto textPaint = TextPaint{ colours[1] };
+                drawTextWrapped(rt, centrePos, ruleScroll.width(), STR_MAPGEN_RULE_HINT, {}, textPaint);
+            }
+        }
+
+        void TextureDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
+        {
+
+            switch (widgetIndex)
+            {
+                case WIDX_RULE_FLOOR_TEXTURE:
+                {
+                    if (_selectedRule == -1)
+                    {
+                        return;
+                    }
+                    auto& selectedRule = _settings.textureRules[_selectedRule];
+
+                    if (dropdownIndex == -1)
+                        dropdownIndex = gDropdown.highlightedIndex;
+
+                    if (dropdownIndex != -1)
+                        selectedRule.result.landTexture = dropdownIndex;
+
+                    invalidate();
+                    break;
+                }
+                case WIDX_RULE_WALL_TEXTURE:
+                {
+                    if (_selectedRule == -1)
+                    {
+                        return;
+                    }
+                    auto& selectedRule = _settings.textureRules[_selectedRule];
+
+                    if (dropdownIndex == -1)
+                        dropdownIndex = gDropdown.highlightedIndex;
+
+                    if (dropdownIndex != -1)
+                        selectedRule.result.edgeTexture = dropdownIndex;
+
+                    invalidate();
+                    break;
+                }
+                case WIDX_RULE_NEW_PRESET:
+                {
+                    if (dropdownIndex == -1)
+                        dropdownIndex = gDropdown.highlightedIndex;
+
+                    if (dropdownIndex != -1)
+                    {
+                        MapGenerator::Rule::createNewTextureRuleFromPreset(_settings, dropdownIndex);
+                        SetSelectedRule(static_cast<int32_t>(_settings.textureRules.size() - 1));
+                    }
+
+                    invalidate();
+                    break;
+                }
+                case WIDX_RULE_CONDITION_ADD:
+                {
+                    if (_selectedRule == -1)
+                    {
+                        return;
+                    }
+
+                    if (dropdownIndex == -1)
+                        dropdownIndex = gDropdown.highlightedIndex;
+
+                    if (dropdownIndex == -1)
+                    {
+                        return;
+                    }
+
+                    auto conditionType = static_cast<MapGenerator::Rule::Type>(dropdownIndex);
+                    auto newCondition = createNewCondition(conditionType);
+                    auto callback = [this](MapGenerator::Rule::Condition& condition) {
+                        if (_selectedRule == -1 || _settings.textureRules[_selectedRule].isDefault)
+                        {
+                            return;
+                        }
+                        auto& selectedRule = _settings.textureRules[_selectedRule];
+                        selectedRule.conditions.push_back(std::move(condition));
+                        SetSelectedCondition(static_cast<int32_t>(selectedRule.conditions.size() - 1));
+                        invalidate();
+                    };
+
+                    MapGenRuleConditionOpen(this, WIDX_RULE_CONDITION_ADD, newCondition, callback);
+                    break;
+                }
+            }
+        }
+
+        ScreenSize TextureScrollGetSize(int32_t scrollIndex)
+        {
+            switch (scrollIndex)
+            {
+                case 0:
+                {
+                    return ScreenSize(
+                        kWindowSize.width - 10, static_cast<int32_t>(_settings.textureRules.size() * kScrollableRowHeight));
+                }
+                case 1:
+                {
+                    if (_selectedRule == -1)
+                    {
+                        return {};
+                    }
+                    auto& selectedRule = _settings.textureRules[_selectedRule];
+
+                    return ScreenSize(
+                        widgets[WIDX_RULE_CONDITION_SCROLL].width(),
+                        static_cast<int32_t>(selectedRule.conditions.size() * kScrollableRowHeight));
+                }
+
+            }
+            return {};
+        }
+
+        void TextureScrollDraw(int32_t scrollIndex, RenderTarget& rt)
+        {
+            switch (scrollIndex)
+            {
+                case 0:
+                    return TextureScrollDrawRule(rt);
+                case 1:
+                    return TextureScrollDrawCondition(rt);
+            }
+        }
+
+        void TextureScrollDrawCondition(RenderTarget& rt)
+        {
+            if (_selectedRule == -1)
+            {
+                return;
+            }
+            auto& selectedRule = _settings.textureRules[_selectedRule];
+
+            const int32_t listWidth = widgets[WIDX_RULE_CONDITION_SCROLL].width();
+            Rectangle::fill(
+                rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } },
+                getColourMap(colours[1].colour).midLight, true);
+
+            ScreenCoordsXY screenCoords{};
+            screenCoords.y = static_cast<int32_t>(kScrollableRowHeight * (selectedRule.conditions.size() - 1));
+
+            for (int32_t i = 0; i < static_cast<int32_t>(selectedRule.conditions.size()); i++)
+            {
+                auto& condition = selectedRule.conditions[i];
+
+                // Draw row background colour
+                auto fillRectangle = ScreenRect{ { 0, screenCoords.y },
+                                                 { listWidth, screenCoords.y + kScrollableRowHeight - 1 } };
+
+                StringId stringFormat = STR_WINDOW_COLOUR_2_STRINGID;
+                if (i == _selectedCondition)
+                {
+                    Rectangle::fill(rt, fillRectangle, getColourMap(colours[1].colour).midDark);
+                    stringFormat = STR_WHITE_STRING;
+                }
+                else if (i == _highlightedCondition)
+                {
+                    Rectangle::fill(rt, fillRectangle, getColourMap(colours[1].colour).midDark, true);
+                    stringFormat = STR_WHITE_STRING;
+                }
+
+                auto checkboxFormatter = Formatter();
+                checkboxFormatter.Add<StringId>(STR_STRING);
+                checkboxFormatter.Add<char*>(kCheckMarkString);
+
+                // Draw enabled checkbox and check
+                Rectangle::fillInset(
+                    rt, { { 2, screenCoords.y }, { 15, screenCoords.y + 11 } }, colours[1], Rectangle::BorderStyle::inset,
+                    Rectangle::FillBrightness::dark, Rectangle::FillMode::dontLightenWhenInset);
+                if (condition.enabled)
+                {
+                    drawText(rt, screenCoords + ScreenCoordsXY{ 4, 1 }, stringFormat, checkboxFormatter);
+                }
+
+                StringId predRepr = kStringIdNone;
+                switch (condition.predicate)
+                {
+                    case MapGenerator::Rule::Predicate::equal:
+                        predRepr = STR_MAPGEN_RULE_PREDICATE_EQUAL;
+                        break;
+                    case MapGenerator::Rule::Predicate::notEqual:
+                        predRepr = STR_MAPGEN_RULE_PREDICATE_NOT_EQUAL;
+                        break;
+                    case MapGenerator::Rule::Predicate::lessThan:
+                        predRepr = STR_MAPGEN_RULE_PREDICATE_LESS_THAN;
+                        break;
+                    case MapGenerator::Rule::Predicate::greaterThan:
+                        predRepr = STR_MAPGEN_RULE_PREDICATE_GREATER_THAN;
+                        break;
+                    case MapGenerator::Rule::Predicate::lessThanOrEqual:
+                        predRepr = STR_MAPGEN_RULE_PREDICATE_LESS_THAN_OR_EQUAL;
+                        break;
+                    case MapGenerator::Rule::Predicate::greaterThanOrEqual:
+                        predRepr = STR_MAPGEN_RULE_PREDICATE_GREATER_THAN_OR_EQUAL;
+                        break;
+                }
+
+                auto ft = Formatter();
+                switch (condition.type)
+                {
+                    case MapGenerator::Rule::Type::HeightAbsolute:
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_LENGTH);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE);
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<int16_t>(static_cast<int16_t>(
+                            BaseZToMetres(std::get<MapGenerator::Rule::HeightData>(condition.data).height)));
+                        break;
+
+                    case MapGenerator::Rule::Type::HeightRelativeToWater:
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_LENGTH);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_ELEVATION_RELATIVE_TO_WATER);
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<int16_t>(static_cast<int16_t>(
+                            HeightUnitsToMetres(std::get<MapGenerator::Rule::HeightData>(condition.data).height)));
+                        break;
+
+                    case MapGenerator::Rule::Type::DistanceToWater:
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_LENGTH);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_WATER);
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<int16_t>(static_cast<int16_t>(
+                            std::get<MapGenerator::Rule::DistanceData>(condition.data).distance));
+                        break;
+
+                    case MapGenerator::Rule::Type::Noise:
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FLOAT);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_NOISE);
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<int32_t>(static_cast<int32_t>(
+                            std::get<MapGenerator::Rule::NoiseData>(condition.data).value * 100));
+                       break;
+
+                    case MapGenerator::Rule::Type::NormalAngle:
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FLOAT);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_NORMAL_ANGLE);
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<int32_t>(static_cast<int32_t>(
+                            std::get<MapGenerator::Rule::NormalAngleData>(condition.data).angle * 100));
+                        break;
+
+                    case MapGenerator::Rule::Type::Prng:
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FLOAT);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<int32_t>(static_cast<int32_t>(
+                            std::get<MapGenerator::Rule::PrngData>(condition.data).value * 100));
+                        break;
+
+                    case MapGenerator::Rule::Type::PrngHeightBlend:
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_BLEND_LENGTH);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_BLEND_HEIGHT);
+                        ft.Add<int16_t>(static_cast<int16_t>(
+                            BaseZToMetres(std::get<MapGenerator::Rule::BlendHeightData>(condition.data).edgeLow)));
+                        ft.Add<int16_t>(static_cast<int16_t>(
+                            BaseZToMetres(std::get<MapGenerator::Rule::BlendHeightData>(condition.data).edgeHigh)));
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
+                        break;
+
+                    case MapGenerator::Rule::Type::PrngNoiseBlend:
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_BLEND_FLOAT);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_BLEND_NOISE);
+                        ft.Add<int32_t>(static_cast<int32_t>(
+                            std::get<MapGenerator::Rule::BlendNoiseData>(condition.data).edgeLow * 100));
+                        ft.Add<int32_t>(static_cast<int32_t>(
+                            std::get<MapGenerator::Rule::BlendNoiseData>(condition.data).edgeHigh * 100));
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
+                        break;
+                }
+
+                // Draw description
+                drawTextEllipsised(rt, screenCoords + ScreenCoordsXY{ 20, 0 }, 190, stringFormat, ft);
+
+                screenCoords.y -= kScrollableRowHeight;
+            }
+        }
+
+        void TextureScrollDrawRule(RenderTarget& rt)
+        {
+            const int32_t listWidth = widgets[WIDX_RULE_SCROLL].width();
+            Rectangle::fill(
+                rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, getColourMap(colours[1].colour).midLight);
+
+            ScreenCoordsXY screenCoords{};
+            screenCoords.y = static_cast<int32_t>(kScrollableRowHeight * (_settings.textureRules.size() - 1));
+
+            for (int32_t i = 0; i < static_cast<int32_t>(_settings.textureRules.size()); i++)
+            {
+                auto& rule = _settings.textureRules[i];
+
+                // Draw row background colour
+                auto fillRectangle = ScreenRect{ { 0, screenCoords.y },
+                                                 { listWidth, screenCoords.y + kScrollableRowHeight - 1 } };
+
+                StringId stringFormat = STR_WINDOW_COLOUR_2_STRINGID;
+                if (i == _selectedRule)
+                {
+                    Rectangle::fill(rt, fillRectangle, getColourMap(colours[1].colour).midDark);
+                    stringFormat = STR_WHITE_STRING;
+                }
+                else if (i == _highlightedRule)
+                {
+                    Rectangle::fill(rt, fillRectangle, getColourMap(colours[1].colour).midDark, true);
+                    stringFormat = STR_WHITE_STRING;
+                }
+
+                auto checkboxFormatter = Formatter();
+                checkboxFormatter.Add<StringId>(STR_STRING);
+                checkboxFormatter.Add<char*>(kCheckMarkString);
+
+                if (!rule.isDefault)
+                {
+                    // Draw enabled checkbox and check
+                    Rectangle::fillInset(
+                        rt, { { 2, screenCoords.y }, { 15, screenCoords.y + 11 } }, colours[1], Rectangle::BorderStyle::inset,
+                        Rectangle::FillBrightness::dark, Rectangle::FillMode::dontLightenWhenInset);
+                    if (rule.enabled)
+                    {
+                        drawText(rt, screenCoords + ScreenCoordsXY{ 4, 1 }, stringFormat, checkboxFormatter);
+                    }
+                }
+
+                // Rule name
+                auto ft = Formatter();
+                ft.Add<StringId>(STR_STRING);
+                ft.Add<char*>(rule.name.c_str());
+                drawTextEllipsised(
+                    rt, screenCoords + ScreenCoordsXY{ 20, 0 }, 190, stringFormat, ft);
+
+                ImageId maskImage(SPR_G2_MASK_MAPGEN_TEXTURE_SCROLL);
+                // Surface
+                if (rule.result.applyLandTexture)
+                {
+                    auto surfaceImage = LookupSurfaceImage(rule.result.landTexture);
+                    GfxDrawSpriteRawMasked(rt, screenCoords + ScreenCoordsXY{ 208, 0 }, maskImage, surfaceImage);
+                }
+
+                // Edge
+                if (rule.result.applyEdgeTexture)
+                {
+                    auto edgeImage = LookupEdgeImage(rule.result.edgeTexture);
+                    GfxDrawSpriteRawMasked(rt, screenCoords + ScreenCoordsXY{ 248, 0 }, maskImage, edgeImage);
+                }
+
+                screenCoords.y -= kScrollableRowHeight;
+            }
+        }
+
+        void TextureScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+        {
+            if(scrollIndex == 0)
+            {
+                int32_t index = static_cast<int32_t>(
+                    _settings.textureRules.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
+                if (index < 0 || index >= static_cast<int32_t>(_settings.textureRules.size()))
+                {
+                    _highlightedRule = -1;
+                }
+                else
+                {
+                    _highlightedRule = index;
+                }
+                invalidateWidget(WIDX_RULE_SCROLL);
+            }
+            else if (scrollIndex == 1)
+            {
+                if (_selectedRule == -1)
+                {
+                    _highlightedCondition = -1;
+                }
+                else
+                {
+                    auto& selectedRule = _settings.textureRules[_selectedRule];
+
+                    int32_t index = static_cast<int32_t>(
+                        selectedRule.conditions.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
+                    if (index < 0 || index >= static_cast<int32_t>(selectedRule.conditions.size()))
+                    {
+                        _highlightedCondition = -1;
+                    }
+                    else
+                    {
+                        _highlightedCondition = index;
+                    }
+                }
+                invalidateWidget(WIDX_RULE_CONDITION_SCROLL);
+            }
+
+
+        }
+
+        void TextureScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+        {
+            if (_settings.textureRules.empty())
+                return;
+
+            if (scrollIndex == 0)
+            {
+                // Because the list items are displayed in reverse order, subtract the calculated index from size
+                const int32_t index = static_cast<int32_t>(
+                    _settings.textureRules.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
+                const ScreenRect checkboxColumnRect{ { 2, 0 }, { 15, screenCoords.y } };
+                if (index >= 0 && checkboxColumnRect.Contains(screenCoords) && !_settings.textureRules[index].isDefault)
+                { // Checkbox was clicked
+                    _settings.textureRules[index].enabled = !_settings.textureRules[index].enabled;
+                }
+                else if (index >= 0 && index < static_cast<int32_t>(_settings.textureRules.size()))
+                {
+                    SetSelectedRule(index);
+                }
+                else
+                {
+                    SetSelectedRule(-1);
+                }
+            } else if (scrollIndex == 1)
+            {
+                if (_selectedRule == -1)
+                {
+                    SetSelectedCondition(-1);
+                } else
+                {
+                    auto& selectedRule = _settings.textureRules[_selectedRule];
+                    // Because the list items are displayed in reverse order, subtract the calculated index from size
+                    const int32_t index = static_cast<int32_t>(
+                        selectedRule.conditions.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
+                    const ScreenRect checkboxColumnRect{ { 2, 0 }, { 15, screenCoords.y } };
+                    if (index >= 0 && checkboxColumnRect.Contains(screenCoords))
+                    { // Checkbox was clicked
+                        selectedRule.conditions[index].enabled = !selectedRule.conditions[index].enabled;
+                    }
+                    else if (index >= 0 && index < static_cast<int32_t>(selectedRule.conditions.size()))
+                    {
+                        SetSelectedCondition(index);
+                    }
+                    else
+                    {
+                        SetSelectedCondition(-1);
+                    }
+                }
+            }
+        }
+
+#pragma endregion
+
 #pragma region Water page
 
         void WaterMouseUp(WidgetIndex widgetIndex)
@@ -1501,12 +2267,6 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
 
-                case WIDX_ADD_BEACHES:
-                {
-                    _settings.beaches ^= true;
-                    invalidate();
-                    break;
-                }
             }
         }
 
@@ -1530,7 +2290,7 @@ namespace OpenRCT2::Ui::Windows
             // Tab animation
             if (++currentFrame >= TabAnimationLoops[page])
                 currentFrame = 0;
-            invalidateWidget(WIDX_TAB_4);
+            invalidateWidget(WIDX_TAB_3);
         }
 
         void WaterTextInput(WidgetIndex widgetIndex, int32_t value)
@@ -1547,7 +2307,6 @@ namespace OpenRCT2::Ui::Windows
 
         void WaterPrepareDraw()
         {
-            setCheckboxValue(WIDX_ADD_BEACHES, _settings.beaches != 0);
         }
 
         void WaterDraw(RenderTarget& rt)
@@ -1598,6 +2357,8 @@ namespace OpenRCT2::Ui::Windows
                     return TerrainMouseUp(widgetIndex);
                 case WINDOW_MAPGEN_PAGE_WATER:
                     return WaterMouseUp(widgetIndex);
+                case WINDOW_MAPGEN_PAGE_TEXTURE:
+                    return TextureMouseUp(widgetIndex);
             }
         }
 
@@ -1613,6 +2374,8 @@ namespace OpenRCT2::Ui::Windows
                     return WaterMouseDown(widgetIndex, &widgets[widgetIndex]);
                 case WINDOW_MAPGEN_PAGE_FORESTS:
                     return ForestsMouseDown(widgetIndex, &widgets[widgetIndex]);
+                case WINDOW_MAPGEN_PAGE_TEXTURE:
+                    return TextureMouseDown(widgetIndex, &widgets[widgetIndex]);
             }
         }
 
@@ -1624,6 +2387,8 @@ namespace OpenRCT2::Ui::Windows
                     return BaseDropdown(widgetIndex, selectedIndex);
                 case WINDOW_MAPGEN_PAGE_TERRAIN:
                     return TerrainDropdown(widgetIndex, selectedIndex);
+                case WINDOW_MAPGEN_PAGE_TEXTURE:
+                    return TextureDropdown(widgetIndex, selectedIndex);
             }
         }
 
@@ -1643,6 +2408,8 @@ namespace OpenRCT2::Ui::Windows
                     return ForestsUpdate();
                 case WINDOW_MAPGEN_PAGE_WATER:
                     return WaterUpdate();
+                case WINDOW_MAPGEN_PAGE_TEXTURE:
+                    return TextureUpdate();
             }
         }
 
@@ -1661,6 +2428,8 @@ namespace OpenRCT2::Ui::Windows
                     return TerrainPrepareDraw();
                 case WINDOW_MAPGEN_PAGE_WATER:
                     return WaterPrepareDraw();
+               case WINDOW_MAPGEN_PAGE_TEXTURE:
+                    return TexturePrepareDraw();
             }
         }
 
@@ -1676,6 +2445,45 @@ namespace OpenRCT2::Ui::Windows
                     return TerrainDraw(rt);
                 case WINDOW_MAPGEN_PAGE_WATER:
                     return WaterDraw(rt);
+                case WINDOW_MAPGEN_PAGE_TEXTURE:
+                    return TextureDraw(rt);
+            }
+        }
+
+        ScreenSize onScrollGetSize(int32_t scrollIndex) override
+        {
+            switch (page)
+            {
+                case WINDOW_MAPGEN_PAGE_TEXTURE:
+                    return TextureScrollGetSize(scrollIndex);
+            }
+            return {};
+        }
+
+        void onScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        {
+            switch (page)
+            {
+                case WINDOW_MAPGEN_PAGE_TEXTURE:
+                    return TextureScrollDraw(scrollIndex, rt);
+            }
+        }
+
+        void onScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        {
+            switch (page)
+            {
+                case WINDOW_MAPGEN_PAGE_TEXTURE:
+                    return TextureScrollMouseOver(scrollIndex, screenCoords);
+            }
+        }
+
+        void onScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        {
+            switch (page)
+            {
+                case WINDOW_MAPGEN_PAGE_TEXTURE:
+                    return TextureScrollMouseDown(scrollIndex, screenCoords);
             }
         }
 
@@ -1684,10 +2492,14 @@ namespace OpenRCT2::Ui::Windows
             auto strText = std::string(text);
             char* end;
 
-            if (widgetIndex == WIDX_MAP_SEED && !_random_seed)
+            if (page == WINDOW_MAPGEN_PAGE_BASE && widgetIndex == WIDX_MAP_SEED && !_random_seed)
             {
                 _seed.assign(text);
                 return;
+            }
+            if (page == WINDOW_MAPGEN_PAGE_TEXTURE)
+            {
+                return TextureTextInput(widgetIndex, text);
             }
 
             // Convert text to integer value
@@ -1756,7 +2568,7 @@ namespace OpenRCT2::Ui::Windows
         }
     };
 
-    WindowBase* MapgenOpen()
+    WindowBase* MapGenOpen()
     {
         auto* windowMgr = GetWindowManager();
         return windowMgr->FocusOrCreate<MapGenWindow>(
@@ -1766,7 +2578,7 @@ namespace OpenRCT2::Ui::Windows
 
     static void HeightmapLoadsaveCallback(ModalResult result, const utf8* path)
     {
-        auto* w = static_cast<MapGenWindow*>(MapgenOpen());
+        auto* w = static_cast<MapGenWindow*>(MapGenOpen());
         w->afterLoadingHeightMap(result, path);
     }
 } // namespace OpenRCT2::Ui::Windows

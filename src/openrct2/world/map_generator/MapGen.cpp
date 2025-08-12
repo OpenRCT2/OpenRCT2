@@ -14,17 +14,21 @@
 #include "../../object/ObjectManager.h"
 #include "../Map.h"
 #include "../tile_element/SurfaceElement.h"
-#include "HeightMap.hpp"
+#include "BaseMap.hpp"
+#include "Noise.h"
 #include "NoiseMapGen.h"
 #include "PngTerrainGenerator.h"
 #include "SurfaceSelection.h"
 #include "TreePlacement.h"
 
+#include <random>
+
 namespace OpenRCT2::World::MapGenerator
 {
     static void generateBlankMap(Settings* settings);
 
-    static void addBeaches(Settings* settings);
+    static void applyTexturesFromRules(Settings* settings);
+    static void placeSceneryFromRules(Settings* settings);
 
     void generate(Settings* settings)
     {
@@ -48,9 +52,8 @@ namespace OpenRCT2::World::MapGenerator
                 break;
         }
 
-        // Add beaches?
-        if (settings->beaches)
-            addBeaches(settings);
+        applyTexturesFromRules(settings);
+        placeSceneryFromRules(settings);
 
         // Place trees?
         if (settings->trees)
@@ -87,24 +90,26 @@ namespace OpenRCT2::World::MapGenerator
         setWaterLevel(settings->waterLevel);
     }
 
-    static void addBeaches(Settings* settings)
+    static void applyTexturesFromRules(Settings* settings)
     {
-        auto beachTextureId = generateBeachTextureId(settings);
-        if (beachTextureId == kObjectEntryIndexNull)
-            return;
+        auto& defaultRule = settings->textureRules[0];
+        assert(defaultRule.isDefault);
+        auto& defaultTextures = defaultRule.result;
 
-        // Add sandy beaches
-        auto& gameState = getGameState();
-        for (auto y = 1; y < gameState.mapSize.y - 1; y++)
-        {
-            for (auto x = 1; x < gameState.mapSize.x - 1; x++)
-            {
-                auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
+        Rule::Callback<Rule::TextureResult> callback =
+            [defaultTextures](TileCoordsXY& coords, SurfaceElement& element, std::optional<Rule::TextureResult>& result) {
+                auto actual = result.value_or(defaultTextures);
 
-                if (surfaceElement != nullptr && surfaceElement->baseHeight < settings->waterLevel + 6)
-                    surfaceElement->SetSurfaceObjectIndex(beachTextureId);
-            }
-        }
+                element.SetSurfaceObjectIndex(actual.applyLandTexture ? actual.landTexture : defaultTextures.landTexture);
+                element.SetEdgeObjectIndex(actual.applyEdgeTexture ? actual.edgeTexture : defaultTextures.edgeTexture);
+            };
+
+        Rule::evaluateRules<Rule::TextureResult>(*settings, settings->textureRules, callback);
+    }
+
+    static void placeSceneryFromRules(Settings* settings)
+    {
+        // TODO
     }
 
     /**

@@ -169,7 +169,6 @@ namespace OpenRCT2::World::MapGenerator
         {
             for (int32_t x = 0; x < heightMap.width; x++)
             {
-                // VecXY pos = { 2.0f*x / settings->mapSize.x - 1.0f, 2.0f*y / settings->mapSize.y - 1.0f };
                 VecXY pos = { x, y };
                 float noiseValue = noise.Generate(pos);
                 float normalisedNoiseValue = (noiseValue + 1.0f) / 2.0f;
