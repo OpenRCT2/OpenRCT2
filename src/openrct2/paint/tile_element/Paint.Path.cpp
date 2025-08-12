@@ -57,7 +57,7 @@ const uint8_t kPathSlopeToLandSlope[] = {
     kTileSlopeSESideUp,
 };
 
-static constexpr uint8_t Byte98D6E0[] = {
+static constexpr uint8_t kPathEdgesAndCornersToSurfaceImageIndexOffset[] = {
     0, 1, 2, 3, 4, 5, 6,  7,  8, 9,  10, 11, 12, 13, 14, 15, 0, 1, 2, 20, 4, 5, 6, 22, 8, 9, 10, 26, 12, 13, 14, 36,
     0, 1, 2, 3, 4, 5, 21, 23, 8, 9,  10, 11, 12, 13, 33, 37, 0, 1, 2, 3,  4, 5, 6, 24, 8, 9, 10, 11, 12, 13, 14, 38,
     0, 1, 2, 3, 4, 5, 6,  7,  8, 9,  10, 11, 29, 30, 34, 39, 0, 1, 2, 3,  4, 5, 6, 7,  8, 9, 10, 11, 12, 13, 14, 40,
@@ -870,7 +870,7 @@ static ImageIndex PathPaintGetBaseImage(
     }
     else
     {
-        surfaceBaseImageIndex += Byte98D6E0[rotatedEdgesAndCorners];
+        surfaceBaseImageIndex += kPathEdgesAndCornersToSurfaceImageIndexOffset[rotatedEdgesAndCorners];
     }
 
     return surfaceBaseImageIndex;
