@@ -9,24 +9,10 @@
  *****************************************************************************/
 
 #include "../core/EnumMap.hpp"
+#include "Ride.h"
 
 #include <cassert>
 #include <string>
-
-enum
-{
-    BREAKDOWN_NONE = 255,
-    BREAKDOWN_SAFETY_CUT_OUT = 0,
-    BREAKDOWN_RESTRAINTS_STUCK_CLOSED,
-    BREAKDOWN_RESTRAINTS_STUCK_OPEN,
-    BREAKDOWN_DOORS_STUCK_CLOSED,
-    BREAKDOWN_DOORS_STUCK_OPEN,
-    BREAKDOWN_VEHICLE_MALFUNCTION,
-    BREAKDOWN_BRAKES_FAILURE,
-    BREAKDOWN_CONTROL_FAILURE,
-
-    BREAKDOWN_COUNT
-};
 
 #ifdef ENABLE_SCRIPTING
 static const EnumMap<uint8_t> BreakdownMap // The types of breakdowns.
