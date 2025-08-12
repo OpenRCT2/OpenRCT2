@@ -61,6 +61,7 @@
 #include "../world/tile_element/TrackElement.h"
 #include "CableLift.h"
 #include "RideAudio.h"
+#include "RideBreakdownMap.h"
 #include "RideConstruction.h"
 #include "RideData.h"
 #include "RideEntry.h"
@@ -73,7 +74,6 @@
 #include "Vehicle.h"
 #include "ted/TrackElementDescriptor.h"
 
-#include "RideBreakdownMap.h"
 #include <cassert>
 #include <iterator>
 #include <limits>
