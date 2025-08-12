@@ -859,7 +859,7 @@ static std::pair<uint8_t, uint8_t> PathPaintGetRotatedEdgesAndCorners(
 
 static ImageIndex PathPaintGetBaseImage(
     const PaintSession& session, const PathElement& pathElement, const FootpathPaintInfo& pathPaintInfo,
-    uint16_t rotatedEdgesAndCorners)
+    const uint8_t rotatedEdgesAndCorners)
 {
     ImageIndex surfaceBaseImageIndex = pathPaintInfo.SurfaceImageId;
     if (pathElement.IsSloped())
