@@ -69,7 +69,7 @@ static constexpr uint8_t kPathEdgesAndCornersToSurfaceImageIndexOffset[] = {
 };
 
 // clang-format off
-static constexpr BoundBoxXY stru_98D804[] = {
+static constexpr BoundBoxXY kPathBoundingBoxes[] = {
     { { 3, 3 }, { 26, 26 } },
     { { 0, 3 }, { 29, 26 } },
     { { 3, 3 }, { 26, 29 } },
@@ -878,8 +878,8 @@ static ImageIndex PathPaintGetBaseImage(
 
 static BoundBoxXYZ PathPaintGetBoundbox(const PaintSession& session, int32_t height, uint8_t edges)
 {
-    CoordsXY boundBoxOffset = stru_98D804[edges].offset;
-    CoordsXY boundBoxSize = stru_98D804[edges].length;
+    CoordsXY boundBoxOffset = kPathBoundingBoxes[edges].offset;
+    CoordsXY boundBoxSize = kPathBoundingBoxes[edges].length;
 
     const bool hasPassedSurface = (session.Flags & PaintSessionFlags::PassedSurface) != 0;
     if (!hasPassedSurface)
