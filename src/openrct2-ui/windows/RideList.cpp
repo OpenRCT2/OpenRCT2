@@ -913,13 +913,13 @@ namespace OpenRCT2::Ui::Windows
             });
         }
 
-        bool IsFiltered(const Ride& ride)
+        bool IsFiltered(const u8string& rideName)
         {
             if (_searchFilter.empty())
                 return true;
 
             // Check if the filter matches the ride name
-            return String::contains(u8string_view(ride.getName()), _searchFilter, true);
+            return String::contains(u8string_view(rideName), _searchFilter, true);
         }
 
         /**
@@ -937,8 +937,11 @@ namespace OpenRCT2::Ui::Windows
                     continue;
                 }
 
+                // Get the ride name once and use it for both filtering and storage
+                auto rideName = rideRef.getName();
+
                 // Apply search filter
-                if (!IsFiltered(rideRef))
+                if (!IsFiltered(rideName))
                 {
                     continue;
                 }
@@ -950,7 +953,7 @@ namespace OpenRCT2::Ui::Windows
 
                 RideListEntry entry{};
                 entry.Id = rideRef.id;
-                entry.Name = rideRef.getName();
+                entry.Name = std::move(rideName);
 
                 _rideList.push_back(std::move(entry));
             }
