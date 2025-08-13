@@ -202,11 +202,11 @@ namespace OpenRCT2::Park
 
         // Penalty for overpriced entrance fee relative to total ride value
         auto entranceFee = GetEntranceFee();
-        if (entranceFee > gameState.totalRideValueForMoney)
+        if (entranceFee > gameState.park.totalRideValueForMoney)
         {
             probability /= 4;
             // Extra penalty for very overpriced entrance fee
-            if (entranceFee / 2 > gameState.totalRideValueForMoney)
+            if (entranceFee / 2 > gameState.park.totalRideValueForMoney)
             {
                 probability /= 4;
             }
@@ -287,7 +287,7 @@ namespace OpenRCT2::Park
         gameState.park.guestChangeModifier = 0;
         gameState.park.Rating = 0;
         gameState.park.guestGenerationProbability = 0;
-        gameState.totalRideValueForMoney = 0;
+        gameState.park.totalRideValueForMoney = 0;
         gameState.suggestedGuestMaximum = 0;
         gameState.researchLastItem = std::nullopt;
         gameState.park.marketingCampaigns.clear();
@@ -346,7 +346,7 @@ namespace OpenRCT2::Park
             gameState.park.Rating = CalculateParkRating();
             gameState.park.Value = Park::CalculateParkValue();
             gameState.park.companyValue = CalculateCompanyValue();
-            gameState.totalRideValueForMoney = calculateTotalRideValueForMoney();
+            gameState.park.totalRideValueForMoney = calculateTotalRideValueForMoney();
             gameState.suggestedGuestMaximum = calculateSuggestedMaxGuests();
             gameState.park.guestGenerationProbability = calculateGuestGenerationProbability();
 

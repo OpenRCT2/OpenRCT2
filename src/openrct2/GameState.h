@@ -50,8 +50,6 @@ namespace OpenRCT2
         uint8_t guestInitialThirst;
         uint32_t nextGuestNumber;
 
-        money64 totalRideValueForMoney;
-
         Objective scenarioObjective;
         uint16_t scenarioParkRatingWarningDays;
         money64 scenarioCompletedCompanyValue;

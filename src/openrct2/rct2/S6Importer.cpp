@@ -463,7 +463,7 @@ namespace OpenRCT2::RCT2
             gameState.guestInitialHappiness = _s6.GuestInitialHappiness;
             gameState.park.Size = _s6.ParkSize;
             gameState.park.guestGenerationProbability = _s6.GuestGenerationProbability;
-            gameState.totalRideValueForMoney = _s6.TotalRideValueForMoney;
+            gameState.park.totalRideValueForMoney = _s6.TotalRideValueForMoney;
             gameState.park.maxBankLoan = ToMoney64(_s6.MaximumLoan);
             gameState.guestInitialCash = ToMoney64(_s6.GuestInitialCash);
             gameState.guestInitialHunger = _s6.GuestInitialHunger;

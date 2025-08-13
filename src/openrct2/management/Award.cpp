@@ -184,10 +184,10 @@ static bool AwardIsDeservedBestValue(int32_t activeAwardTypes)
     if ((gameState.park.Flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked())
         return false;
 
-    if (gameState.totalRideValueForMoney < 10.00_GBP)
+    if (gameState.park.totalRideValueForMoney < 10.00_GBP)
         return false;
 
-    if (Park::GetEntranceFee() + 0.10_GBP >= gameState.totalRideValueForMoney / 2)
+    if (Park::GetEntranceFee() + 0.10_GBP >= gameState.park.totalRideValueForMoney / 2)
         return false;
 
     return true;
@@ -239,7 +239,7 @@ static bool AwardIsDeservedWorstValue(int32_t activeAwardTypes)
     const auto parkEntranceFee = Park::GetEntranceFee();
     if (parkEntranceFee == 0.00_GBP)
         return false;
-    if (parkEntranceFee <= gameState.totalRideValueForMoney)
+    if (parkEntranceFee <= gameState.park.totalRideValueForMoney)
         return false;
     return true;
 }

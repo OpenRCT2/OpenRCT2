@@ -102,6 +102,8 @@ namespace OpenRCT2::Park
         uint64_t totalAdmissions;
         money64 totalIncomeFromAdmissions;
 
+        money64 totalRideValueForMoney;
+
         money64 bankLoan;
         money64 maxBankLoan;
         uint8_t bankLoanInterestRate;
