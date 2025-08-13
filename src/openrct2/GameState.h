@@ -61,11 +61,12 @@ namespace OpenRCT2
         money64 totalRideValueForMoney;
         uint16_t weeklyProfitAverageDivisor;
         money64 weeklyProfitHistory[kFinanceHistorySize];
+
         Objective scenarioObjective;
         uint16_t scenarioParkRatingWarningDays;
         money64 scenarioCompletedCompanyValue;
         money64 scenarioCompanyValueRecord;
-        money64 bankLoan;
+
         uint8_t bankLoanInterestRate;
         money64 maxBankLoan;
         random_engine_t scenarioRand;

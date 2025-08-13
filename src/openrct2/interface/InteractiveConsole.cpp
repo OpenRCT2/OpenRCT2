@@ -569,7 +569,7 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (argv[0] == "current_loan")
         {
-            console.WriteLine(FormatString("current_loan {CURRENCY2DP}", gameState.bankLoan));
+            console.WriteLine(FormatString("current_loan {CURRENCY2DP}", gameState.park.bankLoan));
         }
         else if (argv[0] == "max_loan")
         {

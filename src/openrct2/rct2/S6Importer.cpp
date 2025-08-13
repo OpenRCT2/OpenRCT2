@@ -380,7 +380,7 @@ namespace OpenRCT2::RCT2
             ConvertPeepAnimationTypeToObjects(gameState);
 
             gameState.initialCash = ToMoney64(_s6.InitialCash);
-            gameState.bankLoan = ToMoney64(_s6.CurrentLoan);
+            gameState.park.bankLoan = ToMoney64(_s6.CurrentLoan);
 
             gameState.park.Flags = _s6.ParkFlags & ~PARK_FLAGS_NO_MONEY_SCENARIO;
 

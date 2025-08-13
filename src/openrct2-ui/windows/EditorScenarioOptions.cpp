@@ -1434,10 +1434,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_INITIAL_LOAN_INCREASE:
-                    if (gameState.bankLoan < 5000000.00_GBP)
+                    if (gameState.park.bankLoan < 5000000.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::InitialLoan, gameState.bankLoan + 1000.00_GBP);
+                            ScenarioSetSetting::InitialLoan, gameState.park.bankLoan + 1000.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1447,10 +1447,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_INITIAL_LOAN_DECREASE:
-                    if (gameState.bankLoan > 0.00_GBP)
+                    if (gameState.park.bankLoan > 0.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::InitialLoan, gameState.bankLoan - 1000.00_GBP);
+                            ScenarioSetSetting::InitialLoan, gameState.park.bankLoan - 1000.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1696,7 +1696,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 screenCoords = windowPos + ScreenCoordsXY{ initialLoanWidget.left + 1, initialLoanWidget.top };
                 auto ft = Formatter();
-                ft.Add<money64>(gameState.bankLoan);
+                ft.Add<money64>(gameState.park.bankLoan);
                 auto colour = !IsWidgetDisabled(WIDX_INITIAL_LOAN) ? wColour2 : wColour2.withFlag(ColourFlag::inset, true);
                 DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft, colour);
             }

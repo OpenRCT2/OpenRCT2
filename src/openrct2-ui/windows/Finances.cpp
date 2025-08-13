@@ -357,7 +357,7 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
                 {
                     auto& gameState = getGameState();
-                    const auto cashLessLoan = gameState.park.cash - gameState.bankLoan;
+                    const auto cashLessLoan = gameState.park.cash - gameState.park.bankLoan;
                     const auto fmt = cashLessLoan >= 0 ? STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE
                                                        : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE;
                     OnDrawGraph(rt, cashLessLoan, fmt);
@@ -543,8 +543,8 @@ namespace OpenRCT2::Ui::Windows
                 {
                     // If loan can be increased, do so.
                     // If not, action shows error message.
-                    auto newLoan = gameState.bankLoan + 1000.00_GBP;
-                    if (gameState.bankLoan < gameState.maxBankLoan)
+                    auto newLoan = gameState.park.bankLoan + 1000.00_GBP;
+                    if (gameState.park.bankLoan < gameState.maxBankLoan)
                     {
                         newLoan = std::min(gameState.maxBankLoan, newLoan);
                     }
@@ -557,10 +557,10 @@ namespace OpenRCT2::Ui::Windows
                     // If loan is positive, decrease it.
                     // If loan is negative, action shows error message.
                     // If loan is exactly 0, prevent error message.
-                    if (gameState.bankLoan != 0)
+                    if (gameState.park.bankLoan != 0)
                     {
-                        auto newLoan = gameState.bankLoan - 1000.00_GBP;
-                        if (gameState.bankLoan > 0)
+                        auto newLoan = gameState.park.bankLoan - 1000.00_GBP;
+                        if (gameState.park.bankLoan > 0)
                         {
                             newLoan = std::max(static_cast<money64>(0LL), newLoan);
                         }
@@ -579,7 +579,7 @@ namespace OpenRCT2::Ui::Windows
             // drawing has completed.
             auto ft = Formatter::Common();
             ft.Increment(6);
-            ft.Add<money64>(getGameState().bankLoan);
+            ft.Add<money64>(getGameState().park.bankLoan);
 
             // Keep up with new months being added in the first two years.
             if (GetDate().GetMonthsElapsed() != _lastPaintedMonth)

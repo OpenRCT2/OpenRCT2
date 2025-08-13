@@ -529,7 +529,7 @@ namespace OpenRCT2::Park
     {
         const auto& gameState = getGameState();
 
-        auto result = gameState.park.Value - gameState.bankLoan;
+        auto result = gameState.park.Value - gameState.park.bankLoan;
 
         // Clamp addition to prevent overflow
         result = AddClamp<money64>(result, FinanceGetCurrentCash());
@@ -613,7 +613,8 @@ namespace OpenRCT2::Park
         HistoryPushRecord<uint32_t, numGuestsHistorySize>(gameState.park.guestsInParkHistory, gameState.park.numGuestsInPark);
 
         constexpr auto cashHistorySize = std::extent_v<decltype(ParkData::cashHistory)>;
-        HistoryPushRecord<money64, cashHistorySize>(gameState.park.cashHistory, FinanceGetCurrentCash() - gameState.bankLoan);
+        HistoryPushRecord<money64, cashHistorySize>(
+            gameState.park.cashHistory, FinanceGetCurrentCash() - gameState.park.bankLoan);
 
         // Update weekly profit history
         auto currentWeeklyProfit = gameState.weeklyProfitAverageDividend;

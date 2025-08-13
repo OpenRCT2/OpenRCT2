@@ -326,7 +326,7 @@ namespace OpenRCT2::Editor
             gameState.initialCash = std::min<money64>(gameState.initialCash, 100000);
             FinanceResetCashToInitial();
 
-            gameState.bankLoan = std::clamp<money64>(gameState.bankLoan, 0.00_GBP, 5000000.00_GBP);
+            gameState.park.bankLoan = std::clamp<money64>(gameState.park.bankLoan, 0.00_GBP, 5000000.00_GBP);
 
             gameState.maxBankLoan = std::clamp<money64>(gameState.maxBankLoan, 0.00_GBP, 5000000.00_GBP);
 

@@ -80,5 +80,7 @@ namespace OpenRCT2::Park
 
         uint32_t guestsInParkHistory[kGuestsInParkHistorySize];
         uint32_t numGuestsInPark;
+
+        money64 bankLoan;
     };
 } // namespace OpenRCT2::Park

@@ -141,7 +141,7 @@ void FinancePayInterest()
 
     // This variable uses the 64-bit type as the computation below can involve multiplying very large numbers
     // that will overflow money64 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
-    const money64 current_loan = gameState.bankLoan;
+    const money64 current_loan = gameState.park.bankLoan;
     const auto current_interest_rate = gameState.bankLoanInterestRate;
     const money64 interest_to_pay = (gameState.park.Flags & PARK_FLAGS_RCT1_INTEREST)
         ? (current_loan / 2400)
@@ -225,7 +225,7 @@ void FinanceInit()
     gameState.initialCash = 10000.00_GBP; // Cheat detection
 
     gameState.park.cash = 10000.00_GBP;
-    gameState.bankLoan = 10000.00_GBP;
+    gameState.park.bankLoan = 10000.00_GBP;
     gameState.maxBankLoan = 20000.00_GBP;
 
     gameState.bankLoanInterestRate = 10;
@@ -265,7 +265,7 @@ void FinanceUpdateDailyProfit()
         current_profit -= research_cost_table[level];
 
         // Loan costs
-        auto current_loan = gameState.bankLoan;
+        auto current_loan = gameState.park.bankLoan;
         current_profit -= current_loan / 600;
 
         // Ride costs
@@ -298,7 +298,7 @@ money64 FinanceGetInitialCash()
 
 money64 FinanceGetCurrentLoan()
 {
-    return getGameState().bankLoan;
+    return getGameState().park.bankLoan;
 }
 
 money64 FinanceGetMaximumLoan()

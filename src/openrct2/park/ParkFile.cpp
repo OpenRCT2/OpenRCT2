@@ -894,7 +894,7 @@ namespace OpenRCT2
                 ParkFileChunkType::PARK, [version = os.GetHeader().TargetVersion, &gameState](OrcaStream::ChunkStream& cs) {
                     cs.ReadWrite(gameState.park.Name);
                     cs.ReadWrite(gameState.park.cash);
-                    cs.ReadWrite(gameState.bankLoan);
+                    cs.ReadWrite(gameState.park.bankLoan);
                     cs.ReadWrite(gameState.maxBankLoan);
                     cs.ReadWrite(gameState.bankLoanInterestRate);
                     cs.ReadWrite(gameState.park.Flags);
