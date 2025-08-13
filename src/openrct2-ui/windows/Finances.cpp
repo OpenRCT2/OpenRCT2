@@ -677,7 +677,7 @@ namespace OpenRCT2::Ui::Windows
         void OnPrepareDrawMarketing()
         {
             // Count number of active campaigns
-            int32_t numActiveCampaigns = static_cast<int32_t>(getGameState().marketingCampaigns.size());
+            int32_t numActiveCampaigns = static_cast<int32_t>(getGameState().park.marketingCampaigns.size());
             int32_t y = widgets[WIDX_TAB_1].top + std::max(1, numActiveCampaigns) * kListRowHeight + 75;
 
             // Update group box positions

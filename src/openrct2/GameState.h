@@ -16,7 +16,6 @@
 #include "entity/EntityRegistry.h"
 #include "interface/ZoomLevel.h"
 #include "management/Finance.h"
-#include "management/Marketing.h"
 #include "management/NewsItem.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
@@ -109,8 +108,6 @@ namespace OpenRCT2
         ZoomLevel savedViewZoom;
 
         ObjectEntryIndex lastEntranceStyle;
-
-        std::vector<MarketingCampaign> marketingCampaigns;
 
         /**
          * Probability out of 65535, of gaining a new guest per game tick.

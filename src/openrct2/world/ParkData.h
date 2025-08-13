@@ -13,6 +13,7 @@
 #include "../interface/Colour.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
+#include "../management/Marketing.h"
 #include "Location.hpp"
 
 #include <string>
@@ -102,5 +103,6 @@ namespace OpenRCT2::Park
         colour_t staffSecurityColour;
 
         std::vector<Award> currentAwards;
+        std::vector<MarketingCampaign> marketingCampaigns;
     };
 } // namespace OpenRCT2::Park

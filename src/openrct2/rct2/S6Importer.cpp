@@ -1626,7 +1626,7 @@ namespace OpenRCT2::RCT2
                     {
                         campaign.ShopItemType = ShopItem(_s6.CampaignRideIndex[i]);
                     }
-                    getGameState().marketingCampaigns.push_back(campaign);
+                    getGameState().park.marketingCampaigns.push_back(campaign);
                 }
             }
         }

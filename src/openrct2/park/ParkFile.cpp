@@ -945,7 +945,7 @@ namespace OpenRCT2
                     cs.ReadWrite(gameState.park.historicalProfit);
 
                     // Marketing
-                    cs.ReadWriteVector(gameState.marketingCampaigns, [&cs](MarketingCampaign& campaign) {
+                    cs.ReadWriteVector(gameState.park.marketingCampaigns, [&cs](MarketingCampaign& campaign) {
                         cs.ReadWrite(campaign.Type);
                         cs.ReadWrite(campaign.WeeksLeft);
                         cs.ReadWrite(campaign.flags.holder);

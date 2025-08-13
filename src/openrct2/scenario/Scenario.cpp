@@ -152,7 +152,7 @@ void ScenarioReset(GameState_t& gameState)
         gameState.lastEntranceStyle = 0;
     }
 
-    gameState.marketingCampaigns.clear();
+    gameState.park.marketingCampaigns.clear();
     gameState.park.RatingCasualtyPenalty = 0;
 
     // Open park with free entry when there is no money

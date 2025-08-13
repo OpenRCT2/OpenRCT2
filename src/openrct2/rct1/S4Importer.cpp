@@ -1554,7 +1554,7 @@ namespace OpenRCT2::RCT1
                     {
                         campaign.ShopItemType = ShopItem(_s4.MarketingAssoc[i]);
                     }
-                    gameState.marketingCampaigns.push_back(campaign);
+                    gameState.park.marketingCampaigns.push_back(campaign);
                 }
             }
         }
