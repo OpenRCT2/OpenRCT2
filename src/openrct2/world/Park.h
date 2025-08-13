@@ -22,6 +22,8 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Park
 {
+    struct ParkData;
+
     void Initialise(GameState_t& gameState);
     void Update(GameState_t& gameState, const Date& date);
 
@@ -44,6 +46,7 @@ namespace OpenRCT2::Park
 
     uint8_t CalculateGuestInitialHappiness(uint8_t percentage);
 
+    bool IsOpen(const ParkData& park);
     void SetOpen(bool open);
     money64 GetEntranceFee();
 

@@ -231,7 +231,7 @@ GameActions::Result CheatSetAction::Execute() const
             gameState.cheats.neverendingMarketing = _param1 != 0;
             break;
         case CheatType::OpenClosePark:
-            ParkSetOpen(!gameState.park.IsOpen());
+            ParkSetOpen(!Park::IsOpen(gameState.park));
             break;
         case CheatType::HaveFun:
             gameState.scenarioObjective.Type = OBJECTIVE_HAVE_FUN;

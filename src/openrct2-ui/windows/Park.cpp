@@ -451,7 +451,7 @@ namespace OpenRCT2::Ui::Windows
                 WindowDropdownShowText(
                     { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[1], 0, 2);
 
-                if (getGameState().park.IsOpen())
+                if (Park::IsOpen(getGameState().park))
                 {
                     gDropdownDefaultIndex = 0;
                     Dropdown::SetChecked(1, true);
@@ -512,7 +512,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const char*>(parkName);
             }
-            const bool parkIsOpen = gameState.park.IsOpen();
+            const bool parkIsOpen = Park::IsOpen(gameState.park);
             widgets[WIDX_OPEN_OR_CLOSE].image = ImageId(parkIsOpen ? SPR_OPEN : SPR_CLOSED);
             const auto closeLightImage = SPR_G2_RCT1_CLOSE_BUTTON_0 + !parkIsOpen * 2
                 + widgetIsPressed(*this, WIDX_CLOSE_LIGHT);
@@ -598,7 +598,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw park closed / open label
             auto ft = Formatter();
-            ft.Add<StringId>(getGameState().park.IsOpen() ? STR_PARK_OPEN : STR_PARK_CLOSED);
+            ft.Add<StringId>(Park::IsOpen(getGameState().park) ? STR_PARK_OPEN : STR_PARK_CLOSED);
 
             auto* labelWidget = &widgets[WIDX_STATUS];
             DrawTextEllipsised(

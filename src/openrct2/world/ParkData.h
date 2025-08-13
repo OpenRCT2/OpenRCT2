@@ -65,7 +65,5 @@ namespace OpenRCT2::Park
         uint32_t Size;
         money64 Value;
         money64 ValueHistory[kFinanceHistorySize];
-
-        bool IsOpen() const;
     };
 } // namespace OpenRCT2::Park

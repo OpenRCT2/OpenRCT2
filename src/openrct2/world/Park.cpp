@@ -793,8 +793,8 @@ namespace OpenRCT2::Park
         return false;
     }
 
-    bool ParkData::IsOpen() const
+    bool IsOpen(const ParkData& park)
     {
-        return (Flags & PARK_FLAGS_PARK_OPEN) != 0;
+        return (park.Flags & PARK_FLAGS_PARK_OPEN) != 0;
     }
 } // namespace OpenRCT2::Park
