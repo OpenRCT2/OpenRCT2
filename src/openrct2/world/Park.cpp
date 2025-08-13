@@ -183,7 +183,7 @@ namespace OpenRCT2::Park
         uint32_t probability = 50 + std::clamp(gameState.park.Rating - 200, 0, 650);
 
         // The more guests, the lower the chance of a new one
-        uint32_t numGuests = gameState.numGuestsInPark + gameState.numGuestsHeadingForPark;
+        uint32_t numGuests = gameState.park.numGuestsInPark + gameState.numGuestsHeadingForPark;
         if (numGuests > gameState.suggestedGuestMaximum)
         {
             probability /= 4;
@@ -235,7 +235,7 @@ namespace OpenRCT2::Park
         if (static_cast<int32_t>(ScenarioRand() & 0xFFFF) < gameState.guestGenerationProbability)
         {
             bool difficultGeneration = (gameState.park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
-            if (!difficultGeneration || gameState.suggestedGuestMaximum + 150 >= gameState.numGuestsInPark)
+            if (!difficultGeneration || gameState.suggestedGuestMaximum + 150 >= gameState.park.numGuestsInPark)
             {
                 GenerateGuest();
             }
@@ -281,7 +281,7 @@ namespace OpenRCT2::Park
         gameState.staffHandymanColour = COLOUR_BRIGHT_RED;
         gameState.staffMechanicColour = COLOUR_LIGHT_BLUE;
         gameState.staffSecurityColour = COLOUR_YELLOW;
-        gameState.numGuestsInPark = 0;
+        gameState.park.numGuestsInPark = 0;
         gameState.numGuestsInParkLastWeek = 0;
         gameState.numGuestsHeadingForPark = 0;
         gameState.guestChangeModifier = 0;
@@ -410,7 +410,7 @@ namespace OpenRCT2::Park
         // Guests
         {
             // -150 to +3 based on a range of guests from 0 to 2000
-            result -= 150 - (std::min<int32_t>(2000, gameState.numGuestsInPark) / 13);
+            result -= 150 - (std::min<int32_t>(2000, gameState.park.numGuestsInPark) / 13);
 
             // Find the number of happy peeps and the number of peeps who can't find the park exit
             uint32_t happyGuestCount = 0;
@@ -432,9 +432,9 @@ namespace OpenRCT2::Park
 
             // Peep happiness -500 to +0
             result -= 500;
-            if (gameState.numGuestsInPark > 0)
+            if (gameState.park.numGuestsInPark > 0)
             {
-                result += 2 * std::min(250u, (happyGuestCount * 300) / gameState.numGuestsInPark);
+                result += 2 * std::min(250u, (happyGuestCount * 300) / gameState.park.numGuestsInPark);
             }
 
             // Up to 25 guests can be lost without affecting the park rating.
@@ -520,7 +520,7 @@ namespace OpenRCT2::Park
         }
 
         // +7.00 per guest
-        result += static_cast<money64>(getGameState().numGuestsInPark) * 7.00_GBP;
+        result += static_cast<money64>(getGameState().park.numGuestsInPark) * 7.00_GBP;
 
         return result;
     }
@@ -586,13 +586,14 @@ namespace OpenRCT2::Park
         std::fill(
             std::begin(gameState.park.RatingHistory), std::end(gameState.park.RatingHistory), kParkRatingHistoryUndefined);
         std::fill(
-            std::begin(gameState.guestsInParkHistory), std::end(gameState.guestsInParkHistory), kGuestsInParkHistoryUndefined);
+            std::begin(gameState.park.guestsInParkHistory), std::end(gameState.park.guestsInParkHistory),
+            kGuestsInParkHistoryUndefined);
     }
 
     void UpdateHistories(GameState_t& gameState)
     {
         uint8_t guestChangeModifier = 1;
-        int32_t changeInGuestsInPark = static_cast<int32_t>(gameState.numGuestsInPark)
+        int32_t changeInGuestsInPark = static_cast<int32_t>(gameState.park.numGuestsInPark)
             - static_cast<int32_t>(gameState.numGuestsInParkLastWeek);
         if (changeInGuestsInPark > -20)
         {
@@ -603,15 +604,15 @@ namespace OpenRCT2::Park
             }
         }
         gameState.guestChangeModifier = guestChangeModifier;
-        gameState.numGuestsInParkLastWeek = gameState.numGuestsInPark;
+        gameState.numGuestsInParkLastWeek = gameState.park.numGuestsInPark;
 
         // Update park rating, guests in park and current cash history
         constexpr auto ratingHistorySize = std::extent_v<decltype(ParkData::RatingHistory)>;
         HistoryPushRecord<uint16_t, ratingHistorySize>(gameState.park.RatingHistory, gameState.park.Rating);
-        constexpr auto numGuestsHistorySize = std::extent_v<decltype(GameState_t::guestsInParkHistory)>;
-        HistoryPushRecord<uint32_t, numGuestsHistorySize>(gameState.guestsInParkHistory, gameState.numGuestsInPark);
+        constexpr auto numGuestsHistorySize = std::extent_v<decltype(ParkData::guestsInParkHistory)>;
+        HistoryPushRecord<uint32_t, numGuestsHistorySize>(gameState.park.guestsInParkHistory, gameState.park.numGuestsInPark);
 
-        constexpr auto cashHistorySize = std::extent_v<decltype(GameState_t::park.cashHistory)>;
+        constexpr auto cashHistorySize = std::extent_v<decltype(ParkData::cashHistory)>;
         HistoryPushRecord<money64, cashHistorySize>(gameState.park.cashHistory, FinanceGetCurrentCash() - gameState.bankLoan);
 
         // Update weekly profit history

@@ -77,5 +77,8 @@ namespace OpenRCT2::Park
         money64 currentExpenditure;
 
         money64 companyValue;
+
+        uint32_t guestsInParkHistory[kGuestsInParkHistorySize];
+        uint32_t numGuestsInPark;
     };
 } // namespace OpenRCT2::Park

@@ -979,7 +979,7 @@ namespace OpenRCT2
                     cs.ReadWrite(gameState.park.Value);
                     cs.ReadWrite(gameState.park.companyValue);
                     cs.ReadWrite(gameState.park.Size);
-                    cs.ReadWrite(gameState.numGuestsInPark);
+                    cs.ReadWrite(gameState.park.numGuestsInPark);
                     cs.ReadWrite(gameState.numGuestsHeadingForPark);
                     cs.ReadWrite(gameState.park.Rating);
                     cs.ReadWrite(gameState.park.RatingCasualtyPenalty);
@@ -1056,7 +1056,7 @@ namespace OpenRCT2
                         });
                     }
 
-                    cs.ReadWriteArray(gameState.guestsInParkHistory, [&cs](uint32_t& value) {
+                    cs.ReadWriteArray(gameState.park.guestsInParkHistory, [&cs](uint32_t& value) {
                         cs.ReadWrite(value);
                         return true;
                     });

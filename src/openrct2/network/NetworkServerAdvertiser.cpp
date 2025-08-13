@@ -310,7 +310,7 @@ private:
             { "mapSize", mapSize },
             { "day", date.GetMonthTicks() },
             { "month", date.GetMonthsElapsed() },
-            { "guests", gameState.numGuestsInPark },
+            { "guests", gameState.park.numGuestsInPark },
             { "parkValue", gameState.park.Value },
         };
 

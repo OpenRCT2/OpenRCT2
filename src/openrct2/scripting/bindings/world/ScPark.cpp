@@ -139,7 +139,7 @@ namespace OpenRCT2::Scripting
 
     uint32_t ScPark::guests_get() const
     {
-        return getGameState().numGuestsInPark;
+        return getGameState().park.numGuestsInPark;
     }
 
     uint32_t ScPark::suggestedGuestMaximum_get() const

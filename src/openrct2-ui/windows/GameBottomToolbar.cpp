@@ -130,11 +130,12 @@ namespace OpenRCT2::Ui::Windows
                 const auto& widget = widgets[WIDX_GUESTS];
                 auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(), windowPos.y + widget.midY() - 6 };
 
-                StringId stringId = gameState.numGuestsInPark == 1 ? _guestCountFormatsSingular[gameState.guestChangeModifier]
-                                                                   : _guestCountFormats[gameState.guestChangeModifier];
+                StringId stringId = gameState.park.numGuestsInPark == 1
+                    ? _guestCountFormatsSingular[gameState.guestChangeModifier]
+                    : _guestCountFormats[gameState.guestChangeModifier];
                 auto colour = GetHoverWidgetColour(WIDX_GUESTS);
                 auto ft = Formatter();
-                ft.Add<uint32_t>(gameState.numGuestsInPark);
+                ft.Add<uint32_t>(gameState.park.numGuestsInPark);
                 DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
             }
 

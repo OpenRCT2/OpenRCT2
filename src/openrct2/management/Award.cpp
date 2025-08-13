@@ -108,7 +108,7 @@ static bool AwardIsDeservedMostUntidy(int32_t activeAwardTypes)
         }
     }
 
-    return (negativeCount > getGameState().numGuestsInPark / 16);
+    return (negativeCount > getGameState().park.numGuestsInPark / 16);
 }
 
 /** More than 1/64 of the total guests must be thinking tidy thoughts and less than 6 guests thinking untidy thoughts. */
@@ -140,7 +140,7 @@ static bool AwardIsDeservedMostTidy(int32_t activeAwardTypes)
         }
     }
 
-    return (negativeCount <= 5 && positiveCount > getGameState().numGuestsInPark / 64);
+    return (negativeCount <= 5 && positiveCount > getGameState().park.numGuestsInPark / 64);
 }
 
 /** At least 6 open roller coasters. */
@@ -223,7 +223,7 @@ static bool AwardIsDeservedMostBeautiful(int32_t activeAwardTypes)
         }
     }
 
-    return (negativeCount <= 15 && positiveCount > getGameState().numGuestsInPark / 128);
+    return (negativeCount <= 15 && positiveCount > getGameState().park.numGuestsInPark / 128);
 }
 
 /** Entrance fee is more than total ride value. */
@@ -313,7 +313,7 @@ static bool AwardIsDeservedBestFood(int32_t activeAwardTypes)
         }
     }
 
-    if (shops < 7 || uniqueShops < 4 || shops < getGameState().numGuestsInPark / 128)
+    if (shops < 7 || uniqueShops < 4 || shops < getGameState().park.numGuestsInPark / 128)
         return false;
 
     // Count hungry peeps
@@ -358,7 +358,7 @@ static bool AwardIsDeservedWorstFood(int32_t activeAwardTypes)
         }
     }
 
-    if (uniqueShops > 2 || shops > getGameState().numGuestsInPark / 256)
+    if (uniqueShops > 2 || shops > getGameState().park.numGuestsInPark / 256)
         return false;
 
     // Count hungry peeps
@@ -390,7 +390,7 @@ static bool AwardIsDeservedBestToilets([[maybe_unused]] int32_t activeAwardTypes
         return false;
 
     // At least one open toilet for every 128 guests
-    if (numToilets < getGameState().numGuestsInPark / 128u)
+    if (numToilets < getGameState().park.numGuestsInPark / 128u)
         return false;
 
     // Count number of guests who are thinking they need the toilet

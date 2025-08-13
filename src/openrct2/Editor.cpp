@@ -302,7 +302,7 @@ namespace OpenRCT2::Editor
 
         ResetAllEntities();
         UpdateConsolidatedPatrolAreas();
-        gameState.numGuestsInPark = 0;
+        gameState.park.numGuestsInPark = 0;
         gameState.numGuestsHeadingForPark = 0;
         gameState.numGuestsInParkLastWeek = 0;
         gameState.guestChangeModifier = 0;

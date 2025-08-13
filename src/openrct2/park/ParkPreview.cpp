@@ -40,7 +40,7 @@ namespace OpenRCT2
             .parkUsesMoney = !(gameState.park.Flags & PARK_FLAGS_NO_MONEY),
             .cash = gameState.park.cash,
             .numRides = static_cast<uint16_t>(RideManager().size()),
-            .numGuests = static_cast<uint16_t>(gameState.numGuestsInPark),
+            .numGuests = static_cast<uint16_t>(gameState.park.numGuestsInPark),
         };
 
         if (auto image = generatePreviewMap(); image != std::nullopt)

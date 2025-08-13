@@ -218,12 +218,12 @@ static void FixGuestCount()
     }
 
     auto& gameState = getGameState();
-    if (gameState.numGuestsInPark != guestCount)
+    if (gameState.park.numGuestsInPark != guestCount)
     {
-        LOG_WARNING("Corrected bad amount of guests in park: %u -> %u", gameState.numGuestsInPark, guestCount);
+        LOG_WARNING("Corrected bad amount of guests in park: %u -> %u", gameState.park.numGuestsInPark, guestCount);
     }
 
-    gameState.numGuestsInPark = guestCount;
+    gameState.park.numGuestsInPark = guestCount;
 }
 
 static void FixPeepsWithInvalidRideReference()

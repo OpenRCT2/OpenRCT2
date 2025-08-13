@@ -2277,7 +2277,7 @@ namespace OpenRCT2::RCT1
             {
                 if (_s4.GuestsInParkHistory[i] != kRCT12ParkHistoryUndefined)
                 {
-                    gameState.guestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * kRCT12GuestsInParkHistoryFactor;
+                    gameState.park.guestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * kRCT12GuestsInParkHistoryFactor;
                 }
             }
 
@@ -2293,13 +2293,13 @@ namespace OpenRCT2::RCT1
 
             // Number of guests history
             std::fill(
-                std::begin(gameState.guestsInParkHistory), std::end(gameState.guestsInParkHistory),
+                std::begin(gameState.park.guestsInParkHistory), std::end(gameState.park.guestsInParkHistory),
                 std::numeric_limits<uint32_t>::max());
             for (size_t i = 0; i < std::size(_s4.GuestsInParkHistory); i++)
             {
                 if (_s4.GuestsInParkHistory[i] != std::numeric_limits<uint8_t>::max())
                 {
-                    gameState.guestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * 20;
+                    gameState.park.guestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * 20;
                 }
             }
 

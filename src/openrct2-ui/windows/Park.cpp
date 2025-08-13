@@ -750,7 +750,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
 
             const auto& gameState = getGameState();
-            _guestProps.series = gameState.guestsInParkHistory;
+            _guestProps.series = gameState.park.guestsInParkHistory;
             const Widget* background = &widgets[WIDX_PAGE_BACKGROUND];
             _guestGraphBounds = { windowPos + ScreenCoordsXY{ background->left + 4, background->top + 15 },
                                   windowPos + ScreenCoordsXY{ background->right - 4, background->bottom - 4 } };
@@ -758,9 +758,9 @@ namespace OpenRCT2::Ui::Windows
             // Calculate Y axis max and min
             _guestProps.min = 0;
             _guestProps.max = 5000;
-            for (size_t i = 0; i < std::size(gameState.guestsInParkHistory); i++)
+            for (size_t i = 0; i < std::size(gameState.park.guestsInParkHistory); i++)
             {
-                auto value = gameState.guestsInParkHistory[i];
+                auto value = gameState.park.guestsInParkHistory[i];
                 if (value == kGuestsInParkHistoryUndefined)
                     continue;
                 while (value > _guestProps.max)
@@ -786,7 +786,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Current value
             Formatter ft;
-            ft.Add<uint32_t>(getGameState().numGuestsInPark);
+            ft.Add<uint32_t>(getGameState().park.numGuestsInPark);
             DrawTextBasic(rt, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
 
             // Graph border
@@ -978,7 +978,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw number of guests in park
             ft = Formatter();
-            ft.Add<uint32_t>(gameState.numGuestsInPark);
+            ft.Add<uint32_t>(gameState.park.numGuestsInPark);
             DrawTextBasic(rt, screenCoords, STR_GUESTS_IN_PARK_LABEL, ft);
             screenCoords.y += kListRowHeight;
 

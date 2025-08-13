@@ -407,7 +407,7 @@ namespace OpenRCT2::RCT2
             // _s6.ResearchedTrackTypesA
             // _s6.ResearchedTrackTypesB
 
-            gameState.numGuestsInPark = _s6.GuestsInPark;
+            gameState.park.numGuestsInPark = _s6.GuestsInPark;
             gameState.numGuestsHeadingForPark = _s6.GuestsHeadingForPark;
 
             for (size_t i = 0; i < Limits::kExpenditureTableMonthCount; i++)
@@ -438,7 +438,7 @@ namespace OpenRCT2::RCT2
             {
                 if (_s6.GuestsInParkHistory[i] != kRCT12ParkHistoryUndefined)
                 {
-                    gameState.guestsInParkHistory[i] = _s6.GuestsInParkHistory[i] * kRCT12GuestsInParkHistoryFactor;
+                    gameState.park.guestsInParkHistory[i] = _s6.GuestsInParkHistory[i] * kRCT12GuestsInParkHistoryFactor;
                 }
             }
 

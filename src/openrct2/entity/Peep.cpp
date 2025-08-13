@@ -1041,7 +1041,7 @@ void PeepProblemWarningsUpdate()
     // could maybe be packed into a loop, would lose a lot of clarity though
     if (warningThrottle[0])
         --warningThrottle[0];
-    else if (hungerCounter >= kPeepHungerWarningThreshold && hungerCounter >= gameState.numGuestsInPark / 16)
+    else if (hungerCounter >= kPeepHungerWarningThreshold && hungerCounter >= gameState.park.numGuestsInPark / 16)
     {
         warningThrottle[0] = 4;
         if (Config::Get().notifications.GuestWarnings)
@@ -1053,7 +1053,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[1])
         --warningThrottle[1];
-    else if (thirstCounter >= kPeepThirstWarningThreshold && thirstCounter >= gameState.numGuestsInPark / 16)
+    else if (thirstCounter >= kPeepThirstWarningThreshold && thirstCounter >= gameState.park.numGuestsInPark / 16)
     {
         warningThrottle[1] = 4;
         if (Config::Get().notifications.GuestWarnings)
@@ -1065,7 +1065,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[2])
         --warningThrottle[2];
-    else if (toiletCounter >= kPeepToiletWarningThreshold && toiletCounter >= gameState.numGuestsInPark / 16)
+    else if (toiletCounter >= kPeepToiletWarningThreshold && toiletCounter >= gameState.park.numGuestsInPark / 16)
     {
         warningThrottle[2] = 4;
         if (Config::Get().notifications.GuestWarnings)
@@ -1077,7 +1077,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[3])
         --warningThrottle[3];
-    else if (litterCounter >= kPeepLitterWarningThreshold && litterCounter >= gameState.numGuestsInPark / 32)
+    else if (litterCounter >= kPeepLitterWarningThreshold && litterCounter >= gameState.park.numGuestsInPark / 32)
     {
         warningThrottle[3] = 4;
         if (Config::Get().notifications.GuestWarnings)
@@ -1089,7 +1089,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[4])
         --warningThrottle[4];
-    else if (disgustCounter >= kPeepDisgustWarningThreshold && disgustCounter >= gameState.numGuestsInPark / 32)
+    else if (disgustCounter >= kPeepDisgustWarningThreshold && disgustCounter >= gameState.park.numGuestsInPark / 32)
     {
         warningThrottle[4] = 4;
         if (Config::Get().notifications.GuestWarnings)
@@ -1101,7 +1101,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[5])
         --warningThrottle[5];
-    else if (vandalismCounter >= kPeepVandalismWarningThreshold && vandalismCounter >= gameState.numGuestsInPark / 32)
+    else if (vandalismCounter >= kPeepVandalismWarningThreshold && vandalismCounter >= gameState.park.numGuestsInPark / 32)
     {
         warningThrottle[5] = 4;
         if (Config::Get().notifications.GuestWarnings)
@@ -2591,9 +2591,9 @@ void PeepUpdateNames()
 void IncrementGuestsInPark()
 {
     auto& gameState = getGameState();
-    if (gameState.numGuestsInPark < UINT32_MAX)
+    if (gameState.park.numGuestsInPark < UINT32_MAX)
     {
-        gameState.numGuestsInPark++;
+        gameState.park.numGuestsInPark++;
     }
     else
     {
@@ -2617,9 +2617,9 @@ void IncrementGuestsHeadingForPark()
 void DecrementGuestsInPark()
 {
     auto& gameState = getGameState();
-    if (gameState.numGuestsInPark > 0)
+    if (gameState.park.numGuestsInPark > 0)
     {
-        gameState.numGuestsInPark--;
+        gameState.park.numGuestsInPark--;
     }
     else
     {

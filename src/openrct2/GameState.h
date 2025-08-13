@@ -41,9 +41,6 @@ namespace OpenRCT2
         uint32_t currentTicks{};
         Date date;
 
-        money64 constructionRightsPrice;
-        uint32_t guestsInParkHistory[kGuestsInParkHistorySize];
-
         WeatherState weatherCurrent;
         WeatherState weatherNext;
         uint16_t weatherUpdateTimer;
@@ -55,7 +52,7 @@ namespace OpenRCT2
         uint8_t guestInitialThirst;
         uint8_t guestChangeModifier;
         uint32_t nextGuestNumber;
-        uint32_t numGuestsInPark;
+
         uint32_t numGuestsHeadingForPark;
         uint32_t numGuestsInParkLastWeek;
         money64 weeklyProfitAverageDividend;
@@ -74,6 +71,7 @@ namespace OpenRCT2
         random_engine_t scenarioRand;
         TileCoordsXY mapSize;
         money64 landPrice;
+        money64 constructionRightsPrice;
 
         EditorStep editorStep;
 
