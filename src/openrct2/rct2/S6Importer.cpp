@@ -420,9 +420,9 @@ namespace OpenRCT2::RCT2
 
             gameState.numGuestsInParkLastWeek = _s6.LastGuestsInPark;
             // Pad01357BCA
-            gameState.staffHandymanColour = _s6.HandymanColour;
-            gameState.staffMechanicColour = _s6.MechanicColour;
-            gameState.staffSecurityColour = _s6.SecurityColour;
+            gameState.park.staffHandymanColour = _s6.HandymanColour;
+            gameState.park.staffMechanicColour = _s6.MechanicColour;
+            gameState.park.staffSecurityColour = _s6.SecurityColour;
 
             gameState.park.Rating = _s6.ParkRating;
 

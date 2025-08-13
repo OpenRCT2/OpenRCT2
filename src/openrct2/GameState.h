@@ -97,9 +97,6 @@ namespace OpenRCT2
         uint16_t grassSceneryTileLoopPosition;
         CoordsXY widePathTileLoopPosition;
 
-        colour_t staffHandymanColour;
-        colour_t staffMechanicColour;
-        colour_t staffSecurityColour;
         uint64_t samePriceThroughoutPark{};
 
         uint8_t researchFundingLevel;

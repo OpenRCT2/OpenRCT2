@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../core/EnumUtils.hpp"
+#include "../interface/Colour.h"
 #include "../management/Finance.h"
 #include "Location.hpp"
 
@@ -86,5 +87,9 @@ namespace OpenRCT2::Park
         uint32_t numGuestsInPark;
 
         money64 bankLoan;
+
+        colour_t staffHandymanColour;
+        colour_t staffMechanicColour;
+        colour_t staffSecurityColour;
     };
 } // namespace OpenRCT2::Park

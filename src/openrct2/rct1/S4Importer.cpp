@@ -2317,9 +2317,9 @@ namespace OpenRCT2::RCT1
             gameState.guestGenerationProbability = _s4.GuestGenerationProbability;
 
             // Staff colours
-            gameState.staffHandymanColour = RCT1::GetColour(_s4.HandymanColour);
-            gameState.staffMechanicColour = RCT1::GetColour(_s4.MechanicColour);
-            gameState.staffSecurityColour = RCT1::GetColour(_s4.SecurityGuardColour);
+            gameState.park.staffHandymanColour = RCT1::GetColour(_s4.HandymanColour);
+            gameState.park.staffMechanicColour = RCT1::GetColour(_s4.MechanicColour);
+            gameState.park.staffSecurityColour = RCT1::GetColour(_s4.SecurityGuardColour);
 
             // Flags
             gameState.park.Flags = _s4.ParkFlags;

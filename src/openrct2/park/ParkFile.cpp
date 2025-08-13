@@ -909,9 +909,9 @@ namespace OpenRCT2
                         cs.ReadWrite(gameState.park.EntranceFee);
                     }
 
-                    cs.ReadWrite(gameState.staffHandymanColour);
-                    cs.ReadWrite(gameState.staffMechanicColour);
-                    cs.ReadWrite(gameState.staffSecurityColour);
+                    cs.ReadWrite(gameState.park.staffHandymanColour);
+                    cs.ReadWrite(gameState.park.staffMechanicColour);
+                    cs.ReadWrite(gameState.park.staffSecurityColour);
                     cs.ReadWrite(gameState.samePriceThroughoutPark);
 
                     // Finances

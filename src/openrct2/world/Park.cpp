@@ -278,9 +278,9 @@ namespace OpenRCT2::Park
     {
         gameState.park.Name = LanguageGetString(STR_UNNAMED_PARK);
         gameState.pluginStorage = {};
-        gameState.staffHandymanColour = COLOUR_BRIGHT_RED;
-        gameState.staffMechanicColour = COLOUR_LIGHT_BLUE;
-        gameState.staffSecurityColour = COLOUR_YELLOW;
+        gameState.park.staffHandymanColour = COLOUR_BRIGHT_RED;
+        gameState.park.staffMechanicColour = COLOUR_LIGHT_BLUE;
+        gameState.park.staffSecurityColour = COLOUR_YELLOW;
         gameState.park.numGuestsInPark = 0;
         gameState.numGuestsInParkLastWeek = 0;
         gameState.numGuestsHeadingForPark = 0;
