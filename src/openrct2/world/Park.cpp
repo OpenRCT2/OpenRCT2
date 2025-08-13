@@ -183,7 +183,7 @@ namespace OpenRCT2::Park
         uint32_t probability = 50 + std::clamp(gameState.park.Rating - 200, 0, 650);
 
         // The more guests, the lower the chance of a new one
-        uint32_t numGuests = gameState.park.numGuestsInPark + gameState.numGuestsHeadingForPark;
+        uint32_t numGuests = gameState.park.numGuestsInPark + gameState.park.numGuestsHeadingForPark;
         if (numGuests > gameState.suggestedGuestMaximum)
         {
             probability /= 4;
@@ -282,8 +282,8 @@ namespace OpenRCT2::Park
         gameState.park.staffMechanicColour = COLOUR_LIGHT_BLUE;
         gameState.park.staffSecurityColour = COLOUR_YELLOW;
         gameState.park.numGuestsInPark = 0;
-        gameState.numGuestsInParkLastWeek = 0;
-        gameState.numGuestsHeadingForPark = 0;
+        gameState.park.numGuestsInParkLastWeek = 0;
+        gameState.park.numGuestsHeadingForPark = 0;
         gameState.guestChangeModifier = 0;
         gameState.park.Rating = 0;
         gameState.guestGenerationProbability = 0;
@@ -594,7 +594,7 @@ namespace OpenRCT2::Park
     {
         uint8_t guestChangeModifier = 1;
         int32_t changeInGuestsInPark = static_cast<int32_t>(gameState.park.numGuestsInPark)
-            - static_cast<int32_t>(gameState.numGuestsInParkLastWeek);
+            - static_cast<int32_t>(gameState.park.numGuestsInParkLastWeek);
         if (changeInGuestsInPark > -20)
         {
             guestChangeModifier++;
@@ -604,7 +604,7 @@ namespace OpenRCT2::Park
             }
         }
         gameState.guestChangeModifier = guestChangeModifier;
-        gameState.numGuestsInParkLastWeek = gameState.park.numGuestsInPark;
+        gameState.park.numGuestsInParkLastWeek = gameState.park.numGuestsInPark;
 
         // Update park rating, guests in park and current cash history
         constexpr auto ratingHistorySize = std::extent_v<decltype(ParkData::RatingHistory)>;

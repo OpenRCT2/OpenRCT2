@@ -408,7 +408,7 @@ namespace OpenRCT2::RCT2
             // _s6.ResearchedTrackTypesB
 
             gameState.park.numGuestsInPark = _s6.GuestsInPark;
-            gameState.numGuestsHeadingForPark = _s6.GuestsHeadingForPark;
+            gameState.park.numGuestsHeadingForPark = _s6.GuestsHeadingForPark;
 
             for (size_t i = 0; i < Limits::kExpenditureTableMonthCount; i++)
             {
@@ -418,7 +418,7 @@ namespace OpenRCT2::RCT2
                 }
             }
 
-            gameState.numGuestsInParkLastWeek = _s6.LastGuestsInPark;
+            gameState.park.numGuestsInParkLastWeek = _s6.LastGuestsInPark;
             // Pad01357BCA
             gameState.park.staffHandymanColour = _s6.HandymanColour;
             gameState.park.staffMechanicColour = _s6.MechanicColour;

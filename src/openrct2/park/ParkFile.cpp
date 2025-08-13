@@ -980,7 +980,7 @@ namespace OpenRCT2
                     cs.ReadWrite(gameState.park.companyValue);
                     cs.ReadWrite(gameState.park.Size);
                     cs.ReadWrite(gameState.park.numGuestsInPark);
-                    cs.ReadWrite(gameState.numGuestsHeadingForPark);
+                    cs.ReadWrite(gameState.park.numGuestsHeadingForPark);
                     cs.ReadWrite(gameState.park.Rating);
                     cs.ReadWrite(gameState.park.RatingCasualtyPenalty);
                     cs.ReadWrite(gameState.park.currentExpenditure);
@@ -999,7 +999,7 @@ namespace OpenRCT2
                     {
                         cs.ReadWrite(gameState.totalRideValueForMoney);
                     }
-                    cs.ReadWrite(gameState.numGuestsInParkLastWeek);
+                    cs.ReadWrite(gameState.park.numGuestsInParkLastWeek);
                     cs.ReadWrite(gameState.guestChangeModifier);
                     cs.ReadWrite(gameState.guestGenerationProbability);
                     cs.ReadWrite(gameState.suggestedGuestMaximum);

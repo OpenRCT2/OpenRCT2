@@ -195,13 +195,14 @@ static void FixGuestsHeadingToParkCount()
         }
     }
 
-    if (gameState.numGuestsHeadingForPark != guestsHeadingToPark)
+    if (gameState.park.numGuestsHeadingForPark != guestsHeadingToPark)
     {
         LOG_WARNING(
-            "Corrected bad amount of guests heading to park: %u -> %u", gameState.numGuestsHeadingForPark, guestsHeadingToPark);
+            "Corrected bad amount of guests heading to park: %u -> %u", gameState.park.numGuestsHeadingForPark,
+            guestsHeadingToPark);
     }
 
-    gameState.numGuestsHeadingForPark = guestsHeadingToPark;
+    gameState.park.numGuestsHeadingForPark = guestsHeadingToPark;
 }
 
 static void FixGuestCount()

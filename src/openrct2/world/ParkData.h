@@ -85,6 +85,8 @@ namespace OpenRCT2::Park
 
         uint32_t guestsInParkHistory[kGuestsInParkHistorySize];
         uint32_t numGuestsInPark;
+        uint32_t numGuestsHeadingForPark;
+        uint32_t numGuestsInParkLastWeek;
 
         money64 bankLoan;
 

@@ -2604,9 +2604,9 @@ void IncrementGuestsInPark()
 void IncrementGuestsHeadingForPark()
 {
     auto& gameState = getGameState();
-    if (gameState.numGuestsHeadingForPark < UINT32_MAX)
+    if (gameState.park.numGuestsHeadingForPark < UINT32_MAX)
     {
-        gameState.numGuestsHeadingForPark++;
+        gameState.park.numGuestsHeadingForPark++;
     }
     else
     {
@@ -2631,9 +2631,9 @@ void DecrementGuestsHeadingForPark()
 {
     auto& gameState = getGameState();
 
-    if (gameState.numGuestsHeadingForPark > 0)
+    if (gameState.park.numGuestsHeadingForPark > 0)
     {
-        gameState.numGuestsHeadingForPark--;
+        gameState.park.numGuestsHeadingForPark--;
     }
     else
     {
