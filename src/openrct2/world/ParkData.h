@@ -119,6 +119,8 @@ namespace OpenRCT2::Park
         colour_t staffMechanicColour;
         colour_t staffSecurityColour;
 
+        uint8_t peepWarningThrottle[16];
+
         std::vector<Award> currentAwards;
         std::vector<MarketingCampaign> marketingCampaigns;
     };

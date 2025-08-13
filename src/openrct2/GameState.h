@@ -79,7 +79,6 @@ namespace OpenRCT2
         std::vector<ScenerySelection> restrictedScenery;
 
         std::vector<PeepSpawn> peepSpawns;
-        uint8_t peepWarningThrottle[16];
 
         News::ItemQueues newsItems;
 
