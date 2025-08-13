@@ -557,7 +557,7 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (argv[0] == "company_value")
         {
-            console.WriteLine(FormatString("company_value {CURRENCY2DP}", gameState.companyValue));
+            console.WriteLine(FormatString("company_value {CURRENCY2DP}", gameState.park.companyValue));
         }
         else if (argv[0] == "money")
         {

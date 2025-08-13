@@ -68,5 +68,7 @@ namespace OpenRCT2::Park
 
         money64 cash;
         money64 cashHistory[kFinanceHistorySize];
+
+        money64 companyValue;
     };
 } // namespace OpenRCT2::Park

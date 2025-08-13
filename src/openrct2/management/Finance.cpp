@@ -230,7 +230,7 @@ void FinanceInit()
 
     gameState.bankLoanInterestRate = 10;
     gameState.park.Value = 0;
-    gameState.companyValue = 0;
+    gameState.park.companyValue = 0;
     gameState.historicalProfit = 0;
     gameState.scenarioCompletedCompanyValue = kMoney64Undefined;
     gameState.totalAdmissions = 0;

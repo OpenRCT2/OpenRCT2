@@ -41,13 +41,14 @@ namespace OpenRCT2
         std::string pluginStorage;
         uint32_t currentTicks{};
         Date date;
-        money64 companyValue;
+
         // The total profit for the entire scenario that precedes the current financial table.
         money64 historicalProfit;
         money64 constructionRightsPrice;
         money64 currentExpenditure;
         money64 currentProfit;
         uint32_t guestsInParkHistory[kGuestsInParkHistorySize];
+
         WeatherState weatherCurrent;
         WeatherState weatherNext;
         uint16_t weatherUpdateTimer;

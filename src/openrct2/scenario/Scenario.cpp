@@ -107,7 +107,7 @@ void ScenarioReset(GameState_t& gameState)
 
     gameState.park.Rating = Park::CalculateParkRating();
     gameState.park.Value = Park::CalculateParkValue();
-    gameState.companyValue = Park::CalculateCompanyValue();
+    gameState.park.companyValue = Park::CalculateCompanyValue();
     gameState.historicalProfit = gameState.initialCash - gameState.bankLoan;
     gameState.park.cash = gameState.initialCash;
 
@@ -193,7 +193,7 @@ void ScenarioFailure(GameState_t& gameState)
  */
 void ScenarioSuccess(GameState_t& gameState)
 {
-    auto companyValue = gameState.companyValue;
+    auto companyValue = gameState.park.companyValue;
 
     gameState.scenarioCompletedCompanyValue = companyValue;
     PeepApplause();

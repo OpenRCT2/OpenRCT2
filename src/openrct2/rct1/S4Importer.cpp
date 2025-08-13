@@ -1511,7 +1511,7 @@ namespace OpenRCT2::RCT1
             gameState.bankLoanInterestRate = 1;
             gameState.initialCash = ToMoney64(_s4.Cash);
 
-            gameState.companyValue = ToMoney64(_s4.CompanyValue);
+            gameState.park.companyValue = ToMoney64(_s4.CompanyValue);
             gameState.park.Value = CorrectRCT1ParkValue(_s4.ParkValue);
             gameState.currentProfit = ToMoney64(_s4.Profit);
 

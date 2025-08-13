@@ -345,7 +345,7 @@ namespace OpenRCT2::Park
         {
             gameState.park.Rating = CalculateParkRating();
             gameState.park.Value = Park::CalculateParkValue();
-            gameState.companyValue = CalculateCompanyValue();
+            gameState.park.companyValue = CalculateCompanyValue();
             gameState.totalRideValueForMoney = calculateTotalRideValueForMoney();
             gameState.suggestedGuestMaximum = calculateSuggestedMaxGuests();
             gameState.guestGenerationProbability = calculateGuestGenerationProbability();

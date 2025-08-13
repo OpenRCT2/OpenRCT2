@@ -652,7 +652,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<money64>(gameState.park.Value);
                 DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 280, titleBarBottom + 265 }, STR_PARK_VALUE_LABEL, ft);
                 ft = Formatter();
-                ft.Add<money64>(gameState.companyValue);
+                ft.Add<money64>(gameState.park.companyValue);
                 DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 280, titleBarBottom + 280 }, STR_COMPANY_VALUE_LABEL, ft);
             }
         }
