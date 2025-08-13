@@ -55,7 +55,7 @@ GameActions::Result ParkSetLoanAction::Query() const
     // The “isPayingBack” check is needed to allow increasing the loan when the player is in debt.
     const auto isPayingBack = gameState.bankLoan > _value;
     const auto amountToPayBack = gameState.bankLoan - _value;
-    if (isPayingBack && amountToPayBack > gameState.cash)
+    if (isPayingBack && amountToPayBack > gameState.park.cash)
     {
         return GameActions::Result(
             GameActions::Status::InsufficientFunds, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
@@ -67,7 +67,7 @@ GameActions::Result ParkSetLoanAction::Execute() const
 {
     auto& gameState = getGameState();
 
-    gameState.cash -= (gameState.bankLoan - _value);
+    gameState.park.cash -= (gameState.bankLoan - _value);
     gameState.bankLoan = _value;
 
     auto windowManager = OpenRCT2::Ui::GetWindowManager();

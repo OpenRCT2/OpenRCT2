@@ -175,7 +175,7 @@ namespace OpenRCT2
             }
 
             // Initial cash will eventually be removed
-            gameState.initialCash = gameState.cash;
+            gameState.initialCash = gameState.park.cash;
         }
 
         void Save(GameState_t& gameState, IStream& stream, int16_t compressionLevel)
@@ -893,7 +893,7 @@ namespace OpenRCT2
             os.ReadWriteChunk(
                 ParkFileChunkType::PARK, [version = os.GetHeader().TargetVersion, &gameState](OrcaStream::ChunkStream& cs) {
                     cs.ReadWrite(gameState.park.Name);
-                    cs.ReadWrite(gameState.cash);
+                    cs.ReadWrite(gameState.park.cash);
                     cs.ReadWrite(gameState.bankLoan);
                     cs.ReadWrite(gameState.maxBankLoan);
                     cs.ReadWrite(gameState.bankLoanInterestRate);
@@ -1061,7 +1061,7 @@ namespace OpenRCT2
                         return true;
                     });
 
-                    cs.ReadWriteArray(gameState.cashHistory, [&cs](money64& value) {
+                    cs.ReadWriteArray(gameState.park.cashHistory, [&cs](money64& value) {
                         cs.ReadWrite(value);
                         return true;
                     });

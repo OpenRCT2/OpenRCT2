@@ -316,7 +316,7 @@ private:
 
         if (!(gameState.park.Flags & PARK_FLAGS_NO_MONEY))
         {
-            gameInfo["cash"] = gameState.cash;
+            gameInfo["cash"] = gameState.park.cash;
         }
 
         root["gameInfo"] = gameInfo;

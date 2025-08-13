@@ -1504,7 +1504,7 @@ namespace OpenRCT2::RCT1
             gameState.landPrice = ToMoney64(_s4.LandPrice);
             gameState.constructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
 
-            gameState.cash = ToMoney64(_s4.Cash);
+            gameState.park.cash = ToMoney64(_s4.Cash);
             gameState.bankLoan = ToMoney64(_s4.Loan);
             gameState.maxBankLoan = ToMoney64(_s4.MaxLoan);
             // It's more like 1.33%, but we can only use integers. Can be fixed once we have our own save format.
@@ -1517,7 +1517,7 @@ namespace OpenRCT2::RCT1
 
             for (size_t i = 0; i < Limits::kFinanceGraphSize; i++)
             {
-                gameState.cashHistory[i] = ToMoney64(_s4.CashHistory[i]);
+                gameState.park.cashHistory[i] = ToMoney64(_s4.CashHistory[i]);
                 gameState.park.ValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
                 gameState.weeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
             }

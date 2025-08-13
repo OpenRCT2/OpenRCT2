@@ -611,8 +611,8 @@ namespace OpenRCT2::Park
         constexpr auto numGuestsHistorySize = std::extent_v<decltype(GameState_t::guestsInParkHistory)>;
         HistoryPushRecord<uint32_t, numGuestsHistorySize>(gameState.guestsInParkHistory, gameState.numGuestsInPark);
 
-        constexpr auto cashHistorySize = std::extent_v<decltype(GameState_t::cashHistory)>;
-        HistoryPushRecord<money64, cashHistorySize>(gameState.cashHistory, FinanceGetCurrentCash() - gameState.bankLoan);
+        constexpr auto cashHistorySize = std::extent_v<decltype(GameState_t::park.cashHistory)>;
+        HistoryPushRecord<money64, cashHistorySize>(gameState.park.cashHistory, FinanceGetCurrentCash() - gameState.bankLoan);
 
         // Update weekly profit history
         auto currentWeeklyProfit = gameState.weeklyProfitAverageDividend;

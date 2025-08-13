@@ -65,7 +65,7 @@ bool FinanceCheckMoneyRequired(uint32_t flags)
  */
 bool FinanceCheckAffordability(money64 cost, uint32_t flags)
 {
-    return !FinanceCheckMoneyRequired(flags) || cost <= 0 || cost <= getGameState().cash;
+    return !FinanceCheckMoneyRequired(flags) || cost <= 0 || cost <= getGameState().park.cash;
 }
 
 /**
@@ -78,7 +78,7 @@ void FinancePayment(money64 amount, ExpenditureType type)
 {
     // overflow check
     auto& gameState = getGameState();
-    gameState.cash = AddClamp<money64>(gameState.cash, -amount);
+    gameState.park.cash = AddClamp<money64>(gameState.park.cash, -amount);
 
     gameState.expenditureTable[0][EnumValue(type)] -= amount;
     if (dword_988E60[EnumValue(type)] & 1)
@@ -188,7 +188,7 @@ void FinanceResetHistory()
     auto& gameState = getGameState();
     for (auto i = 0; i < kFinanceHistorySize; i++)
     {
-        gameState.cashHistory[i] = kMoney64Undefined;
+        gameState.park.cashHistory[i] = kMoney64Undefined;
         gameState.weeklyProfitHistory[i] = kMoney64Undefined;
         gameState.park.ValueHistory[i] = kMoney64Undefined;
     }
@@ -224,7 +224,7 @@ void FinanceInit()
 
     gameState.initialCash = 10000.00_GBP; // Cheat detection
 
-    gameState.cash = 10000.00_GBP;
+    gameState.park.cash = 10000.00_GBP;
     gameState.bankLoan = 10000.00_GBP;
     gameState.maxBankLoan = 20000.00_GBP;
 
@@ -308,7 +308,7 @@ money64 FinanceGetMaximumLoan()
 
 money64 FinanceGetCurrentCash()
 {
-    return getGameState().cash;
+    return getGameState().park.cash;
 }
 
 /**
@@ -355,7 +355,7 @@ void FinanceShiftExpenditureTable()
 void FinanceResetCashToInitial()
 {
     auto& gameState = getGameState();
-    gameState.cash = gameState.initialCash;
+    gameState.park.cash = gameState.initialCash;
 }
 
 /**

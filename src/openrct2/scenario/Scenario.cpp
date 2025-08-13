@@ -109,7 +109,7 @@ void ScenarioReset(GameState_t& gameState)
     gameState.park.Value = Park::CalculateParkValue();
     gameState.companyValue = Park::CalculateCompanyValue();
     gameState.historicalProfit = gameState.initialCash - gameState.bankLoan;
-    gameState.cash = gameState.initialCash;
+    gameState.park.cash = gameState.initialCash;
 
     auto& objManager = GetContext()->GetObjectManager();
     if (auto* textObject = objManager.GetLoadedObject<ScenarioMetaObject>(0); textObject != nullptr)

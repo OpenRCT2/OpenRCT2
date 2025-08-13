@@ -490,7 +490,7 @@ namespace OpenRCT2::RCT2
 
             for (size_t i = 0; i < Limits::kFinanceGraphSize; i++)
             {
-                gameState.cashHistory[i] = ToMoney64(_s6.BalanceHistory[i]);
+                gameState.park.cashHistory[i] = ToMoney64(_s6.BalanceHistory[i]);
                 gameState.weeklyProfitHistory[i] = ToMoney64(_s6.WeeklyProfitHistory[i]);
                 gameState.park.ValueHistory[i] = ToMoney64(_s6.ParkValueHistory[i]);
             }
@@ -523,7 +523,7 @@ namespace OpenRCT2::RCT2
             gameState.historicalProfit = ToMoney64(_s6.HistoricalProfit);
             // Pad013587D4
             gameState.scenarioCompletedBy = std::string_view(_s6.ScenarioCompletedName, sizeof(_s6.ScenarioCompletedName));
-            gameState.cash = ToMoney64(DECRYPT_MONEY(_s6.Cash));
+            gameState.park.cash = ToMoney64(DECRYPT_MONEY(_s6.Cash));
             // Pad013587FC
             gameState.park.RatingCasualtyPenalty = _s6.ParkRatingCasualtyPenalty;
             gameState.mapSize = { _s6.MapSize, _s6.MapSize };

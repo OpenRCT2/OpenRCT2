@@ -561,7 +561,7 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (argv[0] == "money")
         {
-            console.WriteLine(FormatString("money {CURRENCY2DP}", gameState.cash));
+            console.WriteLine(FormatString("money {CURRENCY2DP}", gameState.park.cash));
         }
         else if (argv[0] == "scenario_initial_cash")
         {
@@ -785,7 +785,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         if (varName == "money" && InvalidArguments(&invalidArgs, double_valid[0]))
         {
             money64 money = ToMoney64FromGBP(double_val[0]);
-            if (gameState.cash != money)
+            if (gameState.park.cash != money)
             {
                 ConsoleSetVariableAction<CheatSetAction>(console, varName, CheatType::SetMoney, money);
             }

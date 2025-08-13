@@ -107,9 +107,9 @@ namespace OpenRCT2::Ui::Windows
                                                     windowPos.y + widget.midY() - (line_height == 10 ? 5 : 6) };
 
                 auto colour = GetHoverWidgetColour(WIDX_MONEY);
-                StringId stringId = gameState.cash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
+                StringId stringId = gameState.park.cash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
                 auto ft = Formatter();
-                ft.Add<money64>(gameState.cash);
+                ft.Add<money64>(gameState.park.cash);
                 DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
             }
 

@@ -336,7 +336,7 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
                     graphPageWidget = &widgets[WIDX_PAGE_BACKGROUND];
                     centredGraph = true;
-                    _graphProps.series = getGameState().cashHistory;
+                    _graphProps.series = getGameState().park.cashHistory;
                     break;
                 default:
                     return;
@@ -357,7 +357,7 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
                 {
                     auto& gameState = getGameState();
-                    const auto cashLessLoan = gameState.cash - gameState.bankLoan;
+                    const auto cashLessLoan = gameState.park.cash - gameState.bankLoan;
                     const auto fmt = cashLessLoan >= 0 ? STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE
                                                        : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE;
                     OnDrawGraph(rt, cashLessLoan, fmt);
@@ -631,8 +631,8 @@ namespace OpenRCT2::Ui::Windows
 
             // Current cash
             auto ft = Formatter();
-            ft.Add<money64>(gameState.cash);
-            StringId stringId = gameState.cash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
+            ft.Add<money64>(gameState.park.cash);
+            StringId stringId = gameState.park.cash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
             DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 8, titleBarBottom + 280 }, stringId, ft);
 
             // Objective related financial information

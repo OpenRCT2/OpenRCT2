@@ -51,8 +51,7 @@ namespace OpenRCT2
         WeatherState weatherCurrent;
         WeatherState weatherNext;
         uint16_t weatherUpdateTimer;
-        money64 cash;
-        money64 cashHistory[kFinanceHistorySize];
+
         money64 initialCash;
         money64 guestInitialCash;
         uint8_t guestInitialHappiness;

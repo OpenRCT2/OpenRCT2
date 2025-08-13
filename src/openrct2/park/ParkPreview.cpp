@@ -38,7 +38,7 @@ namespace OpenRCT2
             .month = gameState.date.GetMonth(),
             .day = gameState.date.GetDay(),
             .parkUsesMoney = !(gameState.park.Flags & PARK_FLAGS_NO_MONEY),
-            .cash = gameState.cash,
+            .cash = gameState.park.cash,
             .numRides = static_cast<uint16_t>(RideManager().size()),
             .numGuests = static_cast<uint16_t>(gameState.numGuestsInPark),
         };

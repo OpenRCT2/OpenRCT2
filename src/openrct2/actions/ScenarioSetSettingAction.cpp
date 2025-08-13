@@ -84,7 +84,7 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             break;
         case ScenarioSetSetting::InitialCash:
             gameState.initialCash = std::clamp<money64>(_value, 0.00_GBP, 1000000.00_GBP);
-            gameState.cash = gameState.initialCash;
+            gameState.park.cash = gameState.initialCash;
             windowMgr->InvalidateByClass(WindowClass::Finances);
             windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
             break;
