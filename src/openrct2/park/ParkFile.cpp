@@ -912,7 +912,7 @@ namespace OpenRCT2
                     cs.ReadWrite(gameState.park.staffHandymanColour);
                     cs.ReadWrite(gameState.park.staffMechanicColour);
                     cs.ReadWrite(gameState.park.staffSecurityColour);
-                    cs.ReadWrite(gameState.samePriceThroughoutPark);
+                    cs.ReadWrite(gameState.park.samePriceThroughoutPark);
 
                     // Finances
                     if (cs.GetMode() == OrcaStream::Mode::READING)

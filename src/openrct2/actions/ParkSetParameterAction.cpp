@@ -77,7 +77,7 @@ GameActions::Result ParkSetParameterAction::Execute() const
             }
             break;
         case ParkParameter::SamePriceInPark:
-            gameState.samePriceThroughoutPark = _value;
+            gameState.park.samePriceThroughoutPark = _value;
             windowMgr->InvalidateByClass(WindowClass::Ride);
             break;
         default:

@@ -2334,10 +2334,10 @@ namespace OpenRCT2::RCT1
 
             gameState.park.Size = _s4.ParkSize;
             gameState.totalRideValueForMoney = _s4.TotalRideValueForMoney;
-            gameState.samePriceThroughoutPark = 0;
+            gameState.park.samePriceThroughoutPark = 0;
             if (_gameVersion == FILE_VERSION_RCT1_LL)
             {
-                gameState.samePriceThroughoutPark = _s4.SamePriceThroughout;
+                gameState.park.samePriceThroughoutPark = _s4.SamePriceThroughout;
             }
         }
 

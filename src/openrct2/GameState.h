@@ -94,8 +94,6 @@ namespace OpenRCT2
         uint16_t grassSceneryTileLoopPosition;
         CoordsXY widePathTileLoopPosition;
 
-        uint64_t samePriceThroughoutPark{};
-
         uint8_t researchFundingLevel;
         uint8_t researchPriorities;
         uint16_t researchProgress;

@@ -527,7 +527,7 @@ namespace OpenRCT2::RCT2
             // Pad013587FC
             gameState.park.RatingCasualtyPenalty = _s6.ParkRatingCasualtyPenalty;
             gameState.mapSize = { _s6.MapSize, _s6.MapSize };
-            gameState.samePriceThroughoutPark = _s6.SamePriceThroughout
+            gameState.park.samePriceThroughoutPark = _s6.SamePriceThroughout
                 | (static_cast<uint64_t>(_s6.SamePriceThroughoutExtended) << 32);
             gameState.suggestedGuestMaximum = _s6.SuggestedMaxGuests;
             gameState.scenarioParkRatingWarningDays = _s6.ParkRatingWarningDays;

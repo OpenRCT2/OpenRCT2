@@ -91,6 +91,8 @@ namespace OpenRCT2::Park
         money64 bankLoan;
         money64 maxBankLoan;
 
+        uint64_t samePriceThroughoutPark{};
+
         colour_t staffHandymanColour;
         colour_t staffMechanicColour;
         colour_t staffSecurityColour;

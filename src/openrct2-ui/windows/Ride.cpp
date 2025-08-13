@@ -6235,7 +6235,7 @@ namespace OpenRCT2::Ui::Windows
         static void UpdateSamePriceThroughoutFlags(ShopItem shop_item)
         {
             const auto& gameState = getGameState();
-            const auto existingFlags = gameState.samePriceThroughoutPark;
+            const auto existingFlags = gameState.park.samePriceThroughoutPark;
 
             auto newFlags = existingFlags;
             if (GetShopItemDescriptor(shop_item).IsPhoto())
