@@ -507,10 +507,10 @@ jobs:
       - name: Build OpenRCT2
         run: |
           . scripts/setenv -q && build -DCMAKE_CXX_COMPILER=clang++-20 -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=on
-          strip bin/install/usr/bin/openrct2
       - name: Build AppImage
         env:
           APPIMAGE_FILE_NAME: OpenRCT2-${{ needs.build_variables.outputs.name }}-linux-x86_64.AppImage
+          NO_STRIP: true # https://github.com/linuxdeploy/linuxdeploy/blob/d2557d616749c325a61058049e41a2d35ffce924/src/core/appdir.cpp#L248
         run: . scripts/setenv -q && build-appimage
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v4
