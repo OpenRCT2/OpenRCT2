@@ -126,8 +126,8 @@ void ScenarioReset(GameState_t& gameState)
 
     gameState.park.currentExpenditure = 0;
     gameState.park.currentProfit = 0;
-    gameState.weeklyProfitAverageDividend = 0;
-    gameState.weeklyProfitAverageDivisor = 0;
+    gameState.park.weeklyProfitAverageDividend = 0;
+    gameState.park.weeklyProfitAverageDivisor = 0;
     gameState.totalAdmissions = 0;
     gameState.totalIncomeFromAdmissions = 0;
 

@@ -70,6 +70,10 @@ namespace OpenRCT2::Park
         money64 cash;
         money64 cashHistory[kFinanceHistorySize];
 
+        uint16_t weeklyProfitAverageDivisor;
+        money64 weeklyProfitAverageDividend;
+        money64 weeklyProfitHistory[kFinanceHistorySize];
+
         // The total profit for the entire scenario that precedes the current financial table.
         money64 historicalProfit;
         money64 currentProfit;

@@ -617,18 +617,18 @@ namespace OpenRCT2::Park
             gameState.park.cashHistory, FinanceGetCurrentCash() - gameState.park.bankLoan);
 
         // Update weekly profit history
-        auto currentWeeklyProfit = gameState.weeklyProfitAverageDividend;
-        if (gameState.weeklyProfitAverageDivisor != 0)
+        auto currentWeeklyProfit = gameState.park.weeklyProfitAverageDividend;
+        if (gameState.park.weeklyProfitAverageDivisor != 0)
         {
-            currentWeeklyProfit /= gameState.weeklyProfitAverageDivisor;
+            currentWeeklyProfit /= gameState.park.weeklyProfitAverageDivisor;
         }
-        constexpr auto profitHistorySize = std::extent_v<decltype(GameState_t::weeklyProfitHistory)>;
-        HistoryPushRecord<money64, profitHistorySize>(gameState.weeklyProfitHistory, currentWeeklyProfit);
-        gameState.weeklyProfitAverageDividend = 0;
-        gameState.weeklyProfitAverageDivisor = 0;
+        constexpr auto profitHistorySize = std::extent_v<decltype(ParkData::weeklyProfitHistory)>;
+        HistoryPushRecord<money64, profitHistorySize>(gameState.park.weeklyProfitHistory, currentWeeklyProfit);
+        gameState.park.weeklyProfitAverageDividend = 0;
+        gameState.park.weeklyProfitAverageDivisor = 0;
 
         // Update park value history
-        constexpr auto parkValueHistorySize = std::extent_v<decltype(GameState_t::weeklyProfitHistory)>;
+        constexpr auto parkValueHistorySize = std::extent_v<decltype(ParkData::weeklyProfitHistory)>;
         HistoryPushRecord<money64, parkValueHistorySize>(gameState.park.ValueHistory, gameState.park.Value);
 
         // Invalidate relevant windows

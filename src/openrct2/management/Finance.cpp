@@ -189,7 +189,7 @@ void FinanceResetHistory()
     for (auto i = 0; i < kFinanceHistorySize; i++)
     {
         gameState.park.cashHistory[i] = kMoney64Undefined;
-        gameState.weeklyProfitHistory[i] = kMoney64Undefined;
+        gameState.park.weeklyProfitHistory[i] = kMoney64Undefined;
         gameState.park.ValueHistory[i] = kMoney64Undefined;
     }
 
@@ -219,8 +219,8 @@ void FinanceInit()
     gameState.park.currentExpenditure = 0;
     gameState.park.currentProfit = 0;
 
-    gameState.weeklyProfitAverageDividend = 0;
-    gameState.weeklyProfitAverageDivisor = 0;
+    gameState.park.weeklyProfitAverageDividend = 0;
+    gameState.park.weeklyProfitAverageDivisor = 0;
 
     gameState.initialCash = 10000.00_GBP; // Cheat detection
 
@@ -284,8 +284,8 @@ void FinanceUpdateDailyProfit()
     gameState.park.currentProfit += current_profit;
 
     // These are related to weekly profit graph
-    gameState.weeklyProfitAverageDividend += gameState.park.currentProfit;
-    gameState.weeklyProfitAverageDivisor += 1;
+    gameState.park.weeklyProfitAverageDividend += gameState.park.currentProfit;
+    gameState.park.weeklyProfitAverageDivisor += 1;
 
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByClass(WindowClass::Finances);

@@ -482,8 +482,8 @@ namespace OpenRCT2::RCT2
 
             gameState.park.currentExpenditure = ToMoney64(_s6.CurrentExpenditure);
             gameState.park.currentProfit = ToMoney64(_s6.CurrentProfit);
-            gameState.weeklyProfitAverageDividend = ToMoney64(_s6.WeeklyProfitAverageDividend);
-            gameState.weeklyProfitAverageDivisor = _s6.WeeklyProfitAverageDivisor;
+            gameState.park.weeklyProfitAverageDividend = ToMoney64(_s6.WeeklyProfitAverageDividend);
+            gameState.park.weeklyProfitAverageDivisor = _s6.WeeklyProfitAverageDivisor;
             // Pad0135833A
 
             gameState.park.Value = ToMoney64(_s6.ParkValue);
@@ -491,7 +491,7 @@ namespace OpenRCT2::RCT2
             for (size_t i = 0; i < Limits::kFinanceGraphSize; i++)
             {
                 gameState.park.cashHistory[i] = ToMoney64(_s6.BalanceHistory[i]);
-                gameState.weeklyProfitHistory[i] = ToMoney64(_s6.WeeklyProfitHistory[i]);
+                gameState.park.weeklyProfitHistory[i] = ToMoney64(_s6.WeeklyProfitHistory[i]);
                 gameState.park.ValueHistory[i] = ToMoney64(_s6.ParkValueHistory[i]);
             }
 

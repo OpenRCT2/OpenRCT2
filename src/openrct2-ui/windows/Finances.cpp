@@ -331,7 +331,7 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
                     graphPageWidget = &widgets[WIDX_PAGE_BACKGROUND];
                     centredGraph = true;
-                    _graphProps.series = getGameState().weeklyProfitHistory;
+                    _graphProps.series = getGameState().park.weeklyProfitHistory;
                     break;
                 case WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH:
                     graphPageWidget = &widgets[WIDX_PAGE_BACKGROUND];

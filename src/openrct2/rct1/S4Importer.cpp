@@ -1519,7 +1519,7 @@ namespace OpenRCT2::RCT1
             {
                 gameState.park.cashHistory[i] = ToMoney64(_s4.CashHistory[i]);
                 gameState.park.ValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
-                gameState.weeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
+                gameState.park.weeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
             }
 
             for (size_t i = 0; i < Limits::kExpenditureTableMonthCount; i++)

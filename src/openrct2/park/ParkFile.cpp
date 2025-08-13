@@ -985,8 +985,8 @@ namespace OpenRCT2
                     cs.ReadWrite(gameState.park.RatingCasualtyPenalty);
                     cs.ReadWrite(gameState.park.currentExpenditure);
                     cs.ReadWrite(gameState.park.currentProfit);
-                    cs.ReadWrite(gameState.weeklyProfitAverageDividend);
-                    cs.ReadWrite(gameState.weeklyProfitAverageDivisor);
+                    cs.ReadWrite(gameState.park.weeklyProfitAverageDividend);
+                    cs.ReadWrite(gameState.park.weeklyProfitAverageDivisor);
                     cs.ReadWrite(gameState.totalAdmissions);
                     cs.ReadWrite(gameState.totalIncomeFromAdmissions);
                     if (version <= 16)
@@ -1065,7 +1065,7 @@ namespace OpenRCT2
                         cs.ReadWrite(value);
                         return true;
                     });
-                    cs.ReadWriteArray(gameState.weeklyProfitHistory, [&cs](money64& value) {
+                    cs.ReadWriteArray(gameState.park.weeklyProfitHistory, [&cs](money64& value) {
                         cs.ReadWrite(value);
                         return true;
                     });
