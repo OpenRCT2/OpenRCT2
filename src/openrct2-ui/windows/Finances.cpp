@@ -369,9 +369,9 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
                 {
                     auto& gameState = getGameState();
-                    const auto fmt = gameState.currentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE
-                                                                  : STR_FINANCES_WEEKLY_PROFIT_LOSS;
-                    OnDrawGraph(rt, gameState.currentProfit, fmt);
+                    const auto fmt = gameState.park.currentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE
+                                                                       : STR_FINANCES_WEEKLY_PROFIT_LOSS;
+                    OnDrawGraph(rt, gameState.park.currentProfit, fmt);
                     break;
                 }
                 case WINDOW_FINANCES_PAGE_MARKETING:

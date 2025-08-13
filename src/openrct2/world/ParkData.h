@@ -72,7 +72,9 @@ namespace OpenRCT2::Park
 
         // The total profit for the entire scenario that precedes the current financial table.
         money64 historicalProfit;
+        money64 currentProfit;
         money64 expenditureTable[kExpenditureTableMonthCount][EnumValue(ExpenditureType::Count)];
+        money64 currentExpenditure;
 
         money64 companyValue;
     };

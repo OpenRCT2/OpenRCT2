@@ -983,8 +983,8 @@ namespace OpenRCT2
                     cs.ReadWrite(gameState.numGuestsHeadingForPark);
                     cs.ReadWrite(gameState.park.Rating);
                     cs.ReadWrite(gameState.park.RatingCasualtyPenalty);
-                    cs.ReadWrite(gameState.currentExpenditure);
-                    cs.ReadWrite(gameState.currentProfit);
+                    cs.ReadWrite(gameState.park.currentExpenditure);
+                    cs.ReadWrite(gameState.park.currentProfit);
                     cs.ReadWrite(gameState.weeklyProfitAverageDividend);
                     cs.ReadWrite(gameState.weeklyProfitAverageDivisor);
                     cs.ReadWrite(gameState.totalAdmissions);

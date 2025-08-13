@@ -1513,7 +1513,7 @@ namespace OpenRCT2::RCT1
 
             gameState.park.companyValue = ToMoney64(_s4.CompanyValue);
             gameState.park.Value = CorrectRCT1ParkValue(_s4.ParkValue);
-            gameState.currentProfit = ToMoney64(_s4.Profit);
+            gameState.park.currentProfit = ToMoney64(_s4.Profit);
 
             for (size_t i = 0; i < Limits::kFinanceGraphSize; i++)
             {
@@ -1529,7 +1529,7 @@ namespace OpenRCT2::RCT1
                     gameState.park.expenditureTable[i][j] = ToMoney64(_s4.Expenditure[i][j]);
                 }
             }
-            gameState.currentExpenditure = ToMoney64(_s4.TotalExpenditure);
+            gameState.park.currentExpenditure = ToMoney64(_s4.TotalExpenditure);
 
             gameState.scenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s4.CompletedCompanyValue);
             gameState.totalAdmissions = _s4.NumAdmissions;

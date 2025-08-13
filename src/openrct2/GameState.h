@@ -42,8 +42,6 @@ namespace OpenRCT2
         Date date;
 
         money64 constructionRightsPrice;
-        money64 currentExpenditure;
-        money64 currentProfit;
         uint32_t guestsInParkHistory[kGuestsInParkHistorySize];
 
         WeatherState weatherCurrent;

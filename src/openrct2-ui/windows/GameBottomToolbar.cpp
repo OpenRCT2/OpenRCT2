@@ -486,7 +486,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_MONEY:
-                    ft.Add<money64>(gameState.currentProfit);
+                    ft.Add<money64>(gameState.park.currentProfit);
                     ft.Add<money64>(gameState.park.Value);
                     break;
                 case WIDX_PARK_RATING:

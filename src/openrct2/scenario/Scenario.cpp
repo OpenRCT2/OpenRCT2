@@ -124,8 +124,8 @@ void ScenarioReset(GameState_t& gameState)
     auto savePath = env.GetDirectoryPath(DirBase::user, DirId::saves);
     gScenarioSavePath = Path::Combine(savePath, gameState.park.Name + u8".park");
 
-    gameState.currentExpenditure = 0;
-    gameState.currentProfit = 0;
+    gameState.park.currentExpenditure = 0;
+    gameState.park.currentProfit = 0;
     gameState.weeklyProfitAverageDividend = 0;
     gameState.weeklyProfitAverageDivisor = 0;
     gameState.totalAdmissions = 0;

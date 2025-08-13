@@ -480,8 +480,8 @@ namespace OpenRCT2::RCT2
                 gameState.scenarioObjective.NumGuests = _s6.ObjectiveGuests;
             ImportMarketingCampaigns();
 
-            gameState.currentExpenditure = ToMoney64(_s6.CurrentExpenditure);
-            gameState.currentProfit = ToMoney64(_s6.CurrentProfit);
+            gameState.park.currentExpenditure = ToMoney64(_s6.CurrentExpenditure);
+            gameState.park.currentProfit = ToMoney64(_s6.CurrentProfit);
             gameState.weeklyProfitAverageDividend = ToMoney64(_s6.WeeklyProfitAverageDividend);
             gameState.weeklyProfitAverageDivisor = _s6.WeeklyProfitAverageDivisor;
             // Pad0135833A

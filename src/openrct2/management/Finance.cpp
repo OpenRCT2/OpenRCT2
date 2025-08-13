@@ -84,7 +84,7 @@ void FinancePayment(money64 amount, ExpenditureType type)
     if (dword_988E60[EnumValue(type)] & 1)
     {
         // Cumulative amount of money spent this day
-        gameState.currentExpenditure -= amount;
+        gameState.park.currentExpenditure -= amount;
     }
 
     auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
@@ -216,8 +216,8 @@ void FinanceInit()
         gameState.park.expenditureTable[0][i] = 0;
     }
 
-    gameState.currentExpenditure = 0;
-    gameState.currentProfit = 0;
+    gameState.park.currentExpenditure = 0;
+    gameState.park.currentProfit = 0;
 
     gameState.weeklyProfitAverageDividend = 0;
     gameState.weeklyProfitAverageDivisor = 0;
@@ -247,8 +247,8 @@ void FinanceUpdateDailyProfit()
     PROFILED_FUNCTION();
     auto& gameState = getGameState();
 
-    gameState.currentProfit = 7 * gameState.currentExpenditure;
-    gameState.currentExpenditure = 0; // Reset daily expenditure
+    gameState.park.currentProfit = 7 * gameState.park.currentExpenditure;
+    gameState.park.currentExpenditure = 0; // Reset daily expenditure
 
     money64 current_profit = 0;
 
@@ -281,10 +281,10 @@ void FinanceUpdateDailyProfit()
     // This is not equivalent to / 4 due to rounding of negative numbers
     current_profit = current_profit >> 2;
 
-    gameState.currentProfit += current_profit;
+    gameState.park.currentProfit += current_profit;
 
     // These are related to weekly profit graph
-    gameState.weeklyProfitAverageDividend += gameState.currentProfit;
+    gameState.weeklyProfitAverageDividend += gameState.park.currentProfit;
     gameState.weeklyProfitAverageDivisor += 1;
 
     auto* windowMgr = Ui::GetWindowManager();
