@@ -213,7 +213,7 @@ namespace OpenRCT2::Park
         }
 
         // Reward or penalties for park awards
-        for (const auto& award : getGameState().currentAwards)
+        for (const auto& award : getGameState().park.currentAwards)
         {
             // +/- 0.25% of the probability
             if (AwardIsPositive(award.Type))

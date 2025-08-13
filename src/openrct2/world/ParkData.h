@@ -11,6 +11,7 @@
 
 #include "../core/EnumUtils.hpp"
 #include "../interface/Colour.h"
+#include "../management/Award.h"
 #include "../management/Finance.h"
 #include "Location.hpp"
 
@@ -99,5 +100,7 @@ namespace OpenRCT2::Park
         colour_t staffHandymanColour;
         colour_t staffMechanicColour;
         colour_t staffSecurityColour;
+
+        std::vector<Award> currentAwards;
     };
 } // namespace OpenRCT2::Park

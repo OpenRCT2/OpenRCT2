@@ -436,7 +436,7 @@ namespace OpenRCT2::Scripting
         std::vector<std::shared_ptr<ScAward>> result;
 
         auto& gameState = getGameState();
-        for (size_t i = 0; i < gameState.currentAwards.size(); i++)
+        for (size_t i = 0; i < gameState.park.currentAwards.size(); i++)
         {
             result.push_back(std::make_shared<ScAward>(i));
         }

@@ -953,7 +953,7 @@ namespace OpenRCT2
                     });
 
                     // Awards
-                    auto& currentAwards = gameState.currentAwards;
+                    auto& currentAwards = gameState.park.currentAwards;
                     if (version <= 6)
                     {
                         Award awards[RCT2::Limits::kMaxAwards]{};

@@ -502,7 +502,7 @@ namespace OpenRCT2::RCT2
             std::memcpy(gameState.peepWarningThrottle, _s6.PeepWarningThrottle, sizeof(_s6.PeepWarningThrottle));
 
             // Awards
-            auto& currentAwards = gameState.currentAwards;
+            auto& currentAwards = gameState.park.currentAwards;
             for (auto& src : _s6.Awards)
             {
                 if (src.Time != 0)

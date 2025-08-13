@@ -15,7 +15,6 @@
 #include "Limits.h"
 #include "entity/EntityRegistry.h"
 #include "interface/ZoomLevel.h"
-#include "management/Award.h"
 #include "management/Finance.h"
 #include "management/Marketing.h"
 #include "management/NewsItem.h"
@@ -110,8 +109,6 @@ namespace OpenRCT2
         ZoomLevel savedViewZoom;
 
         ObjectEntryIndex lastEntranceStyle;
-
-        std::vector<Award> currentAwards;
 
         std::vector<MarketingCampaign> marketingCampaigns;
 

@@ -1135,7 +1135,7 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
-            auto& currentAwards = getGameState().currentAwards;
+            auto& currentAwards = getGameState().park.currentAwards;
 
             for (const auto& award : currentAwards)
             {

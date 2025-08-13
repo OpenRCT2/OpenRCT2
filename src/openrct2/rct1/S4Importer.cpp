@@ -2282,7 +2282,7 @@ namespace OpenRCT2::RCT1
             }
 
             // Awards
-            auto& currentAwards = gameState.currentAwards;
+            auto& currentAwards = gameState.park.currentAwards;
             for (auto& src : _s4.Awards)
             {
                 if (src.Time != 0)

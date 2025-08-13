@@ -600,12 +600,12 @@ static bool AwardIsDeserved(AwardType awardType, int32_t activeAwardTypes)
 
 void AwardReset()
 {
-    getGameState().currentAwards.clear();
+    getGameState().park.currentAwards.clear();
 }
 
 static void AwardAdd(AwardType type)
 {
-    getGameState().currentAwards.push_back(Award{ 5u, type });
+    getGameState().park.currentAwards.push_back(Award{ 5u, type });
     if (Config::Get().notifications.ParkAward)
     {
         News::AddItemToQueue(News::ItemType::award, AwardGetNews(type), 0, {});
@@ -622,7 +622,7 @@ void AwardUpdateAll()
     PROFILED_FUNCTION();
 
     auto& gameState = getGameState();
-    auto& currentAwards = gameState.currentAwards;
+    auto& currentAwards = gameState.park.currentAwards;
     auto* windowMgr = Ui::GetWindowManager();
 
     // Decrease award times
@@ -671,7 +671,7 @@ void AwardUpdateAll()
 
 void AwardGrant(AwardType type)
 {
-    auto& currentAwards = getGameState().currentAwards;
+    auto& currentAwards = getGameState().park.currentAwards;
 
     // Remove award type if already granted
     std::erase_if(currentAwards, [type](const Award& award) { return award.Type == type; });
