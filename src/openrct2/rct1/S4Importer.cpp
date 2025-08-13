@@ -1526,7 +1526,7 @@ namespace OpenRCT2::RCT1
             {
                 for (size_t j = 0; j < Limits::kExpenditureTypeCount; j++)
                 {
-                    gameState.expenditureTable[i][j] = ToMoney64(_s4.Expenditure[i][j]);
+                    gameState.park.expenditureTable[i][j] = ToMoney64(_s4.Expenditure[i][j]);
                 }
             }
             gameState.currentExpenditure = ToMoney64(_s4.TotalExpenditure);

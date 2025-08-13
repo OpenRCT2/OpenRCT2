@@ -80,7 +80,7 @@ void FinancePayment(money64 amount, ExpenditureType type)
     auto& gameState = getGameState();
     gameState.park.cash = AddClamp<money64>(gameState.park.cash, -amount);
 
-    gameState.expenditureTable[0][EnumValue(type)] -= amount;
+    gameState.park.expenditureTable[0][EnumValue(type)] -= amount;
     if (dword_988E60[EnumValue(type)] & 1)
     {
         // Cumulative amount of money spent this day
@@ -197,7 +197,7 @@ void FinanceResetHistory()
     {
         for (uint32_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); ++j)
         {
-            gameState.expenditureTable[i][j] = 0;
+            gameState.park.expenditureTable[i][j] = 0;
         }
     }
 }
@@ -213,7 +213,7 @@ void FinanceInit()
     // It only initialises the first month
     for (uint32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
     {
-        gameState.expenditureTable[0][i] = 0;
+        gameState.park.expenditureTable[0][i] = 0;
     }
 
     gameState.currentExpenditure = 0;
@@ -323,8 +323,8 @@ void FinanceShiftExpenditureTable()
     if (GetDate().GetMonthsElapsed() >= kExpenditureTableMonthCount)
     {
         const money64 sum = std::accumulate(
-            std::cbegin(gameState.expenditureTable[kExpenditureTableMonthCount - 1]),
-            std::cend(gameState.expenditureTable[kExpenditureTableMonthCount - 1]), money64{});
+            std::cbegin(gameState.park.expenditureTable[kExpenditureTableMonthCount - 1]),
+            std::cend(gameState.park.expenditureTable[kExpenditureTableMonthCount - 1]), money64{});
 
         gameState.park.historicalProfit += sum;
     }
@@ -334,14 +334,14 @@ void FinanceShiftExpenditureTable()
     {
         for (size_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); j++)
         {
-            gameState.expenditureTable[i][j] = gameState.expenditureTable[i - 1][j];
+            gameState.park.expenditureTable[i][j] = gameState.park.expenditureTable[i - 1][j];
         }
     }
 
     // Zero the beginning of the table, which is the new month
     for (uint32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
     {
-        gameState.expenditureTable[0][i] = 0;
+        gameState.park.expenditureTable[0][i] = 0;
     }
 
     auto* windowMgr = Ui::GetWindowManager();
@@ -366,7 +366,7 @@ money64 FinanceGetLastMonthShopProfit()
     money64 profit = 0;
     if (GetDate().GetMonthsElapsed() != 0)
     {
-        const auto* lastMonthExpenditure = getGameState().expenditureTable[1];
+        const auto* lastMonthExpenditure = getGameState().park.expenditureTable[1];
 
         profit += lastMonthExpenditure[EnumValue(ExpenditureType::ShopSales)];
         profit += lastMonthExpenditure[EnumValue(ExpenditureType::ShopStock)];

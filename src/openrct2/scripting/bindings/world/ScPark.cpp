@@ -425,7 +425,7 @@ namespace OpenRCT2::Scripting
             auto& gameState = getGameState();
             for (size_t i = 0; i < recordedMonths; ++i)
             {
-                result[i] = gameState.expenditureTable[i][EnumValue(type)];
+                result[i] = gameState.park.expenditureTable[i][EnumValue(type)];
             }
         }
         return result;

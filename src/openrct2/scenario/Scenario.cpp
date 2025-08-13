@@ -738,7 +738,7 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
 
 ObjectiveStatus Objective::CheckMonthlyRideIncome() const
 {
-    money64 lastMonthRideIncome = getGameState().expenditureTable[1][EnumValue(ExpenditureType::ParkRideTickets)];
+    money64 lastMonthRideIncome = getGameState().park.expenditureTable[1][EnumValue(ExpenditureType::ParkRideTickets)];
     if (lastMonthRideIncome >= Currency)
     {
         return ObjectiveStatus::Success;
@@ -827,7 +827,7 @@ ObjectiveStatus Objective::CheckRepayLoanAndParkValue() const
 
 ObjectiveStatus Objective::CheckMonthlyFoodIncome() const
 {
-    const auto* lastMonthExpenditure = getGameState().expenditureTable[1];
+    const auto* lastMonthExpenditure = getGameState().park.expenditureTable[1];
     auto lastMonthProfit = lastMonthExpenditure[EnumValue(ExpenditureType::ShopSales)]
         + lastMonthExpenditure[EnumValue(ExpenditureType::ShopStock)]
         + lastMonthExpenditure[EnumValue(ExpenditureType::FoodDrinkSales)]

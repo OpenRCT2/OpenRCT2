@@ -440,7 +440,7 @@ namespace OpenRCT2::Ui::Windows
                 money64 profit = 0;
                 for (int32_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); j++)
                 {
-                    auto expenditure = gameState.expenditureTable[i][j];
+                    auto expenditure = gameState.park.expenditureTable[i][j];
                     if (expenditure != 0)
                     {
                         profit += expenditure;

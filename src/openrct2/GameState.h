@@ -13,7 +13,6 @@
 #include "Date.h"
 #include "Editor.h"
 #include "Limits.h"
-#include "core/EnumUtils.hpp"
 #include "entity/EntityRegistry.h"
 #include "interface/ZoomLevel.h"
 #include "management/Award.h"
@@ -74,7 +73,6 @@ namespace OpenRCT2
         money64 bankLoan;
         uint8_t bankLoanInterestRate;
         money64 maxBankLoan;
-        money64 expenditureTable[kExpenditureTableMonthCount][EnumValue(ExpenditureType::Count)];
         random_engine_t scenarioRand;
         TileCoordsXY mapSize;
         money64 landPrice;
