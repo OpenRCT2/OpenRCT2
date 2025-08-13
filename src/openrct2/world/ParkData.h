@@ -89,6 +89,7 @@ namespace OpenRCT2::Park
         uint32_t numGuestsInParkLastWeek;
 
         money64 bankLoan;
+        money64 maxBankLoan;
 
         colour_t staffHandymanColour;
         colour_t staffMechanicColour;

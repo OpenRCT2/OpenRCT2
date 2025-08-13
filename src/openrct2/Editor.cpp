@@ -328,7 +328,7 @@ namespace OpenRCT2::Editor
 
             gameState.park.bankLoan = std::clamp<money64>(gameState.park.bankLoan, 0.00_GBP, 5000000.00_GBP);
 
-            gameState.maxBankLoan = std::clamp<money64>(gameState.maxBankLoan, 0.00_GBP, 5000000.00_GBP);
+            gameState.park.maxBankLoan = std::clamp<money64>(gameState.park.maxBankLoan, 0.00_GBP, 5000000.00_GBP);
 
             gameState.bankLoanInterestRate = std::clamp<uint8_t>(gameState.bankLoanInterestRate, 5, MaxBankLoanInterestRate);
         }

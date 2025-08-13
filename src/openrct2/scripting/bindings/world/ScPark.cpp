@@ -105,16 +105,16 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::maxBankLoan_get() const
     {
-        return getGameState().maxBankLoan;
+        return getGameState().park.maxBankLoan;
     }
     void ScPark::maxBankLoan_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
 
         auto& gameState = getGameState();
-        if (gameState.maxBankLoan != value)
+        if (gameState.park.maxBankLoan != value)
         {
-            gameState.maxBankLoan = value;
+            gameState.park.maxBankLoan = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             ContextBroadcastIntent(&intent);
         }

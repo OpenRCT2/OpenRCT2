@@ -226,7 +226,7 @@ void FinanceInit()
 
     gameState.park.cash = 10000.00_GBP;
     gameState.park.bankLoan = 10000.00_GBP;
-    gameState.maxBankLoan = 20000.00_GBP;
+    gameState.park.maxBankLoan = 20000.00_GBP;
 
     gameState.bankLoanInterestRate = 10;
     gameState.park.Value = 0;
@@ -303,7 +303,7 @@ money64 FinanceGetCurrentLoan()
 
 money64 FinanceGetMaximumLoan()
 {
-    return getGameState().maxBankLoan;
+    return getGameState().park.maxBankLoan;
 }
 
 money64 FinanceGetCurrentCash()

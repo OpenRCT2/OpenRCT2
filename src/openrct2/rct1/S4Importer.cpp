@@ -1506,7 +1506,7 @@ namespace OpenRCT2::RCT1
 
             gameState.park.cash = ToMoney64(_s4.Cash);
             gameState.park.bankLoan = ToMoney64(_s4.Loan);
-            gameState.maxBankLoan = ToMoney64(_s4.MaxLoan);
+            gameState.park.maxBankLoan = ToMoney64(_s4.MaxLoan);
             // It's more like 1.33%, but we can only use integers. Can be fixed once we have our own save format.
             gameState.bankLoanInterestRate = 1;
             gameState.initialCash = ToMoney64(_s4.Cash);

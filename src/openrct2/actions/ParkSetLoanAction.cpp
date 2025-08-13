@@ -43,7 +43,7 @@ void ParkSetLoanAction::Serialise(DataSerialiser& stream)
 GameActions::Result ParkSetLoanAction::Query() const
 {
     auto& gameState = getGameState();
-    if (_value > gameState.park.bankLoan && _value > gameState.maxBankLoan)
+    if (_value > gameState.park.bankLoan && _value > gameState.park.maxBankLoan)
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_CANT_BORROW_ANY_MORE_MONEY, STR_BANK_REFUSES_TO_INCREASE_LOAN);

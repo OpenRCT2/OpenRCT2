@@ -63,7 +63,6 @@ namespace OpenRCT2
         money64 scenarioCompanyValueRecord;
 
         uint8_t bankLoanInterestRate;
-        money64 maxBankLoan;
         random_engine_t scenarioRand;
         TileCoordsXY mapSize;
         money64 landPrice;

@@ -544,9 +544,9 @@ namespace OpenRCT2::Ui::Windows
                     // If loan can be increased, do so.
                     // If not, action shows error message.
                     auto newLoan = gameState.park.bankLoan + 1000.00_GBP;
-                    if (gameState.park.bankLoan < gameState.maxBankLoan)
+                    if (gameState.park.bankLoan < gameState.park.maxBankLoan)
                     {
-                        newLoan = std::min(gameState.maxBankLoan, newLoan);
+                        newLoan = std::min(gameState.park.maxBankLoan, newLoan);
                     }
                     auto gameAction = ParkSetLoanAction(newLoan);
                     GameActions::Execute(&gameAction);
