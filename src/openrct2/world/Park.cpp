@@ -184,7 +184,7 @@ namespace OpenRCT2::Park
 
         // The more guests, the lower the chance of a new one
         uint32_t numGuests = gameState.park.numGuestsInPark + gameState.park.numGuestsHeadingForPark;
-        if (numGuests > gameState.suggestedGuestMaximum)
+        if (numGuests > gameState.park.suggestedGuestMaximum)
         {
             probability /= 4;
             // Even lower for difficult guest generation
@@ -235,7 +235,7 @@ namespace OpenRCT2::Park
         if (static_cast<int32_t>(ScenarioRand() & 0xFFFF) < gameState.park.guestGenerationProbability)
         {
             bool difficultGeneration = (gameState.park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
-            if (!difficultGeneration || gameState.suggestedGuestMaximum + 150 >= gameState.park.numGuestsInPark)
+            if (!difficultGeneration || gameState.park.suggestedGuestMaximum + 150 >= gameState.park.numGuestsInPark)
             {
                 GenerateGuest();
             }
@@ -288,7 +288,7 @@ namespace OpenRCT2::Park
         gameState.park.Rating = 0;
         gameState.park.guestGenerationProbability = 0;
         gameState.park.totalRideValueForMoney = 0;
-        gameState.suggestedGuestMaximum = 0;
+        gameState.park.suggestedGuestMaximum = 0;
         gameState.researchLastItem = std::nullopt;
         gameState.park.marketingCampaigns.clear();
 
@@ -347,7 +347,7 @@ namespace OpenRCT2::Park
             gameState.park.Value = Park::CalculateParkValue();
             gameState.park.companyValue = CalculateCompanyValue();
             gameState.park.totalRideValueForMoney = calculateTotalRideValueForMoney();
-            gameState.suggestedGuestMaximum = calculateSuggestedMaxGuests();
+            gameState.park.suggestedGuestMaximum = calculateSuggestedMaxGuests();
             gameState.park.guestGenerationProbability = calculateGuestGenerationProbability();
 
             windowMgr->InvalidateByClass(WindowClass::Finances);

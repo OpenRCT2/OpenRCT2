@@ -105,11 +105,6 @@ namespace OpenRCT2
 
         ObjectEntryIndex lastEntranceStyle;
 
-        /**
-         * In a difficult guest generation scenario, no guests will be generated if over this value.
-         */
-        uint32_t suggestedGuestMaximum;
-
         CheatsState cheats;
     };
 

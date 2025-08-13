@@ -144,7 +144,7 @@ namespace OpenRCT2::Scripting
 
     uint32_t ScPark::suggestedGuestMaximum_get() const
     {
-        return getGameState().suggestedGuestMaximum;
+        return getGameState().park.suggestedGuestMaximum;
     }
 
     int32_t ScPark::guestGenerationProbability_get() const

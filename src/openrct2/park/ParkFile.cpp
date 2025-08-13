@@ -1002,7 +1002,7 @@ namespace OpenRCT2
                     cs.ReadWrite(gameState.park.numGuestsInParkLastWeek);
                     cs.ReadWrite(gameState.park.guestChangeModifier);
                     cs.ReadWrite(gameState.park.guestGenerationProbability);
-                    cs.ReadWrite(gameState.suggestedGuestMaximum);
+                    cs.ReadWrite(gameState.park.suggestedGuestMaximum);
 
                     cs.ReadWriteArray(gameState.peepWarningThrottle, [&cs](uint8_t& value) {
                         cs.ReadWrite(value);
