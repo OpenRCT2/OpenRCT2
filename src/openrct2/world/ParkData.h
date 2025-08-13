@@ -69,6 +69,9 @@ namespace OpenRCT2::Park
         money64 cash;
         money64 cashHistory[kFinanceHistorySize];
 
+        // The total profit for the entire scenario that precedes the current financial table.
+        money64 historicalProfit;
+
         money64 companyValue;
     };
 } // namespace OpenRCT2::Park

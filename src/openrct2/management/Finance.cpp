@@ -231,7 +231,7 @@ void FinanceInit()
     gameState.bankLoanInterestRate = 10;
     gameState.park.Value = 0;
     gameState.park.companyValue = 0;
-    gameState.historicalProfit = 0;
+    gameState.park.historicalProfit = 0;
     gameState.scenarioCompletedCompanyValue = kMoney64Undefined;
     gameState.totalAdmissions = 0;
     gameState.totalIncomeFromAdmissions = 0;
@@ -326,7 +326,7 @@ void FinanceShiftExpenditureTable()
             std::cbegin(gameState.expenditureTable[kExpenditureTableMonthCount - 1]),
             std::cend(gameState.expenditureTable[kExpenditureTableMonthCount - 1]), money64{});
 
-        gameState.historicalProfit += sum;
+        gameState.park.historicalProfit += sum;
     }
 
     // Shift the table

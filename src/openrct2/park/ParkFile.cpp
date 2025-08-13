@@ -942,7 +942,7 @@ namespace OpenRCT2
                             }
                         }
                     }
-                    cs.ReadWrite(gameState.historicalProfit);
+                    cs.ReadWrite(gameState.park.historicalProfit);
 
                     // Marketing
                     cs.ReadWriteVector(gameState.marketingCampaigns, [&cs](MarketingCampaign& campaign) {

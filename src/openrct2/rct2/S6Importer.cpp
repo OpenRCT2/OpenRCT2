@@ -520,7 +520,7 @@ namespace OpenRCT2::RCT2
             gameState.scenarioCompanyValueRecord = _s6.CompletedCompanyValueRecord;
             // _s6.LoanHash;
             // Pad013587CA
-            gameState.historicalProfit = ToMoney64(_s6.HistoricalProfit);
+            gameState.park.historicalProfit = ToMoney64(_s6.HistoricalProfit);
             // Pad013587D4
             gameState.scenarioCompletedBy = std::string_view(_s6.ScenarioCompletedName, sizeof(_s6.ScenarioCompletedName));
             gameState.park.cash = ToMoney64(DECRYPT_MONEY(_s6.Cash));

@@ -108,7 +108,7 @@ void ScenarioReset(GameState_t& gameState)
     gameState.park.Rating = Park::CalculateParkRating();
     gameState.park.Value = Park::CalculateParkValue();
     gameState.park.companyValue = Park::CalculateCompanyValue();
-    gameState.historicalProfit = gameState.initialCash - gameState.bankLoan;
+    gameState.park.historicalProfit = gameState.initialCash - gameState.bankLoan;
     gameState.park.cash = gameState.initialCash;
 
     auto& objManager = GetContext()->GetObjectManager();
