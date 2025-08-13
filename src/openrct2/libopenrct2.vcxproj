@@ -630,6 +630,7 @@
     <ClInclude Include="world\Map.h" />
     <ClInclude Include="world\MapAnimation.h" />
     <ClInclude Include="world\Park.h" />
+    <ClInclude Include="world\ParkData.h" />
     <ClInclude Include="world\QuarterTile.h" />
     <ClInclude Include="world\Scenery.h" />
     <ClInclude Include="world\ScenerySelection.h" />

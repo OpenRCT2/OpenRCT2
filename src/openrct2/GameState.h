@@ -26,7 +26,7 @@
 #include "world/Banner.h"
 #include "world/Climate.h"
 #include "world/Location.hpp"
-#include "world/Park.h"
+#include "world/ParkData.h"
 #include "world/ScenerySelection.h"
 
 #include <array>

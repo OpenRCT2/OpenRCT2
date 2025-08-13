@@ -13,6 +13,7 @@
 
     #include "../../../Cheats.h"
     #include "../../../GameState.h"
+    #include "../../../world/Park.h"
     #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
 
