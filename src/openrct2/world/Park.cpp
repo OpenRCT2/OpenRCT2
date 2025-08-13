@@ -232,7 +232,7 @@ namespace OpenRCT2::Park
     static void generateGuests(GameState_t& gameState)
     {
         // Generate a new guest for some probability
-        if (static_cast<int32_t>(ScenarioRand() & 0xFFFF) < gameState.guestGenerationProbability)
+        if (static_cast<int32_t>(ScenarioRand() & 0xFFFF) < gameState.park.guestGenerationProbability)
         {
             bool difficultGeneration = (gameState.park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
             if (!difficultGeneration || gameState.suggestedGuestMaximum + 150 >= gameState.park.numGuestsInPark)
@@ -284,9 +284,9 @@ namespace OpenRCT2::Park
         gameState.park.numGuestsInPark = 0;
         gameState.park.numGuestsInParkLastWeek = 0;
         gameState.park.numGuestsHeadingForPark = 0;
-        gameState.guestChangeModifier = 0;
+        gameState.park.guestChangeModifier = 0;
         gameState.park.Rating = 0;
-        gameState.guestGenerationProbability = 0;
+        gameState.park.guestGenerationProbability = 0;
         gameState.totalRideValueForMoney = 0;
         gameState.suggestedGuestMaximum = 0;
         gameState.researchLastItem = std::nullopt;
@@ -348,7 +348,7 @@ namespace OpenRCT2::Park
             gameState.park.companyValue = CalculateCompanyValue();
             gameState.totalRideValueForMoney = calculateTotalRideValueForMoney();
             gameState.suggestedGuestMaximum = calculateSuggestedMaxGuests();
-            gameState.guestGenerationProbability = calculateGuestGenerationProbability();
+            gameState.park.guestGenerationProbability = calculateGuestGenerationProbability();
 
             windowMgr->InvalidateByClass(WindowClass::Finances);
             auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
@@ -603,7 +603,7 @@ namespace OpenRCT2::Park
                 guestChangeModifier = 0;
             }
         }
-        gameState.guestChangeModifier = guestChangeModifier;
+        gameState.park.guestChangeModifier = guestChangeModifier;
         gameState.park.numGuestsInParkLastWeek = gameState.park.numGuestsInPark;
 
         // Update park rating, guests in park and current cash history

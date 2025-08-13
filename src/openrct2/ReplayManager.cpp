@@ -640,7 +640,7 @@ namespace OpenRCT2
         {
             auto& gameState = getGameState();
 
-            serialiser << gameState.guestGenerationProbability;
+            serialiser << gameState.park.guestGenerationProbability;
             serialiser << gameState.suggestedGuestMaximum;
             serialiser << Config::Get().general.ShowRealNamesOfGuests;
 

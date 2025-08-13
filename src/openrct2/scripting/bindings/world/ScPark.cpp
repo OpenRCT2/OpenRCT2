@@ -149,7 +149,7 @@ namespace OpenRCT2::Scripting
 
     int32_t ScPark::guestGenerationProbability_get() const
     {
-        return getGameState().guestGenerationProbability;
+        return getGameState().park.guestGenerationProbability;
     }
 
     DukValue ScPark::generateGuest()

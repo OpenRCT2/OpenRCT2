@@ -401,7 +401,7 @@ namespace OpenRCT2::RCT2
 
             ImportPeepSpawns(gameState);
 
-            gameState.guestChangeModifier = _s6.GuestCountChangeModifier;
+            gameState.park.guestChangeModifier = _s6.GuestCountChangeModifier;
             gameState.researchFundingLevel = _s6.CurrentResearchLevel;
             // Pad01357400
             // _s6.ResearchedTrackTypesA
@@ -462,7 +462,7 @@ namespace OpenRCT2::RCT2
             gameState.researchExpectedMonth = _s6.NextResearchExpectedMonth;
             gameState.guestInitialHappiness = _s6.GuestInitialHappiness;
             gameState.park.Size = _s6.ParkSize;
-            gameState.guestGenerationProbability = _s6.GuestGenerationProbability;
+            gameState.park.guestGenerationProbability = _s6.GuestGenerationProbability;
             gameState.totalRideValueForMoney = _s6.TotalRideValueForMoney;
             gameState.park.maxBankLoan = ToMoney64(_s6.MaximumLoan);
             gameState.guestInitialCash = ToMoney64(_s6.GuestInitialCash);

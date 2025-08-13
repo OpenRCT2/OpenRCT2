@@ -305,7 +305,7 @@ namespace OpenRCT2::Editor
         gameState.park.numGuestsInPark = 0;
         gameState.park.numGuestsHeadingForPark = 0;
         gameState.park.numGuestsInParkLastWeek = 0;
-        gameState.guestChangeModifier = 0;
+        gameState.park.guestChangeModifier = 0;
         if (fromSave)
         {
             gameState.park.Flags |= PARK_FLAGS_NO_MONEY;

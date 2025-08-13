@@ -131,8 +131,8 @@ namespace OpenRCT2::Ui::Windows
                 auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(), windowPos.y + widget.midY() - 6 };
 
                 StringId stringId = gameState.park.numGuestsInPark == 1
-                    ? _guestCountFormatsSingular[gameState.guestChangeModifier]
-                    : _guestCountFormats[gameState.guestChangeModifier];
+                    ? _guestCountFormatsSingular[gameState.park.guestChangeModifier]
+                    : _guestCountFormats[gameState.park.guestChangeModifier];
                 auto colour = GetHoverWidgetColour(WIDX_GUESTS);
                 auto ft = Formatter();
                 ft.Add<uint32_t>(gameState.park.numGuestsInPark);

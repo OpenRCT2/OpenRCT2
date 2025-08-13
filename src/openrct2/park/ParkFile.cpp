@@ -1000,8 +1000,8 @@ namespace OpenRCT2
                         cs.ReadWrite(gameState.totalRideValueForMoney);
                     }
                     cs.ReadWrite(gameState.park.numGuestsInParkLastWeek);
-                    cs.ReadWrite(gameState.guestChangeModifier);
-                    cs.ReadWrite(gameState.guestGenerationProbability);
+                    cs.ReadWrite(gameState.park.guestChangeModifier);
+                    cs.ReadWrite(gameState.park.guestGenerationProbability);
                     cs.ReadWrite(gameState.suggestedGuestMaximum);
 
                     cs.ReadWriteArray(gameState.peepWarningThrottle, [&cs](uint8_t& value) {

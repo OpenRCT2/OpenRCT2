@@ -2314,7 +2314,7 @@ namespace OpenRCT2::RCT1
             gameState.guestInitialThirst = _s4.GuestInitialThirst;
             gameState.guestInitialHappiness = _s4.GuestInitialHappiness;
 
-            gameState.guestGenerationProbability = _s4.GuestGenerationProbability;
+            gameState.park.guestGenerationProbability = _s4.GuestGenerationProbability;
 
             // Staff colours
             gameState.park.staffHandymanColour = RCT1::GetColour(_s4.HandymanColour);

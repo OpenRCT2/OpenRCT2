@@ -89,6 +89,15 @@ namespace OpenRCT2::Park
         uint32_t numGuestsInPark;
         uint32_t numGuestsHeadingForPark;
         uint32_t numGuestsInParkLastWeek;
+        uint8_t guestChangeModifier;
+
+        /**
+         * Probability out of 65535, of gaining a new guest per game tick.
+         * new guests per second = 40 * (probability / 65535)
+         * With a full park rating, non-overpriced entrance fee, less guests than the suggested maximum and four positive
+         * awards, approximately 1 guest per second can be generated (+60 guests in one minute).
+         */
+        int32_t guestGenerationProbability;
 
         uint64_t totalAdmissions;
         money64 totalIncomeFromAdmissions;
