@@ -128,8 +128,8 @@ void ScenarioReset(GameState_t& gameState)
     gameState.park.currentProfit = 0;
     gameState.park.weeklyProfitAverageDividend = 0;
     gameState.park.weeklyProfitAverageDivisor = 0;
-    gameState.totalAdmissions = 0;
-    gameState.totalIncomeFromAdmissions = 0;
+    gameState.park.totalAdmissions = 0;
+    gameState.park.totalIncomeFromAdmissions = 0;
 
     gameState.park.Flags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
     gameState.scenarioCompletedCompanyValue = kMoney64Undefined;

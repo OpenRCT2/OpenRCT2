@@ -1904,12 +1904,12 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
                 return true;
             }
 
-            gameState.totalIncomeFromAdmissions += entranceFee;
+            gameState.park.totalIncomeFromAdmissions += entranceFee;
             guest->SpendMoney(guest->PaidToEnter, entranceFee, ExpenditureType::ParkEntranceTickets);
             guest->PeepFlags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
         }
 
-        getGameState().totalAdmissions++;
+        getGameState().park.totalAdmissions++;
 
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByNumber(WindowClass::ParkInformation, 0);

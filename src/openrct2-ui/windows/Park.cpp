@@ -884,7 +884,7 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 30 };
             auto ft = Formatter();
-            ft.Add<money64>(getGameState().totalIncomeFromAdmissions);
+            ft.Add<money64>(getGameState().park.totalIncomeFromAdmissions);
             DrawTextBasic(rt, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
 
             money64 parkEntranceFee = Park::GetEntranceFee();
@@ -983,7 +983,7 @@ namespace OpenRCT2::Ui::Windows
             screenCoords.y += kListRowHeight;
 
             ft = Formatter();
-            ft.Add<uint32_t>(gameState.totalAdmissions);
+            ft.Add<uint32_t>(gameState.park.totalAdmissions);
             DrawTextBasic(rt, screenCoords, STR_TOTAL_ADMISSIONS, ft);
         }
 #pragma endregion

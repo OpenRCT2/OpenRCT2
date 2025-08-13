@@ -88,6 +88,9 @@ namespace OpenRCT2::Park
         uint32_t numGuestsHeadingForPark;
         uint32_t numGuestsInParkLastWeek;
 
+        uint64_t totalAdmissions;
+        money64 totalIncomeFromAdmissions;
+
         money64 bankLoan;
         money64 maxBankLoan;
 

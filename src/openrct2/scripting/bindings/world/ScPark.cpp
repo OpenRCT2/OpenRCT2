@@ -220,16 +220,16 @@ namespace OpenRCT2::Scripting
 
     uint32_t ScPark::totalAdmissions_get() const
     {
-        return getGameState().totalAdmissions;
+        return getGameState().park.totalAdmissions;
     }
     void ScPark::totalAdmissions_set(uint32_t value)
     {
         ThrowIfGameStateNotMutable();
         auto& gameState = getGameState();
 
-        if (gameState.totalAdmissions != value)
+        if (gameState.park.totalAdmissions != value)
         {
-            gameState.totalAdmissions = value;
+            gameState.park.totalAdmissions = value;
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::ParkInformation);
         }
@@ -237,16 +237,16 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::totalIncomeFromAdmissions_get() const
     {
-        return getGameState().totalIncomeFromAdmissions;
+        return getGameState().park.totalIncomeFromAdmissions;
     }
     void ScPark::totalIncomeFromAdmissions_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
         auto& gameState = getGameState();
 
-        if (gameState.totalIncomeFromAdmissions != value)
+        if (gameState.park.totalIncomeFromAdmissions != value)
         {
-            gameState.totalIncomeFromAdmissions = value;
+            gameState.park.totalIncomeFromAdmissions = value;
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::ParkInformation);
         }

@@ -53,8 +53,6 @@ namespace OpenRCT2
         uint8_t guestChangeModifier;
         uint32_t nextGuestNumber;
 
-        uint64_t totalAdmissions;
-        money64 totalIncomeFromAdmissions;
         money64 totalRideValueForMoney;
 
         Objective scenarioObjective;

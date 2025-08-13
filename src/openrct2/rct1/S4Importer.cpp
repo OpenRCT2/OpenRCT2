@@ -1532,8 +1532,8 @@ namespace OpenRCT2::RCT1
             gameState.park.currentExpenditure = ToMoney64(_s4.TotalExpenditure);
 
             gameState.scenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s4.CompletedCompanyValue);
-            gameState.totalAdmissions = _s4.NumAdmissions;
-            gameState.totalIncomeFromAdmissions = ToMoney64(_s4.AdmissionTotalIncome);
+            gameState.park.totalAdmissions = _s4.NumAdmissions;
+            gameState.park.totalIncomeFromAdmissions = ToMoney64(_s4.AdmissionTotalIncome);
 
             // TODO marketing campaigns not working
             static_assert(

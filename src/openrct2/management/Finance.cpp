@@ -233,8 +233,8 @@ void FinanceInit()
     gameState.park.companyValue = 0;
     gameState.park.historicalProfit = 0;
     gameState.scenarioCompletedCompanyValue = kMoney64Undefined;
-    gameState.totalAdmissions = 0;
-    gameState.totalIncomeFromAdmissions = 0;
+    gameState.park.totalAdmissions = 0;
+    gameState.park.totalIncomeFromAdmissions = 0;
     gameState.scenarioCompletedBy = std::string("?");
 }
 
