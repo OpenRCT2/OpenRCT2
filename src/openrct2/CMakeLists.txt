@@ -19,7 +19,7 @@ if (ENABLE_SCRIPTING)
     endif ()
 endif ()
 
-add_library(libopenrct2 ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${OPENRCT2_DUKTAPE_SOURCES})
+add_library(libopenrct2 STATIC ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${OPENRCT2_DUKTAPE_SOURCES})
 add_library(OpenRCT2::libopenrct2 ALIAS libopenrct2)
 
 if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "13")
@@ -81,15 +81,15 @@ if (NOT DISABLE_TTF)
     if (UNIX AND NOT APPLE AND NOT MSVC)
         PKG_CHECK_MODULES(FONTCONFIG REQUIRED fontconfig)
     endif ()
-        
+
     if (MSVC)
         find_package(freetype REQUIRED)
     else ()
         PKG_CHECK_MODULES(FREETYPE REQUIRED IMPORTED_TARGET freetype2)
     endif ()
-        
+
     target_include_directories(libopenrct2 SYSTEM PRIVATE ${FREETYPE_INCLUDE_DIRS})
-        
+
     if (UNIX AND NOT APPLE)
         target_include_directories(libopenrct2 SYSTEM PRIVATE ${FONTCONFIG_INCLUDE_DIRS})
     endif ()
@@ -193,9 +193,9 @@ if (NOT MINGW AND NOT MSVC AND NOT EMSCRIPTEN)
     endif ()
     # For unicode code page conversion.
     find_package(ICU 59.0 REQUIRED COMPONENTS uc)
-        
+
     target_include_directories(libopenrct2 SYSTEM PRIVATE ${ICU_INCLUDE_DIRS})
-        
+
     if (STATIC)
         target_link_libraries(libopenrct2 ${ICU_STATIC_LIBRARIES})
     else ()
@@ -206,7 +206,7 @@ endif ()
 if (NOT DISABLE_TTF)
     if (STATIC)
         target_link_libraries(libopenrct2 ${FREETYPE_STATIC_LIBRARIES})
-            
+
         if (UNIX AND NOT APPLE)
             target_link_libraries(libopenrct2 ${FONTCONFIG_STATIC_LIBRARIES})
         endif ()
@@ -216,7 +216,7 @@ if (NOT DISABLE_TTF)
         else ()
             target_link_libraries(libopenrct2 ${FREETYPE_LIBRARIES})
         endif ()
-            
+
         if (UNIX AND NOT APPLE)
             target_link_libraries(libopenrct2 ${FONTCONFIG_LIBRARIES})
         endif ()
