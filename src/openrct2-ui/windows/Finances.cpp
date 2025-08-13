@@ -624,7 +624,7 @@ namespace OpenRCT2::Ui::Windows
             if (!(gameState.park.Flags & PARK_FLAGS_RCT1_INTEREST))
             {
                 auto ft = Formatter();
-                ft.Add<uint16_t>(gameState.bankLoanInterestRate);
+                ft.Add<uint16_t>(gameState.park.bankLoanInterestRate);
                 DrawTextBasic(
                     rt, windowPos + ScreenCoordsXY{ 167, titleBarBottom + 265 }, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, ft);
             }

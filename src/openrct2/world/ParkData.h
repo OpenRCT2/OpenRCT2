@@ -95,6 +95,7 @@ namespace OpenRCT2::Park
 
         money64 bankLoan;
         money64 maxBankLoan;
+        uint8_t bankLoanInterestRate;
 
         uint64_t samePriceThroughoutPark{};
 

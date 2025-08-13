@@ -535,7 +535,7 @@ namespace OpenRCT2::RCT2
             // rct1_water_colour
             // Pad01358842
             ImportResearchList(gameState);
-            gameState.bankLoanInterestRate = _s6.CurrentInterestRate;
+            gameState.park.bankLoanInterestRate = _s6.CurrentInterestRate;
             // Pad0135934B
             // Preserve compatibility with vanilla RCT2's save format.
             gameState.park.Entrances.clear();

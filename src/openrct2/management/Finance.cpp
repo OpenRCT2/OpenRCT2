@@ -142,7 +142,7 @@ void FinancePayInterest()
     // This variable uses the 64-bit type as the computation below can involve multiplying very large numbers
     // that will overflow money64 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
     const money64 current_loan = gameState.park.bankLoan;
-    const auto current_interest_rate = gameState.bankLoanInterestRate;
+    const auto current_interest_rate = gameState.park.bankLoanInterestRate;
     const money64 interest_to_pay = (gameState.park.Flags & PARK_FLAGS_RCT1_INTEREST)
         ? (current_loan / 2400)
         : (current_loan * 5 * current_interest_rate) >> 14;
@@ -228,7 +228,7 @@ void FinanceInit()
     gameState.park.bankLoan = 10000.00_GBP;
     gameState.park.maxBankLoan = 20000.00_GBP;
 
-    gameState.bankLoanInterestRate = 10;
+    gameState.park.bankLoanInterestRate = 10;
     gameState.park.Value = 0;
     gameState.park.companyValue = 0;
     gameState.park.historicalProfit = 0;

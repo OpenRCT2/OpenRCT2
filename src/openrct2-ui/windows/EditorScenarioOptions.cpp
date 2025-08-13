@@ -1486,10 +1486,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_INTEREST_RATE_INCREASE:
-                    if (gameState.bankLoanInterestRate < MaxBankLoanInterestRate)
+                    if (gameState.park.bankLoanInterestRate < MaxBankLoanInterestRate)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::AnnualInterestRate, gameState.bankLoanInterestRate + 1);
+                            ScenarioSetSetting::AnnualInterestRate, gameState.park.bankLoanInterestRate + 1);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1499,9 +1499,9 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_INTEREST_RATE_DECREASE:
-                    if (gameState.bankLoanInterestRate > 0)
+                    if (gameState.park.bankLoanInterestRate > 0)
                     {
-                        auto interest = std::min<uint8_t>(MaxBankLoanInterestRate, gameState.bankLoanInterestRate - 1);
+                        auto interest = std::min<uint8_t>(MaxBankLoanInterestRate, gameState.park.bankLoanInterestRate - 1);
                         auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::AnnualInterestRate, interest);
                         GameActions::Execute(&scenarioSetSetting);
                     }
@@ -1718,7 +1718,7 @@ namespace OpenRCT2::Ui::Windows
 
                 auto ft = Formatter();
                 ft.Add<int16_t>(
-                    std::clamp<int16_t>(static_cast<int16_t>(gameState.bankLoanInterestRate), INT16_MIN, INT16_MAX));
+                    std::clamp<int16_t>(static_cast<int16_t>(gameState.park.bankLoanInterestRate), INT16_MIN, INT16_MAX));
                 auto colour = !IsWidgetDisabled(WIDX_INTEREST_RATE) ? wColour2 : wColour2.withFlag(ColourFlag::inset, true);
                 DrawTextBasic(rt, screenCoords, STR_PERCENT_FORMAT_LABEL, ft, colour);
             }
