@@ -365,8 +365,8 @@ jobs:
             run_tests: true
           - arch: x64
             cache_key: macos-x64
-            build_flags: -DARCH="x86_64"
-            run_tests: false
+            build_flags: -DARCH="x86_64" -DWITH_TESTS=on
+            run_tests: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
