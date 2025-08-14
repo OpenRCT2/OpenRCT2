@@ -31,6 +31,7 @@ flat out vec3  fPalettes;
 flat out float fZoom;
 flat out int   fTexColourAtlas;
 flat out int   fTexMaskAtlas;
+flat out int   fScreenHeight;
 // clang-format on
 
 void main()
@@ -56,6 +57,8 @@ void main()
     fFlags = vFlags;
     fColour = vColour;
     fPalettes = vec3(vPalettes);
+
+    fScreenHeight = uScreenSize.y;
 
     // Transform texture coordinates to viewport coordinates
     pos = pos * 2.0 - 1.0;
