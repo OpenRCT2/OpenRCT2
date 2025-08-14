@@ -302,10 +302,10 @@ namespace OpenRCT2::Editor
 
         ResetAllEntities();
         UpdateConsolidatedPatrolAreas();
-        gameState.numGuestsInPark = 0;
-        gameState.numGuestsHeadingForPark = 0;
-        gameState.numGuestsInParkLastWeek = 0;
-        gameState.guestChangeModifier = 0;
+        gameState.park.numGuestsInPark = 0;
+        gameState.park.numGuestsHeadingForPark = 0;
+        gameState.park.numGuestsInParkLastWeek = 0;
+        gameState.park.guestChangeModifier = 0;
         if (fromSave)
         {
             gameState.park.Flags |= PARK_FLAGS_NO_MONEY;
@@ -326,11 +326,12 @@ namespace OpenRCT2::Editor
             gameState.initialCash = std::min<money64>(gameState.initialCash, 100000);
             FinanceResetCashToInitial();
 
-            gameState.bankLoan = std::clamp<money64>(gameState.bankLoan, 0.00_GBP, 5000000.00_GBP);
+            gameState.park.bankLoan = std::clamp<money64>(gameState.park.bankLoan, 0.00_GBP, 5000000.00_GBP);
 
-            gameState.maxBankLoan = std::clamp<money64>(gameState.maxBankLoan, 0.00_GBP, 5000000.00_GBP);
+            gameState.park.maxBankLoan = std::clamp<money64>(gameState.park.maxBankLoan, 0.00_GBP, 5000000.00_GBP);
 
-            gameState.bankLoanInterestRate = std::clamp<uint8_t>(gameState.bankLoanInterestRate, 5, MaxBankLoanInterestRate);
+            gameState.park.bankLoanInterestRate = std::clamp<uint8_t>(
+                gameState.park.bankLoanInterestRate, 5, MaxBankLoanInterestRate);
         }
 
         ClimateReset();

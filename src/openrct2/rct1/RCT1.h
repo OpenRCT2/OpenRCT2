@@ -13,7 +13,7 @@
 #include "../core/FixedPoint.hpp"
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
-#include "../world/Park.h"
+#include "../world/ParkData.h"
 #include "Limits.h"
 
 enum class VehicleColourSettings : uint8_t;

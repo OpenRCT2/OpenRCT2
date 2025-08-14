@@ -973,11 +973,11 @@ colour_t StaffGetColour(StaffType staffType)
     switch (staffType)
     {
         case StaffType::Handyman:
-            return gameState.staffHandymanColour;
+            return gameState.park.staffHandymanColour;
         case StaffType::Mechanic:
-            return gameState.staffMechanicColour;
+            return gameState.park.staffMechanicColour;
         case StaffType::Security:
-            return gameState.staffSecurityColour;
+            return gameState.park.staffSecurityColour;
         case StaffType::Entertainer:
             return 0;
         default:
@@ -992,13 +992,13 @@ GameActions::Result StaffSetColour(StaffType staffType, colour_t value)
     switch (staffType)
     {
         case StaffType::Handyman:
-            gameState.staffHandymanColour = value;
+            gameState.park.staffHandymanColour = value;
             break;
         case StaffType::Mechanic:
-            gameState.staffMechanicColour = value;
+            gameState.park.staffMechanicColour = value;
             break;
         case StaffType::Security:
-            gameState.staffSecurityColour = value;
+            gameState.park.staffSecurityColour = value;
             break;
         default:
             return GameActions::Result(

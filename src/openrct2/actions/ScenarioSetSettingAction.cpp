@@ -84,22 +84,22 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             break;
         case ScenarioSetSetting::InitialCash:
             gameState.initialCash = std::clamp<money64>(_value, 0.00_GBP, 1000000.00_GBP);
-            gameState.cash = gameState.initialCash;
+            gameState.park.cash = gameState.initialCash;
             windowMgr->InvalidateByClass(WindowClass::Finances);
             windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
             break;
         case ScenarioSetSetting::InitialLoan:
-            gameState.bankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
-            gameState.maxBankLoan = std::max(gameState.bankLoan, gameState.maxBankLoan);
+            gameState.park.bankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
+            gameState.park.maxBankLoan = std::max(gameState.park.bankLoan, gameState.park.maxBankLoan);
             windowMgr->InvalidateByClass(WindowClass::Finances);
             break;
         case ScenarioSetSetting::MaximumLoanSize:
-            gameState.maxBankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
-            gameState.bankLoan = std::min(gameState.bankLoan, gameState.maxBankLoan);
+            gameState.park.maxBankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
+            gameState.park.bankLoan = std::min(gameState.park.bankLoan, gameState.park.maxBankLoan);
             windowMgr->InvalidateByClass(WindowClass::Finances);
             break;
         case ScenarioSetSetting::AnnualInterestRate:
-            gameState.bankLoanInterestRate = std::clamp<uint8_t>(_value, 0, MaxBankLoanInterestRate);
+            gameState.park.bankLoanInterestRate = std::clamp<uint8_t>(_value, 0, MaxBankLoanInterestRate);
             windowMgr->InvalidateByClass(WindowClass::Finances);
             break;
         case ScenarioSetSetting::ForbidMarketingCampaigns:

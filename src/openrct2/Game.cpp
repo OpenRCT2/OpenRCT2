@@ -195,13 +195,14 @@ static void FixGuestsHeadingToParkCount()
         }
     }
 
-    if (gameState.numGuestsHeadingForPark != guestsHeadingToPark)
+    if (gameState.park.numGuestsHeadingForPark != guestsHeadingToPark)
     {
         LOG_WARNING(
-            "Corrected bad amount of guests heading to park: %u -> %u", gameState.numGuestsHeadingForPark, guestsHeadingToPark);
+            "Corrected bad amount of guests heading to park: %u -> %u", gameState.park.numGuestsHeadingForPark,
+            guestsHeadingToPark);
     }
 
-    gameState.numGuestsHeadingForPark = guestsHeadingToPark;
+    gameState.park.numGuestsHeadingForPark = guestsHeadingToPark;
 }
 
 static void FixGuestCount()
@@ -218,12 +219,12 @@ static void FixGuestCount()
     }
 
     auto& gameState = getGameState();
-    if (gameState.numGuestsInPark != guestCount)
+    if (gameState.park.numGuestsInPark != guestCount)
     {
-        LOG_WARNING("Corrected bad amount of guests in park: %u -> %u", gameState.numGuestsInPark, guestCount);
+        LOG_WARNING("Corrected bad amount of guests in park: %u -> %u", gameState.park.numGuestsInPark, guestCount);
     }
 
-    gameState.numGuestsInPark = guestCount;
+    gameState.park.numGuestsInPark = guestCount;
 }
 
 static void FixPeepsWithInvalidRideReference()

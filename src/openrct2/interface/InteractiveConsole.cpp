@@ -557,11 +557,11 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (argv[0] == "company_value")
         {
-            console.WriteLine(FormatString("company_value {CURRENCY2DP}", gameState.companyValue));
+            console.WriteLine(FormatString("company_value {CURRENCY2DP}", gameState.park.companyValue));
         }
         else if (argv[0] == "money")
         {
-            console.WriteLine(FormatString("money {CURRENCY2DP}", gameState.cash));
+            console.WriteLine(FormatString("money {CURRENCY2DP}", gameState.park.cash));
         }
         else if (argv[0] == "scenario_initial_cash")
         {
@@ -569,11 +569,11 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (argv[0] == "current_loan")
         {
-            console.WriteLine(FormatString("current_loan {CURRENCY2DP}", gameState.bankLoan));
+            console.WriteLine(FormatString("current_loan {CURRENCY2DP}", gameState.park.bankLoan));
         }
         else if (argv[0] == "max_loan")
         {
-            console.WriteLine(FormatString("max_loan {CURRENCY2DP}", gameState.maxBankLoan));
+            console.WriteLine(FormatString("max_loan {CURRENCY2DP}", gameState.park.maxBankLoan));
         }
         else if (argv[0] == "guest_initial_cash")
         {
@@ -785,7 +785,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         if (varName == "money" && InvalidArguments(&invalidArgs, double_valid[0]))
         {
             money64 money = ToMoney64FromGBP(double_val[0]);
-            if (gameState.cash != money)
+            if (gameState.park.cash != money)
             {
                 ConsoleSetVariableAction<CheatSetAction>(console, varName, CheatType::SetMoney, money);
             }
@@ -803,7 +803,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         else if (varName == "current_loan" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             auto amount = std::clamp(
-                ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, gameState.maxBankLoan);
+                ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, gameState.park.maxBankLoan);
             ConsoleSetVariableAction<ScenarioSetSettingAction>(console, varName, ScenarioSetSetting::InitialLoan, amount);
         }
         else if (varName == "max_loan" && InvalidArguments(&invalidArgs, int_valid[0]))

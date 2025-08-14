@@ -28,6 +28,7 @@
 #include "ui/UiContext.h"
 #include "windows/Intent.h"
 #include "world/MapAnimation.h"
+#include "world/Park.h"
 #include "world/Scenery.h"
 
 using namespace OpenRCT2::Scripting;

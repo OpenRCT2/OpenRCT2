@@ -107,9 +107,9 @@ void ScenarioReset(GameState_t& gameState)
 
     gameState.park.Rating = Park::CalculateParkRating();
     gameState.park.Value = Park::CalculateParkValue();
-    gameState.companyValue = Park::CalculateCompanyValue();
-    gameState.historicalProfit = gameState.initialCash - gameState.bankLoan;
-    gameState.cash = gameState.initialCash;
+    gameState.park.companyValue = Park::CalculateCompanyValue();
+    gameState.park.historicalProfit = gameState.initialCash - gameState.park.bankLoan;
+    gameState.park.cash = gameState.initialCash;
 
     auto& objManager = GetContext()->GetObjectManager();
     if (auto* textObject = objManager.GetLoadedObject<ScenarioMetaObject>(0); textObject != nullptr)
@@ -124,12 +124,12 @@ void ScenarioReset(GameState_t& gameState)
     auto savePath = env.GetDirectoryPath(DirBase::user, DirId::saves);
     gScenarioSavePath = Path::Combine(savePath, gameState.park.Name + u8".park");
 
-    gameState.currentExpenditure = 0;
-    gameState.currentProfit = 0;
-    gameState.weeklyProfitAverageDividend = 0;
-    gameState.weeklyProfitAverageDivisor = 0;
-    gameState.totalAdmissions = 0;
-    gameState.totalIncomeFromAdmissions = 0;
+    gameState.park.currentExpenditure = 0;
+    gameState.park.currentProfit = 0;
+    gameState.park.weeklyProfitAverageDividend = 0;
+    gameState.park.weeklyProfitAverageDivisor = 0;
+    gameState.park.totalAdmissions = 0;
+    gameState.park.totalIncomeFromAdmissions = 0;
 
     gameState.park.Flags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
     gameState.scenarioCompletedCompanyValue = kMoney64Undefined;
@@ -152,7 +152,7 @@ void ScenarioReset(GameState_t& gameState)
         gameState.lastEntranceStyle = 0;
     }
 
-    gameState.marketingCampaigns.clear();
+    gameState.park.marketingCampaigns.clear();
     gameState.park.RatingCasualtyPenalty = 0;
 
     // Open park with free entry when there is no money
@@ -193,7 +193,7 @@ void ScenarioFailure(GameState_t& gameState)
  */
 void ScenarioSuccess(GameState_t& gameState)
 {
-    auto companyValue = gameState.companyValue;
+    auto companyValue = gameState.park.companyValue;
 
     gameState.scenarioCompletedCompanyValue = companyValue;
     PeepApplause();
@@ -227,7 +227,7 @@ void ScenarioSuccessSubmitName(GameState_t& gameState, const char* name)
 static void ScenarioCheckEntranceFeeTooHigh()
 {
     const auto& gameState = getGameState();
-    const auto max_fee = AddClamp<money64>(gameState.totalRideValueForMoney, gameState.totalRideValueForMoney / 2);
+    const auto max_fee = AddClamp<money64>(gameState.park.totalRideValueForMoney, gameState.park.totalRideValueForMoney / 2);
 
     if ((gameState.park.Flags & PARK_FLAGS_PARK_OPEN) && Park::GetEntranceFee() > max_fee)
     {
@@ -609,7 +609,7 @@ ObjectiveStatus Objective::CheckGuestsBy() const
 
     if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
     {
-        if (parkRating >= 600 && getGameState().numGuestsInPark >= NumGuests)
+        if (parkRating >= 600 && getGameState().park.numGuestsInPark >= NumGuests)
         {
             return ObjectiveStatus::Success;
         }
@@ -730,7 +730,7 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
     }
 
     if (gameState.park.Rating >= 700)
-        if (gameState.numGuestsInPark >= NumGuests)
+        if (gameState.park.numGuestsInPark >= NumGuests)
             return ObjectiveStatus::Success;
 
     return ObjectiveStatus::Undecided;
@@ -738,7 +738,7 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
 
 ObjectiveStatus Objective::CheckMonthlyRideIncome() const
 {
-    money64 lastMonthRideIncome = getGameState().expenditureTable[1][EnumValue(ExpenditureType::ParkRideTickets)];
+    money64 lastMonthRideIncome = getGameState().park.expenditureTable[1][EnumValue(ExpenditureType::ParkRideTickets)];
     if (lastMonthRideIncome >= Currency)
     {
         return ObjectiveStatus::Success;
@@ -815,7 +815,7 @@ ObjectiveStatus Objective::CheckRepayLoanAndParkValue() const
 {
     const auto& gameState = getGameState();
     money64 parkValue = gameState.park.Value;
-    money64 currentLoan = gameState.bankLoan;
+    money64 currentLoan = gameState.park.bankLoan;
 
     if (currentLoan <= 0 && parkValue >= Currency)
     {
@@ -827,7 +827,7 @@ ObjectiveStatus Objective::CheckRepayLoanAndParkValue() const
 
 ObjectiveStatus Objective::CheckMonthlyFoodIncome() const
 {
-    const auto* lastMonthExpenditure = getGameState().expenditureTable[1];
+    const auto* lastMonthExpenditure = getGameState().park.expenditureTable[1];
     auto lastMonthProfit = lastMonthExpenditure[EnumValue(ExpenditureType::ShopSales)]
         + lastMonthExpenditure[EnumValue(ExpenditureType::ShopStock)]
         + lastMonthExpenditure[EnumValue(ExpenditureType::FoodDrinkSales)]

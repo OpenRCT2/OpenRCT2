@@ -889,7 +889,8 @@ namespace OpenRCT2::Ui::Windows
                 imgId = SPR_TOOLBAR_STAFF;
                 if (widgetIsPressed(*this, WIDX_STAFF))
                     imgId++;
-                GfxDrawSprite(rt, ImageId(imgId, gameState.staffHandymanColour, gameState.staffMechanicColour), screenPos);
+                GfxDrawSprite(
+                    rt, ImageId(imgId, gameState.park.staffHandymanColour, gameState.park.staffMechanicColour), screenPos);
             }
 
             // Draw fast forward button

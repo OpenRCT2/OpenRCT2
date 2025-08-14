@@ -451,7 +451,7 @@ namespace OpenRCT2::Ui::Windows
                 WindowDropdownShowText(
                     { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[1], 0, 2);
 
-                if (getGameState().park.IsOpen())
+                if (Park::IsOpen(getGameState().park))
                 {
                     gDropdownDefaultIndex = 0;
                     Dropdown::SetChecked(1, true);
@@ -512,7 +512,7 @@ namespace OpenRCT2::Ui::Windows
                 ft.Add<StringId>(STR_STRING);
                 ft.Add<const char*>(parkName);
             }
-            const bool parkIsOpen = gameState.park.IsOpen();
+            const bool parkIsOpen = Park::IsOpen(gameState.park);
             widgets[WIDX_OPEN_OR_CLOSE].image = ImageId(parkIsOpen ? SPR_OPEN : SPR_CLOSED);
             const auto closeLightImage = SPR_G2_RCT1_CLOSE_BUTTON_0 + !parkIsOpen * 2
                 + widgetIsPressed(*this, WIDX_CLOSE_LIGHT);
@@ -598,7 +598,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw park closed / open label
             auto ft = Formatter();
-            ft.Add<StringId>(getGameState().park.IsOpen() ? STR_PARK_OPEN : STR_PARK_CLOSED);
+            ft.Add<StringId>(Park::IsOpen(getGameState().park) ? STR_PARK_OPEN : STR_PARK_CLOSED);
 
             auto* labelWidget = &widgets[WIDX_STATUS];
             DrawTextEllipsised(
@@ -750,7 +750,7 @@ namespace OpenRCT2::Ui::Windows
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_7);
 
             const auto& gameState = getGameState();
-            _guestProps.series = gameState.guestsInParkHistory;
+            _guestProps.series = gameState.park.guestsInParkHistory;
             const Widget* background = &widgets[WIDX_PAGE_BACKGROUND];
             _guestGraphBounds = { windowPos + ScreenCoordsXY{ background->left + 4, background->top + 15 },
                                   windowPos + ScreenCoordsXY{ background->right - 4, background->bottom - 4 } };
@@ -758,9 +758,9 @@ namespace OpenRCT2::Ui::Windows
             // Calculate Y axis max and min
             _guestProps.min = 0;
             _guestProps.max = 5000;
-            for (size_t i = 0; i < std::size(gameState.guestsInParkHistory); i++)
+            for (size_t i = 0; i < std::size(gameState.park.guestsInParkHistory); i++)
             {
-                auto value = gameState.guestsInParkHistory[i];
+                auto value = gameState.park.guestsInParkHistory[i];
                 if (value == kGuestsInParkHistoryUndefined)
                     continue;
                 while (value > _guestProps.max)
@@ -786,7 +786,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Current value
             Formatter ft;
-            ft.Add<uint32_t>(getGameState().numGuestsInPark);
+            ft.Add<uint32_t>(getGameState().park.numGuestsInPark);
             DrawTextBasic(rt, windowPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
 
             // Graph border
@@ -884,7 +884,7 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 30 };
             auto ft = Formatter();
-            ft.Add<money64>(getGameState().totalIncomeFromAdmissions);
+            ft.Add<money64>(getGameState().park.totalIncomeFromAdmissions);
             DrawTextBasic(rt, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
 
             money64 parkEntranceFee = Park::GetEntranceFee();
@@ -978,12 +978,12 @@ namespace OpenRCT2::Ui::Windows
 
             // Draw number of guests in park
             ft = Formatter();
-            ft.Add<uint32_t>(gameState.numGuestsInPark);
+            ft.Add<uint32_t>(gameState.park.numGuestsInPark);
             DrawTextBasic(rt, screenCoords, STR_GUESTS_IN_PARK_LABEL, ft);
             screenCoords.y += kListRowHeight;
 
             ft = Formatter();
-            ft.Add<uint32_t>(gameState.totalAdmissions);
+            ft.Add<uint32_t>(gameState.park.totalAdmissions);
             DrawTextBasic(rt, screenCoords, STR_TOTAL_ADMISSIONS, ft);
         }
 #pragma endregion
@@ -1135,7 +1135,7 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
-            auto& currentAwards = getGameState().currentAwards;
+            auto& currentAwards = getGameState().park.currentAwards;
 
             for (const auto& award : currentAwards)
             {

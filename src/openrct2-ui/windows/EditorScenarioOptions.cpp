@@ -1434,10 +1434,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_INITIAL_LOAN_INCREASE:
-                    if (gameState.bankLoan < 5000000.00_GBP)
+                    if (gameState.park.bankLoan < 5000000.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::InitialLoan, gameState.bankLoan + 1000.00_GBP);
+                            ScenarioSetSetting::InitialLoan, gameState.park.bankLoan + 1000.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1447,10 +1447,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_INITIAL_LOAN_DECREASE:
-                    if (gameState.bankLoan > 0.00_GBP)
+                    if (gameState.park.bankLoan > 0.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::InitialLoan, gameState.bankLoan - 1000.00_GBP);
+                            ScenarioSetSetting::InitialLoan, gameState.park.bankLoan - 1000.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1460,10 +1460,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_MAXIMUM_LOAN_INCREASE:
-                    if (gameState.maxBankLoan < 5000000.00_GBP)
+                    if (gameState.park.maxBankLoan < 5000000.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::MaximumLoanSize, gameState.maxBankLoan + 1000.00_GBP);
+                            ScenarioSetSetting::MaximumLoanSize, gameState.park.maxBankLoan + 1000.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1473,10 +1473,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_MAXIMUM_LOAN_DECREASE:
-                    if (gameState.maxBankLoan > 0.00_GBP)
+                    if (gameState.park.maxBankLoan > 0.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::MaximumLoanSize, gameState.maxBankLoan - 1000.00_GBP);
+                            ScenarioSetSetting::MaximumLoanSize, gameState.park.maxBankLoan - 1000.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1486,10 +1486,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_INTEREST_RATE_INCREASE:
-                    if (gameState.bankLoanInterestRate < MaxBankLoanInterestRate)
+                    if (gameState.park.bankLoanInterestRate < MaxBankLoanInterestRate)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::AnnualInterestRate, gameState.bankLoanInterestRate + 1);
+                            ScenarioSetSetting::AnnualInterestRate, gameState.park.bankLoanInterestRate + 1);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1499,9 +1499,9 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_INTEREST_RATE_DECREASE:
-                    if (gameState.bankLoanInterestRate > 0)
+                    if (gameState.park.bankLoanInterestRate > 0)
                     {
-                        auto interest = std::min<uint8_t>(MaxBankLoanInterestRate, gameState.bankLoanInterestRate - 1);
+                        auto interest = std::min<uint8_t>(MaxBankLoanInterestRate, gameState.park.bankLoanInterestRate - 1);
                         auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::AnnualInterestRate, interest);
                         GameActions::Execute(&scenarioSetSetting);
                     }
@@ -1696,7 +1696,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 screenCoords = windowPos + ScreenCoordsXY{ initialLoanWidget.left + 1, initialLoanWidget.top };
                 auto ft = Formatter();
-                ft.Add<money64>(gameState.bankLoan);
+                ft.Add<money64>(gameState.park.bankLoan);
                 auto colour = !IsWidgetDisabled(WIDX_INITIAL_LOAN) ? wColour2 : wColour2.withFlag(ColourFlag::inset, true);
                 DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft, colour);
             }
@@ -1706,7 +1706,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 screenCoords = windowPos + ScreenCoordsXY{ maximumLoanWidget.left + 1, maximumLoanWidget.top };
                 auto ft = Formatter();
-                ft.Add<money64>(getGameState().maxBankLoan);
+                ft.Add<money64>(getGameState().park.maxBankLoan);
                 auto colour = !IsWidgetDisabled(WIDX_MAXIMUM_LOAN) ? wColour2 : wColour2.withFlag(ColourFlag::inset, true);
                 DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft, colour);
             }
@@ -1718,7 +1718,7 @@ namespace OpenRCT2::Ui::Windows
 
                 auto ft = Formatter();
                 ft.Add<int16_t>(
-                    std::clamp<int16_t>(static_cast<int16_t>(gameState.bankLoanInterestRate), INT16_MIN, INT16_MAX));
+                    std::clamp<int16_t>(static_cast<int16_t>(gameState.park.bankLoanInterestRate), INT16_MIN, INT16_MAX));
                 auto colour = !IsWidgetDisabled(WIDX_INTEREST_RATE) ? wColour2 : wColour2.withFlag(ColourFlag::inset, true);
                 DrawTextBasic(rt, screenCoords, STR_PERCENT_FORMAT_LABEL, ft, colour);
             }

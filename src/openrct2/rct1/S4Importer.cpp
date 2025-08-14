@@ -1504,36 +1504,36 @@ namespace OpenRCT2::RCT1
             gameState.landPrice = ToMoney64(_s4.LandPrice);
             gameState.constructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
 
-            gameState.cash = ToMoney64(_s4.Cash);
-            gameState.bankLoan = ToMoney64(_s4.Loan);
-            gameState.maxBankLoan = ToMoney64(_s4.MaxLoan);
+            gameState.park.cash = ToMoney64(_s4.Cash);
+            gameState.park.bankLoan = ToMoney64(_s4.Loan);
+            gameState.park.maxBankLoan = ToMoney64(_s4.MaxLoan);
             // It's more like 1.33%, but we can only use integers. Can be fixed once we have our own save format.
-            gameState.bankLoanInterestRate = 1;
+            gameState.park.bankLoanInterestRate = 1;
             gameState.initialCash = ToMoney64(_s4.Cash);
 
-            gameState.companyValue = ToMoney64(_s4.CompanyValue);
+            gameState.park.companyValue = ToMoney64(_s4.CompanyValue);
             gameState.park.Value = CorrectRCT1ParkValue(_s4.ParkValue);
-            gameState.currentProfit = ToMoney64(_s4.Profit);
+            gameState.park.currentProfit = ToMoney64(_s4.Profit);
 
             for (size_t i = 0; i < Limits::kFinanceGraphSize; i++)
             {
-                gameState.cashHistory[i] = ToMoney64(_s4.CashHistory[i]);
+                gameState.park.cashHistory[i] = ToMoney64(_s4.CashHistory[i]);
                 gameState.park.ValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
-                gameState.weeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
+                gameState.park.weeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
             }
 
             for (size_t i = 0; i < Limits::kExpenditureTableMonthCount; i++)
             {
                 for (size_t j = 0; j < Limits::kExpenditureTypeCount; j++)
                 {
-                    gameState.expenditureTable[i][j] = ToMoney64(_s4.Expenditure[i][j]);
+                    gameState.park.expenditureTable[i][j] = ToMoney64(_s4.Expenditure[i][j]);
                 }
             }
-            gameState.currentExpenditure = ToMoney64(_s4.TotalExpenditure);
+            gameState.park.currentExpenditure = ToMoney64(_s4.TotalExpenditure);
 
             gameState.scenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s4.CompletedCompanyValue);
-            gameState.totalAdmissions = _s4.NumAdmissions;
-            gameState.totalIncomeFromAdmissions = ToMoney64(_s4.AdmissionTotalIncome);
+            gameState.park.totalAdmissions = _s4.NumAdmissions;
+            gameState.park.totalIncomeFromAdmissions = ToMoney64(_s4.AdmissionTotalIncome);
 
             // TODO marketing campaigns not working
             static_assert(
@@ -1554,7 +1554,7 @@ namespace OpenRCT2::RCT1
                     {
                         campaign.ShopItemType = ShopItem(_s4.MarketingAssoc[i]);
                     }
-                    gameState.marketingCampaigns.push_back(campaign);
+                    gameState.park.marketingCampaigns.push_back(campaign);
                 }
             }
         }
@@ -2277,12 +2277,12 @@ namespace OpenRCT2::RCT1
             {
                 if (_s4.GuestsInParkHistory[i] != kRCT12ParkHistoryUndefined)
                 {
-                    gameState.guestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * kRCT12GuestsInParkHistoryFactor;
+                    gameState.park.guestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * kRCT12GuestsInParkHistoryFactor;
                 }
             }
 
             // Awards
-            auto& currentAwards = gameState.currentAwards;
+            auto& currentAwards = gameState.park.currentAwards;
             for (auto& src : _s4.Awards)
             {
                 if (src.Time != 0)
@@ -2293,13 +2293,13 @@ namespace OpenRCT2::RCT1
 
             // Number of guests history
             std::fill(
-                std::begin(gameState.guestsInParkHistory), std::end(gameState.guestsInParkHistory),
+                std::begin(gameState.park.guestsInParkHistory), std::end(gameState.park.guestsInParkHistory),
                 std::numeric_limits<uint32_t>::max());
             for (size_t i = 0; i < std::size(_s4.GuestsInParkHistory); i++)
             {
                 if (_s4.GuestsInParkHistory[i] != std::numeric_limits<uint8_t>::max())
                 {
-                    gameState.guestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * 20;
+                    gameState.park.guestsInParkHistory[i] = _s4.GuestsInParkHistory[i] * 20;
                 }
             }
 
@@ -2314,12 +2314,12 @@ namespace OpenRCT2::RCT1
             gameState.guestInitialThirst = _s4.GuestInitialThirst;
             gameState.guestInitialHappiness = _s4.GuestInitialHappiness;
 
-            gameState.guestGenerationProbability = _s4.GuestGenerationProbability;
+            gameState.park.guestGenerationProbability = _s4.GuestGenerationProbability;
 
             // Staff colours
-            gameState.staffHandymanColour = RCT1::GetColour(_s4.HandymanColour);
-            gameState.staffMechanicColour = RCT1::GetColour(_s4.MechanicColour);
-            gameState.staffSecurityColour = RCT1::GetColour(_s4.SecurityGuardColour);
+            gameState.park.staffHandymanColour = RCT1::GetColour(_s4.HandymanColour);
+            gameState.park.staffMechanicColour = RCT1::GetColour(_s4.MechanicColour);
+            gameState.park.staffSecurityColour = RCT1::GetColour(_s4.SecurityGuardColour);
 
             // Flags
             gameState.park.Flags = _s4.ParkFlags;
@@ -2333,11 +2333,11 @@ namespace OpenRCT2::RCT1
             }
 
             gameState.park.Size = _s4.ParkSize;
-            gameState.totalRideValueForMoney = _s4.TotalRideValueForMoney;
-            gameState.samePriceThroughoutPark = 0;
+            gameState.park.totalRideValueForMoney = _s4.TotalRideValueForMoney;
+            gameState.park.samePriceThroughoutPark = 0;
             if (_gameVersion == FILE_VERSION_RCT1_LL)
             {
-                gameState.samePriceThroughoutPark = _s4.SamePriceThroughout;
+                gameState.park.samePriceThroughoutPark = _s4.SamePriceThroughout;
             }
         }
 

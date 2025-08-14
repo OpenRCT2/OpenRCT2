@@ -380,7 +380,7 @@ namespace OpenRCT2::RCT2
             ConvertPeepAnimationTypeToObjects(gameState);
 
             gameState.initialCash = ToMoney64(_s6.InitialCash);
-            gameState.bankLoan = ToMoney64(_s6.CurrentLoan);
+            gameState.park.bankLoan = ToMoney64(_s6.CurrentLoan);
 
             gameState.park.Flags = _s6.ParkFlags & ~PARK_FLAGS_NO_MONEY_SCENARIO;
 
@@ -401,28 +401,28 @@ namespace OpenRCT2::RCT2
 
             ImportPeepSpawns(gameState);
 
-            gameState.guestChangeModifier = _s6.GuestCountChangeModifier;
+            gameState.park.guestChangeModifier = _s6.GuestCountChangeModifier;
             gameState.researchFundingLevel = _s6.CurrentResearchLevel;
             // Pad01357400
             // _s6.ResearchedTrackTypesA
             // _s6.ResearchedTrackTypesB
 
-            gameState.numGuestsInPark = _s6.GuestsInPark;
-            gameState.numGuestsHeadingForPark = _s6.GuestsHeadingForPark;
+            gameState.park.numGuestsInPark = _s6.GuestsInPark;
+            gameState.park.numGuestsHeadingForPark = _s6.GuestsHeadingForPark;
 
             for (size_t i = 0; i < Limits::kExpenditureTableMonthCount; i++)
             {
                 for (size_t j = 0; j < Limits::kExpenditureTypeCount; j++)
                 {
-                    gameState.expenditureTable[i][j] = ToMoney64(_s6.ExpenditureTable[i][j]);
+                    gameState.park.expenditureTable[i][j] = ToMoney64(_s6.ExpenditureTable[i][j]);
                 }
             }
 
-            gameState.numGuestsInParkLastWeek = _s6.LastGuestsInPark;
+            gameState.park.numGuestsInParkLastWeek = _s6.LastGuestsInPark;
             // Pad01357BCA
-            gameState.staffHandymanColour = _s6.HandymanColour;
-            gameState.staffMechanicColour = _s6.MechanicColour;
-            gameState.staffSecurityColour = _s6.SecurityColour;
+            gameState.park.staffHandymanColour = _s6.HandymanColour;
+            gameState.park.staffMechanicColour = _s6.MechanicColour;
+            gameState.park.staffSecurityColour = _s6.SecurityColour;
 
             gameState.park.Rating = _s6.ParkRating;
 
@@ -438,7 +438,7 @@ namespace OpenRCT2::RCT2
             {
                 if (_s6.GuestsInParkHistory[i] != kRCT12ParkHistoryUndefined)
                 {
-                    gameState.guestsInParkHistory[i] = _s6.GuestsInParkHistory[i] * kRCT12GuestsInParkHistoryFactor;
+                    gameState.park.guestsInParkHistory[i] = _s6.GuestsInParkHistory[i] * kRCT12GuestsInParkHistoryFactor;
                 }
             }
 
@@ -462,9 +462,9 @@ namespace OpenRCT2::RCT2
             gameState.researchExpectedMonth = _s6.NextResearchExpectedMonth;
             gameState.guestInitialHappiness = _s6.GuestInitialHappiness;
             gameState.park.Size = _s6.ParkSize;
-            gameState.guestGenerationProbability = _s6.GuestGenerationProbability;
-            gameState.totalRideValueForMoney = _s6.TotalRideValueForMoney;
-            gameState.maxBankLoan = ToMoney64(_s6.MaximumLoan);
+            gameState.park.guestGenerationProbability = _s6.GuestGenerationProbability;
+            gameState.park.totalRideValueForMoney = _s6.TotalRideValueForMoney;
+            gameState.park.maxBankLoan = ToMoney64(_s6.MaximumLoan);
             gameState.guestInitialCash = ToMoney64(_s6.GuestInitialCash);
             gameState.guestInitialHunger = _s6.GuestInitialHunger;
             gameState.guestInitialThirst = _s6.GuestInitialThirst;
@@ -480,29 +480,29 @@ namespace OpenRCT2::RCT2
                 gameState.scenarioObjective.NumGuests = _s6.ObjectiveGuests;
             ImportMarketingCampaigns();
 
-            gameState.currentExpenditure = ToMoney64(_s6.CurrentExpenditure);
-            gameState.currentProfit = ToMoney64(_s6.CurrentProfit);
-            gameState.weeklyProfitAverageDividend = ToMoney64(_s6.WeeklyProfitAverageDividend);
-            gameState.weeklyProfitAverageDivisor = _s6.WeeklyProfitAverageDivisor;
+            gameState.park.currentExpenditure = ToMoney64(_s6.CurrentExpenditure);
+            gameState.park.currentProfit = ToMoney64(_s6.CurrentProfit);
+            gameState.park.weeklyProfitAverageDividend = ToMoney64(_s6.WeeklyProfitAverageDividend);
+            gameState.park.weeklyProfitAverageDivisor = _s6.WeeklyProfitAverageDivisor;
             // Pad0135833A
 
             gameState.park.Value = ToMoney64(_s6.ParkValue);
 
             for (size_t i = 0; i < Limits::kFinanceGraphSize; i++)
             {
-                gameState.cashHistory[i] = ToMoney64(_s6.BalanceHistory[i]);
-                gameState.weeklyProfitHistory[i] = ToMoney64(_s6.WeeklyProfitHistory[i]);
+                gameState.park.cashHistory[i] = ToMoney64(_s6.BalanceHistory[i]);
+                gameState.park.weeklyProfitHistory[i] = ToMoney64(_s6.WeeklyProfitHistory[i]);
                 gameState.park.ValueHistory[i] = ToMoney64(_s6.ParkValueHistory[i]);
             }
 
             gameState.scenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s6.CompletedCompanyValue);
-            gameState.totalAdmissions = _s6.TotalAdmissions;
-            gameState.totalIncomeFromAdmissions = ToMoney64(_s6.IncomeFromAdmissions);
-            gameState.companyValue = ToMoney64(_s6.CompanyValue);
-            std::memcpy(gameState.peepWarningThrottle, _s6.PeepWarningThrottle, sizeof(_s6.PeepWarningThrottle));
+            gameState.park.totalAdmissions = _s6.TotalAdmissions;
+            gameState.park.totalIncomeFromAdmissions = ToMoney64(_s6.IncomeFromAdmissions);
+            gameState.park.companyValue = ToMoney64(_s6.CompanyValue);
+            std::memcpy(gameState.park.peepWarningThrottle, _s6.PeepWarningThrottle, sizeof(_s6.PeepWarningThrottle));
 
             // Awards
-            auto& currentAwards = gameState.currentAwards;
+            auto& currentAwards = gameState.park.currentAwards;
             for (auto& src : _s6.Awards)
             {
                 if (src.Time != 0)
@@ -520,22 +520,22 @@ namespace OpenRCT2::RCT2
             gameState.scenarioCompanyValueRecord = _s6.CompletedCompanyValueRecord;
             // _s6.LoanHash;
             // Pad013587CA
-            gameState.historicalProfit = ToMoney64(_s6.HistoricalProfit);
+            gameState.park.historicalProfit = ToMoney64(_s6.HistoricalProfit);
             // Pad013587D4
             gameState.scenarioCompletedBy = std::string_view(_s6.ScenarioCompletedName, sizeof(_s6.ScenarioCompletedName));
-            gameState.cash = ToMoney64(DECRYPT_MONEY(_s6.Cash));
+            gameState.park.cash = ToMoney64(DECRYPT_MONEY(_s6.Cash));
             // Pad013587FC
             gameState.park.RatingCasualtyPenalty = _s6.ParkRatingCasualtyPenalty;
             gameState.mapSize = { _s6.MapSize, _s6.MapSize };
-            gameState.samePriceThroughoutPark = _s6.SamePriceThroughout
+            gameState.park.samePriceThroughoutPark = _s6.SamePriceThroughout
                 | (static_cast<uint64_t>(_s6.SamePriceThroughoutExtended) << 32);
-            gameState.suggestedGuestMaximum = _s6.SuggestedMaxGuests;
+            gameState.park.suggestedGuestMaximum = _s6.SuggestedMaxGuests;
             gameState.scenarioParkRatingWarningDays = _s6.ParkRatingWarningDays;
             gameState.lastEntranceStyle = _s6.LastEntranceStyle;
             // rct1_water_colour
             // Pad01358842
             ImportResearchList(gameState);
-            gameState.bankLoanInterestRate = _s6.CurrentInterestRate;
+            gameState.park.bankLoanInterestRate = _s6.CurrentInterestRate;
             // Pad0135934B
             // Preserve compatibility with vanilla RCT2's save format.
             gameState.park.Entrances.clear();
@@ -1626,7 +1626,7 @@ namespace OpenRCT2::RCT2
                     {
                         campaign.ShopItemType = ShopItem(_s6.CampaignRideIndex[i]);
                     }
-                    getGameState().marketingCampaigns.push_back(campaign);
+                    getGameState().park.marketingCampaigns.push_back(campaign);
                 }
             }
         }

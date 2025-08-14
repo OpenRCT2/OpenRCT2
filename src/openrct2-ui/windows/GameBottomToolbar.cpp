@@ -107,9 +107,9 @@ namespace OpenRCT2::Ui::Windows
                                                     windowPos.y + widget.midY() - (line_height == 10 ? 5 : 6) };
 
                 auto colour = GetHoverWidgetColour(WIDX_MONEY);
-                StringId stringId = gameState.cash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
+                StringId stringId = gameState.park.cash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
                 auto ft = Formatter();
-                ft.Add<money64>(gameState.cash);
+                ft.Add<money64>(gameState.park.cash);
                 DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
             }
 
@@ -130,11 +130,12 @@ namespace OpenRCT2::Ui::Windows
                 const auto& widget = widgets[WIDX_GUESTS];
                 auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(), windowPos.y + widget.midY() - 6 };
 
-                StringId stringId = gameState.numGuestsInPark == 1 ? _guestCountFormatsSingular[gameState.guestChangeModifier]
-                                                                   : _guestCountFormats[gameState.guestChangeModifier];
+                StringId stringId = gameState.park.numGuestsInPark == 1
+                    ? _guestCountFormatsSingular[gameState.park.guestChangeModifier]
+                    : _guestCountFormats[gameState.park.guestChangeModifier];
                 auto colour = GetHoverWidgetColour(WIDX_GUESTS);
                 auto ft = Formatter();
-                ft.Add<uint32_t>(gameState.numGuestsInPark);
+                ft.Add<uint32_t>(gameState.park.numGuestsInPark);
                 DrawTextBasic(rt, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
             }
 
@@ -486,7 +487,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_MONEY:
-                    ft.Add<money64>(gameState.currentProfit);
+                    ft.Add<money64>(gameState.park.currentProfit);
                     ft.Add<money64>(gameState.park.Value);
                     break;
                 case WIDX_PARK_RATING:

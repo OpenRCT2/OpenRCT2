@@ -231,7 +231,7 @@ GameActions::Result CheatSetAction::Execute() const
             gameState.cheats.neverendingMarketing = _param1 != 0;
             break;
         case CheatType::OpenClosePark:
-            ParkSetOpen(!gameState.park.IsOpen());
+            ParkSetOpen(!Park::IsOpen(gameState.park));
             break;
         case CheatType::HaveFun:
             gameState.scenarioObjective.Type = OBJECTIVE_HAVE_FUN;
@@ -604,7 +604,7 @@ void CheatSetAction::SetScenarioNoMoney(bool enabled) const
 
 void CheatSetAction::SetMoney(money64 amount) const
 {
-    getGameState().cash = amount;
+    getGameState().park.cash = amount;
 
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByClass(WindowClass::Finances);
@@ -614,7 +614,7 @@ void CheatSetAction::SetMoney(money64 amount) const
 void CheatSetAction::AddMoney(money64 amount) const
 {
     auto& gameState = getGameState();
-    gameState.cash = AddClamp<money64>(gameState.cash, amount);
+    gameState.park.cash = AddClamp<money64>(gameState.park.cash, amount);
 
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByClass(WindowClass::Finances);
@@ -624,7 +624,7 @@ void CheatSetAction::AddMoney(money64 amount) const
 void CheatSetAction::ClearLoan() const
 {
     // First give money
-    AddMoney(getGameState().bankLoan);
+    AddMoney(getGameState().park.bankLoan);
 
     // Then pay the loan
     auto gameAction = ParkSetLoanAction(0.00_GBP);
