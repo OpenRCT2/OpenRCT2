@@ -284,6 +284,7 @@ constexpr MetalSupportGraphic kMetalSupportGraphicRotated[kMetalSupportTypeCount
 constexpr const int32_t kMetalSupportBaseHeight = 6;
 constexpr const int32_t kMetalSupportMaxSectionHeight = 16;
 constexpr const int32_t kMetalSupportJointInterval = 4;
+constexpr const int32_t kMetalSupportCrossbeamTwoSegmentOffsetIndex = 4;
 
 static inline MetalSupportGraphic RotateMetalSupportGraphic(MetalSupportType supportType, Direction direction);
 
@@ -347,7 +348,7 @@ static bool MetalSupportsPaintSetupCommon(
         const uint8_t crossBeamIndex = kMetalSupportSegmentOffsets[baseIndex + segment * 8 + 1];
         if constexpr (typeB)
         {
-            if (crossBeamIndex >= 4)
+            if (crossBeamIndex >= kMetalSupportCrossbeamTwoSegmentOffsetIndex)
                 return false;
         }
 
