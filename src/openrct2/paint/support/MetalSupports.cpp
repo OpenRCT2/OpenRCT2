@@ -283,6 +283,7 @@ constexpr MetalSupportGraphic kMetalSupportGraphicRotated[kMetalSupportTypeCount
 
 constexpr const int32_t kMetalSupportBaseHeight = 6;
 constexpr const int32_t kMetalSupportMaxSectionHeight = 16;
+constexpr const int32_t kMetalSupportJointInterval = 4;
 
 static inline MetalSupportGraphic RotateMetalSupportGraphic(MetalSupportType supportType, Direction direction);
 
@@ -403,7 +404,7 @@ static bool MetalSupportsPaintSetupCommon(
             break;
 
         uint32_t imageIndex = supportBeamImageIndex + beamLength - 1;
-        if (count % 4 == 0 && beamLength == kMetalSupportMaxSectionHeight)
+        if (count % kMetalSupportJointInterval == 0 && beamLength == kMetalSupportMaxSectionHeight)
             imageIndex++;
 
         PaintAddImageAsParent(
