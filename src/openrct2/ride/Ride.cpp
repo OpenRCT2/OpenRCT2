@@ -4929,6 +4929,12 @@ OpenRCT2::BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(
           SpritePrecision::Sprites4, SpriteGroupType::Slopes25InlineTwists, SpritePrecision::Sprites4,
           SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
           SpritePrecision::Sprites4 }, // TrackGroup::diveLoop
+        { SpriteGroupType::Slopes8, SpritePrecision::Sprites4, SpriteGroupType::Slopes16,
+          SpritePrecision::Sprites4 }, // TrackGroup::diagSlope
+        { SpriteGroupType::Slopes25, SpritePrecision::Sprites8, SpriteGroupType::Slopes42, SpritePrecision::Sprites8,
+          SpriteGroupType::Slopes50, SpritePrecision::Sprites4 }, // TrackGroup::diagSlopeSteepUp
+        { SpriteGroupType::Slopes25, SpritePrecision::Sprites8, SpriteGroupType::Slopes42, SpritePrecision::Sprites8,
+          SpriteGroupType::Slopes50, SpritePrecision::Sprites4 }, // TrackGroup::diagSlopeSteepDown
     };
 
     static_assert(std::size(trackPieceRequiredSprites) == EnumValue(TrackGroup::count));

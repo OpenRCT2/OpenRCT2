@@ -22,7 +22,7 @@ constexpr RideTypeDescriptor InvertedRollerCoasterRTD =
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::invertedRollerCoaster,
         .supportType = MetalSupportType::boxed,
-        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::verticalLoop, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::twist, TrackGroup::halfLoop, TrackGroup::corkscrew, TrackGroup::helixDownBankedQuarter, TrackGroup::helixUpBankedQuarter, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::halfLoopLarge, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
+        .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::flatRollBanking, TrackGroup::verticalLoop, TrackGroup::slope, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::slopeCurve, TrackGroup::slopeCurveSteep, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::twist, TrackGroup::halfLoop, TrackGroup::corkscrew, TrackGroup::helixDownBankedQuarter, TrackGroup::helixUpBankedQuarter, TrackGroup::brakes, TrackGroup::onridePhoto, TrackGroup::halfLoopLarge, TrackGroup::blockBrakes, TrackGroup::slopeRollBanking, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::diagSlope, TrackGroup::diagSlopeSteepUp, TrackGroup::diagSlopeSteepDown },
         .extraTrackGroups = {TrackGroup::booster},
     }),
     .InvertedTrackPaintFunctions = {},
