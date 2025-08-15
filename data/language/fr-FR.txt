@@ -3846,3 +3846,5 @@ STR_6797    :Pas d’aperçu
 STR_6798    :Capture d’écran
 STR_6799    :Mini-carte
 STR_7000    :ou
+STR_7001    :Nom de l’attraction
+STR_7002    :{STRINGID} {STRINGID}
