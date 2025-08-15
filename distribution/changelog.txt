@@ -20,6 +20,7 @@
 - Fix: [#24955] Hybrid Zero G Rolls do not fully block metal supports.
 - Fix: [#24958] Android: fix crash when device is offline.
 - Fix: [#24961] Queues with corner connections set with the tile inspector draw incorrect sprites.
+- Fix: [#24972] Fix crash when closing windows would open other windows.
 
 0.4.25 (2025-08-03)
 ------------------------------------------------------------------------
