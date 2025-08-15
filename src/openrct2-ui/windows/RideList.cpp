@@ -269,7 +269,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_SEARCH_CLEAR_BUTTON:
                     _searchFilter.clear();
-                    RefreshList();
+                    ApplySearchQuery();
                     InvalidateWidget(WIDX_SEARCH_TEXT_BOX);
                     break;
                 case WIDX_CLOSE_LIGHT:
@@ -443,7 +443,7 @@ namespace OpenRCT2::Ui::Windows
             return { 0, newHeight };
         }
 
-        int32_t GetNthVisibleItemIndex(int32_t target)
+        int32_t GetNthVisibleItemIndex(int32_t target) const
         {
             auto j = 0;
             for (auto i = 0u; i < _rideList.size(); i++)
@@ -950,7 +950,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        size_t CountVisibleItems()
+        size_t CountVisibleItems() const
         {
             return std::count_if(_rideList.begin(), _rideList.end(), [](const RideListEntry& entry) { return entry.Visible; });
         }
