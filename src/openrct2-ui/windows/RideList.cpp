@@ -175,6 +175,7 @@ namespace OpenRCT2::Ui::Windows
         {
             RideId Id;
             u8string Name;
+            bool Visible;
         };
         std::vector<RideListEntry> _rideList;
 
@@ -422,7 +423,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             _searchFilter.assign(text);
-            RefreshList();
+            ApplySearchQuery();
         }
 
         /**
@@ -431,7 +432,7 @@ namespace OpenRCT2::Ui::Windows
          */
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override
         {
-            const auto newHeight = static_cast<int32_t>(_rideList.size() * kScrollableRowHeight);
+            const auto newHeight = static_cast<int32_t>(CountVisibleItems() * kScrollableRowHeight);
             auto top = std::max(0, newHeight - widgets[WIDX_LIST].bottom + widgets[WIDX_LIST].top + 21);
             if (top < scrolls[0].contentOffsetY)
             {
@@ -442,14 +443,30 @@ namespace OpenRCT2::Ui::Windows
             return { 0, newHeight };
         }
 
+        int32_t GetNthVisibleItemIndex(int32_t target)
+        {
+            auto j = 0;
+            for (auto i = 0u; i < _rideList.size(); i++)
+            {
+                if (!_rideList[i].Visible)
+                    continue;
+
+                if (j == target)
+                    return i;
+
+                j++;
+            }
+            return -1;
+        }
+
         /**
          *
          *  rct2: 0x006B361F
          */
         void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            const auto index = screenCoords.y / kScrollableRowHeight;
-            if (index < 0 || static_cast<size_t>(index) >= _rideList.size())
+            const auto index = GetNthVisibleItemIndex(screenCoords.y / kScrollableRowHeight);
+            if (index < 0)
                 return;
 
             // Open ride window
@@ -474,8 +491,8 @@ namespace OpenRCT2::Ui::Windows
          */
         void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
         {
-            const auto index = screenCoords.y / kScrollableRowHeight;
-            if (index < 0 || static_cast<size_t>(index) >= _rideList.size())
+            const auto index = GetNthVisibleItemIndex(screenCoords.y / kScrollableRowHeight);
+            if (index < 0)
                 return;
 
             selected_list_item = index;
@@ -620,6 +637,9 @@ namespace OpenRCT2::Ui::Windows
             auto y = 0;
             for (size_t i = 0; i < _rideList.size(); i++)
             {
+                if (!_rideList[i].Visible)
+                    continue;
+
                 StringId format = STR_BLACK_STRING;
                 if (_quickDemolishMode)
                     format = STR_RED_STRINGID;
@@ -922,6 +942,19 @@ namespace OpenRCT2::Ui::Windows
             return String::contains(u8string_view(rideName), _searchFilter, true);
         }
 
+        void ApplySearchQuery()
+        {
+            for (auto& entry : _rideList)
+            {
+                entry.Visible = IsFiltered(entry.Name);
+            }
+        }
+
+        size_t CountVisibleItems()
+        {
+            return std::count_if(_rideList.begin(), _rideList.end(), [](const RideListEntry& entry) { return entry.Visible; });
+        }
+
         /**
          *
          *  rct2: 0x006B39A8
@@ -940,20 +973,16 @@ namespace OpenRCT2::Ui::Windows
                 // Get the ride name once and use it for both filtering and storage
                 auto rideName = rideRef.getName();
 
-                // Apply search filter
-                if (!IsFiltered(rideName))
-                {
-                    continue;
-                }
-
                 if (rideRef.windowInvalidateFlags & RIDE_INVALIDATE_RIDE_LIST)
                 {
                     rideRef.windowInvalidateFlags &= ~RIDE_INVALIDATE_RIDE_LIST;
                 }
 
-                RideListEntry entry{};
-                entry.Id = rideRef.id;
-                entry.Name = std::move(rideName);
+                RideListEntry entry{
+                    .Id = rideRef.id,
+                    .Name = std::move(rideName),
+                    .Visible = IsFiltered(rideName),
+                };
 
                 _rideList.push_back(std::move(entry));
             }
