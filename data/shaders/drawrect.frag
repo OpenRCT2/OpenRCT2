@@ -13,7 +13,7 @@ uniform usampler2D      uPaletteTex;
 uniform sampler2D       uPeelingTex;
 uniform bool            uPeeling;
 
-layout(origin_upper_left, pixel_center_integer) in vec4 gl_FragCoord;
+in vec4 gl_FragCoord;
 
 flat in int             fFlags;
 flat in uint            fColour;
@@ -26,6 +26,7 @@ in vec3                 fPeelPos;
 flat in float           fZoom;
 flat in int             fTexColourAtlas;
 flat in int             fTexMaskAtlas;
+flat in int             fScreenHeight;
 // clang-format on
 
 out uint oColour;
@@ -41,7 +42,8 @@ void main()
         }
     }
 
-    vec2 position = (gl_FragCoord.xy - fPosition) * fZoom;
+    vec2 fragCoord = vec2(floor(gl_FragCoord.x), fScreenHeight - floor(gl_FragCoord.y) - 1);
+    vec2 position = (fragCoord - fPosition) * fZoom;
 
     uint texel;
     if ((fFlags & FLAG_NO_TEXTURE) == 0)
