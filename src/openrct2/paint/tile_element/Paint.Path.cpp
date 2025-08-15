@@ -57,7 +57,7 @@ const uint8_t kPathSlopeToLandSlope[] = {
     kTileSlopeSESideUp,
 };
 
-static constexpr uint8_t Byte98D6E0[] = {
+static constexpr uint8_t kPathEdgesAndCornersToSurfaceImageIndexOffset[] = {
     0, 1, 2, 3, 4, 5, 6,  7,  8, 9,  10, 11, 12, 13, 14, 15, 0, 1, 2, 20, 4, 5, 6, 22, 8, 9, 10, 26, 12, 13, 14, 36,
     0, 1, 2, 3, 4, 5, 21, 23, 8, 9,  10, 11, 12, 13, 33, 37, 0, 1, 2, 3,  4, 5, 6, 24, 8, 9, 10, 11, 12, 13, 14, 38,
     0, 1, 2, 3, 4, 5, 6,  7,  8, 9,  10, 11, 29, 30, 34, 39, 0, 1, 2, 3,  4, 5, 6, 7,  8, 9, 10, 11, 12, 13, 14, 40,
@@ -69,7 +69,7 @@ static constexpr uint8_t Byte98D6E0[] = {
 };
 
 // clang-format off
-static constexpr BoundBoxXY stru_98D804[] = {
+static constexpr BoundBoxXY kPathBoundingBoxes[] = {
     { { 3, 3 }, { 26, 26 } },
     { { 0, 3 }, { 29, 26 } },
     { { 3, 3 }, { 26, 29 } },
@@ -598,7 +598,7 @@ static void PathPaintFencesAndQueueBanners(
  * @param imageFlags (0x00F3EF70)
  * @param sceneryImageFlags (0x00F3EF74)
  */
-static void Sub6A3F61(
+static void PathPaintFencesAdditionsTunnels(
     PaintSession& session, const PathElement& pathElement, uint16_t connectedEdges, uint16_t height,
     const FootpathPaintInfo& pathPaintInfo, ImageId imageTemplate, ImageId sceneryImageTemplate, bool hasSupports)
 {
@@ -859,7 +859,7 @@ static std::pair<uint8_t, uint8_t> PathPaintGetRotatedEdgesAndCorners(
 
 static ImageIndex PathPaintGetBaseImage(
     const PaintSession& session, const PathElement& pathElement, const FootpathPaintInfo& pathPaintInfo,
-    uint16_t rotatedEdgesAndCorners)
+    const uint8_t rotatedEdgesAndCorners)
 {
     ImageIndex surfaceBaseImageIndex = pathPaintInfo.SurfaceImageId;
     if (pathElement.IsSloped())
@@ -870,7 +870,7 @@ static ImageIndex PathPaintGetBaseImage(
     }
     else
     {
-        surfaceBaseImageIndex += Byte98D6E0[rotatedEdgesAndCorners];
+        surfaceBaseImageIndex += kPathEdgesAndCornersToSurfaceImageIndexOffset[rotatedEdgesAndCorners];
     }
 
     return surfaceBaseImageIndex;
@@ -878,8 +878,8 @@ static ImageIndex PathPaintGetBaseImage(
 
 static BoundBoxXYZ PathPaintGetBoundbox(const PaintSession& session, int32_t height, uint8_t edges)
 {
-    CoordsXY boundBoxOffset = stru_98D804[edges].offset;
-    CoordsXY boundBoxSize = stru_98D804[edges].length;
+    CoordsXY boundBoxOffset = kPathBoundingBoxes[edges].offset;
+    CoordsXY boundBoxSize = kPathBoundingBoxes[edges].length;
 
     const bool hasPassedSurface = (session.Flags & PaintSessionFlags::PassedSurface) != 0;
     if (!hasPassedSurface)
@@ -958,9 +958,9 @@ void PathPaintBoxSupport(
     PROFILED_FUNCTION();
 
     auto [edges, corners] = PathPaintGetRotatedEdgesAndCorners(session, pathElement);
-    uint16_t edi = edges | (corners << 4);
+    const uint8_t edgesAndCorners = pathElement.IsQueue() ? edges : edges | (corners << 4);
 
-    auto surfaceBaseImageIndex = PathPaintGetBaseImage(session, pathElement, pathPaintInfo, edi);
+    const auto surfaceBaseImageIndex = PathPaintGetBaseImage(session, pathElement, pathPaintInfo, edgesAndCorners);
     auto boundbox = PathPaintGetBoundbox(session, height, edges);
 
     const bool hasPassedSurface = (session.Flags & PaintSessionFlags::PassedSurface) != 0;
@@ -990,7 +990,8 @@ void PathPaintBoxSupport(
         }
     }
 
-    Sub6A3F61(session, pathElement, edi, height, pathPaintInfo, imageTemplate, sceneryImageTemplate, hasSupports);
+    PathPaintFencesAdditionsTunnels(
+        session, pathElement, edgesAndCorners, height, pathPaintInfo, imageTemplate, sceneryImageTemplate, hasSupports);
 
     Direction slopeDirection{};
     if (pathElement.IsSloped())
@@ -1011,9 +1012,9 @@ void PathPaintPoleSupport(
     PROFILED_FUNCTION();
 
     auto [edges, corners] = PathPaintGetRotatedEdgesAndCorners(session, pathElement);
-    uint16_t edi = edges | (corners << 4);
+    const uint8_t edgesAndCorners = pathElement.IsQueue() ? edges : edges | (corners << 4);
 
-    auto surfaceBaseImageIndex = PathPaintGetBaseImage(session, pathElement, pathPaintInfo, edi);
+    const auto surfaceBaseImageIndex = PathPaintGetBaseImage(session, pathElement, pathPaintInfo, edgesAndCorners);
     auto boundbox = PathPaintGetBoundbox(session, height, edges);
 
     // Below Surface
@@ -1044,8 +1045,8 @@ void PathPaintPoleSupport(
         }
     }
 
-    Sub6A3F61(
-        session, pathElement, edi, height, pathPaintInfo, imageTemplate, sceneryImageTemplate,
+    PathPaintFencesAdditionsTunnels(
+        session, pathElement, edgesAndCorners, height, pathPaintInfo, imageTemplate, sceneryImageTemplate,
         hasSupports); // TODO: arguments
 
     MetalSupportPlace supports[] = {

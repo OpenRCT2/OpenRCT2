@@ -13,6 +13,7 @@
 - Fix: [#24915] LIM Launched (original bug), Corkscrew and Twister Roller Coaster inline twists have some incorrect tunnels.
 - Fix: [#24953] Crash when opening the Scenario Editor, Track Designer or Track Designs Manager.
 - Fix: [#24958] Android: fix crash when device is offline.
+- Fix: [#24961] Queues with corner connections set with the tile inspector draw incorrect sprites.
 
 0.4.25 (2025-08-03)
 ------------------------------------------------------------------------
