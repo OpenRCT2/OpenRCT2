@@ -7,6 +7,7 @@
 - Improved: [#24953] Opening the Scenario Editor, Track Designer or Track Designs Manager now display the progress bar.
 - Change: [#23351] Diagonal sloped Go-Kart track can no longer be built without cheats if the karts do not have sprites for them.
 - Change: [#24606] Increase Misc Entity limit from 1600 to 3200.
+- Change: [#24974] Raise the Go-Karts maximum support height to allow 2 large sloped turns to be built on flat ground.
 - Fix: [#16988] AppImage version does not show changelog.
 - Fix: [#24001] Sloped diagonal metal supports that are offset with a crossbeam draw incorrectly.
 - Fix: [#24173] Allow all game speeds between 1 and 8 if developer mode is on.
