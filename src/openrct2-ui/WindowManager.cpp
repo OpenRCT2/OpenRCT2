@@ -981,6 +981,10 @@ public:
     template<typename TPred>
     void CloseByCondition(TPred pred, uint32_t flags = WindowCloseFlags::None)
     {
+        // Collect windows to close first to avoid iterator invalidation
+        // when Close() might trigger window creation via OnClose()
+        std::vector<WindowBase*> windowsToClose;
+
         for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); ++it)
         {
             auto& wnd = *(*it);
@@ -989,11 +993,20 @@ public:
 
             if (pred(&wnd))
             {
-                Close(wnd);
+                windowsToClose.push_back(&wnd);
                 if (flags & WindowCloseFlags::CloseSingle)
                 {
-                    return;
+                    break;
                 }
+            }
+        }
+
+        // Now close the collected windows
+        for (auto* wnd : windowsToClose)
+        {
+            if (!(wnd->flags & WF_DEAD))
+            {
+                Close(*wnd);
             }
         }
     }
