@@ -169,7 +169,7 @@ struct TrackDesignAppearanceSettings
 
 struct TrackDesignStatistics
 {
-    RatingTuple ratings{};
+    OpenRCT2::RideRating::Tuple ratings{};
     int8_t maxSpeed{};
     int8_t averageSpeed{};
 

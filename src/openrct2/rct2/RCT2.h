@@ -187,7 +187,7 @@ namespace OpenRCT2::RCT2
         money16 price;                                       // 0x138
         RCT12xy8 chairliftBullwheelLocation[2];              // 0x13A
         uint8_t chairliftBullwheelZ[2];                      // 0x13E
-        RatingTuple ratings;                                 // 0x140
+        OpenRCT2::RideRating::Tuple ratings;                 // 0x140
         money16 value;                                       // 0x146
         uint16_t chairliftBullwheelRotation;                 // 0x148
         uint8_t satisfaction;                                // 0x14A

@@ -31,24 +31,6 @@ constexpr ride_rating MakeRideRating(int16_t whole, uint8_t fraction)
 }
 constexpr ride_rating kRideRatingUndefined = 0xFFFFu;
 
-#pragma pack(push, 1)
-
-// Used for return values, for functions that modify all three.
-struct RatingTuple
-{
-    ride_rating excitement{};
-    ride_rating intensity{};
-    ride_rating nausea{};
-
-    bool isNull() const;
-    void setNull();
-
-    bool operator==(const RatingTuple& rhs) const = default;
-};
-static_assert(sizeof(RatingTuple) == 6);
-
-#pragma pack(pop)
-
 struct RideRatingUpdateState
 {
     CoordsXYZ Proximity;
@@ -66,6 +48,24 @@ struct RideRatingUpdateState
 
 namespace OpenRCT2::RideRating
 {
+#pragma pack(push, 1)
+
+    // Used for return values, for functions that modify all three.
+    struct Tuple
+    {
+        ride_rating excitement{};
+        ride_rating intensity{};
+        ride_rating nausea{};
+
+        bool isNull() const;
+        void setNull();
+
+        bool operator==(const Tuple& rhs) const = default;
+    };
+    static_assert(sizeof(Tuple) == 6);
+
+#pragma pack(pop)
+
     static constexpr size_t kMaxUpdateStates = 4;
     using UpdateStates = std::array<RideRatingUpdateState, kMaxUpdateStates>;
 
