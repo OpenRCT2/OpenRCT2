@@ -613,8 +613,8 @@ STR_1214    :Vyberte maximální délku čekání před odjezdem
 STR_1215    :{WINDOW_COLOUR_2}Synchronizovat se sousedícími stanicemi
 STR_1216    :Vyberte, zda synchronizovat odjezdy se sousedícími stanicemi (pro „závodění“)
 STR_1217    :{COMMA16} sekund
-STR_1218    :{BLACK}➕
-STR_1219    :{BLACK}➖
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1220    :Jen východ
 STR_1221    :Nemá vchod
 STR_1222    :Chybí východ
@@ -1125,7 +1125,7 @@ STR_1727    :Stavební práva nejsou na prodej!
 STR_1728    :Tyto stavební práva nelze zakoupit…
 STR_1729    :Pozemek není ve vlastnictví parku!
 STR_1730    :{RED}Zavřeno
-STR_1731    :{WHITE}{STRINGID}
+STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Stavět
 STR_1733    :Mód
 STR_1734    :{WINDOW_COLOUR_2}Počet kol:
@@ -3477,7 +3477,7 @@ STR_6434    :Odstranit všechny vazby pro tuhle zkratku.
 STR_6435    :{WINDOW_COLOUR_2}Vandali zastaveni: {BLACK}{COMMA16}
 STR_6436    :Přepnout neviditelnost
 STR_6437    :Viditelný
-STR_6438    :V
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Průzkumník dlaždic: Přepnout neviditelnost
 STR_6440    :Průhledná voda
 STR_6441    :Alespoň jeden chodník který není fronta musí být vybrán.
