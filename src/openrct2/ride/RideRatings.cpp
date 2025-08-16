@@ -175,7 +175,7 @@ void OpenRCT2::RideRating::ResetUpdateStates()
  * processed will be overwritten.
  * Only purpose of this function currently is for testing.
  */
-void RideRatingsUpdateRide(const Ride& ride)
+void OpenRCT2::RideRating::UpdateRide(const Ride& ride)
 {
     RideRatingUpdateState state;
     if (ride.status != RideStatus::closed)

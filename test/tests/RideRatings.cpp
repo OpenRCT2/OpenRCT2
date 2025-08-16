@@ -32,7 +32,7 @@ protected:
     {
         for (const auto& ride : GetRideManager())
         {
-            RideRatingsUpdateRide(ride);
+            OpenRCT2::RideRating::UpdateRide(ride);
         }
     }
 

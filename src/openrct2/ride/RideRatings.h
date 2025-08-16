@@ -67,9 +67,9 @@ using RideRatingUpdateStates = std::array<RideRatingUpdateState, kRideRatingMaxU
 namespace OpenRCT2::RideRating
 {
     void ResetUpdateStates();
-}
+    void UpdateRide(const Ride& ride);
+} // namespace OpenRCT2::RideRating
 
-void RideRatingsUpdateRide(const Ride& ride);
 void RideRatingsUpdateAll();
 
 // Special Track Element Adjustment functions for RTDs
