@@ -9,10 +9,13 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../core/FixedPoint.hpp"
-#include "../core/Money.hpp"
 #include "../world/Location.hpp"
-#include "RideTypes.h"
+
+#include <array>
+
+struct Ride;
 
 using ride_rating = fixed16_2dp;
 namespace OpenRCT2

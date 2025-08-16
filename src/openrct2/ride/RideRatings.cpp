@@ -13,6 +13,7 @@
 #include "../Context.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
+#include "../core/Money.hpp"
 #include "../core/UnitConversion.h"
 #include "../profiling/Profiling.h"
 #include "../scripting/ScriptEngine.h"
