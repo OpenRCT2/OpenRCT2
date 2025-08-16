@@ -64,7 +64,10 @@ struct RideRatingUpdateState
 static constexpr size_t kRideRatingMaxUpdateStates = 4;
 using RideRatingUpdateStates = std::array<RideRatingUpdateState, kRideRatingMaxUpdateStates>;
 
-void RideRatingResetUpdateStates();
+namespace OpenRCT2::RideRating
+{
+    void ResetUpdateStates();
+}
 
 void RideRatingsUpdateRide(const Ride& ride);
 void RideRatingsUpdateAll();

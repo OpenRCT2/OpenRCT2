@@ -1064,7 +1064,7 @@ namespace OpenRCT2::RCT2
         {
             const auto& src = _s6.RideRatingsCalcData;
             // S6 has only one state, ensure we reset all states before reading the first one.
-            RideRatingResetUpdateStates();
+            OpenRCT2::RideRating::ResetUpdateStates();
             auto& rideRatingStates = getGameState().rideRatingUpdateStates;
             auto& dst = rideRatingStates[0];
             dst = {};

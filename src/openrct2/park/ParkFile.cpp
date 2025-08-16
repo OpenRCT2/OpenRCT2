@@ -654,7 +654,7 @@ namespace OpenRCT2
                     if (os.GetMode() == OrcaStream::Mode::READING)
                     {
                         // Since we read only one state ensure the rest is reset.
-                        RideRatingResetUpdateStates();
+                        OpenRCT2::RideRating::ResetUpdateStates();
                     }
                     auto& rideRatingUpdateState = rideRatings[0];
                     ReadWriteRideRatingCalculationData(cs, rideRatingUpdateState);

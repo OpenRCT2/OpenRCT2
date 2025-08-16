@@ -160,7 +160,7 @@ static void RideRatingsApplyRequirementStations(RatingTuple& ratings, const Ride
 static void RideRatingsApplyRequirementSplashdown(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyPenaltyLateralGs(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
 
-void RideRatingResetUpdateStates()
+void OpenRCT2::RideRating::ResetUpdateStates()
 {
     RideRatingUpdateState nullState{};
     nullState.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
