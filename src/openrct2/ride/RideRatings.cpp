@@ -89,7 +89,7 @@ struct ShelteredEights
 };
 
 // Amount of updates allowed per updating state on the current tick.
-// The total amount would be MaxRideRatingSubSteps * kRideRatingMaxUpdateStates which
+// The total amount would be MaxRideRatingSubSteps * OpenRCT2::RideRating::kMaxUpdateStates which
 // would be currently 80, this is the worst case of sub-steps and may break out earlier.
 static constexpr size_t MaxRideRatingUpdateSubSteps = 20;
 

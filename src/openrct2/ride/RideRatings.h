@@ -64,16 +64,15 @@ struct RideRatingUpdateState
     uint16_t StationFlags;
 };
 
-static constexpr size_t kRideRatingMaxUpdateStates = 4;
-using RideRatingUpdateStates = std::array<RideRatingUpdateState, kRideRatingMaxUpdateStates>;
-
 namespace OpenRCT2::RideRating
 {
+    static constexpr size_t kMaxUpdateStates = 4;
+    using UpdateStates = std::array<RideRatingUpdateState, kMaxUpdateStates>;
+
     void ResetUpdateStates();
     void UpdateRide(const Ride& ride);
     void UpdateAll();
 } // namespace OpenRCT2::RideRating
-
 
 // Special Track Element Adjustment functions for RTDs
 void SpecialTrackElementRatingsAjustment_Default(const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
