@@ -26,9 +26,9 @@ struct SmallSceneryElement : TileElementBase
 
 private:
     OpenRCT2::ObjectEntryIndex entryIndex; // 5
-    uint8_t age;                 // 7
-    uint8_t Colour[3];           // 8
-    uint8_t Flags2;              // B
+    uint8_t age;                           // 7
+    uint8_t Colour[3];                     // 8
+    uint8_t Flags2;                        // B
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t Pad0B[4];

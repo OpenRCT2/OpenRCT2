@@ -35,10 +35,10 @@ struct WallElement : TileElementBase
 
 private:
     OpenRCT2::ObjectEntryIndex entryIndex; // 05
-    colour_t colour_1;           // 07
-    colour_t colour_2;           // 08
-    colour_t colour_3;           // 09
-    BannerIndex banner_index;    // 0A
+    colour_t colour_1;                     // 07
+    colour_t colour_2;                     // 08
+    colour_t colour_3;                     // 09
+    BannerIndex banner_index;              // 0A
     uint8_t animation; // 0C 0b_dfff_fta0 d = direction, f = frame num, t = across track flag (not used), a = animating
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"

@@ -45,12 +45,12 @@ struct EntranceElement : TileElementBase
     static constexpr TileElementType kElementType = TileElementType::Entrance;
 
 private:
-    uint8_t entranceType;        // 5
-    uint8_t SequenceIndex;       // 6. Only uses the lower nibble.
-    StationIndex stationIndex;   // 7
-    OpenRCT2::ObjectEntryIndex PathType; // 8
-    RideId rideIndex;            // A
-    uint8_t flags2;              // C
+    uint8_t entranceType;                  // 5
+    uint8_t SequenceIndex;                 // 6. Only uses the lower nibble.
+    StationIndex stationIndex;             // 7
+    OpenRCT2::ObjectEntryIndex PathType;   // 8
+    RideId rideIndex;                      // A
+    uint8_t flags2;                        // C
     OpenRCT2::ObjectEntryIndex entryIndex; // D
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"

@@ -187,4 +187,4 @@ namespace OpenRCT2
             _entries.push_back(entry);
         }
     }
-}
+} // namespace OpenRCT2

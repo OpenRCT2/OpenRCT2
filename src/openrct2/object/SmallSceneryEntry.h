@@ -44,10 +44,10 @@ namespace OpenRCT2
         SMALL_SCENERY_FLAG_COG = (1 << 22),                  // 0x400000
         SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP = (1 << 23), // 0x800000; means supports can be built on this object. Used for
                                                              // base blocks.
-        SMALL_SCENERY_FLAG_HALF_SPACE = (1 << 24),     // 0x1000000
-        SMALL_SCENERY_FLAG_THREE_QUARTERS = (1 << 25), // 0x2000000
-        SMALL_SCENERY_FLAG_PAINT_SUPPORTS = (1 << 26), // 0x4000000; used for scenery items which are support structures
-        SMALL_SCENERY_FLAG27 = (1 << 27),              // 0x8000000
+        SMALL_SCENERY_FLAG_HALF_SPACE = (1 << 24),           // 0x1000000
+        SMALL_SCENERY_FLAG_THREE_QUARTERS = (1 << 25),       // 0x2000000
+        SMALL_SCENERY_FLAG_PAINT_SUPPORTS = (1 << 26),       // 0x4000000; used for scenery items which are support structures
+        SMALL_SCENERY_FLAG27 = (1 << 27),                    // 0x8000000
 
         // Added by OpenRCT2:
         SMALL_SCENERY_FLAG_IS_TREE = (1 << 28),

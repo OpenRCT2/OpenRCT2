@@ -68,10 +68,10 @@ struct PathElement : TileElementBase
 private:
     OpenRCT2::ObjectEntryIndex SurfaceIndex;  // 5
     OpenRCT2::ObjectEntryIndex RailingsIndex; // 7
-    uint8_t Additions;              // 9 (0 means no addition)
-    uint8_t EdgesAndCorners;        // 10 (edges in lower 4 bits, corners in upper 4)
-    uint8_t Flags2;                 // 11
-    uint8_t SlopeDirection;         // 12
+    uint8_t Additions;                        // 9 (0 means no addition)
+    uint8_t EdgesAndCorners;                  // 10 (edges in lower 4 bits, corners in upper 4)
+    uint8_t Flags2;                           // 11
+    uint8_t SlopeDirection;                   // 12
     union
     {
         uint8_t AdditionStatus; // 13, only used for litter bins
