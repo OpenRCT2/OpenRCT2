@@ -34,7 +34,6 @@
 
 struct IObjectManager;
 class Formatter;
-class StationObject;
 struct Ride;
 struct RideTypeDescriptor;
 struct Guest;
@@ -44,6 +43,11 @@ struct RideObjectEntry;
 struct ResultWithMessage;
 struct TileElement;
 struct TrackElement;
+
+namespace OpenRCT2
+{
+    class StationObject;
+}
 
 constexpr uint8_t kRideAdjacencyCheckDistance = 5;
 
@@ -151,7 +155,7 @@ struct Ride
     ride_type_t type{ kRideTypeNull };
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
-    ObjectEntryIndex subtype{ kObjectEntryIndexNull };
+    OpenRCT2::ObjectEntryIndex subtype{ OpenRCT2::kObjectEntryIndexNull };
     RideMode mode{};
     VehicleColourSettings vehicleColourSettings{};
     VehicleColour vehicleColours[OpenRCT2::Limits::kMaxVehicleColours]{};
@@ -283,8 +287,8 @@ struct Ride
     money64 incomePerHour{};
     money64 profit{};
     TrackColour trackColours[kNumRideColourSchemes]{};
-    ObjectEntryIndex music{ kObjectEntryIndexNull };
-    ObjectEntryIndex entranceStyle{ kObjectEntryIndexNull };
+    OpenRCT2::ObjectEntryIndex music{ OpenRCT2::kObjectEntryIndexNull };
+    OpenRCT2::ObjectEntryIndex entranceStyle{ OpenRCT2::kObjectEntryIndexNull };
     uint16_t vehicleChangeTimeout{};
     uint8_t numBlockBrakes{};
     uint8_t liftHillSpeed{};
@@ -346,7 +350,7 @@ public:
     void remove();
     void crash(uint8_t vehicleIndex);
     void setToDefaultInspectionInterval();
-    void setRideEntry(ObjectEntryIndex entryIndex);
+    void setRideEntry(OpenRCT2::ObjectEntryIndex entryIndex);
 
     void setNumTrains(int32_t newNumTrains);
     void setNumCarsPerTrain(int32_t numCarsPerVehicle);
@@ -420,8 +424,8 @@ public:
     int32_t getTotalLength() const;
     int32_t getTotalTime() const;
 
-    const StationObject* getStationObject() const;
-    const MusicObject* getMusicObject() const;
+    const OpenRCT2::StationObject* getStationObject() const;
+    const OpenRCT2::MusicObject* getMusicObject() const;
 
     bool hasLifecycleFlag(uint32_t flag) const;
     void setLifecycleFlag(uint32_t flag, bool on);
@@ -848,8 +852,8 @@ Ride* RideAllocateAtIndex(RideId index);
 Ride& RideGetTemporaryForPreview();
 void RideDelete(RideId id);
 
-const RideObjectEntry* GetRideEntryByIndex(ObjectEntryIndex index);
-std::string_view GetRideEntryName(ObjectEntryIndex index);
+const RideObjectEntry* GetRideEntryByIndex(OpenRCT2::ObjectEntryIndex index);
+std::string_view GetRideEntryName(OpenRCT2::ObjectEntryIndex index);
 
 int32_t RideGetCount();
 void RideInitAll();
@@ -862,7 +866,7 @@ void RideClearBlockedTiles(const Ride& ride);
 Staff* RideGetMechanic(const Ride& ride);
 Staff* RideGetAssignedMechanic(const Ride& ride);
 VehicleColour RideGetVehicleColour(const Ride& ride, int32_t vehicleIndex);
-int32_t RideGetUnusedPresetVehicleColour(ObjectEntryIndex subType);
+int32_t RideGetUnusedPresetVehicleColour(OpenRCT2::ObjectEntryIndex subType);
 void RideSetVehicleColoursToRandomPreset(Ride& ride, uint8_t preset_index);
 void RideMeasurementsUpdate();
 void RideBreakdownAddNewsItem(const Ride& ride);
@@ -934,7 +938,7 @@ int32_t GetUnifiedBoosterSpeed(ride_type_t rideType, int32_t relativeSpeed);
 void FixInvalidVehicleSpriteSizes();
 bool RideEntryHasCategory(const RideObjectEntry& rideEntry, RideCategory category);
 
-ObjectEntryIndex RideGetEntryIndex(ride_type_t rideType, ObjectEntryIndex rideSubType);
+OpenRCT2::ObjectEntryIndex RideGetEntryIndex(ride_type_t rideType, OpenRCT2::ObjectEntryIndex rideSubType);
 
 void DetermineRideEntranceAndExitLocations();
 void RideClearLeftoverEntrances(const Ride& ride);

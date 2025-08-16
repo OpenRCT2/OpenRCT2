@@ -208,7 +208,7 @@ struct Vehicle : EntityBase
     uint8_t var_D3;
     MiniGolfAnimation mini_golf_current_animation;
     uint8_t mini_golf_flags;
-    ObjectEntryIndex ride_subtype;
+    OpenRCT2::ObjectEntryIndex ride_subtype;
     uint8_t seat_rotation;
     uint8_t target_seat_rotation;
     CoordsXY BoatLocation;

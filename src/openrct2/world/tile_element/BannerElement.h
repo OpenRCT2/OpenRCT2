@@ -12,7 +12,10 @@
 #include "../Banner.h"
 #include "TileElementBase.h"
 
-struct BannerSceneryEntry;
+namespace OpenRCT2
+{
+    struct BannerSceneryEntry;
+}
 
 #pragma pack(push, 1)
 struct BannerElement : TileElementBase
@@ -29,7 +32,7 @@ private:
 #pragma clang diagnostic pop
 public:
     Banner* GetBanner() const;
-    const BannerSceneryEntry* GetEntry() const;
+    const OpenRCT2::BannerSceneryEntry* GetEntry() const;
 
     BannerIndex GetIndex() const;
     void SetIndex(BannerIndex newIndex);

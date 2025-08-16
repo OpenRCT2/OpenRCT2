@@ -303,7 +303,7 @@ struct Peep : EntityBase
         PeepRideSubState RideSubState;
         PeepUsingBinSubState UsingBinSubState;
     };
-    ObjectEntryIndex AnimationObjectIndex;
+    OpenRCT2::ObjectEntryIndex AnimationObjectIndex;
     PeepAnimationGroup AnimationGroup;
     uint8_t TshirtColour;
     uint8_t TrousersColour;

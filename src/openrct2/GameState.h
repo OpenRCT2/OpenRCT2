@@ -71,7 +71,7 @@ namespace OpenRCT2
         std::vector<Banner> banners;
         Entity_t entities[kMaxEntities]{};
         // Ride storage for all the rides in the park, rides with RideId::Null are considered free.
-        std::array<Ride, OpenRCT2::Limits::kMaxRidesInPark> rides{};
+        std::array<Ride, Limits::kMaxRidesInPark> rides{};
         size_t ridesEndOfUsedRange{};
         RideRatingUpdateStates rideRatingUpdateStates;
         std::vector<TileElement> tileElements;

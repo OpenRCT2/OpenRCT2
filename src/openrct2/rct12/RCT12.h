@@ -27,13 +27,13 @@
 #include <string_view>
 #include <vector>
 
-class ObjectList;
-
 namespace OpenRCT2
 {
+    class ObjectList;
     enum class TrackElemType : uint16_t;
     enum class TextColour : uint8_t;
 } // namespace OpenRCT2
+
 namespace OpenRCT2::RCT12
 {
     enum class ClimateType : uint8_t
@@ -1202,7 +1202,7 @@ static_assert(sizeof(RCT12VehicleColour) == 2);
 
 #pragma pack(pop)
 
-ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex index);
+OpenRCT2::ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex index);
 RideId RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId);
 bool IsLikelyUTF8(std::string_view s);
 std::string RCT12RemoveFormattingUTF8(std::string_view s);
@@ -1212,9 +1212,11 @@ OpenRCT2::RCT12::TrackElemType OpenRCT2FlatTrackTypeToRCT12(OpenRCT2::TrackElemT
 std::string_view GetStationIdentifierFromStyle(uint8_t style);
 uint8_t GetStationStyleFromIdentifier(u8string_view identifier);
 std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier);
-void RCT12AddDefaultObjects(ObjectList& objectList);
-void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, std::span<const std::string_view> objectNames);
-void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const OpenRCT2::RCT12::EntryList& entryList);
+void RCT12AddDefaultObjects(OpenRCT2::ObjectList& objectList);
+void AppendRequiredObjects(
+    OpenRCT2::ObjectList& objectList, OpenRCT2::ObjectType objectType, std::span<const std::string_view> objectNames);
+void AppendRequiredObjects(
+    OpenRCT2::ObjectList& objectList, OpenRCT2::ObjectType objectType, const OpenRCT2::RCT12::EntryList& entryList);
 bool IsUserStringID(StringId stringId);
 
 static constexpr money32 kRCT12CompanyValueOnFailedObjective = 0x80000001;

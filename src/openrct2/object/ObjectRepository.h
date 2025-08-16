@@ -15,6 +15,7 @@
 #include <memory>
 #include <vector>
 
+struct RenderTarget;
 enum class RideCategory : uint8_t;
 
 namespace OpenRCT2::Localisation
@@ -27,7 +28,6 @@ namespace OpenRCT2
     struct IStream;
     struct IPlatformEnvironment;
     class Object;
-    struct RenderTarget;
 
     enum ObjectItemFlags : uint8_t
     {
