@@ -113,7 +113,7 @@ namespace OpenRCT2
         {
         }
 
-        virtual ~AssetPackLoadContext() override
+        ~AssetPackLoadContext() override
         {
         }
 
