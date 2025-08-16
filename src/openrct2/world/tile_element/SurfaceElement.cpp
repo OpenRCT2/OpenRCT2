@@ -18,6 +18,8 @@
 #include "Slope.h"
 #include "TileElement.h"
 
+using namespace OpenRCT2;
+
 ObjectEntryIndex SurfaceElement::GetSurfaceObjectIndex() const
 {
     return SurfaceStyle;

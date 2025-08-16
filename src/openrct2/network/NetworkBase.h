@@ -79,8 +79,8 @@ public: // Server
     void RemovePlayer(std::unique_ptr<NetworkConnection>& connection);
     void UpdateServer();
     void ServerClientDisconnected(std::unique_ptr<NetworkConnection>& connection);
-    bool SaveMap(OpenRCT2::IStream* stream, const std::vector<const ObjectRepositoryItem*>& objects) const;
-    std::vector<uint8_t> SaveForNetwork(const std::vector<const ObjectRepositoryItem*>& objects) const;
+    bool SaveMap(OpenRCT2::IStream* stream, const std::vector<const OpenRCT2::ObjectRepositoryItem*>& objects) const;
+    std::vector<uint8_t> SaveForNetwork(const std::vector<const OpenRCT2::ObjectRepositoryItem*>& objects) const;
     std::string MakePlayerNameUnique(const std::string& name);
 
     // Packet dispatchers.
@@ -100,7 +100,8 @@ public: // Server
     void ServerSendGroupList(NetworkConnection& connection);
     void ServerSendEventPlayerJoined(const char* playerName);
     void ServerSendEventPlayerDisconnected(const char* playerName, const char* reason);
-    void ServerSendObjectsList(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
+    void ServerSendObjectsList(
+        NetworkConnection& connection, const std::vector<const OpenRCT2::ObjectRepositoryItem*>& objects) const;
     void ServerSendScripts(NetworkConnection& connection);
 
     // Handlers
@@ -231,7 +232,7 @@ private: // Client Data
     std::map<uint32_t, PlayerListUpdate> _pendingPlayerLists;
     std::multimap<uint32_t, NetworkPlayer> _pendingPlayerInfo;
     std::map<uint32_t, ServerTickData> _serverTickData;
-    std::vector<ObjectEntryDescriptor> _missingObjects;
+    std::vector<OpenRCT2::ObjectEntryDescriptor> _missingObjects;
     std::string _host;
     std::string _chatLogPath;
     std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";

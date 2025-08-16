@@ -17,10 +17,10 @@
 
 #include <optional>
 
-struct IReadObjectContext;
-
 namespace OpenRCT2
 {
+    struct IReadObjectContext;
+
     class AudioSampleTable : public ResourceTable
     {
     private:

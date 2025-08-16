@@ -47,7 +47,7 @@ namespace OpenRCT2
         PopulateTablesFromJson(context, root);
     }
 
-    Audo::IAudioSource* AudioObject::GetSample(uint32_t index) const
+    Audio::IAudioSource* AudioObject::GetSample(uint32_t index) const
     {
         return _loadedSampleTable.GetSample(index);
     }

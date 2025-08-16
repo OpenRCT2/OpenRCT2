@@ -12,10 +12,10 @@
 #include "../localisation/StringIdType.h"
 #include "ObjectTypes.h"
 
+enum class RailingEntrySupportType : uint8_t;
+
 namespace OpenRCT2
 {
-    enum class RailingEntrySupportType : uint8_t;
-
     enum
     {
         FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR = (1 << 2),

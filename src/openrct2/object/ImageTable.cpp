@@ -171,9 +171,9 @@ namespace OpenRCT2
             {
                 auto imageData = context->GetData(s);
                 auto image = Imaging::ReadFromBuffer(imageData);
-                auto meta = ImageImportMeta{};
+                auto meta = Drawing::ImageImportMeta{};
 
-                ImageImporter importer;
+                Drawing::ImageImporter importer;
                 auto importResult = importer.Import(image, meta);
 
                 result.push_back(std::make_unique<RequiredImage>(importResult.Element));
@@ -194,7 +194,7 @@ namespace OpenRCT2
         Guard::Assert(el.is_object(), "ImageTable::ParseImages expects parameter el to be object");
 
         auto path = Json::GetString(el["path"]);
-        auto meta = createImageImportMetaFromJson(el);
+        auto meta = Drawing::createImageImportMetaFromJson(el);
 
         std::vector<std::unique_ptr<RequiredImage>> result;
         try
@@ -208,7 +208,7 @@ namespace OpenRCT2
             }
             auto& image = itSource->second;
 
-            ImageImporter importer;
+            Drawing::ImageImporter importer;
             auto importResult = importer.Import(image, meta);
             auto g1element = importResult.Element;
             result.push_back(std::make_unique<RequiredImage>(g1element));

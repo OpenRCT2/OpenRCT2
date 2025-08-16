@@ -16,10 +16,10 @@
 #include <vector>
 
 struct Image;
-struct IReadObjectContext;
 
 namespace OpenRCT2
 {
+    struct IReadObjectContext;
     struct IStream;
 
     class ImageTable

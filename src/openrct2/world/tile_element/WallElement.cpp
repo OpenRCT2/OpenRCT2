@@ -6,11 +6,14 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+
 #include "WallElement.h"
 
 #include "../../object/ObjectEntryManager.h"
 #include "../../object/WallSceneryEntry.h"
 #include "../Banner.h"
+
+using namespace OpenRCT2;
 
 uint8_t WallElement::GetSlope() const
 {

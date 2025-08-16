@@ -14,14 +14,14 @@
 
 namespace OpenRCT2
 {
-    namespace OpenRCT2::StationObjectFlags
+    namespace StationObjectFlags
     {
         const uint32_t hasPrimaryColour = 1 << 0;
         const uint32_t hasSecondaryColour = 1 << 1;
         const uint32_t isTransparent = 1 << 2;
         const uint32_t noPlatforms = 1 << 3;
         const uint32_t hasShelter = (1 << 4);
-    } // namespace OpenRCT2::StationObjectFlags
+    } // namespace StationObjectFlags
 
     class StationObject final : public Object
     {

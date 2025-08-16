@@ -15,7 +15,11 @@
 #include "../paint/track/Support.h"
 #include "../world/Map.h"
 
-class StationObject;
+namespace OpenRCT2
+{
+    class StationObject;
+}
+
 struct Ride;
 
 constexpr uint8_t kTrackMap2x2[][4] = {
@@ -408,7 +412,7 @@ bool TrackPaintUtilHasFence(
     enum edge_t edge, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride, uint8_t rotation);
 void TrackPaintUtilPaintFloor(
     PaintSession& session, uint8_t edges, ImageId colourFlags, uint16_t height, const uint32_t floorSprites[4],
-    const StationObject* stationStyle);
+    const OpenRCT2::StationObject* stationStyle);
 void TrackPaintUtilPaintFences(
     PaintSession& session, uint8_t edges, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride,
     const ImageId colourFlags, uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation);
@@ -423,10 +427,10 @@ enum class StationBaseType
 constexpr uint32_t kStationBaseTypeCount = 4;
 
 bool TrackPaintUtilDrawStationCovers(
-    PaintSession& session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height,
+    PaintSession& session, enum edge_t edge, bool hasFence, const OpenRCT2::StationObject* stationObject, uint16_t height,
     ImageId colour);
 bool TrackPaintUtilDrawStationCovers2(
-    PaintSession& session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height,
+    PaintSession& session, enum edge_t edge, bool hasFence, const OpenRCT2::StationObject* stationObject, uint16_t height,
     uint8_t stationVariant, ImageId colour);
 bool TrackPaintUtilDrawNarrowStationPlatform(
     PaintSession& session, const Ride& ride, Direction direction, int32_t height, int32_t zOffset,
@@ -442,8 +446,8 @@ bool TrackPaintUtilDrawStationInverted(
     uint8_t stationVariant);
 bool TrackPaintUtilShouldPaintSupports(const CoordsXY& position);
 void TrackPaintUtilDrawPier(
-    PaintSession& session, const Ride& ride, const StationObject* stationObject, const CoordsXY& position, Direction direction,
-    int32_t height, const TrackElement& trackElement, uint8_t rotation);
+    PaintSession& session, const Ride& ride, const OpenRCT2::StationObject* stationObject, const CoordsXY& position,
+    Direction direction, int32_t height, const TrackElement& trackElement, uint8_t rotation);
 inline void TrackPaintUtilDrawStationTunnel(PaintSession& session, Direction direction, int32_t height)
 {
     PaintUtilPushTunnelRotated(session, direction, height, TunnelGroup::Square, TunnelSubType::Flat);

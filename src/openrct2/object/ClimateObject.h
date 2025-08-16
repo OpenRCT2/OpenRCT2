@@ -12,10 +12,10 @@
 #include "../world/Climate.h"
 #include "Object.h"
 
-struct IReadObjectContext;
-
 namespace OpenRCT2
 {
+    struct IReadObjectContext;
+
     using YearlyDistribution = std::array<uint8_t, EnumValue(WeatherType::Count)>;
 
     class ClimateObject final : public Object

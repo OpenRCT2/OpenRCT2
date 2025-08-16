@@ -18,11 +18,12 @@ namespace OpenRCT2
     class FootpathRailingsObject;
     class FootpathSurfaceObject;
     struct PathAdditionEntry;
-    struct PathRailingsDescriptor;
-    struct PathSurfaceDescriptor;
 
     using ObjectEntryIndex = uint16_t;
 } // namespace OpenRCT2
+
+struct PathRailingsDescriptor;
+struct PathSurfaceDescriptor;
 
 // Masks for values stored in TileElement.type
 enum
@@ -92,8 +93,8 @@ public:
     const OpenRCT2::FootpathRailingsObject* GetRailingsEntry() const;
     void SetRailingsEntryIndex(OpenRCT2::ObjectEntryIndex newIndex);
 
-    const OpenRCT2::PathSurfaceDescriptor* GetSurfaceDescriptor() const;
-    const OpenRCT2::PathRailingsDescriptor* GetRailingsDescriptor() const;
+    const PathSurfaceDescriptor* GetSurfaceDescriptor() const;
+    const PathRailingsDescriptor* GetRailingsDescriptor() const;
 
     uint8_t GetQueueBannerDirection() const;
     void SetQueueBannerDirection(uint8_t direction);

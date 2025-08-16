@@ -27,6 +27,8 @@
 
 #include <cassert>
 
+using namespace OpenRCT2;
+
 uint8_t SmallSceneryElement::GetSceneryQuadrant() const
 {
     return (this->Type & kTileElementQuadrantMask) >> 6;
