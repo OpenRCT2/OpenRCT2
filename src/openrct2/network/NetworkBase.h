@@ -143,7 +143,7 @@ public: // Client
     void Client_Send_GAME_ACTION(const GameAction* action);
     void Client_Send_PING();
     void Client_Send_GAMEINFO();
-    void Client_Send_MAPREQUEST(const std::vector<ObjectEntryDescriptor>& objects);
+    void Client_Send_MAPREQUEST(const std::vector<OpenRCT2::ObjectEntryDescriptor>& objects);
     void Client_Send_HEARTBEAT(NetworkConnection& connection) const;
 
     // Handlers.

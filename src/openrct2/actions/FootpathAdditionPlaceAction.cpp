@@ -98,7 +98,7 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
         return res;
     }
 
-    auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(_entryIndex);
+    auto* pathAdditionEntry = ObjectManager::GetObjectEntry<PathAdditionEntry>(_entryIndex);
     if (pathAdditionEntry == nullptr)
     {
         LOG_ERROR("Unknown footpath addition entry for entryIndex %d", _entryIndex);

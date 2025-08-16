@@ -15,12 +15,13 @@ class ParkEntrancePlaceAction final : public GameActionBase<GameCommand::PlacePa
 {
 private:
     CoordsXYZD _loc;
-    ObjectEntryIndex _pathType;
-    ObjectEntryIndex _entranceType;
+    OpenRCT2::ObjectEntryIndex _pathType;
+    OpenRCT2::ObjectEntryIndex _entranceType;
 
 public:
     ParkEntrancePlaceAction() = default;
-    ParkEntrancePlaceAction(const CoordsXYZD& location, ObjectEntryIndex pathType, ObjectEntryIndex entranceType);
+    ParkEntrancePlaceAction(
+        const CoordsXYZD& location, OpenRCT2::ObjectEntryIndex pathType, OpenRCT2::ObjectEntryIndex entranceType);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

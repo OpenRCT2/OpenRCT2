@@ -27,7 +27,7 @@ struct LargeSceneryElement : TileElementBase
     static constexpr TileElementType kElementType = TileElementType::LargeScenery;
 
 private:
-    ObjectEntryIndex EntryIndex;
+    OpenRCT2::ObjectEntryIndex EntryIndex;
     ::BannerIndex BannerIndex;
     uint8_t SequenceIndex;
     uint8_t Colour[3];
@@ -38,10 +38,10 @@ private:
 #pragma clang diagnostic pop
 
 public:
-    ObjectEntryIndex GetEntryIndex() const;
-    void SetEntryIndex(ObjectEntryIndex newIndex);
-    const LargeSceneryEntry* GetEntry() const;
-    const LargeSceneryObject* GetObject() const;
+    OpenRCT2::ObjectEntryIndex GetEntryIndex() const;
+    void SetEntryIndex(OpenRCT2::ObjectEntryIndex newIndex);
+    const OpenRCT2::LargeSceneryEntry* GetEntry() const;
+    const OpenRCT2::LargeSceneryObject* GetObject() const;
 
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newIndex);

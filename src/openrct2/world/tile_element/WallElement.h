@@ -34,7 +34,7 @@ struct WallElement : TileElementBase
     static constexpr TileElementType kElementType = TileElementType::Wall;
 
 private:
-    ObjectEntryIndex entryIndex; // 05
+    OpenRCT2::ObjectEntryIndex entryIndex; // 05
     colour_t colour_1;           // 07
     colour_t colour_2;           // 08
     colour_t colour_3;           // 09
@@ -48,7 +48,7 @@ private:
 public:
     uint16_t GetEntryIndex() const;
     void SetEntryIndex(uint16_t newIndex);
-    const WallSceneryEntry* GetEntry() const;
+    const OpenRCT2::WallSceneryEntry* GetEntry() const;
 
     uint8_t GetSlope() const;
     void SetSlope(uint8_t newslope);

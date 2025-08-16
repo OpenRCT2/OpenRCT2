@@ -17,15 +17,15 @@ class FootpathPlaceAction final : public GameActionBase<GameCommand::PlacePath>
 private:
     CoordsXYZ _loc;
     uint8_t _slope{};
-    ObjectEntryIndex _type{};
-    ObjectEntryIndex _railingsType{};
+    OpenRCT2::ObjectEntryIndex _type{};
+    OpenRCT2::ObjectEntryIndex _railingsType{};
     Direction _direction{ kInvalidDirection };
     PathConstructFlags _constructFlags{};
 
 public:
     FootpathPlaceAction() = default;
     FootpathPlaceAction(
-        const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType,
+        const CoordsXYZ& loc, uint8_t slope, OpenRCT2::ObjectEntryIndex type, OpenRCT2::ObjectEntryIndex railingsType,
         Direction direction = kInvalidDirection, PathConstructFlags constructFlags = 0);
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

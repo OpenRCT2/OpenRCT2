@@ -25,7 +25,7 @@ struct SmallSceneryElement : TileElementBase
     static constexpr TileElementType kElementType = TileElementType::SmallScenery;
 
 private:
-    ObjectEntryIndex entryIndex; // 5
+    OpenRCT2::ObjectEntryIndex entryIndex; // 5
     uint8_t age;                 // 7
     uint8_t Colour[3];           // 8
     uint8_t Flags2;              // B
@@ -35,9 +35,9 @@ private:
 #pragma clang diagnostic pop
 
 public:
-    ObjectEntryIndex GetEntryIndex() const;
-    void SetEntryIndex(ObjectEntryIndex newIndex);
-    const SmallSceneryEntry* GetEntry() const;
+    OpenRCT2::ObjectEntryIndex GetEntryIndex() const;
+    void SetEntryIndex(OpenRCT2::ObjectEntryIndex newIndex);
+    const OpenRCT2::SmallSceneryEntry* GetEntry() const;
     uint8_t GetAge() const;
     void SetAge(uint8_t newAge);
     void IncreaseAge(const CoordsXY& sceneryPos);

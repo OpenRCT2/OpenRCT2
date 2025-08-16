@@ -28,9 +28,9 @@ using EditorInputFlags = FlagHolder<uint8_t, EditorInputFlag>;
 
 extern std::optional<StringId> _gSceneryGroupPartialSelectError;
 extern std::vector<uint8_t> _objectSelectionFlags;
-extern uint32_t _numSelectedObjectsForType[EnumValue(ObjectType::count)];
+extern uint32_t _numSelectedObjectsForType[EnumValue(OpenRCT2::ObjectType::count)];
 
-bool EditorCheckObjectGroupAtLeastOneSelected(ObjectType checkObjectType);
+bool EditorCheckObjectGroupAtLeastOneSelected(OpenRCT2::ObjectType checkObjectType);
 bool EditorCheckObjectGroupAtLeastOneOfPeepTypeSelected(uint8_t peepType);
 bool EditorCheckObjectGroupAtLeastOneSurfaceSelected(bool queue);
 void EditorObjectFlagsClear();
@@ -39,9 +39,9 @@ void Sub6AB211();
 void ResetSelectedObjectCountAndSize();
 void FinishObjectSelection();
 ResultWithMessage WindowEditorObjectSelectionSelectObject(
-    uint8_t isMasterObject, EditorInputFlags flags, const ObjectRepositoryItem* item);
+    uint8_t isMasterObject, EditorInputFlags flags, const OpenRCT2::ObjectRepositoryItem* item);
 ResultWithMessage WindowEditorObjectSelectionSelectObject(
-    uint8_t isMasterObject, EditorInputFlags flags, const ObjectEntryDescriptor& entry);
+    uint8_t isMasterObject, EditorInputFlags flags, const OpenRCT2::ObjectEntryDescriptor& entry);
 
 /**
  * Removes all unused objects from the object selection.

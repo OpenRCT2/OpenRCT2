@@ -12,14 +12,17 @@
 #include "../../Identifiers.h"
 #include "TileElementBase.h"
 
-class FootpathObject;
-class FootpathRailingsObject;
-class FootpathSurfaceObject;
-struct PathAdditionEntry;
-struct PathRailingsDescriptor;
-struct PathSurfaceDescriptor;
+namespace OpenRCT2
+{
+    class FootpathObject;
+    class FootpathRailingsObject;
+    class FootpathSurfaceObject;
+    struct PathAdditionEntry;
+    struct PathRailingsDescriptor;
+    struct PathSurfaceDescriptor;
 
-using ObjectEntryIndex = uint16_t;
+    using ObjectEntryIndex = uint16_t;
+} // namespace OpenRCT2
 
 // Masks for values stored in TileElement.type
 enum
@@ -62,8 +65,8 @@ struct PathElement : TileElementBase
     static constexpr TileElementType kElementType = TileElementType::Path;
 
 private:
-    ObjectEntryIndex SurfaceIndex;  // 5
-    ObjectEntryIndex RailingsIndex; // 7
+    OpenRCT2::ObjectEntryIndex SurfaceIndex;  // 5
+    OpenRCT2::ObjectEntryIndex RailingsIndex; // 7
     uint8_t Additions;              // 9 (0 means no addition)
     uint8_t EdgesAndCorners;        // 10 (edges in lower 4 bits, corners in upper 4)
     uint8_t Flags2;                 // 11
@@ -76,21 +79,21 @@ private:
     ::StationIndex StationIndex; // 15
 
 public:
-    ObjectEntryIndex GetLegacyPathEntryIndex() const;
-    const FootpathObject* GetLegacyPathEntry() const;
-    void SetLegacyPathEntryIndex(ObjectEntryIndex newIndex);
+    OpenRCT2::ObjectEntryIndex GetLegacyPathEntryIndex() const;
+    const OpenRCT2::FootpathObject* GetLegacyPathEntry() const;
+    void SetLegacyPathEntryIndex(OpenRCT2::ObjectEntryIndex newIndex);
     bool HasLegacyPathEntry() const;
 
-    ObjectEntryIndex GetSurfaceEntryIndex() const;
-    const FootpathSurfaceObject* GetSurfaceEntry() const;
-    void SetSurfaceEntryIndex(ObjectEntryIndex newIndex);
+    OpenRCT2::ObjectEntryIndex GetSurfaceEntryIndex() const;
+    const OpenRCT2::FootpathSurfaceObject* GetSurfaceEntry() const;
+    void SetSurfaceEntryIndex(OpenRCT2::ObjectEntryIndex newIndex);
 
-    ObjectEntryIndex GetRailingsEntryIndex() const;
-    const FootpathRailingsObject* GetRailingsEntry() const;
-    void SetRailingsEntryIndex(ObjectEntryIndex newIndex);
+    OpenRCT2::ObjectEntryIndex GetRailingsEntryIndex() const;
+    const OpenRCT2::FootpathRailingsObject* GetRailingsEntry() const;
+    void SetRailingsEntryIndex(OpenRCT2::ObjectEntryIndex newIndex);
 
-    const PathSurfaceDescriptor* GetSurfaceDescriptor() const;
-    const PathRailingsDescriptor* GetRailingsDescriptor() const;
+    const OpenRCT2::PathSurfaceDescriptor* GetSurfaceDescriptor() const;
+    const OpenRCT2::PathRailingsDescriptor* GetRailingsDescriptor() const;
 
     uint8_t GetQueueBannerDirection() const;
     void SetQueueBannerDirection(uint8_t direction);
@@ -133,10 +136,10 @@ public:
 
     bool HasAddition() const;
     uint8_t GetAddition() const;
-    ObjectEntryIndex GetAdditionEntryIndex() const;
-    const PathAdditionEntry* GetAdditionEntry() const;
+    OpenRCT2::ObjectEntryIndex GetAdditionEntryIndex() const;
+    const OpenRCT2::PathAdditionEntry* GetAdditionEntry() const;
     void SetAddition(uint8_t newAddition);
-    void SetAdditionEntryIndex(ObjectEntryIndex entryIndex);
+    void SetAdditionEntryIndex(OpenRCT2::ObjectEntryIndex entryIndex);
 
     bool AdditionIsGhost() const;
     void SetAdditionIsGhost(bool isGhost);
