@@ -2311,10 +2311,10 @@ static void RideRatingsApplyPenaltyLateralGs(OpenRCT2::RideRating::Tuple& rating
 
 bool OpenRCT2::RideRating::Tuple::isNull() const
 {
-    return excitement == kRideRatingUndefined;
+    return excitement == kUndefined;
 }
 
 void OpenRCT2::RideRating::Tuple::setNull()
 {
-    excitement = kRideRatingUndefined;
+    excitement = kUndefined;
 }

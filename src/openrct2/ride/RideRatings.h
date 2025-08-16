@@ -29,10 +29,11 @@ constexpr ride_rating MakeRideRating(int16_t whole, uint8_t fraction)
 {
     return MakeFixed2dp<ride_rating>(whole, fraction);
 }
-constexpr ride_rating kRideRatingUndefined = 0xFFFFu;
 
 namespace OpenRCT2::RideRating
 {
+    constexpr ride_rating kUndefined = 0xFFFFu;
+
 #pragma pack(push, 1)
 
     // Used for return values, for functions that modify all three.
