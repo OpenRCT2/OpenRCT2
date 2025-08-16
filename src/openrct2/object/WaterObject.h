@@ -12,29 +12,30 @@
 #include "Object.h"
 #include "WaterEntry.h"
 
-#include <tuple>
-
-class WaterObject final : public Object
+namespace OpenRCT2
 {
-private:
-    WaterObjectEntry _legacyType = {};
-
-public:
-    static constexpr ObjectType kObjectType = ObjectType::water;
-
-    void* GetLegacyData() override
+    class WaterObject final : public Object
     {
-        return &_legacyType;
-    }
+    private:
+        WaterObjectEntry _legacyType = {};
 
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
-    void Load() override;
-    void Unload() override;
+    public:
+        static constexpr ObjectType kObjectType = ObjectType::water;
 
-    void DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const override;
+        void* GetLegacyData() override
+        {
+            return &_legacyType;
+        }
 
-private:
-    void ReadJsonPalette(json_t& jPalette);
-    uint32_t ParseColour(const std::string& s) const;
-};
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
+        void Load() override;
+        void Unload() override;
+
+        void DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const override;
+
+    private:
+        void ReadJsonPalette(json_t& jPalette);
+        uint32_t ParseColour(const std::string& s) const;
+    };
+} // namespace OpenRCT2

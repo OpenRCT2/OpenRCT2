@@ -17,36 +17,35 @@
 namespace OpenRCT2
 {
     struct IStream;
-}
 
-class ObjectAsset
-{
-private:
-    std::string _zipPath;
-    std::string _path;
-
-public:
-    ObjectAsset() = default;
-    ObjectAsset(std::string_view path)
-        : _path(path)
+    class ObjectAsset
     {
-    }
-    ObjectAsset(std::string_view zipPath, std::string_view path)
-        : _zipPath(zipPath)
-        , _path(path)
-    {
-    }
+    private:
+        std::string _zipPath;
+        std::string _path;
 
-    [[nodiscard]] bool IsAvailable() const;
-    [[nodiscard]] uint64_t GetSize() const;
-    [[nodiscard]] std::vector<uint8_t> GetData() const;
-    [[nodiscard]] std::unique_ptr<OpenRCT2::IStream> GetStream() const;
-    const std::string& GetZipPath() const;
-    const std::string& GetPath() const;
-    size_t GetHash() const;
+    public:
+        ObjectAsset() = default;
+        ObjectAsset(std::string_view path)
+            : _path(path)
+        {
+        }
+        ObjectAsset(std::string_view zipPath, std::string_view path)
+            : _zipPath(zipPath)
+            , _path(path)
+        {
+        }
 
-    friend bool operator==(const ObjectAsset& l, const ObjectAsset& r);
-};
+        [[nodiscard]] bool IsAvailable() const;
+        [[nodiscard]] uint64_t GetSize() const;
+        [[nodiscard]] std::vector<uint8_t> GetData() const;
+        [[nodiscard]] std::unique_ptr<OpenRCT2::IStream> GetStream() const;
+        const std::string& GetZipPath() const;
+        const std::string& GetPath() const;
+        size_t GetHash() const;
+
+        friend bool operator==(const ObjectAsset& l, const ObjectAsset& r);
+    };
 
 template<>
 struct std::hash<ObjectAsset>
@@ -56,3 +55,5 @@ struct std::hash<ObjectAsset>
         return asset.GetHash();
     }
 };
+
+} // namespace OpenRCT2

@@ -23,16 +23,16 @@
 #include <cstring>
 #include <memory>
 
-using namespace OpenRCT2;
-
-void WaterObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
+namespace OpenRCT2
 {
-    stream->Seek(14, OpenRCT2::STREAM_SEEK_CURRENT);
-    _legacyType.flags = stream->ReadValue<uint16_t>();
+    void WaterObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
+    {
+        stream->Seek(14, STREAM_SEEK_CURRENT);
+        _legacyType.flags = stream->ReadValue<uint16_t>();
 
-    GetStringTable().Read(context, stream, ObjectStringID::NAME);
-    GetImageTable().Read(context, stream);
-}
+        GetStringTable().Read(context, stream, ObjectStringID::NAME);
+        GetImageTable().Read(context, stream);
+    }
 
 void WaterObject::Load()
 {
@@ -145,3 +145,4 @@ uint32_t WaterObject::ParseColour(const std::string& s) const
     }
     return (b << 16) | (g << 8) | r;
 }
+} // namespace OpenRCT2

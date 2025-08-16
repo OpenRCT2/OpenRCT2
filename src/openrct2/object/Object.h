@@ -25,31 +25,33 @@
 struct ObjectRepositoryItem;
 using ride_type_t = uint16_t;
 
-constexpr size_t VersionNumFields = 3;
-using ObjectVersion = std::tuple<uint16_t, uint16_t, uint16_t>;
-static_assert(std::tuple_size<ObjectVersion>{} == VersionNumFields);
-
-namespace OpenRCT2::ObjectSelectionFlags
+namespace OpenRCT2
 {
-    constexpr uint8_t Selected = (1 << 0);
-    constexpr uint8_t InUse = (1 << 2);
-    // constexpr uint8_t Required = (1 << 3);               // Unused feature
-    constexpr uint8_t AlwaysRequired = (1 << 4);
-    constexpr uint8_t Flag6 = (1 << 5);
-    constexpr uint8_t AllFlags = 0xFF;
-}; // namespace OpenRCT2::ObjectSelectionFlags
+    constexpr size_t VersionNumFields = 3;
+    using ObjectVersion = std::tuple<uint16_t, uint16_t, uint16_t>;
+    static_assert(std::tuple_size<ObjectVersion>{} == VersionNumFields);
 
-enum class ObjectSourceGame : uint8_t
-{
-    Custom,
-    WackyWorlds,
-    TimeTwister,
-    OpenRCT2Official,
-    RCT1,
-    AddedAttractions,
-    LoopyLandscapes,
-    RCT2 = 8
-};
+    namespace ObjectSelectionFlags
+    {
+        constexpr uint8_t Selected = (1 << 0);
+        constexpr uint8_t InUse = (1 << 2);
+        // constexpr uint8_t Required = (1 << 3);               // Unused feature
+        constexpr uint8_t AlwaysRequired = (1 << 4);
+        constexpr uint8_t Flag6 = (1 << 5);
+        constexpr uint8_t AllFlags = 0xFF;
+    }; // namespace ObjectSelectionFlags
+
+    enum class ObjectSourceGame : uint8_t
+    {
+        Custom,
+        WackyWorlds,
+        TimeTwister,
+        OpenRCT2Official,
+        RCT1,
+        AddedAttractions,
+        LoopyLandscapes,
+        RCT2 = 8
+    };
 
 #pragma pack(push, 1)
 /**
@@ -293,7 +295,7 @@ public:
     virtual void ReadJson(IReadObjectContext* /*context*/, json_t& /*root*/)
     {
     }
-    virtual void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream);
+    virtual void ReadLegacy(IReadObjectContext* context, IStream* stream);
     virtual void Load() = 0;
     virtual void Unload() = 0;
 
@@ -364,3 +366,4 @@ constexpr bool IsIntransientObjectType(ObjectType type)
 
 u8string VersionString(const ObjectVersion& version);
 ObjectVersion VersionTuple(std::string_view version);
+} // namespace OpenRCT2

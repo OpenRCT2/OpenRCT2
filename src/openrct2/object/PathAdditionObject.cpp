@@ -20,100 +20,100 @@
 
 #include <unordered_map>
 
-using namespace OpenRCT2;
-
-void PathAdditionObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
+namespace OpenRCT2
 {
-    stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
-    _legacyType.flags = stream->ReadValue<uint16_t>();
-    _legacyType.draw_type = static_cast<PathAdditionDrawType>(stream->ReadValue<uint8_t>());
-    _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
-    _legacyType.price = stream->ReadValue<money16>();
-    _legacyType.scenery_tab_id = kObjectEntryIndexNull;
-    stream->Seek(2, OpenRCT2::STREAM_SEEK_CURRENT);
-
-    GetStringTable().Read(context, stream, ObjectStringID::NAME);
-
-    RCTObjectEntry sgEntry = stream->ReadValue<RCTObjectEntry>();
-    SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
-
-    GetImageTable().Read(context, stream);
-
-    // Validate properties
-    if (_legacyType.price <= 0.00_GBP)
+    void PathAdditionObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
-        context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
-    }
+        stream->Seek(6, STREAM_SEEK_CURRENT);
+        _legacyType.flags = stream->ReadValue<uint16_t>();
+        _legacyType.draw_type = static_cast<PathAdditionDrawType>(stream->ReadValue<uint8_t>());
+        _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
+        _legacyType.price = stream->ReadValue<money16>();
+        _legacyType.scenery_tab_id = kObjectEntryIndexNull;
+        stream->Seek(2, STREAM_SEEK_CURRENT);
 
-    // Add path additions to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.
-    // Since this is already done the other way round for original items, avoid adding those to prevent duplicates.
+        GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
-    auto& objectRepository = context->GetObjectRepository();
-    auto item = objectRepository.FindObject(GetDescriptor());
-    if (item != nullptr)
-    {
-        auto sourceGame = item->GetFirstSourceGame();
-        if (sourceGame == ObjectSourceGame::WackyWorlds || sourceGame == ObjectSourceGame::TimeTwister
-            || sourceGame == ObjectSourceGame::Custom)
+        RCTObjectEntry sgEntry = stream->ReadValue<RCTObjectEntry>();
+        SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
+
+        GetImageTable().Read(context, stream);
+
+        // Validate properties
+        if (_legacyType.price <= 0.00_GBP)
         {
-            auto scgPathX = Object::GetScgPathXHeader();
-            SetPrimarySceneryGroup(scgPathX);
+            context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
+        }
+
+        // Add path additions to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.
+        // Since this is already done the other way round for original items, avoid adding those to prevent duplicates.
+
+        auto& objectRepository = context->GetObjectRepository();
+        auto item = objectRepository.FindObject(GetDescriptor());
+        if (item != nullptr)
+        {
+            auto sourceGame = item->GetFirstSourceGame();
+            if (sourceGame == ObjectSourceGame::WackyWorlds || sourceGame == ObjectSourceGame::TimeTwister
+                || sourceGame == ObjectSourceGame::Custom)
+            {
+                auto scgPathX = Object::GetScgPathXHeader();
+                SetPrimarySceneryGroup(scgPathX);
+            }
         }
     }
-}
 
-void PathAdditionObject::Load()
-{
-    GetStringTable().Sort();
-    _legacyType.name = LanguageAllocateObjectString(GetName());
-    _legacyType.image = LoadImages();
-
-    _legacyType.scenery_tab_id = kObjectEntryIndexNull;
-}
-
-void PathAdditionObject::Unload()
-{
-    LanguageFreeObjectString(_legacyType.name);
-    UnloadImages();
-
-    _legacyType.name = 0;
-    _legacyType.image = 0;
-}
-
-void PathAdditionObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
-{
-    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
-    GfxDrawSprite(rt, ImageId(_legacyType.image), screenCoords - ScreenCoordsXY{ 22, 24 });
-}
-
-static PathAdditionDrawType ParseDrawType(const std::string& s)
-{
-    if (s == "lamp")
-        return PathAdditionDrawType::Light;
-    if (s == "bin")
-        return PathAdditionDrawType::Bin;
-    if (s == "bench")
-        return PathAdditionDrawType::Bench;
-    if (s == "fountain")
-        return PathAdditionDrawType::JumpingFountain;
-    return PathAdditionDrawType::Light;
-}
-
-void PathAdditionObject::ReadJson(IReadObjectContext* context, json_t& root)
-{
-    Guard::Assert(root.is_object(), "PathAdditionObject::ReadJson expects parameter root to be object");
-
-    json_t properties = root["properties"];
-
-    if (properties.is_object())
+    void PathAdditionObject::Load()
     {
-        _legacyType.draw_type = ParseDrawType(Json::GetString(properties["renderAs"]));
-        _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::LamppostDown);
-        _legacyType.price = Json::GetNumber<money64>(properties["price"]);
+        GetStringTable().Sort();
+        _legacyType.name = LanguageAllocateObjectString(GetName());
+        _legacyType.image = LoadImages();
 
-        SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));
+        _legacyType.scenery_tab_id = kObjectEntryIndexNull;
+    }
 
-        // clang-format off
+    void PathAdditionObject::Unload()
+    {
+        LanguageFreeObjectString(_legacyType.name);
+        UnloadImages();
+
+        _legacyType.name = 0;
+        _legacyType.image = 0;
+    }
+
+    void PathAdditionObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
+    {
+        auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
+        GfxDrawSprite(rt, ImageId(_legacyType.image), screenCoords - ScreenCoordsXY{ 22, 24 });
+    }
+
+    static PathAdditionDrawType ParseDrawType(const std::string& s)
+    {
+        if (s == "lamp")
+            return PathAdditionDrawType::Light;
+        if (s == "bin")
+            return PathAdditionDrawType::Bin;
+        if (s == "bench")
+            return PathAdditionDrawType::Bench;
+        if (s == "fountain")
+            return PathAdditionDrawType::JumpingFountain;
+        return PathAdditionDrawType::Light;
+    }
+
+    void PathAdditionObject::ReadJson(IReadObjectContext* context, json_t& root)
+    {
+        Guard::Assert(root.is_object(), "PathAdditionObject::ReadJson expects parameter root to be object");
+
+        json_t properties = root["properties"];
+
+        if (properties.is_object())
+        {
+            _legacyType.draw_type = ParseDrawType(Json::GetString(properties["renderAs"]));
+            _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::LamppostDown);
+            _legacyType.price = Json::GetNumber<money64>(properties["price"]);
+
+            SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));
+
+            // clang-format off
         _legacyType.flags = Json::GetFlags<uint16_t>(
             properties,
             {
@@ -127,8 +127,9 @@ void PathAdditionObject::ReadJson(IReadObjectContext* context, json_t& root)
                 { "isAllowedOnSlope",       PATH_ADDITION_FLAG_DONT_ALLOW_ON_SLOPE,      Json::FlagType::Inverted },
                 { "isTelevision",           PATH_ADDITION_FLAG_IS_QUEUE_SCREEN,          Json::FlagType::Normal },
             });
-        // clang-format on
-    }
+            // clang-format on
+        }
 
-    PopulateTablesFromJson(context, root);
-}
+        PopulateTablesFromJson(context, root);
+    }
+} // namespace OpenRCT2

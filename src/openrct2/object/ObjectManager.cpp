@@ -40,53 +40,54 @@
 #include <thread>
 #include <unordered_set>
 
-using namespace OpenRCT2;
-
-/**
- * Represents an object that is to be loaded or is loaded and ready
- * to be placed in an object list.
- */
-struct ObjectToLoad
+namespace OpenRCT2
 {
-    const ObjectRepositoryItem* RepositoryItem{};
-    Object* LoadedObject{};
-    ObjectEntryIndex Index{};
-};
 
-class ObjectManager final : public IObjectManager
-{
-private:
-    IObjectRepository& _objectRepository;
-
-    std::array<std::vector<Object*>, EnumValue(ObjectType::count)> _loadedObjects;
-    std::array<std::vector<ObjectEntryIndex>, RIDE_TYPE_COUNT> _rideTypeToObjectMap;
-
-    // Used to return a safe empty vector back from GetAllRideEntries, can be removed when std::span is available
-    std::vector<ObjectEntryIndex> _nullRideTypeEntries;
-
-public:
-    explicit ObjectManager(IObjectRepository& objectRepository)
-        : _objectRepository(objectRepository)
+    /**
+     * Represents an object that is to be loaded or is loaded and ready
+     * to be placed in an object list.
+     */
+    struct ObjectToLoad
     {
-        UpdateSceneryGroupIndexes();
-        ResetTypeToRideEntryIndexMap();
-    }
+        const ObjectRepositoryItem* RepositoryItem{};
+        Object* LoadedObject{};
+        ObjectEntryIndex Index{};
+    };
 
-    ~ObjectManager() override
+    class ObjectManager final : public IObjectManager
     {
-        UnloadAll();
-    }
+    private:
+        IObjectRepository& _objectRepository;
 
-    Object* GetLoadedObject(ObjectType objectType, size_t index) override
-    {
-        // This is sometimes done deliberately (to avoid boilerplate), so no need to log_warn for this.
-        if (index == kObjectEntryIndexNull)
+        std::array<std::vector<Object*>, EnumValue(ObjectType::count)> _loadedObjects;
+        std::array<std::vector<ObjectEntryIndex>, RIDE_TYPE_COUNT> _rideTypeToObjectMap;
+
+        // Used to return a safe empty vector back from GetAllRideEntries, can be removed when std::span is available
+        std::vector<ObjectEntryIndex> _nullRideTypeEntries;
+
+    public:
+        explicit ObjectManager(IObjectRepository& objectRepository)
+            : _objectRepository(objectRepository)
         {
-            return nullptr;
+            UpdateSceneryGroupIndexes();
+            ResetTypeToRideEntryIndexMap();
         }
 
-        if (index >= static_cast<size_t>(getObjectEntryGroupCount(objectType)))
+        ~ObjectManager() override
         {
+            UnloadAll();
+        }
+
+        Object* GetLoadedObject(ObjectType objectType, size_t index) override
+        {
+            // This is sometimes done deliberately (to avoid boilerplate), so no need to log_warn for this.
+            if (index == kObjectEntryIndexNull)
+            {
+                return nullptr;
+            }
+
+            if (index >= static_cast<size_t>(getObjectEntryGroupCount(objectType)))
+            {
 #ifdef DEBUG
             if (index != kObjectEntryIndexNull)
             {
@@ -94,7 +95,7 @@ public:
             }
 #endif
             return nullptr;
-        }
+            }
 
         const auto& list = GetObjectList(objectType);
         if (index >= list.size())
@@ -780,7 +781,7 @@ private:
         std::copy_n(entry->name, kDatNameLength, objName);
         Console::Error::WriteLine("[%s] Object could not be loaded.", objName);
     }
-};
+    };
 
 std::unique_ptr<IObjectManager> CreateObjectManager(IObjectRepository& objectRepository)
 {
@@ -829,3 +830,4 @@ StringId ObjectManagerGetSourceGameString(const ObjectSourceGame sourceGame)
 {
     return ObjectManager::GetObjectSourceGameString(sourceGame);
 }
+} // namespace OpenRCT2
