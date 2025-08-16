@@ -46,11 +46,6 @@ static_assert(sizeof(RatingTuple) == 6);
 
 #pragma pack(pop)
 
-enum
-{
-    RIDE_RATING_STATION_FLAG_NO_ENTRANCE = 1 << 0
-};
-
 struct RideRatingUpdateState
 {
     CoordsXYZ Proximity;

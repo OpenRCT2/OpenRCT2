@@ -47,6 +47,11 @@ enum
 
 enum
 {
+    RIDE_RATING_STATION_FLAG_NO_ENTRANCE = 1 << 0
+};
+
+enum
+{
     PROXIMITY_WATER_OVER,                   // 0x0138B596
     PROXIMITY_WATER_TOUCH,                  // 0x0138B598
     PROXIMITY_WATER_LOW,                    // 0x0138B59A
