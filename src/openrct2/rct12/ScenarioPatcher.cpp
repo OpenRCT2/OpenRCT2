@@ -44,6 +44,8 @@
 
 #include <iostream>
 
+using namespace OpenRCT2;
+
 static bool _dryRun = false;
 
 // Generic keys
@@ -100,7 +102,7 @@ static u8string ToOwnershipJsonKey(int ownershipType)
         case OWNERSHIP_AVAILABLE:
             return "available";
     }
-    OpenRCT2::Guard::Assert(0, "Unrecognized ownership type flag");
+    Guard::Assert(0, "Unrecognized ownership type flag");
     return {};
 }
 
@@ -108,25 +110,24 @@ static void readCoordinate(std::vector<TileCoordsXY>& out, const json_t& coordin
 {
     if (coordinatesArray.size() != 2)
     {
-        OpenRCT2::Guard::Assert(0, "Fix coordinates sub array should have 2 elements");
+        Guard::Assert(0, "Fix coordinates sub array should have 2 elements");
         return;
     }
 
-    out.emplace_back(
-        OpenRCT2::Json::GetNumber<int32_t>(coordinatesArray[0]), OpenRCT2::Json::GetNumber<int32_t>(coordinatesArray[1]));
+    out.emplace_back(Json::GetNumber<int32_t>(coordinatesArray[0]), Json::GetNumber<int32_t>(coordinatesArray[1]));
 }
 
 static void readCoordinate(std::vector<TileCoordsXYZ>& out, const json_t& coordinatesArray)
 {
     if (coordinatesArray.size() != 3)
     {
-        OpenRCT2::Guard::Assert(0, "Fix coordinates sub array should have 3 elements");
+        Guard::Assert(0, "Fix coordinates sub array should have 3 elements");
         return;
     }
 
     out.emplace_back(
-        OpenRCT2::Json::GetNumber<int32_t>(coordinatesArray[0]), OpenRCT2::Json::GetNumber<int32_t>(coordinatesArray[1]),
-        OpenRCT2::Json::GetNumber<int32_t>(coordinatesArray[2]));
+        Json::GetNumber<int32_t>(coordinatesArray[0]), Json::GetNumber<int32_t>(coordinatesArray[1]),
+        Json::GetNumber<int32_t>(coordinatesArray[2]));
 }
 
 template<typename TTileCoords = TileCoordsXY>
@@ -134,19 +135,19 @@ static std::vector<TTileCoords> getCoordinates(const json_t& parameters)
 {
     if (!parameters.contains(_coordinatesKey))
     {
-        OpenRCT2::Guard::Assert(0, "Cannot have fix without coordinates array");
+        Guard::Assert(0, "Cannot have fix without coordinates array");
         return {};
     }
     else if (!parameters[_coordinatesKey].is_array())
     {
-        OpenRCT2::Guard::Assert(0, "Fix coordinates should be an array");
+        Guard::Assert(0, "Fix coordinates should be an array");
         return {};
     }
 
-    auto coords = OpenRCT2::Json::AsArray(parameters[_coordinatesKey]);
+    auto coords = Json::AsArray(parameters[_coordinatesKey]);
     if (coords.empty())
     {
-        OpenRCT2::Guard::Assert(0, "Fix coordinates array should not be empty");
+        Guard::Assert(0, "Fix coordinates array should not be empty");
         return {};
     }
 
@@ -156,11 +157,11 @@ static std::vector<TTileCoords> getCoordinates(const json_t& parameters)
     {
         if (!coords[i].is_array())
         {
-            OpenRCT2::Guard::Assert(0, "Fix coordinates should contain only arrays");
+            Guard::Assert(0, "Fix coordinates should contain only arrays");
             return {};
         }
 
-        auto coordinatesArray = OpenRCT2::Json::AsArray(coords[i]);
+        auto coordinatesArray = Json::AsArray(coords[i]);
         readCoordinate(parsedCoordinates, coordinatesArray);
     }
     return parsedCoordinates;
@@ -174,15 +175,15 @@ static Direction GetDirection(const json_t& parameters)
     }
     else if (!parameters[_directionKey].is_number())
     {
-        OpenRCT2::Guard::Assert(0, "Fix direction must be a number");
+        Guard::Assert(0, "Fix direction must be a number");
         return kInvalidDirection;
     }
 
-    Direction direction = OpenRCT2::Json::GetNumber<Direction>(parameters[_directionKey]);
+    Direction direction = Json::GetNumber<Direction>(parameters[_directionKey]);
 
     if (direction > 3)
     {
-        OpenRCT2::Guard::Assert(0, "Direction must be between 0 and 3");
+        Guard::Assert(0, "Direction must be between 0 and 3");
         return kInvalidDirection;
     }
 
@@ -197,12 +198,12 @@ static bool IsQueue(const json_t& parameters)
     }
     else if (!parameters[_isQueue].is_boolean())
     {
-        OpenRCT2::Guard::Assert(0, "queue must be a boolean");
+        Guard::Assert(0, "queue must be a boolean");
         return false;
     }
     else
     {
-        return OpenRCT2::Json::GetBoolean(parameters[_isQueue]);
+        return Json::GetBoolean(parameters[_isQueue]);
     }
 }
 
@@ -247,14 +248,14 @@ static void ApplyWaterFixes(const json_t& scenarioPatch)
 
     if (!scenarioPatch[_waterFixKey].is_array())
     {
-        OpenRCT2::Guard::Assert(0, "Water fix should be an array");
+        Guard::Assert(0, "Water fix should be an array");
         return;
     }
 
-    auto waterFixes = OpenRCT2::Json::AsArray(scenarioPatch[_waterFixKey]);
+    auto waterFixes = Json::AsArray(scenarioPatch[_waterFixKey]);
     if (waterFixes.empty())
     {
-        OpenRCT2::Guard::Assert(0, "Water fix array should not be empty");
+        Guard::Assert(0, "Water fix array should not be empty");
         return;
     }
 
@@ -262,7 +263,7 @@ static void ApplyWaterFixes(const json_t& scenarioPatch)
     {
         if (!waterFixes[i].contains(_heightKey))
         {
-            OpenRCT2::Guard::Assert(0, "Water fix sub-array should set a height");
+            Guard::Assert(0, "Water fix sub-array should set a height");
             return;
         }
         if (_dryRun)
@@ -280,16 +281,16 @@ static void ApplyWaterFixes(const json_t& scenarioPatch)
     }
 }
 
-static OpenRCT2::TrackElemType toTrackType(const u8string_view trackTypeString)
+static TrackElemType toTrackType(const u8string_view trackTypeString)
 {
     if (trackTypeString == "flat")
-        return OpenRCT2::TrackElemType::Flat;
+        return TrackElemType::Flat;
     else if (trackTypeString == "flat_covered")
-        return OpenRCT2::TrackElemType::FlatCovered;
+        return TrackElemType::FlatCovered;
     else
     {
-        OpenRCT2::Guard::Assert(0, "Unsupported track type conversion");
-        return OpenRCT2::TrackElemType::None;
+        Guard::Assert(0, "Unsupported track type conversion");
+        return TrackElemType::None;
     }
 }
 
@@ -297,20 +298,20 @@ static void ApplyTrackTypeFixes(const json_t& trackTilesFixes)
 {
     if (!trackTilesFixes.contains(_operationsKey))
     {
-        OpenRCT2::Guard::Assert(0, "Cannot apply track tile fixes when operations array is unset");
+        Guard::Assert(0, "Cannot apply track tile fixes when operations array is unset");
         return;
     }
 
     if (!trackTilesFixes[_operationsKey].is_array())
     {
-        OpenRCT2::Guard::Assert(0, "Track tile fixes should have an operations array");
+        Guard::Assert(0, "Track tile fixes should have an operations array");
         return;
     }
 
-    auto fixOperations = OpenRCT2::Json::AsArray(trackTilesFixes[_operationsKey]);
+    auto fixOperations = Json::AsArray(trackTilesFixes[_operationsKey]);
     if (fixOperations.empty())
     {
-        OpenRCT2::Guard::Assert(0, "Operations fix array should not be empty");
+        Guard::Assert(0, "Operations fix array should not be empty");
         return;
     }
 
@@ -318,18 +319,18 @@ static void ApplyTrackTypeFixes(const json_t& trackTilesFixes)
     {
         if (!fixOperations[i].contains(_fromKey))
         {
-            OpenRCT2::Guard::Assert(0, "Operation sub-array should contain a from key");
+            Guard::Assert(0, "Operation sub-array should contain a from key");
             return;
         }
 
         if (!fixOperations[i].contains(_toKey))
         {
-            OpenRCT2::Guard::Assert(0, "Operation sub-array should contain a to key");
+            Guard::Assert(0, "Operation sub-array should contain a to key");
             return;
         }
 
-        auto fromTrackType = toTrackType(OpenRCT2::Json::GetString(fixOperations[i][_fromKey]));
-        auto destinationTrackType = toTrackType(OpenRCT2::Json::GetString(fixOperations[i][_toKey]));
+        auto fromTrackType = toTrackType(Json::GetString(fixOperations[i][_fromKey]));
+        auto destinationTrackType = toTrackType(Json::GetString(fixOperations[i][_toKey]));
         auto coordinatesVector = getCoordinates(fixOperations[i]);
 
         if (_dryRun)
@@ -364,7 +365,7 @@ static TileElementType toTileElementType(const u8string_view tileTypeString)
         return TileElementType::Track;
     else
     {
-        OpenRCT2::Guard::Assert(0, "Unsupported tile type conversion");
+        Guard::Assert(0, "Unsupported tile type conversion");
         return TileElementType::Track;
     }
 }
@@ -379,11 +380,11 @@ static void ApplyTileFixes(const json_t& scenarioPatch)
     auto tilesFixes = scenarioPatch[_tilesKey];
     if (!tilesFixes.contains(_typeKey))
     {
-        OpenRCT2::Guard::Assert(0, "Cannot apply tile fixes without defined type");
+        Guard::Assert(0, "Cannot apply tile fixes without defined type");
     }
     else
     {
-        auto tileType = toTileElementType(OpenRCT2::Json::GetString(tilesFixes[_typeKey]));
+        auto tileType = toTileElementType(Json::GetString(tilesFixes[_typeKey]));
         if (tileType == TileElementType::Track)
         {
             ApplyTrackTypeFixes(tilesFixes);
@@ -400,14 +401,14 @@ static void ApplySurfaceFixes(const json_t& scenarioPatch)
 
     if (!scenarioPatch[_surfacesKey].is_array())
     {
-        OpenRCT2::Guard::Assert(0, "Surface fix should be an array");
+        Guard::Assert(0, "Surface fix should be an array");
         return;
     }
 
-    auto surfaceFixes = OpenRCT2::Json::AsArray(scenarioPatch[_surfacesKey]);
+    auto surfaceFixes = Json::AsArray(scenarioPatch[_surfacesKey]);
     if (surfaceFixes.empty())
     {
-        OpenRCT2::Guard::Assert(0, "Surface fix array should not be empty");
+        Guard::Assert(0, "Surface fix array should not be empty");
         return;
     }
 
@@ -415,7 +416,7 @@ static void ApplySurfaceFixes(const json_t& scenarioPatch)
     {
         if (!surfaceFixes[i].contains(_destinationSurface))
         {
-            OpenRCT2::Guard::Assert(0, "Surface fix sub-array should set a destination surface");
+            Guard::Assert(0, "Surface fix sub-array should set a destination surface");
             return;
         }
         if (_dryRun)
@@ -423,12 +424,12 @@ static void ApplySurfaceFixes(const json_t& scenarioPatch)
             continue;
         }
 
-        auto destinationSurface = OpenRCT2::Json::GetString(surfaceFixes[i][_destinationSurface]);
-        auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-        auto surfaceObj = objectManager.GetLoadedObject(OpenRCT2::ObjectEntryDescriptor::Parse(destinationSurface));
+        auto destinationSurface = Json::GetString(surfaceFixes[i][_destinationSurface]);
+        auto& objectManager = GetContext()->GetObjectManager();
+        auto surfaceObj = objectManager.GetLoadedObject(ObjectEntryDescriptor::Parse(destinationSurface));
         if (surfaceObj == nullptr)
         {
-            OpenRCT2::Guard::Assert(0, "Surface object not found");
+            Guard::Assert(0, "Surface object not found");
             return;
         }
 
@@ -451,14 +452,14 @@ static void RemoveTileElements(const json_t& scenarioPatch)
 
     if (!scenarioPatch[_elementsToDelete].is_array())
     {
-        OpenRCT2::Guard::Assert(0, "Elements to delete should be an array");
+        Guard::Assert(0, "Elements to delete should be an array");
         return;
     }
 
-    auto elementsToDelete = OpenRCT2::Json::AsArray(scenarioPatch[_elementsToDelete]);
+    auto elementsToDelete = Json::AsArray(scenarioPatch[_elementsToDelete]);
     if (elementsToDelete.empty())
     {
-        OpenRCT2::Guard::Assert(0, "Elements to delete should not be empty");
+        Guard::Assert(0, "Elements to delete should not be empty");
         return;
     }
 
@@ -466,7 +467,7 @@ static void RemoveTileElements(const json_t& scenarioPatch)
     {
         if (!elementsToDelete[i].contains(_element_index))
         {
-            OpenRCT2::Guard::Assert(0, "Elements to delete sub-array should set an element_index");
+            Guard::Assert(0, "Elements to delete sub-array should set an element_index");
             return;
         }
         auto elementIndex = elementsToDelete[i][_element_index];
@@ -481,7 +482,7 @@ static void RemoveTileElements(const json_t& scenarioPatch)
             auto tileElement = MapGetNthElementAt(tile.ToCoordsXY(), elementIndex);
             if (tileElement == nullptr)
             {
-                OpenRCT2::Guard::Assert(0, "Invalid Nth element at tile");
+                Guard::Assert(0, "Invalid Nth element at tile");
                 return;
             }
             else
@@ -497,7 +498,7 @@ static void SwapRideEntranceAndExit(RideId rideId)
     auto ride = GetRide(rideId);
     if (ride == nullptr)
     {
-        OpenRCT2::Guard::Assert(0, "Invalid Ride Id for SwapRideEntranceAndExit");
+        Guard::Assert(0, "Invalid Ride Id for SwapRideEntranceAndExit");
         return;
     }
 
@@ -544,14 +545,14 @@ static void ApplyRideFixes(const json_t& scenarioPatch)
 
     if (!scenarioPatch[_ridesKey].is_array())
     {
-        OpenRCT2::Guard::Assert(0, "Ride fixes should be an array of arrays");
+        Guard::Assert(0, "Ride fixes should be an array of arrays");
         return;
     }
 
-    auto rideFixes = OpenRCT2::Json::AsArray(scenarioPatch[_ridesKey]);
+    auto rideFixes = Json::AsArray(scenarioPatch[_ridesKey]);
     if (rideFixes.empty())
     {
-        OpenRCT2::Guard::Assert(0, "Ride fixes should not be an empty array");
+        Guard::Assert(0, "Ride fixes should not be an empty array");
         return;
     }
 
@@ -559,18 +560,18 @@ static void ApplyRideFixes(const json_t& scenarioPatch)
     {
         if (!rideFixes[i].contains(_rideIdKey))
         {
-            OpenRCT2::Guard::Assert(0, "Ride fixes should contain a ride id");
+            Guard::Assert(0, "Ride fixes should contain a ride id");
             return;
         }
 
         if (!rideFixes[i].contains(_operationKey))
         {
-            OpenRCT2::Guard::Assert(0, "Ride fixes should contain a ride operation");
+            Guard::Assert(0, "Ride fixes should contain a ride operation");
             return;
         }
 
-        RideId rideId = RideId::FromUnderlying(OpenRCT2::Json::GetNumber<uint16_t>(rideFixes[i][_rideIdKey]));
-        auto operation = OpenRCT2::Json::GetString(rideFixes[i][_operationKey]);
+        RideId rideId = RideId::FromUnderlying(Json::GetNumber<uint16_t>(rideFixes[i][_rideIdKey]));
+        auto operation = Json::GetString(rideFixes[i][_operationKey]);
 
         if (_dryRun)
         {
@@ -583,7 +584,7 @@ static void ApplyRideFixes(const json_t& scenarioPatch)
         }
         else
         {
-            OpenRCT2::Guard::Assert(0, "Unsupported ride fix operation");
+            Guard::Assert(0, "Unsupported ride fix operation");
         }
     }
 }
@@ -597,14 +598,14 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
 
     if (!scenarioPatch[_pathsKey].is_array())
     {
-        OpenRCT2::Guard::Assert(0, "Path fixes should be an array of arrays");
+        Guard::Assert(0, "Path fixes should be an array of arrays");
         return;
     }
 
-    auto pathFixes = OpenRCT2::Json::AsArray(scenarioPatch[_pathsKey]);
+    auto pathFixes = Json::AsArray(scenarioPatch[_pathsKey]);
     if (pathFixes.empty())
     {
-        OpenRCT2::Guard::Assert(0, "Path fixes should not be an empty array");
+        Guard::Assert(0, "Path fixes should not be an empty array");
         return;
     }
 
@@ -614,43 +615,43 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
 
         if (!pathFix.contains(_railingsKey))
         {
-            OpenRCT2::Guard::Assert(0, "Path fixes should have railings");
+            Guard::Assert(0, "Path fixes should have railings");
             return;
         }
 
         if (!pathFix.contains(_surfaceKey))
         {
-            OpenRCT2::Guard::Assert(0, "Path fixes should have a surface");
+            Guard::Assert(0, "Path fixes should have a surface");
             return;
         }
 
-        auto railings = OpenRCT2::Json::GetString(pathFix[_railingsKey]);
-        auto surface = OpenRCT2::Json::GetString(pathFix[_surfaceKey]);
+        auto railings = Json::GetString(pathFix[_railingsKey]);
+        auto surface = Json::GetString(pathFix[_surfaceKey]);
 
         if (_dryRun)
         {
             continue;
         }
 
-        auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objectManager = GetContext()->GetObjectManager();
         auto railingsObjIndex = objectManager.GetLoadedObjectEntryIndex(railings);
         auto surfaceObjIndex = objectManager.GetLoadedObjectEntryIndex(surface);
 
-        if (railingsObjIndex == OpenRCT2::kObjectEntryIndexNull)
+        if (railingsObjIndex == kObjectEntryIndexNull)
         {
-            OpenRCT2::Guard::Assert(0, "Railings object not found");
+            Guard::Assert(0, "Railings object not found");
             return;
         }
 
-        if (surfaceObjIndex == OpenRCT2::kObjectEntryIndexNull)
+        if (surfaceObjIndex == kObjectEntryIndexNull)
         {
-            OpenRCT2::Guard::Assert(0, "Surface object not found");
+            Guard::Assert(0, "Surface object not found");
             return;
         }
 
         auto coordinates = getCoordinates<TileCoordsXYZ>(pathFix);
         Direction direction = GetDirection(pathFix);
-        PathConstructFlags constructionFlags = IsQueue(pathFix) ? OpenRCT2::PathConstructFlag::IsQueue : 0;
+        PathConstructFlags constructionFlags = IsQueue(pathFix) ? PathConstructFlag::IsQueue : 0;
 
         for (auto coordinate : coordinates)
         {
@@ -658,9 +659,9 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
             auto footpathPlaceAction = FootpathPlaceAction(
                 coordinate.ToCoordsXYZ(), slope, surfaceObjIndex, railingsObjIndex, direction, constructionFlags);
             auto result = footpathPlaceAction.Execute();
-            if (result.Error != OpenRCT2::GameActions::Status::Ok)
+            if (result.Error != GameActions::Status::Ok)
             {
-                OpenRCT2::Guard::Assert(0, "Could not patch path");
+                Guard::Assert(0, "Could not patch path");
             }
         }
     }
@@ -668,12 +669,12 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
 
 static u8string getScenarioSHA256(u8string_view scenarioPath)
 {
-    auto scenarioData = OpenRCT2::File::ReadAllBytes(scenarioPath);
+    auto scenarioData = File::ReadAllBytes(scenarioPath);
 #ifdef DISABLE_NETWORK
     auto scenarioStringHash = picosha2::hash256_hex_string(scenarioData);
 #else
-    auto scenarioHash = OpenRCT2::Crypt::SHA256(scenarioData.data(), scenarioData.size());
-    auto scenarioStringHash = OpenRCT2::String::StringFromHex(scenarioHash);
+    auto scenarioHash = Crypt::SHA256(scenarioData.data(), scenarioData.size());
+    auto scenarioStringHash = String::StringFromHex(scenarioHash);
 #endif
     LOG_VERBOSE("Fetching patch\n  Scenario: '%s'\n  SHA '%s'", scenarioPath.data(), scenarioStringHash.c_str());
     return scenarioStringHash;
@@ -681,10 +682,10 @@ static u8string getScenarioSHA256(u8string_view scenarioPath)
 
 static u8string GetPatchFileName(u8string_view scenarioHash)
 {
-    auto& env = OpenRCT2::GetContext()->GetPlatformEnvironment();
-    auto scenarioPatches = env.GetDirectoryPath(OpenRCT2::DirBase::openrct2, OpenRCT2::DirId::scenarioPatches);
-    auto scenarioPatchFile = OpenRCT2::Path::WithExtension(scenarioHash.substr(0, 7), ".parkpatch");
-    return OpenRCT2::Path::Combine(scenarioPatches, scenarioPatchFile);
+    auto& env = GetContext()->GetPlatformEnvironment();
+    auto scenarioPatches = env.GetDirectoryPath(DirBase::openrct2, DirId::scenarioPatches);
+    auto scenarioPatchFile = Path::WithExtension(scenarioHash.substr(0, 7), ".parkpatch");
+    return Path::Combine(scenarioPatches, scenarioPatchFile);
 }
 
 static bool ValidateSHA256(const json_t& scenarioPatch, u8string_view scenarioHash)
@@ -696,18 +697,18 @@ static bool ValidateSHA256(const json_t& scenarioPatch, u8string_view scenarioHa
 
     if (!scenarioPatch.contains(_scenarioNameKey))
     {
-        OpenRCT2::Guard::Assert(0, "All .parkpatch files should contain the name of the original scenario");
+        Guard::Assert(0, "All .parkpatch files should contain the name of the original scenario");
         return false;
     }
 
     if (!scenarioPatch.contains(_fullSHAKey))
     {
-        OpenRCT2::Guard::Assert(0, "All .parkpatch files should contain the sha256 of the original scenario");
+        Guard::Assert(0, "All .parkpatch files should contain the sha256 of the original scenario");
         return false;
     }
 
-    auto scenarioName = OpenRCT2::Json::GetString(scenarioPatch[_scenarioNameKey]);
-    auto scenarioSHA = OpenRCT2::Json::GetString(scenarioPatch[_fullSHAKey]);
+    auto scenarioName = Json::GetString(scenarioPatch[_scenarioNameKey]);
+    auto scenarioSHA = Json::GetString(scenarioPatch[_fullSHAKey]);
     LOG_VERBOSE(
         "\n  Scenario '%s'\n  SHA '%s'\n  SHA Valid: %d", scenarioName.c_str(), scenarioSHA.c_str(),
         (scenarioHash == scenarioSHA));
@@ -715,12 +716,12 @@ static bool ValidateSHA256(const json_t& scenarioPatch, u8string_view scenarioHa
     return scenarioSHA == scenarioHash;
 }
 
-void OpenRCT2::RCT12::ApplyScenarioPatch(u8string_view scenarioPatchFile, u8string scenarioSHA)
+void RCT12::ApplyScenarioPatch(u8string_view scenarioPatchFile, u8string scenarioSHA)
 {
-    auto scenarioPatch = OpenRCT2::Json::ReadFromFile(scenarioPatchFile);
+    auto scenarioPatch = Json::ReadFromFile(scenarioPatchFile);
     if (!ValidateSHA256(scenarioPatch, scenarioSHA))
     {
-        OpenRCT2::Guard::Assert(0, "Invalid full SHA256. Check for shortened SHA collision");
+        Guard::Assert(0, "Invalid full SHA256. Check for shortened SHA collision");
         return;
     }
     ApplyLandOwnershipFixes(scenarioPatch);
@@ -732,7 +733,7 @@ void OpenRCT2::RCT12::ApplyScenarioPatch(u8string_view scenarioPatchFile, u8stri
     ApplyPathFixes(scenarioPatch);
 }
 
-void OpenRCT2::RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioPath)
+void RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioPath)
 {
     if (scenarioPath.empty())
     {
@@ -741,13 +742,13 @@ void OpenRCT2::RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioPath)
 
     auto scenarioSHA = getScenarioSHA256(scenarioPath);
     auto patchPath = GetPatchFileName(scenarioSHA);
-    if (OpenRCT2::File::Exists(patchPath))
+    if (File::Exists(patchPath))
     {
         ApplyScenarioPatch(patchPath, scenarioSHA);
     }
 }
 
-void OpenRCT2::RCT12::SetDryRun(bool enable)
+void RCT12::SetDryRun(bool enable)
 {
     _dryRun = enable;
 }

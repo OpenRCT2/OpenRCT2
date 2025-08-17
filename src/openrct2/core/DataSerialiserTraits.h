@@ -447,9 +447,9 @@ struct DataSerializerTraitsT<MapRange>
 };
 
 template<>
-struct DataSerializerTraitsT<TileElement>
+struct DataSerializerTraitsT<OpenRCT2::TileElement>
 {
-    static void encode(OpenRCT2::IStream* stream, const TileElement& tileElement)
+    static void encode(OpenRCT2::IStream* stream, const OpenRCT2::TileElement& tileElement)
     {
         stream->WriteValue(tileElement.Type);
         stream->WriteValue(tileElement.Flags);
@@ -465,7 +465,7 @@ struct DataSerializerTraitsT<TileElement>
             stream->WriteValue(v);
         }
     }
-    static void decode(OpenRCT2::IStream* stream, TileElement& tileElement)
+    static void decode(OpenRCT2::IStream* stream, OpenRCT2::TileElement& tileElement)
     {
         tileElement.Type = stream->ReadValue<uint8_t>();
         tileElement.Flags = stream->ReadValue<uint8_t>();
@@ -481,7 +481,7 @@ struct DataSerializerTraitsT<TileElement>
             v = stream->ReadValue<uint8_t>();
         }
     }
-    static void log(OpenRCT2::IStream* stream, const TileElement& tileElement)
+    static void log(OpenRCT2::IStream* stream, const OpenRCT2::TileElement& tileElement)
     {
         char msg[128] = {};
         snprintf(

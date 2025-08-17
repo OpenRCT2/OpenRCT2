@@ -17,10 +17,10 @@ namespace OpenRCT2
     class FootpathObject;
     class FootpathSurfaceObject;
     class FootpathRailingsObject;
-} // namespace OpenRCT2
 
-struct PathElement;
-struct TileElement;
+    struct PathElement;
+    struct TileElement;
+} // namespace OpenRCT2
 
 constexpr auto kFootpathMaxHeight = 248 * kCoordsZStep;
 constexpr auto kFootpathMinHeight = 2 * kCoordsZStep;
@@ -134,19 +134,20 @@ extern const std::array<CoordsXY, kNumOrthogonalDirections> DirectionOffsets;
 extern const std::array<CoordsXY, kNumOrthogonalDirections> BinUseOffsets;
 extern const std::array<CoordsXY, kNumOrthogonalDirections * 2> BenchUseOffsets;
 
-PathElement* MapGetFootpathElement(const CoordsXYZ& coords);
+OpenRCT2::PathElement* MapGetFootpathElement(const CoordsXYZ& coords);
 void FootpathInterruptPeeps(const CoordsXYZ& footpathPos);
 void FootpathRemoveLitter(const CoordsXYZ& footpathPos);
-void FootpathConnectEdges(const CoordsXY& footpathPos, TileElement* tileElement, int32_t flags);
+void FootpathConnectEdges(const CoordsXY& footpathPos, OpenRCT2::TileElement* tileElement, int32_t flags);
 void FootpathUpdateQueueChains();
 bool WallInTheWay(const CoordsXYRangedZ& fencePos, int32_t direction);
 void FootpathChainRideQueue(
-    RideId rideIndex, StationIndex entranceIndex, const CoordsXY& footpathPos, TileElement* tileElement, int32_t direction);
+    RideId rideIndex, StationIndex entranceIndex, const CoordsXY& footpathPos, OpenRCT2::TileElement* tileElement,
+    int32_t direction);
 void FootpathUpdatePathWideFlags(const CoordsXY& footpathPos);
 bool FootpathIsBlockedByVehicle(const TileCoordsXYZ& position);
 
 int32_t FootpathIsConnectedToMapEdge(const CoordsXYZ& footpathPos, int32_t direction, int32_t flags);
-void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement);
+void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, OpenRCT2::TileElement* tileElement);
 
 bool FootpathSelectDefault();
 const OpenRCT2::FootpathObject* GetLegacyFootpathEntry(OpenRCT2::ObjectEntryIndex entryIndex);
@@ -155,4 +156,4 @@ const OpenRCT2::FootpathRailingsObject* GetPathRailingsEntry(OpenRCT2::ObjectEnt
 
 void FootpathQueueChainReset();
 void FootpathQueueChainPush(RideId rideIndex);
-bool FootpathIsZAndDirectionValid(const PathElement& tileElement, int32_t currentZ, int32_t currentDirection);
+bool FootpathIsZAndDirectionValid(const OpenRCT2::PathElement& tileElement, int32_t currentZ, int32_t currentDirection);

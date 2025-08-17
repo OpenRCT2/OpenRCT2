@@ -561,7 +561,7 @@ enum class RCT12TileElementType : uint8_t
     EightCarsCorrupt15 = 15,
 };
 
-constexpr TileElementType ToOpenRCT2TileElementType(RCT12TileElementType rct12type)
+constexpr OpenRCT2::TileElementType ToOpenRCT2TileElementType(RCT12TileElementType rct12type)
 {
     switch (rct12type)
     {
@@ -573,7 +573,7 @@ constexpr TileElementType ToOpenRCT2TileElementType(RCT12TileElementType rct12ty
         case RCT12TileElementType::Wall:
         case RCT12TileElementType::LargeScenery:
         case RCT12TileElementType::Banner:
-            return static_cast<TileElementType>(rct12type);
+            return static_cast<OpenRCT2::TileElementType>(rct12type);
 
         default:
             throw std::runtime_error(

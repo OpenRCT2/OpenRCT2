@@ -380,7 +380,7 @@ private:
     void UpdateLandscapeDoors(const int32_t previousTrackHeight) const;
     int32_t CalculateRiderBraking() const;
     uint8_t ChooseBrakeSpeed() const;
-    void PopulateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, TrackElement& brake);
+    void PopulateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, OpenRCT2::TrackElement& brake);
 
     void Loc6DCE02(const Ride& curRide);
     void Loc6DCDE4(const Ride& curRide);

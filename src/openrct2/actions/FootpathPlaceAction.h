@@ -36,13 +36,15 @@ public:
     OpenRCT2::GameActions::Result Execute() const override;
 
 private:
-    OpenRCT2::GameActions::Result ElementUpdateQuery(PathElement* pathElement, OpenRCT2::GameActions::Result res) const;
-    OpenRCT2::GameActions::Result ElementUpdateExecute(PathElement* pathElement, OpenRCT2::GameActions::Result res) const;
+    OpenRCT2::GameActions::Result ElementUpdateQuery(
+        OpenRCT2::PathElement* pathElement, OpenRCT2::GameActions::Result res) const;
+    OpenRCT2::GameActions::Result ElementUpdateExecute(
+        OpenRCT2::PathElement* pathElement, OpenRCT2::GameActions::Result res) const;
     OpenRCT2::GameActions::Result ElementInsertQuery(OpenRCT2::GameActions::Result res) const;
     OpenRCT2::GameActions::Result ElementInsertExecute(OpenRCT2::GameActions::Result res) const;
     void AutomaticallySetPeepSpawn() const;
-    void RemoveIntersectingWalls(PathElement* pathElement) const;
-    PathElement* MapGetFootpathElementSlope(const CoordsXYZ& footpathPos, int32_t slope) const;
-    bool IsSameAsPathElement(const PathElement* pathElement) const;
-    bool IsSameAsEntranceElement(const EntranceElement& entranceElement) const;
+    void RemoveIntersectingWalls(OpenRCT2::PathElement* pathElement) const;
+    OpenRCT2::PathElement* MapGetFootpathElementSlope(const CoordsXYZ& footpathPos, int32_t slope) const;
+    bool IsSameAsPathElement(const OpenRCT2::PathElement* pathElement) const;
+    bool IsSameAsEntranceElement(const OpenRCT2::EntranceElement& entranceElement) const;
 };

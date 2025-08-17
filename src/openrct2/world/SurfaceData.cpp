@@ -11,6 +11,8 @@
 
 #include "tile_element/Slope.h"
 
+using namespace OpenRCT2;
+
 // 0x00981A1E
 // Table of pre-calculated surface slopes (32) when raising the land tile for a given selection (5)
 // 0x1F = new slope

@@ -36,5 +36,5 @@ public:
     OpenRCT2::GameActions::Result Execute() const override;
 
 private:
-    PathElement* GetValidPathElement() const;
+    OpenRCT2::PathElement* GetValidPathElement() const;
 };

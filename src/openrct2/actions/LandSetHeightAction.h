@@ -32,19 +32,19 @@ public:
 
 private:
     StringId CheckParameters() const;
-    TileElement* CheckTreeObstructions() const;
+    OpenRCT2::TileElement* CheckTreeObstructions() const;
     money64 GetSmallSceneryRemovalCost() const;
     void SmallSceneryRemoval() const;
     StringId CheckRideSupports() const;
-    TileElement* CheckFloatingStructures(TileElement* surfaceElement, uint8_t zCorner) const;
-    money64 GetSurfaceHeightChangeCost(SurfaceElement* surfaceElement) const;
-    void SetSurfaceHeight(TileElement* surfaceElement) const;
+    OpenRCT2::TileElement* CheckFloatingStructures(OpenRCT2::TileElement* surfaceElement, uint8_t zCorner) const;
+    money64 GetSurfaceHeightChangeCost(OpenRCT2::SurfaceElement* surfaceElement) const;
+    void SetSurfaceHeight(OpenRCT2::TileElement* surfaceElement) const;
 
     /**
      *
      *  rct2: 0x00663CB9
      */
     static int32_t MapSetLandHeightClearFunc(
-        TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
+        OpenRCT2::TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
         [[maybe_unused]] money64* price);
 };
