@@ -643,7 +643,7 @@ namespace OpenRCT2
                 auto& rideRatings = gameState.rideRatingUpdateStates;
                 if (os.GetHeader().TargetVersion >= 21)
                 {
-                    cs.ReadWriteArray(rideRatings, [this, &cs](RideRatingUpdateState& calcData) {
+                    cs.ReadWriteArray(rideRatings, [this, &cs](OpenRCT2::RideRating::UpdateState& calcData) {
                         ReadWriteRideRatingCalculationData(cs, calcData);
                         return true;
                     });
@@ -671,7 +671,7 @@ namespace OpenRCT2
             }
         }
 
-        void ReadWriteRideRatingCalculationData(OrcaStream::ChunkStream& cs, RideRatingUpdateState& calcData)
+        void ReadWriteRideRatingCalculationData(OrcaStream::ChunkStream& cs, OpenRCT2::RideRating::UpdateState& calcData)
         {
             cs.ReadWrite(calcData.AmountOfBrakes);
             cs.ReadWrite(calcData.Proximity);

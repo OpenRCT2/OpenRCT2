@@ -31,21 +31,6 @@ constexpr ride_rating MakeRideRating(int16_t whole, uint8_t fraction)
 }
 constexpr ride_rating kRideRatingUndefined = 0xFFFFu;
 
-struct RideRatingUpdateState
-{
-    CoordsXYZ Proximity;
-    CoordsXYZ ProximityStart;
-    RideId CurrentRide;
-    uint8_t State;
-    OpenRCT2::TrackElemType ProximityTrackType;
-    uint8_t ProximityBaseHeight;
-    uint16_t ProximityTotal;
-    uint16_t ProximityScores[26];
-    uint16_t AmountOfBrakes;
-    uint16_t AmountOfReversers;
-    uint16_t StationFlags;
-};
-
 namespace OpenRCT2::RideRating
 {
 #pragma pack(push, 1)
@@ -66,8 +51,23 @@ namespace OpenRCT2::RideRating
 
 #pragma pack(pop)
 
+    struct UpdateState
+    {
+        CoordsXYZ Proximity;
+        CoordsXYZ ProximityStart;
+        RideId CurrentRide;
+        uint8_t State;
+        OpenRCT2::TrackElemType ProximityTrackType;
+        uint8_t ProximityBaseHeight;
+        uint16_t ProximityTotal;
+        uint16_t ProximityScores[26];
+        uint16_t AmountOfBrakes;
+        uint16_t AmountOfReversers;
+        uint16_t StationFlags;
+    };
+
     static constexpr size_t kMaxUpdateStates = 4;
-    using UpdateStates = std::array<RideRatingUpdateState, kMaxUpdateStates>;
+    using UpdateStates = std::array<UpdateState, kMaxUpdateStates>;
 
     void ResetUpdateStates();
     void UpdateRide(const Ride& ride);

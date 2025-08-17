@@ -93,21 +93,21 @@ struct ShelteredEights
 // would be currently 80, this is the worst case of sub-steps and may break out earlier.
 static constexpr size_t MaxRideRatingUpdateSubSteps = 20;
 
-static void ride_ratings_update_state(RideRatingUpdateState& state);
-static void ride_ratings_update_state_0(RideRatingUpdateState& state);
-static void ride_ratings_update_state_1(RideRatingUpdateState& state);
-static void ride_ratings_update_state_2(RideRatingUpdateState& state);
-static void ride_ratings_update_state_3(RideRatingUpdateState& state);
-static void ride_ratings_update_state_4(RideRatingUpdateState& state);
-static void ride_ratings_update_state_5(RideRatingUpdateState& state);
-static void ride_ratings_begin_proximity_loop(RideRatingUpdateState& state);
-static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride);
+static void ride_ratings_update_state(OpenRCT2::RideRating::UpdateState& state);
+static void ride_ratings_update_state_0(OpenRCT2::RideRating::UpdateState& state);
+static void ride_ratings_update_state_1(OpenRCT2::RideRating::UpdateState& state);
+static void ride_ratings_update_state_2(OpenRCT2::RideRating::UpdateState& state);
+static void ride_ratings_update_state_3(OpenRCT2::RideRating::UpdateState& state);
+static void ride_ratings_update_state_4(OpenRCT2::RideRating::UpdateState& state);
+static void ride_ratings_update_state_5(OpenRCT2::RideRating::UpdateState& state);
+static void ride_ratings_begin_proximity_loop(OpenRCT2::RideRating::UpdateState& state);
+static void RideRatingsCalculate(OpenRCT2::RideRating::UpdateState& state, Ride& ride);
 static void RideRatingsCalculateValue(Ride& ride);
-static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, TileElement* inputTileElement);
+static void ride_ratings_score_close_proximity(OpenRCT2::RideRating::UpdateState& state, TileElement* inputTileElement);
 static void RideRatingsAdd(OpenRCT2::RideRating::Tuple& ratings, int32_t excitement, int32_t intensity, int32_t nausea);
 
 static ShelteredEights GetNumOfShelteredEighths(const Ride& ride);
-static money64 RideComputeUpkeep(RideRatingUpdateState& state, const Ride& ride);
+static money64 RideComputeUpkeep(OpenRCT2::RideRating::UpdateState& state, const Ride& ride);
 static void SetUnreliabilityFactor(Ride& ride);
 
 static void RideRatingsApplyAdjustments(const Ride& ride, OpenRCT2::RideRating::Tuple& ratings);
@@ -142,15 +142,15 @@ static void RideRatingsApplyBonusMotionSimulatorMode(
 static void RideRatingsApplyBonus3DCinemaMode(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusTopSpinMode(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusReversals(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier);
+    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, OpenRCT2::RideRating::UpdateState& state, RatingsModifier modifier);
 static void RideRatingsApplyBonusHoles(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusNumTrains(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusDownwardLaunch(
     OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusLaunchedFreefallSpecial(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier);
+    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, OpenRCT2::RideRating::UpdateState& state, RatingsModifier modifier);
 static void RideRatingsApplyBonusProximity(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier);
+    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, OpenRCT2::RideRating::UpdateState& state, RatingsModifier modifier);
 static void RideRatingsApplyBonusScenery(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyRequirementLength(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyRequirementDropHeight(
@@ -168,7 +168,7 @@ static void RideRatingsApplyRequirementInversions(
 static void RideRatingsApplyRequirementUnsheltered(
     OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, uint8_t shelteredEighths, RatingsModifier modifier);
 static void RideRatingsApplyRequirementReversals(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier);
+    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, OpenRCT2::RideRating::UpdateState& state, RatingsModifier modifier);
 static void RideRatingsApplyRequirementHoles(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyRequirementStations(
     OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
@@ -178,7 +178,7 @@ static void RideRatingsApplyPenaltyLateralGs(OpenRCT2::RideRating::Tuple& rating
 
 void OpenRCT2::RideRating::ResetUpdateStates()
 {
-    RideRatingUpdateState nullState{};
+    OpenRCT2::RideRating::UpdateState nullState{};
     nullState.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 
     auto& updateStates = getGameState().rideRatingUpdateStates;
@@ -193,7 +193,7 @@ void OpenRCT2::RideRating::ResetUpdateStates()
  */
 void OpenRCT2::RideRating::UpdateRide(const Ride& ride)
 {
-    RideRatingUpdateState state;
+    OpenRCT2::RideRating::UpdateState state;
     if (ride.status != RideStatus::closed)
     {
         state.CurrentRide = ride.id;
@@ -229,7 +229,7 @@ void OpenRCT2::RideRating::UpdateAll()
     }
 }
 
-static void ride_ratings_update_state(RideRatingUpdateState& state)
+static void ride_ratings_update_state(OpenRCT2::RideRating::UpdateState& state)
 {
     switch (state.State)
     {
@@ -323,7 +323,7 @@ static RideId GetNextRideToUpdate(RideId currentRide)
  *
  *  rct2: 0x006B5A5C
  */
-static void ride_ratings_update_state_0(RideRatingUpdateState& state)
+static void ride_ratings_update_state_0(OpenRCT2::RideRating::UpdateState& state)
 {
     // It is possible that the current ride being calculated has
     // been removed or due to import invalid. For both, reset
@@ -347,7 +347,7 @@ static void ride_ratings_update_state_0(RideRatingUpdateState& state)
  *
  *  rct2: 0x006B5A94
  */
-static void ride_ratings_update_state_1(RideRatingUpdateState& state)
+static void ride_ratings_update_state_1(OpenRCT2::RideRating::UpdateState& state)
 {
     state.ProximityTotal = 0;
     for (int32_t i = 0; i < PROXIMITY_COUNT; i++)
@@ -365,7 +365,7 @@ static void ride_ratings_update_state_1(RideRatingUpdateState& state)
  *
  *  rct2: 0x006B5C66
  */
-static void ride_ratings_update_state_2(RideRatingUpdateState& state)
+static void ride_ratings_update_state_2(OpenRCT2::RideRating::UpdateState& state)
 {
     const RideId rideIndex = state.CurrentRide;
     auto ride = GetRide(rideIndex);
@@ -442,7 +442,7 @@ static void ride_ratings_update_state_2(RideRatingUpdateState& state)
  *
  *  rct2: 0x006B5E4D
  */
-static void ride_ratings_update_state_3(RideRatingUpdateState& state)
+static void ride_ratings_update_state_3(OpenRCT2::RideRating::UpdateState& state)
 {
     auto ride = GetRide(state.CurrentRide);
     if (ride == nullptr || ride->status == RideStatus::closed)
@@ -461,7 +461,7 @@ static void ride_ratings_update_state_3(RideRatingUpdateState& state)
  *
  *  rct2: 0x006B5BAB
  */
-static void ride_ratings_update_state_4(RideRatingUpdateState& state)
+static void ride_ratings_update_state_4(OpenRCT2::RideRating::UpdateState& state)
 {
     state.State = RIDE_RATINGS_STATE_5;
     ride_ratings_begin_proximity_loop(state);
@@ -471,7 +471,7 @@ static void ride_ratings_update_state_4(RideRatingUpdateState& state)
  *
  *  rct2: 0x006B5D72
  */
-static void ride_ratings_update_state_5(RideRatingUpdateState& state)
+static void ride_ratings_update_state_5(OpenRCT2::RideRating::UpdateState& state)
 {
     auto ride = GetRide(state.CurrentRide);
     if (ride == nullptr || ride->status == RideStatus::closed)
@@ -536,7 +536,7 @@ static void ride_ratings_update_state_5(RideRatingUpdateState& state)
  *
  *  rct2: 0x006B5BB2
  */
-static void ride_ratings_begin_proximity_loop(RideRatingUpdateState& state)
+static void ride_ratings_begin_proximity_loop(OpenRCT2::RideRating::UpdateState& state)
 {
     auto ride = GetRide(state.CurrentRide);
     if (ride == nullptr || ride->status == RideStatus::closed)
@@ -573,7 +573,7 @@ static void ride_ratings_begin_proximity_loop(RideRatingUpdateState& state)
     state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
 
-static void proximity_score_increment(RideRatingUpdateState& state, int32_t type)
+static void proximity_score_increment(OpenRCT2::RideRating::UpdateState& state, int32_t type)
 {
     state.ProximityScores[type]++;
 }
@@ -583,7 +583,7 @@ static void proximity_score_increment(RideRatingUpdateState& state, int32_t type
  *  rct2: 0x006B6207
  */
 static void ride_ratings_score_close_proximity_in_direction(
-    RideRatingUpdateState& state, TileElement* inputTileElement, int32_t direction)
+    OpenRCT2::RideRating::UpdateState& state, TileElement* inputTileElement, int32_t direction)
 {
     auto scorePos = CoordsXY{ CoordsXY{ state.Proximity } + CoordsDirectionDelta[direction] };
     if (!MapIsLocationValid(scorePos))
@@ -643,7 +643,8 @@ static void ride_ratings_score_close_proximity_in_direction(
     } while (!(tileElement++)->IsLastForTile());
 }
 
-static void ride_ratings_score_close_proximity_loops_helper(RideRatingUpdateState& state, const CoordsXYE& coordsElement)
+static void ride_ratings_score_close_proximity_loops_helper(
+    OpenRCT2::RideRating::UpdateState& state, const CoordsXYE& coordsElement)
 {
     TileElement* tileElement = MapGetFirstElementAt(coordsElement);
     if (tileElement == nullptr)
@@ -688,7 +689,7 @@ static void ride_ratings_score_close_proximity_loops_helper(RideRatingUpdateStat
  *
  *  rct2: 0x006B62DA
  */
-static void ride_ratings_score_close_proximity_loops(RideRatingUpdateState& state, TileElement* inputTileElement)
+static void ride_ratings_score_close_proximity_loops(OpenRCT2::RideRating::UpdateState& state, TileElement* inputTileElement)
 {
     auto trackType = inputTileElement->AsTrack()->GetTrackType();
     if (trackType == TrackElemType::LeftVerticalLoop || trackType == TrackElemType::RightVerticalLoop)
@@ -705,7 +706,7 @@ static void ride_ratings_score_close_proximity_loops(RideRatingUpdateState& stat
  *
  *  rct2: 0x006B5F9D
  */
-static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, TileElement* inputTileElement)
+static void ride_ratings_score_close_proximity(OpenRCT2::RideRating::UpdateState& state, TileElement* inputTileElement)
 {
     if (state.StationFlags & RIDE_RATING_STATION_FLAG_NO_ENTRANCE)
     {
@@ -891,7 +892,7 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
     }
 }
 
-static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
+static void RideRatingsCalculate(OpenRCT2::RideRating::UpdateState& state, Ride& ride)
 {
     const auto& rrd = ride.getRideTypeDescriptor().RatingsData;
 
@@ -1218,7 +1219,7 @@ static void RideRatingsCalculateValue(Ride& ride)
  * inputs
  * - edi: ride ptr
  */
-static money64 RideComputeUpkeep(RideRatingUpdateState& state, const Ride& ride)
+static money64 RideComputeUpkeep(OpenRCT2::RideRating::UpdateState& state, const Ride& ride)
 {
     // data stored at 0x0057E3A8, incrementing 18 bytes at a time
     auto upkeep = ride.getRideTypeDescriptor().UpkeepCosts.BaseCost;
@@ -1413,7 +1414,7 @@ static uint32_t get_proximity_score_helper_3(uint16_t x, uint16_t resultIfNotZer
  *
  *  rct2: 0x0065E277
  */
-static uint32_t ride_ratings_get_proximity_score(RideRatingUpdateState& state)
+static uint32_t ride_ratings_get_proximity_score(OpenRCT2::RideRating::UpdateState& state)
 {
     const uint16_t* scores = state.ProximityScores;
 
@@ -2057,7 +2058,7 @@ static void RideRatingsApplyBonusTopSpinMode(OpenRCT2::RideRating::Tuple& rating
 }
 
 static void RideRatingsApplyBonusReversals(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier)
+    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, OpenRCT2::RideRating::UpdateState& state, RatingsModifier modifier)
 {
     int32_t numReversers = std::min<uint16_t>(state.AmountOfReversers, modifier.threshold);
     RideRatingsAdd(
@@ -2098,7 +2099,7 @@ static void RideRatingsApplyBonusOperationOptionFreefall(
 }
 
 static void RideRatingsApplyBonusLaunchedFreefallSpecial(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier)
+    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, OpenRCT2::RideRating::UpdateState& state, RatingsModifier modifier)
 {
     int32_t excitement = (ToHumanReadableRideLength(ride.getTotalLength()) * 32768) >> 16;
     RideRatingsAdd(ratings, excitement, 0, 0);
@@ -2123,7 +2124,7 @@ static void RideRatingsApplyBonusLaunchedFreefallSpecial(
 }
 
 static void RideRatingsApplyBonusProximity(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier)
+    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, OpenRCT2::RideRating::UpdateState& state, RatingsModifier modifier)
 {
     RideRatingsAdd(ratings, (ride_ratings_get_proximity_score(state) * modifier.excitement) >> 16, 0, 0);
 }
@@ -2221,7 +2222,7 @@ static void RideRatingsApplyRequirementUnsheltered(
 }
 
 static void RideRatingsApplyRequirementReversals(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier)
+    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, OpenRCT2::RideRating::UpdateState& state, RatingsModifier modifier)
 {
     if (state.AmountOfReversers < modifier.threshold)
     {
