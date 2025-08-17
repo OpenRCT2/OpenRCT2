@@ -54,7 +54,7 @@ constexpr RideTypeDescriptor EnterpriseRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { MakeRideRating(3, 60), MakeRideRating(4, 55), MakeRideRating(5, 72) },
+        { RideRating::make(3, 60), RideRating::make(4, 55), RideRating::make(5, 72) },
         22,
         3,
         false,

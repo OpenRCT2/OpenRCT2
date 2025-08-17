@@ -59,13 +59,13 @@ constexpr RideTypeDescriptor RiverRapidsRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(1, 20), MakeRideRating(0, 70), MakeRideRating(0, 50) },
+        { RideRating::make(1, 20), RideRating::make(0, 70), RideRating::make(0, 50) },
         16,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           2000,             6225, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 30), MakeRideRating(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 30), RideRating::make(0, 05), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                115130, 159411, 106274 },
             { RatingsModifierType::BonusDuration,         500,              13107, 0, 0 },
             { RatingsModifierType::BonusTurns,            0,                29721, 22598, 5718 },

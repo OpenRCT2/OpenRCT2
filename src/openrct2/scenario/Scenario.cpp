@@ -79,8 +79,6 @@ bool gAllowEarlyCompletionInNetworkPlay;
 
 static void ScenarioCheckObjective(GameState_t& gameState);
 
-using namespace OpenRCT2;
-
 void ScenarioBegin(GameState_t& gameState)
 {
     GameLoadInit();
@@ -656,7 +654,7 @@ ObjectiveStatus Objective::Check10RollerCoasters() const
     BitSet<kMaxRideObjects> type_already_counted;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status == RideStatus::open && ride.ratings.excitement >= MakeRideRating(6, 00)
+        if (ride.status == RideStatus::open && ride.ratings.excitement >= RideRating::make(6, 00)
             && ride.subtype != kObjectEntryIndexNull)
         {
             auto rideEntry = ride.getRideEntry();
@@ -758,7 +756,7 @@ ObjectiveStatus Objective::Check10RollerCoastersLength() const
     auto rcs = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status == RideStatus::open && ride.ratings.excitement >= MakeRideRating(7, 00)
+        if (ride.status == RideStatus::open && ride.ratings.excitement >= RideRating::make(7, 00)
             && ride.subtype != kObjectEntryIndexNull)
         {
             auto rideEntry = ride.getRideEntry();

@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(1, 50), MakeRideRating(0, 00), MakeRideRating(0, 10) },
+        { RideRating::make(1, 50), RideRating::make(0, 00), RideRating::make(0, 10) },
         15,
         7,
         false,

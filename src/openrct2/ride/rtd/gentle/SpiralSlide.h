@@ -60,12 +60,12 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { MakeRideRating(1, 50), MakeRideRating(1, 40), MakeRideRating(0, 90) },
+        { RideRating::make(1, 50), RideRating::make(1, 40), RideRating::make(0, 90) },
         8,
         2,
         false,
         {
-            { RatingsModifierType::BonusSlideUnlimitedRides, 0, MakeRideRating(0, 40), MakeRideRating(0, 20), MakeRideRating(0, 25) },
+            { RatingsModifierType::BonusSlideUnlimitedRides, 0, RideRating::make(0, 40), RideRating::make(0, 20), RideRating::make(0, 25) },
             { RatingsModifierType::BonusScenery,             0, 25098, 0, 0 },
         },
     },

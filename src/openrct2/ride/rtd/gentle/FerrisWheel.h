@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { MakeRideRating(0, 60), MakeRideRating(0, 25), MakeRideRating(0, 30) },
+        { RideRating::make(0, 60), RideRating::make(0, 25), RideRating::make(0, 30) },
         16,
         0,
         false,

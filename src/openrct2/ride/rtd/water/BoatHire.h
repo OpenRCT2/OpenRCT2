@@ -64,12 +64,12 @@ constexpr RideTypeDescriptor BoatHireRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(1, 90), MakeRideRating(0, 80), MakeRideRating(0, 90) },
+        { RideRating::make(1, 90), RideRating::make(0, 80), RideRating::make(0, 90) },
         7,
         0,
         false,
         {
-            { RatingsModifierType::BonusBoatHireNoCircuit, 0, MakeRideRating(0, 20), 0, 0 },
+            { RatingsModifierType::BonusBoatHireNoCircuit, 0, RideRating::make(0, 20), 0, 0 },
             { RatingsModifierType::BonusProximity,         0, 11183, 0, 0 },
             { RatingsModifierType::BonusScenery,           0, 22310, 0, 0 },
         },

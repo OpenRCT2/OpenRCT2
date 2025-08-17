@@ -60,13 +60,13 @@ constexpr RideTypeDescriptor GoKartsRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(1, 42), MakeRideRating(1, 73), MakeRideRating(0, 40) },
+        { RideRating::make(1, 42), RideRating::make(1, 73), RideRating::make(0, 40) },
         16,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,            700, 32768, 0, 0 },
-            { RatingsModifierType::BonusGoKartRace,        4,   MakeRideRating(1, 40), MakeRideRating(0, 50), 0 },
+            { RatingsModifierType::BonusGoKartRace,        4,   RideRating::make(1, 40), RideRating::make(0, 50), 0 },
             { RatingsModifierType::BonusTurns,             0,   4458, 3476, 5718 },
             { RatingsModifierType::BonusDrops,             0,   8738, 5461, 6553 },
             { RatingsModifierType::BonusSheltered,         0,   2570, 8738, 2340 },

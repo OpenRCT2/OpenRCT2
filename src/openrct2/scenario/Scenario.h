@@ -97,7 +97,7 @@ struct Objective
     union
     {
         money64 Currency;
-        ride_rating MinimumExcitement; // For the "Finish 5 coaster with a minimum excitement rating" objective.
+        OpenRCT2::RideRating_t MinimumExcitement; // For the "Finish 5 coaster with a minimum excitement rating" objective.
     };
 
     bool NeedsMoney() const

@@ -57,12 +57,12 @@ constexpr RideTypeDescriptor LaunchedFreefallRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 70), MakeRideRating(3, 00), MakeRideRating(3, 50) },
+        { RideRating::make(2, 70), RideRating::make(3, 00), RideRating::make(3, 50) },
         16,
         -1,
         false,
         {
-            { RatingsModifierType::BonusDownwardLaunch,          0, MakeRideRating(0, 30), MakeRideRating(0, 65), MakeRideRating(0, 45) },
+            { RatingsModifierType::BonusDownwardLaunch,          0, RideRating::make(0, 30), RideRating::make(0, 65), RideRating::make(0, 45) },
             { RatingsModifierType::BonusLaunchedFreefallSpecial, 0, 0, 1355917, 451972 },
             { RatingsModifierType::BonusProximity,               0, 20130, 0, 0 },
             { RatingsModifierType::BonusScenery,                 0, 25098, 0, 0 },

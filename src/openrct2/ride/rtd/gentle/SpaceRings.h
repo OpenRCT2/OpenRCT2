@@ -53,7 +53,7 @@ constexpr RideTypeDescriptor SpaceRingsRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { MakeRideRating(1, 50), MakeRideRating(2, 10), MakeRideRating(6, 50) },
+        { RideRating::make(1, 50), RideRating::make(2, 10), RideRating::make(6, 50) },
         7,
         0,
         false,

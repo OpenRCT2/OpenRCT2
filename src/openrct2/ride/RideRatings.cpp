@@ -1340,8 +1340,8 @@ static void RideRatingsApplyAdjustments(const Ride& ride, RideRating::Tuple& rat
  */
 static void RideRatingsApplyIntensityPenalty(RideRating::Tuple& ratings)
 {
-    static constexpr ride_rating intensityBounds[] = { 1000, 1100, 1200, 1320, 1450 };
-    ride_rating excitement = ratings.excitement;
+    static constexpr RideRating_t intensityBounds[] = { 1000, 1100, 1200, 1320, 1450 };
+    RideRating_t excitement = ratings.excitement;
     for (auto intensityBound : intensityBounds)
     {
         if (ratings.intensity >= intensityBound)
@@ -1608,8 +1608,8 @@ static RideRating::Tuple GetSpecialTrackElementsRating(uint8_t type, const Ride&
     int32_t helixesOver5UpTo10 = std::clamp<int32_t>(helixSections - 5, 0, 10);
     nausea += (helixesOver5UpTo10 * 0x140000) >> 16;
 
-    RideRating::Tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
-                                 static_cast<ride_rating>(nausea) };
+    RideRating::Tuple rating = { static_cast<RideRating_t>(excitement), static_cast<RideRating_t>(intensity),
+                                 static_cast<RideRating_t>(nausea) };
     return rating;
 }
 
@@ -1646,8 +1646,8 @@ static RideRating::Tuple ride_ratings_get_turns_ratings(const Ride& ride)
     intensity += inversionsRating.intensity;
     nausea += inversionsRating.nausea;
 
-    RideRating::Tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
-                                 static_cast<ride_rating>(nausea) };
+    RideRating::Tuple rating = { static_cast<RideRating_t>(excitement), static_cast<RideRating_t>(intensity),
+                                 static_cast<RideRating_t>(nausea) };
     return rating;
 }
 
@@ -1685,8 +1685,8 @@ static RideRating::Tuple ride_ratings_get_sheltered_ratings(const Ride& ride)
     lowerVal = std::min<uint8_t>(lowerVal, 11);
     excitement += (lowerVal * 774516) >> 16;
 
-    RideRating::Tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
-                                 static_cast<ride_rating>(nausea) };
+    RideRating::Tuple rating = { static_cast<RideRating_t>(excitement), static_cast<RideRating_t>(intensity),
+                                 static_cast<RideRating_t>(nausea) };
     return rating;
 }
 
@@ -1709,12 +1709,12 @@ static RideRating::Tuple ride_ratings_get_gforce_ratings(const Ride& ride)
 
     // Apply maximum negative G force factor
     fixed16_2dp gforce = ride.maxNegativeVerticalG;
-    result.excitement += (std::clamp<fixed16_2dp>(gforce, -MakeRideRating(2, 50), MakeRideRating(0, 00)) * -15728) >> 16;
-    result.intensity += ((gforce - MakeRideRating(1, 00)) * -52428) >> 16;
-    result.nausea += ((gforce - MakeRideRating(1, 00)) * -14563) >> 16;
+    result.excitement += (std::clamp<fixed16_2dp>(gforce, -RideRating::make(2, 50), RideRating::make(0, 00)) * -15728) >> 16;
+    result.intensity += ((gforce - RideRating::make(1, 00)) * -52428) >> 16;
+    result.nausea += ((gforce - RideRating::make(1, 00)) * -14563) >> 16;
 
     // Apply lateral G force factor
-    result.excitement += (std::min<fixed16_2dp>(MakeRideRating(1, 50), ride.maxLateralG) * 26214) >> 16;
+    result.excitement += (std::min<fixed16_2dp>(RideRating::make(1, 50), ride.maxLateralG) * 26214) >> 16;
     result.intensity += ride.maxLateralG;
     result.nausea += (ride.maxLateralG * 21845) >> 16;
 
@@ -1722,14 +1722,14 @@ static RideRating::Tuple ride_ratings_get_gforce_ratings(const Ride& ride)
 #ifdef ORIGINAL_RATINGS
     if (ride.maxLateralG > MakeFixed16_2dp(2, 80))
     {
-        result.intensity += MakeRideRating(3, 75);
-        result.nausea += MakeRideRating(2, 00);
+        result.intensity += RideRating::make(3, 75);
+        result.nausea += RideRating::make(2, 00);
     }
     if (ride.maxLateralG > MakeFixed16_2dp(3, 10))
     {
         result.excitement /= 2;
-        result.intensity += MakeRideRating(8, 50);
-        result.nausea += MakeRideRating(4, 00);
+        result.intensity += RideRating::make(8, 50);
+        result.nausea += RideRating::make(4, 00);
     }
 #endif
 
@@ -1991,11 +1991,11 @@ static void RideRatingsApplyBonusMotionSimulatorMode(RideRating::Tuple& ratings,
     // Hardcoded until ride mode refactor
     if (ride.mode == RideMode::filmThrillRiders)
     {
-        RideRatingsSet(ratings, MakeRideRating(3, 25), MakeRideRating(4, 10), MakeRideRating(3, 30));
+        RideRatingsSet(ratings, RideRating::make(3, 25), RideRating::make(4, 10), RideRating::make(3, 30));
     }
     else
     {
-        RideRatingsSet(ratings, MakeRideRating(2, 90), MakeRideRating(3, 50), MakeRideRating(3, 00));
+        RideRatingsSet(ratings, RideRating::make(2, 90), RideRating::make(3, 50), RideRating::make(3, 00));
     }
 }
 
@@ -2006,13 +2006,13 @@ static void RideRatingsApplyBonus3DCinemaMode(RideRating::Tuple& ratings, const 
     {
         default:
         case RideMode::mouseTails3DFilm:
-            RideRatingsSet(ratings, MakeRideRating(3, 50), MakeRideRating(2, 40), MakeRideRating(1, 40));
+            RideRatingsSet(ratings, RideRating::make(3, 50), RideRating::make(2, 40), RideRating::make(1, 40));
             break;
         case RideMode::stormChasers3DFilm:
-            RideRatingsSet(ratings, MakeRideRating(4, 00), MakeRideRating(2, 65), MakeRideRating(1, 55));
+            RideRatingsSet(ratings, RideRating::make(4, 00), RideRating::make(2, 65), RideRating::make(1, 55));
             break;
         case RideMode::spaceRaiders3DFilm:
-            RideRatingsSet(ratings, MakeRideRating(4, 20), MakeRideRating(2, 60), MakeRideRating(1, 48));
+            RideRatingsSet(ratings, RideRating::make(4, 20), RideRating::make(2, 60), RideRating::make(1, 48));
             break;
     }
 }
@@ -2024,13 +2024,13 @@ static void RideRatingsApplyBonusTopSpinMode(RideRating::Tuple& ratings, const R
     {
         default:
         case RideMode::beginners:
-            RideRatingsSet(ratings, MakeRideRating(2, 00), MakeRideRating(4, 80), MakeRideRating(5, 74));
+            RideRatingsSet(ratings, RideRating::make(2, 00), RideRating::make(4, 80), RideRating::make(5, 74));
             break;
         case RideMode::intense:
-            RideRatingsSet(ratings, MakeRideRating(3, 00), MakeRideRating(5, 75), MakeRideRating(6, 64));
+            RideRatingsSet(ratings, RideRating::make(3, 00), RideRating::make(5, 75), RideRating::make(6, 64));
             break;
         case RideMode::berserk:
-            RideRatingsSet(ratings, MakeRideRating(3, 20), MakeRideRating(6, 80), MakeRideRating(7, 94));
+            RideRatingsSet(ratings, RideRating::make(3, 20), RideRating::make(6, 80), RideRating::make(7, 94));
             break;
     }
 }
@@ -2239,8 +2239,8 @@ static RideRating::Tuple ride_ratings_get_excessive_lateral_g_penalty(const Ride
     RideRating::Tuple result{};
     if (ride.maxLateralG > MakeFixed16_2dp(2, 80))
     {
-        result.intensity = MakeRideRating(3, 75);
-        result.nausea = MakeRideRating(2, 00);
+        result.intensity = RideRating::make(3, 75);
+        result.nausea = RideRating::make(2, 00);
     }
 
     if (ride.maxLateralG > MakeFixed16_2dp(3, 10))
@@ -2250,16 +2250,17 @@ static RideRating::Tuple ride_ratings_get_excessive_lateral_g_penalty(const Ride
 
         // Apply maximum negative G force factor
         fixed16_2dp gforce = ride.maxNegativeVerticalG;
-        result.excitement += (std::clamp<fixed16_2dp>(gforce, -MakeRideRating(2, 50), MakeRideRating(0, 00)) * -15728) >> 16;
+        result.excitement += (std::clamp<fixed16_2dp>(gforce, -RideRating::make(2, 50), RideRating::make(0, 00)) * -15728)
+            >> 16;
 
         // Apply lateral G force factor
-        result.excitement += (std::min<fixed16_2dp>(MakeRideRating(1, 50), ride.maxLateralG) * 26214) >> 16;
+        result.excitement += (std::min<fixed16_2dp>(RideRating::make(1, 50), ride.maxLateralG) * 26214) >> 16;
 
         // Remove half of the ride_ratings_get_gforce_ratings
         result.excitement /= 2;
         result.excitement *= -1;
-        result.intensity = MakeRideRating(12, 25);
-        result.nausea = MakeRideRating(6, 00);
+        result.intensity = RideRating::make(12, 25);
+        result.nausea = RideRating::make(6, 00);
     }
     return result;
 }

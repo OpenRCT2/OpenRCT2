@@ -62,13 +62,13 @@ constexpr RideTypeDescriptor VerticalDropCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(3, 20), MakeRideRating(0, 80), MakeRideRating(0, 30) },
+        { RideRating::make(3, 20), RideRating::make(0, 80), RideRating::make(0, 30) },
         16,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           4000,             1146, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                97418, 141699, 70849 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
             { RatingsModifierType::BonusDuration,         150,              26214, 0, 0 },

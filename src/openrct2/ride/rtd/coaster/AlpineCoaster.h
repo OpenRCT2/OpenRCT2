@@ -58,13 +58,13 @@ constexpr RideTypeDescriptor AlpineCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 30), MakeRideRating(2, 10), MakeRideRating(1, 4) },
+        { RideRating::make(2, 30), RideRating::make(2, 10), RideRating::make(1, 4) },
         7,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             873, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 75), MakeRideRating(0, 5), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 75), RideRating::make(0, 5), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },

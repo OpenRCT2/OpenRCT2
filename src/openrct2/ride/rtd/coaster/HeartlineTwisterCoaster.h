@@ -60,13 +60,13 @@ constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(3, 00), MakeRideRating(1, 70), MakeRideRating(1, 65) },
+        { RideRating::make(3, 00), RideRating::make(1, 70), RideRating::make(1, 65) },
         18,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000, 764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,    MakeRideRating(0, 20), MakeRideRating(0, 04), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,    RideRating::make(0, 20), RideRating::make(0, 04), 0 },
             { RatingsModifierType::BonusTrainLength,      0,    187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,    97418, 123987, 70849 },
             { RatingsModifierType::BonusAverageSpeed,     0,    291271, 436906, 0 },

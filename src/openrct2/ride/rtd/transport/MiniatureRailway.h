@@ -60,7 +60,7 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 50), MakeRideRating(0, 00), MakeRideRating(0, 00) },
+        { RideRating::make(2, 50), RideRating::make(0, 00), RideRating::make(0, 00) },
         11,
         -1,
         false,

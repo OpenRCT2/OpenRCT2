@@ -60,14 +60,14 @@ constexpr RideTypeDescriptor FlyingSaucersRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { MakeRideRating(2, 40), MakeRideRating(0, 55), MakeRideRating(0, 39) },
+        { RideRating::make(2, 40), RideRating::make(0, 55), RideRating::make(0, 39) },
         32,
         0,
         false,
         {
             // Special case, passing -2 to represent division by 2
             { RatingsModifierType::BonusOperationOption, 0, 1, -2, 0 }, 
-            { RatingsModifierType::BonusNumTrains,       4, MakeRideRating(0, 80), 0, 0 },
+            { RatingsModifierType::BonusNumTrains,       4, RideRating::make(0, 80), 0, 0 },
             { RatingsModifierType::BonusScenery,         0, 5577, 0, 0 },
         },
     },
