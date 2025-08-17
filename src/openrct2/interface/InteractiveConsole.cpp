@@ -288,7 +288,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
             {
                 bool int_valid[2] = { false };
                 int32_t ride_index = ConsoleParseInt(argv[2], &int_valid[0]);
-                ride_rating excitement = ConsoleParseInt(argv[3], &int_valid[1]);
+                RideRating_t excitement = ConsoleParseInt(argv[3], &int_valid[1]);
 
                 if (ride_index < 0)
                 {
@@ -321,7 +321,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
             {
                 bool int_valid[2] = { false };
                 int32_t ride_index = ConsoleParseInt(argv[2], &int_valid[0]);
-                ride_rating intensity = ConsoleParseInt(argv[3], &int_valid[1]);
+                RideRating_t intensity = ConsoleParseInt(argv[3], &int_valid[1]);
 
                 if (ride_index < 0)
                 {
@@ -354,7 +354,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
             {
                 bool int_valid[2] = { false };
                 int32_t ride_index = ConsoleParseInt(argv[2], &int_valid[0]);
-                ride_rating nausea = ConsoleParseInt(argv[3], &int_valid[1]);
+                RideRating_t nausea = ConsoleParseInt(argv[3], &int_valid[1]);
 
                 if (ride_index < 0)
                 {

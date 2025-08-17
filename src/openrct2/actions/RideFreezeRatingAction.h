@@ -23,11 +23,11 @@ class RideFreezeRatingAction final : public GameActionBase<GameCommand::FreezeRi
 private:
     RideId _rideIndex{ RideId::GetNull() };
     RideRatingType _type{};
-    OpenRCT2::ride_rating _value{};
+    OpenRCT2::RideRating_t _value{};
 
 public:
     RideFreezeRatingAction() = default;
-    RideFreezeRatingAction(RideId rideIndex, RideRatingType type, OpenRCT2::ride_rating value);
+    RideFreezeRatingAction(RideId rideIndex, RideRatingType type, OpenRCT2::RideRating_t value);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

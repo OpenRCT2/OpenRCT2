@@ -5318,7 +5318,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Measurements
 
-        static constexpr StringId GetRatingName(ride_rating rating)
+        static constexpr StringId GetRatingName(RideRating_t rating)
         {
             int32_t index = std::clamp<int32_t>(rating >> 8, 0, static_cast<int32_t>(std::size(RatingNames)) - 1);
             return RatingNames[index];

@@ -14,7 +14,7 @@
 
 using namespace OpenRCT2;
 
-RideFreezeRatingAction::RideFreezeRatingAction(RideId rideIndex, RideRatingType type, ride_rating value)
+RideFreezeRatingAction::RideFreezeRatingAction(RideId rideIndex, RideRatingType type, RideRating_t value)
     : _rideIndex(rideIndex)
     , _type(type)
     , _value(value)

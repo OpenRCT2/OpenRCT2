@@ -56,9 +56,9 @@ namespace OpenRCT2::Ui::Windows
     static constexpr uint16_t kObjectiveLengthMin = 1000;
     static constexpr uint16_t kObjectiveLengthAdjustment = 100;
 
-    static constexpr ride_rating kObjectiveExcitementMax = RideRating::make(9, 90);
-    static constexpr ride_rating kObjectiveExcitementMin = RideRating::make(4, 00);
-    static constexpr ride_rating kObjectiveExcitementAdjustment = RideRating::make(0, 10);
+    static constexpr RideRating_t kObjectiveExcitementMax = RideRating::make(9, 90);
+    static constexpr RideRating_t kObjectiveExcitementMin = RideRating::make(4, 00);
+    static constexpr RideRating_t kObjectiveExcitementAdjustment = RideRating::make(0, 10);
 
     // The number has to leave a bit of room for other entities like vehicles, litter and balloons.
     static constexpr uint16_t kObjectiveGuestsMax = 50000;

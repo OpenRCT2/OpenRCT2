@@ -63,7 +63,7 @@ namespace OpenRCT2::Ui
             ft.Add<int16_t>(objective.NumGuests);
             ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, objective.Year));
             if (objective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
-                ft.Add<ride_rating>(objective.MinimumExcitement);
+                ft.Add<RideRating_t>(objective.MinimumExcitement);
             else
                 ft.Add<money64>(objective.Currency);
         }

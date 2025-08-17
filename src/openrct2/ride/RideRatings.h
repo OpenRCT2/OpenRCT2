@@ -20,26 +20,26 @@ struct Ride;
 namespace OpenRCT2
 {
     enum class TrackElemType : uint16_t;
-    using ride_rating = fixed16_2dp;
+    using RideRating_t = fixed16_2dp;
     namespace RideRating
     {
         // Convenience function for writing ride ratings. The result is a 16 bit signed
         // integer. To create the ride rating 3.65 type MakeRideRating(3, 65).
-        constexpr ride_rating make(int16_t whole, uint8_t fraction)
+        constexpr RideRating_t make(int16_t whole, uint8_t fraction)
         {
-            return MakeFixed2dp<ride_rating>(whole, fraction);
+            return MakeFixed2dp<RideRating_t>(whole, fraction);
         }
 
-        constexpr ride_rating kUndefined = 0xFFFFu;
+        constexpr RideRating_t kUndefined = 0xFFFFu;
 
 #pragma pack(push, 1)
 
         // Used for return values, for functions that modify all three.
         struct Tuple
         {
-            ride_rating excitement{};
-            ride_rating intensity{};
-            ride_rating nausea{};
+            RideRating_t excitement{};
+            RideRating_t intensity{};
+            RideRating_t nausea{};
 
             bool isNull() const;
             void setNull();

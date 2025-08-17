@@ -1340,8 +1340,8 @@ static void RideRatingsApplyAdjustments(const Ride& ride, RideRating::Tuple& rat
  */
 static void RideRatingsApplyIntensityPenalty(RideRating::Tuple& ratings)
 {
-    static constexpr ride_rating intensityBounds[] = { 1000, 1100, 1200, 1320, 1450 };
-    ride_rating excitement = ratings.excitement;
+    static constexpr RideRating_t intensityBounds[] = { 1000, 1100, 1200, 1320, 1450 };
+    RideRating_t excitement = ratings.excitement;
     for (auto intensityBound : intensityBounds)
     {
         if (ratings.intensity >= intensityBound)
@@ -1608,8 +1608,8 @@ static RideRating::Tuple GetSpecialTrackElementsRating(uint8_t type, const Ride&
     int32_t helixesOver5UpTo10 = std::clamp<int32_t>(helixSections - 5, 0, 10);
     nausea += (helixesOver5UpTo10 * 0x140000) >> 16;
 
-    RideRating::Tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
-                                 static_cast<ride_rating>(nausea) };
+    RideRating::Tuple rating = { static_cast<RideRating_t>(excitement), static_cast<RideRating_t>(intensity),
+                                 static_cast<RideRating_t>(nausea) };
     return rating;
 }
 
@@ -1646,8 +1646,8 @@ static RideRating::Tuple ride_ratings_get_turns_ratings(const Ride& ride)
     intensity += inversionsRating.intensity;
     nausea += inversionsRating.nausea;
 
-    RideRating::Tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
-                                 static_cast<ride_rating>(nausea) };
+    RideRating::Tuple rating = { static_cast<RideRating_t>(excitement), static_cast<RideRating_t>(intensity),
+                                 static_cast<RideRating_t>(nausea) };
     return rating;
 }
 
@@ -1685,8 +1685,8 @@ static RideRating::Tuple ride_ratings_get_sheltered_ratings(const Ride& ride)
     lowerVal = std::min<uint8_t>(lowerVal, 11);
     excitement += (lowerVal * 774516) >> 16;
 
-    RideRating::Tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
-                                 static_cast<ride_rating>(nausea) };
+    RideRating::Tuple rating = { static_cast<RideRating_t>(excitement), static_cast<RideRating_t>(intensity),
+                                 static_cast<RideRating_t>(nausea) };
     return rating;
 }
 
