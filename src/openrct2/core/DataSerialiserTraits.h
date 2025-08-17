@@ -833,26 +833,26 @@ struct DataSerializerTraitsT<VehicleColour>
 };
 
 template<>
-struct DataSerializerTraitsT<RatingTuple>
+struct DataSerializerTraitsT<OpenRCT2::RideRating::Tuple>
 {
-    static void encode(OpenRCT2::IStream* stream, const RatingTuple& val)
+    static void encode(OpenRCT2::IStream* stream, const OpenRCT2::RideRating::Tuple& val)
     {
         stream->WriteValue(val.excitement);
         stream->WriteValue(val.intensity);
         stream->WriteValue(val.nausea);
     }
-    static void decode(OpenRCT2::IStream* stream, RatingTuple& val)
+    static void decode(OpenRCT2::IStream* stream, OpenRCT2::RideRating::Tuple& val)
     {
         stream->ReadValue(val.excitement);
         stream->ReadValue(val.intensity);
         stream->ReadValue(val.nausea);
     }
-    static void log(OpenRCT2::IStream* stream, const RatingTuple& val)
+    static void log(OpenRCT2::IStream* stream, const OpenRCT2::RideRating::Tuple& val)
     {
         char msg[128] = {};
         snprintf(
-            msg, sizeof(msg), "RatingTuple(excitement = %d, intensity = %d, nausea = %d)", val.excitement, val.intensity,
-            val.nausea);
+            msg, sizeof(msg), "OpenRCT2::RideRating::Tuple(excitement = %d, intensity = %d, nausea = %d)", val.excitement,
+            val.intensity, val.nausea);
         stream->Write(msg, strlen(msg));
     }
 };

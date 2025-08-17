@@ -73,7 +73,7 @@ namespace OpenRCT2
         // Ride storage for all the rides in the park, rides with RideId::Null are considered free.
         std::array<Ride, Limits::kMaxRidesInPark> rides{};
         size_t ridesEndOfUsedRange{};
-        RideRatingUpdateStates rideRatingUpdateStates;
+        RideRating::UpdateStates rideRatingUpdateStates;
         std::vector<TileElement> tileElements;
 
         std::vector<ScenerySelection> restrictedScenery;

@@ -643,7 +643,7 @@ namespace OpenRCT2
                 auto& rideRatings = gameState.rideRatingUpdateStates;
                 if (os.GetHeader().TargetVersion >= 21)
                 {
-                    cs.ReadWriteArray(rideRatings, [this, &cs](RideRatingUpdateState& calcData) {
+                    cs.ReadWriteArray(rideRatings, [this, &cs](OpenRCT2::RideRating::UpdateState& calcData) {
                         ReadWriteRideRatingCalculationData(cs, calcData);
                         return true;
                     });
@@ -654,7 +654,7 @@ namespace OpenRCT2
                     if (os.GetMode() == OrcaStream::Mode::READING)
                     {
                         // Since we read only one state ensure the rest is reset.
-                        RideRatingResetUpdateStates();
+                        OpenRCT2::RideRating::ResetUpdateStates();
                     }
                     auto& rideRatingUpdateState = rideRatings[0];
                     ReadWriteRideRatingCalculationData(cs, rideRatingUpdateState);
@@ -671,7 +671,7 @@ namespace OpenRCT2
             }
         }
 
-        void ReadWriteRideRatingCalculationData(OrcaStream::ChunkStream& cs, RideRatingUpdateState& calcData)
+        void ReadWriteRideRatingCalculationData(OrcaStream::ChunkStream& cs, OpenRCT2::RideRating::UpdateState& calcData)
         {
             cs.ReadWrite(calcData.AmountOfBrakes);
             cs.ReadWrite(calcData.Proximity);
