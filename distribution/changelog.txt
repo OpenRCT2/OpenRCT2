@@ -29,6 +29,7 @@
 - Fix: [#24993] The Mine Train Coaster sloped left medium turn has an incorrectly rotated support at one angle.
 - Fix: [#24994] The Alpine Coaster and Mine Ride left s-bends have an incorrectly rotated support at certain angles.
 - Fix: [#25001] The Hybrid Coaster small banked sloped right turn and large sloped right turn to orthogonal have some incorrectly rotated supports.
+- Fix: [#25002] The large right turn to diagonal on the Miniature Railway draws incorrectly at certain angles.
 
 0.4.25 (2025-08-03)
 ------------------------------------------------------------------------
