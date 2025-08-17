@@ -193,7 +193,7 @@ void OpenRCT2::RideRating::UpdateRide(const Ride& ride)
  *
  *  rct2: 0x006B5A2A
  */
-void RideRatingsUpdateAll()
+void OpenRCT2::RideRating::UpdateAll()
 {
     PROFILED_FUNCTION();
 

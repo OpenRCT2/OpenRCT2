@@ -68,9 +68,9 @@ namespace OpenRCT2::RideRating
 {
     void ResetUpdateStates();
     void UpdateRide(const Ride& ride);
+    void UpdateAll();
 } // namespace OpenRCT2::RideRating
 
-void RideRatingsUpdateAll();
 
 // Special Track Element Adjustment functions for RTDs
 void SpecialTrackElementRatingsAjustment_Default(const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);

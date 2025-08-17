@@ -318,7 +318,7 @@ namespace OpenRCT2
         }
 
         ResearchUpdate();
-        RideRatingsUpdateAll();
+        RideRating::UpdateAll();
         RideMeasurementsUpdate();
         News::UpdateCurrentItem();
 
