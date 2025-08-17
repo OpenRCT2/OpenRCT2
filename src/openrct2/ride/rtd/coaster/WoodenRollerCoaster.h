@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor WoodenRollerCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::woodenRollerCoaster,
         .supportType = WoodenSupportType::truss,
@@ -38,7 +40,7 @@ constexpr RideTypeDescriptor WoodenRollerCoasterRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 41, 24, 8, 11, },
     .MaxMass = 19,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftWood, 5, 7 },
+    .LiftData = { Audio::SoundId::LiftWood, 5, 7 },
     .RatingsMultipliers = { 52, 33, 8 },
     .UpkeepCosts = { 40, 20, 80, 10, 3, 10 },
     .BuildCosts = { 37.50_GBP, 3.50_GBP, 50, },
@@ -89,4 +91,5 @@ constexpr RideTypeDescriptor WoodenRollerCoasterRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

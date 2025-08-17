@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor SteeplechaseRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::steeplechase,
         .supportType = MetalSupportType::stick,
@@ -35,7 +37,7 @@ constexpr RideTypeDescriptor SteeplechaseRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 14, 24, 7, 7, },
     .MaxMass = 4,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftClassic, 4, 5 },
+    .LiftData = { Audio::SoundId::LiftClassic, 4, 5 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 40, 20, 80, 10, 3, 10 },
     .BuildCosts = { 28.50_GBP, 2.00_GBP, 40, },
@@ -84,4 +86,5 @@ constexpr RideTypeDescriptor SteeplechaseRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

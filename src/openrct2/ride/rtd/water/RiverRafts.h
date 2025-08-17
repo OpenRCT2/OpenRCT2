@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor RiverRaftsRTD =
 {
     .Category = RideCategory::water,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::splashBoats,
         .supportType = WoodenSupportType::truss,
@@ -39,7 +41,7 @@ constexpr RideTypeDescriptor RiverRaftsRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 12, 24, 7, 11, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 80, 34, 6 },
     .UpkeepCosts = { 50, 20, 0, 9, 0, 10 },
     .BuildCosts = { 20.00_GBP, 2.50_GBP, 30, },
@@ -72,4 +74,5 @@ constexpr RideTypeDescriptor RiverRaftsRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

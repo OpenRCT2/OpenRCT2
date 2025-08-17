@@ -17,10 +17,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor MazeRTD =
 {
     .Category = RideCategory::gentle,
-    .StartTrackPiece = OpenRCT2::TrackElemType::Maze,
+    .StartTrackPiece = TrackElemType::Maze,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::maze,
         .enabledTrackGroups = {},
@@ -38,7 +40,7 @@ constexpr RideTypeDescriptor MazeRTD =
     .AvailableBreakdowns = 0,
     .Heights = { 6, 24, 0, 1, },
     .MaxMass = 18,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 50, 0, 0 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 27.50_GBP, 1.00_GBP, 8, },
@@ -66,7 +68,7 @@ constexpr RideTypeDescriptor MazeRTD =
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
-    .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
+    .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Maze,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
@@ -76,4 +78,5 @@ constexpr RideTypeDescriptor MazeRTD =
     .ConstructionWindowContext = RideConstructionWindowContext::Maze,
     .specialType = RtdSpecialType::maze,
 };
+} // namespace OpenRCT2
 // clang-format on

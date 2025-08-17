@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor SuspendedMonorailRTD =
 {
     .Category = RideCategory::transport,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::suspendedMonorail,
         .supportType = MetalSupportType::boxed,
@@ -40,7 +42,7 @@ constexpr RideTypeDescriptor SuspendedMonorailRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_DOORS_STUCK_CLOSED) | (1 << BREAKDOWN_DOORS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 12, 40, 32, 8, },
     .MaxMass = 78,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 70, 6, -10 },
     .UpkeepCosts = { 70, 20, 0, 10, 3, 10 },
     .BuildCosts = { 32.50_GBP, 2.50_GBP, 50, },
@@ -77,4 +79,5 @@ constexpr RideTypeDescriptor SuspendedMonorailRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

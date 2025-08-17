@@ -16,10 +16,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor SplashBoatsRTD =
 {
     .Category = RideCategory::water,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::splashBoats,
         .supportType = WoodenSupportType::truss,
@@ -40,7 +42,7 @@ constexpr RideTypeDescriptor SplashBoatsRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_CONTROL_FAILURE),
     .Heights = { 16, 24, 7, 11, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftFlume, 5, 5 },
+    .LiftData = { Audio::SoundId::LiftFlume, 5, 5 },
     .RatingsMultipliers = { 80, 34, 6 },
     .UpkeepCosts = { 70, 20, 0, 9, 0, 10 },
     .BuildCosts = { 28.50_GBP, 2.50_GBP, 30, },
@@ -76,6 +78,7 @@ constexpr RideTypeDescriptor SplashBoatsRTD =
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_BoatHire,
+    .LightFXAddLightsMagicVehicle = Drawing::LightFx::AddLightsMagicVehicle_BoatHire,
 };
+} // namespace OpenRCT2
 // clang-format on

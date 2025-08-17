@@ -16,10 +16,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor DinghySlideRTD =
 {
     .Category = RideCategory::water,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor(
         {
             .trackStyle = TrackStyle::dinghySlide,
@@ -53,7 +55,7 @@ constexpr RideTypeDescriptor DinghySlideRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 15, 24, 5, 7, },
     .MaxMass = 5,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftFrictionWheels, 4, 5 },
+    .LiftData = { Audio::SoundId::LiftFrictionWheels, 4, 5 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 40, 20, 80, 4, 3, 10 },
     .BuildCosts = { 20.00_GBP, 2.00_GBP, 40, },
@@ -96,4 +98,5 @@ constexpr RideTypeDescriptor DinghySlideRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

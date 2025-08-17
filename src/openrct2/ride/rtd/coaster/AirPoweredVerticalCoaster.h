@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::airPoweredVerticalCoaster,
         .supportType = WoodenSupportType::truss,
@@ -38,7 +40,7 @@ constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 255, 32, 4, 7, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 44, 66, 10 },
     .UpkeepCosts = { 90, 20, 0, 0, 0, 10 },
     .BuildCosts = { 100.00_GBP, 0.00_GBP, 45, },
@@ -74,4 +76,5 @@ constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

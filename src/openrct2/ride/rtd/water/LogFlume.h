@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor LogFlumeRTD =
 {
     .Category = RideCategory::water,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::logFlume,
         .supportType = MetalSupportType::boxed,
@@ -39,7 +41,7 @@ constexpr RideTypeDescriptor LogFlumeRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_CONTROL_FAILURE),
     .Heights = { 10, 24, 7, 9, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftFlume, 5, 5 },
+    .LiftData = { Audio::SoundId::LiftFlume, 5, 5 },
     .RatingsMultipliers = { 80, 34, 6 },
     .UpkeepCosts = { 80, 20, 0, 9, 0, 10 },
     .BuildCosts = { 22.50_GBP, 2.50_GBP, 40, },
@@ -76,11 +78,12 @@ constexpr RideTypeDescriptor LogFlumeRTD =
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
-    .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
+    .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_LogFlume,
 };
+} // namespace OpenRCT2
 // clang-format on

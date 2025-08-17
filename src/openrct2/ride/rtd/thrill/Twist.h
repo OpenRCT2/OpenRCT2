@@ -14,10 +14,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor TwistRTD =
 {
     .Category = RideCategory::thrill,
-    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
+    .StartTrackPiece = TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::twist,
         .enabledTrackGroups = {},
@@ -36,7 +38,7 @@ constexpr RideTypeDescriptor TwistRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 12, 64, 3, 2, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 40, 20, 10 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 45.00_GBP, 1.00_GBP, 1, },
@@ -61,4 +63,5 @@ constexpr RideTypeDescriptor TwistRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on
