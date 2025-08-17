@@ -3842,3 +3842,4 @@ STR_6799    :Mini mapa
 STR_7000    :nebo
 STR_7001    :Název atrakce
 STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :Zvukový soubor ‘{STRING}’ je zkrácený. Očekáván sample {INT32}, avšak pouze {INT32} je dostupných. Zvažte přeinstalování RCT2.
