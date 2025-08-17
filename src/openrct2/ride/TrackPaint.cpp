@@ -1916,31 +1916,16 @@ void TrackPaintUtilRightVerticalLoopSegments(PaintSession& session, Direction di
 
 void TrackPaintUtilLeftCorkscrewUpSupports(PaintSession& session, Direction direction, uint16_t height)
 {
-    // TODO: Figure out which of these looks best, and use one to keep a consistent world
-    if (direction == 2)
-    {
-        PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(
-                    PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-                    PaintSegment::bottomLeft),
-                direction),
-            0xFFFF, 0);
-    }
     MetalASupportsPaintSetupRotated(
         session, MetalSupportType::tubes, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
-    if (direction != 2)
-    {
-        PaintUtilSetSegmentSupportHeight(
-            session,
-            PaintUtilRotateSegments(
-                EnumsToFlags(
-                    PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
-                    PaintSegment::bottomLeft),
-                direction),
-            0xFFFF, 0);
-    }
+    PaintUtilSetSegmentSupportHeight(
+        session,
+        PaintUtilRotateSegments(
+            EnumsToFlags(
+                PaintSegment::top, PaintSegment::centre, PaintSegment::topLeft, PaintSegment::topRight,
+                PaintSegment::bottomLeft),
+            direction),
+        0xFFFF, 0);
 }
 
 ImageId GetStationColourScheme(PaintSession& session, const TrackElement& trackElement)
