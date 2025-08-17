@@ -89,96 +89,81 @@ struct ShelteredEights
 };
 
 // Amount of updates allowed per updating state on the current tick.
-// The total amount would be MaxRideRatingSubSteps * OpenRCT2::RideRating::kMaxUpdateStates which
+// The total amount would be MaxRideRatingSubSteps * RideRating::kMaxUpdateStates which
 // would be currently 80, this is the worst case of sub-steps and may break out earlier.
 static constexpr size_t MaxRideRatingUpdateSubSteps = 20;
 
-static void ride_ratings_update_state(OpenRCT2::RideRating::UpdateState& state);
-static void ride_ratings_update_state_0(OpenRCT2::RideRating::UpdateState& state);
-static void ride_ratings_update_state_1(OpenRCT2::RideRating::UpdateState& state);
-static void ride_ratings_update_state_2(OpenRCT2::RideRating::UpdateState& state);
-static void ride_ratings_update_state_3(OpenRCT2::RideRating::UpdateState& state);
-static void ride_ratings_update_state_4(OpenRCT2::RideRating::UpdateState& state);
-static void ride_ratings_update_state_5(OpenRCT2::RideRating::UpdateState& state);
-static void ride_ratings_begin_proximity_loop(OpenRCT2::RideRating::UpdateState& state);
-static void RideRatingsCalculate(OpenRCT2::RideRating::UpdateState& state, Ride& ride);
+static void ride_ratings_update_state(RideRating::UpdateState& state);
+static void ride_ratings_update_state_0(RideRating::UpdateState& state);
+static void ride_ratings_update_state_1(RideRating::UpdateState& state);
+static void ride_ratings_update_state_2(RideRating::UpdateState& state);
+static void ride_ratings_update_state_3(RideRating::UpdateState& state);
+static void ride_ratings_update_state_4(RideRating::UpdateState& state);
+static void ride_ratings_update_state_5(RideRating::UpdateState& state);
+static void ride_ratings_begin_proximity_loop(RideRating::UpdateState& state);
+static void RideRatingsCalculate(RideRating::UpdateState& state, Ride& ride);
 static void RideRatingsCalculateValue(Ride& ride);
-static void ride_ratings_score_close_proximity(OpenRCT2::RideRating::UpdateState& state, TileElement* inputTileElement);
-static void RideRatingsAdd(OpenRCT2::RideRating::Tuple& ratings, int32_t excitement, int32_t intensity, int32_t nausea);
+static void ride_ratings_score_close_proximity(RideRating::UpdateState& state, TileElement* inputTileElement);
+static void RideRatingsAdd(RideRating::Tuple& ratings, int32_t excitement, int32_t intensity, int32_t nausea);
 
 static ShelteredEights GetNumOfShelteredEighths(const Ride& ride);
-static money64 RideComputeUpkeep(OpenRCT2::RideRating::UpdateState& state, const Ride& ride);
+static money64 RideComputeUpkeep(RideRating::UpdateState& state, const Ride& ride);
 static void SetUnreliabilityFactor(Ride& ride);
 
-static void RideRatingsApplyAdjustments(const Ride& ride, OpenRCT2::RideRating::Tuple& ratings);
-static void RideRatingsApplyIntensityPenalty(OpenRCT2::RideRating::Tuple& ratings);
+static void RideRatingsApplyAdjustments(const Ride& ride, RideRating::Tuple& ratings);
+static void RideRatingsApplyIntensityPenalty(RideRating::Tuple& ratings);
 
-static void RideRatingsApplyBonusLength(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusSynchronisation(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusTrainLength(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusMaxSpeed(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusAverageSpeed(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusDuration(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusGForces(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusTurns(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusDrops(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusSheltered(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusRotations(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusOperationOption(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusReversedTrains(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusGoKartRace(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusTowerRide(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusRotoDrop(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride);
-static void RideRatingsApplyBonusMazeSize(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusBoatHireNoCircuit(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusSlideUnlimitedRides(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusMotionSimulatorMode(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonus3DCinemaMode(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusTopSpinMode(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusLength(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusSynchronisation(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusTrainLength(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusMaxSpeed(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusAverageSpeed(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusDuration(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusGForces(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusTurns(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusDrops(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusSheltered(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusRotations(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusOperationOption(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusReversedTrains(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusGoKartRace(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusTowerRide(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusRotoDrop(RideRating::Tuple& ratings, const Ride& ride);
+static void RideRatingsApplyBonusMazeSize(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusBoatHireNoCircuit(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusSlideUnlimitedRides(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusMotionSimulatorMode(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonus3DCinemaMode(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusTopSpinMode(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusReversals(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, OpenRCT2::RideRating::UpdateState& state, RatingsModifier modifier);
-static void RideRatingsApplyBonusHoles(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusNumTrains(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusDownwardLaunch(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+    RideRating::Tuple& ratings, const Ride& ride, RideRating::UpdateState& state, RatingsModifier modifier);
+static void RideRatingsApplyBonusHoles(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusNumTrains(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusDownwardLaunch(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusLaunchedFreefallSpecial(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, OpenRCT2::RideRating::UpdateState& state, RatingsModifier modifier);
+    RideRating::Tuple& ratings, const Ride& ride, RideRating::UpdateState& state, RatingsModifier modifier);
 static void RideRatingsApplyBonusProximity(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, OpenRCT2::RideRating::UpdateState& state, RatingsModifier modifier);
-static void RideRatingsApplyBonusScenery(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyRequirementLength(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyRequirementDropHeight(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyRequirementMaxSpeed(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyRequirementNumDrops(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyRequirementNegativeGs(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyRequirementLateralGs(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyRequirementInversions(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+    RideRating::Tuple& ratings, const Ride& ride, RideRating::UpdateState& state, RatingsModifier modifier);
+static void RideRatingsApplyBonusScenery(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementLength(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementDropHeight(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementMaxSpeed(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementNumDrops(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementNegativeGs(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementLateralGs(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementInversions(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyRequirementUnsheltered(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, uint8_t shelteredEighths, RatingsModifier modifier);
+    RideRating::Tuple& ratings, const Ride& ride, uint8_t shelteredEighths, RatingsModifier modifier);
 static void RideRatingsApplyRequirementReversals(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, OpenRCT2::RideRating::UpdateState& state, RatingsModifier modifier);
-static void RideRatingsApplyRequirementHoles(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyRequirementStations(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyRequirementSplashdown(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyPenaltyLateralGs(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+    RideRating::Tuple& ratings, const Ride& ride, RideRating::UpdateState& state, RatingsModifier modifier);
+static void RideRatingsApplyRequirementHoles(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementStations(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementSplashdown(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyPenaltyLateralGs(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier);
 
-void OpenRCT2::RideRating::ResetUpdateStates()
+void RideRating::ResetUpdateStates()
 {
-    OpenRCT2::RideRating::UpdateState nullState{};
+    RideRating::UpdateState nullState{};
     nullState.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 
     auto& updateStates = getGameState().rideRatingUpdateStates;
@@ -191,9 +176,9 @@ void OpenRCT2::RideRating::ResetUpdateStates()
  * processed will be overwritten.
  * Only purpose of this function currently is for testing.
  */
-void OpenRCT2::RideRating::UpdateRide(const Ride& ride)
+void RideRating::UpdateRide(const Ride& ride)
 {
-    OpenRCT2::RideRating::UpdateState state;
+    RideRating::UpdateState state;
     if (ride.status != RideStatus::closed)
     {
         state.CurrentRide = ride.id;
@@ -209,7 +194,7 @@ void OpenRCT2::RideRating::UpdateRide(const Ride& ride)
  *
  *  rct2: 0x006B5A2A
  */
-void OpenRCT2::RideRating::UpdateAll()
+void RideRating::UpdateAll()
 {
     PROFILED_FUNCTION();
 
@@ -229,7 +214,7 @@ void OpenRCT2::RideRating::UpdateAll()
     }
 }
 
-static void ride_ratings_update_state(OpenRCT2::RideRating::UpdateState& state)
+static void ride_ratings_update_state(RideRating::UpdateState& state)
 {
     switch (state.State)
     {
@@ -323,7 +308,7 @@ static RideId GetNextRideToUpdate(RideId currentRide)
  *
  *  rct2: 0x006B5A5C
  */
-static void ride_ratings_update_state_0(OpenRCT2::RideRating::UpdateState& state)
+static void ride_ratings_update_state_0(RideRating::UpdateState& state)
 {
     // It is possible that the current ride being calculated has
     // been removed or due to import invalid. For both, reset
@@ -347,7 +332,7 @@ static void ride_ratings_update_state_0(OpenRCT2::RideRating::UpdateState& state
  *
  *  rct2: 0x006B5A94
  */
-static void ride_ratings_update_state_1(OpenRCT2::RideRating::UpdateState& state)
+static void ride_ratings_update_state_1(RideRating::UpdateState& state)
 {
     state.ProximityTotal = 0;
     for (int32_t i = 0; i < PROXIMITY_COUNT; i++)
@@ -365,7 +350,7 @@ static void ride_ratings_update_state_1(OpenRCT2::RideRating::UpdateState& state
  *
  *  rct2: 0x006B5C66
  */
-static void ride_ratings_update_state_2(OpenRCT2::RideRating::UpdateState& state)
+static void ride_ratings_update_state_2(RideRating::UpdateState& state)
 {
     const RideId rideIndex = state.CurrentRide;
     auto ride = GetRide(rideIndex);
@@ -376,7 +361,7 @@ static void ride_ratings_update_state_2(OpenRCT2::RideRating::UpdateState& state
     }
 
     auto loc = state.Proximity;
-    OpenRCT2::TrackElemType trackType = state.ProximityTrackType;
+    TrackElemType trackType = state.ProximityTrackType;
 
     TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
@@ -442,7 +427,7 @@ static void ride_ratings_update_state_2(OpenRCT2::RideRating::UpdateState& state
  *
  *  rct2: 0x006B5E4D
  */
-static void ride_ratings_update_state_3(OpenRCT2::RideRating::UpdateState& state)
+static void ride_ratings_update_state_3(RideRating::UpdateState& state)
 {
     auto ride = GetRide(state.CurrentRide);
     if (ride == nullptr || ride->status == RideStatus::closed)
@@ -461,7 +446,7 @@ static void ride_ratings_update_state_3(OpenRCT2::RideRating::UpdateState& state
  *
  *  rct2: 0x006B5BAB
  */
-static void ride_ratings_update_state_4(OpenRCT2::RideRating::UpdateState& state)
+static void ride_ratings_update_state_4(RideRating::UpdateState& state)
 {
     state.State = RIDE_RATINGS_STATE_5;
     ride_ratings_begin_proximity_loop(state);
@@ -471,7 +456,7 @@ static void ride_ratings_update_state_4(OpenRCT2::RideRating::UpdateState& state
  *
  *  rct2: 0x006B5D72
  */
-static void ride_ratings_update_state_5(OpenRCT2::RideRating::UpdateState& state)
+static void ride_ratings_update_state_5(RideRating::UpdateState& state)
 {
     auto ride = GetRide(state.CurrentRide);
     if (ride == nullptr || ride->status == RideStatus::closed)
@@ -481,7 +466,7 @@ static void ride_ratings_update_state_5(OpenRCT2::RideRating::UpdateState& state
     }
 
     auto loc = state.Proximity;
-    OpenRCT2::TrackElemType trackType = state.ProximityTrackType;
+    TrackElemType trackType = state.ProximityTrackType;
 
     TileElement* tileElement = MapGetFirstElementAt(loc);
     if (tileElement == nullptr)
@@ -536,7 +521,7 @@ static void ride_ratings_update_state_5(OpenRCT2::RideRating::UpdateState& state
  *
  *  rct2: 0x006B5BB2
  */
-static void ride_ratings_begin_proximity_loop(OpenRCT2::RideRating::UpdateState& state)
+static void ride_ratings_begin_proximity_loop(RideRating::UpdateState& state)
 {
     auto ride = GetRide(state.CurrentRide);
     if (ride == nullptr || ride->status == RideStatus::closed)
@@ -573,7 +558,7 @@ static void ride_ratings_begin_proximity_loop(OpenRCT2::RideRating::UpdateState&
     state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
 
-static void proximity_score_increment(OpenRCT2::RideRating::UpdateState& state, int32_t type)
+static void proximity_score_increment(RideRating::UpdateState& state, int32_t type)
 {
     state.ProximityScores[type]++;
 }
@@ -583,7 +568,7 @@ static void proximity_score_increment(OpenRCT2::RideRating::UpdateState& state, 
  *  rct2: 0x006B6207
  */
 static void ride_ratings_score_close_proximity_in_direction(
-    OpenRCT2::RideRating::UpdateState& state, TileElement* inputTileElement, int32_t direction)
+    RideRating::UpdateState& state, TileElement* inputTileElement, int32_t direction)
 {
     auto scorePos = CoordsXY{ CoordsXY{ state.Proximity } + CoordsDirectionDelta[direction] };
     if (!MapIsLocationValid(scorePos))
@@ -643,8 +628,7 @@ static void ride_ratings_score_close_proximity_in_direction(
     } while (!(tileElement++)->IsLastForTile());
 }
 
-static void ride_ratings_score_close_proximity_loops_helper(
-    OpenRCT2::RideRating::UpdateState& state, const CoordsXYE& coordsElement)
+static void ride_ratings_score_close_proximity_loops_helper(RideRating::UpdateState& state, const CoordsXYE& coordsElement)
 {
     TileElement* tileElement = MapGetFirstElementAt(coordsElement);
     if (tileElement == nullptr)
@@ -689,7 +673,7 @@ static void ride_ratings_score_close_proximity_loops_helper(
  *
  *  rct2: 0x006B62DA
  */
-static void ride_ratings_score_close_proximity_loops(OpenRCT2::RideRating::UpdateState& state, TileElement* inputTileElement)
+static void ride_ratings_score_close_proximity_loops(RideRating::UpdateState& state, TileElement* inputTileElement)
 {
     auto trackType = inputTileElement->AsTrack()->GetTrackType();
     if (trackType == TrackElemType::LeftVerticalLoop || trackType == TrackElemType::RightVerticalLoop)
@@ -706,7 +690,7 @@ static void ride_ratings_score_close_proximity_loops(OpenRCT2::RideRating::Updat
  *
  *  rct2: 0x006B5F9D
  */
-static void ride_ratings_score_close_proximity(OpenRCT2::RideRating::UpdateState& state, TileElement* inputTileElement)
+static void ride_ratings_score_close_proximity(RideRating::UpdateState& state, TileElement* inputTileElement)
 {
     if (state.StationFlags & RIDE_RATING_STATION_FLAG_NO_ENTRANCE)
     {
@@ -892,7 +876,7 @@ static void ride_ratings_score_close_proximity(OpenRCT2::RideRating::UpdateState
     }
 }
 
-static void RideRatingsCalculate(OpenRCT2::RideRating::UpdateState& state, Ride& ride)
+static void RideRatingsCalculate(RideRating::UpdateState& state, Ride& ride)
 {
     const auto& rrd = ride.getRideTypeDescriptor().RatingsData;
 
@@ -919,7 +903,7 @@ static void RideRatingsCalculate(OpenRCT2::RideRating::UpdateState& state, Ride&
     const auto shelteredEighths = GetNumOfShelteredEighths(ride);
     ride.shelteredEighths = (rrd.RideShelter == -1) ? shelteredEighths.TotalShelteredEighths : rrd.RideShelter;
 
-    OpenRCT2::RideRating::Tuple ratings = rrd.BaseRatings;
+    RideRating::Tuple ratings = rrd.BaseRatings;
     // Apply Modifiers
     for (const auto& modifier : rrd.Modifiers)
     {
@@ -1219,7 +1203,7 @@ static void RideRatingsCalculateValue(Ride& ride)
  * inputs
  * - edi: ride ptr
  */
-static money64 RideComputeUpkeep(OpenRCT2::RideRating::UpdateState& state, const Ride& ride)
+static money64 RideComputeUpkeep(RideRating::UpdateState& state, const Ride& ride)
 {
     // data stored at 0x0057E3A8, incrementing 18 bytes at a time
     auto upkeep = ride.getRideTypeDescriptor().UpkeepCosts.BaseCost;
@@ -1295,7 +1279,7 @@ static money64 RideComputeUpkeep(OpenRCT2::RideRating::UpdateState& state, const
  * - bp: nausea
  * - edi: ride ptr
  */
-static void RideRatingsApplyAdjustments(const Ride& ride, OpenRCT2::RideRating::Tuple& ratings)
+static void RideRatingsApplyAdjustments(const Ride& ride, RideRating::Tuple& ratings)
 {
     const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
 
@@ -1354,7 +1338,7 @@ static void RideRatingsApplyAdjustments(const Ride& ride, OpenRCT2::RideRating::
  * Lowers excitement, the higher the intensity.
  *  rct2: 0x0065E7A3
  */
-static void RideRatingsApplyIntensityPenalty(OpenRCT2::RideRating::Tuple& ratings)
+static void RideRatingsApplyIntensityPenalty(RideRating::Tuple& ratings)
 {
     static constexpr ride_rating intensityBounds[] = { 1000, 1100, 1200, 1320, 1450 };
     ride_rating excitement = ratings.excitement;
@@ -1414,7 +1398,7 @@ static uint32_t get_proximity_score_helper_3(uint16_t x, uint16_t resultIfNotZer
  *
  *  rct2: 0x0065E277
  */
-static uint32_t ride_ratings_get_proximity_score(OpenRCT2::RideRating::UpdateState& state)
+static uint32_t ride_ratings_get_proximity_score(RideRating::UpdateState& state)
 {
     const uint16_t* scores = state.ProximityScores;
 
@@ -1480,13 +1464,13 @@ static ShelteredEights GetNumOfShelteredEighths(const Ride& ride)
     return { trackShelteredEighths, numShelteredEighths };
 }
 
-static OpenRCT2::RideRating::Tuple get_flat_turns_rating(const Ride& ride)
+static RideRating::Tuple get_flat_turns_rating(const Ride& ride)
 {
     int32_t num3PlusTurns = GetTurnCount3Elements(ride, 0);
     int32_t num2Turns = GetTurnCount2Elements(ride, 0);
     int32_t num1Turns = GetTurnCount1Element(ride, 0);
 
-    OpenRCT2::RideRating::Tuple rating;
+    RideRating::Tuple rating;
     rating.excitement = (num3PlusTurns * 0x28000) >> 16;
     rating.excitement += (num2Turns * 0x30000) >> 16;
     rating.excitement += (num1Turns * 63421) >> 16;
@@ -1506,13 +1490,13 @@ static OpenRCT2::RideRating::Tuple get_flat_turns_rating(const Ride& ride)
  *
  *  rct2: 0x0065DF72
  */
-static OpenRCT2::RideRating::Tuple get_banked_turns_rating(const Ride& ride)
+static RideRating::Tuple get_banked_turns_rating(const Ride& ride)
 {
     int32_t num3PlusTurns = GetTurnCount3Elements(ride, 1);
     int32_t num2Turns = GetTurnCount2Elements(ride, 1);
     int32_t num1Turns = GetTurnCount1Element(ride, 1);
 
-    OpenRCT2::RideRating::Tuple rating;
+    RideRating::Tuple rating;
     rating.excitement = (num3PlusTurns * 0x3C000) >> 16;
     rating.excitement += (num2Turns * 0x3C000) >> 16;
     rating.excitement += (num1Turns * 73992) >> 16;
@@ -1532,9 +1516,9 @@ static OpenRCT2::RideRating::Tuple get_banked_turns_rating(const Ride& ride)
  *
  *  rct2: 0x0065E047
  */
-static OpenRCT2::RideRating::Tuple get_sloped_turns_rating(const Ride& ride)
+static RideRating::Tuple get_sloped_turns_rating(const Ride& ride)
 {
-    OpenRCT2::RideRating::Tuple rating;
+    RideRating::Tuple rating;
 
     int32_t num4PlusTurns = GetTurnCount4PlusElements(ride, 2);
     int32_t num3Turns = GetTurnCount3Elements(ride, 2);
@@ -1555,9 +1539,9 @@ static OpenRCT2::RideRating::Tuple get_sloped_turns_rating(const Ride& ride)
  *
  *  rct2: 0x0065E0F2
  */
-static OpenRCT2::RideRating::Tuple getInversionsRatings(uint16_t inversions)
+static RideRating::Tuple getInversionsRatings(uint16_t inversions)
 {
-    OpenRCT2::RideRating::Tuple rating;
+    RideRating::Tuple rating;
 
     rating.excitement = (std::min<int32_t>(inversions, 6) * 0x1AAAAA) >> 16;
     rating.intensity = (inversions * 0x320000) >> 16;
@@ -1607,7 +1591,7 @@ void SpecialTrackElementRatingsAjustment_LogFlume(const Ride& ride, int32_t& exc
     }
 }
 
-static OpenRCT2::RideRating::Tuple GetSpecialTrackElementsRating(uint8_t type, const Ride& ride)
+static RideRating::Tuple GetSpecialTrackElementsRating(uint8_t type, const Ride& ride)
 {
     int32_t excitement = 0, intensity = 0, nausea = 0;
     const auto& rtd = ride.getRideTypeDescriptor();
@@ -1624,8 +1608,8 @@ static OpenRCT2::RideRating::Tuple GetSpecialTrackElementsRating(uint8_t type, c
     int32_t helixesOver5UpTo10 = std::clamp<int32_t>(helixSections - 5, 0, 10);
     nausea += (helixesOver5UpTo10 * 0x140000) >> 16;
 
-    OpenRCT2::RideRating::Tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
-                                           static_cast<ride_rating>(nausea) };
+    RideRating::Tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
+                                 static_cast<ride_rating>(nausea) };
     return rating;
 }
 
@@ -1633,37 +1617,37 @@ static OpenRCT2::RideRating::Tuple GetSpecialTrackElementsRating(uint8_t type, c
  *
  *  rct2: 0x0065DDD1
  */
-static OpenRCT2::RideRating::Tuple ride_ratings_get_turns_ratings(const Ride& ride)
+static RideRating::Tuple ride_ratings_get_turns_ratings(const Ride& ride)
 {
     int32_t excitement = 0, intensity = 0, nausea = 0;
 
-    OpenRCT2::RideRating::Tuple specialTrackElementsRating = GetSpecialTrackElementsRating(ride.type, ride);
+    RideRating::Tuple specialTrackElementsRating = GetSpecialTrackElementsRating(ride.type, ride);
     excitement += specialTrackElementsRating.excitement;
     intensity += specialTrackElementsRating.intensity;
     nausea += specialTrackElementsRating.nausea;
 
-    OpenRCT2::RideRating::Tuple flatTurnsRating = get_flat_turns_rating(ride);
+    RideRating::Tuple flatTurnsRating = get_flat_turns_rating(ride);
     excitement += flatTurnsRating.excitement;
     intensity += flatTurnsRating.intensity;
     nausea += flatTurnsRating.nausea;
 
-    OpenRCT2::RideRating::Tuple bankedTurnsRating = get_banked_turns_rating(ride);
+    RideRating::Tuple bankedTurnsRating = get_banked_turns_rating(ride);
     excitement += bankedTurnsRating.excitement;
     intensity += bankedTurnsRating.intensity;
     nausea += bankedTurnsRating.nausea;
 
-    OpenRCT2::RideRating::Tuple slopedTurnsRating = get_sloped_turns_rating(ride);
+    RideRating::Tuple slopedTurnsRating = get_sloped_turns_rating(ride);
     excitement += slopedTurnsRating.excitement;
     intensity += slopedTurnsRating.intensity;
     nausea += slopedTurnsRating.nausea;
 
-    OpenRCT2::RideRating::Tuple inversionsRating = getInversionsRatings(ride.numInversions);
+    RideRating::Tuple inversionsRating = getInversionsRatings(ride.numInversions);
     excitement += inversionsRating.excitement;
     intensity += inversionsRating.intensity;
     nausea += inversionsRating.nausea;
 
-    OpenRCT2::RideRating::Tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
-                                           static_cast<ride_rating>(nausea) };
+    RideRating::Tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
+                                 static_cast<ride_rating>(nausea) };
     return rating;
 }
 
@@ -1671,7 +1655,7 @@ static OpenRCT2::RideRating::Tuple ride_ratings_get_turns_ratings(const Ride& ri
  *
  *  rct2: 0x0065E1C2
  */
-static OpenRCT2::RideRating::Tuple ride_ratings_get_sheltered_ratings(const Ride& ride)
+static RideRating::Tuple ride_ratings_get_sheltered_ratings(const Ride& ride)
 {
     int32_t shelteredLengthShifted = (ride.shelteredLength) >> 16;
 
@@ -1701,8 +1685,8 @@ static OpenRCT2::RideRating::Tuple ride_ratings_get_sheltered_ratings(const Ride
     lowerVal = std::min<uint8_t>(lowerVal, 11);
     excitement += (lowerVal * 774516) >> 16;
 
-    OpenRCT2::RideRating::Tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
-                                           static_cast<ride_rating>(nausea) };
+    RideRating::Tuple rating = { static_cast<ride_rating>(excitement), static_cast<ride_rating>(intensity),
+                                 static_cast<ride_rating>(nausea) };
     return rating;
 }
 
@@ -1710,9 +1694,9 @@ static OpenRCT2::RideRating::Tuple ride_ratings_get_sheltered_ratings(const Ride
  *
  *  rct2: 0x0065DCDC
  */
-static OpenRCT2::RideRating::Tuple ride_ratings_get_gforce_ratings(const Ride& ride)
+static RideRating::Tuple ride_ratings_get_gforce_ratings(const Ride& ride)
 {
-    OpenRCT2::RideRating::Tuple result = {
+    RideRating::Tuple result = {
         .excitement = 0,
         .intensity = 0,
         .nausea = 0,
@@ -1756,9 +1740,9 @@ static OpenRCT2::RideRating::Tuple ride_ratings_get_gforce_ratings(const Ride& r
  *
  *  rct2: 0x0065E139
  */
-static OpenRCT2::RideRating::Tuple ride_ratings_get_drop_ratings(const Ride& ride)
+static RideRating::Tuple ride_ratings_get_drop_ratings(const Ride& ride)
 {
-    OpenRCT2::RideRating::Tuple result = {
+    RideRating::Tuple result = {
         /* .excitement = */ 0,
         /* .intensity = */ 0,
         /* .nausea = */ 0,
@@ -1839,7 +1823,7 @@ static int32_t ride_ratings_get_scenery_score(const Ride& ride)
 
 #pragma region Ride rating calculation helpers
 
-static void RideRatingsSet(OpenRCT2::RideRating::Tuple& ratings, int32_t excitement, int32_t intensity, int32_t nausea)
+static void RideRatingsSet(RideRating::Tuple& ratings, int32_t excitement, int32_t intensity, int32_t nausea)
 {
     ratings.excitement = 0;
     ratings.intensity = 0;
@@ -1850,7 +1834,7 @@ static void RideRatingsSet(OpenRCT2::RideRating::Tuple& ratings, int32_t excitem
 /**
  * Add to a ride rating with overflow protection.
  */
-static void RideRatingsAdd(OpenRCT2::RideRating::Tuple& ratings, int32_t excitement, int32_t intensity, int32_t nausea)
+static void RideRatingsAdd(RideRating::Tuple& ratings, int32_t excitement, int32_t intensity, int32_t nausea)
 {
     int32_t newExcitement = ratings.excitement + excitement;
     int32_t newIntensity = ratings.intensity + intensity;
@@ -1860,15 +1844,14 @@ static void RideRatingsAdd(OpenRCT2::RideRating::Tuple& ratings, int32_t excitem
     ratings.nausea = std::clamp<int32_t>(newNausea, 0, INT16_MAX);
 }
 
-static void RideRatingsApplyBonusLength(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusLength(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     RideRatingsAdd(
         ratings, (std::min(ToHumanReadableRideLength(ride.getTotalLength()), modifier.threshold) * modifier.excitement) >> 16,
         0, 0);
 }
 
-static void RideRatingsApplyBonusSynchronisation(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusSynchronisation(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if ((ride.departFlags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) && RideHasAdjacentStation(ride))
     {
@@ -1876,12 +1859,12 @@ static void RideRatingsApplyBonusSynchronisation(
     }
 }
 
-static void RideRatingsApplyBonusTrainLength(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusTrainLength(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     RideRatingsAdd(ratings, ((ride.numCarsPerTrain - 1) * modifier.excitement) >> 16, 0, 0);
 }
 
-static void RideRatingsApplyBonusMaxSpeed(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusMaxSpeed(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     int32_t maxSpeedMod = ride.maxSpeed >> 16;
     RideRatingsAdd(
@@ -1889,65 +1872,63 @@ static void RideRatingsApplyBonusMaxSpeed(OpenRCT2::RideRating::Tuple& ratings, 
         (maxSpeedMod * modifier.nausea) >> 16);
 }
 
-static void RideRatingsApplyBonusAverageSpeed(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusAverageSpeed(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     int32_t avgSpeedMod = ride.averageSpeed >> 16;
     RideRatingsAdd(ratings, (avgSpeedMod * modifier.excitement) >> 16, (avgSpeedMod * modifier.intensity) >> 16, 0);
 }
 
-static void RideRatingsApplyBonusDuration(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusDuration(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     RideRatingsAdd(ratings, (std::min(ride.getTotalTime(), modifier.threshold) * modifier.excitement) >> 16, 0, 0);
 }
 
-static void RideRatingsApplyBonusGForces(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusGForces(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
-    OpenRCT2::RideRating::Tuple subRating = ride_ratings_get_gforce_ratings(ride);
+    RideRating::Tuple subRating = ride_ratings_get_gforce_ratings(ride);
     RideRatingsAdd(
         ratings, (subRating.excitement * modifier.excitement) >> 16, (subRating.intensity * modifier.intensity) >> 16,
         (subRating.nausea * modifier.nausea) >> 16);
 }
 
-static void RideRatingsApplyBonusTurns(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusTurns(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
-    OpenRCT2::RideRating::Tuple subRating = ride_ratings_get_turns_ratings(ride);
+    RideRating::Tuple subRating = ride_ratings_get_turns_ratings(ride);
     RideRatingsAdd(
         ratings, (subRating.excitement * modifier.excitement) >> 16, (subRating.intensity * modifier.intensity) >> 16,
         (subRating.nausea * modifier.nausea) >> 16);
 }
 
-static void RideRatingsApplyBonusDrops(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusDrops(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
-    OpenRCT2::RideRating::Tuple subRating = ride_ratings_get_drop_ratings(ride);
+    RideRating::Tuple subRating = ride_ratings_get_drop_ratings(ride);
     RideRatingsAdd(
         ratings, (subRating.excitement * modifier.excitement) >> 16, (subRating.intensity * modifier.intensity) >> 16,
         (subRating.nausea * modifier.nausea) >> 16);
 }
 
-static void RideRatingsApplyBonusSheltered(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusSheltered(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
-    OpenRCT2::RideRating::Tuple subRating = ride_ratings_get_sheltered_ratings(ride);
+    RideRating::Tuple subRating = ride_ratings_get_sheltered_ratings(ride);
     RideRatingsAdd(
         ratings, (subRating.excitement * modifier.excitement) >> 16, (subRating.intensity * modifier.intensity) >> 16,
         (subRating.nausea * modifier.nausea) >> 16);
 }
 
-static void RideRatingsApplyBonusRotations(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusRotations(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     RideRatingsAdd(
         ratings, ride.rotations * modifier.excitement, ride.rotations * modifier.intensity, ride.rotations * modifier.nausea);
 }
 
-static void RideRatingsApplyBonusOperationOption(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusOperationOption(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     int32_t intensity = (modifier.intensity >= 0) ? (ride.operationOption * modifier.intensity)
                                                   : (ride.operationOption / std::abs(modifier.intensity));
     RideRatingsAdd(ratings, ride.operationOption * modifier.excitement, intensity, ride.operationOption * modifier.nausea);
 }
 
-static void RideRatingsApplyBonusReversedTrains(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusReversedTrains(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.hasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS))
     {
@@ -1957,7 +1938,7 @@ static void RideRatingsApplyBonusReversedTrains(
     }
 }
 
-static void RideRatingsApplyBonusGoKartRace(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusGoKartRace(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.mode == RideMode::race && ride.numTrains >= modifier.threshold)
     {
@@ -1968,7 +1949,7 @@ static void RideRatingsApplyBonusGoKartRace(OpenRCT2::RideRating::Tuple& ratings
     }
 }
 
-static void RideRatingsApplyBonusTowerRide(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusTowerRide(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     int32_t lengthFactor = ToHumanReadableRideLength(ride.getTotalLength());
     RideRatingsAdd(
@@ -1976,20 +1957,19 @@ static void RideRatingsApplyBonusTowerRide(OpenRCT2::RideRating::Tuple& ratings,
         (lengthFactor * modifier.nausea) >> 16);
 }
 
-static void RideRatingsApplyBonusRotoDrop(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride)
+static void RideRatingsApplyBonusRotoDrop(RideRating::Tuple& ratings, const Ride& ride)
 {
     int32_t lengthFactor = (ToHumanReadableRideLength(ride.getTotalLength()) * 209715) >> 16;
     RideRatingsAdd(ratings, lengthFactor, lengthFactor * 2, lengthFactor * 2);
 }
 
-static void RideRatingsApplyBonusMazeSize(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusMazeSize(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     int32_t size = std::min<uint16_t>(ride.mazeTiles, modifier.threshold);
     RideRatingsAdd(ratings, size * modifier.excitement, size * modifier.intensity, size * modifier.nausea);
 }
 
-static void RideRatingsApplyBonusBoatHireNoCircuit(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusBoatHireNoCircuit(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     // Most likely checking if the ride has does not have a circuit
     if (!(ride.lifecycleFlags & RIDE_LIFECYCLE_TESTED))
@@ -1998,8 +1978,7 @@ static void RideRatingsApplyBonusBoatHireNoCircuit(
     }
 }
 
-static void RideRatingsApplyBonusSlideUnlimitedRides(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusSlideUnlimitedRides(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.mode == RideMode::unlimitedRidesPerAdmission)
     {
@@ -2007,8 +1986,7 @@ static void RideRatingsApplyBonusSlideUnlimitedRides(
     }
 }
 
-static void RideRatingsApplyBonusMotionSimulatorMode(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusMotionSimulatorMode(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     // Hardcoded until ride mode refactor
     if (ride.mode == RideMode::filmThrillRiders)
@@ -2021,7 +1999,7 @@ static void RideRatingsApplyBonusMotionSimulatorMode(
     }
 }
 
-static void RideRatingsApplyBonus3DCinemaMode(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonus3DCinemaMode(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     // Hardcoded until ride mode refactor
     switch (ride.mode)
@@ -2039,7 +2017,7 @@ static void RideRatingsApplyBonus3DCinemaMode(OpenRCT2::RideRating::Tuple& ratin
     }
 }
 
-static void RideRatingsApplyBonusTopSpinMode(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusTopSpinMode(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     // Hardcoded until ride mode refactor
     switch (ride.mode)
@@ -2058,20 +2036,20 @@ static void RideRatingsApplyBonusTopSpinMode(OpenRCT2::RideRating::Tuple& rating
 }
 
 static void RideRatingsApplyBonusReversals(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, OpenRCT2::RideRating::UpdateState& state, RatingsModifier modifier)
+    RideRating::Tuple& ratings, const Ride& ride, RideRating::UpdateState& state, RatingsModifier modifier)
 {
     int32_t numReversers = std::min<uint16_t>(state.AmountOfReversers, modifier.threshold);
     RideRatingsAdd(
         ratings, numReversers * modifier.excitement, numReversers * modifier.intensity, numReversers * modifier.nausea);
 }
 
-static void RideRatingsApplyBonusHoles(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusHoles(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     auto bonusHoles = std::min<uint8_t>(modifier.threshold, ride.numHoles);
     RideRatingsAdd(ratings, bonusHoles * modifier.excitement, bonusHoles * modifier.intensity, bonusHoles * modifier.nausea);
 }
 
-static void RideRatingsApplyBonusNumTrains(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusNumTrains(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     // For some reason the original code ran this twice, before and after the operation option bonus
     // Has been changed to call once with double value
@@ -2081,8 +2059,7 @@ static void RideRatingsApplyBonusNumTrains(OpenRCT2::RideRating::Tuple& ratings,
     }
 }
 
-static void RideRatingsApplyBonusDownwardLaunch(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusDownwardLaunch(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.mode == RideMode::downwardLaunch)
     {
@@ -2090,8 +2067,7 @@ static void RideRatingsApplyBonusDownwardLaunch(
     }
 }
 
-static void RideRatingsApplyBonusOperationOptionFreefall(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusOperationOptionFreefall(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     RideRatingsAdd(
         ratings, (ride.operationOption * modifier.excitement) >> 16, (ride.operationOption * modifier.intensity) >> 16,
@@ -2099,7 +2075,7 @@ static void RideRatingsApplyBonusOperationOptionFreefall(
 }
 
 static void RideRatingsApplyBonusLaunchedFreefallSpecial(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, OpenRCT2::RideRating::UpdateState& state, RatingsModifier modifier)
+    RideRating::Tuple& ratings, const Ride& ride, RideRating::UpdateState& state, RatingsModifier modifier)
 {
     int32_t excitement = (ToHumanReadableRideLength(ride.getTotalLength()) * 32768) >> 16;
     RideRatingsAdd(ratings, excitement, 0, 0);
@@ -2124,17 +2100,17 @@ static void RideRatingsApplyBonusLaunchedFreefallSpecial(
 }
 
 static void RideRatingsApplyBonusProximity(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, OpenRCT2::RideRating::UpdateState& state, RatingsModifier modifier)
+    RideRating::Tuple& ratings, const Ride& ride, RideRating::UpdateState& state, RatingsModifier modifier)
 {
     RideRatingsAdd(ratings, (ride_ratings_get_proximity_score(state) * modifier.excitement) >> 16, 0, 0);
 }
 
-static void RideRatingsApplyBonusScenery(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusScenery(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     RideRatingsAdd(ratings, (ride_ratings_get_scenery_score(ride) * modifier.excitement) >> 16, 0, 0);
 }
 
-static void RideRatingsApplyRequirementLength(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementLength(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.getStation().SegmentLength < modifier.threshold)
     {
@@ -2144,8 +2120,7 @@ static void RideRatingsApplyRequirementLength(OpenRCT2::RideRating::Tuple& ratin
     }
 }
 
-static void RideRatingsApplyRequirementDropHeight(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementDropHeight(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.highestDropHeight < modifier.threshold)
     {
@@ -2155,8 +2130,7 @@ static void RideRatingsApplyRequirementDropHeight(
     }
 }
 
-static void RideRatingsApplyRequirementMaxSpeed(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementMaxSpeed(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.maxSpeed < modifier.threshold)
     {
@@ -2166,8 +2140,7 @@ static void RideRatingsApplyRequirementMaxSpeed(
     }
 }
 
-static void RideRatingsApplyRequirementNumDrops(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementNumDrops(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.numDrops < modifier.threshold)
     {
@@ -2177,8 +2150,7 @@ static void RideRatingsApplyRequirementNumDrops(
     }
 }
 
-static void RideRatingsApplyRequirementNegativeGs(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementNegativeGs(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.maxNegativeVerticalG >= modifier.threshold)
     {
@@ -2188,8 +2160,7 @@ static void RideRatingsApplyRequirementNegativeGs(
     }
 }
 
-static void RideRatingsApplyRequirementLateralGs(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementLateralGs(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.maxLateralG < modifier.threshold)
     {
@@ -2199,8 +2170,7 @@ static void RideRatingsApplyRequirementLateralGs(
     }
 }
 
-static void RideRatingsApplyRequirementInversions(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementInversions(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.numInversions < modifier.threshold)
     {
@@ -2211,7 +2181,7 @@ static void RideRatingsApplyRequirementInversions(
 }
 
 static void RideRatingsApplyRequirementUnsheltered(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, uint8_t shelteredEighths, RatingsModifier modifier)
+    RideRating::Tuple& ratings, const Ride& ride, uint8_t shelteredEighths, RatingsModifier modifier)
 {
     if (shelteredEighths >= modifier.threshold)
     {
@@ -2222,7 +2192,7 @@ static void RideRatingsApplyRequirementUnsheltered(
 }
 
 static void RideRatingsApplyRequirementReversals(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, OpenRCT2::RideRating::UpdateState& state, RatingsModifier modifier)
+    RideRating::Tuple& ratings, const Ride& ride, RideRating::UpdateState& state, RatingsModifier modifier)
 {
     if (state.AmountOfReversers < modifier.threshold)
     {
@@ -2232,7 +2202,7 @@ static void RideRatingsApplyRequirementReversals(
     }
 }
 
-static void RideRatingsApplyRequirementHoles(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementHoles(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.numHoles < modifier.threshold)
     {
@@ -2242,8 +2212,7 @@ static void RideRatingsApplyRequirementHoles(OpenRCT2::RideRating::Tuple& rating
     }
 }
 
-static void RideRatingsApplyRequirementStations(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementStations(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.numStations <= modifier.threshold)
     {
@@ -2254,8 +2223,7 @@ static void RideRatingsApplyRequirementStations(
     }
 }
 
-static void RideRatingsApplyRequirementSplashdown(
-    OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementSplashdown(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (!ride.specialTrackElements.has(SpecialElement::splash))
     {
@@ -2266,9 +2234,9 @@ static void RideRatingsApplyRequirementSplashdown(
 }
 
 #ifndef ORIGINAL_RATINGS
-static OpenRCT2::RideRating::Tuple ride_ratings_get_excessive_lateral_g_penalty(const Ride& ride)
+static RideRating::Tuple ride_ratings_get_excessive_lateral_g_penalty(const Ride& ride)
 {
-    OpenRCT2::RideRating::Tuple result{};
+    RideRating::Tuple result{};
     if (ride.maxLateralG > MakeFixed16_2dp(2, 80))
     {
         result.intensity = MakeRideRating(3, 75);
@@ -2297,10 +2265,10 @@ static OpenRCT2::RideRating::Tuple ride_ratings_get_excessive_lateral_g_penalty(
 }
 #endif
 
-static void RideRatingsApplyPenaltyLateralGs(OpenRCT2::RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyPenaltyLateralGs(RideRating::Tuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
 #ifndef ORIGINAL_RATINGS
-    OpenRCT2::RideRating::Tuple subRating = ride_ratings_get_excessive_lateral_g_penalty(ride);
+    RideRating::Tuple subRating = ride_ratings_get_excessive_lateral_g_penalty(ride);
     RideRatingsAdd(
         ratings, (subRating.excitement * modifier.excitement) >> 16, (subRating.intensity * modifier.intensity) >> 16,
         (subRating.nausea * modifier.nausea) >> 16);
@@ -2309,12 +2277,12 @@ static void RideRatingsApplyPenaltyLateralGs(OpenRCT2::RideRating::Tuple& rating
 
 #pragma endregion
 
-bool OpenRCT2::RideRating::Tuple::isNull() const
+bool RideRating::Tuple::isNull() const
 {
     return excitement == kUndefined;
 }
 
-void OpenRCT2::RideRating::Tuple::setNull()
+void RideRating::Tuple::setNull()
 {
     excitement = kUndefined;
 }
