@@ -24,6 +24,7 @@
 - Fix: [#24958] Android: fix crash when device is offline.
 - Fix: [#24961] Queues with corner connections set with the tile inspector draw incorrect sprites.
 - Fix: [#24972] Fix crash when closing windows would open other windows.
+- Fix: [#24986] LIM Launched Roller Coaster inline twists block metal supports on the wrong side (original bug).
 - Fix: [#24989] Classic Wooden Roller Coaster small banked turns do not block metal supports correctly.
 
 0.4.25 (2025-08-03)
