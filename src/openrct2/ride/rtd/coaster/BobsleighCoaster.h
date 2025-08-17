@@ -58,13 +58,13 @@ constexpr RideTypeDescriptor BobsleighCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 80), MakeRideRating(3, 20), MakeRideRating(2, 50) },
+        { RideRating::make(2, 80), RideRating::make(3, 20), RideRating::make(2, 50) },
         16,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 20), MakeRideRating(0, 00), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 20), RideRating::make(0, 00), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },

@@ -1920,7 +1920,7 @@ static OpenRCT2::BitSet<OpenRCT2::Limits::kMaxRidesInPark> GuestFindRidesToGoOn(
         // Always take the tall rides into consideration (realistic as you can usually see them from anywhere in the park)
         for (auto& ride : GetRideManager())
         {
-            if (ride.highestDropHeight > 66 || ride.ratings.excitement >= MakeRideRating(8, 00))
+            if (ride.highestDropHeight > 66 || ride.ratings.excitement >= RideRating::make(8, 00))
             {
                 rideConsideration[ride.id.ToUnderlying()] = true;
             }
@@ -2084,7 +2084,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 // excitement check and will only do a basic intensity check when they arrive at the ride itself.
                 if (ride.id == GuestHeadingToRideId)
                 {
-                    if (ride.ratings.intensity > MakeRideRating(10, 00) && !getGameState().cheats.ignoreRideIntensity)
+                    if (ride.ratings.intensity > RideRating::make(10, 00) && !getGameState().cheats.ignoreRideIntensity)
                     {
                         GuestRideIsTooIntense(*this, ride, peepAtRide);
                         return false;
@@ -2157,7 +2157,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                             }
 
                             // Very nauseous peeps will only go on very gentle rides.
-                            if (ride.ratings.nausea >= MakeRideRating(1, 40) && Nausea > 160)
+                            if (ride.ratings.nausea >= RideRating::make(1, 40) && Nausea > 160)
                             {
                                 ChoseNotToGoOnRide(ride, peepAtRide, false);
                                 return false;
@@ -2893,7 +2893,7 @@ static bool GuestShouldGoOnRideAgain(Guest& guest, const Ride& ride)
         return false;
     if (!RideHasRatings(ride))
         return false;
-    if (ride.ratings.intensity > MakeRideRating(10, 00) && !getGameState().cheats.ignoreRideIntensity)
+    if (ride.ratings.intensity > RideRating::make(10, 00) && !getGameState().cheats.ignoreRideIntensity)
         return false;
     if (guest.Happiness < 180)
         return false;
@@ -2938,7 +2938,7 @@ static bool GuestReallyLikedRide(Guest& guest, const Ride& ride)
         return false;
     if (!RideHasRatings(ride))
         return false;
-    if (ride.ratings.intensity > MakeRideRating(10, 00) && !getGameState().cheats.ignoreRideIntensity)
+    if (ride.ratings.intensity > RideRating::make(10, 00) && !getGameState().cheats.ignoreRideIntensity)
         return false;
     return true;
 }
@@ -6443,12 +6443,12 @@ static bool PeepShouldWatchRide(TileElement* tileElement)
         return true;
     }
 
-    if (ride->ratings.excitement >= MakeRideRating(4, 70))
+    if (ride->ratings.excitement >= RideRating::make(4, 70))
     {
         return true;
     }
 
-    if (ride->ratings.intensity >= MakeRideRating(4, 50))
+    if (ride->ratings.intensity >= RideRating::make(4, 50))
     {
         return true;
     }

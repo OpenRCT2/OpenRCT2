@@ -60,13 +60,13 @@ constexpr RideTypeDescriptor SteeplechaseRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 70), MakeRideRating(2, 40), MakeRideRating(1, 80) },
+        { RideRating::make(2, 70), RideRating::make(2, 40), RideRating::make(1, 80) },
         14,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 75), MakeRideRating(0, 9), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 75), RideRating::make(0, 9), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },

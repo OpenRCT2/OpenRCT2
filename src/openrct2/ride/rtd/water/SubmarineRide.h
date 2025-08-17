@@ -58,7 +58,7 @@ constexpr RideTypeDescriptor SubmarineRideRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 20), MakeRideRating(1, 80), MakeRideRating(1, 40) },
+        { RideRating::make(2, 20), RideRating::make(1, 80), RideRating::make(1, 40) },
         7,
         -1,
         false,

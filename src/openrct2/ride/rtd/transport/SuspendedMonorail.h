@@ -61,7 +61,7 @@ constexpr RideTypeDescriptor SuspendedMonorailRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 15), MakeRideRating(0, 23), MakeRideRating(0, 8) },
+        { RideRating::make(2, 15), RideRating::make(0, 23), RideRating::make(0, 8) },
         14,
         -1,
         false,

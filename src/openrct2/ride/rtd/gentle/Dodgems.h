@@ -62,14 +62,14 @@ constexpr RideTypeDescriptor DodgemsRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { MakeRideRating(1, 30), MakeRideRating(0, 50), MakeRideRating(0, 35) },
+        { RideRating::make(1, 30), RideRating::make(0, 50), RideRating::make(0, 35) },
         16,
         7,
         false,
         {
             // Special case, passing -2 to represent division by 2
             { RatingsModifierType::BonusOperationOption, 0, 1, -2, 0 }, 
-            { RatingsModifierType::BonusNumTrains,       4, MakeRideRating(0, 80), 0, 0 },
+            { RatingsModifierType::BonusNumTrains,       4, RideRating::make(0, 80), 0, 0 },
             { RatingsModifierType::BonusScenery,         0, 5577, 0, 0 },
         },
     },

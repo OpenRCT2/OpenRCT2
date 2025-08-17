@@ -62,7 +62,7 @@ constexpr RideTypeDescriptor MonorailRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 00), MakeRideRating(0, 00), MakeRideRating(0, 00) },
+        { RideRating::make(2, 00), RideRating::make(0, 00), RideRating::make(0, 00) },
         14,
         -1,
         false,

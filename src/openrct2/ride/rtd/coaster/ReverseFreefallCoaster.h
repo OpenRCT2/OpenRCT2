@@ -60,13 +60,13 @@ constexpr RideTypeDescriptor ReverseFreefallCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 00), MakeRideRating(3, 20), MakeRideRating(2, 80) },
+        { RideRating::make(2, 00), RideRating::make(3, 20), RideRating::make(2, 80) },
         25,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             327, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 60), MakeRideRating(0, 15), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 60), RideRating::make(0, 15), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                436906, 436906, 320398 },
             { RatingsModifierType::BonusGForces,          0,                24576, 41704, 59578 },
             { RatingsModifierType::BonusSheltered,        0,                12850, 28398, 11702 },

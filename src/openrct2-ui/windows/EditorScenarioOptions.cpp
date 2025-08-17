@@ -56,9 +56,9 @@ namespace OpenRCT2::Ui::Windows
     static constexpr uint16_t kObjectiveLengthMin = 1000;
     static constexpr uint16_t kObjectiveLengthAdjustment = 100;
 
-    static constexpr ride_rating kObjectiveExcitementMax = MakeRideRating(9, 90);
-    static constexpr ride_rating kObjectiveExcitementMin = MakeRideRating(4, 00);
-    static constexpr ride_rating kObjectiveExcitementAdjustment = MakeRideRating(0, 10);
+    static constexpr ride_rating kObjectiveExcitementMax = RideRating::make(9, 90);
+    static constexpr ride_rating kObjectiveExcitementMin = RideRating::make(4, 00);
+    static constexpr ride_rating kObjectiveExcitementAdjustment = RideRating::make(0, 10);
 
     // The number has to leave a bit of room for other entities like vehicles, litter and balloons.
     static constexpr uint16_t kObjectiveGuestsMax = 50000;
@@ -712,7 +712,7 @@ namespace OpenRCT2::Ui::Windows
                     gameState.scenarioObjective.MinimumLength = 1200;
                     break;
                 case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-                    gameState.scenarioObjective.MinimumExcitement = MakeRideRating(6, 70);
+                    gameState.scenarioObjective.MinimumExcitement = RideRating::make(6, 70);
                     break;
                 case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
                     gameState.scenarioObjective.Currency = 50000.00_GBP;

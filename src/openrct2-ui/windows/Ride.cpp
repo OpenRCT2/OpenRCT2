@@ -5655,7 +5655,7 @@ namespace OpenRCT2::Ui::Windows
                     stringId = STR_INTENSITY_RATING;
                     if (!RideHasRatings(*ride))
                         stringId = STR_INTENSITY_RATING_NOT_YET_AVAILABLE;
-                    else if (ride->ratings.intensity >= MakeRideRating(10, 00))
+                    else if (ride->ratings.intensity >= RideRating::make(10, 00))
                         stringId = STR_INTENSITY_RATING_RED;
 
                     DrawTextBasic(rt, screenCoords, stringId, ft);
