@@ -41,13 +41,14 @@ struct Staff;
 struct Vehicle;
 struct RideObjectEntry;
 struct ResultWithMessage;
-struct TileElement;
-struct TrackElement;
 
 namespace OpenRCT2
 {
     class StationObject;
-}
+
+    struct TileElement;
+    struct TrackElement;
+} // namespace OpenRCT2
 
 constexpr uint8_t kRideAdjacencyCheckDistance = 5;
 
@@ -331,7 +332,7 @@ private:
     void update();
     void updateQueueLength(StationIndex stationIndex);
     ResultWithMessage createVehicles(const CoordsXYE& element, bool isApplying);
-    void moveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackElement& firstBlock);
+    void moveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, OpenRCT2::TrackElement& firstBlock);
     money64 calculateIncomePerHour() const;
     void chainQueues() const;
     void constructMissingEntranceOrExit() const;
@@ -403,7 +404,7 @@ public:
 
     uint64_t getAvailableModes() const;
     const RideTypeDescriptor& getRideTypeDescriptor() const;
-    TrackElement* getOriginElement(StationIndex stationIndex) const;
+    OpenRCT2::TrackElement* getOriginElement(StationIndex stationIndex) const;
 
     std::pair<RideMeasurement*, OpenRCT2String> getMeasurement();
 
@@ -450,11 +451,11 @@ struct TrackBeginEnd
     int32_t begin_y;
     int32_t begin_z;
     int32_t begin_direction;
-    TileElement* begin_element;
+    OpenRCT2::TileElement* begin_element;
     int32_t end_x;
     int32_t end_y;
     int32_t end_direction;
-    TileElement* end_element;
+    OpenRCT2::TileElement* end_element;
 };
 #ifdef PLATFORM_32BIT
 static_assert(sizeof(TrackBeginEnd) == 36);
@@ -872,10 +873,10 @@ void RideMeasurementsUpdate();
 void RideBreakdownAddNewsItem(const Ride& ride);
 Staff* RideFindClosestMechanic(const Ride& ride, int32_t forInspection);
 int32_t RideInitialiseConstructionWindow(Ride& ride);
-void RideSetMapTooltip(const TileElement& tileElement);
+void RideSetMapTooltip(const OpenRCT2::TileElement& tileElement);
 void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason);
-TileElement* RideGetStationStartTrackElement(const Ride& ride, StationIndex stationIndex);
-TileElement* RideGetStationExitElement(const CoordsXYZ& elementPos);
+OpenRCT2::TileElement* RideGetStationStartTrackElement(const Ride& ride, StationIndex stationIndex);
+OpenRCT2::TileElement* RideGetStationExitElement(const CoordsXYZ& elementPos);
 money64 RideGetRefundPrice(const Ride& ride);
 int32_t RideGetRandomColourPresetIndex(ride_type_t rideType);
 money64 RideGetCommonPrice(const Ride& forRide);
@@ -911,7 +912,7 @@ money64 RideEntranceExitPlaceGhost(
 ResultWithMessage RideAreAllPossibleEntrancesAndExitsBuilt(const Ride& ride);
 void RideFixBreakdown(Ride& ride, int32_t reliabilityIncreaseFactor);
 
-void BlockBrakeSetLinkedBrakesClosed(const CoordsXYZ& vehicleTrackLocation, TrackElement& tileElement, bool isOpen);
+void BlockBrakeSetLinkedBrakesClosed(const CoordsXYZ& vehicleTrackLocation, OpenRCT2::TrackElement& tileElement, bool isOpen);
 
 uint8_t RideEntryGetVehicleAtPosition(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position);
 void RideUpdateVehicleColours(const Ride& ride);
@@ -929,7 +930,7 @@ Vehicle* RideGetBrokenVehicle(const Ride& ride);
 
 money64 RideGetPrice(const Ride& ride);
 
-TileElement* GetStationPlatform(const CoordsXYRangedZ& coords);
+OpenRCT2::TileElement* GetStationPlatform(const CoordsXYRangedZ& coords);
 bool RideHasAdjacentStation(const Ride& ride);
 bool RideHasStationShelter(const Ride& ride);
 bool RideHasRatings(const Ride& ride);
@@ -943,7 +944,7 @@ OpenRCT2::ObjectEntryIndex RideGetEntryIndex(ride_type_t rideType, OpenRCT2::Obj
 void DetermineRideEntranceAndExitLocations();
 void RideClearLeftoverEntrances(const Ride& ride);
 
-void SetBrakeClosedMultiTile(TrackElement& trackElement, const CoordsXY& trackLocation, bool isClosed);
+void SetBrakeClosedMultiTile(OpenRCT2::TrackElement& trackElement, const CoordsXY& trackLocation, bool isClosed);
 
 std::vector<RideId> GetTracklessRides();
 

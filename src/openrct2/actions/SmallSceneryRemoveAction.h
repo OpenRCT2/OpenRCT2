@@ -31,5 +31,5 @@ public:
     OpenRCT2::GameActions::Result Execute() const override;
 
 private:
-    TileElement* FindSceneryElement() const;
+    OpenRCT2::TileElement* FindSceneryElement() const;
 };

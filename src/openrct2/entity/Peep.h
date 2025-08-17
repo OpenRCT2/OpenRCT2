@@ -29,8 +29,12 @@ constexpr uint8_t kPeepMaxEnergyTarget = 255; // Oddly, this differs from max en
 constexpr auto kPeepClearanceHeight = 4 * kCoordsZStep;
 
 class Formatter;
-struct TileElement;
 struct PaintSession;
+
+namespace OpenRCT2
+{
+    struct TileElement;
+}
 
 namespace OpenRCT2::GameActions
 {
@@ -402,7 +406,7 @@ public: // Peep
     bool ShouldWaitForLevelCrossing() const;
     bool IsOnLevelCrossing() const;
     bool IsOnPathBlockedByVehicle() const;
-    std::pair<uint8_t, TileElement*> PerformNextAction();
+    std::pair<uint8_t, OpenRCT2::TileElement*> PerformNextAction();
     [[nodiscard]] int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
     void SwitchNextAnimationType();
     [[nodiscard]] PeepAnimationType GetAnimationType();

@@ -39,5 +39,5 @@ public:
 private:
     OpenRCT2::GameActions::Result ElementInsertQuery(OpenRCT2::GameActions::Result res) const;
     OpenRCT2::GameActions::Result ElementInsertExecute(OpenRCT2::GameActions::Result res) const;
-    bool IsSameAsEntranceElement(const EntranceElement& entranceElement) const;
+    bool IsSameAsEntranceElement(const OpenRCT2::EntranceElement& entranceElement) const;
 };

@@ -21,9 +21,8 @@ struct LargeSceneryPlaceActionResult
 namespace OpenRCT2
 {
     struct LargeSceneryTile;
-}
-
-struct LargeSceneryElement;
+    struct LargeSceneryElement;
+} // namespace OpenRCT2
 
 class LargeSceneryPlaceAction final : public GameActionBase<GameCommand::PlaceLargeScenery>
 {
@@ -52,5 +51,5 @@ public:
 private:
     bool CheckMapCapacity(std::span<const OpenRCT2::LargeSceneryTile> tiles, size_t numTiles) const;
     int16_t GetMaxSurfaceHeight(std::span<const OpenRCT2::LargeSceneryTile> tiles) const;
-    void SetNewLargeSceneryElement(LargeSceneryElement& sceneryElement, uint8_t tileNum) const;
+    void SetNewLargeSceneryElement(OpenRCT2::LargeSceneryElement& sceneryElement, uint8_t tileNum) const;
 };

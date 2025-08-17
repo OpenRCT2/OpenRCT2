@@ -21,7 +21,6 @@ struct OpenRCT2String;
 struct Peep;
 struct Ride;
 struct RideSelection;
-struct TileElement;
 struct TrackDesign;
 struct Vehicle;
 
@@ -34,7 +33,8 @@ using ScenarioSelectCallback = void (*)(const utf8* path);
 namespace OpenRCT2
 {
     struct ObjectEntryDescriptor;
-}
+    struct TileElement;
+} // namespace OpenRCT2
 
 namespace OpenRCT2::Ui::Windows
 {

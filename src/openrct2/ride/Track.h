@@ -26,10 +26,11 @@ constexpr uint8_t kMaximumTrackSpeed = 30;
 namespace OpenRCT2
 {
     enum class TrackElemType : uint16_t;
-}
+
+    struct TileElement;
+} // namespace OpenRCT2
 
 struct ResultWithMessage;
-struct TileElement;
 
 enum class TrackRoll : uint8_t
 {
@@ -652,7 +653,7 @@ struct TrackCircuitIterator
     CoordsXYE current;
     int32_t currentZ;
     int32_t currentDirection;
-    TileElement* first;
+    OpenRCT2::TileElement* first;
     bool firstIteration;
     bool looped;
 };
@@ -712,7 +713,7 @@ struct TypeOrCurve
 PitchAndRoll TrackPitchAndRollStart(OpenRCT2::TrackElemType trackType);
 PitchAndRoll TrackPitchAndRollEnd(OpenRCT2::TrackElemType trackType);
 
-int32_t TrackIsConnectedByShape(TileElement* a, TileElement* b);
+int32_t TrackIsConnectedByShape(OpenRCT2::TileElement* a, OpenRCT2::TileElement* b);
 
 void TrackCircuitIteratorBegin(TrackCircuitIterator* it, CoordsXYE first);
 bool TrackCircuitIteratorPrevious(TrackCircuitIterator* it);
@@ -722,7 +723,7 @@ bool TrackCircuitIteratorsMatch(const TrackCircuitIterator* firstIt, const Track
 void TrackGetBack(const CoordsXYE& input, CoordsXYE* output);
 void TrackGetFront(const CoordsXYE& input, CoordsXYE* output);
 
-TrackElement* TrackGetPreviousBlock(CoordsXYZ& location, TileElement* tileElement);
+OpenRCT2::TrackElement* TrackGetPreviousBlock(CoordsXYZ& location, OpenRCT2::TileElement* tileElement);
 
 bool TrackElementIsCovered(OpenRCT2::TrackElemType trackElementType);
 OpenRCT2::TrackElemType UncoverTrackElement(OpenRCT2::TrackElemType trackElementType);
@@ -731,9 +732,9 @@ bool TrackTypeIsBrakes(OpenRCT2::TrackElemType trackType);
 bool TrackTypeIsBlockBrakes(OpenRCT2::TrackElemType trackType);
 bool TrackTypeIsBooster(OpenRCT2::TrackElemType trackType);
 
-TrackRoll TrackGetActualBank(TileElement* tileElement, TrackRoll bank);
+TrackRoll TrackGetActualBank(OpenRCT2::TileElement* tileElement, TrackRoll bank);
 TrackRoll TrackGetActualBank2(ride_type_t rideType, bool isInverted, TrackRoll bank);
-TrackRoll TrackGetActualBank3(bool useInvertedSprites, TileElement* tileElement);
+TrackRoll TrackGetActualBank3(bool useInvertedSprites, OpenRCT2::TileElement* tileElement);
 
 ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign);
 ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIndex, int32_t flags);

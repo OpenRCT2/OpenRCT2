@@ -18,13 +18,13 @@
 #include <string>
 
 class Formatter;
-struct TileElement;
-struct WallElement;
 
 namespace OpenRCT2
 {
     struct GameState_t;
-}
+    struct TileElement;
+    struct WallElement;
+} // namespace OpenRCT2
 
 constexpr OpenRCT2::ObjectEntryIndex kBannerNull = OpenRCT2::kObjectEntryIndexNull;
 constexpr size_t kMaxBanners = 8192;
@@ -63,8 +63,8 @@ struct Banner
 };
 
 void BannerInit(OpenRCT2::GameState_t& gameState);
-TileElement* BannerGetTileElement(BannerIndex bannerIndex);
-WallElement* BannerGetScrollingWallTileElement(BannerIndex bannerIndex);
+OpenRCT2::TileElement* BannerGetTileElement(BannerIndex bannerIndex);
+OpenRCT2::WallElement* BannerGetScrollingWallTileElement(BannerIndex bannerIndex);
 RideId BannerGetClosestRideIndex(const CoordsXYZ& mapPos);
 void BannerApplyFixes();
 void UnlinkAllRideBanners();

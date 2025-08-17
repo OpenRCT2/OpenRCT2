@@ -254,12 +254,12 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels);
 ///////////////////////////////////////////////////////////////////////////////
 void TrackDesignSaveInit();
 void TrackDesignSaveResetScenery();
-bool TrackDesignSaveContainsTileElement(const TileElement* tileElement);
+bool TrackDesignSaveContainsTileElement(const OpenRCT2::TileElement* tileElement);
 void TrackDesignSaveSelectNearbyScenery(RideId rideIndex);
 void TrackDesignSaveSelectTileElement(
-    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement, bool collect);
+    ViewportInteractionItem interactionType, const CoordsXY& loc, OpenRCT2::TileElement* tileElement, bool collect);
 
 bool TrackDesignAreEntranceAndExitPlaced();
 
 extern std::vector<TrackDesignSceneryElement> _trackSavedTileElementsDesc;
-extern std::vector<const TileElement*> _trackSavedTileElements;
+extern std::vector<const OpenRCT2::TileElement*> _trackSavedTileElements;
