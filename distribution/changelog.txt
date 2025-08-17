@@ -27,6 +27,7 @@
 - Fix: [#24986] LIM Launched Roller Coaster inline twists block metal supports on the wrong side (original bug).
 - Fix: [#24989] Classic Wooden Roller Coaster small banked turns do not block metal supports correctly.
 - Fix: [#24993] The Mine Train Coaster sloped left medium turn has an incorrectly rotated support at one angle.
+- Fix: [#24994] The Alpine Coaster and Mine Ride left s-bends have an incorrectly rotated support at certain angles.
 
 0.4.25 (2025-08-03)
 ------------------------------------------------------------------------
