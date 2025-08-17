@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor SpiralSlideRTD =
 {
     .Category = RideCategory::gentle,
-    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack2x2,
+    .StartTrackPiece = TrackElemType::FlatTrack2x2,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::spiralSlide,
         .enabledTrackGroups = {},
@@ -38,7 +40,7 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 15, 128, 0, 2, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 50, 10, 0 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 82.50_GBP, 1.00_GBP, 1, },
@@ -69,7 +71,7 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
-    .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
+    .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
@@ -80,4 +82,5 @@ constexpr RideTypeDescriptor SpiralSlideRTD =
     .RideUpdate = updateSpiralSlide,
     .specialType = RtdSpecialType::spiralSlide,
 };
+} // namespace OpenRCT2
 // clang-format on

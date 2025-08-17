@@ -14,10 +14,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor SingleRailRollerCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::singleRailRollerCoaster,
         .supportType = MetalSupportType::tubes,
@@ -37,7 +39,7 @@ constexpr RideTypeDescriptor SingleRailRollerCoasterRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 28, 24, 5, 7},
     .MaxMass = 18,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftRMC, 5, 8 },
+    .LiftData = { Audio::SoundId::LiftRMC, 5, 8 },
     .RatingsMultipliers = { 52, 36, 10 },
     .UpkeepCosts = { 40, 20, 80, 10, 3, 10 },
     .BuildCosts = { 37.50_GBP, 2.50_GBP, 50},
@@ -82,4 +84,5 @@ constexpr RideTypeDescriptor SingleRailRollerCoasterRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

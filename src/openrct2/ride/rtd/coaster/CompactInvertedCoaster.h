@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor CompactInvertedCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::compactInvertedCoaster,
         .supportType = MetalSupportType::tubesInverted,
@@ -37,7 +39,7 @@ constexpr RideTypeDescriptor CompactInvertedCoasterRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 27, 40, 29, 8, },
     .MaxMass = 18,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftClassic, 4, 6 },
+    .LiftData = { Audio::SoundId::LiftClassic, 4, 6 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 40, 20, 80, 13, 3, 10 },
     .BuildCosts = { 50.00_GBP, 2.50_GBP, 50, },
@@ -81,4 +83,5 @@ constexpr RideTypeDescriptor CompactInvertedCoasterRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

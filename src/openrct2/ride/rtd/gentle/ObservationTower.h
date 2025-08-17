@@ -16,10 +16,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor ObservationTowerRTD =
 {
     .Category = RideCategory::gentle,
-    .StartTrackPiece = OpenRCT2::TrackElemType::TowerBase,
+    .StartTrackPiece = TrackElemType::TowerBase,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::observationTower,
         .enabledTrackGroups = {TrackGroup::tower},
@@ -37,7 +39,7 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 255, 32, 3, 2, },
     .MaxMass = 15,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 80, 10, 0 },
     .UpkeepCosts = { 50, 20, 0, 10, 0, 0 },
     .BuildCosts = { 18.50_GBP, 0.00_GBP, 4, },
@@ -68,6 +70,7 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_ObservationTower,
+    .LightFXAddLightsMagicVehicle = Drawing::LightFx::AddLightsMagicVehicle_ObservationTower,
 };
+} // namespace OpenRCT2
 // clang-format on

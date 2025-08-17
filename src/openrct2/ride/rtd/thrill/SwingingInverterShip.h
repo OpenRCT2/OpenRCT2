@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor SwingingInverterShipRTD =
 {
     .Category = RideCategory::thrill,
-    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x4B,
+    .StartTrackPiece = TrackElemType::FlatTrack1x4B,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::swingingInverterShip,
         .enabledTrackGroups = {},
@@ -38,7 +40,7 @@ constexpr RideTypeDescriptor SwingingInverterShipRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 15, 176, 7, 11, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 106.00_GBP, 1.00_GBP, 1, },
@@ -66,4 +68,5 @@ constexpr RideTypeDescriptor SwingingInverterShipRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

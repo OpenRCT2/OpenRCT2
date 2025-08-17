@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor MerryGoRoundRTD =
 {
     .Category = RideCategory::gentle,
-    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
+    .StartTrackPiece = TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::merryGoRound,
         .enabledTrackGroups = {},
@@ -39,7 +41,7 @@ constexpr RideTypeDescriptor MerryGoRoundRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_CONTROL_FAILURE),
     .Heights = { 12, 64, 3, 2, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 50, 10, 0 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 57.50_GBP, 1.00_GBP, 1, },
@@ -64,4 +66,5 @@ constexpr RideTypeDescriptor MerryGoRoundRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

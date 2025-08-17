@@ -14,10 +14,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor DrinkStallRTD =
 {
     .Category = RideCategory::shop,
-    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x1A,
+    .StartTrackPiece = TrackElemType::FlatTrack1x1A,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::shop,
         .enabledTrackGroups = {},
@@ -35,7 +37,7 @@ constexpr RideTypeDescriptor DrinkStallRTD =
     .AvailableBreakdowns = 0,
     .Heights = { 12, kDefaultDrinksStallHeight, 0, 0, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 0, 0, 0 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 250.00_GBP, 0.00_GBP, 1, },
@@ -58,9 +60,10 @@ constexpr RideTypeDescriptor DrinkStallRTD =
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
-    .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
+    .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::shopOrStall,
 };
+} // namespace OpenRCT2
 // clang-format on

@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor WoodenWildMouseRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::woodenWildMouse,
         .supportType = WoodenSupportType::truss,
@@ -36,7 +38,7 @@ constexpr RideTypeDescriptor WoodenWildMouseRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 14, 24, 4, 7, },
     .MaxMass = 4,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftClassic, 4, 5 },
+    .LiftData = { Audio::SoundId::LiftClassic, 4, 5 },
     .RatingsMultipliers = { 50, 30, 30 },
     .UpkeepCosts = { 40, 20, 80, 9, 3, 10 },
     .BuildCosts = { 25.00_GBP, 3.00_GBP, 40, },
@@ -82,4 +84,5 @@ constexpr RideTypeDescriptor WoodenWildMouseRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

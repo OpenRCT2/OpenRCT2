@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor RiverRapidsRTD =
 {
     .Category = RideCategory::water,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::riverRapids,
         .supportType = WoodenSupportType::truss,
@@ -40,7 +42,7 @@ constexpr RideTypeDescriptor RiverRapidsRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_CONTROL_FAILURE),
     .Heights = { 9, 32, 14, 15, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftFlume, 5, 5 },
+    .LiftData = { Audio::SoundId::LiftFlume, 5, 5 },
     .RatingsMultipliers = { 72, 26, 6 },
     .UpkeepCosts = { 82, 20, 0, 10, 0, 10 },
     .BuildCosts = { 31.00_GBP, 3.00_GBP, 40, },
@@ -77,10 +79,11 @@ constexpr RideTypeDescriptor RiverRapidsRTD =
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
-    .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
+    .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
     .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
 };
+} // namespace OpenRCT2
 // clang-format on
