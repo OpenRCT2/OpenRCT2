@@ -16,11 +16,11 @@ class SmallSceneryRemoveAction final : public GameActionBase<GameCommand::Remove
 private:
     CoordsXYZ _loc;
     uint8_t _quadrant{};
-    ObjectEntryIndex _sceneryType{};
+    OpenRCT2::ObjectEntryIndex _sceneryType{};
 
 public:
     SmallSceneryRemoveAction() = default;
-    SmallSceneryRemoveAction(const CoordsXYZ& location, uint8_t quadrant, ObjectEntryIndex sceneryType);
+    SmallSceneryRemoveAction(const CoordsXYZ& location, uint8_t quadrant, OpenRCT2::ObjectEntryIndex sceneryType);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

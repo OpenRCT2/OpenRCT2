@@ -14,57 +14,60 @@
 
 struct CoordsXY;
 
-enum TerrainSurfaceFlags
+namespace OpenRCT2
 {
-    smoothWithSelf = 1 << 0,
-    smoothWithOther = 1 << 1,
-    canGrow = 1 << 2,
-};
-
-class TerrainSurfaceObject final : public Object
-{
-private:
-    struct SpecialEntry
+    enum TerrainSurfaceFlags
     {
-        uint8_t Index{};
-        uint8_t Length{};
-        uint8_t Rotation{};
-        uint8_t Variation{};
+        smoothWithSelf = 1 << 0,
+        smoothWithOther = 1 << 1,
+        canGrow = 1 << 2,
     };
 
-    static constexpr auto kNumImagesInEntry = 19;
+    class TerrainSurfaceObject final : public Object
+    {
+    private:
+        struct SpecialEntry
+        {
+            uint8_t Index{};
+            uint8_t Length{};
+            uint8_t Rotation{};
+            uint8_t Variation{};
+        };
 
-public:
-    static constexpr ObjectType kObjectType = ObjectType::terrainSurface;
+        static constexpr auto kNumImagesInEntry = 19;
 
-    static constexpr uint8_t kNoValue = 0xFF;
-    StringId NameStringId{};
-    uint32_t IconImageId{};
-    uint32_t PatternBaseImageId{};
-    uint32_t EntryBaseImageId{};
+    public:
+        static constexpr ObjectType kObjectType = ObjectType::terrainSurface;
 
-    uint32_t NumEntries{};
-    uint32_t DefaultEntry{};
-    uint32_t DefaultGridEntry{};
-    uint32_t DefaultUndergroundEntry{};
-    std::vector<SpecialEntry> SpecialEntries;
-    std::vector<SpecialEntry> SpecialEntriesUnderground;
-    std::vector<SpecialEntry> SpecialEntriesGrid;
+        static constexpr uint8_t kNoValue = 0xFF;
+        StringId NameStringId{};
+        uint32_t IconImageId{};
+        uint32_t PatternBaseImageId{};
+        uint32_t EntryBaseImageId{};
 
-    colour_t Colour{};
-    uint8_t Rotations{};
-    money64 Price{};
-    TerrainSurfaceFlags Flags{};
-    PaletteIndex MapColours[2]{};
+        uint32_t NumEntries{};
+        uint32_t DefaultEntry{};
+        uint32_t DefaultGridEntry{};
+        uint32_t DefaultUndergroundEntry{};
+        std::vector<SpecialEntry> SpecialEntries;
+        std::vector<SpecialEntry> SpecialEntriesUnderground;
+        std::vector<SpecialEntry> SpecialEntriesGrid;
 
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void Load() override;
-    void Unload() override;
+        colour_t Colour{};
+        uint8_t Rotations{};
+        money64 Price{};
+        TerrainSurfaceFlags Flags{};
+        PaletteIndex MapColours[2]{};
 
-    void DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const override;
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void Load() override;
+        void Unload() override;
 
-    ImageId GetImageId(
-        const CoordsXY& position, uint8_t length, uint8_t rotation, uint8_t offset, bool grid, bool underground) const;
+        void DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const override;
 
-    static TerrainSurfaceObject* GetById(ObjectEntryIndex entryIndex);
-};
+        ImageId GetImageId(
+            const CoordsXY& position, uint8_t length, uint8_t rotation, uint8_t offset, bool grid, bool underground) const;
+
+        static TerrainSurfaceObject* GetById(ObjectEntryIndex entryIndex);
+    };
+} // namespace OpenRCT2

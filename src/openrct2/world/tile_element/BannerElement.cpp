@@ -5,6 +5,8 @@
 #include "../../object/ObjectManager.h"
 #include "../Banner.h"
 
+using namespace OpenRCT2;
+
 Banner* BannerElement::GetBanner() const
 {
     return ::GetBanner(GetIndex());

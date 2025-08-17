@@ -21,7 +21,11 @@
     #include <vector>
 
 class NetworkPlayer;
-struct ObjectRepositoryItem;
+
+namespace OpenRCT2
+{
+    struct ObjectRepositoryItem;
+}
 
 class NetworkConnection final
 {
@@ -34,7 +38,7 @@ public:
     uint32_t PingTime = 0;
     NetworkKey Key;
     std::vector<uint8_t> Challenge;
-    std::vector<const ObjectRepositoryItem*> RequestedObjects;
+    std::vector<const OpenRCT2::ObjectRepositoryItem*> RequestedObjects;
     bool ShouldDisconnect = false;
 
     NetworkConnection() noexcept;

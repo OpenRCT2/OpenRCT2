@@ -609,34 +609,34 @@ struct DataSerializerTraitsT<NetworkCheatType_t>
 };
 
 template<>
-struct DataSerializerTraitsT<RCTObjectEntry>
+struct DataSerializerTraitsT<OpenRCT2::RCTObjectEntry>
 {
-    static void encode(OpenRCT2::IStream* stream, const RCTObjectEntry& val)
+    static void encode(OpenRCT2::IStream* stream, const OpenRCT2::RCTObjectEntry& val)
     {
         stream->WriteValue(ByteSwapBE(val.flags));
         stream->WriteArray(val.nameWOC, 12);
     }
-    static void decode(OpenRCT2::IStream* stream, RCTObjectEntry& val)
+    static void decode(OpenRCT2::IStream* stream, OpenRCT2::RCTObjectEntry& val)
     {
         val.flags = ByteSwapBE(stream->ReadValue<uint32_t>());
         auto str = stream->ReadArray<char>(12);
         memcpy(val.nameWOC, str.get(), 12);
     }
-    static void log(OpenRCT2::IStream* stream, const RCTObjectEntry& val)
+    static void log(OpenRCT2::IStream* stream, const OpenRCT2::RCTObjectEntry& val)
     {
         stream->WriteArray(val.name, 8);
     }
 };
 
 template<>
-struct DataSerializerTraitsT<ObjectEntryDescriptor>
+struct DataSerializerTraitsT<OpenRCT2::ObjectEntryDescriptor>
 {
-    static void encode(OpenRCT2::IStream* stream, const ObjectEntryDescriptor& val)
+    static void encode(OpenRCT2::IStream* stream, const OpenRCT2::ObjectEntryDescriptor& val)
     {
         stream->WriteValue<uint8_t>(static_cast<uint8_t>(val.Generation));
-        if (val.Generation == ObjectGeneration::DAT)
+        if (val.Generation == OpenRCT2::ObjectGeneration::DAT)
         {
-            DataSerializerTraits<RCTObjectEntry> s;
+            DataSerializerTraits<OpenRCT2::RCTObjectEntry> s;
             s.encode(stream, val.Entry);
         }
         else
@@ -646,25 +646,25 @@ struct DataSerializerTraitsT<ObjectEntryDescriptor>
         }
     }
 
-    static void decode(OpenRCT2::IStream* stream, ObjectEntryDescriptor& val)
+    static void decode(OpenRCT2::IStream* stream, OpenRCT2::ObjectEntryDescriptor& val)
     {
-        auto generation = static_cast<ObjectGeneration>(stream->ReadValue<uint8_t>());
-        if (generation == ObjectGeneration::DAT)
+        auto generation = static_cast<OpenRCT2::ObjectGeneration>(stream->ReadValue<uint8_t>());
+        if (generation == OpenRCT2::ObjectGeneration::DAT)
         {
-            DataSerializerTraits<RCTObjectEntry> s;
-            RCTObjectEntry entry;
+            DataSerializerTraits<OpenRCT2::RCTObjectEntry> s;
+            OpenRCT2::RCTObjectEntry entry;
             s.decode(stream, entry);
-            val = ObjectEntryDescriptor(entry);
+            val = OpenRCT2::ObjectEntryDescriptor(entry);
         }
         else
         {
-            auto type = static_cast<ObjectType>(stream->ReadValue<uint8_t>());
+            auto type = static_cast<OpenRCT2::ObjectType>(stream->ReadValue<uint8_t>());
             auto identifier = stream->ReadString();
-            val = ObjectEntryDescriptor(type, identifier);
+            val = OpenRCT2::ObjectEntryDescriptor(type, identifier);
         }
     }
 
-    static void log(OpenRCT2::IStream* stream, const ObjectEntryDescriptor& val)
+    static void log(OpenRCT2::IStream* stream, const OpenRCT2::ObjectEntryDescriptor& val)
     {
         auto identifier = std::string(val.GetName());
         char msg[128] = {};
@@ -758,7 +758,7 @@ struct DataSerializerTraitsT<TrackDesignSceneryElement>
         stream->WriteValue(val.primaryColour);
         stream->WriteValue(val.secondaryColour);
         stream->WriteValue(val.tertiaryColour);
-        DataSerializerTraits<ObjectEntryDescriptor> s;
+        DataSerializerTraits<OpenRCT2::ObjectEntryDescriptor> s;
         s.encode(stream, val.sceneryObject);
     }
     static void decode(OpenRCT2::IStream* stream, TrackDesignSceneryElement& val)
@@ -768,7 +768,7 @@ struct DataSerializerTraitsT<TrackDesignSceneryElement>
         stream->ReadValue(val.primaryColour);
         stream->ReadValue(val.secondaryColour);
         stream->ReadValue(val.tertiaryColour);
-        DataSerializerTraits<ObjectEntryDescriptor> s;
+        DataSerializerTraits<OpenRCT2::ObjectEntryDescriptor> s;
         s.decode(stream, val.sceneryObject);
     }
     static void log(OpenRCT2::IStream* stream, const TrackDesignSceneryElement& val)
@@ -961,7 +961,7 @@ struct DataSerializerTraitsT<Banner>
     static void encode(OpenRCT2::IStream* stream, const Banner& banner)
     {
         DataSerializerTraits<BannerIndex>().encode(stream, banner.id);
-        DataSerializerTraits<ObjectEntryIndex>().encode(stream, banner.type);
+        DataSerializerTraits<OpenRCT2::ObjectEntryIndex>().encode(stream, banner.type);
         stream->WriteValue(banner.flags);
         stream->WriteString(banner.text);
         stream->WriteValue(banner.colour);
@@ -973,7 +973,7 @@ struct DataSerializerTraitsT<Banner>
     static void decode(OpenRCT2::IStream* stream, Banner& banner)
     {
         DataSerializerTraits<BannerIndex>().decode(stream, banner.id);
-        DataSerializerTraits<ObjectEntryIndex>().decode(stream, banner.type);
+        DataSerializerTraits<OpenRCT2::ObjectEntryIndex>().decode(stream, banner.type);
         stream->ReadValue(banner.flags);
         banner.text = stream->ReadString();
         stream->ReadValue(banner.colour);

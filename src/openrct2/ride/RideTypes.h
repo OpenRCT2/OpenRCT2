@@ -27,7 +27,7 @@ static ride_type_t constexpr kRideTypeNull = 0xFF;
 struct RideSelection
 {
     ride_type_t Type = kRideTypeNull;
-    ObjectEntryIndex EntryIndex = kObjectEntryIndexNull;
+    OpenRCT2::ObjectEntryIndex EntryIndex = OpenRCT2::kObjectEntryIndexNull;
 
     bool operator==(const RideSelection& other) const
     {

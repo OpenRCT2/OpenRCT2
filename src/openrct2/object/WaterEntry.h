@@ -12,18 +12,21 @@
 #include "../localisation/StringIdType.h"
 #include "ObjectTypes.h"
 
-enum
+namespace OpenRCT2
 {
-    WATER_FLAGS_ALLOW_DUCKS = (1 << 0)
-};
+    enum
+    {
+        WATER_FLAGS_ALLOW_DUCKS = (1 << 0)
+    };
 
-struct WaterObjectEntry
-{
-    static constexpr auto kObjectType = ObjectType::water;
+    struct WaterObjectEntry
+    {
+        static constexpr auto kObjectType = ObjectType::water;
 
-    StringId string_idx;      // 0x00
-    uint32_t image_id;        // 0x02
-    uint32_t palette_index_1; // 0x06
-    uint32_t palette_index_2; // 0x0A
-    uint16_t flags;           // 0x0E
-};
+        StringId string_idx;      // 0x00
+        uint32_t image_id;        // 0x02
+        uint32_t palette_index_1; // 0x06
+        uint32_t palette_index_2; // 0x0A
+        uint16_t flags;           // 0x0E
+    };
+} // namespace OpenRCT2

@@ -17,70 +17,71 @@
 #include "../localisation/Language.h"
 #include "../paint/tile_element/Paint.TileElement.h"
 
-using namespace OpenRCT2;
-
-void EntranceObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
+namespace OpenRCT2
 {
-    stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
-    _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
-    _legacyType.text_height = stream->ReadValue<uint8_t>();
-
-    GetStringTable().Read(context, stream, ObjectStringID::NAME);
-    GetImageTable().Read(context, stream);
-}
-
-void EntranceObject::Load()
-{
-    GetStringTable().Sort();
-    _legacyType.string_idx = LanguageAllocateObjectString(GetName());
-    _legacyType.image_id = LoadImages();
-}
-
-void EntranceObject::Unload()
-{
-    LanguageFreeObjectString(_legacyType.string_idx);
-    UnloadImages();
-
-    _legacyType.string_idx = 0;
-    _legacyType.image_id = 0;
-}
-
-void EntranceObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
-{
-    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
-    GfxDrawSprite(rt, ImageId(_legacyType.image_id + 1), screenCoords + ScreenCoordsXY{ -32, 14 });
-    GfxDrawSprite(rt, ImageId(_legacyType.image_id + 0), screenCoords + ScreenCoordsXY{ 0, 28 });
-    GfxDrawSprite(rt, ImageId(_legacyType.image_id + 2), screenCoords + ScreenCoordsXY{ 32, 44 });
-}
-
-void EntranceObject::ReadJson(IReadObjectContext* context, json_t& root)
-{
-    Guard::Assert(root.is_object(), "EntranceObject::ReadJson expects parameter root to be object");
-
-    json_t properties = root["properties"];
-
-    if (properties.is_object())
+    void EntranceObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
     {
-        _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"]);
-        _legacyType.text_height = Json::GetNumber<uint8_t>(properties["textHeight"]);
+        stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
+        _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
+        _legacyType.text_height = stream->ReadValue<uint8_t>();
+
+        GetStringTable().Read(context, stream, ObjectStringID::NAME);
+        GetImageTable().Read(context, stream);
     }
 
-    PopulateTablesFromJson(context, root);
-}
+    void EntranceObject::Load()
+    {
+        GetStringTable().Sort();
+        _legacyType.string_idx = LanguageAllocateObjectString(GetName());
+        _legacyType.image_id = LoadImages();
+    }
 
-ImageIndex EntranceObject::GetImage(uint8_t sequence, Direction direction) const
-{
-    if (sequence > 2)
-        return kImageIndexUndefined;
-    return _legacyType.image_id + ((direction & 3) * 3) + sequence;
-}
+    void EntranceObject::Unload()
+    {
+        LanguageFreeObjectString(_legacyType.string_idx);
+        UnloadImages();
 
-uint8_t EntranceObject::GetScrollingMode() const
-{
-    return _legacyType.scrolling_mode;
-}
+        _legacyType.string_idx = 0;
+        _legacyType.image_id = 0;
+    }
 
-uint8_t EntranceObject::GetTextHeight() const
-{
-    return _legacyType.text_height;
-}
+    void EntranceObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
+    {
+        auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
+        GfxDrawSprite(rt, ImageId(_legacyType.image_id + 1), screenCoords + ScreenCoordsXY{ -32, 14 });
+        GfxDrawSprite(rt, ImageId(_legacyType.image_id + 0), screenCoords + ScreenCoordsXY{ 0, 28 });
+        GfxDrawSprite(rt, ImageId(_legacyType.image_id + 2), screenCoords + ScreenCoordsXY{ 32, 44 });
+    }
+
+    void EntranceObject::ReadJson(IReadObjectContext* context, json_t& root)
+    {
+        Guard::Assert(root.is_object(), "EntranceObject::ReadJson expects parameter root to be object");
+
+        json_t properties = root["properties"];
+
+        if (properties.is_object())
+        {
+            _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"]);
+            _legacyType.text_height = Json::GetNumber<uint8_t>(properties["textHeight"]);
+        }
+
+        PopulateTablesFromJson(context, root);
+    }
+
+    ImageIndex EntranceObject::GetImage(uint8_t sequence, Direction direction) const
+    {
+        if (sequence > 2)
+            return kImageIndexUndefined;
+        return _legacyType.image_id + ((direction & 3) * 3) + sequence;
+    }
+
+    uint8_t EntranceObject::GetScrollingMode() const
+    {
+        return _legacyType.scrolling_mode;
+    }
+
+    uint8_t EntranceObject::GetTextHeight() const
+    {
+        return _legacyType.text_height;
+    }
+} // namespace OpenRCT2

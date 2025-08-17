@@ -16,6 +16,8 @@
 #include "../../object/ObjectManager.h"
 #include "../Entrance.h"
 
+using namespace OpenRCT2;
+
 // rct2: 0x0097B974
 static constexpr uint16_t kEntranceDirections[] = {
     (4),     0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_RIDE_ENTRANCE,

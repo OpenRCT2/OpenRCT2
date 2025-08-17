@@ -32,20 +32,22 @@ namespace OpenRCT2
     {
         struct FootpathMapping;
     }
+
+    struct ObjectEntryDescriptor;
+    class ObjectList;
 } // namespace OpenRCT2
 
-struct ObjectEntryDescriptor;
-class ObjectList;
 using ride_type_t = uint16_t;
 enum class SpecialElement : uint8_t;
 using SpecialElements = FlagHolder<uint8_t, SpecialElement>;
 
 std::string_view MapToNewObjectIdentifier(std::string_view s);
 std::optional<std::string_view> GetDATPathName(std::string_view newPathName);
-const OpenRCT2::RCT2::FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& desc);
+const OpenRCT2::RCT2::FootpathMapping* GetFootpathMapping(const OpenRCT2::ObjectEntryDescriptor& desc);
 void UpdateFootpathsFromMapping(
-    ObjectEntryIndex* pathToSurfaceMap, ObjectEntryIndex* pathToQueueSurfaceMap, ObjectEntryIndex* pathToRailingsMap,
-    ObjectList& requiredObjects, ObjectEntryIndex entryIndex, const OpenRCT2::RCT2::FootpathMapping* footpathMapping);
+    OpenRCT2::ObjectEntryIndex* pathToSurfaceMap, OpenRCT2::ObjectEntryIndex* pathToQueueSurfaceMap,
+    OpenRCT2::ObjectEntryIndex* pathToRailingsMap, OpenRCT2::ObjectList& requiredObjects, OpenRCT2::ObjectEntryIndex entryIndex,
+    const OpenRCT2::RCT2::FootpathMapping* footpathMapping);
 
 std::span<const std::string_view> GetLegacyPeepAnimationObjects();
 void ConvertPeepAnimationTypeToObjects(OpenRCT2::GameState_t& gameState);

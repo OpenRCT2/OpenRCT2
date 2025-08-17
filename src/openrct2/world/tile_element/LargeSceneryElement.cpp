@@ -16,6 +16,8 @@
 
 #include <cassert>
 
+using namespace OpenRCT2;
+
 colour_t LargeSceneryElement::GetPrimaryColour() const
 {
     return Colour[0];

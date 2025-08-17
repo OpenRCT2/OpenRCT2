@@ -13,17 +13,20 @@
 
 #include <array>
 
-/**
- * Used by all editor modes: Scenario Editor, Track Designer and Track Designs Manager.
- */
-extern const std::array<std::string_view, 3> kMinimumRequiredObjects;
+namespace OpenRCT2
+{
+    /**
+     * Used by all editor modes: Scenario Editor, Track Designer and Track Designs Manager.
+     */
+    extern const std::array<std::string_view, 3> kMinimumRequiredObjects;
 
-/**
- * Used by the Scenario Editor and Track Designer.
- */
-extern const std::array<std::string_view, 82> kCommonScenarioAndTrackDesignerObjects;
+    /**
+     * Used by the Scenario Editor and Track Designer.
+     */
+    extern const std::array<std::string_view, 82> kCommonScenarioAndTrackDesignerObjects;
 
-/**
- * Used only by the Scenario Editor.
- */
-extern const std::array<std::string_view, 37> kDefaultScenarioObjects;
+    /**
+     * Used only by the Scenario Editor.
+     */
+    extern const std::array<std::string_view, 37> kDefaultScenarioObjects;
+} // namespace OpenRCT2

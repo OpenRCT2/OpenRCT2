@@ -61,7 +61,7 @@ struct TrackDesignEntranceElement
 
 struct TrackDesignSceneryElement
 {
-    ObjectEntryDescriptor sceneryObject{};
+    OpenRCT2::ObjectEntryDescriptor sceneryObject{};
     CoordsXYZ loc{};
     uint8_t flags{};
     colour_t primaryColour{};
@@ -143,7 +143,7 @@ enum class TrackDesignGameStateFlag
 struct TrackDesignTrackAndVehicleSettings
 {
     ride_type_t rtdIndex{};
-    ObjectEntryDescriptor vehicleObject{};
+    OpenRCT2::ObjectEntryDescriptor vehicleObject{};
     uint8_t numberOfTrains{};
     uint8_t numberOfCarsPerTrain{};
 };

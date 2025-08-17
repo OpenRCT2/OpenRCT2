@@ -34,11 +34,11 @@ struct WallElement : TileElementBase
     static constexpr TileElementType kElementType = TileElementType::Wall;
 
 private:
-    ObjectEntryIndex entryIndex; // 05
-    colour_t colour_1;           // 07
-    colour_t colour_2;           // 08
-    colour_t colour_3;           // 09
-    BannerIndex banner_index;    // 0A
+    OpenRCT2::ObjectEntryIndex entryIndex; // 05
+    colour_t colour_1;                     // 07
+    colour_t colour_2;                     // 08
+    colour_t colour_3;                     // 09
+    BannerIndex banner_index;              // 0A
     uint8_t animation; // 0C 0b_dfff_fta0 d = direction, f = frame num, t = across track flag (not used), a = animating
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
@@ -48,7 +48,7 @@ private:
 public:
     uint16_t GetEntryIndex() const;
     void SetEntryIndex(uint16_t newIndex);
-    const WallSceneryEntry* GetEntry() const;
+    const OpenRCT2::WallSceneryEntry* GetEntry() const;
 
     uint8_t GetSlope() const;
     void SetSlope(uint8_t newslope);

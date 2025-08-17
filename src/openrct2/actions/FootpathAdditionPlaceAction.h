@@ -15,11 +15,11 @@ class FootpathAdditionPlaceAction final : public GameActionBase<GameCommand::Pla
 {
 private:
     CoordsXYZ _loc;
-    ObjectEntryIndex _entryIndex{};
+    OpenRCT2::ObjectEntryIndex _entryIndex{};
 
 public:
     FootpathAdditionPlaceAction() = default;
-    FootpathAdditionPlaceAction(const CoordsXYZ& loc, ObjectEntryIndex pathItemType);
+    FootpathAdditionPlaceAction(const CoordsXYZ& loc, OpenRCT2::ObjectEntryIndex pathItemType);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

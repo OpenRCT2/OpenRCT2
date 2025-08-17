@@ -53,171 +53,173 @@
 #include <memory>
 #include <unordered_map>
 
-using namespace OpenRCT2;
-using namespace OpenRCT2::SawyerCoding;
-
-struct IFileDataRetriever
+namespace OpenRCT2
 {
-    virtual ~IFileDataRetriever() = default;
-    virtual std::vector<uint8_t> GetData(std::string_view path) const = 0;
-    virtual ObjectAsset GetAsset(std::string_view path) const = 0;
-};
+    using namespace OpenRCT2::SawyerCoding;
 
-class FileSystemDataRetriever : public IFileDataRetriever
-{
-private:
-    std::string _basePath;
-
-public:
-    FileSystemDataRetriever(std::string_view basePath)
-        : _basePath(basePath)
+    struct IFileDataRetriever
     {
-    }
+        virtual ~IFileDataRetriever() = default;
+        virtual std::vector<uint8_t> GetData(std::string_view path) const = 0;
+        virtual ObjectAsset GetAsset(std::string_view path) const = 0;
+    };
 
-    std::vector<uint8_t> GetData(std::string_view path) const override
+    class FileSystemDataRetriever : public IFileDataRetriever
     {
-        auto absolutePath = Path::Combine(_basePath, path);
-        return File::ReadAllBytes(absolutePath);
-    }
+    private:
+        std::string _basePath;
 
-    ObjectAsset GetAsset(std::string_view path) const override
-    {
-        if (Path::IsAbsolute(path))
+    public:
+        FileSystemDataRetriever(std::string_view basePath)
+            : _basePath(basePath)
         {
-            return ObjectAsset(path);
         }
-        else
+
+        std::vector<uint8_t> GetData(std::string_view path) const override
         {
             auto absolutePath = Path::Combine(_basePath, path);
-            return ObjectAsset(absolutePath);
+            return File::ReadAllBytes(absolutePath);
         }
-    }
-};
 
-class ZipDataRetriever : public IFileDataRetriever
-{
-private:
-    const std::string _path;
-    const IZipArchive& _zipArchive;
-
-public:
-    ZipDataRetriever(std::string_view path, const IZipArchive& zipArchive)
-        : _path(path)
-        , _zipArchive(zipArchive)
-    {
-    }
-
-    std::vector<uint8_t> GetData(std::string_view path) const override
-    {
-        return _zipArchive.GetFileData(path);
-    }
-
-    ObjectAsset GetAsset(std::string_view path) const override
-    {
-        return ObjectAsset(_path, path);
-    }
-};
-
-class ReadObjectContext : public IReadObjectContext
-{
-private:
-    IObjectRepository& _objectRepository;
-    const IFileDataRetriever* _fileDataRetriever;
-
-    std::string _identifier;
-    bool _loadImages;
-    std::string _basePath;
-    bool _wasVerbose = false;
-    bool _wasWarning = false;
-    bool _wasError = false;
-
-public:
-    bool WasVerbose() const
-    {
-        return _wasVerbose;
-    }
-    bool WasWarning() const
-    {
-        return _wasWarning;
-    }
-    bool WasError() const
-    {
-        return _wasError;
-    }
-
-    ReadObjectContext(
-        IObjectRepository& objectRepository, const std::string& identifier, bool loadImages,
-        const IFileDataRetriever* fileDataRetriever)
-        : _objectRepository(objectRepository)
-        , _fileDataRetriever(fileDataRetriever)
-        , _identifier(identifier)
-        , _loadImages(loadImages)
-    {
-    }
-
-    std::string_view GetObjectIdentifier() override
-    {
-        return _identifier;
-    }
-
-    IObjectRepository& GetObjectRepository() override
-    {
-        return _objectRepository;
-    }
-
-    bool ShouldLoadImages() override
-    {
-        return _loadImages;
-    }
-
-    std::vector<uint8_t> GetData(std::string_view path) override
-    {
-        if (_fileDataRetriever != nullptr)
+        ObjectAsset GetAsset(std::string_view path) const override
         {
-            return _fileDataRetriever->GetData(path);
+            if (Path::IsAbsolute(path))
+            {
+                return ObjectAsset(path);
+            }
+            else
+            {
+                auto absolutePath = Path::Combine(_basePath, path);
+                return ObjectAsset(absolutePath);
+            }
         }
-        return {};
-    }
+    };
 
-    ObjectAsset GetAsset(std::string_view path) override
+    class ZipDataRetriever : public IFileDataRetriever
     {
-        if (_fileDataRetriever != nullptr)
-        {
-            return _fileDataRetriever->GetAsset(path);
-        }
-        return {};
-    }
+    private:
+        const std::string _path;
+        const IZipArchive& _zipArchive;
 
-    void LogVerbose(ObjectError code, const utf8* text) override
+    public:
+        ZipDataRetriever(std::string_view path, const IZipArchive& zipArchive)
+            : _path(path)
+            , _zipArchive(zipArchive)
+        {
+        }
+
+        std::vector<uint8_t> GetData(std::string_view path) const override
+        {
+            return _zipArchive.GetFileData(path);
+        }
+
+        ObjectAsset GetAsset(std::string_view path) const override
+        {
+            return ObjectAsset(_path, path);
+        }
+    };
+
+    class ReadObjectContext : public IReadObjectContext
     {
-        _wasVerbose = true;
+    private:
+        IObjectRepository& _objectRepository;
+        const IFileDataRetriever* _fileDataRetriever;
 
-        if (!String::isNullOrEmpty(text))
+        std::string _identifier;
+        bool _loadImages;
+        std::string _basePath;
+        bool _wasVerbose = false;
+        bool _wasWarning = false;
+        bool _wasError = false;
+
+    public:
+        bool WasVerbose() const
         {
-            LOG_VERBOSE("[%s] Info (%d): %s", _identifier.c_str(), code, text);
+            return _wasVerbose;
         }
-    }
-
-    void LogWarning(ObjectError code, const utf8* text) override
-    {
-        _wasWarning = true;
-
-        if (!String::isNullOrEmpty(text))
+        bool WasWarning() const
         {
-            Console::Error::WriteLine("[%s] Warning (%d): %s", _identifier.c_str(), code, text);
+            return _wasWarning;
         }
-    }
-
-    void LogError(ObjectError code, const utf8* text) override
-    {
-        _wasError = true;
-
-        if (!String::isNullOrEmpty(text))
+        bool WasError() const
         {
-            Console::Error::WriteLine("[%s] Error (%d): %s", _identifier.c_str(), code, text);
+            return _wasError;
         }
-    }
-};
+
+        ReadObjectContext(
+            IObjectRepository& objectRepository, const std::string& identifier, bool loadImages,
+            const IFileDataRetriever* fileDataRetriever)
+            : _objectRepository(objectRepository)
+            , _fileDataRetriever(fileDataRetriever)
+            , _identifier(identifier)
+            , _loadImages(loadImages)
+        {
+        }
+
+        std::string_view GetObjectIdentifier() override
+        {
+            return _identifier;
+        }
+
+        IObjectRepository& GetObjectRepository() override
+        {
+            return _objectRepository;
+        }
+
+        bool ShouldLoadImages() override
+        {
+            return _loadImages;
+        }
+
+        std::vector<uint8_t> GetData(std::string_view path) override
+        {
+            if (_fileDataRetriever != nullptr)
+            {
+                return _fileDataRetriever->GetData(path);
+            }
+            return {};
+        }
+
+        ObjectAsset GetAsset(std::string_view path) override
+        {
+            if (_fileDataRetriever != nullptr)
+            {
+                return _fileDataRetriever->GetAsset(path);
+            }
+            return {};
+        }
+
+        void LogVerbose(ObjectError code, const utf8* text) override
+        {
+            _wasVerbose = true;
+
+            if (!String::isNullOrEmpty(text))
+            {
+                LOG_VERBOSE("[%s] Info (%d): %s", _identifier.c_str(), code, text);
+            }
+        }
+
+        void LogWarning(ObjectError code, const utf8* text) override
+        {
+            _wasWarning = true;
+
+            if (!String::isNullOrEmpty(text))
+            {
+                Console::Error::WriteLine("[%s] Warning (%d): %s", _identifier.c_str(), code, text);
+            }
+        }
+
+        void LogError(ObjectError code, const utf8* text) override
+        {
+            _wasError = true;
+
+            if (!String::isNullOrEmpty(text))
+            {
+                Console::Error::WriteLine("[%s] Error (%d): %s", _identifier.c_str(), code, text);
+            }
+        }
+    };
+} // namespace OpenRCT2
 
 namespace OpenRCT2::ObjectFactory
 {

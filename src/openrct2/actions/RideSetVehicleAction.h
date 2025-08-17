@@ -43,5 +43,5 @@ public:
 private:
     bool RideIsVehicleTypeValid(const Ride& ride) const;
 
-    static_assert(sizeof(_value) >= sizeof(ObjectEntryIndex));
+    static_assert(sizeof(_value) >= sizeof(OpenRCT2::ObjectEntryIndex));
 };

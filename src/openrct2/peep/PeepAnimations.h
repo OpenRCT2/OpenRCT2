@@ -17,12 +17,13 @@
 #include <string>
 #include <vector>
 
-class PeepAnimationsObject;
 enum class RCT12PeepAnimationGroup : uint8_t;
 enum class StaffType : uint8_t;
 
 namespace OpenRCT2
 {
+    class PeepAnimationsObject;
+
     enum class AnimationPeepType : uint8_t
     {
         Guest,

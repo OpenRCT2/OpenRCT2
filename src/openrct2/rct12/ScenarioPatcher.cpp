@@ -425,7 +425,7 @@ static void ApplySurfaceFixes(const json_t& scenarioPatch)
 
         auto destinationSurface = OpenRCT2::Json::GetString(surfaceFixes[i][_destinationSurface]);
         auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-        auto surfaceObj = objectManager.GetLoadedObject(ObjectEntryDescriptor::Parse(destinationSurface));
+        auto surfaceObj = objectManager.GetLoadedObject(OpenRCT2::ObjectEntryDescriptor::Parse(destinationSurface));
         if (surfaceObj == nullptr)
         {
             OpenRCT2::Guard::Assert(0, "Surface object not found");
@@ -636,13 +636,13 @@ static void ApplyPathFixes(const json_t& scenarioPatch)
         auto railingsObjIndex = objectManager.GetLoadedObjectEntryIndex(railings);
         auto surfaceObjIndex = objectManager.GetLoadedObjectEntryIndex(surface);
 
-        if (railingsObjIndex == kObjectEntryIndexNull)
+        if (railingsObjIndex == OpenRCT2::kObjectEntryIndexNull)
         {
             OpenRCT2::Guard::Assert(0, "Railings object not found");
             return;
         }
 
-        if (surfaceObjIndex == kObjectEntryIndexNull)
+        if (surfaceObjIndex == OpenRCT2::kObjectEntryIndexNull)
         {
             OpenRCT2::Guard::Assert(0, "Surface object not found");
             return;

@@ -62,13 +62,13 @@ public:
     uint8_t GetSlope() const;
     void SetSlope(uint8_t newSlope);
 
-    ObjectEntryIndex GetSurfaceObjectIndex() const;
-    TerrainSurfaceObject* GetSurfaceObject() const;
-    void SetSurfaceObjectIndex(ObjectEntryIndex newStyle);
+    OpenRCT2::ObjectEntryIndex GetSurfaceObjectIndex() const;
+    OpenRCT2::TerrainSurfaceObject* GetSurfaceObject() const;
+    void SetSurfaceObjectIndex(OpenRCT2::ObjectEntryIndex newStyle);
 
-    ObjectEntryIndex GetEdgeObjectIndex() const;
-    TerrainEdgeObject* GetEdgeObject() const;
-    void SetEdgeObjectIndex(ObjectEntryIndex newStyle);
+    OpenRCT2::ObjectEntryIndex GetEdgeObjectIndex() const;
+    OpenRCT2::TerrainEdgeObject* GetEdgeObject() const;
+    void SetEdgeObjectIndex(OpenRCT2::ObjectEntryIndex newStyle);
 
     bool CanGrassGrow() const;
     uint8_t GetGrassLength() const;

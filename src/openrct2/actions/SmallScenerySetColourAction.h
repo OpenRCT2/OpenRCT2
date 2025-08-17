@@ -16,7 +16,7 @@ class SmallScenerySetColourAction final : public GameActionBase<GameCommand::Set
 private:
     CoordsXYZ _loc;
     uint8_t _quadrant{};
-    ObjectEntryIndex _sceneryType{};
+    OpenRCT2::ObjectEntryIndex _sceneryType{};
     uint8_t _primaryColour{};
     uint8_t _secondaryColour{};
     uint8_t _tertiaryColour{};
@@ -24,8 +24,8 @@ private:
 public:
     SmallScenerySetColourAction() = default;
     SmallScenerySetColourAction(
-        const CoordsXYZ& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour,
-        uint8_t tertiaryColour);
+        const CoordsXYZ& loc, uint8_t quadrant, OpenRCT2::ObjectEntryIndex sceneryType, uint8_t primaryColour,
+        uint8_t secondaryColour, uint8_t tertiaryColour);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

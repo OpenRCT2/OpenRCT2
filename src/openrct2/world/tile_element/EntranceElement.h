@@ -45,13 +45,13 @@ struct EntranceElement : TileElementBase
     static constexpr TileElementType kElementType = TileElementType::Entrance;
 
 private:
-    uint8_t entranceType;        // 5
-    uint8_t SequenceIndex;       // 6. Only uses the lower nibble.
-    StationIndex stationIndex;   // 7
-    ObjectEntryIndex PathType;   // 8
-    RideId rideIndex;            // A
-    uint8_t flags2;              // C
-    ObjectEntryIndex entryIndex; // D
+    uint8_t entranceType;                  // 5
+    uint8_t SequenceIndex;                 // 6. Only uses the lower nibble.
+    StationIndex stationIndex;             // 7
+    OpenRCT2::ObjectEntryIndex PathType;   // 8
+    RideId rideIndex;                      // A
+    uint8_t flags2;                        // C
+    OpenRCT2::ObjectEntryIndex entryIndex; // D
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t Pad0F[1];
@@ -72,20 +72,20 @@ public:
 
     bool HasLegacyPathEntry() const;
 
-    ObjectEntryIndex GetLegacyPathEntryIndex() const;
-    const FootpathObject* GetLegacyPathEntry() const;
-    void SetLegacyPathEntryIndex(ObjectEntryIndex newPathType);
+    OpenRCT2::ObjectEntryIndex GetLegacyPathEntryIndex() const;
+    const OpenRCT2::FootpathObject* GetLegacyPathEntry() const;
+    void SetLegacyPathEntryIndex(OpenRCT2::ObjectEntryIndex newPathType);
 
-    ObjectEntryIndex GetSurfaceEntryIndex() const;
-    const FootpathSurfaceObject* GetSurfaceEntry() const;
-    void SetSurfaceEntryIndex(ObjectEntryIndex newIndex);
+    OpenRCT2::ObjectEntryIndex GetSurfaceEntryIndex() const;
+    const OpenRCT2::FootpathSurfaceObject* GetSurfaceEntry() const;
+    void SetSurfaceEntryIndex(OpenRCT2::ObjectEntryIndex newIndex);
 
     const PathSurfaceDescriptor* GetPathSurfaceDescriptor() const;
 
     int32_t GetDirections() const;
 
-    ObjectEntryIndex getEntryIndex() const;
-    void setEntryIndex(ObjectEntryIndex newIndex);
+    OpenRCT2::ObjectEntryIndex getEntryIndex() const;
+    void setEntryIndex(OpenRCT2::ObjectEntryIndex newIndex);
 };
 static_assert(sizeof(EntranceElement) == kTileElementSize);
 #pragma pack(pop)

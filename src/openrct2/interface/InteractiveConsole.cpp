@@ -1050,7 +1050,7 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
             return;
         }
 
-        const RCTObjectEntry* entry = &ori->ObjectEntry;
+        const auto* entry = &ori->ObjectEntry;
         const auto* loadedObject = ObjectManagerGetLoadedObject(ObjectEntryDescriptor(*ori));
         if (loadedObject != nullptr)
         {

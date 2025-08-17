@@ -19,6 +19,8 @@
 #include "../../object/PathAdditionEntry.h"
 #include "../Footpath.h"
 
+using namespace OpenRCT2;
+
 bool PathElement::IsSloped() const
 {
     return (Flags2 & FOOTPATH_ELEMENT_FLAGS2_IS_SLOPED) != 0;

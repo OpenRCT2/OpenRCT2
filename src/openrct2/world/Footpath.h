@@ -12,9 +12,13 @@
 #include "../Identifiers.h"
 #include "../object/Object.h"
 
-class FootpathObject;
-class FootpathSurfaceObject;
-class FootpathRailingsObject;
+namespace OpenRCT2
+{
+    class FootpathObject;
+    class FootpathSurfaceObject;
+    class FootpathRailingsObject;
+} // namespace OpenRCT2
+
 struct PathElement;
 struct TileElement;
 
@@ -59,13 +63,13 @@ namespace OpenRCT2::PathConstructFlag
 
 struct FootpathSelection
 {
-    ObjectEntryIndex LegacyPath = kObjectEntryIndexNull;
-    ObjectEntryIndex NormalSurface = kObjectEntryIndexNull;
-    ObjectEntryIndex QueueSurface = kObjectEntryIndexNull;
-    ObjectEntryIndex Railings = kObjectEntryIndexNull;
+    OpenRCT2::ObjectEntryIndex LegacyPath = OpenRCT2::kObjectEntryIndexNull;
+    OpenRCT2::ObjectEntryIndex NormalSurface = OpenRCT2::kObjectEntryIndexNull;
+    OpenRCT2::ObjectEntryIndex QueueSurface = OpenRCT2::kObjectEntryIndexNull;
+    OpenRCT2::ObjectEntryIndex Railings = OpenRCT2::kObjectEntryIndexNull;
     bool IsQueueSelected{};
 
-    ObjectEntryIndex GetSelectedSurface() const
+    OpenRCT2::ObjectEntryIndex GetSelectedSurface() const
     {
         return IsQueueSelected ? QueueSurface : NormalSurface;
     }
@@ -145,9 +149,9 @@ int32_t FootpathIsConnectedToMapEdge(const CoordsXYZ& footpathPos, int32_t direc
 void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement);
 
 bool FootpathSelectDefault();
-const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex);
-const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex);
-const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex);
+const OpenRCT2::FootpathObject* GetLegacyFootpathEntry(OpenRCT2::ObjectEntryIndex entryIndex);
+const OpenRCT2::FootpathSurfaceObject* GetPathSurfaceEntry(OpenRCT2::ObjectEntryIndex entryIndex);
+const OpenRCT2::FootpathRailingsObject* GetPathRailingsEntry(OpenRCT2::ObjectEntryIndex entryIndex);
 
 void FootpathQueueChainReset();
 void FootpathQueueChainPush(RideId rideIndex);
