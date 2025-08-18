@@ -67,7 +67,7 @@ namespace OpenRCT2
     {
         bool operator()(const RCTObjectEntry& lhs, const RCTObjectEntry& rhs) const
         {
-            return memcmp(&lhs.name, &rhs.name, 8) == 0;
+            return lhs == rhs;
         }
     };
 
