@@ -2072,7 +2072,8 @@ void DrawSBendLeftSupports(
                     session.SupportColours);
             break;
         case 3:
-            MetalASupportsPaintSetup(session, supportType, MetalSupportPlace::centre, specialA, height, session.SupportColours);
+            MetalASupportsPaintSetupRotated(
+                session, supportType, MetalSupportPlace::centre, direction, specialA, height, session.SupportColours);
             break;
     }
 }
