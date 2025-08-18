@@ -3838,3 +3838,4 @@ STR_6799    :Mini mapa
 STR_7000    :ou
 STR_7001    :Nome da atração
 STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :O arquito de áudio ‘{STRING}’ está incompleto. {INT32} amostras eram esperadas, mas apenas {INT32} estão disponíveis. Considere reinstalar o RCT2.
