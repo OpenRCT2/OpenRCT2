@@ -93,10 +93,10 @@ namespace OpenRCT2::World::MapGenerator
             return;
 
         // Add sandy beaches
-        const auto& mapSize = settings->mapSize;
-        for (auto y = 1; y < mapSize.y - 1; y++)
+        auto& gameState = getGameState();
+        for (auto y = 1; y < gameState.mapSize.y - 1; y++)
         {
-            for (auto x = 1; x < mapSize.x - 1; x++)
+            for (auto x = 1; x < gameState.mapSize.x - 1; x++)
             {
                 auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
 
