@@ -28,6 +28,7 @@
 - Fix: [#24989] Classic Wooden Roller Coaster small banked turns do not block metal supports correctly.
 - Fix: [#24993] The Mine Train Coaster sloped left medium turn has an incorrectly rotated support at one angle.
 - Fix: [#24994] The Alpine Coaster and Mine Ride left s-bends have an incorrectly rotated support at certain angles.
+- Fix: [#25001] The Hybrid Coaster small banked sloped right turn and large sloped right turn to orthogonal have some incorrectly rotated supports.
 
 0.4.25 (2025-08-03)
 ------------------------------------------------------------------------
