@@ -18,13 +18,12 @@ uint32_t UtilRand()
     return _prng();
 }
 
-// Returns a random floating point number from the Standard Normal Distribution; mean of 0 and standard deviation of 1.
-// TODO: In C++20 this can be templated, where the standard deviation is passed as a value template argument.
-float UtilRandNormalDistributed()
+uint8_t UtilRandUniformDistributedByte()
 {
     thread_local std::mt19937 _prng{ std::random_device{}() };
-    thread_local std::normal_distribution<float> _distributor{ 0.0f, 1.0f };
-    return _distributor(_prng);
+    // char types are not permitted as type params of uniform_int_distribution...
+    thread_local std::uniform_int_distribution<uint16_t> _distributor{ 0, 255 };
+    return static_cast<uint8_t>(_distributor(_prng));
 }
 
 uint8_t Lerp(uint8_t a, uint8_t b, float t)
@@ -42,6 +41,12 @@ uint8_t Lerp(uint8_t a, uint8_t b, float t)
 float FLerp(float a, float b, float f)
 {
     return (a * (1.0f - f)) + (b * f);
+}
+
+float Smoothstep(float edge0, float edge1, float x)
+{
+    x = std::clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
+    return x * x * (3.0f - 2.0f * x);
 }
 
 uint8_t SoftLight(uint8_t a, uint8_t b)

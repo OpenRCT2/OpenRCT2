@@ -26,8 +26,10 @@
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Map.h>
+#include <openrct2/world/map_generator/Erosion.h>
 #include <openrct2/world/map_generator/MapGen.h>
 #include <openrct2/world/map_generator/PngTerrainGenerator.h>
+#include <random>
 
 using namespace OpenRCT2::World;
 
@@ -63,6 +65,9 @@ namespace OpenRCT2::Ui::Windows
         WIDX_MAP_SIZE_X,
         WIDX_MAP_SIZE_X_UP,
         WIDX_MAP_SIZE_X_DOWN,
+        WIDX_MAP_SEED_GROUP,
+        WIDX_MAP_SEED_RANDOM,
+        WIDX_MAP_SEED,
         WIDX_HEIGHTMAP_SOURCE,
         WIDX_HEIGHTMAP_SOURCE_DROPDOWN,
 
@@ -82,6 +87,13 @@ namespace OpenRCT2::Ui::Windows
         WIDX_HEIGHTMAP_STRENGTH_UP,
         WIDX_HEIGHTMAP_STRENGTH_DOWN,
 
+        WIDX_BIAS_GROUP,
+        WIDX_BIAS_TYPE,
+        WIDX_BIAS_TYPE_DROPDOWN,
+        WIDX_BIAS_STRENGTH,
+        WIDX_BIAS_STRENGTH_UP,
+        WIDX_BIAS_STRENGTH_DOWN,
+
         WIDX_HEIGHTMAP_LOW = TAB_BEGIN,
         WIDX_HEIGHTMAP_LOW_UP,
         WIDX_HEIGHTMAP_LOW_DOWN,
@@ -92,6 +104,10 @@ namespace OpenRCT2::Ui::Windows
         WIDX_WALL_TEXTURE,
         WIDX_RANDOM_TERRAIN,
         WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES,
+        WIDX_HEIGHTMAP_EROSION,
+        WIDX_HEIGHTMAP_EROSION_PPT,
+        WIDX_HEIGHTMAP_EROSION_PPT_UP,
+        WIDX_HEIGHTMAP_EROSION_PPT_DOWN,
 
         WIDX_WATER_LEVEL = TAB_BEGIN,
         WIDX_WATER_LEVEL_UP,
@@ -112,37 +128,46 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Widgets
 
-    static constexpr ScreenSize kWindowSize = { 300, 220 };
+    static constexpr ScreenSize kWindowSize = { 300, 276 };
 
     // clang-format off
     static constexpr auto makeMapGenWidgets = [](StringId title) {
         return makeWidgets(
             makeWindowShim(title, kWindowSize),
-            makeWidget({   0, 43 }, { kWindowSize.width, 177 }, WidgetType::resize, WindowColour::secondary),
-            makeTab   ({   3, 17 }),
-            makeTab   ({  34, 17 }),
-            makeTab   ({  65, 17 }),
-            makeTab   ({  96, 17 }),
-            makeWidget({ 185, 200 }, { 109, 14 }, WidgetType::button, WindowColour::secondary, STR_MAPGEN_ACTION_GENERATE)
+            makeWidget({   0,  43 }, { kWindowSize.width, 177 }, WidgetType::resize, WindowColour::secondary),
+            makeTab   ({   3,  17 }),
+            makeTab   ({  34,  17 }),
+            makeTab   ({  65,  17 }),
+            makeTab   ({  96,  17 }),
+            makeWidget({ 185, 256 }, { 109, 14 }, WidgetType::button, WindowColour::secondary, STR_MAPGEN_ACTION_GENERATE)
         );
     };
 
     static constexpr auto BaseWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_GENERATOR),
-        makeSpinnerWidgets ({165, 52}, { 50, 12}, WidgetType::spinner,      WindowColour::secondary, STR_COMMA16                                                ), // NB: 3 widgets
-        makeWidget         ({216, 52}, { 21, 12}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_G2_LINK_CHAIN), STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
-        makeSpinnerWidgets ({238, 52}, { 50, 12}, WidgetType::spinner,      WindowColour::secondary, STR_POP16_COMMA16                                          ), // NB: 3 widgets
-        makeDropdownWidgets({155, 70}, {133, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_HEIGHTMAP_FLATLAND                                     ),
+        makeSpinnerWidgets ({165,  52}, { 50, 12}, WidgetType::spinner,      WindowColour::secondary, STR_COMMA16                                                ), // NB: 3 widgets
+        makeWidget         ({216,  52}, { 21, 12}, WidgetType::flatBtn,      WindowColour::secondary, ImageId(SPR_G2_LINK_CHAIN), STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
+        makeSpinnerWidgets ({238,  52}, { 50, 12}, WidgetType::spinner,      WindowColour::secondary, STR_POP16_COMMA16                                          ), // NB: 3 widgets
 
-        makeWidget        ({  5,  90}, {290, 55}, WidgetType::groupbox, WindowColour::secondary, STR_MAPGEN_SIMPLEX_NOISE), // WIDX_SIMPLEX_GROUP
-        makeSpinnerWidgets({179, 107}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                          ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
-        makeSpinnerWidgets({179, 125}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                          ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
+        makeWidget         ({  5,  70}, {290, 41}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_SEED       ), // WIDX_SEED_GROUP
+        makeWidget         ({ 10,  90}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAPGEN_SEED_RANDOM), // WIDX_SEED_RANDOM
+        makeWidget         ({179,  90}, {109, 14}, WidgetType::textBox,      WindowColour::secondary                        ), // WIDX_SEED
 
-        makeWidget        ({  5,  90}, {290, 86}, WidgetType::groupbox, WindowColour::secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_GROUP
-        makeWidget        ({223, 107}, { 65, 14}, WidgetType::button,   WindowColour::secondary, STR_BROWSE                 ), // WIDX_HEIGHTMAP_BROWSE
-        makeWidget        ({ 10, 125}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
-        makeWidget        ({ 10, 141}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
-        makeSpinnerWidgets({179, 157}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                             )  // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
+        makeDropdownWidgets({179, 117}, {109, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_HEIGHTMAP_FLATLAND),
+
+        makeWidget         ({  5, 134}, {290, 56}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_SIMPLEX_NOISE  ), // WIDX_SIMPLEX_GROUP
+        makeSpinnerWidgets ({179, 151}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                            ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
+        makeSpinnerWidgets ({179, 169}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                            ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
+
+        makeWidget         ({  5, 134}, {290, 86}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_GROUP
+        makeWidget         ({223, 151}, { 65, 14}, WidgetType::button,       WindowColour::secondary, STR_BROWSE                 ), // WIDX_HEIGHTMAP_BROWSE
+        makeWidget         ({ 10, 169}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
+        makeWidget         ({ 10, 185}, {150, 12}, WidgetType::checkbox,     WindowColour::secondary, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
+        makeSpinnerWidgets ({179, 201}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                             ),  // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
+
+        makeWidget         ({  5, 194}, {290, 56}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_BIAS     ), // WIDX_BIAS_GROUP
+        makeDropdownWidgets({179, 210}, {109, 14}, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_BIAS_TYPE_NONE), // WIDX_BIAS_TYPE(_DROPDOWN)
+        makeSpinnerWidgets ({179, 230}, {109, 12}, WidgetType::spinner,      WindowColour::secondary                            )  // WIDX_BIAS_STRENGTH{,_UP,_DOWN}
     );
 
     static constexpr auto TerrainWidgets = makeWidgets(
@@ -152,7 +177,9 @@ namespace OpenRCT2::Ui::Windows
         makeWidget        ({179,  88}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_BASE_LAND_TIP    ),
         makeWidget        ({236,  88}, { 47, 36}, WidgetType::flatBtn,  WindowColour::secondary, 0xFFFFFFFF, STR_CHANGE_VERTICAL_LAND_TIP),
         makeWidget        ({ 10, 106}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN        ),
-        makeWidget        ({ 10, 122}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_SMOOTH_TILE                  )  // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
+        makeWidget        ({ 10, 122}, {150, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_SMOOTH_TILE                  ), // WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES
+        makeWidget        ({ 10, 138}, {255, 12}, WidgetType::checkbox, WindowColour::secondary, STR_EROSION                             ), // WIDX_HEIGHTMAP_EROSION
+        makeSpinnerWidgets({179, 154}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                                          )  // WIDX_HEIGHTMAP_EROSION_PARTICLES
     );
 
     static constexpr auto WaterWidgets = makeWidgets(
@@ -205,13 +232,17 @@ namespace OpenRCT2::Ui::Windows
         (1uLL << WIDX_SIMPLEX_BASE_FREQ_DOWN) |
         (1uLL << WIDX_SIMPLEX_OCTAVES_UP) |
         (1uLL << WIDX_SIMPLEX_OCTAVES_DOWN) |
+        (1uLL << WIDX_BIAS_STRENGTH_UP) |
+        (1uLL << WIDX_BIAS_STRENGTH_DOWN) |
         (1uLL << WIDX_HEIGHTMAP_STRENGTH_UP) |
         (1uLL << WIDX_HEIGHTMAP_STRENGTH_DOWN),
 
         (1uLL << WIDX_HEIGHTMAP_LOW_UP) |
         (1uLL << WIDX_HEIGHTMAP_LOW_DOWN) |
         (1uLL << WIDX_HEIGHTMAP_HIGH_UP) |
-        (1uLL << WIDX_HEIGHTMAP_HIGH_DOWN),
+        (1uLL << WIDX_HEIGHTMAP_HIGH_DOWN) |
+        (1uLL << WIDX_HEIGHTMAP_EROSION_PPT_UP) |
+        (1uLL << WIDX_HEIGHTMAP_EROSION_PPT_DOWN) ,
 
         (1uLL << WIDX_WATER_LEVEL_UP) |
         (1uLL << WIDX_WATER_LEVEL_DOWN),
@@ -225,9 +256,12 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
-        0,
+        (1uLL << WIDX_MAP_SEED_RANDOM),
+
         (1uLL << WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES),
+
         0,
+
         0,
     };
     // clang-format on
@@ -269,6 +303,8 @@ namespace OpenRCT2::Ui::Windows
     private:
         ResizeDirection _resizeDirection{ ResizeDirection::Both };
         bool _mapWidthAndHeightLinked{ true };
+        u8string _seed = std::to_string(std::random_device{}());
+        bool _random_seed = true;
         MapGenerator::Settings _settings{};
         bool _randomTerrain = true;
         bool _heightmapLoaded = false;
@@ -387,6 +423,12 @@ namespace OpenRCT2::Ui::Windows
                 mapgenSettings.edgeTexture = -1;
             }
 
+            if (_random_seed)
+            {
+                _seed = std::to_string(std::random_device{}());
+            }
+            mapgenSettings.seed = static_cast<uint32_t>(std::hash<u8string>{}(_seed));
+
             MapGenerator::generate(&mapgenSettings);
             GfxInvalidateScreen();
         }
@@ -397,10 +439,16 @@ namespace OpenRCT2::Ui::Windows
         {
             SharedMouseUp(widgetIndex);
 
-            if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise)
+            if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise
+                || _settings.algorithm == MapGenerator::Algorithm::warpedNoise)
+            {
                 SimplexMouseUp(widgetIndex);
+                BiasMouseUp(widgetIndex);
+            }
             else if (_settings.algorithm == MapGenerator::Algorithm::heightmapImage)
+            {
                 HeightmapMouseUp(widgetIndex);
+            }
 
             switch (widgetIndex)
             {
@@ -415,16 +463,34 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_MAP_SIZE_LINK:
                     _mapWidthAndHeightLinked = !_mapWidthAndHeightLinked;
                     break;
+                case WIDX_MAP_SEED:
+                    if (!_random_seed)
+                    {
+                        WindowStartTextbox(*this, widgetIndex, _seed, 16);
+                    }
+                    break;
+                case WIDX_MAP_SEED_RANDOM:
+                    _random_seed = !_random_seed;
+                    SetCheckboxValue(WIDX_MAP_SEED_RANDOM, _random_seed);
+                    widgets[WIDX_MAP_SEED].type = _random_seed ? WidgetType::empty : WidgetType::textBox;
+                    InvalidateWidget(WIDX_MAP_SEED_RANDOM);
+                    InvalidateWidget(WIDX_MAP_SEED);
+                    break;
             }
         }
 
         void BaseMouseDown(WidgetIndex widgetIndex, Widget* widget)
         {
-            if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise)
+            if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise
+                || _settings.algorithm == MapGenerator::Algorithm::warpedNoise)
+            {
                 SimplexMouseDown(widgetIndex, widget);
-
+                BiasMouseDown(widgetIndex, widget);
+            }
             else if (_settings.algorithm == MapGenerator::Algorithm::heightmapImage)
+            {
                 HeightmapMouseDown(widgetIndex, widget);
+            }
 
             switch (widgetIndex)
             {
@@ -455,7 +521,8 @@ namespace OpenRCT2::Ui::Windows
                     constexpr ItemExt items[] = {
                         ToggleOption(0, STR_HEIGHTMAP_FLATLAND),
                         ToggleOption(1, STR_HEIGHTMAP_SIMPLEX_NOISE),
-                        ToggleOption(2, STR_HEIGHTMAP_FILE),
+                        ToggleOption(2, STR_HEIGHTMAP_WARPED_NOISE),
+                        ToggleOption(3, STR_HEIGHTMAP_FILE),
                     };
 
                     SetItems(items);
@@ -487,7 +554,11 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_HEIGHTMAP_SOURCE_DROPDOWN:
-                    _settings.algorithm = MapGenerator::Algorithm(dropdownIndex);
+                    _settings.algorithm = static_cast<MapGenerator::Algorithm>(dropdownIndex);
+                    Invalidate();
+                    break;
+                case WIDX_BIAS_TYPE_DROPDOWN:
+                    _settings.bias = static_cast<MapGenerator::Bias>(dropdownIndex);
                     Invalidate();
                     break;
             }
@@ -495,10 +566,16 @@ namespace OpenRCT2::Ui::Windows
 
         void BaseTextInput(WidgetIndex widgetIndex, int32_t value)
         {
-            if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise)
+            if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise
+                || _settings.algorithm == MapGenerator::Algorithm::warpedNoise)
+            {
                 SimplexTextInput(widgetIndex, value);
+                BiasTextInput(widgetIndex, value);
+            }
             else if (_settings.algorithm == MapGenerator::Algorithm::heightmapImage)
+            {
                 HeightmapTextInput(widgetIndex, value);
+            }
 
             switch (widgetIndex)
             {
@@ -522,6 +599,10 @@ namespace OpenRCT2::Ui::Windows
             SetWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
             SetWidgetDisabled(WIDX_MAP_SIZE_LINK, _settings.mapSize.x != _settings.mapSize.y);
 
+            SetCheckboxValue(WIDX_MAP_SEED_RANDOM, _random_seed);
+            widgets[WIDX_MAP_SEED].string = _seed.data();
+            widgets[WIDX_MAP_SEED].type = _random_seed ? WidgetType::empty : WidgetType::textBox;
+
             bool isHeightMapImage = _settings.algorithm == MapGenerator::Algorithm::heightmapImage;
             SetWidgetDisabled(WIDX_MAP_SIZE_Y, isHeightMapImage);
             SetWidgetDisabled(WIDX_MAP_SIZE_Y_UP, isHeightMapImage);
@@ -541,6 +622,11 @@ namespace OpenRCT2::Ui::Windows
                 SetWidgetEnabled(WIDX_HEIGHTMAP_STRENGTH_DOWN, _heightmapLoaded && _settings.smooth_height_map);
             }
 
+            auto isNoneBias = _settings.bias == MapGenerator::Bias::none;
+            SetWidgetDisabled(WIDX_BIAS_STRENGTH, isNoneBias);
+            SetWidgetDisabled(WIDX_BIAS_STRENGTH_UP, isNoneBias);
+            SetWidgetDisabled(WIDX_BIAS_STRENGTH_DOWN, isNoneBias);
+
             SetPressedTab();
 
             // Push width (Y) and height (X) to the common formatter arguments for the map size spinners to use
@@ -555,19 +641,57 @@ namespace OpenRCT2::Ui::Windows
                     sourceWidget.text = STR_HEIGHTMAP_FLATLAND;
                     ToggleSimplexWidgets(false);
                     ToggleHeightmapWidgets(false);
+                    ToggleBiasWidgets(false);
                     break;
 
                 case MapGenerator::Algorithm::simplexNoise:
                     sourceWidget.text = STR_HEIGHTMAP_SIMPLEX_NOISE;
                     ToggleSimplexWidgets(true);
                     ToggleHeightmapWidgets(false);
+                    ToggleBiasWidgets(true);
+                    break;
+
+                case MapGenerator::Algorithm::warpedNoise:
+                    sourceWidget.text = STR_HEIGHTMAP_WARPED_NOISE;
+                    ToggleSimplexWidgets(true);
+                    ToggleHeightmapWidgets(false);
+                    ToggleBiasWidgets(true);
                     break;
 
                 case MapGenerator::Algorithm::heightmapImage:
                     sourceWidget.text = STR_HEIGHTMAP_FILE;
                     ToggleSimplexWidgets(false);
                     ToggleHeightmapWidgets(true);
+                    ToggleBiasWidgets(false);
                     HeightmapPrepareDraw();
+                    break;
+            }
+
+            switch (_settings.bias)
+            {
+                case MapGenerator::Bias::none:
+                    widgets[WIDX_BIAS_TYPE].text = STR_MAPGEN_BIAS_TYPE_NONE;
+                    break;
+                case MapGenerator::Bias::island:
+                    widgets[WIDX_BIAS_TYPE].text = STR_MAPGEN_BIAS_TYPE_ISLAND;
+                    break;
+                case MapGenerator::Bias::valley:
+                    widgets[WIDX_BIAS_TYPE].text = STR_MAPGEN_BIAS_TYPE_VALLEY;
+                    break;
+                case MapGenerator::Bias::coastal:
+                    widgets[WIDX_BIAS_TYPE].text = STR_MAPGEN_BIAS_TYPE_COASTAL;
+                    break;
+                case MapGenerator::Bias::river:
+                    widgets[WIDX_BIAS_TYPE].text = STR_MAPGEN_BIAS_TYPE_RIVER;
+                    break;
+                case MapGenerator::Bias::canyon:
+                    widgets[WIDX_BIAS_TYPE].text = STR_MAPGEN_BIAS_TYPE_CANYON;
+                    break;
+                case MapGenerator::Bias::mountain:
+                    widgets[WIDX_BIAS_TYPE].text = STR_MAPGEN_BIAS_TYPE_MOUNTAIN;
+                    break;
+                case MapGenerator::Bias::cliff:
+                    widgets[WIDX_BIAS_TYPE].text = STR_MAPGEN_BIAS_TYPE_CLIFF;
                     break;
             }
         }
@@ -575,13 +699,25 @@ namespace OpenRCT2::Ui::Windows
         void ToggleSimplexWidgets(bool state)
         {
             // clang-format off
-            widgets[WIDX_SIMPLEX_GROUP].type          = state ? WidgetType::groupbox : WidgetType::empty;
-            widgets[WIDX_SIMPLEX_BASE_FREQ].type      = state ? WidgetType::spinner  : WidgetType::empty;
-            widgets[WIDX_SIMPLEX_BASE_FREQ_UP].type   = state ? WidgetType::button   : WidgetType::empty;
-            widgets[WIDX_SIMPLEX_BASE_FREQ_DOWN].type = state ? WidgetType::button   : WidgetType::empty;
-            widgets[WIDX_SIMPLEX_OCTAVES].type        = state ? WidgetType::spinner  : WidgetType::empty;
-            widgets[WIDX_SIMPLEX_OCTAVES_UP].type     = state ? WidgetType::button   : WidgetType::empty;
-            widgets[WIDX_SIMPLEX_OCTAVES_DOWN].type   = state ? WidgetType::button   : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_GROUP].type          = state ? WidgetType::groupbox     : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_BASE_FREQ].type      = state ? WidgetType::spinner      : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_BASE_FREQ_UP].type   = state ? WidgetType::button       : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_BASE_FREQ_DOWN].type = state ? WidgetType::button       : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_OCTAVES].type        = state ? WidgetType::spinner      : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_OCTAVES_UP].type     = state ? WidgetType::button       : WidgetType::empty;
+            widgets[WIDX_SIMPLEX_OCTAVES_DOWN].type   = state ? WidgetType::button       : WidgetType::empty;
+            // clang-format on
+        }
+
+        void ToggleBiasWidgets(bool state)
+        {
+            // clang-format off
+            widgets[WIDX_BIAS_GROUP].type         = state ? WidgetType::groupbox     : WidgetType::empty;
+            widgets[WIDX_BIAS_TYPE].type          = state ? WidgetType::dropdownMenu : WidgetType::empty;
+            widgets[WIDX_BIAS_TYPE_DROPDOWN].type = state ? WidgetType::button       : WidgetType::empty;
+            widgets[WIDX_BIAS_STRENGTH].type      = state ? WidgetType::spinner      : WidgetType::empty;
+            widgets[WIDX_BIAS_STRENGTH_UP].type   = state ? WidgetType::button       : WidgetType::empty;
+            widgets[WIDX_BIAS_STRENGTH_DOWN].type = state ? WidgetType::button       : WidgetType::empty;
             // clang-format on
         }
 
@@ -603,11 +739,16 @@ namespace OpenRCT2::Ui::Windows
             DrawWidgets(rt);
             DrawTabImages(rt);
 
-            if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise)
+            if (_settings.algorithm == MapGenerator::Algorithm::simplexNoise
+                || _settings.algorithm == MapGenerator::Algorithm::warpedNoise)
+            {
                 SimplexDraw(rt);
-
+                BiasDraw(rt);
+            }
             else if (_settings.algorithm == MapGenerator::Algorithm::heightmapImage)
+            {
                 HeightmapDraw(rt);
+            }
 
             const auto enabledColour = colours[1];
             const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
@@ -623,6 +764,12 @@ namespace OpenRCT2::Ui::Windows
                 DrawTextBasic(
                     rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_SOURCE].top + 1 }, STR_HEIGHTMAP_SOURCE, {},
                     { textColour });
+            }
+
+            if (_random_seed)
+            {
+                DrawText(
+                    rt, windowPos + ScreenCoordsXY{ 179, widgets[WIDX_MAP_SEED].top + 1 }, { disabledColour }, _seed.data());
             }
         }
 
@@ -866,9 +1013,6 @@ namespace OpenRCT2::Ui::Windows
 
         void SimplexDraw(RenderTarget& rt)
         {
-            DrawWidgets(rt);
-            DrawTabImages(rt);
-
             const auto textColour = colours[1];
 
             DrawTextBasic(
@@ -902,6 +1046,101 @@ namespace OpenRCT2::Ui::Windows
 
                 case WIDX_SIMPLEX_OCTAVES:
                     _settings.simplex_octaves = std::clamp(value, 1, 10);
+                    break;
+            }
+        }
+
+#pragma endregion
+
+#pragma region bias settings, part of generator tab
+
+        void BiasMouseUp(WidgetIndex widgetIndex)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_BIAS_STRENGTH:
+                {
+                    Formatter ft;
+                    ft.Add<int32_t>(0);
+                    ft.Add<int32_t>(100);
+                    WindowTextInputOpen(
+                        this, widgetIndex, STR_MAPGEN_BIAS_STRENGTH, STR_ENTER_BIAS_STRENGTH, ft, STR_FORMAT_COMMA2DP32,
+                        _settings.bias_strength, 4);
+                    break;
+                }
+            }
+        }
+
+        void BiasMouseDown(WidgetIndex widgetIndex, Widget* widget)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_BIAS_STRENGTH_UP:
+                    _settings.bias_strength = std::min(_settings.bias_strength + 5, 100);
+                    Invalidate();
+                    break;
+                case WIDX_BIAS_STRENGTH_DOWN:
+                    _settings.bias_strength = std::max(_settings.bias_strength - 5, 0);
+                    Invalidate();
+                    break;
+                case WIDX_BIAS_TYPE_DROPDOWN:
+                {
+                    using namespace Dropdown;
+
+                    constexpr ItemExt items[] = {
+                        // clang-format off
+                        ToggleOption(0, STR_MAPGEN_BIAS_TYPE_NONE),
+                        ToggleOption(1, STR_MAPGEN_BIAS_TYPE_ISLAND),
+                        ToggleOption(2, STR_MAPGEN_BIAS_TYPE_VALLEY),
+                        ToggleOption(3, STR_MAPGEN_BIAS_TYPE_COASTAL),
+                        ToggleOption(4, STR_MAPGEN_BIAS_TYPE_RIVER),
+                        ToggleOption(5, STR_MAPGEN_BIAS_TYPE_CANYON),
+                        ToggleOption(7, STR_MAPGEN_BIAS_TYPE_MOUNTAIN),
+                        ToggleOption(8, STR_MAPGEN_BIAS_TYPE_CLIFF),
+                        //clang-format on
+                    };
+
+                    SetItems(items);
+
+                    Widget* ddWidget = &widgets[widgetIndex - 1];
+                    WindowDropdownShowTextCustomWidth(
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1], 0,
+                        Flag::StayOpen, std::size(items), ddWidget->width() - 2);
+
+                    SetChecked(EnumValue(_settings.bias), true);
+                    break;
+                }
+            }
+        }
+
+        void BiasDraw(RenderTarget& rt)
+        {
+            const auto enabledColour = colours[1];
+            const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
+            const bool strengthDisabled = _settings.bias == MapGenerator::Bias::none;
+            const auto strengthColour = strengthDisabled ? disabledColour : enabledColour;
+
+            DrawTextBasic(
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_BIAS_TYPE].top + 1 }, STR_MAPGEN_BIAS_TYPE, {},
+                { enabledColour });
+
+            DrawTextBasic(
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_BIAS_STRENGTH].top + 1 }, STR_MAPGEN_BIAS_STRENGTH, {},
+                { strengthColour });
+
+            auto ft = Formatter();
+            ft.Add<uint16_t>(_settings.bias_strength);
+            DrawTextBasic(
+                rt, windowPos + ScreenCoordsXY{ widgets[WIDX_BIAS_STRENGTH].left + 1, widgets[WIDX_BIAS_STRENGTH].top + 1 },
+                STR_COMMA2DP32, ft, { strengthColour });
+        }
+
+        void BiasTextInput(WidgetIndex widgetIndex, int32_t value)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_BIAS_STRENGTH:
+                    _settings.bias_strength = std::clamp(value, 0, 100);
                     break;
             }
         }
@@ -1053,6 +1292,21 @@ namespace OpenRCT2::Ui::Windows
                     SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
                     InvalidateWidget(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES);
                     break;
+
+                case WIDX_HEIGHTMAP_EROSION:
+                    _settings.simulate_erosion = !_settings.simulate_erosion;
+                    SetCheckboxValue(WIDX_HEIGHTMAP_EROSION, _settings.simulate_erosion);
+                    InvalidateWidget(WIDX_HEIGHTMAP_EROSION);
+                    break;
+
+                case WIDX_HEIGHTMAP_EROSION_PPT:
+                    Formatter ft;
+                    ft.Add<int32_t>(MapGenerator::kMinParticlesPerTile);
+                    ft.Add<int32_t>(MapGenerator::kMaxParticlesPerTile);
+                    WindowTextInputOpen(
+                        this, widgetIndex, STR_EROSION_PPT, STR_ENTER_EROSION_PPT, ft, STR_FORMAT_COMMA2DP32,
+                        _settings.particles_per_tile, 4);
+                    break;
             }
         }
 
@@ -1088,6 +1342,16 @@ namespace OpenRCT2::Ui::Windows
                     _settings.heightmapLow = std::min(_settings.heightmapLow, _settings.heightmapHigh - 2);
                     InvalidateWidget(WIDX_HEIGHTMAP_HIGH);
                     break;
+                case WIDX_HEIGHTMAP_EROSION_PPT_DOWN:
+                    _settings.particles_per_tile = std::max<int32_t>(
+                        _settings.particles_per_tile - 5, MapGenerator::kMinParticlesPerTile);
+                    InvalidateWidget(WIDX_HEIGHTMAP_EROSION_PPT);
+                    break;
+                case WIDX_HEIGHTMAP_EROSION_PPT_UP:
+                    _settings.particles_per_tile = std::min<int32_t>(
+                        _settings.particles_per_tile + 5, MapGenerator::kMaxParticlesPerTile);
+                    InvalidateWidget(WIDX_HEIGHTMAP_EROSION_PPT);
+                    break;
             }
         }
 
@@ -1111,6 +1375,10 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_HEIGHTMAP_HIGH:
                     _settings.heightmapHigh = value;
                     _settings.heightmapLow = std::min(_settings.heightmapLow, _settings.heightmapHigh);
+                    break;
+                case WIDX_HEIGHTMAP_EROSION_PPT:
+                    _settings.particles_per_tile = std::clamp(
+                        value, MapGenerator::kMinParticlesPerTile, MapGenerator::kMaxParticlesPerTile);
                     break;
             }
 
@@ -1209,18 +1477,26 @@ namespace OpenRCT2::Ui::Windows
 
         void TerrainPrepareDraw()
         {
+            bool isNotFlatland = _settings.algorithm != MapGenerator::Algorithm::blank;
+
             SetCheckboxValue(WIDX_RANDOM_TERRAIN, _randomTerrain != 0);
             SetCheckboxValue(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.smoothTileEdges);
+            SetCheckboxValue(WIDX_HEIGHTMAP_EROSION, _settings.simulate_erosion);
 
             // Only allow floor and wall texture options if random terrain is disabled
             SetWidgetEnabled(WIDX_FLOOR_TEXTURE, !_randomTerrain);
             SetWidgetEnabled(WIDX_WALL_TEXTURE, !_randomTerrain);
 
             // Max land height option is irrelevant for flatland
-            SetWidgetEnabled(WIDX_HEIGHTMAP_HIGH, _settings.algorithm != MapGenerator::Algorithm::blank);
+            SetWidgetEnabled(WIDX_HEIGHTMAP_HIGH, isNotFlatland);
 
             // Only offer terrain edge smoothing if we don't use flatland terrain
-            SetWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, _settings.algorithm != MapGenerator::Algorithm::blank);
+            SetWidgetEnabled(WIDX_HEIGHTMAP_SMOOTH_TILE_EDGES, isNotFlatland);
+
+            // Erosion can't be used with flatland
+            SetWidgetEnabled(WIDX_HEIGHTMAP_EROSION, isNotFlatland);
+            SetWidgetEnabled(WIDX_HEIGHTMAP_EROSION_PPT, _settings.simulate_erosion && isNotFlatland);
+
             SetPressedTab();
         }
 
@@ -1261,6 +1537,23 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(
                 rt, windowPos + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_HIGH].left + 1, widgets[WIDX_HEIGHTMAP_HIGH].top + 1 },
                 STR_RIDE_LENGTH_ENTRY, ft, { maxLandColour });
+
+            // Erosion particle count label and value
+            const auto particleColour = IsWidgetDisabled(WIDX_HEIGHTMAP_EROSION) || !_settings.simulate_erosion ? disabledColour
+                                                                                                                : enabledColour;
+
+            DrawTextBasic(
+                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_HEIGHTMAP_EROSION_PPT].top + 1 }, STR_EROSION_PPT, {},
+                { particleColour });
+
+            ft = Formatter();
+            ft.Add<int32_t>(_settings.particles_per_tile);
+            DrawTextBasic(
+                rt,
+                windowPos
+                    + ScreenCoordsXY{ widgets[WIDX_HEIGHTMAP_EROSION_PPT].left + 1,
+                                      widgets[WIDX_HEIGHTMAP_EROSION_PPT].top + 1 },
+                STR_FORMAT_COMMA2DP32, ft, { particleColour });
         }
 
 #pragma endregion
@@ -1418,6 +1711,12 @@ namespace OpenRCT2::Ui::Windows
 
         void OnUpdate() override
         {
+            if (GetCurrentTextBox().window.classification == classification && GetCurrentTextBox().window.number == number)
+            {
+                WindowUpdateTextboxCaret();
+                InvalidateWidget(WIDX_MAP_SEED);
+            }
+
             switch (page)
             {
                 case WINDOW_MAPGEN_PAGE_BASE:
@@ -1467,9 +1766,17 @@ namespace OpenRCT2::Ui::Windows
             auto strText = std::string(text);
             char* end;
 
+            if (widgetIndex == WIDX_MAP_SEED && !_random_seed)
+            {
+                _seed.assign(text);
+                return;
+            }
+
             // Convert text to integer value
             int32_t value{};
-            if (page == WINDOW_MAPGEN_PAGE_BASE && widgetIndex == WIDX_SIMPLEX_BASE_FREQ)
+            if ((page == WINDOW_MAPGEN_PAGE_BASE && widgetIndex == WIDX_SIMPLEX_BASE_FREQ)
+                || (page == WINDOW_MAPGEN_PAGE_BASE && widgetIndex == WIDX_BIAS_STRENGTH)
+                || (page == WINDOW_MAPGEN_PAGE_TERRAIN && widgetIndex == WIDX_HEIGHTMAP_EROSION_PPT))
                 value = 100 * strtof(strText.c_str(), &end);
             else
                 value = strtol(strText.c_str(), &end, 10);
@@ -1479,7 +1786,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Take care of unit conversion
             int32_t rawValue = value;
-            if (page != WINDOW_MAPGEN_PAGE_BASE)
+            if (page != WINDOW_MAPGEN_PAGE_BASE && widgetIndex != WIDX_HEIGHTMAP_EROSION_PPT)
             {
                 switch (Config::Get().general.MeasurementFormat)
                 {
@@ -1534,8 +1841,7 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* MapgenOpen()
     {
         auto* windowMgr = GetWindowManager();
-        return windowMgr->FocusOrCreate<MapGenWindow>(
-            WindowClass::Mapgen, kWindowSize, WF_10 | WF_AUTO_POSITION | WF_CENTRE_SCREEN);
+        return windowMgr->FocusOrCreate<MapGenWindow>(WindowClass::Mapgen, kWindowSize, WF_10 | WF_AUTO_POSITION);
     }
 
     static void HeightmapLoadsaveCallback(ModalResult result, const utf8* path)

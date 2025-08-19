@@ -17,6 +17,7 @@
 #include "../../localisation/StringIds.h"
 #include "../Map.h"
 #include "../tile_element/SurfaceElement.h"
+#include "Erosion.h"
 #include "HeightMap.hpp"
 #include "MapGen.h"
 #include "MapHelpers.h"
@@ -103,6 +104,7 @@ namespace OpenRCT2::World::MapGenerator
 
     /**
      * Applies box blur to the surface N times
+     * TODO deduplicate smoothing functions
      */
     static void SmoothHeightmap(HeightMap& src, int32_t strength)
     {
@@ -158,11 +160,16 @@ namespace OpenRCT2::World::MapGenerator
         // Get technical map size, +2 for the black tiles around the map
         auto mapWidth = static_cast<int32_t>(dest.width + 2);
         auto mapHeight = static_cast<int32_t>(dest.height + 2);
-        MapInit({ mapHeight, mapWidth });
 
         if (settings->smooth_height_map)
         {
             SmoothHeightmap(dest, settings->smooth_strength);
+        }
+
+        if (settings->simulate_erosion)
+        {
+            auto erosionSettings = ErosionSettings(*settings);
+            simulateErosion(erosionSettings, dest);
         }
 
         uint8_t maxValue = 255;
@@ -199,6 +206,7 @@ namespace OpenRCT2::World::MapGenerator
         const uint8_t rangeIn = maxValue - minValue;
         const uint8_t rangeOut = (settings->heightmapHigh - settings->heightmapLow) * 2;
 
+        MapInit({ mapHeight, mapWidth });
         for (auto y = 0; y < dest.height; y++)
         {
             for (auto x = 0; x < dest.width; x++)

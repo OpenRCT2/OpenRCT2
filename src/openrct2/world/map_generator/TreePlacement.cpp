@@ -22,7 +22,7 @@
 #include "../tile_element/SurfaceElement.h"
 #include "../tile_element/TileElement.h"
 #include "MapGen.h"
-#include "SimplexNoise.h"
+#include "Noise.h"
 
 #include <vector>
 
@@ -62,7 +62,7 @@ namespace OpenRCT2::World::MapGenerator
         "rct2.scenery_small.trfs", // Snow-covered Red Fir Tree
     };
 
-    static void placeTree(ObjectEntryIndex type, const CoordsXY& loc)
+    static void placeTree(ObjectEntryIndex type, const CoordsXY& loc, Direction direction)
     {
         auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(type);
         if (sceneryEntry == nullptr)
@@ -76,7 +76,7 @@ namespace OpenRCT2::World::MapGenerator
         Guard::Assert(sceneryElement != nullptr);
 
         sceneryElement->SetClearanceZ(surfaceZ + sceneryEntry->height);
-        sceneryElement->SetDirection(UtilRand() & 3);
+        sceneryElement->SetDirection(direction);
         sceneryElement->SetEntryIndex(type);
         sceneryElement->SetAge(0);
         sceneryElement->SetPrimaryColour(COLOUR_YELLOW);
@@ -147,8 +147,15 @@ namespace OpenRCT2::World::MapGenerator
         // Place trees
         float treeToLandRatio = static_cast<float>(settings->treeToLandRatio) / 100.0f;
 
-        // Randomise simplex noise
-        NoiseRand();
+        SimplexFbmNoise simplex_fbm{ settings->seed - 1, 0.025f, 2, 2.0f, 0.65f };
+
+        std::mt19937 prng(settings->seed);
+        std::normal_distribution<float> distNoiseChance(0.0f, 1.0f);
+        std::uniform_real_distribution<float> distBaseChance(0.0f, 1.0f);
+        std::uniform_int_distribution<size_t> distGrassTrees(0, grassTreeIds.size() - 1);
+        std::uniform_int_distribution<size_t> distDesertTrees(0, desertTreeIds.size() - 1);
+        std::uniform_int_distribution<size_t> distSnowTrees(0, snowTreeIds.size() - 1);
+        std::uniform_int_distribution<uint16_t> distTreeDirection(0, 3);
 
         auto& gameState = getGameState();
         for (int32_t y = 1; y < gameState.mapSize.y - 1; y++)
@@ -200,32 +207,34 @@ namespace OpenRCT2::World::MapGenerator
                 }
 
                 // Use tree:land ratio except when near an oasis
-                constexpr static auto randModulo = 0xFFFF;
-                if (static_cast<float>(UtilRand() & randModulo) / randModulo > std::max(treeToLandRatio, oasisScore))
+                if (distBaseChance(prng) > std::max(treeToLandRatio, oasisScore))
                     continue;
 
                 // Use fractal noise to group tiles that are likely to spawn trees together
-                float noiseValue = FractalNoise(x, y, 0.025f, 2, 2.0f, 0.65f);
+                float noiseValue = simplex_fbm.Generate({ x, y });
                 // Reduces the range to rarely stray further than 0.5 from the mean.
-                float noiseOffset = UtilRandNormalDistributed() * 0.25f;
+                float noiseOffset = distNoiseChance(prng) * 0.25f;
                 if (noiseValue + oasisScore < noiseOffset)
                     continue;
 
                 if (!grassTreeIds.empty() && surfaceTakesGrassTrees(surfaceStyleObject))
                 {
-                    treeObjectEntryIndex = grassTreeIds[UtilRand() % grassTreeIds.size()];
+                    treeObjectEntryIndex = grassTreeIds[distGrassTrees(prng)];
                 }
                 else if (!desertTreeIds.empty() && surfaceTakesSandTrees(surfaceStyleObject))
                 {
-                    treeObjectEntryIndex = desertTreeIds[UtilRand() % desertTreeIds.size()];
+                    treeObjectEntryIndex = desertTreeIds[distDesertTrees(prng)];
                 }
                 else if (!snowTreeIds.empty() && surfaceTakesSnowTrees(surfaceStyleObject))
                 {
-                    treeObjectEntryIndex = snowTreeIds[UtilRand() % snowTreeIds.size()];
+                    treeObjectEntryIndex = snowTreeIds[distSnowTrees(prng)];
                 }
 
                 if (treeObjectEntryIndex != kObjectEntryIndexNull)
-                    placeTree(treeObjectEntryIndex, pos);
+                {
+                    Direction treeDirection = static_cast<Direction>(distTreeDirection(prng));
+                    placeTree(treeObjectEntryIndex, pos, treeDirection);
+                }
             }
         }
     }
