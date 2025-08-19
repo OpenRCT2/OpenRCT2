@@ -1723,6 +1723,7 @@ enum : StringId
     STR_LOADING_SCENARIO = 6649,
     STR_LOADING_SAVED_GAME = 6650,
     STR_STRING_M_PERCENT = 6651,
+    STR_EROSION_PROGRESS = 7014,
 
     STR_CHEAT_IGNORE_PRICE = 6659,
 
@@ -1756,6 +1757,16 @@ enum : StringId
 
     // Window: Error
     STR_AUDIO_FILE_TRUNCATED = 7003,
+
+    // Mapgen
+    STR_MAPGEN_RULE_DEFAULT = 7039,
+    STR_MAPGEN_RULE_TEMPLATE_NEW = 7049,
+    STR_MAPGEN_RULE_BEACHES_WATER_BODIES = 6677,
+    STR_MAPGEN_RULE_ROCKY_MOUNTAIN_PEAKS = 7071,
+    STR_MAPGEN_RULE_SNOWY_MOUNTAIN_PEAKS = 7072,
+    STR_MAPGEN_RULE_SMALL_ROCK_PATCHES = 7067,
+    STR_MAPGEN_RULE_MEDIUM_DIRT_PATCHES = 7068,
+    STR_MAPGEN_RULE_LARGE_GRASS_CLUMP_PATCHES = 7069,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

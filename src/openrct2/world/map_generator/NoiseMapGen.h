@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2025 OpenRCT2 developers
+ * Copyright (c) 2025 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,14 +9,10 @@
 
 #pragma once
 
-#include <cstdint>
+#include "MapGen.h"
 
 namespace OpenRCT2::World::MapGenerator
 {
-    struct Settings;
-
-    void NoiseRand();
-    float FractalNoise(int32_t x, int32_t y, float frequency, int32_t octaves, float lacunarity, float persistence);
-
     void generateSimplexMap(Settings* settings);
+    void generateWarpedMap(Settings* settings);
 } // namespace OpenRCT2::World::MapGenerator

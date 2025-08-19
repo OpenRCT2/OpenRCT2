@@ -17,5 +17,5 @@ namespace OpenRCT2::World::MapGenerator
 
     ObjectEntryIndex generateSurfaceTextureId(Settings* settings);
     ObjectEntryIndex generateEdgeTextureId(Settings* settings, ObjectEntryIndex surfaceTextureId);
-    ObjectEntryIndex generateBeachTextureId();
+    ObjectEntryIndex generateBeachTextureId(Settings* settings);
 } // namespace OpenRCT2::World::MapGenerator
