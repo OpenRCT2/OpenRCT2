@@ -16,7 +16,6 @@
 #include "MapHelpers.h"
 
 #include <algorithm>
-#include <random>
 
 namespace OpenRCT2::World::MapGenerator
 {
@@ -31,11 +30,8 @@ namespace OpenRCT2::World::MapGenerator
     static float Grad(int32_t hash, float x, float y);
 
     SimplexNoise::SimplexNoise()
+        : SimplexNoise(std::random_device{}())
     {
-        for (auto& i : _perm)
-        {
-            i = UtilRandUniformDistributedByte();
-        }
     }
 
     SimplexNoise::SimplexNoise(const uint32_t seed)

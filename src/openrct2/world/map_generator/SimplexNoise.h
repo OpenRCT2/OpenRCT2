@@ -12,6 +12,7 @@
 #include "Noise.h"
 
 #include <cstdint>
+#include <random>
 
 namespace OpenRCT2::World::MapGenerator
 {
@@ -37,16 +38,13 @@ namespace OpenRCT2::World::MapGenerator
         float _persistence;
 
     public:
+        SimplexFbmNoise(float frequency, int32_t octaves, float lacunarity, float persistence)
+            : SimplexFbmNoise(std::random_device{}(), frequency, octaves, lacunarity, persistence)
+        {
+        }
         SimplexFbmNoise(uint32_t seed, float frequency, int32_t octaves, float lacunarity, float persistence)
             : SimplexNoise(seed)
             , _frequency(frequency)
-            , _octaves(octaves)
-            , _lacunarity(lacunarity)
-            , _persistence(persistence)
-        {
-        }
-        SimplexFbmNoise(float frequency, int32_t octaves, float lacunarity, float persistence)
-            : _frequency(frequency)
             , _octaves(octaves)
             , _lacunarity(lacunarity)
             , _persistence(persistence)
