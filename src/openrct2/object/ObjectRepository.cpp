@@ -213,14 +213,14 @@ namespace OpenRCT2
 
         const ObjectRepositoryItem* FindObjectLegacy(std::string_view legacyIdentifier) const override
         {
-            RCTObjectEntry entry = {};
-            entry.SetName(legacyIdentifier);
-
-            auto kvp = _itemMap.find(entry);
-            if (kvp != _itemMap.end())
+            for (const auto& currentEntry : _itemMap)
             {
-                return &_items[kvp->second];
+                if (currentEntry.first.GetName() == legacyIdentifier)
+                {
+                    return &_items[currentEntry.second];
+                }
             }
+
             return nullptr;
         }
 
