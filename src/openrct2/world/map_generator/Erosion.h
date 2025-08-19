@@ -20,7 +20,7 @@ namespace OpenRCT2::World::MapGenerator
     struct ErosionSettings
     {
         ErosionSettings() = default;
-        ErosionSettings(const Settings& settings)
+        explicit ErosionSettings(const Settings& settings)
         {
             particles = static_cast<uint32_t>(settings.particles_per_tile * settings.mapSize.x * settings.mapSize.y) / 100;
         }
@@ -35,6 +35,6 @@ namespace OpenRCT2::World::MapGenerator
         float dt = 1.2f;
     };
 
-    void simulateErosion(ErosionSettings& settings, HeightMap& heightMap);
+    void simulateErosion(const ErosionSettings& settings, HeightMap& heightMap);
 
 } // namespace OpenRCT2::World::MapGenerator

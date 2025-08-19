@@ -22,7 +22,7 @@ namespace OpenRCT2::World::MapGenerator
 
     struct Particle
     {
-        Particle(VecXY _position)
+        explicit Particle(const VecXY _position)
         {
             position = _position;
         }
@@ -35,7 +35,7 @@ namespace OpenRCT2::World::MapGenerator
     /**
      * Calculate the surface normal at the given position.
      */
-    static VecXYZ surfaceNormal(HeightMap& heightMap, TileCoordsXY pos)
+    static VecXYZ surfaceNormal(const HeightMap& heightMap, const TileCoordsXY pos)
     {
         auto normal = VecXYZ(0.0f, 0.0f, 0.0f);
 
@@ -67,7 +67,7 @@ namespace OpenRCT2::World::MapGenerator
      *
      * Based on https://nickmcd.me/2020/04/10/simple-particle-based-hydraulic-erosion (https://github.com/weigert/SimpleErosion)
      */
-    void simulateErosion(ErosionSettings& settings, HeightMap& heightMap)
+    void simulateErosion(const ErosionSettings& settings, HeightMap& heightMap)
     {
         GetContext()->OpenProgress(STR_EROSION_PROGRESS);
 
