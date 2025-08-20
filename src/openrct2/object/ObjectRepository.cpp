@@ -224,6 +224,19 @@ namespace OpenRCT2
             return nullptr;
         }
 
+        const ObjectRepositoryItem* FindObjectLegacy(uint32_t flags, std::string_view legacyIdentifier) const override
+        {
+            for (const auto& currentEntry : _itemMap)
+            {
+                if (currentEntry.first.flags == flags && currentEntry.first.GetName() == legacyIdentifier)
+                {
+                    return &_items[currentEntry.second];
+                }
+            }
+
+            return nullptr;
+        }
+
         const ObjectRepositoryItem* FindObject(std::string_view identifier) const override final
         {
             auto kvp = _newItemMap.find(identifier);
@@ -250,6 +263,18 @@ namespace OpenRCT2
                 return FindObject(&entry.Entry);
 
             return FindObject(entry.Identifier);
+        }
+
+        const ObjectRepositoryItem* FindObjectWithFallback(const ObjectEntryDescriptor& entry) const override final
+        {
+            auto* ori = FindObject(entry);
+            // If an exact match for a DAT is not found, try again ignoring the checksum.
+            if (ori == nullptr && entry.Generation == ObjectGeneration::DAT)
+            {
+                return FindObjectLegacy(entry.Entry.flags, entry.Entry.GetName());
+            }
+
+            return ori;
         }
 
         std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) override
