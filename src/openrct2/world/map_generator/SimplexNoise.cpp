@@ -166,16 +166,21 @@ namespace OpenRCT2::World::MapGenerator
         for (auto i = 0; i < iterations; i++)
         {
             auto copyHeight = heightMap;
-            for (auto y = 1; y < heightMap.height - 1; y++)
+            for (auto y = 0; y < heightMap.height; y++)
             {
-                for (auto x = 1; x < heightMap.width - 1; x++)
+                for (auto x = 0; x < heightMap.width; x++)
                 {
                     auto avg = 0;
                     for (auto yy = -1; yy <= 1; yy++)
                     {
                         for (auto xx = -1; xx <= 1; xx++)
                         {
-                            avg += copyHeight[{ y + yy, x + xx }];
+                            auto dx = x + xx;
+                            auto dy = y + yy;
+
+                            // Use tile height if OOB
+                            auto oob = dy < 0 || dx < 0 || dy >= heightMap.width || dx >= heightMap.height;
+                            avg += oob ? copyHeight[{ x, y }] : copyHeight[{ dx, dy }];
                         }
                     }
                     avg /= 9.0f;
