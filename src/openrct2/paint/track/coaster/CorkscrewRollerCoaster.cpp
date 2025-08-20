@@ -9796,7 +9796,7 @@ static void CorkscrewRCTrackLeftTwistDownToUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height + 1, session.SupportColours);
 
             switch (direction)
             {
@@ -9913,7 +9913,7 @@ static void CorkscrewRCTrackRightTwistDownToUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height + 1, session.SupportColours);
 
             switch (direction)
             {
@@ -9964,7 +9964,7 @@ static void CorkscrewRCTrackLeftTwistUpToDown(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height + 1, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
@@ -10081,7 +10081,7 @@ static void CorkscrewRCTrackRightTwistUpToDown(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height + 1, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
