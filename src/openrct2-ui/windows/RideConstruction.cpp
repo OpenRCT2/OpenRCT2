@@ -2979,6 +2979,11 @@ namespace OpenRCT2::Ui::Windows
 
             WindowRideConstructionDoEntranceExitCheck();
             WindowRideConstructionUpdateActiveElements();
+            auto rideWindow = GetWindowManager()->FindByClass(WindowClass::RideList);
+            if (rideWindow)
+            {
+                WindowRideListRefreshList(rideWindow);
+            }
         }
 
         auto* windowMgr = Ui::GetWindowManager();
@@ -4933,12 +4938,6 @@ namespace OpenRCT2::Ui::Windows
         if (!std::get<0>(updated_element))
         {
             return true;
-        }
-
-        auto rideWindow = GetWindowManager()->FindByClass(WindowClass::RideList);
-        if (rideWindow)
-        {
-            WindowRideListRefreshList(rideWindow);
         }
 
         OpenRCT2::TrackElemType trackType = std::get<1>(updated_element);
