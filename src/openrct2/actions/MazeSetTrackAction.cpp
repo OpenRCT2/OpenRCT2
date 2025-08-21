@@ -20,6 +20,8 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../world/ConstructionClearance.h"
+#include "../ui/WindowManager.h"
+#include "../windows/Intent.h"
 #include "../world/Footpath.h"
 #include "../world/Park.h"
 #include "../world/Wall.h"
@@ -335,6 +337,13 @@ GameActions::Result MazeSetTrackAction::Execute() const
         TileElementRemove(tileElement);
         ride->validateStations();
         ride->mazeTiles--;
+    }
+
+    // Refresh the RideList when maze track is placed (non-ghost). This ensures the ride appears after first placement.
+    if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+    {
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
     }
 
     return res;

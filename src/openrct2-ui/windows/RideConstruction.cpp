@@ -2979,11 +2979,6 @@ namespace OpenRCT2::Ui::Windows
 
             WindowRideConstructionDoEntranceExitCheck();
             WindowRideConstructionUpdateActiveElements();
-            auto rideWindow = GetWindowManager()->FindByClass(WindowClass::RideList);
-            if (rideWindow)
-            {
-                WindowRideListRefreshList(rideWindow);
-            }
         }
 
         auto* windowMgr = Ui::GetWindowManager();
