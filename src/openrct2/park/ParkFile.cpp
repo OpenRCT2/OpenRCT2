@@ -118,9 +118,9 @@ namespace OpenRCT2
         void ThrowIfIncompatibleVersion()
         {
             const auto& header = _os->GetHeader();
-            if (/*header.TargetVersion < kParkFileMinSupportedVersion || */ header.MinVersion > kParkFileCurrentVersion)
+            if (/*header.targetVersion < kParkFileMinSupportedVersion || */ header.minVersion > kParkFileCurrentVersion)
             {
-                throw UnsupportedVersionException(header.MinVersion, header.TargetVersion);
+                throw UnsupportedVersionException(header.minVersion, header.targetVersion);
             }
         }
 
@@ -128,8 +128,8 @@ namespace OpenRCT2
         bool IsSemiCompatibleVersion(uint32_t& minVersion, uint32_t& targetVersion)
         {
             const auto& header = _os->GetHeader();
-            minVersion = header.MinVersion;
-            targetVersion = header.TargetVersion;
+            minVersion = header.minVersion;
+            targetVersion = header.targetVersion;
             return targetVersion > kParkFileCurrentVersion;
         }
 
@@ -169,7 +169,7 @@ namespace OpenRCT2
             ReadWriteCheatsChunk(gameState, os);
             ReadWriteRestrictedObjectsChunk(gameState, os);
             ReadWritePluginStorageChunk(gameState, os);
-            if (os.GetHeader().TargetVersion < 0x4)
+            if (os.GetHeader().targetVersion < 0x4)
             {
                 UpdateTrackElementsRideType();
             }
@@ -183,9 +183,9 @@ namespace OpenRCT2
             OrcaStream os(stream, OrcaStream::Mode::writing, compressionLevel);
 
             auto& header = os.GetHeader();
-            header.Magic = kParkFileMagic;
-            header.TargetVersion = kParkFileCurrentVersion;
-            header.MinVersion = kParkFileMinVersion;
+            header.magic = kParkFileMagic;
+            header.targetVersion = kParkFileCurrentVersion;
+            header.minVersion = kParkFileMinVersion;
 
             ReadWriteAuthoringChunk(os);
             ReadWriteObjectsChunk(os);
@@ -312,7 +312,7 @@ namespace OpenRCT2
                 auto* pathToSurfaceMap = _pathToSurfaceMap;
                 auto* pathToQueueSurfaceMap = _pathToQueueSurfaceMap;
                 auto* pathToRailingsMap = _pathToRailingsMap;
-                const auto version = os.GetHeader().TargetVersion;
+                const auto version = os.GetHeader().targetVersion;
 
                 ObjectList requiredObjects;
                 struct LegacyFootpathMapping
@@ -520,7 +520,7 @@ namespace OpenRCT2
                     cs.Write(AllowEarlyCompletion());
                 }
 
-                if (os.GetHeader().TargetVersion >= 1)
+                if (os.GetHeader().targetVersion >= 1)
                 {
                     cs.ReadWrite(gameState.scenarioFileName);
                 }
@@ -556,7 +556,7 @@ namespace OpenRCT2
 
         void ReadWriteGeneralChunk(GameState_t& gameState, OrcaStream& os)
         {
-            const auto version = os.GetHeader().TargetVersion;
+            const auto version = os.GetHeader().targetVersion;
             auto found = os.ReadWriteChunk(ParkFileChunkType::GENERAL, [&](OrcaStream::ChunkStream& cs) {
                 // Only GAME_PAUSED_NORMAL from gGamePaused is relevant.
                 if (cs.GetMode() == OrcaStream::Mode::reading)
@@ -641,7 +641,7 @@ namespace OpenRCT2
                 cs.ReadWrite(gameState.widePathTileLoopPosition);
 
                 auto& rideRatings = gameState.rideRatingUpdateStates;
-                if (os.GetHeader().TargetVersion >= 21)
+                if (os.GetHeader().targetVersion >= 21)
                 {
                     cs.ReadWriteArray(rideRatings, [this, &cs](OpenRCT2::RideRating::UpdateState& calcData) {
                         ReadWriteRideRatingCalculationData(cs, calcData);
@@ -660,7 +660,7 @@ namespace OpenRCT2
                     ReadWriteRideRatingCalculationData(cs, rideRatingUpdateState);
                 }
 
-                if (os.GetHeader().TargetVersion >= 14)
+                if (os.GetHeader().targetVersion >= 14)
                 {
                     cs.ReadWrite(gIsAutosave);
                 }
@@ -868,7 +868,7 @@ namespace OpenRCT2
         void ReadWriteClimateChunk(GameState_t& gameState, OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::CLIMATE, [&os, &gameState](OrcaStream::ChunkStream& cs) {
-                auto version = os.GetHeader().TargetVersion;
+                auto version = os.GetHeader().targetVersion;
                 if (version < kClimateObjectsVersion)
                 {
                     // Legacy climate is converted elsewhere, so we can skip it here.
@@ -891,7 +891,7 @@ namespace OpenRCT2
         void ReadWriteParkChunk(GameState_t& gameState, OrcaStream& os)
         {
             os.ReadWriteChunk(
-                ParkFileChunkType::PARK, [version = os.GetHeader().TargetVersion, &gameState](OrcaStream::ChunkStream& cs) {
+                ParkFileChunkType::PARK, [version = os.GetHeader().targetVersion, &gameState](OrcaStream::ChunkStream& cs) {
                     cs.ReadWrite(gameState.park.Name);
                     cs.ReadWrite(gameState.park.cash);
                     cs.ReadWrite(gameState.park.bankLoan);
@@ -1226,11 +1226,11 @@ namespace OpenRCT2
                                     auto* trackElement = it.element->AsTrack();
                                     auto trackType = trackElement->GetTrackType();
                                     if (TrackTypeMustBeMadeInvisible(
-                                            trackElement->GetRideType(), trackType, os.GetHeader().TargetVersion))
+                                            trackElement->GetRideType(), trackType, os.GetHeader().targetVersion))
                                     {
                                         it.element->SetInvisible(true);
                                     }
-                                    if (os.GetHeader().TargetVersion < kBlockBrakeImprovementsVersion)
+                                    if (os.GetHeader().targetVersion < kBlockBrakeImprovementsVersion)
                                     {
                                         if (trackType == TrackElemType::Brakes)
                                             trackElement->SetBrakeClosed(true);
@@ -1239,7 +1239,7 @@ namespace OpenRCT2
                                     }
                                 }
                                 else if (
-                                    it.element->GetType() == TileElementType::SmallScenery && os.GetHeader().TargetVersion < 23)
+                                    it.element->GetType() == TileElementType::SmallScenery && os.GetHeader().targetVersion < 23)
                                 {
                                     auto* sceneryElement = it.element->AsSmallScenery();
                                     // Previous formats stored the needs supports flag in the primary colour
@@ -1300,7 +1300,7 @@ namespace OpenRCT2
         void ReadWriteBannersChunk(GameState_t& gameState, OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::BANNERS, [&os](OrcaStream::ChunkStream& cs) {
-                auto version = os.GetHeader().TargetVersion;
+                auto version = os.GetHeader().targetVersion;
                 if (cs.GetMode() == OrcaStream::Mode::writing)
                 {
                     auto numBanners = GetNumBanners();
@@ -1377,7 +1377,7 @@ namespace OpenRCT2
 
         void ReadWriteRidesChunk(GameState_t& gameState, OrcaStream& os)
         {
-            const auto version = os.GetHeader().TargetVersion;
+            const auto version = os.GetHeader().targetVersion;
             os.ReadWriteChunk(ParkFileChunkType::RIDES, [this, &version, &os](OrcaStream::ChunkStream& cs) {
                 std::vector<RideId> rideIds;
                 if (cs.GetMode() == OrcaStream::Mode::reading)
@@ -1553,7 +1553,7 @@ namespace OpenRCT2
                         }
                     }
 
-                    if (os.GetHeader().TargetVersion < kHigherInversionsHolesHelicesStatsVersion)
+                    if (os.GetHeader().targetVersion < kHigherInversionsHolesHelicesStatsVersion)
                     {
                         uint8_t combinedValue = cs.Read<uint8_t>();
                         auto split = splitCombinedHelicesAndSpecialElements(combinedValue);
@@ -1790,7 +1790,7 @@ namespace OpenRCT2
 
         static void ReadWritePeep(OrcaStream& os, OrcaStream::ChunkStream& cs, Peep& entity)
         {
-            auto version = os.GetHeader().TargetVersion;
+            auto version = os.GetHeader().targetVersion;
 
             ReadWriteEntityCommon(cs, entity);
 
@@ -2220,7 +2220,7 @@ namespace OpenRCT2
         cs.ReadWrite(entity.next_vehicle_on_ride);
         cs.ReadWrite(entity.var_44);
         cs.ReadWrite(entity.mass);
-        if (cs.GetMode() == OrcaStream::Mode::reading && os.GetHeader().TargetVersion < 18)
+        if (cs.GetMode() == OrcaStream::Mode::reading && os.GetHeader().targetVersion < 18)
         {
             uint16_t updateFlags = 0;
             cs.ReadWrite(updateFlags);
@@ -2258,7 +2258,7 @@ namespace OpenRCT2
         cs.ReadWrite(entity.powered_acceleration);
         cs.ReadWrite(entity.CollisionDetectionTimer);
         cs.ReadWrite(entity.animation_frame);
-        if (cs.GetMode() == OrcaStream::Mode::reading && os.GetHeader().TargetVersion <= 2)
+        if (cs.GetMode() == OrcaStream::Mode::reading && os.GetHeader().targetVersion <= 2)
         {
             uint16_t lower = 0, upper = 0;
             cs.ReadWrite(lower);
@@ -2272,7 +2272,7 @@ namespace OpenRCT2
         cs.ReadWrite(entity.scream_sound_id);
         cs.ReadWrite(entity.TrackSubposition);
         cs.ReadWrite(entity.NumLaps);
-        if (cs.GetMode() == OrcaStream::Mode::reading && os.GetHeader().TargetVersion < kBlockBrakeImprovementsVersion)
+        if (cs.GetMode() == OrcaStream::Mode::reading && os.GetHeader().targetVersion < kBlockBrakeImprovementsVersion)
         {
             uint8_t brakeSpeed;
             cs.ReadWrite(brakeSpeed);
@@ -2293,7 +2293,7 @@ namespace OpenRCT2
         cs.ReadWrite(entity.colours.Tertiary);
         cs.ReadWrite(entity.seat_rotation);
         cs.ReadWrite(entity.target_seat_rotation);
-        if (cs.GetMode() == OrcaStream::Mode::reading && os.GetHeader().TargetVersion < 18)
+        if (cs.GetMode() == OrcaStream::Mode::reading && os.GetHeader().targetVersion < 18)
         {
             bool isCrashedVehicle = false;
             cs.ReadWrite(isCrashedVehicle);
@@ -2302,7 +2302,7 @@ namespace OpenRCT2
                 entity.SetFlag(VehicleFlags::Crashed);
             }
         }
-        if (cs.GetMode() == OrcaStream::Mode::reading && os.GetHeader().TargetVersion < kBlockBrakeImprovementsVersion)
+        if (cs.GetMode() == OrcaStream::Mode::reading && os.GetHeader().targetVersion < kBlockBrakeImprovementsVersion)
         {
             entity.BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
         }
@@ -2316,7 +2316,7 @@ namespace OpenRCT2
     void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Guest& guest)
     {
         ReadWritePeep(os, cs, guest);
-        auto version = os.GetHeader().TargetVersion;
+        auto version = os.GetHeader().targetVersion;
 
         if (version <= 1)
         {
@@ -2372,7 +2372,7 @@ namespace OpenRCT2
         }
         cs.ReadWrite(guest.NauseaTolerance);
 
-        if (os.GetHeader().TargetVersion < 3)
+        if (os.GetHeader().targetVersion < 3)
         {
             std::array<uint8_t, 16> rideTypeBeenOn;
             cs.ReadWriteArray(rideTypeBeenOn, [&cs](uint8_t& rideType) {
@@ -2383,7 +2383,7 @@ namespace OpenRCT2
         }
 
         cs.ReadWrite(guest.TimeInQueue);
-        if (os.GetHeader().TargetVersion < 3)
+        if (os.GetHeader().targetVersion < 3)
         {
             std::array<uint8_t, 32> ridesBeenOn;
             cs.ReadWriteArray(ridesBeenOn, [&cs](uint8_t& rideType) {
@@ -2449,7 +2449,7 @@ namespace OpenRCT2
         cs.ReadWrite(guest.RejoinQueueTimeout);
         cs.ReadWrite(guest.PreviousRide);
         cs.ReadWrite(guest.PreviousRideTimeOut);
-        cs.ReadWriteArray(guest.Thoughts, [version = os.GetHeader().TargetVersion, &cs](PeepThought& thought) {
+        cs.ReadWriteArray(guest.Thoughts, [version = os.GetHeader().targetVersion, &cs](PeepThought& thought) {
             cs.ReadWrite(thought.type);
             if (version <= 2)
             {
@@ -2512,7 +2512,7 @@ namespace OpenRCT2
             }
         }
 
-        if (os.GetHeader().TargetVersion <= 1)
+        if (os.GetHeader().targetVersion <= 1)
         {
             return;
         }
@@ -2520,7 +2520,7 @@ namespace OpenRCT2
         cs.ReadWrite(entity.AssignedStaffType);
         cs.ReadWrite(entity.MechanicTimeSinceCall);
         cs.ReadWrite(entity.HireDate);
-        if (os.GetHeader().TargetVersion <= 4)
+        if (os.GetHeader().targetVersion <= 4)
         {
             cs.Ignore<uint8_t>();
         }
@@ -2693,7 +2693,7 @@ namespace OpenRCT2
                     Vehicle, Guest, Staff, Litter, SteamParticle, MoneyEffect, VehicleCrashParticle, ExplosionCloud,
                     CrashSplashParticle, ExplosionFlare, JumpingFountain, Balloon, Duck>(os, cs);
 
-                auto version = os.GetHeader().TargetVersion;
+                auto version = os.GetHeader().targetVersion;
                 if (version < kPeepAnimationObjectsVersion)
                 {
                     ConvertPeepAnimationTypeToObjects(gameState);

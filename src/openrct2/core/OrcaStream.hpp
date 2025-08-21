@@ -48,14 +48,14 @@ namespace OpenRCT2
 #pragma pack(push, 1)
         struct Header
         {
-            uint32_t Magic{};
-            uint32_t TargetVersion{};
-            uint32_t MinVersion{};
-            uint32_t NumChunks{};
-            uint64_t UncompressedSize{};
-            CompressionType Compression{};
-            uint64_t CompressedSize{};
-            std::array<uint8_t, 8> FNV1a{};
+            uint32_t magic{};
+            uint32_t targetVersion{};
+            uint32_t minVersion{};
+            uint32_t numChunks{};
+            uint64_t uncompressedSize{};
+            CompressionType compression{};
+            uint64_t compressedSize{};
+            std::array<uint8_t, 8> fnv1a{};
             uint8_t padding[20]{};
         };
         static_assert(sizeof(Header) == 64, "Header should be 64 bytes");
@@ -87,55 +87,55 @@ namespace OpenRCT2
                 _header = _stream->ReadValue<Header>();
 
                 _chunks.clear();
-                for (uint32_t i = 0; i < _header.NumChunks; i++)
+                for (uint32_t i = 0; i < _header.numChunks; i++)
                 {
                     auto entry = _stream->ReadValue<ChunkEntry>();
                     _chunks.push_back(entry);
                 }
 
                 // Uncompress
-                if (_header.Compression != CompressionType::none)
+                if (_header.compression != CompressionType::none)
                 {
                     bool decompressStatus = false;
 
-                    switch (_header.Compression)
+                    switch (_header.compression)
                     {
                         case CompressionType::gzip:
                             decompressStatus = Compression::zlibDecompress(
-                                *_stream, _header.CompressedSize, _buffer, _header.UncompressedSize,
+                                *_stream, _header.compressedSize, _buffer, _header.uncompressedSize,
                                 Compression::ZlibHeaderType::gzip);
                             break;
                         case CompressionType::zstd:
                             decompressStatus = Compression::zstdDecompress(
-                                *_stream, _header.CompressedSize, _buffer, _header.UncompressedSize);
+                                *_stream, _header.compressedSize, _buffer, _header.uncompressedSize);
                             break;
                         default:
-                            throw IOException("Unknown Park Compression Type");
+                            throw IOException("Unknown park compression type");
                     }
 
                     if (!decompressStatus)
-                        throw IOException("Decompression Error");
+                        throw IOException("Decompression error!");
                 }
                 else
                 {
-                    if (_header.UncompressedSize != _header.CompressedSize)
-                        throw IOException("None Compression Sizes Don't Match");
-                    _buffer.CopyFromStream(*_stream, _header.UncompressedSize);
+                    if (_header.uncompressedSize != _header.compressedSize)
+                        throw IOException("Compressed and uncompressed sizes don't match!");
+                    _buffer.CopyFromStream(*_stream, _header.uncompressedSize);
                 }
 
                 // early in-dev versions used SHA1 instead of FNV1a, so just assume any file
                 // with a verison number of 0 may be one of these, and don't check their hashes.
-                if (_header.TargetVersion > 0)
+                if (_header.targetVersion > 0)
                 {
                     auto checksum = Crypt::FNV1a(_buffer.GetData(), _buffer.GetLength());
-                    if (checksum != _header.FNV1a)
-                        throw IOException("Checksum Is Not Valid");
+                    if (checksum != _header.fnv1a)
+                        throw IOException("Checksum is not valid!");
                 }
             }
             else
             {
                 _header = {};
-                _header.Compression = _compressionLevel == Compression::kNoCompressionLevel ? CompressionType::none
+                _header.compression = _compressionLevel == Compression::kNoCompressionLevel ? CompressionType::none
                                                                                             : CompressionType::zstd;
                 _buffer = MemoryStream{};
             }
@@ -147,22 +147,22 @@ namespace OpenRCT2
         {
             if (_mode == Mode::writing)
             {
-                _header.NumChunks = static_cast<uint32_t>(_chunks.size());
-                _header.UncompressedSize = _buffer.GetLength();
-                _header.CompressedSize = _buffer.GetLength();
-                _header.FNV1a = Crypt::FNV1a(_buffer.GetData(), _buffer.GetLength());
+                _header.numChunks = static_cast<uint32_t>(_chunks.size());
+                _header.uncompressedSize = _buffer.GetLength();
+                _header.compressedSize = _buffer.GetLength();
+                _header.fnv1a = Crypt::FNV1a(_buffer.GetData(), _buffer.GetLength());
 
                 if (_compressionLevel == Compression::kNoCompressionLevel)
-                    _header.Compression = CompressionType::none;
+                    _header.compression = CompressionType::none;
 
                 // Compress data
-                if (_header.Compression != CompressionType::none)
+                if (_header.compression != CompressionType::none)
                 {
                     MemoryStream compressed;
                     bool compressStatus = false;
 
                     _buffer.SetPosition(0);
-                    switch (_header.Compression)
+                    switch (_header.compression)
                     {
                         case CompressionType::gzip:
                             compressStatus = Compression::zlibCompress(
@@ -180,12 +180,12 @@ namespace OpenRCT2
                     if (compressStatus && compressed.GetLength() < _buffer.GetLength())
                     {
                         _buffer = std::move(compressed);
-                        _header.CompressedSize = _buffer.GetLength();
+                        _header.compressedSize = _buffer.GetLength();
                     }
                     else
                     {
                         // Compression increases filesize, so just store uncompressed data
-                        _header.Compression = CompressionType::none;
+                        _header.compression = CompressionType::none;
                     }
                 }
 
