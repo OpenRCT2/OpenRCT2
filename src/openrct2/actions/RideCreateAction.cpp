@@ -298,8 +298,6 @@ GameActions::Result RideCreateAction::Execute() const
 
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByClass(WindowClass::RideList);
-    // Ensure RideList window updates after placing a ride
-    windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
 
     res.Expenditure = ExpenditureType::RideConstruction;
     res.SetData(RideId{ rideIndex });
