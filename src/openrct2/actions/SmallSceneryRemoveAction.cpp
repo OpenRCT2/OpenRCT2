@@ -71,14 +71,14 @@ GameActions::Result SmallSceneryRemoveAction::Query() const
     }
 
     res.Cost = entry->removal_price;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Position = _loc;
 
     if (gLegacyScene != LegacyScene::scenarioEditor && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
         && !getGameState().cheats.sandboxMode)
     {
         // Check if allowed to remove item
-        if (getGameState().park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+        if (getGameState().park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
         {
             if (entry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
             {
@@ -123,7 +123,7 @@ GameActions::Result SmallSceneryRemoveAction::Execute() const
     }
 
     res.Cost = entry->removal_price;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Position = _loc;
 
     TileElement* tileElement = FindSceneryElement();

@@ -111,7 +111,7 @@ namespace OpenRCT2::Editor
         gameStateInitAll(gameState, kDefaultMapSize);
         gLegacyScene = LegacyScene::scenarioEditor;
         gameState.editorStep = EditorStep::ObjectSelection;
-        gameState.park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gameState.scenarioCategory = ScenarioCategory::other;
         ObjectListLoad();
         ViewportInitAll();
@@ -308,18 +308,18 @@ namespace OpenRCT2::Editor
         gameState.park.guestChangeModifier = 0;
         if (fromSave)
         {
-            gameState.park.Flags |= PARK_FLAGS_NO_MONEY;
+            gameState.park.flags |= PARK_FLAGS_NO_MONEY;
 
-            if (gameState.park.EntranceFee == 0)
+            if (gameState.park.entranceFee == 0)
             {
-                gameState.park.Flags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                gameState.park.flags |= PARK_FLAGS_PARK_FREE_ENTRY;
             }
             else
             {
-                gameState.park.Flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+                gameState.park.flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
             }
 
-            gameState.park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+            gameState.park.flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 
             gameState.guestInitialCash = std::clamp(gameState.guestInitialCash, 10.00_GBP, kMaxEntranceFee);
 
@@ -331,7 +331,7 @@ namespace OpenRCT2::Editor
             gameState.park.maxBankLoan = std::clamp<money64>(gameState.park.maxBankLoan, 0.00_GBP, 5000000.00_GBP);
 
             gameState.park.bankLoanInterestRate = std::clamp<uint8_t>(
-                gameState.park.bankLoanInterestRate, 5, MaxBankLoanInterestRate);
+                gameState.park.bankLoanInterestRate, 5, kMaxBankLoanInterestRate);
         }
 
         ClimateReset();
@@ -500,12 +500,12 @@ namespace OpenRCT2::Editor
             return { false, STR_PARK_MUST_OWN_SOME_LAND };
         }
 
-        if (gameState.park.Entrances.empty())
+        if (gameState.park.entrances.empty())
         {
             return { false, STR_NO_PARK_ENTRANCES };
         }
 
-        for (const auto& parkEntrance : gameState.park.Entrances)
+        for (const auto& parkEntrance : gameState.park.entrances)
         {
             int32_t direction = DirectionReverse(parkEntrance.direction);
 

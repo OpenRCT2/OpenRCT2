@@ -268,7 +268,7 @@ static void ShortcutShowFinancialInformation()
         return;
 
     if (!(isInTrackDesignerOrManager()))
-        if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+        if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             ContextOpenWindow(WindowClass::Finances);
 }
 

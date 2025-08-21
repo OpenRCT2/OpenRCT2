@@ -56,22 +56,22 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             {
                 if (_value != 0)
                 {
-                    gameState.park.Flags |= PARK_FLAGS_NO_MONEY;
+                    gameState.park.flags |= PARK_FLAGS_NO_MONEY;
                 }
                 else
                 {
-                    gameState.park.Flags &= ~PARK_FLAGS_NO_MONEY;
+                    gameState.park.flags &= ~PARK_FLAGS_NO_MONEY;
                 }
             }
             else
             {
                 if (_value != 0)
                 {
-                    gameState.park.Flags |= PARK_FLAGS_NO_MONEY;
+                    gameState.park.flags |= PARK_FLAGS_NO_MONEY;
                 }
                 else
                 {
-                    gameState.park.Flags &= ~PARK_FLAGS_NO_MONEY;
+                    gameState.park.flags &= ~PARK_FLAGS_NO_MONEY;
                 }
                 // Invalidate all windows that have anything to do with finance
                 windowMgr->InvalidateByClass(WindowClass::Ride);
@@ -99,17 +99,17 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             windowMgr->InvalidateByClass(WindowClass::Finances);
             break;
         case ScenarioSetSetting::AnnualInterestRate:
-            gameState.park.bankLoanInterestRate = std::clamp<uint8_t>(_value, 0, MaxBankLoanInterestRate);
+            gameState.park.bankLoanInterestRate = std::clamp<uint8_t>(_value, 0, kMaxBankLoanInterestRate);
             windowMgr->InvalidateByClass(WindowClass::Finances);
             break;
         case ScenarioSetSetting::ForbidMarketingCampaigns:
             if (_value != 0)
             {
-                gameState.park.Flags |= PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
+                gameState.park.flags |= PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
             }
             else
             {
-                gameState.park.Flags &= ~PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
+                gameState.park.flags &= ~PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
             }
             break;
         case ScenarioSetSetting::AverageCashPerGuest:
@@ -127,21 +127,21 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
         case ScenarioSetSetting::GuestsPreferLessIntenseRides:
             if (_value != 0)
             {
-                gameState.park.Flags |= PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
+                gameState.park.flags |= PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
             }
             else
             {
-                gameState.park.Flags &= ~PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
+                gameState.park.flags &= ~PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
             }
             break;
         case ScenarioSetSetting::GuestsPreferMoreIntenseRides:
             if (_value != 0)
             {
-                gameState.park.Flags |= PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
+                gameState.park.flags |= PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
             }
             else
             {
-                gameState.park.Flags &= ~PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
+                gameState.park.flags &= ~PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
             }
             break;
         case ScenarioSetSetting::CostToBuyLand:
@@ -155,96 +155,96 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             {
                 if (_value == 0)
                 {
-                    gameState.park.Flags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                    gameState.park.Flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
-                    gameState.park.EntranceFee = 0.00_GBP;
+                    gameState.park.flags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                    gameState.park.flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gameState.park.entranceFee = 0.00_GBP;
                 }
                 else if (_value == 1)
                 {
-                    gameState.park.Flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-                    gameState.park.Flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
-                    gameState.park.EntranceFee = 10.00_GBP;
+                    gameState.park.flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+                    gameState.park.flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gameState.park.entranceFee = 10.00_GBP;
                 }
                 else
                 {
-                    gameState.park.Flags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                    gameState.park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
-                    gameState.park.EntranceFee = 10.00_GBP;
+                    gameState.park.flags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                    gameState.park.flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gameState.park.entranceFee = 10.00_GBP;
                 }
             }
             else
             {
                 if (_value == 0)
                 {
-                    gameState.park.Flags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                    gameState.park.Flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gameState.park.flags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                    gameState.park.flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
                 }
                 else if (_value == 1)
                 {
-                    gameState.park.Flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-                    gameState.park.Flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gameState.park.flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+                    gameState.park.flags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
                 }
                 else
                 {
-                    gameState.park.Flags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                    gameState.park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gameState.park.flags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                    gameState.park.flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
                 }
                 windowMgr->InvalidateByClass(WindowClass::ParkInformation);
                 windowMgr->InvalidateByClass(WindowClass::Ride);
             }
             break;
         case ScenarioSetSetting::ParkChargeEntryFee:
-            gameState.park.EntranceFee = std::clamp<money64>(_value, 0.00_GBP, kMaxEntranceFee);
+            gameState.park.entranceFee = std::clamp<money64>(_value, 0.00_GBP, kMaxEntranceFee);
             windowMgr->InvalidateByClass(WindowClass::ParkInformation);
             break;
         case ScenarioSetSetting::ForbidTreeRemoval:
             if (_value != 0)
             {
-                gameState.park.Flags |= PARK_FLAGS_FORBID_TREE_REMOVAL;
+                gameState.park.flags |= PARK_FLAGS_FORBID_TREE_REMOVAL;
             }
             else
             {
-                gameState.park.Flags &= ~PARK_FLAGS_FORBID_TREE_REMOVAL;
+                gameState.park.flags &= ~PARK_FLAGS_FORBID_TREE_REMOVAL;
             }
             break;
         case ScenarioSetSetting::ForbidLandscapeChanges:
             if (_value != 0)
             {
-                gameState.park.Flags |= PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
+                gameState.park.flags |= PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
             }
             else
             {
-                gameState.park.Flags &= ~PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
+                gameState.park.flags &= ~PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
             }
             break;
         case ScenarioSetSetting::ForbidHighConstruction:
             if (_value != 0)
             {
-                gameState.park.Flags |= PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+                gameState.park.flags |= PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
             }
             else
             {
-                gameState.park.Flags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+                gameState.park.flags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
             }
             break;
         case ScenarioSetSetting::ParkRatingHigherDifficultyLevel:
             if (_value != 0)
             {
-                gameState.park.Flags |= PARK_FLAGS_DIFFICULT_PARK_RATING;
+                gameState.park.flags |= PARK_FLAGS_DIFFICULT_PARK_RATING;
             }
             else
             {
-                gameState.park.Flags &= ~PARK_FLAGS_DIFFICULT_PARK_RATING;
+                gameState.park.flags &= ~PARK_FLAGS_DIFFICULT_PARK_RATING;
             }
             break;
         case ScenarioSetSetting::GuestGenerationHigherDifficultyLevel:
             if (_value != 0)
             {
-                gameState.park.Flags |= PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
+                gameState.park.flags |= PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
             }
             else
             {
-                gameState.park.Flags &= ~PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
+                gameState.park.flags &= ~PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
             }
             break;
         case ScenarioSetSetting::AllowEarlyCompletion:
@@ -254,11 +254,11 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
         {
             if (_value != 0)
             {
-                gameState.park.Flags |= PARK_FLAGS_RCT1_INTEREST;
+                gameState.park.flags |= PARK_FLAGS_RCT1_INTEREST;
             }
             else
             {
-                gameState.park.Flags &= ~PARK_FLAGS_RCT1_INTEREST;
+                gameState.park.flags &= ~PARK_FLAGS_RCT1_INTEREST;
             }
             break;
         }

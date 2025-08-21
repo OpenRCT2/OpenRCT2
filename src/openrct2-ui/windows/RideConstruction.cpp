@@ -1712,7 +1712,7 @@ namespace OpenRCT2::Ui::Windows
                 DrawTextBasic(rt, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
 
             screenCoords.y += 11;
-            if (_currentTrackPrice != kMoney64Undefined && !(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+            if (_currentTrackPrice != kMoney64Undefined && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_currentTrackPrice);
@@ -2591,7 +2591,7 @@ namespace OpenRCT2::Ui::Windows
                 // Separate elements logically
                 if (trackPiece == TrackElemType::None)
                 {
-                    gDropdownItems[i++].Format = kStringIdEmpty;
+                    gDropdownItems[i++].format = kStringIdEmpty;
                     continue;
                 }
 
@@ -2610,7 +2610,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                gDropdownItems[i].Format = trackPieceStringId;
+                gDropdownItems[i].format = trackPieceStringId;
                 if (_currentlySelectedTrack == trackPiece)
                     defaultIndex = i;
 

@@ -274,7 +274,7 @@ namespace OpenRCT2::Ui::Windows
             DrawWidgets(rt);
             DrawTabImages(rt);
 
-            if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+            if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(GetStaffWage(GetSelectedStaffType()));

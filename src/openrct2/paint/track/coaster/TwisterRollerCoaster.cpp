@@ -13395,22 +13395,22 @@ static void TwisterRCTrackLeftTwistDownToUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27430), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27436), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27429), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27435), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(
@@ -13516,22 +13516,22 @@ static void TwisterRCTrackRightTwistDownToUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27442), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27448), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27441), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27447), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(
@@ -13704,22 +13704,22 @@ static void TwisterRCTrackLeftTwistUpToDown(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27429), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27435), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27430), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27436), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(
@@ -13825,22 +13825,22 @@ static void TwisterRCTrackRightTwistUpToDown(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27441), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27447), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27442), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours.WithIndex(27448), { 0, 6, height - 5 },
-                        { { 0, 0, height + 6 }, { 32, 20, 3 } });
+                        { { 0, 6, height }, { 32, 20, 3 } });
                     break;
             }
             MetalASupportsPaintSetup(

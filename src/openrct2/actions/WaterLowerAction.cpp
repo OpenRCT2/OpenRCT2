@@ -64,7 +64,7 @@ GameActions::Result WaterLowerAction::QueryExecute(bool isExecuting) const
         z = waterHeight;
     }
     res.Position.z = z;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
 
     uint8_t minHeight = GetLowestHeight(validRange);
     bool hasChanged = false;

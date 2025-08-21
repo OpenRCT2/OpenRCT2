@@ -357,7 +357,7 @@ namespace OpenRCT2::RCT1
             // Do map initialisation, same kind of stuff done when loading scenario editor
             gameStateInitAll(gameState, { mapSize, mapSize });
             gameState.editorStep = EditorStep::ObjectSelection;
-            gameState.park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+            gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
             gameState.scenarioCategory = ScenarioCategory::other;
         }
 
@@ -1500,7 +1500,7 @@ namespace OpenRCT2::RCT1
 
         void ImportFinance(GameState_t& gameState)
         {
-            gameState.park.EntranceFee = _s4.ParkEntranceFee;
+            gameState.park.entranceFee = _s4.ParkEntranceFee;
             gameState.landPrice = ToMoney64(_s4.LandPrice);
             gameState.constructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
 
@@ -1512,13 +1512,13 @@ namespace OpenRCT2::RCT1
             gameState.initialCash = ToMoney64(_s4.Cash);
 
             gameState.park.companyValue = ToMoney64(_s4.CompanyValue);
-            gameState.park.Value = CorrectRCT1ParkValue(_s4.ParkValue);
+            gameState.park.value = CorrectRCT1ParkValue(_s4.ParkValue);
             gameState.park.currentProfit = ToMoney64(_s4.Profit);
 
             for (size_t i = 0; i < Limits::kFinanceGraphSize; i++)
             {
                 gameState.park.cashHistory[i] = ToMoney64(_s4.CashHistory[i]);
-                gameState.park.ValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
+                gameState.park.valueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
                 gameState.park.weeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
             }
 
@@ -2214,7 +2214,7 @@ namespace OpenRCT2::RCT1
             }
 
             auto& park = gameState.park;
-            park.Name = std::move(parkName);
+            park.name = std::move(parkName);
         }
 
         std::vector<OpenRCT2::News::Item> convertNewsQueue(std::span<const RCT12NewsItem> queue)
@@ -2263,14 +2263,14 @@ namespace OpenRCT2::RCT1
             gameState.date = Date{ _s4.Month, _s4.Day };
 
             // Park rating
-            gameState.park.Rating = _s4.ParkRating;
+            gameState.park.rating = _s4.ParkRating;
 
             Park::ResetHistories(gameState);
             for (size_t i = 0; i < std::size(_s4.ParkRatingHistory); i++)
             {
                 if (_s4.ParkRatingHistory[i] != kRCT12ParkHistoryUndefined)
                 {
-                    gameState.park.RatingHistory[i] = _s4.ParkRatingHistory[i] * kRCT12ParkRatingHistoryFactor;
+                    gameState.park.ratingHistory[i] = _s4.ParkRatingHistory[i] * kRCT12ParkRatingHistoryFactor;
                 }
             }
             for (size_t i = 0; i < std::size(_s4.GuestsInParkHistory); i++)
@@ -2322,17 +2322,17 @@ namespace OpenRCT2::RCT1
             gameState.park.staffSecurityColour = RCT1::GetColour(_s4.SecurityGuardColour);
 
             // Flags
-            gameState.park.Flags = _s4.ParkFlags;
-            gameState.park.Flags &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
-            gameState.park.Flags |= PARK_FLAGS_RCT1_INTEREST;
+            gameState.park.flags = _s4.ParkFlags;
+            gameState.park.flags &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
+            gameState.park.flags |= PARK_FLAGS_RCT1_INTEREST;
             // Loopy Landscape parks can set a flag to lock the entry price to free.
             // If this flag is not set, the player can ask money for both rides and entry.
             if (!(_s4.ParkFlags & RCT1_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE))
             {
-                gameState.park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                gameState.park.flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
             }
 
-            gameState.park.Size = _s4.ParkSize;
+            gameState.park.size = _s4.ParkSize;
             gameState.park.totalRideValueForMoney = _s4.TotalRideValueForMoney;
             gameState.park.samePriceThroughoutPark = 0;
             if (_gameVersion == FILE_VERSION_RCT1_LL)
@@ -2452,7 +2452,7 @@ namespace OpenRCT2::RCT1
             if (_isScenario && !parkName.empty())
             {
                 auto& park = getGameState().park;
-                park.Name = std::move(parkName);
+                park.name = std::move(parkName);
             }
         }
 
@@ -2545,10 +2545,10 @@ namespace OpenRCT2::RCT1
 
         void FixEntrancePositions(GameState_t& gameState)
         {
-            gameState.park.Entrances.clear();
+            gameState.park.entrances.clear();
             TileElementIterator it;
             TileElementIteratorBegin(&it);
-            while (TileElementIteratorNext(&it) && gameState.park.Entrances.size() < Limits::kMaxParkEntrances)
+            while (TileElementIteratorNext(&it) && gameState.park.entrances.size() < Limits::kMaxParkEntrances)
             {
                 TileElement* element = it.element;
 
@@ -2560,7 +2560,7 @@ namespace OpenRCT2::RCT1
                     continue;
 
                 CoordsXYZD entrance = { TileCoordsXY(it.x, it.y).ToCoordsXY(), element->GetBaseZ(), element->GetDirection() };
-                gameState.park.Entrances.push_back(entrance);
+                gameState.park.entrances.push_back(entrance);
             }
         }
 

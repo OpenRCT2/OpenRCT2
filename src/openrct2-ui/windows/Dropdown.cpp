@@ -61,7 +61,7 @@ namespace OpenRCT2::Ui::Windows
     {
         for (size_t i = 0; i < std::size(gDropdownItems); i++)
         {
-            gDropdownItems[i].Flags = 0;
+            gDropdownItems[i].flags.clearAll();
         }
     }
 
@@ -113,7 +113,7 @@ namespace OpenRCT2::Ui::Windows
                 ScreenCoordsXY screenCoords = windowPos
                     + ScreenCoordsXY{ 2 + (cellCoords.x * ItemWidth), 2 + (cellCoords.y * ItemHeight) };
 
-                if (gDropdownItems[i].IsSeparator())
+                if (gDropdownItems[i].isSeparator())
                 {
                     const auto leftTop = screenCoords + ScreenCoordsXY{ 2, (ItemHeight / 2) - 1 };
                     const auto rightBottom = leftTop + ScreenCoordsXY{ ItemWidth - 4, 0 };
@@ -141,12 +141,12 @@ namespace OpenRCT2::Ui::Windows
                         GfxFilterRect(rt, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
                     }
 
-                    StringId item = gDropdownItems[i].Format;
+                    StringId item = gDropdownItems[i].format;
                     if (item == Dropdown::kFormatLandPicker || item == Dropdown::kFormatColourPicker)
                     {
                         // Image item
                         auto image = UseImages ? _dropdownItemsImages[i]
-                                               : ImageId(static_cast<uint32_t>(gDropdownItems[i].Args));
+                                               : ImageId(static_cast<uint32_t>(gDropdownItems[i].args));
                         if (item == Dropdown::kFormatColourPicker && highlightedIndex == i)
                             image = image.WithIndexOffset(1);
                         GfxDrawSprite(rt, image, screenCoords);
@@ -166,7 +166,7 @@ namespace OpenRCT2::Ui::Windows
 
                         // Draw item string
                         auto yOffset = GetAdditionalRowPadding();
-                        Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItems[i].Args));
+                        Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItems[i].args));
                         DrawTextEllipsised(
                             rt, { screenCoords.x + 2, screenCoords.y + yOffset }, width - 7, item, ft, { colour });
                     }
@@ -310,6 +310,14 @@ namespace OpenRCT2::Ui::Windows
         }
     };
 
+    static void copyItemsToGlobal(std::span<const Dropdown::Item> items)
+    {
+        for (size_t i = 0; i < items.size(); i++)
+        {
+            gDropdownItems[i] = items[i];
+        }
+    }
+
     /**
      * Shows a text dropdown menu.
      *  rct2: 0x006ECFB9
@@ -331,13 +339,21 @@ namespace OpenRCT2::Ui::Windows
         int32_t max_string_width = 0;
         for (size_t i = 0; i < num_items; i++)
         {
-            FormatStringLegacy(buffer, 256, gDropdownItems[i].Format, static_cast<void*>(&gDropdownItems[i].Args));
+            FormatStringLegacy(buffer, 256, gDropdownItems[i].format, static_cast<void*>(&gDropdownItems[i].args));
             int32_t string_width = GfxGetStringWidth(buffer, FontStyle::Medium);
             max_string_width = std::max(string_width, max_string_width);
         }
 
         WindowDropdownShowTextCustomWidth(
             screenPos, extray, colour, 0, flags, num_items, max_string_width + 3, prefRowsPerColumn);
+    }
+
+    void WindowDropdownShowText(
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags,
+        std::span<const Dropdown::Item> items, size_t prefRowsPerColumn)
+    {
+        copyItemsToGlobal(items);
+        WindowDropdownShowText(screenPos, extray, colour, flags, items.size(), prefRowsPerColumn);
     }
 
     /**
@@ -371,6 +387,15 @@ namespace OpenRCT2::Ui::Windows
             auto numRowsPerColumn = prefRowsPerColumn > 0 ? static_cast<int32_t>(prefRowsPerColumn) : Dropdown::kItemsMaxSize;
             w->SetTextItems(screenPos, extray, colour, customItemHeight, flags, num_items, width, numRowsPerColumn);
         }
+    }
+
+    void WindowDropdownShowTextCustomWidth(
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t custom_height, uint8_t flags,
+        std::span<const Dropdown::Item> items, int32_t width, size_t prefRowsPerColumn)
+    {
+        copyItemsToGlobal(items);
+        WindowDropdownShowTextCustomWidth(
+            screenPos, extray, colour, custom_height, flags, items.size(), width, prefRowsPerColumn);
     }
 
     /**
@@ -584,7 +609,7 @@ namespace OpenRCT2::Ui::Windows
             auto imageId = (orderedColour == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_WHITE)
                                                                : ImageId(SPR_PALETTE_BTN, orderedColour);
 
-            gDropdownItems[i].Format = Dropdown::kFormatColourPicker;
+            gDropdownItems[i].format = Dropdown::kFormatColourPicker;
             Dropdown::SetImage(i, imageId);
         }
 
@@ -619,7 +644,7 @@ bool Dropdown::IsChecked(int32_t index)
     {
         return false;
     }
-    return gDropdownItems[index].IsChecked();
+    return gDropdownItems[index].isChecked();
 }
 
 bool Dropdown::IsDisabled(int32_t index)
@@ -628,7 +653,7 @@ bool Dropdown::IsDisabled(int32_t index)
     {
         return true;
     }
-    return gDropdownItems[index].IsDisabled();
+    return gDropdownItems[index].isDisabled();
 }
 
 void Dropdown::SetChecked(int32_t index, bool value)
@@ -637,10 +662,8 @@ void Dropdown::SetChecked(int32_t index, bool value)
     {
         return;
     }
-    if (value)
-        gDropdownItems[index].Flags |= EnumValue(Dropdown::ItemFlag::IsChecked);
-    else
-        gDropdownItems[index].Flags &= ~EnumValue(Dropdown::ItemFlag::IsChecked);
+
+    gDropdownItems[index].flags.set(Dropdown::ItemFlag::isChecked, value);
 }
 
 void Dropdown::SetDisabled(int32_t index, bool value)
@@ -649,10 +672,8 @@ void Dropdown::SetDisabled(int32_t index, bool value)
     {
         return;
     }
-    if (value)
-        gDropdownItems[index].Flags |= EnumValue(Dropdown::ItemFlag::IsDisabled);
-    else
-        gDropdownItems[index].Flags &= ~EnumValue(Dropdown::ItemFlag::IsDisabled);
+
+    gDropdownItems[index].flags.set(Dropdown::ItemFlag::isDisabled, value);
 }
 
 void Dropdown::SetImage(int32_t index, ImageId image)

@@ -529,7 +529,7 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_CONSTRUCT].midX(), widgets[WIDX_CONSTRUCT].bottom - 12 };
             if (_windowFootpathCost != kMoney64Undefined)
             {
-                if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+                if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
                 {
                     auto ft = Formatter();
                     ft.Add<money64>(_windowFootpathCost);
@@ -702,7 +702,7 @@ namespace OpenRCT2::Ui::Windows
                     defaultIndex = numPathTypes;
                 }
 
-                gDropdownItems[numPathTypes].Format = kStringIdNone;
+                gDropdownItems[numPathTypes].format = kStringIdNone;
                 gDropdownTooltips[numPathTypes] = pathType->NameStringId;
                 Dropdown::SetImage(numPathTypes, ImageId(pathType->PreviewImageId));
                 _dropdownEntries.push_back({ ObjectType::footpathSurface, i });
@@ -728,7 +728,7 @@ namespace OpenRCT2::Ui::Windows
                     defaultIndex = numPathTypes;
                 }
 
-                gDropdownItems[numPathTypes].Format = kStringIdNone;
+                gDropdownItems[numPathTypes].format = kStringIdNone;
                 gDropdownTooltips[numPathTypes] = pathEntry->string_idx;
                 Dropdown::SetImage(
                     numPathTypes, ImageId(showQueues ? pathEntry->GetQueuePreviewImage() : pathEntry->GetPreviewImage()));
@@ -766,7 +766,7 @@ namespace OpenRCT2::Ui::Windows
                     defaultIndex = numRailingsTypes;
                 }
 
-                gDropdownItems[numRailingsTypes].Format = kStringIdNone;
+                gDropdownItems[numRailingsTypes].format = kStringIdNone;
                 gDropdownTooltips[numRailingsTypes] = railingsEntry->NameStringId;
                 Dropdown::SetImage(numRailingsTypes, ImageId(railingsEntry->PreviewImageId));
                 _dropdownEntries.push_back({ ObjectType::footpathRailings, i });

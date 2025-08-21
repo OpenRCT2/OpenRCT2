@@ -72,7 +72,7 @@ GameActions::Result TrackRemoveAction::Query() const
     res.Position.x = _origin.x + 16;
     res.Position.y = _origin.y + 16;
     res.Position.z = _origin.z;
-    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Expenditure = ExpenditureType::rideConstruction;
 
     auto comparableTrackType = normaliseTrackType(_trackType);
 
@@ -265,7 +265,7 @@ GameActions::Result TrackRemoveAction::Execute() const
     res.Position.x = _origin.x + 16;
     res.Position.y = _origin.y + 16;
     res.Position.z = _origin.z;
-    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Expenditure = ExpenditureType::rideConstruction;
 
     auto comparableTrackType = normaliseTrackType(_trackType);
 

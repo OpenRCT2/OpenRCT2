@@ -3844,3 +3844,4 @@ STR_6799    :Mini-carte
 STR_7000    :ou
 STR_7001    :Nom de l’attraction
 STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :Le fichier audio « {STRING} » est tronqué. L’échantillon {INT32} était attendu, mais seulement {INT32} sont disponibles. Songez à réinstaller RCT2.

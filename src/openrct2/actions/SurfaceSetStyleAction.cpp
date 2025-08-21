@@ -48,7 +48,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
 {
     auto res = GameActions::Result();
     res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
 
     auto validRange = ClampRangeWithinMap(_range.Normalise());
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
@@ -89,7 +89,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
 
     // Do nothing if not in editor, sandbox mode or landscaping is forbidden
     if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
-        && (gameState.park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
+        && (gameState.park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
@@ -151,7 +151,7 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
 {
     auto res = GameActions::Result();
     res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
 
     auto validRange = ClampRangeWithinMap(_range.Normalise());
     auto xMid = (validRange.GetLeft() + validRange.GetRight()) / 2 + 16;

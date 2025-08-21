@@ -58,7 +58,7 @@ GameActions::Result TrackDesignAction::Query() const
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
     res.Position.z = _loc.z;
-    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Expenditure = ExpenditureType::rideConstruction;
 
     if (!LocationValid(_loc))
     {
@@ -138,7 +138,7 @@ GameActions::Result TrackDesignAction::Execute() const
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
     res.Position.z = _loc.z;
-    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Expenditure = ExpenditureType::rideConstruction;
 
     auto& gameState = getGameState();
     auto& objManager = GetContext()->GetObjectManager();
