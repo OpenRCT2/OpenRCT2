@@ -25,6 +25,8 @@
 #include "../world/Wall.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TrackElement.h"
+#include "../ui/WindowManager.h"
+#include "../windows/Intent.h"
 
 using namespace OpenRCT2;
 
@@ -239,6 +241,14 @@ GameActions::Result MazeSetTrackAction::Execute() const
         if (_initialPlacement && !(flags & GAME_COMMAND_FLAG_GHOST))
         {
             ride->overallView = startLoc;
+        }
+
+        // Broadcast a Ride List refresh only on the first actual (non-ghost) placement
+        // to align maze behavior with standard rides.
+        if (_initialPlacement && !(flags & GAME_COMMAND_FLAG_GHOST))
+        {
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
         }
     }
 

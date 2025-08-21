@@ -297,6 +297,8 @@ GameActions::Result RideCreateAction::Execute() const
     RideSetVehicleColoursToRandomPreset(*ride, _colour2);
 
     auto* windowMgr = Ui::GetWindowManager();
+    // Mark the ride list as needing refresh; the actual refresh occurs when the first non-ghost piece is placed.
+    ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_LIST;
     windowMgr->InvalidateByClass(WindowClass::RideList);
 
     res.Expenditure = ExpenditureType::RideConstruction;
