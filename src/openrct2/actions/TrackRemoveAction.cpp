@@ -12,17 +12,17 @@
 #include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../management/Finance.h"
+#include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"
+#include "../ui/WindowManager.h"
+#include "../windows/Intent.h"
 #include "../world/Footpath.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "RideSetSettingAction.h"
-#include "../ride/Ride.h"
-#include "../ui/WindowManager.h"
-#include "../windows/Intent.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
