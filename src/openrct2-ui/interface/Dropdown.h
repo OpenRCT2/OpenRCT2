@@ -54,8 +54,6 @@ namespace OpenRCT2::Ui::Windows
     void WindowDropdownShowColour(
         WindowBase* w, Widget* widget, ColourWithFlags dropdownColour, colour_t selectedColour,
         bool alwaysHideSpecialColours = false);
-    void WindowDropdownShowColourAvailable(
-        WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);
 
     colour_t ColourDropDownIndexToColour(uint8_t ddidx);
 
