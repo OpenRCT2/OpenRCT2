@@ -528,8 +528,8 @@ namespace OpenRCT2::Ui::Windows
 
         for (auto i = 0; i < NetworkGetNumGroups(); i++)
         {
-            gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
-            gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(NetworkGetGroupName(i));
+            gDropdownItems[i].format = STR_OPTIONS_DROPDOWN_ITEM;
+            gDropdownItems[i].args = reinterpret_cast<uintptr_t>(NetworkGetGroupName(i));
         }
         if (widget == &widgets[WIDX_DEFAULT_GROUP_DROPDOWN])
         {

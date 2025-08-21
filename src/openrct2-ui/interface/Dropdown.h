@@ -78,29 +78,30 @@ namespace OpenRCT2::Dropdown
 
     enum class ItemFlag : uint8_t
     {
-        IsDisabled = (1 << 0),
-        IsChecked = (1 << 1),
+        isDisabled = 0,
+        isChecked = 1,
     };
+    using ItemFlags = FlagHolder<uint8_t, ItemFlag>;
 
     struct Item
     {
-        StringId Format;
-        int64_t Args;
-        uint8_t Flags;
+        StringId format{};
+        int64_t args{};
+        ItemFlags flags{};
 
-        constexpr bool IsSeparator() const
+        constexpr bool isSeparator() const
         {
-            return Format == kSeparatorString;
+            return format == kSeparatorString;
         }
 
-        constexpr bool IsDisabled() const
+        constexpr bool isDisabled() const
         {
-            return (Flags & EnumValue(ItemFlag::IsDisabled));
+            return flags.has(ItemFlag::isDisabled);
         }
 
-        constexpr bool IsChecked() const
+        constexpr bool isChecked() const
         {
-            return (Flags & EnumValue(ItemFlag::IsChecked));
+            return flags.has(ItemFlag::isChecked);
         }
     };
 
@@ -134,8 +135,8 @@ namespace OpenRCT2::Dropdown
         for (int i = 0; i < N; ++i)
         {
             const ItemExt& item = items[i];
-            OpenRCT2::Ui::Windows::gDropdownItems[i].Format = item.itemFormat;
-            OpenRCT2::Ui::Windows::gDropdownItems[i].Args = item.stringId;
+            OpenRCT2::Ui::Windows::gDropdownItems[i].format = item.itemFormat;
+            OpenRCT2::Ui::Windows::gDropdownItems[i].args = item.stringId;
         }
     }
 

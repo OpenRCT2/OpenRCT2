@@ -220,14 +220,14 @@ namespace OpenRCT2::Ui::Windows
 
                 const auto& listWidget = widgets[WIDX_LIST];
 
-                gDropdownItems[0].Format = STR_JOIN_GAME;
+                gDropdownItems[0].format = STR_JOIN_GAME;
                 if (server.Favourite)
                 {
-                    gDropdownItems[1].Format = STR_REMOVE_FROM_FAVOURITES;
+                    gDropdownItems[1].format = STR_REMOVE_FROM_FAVOURITES;
                 }
                 else
                 {
-                    gDropdownItems[1].Format = STR_ADD_TO_FAVOURITES;
+                    gDropdownItems[1].format = STR_ADD_TO_FAVOURITES;
                 }
                 auto dropdownPos = ScreenCoordsXY{
                     windowPos.x + listWidget.left + screenCoords.x + 2 - scrolls[0].contentOffsetX,

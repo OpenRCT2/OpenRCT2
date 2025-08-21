@@ -2591,7 +2591,7 @@ namespace OpenRCT2::Ui::Windows
                 // Separate elements logically
                 if (trackPiece == TrackElemType::None)
                 {
-                    gDropdownItems[i++].Format = kStringIdEmpty;
+                    gDropdownItems[i++].format = kStringIdEmpty;
                     continue;
                 }
 
@@ -2610,7 +2610,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                gDropdownItems[i].Format = trackPieceStringId;
+                gDropdownItems[i].format = trackPieceStringId;
                 if (_currentlySelectedTrack == trackPiece)
                     defaultIndex = i;
 

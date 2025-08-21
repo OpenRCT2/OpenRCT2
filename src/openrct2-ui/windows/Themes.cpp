@@ -440,8 +440,8 @@ namespace OpenRCT2::Ui::Windows
                     widget--;
                     for (int32_t i = 0; i < num_items; i++)
                     {
-                        gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
+                        gDropdownItems[i].format = STR_OPTIONS_DROPDOWN_ITEM;
+                        gDropdownItems[i].args = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
                     }
 
                     WindowDropdownShowTextCustomWidth(
