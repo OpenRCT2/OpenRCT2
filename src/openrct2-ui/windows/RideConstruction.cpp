@@ -4928,10 +4928,17 @@ namespace OpenRCT2::Ui::Windows
 
         auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES);
         ContextBroadcastIntent(&intent);
+
         auto updated_element = WindowRideConstructionUpdateStateGetTrackElement();
         if (!std::get<0>(updated_element))
         {
             return true;
+        }
+
+        auto rideWindow = GetWindowManager()->FindByClass(WindowClass::RideList);
+        if (rideWindow)
+        {
+            WindowRideListRefreshList(rideWindow);
         }
 
         OpenRCT2::TrackElemType trackType = std::get<1>(updated_element);
