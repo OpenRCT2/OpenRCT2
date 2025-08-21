@@ -220,20 +220,16 @@ namespace OpenRCT2::Ui::Windows
 
                 const auto& listWidget = widgets[WIDX_LIST];
 
-                gDropdownItems[0].format = STR_JOIN_GAME;
-                if (server.Favourite)
-                {
-                    gDropdownItems[1].format = STR_REMOVE_FROM_FAVOURITES;
-                }
-                else
-                {
-                    gDropdownItems[1].format = STR_ADD_TO_FAVOURITES;
-                }
+                std::array<Dropdown::Item, 2> dropdownItems = {
+                    Dropdown::Item{ STR_JOIN_GAME },
+                    Dropdown::Item{ server.Favourite ? STR_REMOVE_FROM_FAVOURITES : STR_ADD_TO_FAVOURITES },
+                };
+
                 auto dropdownPos = ScreenCoordsXY{
                     windowPos.x + listWidget.left + screenCoords.x + 2 - scrolls[0].contentOffsetX,
                     windowPos.y + listWidget.top + screenCoords.y + 2 - scrolls[0].contentOffsetY
                 };
-                WindowDropdownShowText(dropdownPos, 0, { COLOUR_GREY }, 0, 2);
+                WindowDropdownShowText(dropdownPos, 0, { COLOUR_GREY }, 0, dropdownItems);
             }
         }
 
