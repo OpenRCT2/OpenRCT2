@@ -36,7 +36,7 @@ constexpr uint8_t kFinanceHistorySize = 128;
 
 constexpr uint8_t kMaxBankLoanInterestRate = 255;
 
-extern const money64 research_cost_table[RESEARCH_FUNDING_COUNT];
+extern const money64 kResearchCosts[RESEARCH_FUNDING_COUNT];
 
 bool FinanceCheckMoneyRequired(uint32_t flags);
 bool FinanceCheckAffordability(money64 cost, uint32_t flags);

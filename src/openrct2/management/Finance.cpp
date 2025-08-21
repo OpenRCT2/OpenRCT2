@@ -30,7 +30,7 @@
 using namespace OpenRCT2;
 
 // Monthly research funding costs
-const money64 research_cost_table[RESEARCH_FUNDING_COUNT] = {
+const money64 kResearchCosts[RESEARCH_FUNDING_COUNT] = {
     0.00_GBP,   // No funding
     100.00_GBP, // Minimum funding
     200.00_GBP, // Normal funding
@@ -123,7 +123,7 @@ void FinancePayResearch()
     }
 
     const uint8_t level = gameState.researchFundingLevel;
-    FinancePayment(research_cost_table[level] / 4, ExpenditureType::research);
+    FinancePayment(kResearchCosts[level] / 4, ExpenditureType::research);
 }
 
 /**
@@ -262,7 +262,7 @@ void FinanceUpdateDailyProfit()
 
         // Research costs
         uint8_t level = gameState.researchFundingLevel;
-        current_profit -= research_cost_table[level];
+        current_profit -= kResearchCosts[level];
 
         // Loan costs
         auto current_loan = gameState.park.bankLoan;
