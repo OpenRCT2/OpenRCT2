@@ -37,7 +37,7 @@ const money64 research_cost_table[RESEARCH_FUNDING_COUNT] = {
     400.00_GBP, // Maximum funding
 };
 
-static constexpr int32_t dword_988E60[EnumValue(ExpenditureType::Count)] = {
+static constexpr int32_t dword_988E60[EnumValue(ExpenditureType::count)] = {
     1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0,
 };
 
@@ -106,7 +106,7 @@ void FinancePayWages()
 
     for (auto peep : EntityList<Staff>())
     {
-        FinancePayment(GetStaffWage(peep->AssignedStaffType) / 4, ExpenditureType::Wages);
+        FinancePayment(GetStaffWage(peep->AssignedStaffType) / 4, ExpenditureType::wages);
     }
 }
 
@@ -123,7 +123,7 @@ void FinancePayResearch()
     }
 
     const uint8_t level = gameState.researchFundingLevel;
-    FinancePayment(research_cost_table[level] / 4, ExpenditureType::Research);
+    FinancePayment(research_cost_table[level] / 4, ExpenditureType::research);
 }
 
 /**
@@ -147,7 +147,7 @@ void FinancePayInterest()
         ? (current_loan / 2400)
         : (current_loan * 5 * current_interest_rate) >> 14;
 
-    FinancePayment(interest_to_pay, ExpenditureType::Interest);
+    FinancePayment(interest_to_pay, ExpenditureType::interest);
 }
 
 /**
@@ -172,7 +172,7 @@ void FinancePayRideUpkeep()
             {
                 ride.totalProfit = AddClamp(ride.totalProfit, -upkeep);
                 ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
-                FinancePayment(upkeep, ExpenditureType::RideRunningCosts);
+                FinancePayment(upkeep, ExpenditureType::rideRunningCosts);
             }
         }
 
@@ -195,7 +195,7 @@ void FinanceResetHistory()
 
     for (uint32_t i = 0; i < kExpenditureTableMonthCount; ++i)
     {
-        for (uint32_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); ++j)
+        for (uint32_t j = 0; j < static_cast<int32_t>(ExpenditureType::count); ++j)
         {
             gameState.park.expenditureTable[i][j] = 0;
         }
@@ -211,7 +211,7 @@ void FinanceInit()
     auto& gameState = getGameState();
 
     // It only initialises the first month
-    for (uint32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
+    for (uint32_t i = 0; i < static_cast<int32_t>(ExpenditureType::count); i++)
     {
         gameState.park.expenditureTable[0][i] = 0;
     }
@@ -332,14 +332,14 @@ void FinanceShiftExpenditureTable()
     // Shift the table
     for (size_t i = kExpenditureTableMonthCount - 1; i >= 1; i--)
     {
-        for (size_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); j++)
+        for (size_t j = 0; j < static_cast<int32_t>(ExpenditureType::count); j++)
         {
             gameState.park.expenditureTable[i][j] = gameState.park.expenditureTable[i - 1][j];
         }
     }
 
     // Zero the beginning of the table, which is the new month
-    for (uint32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
+    for (uint32_t i = 0; i < static_cast<int32_t>(ExpenditureType::count); i++)
     {
         gameState.park.expenditureTable[0][i] = 0;
     }
@@ -368,10 +368,10 @@ money64 FinanceGetLastMonthShopProfit()
     {
         const auto* lastMonthExpenditure = getGameState().park.expenditureTable[1];
 
-        profit += lastMonthExpenditure[EnumValue(ExpenditureType::ShopSales)];
-        profit += lastMonthExpenditure[EnumValue(ExpenditureType::ShopStock)];
-        profit += lastMonthExpenditure[EnumValue(ExpenditureType::FoodDrinkSales)];
-        profit += lastMonthExpenditure[EnumValue(ExpenditureType::FoodDrinkStock)];
+        profit += lastMonthExpenditure[EnumValue(ExpenditureType::shopSales)];
+        profit += lastMonthExpenditure[EnumValue(ExpenditureType::shopStock)];
+        profit += lastMonthExpenditure[EnumValue(ExpenditureType::foodDrinkSales)];
+        profit += lastMonthExpenditure[EnumValue(ExpenditureType::foodDrinkStock)];
     }
     return profit;
 }

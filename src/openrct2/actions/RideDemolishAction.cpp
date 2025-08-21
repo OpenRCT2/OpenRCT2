@@ -144,7 +144,7 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
     MarketingCancelCampaignsForRide(_rideIndex);
 
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Expenditure = ExpenditureType::rideConstruction;
     res.Cost = refundPrice;
 
     if (!ride.overallView.IsNull())
@@ -270,7 +270,7 @@ money64 RideDemolishAction::DemolishTracks() const
 GameActions::Result RideDemolishAction::RefurbishRide(Ride& ride) const
 {
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Expenditure = ExpenditureType::rideConstruction;
     res.Cost = GetRefurbishPrice(ride);
 
     ride.renew();

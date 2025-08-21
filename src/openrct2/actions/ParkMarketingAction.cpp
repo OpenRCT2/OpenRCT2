@@ -92,7 +92,7 @@ GameActions::Result ParkMarketingAction::CreateResult() const
 {
     auto result = GameActions::Result();
     result.ErrorTitle = STR_CANT_START_MARKETING_CAMPAIGN;
-    result.Expenditure = ExpenditureType::Marketing;
+    result.Expenditure = ExpenditureType::marketing;
     result.Cost = CalculatePrice();
     return result;
 }

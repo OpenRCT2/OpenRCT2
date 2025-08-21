@@ -1905,7 +1905,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             }
 
             gameState.park.totalIncomeFromAdmissions += entranceFee;
-            guest->SpendMoney(guest->PaidToEnter, entranceFee, ExpenditureType::ParkEntranceTickets);
+            guest->SpendMoney(guest->PaidToEnter, entranceFee, ExpenditureType::parkEntranceTickets);
             guest->PeepFlags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
         }
 
@@ -2277,7 +2277,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         {
             ride->totalProfit = AddClamp(ride->totalProfit, cost);
             ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
-            guest->SpendMoney(cost, ExpenditureType::ParkRideTickets);
+            guest->SpendMoney(cost, ExpenditureType::parkRideTickets);
         }
 
         auto coordsCentre = coords.ToTileCentre();

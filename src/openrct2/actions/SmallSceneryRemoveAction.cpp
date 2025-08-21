@@ -71,7 +71,7 @@ GameActions::Result SmallSceneryRemoveAction::Query() const
     }
 
     res.Cost = entry->removal_price;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Position = _loc;
 
     if (gLegacyScene != LegacyScene::scenarioEditor && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
@@ -123,7 +123,7 @@ GameActions::Result SmallSceneryRemoveAction::Execute() const
     }
 
     res.Cost = entry->removal_price;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Position = _loc;
 
     TileElement* tileElement = FindSceneryElement();

@@ -14,21 +14,21 @@
 
 enum class ExpenditureType : int32_t
 {
-    RideConstruction = 0,
-    RideRunningCosts,
-    LandPurchase,
-    Landscaping,
-    ParkEntranceTickets,
-    ParkRideTickets,
-    ShopSales,
-    ShopStock,
-    FoodDrinkSales,
-    FoodDrinkStock,
-    Wages,
-    Marketing,
-    Research,
-    Interest,
-    Count
+    rideConstruction = 0,
+    rideRunningCosts,
+    landPurchase,
+    landscaping,
+    parkEntranceTickets,
+    parkRideTickets,
+    shopSales,
+    shopStock,
+    foodDrinkSales,
+    foodDrinkStock,
+    wages,
+    marketing,
+    research,
+    interest,
+    count
 };
 
 constexpr uint8_t kExpenditureTableMonthCount = 16;

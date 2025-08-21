@@ -49,7 +49,7 @@ GameActions::Result ParkEntranceRemoveAction::Query() const
     }
 
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::LandPurchase;
+    res.Expenditure = ExpenditureType::landPurchase;
     res.Position = _loc;
     res.ErrorTitle = STR_CANT_REMOVE_THIS;
 
@@ -68,7 +68,7 @@ GameActions::Result ParkEntranceRemoveAction::Query() const
 GameActions::Result ParkEntranceRemoveAction::Execute() const
 {
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::LandPurchase;
+    res.Expenditure = ExpenditureType::landPurchase;
     res.Position = _loc;
     res.ErrorTitle = STR_CANT_REMOVE_THIS;
 

@@ -73,7 +73,7 @@ GameActions::Result StaffHireNewAction::Execute() const
 GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
 {
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::Wages;
+    res.Expenditure = ExpenditureType::wages;
 
     if (_staffType >= static_cast<uint8_t>(StaffType::Count))
     {

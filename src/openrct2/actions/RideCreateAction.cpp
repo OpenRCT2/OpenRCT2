@@ -299,7 +299,7 @@ GameActions::Result RideCreateAction::Execute() const
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByClass(WindowClass::RideList);
 
-    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Expenditure = ExpenditureType::rideConstruction;
     res.SetData(RideId{ rideIndex });
 
     return res;

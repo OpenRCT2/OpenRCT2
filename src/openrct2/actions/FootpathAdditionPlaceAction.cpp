@@ -53,7 +53,7 @@ void FootpathAdditionPlaceAction::Serialise(DataSerialiser& stream)
 GameActions::Result FootpathAdditionPlaceAction::Query() const
 {
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Position = _loc;
     if (!LocationValid(_loc))
     {
@@ -150,7 +150,7 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
 {
     auto res = GameActions::Result();
     res.Position = _loc;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
 
     auto tileElement = MapGetFootpathElement(_loc);
     auto pathElement = tileElement->AsPath();

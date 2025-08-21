@@ -42,7 +42,7 @@ GameActions::Result WallRemoveAction::Query() const
 {
     GameActions::Result res = GameActions::Result();
     res.Cost = 0;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
 
     if (!LocationValid(_loc))
     {
@@ -71,7 +71,7 @@ GameActions::Result WallRemoveAction::Execute() const
 {
     GameActions::Result res = GameActions::Result();
     res.Cost = 0;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
 
     const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
 

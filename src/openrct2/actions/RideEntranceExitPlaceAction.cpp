@@ -132,7 +132,7 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
 
     auto res = GameActions::Result();
     res.Position = { _loc.ToTileCentre(), z };
-    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Expenditure = ExpenditureType::rideConstruction;
     res.Cost += canBuild.Cost;
     return res;
 }
@@ -190,7 +190,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
 
     auto res = GameActions::Result();
     res.Position = { _loc.ToTileCentre(), z };
-    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Expenditure = ExpenditureType::rideConstruction;
     res.Cost += canBuild.Cost;
 
     auto* entranceElement = TileElementInsert<EntranceElement>(CoordsXYZ{ _loc, z }, 0b1111);
@@ -266,7 +266,7 @@ GameActions::Result RideEntranceExitPlaceAction::TrackPlaceQuery(const CoordsXYZ
     }
     auto res = GameActions::Result();
     res.Position = { loc.ToTileCentre(), TileElementHeight(loc) };
-    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Expenditure = ExpenditureType::rideConstruction;
     res.Cost += canBuild.Cost;
     return res;
 }

@@ -62,7 +62,7 @@ GameActions::Result ParkEntrancePlaceAction::Query() const
     }
 
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::LandPurchase;
+    res.Expenditure = ExpenditureType::landPurchase;
     res.Position = { _loc.x, _loc.y, _loc.z };
 
     auto mapSizeUnits = GetMapSizeUnits() - CoordsXY{ kCoordsXYStep, kCoordsXYStep };
@@ -121,7 +121,7 @@ GameActions::Result ParkEntrancePlaceAction::Query() const
 GameActions::Result ParkEntrancePlaceAction::Execute() const
 {
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::LandPurchase;
+    res.Expenditure = ExpenditureType::landPurchase;
     res.Position = CoordsXYZ{ _loc.x, _loc.y, _loc.z };
 
     uint32_t flags = GetFlags();

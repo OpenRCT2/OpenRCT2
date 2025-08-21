@@ -170,7 +170,7 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Constants
 
-    static constexpr StringId _windowFinancesSummaryRowLabels[EnumValue(ExpenditureType::Count)] = {
+    static constexpr StringId _windowFinancesSummaryRowLabels[EnumValue(ExpenditureType::count)] = {
         STR_FINANCES_SUMMARY_RIDE_CONSTRUCTION,
         STR_FINANCES_SUMMARY_RIDE_RUNNING_COSTS,
         STR_FINANCES_SUMMARY_LAND_PURCHASE,
@@ -404,7 +404,7 @@ namespace OpenRCT2::Ui::Windows
             int32_t row_width = std::max<uint16_t>(scrolls[0].contentWidth, self.width());
 
             // Expenditure / Income row labels
-            for (int32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
+            for (int32_t i = 0; i < static_cast<int32_t>(ExpenditureType::count); i++)
             {
                 // Darken every even row
                 if (i % 2 == 0)
@@ -438,7 +438,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Month expenditures
                 money64 profit = 0;
-                for (int32_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); j++)
+                for (int32_t j = 0; j < static_cast<int32_t>(ExpenditureType::count); j++)
                 {
                     auto expenditure = gameState.park.expenditureTable[i][j];
                     if (expenditure != 0)
@@ -599,7 +599,7 @@ namespace OpenRCT2::Ui::Windows
             screenCoords.y += 14;
 
             // Expenditure / Income row labels
-            for (int32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
+            for (int32_t i = 0; i < static_cast<int32_t>(ExpenditureType::count); i++)
             {
                 // Darken every even row
                 if (i % 2 == 0)

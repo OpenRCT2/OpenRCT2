@@ -78,7 +78,7 @@ GameActions::Result RideSetPriceAction::Query() const
 GameActions::Result RideSetPriceAction::Execute() const
 {
     GameActions::Result res = GameActions::Result();
-    res.Expenditure = ExpenditureType::ParkRideTickets;
+    res.Expenditure = ExpenditureType::parkRideTickets;
 
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)

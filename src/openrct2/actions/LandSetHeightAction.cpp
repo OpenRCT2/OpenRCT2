@@ -151,7 +151,7 @@ GameActions::Result LandSetHeightAction::Query() const
     }
     auto res = GameActions::Result();
     res.Cost = sceneryRemovalCost + GetSurfaceHeightChangeCost(surfaceElement);
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     return res;
 }
 
@@ -179,7 +179,7 @@ GameActions::Result LandSetHeightAction::Execute() const
     auto res = GameActions::Result();
     res.Position = { _coords.x + 16, _coords.y + 16, surfaceHeight };
     res.Cost = cost;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     return res;
 }
 

@@ -1716,18 +1716,18 @@ static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopI
         guest.AmountOfSouvenirs++;
 
     money64* expend_type = &guest.PaidOnSouvenirs;
-    ExpenditureType expenditure = ExpenditureType::ShopStock;
+    ExpenditureType expenditure = ExpenditureType::shopStock;
 
     if (shopItemDescriptor.IsFood())
     {
         expend_type = &guest.PaidOnFood;
-        expenditure = ExpenditureType::FoodDrinkStock;
+        expenditure = ExpenditureType::foodDrinkStock;
     }
 
     if (shopItemDescriptor.IsDrink())
     {
         expend_type = &guest.PaidOnDrink;
-        expenditure = ExpenditureType::FoodDrinkStock;
+        expenditure = ExpenditureType::foodDrinkStock;
     }
 
     if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
@@ -3900,7 +3900,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride& ride)
         {
             ride.totalProfit = AddClamp<money64>(ride.totalProfit, ridePrice);
             ride.windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
-            SpendMoney(PaidOnRides, ridePrice, ExpenditureType::ParkRideTickets);
+            SpendMoney(PaidOnRides, ridePrice, ExpenditureType::parkRideTickets);
         }
     }
 

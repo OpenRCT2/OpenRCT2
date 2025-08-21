@@ -420,7 +420,7 @@ namespace OpenRCT2::Scripting
             GetDate().GetMonthsElapsed() + 1, static_cast<uint32_t>(0), static_cast<uint32_t>(kExpenditureTableMonthCount));
         std::vector<int32_t> result(recordedMonths, 0);
         auto type = ScriptEngine::StringToExpenditureType(expenditureType);
-        if (type != ExpenditureType::Count)
+        if (type != ExpenditureType::count)
         {
             auto& gameState = getGameState();
             for (size_t i = 0; i < recordedMonths; ++i)

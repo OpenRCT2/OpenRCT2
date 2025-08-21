@@ -121,7 +121,7 @@ GameActions::Result TrackPlaceAction::Query() const
     }
 
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Expenditure = ExpenditureType::rideConstruction;
     res.Position.x = _origin.x + 16;
     res.Position.y = _origin.y + 16;
     res.Position.z = _origin.z;
@@ -443,7 +443,7 @@ GameActions::Result TrackPlaceAction::Execute() const
     }
 
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Expenditure = ExpenditureType::rideConstruction;
     res.Position.x = _origin.x + 16;
     res.Position.y = _origin.y + 16;
     res.Position.z = _origin.z;
