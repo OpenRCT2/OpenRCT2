@@ -198,37 +198,37 @@ namespace OpenRCT2
             }
         }
 
-        Mode GetMode() const
+        Mode getMode() const
         {
             return _mode;
         }
 
-        Header& GetHeader()
+        Header& getHeader()
         {
             return _header;
         }
 
-        const Header& GetHeader() const
+        const Header& getHeader() const
         {
             return _header;
         }
 
-        int16_t GetCompressionLevel() const
+        int16_t getCompressionLevel() const
         {
             return _compressionLevel;
         }
 
-        void SetCompressionLevel(int16_t compressionLevel)
+        void setCompressionLevel(int16_t compressionLevel)
         {
             _compressionLevel = compressionLevel;
         }
 
         template<typename TFunc>
-        bool ReadWriteChunk(const uint32_t chunkId, TFunc f)
+        bool readWriteChunk(const uint32_t chunkId, TFunc f)
         {
             if (_mode == Mode::reading)
             {
-                if (SeekChunk(chunkId))
+                if (seekChunk(chunkId))
                 {
                     ChunkStream stream(_buffer, _mode);
                     f(stream);
@@ -249,7 +249,7 @@ namespace OpenRCT2
         }
 
     private:
-        bool SeekChunk(const uint32_t id)
+        bool seekChunk(const uint32_t id)
         {
             const auto result = std::find_if(_chunks.begin(), _chunks.end(), [id](const ChunkEntry& e) { return e.id == id; });
             if (result != _chunks.end())
