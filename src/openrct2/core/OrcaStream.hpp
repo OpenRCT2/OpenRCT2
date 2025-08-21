@@ -33,8 +33,8 @@ namespace OpenRCT2
     public:
         enum class Mode
         {
-            READING,
-            WRITING,
+            reading,
+            writing,
         };
 
         enum class CompressionType : uint32_t
@@ -82,7 +82,7 @@ namespace OpenRCT2
             _stream = &stream;
             _mode = mode;
             _compressionLevel = compressionLevel;
-            if (mode == Mode::READING)
+            if (mode == Mode::reading)
             {
                 _header = _stream->ReadValue<Header>();
 
@@ -145,7 +145,7 @@ namespace OpenRCT2
 
         ~OrcaStream()
         {
-            if (_mode == Mode::WRITING)
+            if (_mode == Mode::writing)
             {
                 _header.NumChunks = static_cast<uint32_t>(_chunks.size());
                 _header.UncompressedSize = _buffer.GetLength();
@@ -226,7 +226,7 @@ namespace OpenRCT2
         template<typename TFunc>
         bool ReadWriteChunk(const uint32_t chunkId, TFunc f)
         {
-            if (_mode == Mode::READING)
+            if (_mode == Mode::reading)
             {
                 if (SeekChunk(chunkId))
                 {
@@ -296,7 +296,7 @@ namespace OpenRCT2
 
             void ReadWrite(void* addr, const size_t len)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
                     ReadBuffer(addr, len);
                 }
@@ -308,7 +308,7 @@ namespace OpenRCT2
 
             void Read(void* addr, const size_t len)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
                     ReadBuffer(addr, len);
                 }
@@ -320,7 +320,7 @@ namespace OpenRCT2
 
             void Write(const void* addr, const size_t len)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
                     throw std::runtime_error("Incorrect mode");
                 }
@@ -333,7 +333,7 @@ namespace OpenRCT2
             template<typename T, std::enable_if_t<std::is_integral<T>::value, bool> = true>
             void ReadWrite(T& v)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
                     v = ReadInteger<T>();
                 }
@@ -347,7 +347,7 @@ namespace OpenRCT2
             void ReadWrite(T& v)
             {
                 using underlying = typename std::underlying_type<T>::type;
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
                     v = static_cast<T>(ReadInteger<underlying>());
                 }
@@ -360,7 +360,7 @@ namespace OpenRCT2
             template<typename T, T TNullValue, typename TTag>
             void ReadWrite(TIdentifier<T, TNullValue, TTag>& value)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
                     T temp{};
                     ReadWrite(temp);
@@ -432,7 +432,7 @@ namespace OpenRCT2
 
             void ReadWrite(std::string& v)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
                     v = ReadString();
                 }
@@ -445,7 +445,7 @@ namespace OpenRCT2
             template<typename T, typename = std::enable_if<std::is_integral<T>::value>>
             void Write(T v)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
                     T temp{};
                     ReadWrite(temp);
@@ -466,7 +466,7 @@ namespace OpenRCT2
 
             void Write(const std::string_view v)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
                     std::string temp;
                     ReadWrite(temp);
@@ -485,7 +485,7 @@ namespace OpenRCT2
             template<typename TVec, typename TFunc>
             void ReadWriteVector(TVec& vec, TFunc f)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
                     const auto count = BeginArray();
                     vec.clear();
@@ -512,7 +512,7 @@ namespace OpenRCT2
             template<typename TArr, typename TFunc>
             void ReadWriteArray(std::span<TArr> arr, TFunc f)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
                     const auto count = BeginArray();
                     for (auto& el : arr)
@@ -678,7 +678,7 @@ namespace OpenRCT2
             size_t BeginArray()
             {
                 auto& arrayState = _arrayStack.emplace();
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
                     arrayState.Count = Read<uint32_t>();
                     arrayState.ElementSize = Read<uint32_t>();
@@ -698,7 +698,7 @@ namespace OpenRCT2
             bool NextArrayElement()
             {
                 auto& arrayState = _arrayStack.top();
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
                     if (arrayState.Count == 0)
                     {
@@ -733,7 +733,7 @@ namespace OpenRCT2
             void EndArray()
             {
                 auto& arrayState = _arrayStack.top();
-                if (_mode == Mode::WRITING)
+                if (_mode == Mode::writing)
                 {
                     const size_t backupPos = _buffer.GetPosition();
                     if (backupPos != static_cast<size_t>(arrayState.StartPos) + 8 && arrayState.Count == 0)
