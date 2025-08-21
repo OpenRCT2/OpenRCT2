@@ -19,6 +19,8 @@
 #include "../world/Wall.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TrackElement.h"
+#include "../ui/WindowManager.h"
+#include "../windows/Intent.h"
 
 using namespace OpenRCT2;
 
@@ -201,6 +203,9 @@ GameActions::Result MazePlaceTrackAction::Execute() const
     {
         ride->overallView = startLoc;
     }
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
 
     return res;
 }
