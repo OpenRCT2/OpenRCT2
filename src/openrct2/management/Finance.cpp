@@ -37,8 +37,21 @@ const money64 kResearchCosts[RESEARCH_FUNDING_COUNT] = {
     400.00_GBP, // Maximum funding
 };
 
-static constexpr int32_t dword_988E60[EnumValue(ExpenditureType::count)] = {
-    1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0,
+static constexpr bool kCountTowardsCurrentExpenditure[EnumValue(ExpenditureType::count)] = {
+    true,  // ExpenditureType::rideConstruction
+    false, // ExpenditureType::rideRunningCosts
+    true,  // ExpenditureType::landPurchase
+    true,  // ExpenditureType::landscaping
+    true,  // ExpenditureType::parkEntranceTickets
+    true,  // ExpenditureType::parkRideTickets
+    true,  // ExpenditureType::shopSales
+    true,  // ExpenditureType::shopStock
+    true,  // ExpenditureType::foodDrinkSales
+    true,  // ExpenditureType::foodDrinkStock
+    false, // ExpenditureType::wages
+    true,  // ExpenditureType::marketing
+    false, // ExpenditureType::research
+    false, // ExpenditureType::interest
 };
 
 /**
@@ -81,7 +94,7 @@ void FinancePayment(money64 amount, ExpenditureType type)
     gameState.park.cash = AddClamp<money64>(gameState.park.cash, -amount);
 
     gameState.park.expenditureTable[0][EnumValue(type)] -= amount;
-    if (dword_988E60[EnumValue(type)] & 1)
+    if (kCountTowardsCurrentExpenditure[EnumValue(type)])
     {
         // Cumulative amount of money spent this day
         gameState.park.currentExpenditure -= amount;
