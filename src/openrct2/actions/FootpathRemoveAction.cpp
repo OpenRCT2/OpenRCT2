@@ -50,7 +50,7 @@ GameActions::Result FootpathRemoveAction::Query() const
 {
     auto res = GameActions::Result();
     res.Cost = 0;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Position = { _loc.x + 16, _loc.y + 16, _loc.z };
 
     if (!LocationValid(_loc))
@@ -81,7 +81,7 @@ GameActions::Result FootpathRemoveAction::Execute() const
 {
     auto res = GameActions::Result();
     res.Cost = 0;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Position = { _loc.x + 16, _loc.y + 16, _loc.z };
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))

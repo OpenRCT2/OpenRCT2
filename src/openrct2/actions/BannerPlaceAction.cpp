@@ -56,7 +56,7 @@ GameActions::Result BannerPlaceAction::Query() const
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
     res.Position.z = _loc.z;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
     if (!LocationValid(_loc))
@@ -118,7 +118,7 @@ GameActions::Result BannerPlaceAction::Execute() const
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
     res.Position.z = _loc.z;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
     if (!MapCheckCapacityAndReorganise(_loc))

@@ -75,7 +75,7 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
     auto validRange = ClampRangeWithinMap(_range);
 
     res.Position = { _coords.x, _coords.y, TileElementHeight(_coords) };
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
 
     if (isExecuting)
     {

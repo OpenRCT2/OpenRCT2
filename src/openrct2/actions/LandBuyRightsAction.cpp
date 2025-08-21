@@ -85,7 +85,7 @@ GameActions::Result LandBuyRightsAction::QueryExecute(bool isExecuting) const
     centre.z = TileElementHeight(centre);
 
     res.Position = centre;
-    res.Expenditure = ExpenditureType::LandPurchase;
+    res.Expenditure = ExpenditureType::landPurchase;
 
     // Game command modified to accept selection size
     for (auto y = validRange.GetTop(); y <= validRange.GetBottom(); y += kCoordsXYStep)

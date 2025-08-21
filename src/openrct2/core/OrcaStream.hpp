@@ -33,8 +33,8 @@ namespace OpenRCT2
     public:
         enum class Mode
         {
-            READING,
-            WRITING,
+            reading,
+            writing,
         };
 
         enum class CompressionType : uint32_t
@@ -48,23 +48,23 @@ namespace OpenRCT2
 #pragma pack(push, 1)
         struct Header
         {
-            uint32_t Magic{};
-            uint32_t TargetVersion{};
-            uint32_t MinVersion{};
-            uint32_t NumChunks{};
-            uint64_t UncompressedSize{};
-            CompressionType Compression{};
-            uint64_t CompressedSize{};
-            std::array<uint8_t, 8> FNV1a{};
+            uint32_t magic{};
+            uint32_t targetVersion{};
+            uint32_t minVersion{};
+            uint32_t numChunks{};
+            uint64_t uncompressedSize{};
+            CompressionType compression{};
+            uint64_t compressedSize{};
+            std::array<uint8_t, 8> fnv1a{};
             uint8_t padding[20]{};
         };
         static_assert(sizeof(Header) == 64, "Header should be 64 bytes");
 
         struct ChunkEntry
         {
-            uint32_t Id{};
-            uint64_t Offset{};
-            uint64_t Length{};
+            uint32_t id{};
+            uint64_t offset{};
+            uint64_t length{};
         };
 #pragma pack(pop)
 
@@ -82,60 +82,60 @@ namespace OpenRCT2
             _stream = &stream;
             _mode = mode;
             _compressionLevel = compressionLevel;
-            if (mode == Mode::READING)
+            if (mode == Mode::reading)
             {
                 _header = _stream->ReadValue<Header>();
 
                 _chunks.clear();
-                for (uint32_t i = 0; i < _header.NumChunks; i++)
+                for (uint32_t i = 0; i < _header.numChunks; i++)
                 {
                     auto entry = _stream->ReadValue<ChunkEntry>();
                     _chunks.push_back(entry);
                 }
 
                 // Uncompress
-                if (_header.Compression != CompressionType::none)
+                if (_header.compression != CompressionType::none)
                 {
                     bool decompressStatus = false;
 
-                    switch (_header.Compression)
+                    switch (_header.compression)
                     {
                         case CompressionType::gzip:
                             decompressStatus = Compression::zlibDecompress(
-                                *_stream, _header.CompressedSize, _buffer, _header.UncompressedSize,
+                                *_stream, _header.compressedSize, _buffer, _header.uncompressedSize,
                                 Compression::ZlibHeaderType::gzip);
                             break;
                         case CompressionType::zstd:
                             decompressStatus = Compression::zstdDecompress(
-                                *_stream, _header.CompressedSize, _buffer, _header.UncompressedSize);
+                                *_stream, _header.compressedSize, _buffer, _header.uncompressedSize);
                             break;
                         default:
-                            throw IOException("Unknown Park Compression Type");
+                            throw IOException("Unknown park compression type");
                     }
 
                     if (!decompressStatus)
-                        throw IOException("Decompression Error");
+                        throw IOException("Decompression error!");
                 }
                 else
                 {
-                    if (_header.UncompressedSize != _header.CompressedSize)
-                        throw IOException("None Compression Sizes Don't Match");
-                    _buffer.CopyFromStream(*_stream, _header.UncompressedSize);
+                    if (_header.uncompressedSize != _header.compressedSize)
+                        throw IOException("Compressed and uncompressed sizes don't match!");
+                    _buffer.CopyFromStream(*_stream, _header.uncompressedSize);
                 }
 
                 // early in-dev versions used SHA1 instead of FNV1a, so just assume any file
                 // with a verison number of 0 may be one of these, and don't check their hashes.
-                if (_header.TargetVersion > 0)
+                if (_header.targetVersion > 0)
                 {
                     auto checksum = Crypt::FNV1a(_buffer.GetData(), _buffer.GetLength());
-                    if (checksum != _header.FNV1a)
-                        throw IOException("Checksum Is Not Valid");
+                    if (checksum != _header.fnv1a)
+                        throw IOException("Checksum is not valid!");
                 }
             }
             else
             {
                 _header = {};
-                _header.Compression = _compressionLevel == Compression::kNoCompressionLevel ? CompressionType::none
+                _header.compression = _compressionLevel == Compression::kNoCompressionLevel ? CompressionType::none
                                                                                             : CompressionType::zstd;
                 _buffer = MemoryStream{};
             }
@@ -145,24 +145,24 @@ namespace OpenRCT2
 
         ~OrcaStream()
         {
-            if (_mode == Mode::WRITING)
+            if (_mode == Mode::writing)
             {
-                _header.NumChunks = static_cast<uint32_t>(_chunks.size());
-                _header.UncompressedSize = _buffer.GetLength();
-                _header.CompressedSize = _buffer.GetLength();
-                _header.FNV1a = Crypt::FNV1a(_buffer.GetData(), _buffer.GetLength());
+                _header.numChunks = static_cast<uint32_t>(_chunks.size());
+                _header.uncompressedSize = _buffer.GetLength();
+                _header.compressedSize = _buffer.GetLength();
+                _header.fnv1a = Crypt::FNV1a(_buffer.GetData(), _buffer.GetLength());
 
                 if (_compressionLevel == Compression::kNoCompressionLevel)
-                    _header.Compression = CompressionType::none;
+                    _header.compression = CompressionType::none;
 
                 // Compress data
-                if (_header.Compression != CompressionType::none)
+                if (_header.compression != CompressionType::none)
                 {
                     MemoryStream compressed;
                     bool compressStatus = false;
 
                     _buffer.SetPosition(0);
-                    switch (_header.Compression)
+                    switch (_header.compression)
                     {
                         case CompressionType::gzip:
                             compressStatus = Compression::zlibCompress(
@@ -180,12 +180,12 @@ namespace OpenRCT2
                     if (compressStatus && compressed.GetLength() < _buffer.GetLength())
                     {
                         _buffer = std::move(compressed);
-                        _header.CompressedSize = _buffer.GetLength();
+                        _header.compressedSize = _buffer.GetLength();
                     }
                     else
                     {
                         // Compression increases filesize, so just store uncompressed data
-                        _header.Compression = CompressionType::none;
+                        _header.compression = CompressionType::none;
                     }
                 }
 
@@ -198,37 +198,37 @@ namespace OpenRCT2
             }
         }
 
-        Mode GetMode() const
+        Mode getMode() const
         {
             return _mode;
         }
 
-        Header& GetHeader()
+        Header& getHeader()
         {
             return _header;
         }
 
-        const Header& GetHeader() const
+        const Header& getHeader() const
         {
             return _header;
         }
 
-        int16_t GetCompressionLevel() const
+        int16_t getCompressionLevel() const
         {
             return _compressionLevel;
         }
 
-        void SetCompressionLevel(int16_t compressionLevel)
+        void setCompressionLevel(int16_t compressionLevel)
         {
             _compressionLevel = compressionLevel;
         }
 
         template<typename TFunc>
-        bool ReadWriteChunk(const uint32_t chunkId, TFunc f)
+        bool readWriteChunk(const uint32_t chunkId, TFunc f)
         {
-            if (_mode == Mode::READING)
+            if (_mode == Mode::reading)
             {
-                if (SeekChunk(chunkId))
+                if (seekChunk(chunkId))
                 {
                     ChunkStream stream(_buffer, _mode);
                     f(stream);
@@ -238,23 +238,23 @@ namespace OpenRCT2
                 return false;
             }
 
-            _currentChunk.Id = chunkId;
-            _currentChunk.Offset = _buffer.GetPosition();
-            _currentChunk.Length = 0;
+            _currentChunk.id = chunkId;
+            _currentChunk.offset = _buffer.GetPosition();
+            _currentChunk.length = 0;
             ChunkStream stream(_buffer, _mode);
             f(stream);
-            _currentChunk.Length = static_cast<uint64_t>(_buffer.GetPosition()) - _currentChunk.Offset;
+            _currentChunk.length = static_cast<uint64_t>(_buffer.GetPosition()) - _currentChunk.offset;
             _chunks.push_back(_currentChunk);
             return true;
         }
 
     private:
-        bool SeekChunk(const uint32_t id)
+        bool seekChunk(const uint32_t id)
         {
-            const auto result = std::find_if(_chunks.begin(), _chunks.end(), [id](const ChunkEntry& e) { return e.Id == id; });
+            const auto result = std::find_if(_chunks.begin(), _chunks.end(), [id](const ChunkEntry& e) { return e.id == id; });
             if (result != _chunks.end())
             {
-                const auto offset = result->Offset;
+                const auto offset = result->offset;
                 _buffer.SetPosition(offset);
                 return true;
             }
@@ -267,10 +267,10 @@ namespace OpenRCT2
         private:
             struct ArrayState
             {
-                std::streampos StartPos{};
-                std::streampos LastPos{};
-                size_t Count{};
-                size_t ElementSize{};
+                std::streampos startPos{};
+                std::streampos lastPos{};
+                size_t count{};
+                size_t elementSize{};
             };
 
             MemoryStream& _buffer;
@@ -284,33 +284,33 @@ namespace OpenRCT2
             {
             }
 
-            Mode GetMode() const
+            Mode getMode() const
             {
                 return _mode;
             }
 
-            MemoryStream& GetStream()
+            MemoryStream& getStream()
             {
                 return _buffer;
             }
 
-            void ReadWrite(void* addr, const size_t len)
+            void readWrite(void* addr, const size_t len)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
-                    ReadBuffer(addr, len);
+                    readBuffer(addr, len);
                 }
                 else
                 {
-                    WriteBuffer(addr, len);
+                    writeBuffer(addr, len);
                 }
             }
 
-            void Read(void* addr, const size_t len)
+            void read(void* addr, const size_t len)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
-                    ReadBuffer(addr, len);
+                    readBuffer(addr, len);
                 }
                 else
                 {
@@ -318,203 +318,203 @@ namespace OpenRCT2
                 }
             }
 
-            void Write(const void* addr, const size_t len)
+            void write(const void* addr, const size_t len)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
                     throw std::runtime_error("Incorrect mode");
                 }
                 else
                 {
-                    WriteBuffer(addr, len);
+                    writeBuffer(addr, len);
                 }
             }
 
             template<typename T, std::enable_if_t<std::is_integral<T>::value, bool> = true>
-            void ReadWrite(T& v)
+            void readWrite(T& v)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
-                    v = ReadInteger<T>();
+                    v = readInteger<T>();
                 }
                 else
                 {
-                    WriteInteger(v);
+                    writeInteger(v);
                 }
             }
 
             template<typename T, std::enable_if_t<std::is_enum<T>::value, bool> = true>
-            void ReadWrite(T& v)
+            void readWrite(T& v)
             {
                 using underlying = typename std::underlying_type<T>::type;
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
-                    v = static_cast<T>(ReadInteger<underlying>());
+                    v = static_cast<T>(readInteger<underlying>());
                 }
                 else
                 {
-                    WriteInteger(static_cast<underlying>(v));
+                    writeInteger(static_cast<underlying>(v));
                 }
             }
 
             template<typename T, T TNullValue, typename TTag>
-            void ReadWrite(TIdentifier<T, TNullValue, TTag>& value)
+            void readWrite(TIdentifier<T, TNullValue, TTag>& value)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
                     T temp{};
-                    ReadWrite(temp);
+                    readWrite(temp);
                     value = TIdentifier<T, TNullValue, TTag>::FromUnderlying(temp);
                 }
                 else
                 {
                     auto temp = value.ToUnderlying();
-                    ReadWrite(temp);
+                    readWrite(temp);
                 }
             }
 
-            void ReadWrite(bool& value)
+            void readWrite(bool& value)
             {
                 uint8_t value8 = value ? 1 : 0;
-                ReadWrite(&value8, sizeof(value8));
+                readWrite(&value8, sizeof(value8));
                 value = value8 != 0;
             }
 
-            void ReadWrite(CoordsXY& coords)
+            void readWrite(CoordsXY& coords)
             {
-                ReadWrite(coords.x);
-                ReadWrite(coords.y);
+                readWrite(coords.x);
+                readWrite(coords.y);
             }
 
-            void ReadWrite(CoordsXYZ& coords)
+            void readWrite(CoordsXYZ& coords)
             {
-                ReadWrite(coords.x);
-                ReadWrite(coords.y);
-                ReadWrite(coords.z);
+                readWrite(coords.x);
+                readWrite(coords.y);
+                readWrite(coords.z);
             }
 
-            void ReadWrite(CoordsXYZD& coords)
+            void readWrite(CoordsXYZD& coords)
             {
-                ReadWrite(coords.x);
-                ReadWrite(coords.y);
-                ReadWrite(coords.z);
-                ReadWrite(coords.direction);
+                readWrite(coords.x);
+                readWrite(coords.y);
+                readWrite(coords.z);
+                readWrite(coords.direction);
             }
 
-            void ReadWrite(TileCoordsXY& coords)
+            void readWrite(TileCoordsXY& coords)
             {
-                ReadWrite(coords.x);
-                ReadWrite(coords.y);
+                readWrite(coords.x);
+                readWrite(coords.y);
             }
 
-            void ReadWrite(TileCoordsXYZ& coords)
+            void readWrite(TileCoordsXYZ& coords)
             {
-                ReadWrite(coords.x);
-                ReadWrite(coords.y);
-                ReadWrite(coords.z);
+                readWrite(coords.x);
+                readWrite(coords.y);
+                readWrite(coords.z);
             }
 
-            void ReadWrite(TileCoordsXYZD& coords)
+            void readWrite(TileCoordsXYZD& coords)
             {
-                ReadWrite(coords.x);
-                ReadWrite(coords.y);
-                ReadWrite(coords.z);
-                ReadWrite(coords.direction);
+                readWrite(coords.x);
+                readWrite(coords.y);
+                readWrite(coords.z);
+                readWrite(coords.direction);
             }
 
             template<typename T, typename = std::enable_if<std::is_integral<T>::value>>
-            T Read()
+            T read()
             {
                 T v{};
-                ReadWrite(v);
+                readWrite(v);
                 return v;
             }
 
-            void ReadWrite(std::string& v)
+            void readWrite(std::string& v)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
-                    v = ReadString();
+                    v = readString();
                 }
                 else
                 {
-                    WriteString(v);
+                    writeString(v);
                 }
             }
 
             template<typename T, typename = std::enable_if<std::is_integral<T>::value>>
-            void Write(T v)
+            void write(T v)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
                     T temp{};
-                    ReadWrite(temp);
+                    readWrite(temp);
                 }
                 else
                 {
-                    ReadWrite(v);
+                    readWrite(v);
                 }
             }
 
-            void Write(const char* v)
+            void write(const char* v)
             {
                 std::string_view sv;
                 if (v != nullptr)
                     sv = v;
-                Write(sv);
+                write(sv);
             }
 
-            void Write(const std::string_view v)
+            void write(const std::string_view v)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
                     std::string temp;
-                    ReadWrite(temp);
+                    readWrite(temp);
                 }
                 else
                 {
-                    WriteString(v);
+                    writeString(v);
                 }
             }
 
-            void Write(const std::string& v)
+            void write(const std::string& v)
             {
-                Write(std::string_view(v));
+                write(std::string_view(v));
             }
 
             template<typename TVec, typename TFunc>
-            void ReadWriteVector(TVec& vec, TFunc f)
+            void readWriteVector(TVec& vec, TFunc f)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
-                    const auto count = BeginArray();
+                    const auto count = beginArray();
                     vec.clear();
                     for (size_t i = 0; i < count; i++)
                     {
                         auto& el = vec.emplace_back();
                         f(el);
-                        NextArrayElement();
+                        nextArrayElement();
                     }
-                    EndArray();
+                    endArray();
                 }
                 else
                 {
-                    BeginArray();
+                    beginArray();
                     for (auto& el : vec)
                     {
                         f(el);
-                        NextArrayElement();
+                        nextArrayElement();
                     }
-                    EndArray();
+                    endArray();
                 }
             }
 
             template<typename TArr, typename TFunc>
-            void ReadWriteArray(std::span<TArr> arr, TFunc f)
+            void readWriteArray(std::span<TArr> arr, TFunc f)
             {
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
-                    const auto count = BeginArray();
+                    const auto count = beginArray();
                     for (auto& el : arr)
                     {
                         el = {};
@@ -525,69 +525,69 @@ namespace OpenRCT2
                         {
                             f(arr[i]);
                         }
-                        NextArrayElement();
+                        nextArrayElement();
                     }
-                    EndArray();
+                    endArray();
                 }
                 else
                 {
-                    BeginArray();
+                    beginArray();
                     for (auto& el : arr)
                     {
                         if (f(el))
                         {
-                            NextArrayElement();
+                            nextArrayElement();
                         }
                     }
-                    EndArray();
+                    endArray();
                 }
             }
 
             template<typename TArr, size_t TArrSize, typename TFunc>
-            void ReadWriteArray(TArr (&arr)[TArrSize], TFunc f)
+            void readWriteArray(TArr (&arr)[TArrSize], TFunc f)
             {
-                ReadWriteArray(std::span<TArr>{ arr, TArrSize }, f);
+                readWriteArray(std::span<TArr>{ arr, TArrSize }, f);
             }
 
             template<typename TArr, size_t TArrSize, typename TFunc>
-            void ReadWriteArray(std::array<TArr, TArrSize>& arr, TFunc f)
+            void readWriteArray(std::array<TArr, TArrSize>& arr, TFunc f)
             {
-                ReadWriteArray(std::span<TArr>{ arr.begin(), arr.end() }, f);
+                readWriteArray(std::span<TArr>{ arr.begin(), arr.end() }, f);
             }
 
             template<typename T>
-            void Ignore()
+            void ignore()
             {
                 T value{};
-                ReadWrite(value);
+                readWrite(value);
             }
 
         private:
-            void ReadBuffer(void* dst, const size_t len)
+            void readBuffer(void* dst, const size_t len)
             {
                 _buffer.Read(dst, len);
             }
 
-            void WriteBuffer(const void* buffer, const size_t len)
+            void writeBuffer(const void* buffer, const size_t len)
             {
                 _buffer.Write(buffer, len);
             }
 
             template<typename T, typename = std::enable_if<std::is_integral<T>::value>>
-            T ReadInteger()
+            T readInteger()
             {
                 if constexpr (sizeof(T) > 4)
                 {
                     if constexpr (std::is_signed<T>())
                     {
                         int64_t raw{};
-                        Read(&raw, sizeof(raw));
+                        read(&raw, sizeof(raw));
                         return static_cast<T>(raw);
                     }
                     else
                     {
                         uint64_t raw{};
-                        Read(&raw, sizeof(raw));
+                        read(&raw, sizeof(raw));
                         return static_cast<T>(raw);
                     }
                 }
@@ -596,7 +596,7 @@ namespace OpenRCT2
                     if constexpr (std::is_signed<T>())
                     {
                         int32_t raw{};
-                        Read(&raw, sizeof(raw));
+                        read(&raw, sizeof(raw));
                         if (raw < std::numeric_limits<T>::min() || raw > std::numeric_limits<T>::max())
                         {
                             throw std::runtime_error("Value is incompatible with internal type.");
@@ -606,7 +606,7 @@ namespace OpenRCT2
                     else
                     {
                         uint32_t raw{};
-                        Read(&raw, sizeof(raw));
+                        read(&raw, sizeof(raw));
                         if (raw > std::numeric_limits<T>::max())
                         {
                             throw std::runtime_error("Value is incompatible with internal type.");
@@ -617,19 +617,19 @@ namespace OpenRCT2
             }
 
             template<typename T, typename = std::enable_if<std::is_integral<T>::value>>
-            void WriteInteger(const T value)
+            void writeInteger(const T value)
             {
                 if constexpr (sizeof(T) > 4)
                 {
                     if constexpr (std::is_signed<T>())
                     {
                         auto raw = static_cast<int64_t>(value);
-                        Write(&raw, sizeof(raw));
+                        write(&raw, sizeof(raw));
                     }
                     else
                     {
                         auto raw = static_cast<uint64_t>(value);
-                        Write(&raw, sizeof(raw));
+                        write(&raw, sizeof(raw));
                     }
                 }
                 else
@@ -637,23 +637,23 @@ namespace OpenRCT2
                     if constexpr (std::is_signed<T>())
                     {
                         auto raw = static_cast<int32_t>(value);
-                        Write(&raw, sizeof(raw));
+                        write(&raw, sizeof(raw));
                     }
                     else
                     {
                         auto raw = static_cast<uint32_t>(value);
-                        Write(&raw, sizeof(raw));
+                        write(&raw, sizeof(raw));
                     }
                 }
             }
 
-            std::string ReadString()
+            std::string readString()
             {
                 std::string buffer;
                 while (true)
                 {
                     char c{};
-                    ReadBuffer(&c, sizeof(c));
+                    readBuffer(&c, sizeof(c));
                     if (c == '\0')
                     {
                         break;
@@ -663,7 +663,7 @@ namespace OpenRCT2
                 return buffer;
             }
 
-            void WriteString(const std::string_view s)
+            void writeString(const std::string_view s)
             {
                 const char nullt = '\0';
                 auto len = s.find('\0');
@@ -675,74 +675,74 @@ namespace OpenRCT2
                 _buffer.Write(&nullt, sizeof(nullt));
             }
 
-            size_t BeginArray()
+            size_t beginArray()
             {
                 auto& arrayState = _arrayStack.emplace();
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
-                    arrayState.Count = Read<uint32_t>();
-                    arrayState.ElementSize = Read<uint32_t>();
-                    arrayState.LastPos = _buffer.GetPosition();
-                    return arrayState.Count;
+                    arrayState.count = read<uint32_t>();
+                    arrayState.elementSize = read<uint32_t>();
+                    arrayState.lastPos = _buffer.GetPosition();
+                    return arrayState.count;
                 }
 
-                arrayState.Count = 0;
-                arrayState.ElementSize = 0;
-                arrayState.StartPos = _buffer.GetPosition();
-                Write<uint32_t>(0);
-                Write<uint32_t>(0);
-                arrayState.LastPos = _buffer.GetPosition();
+                arrayState.count = 0;
+                arrayState.elementSize = 0;
+                arrayState.startPos = _buffer.GetPosition();
+                write<uint32_t>(0);
+                write<uint32_t>(0);
+                arrayState.lastPos = _buffer.GetPosition();
                 return 0;
             }
 
-            bool NextArrayElement()
+            bool nextArrayElement()
             {
                 auto& arrayState = _arrayStack.top();
-                if (_mode == Mode::READING)
+                if (_mode == Mode::reading)
                 {
-                    if (arrayState.Count == 0)
+                    if (arrayState.count == 0)
                     {
                         return false;
                     }
-                    if (arrayState.ElementSize != 0)
+                    if (arrayState.elementSize != 0)
                     {
-                        arrayState.LastPos += arrayState.ElementSize;
-                        _buffer.SetPosition(arrayState.LastPos);
+                        arrayState.lastPos += arrayState.elementSize;
+                        _buffer.SetPosition(arrayState.lastPos);
                     }
-                    arrayState.Count--;
-                    return arrayState.Count == 0;
+                    arrayState.count--;
+                    return arrayState.count == 0;
                 }
 
-                const auto lastElSize = static_cast<size_t>(_buffer.GetPosition()) - arrayState.LastPos;
-                if (arrayState.Count == 0)
+                const auto lastElSize = static_cast<size_t>(_buffer.GetPosition()) - arrayState.lastPos;
+                if (arrayState.count == 0)
                 {
                     // Set array element size based on first element size
-                    arrayState.ElementSize = lastElSize;
+                    arrayState.elementSize = lastElSize;
                 }
-                else if (arrayState.ElementSize != lastElSize)
+                else if (arrayState.elementSize != lastElSize)
                 {
                     // Array element size was different from first element so reset it
                     // to dynamic
-                    arrayState.ElementSize = 0;
+                    arrayState.elementSize = 0;
                 }
-                arrayState.Count++;
-                arrayState.LastPos = _buffer.GetPosition();
+                arrayState.count++;
+                arrayState.lastPos = _buffer.GetPosition();
                 return true;
             }
 
-            void EndArray()
+            void endArray()
             {
                 auto& arrayState = _arrayStack.top();
-                if (_mode == Mode::WRITING)
+                if (_mode == Mode::writing)
                 {
                     const size_t backupPos = _buffer.GetPosition();
-                    if (backupPos != static_cast<size_t>(arrayState.StartPos) + 8 && arrayState.Count == 0)
+                    if (backupPos != static_cast<size_t>(arrayState.startPos) + 8 && arrayState.count == 0)
                     {
                         throw std::runtime_error("Array data was written but no elements were added.");
                     }
-                    _buffer.SetPosition(arrayState.StartPos);
-                    Write(static_cast<uint32_t>(arrayState.Count));
-                    Write(static_cast<uint32_t>(arrayState.ElementSize));
+                    _buffer.SetPosition(arrayState.startPos);
+                    write(static_cast<uint32_t>(arrayState.count));
+                    write(static_cast<uint32_t>(arrayState.elementSize));
                     _buffer.SetPosition(backupPos);
                 }
                 _arrayStack.pop();

@@ -69,7 +69,7 @@ namespace OpenRCT2::Scripting
 
     int32_t ScPark::rating_get() const
     {
-        return getGameState().park.Rating;
+        return getGameState().park.rating;
     }
     void ScPark::rating_set(int32_t value)
     {
@@ -77,9 +77,9 @@ namespace OpenRCT2::Scripting
 
         auto valueClamped = std::min(std::max(0, value), 999);
         auto& gameState = getGameState();
-        if (gameState.park.Rating != valueClamped)
+        if (gameState.park.rating != valueClamped)
         {
-            gameState.park.Rating = std::min(std::max(0, value), 999);
+            gameState.park.rating = std::min(std::max(0, value), 999);
             auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
             ContextBroadcastIntent(&intent);
         }
@@ -122,16 +122,16 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::entranceFee_get() const
     {
-        return getGameState().park.EntranceFee;
+        return getGameState().park.entranceFee;
     }
     void ScPark::entranceFee_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
 
         auto& gameState = getGameState();
-        if (gameState.park.EntranceFee != value)
+        if (gameState.park.entranceFee != value)
         {
-            gameState.park.EntranceFee = value;
+            gameState.park.entranceFee = value;
             auto* windowMgr = Ui::GetWindowManager();
             windowMgr->InvalidateByClass(WindowClass::ParkInformation);
         }
@@ -181,16 +181,16 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::value_get() const
     {
-        return getGameState().park.Value;
+        return getGameState().park.value;
     }
     void ScPark::value_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
 
         auto& gameState = getGameState();
-        if (gameState.park.Value != value)
+        if (gameState.park.value != value)
         {
-            gameState.park.Value = value;
+            gameState.park.value = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             ContextBroadcastIntent(&intent);
         }
@@ -274,31 +274,31 @@ namespace OpenRCT2::Scripting
 
     int16_t ScPark::casualtyPenalty_get() const
     {
-        return getGameState().park.RatingCasualtyPenalty;
+        return getGameState().park.ratingCasualtyPenalty;
     }
     void ScPark::casualtyPenalty_set(int16_t value)
     {
         ThrowIfGameStateNotMutable();
-        getGameState().park.RatingCasualtyPenalty = value;
+        getGameState().park.ratingCasualtyPenalty = value;
     }
 
     uint16_t ScPark::parkSize_get() const
     {
-        return getGameState().park.Size;
+        return getGameState().park.size;
     }
 
     std::string ScPark::name_get() const
     {
-        return getGameState().park.Name;
+        return getGameState().park.name;
     }
     void ScPark::name_set(std::string value)
     {
         ThrowIfGameStateNotMutable();
 
         auto& park = getGameState().park;
-        if (park.Name != value)
+        if (park.name != value)
         {
-            park.Name = std::move(value);
+            park.name = std::move(value);
             GfxInvalidateScreen();
         }
     }
@@ -306,7 +306,7 @@ namespace OpenRCT2::Scripting
     bool ScPark::getFlag(const std::string& key) const
     {
         auto mask = ParkFlagMap[key];
-        return (getGameState().park.Flags & mask) != 0;
+        return (getGameState().park.flags & mask) != 0;
     }
 
     void ScPark::setFlag(const std::string& key, bool value)
@@ -315,9 +315,9 @@ namespace OpenRCT2::Scripting
         auto mask = ParkFlagMap[key];
         auto& gameState = getGameState();
         if (value)
-            gameState.park.Flags |= mask;
+            gameState.park.flags |= mask;
         else
-            gameState.park.Flags &= ~mask;
+            gameState.park.flags &= ~mask;
         GfxInvalidateScreen();
     }
 
@@ -420,7 +420,7 @@ namespace OpenRCT2::Scripting
             GetDate().GetMonthsElapsed() + 1, static_cast<uint32_t>(0), static_cast<uint32_t>(kExpenditureTableMonthCount));
         std::vector<int32_t> result(recordedMonths, 0);
         auto type = ScriptEngine::StringToExpenditureType(expenditureType);
-        if (type != ExpenditureType::Count)
+        if (type != ExpenditureType::count)
         {
             auto& gameState = getGameState();
             for (size_t i = 0; i < recordedMonths; ++i)

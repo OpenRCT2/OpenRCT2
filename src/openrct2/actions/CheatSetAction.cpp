@@ -584,11 +584,11 @@ void CheatSetAction::SetScenarioNoMoney(bool enabled) const
     auto& gameState = getGameState();
     if (enabled)
     {
-        gameState.park.Flags |= PARK_FLAGS_NO_MONEY;
+        gameState.park.flags |= PARK_FLAGS_NO_MONEY;
     }
     else
     {
-        gameState.park.Flags &= ~PARK_FLAGS_NO_MONEY;
+        gameState.park.flags &= ~PARK_FLAGS_NO_MONEY;
     }
 
     // Invalidate all windows that have anything to do with finance

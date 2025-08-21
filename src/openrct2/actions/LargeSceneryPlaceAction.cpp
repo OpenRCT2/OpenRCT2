@@ -66,7 +66,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
 {
     auto res = GameActions::Result();
     res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     int16_t surfaceHeight = TileElementHeight(_loc);
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
@@ -202,7 +202,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
 {
     auto res = GameActions::Result();
     res.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
 
     int16_t surfaceHeight = TileElementHeight(_loc);
     res.Position.x = _loc.x + 16;

@@ -64,7 +64,7 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
         z = waterHeight;
     }
     res.Position.z = z;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
 
     auto maxHeight = GetHighestHeight(validRange) / kCoordsZStep;
     bool hasChanged = false;

@@ -63,7 +63,7 @@ GameActions::Result BannerSetStyleAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
     }
 
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     auto location = banner->position.ToCoordsXY().ToTileCentre();
     res.Position = { location, TileElementHeight(location) };
 
@@ -133,7 +133,7 @@ GameActions::Result BannerSetStyleAction::Execute() const
             GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
     }
 
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     auto location = banner->position.ToCoordsXY().ToTileCentre();
     res.Position = { location, TileElementHeight(location) };
 

@@ -82,7 +82,7 @@ GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
     centre.z = TileElementHeight(centre);
 
     res.Position = centre;
-    res.Expenditure = ExpenditureType::LandPurchase;
+    res.Expenditure = ExpenditureType::landPurchase;
 
     if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
     {

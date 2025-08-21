@@ -48,12 +48,12 @@ void WaterSetHeightAction::Serialise(DataSerialiser& stream)
 GameActions::Result WaterSetHeightAction::Query() const
 {
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Position = { _coords, _height * kCoordsZStep };
 
     auto& gameState = getGameState();
     if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
-        && gameState.park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
+        && gameState.park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
         return GameActions::Result(GameActions::Status::Disallowed, kStringIdNone, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
     }
@@ -116,7 +116,7 @@ GameActions::Result WaterSetHeightAction::Query() const
 GameActions::Result WaterSetHeightAction::Execute() const
 {
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Position = { _coords, _height * kCoordsZStep };
 
     int32_t surfaceHeight = TileElementHeight(_coords);

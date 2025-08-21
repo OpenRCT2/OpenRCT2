@@ -60,7 +60,7 @@ void LandSetHeightAction::Serialise(DataSerialiser& stream)
 GameActions::Result LandSetHeightAction::Query() const
 {
     auto& gameState = getGameState();
-    if (gameState.park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
+    if (gameState.park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY, kStringIdNone);
     }
@@ -82,7 +82,7 @@ GameActions::Result LandSetHeightAction::Query() const
     money64 sceneryRemovalCost = 0;
     if (!gameState.cheats.disableClearanceChecks)
     {
-        if (gameState.park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+        if (gameState.park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
         {
             // Check for obstructing large trees
             TileElement* tileElement = CheckTreeObstructions();
@@ -151,7 +151,7 @@ GameActions::Result LandSetHeightAction::Query() const
     }
     auto res = GameActions::Result();
     res.Cost = sceneryRemovalCost + GetSurfaceHeightChangeCost(surfaceElement);
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     return res;
 }
 
@@ -179,7 +179,7 @@ GameActions::Result LandSetHeightAction::Execute() const
     auto res = GameActions::Result();
     res.Position = { _coords.x + 16, _coords.y + 16, surfaceHeight };
     res.Cost = cost;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     return res;
 }
 

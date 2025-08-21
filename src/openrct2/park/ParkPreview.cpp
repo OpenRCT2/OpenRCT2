@@ -32,12 +32,12 @@ namespace OpenRCT2
     ParkPreview generatePreviewFromGameState(const GameState_t& gameState)
     {
         ParkPreview preview{
-            .parkName = gameState.park.Name,
-            .parkRating = gameState.park.Rating,
+            .parkName = gameState.park.name,
+            .parkRating = gameState.park.rating,
             .year = gameState.date.GetYear(),
             .month = gameState.date.GetMonth(),
             .day = gameState.date.GetDay(),
-            .parkUsesMoney = !(gameState.park.Flags & PARK_FLAGS_NO_MONEY),
+            .parkUsesMoney = !(gameState.park.flags & PARK_FLAGS_NO_MONEY),
             .cash = gameState.park.cash,
             .numRides = static_cast<uint16_t>(RideManager().size()),
             .numGuests = static_cast<uint16_t>(gameState.park.numGuestsInPark),
@@ -191,9 +191,9 @@ namespace OpenRCT2
             const auto mapPos = ViewportPosToMapPos(centre, 24, mainViewport->rotation);
             mapPosXYZD = CoordsXYZD(mapPos.x, mapPos.y, int32_t{ TileElementHeight(mapPos) }, mainViewport->rotation);
         }
-        else if (!gameState.park.Entrances.empty())
+        else if (!gameState.park.entrances.empty())
         {
-            const auto& entrance = gameState.park.Entrances[0];
+            const auto& entrance = gameState.park.entrances[0];
             mapPosXYZD = CoordsXYZD(entrance.x + 16, entrance.y + 16, entrance.z + 32, DirectionReverse(entrance.direction));
         }
         else

@@ -56,7 +56,7 @@ GameActions::Result BannerSetColourAction::Execute() const
 GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
 {
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
     res.Position.z = _loc.z;
