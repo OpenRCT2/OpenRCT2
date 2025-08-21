@@ -1344,7 +1344,7 @@ namespace OpenRCT2
                             dropdown_index = DropdownIndexFromPoint(screenCoords, w);
                             dropdownCleanup = dropdown_index == -1
                                 || (dropdown_index < Dropdown::kItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
-                                || gDropdownItems[dropdown_index].IsSeparator();
+                                || gDropdownItems[dropdown_index].isSeparator();
                             w = nullptr; // To be closed right next
                         }
                         else
@@ -1481,7 +1481,7 @@ namespace OpenRCT2
                 return;
             }
 
-            if (gDropdownItems[dropdown_index].IsSeparator())
+            if (gDropdownItems[dropdown_index].isSeparator())
             {
                 return;
             }

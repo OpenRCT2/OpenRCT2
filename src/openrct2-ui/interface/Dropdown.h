@@ -13,6 +13,7 @@
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/interface/Window.h>
+#include <span>
 
 struct ImageId;
 
@@ -39,9 +40,15 @@ namespace OpenRCT2::Ui::Windows
     void WindowDropdownShowText(
         const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags, size_t num_items,
         size_t prefRowsPerColumn = 0);
+    void WindowDropdownShowText(
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags,
+        std::span<const Dropdown::Item> items, size_t prefRowsPerColumn = 0);
     void WindowDropdownShowTextCustomWidth(
         const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t custom_height, uint8_t flags,
         size_t num_items, int32_t width, size_t prefRowsPerColumn = 0);
+    void WindowDropdownShowTextCustomWidth(
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t custom_height, uint8_t flags,
+        std::span<const Dropdown::Item> items, int32_t width, size_t prefRowsPerColumn = 0);
 
     void WindowDropdownShowImage(
         int32_t x, int32_t y, int32_t extray, ColourWithFlags colour, uint8_t flags, int32_t numItems, int32_t itemWidth,
@@ -54,8 +61,6 @@ namespace OpenRCT2::Ui::Windows
     void WindowDropdownShowColour(
         WindowBase* w, Widget* widget, ColourWithFlags dropdownColour, colour_t selectedColour,
         bool alwaysHideSpecialColours = false);
-    void WindowDropdownShowColourAvailable(
-        WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);
 
     colour_t ColourDropDownIndexToColour(uint8_t ddidx);
 
@@ -78,29 +83,30 @@ namespace OpenRCT2::Dropdown
 
     enum class ItemFlag : uint8_t
     {
-        IsDisabled = (1 << 0),
-        IsChecked = (1 << 1),
+        isDisabled = 0,
+        isChecked = 1,
     };
+    using ItemFlags = FlagHolder<uint8_t, ItemFlag>;
 
     struct Item
     {
-        StringId Format;
-        int64_t Args;
-        uint8_t Flags;
+        StringId format{};
+        int64_t args{};
+        ItemFlags flags{};
 
-        constexpr bool IsSeparator() const
+        constexpr bool isSeparator() const
         {
-            return Format == kSeparatorString;
+            return format == kSeparatorString;
         }
 
-        constexpr bool IsDisabled() const
+        constexpr bool isDisabled() const
         {
-            return (Flags & EnumValue(ItemFlag::IsDisabled));
+            return flags.has(ItemFlag::isDisabled);
         }
 
-        constexpr bool IsChecked() const
+        constexpr bool isChecked() const
         {
-            return (Flags & EnumValue(ItemFlag::IsChecked));
+            return flags.has(ItemFlag::isChecked);
         }
     };
 
@@ -134,8 +140,8 @@ namespace OpenRCT2::Dropdown
         for (int i = 0; i < N; ++i)
         {
             const ItemExt& item = items[i];
-            OpenRCT2::Ui::Windows::gDropdownItems[i].Format = item.itemFormat;
-            OpenRCT2::Ui::Windows::gDropdownItems[i].Args = item.stringId;
+            OpenRCT2::Ui::Windows::gDropdownItems[i].format = item.itemFormat;
+            OpenRCT2::Ui::Windows::gDropdownItems[i].args = item.stringId;
         }
     }
 

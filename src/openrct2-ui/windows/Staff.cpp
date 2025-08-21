@@ -427,8 +427,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_PATROL:
                 {
                     // Dropdown names
-                    gDropdownItems[0].Format = STR_SET_PATROL_AREA;
-                    gDropdownItems[1].Format = STR_CLEAR_PATROL_AREA;
+                    gDropdownItems[0].format = STR_SET_PATROL_AREA;
+                    gDropdownItems[1].format = STR_CLEAR_PATROL_AREA;
 
                     auto ddPos = ScreenCoordsXY{ widget->left + windowPos.x, widget->top + windowPos.y };
                     int32_t extraHeight = widget->height() + 1;
@@ -782,8 +782,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 // TODO: rework interface to dropdown arguments so memcpy won't be needed
                 auto* nameStr = _availableCostumes[i].friendlyName.c_str();
-                std::memcpy(&gDropdownItems[i].Args, &nameStr, sizeof(const char*));
-                gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+                std::memcpy(&gDropdownItems[i].args, &nameStr, sizeof(const char*));
+                gDropdownItems[i].format = STR_OPTIONS_DROPDOWN_ITEM;
 
                 // Remember what item to check for the end of this event function
                 auto costumeIndex = _availableCostumes[i].index;
@@ -1164,8 +1164,8 @@ namespace OpenRCT2::Ui::Windows
 
         void ShowLocateDropdown(Widget* widget)
         {
-            gDropdownItems[0].Format = STR_LOCATE_SUBJECT_TIP;
-            gDropdownItems[1].Format = STR_FOLLOW_SUBJECT_TIP;
+            gDropdownItems[0].format = STR_LOCATE_SUBJECT_TIP;
+            gDropdownItems[1].format = STR_FOLLOW_SUBJECT_TIP;
 
             WindowDropdownShowText(
                 { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 2);

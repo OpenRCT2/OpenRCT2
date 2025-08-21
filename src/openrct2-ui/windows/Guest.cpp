@@ -715,11 +715,13 @@ namespace OpenRCT2::Ui::Windows
 
         void ShowLocateDropdown(Widget& widget)
         {
-            gDropdownItems[0].Format = STR_LOCATE_SUBJECT_TIP;
-            gDropdownItems[1].Format = STR_FOLLOW_SUBJECT_TIP;
+            constexpr std::array<Dropdown::Item, 2> dropdownItems = {
+                Dropdown::Item{ STR_LOCATE_SUBJECT_TIP },
+                Dropdown::Item{ STR_FOLLOW_SUBJECT_TIP },
+            };
 
             WindowDropdownShowText(
-                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[1], 0, 2);
+                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[1], 0, dropdownItems);
             gDropdownDefaultIndex = 0;
         }
 
