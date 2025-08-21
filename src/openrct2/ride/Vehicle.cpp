@@ -4572,9 +4572,9 @@ static void ride_train_crash(Ride& ride, uint16_t numFatalities)
         }
 
         auto& gameState = getGameState();
-        if (gameState.park.RatingCasualtyPenalty < 500)
+        if (gameState.park.ratingCasualtyPenalty < 500)
         {
-            gameState.park.RatingCasualtyPenalty += 200;
+            gameState.park.ratingCasualtyPenalty += 200;
         }
     }
 }

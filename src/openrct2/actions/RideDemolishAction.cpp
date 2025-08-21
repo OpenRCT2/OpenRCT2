@@ -154,7 +154,7 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
     }
 
     ride.remove();
-    getGameState().park.Value = Park::CalculateParkValue();
+    getGameState().park.value = Park::CalculateParkValue();
 
     // Close windows related to the demolished ride
     auto* windowMgr = Ui::GetWindowManager();

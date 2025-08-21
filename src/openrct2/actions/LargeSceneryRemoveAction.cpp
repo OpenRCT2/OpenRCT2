@@ -90,7 +90,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
 
         if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
         {
-            if (getGameState().park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+            if (getGameState().park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
             {
                 if (sceneryEntry->HasFlag(LARGE_SCENERY_FLAG_IS_TREE))
                 {

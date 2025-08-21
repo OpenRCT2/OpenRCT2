@@ -648,7 +648,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_PAUSE].type = WidgetType::empty;
             }
 
-            if ((getGameState().park.Flags & PARK_FLAGS_NO_MONEY) || !Config::Get().interface.ToolbarShowFinances)
+            if ((getGameState().park.flags & PARK_FLAGS_NO_MONEY) || !Config::Get().interface.ToolbarShowFinances)
                 widgets[WIDX_FINANCES].type = WidgetType::empty;
         }
 

@@ -80,7 +80,7 @@ GameActions::Result ParkEntranceRemoveAction::Execute() const
     }
 
     auto& gameState = getGameState();
-    auto direction = (gameState.park.Entrances[entranceIndex].direction - 1) & 3;
+    auto direction = (gameState.park.entrances[entranceIndex].direction - 1) & 3;
 
     // Centre (sign)
     ParkEntranceRemoveSegment(_loc);
@@ -93,7 +93,7 @@ GameActions::Result ParkEntranceRemoveAction::Execute() const
     ParkEntranceRemoveSegment(
         { _loc.x - CoordsDirectionDelta[direction].x, _loc.y - CoordsDirectionDelta[direction].y, _loc.z });
 
-    gameState.park.Entrances.erase(gameState.park.Entrances.begin() + entranceIndex);
+    gameState.park.entrances.erase(gameState.park.entrances.begin() + entranceIndex);
     return res;
 }
 

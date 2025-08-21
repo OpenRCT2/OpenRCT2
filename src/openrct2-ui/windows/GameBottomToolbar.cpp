@@ -100,7 +100,7 @@ namespace OpenRCT2::Ui::Windows
             auto& gameState = getGameState();
 
             // Draw money
-            if (!(gameState.park.Flags & PARK_FLAGS_NO_MONEY))
+            if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
             {
                 const auto& widget = widgets[WIDX_MONEY];
                 auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(),
@@ -144,7 +144,7 @@ namespace OpenRCT2::Ui::Windows
                 const auto& widget = widgets[WIDX_PARK_RATING];
                 auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 11, widget.midY() - 5 };
 
-                DrawParkRating(rt, colours[3].colour, screenCoords, std::max(10, ((gameState.park.Rating / 4) * 263) / 256));
+                DrawParkRating(rt, colours[3].colour, screenCoords, std::max(10, ((gameState.park.rating / 4) * 263) / 256));
             }
         }
 
@@ -432,7 +432,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_LEFT_OUTSET:
                 case WIDX_MONEY:
-                    if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+                    if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
                         ContextOpenWindow(WindowClass::Finances);
                     break;
                 case WIDX_GUESTS:
@@ -488,10 +488,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_MONEY:
                     ft.Add<money64>(gameState.park.currentProfit);
-                    ft.Add<money64>(gameState.park.Value);
+                    ft.Add<money64>(gameState.park.value);
                     break;
                 case WIDX_PARK_RATING:
-                    ft.Add<int16_t>(gameState.park.Rating);
+                    ft.Add<int16_t>(gameState.park.rating);
                     break;
             }
             return { fallback, ft };
@@ -514,7 +514,7 @@ namespace OpenRCT2::Ui::Windows
                 + 1;
 
             // Reposition left widgets in accordance with line height... depending on whether there is money in play.
-            if (getGameState().park.Flags & PARK_FLAGS_NO_MONEY)
+            if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
             {
                 widgets[WIDX_MONEY].type = WidgetType::empty;
                 widgets[WIDX_GUESTS].top = 1;

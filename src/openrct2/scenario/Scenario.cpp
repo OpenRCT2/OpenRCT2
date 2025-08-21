@@ -103,8 +103,8 @@ void ScenarioReset(GameState_t& gameState)
 
     News::InitQueue(gameState);
 
-    gameState.park.Rating = Park::CalculateParkRating();
-    gameState.park.Value = Park::CalculateParkValue();
+    gameState.park.rating = Park::CalculateParkRating();
+    gameState.park.value = Park::CalculateParkValue();
     gameState.park.companyValue = Park::CalculateCompanyValue();
     gameState.park.historicalProfit = gameState.initialCash - gameState.park.bankLoan;
     gameState.park.cash = gameState.initialCash;
@@ -113,14 +113,14 @@ void ScenarioReset(GameState_t& gameState)
     if (auto* textObject = objManager.GetLoadedObject<ScenarioMetaObject>(0); textObject != nullptr)
     {
         gameState.scenarioName = textObject->GetScenarioName();
-        gameState.park.Name = textObject->GetParkName();
+        gameState.park.name = textObject->GetParkName();
         gameState.scenarioDetails = textObject->GetScenarioDetails();
     }
 
     // Set the last saved game path
     auto& env = GetContext()->GetPlatformEnvironment();
     auto savePath = env.GetDirectoryPath(DirBase::user, DirId::saves);
-    gScenarioSavePath = Path::Combine(savePath, gameState.park.Name + u8".park");
+    gScenarioSavePath = Path::Combine(savePath, gameState.park.name + u8".park");
 
     gameState.park.currentExpenditure = 0;
     gameState.park.currentProfit = 0;
@@ -129,7 +129,7 @@ void ScenarioReset(GameState_t& gameState)
     gameState.park.totalAdmissions = 0;
     gameState.park.totalIncomeFromAdmissions = 0;
 
-    gameState.park.Flags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+    gameState.park.flags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
     gameState.scenarioCompletedCompanyValue = kMoney64Undefined;
     gameState.scenarioCompletedBy = "?";
 
@@ -151,16 +151,16 @@ void ScenarioReset(GameState_t& gameState)
     }
 
     gameState.park.marketingCampaigns.clear();
-    gameState.park.RatingCasualtyPenalty = 0;
+    gameState.park.ratingCasualtyPenalty = 0;
 
     // Open park with free entry when there is no money
-    if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
+    if (gameState.park.flags & PARK_FLAGS_NO_MONEY)
     {
-        gameState.park.Flags |= PARK_FLAGS_PARK_OPEN;
-        gameState.park.EntranceFee = 0;
+        gameState.park.flags |= PARK_FLAGS_PARK_OPEN;
+        gameState.park.entranceFee = 0;
     }
 
-    gameState.park.Flags |= PARK_FLAGS_SPRITES_INITIALISED;
+    gameState.park.flags |= PARK_FLAGS_SPRITES_INITIALISED;
     gGamePaused = false;
 }
 
@@ -199,7 +199,7 @@ void ScenarioSuccess(GameState_t& gameState)
     if (ScenarioRepositoryTryRecordHighscore(gameState.scenarioFileName.c_str(), companyValue, nullptr))
     {
         // Allow name entry
-        gameState.park.Flags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+        gameState.park.flags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
         gameState.scenarioCompanyValueRecord = companyValue;
     }
     ScenarioEnd();
@@ -215,7 +215,7 @@ void ScenarioSuccessSubmitName(GameState_t& gameState, const char* name)
     {
         gameState.scenarioCompletedBy = name;
     }
-    gameState.park.Flags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+    gameState.park.flags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 }
 
 /**
@@ -227,11 +227,11 @@ static void ScenarioCheckEntranceFeeTooHigh()
     const auto& gameState = getGameState();
     const auto max_fee = AddClamp<money64>(gameState.park.totalRideValueForMoney, gameState.park.totalRideValueForMoney / 2);
 
-    if ((gameState.park.Flags & PARK_FLAGS_PARK_OPEN) && Park::GetEntranceFee() > max_fee)
+    if ((gameState.park.flags & PARK_FLAGS_PARK_OPEN) && Park::GetEntranceFee() > max_fee)
     {
-        if (!gameState.park.Entrances.empty())
+        if (!gameState.park.entrances.empty())
         {
-            const auto& entrance = gameState.park.Entrances[0];
+            const auto& entrance = gameState.park.entrances[0];
             auto x = entrance.x + 16;
             auto y = entrance.y + 16;
 
@@ -301,8 +301,8 @@ static void ScenarioDayUpdate(GameState_t& gameState)
     }
 
     // Lower the casualty penalty
-    uint16_t casualtyPenaltyModifier = (gameState.park.Flags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
-    gameState.park.RatingCasualtyPenalty = std::max(0, gameState.park.RatingCasualtyPenalty - casualtyPenaltyModifier);
+    uint16_t casualtyPenaltyModifier = (gameState.park.flags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
+    gameState.park.ratingCasualtyPenalty = std::max(0, gameState.park.ratingCasualtyPenalty - casualtyPenaltyModifier);
 
     auto intent = Intent(INTENT_ACTION_UPDATE_DATE);
     ContextBroadcastIntent(&intent);
@@ -593,7 +593,7 @@ ResultWithMessage ScenarioPrepareForSave(GameState_t& gameState)
     }
 
     if (gameState.scenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
-        gameState.park.Flags |= PARK_FLAGS_PARK_OPEN;
+        gameState.park.flags |= PARK_FLAGS_PARK_OPEN;
 
     ScenarioReset(gameState);
 
@@ -602,7 +602,7 @@ ResultWithMessage ScenarioPrepareForSave(GameState_t& gameState)
 
 ObjectiveStatus Objective::CheckGuestsBy() const
 {
-    auto parkRating = getGameState().park.Rating;
+    auto parkRating = getGameState().park.rating;
     int32_t currentMonthYear = GetDate().GetMonthsElapsed();
 
     if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
@@ -625,7 +625,7 @@ ObjectiveStatus Objective::CheckParkValueBy() const
 {
     int32_t currentMonthYear = GetDate().GetMonthsElapsed();
     money64 objectiveParkValue = Currency;
-    money64 parkValue = getGameState().park.Value;
+    money64 parkValue = getGameState().park.value;
 
     if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
     {
@@ -683,7 +683,7 @@ ObjectiveStatus Objective::Check10RollerCoasters() const
 ObjectiveStatus Objective::CheckGuestsAndRating() const
 {
     auto& gameState = getGameState();
-    if (gameState.park.Rating < 700 && GetDate().GetMonthsElapsed() >= 1)
+    if (gameState.park.rating < 700 && GetDate().GetMonthsElapsed() >= 1)
     {
         gameState.scenarioParkRatingWarningDays++;
         if (gameState.scenarioParkRatingWarningDays == 1)
@@ -717,7 +717,7 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
         else if (gameState.scenarioParkRatingWarningDays == 29)
         {
             News::AddItemToQueue(News::ItemType::graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
-            gameState.park.Flags &= ~PARK_FLAGS_PARK_OPEN;
+            gameState.park.flags &= ~PARK_FLAGS_PARK_OPEN;
             gameState.guestInitialHappiness = 50;
             return ObjectiveStatus::Failure;
         }
@@ -727,7 +727,7 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
         gameState.scenarioParkRatingWarningDays = 0;
     }
 
-    if (gameState.park.Rating >= 700)
+    if (gameState.park.rating >= 700)
         if (gameState.park.numGuestsInPark >= NumGuests)
             return ObjectiveStatus::Success;
 
@@ -812,7 +812,7 @@ ObjectiveStatus Objective::CheckFinish5RollerCoasters() const
 ObjectiveStatus Objective::CheckRepayLoanAndParkValue() const
 {
     const auto& gameState = getGameState();
-    money64 parkValue = gameState.park.Value;
+    money64 parkValue = gameState.park.value;
     money64 currentLoan = gameState.park.bankLoan;
 
     if (currentLoan <= 0 && parkValue >= Currency)

@@ -47,7 +47,7 @@ static constexpr int32_t dword_988E60[EnumValue(ExpenditureType::Count)] = {
  */
 bool FinanceCheckMoneyRequired(uint32_t flags)
 {
-    if (getGameState().park.Flags & PARK_FLAGS_NO_MONEY)
+    if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
         return false;
     if (isInEditorMode())
         return false;
@@ -99,7 +99,7 @@ void FinancePayWages()
 {
     PROFILED_FUNCTION();
 
-    if (getGameState().park.Flags & PARK_FLAGS_NO_MONEY)
+    if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
@@ -117,7 +117,7 @@ void FinancePayWages()
 void FinancePayResearch()
 {
     const auto& gameState = getGameState();
-    if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
+    if (gameState.park.flags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
@@ -134,7 +134,7 @@ void FinancePayInterest()
 {
     const auto& gameState = getGameState();
 
-    if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
+    if (gameState.park.flags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
@@ -143,7 +143,7 @@ void FinancePayInterest()
     // that will overflow money64 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
     const money64 current_loan = gameState.park.bankLoan;
     const auto current_interest_rate = gameState.park.bankLoanInterestRate;
-    const money64 interest_to_pay = (gameState.park.Flags & PARK_FLAGS_RCT1_INTEREST)
+    const money64 interest_to_pay = (gameState.park.flags & PARK_FLAGS_RCT1_INTEREST)
         ? (current_loan / 2400)
         : (current_loan * 5 * current_interest_rate) >> 14;
 
@@ -165,7 +165,7 @@ void FinancePayRideUpkeep()
             ride.renew();
         }
 
-        if (ride.status != RideStatus::closed && !(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+        if (ride.status != RideStatus::closed && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
         {
             auto upkeep = ride.upkeepCost;
             if (upkeep != kMoney64Undefined)
@@ -190,7 +190,7 @@ void FinanceResetHistory()
     {
         gameState.park.cashHistory[i] = kMoney64Undefined;
         gameState.park.weeklyProfitHistory[i] = kMoney64Undefined;
-        gameState.park.ValueHistory[i] = kMoney64Undefined;
+        gameState.park.valueHistory[i] = kMoney64Undefined;
     }
 
     for (uint32_t i = 0; i < kExpenditureTableMonthCount; ++i)
@@ -229,7 +229,7 @@ void FinanceInit()
     gameState.park.maxBankLoan = 20000.00_GBP;
 
     gameState.park.bankLoanInterestRate = 10;
-    gameState.park.Value = 0;
+    gameState.park.value = 0;
     gameState.park.companyValue = 0;
     gameState.park.historicalProfit = 0;
     gameState.scenarioCompletedCompanyValue = kMoney64Undefined;
@@ -252,7 +252,7 @@ void FinanceUpdateDailyProfit()
 
     money64 current_profit = 0;
 
-    if (!(gameState.park.Flags & PARK_FLAGS_NO_MONEY))
+    if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
     {
         // Staff costs
         for (auto peep : EntityList<Staff>())

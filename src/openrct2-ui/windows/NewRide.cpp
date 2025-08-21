@@ -849,7 +849,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WidgetType::groupbox;
                 widgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WidgetType::groupbox;
                 widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WidgetType::flatBtn;
-                if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+                if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
                     widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WidgetType::flatBtn;
 
                 newWidth = 300;
@@ -956,7 +956,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, screenPos + ScreenCoordsXY{ 0, 51 }, designCountStringId, ft);
 
             // Price
-            if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+            if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             {
                 // Get price of ride
                 auto startPieceId = GetRideTypeDescriptor(item.Type).StartTrackPiece;

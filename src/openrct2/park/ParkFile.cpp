@@ -486,7 +486,7 @@ namespace OpenRCT2
             os.readWriteChunk(ParkFileChunkType::SCENARIO, [&gameState, &os](OrcaStream::ChunkStream& cs) {
                 cs.readWrite(gameState.scenarioCategory);
                 ReadWriteStringTable(cs, gameState.scenarioName, "en-GB");
-                ReadWriteStringTable(cs, gameState.park.Name, "en-GB");
+                ReadWriteStringTable(cs, gameState.park.name, "en-GB");
                 ReadWriteStringTable(cs, gameState.scenarioDetails, "en-GB");
 
                 cs.readWrite(gameState.scenarioObjective.Type);
@@ -892,21 +892,21 @@ namespace OpenRCT2
         {
             os.readWriteChunk(
                 ParkFileChunkType::PARK, [version = os.getHeader().targetVersion, &gameState](OrcaStream::ChunkStream& cs) {
-                    cs.readWrite(gameState.park.Name);
+                    cs.readWrite(gameState.park.name);
                     cs.readWrite(gameState.park.cash);
                     cs.readWrite(gameState.park.bankLoan);
                     cs.readWrite(gameState.park.maxBankLoan);
                     cs.readWrite(gameState.park.bankLoanInterestRate);
-                    cs.readWrite(gameState.park.Flags);
+                    cs.readWrite(gameState.park.flags);
                     if (version <= 18)
                     {
                         money16 tempParkEntranceFee{};
                         cs.readWrite(tempParkEntranceFee);
-                        gameState.park.EntranceFee = ToMoney64(tempParkEntranceFee);
+                        gameState.park.entranceFee = ToMoney64(tempParkEntranceFee);
                     }
                     else
                     {
-                        cs.readWrite(gameState.park.EntranceFee);
+                        cs.readWrite(gameState.park.entranceFee);
                     }
 
                     cs.readWrite(gameState.park.staffHandymanColour);
@@ -976,13 +976,13 @@ namespace OpenRCT2
                             cs.readWrite(award.Type);
                         });
                     }
-                    cs.readWrite(gameState.park.Value);
+                    cs.readWrite(gameState.park.value);
                     cs.readWrite(gameState.park.companyValue);
-                    cs.readWrite(gameState.park.Size);
+                    cs.readWrite(gameState.park.size);
                     cs.readWrite(gameState.park.numGuestsInPark);
                     cs.readWrite(gameState.park.numGuestsHeadingForPark);
-                    cs.readWrite(gameState.park.Rating);
-                    cs.readWrite(gameState.park.RatingCasualtyPenalty);
+                    cs.readWrite(gameState.park.rating);
+                    cs.readWrite(gameState.park.ratingCasualtyPenalty);
                     cs.readWrite(gameState.park.currentExpenditure);
                     cs.readWrite(gameState.park.currentProfit);
                     cs.readWrite(gameState.park.weeklyProfitAverageDividend);
@@ -1021,10 +1021,10 @@ namespace OpenRCT2
                             for (int i = 0; i < kParkRatingHistorySize; i++)
                             {
                                 if (smallHistory[i] == kRCT12ParkHistoryUndefined)
-                                    gameState.park.RatingHistory[i] = kParkRatingHistoryUndefined;
+                                    gameState.park.ratingHistory[i] = kParkRatingHistoryUndefined;
                                 else
                                 {
-                                    gameState.park.RatingHistory[i] = static_cast<uint16_t>(
+                                    gameState.park.ratingHistory[i] = static_cast<uint16_t>(
                                         smallHistory[i] * kRCT12ParkRatingHistoryFactor);
                                 }
                             }
@@ -1034,12 +1034,12 @@ namespace OpenRCT2
                             uint8_t smallHistory[kParkRatingHistorySize];
                             for (int i = 0; i < kParkRatingHistorySize; i++)
                             {
-                                if (gameState.park.RatingHistory[i] == kParkRatingHistoryUndefined)
+                                if (gameState.park.ratingHistory[i] == kParkRatingHistoryUndefined)
                                     smallHistory[i] = kRCT12ParkHistoryUndefined;
                                 else
                                 {
                                     smallHistory[i] = static_cast<uint8_t>(
-                                        gameState.park.RatingHistory[i] / kRCT12ParkRatingHistoryFactor);
+                                        gameState.park.ratingHistory[i] / kRCT12ParkRatingHistoryFactor);
                                 }
                             }
                             cs.readWriteArray(smallHistory, [&cs](uint8_t& value) {
@@ -1050,7 +1050,7 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        cs.readWriteArray(gameState.park.RatingHistory, [&cs](uint16_t& value) {
+                        cs.readWriteArray(gameState.park.ratingHistory, [&cs](uint16_t& value) {
                             cs.readWrite(value);
                             return true;
                         });
@@ -1069,7 +1069,7 @@ namespace OpenRCT2
                         cs.readWrite(value);
                         return true;
                     });
-                    cs.readWriteArray(gameState.park.ValueHistory, [&cs](money64& value) {
+                    cs.readWriteArray(gameState.park.valueHistory, [&cs](money64& value) {
                         cs.readWrite(value);
                         return true;
                     });

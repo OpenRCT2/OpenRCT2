@@ -517,7 +517,7 @@ static StringId window_cheats_page_titles[] = {
                         SetWidgetDisabled(WIDX_NO_MONEY, true);
                     }
 
-                    auto moneyDisabled = (gameState.park.Flags & PARK_FLAGS_NO_MONEY) != 0;
+                    auto moneyDisabled = (gameState.park.flags & PARK_FLAGS_NO_MONEY) != 0;
                     SetCheckboxValue(WIDX_NO_MONEY, moneyDisabled);
                     SetWidgetDisabled(WIDX_ADD_SET_MONEY_GROUP, moneyDisabled);
                     SetWidgetDisabled(WIDX_MONEY_SPINNER, moneyDisabled);
@@ -540,7 +540,7 @@ static StringId window_cheats_page_titles[] = {
                 }
                 case WINDOW_CHEATS_PAGE_PARK:
                     widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_OPEN_PARK;
-                    if (gameState.park.Flags & PARK_FLAGS_PARK_OPEN)
+                    if (gameState.park.flags & PARK_FLAGS_PARK_OPEN)
                         widgets[WIDX_OPEN_CLOSE_PARK].text = STR_CHEAT_CLOSE_PARK;
 
                     SetCheckboxValue(WIDX_FORCE_PARK_RATING, Park::GetForcedRating() >= 0);
@@ -939,7 +939,7 @@ static StringId window_cheats_page_titles[] = {
             switch (widgetIndex)
             {
                 case WIDX_NO_MONEY:
-                    CheatsSet(CheatType::NoMoney, getGameState().park.Flags & PARK_FLAGS_NO_MONEY ? 0 : 1);
+                    CheatsSet(CheatType::NoMoney, getGameState().park.flags & PARK_FLAGS_NO_MONEY ? 0 : 1);
                     break;
                 case WIDX_MONEY_SPINNER:
                     MoneyToString(_moneySpinnerValue, _moneySpinnerText, kMoneyStringMaxlength, false);

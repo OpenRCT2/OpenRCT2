@@ -788,7 +788,7 @@ void Peep::UpdateFalling()
         }
 
         auto& gameState = getGameState();
-        gameState.park.RatingCasualtyPenalty = std::min(gameState.park.RatingCasualtyPenalty + 25, 1000);
+        gameState.park.ratingCasualtyPenalty = std::min(gameState.park.ratingCasualtyPenalty + 25, 1000);
         Remove();
         return;
     }
@@ -1475,8 +1475,8 @@ void Peep::FormatNameTo(Formatter& ft) const
     if (Name == nullptr)
     {
         auto& gameState = getGameState();
-        const bool showGuestNames = gameState.park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-        const bool showStaffNames = gameState.park.Flags & PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
+        const bool showGuestNames = gameState.park.flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        const bool showStaffNames = gameState.park.flags & PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
 
         auto* staff = As<Staff>();
         const bool isStaff = staff != nullptr;
@@ -1770,7 +1770,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             if (!(guest->PeepFlags & PEEP_FLAGS_LEAVING_PARK))
             {
                 // If the park is open and leaving flag isn't set return to centre
-                if (gameState.park.Flags & PARK_FLAGS_PARK_OPEN)
+                if (gameState.park.flags & PARK_FLAGS_PARK_OPEN)
                 {
                     PeepReturnToCentreOfTile(guest);
                     return true;
@@ -1803,7 +1803,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             return true;
         }
 
-        if (!(gameState.park.Flags & PARK_FLAGS_PARK_OPEN))
+        if (!(gameState.park.flags & PARK_FLAGS_PARK_OPEN))
         {
             guest->State = PeepState::LeavingPark;
             guest->Var37 = 1;
@@ -1814,10 +1814,10 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         }
 
         bool found = false;
-        auto entrance = std::find_if(gameState.park.Entrances.begin(), gameState.park.Entrances.end(), [coords](const auto& e) {
+        auto entrance = std::find_if(gameState.park.entrances.begin(), gameState.park.entrances.end(), [coords](const auto& e) {
             return coords.ToTileStart() == e;
         });
-        if (entrance != gameState.park.Entrances.end())
+        if (entrance != gameState.park.entrances.end())
         {
             int16_t z = entrance->z / 8;
             entranceDirection = entrance->direction;
@@ -2273,7 +2273,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         }
 
         auto cost = ride->price[0];
-        if (cost != 0 && !(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+        if (cost != 0 && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
         {
             ride->totalProfit = AddClamp(ride->totalProfit, cost);
             ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME;
@@ -2540,7 +2540,7 @@ int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b
 
     if (peep_a->Name == nullptr && peep_b->Name == nullptr)
     {
-        if (getGameState().park.Flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
+        if (getGameState().park.flags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
             // Potentially could find a more optional way of sorting dynamic real names
         }
@@ -2574,14 +2574,14 @@ void PeepUpdateNames()
     auto& config = Config::Get().general;
 
     if (config.ShowRealNamesOfGuests)
-        gameState.park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
     else
-        gameState.park.Flags &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        gameState.park.flags &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
 
     if (config.ShowRealNamesOfStaff)
-        gameState.park.Flags |= PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
+        gameState.park.flags |= PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
     else
-        gameState.park.Flags &= ~PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
+        gameState.park.flags &= ~PARK_FLAGS_SHOW_REAL_STAFF_NAMES;
 
     auto intent = Intent(INTENT_ACTION_REFRESH_GUEST_LIST);
     ContextBroadcastIntent(&intent);

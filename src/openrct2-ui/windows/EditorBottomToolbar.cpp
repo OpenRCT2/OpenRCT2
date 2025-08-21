@@ -78,7 +78,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool GameHasEntities() const
         {
-            return GetNumFreeEntities() != kMaxEntities || getGameState().park.Flags & PARK_FLAGS_SPRITES_INITIALISED;
+            return GetNumFreeEntities() != kMaxEntities || getGameState().park.flags & PARK_FLAGS_SPRITES_INITIALISED;
         }
 
         void OnPrepareDraw() override

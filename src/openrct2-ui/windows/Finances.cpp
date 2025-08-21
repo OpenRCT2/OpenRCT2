@@ -226,7 +226,7 @@ namespace OpenRCT2::Ui::Windows
 
         void SetDisabledTabs()
         {
-            disabled_widgets = (getGameState().park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
+            disabled_widgets = (getGameState().park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
         }
 
     public:
@@ -326,7 +326,7 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
                     graphPageWidget = &widgets[WIDX_PAGE_BACKGROUND];
                     centredGraph = false;
-                    _graphProps.series = getGameState().park.ValueHistory;
+                    _graphProps.series = getGameState().park.valueHistory;
                     break;
                 case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
                     graphPageWidget = &widgets[WIDX_PAGE_BACKGROUND];
@@ -364,7 +364,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
                 case WINDOW_FINANCES_PAGE_VALUE_GRAPH:
-                    OnDrawGraph(rt, getGameState().park.Value, STR_FINANCES_PARK_VALUE);
+                    OnDrawGraph(rt, getGameState().park.value, STR_FINANCES_PARK_VALUE);
                     break;
                 case WINDOW_FINANCES_PAGE_PROFIT_GRAPH:
                 {
@@ -621,7 +621,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Loan and interest rate
             DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 8, titleBarBottom + 265 }, STR_FINANCES_SUMMARY_LOAN);
-            if (!(gameState.park.Flags & PARK_FLAGS_RCT1_INTEREST))
+            if (!(gameState.park.flags & PARK_FLAGS_RCT1_INTEREST))
             {
                 auto ft = Formatter();
                 ft.Add<uint16_t>(gameState.park.bankLoanInterestRate);
@@ -649,7 +649,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 // Park value and company value
                 ft = Formatter();
-                ft.Add<money64>(gameState.park.Value);
+                ft.Add<money64>(gameState.park.value);
                 DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 280, titleBarBottom + 265 }, STR_PARK_VALUE_LABEL, ft);
                 ft = Formatter();
                 ft.Add<money64>(gameState.park.companyValue);
@@ -739,7 +739,7 @@ namespace OpenRCT2::Ui::Windows
                         break;
                     default:
                     {
-                        auto parkName = getGameState().park.Name.c_str();
+                        auto parkName = getGameState().park.name.c_str();
                         ft.Add<StringId>(STR_STRING);
                         ft.Add<const char*>(parkName);
                     }

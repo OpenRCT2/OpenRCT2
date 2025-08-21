@@ -53,7 +53,7 @@ GameActions::Result WaterSetHeightAction::Query() const
 
     auto& gameState = getGameState();
     if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
-        && gameState.park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
+        && gameState.park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
         return GameActions::Result(GameActions::Status::Disallowed, kStringIdNone, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
     }
