@@ -62,9 +62,9 @@ namespace OpenRCT2
 
         struct ChunkEntry
         {
-            uint32_t Id{};
-            uint64_t Offset{};
-            uint64_t Length{};
+            uint32_t id{};
+            uint64_t offset{};
+            uint64_t length{};
         };
 #pragma pack(pop)
 
@@ -238,12 +238,12 @@ namespace OpenRCT2
                 return false;
             }
 
-            _currentChunk.Id = chunkId;
-            _currentChunk.Offset = _buffer.GetPosition();
-            _currentChunk.Length = 0;
+            _currentChunk.id = chunkId;
+            _currentChunk.offset = _buffer.GetPosition();
+            _currentChunk.length = 0;
             ChunkStream stream(_buffer, _mode);
             f(stream);
-            _currentChunk.Length = static_cast<uint64_t>(_buffer.GetPosition()) - _currentChunk.Offset;
+            _currentChunk.length = static_cast<uint64_t>(_buffer.GetPosition()) - _currentChunk.offset;
             _chunks.push_back(_currentChunk);
             return true;
         }
@@ -251,10 +251,10 @@ namespace OpenRCT2
     private:
         bool SeekChunk(const uint32_t id)
         {
-            const auto result = std::find_if(_chunks.begin(), _chunks.end(), [id](const ChunkEntry& e) { return e.Id == id; });
+            const auto result = std::find_if(_chunks.begin(), _chunks.end(), [id](const ChunkEntry& e) { return e.id == id; });
             if (result != _chunks.end())
             {
-                const auto offset = result->Offset;
+                const auto offset = result->offset;
                 _buffer.SetPosition(offset);
                 return true;
             }
