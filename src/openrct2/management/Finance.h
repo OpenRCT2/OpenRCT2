@@ -34,7 +34,7 @@ enum class ExpenditureType : int32_t
 constexpr uint8_t kExpenditureTableMonthCount = 16;
 constexpr uint8_t kFinanceHistorySize = 128;
 
-constexpr uint8_t MaxBankLoanInterestRate = 255;
+constexpr uint8_t kMaxBankLoanInterestRate = 255;
 
 extern const money64 research_cost_table[RESEARCH_FUNDING_COUNT];
 

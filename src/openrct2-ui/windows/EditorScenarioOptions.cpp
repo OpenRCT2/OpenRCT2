@@ -1486,7 +1486,7 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_INTEREST_RATE_INCREASE:
-                    if (gameState.park.bankLoanInterestRate < MaxBankLoanInterestRate)
+                    if (gameState.park.bankLoanInterestRate < kMaxBankLoanInterestRate)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
                             ScenarioSetSetting::AnnualInterestRate, gameState.park.bankLoanInterestRate + 1);
@@ -1501,7 +1501,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_INTEREST_RATE_DECREASE:
                     if (gameState.park.bankLoanInterestRate > 0)
                     {
-                        auto interest = std::min<uint8_t>(MaxBankLoanInterestRate, gameState.park.bankLoanInterestRate - 1);
+                        auto interest = std::min<uint8_t>(kMaxBankLoanInterestRate, gameState.park.bankLoanInterestRate - 1);
                         auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::AnnualInterestRate, interest);
                         GameActions::Execute(&scenarioSetSetting);
                     }
