@@ -14,13 +14,13 @@
 #include "../ride/MazeCost.h"
 #include "../ride/RideData.h"
 #include "../ride/TrackData.h"
+#include "../ui/WindowManager.h"
+#include "../windows/Intent.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"
 #include "../world/Wall.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TrackElement.h"
-#include "../ui/WindowManager.h"
-#include "../windows/Intent.h"
 
 using namespace OpenRCT2;
 
