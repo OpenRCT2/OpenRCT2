@@ -310,6 +310,14 @@ namespace OpenRCT2::Ui::Windows
         }
     };
 
+    static void copyItemsToGlobal(std::span<const Dropdown::Item> items)
+    {
+        for (size_t i = 0; i < items.size(); i++)
+        {
+            gDropdownItems[i] = items[i];
+        }
+    }
+
     /**
      * Shows a text dropdown menu.
      *  rct2: 0x006ECFB9
@@ -338,6 +346,14 @@ namespace OpenRCT2::Ui::Windows
 
         WindowDropdownShowTextCustomWidth(
             screenPos, extray, colour, 0, flags, num_items, max_string_width + 3, prefRowsPerColumn);
+    }
+
+    void WindowDropdownShowText(
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags,
+        std::span<const Dropdown::Item> items, size_t prefRowsPerColumn)
+    {
+        copyItemsToGlobal(items);
+        WindowDropdownShowText(screenPos, extray, colour, flags, items.size(), prefRowsPerColumn);
     }
 
     /**
@@ -371,6 +387,15 @@ namespace OpenRCT2::Ui::Windows
             auto numRowsPerColumn = prefRowsPerColumn > 0 ? static_cast<int32_t>(prefRowsPerColumn) : Dropdown::kItemsMaxSize;
             w->SetTextItems(screenPos, extray, colour, customItemHeight, flags, num_items, width, numRowsPerColumn);
         }
+    }
+
+    void WindowDropdownShowTextCustomWidth(
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t custom_height, uint8_t flags,
+        std::span<const Dropdown::Item> items, int32_t width, size_t prefRowsPerColumn)
+    {
+        copyItemsToGlobal(items);
+        WindowDropdownShowTextCustomWidth(
+            screenPos, extray, colour, custom_height, flags, items.size(), width, prefRowsPerColumn);
     }
 
     /**

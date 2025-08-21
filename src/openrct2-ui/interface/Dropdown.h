@@ -13,6 +13,7 @@
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2/core/EnumUtils.hpp>
 #include <openrct2/interface/Window.h>
+#include <span>
 
 struct ImageId;
 
@@ -39,9 +40,15 @@ namespace OpenRCT2::Ui::Windows
     void WindowDropdownShowText(
         const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags, size_t num_items,
         size_t prefRowsPerColumn = 0);
+    void WindowDropdownShowText(
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags,
+        std::span<const Dropdown::Item> items, size_t prefRowsPerColumn = 0);
     void WindowDropdownShowTextCustomWidth(
         const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t custom_height, uint8_t flags,
         size_t num_items, int32_t width, size_t prefRowsPerColumn = 0);
+    void WindowDropdownShowTextCustomWidth(
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t custom_height, uint8_t flags,
+        std::span<const Dropdown::Item> items, int32_t width, size_t prefRowsPerColumn = 0);
 
     void WindowDropdownShowImage(
         int32_t x, int32_t y, int32_t extray, ColourWithFlags colour, uint8_t flags, int32_t numItems, int32_t itemWidth,
