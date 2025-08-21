@@ -1155,6 +1155,5 @@ namespace OpenRCT2::Ui::Windows
         {
             w->RefreshListWrapper();
         }
-        
     }
 } // namespace OpenRCT2::Ui::Windows
