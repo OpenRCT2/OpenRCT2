@@ -19,7 +19,7 @@
 #include "management/NewsItem.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
-#include "scenario/Scenario.h"
+#include "scenario/ScenarioOptions.h"
 #include "world/Banner.h"
 #include "world/Climate.h"
 #include "world/Location.hpp"
@@ -35,6 +35,7 @@ namespace OpenRCT2
     struct GameState_t
     {
         Park::ParkData park{};
+        Scenario::Options scenarioOptions;
         std::string pluginStorage;
         uint32_t currentTicks{};
         Date date;
@@ -43,28 +44,17 @@ namespace OpenRCT2
         WeatherState weatherNext;
         uint16_t weatherUpdateTimer;
 
-        money64 initialCash;
-        money64 guestInitialCash;
-        uint8_t guestInitialHappiness;
-        uint8_t guestInitialHunger;
-        uint8_t guestInitialThirst;
         uint32_t nextGuestNumber;
 
-        Objective scenarioObjective;
         uint16_t scenarioParkRatingWarningDays;
         money64 scenarioCompletedCompanyValue;
         money64 scenarioCompanyValueRecord;
         random_engine_t scenarioRand;
 
         TileCoordsXY mapSize;
-        money64 landPrice;
-        money64 constructionRightsPrice;
 
         EditorStep editorStep;
 
-        ScenarioCategory scenarioCategory;
-        std::string scenarioName;
-        std::string scenarioDetails;
         std::string scenarioCompletedBy;
         std::string scenarioFileName;
 

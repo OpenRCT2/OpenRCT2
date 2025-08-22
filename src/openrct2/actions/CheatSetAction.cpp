@@ -234,7 +234,7 @@ GameActions::Result CheatSetAction::Execute() const
             ParkSetOpen(!Park::IsOpen(gameState.park));
             break;
         case CheatType::HaveFun:
-            gameState.scenarioObjective.Type = OBJECTIVE_HAVE_FUN;
+            gameState.scenarioOptions.objective.Type = OBJECTIVE_HAVE_FUN;
             break;
         case CheatType::SetForcedParkRating:
             Park::SetForcedRating(_param1);

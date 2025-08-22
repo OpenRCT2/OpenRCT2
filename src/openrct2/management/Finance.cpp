@@ -235,7 +235,7 @@ void FinanceInit()
     gameState.park.weeklyProfitAverageDividend = 0;
     gameState.park.weeklyProfitAverageDivisor = 0;
 
-    gameState.initialCash = 10000.00_GBP; // Cheat detection
+    gameState.scenarioOptions.initialCash = 10000.00_GBP; // Cheat detection
 
     gameState.park.cash = 10000.00_GBP;
     gameState.park.bankLoan = 10000.00_GBP;
@@ -306,7 +306,7 @@ void FinanceUpdateDailyProfit()
 
 money64 FinanceGetInitialCash()
 {
-    return getGameState().initialCash;
+    return getGameState().scenarioOptions.initialCash;
 }
 
 money64 FinanceGetCurrentLoan()
@@ -368,7 +368,7 @@ void FinanceShiftExpenditureTable()
 void FinanceResetCashToInitial()
 {
     auto& gameState = getGameState();
-    gameState.park.cash = gameState.initialCash;
+    gameState.park.cash = gameState.scenarioOptions.initialCash;
 }
 
 /**

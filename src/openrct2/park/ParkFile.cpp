@@ -175,7 +175,7 @@ namespace OpenRCT2
             }
 
             // Initial cash will eventually be removed
-            gameState.initialCash = gameState.park.cash;
+            gameState.scenarioOptions.initialCash = gameState.park.cash;
         }
 
         void Save(GameState_t& gameState, IStream& stream, int16_t compressionLevel)
@@ -484,15 +484,15 @@ namespace OpenRCT2
         void ReadWriteScenarioChunk(GameState_t& gameState, OrcaStream& os)
         {
             os.readWriteChunk(ParkFileChunkType::SCENARIO, [&gameState, &os](OrcaStream::ChunkStream& cs) {
-                cs.readWrite(gameState.scenarioCategory);
-                ReadWriteStringTable(cs, gameState.scenarioName, "en-GB");
+                cs.readWrite(gameState.scenarioOptions.category);
+                ReadWriteStringTable(cs, gameState.scenarioOptions.name, "en-GB");
                 ReadWriteStringTable(cs, gameState.park.name, "en-GB");
-                ReadWriteStringTable(cs, gameState.scenarioDetails, "en-GB");
+                ReadWriteStringTable(cs, gameState.scenarioOptions.details, "en-GB");
 
-                cs.readWrite(gameState.scenarioObjective.Type);
-                cs.readWrite(gameState.scenarioObjective.Year);
-                cs.readWrite(gameState.scenarioObjective.NumGuests);
-                cs.readWrite(gameState.scenarioObjective.Currency);
+                cs.readWrite(gameState.scenarioOptions.objective.Type);
+                cs.readWrite(gameState.scenarioOptions.objective.Year);
+                cs.readWrite(gameState.scenarioOptions.objective.NumGuests);
+                cs.readWrite(gameState.scenarioOptions.objective.Currency);
 
                 cs.readWrite(gameState.scenarioParkRatingWarningDays);
 
@@ -601,19 +601,19 @@ namespace OpenRCT2
                     cs.write(randState.s1);
                 }
 
-                cs.readWrite(gameState.guestInitialHappiness);
+                cs.readWrite(gameState.scenarioOptions.guestInitialHappiness);
                 if (version <= 18)
                 {
                     money16 tempGuestInitialCash{};
                     cs.readWrite(tempGuestInitialCash);
-                    gameState.guestInitialCash = ToMoney64(tempGuestInitialCash);
+                    gameState.scenarioOptions.guestInitialCash = ToMoney64(tempGuestInitialCash);
                 }
                 else
                 {
-                    cs.readWrite(gameState.guestInitialCash);
+                    cs.readWrite(gameState.scenarioOptions.guestInitialCash);
                 }
-                cs.readWrite(gameState.guestInitialHunger);
-                cs.readWrite(gameState.guestInitialThirst);
+                cs.readWrite(gameState.scenarioOptions.guestInitialHunger);
+                cs.readWrite(gameState.scenarioOptions.guestInitialThirst);
 
                 cs.readWrite(gameState.nextGuestNumber);
                 cs.readWriteVector(gameState.peepSpawns, [&cs](PeepSpawn& spawn) {
@@ -629,13 +629,13 @@ namespace OpenRCT2
                     money16 tempConstructionRightPrice{};
                     cs.readWrite(tempLandPrice);
                     cs.readWrite(tempConstructionRightPrice);
-                    gameState.landPrice = ToMoney64(tempLandPrice);
-                    gameState.constructionRightsPrice = ToMoney64(tempConstructionRightPrice);
+                    gameState.scenarioOptions.landPrice = ToMoney64(tempLandPrice);
+                    gameState.scenarioOptions.constructionRightsPrice = ToMoney64(tempConstructionRightPrice);
                 }
                 else
                 {
-                    cs.readWrite(gameState.landPrice);
-                    cs.readWrite(gameState.constructionRightsPrice);
+                    cs.readWrite(gameState.scenarioOptions.landPrice);
+                    cs.readWrite(gameState.scenarioOptions.constructionRightsPrice);
                 }
                 cs.readWrite(gameState.grassSceneryTileLoopPosition);
                 cs.readWrite(gameState.widePathTileLoopPosition);

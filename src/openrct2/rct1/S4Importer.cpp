@@ -358,7 +358,7 @@ namespace OpenRCT2::RCT1
             gameStateInitAll(gameState, { mapSize, mapSize });
             gameState.editorStep = EditorStep::ObjectSelection;
             gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-            gameState.scenarioCategory = ScenarioCategory::other;
+            gameState.scenarioOptions.category = ScenarioCategory::other;
         }
 
         std::string GetRCT1ScenarioName()
@@ -1501,15 +1501,15 @@ namespace OpenRCT2::RCT1
         void ImportFinance(GameState_t& gameState)
         {
             gameState.park.entranceFee = _s4.ParkEntranceFee;
-            gameState.landPrice = ToMoney64(_s4.LandPrice);
-            gameState.constructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
+            gameState.scenarioOptions.landPrice = ToMoney64(_s4.LandPrice);
+            gameState.scenarioOptions.constructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
 
             gameState.park.cash = ToMoney64(_s4.Cash);
             gameState.park.bankLoan = ToMoney64(_s4.Loan);
             gameState.park.maxBankLoan = ToMoney64(_s4.MaxLoan);
             // It's more like 1.33%, but we can only use integers. Can be fixed once we have our own save format.
             gameState.park.bankLoanInterestRate = 1;
-            gameState.initialCash = ToMoney64(_s4.Cash);
+            gameState.scenarioOptions.initialCash = ToMoney64(_s4.Cash);
 
             gameState.park.companyValue = ToMoney64(_s4.CompanyValue);
             gameState.park.value = CorrectRCT1ParkValue(_s4.ParkValue);
@@ -2309,10 +2309,10 @@ namespace OpenRCT2::RCT1
             News::importNewsItems(gameState, recentMessages, archivedMessages);
 
             // Initial guest status
-            gameState.guestInitialCash = ToMoney64(_s4.GuestInitialCash);
-            gameState.guestInitialHunger = _s4.GuestInitialHunger;
-            gameState.guestInitialThirst = _s4.GuestInitialThirst;
-            gameState.guestInitialHappiness = _s4.GuestInitialHappiness;
+            gameState.scenarioOptions.guestInitialCash = ToMoney64(_s4.GuestInitialCash);
+            gameState.scenarioOptions.guestInitialHunger = _s4.GuestInitialHunger;
+            gameState.scenarioOptions.guestInitialThirst = _s4.GuestInitialThirst;
+            gameState.scenarioOptions.guestInitialHappiness = _s4.GuestInitialHappiness;
 
             gameState.park.guestGenerationProbability = _s4.GuestGenerationProbability;
 
@@ -2447,8 +2447,8 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            gameState.scenarioName = std::move(name);
-            gameState.scenarioDetails = std::move(details);
+            gameState.scenarioOptions.name = std::move(name);
+            gameState.scenarioOptions.details = std::move(details);
             if (_isScenario && !parkName.empty())
             {
                 auto& park = getGameState().park;
@@ -2458,21 +2458,21 @@ namespace OpenRCT2::RCT1
 
         void ImportScenarioObjective(GameState_t& gameState)
         {
-            gameState.scenarioObjective.Type = _s4.ScenarioObjectiveType;
-            gameState.scenarioObjective.Year = _s4.ScenarioObjectiveYears;
-            gameState.scenarioObjective.NumGuests = _s4.ScenarioObjectiveNumGuests;
+            gameState.scenarioOptions.objective.Type = _s4.ScenarioObjectiveType;
+            gameState.scenarioOptions.objective.Year = _s4.ScenarioObjectiveYears;
+            gameState.scenarioOptions.objective.NumGuests = _s4.ScenarioObjectiveNumGuests;
 
             // RCT1 used a different way of calculating the park value.
             // This is corrected here, but since scenario_objective_currency doubles as minimum excitement rating,
             // we need to check the goal to avoid affecting scenarios like Volcania.
             if (_s4.ScenarioObjectiveType == OBJECTIVE_PARK_VALUE_BY)
-                gameState.scenarioObjective.Currency = CorrectRCT1ParkValue(_s4.ScenarioObjectiveCurrency);
+                gameState.scenarioOptions.objective.Currency = CorrectRCT1ParkValue(_s4.ScenarioObjectiveCurrency);
             else
-                gameState.scenarioObjective.Currency = ToMoney64(_s4.ScenarioObjectiveCurrency);
+                gameState.scenarioOptions.objective.Currency = ToMoney64(_s4.ScenarioObjectiveCurrency);
 
             // This does not seem to be saved in the objective arguments, so look up the ID from the available rides instead.
             if (_s4.ScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
-                gameState.scenarioObjective.RideId = GetBuildTheBestRideId();
+                gameState.scenarioOptions.objective.RideId = GetBuildTheBestRideId();
         }
 
         void ImportSavedView(GameState_t& gameState)

@@ -309,22 +309,22 @@ namespace OpenRCT2::Park
             ResearchCategory::Water, ResearchCategory::Shop, ResearchCategory::SceneryGroup);
         gameState.researchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
-        gameState.guestInitialCash = 50.00_GBP;
-        gameState.guestInitialHappiness = Park::CalculateGuestInitialHappiness(50);
-        gameState.guestInitialHunger = 200;
-        gameState.guestInitialThirst = 200;
-        gameState.scenarioObjective.Type = OBJECTIVE_GUESTS_BY;
-        gameState.scenarioObjective.Year = 4;
-        gameState.scenarioObjective.NumGuests = 1000;
-        gameState.landPrice = 90.00_GBP;
-        gameState.constructionRightsPrice = 40.00_GBP;
+        gameState.scenarioOptions.guestInitialCash = 50.00_GBP;
+        gameState.scenarioOptions.guestInitialHappiness = Park::CalculateGuestInitialHappiness(50);
+        gameState.scenarioOptions.guestInitialHunger = 200;
+        gameState.scenarioOptions.guestInitialThirst = 200;
+        gameState.scenarioOptions.objective.Type = OBJECTIVE_GUESTS_BY;
+        gameState.scenarioOptions.objective.Year = 4;
+        gameState.scenarioOptions.objective.NumGuests = 1000;
+        gameState.scenarioOptions.landPrice = 90.00_GBP;
+        gameState.scenarioOptions.constructionRightsPrice = 40.00_GBP;
         gameState.park.flags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         ResetHistories(gameState);
         FinanceResetHistory();
         AwardReset();
 
-        gameState.scenarioName.clear();
-        gameState.scenarioDetails = String::toStd(LanguageGetString(STR_NO_DETAILS_YET));
+        gameState.scenarioOptions.name.clear();
+        gameState.scenarioOptions.details = String::toStd(LanguageGetString(STR_NO_DETAILS_YET));
     }
 
     void Update(GameState_t& gameState, const Date& date)

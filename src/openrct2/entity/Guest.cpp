@@ -7338,10 +7338,10 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     /* Scenario editor limits initial guest happiness to between 37..253.
      * To be on the safe side, assume the value could have been hacked
      * to any value 0..255. */
-    peep->Happiness = gameState.guestInitialHappiness;
+    peep->Happiness = gameState.scenarioOptions.guestInitialHappiness;
     /* Assume a default initial happiness of 0 is wrong and set
      * to 128 (50%) instead. */
-    if (gameState.guestInitialHappiness == 0)
+    if (gameState.scenarioOptions.guestInitialHappiness == 0)
         peep->Happiness = 128;
     /* Initial value will vary by -15..16 */
     int8_t happinessDelta = (ScenarioRand() & 0x1F) - 15;
@@ -7354,7 +7354,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     /* Scenario editor limits initial guest hunger to between 37..253.
      * To be on the safe side, assume the value could have been hacked
      * to any value 0..255. */
-    peep->Hunger = gameState.guestInitialHunger;
+    peep->Hunger = gameState.scenarioOptions.guestInitialHunger;
     /* Initial value will vary by -15..16 */
     int8_t hungerDelta = (ScenarioRand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
@@ -7363,7 +7363,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     /* Scenario editor limits initial guest thirst to between 37..253.
      * To be on the safe side, assume the value could have been hacked
      * to any value 0..255. */
-    peep->Thirst = gameState.guestInitialThirst;
+    peep->Thirst = gameState.scenarioOptions.guestInitialThirst;
     /* Initial value will vary by -15..16 */
     int8_t thirstDelta = (ScenarioRand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
@@ -7376,11 +7376,11 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->PeepId = gameState.nextGuestNumber++;
     peep->Name = nullptr;
 
-    money64 cash = (static_cast<money64>(ScenarioRand() & 0x3) * 100) - 100 + gameState.guestInitialCash;
+    money64 cash = (static_cast<money64>(ScenarioRand() & 0x3) * 100) - 100 + gameState.scenarioOptions.guestInitialCash;
     if (cash < 0)
         cash = 0;
 
-    if (gameState.guestInitialCash == 0.00_GBP)
+    if (gameState.scenarioOptions.guestInitialCash == 0.00_GBP)
     {
         cash = 500;
     }
@@ -7390,7 +7390,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
         cash = 0;
     }
 
-    if (gameState.guestInitialCash == kMoney64Undefined)
+    if (gameState.scenarioOptions.guestInitialCash == kMoney64Undefined)
     {
         cash = 0;
     }

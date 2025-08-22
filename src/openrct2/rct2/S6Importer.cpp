@@ -350,7 +350,7 @@ namespace OpenRCT2::RCT2
             Initialise(gameState);
 
             gameState.editorStep = _s6.Info.EditorStep;
-            gameState.scenarioCategory = _s6.Info.Category;
+            gameState.scenarioOptions.category = _s6.Info.Category;
 
             // Some scenarios have their scenario details in UTF-8, due to earlier bugs in OpenRCT2.
             auto loadMaybeUTF8 = [](std::string_view str) -> std::string {
@@ -359,14 +359,14 @@ namespace OpenRCT2::RCT2
 
             if (_s6.Header.Type == S6_TYPE_SCENARIO)
             {
-                gameState.scenarioName = loadMaybeUTF8(_s6.Info.Name);
-                gameState.scenarioDetails = loadMaybeUTF8(_s6.Info.Details);
+                gameState.scenarioOptions.name = loadMaybeUTF8(_s6.Info.Name);
+                gameState.scenarioOptions.details = loadMaybeUTF8(_s6.Info.Details);
             }
             else
             {
                 // Saved games do not have an info chunk
-                gameState.scenarioName = loadMaybeUTF8(_s6.ScenarioName);
-                gameState.scenarioDetails = loadMaybeUTF8(_s6.ScenarioDescription);
+                gameState.scenarioOptions.name = loadMaybeUTF8(_s6.ScenarioName);
+                gameState.scenarioOptions.details = loadMaybeUTF8(_s6.ScenarioDescription);
             }
 
             gameState.date = OpenRCT2::Date{ _s6.ElapsedMonths, _s6.CurrentDay };
@@ -379,7 +379,7 @@ namespace OpenRCT2::RCT2
             ImportEntities();
             ConvertPeepAnimationTypeToObjects(gameState);
 
-            gameState.initialCash = ToMoney64(_s6.InitialCash);
+            gameState.scenarioOptions.initialCash = ToMoney64(_s6.InitialCash);
             gameState.park.bankLoan = ToMoney64(_s6.CurrentLoan);
 
             gameState.park.flags = _s6.ParkFlags & ~PARK_FLAGS_NO_MONEY_SCENARIO;
@@ -460,24 +460,24 @@ namespace OpenRCT2::RCT2
             gameState.researchProgress = _s6.ResearchProgress;
             gameState.researchExpectedDay = _s6.NextResearchExpectedDay;
             gameState.researchExpectedMonth = _s6.NextResearchExpectedMonth;
-            gameState.guestInitialHappiness = _s6.GuestInitialHappiness;
+            gameState.scenarioOptions.guestInitialHappiness = _s6.GuestInitialHappiness;
             gameState.park.size = _s6.ParkSize;
             gameState.park.guestGenerationProbability = _s6.GuestGenerationProbability;
             gameState.park.totalRideValueForMoney = _s6.TotalRideValueForMoney;
             gameState.park.maxBankLoan = ToMoney64(_s6.MaximumLoan);
-            gameState.guestInitialCash = ToMoney64(_s6.GuestInitialCash);
-            gameState.guestInitialHunger = _s6.GuestInitialHunger;
-            gameState.guestInitialThirst = _s6.GuestInitialThirst;
-            gameState.scenarioObjective.Type = _s6.ObjectiveType;
-            gameState.scenarioObjective.Year = _s6.ObjectiveYear;
+            gameState.scenarioOptions.guestInitialCash = ToMoney64(_s6.GuestInitialCash);
+            gameState.scenarioOptions.guestInitialHunger = _s6.GuestInitialHunger;
+            gameState.scenarioOptions.guestInitialThirst = _s6.GuestInitialThirst;
+            gameState.scenarioOptions.objective.Type = _s6.ObjectiveType;
+            gameState.scenarioOptions.objective.Year = _s6.ObjectiveYear;
             // Pad013580FA
-            gameState.scenarioObjective.Currency = _s6.ObjectiveCurrency;
+            gameState.scenarioOptions.objective.Currency = _s6.ObjectiveCurrency;
             // In RCT2, the ride string IDs start at index STR_0002 and are directly mappable.
             // This is not always the case in OpenRCT2, so we use the actual ride ID.
-            if (gameState.scenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
-                gameState.scenarioObjective.RideId = _s6.ObjectiveGuests - kRCT2RideStringStart;
+            if (gameState.scenarioOptions.objective.Type == OBJECTIVE_BUILD_THE_BEST)
+                gameState.scenarioOptions.objective.RideId = _s6.ObjectiveGuests - kRCT2RideStringStart;
             else
-                gameState.scenarioObjective.NumGuests = _s6.ObjectiveGuests;
+                gameState.scenarioOptions.objective.NumGuests = _s6.ObjectiveGuests;
             ImportMarketingCampaigns();
 
             gameState.park.currentExpenditure = ToMoney64(_s6.CurrentExpenditure);
@@ -511,8 +511,8 @@ namespace OpenRCT2::RCT2
                 }
             }
 
-            gameState.landPrice = ToMoney64(_s6.LandPrice);
-            gameState.constructionRightsPrice = ToMoney64(_s6.ConstructionRightsPrice);
+            gameState.scenarioOptions.landPrice = ToMoney64(_s6.LandPrice);
+            gameState.scenarioOptions.constructionRightsPrice = ToMoney64(_s6.ConstructionRightsPrice);
             // unk_01358774
             // Pad01358776
             // _s6.CdKey
@@ -641,8 +641,8 @@ namespace OpenRCT2::RCT2
         {
             // Scenario details
             gameState.scenarioCompletedBy = RCT2StringToUTF8(gameState.scenarioCompletedBy, RCT2LanguageId::EnglishUK);
-            gameState.scenarioName = RCT2StringToUTF8(gameState.scenarioName, RCT2LanguageId::EnglishUK);
-            gameState.scenarioDetails = RCT2StringToUTF8(gameState.scenarioDetails, RCT2LanguageId::EnglishUK);
+            gameState.scenarioOptions.name = RCT2StringToUTF8(gameState.scenarioOptions.name, RCT2LanguageId::EnglishUK);
+            gameState.scenarioOptions.details = RCT2StringToUTF8(gameState.scenarioOptions.details, RCT2LanguageId::EnglishUK);
         }
 
         void ImportRides()

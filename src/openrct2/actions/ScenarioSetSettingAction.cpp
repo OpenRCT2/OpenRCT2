@@ -83,8 +83,8 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             }
             break;
         case ScenarioSetSetting::InitialCash:
-            gameState.initialCash = std::clamp<money64>(_value, 0.00_GBP, 1000000.00_GBP);
-            gameState.park.cash = gameState.initialCash;
+            gameState.scenarioOptions.initialCash = std::clamp<money64>(_value, 0.00_GBP, 1000000.00_GBP);
+            gameState.park.cash = gameState.scenarioOptions.initialCash;
             windowMgr->InvalidateByClass(WindowClass::Finances);
             windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
             break;
@@ -113,16 +113,16 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             }
             break;
         case ScenarioSetSetting::AverageCashPerGuest:
-            gameState.guestInitialCash = std::clamp<money64>(_value, 0.00_GBP, 1000.00_GBP);
+            gameState.scenarioOptions.guestInitialCash = std::clamp<money64>(_value, 0.00_GBP, 1000.00_GBP);
             break;
         case ScenarioSetSetting::GuestInitialHappiness:
-            gameState.guestInitialHappiness = std::clamp<uint8_t>(_value, 40, 250);
+            gameState.scenarioOptions.guestInitialHappiness = std::clamp<uint8_t>(_value, 40, 250);
             break;
         case ScenarioSetSetting::GuestInitialHunger:
-            gameState.guestInitialHunger = std::clamp<uint8_t>(_value, 40, 250);
+            gameState.scenarioOptions.guestInitialHunger = std::clamp<uint8_t>(_value, 40, 250);
             break;
         case ScenarioSetSetting::GuestInitialThirst:
-            gameState.guestInitialThirst = std::clamp<uint8_t>(_value, 40, 250);
+            gameState.scenarioOptions.guestInitialThirst = std::clamp<uint8_t>(_value, 40, 250);
             break;
         case ScenarioSetSetting::GuestsPreferLessIntenseRides:
             if (_value != 0)
@@ -145,10 +145,10 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             }
             break;
         case ScenarioSetSetting::CostToBuyLand:
-            gameState.landPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
+            gameState.scenarioOptions.landPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
             break;
         case ScenarioSetSetting::CostToBuyConstructionRights:
-            gameState.constructionRightsPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
+            gameState.scenarioOptions.constructionRightsPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
             break;
         case ScenarioSetSetting::ParkChargeMethod:
             if (gLegacyScene == LegacyScene::scenarioEditor)

@@ -41,22 +41,22 @@ namespace OpenRCT2::Scripting
     private:
         std::string type_get()
         {
-            return std::string(ScenarioObjectiveTypeMap[getGameState().scenarioObjective.Type]);
+            return std::string(ScenarioObjectiveTypeMap[getGameState().scenarioOptions.objective.Type]);
         }
 
         void type_set(const std::string& value)
         {
             ThrowIfGameStateNotMutable();
-            getGameState().scenarioObjective.Type = ScenarioObjectiveTypeMap[value];
+            getGameState().scenarioOptions.objective.Type = ScenarioObjectiveTypeMap[value];
         }
 
         uint16_t guests_get()
         {
             auto& gameState = getGameState();
-            if (gameState.scenarioObjective.Type == OBJECTIVE_GUESTS_BY
-                || gameState.scenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
+            if (gameState.scenarioOptions.objective.Type == OBJECTIVE_GUESTS_BY
+                || gameState.scenarioOptions.objective.Type == OBJECTIVE_GUESTS_AND_RATING)
             {
-                return gameState.scenarioObjective.NumGuests;
+                return gameState.scenarioOptions.objective.NumGuests;
             }
             return 0;
         }
@@ -65,20 +65,20 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             auto& gameState = getGameState();
-            if (gameState.scenarioObjective.Type == OBJECTIVE_GUESTS_BY
-                || gameState.scenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
+            if (gameState.scenarioOptions.objective.Type == OBJECTIVE_GUESTS_BY
+                || gameState.scenarioOptions.objective.Type == OBJECTIVE_GUESTS_AND_RATING)
             {
-                gameState.scenarioObjective.NumGuests = value;
+                gameState.scenarioOptions.objective.NumGuests = value;
             }
         }
 
         uint8_t year_get()
         {
             const auto& gameState = getGameState();
-            if (gameState.scenarioObjective.Type == OBJECTIVE_GUESTS_BY
-                || gameState.scenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY)
+            if (gameState.scenarioOptions.objective.Type == OBJECTIVE_GUESTS_BY
+                || gameState.scenarioOptions.objective.Type == OBJECTIVE_PARK_VALUE_BY)
             {
-                return gameState.scenarioObjective.Year;
+                return gameState.scenarioOptions.objective.Year;
             }
             return 0;
         }
@@ -87,19 +87,19 @@ namespace OpenRCT2::Scripting
         {
             auto& gameState = getGameState();
             ThrowIfGameStateNotMutable();
-            if (gameState.scenarioObjective.Type == OBJECTIVE_GUESTS_BY
-                || gameState.scenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY)
+            if (gameState.scenarioOptions.objective.Type == OBJECTIVE_GUESTS_BY
+                || gameState.scenarioOptions.objective.Type == OBJECTIVE_PARK_VALUE_BY)
             {
-                gameState.scenarioObjective.Year = value;
+                gameState.scenarioOptions.objective.Year = value;
             }
         }
 
         uint16_t length_get()
         {
             const auto& gameState = getGameState();
-            if (gameState.scenarioObjective.Type == OBJECTIVE_10_ROLLERCOASTERS_LENGTH)
+            if (gameState.scenarioOptions.objective.Type == OBJECTIVE_10_ROLLERCOASTERS_LENGTH)
             {
-                return gameState.scenarioObjective.NumGuests;
+                return gameState.scenarioOptions.objective.NumGuests;
             }
             return 0;
         }
@@ -108,18 +108,18 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             auto& gameState = getGameState();
-            if (gameState.scenarioObjective.Type == OBJECTIVE_10_ROLLERCOASTERS_LENGTH)
+            if (gameState.scenarioOptions.objective.Type == OBJECTIVE_10_ROLLERCOASTERS_LENGTH)
             {
-                gameState.scenarioObjective.NumGuests = value;
+                gameState.scenarioOptions.objective.NumGuests = value;
             }
         }
 
         money64 excitement_get()
         {
             const auto& gameState = getGameState();
-            if (gameState.scenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
+            if (gameState.scenarioOptions.objective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
             {
-                return gameState.scenarioObjective.Currency;
+                return gameState.scenarioOptions.objective.Currency;
             }
             return 0;
         }
@@ -128,19 +128,19 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             auto& gameState = getGameState();
-            if (gameState.scenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
+            if (gameState.scenarioOptions.objective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
             {
-                gameState.scenarioObjective.Currency = value;
+                gameState.scenarioOptions.objective.Currency = value;
             }
         }
 
         money64 parkValue_get()
         {
             const auto& gameState = getGameState();
-            if (gameState.scenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY
-                || gameState.scenarioObjective.Type == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
+            if (gameState.scenarioOptions.objective.Type == OBJECTIVE_PARK_VALUE_BY
+                || gameState.scenarioOptions.objective.Type == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
             {
-                return gameState.scenarioObjective.Currency;
+                return gameState.scenarioOptions.objective.Currency;
             }
             return 0;
         }
@@ -149,20 +149,20 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             auto& gameState = getGameState();
-            if (gameState.scenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY
-                || gameState.scenarioObjective.Type == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
+            if (gameState.scenarioOptions.objective.Type == OBJECTIVE_PARK_VALUE_BY
+                || gameState.scenarioOptions.objective.Type == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
             {
-                gameState.scenarioObjective.Currency = value;
+                gameState.scenarioOptions.objective.Currency = value;
             }
         }
 
         money64 monthlyIncome_get()
         {
             const auto& gameState = getGameState();
-            if (gameState.scenarioObjective.Type == OBJECTIVE_MONTHLY_RIDE_INCOME
-                || gameState.scenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
+            if (gameState.scenarioOptions.objective.Type == OBJECTIVE_MONTHLY_RIDE_INCOME
+                || gameState.scenarioOptions.objective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
             {
-                return gameState.scenarioObjective.Currency;
+                return gameState.scenarioOptions.objective.Currency;
             }
             return 0;
         }
@@ -171,10 +171,10 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             auto& gameState = getGameState();
-            if (gameState.scenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY
-                || gameState.scenarioObjective.Type == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
+            if (gameState.scenarioOptions.objective.Type == OBJECTIVE_PARK_VALUE_BY
+                || gameState.scenarioOptions.objective.Type == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
             {
-                gameState.scenarioObjective.Currency = value;
+                gameState.scenarioOptions.objective.Currency = value;
             }
         }
 
@@ -198,24 +198,24 @@ namespace OpenRCT2::Scripting
     public:
         std::string name_get()
         {
-            return getGameState().scenarioName;
+            return getGameState().scenarioOptions.name;
         }
 
         void name_set(const std::string& value)
         {
             ThrowIfGameStateNotMutable();
-            getGameState().scenarioName = value;
+            getGameState().scenarioOptions.name = value;
         }
 
         std::string details_get()
         {
-            return getGameState().scenarioDetails;
+            return getGameState().scenarioOptions.details;
         }
 
         void details_set(const std::string& value)
         {
             ThrowIfGameStateNotMutable();
-            getGameState().scenarioDetails = value;
+            getGameState().scenarioOptions.details = value;
         }
 
         std::string completedBy_get()

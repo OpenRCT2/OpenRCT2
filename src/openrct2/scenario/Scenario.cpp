@@ -84,7 +84,7 @@ void ScenarioBegin(GameState_t& gameState)
     GameLoadInit();
     ScenarioReset(gameState);
 
-    if (gameState.scenarioObjective.Type != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
+    if (gameState.scenarioOptions.objective.Type != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
         ContextOpenWindowView(WV_PARK_OBJECTIVE);
 
     gScreenAge = 0;
@@ -106,15 +106,15 @@ void ScenarioReset(GameState_t& gameState)
     gameState.park.rating = Park::CalculateParkRating();
     gameState.park.value = Park::CalculateParkValue();
     gameState.park.companyValue = Park::CalculateCompanyValue();
-    gameState.park.historicalProfit = gameState.initialCash - gameState.park.bankLoan;
-    gameState.park.cash = gameState.initialCash;
+    gameState.park.historicalProfit = gameState.scenarioOptions.initialCash - gameState.park.bankLoan;
+    gameState.park.cash = gameState.scenarioOptions.initialCash;
 
     auto& objManager = GetContext()->GetObjectManager();
     if (auto* textObject = objManager.GetLoadedObject<ScenarioMetaObject>(0); textObject != nullptr)
     {
-        gameState.scenarioName = textObject->GetScenarioName();
+        gameState.scenarioOptions.name = textObject->GetScenarioName();
         gameState.park.name = textObject->GetParkName();
-        gameState.scenarioDetails = textObject->GetScenarioDetails();
+        gameState.scenarioOptions.details = textObject->GetScenarioDetails();
     }
 
     // Set the last saved game path
@@ -285,7 +285,7 @@ static void ScenarioDayUpdate(GameState_t& gameState)
 {
     FinanceUpdateDailyProfit();
     PeepUpdateDaysInQueue();
-    switch (gameState.scenarioObjective.Type)
+    switch (gameState.scenarioOptions.objective.Type)
     {
         case OBJECTIVE_10_ROLLERCOASTERS:
         case OBJECTIVE_GUESTS_AND_RATING:
@@ -526,7 +526,7 @@ uint32_t ScenarioRandMax(uint32_t max)
  */
 static ResultWithMessage ScenarioPrepareRidesForSave(GameState_t& gameState)
 {
-    int32_t isFiveCoasterObjective = gameState.scenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
+    int32_t isFiveCoasterObjective = gameState.scenarioOptions.objective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
     uint8_t rcs = 0;
 
     for (auto& ride : GetRideManager())
@@ -592,7 +592,7 @@ ResultWithMessage ScenarioPrepareForSave(GameState_t& gameState)
         return { false, prepareRidesResult.Message };
     }
 
-    if (gameState.scenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
+    if (gameState.scenarioOptions.objective.Type == OBJECTIVE_GUESTS_AND_RATING)
         gameState.park.flags |= PARK_FLAGS_PARK_OPEN;
 
     ScenarioReset(gameState);
@@ -718,7 +718,7 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
         {
             News::AddItemToQueue(News::ItemType::graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
             gameState.park.flags &= ~PARK_FLAGS_PARK_OPEN;
-            gameState.guestInitialHappiness = 50;
+            gameState.scenarioOptions.guestInitialHappiness = 50;
             return ObjectiveStatus::Failure;
         }
     }
@@ -858,7 +858,7 @@ bool AllowEarlyCompletion()
 
 static void ScenarioCheckObjective(GameState_t& gameState)
 {
-    auto status = gameState.scenarioObjective.Check(gameState);
+    auto status = gameState.scenarioOptions.objective.Check(gameState);
     if (status == ObjectiveStatus::Success)
     {
         ScenarioSuccess(gameState);
