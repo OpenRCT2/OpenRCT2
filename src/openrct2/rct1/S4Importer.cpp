@@ -236,7 +236,7 @@ namespace OpenRCT2::RCT1
             bool isOfficial = ScenarioSources::TryGetById(_s4.ScenarioSlotIndex, &desc);
 
             // Perform an additional name check if this is detected to be a competition scenario
-            if (isOfficial && desc.category == ScenarioCategory::competitions)
+            if (isOfficial && desc.category == Scenario::Category::competitions)
                 isOfficial = ScenarioSources::TryGetByName(_s4.ScenarioName, &desc);
 
             dst->Category = desc.category;
@@ -360,7 +360,7 @@ namespace OpenRCT2::RCT1
             gameStateInitAll(gameState, { mapSize, mapSize });
             gameState.editorStep = EditorStep::ObjectSelection;
             gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-            gameState.scenarioOptions.category = ScenarioCategory::other;
+            gameState.scenarioOptions.category = Scenario::Category::other;
         }
 
         std::string GetRCT1ScenarioName()
@@ -2432,7 +2432,7 @@ namespace OpenRCT2::RCT1
                 bool isOfficial = ScenarioSources::TryGetById(_s4.ScenarioSlotIndex, &desc);
 
                 // Perform an additional name check if this is detected to be a competition scenario
-                if (isOfficial && desc.category == ScenarioCategory::competitions)
+                if (isOfficial && desc.category == Scenario::Category::competitions)
                     isOfficial = ScenarioSources::TryGetByName(_s4.ScenarioName, &desc);
 
                 if (isOfficial && !desc.textObjectId.empty())

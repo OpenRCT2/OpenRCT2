@@ -113,7 +113,7 @@ namespace OpenRCT2::Editor
         gLegacyScene = LegacyScene::scenarioEditor;
         gameState.editorStep = EditorStep::ObjectSelection;
         gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-        gameState.scenarioOptions.category = ScenarioCategory::other;
+        gameState.scenarioOptions.category = Scenario::Category::other;
         ObjectListLoad();
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
@@ -157,7 +157,7 @@ namespace OpenRCT2::Editor
 
         gLegacyScene = LegacyScene::scenarioEditor;
         gameState.editorStep = EditorStep::OptionsSelection;
-        gameState.scenarioOptions.category = ScenarioCategory::other;
+        gameState.scenarioOptions.category = Scenario::Category::other;
         ViewportInitAll();
         OpenEditorWindows();
         FinaliseMainView();

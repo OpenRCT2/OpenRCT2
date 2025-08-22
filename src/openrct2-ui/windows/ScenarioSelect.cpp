@@ -29,6 +29,7 @@
 #include <openrct2/park/ParkPreview.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
+#include <openrct2/scenario/ScenarioCategory.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
 #include <openrct2/ui/WindowManager.h>
@@ -682,7 +683,7 @@ namespace OpenRCT2::Ui::Windows
             union
             {
                 uint8_t raw = UINT8_MAX;
-                ScenarioCategory category;
+                Scenario::Category category;
                 ScenarioSource source;
             } currentHeading{};
             for (size_t i = 0; i < numScenarios; i++)
@@ -697,7 +698,7 @@ namespace OpenRCT2::Ui::Windows
                 if (selected_tab != EnumValue(ScenarioSource::Real) && currentHeading.category != scenario->Category)
                 {
                     currentHeading.category = scenario->Category;
-                    headingStringId = kScenarioCategoryStringIds[currentHeading.raw];
+                    headingStringId = Scenario::kScenarioCategoryStringIds[currentHeading.raw];
                 }
 
                 if (headingStringId != kStringIdNone)

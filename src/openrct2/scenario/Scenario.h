@@ -9,12 +9,9 @@
 
 #pragma once
 
-#include "../core/EnumUtils.hpp"
 #include "../core/Money.hpp"
 #include "../core/Random.hpp"
 #include "../core/String.hpp"
-#include "../localisation/StringIdType.h"
-#include "../ride/RideRatings.h"
 
 struct ResultWithMessage;
 
@@ -36,25 +33,6 @@ enum
     S6_TYPE_SCENARIO
 };
 
-enum class ScenarioCategory : uint8_t
-{
-    // RCT2 categories (keep order)
-    beginner,
-    challenging,
-    expert,
-    real,
-    other,
-
-    // OpenRCT2 categories
-    dlc,
-    buildYourOwn,
-    competitions,
-    timeMachine,
-    katysDreamworld,
-
-    count,
-};
-
 enum
 {
     AUTOSAVE_EVERY_MINUTE,
@@ -69,8 +47,6 @@ constexpr uint8_t kAutosavePause = 0;
 constexpr uint8_t kDefaultNumAutosavesToKeep = 10;
 
 static constexpr money64 kCompanyValueOnFailedObjective = 0x8000000000000001;
-
-extern const StringId kScenarioCategoryStringIds[EnumValue(ScenarioCategory::count)];
 
 extern bool gAllowEarlyCompletionInNetworkPlay;
 

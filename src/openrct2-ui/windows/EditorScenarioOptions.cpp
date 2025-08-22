@@ -773,10 +773,10 @@ namespace OpenRCT2::Ui::Windows
 
         void ShowCategoryDropdown()
         {
-            for (int32_t i = EnumValue(ScenarioCategory::beginner); i <= EnumValue(ScenarioCategory::other); i++)
+            for (int32_t i = EnumValue(Scenario::Category::beginner); i <= EnumValue(Scenario::Category::other); i++)
             {
                 gDropdownItems[i].format = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItems[i].args = kScenarioCategoryStringIds[i];
+                gDropdownItems[i].args = Scenario::kScenarioCategoryStringIds[i];
             }
 
             Widget* dropdownWidget = &widgets[WIDX_CATEGORY];
@@ -1262,9 +1262,9 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_CATEGORY_DROPDOWN:
                 {
                     auto& gameState = getGameState();
-                    if (gameState.scenarioOptions.category != static_cast<ScenarioCategory>(dropdownIndex))
+                    if (gameState.scenarioOptions.category != static_cast<Scenario::Category>(dropdownIndex))
                     {
-                        gameState.scenarioOptions.category = static_cast<ScenarioCategory>(dropdownIndex);
+                        gameState.scenarioOptions.category = static_cast<Scenario::Category>(dropdownIndex);
                         Invalidate();
                     }
                     break;
@@ -1325,7 +1325,7 @@ namespace OpenRCT2::Ui::Windows
             // Scenario category value
             screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_CATEGORY].left + 1, widgets[WIDX_CATEGORY].top };
             ft = Formatter();
-            ft.Add<StringId>(kScenarioCategoryStringIds[EnumValue(gameState.scenarioOptions.category)]);
+            ft.Add<StringId>(Scenario::kScenarioCategoryStringIds[EnumValue(gameState.scenarioOptions.category)]);
             DrawTextBasic(rt, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
         }
 

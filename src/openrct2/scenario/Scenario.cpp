@@ -69,11 +69,6 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scenario;
 
-const StringId kScenarioCategoryStringIds[EnumValue(ScenarioCategory::count)] = {
-    STR_BEGINNER_PARKS, STR_CHALLENGING_PARKS,    STR_EXPERT_PARKS, STR_REAL_PARKS, STR_OTHER_PARKS,
-    STR_DLC_PARKS,      STR_BUILD_YOUR_OWN_PARKS, STR_COMPETITIONS, STR_UCES_TM,    STR_UCES_KD,
-};
-
 std::string gScenarioSavePath;
 bool gFirstTimeSaving = true;
 uint32_t gLastAutoSaveUpdate = 0;

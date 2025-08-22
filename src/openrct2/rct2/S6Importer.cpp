@@ -280,7 +280,7 @@ namespace OpenRCT2::RCT2
             {
                 dst->ScenarioId = SC_UNIDENTIFIED;
                 dst->SourceIndex = -1;
-                if (dst->Category == ScenarioCategory::real)
+                if (dst->Category == Scenario::Category::real)
                 {
                     dst->SourceGame = ScenarioSource::Real;
                 }
