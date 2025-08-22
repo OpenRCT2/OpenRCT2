@@ -1408,10 +1408,10 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_INITIAL_CASH_INCREASE:
-                    if (gameState.initialCash < 1000000.00_GBP)
+                    if (gameState.scenarioOptions.initialCash < 1000000.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::InitialCash, gameState.initialCash + 500.00_GBP);
+                            ScenarioSetSetting::InitialCash, gameState.scenarioOptions.initialCash + 500.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1421,10 +1421,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_INITIAL_CASH_DECREASE:
-                    if (gameState.initialCash > 0.00_GBP)
+                    if (gameState.scenarioOptions.initialCash > 0.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::InitialCash, gameState.initialCash - 500.00_GBP);
+                            ScenarioSetSetting::InitialCash, gameState.scenarioOptions.initialCash - 500.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1686,7 +1686,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 screenCoords = windowPos + ScreenCoordsXY{ initialCashWidget.left + 1, initialCashWidget.top };
                 auto ft = Formatter();
-                ft.Add<money64>(getGameState().initialCash);
+                ft.Add<money64>(getGameState().scenarioOptions.initialCash);
                 auto colour = !IsWidgetDisabled(WIDX_INITIAL_CASH) ? wColour2 : wColour2.withFlag(ColourFlag::inset, true);
                 DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft, colour);
             }
@@ -1767,14 +1767,15 @@ namespace OpenRCT2::Ui::Windows
         void GuestsMouseDown(WidgetIndex widgetIndex)
         {
             auto& gameState = getGameState();
+            auto& scenarioOptions = gameState.scenarioOptions;
 
             switch (widgetIndex)
             {
                 case WIDX_CASH_PER_GUEST_INCREASE:
-                    if (gameState.guestInitialCash < 1000.00_GBP)
+                    if (scenarioOptions.guestInitialCash < 1000.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::AverageCashPerGuest, gameState.guestInitialCash + 1.00_GBP);
+                            ScenarioSetSetting::AverageCashPerGuest, scenarioOptions.guestInitialCash + 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1784,10 +1785,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_CASH_PER_GUEST_DECREASE:
-                    if (gameState.guestInitialCash > 0.00_GBP)
+                    if (scenarioOptions.guestInitialCash > 0.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::AverageCashPerGuest, gameState.guestInitialCash - 1.00_GBP);
+                            ScenarioSetSetting::AverageCashPerGuest, scenarioOptions.guestInitialCash - 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1797,10 +1798,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_GUEST_INITIAL_HAPPINESS_INCREASE:
-                    if (gameState.guestInitialHappiness < 250)
+                    if (scenarioOptions.guestInitialHappiness < 250)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::GuestInitialHappiness, gameState.guestInitialHappiness + 4);
+                            ScenarioSetSetting::GuestInitialHappiness, scenarioOptions.guestInitialHappiness + 4);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1810,10 +1811,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_GUEST_INITIAL_HAPPINESS_DECREASE:
-                    if (gameState.guestInitialHappiness > 40)
+                    if (scenarioOptions.guestInitialHappiness > 40)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::GuestInitialHappiness, gameState.guestInitialHappiness - 4);
+                            ScenarioSetSetting::GuestInitialHappiness, scenarioOptions.guestInitialHappiness - 4);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1823,10 +1824,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_GUEST_INITIAL_HUNGER_INCREASE:
-                    if (gameState.guestInitialHunger > 40)
+                    if (scenarioOptions.guestInitialHunger > 40)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::GuestInitialHunger, gameState.guestInitialHunger - 4);
+                            ScenarioSetSetting::GuestInitialHunger, scenarioOptions.guestInitialHunger - 4);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1836,10 +1837,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_GUEST_INITIAL_HUNGER_DECREASE:
-                    if (gameState.guestInitialHunger < 250)
+                    if (scenarioOptions.guestInitialHunger < 250)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::GuestInitialHunger, gameState.guestInitialHunger + 4);
+                            ScenarioSetSetting::GuestInitialHunger, scenarioOptions.guestInitialHunger + 4);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1849,10 +1850,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_GUEST_INITIAL_THIRST_INCREASE:
-                    if (gameState.guestInitialThirst > 40)
+                    if (scenarioOptions.guestInitialThirst > 40)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::GuestInitialThirst, gameState.guestInitialThirst - 4);
+                            ScenarioSetSetting::GuestInitialThirst, scenarioOptions.guestInitialThirst - 4);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1862,10 +1863,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_GUEST_INITIAL_THIRST_DECREASE:
-                    if (gameState.guestInitialThirst < 250)
+                    if (scenarioOptions.guestInitialThirst < 250)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::GuestInitialThirst, gameState.guestInitialThirst + 4);
+                            ScenarioSetSetting::GuestInitialThirst, scenarioOptions.guestInitialThirst + 4);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -1975,7 +1976,7 @@ namespace OpenRCT2::Ui::Windows
                 // Cash per guest value
                 screenCoords = windowPos + ScreenCoordsXY{ cashPerGuestWidget.left + 1, cashPerGuestWidget.top };
                 auto ft = Formatter();
-                ft.Add<money64>(gameState.guestInitialCash);
+                ft.Add<money64>(gameState.scenarioOptions.guestInitialCash);
                 auto colour = !IsWidgetDisabled(WIDX_CASH_PER_GUEST) ? wColour2 : wColour2.withFlag(ColourFlag::inset, true);
                 DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft, colour);
             }
@@ -1986,21 +1987,21 @@ namespace OpenRCT2::Ui::Windows
             const auto& initialHappinessWidget = widgets[WIDX_GUEST_INITIAL_HAPPINESS];
             screenCoords = windowPos + ScreenCoordsXY{ initialHappinessWidget.left + 1, initialHappinessWidget.top };
             auto ft = Formatter();
-            ft.Add<uint16_t>((gameState.guestInitialHappiness * 100) / 255);
+            ft.Add<uint16_t>((gameState.scenarioOptions.guestInitialHappiness * 100) / 255);
             DrawTextBasic(rt, screenCoords, STR_PERCENT_FORMAT_LABEL, ft, colour);
 
             // Guest initial hunger value
             const auto& initialHungerWidget = widgets[WIDX_GUEST_INITIAL_HUNGER];
             screenCoords = windowPos + ScreenCoordsXY{ initialHungerWidget.left + 1, initialHungerWidget.top };
             ft = Formatter();
-            ft.Add<uint16_t>(((255 - gameState.guestInitialHunger) * 100) / 255);
+            ft.Add<uint16_t>(((255 - gameState.scenarioOptions.guestInitialHunger) * 100) / 255);
             DrawTextBasic(rt, screenCoords, STR_PERCENT_FORMAT_LABEL, ft, colour);
 
             // Guest initial thirst value
             const auto& initialThirstWidget = widgets[WIDX_GUEST_INITIAL_THIRST];
             screenCoords = windowPos + ScreenCoordsXY{ initialThirstWidget.left + 1, initialThirstWidget.top };
             ft = Formatter();
-            ft.Add<uint16_t>(((255 - gameState.guestInitialThirst) * 100) / 255);
+            ft.Add<uint16_t>(((255 - gameState.scenarioOptions.guestInitialThirst) * 100) / 255);
             DrawTextBasic(rt, screenCoords, STR_PERCENT_FORMAT_LABEL, ft, colour);
 
             // Guests' intensity value

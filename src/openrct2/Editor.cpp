@@ -298,40 +298,40 @@ namespace OpenRCT2::Editor
             staff->SetName({});
         }
 
-        auto& gameState = getGameState();
-
         ResetAllEntities();
         UpdateConsolidatedPatrolAreas();
-        gameState.park.numGuestsInPark = 0;
-        gameState.park.numGuestsHeadingForPark = 0;
-        gameState.park.numGuestsInParkLastWeek = 0;
-        gameState.park.guestChangeModifier = 0;
+
+        auto& gameState = getGameState();
+        auto& park = gameState.park;
+        auto& scenarioOptions = gameState.scenarioOptions;
+
+        park.numGuestsInPark = 0;
+        park.numGuestsHeadingForPark = 0;
+        park.numGuestsInParkLastWeek = 0;
+        park.guestChangeModifier = 0;
+
         if (fromSave)
         {
-            gameState.park.flags |= PARK_FLAGS_NO_MONEY;
+            park.flags |= PARK_FLAGS_NO_MONEY;
 
-            if (gameState.park.entranceFee == 0)
+            if (park.entranceFee == 0)
             {
-                gameState.park.flags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                park.flags |= PARK_FLAGS_PARK_FREE_ENTRY;
             }
             else
             {
-                gameState.park.flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+                park.flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
             }
 
-            gameState.park.flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+            park.flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 
-            gameState.guestInitialCash = std::clamp(gameState.guestInitialCash, 10.00_GBP, kMaxEntranceFee);
-
-            gameState.initialCash = std::min<money64>(gameState.initialCash, 100000);
+            scenarioOptions.guestInitialCash = std::clamp(scenarioOptions.guestInitialCash, 10.00_GBP, kMaxEntranceFee);
+            scenarioOptions.initialCash = std::min<money64>(scenarioOptions.initialCash, 100000);
             FinanceResetCashToInitial();
 
-            gameState.park.bankLoan = std::clamp<money64>(gameState.park.bankLoan, 0.00_GBP, 5000000.00_GBP);
-
-            gameState.park.maxBankLoan = std::clamp<money64>(gameState.park.maxBankLoan, 0.00_GBP, 5000000.00_GBP);
-
-            gameState.park.bankLoanInterestRate = std::clamp<uint8_t>(
-                gameState.park.bankLoanInterestRate, 5, kMaxBankLoanInterestRate);
+            park.bankLoan = std::clamp<money64>(park.bankLoan, 0.00_GBP, 5000000.00_GBP);
+            park.maxBankLoan = std::clamp<money64>(park.maxBankLoan, 0.00_GBP, 5000000.00_GBP);
+            park.bankLoanInterestRate = std::clamp<uint8_t>(park.bankLoanInterestRate, 5, kMaxBankLoanInterestRate);
         }
 
         ClimateReset();

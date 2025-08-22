@@ -18,7 +18,6 @@
 #include <string_view>
 #include <vector>
 
-class AudioObject;
 struct CoordsXYZ;
 
 namespace OpenRCT2::Audio

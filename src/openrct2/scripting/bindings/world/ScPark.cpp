@@ -161,22 +161,22 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::guestInitialCash_get() const
     {
-        return getGameState().guestInitialCash;
+        return getGameState().scenarioOptions.guestInitialCash;
     }
 
     uint8_t ScPark::guestInitialHappiness_get() const
     {
-        return getGameState().guestInitialHappiness;
+        return getGameState().scenarioOptions.guestInitialHappiness;
     }
 
     uint8_t ScPark::guestInitialHunger_get() const
     {
-        return getGameState().guestInitialHunger;
+        return getGameState().scenarioOptions.guestInitialHunger;
     }
 
     uint8_t ScPark::guestInitialThirst_get() const
     {
-        return getGameState().guestInitialThirst;
+        return getGameState().scenarioOptions.guestInitialThirst;
     }
 
     money64 ScPark::value_get() const

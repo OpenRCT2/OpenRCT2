@@ -565,7 +565,7 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (argv[0] == "scenario_initial_cash")
         {
-            console.WriteLine(FormatString("scenario_initial_cash {CURRENCY2DP}", gameState.initialCash));
+            console.WriteLine(FormatString("scenario_initial_cash {CURRENCY2DP}", gameState.scenarioOptions.initialCash));
         }
         else if (argv[0] == "current_loan")
         {
@@ -577,7 +577,7 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (argv[0] == "guest_initial_cash")
         {
-            console.WriteLine(FormatString("guest_initial_cash {CURRENCY2DP}", gameState.guestInitialCash));
+            console.WriteLine(FormatString("guest_initial_cash {CURRENCY2DP}", gameState.scenarioOptions.guestInitialCash));
         }
         else if (argv[0] == "land_rights_cost")
         {
@@ -589,16 +589,18 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (argv[0] == "guest_initial_happiness")
         {
-            uint32_t current_happiness = gameState.guestInitialHappiness;
+            uint32_t current_happiness = gameState.scenarioOptions.guestInitialHappiness;
             for (int32_t i = 15; i <= 99; i++)
             {
                 if (i == 99)
                 {
-                    console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", 15, gameState.guestInitialHappiness);
+                    console.WriteFormatLine(
+                        "guest_initial_happiness %d%%  (%d)", 15, gameState.scenarioOptions.guestInitialHappiness);
                 }
                 else if (current_happiness == Park::CalculateGuestInitialHappiness(i))
                 {
-                    console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", i, gameState.guestInitialHappiness);
+                    console.WriteFormatLine(
+                        "guest_initial_happiness %d%%  (%d)", i, gameState.scenarioOptions.guestInitialHappiness);
                     break;
                 }
             }
@@ -606,14 +608,14 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         else if (argv[0] == "guest_initial_hunger")
         {
             console.WriteFormatLine(
-                "guest_initial_hunger %d%%  (%d)", ((255 - gameState.guestInitialHunger) * 100) / 255,
-                gameState.guestInitialHunger);
+                "guest_initial_hunger %d%%  (%d)", ((255 - gameState.scenarioOptions.guestInitialHunger) * 100) / 255,
+                gameState.scenarioOptions.guestInitialHunger);
         }
         else if (argv[0] == "guest_initial_thirst")
         {
             console.WriteFormatLine(
-                "guest_initial_thirst %d%%  (%d)", ((255 - gameState.guestInitialThirst) * 100) / 255,
-                gameState.guestInitialThirst);
+                "guest_initial_thirst %d%%  (%d)", ((255 - gameState.scenarioOptions.guestInitialThirst) * 100) / 255,
+                gameState.scenarioOptions.guestInitialThirst);
         }
         else if (argv[0] == "guest_prefer_less_intense_rides")
         {

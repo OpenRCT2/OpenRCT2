@@ -106,8 +106,8 @@ void ScenarioReset(GameState_t& gameState)
     gameState.park.rating = Park::CalculateParkRating();
     gameState.park.value = Park::CalculateParkValue();
     gameState.park.companyValue = Park::CalculateCompanyValue();
-    gameState.park.historicalProfit = gameState.initialCash - gameState.park.bankLoan;
-    gameState.park.cash = gameState.initialCash;
+    gameState.park.historicalProfit = gameState.scenarioOptions.initialCash - gameState.park.bankLoan;
+    gameState.park.cash = gameState.scenarioOptions.initialCash;
 
     auto& objManager = GetContext()->GetObjectManager();
     if (auto* textObject = objManager.GetLoadedObject<ScenarioMetaObject>(0); textObject != nullptr)
@@ -718,7 +718,7 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
         {
             News::AddItemToQueue(News::ItemType::graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
             gameState.park.flags &= ~PARK_FLAGS_PARK_OPEN;
-            gameState.guestInitialHappiness = 50;
+            gameState.scenarioOptions.guestInitialHappiness = 50;
             return ObjectiveStatus::Failure;
         }
     }

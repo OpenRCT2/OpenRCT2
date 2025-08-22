@@ -379,7 +379,7 @@ namespace OpenRCT2::RCT2
             ImportEntities();
             ConvertPeepAnimationTypeToObjects(gameState);
 
-            gameState.initialCash = ToMoney64(_s6.InitialCash);
+            gameState.scenarioOptions.initialCash = ToMoney64(_s6.InitialCash);
             gameState.park.bankLoan = ToMoney64(_s6.CurrentLoan);
 
             gameState.park.flags = _s6.ParkFlags & ~PARK_FLAGS_NO_MONEY_SCENARIO;
@@ -460,14 +460,14 @@ namespace OpenRCT2::RCT2
             gameState.researchProgress = _s6.ResearchProgress;
             gameState.researchExpectedDay = _s6.NextResearchExpectedDay;
             gameState.researchExpectedMonth = _s6.NextResearchExpectedMonth;
-            gameState.guestInitialHappiness = _s6.GuestInitialHappiness;
+            gameState.scenarioOptions.guestInitialHappiness = _s6.GuestInitialHappiness;
             gameState.park.size = _s6.ParkSize;
             gameState.park.guestGenerationProbability = _s6.GuestGenerationProbability;
             gameState.park.totalRideValueForMoney = _s6.TotalRideValueForMoney;
             gameState.park.maxBankLoan = ToMoney64(_s6.MaximumLoan);
-            gameState.guestInitialCash = ToMoney64(_s6.GuestInitialCash);
-            gameState.guestInitialHunger = _s6.GuestInitialHunger;
-            gameState.guestInitialThirst = _s6.GuestInitialThirst;
+            gameState.scenarioOptions.guestInitialCash = ToMoney64(_s6.GuestInitialCash);
+            gameState.scenarioOptions.guestInitialHunger = _s6.GuestInitialHunger;
+            gameState.scenarioOptions.guestInitialThirst = _s6.GuestInitialThirst;
             gameState.scenarioObjective.Type = _s6.ObjectiveType;
             gameState.scenarioObjective.Year = _s6.ObjectiveYear;
             // Pad013580FA

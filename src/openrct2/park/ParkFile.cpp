@@ -175,7 +175,7 @@ namespace OpenRCT2
             }
 
             // Initial cash will eventually be removed
-            gameState.initialCash = gameState.park.cash;
+            gameState.scenarioOptions.initialCash = gameState.park.cash;
         }
 
         void Save(GameState_t& gameState, IStream& stream, int16_t compressionLevel)
@@ -601,19 +601,19 @@ namespace OpenRCT2
                     cs.write(randState.s1);
                 }
 
-                cs.readWrite(gameState.guestInitialHappiness);
+                cs.readWrite(gameState.scenarioOptions.guestInitialHappiness);
                 if (version <= 18)
                 {
                     money16 tempGuestInitialCash{};
                     cs.readWrite(tempGuestInitialCash);
-                    gameState.guestInitialCash = ToMoney64(tempGuestInitialCash);
+                    gameState.scenarioOptions.guestInitialCash = ToMoney64(tempGuestInitialCash);
                 }
                 else
                 {
-                    cs.readWrite(gameState.guestInitialCash);
+                    cs.readWrite(gameState.scenarioOptions.guestInitialCash);
                 }
-                cs.readWrite(gameState.guestInitialHunger);
-                cs.readWrite(gameState.guestInitialThirst);
+                cs.readWrite(gameState.scenarioOptions.guestInitialHunger);
+                cs.readWrite(gameState.scenarioOptions.guestInitialThirst);
 
                 cs.readWrite(gameState.nextGuestNumber);
                 cs.readWriteVector(gameState.peepSpawns, [&cs](PeepSpawn& spawn) {

@@ -1509,7 +1509,7 @@ namespace OpenRCT2::RCT1
             gameState.park.maxBankLoan = ToMoney64(_s4.MaxLoan);
             // It's more like 1.33%, but we can only use integers. Can be fixed once we have our own save format.
             gameState.park.bankLoanInterestRate = 1;
-            gameState.initialCash = ToMoney64(_s4.Cash);
+            gameState.scenarioOptions.initialCash = ToMoney64(_s4.Cash);
 
             gameState.park.companyValue = ToMoney64(_s4.CompanyValue);
             gameState.park.value = CorrectRCT1ParkValue(_s4.ParkValue);
@@ -2309,10 +2309,10 @@ namespace OpenRCT2::RCT1
             News::importNewsItems(gameState, recentMessages, archivedMessages);
 
             // Initial guest status
-            gameState.guestInitialCash = ToMoney64(_s4.GuestInitialCash);
-            gameState.guestInitialHunger = _s4.GuestInitialHunger;
-            gameState.guestInitialThirst = _s4.GuestInitialThirst;
-            gameState.guestInitialHappiness = _s4.GuestInitialHappiness;
+            gameState.scenarioOptions.guestInitialCash = ToMoney64(_s4.GuestInitialCash);
+            gameState.scenarioOptions.guestInitialHunger = _s4.GuestInitialHunger;
+            gameState.scenarioOptions.guestInitialThirst = _s4.GuestInitialThirst;
+            gameState.scenarioOptions.guestInitialHappiness = _s4.GuestInitialHappiness;
 
             gameState.park.guestGenerationProbability = _s4.GuestGenerationProbability;
 

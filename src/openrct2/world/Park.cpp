@@ -309,10 +309,10 @@ namespace OpenRCT2::Park
             ResearchCategory::Water, ResearchCategory::Shop, ResearchCategory::SceneryGroup);
         gameState.researchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
-        gameState.guestInitialCash = 50.00_GBP;
-        gameState.guestInitialHappiness = Park::CalculateGuestInitialHappiness(50);
-        gameState.guestInitialHunger = 200;
-        gameState.guestInitialThirst = 200;
+        gameState.scenarioOptions.guestInitialCash = 50.00_GBP;
+        gameState.scenarioOptions.guestInitialHappiness = Park::CalculateGuestInitialHappiness(50);
+        gameState.scenarioOptions.guestInitialHunger = 200;
+        gameState.scenarioOptions.guestInitialThirst = 200;
         gameState.scenarioObjective.Type = OBJECTIVE_GUESTS_BY;
         gameState.scenarioObjective.Year = 4;
         gameState.scenarioObjective.NumGuests = 1000;
