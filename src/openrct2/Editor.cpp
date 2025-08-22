@@ -112,14 +112,14 @@ namespace OpenRCT2::Editor
         gLegacyScene = LegacyScene::scenarioEditor;
         gameState.editorStep = EditorStep::ObjectSelection;
         gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-        gameState.scenarioCategory = ScenarioCategory::other;
+        gameState.scenarioOptions.category = ScenarioCategory::other;
         ObjectListLoad();
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
         gScreenAge = 0;
-        gameState.scenarioName = LanguageGetString(STR_MY_NEW_SCENARIO);
+        gameState.scenarioOptions.name = LanguageGetString(STR_MY_NEW_SCENARIO);
 
         GameLoadScripts();
         GameNotifyMapChanged();
@@ -156,7 +156,7 @@ namespace OpenRCT2::Editor
 
         gLegacyScene = LegacyScene::scenarioEditor;
         gameState.editorStep = EditorStep::OptionsSelection;
-        gameState.scenarioCategory = ScenarioCategory::other;
+        gameState.scenarioOptions.category = ScenarioCategory::other;
         ViewportInitAll();
         OpenEditorWindows();
         FinaliseMainView();

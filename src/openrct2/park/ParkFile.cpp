@@ -484,15 +484,15 @@ namespace OpenRCT2
         void ReadWriteScenarioChunk(GameState_t& gameState, OrcaStream& os)
         {
             os.readWriteChunk(ParkFileChunkType::SCENARIO, [&gameState, &os](OrcaStream::ChunkStream& cs) {
-                cs.readWrite(gameState.scenarioCategory);
-                ReadWriteStringTable(cs, gameState.scenarioName, "en-GB");
+                cs.readWrite(gameState.scenarioOptions.category);
+                ReadWriteStringTable(cs, gameState.scenarioOptions.name, "en-GB");
                 ReadWriteStringTable(cs, gameState.park.name, "en-GB");
-                ReadWriteStringTable(cs, gameState.scenarioDetails, "en-GB");
+                ReadWriteStringTable(cs, gameState.scenarioOptions.details, "en-GB");
 
-                cs.readWrite(gameState.scenarioObjective.Type);
-                cs.readWrite(gameState.scenarioObjective.Year);
-                cs.readWrite(gameState.scenarioObjective.NumGuests);
-                cs.readWrite(gameState.scenarioObjective.Currency);
+                cs.readWrite(gameState.scenarioOptions.objective.Type);
+                cs.readWrite(gameState.scenarioOptions.objective.Year);
+                cs.readWrite(gameState.scenarioOptions.objective.NumGuests);
+                cs.readWrite(gameState.scenarioOptions.objective.Currency);
 
                 cs.readWrite(gameState.scenarioParkRatingWarningDays);
 

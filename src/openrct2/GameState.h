@@ -34,6 +34,11 @@ namespace OpenRCT2::Scenario
 {
     struct Options
     {
+        Objective objective;
+        ScenarioCategory category;
+        std::string name;
+        std::string details;
+
         money64 initialCash;
 
         money64 guestInitialCash;
@@ -60,7 +65,6 @@ namespace OpenRCT2
 
         uint32_t nextGuestNumber;
 
-        Objective scenarioObjective;
         uint16_t scenarioParkRatingWarningDays;
         money64 scenarioCompletedCompanyValue;
         money64 scenarioCompanyValueRecord;
@@ -72,9 +76,6 @@ namespace OpenRCT2
 
         EditorStep editorStep;
 
-        ScenarioCategory scenarioCategory;
-        std::string scenarioName;
-        std::string scenarioDetails;
         std::string scenarioCompletedBy;
         std::string scenarioFileName;
 

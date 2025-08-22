@@ -636,7 +636,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, windowPos + ScreenCoordsXY{ 8, titleBarBottom + 280 }, stringId, ft);
 
             // Objective related financial information
-            if (gameState.scenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
+            if (gameState.scenarioOptions.objective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
             {
                 auto lastMonthProfit = FinanceGetLastMonthShopProfit();
                 ft = Formatter();

@@ -521,7 +521,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
             // Only allow closing of park for guest / rating objective
-            if (gameState.scenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
+            if (gameState.scenarioOptions.objective.Type == OBJECTIVE_GUESTS_AND_RATING)
                 disabled_widgets |= (1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT);
             else
                 disabled_widgets &= ~((1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT));
@@ -545,7 +545,7 @@ namespace OpenRCT2::Ui::Windows
             if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK)
             {
                 widgets[WIDX_OPEN_OR_CLOSE].type = WidgetType::empty;
-                if (gameState.scenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
+                if (gameState.scenarioOptions.objective.Type == OBJECTIVE_GUESTS_AND_RATING)
                 {
                     widgets[WIDX_CLOSE_LIGHT].type = WidgetType::flatBtn;
                     widgets[WIDX_OPEN_LIGHT].type = WidgetType::flatBtn;
@@ -1073,7 +1073,7 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 7 };
             auto ft = Formatter();
             ft.Add<StringId>(STR_STRING);
-            ft.Add<const char*>(gameState.scenarioDetails.c_str());
+            ft.Add<const char*>(gameState.scenarioOptions.details.c_str());
             screenCoords.y += DrawTextWrapped(rt, screenCoords, 222, STR_BLACK_STRING, ft);
             screenCoords.y += 5;
 
@@ -1083,9 +1083,10 @@ namespace OpenRCT2::Ui::Windows
 
             // Objective
             ft = Formatter();
-            formatObjective(ft, gameState.scenarioObjective);
+            formatObjective(ft, gameState.scenarioOptions.objective);
 
-            screenCoords.y += DrawTextWrapped(rt, screenCoords, 221, kObjectiveNames[gameState.scenarioObjective.Type], ft);
+            screenCoords.y += DrawTextWrapped(
+                rt, screenCoords, 221, kObjectiveNames[gameState.scenarioOptions.objective.Type], ft);
             screenCoords.y += 5;
 
             // Objective outcome
