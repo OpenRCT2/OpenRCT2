@@ -19,7 +19,7 @@
 #include "management/NewsItem.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
-#include "scenario/Scenario.h"
+#include "scenario/ScenarioOptions.h"
 #include "world/Banner.h"
 #include "world/Climate.h"
 #include "world/Location.hpp"
@@ -30,29 +30,8 @@
 #include <memory>
 #include <vector>
 
-namespace OpenRCT2::Scenario
-{
-    struct Options
-    {
-        Objective objective;
-        ScenarioCategory category;
-        std::string name;
-        std::string details;
-
-        money64 initialCash;
-        money64 landPrice;
-        money64 constructionRightsPrice;
-
-        money64 guestInitialCash;
-        uint8_t guestInitialHappiness;
-        uint8_t guestInitialHunger;
-        uint8_t guestInitialThirst;
-    };
-} // namespace OpenRCT2::Scenario
-
 namespace OpenRCT2
 {
-
     struct GameState_t
     {
         Park::ParkData park{};
