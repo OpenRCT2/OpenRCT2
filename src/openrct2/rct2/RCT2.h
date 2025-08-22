@@ -22,12 +22,6 @@
 struct RideObjectEntry;
 enum class EditorStep : uint8_t;
 enum class VehicleColourSettings : uint8_t;
-enum class ScenarioCategory : uint8_t;
-
-namespace OpenRCT2
-{
-    class ObjectList;
-}
 
 namespace OpenRCT2::Scenario
 {
