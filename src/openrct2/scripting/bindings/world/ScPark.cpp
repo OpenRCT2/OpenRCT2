@@ -254,22 +254,22 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::landPrice_get() const
     {
-        return getGameState().landPrice;
+        return getGameState().scenarioOptions.landPrice;
     }
     void ScPark::landPrice_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
-        getGameState().landPrice = value;
+        getGameState().scenarioOptions.landPrice = value;
     }
 
     money64 ScPark::constructionRightsPrice_get() const
     {
-        return getGameState().constructionRightsPrice;
+        return getGameState().scenarioOptions.constructionRightsPrice;
     }
     void ScPark::constructionRightsPrice_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
-        getGameState().constructionRightsPrice = value;
+        getGameState().scenarioOptions.constructionRightsPrice = value;
     }
 
     int16_t ScPark::casualtyPenalty_get() const

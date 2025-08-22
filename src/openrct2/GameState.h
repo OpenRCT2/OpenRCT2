@@ -40,6 +40,8 @@ namespace OpenRCT2::Scenario
         std::string details;
 
         money64 initialCash;
+        money64 landPrice;
+        money64 constructionRightsPrice;
 
         money64 guestInitialCash;
         uint8_t guestInitialHappiness;
@@ -71,8 +73,6 @@ namespace OpenRCT2
         random_engine_t scenarioRand;
 
         TileCoordsXY mapSize;
-        money64 landPrice;
-        money64 constructionRightsPrice;
 
         EditorStep editorStep;
 

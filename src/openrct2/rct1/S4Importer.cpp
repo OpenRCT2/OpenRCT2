@@ -1501,8 +1501,8 @@ namespace OpenRCT2::RCT1
         void ImportFinance(GameState_t& gameState)
         {
             gameState.park.entranceFee = _s4.ParkEntranceFee;
-            gameState.landPrice = ToMoney64(_s4.LandPrice);
-            gameState.constructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
+            gameState.scenarioOptions.landPrice = ToMoney64(_s4.LandPrice);
+            gameState.scenarioOptions.constructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
 
             gameState.park.cash = ToMoney64(_s4.Cash);
             gameState.park.bankLoan = ToMoney64(_s4.Loan);

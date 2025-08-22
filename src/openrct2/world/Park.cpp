@@ -316,8 +316,8 @@ namespace OpenRCT2::Park
         gameState.scenarioOptions.objective.Type = OBJECTIVE_GUESTS_BY;
         gameState.scenarioOptions.objective.Year = 4;
         gameState.scenarioOptions.objective.NumGuests = 1000;
-        gameState.landPrice = 90.00_GBP;
-        gameState.constructionRightsPrice = 40.00_GBP;
+        gameState.scenarioOptions.landPrice = 90.00_GBP;
+        gameState.scenarioOptions.constructionRightsPrice = 40.00_GBP;
         gameState.park.flags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         ResetHistories(gameState);
         FinanceResetHistory();

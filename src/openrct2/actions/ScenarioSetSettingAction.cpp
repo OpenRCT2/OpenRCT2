@@ -145,10 +145,10 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             }
             break;
         case ScenarioSetSetting::CostToBuyLand:
-            gameState.landPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
+            gameState.scenarioOptions.landPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
             break;
         case ScenarioSetSetting::CostToBuyConstructionRights:
-            gameState.constructionRightsPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
+            gameState.scenarioOptions.constructionRightsPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
             break;
         case ScenarioSetSetting::ParkChargeMethod:
             if (gLegacyScene == LegacyScene::scenarioEditor)

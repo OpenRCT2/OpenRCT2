@@ -511,8 +511,8 @@ namespace OpenRCT2::RCT2
                 }
             }
 
-            gameState.landPrice = ToMoney64(_s6.LandPrice);
-            gameState.constructionRightsPrice = ToMoney64(_s6.ConstructionRightsPrice);
+            gameState.scenarioOptions.landPrice = ToMoney64(_s6.LandPrice);
+            gameState.scenarioOptions.constructionRightsPrice = ToMoney64(_s6.ConstructionRightsPrice);
             // unk_01358774
             // Pad01358776
             // _s6.CdKey

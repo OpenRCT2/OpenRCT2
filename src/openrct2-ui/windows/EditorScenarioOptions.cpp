@@ -2083,13 +2083,15 @@ namespace OpenRCT2::Ui::Windows
         void LandMouseDown(WidgetIndex widgetIndex)
         {
             auto& gameState = getGameState();
+            auto& scenarioOptions = gameState.scenarioOptions;
+
             switch (widgetIndex)
             {
                 case WIDX_LAND_COST_INCREASE:
-                    if (gameState.landPrice < 200.00_GBP)
+                    if (scenarioOptions.landPrice < 200.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::CostToBuyLand, gameState.landPrice + 1.00_GBP);
+                            ScenarioSetSetting::CostToBuyLand, scenarioOptions.landPrice + 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -2099,10 +2101,10 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_LAND_COST_DECREASE:
-                    if (gameState.landPrice > 5.00_GBP)
+                    if (scenarioOptions.landPrice > 5.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::CostToBuyLand, gameState.landPrice - 1.00_GBP);
+                            ScenarioSetSetting::CostToBuyLand, scenarioOptions.landPrice - 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -2112,10 +2114,11 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE:
-                    if (gameState.constructionRightsPrice < 200.00_GBP)
+                    if (scenarioOptions.constructionRightsPrice < 200.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::CostToBuyConstructionRights, gameState.constructionRightsPrice + 1.00_GBP);
+                            ScenarioSetSetting::CostToBuyConstructionRights,
+                            scenarioOptions.constructionRightsPrice + 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -2125,10 +2128,11 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE:
-                    if (gameState.constructionRightsPrice > 5.00_GBP)
+                    if (scenarioOptions.constructionRightsPrice > 5.00_GBP)
                     {
                         auto scenarioSetSetting = ScenarioSetSettingAction(
-                            ScenarioSetSetting::CostToBuyConstructionRights, gameState.constructionRightsPrice - 1.00_GBP);
+                            ScenarioSetSetting::CostToBuyConstructionRights,
+                            scenarioOptions.constructionRightsPrice - 1.00_GBP);
                         GameActions::Execute(&scenarioSetSetting);
                     }
                     else
@@ -2185,7 +2189,7 @@ namespace OpenRCT2::Ui::Windows
                 // Cost to buy land value
                 screenCoords = windowPos + ScreenCoordsXY{ landCostWidget.left + 1, landCostWidget.top };
                 auto ft = Formatter();
-                ft.Add<money64>(gameState.landPrice);
+                ft.Add<money64>(gameState.scenarioOptions.landPrice);
                 auto colour = !IsWidgetDisabled(WIDX_LAND_COST) ? wColour2 : wColour2.withFlag(ColourFlag::inset, true);
                 DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft, colour);
             }
@@ -2197,7 +2201,7 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords = windowPos
                     + ScreenCoordsXY{ constructionRightsCostWidget.left + 1, constructionRightsCostWidget.top };
                 auto ft = Formatter();
-                ft.Add<money64>(gameState.constructionRightsPrice);
+                ft.Add<money64>(gameState.scenarioOptions.constructionRightsPrice);
                 auto colour = !IsWidgetDisabled(WIDX_CONSTRUCTION_RIGHTS_COST) ? wColour2
                                                                                : wColour2.withFlag(ColourFlag::inset, true);
                 DrawTextBasic(rt, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft, colour);

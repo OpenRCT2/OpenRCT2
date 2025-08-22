@@ -629,13 +629,13 @@ namespace OpenRCT2
                     money16 tempConstructionRightPrice{};
                     cs.readWrite(tempLandPrice);
                     cs.readWrite(tempConstructionRightPrice);
-                    gameState.landPrice = ToMoney64(tempLandPrice);
-                    gameState.constructionRightsPrice = ToMoney64(tempConstructionRightPrice);
+                    gameState.scenarioOptions.landPrice = ToMoney64(tempLandPrice);
+                    gameState.scenarioOptions.constructionRightsPrice = ToMoney64(tempConstructionRightPrice);
                 }
                 else
                 {
-                    cs.readWrite(gameState.landPrice);
-                    cs.readWrite(gameState.constructionRightsPrice);
+                    cs.readWrite(gameState.scenarioOptions.landPrice);
+                    cs.readWrite(gameState.scenarioOptions.constructionRightsPrice);
                 }
                 cs.readWrite(gameState.grassSceneryTileLoopPosition);
                 cs.readWrite(gameState.widePathTileLoopPosition);

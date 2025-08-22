@@ -581,11 +581,12 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (argv[0] == "land_rights_cost")
         {
-            console.WriteLine(FormatString("land_rights_cost {CURRENCY2DP}", gameState.landPrice));
+            console.WriteLine(FormatString("land_rights_cost {CURRENCY2DP}", gameState.scenarioOptions.landPrice));
         }
         else if (argv[0] == "construction_rights_cost")
         {
-            console.WriteLine(FormatString("construction_rights_cost {CURRENCY2DP}", gameState.constructionRightsPrice));
+            console.WriteLine(
+                FormatString("construction_rights_cost {CURRENCY2DP}", gameState.scenarioOptions.constructionRightsPrice));
         }
         else if (argv[0] == "guest_initial_happiness")
         {
