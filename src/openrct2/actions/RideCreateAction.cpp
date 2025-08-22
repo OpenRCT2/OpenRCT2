@@ -226,7 +226,7 @@ GameActions::Result RideCreateAction::Execute() const
             ride->price[1] = GetShopItemDescriptor(rideEntry->shop_item[1]).DefaultPrice;
         }
 
-        if (gameState.scenarioOptions.objective.Type == OBJECTIVE_BUILD_THE_BEST)
+        if (gameState.scenarioOptions.objective.Type == Scenario::ObjectiveType::buildTheBest)
         {
             ride->price[0] = 0;
         }

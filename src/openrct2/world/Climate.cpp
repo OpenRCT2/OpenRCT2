@@ -22,6 +22,7 @@
 #include "../object/ClimateObject.h"
 #include "../object/ObjectManager.h"
 #include "../profiling/Profiling.h"
+#include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 

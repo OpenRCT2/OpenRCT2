@@ -23,6 +23,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/PeepAnimationsObject.h"
 #include "../ride/Ride.h"
+#include "../scenario/Scenario.h"
 #include "../ui/WindowManager.h"
 #include "../world/Entrance.h"
 #include "../world/Park.h"

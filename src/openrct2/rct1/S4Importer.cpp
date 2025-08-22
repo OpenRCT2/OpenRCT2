@@ -63,6 +63,8 @@
 #include "../ride/TrainManager.h"
 #include "../ride/Vehicle.h"
 #include "../sawyer_coding/SawyerCoding.h"
+#include "../scenario/Scenario.h"
+#include "../scenario/ScenarioObjective.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
 #include "../world/Climate.h"
@@ -245,13 +247,13 @@ namespace OpenRCT2::RCT1
             dst->ObjectiveType = _s4.ScenarioObjectiveType;
             dst->ObjectiveArg1 = _s4.ScenarioObjectiveYears;
             // RCT1 used another way of calculating park value.
-            if (_s4.ScenarioObjectiveType == OBJECTIVE_PARK_VALUE_BY)
+            if (_s4.ScenarioObjectiveType == Scenario::ObjectiveType::parkValueBy)
                 dst->ObjectiveArg2 = CorrectRCT1ParkValue(_s4.ScenarioObjectiveCurrency);
             else
                 dst->ObjectiveArg2 = _s4.ScenarioObjectiveCurrency;
             dst->ObjectiveArg3 = _s4.ScenarioObjectiveNumGuests;
             // This does not seem to be saved in the objective arguments, so look up the ID from the available rides instead.
-            if (_s4.ScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
+            if (_s4.ScenarioObjectiveType == Scenario::ObjectiveType::buildTheBest)
             {
                 dst->ObjectiveArg3 = GetBuildTheBestRideId();
             }
@@ -2465,13 +2467,13 @@ namespace OpenRCT2::RCT1
             // RCT1 used a different way of calculating the park value.
             // This is corrected here, but since scenario_objective_currency doubles as minimum excitement rating,
             // we need to check the goal to avoid affecting scenarios like Volcania.
-            if (_s4.ScenarioObjectiveType == OBJECTIVE_PARK_VALUE_BY)
+            if (_s4.ScenarioObjectiveType == Scenario::ObjectiveType::parkValueBy)
                 gameState.scenarioOptions.objective.Currency = CorrectRCT1ParkValue(_s4.ScenarioObjectiveCurrency);
             else
                 gameState.scenarioOptions.objective.Currency = ToMoney64(_s4.ScenarioObjectiveCurrency);
 
             // This does not seem to be saved in the objective arguments, so look up the ID from the available rides instead.
-            if (_s4.ScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
+            if (_s4.ScenarioObjectiveType == Scenario::ObjectiveType::buildTheBest)
                 gameState.scenarioOptions.objective.RideId = GetBuildTheBestRideId();
         }
 

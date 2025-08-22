@@ -22,6 +22,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/management/Research.h>
+#include <openrct2/scenario/Scenario.h>
 #include <openrct2/scripting/ScriptEngine.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>

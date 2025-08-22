@@ -12,6 +12,7 @@
 #include "../core/DateTime.h"
 #include "../core/Money.hpp"
 #include "../core/StringTypes.h"
+#include "ScenarioObjective.h"
 
 #include <memory>
 
@@ -52,7 +53,7 @@ struct ScenarioIndexEntry
     uint16_t ScenarioId;
 
     // Objective
-    uint8_t ObjectiveType;
+    OpenRCT2::Scenario::ObjectiveType ObjectiveType;
     uint8_t ObjectiveArg1;  // years
     int64_t ObjectiveArg2;  // money or excitement
     uint16_t ObjectiveArg3; // guests or rideID or coasterLength

@@ -18,8 +18,6 @@
 
 struct ResultWithMessage;
 
-using random_engine_t = OpenRCT2::Random::RCT2::Engine;
-
 namespace OpenRCT2
 {
     struct GameState_t;
@@ -55,76 +53,6 @@ enum class ScenarioCategory : uint8_t
     katysDreamworld,
 
     count,
-};
-
-enum
-{
-    OBJECTIVE_NONE,
-    OBJECTIVE_GUESTS_BY,
-    OBJECTIVE_PARK_VALUE_BY,
-    OBJECTIVE_HAVE_FUN,
-    OBJECTIVE_BUILD_THE_BEST,
-    OBJECTIVE_10_ROLLERCOASTERS,
-    OBJECTIVE_GUESTS_AND_RATING,
-    OBJECTIVE_MONTHLY_RIDE_INCOME,
-    OBJECTIVE_10_ROLLERCOASTERS_LENGTH,
-    OBJECTIVE_FINISH_5_ROLLERCOASTERS,
-    OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE,
-    OBJECTIVE_MONTHLY_FOOD_INCOME,
-
-    OBJECTIVE_COUNT
-};
-
-bool ObjectiveNeedsMoney(const uint8_t objective);
-
-enum class ObjectiveStatus : uint8_t
-{
-    Undecided,
-    Success,
-    Failure,
-};
-
-struct Objective
-{
-    uint8_t Type;
-    uint8_t Year;
-    union
-    {
-        uint16_t NumGuests;
-        StringId RideId;
-        uint16_t MinimumLength; // For the "Build 10 coasters of minimum length" objective.
-    };
-    union
-    {
-        money64 Currency;
-        OpenRCT2::RideRating_t MinimumExcitement; // For the "Finish 5 coaster with a minimum excitement rating" objective.
-    };
-
-    bool NeedsMoney() const
-    {
-        return ObjectiveNeedsMoney(Type);
-    }
-
-    bool IsValid(bool useMoney, bool canAskMoneyForRides) const
-    {
-        const bool objectiveAllowedByMoneyUsage = useMoney || !NeedsMoney();
-        // This objective can only work if the player can ask money for rides.
-        const bool objectiveAllowedByPaymentSettings = (Type != OBJECTIVE_MONTHLY_RIDE_INCOME) || canAskMoneyForRides;
-        return objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings;
-    }
-
-    ObjectiveStatus Check(OpenRCT2::GameState_t& gameState) const;
-
-private:
-    ObjectiveStatus CheckGuestsBy() const;
-    ObjectiveStatus CheckParkValueBy() const;
-    ObjectiveStatus Check10RollerCoasters() const;
-    ObjectiveStatus CheckGuestsAndRating() const;
-    ObjectiveStatus CheckMonthlyRideIncome() const;
-    ObjectiveStatus Check10RollerCoastersLength() const;
-    ObjectiveStatus CheckFinish5RollerCoasters() const;
-    ObjectiveStatus CheckRepayLoanAndParkValue() const;
-    ObjectiveStatus CheckMonthlyFoodIncome() const;
 };
 
 enum

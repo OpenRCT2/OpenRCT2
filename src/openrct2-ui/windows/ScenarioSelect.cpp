@@ -392,13 +392,13 @@ namespace OpenRCT2::Ui::Windows
             screenPos.y += DrawTextWrapped(rt, screenPos, previewPaneWidth, STR_BLACK_STRING, ft) + 5;
 
             // Scenario objective
-            Objective objective = { .Type = scenario->ObjectiveType,
-                                    .Year = scenario->ObjectiveArg1,
-                                    .NumGuests = static_cast<uint16_t>(scenario->ObjectiveArg3),
-                                    .Currency = scenario->ObjectiveArg2 };
+            Scenario::Objective objective = { .Type = scenario->ObjectiveType,
+                                              .Year = scenario->ObjectiveArg1,
+                                              .NumGuests = static_cast<uint16_t>(scenario->ObjectiveArg3),
+                                              .Currency = scenario->ObjectiveArg2 };
 
             ft = Formatter();
-            ft.Add<StringId>(kObjectiveNames[scenario->ObjectiveType]);
+            ft.Add<StringId>(kObjectiveNames[EnumValue(scenario->ObjectiveType)]);
             formatObjective(ft, objective);
             screenPos.y += DrawTextWrapped(rt, screenPos, previewPaneWidth, STR_OBJECTIVE, ft) + 5;
 

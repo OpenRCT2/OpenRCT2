@@ -38,6 +38,7 @@
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
 #include "../rct12/RCT12.h"
+#include "../scenario/Scenario.h"
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"

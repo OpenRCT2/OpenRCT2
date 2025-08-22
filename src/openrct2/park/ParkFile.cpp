@@ -49,6 +49,7 @@
 #include "../ride/RideManager.hpp"
 #include "../ride/ShopItem.h"
 #include "../ride/Vehicle.h"
+#include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
@@ -233,7 +234,7 @@ namespace OpenRCT2
                 entry.Details = scenarioDetails;
 
                 // wrong order is intentional here due to ReadWriteScenarioChunk writing guests first
-                entry.ObjectiveType = cs.read<uint8_t>();
+                entry.ObjectiveType = cs.read<Scenario::ObjectiveType>();
                 entry.ObjectiveArg1 = cs.read<uint8_t>();
                 entry.ObjectiveArg3 = cs.read<uint16_t>();
                 entry.ObjectiveArg2 = cs.read<int32_t>();

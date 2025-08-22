@@ -27,6 +27,8 @@
 #include "../ride/Ride.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/Vehicle.h"
+#include "../scenario/Scenario.h"
+#include "../scenario/ScenarioObjective.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -234,7 +236,7 @@ GameActions::Result CheatSetAction::Execute() const
             ParkSetOpen(!Park::IsOpen(gameState.park));
             break;
         case CheatType::HaveFun:
-            gameState.scenarioOptions.objective.Type = OBJECTIVE_HAVE_FUN;
+            gameState.scenarioOptions.objective.Type = Scenario::ObjectiveType::haveFun;
             break;
         case CheatType::SetForcedParkRating:
             Park::SetForcedRating(_param1);

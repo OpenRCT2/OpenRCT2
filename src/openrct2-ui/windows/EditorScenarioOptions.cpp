@@ -21,6 +21,7 @@
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ParkSetNameAction.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
 #include <openrct2/drawing/Text.h>
@@ -680,7 +681,7 @@ namespace OpenRCT2::Ui::Windows
          *
          *  rct2: 0x0067201D
          */
-        void SetObjective(int32_t objective)
+        void SetObjective(Scenario::ObjectiveType objective)
         {
             auto& gameState = getGameState();
             auto& scenarioOptions = gameState.scenarioOptions;
@@ -691,36 +692,38 @@ namespace OpenRCT2::Ui::Windows
             // Set default objective arguments
             switch (objective)
             {
-                case OBJECTIVE_NONE:
-                case OBJECTIVE_HAVE_FUN:
-                case OBJECTIVE_BUILD_THE_BEST:
-                case OBJECTIVE_10_ROLLERCOASTERS:
+                case Scenario::ObjectiveType::none:
+                case Scenario::ObjectiveType::haveFun:
+                case Scenario::ObjectiveType::buildTheBest:
+                case Scenario::ObjectiveType::tenRollercoasters:
                     break;
-                case OBJECTIVE_GUESTS_BY:
+                case Scenario::ObjectiveType::guestsBy:
                     scenarioOptions.objective.Year = 3;
                     scenarioOptions.objective.NumGuests = 1500;
                     break;
-                case OBJECTIVE_PARK_VALUE_BY:
+                case Scenario::ObjectiveType::parkValueBy:
                     scenarioOptions.objective.Year = 3;
                     scenarioOptions.objective.Currency = 50000.00_GBP;
                     break;
-                case OBJECTIVE_GUESTS_AND_RATING:
+                case Scenario::ObjectiveType::guestsAndRating:
                     scenarioOptions.objective.NumGuests = 2000;
                     break;
-                case OBJECTIVE_MONTHLY_RIDE_INCOME:
+                case Scenario::ObjectiveType::monthlyRideIncome:
                     scenarioOptions.objective.Currency = 10000.00_GBP;
                     break;
-                case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
+                case Scenario::ObjectiveType::tenRollercoastersLength:
                     scenarioOptions.objective.MinimumLength = 1200;
                     break;
-                case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
+                case Scenario::ObjectiveType::finishFiveRollercoasters:
                     scenarioOptions.objective.MinimumExcitement = RideRating::make(6, 70);
                     break;
-                case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
+                case Scenario::ObjectiveType::repayLoanAndParkValue:
                     scenarioOptions.objective.Currency = 50000.00_GBP;
                     break;
-                case OBJECTIVE_MONTHLY_FOOD_INCOME:
+                case Scenario::ObjectiveType::monthlyFoodIncome:
                     scenarioOptions.objective.Currency = 1000.00_GBP;
+                    break;
+                default:
                     break;
             }
         }
@@ -730,18 +733,20 @@ namespace OpenRCT2::Ui::Windows
             const auto& gameState = getGameState();
             const auto& scenarioOptions = gameState.scenarioOptions;
 
-            int32_t numItems = 0, objectiveType;
-
-            for (auto i = 0; i < OBJECTIVE_COUNT; i++)
+            int32_t numItems = 0;
+            for (auto i = 0; i < EnumValue(Scenario::ObjectiveType::count); i++)
             {
-                if (i == OBJECTIVE_NONE || i == OBJECTIVE_BUILD_THE_BEST)
+                auto obj = Scenario::ObjectiveType(i);
+                if (obj == Scenario::ObjectiveType::none || obj == Scenario::ObjectiveType::buildTheBest)
                     continue;
 
                 const bool objectiveAllowedByMoneyUsage = !(gameState.park.flags & PARK_FLAGS_NO_MONEY)
-                    || !ObjectiveNeedsMoney(i);
+                    || !Scenario::ObjectiveNeedsMoney(obj);
+
                 // This objective can only work if the player can ask money for rides.
-                const bool objectiveAllowedByPaymentSettings = (i != OBJECTIVE_MONTHLY_RIDE_INCOME)
+                const bool objectiveAllowedByPaymentSettings = (obj != Scenario::ObjectiveType::monthlyRideIncome)
                     || Park::RidePricesUnlocked();
+
                 if (objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings)
                 {
                     gDropdownItems[numItems].format = STR_DROPDOWN_MENU_LABEL;
@@ -755,7 +760,7 @@ namespace OpenRCT2::Ui::Windows
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                 colours[1], 0, Dropdown::Flag::StayOpen, numItems, dropdownWidget->width() - 3);
 
-            objectiveType = scenarioOptions.objective.Type;
+            auto objectiveType = EnumValue(scenarioOptions.objective.Type);
             for (int32_t j = 0; j < numItems; j++)
             {
                 if (gDropdownItems[j].args - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType)
@@ -789,9 +794,9 @@ namespace OpenRCT2::Ui::Windows
 
             switch (scenarioOptions.objective.Type)
             {
-                case OBJECTIVE_PARK_VALUE_BY:
-                case OBJECTIVE_MONTHLY_RIDE_INCOME:
-                case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
+                case Scenario::ObjectiveType::parkValueBy:
+                case Scenario::ObjectiveType::monthlyRideIncome:
+                case Scenario::ObjectiveType::repayLoanAndParkValue:
                     if (scenarioOptions.objective.Currency >= kObjectiveCurrencyLoanAndValueMax)
                     {
                         ContextShowError(STR_CANT_INCREASE_FURTHER, kStringIdNone, {});
@@ -802,7 +807,7 @@ namespace OpenRCT2::Ui::Windows
                         Invalidate();
                     }
                     break;
-                case OBJECTIVE_MONTHLY_FOOD_INCOME:
+                case Scenario::ObjectiveType::monthlyFoodIncome:
                     if (scenarioOptions.objective.Currency >= kObjectiveCurrencyFoodMax)
                     {
                         ContextShowError(STR_CANT_INCREASE_FURTHER, kStringIdNone, {});
@@ -813,7 +818,7 @@ namespace OpenRCT2::Ui::Windows
                         Invalidate();
                     }
                     break;
-                case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
+                case Scenario::ObjectiveType::tenRollercoastersLength:
                     if (scenarioOptions.objective.MinimumLength >= kObjectiveLengthMax)
                     {
                         ContextShowError(STR_CANT_INCREASE_FURTHER, kStringIdNone, {});
@@ -824,7 +829,7 @@ namespace OpenRCT2::Ui::Windows
                         Invalidate();
                     }
                     break;
-                case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
+                case Scenario::ObjectiveType::finishFiveRollercoasters:
                     if (scenarioOptions.objective.MinimumExcitement >= kObjectiveExcitementMax)
                     {
                         ContextShowError(STR_CANT_INCREASE_FURTHER, kStringIdNone, {});
@@ -856,9 +861,9 @@ namespace OpenRCT2::Ui::Windows
 
             switch (scenarioOptions.objective.Type)
             {
-                case OBJECTIVE_PARK_VALUE_BY:
-                case OBJECTIVE_MONTHLY_RIDE_INCOME:
-                case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
+                case Scenario::ObjectiveType::parkValueBy:
+                case Scenario::ObjectiveType::monthlyRideIncome:
+                case Scenario::ObjectiveType::repayLoanAndParkValue:
                     if (scenarioOptions.objective.Currency <= kObjectiveCurrencyLoanAndValueMin)
                     {
                         ContextShowError(STR_CANT_REDUCE_FURTHER, kStringIdNone, {});
@@ -869,7 +874,7 @@ namespace OpenRCT2::Ui::Windows
                         Invalidate();
                     }
                     break;
-                case OBJECTIVE_MONTHLY_FOOD_INCOME:
+                case Scenario::ObjectiveType::monthlyFoodIncome:
                     if (scenarioOptions.objective.Currency <= kObjectiveCurrencyFoodMin)
                     {
                         ContextShowError(STR_CANT_REDUCE_FURTHER, kStringIdNone, {});
@@ -880,7 +885,7 @@ namespace OpenRCT2::Ui::Windows
                         Invalidate();
                     }
                     break;
-                case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
+                case Scenario::ObjectiveType::tenRollercoastersLength:
                     if (scenarioOptions.objective.MinimumLength <= kObjectiveLengthMin)
                     {
                         ContextShowError(STR_CANT_REDUCE_FURTHER, kStringIdNone, {});
@@ -891,7 +896,7 @@ namespace OpenRCT2::Ui::Windows
                         Invalidate();
                     }
                     break;
-                case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
+                case Scenario::ObjectiveType::finishFiveRollercoasters:
                     if (scenarioOptions.objective.MinimumExcitement <= kObjectiveExcitementMin)
                     {
                         ContextShowError(STR_CANT_REDUCE_FURTHER, kStringIdNone, {});
@@ -1007,7 +1012,6 @@ namespace OpenRCT2::Ui::Windows
         void ObjectiveOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
             auto& gameState = getGameState();
-            uint8_t newObjectiveType;
 
             if (dropdownIndex == -1)
                 return;
@@ -1016,7 +1020,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_OBJECTIVE_DROPDOWN:
                     // TODO: Don't rely on string ID order
-                    newObjectiveType = static_cast<uint8_t>(gDropdownItems[dropdownIndex].args - STR_OBJECTIVE_DROPDOWN_NONE);
+                    auto newObjectiveType = static_cast<Scenario::ObjectiveType>(
+                        gDropdownItems[dropdownIndex].args - STR_OBJECTIVE_DROPDOWN_NONE);
                     if (gameState.scenarioOptions.objective.Type != newObjectiveType)
                         SetObjective(newObjectiveType);
                     break;
@@ -1029,24 +1034,24 @@ namespace OpenRCT2::Ui::Windows
          */
         void ObjectiveOnUpdate()
         {
-            uint8_t objectiveType;
-
             frame_no++;
             OnPrepareDraw();
             InvalidateWidget(WIDX_TAB_1);
 
-            objectiveType = getGameState().scenarioOptions.objective.Type;
+            auto objectiveType = getGameState().scenarioOptions.objective.Type;
 
             // Check if objective is allowed by money and pay-per-ride settings.
             const bool objectiveAllowedByMoneyUsage = !(getGameState().park.flags & PARK_FLAGS_NO_MONEY)
                 || !ObjectiveNeedsMoney(objectiveType);
+
             // This objective can only work if the player can ask money for rides.
-            const bool objectiveAllowedByPaymentSettings = (objectiveType != OBJECTIVE_MONTHLY_RIDE_INCOME)
+            const bool objectiveAllowedByPaymentSettings = (objectiveType != Scenario::ObjectiveType::monthlyRideIncome)
                 || Park::RidePricesUnlocked();
+
             if (!objectiveAllowedByMoneyUsage || !objectiveAllowedByPaymentSettings)
             {
                 // Reset objective
-                SetObjective(OBJECTIVE_GUESTS_AND_RATING);
+                SetObjective(Scenario::ObjectiveType::guestsAndRating);
             }
         }
 
@@ -1062,8 +1067,8 @@ namespace OpenRCT2::Ui::Windows
 
             switch (gameState.scenarioOptions.objective.Type)
             {
-                case OBJECTIVE_GUESTS_BY:
-                case OBJECTIVE_PARK_VALUE_BY:
+                case Scenario::ObjectiveType::guestsBy:
+                case Scenario::ObjectiveType::parkValueBy:
                     widgets[WIDX_OBJECTIVE_ARG_1_LABEL].type = WidgetType::label;
                     widgets[WIDX_OBJECTIVE_ARG_1].type = WidgetType::spinner;
                     widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WidgetType::button;
@@ -1073,12 +1078,12 @@ namespace OpenRCT2::Ui::Windows
                     widgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WidgetType::button;
                     widgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WidgetType::button;
                     break;
-                case OBJECTIVE_GUESTS_AND_RATING:
-                case OBJECTIVE_MONTHLY_RIDE_INCOME:
-                case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-                case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-                case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-                case OBJECTIVE_MONTHLY_FOOD_INCOME:
+                case Scenario::ObjectiveType::guestsAndRating:
+                case Scenario::ObjectiveType::monthlyRideIncome:
+                case Scenario::ObjectiveType::tenRollercoastersLength:
+                case Scenario::ObjectiveType::finishFiveRollercoasters:
+                case Scenario::ObjectiveType::repayLoanAndParkValue:
+                case Scenario::ObjectiveType::monthlyFoodIncome:
                     widgets[WIDX_OBJECTIVE_ARG_1_LABEL].type = WidgetType::label;
                     widgets[WIDX_OBJECTIVE_ARG_1].type = WidgetType::spinner;
                     widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WidgetType::button;
@@ -1106,21 +1111,21 @@ namespace OpenRCT2::Ui::Windows
                 // Objective argument 1 label
                 switch (gameState.scenarioOptions.objective.Type)
                 {
-                    case OBJECTIVE_GUESTS_BY:
-                    case OBJECTIVE_GUESTS_AND_RATING:
+                    case Scenario::ObjectiveType::guestsBy:
+                    case Scenario::ObjectiveType::guestsAndRating:
                         arg1StringId = STR_WINDOW_OBJECTIVE_GUEST_COUNT;
                         break;
-                    case OBJECTIVE_PARK_VALUE_BY:
-                    case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
+                    case Scenario::ObjectiveType::parkValueBy:
+                    case Scenario::ObjectiveType::repayLoanAndParkValue:
                         arg1StringId = STR_WINDOW_OBJECTIVE_PARK_VALUE;
                         break;
-                    case OBJECTIVE_MONTHLY_RIDE_INCOME:
+                    case Scenario::ObjectiveType::monthlyRideIncome:
                         arg1StringId = STR_WINDOW_OBJECTIVE_MONTHLY_INCOME;
                         break;
-                    case OBJECTIVE_MONTHLY_FOOD_INCOME:
+                    case Scenario::ObjectiveType::monthlyFoodIncome:
                         arg1StringId = STR_WINDOW_OBJECTIVE_MONTHLY_PROFIT;
                         break;
-                    case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
+                    case Scenario::ObjectiveType::tenRollercoastersLength:
                         arg1StringId = STR_WINDOW_OBJECTIVE_MINIMUM_LENGTH;
                         break;
                     default:
@@ -1151,7 +1156,7 @@ namespace OpenRCT2::Ui::Windows
             // Objective value
             auto screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_OBJECTIVE].left + 1, widgets[WIDX_OBJECTIVE].top };
             auto ft = Formatter();
-            ft.Add<StringId>(ObjectiveDropdownOptionNames[scenarioOptions.objective.Type]);
+            ft.Add<StringId>(ObjectiveDropdownOptionNames[EnumValue(scenarioOptions.objective.Type)]);
             DrawTextBasic(rt, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
 
             if (widgets[WIDX_OBJECTIVE_ARG_1].type != WidgetType::empty)
@@ -1165,23 +1170,23 @@ namespace OpenRCT2::Ui::Windows
                 ft = Formatter();
                 switch (scenarioOptions.objective.Type)
                 {
-                    case OBJECTIVE_GUESTS_BY:
-                    case OBJECTIVE_GUESTS_AND_RATING:
+                    case Scenario::ObjectiveType::guestsBy:
+                    case Scenario::ObjectiveType::guestsAndRating:
                         stringId = STR_WINDOW_COLOUR_2_COMMA32;
                         ft.Add<int32_t>(scenarioOptions.objective.NumGuests);
                         break;
-                    case OBJECTIVE_PARK_VALUE_BY:
-                    case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-                    case OBJECTIVE_MONTHLY_RIDE_INCOME:
-                    case OBJECTIVE_MONTHLY_FOOD_INCOME:
+                    case Scenario::ObjectiveType::parkValueBy:
+                    case Scenario::ObjectiveType::repayLoanAndParkValue:
+                    case Scenario::ObjectiveType::monthlyRideIncome:
+                    case Scenario::ObjectiveType::monthlyFoodIncome:
                         stringId = STR_CURRENCY_FORMAT_LABEL;
                         ft.Add<money64>(scenarioOptions.objective.Currency);
                         break;
-                    case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
+                    case Scenario::ObjectiveType::tenRollercoastersLength:
                         stringId = STR_WINDOW_COLOUR_2_LENGTH;
                         ft.Add<uint16_t>(scenarioOptions.objective.MinimumLength);
                         break;
-                    case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
+                    case Scenario::ObjectiveType::finishFiveRollercoasters:
                         stringId = STR_WINDOW_COLOUR_2_COMMA2DP32;
                         ft.Add<uint16_t>(scenarioOptions.objective.MinimumExcitement);
                         break;

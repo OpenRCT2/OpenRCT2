@@ -17,6 +17,7 @@
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
+#include "../scenario/Scenario.h"
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
 #include "NewsItem.h"
