@@ -35,6 +35,20 @@ namespace OpenRCT2::Scenario
     enum class ObjectiveType : uint8_t;
 } // namespace OpenRCT2::Scenario
 
+enum
+{
+    S6_TYPE_SAVEDGAME,
+    S6_TYPE_SCENARIO
+};
+
+// For legacy scores file
+enum
+{
+    SCENARIO_FLAGS_VISIBLE = (1 << 0),
+    SCENARIO_FLAGS_COMPLETED = (1 << 1),
+    SCENARIO_FLAGS_SIXFLAGS = (1 << 2)
+};
+
 namespace OpenRCT2::RCT2
 {
     constexpr StringId kRCT2RideStringStart = 2;
