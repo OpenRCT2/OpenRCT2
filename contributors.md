@@ -285,7 +285,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Catalan - Joan Josep (J0anJosep)
 * Chinese (Simplified) - Naiji Ma (naijim), (izhangfei), Eric Zhao (sczyh30), (Muhhan), Arnold Zhou (mrmagic2020)
 * Chinese (Traditional) - Harry Lam (daihakken)
-* Czech - Martin Černáč (octaroot), (Clonewayx), Tomáš Pazdiora (Aroidzap)
+* Czech - Martin Černáč (octaroot), (Clonewayx), Tomáš Pazdiora (Aroidzap), Ríša Szlachta (tygrysek90) 
 * Danish - Lars P. Sørensen (LPSGizmo)
 * Dutch - Michael Steenbeek (Gymnasiast), Yannic Geurts (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute),  Marijn van der Werf (marijnvdwerf), Tom Kroes (ThePsionic), Karst van Galen Last (AuraSpecs); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (SijmenSchoon)
 * Esperanto - (tellovishous), Raymond Zhao (rzhao271)
