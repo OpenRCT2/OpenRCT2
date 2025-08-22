@@ -445,21 +445,21 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex == WIDX_OPEN_OR_CLOSE)
             {
                 auto& widget = widgets[widgetIndex];
-                gDropdownItems[0].format = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItems[1].format = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItems[0].args = STR_CLOSE_PARK;
-                gDropdownItems[1].args = STR_OPEN_PARK;
+                gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
+                gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
+                gDropdown.items[0].args = STR_CLOSE_PARK;
+                gDropdown.items[1].args = STR_OPEN_PARK;
                 WindowDropdownShowText(
                     { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[1], 0, 2);
 
                 if (Park::IsOpen(getGameState().park))
                 {
-                    gDropdownDefaultIndex = 0;
+                    gDropdown.defaultIndex = 0;
                     Dropdown::SetChecked(1, true);
                 }
                 else
                 {
-                    gDropdownDefaultIndex = 1;
+                    gDropdown.defaultIndex = 1;
                     Dropdown::SetChecked(0, true);
                 }
             }
@@ -470,7 +470,7 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex == WIDX_OPEN_OR_CLOSE)
             {
                 if (dropdownIndex == -1)
-                    dropdownIndex = gDropdownHighlightedIndex;
+                    dropdownIndex = gDropdown.highlightedIndex;
 
                 if (dropdownIndex != 0)
                 {

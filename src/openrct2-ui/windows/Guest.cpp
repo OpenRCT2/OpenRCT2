@@ -722,7 +722,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowDropdownShowText(
                 { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[1], 0, dropdownItems);
-            gDropdownDefaultIndex = 0;
+            gDropdown.defaultIndex = 0;
         }
 
         void GuestFollow()

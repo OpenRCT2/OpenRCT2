@@ -25,17 +25,13 @@ namespace OpenRCT2::Dropdown
     constexpr StringId kFormatColourPicker = 0xFFFE;
     constexpr StringId kFormatLandPicker = 0xFFFF;
     constexpr int32_t kItemsMaxSize = 512;
+
+    struct DropdownState;
 } // namespace OpenRCT2::Dropdown
 
 namespace OpenRCT2::Ui::Windows
 {
-    extern int32_t gDropdownNumItems;
-    extern std::array<Dropdown::Item, Dropdown::kItemsMaxSize> gDropdownItems;
-    extern std::array<StringId, Dropdown::kItemsMaxSize> gDropdownTooltips;
-    extern bool gDropdownHasTooltips;
-    extern int32_t gDropdownLastTooltipHover;
-    extern int32_t gDropdownHighlightedIndex;
-    extern int32_t gDropdownDefaultIndex;
+    extern Dropdown::DropdownState gDropdown;
 
     void WindowDropdownShowText(
         const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags, size_t num_items,
@@ -134,14 +130,26 @@ namespace OpenRCT2::Dropdown
         return ItemExt(-1, Dropdown::kSeparatorString, kStringIdEmpty);
     }
 
+    struct DropdownState
+    {
+        int32_t numItems{};
+        std::array<Dropdown::Item, Dropdown::kItemsMaxSize> items{};
+        std::array<StringId, Dropdown::kItemsMaxSize> tooltips{};
+        std::array<ImageId, Dropdown::kItemsMaxSize> itemsImages{};
+        bool hasTooltips{};
+        int32_t lastTooltipHover{};
+        int32_t highlightedIndex{};
+        int32_t defaultIndex{};
+    };
+
     template<int N>
     void SetItems(const Dropdown::ItemExt (&items)[N])
     {
         for (int i = 0; i < N; ++i)
         {
             const ItemExt& item = items[i];
-            OpenRCT2::Ui::Windows::gDropdownItems[i].format = item.itemFormat;
-            OpenRCT2::Ui::Windows::gDropdownItems[i].args = item.stringId;
+            OpenRCT2::Ui::Windows::gDropdown.items[i].format = item.itemFormat;
+            OpenRCT2::Ui::Windows::gDropdown.items[i].args = item.stringId;
         }
     }
 

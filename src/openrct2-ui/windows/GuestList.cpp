@@ -338,8 +338,8 @@ namespace OpenRCT2::Ui::Windows
 
                     for (size_t i = 0; i < _numPages; i++)
                     {
-                        gDropdownItems[i].format = STR_DROPDOWN_MENU_LABEL;
-                        uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdownItems[i].args);
+                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
+                        uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdown.items[i].args);
                         args[0] = STR_PAGE_X;
                         args[1] = static_cast<uint16_t>(i + 1);
                     }
@@ -348,10 +348,10 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_INFO_TYPE_DROPDOWN_BUTTON:
                 {
-                    gDropdownItems[0].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[0].args = GetViewName(GuestViewType::Actions);
-                    gDropdownItems[1].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[1].args = GetViewName(GuestViewType::Thoughts);
+                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[0].args = GetViewName(GuestViewType::Actions);
+                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[1].args = GetViewName(GuestViewType::Thoughts);
 
                     auto* widget = &widgets[widgetIndex - 1];
                     WindowDropdownShowTextCustomWidth(

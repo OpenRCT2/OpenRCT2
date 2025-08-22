@@ -702,8 +702,8 @@ namespace OpenRCT2::Ui::Windows
                     defaultIndex = numPathTypes;
                 }
 
-                gDropdownItems[numPathTypes].format = kStringIdNone;
-                gDropdownTooltips[numPathTypes] = pathType->NameStringId;
+                gDropdown.items[numPathTypes].format = kStringIdNone;
+                gDropdown.tooltips[numPathTypes] = pathType->NameStringId;
                 Dropdown::SetImage(numPathTypes, ImageId(pathType->PreviewImageId));
                 _dropdownEntries.push_back({ ObjectType::footpathSurface, i });
                 numPathTypes++;
@@ -728,8 +728,8 @@ namespace OpenRCT2::Ui::Windows
                     defaultIndex = numPathTypes;
                 }
 
-                gDropdownItems[numPathTypes].format = kStringIdNone;
-                gDropdownTooltips[numPathTypes] = pathEntry->string_idx;
+                gDropdown.items[numPathTypes].format = kStringIdNone;
+                gDropdown.tooltips[numPathTypes] = pathEntry->string_idx;
                 Dropdown::SetImage(
                     numPathTypes, ImageId(showQueues ? pathEntry->GetQueuePreviewImage() : pathEntry->GetPreviewImage()));
                 _dropdownEntries.push_back({ ObjectType::paths, i });
@@ -741,10 +741,10 @@ namespace OpenRCT2::Ui::Windows
                 windowPos.x + widget->left, windowPos.y + widget->top, widget->height() + 1, colours[1], 0, numPathTypes, 47,
                 36, itemsPerRow);
 
-            gDropdownHasTooltips = true;
+            gDropdown.hasTooltips = true;
 
             if (defaultIndex)
-                gDropdownDefaultIndex = static_cast<int32_t>(*defaultIndex);
+                gDropdown.defaultIndex = static_cast<int32_t>(*defaultIndex);
         }
 
         void WindowFootpathShowRailingsTypesDialog(Widget* widget)
@@ -766,8 +766,8 @@ namespace OpenRCT2::Ui::Windows
                     defaultIndex = numRailingsTypes;
                 }
 
-                gDropdownItems[numRailingsTypes].format = kStringIdNone;
-                gDropdownTooltips[numRailingsTypes] = railingsEntry->NameStringId;
+                gDropdown.items[numRailingsTypes].format = kStringIdNone;
+                gDropdown.tooltips[numRailingsTypes] = railingsEntry->NameStringId;
                 Dropdown::SetImage(numRailingsTypes, ImageId(railingsEntry->PreviewImageId));
                 _dropdownEntries.push_back({ ObjectType::footpathRailings, i });
                 numRailingsTypes++;
@@ -778,10 +778,10 @@ namespace OpenRCT2::Ui::Windows
                 windowPos.x + widget->left, windowPos.y + widget->top, widget->height() + 1, colours[1], 0, numRailingsTypes,
                 47, 36, itemsPerRow);
 
-            gDropdownHasTooltips = true;
+            gDropdown.hasTooltips = true;
 
             if (defaultIndex)
-                gDropdownDefaultIndex = static_cast<int32_t>(*defaultIndex);
+                gDropdown.defaultIndex = static_cast<int32_t>(*defaultIndex);
         }
 
         /**

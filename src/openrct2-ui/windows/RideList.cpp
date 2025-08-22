@@ -301,8 +301,8 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex == WIDX_OPEN_CLOSE_ALL)
             {
                 const auto& widget = widgets[widgetIndex];
-                gDropdownItems[0].format = STR_CLOSE_ALL;
-                gDropdownItems[1].format = STR_OPEN_ALL;
+                gDropdown.items[0].format = STR_CLOSE_ALL;
+                gDropdown.items[1].format = STR_OPEN_ALL;
                 WindowDropdownShowText(
                     { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], 0, 2);
             }
@@ -331,8 +331,8 @@ namespace OpenRCT2::Ui::Windows
                         selectedIndex = numItems;
                     }
 
-                    gDropdownItems[numItems].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[numItems].args = ride_info_type_string_mapping[type];
+                    gDropdown.items[numItems].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[numItems].args = ride_info_type_string_mapping[type];
                     numItems++;
                 }
 
@@ -376,7 +376,7 @@ namespace OpenRCT2::Ui::Windows
                     return;
 
                 int32_t informationType = INFORMATION_TYPE_STATUS;
-                uint32_t arg = static_cast<uint32_t>(gDropdownItems[dropdownIndex].args);
+                uint32_t arg = static_cast<uint32_t>(gDropdown.items[dropdownIndex].args);
                 for (size_t i = 0; i < std::size(ride_info_type_string_mapping); i++)
                 {
                     if (arg == ride_info_type_string_mapping[i])
