@@ -71,8 +71,8 @@ namespace OpenRCT2::Ui::Windows
         makeTab   ({  3, 17},                                                                STR_LIST_RIDES_TIP                                                    ), // tab 1
         makeTab   ({ 34, 17},                                                                STR_LIST_SHOPS_AND_STALLS_TIP                                         ), // tab 2
         makeTab   ({ 65, 17},                                                                STR_LIST_KIOSKS_AND_FACILITIES_TIP                                    ), // tab 3
-        makeWidget({  3, 47}, {284,  14}, WidgetType::textBox,      WindowColour::secondary                                                                        ), // search text box
-        makeWidget({284, 47}, { 50,  14}, WidgetType::button,       WindowColour::secondary, STR_OBJECT_SEARCH_CLEAR,            STR_CLEAR_SCENERY_TIP             ), // search clear button
+        makeWidget({  3, 47}, {264,  14}, WidgetType::textBox,      WindowColour::secondary                                                                        ), // search text box
+        makeWidget({264, 47}, { 70,  14}, WidgetType::button,       WindowColour::secondary, STR_OBJECT_SEARCH_CLEAR,            STR_CLEAR_SCENERY_TIP             ), // search clear button
         makeWidget({  3, 62}, {150,  14}, WidgetType::tableHeader,  WindowColour::secondary                                                                        ), // name header
         makeWidget({153, 62}, {147,  14}, WidgetType::tableHeader,  WindowColour::secondary                                                                        ), // other header
         makeWidget({300, 62}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH                                                    ), // customise button
@@ -524,7 +524,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_LIST].bottom = height - 15;
 
             widgets[WIDX_SEARCH_CLEAR_BUTTON].right = widgets[WIDX_LIST].right - 1;
-            widgets[WIDX_SEARCH_CLEAR_BUTTON].left = widgets[WIDX_SEARCH_CLEAR_BUTTON].right - 40;
+            widgets[WIDX_SEARCH_CLEAR_BUTTON].left = widgets[WIDX_SEARCH_CLEAR_BUTTON].right - 70;
             widgets[WIDX_SEARCH_TEXT_BOX].right = widgets[WIDX_SEARCH_CLEAR_BUTTON].left - 2;
             widgets[WIDX_SEARCH_TEXT_BOX].string = _searchFilter.data();
 
