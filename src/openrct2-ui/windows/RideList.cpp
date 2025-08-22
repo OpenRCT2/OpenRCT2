@@ -523,8 +523,12 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_LIST].right = width - 26;
             widgets[WIDX_LIST].bottom = height - 15;
 
+            // Get 'Clear' button string width
+            auto clearLabel = LanguageGetString(STR_OBJECT_SEARCH_CLEAR);
+            auto clearLabelWidth = GfxGetStringWidth(clearLabel, FontStyle::Medium) + 12;
+
             widgets[WIDX_SEARCH_CLEAR_BUTTON].right = widgets[WIDX_LIST].right - 1;
-            widgets[WIDX_SEARCH_CLEAR_BUTTON].left = widgets[WIDX_SEARCH_CLEAR_BUTTON].right - 40;
+            widgets[WIDX_SEARCH_CLEAR_BUTTON].left = widgets[WIDX_SEARCH_CLEAR_BUTTON].right - clearLabelWidth;
             widgets[WIDX_SEARCH_TEXT_BOX].right = widgets[WIDX_SEARCH_CLEAR_BUTTON].left - 2;
             widgets[WIDX_SEARCH_TEXT_BOX].string = _searchFilter.data();
 
