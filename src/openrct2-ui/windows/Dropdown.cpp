@@ -629,4 +629,9 @@ namespace OpenRCT2::Dropdown
     {
         return Item{ STR_OPTIONS_DROPDOWN_ITEM, reinterpret_cast<int64_t>(string) };
     }
+
+    Item PlainMenuLabel(const utf8* string)
+    {
+        return Item{ STR_STRING, reinterpret_cast<int64_t>(string) };
+    }
 } // namespace OpenRCT2::Dropdown

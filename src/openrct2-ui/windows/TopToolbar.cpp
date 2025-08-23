@@ -1180,9 +1180,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Standard)
                 {
-                    gDropdown.items[i].format = STR_STRING;
-                    auto sz = item.Text.c_str();
-                    std::memcpy(&gDropdown.items[i].args.generic, &sz, sizeof(const char*));
+                    gDropdown.items[i] = Dropdown::PlainMenuLabel(item.Text.c_str());
                     i++;
                 }
             }

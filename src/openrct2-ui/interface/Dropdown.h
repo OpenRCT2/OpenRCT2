@@ -156,6 +156,7 @@ namespace OpenRCT2::Dropdown
     }
 
     Item MenuLabel(const utf8* string);
+    Item PlainMenuLabel(const utf8* string);
 
     /**
      * Like MenuLabel, but shows a tick when selected.
