@@ -76,7 +76,7 @@ GameActions::Result FootpathPlaceAction::Query() const
 {
     auto res = GameActions::Result();
     res.Cost = 0;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Position = _loc.ToTileCentre();
 
     gFootpathGroundFlags = 0;
@@ -128,7 +128,7 @@ GameActions::Result FootpathPlaceAction::Execute() const
 {
     auto res = GameActions::Result();
     res.Cost = 0;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Position = _loc.ToTileCentre();
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))

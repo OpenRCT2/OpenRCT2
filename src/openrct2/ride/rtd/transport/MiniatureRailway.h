@@ -16,14 +16,16 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor MiniatureRailwayRTD =
 {
     .Category = RideCategory::transport,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::miniatureRailway,
         .supportType = WoodenSupportType::truss,
-        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::diagSlope},
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
@@ -40,7 +42,7 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 7, 32, 5, 9, },
     .MaxMass = 39,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 70, 6, -10 },
     .UpkeepCosts = { 60, 20, 0, 10, 3, 5 },
     .BuildCosts = { 17.50_GBP, 3.00_GBP, 50, },
@@ -58,7 +60,7 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 50), MakeRideRating(0, 00), MakeRideRating(0, 00) },
+        { RideRating::make(2, 50), RideRating::make(0, 00), RideRating::make(0, 00) },
         11,
         -1,
         false,
@@ -76,6 +78,7 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_MiniatureRailway,
+    .LightFXAddLightsMagicVehicle = Drawing::LightFx::AddLightsMagicVehicle_MiniatureRailway,
 };
+} // namespace OpenRCT2
 // clang-format on

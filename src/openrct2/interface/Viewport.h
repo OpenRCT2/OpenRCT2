@@ -20,7 +20,6 @@
 struct PaintSession;
 struct PaintStruct;
 struct RenderTarget;
-struct TileElement;
 struct EntityBase;
 struct Guest;
 struct Staff;
@@ -28,6 +27,7 @@ struct PaintEntry;
 
 namespace OpenRCT2
 {
+    struct TileElement;
     struct WindowBase;
 
     struct Viewport
@@ -223,6 +223,7 @@ namespace OpenRCT2
     std::optional<CoordsXY> ScreenGetMapXYQuadrantWithZ(const ScreenCoordsXY& screenCoords, int32_t z, uint8_t* quadrant);
     std::optional<CoordsXY> ScreenGetMapXYSide(const ScreenCoordsXY& screenCoords, uint8_t* side);
     std::optional<CoordsXY> ScreenGetMapXYSideWithZ(const ScreenCoordsXY& screenCoords, int32_t z, uint8_t* side);
+    Viewport* ViewportFindFromPoint(const ScreenCoordsXY& screenCoords);
 
     ScreenCoordsXY Translate3DTo2DWithZ(int32_t rotation, const CoordsXYZ& pos);
 

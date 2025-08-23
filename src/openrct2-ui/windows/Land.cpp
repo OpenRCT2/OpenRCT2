@@ -171,7 +171,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_FLOOR:
                     if (dropdownIndex == -1)
-                        dropdownIndex = gDropdownHighlightedIndex;
+                        dropdownIndex = gDropdown.highlightedIndex;
 
                     type = (dropdownIndex == -1)
                         ? _selectedFloorTexture
@@ -190,7 +190,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_WALL:
                     if (dropdownIndex == -1)
-                        dropdownIndex = gDropdownHighlightedIndex;
+                        dropdownIndex = gDropdown.highlightedIndex;
 
                     type = (dropdownIndex == -1) ? _selectedWallTexture
                                                  : LandTool::GetEdgeStyleFromDropdownIndex(static_cast<size_t>(dropdownIndex));
@@ -280,7 +280,7 @@ namespace OpenRCT2::Ui::Windows
 
             screenCoords = { windowPos.x + previewWidget->midX(), windowPos.y + previewWidget->bottom + 5 };
 
-            if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+            if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             {
                 // Draw raise cost amount
                 if (_landToolRaiseCost != kMoney64Undefined && _landToolRaiseCost != 0)

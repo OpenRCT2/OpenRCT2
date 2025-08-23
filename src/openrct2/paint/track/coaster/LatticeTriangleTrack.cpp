@@ -13534,10 +13534,7 @@ static void LatticeTriangleTrack90DegToInvertedFlatQuarterLoopUp(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
-                0xFFFF, 0);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
@@ -13569,10 +13566,7 @@ static void LatticeTriangleTrack90DegToInvertedFlatQuarterLoopUp(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
-                0xFFFF, 0);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
@@ -13608,10 +13602,7 @@ static void LatticeTriangleTrack90DegToInvertedFlatQuarterLoopUp(
                 PaintUtilPushTunnelRotated(session, direction, height + 8, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
-                0xFFFF, 0);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
@@ -19341,6 +19332,7 @@ static void LatticeTriangleTrackLeftEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { 0, 6, height + 36 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 44, session.SupportColours);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -19348,6 +19340,7 @@ static void LatticeTriangleTrackLeftEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { 0, 6, height + 36 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 44, session.SupportColours);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -19518,6 +19511,7 @@ static void LatticeTriangleTrackRightEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { 6, 0, height + 36 }, { 20, 32, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 44, session.SupportColours);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -19525,6 +19519,7 @@ static void LatticeTriangleTrackRightEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { 6, 0, height + 36 }, { 20, 32, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 44, session.SupportColours);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(

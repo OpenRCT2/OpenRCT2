@@ -133,7 +133,6 @@ const CommandLineCommand CommandLine::kRootCommands[]
     DefineCommand("join",     "<hostname>",             kStandardOptions, HandleCommandJoin   ),
 #endif
     DefineCommand("set-rct2", "<path>",                 kStandardOptions, HandleCommandSetRCT2),
-    DefineCommand("convert",  "<source> <destination>", kStandardOptions, CommandLine::HandleCommandConvert),
     DefineCommand("scan-objects", "<path>",             kStandardOptions, HandleCommandScanObjects),
     DefineCommand("handle-uri", "openrct2://.../",      kStandardOptions, CommandLine::HandleCommandUri),
 
@@ -142,6 +141,7 @@ const CommandLineCommand CommandLine::kRootCommands[]
 #endif
 
     // Sub-commands
+    DefineSubCommand("convert",         CommandLine::kConvertCommands          ),
     DefineSubCommand("screenshot",      CommandLine::kScreenshotCommands       ),
     DefineSubCommand("sprite",          CommandLine::kSpriteCommands           ),
     DefineSubCommand("simulate",        CommandLine::kSimulateCommands         ),

@@ -9,8 +9,11 @@
 
 #include "WallSceneryEntry.h"
 
-OpenRCT2::Audio::DoorSoundType WallSceneryEntry::getDoorSoundType() const
+namespace OpenRCT2
 {
-    return static_cast<OpenRCT2::Audio::DoorSoundType>(
-        (flags2 & WALL_SCENERY_2_DOOR_SOUND_MASK) >> WALL_SCENERY_2_DOOR_SOUND_SHIFT);
-}
+    Audio::DoorSoundType WallSceneryEntry::getDoorSoundType() const
+    {
+        return static_cast<OpenRCT2::Audio::DoorSoundType>(
+            (flags2 & WALL_SCENERY_2_DOOR_SOUND_MASK) >> WALL_SCENERY_2_DOOR_SOUND_SHIFT);
+    }
+} // namespace OpenRCT2

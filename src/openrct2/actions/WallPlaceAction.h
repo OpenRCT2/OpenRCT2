@@ -15,7 +15,10 @@
 #include "../world/Scenery.h"
 #include "GameAction.h"
 
-struct WallSceneryEntry;
+namespace OpenRCT2
+{
+    struct WallSceneryEntry;
+}
 
 struct WallPlaceActionResult
 {
@@ -26,7 +29,7 @@ struct WallPlaceActionResult
 class WallPlaceAction final : public GameActionBase<GameCommand::PlaceWall>
 {
 private:
-    ObjectEntryIndex _wallType{ kObjectEntryIndexNull };
+    OpenRCT2::ObjectEntryIndex _wallType{ OpenRCT2::kObjectEntryIndexNull };
     CoordsXYZ _loc;
     Direction _edge{ kInvalidDirection };
     int32_t _primaryColour{ COLOUR_BLACK };
@@ -36,7 +39,7 @@ private:
 public:
     WallPlaceAction() = default;
     WallPlaceAction(
-        ObjectEntryIndex wallType, const CoordsXYZ& loc, uint8_t edge, int32_t primaryColour, int32_t secondaryColour,
+        OpenRCT2::ObjectEntryIndex wallType, const CoordsXYZ& loc, uint8_t edge, int32_t primaryColour, int32_t secondaryColour,
         int32_t tertiaryColour);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;

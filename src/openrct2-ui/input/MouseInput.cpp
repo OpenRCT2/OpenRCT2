@@ -980,18 +980,13 @@ namespace OpenRCT2
             ScreenCoordsXY newScreenCoords;
             widgetScrollGetPart(*w, widget, screenCoords, newScreenCoords, &scroll_part, &scrollId);
 
-            if (scroll_part != SCROLL_PART_VIEW)
-                WindowTooltipClose();
-            else
+            if (scroll_part == SCROLL_PART_VIEW)
             {
                 w->OnScrollMouseOver(scrollId, newScreenCoords);
-                InputUpdateTooltip(w, widgetIndex, screenCoords);
             }
         }
-        else
-        {
-            InputUpdateTooltip(w, widgetIndex, screenCoords);
-        }
+
+        InputUpdateTooltip(w, widgetIndex, screenCoords);
     }
 
     /**
@@ -1324,7 +1319,7 @@ namespace OpenRCT2
                 {
                     if (_inputState == InputState::DropdownActive)
                     {
-                        gDropdownHighlightedIndex = gDropdownDefaultIndex;
+                        gDropdown.highlightedIndex = gDropdown.defaultIndex;
                         windowMgr->InvalidateByClass(WindowClass::Dropdown);
                     }
                     return;
@@ -1349,7 +1344,7 @@ namespace OpenRCT2
                             dropdown_index = DropdownIndexFromPoint(screenCoords, w);
                             dropdownCleanup = dropdown_index == -1
                                 || (dropdown_index < Dropdown::kItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
-                                || gDropdownItems[dropdown_index].IsSeparator();
+                                || gDropdown.items[dropdown_index].isSeparator();
                             w = nullptr; // To be closed right next
                         }
                         else
@@ -1397,9 +1392,9 @@ namespace OpenRCT2
 
                             if (dropdown_index == -1)
                             {
-                                if (!Dropdown::IsDisabled(gDropdownDefaultIndex))
+                                if (!Dropdown::IsDisabled(gDropdown.defaultIndex))
                                 {
-                                    dropdown_index = gDropdownDefaultIndex;
+                                    dropdown_index = gDropdown.defaultIndex;
                                 }
                             }
                             cursor_w->OnDropdown(cursor_widgetIndex, dropdown_index);
@@ -1452,13 +1447,13 @@ namespace OpenRCT2
             }
             return;
         }
-        else if (gDropdownHasTooltips)
+        else if (gDropdown.hasTooltips)
         {
             // This is ordinarily covered in InputWidgetOver but the dropdown with colours is a special case.
             InputUpdateTooltip(w, widgetIndex, screenCoords);
         }
 
-        gDropdownHighlightedIndex = -1;
+        gDropdown.highlightedIndex = -1;
         windowMgr->InvalidateByClass(WindowClass::Dropdown);
         if (w == nullptr)
         {
@@ -1473,12 +1468,12 @@ namespace OpenRCT2
                 return;
             }
 
-            if (gDropdownHasTooltips && gDropdownLastTooltipHover != dropdown_index)
+            if (gDropdown.hasTooltips && gDropdown.lastTooltipHover != dropdown_index)
             {
-                gDropdownLastTooltipHover = dropdown_index;
+                gDropdown.lastTooltipHover = dropdown_index;
                 WindowTooltipClose();
 
-                WindowTooltipShow(OpenRCT2String{ gDropdownTooltips[dropdown_index], {} }, screenCoords);
+                WindowTooltipShow(OpenRCT2String{ gDropdown.tooltips[dropdown_index], {} }, screenCoords);
             }
 
             if (dropdown_index < Dropdown::kItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
@@ -1486,17 +1481,17 @@ namespace OpenRCT2
                 return;
             }
 
-            if (gDropdownItems[dropdown_index].IsSeparator())
+            if (gDropdown.items[dropdown_index].isSeparator())
             {
                 return;
             }
 
-            gDropdownHighlightedIndex = dropdown_index;
+            gDropdown.highlightedIndex = dropdown_index;
             windowMgr->InvalidateByClass(WindowClass::Dropdown);
         }
         else
         {
-            gDropdownLastTooltipHover = -1;
+            gDropdown.lastTooltipHover = -1;
             WindowTooltipClose();
         }
     }
@@ -1694,5 +1689,44 @@ namespace OpenRCT2
             mainWindow->savedViewPos.y += dy;
             gInputFlags.set(InputFlag::viewportScrolling);
         }
+    }
+
+    void InputScrollViewportSmooth(const ScreenCoordsXY& scrollScreenCoords, WindowBase* targetWindow)
+    {
+        if (targetWindow == nullptr)
+        {
+            return;
+        }
+
+        Viewport* viewport = targetWindow->viewport;
+        if (viewport == nullptr)
+        {
+            return;
+        }
+
+        if (targetWindow->flags & WF_NO_SCROLLING)
+        {
+            return;
+        }
+
+        if (scrollScreenCoords.x == 0 && scrollScreenCoords.y == 0)
+            return;
+
+        // Apply smooth scrolling similar to mouse drag behavior
+        // Use zoom-based scaling like mouse dragging does
+        ScreenCoordsXY differentialCoords = scrollScreenCoords;
+
+        // Apply zoom scaling (same logic as mouse drag)
+        const bool posX = differentialCoords.x > 0;
+        const bool posY = differentialCoords.y > 0;
+        differentialCoords.x = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.x));
+        differentialCoords.y = (viewport->zoom + 1).ApplyTo(-std::abs(differentialCoords.y));
+        differentialCoords.x = posX ? -differentialCoords.x : differentialCoords.x;
+        differentialCoords.y = posY ? -differentialCoords.y : differentialCoords.y;
+
+        // Apply the movement (note: we don't invert for gamepad like mouse drag does)
+        targetWindow->savedViewPos += differentialCoords;
+
+        gInputFlags.set(InputFlag::viewportScrolling);
     }
 } // namespace OpenRCT2

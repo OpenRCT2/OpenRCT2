@@ -895,34 +895,33 @@ public:
             }
         }
 
-        auto itNew = g_window_list.insert(itDestPos, std::move(wp));
-        auto w = itNew->get();
-
         // Setup window
-        w->classification = cls;
-        w->flags = flags;
+        wp->classification = cls;
+        wp->flags = flags;
 
         // Play sounds and flash the window
         if (!(flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
         {
-            w->flags |= WF_WHITE_BORDER_MASK;
+            wp->flags |= WF_WHITE_BORDER_MASK;
             OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 0, pos.x + (windowSize.width / 2));
         }
 
-        w->windowPos = pos;
-        w->width = windowSize.width;
-        w->height = windowSize.height;
-        w->min_width = windowSize.width;
-        w->max_width = windowSize.width;
-        w->min_height = windowSize.height;
-        w->max_height = windowSize.height;
+        wp->windowPos = pos;
+        wp->width = windowSize.width;
+        wp->height = windowSize.height;
+        wp->min_width = windowSize.width;
+        wp->max_width = windowSize.width;
+        wp->min_height = windowSize.height;
+        wp->max_height = windowSize.height;
 
-        w->focus = std::nullopt;
+        wp->focus = std::nullopt;
 
-        ColourSchemeUpdate(w);
-        w->Invalidate();
-        w->OnOpen();
-        return w;
+        ColourSchemeUpdate(wp.get());
+        wp->Invalidate();
+        wp->OnOpen();
+
+        auto itNew = g_window_list.insert(itDestPos, std::move(wp));
+        return itNew->get();
     }
 
     /**
@@ -982,6 +981,10 @@ public:
     template<typename TPred>
     void CloseByCondition(TPred pred, uint32_t flags = WindowCloseFlags::None)
     {
+        // Collect windows to close first to avoid iterator invalidation
+        // when Close() might trigger window creation via OnClose()
+        std::vector<WindowBase*> windowsToClose;
+
         for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); ++it)
         {
             auto& wnd = *(*it);
@@ -990,11 +993,20 @@ public:
 
             if (pred(&wnd))
             {
-                Close(wnd);
+                windowsToClose.push_back(&wnd);
                 if (flags & WindowCloseFlags::CloseSingle)
                 {
-                    return;
+                    break;
                 }
+            }
+        }
+
+        // Now close the collected windows
+        for (auto* wnd : windowsToClose)
+        {
+            if (!(wnd->flags & WF_DEAD))
+            {
+                Close(*wnd);
             }
         }
     }
@@ -1271,8 +1283,9 @@ public:
         if (widget.left == -2)
             return;
 
-        GfxSetDirtyBlocks({ { w.windowPos + ScreenCoordsXY{ widget.left, widget.top } },
-                            { w.windowPos + ScreenCoordsXY{ widget.right + 1, widget.bottom + 1 } } });
+        GfxSetDirtyBlocks(
+            { { w.windowPos + ScreenCoordsXY{ widget.left, widget.top } },
+              { w.windowPos + ScreenCoordsXY{ widget.right + 1, widget.bottom + 1 } } });
     }
 
     /**

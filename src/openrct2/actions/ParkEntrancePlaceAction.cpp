@@ -62,7 +62,7 @@ GameActions::Result ParkEntrancePlaceAction::Query() const
     }
 
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::LandPurchase;
+    res.Expenditure = ExpenditureType::landPurchase;
     res.Position = { _loc.x, _loc.y, _loc.z };
 
     auto mapSizeUnits = GetMapSizeUnits() - CoordsXY{ kCoordsXYStep, kCoordsXYStep };
@@ -80,7 +80,7 @@ GameActions::Result ParkEntrancePlaceAction::Query() const
     }
 
     const auto& gameState = getGameState();
-    if (gameState.park.Entrances.size() >= OpenRCT2::Limits::kMaxParkEntrances)
+    if (gameState.park.entrances.size() >= OpenRCT2::Limits::kMaxParkEntrances)
     {
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
@@ -121,12 +121,12 @@ GameActions::Result ParkEntrancePlaceAction::Query() const
 GameActions::Result ParkEntrancePlaceAction::Execute() const
 {
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::LandPurchase;
+    res.Expenditure = ExpenditureType::landPurchase;
     res.Position = CoordsXYZ{ _loc.x, _loc.y, _loc.z };
 
     uint32_t flags = GetFlags();
 
-    getGameState().park.Entrances.push_back(_loc);
+    getGameState().park.entrances.push_back(_loc);
 
     auto zLow = _loc.z;
     auto zHigh = zLow + ParkEntranceHeight;

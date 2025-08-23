@@ -2695,7 +2695,6 @@ STR_5549    :Year/Month/Day
 STR_5550    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Year/Day/Month
 STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_5553    :Pause game when Steam overlay is open
 STR_5554    :Enable mountain tool
 STR_5555    :Show vehicles from other track types
 STR_5556    :Kick player
@@ -2766,9 +2765,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :“Real” Parks
 STR_5626    :Other Parks
-STR_5627    :Group scenario list by:
-STR_5628    :Source game
-STR_5629    :Difficulty level
 STR_5630    :Enable progressive unlocking
 STR_5631    :Original DLC Parks
 STR_5632    :Build your own…
@@ -2919,7 +2915,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :Display FPS counter in-game
 STR_5816    :Sets ratio to scale the game by.{NEWLINE}Most useful when playing in{NEWLINE}high resolutions
-
 STR_5820    :Minimise the game if focus is{NEWLINE}lost while in fullscreen mode
 STR_5822    :Cycle between day and night.{NEWLINE}Full cycle takes one in-game month
 STR_5823    :Display banners in uppercase (RCT1 behaviour)
@@ -2958,7 +2953,7 @@ STR_5858    :Use GPU for displaying instead of CPU. Improves compatibility with 
 STR_5859    :Enables frame tweening for visually{NEWLINE}smoother gameplay. When disabled,{NEWLINE}the game will run at 40 FPS.
 STR_5860    :Toggle original/decompiled track drawing
 STR_5861    :Key verification failure.
-STR_5862    :Block unknown players.
+STR_5862    :Block unknown players
 STR_5863    :Only allow players with known keys to join.
 STR_5864    :This server only allows whitelisted players to connect.
 STR_5865    :Log chat history
@@ -3252,7 +3247,6 @@ STR_6165    :Use vertical sync
 STR_6166    :Synchronises each frame displayed to the monitor’s refresh rate, preventing screen tearing.
 STR_6167    :Advanced
 STR_6168    :Title Sequence
-STR_6169    :Scenario selection
 STR_6170    :Interface Tweaks
 STR_6171    :Search
 STR_6172    :Search
@@ -3829,3 +3823,22 @@ STR_6781    :Screenshots
 STR_6782    :Park notifications
 STR_6783    :Ride notifications
 STR_6784    :Guest notifications
+STR_6785    :Gamepad
+STR_6786    :Deadzone:
+STR_6787    :Analogue stick deadzone (minimum movement required)
+STR_6788    :Sensitivity:
+STR_6789    :Analogue stick sensitivity multiplier
+STR_6790    :Deadzone: {COMMA32}%
+STR_6791    :Sensitivity: {COMMA32}%
+STR_6792    :Entrance Buildings
+STR_6793    :Guests and Staff
+STR_6794    :Scenery and Themes
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :No preview
+STR_6798    :Screenshot
+STR_6799    :Mini map
+STR_7000    :or
+STR_7001    :Ride name
+STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :Audio file ‘{STRING}’ is truncated. Expected sample {INT32}, but only {INT32} are available. Consider reinstalling RCT2.

@@ -17,16 +17,16 @@
 
 #include <memory>
 
-struct IObjectManager;
-struct IObjectRepository;
 struct IScenarioRepository;
 enum class DrawingEngine : int32_t;
 enum class CursorID : uint8_t;
 
 namespace OpenRCT2
 {
-    struct IStream;
     class Intent;
+    struct IObjectManager;
+    struct IObjectRepository;
+    struct IStream;
     struct WindowBase;
 } // namespace OpenRCT2
 

@@ -18,7 +18,6 @@
 #include <string_view>
 #include <vector>
 
-class AudioObject;
 struct CoordsXYZ;
 
 namespace OpenRCT2::Audio
@@ -121,7 +120,7 @@ namespace OpenRCT2::Audio
         LiftWildMouse,
         LiftBM,
         TrackFrictionBM,
-        Scream8,
+        Scream8, // Blood-curdling, Haunted House-like scream
         Tram,
         DoorOpen,
         DoorClose,

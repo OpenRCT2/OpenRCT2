@@ -11,7 +11,10 @@
 
 #include "../core/StringTypes.h"
 
-enum class ScenarioCategory : uint8_t;
+namespace OpenRCT2::Scenario
+{
+    enum class Category : uint8_t;
+}
 
 struct SourceDescriptor
 {
@@ -19,7 +22,7 @@ struct SourceDescriptor
     uint8_t id;
     uint8_t source;
     int32_t index;
-    ScenarioCategory category;
+    OpenRCT2::Scenario::Category category;
     u8string_view textObjectId;
 };
 
@@ -74,6 +77,7 @@ enum
     // Special
     SC_ALTON_TOWERS,
     SC_FORT_ANACHRONISM,
+    SC_TAIWAN_PARK,
 
     // Added Attractions
     SC_WHISPERING_CLIFFS = 40,

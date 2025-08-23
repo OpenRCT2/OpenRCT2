@@ -27,9 +27,10 @@
 #include "../platform/Platform.h"
 #include "../rct12/CSStringConverter.h"
 #include "../rct12/RCT12.h"
-#include "../rct12/SawyerChunkReader.h"
 #include "../rct2/RCT2.h"
+#include "../sawyer_coding/SawyerChunkReader.h"
 #include "Scenario.h"
+#include "ScenarioCategory.h"
 #include "ScenarioSources.h"
 
 #include <memory>
@@ -38,17 +39,17 @@
 
 using namespace OpenRCT2;
 
-static int32_t ScenarioCategoryCompare(ScenarioCategory categoryA, ScenarioCategory categoryB)
+static int32_t ScenarioCategoryCompare(Scenario::Category categoryA, Scenario::Category categoryB)
 {
     if (categoryA == categoryB)
         return 0;
-    if (categoryA == ScenarioCategory::dlc)
+    if (categoryA == Scenario::Category::dlc)
         return -1;
-    if (categoryB == ScenarioCategory::dlc)
+    if (categoryB == Scenario::Category::dlc)
         return 1;
-    if (categoryA == ScenarioCategory::buildYourOwn)
+    if (categoryA == Scenario::Category::buildYourOwn)
         return -1;
-    if (categoryB == ScenarioCategory::buildYourOwn)
+    if (categoryB == Scenario::Category::buildYourOwn)
         return 1;
     if (categoryA < categoryB)
         return -1;
@@ -72,8 +73,8 @@ static int32_t ScenarioIndexEntryCompareByCategory(const ScenarioIndexEntry& ent
                 return static_cast<int32_t>(entryA.SourceGame) - static_cast<int32_t>(entryB.SourceGame);
             }
             return strcmp(entryA.Name.c_str(), entryB.Name.c_str());
-        case ScenarioCategory::real:
-        case ScenarioCategory::other:
+        case Scenario::Category::real:
+        case Scenario::Category::other:
             return strcmp(entryA.Name.c_str(), entryB.Name.c_str());
     }
 }
@@ -508,20 +509,9 @@ private:
 
     void Sort()
     {
-        if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
-        {
-            std::sort(
-                _scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
-                    return ScenarioIndexEntryCompareByIndex(a, b) < 0;
-                });
-        }
-        else
-        {
-            std::sort(
-                _scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
-                    return ScenarioIndexEntryCompareByCategory(a, b) < 0;
-                });
-        }
+        std::sort(_scenarios.begin(), _scenarios.end(), [](const ScenarioIndexEntry& a, const ScenarioIndexEntry& b) -> bool {
+            return ScenarioIndexEntryCompareByIndex(a, b) < 0;
+        });
     }
 
     void LoadScores()
@@ -548,8 +538,8 @@ private:
             for (uint32_t i = 0; i < numHighscores; i++)
             {
                 ScenarioHighscoreEntry* highscore = InsertHighscore();
-                highscore->fileName = fs.ReadStdString();
-                highscore->name = fs.ReadStdString();
+                highscore->fileName = fs.ReadString();
+                highscore->name = fs.ReadString();
                 highscore->company_value = fileVersion == 1 ? fs.ReadValue<money32>() : fs.ReadValue<money64>();
                 highscore->timestamp = fs.ReadValue<datetime64>();
             }

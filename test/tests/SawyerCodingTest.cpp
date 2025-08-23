@@ -9,12 +9,13 @@
 
 #include <gtest/gtest.h>
 #include <openrct2/core/MemoryStream.h>
-#include <openrct2/core/SawyerCoding.h>
-#include <openrct2/rct12/SawyerChunkReader.h>
+#include <openrct2/sawyer_coding/SawyerChunkReader.h>
+#include <openrct2/sawyer_coding/SawyerCoding.h>
 
 constexpr size_t BUFFER_SIZE = 0x600000;
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::SawyerCoding;
 
 class SawyerCodingTest : public testing::Test
 {
@@ -33,7 +34,7 @@ protected:
     static const uint8_t invalid7[6];
     static const uint8_t empty[1];
 
-    void TestEncodeDecode(uint8_t encoding_type)
+    void TestEncodeDecode(ChunkEncoding encoding_type)
     {
         // Encode
         SawyerCoding::ChunkHeader chdr_in;
@@ -48,7 +49,7 @@ protected:
         OpenRCT2::MemoryStream ms(encodedDataBuffer, encodedDataSize);
         SawyerChunkReader reader(&ms);
         auto chunk = reader.ReadChunk();
-        ASSERT_EQ(static_cast<uint8_t>(chunk->GetEncoding()), chdr_in.encoding);
+        ASSERT_EQ(chunk->GetEncoding(), chdr_in.encoding);
         ASSERT_EQ(chunk->GetLength(), chdr_in.length);
         auto result = memcmp(chunk->GetData(), randomdata, sizeof(randomdata));
         ASSERT_EQ(result, 0);
@@ -65,7 +66,7 @@ protected:
         OpenRCT2::MemoryStream ms(data, size);
         SawyerChunkReader reader(&ms);
         auto chunk = reader.ReadChunk();
-        ASSERT_EQ(static_cast<uint8_t>(chunk->GetEncoding()), chdr_in->encoding);
+        ASSERT_EQ(chunk->GetEncoding(), chdr_in->encoding);
         ASSERT_EQ(chunk->GetLength(), sizeof(randomdata));
         auto result = memcmp(chunk->GetData(), randomdata, sizeof(randomdata));
         ASSERT_EQ(result, 0);
@@ -74,22 +75,22 @@ protected:
 
 TEST_F(SawyerCodingTest, write_read_chunk_none)
 {
-    TestEncodeDecode(CHUNK_ENCODING_NONE);
+    TestEncodeDecode(ChunkEncoding::none);
 }
 
 TEST_F(SawyerCodingTest, write_read_chunk_rle)
 {
-    TestEncodeDecode(CHUNK_ENCODING_RLE);
+    TestEncodeDecode(ChunkEncoding::rle);
 }
 
 TEST_F(SawyerCodingTest, write_read_chunk_rle_compressed)
 {
-    TestEncodeDecode(CHUNK_ENCODING_RLECOMPRESSED);
+    TestEncodeDecode(ChunkEncoding::rleCompressed);
 }
 
 TEST_F(SawyerCodingTest, write_read_chunk_rotate)
 {
-    TestEncodeDecode(CHUNK_ENCODING_ROTATE);
+    TestEncodeDecode(ChunkEncoding::rotate);
 }
 
 // Note we only check if provided data decompresses to the same data, not if it compresses the same.

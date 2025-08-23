@@ -13,6 +13,7 @@
 
     #include "../../../Cheats.h"
     #include "../../../GameState.h"
+    #include "../../../world/Park.h"
     #include "../../Duktape.hpp"
     #include "../../ScriptEngine.h"
 
@@ -66,14 +67,19 @@ namespace OpenRCT2::Scripting
                 ctx, &ScCheats::ignoreResearchStatus_get, &ScCheats::ignoreResearchStatus_set, "ignoreResearchStatus");
             dukglue_register_property(
                 ctx, &ScCheats::ignoreRideIntensity_get, &ScCheats::ignoreRideIntensity_set, "ignoreRideIntensity");
+            dukglue_register_property(ctx, &ScCheats::ignoreRidePrice_get, &ScCheats::ignoreRidePrice_set, "ignoreRidePrice");
             dukglue_register_property(
                 ctx, &ScCheats::neverendingMarketing_get, &ScCheats::neverendingMarketing_set, "neverendingMarketing");
+            dukglue_register_property(
+                ctx, &ScCheats::forcedParkRating_get, &ScCheats::forcedParkRating_set, "forcedParkRating");
             dukglue_register_property(ctx, &ScCheats::sandboxMode_get, &ScCheats::sandboxMode_set, "sandboxMode");
             dukglue_register_property(
                 ctx, &ScCheats::showAllOperatingModes_get, &ScCheats::showAllOperatingModes_set, "showAllOperatingModes");
             dukglue_register_property(
                 ctx, &ScCheats::showVehiclesFromOtherTrackTypes_get, &ScCheats::showVehiclesFromOtherTrackTypes_set,
                 "showVehiclesFromOtherTrackTypes");
+            dukglue_register_property(
+                ctx, &ScCheats::makeAllDestructible_get, &ScCheats::makeAllDestructible_set, "makeAllDestructible");
         }
 
     private:
@@ -297,6 +303,17 @@ namespace OpenRCT2::Scripting
             getGameState().cheats.ignoreRideIntensity = value;
         }
 
+        bool ignoreRidePrice_get()
+        {
+            return getGameState().cheats.ignorePrice;
+        }
+
+        void ignoreRidePrice_set(bool value)
+        {
+            ThrowIfGameStateNotMutable();
+            getGameState().cheats.ignorePrice = value;
+        }
+
         bool neverendingMarketing_get()
         {
             return getGameState().cheats.neverendingMarketing;
@@ -306,6 +323,19 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             getGameState().cheats.neverendingMarketing = value;
+        }
+
+        int32_t forcedParkRating_get()
+        {
+            return getGameState().cheats.forcedParkRating;
+        }
+
+        void forcedParkRating_set(int32_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            int32_t adjusted = std::max(-1, std::min(value, 999));
+            getGameState().cheats.forcedParkRating = adjusted;
+            Park::SetForcedRating(adjusted);
         }
 
         bool sandboxMode_get()
@@ -339,6 +369,17 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             getGameState().cheats.showVehiclesFromOtherTrackTypes = value;
+        }
+
+        bool makeAllDestructible_get()
+        {
+            return getGameState().cheats.makeAllDestructible;
+        }
+
+        void makeAllDestructible_set(bool value)
+        {
+            ThrowIfGameStateNotMutable();
+            getGameState().cheats.makeAllDestructible = value;
         }
     };
 } // namespace OpenRCT2::Scripting

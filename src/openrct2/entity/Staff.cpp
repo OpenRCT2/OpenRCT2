@@ -39,6 +39,7 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/Vehicle.h"
+#include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Entrance.h"
@@ -889,7 +890,7 @@ void Staff::EntertainerUpdateNearbyPeeps() const
                     continue;
 
                 int16_t z_dist = std::abs(z - guest->z);
-                if (z_dist > 48)
+                if (z_dist > kTileRadius / 2)
                     continue;
 
                 int16_t x_dist = std::abs(x - guest->x);
@@ -973,11 +974,11 @@ colour_t StaffGetColour(StaffType staffType)
     switch (staffType)
     {
         case StaffType::Handyman:
-            return gameState.staffHandymanColour;
+            return gameState.park.staffHandymanColour;
         case StaffType::Mechanic:
-            return gameState.staffMechanicColour;
+            return gameState.park.staffMechanicColour;
         case StaffType::Security:
-            return gameState.staffSecurityColour;
+            return gameState.park.staffSecurityColour;
         case StaffType::Entertainer:
             return 0;
         default:
@@ -992,13 +993,13 @@ GameActions::Result StaffSetColour(StaffType staffType, colour_t value)
     switch (staffType)
     {
         case StaffType::Handyman:
-            gameState.staffHandymanColour = value;
+            gameState.park.staffHandymanColour = value;
             break;
         case StaffType::Mechanic:
-            gameState.staffMechanicColour = value;
+            gameState.park.staffMechanicColour = value;
             break;
         case StaffType::Security:
-            gameState.staffSecurityColour = value;
+            gameState.park.staffSecurityColour = value;
             break;
         default:
             return GameActions::Result(
@@ -1644,14 +1645,58 @@ bool Staff::UpdatePatrollingFindSweeping()
     return false;
 }
 
+bool Staff::SecurityGuardPathIsCrowded() const
+{
+    // Iterate over tiles within a 3-tile radius (96 units)
+    constexpr auto kTileRadius = 3;
+    constexpr auto kLookupRadius = kCoordsXYStep * kTileRadius;
+    constexpr auto kSecurityPathCrowdedThreshold = 20;
+
+    int16_t guestCount = 0;
+
+    for (int32_t tileX = x - kLookupRadius; tileX <= x + kLookupRadius; tileX += kCoordsXYStep)
+    {
+        for (int32_t tileY = y - kLookupRadius; tileY <= y + kLookupRadius; tileY += kCoordsXYStep)
+        {
+            for (auto* guest : EntityTileList<Guest>({ tileX, tileY }))
+            {
+                if (guest->x == kLocationNull)
+                    continue;
+
+                int16_t zDist = std::abs(z - guest->z);
+                if (zDist > kTileRadius / 2)
+                    continue;
+
+                int16_t xDist = std::abs(x - guest->x);
+                if (xDist > kLookupRadius)
+                    continue;
+
+                int16_t yDist = std::abs(y - guest->y);
+                if (yDist > kLookupRadius)
+                    continue;
+
+                if (!guest->IsActionWalking())
+                    continue;
+
+                guestCount++;
+                if (guestCount >= kSecurityPathCrowdedThreshold)
+                    return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 void Staff::Tick128UpdateStaff()
 {
     if (AssignedStaffType != StaffType::Security)
         return;
 
-    PeepAnimationGroup newAnimationGroup = PeepAnimationGroup::Alternate;
-    if (State != PeepState::Patrolling)
-        newAnimationGroup = PeepAnimationGroup::Normal;
+    // Alternate between walking animations based on crowd size
+    auto newAnimationGroup = PeepAnimationGroup::Normal;
+    if (State == PeepState::Patrolling && SecurityGuardPathIsCrowded())
+        newAnimationGroup = PeepAnimationGroup::Alternate;
 
     if (AnimationGroup == newAnimationGroup)
         return;
@@ -1665,6 +1710,7 @@ void Staff::Tick128UpdateStaff()
     auto& objManager = GetContext()->GetObjectManager();
     auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(AnimationObjectIndex);
 
+    // NB: security staff have two animations groups: one regular, and one slow-walking
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
     if (animObj->IsSlowWalking(newAnimationGroup))
     {

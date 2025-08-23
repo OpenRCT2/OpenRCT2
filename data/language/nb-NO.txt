@@ -1241,7 +1241,6 @@ STR_1870    :Antall fullførte rotasjoner
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Inntekt: {BLACK}{CURRENCY2DP} per time
 STR_1874    :{WINDOW_COLOUR_2}Profitt: {BLACK}{CURRENCY2DP} per time
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspiser Attraksjoner
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fiks Attraksjoner
 STR_1878    :{WINDOW_COLOUR_2}Inspeksjon:
@@ -2160,7 +2159,6 @@ STR_3136    :Advarsel: Dette designet vil bli bygget med en alternativ type kjø
 STR_3137    :Velg Dekorasjon i Nærheten
 STR_3138    :Nullstill Utvalg
 STR_3139    :Kabeltrekk fungerer ikke i denne driftsmodusen
-STR_3140    :Kabeltrekk må starte umiddelbart etter stasjon
 STR_3141    :Flerkrets per tur ikke mulig med kabeltrekk
 STR_3142    :{WINDOW_COLOUR_2}Kapasitet: {BLACK}{STRINGID}
 STR_3143    :Vis folk på kart
@@ -2760,9 +2758,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :“Ekte” Parker
 STR_5626    :Andre Parker
-STR_5627    :Gruppér scenarioliste etter:
-STR_5628    :Kildespill
-STR_5629    :Vanskelighetsgrad
 STR_5630    :Skru på progressiv opplåsing
 STR_5631    :Originale DLC Parker
 STR_5632    :Bygg din egen…
@@ -3245,7 +3240,6 @@ STR_6165    :Bruk Vertical Sync
 STR_6166    :Synkroniserer visning av bilder med skjermens oppdateringsfrekvens; forhindrer “screen tearing”.
 STR_6167    :Avansert
 STR_6168    :Startskjermsekvens
-STR_6169    :Scenariovalg
 STR_6170    :Tilpass brukergrensesnitt
 STR_6171    :Søk
 STR_6172    :Søk

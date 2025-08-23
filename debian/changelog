@@ -1,3 +1,58 @@
+openrct2 (0.4.25-develop-1) unstable; urgency=medium
+
+* Feature: [#24468] [Plugin] Add awards to plugin API.
+* Feature: [#24702] [Plugin] Add bindings for missing cheats (forcedParkRating, *gnoreRidePrice, makeAllDestructible).
+* Feature: [#24794] The load/save browser can now optionally show mini map previews instead *f screenshots.
+* Improved: [#24812] Taiwan Park has been added to the Extras tab if it is present.
+* Improved: [OpenSFX#12] Add Brake Fix, Buy and Dinghy Slide running sounds.
+* Change: [#24730] Security guards now only walk slowly in crowded areas.
+* Change: [#24843] Update android targetSDK to 36.
+* Fix: [#24598] Cannot load .park files that use official legacy footpaths by accident.
+* Fix: [#24611] The confirmation prompt for track file deletion is not vertically aligned.
+* Fix: [#24711] The map smoothing function only partially works for custom height map image *iles.
+* Fix: [#24761] The reliability bar in the ride window visually does not go below 10%.
+* Fix: [#24773] The new ride window debug authors does not show the correct authors for non *egacy ride objects.
+* Fix: [#24775] The scenery and new ride windows do not filter by file name or identifier *orrectly for non legacy objects.
+* Fix: [#24777] The stall item preview cycles between all possible colours when random *heckbox is ticked.
+* Fix: [#24794] The load/save browser does not resize cleanly when toggling the preview *idebar.
+* Fix: [#24824] The Air Powered Vertical Coaster top section track piece has vertical *unnels (original bug).
+* Fix: [#24825] The River Rapids flat-to-gentle track piece tunnels are incorrect on the *entle side.
+* Fix: [#24826] The Junior Roller Coaster flat-to-steep track piece tunnels are incorrect.
+* Fix: [#24829] The pattern of long grass across tiles is different to RCT1 and RCT2.
+* Fix: [#24831] Park names are being overwritten for custom RCT1 scenarios that use *ompetition id slots.
+* Fix: [#24838] Not using localized word for conjunction when having multiple shortcuts for *he same action.
+* Fix: [#24841] Fullscreen options do not work correctly with Emscripten.
+
+openrct2 (0.4.24-develop-1) unstable; urgency=medium
+
+* Feature: [#24411] Vanilla scenarios now also have previews in the scenario selection window.
+* Feature: [#24616] Add ability to scroll map with gamepad sticks.
+* Feature: [#24662] Add optional screenshot argument for Z coord.
+* Improved: [#22684] The limit of 2000 animated tile elements has been removed.
+* Improved: [#23228] Landscape edge doors now animate opening and closing and play a sound.
+* Improved: [#24026] Notification settings have been made into a tab of the Recent Messages window.
+* Improved: [#24569, #24710] Add ten additional translations to the Windows installer.
+* Change: [#24559] Scenario options are now disabled rather than hidden when disabling money makes them non-applicable.
+* Change: [objects#383] Disable all base colours on non-remappable WWTT vehicles, change black to light_blue.
+* Change: [objects#384] Remove erroneously enabled WWTT third remaps.
+* Removed: [#24628] “Pause game when Steam overlay is open” feature (already broken for a long time).
+* Removed: [#24640] Grouping by difficulty (instead of per campaign) in the scenario selector.
+* Fix: [#15846] Rightclicking on track piece when there is construction below does not work.
+* Fix: [#16176, #23113] Animated tile elements do not always redraw when there is over 2000.
+* Fix: [#17365] The slope of new land surfaces is only correct on one side when shifting and resizing the map.
+* Fix: [#18080] Obsolete official .DAT files can be loaded accidentally.
+* Fix: [#21703] Scenery wall doors get stuck open if the game is saved and loaded whilst they are open.
+* Fix: [#24456] Zoomed out vehicles on the ride window tab can sometimes draw incorrectly.
+* Fix: [#24458] Vehicles in the ride window vehicle tab are offset differently than vanilla RCT2, and the sprites are cut off at the bottom.
+* Fix: [#24576] It is possible to edit open rides in certain circumstances.
+* Fix: [#24589] Music tab doesn’t fully render in multiplayer.
+* Fix: [#24615] Blank strings in Windows installer.
+* Fix: [#24617] ‘Divide by zero’ error when updating boat hire acceleration.
+* Fix: [#24626] Viewports that only follow sprites (e.g. in the Ride and Guest windows) can be made to unfollow them.
+* Fix: [#24661] `convert` console command always crashes with a segmentation fault.
+* Fix: [#24666] `convert` console command rejects files with an SV7 extension.
+* Fix: [objects#388] ‘Italian Police Ride’ has a non-functional first remap colour.
+
 openrct2 (0.4.23-develop-1) unstable; urgency=medium
 
 * Feature: [#22476] “Time since last inspection” statistic is available in the rides window.

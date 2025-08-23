@@ -12,6 +12,7 @@
 #include "ShortcutIds.h"
 
 #include <SDL.h>
+#include <openrct2-ui/UiStringIds.h>
 #include <openrct2/Context.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/core/Console.hpp>
@@ -101,8 +102,9 @@ std::string RegisteredShortcut::GetDisplayString() const
         result += kc.ToLocalisedString();
         if (i < numChords - 1)
         {
-            // TODO localise...
-            result += " or ";
+            result += " ";
+            result += LanguageGetString(STR_OR);
+            result += " ";
         }
     }
     return result;

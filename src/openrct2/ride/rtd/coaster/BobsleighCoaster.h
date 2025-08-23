@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor BobsleighCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::bobsleighCoaster,
         .supportType = MetalSupportType::tubes,        
@@ -36,7 +38,7 @@ constexpr RideTypeDescriptor BobsleighCoasterRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 19, 24, 5, 7, },
     .MaxMass = 25,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftFrictionWheels, 4, 5 },
+    .LiftData = { Audio::SoundId::LiftFrictionWheels, 4, 5 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 40, 20, 80, 10, 3, 10 },
     .BuildCosts = { 40.00_GBP, 2.50_GBP, 45, },
@@ -56,13 +58,13 @@ constexpr RideTypeDescriptor BobsleighCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 80), MakeRideRating(3, 20), MakeRideRating(2, 50) },
+        { RideRating::make(2, 80), RideRating::make(3, 20), RideRating::make(2, 50) },
         16,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 20), MakeRideRating(0, 00), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 20), RideRating::make(0, 00), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -80,4 +82,5 @@ constexpr RideTypeDescriptor BobsleighCoasterRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

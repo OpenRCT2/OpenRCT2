@@ -227,8 +227,8 @@
     <ClInclude Include="core\Random.hpp" />
     <ClInclude Include="core\Range.hpp" />
     <ClInclude Include="core\RTL.h" />
-    <ClInclude Include="core\SawyerCoding.h" />
     <ClInclude Include="core\Speed.hpp" />
+    <ClInclude Include="core\StreamBuffer.hpp" />
     <ClInclude Include="core\String.hpp" />
     <ClInclude Include="core\StringBuilder.h" />
     <ClInclude Include="core\StringReader.h" />
@@ -415,9 +415,6 @@
     <ClInclude Include="rct12\EntryList.h" />
     <ClInclude Include="rct12\Limits.h" />
     <ClInclude Include="rct12\RCT12.h" />
-    <ClInclude Include="rct12\SawyerChunk.h" />
-    <ClInclude Include="rct12\SawyerChunkReader.h" />
-    <ClInclude Include="rct12\SawyerChunkWriter.h" />
     <ClInclude Include="rct12\TD46.h" />
     <ClInclude Include="rct1\Csg.h" />
     <ClInclude Include="rct1\Limits.h" />
@@ -546,7 +543,14 @@
     <ClInclude Include="ride\VehicleData.h" />
     <ClInclude Include="ride\VehicleRiderControl.h" />
     <ClInclude Include="ride\VehicleSubpositionData.h" />
+    <ClInclude Include="sawyer_coding\SawyerCoding.h" />
+    <ClInclude Include="sawyer_coding\SawyerChunk.h" />
+    <ClInclude Include="sawyer_coding\SawyerChunkReader.h" />
+    <ClInclude Include="sawyer_coding\SawyerChunkWriter.h" />
     <ClInclude Include="scenario\Scenario.h" />
+    <ClInclude Include="scenario\ScenarioCategory.h" />
+    <ClInclude Include="scenario\ScenarioObjective.h" />
+    <ClInclude Include="scenario\ScenarioOptions.h" />
     <ClInclude Include="scenario\ScenarioRepository.h" />
     <ClInclude Include="scenario\ScenarioSources.h" />
     <ClInclude Include="scenes\Scene.h" />
@@ -594,6 +598,7 @@
     <ClInclude Include="scripting\bindings\ride\ScRideStation.hpp" />
     <ClInclude Include="scripting\bindings\ride\ScTrackIterator.h" />
     <ClInclude Include="scripting\bindings\ride\ScTrackSegment.h" />
+    <ClInclude Include="scripting\bindings\world\ScAward.hpp" />
     <ClInclude Include="scripting\bindings\world\ScClimate.hpp" />
     <ClInclude Include="scripting\bindings\world\ScDate.hpp" />
     <ClInclude Include="scripting\bindings\world\ScMap.hpp" />
@@ -628,6 +633,7 @@
     <ClInclude Include="world\Map.h" />
     <ClInclude Include="world\MapAnimation.h" />
     <ClInclude Include="world\Park.h" />
+    <ClInclude Include="world\ParkData.h" />
     <ClInclude Include="world\QuarterTile.h" />
     <ClInclude Include="world\Scenery.h" />
     <ClInclude Include="world\ScenerySelection.h" />
@@ -789,7 +795,7 @@
     <ClCompile Include="core\Path.cpp" />
     <ClCompile Include="core\RTL.FriBidi.cpp" />
     <ClCompile Include="core\RTL.ICU.cpp" />
-    <ClCompile Include="core\SawyerCoding.cpp" />
+    <ClCompile Include="core\StreamBuffer.cpp" />
     <ClCompile Include="core\String.cpp" />
     <ClCompile Include="core\StringBuilder.cpp" />
     <ClCompile Include="core\StringReader.cpp" />
@@ -1042,9 +1048,6 @@
     <ClCompile Include="rct12\CSStringConverter.cpp" />
     <ClCompile Include="rct12\RCT12.cpp" />
     <ClCompile Include="rct12\ScenarioPatcher.cpp" />
-    <ClCompile Include="rct12\SawyerChunk.cpp" />
-    <ClCompile Include="rct12\SawyerChunkReader.cpp" />
-    <ClCompile Include="rct12\SawyerChunkWriter.cpp" />
     <ClCompile Include="rct12\TD46.cpp" />
     <ClCompile Include="rct1\Csg.cpp" />
     <ClCompile Include="rct1\S4Importer.cpp" />
@@ -1079,7 +1082,13 @@
     <ClCompile Include="ride\VehicleData.cpp" />
     <ClCompile Include="ride\VehicleRiderControl.cpp" />
     <ClCompile Include="ride\VehicleSubpositionData.cpp" />
+    <ClCompile Include="sawyer_coding\SawyerCoding.cpp" />
+    <ClCompile Include="sawyer_coding\SawyerChunk.cpp" />
+    <ClCompile Include="sawyer_coding\SawyerChunkReader.cpp" />
+    <ClCompile Include="sawyer_coding\SawyerChunkWriter.cpp" />
     <ClCompile Include="scenario\Scenario.cpp" />
+    <ClCompile Include="scenario\ScenarioCategory.cpp" />
+    <ClCompile Include="scenario\ScenarioObjective.cpp" />
     <ClCompile Include="scenario\ScenarioRepository.cpp" />
     <ClCompile Include="scenario\ScenarioSources.cpp" />
     <ClCompile Include="scenes\Scene.cpp" />
@@ -1115,6 +1124,7 @@
     <ClCompile Include="scripting\bindings\ride\ScRideStation.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScTrackIterator.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScTrackSegment.cpp" />
+    <ClCompile Include="scripting\bindings\world\ScAward.cpp" />
     <ClCompile Include="scripting\bindings\world\ScMap.cpp" />
     <ClCompile Include="scripting\bindings\world\ScPark.cpp" />
     <ClCompile Include="scripting\bindings\world\ScParkMessage.cpp" />

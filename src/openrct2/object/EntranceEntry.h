@@ -12,10 +12,13 @@
 #include "../localisation/StringIdType.h"
 #include "ObjectTypes.h"
 
-struct EntranceEntry
+namespace OpenRCT2
 {
-    StringId string_idx;    // 0x00
-    uint32_t image_id;      // 0x02
-    uint8_t scrolling_mode; // 0x06
-    uint8_t text_height;    // 0x07
-};
+    struct EntranceEntry
+    {
+        StringId string_idx;    // 0x00
+        uint32_t image_id;      // 0x02
+        uint8_t scrolling_mode; // 0x06
+        uint8_t text_height;    // 0x07
+    };
+} // namespace OpenRCT2

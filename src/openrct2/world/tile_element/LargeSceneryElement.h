@@ -16,49 +16,53 @@
 
 struct Banner;
 
-enum
+namespace OpenRCT2
 {
-    LARGE_SCENERY_ELEMENT_FLAGS2_ACCOUNTED = 1 << 0,
-};
+    enum
+    {
+        LARGE_SCENERY_ELEMENT_FLAGS2_ACCOUNTED = 1 << 0,
+    };
 
 #pragma pack(push, 1)
-struct LargeSceneryElement : TileElementBase
-{
-    static constexpr TileElementType kElementType = TileElementType::LargeScenery;
+    struct LargeSceneryElement : TileElementBase
+    {
+        static constexpr TileElementType kElementType = TileElementType::LargeScenery;
 
-private:
-    ObjectEntryIndex EntryIndex;
-    ::BannerIndex BannerIndex;
-    uint8_t SequenceIndex;
-    uint8_t Colour[3];
-    uint8_t Flags2;
+    private:
+        ObjectEntryIndex EntryIndex;
+        ::BannerIndex BannerIndex;
+        uint8_t SequenceIndex;
+        uint8_t Colour[3];
+        uint8_t Flags2;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad[2];
+        uint8_t pad[2];
 #pragma clang diagnostic pop
 
-public:
-    ObjectEntryIndex GetEntryIndex() const;
-    void SetEntryIndex(ObjectEntryIndex newIndex);
-    const LargeSceneryEntry* GetEntry() const;
-    const LargeSceneryObject* GetObject() const;
+    public:
+        ObjectEntryIndex GetEntryIndex() const;
+        void SetEntryIndex(ObjectEntryIndex newIndex);
+        const LargeSceneryEntry* GetEntry() const;
+        const LargeSceneryObject* GetObject() const;
 
-    uint8_t GetSequenceIndex() const;
-    void SetSequenceIndex(uint8_t newIndex);
+        uint8_t GetSequenceIndex() const;
+        void SetSequenceIndex(uint8_t newIndex);
 
-    colour_t GetPrimaryColour() const;
-    void SetPrimaryColour(colour_t colour);
-    colour_t GetSecondaryColour() const;
-    void SetSecondaryColour(colour_t colour);
-    colour_t GetTertiaryColour() const;
-    void SetTertiaryColour(colour_t colour);
+        colour_t GetPrimaryColour() const;
+        void SetPrimaryColour(colour_t colour);
+        colour_t GetSecondaryColour() const;
+        void SetSecondaryColour(colour_t colour);
+        colour_t GetTertiaryColour() const;
+        void SetTertiaryColour(colour_t colour);
 
-    Banner* GetBanner() const;
-    ::BannerIndex GetBannerIndex() const;
-    void SetBannerIndex(::BannerIndex newIndex);
+        Banner* GetBanner() const;
+        ::BannerIndex GetBannerIndex() const;
+        void SetBannerIndex(::BannerIndex newIndex);
 
-    bool IsAccounted() const;
-    void SetIsAccounted(bool isAccounted);
-};
-static_assert(sizeof(LargeSceneryElement) == kTileElementSize);
+        bool IsAccounted() const;
+        void SetIsAccounted(bool isAccounted);
+    };
+    static_assert(sizeof(LargeSceneryElement) == kTileElementSize);
 #pragma pack(pop)
+
+} // namespace OpenRCT2

@@ -15,22 +15,25 @@
 
 #include <string>
 
-class ScenarioMetaObject final : public Object
+namespace OpenRCT2
 {
-private:
-    ImageIndex _imageOffsetId;
+    class ScenarioMetaObject final : public Object
+    {
+    private:
+        ImageIndex _imageOffsetId;
 
-public:
-    static constexpr ObjectType kObjectType = ObjectType::scenarioMeta;
+    public:
+        static constexpr ObjectType kObjectType = ObjectType::scenarioMeta;
 
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void Load() override;
-    void Unload() override;
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void Load() override;
+        void Unload() override;
 
-    std::string GetScenarioName();
-    std::string GetParkName();
-    std::string GetScenarioDetails();
+        std::string GetScenarioName();
+        std::string GetParkName();
+        std::string GetScenarioDetails();
 
-    OpenRCT2::PreviewImage GetMiniMapImage() const;
-    OpenRCT2::PreviewImage GetPreviewImage() const;
-};
+        PreviewImage GetMiniMapImage() const;
+        PreviewImage GetPreviewImage() const;
+    };
+} // namespace OpenRCT2

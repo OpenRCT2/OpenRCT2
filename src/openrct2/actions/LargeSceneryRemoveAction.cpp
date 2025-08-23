@@ -57,7 +57,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
     res.Position.z = _loc.z;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Cost = 0;
 
     TileElement* tileElement = FindLargeSceneryElement(_loc, _tileIndex);
@@ -90,7 +90,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
 
         if (gLegacyScene != LegacyScene::scenarioEditor && !getGameState().cheats.sandboxMode)
         {
-            if (getGameState().park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+            if (getGameState().park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
             {
                 if (sceneryEntry->HasFlag(LARGE_SCENERY_FLAG_IS_TREE))
                 {
@@ -136,7 +136,7 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
     res.Position.z = _loc.z;
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Cost = 0;
 
     TileElement* tileElement = FindLargeSceneryElement(_loc, _tileIndex);

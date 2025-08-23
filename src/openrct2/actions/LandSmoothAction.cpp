@@ -346,7 +346,7 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
 
     auto res = GameActions::Result();
     res.ErrorTitle = kErrorTitles[_isLowering ? 0 : 1];
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Position = { _coords.x, _coords.y, centreZ };
 
     // Do the smoothing

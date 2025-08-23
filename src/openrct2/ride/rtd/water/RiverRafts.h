@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor RiverRaftsRTD =
 {
     .Category = RideCategory::water,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::splashBoats,
         .supportType = WoodenSupportType::truss,
@@ -39,7 +41,7 @@ constexpr RideTypeDescriptor RiverRaftsRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 12, 24, 7, 11, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 80, 34, 6 },
     .UpkeepCosts = { 50, 20, 0, 9, 0, 10 },
     .BuildCosts = { 20.00_GBP, 2.50_GBP, 30, },
@@ -56,13 +58,13 @@ constexpr RideTypeDescriptor RiverRaftsRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(1, 45), MakeRideRating(0, 25), MakeRideRating(0, 34) },
+        { RideRating::make(1, 45), RideRating::make(0, 25), RideRating::make(0, 34) },
         12,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           2000,             7208, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                531372, 655360, 301111 },
             { RatingsModifierType::BonusDuration,         500,              13107, 0, 0 },
             { RatingsModifierType::BonusTurns,            0,                22291, 20860, 4574 },
@@ -72,4 +74,5 @@ constexpr RideTypeDescriptor RiverRaftsRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

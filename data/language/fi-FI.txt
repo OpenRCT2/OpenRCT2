@@ -1247,7 +1247,6 @@ STR_1870    :Täysien kierrosten määrä
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Tulo: {BLACK}{CURRENCY2DP} per tunti
 STR_1874    :{WINDOW_COLOUR_2}Tuotto: {BLACK}{CURRENCY2DP} per tunti
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Tarkasta laitteet
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Korjaa laitteet
 STR_1878    :{WINDOW_COLOUR_2}Tarkastus:
@@ -2169,7 +2168,6 @@ STR_3136    :Varoitus: Tämä malli rakennetaan korvaavalla ajoneuvotyypillä, j
 STR_3137    :Valitse lähistön maisemoinnit
 STR_3138    :Tyhjennä valinta
 STR_3139    :Nostomäki ei toimi tässä toimintatilassa
-STR_3140    :Nostomäen tulee alkaa heti aseman jälkeen
 STR_3141    :Monikierrokset eivät ole mahdollisia nostomäen kanssa
 STR_3142    :{WINDOW_COLOUR_2}Kapasiteetti: {BLACK}{STRINGID}
 STR_3143    :Näytä ihmiset kartalla
@@ -2770,9 +2768,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :“Oikeat” puistot
 STR_5626    :Muut puistot
-STR_5627    :Skenaarioiden ryhmitys:
-STR_5628    :Lähdepelin mukaan
-STR_5629    :Vaikeusasteen mukaan
 STR_5630    :Edistyksen mukainen skenaarioiden avaus
 STR_5631    :Alkuperäiset DLC-puistot
 STR_5632    :Rakenna oma…
@@ -3255,7 +3250,6 @@ STR_6165    :Pystytahdistus
 STR_6166    :Tahdista jokaisen kuvan piirto näytön virkistystaajuuteen, estäen screen tearing -ilmiön
 STR_6167    :Lisäasetukset
 STR_6168    :Päävalikon tausta
-STR_6169    :Skenaarion valinta
 STR_6170    :Käyttöliittymän asetukset
 STR_6171    :Haku
 STR_6172    :Haku

@@ -112,7 +112,7 @@ void ScreenshotCheck()
 
 static std::string ScreenshotGetParkName()
 {
-    return getGameState().park.Name;
+    return getGameState().park.name;
 }
 
 static std::string ScreenshotGetDirectory()
@@ -179,7 +179,7 @@ std::string ScreenshotDumpPNG(RenderTarget& rt)
 
     if (!path.has_value())
     {
-        return "";
+        return {};
     }
 
     if (WriteDpiToFile(path.value(), rt, gPalette))
@@ -187,7 +187,7 @@ std::string ScreenshotDumpPNG(RenderTarget& rt)
         return path.value();
     }
 
-    return "";
+    return {};
 }
 
 static int32_t GetHighestBaseClearanceZ(const CoordsXY& location, const bool useViewClipping)
@@ -422,6 +422,11 @@ static void ApplyOptions(const ScreenshotOptions* options, Viewport& viewport)
     {
         viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
     }
+
+    if (options->draw_bounding_boxes)
+    {
+        gPaintBoundingBoxes = true;
+    }
 }
 
 int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOptions* options)
@@ -438,9 +443,9 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
     }
 
     bool giantScreenshot = (argc == 5) && String::iequals(argv[2], "giant");
-    if (argc != 4 && argc != 8 && !giantScreenshot)
+    if (argc != 4 && argc != 8 && argc != 9 && !giantScreenshot)
     {
-        std::printf("Usage: openrct2 screenshot <file> <output_image> <width> <height> [<x> <y> <zoom> <rotation>]\n");
+        std::printf("Usage: openrct2 screenshot <file> <output_image> <width> <height> [<x> <y> [<z>] <zoom> <rotation>]\n");
         std::printf("Usage: openrct2 screenshot <file> <output_image> giant <zoom> <rotation>\n");
         return -1;
     }
@@ -488,8 +493,9 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
             int32_t customY = 0;
             int32_t customZoom = 0;
             int32_t customRotation = 0;
-            if (argc == 8)
+            if (argc >= 8)
             {
+                int32_t argOffset = argc == 8 ? 0 : 1;
                 customLocation = true;
                 if (argv[4][0] == 'c')
                     centreMapX = true;
@@ -501,8 +507,8 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
                 else
                     customY = std::atoi(argv[5]);
 
-                customZoom = std::atoi(argv[6]);
-                customRotation = std::atoi(argv[7]) & 3;
+                customZoom = std::atoi(argv[6 + argOffset]);
+                customRotation = std::atoi(argv[7 + argOffset]) & 3;
             }
 
             const auto& mapSize = getGameState().mapSize;
@@ -525,6 +531,8 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
                     customY = (mapSize.y / 2) * 32 + 16;
 
                 int32_t z = TileElementHeight({ customX, customY });
+                if (argc == 9)
+                    z = std::atoi(argv[6]);
                 CoordsXYZ coords3d = { customX, customY, z };
 
                 auto coords2d = Translate3DTo2DWithZ(customRotation, coords3d);

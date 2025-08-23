@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor LaunchedFreefallRTD =
 {
     .Category = RideCategory::thrill,
-    .StartTrackPiece = OpenRCT2::TrackElemType::TowerBase,
+    .StartTrackPiece = TrackElemType::TowerBase,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::launchedFreefall,
         .enabledTrackGroups = {TrackGroup::tower},
@@ -37,7 +39,7 @@ constexpr RideTypeDescriptor LaunchedFreefallRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 255, 32, 3, 2, },
     .MaxMass = 15,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 50, 50, 10 },
     .UpkeepCosts = { 50, 20, 0, 10, 0, 0 },
     .BuildCosts = { 25.00_GBP, 0.00_GBP, 4, },
@@ -55,16 +57,17 @@ constexpr RideTypeDescriptor LaunchedFreefallRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 70), MakeRideRating(3, 00), MakeRideRating(3, 50) },
+        { RideRating::make(2, 70), RideRating::make(3, 00), RideRating::make(3, 50) },
         16,
         -1,
         false,
         {
-            { RatingsModifierType::BonusDownwardLaunch,          0, MakeRideRating(0, 30), MakeRideRating(0, 65), MakeRideRating(0, 45) },
+            { RatingsModifierType::BonusDownwardLaunch,          0, RideRating::make(0, 30), RideRating::make(0, 65), RideRating::make(0, 45) },
             { RatingsModifierType::BonusLaunchedFreefallSpecial, 0, 0, 1355917, 451972 },
             { RatingsModifierType::BonusProximity,               0, 20130, 0, 0 },
             { RatingsModifierType::BonusScenery,                 0, 25098, 0, 0 },
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

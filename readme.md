@@ -17,9 +17,9 @@
 ---
 
 ### Download
-| Latest release                                                                                                           | Latest development build |
-|--------------------------------------------------------------------------------------------------------------------------|--------------------------|
-| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.4.23-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/github/last-commit/OpenRCT2/OpenRCT2/develop)](https://openrct2.org/downloads/develop/latest) |
+| Latest release                                                                                                         | Latest development build |
+|------------------------------------------------------------------------------------------------------------------------|--------------------------|
+| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.4.25-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/github/last-commit/OpenRCT2/OpenRCT2/develop)](https://openrct2.org/downloads/develop/latest) |
 
 ---
 
@@ -135,7 +135,7 @@ We sign our releases with a digital certificate provided by SignPath Foundation.
 
 Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/).
 
-Signed releases can only be done by member of the [development team](https://github.com/OpenRCT2/OpenRCT2/blob/develop/contributors.md#development-team).
+Signed releases can only be done by members of the [development team](https://github.com/OpenRCT2/OpenRCT2/blob/develop/contributors.md#development-team).
 
 ## 5.3 Privacy policy
 

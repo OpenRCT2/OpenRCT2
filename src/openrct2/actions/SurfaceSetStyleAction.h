@@ -15,12 +15,12 @@ class SurfaceSetStyleAction final : public GameActionBase<GameCommand::ChangeSur
 {
 private:
     MapRange _range;
-    ObjectEntryIndex _surfaceStyle{};
-    ObjectEntryIndex _edgeStyle{};
+    OpenRCT2::ObjectEntryIndex _surfaceStyle{};
+    OpenRCT2::ObjectEntryIndex _edgeStyle{};
 
 public:
     SurfaceSetStyleAction() = default;
-    SurfaceSetStyleAction(MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle);
+    SurfaceSetStyleAction(MapRange range, OpenRCT2::ObjectEntryIndex surfaceStyle, OpenRCT2::ObjectEntryIndex edgeStyle);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

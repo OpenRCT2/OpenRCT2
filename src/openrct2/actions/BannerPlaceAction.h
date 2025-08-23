@@ -20,12 +20,12 @@ class BannerPlaceAction final : public GameActionBase<GameCommand::PlaceBanner>
 {
 private:
     CoordsXYZD _loc;
-    ObjectEntryIndex _bannerType{ kBannerNull };
+    OpenRCT2::ObjectEntryIndex _bannerType{ kBannerNull };
     uint8_t _primaryColour{};
 
 public:
     BannerPlaceAction() = default;
-    BannerPlaceAction(const CoordsXYZD& loc, ObjectEntryIndex bannerType, colour_t primaryColour);
+    BannerPlaceAction(const CoordsXYZD& loc, OpenRCT2::ObjectEntryIndex bannerType, colour_t primaryColour);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
@@ -36,5 +36,5 @@ public:
     OpenRCT2::GameActions::Result Execute() const override;
 
 private:
-    PathElement* GetValidPathElement() const;
+    OpenRCT2::PathElement* GetValidPathElement() const;
 };

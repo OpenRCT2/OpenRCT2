@@ -5592,7 +5592,7 @@ static void JuniorRCFlatTo60DegUpPaintSetup(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
             break;
         case 1:
             PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
@@ -5601,7 +5601,7 @@ static void JuniorRCFlatTo60DegUpPaintSetup(
             PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
             break;
     }
 
@@ -5655,16 +5655,16 @@ static void JuniorRC60DegUpToFlatPaintSetup(
     switch (direction)
     {
         case 0:
-            PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelLeft(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             break;
         case 1:
-            PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelRight(session, height + 24, kTunnelGroup, TunnelSubType::Flat);
             break;
         case 2:
-            PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::SlopeEnd);
+            PaintUtilPushTunnelLeft(session, height + 24, kTunnelGroup, TunnelSubType::Flat);
             break;
         case 3:
-            PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::SlopeStart);
+            PaintUtilPushTunnelRight(session, height - 8, kTunnelGroup, TunnelSubType::SlopeStart);
             break;
     }
 

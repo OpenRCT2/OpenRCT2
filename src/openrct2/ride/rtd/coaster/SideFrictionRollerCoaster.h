@@ -15,14 +15,16 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor SideFrictionRollerCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::sideFrictionRollerCoaster,
         .supportType = WoodenSupportType::truss,
-        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown},
+        .enabledTrackGroups = {TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill, TrackGroup::slope, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::brakes, TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::diagSlope, TrackGroup::diagSlopeSteepUp, TrackGroup::diagSlopeSteepDown},
         .extraTrackGroups = {},
     }),
     .InvertedTrackPaintFunctions = {},
@@ -36,7 +38,7 @@ constexpr RideTypeDescriptor SideFrictionRollerCoasterRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 18, 24, 4, 11, },
     .MaxMass = 15,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftWood, 3, 5 },
+    .LiftData = { Audio::SoundId::LiftWood, 3, 5 },
     .RatingsMultipliers = { 48, 28, 7 },
     .UpkeepCosts = { 39, 20, 80, 10, 3, 10 },
     .BuildCosts = { 27.50_GBP, 3.00_GBP, 37, },
@@ -56,13 +58,13 @@ constexpr RideTypeDescriptor SideFrictionRollerCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 50), MakeRideRating(2, 00), MakeRideRating(1, 50) },
+        { RideRating::make(2, 50), RideRating::make(2, 00), RideRating::make(1, 50) },
         19,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             873, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                364088, 655360, 0 },
@@ -82,4 +84,5 @@ constexpr RideTypeDescriptor SideFrictionRollerCoasterRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

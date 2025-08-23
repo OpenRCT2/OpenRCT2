@@ -177,12 +177,12 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr ObjectPageDesc ObjectSelectionPages[] = {
         { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS, ObjectType::ride,            SPR_TAB_RIDE_16,            kRideObjectSubTabs },
-        { STR_OBJECT_SELECTION_SCENERY_GROUPS,            ObjectType::sceneryGroup,    SPR_TAB_SCENERY_STATUES,    kSceneryObjectSubTabs },
+        { STR_OBJECT_SELECTION_SCENERY_AND_THEMES,        ObjectType::sceneryGroup,    SPR_TAB_SCENERY_STATUES,    kSceneryObjectSubTabs },
         { STR_OBJECT_SELECTION_FOOTPATH_SURFACES,         ObjectType::footpathSurface, SPR_G2_LEGACY_PATH_TAB,     kPathObjectSubTabs },
-        { STR_OBJECT_SELECTION_PARK_ENTRANCE,             ObjectType::parkEntrance,    SPR_TAB_PARK,               kEntrancesObjectSubTabs },
+        { STR_OBJECT_SELECTION_ENTRANCE_BUILDINGS,        ObjectType::parkEntrance,    SPR_TAB_PARK,               kEntrancesObjectSubTabs },
         { STR_OBJECT_SELECTION_TERRAIN_SURFACES,          ObjectType::terrainSurface,  SPR_G2_MAP_GEN_TERRAIN_TAB, kTerrainObjectSubTabs },
         { STR_OBJECT_SELECTION_MUSIC,                     ObjectType::music,           SPR_TAB_MUSIC_0,            {} },
-        { STR_OBJECT_SELECTION_PEEP_NAMES,                ObjectType::peepNames,       SPR_TAB_GUESTS_0,           kPeepObjectSubTabs },
+        { STR_OBJECT_SELECTION_GUESTS_AND_STAFF,          ObjectType::peepNames,       SPR_TAB_GUESTS_0,           kPeepObjectSubTabs },
     };
     // clang-format on
 
@@ -513,8 +513,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_FILTER_DROPDOWN_BTN:
                     for (auto ddIdx = EnumValue(DDIX_FILTER_RCT1); ddIdx <= EnumValue(DDIX_FILTER_CUSTOM); ddIdx++)
                     {
-                        gDropdownItems[ddIdx].Args = kSourceStringIds[ddIdx];
-                        gDropdownItems[ddIdx].Format = STR_TOGGLE_OPTION;
+                        gDropdown.items[ddIdx].args = kSourceStringIds[ddIdx];
+                        gDropdown.items[ddIdx].format = STR_TOGGLE_OPTION;
                     }
 
                     // Track designs manager cannot select multiple, so only show selection filters if not in track designs
@@ -522,12 +522,12 @@ namespace OpenRCT2::Ui::Windows
                     if (!(gLegacyScene == LegacyScene::trackDesignsManager))
                     {
                         numSelectionItems = 3;
-                        gDropdownItems[DDIX_FILTER_SEPARATOR].Format = 0;
-                        gDropdownItems[DDIX_FILTER_SELECTED].Format = STR_TOGGLE_OPTION;
-                        gDropdownItems[DDIX_FILTER_NONSELECTED].Format = STR_TOGGLE_OPTION;
-                        gDropdownItems[DDIX_FILTER_SEPARATOR].Args = kStringIdNone;
-                        gDropdownItems[DDIX_FILTER_SELECTED].Args = STR_SELECTED_ONLY;
-                        gDropdownItems[DDIX_FILTER_NONSELECTED].Args = STR_NON_SELECTED_ONLY;
+                        gDropdown.items[DDIX_FILTER_SEPARATOR].format = 0;
+                        gDropdown.items[DDIX_FILTER_SELECTED].format = STR_TOGGLE_OPTION;
+                        gDropdown.items[DDIX_FILTER_NONSELECTED].format = STR_TOGGLE_OPTION;
+                        gDropdown.items[DDIX_FILTER_SEPARATOR].args = kStringIdNone;
+                        gDropdown.items[DDIX_FILTER_SELECTED].args = STR_SELECTED_ONLY;
+                        gDropdown.items[DDIX_FILTER_NONSELECTED].args = STR_NON_SELECTED_ONLY;
                     }
 
                     auto& ddWidget = widgets[WIDX_FILTER_DROPDOWN];
@@ -1559,7 +1559,7 @@ namespace OpenRCT2::Ui::Windows
                     return rideObject->GetDescription();
                 }
                 default:
-                    return "";
+                    return {};
             }
         }
 

@@ -1246,7 +1246,6 @@ STR_1870    :Aantal complete rotaties
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Inkomsten: {BLACK}{CURRENCY2DP} per uur
 STR_1874    :{WINDOW_COLOUR_2}Winst: {BLACK}{CURRENCY2DP} per uur
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Attracties inspecteren
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Attracties repareren
 STR_1878    :{WINDOW_COLOUR_2}Inspectie:
@@ -2766,9 +2765,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :‘Echte’ parken
 STR_5626    :Overige parken
-STR_5627    :Scenariolijst groeperen op:
-STR_5628    :Oorsprong
-STR_5629    :Moeilijkheidsgraad
 STR_5630    :Moeilijke scenario’s ontgrendelden met makkelijke
 STR_5631    :Originele DLC
 STR_5632    :Bouw je eigen…
@@ -3249,7 +3245,6 @@ STR_6165    :Verticale synchronisatie
 STR_6166    :Synchroniseert het aantal frames per seconde met de frequentie van de monitor. Dit voorkomt tearing en zorgt zo voor een beter beeld.
 STR_6167    :Geavanceerd
 STR_6168    :Titelpresentatie
-STR_6169    :Scenarioselectie
 STR_6170    :Overig
 STR_6171    :Zoeken
 STR_6172    :Zoeken
@@ -3824,3 +3819,10 @@ STR_6781    :Screenshots
 STR_6782    :Park
 STR_6783    :Attracties
 STR_6784    :Bezoekers
+STR_6785    :Gamepad
+STR_6786    :Dode zone:
+STR_6787    :Dode zone voor de analogue stick (minimaal vereiste beweging voordat het spel reageert)
+STR_6788    :Gevoeligheid:
+STR_6789    :Gevoeligheidsfactor voor de analoge stick
+STR_6790    :Dode zone: {COMMA32}%
+STR_6791    :Gevoeligheid: {COMMA32}%

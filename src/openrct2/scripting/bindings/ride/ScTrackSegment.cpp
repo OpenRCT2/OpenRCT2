@@ -197,17 +197,18 @@ std::vector<DukValue> ScTrackSegment::getSubpositions(uint8_t trackSubposition, 
 
 static DukValue _trackCurveToString(duk_context* ctx, TrackCurve curve)
 {
-    static const EnumMap<TrackCurve> map({
-        { "straight", TrackCurve::None },
-        { "left", TrackCurve::Left },
-        { "right", TrackCurve::Right },
-        { "left_small", TrackCurve::LeftSmall },
-        { "right_small", TrackCurve::RightSmall },
-        { "left_very_small", TrackCurve::LeftVerySmall },
-        { "right_very_small", TrackCurve::RightVerySmall },
-        { "left_large", TrackCurve::LeftLarge },
-        { "right_large", TrackCurve::RightLarge },
-    });
+    static const EnumMap<TrackCurve> map(
+        {
+            { "straight", TrackCurve::None },
+            { "left", TrackCurve::Left },
+            { "right", TrackCurve::Right },
+            { "left_small", TrackCurve::LeftSmall },
+            { "right_small", TrackCurve::RightSmall },
+            { "left_very_small", TrackCurve::LeftVerySmall },
+            { "right_very_small", TrackCurve::RightVerySmall },
+            { "left_large", TrackCurve::LeftLarge },
+            { "right_large", TrackCurve::RightLarge },
+        });
 
     u8string text = u8string(map[curve]);
     return ToDuk<std::string>(ctx, text);

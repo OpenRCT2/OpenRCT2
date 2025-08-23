@@ -87,11 +87,11 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 case WIDX_AFFIX_DROPDOWN_BUTTON:
-                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[0].Args = STR_PREFIX;
+                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[0].args = STR_PREFIX;
 
-                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[1].Args = STR_SUFFIX;
+                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[1].args = STR_SUFFIX;
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,

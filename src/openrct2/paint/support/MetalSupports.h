@@ -91,20 +91,21 @@ struct PaintSession;
 
 /** @deprecated */
 bool MetalASupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t special, int32_t height,
+    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t heightExtra, int32_t height,
     ImageId imageTemplate);
 bool MetalASupportsPaintSetupRotated(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t special,
+    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t heightExtra,
     int32_t height, ImageId imageTemplate);
 /** @deprecated */
 bool MetalBSupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t special, int32_t height,
+    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, int32_t heightExtra, int32_t height,
     ImageId imageTemplate);
 bool MetalBSupportsPaintSetupRotated(
-    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t special,
+    PaintSession& session, MetalSupportType supportType, MetalSupportPlace placement, Direction direction, int32_t heightExtra,
     int32_t height, ImageId imageTemplate);
 void DrawSupportsSideBySide(
-    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special = 0);
+    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type,
+    int32_t heightExtra = 0);
 bool PathPoleSupportsPaintSetup(
     PaintSession& session, MetalSupportPlace supportPlace, bool isSloped, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo);

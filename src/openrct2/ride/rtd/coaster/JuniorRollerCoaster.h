@@ -15,15 +15,17 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor JuniorRollerCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::juniorRollerCoaster,
         .supportType = MetalSupportType::fork,
-        .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill,TrackGroup::liftHillCurve, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::flatToSteepSlope, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::blockBrakes, TrackGroup::booster, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes},
-        .extraTrackGroups = {TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::onridePhoto},
+        .enabledTrackGroups = { TrackGroup::straight, TrackGroup::stationEnd, TrackGroup::liftHill,TrackGroup::liftHillCurve, TrackGroup::flatRollBanking, TrackGroup::slope, TrackGroup::flatToSteepSlope, TrackGroup::slopeCurve, TrackGroup::sBend, TrackGroup::curveSmall, TrackGroup::curve, TrackGroup::curveLarge, TrackGroup::helixDownBankedHalf, TrackGroup::helixUpBankedHalf, TrackGroup::brakes, TrackGroup::blockBrakes, TrackGroup::booster, TrackGroup::diagBrakes, TrackGroup::diagBlockBrakes, TrackGroup::diagSlope },
+        .extraTrackGroups = { TrackGroup::slopeSteepUp, TrackGroup::slopeSteepDown, TrackGroup::onridePhoto, TrackGroup::diagSlopeSteepUp, TrackGroup::diagSlopeSteepDown },
     }),
     .InvertedTrackPaintFunctions = {},
     .Flags = kRtdFlagsHasThreeColours | kRtdFlagsCommonCoaster | kRtdFlagsCommonCoasterNonAlt |
@@ -39,7 +41,7 @@ constexpr RideTypeDescriptor JuniorRollerCoasterRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 12, 24, 4, 7, },
     .MaxMass = 18,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftFrictionWheels, 4, 6 },
+    .LiftData = { Audio::SoundId::LiftFrictionWheels, 4, 6 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 40, 20, 80, 8, 3, 5 },
     .BuildCosts = { 22.50_GBP, 2.00_GBP, 40, },
@@ -60,13 +62,13 @@ constexpr RideTypeDescriptor JuniorRollerCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 40), MakeRideRating(2, 50), MakeRideRating(1, 80) },
+        { RideRating::make(2, 40), RideRating::make(2, 50), RideRating::make(1, 80) },
         13,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -85,4 +87,5 @@ constexpr RideTypeDescriptor JuniorRollerCoasterRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

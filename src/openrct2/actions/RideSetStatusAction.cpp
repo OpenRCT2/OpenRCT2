@@ -118,7 +118,7 @@ GameActions::Result RideSetStatusAction::Query() const
 GameActions::Result RideSetStatusAction::Execute() const
 {
     GameActions::Result res = GameActions::Result();
-    res.Expenditure = ExpenditureType::RideRunningCosts;
+    res.Expenditure = ExpenditureType::rideRunningCosts;
 
     auto ride = GetRide(_rideIndex);
     if (ride == nullptr)

@@ -29,6 +29,13 @@ enum class FileBrowserSort : int32_t
     DateDescending,
 };
 
+enum class ParkPreviewPref : int32_t
+{
+    disabled,
+    miniMap,
+    screenshot,
+};
+
 enum class TemperatureUnit : int32_t
 {
     Celsius,

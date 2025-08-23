@@ -51,6 +51,7 @@
     #include "bindings/object/ScObjectManager.h"
     #include "bindings/ride/ScRide.hpp"
     #include "bindings/ride/ScRideStation.hpp"
+    #include "bindings/world/ScAward.hpp"
     #include "bindings/world/ScClimate.hpp"
     #include "bindings/world/ScDate.hpp"
     #include "bindings/world/ScMap.hpp"
@@ -403,6 +404,7 @@ void ScriptEngine::Initialise()
         throw std::runtime_error("Script engine already initialised.");
 
     auto ctx = static_cast<duk_context*>(_context);
+    ScAward::Register(ctx);
     ScCheats::Register(ctx);
     ScClimate::Register(ctx);
     ScWeatherState::Register(ctx);
@@ -1141,7 +1143,7 @@ GameActions::Result ScriptEngine::DukToGameActionResult(const DukValue& d)
         if (!expenditureType.empty())
         {
             auto expenditure = StringToExpenditureType(expenditureType);
-            if (expenditure != ExpenditureType::Count)
+            if (expenditure != ExpenditureType::count)
             {
                 result.Expenditure = expenditure;
             }
@@ -1190,7 +1192,7 @@ ExpenditureType ScriptEngine::StringToExpenditureType(std::string_view expenditu
     {
         return static_cast<ExpenditureType>(std::distance(std::begin(ExpenditureTypes), it));
     }
-    return ExpenditureType::Count;
+    return ExpenditureType::count;
 }
 
 DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const GameActions::Result& result)
@@ -1213,7 +1215,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Gam
     {
         obj.Set("position", ToDuk(_context, result.Position));
     }
-    if (result.Expenditure != ExpenditureType::Count)
+    if (result.Expenditure != ExpenditureType::count)
     {
         obj.Set("expenditureType", ExpenditureTypeToString(result.Expenditure));
     }

@@ -1242,7 +1242,6 @@ STR_1870    :Number of complete rotations
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Income: {BLACK}{CURRENCY2DP} per hour
 STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY2DP} per hour
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect Rides
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix Rides
 STR_1878    :{WINDOW_COLOUR_2}Inspection:
@@ -2163,7 +2162,6 @@ STR_3136    :Warning: This design will be built with an alternative vehicle type
 STR_3137    :Select Nearby Scenery
 STR_3138    :Reset Selection
 STR_3139    :Cable lift unable to work in this operating mode
-STR_3140    :Cable lift hill must start immediately after station
 STR_3141    :Multi-circuit per ride not possible with cable lift hill
 STR_3142    :{WINDOW_COLOUR_2}Capacity: {BLACK}{STRINGID}
 STR_3143    :Show people on map
@@ -2765,9 +2763,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :“Real” Parks
 STR_5626    :Other Parks
-STR_5627    :Group scenario list by:
-STR_5628    :اللعبة المصدر
-STR_5629    :مستوي الصعوبة
 STR_5630    :تفعيل الإفراج التدريجي
 STR_5631    :Original DLC Parks
 STR_5632    :Build your own…
@@ -3250,7 +3245,6 @@ STR_6165    :إستخدام المزامنة العمودية
 STR_6166    :مزامنة كل فريم إلي معدل تحديث الشاشة، مما يمنع تمزيق وتمييع الشاشة.
 STR_6167    :متقدم
 STR_6168    :تسلسل العنوان
-STR_6169    :تحديد السيناريو
 STR_6170    :ضبط الواجهة
 STR_6171    :البحث
 STR_6172    :بحث
@@ -3373,7 +3367,6 @@ STR_6331    :إنشاء البط
 STR_6332    :حذف البط
 STR_6333    :زيادة عامل الحجم
 STR_6334    :تقليل عامل الحجم
-STR_6335    :معاين البلاط: أدرج العنصر التالف
 STR_6336    :معاين البلاط: نسخ العنصر
 STR_6337    :معاين البلاط: لصق العنصر
 STR_6338    :معاين البلاط: حذف العنصر

@@ -16,10 +16,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor ChairliftRTD =
 {
     .Category = RideCategory::transport,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::chairlift,
         .supportType = MetalSupportType::truss,
@@ -40,7 +42,7 @@ constexpr RideTypeDescriptor ChairliftRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 40, 32, 28, 2, },
     .MaxMass = 18,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 70, 10, 0 },
     .UpkeepCosts = { 60, 20, 0, 4, 3, 10 },
     .BuildCosts = { 32.50_GBP, 0.50_GBP, 30, },
@@ -59,7 +61,7 @@ constexpr RideTypeDescriptor ChairliftRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(1, 60), MakeRideRating(0, 40), MakeRideRating(0, 50) },
+        { RideRating::make(1, 60), RideRating::make(0, 40), RideRating::make(0, 50) },
         14,
         -1,
         false,
@@ -79,8 +81,8 @@ constexpr RideTypeDescriptor ChairliftRTD =
         },
     },
     .UpdateRotating = UpdateRotatingDefault,
-    .LightFXAddLightsMagicVehicle = OpenRCT2::Drawing::LightFx::AddLightsMagicVehicle_ChairLift,
-    .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
+    .LightFXAddLightsMagicVehicle = Drawing::LightFx::AddLightsMagicVehicle_ChairLift,
+    .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
@@ -90,4 +92,5 @@ constexpr RideTypeDescriptor ChairliftRTD =
     .ConstructionWindowContext = RideConstructionWindowContext::Default,
     .RideUpdate = updateChairlift,
 };
+} // namespace OpenRCT2
 // clang-format on

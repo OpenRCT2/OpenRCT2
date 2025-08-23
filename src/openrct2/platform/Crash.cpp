@@ -33,14 +33,15 @@
     #include "../config/Config.h"
     #include "../core/Compression.h"
     #include "../core/Console.hpp"
+    #include "../core/FileStream.h"
     #include "../core/Guard.hpp"
     #include "../core/Path.hpp"
-    #include "../core/SawyerCoding.h"
     #include "../core/String.hpp"
     #include "../drawing/IDrawingEngine.h"
     #include "../interface/Screenshot.h"
     #include "../object/ObjectManager.h"
     #include "../park/ParkFile.h"
+    #include "../sawyer_coding/SawyerCoding.h"
     #include "Platform.h"
 
     #define WSZ(x) L"" x
@@ -55,7 +56,7 @@ static const wchar_t* _wszCommitSha1Short = WSZ("");
 static const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 static std::map<std::wstring, std::wstring> _uploadFiles;
 
-    #define BACKTRACE_TOKEN "40d058b4220e017dd496a919442135fb5a3cc3fdd463b35ca0b6363c1d5d871e"
+    #define BACKTRACE_TOKEN "04d8cfb780c59ed8dcb87311d9d04a2d82a012571dd3be7ece9b205944afa65a"
 
 using namespace OpenRCT2;
 
@@ -70,8 +71,9 @@ static bool UploadMinidump(const std::map<std::wstring, std::wstring>& files, in
     {
         wprintf(L"files[%s] = %s\n", file.first.c_str(), file.second.c_str());
     }
-    std::wstring url(L"https://openrct2.sp.backtrace.io:6098/"
-                     L"post?format=minidump&token=" BACKTRACE_TOKEN);
+    std::wstring url(
+        L"https://openrct2.sp.backtrace.io:6098/"
+        L"post?format=minidump&token=" BACKTRACE_TOKEN);
     std::map<std::wstring, std::wstring> parameters;
     parameters[L"product_name"] = L"openrct2";
     parameters[L"version"] = String::toWideChar(gVersionInfoFull);
@@ -134,10 +136,12 @@ static bool OnCrash(
 
     // Compress the dump
     {
-        FILE* input = _wfopen(dumpFilePath, L"rb");
-        FILE* dest = _wfopen(dumpFilePathGZIP, L"wb");
+        FileStream source(dumpFilePath, FileMode::open);
+        FileStream dest(dumpFilePathGZIP, FileMode::write);
 
-        if (Compression::gzipCompress(input, dest))
+        // We could switch this to zstdCompress() if supported by backtrace.io. If you switch it,
+        // use the extension .zst and ZstdMetadataType::both to use the appropriate metadata.
+        if (Compression::zlibCompress(source, source.GetLength(), dest, Compression::ZlibHeaderType::gzip))
         {
             // TODO: enable upload of gzip-compressed dumps once supported on
             // backtrace.io (uncomment the line below). For now leave compression
@@ -148,8 +152,6 @@ static bool OnCrash(
             _uploadFiles[L"upload_file_minidump"] = dumpFilePathGZIP;
             */
         }
-        fclose(input);
-        fclose(dest);
     }
 
     bool with_record = StopSilentRecord();
@@ -183,7 +185,7 @@ static bool OnCrash(
         exporter->ExportObjectsList = objManager.GetPackableObjects();
 
         auto& gameState = getGameState();
-        exporter->Export(gameState, saveFilePathUTF8.c_str());
+        exporter->Export(gameState, saveFilePathUTF8.c_str(), kParkFileSaveCompressionLevel);
         savedGameDumped = true;
     }
     catch (const std::exception& e)

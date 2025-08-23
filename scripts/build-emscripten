@@ -7,11 +7,13 @@ START_DIR=$(pwd)
 SPEEXDSP_ROOT=/ext/speexdsp
 ICU_ROOT=/ext/icu/icu4c/source
 LIBZIP_ROOT=/ext/libzip
+ZSTD_ROOT=/ext/zstd
 JSON_DIR=/usr/include/nlohmann/
 
 emcmake cmake ../ \
     -G Ninja \
 	-DDISABLE_NETWORK=ON \
+	-DDISABLE_OPENGL=ON \
 	-DDISABLE_HTTP=ON \
 	-DDISABLE_TTF=ON \
 	-DDISABLE_FLAC=ON \
@@ -24,8 +26,9 @@ emcmake cmake ../ \
 	-DICU_DATA_LIBRARIES=$ICU_ROOT/lib/libicuuc.so \
 	-DICU_DT_LIBRARY_RELEASE="$ICU_ROOT/stubdata/libicudata.so" \
 	-DLIBZIP_LIBRARIES="$LIBZIP_ROOT/build/lib/libzip.a" \
-	-DEMSCRIPTEN_FLAGS="-s USE_SDL=2 -s USE_BZIP2=1 -s USE_LIBPNG=1 -pthread -O3" \
-	-DEMSCRIPTEN_LDFLAGS="-Wno-pthreads-mem-growth -s SAFE_HEAP=0 -s ALLOW_MEMORY_GROWTH=1 -s MAXIMUM_MEMORY=4GB -s INITIAL_MEMORY=2GB -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2 -s PTHREAD_POOL_SIZE=120 -pthread -s EXPORTED_RUNTIME_METHODS=ccall,FS,callMain,UTF8ToString,stringToNewUTF8 -lidbfs.js --use-preload-plugins -s MODULARIZE=1 -s 'EXPORT_NAME=\"OPENRCT2_WEB\"'"
+	-DZSTD_LIBRARIES="$ZSTD_ROOT/build/build/lib/libzstd.a" \
+	-DEMSCRIPTEN_FLAGS="-s USE_SDL=2 -s USE_ZLIB=1 -s USE_BZIP2=1 -s USE_LIBPNG=1 -pthread -O3" \
+	-DEMSCRIPTEN_LDFLAGS="-Wno-pthreads-mem-growth -s SAFE_HEAP=0 -s ALLOW_MEMORY_GROWTH=1 -s MAXIMUM_MEMORY=4GB -s INITIAL_MEMORY=2GB -s STACK_SIZE=8388608 -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2 -s PTHREAD_POOL_SIZE=120 -pthread -s EXPORTED_RUNTIME_METHODS=ccall,FS,callMain,UTF8ToString,stringToNewUTF8 -lidbfs.js --use-preload-plugins -s MODULARIZE=1 -s 'EXPORT_NAME=\"OPENRCT2_WEB\"'"
 
 emmake ninja
 

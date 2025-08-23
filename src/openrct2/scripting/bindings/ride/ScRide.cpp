@@ -536,7 +536,7 @@ namespace OpenRCT2::Scripting
             if (it != BreakdownMap.end())
                 return std::string(it->first);
         }
-        return "";
+        return {};
     }
 
     uint8_t ScRide::downtime_get() const

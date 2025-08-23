@@ -13,18 +13,26 @@
 
 #include <cstdint>
 
-namespace OpenRCT2
+namespace OpenRCT2::SawyerCoding
 {
     /**
      * The type of encoding / compression for a sawyer encoded chunk.
      */
-    enum class SawyerEncoding : uint8_t
+    enum class ChunkEncoding : uint8_t
     {
         none,
         rle,
         rleCompressed,
         rotate,
     };
+#pragma pack(push, 1)
+    struct ChunkHeader
+    {
+        ChunkEncoding encoding;
+        uint32_t length;
+    };
+    static_assert(sizeof(ChunkHeader) == 5);
+#pragma pack(pop)
 
     /**
      * Represents a sawyer encoded chunk.
@@ -33,7 +41,7 @@ namespace OpenRCT2
     {
     private:
         OpenRCT2::MemoryStream _data;
-        SawyerEncoding _encoding = SawyerEncoding::none;
+        ChunkEncoding _encoding = ChunkEncoding::none;
 
     public:
         const void* GetData() const
@@ -44,11 +52,11 @@ namespace OpenRCT2
         {
             return _data.GetLength();
         }
-        SawyerEncoding GetEncoding() const
+        ChunkEncoding GetEncoding() const
         {
             return _encoding;
         }
 
-        SawyerChunk(SawyerEncoding encoding, OpenRCT2::MemoryStream&& data);
+        SawyerChunk(ChunkEncoding encoding, OpenRCT2::MemoryStream&& data);
     };
-} // namespace OpenRCT2
+} // namespace OpenRCT2::SawyerCoding

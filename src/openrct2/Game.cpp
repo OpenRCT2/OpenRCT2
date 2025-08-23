@@ -30,7 +30,6 @@
 #include "core/FileScanner.h"
 #include "core/Money.hpp"
 #include "core/Path.hpp"
-#include "core/SawyerCoding.h"
 #include "core/String.hpp"
 #include "entity/EntityList.h"
 #include "entity/EntityRegistry.h"
@@ -57,6 +56,8 @@
 #include "ride/Track.h"
 #include "ride/TrackDesign.h"
 #include "ride/Vehicle.h"
+#include "sawyer_coding/SawyerCoding.h"
+#include "scenario/Scenario.h"
 #include "scenes/title/TitleScene.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
@@ -195,13 +196,14 @@ static void FixGuestsHeadingToParkCount()
         }
     }
 
-    if (gameState.numGuestsHeadingForPark != guestsHeadingToPark)
+    if (gameState.park.numGuestsHeadingForPark != guestsHeadingToPark)
     {
         LOG_WARNING(
-            "Corrected bad amount of guests heading to park: %u -> %u", gameState.numGuestsHeadingForPark, guestsHeadingToPark);
+            "Corrected bad amount of guests heading to park: %u -> %u", gameState.park.numGuestsHeadingForPark,
+            guestsHeadingToPark);
     }
 
-    gameState.numGuestsHeadingForPark = guestsHeadingToPark;
+    gameState.park.numGuestsHeadingForPark = guestsHeadingToPark;
 }
 
 static void FixGuestCount()
@@ -218,12 +220,12 @@ static void FixGuestCount()
     }
 
     auto& gameState = getGameState();
-    if (gameState.numGuestsInPark != guestCount)
+    if (gameState.park.numGuestsInPark != guestCount)
     {
-        LOG_WARNING("Corrected bad amount of guests in park: %u -> %u", gameState.numGuestsInPark, guestCount);
+        LOG_WARNING("Corrected bad amount of guests in park: %u -> %u", gameState.park.numGuestsInPark, guestCount);
     }
 
-    gameState.numGuestsInPark = guestCount;
+    gameState.park.numGuestsInPark = guestCount;
 }
 
 static void FixPeepsWithInvalidRideReference()

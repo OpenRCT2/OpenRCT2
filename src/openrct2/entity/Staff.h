@@ -69,7 +69,7 @@ public:
     void SetHireDate(int32_t hireDate);
     int32_t GetHireDate() const;
 
-    bool CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) const;
+    bool CanIgnoreWideFlag(const CoordsXYZ& staffPos, OpenRCT2::TileElement* path) const;
 
     static void ResetStats();
     void Serialise(DataSerialiser& stream);
@@ -112,15 +112,16 @@ private:
     Direction HandymanDirectionRandSurface(uint8_t validDirections) const;
 
     void EntertainerUpdateNearbyPeeps() const;
+    bool SecurityGuardPathIsCrowded() const;
 
     uint8_t GetValidPatrolDirections(const CoordsXY& loc) const;
     Direction HandymanDirectionToNearestLitter() const;
     uint8_t HandymanDirectionToUncutGrass(uint8_t valid_directions) const;
     Direction DirectionSurface(Direction initialDirection) const;
-    Direction DirectionPath(uint8_t validDirections, PathElement* pathElement) const;
+    Direction DirectionPath(uint8_t validDirections, OpenRCT2::PathElement* pathElement) const;
     Direction MechanicDirectionSurface() const;
     Direction MechanicDirectionPathRand(uint8_t pathDirections) const;
-    Direction MechanicDirectionPath(uint8_t validDirections, PathElement* pathElement);
+    Direction MechanicDirectionPath(uint8_t validDirections, OpenRCT2::PathElement* pathElement);
     bool UpdatePatrollingFindWatering();
     bool UpdatePatrollingFindBin();
     bool UpdatePatrollingFindSweeping();

@@ -117,14 +117,14 @@ void MarketingUpdate()
     if (gameState.cheats.neverendingMarketing)
         return;
 
-    for (auto it = gameState.marketingCampaigns.begin(); it != gameState.marketingCampaigns.end();)
+    for (auto it = gameState.park.marketingCampaigns.begin(); it != gameState.park.marketingCampaigns.end();)
     {
         auto& campaign = *it;
-        if (campaign.Flags & MarketingCampaignFlags::FIRST_WEEK)
+        if (campaign.flags.has(MarketingCampaignFlag::firstWeek))
         {
             // This ensures the campaign is active for x full weeks if started within the
             // middle of a week.
-            campaign.Flags &= ~MarketingCampaignFlags::FIRST_WEEK;
+            campaign.flags.unset(MarketingCampaignFlag::firstWeek);
         }
         else if (campaign.WeeksLeft > 0)
         {
@@ -134,7 +134,7 @@ void MarketingUpdate()
         if (campaign.WeeksLeft == 0)
         {
             MarketingRaiseFinishedNotification(campaign);
-            it = gameState.marketingCampaigns.erase(it);
+            it = gameState.park.marketingCampaigns.erase(it);
         }
         else
         {
@@ -234,7 +234,7 @@ bool MarketingIsCampaignTypeApplicable(int32_t campaignType)
 
 MarketingCampaign* MarketingGetCampaign(int32_t campaignType)
 {
-    for (auto& campaign : getGameState().marketingCampaigns)
+    for (auto& campaign : getGameState().park.marketingCampaigns)
     {
         if (campaign.Type == campaignType)
         {
@@ -254,7 +254,7 @@ void MarketingNewCampaign(const MarketingCampaign& campaign)
     }
     else
     {
-        getGameState().marketingCampaigns.push_back(campaign);
+        getGameState().park.marketingCampaigns.push_back(campaign);
     }
 }
 
@@ -268,7 +268,7 @@ void MarketingCancelCampaignsForRide(const RideId rideId)
         return false;
     };
 
-    auto& v = getGameState().marketingCampaigns;
+    auto& v = getGameState().park.marketingCampaigns;
     auto removedIt = std::remove_if(v.begin(), v.end(), isCampaignForRideFn);
     v.erase(removedIt, v.end());
 }

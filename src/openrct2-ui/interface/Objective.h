@@ -13,11 +13,15 @@
 #include <openrct2/localisation/StringIdType.h>
 
 class Formatter;
-struct Objective;
+
+namespace OpenRCT2::Scenario
+{
+    struct Objective;
+}
 
 namespace OpenRCT2::Ui
 {
-    void formatObjective(Formatter& ft, Objective objective);
+    void formatObjective(Formatter& ft, const Scenario::Objective& objective);
 
     extern const StringId kObjectiveNames[12];
 } // namespace OpenRCT2::Ui

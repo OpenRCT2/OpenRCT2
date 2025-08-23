@@ -23,7 +23,6 @@
 #include "../core/File.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
-#include "../core/SawyerCoding.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/EntityTweener.h"
@@ -32,6 +31,7 @@
 #include "../localisation/LocalisationService.h"
 #include "../park/ParkFile.h"
 #include "../platform/Platform.h"
+#include "../sawyer_coding/SawyerCoding.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
@@ -49,7 +49,7 @@ using namespace OpenRCT2;
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-constexpr uint8_t kNetworkStreamVersion = 1;
+constexpr uint8_t kNetworkStreamVersion = 4;
 
 const std::string kNetworkStreamID = std::string(kOpenRCT2Version) + "-" + std::to_string(kNetworkStreamVersion);
 
@@ -2400,8 +2400,8 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
     uint32_t totalObjects = 0;
     packet >> index >> totalObjects;
 
-    static constexpr uint32_t OBJECT_START_INDEX = 0;
-    if (index == OBJECT_START_INDEX)
+    static constexpr uint32_t kObjectStartIndex = 0;
+    if (index == kObjectStartIndex)
     {
         _missingObjects.clear();
     }
@@ -2876,7 +2876,7 @@ bool NetworkBase::SaveMap(IStream* stream, const std::vector<const ObjectReposit
         exporter->ExportObjectsList = objects;
 
         auto& gameState = getGameState();
-        exporter->Export(gameState, *stream);
+        exporter->Export(gameState, *stream, kParkFileNetCompressionLevel);
         result = true;
     }
     catch (const std::exception& e)

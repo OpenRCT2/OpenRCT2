@@ -338,7 +338,15 @@ namespace OpenRCT2::String
         // null terminator.
         va_list copy;
         va_copy(copy, args);
+#pragma GCC diagnostic push
+// clang does not recognize -Wformat-truncation and errors on -Wunknown-warning-option.
+// GCC does not recognize disabling -Wunknown-warning-option via pragma
+// Only disable this warning for GCC, as Clang does not support it.
+#ifndef __clang__
+    #pragma GCC diagnostic ignored "-Wformat-truncation"
+#endif
         auto len = vsnprintf(nullptr, 0, format, copy);
+#pragma GCC diagnostic pop
         va_end(copy);
 
         if (len >= 0)

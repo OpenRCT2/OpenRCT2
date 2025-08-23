@@ -15,5 +15,5 @@
 #include <cstdint>
 
 void Sub6A3F61PathAddition(
-    PaintSession& session, const PathElement& pathElement, uint16_t height, ImageId sceneryImageTemplate);
-void PaintLampLightEffects(PaintSession& session, const PathElement& pathEl, uint16_t height);
+    PaintSession& session, const OpenRCT2::PathElement& pathElement, uint16_t height, ImageId sceneryImageTemplate);
+void PaintLampLightEffects(PaintSession& session, const OpenRCT2::PathElement& pathEl, uint16_t height);

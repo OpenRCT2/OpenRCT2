@@ -29,5 +29,5 @@ public:
     OpenRCT2::GameActions::Result Execute() const override;
 
 private:
-    BannerElement* GetBannerElementAt() const;
+    OpenRCT2::BannerElement* GetBannerElementAt() const;
 };

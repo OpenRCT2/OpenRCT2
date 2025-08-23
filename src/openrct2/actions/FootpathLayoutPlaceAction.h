@@ -17,16 +17,16 @@ class FootpathLayoutPlaceAction final : public GameActionBase<GameCommand::Place
 private:
     CoordsXYZ _loc;
     uint8_t _slope{};
-    ObjectEntryIndex _type{};
-    ObjectEntryIndex _railingsType{};
+    OpenRCT2::ObjectEntryIndex _type{};
+    OpenRCT2::ObjectEntryIndex _railingsType{};
     uint8_t _edges{};
     PathConstructFlags _constructFlags{};
 
 public:
     FootpathLayoutPlaceAction() = default;
     FootpathLayoutPlaceAction(
-        const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType, uint8_t edges,
-        PathConstructFlags constructFlags = 0);
+        const CoordsXYZ& loc, uint8_t slope, OpenRCT2::ObjectEntryIndex type, OpenRCT2::ObjectEntryIndex railingsType,
+        uint8_t edges, PathConstructFlags constructFlags = 0);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
@@ -39,5 +39,5 @@ public:
 private:
     OpenRCT2::GameActions::Result ElementInsertQuery(OpenRCT2::GameActions::Result res) const;
     OpenRCT2::GameActions::Result ElementInsertExecute(OpenRCT2::GameActions::Result res) const;
-    bool IsSameAsEntranceElement(const EntranceElement& entranceElement) const;
+    bool IsSameAsEntranceElement(const OpenRCT2::EntranceElement& entranceElement) const;
 };

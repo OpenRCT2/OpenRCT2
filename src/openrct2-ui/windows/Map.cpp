@@ -718,44 +718,40 @@ namespace OpenRCT2::Ui::Windows
         void CentreMapOnViewPoint()
         {
             WindowBase* mainWindow = WindowGetMain();
-            int16_t ax, bx, cx, dx;
-            int16_t bp, di;
-
-            if (mainWindow == nullptr || mainWindow->viewport == nullptr)
+            if (mainWindow == nullptr)
                 return;
 
-            auto offset = MiniMapOffsetFactors[GetCurrentRotation()];
+            Viewport* vp = mainWindow->viewport;
+            if (vp == nullptr)
+                return;
 
             // calculate centre view point of viewport and transform it to minimap coordinates
+            auto centreX = ((vp->ViewWidth() / 2) + vp->viewPos.x) / kCoordsXYStep;
+            auto centreY = ((vp->ViewHeight() / 2) + vp->viewPos.y) / kCoordsXYHalfTile;
 
-            cx = ((mainWindow->viewport->ViewWidth() / 2) + mainWindow->viewport->viewPos.x) / kCoordsXYStep;
-            dx = ((mainWindow->viewport->ViewHeight() / 2) + mainWindow->viewport->viewPos.y) / kCoordsXYHalfTile;
-            cx += offset.x * getPracticalMapSize();
-            dx += offset.y * getPracticalMapSize();
+            auto& offset = MiniMapOffsetFactors[GetCurrentRotation()];
+            centreX += offset.x * getPracticalMapSize();
+            centreY += offset.y * getPracticalMapSize();
 
             // calculate width and height of minimap
+            auto& widget = widgets[WIDX_MAP];
+            auto mapWidth = widget.width() - kScrollBarWidth - 1;
+            auto mapHeight = widget.height() - kScrollBarWidth - 1;
 
-            ax = widgets[WIDX_MAP].width() - 11;
-            bx = widgets[WIDX_MAP].height() - 11;
-            bp = ax;
-            di = bx;
+            centreX = std::max(centreX - (mapWidth >> 1), 0);
+            centreY = std::max(centreY - (mapHeight >> 1), 0);
 
-            ax >>= 1;
-            bx >>= 1;
-            cx = std::max(cx - ax, 0);
-            dx = std::max(dx - bx, 0);
+            mapWidth = scrolls[0].contentWidth - mapWidth;
+            mapHeight = scrolls[0].contentHeight - mapHeight;
 
-            bp = scrolls[0].contentWidth - bp;
-            di = scrolls[0].contentHeight - di;
+            if (mapWidth < 0 && (mapWidth - centreX) < 0)
+                centreX = 0;
 
-            if (bp < 0 && (bp - cx) < 0)
-                cx = 0;
+            if (mapHeight < 0 && (mapHeight - centreY) < 0)
+                centreY = 0;
 
-            if (di < 0 && (di - dx) < 0)
-                dx = 0;
-
-            scrolls[0].contentOffsetX = cx;
-            scrolls[0].contentOffsetY = dx;
+            scrolls[0].contentOffsetX = centreX;
+            scrolls[0].contentOffsetY = centreY;
             widgetScrollUpdateThumbs(*this, WIDX_MAP);
         }
 

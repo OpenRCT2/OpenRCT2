@@ -1234,7 +1234,6 @@ STR_1870    :Aletin kaç defa çevirme yapacağını seçiniz
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Gelir: {BLACK} saatte {CURRENCY2DP}
 STR_1874    :{WINDOW_COLOUR_2}Kâr: {BLACK} saatte {CURRENCY2DP}
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Aletleri kontrol etsin
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Aletleri tamir etsin
 STR_1878    :{WINDOW_COLOUR_2}Kontrol:
@@ -2153,7 +2152,6 @@ STR_3136    :Uyarı: Bu tasarım alternatif bir araç tipi ile inşa edilecek ve
 STR_3137    :Yakındaki cisimleri seçiniz
 STR_3138    :Seçiminizi sıfırlayınız
 STR_3139    :Asansörlü tırmanma zinciri bu çalışma modunda kullanılamıyor
-STR_3140    :Asansörlü tırmanma zinciri istasyondan hemen sonra bulunması lazım
 STR_3141    :Asansörlü tırmanma zinciri ile tur modu uygulanamıyor
 STR_3142    :{WINDOW_COLOUR_2}Kapasite: {BLACK}{STRINGID}
 STR_3143    :Müşterileri göster
@@ -2753,9 +2751,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :Gerçek parklar
 STR_5626    :Diğer parklar
-STR_5627    :Senaryo listesi sıralaması:
-STR_5628    :Standart
-STR_5629    :Zorluk seviyesi
 STR_5630    :Aşamalı ilerleme
 STR_5631    :Orijinal DLC Parkları
 STR_5632    :Kendiniz inşa ediniz…
@@ -3237,7 +3232,6 @@ STR_6165    :Vertical sync aç/kapat
 STR_6166    :Ekranın yırtılmasını önleyerek monitörün yenileme hızına göre her kareyi senkronize eder.
 STR_6167    :Gelişmiş
 STR_6168    :Başlık dizisi
-STR_6169    :Senaryo listesi ayarları
 STR_6170    :Kolaylaştırmalar
 STR_6171    :Arama
 STR_6172    :Arama

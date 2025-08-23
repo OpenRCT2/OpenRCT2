@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor CircusRTD =
 {
     .Category = RideCategory::gentle,
-    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
+    .StartTrackPiece = TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::circus,
         .enabledTrackGroups = {},
@@ -37,7 +39,7 @@ constexpr RideTypeDescriptor CircusRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 12, 128, 3, 2, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 20, 10, 0 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 62.50_GBP, 1.00_GBP, 1, },
@@ -52,7 +54,7 @@ constexpr RideTypeDescriptor CircusRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { MakeRideRating(2, 10), MakeRideRating(0, 30), MakeRideRating(0, 0) },
+        { RideRating::make(2, 10), RideRating::make(0, 30), RideRating::make(0, 0) },
         9,
         7,
         false,
@@ -60,7 +62,7 @@ constexpr RideTypeDescriptor CircusRTD =
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
-    .StartRideMusic = OpenRCT2::RideAudio::CircusStartRideMusicChannel,
+    .StartRideMusic = RideAudio::CircusStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = CircusMusicUpdate,
     .Classification = RideClassification::ride,
@@ -70,6 +72,7 @@ constexpr RideTypeDescriptor CircusRTD =
     .ConstructionWindowContext = RideConstructionWindowContext::Default,
     .RideUpdate = nullptr,
     .UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_Default,
-    .MusicTrackOffsetLength = OpenRCT2::RideAudio::RideMusicGetTrackOffsetLength_Circus,
+    .MusicTrackOffsetLength = RideAudio::RideMusicGetTrackOffsetLength_Circus,
 };
+} // namespace OpenRCT2
 // clang-format on

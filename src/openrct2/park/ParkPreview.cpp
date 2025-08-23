@@ -32,15 +32,15 @@ namespace OpenRCT2
     ParkPreview generatePreviewFromGameState(const GameState_t& gameState)
     {
         ParkPreview preview{
-            .parkName = gameState.park.Name,
-            .parkRating = gameState.park.Rating,
+            .parkName = gameState.park.name,
+            .parkRating = gameState.park.rating,
             .year = gameState.date.GetYear(),
             .month = gameState.date.GetMonth(),
             .day = gameState.date.GetDay(),
-            .parkUsesMoney = !(gameState.park.Flags & PARK_FLAGS_NO_MONEY),
-            .cash = gameState.cash,
+            .parkUsesMoney = !(gameState.park.flags & PARK_FLAGS_NO_MONEY),
+            .cash = gameState.park.cash,
             .numRides = static_cast<uint16_t>(RideManager().size()),
-            .numGuests = static_cast<uint16_t>(gameState.numGuestsInPark),
+            .numGuests = static_cast<uint16_t>(gameState.park.numGuestsInPark),
         };
 
         if (auto image = generatePreviewMap(); image != std::nullopt)
@@ -183,21 +183,23 @@ namespace OpenRCT2
         const auto mainWindow = WindowGetMain();
         const auto mainViewport = WindowGetViewport(mainWindow);
 
-        CoordsXYZ mapPosXYZ{};
+        CoordsXYZD mapPosXYZD{};
         if (mainViewport != nullptr)
         {
             const auto centre = mainViewport->viewPos
                 + ScreenCoordsXY{ mainViewport->ViewWidth() / 2, mainViewport->ViewHeight() / 2 };
             const auto mapPos = ViewportPosToMapPos(centre, 24, mainViewport->rotation);
-            mapPosXYZ = CoordsXYZ(mapPos.x, mapPos.y, int32_t{ TileElementHeight(mapPos) });
+            mapPosXYZD = CoordsXYZD(mapPos.x, mapPos.y, int32_t{ TileElementHeight(mapPos) }, mainViewport->rotation);
         }
-        else if (!gameState.park.Entrances.empty())
+        else if (!gameState.park.entrances.empty())
         {
-            const auto& entrance = gameState.park.Entrances[0];
-            mapPosXYZ = CoordsXYZ{ entrance.x + 16, entrance.y + 16, entrance.z + 32 };
+            const auto& entrance = gameState.park.entrances[0];
+            mapPosXYZD = CoordsXYZD(entrance.x + 16, entrance.y + 16, entrance.z + 32, DirectionReverse(entrance.direction));
         }
         else
+        {
             return std::nullopt;
+        }
 
         PreviewImage image{
             .type = PreviewImageType::screenshot,
@@ -210,10 +212,10 @@ namespace OpenRCT2
             .height = image.height,
             .flags = 0,
             .zoom = ZoomLevel{ 1 },
-            .rotation = mainViewport->rotation,
+            .rotation = mapPosXYZD.direction,
         };
 
-        auto viewPos = centre_2d_coordinates(mapPosXYZ, &saveVp);
+        auto viewPos = centre_2d_coordinates(mapPosXYZD, &saveVp);
         if (viewPos == std::nullopt)
             return std::nullopt;
 

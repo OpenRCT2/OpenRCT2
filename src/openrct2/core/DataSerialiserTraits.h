@@ -45,14 +45,11 @@ struct DataSerializerTraitsEnum
 
     static void encode(OpenRCT2::IStream* stream, const T& val)
     {
-        TUnderlying temp = ByteSwapBE(static_cast<TUnderlying>(val));
-        stream->Write(&temp);
+        stream->WriteValue(ByteSwapBE(static_cast<TUnderlying>(val)));
     }
     static void decode(OpenRCT2::IStream* stream, T& val)
     {
-        TUnderlying temp;
-        stream->Read(&temp);
-        val = static_cast<T>(ByteSwapBE(temp));
+        val = static_cast<T>(ByteSwapBE(stream->ReadValue<TUnderlying>()));
     }
     static void log(OpenRCT2::IStream* stream, const T& val)
     {
@@ -72,14 +69,11 @@ struct DataSerializerTraitsIntegral
 {
     static void encode(OpenRCT2::IStream* stream, const T& val)
     {
-        T temp = ByteSwapBE(val);
-        stream->Write(&temp);
+        stream->WriteValue(ByteSwapBE(val));
     }
     static void decode(OpenRCT2::IStream* stream, T& val)
     {
-        T temp;
-        stream->Read(&temp);
-        val = ByteSwapBE(temp);
+        val = ByteSwapBE(stream->ReadValue<T>());
     }
     static void log(OpenRCT2::IStream* stream, const T& val)
     {
@@ -96,11 +90,11 @@ struct DataSerializerTraitsT<bool>
 {
     static void encode(OpenRCT2::IStream* stream, const bool& val)
     {
-        stream->Write(&val);
+        stream->WriteValue(val);
     }
     static void decode(OpenRCT2::IStream* stream, bool& val)
     {
-        stream->Read(&val);
+        stream->ReadValue(val);
     }
     static void log(OpenRCT2::IStream* stream, const bool& val)
     {
@@ -162,19 +156,16 @@ struct DataSerializerTraitsT<std::string>
     static void encode(OpenRCT2::IStream* stream, const std::string& str)
     {
         uint16_t len = static_cast<uint16_t>(str.size());
-        uint16_t swapped = ByteSwapBE(len);
-        stream->Write(&swapped);
+        stream->WriteValue(ByteSwapBE(len));
         if (len == 0)
         {
             return;
         }
-        stream->WriteArray(str.c_str(), len);
+        stream->Write(str.c_str(), len);
     }
     static void decode(OpenRCT2::IStream* stream, std::string& res)
     {
-        uint16_t len;
-        stream->Read(&len);
-        len = ByteSwapBE(len);
+        uint16_t len = ByteSwapBE(stream->ReadValue<uint16_t>());
         if (len == 0)
         {
             res.clear();
@@ -199,15 +190,11 @@ struct DataSerializerTraitsT<NetworkPlayerId_t>
 {
     static void encode(OpenRCT2::IStream* stream, const NetworkPlayerId_t& val)
     {
-        uint32_t temp = static_cast<uint32_t>(val.id);
-        temp = ByteSwapBE(temp);
-        stream->Write(&temp);
+        stream->WriteValue(ByteSwapBE(val.id));
     }
     static void decode(OpenRCT2::IStream* stream, NetworkPlayerId_t& val)
     {
-        uint32_t temp;
-        stream->Read(&temp);
-        val.id = static_cast<decltype(val.id)>(ByteSwapBE(temp));
+        val.id = ByteSwapBE(stream->ReadValue<int32_t>());
     }
     static void log(OpenRCT2::IStream* stream, const NetworkPlayerId_t& val)
     {
@@ -288,9 +275,7 @@ struct DataSerializerTraitsPODArray
 {
     static void encode(OpenRCT2::IStream* stream, const _Ty (&val)[_Size])
     {
-        uint16_t len = static_cast<uint16_t>(_Size);
-        uint16_t swapped = ByteSwapBE(len);
-        stream->Write(&swapped);
+        stream->WriteValue(ByteSwapBE(static_cast<uint16_t>(_Size)));
 
         DataSerializerTraits<_Ty> s;
         for (auto&& sub : val)
@@ -300,9 +285,7 @@ struct DataSerializerTraitsPODArray
     }
     static void decode(OpenRCT2::IStream* stream, _Ty (&val)[_Size])
     {
-        uint16_t len;
-        stream->Read(&len);
-        len = ByteSwapBE(len);
+        uint16_t len = ByteSwapBE(stream->ReadValue<uint16_t>());
 
         if (len != _Size)
             throw std::runtime_error("Invalid size, can't decode");
@@ -362,9 +345,7 @@ struct DataSerializerTraitsT<std::array<_Ty, _Size>>
 {
     static void encode(OpenRCT2::IStream* stream, const std::array<_Ty, _Size>& val)
     {
-        uint16_t len = static_cast<uint16_t>(_Size);
-        uint16_t swapped = ByteSwapBE(len);
-        stream->Write(&swapped);
+        stream->WriteValue(ByteSwapBE(static_cast<uint16_t>(_Size)));
 
         DataSerializerTraits<_Ty> s;
         for (auto&& sub : val)
@@ -374,9 +355,7 @@ struct DataSerializerTraitsT<std::array<_Ty, _Size>>
     }
     static void decode(OpenRCT2::IStream* stream, std::array<_Ty, _Size>& val)
     {
-        uint16_t len;
-        stream->Read(&len);
-        len = ByteSwapBE(len);
+        uint16_t len = ByteSwapBE(stream->ReadValue<uint16_t>());
 
         if (len != _Size)
             throw std::runtime_error("Invalid size, can't decode");
@@ -405,9 +384,7 @@ struct DataSerializerTraitsT<std::vector<_Ty>>
 {
     static void encode(OpenRCT2::IStream* stream, const std::vector<_Ty>& val)
     {
-        uint16_t len = static_cast<uint16_t>(val.size());
-        uint16_t swapped = ByteSwapBE(len);
-        stream->Write(&swapped);
+        stream->WriteValue(ByteSwapBE(static_cast<uint16_t>(val.size())));
 
         DataSerializerTraits<_Ty> s;
         for (auto&& sub : val)
@@ -417,9 +394,7 @@ struct DataSerializerTraitsT<std::vector<_Ty>>
     }
     static void decode(OpenRCT2::IStream* stream, std::vector<_Ty>& val)
     {
-        uint16_t len;
-        stream->Read(&len);
-        len = ByteSwapBE(len);
+        uint16_t len = ByteSwapBE(stream->ReadValue<uint16_t>());
 
         DataSerializerTraits<_Ty> s;
         for (auto i = 0; i < len; ++i)
@@ -472,9 +447,9 @@ struct DataSerializerTraitsT<MapRange>
 };
 
 template<>
-struct DataSerializerTraitsT<TileElement>
+struct DataSerializerTraitsT<OpenRCT2::TileElement>
 {
-    static void encode(OpenRCT2::IStream* stream, const TileElement& tileElement)
+    static void encode(OpenRCT2::IStream* stream, const OpenRCT2::TileElement& tileElement)
     {
         stream->WriteValue(tileElement.Type);
         stream->WriteValue(tileElement.Flags);
@@ -490,7 +465,7 @@ struct DataSerializerTraitsT<TileElement>
             stream->WriteValue(v);
         }
     }
-    static void decode(OpenRCT2::IStream* stream, TileElement& tileElement)
+    static void decode(OpenRCT2::IStream* stream, OpenRCT2::TileElement& tileElement)
     {
         tileElement.Type = stream->ReadValue<uint8_t>();
         tileElement.Flags = stream->ReadValue<uint8_t>();
@@ -506,7 +481,7 @@ struct DataSerializerTraitsT<TileElement>
             v = stream->ReadValue<uint8_t>();
         }
     }
-    static void log(OpenRCT2::IStream* stream, const TileElement& tileElement)
+    static void log(OpenRCT2::IStream* stream, const OpenRCT2::TileElement& tileElement)
     {
         char msg[128] = {};
         snprintf(
@@ -620,14 +595,11 @@ struct DataSerializerTraitsT<NetworkCheatType_t>
 {
     static void encode(OpenRCT2::IStream* stream, const NetworkCheatType_t& val)
     {
-        uint32_t temp = ByteSwapBE(val.id);
-        stream->Write(&temp);
+        stream->WriteValue(ByteSwapBE(val.id));
     }
     static void decode(OpenRCT2::IStream* stream, NetworkCheatType_t& val)
     {
-        uint32_t temp;
-        stream->Read(&temp);
-        val.id = ByteSwapBE(temp);
+        val.id = ByteSwapBE(stream->ReadValue<int32_t>());
     }
     static void log(OpenRCT2::IStream* stream, const NetworkCheatType_t& val)
     {
@@ -637,37 +609,34 @@ struct DataSerializerTraitsT<NetworkCheatType_t>
 };
 
 template<>
-struct DataSerializerTraitsT<RCTObjectEntry>
+struct DataSerializerTraitsT<OpenRCT2::RCTObjectEntry>
 {
-    static void encode(OpenRCT2::IStream* stream, const RCTObjectEntry& val)
+    static void encode(OpenRCT2::IStream* stream, const OpenRCT2::RCTObjectEntry& val)
     {
-        uint32_t temp = ByteSwapBE(val.flags);
-        stream->Write(&temp);
+        stream->WriteValue(ByteSwapBE(val.flags));
         stream->WriteArray(val.nameWOC, 12);
     }
-    static void decode(OpenRCT2::IStream* stream, RCTObjectEntry& val)
+    static void decode(OpenRCT2::IStream* stream, OpenRCT2::RCTObjectEntry& val)
     {
-        uint32_t temp;
-        stream->Read(&temp);
-        val.flags = ByteSwapBE(temp);
+        val.flags = ByteSwapBE(stream->ReadValue<uint32_t>());
         auto str = stream->ReadArray<char>(12);
         memcpy(val.nameWOC, str.get(), 12);
     }
-    static void log(OpenRCT2::IStream* stream, const RCTObjectEntry& val)
+    static void log(OpenRCT2::IStream* stream, const OpenRCT2::RCTObjectEntry& val)
     {
         stream->WriteArray(val.name, 8);
     }
 };
 
 template<>
-struct DataSerializerTraitsT<ObjectEntryDescriptor>
+struct DataSerializerTraitsT<OpenRCT2::ObjectEntryDescriptor>
 {
-    static void encode(OpenRCT2::IStream* stream, const ObjectEntryDescriptor& val)
+    static void encode(OpenRCT2::IStream* stream, const OpenRCT2::ObjectEntryDescriptor& val)
     {
         stream->WriteValue<uint8_t>(static_cast<uint8_t>(val.Generation));
-        if (val.Generation == ObjectGeneration::DAT)
+        if (val.Generation == OpenRCT2::ObjectGeneration::DAT)
         {
-            DataSerializerTraits<RCTObjectEntry> s;
+            DataSerializerTraits<OpenRCT2::RCTObjectEntry> s;
             s.encode(stream, val.Entry);
         }
         else
@@ -677,25 +646,25 @@ struct DataSerializerTraitsT<ObjectEntryDescriptor>
         }
     }
 
-    static void decode(OpenRCT2::IStream* stream, ObjectEntryDescriptor& val)
+    static void decode(OpenRCT2::IStream* stream, OpenRCT2::ObjectEntryDescriptor& val)
     {
-        auto generation = static_cast<ObjectGeneration>(stream->ReadValue<uint8_t>());
-        if (generation == ObjectGeneration::DAT)
+        auto generation = static_cast<OpenRCT2::ObjectGeneration>(stream->ReadValue<uint8_t>());
+        if (generation == OpenRCT2::ObjectGeneration::DAT)
         {
-            DataSerializerTraits<RCTObjectEntry> s;
-            RCTObjectEntry entry;
+            DataSerializerTraits<OpenRCT2::RCTObjectEntry> s;
+            OpenRCT2::RCTObjectEntry entry;
             s.decode(stream, entry);
-            val = ObjectEntryDescriptor(entry);
+            val = OpenRCT2::ObjectEntryDescriptor(entry);
         }
         else
         {
-            auto type = static_cast<ObjectType>(stream->ReadValue<uint8_t>());
-            auto identifier = stream->ReadStdString();
-            val = ObjectEntryDescriptor(type, identifier);
+            auto type = static_cast<OpenRCT2::ObjectType>(stream->ReadValue<uint8_t>());
+            auto identifier = stream->ReadString();
+            val = OpenRCT2::ObjectEntryDescriptor(type, identifier);
         }
     }
 
-    static void log(OpenRCT2::IStream* stream, const ObjectEntryDescriptor& val)
+    static void log(OpenRCT2::IStream* stream, const OpenRCT2::ObjectEntryDescriptor& val)
     {
         auto identifier = std::string(val.GetName());
         char msg[128] = {};
@@ -709,21 +678,21 @@ struct DataSerializerTraitsT<TrackDesignTrackElement>
 {
     static void encode(OpenRCT2::IStream* stream, const TrackDesignTrackElement& val)
     {
-        stream->Write(&val.type);
-        stream->Write(&val.flags);
-        stream->Write(&val.colourScheme);
-        stream->Write(&val.stationIndex);
-        stream->Write(&val.brakeBoosterSpeed);
-        stream->Write(&val.seatRotation);
+        stream->WriteValue(val.type);
+        stream->WriteValue(val.flags);
+        stream->WriteValue(val.colourScheme);
+        stream->WriteValue(val.stationIndex);
+        stream->WriteValue(val.brakeBoosterSpeed);
+        stream->WriteValue(val.seatRotation);
     }
     static void decode(OpenRCT2::IStream* stream, TrackDesignTrackElement& val)
     {
-        stream->Read(&val.type);
-        stream->Read(&val.flags);
-        stream->Read(&val.colourScheme);
-        stream->Read(&val.stationIndex);
-        stream->Read(&val.brakeBoosterSpeed);
-        stream->Read(&val.seatRotation);
+        stream->ReadValue(val.type);
+        stream->ReadValue(val.flags);
+        stream->ReadValue(val.colourScheme);
+        stream->ReadValue(val.stationIndex);
+        stream->ReadValue(val.brakeBoosterSpeed);
+        stream->ReadValue(val.seatRotation);
     }
     static void log(OpenRCT2::IStream* stream, const TrackDesignTrackElement& val)
     {
@@ -738,13 +707,13 @@ struct DataSerializerTraitsT<TrackDesignMazeElement>
 {
     static void encode(OpenRCT2::IStream* stream, const TrackDesignMazeElement& val)
     {
-        stream->Write(&val.location);
-        stream->Write(&val.mazeEntry);
+        stream->WriteValue(val.location);
+        stream->WriteValue(val.mazeEntry);
     }
     static void decode(OpenRCT2::IStream* stream, TrackDesignMazeElement& val)
     {
-        stream->Read(&val.location);
-        stream->Read(&val.mazeEntry);
+        stream->ReadValue(val.location);
+        stream->ReadValue(val.mazeEntry);
     }
     static void log(OpenRCT2::IStream* stream, const TrackDesignMazeElement& val)
     {
@@ -761,13 +730,13 @@ struct DataSerializerTraitsT<TrackDesignEntranceElement>
 {
     static void encode(OpenRCT2::IStream* stream, const TrackDesignEntranceElement& val)
     {
-        stream->Write(&val.location);
-        stream->Write(&val.isExit);
+        stream->WriteValue(val.location);
+        stream->WriteValue(val.isExit);
     }
     static void decode(OpenRCT2::IStream* stream, TrackDesignEntranceElement& val)
     {
-        stream->Read(&val.location);
-        stream->Read(&val.isExit);
+        stream->ReadValue(val.location);
+        stream->ReadValue(val.isExit);
     }
     static void log(OpenRCT2::IStream* stream, const TrackDesignEntranceElement& val)
     {
@@ -784,22 +753,22 @@ struct DataSerializerTraitsT<TrackDesignSceneryElement>
 {
     static void encode(OpenRCT2::IStream* stream, const TrackDesignSceneryElement& val)
     {
-        stream->Write(&val.loc);
-        stream->Write(&val.flags);
-        stream->Write(&val.primaryColour);
-        stream->Write(&val.secondaryColour);
-        stream->Write(&val.tertiaryColour);
-        DataSerializerTraits<ObjectEntryDescriptor> s;
+        stream->WriteValue(val.loc);
+        stream->WriteValue(val.flags);
+        stream->WriteValue(val.primaryColour);
+        stream->WriteValue(val.secondaryColour);
+        stream->WriteValue(val.tertiaryColour);
+        DataSerializerTraits<OpenRCT2::ObjectEntryDescriptor> s;
         s.encode(stream, val.sceneryObject);
     }
     static void decode(OpenRCT2::IStream* stream, TrackDesignSceneryElement& val)
     {
-        stream->Read(&val.loc);
-        stream->Read(&val.flags);
-        stream->Read(&val.primaryColour);
-        stream->Read(&val.secondaryColour);
-        stream->Read(&val.tertiaryColour);
-        DataSerializerTraits<ObjectEntryDescriptor> s;
+        stream->ReadValue(val.loc);
+        stream->ReadValue(val.flags);
+        stream->ReadValue(val.primaryColour);
+        stream->ReadValue(val.secondaryColour);
+        stream->ReadValue(val.tertiaryColour);
+        DataSerializerTraits<OpenRCT2::ObjectEntryDescriptor> s;
         s.decode(stream, val.sceneryObject);
     }
     static void log(OpenRCT2::IStream* stream, const TrackDesignSceneryElement& val)
@@ -821,15 +790,15 @@ struct DataSerializerTraitsT<TrackColour>
 {
     static void encode(OpenRCT2::IStream* stream, const TrackColour& val)
     {
-        stream->Write(&val.main);
-        stream->Write(&val.additional);
-        stream->Write(&val.supports);
+        stream->WriteValue(val.main);
+        stream->WriteValue(val.additional);
+        stream->WriteValue(val.supports);
     }
     static void decode(OpenRCT2::IStream* stream, TrackColour& val)
     {
-        stream->Read(&val.main);
-        stream->Read(&val.additional);
-        stream->Read(&val.supports);
+        stream->ReadValue(val.main);
+        stream->ReadValue(val.additional);
+        stream->ReadValue(val.supports);
     }
     static void log(OpenRCT2::IStream* stream, const TrackColour& val)
     {
@@ -845,15 +814,15 @@ struct DataSerializerTraitsT<VehicleColour>
 {
     static void encode(OpenRCT2::IStream* stream, const VehicleColour& val)
     {
-        stream->Write(&val.Body);
-        stream->Write(&val.Trim);
-        stream->Write(&val.Tertiary);
+        stream->WriteValue(val.Body);
+        stream->WriteValue(val.Trim);
+        stream->WriteValue(val.Tertiary);
     }
     static void decode(OpenRCT2::IStream* stream, VehicleColour& val)
     {
-        stream->Read(&val.Body);
-        stream->Read(&val.Trim);
-        stream->Read(&val.Tertiary);
+        stream->ReadValue(val.Body);
+        stream->ReadValue(val.Trim);
+        stream->ReadValue(val.Tertiary);
     }
     static void log(OpenRCT2::IStream* stream, const VehicleColour& val)
     {
@@ -864,26 +833,26 @@ struct DataSerializerTraitsT<VehicleColour>
 };
 
 template<>
-struct DataSerializerTraitsT<RatingTuple>
+struct DataSerializerTraitsT<OpenRCT2::RideRating::Tuple>
 {
-    static void encode(OpenRCT2::IStream* stream, const RatingTuple& val)
+    static void encode(OpenRCT2::IStream* stream, const OpenRCT2::RideRating::Tuple& val)
     {
-        stream->Write(&val.excitement);
-        stream->Write(&val.intensity);
-        stream->Write(&val.nausea);
+        stream->WriteValue(val.excitement);
+        stream->WriteValue(val.intensity);
+        stream->WriteValue(val.nausea);
     }
-    static void decode(OpenRCT2::IStream* stream, RatingTuple& val)
+    static void decode(OpenRCT2::IStream* stream, OpenRCT2::RideRating::Tuple& val)
     {
-        stream->Read(&val.excitement);
-        stream->Read(&val.intensity);
-        stream->Read(&val.nausea);
+        stream->ReadValue(val.excitement);
+        stream->ReadValue(val.intensity);
+        stream->ReadValue(val.nausea);
     }
-    static void log(OpenRCT2::IStream* stream, const RatingTuple& val)
+    static void log(OpenRCT2::IStream* stream, const OpenRCT2::RideRating::Tuple& val)
     {
         char msg[128] = {};
         snprintf(
-            msg, sizeof(msg), "RatingTuple(excitement = %d, intensity = %d, nausea = %d)", val.excitement, val.intensity,
-            val.nausea);
+            msg, sizeof(msg), "OpenRCT2::RideRating::Tuple(excitement = %d, intensity = %d, nausea = %d)", val.excitement,
+            val.intensity, val.nausea);
         stream->Write(msg, strlen(msg));
     }
 };
@@ -893,13 +862,11 @@ struct DataSerializerTraitsT<IntensityRange>
 {
     static void encode(OpenRCT2::IStream* stream, const IntensityRange& val)
     {
-        uint8_t temp = uint8_t(val);
-        stream->Write(&temp);
+        stream->WriteValue(static_cast<uint8_t>(val));
     }
     static void decode(OpenRCT2::IStream* stream, IntensityRange& val)
     {
-        auto temp = stream->ReadValue<uint8_t>();
-        val = IntensityRange(temp);
+        val = static_cast<IntensityRange>(stream->ReadValue<uint8_t>());
     }
     static void log(OpenRCT2::IStream* stream, const IntensityRange& val)
     {
@@ -914,17 +881,17 @@ struct DataSerializerTraitsT<PeepThought>
 {
     static void encode(OpenRCT2::IStream* stream, const PeepThought& val)
     {
-        stream->Write(&val.type);
-        stream->Write(&val.item);
-        stream->Write(&val.freshness);
-        stream->Write(&val.fresh_timeout);
+        stream->WriteValue(val.type);
+        stream->WriteValue(val.item);
+        stream->WriteValue(val.freshness);
+        stream->WriteValue(val.fresh_timeout);
     }
     static void decode(OpenRCT2::IStream* stream, PeepThought& val)
     {
-        stream->Read(&val.type);
-        stream->Read(&val.item);
-        stream->Read(&val.freshness);
-        stream->Read(&val.fresh_timeout);
+        stream->ReadValue(val.type);
+        stream->ReadValue(val.item);
+        stream->ReadValue(val.freshness);
+        stream->ReadValue(val.fresh_timeout);
     }
     static void log(OpenRCT2::IStream* stream, const PeepThought& val)
     {
@@ -994,7 +961,7 @@ struct DataSerializerTraitsT<Banner>
     static void encode(OpenRCT2::IStream* stream, const Banner& banner)
     {
         DataSerializerTraits<BannerIndex>().encode(stream, banner.id);
-        DataSerializerTraits<ObjectEntryIndex>().encode(stream, banner.type);
+        DataSerializerTraits<OpenRCT2::ObjectEntryIndex>().encode(stream, banner.type);
         stream->WriteValue(banner.flags);
         stream->WriteString(banner.text);
         stream->WriteValue(banner.colour);
@@ -1006,12 +973,12 @@ struct DataSerializerTraitsT<Banner>
     static void decode(OpenRCT2::IStream* stream, Banner& banner)
     {
         DataSerializerTraits<BannerIndex>().decode(stream, banner.id);
-        DataSerializerTraits<ObjectEntryIndex>().decode(stream, banner.type);
-        stream->Read(&banner.flags);
-        banner.text = stream->ReadStdString();
-        stream->Read(&banner.colour);
+        DataSerializerTraits<OpenRCT2::ObjectEntryIndex>().decode(stream, banner.type);
+        stream->ReadValue(banner.flags);
+        banner.text = stream->ReadString();
+        stream->ReadValue(banner.colour);
         DataSerializerTraits<RideId>().decode(stream, banner.rideIndex);
-        stream->Read(&banner.textColour);
+        stream->ReadValue(banner.textColour);
         DataSerializerTraits<TileCoordsXY>().decode(stream, banner.position);
     }
 

@@ -24,28 +24,31 @@ using namespace OpenRCT2;
 
 namespace OpenRCT2::Scripting
 {
-    static const DukEnumMap<uint8_t> ResearchStageMap({
-        { "initial_research", RESEARCH_STAGE_INITIAL_RESEARCH },
-        { "designing", RESEARCH_STAGE_DESIGNING },
-        { "completing_design", RESEARCH_STAGE_COMPLETING_DESIGN },
-        { "unknown", RESEARCH_STAGE_UNKNOWN },
-        { "finished_all", RESEARCH_STAGE_FINISHED_ALL },
-    });
+    static const DukEnumMap<uint8_t> ResearchStageMap(
+        {
+            { "initial_research", RESEARCH_STAGE_INITIAL_RESEARCH },
+            { "designing", RESEARCH_STAGE_DESIGNING },
+            { "completing_design", RESEARCH_STAGE_COMPLETING_DESIGN },
+            { "unknown", RESEARCH_STAGE_UNKNOWN },
+            { "finished_all", RESEARCH_STAGE_FINISHED_ALL },
+        });
 
-    static const DukEnumMap<ResearchCategory> ResearchCategoryMap({
-        { "transport", ResearchCategory::Transport },
-        { "gentle", ResearchCategory::Gentle },
-        { "rollercoaster", ResearchCategory::Rollercoaster },
-        { "thrill", ResearchCategory::Thrill },
-        { "water", ResearchCategory::Water },
-        { "shop", ResearchCategory::Shop },
-        { "scenery", ResearchCategory::SceneryGroup },
-    });
+    static const DukEnumMap<ResearchCategory> ResearchCategoryMap(
+        {
+            { "transport", ResearchCategory::Transport },
+            { "gentle", ResearchCategory::Gentle },
+            { "rollercoaster", ResearchCategory::Rollercoaster },
+            { "thrill", ResearchCategory::Thrill },
+            { "water", ResearchCategory::Water },
+            { "shop", ResearchCategory::Shop },
+            { "scenery", ResearchCategory::SceneryGroup },
+        });
 
-    static const DukEnumMap<Research::EntryType> ResearchEntryTypeMap({
-        { "ride", Research::EntryType::Ride },
-        { "scenery", Research::EntryType::Scenery },
-    });
+    static const DukEnumMap<Research::EntryType> ResearchEntryTypeMap(
+        {
+            { "ride", Research::EntryType::Ride },
+            { "scenery", Research::EntryType::Scenery },
+        });
 
     template<>
     inline DukValue ToDuk(duk_context* ctx, const ResearchItem& value)

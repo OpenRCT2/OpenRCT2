@@ -198,19 +198,22 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TOUCH_ENHANCEMENTS,
         WIDX_HOTKEY_DROPDOWN,
 
+        // Gamepad
+        WIDX_GAMEPAD_GROUP,
+        WIDX_GAMEPAD_DEADZONE_LABEL,
+        WIDX_GAMEPAD_DEADZONE,
+        WIDX_GAMEPAD_SENSITIVITY_LABEL,
+        WIDX_GAMEPAD_SENSITIVITY,
+
         // Misc
         WIDX_TITLE_SEQUENCE_GROUP = WIDX_PAGE_START,
         WIDX_TITLE_SEQUENCE,
         WIDX_TITLE_SEQUENCE_DROPDOWN,
-        WIDX_SCENARIO_GROUP,
+        WIDX_SCENARIO_OPTIONS_GROUP,
         WIDX_SCENARIO_PREVIEWS_LABEL,
         WIDX_SCENARIO_PREVIEWS,
         WIDX_SCENARIO_PREVIEWS_DROPDOWN,
-        WIDX_SCENARIO_GROUPING_LABEL,
-        WIDX_SCENARIO_GROUPING,
-        WIDX_SCENARIO_GROUPING_DROPDOWN,
         WIDX_SCENARIO_UNLOCKING,
-        WIDX_SCENARIO_OPTIONS_GROUP,
         WIDX_ALLOW_EARLY_COMPLETION,
         WIDX_TWEAKS_GROUP,
         WIDX_REAL_NAMES_GUESTS_CHECKBOX,
@@ -355,6 +358,7 @@ namespace OpenRCT2::Ui::Windows
     );
 
     constexpr int32_t kControlsGroupStart = 53;
+    constexpr int32_t kGamepadGroupStart = kControlsGroupStart + 150;
 
     static constexpr auto window_options_controls_widgets = makeWidgets(
         kMainOptionsWidgets,
@@ -366,7 +370,14 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 10, kControlsGroupStart + 75},  {290, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_WINDOW_BUTTONS_ON_THE_LEFT, STR_WINDOW_BUTTONS_ON_THE_LEFT_TIP), // Window buttons on the left
         makeWidget({ 10, kControlsGroupStart + 90},  {290, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_ENLARGED_UI,                STR_ENLARGED_UI_TIP               ),
         makeWidget({ 25, kControlsGroupStart + 105}, {275, 12}, WidgetType::checkbox, WindowColour::tertiary,  STR_TOUCH_ENHANCEMENTS,         STR_TOUCH_ENHANCEMENTS_TIP        ),
-        makeWidget({155, kControlsGroupStart + 120}, {145, 13}, WidgetType::button,   WindowColour::secondary, STR_HOTKEY,                     STR_HOTKEY_TIP                    )  // Set hotkeys buttons
+        makeWidget({155, kControlsGroupStart + 120}, {145, 13}, WidgetType::button,   WindowColour::secondary, STR_HOTKEY,                     STR_HOTKEY_TIP                    ), // Set hotkeys buttons
+
+        // Gamepad group
+        makeWidget({  5, kGamepadGroupStart +  0},   {300, 45}, WidgetType::groupbox, WindowColour::secondary, STR_GAMEPAD_GROUP                                                 ), // Gamepad group
+        makeWidget({ 10, kGamepadGroupStart + 13},   { 90, 12}, WidgetType::label,    WindowColour::secondary, STR_GAMEPAD_DEADZONE_LABEL,     STR_GAMEPAD_DEADZONE_TIP          ), // Deadzone label
+        makeWidget({105, kGamepadGroupStart + 13},   {190, 13}, WidgetType::scroll,   WindowColour::secondary, SCROLL_HORIZONTAL,              STR_GAMEPAD_DEADZONE_TOOLTIP_FORMAT), // Deadzone slider
+        makeWidget({ 10, kGamepadGroupStart + 28},   { 90, 12}, WidgetType::label,    WindowColour::secondary, STR_GAMEPAD_SENSITIVITY_LABEL,  STR_GAMEPAD_SENSITIVITY_TIP       ), // Sensitivity label
+        makeWidget({105, kGamepadGroupStart + 28},   {190, 13}, WidgetType::scroll,   WindowColour::secondary, SCROLL_HORIZONTAL,              STR_GAMEPAD_SENSITIVITY_TOOLTIP_FORMAT)  // Sensitivity slider
     );
 
     constexpr int32_t kThemesGroupStart = 53;
@@ -394,26 +405,20 @@ namespace OpenRCT2::Ui::Windows
     );
 
     constexpr int32_t kTitleSequenceStart = 53;
-    constexpr int32_t kScenarioGroupStart = kTitleSequenceStart + 35;
-    constexpr int32_t kScenarioOptionsGroupStart = kScenarioGroupStart + 70;
-    constexpr int32_t kTweaksStart = kScenarioOptionsGroupStart + 39;
+    constexpr int32_t kScenarioOptionsGroupStart = kTitleSequenceStart + 35;
+    constexpr int32_t kTweaksStart = kScenarioOptionsGroupStart + 70;
 
     static constexpr auto window_options_misc_widgets = makeWidgets(
         kMainOptionsWidgets,
-        makeWidget(         {  5, kTitleSequenceStart +  0}, {300, 31}, WidgetType::groupbox,     WindowColour::secondary, STR_OPTIONS_TITLE_SEQUENCE                        ),
-        makeDropdownWidgets({ 10, kTitleSequenceStart + 15}, {290, 12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_STRINGID,               STR_TITLE_SEQUENCE_TIP), // Title sequence dropdown
+        makeWidget(         {  5, kTitleSequenceStart +  0}, {300, 31}, WidgetType::groupbox,     WindowColour::secondary, STR_OPTIONS_TITLE_SEQUENCE                              ),
+        makeDropdownWidgets({ 10, kTitleSequenceStart + 15}, {290, 12}, WidgetType::dropdownMenu, WindowColour::secondary, STR_STRINGID,                 STR_TITLE_SEQUENCE_TIP    ), // Title sequence dropdown
 
-        makeWidget({  5,  kScenarioGroupStart + 0}, {300, 66}, WidgetType::groupbox,     WindowColour::secondary, STR_OPTIONS_SCENARIO_SELECTION                            ),
-        makeWidget({ 10, kScenarioGroupStart + 16}, {165, 12}, WidgetType::label,        WindowColour::secondary, STR_SCENARIO_PREVIEWS_LABEL,    STR_SCENARIO_PREVIEWS_TIP ),
-        makeWidget({175, kScenarioGroupStart + 15}, {125, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                            ), // Scenario previews
-        makeWidget({288, kScenarioGroupStart + 16}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,             STR_SCENARIO_PREVIEWS_TIP ),
-        makeWidget({ 10, kScenarioGroupStart + 31}, {165, 12}, WidgetType::label,        WindowColour::secondary, STR_OPTIONS_SCENARIO_GROUPING,  STR_SCENARIO_GROUPING_TIP ),
-        makeWidget({175, kScenarioGroupStart + 30}, {125, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                            ), // Scenario select mode
-        makeWidget({288, kScenarioGroupStart + 31}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,             STR_SCENARIO_GROUPING_TIP ),
-        makeWidget({ 25, kScenarioGroupStart + 45}, {275, 16}, WidgetType::checkbox,     WindowColour::tertiary , STR_OPTIONS_SCENARIO_UNLOCKING, STR_SCENARIO_UNLOCKING_TIP), // Unlocking of scenarios
-
-        makeWidget({ 5,  kScenarioOptionsGroupStart + 0}, {300, 35}, WidgetType::groupbox, WindowColour::secondary, STR_SCENARIO_OPTIONS                                ),
-        makeWidget({10, kScenarioOptionsGroupStart + 15}, {290, 15}, WidgetType::checkbox, WindowColour::tertiary , STR_ALLOW_EARLY_COMPLETION, STR_EARLY_COMPLETION_TIP), // Allow early scenario completion
+        makeWidget({ 5,  kScenarioOptionsGroupStart +  0}, {300, 66}, WidgetType::groupbox,     WindowColour::secondary, STR_SCENARIO_OPTIONS                                      ),
+        makeWidget({ 10, kScenarioOptionsGroupStart + 16}, {165, 12}, WidgetType::label,        WindowColour::secondary, STR_SCENARIO_PREVIEWS_LABEL,    STR_SCENARIO_PREVIEWS_TIP ),
+        makeWidget({175, kScenarioOptionsGroupStart + 15}, {125, 12}, WidgetType::dropdownMenu, WindowColour::secondary                                                            ), // Scenario previews
+        makeWidget({288, kScenarioOptionsGroupStart + 16}, { 11, 10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,             STR_SCENARIO_PREVIEWS_TIP ),
+        makeWidget({ 10, kScenarioOptionsGroupStart + 30}, {275, 16}, WidgetType::checkbox,     WindowColour::tertiary,  STR_OPTIONS_SCENARIO_UNLOCKING, STR_SCENARIO_UNLOCKING_TIP), // Unlocking of scenarios
+        makeWidget({ 10, kScenarioOptionsGroupStart + 45}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary,  STR_ALLOW_EARLY_COMPLETION,     STR_EARLY_COMPLETION_TIP  ), // Allow early scenario completion
 
         makeWidget({  5,  kTweaksStart + 0}, {300, 96}, WidgetType::groupbox,     WindowColour::secondary, STR_OPTIONS_TWEAKS                                                  ),
         makeWidget({ 10, kTweaksStart + 15}, {290, 15}, WidgetType::checkbox,     WindowColour::tertiary , STR_REAL_NAME_GUESTS,     STR_REAL_NAME_GUESTS_TIP                  ), // Show 'real' names of guests
@@ -648,10 +653,12 @@ namespace OpenRCT2::Ui::Windows
                 case WINDOW_OPTIONS_PAGE_AUDIO:
                     AudioUpdate();
                     break;
+                case WINDOW_OPTIONS_PAGE_CONTROLS:
+                    ControlsUpdate();
+                    break;
                 case WINDOW_OPTIONS_PAGE_DISPLAY:
                 case WINDOW_OPTIONS_PAGE_RENDERING:
                 case WINDOW_OPTIONS_PAGE_CULTURE:
-                case WINDOW_OPTIONS_PAGE_CONTROLS:
                 case WINDOW_OPTIONS_PAGE_MISC:
                 case WINDOW_OPTIONS_PAGE_ADVANCED:
                 default:
@@ -665,10 +672,11 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_OPTIONS_PAGE_AUDIO:
                     return AudioScrollGetSize(scrollIndex);
+                case WINDOW_OPTIONS_PAGE_CONTROLS:
+                    return ControlsScrollGetSize(scrollIndex);
                 case WINDOW_OPTIONS_PAGE_DISPLAY:
                 case WINDOW_OPTIONS_PAGE_RENDERING:
                 case WINDOW_OPTIONS_PAGE_CULTURE:
-                case WINDOW_OPTIONS_PAGE_CONTROLS:
                 case WINDOW_OPTIONS_PAGE_MISC:
                 case WINDOW_OPTIONS_PAGE_ADVANCED:
                 default:
@@ -680,6 +688,28 @@ namespace OpenRCT2::Ui::Windows
         {
             if (page == WINDOW_OPTIONS_PAGE_ADVANCED)
                 return AdvancedTooltip(widgetIndex, fallback);
+
+            if (page == WINDOW_OPTIONS_PAGE_CONTROLS)
+            {
+                if (widgetIndex == WIDX_GAMEPAD_DEADZONE)
+                {
+                    const int32_t deadzone = Config::Get().general.gamepadDeadzone;
+                    const int32_t deadzonePercent = static_cast<int32_t>((deadzone / 32767.0f) * 100);
+
+                    auto ft = Formatter();
+                    ft.Add<int32_t>(deadzonePercent);
+                    return { STR_GAMEPAD_DEADZONE_TOOLTIP_FORMAT, ft };
+                }
+                else if (widgetIndex == WIDX_GAMEPAD_SENSITIVITY)
+                {
+                    const float sensitivity = Config::Get().general.gamepadSensitivity;
+                    const int32_t sensitivityDisplay = static_cast<int32_t>(sensitivity * 100);
+
+                    auto ft = Formatter();
+                    ft.Add<int32_t>(sensitivityDisplay);
+                    return { STR_GAMEPAD_SENSITIVITY_TOOLTIP_FORMAT, ft };
+                }
+            }
 
             return WindowBase::OnTooltip(widgetIndex, fallback);
         }
@@ -792,9 +822,9 @@ namespace OpenRCT2::Ui::Windows
                     {
                         const Resolution& resolution = resolutions[i];
 
-                        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
 
-                        uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdownItems[i].Args);
+                        uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdown.items[i].args);
                         args[0] = STR_RESOLUTION_X_BY_Y;
                         args[1] = resolution.Width;
                         args[2] = resolution.Height;
@@ -816,12 +846,12 @@ namespace OpenRCT2::Ui::Windows
 
                 break;
                 case WIDX_FULLSCREEN_DROPDOWN:
-                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[0].Args = STR_OPTIONS_DISPLAY_WINDOWED;
-                    gDropdownItems[1].Args = STR_OPTIONS_DISPLAY_FULLSCREEN;
-                    gDropdownItems[2].Args = STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS;
+                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[2].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[0].args = STR_OPTIONS_DISPLAY_WINDOWED;
+                    gDropdown.items[1].args = STR_OPTIONS_DISPLAY_FULLSCREEN;
+                    gDropdown.items[2].args = STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS;
 
                     ShowDropdown(widget, 3);
 
@@ -832,8 +862,8 @@ namespace OpenRCT2::Ui::Windows
                     const auto numItems = static_cast<int32_t>(std::size(kDrawingEngineStringIds));
                     for (int32_t i = 0; i < numItems; i++)
                     {
-                        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[i].Args = kDrawingEngineStringIds[i];
+                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
+                        gDropdown.items[i].args = kDrawingEngineStringIds[i];
                     }
                     ShowDropdown(widget, numItems);
                     Dropdown::SetChecked(EnumValue(Config::Get().general.DrawingEngine), true);
@@ -856,12 +886,12 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_FRAME_RATE_LIMIT_DROPDOWN:
                 {
-                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[0].Args = STR_FRAME_RATE_LIMIT_DEFAULT;
-                    gDropdownItems[1].Args = STR_FRAME_RATE_LIMIT_VSYNC;
-                    gDropdownItems[2].Args = STR_FRAME_RATE_LIMIT_UNRESTRICTED;
+                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[2].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[0].args = STR_FRAME_RATE_LIMIT_DEFAULT;
+                    gDropdown.items[1].args = STR_FRAME_RATE_LIMIT_VSYNC;
+                    gDropdown.items[2].args = STR_FRAME_RATE_LIMIT_UNRESTRICTED;
 
                     ShowDropdown(widget, 3);
 
@@ -1082,12 +1112,12 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_VIRTUAL_FLOOR_DROPDOWN:
-                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[0].Args = STR_VIRTUAL_FLOOR_STYLE_DISABLED;
-                    gDropdownItems[1].Args = STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT;
-                    gDropdownItems[2].Args = STR_VIRTUAL_FLOOR_STYLE_GLASSY;
+                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[2].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[0].args = STR_VIRTUAL_FLOOR_STYLE_DISABLED;
+                    gDropdown.items[1].args = STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT;
+                    gDropdown.items[2].args = STR_VIRTUAL_FLOOR_STYLE_GLASSY;
 
                     Widget* widget = &widgets[widgetIndex - 1];
                     ShowDropdown(widget, 3);
@@ -1175,10 +1205,10 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_HEIGHT_LABELS_DROPDOWN:
-                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[0].Args = STR_HEIGHT_IN_UNITS;
-                    gDropdownItems[1].Args = STR_REAL_VALUES;
+                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[0].args = STR_HEIGHT_IN_UNITS;
+                    gDropdown.items[1].args = STR_REAL_VALUES;
 
                     ShowDropdown(widget, 2);
 
@@ -1194,15 +1224,15 @@ namespace OpenRCT2::Ui::Windows
 
                     for (size_t i = 0; i < numOrdinaryCurrencies; i++)
                     {
-                        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[i].Args = CurrencyDescriptors[i].stringId;
+                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
+                        gDropdown.items[i].args = CurrencyDescriptors[i].stringId;
                     }
 
-                    gDropdownItems[numOrdinaryCurrencies].Format = Dropdown::kSeparatorString;
+                    gDropdown.items[numOrdinaryCurrencies].format = Dropdown::kSeparatorString;
 
-                    gDropdownItems[numOrdinaryCurrencies + 1].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[numOrdinaryCurrencies + 1].Args = CurrencyDescriptors[EnumValue(CurrencyType::Custom)]
-                                                                         .stringId;
+                    gDropdown.items[numOrdinaryCurrencies + 1].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[numOrdinaryCurrencies + 1].args = CurrencyDescriptors[EnumValue(CurrencyType::Custom)]
+                                                                          .stringId;
 
                     ShowDropdown(widget, numItems);
 
@@ -1217,22 +1247,22 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 }
                 case WIDX_DISTANCE_DROPDOWN:
-                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[0].Args = STR_IMPERIAL;
-                    gDropdownItems[1].Args = STR_METRIC;
-                    gDropdownItems[2].Args = STR_SI;
+                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[2].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[0].args = STR_IMPERIAL;
+                    gDropdown.items[1].args = STR_METRIC;
+                    gDropdown.items[2].args = STR_SI;
 
                     ShowDropdown(widget, 3);
 
                     Dropdown::SetChecked(static_cast<int32_t>(Config::Get().general.MeasurementFormat), true);
                     break;
                 case WIDX_TEMPERATURE_DROPDOWN:
-                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[0].Args = STR_CELSIUS;
-                    gDropdownItems[1].Args = STR_FAHRENHEIT;
+                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[0].args = STR_CELSIUS;
+                    gDropdown.items[1].args = STR_FAHRENHEIT;
 
                     ShowDropdown(widget, 2);
 
@@ -1241,8 +1271,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_LANGUAGE_DROPDOWN:
                     for (size_t i = 1; i < LANGUAGE_COUNT; i++)
                     {
-                        gDropdownItems[i - 1].Format = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdownItems[i - 1].Args = reinterpret_cast<uintptr_t>(LanguagesDescriptors[i].native_name);
+                        gDropdown.items[i - 1].format = STR_OPTIONS_DROPDOWN_ITEM;
+                        gDropdown.items[i - 1].args = reinterpret_cast<uintptr_t>(LanguagesDescriptors[i].native_name);
                     }
                     ShowDropdown(widget, LANGUAGE_COUNT - 1);
                     Dropdown::SetChecked(LocalisationService_GetCurrentLanguage() - 1, true);
@@ -1250,8 +1280,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_DATE_FORMAT_DROPDOWN:
                     for (size_t i = 0; i < 4; i++)
                     {
-                        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[i].Args = DateFormatStringIDs[i];
+                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
+                        gDropdown.items[i].args = DateFormatStringIDs[i];
                     }
                     ShowDropdown(widget, 4);
                     Dropdown::SetChecked(Config::Get().general.DateFormat, true);
@@ -1434,8 +1464,8 @@ namespace OpenRCT2::Ui::Windows
                     // populate the list with the sound devices
                     for (int32_t i = 0; i < OpenRCT2::Audio::GetDeviceCount(); i++)
                     {
-                        gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(OpenRCT2::Audio::GetDeviceName(i).c_str());
+                        gDropdown.items[i].format = STR_OPTIONS_DROPDOWN_ITEM;
+                        gDropdown.items[i].args = reinterpret_cast<uintptr_t>(OpenRCT2::Audio::GetDeviceName(i).c_str());
                     }
 
                     ShowDropdown(widget, OpenRCT2::Audio::GetDeviceCount());
@@ -1455,8 +1485,8 @@ namespace OpenRCT2::Ui::Windows
                         if (Config::Get().sound.TitleMusic == theme.Kind)
                             checkedIndex = numItems;
 
-                        gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[numItems++].Args = theme.Name;
+                        gDropdown.items[numItems].format = STR_DROPDOWN_MENU_LABEL;
+                        gDropdown.items[numItems++].args = theme.Name;
                     }
                     ShowDropdown(widget, numItems);
                     Dropdown::SetChecked(checkedIndex, true);
@@ -1548,6 +1578,42 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        void ControlsUpdate()
+        {
+            const auto& deadzoneWidget = widgets[WIDX_GAMEPAD_DEADZONE];
+            const auto& deadzoneScroll = scrolls[0];
+            uint8_t deadzonePercent = GetScrollPercentage(deadzoneWidget, deadzoneScroll);
+            int32_t deadzoneValue = static_cast<int32_t>((deadzonePercent / 100.0f) * 32767);
+            if (deadzoneValue != Config::Get().general.gamepadDeadzone)
+            {
+                Config::Get().general.gamepadDeadzone = deadzoneValue;
+                Config::Save();
+            }
+
+            const auto& sensitivityWidget = widgets[WIDX_GAMEPAD_SENSITIVITY];
+            const auto& sensitivityScroll = scrolls[1];
+            uint8_t sensitivityPercent = GetScrollPercentage(sensitivityWidget, sensitivityScroll);
+            float sensitivityValue = 0.5f + (sensitivityPercent / 100.0f) * 2.5f; // Map 0-100% to 0.5-3.0
+            if (std::abs(sensitivityValue - Config::Get().general.gamepadSensitivity) > 0.01f)
+            {
+                Config::Get().general.gamepadSensitivity = sensitivityValue;
+                Config::Save();
+            }
+        }
+
+        ScreenSize ControlsScrollGetSize(int32_t scrollIndex)
+        {
+            switch (scrollIndex)
+            {
+                case 0:                // Deadzone slider
+                    return { 500, 0 }; // Range 0-500 (same as audio sliders)
+                case 1:                // Sensitivity slider
+                    return { 500, 0 }; // Range 0-500 (same as audio sliders)
+                default:
+                    return { 0, 0 };
+            }
+        }
+
         ScreenSize AudioScrollGetSize(int32_t scrollIndex)
         {
             return { 500, 0 };
@@ -1613,7 +1679,6 @@ namespace OpenRCT2::Ui::Windows
 #pragma endregion
 
 #pragma region Controls tab events
-
         void ControlsMouseUp(WidgetIndex widgetIndex)
         {
             auto* windowMgr = Ui::GetWindowManager();
@@ -1680,6 +1745,19 @@ namespace OpenRCT2::Ui::Windows
             SetCheckboxValue(WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.TouchEnhancements);
 
             widgetSetEnabled(*this, WIDX_TOUCH_ENHANCEMENTS, Config::Get().interface.EnlargedUi);
+
+            // Initialize scroll positions for sliders only on first frame
+            if (frame_no == 0)
+            {
+                // Convert deadzone (0-32767) to percentage (0-100), then to scroll position (0-500)
+                uint8_t deadzonePercent = static_cast<uint8_t>((Config::Get().general.gamepadDeadzone / 32767.0f) * 100);
+                InitializeScrollPosition(WIDX_GAMEPAD_DEADZONE, 0, deadzonePercent);
+
+                // Convert sensitivity (0.5-3.0) to percentage (0-100), then to scroll position (0-500)
+                uint8_t sensitivityPercent = static_cast<uint8_t>(
+                    ((Config::Get().general.gamepadSensitivity - 0.5f) / 2.5f) * 100);
+                InitializeScrollPosition(WIDX_GAMEPAD_SENSITIVITY, 1, sensitivityPercent);
+            }
         }
 
 #pragma endregion
@@ -1744,8 +1822,8 @@ namespace OpenRCT2::Ui::Windows
 
                     for (size_t i = 0; i < numItems; i++)
                     {
-                        gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
+                        gDropdown.items[i].format = STR_OPTIONS_DROPDOWN_ITEM;
+                        gDropdown.items[i].args = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
                     }
 
                     WindowDropdownShowTextCustomWidth(
@@ -1854,14 +1932,14 @@ namespace OpenRCT2::Ui::Windows
                     uint32_t numItems = static_cast<int32_t>(TitleSequenceManager::GetCount());
                     for (size_t i = 0; i < numItems; i++)
                     {
-                        gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(TitleSequenceManager::GetName(i));
+                        gDropdown.items[i].format = STR_OPTIONS_DROPDOWN_ITEM;
+                        gDropdown.items[i].args = reinterpret_cast<uintptr_t>(TitleSequenceManager::GetName(i));
                     }
 
-                    gDropdownItems[numItems].Format = 0;
+                    gDropdown.items[numItems].format = 0;
                     numItems++;
-                    gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[numItems].Args = STR_TITLE_SEQUENCE_RANDOM;
+                    gDropdown.items[numItems].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[numItems].args = STR_TITLE_SEQUENCE_RANDOM;
                     numItems++;
 
                     WindowDropdownShowText(
@@ -1878,10 +1956,10 @@ namespace OpenRCT2::Ui::Windows
                 {
                     uint32_t numItems = 2;
 
-                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[0].Args = STR_SCENARIO_PREVIEWS_MINIMAPS;
-                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[1].Args = STR_SCENARIO_PREVIEWS_SCREENSHOTS;
+                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[0].args = STR_SCENARIO_PREVIEWS_MINIMAPS;
+                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[1].args = STR_SCENARIO_PREVIEWS_SCREENSHOTS;
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
@@ -1890,27 +1968,11 @@ namespace OpenRCT2::Ui::Windows
                     Dropdown::SetChecked(Config::Get().interface.scenarioPreviewScreenshots, true);
                     break;
                 }
-                case WIDX_SCENARIO_GROUPING_DROPDOWN:
-                {
-                    uint32_t numItems = 2;
-
-                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[0].Args = STR_OPTIONS_SCENARIO_DIFFICULTY;
-                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[1].Args = STR_OPTIONS_SCENARIO_ORIGIN;
-
-                    WindowDropdownShowTextCustomWidth(
-                        { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
-                        Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
-
-                    Dropdown::SetChecked(EnumValue(Config::Get().general.scenarioSelectMode), true);
-                    break;
-                }
                 case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
                     for (size_t i = 0; i < 7; i++)
                     {
-                        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[i].Args = kRideInspectionIntervalNames[i];
+                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
+                        gDropdown.items[i].args = kRideInspectionIntervalNames[i];
                     }
 
                     ShowDropdown(widget, 7);
@@ -1959,17 +2021,6 @@ namespace OpenRCT2::Ui::Windows
                         windowMgr->InvalidateByClass(WindowClass::ScenarioSelect);
                     }
                     break;
-                case WIDX_SCENARIO_GROUPING_DROPDOWN:
-                    if (dropdownIndex != EnumValue(Config::Get().general.scenarioSelectMode))
-                    {
-                        Config::Get().general.scenarioSelectMode = static_cast<ScenarioSelectMode>(dropdownIndex);
-                        Config::Get().interface.scenarioSelectLastTab = 0;
-                        Config::Save();
-                        Invalidate();
-                        auto* windowMgr = Ui::GetWindowManager();
-                        windowMgr->CloseByClass(WindowClass::ScenarioSelect);
-                    }
-                    break;
             }
         }
 
@@ -2016,21 +2067,7 @@ namespace OpenRCT2::Ui::Windows
             else
                 widgets[WIDX_SCENARIO_PREVIEWS].text = STR_SCENARIO_PREVIEWS_MINIMAPS;
 
-            if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::difficulty)
-                widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_DIFFICULTY;
-            else
-                widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_ORIGIN;
-
             SetCheckboxValue(WIDX_SCENARIO_UNLOCKING, Config::Get().general.ScenarioUnlockingEnabled);
-
-            if (Config::Get().general.scenarioSelectMode == ScenarioSelectMode::origin)
-            {
-                disabled_widgets &= ~(1uLL << WIDX_SCENARIO_UNLOCKING);
-            }
-            else
-            {
-                disabled_widgets |= (1uLL << WIDX_SCENARIO_UNLOCKING);
-            }
 
             widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = kRideInspectionIntervalNames
                 [Config::Get().general.DefaultInspectionInterval];
@@ -2130,8 +2167,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_AUTOSAVE_FREQUENCY_DROPDOWN:
                     for (size_t i = AUTOSAVE_EVERY_MINUTE; i <= AUTOSAVE_NEVER; i++)
                     {
-                        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[i].Args = AutosaveNames[i];
+                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
+                        gDropdown.items[i].args = AutosaveNames[i];
                     }
 
                     ShowDropdown(widget, AUTOSAVE_NEVER + 1);

@@ -72,5 +72,5 @@ GameActions::Result GameSetSpeedAction::Execute() const
 
 bool GameSetSpeedAction::IsValidSpeed(uint8_t speed) const
 {
-    return (speed >= 1 && speed <= 4) || (Config::Get().general.DebuggingTools && speed == 8);
+    return speed >= 1 && (speed <= 4 || (Config::Get().general.DebuggingTools && speed <= 8));
 }

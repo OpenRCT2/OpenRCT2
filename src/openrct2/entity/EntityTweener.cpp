@@ -153,9 +153,10 @@ namespace OpenRCT2
             if (posA == posB)
                 continue;
 
-            ent->MoveTo({ static_cast<int32_t>(std::round(posB.x * alpha + posA.x * inv)),
-                          static_cast<int32_t>(std::round(posB.y * alpha + posA.y * inv)),
-                          static_cast<int32_t>(std::round(posB.z * alpha + posA.z * inv)) });
+            ent->MoveTo(
+                { static_cast<int32_t>(std::round(posB.x * alpha + posA.x * inv)),
+                  static_cast<int32_t>(std::round(posB.y * alpha + posA.y * inv)),
+                  static_cast<int32_t>(std::round(posB.z * alpha + posA.z * inv)) });
         }
     }
 

@@ -867,7 +867,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto [name, price] = GetNameAndPrice(selectedSceneryEntry);
-            if (price != kMoney64Undefined && !(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+            if (price != kMoney64Undefined && !(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(price);
@@ -1366,8 +1366,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsFilterInFilename(const Object& object)
         {
-            auto repoItem = ObjectRepositoryFindObjectByEntry(&(object.GetObjectEntry()));
-            return String::contains(repoItem->Path, _filteredSceneryTab.Filter, true);
+            return String::contains(object.GetFileName(), _filteredSceneryTab.Filter, true);
         }
 
         void SortTabs()

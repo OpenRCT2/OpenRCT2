@@ -15,13 +15,13 @@
 #include "../core/String.hpp"
 #include "../object/ObjectRepository.h"
 #include "../object/RideObject.h"
-#include "../rct12/SawyerChunkReader.h"
 #include "../rct12/TD46.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/TrackDesign.h"
 #include "../ride/TrackDesignRepository.h"
+#include "../sawyer_coding/SawyerChunkReader.h"
 
 #include <mutex>
 
@@ -29,6 +29,7 @@ using namespace OpenRCT2;
 
 using OpenRCT2::RCT12::TD46MazeElement;
 using OpenRCT2::RCT12::TD46Version;
+using namespace OpenRCT2::SawyerCoding;
 
 namespace OpenRCT2::RCT2
 {

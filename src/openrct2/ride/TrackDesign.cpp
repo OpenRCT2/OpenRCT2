@@ -34,7 +34,6 @@
 #include "../core/DataSerialiser.h"
 #include "../core/File.h"
 #include "../core/Numerics.hpp"
-#include "../core/SawyerCoding.h"
 #include "../core/String.hpp"
 #include "../core/UnitConversion.h"
 #include "../drawing/X8DrawingEngine.h"
@@ -54,6 +53,7 @@
 #include "../object/StationObject.h"
 #include "../rct2/RCT2.h"
 #include "../ride/RideConstruction.h"
+#include "../sawyer_coding/SawyerCoding.h"
 #include "../world/Footpath.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
@@ -107,7 +107,7 @@ static u8string_view TrackDesignGetStationObjectIdentifier(const Ride& ride)
 {
     const auto* stationObject = ride.getStationObject();
     if (stationObject == nullptr)
-        return "";
+        return {};
 
     return stationObject->GetIdentifier();
 }
@@ -1917,8 +1917,8 @@ static bool TrackDesignPlacePreview(
 
     _trackDesignDrawingPreview = true;
     uint8_t backup_rotation = _currentTrackPieceDirection;
-    uint32_t backup_park_flags = gameState.park.Flags;
-    gameState.park.Flags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+    uint32_t backup_park_flags = gameState.park.flags;
+    gameState.park.flags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
     auto mapSize = TileCoordsXY{ gameState.mapSize.x * 16, gameState.mapSize.y * 16 };
 
     _currentTrackPieceDirection = 0;
@@ -1942,7 +1942,7 @@ static bool TrackDesignPlacePreview(
     auto res = TrackDesignPlaceVirtual(
         tds, td, TrackPlaceOperation::placeTrackPreview, placeScenery, *ride,
         { mapSize.x, mapSize.y, z, _currentTrackPieceDirection });
-    gameState.park.Flags = backup_park_flags;
+    gameState.park.flags = backup_park_flags;
 
     if (res.Error == GameActions::Status::Ok)
     {

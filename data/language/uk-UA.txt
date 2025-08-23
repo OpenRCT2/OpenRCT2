@@ -1241,7 +1241,6 @@ STR_1870    :Кількість повних обертів
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Дохід: {BLACK}{CURRENCY2DP} за годину
 STR_1874    :{WINDOW_COLOUR_2}Прибуток: {BLACK}{CURRENCY2DP} за годину
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Перевірити атракціони
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Полагодити атракціони
 STR_1878    :{WINDOW_COLOUR_2}Перевірка:
@@ -2082,39 +2081,6 @@ STR_3008    :{PEARLAQUA}АБВ
 STR_3009    :{PALESILVER}АБВ
 STR_3010    :Не вдалося завантажити файл…
 STR_3011    :Файл містить невірні дані
-STR_3012    :Dodgems beat style
-STR_3013    :Fairground organ style
-STR_3014    :Roman fanfare style
-STR_3015    :Oriental style
-STR_3016    :Martian style
-STR_3017    :Jungle drums style
-STR_3018    :Egyptian style
-STR_3019    :Toyland style
-STR_3020    :
-STR_3021    :Space style
-STR_3022    :Horror style
-STR_3023    :Techno style
-STR_3024    :Gentle style
-STR_3025    :Summer style
-STR_3026    :Water style
-STR_3027    :Wild west style
-STR_3028    :Jurassic style
-STR_3029    :Rock style
-STR_3030    :Ragtime style
-STR_3031    :Fantasy style
-STR_3032    :Rock style 2
-STR_3033    :Ice style
-STR_3034    :Snow style
-STR_3035    :Власна музика 1
-STR_3036    :Власна музика 2
-STR_3037    :Medieval style
-STR_3038    :Urban style
-STR_3039    :Organ style
-STR_3040    :Mechanical style
-STR_3041    :Modern style
-STR_3042    :Pirates style
-STR_3043    :Rock style 3
-STR_3044    :Candy style
 STR_3045    :Select style of music to play
 STR_3047    :Local authority forbids demolition or modifications to this ride
 STR_3048    :Marketing campaigns forbidden by local authority
@@ -2193,7 +2159,6 @@ STR_3136    :Warning: This design will be built with an alternative vehicle type
 STR_3137    :Select Nearby Scenery
 STR_3138    :Скинути виділення
 STR_3139    :Cable lift unable to work in this operating mode
-STR_3140    :Cable lift hill must start immediately after station
 STR_3141    :Multi-circuit per ride not possible with cable lift hill
 STR_3142    :{WINDOW_COLOUR_2}Capacity: {BLACK}{STRINGID}
 STR_3143    :Show people on map
@@ -2793,9 +2758,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :“Справжні” парки
 STR_5626    :Інші парки
-STR_5627    :Групувати сценарії за:
-STR_5628    :Грою походження
-STR_5629    :Складністю
 STR_5630    :Прогресивне розблокування
 STR_5631    :Оригінальні DLC парки
 STR_5632    :Збудуйте свій власний…
@@ -3278,7 +3240,6 @@ STR_6165    :Верт. синхронізація
 STR_6166    :Синхронізовує кожен кадр із частотою оновлення монітора, запобігаючи розриву кадрів екрана.
 STR_6167    :Розширені
 STR_6168    :Послідовність меню
-STR_6169    :Вибір сценарію
 STR_6170    :Коригування інтерфейсу
 STR_6171    :Пошук
 STR_6172    :Пошук

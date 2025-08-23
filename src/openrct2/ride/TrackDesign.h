@@ -61,7 +61,7 @@ struct TrackDesignEntranceElement
 
 struct TrackDesignSceneryElement
 {
-    ObjectEntryDescriptor sceneryObject{};
+    OpenRCT2::ObjectEntryDescriptor sceneryObject{};
     CoordsXYZ loc{};
     uint8_t flags{};
     colour_t primaryColour{};
@@ -143,7 +143,7 @@ enum class TrackDesignGameStateFlag
 struct TrackDesignTrackAndVehicleSettings
 {
     ride_type_t rtdIndex{};
-    ObjectEntryDescriptor vehicleObject{};
+    OpenRCT2::ObjectEntryDescriptor vehicleObject{};
     uint8_t numberOfTrains{};
     uint8_t numberOfCarsPerTrain{};
 };
@@ -169,7 +169,7 @@ struct TrackDesignAppearanceSettings
 
 struct TrackDesignStatistics
 {
-    RatingTuple ratings{};
+    OpenRCT2::RideRating::Tuple ratings{};
     int8_t maxSpeed{};
     int8_t averageSpeed{};
 
@@ -254,12 +254,12 @@ void TrackDesignDrawPreview(TrackDesign& td, uint8_t* pixels);
 ///////////////////////////////////////////////////////////////////////////////
 void TrackDesignSaveInit();
 void TrackDesignSaveResetScenery();
-bool TrackDesignSaveContainsTileElement(const TileElement* tileElement);
+bool TrackDesignSaveContainsTileElement(const OpenRCT2::TileElement* tileElement);
 void TrackDesignSaveSelectNearbyScenery(RideId rideIndex);
 void TrackDesignSaveSelectTileElement(
-    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement, bool collect);
+    ViewportInteractionItem interactionType, const CoordsXY& loc, OpenRCT2::TileElement* tileElement, bool collect);
 
 bool TrackDesignAreEntranceAndExitPlaced();
 
 extern std::vector<TrackDesignSceneryElement> _trackSavedTileElementsDesc;
-extern std::vector<const TileElement*> _trackSavedTileElements;
+extern std::vector<const OpenRCT2::TileElement*> _trackSavedTileElements;

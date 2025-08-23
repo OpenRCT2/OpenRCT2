@@ -51,7 +51,7 @@ GameActions::Result PeepSpawnPlaceAction::Query() const
     }
 
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::LandPurchase;
+    res.Expenditure = ExpenditureType::landPurchase;
     res.Position = _location;
 
     auto mapSizeUnits = GetMapSizeUnits() - CoordsXY{ 16, 16 };
@@ -67,7 +67,7 @@ GameActions::Result PeepSpawnPlaceAction::Query() const
     if (pathElement == nullptr)
     {
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
+            GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ON_PATHS);
     }
 
     // Verify location is unowned
@@ -90,7 +90,7 @@ GameActions::Result PeepSpawnPlaceAction::Query() const
 GameActions::Result PeepSpawnPlaceAction::Execute() const
 {
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::LandPurchase;
+    res.Expenditure = ExpenditureType::landPurchase;
     res.Position = _location;
 
     // Shift the spawn point to the edge of the tile

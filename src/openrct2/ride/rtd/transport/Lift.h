@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor LiftRTD =
 {
     .Category = RideCategory::transport,
-    .StartTrackPiece = OpenRCT2::TrackElemType::TowerBase,
+    .StartTrackPiece = TrackElemType::TowerBase,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::lift,
         .enabledTrackGroups = {TrackGroup::tower},
@@ -36,7 +38,7 @@ constexpr RideTypeDescriptor LiftRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_DOORS_STUCK_CLOSED) | (1 << BREAKDOWN_DOORS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 255, 32, 3, 2, },
     .MaxMass = 15,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 80, 10, 0 },
     .UpkeepCosts = { 50, 20, 0, 10, 0, 0 },
     .BuildCosts = { 19.50_GBP, 0.00_GBP, 4, },
@@ -55,7 +57,7 @@ constexpr RideTypeDescriptor LiftRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(1, 11), MakeRideRating(0, 35), MakeRideRating(0, 30) },
+        { RideRating::make(1, 11), RideRating::make(0, 35), RideRating::make(0, 30) },
         15,
         7,
         false,
@@ -67,4 +69,5 @@ constexpr RideTypeDescriptor LiftRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

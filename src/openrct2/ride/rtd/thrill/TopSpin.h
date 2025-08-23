@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor TopSpinRTD =
 {
     .Category = RideCategory::thrill,
-    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
+    .StartTrackPiece = TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::topSpin,
         .enabledTrackGroups = {},
@@ -37,7 +39,7 @@ constexpr RideTypeDescriptor TopSpinRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 16, 112, 3, 2, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 24, 20, 10 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 72.50_GBP, 1.00_GBP, 1, },
@@ -66,4 +68,5 @@ constexpr RideTypeDescriptor TopSpinRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

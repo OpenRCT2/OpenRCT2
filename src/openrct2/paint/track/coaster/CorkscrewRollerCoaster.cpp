@@ -9796,15 +9796,15 @@ static void CorkscrewRCTrackLeftTwistDownToUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height + 1, session.SupportColours);
 
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height - 26, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height - 32, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height - 26, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height - 32, kTunnelGroup, TunnelSubType::Tall);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -9913,15 +9913,15 @@ static void CorkscrewRCTrackRightTwistDownToUp(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height + 1, session.SupportColours);
 
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height - 26, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height - 32, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height - 26, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height - 32, kTunnelGroup, TunnelSubType::Tall);
                     break;
             }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
@@ -9964,11 +9964,11 @@ static void CorkscrewRCTrackLeftTwistUpToDown(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height + 1, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height - 32, kTunnelGroup, TunnelSubType::Tall);
             }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -10027,10 +10027,10 @@ static void CorkscrewRCTrackLeftTwistUpToDown(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height - 26, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height - 26, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -10081,11 +10081,11 @@ static void CorkscrewRCTrackRightTwistUpToDown(
                     direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetupRotated(
-                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height, session.SupportColours);
+                session, supportType.metal, MetalSupportPlace::centre, direction, 0, height + 1, session.SupportColours);
 
             if (direction == 0 || direction == 3)
             {
-                PaintUtilPushTunnelRotated(session, direction, height, kTunnelGroup, TunnelSubType::Flat);
+                PaintUtilPushTunnelRotated(session, direction, height - 32, kTunnelGroup, TunnelSubType::Tall);
             }
             PaintUtilSetGeneralSupportHeight(session, height + kDefaultGeneralSupportHeight);
             break;
@@ -10144,10 +10144,10 @@ static void CorkscrewRCTrackRightTwistUpToDown(
             switch (direction)
             {
                 case 1:
-                    PaintUtilPushTunnelRight(session, height - 26, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelRight(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
                 case 2:
-                    PaintUtilPushTunnelLeft(session, height - 26, kTunnelGroup, TunnelSubType::Flat);
+                    PaintUtilPushTunnelLeft(session, height, kTunnelGroup, TunnelSubType::Flat);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -16970,10 +16970,7 @@ static void CorkscrewRCTrack90DegToInvertedFlatQuarterLoopUp(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
-                0xFFFF, 0);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 88);
             break;
         case 1:
@@ -17007,10 +17004,7 @@ static void CorkscrewRCTrack90DegToInvertedFlatQuarterLoopUp(
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
-                0xFFFF, 0);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 64);
             break;
         case 2:
@@ -17042,10 +17036,7 @@ static void CorkscrewRCTrack90DegToInvertedFlatQuarterLoopUp(
                 PaintUtilPushTunnelRotated(session, direction, height + 16, kTunnelGroup, TunnelSubType::Flat);
             }
             PaintUtilSetSegmentSupportHeight(
-                session,
-                PaintUtilRotateSegments(
-                    EnumsToFlags(PaintSegment::centre, PaintSegment::topLeft, PaintSegment::bottomRight), direction),
-                0xFFFF, 0);
+                session, PaintUtilRotateSegments(BlockedSegments::kStraightFlat, direction), 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + 48);
             break;
     }
@@ -20217,6 +20208,7 @@ static void CorkscrewRCTrackLeftEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 37, session.SupportColours);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -20224,6 +20216,7 @@ static void CorkscrewRCTrackLeftEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 37, session.SupportColours);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -20394,6 +20387,7 @@ static void CorkscrewRCTrackRightEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { 6, 0, height + 28 }, { 20, 32, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topLeftSide, 0, height + 37, session.SupportColours);
+                    PaintUtilPushTunnelRight(session, height + 8, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -20401,6 +20395,7 @@ static void CorkscrewRCTrackRightEighthDiveLoopUpToOrthogonal(
                         { -16, -16, height }, { { 6, 0, height + 28 }, { 20, 32, 1 } });
                     MetalASupportsPaintSetup(
                         session, supportType.metal, MetalSupportPlace::topRightSide, 0, height + 37, session.SupportColours);
+                    PaintUtilPushTunnelLeft(session, height + 8, kTunnelGroup, TunnelSubType::Tall);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(

@@ -15,29 +15,32 @@
 
 #include <vector>
 
-class SmallSceneryObject final : public SceneryObject
+namespace OpenRCT2
 {
-private:
-    SmallSceneryEntry _legacyType = {};
-    std::vector<uint8_t> _frameOffsets;
-
-public:
-    static constexpr ObjectType kObjectType = ObjectType::smallScenery;
-
-    void* GetLegacyData() override
+    class SmallSceneryObject final : public SceneryObject
     {
-        return &_legacyType;
-    }
+    private:
+        SmallSceneryEntry _legacyType = {};
+        std::vector<uint8_t> _frameOffsets;
 
-    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void Load() override;
-    void Unload() override;
+    public:
+        static constexpr ObjectType kObjectType = ObjectType::smallScenery;
 
-    void DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const override;
+        void* GetLegacyData() override
+        {
+            return &_legacyType;
+        }
 
-private:
-    static std::vector<uint8_t> ReadFrameOffsets(OpenRCT2::IStream* stream);
-    static std::vector<uint8_t> ReadJsonFrameOffsets(json_t& jFrameOffsets);
-    void PerformFixes();
-};
+        void ReadLegacy(IReadObjectContext* context, IStream* stream) override;
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void Load() override;
+        void Unload() override;
+
+        void DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const override;
+
+    private:
+        static std::vector<uint8_t> ReadFrameOffsets(IStream* stream);
+        static std::vector<uint8_t> ReadJsonFrameOffsets(json_t& jFrameOffsets);
+        void PerformFixes();
+    };
+} // namespace OpenRCT2

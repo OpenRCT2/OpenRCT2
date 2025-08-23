@@ -43,19 +43,19 @@ void ParkSetLoanAction::Serialise(DataSerialiser& stream)
 GameActions::Result ParkSetLoanAction::Query() const
 {
     auto& gameState = getGameState();
-    if (_value > gameState.bankLoan && _value > gameState.maxBankLoan)
+    if (_value > gameState.park.bankLoan && _value > gameState.park.maxBankLoan)
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_CANT_BORROW_ANY_MORE_MONEY, STR_BANK_REFUSES_TO_INCREASE_LOAN);
     }
-    if (_value < gameState.bankLoan && _value < 0.00_GBP)
+    if (_value < gameState.park.bankLoan && _value < 0.00_GBP)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_PAY_BACK_LOAN, STR_LOAN_CANT_BE_NEGATIVE);
     }
     // The “isPayingBack” check is needed to allow increasing the loan when the player is in debt.
-    const auto isPayingBack = gameState.bankLoan > _value;
-    const auto amountToPayBack = gameState.bankLoan - _value;
-    if (isPayingBack && amountToPayBack > gameState.cash)
+    const auto isPayingBack = gameState.park.bankLoan > _value;
+    const auto amountToPayBack = gameState.park.bankLoan - _value;
+    if (isPayingBack && amountToPayBack > gameState.park.cash)
     {
         return GameActions::Result(
             GameActions::Status::InsufficientFunds, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
@@ -67,8 +67,8 @@ GameActions::Result ParkSetLoanAction::Execute() const
 {
     auto& gameState = getGameState();
 
-    gameState.cash -= (gameState.bankLoan - _value);
-    gameState.bankLoan = _value;
+    gameState.park.cash -= (gameState.park.bankLoan - _value);
+    gameState.park.bankLoan = _value;
 
     auto windowManager = OpenRCT2::Ui::GetWindowManager();
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_CASH));

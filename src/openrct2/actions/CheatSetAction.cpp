@@ -27,6 +27,8 @@
 #include "../ride/Ride.h"
 #include "../ride/RideManager.hpp"
 #include "../ride/Vehicle.h"
+#include "../scenario/Scenario.h"
+#include "../scenario/ScenarioObjective.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -231,10 +233,10 @@ GameActions::Result CheatSetAction::Execute() const
             gameState.cheats.neverendingMarketing = _param1 != 0;
             break;
         case CheatType::OpenClosePark:
-            ParkSetOpen(!gameState.park.IsOpen());
+            ParkSetOpen(!Park::IsOpen(gameState.park));
             break;
         case CheatType::HaveFun:
-            gameState.scenarioObjective.Type = OBJECTIVE_HAVE_FUN;
+            gameState.scenarioOptions.objective.Type = Scenario::ObjectiveType::haveFun;
             break;
         case CheatType::SetForcedParkRating:
             Park::SetForcedRating(_param1);
@@ -584,11 +586,11 @@ void CheatSetAction::SetScenarioNoMoney(bool enabled) const
     auto& gameState = getGameState();
     if (enabled)
     {
-        gameState.park.Flags |= PARK_FLAGS_NO_MONEY;
+        gameState.park.flags |= PARK_FLAGS_NO_MONEY;
     }
     else
     {
-        gameState.park.Flags &= ~PARK_FLAGS_NO_MONEY;
+        gameState.park.flags &= ~PARK_FLAGS_NO_MONEY;
     }
 
     // Invalidate all windows that have anything to do with finance
@@ -604,7 +606,7 @@ void CheatSetAction::SetScenarioNoMoney(bool enabled) const
 
 void CheatSetAction::SetMoney(money64 amount) const
 {
-    getGameState().cash = amount;
+    getGameState().park.cash = amount;
 
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByClass(WindowClass::Finances);
@@ -614,7 +616,7 @@ void CheatSetAction::SetMoney(money64 amount) const
 void CheatSetAction::AddMoney(money64 amount) const
 {
     auto& gameState = getGameState();
-    gameState.cash = AddClamp<money64>(gameState.cash, amount);
+    gameState.park.cash = AddClamp<money64>(gameState.park.cash, amount);
 
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByClass(WindowClass::Finances);
@@ -624,7 +626,7 @@ void CheatSetAction::AddMoney(money64 amount) const
 void CheatSetAction::ClearLoan() const
 {
     // First give money
-    AddMoney(getGameState().bankLoan);
+    AddMoney(getGameState().park.bankLoan);
 
     // Then pay the loan
     auto gameAction = ParkSetLoanAction(0.00_GBP);

@@ -67,24 +67,24 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
 set(TITLE_SEQUENCE_VERSION "0.4.14")
-set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v${TITLE_SEQUENCE_VERSION}/title-sequences.zip")
-set(TITLE_SEQUENCE_SHA1 "6c04781b959b468e1f65ec2d2f21f5aaa5e5724d")
+set(TITLE_SEQUENCE_URL     "https://github.com/OpenRCT2/title-sequences/releases/download/v${TITLE_SEQUENCE_VERSION}/title-sequences.zip")
+set(TITLE_SEQUENCE_SHA256  "140df714e806fed411cc49763e7f16b0fcf2a487a57001d1e50fce8f9148a9f3")
 
-set(OBJECTS_VERSION "1.7.0")
-set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
-set(OBJECTS_SHA1 "214f6e359c2c2b466acea3c763e87896514d62cb")
+set(OBJECTS_VERSION "1.7.3")
+set(OBJECTS_URL     "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
+set(OBJECTS_SHA256  "c81029264578706ed1db88665e12a70a583e71dc4d3eb4db262535d2f0589eab")
 
-set(OPENSFX_VERSION "1.0.5")
-set(OPENSFX_URL  "https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v${OPENSFX_VERSION}/opensound.zip")
-set(OPENSFX_SHA1 "b1b1f1b241d2cbff63a1889c4dc5a09bdf769bfb")
+set(OPENSFX_VERSION "1.0.6")
+set(OPENSFX_URL     "https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v${OPENSFX_VERSION}/opensound.zip")
+set(OPENSFX_SHA256  "06b90f3e19c216752df441d551b26a9e3e1ba7755bdd2102504b73bf993608be")
 
-set(OPENMSX_VERSION "1.6")
-set(OPENMSX_URL  "https://github.com/OpenRCT2/OpenMusic/releases/download/v${OPENMSX_VERSION}/openmusic.zip")
-set(OPENMSX_SHA1 "ba170fa6d777b309c15420f4b6eb3fa25082a9d1")
+set(OPENMSX_VERSION "1.6.1")
+set(OPENMSX_URL     "https://github.com/OpenRCT2/OpenMusic/releases/download/v${OPENMSX_VERSION}/openmusic.zip")
+set(OPENMSX_SHA256  "994b350d3b180ee1cb9619fe27f7ebae3a1a5232840c4bd47a89f33fa89de1a1")
 
-set(REPLAYS_VERSION "0.0.87")
-set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
-set(REPLAYS_SHA1 "6061B53DE346BD853BB997E635AC7374B1A7D2F0")
+set(REPLAYS_VERSION "0.0.89")
+set(REPLAYS_URL     "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
+set(REPLAYS_SHA256  "04607bb1f67a0f31d841ed70b38d65b8f7a9e19749e414ff74b8a434bc90b42a")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
@@ -142,9 +142,9 @@ if (MACOS_USE_DEPENDENCIES)
     # if we're building on macOS, then we need the dependencies
     include(cmake/download.cmake)
 
-    set(MACOS_DYLIBS_VERSION "37")
+    set(MACOS_DYLIBS_VERSION "38")
     set(MACOS_DYLIBS_ZIPFILE "openrct2-libs-v${MACOS_DYLIBS_VERSION}-universal-macos-dylibs.zip")
-    set(MACOS_DYLIBS_SHA1 "6d633a881fc243e960e29d9c371915a7cdeeb880")
+    set(MACOS_DYLIBS_SHA256 "900f298be7bf2b8469d0b9f1700f09a61ded3daafea32f599d58c88b6d7c9ce7")
     set(MACOS_DYLIBS_DIR "${ROOT_DIR}/lib/macos")
     set(MACOS_DYLIBS_URL "https://github.com/OpenRCT2/Dependencies/releases/download/v${MACOS_DYLIBS_VERSION}/${MACOS_DYLIBS_ZIPFILE}")
 
@@ -152,7 +152,7 @@ if (MACOS_USE_DEPENDENCIES)
         ZIP_VERSION ${MACOS_DYLIBS_VERSION}
         DOWNLOAD_DIR ${MACOS_DYLIBS_DIR}
         ZIP_URL ${MACOS_DYLIBS_URL}
-        SHA1 ${MACOS_DYLIBS_SHA1}
+        SHA256 ${MACOS_DYLIBS_SHA256}
     )
 
     set(CMAKE_MACOSX_RPATH 1)
@@ -358,6 +358,11 @@ else ()
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error=objc-method-access")
     endif()
 
+    # Clang -Wmissing-declarations differs from GCC, set -Wmissing-prototypes for parity
+    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wmissing-prototypes")
+    endif()
+
     # On mingw all code is already PIC, this will avoid compiler error on redefining this option
     if (NOT MINGW)
         set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -448,7 +453,7 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
                 DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/openrct2/sequence/
                 SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/sequence/
                 ZIP_URL ${TITLE_SEQUENCE_URL}
-                SHA1 ${TITLE_SEQUENCE_SHA1}
+                SHA256 ${TITLE_SEQUENCE_SHA256}
             )")
     endif ()
     if (DOWNLOAD_OBJECTS)
@@ -462,7 +467,7 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
                 DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/openrct2/object/
                 SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/object/
                 ZIP_URL ${OBJECTS_URL}
-                SHA1 ${OBJECTS_SHA1}
+                SHA256 ${OBJECTS_SHA256}
             )")
     endif ()
     if (DOWNLOAD_OPENSFX)
@@ -473,7 +478,7 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
                 SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/assetpack/openrct2.sound.parkap
                 DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/openrct2/
                 ZIP_URL ${OPENSFX_URL}
-                SHA1 ${OPENSFX_SHA1}
+                SHA256 ${OPENSFX_SHA256}
             )")
     endif ()
     if (DOWNLOAD_OPENMSX)
@@ -484,7 +489,7 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
                 SKIP_IF_EXISTS ${CMAKE_SOURCE_DIR}/data/assetpack/openrct2.music.alternative.parkap
                 DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/openrct2/
                 ZIP_URL ${OPENMSX_URL}
-                SHA1 ${OPENMSX_SHA1}
+                SHA256 ${OPENMSX_SHA256}
             )")
     endif ()
     if (DOWNLOAD_REPLAYS)
@@ -495,7 +500,7 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
                 ZIP_VERSION ${REPLAYS_VERSION}
                 DOWNLOAD_DIR \${CMAKE_CURRENT_BINARY_DIR}/testdata/replays/
                 ZIP_URL ${REPLAYS_URL}
-                SHA1 ${REPLAYS_SHA1}
+                SHA256 ${REPLAYS_SHA256}
             )")
     endif ()
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/g2.dat" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")

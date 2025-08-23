@@ -1247,7 +1247,6 @@ STR_1870    :Número de rotações completas
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Receita: {BLACK}{CURRENCY2DP} por hora
 STR_1874    :{WINDOW_COLOUR_2}Lucro: {BLACK}{CURRENCY2DP} por hora
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspecionar Atrações
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Consertar Atrações
 STR_1878    :{WINDOW_COLOUR_2}Inspeção:
@@ -2765,9 +2764,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :Parques “Reais”
 STR_5626    :Outros parques
-STR_5627    :Agrupar lista de cenário por:
-STR_5628    :Origem do jogo
-STR_5629    :Nível de dificuldade
 STR_5630    :Habilitar destravamento progressivo
 STR_5631    :Parques Originais Baixados (DLC)
 STR_5632    :Construa seu próprio…
@@ -3250,7 +3246,6 @@ STR_6165    :Usar sincronização vertical
 STR_6166    :Sincroniza cada quadro mostrado com a taxa de atualização do monitor, prevenindo cortes na tela.
 STR_6167    :Avançado
 STR_6168    :Sequência de Título
-STR_6169    :Seleção de Cenários
 STR_6170    :Melhoras de Interface
 STR_6171    :Procurar
 STR_6172    :Procura
@@ -3818,3 +3813,29 @@ STR_6774    :Tempo desde a última inspeção
 STR_6775    :{COMMA16} minuto
 STR_6776    :{COMMA16} minutos
 STR_6777    :mais de 4 horas
+STR_6778    :Pré-visualizar cenários usando:
+STR_6779    :Selecione o tipo de imagem de pré-visualização a ser utilizado na tela de seleção de cenários.
+STR_6780    :Mini mapas
+STR_6781    :Capturas de tela
+STR_6782    :Notificações de Parque
+STR_6783    :Notificações de Atração
+STR_6784    :Notificações de Visitantes
+STR_6785    :Controle de videogame
+STR_6786    :Zona morta:
+STR_6787    :Zona morta do direcional analógico (movimento mínimo requerido)
+STR_6788    :Sensibilidade:
+STR_6789    :Multiplicador de sensibilidade do direcional analógico
+STR_6790    :Zona morta: {COMMA32}%
+STR_6791    :Sensibilidade: {COMMA32}%
+STR_6792    :Edifícios de entrada
+STR_6793    :Visitantes e funcionários
+STR_6794    :Cenários e Temas
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :Sem pré-visualização
+STR_6798    :Captura de tela
+STR_6799    :Mini mapa
+STR_7000    :ou
+STR_7001    :Nome da atração
+STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :O arquito de áudio ‘{STRING}’ está incompleto. {INT32} amostras eram esperadas, mas apenas {INT32} estão disponíveis. Considere reinstalar o RCT2.

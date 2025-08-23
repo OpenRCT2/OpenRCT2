@@ -1247,7 +1247,6 @@ STR_1870    :Nombro de plenaj turnadoj
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Enspezo: {BLACK}po {CURRENCY2DP} por horo
 STR_1874    :{WINDOW_COLOUR_2}Profito: {BLACK}po {CURRENCY2DP} por horo
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspekti Atrakciojn
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Ripari Atrakciojn
 STR_1878    :{WINDOW_COLOUR_2}Inspekto:
@@ -2765,9 +2764,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :“Faktaj” Parkoj
 STR_5626    :Aliaj Parkoj
-STR_5627    :Grupigi scenaroliston laŭ:
-STR_5628    :Ludo-fonto
-STR_5629    :Malfacileco-nivelo
 STR_5630    :Ŝalti progresivan malŝlosadon
 STR_5631    :Originala Elŝutebla-Enhavo-Parkoj
 STR_5632    :Konstrui vian propran…
@@ -3250,7 +3246,6 @@ STR_6165    :Uzi vertikalan sinkronigon
 STR_6166    :Sinkronigas ĉiun kadron montritan laŭ la ofteco de ekrano-aktualigo, por preventi ekrano-ŝiron.
 STR_6167    :Altnivela
 STR_6168    :Titolosekvenco
-STR_6169    :Elektado de Scenaro
 STR_6170    :Optimumigoj de Interfacoj
 STR_6171    :Serĉi
 STR_6172    :Serĉi
@@ -3825,3 +3820,22 @@ STR_6781    :Ekrankopioj
 STR_6782    :Sciigoj de parko
 STR_6783    :Sciigoj de atrakcioj
 STR_6784    :Sciigoj de gastoj
+STR_6785    :Ludregilo
+STR_6786    :Morta zono:
+STR_6787    :Morta zono de stirstango (minimuma movado bezonata)
+STR_6788    :Sentemo:
+STR_6789    :Sentema obligilo de stirstango
+STR_6790    :Morta zono: {COMMA32}%
+STR_6791    :Sentemo: {COMMA32}%
+STR_6792    :Enirejo-Konstruaĵoj
+STR_6793    :Gastoj kaj Dungitaro
+STR_6794    :Pejzaĝo kaj Temoj
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :Neniu antaŭrigardo
+STR_6798    :Ekrankopio
+STR_6799    :Eta mapo
+STR_7000    :aŭ
+STR_7001    :Nomo de atrakcio
+STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :Sondosiero ‘{STRING}’ estas distranĉita. Atendis sonpecon {INT32}, sed nur {INT32} disponeblas. Konsideru reinstali je RCT2.

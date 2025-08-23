@@ -270,7 +270,7 @@ static void EntityReset(EntityBase& entity)
     entity.Type = EntityType::Null;
 }
 
-static constexpr uint16_t kMaxMiscEntities = 1600;
+static constexpr uint16_t kMaxMiscEntities = 3200;
 
 static void AddToEntityList(EntityBase& entity)
 {

@@ -47,6 +47,7 @@
 #include "../object/StationObject.h"
 #include "../profiling/Profiling.h"
 #include "../rct1/RCT1.h"
+#include "../scenario/Scenario.h"
 #include "../ui/WindowManager.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -1433,7 +1434,7 @@ static void RideBreakdownUpdate(Ride& ride)
 static int32_t RideGetNewBreakdownProblem(const Ride& ride)
 {
     // Brake failure is more likely when it's raining or heavily snowing (HeavySnow and Blizzard)
-    _breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = (ClimateIsRaining() || ClimateIsSnowingHeavily()) ? 20 : 3;
+    _breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = ClimateIsPrecipitating() ? 20 : 3;
 
     if (!ride.canBreakDown())
         return -1;
@@ -1918,11 +1919,16 @@ void CircusMusicUpdate(Ride& ride)
         return;
     }
 
-    CoordsXYZ rideCoords = ride.getStation().GetStart().ToTileCentre();
-
     const auto sampleRate = RideMusicSampleRate(ride);
 
-    OpenRCT2::RideAudio::UpdateMusicInstance(ride, rideCoords, sampleRate);
+    for (const auto& station : ride.getStations())
+    {
+        if (!station.Start.IsNull())
+        {
+            CoordsXYZ rideCoords = station.GetStart().ToTileCentre();
+            OpenRCT2::RideAudio::UpdateMusicInstance(ride, rideCoords, sampleRate);
+        }
+    }
 }
 
 /**
@@ -1956,11 +1962,16 @@ void DefaultMusicUpdate(Ride& ride)
         return;
     }
 
-    CoordsXYZ rideCoords = ride.getStation().GetStart().ToTileCentre();
-
     int32_t sampleRate = RideMusicSampleRate(ride);
 
-    OpenRCT2::RideAudio::UpdateMusicInstance(ride, rideCoords, sampleRate);
+    for (const auto& station : ride.getStations())
+    {
+        if (!station.Start.IsNull())
+        {
+            CoordsXYZ rideCoords = station.GetStart().ToTileCentre();
+            OpenRCT2::RideAudio::UpdateMusicInstance(ride, rideCoords, sampleRate);
+        }
+    }
 }
 
 static void RideMusicUpdate(Ride& ride)
@@ -4929,6 +4940,12 @@ OpenRCT2::BitSet<EnumValue(TrackGroup::count)> RideEntryGetSupportedTrackPieces(
           SpritePrecision::Sprites4, SpriteGroupType::Slopes25InlineTwists, SpritePrecision::Sprites4,
           SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
           SpritePrecision::Sprites4 }, // TrackGroup::diveLoop
+        { SpriteGroupType::Slopes8, SpritePrecision::Sprites4, SpriteGroupType::Slopes16,
+          SpritePrecision::Sprites4 }, // TrackGroup::diagSlope
+        { SpriteGroupType::Slopes25, SpritePrecision::Sprites8, SpriteGroupType::Slopes42, SpritePrecision::Sprites8,
+          SpriteGroupType::Slopes50, SpritePrecision::Sprites4 }, // TrackGroup::diagSlopeSteepUp
+        { SpriteGroupType::Slopes25, SpritePrecision::Sprites8, SpriteGroupType::Slopes42, SpritePrecision::Sprites8,
+          SpriteGroupType::Slopes50, SpritePrecision::Sprites4 }, // TrackGroup::diagSlopeSteepDown
     };
 
     static_assert(std::size(trackPieceRequiredSprites) == EnumValue(TrackGroup::count));
@@ -5339,7 +5356,7 @@ bool Ride::isRide() const
 
 money64 RideGetPrice(const Ride& ride)
 {
-    if (getGameState().park.Flags & PARK_FLAGS_NO_MONEY)
+    if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
         return 0;
     if (ride.isRide())
     {

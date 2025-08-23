@@ -47,37 +47,38 @@ constexpr uint32_t kMaxTileElementsWithSpaceRoom = 0x1000000;
 constexpr uint32_t kMaxTileElements = kMaxTileElementsWithSpaceRoom - 512;
 
 using PeepSpawn = CoordsXYZD;
-struct BannerElement;
-struct EntranceElement;
-struct LargeSceneryElement;
-struct PathElement;
-struct SmallSceneryElement;
-struct SurfaceElement;
-struct TileElement;
-struct TrackElement;
-struct WallElement;
-enum class TileElementType : uint8_t;
 
 namespace OpenRCT2
 {
+    struct BannerElement;
+    struct EntranceElement;
+    struct LargeSceneryElement;
+    struct PathElement;
+    struct SmallSceneryElement;
+    struct SurfaceElement;
+    struct TileElement;
+    struct TrackElement;
+    struct WallElement;
+
+    enum class TileElementType : uint8_t;
     enum class TrackElemType : uint16_t;
-}
+} // namespace OpenRCT2
 
 struct CoordsXYE : public CoordsXY
 {
     CoordsXYE() = default;
-    constexpr CoordsXYE(int32_t _x, int32_t _y, TileElement* _e)
+    constexpr CoordsXYE(int32_t _x, int32_t _y, OpenRCT2::TileElement* _e)
         : CoordsXY(_x, _y)
         , element(_e)
     {
     }
 
-    constexpr CoordsXYE(const CoordsXY& c, TileElement* _e)
+    constexpr CoordsXYE(const CoordsXY& c, OpenRCT2::TileElement* _e)
         : CoordsXY(c)
         , element(_e)
     {
     }
-    TileElement* element = nullptr;
+    OpenRCT2::TileElement* element = nullptr;
 };
 
 enum
@@ -134,32 +135,33 @@ namespace OpenRCT2
 }
 
 void ReorganiseTileElements();
-const std::vector<TileElement>& GetTileElements();
-void SetTileElements(OpenRCT2::GameState_t& gameState, std::vector<TileElement>&& tileElements);
+const std::vector<OpenRCT2::TileElement>& GetTileElements();
+void SetTileElements(OpenRCT2::GameState_t& gameState, std::vector<OpenRCT2::TileElement>&& tileElements);
 void StashMap();
 void UnstashMap();
-std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts();
+std::vector<OpenRCT2::TileElement> GetReorganisedTileElementsWithoutGhosts();
 
 void MapInit(const TileCoordsXY& size);
 
 void MapCountRemainingLandRights();
 void MapStripGhostFlagFromElements();
-TileElement* MapGetFirstElementAt(const CoordsXY& tilePos);
-TileElement* MapGetFirstElementAt(const TileCoordsXY& tilePos);
-TileElement* MapGetNthElementAt(const CoordsXY& coords, int32_t n);
-TileElement* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc, TileElementType type);
-void MapSetTileElement(const TileCoordsXY& tilePos, TileElement* elements);
+OpenRCT2::TileElement* MapGetFirstElementAt(const CoordsXY& tilePos);
+OpenRCT2::TileElement* MapGetFirstElementAt(const TileCoordsXY& tilePos);
+OpenRCT2::TileElement* MapGetNthElementAt(const CoordsXY& coords, int32_t n);
+OpenRCT2::TileElement* MapGetFirstTileElementWithBaseHeightBetween(
+    const TileCoordsXYRangedZ& loc, OpenRCT2::TileElementType type);
+void MapSetTileElement(const TileCoordsXY& tilePos, OpenRCT2::TileElement* elements);
 int32_t MapHeightFromSlope(const CoordsXY& coords, int32_t slopeDirection, bool isSloped);
-BannerElement* MapGetBannerElementAt(const CoordsXYZ& bannerPos, uint8_t direction);
-SurfaceElement* MapGetSurfaceElementAt(const TileCoordsXY& coords);
-SurfaceElement* MapGetSurfaceElementAt(const CoordsXY& coords);
-PathElement* MapGetPathElementAt(const TileCoordsXYZ& loc);
-WallElement* MapGetWallElementAt(const CoordsXYZD& wallCoords);
-WallElement* MapGetWallElementAt(const CoordsXYRangedZ& coords);
-SmallSceneryElement* MapGetSmallSceneryElementAt(const CoordsXYZ& sceneryCoords, int32_t type, uint8_t quadrant);
-EntranceElement* MapGetParkEntranceElementAt(const CoordsXYZ& entranceCoords, bool ghost);
-EntranceElement* MapGetRideEntranceElementAt(const CoordsXYZ& entranceCoords, bool ghost);
-EntranceElement* MapGetRideExitElementAt(const CoordsXYZ& exitCoords, bool ghost);
+OpenRCT2::BannerElement* MapGetBannerElementAt(const CoordsXYZ& bannerPos, uint8_t direction);
+OpenRCT2::SurfaceElement* MapGetSurfaceElementAt(const TileCoordsXY& coords);
+OpenRCT2::SurfaceElement* MapGetSurfaceElementAt(const CoordsXY& coords);
+OpenRCT2::PathElement* MapGetPathElementAt(const TileCoordsXYZ& loc);
+OpenRCT2::WallElement* MapGetWallElementAt(const CoordsXYZD& wallCoords);
+OpenRCT2::WallElement* MapGetWallElementAt(const CoordsXYRangedZ& coords);
+OpenRCT2::SmallSceneryElement* MapGetSmallSceneryElementAt(const CoordsXYZ& sceneryCoords, int32_t type, uint8_t quadrant);
+OpenRCT2::EntranceElement* MapGetParkEntranceElementAt(const CoordsXYZ& entranceCoords, bool ghost);
+OpenRCT2::EntranceElement* MapGetRideEntranceElementAt(const CoordsXYZ& entranceCoords, bool ghost);
+OpenRCT2::EntranceElement* MapGetRideExitElementAt(const CoordsXYZ& exitCoords, bool ghost);
 uint8_t MapGetHighestLandHeight(const MapRange& range);
 uint8_t MapGetLowestLandHeight(const MapRange& range);
 bool MapCoordIsConnected(const TileCoordsXYZ& loc, uint8_t faceDirection);
@@ -178,10 +180,10 @@ bool MapCheckCapacityAndReorganise(const CoordsXY& loc, size_t numElements = 1);
 int16_t TileElementHeight(const CoordsXY& loc);
 int16_t TileElementHeight(const CoordsXYZ& loc, uint8_t slope);
 int16_t TileElementWaterHeight(const CoordsXY& loc);
-void TileElementRemove(TileElement* tileElement);
-TileElement* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementType type);
+void TileElementRemove(OpenRCT2::TileElement* tileElement);
+OpenRCT2::TileElement* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants, OpenRCT2::TileElementType type);
 
-template<typename T = TileElement>
+template<typename T = OpenRCT2::TileElement>
 T* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRangedZ& loc)
 {
     auto* element = MapGetFirstTileElementWithBaseHeightBetween(loc, T::kElementType);
@@ -199,7 +201,7 @@ struct TileElementIterator
 {
     int32_t x;
     int32_t y;
-    TileElement* element;
+    OpenRCT2::TileElement* element;
 };
 #ifdef PLATFORM_32BIT
 static_assert(sizeof(TileElementIterator) == 12);
@@ -212,7 +214,7 @@ void TileElementIteratorRestartForTile(TileElementIterator* it);
 void MapUpdateTiles();
 int32_t MapGetHighestZ(const CoordsXY& loc);
 
-bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const TileElement* const elementToBeRemoved);
+bool TileElementWantsPathConnectionTowards(const TileCoordsXYZD& coords, const OpenRCT2::TileElement* const elementToBeRemoved);
 
 void MapRemoveOutOfRangeElements();
 void MapExtendBoundarySurfaceX();
@@ -224,30 +226,33 @@ void MapInvalidateTile(const CoordsXYRangedZ& tilePos);
 void MapInvalidateTileZoom1(const CoordsXYRangedZ& tilePos);
 void MapInvalidateTileZoom0(const CoordsXYRangedZ& tilePos);
 void MapInvalidateTileFull(const CoordsXY& tilePos);
-void MapInvalidateElement(const CoordsXY& elementPos, TileElement* tileElement);
+void MapInvalidateElement(const CoordsXY& elementPos, OpenRCT2::TileElement* tileElement);
 void MapInvalidateRegion(const CoordsXY& mins, const CoordsXY& maxs);
 
 int32_t MapGetTileSide(const CoordsXY& mapPos);
 int32_t MapGetTileQuadrant(const CoordsXY& mapPos);
 int32_t MapGetCornerHeight(int32_t z, int32_t slope, int32_t direction);
-int32_t TileElementGetCornerHeight(const SurfaceElement* surfaceElement, int32_t direction);
+int32_t TileElementGetCornerHeight(const OpenRCT2::SurfaceElement* surfaceElement, int32_t direction);
 
 void MapClearAllElements();
-void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr);
+void ClearElementAt(const CoordsXY& loc, OpenRCT2::TileElement** elementPtr);
 
-LargeSceneryElement* MapGetLargeScenerySegment(const CoordsXYZD& sceneryPos, int32_t sequence);
+OpenRCT2::LargeSceneryElement* MapGetLargeScenerySegment(const CoordsXYZD& sceneryPos, int32_t sequence);
 std::optional<CoordsXYZ> MapLargeSceneryGetOrigin(
-    const CoordsXYZD& sceneryPos, int32_t sequence, LargeSceneryElement** outElement);
+    const CoordsXYZD& sceneryPos, int32_t sequence, OpenRCT2::LargeSceneryElement** outElement);
 
-TrackElement* MapGetTrackElementAt(const CoordsXYZ& trackPos);
-TileElement* MapGetTrackElementAtOfType(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType);
-TileElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType, int32_t sequence);
-TrackElement* MapGetTrackElementAtOfType(const CoordsXYZD& location, OpenRCT2::TrackElemType trackType);
-TrackElement* MapGetTrackElementAtOfTypeSeq(const CoordsXYZD& location, OpenRCT2::TrackElemType trackType, int32_t sequence);
-TileElement* MapGetTrackElementAtOfTypeFromRide(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType, RideId rideIndex);
-TileElement* MapGetTrackElementAtFromRide(const CoordsXYZ& trackPos, RideId rideIndex);
-TileElement* MapGetTrackElementAtWithDirectionFromRide(const CoordsXYZD& trackPos, RideId rideIndex);
-TileElement* MapGetTrackElementAtBeforeSurfaceFromRide(const CoordsXYZ& trackPos, RideId rideIndex);
+OpenRCT2::TrackElement* MapGetTrackElementAt(const CoordsXYZ& trackPos);
+OpenRCT2::TileElement* MapGetTrackElementAtOfType(const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType);
+OpenRCT2::TileElement* MapGetTrackElementAtOfTypeSeq(
+    const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType, int32_t sequence);
+OpenRCT2::TrackElement* MapGetTrackElementAtOfType(const CoordsXYZD& location, OpenRCT2::TrackElemType trackType);
+OpenRCT2::TrackElement* MapGetTrackElementAtOfTypeSeq(
+    const CoordsXYZD& location, OpenRCT2::TrackElemType trackType, int32_t sequence);
+OpenRCT2::TileElement* MapGetTrackElementAtOfTypeFromRide(
+    const CoordsXYZ& trackPos, OpenRCT2::TrackElemType trackType, RideId rideIndex);
+OpenRCT2::TileElement* MapGetTrackElementAtFromRide(const CoordsXYZ& trackPos, RideId rideIndex);
+OpenRCT2::TileElement* MapGetTrackElementAtWithDirectionFromRide(const CoordsXYZD& trackPos, RideId rideIndex);
+OpenRCT2::TileElement* MapGetTrackElementAtBeforeSurfaceFromRide(const CoordsXYZ& trackPos, RideId rideIndex);
 
 bool MapIsLocationAtEdge(const CoordsXY& loc);
 

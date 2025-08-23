@@ -30,7 +30,7 @@ public:
     OpenRCT2::GameActions::Result Execute() const override;
 
 private:
-    TileElement* GetFootpathElement() const;
-    money64 GetRefundPrice(TileElement* footpathElement) const;
-    OpenRCT2::GameActions::Result RemoveBannersAtElement(const CoordsXY& loc, TileElement* tileElement) const;
+    OpenRCT2::TileElement* GetFootpathElement() const;
+    money64 GetRefundPrice(OpenRCT2::TileElement* footpathElement) const;
+    OpenRCT2::GameActions::Result RemoveBannersAtElement(const CoordsXY& loc, OpenRCT2::TileElement* tileElement) const;
 };

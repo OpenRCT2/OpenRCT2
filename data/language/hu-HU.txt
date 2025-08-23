@@ -390,7 +390,7 @@ STR_0993    :Játék/épület lerombolása
 STR_0994    :Lerombolás
 STR_0995    :{WINDOW_COLOUR_1}Biztosan le akarod bontani ezt: {STRINGID}?
 STR_0996    :Teljes nézet
-STR_0997    :A látkép kiválasztása
+STR_0997    :A nézetablak kiválasztása
 STR_0998    :A játék nem tartalmazhat több állomást
 STR_0999    :Állomásra van szüksége
 STR_1000    :A pálya nem teljes körpálya 
@@ -785,7 +785,7 @@ STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
 STR_1389    :{OUTLINE}{RED}- {CURRENCY}
 STR_1390    :{CURRENCY2DP}
 STR_1391    :{RED}{CURRENCY2DP}
-STR_1392    :A játék/épület látképe
+STR_1392    :A játék/épület nézetablaka
 STR_1393    :A jármű részletei és beállításai
 STR_1394    :Üzemmód-beállítások
 STR_1395    :Karbantartási beállítások
@@ -1046,8 +1046,8 @@ STR_1649    :„Mindjárt elfogy a pénzem!”
 STR_1650    :„Hű! Egy új játék épül!”
 STR_1653    :„…és itt vagyunk ezen: {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Legutóbbi gondolatok:
-STR_1655    :Út építése a földön
-STR_1656    :Út építése hídon vagy alagútban
+STR_1655    :Út építése a talajon
+STR_1656    :Út építése hídként vagy alagútként
 STR_1657    :{WINDOW_COLOUR_2}Előnyben részesített játék-
 STR_1658    :{WINDOW_COLOUR_2}intenzitás: {BLACK}kevesebb mint {COMMA16}
 STR_1659    :{WINDOW_COLOUR_2}intenzitás: {BLACK}{COMMA16} és {COMMA16} között
@@ -1247,7 +1247,6 @@ STR_1870    :A teljes körforgások száma
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Bevétel: {BLACK}{CURRENCY2DP} óránként
 STR_1874    :{WINDOW_COLOUR_2}Nyereség: {BLACK}{CURRENCY2DP} óránként
-STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Játékok ellenőrzése
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Játékok javítása
 STR_1878    :{WINDOW_COLOUR_2}Ellenőrzés:
@@ -1306,8 +1305,8 @@ STR_1934    :{STRINGID} elhagyta ezt: {STRINGID}
 STR_1935    :{STRINGID} elhagyta a parkot
 STR_1936    :{STRINGID} ezt vásárolta: {STRINGID}
 STR_1937    :Információk az üzenet tárgyáról
-STR_1938    :A vendég látképe
-STR_1939    :Az alkalmazott látképe
+STR_1938    :A vendég nézetablaka
+STR_1939    :Az alkalmazott nézetablaka
 STR_1940    :A vendég boldogsága, energiája, éhsége stb.
 STR_1941    :A vendég által használt játékok
 STR_1942    :A vendég pénzügyi információi
@@ -1797,7 +1796,7 @@ STR_2458    :Grafikon a pénz (kölcsön nélküli) alakulásáról
 STR_2459    :Grafikon a park értékének alakulásáról
 STR_2460    :Grafikon a heti nyereség alakulásáról
 STR_2461    :Marketingkampányok
-STR_2462    :A park bejáratának látképe
+STR_2462    :A park bejáratának nézetablaka
 STR_2463    :Grafikon a park értékelésének alakulásáról
 STR_2464    :Grafikon a vendégek számának alakulásáról
 STR_2465    :A park belépési díja és bevétele
@@ -1847,7 +1846,7 @@ STR_2510    :Magasságjelek az utakon be/ki
 STR_2511    :Talaj módosítása
 STR_2512    :Víz módosítása
 STR_2513    :Díszlet építése
-STR_2514    :Utak építése
+STR_2514    :Útépítés
 STR_2515    :Új játék építése
 STR_2516    :Pénzügyi információk
 STR_2517    :Kutatási információk
@@ -1967,8 +1966,8 @@ STR_2775    :Telj. kép. (keret nélküli abl.)
 STR_2776    :Nyelv:
 STR_2777    :{MOVE_X}{10}{STRING}
 STR_2778    :»{MOVE_X}{10}{STRING}
-STR_2779    :Látkép {COMMA16}
-STR_2780    :Extra látkép
+STR_2779    :Nézetablak {COMMA16}
+STR_2780    :Extra nézetablak
 # End of new strings
 STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
@@ -2166,7 +2165,6 @@ STR_3136    :Figyelmeztetés: A terv alternatív járműtípussal lesz megépít
 STR_3137    :Közeli díszletek kiválasztása
 STR_3138    :Kiválasztás törlése
 STR_3139    :A kábeles felvonó nem tud üzemelni ebben a működési módban
-STR_3140    :A kábeles felvonószakasznak közvetlenül az állomás után kell kezdődnie
 STR_3141    :Nem lehetséges többkörös utazás kábeles felvonószakasszal
 STR_3142    :{WINDOW_COLOUR_2}Befogadóképesség: {BLACK}{STRINGID}
 STR_3143    :Emberek megjelenítése a térképen
@@ -2241,7 +2239,7 @@ STR_3232    :Pálya beállítások - Pénzügyi
 STR_3233    :Pálya beállítások - Vendégek
 STR_3235    :Pénzügyi beállítások
 STR_3236    :A vendégek beállításai
-STR_3238    :Nem kell pénz
+STR_3238    :Pénz nélküli mód
 STR_3239    :Legyen ez a park egy „pénz nélküli” park, pénzügyi korlátozások nélkül
 STR_3240    :Kezdőtőke:
 STR_3241    :Kezdeti kölcsön:
@@ -2423,9 +2421,9 @@ STR_5162    :Nap/hónap/év
 STR_5163    :Hónap/nap/év
 STR_5177    :Képernyőmód:
 STR_5178    :Pénzügyi csalások
-STR_5179    :Vendég-csalások
-STR_5180    :Park-csalások
-STR_5181    :Játék-csalások
+STR_5179    :Vendégcsalások
+STR_5180    :Parkcsalások
+STR_5181    :Játékcsalások
 STR_5182    :{INT32}
 STR_5183    :Alapmagasság
 STR_5184    :Add meg az alapmagasságot {COMMA16} és {COMMA16} között
@@ -2435,7 +2433,7 @@ STR_5187    :Pénzügyek
 STR_5188    :Új kampány
 STR_5189    :Kutatás
 STR_5190    :Térkép
-STR_5191    :Látkép
+STR_5191    :Nézetablak
 STR_5192    :Friss hírek
 STR_5193    :Talaj
 STR_5194    :Víz
@@ -2563,9 +2561,9 @@ STR_5340    :Teljes magasság
 STR_5343    :Alkalmazottak automatikus lerakása
 STR_5344    :Változási napló
 STR_5345    :Pénzügyi csalások
-STR_5346    :Vendég-csalások
-STR_5347    :Park-csalások
-STR_5348    :Játék-csalások
+STR_5346    :Vendégcsalások
+STR_5347    :Parkcsalások
+STR_5348    :Játékcsalások
 STR_5349    :Minden játék
 STR_5350    :Max.
 STR_5351    :Min.
@@ -2652,7 +2650,7 @@ STR_5502    :Többjátékos mód
 STR_5503    :Add meg a gépnevet vagy IP-címet:
 STR_5504    :A többjátékos mód állapota
 STR_5505    :Nem lehet csatlakozni a szerverhez.
-STR_5506    :Vendégeket nem érdeklik az intenzitások
+STR_5506    :Vendégeket nem érdekli az intenzitás
 STR_5510    :Alapértelmezett hangeszköz
 STR_5511    :(ISMERETLEN)
 STR_5512    :Játék mentése másként
@@ -2707,7 +2705,7 @@ STR_5561    :A nyelv betöltése sikertelen
 STR_5562    :FIGYELMEZTETÉS!
 STR_5563    :Ez a funkció jelenleg instabil, legyél rendkívül elővigyázatos.
 STR_5566    :Jelszó:
-STR_5567    :Hirdetés
+STR_5567    :Kihirdetés
 STR_5568    :Jelszó szükséges
 STR_5569    :Ehhez a szerverhez jelszó szükséges
 STR_5570    :Szerver keresése
@@ -2766,9 +2764,6 @@ STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
 STR_5625    :„Igazi” parkok
 STR_5626    :Egyéb parkok
-STR_5627    :Pályák csoportosítása:
-STR_5628    :Forrásjáték
-STR_5629    :Nehézségi szint
 STR_5630    :Fokozatos feloldás bekapcsolása
 STR_5631    :Eredeti DLC parkok
 STR_5632    :Építsd meg a saját…
@@ -2924,7 +2919,7 @@ STR_5822    :A nap és az éjszaka váltakozásának bekapcsolása.{NEWLINE}A te
 STR_5823    :Nagybetűs megjelenítés a hirdetőtáblákon (RCT1-beli viselkedés)
 STR_5824    :A viharok alatti villámhatás{NEWLINE}kikapcsolása
 STR_5825    :Az egérmutató maradjon az ablakon belül
-STR_5826    :A látkép jobb egeres húzásának invertálása
+STR_5826    :A nézetbalak jobb egeres húzásának invertálása
 STR_5827    :A felhasználói felület színsémájának beállítása
 STR_5828    :A távolságok, sebesség stb. mértékegységeinek megváltoztatása
 STR_5829    :A használatban lévő pénznem formátum megváltoztatása. Tisztán vizuális, a pontos árfolyam nincs implementálva.
@@ -3251,7 +3246,6 @@ STR_6165    :Vertikális szinkron
 STR_6166    :A megjelenített képkockákat a kijelző frissítési gyakoriságához igazítja, így megakadályozza a kép szétcsúszását.
 STR_6167    :Haladó
 STR_6168    :Nyitójelenetek
-STR_6169    :Pályaválasztás
 STR_6170    :Felület finomhangolása
 STR_6171    :Keresés
 STR_6172    :Keresés
@@ -3704,13 +3698,13 @@ STR_6659    :Vendégeket nem érdeklik az árak
 STR_6660    :A vendégek hagyják figyelmen kívül a játékok és bódék árait
 STR_6661    :Véletlenszerűek
 STR_6662    :Véletlenszerű színek minden vonat vagy jármű számára
-STR_6663    :Dátum csalások
-STR_6664    :Dátum csalások megjelenítése
-STR_6665    :Természet/időjárás csalások
-STR_6666    :Természet/időjárás csalások megjelenítése
+STR_6663    :Dátumcsalások
+STR_6664    :Dátumcsalások
+STR_6665    :Természet-/időjárás-csalások
+STR_6666    :Természet-/időjárás-csalások
 STR_6667    :Fauna
 STR_6668    :Személyzeti csalások
-STR_6669    :Személyzeti csalások megjelenítése
+STR_6669    :Személyzeti csalások
 STR_6670    :Vendégek viselkedése
 STR_6671    :Alkalmazottak „igazi” nevének mutatása
 STR_6672    :Váltás az alkalmazottak „igazi” nevének és az alkalmazottak számának mutatása között
@@ -3718,7 +3712,7 @@ STR_6673    :Átlátszó
 STR_6674    :{COMMA16}. év {MONTH}
 STR_6675    :Vendég nevek
 STR_6676    :Legalább egy vendégneves objektumot ki kell választani
-STR_6677    :Partok létrehozása vízfelületek körül
+STR_6677    :Part létrehozása a vízfelületek körül
 STR_6678    :Magasságtérkép forrása:
 STR_6679    :Síkság
 STR_6680    :Szimplex zaj
@@ -3826,3 +3820,22 @@ STR_6781    :Képernyőképek
 STR_6782    :Park értesítések  
 STR_6783    :Játék értesítések  
 STR_6784    :Látogatói értesítések
+STR_6785    :Játékvezérlő
+STR_6786    :Holtzóna:
+STR_6787    :Analóg kar holtzónája (a minimális szükséges elmozdulás)
+STR_6788    :Érzékenység:
+STR_6789    :Analóg kar érzékenységi szorzó
+STR_6790    :Holtzóna: {COMMA32}%
+STR_6791    :Érzékenység: {COMMA32}%
+STR_6792    :Bejárati épületek
+STR_6793    :Vendégek és személyzet
+STR_6794    :Díszletek és témák
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :Nincs előnézet
+STR_6798    :Képernyőkép
+STR_6799    :Mini térkép
+STR_7000    :vagy
+STR_7001    :Játéknév
+STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :A(z) „{STRING}” hangfájl csonka. Minta {INT32} lenne az elvárt, de csak {INT32} érhető el. Fontold meg az RCT2 újratelepítését.

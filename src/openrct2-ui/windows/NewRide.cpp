@@ -786,16 +786,12 @@ namespace OpenRCT2::Ui::Windows
 
         bool IsFilterInIdentifier(const RideObject& rideObject)
         {
-            auto objectName = rideObject.GetObjectEntry().GetName();
-
-            return String::contains(objectName, _filter, true);
+            return String::contains(rideObject.GetIdentifier(), _filter, true);
         }
 
         bool IsFilterInFilename(const RideObject& rideObject)
         {
-            auto repoItem = ObjectRepositoryFindObjectByEntry(&(rideObject.GetObjectEntry()));
-
-            return String::contains(repoItem->Path, _filter, true);
+            return String::contains(rideObject.GetFileName(), _filter, true);
         }
 
         void SetPressedTab()
@@ -853,7 +849,7 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WidgetType::groupbox;
                 widgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WidgetType::groupbox;
                 widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WidgetType::flatBtn;
-                if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+                if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
                     widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WidgetType::flatBtn;
 
                 newWidth = 300;
@@ -960,7 +956,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTextBasic(rt, screenPos + ScreenCoordsXY{ 0, 51 }, designCountStringId, ft);
 
             // Price
-            if (!(getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+            if (!(getGameState().park.flags & PARK_FLAGS_NO_MONEY))
             {
                 // Get price of ride
                 auto startPieceId = GetRideTypeDescriptor(item.Type).StartTrackPiece;
@@ -980,14 +976,12 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Draw object author(s) if debugging tools are active
-            if (Config::Get().general.DebuggingTools)
+            if (Config::Get().general.DebuggingTools && !rideObj->GetAuthors().empty())
             {
-                auto repoItem = ObjectRepositoryFindObjectByEntry(&(rideObj->GetObjectEntry()));
-
-                StringId authorStringId = repoItem->Authors.size() > 1 ? STR_AUTHORS_STRING : STR_AUTHOR_STRING;
+                const auto& authors = rideObj->GetAuthors();
 
                 std::string authorsString;
-                for (auto& author : repoItem->Authors)
+                for (auto& author : authors)
                 {
                     if (!authorsString.empty())
                         authorsString.append(", ");
@@ -996,7 +990,7 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 ft = Formatter();
-                ft.Add<StringId>(authorStringId);
+                ft.Add<StringId>(authors.size() > 1 ? STR_AUTHORS_STRING : STR_AUTHOR_STRING);
                 ft.Add<const char*>(authorsString.c_str());
 
                 DrawTextEllipsised(

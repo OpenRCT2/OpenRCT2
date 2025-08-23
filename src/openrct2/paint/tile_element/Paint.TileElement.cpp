@@ -125,10 +125,8 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
             return;
     }
 
-    session.LeftTunnelCount = 0;
-    session.RightTunnelCount = 0;
-    session.LeftTunnels[0] = { 0xFF, TunnelType::Null };
-    session.RightTunnels[0] = { 0xFF, TunnelType::Null };
+    session.LeftTunnels.clear();
+    session.RightTunnels.clear();
     session.VerticalTunnelHeight = 0xFF;
     session.MapPosition.x = coords.x;
     session.MapPosition.y = coords.y;

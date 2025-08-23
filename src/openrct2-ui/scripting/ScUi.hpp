@@ -22,7 +22,7 @@
     #include <memory>
     #include <openrct2/Context.h>
     #include <openrct2/Input.h>
-    #include <openrct2/scenario/Scenario.h>
+    #include <openrct2/scenario/ScenarioCategory.h>
     #include <openrct2/scenario/ScenarioRepository.h>
     #include <openrct2/scripting/Duktape.hpp>
     #include <openrct2/scripting/ScriptEngine.h>
@@ -40,36 +40,38 @@ namespace OpenRCT2::Ui::Windows
 
 namespace OpenRCT2::Scripting
 {
-    static const DukEnumMap<ScenarioCategory> ScenarioCategoryMap({
-        { "beginner", ScenarioCategory::beginner },
-        { "challenging", ScenarioCategory::challenging },
-        { "expert", ScenarioCategory::expert },
-        { "real", ScenarioCategory::real },
-        { "other", ScenarioCategory::other },
-        { "dlc", ScenarioCategory::dlc },
-        { "build_your_own", ScenarioCategory::buildYourOwn },
-        { "competitions", ScenarioCategory::competitions },
-    });
+    static const DukEnumMap<Scenario::Category> ScenarioCategoryMap(
+        {
+            { "beginner", Scenario::Category::beginner },
+            { "challenging", Scenario::Category::challenging },
+            { "expert", Scenario::Category::expert },
+            { "real", Scenario::Category::real },
+            { "other", Scenario::Category::other },
+            { "dlc", Scenario::Category::dlc },
+            { "build_your_own", Scenario::Category::buildYourOwn },
+            { "competitions", Scenario::Category::competitions },
+        });
 
-    static const DukEnumMap<ScenarioSource> ScenarioSourceMap({
-        { "rct1", ScenarioSource::RCT1 },
-        { "rct1_aa", ScenarioSource::RCT1_AA },
-        { "rct1_ll", ScenarioSource::RCT1_LL },
-        { "rct2", ScenarioSource::RCT2 },
-        { "rct2_ww", ScenarioSource::RCT2_WW },
-        { "rct2_tt", ScenarioSource::RCT2_TT },
-        { "real", ScenarioSource::Real },
-        { "extras", ScenarioSource::Extras },
-        { "other", ScenarioSource::Other },
-    });
+    static const DukEnumMap<ScenarioSource> ScenarioSourceMap(
+        {
+            { "rct1", ScenarioSource::RCT1 },
+            { "rct1_aa", ScenarioSource::RCT1_AA },
+            { "rct1_ll", ScenarioSource::RCT1_LL },
+            { "rct2", ScenarioSource::RCT2 },
+            { "rct2_ww", ScenarioSource::RCT2_WW },
+            { "rct2_tt", ScenarioSource::RCT2_TT },
+            { "real", ScenarioSource::Real },
+            { "extras", ScenarioSource::Extras },
+            { "other", ScenarioSource::Other },
+        });
 
     template<>
-    inline DukValue ToDuk(duk_context* ctx, const ScenarioCategory& value)
+    inline DukValue ToDuk(duk_context* ctx, const Scenario::Category& value)
     {
         const auto& entry = ScenarioCategoryMap.find(value);
         if (entry != ScenarioCategoryMap.end())
             return ToDuk(ctx, entry->first);
-        return ToDuk(ctx, ScenarioCategoryMap[ScenarioCategory::other]);
+        return ToDuk(ctx, ScenarioCategoryMap[Scenario::Category::other]);
     }
 
     template<>

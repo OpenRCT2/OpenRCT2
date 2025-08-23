@@ -14,10 +14,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor EnterpriseRTD =
 {
     .Category = RideCategory::thrill,
-    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack4x4,
+    .StartTrackPiece = TrackElemType::FlatTrack4x4,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::enterprise,
         .enabledTrackGroups = {},
@@ -37,7 +39,7 @@ constexpr RideTypeDescriptor EnterpriseRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 16, 160, 3, 2, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 50, 10, 0 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 50.00_GBP, 1.00_GBP, 1, },
@@ -52,7 +54,7 @@ constexpr RideTypeDescriptor EnterpriseRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { MakeRideRating(3, 60), MakeRideRating(4, 55), MakeRideRating(5, 72) },
+        { RideRating::make(3, 60), RideRating::make(4, 55), RideRating::make(5, 72) },
         22,
         3,
         false,
@@ -63,7 +65,7 @@ constexpr RideTypeDescriptor EnterpriseRTD =
     },
     .UpdateRotating = UpdateRotatingEnterprise,
     .LightFXAddLightsMagicVehicle = nullptr,
-    .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
+    .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
@@ -71,4 +73,5 @@ constexpr RideTypeDescriptor EnterpriseRTD =
     .SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default,
     .GetGuestWaypointLocation = GetGuestWaypointLocationEnterprise,
 };
+} // namespace OpenRCT2
 // clang-format on
