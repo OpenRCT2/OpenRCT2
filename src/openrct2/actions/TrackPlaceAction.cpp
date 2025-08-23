@@ -263,7 +263,8 @@ namespace OpenRCT2::GameActions
                 ? CreateCrossingMode::trackOverPath
                 : CreateCrossingMode::none;
             auto canBuild = MapCanConstructWithClearAt(
-                { mapLoc, baseZ, clearanceZ }, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), crossingMode);
+                { mapLoc, baseZ, clearanceZ }, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags(), kTileSlopeFlat,
+                crossingMode);
             if (canBuild.Error != Status::Ok)
             {
                 canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
@@ -468,7 +469,7 @@ namespace OpenRCT2::GameActions
                 : CreateCrossingMode::none;
             auto canBuild = MapCanConstructWithClearAt(
                 mapLocWithClearance, &MapPlaceNonSceneryClearFunc, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
-                crossingMode);
+                kTileSlopeFlat, crossingMode);
             if (canBuild.Error != Status::Ok)
             {
                 canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
