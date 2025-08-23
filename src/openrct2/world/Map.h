@@ -178,6 +178,7 @@ bool MapCheckCapacityAndReorganise(const CoordsXY& loc, size_t numElements = 1);
 int16_t TileElementHeight(const CoordsXY& loc);
 int16_t TileElementHeight(const CoordsXYZ& loc, uint8_t slope);
 int16_t TileElementWaterHeight(const CoordsXY& loc);
+uint8_t TileElementSlope(const CoordsXY& loc);
 void TileElementRemove(TileElement* tileElement);
 TileElement* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementType type);
 

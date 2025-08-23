@@ -16,10 +16,8 @@
 #include "Noise.h"
 #include "NoiseMapGen.h"
 #include "PngTerrainGenerator.h"
+#include "SceneryPlacement.h"
 #include "SurfaceSelection.h"
-#include "TreePlacement.h"
-
-#include <random>
 
 namespace OpenRCT2::World::MapGenerator
 {
@@ -52,10 +50,6 @@ namespace OpenRCT2::World::MapGenerator
 
         applyTexturesFromRules(settings);
         placeSceneryFromRules(settings);
-
-        // Place trees?
-        if (settings->trees)
-            placeTrees(settings);
     }
 
     void resetSurfaces(Settings* settings)
@@ -92,22 +86,36 @@ namespace OpenRCT2::World::MapGenerator
     {
         auto& defaultRule = settings->textureRules[0];
         assert(defaultRule.isDefault);
-        auto& defaultTextures = defaultRule.result;
+        auto defaultTextures = defaultRule.effect;
 
         Rule::Callback<Rule::TextureResult> callback =
-            [defaultTextures](TileCoordsXY& coords, SurfaceElement& element, std::optional<Rule::TextureResult>& result) {
+            [defaultTextures](const TileCoordsXY& coords, const std::optional<Rule::TextureResult>& result) {
+                auto* element = MapGetSurfaceElementAt(coords);
+                if (element == nullptr)
+                {
+                    return;
+                }
+
                 auto actual = result.value_or(defaultTextures);
 
-                element.SetSurfaceObjectIndex(actual.applyLandTexture ? actual.landTexture : defaultTextures.landTexture);
-                element.SetEdgeObjectIndex(actual.applyEdgeTexture ? actual.edgeTexture : defaultTextures.edgeTexture);
+                element->SetSurfaceObjectIndex(actual.applyLandTexture ? actual.landTexture : defaultTextures.landTexture);
+                element->SetEdgeObjectIndex(actual.applyEdgeTexture ? actual.edgeTexture : defaultTextures.edgeTexture);
             };
 
-        Rule::evaluateRules<Rule::TextureResult>(*settings, settings->textureRules, callback);
+        Rule::evaluateTextureRules(*settings, callback);
     }
 
     static void placeSceneryFromRules(Settings* settings)
     {
-        // TODO
+        Rule::Callback<Rule::SceneryResult> callback = [](const TileCoordsXY& coords,
+                                                          const std::optional<Rule::SceneryResult>& result) {
+            if (result.has_value())
+            {
+                placeScenery(coords, result.value());
+            }
+        };
+
+        Rule::evaluateSceneryRules(*settings, callback);
     }
 
     /**

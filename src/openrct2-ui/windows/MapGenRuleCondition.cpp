@@ -14,8 +14,9 @@
 #include <openrct2/Context.h>
 #include <openrct2/Diagnostic.h>
 #include <openrct2/core/UnitConversion.h>
-#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
+#include <openrct2/object/ObjectLimits.h>
+#include <openrct2/object/ObjectManager.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/map_generator/rule/Rule.h>
 
@@ -63,17 +64,20 @@ namespace OpenRCT2::Ui::Windows
         WIDX_EDGE_HIGH,
         WIDX_EDGE_HIGH_UP,
         WIDX_EDGE_HIGH_DOWN,
+
+        WIDX_LAND_STYLE_SCROLL
     };
 
     static constexpr ScreenSize kWindowSize = { 300, 156 };
+    static constexpr ScreenSize kItemSize = { 47, 36 };
     static constexpr auto _widgets = makeWidgets(
         // clang-format off
         makeWindowShim(STR_MAPGEN_RULE_CONDITION_EDIT_WINDOW_TITLE, kWindowSize),
         makeWidget(         { 186, 134 }, { 109, 14 }, WidgetType::button, WindowColour::secondary, STR_CANCEL),
         makeWidget(         {   5, 134 }, { 109, 14 }, WidgetType::button, WindowColour::secondary, STR_OK),
 
-        makeWidget(         {   5,  20 }, { 142, 14 }, WidgetType::label, WindowColour::secondary),
-        makeDropdownWidgets({ 153,  20 }, {  28, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_RULE_PREDICATE_GREATER_THAN),
+        makeWidget(         {   5,  20 }, { 122, 14 }, WidgetType::label, WindowColour::secondary),
+        makeDropdownWidgets({ 133,  20 }, {  48, 14 }, WidgetType::dropdownMenu, WindowColour::secondary, STR_MAPGEN_RULE_PREDICATE_GREATER_THAN),
         makeSpinnerWidgets( { 186,  20 }, { 109, 14 }, WidgetType::spinner, WindowColour::secondary),
 
         makeWidget(         {   5,  39 }, { 142, 14 }, WidgetType::label, WindowColour::secondary, STR_MAPGEN_SEED_OFFSET),
@@ -89,7 +93,9 @@ namespace OpenRCT2::Ui::Windows
         makeSpinnerWidgets( { 186,  96 }, { 109, 14 }, WidgetType::spinner, WindowColour::secondary),
 
         makeWidget(         {   5, 115 }, { 150, 14 }, WidgetType::label, WindowColour::secondary, STR_MAPGEN_RULE_EDGE_HIGH),
-        makeSpinnerWidgets( { 186, 115 }, { 109, 14 }, WidgetType::spinner, WindowColour::secondary)
+        makeSpinnerWidgets( { 186, 115 }, { 109, 14 }, WidgetType::spinner, WindowColour::secondary),
+        
+        makeWidget(         {   5,  39 }, { 290, 88 }, WidgetType::scroll, WindowColour::secondary, SCROLL_VERTICAL)
         // clang-format on
     );
 
@@ -99,8 +105,8 @@ namespace OpenRCT2::Ui::Windows
         WidgetIdentifier callWidget = {};
         Condition condition = {};
         std::function<void(Condition&)> callback;
-
-        u8string _seed = std::to_string(std::random_device{}());
+        std::vector<ObjectEntryIndex> landStyles;
+        std::optional<ObjectEntryIndex> highlightedItem = std::nullopt;
 
         bool HasParentWindow() const
         {
@@ -126,6 +132,16 @@ namespace OpenRCT2::Ui::Windows
             hold_down_widgets = (1uLL << WIDX_VALUE_UP) | (1uLL << WIDX_VALUE_DOWN);
             WindowInitScrollWidgets(*this);
             WindowSetResize(*this, kWindowSize, kWindowSize);
+
+            auto& objectManager = GetContext()->GetObjectManager();
+            for (ObjectEntryIndex surfaceIdx = 0; surfaceIdx < kMaxTerrainSurfaceObjects; surfaceIdx++)
+            {
+                TerrainSurfaceObject* surfaceObj = objectManager.GetLoadedObject<TerrainSurfaceObject>(surfaceIdx);
+                if (surfaceObj != nullptr)
+                {
+                    landStyles.push_back(surfaceIdx);
+                }
+            }
         }
 
         void OnUpdate() override
@@ -139,6 +155,12 @@ namespace OpenRCT2::Ui::Windows
                     Close();
                 }
             }
+
+            if (!widgetIsHighlighted(*this, WIDX_LAND_STYLE_SCROLL))
+            {
+                highlightedItem = std::nullopt;
+                InvalidateWidget(WIDX_LAND_STYLE_SCROLL);
+            }
         }
 
         void OnPrepareDraw() override
@@ -149,6 +171,7 @@ namespace OpenRCT2::Ui::Windows
             bool octaVisible = false;
             bool edgeLowVisible = false;
             bool edgeHighVisible = false;
+            bool landStyleVisible = false;
 
             switch (condition.type)
             {
@@ -170,18 +193,18 @@ namespace OpenRCT2::Ui::Windows
                 case Type::NormalAngle:
                     widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_NORMAL_ANGLE;
                     break;
-                case Type::Prng:
+                case Type::Random:
                     widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_CONDITION_PRNG;
                     seedVisible = true;
                     break;
-                case Type::PrngHeightBlend:
+                case Type::BlendHeight:
                     widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_COND_BLEND_HEIGHT_VERBOSE;
                     valueVisible = false;
                     seedVisible = true;
                     edgeLowVisible = true;
                     edgeHighVisible = true;
                     break;
-                case Type::PrngNoiseBlend:
+                case Type::BlendNoise:
                     widgets[WIDX_CONDITION_LABEL].text = STR_MAPGEN_RULE_COND_BLEND_NOISE_VERBOSE;
                     valueVisible = false;
                     seedVisible = true;
@@ -189,6 +212,15 @@ namespace OpenRCT2::Ui::Windows
                     octaVisible = true;
                     edgeLowVisible = true;
                     edgeHighVisible = true;
+                    break;
+                case Type::LandStyle:
+                    valueVisible = false;
+                    seedVisible = false;
+                    freqVisible = false;
+                    octaVisible = false;
+                    edgeLowVisible = false;
+                    edgeHighVisible = false;
+                    landStyleVisible = true;
                     break;
             }
 
@@ -222,24 +254,28 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_EDGE_HIGH_UP].type = edgeHighVisible ? WidgetType::button : WidgetType::empty;
             widgets[WIDX_EDGE_HIGH_DOWN].type = edgeHighVisible ? WidgetType::button : WidgetType::empty;
 
+            widgets[WIDX_LAND_STYLE_SCROLL].type = landStyleVisible ? WidgetType::scroll : WidgetType::empty;
+
             switch (condition.predicate)
             {
-                case Predicate::equal:
-                    widgets[WIDX_PREDICATE].text = STR_MAPGEN_RULE_PREDICATE_EQUAL;
+                case Predicate::Equal:
+                    widgets[WIDX_PREDICATE].text = condition.type == Type::LandStyle ? STR_MAPGEN_RULE_PREDICATE_IN
+                                                                                     : STR_MAPGEN_RULE_PREDICATE_EQUAL;
                     break;
-                case Predicate::notEqual:
-                    widgets[WIDX_PREDICATE].text = STR_MAPGEN_RULE_PREDICATE_NOT_EQUAL;
+                case Predicate::NotEqual:
+                    widgets[WIDX_PREDICATE].text = condition.type == Type::LandStyle ? STR_MAPGEN_RULE_PREDICATE_NOT_IN
+                                                                                     : STR_MAPGEN_RULE_PREDICATE_NOT_EQUAL;
                     break;
-                case Predicate::lessThan:
+                case Predicate::LessThan:
                     widgets[WIDX_PREDICATE].text = STR_MAPGEN_RULE_PREDICATE_LESS_THAN;
                     break;
-                case Predicate::greaterThan:
+                case Predicate::GreaterThan:
                     widgets[WIDX_PREDICATE].text = STR_MAPGEN_RULE_PREDICATE_GREATER_THAN;
                     break;
-                case Predicate::lessThanOrEqual:
+                case Predicate::LessThanOrEqual:
                     widgets[WIDX_PREDICATE].text = STR_MAPGEN_RULE_PREDICATE_LESS_THAN_OR_EQUAL;
                     break;
-                case Predicate::greaterThanOrEqual:
+                case Predicate::GreaterThanOrEqual:
                     widgets[WIDX_PREDICATE].text = STR_MAPGEN_RULE_PREDICATE_GREATER_THAN_OR_EQUAL;
                     break;
                 default:
@@ -319,10 +355,10 @@ namespace OpenRCT2::Ui::Windows
                         STR_COMMA2DP32, ft, { colours[1] });
                     break;
                 }
-                case Type::Prng:
+                case Type::Random:
                 {
                     auto ft = Formatter();
-                    auto& prngData = std::get<PrngData>(condition.data);
+                    auto& prngData = std::get<RandomData>(condition.data);
                     ft.Add<int32_t>(static_cast<int32_t>(prngData.value * 100));
                     DrawTextBasic(
                         rt, windowPos + ScreenCoordsXY{ widgets[WIDX_VALUE].left + 1, widgets[WIDX_VALUE].top + 1 },
@@ -335,7 +371,7 @@ namespace OpenRCT2::Ui::Windows
                         STR_FORMAT_INTEGER, ft, { colours[1] });
                     break;
                 }
-                case Type::PrngHeightBlend:
+                case Type::BlendHeight:
                 {
                     auto& blendHeightData = std::get<BlendHeightData>(condition.data);
 
@@ -364,7 +400,7 @@ namespace OpenRCT2::Ui::Windows
                         STR_FORMAT_INTEGER, ft, { colours[1] });
                     break;
                 }
-                case Type::PrngNoiseBlend:
+                case Type::BlendNoise:
                 {
                     auto& blendNoiseData = std::get<BlendNoiseData>(condition.data);
 
@@ -406,6 +442,17 @@ namespace OpenRCT2::Ui::Windows
                         rt, windowPos + ScreenCoordsXY{ widgets[WIDX_SEED_OFFSET].left + 1, widgets[WIDX_SEED_OFFSET].top + 1 },
                         STR_FORMAT_INTEGER, ft, { colours[1] });
 
+                    break;
+                }
+                case Type::LandStyle:
+                {
+                    auto ft = Formatter();
+                    ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_LAND_STYLE);
+                    DrawTextBasic(
+                        rt,
+                        windowPos
+                            + ScreenCoordsXY{ widgets[WIDX_CONDITION_LABEL].left + 1, widgets[WIDX_CONDITION_LABEL].top + 1 },
+                        STR_STRINGID, ft, { colours[1] });
                     break;
                 }
             }
@@ -476,9 +523,9 @@ namespace OpenRCT2::Ui::Windows
                     normalAngleData.angle = std::clamp(angleValue, kAngleMin, kAngleMax);
                     break;
                 }
-                case Type::Prng:
+                case Type::Random:
                 {
-                    auto& prngData = std::get<PrngData>(condition.data);
+                    auto& prngData = std::get<RandomData>(condition.data);
                     auto prngValue = floatValue.has_value() ? floatValue.value()
                                                             : prngData.value + 0.01f * static_cast<float>(changeMultiplier);
                     prngData.value = std::clamp(prngValue, kRandomMin, kRandomMax);
@@ -495,7 +542,7 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (condition.type)
             {
-                case Type::PrngHeightBlend:
+                case Type::BlendHeight:
                 {
                     auto& blendHeightData = std::get<BlendHeightData>(condition.data);
                     auto edgeLow = intValue.has_value() ? MetresToBaseZ(intValue.value())
@@ -507,7 +554,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                case Type::PrngNoiseBlend:
+                case Type::BlendNoise:
                 {
                     auto& blendNoiseData = std::get<BlendNoiseData>(condition.data);
                     auto edgeLow = floatValue.has_value()
@@ -531,7 +578,7 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (condition.type)
             {
-                case Type::PrngHeightBlend:
+                case Type::BlendHeight:
                 {
                     auto& blendHeightData = std::get<BlendHeightData>(condition.data);
                     auto edgeHigh = intValue.has_value() ? MetresToBaseZ(intValue.value())
@@ -543,7 +590,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                case Type::PrngNoiseBlend:
+                case Type::BlendNoise:
                 {
                     auto& blendNoiseData = std::get<BlendNoiseData>(condition.data);
                     auto edgeHigh = floatValue.has_value()
@@ -576,16 +623,16 @@ namespace OpenRCT2::Ui::Windows
                     noiseData.seedOffset = static_cast<uint32_t>(noiseSeedOffset);
                     break;
                 }
-                case Type::Prng:
+                case Type::Random:
                 {
-                    auto& prngData = std::get<PrngData>(condition.data);
+                    auto& prngData = std::get<RandomData>(condition.data);
                     auto prngSeedOffset = seedOffset.has_value()
                         ? seedOffset.value()
                         : static_cast<int32_t>(prngData.seedOffset) + 1 * changeMultiplier;
                     prngData.seedOffset = static_cast<uint32_t>(prngSeedOffset);
                     break;
                 }
-                case Type::PrngHeightBlend:
+                case Type::BlendHeight:
                 {
                     auto& blendHeightData = std::get<BlendHeightData>(condition.data);
                     auto prngSeedOffset = seedOffset.has_value()
@@ -594,7 +641,7 @@ namespace OpenRCT2::Ui::Windows
                     blendHeightData.seedOffset = static_cast<uint32_t>(prngSeedOffset);
                     break;
                 }
-                case Type::PrngNoiseBlend:
+                case Type::BlendNoise:
                 {
                     auto& blendNoiseData = std::get<BlendNoiseData>(condition.data);
                     auto prngSeedOffset = seedOffset.has_value()
@@ -618,15 +665,15 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto& noiseData = std::get<NoiseData>(condition.data);
                     auto noiseFrequency = frequency.has_value() ? frequency.value()
-                                                                : noiseData.frequency + 5 * changeMultiplier;
+                                                                : noiseData.frequency + 0.05f * changeMultiplier;
                     noiseData.frequency = std::clamp(noiseFrequency, kFrequencyMin, kFrequencyMax);
                     break;
                 }
-                case Type::PrngNoiseBlend:
+                case Type::BlendNoise:
                 {
                     auto& blendNoiseData = std::get<BlendNoiseData>(condition.data);
                     auto noiseFrequency = frequency.has_value() ? frequency.value()
-                                                                : blendNoiseData.frequency + 5 * changeMultiplier;
+                                                                : blendNoiseData.frequency + 0.05f * changeMultiplier;
                     blendNoiseData.frequency = std::clamp(noiseFrequency, kFrequencyMin, kFrequencyMax);
                     break;
                 }
@@ -648,7 +695,7 @@ namespace OpenRCT2::Ui::Windows
                     noiseData.octaves = std::clamp(noiseOctaves, kOctavesMin, kOctavesMax);
                     break;
                 }
-                case Type::PrngNoiseBlend:
+                case Type::BlendNoise:
                 {
                     auto& blendNoiseData = std::get<BlendNoiseData>(condition.data);
                     auto noiseOctaves = octaves.value_or(blendNoiseData.octaves + 1 * changeMultiplier);
@@ -721,7 +768,7 @@ namespace OpenRCT2::Ui::Windows
                         STR_COMMA2DP32, static_cast<int32_t>(std::get<NormalAngleData>(condition.data).angle * 100), 5);
                     break;
                 }
-                case Type::Prng:
+                case Type::Random:
                 {
                     Formatter ft;
                     ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
@@ -729,7 +776,7 @@ namespace OpenRCT2::Ui::Windows
                     ft.Add<int32_t>(static_cast<int32_t>(kAngleMax * 100));
                     WindowTextInputOpen(
                         this, WIDX_VALUE, STR_MAPGEN_RULE_CONDITION_PRNG, STR_MAPGEN_RULE_ENTER_FLOAT, ft, STR_COMMA2DP32,
-                        static_cast<int32_t>(std::get<PrngData>(condition.data).value * 100), 4);
+                        static_cast<int32_t>(std::get<RandomData>(condition.data).value * 100), 4);
                     break;
                 }
                 default:
@@ -745,7 +792,7 @@ namespace OpenRCT2::Ui::Windows
                 case Type::Noise:
                     frequency = static_cast<int32_t>(std::get<NoiseData>(condition.data).frequency * 100);
                     break;
-                case Type::PrngNoiseBlend:
+                case Type::BlendNoise:
                     frequency = static_cast<int32_t>(std::get<BlendNoiseData>(condition.data).frequency * 100);
                     break;
                 default:
@@ -769,7 +816,7 @@ namespace OpenRCT2::Ui::Windows
                 case Type::Noise:
                     octaves = std::get<NoiseData>(condition.data).octaves;
                     break;
-                case Type::PrngNoiseBlend:
+                case Type::BlendNoise:
                     octaves = std::get<BlendNoiseData>(condition.data).octaves;
                     break;
                 default:
@@ -793,13 +840,13 @@ namespace OpenRCT2::Ui::Windows
                 case Type::Noise:
                     seedOffset = std::get<NoiseData>(condition.data).seedOffset;
                     break;
-                case Type::Prng:
-                    seedOffset = std::get<PrngData>(condition.data).seedOffset;
+                case Type::Random:
+                    seedOffset = std::get<RandomData>(condition.data).seedOffset;
                     break;
-                case Type::PrngHeightBlend:
+                case Type::BlendHeight:
                     seedOffset = std::get<BlendHeightData>(condition.data).seedOffset;
                     break;
-                case Type::PrngNoiseBlend:
+                case Type::BlendNoise:
                     seedOffset = std::get<BlendNoiseData>(condition.data).seedOffset;
                     break;
                 default:
@@ -819,7 +866,7 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (condition.type)
             {
-                case Type::PrngHeightBlend:
+                case Type::BlendHeight:
                 {
                     Formatter ft;
                     ft.Add<StringId>(STR_MAPGEN_RULE_EDGE_LOW);
@@ -830,7 +877,7 @@ namespace OpenRCT2::Ui::Windows
                         BaseZToMetres(std::get<BlendHeightData>(condition.data).edgeLow), 3);
                     break;
                 }
-                case Type::PrngNoiseBlend:
+                case Type::BlendNoise:
                 {
                     Formatter ft;
                     ft.Add<StringId>(STR_MAPGEN_RULE_EDGE_LOW);
@@ -850,7 +897,7 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (condition.type)
             {
-                case Type::PrngHeightBlend:
+                case Type::BlendHeight:
                 {
                     Formatter ft;
                     ft.Add<StringId>(STR_MAPGEN_RULE_EDGE_HIGH);
@@ -861,7 +908,7 @@ namespace OpenRCT2::Ui::Windows
                         BaseZToMetres(std::get<BlendHeightData>(condition.data).edgeHigh), 3);
                     break;
                 }
-                case Type::PrngNoiseBlend:
+                case Type::BlendNoise:
                 {
                     Formatter ft;
                     ft.Add<StringId>(STR_MAPGEN_RULE_EDGE_HIGH);
@@ -1002,21 +1049,36 @@ namespace OpenRCT2::Ui::Windows
                 {
                     using namespace Dropdown;
 
-                    constexpr ItemExt items[] = {
-                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_EQUAL),
-                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_NOT_EQUAL),
-                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_LESS_THAN),
-                        ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_GREATER_THAN),
-                        ItemExt(4, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_LESS_THAN_OR_EQUAL),
-                        ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_GREATER_THAN_OR_EQUAL),
-                    };
+                    size_t itemSize;
+                    if (condition.type == Type::LandStyle)
+                    {
+                        constexpr ItemExt items[] = {
+                            ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_IN),
+                            ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_NOT_IN),
+                        };
 
-                    SetItems(items);
+                        SetItems(items);
+                        itemSize = std::size(items);
+                    }
+                    else
+                    {
+                        constexpr ItemExt items[] = {
+                            ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_EQUAL),
+                            ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_NOT_EQUAL),
+                            ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_LESS_THAN),
+                            ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_GREATER_THAN),
+                            ItemExt(4, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_LESS_THAN_OR_EQUAL),
+                            ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_PREDICATE_GREATER_THAN_OR_EQUAL),
+                        };
+
+                        SetItems(items);
+                        itemSize = std::size(items);
+                    }
 
                     Widget* ddWidget = &widgets[widgetIndex - 1];
                     WindowDropdownShowText(
                         { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
-                        Dropdown::Flag::StayOpen, std::size(items));
+                        Dropdown::Flag::StayOpen, itemSize);
                     break;
                 }
                 case WIDX_VALUE_DOWN:
@@ -1094,6 +1156,120 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        int32_t GetNumColumns() const
+        {
+            return (widgets[WIDX_LAND_STYLE_SCROLL].width() - kScrollBarWidth) / kItemSize.width;
+        }
+
+        int32_t GetNumRows() const
+        {
+            float items = static_cast<float>(landStyles.size());
+            float columns = static_cast<float>(GetNumColumns());
+            return static_cast<int32_t>(std::ceil<float>(items / columns));
+        }
+
+        ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+        {
+            return { 0, GetNumRows() * kItemSize.height };
+        }
+
+        ImageId LookupSurfaceImage(ObjectEntryIndex surfaceTexture)
+        {
+            auto& objManager = GetContext()->GetObjectManager();
+            const auto* surfaceObj = objManager.GetLoadedObject<TerrainSurfaceObject>(surfaceTexture);
+            ImageId surfaceImage;
+            if (surfaceObj != nullptr)
+            {
+                surfaceImage = ImageId(surfaceObj->IconImageId);
+                if (surfaceObj->Colour != TerrainSurfaceObject::kNoValue)
+                {
+                    surfaceImage = surfaceImage.WithPrimary(surfaceObj->Colour);
+                }
+            }
+            return surfaceImage;
+        }
+
+        void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt) override
+        {
+            GfxClear(rt, ColourMapA[colours[1].colour].mid_light);
+
+            auto numColumns = GetNumColumns();
+
+            ScreenCoordsXY pos{ 0, 0 };
+
+            auto& selectedLandStyles = std::get<LandStyleData>(condition.data).styles;
+
+            for (auto& itemIdx : landStyles)
+            {
+                auto itemRect = ScreenRect{ pos, pos + ScreenCoordsXY{ kItemSize.width - 1, kItemSize.height - 1 } };
+
+                bool selected = selectedLandStyles.contains(itemIdx);
+                if (selected)
+                {
+                    GfxFillRectInset(rt, itemRect, colours[1], INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_MID_LIGHT);
+                }
+                else if (highlightedItem.has_value() && highlightedItem.value() == itemIdx)
+                {
+                    GfxFillRectInset(rt, itemRect, colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
+                }
+
+                // draw sprite
+                GfxDrawSprite(rt, LookupSurfaceImage(itemIdx), pos);
+
+                pos.x += kItemSize.width;
+                if (pos.x >= numColumns * kItemSize.width)
+                {
+                    pos.y += kItemSize.height;
+                    pos.x = 0;
+                }
+            }
+        }
+
+        std::optional<ObjectEntryIndex> getItemIdxAt(const ScreenCoordsXY& screenCoords) const
+        {
+            const auto columns = GetNumColumns();
+            const auto col = screenCoords.x / kItemSize.width;
+            const auto row = screenCoords.y / kItemSize.height;
+
+            if (col >= 0 && col < columns && row >= 0)
+            {
+                const auto idx = static_cast<size_t>(row * columns + col);
+                if (idx < landStyles.size())
+                {
+                    return std::make_optional(landStyles[idx]);
+                }
+            }
+            return std::nullopt;
+        }
+
+        void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        {
+            highlightedItem = getItemIdxAt(screenCoords);
+            Invalidate();
+        }
+
+        void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+        {
+            auto maybeClicked = getItemIdxAt(screenCoords);
+            if (!maybeClicked.has_value())
+            {
+                return;
+            }
+
+            auto& selectedLandStyles = std::get<LandStyleData>(condition.data).styles;
+            auto& clicked = maybeClicked.value();
+
+            if (selectedLandStyles.contains(clicked))
+            {
+                selectedLandStyles.erase(clicked);
+            }
+            else
+            {
+                selectedLandStyles.insert(clicked);
+            }
+            Invalidate();
+        }
+
         bool WasCalledFrom(const WindowBase* call_w, const WidgetIndex call_widget) const
         {
             if (call_w == nullptr)
@@ -1124,7 +1300,7 @@ namespace OpenRCT2::Ui::Windows
         return w;
     }
 
-    void WindowGenRuleConditionCloseByCalling(WindowBase* call_w, WidgetIndex call_widget)
+    void MapGenRuleConditionCloseByCalling(WindowBase* call_w, WidgetIndex call_widget)
     {
         auto* windowMgr = GetWindowManager();
         auto* w = reinterpret_cast<MapGenRuleConditionWindow*>(windowMgr->FindByClass(WindowClass::MapgenRuleCondition));

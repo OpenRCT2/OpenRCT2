@@ -22,7 +22,9 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/StringIds.h>
+#include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/ui/WindowManager.h>
@@ -43,7 +45,7 @@ namespace OpenRCT2::Ui::Windows
         WINDOW_MAPGEN_PAGE_TERRAIN,
         WINDOW_MAPGEN_PAGE_WATER,
         WINDOW_MAPGEN_PAGE_TEXTURE,
-        WINDOW_MAPGEN_PAGE_FORESTS,
+        WINDOW_MAPGEN_PAGE_SCENERY,
         WINDOW_MAPGEN_PAGE_COUNT
     };
 
@@ -114,39 +116,45 @@ namespace OpenRCT2::Ui::Windows
         WIDX_WATER_LEVEL_UP,
         WIDX_WATER_LEVEL_DOWN,
 
-        WIDX_RULE_NEW = TAB_BEGIN,
-        WIDX_RULE_NEW_PRESET,
-        WIDX_RULE_RENAME,
-        WIDX_RULE_REMOVE,
-        WIDX_RULE_MOVE_UP,
-        WIDX_RULE_MOVE_DOWN,
-        WIDX_RULE_HEADER_ENABLED,
-        WIDX_RULE_HEADER_NAME,
-        WIDX_RULE_HEADER_SURFACE,
-        WIDX_RULE_HEADER_EDGE,
-        WIDX_RULE_SCROLL,
-        WIDX_RULE_CONDITION_GROUP,
-        WIDX_RULE_CONDITION_SCROLL,
-        WIDX_RULE_CONDITION_REMOVE,
-        WIDX_RULE_CONDITION_EDIT,
-        WIDX_RULE_CONDITION_ADD,
+        WIDX_RULE_TX_NEW = TAB_BEGIN,
+        WIDX_RULE_TX_NEW_PRESET,
+        WIDX_RULE_TX_RENAME,
+        WIDX_RULE_TX_REMOVE,
+        WIDX_RULE_TX_MOVE_UP,
+        WIDX_RULE_TX_MOVE_DOWN,
+        WIDX_RULE_TX_HEADER_ENABLED,
+        WIDX_RULE_TX_HEADER_NAME,
+        WIDX_RULE_TX_HEADER_SURFACE,
+        WIDX_RULE_TX_HEADER_EDGE,
+        WIDX_RULE_TX_SCROLL,
+        WIDX_RULE_TX_CONDITION_GROUP,
+        WIDX_RULE_TX_CONDITION_SCROLL,
+        WIDX_RULE_TX_CONDITION_REMOVE,
+        WIDX_RULE_TX_CONDITION_EDIT,
+        WIDX_RULE_TX_CONDITION_ADD,
+        WIDX_RULE_TX_OUTCOME_GROUP,
+        WIDX_RULE_TX_FLOOR_TEXTURE_CHECK,
+        WIDX_RULE_TX_FLOOR_TEXTURE,
+        WIDX_RULE_TX_WALL_TEXTURE_CHECK,
+        WIDX_RULE_TX_WALL_TEXTURE,
 
-        WIDX_RULE_OUTCOME_GROUP,
-        WIDX_RULE_FLOOR_TEXTURE_CHECK,
-        WIDX_RULE_FLOOR_TEXTURE,
-        WIDX_RULE_WALL_TEXTURE_CHECK,
-        WIDX_RULE_WALL_TEXTURE,
-
-        WIDX_FORESTS_PLACE_TREES = TAB_BEGIN,
-        WIDX_TREE_LAND_RATIO,
-        WIDX_TREE_LAND_RATIO_UP,
-        WIDX_TREE_LAND_RATIO_DOWN,
-        WIDX_TREE_ALTITUDE_MIN,
-        WIDX_TREE_ALTITUDE_MIN_UP,
-        WIDX_TREE_ALTITUDE_MIN_DOWN,
-        WIDX_TREE_ALTITUDE_MAX,
-        WIDX_TREE_ALTITUDE_MAX_UP,
-        WIDX_TREE_ALTITUDE_MAX_DOWN,
+        WIDX_RULE_SC_NEW = TAB_BEGIN,
+        WIDX_RULE_SC_NEW_PRESET,
+        WIDX_RULE_SC_RENAME,
+        WIDX_RULE_SC_REMOVE,
+        WIDX_RULE_SC_MOVE_UP,
+        WIDX_RULE_SC_MOVE_DOWN,
+        WIDX_RULE_SC_HEADER_ENABLED,
+        WIDX_RULE_SC_HEADER_NAME,
+        WIDX_RULE_SC_HEADER_ITEMS,
+        WIDX_RULE_SC_SCROLL,
+        WIDX_RULE_SC_CONDITION_GROUP,
+        WIDX_RULE_SC_CONDITION_SCROLL,
+        WIDX_RULE_SC_CONDITION_REMOVE,
+        WIDX_RULE_SC_CONDITION_EDIT,
+        WIDX_RULE_SC_CONDITION_ADD,
+        WIDX_RULE_SC_OUTCOME_GROUP,
+        WIDX_RULE_SC_OUTCOME_SELECT,
     };
 
 #pragma region Widgets
@@ -237,10 +245,25 @@ namespace OpenRCT2::Ui::Windows
 
     static constexpr auto ForestsWidgets = makeWidgets(
         makeMapGenWidgets(STR_MAPGEN_CAPTION_FORESTS),
-        makeWidget        ({ 10,  52}, {255, 12}, WidgetType::checkbox, WindowColour::secondary, STR_MAPGEN_OPTION_PLACE_TREES),
-        makeSpinnerWidgets({179,  70}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                               ), // WIDX_TREE_LAND_RATIO{,_UP,_DOWN}
-        makeSpinnerWidgets({179,  88}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                               ), // WIDX_TREE_ALTITUDE_MIN{,_UP,_DOWN}
-        makeSpinnerWidgets({179, 106}, {109, 12}, WidgetType::spinner,  WindowColour::secondary                               )  // WIDX_TREE_ALTITUDE_MAX{,_UP,_DOWN}
+        makeWidget({226,  52}, { 55,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_NEW                     ),
+        makeWidget({281,  52}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_DOWN                                ),
+        makeWidget({152,  52}, { 69,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_RENAME                  ),
+        makeWidget({ 78,  52}, { 69,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_REMOVE                  ),
+        makeWidget({  5,  52}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_UP                                  ),
+        makeWidget({ 22,  52}, { 14,  14}, WidgetType::button,       WindowColour::secondary, STR_DOWN                                ),
+        makeWidget({  5,  70}, { 20,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_ENABLED          ),
+        makeWidget({ 25,  70}, {190,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_NAME             ),
+        makeWidget({215,  70}, { 80,  14}, WidgetType::tableHeader,  WindowColour::secondary, STR_MAPGEN_RULE_HEADER_ITEMS            ),
+        makeWidget({  5,  83}, {290,  72}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
+
+        makeWidget({  5, 158}, {202,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_IF                ),
+        makeWidget({ 10, 170}, {191,  59}, WidgetType::scroll,       WindowColour::secondary, SCROLL_VERTICAL                         ),
+        makeWidget({ 10, 233}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_REMOVE             ),
+        makeWidget({ 76, 233}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_EDIT               ),
+        makeWidget({142, 233}, { 59,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_COND_ADD                ),
+
+        makeWidget({212, 158}, { 83,  94}, WidgetType::groupbox,     WindowColour::secondary, STR_MAPGEN_RULE_GROUP_THEN              ),
+        makeWidget({217, 233}, { 73,  14}, WidgetType::button,       WindowColour::secondary, STR_MAPGEN_RULE_SELECT                  )
     );
 
     static std::span<const Widget> PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
@@ -299,12 +322,7 @@ namespace OpenRCT2::Ui::Windows
 
         0,
 
-        (1uLL << WIDX_TREE_LAND_RATIO_UP) |
-        (1uLL << WIDX_TREE_LAND_RATIO_DOWN) |
-        (1uLL << WIDX_TREE_ALTITUDE_MIN_UP) |
-        (1uLL << WIDX_TREE_ALTITUDE_MIN_DOWN) |
-        (1uLL << WIDX_TREE_ALTITUDE_MAX_UP) |
-        (1uLL << WIDX_TREE_ALTITUDE_MAX_DOWN),
+        0,
     };
 
     static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
@@ -366,11 +384,17 @@ namespace OpenRCT2::Ui::Windows
         bool _heightmapLoaded = false;
         std::string _heightmapFilename{};
 
-        int32_t _selectedRule = -1;
-        int32_t _highlightedRule = -1;
+        int32_t _selectedTxRule = -1;
+        int32_t _highlightedTxRule = -1;
 
-        int32_t _selectedCondition = -1;
-        int32_t _highlightedCondition = -1;
+        int32_t _selectedTxCondition = -1;
+        int32_t _highlightedTxCondition = -1;
+
+        int32_t _selectedScRule = -1;
+        int32_t _highlightedScRule = -1;
+
+        int32_t _selectedScCondition = -1;
+        int32_t _highlightedScCondition = -1;
 
         void SetPage(int32_t newPage)
         {
@@ -425,7 +449,7 @@ namespace OpenRCT2::Ui::Windows
             DrawTabImage(rt, WINDOW_MAPGEN_PAGE_TERRAIN, SPR_G2_MAP_GEN_TERRAIN_TAB);
             DrawTabImage(rt, WINDOW_MAPGEN_PAGE_WATER, SPR_TAB_WATER);
             DrawTabImage(rt, WINDOW_MAPGEN_PAGE_TEXTURE, SPR_G2_TERRAIN_EDGE_TAB);
-            DrawTabImage(rt, WINDOW_MAPGEN_PAGE_FORESTS, SPR_TAB_SCENERY_TREES);
+            DrawTabImage(rt, WINDOW_MAPGEN_PAGE_SCENERY, SPR_TAB_SCENERY_TREES);
         }
 
         void ChangeMapSize(int32_t sizeOffset)
@@ -837,185 +861,782 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma endregion
 
-#pragma region Forests page
+#pragma region Scenery page
 
-        void ForestsMouseUp(WidgetIndex widgetIndex)
+        void SetSelectedSceneryRule(int32_t roleIdx)
+        {
+            if (roleIdx != _selectedScRule)
+            {
+                WindowTextInputCloseByCalling(this, WIDX_RULE_SC_RENAME);
+                MapGenRuleScenerySelectCloseByCalling(this, WIDX_RULE_SC_OUTCOME_SELECT);
+                SetSelectedSceneryCondition(-1);
+                scrolls[1].contentOffsetY = 0;
+                Invalidate();
+            }
+            _selectedScRule = roleIdx;
+        }
+
+        void SetSelectedSceneryCondition(int32_t conditionIdx)
+        {
+            if (conditionIdx != _selectedScCondition)
+            {
+                MapGenRuleConditionCloseByCalling(this, WIDX_RULE_SC_CONDITION_ADD);
+                MapGenRuleConditionCloseByCalling(this, WIDX_RULE_SC_CONDITION_EDIT);
+            }
+            _selectedScCondition = conditionIdx;
+        }
+
+        void SceneryMouseUp(WidgetIndex widgetIndex)
         {
             SharedMouseUp(widgetIndex);
 
             switch (widgetIndex)
             {
-                case WIDX_FORESTS_PLACE_TREES:
-                    _settings.trees ^= true;
+                case WIDX_RULE_SC_NEW:
+                {
+                    MapGenerator::Rule::createNewSceneryRule(_settings);
+                    SetSelectedSceneryRule(static_cast<int32_t>(_settings.sceneryRules.size() - 1));
                     Invalidate();
                     break;
-
-                case WIDX_TREE_LAND_RATIO:
+                }
+                case WIDX_RULE_SC_REMOVE:
                 {
-                    Formatter ft;
-                    ft.Add<int16_t>(1);
-                    ft.Add<int16_t>(50);
-                    WindowTextInputOpen(
-                        this, widgetIndex, STR_TREE_TO_LAND_RATIO, STR_ENTER_TREE_TO_LAND_RATIO, ft, STR_FORMAT_INTEGER,
-                        _settings.treeToLandRatio, 2);
+                    if (_selectedScRule != -1)
+                    {
+                        _settings.sceneryRules.erase(_settings.sceneryRules.begin() + _selectedScRule);
+                        SetSelectedSceneryRule(_selectedScRule - 1);
+                        Invalidate();
+                    }
                     break;
                 }
-
-                case WIDX_TREE_ALTITUDE_MIN:
+                case WIDX_RULE_SC_RENAME:
                 {
-                    Formatter ft;
-                    ft.Add<int16_t>(BaseZToMetres(kMinimumLandHeight));
-                    ft.Add<int16_t>(BaseZToMetres(kMaximumLandHeight));
-                    WindowTextInputOpen(
-                        this, widgetIndex, STR_MIN_TREE_ALTITUDE, STR_ENTER_MIN_TREE_ALTITUDE, ft, STR_FORMAT_INTEGER,
-                        BaseZToMetres(_settings.minTreeAltitude), 6);
+                    if (_selectedScRule != -1)
+                    {
+                        auto& selectedRule = _settings.sceneryRules[_selectedScRule];
+                        auto* qqq = selectedRule.name.c_str();
+                        WindowTextInputOpen(
+                            this, widgetIndex, STR_MAPGEN_RULE_RENAME_TITLE, STR_MAPGEN_RULE_ENTER_NAME, {}, STR_STRING,
+                            reinterpret_cast<uintptr_t>(qqq), 32);
+                    }
                     break;
                 }
-
-                case WIDX_TREE_ALTITUDE_MAX:
+                case WIDX_RULE_SC_MOVE_UP:
                 {
-                    Formatter ft;
-                    ft.Add<int16_t>(BaseZToMetres(kMinimumLandHeight));
-                    ft.Add<int16_t>(BaseZToMetres(kMaximumLandHeight));
-                    WindowTextInputOpen(
-                        this, widgetIndex, STR_MAX_TREE_ALTITUDE, STR_ENTER_MAX_TREE_ALTITUDE, ft, STR_FORMAT_INTEGER,
-                        BaseZToMetres(_settings.maxTreeAltitude), 6);
+                    if (_selectedScRule != -1 && _selectedScRule < static_cast<int32_t>(_settings.sceneryRules.size() - 1))
+                    {
+                        std::swap(_settings.sceneryRules[_selectedScRule], _settings.sceneryRules[_selectedScRule + 1]);
+                        SetSelectedSceneryRule(_selectedScRule + 1);
+                        Invalidate();
+                    }
+                    break;
+                }
+                case WIDX_RULE_SC_MOVE_DOWN:
+                {
+                    if (_selectedScRule != -1 && _selectedScRule > 0)
+                    {
+                        std::swap(_settings.sceneryRules[_selectedScRule], _settings.sceneryRules[_selectedScRule - 1]);
+                        SetSelectedSceneryRule(_selectedScRule - 1);
+                        Invalidate();
+                    }
+                    break;
+                }
+                case WIDX_RULE_SC_CONDITION_REMOVE:
+                {
+                    if (_selectedScRule != -1 && _selectedScCondition != -1)
+                    {
+                        auto& selectedRule = _settings.sceneryRules[_selectedScRule];
+                        selectedRule.conditions.erase(selectedRule.conditions.begin() + _selectedScCondition);
+                        auto nextIdx = _selectedScCondition - 1;
+                        if (nextIdx == -1 && !selectedRule.conditions.empty())
+                        {
+                            nextIdx = 0;
+                        }
+                        SetSelectedSceneryCondition(nextIdx);
+                        Invalidate();
+                    }
+                    break;
+                }
+                case WIDX_RULE_SC_CONDITION_EDIT:
+                {
+                    if (_selectedScRule != -1 && _selectedScCondition != -1)
+                    {
+                        auto& selectedRule = _settings.sceneryRules[_selectedScRule];
+                        auto& selectedCondition = selectedRule.conditions[_selectedScCondition];
+
+                        auto callback = [this](MapGenerator::Rule::Condition& condition) {
+                            if (_selectedScRule == -1 || _selectedScCondition == -1)
+                            {
+                                return;
+                            }
+                            _settings.sceneryRules[_selectedScRule].conditions[_selectedScCondition] = condition;
+                            Invalidate();
+                        };
+
+                        MapGenRuleConditionOpen(this, WIDX_RULE_SC_CONDITION_ADD, selectedCondition, callback);
+                    }
+                    break;
+                }
+                case WIDX_RULE_SC_OUTCOME_SELECT:
+                {
+                    if (_selectedScRule != -1)
+                    {
+                        auto& selectedRule = _settings.sceneryRules[_selectedScRule];
+
+                        auto callback = [this](MapGenerator::Rule::SceneryEffect& effect) {
+                            if (_selectedScRule == -1)
+                            {
+                                return;
+                            }
+                            _settings.sceneryRules[_selectedScRule].effect = effect;
+                            Invalidate();
+                        };
+
+                        MapGenRuleScenerySelectOpen(this, WIDX_RULE_SC_OUTCOME_SELECT, selectedRule.effect, callback);
+                    }
                     break;
                 }
             }
         }
 
-        void ForestsMouseDown(WidgetIndex widgetIndex, Widget* widget)
+        void SceneryMouseDown(WidgetIndex widgetIndex, Widget* widget)
         {
             switch (widgetIndex)
             {
-                case WIDX_TREE_LAND_RATIO_UP:
-                    _settings.treeToLandRatio = std::min(_settings.treeToLandRatio + 1, 50);
-                    InvalidateWidget(WIDX_TREE_LAND_RATIO);
+                case WIDX_RULE_SC_NEW_PRESET:
+                {
+                    using namespace Dropdown;
+
+                    constexpr ItemExt items[] = {
+                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_PRESET_SC_MEDITERRANEAN),
+                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_PRESET_SC_COLD),
+                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_PRESET_SC_ARID),
+                        ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_PRESET_SC_RAINFOREST),
+                    };
+
+                    SetItems(items);
+
+                    Widget* ddWidget = &widgets[widgetIndex - 1];
+                    WindowDropdownShowText(
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
+                        Dropdown::Flag::StayOpen, std::size(items));
                     break;
-                case WIDX_TREE_LAND_RATIO_DOWN:
-                    _settings.treeToLandRatio = std::max(_settings.treeToLandRatio - 1, 1);
-                    InvalidateWidget(WIDX_TREE_LAND_RATIO);
+                }
+                case WIDX_RULE_SC_CONDITION_ADD:
+                {
+                    using namespace Dropdown;
+
+                    constexpr ItemExt items[] = {
+                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE),
+                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_ELEVATION_RELATIVE_TO_WATER),
+                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_WATER),
+                        ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NOISE),
+                        ItemExt(4, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_NORMAL_ANGLE),
+                        ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_PRNG),
+                        ItemExt(6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_HEIGHT),
+                        ItemExt(7, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_NOISE),
+                        ItemExt(8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_LAND_STYLE),
+                    };
+
+                    SetItems(items);
+
+                    Widget* ddWidget = &widgets[widgetIndex];
+                    WindowDropdownShowText(
+                        { windowPos.x + ddWidget->left, windowPos.y + ddWidget->top }, ddWidget->height() + 1, colours[1],
+                        Dropdown::Flag::StayOpen, std::size(items));
+
+                    // TODO implement
+                    SetDisabled(4, true);
+
                     break;
-                case WIDX_TREE_ALTITUDE_MIN_UP:
-                    _settings.minTreeAltitude = std::min(_settings.minTreeAltitude + 2, kMaximumLandHeight / 2 - 1);
-                    _settings.maxTreeAltitude = std::max(_settings.maxTreeAltitude, _settings.minTreeAltitude + 2);
-                    InvalidateWidget(WIDX_TREE_ALTITUDE_MIN);
-                    break;
-                case WIDX_TREE_ALTITUDE_MIN_DOWN:
-                    _settings.minTreeAltitude = std::max<int32_t>(_settings.minTreeAltitude - 2, kMinimumLandHeight);
-                    InvalidateWidget(WIDX_TREE_ALTITUDE_MIN);
-                    break;
-                case WIDX_TREE_ALTITUDE_MAX_UP:
-                    _settings.maxTreeAltitude = std::min<int32_t>(_settings.maxTreeAltitude + 2, kMaximumLandHeight - 1);
-                    InvalidateWidget(WIDX_TREE_ALTITUDE_MAX);
-                    break;
-                case WIDX_TREE_ALTITUDE_MAX_DOWN:
-                    _settings.maxTreeAltitude = std::max<int32_t>(_settings.maxTreeAltitude - 2, kMinimumLandHeight - 1);
-                    _settings.minTreeAltitude = std::min(_settings.minTreeAltitude, _settings.maxTreeAltitude - 2);
-                    InvalidateWidget(WIDX_TREE_ALTITUDE_MAX);
-                    break;
+                }
             }
         }
 
-        void ForestsUpdate()
+        void SceneryUpdate()
         {
             // Tab animation
             if (++frame_no >= TabAnimationLoops[page])
                 frame_no = 0;
-            InvalidateWidget(WIDX_TAB_2);
+            InvalidateWidget(WIDX_TAB_4);
+
+            // Check if the mouse is hovering over the list
+            if (!widgetIsHighlighted(*this, WIDX_RULE_SC_SCROLL))
+            {
+                if (_highlightedScRule != -1)
+                    InvalidateWidget(WIDX_RULE_SC_SCROLL);
+                _highlightedScRule = -1;
+            }
+
+            // Check if the mouse is hovering over the list
+            if (!widgetIsHighlighted(*this, WIDX_RULE_SC_CONDITION_SCROLL))
+            {
+                if (_highlightedScCondition != -1)
+                    InvalidateWidget(WIDX_RULE_SC_CONDITION_SCROLL);
+                _highlightedScCondition = -1;
+            }
         }
 
-        void ForestsTextInput(WidgetIndex widgetIndex, int32_t rawValue, int32_t value)
+        void SceneryTextInput(WidgetIndex widgetIndex, std::string_view& value)
         {
             switch (widgetIndex)
             {
-                case WIDX_TREE_LAND_RATIO:
-                    _settings.treeToLandRatio = std::clamp(rawValue, 1, 50);
-                    break;
+                case WIDX_RULE_SC_RENAME:
+                {
+                    if (_selectedScRule == -1)
+                    {
+                        return;
+                    }
 
-                case WIDX_TREE_ALTITUDE_MIN:
-                    _settings.minTreeAltitude = value;
-                    _settings.maxTreeAltitude = std::max(_settings.minTreeAltitude, _settings.maxTreeAltitude);
-                    break;
+                    // TODO trim + check not empty?
 
-                case WIDX_TREE_ALTITUDE_MAX:
-                    _settings.maxTreeAltitude = value;
-                    _settings.minTreeAltitude = std::min(_settings.minTreeAltitude, _settings.maxTreeAltitude);
+                    auto& selectedRule = _settings.sceneryRules[_selectedScRule];
+                    selectedRule.name = std::string(value);
                     break;
+                }
             }
 
             Invalidate();
         }
 
-        void ForestsPrepareDraw()
+        void SceneryPrepareDraw()
         {
-            pressed_widgets = 0;
-            if (_settings.trees)
-                pressed_widgets |= 1uLL << WIDX_FORESTS_PLACE_TREES;
+            bool ruleSelected = _selectedScRule != -1;
+            bool condSelected = ruleSelected && _selectedScCondition != -1;
+
+            widgets[WIDX_RULE_SC_MOVE_UP].type = ruleSelected ? WidgetType::button : WidgetType::empty;
+            widgets[WIDX_RULE_SC_MOVE_DOWN].type = ruleSelected ? WidgetType::button : WidgetType::empty;
+            widgets[WIDX_RULE_SC_REMOVE].type = ruleSelected ? WidgetType::button : WidgetType::empty;
+            widgets[WIDX_RULE_SC_RENAME].type = ruleSelected ? WidgetType::button : WidgetType::empty;
+
+            widgets[WIDX_RULE_SC_CONDITION_GROUP].type = ruleSelected ? WidgetType::groupbox : WidgetType::empty;
+            widgets[WIDX_RULE_SC_CONDITION_SCROLL].type = ruleSelected ? WidgetType::scroll : WidgetType::empty;
+            widgets[WIDX_RULE_SC_CONDITION_REMOVE].type = condSelected ? WidgetType::button : WidgetType::empty;
+            widgets[WIDX_RULE_SC_CONDITION_EDIT].type = condSelected ? WidgetType::button : WidgetType::empty;
+            widgets[WIDX_RULE_SC_CONDITION_ADD].type = ruleSelected ? WidgetType::button : WidgetType::empty;
+
+            widgets[WIDX_RULE_SC_OUTCOME_GROUP].type = ruleSelected ? WidgetType::groupbox : WidgetType::empty;
+            widgets[WIDX_RULE_SC_OUTCOME_SELECT].type = ruleSelected ? WidgetType::button : WidgetType::empty;
+
+            if (ruleSelected)
+            {
+                SetWidgetEnabled(
+                    WIDX_RULE_SC_MOVE_UP, _selectedScRule < static_cast<int32_t>(_settings.sceneryRules.size() - 1));
+                SetWidgetEnabled(WIDX_RULE_SC_MOVE_DOWN, _selectedScRule > 0);
+
+                SetWidgetEnabled(WIDX_RULE_SC_CONDITION_REMOVE, condSelected);
+                SetWidgetEnabled(WIDX_RULE_SC_CONDITION_EDIT, condSelected);
+            }
 
             SetPressedTab();
-
-            const bool isFlatland = _settings.algorithm == MapGenerator::Algorithm::blank;
-
-            SetWidgetDisabled(WIDX_TREE_LAND_RATIO, !_settings.trees);
-            SetWidgetDisabled(WIDX_TREE_LAND_RATIO_UP, !_settings.trees);
-            SetWidgetDisabled(WIDX_TREE_LAND_RATIO_DOWN, !_settings.trees);
-            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MIN, !_settings.trees);
-            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MIN_UP, !_settings.trees);
-            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MIN_DOWN, !_settings.trees);
-            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MAX, !_settings.trees || isFlatland);
-            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MAX_UP, !_settings.trees || isFlatland);
-            SetWidgetDisabled(WIDX_TREE_ALTITUDE_MAX_DOWN, !_settings.trees || isFlatland);
         }
 
-        void ForestsDraw(RenderTarget& rt)
+        void SceneryDraw(RenderTarget& rt)
         {
             DrawWidgets(rt);
             DrawTabImages(rt);
 
-            const auto enabledColour = colours[1];
-            const auto disabledColour = enabledColour.withFlag(ColourFlag::inset, true);
+            if (_selectedScRule != -1)
+            {
+                auto& selectedRule = _settings.sceneryRules[_selectedScRule];
 
-            const auto textColour = _settings.trees ? enabledColour : disabledColour;
+                ScreenCoordsXY sceneryPreviewPos = { windowPos.x + widgets[WIDX_RULE_SC_OUTCOME_GROUP].left + 4,
+                                                     windowPos.y + widgets[WIDX_RULE_SC_OUTCOME_GROUP].top + 12 };
+                ScreenCoordsXY sceneryPreviewOutcomeSize = { 73, 59 };
+                SceneryDrawItems(rt, selectedRule, sceneryPreviewPos, sceneryPreviewOutcomeSize);
+            }
+            else
+            {
+                auto& ruleScroll = widgets[WIDX_RULE_SC_SCROLL];
+                auto centrePos = windowPos + ScreenCoordsXY{ ruleScroll.left, ruleScroll.bottom + 5 };
+                auto textPaint = TextPaint{ colours[1] };
+                DrawTextWrapped(rt, centrePos, ruleScroll.width(), STR_MAPGEN_RULE_SC_HINT, {}, textPaint);
+            }
+        }
 
-            // Tree to land ratio, label and value
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_LAND_RATIO].top + 1 }, STR_MAPGEN_TREE_TO_LAND_RATIO, {},
-                { textColour });
+        void SceneryDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_RULE_SC_NEW_PRESET:
+                {
+                    if (dropdownIndex == -1)
+                        dropdownIndex = gDropdownHighlightedIndex;
 
-            auto ft = Formatter();
-            ft.Add<uint16_t>(_settings.treeToLandRatio);
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ widgets[WIDX_TREE_LAND_RATIO].left + 1, widgets[WIDX_TREE_LAND_RATIO].top + 1 },
-                STR_MAPGEN_TREE_TO_LAND_RATIO_PCT, ft, { textColour });
+                    if (dropdownIndex != -1)
+                    {
+                        auto preset = static_cast<MapGenerator::Rule::SceneryRulePreset>(dropdownIndex);
+                        MapGenerator::Rule::createNewSceneryRuleFromPreset(_settings, preset);
+                        SetSelectedSceneryRule(static_cast<int32_t>(_settings.sceneryRules.size() - 1));
+                    }
 
-            // Minimum tree altitude, label and value
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_ALTITUDE_MIN].top + 1 }, STR_MAPGEN_TREE_MIN_ALTITUDE, {},
-                { textColour });
+                    Invalidate();
+                    break;
+                }
+                case WIDX_RULE_SC_CONDITION_ADD:
+                {
+                    if (_selectedScRule == -1)
+                    {
+                        return;
+                    }
 
-            ft = Formatter();
-            ft.Add<int16_t>(BaseZToMetres(_settings.minTreeAltitude));
-            DrawTextBasic(
-                rt,
-                windowPos + ScreenCoordsXY{ widgets[WIDX_TREE_ALTITUDE_MIN].left + 1, widgets[WIDX_TREE_ALTITUDE_MIN].top + 1 },
-                STR_RIDE_LENGTH_ENTRY, ft, { textColour });
+                    if (dropdownIndex == -1)
+                        dropdownIndex = gDropdownHighlightedIndex;
 
-            // Maximum tree altitude, label and value
-            const bool isFlatland = _settings.algorithm == MapGenerator::Algorithm::blank;
-            const auto maxTreeTextColour = _settings.trees && !isFlatland ? enabledColour : disabledColour;
+                    if (dropdownIndex == -1)
+                    {
+                        return;
+                    }
 
-            DrawTextBasic(
-                rt, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TREE_ALTITUDE_MAX].top + 1 }, STR_MAPGEN_TREE_MAX_ALTITUDE, {},
-                { maxTreeTextColour });
+                    auto conditionType = static_cast<MapGenerator::Rule::Type>(dropdownIndex);
+                    auto newCondition = createNewCondition(conditionType);
+                    auto callback = [this](MapGenerator::Rule::Condition& condition) {
+                        if (_selectedScRule == -1)
+                        {
+                            return;
+                        }
+                        auto& selectedRule = _settings.sceneryRules[_selectedScRule];
+                        selectedRule.conditions.push_back(std::move(condition));
+                        SetSelectedSceneryCondition(static_cast<int32_t>(selectedRule.conditions.size() - 1));
+                        Invalidate();
+                    };
 
-            ft = Formatter();
-            ft.Add<int16_t>(BaseZToMetres(_settings.maxTreeAltitude));
-            DrawTextBasic(
-                rt,
-                windowPos + ScreenCoordsXY{ widgets[WIDX_TREE_ALTITUDE_MAX].left + 1, widgets[WIDX_TREE_ALTITUDE_MAX].top + 1 },
-                STR_RIDE_LENGTH_ENTRY, ft, { maxTreeTextColour });
+                    MapGenRuleConditionOpen(this, WIDX_RULE_SC_CONDITION_ADD, newCondition, callback);
+                    break;
+                }
+            }
+        }
+
+        ScreenSize SceneryScrollGetSize(int32_t scrollIndex)
+        {
+            switch (scrollIndex)
+            {
+                case 0:
+                {
+                    return ScreenSize(
+                        kWindowSize.width - 10, static_cast<int32_t>(_settings.sceneryRules.size() * kScrollableRowHeight));
+                }
+                case 1:
+                {
+                    if (_selectedScRule == -1)
+                    {
+                        return {};
+                    }
+                    auto& selectedRule = _settings.sceneryRules[_selectedScRule];
+
+                    return ScreenSize(
+                        widgets[WIDX_RULE_SC_CONDITION_SCROLL].width(),
+                        static_cast<int32_t>(selectedRule.conditions.size() * kScrollableRowHeight));
+                }
+            }
+            return {};
+        }
+
+        void SceneryDrawItem(
+            RenderTarget& rt, const MapGenerator::Rule::SceneryEffectItem& item, const ScreenCoordsXY& targetSize, size_t idx,
+            size_t count)
+        {
+            uint8_t direction = item.direction.value_or(0);
+
+            auto sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(item.index);
+            auto imageId = ImageId(sceneryEntry->image + direction);
+
+            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
+            {
+                imageId = imageId.WithPrimary(item.colours[0]);
+            }
+            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+            {
+                imageId = imageId.WithSecondary(item.colours[1]);
+            }
+            if (sceneryEntry->flags & SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
+            {
+                imageId = imageId.WithTertiary(item.colours[2]);
+            }
+
+            auto spriteTop = (targetSize.y / 2) + (sceneryEntry->height / 2);
+            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+            {
+                spriteTop -= 12;
+            }
+
+            if (item.weight == 0)
+            {
+                imageId = imageId.WithRemap(FilterPaletteID::PaletteGhost);
+            }
+
+            auto spriteOffsetX = static_cast<int32_t>(targetSize.x / (count + 1) * (idx + 1));
+            auto spritePosition = ScreenCoordsXY{ spriteOffsetX, spriteTop };
+
+            GfxDrawSprite(rt, imageId, spritePosition);
+
+            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
+            {
+                imageId = ImageId(sceneryEntry->image + 4 + direction).WithTransparency(item.colours[0]);
+                GfxDrawSprite(rt, imageId, spritePosition);
+            }
+
+            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED_FG))
+            {
+                imageId = ImageId(sceneryEntry->image + 4 + direction);
+                GfxDrawSprite(rt, imageId, spritePosition);
+            }
+        }
+
+        void SceneryDrawItems(
+            RenderTarget& rt, MapGenerator::Rule::SceneryRule& rule, ScreenCoordsXY& pos, ScreenCoordsXY& size)
+        {
+            RenderTarget clippedRT;
+            if (ClipDrawPixelInfo(clippedRT, rt, pos, size.x, size.y))
+            {
+                size_t limitedItemCount = std::min<size_t>(4, rule.effect.objects.size());
+                for (size_t i = 0; i < limitedItemCount; ++i)
+                {
+                    auto& item = rule.effect.objects[i];
+                    SceneryDrawItem(clippedRT, item, size, i, limitedItemCount);
+                }
+            }
+        }
+
+        void SceneryScrollDraw(int32_t scrollIndex, RenderTarget& rt)
+        {
+            switch (scrollIndex)
+            {
+                case 0:
+                    return SceneryScrollDrawRule(rt);
+                case 1:
+                    return SceneryScrollDrawCondition(rt);
+            }
+        }
+
+        void SceneryScrollDrawCondition(RenderTarget& rt)
+        {
+            if (_selectedScRule == -1)
+            {
+                return;
+            }
+            auto& selectedRule = _settings.sceneryRules[_selectedScRule];
+
+            const int32_t listWidth = widgets[WIDX_RULE_SC_CONDITION_SCROLL].width();
+            GfxFillRect(
+                rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } },
+                ColourMapA[colours[1].colour].mid_light | 0x1000000);
+
+            ScreenCoordsXY screenCoords{};
+            screenCoords.y = static_cast<int32_t>(kScrollableRowHeight * (selectedRule.conditions.size() - 1));
+
+            for (int32_t i = 0; i < static_cast<int32_t>(selectedRule.conditions.size()); i++)
+            {
+                auto& condition = selectedRule.conditions[i];
+
+                // Draw row background colour
+                auto fillRectangle = ScreenRect{ { 0, screenCoords.y },
+                                                 { listWidth, screenCoords.y + kScrollableRowHeight - 1 } };
+
+                StringId stringFormat = STR_WINDOW_COLOUR_2_STRINGID;
+                if (i == _selectedScCondition)
+                {
+                    GfxFillRect(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
+                    stringFormat = STR_WHITE_STRING;
+                }
+                else if (i == _highlightedScCondition)
+                {
+                    GfxFillRect(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark | 0x1000000);
+                    stringFormat = STR_WHITE_STRING;
+                }
+
+                auto checkboxFormatter = Formatter();
+                checkboxFormatter.Add<StringId>(STR_STRING);
+                checkboxFormatter.Add<char*>(kCheckMarkString);
+
+                // Draw enabled checkbox and check
+                GfxFillRectInset(rt, { { 2, screenCoords.y }, { 15, screenCoords.y + 11 } }, colours[1], INSET_RECT_F_60);
+                if (condition.enabled)
+                {
+                    DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ 4, 1 }, stringFormat, checkboxFormatter);
+                }
+
+                // Draw land styles
+                if (condition.type == MapGenerator::Rule::Type::LandStyle)
+                {
+                    auto& landStyleData = std::get<MapGenerator::Rule::LandStyleData>(condition.data);
+                    std::vector<ObjectEntryIndex> orderedStyles;
+                    std::ranges::copy(landStyleData.styles, std::back_inserter(orderedStyles));
+                    std::ranges::sort(orderedStyles);
+
+                    ImageId maskImage(SPR_G2_MASK_MAPGEN_TEXTURE_SCROLL);
+                    auto styleCount = std::min<size_t>(4, orderedStyles.size());
+                    auto styleWidth = 24;
+                    auto baseOffset = listWidth - kScrollBarWidth - styleCount * styleWidth;
+
+                    for (size_t s = 0; s < styleCount; ++s)
+                    {
+                        auto offset = static_cast<int32_t>(baseOffset + s * styleWidth);
+                        auto imgCoords = screenCoords + ScreenCoordsXY{ offset, 0 };
+                        auto surfaceImage = LookupSurfaceImage(orderedStyles[s]);
+                        GfxDrawSpriteRawMasked(rt, imgCoords, maskImage, surfaceImage);
+                    }
+                }
+
+                StringId predRepr = kStringIdNone;
+                switch (condition.predicate)
+                {
+                    case MapGenerator::Rule::Predicate::Equal:
+                        predRepr = STR_MAPGEN_RULE_PREDICATE_EQUAL;
+                        break;
+                    case MapGenerator::Rule::Predicate::NotEqual:
+                        predRepr = STR_MAPGEN_RULE_PREDICATE_NOT_EQUAL;
+                        break;
+                    case MapGenerator::Rule::Predicate::LessThan:
+                        predRepr = STR_MAPGEN_RULE_PREDICATE_LESS_THAN;
+                        break;
+                    case MapGenerator::Rule::Predicate::GreaterThan:
+                        predRepr = STR_MAPGEN_RULE_PREDICATE_GREATER_THAN;
+                        break;
+                    case MapGenerator::Rule::Predicate::LessThanOrEqual:
+                        predRepr = STR_MAPGEN_RULE_PREDICATE_LESS_THAN_OR_EQUAL;
+                        break;
+                    case MapGenerator::Rule::Predicate::GreaterThanOrEqual:
+                        predRepr = STR_MAPGEN_RULE_PREDICATE_GREATER_THAN_OR_EQUAL;
+                        break;
+                }
+
+                auto ft = Formatter();
+                switch (condition.type)
+                {
+                    case MapGenerator::Rule::Type::HeightAbsolute:
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_LENGTH);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_ELEVATION_ABSOLUTE);
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<int16_t>(static_cast<int16_t>(
+                            BaseZToMetres(std::get<MapGenerator::Rule::HeightData>(condition.data).height)));
+                        break;
+
+                    case MapGenerator::Rule::Type::HeightRelativeToWater:
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_LENGTH);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_ELEVATION_RELATIVE_TO_WATER);
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<int16_t>(static_cast<int16_t>(
+                            HeightUnitsToMetres(std::get<MapGenerator::Rule::HeightData>(condition.data).height)));
+                        break;
+
+                    case MapGenerator::Rule::Type::DistanceToWater:
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_LENGTH);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_DISTANCE_TO_WATER);
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<int16_t>(
+                            static_cast<int16_t>(std::get<MapGenerator::Rule::DistanceData>(condition.data).distance));
+                        break;
+
+                    case MapGenerator::Rule::Type::Noise:
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FLOAT);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_NOISE);
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<int32_t>(
+                            static_cast<int32_t>(std::get<MapGenerator::Rule::NoiseData>(condition.data).value * 100));
+                        break;
+
+                    case MapGenerator::Rule::Type::NormalAngle:
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FLOAT);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_NORMAL_ANGLE);
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<int32_t>(
+                            static_cast<int32_t>(std::get<MapGenerator::Rule::NormalAngleData>(condition.data).angle * 100));
+                        break;
+
+                    case MapGenerator::Rule::Type::Random:
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FLOAT);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<int32_t>(
+                            static_cast<int32_t>(std::get<MapGenerator::Rule::RandomData>(condition.data).value * 100));
+                        break;
+
+                    case MapGenerator::Rule::Type::BlendHeight:
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_BLEND_LENGTH);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_BLEND_HEIGHT);
+                        ft.Add<int16_t>(static_cast<int16_t>(
+                            BaseZToMetres(std::get<MapGenerator::Rule::BlendHeightData>(condition.data).edgeLow)));
+                        ft.Add<int16_t>(static_cast<int16_t>(
+                            BaseZToMetres(std::get<MapGenerator::Rule::BlendHeightData>(condition.data).edgeHigh)));
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
+                        break;
+
+                    case MapGenerator::Rule::Type::BlendNoise:
+                        ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_BLEND_FLOAT);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_BLEND_NOISE);
+                        ft.Add<int32_t>(
+                            static_cast<int32_t>(std::get<MapGenerator::Rule::BlendNoiseData>(condition.data).edgeLow * 100));
+                        ft.Add<int32_t>(
+                            static_cast<int32_t>(std::get<MapGenerator::Rule::BlendNoiseData>(condition.data).edgeHigh * 100));
+                        ft.Add<StringId>(predRepr);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
+                        break;
+
+                    case MapGenerator::Rule::Type::LandStyle:
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_LAND_STYLE_FMT);
+                        ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_LAND_STYLE);
+                        ft.Add<StringId>(
+                            condition.predicate == MapGenerator::Rule::Predicate::Equal ? STR_MAPGEN_RULE_PREDICATE_IN
+                                                                                        : STR_MAPGEN_RULE_PREDICATE_NOT_IN);
+                        break;
+                }
+
+                // Draw description
+                DrawTextEllipsised(rt, screenCoords + ScreenCoordsXY{ 20, 0 }, 190, stringFormat, ft);
+
+                screenCoords.y -= kScrollableRowHeight;
+            }
+        }
+
+        void SceneryScrollDrawRule(RenderTarget& rt)
+        {
+            const int32_t listWidth = widgets[WIDX_RULE_SC_SCROLL].width();
+            GfxFillRect(
+                rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);
+
+            ScreenCoordsXY screenCoords{};
+            screenCoords.y = static_cast<int32_t>(kScrollableRowHeight * (_settings.sceneryRules.size() - 1));
+
+            for (int32_t i = 0; i < static_cast<int32_t>(_settings.sceneryRules.size()); i++)
+            {
+                auto& rule = _settings.sceneryRules[i];
+
+                // Draw row background colour
+                auto fillRectangle = ScreenRect{ { 0, screenCoords.y },
+                                                 { listWidth, screenCoords.y + kScrollableRowHeight - 1 } };
+
+                StringId stringFormat = STR_WINDOW_COLOUR_2_STRINGID;
+                if (i == _selectedScRule)
+                {
+                    GfxFillRect(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
+                    stringFormat = STR_WHITE_STRING;
+                }
+                else if (i == _highlightedScRule)
+                {
+                    GfxFillRect(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark | 0x1000000);
+                    stringFormat = STR_WHITE_STRING;
+                }
+
+                auto checkboxFormatter = Formatter();
+                checkboxFormatter.Add<StringId>(STR_STRING);
+                checkboxFormatter.Add<char*>(kCheckMarkString);
+
+                // Draw enabled checkbox and check
+                GfxFillRectInset(rt, { { 2, screenCoords.y }, { 15, screenCoords.y + 11 } }, colours[1], INSET_RECT_F_E0);
+                if (rule.enabled)
+                {
+                    DrawTextBasic(rt, screenCoords + ScreenCoordsXY{ 4, 1 }, stringFormat, checkboxFormatter);
+                }
+
+                // Rule name
+                auto ft = Formatter();
+                ft.Add<StringId>(STR_STRING);
+                ft.Add<char*>(rule.name.c_str());
+                DrawTextEllipsised(rt, screenCoords + ScreenCoordsXY{ 20, 0 }, 190, stringFormat, ft);
+
+                // Preview
+                ScreenCoordsXY sceneryPreviewPos = screenCoords + ScreenCoordsXY{ 208, 0 };
+                ScreenCoordsXY sceneryPreviewOutcomeSize = { 80, kScrollableRowHeight };
+                SceneryDrawItems(rt, rule, sceneryPreviewPos, sceneryPreviewOutcomeSize);
+
+                screenCoords.y -= kScrollableRowHeight;
+            }
+        }
+
+        void SceneryScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+        {
+            if (scrollIndex == 0)
+            {
+                int32_t index = static_cast<int32_t>(
+                    _settings.sceneryRules.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
+                if (index < 0 || index >= static_cast<int32_t>(_settings.sceneryRules.size()))
+                {
+                    _highlightedScRule = -1;
+                }
+                else
+                {
+                    _highlightedScRule = index;
+                }
+                InvalidateWidget(WIDX_RULE_SC_SCROLL);
+            }
+            else if (scrollIndex == 1)
+            {
+                if (_selectedScRule == -1)
+                {
+                    _highlightedScCondition = -1;
+                }
+                else
+                {
+                    auto& selectedRule = _settings.sceneryRules[_selectedScRule];
+
+                    int32_t index = static_cast<int32_t>(
+                        selectedRule.conditions.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
+                    if (index < 0 || index >= static_cast<int32_t>(selectedRule.conditions.size()))
+                    {
+                        _highlightedScCondition = -1;
+                    }
+                    else
+                    {
+                        _highlightedScCondition = index;
+                    }
+                }
+                InvalidateWidget(WIDX_RULE_SC_CONDITION_SCROLL);
+            }
+        }
+
+        void SceneryScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+        {
+            if (_settings.sceneryRules.empty())
+                return;
+
+            if (scrollIndex == 0)
+            {
+                // Because the list items are displayed in reverse order, subtract the calculated index from size
+                const int32_t index = static_cast<int32_t>(
+                    _settings.sceneryRules.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
+                const ScreenRect checkboxColumnRect{ { 2, 0 }, { 15, screenCoords.y } };
+                if (index >= 0 && checkboxColumnRect.Contains(screenCoords))
+                { // Checkbox was clicked
+                    _settings.sceneryRules[index].enabled = !_settings.sceneryRules[index].enabled;
+                }
+                else if (index >= 0 && index < static_cast<int32_t>(_settings.sceneryRules.size()))
+                {
+                    SetSelectedSceneryRule(index);
+                }
+                else
+                {
+                    SetSelectedSceneryRule(-1);
+                }
+            }
+            else if (scrollIndex == 1)
+            {
+                if (_selectedScRule == -1)
+                {
+                    SetSelectedSceneryCondition(-1);
+                }
+                else
+                {
+                    auto& selectedRule = _settings.sceneryRules[_selectedScRule];
+                    // Because the list items are displayed in reverse order, subtract the calculated index from size
+                    const int32_t index = static_cast<int32_t>(
+                        selectedRule.conditions.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
+                    const ScreenRect checkboxColumnRect{ { 2, 0 }, { 15, screenCoords.y } };
+                    if (index >= 0 && checkboxColumnRect.Contains(screenCoords))
+                    { // Checkbox was clicked
+                        selectedRule.conditions[index].enabled = !selectedRule.conditions[index].enabled;
+                    }
+                    else if (index >= 0 && index < static_cast<int32_t>(selectedRule.conditions.size()))
+                    {
+                        SetSelectedSceneryCondition(index);
+                    }
+                    else
+                    {
+                        SetSelectedSceneryCondition(-1);
+                    }
+                }
+            }
         }
 
 #pragma endregion
@@ -1412,7 +2033,7 @@ namespace OpenRCT2::Ui::Windows
             // Tab animation
             if (++frame_no >= TabAnimationLoops[page])
                 frame_no = 0;
-            InvalidateWidget(WIDX_TAB_3);
+            InvalidateWidget(WIDX_TAB_2);
         }
 
         void TerrainTextInput(WidgetIndex widgetIndex, int32_t value)
@@ -1565,24 +2186,26 @@ namespace OpenRCT2::Ui::Windows
 
 #pragma region Texture page
 
-        void SetSelectedRule(int32_t roleIdx)
+        void SetSelectedTextureRule(int32_t roleIdx)
         {
-            if (roleIdx != _selectedRule)
+            if (roleIdx != _selectedTxRule)
             {
-                WindowTextInputCloseByCalling(this, WIDX_RULE_RENAME);
-                SetSelectedCondition(-1);
+                WindowTextInputCloseByCalling(this, WIDX_RULE_TX_RENAME);
+                SetSelectedTextureCondition(-1);
+                scrolls[1].contentOffsetY = 0;
+                Invalidate();
             }
-            _selectedRule = roleIdx;
+            _selectedTxRule = roleIdx;
         }
 
-        void SetSelectedCondition(int32_t conditionIdx)
+        void SetSelectedTextureCondition(int32_t conditionIdx)
         {
-            if (conditionIdx != _selectedCondition)
+            if (conditionIdx != _selectedTxCondition)
             {
-                WindowGenRuleConditionCloseByCalling(this, WIDX_RULE_CONDITION_ADD);
-                WindowGenRuleConditionCloseByCalling(this, WIDX_RULE_CONDITION_EDIT);
+                MapGenRuleConditionCloseByCalling(this, WIDX_RULE_TX_CONDITION_ADD);
+                MapGenRuleConditionCloseByCalling(this, WIDX_RULE_TX_CONDITION_EDIT);
             }
-            _selectedCondition = conditionIdx;
+            _selectedTxCondition = conditionIdx;
         }
 
         void TextureMouseUp(WidgetIndex widgetIndex)
@@ -1591,48 +2214,48 @@ namespace OpenRCT2::Ui::Windows
 
             switch (widgetIndex)
             {
-                case WIDX_RULE_FLOOR_TEXTURE_CHECK:
+                case WIDX_RULE_TX_FLOOR_TEXTURE_CHECK:
                 {
-                    if (_selectedRule != -1)
+                    if (_selectedTxRule != -1)
                     {
-                        auto& selectedRule = _settings.textureRules[_selectedRule];
-                        selectedRule.result.applyLandTexture = !selectedRule.result.applyLandTexture;
+                        auto& selectedRule = _settings.textureRules[_selectedTxRule];
+                        selectedRule.effect.applyLandTexture = !selectedRule.effect.applyLandTexture;
                         Invalidate();
                     }
                     break;
                 }
-                case WIDX_RULE_WALL_TEXTURE_CHECK:
+                case WIDX_RULE_TX_WALL_TEXTURE_CHECK:
                 {
-                    if (_selectedRule != -1)
+                    if (_selectedTxRule != -1)
                     {
-                        auto& selectedRule = _settings.textureRules[_selectedRule];
-                        selectedRule.result.applyEdgeTexture = !selectedRule.result.applyEdgeTexture;
+                        auto& selectedRule = _settings.textureRules[_selectedTxRule];
+                        selectedRule.effect.applyEdgeTexture = !selectedRule.effect.applyEdgeTexture;
                         Invalidate();
                     }
                     break;
                 }
-                case WIDX_RULE_NEW:
+                case WIDX_RULE_TX_NEW:
                 {
                     MapGenerator::Rule::createNewTextureRule(_settings);
-                    SetSelectedRule(static_cast<int32_t>(_settings.textureRules.size() - 1));
+                    SetSelectedTextureRule(static_cast<int32_t>(_settings.textureRules.size() - 1));
                     Invalidate();
                     break;
                 }
-                case WIDX_RULE_REMOVE:
+                case WIDX_RULE_TX_REMOVE:
                 {
-                    if (_selectedRule != -1 && !_settings.textureRules[_selectedRule].isDefault)
+                    if (_selectedTxRule != -1 && !_settings.textureRules[_selectedTxRule].isDefault)
                     {
-                        _settings.textureRules.erase(_settings.textureRules.begin() + _selectedRule);
-                        SetSelectedRule(_selectedRule - 1);
+                        _settings.textureRules.erase(_settings.textureRules.begin() + _selectedTxRule);
+                        SetSelectedTextureRule(_selectedTxRule - 1);
                         Invalidate();
                     }
                     break;
                 }
-                case WIDX_RULE_RENAME:
+                case WIDX_RULE_TX_RENAME:
                 {
-                    if (_selectedRule != -1 && !_settings.textureRules[_selectedRule].isDefault)
+                    if (_selectedTxRule != -1 && !_settings.textureRules[_selectedTxRule].isDefault)
                     {
-                        auto& selectedRule = _settings.textureRules[_selectedRule];
+                        auto& selectedRule = _settings.textureRules[_selectedTxRule];
                         auto* qqq = selectedRule.name.c_str();
                         WindowTextInputOpen(
                             this, widgetIndex, STR_MAPGEN_RULE_RENAME_TITLE, STR_MAPGEN_RULE_ENTER_NAME, {}, STR_STRING,
@@ -1640,61 +2263,61 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 }
-                case WIDX_RULE_MOVE_UP:
+                case WIDX_RULE_TX_MOVE_UP:
                 {
-                    if (_selectedRule != -1 && !_settings.textureRules[_selectedRule].isDefault
-                        && _selectedRule < static_cast<int32_t>(_settings.textureRules.size() - 1))
+                    if (_selectedTxRule != -1 && !_settings.textureRules[_selectedTxRule].isDefault
+                        && _selectedTxRule < static_cast<int32_t>(_settings.textureRules.size() - 1))
                     {
-                        std::swap(_settings.textureRules[_selectedRule], _settings.textureRules[_selectedRule + 1]);
-                        SetSelectedRule(_selectedRule + 1);
+                        std::swap(_settings.textureRules[_selectedTxRule], _settings.textureRules[_selectedTxRule + 1]);
+                        SetSelectedTextureRule(_selectedTxRule + 1);
                         Invalidate();
                     }
                     break;
                 }
-                case WIDX_RULE_MOVE_DOWN:
+                case WIDX_RULE_TX_MOVE_DOWN:
                 {
-                    if (_selectedRule != -1 && !_settings.textureRules[_selectedRule].isDefault && _selectedRule > 1)
+                    if (_selectedTxRule != -1 && !_settings.textureRules[_selectedTxRule].isDefault && _selectedTxRule > 1)
                     {
-                        std::swap(_settings.textureRules[_selectedRule], _settings.textureRules[_selectedRule - 1]);
-                        SetSelectedRule(_selectedRule - 1);
+                        std::swap(_settings.textureRules[_selectedTxRule], _settings.textureRules[_selectedTxRule - 1]);
+                        SetSelectedTextureRule(_selectedTxRule - 1);
                         Invalidate();
                     }
                     break;
                 }
-                case WIDX_RULE_CONDITION_REMOVE:
+                case WIDX_RULE_TX_CONDITION_REMOVE:
                 {
-                    if (_selectedRule != -1 && !_settings.textureRules[_selectedRule].isDefault && _selectedCondition != -1)
+                    if (_selectedTxRule != -1 && !_settings.textureRules[_selectedTxRule].isDefault && _selectedTxCondition != -1)
                     {
-                        auto& selectedRule = _settings.textureRules[_selectedRule];
-                        selectedRule.conditions.erase(selectedRule.conditions.begin() + _selectedCondition);
-                        auto nextIdx = _selectedCondition - 1;
+                        auto& selectedRule = _settings.textureRules[_selectedTxRule];
+                        selectedRule.conditions.erase(selectedRule.conditions.begin() + _selectedTxCondition);
+                        auto nextIdx = _selectedTxCondition - 1;
                         if (nextIdx == -1 && !selectedRule.conditions.empty())
                         {
                             nextIdx = 0;
                         }
-                        SetSelectedCondition(nextIdx);
+                        SetSelectedTextureCondition(nextIdx);
                         Invalidate();
                     }
                     break;
                 }
-                case WIDX_RULE_CONDITION_EDIT:
+                case WIDX_RULE_TX_CONDITION_EDIT:
                 {
-                    if (_selectedRule != -1 && !_settings.textureRules[_selectedRule].isDefault && _selectedCondition != -1)
+                    if (_selectedTxRule != -1 && !_settings.textureRules[_selectedTxRule].isDefault && _selectedTxCondition != -1)
                     {
-                        auto& selectedRule = _settings.textureRules[_selectedRule];
-                        auto& selectedCondition = selectedRule.conditions[_selectedCondition];
+                        auto& selectedRule = _settings.textureRules[_selectedTxRule];
+                        auto& selectedCondition = selectedRule.conditions[_selectedTxCondition];
 
                         auto callback = [this](MapGenerator::Rule::Condition& condition) {
-                            if (_selectedRule == -1 || _settings.textureRules[_selectedRule].isDefault
-                                || _selectedCondition == -1)
+                            if (_selectedTxRule == -1 || _settings.textureRules[_selectedTxRule].isDefault
+                                || _selectedTxCondition == -1)
                             {
                                 return;
                             }
-                            _settings.textureRules[_selectedRule].conditions[_selectedCondition] = condition;
+                            _settings.textureRules[_selectedTxRule].conditions[_selectedTxCondition] = condition;
                             Invalidate();
                         };
 
-                        MapGenRuleConditionOpen(this, WIDX_RULE_CONDITION_ADD, selectedCondition, callback);
+                        MapGenRuleConditionOpen(this, WIDX_RULE_TX_CONDITION_ADD, selectedCondition, callback);
                     }
                     break;
                 }
@@ -1705,35 +2328,35 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
-                case WIDX_RULE_FLOOR_TEXTURE:
+                case WIDX_RULE_TX_FLOOR_TEXTURE:
                 {
-                    if (_selectedRule == -1)
+                    if (_selectedTxRule == -1)
                     {
                         return;
                     }
-                    auto& selectedRule = _settings.textureRules[_selectedRule];
-                    LandTool::ShowSurfaceStyleDropdown(this, widget, selectedRule.result.landTexture);
+                    auto& selectedRule = _settings.textureRules[_selectedTxRule];
+                    LandTool::ShowSurfaceStyleDropdown(this, widget, selectedRule.effect.landTexture);
                     break;
                 }
-                case WIDX_RULE_WALL_TEXTURE:
+                case WIDX_RULE_TX_WALL_TEXTURE:
                 {
-                    if (_selectedRule == -1)
+                    if (_selectedTxRule == -1)
                     {
                         return;
                     }
-                    auto& selectedRule = _settings.textureRules[_selectedRule];
-                    LandTool::ShowEdgeStyleDropdown(this, widget, selectedRule.result.edgeTexture);
+                    auto& selectedRule = _settings.textureRules[_selectedTxRule];
+                    LandTool::ShowEdgeStyleDropdown(this, widget, selectedRule.effect.edgeTexture);
                     break;
                 }
-                case WIDX_RULE_NEW_PRESET:
+                case WIDX_RULE_TX_NEW_PRESET:
                 {
                     using namespace Dropdown;
 
                     constexpr ItemExt items[] = {
-                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_PRESET_SMALL_ROCK_PATCHES),
-                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_PRESET_MEDIUM_DIRT_PATCHES),
-                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_PRESET_LARGE_GRASS_CLUMP_PATCHES),
-                        ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_PRESET_MOUNTAIN_PEAKS),
+                        ItemExt(0, STR_STRINGID, STR_MAPGEN_RULE_PRESET_TX_SMALL_ROCK_PATCHES),
+                        ItemExt(1, STR_STRINGID, STR_MAPGEN_RULE_PRESET_TX_MEDIUM_DIRT_PATCHES),
+                        ItemExt(2, STR_STRINGID, STR_MAPGEN_RULE_PRESET_TX_LARGE_GRASS_CLUMP_PATCHES),
+                        ItemExt(3, STR_STRINGID, STR_MAPGEN_RULE_PRESET_TX_MOUNTAIN_PEAKS),
                     };
 
                     SetItems(items);
@@ -1744,7 +2367,7 @@ namespace OpenRCT2::Ui::Windows
                         Dropdown::Flag::StayOpen, std::size(items));
                     break;
                 }
-                case WIDX_RULE_CONDITION_ADD:
+                case WIDX_RULE_TX_CONDITION_ADD:
                 {
                     using namespace Dropdown;
 
@@ -1757,6 +2380,7 @@ namespace OpenRCT2::Ui::Windows
                         ItemExt(5, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_PRNG),
                         ItemExt(6, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_HEIGHT),
                         ItemExt(7, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_BLEND_NOISE),
+                        ItemExt(8, STR_STRINGID, STR_MAPGEN_RULE_CONDITION_LAND_STYLE),
                     };
 
                     SetItems(items);
@@ -1768,6 +2392,8 @@ namespace OpenRCT2::Ui::Windows
 
                     // TODO implement
                     SetDisabled(4, true);
+                    // not available here
+                    SetDisabled(8, true);
 
                     break;
                 }
@@ -1782,19 +2408,19 @@ namespace OpenRCT2::Ui::Windows
             InvalidateWidget(WIDX_TAB_4);
 
             // Check if the mouse is hovering over the list
-            if (!widgetIsHighlighted(*this, WIDX_RULE_SCROLL))
+            if (!widgetIsHighlighted(*this, WIDX_RULE_TX_SCROLL))
             {
-                if (_highlightedRule != -1)
-                    InvalidateWidget(WIDX_RULE_SCROLL);
-                _highlightedRule = -1;
+                if (_highlightedTxRule != -1)
+                    InvalidateWidget(WIDX_RULE_TX_SCROLL);
+                _highlightedTxRule = -1;
             }
 
             // Check if the mouse is hovering over the list
-            if (!widgetIsHighlighted(*this, WIDX_RULE_CONDITION_SCROLL))
+            if (!widgetIsHighlighted(*this, WIDX_RULE_TX_CONDITION_SCROLL))
             {
-                if (_highlightedCondition != -1)
-                    InvalidateWidget(WIDX_RULE_CONDITION_SCROLL);
-                _highlightedCondition = -1;
+                if (_highlightedTxCondition != -1)
+                    InvalidateWidget(WIDX_RULE_TX_CONDITION_SCROLL);
+                _highlightedTxCondition = -1;
             }
         }
 
@@ -1802,16 +2428,16 @@ namespace OpenRCT2::Ui::Windows
         {
             switch (widgetIndex)
             {
-                case WIDX_RULE_RENAME:
+                case WIDX_RULE_TX_RENAME:
                 {
-                    if (_selectedRule == -1 || _settings.textureRules[_selectedRule].isDefault)
+                    if (_selectedTxRule == -1 || _settings.textureRules[_selectedTxRule].isDefault)
                     {
                         return;
                     }
 
                     // TODO trim + check not empty?
 
-                    auto& selectedRule = _settings.textureRules[_selectedRule];
+                    auto& selectedRule = _settings.textureRules[_selectedTxRule];
                     selectedRule.name = std::string(value);
                     break;
                 }
@@ -1823,48 +2449,48 @@ namespace OpenRCT2::Ui::Windows
         void TexturePrepareDraw()
         {
 
-            bool ruleSelected = _selectedRule != -1;
-            bool condSelected = ruleSelected && _selectedCondition != -1;
+            bool ruleSelected = _selectedTxRule != -1;
+            bool condSelected = ruleSelected && _selectedTxCondition != -1;
 
-            widgets[WIDX_RULE_MOVE_UP].type = ruleSelected ? WidgetType::button : WidgetType::empty;
-            widgets[WIDX_RULE_MOVE_DOWN].type = ruleSelected ? WidgetType::button : WidgetType::empty;
-            widgets[WIDX_RULE_REMOVE].type = ruleSelected ? WidgetType::button : WidgetType::empty;
-            widgets[WIDX_RULE_RENAME].type = ruleSelected ? WidgetType::button : WidgetType::empty;
+            widgets[WIDX_RULE_TX_MOVE_UP].type = ruleSelected ? WidgetType::button : WidgetType::empty;
+            widgets[WIDX_RULE_TX_MOVE_DOWN].type = ruleSelected ? WidgetType::button : WidgetType::empty;
+            widgets[WIDX_RULE_TX_REMOVE].type = ruleSelected ? WidgetType::button : WidgetType::empty;
+            widgets[WIDX_RULE_TX_RENAME].type = ruleSelected ? WidgetType::button : WidgetType::empty;
 
-            widgets[WIDX_RULE_CONDITION_GROUP].type = ruleSelected ? WidgetType::groupbox : WidgetType::empty;
-            widgets[WIDX_RULE_CONDITION_SCROLL].type = ruleSelected ? WidgetType::scroll : WidgetType::empty;
-            widgets[WIDX_RULE_CONDITION_REMOVE].type = condSelected ? WidgetType::button : WidgetType::empty;
-            widgets[WIDX_RULE_CONDITION_EDIT].type = condSelected ? WidgetType::button : WidgetType::empty;
-            widgets[WIDX_RULE_CONDITION_ADD].type = ruleSelected ? WidgetType::button : WidgetType::empty;
+            widgets[WIDX_RULE_TX_CONDITION_GROUP].type = ruleSelected ? WidgetType::groupbox : WidgetType::empty;
+            widgets[WIDX_RULE_TX_CONDITION_SCROLL].type = ruleSelected ? WidgetType::scroll : WidgetType::empty;
+            widgets[WIDX_RULE_TX_CONDITION_REMOVE].type = condSelected ? WidgetType::button : WidgetType::empty;
+            widgets[WIDX_RULE_TX_CONDITION_EDIT].type = condSelected ? WidgetType::button : WidgetType::empty;
+            widgets[WIDX_RULE_TX_CONDITION_ADD].type = ruleSelected ? WidgetType::button : WidgetType::empty;
 
-            widgets[WIDX_RULE_OUTCOME_GROUP].type = ruleSelected ? WidgetType::groupbox : WidgetType::empty;
-            widgets[WIDX_RULE_FLOOR_TEXTURE_CHECK].type = ruleSelected ? WidgetType::checkbox : WidgetType::empty;
-            widgets[WIDX_RULE_FLOOR_TEXTURE].type = ruleSelected ? WidgetType::flatBtn : WidgetType::empty;
-            widgets[WIDX_RULE_WALL_TEXTURE_CHECK].type = ruleSelected ? WidgetType::checkbox : WidgetType::empty;
-            widgets[WIDX_RULE_WALL_TEXTURE].type = ruleSelected ? WidgetType::flatBtn : WidgetType::empty;
+            widgets[WIDX_RULE_TX_OUTCOME_GROUP].type = ruleSelected ? WidgetType::groupbox : WidgetType::empty;
+            widgets[WIDX_RULE_TX_FLOOR_TEXTURE_CHECK].type = ruleSelected ? WidgetType::checkbox : WidgetType::empty;
+            widgets[WIDX_RULE_TX_FLOOR_TEXTURE].type = ruleSelected ? WidgetType::flatBtn : WidgetType::empty;
+            widgets[WIDX_RULE_TX_WALL_TEXTURE_CHECK].type = ruleSelected ? WidgetType::checkbox : WidgetType::empty;
+            widgets[WIDX_RULE_TX_WALL_TEXTURE].type = ruleSelected ? WidgetType::flatBtn : WidgetType::empty;
 
             if (ruleSelected)
             {
-                auto& selectedRule = _settings.textureRules[_selectedRule];
-                SetCheckboxValue(WIDX_RULE_FLOOR_TEXTURE_CHECK, selectedRule.result.applyLandTexture);
-                SetCheckboxValue(WIDX_RULE_WALL_TEXTURE_CHECK, selectedRule.result.applyEdgeTexture);
+                auto& selectedRule = _settings.textureRules[_selectedTxRule];
+                SetCheckboxValue(WIDX_RULE_TX_FLOOR_TEXTURE_CHECK, selectedRule.effect.applyLandTexture);
+                SetCheckboxValue(WIDX_RULE_TX_WALL_TEXTURE_CHECK, selectedRule.effect.applyEdgeTexture);
 
-                SetWidgetEnabled(WIDX_RULE_FLOOR_TEXTURE, selectedRule.result.applyLandTexture);
-                SetWidgetEnabled(WIDX_RULE_WALL_TEXTURE, selectedRule.result.applyEdgeTexture);
+                SetWidgetEnabled(WIDX_RULE_TX_FLOOR_TEXTURE, selectedRule.effect.applyLandTexture);
+                SetWidgetEnabled(WIDX_RULE_TX_WALL_TEXTURE, selectedRule.effect.applyEdgeTexture);
 
-                SetWidgetEnabled(WIDX_RULE_FLOOR_TEXTURE_CHECK, !selectedRule.isDefault);
-                SetWidgetEnabled(WIDX_RULE_WALL_TEXTURE_CHECK, !selectedRule.isDefault);
+                SetWidgetEnabled(WIDX_RULE_TX_FLOOR_TEXTURE_CHECK, !selectedRule.isDefault);
+                SetWidgetEnabled(WIDX_RULE_TX_WALL_TEXTURE_CHECK, !selectedRule.isDefault);
 
-                SetWidgetEnabled(WIDX_RULE_REMOVE, !selectedRule.isDefault);
-                SetWidgetEnabled(WIDX_RULE_RENAME, !selectedRule.isDefault);
+                SetWidgetEnabled(WIDX_RULE_TX_REMOVE, !selectedRule.isDefault);
+                SetWidgetEnabled(WIDX_RULE_TX_RENAME, !selectedRule.isDefault);
 
-                SetWidgetEnabled(WIDX_RULE_MOVE_UP, !selectedRule.isDefault
-                    && _selectedRule < static_cast<int32_t>(_settings.textureRules.size() - 1));
-                SetWidgetEnabled(WIDX_RULE_MOVE_DOWN, !selectedRule.isDefault &&  _selectedRule > 1);
+                SetWidgetEnabled(WIDX_RULE_TX_MOVE_UP, !selectedRule.isDefault
+                    && _selectedTxRule < static_cast<int32_t>(_settings.textureRules.size() - 1));
+                SetWidgetEnabled(WIDX_RULE_TX_MOVE_DOWN, !selectedRule.isDefault &&  _selectedTxRule > 1);
 
-                SetWidgetEnabled(WIDX_RULE_CONDITION_REMOVE, !selectedRule.isDefault && condSelected);
-                SetWidgetEnabled(WIDX_RULE_CONDITION_EDIT, !selectedRule.isDefault && condSelected);
-                SetWidgetEnabled(WIDX_RULE_CONDITION_ADD, !selectedRule.isDefault);
+                SetWidgetEnabled(WIDX_RULE_TX_CONDITION_REMOVE, !selectedRule.isDefault && condSelected);
+                SetWidgetEnabled(WIDX_RULE_TX_CONDITION_EDIT, !selectedRule.isDefault && condSelected);
+                SetWidgetEnabled(WIDX_RULE_TX_CONDITION_ADD, !selectedRule.isDefault);
             }
 
             SetPressedTab();
@@ -1875,18 +2501,18 @@ namespace OpenRCT2::Ui::Windows
             DrawWidgets(rt);
             DrawTabImages(rt);
 
-            if (_selectedRule != -1)
+            if (_selectedTxRule != -1)
             {
-                auto& selectedRule = _settings.textureRules[_selectedRule];
-                DrawDropdownButton(rt, WIDX_RULE_FLOOR_TEXTURE, LookupSurfaceImage(selectedRule.result.landTexture));
-                DrawDropdownButton(rt, WIDX_RULE_WALL_TEXTURE, LookupEdgeImage(selectedRule.result.edgeTexture));
+                auto& selectedRule = _settings.textureRules[_selectedTxRule];
+                DrawDropdownButton(rt, WIDX_RULE_TX_FLOOR_TEXTURE, LookupSurfaceImage(selectedRule.effect.landTexture));
+                DrawDropdownButton(rt, WIDX_RULE_TX_WALL_TEXTURE, LookupEdgeImage(selectedRule.effect.edgeTexture));
             }
             else
             {
-                auto& ruleScroll = widgets[WIDX_RULE_SCROLL];
+                auto& ruleScroll = widgets[WIDX_RULE_TX_SCROLL];
                 auto centrePos = windowPos + ScreenCoordsXY{ ruleScroll.left, ruleScroll.bottom + 5 };
                 auto textPaint = TextPaint{ colours[1] };
-                DrawTextWrapped(rt, centrePos, ruleScroll.width(), STR_MAPGEN_RULE_HINT, {}, textPaint);
+                DrawTextWrapped(rt, centrePos, ruleScroll.width(), STR_MAPGEN_RULE_TX_HINT, {}, textPaint);
             }
         }
 
@@ -1895,57 +2521,58 @@ namespace OpenRCT2::Ui::Windows
 
             switch (widgetIndex)
             {
-                case WIDX_RULE_FLOOR_TEXTURE:
+                case WIDX_RULE_TX_FLOOR_TEXTURE:
                 {
-                    if (_selectedRule == -1)
+                    if (_selectedTxRule == -1)
                     {
                         return;
                     }
-                    auto& selectedRule = _settings.textureRules[_selectedRule];
+                    auto& selectedRule = _settings.textureRules[_selectedTxRule];
 
                     if (dropdownIndex == -1)
                         dropdownIndex = gDropdownHighlightedIndex;
 
                     if (dropdownIndex != -1)
-                        selectedRule.result.landTexture = dropdownIndex;
+                        selectedRule.effect.landTexture = dropdownIndex;
 
                     Invalidate();
                     break;
                 }
-                case WIDX_RULE_WALL_TEXTURE:
+                case WIDX_RULE_TX_WALL_TEXTURE:
                 {
-                    if (_selectedRule == -1)
+                    if (_selectedTxRule == -1)
                     {
                         return;
                     }
-                    auto& selectedRule = _settings.textureRules[_selectedRule];
+                    auto& selectedRule = _settings.textureRules[_selectedTxRule];
 
                     if (dropdownIndex == -1)
                         dropdownIndex = gDropdownHighlightedIndex;
 
                     if (dropdownIndex != -1)
-                        selectedRule.result.edgeTexture = dropdownIndex;
+                        selectedRule.effect.edgeTexture = dropdownIndex;
 
                     Invalidate();
                     break;
                 }
-                case WIDX_RULE_NEW_PRESET:
+                case WIDX_RULE_TX_NEW_PRESET:
                 {
                     if (dropdownIndex == -1)
                         dropdownIndex = gDropdownHighlightedIndex;
 
                     if (dropdownIndex != -1)
                     {
-                        MapGenerator::Rule::createNewTextureRuleFromPreset(_settings, dropdownIndex);
-                        SetSelectedRule(static_cast<int32_t>(_settings.textureRules.size() - 1));
+                        auto preset = static_cast<MapGenerator::Rule::TextureRulePreset>(dropdownIndex);
+                        MapGenerator::Rule::createNewTextureRuleFromPreset(_settings, preset);
+                        SetSelectedTextureRule(static_cast<int32_t>(_settings.textureRules.size() - 1));
                     }
 
                     Invalidate();
                     break;
                 }
-                case WIDX_RULE_CONDITION_ADD:
+                case WIDX_RULE_TX_CONDITION_ADD:
                 {
-                    if (_selectedRule == -1)
+                    if (_selectedTxRule == -1)
                     {
                         return;
                     }
@@ -1961,17 +2588,17 @@ namespace OpenRCT2::Ui::Windows
                     auto conditionType = static_cast<MapGenerator::Rule::Type>(dropdownIndex);
                     auto newCondition = createNewCondition(conditionType);
                     auto callback = [this](MapGenerator::Rule::Condition& condition) {
-                        if (_selectedRule == -1 || _settings.textureRules[_selectedRule].isDefault)
+                        if (_selectedTxRule == -1 || _settings.textureRules[_selectedTxRule].isDefault)
                         {
                             return;
                         }
-                        auto& selectedRule = _settings.textureRules[_selectedRule];
+                        auto& selectedRule = _settings.textureRules[_selectedTxRule];
                         selectedRule.conditions.push_back(std::move(condition));
-                        SetSelectedCondition(static_cast<int32_t>(selectedRule.conditions.size() - 1));
+                        SetSelectedTextureCondition(static_cast<int32_t>(selectedRule.conditions.size() - 1));
                         Invalidate();
                     };
 
-                    MapGenRuleConditionOpen(this, WIDX_RULE_CONDITION_ADD, newCondition, callback);
+                    MapGenRuleConditionOpen(this, WIDX_RULE_TX_CONDITION_ADD, newCondition, callback);
                     break;
                 }
             }
@@ -1988,14 +2615,14 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case 1:
                 {
-                    if (_selectedRule == -1)
+                    if (_selectedTxRule == -1)
                     {
                         return {};
                     }
-                    auto& selectedRule = _settings.textureRules[_selectedRule];
+                    auto& selectedRule = _settings.textureRules[_selectedTxRule];
 
                     return ScreenSize(
-                        widgets[WIDX_RULE_CONDITION_SCROLL].width(),
+                        widgets[WIDX_RULE_TX_CONDITION_SCROLL].width(),
                         static_cast<int32_t>(selectedRule.conditions.size() * kScrollableRowHeight));
                 }
 
@@ -2016,13 +2643,13 @@ namespace OpenRCT2::Ui::Windows
 
         void TextureScrollDrawCondition(RenderTarget& rt)
         {
-            if (_selectedRule == -1)
+            if (_selectedTxRule == -1)
             {
                 return;
             }
-            auto& selectedRule = _settings.textureRules[_selectedRule];
+            auto& selectedRule = _settings.textureRules[_selectedTxRule];
 
-            const int32_t listWidth = widgets[WIDX_RULE_CONDITION_SCROLL].width();
+            const int32_t listWidth = widgets[WIDX_RULE_TX_CONDITION_SCROLL].width();
             GfxFillRect(
                 rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } },
                 ColourMapA[colours[1].colour].mid_light |  0x1000000);
@@ -2039,12 +2666,12 @@ namespace OpenRCT2::Ui::Windows
                                                  { listWidth, screenCoords.y + kScrollableRowHeight - 1 } };
 
                 StringId stringFormat = STR_WINDOW_COLOUR_2_STRINGID;
-                if (i == _selectedCondition)
+                if (i == _selectedTxCondition)
                 {
                     GfxFillRect(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
                     stringFormat = STR_WHITE_STRING;
                 }
-                else if (i == _highlightedCondition)
+                else if (i == _highlightedTxCondition)
                 {
                     GfxFillRect(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark | 0x1000000);
                     stringFormat = STR_WHITE_STRING;
@@ -2064,22 +2691,22 @@ namespace OpenRCT2::Ui::Windows
                 StringId predRepr = kStringIdNone;
                 switch (condition.predicate)
                 {
-                    case MapGenerator::Rule::Predicate::equal:
+                    case MapGenerator::Rule::Predicate::Equal:
                         predRepr = STR_MAPGEN_RULE_PREDICATE_EQUAL;
                         break;
-                    case MapGenerator::Rule::Predicate::notEqual:
+                    case MapGenerator::Rule::Predicate::NotEqual:
                         predRepr = STR_MAPGEN_RULE_PREDICATE_NOT_EQUAL;
                         break;
-                    case MapGenerator::Rule::Predicate::lessThan:
+                    case MapGenerator::Rule::Predicate::LessThan:
                         predRepr = STR_MAPGEN_RULE_PREDICATE_LESS_THAN;
                         break;
-                    case MapGenerator::Rule::Predicate::greaterThan:
+                    case MapGenerator::Rule::Predicate::GreaterThan:
                         predRepr = STR_MAPGEN_RULE_PREDICATE_GREATER_THAN;
                         break;
-                    case MapGenerator::Rule::Predicate::lessThanOrEqual:
+                    case MapGenerator::Rule::Predicate::LessThanOrEqual:
                         predRepr = STR_MAPGEN_RULE_PREDICATE_LESS_THAN_OR_EQUAL;
                         break;
-                    case MapGenerator::Rule::Predicate::greaterThanOrEqual:
+                    case MapGenerator::Rule::Predicate::GreaterThanOrEqual:
                         predRepr = STR_MAPGEN_RULE_PREDICATE_GREATER_THAN_OR_EQUAL;
                         break;
                 }
@@ -2127,15 +2754,15 @@ namespace OpenRCT2::Ui::Windows
                             std::get<MapGenerator::Rule::NormalAngleData>(condition.data).angle * 100));
                         break;
 
-                    case MapGenerator::Rule::Type::Prng:
+                    case MapGenerator::Rule::Type::Random:
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_FLOAT);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
                         ft.Add<StringId>(predRepr);
                         ft.Add<int32_t>(static_cast<int32_t>(
-                            std::get<MapGenerator::Rule::PrngData>(condition.data).value * 100));
+                            std::get<MapGenerator::Rule::RandomData>(condition.data).value * 100));
                         break;
 
-                    case MapGenerator::Rule::Type::PrngHeightBlend:
+                    case MapGenerator::Rule::Type::BlendHeight:
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_BLEND_LENGTH);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_BLEND_HEIGHT);
                         ft.Add<int16_t>(static_cast<int16_t>(
@@ -2146,7 +2773,7 @@ namespace OpenRCT2::Ui::Windows
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
                         break;
 
-                    case MapGenerator::Rule::Type::PrngNoiseBlend:
+                    case MapGenerator::Rule::Type::BlendNoise:
                         ft.Add<StringId>(STR_MAPGEN_RULE_VALUE_BLEND_FLOAT);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_BLEND_NOISE);
                         ft.Add<int32_t>(static_cast<int32_t>(
@@ -2155,6 +2782,9 @@ namespace OpenRCT2::Ui::Windows
                             std::get<MapGenerator::Rule::BlendNoiseData>(condition.data).edgeHigh * 100));
                         ft.Add<StringId>(predRepr);
                         ft.Add<StringId>(STR_MAPGEN_RULE_CONDITION_PRNG);
+                        break;
+                    case MapGenerator::Rule::Type::LandStyle:
+                        // should not be reachable
                         break;
                 }
 
@@ -2167,7 +2797,7 @@ namespace OpenRCT2::Ui::Windows
 
         void TextureScrollDrawRule(RenderTarget& rt)
         {
-            const int32_t listWidth = widgets[WIDX_RULE_SCROLL].width();
+            const int32_t listWidth = widgets[WIDX_RULE_TX_SCROLL].width();
             GfxFillRect(
                 rt, { { rt.x, rt.y }, { rt.x + rt.width - 1, rt.y + rt.height - 1 } }, ColourMapA[colours[1].colour].mid_light);
 
@@ -2183,12 +2813,12 @@ namespace OpenRCT2::Ui::Windows
                                                  { listWidth, screenCoords.y + kScrollableRowHeight - 1 } };
 
                 StringId stringFormat = STR_WINDOW_COLOUR_2_STRINGID;
-                if (i == _selectedRule)
+                if (i == _selectedTxRule)
                 {
                     GfxFillRect(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark);
                     stringFormat = STR_WHITE_STRING;
                 }
-                else if (i == _highlightedRule)
+                else if (i == _highlightedTxRule)
                 {
                     GfxFillRect(rt, fillRectangle, ColourMapA[colours[1].colour].mid_dark | 0x1000000);
                     stringFormat = STR_WHITE_STRING;
@@ -2217,16 +2847,16 @@ namespace OpenRCT2::Ui::Windows
 
                 ImageId maskImage(SPR_G2_MASK_MAPGEN_TEXTURE_SCROLL);
                 // Surface
-                if (rule.result.applyLandTexture)
+                if (rule.effect.applyLandTexture)
                 {
-                    auto surfaceImage = LookupSurfaceImage(rule.result.landTexture);
+                    auto surfaceImage = LookupSurfaceImage(rule.effect.landTexture);
                     GfxDrawSpriteRawMasked(rt, screenCoords + ScreenCoordsXY{ 208, 0 }, maskImage, surfaceImage);
                 }
 
                 // Edge
-                if (rule.result.applyEdgeTexture)
+                if (rule.effect.applyEdgeTexture)
                 {
-                    auto edgeImage = LookupEdgeImage(rule.result.edgeTexture);
+                    auto edgeImage = LookupEdgeImage(rule.effect.edgeTexture);
                     GfxDrawSpriteRawMasked(rt, screenCoords + ScreenCoordsXY{ 248, 0 }, maskImage, edgeImage);
                 }
 
@@ -2242,36 +2872,36 @@ namespace OpenRCT2::Ui::Windows
                     _settings.textureRules.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
                 if (index < 0 || index >= static_cast<int32_t>(_settings.textureRules.size()))
                 {
-                    _highlightedRule = -1;
+                    _highlightedTxRule = -1;
                 }
                 else
                 {
-                    _highlightedRule = index;
+                    _highlightedTxRule = index;
                 }
-                InvalidateWidget(WIDX_RULE_SCROLL);
+                InvalidateWidget(WIDX_RULE_TX_SCROLL);
             }
             else if (scrollIndex == 1)
             {
-                if (_selectedRule == -1)
+                if (_selectedTxRule == -1)
                 {
-                    _highlightedCondition = -1;
+                    _highlightedTxCondition = -1;
                 }
                 else
                 {
-                    auto& selectedRule = _settings.textureRules[_selectedRule];
+                    auto& selectedRule = _settings.textureRules[_selectedTxRule];
 
                     int32_t index = static_cast<int32_t>(
                         selectedRule.conditions.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
                     if (index < 0 || index >= static_cast<int32_t>(selectedRule.conditions.size()))
                     {
-                        _highlightedCondition = -1;
+                        _highlightedTxCondition = -1;
                     }
                     else
                     {
-                        _highlightedCondition = index;
+                        _highlightedTxCondition = index;
                     }
                 }
-                InvalidateWidget(WIDX_RULE_CONDITION_SCROLL);
+                InvalidateWidget(WIDX_RULE_TX_CONDITION_SCROLL);
             }
 
 
@@ -2294,20 +2924,20 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else if (index >= 0 && index < static_cast<int32_t>(_settings.textureRules.size()))
                 {
-                    SetSelectedRule(index);
+                    SetSelectedTextureRule(index);
                 }
                 else
                 {
-                    SetSelectedRule(-1);
+                    SetSelectedTextureRule(-1);
                 }
             } else if (scrollIndex == 1)
             {
-                if (_selectedRule == -1)
+                if (_selectedTxRule == -1)
                 {
-                    SetSelectedCondition(-1);
+                    SetSelectedTextureCondition(-1);
                 } else
                 {
-                    auto& selectedRule = _settings.textureRules[_selectedRule];
+                    auto& selectedRule = _settings.textureRules[_selectedTxRule];
                     // Because the list items are displayed in reverse order, subtract the calculated index from size
                     const int32_t index = static_cast<int32_t>(
                         selectedRule.conditions.size() - (screenCoords.y - 1) / kScrollableRowHeight - 1);
@@ -2318,11 +2948,11 @@ namespace OpenRCT2::Ui::Windows
                     }
                     else if (index >= 0 && index < static_cast<int32_t>(selectedRule.conditions.size()))
                     {
-                        SetSelectedCondition(index);
+                        SetSelectedTextureCondition(index);
                     }
                     else
                     {
-                        SetSelectedCondition(-1);
+                        SetSelectedTextureCondition(-1);
                     }
                 }
             }
@@ -2416,6 +3046,9 @@ namespace OpenRCT2::Ui::Windows
         {
             number = 0;
 
+            MapGenerator::Rule::createDefaultTextureRules(_settings);
+            MapGenerator::Rule::createDefaultSceneryRules(_settings);
+
             SetPage(WINDOW_MAPGEN_PAGE_BASE);
             Invalidate();
             hold_down_widgets = HoldDownWidgets[WINDOW_MAPGEN_PAGE_BASE];
@@ -2437,8 +3070,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_MAPGEN_PAGE_BASE:
                     return BaseMouseUp(widgetIndex);
-                case WINDOW_MAPGEN_PAGE_FORESTS:
-                    return ForestsMouseUp(widgetIndex);
+                case WINDOW_MAPGEN_PAGE_SCENERY:
+                    return SceneryMouseUp(widgetIndex);
                 case WINDOW_MAPGEN_PAGE_TERRAIN:
                     return TerrainMouseUp(widgetIndex);
                 case WINDOW_MAPGEN_PAGE_WATER:
@@ -2458,8 +3091,8 @@ namespace OpenRCT2::Ui::Windows
                     return TerrainMouseDown(widgetIndex, &widgets[widgetIndex]);
                 case WINDOW_MAPGEN_PAGE_WATER:
                     return WaterMouseDown(widgetIndex, &widgets[widgetIndex]);
-                case WINDOW_MAPGEN_PAGE_FORESTS:
-                    return ForestsMouseDown(widgetIndex, &widgets[widgetIndex]);
+                case WINDOW_MAPGEN_PAGE_SCENERY:
+                    return SceneryMouseDown(widgetIndex, &widgets[widgetIndex]);
                 case WINDOW_MAPGEN_PAGE_TEXTURE:
                     return TextureMouseDown(widgetIndex, &widgets[widgetIndex]);
             }
@@ -2475,6 +3108,8 @@ namespace OpenRCT2::Ui::Windows
                     return TerrainDropdown(widgetIndex, selectedIndex);
                 case WINDOW_MAPGEN_PAGE_TEXTURE:
                     return TextureDropdown(widgetIndex, selectedIndex);
+                case WINDOW_MAPGEN_PAGE_SCENERY:
+                    return SceneryDropdown(widgetIndex, selectedIndex);
             }
         }
 
@@ -2490,8 +3125,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_MAPGEN_PAGE_BASE:
                     return BaseUpdate();
-                case WINDOW_MAPGEN_PAGE_FORESTS:
-                    return ForestsUpdate();
+                case WINDOW_MAPGEN_PAGE_TERRAIN:
+                    return TerrainUpdate();
+                case WINDOW_MAPGEN_PAGE_SCENERY:
+                    return SceneryUpdate();
                 case WINDOW_MAPGEN_PAGE_WATER:
                     return WaterUpdate();
                 case WINDOW_MAPGEN_PAGE_TEXTURE:
@@ -2508,8 +3145,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_MAPGEN_PAGE_BASE:
                     return BasePrepareDraw();
-                case WINDOW_MAPGEN_PAGE_FORESTS:
-                    return ForestsPrepareDraw();
+                case WINDOW_MAPGEN_PAGE_SCENERY:
+                    return SceneryPrepareDraw();
                 case WINDOW_MAPGEN_PAGE_TERRAIN:
                     return TerrainPrepareDraw();
                 case WINDOW_MAPGEN_PAGE_WATER:
@@ -2525,8 +3162,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_MAPGEN_PAGE_BASE:
                     return BaseDraw(rt);
-                case WINDOW_MAPGEN_PAGE_FORESTS:
-                    return ForestsDraw(rt);
+                case WINDOW_MAPGEN_PAGE_SCENERY:
+                    return SceneryDraw(rt);
                 case WINDOW_MAPGEN_PAGE_TERRAIN:
                     return TerrainDraw(rt);
                 case WINDOW_MAPGEN_PAGE_WATER:
@@ -2542,6 +3179,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_MAPGEN_PAGE_TEXTURE:
                     return TextureScrollGetSize(scrollIndex);
+                case WINDOW_MAPGEN_PAGE_SCENERY:
+                    return SceneryScrollGetSize(scrollIndex);
             }
             return {};
         }
@@ -2552,6 +3191,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_MAPGEN_PAGE_TEXTURE:
                     return TextureScrollDraw(scrollIndex, rt);
+                case WINDOW_MAPGEN_PAGE_SCENERY:
+                    return SceneryScrollDraw(scrollIndex, rt);
             }
         }
 
@@ -2561,6 +3202,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_MAPGEN_PAGE_TEXTURE:
                     return TextureScrollMouseOver(scrollIndex, screenCoords);
+                case WINDOW_MAPGEN_PAGE_SCENERY:
+                    return SceneryScrollMouseOver(scrollIndex, screenCoords);
             }
         }
 
@@ -2570,6 +3213,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WINDOW_MAPGEN_PAGE_TEXTURE:
                     return TextureScrollMouseDown(scrollIndex, screenCoords);
+                case WINDOW_MAPGEN_PAGE_SCENERY:
+                    return SceneryScrollMouseDown(scrollIndex, screenCoords);
             }
         }
 
@@ -2587,6 +3232,10 @@ namespace OpenRCT2::Ui::Windows
             {
                 return TextureTextInput(widgetIndex, text);
             }
+            if (page == WINDOW_MAPGEN_PAGE_SCENERY)
+            {
+                return SceneryTextInput(widgetIndex, text);
+            }
 
             // Convert text to integer value
             int32_t value{};
@@ -2601,7 +3250,6 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             // Take care of unit conversion
-            int32_t rawValue = value;
             if (page != WINDOW_MAPGEN_PAGE_BASE && widgetIndex != WIDX_HEIGHTMAP_EROSION_PPT)
             {
                 switch (Config::Get().general.MeasurementFormat)
@@ -2625,8 +3273,6 @@ namespace OpenRCT2::Ui::Windows
                     return TerrainTextInput(widgetIndex, value);
                 case WINDOW_MAPGEN_PAGE_WATER:
                     return WaterTextInput(widgetIndex, value);
-                case WINDOW_MAPGEN_PAGE_FORESTS:
-                    return ForestsTextInput(widgetIndex, rawValue, value);
             }
         }
 

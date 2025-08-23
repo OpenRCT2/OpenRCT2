@@ -645,8 +645,8 @@
     <ClInclude Include="world\map_generator\Noise.h" />
     <ClInclude Include="world\map_generator\NoiseMapGen.h" />
     <ClInclude Include="world\map_generator\PngTerrainGenerator.h" />
+    <ClInclude Include="world\map_generator\SceneryPlacement.h" />
     <ClInclude Include="world\map_generator\SurfaceSelection.h" />
-    <ClInclude Include="world\map_generator\TreePlacement.h" />
     <ClInclude Include="world\map_generator\rule/Rule.h" />
     <ClInclude Include="world\tile_element\BannerElement.h" />
     <ClInclude Include="world\tile_element\EntranceElement.h" />
@@ -1156,8 +1156,8 @@
     <ClCompile Include="world\map_generator\Noise.cpp" />
     <ClCompile Include="world\map_generator\NoiseMapGen.cpp" />
     <ClCompile Include="world\map_generator\PngTerrainGenerator.cpp" />
+    <ClCompile Include="world\map_generator\SceneryPlacement.cpp" />
     <ClCompile Include="world\map_generator\SurfaceSelection.cpp" />
-    <ClCompile Include="world\map_generator\TreePlacement.cpp" />
     <ClCompile Include="world\map_generator\rule/Rule.cpp" />
     <ClCompile Include="world\tile_element\BannerElement.cpp" />
     <ClCompile Include="world\tile_element\EntranceElement.cpp" />

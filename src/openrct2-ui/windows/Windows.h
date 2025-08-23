@@ -150,7 +150,11 @@ namespace OpenRCT2::Ui::Windows
     WindowBase* MapGenRuleConditionOpen(
         WindowBase* callWindow, WidgetIndex callWidget, World::MapGenerator::Rule::Condition& condition,
         std::function<void(World::MapGenerator::Rule::Condition&)> callback);
-    void WindowGenRuleConditionCloseByCalling(WindowBase* call_w, WidgetIndex call_widget);
+    void MapGenRuleConditionCloseByCalling(WindowBase* call_w, WidgetIndex call_widget);
+    WindowBase* MapGenRuleScenerySelectOpen(
+        WindowBase* callWindow, WidgetIndex callWidget, World::MapGenerator::Rule::SceneryEffect& effect,
+        std::function<void(World::MapGenerator::Rule::SceneryEffect&)> callback);
+    void MapGenRuleScenerySelectCloseByCalling(WindowBase* call_w, WidgetIndex call_widget);
 
     // MapTooltip
     void SetMapTooltip(Formatter& ft);

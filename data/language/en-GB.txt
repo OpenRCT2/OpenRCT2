@@ -3723,7 +3723,7 @@ STR_6681    :Heightmap file
 STR_6682    :Map Generator - Generator
 STR_6683    :Map Generator - Terrain
 STR_6684    :Map Generator - Water
-STR_6685    :Map Generator - Forests
+STR_6685    :Map Generator - Foliage
 STR_6686    :Tree to land ratio:
 STR_6687    :Min. tree altitude:
 STR_6688    :Max. tree altitude:
@@ -3914,3 +3914,27 @@ STR_7090    :BlendNoise[Low..High]
 STR_7091    :Enter {STRINGID} [{INT32}..{INT32}]
 STR_7092    :Enter {STRINGID} [{LENGTH}..{LENGTH}]
 STR_7093    :Enter {STRINGID} [{COMMA2DP32}..{COMMA2DP32}]
+STR_7100    :Items
+STR_7101    :Select
+STR_7102    :For each tile the rules are evaluated top to bottom, placing a foliage element from the pool of first matching rule. If the pool is empty no item is placed.
+STR_7103    :Select scenery
+STR_7104    :{UINT16}x
+STR_7105    :Land style
+STR_7106    :in
+STR_7107    :not in
+STR_7108    :{STRINGID} {STRINGID}
+STR_7109    :Cacti
+STR_7110    :Oasis
+STR_7111    :Shrubs
+STR_7112    :Arid
+STR_7113    :Snow covered conifers
+STR_7114    :Conifers
+STR_7115    :Cold
+STR_7116    :Canopy
+STR_7117    :Flowers
+STR_7118    :Ground
+STR_7119    :Rainforest
+STR_7120    :Broad-leaved
+STR_7121    :Mixed
+STR_7122    :Cypresses and pines
+STR_7123    :Mediterranean

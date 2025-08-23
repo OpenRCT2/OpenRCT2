@@ -192,6 +192,9 @@ namespace OpenRCT2
         virtual void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
         {
         }
+        virtual void OnScrollMouseUp(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+        {
+        }
         virtual void OnScrollDraw(int32_t scrollIndex, RenderTarget& rt)
         {
         }

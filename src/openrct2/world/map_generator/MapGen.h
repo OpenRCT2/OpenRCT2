@@ -10,8 +10,6 @@
 #pragma once
 
 #include "../../Version.h"
-#include "../../localisation/Formatting.h"
-#include "../../localisation/StringIds.h"
 #include "../Location.hpp"
 #include "BaseMap.hpp"
 #include "rule/Rule.h"
@@ -54,34 +52,8 @@ namespace OpenRCT2::World::MapGenerator
         int32_t heightmapHigh = 60;
         bool smoothTileEdges = true;
 
-        std::vector<Rule::TextureRule> textureRules{
-            Rule::TextureRule{
-                .enabled = true,
-                .isDefault = true,
-                .name = FormatStringID(STR_MAPGEN_RULE_DEFAULT),
-                .conditions = std::vector<Rule::Condition>{},
-                .result{ .applyLandTexture = true, .landTexture = 0, .applyEdgeTexture = true, .edgeTexture = 0 } },
-            Rule::TextureRule{
-                .enabled = true,
-                .isDefault = false,
-                .name = FormatStringID(STR_MAPGEN_RULE_BEACHES_WATER_BODIES),
-                .conditions = std::vector{ Rule::Condition{ .enabled = true,
-                                                            .type = Rule::Type::HeightRelativeToWater,
-                                                            .predicate = Rule::Predicate::lessThanOrEqual,
-                                                            .data = Rule::HeightData{ 2 } },
-                                           Rule::Condition{ .enabled = false,
-                                                            .type = Rule::Type::DistanceToWater,
-                                                            .predicate = Rule::Predicate::lessThanOrEqual,
-                                                            .data = Rule::DistanceData{ 4 } } },
-                .result = { .applyLandTexture = true, .landTexture = 11, .applyEdgeTexture = false, .edgeTexture = 0 } }
-        };
-        std::vector<Rule::SceneryRule> sceneryRules;
-
-        // Features (e.g. tree, rivers, lakes etc.)
-        bool trees = true;
-        int32_t treeToLandRatio = 25;
-        int32_t minTreeAltitude = 10;
-        int32_t maxTreeAltitude = 50;
+        Rule::TextureRuleList textureRules{};
+        Rule::SceneryRuleList sceneryRules{};
 
         // Simplex Noise Parameters
         int32_t simplex_base_freq = 175;
