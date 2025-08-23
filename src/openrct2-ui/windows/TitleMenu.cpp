@@ -175,11 +175,11 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex == WIDX_GAME_TOOLS)
             {
                 int32_t i = 0;
-                gDropdown.items[i++].format = STR_SCENARIO_EDITOR;
-                gDropdown.items[i++].format = STR_CONVERT_SAVED_GAME_TO_SCENARIO;
-                gDropdown.items[i++].format = STR_ROLLER_COASTER_DESIGNER;
-                gDropdown.items[i++].format = STR_TRACK_DESIGNS_MANAGER;
-                gDropdown.items[i++].format = STR_OPEN_USER_CONTENT_FOLDER;
+                gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_SCENARIO_EDITOR);
+                gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_CONVERT_SAVED_GAME_TO_SCENARIO);
+                gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_ROLLER_COASTER_DESIGNER);
+                gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_TRACK_DESIGNS_MANAGER);
+                gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_OPEN_USER_CONTENT_FOLDER);
 
 #ifdef ENABLE_SCRIPTING
                 auto hasCustomItems = false;

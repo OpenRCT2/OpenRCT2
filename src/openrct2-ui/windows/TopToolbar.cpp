@@ -1164,11 +1164,11 @@ namespace OpenRCT2::Ui::Windows
     void TopToolbar::InitMapMenu(Widget& widget)
     {
         auto i = 0;
-        gDropdown.items[i++].format = STR_SHORTCUT_SHOW_MAP;
-        gDropdown.items[i++].format = STR_EXTRA_VIEWPORT;
+        gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_SHORTCUT_SHOW_MAP);
+        gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_EXTRA_VIEWPORT);
         if (gLegacyScene == LegacyScene::scenarioEditor && getGameState().editorStep == EditorStep::LandscapeEditor)
         {
-            gDropdown.items[i++].format = STR_MAPGEN_MENU_ITEM;
+            gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_MAPGEN_MENU_ITEM);
         }
 
 #ifdef ENABLE_SCRIPTING
@@ -1306,66 +1306,66 @@ namespace OpenRCT2::Ui::Windows
         int32_t numItems = 0;
         if (isInTrackDesignerOrManager())
         {
-            gDropdown.items[numItems++].format = STR_SCREENSHOT;
-            gDropdown.items[numItems++].format = STR_GIANT_SCREENSHOT;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_SCREENSHOT);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_GIANT_SCREENSHOT);
             gDropdown.items[numItems++] = Dropdown::Separator();
-            gDropdown.items[numItems++].format = STR_ABOUT;
-            gDropdown.items[numItems++].format = STR_FILE_BUG_ON_GITHUB;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_ABOUT);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_FILE_BUG_ON_GITHUB);
 
             if (OpenRCT2::GetContext()->HasNewVersionInfo())
-                gDropdown.items[numItems++].format = STR_UPDATE_AVAILABLE;
+                gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_UPDATE_AVAILABLE);
 
-            gDropdown.items[numItems++].format = STR_OPTIONS;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_OPTIONS);
             gDropdown.items[numItems++] = Dropdown::Separator();
 
             if (gLegacyScene == LegacyScene::trackDesigner)
-                gDropdown.items[numItems++].format = STR_QUIT_ROLLERCOASTER_DESIGNER;
+                gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_QUIT_ROLLERCOASTER_DESIGNER);
             else
-                gDropdown.items[numItems++].format = STR_QUIT_TRACK_DESIGNS_MANAGER;
+                gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_QUIT_TRACK_DESIGNS_MANAGER);
 
-            gDropdown.items[numItems++].format = STR_EXIT_OPENRCT2;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_EXIT_OPENRCT2);
         }
         else if (gLegacyScene == LegacyScene::scenarioEditor)
         {
-            gDropdown.items[numItems++].format = STR_LOAD_LANDSCAPE;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_LOAD_LANDSCAPE);
             gDropdown.items[numItems++] = Dropdown::Separator();
-            gDropdown.items[numItems++].format = STR_SAVE_LANDSCAPE;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_SAVE_LANDSCAPE);
             gDropdown.items[numItems++] = Dropdown::Separator();
-            gDropdown.items[numItems++].format = STR_SCREENSHOT;
-            gDropdown.items[numItems++].format = STR_GIANT_SCREENSHOT;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_SCREENSHOT);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_GIANT_SCREENSHOT);
             gDropdown.items[numItems++] = Dropdown::Separator();
-            gDropdown.items[numItems++].format = STR_ABOUT;
-            gDropdown.items[numItems++].format = STR_FILE_BUG_ON_GITHUB;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_ABOUT);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_FILE_BUG_ON_GITHUB);
 
             if (OpenRCT2::GetContext()->HasNewVersionInfo())
-                gDropdown.items[numItems++].format = STR_UPDATE_AVAILABLE;
+                gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_UPDATE_AVAILABLE);
 
-            gDropdown.items[numItems++].format = STR_OPTIONS;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_OPTIONS);
             gDropdown.items[numItems++] = Dropdown::Separator();
-            gDropdown.items[numItems++].format = STR_QUIT_SCENARIO_EDITOR;
-            gDropdown.items[numItems++].format = STR_EXIT_OPENRCT2;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_QUIT_SCENARIO_EDITOR);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_EXIT_OPENRCT2);
         }
         else
         {
-            gDropdown.items[numItems++].format = STR_NEW_GAME;
-            gDropdown.items[numItems++].format = STR_LOAD_GAME;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_NEW_GAME);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_LOAD_GAME);
             gDropdown.items[numItems++] = Dropdown::Separator();
-            gDropdown.items[numItems++].format = STR_SAVE_GAME;
-            gDropdown.items[numItems++].format = STR_SAVE_GAME_AS;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_SAVE_GAME);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_SAVE_GAME_AS);
             gDropdown.items[numItems++] = Dropdown::Separator();
-            gDropdown.items[numItems++].format = STR_SCREENSHOT;
-            gDropdown.items[numItems++].format = STR_GIANT_SCREENSHOT;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_SCREENSHOT);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_GIANT_SCREENSHOT);
             gDropdown.items[numItems++] = Dropdown::Separator();
-            gDropdown.items[numItems++].format = STR_ABOUT;
-            gDropdown.items[numItems++].format = STR_FILE_BUG_ON_GITHUB;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_ABOUT);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_FILE_BUG_ON_GITHUB);
 
             if (OpenRCT2::GetContext()->HasNewVersionInfo())
-                gDropdown.items[numItems++].format = STR_UPDATE_AVAILABLE;
+                gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_UPDATE_AVAILABLE);
 
-            gDropdown.items[numItems++].format = STR_OPTIONS;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_OPTIONS);
             gDropdown.items[numItems++] = Dropdown::Separator();
-            gDropdown.items[numItems++].format = STR_QUIT_TO_MENU;
-            gDropdown.items[numItems++].format = STR_EXIT_OPENRCT2;
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_QUIT_TO_MENU);
+            gDropdown.items[numItems++] = Dropdown::PlainMenuLabel(STR_EXIT_OPENRCT2);
         }
 
         WindowDropdownShowText(
@@ -1509,8 +1509,8 @@ namespace OpenRCT2::Ui::Windows
 
     void TopToolbar::InitNetworkMenu(Widget& widget)
     {
-        gDropdown.items[DDIDX_MULTIPLAYER].format = STR_MULTIPLAYER;
-        gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT].format = STR_MULTIPLAYER_RECONNECT;
+        gDropdown.items[DDIDX_MULTIPLAYER] = Dropdown::PlainMenuLabel(STR_MULTIPLAYER);
+        gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT] = Dropdown::PlainMenuLabel(STR_MULTIPLAYER_RECONNECT);
 
         WindowDropdownShowText(
             { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,

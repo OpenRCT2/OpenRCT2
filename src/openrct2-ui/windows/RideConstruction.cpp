@@ -2610,7 +2610,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                gDropdown.items[i].format = trackPieceStringId;
+                gDropdown.items[i] = Dropdown::PlainMenuLabel(trackPieceStringId);
                 if (_currentlySelectedTrack == trackPiece)
                     defaultIndex = i;
 

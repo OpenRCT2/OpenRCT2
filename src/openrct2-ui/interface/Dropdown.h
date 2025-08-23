@@ -139,13 +139,27 @@ namespace OpenRCT2::Dropdown
         return ItemExt(-1, Dropdown::kSeparatorString, kStringIdEmpty);
     }
 
+    /**
+     * Regular menu item, which shows a » symbol when selected
+     */
     constexpr Item MenuLabel(StringId stringId)
     {
         return Item{ STR_DROPDOWN_MENU_LABEL, stringId };
     }
 
+    /**
+     * Leaves out the left padding where a checkmark can be drawn, use only for menu where no item can be checked.
+     */
+    constexpr Item PlainMenuLabel(StringId stringId)
+    {
+        return Item{ stringId };
+    }
+
     Item MenuLabel(const utf8* string);
 
+    /**
+     * Like MenuLabel, but shows a tick when selected.
+     */
     constexpr Item ToggleOption(StringId stringId)
     {
         return Item{ STR_TOGGLE_OPTION, stringId };

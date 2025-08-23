@@ -650,12 +650,13 @@ namespace OpenRCT2::Ui::Windows
                     for (size_t i = 0; i < numItems; i++)
                     {
                         gDropdown.items[i] = Dropdown::MenuLabel(items[i].c_str());
-                        if (selectedIndex == static_cast<int32_t>(i))
-                            gDropdown.items[i].format = STR_OPTIONS_DROPDOWN_ITEM_SELECTED;
                     }
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1,
                         colours[widget->colour], 0, Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
+
+                    if (selectedIndex >= 0 && selectedIndex < static_cast<int32_t>(numItems))
+                        gDropdown.items[selectedIndex].setChecked(true);
                 }
                 else if (widgetDesc->Type == "spinner")
                 {

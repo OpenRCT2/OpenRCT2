@@ -427,8 +427,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_PATROL:
                 {
                     // Dropdown names
-                    gDropdown.items[0].format = STR_SET_PATROL_AREA;
-                    gDropdown.items[1].format = STR_CLEAR_PATROL_AREA;
+                    gDropdown.items[0] = Dropdown::PlainMenuLabel(STR_SET_PATROL_AREA);
+                    gDropdown.items[1] = Dropdown::PlainMenuLabel(STR_CLEAR_PATROL_AREA);
 
                     auto ddPos = ScreenCoordsXY{ widget->left + windowPos.x, widget->top + windowPos.y };
                     int32_t extraHeight = widget->height() + 1;
@@ -1161,8 +1161,8 @@ namespace OpenRCT2::Ui::Windows
 
         void ShowLocateDropdown(Widget* widget)
         {
-            gDropdown.items[0].format = STR_LOCATE_SUBJECT_TIP;
-            gDropdown.items[1].format = STR_FOLLOW_SUBJECT_TIP;
+            gDropdown.items[0] = Dropdown::PlainMenuLabel(STR_LOCATE_SUBJECT_TIP);
+            gDropdown.items[1] = Dropdown::PlainMenuLabel(STR_FOLLOW_SUBJECT_TIP);
 
             WindowDropdownShowText(
                 { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 2);
