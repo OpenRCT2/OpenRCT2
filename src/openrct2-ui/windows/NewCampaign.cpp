@@ -212,7 +212,7 @@ namespace OpenRCT2::Ui::Windows
                             for (int32_t i = 0; i < maxSize; i++)
                             {
                                 gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                                gDropdown.items[i].args = GetShopItemDescriptor(ShopItems[i]).Naming.Plural;
+                                gDropdown.items[i].args.generic = GetShopItemDescriptor(ShopItems[i]).Naming.Plural;
                                 numItems++;
                             }
 
@@ -232,7 +232,7 @@ namespace OpenRCT2::Ui::Windows
                             {
                                 // HACK until dropdown items have longer argument buffers
                                 gDropdown.items[numItems].format = STR_DROPDOWN_MENU_LABEL;
-                                Formatter ft(reinterpret_cast<uint8_t*>(&gDropdown.items[numItems].args));
+                                Formatter ft(reinterpret_cast<uint8_t*>(&gDropdown.items[numItems].args.generic));
                                 if (curRide->customName.empty())
                                 {
                                     curRide->formatNameTo(ft);

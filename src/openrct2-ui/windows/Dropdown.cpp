@@ -48,8 +48,6 @@ namespace OpenRCT2::Ui::Windows
 
     Dropdown::DropdownState gDropdown{};
 
-    static bool _dropdownPrepareUseImages;
-
     static void ResetDropdownFlags()
     {
         for (size_t i = 0; i < std::size(gDropdown.items); i++)
@@ -60,7 +58,6 @@ namespace OpenRCT2::Ui::Windows
 
     class DropdownWindow final : public Window
     {
-        bool UseImages;
         int32_t NumColumns;
         int32_t NumRows;
         int32_t ItemWidth;
@@ -138,8 +135,7 @@ namespace OpenRCT2::Ui::Windows
                     if (item == Dropdown::kFormatLandPicker || item == Dropdown::kFormatColourPicker)
                     {
                         // Image item
-                        auto image = UseImages ? gDropdown.itemsImages[i]
-                                               : ImageId(static_cast<uint32_t>(gDropdown.items[i].args));
+                        auto image = gDropdown.items[i].args.image;
                         if (item == Dropdown::kFormatColourPicker && highlightedIndex == i)
                             image = image.WithIndexOffset(1);
                         GfxDrawSprite(rt, image, screenCoords);
@@ -159,7 +155,7 @@ namespace OpenRCT2::Ui::Windows
 
                         // Draw item string
                         auto yOffset = GetAdditionalRowPadding();
-                        Formatter ft(reinterpret_cast<uint8_t*>(&gDropdown.items[i].args));
+                        Formatter ft(reinterpret_cast<uint8_t*>(&gDropdown.items[i].args.generic));
                         DrawTextEllipsised(
                             rt, { screenCoords.x + 2, screenCoords.y + yOffset }, width - 7, item, ft, { colour });
                     }
@@ -213,9 +209,6 @@ namespace OpenRCT2::Ui::Windows
             const ScreenCoordsXY& screenPos, int32_t extraY, ColourWithFlags colour, int32_t numItems, int32_t itemWidth,
             int32_t itemHeight, int32_t numColumns)
         {
-            UseImages = _dropdownPrepareUseImages;
-            _dropdownPrepareUseImages = false;
-
             // Set and calculate num items, rows and columns
             ItemWidth = itemWidth;
             ItemHeight = itemHeight;
@@ -332,7 +325,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t max_string_width = 0;
         for (size_t i = 0; i < num_items; i++)
         {
-            FormatStringLegacy(buffer, 256, gDropdown.items[i].format, static_cast<void*>(&gDropdown.items[i].args));
+            FormatStringLegacy(buffer, 256, gDropdown.items[i].format, static_cast<void*>(&gDropdown.items[i].args.generic));
             int32_t string_width = GfxGetStringWidth(buffer, FontStyle::Medium);
             max_string_width = std::max(string_width, max_string_width);
         }
@@ -603,7 +596,8 @@ namespace OpenRCT2::Ui::Windows
                                                                : ImageId(SPR_PALETTE_BTN, orderedColour);
 
             gDropdown.items[i].format = Dropdown::kFormatColourPicker;
-            Dropdown::SetImage(i, imageId);
+            gDropdown.items[i].args.image = imageId;
+            gDropdown.items[i].tooltip = kColourTooltips[i];
         }
 
         // Show dropdown
@@ -612,8 +606,6 @@ namespace OpenRCT2::Ui::Windows
             w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, dropdownColour,
             Dropdown::Flag::StayOpen, numColours, squareSize, squareSize,
             DropdownGetAppropriateImageDropdownItemsPerRow(static_cast<uint32_t>(numColours)));
-
-        std::copy(kColourTooltips.begin(), kColourTooltips.end(), gDropdown.tooltips.begin());
 
         gDropdown.hasTooltips = true;
         gDropdown.lastTooltipHover = -1;
@@ -630,13 +622,3 @@ namespace OpenRCT2::Ui::Windows
 
 using namespace OpenRCT2::Ui::Windows;
 using namespace OpenRCT2;
-
-void Dropdown::SetImage(int32_t index, ImageId image)
-{
-    if (index < 0 || index >= static_cast<int32_t>(std::size(gDropdown.itemsImages)))
-    {
-        return;
-    }
-    gDropdown.itemsImages[index] = image;
-    _dropdownPrepareUseImages = true;
-}

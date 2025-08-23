@@ -65,8 +65,6 @@ namespace OpenRCT2::Ui::Windows
 
 namespace OpenRCT2::Dropdown
 {
-    void SetImage(int32_t index, ImageId image);
-
     enum Flag
     {
         CustomHeight = (1 << 6), // never set?
@@ -83,8 +81,13 @@ namespace OpenRCT2::Dropdown
     struct Item
     {
         StringId format{};
-        int64_t args{};
+        union
+        {
+            int64_t generic;
+            ImageId image;
+        } args{};
         ItemFlags flags{};
+        StringId tooltip{};
 
         constexpr bool isSeparator() const
         {
@@ -140,8 +143,6 @@ namespace OpenRCT2::Dropdown
     {
         int32_t numItems{};
         std::array<Dropdown::Item, Dropdown::kItemsMaxSize> items{};
-        std::array<StringId, Dropdown::kItemsMaxSize> tooltips{};
-        std::array<ImageId, Dropdown::kItemsMaxSize> itemsImages{};
         bool hasTooltips{};
         int32_t lastTooltipHover{};
         int32_t highlightedIndex{};
@@ -155,7 +156,7 @@ namespace OpenRCT2::Dropdown
         {
             const ItemExt& item = items[i];
             OpenRCT2::Ui::Windows::gDropdown.items[i].format = item.itemFormat;
-            OpenRCT2::Ui::Windows::gDropdown.items[i].args = item.stringId;
+            OpenRCT2::Ui::Windows::gDropdown.items[i].args.generic = item.stringId;
         }
     }
 

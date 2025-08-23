@@ -1473,7 +1473,7 @@ namespace OpenRCT2
                 gDropdown.lastTooltipHover = dropdown_index;
                 WindowTooltipClose();
 
-                WindowTooltipShow(OpenRCT2String{ gDropdown.tooltips[dropdown_index], {} }, screenCoords);
+                WindowTooltipShow(OpenRCT2String{ gDropdown.items[dropdown_index].tooltip, {} }, screenCoords);
             }
 
             if (dropdown_index < Dropdown::kItemsMaxSize && gDropdown.items[dropdown_index].isDisabled())

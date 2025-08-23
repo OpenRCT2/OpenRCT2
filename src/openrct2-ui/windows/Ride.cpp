@@ -1762,7 +1762,7 @@ namespace OpenRCT2::Ui::Windows
 
             // First item
             gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-            gDropdown.items[0].args = STR_OVERALL_VIEW;
+            gDropdown.items[0].args.generic = STR_OVERALL_VIEW;
             int32_t currentItem = 1;
 
             // Vehicles
@@ -1770,7 +1770,7 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t i = 0; i < ride->numTrains; i++)
             {
                 gDropdown.items[currentItem].format = STR_DROPDOWN_MENU_LABEL;
-                gDropdown.items[currentItem].args = name | (currentItem << 16);
+                gDropdown.items[currentItem].args.generic = name | (currentItem << 16);
                 if (TrainMustBeHidden(*ride, i))
                 {
                     gDropdown.items[currentItem].setDisabled(true);
@@ -1783,7 +1783,7 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t i = 1; i <= ride->numStations; i++)
             {
                 gDropdown.items[currentItem].format = STR_DROPDOWN_MENU_LABEL;
-                gDropdown.items[currentItem].args = name | (i << 16);
+                gDropdown.items[currentItem].args.generic = name | (i << 16);
                 currentItem++;
             }
 
@@ -1833,7 +1833,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto index = info.NumItems;
                 gDropdown.items[index].format = STR_DROPDOWN_MENU_LABEL;
-                gDropdown.items[index].args = text;
+                gDropdown.items[index].args.generic = text;
                 if (info.CurrentStatus == status)
                 {
                     info.CheckedIndex = index;
@@ -1926,7 +1926,7 @@ namespace OpenRCT2::Ui::Windows
             for (size_t i = 0; i < _rideDropdownData.size(); i++)
             {
                 gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                gDropdown.items[i].args = _rideDropdownData[i].LabelId;
+                gDropdown.items[i].args.generic = _rideDropdownData[i].LabelId;
             }
 
             Widget* dropdownWidget = widget - 1;
@@ -2074,7 +2074,7 @@ namespace OpenRCT2::Ui::Windows
             for (size_t i = 0; i < numItems; i++)
             {
                 gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                gDropdown.items[i].args = _vehicleDropdownData[i].LabelId;
+                gDropdown.items[i].args.generic = _vehicleDropdownData[i].LabelId;
             }
 
             Widget* dropdownWidget = widget - 1;
@@ -2134,7 +2134,7 @@ namespace OpenRCT2::Ui::Windows
 
             for (size_t i = 0; i < _entranceDropdownData.size(); i++)
             {
-                gDropdown.items[i].args = _entranceDropdownData[i].LabelId;
+                gDropdown.items[i].args.generic = _entranceDropdownData[i].LabelId;
                 gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
                 if (_entranceDropdownData[i].EntranceTypeId == ride->entranceStyle)
                     gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL_SELECTED;
@@ -2204,7 +2204,7 @@ namespace OpenRCT2::Ui::Windows
                         }
                         if (dropdownIndex < static_cast<int32_t>(std::size(gDropdown.items)))
                         {
-                            switch (gDropdown.items[dropdownIndex].args)
+                            switch (gDropdown.items[dropdownIndex].args.generic)
                             {
                                 case STR_CLOSE_RIDE:
                                     status = RideStatus::closed;
@@ -3113,7 +3113,7 @@ namespace OpenRCT2::Ui::Windows
                 if (availableModes & (1uLL << i))
                 {
                     gDropdown.items[numAvailableModes].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[numAvailableModes].args = kRideModeNames[i];
+                    gDropdown.items[numAvailableModes].args.generic = kRideModeNames[i];
 
                     if (ride->mode == static_cast<RideMode>(i))
                         checkedIndex = numAvailableModes;
@@ -3142,7 +3142,7 @@ namespace OpenRCT2::Ui::Windows
             for (auto i = 0; i < 5; i++)
             {
                 gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                gDropdown.items[i].args = VehicleLoadNames[i];
+                gDropdown.items[i].args.generic = VehicleLoadNames[i];
             }
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
@@ -3792,7 +3792,7 @@ namespace OpenRCT2::Ui::Windows
                     for (int32_t i = 0; i < 7; i++)
                     {
                         gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdown.items[i].args = kRideInspectionIntervalNames[i];
+                        gDropdown.items[i].args.generic = kRideInspectionIntervalNames[i];
                     }
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
@@ -3809,7 +3809,7 @@ namespace OpenRCT2::Ui::Windows
                             break;
                     }
                     gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[0].args = STR_DEBUG_FIX_RIDE;
+                    gDropdown.items[0].args.generic = STR_DEBUG_FIX_RIDE;
                     for (int32_t i = 0; i < 8; i++)
                     {
                         assert(j < static_cast<int32_t>(std::size(rideEntry->ride_type)));
@@ -3821,7 +3821,7 @@ namespace OpenRCT2::Ui::Windows
                                     continue;
                             }
                             gDropdown.items[numItems].format = STR_DROPDOWN_MENU_LABEL;
-                            gDropdown.items[numItems].args = RideBreakdownReasonNames[i];
+                            gDropdown.items[numItems].args.generic = RideBreakdownReasonNames[i];
                             numItems++;
                         }
                     }
@@ -3855,7 +3855,7 @@ namespace OpenRCT2::Ui::Windows
                                         break;
                                     }
                                     gDropdown.items[numItems].format = STR_DROPDOWN_MENU_LABEL;
-                                    gDropdown.items[numItems].args = RideBreakdownReasonNames[i];
+                                    gDropdown.items[numItems].args.generic = RideBreakdownReasonNames[i];
                                     numItems++;
                                 }
                             }
@@ -4326,7 +4326,7 @@ namespace OpenRCT2::Ui::Windows
                     for (size_t i = 0; i < std::size(ColourSchemeNames); i++)
                     {
                         gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdown.items[i].args = ColourSchemeNames[i];
+                        gDropdown.items[i].args.generic = ColourSchemeNames[i];
                     }
 
                     WindowDropdownShowTextCustomWidth(
@@ -4353,7 +4353,7 @@ namespace OpenRCT2::Ui::Windows
                     for (auto i = 0; i < 4; i++)
                     {
                         gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdown.items[i].args = MazeOptions[i].text;
+                        gDropdown.items[i].args.generic = MazeOptions[i].text;
                     }
 
                     WindowDropdownShowTextCustomWidth(
@@ -4373,15 +4373,15 @@ namespace OpenRCT2::Ui::Windows
 
                     auto numDropdownItems = 2;
                     gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[0].args = STR_ALL_VEHICLES_IN_SAME_COLOURS;
+                    gDropdown.items[0].args.generic = STR_ALL_VEHICLES_IN_SAME_COLOURS;
                     gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[1].args = (vehicleTypeName << 16) | STR_DIFFERENT_COLOURS_PER;
+                    gDropdown.items[1].args.generic = (vehicleTypeName << 16) | STR_DIFFERENT_COLOURS_PER;
 
                     if (getNumVisibleCars() > 1)
                     {
                         numDropdownItems++;
                         gDropdown.items[2].format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdown.items[2].args = STR_DIFFERENT_COLOURS_PER_VEHICLE;
+                        gDropdown.items[2].args.generic = STR_DIFFERENT_COLOURS_PER_VEHICLE;
                     }
 
                     WindowDropdownShowTextCustomWidth(
@@ -4415,7 +4415,7 @@ namespace OpenRCT2::Ui::Windows
 
                         int64_t vehicleIndex = dropdownIndex + 1;
                         gDropdown.items[dropdownIndex].format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdown.items[dropdownIndex].args = (vehicleIndex << 32)
+                        gDropdown.items[dropdownIndex].args.generic = (vehicleIndex << 32)
                             | ((GetRideComponentName(ride->getRideTypeDescriptor().NameConvention.vehicle).capitalised) << 16)
                             | stringId;
                         dropdownIndex++;
@@ -5086,7 +5086,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto musicObj = objManager.GetLoadedObject<MusicObject>(musicOrder[i]);
                 gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                gDropdown.items[i].args = musicObj->NameStringId;
+                gDropdown.items[i].args.generic = musicObj->NameStringId;
             }
 
             WindowDropdownShowTextCustomWidth(

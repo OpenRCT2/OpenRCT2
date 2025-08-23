@@ -199,7 +199,7 @@ namespace OpenRCT2::Ui::Windows
 
                             gDropdown.items[i].format = STR_STRING;
                             auto sz = item.Text.c_str();
-                            std::memcpy(&gDropdown.items[i].args, &sz, sizeof(const char*));
+                            std::memcpy(&gDropdown.items[i].args.generic, &sz, sizeof(const char*));
                             i++;
                         }
                     }

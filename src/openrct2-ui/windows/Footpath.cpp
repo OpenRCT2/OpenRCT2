@@ -702,9 +702,9 @@ namespace OpenRCT2::Ui::Windows
                     defaultIndex = numPathTypes;
                 }
 
-                gDropdown.items[numPathTypes].format = kStringIdNone;
-                gDropdown.tooltips[numPathTypes] = pathType->NameStringId;
-                Dropdown::SetImage(numPathTypes, ImageId(pathType->PreviewImageId));
+                gDropdown.items[numPathTypes].format = Dropdown::kFormatLandPicker;
+                gDropdown.items[numPathTypes].tooltip = pathType->NameStringId;
+                gDropdown.items[numPathTypes].args.image = ImageId(pathType->PreviewImageId);
                 _dropdownEntries.push_back({ ObjectType::footpathSurface, i });
                 numPathTypes++;
             }
@@ -728,10 +728,10 @@ namespace OpenRCT2::Ui::Windows
                     defaultIndex = numPathTypes;
                 }
 
-                gDropdown.items[numPathTypes].format = kStringIdNone;
-                gDropdown.tooltips[numPathTypes] = pathEntry->string_idx;
-                Dropdown::SetImage(
-                    numPathTypes, ImageId(showQueues ? pathEntry->GetQueuePreviewImage() : pathEntry->GetPreviewImage()));
+                gDropdown.items[numPathTypes].format = Dropdown::kFormatLandPicker;
+                gDropdown.items[numPathTypes].tooltip = pathEntry->string_idx;
+                gDropdown.items[numPathTypes].args.image = ImageId(
+                    showQueues ? pathEntry->GetQueuePreviewImage() : pathEntry->GetPreviewImage());
                 _dropdownEntries.push_back({ ObjectType::paths, i });
                 numPathTypes++;
             }
@@ -766,9 +766,9 @@ namespace OpenRCT2::Ui::Windows
                     defaultIndex = numRailingsTypes;
                 }
 
-                gDropdown.items[numRailingsTypes].format = kStringIdNone;
-                gDropdown.tooltips[numRailingsTypes] = railingsEntry->NameStringId;
-                Dropdown::SetImage(numRailingsTypes, ImageId(railingsEntry->PreviewImageId));
+                gDropdown.items[numRailingsTypes].format = Dropdown::kFormatLandPicker;
+                gDropdown.items[numRailingsTypes].tooltip = railingsEntry->NameStringId;
+                gDropdown.items[numRailingsTypes].args.image = ImageId(railingsEntry->PreviewImageId);
                 _dropdownEntries.push_back({ ObjectType::footpathRailings, i });
                 numRailingsTypes++;
             }

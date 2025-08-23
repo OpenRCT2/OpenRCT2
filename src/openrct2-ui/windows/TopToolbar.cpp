@@ -1182,7 +1182,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     gDropdown.items[i].format = STR_STRING;
                     auto sz = item.Text.c_str();
-                    std::memcpy(&gDropdown.items[i].args, &sz, sizeof(const char*));
+                    std::memcpy(&gDropdown.items[i].args.generic, &sz, sizeof(const char*));
                     i++;
                 }
             }
@@ -1251,14 +1251,14 @@ namespace OpenRCT2::Ui::Windows
         {
             gDropdown.items[4].format = kStringIdEmpty;
             gDropdown.items[5].format = STR_TOGGLE_OPTION;
-            gDropdown.items[5].args = STR_SPEED_HYPER;
+            gDropdown.items[5].args.generic = STR_SPEED_HYPER;
             num_items = 6;
         }
 
-        gDropdown.items[0].args = STR_SPEED_NORMAL;
-        gDropdown.items[1].args = STR_SPEED_QUICK;
-        gDropdown.items[2].args = STR_SPEED_FAST;
-        gDropdown.items[3].args = STR_SPEED_TURBO;
+        gDropdown.items[0].args.generic = STR_SPEED_NORMAL;
+        gDropdown.items[1].args.generic = STR_SPEED_QUICK;
+        gDropdown.items[2].args.generic = STR_SPEED_FAST;
+        gDropdown.items[3].args.generic = STR_SPEED_TURBO;
 
         WindowDropdownShowText(
             { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
@@ -1470,9 +1470,9 @@ namespace OpenRCT2::Ui::Windows
     void TopToolbar::InitDebugMenu(Widget& widget)
     {
         gDropdown.items[DDIDX_CONSOLE].format = STR_TOGGLE_OPTION;
-        gDropdown.items[DDIDX_CONSOLE].args = STR_DEBUG_DROPDOWN_CONSOLE;
+        gDropdown.items[DDIDX_CONSOLE].args.generic = STR_DEBUG_DROPDOWN_CONSOLE;
         gDropdown.items[DDIDX_DEBUG_PAINT].format = STR_TOGGLE_OPTION;
-        gDropdown.items[DDIDX_DEBUG_PAINT].args = STR_DEBUG_DROPDOWN_DEBUG_PAINT;
+        gDropdown.items[DDIDX_DEBUG_PAINT].args.generic = STR_DEBUG_DROPDOWN_DEBUG_PAINT;
 
         WindowDropdownShowText(
             { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,

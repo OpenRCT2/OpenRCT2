@@ -441,7 +441,7 @@ namespace OpenRCT2::Ui::Windows
                     for (int32_t i = 0; i < num_items; i++)
                     {
                         gDropdown.items[i].format = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdown.items[i].args = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
+                        gDropdown.items[i].args.generic = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
                     }
 
                     WindowDropdownShowTextCustomWidth(

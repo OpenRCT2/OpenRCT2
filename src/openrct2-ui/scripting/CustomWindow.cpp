@@ -654,7 +654,7 @@ namespace OpenRCT2::Ui::Windows
                             gDropdown.items[i].format = STR_OPTIONS_DROPDOWN_ITEM_SELECTED;
 
                         auto sz = items[i].c_str();
-                        std::memcpy(&gDropdown.items[i].args, &sz, sizeof(const char*));
+                        std::memcpy(&gDropdown.items[i].args.generic, &sz, sizeof(const char*));
                     }
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1,

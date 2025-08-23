@@ -68,7 +68,7 @@ void LandTool::ShowSurfaceStyleDropdown(WindowBase* w, Widget* widget, ObjectEnt
                 imageId = imageId.WithPrimary(surfaceObj->Colour);
 
             gDropdown.items[itemIndex].format = Dropdown::kFormatLandPicker;
-            Dropdown::SetImage(itemIndex, imageId);
+            gDropdown.items[itemIndex].args.image = imageId;
             if (i == currentSurfaceType)
             {
                 defaultIndex = itemIndex;
@@ -118,7 +118,7 @@ void LandTool::ShowEdgeStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryI
         if (edgeObj != nullptr && !edgeObj->UsesFallbackImages())
         {
             gDropdown.items[itemIndex].format = Dropdown::kFormatLandPicker;
-            Dropdown::SetImage(itemIndex, ImageId(edgeObj->IconImageId));
+            gDropdown.items[itemIndex].args.image = ImageId(edgeObj->IconImageId);
             if (i == currentEdgeType)
             {
                 defaultIndex = itemIndex;

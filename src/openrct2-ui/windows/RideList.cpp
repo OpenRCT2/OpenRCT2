@@ -332,7 +332,7 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     gDropdown.items[numItems].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[numItems].args = ride_info_type_string_mapping[type];
+                    gDropdown.items[numItems].args.generic = ride_info_type_string_mapping[type];
                     numItems++;
                 }
 
@@ -376,7 +376,7 @@ namespace OpenRCT2::Ui::Windows
                     return;
 
                 int32_t informationType = INFORMATION_TYPE_STATUS;
-                uint32_t arg = static_cast<uint32_t>(gDropdown.items[dropdownIndex].args);
+                uint32_t arg = static_cast<uint32_t>(gDropdown.items[dropdownIndex].args.generic);
                 for (size_t i = 0; i < std::size(ride_info_type_string_mapping); i++)
                 {
                     if (arg == ride_info_type_string_mapping[i])

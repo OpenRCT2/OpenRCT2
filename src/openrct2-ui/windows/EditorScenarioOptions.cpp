@@ -750,7 +750,7 @@ namespace OpenRCT2::Ui::Windows
                 if (objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings)
                 {
                     gDropdown.items[numItems].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[numItems].args = ObjectiveDropdownOptionNames[i];
+                    gDropdown.items[numItems].args.generic = ObjectiveDropdownOptionNames[i];
                     numItems++;
                 }
             }
@@ -763,7 +763,7 @@ namespace OpenRCT2::Ui::Windows
             auto objectiveType = EnumValue(scenarioOptions.objective.Type);
             for (int32_t j = 0; j < numItems; j++)
             {
-                if (gDropdown.items[j].args - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType)
+                if (gDropdown.items[j].args.generic - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType)
                 {
                     gDropdown.items[j].setChecked(true);
                     break;
@@ -776,7 +776,7 @@ namespace OpenRCT2::Ui::Windows
             for (int32_t i = EnumValue(Scenario::Category::beginner); i <= EnumValue(Scenario::Category::other); i++)
             {
                 gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                gDropdown.items[i].args = Scenario::kScenarioCategoryStringIds[i];
+                gDropdown.items[i].args.generic = Scenario::kScenarioCategoryStringIds[i];
             }
 
             Widget* dropdownWidget = &widgets[WIDX_CATEGORY];
@@ -1021,7 +1021,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_OBJECTIVE_DROPDOWN:
                     // TODO: Don't rely on string ID order
                     auto newObjectiveType = static_cast<Scenario::ObjectiveType>(
-                        gDropdown.items[dropdownIndex].args - STR_OBJECTIVE_DROPDOWN_NONE);
+                        gDropdown.items[dropdownIndex].args.generic - STR_OBJECTIVE_DROPDOWN_NONE);
                     if (gameState.scenarioOptions.objective.Type != newObjectiveType)
                         SetObjective(newObjectiveType);
                     break;
@@ -1558,11 +1558,11 @@ namespace OpenRCT2::Ui::Windows
                     Widget* dropdownWidget = &widgets[widgetIndex - 1];
 
                     gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[0].args = STR_FREE_PARK_ENTER;
+                    gDropdown.items[0].args.generic = STR_FREE_PARK_ENTER;
                     gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[1].args = STR_PAY_PARK_ENTER;
+                    gDropdown.items[1].args.generic = STR_PAY_PARK_ENTER;
                     gDropdown.items[2].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[2].args = STR_PAID_ENTRY_PAID_RIDES;
+                    gDropdown.items[2].args.generic = STR_PAID_ENTRY_PAID_RIDES;
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() - 1,
@@ -1901,10 +1901,10 @@ namespace OpenRCT2::Ui::Windows
                     gDropdown.items[2].format = STR_DROPDOWN_MENU_LABEL;
                     gDropdown.items[3].format = STR_DROPDOWN_MENU_LABEL;
 
-                    gDropdown.items[0].args = STR_GUESTS_PREFER_INTENSITY_NONE;
-                    gDropdown.items[1].args = STR_GUESTS_PREFER_INTENSITY_BALANCED;
-                    gDropdown.items[2].args = STR_GUESTS_PREFER_INTENSITY_LESS_INTENSE_RIDES;
-                    gDropdown.items[3].args = STR_GUESTS_PREFER_INTENSITY_MORE_INTENSE_RIDES;
+                    gDropdown.items[0].args.generic = STR_GUESTS_PREFER_INTENSITY_NONE;
+                    gDropdown.items[1].args.generic = STR_GUESTS_PREFER_INTENSITY_BALANCED;
+                    gDropdown.items[2].args.generic = STR_GUESTS_PREFER_INTENSITY_LESS_INTENSE_RIDES;
+                    gDropdown.items[3].args.generic = STR_GUESTS_PREFER_INTENSITY_MORE_INTENSE_RIDES;
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.top }, dropdownWidget.height() - 1,

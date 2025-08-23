@@ -513,7 +513,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_FILTER_DROPDOWN_BTN:
                     for (auto ddIdx = EnumValue(DDIX_FILTER_RCT1); ddIdx <= EnumValue(DDIX_FILTER_CUSTOM); ddIdx++)
                     {
-                        gDropdown.items[ddIdx].args = kSourceStringIds[ddIdx];
+                        gDropdown.items[ddIdx].args.generic = kSourceStringIds[ddIdx];
                         gDropdown.items[ddIdx].format = STR_TOGGLE_OPTION;
                     }
 
@@ -525,9 +525,9 @@ namespace OpenRCT2::Ui::Windows
                         gDropdown.items[DDIX_FILTER_SEPARATOR].format = 0;
                         gDropdown.items[DDIX_FILTER_SELECTED].format = STR_TOGGLE_OPTION;
                         gDropdown.items[DDIX_FILTER_NONSELECTED].format = STR_TOGGLE_OPTION;
-                        gDropdown.items[DDIX_FILTER_SEPARATOR].args = kStringIdNone;
-                        gDropdown.items[DDIX_FILTER_SELECTED].args = STR_SELECTED_ONLY;
-                        gDropdown.items[DDIX_FILTER_NONSELECTED].args = STR_NON_SELECTED_ONLY;
+                        gDropdown.items[DDIX_FILTER_SEPARATOR].args.generic = kStringIdNone;
+                        gDropdown.items[DDIX_FILTER_SELECTED].args.generic = STR_SELECTED_ONLY;
+                        gDropdown.items[DDIX_FILTER_NONSELECTED].args.generic = STR_NON_SELECTED_ONLY;
                     }
 
                     auto& ddWidget = widgets[WIDX_FILTER_DROPDOWN];
