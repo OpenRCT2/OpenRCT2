@@ -1319,7 +1319,7 @@ namespace OpenRCT2
                 {
                     if (_inputState == InputState::DropdownActive)
                     {
-                        gDropdownHighlightedIndex = gDropdownDefaultIndex;
+                        gDropdown.highlightedIndex = gDropdown.defaultIndex;
                         windowMgr->InvalidateByClass(WindowClass::Dropdown);
                     }
                     return;
@@ -1344,7 +1344,7 @@ namespace OpenRCT2
                             dropdown_index = DropdownIndexFromPoint(screenCoords, w);
                             dropdownCleanup = dropdown_index == -1
                                 || (dropdown_index < Dropdown::kItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
-                                || gDropdownItems[dropdown_index].isSeparator();
+                                || gDropdown.items[dropdown_index].isSeparator();
                             w = nullptr; // To be closed right next
                         }
                         else
@@ -1392,9 +1392,9 @@ namespace OpenRCT2
 
                             if (dropdown_index == -1)
                             {
-                                if (!Dropdown::IsDisabled(gDropdownDefaultIndex))
+                                if (!Dropdown::IsDisabled(gDropdown.defaultIndex))
                                 {
-                                    dropdown_index = gDropdownDefaultIndex;
+                                    dropdown_index = gDropdown.defaultIndex;
                                 }
                             }
                             cursor_w->OnDropdown(cursor_widgetIndex, dropdown_index);
@@ -1447,13 +1447,13 @@ namespace OpenRCT2
             }
             return;
         }
-        else if (gDropdownHasTooltips)
+        else if (gDropdown.hasTooltips)
         {
             // This is ordinarily covered in InputWidgetOver but the dropdown with colours is a special case.
             InputUpdateTooltip(w, widgetIndex, screenCoords);
         }
 
-        gDropdownHighlightedIndex = -1;
+        gDropdown.highlightedIndex = -1;
         windowMgr->InvalidateByClass(WindowClass::Dropdown);
         if (w == nullptr)
         {
@@ -1468,12 +1468,12 @@ namespace OpenRCT2
                 return;
             }
 
-            if (gDropdownHasTooltips && gDropdownLastTooltipHover != dropdown_index)
+            if (gDropdown.hasTooltips && gDropdown.lastTooltipHover != dropdown_index)
             {
-                gDropdownLastTooltipHover = dropdown_index;
+                gDropdown.lastTooltipHover = dropdown_index;
                 WindowTooltipClose();
 
-                WindowTooltipShow(OpenRCT2String{ gDropdownTooltips[dropdown_index], {} }, screenCoords);
+                WindowTooltipShow(OpenRCT2String{ gDropdown.tooltips[dropdown_index], {} }, screenCoords);
             }
 
             if (dropdown_index < Dropdown::kItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
@@ -1481,17 +1481,17 @@ namespace OpenRCT2
                 return;
             }
 
-            if (gDropdownItems[dropdown_index].isSeparator())
+            if (gDropdown.items[dropdown_index].isSeparator())
             {
                 return;
             }
 
-            gDropdownHighlightedIndex = dropdown_index;
+            gDropdown.highlightedIndex = dropdown_index;
             windowMgr->InvalidateByClass(WindowClass::Dropdown);
         }
         else
         {
-            gDropdownLastTooltipHover = -1;
+            gDropdown.lastTooltipHover = -1;
             WindowTooltipClose();
         }
     }

@@ -2591,7 +2591,7 @@ namespace OpenRCT2::Ui::Windows
                 // Separate elements logically
                 if (trackPiece == TrackElemType::None)
                 {
-                    gDropdownItems[i++].format = kStringIdEmpty;
+                    gDropdown.items[i++].format = kStringIdEmpty;
                     continue;
                 }
 
@@ -2610,7 +2610,7 @@ namespace OpenRCT2::Ui::Windows
                     }
                 }
 
-                gDropdownItems[i].format = trackPieceStringId;
+                gDropdown.items[i].format = trackPieceStringId;
                 if (_currentlySelectedTrack == trackPiece)
                     defaultIndex = i;
 
@@ -2631,7 +2631,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 Dropdown::SetDisabled(static_cast<int32_t>(j), _specialElementDropdownState.Elements[j].Disabled);
             }
-            gDropdownDefaultIndex = defaultIndex;
+            gDropdown.defaultIndex = defaultIndex;
         }
 
         void RideSelectedTrackSetSeatRotation(int32_t seatRotation)

@@ -559,8 +559,8 @@ namespace OpenRCT2::Ui::Windows
 
             for (i = 0; i < NetworkGetNumGroups(); i++)
             {
-                gDropdownItems[i].format = STR_OPTIONS_DROPDOWN_ITEM;
-                gDropdownItems[i].args = reinterpret_cast<uintptr_t>(NetworkGetGroupName(i));
+                gDropdown.items[i].format = STR_OPTIONS_DROPDOWN_ITEM;
+                gDropdown.items[i].args = reinterpret_cast<uintptr_t>(NetworkGetGroupName(i));
             }
 
             Dropdown::SetChecked(NetworkGetGroupIndex(NetworkGetPlayerGroup(player)), true);

@@ -171,7 +171,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_FLOOR:
                     if (dropdownIndex == -1)
-                        dropdownIndex = gDropdownHighlightedIndex;
+                        dropdownIndex = gDropdown.highlightedIndex;
 
                     type = (dropdownIndex == -1)
                         ? _selectedFloorTexture
@@ -190,7 +190,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_WALL:
                     if (dropdownIndex == -1)
-                        dropdownIndex = gDropdownHighlightedIndex;
+                        dropdownIndex = gDropdown.highlightedIndex;
 
                     type = (dropdownIndex == -1) ? _selectedWallTexture
                                                  : LandTool::GetEdgeStyleFromDropdownIndex(static_cast<size_t>(dropdownIndex));
