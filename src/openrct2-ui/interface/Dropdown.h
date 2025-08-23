@@ -170,7 +170,7 @@ namespace OpenRCT2::Dropdown
     {
         return Item{ kSeparatorString };
     }
-    
+
     constexpr Item ImageItem(ImageId image, StringId tooltip = kStringIdEmpty)
     {
         return Item{ .format = Dropdown::kFormatLandPicker, .args = { .image = image }, .tooltip = tooltip };

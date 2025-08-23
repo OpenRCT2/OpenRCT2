@@ -762,7 +762,8 @@ namespace OpenRCT2::Ui::Windows
                     defaultIndex = numRailingsTypes;
                 }
 
-                gDropdown.items[numRailingsTypes] = Dropdown::ImageItem(ImageId(railingsEntry->PreviewImageId), railingsEntry->NameStringId);
+                gDropdown.items[numRailingsTypes] = Dropdown::ImageItem(
+                    ImageId(railingsEntry->PreviewImageId), railingsEntry->NameStringId);
                 _dropdownEntries.push_back({ ObjectType::footpathRailings, i });
                 numRailingsTypes++;
             }
