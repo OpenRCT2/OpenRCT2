@@ -3,6 +3,7 @@
 #include "../System.hpp"
 #include "../actions/GameAction.h"
 #include "../object/Object.h"
+#include "../scenario/Scenario.h"
 #include "NetworkConnection.h"
 #include "NetworkGroup.h"
 #include "NetworkPlayer.h"

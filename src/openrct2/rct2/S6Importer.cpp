@@ -68,6 +68,7 @@
 #include "../ride/Vehicle.h"
 #include "../sawyer_coding/SawyerChunkReader.h"
 #include "../sawyer_coding/SawyerCoding.h"
+#include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
 #include "../world/Climate.h"
@@ -279,7 +280,7 @@ namespace OpenRCT2::RCT2
             {
                 dst->ScenarioId = SC_UNIDENTIFIED;
                 dst->SourceIndex = -1;
-                if (dst->Category == ScenarioCategory::real)
+                if (dst->Category == Scenario::Category::real)
                 {
                     dst->SourceGame = ScenarioSource::Real;
                 }
@@ -474,7 +475,7 @@ namespace OpenRCT2::RCT2
             gameState.scenarioOptions.objective.Currency = _s6.ObjectiveCurrency;
             // In RCT2, the ride string IDs start at index STR_0002 and are directly mappable.
             // This is not always the case in OpenRCT2, so we use the actual ride ID.
-            if (gameState.scenarioOptions.objective.Type == OBJECTIVE_BUILD_THE_BEST)
+            if (gameState.scenarioOptions.objective.Type == Scenario::ObjectiveType::buildTheBest)
                 gameState.scenarioOptions.objective.RideId = _s6.ObjectiveGuests - kRCT2RideStringStart;
             else
                 gameState.scenarioOptions.objective.NumGuests = _s6.ObjectiveGuests;

@@ -22,6 +22,7 @@
 #include "platform/Platform.h"
 #include "profiling/Profiling.h"
 #include "ride/Vehicle.h"
+#include "scenario/Scenario.h"
 #include "scenes/title/TitleScene.h"
 #include "scenes/title/TitleSequencePlayer.h"
 #include "scripting/ScriptEngine.h"

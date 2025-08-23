@@ -22,12 +22,26 @@
 struct RideObjectEntry;
 enum class EditorStep : uint8_t;
 enum class VehicleColourSettings : uint8_t;
-enum class ScenarioCategory : uint8_t;
 
-namespace OpenRCT2
+namespace OpenRCT2::Scenario
 {
-    class ObjectList;
-}
+    enum class Category : uint8_t;
+    enum class ObjectiveType : uint8_t;
+} // namespace OpenRCT2::Scenario
+
+enum
+{
+    S6_TYPE_SAVEDGAME,
+    S6_TYPE_SCENARIO
+};
+
+// For legacy scores file
+enum
+{
+    SCENARIO_FLAGS_VISIBLE = (1 << 0),
+    SCENARIO_FLAGS_COMPLETED = (1 << 1),
+    SCENARIO_FLAGS_SIXFLAGS = (1 << 2)
+};
 
 namespace OpenRCT2::RCT2
 {
@@ -394,7 +408,7 @@ namespace OpenRCT2::RCT2
         char Path[256];
         uint8_t Category;
         uint8_t Pad0101[0x1F];
-        int8_t ObjectiveType;
+        Scenario::ObjectiveType ObjectiveType;
         int8_t ObjectiveArg1;
         int32_t objectiveArg2;
         uint16_t objectiveArg3;
@@ -762,11 +776,11 @@ namespace OpenRCT2::RCT2
     struct S6Info
     {
         ::EditorStep EditorStep;
-        ScenarioCategory Category; // 0x01
-        uint8_t ObjectiveType;     // 0x02
-        uint8_t ObjectiveArg1;     // 0x03
-        int32_t ObjectiveArg2;     // 0x04
-        uint16_t ObjectiveArg3;    // 0x08
+        Scenario::Category Category;           // 0x01
+        Scenario::ObjectiveType ObjectiveType; // 0x02
+        uint8_t ObjectiveArg1;                 // 0x03
+        int32_t ObjectiveArg2;                 // 0x04
+        uint16_t ObjectiveArg3;                // 0x08
         uint8_t Pad00A[0x3E];
         char Name[64];        // 0x48
         char Details[256];    // 0x88
@@ -883,7 +897,7 @@ namespace OpenRCT2::RCT2
         money16 GuestInitialCash;
         uint8_t GuestInitialHunger;
         uint8_t GuestInitialThirst;
-        uint8_t ObjectiveType;
+        Scenario::ObjectiveType ObjectiveType;
         uint8_t ObjectiveYear;
         uint8_t Pad013580FA[2];
         money32 ObjectiveCurrency;

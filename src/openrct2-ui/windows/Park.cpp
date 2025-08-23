@@ -29,6 +29,7 @@
 #include <openrct2/management/Award.h>
 #include <openrct2/object/PeepAnimationsObject.h>
 #include <openrct2/ride/RideData.h>
+#include <openrct2/scenario/Scenario.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Park.h>
 
@@ -521,7 +522,7 @@ namespace OpenRCT2::Ui::Windows
             widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
             // Only allow closing of park for guest / rating objective
-            if (gameState.scenarioOptions.objective.Type == OBJECTIVE_GUESTS_AND_RATING)
+            if (gameState.scenarioOptions.objective.Type == Scenario::ObjectiveType::guestsAndRating)
                 disabled_widgets |= (1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT);
             else
                 disabled_widgets &= ~((1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT));
@@ -545,7 +546,7 @@ namespace OpenRCT2::Ui::Windows
             if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK)
             {
                 widgets[WIDX_OPEN_OR_CLOSE].type = WidgetType::empty;
-                if (gameState.scenarioOptions.objective.Type == OBJECTIVE_GUESTS_AND_RATING)
+                if (gameState.scenarioOptions.objective.Type == Scenario::ObjectiveType::guestsAndRating)
                 {
                     widgets[WIDX_CLOSE_LIGHT].type = WidgetType::flatBtn;
                     widgets[WIDX_OPEN_LIGHT].type = WidgetType::flatBtn;
@@ -1086,7 +1087,7 @@ namespace OpenRCT2::Ui::Windows
             formatObjective(ft, gameState.scenarioOptions.objective);
 
             screenCoords.y += DrawTextWrapped(
-                rt, screenCoords, 221, kObjectiveNames[gameState.scenarioOptions.objective.Type], ft);
+                rt, screenCoords, 221, kObjectiveNames[EnumValue(gameState.scenarioOptions.objective.Type)], ft);
             screenCoords.y += 5;
 
             // Objective outcome

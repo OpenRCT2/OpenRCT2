@@ -9,28 +9,29 @@
 
 #pragma once
 
-#include "../core/Money.hpp"
-#include "ScenarioCategory.h"
-#include "ScenarioObjective.h"
-
-#include <string>
+#include "../core/EnumUtils.hpp"
+#include "../localisation/StringIdType.h"
 
 namespace OpenRCT2::Scenario
 {
-    struct Options
+    enum class Category : uint8_t
     {
-        Objective objective;
-        Category category;
-        std::string name;
-        std::string details;
+        // RCT2 categories (keep order)
+        beginner,
+        challenging,
+        expert,
+        real,
+        other,
 
-        money64 initialCash;
-        money64 landPrice;
-        money64 constructionRightsPrice;
+        // OpenRCT2 categories
+        dlc,
+        buildYourOwn,
+        competitions,
+        timeMachine,
+        katysDreamworld,
 
-        money64 guestInitialCash;
-        uint8_t guestInitialHappiness;
-        uint8_t guestInitialHunger;
-        uint8_t guestInitialThirst;
+        count,
     };
+
+    extern const StringId kScenarioCategoryStringIds[EnumValue(Category::count)];
 } // namespace OpenRCT2::Scenario

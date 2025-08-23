@@ -38,6 +38,7 @@
 #include "object/ObjectRepository.h"
 #include "peep/PeepAnimations.h"
 #include "rct1/RCT1.h"
+#include "scenario/Scenario.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/WindowManager.h"
 #include "windows/Intent.h"
@@ -112,7 +113,7 @@ namespace OpenRCT2::Editor
         gLegacyScene = LegacyScene::scenarioEditor;
         gameState.editorStep = EditorStep::ObjectSelection;
         gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-        gameState.scenarioOptions.category = ScenarioCategory::other;
+        gameState.scenarioOptions.category = Scenario::Category::other;
         ObjectListLoad();
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
@@ -156,7 +157,7 @@ namespace OpenRCT2::Editor
 
         gLegacyScene = LegacyScene::scenarioEditor;
         gameState.editorStep = EditorStep::OptionsSelection;
-        gameState.scenarioOptions.category = ScenarioCategory::other;
+        gameState.scenarioOptions.category = Scenario::Category::other;
         ViewportInitAll();
         OpenEditorWindows();
         FinaliseMainView();
