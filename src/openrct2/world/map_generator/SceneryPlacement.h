@@ -9,9 +9,10 @@
 
 #pragma once
 
+#include "../Location.hpp"
+#include "rule/Rule.h"
+
 namespace OpenRCT2::World::MapGenerator
 {
-    struct Settings;
-
-    void placeTrees(Settings* settings);
+    void placeScenery(const TileCoordsXY& loc, const Rule::SceneryResult& sceneryResult);
 } // namespace OpenRCT2::World::MapGenerator

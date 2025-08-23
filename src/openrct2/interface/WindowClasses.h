@@ -97,6 +97,7 @@ namespace OpenRCT2
         editorStepController = 140,
         editorStatusLine = 141,
         mapgenRuleCondition = 142,
+        mapgenRuleScenerySelect = 143,
 
         // Only used for colour schemes
         staff = 220,
