@@ -36,7 +36,7 @@ namespace OpenRCT2::World::MapGenerator
         auto& defaultRule = settings->textureRules[0];
         assert(defaultRule.isDefault);
 
-        const auto selectedFloor = TerrainSurfaceObject::GetById(defaultRule.result.landTexture);
+        const auto selectedFloor = TerrainSurfaceObject::GetById(defaultRule.effect.landTexture);
         std::string_view surfaceTexture = selectedFloor != nullptr ? selectedFloor->GetIdentifier() : "";
 
         if (surfaceTexture.empty())
@@ -70,7 +70,7 @@ namespace OpenRCT2::World::MapGenerator
         auto& defaultRule = settings->textureRules[0];
         assert(defaultRule.isDefault);
 
-        const auto selectedEdge = TerrainEdgeObject::GetById(defaultRule.result.edgeTexture);
+        const auto selectedEdge = TerrainEdgeObject::GetById(defaultRule.effect.edgeTexture);
         std::string_view edgeTexture = selectedEdge != nullptr ? selectedEdge->GetIdentifier() : "";
 
         if (edgeTexture.empty())

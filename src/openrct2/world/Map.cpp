@@ -700,6 +700,23 @@ namespace OpenRCT2
         return surfaceElement->GetWaterHeight();
     }
 
+    uint8_t TileElementSlope(const CoordsXY& loc)
+    {
+        // Off the map
+        if (!MapIsLocationValid(loc))
+            return 0;
+
+        // Get the surface element for the tile
+        auto surfaceElement = MapGetSurfaceElementAt(loc);
+
+        if (surfaceElement == nullptr)
+        {
+            return 0;
+        }
+
+        return surfaceElement->GetSlope();
+    }
+
     /**
      * Checks if the tile at coordinate at height counts as connected.
      * @return 1 if connected, 0 otherwise

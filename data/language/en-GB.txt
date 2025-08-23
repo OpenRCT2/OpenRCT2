@@ -3681,7 +3681,7 @@ STR_6681    :Heightmap file
 STR_6682    :Map Generator - Generator
 STR_6683    :Map Generator - Terrain
 STR_6684    :Map Generator - Water
-STR_6685    :Map Generator - Forests
+STR_6685    :Map Generator - Foliage
 STR_6686    :Tree to land ratio:
 STR_6687    :Min. tree altitude:
 STR_6688    :Max. tree altitude:
@@ -3818,7 +3818,7 @@ STR_7018    :{SPRITE}{MOVE_X}{17}{STRINGID}
 STR_7019    :{SPRITE}{MOVE_X}{27}{STRINGID}
 STR_7020    :{MOVE_X}{10}{SPRITE}{NEWLINE_SMALLER}{MOVE_X}{36}{STRINGID}
 STR_7021    :{MOVE_X}{10}{SPRITE}{NEWLINE_SMALLER}»{MOVE_X}{36}{STRINGID}
-STR_7022    :{STRING} - - 
+STR_7022    :{STRING} - -
 STR_7023    :Make invisible
 STR_7024    :Makes the whole ride invisible
 STR_7025    :Make visible
@@ -3899,3 +3899,27 @@ STR_7130    :BlendNoise[Low..High]
 STR_7131    :Enter {STRINGID} [{INT32}..{INT32}]
 STR_7132    :Enter {STRINGID} [{LENGTH}..{LENGTH}]
 STR_7133    :Enter {STRINGID} [{COMMA2DP32}..{COMMA2DP32}]
+STR_7140    :Items
+STR_7141    :Select
+STR_7142    :For each tile the rules are evaluated top to bottom, placing a foliage element from the pool of first matching rule. If the pool is empty no item is placed.
+STR_7143    :Select scenery
+STR_7144    :{UINT16}x
+STR_7145    :Land style
+STR_7146    :in
+STR_7147    :not in
+STR_7148    :{STRINGID} {STRINGID}
+STR_7149    :Cacti
+STR_7150    :Oasis
+STR_7151    :Shrubs
+STR_7152    :Arid
+STR_7153    :Snow covered conifers
+STR_7154    :Conifers
+STR_7155    :Cold
+STR_7156    :Canopy
+STR_7157    :Flowers
+STR_7158    :Ground
+STR_7159    :Rainforest
+STR_7160    :Broad-leaved
+STR_7161    :Mixed
+STR_7162    :Cypresses and pines
+STR_7163    :Mediterranean

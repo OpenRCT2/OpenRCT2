@@ -91,6 +91,7 @@ enum class WindowClass : uint8_t
     titleVersion = 138,
     editorParkEntrance = 139,
     mapgenRuleCondition = 140,
+    mapgenRuleScenerySelect = 141,
 
     // Only used for colour schemes
     staff = 220,
