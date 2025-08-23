@@ -513,8 +513,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_FILTER_DROPDOWN_BTN:
                     for (auto ddIdx = EnumValue(DDIX_FILTER_RCT1); ddIdx <= EnumValue(DDIX_FILTER_CUSTOM); ddIdx++)
                     {
-                        gDropdown.items[ddIdx].args.generic = kSourceStringIds[ddIdx];
-                        gDropdown.items[ddIdx].format = STR_TOGGLE_OPTION;
+                        gDropdown.items[ddIdx] = Dropdown::ToggleOption(kSourceStringIds[ddIdx]);
                     }
 
                     // Track designs manager cannot select multiple, so only show selection filters if not in track designs
@@ -522,12 +521,10 @@ namespace OpenRCT2::Ui::Windows
                     if (!(gLegacyScene == LegacyScene::trackDesignsManager))
                     {
                         numSelectionItems = 3;
-                        gDropdown.items[DDIX_FILTER_SEPARATOR].format = 0;
-                        gDropdown.items[DDIX_FILTER_SELECTED].format = STR_TOGGLE_OPTION;
-                        gDropdown.items[DDIX_FILTER_NONSELECTED].format = STR_TOGGLE_OPTION;
-                        gDropdown.items[DDIX_FILTER_SEPARATOR].args.generic = kStringIdNone;
-                        gDropdown.items[DDIX_FILTER_SELECTED].args.generic = STR_SELECTED_ONLY;
-                        gDropdown.items[DDIX_FILTER_NONSELECTED].args.generic = STR_NON_SELECTED_ONLY;
+                        gDropdown.items[DDIX_FILTER_SEPARATOR] = Dropdown::Separator();
+
+                        gDropdown.items[DDIX_FILTER_SELECTED] = Dropdown::ToggleOption(STR_SELECTED_ONLY);
+                        gDropdown.items[DDIX_FILTER_NONSELECTED] = Dropdown::ToggleOption(STR_NON_SELECTED_ONLY);
                     }
 
                     auto& ddWidget = widgets[WIDX_FILTER_DROPDOWN];

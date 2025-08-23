@@ -902,14 +902,11 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex != WIDX_SORT_CUSTOMISE)
                 return;
 
-            gDropdown.items[0].format = STR_TOGGLE_OPTION;
-            gDropdown.items[1].format = STR_TOGGLE_OPTION;
-            gDropdown.items[2].format = STR_TOGGLE_OPTION;
-            gDropdown.items[3].format = Dropdown::kSeparatorString;
+            gDropdown.items[0] = Dropdown::ToggleOption(STR_FILEBROWSER_CUSTOMISE_FILENAME);
+            gDropdown.items[1] = Dropdown::ToggleOption(STR_FILEBROWSER_CUSTOMISE_SIZE);
+            gDropdown.items[2] = Dropdown::ToggleOption(STR_FILEBROWSER_CUSTOMISE_DATE);
 
-            gDropdown.items[0].args.generic = STR_FILEBROWSER_CUSTOMISE_FILENAME;
-            gDropdown.items[1].args.generic = STR_FILEBROWSER_CUSTOMISE_SIZE;
-            gDropdown.items[2].args.generic = STR_FILEBROWSER_CUSTOMISE_DATE;
+            gDropdown.items[3] = Dropdown::Separator();
 
             gDropdown.items[4] = Dropdown::MenuLabel(STR_FILEBROWSER_PREVIEW_DISABLED);
             gDropdown.items[5] = Dropdown::MenuLabel(STR_FILEBROWSER_PREVIEW_MINIMAP);

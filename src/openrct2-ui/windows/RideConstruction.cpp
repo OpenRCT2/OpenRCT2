@@ -2591,7 +2591,7 @@ namespace OpenRCT2::Ui::Windows
                 // Separate elements logically
                 if (trackPiece == TrackElemType::None)
                 {
-                    gDropdown.items[i++].format = kStringIdEmpty;
+                    gDropdown.items[i++] = Dropdown::Separator();
                     continue;
                 }
 

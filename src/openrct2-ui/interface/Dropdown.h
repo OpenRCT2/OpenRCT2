@@ -134,7 +134,7 @@ namespace OpenRCT2::Dropdown
         return ItemExt(_expectedItemIndex, STR_TOGGLE_OPTION, _stringId);
     }
 
-    constexpr ItemExt Separator()
+    constexpr ItemExt ExtSeparator()
     {
         return ItemExt(-1, Dropdown::kSeparatorString, kStringIdEmpty);
     }
@@ -142,6 +142,16 @@ namespace OpenRCT2::Dropdown
     constexpr Item MenuLabel(StringId stringId)
     {
         return Item{ STR_DROPDOWN_MENU_LABEL, stringId };
+    }
+
+    constexpr Item ToggleOption(StringId stringId)
+    {
+        return Item{ STR_TOGGLE_OPTION, stringId };
+    }
+
+    constexpr Item Separator()
+    {
+        return Item{ kSeparatorString };
     }
 
     struct DropdownState

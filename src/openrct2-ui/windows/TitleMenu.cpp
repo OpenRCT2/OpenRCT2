@@ -194,7 +194,7 @@ namespace OpenRCT2::Ui::Windows
                             if (!hasCustomItems)
                             {
                                 hasCustomItems = true;
-                                gDropdown.items[i++].format = kStringIdEmpty;
+                                gDropdown.items[i++] = Dropdown::Separator();
                             }
 
                             gDropdown.items[i].format = STR_STRING;

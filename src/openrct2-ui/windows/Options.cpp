@@ -1215,7 +1215,7 @@ namespace OpenRCT2::Ui::Windows
                         gDropdown.items[i] = Dropdown::MenuLabel(CurrencyDescriptors[i].stringId);
                     }
 
-                    gDropdown.items[numOrdinaryCurrencies].format = Dropdown::kSeparatorString;
+                    gDropdown.items[numOrdinaryCurrencies] = Dropdown::Separator();
 
                     gDropdown.items[numOrdinaryCurrencies + 1] = Dropdown::MenuLabel(
                         CurrencyDescriptors[EnumValue(CurrencyType::Custom)].stringId);
@@ -1916,7 +1916,7 @@ namespace OpenRCT2::Ui::Windows
                         gDropdown.items[i].args.generic = reinterpret_cast<uintptr_t>(TitleSequenceManager::GetName(i));
                     }
 
-                    gDropdown.items[numItems].format = Dropdown::kSeparatorString;
+                    gDropdown.items[numItems] = Dropdown::Separator();
                     numItems++;
                     gDropdown.items[numItems] = Dropdown::MenuLabel(STR_TITLE_SEQUENCE_RANDOM);
                     numItems++;
