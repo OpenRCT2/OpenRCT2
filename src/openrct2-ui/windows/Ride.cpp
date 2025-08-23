@@ -1773,7 +1773,7 @@ namespace OpenRCT2::Ui::Windows
                 gDropdown.items[currentItem].args = name | (currentItem << 16);
                 if (TrainMustBeHidden(*ride, i))
                 {
-                    Dropdown::SetDisabled(currentItem, true);
+                    gDropdown.items[currentItem].setDisabled(true);
                 }
                 currentItem++;
             }
@@ -1788,7 +1788,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Set checked item
-            Dropdown::SetChecked(_viewIndex, true);
+            gDropdown.items[_viewIndex].setChecked(true);
         }
 
         RideStatus GetNextDefaultStatus(const Ride& ride) const
@@ -1863,7 +1863,7 @@ namespace OpenRCT2::Ui::Windows
             SetDropdown(info, RideStatus::open, STR_OPEN_RIDE);
             WindowDropdownShowText(
                 { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, info.NumItems);
-            Dropdown::SetChecked(info.CheckedIndex, true);
+            gDropdown.items[info.CheckedIndex].setChecked(true);
             gDropdown.defaultIndex = info.DefaultIndex;
         }
 
@@ -1947,7 +1947,7 @@ namespace OpenRCT2::Ui::Windows
 
             gDropdown.highlightedIndex = pos;
             gDropdown.defaultIndex = pos;
-            Dropdown::SetChecked(pos, true);
+            gDropdown.items[pos].setChecked(true);
         }
 
         void ShowLocateDropdown(Widget* widget)
@@ -1965,7 +1965,7 @@ namespace OpenRCT2::Ui::Windows
             if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack) || _viewIndex == 0 || _viewIndex > ride->numTrains)
             {
                 // Disable if we're a flat ride, 'overall view' is selected or a station is selected
-                Dropdown::SetDisabled(1, true);
+                gDropdown.items[1].setDisabled(true);
             }
         }
 
@@ -2095,7 +2095,7 @@ namespace OpenRCT2::Ui::Windows
 
             gDropdown.highlightedIndex = pos;
             gDropdown.defaultIndex = pos;
-            Dropdown::SetChecked(pos, true);
+            gDropdown.items[pos].setChecked(true);
         }
 
         void PopulateEntranceStyleDropdown()
@@ -3128,7 +3128,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (checkedIndex != -1)
             {
-                Dropdown::SetChecked(checkedIndex, true);
+                gDropdown.items[checkedIndex].setChecked(true);
             }
         }
 
@@ -3148,7 +3148,7 @@ namespace OpenRCT2::Ui::Windows
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                 colours[1], 0, Dropdown::Flag::StayOpen, 5, widget->right - dropdownWidget->left);
 
-            Dropdown::SetChecked(ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD_MASK, true);
+            gDropdown.items[ride->departFlags & RIDE_DEPART_WAIT_FOR_LOAD_MASK].setChecked(true);
         }
 
         void OperatingOnMouseUp(WidgetIndex widgetIndex)
@@ -3798,7 +3798,7 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                         colours[1], 0, Dropdown::Flag::StayOpen, 7, widgets[widgetIndex].right - dropdownWidget->left);
 
-                    Dropdown::SetChecked(ride->inspectionInterval, true);
+                    gDropdown.items[ride->inspectionInterval].setChecked(true);
                     break;
 
                 case WIDX_FORCE_BREAKDOWN:
@@ -3851,7 +3851,7 @@ namespace OpenRCT2::Ui::Windows
                                     }
                                     if (i == breakdownReason)
                                     {
-                                        Dropdown::SetChecked(numItems, true);
+                                        gDropdown.items[numItems].setChecked(true);
                                         break;
                                     }
                                     gDropdown.items[numItems].format = STR_DROPDOWN_MENU_LABEL;
@@ -3863,7 +3863,7 @@ namespace OpenRCT2::Ui::Windows
 
                         if ((ride->lifecycleFlags & RIDE_LIFECYCLE_BREAKDOWN_PENDING) == 0)
                         {
-                            Dropdown::SetDisabled(0, true);
+                            gDropdown.items[0].setDisabled(true);
                         }
                     }
                     break;
@@ -4333,7 +4333,7 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                         colours[1], 0, Dropdown::Flag::StayOpen, 4, widgets[widgetIndex].right - dropdownWidget->left);
 
-                    Dropdown::SetChecked(colourSchemeIndex, true);
+                    gDropdown.items[colourSchemeIndex].setChecked(true);
                     break;
                 }
                 case WIDX_TRACK_MAIN_COLOUR:
@@ -4360,7 +4360,7 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                         colours[1], 0, Dropdown::Flag::StayOpen, 4, widgets[widgetIndex].right - dropdownWidget->left);
 
-                    Dropdown::SetChecked(ride->trackColours[colourSchemeIndex].supports, true);
+                    gDropdown.items[ride->trackColours[colourSchemeIndex].supports].setChecked(true);
                     break;
                 }
                 case WIDX_ENTRANCE_STYLE_DROPDOWN:
@@ -4389,7 +4389,7 @@ namespace OpenRCT2::Ui::Windows
                         colours[1], 0, Dropdown::Flag::StayOpen, numDropdownItems,
                         widgets[widgetIndex].right - dropdownWidget->left);
 
-                    Dropdown::SetChecked(EnumValue(ride->vehicleColourSettings), true);
+                    gDropdown.items[EnumValue(ride->vehicleColourSettings)].setChecked(true);
                     break;
                 }
                 case WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN:
@@ -4426,7 +4426,7 @@ namespace OpenRCT2::Ui::Windows
                         colours[1], 0, Dropdown::Flag::StayOpen, dropdownIndex,
                         widgets[widgetIndex].right - dropdownWidget->left);
 
-                    Dropdown::SetChecked(carIndexToDropdownIndex(_vehicleIndex), true);
+                    gDropdown.items[carIndexToDropdownIndex(_vehicleIndex)].setChecked(true);
                     break;
                 }
                 case WIDX_VEHICLE_BODY_COLOUR:
@@ -5098,7 +5098,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (musicOrder[i] == ride->music)
                 {
-                    Dropdown::SetChecked(static_cast<int32_t>(i), true);
+                    gDropdown.items[static_cast<int32_t>(i)].setChecked(true);
                 }
             }
         }
@@ -5477,7 +5477,7 @@ namespace OpenRCT2::Ui::Windows
             if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
             {
                 // Disable saving without scenery if we're a flat ride
-                Dropdown::SetDisabled(0, true);
+                gDropdown.items[0].setDisabled(true);
                 gDropdown.defaultIndex = 1;
             }
         }

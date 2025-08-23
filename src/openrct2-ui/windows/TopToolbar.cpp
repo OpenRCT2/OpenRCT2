@@ -1060,23 +1060,23 @@ namespace OpenRCT2::Ui::Windows
             colours[1].withFlag(ColourFlag::translucent, true), 0, TOP_TOOLBAR_VIEW_MENU_COUNT);
 
         auto mvpFlags = WindowGetMain()->viewport->flags;
-        SetChecked(DDIDX_UNDERGROUND_INSIDE, mvpFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
-        SetChecked(DDIDX_TRANSPARENT_WATER, Config::Get().general.TransparentWater);
-        SetChecked(DDIDX_HIDE_BASE, mvpFlags & VIEWPORT_FLAG_HIDE_BASE);
-        SetChecked(DDIDX_HIDE_VERTICAL, mvpFlags & VIEWPORT_FLAG_HIDE_VERTICAL);
-        SetChecked(DDIDX_HIDE_RIDES, mvpFlags & VIEWPORT_FLAG_HIDE_RIDES);
-        SetChecked(DDIDX_HIDE_VEHICLES, mvpFlags & VIEWPORT_FLAG_HIDE_VEHICLES);
-        SetChecked(DDIDX_HIDE_VEGETATION, mvpFlags & VIEWPORT_FLAG_HIDE_VEGETATION);
-        SetChecked(DDIDX_HIDE_SCENERY, mvpFlags & VIEWPORT_FLAG_HIDE_SCENERY);
-        SetChecked(DDIDX_HIDE_PATHS, mvpFlags & VIEWPORT_FLAG_HIDE_PATHS);
-        SetChecked(DDIDX_HIDE_SUPPORTS, mvpFlags & VIEWPORT_FLAG_HIDE_SUPPORTS);
-        SetChecked(DDIDX_HIDE_GUESTS, mvpFlags & VIEWPORT_FLAG_HIDE_GUESTS);
-        SetChecked(DDIDX_HIDE_STAFF, mvpFlags & VIEWPORT_FLAG_HIDE_STAFF);
-        SetChecked(DDIDX_LAND_HEIGHTS, mvpFlags & VIEWPORT_FLAG_LAND_HEIGHTS);
-        SetChecked(DDIDX_TRACK_HEIGHTS, mvpFlags & VIEWPORT_FLAG_TRACK_HEIGHTS);
-        SetChecked(DDIDX_PATH_HEIGHTS, mvpFlags & VIEWPORT_FLAG_PATH_HEIGHTS);
-        SetChecked(DDIDX_VIEW_CLIPPING, mvpFlags & VIEWPORT_FLAG_CLIP_VIEW);
-        SetChecked(DDIDX_HIGHLIGHT_PATH_ISSUES, mvpFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
+        gDropdown.items[DDIDX_UNDERGROUND_INSIDE].setChecked(mvpFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+        gDropdown.items[DDIDX_TRANSPARENT_WATER].setChecked(Config::Get().general.TransparentWater);
+        gDropdown.items[DDIDX_HIDE_BASE].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_BASE);
+        gDropdown.items[DDIDX_HIDE_VERTICAL].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_VERTICAL);
+        gDropdown.items[DDIDX_HIDE_RIDES].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_RIDES);
+        gDropdown.items[DDIDX_HIDE_VEHICLES].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_VEHICLES);
+        gDropdown.items[DDIDX_HIDE_VEGETATION].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_VEGETATION);
+        gDropdown.items[DDIDX_HIDE_SCENERY].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_SCENERY);
+        gDropdown.items[DDIDX_HIDE_PATHS].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_PATHS);
+        gDropdown.items[DDIDX_HIDE_SUPPORTS].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_SUPPORTS);
+        gDropdown.items[DDIDX_HIDE_GUESTS].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_GUESTS);
+        gDropdown.items[DDIDX_HIDE_STAFF].setChecked(mvpFlags & VIEWPORT_FLAG_HIDE_STAFF);
+        gDropdown.items[DDIDX_LAND_HEIGHTS].setChecked(mvpFlags & VIEWPORT_FLAG_LAND_HEIGHTS);
+        gDropdown.items[DDIDX_TRACK_HEIGHTS].setChecked(mvpFlags & VIEWPORT_FLAG_TRACK_HEIGHTS);
+        gDropdown.items[DDIDX_PATH_HEIGHTS].setChecked(mvpFlags & VIEWPORT_FLAG_PATH_HEIGHTS);
+        gDropdown.items[DDIDX_VIEW_CLIPPING].setChecked(mvpFlags & VIEWPORT_FLAG_CLIP_VIEW);
+        gDropdown.items[DDIDX_HIGHLIGHT_PATH_ISSUES].setChecked(mvpFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 
         gDropdown.defaultIndex = DDIDX_UNDERGROUND_INSIDE;
     }
@@ -1267,11 +1267,11 @@ namespace OpenRCT2::Ui::Windows
         // Set checkmarks
         if (gGameSpeed <= 4)
         {
-            Dropdown::SetChecked(gGameSpeed - 1, true);
+            gDropdown.items[gGameSpeed - 1].setChecked(true);
         }
         if (gGameSpeed == 8)
         {
-            Dropdown::SetChecked(5, true);
+            gDropdown.items[5].setChecked(true);
         }
 
         if (Config::Get().general.DebuggingTools)
@@ -1403,30 +1403,30 @@ namespace OpenRCT2::Ui::Windows
         // Disable items that are not yet available in multiplayer
         if (NetworkGetMode() != NETWORK_MODE_NONE)
         {
-            Dropdown::SetDisabled(DDIDX_OBJECT_SELECTION, true);
-            Dropdown::SetDisabled(DDIDX_INVENTIONS_LIST, true);
+            gDropdown.items[DDIDX_OBJECT_SELECTION].setDisabled(true);
+            gDropdown.items[DDIDX_INVENTIONS_LIST].setDisabled(true);
         }
 
         if (isInEditorMode())
         {
-            Dropdown::SetDisabled(DDIDX_OBJECT_SELECTION, true);
-            Dropdown::SetDisabled(DDIDX_INVENTIONS_LIST, true);
-            Dropdown::SetDisabled(DDIDX_SCENARIO_OPTIONS, true);
-            Dropdown::SetDisabled(DDIDX_ENABLE_SANDBOX_MODE, true);
+            gDropdown.items[DDIDX_OBJECT_SELECTION].setDisabled(true);
+            gDropdown.items[DDIDX_INVENTIONS_LIST].setDisabled(true);
+            gDropdown.items[DDIDX_SCENARIO_OPTIONS].setDisabled(true);
+            gDropdown.items[DDIDX_ENABLE_SANDBOX_MODE].setDisabled(true);
         }
 
         auto& gameState = getGameState();
         if (gameState.cheats.sandboxMode)
         {
-            Dropdown::SetChecked(DDIDX_ENABLE_SANDBOX_MODE, true);
+            gDropdown.items[DDIDX_ENABLE_SANDBOX_MODE].setChecked(true);
         }
         if (gameState.cheats.disableClearanceChecks)
         {
-            Dropdown::SetChecked(DDIDX_DISABLE_CLEARANCE_CHECKS, true);
+            gDropdown.items[DDIDX_DISABLE_CLEARANCE_CHECKS].setChecked(true);
         }
         if (gameState.cheats.disableSupportLimits)
         {
-            Dropdown::SetChecked(DDIDX_DISABLE_SUPPORT_LIMITS, true);
+            gDropdown.items[DDIDX_DISABLE_SUPPORT_LIMITS].setChecked(true);
         }
 
         gDropdown.defaultIndex = DDIDX_CHEATS;
@@ -1479,7 +1479,7 @@ namespace OpenRCT2::Ui::Windows
             colours[0].withFlag(ColourFlag::translucent, true), Dropdown::Flag::StayOpen, TOP_TOOLBAR_DEBUG_COUNT);
 
         auto* windowMgr = GetWindowManager();
-        Dropdown::SetChecked(DDIDX_DEBUG_PAINT, windowMgr->FindByClass(WindowClass::DebugPaint) != nullptr);
+        gDropdown.items[DDIDX_DEBUG_PAINT].setChecked(windowMgr->FindByClass(WindowClass::DebugPaint) != nullptr);
     }
 
     void TopToolbar::DebugMenuDropdown(int16_t dropdownIndex)
@@ -1521,7 +1521,7 @@ namespace OpenRCT2::Ui::Windows
             { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
             colours[0].withFlag(ColourFlag::translucent, true), 0, TOP_TOOLBAR_NETWORK_COUNT);
 
-        Dropdown::SetDisabled(DDIDX_MULTIPLAYER_RECONNECT, !NetworkIsDesynchronised());
+        gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT].setDisabled(!NetworkIsDesynchronised());
 
         gDropdown.defaultIndex = DDIDX_MULTIPLAYER;
     }

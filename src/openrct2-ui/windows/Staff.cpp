@@ -444,7 +444,7 @@ namespace OpenRCT2::Ui::Windows
                     // Disable clear patrol area if no area is set.
                     if (!staff->HasPatrolArea())
                     {
-                        Dropdown::SetDisabled(1, true);
+                        gDropdown.items[1].setDisabled(true);
                     }
                 }
             }
@@ -798,7 +798,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Set selection
             if (checkedIndex != -1)
-                Dropdown::SetChecked(checkedIndex, true);
+                gDropdown.items[checkedIndex].setChecked(true);
         }
 
         void OptionsOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)

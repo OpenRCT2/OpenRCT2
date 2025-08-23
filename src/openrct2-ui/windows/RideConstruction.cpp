@@ -2629,7 +2629,7 @@ namespace OpenRCT2::Ui::Windows
 
             for (size_t j = 0; j < elements.size(); j++)
             {
-                Dropdown::SetDisabled(static_cast<int32_t>(j), _specialElementDropdownState.Elements[j].Disabled);
+                gDropdown.items[static_cast<int32_t>(j)].setDisabled(_specialElementDropdownState.Elements[j].Disabled);
             }
             gDropdown.defaultIndex = defaultIndex;
         }

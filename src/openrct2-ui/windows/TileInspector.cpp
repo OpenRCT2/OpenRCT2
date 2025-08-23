@@ -905,7 +905,7 @@ static uint64_t PageDisabledWidgets[] = {
                                 Dropdown::Flag::StayOpen, 3, widget->width() - 3);
 
                             // Set current value as checked
-                            Dropdown::SetChecked(tileElement->AsWall()->GetSlope(), true);
+                            gDropdown.items[tileElement->AsWall()->GetSlope()].setChecked(true);
                             break;
                         }
 

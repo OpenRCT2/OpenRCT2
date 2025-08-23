@@ -455,12 +455,12 @@ namespace OpenRCT2::Ui::Windows
                 if (Park::IsOpen(getGameState().park))
                 {
                     gDropdown.defaultIndex = 0;
-                    Dropdown::SetChecked(1, true);
+                    gDropdown.items[1].setChecked(true);
                 }
                 else
                 {
                     gDropdown.defaultIndex = 1;
-                    Dropdown::SetChecked(0, true);
+                    gDropdown.items[0].setChecked(true);
                 }
             }
         }

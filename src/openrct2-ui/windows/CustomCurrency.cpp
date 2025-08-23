@@ -99,11 +99,11 @@ namespace OpenRCT2::Ui::Windows
 
                     if (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode == CurrencyAffix::Prefix)
                     {
-                        Dropdown::SetChecked(0, true);
+                        gDropdown.items[0].setChecked(true);
                     }
                     else
                     {
-                        Dropdown::SetChecked(1, true);
+                        gDropdown.items[1].setChecked(true);
                     }
 
                     break;

@@ -765,7 +765,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (gDropdown.items[j].args - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType)
                 {
-                    Dropdown::SetChecked(j, true);
+                    gDropdown.items[j].setChecked(true);
                     break;
                 }
             }
@@ -784,7 +784,7 @@ namespace OpenRCT2::Ui::Windows
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                 colours[1], 0, Dropdown::Flag::StayOpen, 5, dropdownWidget->width() - 3);
 
-            Dropdown::SetChecked(EnumValue(getGameState().scenarioOptions.category), true);
+            gDropdown.items[EnumValue(getGameState().scenarioOptions.category)].setChecked(true);
         }
 
         void Arg1Increase()
@@ -1569,11 +1569,11 @@ namespace OpenRCT2::Ui::Windows
                         colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
 
                     if (gameState.park.flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
-                        Dropdown::SetChecked(2, true);
+                        gDropdown.items[2].setChecked(true);
                     else if (gameState.park.flags & PARK_FLAGS_PARK_FREE_ENTRY)
-                        Dropdown::SetChecked(0, true);
+                        gDropdown.items[0].setChecked(true);
                     else
-                        Dropdown::SetChecked(1, true);
+                        gDropdown.items[1].setChecked(true);
 
                     break;
                 }
@@ -1921,7 +1921,7 @@ namespace OpenRCT2::Ui::Windows
                     else if (!preferLess && preferMore)
                         prefItem = 3;
 
-                    Dropdown::SetChecked(prefItem, true);
+                    gDropdown.items[prefItem].setChecked(true);
                     break;
                 }
                 case WIDX_HARD_GUEST_GENERATION:

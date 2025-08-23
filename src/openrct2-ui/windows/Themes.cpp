@@ -448,7 +448,7 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
                         Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
 
-                    Dropdown::SetChecked(static_cast<int32_t>(ThemeManagerGetAvailableThemeIndex()), true);
+                    gDropdown.items[static_cast<int32_t>(ThemeManagerGetAvailableThemeIndex())].setChecked(true);
                     break;
                 }
                 case WIDX_THEMES_RCT1_RIDE_LIGHTS:

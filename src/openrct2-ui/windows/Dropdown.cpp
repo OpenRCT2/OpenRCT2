@@ -147,14 +147,14 @@ namespace OpenRCT2::Ui::Windows
                     else
                     {
                         // Text item
-                        if (i < Dropdown::kItemsMaxSize && Dropdown::IsChecked(i))
+                        if (i < Dropdown::kItemsMaxSize && gDropdown.items[i].isChecked())
                             item++;
 
                         // Calculate colour
                         ColourWithFlags colour = { colours[0].colour };
                         if (i == highlightedIndex)
                             colour.colour = COLOUR_WHITE;
-                        if (i < Dropdown::kItemsMaxSize && Dropdown::IsDisabled(i))
+                        if (i < Dropdown::kItemsMaxSize && gDropdown.items[i].isDisabled())
                             colour = { colours[0].colour, EnumToFlag(ColourFlag::inset) };
 
                         // Draw item string
@@ -630,44 +630,6 @@ namespace OpenRCT2::Ui::Windows
 
 using namespace OpenRCT2::Ui::Windows;
 using namespace OpenRCT2;
-
-bool Dropdown::IsChecked(int32_t index)
-{
-    if (index < 0 || index >= static_cast<int32_t>(std::size(gDropdown.items)))
-    {
-        return false;
-    }
-    return gDropdown.items[index].isChecked();
-}
-
-bool Dropdown::IsDisabled(int32_t index)
-{
-    if (index < 0 || index >= static_cast<int32_t>(std::size(gDropdown.items)))
-    {
-        return true;
-    }
-    return gDropdown.items[index].isDisabled();
-}
-
-void Dropdown::SetChecked(int32_t index, bool value)
-{
-    if (index < 0 || index >= static_cast<int32_t>(std::size(gDropdown.items)))
-    {
-        return;
-    }
-
-    gDropdown.items[index].flags.set(Dropdown::ItemFlag::isChecked, value);
-}
-
-void Dropdown::SetDisabled(int32_t index, bool value)
-{
-    if (index < 0 || index >= static_cast<int32_t>(std::size(gDropdown.items)))
-    {
-        return;
-    }
-
-    gDropdown.items[index].flags.set(Dropdown::ItemFlag::isDisabled, value);
-}
 
 void Dropdown::SetImage(int32_t index, ImageId image)
 {

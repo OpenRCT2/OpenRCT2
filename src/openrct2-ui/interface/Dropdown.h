@@ -65,10 +65,6 @@ namespace OpenRCT2::Ui::Windows
 
 namespace OpenRCT2::Dropdown
 {
-    bool IsChecked(int32_t index);
-    bool IsDisabled(int32_t index);
-    void SetChecked(int32_t index, bool value);
-    void SetDisabled(int32_t index, bool value);
     void SetImage(int32_t index, ImageId image);
 
     enum Flag
@@ -100,9 +96,19 @@ namespace OpenRCT2::Dropdown
             return flags.has(ItemFlag::isDisabled);
         }
 
+        constexpr void setDisabled(bool on)
+        {
+            flags.set(ItemFlag::isDisabled, on);
+        }
+
         constexpr bool isChecked() const
         {
             return flags.has(ItemFlag::isChecked);
+        }
+
+        constexpr void setChecked(bool on)
+        {
+            flags.set(ItemFlag::isChecked, on);
         }
     };
 

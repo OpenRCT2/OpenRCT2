@@ -925,12 +925,12 @@ namespace OpenRCT2::Ui::Windows
 
             auto& config = Config::Get().general;
 
-            Dropdown::SetChecked(0, true);
-            Dropdown::SetChecked(1, config.FileBrowserShowSizeColumn);
-            Dropdown::SetChecked(2, config.FileBrowserShowDateColumn);
-            Dropdown::SetChecked(4, config.FileBrowserPreviewType == ParkPreviewPref::disabled);
-            Dropdown::SetChecked(5, config.FileBrowserPreviewType == ParkPreviewPref::miniMap);
-            Dropdown::SetChecked(6, config.FileBrowserPreviewType == ParkPreviewPref::screenshot);
+            gDropdown.items[0].setChecked(true);
+            gDropdown.items[1].setChecked(config.FileBrowserShowSizeColumn);
+            gDropdown.items[2].setChecked(config.FileBrowserShowDateColumn);
+            gDropdown.items[4].setChecked(config.FileBrowserPreviewType == ParkPreviewPref::disabled);
+            gDropdown.items[5].setChecked(config.FileBrowserPreviewType == ParkPreviewPref::miniMap);
+            gDropdown.items[6].setChecked(config.FileBrowserPreviewType == ParkPreviewPref::screenshot);
         }
 
         void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override

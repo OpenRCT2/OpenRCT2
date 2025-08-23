@@ -533,11 +533,11 @@ namespace OpenRCT2::Ui::Windows
         }
         if (widget == &widgets[WIDX_DEFAULT_GROUP_DROPDOWN])
         {
-            Dropdown::SetChecked(NetworkGetGroupIndex(NetworkGetDefaultGroup()), true);
+            gDropdown.items[NetworkGetGroupIndex(NetworkGetDefaultGroup())].setChecked(true);
         }
         else if (widget == &widgets[WIDX_SELECTED_GROUP_DROPDOWN])
         {
-            Dropdown::SetChecked(NetworkGetGroupIndex(_selectedGroup), true);
+            gDropdown.items[NetworkGetGroupIndex(_selectedGroup)].setChecked(true);
         }
     }
 

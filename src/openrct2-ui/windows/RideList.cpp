@@ -346,7 +346,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (selectedIndex != -1)
                 {
-                    Dropdown::SetChecked(selectedIndex, true);
+                    gDropdown.items[selectedIndex].setChecked(true);
                 }
             }
         }

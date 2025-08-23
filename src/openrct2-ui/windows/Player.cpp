@@ -563,7 +563,7 @@ namespace OpenRCT2::Ui::Windows
                 gDropdown.items[i].args = reinterpret_cast<uintptr_t>(NetworkGetGroupName(i));
             }
 
-            Dropdown::SetChecked(NetworkGetGroupIndex(NetworkGetPlayerGroup(player)), true);
+            gDropdown.items[NetworkGetGroupIndex(NetworkGetPlayerGroup(player))].setChecked(true);
         }
 
 #pragma endregion

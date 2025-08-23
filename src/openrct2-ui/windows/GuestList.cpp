@@ -343,7 +343,7 @@ namespace OpenRCT2::Ui::Windows
                         args[0] = STR_PAGE_X;
                         args[1] = static_cast<uint16_t>(i + 1);
                     }
-                    Dropdown::SetChecked(static_cast<int32_t>(_selectedPage), true);
+                    gDropdown.items[static_cast<int32_t>(_selectedPage)].setChecked(true);
                     break;
                 }
                 case WIDX_INFO_TYPE_DROPDOWN_BUTTON:
@@ -358,7 +358,7 @@ namespace OpenRCT2::Ui::Windows
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
                         Dropdown::Flag::StayOpen, 2, widget->width() - 3);
 
-                    Dropdown::SetChecked(static_cast<int32_t>(_selectedView), true);
+                    gDropdown.items[static_cast<int32_t>(_selectedView)].setChecked(true);
                     break;
                 }
             }

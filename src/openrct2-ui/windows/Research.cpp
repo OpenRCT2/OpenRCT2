@@ -486,7 +486,7 @@ namespace OpenRCT2::Ui::Windows
             w->colours[1], 0, Dropdown::Flag::StayOpen, 4, dropdownWidget->width() - 3);
 
         int32_t currentResearchLevel = gameState.researchFundingLevel;
-        Dropdown::SetChecked(currentResearchLevel, true);
+        gDropdown.items[currentResearchLevel].setChecked(true);
     }
 
     void WindowResearchFundingMouseUp(WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex)

@@ -539,14 +539,14 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (_filterFlags & (1 << i))
                         {
-                            Dropdown::SetChecked(i, true);
+                            gDropdown.items[i].setChecked(true);
                         }
                     }
 
                     if (!(gLegacyScene == LegacyScene::trackDesignsManager))
                     {
-                        Dropdown::SetChecked(DDIX_FILTER_SELECTED, IsFilterActive(FILTER_SELECTED));
-                        Dropdown::SetChecked(DDIX_FILTER_NONSELECTED, IsFilterActive(FILTER_NONSELECTED));
+                        gDropdown.items[DDIX_FILTER_SELECTED].setChecked(IsFilterActive(FILTER_SELECTED));
+                        gDropdown.items[DDIX_FILTER_NONSELECTED].setChecked(IsFilterActive(FILTER_NONSELECTED));
                     }
                     break;
             }
