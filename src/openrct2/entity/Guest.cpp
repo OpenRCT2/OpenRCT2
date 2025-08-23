@@ -1527,7 +1527,7 @@ static money64 getItemValue(const ShopItemDescriptor& shopItemDescriptor)
 static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopItem, money64 price)
 {
     const bool isPrecipitating = ClimateIsPrecipitating();
-    const bool isRainingAndUmbrella = isPrecipitating && (shopItem == ShopItem::Umbrella);
+    const bool isPrecipitatingAndUmbrella = isPrecipitating && (shopItem == ShopItem::Umbrella);
 
     bool hasVoucher = false;
     if ((guest.HasItem(ShopItem::Voucher)) && (guest.VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
@@ -1581,7 +1581,7 @@ static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopI
         return false;
     }
 
-    if (!isRainingAndUmbrella && (shopItem != ShopItem::Map) && shopItemDescriptor.IsSouvenir() && !hasVoucher)
+    if (!isPrecipitatingAndUmbrella && (shopItem != ShopItem::Map) && shopItemDescriptor.IsSouvenir() && !hasVoucher)
     {
         if (((ScenarioRand() & 0x7F) + 0x73) > guest.Happiness || guest.GuestNumRides < 3)
             return false;
@@ -1608,7 +1608,7 @@ static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopI
         {
             itemValue -= price;
 
-            if (!isRainingAndUmbrella)
+            if (!isPrecipitatingAndUmbrella)
             {
                 itemValue = -itemValue;
                 if (guest.Happiness >= 128)
@@ -4946,7 +4946,8 @@ void Guest::UpdateRideMazePathfinding()
 
     if (IsActionInterruptable())
     {
-        if (Energy > 80 && !(PeepFlags & PEEP_FLAGS_SLOW_WALK) && !ClimateIsRaining() && (ScenarioRand() & 0xFFFF) <= 2427)
+        if (Energy > 80 && !(PeepFlags & PEEP_FLAGS_SLOW_WALK) && !ClimateIsPrecipitating()
+            && (ScenarioRand() & 0xFFFF) <= 2427)
         {
             Action = PeepActionType::Jump;
             AnimationFrameNum = 0;
