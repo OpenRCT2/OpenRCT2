@@ -1252,8 +1252,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_LANGUAGE_DROPDOWN:
                     for (size_t i = 1; i < LANGUAGE_COUNT; i++)
                     {
-                        gDropdown.items[i - 1].format = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdown.items[i - 1].args.generic = reinterpret_cast<uintptr_t>(LanguagesDescriptors[i].native_name);
+                        gDropdown.items[i - 1] = Dropdown::MenuLabel(LanguagesDescriptors[i].native_name);
                     }
                     ShowDropdown(widget, LANGUAGE_COUNT - 1);
                     gDropdown.items[LocalisationService_GetCurrentLanguage() - 1].setChecked(true);
@@ -1444,9 +1443,7 @@ namespace OpenRCT2::Ui::Windows
                     // populate the list with the sound devices
                     for (int32_t i = 0; i < OpenRCT2::Audio::GetDeviceCount(); i++)
                     {
-                        gDropdown.items[i].format = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdown.items[i].args.generic = reinterpret_cast<uintptr_t>(
-                            OpenRCT2::Audio::GetDeviceName(i).c_str());
+                        gDropdown.items[i] = Dropdown::MenuLabel(OpenRCT2::Audio::GetDeviceName(i).c_str());
                     }
 
                     ShowDropdown(widget, OpenRCT2::Audio::GetDeviceCount());
@@ -1802,8 +1799,7 @@ namespace OpenRCT2::Ui::Windows
 
                     for (size_t i = 0; i < numItems; i++)
                     {
-                        gDropdown.items[i].format = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdown.items[i].args.generic = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
+                        gDropdown.items[i] = Dropdown::MenuLabel(ThemeManagerGetAvailableThemeName(i));
                     }
 
                     WindowDropdownShowTextCustomWidth(
@@ -1912,8 +1908,7 @@ namespace OpenRCT2::Ui::Windows
                     uint32_t numItems = static_cast<int32_t>(TitleSequenceManager::GetCount());
                     for (size_t i = 0; i < numItems; i++)
                     {
-                        gDropdown.items[i].format = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdown.items[i].args.generic = reinterpret_cast<uintptr_t>(TitleSequenceManager::GetName(i));
+                        gDropdown.items[i] = Dropdown::MenuLabel(TitleSequenceManager::GetName(i));
                     }
 
                     gDropdown.items[numItems] = Dropdown::Separator();

@@ -622,3 +622,11 @@ namespace OpenRCT2::Ui::Windows
 
 using namespace OpenRCT2::Ui::Windows;
 using namespace OpenRCT2;
+
+namespace OpenRCT2::Dropdown
+{
+    Item MenuLabel(const utf8* string)
+    {
+        return Item{ STR_OPTIONS_DROPDOWN_ITEM, reinterpret_cast<int64_t>(string) };
+    }
+} // namespace OpenRCT2::Dropdown

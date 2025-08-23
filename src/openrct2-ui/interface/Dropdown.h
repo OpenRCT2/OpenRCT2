@@ -144,6 +144,8 @@ namespace OpenRCT2::Dropdown
         return Item{ STR_DROPDOWN_MENU_LABEL, stringId };
     }
 
+    Item MenuLabel(const utf8* string);
+
     constexpr Item ToggleOption(StringId stringId)
     {
         return Item{ STR_TOGGLE_OPTION, stringId };
