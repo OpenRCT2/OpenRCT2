@@ -749,8 +749,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings)
                 {
-                    gDropdown.items[numItems].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[numItems].args.generic = ObjectiveDropdownOptionNames[i];
+                    gDropdown.items[numItems] = Dropdown::MenuLabel(ObjectiveDropdownOptionNames[i]);
                     numItems++;
                 }
             }
@@ -775,8 +774,7 @@ namespace OpenRCT2::Ui::Windows
         {
             for (int32_t i = EnumValue(Scenario::Category::beginner); i <= EnumValue(Scenario::Category::other); i++)
             {
-                gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                gDropdown.items[i].args.generic = Scenario::kScenarioCategoryStringIds[i];
+                gDropdown.items[i] = Dropdown::MenuLabel(Scenario::kScenarioCategoryStringIds[i]);
             }
 
             Widget* dropdownWidget = &widgets[WIDX_CATEGORY];
@@ -1557,12 +1555,9 @@ namespace OpenRCT2::Ui::Windows
                 {
                     Widget* dropdownWidget = &widgets[widgetIndex - 1];
 
-                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[0].args.generic = STR_FREE_PARK_ENTER;
-                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[1].args.generic = STR_PAY_PARK_ENTER;
-                    gDropdown.items[2].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[2].args.generic = STR_PAID_ENTRY_PAID_RIDES;
+                    gDropdown.items[0] = Dropdown::MenuLabel(STR_FREE_PARK_ENTER);
+                    gDropdown.items[1] = Dropdown::MenuLabel(STR_PAY_PARK_ENTER);
+                    gDropdown.items[2] = Dropdown::MenuLabel(STR_PAID_ENTRY_PAID_RIDES);
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() - 1,
@@ -1896,15 +1891,10 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto& dropdownWidget = widgets[widgetIndex - 1];
 
-                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[2].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[3].format = STR_DROPDOWN_MENU_LABEL;
-
-                    gDropdown.items[0].args.generic = STR_GUESTS_PREFER_INTENSITY_NONE;
-                    gDropdown.items[1].args.generic = STR_GUESTS_PREFER_INTENSITY_BALANCED;
-                    gDropdown.items[2].args.generic = STR_GUESTS_PREFER_INTENSITY_LESS_INTENSE_RIDES;
-                    gDropdown.items[3].args.generic = STR_GUESTS_PREFER_INTENSITY_MORE_INTENSE_RIDES;
+                    gDropdown.items[0] = Dropdown::MenuLabel(STR_GUESTS_PREFER_INTENSITY_NONE);
+                    gDropdown.items[1] = Dropdown::MenuLabel(STR_GUESTS_PREFER_INTENSITY_BALANCED);
+                    gDropdown.items[2] = Dropdown::MenuLabel(STR_GUESTS_PREFER_INTENSITY_LESS_INTENSE_RIDES);
+                    gDropdown.items[3] = Dropdown::MenuLabel(STR_GUESTS_PREFER_INTENSITY_MORE_INTENSE_RIDES);
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.top }, dropdownWidget.height() - 1,

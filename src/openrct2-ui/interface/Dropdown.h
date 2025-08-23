@@ -139,6 +139,11 @@ namespace OpenRCT2::Dropdown
         return ItemExt(-1, Dropdown::kSeparatorString, kStringIdEmpty);
     }
 
+    constexpr Item MenuLabel(StringId stringId)
+    {
+        return Item{ STR_DROPDOWN_MENU_LABEL, stringId };
+    }
+
     struct DropdownState
     {
         int32_t numItems{};

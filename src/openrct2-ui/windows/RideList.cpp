@@ -331,8 +331,7 @@ namespace OpenRCT2::Ui::Windows
                         selectedIndex = numItems;
                     }
 
-                    gDropdown.items[numItems].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[numItems].args.generic = ride_info_type_string_mapping[type];
+                    gDropdown.items[numItems] = Dropdown::MenuLabel(ride_info_type_string_mapping[type]);
                     numItems++;
                 }
 

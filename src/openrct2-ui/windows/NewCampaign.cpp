@@ -211,8 +211,7 @@ namespace OpenRCT2::Ui::Windows
                             int32_t maxSize = std::min(Dropdown::kItemsMaxSize, static_cast<int32_t>(ShopItems.size()));
                             for (int32_t i = 0; i < maxSize; i++)
                             {
-                                gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                                gDropdown.items[i].args.generic = GetShopItemDescriptor(ShopItems[i]).Naming.Plural;
+                                gDropdown.items[i] = Dropdown::MenuLabel(GetShopItemDescriptor(ShopItems[i]).Naming.Plural);
                                 numItems++;
                             }
 

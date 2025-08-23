@@ -905,17 +905,15 @@ namespace OpenRCT2::Ui::Windows
             gDropdown.items[0].format = STR_TOGGLE_OPTION;
             gDropdown.items[1].format = STR_TOGGLE_OPTION;
             gDropdown.items[2].format = STR_TOGGLE_OPTION;
-            gDropdown.items[3].format = kStringIdEmpty;
-            gDropdown.items[4].format = STR_DROPDOWN_BULLET_OPTION;
-            gDropdown.items[5].format = STR_DROPDOWN_BULLET_OPTION;
-            gDropdown.items[6].format = STR_DROPDOWN_BULLET_OPTION;
+            gDropdown.items[3].format = Dropdown::kSeparatorString;
 
             gDropdown.items[0].args.generic = STR_FILEBROWSER_CUSTOMISE_FILENAME;
             gDropdown.items[1].args.generic = STR_FILEBROWSER_CUSTOMISE_SIZE;
             gDropdown.items[2].args.generic = STR_FILEBROWSER_CUSTOMISE_DATE;
-            gDropdown.items[4].args.generic = STR_FILEBROWSER_PREVIEW_DISABLED;
-            gDropdown.items[5].args.generic = STR_FILEBROWSER_PREVIEW_MINIMAP;
-            gDropdown.items[6].args.generic = STR_FILEBROWSER_PREVIEW_SCREENSHOT;
+
+            gDropdown.items[4] = Dropdown::MenuLabel(STR_FILEBROWSER_PREVIEW_DISABLED);
+            gDropdown.items[5] = Dropdown::MenuLabel(STR_FILEBROWSER_PREVIEW_MINIMAP);
+            gDropdown.items[6] = Dropdown::MenuLabel(STR_FILEBROWSER_PREVIEW_SCREENSHOT);
 
             Widget* widget = &widgets[WIDX_SORT_CUSTOMISE];
 

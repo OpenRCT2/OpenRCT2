@@ -167,8 +167,7 @@ namespace OpenRCT2::Ui::Windows
                     auto numItems = std::size(kBannerColouredTextFormats) - 1;
                     for (size_t i = 0; i < numItems; ++i)
                     {
-                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdown.items[i].args.generic = kBannerColouredTextFormats[i + 1];
+                        gDropdown.items[i] = Dropdown::MenuLabel(kBannerColouredTextFormats[i + 1]);
                     }
 
                     // Switch to the dropdown box widget.

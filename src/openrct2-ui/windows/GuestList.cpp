@@ -348,10 +348,8 @@ namespace OpenRCT2::Ui::Windows
                 }
                 case WIDX_INFO_TYPE_DROPDOWN_BUTTON:
                 {
-                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[0].args.generic = GetViewName(GuestViewType::Actions);
-                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[1].args.generic = GetViewName(GuestViewType::Thoughts);
+                    gDropdown.items[0] = Dropdown::MenuLabel(GetViewName(GuestViewType::Actions));
+                    gDropdown.items[1] = Dropdown::MenuLabel(GetViewName(GuestViewType::Thoughts));
 
                     auto* widget = &widgets[widgetIndex - 1];
                     WindowDropdownShowTextCustomWidth(

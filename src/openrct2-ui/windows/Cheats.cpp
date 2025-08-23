@@ -994,8 +994,7 @@ static StringId window_cheats_page_titles[] = {
 
                     for (size_t i = 0; i < std::size(_staffSpeedNames); i++)
                     {
-                        gDropdown.items[i].args.generic = _staffSpeedNames[i];
-                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
+                        gDropdown.items[i] = Dropdown::MenuLabel(_staffSpeedNames[i]);
                     }
 
                     WindowDropdownShowTextCustomWidth(
@@ -1018,8 +1017,7 @@ static StringId window_cheats_page_titles[] = {
 
                     for (size_t i = 0; i < std::size(WeatherTypes); i++)
                     {
-                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdown.items[i].args.generic = WeatherTypes[i];
+                        gDropdown.items[i] = Dropdown::MenuLabel(WeatherTypes[i]);
                     }
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,

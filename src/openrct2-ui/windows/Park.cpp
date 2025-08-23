@@ -445,10 +445,8 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex == WIDX_OPEN_OR_CLOSE)
             {
                 auto& widget = widgets[widgetIndex];
-                gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-                gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
-                gDropdown.items[0].args.generic = STR_CLOSE_PARK;
-                gDropdown.items[1].args.generic = STR_OPEN_PARK;
+                gDropdown.items[0] = Dropdown::MenuLabel(STR_CLOSE_PARK);
+                gDropdown.items[1] = Dropdown::MenuLabel(STR_OPEN_PARK);
                 WindowDropdownShowText(
                     { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1, colours[1], 0, 2);
 
