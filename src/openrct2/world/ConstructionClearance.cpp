@@ -122,6 +122,20 @@ static bool MapLoc68BABCShouldContinue(
         }
     }
 
+    if (slope != kTileSlopeFlat && tileElement->GetType() == TileElementType::Path && tileElement->AsPath()->IsSloped())
+    {
+        const auto slopeCornerHeights = GetSlopeCornerHeights(pos.baseZ, slope);
+
+        const PathElement& pathElement = *tileElement->AsPath();
+        const uint8_t pathSlope = Numerics::rol4(kTileSlopeSWSideUp, pathElement.GetSlopeDirection());
+        const auto pathCornerHeights = GetSlopeCornerHeights(pathElement.GetBaseZ(), pathSlope);
+
+        if (slopeCornerHeights <= pathCornerHeights)
+        {
+            return true;
+        }
+    }
+
     if (crossingMode == CreateCrossingMode::trackOverPath && canBuildCrossing && tileElement->GetType() == TileElementType::Path
         && tileElement->GetBaseZ() == pos.baseZ && !tileElement->AsPath()->IsQueue() && !tileElement->AsPath()->IsSloped())
     {

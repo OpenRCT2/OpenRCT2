@@ -907,4 +907,9 @@ struct TileCornersZ
     int32_t east;
     int32_t south;
     int32_t west;
+
+    constexpr bool operator<=(const TileCornersZ& other) const
+    {
+        return north <= other.north && east <= other.east && south <= other.south && west <= other.west;
+    }
 };
