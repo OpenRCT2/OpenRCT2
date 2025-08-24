@@ -3824,3 +3824,15 @@ STR_6788    :Empfindlichkeit:
 STR_6789    :Analogstickempfindlichkeitsfaktor
 STR_6790    :Tote Zone {COMMA32}%
 STR_6791    :Empfindlichkeit: {COMMA32}%
+STR_6792    :Eingangsgebäude
+STR_6793    :Besucher und Personal
+STR_6794    :Szenerie und Themen
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :Keine Vorschau
+STR_6798    :Screenshot
+STR_6799    :Übersichtskarte
+STR_7000    :oder
+STR_7001    :Fahrgeschäftsname
+STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :Die Audiodatei „{STRING}“ ist abgeschnitten. Sample {INT32} erwartet, es sind aber nur {INT32} verfügbar. Ziehen Sie eine Neuinstallation von RCT2 in Betracht.
