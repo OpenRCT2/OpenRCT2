@@ -1,6 +1,7 @@
 0.4.27 (in development)
 ------------------------------------------------------------------------
 - Fix: [#25132] Crash when trying to use simulate on incomplete ride.
+- Improved: [#25032] The land tool now takes sloped track and paths into account when modifying land.
 
 0.4.26 (2025-09-06)
 ------------------------------------------------------------------------
