@@ -12,6 +12,7 @@
 #include "Cheats.h"
 #include "Date.h"
 #include "Editor.h"
+#include "Identifiers.h"
 #include "Limits.h"
 #include "core/Random.hpp"
 #include "entity/EntityRegistry.h"
@@ -108,4 +109,10 @@ namespace OpenRCT2
     void gameStateTick();
     void gameStateUpdateLogic();
 
+    Park::ParkData& getPlayerPark();
+    ParkId getPlayerParkId();
+    void setPlayerParkId(ParkId newParkId);
+    Park::ParkData& getUpdatingPark();
+    ParkId getUpdatingParkId();
+    void setUpdatingParkId(ParkId newParkId);
 } // namespace OpenRCT2
