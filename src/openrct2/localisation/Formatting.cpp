@@ -616,7 +616,18 @@ namespace OpenRCT2
             case FormatToken::Height2dp:
                 if constexpr (std::is_integral<T>())
                 {
-                    FormatNumber<2, true>(ss, arg);
+                    auto comma32 = HeightUnitsToComma32(arg);
+                    switch (Config::Get().general.MeasurementFormat)
+                    {
+                        default:
+                        case MeasurementFormat::Imperial:
+                            FormatStringID(ss, STR_UNIT2DP_SUFFIX_FEET, comma32);
+                            break;
+                        case MeasurementFormat::Metric:
+                        case MeasurementFormat::SI:
+                            FormatStringID(ss, STR_UNIT2DP_SUFFIX_METRES, comma32);
+                            break;
+                    }
                 }
                 break;
             case FormatToken::MonthYear:

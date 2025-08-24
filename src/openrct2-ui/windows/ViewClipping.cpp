@@ -294,55 +294,19 @@ namespace OpenRCT2::Ui::Windows
         {
             WindowDrawWidgets(*this, rt);
 
+            auto& widget = widgets[WIDX_CLIP_HEIGHT_VALUE];
+
+            // Clip height label
+            auto screenCoords = windowPos + ScreenCoordsXY{ 8, widget.top };
+            DrawTextBasic(rt, screenCoords, STR_VIEW_CLIPPING_HEIGHT_VALUE, {}, { colours[0] });
+
             // Clip height value
-            auto screenCoords = this->windowPos + ScreenCoordsXY{ 8, this->widgets[WIDX_CLIP_HEIGHT_VALUE].top };
-            DrawTextBasic(rt, screenCoords, STR_VIEW_CLIPPING_HEIGHT_VALUE, {}, { this->colours[0] });
+            auto ft = Formatter();
+            ft.Add<int32_t>(gClipHeight);
 
-            screenCoords = this->windowPos
-                + ScreenCoordsXY{ this->widgets[WIDX_CLIP_HEIGHT_VALUE].left + 1, this->widgets[WIDX_CLIP_HEIGHT_VALUE].top };
-
-            switch (_clipHeightDisplayType)
-            {
-                case DisplayType::DisplayRaw:
-                default:
-                {
-                    auto ft = Formatter();
-                    ft.Add<int32_t>(static_cast<int32_t>(gClipHeight));
-
-                    // Printing the raw value.
-                    DrawTextBasic(rt, screenCoords, STR_FORMAT_INTEGER, ft, { this->colours[0] });
-                    break;
-                }
-                case DisplayType::DisplayUnits:
-                {
-                    // Print the value in the configured height label type:
-                    auto ft = Formatter();
-                    if (Config::Get().general.ShowHeightAsUnits)
-                    {
-                        ft.Add<fixed32_2dp>(FIXED_2DP(gClipHeight, 0) / 2 - FIXED_2DP(7, 0));
-                        DrawTextBasic(rt, screenCoords, STR_UNIT2DP_NO_SUFFIX, ft, { this->colours[0] });
-                    }
-                    else
-                    {
-                        switch (Config::Get().general.MeasurementFormat)
-                        {
-                            case MeasurementFormat::Imperial:
-                            {
-                                ft.Add<fixed32_2dp>(FIXED_2DP(gClipHeight, 0) / 2.0f * 5.0f - FIXED_2DP(35, 0));
-                                DrawTextBasic(rt, screenCoords, STR_UNIT2DP_SUFFIX_FEET, ft, { this->colours[0] });
-                                break;
-                            }
-                            case MeasurementFormat::Metric:
-                            case MeasurementFormat::SI:
-                            {
-                                ft.Add<fixed32_2dp>(FIXED_2DP(gClipHeight, 0) / 2.0f * 1.5f - FIXED_2DP(10, 50));
-                                DrawTextBasic(rt, screenCoords, STR_UNIT2DP_SUFFIX_METRES, ft, { this->colours[0] });
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
+            screenCoords = windowPos + ScreenCoordsXY{ widget.left + 1, widget.top };
+            auto stringId = _clipHeightDisplayType == DisplayType::DisplayUnits ? STR_HEIGHT2DP : STR_FORMAT_INTEGER;
+            DrawTextBasic(rt, screenCoords, stringId, ft, { colours[0] });
         }
 
         ScreenSize OnScrollGetSize(int32_t scrollIndex) override

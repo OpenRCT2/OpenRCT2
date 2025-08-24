@@ -253,22 +253,22 @@ TEST_F(FormattingTests, length_si)
 TEST_F(FormattingTests, height2dp_imperial)
 {
     Config::Get().general.MeasurementFormat = MeasurementFormat::Imperial;
-    auto actual = FormatString("Height: {HEIGHT2DP}", 1024);
-    ASSERT_EQ("Height: 3,360.00 ft", actual);
+    auto actual = FormatString("Height: {HEIGHT2DP}", 1024); // NB: fixed point value
+    ASSERT_EQ("Height: 2,525.00ft", actual);
 }
 
 TEST_F(FormattingTests, height2dp_metric)
 {
     Config::Get().general.MeasurementFormat = MeasurementFormat::Metric;
-    auto actual = FormatString("Height: {HEIGHT2DP}", 1024);
-    ASSERT_EQ("Height: 1,024.00 m", actual);
+    auto actual = FormatString("Height: {HEIGHT2DP}", 1024); // NB: fixed point value
+    ASSERT_EQ("Height: 757.50m", actual);
 }
 
 TEST_F(FormattingTests, height2dp_si)
 {
     Config::Get().general.MeasurementFormat = MeasurementFormat::SI;
-    auto actual = FormatString("Height: {HEIGHT2DP}", 2048);
-    ASSERT_EQ("Height: 2,048.00 m", actual);
+    auto actual = FormatString("Height: {HEIGHT2DP}", 2048); // NB: fixed point value
+    ASSERT_EQ("Height: 1,525.50m", actual);
 }
 
 TEST_F(FormattingTests, minssecs)
