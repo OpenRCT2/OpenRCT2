@@ -61,7 +61,6 @@ namespace OpenRCT2
     constexpr uint16_t kHigherInversionsHolesHelicesStatsVersion = 55;
     constexpr uint16_t kFixedObsoleteFootpathsVersion = 56;
     constexpr uint16_t kWaterRidesWithLiftsVersion = 58;
-} // namespace OpenRCT2
 
     class ParkFileExporter
     {

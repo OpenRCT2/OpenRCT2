@@ -1256,7 +1256,7 @@ namespace OpenRCT2
                                             }
                                         }
                                     }
-                                    if (os.GetHeader().TargetVersion < kBlockBrakeImprovementsVersion)
+                                    if (os.getHeader().targetVersion < kBlockBrakeImprovementsVersion)
                                     {
                                         if (trackType == TrackElemType::Brakes)
                                             trackElement->SetBrakeClosed(true);
