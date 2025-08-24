@@ -40,6 +40,9 @@ namespace OpenRCT2
 {
     static auto _gameState = std::make_unique<GameState_t>();
 
+    static ParkId _playerParkId{};
+    static ParkId _updatingParkId{};
+
     GameState_t& getGameState()
     {
         return *_gameState;
@@ -368,5 +371,37 @@ namespace OpenRCT2
 #endif
 
         gInUpdateCode = false;
+    }
+
+    Park::ParkData& getPlayerPark()
+    {
+        return _gameState.parks[EnumValue(_playerParkId)];
+    }
+
+    ParkId getPlayerParkId()
+    {
+        return _playerParkId;
+    }
+
+    void setPlayerParkId(ParkId newParkId)
+    {
+        assert(EnumValue(newParkId) < _gameState.parks.size());
+        _playerParkId = newParkId;
+    }
+
+    Park::ParkData& getUpdatingPark()
+    {
+        return _gameState.parks[EnumValue(_updatingParkId)];
+    }
+
+    ParkId getUpdatingParkId()
+    {
+        return _updatingParkId;
+    }
+
+    void setUpdatingParkId(ParkId newParkId)
+    {
+        assert(EnumValue(newParkId) < _gameState.parks.size());
+        _updatingParkId = newParkId;
     }
 } // namespace OpenRCT2
