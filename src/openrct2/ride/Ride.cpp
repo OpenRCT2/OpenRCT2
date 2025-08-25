@@ -4083,7 +4083,7 @@ ResultWithMessage Ride::test(bool isApplying)
 
 ResultWithMessage Ride::simulate(bool isApplying)
 {
-    CoordsXYE trackElement, problematicTrackElement = {};
+    CoordsXYE trackElement = {};
     if (type == kRideTypeNull)
     {
         LOG_WARNING("Invalid ride type for ride %u", id.ToUnderlying());
