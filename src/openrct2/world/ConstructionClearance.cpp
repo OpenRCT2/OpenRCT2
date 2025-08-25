@@ -44,14 +44,14 @@ static int32_t MapPlaceClearFunc(
 
     auto* scenery = (*tile_element)->AsSmallScenery()->GetEntry();
 
-    auto& gameState = getGameState();
-    if (gameState.park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+    auto& park = getGameState().park;
+    if (park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL)
     {
         if (scenery != nullptr && scenery->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
             return 1;
     }
 
-    if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY) && scenery != nullptr)
+    if (!(park.flags & PARK_FLAGS_NO_MONEY) && scenery != nullptr)
         *price += scenery->removal_price;
 
     if (flags & GAME_COMMAND_FLAG_GHOST)

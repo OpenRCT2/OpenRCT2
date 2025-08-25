@@ -34,8 +34,8 @@ namespace OpenRCT2::Park
 
     Guest* GenerateGuest();
 
-    void ResetHistories(GameState_t& gameState);
-    void UpdateHistories(GameState_t& gameState);
+    void ResetHistories(ParkData& park);
+    void UpdateHistories(ParkData& park);
     void SetForcedRating(int32_t rating);
     int32_t GetForcedRating();
 

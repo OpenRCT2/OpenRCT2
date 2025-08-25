@@ -90,14 +90,14 @@ bool FinanceCheckAffordability(money64 cost, uint32_t flags)
 void FinancePayment(money64 amount, ExpenditureType type)
 {
     // overflow check
-    auto& gameState = getGameState();
-    gameState.park.cash = AddClamp<money64>(gameState.park.cash, -amount);
+    auto& park = getGameState().park;
+    park.cash = AddClamp<money64>(park.cash, -amount);
 
-    gameState.park.expenditureTable[0][EnumValue(type)] -= amount;
+    park.expenditureTable[0][EnumValue(type)] -= amount;
     if (kCountTowardsCurrentExpenditure[EnumValue(type)])
     {
         // Cumulative amount of money spent this day
-        gameState.park.currentExpenditure -= amount;
+        park.currentExpenditure -= amount;
     }
 
     auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
@@ -130,7 +130,7 @@ void FinancePayWages()
 void FinancePayResearch()
 {
     const auto& gameState = getGameState();
-    if (gameState.park.flags & PARK_FLAGS_NO_MONEY)
+    if (getGameState().park.flags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
@@ -145,20 +145,19 @@ void FinancePayResearch()
  */
 void FinancePayInterest()
 {
-    const auto& gameState = getGameState();
+    const auto& park = getGameState().park;
 
-    if (gameState.park.flags & PARK_FLAGS_NO_MONEY)
+    if (park.flags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
 
     // This variable uses the 64-bit type as the computation below can involve multiplying very large numbers
     // that will overflow money64 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
-    const money64 current_loan = gameState.park.bankLoan;
-    const auto current_interest_rate = gameState.park.bankLoanInterestRate;
-    const money64 interest_to_pay = (gameState.park.flags & PARK_FLAGS_RCT1_INTEREST)
-        ? (current_loan / 2400)
-        : (current_loan * 5 * current_interest_rate) >> 14;
+    const money64 current_loan = park.bankLoan;
+    const auto current_interest_rate = park.bankLoanInterestRate;
+    const money64 interest_to_pay = (park.flags & PARK_FLAGS_RCT1_INTEREST) ? (current_loan / 2400)
+                                                                            : (current_loan * 5 * current_interest_rate) >> 14;
 
     FinancePayment(interest_to_pay, ExpenditureType::interest);
 }
@@ -198,19 +197,19 @@ void FinancePayRideUpkeep()
 
 void FinanceResetHistory()
 {
-    auto& gameState = getGameState();
+    auto& park = getGameState().park;
     for (auto i = 0; i < kFinanceHistorySize; i++)
     {
-        gameState.park.cashHistory[i] = kMoney64Undefined;
-        gameState.park.weeklyProfitHistory[i] = kMoney64Undefined;
-        gameState.park.valueHistory[i] = kMoney64Undefined;
+        park.cashHistory[i] = kMoney64Undefined;
+        park.weeklyProfitHistory[i] = kMoney64Undefined;
+        park.valueHistory[i] = kMoney64Undefined;
     }
 
     for (uint32_t i = 0; i < kExpenditureTableMonthCount; ++i)
     {
         for (uint32_t j = 0; j < static_cast<int32_t>(ExpenditureType::count); ++j)
         {
-            gameState.park.expenditureTable[i][j] = 0;
+            park.expenditureTable[i][j] = 0;
         }
     }
 }
@@ -222,32 +221,33 @@ void FinanceResetHistory()
 void FinanceInit()
 {
     auto& gameState = getGameState();
+    auto& park = gameState.park;
 
     // It only initialises the first month
     for (uint32_t i = 0; i < static_cast<int32_t>(ExpenditureType::count); i++)
     {
-        gameState.park.expenditureTable[0][i] = 0;
+        park.expenditureTable[0][i] = 0;
     }
 
-    gameState.park.currentExpenditure = 0;
-    gameState.park.currentProfit = 0;
+    park.currentExpenditure = 0;
+    park.currentProfit = 0;
 
-    gameState.park.weeklyProfitAverageDividend = 0;
-    gameState.park.weeklyProfitAverageDivisor = 0;
+    park.weeklyProfitAverageDividend = 0;
+    park.weeklyProfitAverageDivisor = 0;
 
     gameState.scenarioOptions.initialCash = 10000.00_GBP; // Cheat detection
 
-    gameState.park.cash = 10000.00_GBP;
-    gameState.park.bankLoan = 10000.00_GBP;
-    gameState.park.maxBankLoan = 20000.00_GBP;
+    park.cash = 10000.00_GBP;
+    park.bankLoan = 10000.00_GBP;
+    park.maxBankLoan = 20000.00_GBP;
 
-    gameState.park.bankLoanInterestRate = 10;
-    gameState.park.value = 0;
-    gameState.park.companyValue = 0;
-    gameState.park.historicalProfit = 0;
+    park.bankLoanInterestRate = 10;
+    park.value = 0;
+    park.companyValue = 0;
+    park.historicalProfit = 0;
     gameState.scenarioCompletedCompanyValue = kMoney64Undefined;
-    gameState.park.totalAdmissions = 0;
-    gameState.park.totalIncomeFromAdmissions = 0;
+    park.totalAdmissions = 0;
+    park.totalIncomeFromAdmissions = 0;
     gameState.scenarioCompletedBy = std::string("?");
 }
 
@@ -258,14 +258,16 @@ void FinanceInit()
 void FinanceUpdateDailyProfit()
 {
     PROFILED_FUNCTION();
-    auto& gameState = getGameState();
 
-    gameState.park.currentProfit = 7 * gameState.park.currentExpenditure;
-    gameState.park.currentExpenditure = 0; // Reset daily expenditure
+    auto& gameState = getGameState();
+    auto& park = gameState.park;
+
+    park.currentProfit = 7 * park.currentExpenditure;
+    park.currentExpenditure = 0; // Reset daily expenditure
 
     money64 current_profit = 0;
 
-    if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
+    if (!(park.flags & PARK_FLAGS_NO_MONEY))
     {
         // Staff costs
         for (auto peep : EntityList<Staff>())
@@ -278,7 +280,7 @@ void FinanceUpdateDailyProfit()
         current_profit -= kResearchCosts[level];
 
         // Loan costs
-        auto current_loan = gameState.park.bankLoan;
+        auto current_loan = park.bankLoan;
         current_profit -= current_loan / 600;
 
         // Ride costs
@@ -294,11 +296,11 @@ void FinanceUpdateDailyProfit()
     // This is not equivalent to / 4 due to rounding of negative numbers
     current_profit = current_profit >> 2;
 
-    gameState.park.currentProfit += current_profit;
+    park.currentProfit += current_profit;
 
     // These are related to weekly profit graph
-    gameState.park.weeklyProfitAverageDividend += gameState.park.currentProfit;
-    gameState.park.weeklyProfitAverageDivisor += 1;
+    park.weeklyProfitAverageDividend += park.currentProfit;
+    park.weeklyProfitAverageDivisor += 1;
 
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByClass(WindowClass::Finances);
@@ -331,15 +333,16 @@ money64 FinanceGetCurrentCash()
  */
 void FinanceShiftExpenditureTable()
 {
-    auto& gameState = getGameState();
+    auto& park = getGameState().park;
+
     // If kExpenditureTableMonthCount months have passed then is full, sum the oldest month
     if (GetDate().GetMonthsElapsed() >= kExpenditureTableMonthCount)
     {
         const money64 sum = std::accumulate(
-            std::cbegin(gameState.park.expenditureTable[kExpenditureTableMonthCount - 1]),
-            std::cend(gameState.park.expenditureTable[kExpenditureTableMonthCount - 1]), money64{});
+            std::cbegin(park.expenditureTable[kExpenditureTableMonthCount - 1]),
+            std::cend(park.expenditureTable[kExpenditureTableMonthCount - 1]), money64{});
 
-        gameState.park.historicalProfit += sum;
+        park.historicalProfit += sum;
     }
 
     // Shift the table
@@ -347,14 +350,14 @@ void FinanceShiftExpenditureTable()
     {
         for (size_t j = 0; j < static_cast<int32_t>(ExpenditureType::count); j++)
         {
-            gameState.park.expenditureTable[i][j] = gameState.park.expenditureTable[i - 1][j];
+            park.expenditureTable[i][j] = park.expenditureTable[i - 1][j];
         }
     }
 
     // Zero the beginning of the table, which is the new month
     for (uint32_t i = 0; i < static_cast<int32_t>(ExpenditureType::count); i++)
     {
-        gameState.park.expenditureTable[0][i] = 0;
+        park.expenditureTable[0][i] = 0;
     }
 
     auto* windowMgr = Ui::GetWindowManager();
@@ -368,7 +371,7 @@ void FinanceShiftExpenditureTable()
 void FinanceResetCashToInitial()
 {
     auto& gameState = getGameState();
-    gameState.park.cash = gameState.scenarioOptions.initialCash;
+    getGameState().park.cash = gameState.scenarioOptions.initialCash;
 }
 
 /**

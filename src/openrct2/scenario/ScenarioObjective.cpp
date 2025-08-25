@@ -101,7 +101,10 @@ namespace OpenRCT2::Scenario
     ObjectiveStatus Objective::CheckGuestsAndRating() const
     {
         auto& gameState = getGameState();
-        if (gameState.park.rating < 700 && GetDate().GetMonthsElapsed() >= 1)
+        auto& park = getGameState().park;
+
+        // TODO: make park-specific
+        if (park.rating < 700 && GetDate().GetMonthsElapsed() >= 1)
         {
             gameState.scenarioParkRatingWarningDays++;
             if (gameState.scenarioParkRatingWarningDays == 1)
@@ -135,7 +138,7 @@ namespace OpenRCT2::Scenario
             else if (gameState.scenarioParkRatingWarningDays == 29)
             {
                 News::AddItemToQueue(News::ItemType::graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
-                gameState.park.flags &= ~PARK_FLAGS_PARK_OPEN;
+                park.flags &= ~PARK_FLAGS_PARK_OPEN;
                 gameState.scenarioOptions.guestInitialHappiness = 50;
                 return ObjectiveStatus::Failure;
             }
@@ -145,8 +148,8 @@ namespace OpenRCT2::Scenario
             gameState.scenarioParkRatingWarningDays = 0;
         }
 
-        if (gameState.park.rating >= 700)
-            if (gameState.park.numGuestsInPark >= NumGuests)
+        if (park.rating >= 700)
+            if (park.numGuestsInPark >= NumGuests)
                 return ObjectiveStatus::Success;
 
         return ObjectiveStatus::Undecided;
@@ -154,7 +157,10 @@ namespace OpenRCT2::Scenario
 
     ObjectiveStatus Objective::CheckMonthlyRideIncome() const
     {
-        money64 lastMonthRideIncome = getGameState().park.expenditureTable[1][EnumValue(ExpenditureType::parkRideTickets)];
+        // TODO: pass park by ref
+        const auto& park = getGameState().park;
+
+        money64 lastMonthRideIncome = park.expenditureTable[1][EnumValue(ExpenditureType::parkRideTickets)];
         if (lastMonthRideIncome >= Currency)
         {
             return ObjectiveStatus::Success;
@@ -229,9 +235,10 @@ namespace OpenRCT2::Scenario
 
     ObjectiveStatus Objective::CheckRepayLoanAndParkValue() const
     {
-        const auto& gameState = getGameState();
-        money64 parkValue = gameState.park.value;
-        money64 currentLoan = gameState.park.bankLoan;
+        // TODO: pass park by ref
+        const auto& park = getGameState().park;
+        money64 parkValue = park.value;
+        money64 currentLoan = park.bankLoan;
 
         if (currentLoan <= 0 && parkValue >= Currency)
         {
@@ -243,7 +250,10 @@ namespace OpenRCT2::Scenario
 
     ObjectiveStatus Objective::CheckMonthlyFoodIncome() const
     {
-        const auto* lastMonthExpenditure = getGameState().park.expenditureTable[1];
+        // TODO: pass park by ref
+        const auto& park = getGameState().park;
+
+        const auto* lastMonthExpenditure = park.expenditureTable[1];
         auto lastMonthProfit = lastMonthExpenditure[EnumValue(ExpenditureType::shopSales)]
             + lastMonthExpenditure[EnumValue(ExpenditureType::shopStock)]
             + lastMonthExpenditure[EnumValue(ExpenditureType::foodDrinkSales)]
