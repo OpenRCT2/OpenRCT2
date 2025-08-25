@@ -14453,7 +14453,7 @@ namespace OpenRCT2::HybridRC
                         break;
                 }
                 WoodenASupportsPaintSetupRotated(
-                    session, supportType.wooden, WoodenSupportSubType::nwSe, DirectionNext(direction), height,
+                    session, supportType.wooden, WoodenSupportSubType::neSw, DirectionNext(direction), height,
                     session.SupportColours, WoodenSupportTransitionType::up25Deg);
                 if (direction == 0 || direction == 1)
                 {
