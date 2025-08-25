@@ -15,19 +15,22 @@
 #include <string>
 #include <vector>
 
-class PeepNamesObject final : public Object
+namespace OpenRCT2
 {
-private:
-    std::vector<std::string> _givenNames;
-    std::vector<std::string> _surnames;
+    class PeepNamesObject final : public Object
+    {
+    private:
+        std::vector<std::string> _givenNames;
+        std::vector<std::string> _surnames;
 
-public:
-    static constexpr ObjectType kObjectType = ObjectType::peepNames;
+    public:
+        static constexpr ObjectType kObjectType = ObjectType::peepNames;
 
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void Load() override;
-    void Unload() override;
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void Load() override;
+        void Unload() override;
 
-    std::string GetGivenNameAt(size_t index) const;
-    std::string GetSurnameAt(size_t index) const;
-};
+        std::string GetGivenNameAt(size_t index) const;
+        std::string GetSurnameAt(size_t index) const;
+    };
+} // namespace OpenRCT2

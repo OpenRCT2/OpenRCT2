@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor MiniSuspendedCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::miniSuspendedCoaster,
         .supportType = MetalSupportType::fork,
@@ -36,7 +38,7 @@ constexpr RideTypeDescriptor MiniSuspendedCoasterRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 10, 24, 24, 8, },
     .MaxMass = 3,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftFrictionWheels, 4, 5 },
+    .LiftData = { Audio::SoundId::LiftFrictionWheels, 4, 5 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 40, 20, 80, 10, 3, 10 },
     .BuildCosts = { 30.00_GBP, 2.50_GBP, 40, },
@@ -54,13 +56,13 @@ constexpr RideTypeDescriptor MiniSuspendedCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 80), MakeRideRating(2, 50), MakeRideRating(2, 70) },
+        { RideRating::make(2, 80), RideRating::make(2, 50), RideRating::make(2, 70) },
         15,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 45), MakeRideRating(0, 15), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 45), RideRating::make(0, 15), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -79,4 +81,5 @@ constexpr RideTypeDescriptor MiniSuspendedCoasterRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

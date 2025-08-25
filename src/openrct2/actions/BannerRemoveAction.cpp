@@ -46,7 +46,7 @@ void BannerRemoveAction::Serialise(DataSerialiser& stream)
 GameActions::Result BannerRemoveAction::Query() const
 {
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
     res.Position.z = _loc.z;
@@ -94,7 +94,7 @@ GameActions::Result BannerRemoveAction::Query() const
 GameActions::Result BannerRemoveAction::Execute() const
 {
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
     res.Position.z = _loc.z;

@@ -22,6 +22,7 @@
 #include <openrct2/audio/Audio.h>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/management/Research.h>
+#include <openrct2/scenario/Scenario.h>
 #include <openrct2/scripting/ScriptEngine.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
@@ -78,7 +79,7 @@ namespace OpenRCT2::Ui::Windows
 
         bool GameHasEntities() const
         {
-            return GetNumFreeEntities() != kMaxEntities || getGameState().park.Flags & PARK_FLAGS_SPRITES_INITIALISED;
+            return GetNumFreeEntities() != kMaxEntities || getGameState().park.flags & PARK_FLAGS_SPRITES_INITIALISED;
         }
 
         void OnPrepareDraw() override
@@ -311,7 +312,7 @@ namespace OpenRCT2::Ui::Windows
             auto intent = Intent(WindowClass::Loadsave);
             intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::save);
             intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::scenario);
-            intent.PutExtra(INTENT_EXTRA_PATH, gameState.scenarioName);
+            intent.PutExtra(INTENT_EXTRA_PATH, gameState.scenarioOptions.name);
             intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<CloseCallback>(SaveScenarioCallback));
             ContextOpenIntent(&intent);
         }

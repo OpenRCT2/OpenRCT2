@@ -112,7 +112,7 @@ void ScreenshotCheck()
 
 static std::string ScreenshotGetParkName()
 {
-    return getGameState().park.Name;
+    return getGameState().park.name;
 }
 
 static std::string ScreenshotGetDirectory()

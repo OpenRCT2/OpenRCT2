@@ -158,7 +158,10 @@ namespace OpenRCT2::World::MapGenerator
         // Get technical map size, +2 for the black tiles around the map
         auto mapWidth = static_cast<int32_t>(dest.width + 2);
         auto mapHeight = static_cast<int32_t>(dest.height + 2);
-        MapInit({ mapHeight, mapWidth });
+
+        // The x and y axis are flipped in the world, so this uses y for x and x for y.
+        TileCoordsXY flippedMapSize{ mapHeight, mapWidth };
+        MapInit(flippedMapSize);
 
         if (settings->smooth_height_map)
         {
@@ -203,7 +206,6 @@ namespace OpenRCT2::World::MapGenerator
         {
             for (auto x = 0; x < dest.width; x++)
             {
-                // The x and y axis are flipped in the world, so this uses y for x and x for y.
                 auto tileCoords = HeightmapCoordToTileCoordsXY(x, y);
                 auto* const surfaceElement = MapGetSurfaceElementAt(tileCoords);
                 if (surfaceElement == nullptr)
@@ -236,7 +238,7 @@ namespace OpenRCT2::World::MapGenerator
         if (settings->smoothTileEdges)
         {
             // Set the tile slopes so that there are no cliffs
-            smoothMap({ mapWidth, mapHeight }, smoothTileWeak);
+            smoothMap(flippedMapSize, smoothTileWeak);
         }
     }
 } // namespace OpenRCT2::World::MapGenerator

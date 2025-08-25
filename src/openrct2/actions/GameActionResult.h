@@ -62,7 +62,7 @@ namespace OpenRCT2::GameActions
         std::array<uint8_t, 32> ErrorMessageArgs{};
         CoordsXYZ Position = { kLocationNull, kLocationNull, kLocationNull };
         money64 Cost = 0;
-        ExpenditureType Expenditure = ExpenditureType::Count;
+        ExpenditureType Expenditure = ExpenditureType::count;
 
 #ifdef __ANDROID__
         // Any_cast throws a bad_any_cast exception on Android

@@ -57,9 +57,9 @@ GameActions::Result ParkSetNameAction::Execute() const
 {
     // Do a no-op if new name is the same as the current name is the same
     auto& park = getGameState().park;
-    if (_name != park.Name)
+    if (_name != park.name)
     {
-        park.Name = _name;
+        park.name = _name;
         ScrollingTextInvalidate();
         GfxInvalidateScreen();
     }

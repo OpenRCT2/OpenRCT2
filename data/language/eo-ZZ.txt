@@ -3838,3 +3838,4 @@ STR_6799    :Eta mapo
 STR_7000    :aŭ
 STR_7001    :Nomo de atrakcio
 STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :Sondosiero ‘{STRING}’ estas distranĉita. Atendis sonpecon {INT32}, sed nur {INT32} disponeblas. Konsideru reinstali je RCT2.

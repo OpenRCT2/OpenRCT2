@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor RotoDropRTD =
 {
     .Category = RideCategory::thrill,
-    .StartTrackPiece = OpenRCT2::TrackElemType::TowerBase,
+    .StartTrackPiece = TrackElemType::TowerBase,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::rotoDrop,
         .enabledTrackGroups = {TrackGroup::tower},
@@ -37,7 +39,7 @@ constexpr RideTypeDescriptor RotoDropRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 255, 32, 3, 2, },
     .MaxMass = 15,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 50, 50, 10 },
     .UpkeepCosts = { 50, 20, 0, 10, 0, 0 },
     .BuildCosts = { 22.50_GBP, 0.00_GBP, 4, },
@@ -55,7 +57,7 @@ constexpr RideTypeDescriptor RotoDropRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 80), MakeRideRating(3, 50), MakeRideRating(3, 50) },
+        { RideRating::make(2, 80), RideRating::make(3, 50), RideRating::make(3, 50) },
         24,
         -1,
         false,
@@ -66,4 +68,5 @@ constexpr RideTypeDescriptor RotoDropRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

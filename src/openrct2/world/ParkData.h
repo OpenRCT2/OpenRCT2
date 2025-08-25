@@ -59,16 +59,16 @@ namespace OpenRCT2::Park
 {
     struct ParkData final
     {
-        std::string Name;
-        uint64_t Flags;
-        uint16_t Rating;
-        uint16_t RatingHistory[kParkRatingHistorySize];
-        int16_t RatingCasualtyPenalty;
-        money64 EntranceFee;
-        std::vector<CoordsXYZD> Entrances;
-        uint32_t Size;
-        money64 Value;
-        money64 ValueHistory[kFinanceHistorySize];
+        std::string name;
+        uint64_t flags;
+        uint16_t rating;
+        uint16_t ratingHistory[kParkRatingHistorySize];
+        int16_t ratingCasualtyPenalty;
+        money64 entranceFee;
+        std::vector<CoordsXYZD> entrances;
+        uint32_t size;
+        money64 value;
+        money64 valueHistory[kFinanceHistorySize];
 
         money64 cash;
         money64 cashHistory[kFinanceHistorySize];
@@ -80,7 +80,7 @@ namespace OpenRCT2::Park
         // The total profit for the entire scenario that precedes the current financial table.
         money64 historicalProfit;
         money64 currentProfit;
-        money64 expenditureTable[kExpenditureTableMonthCount][EnumValue(ExpenditureType::Count)];
+        money64 expenditureTable[kExpenditureTableMonthCount][EnumValue(ExpenditureType::count)];
         money64 currentExpenditure;
 
         money64 companyValue;

@@ -15,11 +15,10 @@
 #include <string_view>
 #include <vector>
 
-struct ObjectRepositoryItem;
-
 namespace OpenRCT2
 {
     struct GameState_t;
+    struct ObjectRepositoryItem;
 
     // Current version that is saved.
     constexpr uint32_t kParkFileCurrentVersion = 57;

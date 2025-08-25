@@ -22,6 +22,7 @@
 #include "../object/ClimateObject.h"
 #include "../object/ObjectManager.h"
 #include "../profiling/Profiling.h"
+#include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 
@@ -281,6 +282,11 @@ bool ClimateIsSnowingHeavily()
 {
     auto& weather = getGameState().weatherCurrent.weatherType;
     return weather == WeatherType::HeavySnow || weather == WeatherType::Blizzard;
+}
+
+bool ClimateIsPrecipitating()
+{
+    return ClimateIsRaining() || ClimateIsSnowingHeavily();
 }
 
 bool WeatherIsDry(WeatherType weather)

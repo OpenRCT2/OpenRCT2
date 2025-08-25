@@ -175,11 +175,11 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex == WIDX_GAME_TOOLS)
             {
                 int32_t i = 0;
-                gDropdownItems[i++].Format = STR_SCENARIO_EDITOR;
-                gDropdownItems[i++].Format = STR_CONVERT_SAVED_GAME_TO_SCENARIO;
-                gDropdownItems[i++].Format = STR_ROLLER_COASTER_DESIGNER;
-                gDropdownItems[i++].Format = STR_TRACK_DESIGNS_MANAGER;
-                gDropdownItems[i++].Format = STR_OPEN_USER_CONTENT_FOLDER;
+                gDropdown.items[i++].format = STR_SCENARIO_EDITOR;
+                gDropdown.items[i++].format = STR_CONVERT_SAVED_GAME_TO_SCENARIO;
+                gDropdown.items[i++].format = STR_ROLLER_COASTER_DESIGNER;
+                gDropdown.items[i++].format = STR_TRACK_DESIGNS_MANAGER;
+                gDropdown.items[i++].format = STR_OPEN_USER_CONTENT_FOLDER;
 
 #ifdef ENABLE_SCRIPTING
                 auto hasCustomItems = false;
@@ -194,12 +194,12 @@ namespace OpenRCT2::Ui::Windows
                             if (!hasCustomItems)
                             {
                                 hasCustomItems = true;
-                                gDropdownItems[i++].Format = kStringIdEmpty;
+                                gDropdown.items[i++].format = kStringIdEmpty;
                             }
 
-                            gDropdownItems[i].Format = STR_STRING;
+                            gDropdown.items[i].format = STR_STRING;
                             auto sz = item.Text.c_str();
-                            std::memcpy(&gDropdownItems[i].Args, &sz, sizeof(const char*));
+                            std::memcpy(&gDropdown.items[i].args, &sz, sizeof(const char*));
                             i++;
                         }
                     }

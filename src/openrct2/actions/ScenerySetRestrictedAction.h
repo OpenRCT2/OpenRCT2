@@ -14,13 +14,13 @@
 class ScenerySetRestrictedAction final : public GameActionBase<GameCommand::SetRestrictedScenery>
 {
 private:
-    ObjectType _objectType;
-    ObjectEntryIndex _objectIndex;
+    OpenRCT2::ObjectType _objectType;
+    OpenRCT2::ObjectEntryIndex _objectIndex;
     bool _isRestricted;
 
 public:
     ScenerySetRestrictedAction() = default;
-    ScenerySetRestrictedAction(ObjectType objectType, ObjectEntryIndex entryIndex, bool isRestricted);
+    ScenerySetRestrictedAction(OpenRCT2::ObjectType objectType, OpenRCT2::ObjectEntryIndex entryIndex, bool isRestricted);
 
     uint16_t GetActionFlags() const override;
 

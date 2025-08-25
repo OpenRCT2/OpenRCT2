@@ -147,7 +147,7 @@ namespace OpenRCT2::Ui
             case ViewportInteractionItem::ParkEntrance:
             {
                 auto& gameState = getGameState();
-                auto parkName = gameState.park.Name.c_str();
+                auto parkName = gameState.park.name.c_str();
 
                 auto ft = Formatter();
                 ft.Add<StringId>(STR_STRING);

@@ -65,7 +65,7 @@ GameActions::Result ClearAction::CreateResult() const
 {
     auto result = GameActions::Result();
     result.ErrorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
-    result.Expenditure = ExpenditureType::Landscaping;
+    result.Expenditure = ExpenditureType::landscaping;
 
     auto x = (_range.GetLeft() + _range.GetRight()) / 2 + 16;
     auto y = (_range.GetTop() + _range.GetBottom()) / 2 + 16;

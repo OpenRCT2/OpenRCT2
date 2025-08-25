@@ -26,5 +26,5 @@ public:
     OpenRCT2::GameActions::Result Execute() const override;
 
 private:
-    TileElement* GetFirstWallElementAt(const CoordsXYZD& location, bool isGhost) const;
+    OpenRCT2::TileElement* GetFirstWallElementAt(const CoordsXYZD& location, bool isGhost) const;
 };

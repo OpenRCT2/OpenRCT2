@@ -15,13 +15,16 @@
 
 #include <vector>
 
-struct SceneryGroupEntry
+namespace OpenRCT2
 {
-    static constexpr auto kObjectType = ObjectType::sceneryGroup;
+    struct SceneryGroupEntry
+    {
+        static constexpr auto kObjectType = ObjectType::sceneryGroup;
 
-    StringId name;
-    uint32_t image;
-    std::vector<ScenerySelection> SceneryEntries;
-    uint8_t priority;
-    uint32_t entertainer_costumes;
-};
+        StringId name;
+        uint32_t image;
+        std::vector<ScenerySelection> SceneryEntries;
+        uint8_t priority;
+        uint32_t entertainer_costumes;
+    };
+} // namespace OpenRCT2

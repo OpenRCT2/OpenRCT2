@@ -57,7 +57,7 @@ struct ResearchItem
         uint32_t rawValue;
         struct
         {
-            ObjectEntryIndex entryIndex;
+            OpenRCT2::ObjectEntryIndex entryIndex;
             uint8_t baseRideType;
             OpenRCT2::Research::EntryType type; // 0: scenery entry, 1: ride entry
         };
@@ -81,8 +81,8 @@ struct ResearchItem
     {
     }
     ResearchItem(
-        OpenRCT2::Research::EntryType _type, ObjectEntryIndex _entryIndex, uint8_t _baseRideType, ResearchCategory _category,
-        uint8_t _flags)
+        OpenRCT2::Research::EntryType _type, OpenRCT2::ObjectEntryIndex _entryIndex, uint8_t _baseRideType,
+        ResearchCategory _category, uint8_t _flags)
         : entryIndex(_entryIndex)
         , baseRideType(_baseRideType)
         , type(_type)
@@ -127,17 +127,18 @@ void ResearchFinishItem(const ResearchItem& researchItem);
 void ResearchInsert(ResearchItem&& item, bool researched);
 void ResearchRemove(const ResearchItem& researchItem);
 
-bool ResearchInsertRideEntry(ride_type_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched);
-void ResearchInsertRideEntry(ObjectEntryIndex entryIndex, bool researched);
-bool ResearchInsertSceneryGroupEntry(ObjectEntryIndex entryIndex, bool researched);
+bool ResearchInsertRideEntry(
+    ride_type_t rideType, OpenRCT2::ObjectEntryIndex entryIndex, ResearchCategory category, bool researched);
+void ResearchInsertRideEntry(OpenRCT2::ObjectEntryIndex entryIndex, bool researched);
+bool ResearchInsertSceneryGroupEntry(OpenRCT2::ObjectEntryIndex entryIndex, bool researched);
 
-bool ResearchIsInvented(ObjectType objectType, ObjectEntryIndex index);
+bool ResearchIsInvented(OpenRCT2::ObjectType objectType, OpenRCT2::ObjectEntryIndex index);
 void RideTypeSetInvented(ride_type_t rideType);
-void RideEntrySetInvented(ObjectEntryIndex rideEntryIndex);
+void RideEntrySetInvented(OpenRCT2::ObjectEntryIndex rideEntryIndex);
 void ScenerySetInvented(const ScenerySelection& sceneryItem);
 void ScenerySetNotInvented(const ScenerySelection& sceneryItem);
 bool RideTypeIsInvented(ride_type_t rideType);
-bool RideEntryIsInvented(ObjectEntryIndex rideEntryIndex);
+bool RideEntryIsInvented(OpenRCT2::ObjectEntryIndex rideEntryIndex);
 bool SceneryGroupIsInvented(int32_t sgIndex);
 void SceneryGroupSetInvented(int32_t sgIndex);
 bool SceneryIsInvented(const ScenerySelection& sceneryItem);

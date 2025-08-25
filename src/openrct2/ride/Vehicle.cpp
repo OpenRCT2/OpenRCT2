@@ -38,6 +38,7 @@
 #include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
 #include "../rct12/RCT12.h"
+#include "../scenario/Scenario.h"
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
@@ -4572,9 +4573,9 @@ static void ride_train_crash(Ride& ride, uint16_t numFatalities)
         }
 
         auto& gameState = getGameState();
-        if (gameState.park.RatingCasualtyPenalty < 500)
+        if (gameState.park.ratingCasualtyPenalty < 500)
         {
-            gameState.park.RatingCasualtyPenalty += 200;
+            gameState.park.ratingCasualtyPenalty += 200;
         }
     }
 }

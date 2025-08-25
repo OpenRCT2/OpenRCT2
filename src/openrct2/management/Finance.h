@@ -14,29 +14,29 @@
 
 enum class ExpenditureType : int32_t
 {
-    RideConstruction = 0,
-    RideRunningCosts,
-    LandPurchase,
-    Landscaping,
-    ParkEntranceTickets,
-    ParkRideTickets,
-    ShopSales,
-    ShopStock,
-    FoodDrinkSales,
-    FoodDrinkStock,
-    Wages,
-    Marketing,
-    Research,
-    Interest,
-    Count
+    rideConstruction = 0,
+    rideRunningCosts,
+    landPurchase,
+    landscaping,
+    parkEntranceTickets,
+    parkRideTickets,
+    shopSales,
+    shopStock,
+    foodDrinkSales,
+    foodDrinkStock,
+    wages,
+    marketing,
+    research,
+    interest,
+    count
 };
 
 constexpr uint8_t kExpenditureTableMonthCount = 16;
 constexpr uint8_t kFinanceHistorySize = 128;
 
-constexpr uint8_t MaxBankLoanInterestRate = 255;
+constexpr uint8_t kMaxBankLoanInterestRate = 255;
 
-extern const money64 research_cost_table[RESEARCH_FUNDING_COUNT];
+extern const money64 kResearchCosts[RESEARCH_FUNDING_COUNT];
 
 bool FinanceCheckMoneyRequired(uint32_t flags);
 bool FinanceCheckAffordability(money64 cost, uint32_t flags);

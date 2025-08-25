@@ -27,103 +27,106 @@
 
 #include <cassert>
 
-uint8_t SmallSceneryElement::GetSceneryQuadrant() const
+namespace OpenRCT2
 {
-    return (this->Type & kTileElementQuadrantMask) >> 6;
-}
-
-void SmallSceneryElement::SetSceneryQuadrant(uint8_t newQuadrant)
-{
-    Type &= ~kTileElementQuadrantMask;
-    Type |= (newQuadrant << 6);
-}
-
-uint16_t SmallSceneryElement::GetEntryIndex() const
-{
-    return this->entryIndex;
-}
-
-void SmallSceneryElement::SetEntryIndex(uint16_t newIndex)
-{
-    this->entryIndex = newIndex;
-}
-
-uint8_t SmallSceneryElement::GetAge() const
-{
-    return this->age;
-}
-
-void SmallSceneryElement::SetAge(uint8_t newAge)
-{
-    this->age = newAge;
-}
-
-void SmallSceneryElement::IncreaseAge(const CoordsXY& sceneryPos)
-{
-    if (IsGhost())
-        return;
-
-    if (age < 255)
+    uint8_t SmallSceneryElement::GetSceneryQuadrant() const
     {
-        uint8_t newAge = age++;
+        return (this->Type & kTileElementQuadrantMask) >> 6;
+    }
 
-        // Only invalidate tiles when scenery crosses the withering thresholds, and can be withered.
-        if (newAge == kSceneryWitherAgeThreshold1 || newAge == kSceneryWitherAgeThreshold2)
+    void SmallSceneryElement::SetSceneryQuadrant(uint8_t newQuadrant)
+    {
+        Type &= ~kTileElementQuadrantMask;
+        Type |= (newQuadrant << 6);
+    }
+
+    uint16_t SmallSceneryElement::GetEntryIndex() const
+    {
+        return this->entryIndex;
+    }
+
+    void SmallSceneryElement::SetEntryIndex(uint16_t newIndex)
+    {
+        this->entryIndex = newIndex;
+    }
+
+    uint8_t SmallSceneryElement::GetAge() const
+    {
+        return this->age;
+    }
+
+    void SmallSceneryElement::SetAge(uint8_t newAge)
+    {
+        this->age = newAge;
+    }
+
+    void SmallSceneryElement::IncreaseAge(const CoordsXY& sceneryPos)
+    {
+        if (IsGhost())
+            return;
+
+        if (age < 255)
         {
-            auto* sceneryEntry = GetEntry();
+            uint8_t newAge = age++;
 
-            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_WITHER))
+            // Only invalidate tiles when scenery crosses the withering thresholds, and can be withered.
+            if (newAge == kSceneryWitherAgeThreshold1 || newAge == kSceneryWitherAgeThreshold2)
             {
-                MapInvalidateTileZoom1({ sceneryPos, GetBaseZ(), GetClearanceZ() });
+                auto* sceneryEntry = GetEntry();
+
+                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_WITHER))
+                {
+                    MapInvalidateTileZoom1({ sceneryPos, GetBaseZ(), GetClearanceZ() });
+                }
             }
         }
     }
-}
 
-colour_t SmallSceneryElement::GetPrimaryColour() const
-{
-    return Colour[0];
-}
+    colour_t SmallSceneryElement::GetPrimaryColour() const
+    {
+        return Colour[0];
+    }
 
-colour_t SmallSceneryElement::GetSecondaryColour() const
-{
-    return Colour[1];
-}
+    colour_t SmallSceneryElement::GetSecondaryColour() const
+    {
+        return Colour[1];
+    }
 
-colour_t SmallSceneryElement::GetTertiaryColour() const
-{
-    return Colour[2];
-}
+    colour_t SmallSceneryElement::GetTertiaryColour() const
+    {
+        return Colour[2];
+    }
 
-void SmallSceneryElement::SetPrimaryColour(colour_t newColour)
-{
-    assert(newColour < COLOUR_COUNT);
-    Colour[0] = newColour;
-}
+    void SmallSceneryElement::SetPrimaryColour(colour_t newColour)
+    {
+        assert(newColour < COLOUR_COUNT);
+        Colour[0] = newColour;
+    }
 
-void SmallSceneryElement::SetSecondaryColour(colour_t newColour)
-{
-    assert(newColour < COLOUR_COUNT);
-    Colour[1] = newColour;
-}
+    void SmallSceneryElement::SetSecondaryColour(colour_t newColour)
+    {
+        assert(newColour < COLOUR_COUNT);
+        Colour[1] = newColour;
+    }
 
-void SmallSceneryElement::SetTertiaryColour(colour_t newColour)
-{
-    assert(newColour < COLOUR_COUNT);
-    Colour[2] = newColour;
-}
+    void SmallSceneryElement::SetTertiaryColour(colour_t newColour)
+    {
+        assert(newColour < COLOUR_COUNT);
+        Colour[2] = newColour;
+    }
 
-bool SmallSceneryElement::NeedsSupports() const
-{
-    return static_cast<bool>(Flags2 & MAP_ELEM_SMALL_SCENERY_FLAGS2_NEEDS_SUPPORTS);
-}
+    bool SmallSceneryElement::NeedsSupports() const
+    {
+        return static_cast<bool>(Flags2 & MAP_ELEM_SMALL_SCENERY_FLAGS2_NEEDS_SUPPORTS);
+    }
 
-void SmallSceneryElement::SetNeedsSupports()
-{
-    Flags2 |= MAP_ELEM_SMALL_SCENERY_FLAGS2_NEEDS_SUPPORTS;
-}
+    void SmallSceneryElement::SetNeedsSupports()
+    {
+        Flags2 |= MAP_ELEM_SMALL_SCENERY_FLAGS2_NEEDS_SUPPORTS;
+    }
 
-const SmallSceneryEntry* SmallSceneryElement::GetEntry() const
-{
-    return OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
-}
+    const SmallSceneryEntry* SmallSceneryElement::GetEntry() const
+    {
+        return ObjectManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
+    }
+} // namespace OpenRCT2

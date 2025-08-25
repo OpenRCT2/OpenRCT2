@@ -13,7 +13,10 @@
 #include <string_view>
 #include <vector>
 
-using ObjectEntryIndex = uint16_t;
+namespace OpenRCT2
+{
+    using ObjectEntryIndex = uint16_t;
+}
 
 namespace OpenRCT2::RCT12
 {

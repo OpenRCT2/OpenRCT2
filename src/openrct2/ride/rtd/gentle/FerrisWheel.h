@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor FerrisWheelRTD =
 {
     .Category = RideCategory::gentle,
-    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x4C,
+    .StartTrackPiece = TrackElemType::FlatTrack1x4C,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::ferrisWheel,
         .enabledTrackGroups = {},
@@ -38,7 +40,7 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 16, 176, 3, 2, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 60, 20, 10 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 112.50_GBP, 1.00_GBP, 1, },
@@ -56,7 +58,7 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { MakeRideRating(0, 60), MakeRideRating(0, 25), MakeRideRating(0, 30) },
+        { RideRating::make(0, 60), RideRating::make(0, 25), RideRating::make(0, 30) },
         16,
         0,
         false,
@@ -66,4 +68,5 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

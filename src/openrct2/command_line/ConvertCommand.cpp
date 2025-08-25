@@ -16,8 +16,10 @@
 #include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/Path.hpp"
+#include "../core/String.hpp"
 #include "../object/ObjectManager.h"
 #include "../park/ParkFile.h"
+#include "../scenario/Scenario.h"
 #include "../ui/WindowManager.h"
 #include "CommandLine.hpp"
 

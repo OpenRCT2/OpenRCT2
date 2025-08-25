@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor LoopingRollerCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::loopingRollerCoaster,
         .supportType = MetalSupportType::tubes,
@@ -39,7 +41,7 @@ constexpr RideTypeDescriptor LoopingRollerCoasterRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 35, 24, 5, 7, },
     .MaxMass = 18,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftClassic, 4, 6 },
+    .LiftData = { Audio::SoundId::LiftClassic, 4, 6 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 40, 20, 80, 10, 3, 10 },
     .BuildCosts = { 45.00_GBP, 2.50_GBP, 50, },
@@ -63,13 +65,13 @@ constexpr RideTypeDescriptor LoopingRollerCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(3, 00), MakeRideRating(0, 50), MakeRideRating(0, 20) },
+        { RideRating::make(3, 00), RideRating::make(0, 50), RideRating::make(0, 20) },
         15,
         -1,
         true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -89,4 +91,5 @@ constexpr RideTypeDescriptor LoopingRollerCoasterRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

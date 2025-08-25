@@ -301,8 +301,8 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex == WIDX_OPEN_CLOSE_ALL)
             {
                 const auto& widget = widgets[widgetIndex];
-                gDropdownItems[0].Format = STR_CLOSE_ALL;
-                gDropdownItems[1].Format = STR_OPEN_ALL;
+                gDropdown.items[0].format = STR_CLOSE_ALL;
+                gDropdown.items[1].format = STR_OPEN_ALL;
                 WindowDropdownShowText(
                     { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], 0, 2);
             }
@@ -318,7 +318,7 @@ namespace OpenRCT2::Ui::Windows
                 int32_t selectedIndex = -1;
                 for (int32_t type = INFORMATION_TYPE_STATUS; type <= lastType; type++)
                 {
-                    if ((getGameState().park.Flags & PARK_FLAGS_NO_MONEY))
+                    if ((getGameState().park.flags & PARK_FLAGS_NO_MONEY))
                     {
                         if (ride_info_type_money_mapping[type])
                         {
@@ -331,8 +331,8 @@ namespace OpenRCT2::Ui::Windows
                         selectedIndex = numItems;
                     }
 
-                    gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[numItems].Args = ride_info_type_string_mapping[type];
+                    gDropdown.items[numItems].format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdown.items[numItems].args = ride_info_type_string_mapping[type];
                     numItems++;
                 }
 
@@ -376,7 +376,7 @@ namespace OpenRCT2::Ui::Windows
                     return;
 
                 int32_t informationType = INFORMATION_TYPE_STATUS;
-                uint32_t arg = static_cast<uint32_t>(gDropdownItems[dropdownIndex].Args);
+                uint32_t arg = static_cast<uint32_t>(gDropdown.items[dropdownIndex].args);
                 for (size_t i = 0; i < std::size(ride_info_type_string_mapping); i++)
                 {
                     if (arg == ride_info_type_string_mapping[i])
@@ -1075,23 +1075,24 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case INFORMATION_TYPE_EXCITEMENT:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        const auto leftValue = thisRide.ratings.isNull() ? kRideRatingUndefined : thisRide.ratings.excitement;
-                        const auto rightValue = otherRide.ratings.isNull() ? kRideRatingUndefined
+                        const auto leftValue = thisRide.ratings.isNull() ? RideRating::kUndefined : thisRide.ratings.excitement;
+                        const auto rightValue = otherRide.ratings.isNull() ? RideRating::kUndefined
                                                                            : otherRide.ratings.excitement;
                         return leftValue <= rightValue;
                     });
                     break;
                 case INFORMATION_TYPE_INTENSITY:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        const auto leftValue = thisRide.ratings.isNull() ? kRideRatingUndefined : thisRide.ratings.intensity;
-                        const auto rightValue = otherRide.ratings.isNull() ? kRideRatingUndefined : otherRide.ratings.intensity;
+                        const auto leftValue = thisRide.ratings.isNull() ? RideRating::kUndefined : thisRide.ratings.intensity;
+                        const auto rightValue = otherRide.ratings.isNull() ? RideRating::kUndefined
+                                                                           : otherRide.ratings.intensity;
                         return leftValue <= rightValue;
                     });
                     break;
                 case INFORMATION_TYPE_NAUSEA:
                     SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
-                        const auto leftValue = thisRide.ratings.isNull() ? kRideRatingUndefined : thisRide.ratings.nausea;
-                        const auto rightValue = otherRide.ratings.isNull() ? kRideRatingUndefined : otherRide.ratings.nausea;
+                        const auto leftValue = thisRide.ratings.isNull() ? RideRating::kUndefined : thisRide.ratings.nausea;
+                        const auto rightValue = otherRide.ratings.isNull() ? RideRating::kUndefined : otherRide.ratings.nausea;
                         return leftValue <= rightValue;
                     });
                     break;

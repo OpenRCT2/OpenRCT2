@@ -57,6 +57,7 @@
 #include "ride/TrackDesign.h"
 #include "ride/Vehicle.h"
 #include "sawyer_coding/SawyerCoding.h"
+#include "scenario/Scenario.h"
 #include "scenes/title/TitleScene.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"

@@ -16,6 +16,7 @@
     #include "../../../interface/Screenshot.h"
     #include "../../../localisation/Formatting.h"
     #include "../../../object/ObjectManager.h"
+    #include "../../../scenario/Scenario.h"
     #include "../../Duktape.hpp"
     #include "../../HookEngine.h"
     #include "../../IconNames.hpp"

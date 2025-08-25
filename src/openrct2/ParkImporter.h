@@ -16,11 +16,10 @@
 #include <memory>
 #include <vector>
 
-struct IObjectManager;
-struct IObjectRepository;
-
 namespace OpenRCT2
 {
+    struct IObjectManager;
+    struct IObjectRepository;
     struct IStream;
     struct GameState_t;
     struct ParkPreview;
@@ -31,12 +30,12 @@ struct ScenarioIndexEntry;
 struct ParkLoadResult final
 {
 public:
-    ObjectList RequiredObjects;
+    OpenRCT2::ObjectList RequiredObjects;
     bool SemiCompatibleVersion{};
     uint32_t MinVersion{};
     uint32_t TargetVersion{};
 
-    explicit ParkLoadResult(ObjectList&& requiredObjects)
+    explicit ParkLoadResult(OpenRCT2::ObjectList&& requiredObjects)
         : RequiredObjects(std::move(requiredObjects))
     {
     }
@@ -77,9 +76,9 @@ namespace OpenRCT2::ParkImporter
 class ObjectLoadException : public std::exception
 {
 public:
-    std::vector<ObjectEntryDescriptor> const MissingObjects;
+    std::vector<OpenRCT2::ObjectEntryDescriptor> const MissingObjects;
 
-    explicit ObjectLoadException(std::vector<ObjectEntryDescriptor>&& missingObjects)
+    explicit ObjectLoadException(std::vector<OpenRCT2::ObjectEntryDescriptor>&& missingObjects)
         : MissingObjects(std::move(missingObjects))
     {
     }
@@ -93,9 +92,9 @@ public:
 class UnsupportedRideTypeException : public std::exception
 {
 public:
-    ObjectEntryIndex const Type;
+    OpenRCT2::ObjectEntryIndex const Type;
 
-    explicit UnsupportedRideTypeException(ObjectEntryIndex type)
+    explicit UnsupportedRideTypeException(OpenRCT2::ObjectEntryIndex type)
         : Type(type)
     {
     }

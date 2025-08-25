@@ -13,23 +13,26 @@
 #include "BannerSceneryEntry.h"
 #include "SceneryObject.h"
 
-class BannerObject final : public SceneryObject
+namespace OpenRCT2
 {
-private:
-    BannerSceneryEntry _legacyType = {};
-
-public:
-    static constexpr ObjectType kObjectType = ObjectType::banners;
-
-    void* GetLegacyData() override
+    class BannerObject final : public SceneryObject
     {
-        return &_legacyType;
-    }
+    private:
+        BannerSceneryEntry _legacyType = {};
 
-    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void Load() override;
-    void Unload() override;
+    public:
+        static constexpr ObjectType kObjectType = ObjectType::banners;
 
-    void DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const override;
-};
+        void* GetLegacyData() override
+        {
+            return &_legacyType;
+        }
+
+        void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void Load() override;
+        void Unload() override;
+
+        void DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const override;
+    };
+} // namespace OpenRCT2

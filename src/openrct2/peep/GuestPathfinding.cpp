@@ -18,6 +18,7 @@
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
+#include "../scenario/Scenario.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "../world/tile_element/BannerElement.h"
@@ -1573,7 +1574,7 @@ namespace OpenRCT2::PathFinding
     {
         std::optional<CoordsXYZ> chosenEntrance = std::nullopt;
         uint16_t nearestDist = 0xFFFF;
-        for (const auto& parkEntrance : getGameState().park.Entrances)
+        for (const auto& parkEntrance : getGameState().park.entrances)
         {
             auto dist = abs(parkEntrance.x - loc.x) + abs(parkEntrance.y - loc.y);
             if (dist < nearestDist)

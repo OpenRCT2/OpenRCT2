@@ -30,5 +30,5 @@ public:
     OpenRCT2::GameActions::Result Execute() const override;
 
 private:
-    TileElement* FindLargeSceneryElement(const CoordsXYZ& pos, int32_t sequenceIndex) const;
+    OpenRCT2::TileElement* FindLargeSceneryElement(const CoordsXYZ& pos, int32_t sequenceIndex) const;
 };

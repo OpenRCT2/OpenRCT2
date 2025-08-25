@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor VirginiaReelRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::virginiaReel,
         .supportType = WoodenSupportType::truss,
@@ -35,7 +37,7 @@ constexpr RideTypeDescriptor VirginiaReelRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 14, 24, 6, 7, },
     .MaxMass = 15,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftClassic, 3, 5 },
+    .LiftData = { Audio::SoundId::LiftClassic, 3, 5 },
     .RatingsMultipliers = { 30, 15, 25 },
     .UpkeepCosts = { 39, 20, 80, 10, 3, 10 },
     .BuildCosts = { 26.50_GBP, 3.00_GBP, 25, },
@@ -54,13 +56,13 @@ constexpr RideTypeDescriptor VirginiaReelRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(2, 10), MakeRideRating(1, 90), MakeRideRating(3, 70) },
+        { RideRating::make(2, 10), RideRating::make(1, 90), RideRating::make(3, 70) },
         19,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             873, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                364088, 655360, 0 },
@@ -77,4 +79,5 @@ constexpr RideTypeDescriptor VirginiaReelRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

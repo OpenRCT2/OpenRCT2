@@ -288,7 +288,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
             {
                 bool int_valid[2] = { false };
                 int32_t ride_index = ConsoleParseInt(argv[2], &int_valid[0]);
-                ride_rating excitement = ConsoleParseInt(argv[3], &int_valid[1]);
+                RideRating_t excitement = ConsoleParseInt(argv[3], &int_valid[1]);
 
                 if (ride_index < 0)
                 {
@@ -321,7 +321,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
             {
                 bool int_valid[2] = { false };
                 int32_t ride_index = ConsoleParseInt(argv[2], &int_valid[0]);
-                ride_rating intensity = ConsoleParseInt(argv[3], &int_valid[1]);
+                RideRating_t intensity = ConsoleParseInt(argv[3], &int_valid[1]);
 
                 if (ride_index < 0)
                 {
@@ -354,7 +354,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
             {
                 bool int_valid[2] = { false };
                 int32_t ride_index = ConsoleParseInt(argv[2], &int_valid[0]);
-                ride_rating nausea = ConsoleParseInt(argv[3], &int_valid[1]);
+                RideRating_t nausea = ConsoleParseInt(argv[3], &int_valid[1]);
 
                 if (ride_index < 0)
                 {
@@ -549,11 +549,11 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
     {
         if (argv[0] == "park_rating")
         {
-            console.WriteFormatLine("park_rating %d", gameState.park.Rating);
+            console.WriteFormatLine("park_rating %d", gameState.park.rating);
         }
         else if (argv[0] == "park_value")
         {
-            console.WriteLine(FormatString("park_value {CURRENCY2DP}", gameState.park.Value));
+            console.WriteLine(FormatString("park_value {CURRENCY2DP}", gameState.park.value));
         }
         else if (argv[0] == "company_value")
         {
@@ -565,7 +565,7 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (argv[0] == "scenario_initial_cash")
         {
-            console.WriteLine(FormatString("scenario_initial_cash {CURRENCY2DP}", gameState.initialCash));
+            console.WriteLine(FormatString("scenario_initial_cash {CURRENCY2DP}", gameState.scenarioOptions.initialCash));
         }
         else if (argv[0] == "current_loan")
         {
@@ -577,28 +577,31 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (argv[0] == "guest_initial_cash")
         {
-            console.WriteLine(FormatString("guest_initial_cash {CURRENCY2DP}", gameState.guestInitialCash));
+            console.WriteLine(FormatString("guest_initial_cash {CURRENCY2DP}", gameState.scenarioOptions.guestInitialCash));
         }
         else if (argv[0] == "land_rights_cost")
         {
-            console.WriteLine(FormatString("land_rights_cost {CURRENCY2DP}", gameState.landPrice));
+            console.WriteLine(FormatString("land_rights_cost {CURRENCY2DP}", gameState.scenarioOptions.landPrice));
         }
         else if (argv[0] == "construction_rights_cost")
         {
-            console.WriteLine(FormatString("construction_rights_cost {CURRENCY2DP}", gameState.constructionRightsPrice));
+            console.WriteLine(
+                FormatString("construction_rights_cost {CURRENCY2DP}", gameState.scenarioOptions.constructionRightsPrice));
         }
         else if (argv[0] == "guest_initial_happiness")
         {
-            uint32_t current_happiness = gameState.guestInitialHappiness;
+            uint32_t current_happiness = gameState.scenarioOptions.guestInitialHappiness;
             for (int32_t i = 15; i <= 99; i++)
             {
                 if (i == 99)
                 {
-                    console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", 15, gameState.guestInitialHappiness);
+                    console.WriteFormatLine(
+                        "guest_initial_happiness %d%%  (%d)", 15, gameState.scenarioOptions.guestInitialHappiness);
                 }
                 else if (current_happiness == Park::CalculateGuestInitialHappiness(i))
                 {
-                    console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", i, gameState.guestInitialHappiness);
+                    console.WriteFormatLine(
+                        "guest_initial_happiness %d%%  (%d)", i, gameState.scenarioOptions.guestInitialHappiness);
                     break;
                 }
             }
@@ -606,64 +609,64 @@ static void ConsoleCommandGet(InteractiveConsole& console, const arguments_t& ar
         else if (argv[0] == "guest_initial_hunger")
         {
             console.WriteFormatLine(
-                "guest_initial_hunger %d%%  (%d)", ((255 - gameState.guestInitialHunger) * 100) / 255,
-                gameState.guestInitialHunger);
+                "guest_initial_hunger %d%%  (%d)", ((255 - gameState.scenarioOptions.guestInitialHunger) * 100) / 255,
+                gameState.scenarioOptions.guestInitialHunger);
         }
         else if (argv[0] == "guest_initial_thirst")
         {
             console.WriteFormatLine(
-                "guest_initial_thirst %d%%  (%d)", ((255 - gameState.guestInitialThirst) * 100) / 255,
-                gameState.guestInitialThirst);
+                "guest_initial_thirst %d%%  (%d)", ((255 - gameState.scenarioOptions.guestInitialThirst) * 100) / 255,
+                gameState.scenarioOptions.guestInitialThirst);
         }
         else if (argv[0] == "guest_prefer_less_intense_rides")
         {
             console.WriteFormatLine(
-                "guest_prefer_less_intense_rides %d", (gameState.park.Flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) != 0);
+                "guest_prefer_less_intense_rides %d", (gameState.park.flags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) != 0);
         }
         else if (argv[0] == "guest_prefer_more_intense_rides")
         {
             console.WriteFormatLine(
-                "guest_prefer_more_intense_rides %d", (gameState.park.Flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES) != 0);
+                "guest_prefer_more_intense_rides %d", (gameState.park.flags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES) != 0);
         }
         else if (argv[0] == "forbid_marketing_campaigns")
         {
             console.WriteFormatLine(
-                "forbid_marketing_campaigns %d", (gameState.park.Flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) != 0);
+                "forbid_marketing_campaigns %d", (gameState.park.flags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) != 0);
         }
         else if (argv[0] == "forbid_landscape_changes")
         {
             console.WriteFormatLine(
-                "forbid_landscape_changes %d", (gameState.park.Flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) != 0);
+                "forbid_landscape_changes %d", (gameState.park.flags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) != 0);
         }
         else if (argv[0] == "forbid_tree_removal")
         {
-            console.WriteFormatLine("forbid_tree_removal %d", (gameState.park.Flags & PARK_FLAGS_FORBID_TREE_REMOVAL) != 0);
+            console.WriteFormatLine("forbid_tree_removal %d", (gameState.park.flags & PARK_FLAGS_FORBID_TREE_REMOVAL) != 0);
         }
         else if (argv[0] == "forbid_high_construction")
         {
             console.WriteFormatLine(
-                "forbid_high_construction %d", (gameState.park.Flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION) != 0);
+                "forbid_high_construction %d", (gameState.park.flags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION) != 0);
         }
         else if (argv[0] == "pay_for_rides")
         {
-            console.WriteFormatLine("pay_for_rides %d", (gameState.park.Flags & PARK_FLAGS_PARK_FREE_ENTRY) != 0);
+            console.WriteFormatLine("pay_for_rides %d", (gameState.park.flags & PARK_FLAGS_PARK_FREE_ENTRY) != 0);
         }
         else if (argv[0] == "no_money")
         {
-            console.WriteFormatLine("no_money %d", (gameState.park.Flags & PARK_FLAGS_NO_MONEY) != 0);
+            console.WriteFormatLine("no_money %d", (gameState.park.flags & PARK_FLAGS_NO_MONEY) != 0);
         }
         else if (argv[0] == "difficult_park_rating")
         {
-            console.WriteFormatLine("difficult_park_rating %d", (gameState.park.Flags & PARK_FLAGS_DIFFICULT_PARK_RATING) != 0);
+            console.WriteFormatLine("difficult_park_rating %d", (gameState.park.flags & PARK_FLAGS_DIFFICULT_PARK_RATING) != 0);
         }
         else if (argv[0] == "difficult_guest_generation")
         {
             console.WriteFormatLine(
-                "difficult_guest_generation %d", (gameState.park.Flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0);
+                "difficult_guest_generation %d", (gameState.park.flags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0);
         }
         else if (argv[0] == "park_open")
         {
-            console.WriteFormatLine("park_open %d", (gameState.park.Flags & PARK_FLAGS_PARK_OPEN) != 0);
+            console.WriteFormatLine("park_open %d", (gameState.park.flags & PARK_FLAGS_PARK_OPEN) != 0);
         }
         else if (argv[0] == "game_speed")
         {
@@ -868,7 +871,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (varName == "pay_for_rides" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            SET_FLAG(gameState.park.Flags, PARK_FLAGS_PARK_FREE_ENTRY, int_val[0]);
+            SET_FLAG(gameState.park.flags, PARK_FLAGS_PARK_FREE_ENTRY, int_val[0]);
             console.Execute("get pay_for_rides");
         }
         else if (varName == "no_money" && InvalidArguments(&invalidArgs, int_valid[0]))
@@ -1050,7 +1053,7 @@ static void ConsoleCommandLoadObject(InteractiveConsole& console, const argument
             return;
         }
 
-        const RCTObjectEntry* entry = &ori->ObjectEntry;
+        const auto* entry = &ori->ObjectEntry;
         const auto* loadedObject = ObjectManagerGetLoadedObject(ObjectEntryDescriptor(*ori));
         if (loadedObject != nullptr)
         {

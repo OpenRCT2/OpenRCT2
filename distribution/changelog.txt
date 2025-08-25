@@ -12,17 +12,29 @@
 - Change: [#24974] Raise the Go-Karts maximum support height to allow 2 large sloped turns to be built on flat ground.
 - Fix: [#16988] AppImage version does not show changelog.
 - Fix: [#18048] Play music from all ride's stations.
+- Fix: [#19137] Non-inverted left corkscrew supports are incorrect at one angle (original bug).
+- Fix: [#23440] Quarter loops do not block metal supports correctly (original bug).
 - Fix: [#24001] Sloped diagonal metal supports that are offset with a crossbeam draw incorrectly.
 - Fix: [#24151] Sprites are cut off by 1 row of pixels when using OpenGL on Intel Macs.
 - Fix: [#24173] Allow all game speeds between 1 and 8 if developer mode is on.
 - Fix: [#24745] Potential crash when lighting effects are enabled and loading a save or a new scenario.
 - Fix: [#24835] Dive loop track pieces do not have tunnels.
+- Fix: [#24884] Smooth map and add beaches functions use incorrect map size with height map image files.
 - Fix: [#24915] LIM Launched (original bug), Corkscrew and Twister Roller Coaster inline twists have some incorrect tunnels.
+- Fix: [#24916] LIM Launched inline twists can draw over land edges when built underground (original bug).
 - Fix: [#24953] Crash when opening the Scenario Editor, Track Designer or Track Designs Manager.
 - Fix: [#24955] Hybrid Zero G Rolls do not fully block metal supports.
 - Fix: [#24958] Android: fix crash when device is offline.
 - Fix: [#24961] Queues with corner connections set with the tile inspector draw incorrect sprites.
 - Fix: [#24972] Fix crash when closing windows would open other windows.
+- Fix: [#24986] LIM Launched Roller Coaster inline twists block metal supports on the wrong side (original bug).
+- Fix: [#24989] Classic Wooden Roller Coaster small banked turns do not block metal supports correctly.
+- Fix: [#24993] The Mine Train Coaster sloped left medium turn has an incorrectly rotated support at one angle.
+- Fix: [#24994] The Alpine Coaster and Mine Ride left s-bends have an incorrectly rotated support at certain angles.
+- Fix: [#25001] The Hybrid Coaster small banked sloped right turn and large sloped right turn to orthogonal have some incorrectly rotated supports.
+- Fix: [#25002] The large right turn to diagonal on the Miniature Railway draws incorrectly at certain angles.
+- Fix: [#25005] The Corkscrew Roller Coaster inline twist inverted supports draw below the track.
+- Fix: [#25006] The Twister Roller Coaster inline twists do not draw in tunnels at some angles.
 
 0.4.25 (2025-08-03)
 ------------------------------------------------------------------------

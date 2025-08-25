@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor SpiralRollerCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::miniRollerCoaster,
         .supportType = MetalSupportType::fork,
@@ -39,7 +41,7 @@ constexpr RideTypeDescriptor SpiralRollerCoasterRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 19, 24, 9, 11, },
     .MaxMass = 31,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftFrictionWheels, 7, 7 },
+    .LiftData = { Audio::SoundId::LiftFrictionWheels, 7, 7 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 41, 20, 80, 10, 3, 10 },
     .BuildCosts = { 35.00_GBP, 2.50_GBP, 50, },
@@ -57,13 +59,13 @@ constexpr RideTypeDescriptor SpiralRollerCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(3, 30), MakeRideRating(0, 30), MakeRideRating(0, 30) },
+        { RideRating::make(3, 30), RideRating::make(0, 30), RideRating::make(0, 30) },
         14,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             819, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                140434, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                51366, 85019, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                364088, 400497, 0 },
@@ -82,4 +84,5 @@ constexpr RideTypeDescriptor SpiralRollerCoasterRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

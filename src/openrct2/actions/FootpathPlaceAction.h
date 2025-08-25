@@ -17,15 +17,15 @@ class FootpathPlaceAction final : public GameActionBase<GameCommand::PlacePath>
 private:
     CoordsXYZ _loc;
     uint8_t _slope{};
-    ObjectEntryIndex _type{};
-    ObjectEntryIndex _railingsType{};
+    OpenRCT2::ObjectEntryIndex _type{};
+    OpenRCT2::ObjectEntryIndex _railingsType{};
     Direction _direction{ kInvalidDirection };
     PathConstructFlags _constructFlags{};
 
 public:
     FootpathPlaceAction() = default;
     FootpathPlaceAction(
-        const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType,
+        const CoordsXYZ& loc, uint8_t slope, OpenRCT2::ObjectEntryIndex type, OpenRCT2::ObjectEntryIndex railingsType,
         Direction direction = kInvalidDirection, PathConstructFlags constructFlags = 0);
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
@@ -36,13 +36,15 @@ public:
     OpenRCT2::GameActions::Result Execute() const override;
 
 private:
-    OpenRCT2::GameActions::Result ElementUpdateQuery(PathElement* pathElement, OpenRCT2::GameActions::Result res) const;
-    OpenRCT2::GameActions::Result ElementUpdateExecute(PathElement* pathElement, OpenRCT2::GameActions::Result res) const;
+    OpenRCT2::GameActions::Result ElementUpdateQuery(
+        OpenRCT2::PathElement* pathElement, OpenRCT2::GameActions::Result res) const;
+    OpenRCT2::GameActions::Result ElementUpdateExecute(
+        OpenRCT2::PathElement* pathElement, OpenRCT2::GameActions::Result res) const;
     OpenRCT2::GameActions::Result ElementInsertQuery(OpenRCT2::GameActions::Result res) const;
     OpenRCT2::GameActions::Result ElementInsertExecute(OpenRCT2::GameActions::Result res) const;
     void AutomaticallySetPeepSpawn() const;
-    void RemoveIntersectingWalls(PathElement* pathElement) const;
-    PathElement* MapGetFootpathElementSlope(const CoordsXYZ& footpathPos, int32_t slope) const;
-    bool IsSameAsPathElement(const PathElement* pathElement) const;
-    bool IsSameAsEntranceElement(const EntranceElement& entranceElement) const;
+    void RemoveIntersectingWalls(OpenRCT2::PathElement* pathElement) const;
+    OpenRCT2::PathElement* MapGetFootpathElementSlope(const CoordsXYZ& footpathPos, int32_t slope) const;
+    bool IsSameAsPathElement(const OpenRCT2::PathElement* pathElement) const;
+    bool IsSameAsEntranceElement(const OpenRCT2::EntranceElement& entranceElement) const;
 };

@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::airPoweredVerticalCoaster,
         .supportType = WoodenSupportType::truss,
@@ -38,7 +40,7 @@ constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
     .Heights = { 255, 32, 4, 7, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 44, 66, 10 },
     .UpkeepCosts = { 90, 20, 0, 0, 0, 10 },
     .BuildCosts = { 100.00_GBP, 0.00_GBP, 45, },
@@ -57,13 +59,13 @@ constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(4, 13), MakeRideRating(2, 50), MakeRideRating(2, 80) },
+        { RideRating::make(4, 13), RideRating::make(2, 50), RideRating::make(2, 80) },
         28,
         -1,
         false,
         {
             { RatingsModifierType::BonusLength,           6000,             327, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 60), MakeRideRating(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 60), RideRating::make(0, 05), 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                509724, 364088, 320398 },
             { RatingsModifierType::BonusGForces,          0,                24576, 35746, 59578 },
             { RatingsModifierType::BonusSheltered,        0,                15420, 21845, 11702 },
@@ -74,4 +76,5 @@ constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

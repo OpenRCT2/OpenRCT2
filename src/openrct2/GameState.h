@@ -13,13 +13,14 @@
 #include "Date.h"
 #include "Editor.h"
 #include "Limits.h"
+#include "core/Random.hpp"
 #include "entity/EntityRegistry.h"
 #include "interface/ZoomLevel.h"
 #include "management/Finance.h"
 #include "management/NewsItem.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
-#include "scenario/Scenario.h"
+#include "scenario/ScenarioOptions.h"
 #include "world/Banner.h"
 #include "world/Climate.h"
 #include "world/Location.hpp"
@@ -35,6 +36,7 @@ namespace OpenRCT2
     struct GameState_t
     {
         Park::ParkData park{};
+        Scenario::Options scenarioOptions;
         std::string pluginStorage;
         uint32_t currentTicks{};
         Date date;
@@ -43,37 +45,26 @@ namespace OpenRCT2
         WeatherState weatherNext;
         uint16_t weatherUpdateTimer;
 
-        money64 initialCash;
-        money64 guestInitialCash;
-        uint8_t guestInitialHappiness;
-        uint8_t guestInitialHunger;
-        uint8_t guestInitialThirst;
         uint32_t nextGuestNumber;
 
-        Objective scenarioObjective;
         uint16_t scenarioParkRatingWarningDays;
         money64 scenarioCompletedCompanyValue;
         money64 scenarioCompanyValueRecord;
         random_engine_t scenarioRand;
 
         TileCoordsXY mapSize;
-        money64 landPrice;
-        money64 constructionRightsPrice;
 
         EditorStep editorStep;
 
-        ScenarioCategory scenarioCategory;
-        std::string scenarioName;
-        std::string scenarioDetails;
         std::string scenarioCompletedBy;
         std::string scenarioFileName;
 
         std::vector<Banner> banners;
         Entity_t entities[kMaxEntities]{};
         // Ride storage for all the rides in the park, rides with RideId::Null are considered free.
-        std::array<Ride, OpenRCT2::Limits::kMaxRidesInPark> rides{};
+        std::array<Ride, Limits::kMaxRidesInPark> rides{};
         size_t ridesEndOfUsedRange{};
-        RideRatingUpdateStates rideRatingUpdateStates;
+        RideRating::UpdateStates rideRatingUpdateStates;
         std::vector<TileElement> tileElements;
 
         std::vector<ScenerySelection> restrictedScenery;
