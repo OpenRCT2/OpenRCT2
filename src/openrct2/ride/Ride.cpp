@@ -2702,7 +2702,7 @@ void Ride::chainQueues() const
  *
  *  rct2: 0x006D3319
  */
-static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE* output)
+static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE* output, bool shouldCheckCompleteCircuit)
 {
     if (input.element == nullptr || input.element->GetType() != TileElementType::Track)
         return { false };
@@ -2739,7 +2739,7 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
             }
         }
     }
-    if (!it.looped)
+    if (!it.looped && shouldCheckCompleteCircuit)
     {
         // Not sure why this is the case...
         *output = it.last;
@@ -3458,14 +3458,14 @@ static TrainReference VehicleCreateTrain(
     return train;
 }
 
-static bool VehicleCreateTrains(Ride& ride, const CoordsXYZ& trainsPos, TrackElement* trackElement)
+static bool VehicleCreateTrains(Ride& ride, const CoordsXYZ& trainsPos, TrackElement* trackElement, int16_t numberOfTrains)
 {
     TrainReference firstTrain = {};
     TrainReference lastTrain = {};
     int32_t remainingDistance = 0;
     bool allTrainsCreated = true;
 
-    for (int32_t vehicleIndex = 0; vehicleIndex < ride.numTrains; vehicleIndex++)
+    for (int32_t vehicleIndex = 0; vehicleIndex < numberOfTrains; vehicleIndex++)
     {
         if (ride.isBlockSectioned())
         {
@@ -3585,7 +3585,7 @@ static void RidecreateVehiclesFindFirstBlock(const Ride& ride, CoordsXYE* outXYE
  * Create and place the rides vehicles
  *  rct2: 0x006DD84C
  */
-ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying)
+ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying, bool isSimulating)
 {
     updateMaxVehicles();
     if (subtype == kObjectEntryIndexNull)
@@ -3594,7 +3594,12 @@ ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying
     }
 
     // Check if there are enough free sprite slots for all the vehicles
-    int32_t totalCars = numTrains * numCarsPerTrain;
+    int32_t numberOfTrains = numTrains;
+    if (isBlockSectioned() && isSimulating)
+    {
+        numberOfTrains = 1;
+    }
+    int32_t totalCars = numberOfTrains * numCarsPerTrain;
     if (totalCars > count_free_misc_sprite_slots())
     {
         return { false, STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES };
@@ -3619,7 +3624,7 @@ ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying
         vehiclePos.z = trackElement->GetBaseZ();
     }
 
-    if (!VehicleCreateTrains(*this, vehiclePos, trackElement))
+    if (!VehicleCreateTrains(*this, vehiclePos, trackElement, numberOfTrains))
     {
         // This flag is needed for Ride::removeVehicles()
         lifecycleFlags |= RIDE_LIFECYCLE_ON_TRACK;
@@ -3639,7 +3644,7 @@ ResultWithMessage Ride::createVehicles(const CoordsXYE& element, bool isApplying
     //
     if (type != RIDE_TYPE_SPACE_RINGS && !getRideTypeDescriptor().HasFlag(RtdFlag::vehicleIsIntegral))
     {
-        if (isBlockSectioned())
+        if (isBlockSectioned() && !isSimulating)
         {
             CoordsXYE firstBlock{};
             RidecreateVehiclesFindFirstBlock(*this, &firstBlock);
@@ -4067,13 +4072,13 @@ ResultWithMessage Ride::test(bool isApplying)
         return message;
     }
 
-    message = changeStatusCheckTrackValidity(trackElement);
+    message = changeStatusCheckTrackValidity(trackElement, false);
     if (!message.Successful)
     {
         return message;
     }
 
-    return changeStatusCreateVehicles(isApplying, trackElement);
+    return changeStatusCreateVehicles(isApplying, trackElement, false);
 }
 
 ResultWithMessage Ride::simulate(bool isApplying)
@@ -4098,19 +4103,13 @@ ResultWithMessage Ride::simulate(bool isApplying)
         return message;
     }
 
-    if (isBlockSectioned() && findTrackGap(trackElement, &problematicTrackElement))
-    {
-        RideScrollToTrackError(problematicTrackElement);
-        return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
-    }
-
-    message = changeStatusCheckTrackValidity(trackElement);
+    message = changeStatusCheckTrackValidity(trackElement, true);
     if (!message.Successful)
     {
         return message;
     }
 
-    return changeStatusCreateVehicles(isApplying, trackElement);
+    return changeStatusCreateVehicles(isApplying, trackElement, true);
 }
 
 /**
@@ -4162,13 +4161,13 @@ ResultWithMessage Ride::open(bool isApplying)
         return message;
     }
 
-    message = changeStatusCheckTrackValidity(trackElement);
+    message = changeStatusCheckTrackValidity(trackElement, false);
     if (!message.Successful)
     {
         return message;
     }
 
-    return changeStatusCreateVehicles(isApplying, trackElement);
+    return changeStatusCreateVehicles(isApplying, trackElement, false);
 }
 
 /**
@@ -5937,13 +5936,13 @@ ResultWithMessage Ride::changeStatusCheckCompleteCircuit(const CoordsXYE& trackE
     return { true };
 }
 
-ResultWithMessage Ride::changeStatusCheckTrackValidity(const CoordsXYE& trackElement)
+ResultWithMessage Ride::changeStatusCheckTrackValidity(const CoordsXYE& trackElement, bool isSimulating)
 {
     CoordsXYE problematicTrackElement = {};
 
     if (isBlockSectioned())
     {
-        auto blockBrakeCheck = RideCheckBlockBrakes(trackElement, &problematicTrackElement);
+        auto blockBrakeCheck = RideCheckBlockBrakes(trackElement, &problematicTrackElement, !isSimulating);
         if (!blockBrakeCheck.Successful)
         {
             RideScrollToTrackError(problematicTrackElement);
@@ -5999,7 +5998,7 @@ ResultWithMessage Ride::changeStatusCheckTrackValidity(const CoordsXYE& trackEle
     return { true };
 }
 
-ResultWithMessage Ride::changeStatusCreateVehicles(bool isApplying, const CoordsXYE& trackElement)
+ResultWithMessage Ride::changeStatusCreateVehicles(bool isApplying, const CoordsXYE& trackElement, bool isSimulating)
 {
     if (isApplying)
         RideSetStartFinishPoints(id, trackElement);
@@ -6007,7 +6006,7 @@ ResultWithMessage Ride::changeStatusCreateVehicles(bool isApplying, const Coords
     const auto& rtd = getRideTypeDescriptor();
     if (!rtd.HasFlag(RtdFlag::noVehicles) && !(lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK))
     {
-        const auto createVehicleResult = createVehicles(trackElement, isApplying);
+        const auto createVehicleResult = createVehicles(trackElement, isApplying, isSimulating);
         if (!createVehicleResult.Successful)
         {
             return { false, createVehicleResult.Message };
