@@ -42,6 +42,7 @@
 - Fix: [#25054] Panning a viewport in a window that is partially outside the game’s window can draw incorrectly or crash in software rendering.
 - Fix: [#25062] Certain peep actions cannot be triggered if they are under or inside a track piece due to faulty verification of them being on a level crossing.
 - Fix: [#25067] Progress bars can flicker when downloading maps in multiplayer mode.
+- Fix: [#25075] The Hybrid Coaster quarter loops draw over land edges and walls directly next to them.
 
 0.4.25 (2025-08-03)
 ------------------------------------------------------------------------
