@@ -902,20 +902,20 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex != WIDX_SORT_CUSTOMISE)
                 return;
 
-            gDropdownItems[0].Format = STR_TOGGLE_OPTION;
-            gDropdownItems[1].Format = STR_TOGGLE_OPTION;
-            gDropdownItems[2].Format = STR_TOGGLE_OPTION;
-            gDropdownItems[3].Format = kStringIdEmpty;
-            gDropdownItems[4].Format = STR_DROPDOWN_BULLET_OPTION;
-            gDropdownItems[5].Format = STR_DROPDOWN_BULLET_OPTION;
-            gDropdownItems[6].Format = STR_DROPDOWN_BULLET_OPTION;
+            gDropdown.items[0].format = STR_TOGGLE_OPTION;
+            gDropdown.items[1].format = STR_TOGGLE_OPTION;
+            gDropdown.items[2].format = STR_TOGGLE_OPTION;
+            gDropdown.items[3].format = kStringIdEmpty;
+            gDropdown.items[4].format = STR_DROPDOWN_BULLET_OPTION;
+            gDropdown.items[5].format = STR_DROPDOWN_BULLET_OPTION;
+            gDropdown.items[6].format = STR_DROPDOWN_BULLET_OPTION;
 
-            gDropdownItems[0].Args = STR_FILEBROWSER_CUSTOMISE_FILENAME;
-            gDropdownItems[1].Args = STR_FILEBROWSER_CUSTOMISE_SIZE;
-            gDropdownItems[2].Args = STR_FILEBROWSER_CUSTOMISE_DATE;
-            gDropdownItems[4].Args = STR_FILEBROWSER_PREVIEW_DISABLED;
-            gDropdownItems[5].Args = STR_FILEBROWSER_PREVIEW_MINIMAP;
-            gDropdownItems[6].Args = STR_FILEBROWSER_PREVIEW_SCREENSHOT;
+            gDropdown.items[0].args = STR_FILEBROWSER_CUSTOMISE_FILENAME;
+            gDropdown.items[1].args = STR_FILEBROWSER_CUSTOMISE_SIZE;
+            gDropdown.items[2].args = STR_FILEBROWSER_CUSTOMISE_DATE;
+            gDropdown.items[4].args = STR_FILEBROWSER_PREVIEW_DISABLED;
+            gDropdown.items[5].args = STR_FILEBROWSER_PREVIEW_MINIMAP;
+            gDropdown.items[6].args = STR_FILEBROWSER_PREVIEW_SCREENSHOT;
 
             Widget* widget = &widgets[WIDX_SORT_CUSTOMISE];
 

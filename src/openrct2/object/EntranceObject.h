@@ -14,27 +14,30 @@
 #include "EntranceEntry.h"
 #include "Object.h"
 
-class EntranceObject final : public Object
+namespace OpenRCT2
 {
-private:
-    EntranceEntry _legacyType = {};
-
-public:
-    static constexpr ObjectType kObjectType = ObjectType::parkEntrance;
-
-    void* GetLegacyData() override
+    class EntranceObject final : public Object
     {
-        return &_legacyType;
-    }
+    private:
+        EntranceEntry _legacyType = {};
 
-    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
-    void ReadJson(IReadObjectContext* context, json_t& root) override;
-    void Load() override;
-    void Unload() override;
+    public:
+        static constexpr ObjectType kObjectType = ObjectType::parkEntrance;
 
-    void DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const override;
+        void* GetLegacyData() override
+        {
+            return &_legacyType;
+        }
 
-    ImageIndex GetImage(uint8_t sequence, Direction direction) const;
-    uint8_t GetScrollingMode() const;
-    uint8_t GetTextHeight() const;
-};
+        void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
+        void ReadJson(IReadObjectContext* context, json_t& root) override;
+        void Load() override;
+        void Unload() override;
+
+        void DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const override;
+
+        ImageIndex GetImage(uint8_t sequence, Direction direction) const;
+        uint8_t GetScrollingMode() const;
+        uint8_t GetTextHeight() const;
+    };
+} // namespace OpenRCT2

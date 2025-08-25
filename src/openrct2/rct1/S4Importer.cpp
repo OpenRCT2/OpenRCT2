@@ -63,6 +63,8 @@
 #include "../ride/TrainManager.h"
 #include "../ride/Vehicle.h"
 #include "../sawyer_coding/SawyerCoding.h"
+#include "../scenario/Scenario.h"
+#include "../scenario/ScenarioObjective.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
 #include "../world/Climate.h"
@@ -234,7 +236,7 @@ namespace OpenRCT2::RCT1
             bool isOfficial = ScenarioSources::TryGetById(_s4.ScenarioSlotIndex, &desc);
 
             // Perform an additional name check if this is detected to be a competition scenario
-            if (isOfficial && desc.category == ScenarioCategory::competitions)
+            if (isOfficial && desc.category == Scenario::Category::competitions)
                 isOfficial = ScenarioSources::TryGetByName(_s4.ScenarioName, &desc);
 
             dst->Category = desc.category;
@@ -245,13 +247,13 @@ namespace OpenRCT2::RCT1
             dst->ObjectiveType = _s4.ScenarioObjectiveType;
             dst->ObjectiveArg1 = _s4.ScenarioObjectiveYears;
             // RCT1 used another way of calculating park value.
-            if (_s4.ScenarioObjectiveType == OBJECTIVE_PARK_VALUE_BY)
+            if (_s4.ScenarioObjectiveType == Scenario::ObjectiveType::parkValueBy)
                 dst->ObjectiveArg2 = CorrectRCT1ParkValue(_s4.ScenarioObjectiveCurrency);
             else
                 dst->ObjectiveArg2 = _s4.ScenarioObjectiveCurrency;
             dst->ObjectiveArg3 = _s4.ScenarioObjectiveNumGuests;
             // This does not seem to be saved in the objective arguments, so look up the ID from the available rides instead.
-            if (_s4.ScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
+            if (_s4.ScenarioObjectiveType == Scenario::ObjectiveType::buildTheBest)
             {
                 dst->ObjectiveArg3 = GetBuildTheBestRideId();
             }
@@ -357,8 +359,8 @@ namespace OpenRCT2::RCT1
             // Do map initialisation, same kind of stuff done when loading scenario editor
             gameStateInitAll(gameState, { mapSize, mapSize });
             gameState.editorStep = EditorStep::ObjectSelection;
-            gameState.park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-            gameState.scenarioCategory = ScenarioCategory::other;
+            gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+            gameState.scenarioOptions.category = Scenario::Category::other;
         }
 
         std::string GetRCT1ScenarioName()
@@ -1500,25 +1502,25 @@ namespace OpenRCT2::RCT1
 
         void ImportFinance(GameState_t& gameState)
         {
-            gameState.park.EntranceFee = _s4.ParkEntranceFee;
-            gameState.landPrice = ToMoney64(_s4.LandPrice);
-            gameState.constructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
+            gameState.park.entranceFee = _s4.ParkEntranceFee;
+            gameState.scenarioOptions.landPrice = ToMoney64(_s4.LandPrice);
+            gameState.scenarioOptions.constructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
 
             gameState.park.cash = ToMoney64(_s4.Cash);
             gameState.park.bankLoan = ToMoney64(_s4.Loan);
             gameState.park.maxBankLoan = ToMoney64(_s4.MaxLoan);
             // It's more like 1.33%, but we can only use integers. Can be fixed once we have our own save format.
             gameState.park.bankLoanInterestRate = 1;
-            gameState.initialCash = ToMoney64(_s4.Cash);
+            gameState.scenarioOptions.initialCash = ToMoney64(_s4.Cash);
 
             gameState.park.companyValue = ToMoney64(_s4.CompanyValue);
-            gameState.park.Value = CorrectRCT1ParkValue(_s4.ParkValue);
+            gameState.park.value = CorrectRCT1ParkValue(_s4.ParkValue);
             gameState.park.currentProfit = ToMoney64(_s4.Profit);
 
             for (size_t i = 0; i < Limits::kFinanceGraphSize; i++)
             {
                 gameState.park.cashHistory[i] = ToMoney64(_s4.CashHistory[i]);
-                gameState.park.ValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
+                gameState.park.valueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
                 gameState.park.weeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
             }
 
@@ -2214,7 +2216,7 @@ namespace OpenRCT2::RCT1
             }
 
             auto& park = gameState.park;
-            park.Name = std::move(parkName);
+            park.name = std::move(parkName);
         }
 
         std::vector<OpenRCT2::News::Item> convertNewsQueue(std::span<const RCT12NewsItem> queue)
@@ -2263,14 +2265,14 @@ namespace OpenRCT2::RCT1
             gameState.date = Date{ _s4.Month, _s4.Day };
 
             // Park rating
-            gameState.park.Rating = _s4.ParkRating;
+            gameState.park.rating = _s4.ParkRating;
 
             Park::ResetHistories(gameState);
             for (size_t i = 0; i < std::size(_s4.ParkRatingHistory); i++)
             {
                 if (_s4.ParkRatingHistory[i] != kRCT12ParkHistoryUndefined)
                 {
-                    gameState.park.RatingHistory[i] = _s4.ParkRatingHistory[i] * kRCT12ParkRatingHistoryFactor;
+                    gameState.park.ratingHistory[i] = _s4.ParkRatingHistory[i] * kRCT12ParkRatingHistoryFactor;
                 }
             }
             for (size_t i = 0; i < std::size(_s4.GuestsInParkHistory); i++)
@@ -2309,10 +2311,10 @@ namespace OpenRCT2::RCT1
             News::importNewsItems(gameState, recentMessages, archivedMessages);
 
             // Initial guest status
-            gameState.guestInitialCash = ToMoney64(_s4.GuestInitialCash);
-            gameState.guestInitialHunger = _s4.GuestInitialHunger;
-            gameState.guestInitialThirst = _s4.GuestInitialThirst;
-            gameState.guestInitialHappiness = _s4.GuestInitialHappiness;
+            gameState.scenarioOptions.guestInitialCash = ToMoney64(_s4.GuestInitialCash);
+            gameState.scenarioOptions.guestInitialHunger = _s4.GuestInitialHunger;
+            gameState.scenarioOptions.guestInitialThirst = _s4.GuestInitialThirst;
+            gameState.scenarioOptions.guestInitialHappiness = _s4.GuestInitialHappiness;
 
             gameState.park.guestGenerationProbability = _s4.GuestGenerationProbability;
 
@@ -2322,17 +2324,17 @@ namespace OpenRCT2::RCT1
             gameState.park.staffSecurityColour = RCT1::GetColour(_s4.SecurityGuardColour);
 
             // Flags
-            gameState.park.Flags = _s4.ParkFlags;
-            gameState.park.Flags &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
-            gameState.park.Flags |= PARK_FLAGS_RCT1_INTEREST;
+            gameState.park.flags = _s4.ParkFlags;
+            gameState.park.flags &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
+            gameState.park.flags |= PARK_FLAGS_RCT1_INTEREST;
             // Loopy Landscape parks can set a flag to lock the entry price to free.
             // If this flag is not set, the player can ask money for both rides and entry.
             if (!(_s4.ParkFlags & RCT1_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE))
             {
-                gameState.park.Flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                gameState.park.flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
             }
 
-            gameState.park.Size = _s4.ParkSize;
+            gameState.park.size = _s4.ParkSize;
             gameState.park.totalRideValueForMoney = _s4.TotalRideValueForMoney;
             gameState.park.samePriceThroughoutPark = 0;
             if (_gameVersion == FILE_VERSION_RCT1_LL)
@@ -2430,7 +2432,7 @@ namespace OpenRCT2::RCT1
                 bool isOfficial = ScenarioSources::TryGetById(_s4.ScenarioSlotIndex, &desc);
 
                 // Perform an additional name check if this is detected to be a competition scenario
-                if (isOfficial && desc.category == ScenarioCategory::competitions)
+                if (isOfficial && desc.category == Scenario::Category::competitions)
                     isOfficial = ScenarioSources::TryGetByName(_s4.ScenarioName, &desc);
 
                 if (isOfficial && !desc.textObjectId.empty())
@@ -2447,32 +2449,32 @@ namespace OpenRCT2::RCT1
                 }
             }
 
-            gameState.scenarioName = std::move(name);
-            gameState.scenarioDetails = std::move(details);
+            gameState.scenarioOptions.name = std::move(name);
+            gameState.scenarioOptions.details = std::move(details);
             if (_isScenario && !parkName.empty())
             {
                 auto& park = getGameState().park;
-                park.Name = std::move(parkName);
+                park.name = std::move(parkName);
             }
         }
 
         void ImportScenarioObjective(GameState_t& gameState)
         {
-            gameState.scenarioObjective.Type = _s4.ScenarioObjectiveType;
-            gameState.scenarioObjective.Year = _s4.ScenarioObjectiveYears;
-            gameState.scenarioObjective.NumGuests = _s4.ScenarioObjectiveNumGuests;
+            gameState.scenarioOptions.objective.Type = _s4.ScenarioObjectiveType;
+            gameState.scenarioOptions.objective.Year = _s4.ScenarioObjectiveYears;
+            gameState.scenarioOptions.objective.NumGuests = _s4.ScenarioObjectiveNumGuests;
 
             // RCT1 used a different way of calculating the park value.
             // This is corrected here, but since scenario_objective_currency doubles as minimum excitement rating,
             // we need to check the goal to avoid affecting scenarios like Volcania.
-            if (_s4.ScenarioObjectiveType == OBJECTIVE_PARK_VALUE_BY)
-                gameState.scenarioObjective.Currency = CorrectRCT1ParkValue(_s4.ScenarioObjectiveCurrency);
+            if (_s4.ScenarioObjectiveType == Scenario::ObjectiveType::parkValueBy)
+                gameState.scenarioOptions.objective.Currency = CorrectRCT1ParkValue(_s4.ScenarioObjectiveCurrency);
             else
-                gameState.scenarioObjective.Currency = ToMoney64(_s4.ScenarioObjectiveCurrency);
+                gameState.scenarioOptions.objective.Currency = ToMoney64(_s4.ScenarioObjectiveCurrency);
 
             // This does not seem to be saved in the objective arguments, so look up the ID from the available rides instead.
-            if (_s4.ScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
-                gameState.scenarioObjective.RideId = GetBuildTheBestRideId();
+            if (_s4.ScenarioObjectiveType == Scenario::ObjectiveType::buildTheBest)
+                gameState.scenarioOptions.objective.RideId = GetBuildTheBestRideId();
         }
 
         void ImportSavedView(GameState_t& gameState)
@@ -2545,10 +2547,10 @@ namespace OpenRCT2::RCT1
 
         void FixEntrancePositions(GameState_t& gameState)
         {
-            gameState.park.Entrances.clear();
+            gameState.park.entrances.clear();
             TileElementIterator it;
             TileElementIteratorBegin(&it);
-            while (TileElementIteratorNext(&it) && gameState.park.Entrances.size() < Limits::kMaxParkEntrances)
+            while (TileElementIteratorNext(&it) && gameState.park.entrances.size() < Limits::kMaxParkEntrances)
             {
                 TileElement* element = it.element;
 
@@ -2560,7 +2562,7 @@ namespace OpenRCT2::RCT1
                     continue;
 
                 CoordsXYZD entrance = { TileCoordsXY(it.x, it.y).ToCoordsXY(), element->GetBaseZ(), element->GetDirection() };
-                gameState.park.Entrances.push_back(entrance);
+                gameState.park.entrances.push_back(entrance);
             }
         }
 

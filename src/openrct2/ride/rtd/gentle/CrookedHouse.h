@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor CrookedHouseRTD =
 {
     .Category = RideCategory::gentle,
-    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
+    .StartTrackPiece = TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::crookedHouse,
         .enabledTrackGroups = {},
@@ -37,7 +39,7 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
     .AvailableBreakdowns = 0,
     .Heights = { 16, 96, 3, 2, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 15, 8, 0 },
     .UpkeepCosts = { 30, 1, 0, 0, 0, 0 },
     .BuildCosts = { 32.50_GBP, 1.00_GBP, 1, },
@@ -54,11 +56,12 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { MakeRideRating(2, 15), MakeRideRating(0, 62), MakeRideRating(0, 34) },
+        { RideRating::make(2, 15), RideRating::make(0, 62), RideRating::make(0, 34) },
         5,
         7,
         false,
         { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
     },
 };
+} // namespace OpenRCT2
 // clang-format on

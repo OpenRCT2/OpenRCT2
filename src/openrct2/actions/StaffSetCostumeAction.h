@@ -16,11 +16,11 @@ class StaffSetCostumeAction final : public GameActionBase<GameCommand::SetStaffC
 {
 private:
     EntityId _spriteIndex{ EntityId::GetNull() };
-    ObjectEntryIndex _costume = kObjectEntryIndexNull;
+    OpenRCT2::ObjectEntryIndex _costume = OpenRCT2::kObjectEntryIndexNull;
 
 public:
     StaffSetCostumeAction() = default;
-    StaffSetCostumeAction(EntityId spriteIndex, ObjectEntryIndex costume);
+    StaffSetCostumeAction(EntityId spriteIndex, OpenRCT2::ObjectEntryIndex costume);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

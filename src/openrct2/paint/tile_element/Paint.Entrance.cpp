@@ -234,10 +234,10 @@ static void PaintParkEntranceScrollingText(
 
     auto ft = Formatter();
     auto& gameState = getGameState();
-    if (gameState.park.Flags & PARK_FLAGS_PARK_OPEN)
+    if (gameState.park.flags & PARK_FLAGS_PARK_OPEN)
     {
         const auto& park = gameState.park;
-        auto name = park.Name.c_str();
+        auto name = park.name.c_str();
         ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(name);
     }

@@ -33,6 +33,7 @@
 #include "../ride/RideData.h"
 #include "../ride/RideEntry.h"
 #include "../ride/TrackData.h"
+#include "../scenario/Scenario.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
@@ -326,7 +327,7 @@ void ResearchUpdate()
         return;
     }
 
-    if ((gameState.park.Flags & PARK_FLAGS_NO_MONEY) && gameState.researchFundingLevel == RESEARCH_FUNDING_NONE)
+    if ((gameState.park.flags & PARK_FLAGS_NO_MONEY) && gameState.researchFundingLevel == RESEARCH_FUNDING_NONE)
     {
         researchLevel = RESEARCH_FUNDING_NORMAL;
     }

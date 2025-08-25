@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor MagicCarpetRTD =
 {
     .Category = RideCategory::thrill,
-    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack1x4A,
+    .StartTrackPiece = TrackElemType::FlatTrack1x4A,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::magicCarpet,
         .enabledTrackGroups = {},
@@ -38,7 +40,7 @@ constexpr RideTypeDescriptor MagicCarpetRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 15, 176, 7, 11, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 99.00_GBP, 1.00_GBP, 1, },
@@ -57,7 +59,7 @@ constexpr RideTypeDescriptor MagicCarpetRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { MakeRideRating(2, 45), MakeRideRating(1, 60), MakeRideRating(2, 60) },
+        { RideRating::make(2, 45), RideRating::make(1, 60), RideRating::make(2, 60) },
         16,
         0,
         false,
@@ -67,4 +69,5 @@ constexpr RideTypeDescriptor MagicCarpetRTD =
         },
     },
 };
+} // namespace OpenRCT2
 // clang-format on

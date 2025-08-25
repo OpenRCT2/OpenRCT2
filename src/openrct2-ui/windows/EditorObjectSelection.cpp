@@ -513,8 +513,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_FILTER_DROPDOWN_BTN:
                     for (auto ddIdx = EnumValue(DDIX_FILTER_RCT1); ddIdx <= EnumValue(DDIX_FILTER_CUSTOM); ddIdx++)
                     {
-                        gDropdownItems[ddIdx].Args = kSourceStringIds[ddIdx];
-                        gDropdownItems[ddIdx].Format = STR_TOGGLE_OPTION;
+                        gDropdown.items[ddIdx].args = kSourceStringIds[ddIdx];
+                        gDropdown.items[ddIdx].format = STR_TOGGLE_OPTION;
                     }
 
                     // Track designs manager cannot select multiple, so only show selection filters if not in track designs
@@ -522,12 +522,12 @@ namespace OpenRCT2::Ui::Windows
                     if (!(gLegacyScene == LegacyScene::trackDesignsManager))
                     {
                         numSelectionItems = 3;
-                        gDropdownItems[DDIX_FILTER_SEPARATOR].Format = 0;
-                        gDropdownItems[DDIX_FILTER_SELECTED].Format = STR_TOGGLE_OPTION;
-                        gDropdownItems[DDIX_FILTER_NONSELECTED].Format = STR_TOGGLE_OPTION;
-                        gDropdownItems[DDIX_FILTER_SEPARATOR].Args = kStringIdNone;
-                        gDropdownItems[DDIX_FILTER_SELECTED].Args = STR_SELECTED_ONLY;
-                        gDropdownItems[DDIX_FILTER_NONSELECTED].Args = STR_NON_SELECTED_ONLY;
+                        gDropdown.items[DDIX_FILTER_SEPARATOR].format = 0;
+                        gDropdown.items[DDIX_FILTER_SELECTED].format = STR_TOGGLE_OPTION;
+                        gDropdown.items[DDIX_FILTER_NONSELECTED].format = STR_TOGGLE_OPTION;
+                        gDropdown.items[DDIX_FILTER_SEPARATOR].args = kStringIdNone;
+                        gDropdown.items[DDIX_FILTER_SELECTED].args = STR_SELECTED_ONLY;
+                        gDropdown.items[DDIX_FILTER_NONSELECTED].args = STR_NON_SELECTED_ONLY;
                     }
 
                     auto& ddWidget = widgets[WIDX_FILTER_DROPDOWN];

@@ -311,10 +311,10 @@ private:
             { "day", date.GetMonthTicks() },
             { "month", date.GetMonthsElapsed() },
             { "guests", gameState.park.numGuestsInPark },
-            { "parkValue", gameState.park.Value },
+            { "parkValue", gameState.park.value },
         };
 
-        if (!(gameState.park.Flags & PARK_FLAGS_NO_MONEY))
+        if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
         {
             gameInfo["cash"] = gameState.park.cash;
         }

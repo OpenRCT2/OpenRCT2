@@ -18,6 +18,11 @@
 
 enum class VehicleColourSettings : uint8_t;
 
+namespace OpenRCT2::Scenario
+{
+    enum class ObjectiveType : uint8_t;
+}
+
 namespace OpenRCT2::RCT1
 {
     constexpr uint8_t RCT1ResearchFlagsSeparator = 0xFF;
@@ -325,7 +330,7 @@ namespace OpenRCT2::RCT1
         money16 price;                                       // 0x0E8
         RCT12xy8 chairliftBullwheelLocation[2];              // 0x0EA
         uint8_t chairliftBullwheelZ[2];                      // 0x0EE
-        RatingTuple ratings;                                 // 0x0F0
+        OpenRCT2::RideRating::Tuple ratings;                 // 0x0F0
         money16 value;                                       // 0x0F6
         uint16_t chairliftBullwheelRotation;                 // 0x0F8
         uint8_t satisfaction;                                // 0x0FA
@@ -800,7 +805,7 @@ namespace OpenRCT2::RCT1
         money16 GuestInitialCash;
         uint8_t GuestInitialHunger;
         uint8_t GuestInitialThirst;
-        uint8_t ScenarioObjectiveType;
+        Scenario::ObjectiveType ScenarioObjectiveType;
         uint8_t ScenarioObjectiveYears;
         uint16_t Unk199552;
         money32 ScenarioObjectiveCurrency;

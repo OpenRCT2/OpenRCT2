@@ -48,7 +48,7 @@ struct JumpingFountain : EntityBase
     int16_t TargetY;
     uint16_t Iteration;
     void Update();
-    static void StartAnimation(JumpingFountainType newType, const CoordsXY& newLoc, const TileElement* tileElement);
+    static void StartAnimation(JumpingFountainType newType, const CoordsXY& newLoc, const OpenRCT2::TileElement* tileElement);
     void Serialise(DataSerialiser& stream);
     void Paint(PaintSession& session, int32_t imageDirection) const;
 

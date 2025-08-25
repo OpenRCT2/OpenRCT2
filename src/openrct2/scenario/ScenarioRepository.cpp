@@ -30,6 +30,7 @@
 #include "../rct2/RCT2.h"
 #include "../sawyer_coding/SawyerChunkReader.h"
 #include "Scenario.h"
+#include "ScenarioCategory.h"
 #include "ScenarioSources.h"
 
 #include <memory>
@@ -38,17 +39,17 @@
 
 using namespace OpenRCT2;
 
-static int32_t ScenarioCategoryCompare(ScenarioCategory categoryA, ScenarioCategory categoryB)
+static int32_t ScenarioCategoryCompare(Scenario::Category categoryA, Scenario::Category categoryB)
 {
     if (categoryA == categoryB)
         return 0;
-    if (categoryA == ScenarioCategory::dlc)
+    if (categoryA == Scenario::Category::dlc)
         return -1;
-    if (categoryB == ScenarioCategory::dlc)
+    if (categoryB == Scenario::Category::dlc)
         return 1;
-    if (categoryA == ScenarioCategory::buildYourOwn)
+    if (categoryA == Scenario::Category::buildYourOwn)
         return -1;
-    if (categoryB == ScenarioCategory::buildYourOwn)
+    if (categoryB == Scenario::Category::buildYourOwn)
         return 1;
     if (categoryA < categoryB)
         return -1;
@@ -72,8 +73,8 @@ static int32_t ScenarioIndexEntryCompareByCategory(const ScenarioIndexEntry& ent
                 return static_cast<int32_t>(entryA.SourceGame) - static_cast<int32_t>(entryB.SourceGame);
             }
             return strcmp(entryA.Name.c_str(), entryB.Name.c_str());
-        case ScenarioCategory::real:
-        case ScenarioCategory::other:
+        case Scenario::Category::real:
+        case Scenario::Category::other:
             return strcmp(entryA.Name.c_str(), entryB.Name.c_str());
     }
 }

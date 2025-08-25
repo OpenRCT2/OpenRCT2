@@ -23,6 +23,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/PeepAnimationsObject.h"
 #include "../ride/Ride.h"
+#include "../scenario/Scenario.h"
 #include "../ui/WindowManager.h"
 #include "../world/Entrance.h"
 #include "../world/Park.h"
@@ -73,7 +74,7 @@ GameActions::Result StaffHireNewAction::Execute() const
 GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
 {
     auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::Wages;
+    res.Expenditure = ExpenditureType::wages;
 
     if (_staffType >= static_cast<uint8_t>(StaffType::Count))
     {
@@ -281,10 +282,10 @@ void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
     {
         // No walking guests; pick random park entrance
         const auto& gameState = getGameState();
-        if (!gameState.park.Entrances.empty())
+        if (!gameState.park.entrances.empty())
         {
-            auto rand = ScenarioRandMax(static_cast<uint32_t>(gameState.park.Entrances.size()));
-            const auto& entrance = gameState.park.Entrances[rand];
+            auto rand = ScenarioRandMax(static_cast<uint32_t>(gameState.park.entrances.size()));
+            const auto& entrance = gameState.park.entrances[rand];
             auto dir = entrance.direction;
             newLocation = entrance;
             // TODO: Replace with CoordsDirectionDelta

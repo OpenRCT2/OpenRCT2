@@ -19,6 +19,8 @@
 #include "../world/tile_element/TrackElement.h"
 #include "EntityRegistry.h"
 
+using namespace OpenRCT2;
+
 template<>
 bool EntityBase::Is<Balloon>() const
 {

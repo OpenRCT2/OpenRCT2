@@ -200,3 +200,5 @@ namespace OpenRCT2::Random
         using State = Engine::state_type;
     } // namespace RCT2
 } // namespace OpenRCT2::Random
+
+using random_engine_t = OpenRCT2::Random::RCT2::Engine;

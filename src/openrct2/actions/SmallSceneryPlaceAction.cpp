@@ -284,7 +284,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     const uint8_t groundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
     res.SetData(SmallSceneryPlaceActionResult{ groundFlags, 0, 0 });
 
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Cost = sceneryEntry->price + canBuild.Cost;
 
     return res;
@@ -420,7 +420,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
         return canBuild;
     }
 
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Cost = sceneryEntry->price + canBuild.Cost;
 
     auto* sceneryElement = TileElementInsert<SmallSceneryElement>(

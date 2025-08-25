@@ -203,7 +203,7 @@ GameActions::Result RideCreateAction::Execute() const
 
     ride->ratings.setNull();
 
-    if (!(gameState.park.Flags & PARK_FLAGS_NO_MONEY))
+    if (!(gameState.park.flags & PARK_FLAGS_NO_MONEY))
     {
         for (auto i = 0; i < RCT2::ObjectLimits::kMaxShopItemsPerRideEntry; i++)
         {
@@ -212,7 +212,7 @@ GameActions::Result RideCreateAction::Execute() const
 
         if (rideEntry->shop_item[0] == ShopItem::None)
         {
-            if (!Park::RidePricesUnlocked() || gameState.park.EntranceFee > 0)
+            if (!Park::RidePricesUnlocked() || gameState.park.entranceFee > 0)
             {
                 ride->price[0] = 0;
             }
@@ -226,7 +226,7 @@ GameActions::Result RideCreateAction::Execute() const
             ride->price[1] = GetShopItemDescriptor(rideEntry->shop_item[1]).DefaultPrice;
         }
 
-        if (gameState.scenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
+        if (gameState.scenarioOptions.objective.Type == Scenario::ObjectiveType::buildTheBest)
         {
             ride->price[0] = 0;
         }
@@ -299,7 +299,7 @@ GameActions::Result RideCreateAction::Execute() const
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByClass(WindowClass::RideList);
 
-    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Expenditure = ExpenditureType::rideConstruction;
     res.SetData(RideId{ rideIndex });
 
     return res;

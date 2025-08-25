@@ -13,26 +13,29 @@
 #include "../Banner.h"
 #include "TileElementBase.h"
 
-#pragma pack(push, 1)
-/**
- * Map element structure
- * size: 0x10
- */
-struct TileElement : public TileElementBase
+namespace OpenRCT2
 {
-    uint8_t Pad05[3];
-    uint8_t Pad08[8];
+#pragma pack(push, 1)
+    /**
+     * Map element structure
+     * size: 0x10
+     */
+    struct TileElement : public TileElementBase
+    {
+        uint8_t Pad05[3];
+        uint8_t Pad08[8];
 
-    void ClearAs(TileElementType newType);
+        void ClearAs(TileElementType newType);
 
-    RideId GetRideIndex() const;
+        RideId GetRideIndex() const;
 
-    void SetBannerIndex(BannerIndex newIndex);
-    void RemoveBannerEntry();
-    BannerIndex GetBannerIndex() const;
-};
-static_assert(sizeof(TileElement) == kTileElementSize);
+        void SetBannerIndex(BannerIndex newIndex);
+        void RemoveBannerEntry();
+        BannerIndex GetBannerIndex() const;
+    };
+    static_assert(sizeof(TileElement) == kTileElementSize);
 
-bool TileElementIsUnderground(TileElement* tileElement);
+    bool TileElementIsUnderground(TileElement* tileElement);
 
 #pragma pack(pop)
+} // namespace OpenRCT2

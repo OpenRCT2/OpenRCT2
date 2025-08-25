@@ -75,7 +75,7 @@ GameActions::Result WallPlaceAction::Query() const
     res.ErrorTitle = STR_CANT_BUILD_THIS_HERE;
     res.Position = _loc;
 
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Position.x += 16;
     res.Position.y += 16;
 
@@ -291,7 +291,7 @@ GameActions::Result WallPlaceAction::Execute() const
     res.ErrorTitle = STR_CANT_BUILD_THIS_HERE;
     res.Position = _loc;
 
-    res.Expenditure = ExpenditureType::Landscaping;
+    res.Expenditure = ExpenditureType::landscaping;
     res.Position.x += 16;
     res.Position.y += 16;
 

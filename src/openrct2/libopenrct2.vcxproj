@@ -548,6 +548,9 @@
     <ClInclude Include="sawyer_coding\SawyerChunkReader.h" />
     <ClInclude Include="sawyer_coding\SawyerChunkWriter.h" />
     <ClInclude Include="scenario\Scenario.h" />
+    <ClInclude Include="scenario\ScenarioCategory.h" />
+    <ClInclude Include="scenario\ScenarioObjective.h" />
+    <ClInclude Include="scenario\ScenarioOptions.h" />
     <ClInclude Include="scenario\ScenarioRepository.h" />
     <ClInclude Include="scenario\ScenarioSources.h" />
     <ClInclude Include="scenes\Scene.h" />
@@ -1084,6 +1087,8 @@
     <ClCompile Include="sawyer_coding\SawyerChunkReader.cpp" />
     <ClCompile Include="sawyer_coding\SawyerChunkWriter.cpp" />
     <ClCompile Include="scenario\Scenario.cpp" />
+    <ClCompile Include="scenario\ScenarioCategory.cpp" />
+    <ClCompile Include="scenario\ScenarioObjective.cpp" />
     <ClCompile Include="scenario\ScenarioRepository.cpp" />
     <ClCompile Include="scenario\ScenarioSources.cpp" />
     <ClCompile Include="scenes\Scene.cpp" />

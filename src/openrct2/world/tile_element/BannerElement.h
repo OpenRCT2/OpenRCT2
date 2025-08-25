@@ -12,34 +12,37 @@
 #include "../Banner.h"
 #include "TileElementBase.h"
 
-struct BannerSceneryEntry;
+namespace OpenRCT2
+{
+    struct BannerSceneryEntry;
 
 #pragma pack(push, 1)
-struct BannerElement : TileElementBase
-{
-    static constexpr TileElementType kElementType = TileElementType::Banner;
+    struct BannerElement : TileElementBase
+    {
+        static constexpr TileElementType kElementType = TileElementType::Banner;
 
-private:
-    BannerIndex index;    // 5
-    uint8_t position;     // 7
-    uint8_t AllowedEdges; // 8
+    private:
+        BannerIndex index;    // 5
+        uint8_t position;     // 7
+        uint8_t AllowedEdges; // 8
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t Pad09[7];
+        uint8_t Pad09[7];
 #pragma clang diagnostic pop
-public:
-    Banner* GetBanner() const;
-    const BannerSceneryEntry* GetEntry() const;
+    public:
+        Banner* GetBanner() const;
+        const BannerSceneryEntry* GetEntry() const;
 
-    BannerIndex GetIndex() const;
-    void SetIndex(BannerIndex newIndex);
+        BannerIndex GetIndex() const;
+        void SetIndex(BannerIndex newIndex);
 
-    uint8_t GetPosition() const;
-    void SetPosition(uint8_t newPosition);
+        uint8_t GetPosition() const;
+        void SetPosition(uint8_t newPosition);
 
-    uint8_t GetAllowedEdges() const;
-    void SetAllowedEdges(uint8_t newEdges);
-    void ResetAllowedEdges();
-};
-static_assert(sizeof(BannerElement) == kTileElementSize);
+        uint8_t GetAllowedEdges() const;
+        void SetAllowedEdges(uint8_t newEdges);
+        void ResetAllowedEdges();
+    };
+    static_assert(sizeof(BannerElement) == kTileElementSize);
 #pragma pack(pop)
+} // namespace OpenRCT2

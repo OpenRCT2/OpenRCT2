@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
 {
     .Category = RideCategory::rollerCoaster,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::multiDimensionRollerCoaster,
         .supportType = MetalSupportType::tubesInverted,
@@ -45,7 +47,7 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 40, 24, 8, 11, },
     .MaxMass = 78,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftFrictionWheels, 4, 6 },
+    .LiftData = { Audio::SoundId::LiftFrictionWheels, 4, 6 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 75, 20, 90, 11, 3, 15 },
     .BuildCosts = { 90.00_GBP, 2.50_GBP, 50, },
@@ -67,13 +69,13 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(3, 75), MakeRideRating(1, 95), MakeRideRating(4, 79) },
+        { RideRating::make(3, 75), RideRating::make(1, 95), RideRating::make(4, 79) },
         18,
         -1,
         true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -96,7 +98,7 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
 constexpr RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
 {
     .Category = RideCategory::none,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({ 
         .trackStyle = TrackStyle::null,
         .enabledTrackGroups = {  },
@@ -119,7 +121,7 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),
     .Heights = { 40, 24, 8, 11, },
     .MaxMass = 78,
-    .LiftData = { OpenRCT2::Audio::SoundId::LiftFrictionWheels, 4, 6 },
+    .LiftData = { Audio::SoundId::LiftFrictionWheels, 4, 6 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 75, 20, 90, 11, 3, 15 },
     .BuildCosts = { 90.00_GBP, 2.50_GBP, 50, },
@@ -138,13 +140,13 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(3, 75), MakeRideRating(1, 95), MakeRideRating(4, 79) },
+        { RideRating::make(3, 75), RideRating::make(1, 95), RideRating::make(4, 79) },
         18,
         -1,
         true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
-            { RatingsModifierType::BonusSynchronisation,  0,                MakeRideRating(0, 40), MakeRideRating(0, 05), 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RideRating::make(0, 40), RideRating::make(0, 05), 0 },
             { RatingsModifierType::BonusTrainLength,      0,                187245, 0, 0 },
             { RatingsModifierType::BonusMaxSpeed,         0,                44281, 88562, 35424 },
             { RatingsModifierType::BonusAverageSpeed,     0,                291271, 436906, 0 },
@@ -163,5 +165,5 @@ constexpr RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
         },
     },
 };
-
+} // namespace OpenRCT2
 // clang-format on

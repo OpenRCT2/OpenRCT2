@@ -15,10 +15,11 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2 {
 constexpr RideTypeDescriptor MiniGolfRTD =
 {
     .Category = RideCategory::gentle,
-    .StartTrackPiece = OpenRCT2::TrackElemType::EndStation,
+    .StartTrackPiece = TrackElemType::EndStation,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::miniGolf,
         .supportType = MetalSupportType::boxed,
@@ -36,7 +37,7 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .AvailableBreakdowns = 0,
     .Heights = { 7, 32, 2, 2, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 50, 30, 10 },
     .UpkeepCosts = { 30, 60, 0, 0, 0, 0 },
     .BuildCosts = { 25.00_GBP, 3.50_GBP, 20, },
@@ -54,7 +55,7 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .RatingsData = 
     {
         RatingsCalculationType::Normal,
-        { MakeRideRating(1, 50), MakeRideRating(0, 90), MakeRideRating(0, 00) },
+        { RideRating::make(1, 50), RideRating::make(0, 90), RideRating::make(0, 00) },
         0,
         -1,
         false,
@@ -72,7 +73,7 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     },
     .UpdateRotating = UpdateRotatingDefault,
     .LightFXAddLightsMagicVehicle = nullptr,
-    .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
+    .StartRideMusic = RideAudio::DefaultStartRideMusicChannel,
     .DesignCreateMode = TrackDesignCreateMode::Default,
     .MusicUpdateFunction = DefaultMusicUpdate,
     .Classification = RideClassification::ride,
@@ -84,4 +85,5 @@ constexpr RideTypeDescriptor MiniGolfRTD =
     .UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_MiniGolf,
     .specialType = RtdSpecialType::miniGolf,
 };
+} // namespace OpenRCT2
 // clang-format on

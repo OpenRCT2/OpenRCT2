@@ -17,6 +17,7 @@
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/RideManager.hpp"
+#include "../scenario/Scenario.h"
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
 #include "NewsItem.h"
@@ -181,7 +182,7 @@ static bool AwardIsDeservedBestValue(int32_t activeAwardTypes)
     if (activeAwardTypes & EnumToFlag(AwardType::MostDisappointing))
         return false;
 
-    if ((gameState.park.Flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked())
+    if ((gameState.park.flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked())
         return false;
 
     if (gameState.park.totalRideValueForMoney < 10.00_GBP)
@@ -233,7 +234,7 @@ static bool AwardIsDeservedWorstValue(int32_t activeAwardTypes)
 
     if (activeAwardTypes & EnumToFlag(AwardType::BestValue))
         return false;
-    if (gameState.park.Flags & PARK_FLAGS_NO_MONEY)
+    if (gameState.park.flags & PARK_FLAGS_NO_MONEY)
         return false;
 
     const auto parkEntranceFee = Park::GetEntranceFee();
@@ -412,7 +413,7 @@ static bool AwardIsDeservedMostDisappointing(int32_t activeAwardTypes)
 {
     if (activeAwardTypes & EnumToFlag(AwardType::BestValue))
         return false;
-    if (getGameState().park.Rating > 650)
+    if (getGameState().park.rating > 650)
         return false;
 
     // Count the number of disappointing rides
@@ -475,7 +476,7 @@ static bool AwardIsDeservedBestCustomDesignedRides(int32_t activeAwardTypes)
             continue;
         if (ride.lifecycleFlags & RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN)
             continue;
-        if (ride.ratings.excitement < MakeRideRating(5, 50))
+        if (ride.ratings.excitement < RideRating::make(5, 50))
             continue;
         if (ride.status != RideStatus::open || (ride.lifecycleFlags & RIDE_LIFECYCLE_CRASHED))
             continue;
@@ -641,7 +642,7 @@ void AwardUpdateAll()
     }
 
     // Only add new awards if park is open
-    if (gameState.park.Flags & PARK_FLAGS_PARK_OPEN)
+    if (gameState.park.flags & PARK_FLAGS_PARK_OPEN)
     {
         // Set active award types as flags
         int32_t activeAwardTypes = 0;

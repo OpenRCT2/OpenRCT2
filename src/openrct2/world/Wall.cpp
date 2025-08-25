@@ -13,6 +13,8 @@
 #include "tile_element/TileElement.h"
 #include "tile_element/WallElement.h"
 
+using namespace OpenRCT2;
+
 /**
  *
  *  rct2: 0x006E588E

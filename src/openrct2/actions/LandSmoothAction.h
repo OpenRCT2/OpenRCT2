@@ -38,7 +38,7 @@ public:
 
 private:
     OpenRCT2::GameActions::Result SmoothLandTile(
-        int32_t direction, bool isExecuting, const CoordsXY& loc, SurfaceElement* surfaceElement) const;
+        int32_t direction, bool isExecuting, const CoordsXY& loc, OpenRCT2::SurfaceElement* surfaceElement) const;
     money64 SmoothLandRowByEdge(
         bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight1, int32_t expectedLandHeight2, int32_t stepX,
         int32_t stepY, int32_t direction1, int32_t direction2, int32_t checkDirection1, int32_t checkDirection2) const;

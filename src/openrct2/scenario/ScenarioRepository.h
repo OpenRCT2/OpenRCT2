@@ -12,11 +12,16 @@
 #include "../core/DateTime.h"
 #include "../core/Money.hpp"
 #include "../core/StringTypes.h"
+#include "ScenarioObjective.h"
 
 #include <memory>
 
 struct RCTObjectEntry;
-enum class ScenarioCategory : uint8_t;
+
+namespace OpenRCT2::Scenario
+{
+    enum class Category : uint8_t;
+}
 
 struct ScenarioHighscoreEntry
 {
@@ -46,13 +51,13 @@ struct ScenarioIndexEntry
     uint64_t Timestamp;
 
     // Category / sequence
-    ScenarioCategory Category;
+    OpenRCT2::Scenario::Category Category;
     ScenarioSource SourceGame;
     int16_t SourceIndex = -1;
     uint16_t ScenarioId;
 
     // Objective
-    uint8_t ObjectiveType;
+    OpenRCT2::Scenario::ObjectiveType ObjectiveType;
     uint8_t ObjectiveArg1;  // years
     int64_t ObjectiveArg2;  // money or excitement
     uint16_t ObjectiveArg3; // guests or rideID or coasterLength

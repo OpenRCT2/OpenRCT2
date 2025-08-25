@@ -10,7 +10,10 @@
 #pragma once
 #include <openrct2/world/Location.hpp>
 
-struct TileElement;
+namespace OpenRCT2
+{
+    struct TileElement;
+}
 
 namespace OpenRCT2::Ui
 {

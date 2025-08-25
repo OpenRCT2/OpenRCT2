@@ -46,22 +46,15 @@ namespace OpenRCT2::Ui::Windows
         makeWidget({ 0, 0 }, { 1, 1 }, WidgetType::imgBtn, WindowColour::primary),
     };
 
-    std::array<Dropdown::Item, Dropdown::kItemsMaxSize> gDropdownItems;
-    std::array<StringId, Dropdown::kItemsMaxSize> gDropdownTooltips;
-    static std::array<ImageId, Dropdown::kItemsMaxSize> _dropdownItemsImages;
+    Dropdown::DropdownState gDropdown{};
 
-    int32_t gDropdownNumItems;
-    bool gDropdownHasTooltips;
-    int32_t gDropdownLastTooltipHover;
-    int32_t gDropdownHighlightedIndex;
-    int32_t gDropdownDefaultIndex;
     static bool _dropdownPrepareUseImages;
 
     static void ResetDropdownFlags()
     {
-        for (size_t i = 0; i < std::size(gDropdownItems); i++)
+        for (size_t i = 0; i < std::size(gDropdown.items); i++)
         {
-            gDropdownItems[i].Flags = 0;
+            gDropdown.items[i].flags.clearAll();
         }
     }
 
@@ -80,10 +73,10 @@ namespace OpenRCT2::Ui::Windows
             SetWidgets(kWindowDropdownWidgets);
 
             // Input state
-            gDropdownHighlightedIndex = -1;
+            gDropdown.highlightedIndex = -1;
             ResetDropdownFlags();
-            gDropdownHasTooltips = false;
-            gDropdownDefaultIndex = -1;
+            gDropdown.hasTooltips = false;
+            gDropdown.defaultIndex = -1;
             InputSetState(InputState::DropdownActive);
         }
 
@@ -101,8 +94,8 @@ namespace OpenRCT2::Ui::Windows
         {
             DrawWidgets(rt);
 
-            int32_t highlightedIndex = gDropdownHighlightedIndex;
-            for (int32_t i = 0; i < gDropdownNumItems; i++)
+            int32_t highlightedIndex = gDropdown.highlightedIndex;
+            for (int32_t i = 0; i < gDropdown.numItems; i++)
             {
                 ScreenCoordsXY cellCoords;
                 if (ListVertically)
@@ -113,7 +106,7 @@ namespace OpenRCT2::Ui::Windows
                 ScreenCoordsXY screenCoords = windowPos
                     + ScreenCoordsXY{ 2 + (cellCoords.x * ItemWidth), 2 + (cellCoords.y * ItemHeight) };
 
-                if (gDropdownItems[i].IsSeparator())
+                if (gDropdown.items[i].isSeparator())
                 {
                     const auto leftTop = screenCoords + ScreenCoordsXY{ 2, (ItemHeight / 2) - 1 };
                     const auto rightBottom = leftTop + ScreenCoordsXY{ ItemWidth - 4, 0 };
@@ -141,12 +134,12 @@ namespace OpenRCT2::Ui::Windows
                         GfxFilterRect(rt, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
                     }
 
-                    StringId item = gDropdownItems[i].Format;
+                    StringId item = gDropdown.items[i].format;
                     if (item == Dropdown::kFormatLandPicker || item == Dropdown::kFormatColourPicker)
                     {
                         // Image item
-                        auto image = UseImages ? _dropdownItemsImages[i]
-                                               : ImageId(static_cast<uint32_t>(gDropdownItems[i].Args));
+                        auto image = UseImages ? gDropdown.itemsImages[i]
+                                               : ImageId(static_cast<uint32_t>(gDropdown.items[i].args));
                         if (item == Dropdown::kFormatColourPicker && highlightedIndex == i)
                             image = image.WithIndexOffset(1);
                         GfxDrawSprite(rt, image, screenCoords);
@@ -166,7 +159,7 @@ namespace OpenRCT2::Ui::Windows
 
                         // Draw item string
                         auto yOffset = GetAdditionalRowPadding();
-                        Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItems[i].Args));
+                        Formatter ft(reinterpret_cast<uint8_t*>(&gDropdown.items[i].args));
                         DrawTextEllipsised(
                             rt, { screenCoords.x + 2, screenCoords.y + yOffset }, width - 7, item, ft, { colour });
                     }
@@ -190,12 +183,12 @@ namespace OpenRCT2::Ui::Windows
             // Set and calculate num items, rows and columns
             ItemHeight = (txtFlags & Dropdown::Flag::CustomHeight) ? customItemHeight : GetDefaultRowHeight();
 
-            gDropdownNumItems = static_cast<int32_t>(numItems);
-            if (gDropdownNumItems > 1)
+            gDropdown.numItems = static_cast<int32_t>(numItems);
+            if (gDropdown.numItems > 1)
             {
                 int32_t numAvailableRows = std::max(1, getSpaceUntilBottom(screenPos, extraY) / ItemHeight);
-                NumRows = std::min({ gDropdownNumItems, numAvailableRows, numRowsPerColumn });
-                NumColumns = (gDropdownNumItems + NumRows - 1) / NumRows;
+                NumRows = std::min({ gDropdown.numItems, numAvailableRows, numRowsPerColumn });
+                NumColumns = (gDropdown.numItems + NumRows - 1) / NumRows;
             }
             else
             {
@@ -226,10 +219,10 @@ namespace OpenRCT2::Ui::Windows
             // Set and calculate num items, rows and columns
             ItemWidth = itemWidth;
             ItemHeight = itemHeight;
-            gDropdownNumItems = numItems;
+            gDropdown.numItems = numItems;
 
             // There must always be at least one column and row to prevent dividing by zero
-            if (gDropdownNumItems == 0)
+            if (gDropdown.numItems == 0)
             {
                 NumColumns = 1;
                 NumRows = 1;
@@ -237,8 +230,8 @@ namespace OpenRCT2::Ui::Windows
             else
             {
                 NumColumns = std::max(1, numColumns);
-                NumRows = gDropdownNumItems / NumColumns;
-                if (gDropdownNumItems % NumColumns != 0)
+                NumRows = gDropdown.numItems / NumColumns;
+                if (gDropdown.numItems % NumColumns != 0)
                     NumRows++;
             }
 
@@ -279,7 +272,7 @@ namespace OpenRCT2::Ui::Windows
             else
                 dropdownIndex = rowNum * NumColumns + columnNum;
 
-            if (dropdownIndex >= gDropdownNumItems)
+            if (dropdownIndex >= gDropdown.numItems)
                 return -1;
 
             return dropdownIndex;
@@ -310,6 +303,14 @@ namespace OpenRCT2::Ui::Windows
         }
     };
 
+    static void copyItemsToGlobal(std::span<const Dropdown::Item> items)
+    {
+        for (size_t i = 0; i < items.size(); i++)
+        {
+            gDropdown.items[i] = items[i];
+        }
+    }
+
     /**
      * Shows a text dropdown menu.
      *  rct2: 0x006ECFB9
@@ -331,13 +332,21 @@ namespace OpenRCT2::Ui::Windows
         int32_t max_string_width = 0;
         for (size_t i = 0; i < num_items; i++)
         {
-            FormatStringLegacy(buffer, 256, gDropdownItems[i].Format, static_cast<void*>(&gDropdownItems[i].Args));
+            FormatStringLegacy(buffer, 256, gDropdown.items[i].format, static_cast<void*>(&gDropdown.items[i].args));
             int32_t string_width = GfxGetStringWidth(buffer, FontStyle::Medium);
             max_string_width = std::max(string_width, max_string_width);
         }
 
         WindowDropdownShowTextCustomWidth(
             screenPos, extray, colour, 0, flags, num_items, max_string_width + 3, prefRowsPerColumn);
+    }
+
+    void WindowDropdownShowText(
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t flags,
+        std::span<const Dropdown::Item> items, size_t prefRowsPerColumn)
+    {
+        copyItemsToGlobal(items);
+        WindowDropdownShowText(screenPos, extray, colour, flags, items.size(), prefRowsPerColumn);
     }
 
     /**
@@ -371,6 +380,15 @@ namespace OpenRCT2::Ui::Windows
             auto numRowsPerColumn = prefRowsPerColumn > 0 ? static_cast<int32_t>(prefRowsPerColumn) : Dropdown::kItemsMaxSize;
             w->SetTextItems(screenPos, extray, colour, customItemHeight, flags, num_items, width, numRowsPerColumn);
         }
+    }
+
+    void WindowDropdownShowTextCustomWidth(
+        const ScreenCoordsXY& screenPos, int32_t extray, ColourWithFlags colour, uint8_t custom_height, uint8_t flags,
+        std::span<const Dropdown::Item> items, int32_t width, size_t prefRowsPerColumn)
+    {
+        copyItemsToGlobal(items);
+        WindowDropdownShowTextCustomWidth(
+            screenPos, extray, colour, custom_height, flags, items.size(), width, prefRowsPerColumn);
     }
 
     /**
@@ -584,7 +602,7 @@ namespace OpenRCT2::Ui::Windows
             auto imageId = (orderedColour == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_WHITE)
                                                                : ImageId(SPR_PALETTE_BTN, orderedColour);
 
-            gDropdownItems[i].Format = Dropdown::kFormatColourPicker;
+            gDropdown.items[i].format = Dropdown::kFormatColourPicker;
             Dropdown::SetImage(i, imageId);
         }
 
@@ -595,11 +613,11 @@ namespace OpenRCT2::Ui::Windows
             Dropdown::Flag::StayOpen, numColours, squareSize, squareSize,
             DropdownGetAppropriateImageDropdownItemsPerRow(static_cast<uint32_t>(numColours)));
 
-        std::copy(kColourTooltips.begin(), kColourTooltips.end(), gDropdownTooltips.begin());
+        std::copy(kColourTooltips.begin(), kColourTooltips.end(), gDropdown.tooltips.begin());
 
-        gDropdownHasTooltips = true;
-        gDropdownLastTooltipHover = -1;
-        gDropdownDefaultIndex = defaultIndex;
+        gDropdown.hasTooltips = true;
+        gDropdown.lastTooltipHover = -1;
+        gDropdown.defaultIndex = defaultIndex;
     }
 
     uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems)
@@ -615,52 +633,48 @@ using namespace OpenRCT2;
 
 bool Dropdown::IsChecked(int32_t index)
 {
-    if (index < 0 || index >= static_cast<int32_t>(std::size(gDropdownItems)))
+    if (index < 0 || index >= static_cast<int32_t>(std::size(gDropdown.items)))
     {
         return false;
     }
-    return gDropdownItems[index].IsChecked();
+    return gDropdown.items[index].isChecked();
 }
 
 bool Dropdown::IsDisabled(int32_t index)
 {
-    if (index < 0 || index >= static_cast<int32_t>(std::size(gDropdownItems)))
+    if (index < 0 || index >= static_cast<int32_t>(std::size(gDropdown.items)))
     {
         return true;
     }
-    return gDropdownItems[index].IsDisabled();
+    return gDropdown.items[index].isDisabled();
 }
 
 void Dropdown::SetChecked(int32_t index, bool value)
 {
-    if (index < 0 || index >= static_cast<int32_t>(std::size(gDropdownItems)))
+    if (index < 0 || index >= static_cast<int32_t>(std::size(gDropdown.items)))
     {
         return;
     }
-    if (value)
-        gDropdownItems[index].Flags |= EnumValue(Dropdown::ItemFlag::IsChecked);
-    else
-        gDropdownItems[index].Flags &= ~EnumValue(Dropdown::ItemFlag::IsChecked);
+
+    gDropdown.items[index].flags.set(Dropdown::ItemFlag::isChecked, value);
 }
 
 void Dropdown::SetDisabled(int32_t index, bool value)
 {
-    if (index < 0 || index >= static_cast<int32_t>(std::size(gDropdownItems)))
+    if (index < 0 || index >= static_cast<int32_t>(std::size(gDropdown.items)))
     {
         return;
     }
-    if (value)
-        gDropdownItems[index].Flags |= EnumValue(Dropdown::ItemFlag::IsDisabled);
-    else
-        gDropdownItems[index].Flags &= ~EnumValue(Dropdown::ItemFlag::IsDisabled);
+
+    gDropdown.items[index].flags.set(Dropdown::ItemFlag::isDisabled, value);
 }
 
 void Dropdown::SetImage(int32_t index, ImageId image)
 {
-    if (index < 0 || index >= static_cast<int32_t>(std::size(_dropdownItemsImages)))
+    if (index < 0 || index >= static_cast<int32_t>(std::size(gDropdown.itemsImages)))
     {
         return;
     }
-    _dropdownItemsImages[index] = image;
+    gDropdown.itemsImages[index] = image;
     _dropdownPrepareUseImages = true;
 }

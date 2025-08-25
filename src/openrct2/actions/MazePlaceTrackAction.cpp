@@ -49,7 +49,7 @@ GameActions::Result MazePlaceTrackAction::Query() const
     auto res = GameActions::Result();
 
     res.Position = _loc + CoordsXYZ{ 8, 8, 0 };
-    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Expenditure = ExpenditureType::rideConstruction;
     res.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
     if ((_loc.z & 0xF) != 0)
     {
@@ -146,7 +146,7 @@ GameActions::Result MazePlaceTrackAction::Execute() const
     auto res = GameActions::Result();
 
     res.Position = _loc + CoordsXYZ{ 8, 8, 0 };
-    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Expenditure = ExpenditureType::rideConstruction;
     res.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
     auto ride = GetRide(_rideIndex);

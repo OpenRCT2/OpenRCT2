@@ -17,58 +17,59 @@
 #include "../drawing/Drawing.h"
 #include "ObjectManager.h"
 
-using namespace OpenRCT2;
-
-void TerrainEdgeObject::Load()
+namespace OpenRCT2
 {
-    GetStringTable().Sort();
-    NameStringId = LanguageAllocateObjectString(GetName());
-    IconImageId = LoadImages();
-
-    // First image is icon followed by edge images
-    BaseImageId = IconImageId + 1;
-}
-
-void TerrainEdgeObject::Unload()
-{
-    LanguageFreeObjectString(NameStringId);
-    UnloadImages();
-
-    NameStringId = 0;
-    IconImageId = 0;
-    BaseImageId = 0;
-}
-
-void TerrainEdgeObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
-{
-    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
-
-    auto imageId = ImageId(BaseImageId + 5);
-    GfxDrawSprite(rt, imageId, screenCoords + ScreenCoordsXY{ 8, -8 });
-    GfxDrawSprite(rt, imageId, screenCoords + ScreenCoordsXY{ 8, 8 });
-}
-
-void TerrainEdgeObject::ReadJson(IReadObjectContext* context, json_t& root)
-{
-    Guard::Assert(root.is_object(), "TerrainEdgeObject::ReadJson expects parameter root to be object");
-
-    auto properties = root["properties"];
-
-    if (properties.is_object())
+    void TerrainEdgeObject::Load()
     {
-        HasDoors = Json::GetBoolean(properties["hasDoors"]);
-        const uint32_t doorSoundNumber = Json::GetNumber<uint32_t>(properties["doorSound"]);
-        if (doorSoundNumber < OpenRCT2::Audio::kDoorSoundTypeCount)
-        {
-            doorSound = static_cast<OpenRCT2::Audio::DoorSoundType>(doorSoundNumber);
-        }
+        GetStringTable().Sort();
+        NameStringId = LanguageAllocateObjectString(GetName());
+        IconImageId = LoadImages();
+
+        // First image is icon followed by edge images
+        BaseImageId = IconImageId + 1;
     }
 
-    PopulateTablesFromJson(context, root);
-}
+    void TerrainEdgeObject::Unload()
+    {
+        LanguageFreeObjectString(NameStringId);
+        UnloadImages();
 
-TerrainEdgeObject* TerrainEdgeObject::GetById(ObjectEntryIndex entryIndex)
-{
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    return objMgr.GetLoadedObject<TerrainEdgeObject>(entryIndex);
-}
+        NameStringId = 0;
+        IconImageId = 0;
+        BaseImageId = 0;
+    }
+
+    void TerrainEdgeObject::DrawPreview(RenderTarget& rt, int32_t width, int32_t height) const
+    {
+        auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
+
+        auto imageId = ImageId(BaseImageId + 5);
+        GfxDrawSprite(rt, imageId, screenCoords + ScreenCoordsXY{ 8, -8 });
+        GfxDrawSprite(rt, imageId, screenCoords + ScreenCoordsXY{ 8, 8 });
+    }
+
+    void TerrainEdgeObject::ReadJson(IReadObjectContext* context, json_t& root)
+    {
+        Guard::Assert(root.is_object(), "TerrainEdgeObject::ReadJson expects parameter root to be object");
+
+        auto properties = root["properties"];
+
+        if (properties.is_object())
+        {
+            HasDoors = Json::GetBoolean(properties["hasDoors"]);
+            const uint32_t doorSoundNumber = Json::GetNumber<uint32_t>(properties["doorSound"]);
+            if (doorSoundNumber < Audio::kDoorSoundTypeCount)
+            {
+                doorSound = static_cast<Audio::DoorSoundType>(doorSoundNumber);
+            }
+        }
+
+        PopulateTablesFromJson(context, root);
+    }
+
+    TerrainEdgeObject* TerrainEdgeObject::GetById(ObjectEntryIndex entryIndex)
+    {
+        auto& objMgr = GetContext()->GetObjectManager();
+        return objMgr.GetLoadedObject<TerrainEdgeObject>(entryIndex);
+    }
+} // namespace OpenRCT2

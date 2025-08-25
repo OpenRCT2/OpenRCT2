@@ -14,10 +14,13 @@
 #include <memory>
 #include <string_view>
 
-struct IObjectRepository;
-class Object;
-struct RCTObjectEntry;
-enum class ObjectType : uint8_t;
+namespace OpenRCT2
+{
+    struct IObjectRepository;
+    class Object;
+    struct RCTObjectEntry;
+    enum class ObjectType : uint8_t;
+} // namespace OpenRCT2
 
 namespace OpenRCT2::ObjectFactory
 {

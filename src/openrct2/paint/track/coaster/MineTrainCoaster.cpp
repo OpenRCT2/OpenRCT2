@@ -1630,7 +1630,7 @@ static void MineTrainRCTrackLeftQuarterTurn525DegUp(
                         session, direction, session.TrackColours.WithIndex(20264), { 0, 0, height },
                         { { 2, 0, height }, { 27, 32, 1 } });
                     WoodenASupportsPaintSetup(
-                        session, supportType.wooden, WoodenSupportSubType::neSw, height, session.SupportColours,
+                        session, supportType.wooden, WoodenSupportSubType::nwSe, height, session.SupportColours,
                         WoodenSupportTransitionType::up25Deg, 1);
                     break;
                 case 3:

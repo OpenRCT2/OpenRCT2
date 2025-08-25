@@ -15,10 +15,12 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
 constexpr RideTypeDescriptor HauntedHouseRTD =
 {
     .Category = RideCategory::gentle,
-    .StartTrackPiece = OpenRCT2::TrackElemType::FlatTrack3x3,
+    .StartTrackPiece = TrackElemType::FlatTrack3x3,
     .TrackPaintFunctions = TrackDrawerDescriptor({
         .trackStyle = TrackStyle::hauntedHouse,
         .enabledTrackGroups = {},
@@ -37,7 +39,7 @@ constexpr RideTypeDescriptor HauntedHouseRTD =
     .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT),
     .Heights = { 16, 160, 3, 2, },
     .MaxMass = 255,
-    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .LiftData = { Audio::SoundId::Null, 5, 5 },
     .RatingsMultipliers = { 20, 10, 0 },
     .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
     .BuildCosts = { 42.50_GBP, 1.00_GBP, 1, },
@@ -52,11 +54,12 @@ constexpr RideTypeDescriptor HauntedHouseRTD =
     .RatingsData = 
     {
         RatingsCalculationType::FlatRide,
-        { MakeRideRating(3, 41), MakeRideRating(1, 53), MakeRideRating(0, 10) },
+        { RideRating::make(3, 41), RideRating::make(1, 53), RideRating::make(0, 10) },
         8,
         7,
         false,
         { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
     },
 };
+} // namespace OpenRCT2
 // clang-format on

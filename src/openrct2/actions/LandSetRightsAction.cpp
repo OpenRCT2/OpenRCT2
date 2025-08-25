@@ -82,7 +82,7 @@ GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
     centre.z = TileElementHeight(centre);
 
     res.Position = centre;
-    res.Expenditure = ExpenditureType::LandPurchase;
+    res.Expenditure = ExpenditureType::landPurchase;
 
     if (!isInEditorMode() && !getGameState().cheats.sandboxMode)
     {
@@ -193,23 +193,23 @@ GameActions::Result LandSetRightsAction::MapBuyLandRightsForTile(const CoordsXY&
             {
                 // Buying land
                 if (!(currentOwnership & OWNERSHIP_OWNED) && (_ownership & OWNERSHIP_OWNED))
-                    res.Cost = gameState.landPrice;
+                    res.Cost = gameState.scenarioOptions.landPrice;
 
                 // Buying construction rights
                 if (!(currentOwnership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
                     && (_ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED))
-                    res.Cost = gameState.constructionRightsPrice;
+                    res.Cost = gameState.scenarioOptions.constructionRightsPrice;
             }
             else
             {
                 // Selling land
                 if ((currentOwnership & OWNERSHIP_OWNED) && !(_ownership & OWNERSHIP_OWNED))
-                    res.Cost = -gameState.landPrice;
+                    res.Cost = -gameState.scenarioOptions.landPrice;
 
                 // Selling construction rights
                 if ((currentOwnership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
                     && !(_ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED))
-                    res.Cost = -gameState.constructionRightsPrice;
+                    res.Cost = -gameState.scenarioOptions.constructionRightsPrice;
             }
 
             if (isExecuting)

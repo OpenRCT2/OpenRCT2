@@ -38,6 +38,7 @@
 #include "object/ObjectRepository.h"
 #include "peep/PeepAnimations.h"
 #include "rct1/RCT1.h"
+#include "scenario/Scenario.h"
 #include "scripting/ScriptEngine.h"
 #include "ui/WindowManager.h"
 #include "windows/Intent.h"
@@ -111,15 +112,15 @@ namespace OpenRCT2::Editor
         gameStateInitAll(gameState, kDefaultMapSize);
         gLegacyScene = LegacyScene::scenarioEditor;
         gameState.editorStep = EditorStep::ObjectSelection;
-        gameState.park.Flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-        gameState.scenarioCategory = ScenarioCategory::other;
+        gameState.park.flags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        gameState.scenarioOptions.category = Scenario::Category::other;
         ObjectListLoad();
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetViewportLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
         gScreenAge = 0;
-        gameState.scenarioName = LanguageGetString(STR_MY_NEW_SCENARIO);
+        gameState.scenarioOptions.name = LanguageGetString(STR_MY_NEW_SCENARIO);
 
         GameLoadScripts();
         GameNotifyMapChanged();
@@ -156,7 +157,7 @@ namespace OpenRCT2::Editor
 
         gLegacyScene = LegacyScene::scenarioEditor;
         gameState.editorStep = EditorStep::OptionsSelection;
-        gameState.scenarioCategory = ScenarioCategory::other;
+        gameState.scenarioOptions.category = Scenario::Category::other;
         ViewportInitAll();
         OpenEditorWindows();
         FinaliseMainView();
@@ -298,40 +299,40 @@ namespace OpenRCT2::Editor
             staff->SetName({});
         }
 
-        auto& gameState = getGameState();
-
         ResetAllEntities();
         UpdateConsolidatedPatrolAreas();
-        gameState.park.numGuestsInPark = 0;
-        gameState.park.numGuestsHeadingForPark = 0;
-        gameState.park.numGuestsInParkLastWeek = 0;
-        gameState.park.guestChangeModifier = 0;
+
+        auto& gameState = getGameState();
+        auto& park = gameState.park;
+        auto& scenarioOptions = gameState.scenarioOptions;
+
+        park.numGuestsInPark = 0;
+        park.numGuestsHeadingForPark = 0;
+        park.numGuestsInParkLastWeek = 0;
+        park.guestChangeModifier = 0;
+
         if (fromSave)
         {
-            gameState.park.Flags |= PARK_FLAGS_NO_MONEY;
+            park.flags |= PARK_FLAGS_NO_MONEY;
 
-            if (gameState.park.EntranceFee == 0)
+            if (park.entranceFee == 0)
             {
-                gameState.park.Flags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                park.flags |= PARK_FLAGS_PARK_FREE_ENTRY;
             }
             else
             {
-                gameState.park.Flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+                park.flags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
             }
 
-            gameState.park.Flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+            park.flags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 
-            gameState.guestInitialCash = std::clamp(gameState.guestInitialCash, 10.00_GBP, kMaxEntranceFee);
-
-            gameState.initialCash = std::min<money64>(gameState.initialCash, 100000);
+            scenarioOptions.guestInitialCash = std::clamp(scenarioOptions.guestInitialCash, 10.00_GBP, kMaxEntranceFee);
+            scenarioOptions.initialCash = std::min<money64>(scenarioOptions.initialCash, 100000);
             FinanceResetCashToInitial();
 
-            gameState.park.bankLoan = std::clamp<money64>(gameState.park.bankLoan, 0.00_GBP, 5000000.00_GBP);
-
-            gameState.park.maxBankLoan = std::clamp<money64>(gameState.park.maxBankLoan, 0.00_GBP, 5000000.00_GBP);
-
-            gameState.park.bankLoanInterestRate = std::clamp<uint8_t>(
-                gameState.park.bankLoanInterestRate, 5, MaxBankLoanInterestRate);
+            park.bankLoan = std::clamp<money64>(park.bankLoan, 0.00_GBP, 5000000.00_GBP);
+            park.maxBankLoan = std::clamp<money64>(park.maxBankLoan, 0.00_GBP, 5000000.00_GBP);
+            park.bankLoanInterestRate = std::clamp<uint8_t>(park.bankLoanInterestRate, 5, kMaxBankLoanInterestRate);
         }
 
         ClimateReset();
@@ -500,12 +501,12 @@ namespace OpenRCT2::Editor
             return { false, STR_PARK_MUST_OWN_SOME_LAND };
         }
 
-        if (gameState.park.Entrances.empty())
+        if (gameState.park.entrances.empty())
         {
             return { false, STR_NO_PARK_ENTRANCES };
         }
 
-        for (const auto& parkEntrance : gameState.park.Entrances)
+        for (const auto& parkEntrance : gameState.park.entrances)
         {
             int32_t direction = DirectionReverse(parkEntrance.direction);
 

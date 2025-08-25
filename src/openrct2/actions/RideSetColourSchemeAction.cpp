@@ -74,7 +74,7 @@ GameActions::Result RideSetColourSchemeAction::Query() const
 GameActions::Result RideSetColourSchemeAction::Execute() const
 {
     GameActions::Result res = GameActions::Result();
-    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Expenditure = ExpenditureType::rideConstruction;
     res.ErrorTitle = STR_CANT_SET_COLOUR_SCHEME;
 
     GetTrackElementOriginAndApplyChanges(_loc, _trackType, _newColourScheme, nullptr, { TrackElementSetFlag::colourScheme });

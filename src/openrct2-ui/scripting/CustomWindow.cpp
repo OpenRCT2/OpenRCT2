@@ -649,12 +649,12 @@ namespace OpenRCT2::Ui::Windows
                     const auto numItems = std::min<size_t>(items.size(), Dropdown::kItemsMaxSize);
                     for (size_t i = 0; i < numItems; i++)
                     {
-                        gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+                        gDropdown.items[i].format = STR_OPTIONS_DROPDOWN_ITEM;
                         if (selectedIndex == static_cast<int32_t>(i))
-                            gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM_SELECTED;
+                            gDropdown.items[i].format = STR_OPTIONS_DROPDOWN_ITEM_SELECTED;
 
                         auto sz = items[i].c_str();
-                        std::memcpy(&gDropdownItems[i].Args, &sz, sizeof(const char*));
+                        std::memcpy(&gDropdown.items[i].args, &sz, sizeof(const char*));
                     }
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1,

@@ -211,8 +211,8 @@ namespace OpenRCT2::Ui::Windows
                             int32_t maxSize = std::min(Dropdown::kItemsMaxSize, static_cast<int32_t>(ShopItems.size()));
                             for (int32_t i = 0; i < maxSize; i++)
                             {
-                                gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                                gDropdownItems[i].Args = GetShopItemDescriptor(ShopItems[i]).Naming.Plural;
+                                gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
+                                gDropdown.items[i].args = GetShopItemDescriptor(ShopItems[i]).Naming.Plural;
                                 numItems++;
                             }
 
@@ -231,15 +231,15 @@ namespace OpenRCT2::Ui::Windows
                             if (curRide != nullptr)
                             {
                                 // HACK until dropdown items have longer argument buffers
-                                gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
-                                Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItems[numItems].Args));
+                                gDropdown.items[numItems].format = STR_DROPDOWN_MENU_LABEL;
+                                Formatter ft(reinterpret_cast<uint8_t*>(&gDropdown.items[numItems].args));
                                 if (curRide->customName.empty())
                                 {
                                     curRide->formatNameTo(ft);
                                 }
                                 else
                                 {
-                                    gDropdownItems[numItems].Format = STR_OPTIONS_DROPDOWN_ITEM;
+                                    gDropdown.items[numItems].format = STR_OPTIONS_DROPDOWN_ITEM;
                                     ft.Add<const char*>(curRide->customName.c_str());
                                 }
                                 numItems++;
