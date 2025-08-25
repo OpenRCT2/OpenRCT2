@@ -184,8 +184,6 @@ void RCT2StringToUTF8Self(char* buffer, size_t length)
 
 static void FixGuestsHeadingToParkCount()
 {
-    auto& gameState = getGameState();
-
     uint32_t guestsHeadingToPark = 0;
 
     for (auto* peep : EntityList<Guest>())
@@ -196,14 +194,14 @@ static void FixGuestsHeadingToParkCount()
         }
     }
 
-    if (gameState.park.numGuestsHeadingForPark != guestsHeadingToPark)
+    auto& park = getGameState().park;
+    if (park.numGuestsHeadingForPark != guestsHeadingToPark)
     {
         LOG_WARNING(
-            "Corrected bad amount of guests heading to park: %u -> %u", gameState.park.numGuestsHeadingForPark,
-            guestsHeadingToPark);
+            "Corrected bad amount of guests heading to park: %u -> %u", park.numGuestsHeadingForPark, guestsHeadingToPark);
     }
 
-    gameState.park.numGuestsHeadingForPark = guestsHeadingToPark;
+    park.numGuestsHeadingForPark = guestsHeadingToPark;
 }
 
 static void FixGuestCount()
@@ -219,13 +217,13 @@ static void FixGuestCount()
         }
     }
 
-    auto& gameState = getGameState();
-    if (gameState.park.numGuestsInPark != guestCount)
+    auto& park = getGameState().park;
+    if (park.numGuestsInPark != guestCount)
     {
-        LOG_WARNING("Corrected bad amount of guests in park: %u -> %u", gameState.park.numGuestsInPark, guestCount);
+        LOG_WARNING("Corrected bad amount of guests in park: %u -> %u", park.numGuestsInPark, guestCount);
     }
 
-    gameState.park.numGuestsInPark = guestCount;
+    park.numGuestsInPark = guestCount;
 }
 
 static void FixPeepsWithInvalidRideReference()

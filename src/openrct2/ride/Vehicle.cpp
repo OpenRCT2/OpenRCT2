@@ -4572,10 +4572,11 @@ static void ride_train_crash(Ride& ride, uint16_t numFatalities)
                 ride.id.ToUnderlying(), ft);
         }
 
-        auto& gameState = getGameState();
-        if (gameState.park.ratingCasualtyPenalty < 500)
+        // TODO: get park id from ride/vehicle
+        auto& park = getGameState().park;
+        if (park.ratingCasualtyPenalty < 500)
         {
-            gameState.park.ratingCasualtyPenalty += 200;
+            park.ratingCasualtyPenalty += 200;
         }
     }
 }

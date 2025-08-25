@@ -380,21 +380,23 @@ namespace OpenRCT2::RCT2
             ImportEntities();
             ConvertPeepAnimationTypeToObjects(gameState);
 
-            gameState.scenarioOptions.initialCash = ToMoney64(_s6.InitialCash);
-            gameState.park.bankLoan = ToMoney64(_s6.CurrentLoan);
+            auto& park = gameState.park;
 
-            gameState.park.flags = _s6.ParkFlags & ~PARK_FLAGS_NO_MONEY_SCENARIO;
+            gameState.scenarioOptions.initialCash = ToMoney64(_s6.InitialCash);
+            park.bankLoan = ToMoney64(_s6.CurrentLoan);
+
+            park.flags = _s6.ParkFlags & ~PARK_FLAGS_NO_MONEY_SCENARIO;
 
             // RCT2 used a different flag for `no money` when the park is a scenario
             if (_s6.Header.Type == S6_TYPE_SCENARIO)
             {
                 if (_s6.ParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
-                    gameState.park.flags |= PARK_FLAGS_NO_MONEY;
+                    park.flags |= PARK_FLAGS_NO_MONEY;
                 else
-                    gameState.park.flags &= ~PARK_FLAGS_NO_MONEY;
+                    park.flags &= ~PARK_FLAGS_NO_MONEY;
             }
 
-            gameState.park.entranceFee = _s6.ParkEntranceFee;
+            park.entranceFee = _s6.ParkEntranceFee;
             // rct1_park_entranceX
             // rct1_park_entrance_y
             // Pad013573EE
@@ -402,44 +404,44 @@ namespace OpenRCT2::RCT2
 
             ImportPeepSpawns(gameState);
 
-            gameState.park.guestChangeModifier = _s6.GuestCountChangeModifier;
+            park.guestChangeModifier = _s6.GuestCountChangeModifier;
             gameState.researchFundingLevel = _s6.CurrentResearchLevel;
             // Pad01357400
             // _s6.ResearchedTrackTypesA
             // _s6.ResearchedTrackTypesB
 
-            gameState.park.numGuestsInPark = _s6.GuestsInPark;
-            gameState.park.numGuestsHeadingForPark = _s6.GuestsHeadingForPark;
+            park.numGuestsInPark = _s6.GuestsInPark;
+            park.numGuestsHeadingForPark = _s6.GuestsHeadingForPark;
 
             for (size_t i = 0; i < Limits::kExpenditureTableMonthCount; i++)
             {
                 for (size_t j = 0; j < Limits::kExpenditureTypeCount; j++)
                 {
-                    gameState.park.expenditureTable[i][j] = ToMoney64(_s6.ExpenditureTable[i][j]);
+                    park.expenditureTable[i][j] = ToMoney64(_s6.ExpenditureTable[i][j]);
                 }
             }
 
-            gameState.park.numGuestsInParkLastWeek = _s6.LastGuestsInPark;
+            park.numGuestsInParkLastWeek = _s6.LastGuestsInPark;
             // Pad01357BCA
-            gameState.park.staffHandymanColour = _s6.HandymanColour;
-            gameState.park.staffMechanicColour = _s6.MechanicColour;
-            gameState.park.staffSecurityColour = _s6.SecurityColour;
+            park.staffHandymanColour = _s6.HandymanColour;
+            park.staffMechanicColour = _s6.MechanicColour;
+            park.staffSecurityColour = _s6.SecurityColour;
 
-            gameState.park.rating = _s6.ParkRating;
+            park.rating = _s6.ParkRating;
 
-            Park::ResetHistories(gameState);
+            Park::ResetHistories(park);
             for (size_t i = 0; i < std::size(_s6.ParkRatingHistory); i++)
             {
                 if (_s6.ParkRatingHistory[i] != kRCT12ParkHistoryUndefined)
                 {
-                    gameState.park.ratingHistory[i] = _s6.ParkRatingHistory[i] * kRCT12ParkRatingHistoryFactor;
+                    park.ratingHistory[i] = _s6.ParkRatingHistory[i] * kRCT12ParkRatingHistoryFactor;
                 }
             }
             for (size_t i = 0; i < std::size(_s6.GuestsInParkHistory); i++)
             {
                 if (_s6.GuestsInParkHistory[i] != kRCT12ParkHistoryUndefined)
                 {
-                    gameState.park.guestsInParkHistory[i] = _s6.GuestsInParkHistory[i] * kRCT12GuestsInParkHistoryFactor;
+                    park.guestsInParkHistory[i] = _s6.GuestsInParkHistory[i] * kRCT12GuestsInParkHistoryFactor;
                 }
             }
 
@@ -462,10 +464,10 @@ namespace OpenRCT2::RCT2
             gameState.researchExpectedDay = _s6.NextResearchExpectedDay;
             gameState.researchExpectedMonth = _s6.NextResearchExpectedMonth;
             gameState.scenarioOptions.guestInitialHappiness = _s6.GuestInitialHappiness;
-            gameState.park.size = _s6.ParkSize;
-            gameState.park.guestGenerationProbability = _s6.GuestGenerationProbability;
-            gameState.park.totalRideValueForMoney = _s6.TotalRideValueForMoney;
-            gameState.park.maxBankLoan = ToMoney64(_s6.MaximumLoan);
+            park.size = _s6.ParkSize;
+            park.guestGenerationProbability = _s6.GuestGenerationProbability;
+            park.totalRideValueForMoney = _s6.TotalRideValueForMoney;
+            park.maxBankLoan = ToMoney64(_s6.MaximumLoan);
             gameState.scenarioOptions.guestInitialCash = ToMoney64(_s6.GuestInitialCash);
             gameState.scenarioOptions.guestInitialHunger = _s6.GuestInitialHunger;
             gameState.scenarioOptions.guestInitialThirst = _s6.GuestInitialThirst;
@@ -479,31 +481,31 @@ namespace OpenRCT2::RCT2
                 gameState.scenarioOptions.objective.RideId = _s6.ObjectiveGuests - kRCT2RideStringStart;
             else
                 gameState.scenarioOptions.objective.NumGuests = _s6.ObjectiveGuests;
-            ImportMarketingCampaigns();
+            ImportMarketingCampaigns(park);
 
-            gameState.park.currentExpenditure = ToMoney64(_s6.CurrentExpenditure);
-            gameState.park.currentProfit = ToMoney64(_s6.CurrentProfit);
-            gameState.park.weeklyProfitAverageDividend = ToMoney64(_s6.WeeklyProfitAverageDividend);
-            gameState.park.weeklyProfitAverageDivisor = _s6.WeeklyProfitAverageDivisor;
+            park.currentExpenditure = ToMoney64(_s6.CurrentExpenditure);
+            park.currentProfit = ToMoney64(_s6.CurrentProfit);
+            park.weeklyProfitAverageDividend = ToMoney64(_s6.WeeklyProfitAverageDividend);
+            park.weeklyProfitAverageDivisor = _s6.WeeklyProfitAverageDivisor;
             // Pad0135833A
 
-            gameState.park.value = ToMoney64(_s6.ParkValue);
+            park.value = ToMoney64(_s6.ParkValue);
 
             for (size_t i = 0; i < Limits::kFinanceGraphSize; i++)
             {
-                gameState.park.cashHistory[i] = ToMoney64(_s6.BalanceHistory[i]);
-                gameState.park.weeklyProfitHistory[i] = ToMoney64(_s6.WeeklyProfitHistory[i]);
-                gameState.park.valueHistory[i] = ToMoney64(_s6.ParkValueHistory[i]);
+                park.cashHistory[i] = ToMoney64(_s6.BalanceHistory[i]);
+                park.weeklyProfitHistory[i] = ToMoney64(_s6.WeeklyProfitHistory[i]);
+                park.valueHistory[i] = ToMoney64(_s6.ParkValueHistory[i]);
             }
 
             gameState.scenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s6.CompletedCompanyValue);
-            gameState.park.totalAdmissions = _s6.TotalAdmissions;
-            gameState.park.totalIncomeFromAdmissions = ToMoney64(_s6.IncomeFromAdmissions);
-            gameState.park.companyValue = ToMoney64(_s6.CompanyValue);
-            std::memcpy(gameState.park.peepWarningThrottle, _s6.PeepWarningThrottle, sizeof(_s6.PeepWarningThrottle));
+            park.totalAdmissions = _s6.TotalAdmissions;
+            park.totalIncomeFromAdmissions = ToMoney64(_s6.IncomeFromAdmissions);
+            park.companyValue = ToMoney64(_s6.CompanyValue);
+            std::memcpy(park.peepWarningThrottle, _s6.PeepWarningThrottle, sizeof(_s6.PeepWarningThrottle));
 
             // Awards
-            auto& currentAwards = gameState.park.currentAwards;
+            auto& currentAwards = park.currentAwards;
             for (auto& src : _s6.Awards)
             {
                 if (src.Time != 0)
@@ -521,25 +523,25 @@ namespace OpenRCT2::RCT2
             gameState.scenarioCompanyValueRecord = _s6.CompletedCompanyValueRecord;
             // _s6.LoanHash;
             // Pad013587CA
-            gameState.park.historicalProfit = ToMoney64(_s6.HistoricalProfit);
+            park.historicalProfit = ToMoney64(_s6.HistoricalProfit);
             // Pad013587D4
             gameState.scenarioCompletedBy = std::string_view(_s6.ScenarioCompletedName, sizeof(_s6.ScenarioCompletedName));
-            gameState.park.cash = ToMoney64(DECRYPT_MONEY(_s6.Cash));
+            park.cash = ToMoney64(DECRYPT_MONEY(_s6.Cash));
             // Pad013587FC
-            gameState.park.ratingCasualtyPenalty = _s6.ParkRatingCasualtyPenalty;
+            park.ratingCasualtyPenalty = _s6.ParkRatingCasualtyPenalty;
             gameState.mapSize = { _s6.MapSize, _s6.MapSize };
-            gameState.park.samePriceThroughoutPark = _s6.SamePriceThroughout
+            park.samePriceThroughoutPark = _s6.SamePriceThroughout
                 | (static_cast<uint64_t>(_s6.SamePriceThroughoutExtended) << 32);
-            gameState.park.suggestedGuestMaximum = _s6.SuggestedMaxGuests;
+            park.suggestedGuestMaximum = _s6.SuggestedMaxGuests;
             gameState.scenarioParkRatingWarningDays = _s6.ParkRatingWarningDays;
             gameState.lastEntranceStyle = _s6.LastEntranceStyle;
             // rct1_water_colour
             // Pad01358842
             ImportResearchList(gameState);
-            gameState.park.bankLoanInterestRate = _s6.CurrentInterestRate;
+            park.bankLoanInterestRate = _s6.CurrentInterestRate;
             // Pad0135934B
             // Preserve compatibility with vanilla RCT2's save format.
-            gameState.park.entrances.clear();
+            park.entrances.clear();
             for (uint8_t i = 0; i < Limits::kMaxParkEntrances; i++)
             {
                 if (_s6.ParkEntranceX[i] != kLocationNull)
@@ -549,7 +551,7 @@ namespace OpenRCT2::RCT2
                     entrance.y = _s6.ParkEntranceY[i];
                     entrance.z = _s6.ParkEntranceZ[i];
                     entrance.direction = _s6.ParkEntranceDirection[i];
-                    gameState.park.entrances.push_back(entrance);
+                    park.entrances.push_back(entrance);
                 }
             }
             if (_s6.Header.Type == S6_TYPE_SCENARIO)
@@ -615,7 +617,7 @@ namespace OpenRCT2::RCT2
             ConvertScenarioStringsToUTF8(gameState);
             DetermineRideEntranceAndExitLocations();
 
-            gameState.park.name = GetUserString(_s6.ParkName);
+            park.name = GetUserString(_s6.ParkName);
 
             if (_isScenario)
             {
@@ -1606,7 +1608,7 @@ namespace OpenRCT2::RCT2
             }
         }
 
-        void ImportMarketingCampaigns()
+        void ImportMarketingCampaigns(Park::ParkData& park)
         {
             for (size_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
             {
@@ -1627,7 +1629,7 @@ namespace OpenRCT2::RCT2
                     {
                         campaign.ShopItemType = ShopItem(_s6.CampaignRideIndex[i]);
                     }
-                    getGameState().park.marketingCampaigns.push_back(campaign);
+                    park.marketingCampaigns.push_back(campaign);
                 }
             }
         }

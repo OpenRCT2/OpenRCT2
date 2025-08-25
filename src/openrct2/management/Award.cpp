@@ -174,7 +174,7 @@ static bool AwardIsDeservedBestRollercoasters([[maybe_unused]] int32_t activeAwa
 /** Entrance fee is 0.10 less than half of the total ride value. */
 static bool AwardIsDeservedBestValue(int32_t activeAwardTypes)
 {
-    auto& gameState = getGameState();
+    auto& park = getGameState().park;
 
     if (activeAwardTypes & EnumToFlag(AwardType::WorstValue))
         return false;
@@ -182,13 +182,13 @@ static bool AwardIsDeservedBestValue(int32_t activeAwardTypes)
     if (activeAwardTypes & EnumToFlag(AwardType::MostDisappointing))
         return false;
 
-    if ((gameState.park.flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked())
+    if ((park.flags & PARK_FLAGS_NO_MONEY) || !Park::EntranceFeeUnlocked())
         return false;
 
-    if (gameState.park.totalRideValueForMoney < 10.00_GBP)
+    if (park.totalRideValueForMoney < 10.00_GBP)
         return false;
 
-    if (Park::GetEntranceFee() + 0.10_GBP >= gameState.park.totalRideValueForMoney / 2)
+    if (Park::GetEntranceFee() + 0.10_GBP >= park.totalRideValueForMoney / 2)
         return false;
 
     return true;
@@ -230,17 +230,17 @@ static bool AwardIsDeservedMostBeautiful(int32_t activeAwardTypes)
 /** Entrance fee is more than total ride value. */
 static bool AwardIsDeservedWorstValue(int32_t activeAwardTypes)
 {
-    auto& gameState = getGameState();
+    auto& park = getGameState().park;
 
     if (activeAwardTypes & EnumToFlag(AwardType::BestValue))
         return false;
-    if (gameState.park.flags & PARK_FLAGS_NO_MONEY)
+    if (park.flags & PARK_FLAGS_NO_MONEY)
         return false;
 
     const auto parkEntranceFee = Park::GetEntranceFee();
     if (parkEntranceFee == 0.00_GBP)
         return false;
-    if (parkEntranceFee <= gameState.park.totalRideValueForMoney)
+    if (parkEntranceFee <= park.totalRideValueForMoney)
         return false;
     return true;
 }
@@ -622,8 +622,7 @@ void AwardUpdateAll()
 {
     PROFILED_FUNCTION();
 
-    auto& gameState = getGameState();
-    auto& currentAwards = gameState.park.currentAwards;
+    auto& currentAwards = getGameState().park.currentAwards;
     auto* windowMgr = Ui::GetWindowManager();
 
     // Decrease award times
@@ -642,7 +641,7 @@ void AwardUpdateAll()
     }
 
     // Only add new awards if park is open
-    if (gameState.park.flags & PARK_FLAGS_PARK_OPEN)
+    if (getGameState().park.flags & PARK_FLAGS_PARK_OPEN)
     {
         // Set active award types as flags
         int32_t activeAwardTypes = 0;

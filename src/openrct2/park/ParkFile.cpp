@@ -891,29 +891,32 @@ namespace OpenRCT2
 
         void ReadWriteParkChunk(GameState_t& gameState, OrcaStream& os)
         {
+            // TODO: load/save all parks
+            auto& park = gameState.park;
+
             os.readWriteChunk(
-                ParkFileChunkType::PARK, [version = os.getHeader().targetVersion, &gameState](OrcaStream::ChunkStream& cs) {
-                    cs.readWrite(gameState.park.name);
-                    cs.readWrite(gameState.park.cash);
-                    cs.readWrite(gameState.park.bankLoan);
-                    cs.readWrite(gameState.park.maxBankLoan);
-                    cs.readWrite(gameState.park.bankLoanInterestRate);
-                    cs.readWrite(gameState.park.flags);
+                ParkFileChunkType::PARK, [version = os.getHeader().targetVersion, &park](OrcaStream::ChunkStream& cs) {
+                    cs.readWrite(park.name);
+                    cs.readWrite(park.cash);
+                    cs.readWrite(park.bankLoan);
+                    cs.readWrite(park.maxBankLoan);
+                    cs.readWrite(park.bankLoanInterestRate);
+                    cs.readWrite(park.flags);
                     if (version <= 18)
                     {
                         money16 tempParkEntranceFee{};
                         cs.readWrite(tempParkEntranceFee);
-                        gameState.park.entranceFee = ToMoney64(tempParkEntranceFee);
+                        park.entranceFee = ToMoney64(tempParkEntranceFee);
                     }
                     else
                     {
-                        cs.readWrite(gameState.park.entranceFee);
+                        cs.readWrite(park.entranceFee);
                     }
 
-                    cs.readWrite(gameState.park.staffHandymanColour);
-                    cs.readWrite(gameState.park.staffMechanicColour);
-                    cs.readWrite(gameState.park.staffSecurityColour);
-                    cs.readWrite(gameState.park.samePriceThroughoutPark);
+                    cs.readWrite(park.staffHandymanColour);
+                    cs.readWrite(park.staffMechanicColour);
+                    cs.readWrite(park.staffSecurityColour);
+                    cs.readWrite(park.samePriceThroughoutPark);
 
                     // Finances
                     if (cs.getMode() == OrcaStream::Mode::reading)
@@ -924,7 +927,7 @@ namespace OpenRCT2
                         {
                             for (uint32_t j = 0; j < numTypes; j++)
                             {
-                                gameState.park.expenditureTable[i][j] = cs.read<money64>();
+                                park.expenditureTable[i][j] = cs.read<money64>();
                             }
                         }
                     }
@@ -939,14 +942,14 @@ namespace OpenRCT2
                         {
                             for (uint32_t j = 0; j < numTypes; j++)
                             {
-                                cs.write(gameState.park.expenditureTable[i][j]);
+                                cs.write(park.expenditureTable[i][j]);
                             }
                         }
                     }
-                    cs.readWrite(gameState.park.historicalProfit);
+                    cs.readWrite(park.historicalProfit);
 
                     // Marketing
-                    cs.readWriteVector(gameState.park.marketingCampaigns, [&cs](MarketingCampaign& campaign) {
+                    cs.readWriteVector(park.marketingCampaigns, [&cs](MarketingCampaign& campaign) {
                         cs.readWrite(campaign.Type);
                         cs.readWrite(campaign.WeeksLeft);
                         cs.readWrite(campaign.flags.holder);
@@ -954,7 +957,7 @@ namespace OpenRCT2
                     });
 
                     // Awards
-                    auto& currentAwards = gameState.park.currentAwards;
+                    auto& currentAwards = park.currentAwards;
                     if (version <= 6)
                     {
                         Award awards[RCT2::Limits::kMaxAwards]{};
@@ -977,35 +980,35 @@ namespace OpenRCT2
                             cs.readWrite(award.Type);
                         });
                     }
-                    cs.readWrite(gameState.park.value);
-                    cs.readWrite(gameState.park.companyValue);
-                    cs.readWrite(gameState.park.size);
-                    cs.readWrite(gameState.park.numGuestsInPark);
-                    cs.readWrite(gameState.park.numGuestsHeadingForPark);
-                    cs.readWrite(gameState.park.rating);
-                    cs.readWrite(gameState.park.ratingCasualtyPenalty);
-                    cs.readWrite(gameState.park.currentExpenditure);
-                    cs.readWrite(gameState.park.currentProfit);
-                    cs.readWrite(gameState.park.weeklyProfitAverageDividend);
-                    cs.readWrite(gameState.park.weeklyProfitAverageDivisor);
-                    cs.readWrite(gameState.park.totalAdmissions);
-                    cs.readWrite(gameState.park.totalIncomeFromAdmissions);
+                    cs.readWrite(park.value);
+                    cs.readWrite(park.companyValue);
+                    cs.readWrite(park.size);
+                    cs.readWrite(park.numGuestsInPark);
+                    cs.readWrite(park.numGuestsHeadingForPark);
+                    cs.readWrite(park.rating);
+                    cs.readWrite(park.ratingCasualtyPenalty);
+                    cs.readWrite(park.currentExpenditure);
+                    cs.readWrite(park.currentProfit);
+                    cs.readWrite(park.weeklyProfitAverageDividend);
+                    cs.readWrite(park.weeklyProfitAverageDivisor);
+                    cs.readWrite(park.totalAdmissions);
+                    cs.readWrite(park.totalIncomeFromAdmissions);
                     if (version <= 16)
                     {
                         money16 legacyTotalRideValueForMoney = 0;
                         cs.readWrite(legacyTotalRideValueForMoney);
-                        gameState.park.totalRideValueForMoney = legacyTotalRideValueForMoney;
+                        park.totalRideValueForMoney = legacyTotalRideValueForMoney;
                     }
                     else
                     {
-                        cs.readWrite(gameState.park.totalRideValueForMoney);
+                        cs.readWrite(park.totalRideValueForMoney);
                     }
-                    cs.readWrite(gameState.park.numGuestsInParkLastWeek);
-                    cs.readWrite(gameState.park.guestChangeModifier);
-                    cs.readWrite(gameState.park.guestGenerationProbability);
-                    cs.readWrite(gameState.park.suggestedGuestMaximum);
+                    cs.readWrite(park.numGuestsInParkLastWeek);
+                    cs.readWrite(park.guestChangeModifier);
+                    cs.readWrite(park.guestGenerationProbability);
+                    cs.readWrite(park.suggestedGuestMaximum);
 
-                    cs.readWriteArray(gameState.park.peepWarningThrottle, [&cs](uint8_t& value) {
+                    cs.readWriteArray(park.peepWarningThrottle, [&cs](uint8_t& value) {
                         cs.readWrite(value);
                         return true;
                     });
@@ -1022,10 +1025,10 @@ namespace OpenRCT2
                             for (int i = 0; i < kParkRatingHistorySize; i++)
                             {
                                 if (smallHistory[i] == kRCT12ParkHistoryUndefined)
-                                    gameState.park.ratingHistory[i] = kParkRatingHistoryUndefined;
+                                    park.ratingHistory[i] = kParkRatingHistoryUndefined;
                                 else
                                 {
-                                    gameState.park.ratingHistory[i] = static_cast<uint16_t>(
+                                    park.ratingHistory[i] = static_cast<uint16_t>(
                                         smallHistory[i] * kRCT12ParkRatingHistoryFactor);
                                 }
                             }
@@ -1035,12 +1038,12 @@ namespace OpenRCT2
                             uint8_t smallHistory[kParkRatingHistorySize];
                             for (int i = 0; i < kParkRatingHistorySize; i++)
                             {
-                                if (gameState.park.ratingHistory[i] == kParkRatingHistoryUndefined)
+                                if (park.ratingHistory[i] == kParkRatingHistoryUndefined)
                                     smallHistory[i] = kRCT12ParkHistoryUndefined;
                                 else
                                 {
                                     smallHistory[i] = static_cast<uint8_t>(
-                                        gameState.park.ratingHistory[i] / kRCT12ParkRatingHistoryFactor);
+                                        park.ratingHistory[i] / kRCT12ParkRatingHistoryFactor);
                                 }
                             }
                             cs.readWriteArray(smallHistory, [&cs](uint8_t& value) {
@@ -1051,26 +1054,26 @@ namespace OpenRCT2
                     }
                     else
                     {
-                        cs.readWriteArray(gameState.park.ratingHistory, [&cs](uint16_t& value) {
+                        cs.readWriteArray(park.ratingHistory, [&cs](uint16_t& value) {
                             cs.readWrite(value);
                             return true;
                         });
                     }
 
-                    cs.readWriteArray(gameState.park.guestsInParkHistory, [&cs](uint32_t& value) {
+                    cs.readWriteArray(park.guestsInParkHistory, [&cs](uint32_t& value) {
                         cs.readWrite(value);
                         return true;
                     });
 
-                    cs.readWriteArray(gameState.park.cashHistory, [&cs](money64& value) {
+                    cs.readWriteArray(park.cashHistory, [&cs](money64& value) {
                         cs.readWrite(value);
                         return true;
                     });
-                    cs.readWriteArray(gameState.park.weeklyProfitHistory, [&cs](money64& value) {
+                    cs.readWriteArray(park.weeklyProfitHistory, [&cs](money64& value) {
                         cs.readWrite(value);
                         return true;
                     });
-                    cs.readWriteArray(gameState.park.valueHistory, [&cs](money64& value) {
+                    cs.readWriteArray(park.valueHistory, [&cs](money64& value) {
                         cs.readWrite(value);
                         return true;
                     });

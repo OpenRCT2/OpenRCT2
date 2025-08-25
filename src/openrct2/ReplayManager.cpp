@@ -639,10 +639,10 @@ namespace OpenRCT2
 
         bool SerialiseParkParameters(DataSerialiser& serialiser)
         {
-            auto& gameState = getGameState();
+            auto& park = getGameState().park;
 
-            serialiser << gameState.park.guestGenerationProbability;
-            serialiser << gameState.park.suggestedGuestMaximum;
+            serialiser << park.guestGenerationProbability;
+            serialiser << park.suggestedGuestMaximum;
             serialiser << Config::Get().general.ShowRealNamesOfGuests;
 
             // To make this a little bit less volatile against updates

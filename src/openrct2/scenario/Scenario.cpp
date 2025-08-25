@@ -101,37 +101,38 @@ void ScenarioReset(GameState_t& gameState)
 
     News::InitQueue(gameState);
 
-    gameState.park.rating = Park::CalculateParkRating();
-    gameState.park.value = Park::CalculateParkValue();
-    gameState.park.companyValue = Park::CalculateCompanyValue();
-    gameState.park.historicalProfit = gameState.scenarioOptions.initialCash - gameState.park.bankLoan;
-    gameState.park.cash = gameState.scenarioOptions.initialCash;
+    auto& park = gameState.park;
+    park.rating = Park::CalculateParkRating();
+    park.value = Park::CalculateParkValue();
+    park.companyValue = Park::CalculateCompanyValue();
+    park.historicalProfit = gameState.scenarioOptions.initialCash - park.bankLoan;
+    park.cash = gameState.scenarioOptions.initialCash;
 
     auto& objManager = GetContext()->GetObjectManager();
     if (auto* textObject = objManager.GetLoadedObject<ScenarioMetaObject>(0); textObject != nullptr)
     {
         gameState.scenarioOptions.name = textObject->GetScenarioName();
-        gameState.park.name = textObject->GetParkName();
+        park.name = textObject->GetParkName();
         gameState.scenarioOptions.details = textObject->GetScenarioDetails();
     }
 
     // Set the last saved game path
     auto& env = GetContext()->GetPlatformEnvironment();
     auto savePath = env.GetDirectoryPath(DirBase::user, DirId::saves);
-    gScenarioSavePath = Path::Combine(savePath, gameState.park.name + u8".park");
+    gScenarioSavePath = Path::Combine(savePath, park.name + u8".park");
 
-    gameState.park.currentExpenditure = 0;
-    gameState.park.currentProfit = 0;
-    gameState.park.weeklyProfitAverageDividend = 0;
-    gameState.park.weeklyProfitAverageDivisor = 0;
-    gameState.park.totalAdmissions = 0;
-    gameState.park.totalIncomeFromAdmissions = 0;
+    park.currentExpenditure = 0;
+    park.currentProfit = 0;
+    park.weeklyProfitAverageDividend = 0;
+    park.weeklyProfitAverageDivisor = 0;
+    park.totalAdmissions = 0;
+    park.totalIncomeFromAdmissions = 0;
 
-    gameState.park.flags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+    park.flags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
     gameState.scenarioCompletedCompanyValue = kMoney64Undefined;
     gameState.scenarioCompletedBy = "?";
 
-    Park::ResetHistories(gameState);
+    Park::ResetHistories(park);
     FinanceResetHistory();
     AwardReset();
     ResetAllRideBuildDates();
@@ -148,17 +149,17 @@ void ScenarioReset(GameState_t& gameState)
         gameState.lastEntranceStyle = 0;
     }
 
-    gameState.park.marketingCampaigns.clear();
-    gameState.park.ratingCasualtyPenalty = 0;
+    park.marketingCampaigns.clear();
+    park.ratingCasualtyPenalty = 0;
 
     // Open park with free entry when there is no money
-    if (gameState.park.flags & PARK_FLAGS_NO_MONEY)
+    if (park.flags & PARK_FLAGS_NO_MONEY)
     {
-        gameState.park.flags |= PARK_FLAGS_PARK_OPEN;
-        gameState.park.entranceFee = 0;
+        park.flags |= PARK_FLAGS_PARK_OPEN;
+        park.entranceFee = 0;
     }
 
-    gameState.park.flags |= PARK_FLAGS_SPRITES_INITIALISED;
+    park.flags |= PARK_FLAGS_SPRITES_INITIALISED;
     gGamePaused = false;
 }
 
@@ -222,14 +223,14 @@ void ScenarioSuccessSubmitName(GameState_t& gameState, const char* name)
  */
 static void ScenarioCheckEntranceFeeTooHigh()
 {
-    const auto& gameState = getGameState();
-    const auto max_fee = AddClamp<money64>(gameState.park.totalRideValueForMoney, gameState.park.totalRideValueForMoney / 2);
+    const auto& park = getGameState().park;
+    const auto max_fee = AddClamp<money64>(park.totalRideValueForMoney, park.totalRideValueForMoney / 2);
 
-    if ((gameState.park.flags & PARK_FLAGS_PARK_OPEN) && Park::GetEntranceFee() > max_fee)
+    if ((park.flags & PARK_FLAGS_PARK_OPEN) && Park::GetEntranceFee() > max_fee)
     {
-        if (!gameState.park.entrances.empty())
+        if (!park.entrances.empty())
         {
-            const auto& entrance = gameState.park.entrances[0];
+            const auto& entrance = park.entrances[0];
             auto x = entrance.x + 16;
             auto y = entrance.y + 16;
 
@@ -298,9 +299,11 @@ static void ScenarioDayUpdate(GameState_t& gameState)
             break;
     }
 
+    auto& park = gameState.park;
+
     // Lower the casualty penalty
-    uint16_t casualtyPenaltyModifier = (gameState.park.flags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
-    gameState.park.ratingCasualtyPenalty = std::max(0, gameState.park.ratingCasualtyPenalty - casualtyPenaltyModifier);
+    uint16_t casualtyPenaltyModifier = (park.flags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
+    park.ratingCasualtyPenalty = std::max(0, park.ratingCasualtyPenalty - casualtyPenaltyModifier);
 
     auto intent = Intent(INTENT_ACTION_UPDATE_DATE);
     ContextBroadcastIntent(&intent);

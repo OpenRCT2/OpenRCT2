@@ -583,14 +583,14 @@ void CheatSetAction::Set10MinuteInspection() const
 
 void CheatSetAction::SetScenarioNoMoney(bool enabled) const
 {
-    auto& gameState = getGameState();
+    auto& park = getGameState().park;
     if (enabled)
     {
-        gameState.park.flags |= PARK_FLAGS_NO_MONEY;
+        park.flags |= PARK_FLAGS_NO_MONEY;
     }
     else
     {
-        gameState.park.flags &= ~PARK_FLAGS_NO_MONEY;
+        park.flags &= ~PARK_FLAGS_NO_MONEY;
     }
 
     // Invalidate all windows that have anything to do with finance
@@ -615,8 +615,8 @@ void CheatSetAction::SetMoney(money64 amount) const
 
 void CheatSetAction::AddMoney(money64 amount) const
 {
-    auto& gameState = getGameState();
-    gameState.park.cash = AddClamp<money64>(gameState.park.cash, amount);
+    auto& park = getGameState().park;
+    park.cash = AddClamp<money64>(park.cash, amount);
 
     auto* windowMgr = Ui::GetWindowManager();
     windowMgr->InvalidateByClass(WindowClass::Finances);
