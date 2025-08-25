@@ -12,19 +12,22 @@
 #include "../Identifiers.h"
 #include "GameAction.h"
 
-class BalloonPressAction final : public GameActionBase<GameCommand::BalloonPress>
+namespace OpenRCT2::GameActions
 {
-    EntityId _spriteIndex{ EntityId::GetNull() };
+    class BalloonPressAction final : public GameActionBase<GameCommand::BalloonPress>
+    {
+        EntityId _spriteIndex{ EntityId::GetNull() };
 
-public:
-    BalloonPressAction() = default;
-    BalloonPressAction(EntityId spriteIndex);
+    public:
+        BalloonPressAction() = default;
+        BalloonPressAction(EntityId spriteIndex);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        OpenRCT2::GameActions::Result Query() const override;
+        OpenRCT2::GameActions::Result Execute() const override;
+    };
+} // namespace OpenRCT2::GameActions

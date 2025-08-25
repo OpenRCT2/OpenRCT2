@@ -1246,7 +1246,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Gam
     switch (action.GetType())
     {
         case GameCommand::PlaceBanner:
-            bannerId = result.GetData<BannerPlaceActionResult>().bannerId;
+            bannerId = result.GetData<GameActions::BannerPlaceActionResult>().bannerId;
             break;
         case GameCommand::PlaceLargeScenery:
             bannerId = result.GetData<LargeSceneryPlaceActionResult>().bannerId;

@@ -2216,7 +2216,7 @@ namespace OpenRCT2::Ui::Windows
 
             // 6e2612
             auto primaryColour = _sceneryPrimaryColour;
-            auto bannerPlaceAction = BannerPlaceAction(loc, entryIndex, primaryColour);
+            auto bannerPlaceAction = GameActions::BannerPlaceAction(loc, entryIndex, primaryColour);
             bannerPlaceAction.SetFlags(
                 GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
             auto res = GameActions::Execute(&bannerPlaceAction);
@@ -3224,12 +3224,12 @@ namespace OpenRCT2::Ui::Windows
 
                     CoordsXYZD loc{ gridPos, z, direction };
                     auto primaryColour = _sceneryPrimaryColour;
-                    auto bannerPlaceAction = BannerPlaceAction(loc, selectedScenery, primaryColour);
+                    auto bannerPlaceAction = GameActions::BannerPlaceAction(loc, selectedScenery, primaryColour);
                     bannerPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
                         {
-                            auto data = result->GetData<BannerPlaceActionResult>();
-                            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+                            auto data = result->GetData<GameActions::BannerPlaceActionResult>();
+                            Audio::Play3D(Audio::SoundId::PlaceItem, result->Position);
                             ContextOpenDetailWindow(WD_BANNER, data.bannerId.ToUnderlying());
                         }
                     });

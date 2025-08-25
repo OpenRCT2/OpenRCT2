@@ -222,7 +222,7 @@ namespace OpenRCT2::Ui
                     {
                         if (GameIsNotPaused())
                         {
-                            auto balloonPress = BalloonPressAction(entity->Id);
+                            auto balloonPress = GameActions::BalloonPressAction(entity->Id);
                             GameActions::Execute(&balloonPress);
                         }
                     }
