@@ -14,12 +14,9 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../ParkImporter.h"
-#include "../actions/WallPlaceAction.h"
 #include "../audio/Audio.h"
 #include "../core/BitSet.hpp"
-#include "../core/Collections.hpp"
 #include "../core/Console.hpp"
-#include "../core/EnumUtils.hpp"
 #include "../core/FileStream.h"
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
@@ -29,7 +26,6 @@
 #include "../entity/Balloon.h"
 #include "../entity/Duck.h"
 #include "../entity/EntityList.h"
-#include "../entity/EntityRegistry.h"
 #include "../entity/Fountain.h"
 #include "../entity/Litter.h"
 #include "../entity/MoneyEffect.h"
@@ -38,7 +34,6 @@
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
 #include "../localisation/Formatting.h"
-#include "../localisation/Localisation.Date.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
@@ -51,7 +46,6 @@
 #include "../object/PeepAnimationsObject.h"
 #include "../object/ScenarioMetaObject.h"
 #include "../park/Legacy.h"
-#include "../park/ParkPreview.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct12/CSStringConverter.h"
 #include "../rct12/EntryList.h"
@@ -81,15 +75,14 @@
 #include "../world/tile_element/PathElement.h"
 #include "../world/tile_element/SmallSceneryElement.h"
 #include "../world/tile_element/SurfaceElement.h"
+#include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "../world/tile_element/WallElement.h"
 #include "RCT1.h"
 #include "Tables.h"
 
 #include <cassert>
-#include <iterator>
 #include <memory>
-#include <mutex>
 #include <vector>
 
 using namespace OpenRCT2;
