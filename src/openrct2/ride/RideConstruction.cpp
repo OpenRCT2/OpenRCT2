@@ -1122,7 +1122,7 @@ money64 RideGetRefundPrice(const Ride& ride)
 
     do
     {
-        auto trackRemoveAction = TrackRemoveAction(
+        auto trackRemoveAction = GameActions::TrackRemoveAction(
             trackElement.element->AsTrack()->GetTrackType(), trackElement.element->AsTrack()->GetSequenceIndex(),
             { trackElement.x, trackElement.y, trackElement.element->GetBaseZ(), direction });
         trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);

@@ -1582,7 +1582,7 @@ static GameActions::Result TrackDesignPlaceRide(
             {
                 const TrackCoordinates* trackCoordinates = &ted.coordinates;
                 int32_t tempZ = newCoords.z - trackCoordinates->zBegin + ted.sequences[0].clearance.z;
-                auto trackRemoveAction = TrackRemoveAction(
+                auto trackRemoveAction = GameActions::TrackRemoveAction(
                     trackType, 0, { newCoords, tempZ, static_cast<Direction>(rotation & 3) });
                 trackRemoveAction.SetFlags(
                     GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST
@@ -1631,7 +1631,7 @@ static GameActions::Result TrackDesignPlaceRide(
                     flags |= GAME_COMMAND_FLAG_REPLAY;
                 }
 
-                auto trackPlaceAction = TrackPlaceAction(
+                auto trackPlaceAction = GameActions::TrackPlaceAction(
                     ride.id, trackType, ride.type, { newCoords, tempZ, static_cast<uint8_t>(rotation) },
                     track.brakeBoosterSpeed, track.colourScheme, track.seatRotation, liftHillAndAlternativeState, true);
                 trackPlaceAction.SetFlags(flags);
