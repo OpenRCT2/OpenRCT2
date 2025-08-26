@@ -142,9 +142,9 @@ if (MACOS_USE_DEPENDENCIES)
     # if we're building on macOS, then we need the dependencies
     include(cmake/download.cmake)
 
-    set(MACOS_DYLIBS_VERSION "38")
+    set(MACOS_DYLIBS_VERSION "40")
     set(MACOS_DYLIBS_ZIPFILE "openrct2-libs-v${MACOS_DYLIBS_VERSION}-universal-macos-dylibs.zip")
-    set(MACOS_DYLIBS_SHA256 "900f298be7bf2b8469d0b9f1700f09a61ded3daafea32f599d58c88b6d7c9ce7")
+    set(MACOS_DYLIBS_SHA256 "dfbdf2a2bb09cdf52e77b2a4ed3889845bb0203ae4cb6be4f2a161ebacc9b02f")
     set(MACOS_DYLIBS_DIR "${ROOT_DIR}/lib/macos")
     set(MACOS_DYLIBS_URL "https://github.com/OpenRCT2/Dependencies/releases/download/v${MACOS_DYLIBS_VERSION}/${MACOS_DYLIBS_ZIPFILE}")
 
