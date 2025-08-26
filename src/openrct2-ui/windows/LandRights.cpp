@@ -421,12 +421,12 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        LandBuyRightsAction GetLandBuyAction()
+        GameActions::LandBuyRightsAction GetLandBuyAction()
         {
-            auto mode = (_landRightsMode == LandRightsMode::BuyLand) ? LandBuyRightSetting::BuyLand
-                                                                     : LandBuyRightSetting::BuyConstructionRights;
+            auto mode = (_landRightsMode == LandRightsMode::BuyLand) ? GameActions::LandBuyRightSetting::BuyLand
+                                                                     : GameActions::LandBuyRightSetting::BuyConstructionRights;
 
-            return LandBuyRightsAction(
+            return GameActions::LandBuyRightsAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, mode);
         }
 
@@ -448,11 +448,11 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        LandSetRightsAction GetLandSetAction()
+        GameActions::LandSetRightsAction GetLandSetAction()
         {
-            return LandSetRightsAction(
+            return GameActions::LandSetRightsAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-                LandSetRightSetting::SetOwnershipWithChecks, GetDesiredOwnership());
+                GameActions::LandSetRightSetting::SetOwnershipWithChecks, GetDesiredOwnership());
         }
 
         void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override

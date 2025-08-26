@@ -102,7 +102,7 @@ using namespace OpenRCT2;
 
 void GameResetSpeed()
 {
-    auto setSpeedAction = GameSetSpeedAction(1);
+    auto setSpeedAction = GameActions::GameSetSpeedAction(1);
     GameActions::Execute(&setSpeedAction);
 }
 
@@ -112,7 +112,7 @@ void GameIncreaseGameSpeed()
     if (newSpeed == 5)
         newSpeed = 8;
 
-    auto setSpeedAction = GameSetSpeedAction(newSpeed);
+    auto setSpeedAction = GameActions::GameSetSpeedAction(newSpeed);
     GameActions::Execute(&setSpeedAction);
 }
 
@@ -122,7 +122,7 @@ void GameReduceGameSpeed()
     if (newSpeed == 7)
         newSpeed = 4;
 
-    auto setSpeedAction = GameSetSpeedAction(newSpeed);
+    auto setSpeedAction = GameActions::GameSetSpeedAction(newSpeed);
     GameActions::Execute(&setSpeedAction);
 }
 

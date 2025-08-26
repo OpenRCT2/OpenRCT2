@@ -339,7 +339,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (_landToolMountainMode)
             {
-                auto landSmoothAction = LandSmoothAction(
+                auto landSmoothAction = GameActions::LandSmoothAction(
                     { centreX, centreY },
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
                     gMapSelectType, false);
@@ -348,7 +348,7 @@ namespace OpenRCT2::Ui::Windows
                 return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
             }
 
-            auto landRaiseAction = LandRaiseAction(
+            auto landRaiseAction = GameActions::LandRaiseAction(
                 { centreX, centreY },
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
             auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landRaiseAction)
@@ -370,7 +370,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (_landToolMountainMode)
             {
-                auto landSmoothAction = LandSmoothAction(
+                auto landSmoothAction = GameActions::LandSmoothAction(
                     { centreX, centreY },
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
                     gMapSelectType, true);
@@ -379,7 +379,7 @@ namespace OpenRCT2::Ui::Windows
                 return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
             }
 
-            auto landLowerAction = LandLowerAction(
+            auto landLowerAction = GameActions::LandLowerAction(
                 { centreX, centreY },
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y }, gMapSelectType);
             auto res = (flag & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landLowerAction)

@@ -677,7 +677,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     uint32_t guestFlags = peep->PeepFlags ^ PEEP_FLAGS_TRACKING;
 
-                    auto guestSetFlagsAction = GuestSetFlagsAction(EntityId::FromUnderlying(number), guestFlags);
+                    auto guestSetFlagsAction = GameActions::GuestSetFlagsAction(EntityId::FromUnderlying(number), guestFlags);
                     GameActions::Execute(&guestSetFlagsAction);
                 }
                 break;
@@ -961,7 +961,7 @@ namespace OpenRCT2::Ui::Windows
             if (text.empty())
                 return;
             std::string sText(text);
-            auto gameAction = GuestSetNameAction(EntityId::FromUnderlying(number), sText);
+            auto gameAction = GameActions::GuestSetNameAction(EntityId::FromUnderlying(number), sText);
             GameActions::Execute(&gameAction);
         }
 

@@ -13,64 +13,63 @@
 #include "../config/Config.h"
 #include "../ui/WindowManager.h"
 
-using namespace OpenRCT2;
-
-GameSetSpeedAction::GameSetSpeedAction(uint8_t speed)
-    : _speed(speed)
+namespace OpenRCT2::GameActions
 {
-}
-
-void GameSetSpeedAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("speed", _speed);
-}
-
-uint16_t GameSetSpeedAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused | GameActions::Flags::IgnoreForReplays;
-}
-
-void GameSetSpeedAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-
-    stream << DS_TAG(_speed);
-}
-
-GameActions::Result GameSetSpeedAction::Query() const
-{
-    GameActions::Result res = GameActions::Result();
-
-    if (!IsValidSpeed(_speed))
+    GameSetSpeedAction::GameSetSpeedAction(uint8_t speed)
+        : _speed(speed)
     {
-        LOG_ERROR("Invalid speed %u", _speed);
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
-    return res;
-}
-
-GameActions::Result GameSetSpeedAction::Execute() const
-{
-    GameActions::Result res = GameActions::Result();
-
-    if (!IsValidSpeed(_speed))
+    void GameSetSpeedAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        LOG_ERROR("Invalid speed %u", _speed);
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+        visitor.Visit("speed", _speed);
     }
 
-    gGameSpeed = _speed;
+    uint16_t GameSetSpeedAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags() | Flags::AllowWhilePaused | Flags::IgnoreForReplays;
+    }
 
-    auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByClass(WindowClass::TopToolbar);
+    void GameSetSpeedAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
 
-    return res;
-}
+        stream << DS_TAG(_speed);
+    }
 
-bool GameSetSpeedAction::IsValidSpeed(uint8_t speed) const
-{
-    return speed >= 1 && (speed <= 4 || (Config::Get().general.DebuggingTools && speed <= 8));
-}
+    Result GameSetSpeedAction::Query() const
+    {
+        Result res = Result();
+
+        if (!IsValidSpeed(_speed))
+        {
+            LOG_ERROR("Invalid speed %u", _speed);
+            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+        }
+
+        return res;
+    }
+
+    Result GameSetSpeedAction::Execute() const
+    {
+        Result res = Result();
+
+        if (!IsValidSpeed(_speed))
+        {
+            LOG_ERROR("Invalid speed %u", _speed);
+            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+        }
+
+        gGameSpeed = _speed;
+
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateByClass(WindowClass::TopToolbar);
+
+        return res;
+    }
+
+    bool GameSetSpeedAction::IsValidSpeed(uint8_t speed) const
+    {
+        return speed >= 1 && (speed <= 4 || (Config::Get().general.DebuggingTools && speed <= 8));
+    }
+} // namespace OpenRCT2::GameActions

@@ -1299,7 +1299,7 @@ namespace OpenRCT2::Ui::Windows
                 if (newSpeed >= 5)
                     newSpeed = 8;
 
-                auto setSpeedAction = GameSetSpeedAction(newSpeed);
+                auto setSpeedAction = GameActions::GameSetSpeedAction(newSpeed);
                 GameActions::Execute(&setSpeedAction);
             }
         }
