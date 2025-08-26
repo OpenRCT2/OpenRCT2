@@ -25,84 +25,84 @@ namespace OpenRCT2
         {
         }
     };
-} // namespace OpenRCT2
 
-constexpr uint16_t kMaxEntities = 65535;
+    constexpr uint16_t kMaxEntities = 65535;
 
-EntityBase* GetEntity(EntityId entityId);
+    EntityBase* GetEntity(EntityId entityId);
 
-template<typename T>
-T* GetEntity(EntityId entityId)
-{
-    auto* ent = GetEntity(entityId);
-    if (ent == nullptr)
+    template<typename T>
+    T* GetEntity(EntityId entityId)
     {
-        return nullptr;
+        auto* ent = GetEntity(entityId);
+        if (ent == nullptr)
+        {
+            return nullptr;
+        }
+        if constexpr (std::is_same_v<T, EntityBase>)
+        {
+            return ent;
+        }
+        else
+        {
+            return ent->As<T>();
+        }
     }
-    if constexpr (std::is_same_v<T, EntityBase>)
+
+    EntityBase* TryGetEntity(EntityId spriteIndex);
+
+    template<typename T>
+    T* TryGetEntity(EntityId entityId)
     {
-        return ent;
+        auto* ent = TryGetEntity(entityId);
+        if (ent == nullptr)
+        {
+            return nullptr;
+        }
+        if constexpr (std::is_same_v<T, EntityBase>)
+        {
+            return ent;
+        }
+        else
+        {
+            return ent->As<T>();
+        }
     }
-    else
+
+    EntityBase* CreateEntity(EntityType type);
+
+    template<typename T>
+    T* CreateEntity()
     {
-        return ent->As<T>();
+        return static_cast<T*>(CreateEntity(T::cEntityType));
     }
-}
 
-EntityBase* TryGetEntity(EntityId spriteIndex);
-
-template<typename T>
-T* TryGetEntity(EntityId entityId)
-{
-    auto* ent = TryGetEntity(entityId);
-    if (ent == nullptr)
+    // Use only with imports that must happen at a specified index
+    EntityBase* CreateEntityAt(const EntityId index, const EntityType type);
+    // Use only with imports that must happen at a specified index
+    template<typename T>
+    T* CreateEntityAt(const EntityId index)
     {
-        return nullptr;
+        return static_cast<T*>(CreateEntityAt(index, T::cEntityType));
     }
-    if constexpr (std::is_same_v<T, EntityBase>)
-    {
-        return ent;
-    }
-    else
-    {
-        return ent->As<T>();
-    }
-}
 
-EntityBase* CreateEntity(EntityType type);
-
-template<typename T>
-T* CreateEntity()
-{
-    return static_cast<T*>(CreateEntity(T::cEntityType));
-}
-
-// Use only with imports that must happen at a specified index
-EntityBase* CreateEntityAt(const EntityId index, const EntityType type);
-// Use only with imports that must happen at a specified index
-template<typename T>
-T* CreateEntityAt(const EntityId index)
-{
-    return static_cast<T*>(CreateEntityAt(index, T::cEntityType));
-}
-
-void ResetAllEntities();
-void ResetEntitySpatialIndices();
-void UpdateAllMiscEntities();
-void UpdateMoneyEffect();
-void EntityRemove(EntityBase* entity);
-uint16_t RemoveFloatingEntities();
-void UpdateEntitiesSpatialIndex();
+    void ResetAllEntities();
+    void ResetEntitySpatialIndices();
+    void UpdateAllMiscEntities();
+    void UpdateMoneyEffect();
+    void EntityRemove(EntityBase* entity);
+    uint16_t RemoveFloatingEntities();
+    void UpdateEntitiesSpatialIndex();
 
 #pragma pack(push, 1)
-struct EntitiesChecksum
-{
-    std::array<std::byte, 20> raw;
+    struct EntitiesChecksum
+    {
+        std::array<std::byte, 20> raw;
 
-    std::string ToString() const;
-};
+        std::string ToString() const;
+    };
 #pragma pack(pop)
-EntitiesChecksum GetAllEntitiesChecksum();
+    EntitiesChecksum GetAllEntitiesChecksum();
 
-void EntitySetFlashing(EntityBase* entity, bool flashing);
-bool EntityGetFlashing(EntityBase* entity);
+    void EntitySetFlashing(EntityBase* entity, bool flashing);
+    bool EntityGetFlashing(EntityBase* entity);
+} // namespace OpenRCT2

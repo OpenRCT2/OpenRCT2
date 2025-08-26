@@ -28,7 +28,7 @@ namespace OpenRCT2::Scripting
 
     Balloon* ScBalloon::GetBalloon() const
     {
-        return ::GetEntity<Balloon>(_id);
+        return OpenRCT2::GetEntity<Balloon>(_id);
     }
 
     uint8_t ScBalloon::colour_get() const

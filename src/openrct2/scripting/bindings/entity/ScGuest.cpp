@@ -194,7 +194,7 @@ namespace OpenRCT2::Scripting
 
     Guest* ScGuest::GetGuest() const
     {
-        return ::GetEntity<Guest>(_id);
+        return OpenRCT2::GetEntity<Guest>(_id);
     }
 
     uint8_t ScGuest::tshirtColour_get() const

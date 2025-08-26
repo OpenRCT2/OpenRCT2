@@ -192,7 +192,7 @@ namespace OpenRCT2::Scripting
 
         EntityBase* GetEntity() const
         {
-            return ::GetEntity(_id);
+            return OpenRCT2::GetEntity(_id);
         }
 
     public:
