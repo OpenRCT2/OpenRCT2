@@ -2062,10 +2062,10 @@ void NetworkBase::ServerClientDisconnected(std::unique_ptr<NetworkConnection>& c
     Peep* pickup_peep = NetworkGetPickupPeep(connection_player->Id);
     if (pickup_peep != nullptr)
     {
-        PeepPickupAction pickupAction{ PeepPickupType::Cancel,
-                                       pickup_peep->Id,
-                                       { NetworkGetPickupPeepOldX(connection_player->Id), 0, 0 },
-                                       NetworkGetCurrentPlayerId() };
+        GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Cancel,
+                                                    pickup_peep->Id,
+                                                    { NetworkGetPickupPeepOldX(connection_player->Id), 0, 0 },
+                                                    NetworkGetCurrentPlayerId() };
         auto res = GameActions::Execute(&pickupAction);
     }
     ServerSendEventPlayerDisconnected(

@@ -530,7 +530,7 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
                 }
 
                 auto costume = static_cast<ObjectEntryIndex>(int_val[1]);
-                auto staffSetCostumeAction = StaffSetCostumeAction(EntityId::FromUnderlying(int_val[0]), costume);
+                auto staffSetCostumeAction = GameActions::StaffSetCostumeAction(EntityId::FromUnderlying(int_val[0]), costume);
                 GameActions::Execute(&staffSetCostumeAction);
             }
         }

@@ -11,20 +11,23 @@
 
 #include "GameAction.h"
 
-class StaffSetNameAction final : public GameActionBase<GameCommand::SetStaffName>
+namespace OpenRCT2::GameActions
 {
-private:
-    EntityId _spriteIndex{ EntityId::GetNull() };
-    std::string _name;
+    class StaffSetNameAction final : public GameActionBase<GameCommand::SetStaffName>
+    {
+    private:
+        EntityId _spriteIndex{ EntityId::GetNull() };
+        std::string _name;
 
-public:
-    StaffSetNameAction() = default;
-    StaffSetNameAction(EntityId spriteIndex, const std::string& name);
+    public:
+        StaffSetNameAction() = default;
+        StaffSetNameAction(EntityId spriteIndex, const std::string& name);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
-};
+        uint16_t GetActionFlags() const override;
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
+    };
+} // namespace OpenRCT2::GameActions
