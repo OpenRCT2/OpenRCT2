@@ -521,7 +521,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_BACKGROUND:
                     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
                     {
-                        auto surfaceSetStyleAction = SurfaceSetStyleAction(
+                        auto surfaceSetStyleAction = GameActions::SurfaceSetStyleAction(
                             { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
                             gLandToolTerrainSurface, gLandToolTerrainEdge);
 
@@ -548,7 +548,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
                         {
-                            auto surfaceSetStyleAction = SurfaceSetStyleAction(
+                            auto surfaceSetStyleAction = GameActions::SurfaceSetStyleAction(
                                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
                                 gLandToolTerrainSurface, gLandToolTerrainEdge);
 
