@@ -1502,7 +1502,7 @@ void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
         case TileElementType::Wall:
         {
             CoordsXYZD wallLocation = { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() };
-            auto wallRemoveAction = WallRemoveAction(wallLocation);
+            auto wallRemoveAction = GameActions::WallRemoveAction(wallLocation);
             auto result = GameActions::ExecuteNested(&wallRemoveAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
             if (result.Error != GameActions::Status::Ok)
@@ -1513,7 +1513,7 @@ void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
         break;
         case TileElementType::LargeScenery:
         {
-            auto removeSceneryAction = LargeSceneryRemoveAction(
+            auto removeSceneryAction = GameActions::LargeSceneryRemoveAction(
                 { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() }, element->AsLargeScenery()->GetSequenceIndex());
             auto result = GameActions::ExecuteNested(&removeSceneryAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.

@@ -11,25 +11,28 @@
 
 #include "GameAction.h"
 
-class SmallSceneryRemoveAction final : public GameActionBase<GameCommand::RemoveScenery>
+namespace OpenRCT2::GameActions
 {
-private:
-    CoordsXYZ _loc;
-    uint8_t _quadrant{};
-    OpenRCT2::ObjectEntryIndex _sceneryType{};
+    class SmallSceneryRemoveAction final : public GameActionBase<GameCommand::RemoveScenery>
+    {
+    private:
+        CoordsXYZ _loc;
+        uint8_t _quadrant{};
+        ObjectEntryIndex _sceneryType{};
 
-public:
-    SmallSceneryRemoveAction() = default;
-    SmallSceneryRemoveAction(const CoordsXYZ& location, uint8_t quadrant, OpenRCT2::ObjectEntryIndex sceneryType);
+    public:
+        SmallSceneryRemoveAction() = default;
+        SmallSceneryRemoveAction(const CoordsXYZ& location, uint8_t quadrant, ObjectEntryIndex sceneryType);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
 
-private:
-    OpenRCT2::TileElement* FindSceneryElement() const;
-};
+    private:
+        TileElement* FindSceneryElement() const;
+    };
+} // namespace OpenRCT2::GameActions

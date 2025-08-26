@@ -961,7 +961,7 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
             uint8_t quadrant = scenery.getQuadrant() + _currentTrackPieceDirection;
             quadrant &= 3;
 
-            auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(entryInfo->Index);
+            auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(entryInfo->Index);
             if (!(!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_DIAGONAL))
                 && sceneryEntry->HasFlag(
                     SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE | SMALL_SCENERY_FLAG_THREE_QUARTERS))
@@ -969,14 +969,16 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
                 quadrant = 0;
             }
 
-            ga = std::make_unique<SmallSceneryRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z }, quadrant, entryInfo->Index);
+            ga = std::make_unique<GameActions::SmallSceneryRemoveAction>(
+                CoordsXYZ{ mapCoord.x, mapCoord.y, z }, quadrant, entryInfo->Index);
             break;
         }
         case ObjectType::largeScenery:
-            ga = std::make_unique<LargeSceneryRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z, sceneryRotation }, 0);
+            ga = std::make_unique<GameActions::LargeSceneryRemoveAction>(
+                CoordsXYZD{ mapCoord.x, mapCoord.y, z, sceneryRotation }, 0);
             break;
         case ObjectType::walls:
-            ga = std::make_unique<WallRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z, sceneryRotation });
+            ga = std::make_unique<GameActions::WallRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z, sceneryRotation });
             break;
         case ObjectType::paths:
         case ObjectType::footpathSurface:
@@ -1075,7 +1077,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 flags |= GAME_COMMAND_FLAG_REPLAY;
             }
 
-            auto smallSceneryPlace = SmallSceneryPlaceAction(
+            auto smallSceneryPlace = GameActions::SmallSceneryPlaceAction(
                 { mapCoord.x, mapCoord.y, z, rotation }, quadrant, entryInfo->Index, scenery.primaryColour,
                 scenery.secondaryColour, scenery.tertiaryColour);
 
@@ -1117,7 +1119,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             {
                 flags |= GAME_COMMAND_FLAG_REPLAY;
             }
-            auto sceneryPlaceAction = LargeSceneryPlaceAction(
+            auto sceneryPlaceAction = GameActions::LargeSceneryPlaceAction(
                 { mapCoord.x, mapCoord.y, z, rotation }, entryInfo->Index, scenery.primaryColour, scenery.secondaryColour,
                 scenery.tertiaryColour);
             sceneryPlaceAction.SetFlags(flags);
@@ -1157,7 +1159,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             {
                 flags |= GAME_COMMAND_FLAG_REPLAY;
             }
-            auto wallPlaceAction = WallPlaceAction(
+            auto wallPlaceAction = GameActions::WallPlaceAction(
                 entryInfo->Index, { mapCoord.x, mapCoord.y, z }, rotation, scenery.primaryColour, scenery.secondaryColour,
                 scenery.tertiaryColour);
             wallPlaceAction.SetFlags(flags);

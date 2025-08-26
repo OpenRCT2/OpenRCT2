@@ -11,20 +11,23 @@
 
 #include "GameAction.h"
 
-class WallRemoveAction final : public GameActionBase<GameCommand::RemoveWall>
+namespace OpenRCT2::GameActions
 {
-private:
-    CoordsXYZD _loc;
+    class WallRemoveAction final : public GameActionBase<GameCommand::RemoveWall>
+    {
+    private:
+        CoordsXYZD _loc;
 
-public:
-    WallRemoveAction() = default;
-    WallRemoveAction(const CoordsXYZD& loc);
+    public:
+        WallRemoveAction() = default;
+        WallRemoveAction(const CoordsXYZD& loc);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
 
-private:
-    OpenRCT2::TileElement* GetFirstWallElementAt(const CoordsXYZD& location, bool isGhost) const;
-};
+    private:
+        TileElement* GetFirstWallElementAt(const CoordsXYZD& location, bool isGhost) const;
+    };
+} // namespace OpenRCT2::GameActions

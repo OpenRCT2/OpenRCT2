@@ -1249,10 +1249,10 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Gam
             bannerId = result.GetData<GameActions::BannerPlaceActionResult>().bannerId;
             break;
         case GameCommand::PlaceLargeScenery:
-            bannerId = result.GetData<LargeSceneryPlaceActionResult>().bannerId;
+            bannerId = result.GetData<GameActions::LargeSceneryPlaceActionResult>().bannerId;
             break;
         case GameCommand::PlaceWall:
-            bannerId = result.GetData<WallPlaceActionResult>().BannerId;
+            bannerId = result.GetData<GameActions::WallPlaceActionResult>().BannerId;
             break;
         default:
             break;

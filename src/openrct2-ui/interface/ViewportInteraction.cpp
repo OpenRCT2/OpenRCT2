@@ -622,7 +622,7 @@ namespace OpenRCT2::Ui
      */
     static void ViewportInteractionRemoveScenery(const SmallSceneryElement& smallSceneryElement, const CoordsXY& mapCoords)
     {
-        auto removeSceneryAction = SmallSceneryRemoveAction(
+        auto removeSceneryAction = GameActions::SmallSceneryRemoveAction(
             { mapCoords.x, mapCoords.y, smallSceneryElement.GetBaseZ() }, smallSceneryElement.GetSceneryQuadrant(),
             smallSceneryElement.GetEntryIndex());
 
@@ -701,7 +701,7 @@ namespace OpenRCT2::Ui
         else
         {
             CoordsXYZD wallLocation = { mapCoords.x, mapCoords.y, wallElement.GetBaseZ(), wallElement.GetDirection() };
-            auto wallRemoveAction = WallRemoveAction(wallLocation);
+            auto wallRemoveAction = GameActions::WallRemoveAction(wallLocation);
             GameActions::Execute(&wallRemoveAction);
         }
     }
@@ -721,7 +721,7 @@ namespace OpenRCT2::Ui
         }
         else
         {
-            auto removeSceneryAction = LargeSceneryRemoveAction(
+            auto removeSceneryAction = GameActions::LargeSceneryRemoveAction(
                 { mapCoords.x, mapCoords.y, largeSceneryElement.GetBaseZ(), largeSceneryElement.GetDirection() },
                 largeSceneryElement.GetSequenceIndex());
             GameActions::Execute(&removeSceneryAction);
