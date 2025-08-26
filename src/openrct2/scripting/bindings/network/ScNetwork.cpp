@@ -68,7 +68,7 @@ namespace OpenRCT2::Scripting
     void ScNetwork::defaultGroup_set(int32_t value)
     {
     #ifndef DISABLE_NETWORK
-        auto action = NetworkModifyGroupAction(ModifyGroupType::SetDefault, value);
+        auto action = GameActions::NetworkModifyGroupAction(GameActions::ModifyGroupType::SetDefault, value);
         GameActions::Execute(&action);
     #endif
     }
@@ -198,7 +198,7 @@ namespace OpenRCT2::Scripting
     void ScNetwork::addGroup()
     {
     #ifndef DISABLE_NETWORK
-        auto networkModifyGroup = NetworkModifyGroupAction(ModifyGroupType::AddGroup);
+        auto networkModifyGroup = GameActions::NetworkModifyGroupAction(GameActions::ModifyGroupType::AddGroup);
         GameActions::Execute(&networkModifyGroup);
     #endif
     }
@@ -213,7 +213,7 @@ namespace OpenRCT2::Scripting
             if (index < numGroups)
             {
                 auto groupId = NetworkGetGroupID(index);
-                auto networkAction = NetworkModifyGroupAction(ModifyGroupType::RemoveGroup, groupId);
+                auto networkAction = GameActions::NetworkModifyGroupAction(GameActions::ModifyGroupType::RemoveGroup, groupId);
                 GameActions::Execute(&networkAction);
             }
         }
@@ -222,7 +222,7 @@ namespace OpenRCT2::Scripting
             auto index = NetworkGetGroupIndex(id);
             if (index != -1)
             {
-                auto networkAction = NetworkModifyGroupAction(ModifyGroupType::RemoveGroup, id);
+                auto networkAction = GameActions::NetworkModifyGroupAction(GameActions::ModifyGroupType::RemoveGroup, id);
                 GameActions::Execute(&networkAction);
             }
         }

@@ -30,10 +30,10 @@ struct Peep;
 struct CoordsXYZ;
 namespace OpenRCT2::GameActions
 {
+    enum class ModifyGroupType : uint8_t;
+    enum class PermissionState : uint8_t;
     class Result;
-}
-enum class ModifyGroupType : uint8_t;
-enum class PermissionState : uint8_t;
+} // namespace OpenRCT2::GameActions
 enum class NetworkPermission : uint32_t;
 
 void NetworkReconnect();
@@ -82,8 +82,8 @@ void NetworkSetPlayerGroup(uint32_t index, uint32_t groupindex);
 [[nodiscard]] OpenRCT2::GameActions::Result NetworkSetPlayerGroup(
     NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting);
 [[nodiscard]] OpenRCT2::GameActions::Result NetworkModifyGroups(
-    NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
-    PermissionState permissionState, bool isExecuting);
+    NetworkPlayerId_t actionPlayerId, OpenRCT2::GameActions::ModifyGroupType type, uint8_t groupId, const std::string& name,
+    uint32_t permissionIndex, OpenRCT2::GameActions::PermissionState permissionState, bool isExecuting);
 [[nodiscard]] OpenRCT2::GameActions::Result NetworkKickPlayer(NetworkPlayerId_t playerId, bool isExecuting);
 [[nodiscard]] uint8_t NetworkGetDefaultGroup();
 [[nodiscard]] int32_t NetworkGetNumActions();

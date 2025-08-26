@@ -1475,7 +1475,7 @@ static GameActions::Result TrackDesignPlaceMaze(
                 flags |= GAME_COMMAND_FLAG_REPLAY;
             }
 
-            auto mazePlace = MazePlaceTrackAction({ mapCoord, origin.z }, ride.id, mazeEntry);
+            auto mazePlace = GameActions::MazePlaceTrackAction({ mapCoord, origin.z }, ride.id, mazeEntry);
             mazePlace.SetFlags(flags);
             auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&mazePlace)
                                                        : GameActions::QueryNested(&mazePlace);

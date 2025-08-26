@@ -3700,7 +3700,7 @@ namespace OpenRCT2::Ui::Windows
 
                 gDisableErrorWindowSound = true;
 
-                auto gameAction = MazeSetTrackAction(
+                auto gameAction = GameActions::MazeSetTrackAction(
                     CoordsXYZD{ _currentTrackBegin, 0 }, true, _currentRideIndex, GC_SET_MAZE_TRACK_BUILD);
                 auto mazeSetTrackResult = GameActions::Execute(&gameAction);
                 if (mazeSetTrackResult.Error == GameActions::Status::Ok)
@@ -4760,7 +4760,8 @@ namespace OpenRCT2::Ui::Windows
         if (rtd.specialType == RtdSpecialType::maze)
         {
             int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
-            auto gameAction = MazeSetTrackAction(CoordsXYZD{ trackPos, 0 }, true, rideIndex, GC_SET_MAZE_TRACK_BUILD);
+            auto gameAction = GameActions::MazeSetTrackAction(
+                CoordsXYZD{ trackPos, 0 }, true, rideIndex, GC_SET_MAZE_TRACK_BUILD);
             gameAction.SetFlags(flags);
             auto result = GameActions::Execute(&gameAction);
 
@@ -5148,7 +5149,7 @@ namespace OpenRCT2::Ui::Windows
             };
             for (const auto& quadrant : quadrants)
             {
-                auto gameAction = MazeSetTrackAction(quadrant, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
+                auto gameAction = GameActions::MazeSetTrackAction(quadrant, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
                 gameAction.SetFlags(flags);
                 auto res = GameActions::Execute(&gameAction);
             }

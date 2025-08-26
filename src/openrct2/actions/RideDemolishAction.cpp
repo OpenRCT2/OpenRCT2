@@ -177,7 +177,7 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride& ride) const
 
 money64 RideDemolishAction::MazeRemoveTrack(const CoordsXYZD& coords) const
 {
-    auto setMazeTrack = MazeSetTrackAction(coords, false, _rideIndex, GC_SET_MAZE_TRACK_FILL);
+    auto setMazeTrack = GameActions::MazeSetTrackAction(coords, false, _rideIndex, GC_SET_MAZE_TRACK_FILL);
     setMazeTrack.SetFlags(GetFlags());
 
     auto execRes = GameActions::ExecuteNested(&setMazeTrack);

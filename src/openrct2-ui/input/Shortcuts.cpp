@@ -429,7 +429,7 @@ static void ShortcutLoadGame()
 {
     if (!(isInTrackDesignerOrManager()))
     {
-        auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
+        auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::OpenSavePrompt);
         GameActions::Execute(&loadOrQuitAction);
     }
 }
