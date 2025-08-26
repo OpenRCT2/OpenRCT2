@@ -12,6 +12,7 @@
 #include <array>
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2/core/EnumUtils.hpp>
+#include <openrct2/core/StringTypes.h>
 #include <openrct2/interface/Window.h>
 #include <span>
 
@@ -84,6 +85,7 @@ namespace OpenRCT2::Dropdown
         union
         {
             int64_t generic;
+            const utf8* string;
             ImageId image;
         } args{};
         ItemFlags flags{};

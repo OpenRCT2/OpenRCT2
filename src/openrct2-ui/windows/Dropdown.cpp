@@ -627,11 +627,11 @@ namespace OpenRCT2::Dropdown
 {
     Item MenuLabel(const utf8* string)
     {
-        return Item{ STR_OPTIONS_DROPDOWN_ITEM, reinterpret_cast<int64_t>(string) };
+        return Item{ STR_OPTIONS_DROPDOWN_ITEM, { .string = string } };
     }
 
     Item PlainMenuLabel(const utf8* string)
     {
-        return Item{ STR_STRING, reinterpret_cast<int64_t>(string) };
+        return Item{ STR_STRING, { .string = string } };
     }
 } // namespace OpenRCT2::Dropdown
