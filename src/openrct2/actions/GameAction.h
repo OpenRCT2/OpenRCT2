@@ -288,11 +288,11 @@ namespace OpenRCT2::GameActions
     GameAction::Ptr Clone(const GameAction* action);
 
     // This should be used if a round trip is to be expected.
-    OpenRCT2::GameActions::Result Query(const GameAction* action);
-    OpenRCT2::GameActions::Result Execute(const GameAction* action);
+    Result Query(const GameAction* action);
+    Result Execute(const GameAction* action);
 
     // This should be used from within game actions.
-    OpenRCT2::GameActions::Result QueryNested(const GameAction* action);
-    OpenRCT2::GameActions::Result ExecuteNested(const GameAction* action);
+    Result QueryNested(const GameAction* action);
+    Result ExecuteNested(const GameAction* action);
 
 } // namespace OpenRCT2::GameActions

@@ -965,7 +965,8 @@ static StringId window_cheats_page_titles[] = {
                     InvalidateWidget(WIDX_PARK_RATING_SPINNER);
                     if (Park::GetForcedRating() >= 0)
                     {
-                        auto cheatSetAction = CheatSetAction(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
+                        auto cheatSetAction = GameActions::CheatSetAction(
+                            CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
                         GameActions::Execute(&cheatSetAction);
                     }
                     break;

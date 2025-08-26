@@ -292,7 +292,7 @@ void SceneryRemoveGhostToolPlacement()
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_4;
 
-        auto removeSceneryAction = BannerRemoveAction({ gSceneryGhostPosition, gSceneryPlaceRotation });
+        auto removeSceneryAction = GameActions::BannerRemoveAction({ gSceneryGhostPosition, gSceneryPlaceRotation });
         removeSceneryAction.SetFlags(
             GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         GameActions::Execute(&removeSceneryAction);

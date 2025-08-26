@@ -2297,7 +2297,7 @@ namespace OpenRCT2::Ui::Windows
                         auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
                         if (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
                         {
-                            auto repaintScenery = BannerSetColourAction(
+                            auto repaintScenery = GameActions::BannerSetColourAction(
                                 { info.Loc, info.Element->GetBaseZ(), info.Element->AsBanner()->GetPosition() },
                                 _sceneryPrimaryColour);
 

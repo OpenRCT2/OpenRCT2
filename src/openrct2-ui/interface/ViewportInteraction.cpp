@@ -649,7 +649,7 @@ namespace OpenRCT2::Ui
         {
             if (tileElement2->GetType() == TileElementType::Path && tileElement2->GetBaseZ() == z)
             {
-                auto action = FootpathRemoveAction({ mapCoords, z });
+                auto action = GameActions::FootpathRemoveAction({ mapCoords, z });
                 GameActions::Execute(&action);
                 break;
             }

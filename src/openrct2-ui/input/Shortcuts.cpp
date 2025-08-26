@@ -609,7 +609,7 @@ static void ShortcutDecreaseElementHeight()
 
 static void ShortcutToggleClearanceChecks()
 {
-    auto cheatSetAction = CheatSetAction(
+    auto cheatSetAction = GameActions::CheatSetAction(
         CheatType::DisableClearanceChecks, getGameState().cheats.disableClearanceChecks ? 0 : 1);
     GameActions::Execute(&cheatSetAction);
 }

@@ -980,7 +980,7 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
             break;
         case ObjectType::paths:
         case ObjectType::footpathSurface:
-            ga = std::make_unique<FootpathRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z });
+            ga = std::make_unique<GameActions::FootpathRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z });
             break;
         default:
             return GameActions::Result();

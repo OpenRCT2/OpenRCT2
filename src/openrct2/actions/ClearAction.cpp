@@ -143,7 +143,7 @@ money64 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
                 case TileElementType::Path:
                     if (_itemsToClear & CLEARABLE_ITEMS::kSceneryFootpath)
                     {
-                        auto footpathRemoveAction = FootpathRemoveAction({ tilePos, tileElement->GetBaseZ() });
+                        auto footpathRemoveAction = GameActions::FootpathRemoveAction({ tilePos, tileElement->GetBaseZ() });
                         footpathRemoveAction.SetFlags(GetFlags());
 
                         auto res = executing ? GameActions::ExecuteNested(&footpathRemoveAction)

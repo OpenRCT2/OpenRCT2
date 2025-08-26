@@ -1525,7 +1525,7 @@ void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
         break;
         case TileElementType::Banner:
         {
-            auto bannerRemoveAction = BannerRemoveAction(
+            auto bannerRemoveAction = GameActions::BannerRemoveAction(
                 { loc.x, loc.y, element->GetBaseZ(), element->AsBanner()->GetPosition() });
             auto result = GameActions::ExecuteNested(&bannerRemoveAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.

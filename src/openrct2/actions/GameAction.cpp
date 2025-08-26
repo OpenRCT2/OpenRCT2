@@ -31,8 +31,6 @@
 
 #include <iterator>
 
-using namespace OpenRCT2;
-
 namespace OpenRCT2::GameActions
 {
     struct QueuedGameAction
@@ -143,8 +141,8 @@ namespace OpenRCT2::GameActions
 
             Guard::Assert(action != nullptr);
 
-            GameActions::Result result = Execute(action);
-            if (result.Error == GameActions::Status::Ok && NetworkGetMode() == NETWORK_MODE_SERVER)
+            Result result = Execute(action);
+            if (result.Error == Status::Ok && NetworkGetMode() == NETWORK_MODE_SERVER)
             {
                 // Relay this action to all other clients.
                 NetworkSendGameAction(action);
@@ -161,7 +159,7 @@ namespace OpenRCT2::GameActions
 
     GameAction::Ptr Clone(const GameAction* action)
     {
-        std::unique_ptr<GameAction> ga = GameActions::Create(action->GetType());
+        std::unique_ptr<GameAction> ga = Create(action->GetType());
         ga->SetCallback(action->GetCallback());
 
         // Serialise action data into stream.
@@ -184,21 +182,21 @@ namespace OpenRCT2::GameActions
             return true;
         if (getGameState().cheats.buildInPauseMode)
             return true;
-        if (actionFlags & GameActions::Flags::AllowWhilePaused)
+        if (actionFlags & Flags::AllowWhilePaused)
             return true;
         return false;
     }
 
-    static GameActions::Result QueryInternal(const GameAction* action, bool topLevel)
+    static Result QueryInternal(const GameAction* action, bool topLevel)
     {
         Guard::ArgumentNotNull(action);
 
         uint16_t actionFlags = action->GetActionFlags();
         if (topLevel && !CheckActionInPausedMode(actionFlags))
         {
-            GameActions::Result result = GameActions::Result();
+            Result result = Result();
 
-            result.Error = GameActions::Status::GamePaused;
+            result.Error = Status::GamePaused;
             result.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
             result.ErrorMessage = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 
@@ -207,11 +205,11 @@ namespace OpenRCT2::GameActions
 
         auto result = action->Query();
 
-        if (result.Error == GameActions::Status::Ok)
+        if (result.Error == Status::Ok)
         {
             if (!FinanceCheckAffordability(result.Cost, action->GetFlags()))
             {
-                result.Error = GameActions::Status::InsufficientFunds;
+                result.Error = Status::InsufficientFunds;
                 result.ErrorTitle = STR_CANT_DO_THIS;
                 result.ErrorMessage = STR_NOT_ENOUGH_CASH_REQUIRES;
                 Formatter(result.ErrorMessageArgs.data()).Add<uint32_t>(result.Cost);
@@ -220,12 +218,12 @@ namespace OpenRCT2::GameActions
         return result;
     }
 
-    GameActions::Result Query(const GameAction* action)
+    Result Query(const GameAction* action)
     {
         return QueryInternal(action, true);
     }
 
-    GameActions::Result QueryNested(const GameAction* action)
+    Result QueryNested(const GameAction* action)
     {
         return QueryInternal(action, false);
     }
@@ -261,13 +259,13 @@ namespace OpenRCT2::GameActions
         action->Serialise(ds);
     }
 
-    static void LogActionFinish(ActionLogContext& ctx, const GameAction* action, const GameActions::Result& result)
+    static void LogActionFinish(ActionLogContext& ctx, const GameAction* action, const Result& result)
     {
         MemoryStream& output = ctx.output;
 
         char temp[128] = {};
 
-        if (result.Error != GameActions::Status::Ok)
+        if (result.Error != Status::Ok)
         {
             snprintf(temp, sizeof(temp), ") Failed, %u", static_cast<uint32_t>(result.Error));
         }
@@ -284,7 +282,7 @@ namespace OpenRCT2::GameActions
         NetworkAppendServerLog(text);
     }
 
-    static GameActions::Result ExecuteInternal(const GameAction* action, bool topLevel)
+    static Result ExecuteInternal(const GameAction* action, bool topLevel)
     {
         Guard::ArgumentNotNull(action);
 
@@ -292,7 +290,7 @@ namespace OpenRCT2::GameActions
         uint32_t flags = action->GetFlags();
 
         // Some actions are not recorded in the replay.
-        const auto ignoreForReplays = (actionFlags & GameActions::Flags::IgnoreForReplays) != 0;
+        const auto ignoreForReplays = (actionFlags & Flags::IgnoreForReplays) != 0;
 
         auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
         if (replayManager != nullptr && (replayManager->IsReplaying() || replayManager->IsNormalising()))
@@ -301,8 +299,8 @@ namespace OpenRCT2::GameActions
             if ((flags & GAME_COMMAND_FLAG_REPLAY) == 0 && !ignoreForReplays)
             {
                 // TODO: Introduce proper error.
-                auto result = GameActions::Result();
-                result.Error = GameActions::Status::GamePaused;
+                auto result = Result();
+                result.Error = Status::GamePaused;
                 result.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
                 result.ErrorMessage = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 
@@ -310,17 +308,16 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        GameActions::Result result = QueryInternal(action, topLevel);
+        Result result = QueryInternal(action, topLevel);
 #ifdef ENABLE_SCRIPTING
-        if (result.Error == GameActions::Status::Ok
-            && ((NetworkGetMode() == NETWORK_MODE_NONE) || (flags & GAME_COMMAND_FLAG_NETWORKED)))
+        if (result.Error == Status::Ok && ((NetworkGetMode() == NETWORK_MODE_NONE) || (flags & GAME_COMMAND_FLAG_NETWORKED)))
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.RunGameActionHooks(*action, result, false);
             // Script hooks may now have changed the game action result...
         }
 #endif
-        if (result.Error == GameActions::Status::Ok)
+        if (result.Error == Status::Ok)
         {
             if (topLevel)
             {
@@ -328,7 +325,7 @@ namespace OpenRCT2::GameActions
                 if (NetworkGetMode() == NETWORK_MODE_CLIENT)
                 {
                     // As a client we have to wait or send it first.
-                    if (!(actionFlags & GameActions::Flags::ClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
+                    if (!(actionFlags & Flags::ClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                     {
                         LOG_VERBOSE("[%s] GameAction::Execute %s (Out)", GetRealm(), action->GetName());
                         NetworkSendGameAction(action);
@@ -341,7 +338,7 @@ namespace OpenRCT2::GameActions
                     // If player is the server it would execute right away as where clients execute the commands
                     // at the beginning of the frame, so we have to put them into the queue.
                     // This is also the case when its executed from the UI update.
-                    if (!(actionFlags & GameActions::Flags::ClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
+                    if (!(actionFlags & Flags::ClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                     {
                         LOG_VERBOSE("[%s] GameAction::Execute %s (Queue)", GetRealm(), action->GetName());
                         Enqueue(action, getGameState().currentTicks);
@@ -357,7 +354,7 @@ namespace OpenRCT2::GameActions
             // Execute the action, changing the game state
             result = action->Execute();
 #ifdef ENABLE_SCRIPTING
-            if (result.Error == GameActions::Status::Ok)
+            if (result.Error == Status::Ok)
             {
                 auto& scriptEngine = GetContext()->GetScriptEngine();
                 scriptEngine.RunGameActionHooks(*action, result, true);
@@ -372,13 +369,13 @@ namespace OpenRCT2::GameActions
                 return result;
 
             // Update money balance
-            if (result.Error == GameActions::Status::Ok && FinanceCheckMoneyRequired(flags) && result.Cost != 0)
+            if (result.Error == Status::Ok && FinanceCheckMoneyRequired(flags) && result.Cost != 0)
             {
                 FinancePayment(result.Cost, result.Expenditure);
                 MoneyEffect::Create(result.Cost, result.Position);
             }
 
-            if (!(actionFlags & GameActions::Flags::ClientOnly) && result.Error == GameActions::Status::Ok)
+            if (!(actionFlags & Flags::ClientOnly) && result.Error == Status::Ok)
             {
                 if (NetworkGetMode() != NETWORK_MODE_NONE)
                 {
@@ -448,7 +445,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        if (result.Error != GameActions::Status::Ok && shouldShowError)
+        if (result.Error != Status::Ok && shouldShowError)
         {
             auto windowManager = Ui::GetWindowManager();
             windowManager->ShowError(result.GetErrorTitle(), result.GetErrorMessage());
@@ -457,12 +454,12 @@ namespace OpenRCT2::GameActions
         return result;
     }
 
-    GameActions::Result Execute(const GameAction* action)
+    Result Execute(const GameAction* action)
     {
         return ExecuteInternal(action, true);
     }
 
-    GameActions::Result ExecuteNested(const GameAction* action)
+    Result ExecuteNested(const GameAction* action)
     {
         return ExecuteInternal(action, false);
     }
@@ -470,7 +467,7 @@ namespace OpenRCT2::GameActions
 
 const char* GameAction::GetName() const
 {
-    return GameActions::GetName(_type);
+    return OpenRCT2::GameActions::GetName(_type);
 }
 
 bool GameAction::LocationValid(const CoordsXY& coords) const
@@ -479,10 +476,10 @@ bool GameAction::LocationValid(const CoordsXY& coords) const
     if (!result)
         return false;
 #ifdef ENABLE_SCRIPTING
-    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
     if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::actionLocation))
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
 
         // Create event args object
         auto obj = OpenRCT2::Scripting::DukObject(ctx);
@@ -492,7 +489,7 @@ bool GameAction::LocationValid(const CoordsXY& coords) const
         obj.Set("type", EnumValue(_type));
 
         auto flags = GetActionFlags();
-        obj.Set("isClientOnly", (flags & GameActions::Flags::ClientOnly) != 0);
+        obj.Set("isClientOnly", (flags & OpenRCT2::GameActions::Flags::ClientOnly) != 0);
         obj.Set("result", true);
 
         // Call the subscriptions

@@ -50,9 +50,9 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc) << DS_TAG(_bannerType) << DS_TAG(_primaryColour);
     }
 
-    GameActions::Result BannerPlaceAction::Query() const
+    Result BannerPlaceAction::Query() const
     {
-        auto res = GameActions::Result();
+        auto res = Result();
         res.Position.x = _loc.x + 16;
         res.Position.y = _loc.y + 16;
         res.Position.z = _loc.z;
@@ -61,51 +61,45 @@ namespace OpenRCT2::GameActions
 
         if (!LocationValid(_loc))
         {
-            return GameActions::Result(
-                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
+            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
         if (!MapCheckCapacityAndReorganise(_loc))
         {
             LOG_ERROR("No free map elements.");
-            return GameActions::Result(
-                GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
+            return Result(Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
         auto pathElement = GetValidPathElement();
 
         if (pathElement == nullptr)
         {
-            return GameActions::Result(
-                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
+            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
         }
 
         if (!MapCanBuildAt(_loc))
         {
-            return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+            return Result(Status::NotOwned, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         auto baseHeight = _loc.z + kPathHeightStep;
         BannerElement* existingBannerElement = MapGetBannerElementAt({ _loc.x, _loc.y, baseHeight }, _loc.direction);
         if (existingBannerElement != nullptr)
         {
-            return GameActions::Result(
-                GameActions::Status::ItemAlreadyPlaced, STR_CANT_POSITION_THIS_HERE, STR_BANNER_SIGN_IN_THE_WAY);
+            return Result(Status::ItemAlreadyPlaced, STR_CANT_POSITION_THIS_HERE, STR_BANNER_SIGN_IN_THE_WAY);
         }
 
         if (HasReachedBannerLimit())
         {
             LOG_ERROR("No free banners available");
-            return GameActions::Result(
-                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
+            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
         }
 
         auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(_bannerType);
         if (bannerEntry == nullptr)
         {
             LOG_ERROR("Banner entry not found for bannerType %u", _bannerType);
-            return GameActions::Result(
-                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
+            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
         res.Cost = bannerEntry->price;
         res.SetData(BannerPlaceActionResult{});
@@ -113,9 +107,9 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    GameActions::Result BannerPlaceAction::Execute() const
+    Result BannerPlaceAction::Execute() const
     {
-        auto res = GameActions::Result();
+        auto res = Result();
         res.Position.x = _loc.x + 16;
         res.Position.y = _loc.y + 16;
         res.Position.z = _loc.z;
@@ -125,24 +119,21 @@ namespace OpenRCT2::GameActions
         if (!MapCheckCapacityAndReorganise(_loc))
         {
             LOG_ERROR("No free map elements.");
-            return GameActions::Result(
-                GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
+            return Result(Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
         auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(_bannerType);
         if (bannerEntry == nullptr)
         {
             LOG_ERROR("Banner entry not found for bannerType %u", _bannerType);
-            return GameActions::Result(
-                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
+            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
         }
 
         auto banner = CreateBanner();
         if (banner == nullptr)
         {
             LOG_ERROR("No free banners available");
-            return GameActions::Result(
-                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
+            return Result(Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
         }
         banner->flags = {};
         banner->text = {};

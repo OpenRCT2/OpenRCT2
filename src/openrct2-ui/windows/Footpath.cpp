@@ -1320,7 +1320,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             gFootpathConstructFromPosition.z = tileElement->GetBaseZ();
-            auto action = FootpathRemoveAction(gFootpathConstructFromPosition);
+            auto action = GameActions::FootpathRemoveAction(gFootpathConstructFromPosition);
             GameActions::Execute(&action);
 
             // Move selection
@@ -1814,7 +1814,7 @@ namespace OpenRCT2::Ui::Windows
         {
             _provisionalFootpath.flags.unset(ProvisionalPathFlag::placed);
 
-            auto action = FootpathRemoveAction(_provisionalFootpath.position);
+            auto action = GameActions::FootpathRemoveAction(_provisionalFootpath.position);
             action.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
             GameActions::Execute(&action);
         }

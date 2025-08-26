@@ -22,22 +22,22 @@ namespace OpenRCT2::GameActions
     {
     private:
         CoordsXYZD _loc;
-        OpenRCT2::ObjectEntryIndex _bannerType{ kBannerNull };
+        ObjectEntryIndex _bannerType{ kBannerNull };
         uint8_t _primaryColour{};
 
     public:
         BannerPlaceAction() = default;
-        BannerPlaceAction(const CoordsXYZD& loc, OpenRCT2::ObjectEntryIndex bannerType, colour_t primaryColour);
+        BannerPlaceAction(const CoordsXYZD& loc, ObjectEntryIndex bannerType, colour_t primaryColour);
 
         void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
         uint16_t GetActionFlags() const override;
 
         void Serialise(DataSerialiser& stream) override;
-        OpenRCT2::GameActions::Result Query() const override;
-        OpenRCT2::GameActions::Result Execute() const override;
+        Result Query() const override;
+        Result Execute() const override;
 
     private:
-        OpenRCT2::PathElement* GetValidPathElement() const;
+        PathElement* GetValidPathElement() const;
     };
 } // namespace OpenRCT2::GameActions
