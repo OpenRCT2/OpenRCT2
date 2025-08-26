@@ -4474,7 +4474,7 @@ declare global {
         readonly category: RideResearchCategory;
 
         /**
-         * The ride type. Each vehicle can have a seperate invention for each ride type.
+         * The ride type. Each vehicle can have a separate invention for each ride type.
          */
         readonly rideType: number;
 
@@ -5056,7 +5056,7 @@ declare global {
         column: number;
     }
 
-    type ListViewItem = ListViewItemSeperator | string[] | string;
+    type ListViewItem = ListViewItemSeparator | string[] | string;
 
     interface ListViewWidget extends WidgetBase {
         type: "listview";
@@ -5183,8 +5183,8 @@ declare global {
         textAlign?: TextAlignment;
     }
 
-    interface ListViewItemSeperator {
-        type: "seperator";
+    interface ListViewItemSeparator {
+        type: "separator";
         text?: string;
     }
 

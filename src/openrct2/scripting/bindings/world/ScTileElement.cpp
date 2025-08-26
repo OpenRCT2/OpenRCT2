@@ -1584,7 +1584,7 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    // Deprecated in favor of seperate 'edges' and 'corners' properties,
+    // Deprecated in favor of separate 'edges' and 'corners' properties,
     // left here to maintain compatibility with older plugins.
     /** @deprecated */
     uint8_t ScTileElement::edgesAndCorners_get() const

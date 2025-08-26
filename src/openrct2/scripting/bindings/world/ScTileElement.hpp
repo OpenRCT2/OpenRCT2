@@ -145,7 +145,7 @@ namespace OpenRCT2::Scripting
         DukValue bannerIndex_get() const;
         void bannerIndex_set(const DukValue& value);
 
-        // Deprecated in favor of seperate 'edges' and 'corners' properties,
+        // Deprecated in favor of separate 'edges' and 'corners' properties,
         // left here to maintain compatibility with older plugins.
         /** @deprecated */
         uint8_t edgesAndCorners_get() const;
