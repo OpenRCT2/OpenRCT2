@@ -1532,7 +1532,7 @@ static GameActions::Result TrackDesignPlaceMaze(
 
     if (tds.placeOperation == TrackPlaceOperation::removeGhost)
     {
-        auto gameAction = RideDemolishAction(ride.id, RideModifyType::demolish);
+        auto gameAction = GameActions::RideDemolishAction(ride.id, GameActions::RideModifyType::demolish);
         gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         GameActions::Execute(&gameAction);
     }
@@ -1851,7 +1851,7 @@ int32_t TrackDesignGetZPlacement(const TrackDesign& td, Ride& ride, const Coords
 static money64 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flags, RideId* outRideIndex)
 {
     // Don't set colours as will be set correctly later.
-    auto gameAction = RideCreateAction(type, subType, 0, 0, getGameState().lastEntranceStyle);
+    auto gameAction = GameActions::RideCreateAction(type, subType, 0, 0, getGameState().lastEntranceStyle);
     gameAction.SetFlags(flags);
 
     auto res = GameActions::ExecuteNested(&gameAction);
