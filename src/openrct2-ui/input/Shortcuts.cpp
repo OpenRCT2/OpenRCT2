@@ -522,8 +522,9 @@ static void ShortcutToggleWallSlope()
     int32_t newSlopeValue = (currSlopeValue + 1) % 3;
 
     extern TileCoordsXY windowTileInspectorTile;
-    auto modifyTile = TileModifyAction(
-        windowTileInspectorTile.ToCoordsXY(), TileModifyType::WallSetSlope, windowTileInspectorSelectedIndex, newSlopeValue);
+    auto modifyTile = GameActions::TileModifyAction(
+        windowTileInspectorTile.ToCoordsXY(), GameActions::TileModifyType::WallSetSlope, windowTileInspectorSelectedIndex,
+        newSlopeValue);
     GameActions::Execute(&modifyTile);
 }
 
@@ -782,7 +783,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::kInterfacePause, STR_SHORTCUT_PAUSE_GAME, "PAUSE", []() {
         if (gLegacyScene != LegacyScene::titleSequence && gLegacyScene != LegacyScene::scenarioEditor && gLegacyScene != LegacyScene::trackDesignsManager)
         {
-            auto pauseToggleAction = PauseToggleAction();
+            auto pauseToggleAction = GameActions::PauseToggleAction();
             GameActions::Execute(&pauseToggleAction);
         }
     });

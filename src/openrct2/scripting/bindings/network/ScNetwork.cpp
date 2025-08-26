@@ -239,7 +239,7 @@ namespace OpenRCT2::Scripting
             if (index < numPlayers)
             {
                 auto playerId = NetworkGetPlayerID(index);
-                auto kickPlayerAction = PlayerKickAction(playerId);
+                auto kickPlayerAction = GameActions::PlayerKickAction(playerId);
                 GameActions::Execute(&kickPlayerAction);
             }
         }
@@ -248,7 +248,7 @@ namespace OpenRCT2::Scripting
             auto index = NetworkGetPlayerIndex(id);
             if (index != -1)
             {
-                auto kickPlayerAction = PlayerKickAction(id);
+                auto kickPlayerAction = GameActions::PlayerKickAction(id);
                 GameActions::Execute(&kickPlayerAction);
             }
         }

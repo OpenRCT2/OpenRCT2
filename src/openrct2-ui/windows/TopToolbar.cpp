@@ -308,7 +308,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_PAUSE:
                     if (NetworkGetMode() != NETWORK_MODE_CLIENT)
                     {
-                        auto pauseToggleAction = PauseToggleAction();
+                        auto pauseToggleAction = GameActions::PauseToggleAction();
                         GameActions::Execute(&pauseToggleAction);
                         _waitingForPause = true;
                     }

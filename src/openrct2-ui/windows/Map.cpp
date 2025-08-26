@@ -481,7 +481,7 @@ namespace OpenRCT2::Ui::Windows
 
             int32_t mapZ = tileElement->GetBaseZ();
 
-            auto gameAction = PeepSpawnPlaceAction({ mapCoords, mapZ, static_cast<Direction>(direction) });
+            auto gameAction = GameActions::PeepSpawnPlaceAction({ mapCoords, mapZ, static_cast<Direction>(direction) });
             auto result = GameActions::Execute(&gameAction);
             if (result.Error == GameActions::Status::Ok)
             {
