@@ -683,7 +683,8 @@ namespace OpenRCT2::Ui
                 mapCoords -= CoordsDirectionDelta[rotation];
                 break;
         }
-        auto parkEntranceRemoveAction = ParkEntranceRemoveAction({ mapCoords.x, mapCoords.y, entranceElement.GetBaseZ() });
+        auto parkEntranceRemoveAction = GameActions::ParkEntranceRemoveAction(
+            { mapCoords.x, mapCoords.y, entranceElement.GetBaseZ() });
         GameActions::Execute(&parkEntranceRemoveAction);
     }
 

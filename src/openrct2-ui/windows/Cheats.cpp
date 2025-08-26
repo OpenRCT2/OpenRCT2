@@ -916,14 +916,15 @@ static StringId window_cheats_page_titles[] = {
                     break;
                 case WIDX_DATE_SET:
                 {
-                    auto setDateAction = ParkSetDateAction(_yearSpinnerValue - 1, _monthSpinnerValue - 1, _daySpinnerValue - 1);
+                    auto setDateAction = GameActions::ParkSetDateAction(
+                        _yearSpinnerValue - 1, _monthSpinnerValue - 1, _daySpinnerValue - 1);
                     GameActions::Execute(&setDateAction);
                     windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
                     break;
                 }
                 case WIDX_DATE_RESET:
                 {
-                    auto setDateAction = ParkSetDateAction(0, 0, 0);
+                    auto setDateAction = GameActions::ParkSetDateAction(0, 0, 0);
                     GameActions::Execute(&setDateAction);
                     windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
                     InvalidateWidget(WIDX_YEAR_BOX);

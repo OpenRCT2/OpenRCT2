@@ -11,23 +11,26 @@
 
 #include "GameAction.h"
 
-class ParkEntranceRemoveAction final : public GameActionBase<GameCommand::RemoveParkEntrance>
+namespace OpenRCT2::GameActions
 {
-private:
-    CoordsXYZ _loc;
+    class ParkEntranceRemoveAction final : public GameActionBase<GameCommand::RemoveParkEntrance>
+    {
+    private:
+        CoordsXYZ _loc;
 
-public:
-    ParkEntranceRemoveAction() = default;
-    ParkEntranceRemoveAction(const CoordsXYZ& loc);
+    public:
+        ParkEntranceRemoveAction() = default;
+        ParkEntranceRemoveAction(const CoordsXYZ& loc);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
 
-private:
-    void ParkEntranceRemoveSegment(const CoordsXYZ& loc) const;
-};
+    private:
+        void ParkEntranceRemoveSegment(const CoordsXYZ& loc) const;
+    };
+} // namespace OpenRCT2::GameActions

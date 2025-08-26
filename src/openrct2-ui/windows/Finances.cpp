@@ -14,7 +14,6 @@
 #include <openrct2/GameState.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/ParkSetLoanAction.h>
-#include <openrct2/actions/ParkSetResearchFundingAction.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.Date.h>
@@ -548,7 +547,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         newLoan = std::min(gameState.park.maxBankLoan, newLoan);
                     }
-                    auto gameAction = ParkSetLoanAction(newLoan);
+                    auto gameAction = GameActions::ParkSetLoanAction(newLoan);
                     GameActions::Execute(&gameAction);
                     break;
                 }
@@ -564,7 +563,7 @@ namespace OpenRCT2::Ui::Windows
                         {
                             newLoan = std::max(static_cast<money64>(0LL), newLoan);
                         }
-                        auto gameAction = ParkSetLoanAction(newLoan);
+                        auto gameAction = GameActions::ParkSetLoanAction(newLoan);
                         GameActions::Execute(&gameAction);
                     }
                     break;

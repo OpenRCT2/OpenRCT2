@@ -194,7 +194,8 @@ namespace OpenRCT2::Ui::Windows
 
             ParkEntranceRemoveGhost();
 
-            auto gameAction = ParkEntrancePlaceAction(parkEntrancePosition, gFootpathSelectedId, _selectedEntranceType);
+            auto gameAction = GameActions::ParkEntrancePlaceAction(
+                parkEntrancePosition, gFootpathSelectedId, _selectedEntranceType);
             gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
 
             auto result = GameActions::Execute(&gameAction);
@@ -212,7 +213,8 @@ namespace OpenRCT2::Ui::Windows
             CoordsXYZD parkEntrancePosition = PlaceParkEntranceGetMapPosition(screenCoords);
             if (!parkEntrancePosition.IsNull())
             {
-                auto gameAction = ParkEntrancePlaceAction(parkEntrancePosition, gFootpathSelectedId, _selectedEntranceType);
+                auto gameAction = GameActions::ParkEntrancePlaceAction(
+                    parkEntrancePosition, gFootpathSelectedId, _selectedEntranceType);
                 auto result = GameActions::Execute(&gameAction);
                 if (result.Error == GameActions::Status::Ok)
                 {

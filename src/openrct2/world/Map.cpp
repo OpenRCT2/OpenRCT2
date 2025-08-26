@@ -1490,7 +1490,7 @@ void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
                     seqLoc -= CoordsDirectionDelta[rotation];
                     break;
             }
-            auto parkEntranceRemoveAction = ParkEntranceRemoveAction(CoordsXYZ{ seqLoc, element->GetBaseZ() });
+            auto parkEntranceRemoveAction = GameActions::ParkEntranceRemoveAction(CoordsXYZ{ seqLoc, element->GetBaseZ() });
             auto result = GameActions::ExecuteNested(&parkEntranceRemoveAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
             if (result.Error != GameActions::Status::Ok)

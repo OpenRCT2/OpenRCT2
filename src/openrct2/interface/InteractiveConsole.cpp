@@ -890,8 +890,8 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (varName == "park_open" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            ConsoleSetVariableAction<ParkSetParameterAction>(
-                console, varName, (int_val[0] == 1) ? ParkParameter::Open : ParkParameter::Close);
+            ConsoleSetVariableAction<GameActions::ParkSetParameterAction>(
+                console, varName, (int_val[0] == 1) ? GameActions::ParkParameter::Open : GameActions::ParkParameter::Close);
         }
         else if (varName == "land_rights_cost" && InvalidArguments(&invalidArgs, double_valid[0]))
         {
@@ -1295,7 +1295,7 @@ static void ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& console
         }
     }
 
-    auto setDateAction = ParkSetDateAction(year - 1, month - 1, day - 1);
+    auto setDateAction = GameActions::ParkSetDateAction(year - 1, month - 1, day - 1);
     GameActions::Execute(&setDateAction);
 
     auto* windowMgr = Ui::GetWindowManager();
