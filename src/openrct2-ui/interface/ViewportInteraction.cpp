@@ -662,7 +662,8 @@ namespace OpenRCT2::Ui
      */
     static void ViewportInteractionRemovePathAddition(const PathElement& pathElement, const CoordsXY& mapCoords)
     {
-        auto footpathAdditionRemoveAction = FootpathAdditionRemoveAction({ mapCoords.x, mapCoords.y, pathElement.GetBaseZ() });
+        auto footpathAdditionRemoveAction = GameActions::FootpathAdditionRemoveAction(
+            { mapCoords.x, mapCoords.y, pathElement.GetBaseZ() });
         GameActions::Execute(&footpathAdditionRemoveAction);
     }
 

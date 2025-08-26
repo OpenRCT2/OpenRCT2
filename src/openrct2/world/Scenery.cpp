@@ -260,7 +260,7 @@ void SceneryRemoveGhostToolPlacement()
             if (tileElement->GetBaseZ() != gSceneryGhostPosition.z)
                 continue;
 
-            auto footpathAdditionRemoveAction = FootpathAdditionRemoveAction(gSceneryGhostPosition);
+            auto footpathAdditionRemoveAction = GameActions::FootpathAdditionRemoveAction(gSceneryGhostPosition);
             footpathAdditionRemoveAction.SetFlags(
                 GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
             GameActions::Execute(&footpathAdditionRemoveAction);

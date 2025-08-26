@@ -11,21 +11,24 @@
 
 #include "GameAction.h"
 
-class FootpathAdditionPlaceAction final : public GameActionBase<GameCommand::PlaceFootpathAddition>
+namespace OpenRCT2::GameActions
 {
-private:
-    CoordsXYZ _loc;
-    OpenRCT2::ObjectEntryIndex _entryIndex{};
+    class FootpathAdditionPlaceAction final : public GameActionBase<GameCommand::PlaceFootpathAddition>
+    {
+    private:
+        CoordsXYZ _loc;
+        ObjectEntryIndex _entryIndex{};
 
-public:
-    FootpathAdditionPlaceAction() = default;
-    FootpathAdditionPlaceAction(const CoordsXYZ& loc, OpenRCT2::ObjectEntryIndex pathItemType);
+    public:
+        FootpathAdditionPlaceAction() = default;
+        FootpathAdditionPlaceAction(const CoordsXYZ& loc, ObjectEntryIndex pathItemType);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
+    };
+} // namespace OpenRCT2::GameActions

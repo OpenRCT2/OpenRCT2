@@ -1072,7 +1072,7 @@ void ScriptEngine::RemoveNetworkPlugins()
     }
 }
 
-GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAction& customAction, bool isExecute)
+GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const GameActions::CustomAction& customAction, bool isExecute)
 {
     std::string actionz = customAction.GetId();
     auto kvp = _customActions.find(actionz);
@@ -1473,7 +1473,7 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, GameActions::Res
         auto actionId = action.GetType();
         if (action.GetType() == GameCommand::Custom)
         {
-            auto customAction = static_cast<const CustomAction&>(action);
+            auto customAction = static_cast<const GameActions::CustomAction&>(action);
             obj.Set("action", customAction.GetId());
 
             auto dukArgs = DuktapeTryParseJson(_context, customAction.GetJson());
@@ -1559,7 +1559,7 @@ std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(
     auto jsonz = duk_json_encode(ctx, -1);
     auto json = std::string(jsonz);
     duk_pop(ctx);
-    auto customAction = std::make_unique<CustomAction>(actionid, json, pluginName);
+    auto customAction = std::make_unique<GameActions::CustomAction>(actionid, json, pluginName);
 
     if (customAction->GetPlayer() == -1 && NetworkGetMode() != NETWORK_MODE_NONE)
     {

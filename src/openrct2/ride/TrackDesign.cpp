@@ -1199,7 +1199,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                     constructFlags |= PathConstructFlag::IsQueue;
                 if (entryInfo->Type == ObjectType::paths)
                     constructFlags |= PathConstructFlag::IsLegacyPathObject;
-                auto footpathPlaceAction = FootpathLayoutPlaceAction(
+                auto footpathPlaceAction = GameActions::FootpathLayoutPlaceAction(
                     { mapCoord.x, mapCoord.y, z }, slope, entryInfo->Index, entryInfo->SecondaryIndex, edges, constructFlags);
                 footpathPlaceAction.SetFlags(flags);
                 auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction)
