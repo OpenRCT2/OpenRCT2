@@ -5262,7 +5262,7 @@ void Ride::setToDefaultInspectionInterval()
     {
         if (defaultInspectionInterval <= RIDE_INSPECTION_NEVER)
         {
-            SetOperatingSetting(id, RideSetSetting::InspectionInterval, defaultInspectionInterval);
+            SetOperatingSetting(id, GameActions::RideSetSetting::InspectionInterval, defaultInspectionInterval);
         }
     }
 }

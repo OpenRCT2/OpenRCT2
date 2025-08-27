@@ -200,7 +200,8 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                 }
                 else
                 {
-                    auto res = SetOperatingSetting(RideId::FromUnderlying(ride_index), RideSetSetting::RideType, type);
+                    auto res = SetOperatingSetting(
+                        RideId::FromUnderlying(ride_index), GameActions::RideSetSetting::RideType, type);
                     if (res == kMoney64Undefined)
                     {
                         if (!getGameState().cheats.allowArbitraryRideTypeChanges)
@@ -396,7 +397,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                         {
                             for (const auto& ride : GetRideManager())
                             {
-                                auto rideSetPrice = RideSetPriceAction(ride.id, price, true);
+                                auto rideSetPrice = GameActions::RideSetPriceAction(ride.id, price, true);
                                 GameActions::Execute(&rideSetPrice);
                             }
                         }
@@ -416,7 +417,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                             {
                                 if (ride.type == rideType)
                                 {
-                                    auto rideSetPrice = RideSetPriceAction(ride.id, price, true);
+                                    auto rideSetPrice = GameActions::RideSetPriceAction(ride.id, price, true);
                                     GameActions::Execute(&rideSetPrice);
                                 }
                             }
@@ -438,7 +439,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     }
                     else
                     {
-                        auto rideSetPrice = RideSetPriceAction(RideId::FromUnderlying(rideId), price, true);
+                        auto rideSetPrice = GameActions::RideSetPriceAction(RideId::FromUnderlying(rideId), price, true);
                         GameActions::Execute(&rideSetPrice);
                     }
                 }

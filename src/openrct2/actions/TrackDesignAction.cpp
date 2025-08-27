@@ -79,8 +79,7 @@ namespace OpenRCT2::GameActions
         }
 
         // Colours do not matter as will be overwritten
-        auto rideCreateAction = GameActions::RideCreateAction(
-            _td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.lastEntranceStyle);
+        auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.lastEntranceStyle);
         rideCreateAction.SetFlags(GetFlags());
         auto r = ExecuteNested(&rideCreateAction);
         if (r.Error != Status::Ok)
@@ -111,7 +110,7 @@ namespace OpenRCT2::GameActions
             queryRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
         }
 
-        auto gameAction = GameActions::RideDemolishAction(ride->id, GameActions::RideModifyType::demolish);
+        auto gameAction = RideDemolishAction(ride->id, RideModifyType::demolish);
         gameAction.SetFlags(GetFlags());
 
         ExecuteNested(&gameAction);
@@ -153,8 +152,7 @@ namespace OpenRCT2::GameActions
         }
 
         // Colours do not matter as will be overwritten
-        auto rideCreateAction = GameActions::RideCreateAction(
-            _td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.lastEntranceStyle);
+        auto rideCreateAction = RideCreateAction(_td.trackAndVehicle.rtdIndex, entryIndex, 0, 0, gameState.lastEntranceStyle);
         rideCreateAction.SetFlags(GetFlags());
         auto r = ExecuteNested(&rideCreateAction);
         if (r.Error != Status::Ok)
@@ -184,7 +182,7 @@ namespace OpenRCT2::GameActions
 
         if (queryRes.Error != Status::Ok)
         {
-            auto gameAction = GameActions::RideDemolishAction(ride->id, GameActions::RideModifyType::demolish);
+            auto gameAction = RideDemolishAction(ride->id, RideModifyType::demolish);
             gameAction.SetFlags(GetFlags());
             ExecuteNested(&gameAction);
 
@@ -202,7 +200,7 @@ namespace OpenRCT2::GameActions
         auto execRes = TrackDesignPlace(_td, flags, placeScenery, *ride, _loc);
         if (execRes.Error != Status::Ok)
         {
-            auto gameAction = GameActions::RideDemolishAction(ride->id, GameActions::RideModifyType::demolish);
+            auto gameAction = RideDemolishAction(ride->id, RideModifyType::demolish);
             gameAction.SetFlags(GetFlags());
             ExecuteNested(&gameAction);
 

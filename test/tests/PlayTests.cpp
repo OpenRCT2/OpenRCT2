@@ -115,7 +115,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
 
     // Open it for free
     execute<RideSetStatusAction>(ferrisWheel.id, RideStatus::open);
-    execute<RideSetPriceAction>(ferrisWheel.id, 0, true);
+    execute<GameActions::RideSetPriceAction>(ferrisWheel.id, 0, true);
 
     // Ignore intensity to stimulate peeps to queue into ferris wheel
     gameState.cheats.ignoreRideIntensity = true;
@@ -137,7 +137,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     ASSERT_TRUE(matched);
 
     // Raise the price of the ride to a value poor guest can't pay
-    execute<RideSetPriceAction>(ferrisWheel.id, 10, true);
+    execute<GameActions::RideSetPriceAction>(ferrisWheel.id, 10, true);
 
     // Verify that the poor guest goes back to walking without riding
     // since it doesn't have enough money to pay for it
@@ -174,7 +174,7 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
 
     // Open it for free
     execute<RideSetStatusAction>(carRide.id, RideStatus::open);
-    execute<RideSetPriceAction>(carRide.id, 0, true);
+    execute<GameActions::RideSetPriceAction>(carRide.id, 0, true);
 
     // Ignore intensity to stimulate peeps to queue into the ride
     gameState.cheats.ignoreRideIntensity = true;

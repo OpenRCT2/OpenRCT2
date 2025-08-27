@@ -1152,16 +1152,16 @@ money64 RideGetRefundPrice(const Ride& ride)
     return cost;
 }
 
-money64 SetOperatingSetting(RideId rideId, RideSetSetting setting, uint8_t value)
+money64 SetOperatingSetting(RideId rideId, GameActions::RideSetSetting setting, uint8_t value)
 {
-    auto rideSetSetting = RideSetSettingAction(rideId, setting, value);
+    auto rideSetSetting = GameActions::RideSetSettingAction(rideId, setting, value);
     auto res = GameActions::Execute(&rideSetSetting);
     return res.Error == GameActions::Status::Ok ? 0 : kMoney64Undefined;
 }
 
-money64 SetOperatingSettingNested(RideId rideId, RideSetSetting setting, uint8_t value, uint8_t flags)
+money64 SetOperatingSettingNested(RideId rideId, GameActions::RideSetSetting setting, uint8_t value, uint8_t flags)
 {
-    auto rideSetSetting = RideSetSettingAction(rideId, setting, value);
+    auto rideSetSetting = GameActions::RideSetSettingAction(rideId, setting, value);
     rideSetSetting.SetFlags(flags);
     auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetSetting)
                                                : GameActions::QueryNested(&rideSetSetting);

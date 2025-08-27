@@ -11,25 +11,28 @@
 
 #include "GameAction.h"
 
-class RideSetPriceAction final : public GameActionBase<GameCommand::SetRidePrice>
+namespace OpenRCT2::GameActions
 {
-private:
-    RideId _rideIndex{ RideId::GetNull() };
-    money64 _price{ kMoney64Undefined };
-    bool _primaryPrice{ true };
+    class RideSetPriceAction final : public GameActionBase<GameCommand::SetRidePrice>
+    {
+    private:
+        RideId _rideIndex{ RideId::GetNull() };
+        money64 _price{ kMoney64Undefined };
+        bool _primaryPrice{ true };
 
-public:
-    RideSetPriceAction() = default;
-    RideSetPriceAction(RideId rideIndex, money64 price, bool primaryPrice);
+    public:
+        RideSetPriceAction() = default;
+        RideSetPriceAction(RideId rideIndex, money64 price, bool primaryPrice);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
 
-private:
-    void RideSetCommonPrice(ShopItem shopItem) const;
-};
+    private:
+        void RideSetCommonPrice(ShopItem shopItem) const;
+    };
+} // namespace OpenRCT2::GameActions
