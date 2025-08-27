@@ -411,38 +411,6 @@ static constexpr float kWindowScrollLocations[][2] = {
         }
     }
 
-    void WindowViewportGetMapCoordsByCursor(
-        const WindowBase& w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y)
-    {
-        // Get mouse position to offset against.
-        auto mouseCoords = ContextGetCursorPositionScaled();
-
-        // Compute map coordinate by mouse position.
-        auto viewportPos = w.viewport->ScreenToViewportCoord(mouseCoords);
-        auto coordsXYZ = ViewportAdjustForMapHeight(viewportPos, w.viewport->rotation);
-        auto mapCoords = ViewportPosToMapPos(viewportPos, coordsXYZ.z, w.viewport->rotation);
-        *map_x = mapCoords.x;
-        *map_y = mapCoords.y;
-
-        // Get viewport coordinates centring around the tile.
-        int32_t z = TileElementHeight(mapCoords);
-
-        auto centreLoc = centre_2d_coordinates({ mapCoords.x, mapCoords.y, z }, w.viewport);
-        if (!centreLoc)
-        {
-            LOG_ERROR("Invalid location.");
-            return;
-        }
-
-        // Rebase mouse position onto centre of window, and compensate for zoom level.
-        int32_t rebased_x = w.viewport->zoom.ApplyTo(w.width / 2 - mouseCoords.x);
-        int32_t rebased_y = w.viewport->zoom.ApplyTo(w.height / 2 - mouseCoords.y);
-
-        // Compute cursor offset relative to tile.
-        *offset_x = w.viewport->zoom.ApplyTo(w.savedViewPos.x - (centreLoc->x + rebased_x));
-        *offset_y = w.viewport->zoom.ApplyTo(w.savedViewPos.y - (centreLoc->y + rebased_y));
-    }
-
     void WindowViewportCentreTileAroundCursor(WindowBase& w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y)
     {
         // Get viewport coordinates centring around the tile.
