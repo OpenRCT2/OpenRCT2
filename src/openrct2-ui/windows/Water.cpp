@@ -260,7 +260,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 gInputDragLast.y += dx;
 
-                auto waterRaiseAction = WaterRaiseAction(
+                auto waterRaiseAction = GameActions::WaterRaiseAction(
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
                 GameActions::Execute(&waterRaiseAction);
 
@@ -276,7 +276,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 gInputDragLast.y += dx;
 
-                auto waterLowerAction = WaterLowerAction(
+                auto waterLowerAction = GameActions::WaterLowerAction(
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
                 GameActions::Execute(&waterLowerAction);
                 _waterToolRaiseCost = kMoney64Undefined;
@@ -301,9 +301,9 @@ namespace OpenRCT2::Ui::Windows
                 if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
                     return;
 
-                auto waterLowerAction = WaterLowerAction(
+                auto waterLowerAction = GameActions::WaterLowerAction(
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
-                auto waterRaiseAction = WaterRaiseAction(
+                auto waterRaiseAction = GameActions::WaterRaiseAction(
                     { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
 
                 auto res = GameActions::Query(&waterLowerAction);
@@ -392,9 +392,9 @@ namespace OpenRCT2::Ui::Windows
             if (!state_changed)
                 return;
 
-            auto waterLowerAction = WaterLowerAction(
+            auto waterLowerAction = GameActions::WaterLowerAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
-            auto waterRaiseAction = WaterRaiseAction(
+            auto waterRaiseAction = GameActions::WaterRaiseAction(
                 { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
 
             auto res = GameActions::Query(&waterLowerAction);

@@ -18,92 +18,91 @@
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 
-using namespace OpenRCT2;
-
-StaffSetCostumeAction::StaffSetCostumeAction(EntityId spriteIndex, ObjectEntryIndex costume)
-    : _spriteIndex(spriteIndex)
-    , _costume(costume)
+namespace OpenRCT2::GameActions
 {
-}
-
-void StaffSetCostumeAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("id", _spriteIndex);
-    visitor.Visit("costume", _costume);
-}
-
-uint16_t StaffSetCostumeAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-void StaffSetCostumeAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-
-    stream << DS_TAG(_spriteIndex) << DS_TAG(_costume);
-}
-
-GameActions::Result StaffSetCostumeAction::Query() const
-{
-    if (_spriteIndex.ToUnderlying() >= kMaxEntities || _spriteIndex.IsNull())
+    StaffSetCostumeAction::StaffSetCostumeAction(EntityId spriteIndex, ObjectEntryIndex costume)
+        : _spriteIndex(spriteIndex)
+        , _costume(costume)
     {
-        LOG_ERROR("Invalid sprite index %u", _spriteIndex);
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
-    auto* staff = TryGetEntity<Staff>(_spriteIndex);
-    if (staff == nullptr)
+    void StaffSetCostumeAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
+        visitor.Visit("id", _spriteIndex);
+        visitor.Visit("costume", _costume);
     }
 
-    auto& objManager = GetContext()->GetObjectManager();
-    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(_costume);
-
-    auto animPeepType = AnimationPeepType(static_cast<uint8_t>(staff->AssignedStaffType) + 1);
-    if (animObj->GetPeepType() != animPeepType)
+    uint16_t StaffSetCostumeAction::GetActionFlags() const
     {
-        LOG_ERROR("Invalid entertainer costume %u", _costume);
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
-    }
-    return GameActions::Result();
-}
-
-GameActions::Result StaffSetCostumeAction::Execute() const
-{
-    auto* staff = TryGetEntity<Staff>(_spriteIndex);
-    if (staff == nullptr)
-    {
-        LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
+        return GameAction::GetActionFlags() | Flags::AllowWhilePaused;
     }
 
-    staff->AnimationObjectIndex = _costume;
-    staff->AnimationGroup = PeepAnimationGroup::Normal;
+    void StaffSetCostumeAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
 
-    auto& objManager = GetContext()->GetObjectManager();
-    auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(_costume);
+        stream << DS_TAG(_spriteIndex) << DS_TAG(_costume);
+    }
 
-    staff->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-    if (animObj->IsSlowWalking(PeepAnimationGroup::Normal))
-        staff->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
+    Result StaffSetCostumeAction::Query() const
+    {
+        if (_spriteIndex.ToUnderlying() >= kMaxEntities || _spriteIndex.IsNull())
+        {
+            LOG_ERROR("Invalid sprite index %u", _spriteIndex);
+            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+        }
 
-    staff->AnimationFrameNum = 0;
-    staff->UpdateCurrentAnimationType();
-    staff->Invalidate();
+        auto* staff = TryGetEntity<Staff>(_spriteIndex);
+        if (staff == nullptr)
+        {
+            LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
+            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
+        }
 
-    auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->InvalidateByNumber(WindowClass::Peep, _spriteIndex);
+        auto& objManager = GetContext()->GetObjectManager();
+        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(_costume);
 
-    auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
-    ContextBroadcastIntent(&intent);
+        auto animPeepType = AnimationPeepType(static_cast<uint8_t>(staff->AssignedStaffType) + 1);
+        if (animObj->GetPeepType() != animPeepType)
+        {
+            LOG_ERROR("Invalid entertainer costume %u", _costume);
+            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+        }
+        return Result();
+    }
 
-    auto res = GameActions::Result();
-    res.Position = staff->GetLocation();
+    Result StaffSetCostumeAction::Execute() const
+    {
+        auto* staff = TryGetEntity<Staff>(_spriteIndex);
+        if (staff == nullptr)
+        {
+            LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
+            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
+        }
 
-    return res;
-}
+        staff->AnimationObjectIndex = _costume;
+        staff->AnimationGroup = PeepAnimationGroup::Normal;
+
+        auto& objManager = GetContext()->GetObjectManager();
+        auto* animObj = objManager.GetLoadedObject<PeepAnimationsObject>(_costume);
+
+        staff->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
+        if (animObj->IsSlowWalking(PeepAnimationGroup::Normal))
+            staff->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
+
+        staff->AnimationFrameNum = 0;
+        staff->UpdateCurrentAnimationType();
+        staff->Invalidate();
+
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->InvalidateByNumber(WindowClass::Peep, _spriteIndex);
+
+        auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
+        ContextBroadcastIntent(&intent);
+
+        auto res = Result();
+        res.Position = staff->GetLocation();
+
+        return res;
+    }
+} // namespace OpenRCT2::GameActions

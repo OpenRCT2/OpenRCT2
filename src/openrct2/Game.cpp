@@ -102,7 +102,7 @@ using namespace OpenRCT2;
 
 void GameResetSpeed()
 {
-    auto setSpeedAction = GameSetSpeedAction(1);
+    auto setSpeedAction = GameActions::GameSetSpeedAction(1);
     GameActions::Execute(&setSpeedAction);
 }
 
@@ -112,7 +112,7 @@ void GameIncreaseGameSpeed()
     if (newSpeed == 5)
         newSpeed = 8;
 
-    auto setSpeedAction = GameSetSpeedAction(newSpeed);
+    auto setSpeedAction = GameActions::GameSetSpeedAction(newSpeed);
     GameActions::Execute(&setSpeedAction);
 }
 
@@ -122,7 +122,7 @@ void GameReduceGameSpeed()
     if (newSpeed == 7)
         newSpeed = 4;
 
-    auto setSpeedAction = GameSetSpeedAction(newSpeed);
+    auto setSpeedAction = GameActions::GameSetSpeedAction(newSpeed);
     GameActions::Execute(&setSpeedAction);
 }
 
@@ -655,7 +655,7 @@ void GameLoadOrQuitNoSavePrompt()
     {
         case PromptMode::saveBeforeLoad:
         {
-            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
+            auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
             ToolCancel();
             if (gLegacyScene == LegacyScene::scenarioEditor)
@@ -674,7 +674,7 @@ void GameLoadOrQuitNoSavePrompt()
         }
         case PromptMode::saveBeforeQuit:
         {
-            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
+            auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
             ToolCancel();
             if (gInputFlags.has(InputFlag::unk5))
@@ -692,7 +692,7 @@ void GameLoadOrQuitNoSavePrompt()
         }
         case PromptMode::saveBeforeNewGame:
         {
-            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
+            auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
             ToolCancel();
             auto intent = Intent(WindowClass::ScenarioSelect);

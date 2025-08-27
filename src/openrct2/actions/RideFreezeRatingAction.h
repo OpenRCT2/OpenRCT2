@@ -11,27 +11,30 @@
 
 #include "GameAction.h"
 
-enum class RideRatingType : uint8_t
+namespace OpenRCT2::GameActions
 {
-    Excitement,
-    Intensity,
-    Nausea,
-};
-//
-class RideFreezeRatingAction final : public GameActionBase<GameCommand::FreezeRideRating>
-{
-private:
-    RideId _rideIndex{ RideId::GetNull() };
-    RideRatingType _type{};
-    OpenRCT2::RideRating_t _value{};
+    enum class RideRatingType : uint8_t
+    {
+        Excitement,
+        Intensity,
+        Nausea,
+    };
 
-public:
-    RideFreezeRatingAction() = default;
-    RideFreezeRatingAction(RideId rideIndex, RideRatingType type, OpenRCT2::RideRating_t value);
+    class RideFreezeRatingAction final : public GameActionBase<GameCommand::FreezeRideRating>
+    {
+    private:
+        RideId _rideIndex{ RideId::GetNull() };
+        RideRatingType _type{};
+        RideRating_t _value{};
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+    public:
+        RideFreezeRatingAction() = default;
+        RideFreezeRatingAction(RideId rideIndex, RideRatingType type, RideRating_t value);
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
-};
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
+    };
+} // namespace OpenRCT2::GameActions

@@ -140,7 +140,7 @@ static void ResearchMarkAsFullyCompleted()
     gameState.researchProgressStage = RESEARCH_STAGE_FINISHED_ALL;
     ResearchInvalidateRelatedWindows();
     // Reset funding to 0 if no more rides.
-    auto gameAction = ParkSetResearchFundingAction(gameState.researchPriorities, 0);
+    auto gameAction = GameActions::ParkSetResearchFundingAction(gameState.researchPriorities, 0);
     GameActions::Execute(&gameAction);
 }
 

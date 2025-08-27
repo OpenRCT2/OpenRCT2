@@ -1345,7 +1345,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 case WIDX_PARK_NAME:
                 {
-                    auto action = ParkSetNameAction(std::string(text));
+                    auto action = GameActions::ParkSetNameAction(std::string(text));
                     GameActions::Execute(&action);
 
                     if (scenarioOptions.name.empty())

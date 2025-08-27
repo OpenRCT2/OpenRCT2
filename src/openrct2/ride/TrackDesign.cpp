@@ -961,7 +961,7 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
             uint8_t quadrant = scenery.getQuadrant() + _currentTrackPieceDirection;
             quadrant &= 3;
 
-            auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(entryInfo->Index);
+            auto* sceneryEntry = ObjectManager::GetObjectEntry<SmallSceneryEntry>(entryInfo->Index);
             if (!(!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_DIAGONAL))
                 && sceneryEntry->HasFlag(
                     SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE | SMALL_SCENERY_FLAG_THREE_QUARTERS))
@@ -969,18 +969,20 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
                 quadrant = 0;
             }
 
-            ga = std::make_unique<SmallSceneryRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z }, quadrant, entryInfo->Index);
+            ga = std::make_unique<GameActions::SmallSceneryRemoveAction>(
+                CoordsXYZ{ mapCoord.x, mapCoord.y, z }, quadrant, entryInfo->Index);
             break;
         }
         case ObjectType::largeScenery:
-            ga = std::make_unique<LargeSceneryRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z, sceneryRotation }, 0);
+            ga = std::make_unique<GameActions::LargeSceneryRemoveAction>(
+                CoordsXYZD{ mapCoord.x, mapCoord.y, z, sceneryRotation }, 0);
             break;
         case ObjectType::walls:
-            ga = std::make_unique<WallRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z, sceneryRotation });
+            ga = std::make_unique<GameActions::WallRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z, sceneryRotation });
             break;
         case ObjectType::paths:
         case ObjectType::footpathSurface:
-            ga = std::make_unique<FootpathRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z });
+            ga = std::make_unique<GameActions::FootpathRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z });
             break;
         default:
             return GameActions::Result();
@@ -1075,7 +1077,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 flags |= GAME_COMMAND_FLAG_REPLAY;
             }
 
-            auto smallSceneryPlace = SmallSceneryPlaceAction(
+            auto smallSceneryPlace = GameActions::SmallSceneryPlaceAction(
                 { mapCoord.x, mapCoord.y, z, rotation }, quadrant, entryInfo->Index, scenery.primaryColour,
                 scenery.secondaryColour, scenery.tertiaryColour);
 
@@ -1117,7 +1119,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             {
                 flags |= GAME_COMMAND_FLAG_REPLAY;
             }
-            auto sceneryPlaceAction = LargeSceneryPlaceAction(
+            auto sceneryPlaceAction = GameActions::LargeSceneryPlaceAction(
                 { mapCoord.x, mapCoord.y, z, rotation }, entryInfo->Index, scenery.primaryColour, scenery.secondaryColour,
                 scenery.tertiaryColour);
             sceneryPlaceAction.SetFlags(flags);
@@ -1157,7 +1159,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             {
                 flags |= GAME_COMMAND_FLAG_REPLAY;
             }
-            auto wallPlaceAction = WallPlaceAction(
+            auto wallPlaceAction = GameActions::WallPlaceAction(
                 entryInfo->Index, { mapCoord.x, mapCoord.y, z }, rotation, scenery.primaryColour, scenery.secondaryColour,
                 scenery.tertiaryColour);
             wallPlaceAction.SetFlags(flags);
@@ -1199,7 +1201,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                     constructFlags |= PathConstructFlag::IsQueue;
                 if (entryInfo->Type == ObjectType::paths)
                     constructFlags |= PathConstructFlag::IsLegacyPathObject;
-                auto footpathPlaceAction = FootpathLayoutPlaceAction(
+                auto footpathPlaceAction = GameActions::FootpathLayoutPlaceAction(
                     { mapCoord.x, mapCoord.y, z }, slope, entryInfo->Index, entryInfo->SecondaryIndex, edges, constructFlags);
                 footpathPlaceAction.SetFlags(flags);
                 auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction)
@@ -1376,7 +1378,7 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                             flags |= GAME_COMMAND_FLAG_REPLAY;
                         }
 
-                        auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
+                        auto rideEntranceExitPlaceAction = GameActions::RideEntranceExitPlaceAction(
                             newCoords, rotation, rideId, stationIndex, entrance.isExit);
                         rideEntranceExitPlaceAction.SetFlags(flags);
                         auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideEntranceExitPlaceAction)
@@ -1394,7 +1396,7 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                 }
                 else
                 {
-                    auto res = RideEntranceExitPlaceAction::TrackPlaceQuery(newCoords, false);
+                    auto res = GameActions::RideEntranceExitPlaceAction::TrackPlaceQuery(newCoords, false);
                     if (res.Error != GameActions::Status::Ok)
                     {
                         return res;
@@ -1473,7 +1475,7 @@ static GameActions::Result TrackDesignPlaceMaze(
                 flags |= GAME_COMMAND_FLAG_REPLAY;
             }
 
-            auto mazePlace = MazePlaceTrackAction({ mapCoord, origin.z }, ride.id, mazeEntry);
+            auto mazePlace = GameActions::MazePlaceTrackAction({ mapCoord, origin.z }, ride.id, mazeEntry);
             mazePlace.SetFlags(flags);
             auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&mazePlace)
                                                        : GameActions::QueryNested(&mazePlace);
@@ -1530,7 +1532,7 @@ static GameActions::Result TrackDesignPlaceMaze(
 
     if (tds.placeOperation == TrackPlaceOperation::removeGhost)
     {
-        auto gameAction = RideDemolishAction(ride.id, RideModifyType::demolish);
+        auto gameAction = GameActions::RideDemolishAction(ride.id, GameActions::RideModifyType::demolish);
         gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         GameActions::Execute(&gameAction);
     }
@@ -1580,7 +1582,7 @@ static GameActions::Result TrackDesignPlaceRide(
             {
                 const TrackCoordinates* trackCoordinates = &ted.coordinates;
                 int32_t tempZ = newCoords.z - trackCoordinates->zBegin + ted.sequences[0].clearance.z;
-                auto trackRemoveAction = TrackRemoveAction(
+                auto trackRemoveAction = GameActions::TrackRemoveAction(
                     trackType, 0, { newCoords, tempZ, static_cast<Direction>(rotation & 3) });
                 trackRemoveAction.SetFlags(
                     GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST
@@ -1629,7 +1631,7 @@ static GameActions::Result TrackDesignPlaceRide(
                     flags |= GAME_COMMAND_FLAG_REPLAY;
                 }
 
-                auto trackPlaceAction = TrackPlaceAction(
+                auto trackPlaceAction = GameActions::TrackPlaceAction(
                     ride.id, trackType, ride.type, { newCoords, tempZ, static_cast<uint8_t>(rotation) },
                     track.brakeBoosterSpeed, track.colourScheme, track.seatRotation, liftHillAndAlternativeState, true);
                 trackPlaceAction.SetFlags(flags);
@@ -1849,7 +1851,7 @@ int32_t TrackDesignGetZPlacement(const TrackDesign& td, Ride& ride, const Coords
 static money64 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flags, RideId* outRideIndex)
 {
     // Don't set colours as will be set correctly later.
-    auto gameAction = RideCreateAction(type, subType, 0, 0, getGameState().lastEntranceStyle);
+    auto gameAction = GameActions::RideCreateAction(type, subType, 0, 0, getGameState().lastEntranceStyle);
     gameAction.SetFlags(flags);
 
     auto res = GameActions::ExecuteNested(&gameAction);

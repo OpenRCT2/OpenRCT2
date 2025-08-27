@@ -12,39 +12,40 @@
 #include "../world/Footpath.h"
 #include "GameAction.h"
 
-class FootpathPlaceAction final : public GameActionBase<GameCommand::PlacePath>
+namespace OpenRCT2::GameActions
 {
-private:
-    CoordsXYZ _loc;
-    uint8_t _slope{};
-    OpenRCT2::ObjectEntryIndex _type{};
-    OpenRCT2::ObjectEntryIndex _railingsType{};
-    Direction _direction{ kInvalidDirection };
-    PathConstructFlags _constructFlags{};
+    class FootpathPlaceAction final : public GameActionBase<GameCommand::PlacePath>
+    {
+    private:
+        CoordsXYZ _loc;
+        uint8_t _slope{};
+        ObjectEntryIndex _type{};
+        ObjectEntryIndex _railingsType{};
+        Direction _direction{ kInvalidDirection };
+        PathConstructFlags _constructFlags{};
 
-public:
-    FootpathPlaceAction() = default;
-    FootpathPlaceAction(
-        const CoordsXYZ& loc, uint8_t slope, OpenRCT2::ObjectEntryIndex type, OpenRCT2::ObjectEntryIndex railingsType,
-        Direction direction = kInvalidDirection, PathConstructFlags constructFlags = 0);
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+    public:
+        FootpathPlaceAction() = default;
+        FootpathPlaceAction(
+            const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType,
+            Direction direction = kInvalidDirection, PathConstructFlags constructFlags = 0);
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
 
-private:
-    OpenRCT2::GameActions::Result ElementUpdateQuery(
-        OpenRCT2::PathElement* pathElement, OpenRCT2::GameActions::Result res) const;
-    OpenRCT2::GameActions::Result ElementUpdateExecute(
-        OpenRCT2::PathElement* pathElement, OpenRCT2::GameActions::Result res) const;
-    OpenRCT2::GameActions::Result ElementInsertQuery(OpenRCT2::GameActions::Result res) const;
-    OpenRCT2::GameActions::Result ElementInsertExecute(OpenRCT2::GameActions::Result res) const;
-    void AutomaticallySetPeepSpawn() const;
-    void RemoveIntersectingWalls(OpenRCT2::PathElement* pathElement) const;
-    OpenRCT2::PathElement* MapGetFootpathElementSlope(const CoordsXYZ& footpathPos, int32_t slope) const;
-    bool IsSameAsPathElement(const OpenRCT2::PathElement* pathElement) const;
-    bool IsSameAsEntranceElement(const OpenRCT2::EntranceElement& entranceElement) const;
-};
+    private:
+        Result ElementUpdateQuery(PathElement* pathElement, Result res) const;
+        Result ElementUpdateExecute(PathElement* pathElement, Result res) const;
+        Result ElementInsertQuery(Result res) const;
+        Result ElementInsertExecute(Result res) const;
+        void AutomaticallySetPeepSpawn() const;
+        void RemoveIntersectingWalls(PathElement* pathElement) const;
+        PathElement* MapGetFootpathElementSlope(const CoordsXYZ& footpathPos, int32_t slope) const;
+        bool IsSameAsPathElement(const PathElement* pathElement) const;
+        bool IsSameAsEntranceElement(const EntranceElement& entranceElement) const;
+    };
+} // namespace OpenRCT2::GameActions

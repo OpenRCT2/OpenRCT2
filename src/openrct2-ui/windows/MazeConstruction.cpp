@@ -130,7 +130,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (currentRide->overallView.IsNull())
                 {
-                    auto gameAction = RideDemolishAction(currentRide->id, RideModifyType::demolish);
+                    auto gameAction = GameActions::RideDemolishAction(currentRide->id, GameActions::RideModifyType::demolish);
                     gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
                     GameActions::Execute(&gameAction);
                 }
@@ -355,7 +355,7 @@ namespace OpenRCT2::Ui::Windows
 
             RideId rideIndex = gRideEntranceExitPlaceRideIndex;
 
-            auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
+            auto rideEntranceExitPlaceAction = GameActions::RideEntranceExitPlaceAction(
                 entranceOrExitCoords, DirectionReverse(entranceOrExitCoords.direction), rideIndex,
                 gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
@@ -421,7 +421,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             const auto loc = CoordsXYZD{ x, y, z, static_cast<uint8_t>(direction) };
-            auto action = MazeSetTrackAction(loc, false, _currentRideIndex, mode);
+            auto action = GameActions::MazeSetTrackAction(loc, false, _currentRideIndex, mode);
             action.SetFlags(actionFlags);
             const auto res = GameActions::Execute(&action);
             if (res.Error != GameActions::Status::Ok)
@@ -433,7 +433,7 @@ namespace OpenRCT2::Ui::Windows
             _currentTrackBegin.y = y;
             if (_rideConstructionState != RideConstructionState::MazeMove)
             {
-                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, { x, y, z });
+                Audio::Play3D(Audio::SoundId::PlaceItem, { x, y, z });
             }
         }
     };

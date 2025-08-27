@@ -206,7 +206,8 @@ namespace OpenRCT2::Ui::Windows
                 auto staff = GetEntity<Staff>(_staffId);
                 if (staff != nullptr)
                 {
-                    _mode = staff->IsPatrolAreaSet(*mapTile) ? StaffSetPatrolAreaMode::Unset : StaffSetPatrolAreaMode::Set;
+                    _mode = staff->IsPatrolAreaSet(*mapTile) ? GameActions::StaffSetPatrolAreaMode::Unset
+                                                             : GameActions::StaffSetPatrolAreaMode::Set;
                 }
             }
 
@@ -219,7 +220,7 @@ namespace OpenRCT2::Ui::Windows
             if (staff != nullptr)
             {
                 MapRange range(gMapSelectPositionA, gMapSelectPositionB);
-                auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(_staffId, range, _mode);
+                auto staffSetPatrolAreaAction = GameActions::StaffSetPatrolAreaAction(_staffId, range, _mode);
                 GameActions::Execute(&staffSetPatrolAreaAction);
             }
         }
@@ -237,7 +238,7 @@ namespace OpenRCT2::Ui::Windows
 
     private:
         EntityId _staffId;
-        StaffSetPatrolAreaMode _mode;
+        GameActions::StaffSetPatrolAreaMode _mode;
 
         void EnableTool()
         {

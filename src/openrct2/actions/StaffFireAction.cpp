@@ -14,72 +14,72 @@
 #include "../entity/Staff.h"
 #include "../ui/WindowManager.h"
 
-using namespace OpenRCT2;
-
-StaffFireAction::StaffFireAction(EntityId spriteId)
-    : _spriteId(spriteId)
+namespace OpenRCT2::GameActions
 {
-}
-
-void StaffFireAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("id", _spriteId);
-}
-
-uint16_t StaffFireAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-void StaffFireAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-    stream << DS_TAG(_spriteId);
-}
-
-GameActions::Result StaffFireAction::Query() const
-{
-    if (_spriteId.ToUnderlying() >= kMaxEntities || _spriteId.IsNull())
+    StaffFireAction::StaffFireAction(EntityId spriteId)
+        : _spriteId(spriteId)
     {
-        LOG_ERROR("Invalid spriteId %u", _spriteId);
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
-    auto staff = TryGetEntity<Staff>(_spriteId);
-    if (staff == nullptr)
+    void StaffFireAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        LOG_ERROR("Staff entity not found for spriteId %u", _spriteId);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
+        visitor.Visit("id", _spriteId);
     }
 
-    if (staff->State == PeepState::Fixing)
+    uint16_t StaffFireAction::GetActionFlags() const
     {
-        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_FIRE_STAFF_FIXING, kStringIdNone);
-    }
-    else if (staff->State == PeepState::Inspecting)
-    {
-        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_FIRE_STAFF_INSPECTING, kStringIdNone);
+        return GameAction::GetActionFlags() | Flags::AllowWhilePaused;
     }
 
-    return GameActions::Result();
-}
-
-GameActions::Result StaffFireAction::Execute() const
-{
-    auto staff = TryGetEntity<Staff>(_spriteId);
-    if (staff == nullptr)
+    void StaffFireAction::Serialise(DataSerialiser& stream)
     {
-        LOG_ERROR("Staff entity not found for spriteId %u", _spriteId);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
+        GameAction::Serialise(stream);
+        stream << DS_TAG(_spriteId);
     }
 
-    auto* windowMgr = Ui::GetWindowManager();
-    windowMgr->CloseByClass(WindowClass::FirePrompt);
+    Result StaffFireAction::Query() const
+    {
+        if (_spriteId.ToUnderlying() >= kMaxEntities || _spriteId.IsNull())
+        {
+            LOG_ERROR("Invalid spriteId %u", _spriteId);
+            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+        }
 
-    PeepEntityRemove(staff);
-    // Due to patrol areas best to invalidate the whole screen on removal of staff
-    GfxInvalidateScreen();
+        auto staff = TryGetEntity<Staff>(_spriteId);
+        if (staff == nullptr)
+        {
+            LOG_ERROR("Staff entity not found for spriteId %u", _spriteId);
+            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
+        }
 
-    return GameActions::Result();
-}
+        if (staff->State == PeepState::Fixing)
+        {
+            return Result(Status::Disallowed, STR_CANT_FIRE_STAFF_FIXING, kStringIdNone);
+        }
+        else if (staff->State == PeepState::Inspecting)
+        {
+            return Result(Status::Disallowed, STR_CANT_FIRE_STAFF_INSPECTING, kStringIdNone);
+        }
+
+        return Result();
+    }
+
+    Result StaffFireAction::Execute() const
+    {
+        auto staff = TryGetEntity<Staff>(_spriteId);
+        if (staff == nullptr)
+        {
+            LOG_ERROR("Staff entity not found for spriteId %u", _spriteId);
+            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
+        }
+
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->CloseByClass(WindowClass::FirePrompt);
+
+        PeepEntityRemove(staff);
+        // Due to patrol areas best to invalidate the whole screen on removal of staff
+        GfxInvalidateScreen();
+
+        return Result();
+    }
+} // namespace OpenRCT2::GameActions

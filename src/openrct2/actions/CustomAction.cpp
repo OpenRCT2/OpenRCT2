@@ -13,51 +13,52 @@
     #include "../Context.h"
     #include "../scripting/ScriptEngine.h"
 
-using namespace OpenRCT2;
-
-CustomAction::CustomAction(const std::string& id, const std::string& json, const std::string& pluginName)
-    : _id(id)
-    , _json(json)
-    , _pluginName(pluginName)
+namespace OpenRCT2::GameActions
 {
-}
+    CustomAction::CustomAction(const std::string& id, const std::string& json, const std::string& pluginName)
+        : _id(id)
+        , _json(json)
+        , _pluginName(pluginName)
+    {
+    }
 
-std::string CustomAction::GetId() const
-{
-    return _id;
-}
+    std::string CustomAction::GetId() const
+    {
+        return _id;
+    }
 
-std::string CustomAction::GetJson() const
-{
-    return _json;
-}
+    std::string CustomAction::GetJson() const
+    {
+        return _json;
+    }
 
-std::string CustomAction::GetPluginName() const
-{
-    return _pluginName;
-}
+    std::string CustomAction::GetPluginName() const
+    {
+        return _pluginName;
+    }
 
-uint16_t CustomAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
+    uint16_t CustomAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags() | Flags::AllowWhilePaused;
+    }
 
-void CustomAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-    stream << DS_TAG(_id) << DS_TAG(_json);
-}
+    void CustomAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
+        stream << DS_TAG(_id) << DS_TAG(_json);
+    }
 
-GameActions::Result CustomAction::Query() const
-{
-    auto& scriptingEngine = OpenRCT2::GetContext()->GetScriptEngine();
-    return scriptingEngine.QueryOrExecuteCustomGameAction(*this, false);
-}
+    Result CustomAction::Query() const
+    {
+        auto& scriptingEngine = GetContext()->GetScriptEngine();
+        return scriptingEngine.QueryOrExecuteCustomGameAction(*this, false);
+    }
 
-GameActions::Result CustomAction::Execute() const
-{
-    auto& scriptingEngine = OpenRCT2::GetContext()->GetScriptEngine();
-    return scriptingEngine.QueryOrExecuteCustomGameAction(*this, true);
-}
+    Result CustomAction::Execute() const
+    {
+        auto& scriptingEngine = GetContext()->GetScriptEngine();
+        return scriptingEngine.QueryOrExecuteCustomGameAction(*this, true);
+    }
+} // namespace OpenRCT2::GameActions
 
 #endif

@@ -200,7 +200,8 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                 }
                 else
                 {
-                    auto res = SetOperatingSetting(RideId::FromUnderlying(ride_index), RideSetSetting::RideType, type);
+                    auto res = SetOperatingSetting(
+                        RideId::FromUnderlying(ride_index), GameActions::RideSetSetting::RideType, type);
                     if (res == kMoney64Undefined)
                     {
                         if (!getGameState().cheats.allowArbitraryRideTypeChanges)
@@ -312,7 +313,8 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     }
                     else
                     {
-                        auto rideAction = RideFreezeRatingAction(rideIndex, RideRatingType::Excitement, excitement);
+                        auto rideAction = GameActions::RideFreezeRatingAction(
+                            rideIndex, GameActions::RideRatingType::Excitement, excitement);
                         GameActions::Execute(&rideAction);
                     }
                 }
@@ -345,7 +347,8 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     }
                     else
                     {
-                        auto rideAction = RideFreezeRatingAction(rideIndex, RideRatingType::Intensity, intensity);
+                        auto rideAction = GameActions::RideFreezeRatingAction(
+                            rideIndex, GameActions::RideRatingType::Intensity, intensity);
                         GameActions::Execute(&rideAction);
                     }
                 }
@@ -378,7 +381,8 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     }
                     else
                     {
-                        auto rideAction = RideFreezeRatingAction(rideIndex, RideRatingType::Nausea, nausea);
+                        auto rideAction = GameActions::RideFreezeRatingAction(
+                            rideIndex, GameActions::RideRatingType::Nausea, nausea);
                         GameActions::Execute(&rideAction);
                     }
                 }
@@ -396,7 +400,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                         {
                             for (const auto& ride : GetRideManager())
                             {
-                                auto rideSetPrice = RideSetPriceAction(ride.id, price, true);
+                                auto rideSetPrice = GameActions::RideSetPriceAction(ride.id, price, true);
                                 GameActions::Execute(&rideSetPrice);
                             }
                         }
@@ -416,7 +420,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                             {
                                 if (ride.type == rideType)
                                 {
-                                    auto rideSetPrice = RideSetPriceAction(ride.id, price, true);
+                                    auto rideSetPrice = GameActions::RideSetPriceAction(ride.id, price, true);
                                     GameActions::Execute(&rideSetPrice);
                                 }
                             }
@@ -438,7 +442,7 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     }
                     else
                     {
-                        auto rideSetPrice = RideSetPriceAction(RideId::FromUnderlying(rideId), price, true);
+                        auto rideSetPrice = GameActions::RideSetPriceAction(RideId::FromUnderlying(rideId), price, true);
                         GameActions::Execute(&rideSetPrice);
                     }
                 }
@@ -530,7 +534,7 @@ static void ConsoleCommandStaff(InteractiveConsole& console, const arguments_t& 
                 }
 
                 auto costume = static_cast<ObjectEntryIndex>(int_val[1]);
-                auto staffSetCostumeAction = StaffSetCostumeAction(EntityId::FromUnderlying(int_val[0]), costume);
+                auto staffSetCostumeAction = GameActions::StaffSetCostumeAction(EntityId::FromUnderlying(int_val[0]), costume);
                 GameActions::Execute(&staffSetCostumeAction);
             }
         }
@@ -790,7 +794,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
             money64 money = ToMoney64FromGBP(double_val[0]);
             if (gameState.park.cash != money)
             {
-                ConsoleSetVariableAction<CheatSetAction>(console, varName, CheatType::SetMoney, money);
+                ConsoleSetVariableAction<GameActions::CheatSetAction>(console, varName, CheatType::SetMoney, money);
             }
             else
             {
@@ -876,7 +880,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (varName == "no_money" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            ConsoleSetVariableAction<CheatSetAction>(console, varName, CheatType::NoMoney, int_val[0] != 0);
+            ConsoleSetVariableAction<GameActions::CheatSetAction>(console, varName, CheatType::NoMoney, int_val[0] != 0);
         }
         else if (varName == "difficult_park_rating" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
@@ -890,8 +894,8 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (varName == "park_open" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            ConsoleSetVariableAction<ParkSetParameterAction>(
-                console, varName, (int_val[0] == 1) ? ParkParameter::Open : ParkParameter::Close);
+            ConsoleSetVariableAction<GameActions::ParkSetParameterAction>(
+                console, varName, (int_val[0] == 1) ? GameActions::ParkParameter::Open : GameActions::ParkParameter::Close);
         }
         else if (varName == "land_rights_cost" && InvalidArguments(&invalidArgs, double_valid[0]))
         {
@@ -907,7 +911,7 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         }
         else if (varName == "game_speed" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            ConsoleSetVariableAction<GameSetSpeedAction>(console, varName, int_val[0]);
+            ConsoleSetVariableAction<GameActions::GameSetSpeedAction>(console, varName, int_val[0]);
         }
         else if (varName == "console_small_font" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
@@ -957,7 +961,8 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         {
             if (getGameState().cheats.sandboxMode != (int_val[0] != 0))
             {
-                ConsoleSetVariableAction<CheatSetAction>(console, varName, CheatType::SandboxMode, int_val[0] != 0);
+                ConsoleSetVariableAction<GameActions::CheatSetAction>(
+                    console, varName, CheatType::SandboxMode, int_val[0] != 0);
             }
             else
             {
@@ -968,7 +973,8 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         {
             if (getGameState().cheats.disableClearanceChecks != (int_val[0] != 0))
             {
-                ConsoleSetVariableAction<CheatSetAction>(console, varName, CheatType::DisableClearanceChecks, int_val[0] != 0);
+                ConsoleSetVariableAction<GameActions::CheatSetAction>(
+                    console, varName, CheatType::DisableClearanceChecks, int_val[0] != 0);
             }
             else
             {
@@ -979,7 +985,8 @@ static void ConsoleCommandSet(InteractiveConsole& console, const arguments_t& ar
         {
             if (getGameState().cheats.disableSupportLimits != (int_val[0] != 0))
             {
-                ConsoleSetVariableAction<CheatSetAction>(console, varName, CheatType::DisableSupportLimits, int_val[0] != 0);
+                ConsoleSetVariableAction<GameActions::CheatSetAction>(
+                    console, varName, CheatType::DisableSupportLimits, int_val[0] != 0);
             }
             else
             {
@@ -1292,7 +1299,7 @@ static void ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& console
         }
     }
 
-    auto setDateAction = ParkSetDateAction(year - 1, month - 1, day - 1);
+    auto setDateAction = GameActions::ParkSetDateAction(year - 1, month - 1, day - 1);
     GameActions::Execute(&setDateAction);
 
     auto* windowMgr = Ui::GetWindowManager();

@@ -273,7 +273,7 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_START_BUTTON:
                 {
-                    auto gameAction = ParkMarketingAction(
+                    auto gameAction = GameActions::ParkMarketingAction(
                         Campaign.campaign_type, Campaign.RideId.ToUnderlying(), Campaign.no_weeks);
                     gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)

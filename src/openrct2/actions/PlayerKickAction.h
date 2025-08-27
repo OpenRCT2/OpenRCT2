@@ -11,21 +11,24 @@
 
 #include "GameAction.h"
 
-class PlayerKickAction final : public GameActionBase<GameCommand::KickPlayer>
+namespace OpenRCT2::GameActions
 {
-private:
-    NetworkPlayerId_t _playerId{ -1 };
+    class PlayerKickAction final : public GameActionBase<GameCommand::KickPlayer>
+    {
+    private:
+        NetworkPlayerId_t _playerId{ -1 };
 
-public:
-    PlayerKickAction() = default;
+    public:
+        PlayerKickAction() = default;
 
-    PlayerKickAction(NetworkPlayerId_t playerId);
+        PlayerKickAction(NetworkPlayerId_t playerId);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
+    };
+} // namespace OpenRCT2::GameActions

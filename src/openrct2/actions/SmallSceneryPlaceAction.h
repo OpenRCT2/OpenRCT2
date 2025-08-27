@@ -11,35 +11,38 @@
 
 #include "GameAction.h"
 
-struct SmallSceneryPlaceActionResult
+namespace OpenRCT2::GameActions
 {
-    uint8_t GroundFlags{};
-    int32_t BaseHeight{};
-    uint8_t SceneryQuadrant{};
-};
+    struct SmallSceneryPlaceActionResult
+    {
+        uint8_t GroundFlags{};
+        int32_t BaseHeight{};
+        uint8_t SceneryQuadrant{};
+    };
 
-class SmallSceneryPlaceAction final : public GameActionBase<GameCommand::PlaceScenery>
-{
-private:
-    CoordsXYZD _loc;
-    uint8_t _quadrant{};
-    OpenRCT2::ObjectEntryIndex _sceneryType{};
-    uint8_t _primaryColour{};
-    uint8_t _secondaryColour{};
-    uint8_t _tertiaryColour{};
+    class SmallSceneryPlaceAction final : public GameActionBase<GameCommand::PlaceScenery>
+    {
+    private:
+        CoordsXYZD _loc;
+        uint8_t _quadrant{};
+        ObjectEntryIndex _sceneryType{};
+        uint8_t _primaryColour{};
+        uint8_t _secondaryColour{};
+        uint8_t _tertiaryColour{};
 
-public:
-    SmallSceneryPlaceAction() = default;
-    SmallSceneryPlaceAction(
-        const CoordsXYZD& loc, uint8_t quadrant, OpenRCT2::ObjectEntryIndex sceneryType, uint8_t primaryColour,
-        uint8_t secondaryColour, uint8_t tertiaryColour);
+    public:
+        SmallSceneryPlaceAction() = default;
+        SmallSceneryPlaceAction(
+            const CoordsXYZD& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour,
+            uint8_t secondaryColour, uint8_t tertiaryColour);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint32_t GetCooldownTime() const override;
-    uint16_t GetActionFlags() const override;
+        uint32_t GetCooldownTime() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
+    };
+} // namespace OpenRCT2::GameActions

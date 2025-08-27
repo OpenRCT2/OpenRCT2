@@ -481,7 +481,7 @@ namespace OpenRCT2::Ui::Windows
 
             int32_t mapZ = tileElement->GetBaseZ();
 
-            auto gameAction = PeepSpawnPlaceAction({ mapCoords, mapZ, static_cast<Direction>(direction) });
+            auto gameAction = GameActions::PeepSpawnPlaceAction({ mapCoords, mapZ, static_cast<Direction>(direction) });
             auto result = GameActions::Execute(&gameAction);
             if (result.Error == GameActions::Status::Ok)
             {
@@ -515,7 +515,7 @@ namespace OpenRCT2::Ui::Windows
                         if (_resizeDirection != ResizeDirection::Y)
                             newMapSize.x = size;
 
-                        auto mapChangeSizeAction = MapChangeSizeAction(newMapSize);
+                        auto mapChangeSizeAction = GameActions::MapChangeSizeAction(newMapSize);
                         GameActions::Execute(&mapChangeSizeAction);
                         Invalidate();
                     }
@@ -763,7 +763,7 @@ namespace OpenRCT2::Ui::Windows
             if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
                 newMapSize.x++;
 
-            auto increaseMapSizeAction = MapChangeSizeAction(newMapSize);
+            auto increaseMapSizeAction = GameActions::MapChangeSizeAction(newMapSize);
             GameActions::Execute(&increaseMapSizeAction);
         }
 
@@ -775,7 +775,7 @@ namespace OpenRCT2::Ui::Windows
             if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
                 newMapSize.x--;
 
-            auto decreaseMapSizeAction = MapChangeSizeAction(newMapSize);
+            auto decreaseMapSizeAction = GameActions::MapChangeSizeAction(newMapSize);
             GameActions::Execute(&decreaseMapSizeAction);
         }
 

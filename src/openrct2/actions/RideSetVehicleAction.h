@@ -11,37 +11,40 @@
 
 #include "GameAction.h"
 
-enum class RideSetVehicleType : uint8_t
+namespace OpenRCT2::GameActions
 {
-    NumTrains,
-    NumCarsPerTrain,
-    RideEntry,
-    TrainsReversed,
-    Count,
-};
+    enum class RideSetVehicleType : uint8_t
+    {
+        NumTrains,
+        NumCarsPerTrain,
+        RideEntry,
+        TrainsReversed,
+        Count,
+    };
 
-class RideSetVehicleAction final : public GameActionBase<GameCommand::SetRideVehicles>
-{
-private:
-    RideId _rideIndex{ RideId::GetNull() };
-    RideSetVehicleType _type{};
-    uint16_t _value{};
-    uint8_t _colour{};
+    class RideSetVehicleAction final : public GameActionBase<GameCommand::SetRideVehicles>
+    {
+    private:
+        RideId _rideIndex{ RideId::GetNull() };
+        RideSetVehicleType _type{};
+        uint16_t _value{};
+        uint8_t _colour{};
 
-public:
-    RideSetVehicleAction() = default;
-    RideSetVehicleAction(RideId rideIndex, RideSetVehicleType type, uint16_t value, uint8_t colour = 0);
+    public:
+        RideSetVehicleAction() = default;
+        RideSetVehicleAction(RideId rideIndex, RideSetVehicleType type, uint16_t value, uint8_t colour = 0);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
 
-private:
-    bool RideIsVehicleTypeValid(const Ride& ride) const;
+    private:
+        bool RideIsVehicleTypeValid(const Ride& ride) const;
 
-    static_assert(sizeof(_value) >= sizeof(OpenRCT2::ObjectEntryIndex));
-};
+        static_assert(sizeof(_value) >= sizeof(ObjectEntryIndex));
+    };
+} // namespace OpenRCT2::GameActions

@@ -381,8 +381,9 @@ namespace OpenRCT2::Ui::Windows
                     _pickedPeepOldX = staff->x;
                     CoordsXYZ nullLoc{};
                     nullLoc.SetNull();
-                    PeepPickupAction pickupAction{ PeepPickupType::Pickup, EntityId::FromUnderlying(number), nullLoc,
-                                                   NetworkGetCurrentPlayerId() };
+                    GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Pickup,
+                                                                EntityId::FromUnderlying(number), nullLoc,
+                                                                NetworkGetCurrentPlayerId() };
                     pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error != GameActions::Status::Ok)
                             return;
@@ -480,8 +481,8 @@ namespace OpenRCT2::Ui::Windows
                         auto* windowMgr = Ui::GetWindowManager();
                         windowMgr->CloseByClass(WindowClass::PatrolArea);
 
-                        auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
-                            staff->Id, {}, StaffSetPatrolAreaMode::ClearAll);
+                        auto staffSetPatrolAreaAction = GameActions::StaffSetPatrolAreaAction(
+                            staff->Id, {}, GameActions::StaffSetPatrolAreaMode::ClearAll);
                         GameActions::Execute(&staffSetPatrolAreaAction);
                     }
                     else
@@ -706,9 +707,10 @@ namespace OpenRCT2::Ui::Windows
             if (destCoords.IsNull())
                 return;
 
-            PeepPickupAction pickupAction{
-                PeepPickupType::Place, staffEntityId, { destCoords, tileElement->GetBaseZ() }, NetworkGetCurrentPlayerId()
-            };
+            GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Place,
+                                                        staffEntityId,
+                                                        { destCoords, tileElement->GetBaseZ() },
+                                                        NetworkGetCurrentPlayerId() };
             pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                     return;
@@ -723,9 +725,10 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex != WIDX_PICKUP)
                 return;
 
-            PeepPickupAction pickupAction{
-                PeepPickupType::Cancel, EntityId::FromUnderlying(number), { _pickedPeepOldX, 0, 0 }, NetworkGetCurrentPlayerId()
-            };
+            GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Cancel,
+                                                        EntityId::FromUnderlying(number),
+                                                        { _pickedPeepOldX, 0, 0 },
+                                                        NetworkGetCurrentPlayerId() };
             GameActions::Execute(&pickupAction);
         }
 
@@ -742,7 +745,7 @@ namespace OpenRCT2::Ui::Windows
             if (text.empty())
                 return;
 
-            auto gameAction = StaffSetNameAction(EntityId::FromUnderlying(number), std::string{ text });
+            auto gameAction = GameActions::StaffSetNameAction(EntityId::FromUnderlying(number), std::string{ text });
             GameActions::Execute(&gameAction);
         }
 #pragma endregion
@@ -812,7 +815,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
 
             ObjectEntryIndex costume = _availableCostumes[dropdownIndex].index;
-            auto staffSetCostumeAction = StaffSetCostumeAction(EntityId::FromUnderlying(number), costume);
+            auto staffSetCostumeAction = GameActions::StaffSetCostumeAction(EntityId::FromUnderlying(number), costume);
             GameActions::Execute(&staffSetCostumeAction);
         }
 
@@ -1099,7 +1102,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             uint8_t newOrders = staff->StaffOrders ^ (1 << orderId);
-            auto staffSetOrdersAction = StaffSetOrdersAction(EntityId::FromUnderlying(number), newOrders);
+            auto staffSetOrdersAction = GameActions::StaffSetOrdersAction(EntityId::FromUnderlying(number), newOrders);
             GameActions::Execute(&staffSetOrdersAction);
         }
 

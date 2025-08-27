@@ -232,7 +232,8 @@ namespace OpenRCT2::Ui::Windows
             }
             if (widgetIndex == WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER)
             {
-                auto action = StaffSetColourAction(GetSelectedStaffType(), ColourDropDownIndexToColour(dropdownIndex));
+                auto action = GameActions::StaffSetColourAction(
+                    GetSelectedStaffType(), ColourDropDownIndexToColour(dropdownIndex));
                 GameActions::Execute(&action);
             }
         }
@@ -341,7 +342,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (_quickFireMode)
                     {
-                        auto staffFireAction = StaffFireAction(entry.Id);
+                        auto staffFireAction = GameActions::StaffFireAction(entry.Id);
                         GameActions::Execute(&staffFireAction);
                     }
                     else
@@ -536,12 +537,12 @@ namespace OpenRCT2::Ui::Windows
             else
                 costume = findPeepAnimationsIndexForType(animPeepType);
 
-            auto hireStaffAction = StaffHireNewAction(autoPosition, staffType, costume, staffOrders);
+            auto hireStaffAction = GameActions::StaffHireNewAction(autoPosition, staffType, costume, staffOrders);
             hireStaffAction.SetCallback([=](const GameAction*, const GameActions::Result* res) -> void {
                 if (res->Error != GameActions::Status::Ok)
                     return;
 
-                auto actionResult = res->GetData<StaffHireNewActionResult>();
+                auto actionResult = res->GetData<GameActions::StaffHireNewActionResult>();
                 auto* staff = GetEntity<Staff>(actionResult.StaffEntityId);
                 if (staff == nullptr)
                     return;
@@ -552,7 +553,8 @@ namespace OpenRCT2::Ui::Windows
                     CoordsXYZ nullLoc{};
                     nullLoc.SetNull();
 
-                    PeepPickupAction pickupAction{ PeepPickupType::Pickup, staff->Id, nullLoc, NetworkGetCurrentPlayerId() };
+                    GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Pickup, staff->Id, nullLoc,
+                                                                NetworkGetCurrentPlayerId() };
                     pickupAction.SetCallback([staffId = staff->Id](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error != GameActions::Status::Ok)
                             return;

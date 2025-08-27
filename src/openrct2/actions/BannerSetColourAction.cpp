@@ -17,93 +17,94 @@
 #include "../world/tile_element/BannerElement.h"
 #include "GameAction.h"
 
-using namespace OpenRCT2;
-
-BannerSetColourAction::BannerSetColourAction(const CoordsXYZD& loc, uint8_t primaryColour)
-    : _loc(loc)
-    , _primaryColour(primaryColour)
+namespace OpenRCT2::GameActions
 {
-}
-
-void BannerSetColourAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit(_loc);
-    visitor.Visit("primaryColour", _primaryColour);
-}
-
-uint16_t BannerSetColourAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-void BannerSetColourAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-
-    stream << DS_TAG(_loc) << DS_TAG(_primaryColour);
-}
-
-GameActions::Result BannerSetColourAction::Query() const
-{
-    return QueryExecute(false);
-}
-
-GameActions::Result BannerSetColourAction::Execute() const
-{
-    return QueryExecute(true);
-}
-
-GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
-{
-    auto res = GameActions::Result();
-    res.Expenditure = ExpenditureType::landscaping;
-    res.Position.x = _loc.x + 16;
-    res.Position.y = _loc.y + 16;
-    res.Position.z = _loc.z;
-    res.ErrorTitle = STR_CANT_REPAINT_THIS;
-
-    if (!LocationValid(_loc))
+    BannerSetColourAction::BannerSetColourAction(const CoordsXYZD& loc, uint8_t primaryColour)
+        : _loc(loc)
+        , _primaryColour(primaryColour)
     {
-        LOG_ERROR("Invalid x / y coordinates: x = %d, y = %d", _loc.x, _loc.y);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (_primaryColour > 31)
+    void BannerSetColourAction::AcceptParameters(GameActionParameterVisitor& visitor)
     {
-        LOG_ERROR("Invalid primary colour %u", _primaryColour);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
+        visitor.Visit(_loc);
+        visitor.Visit("primaryColour", _primaryColour);
     }
 
-    if (!MapCanBuildAt({ _loc.x, _loc.y, _loc.z - 16 }))
+    uint16_t BannerSetColourAction::GetActionFlags() const
     {
-        return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameAction::GetActionFlags() | Flags::AllowWhilePaused;
     }
 
-    auto bannerElement = MapGetBannerElementAt(_loc, _loc.direction);
-
-    if (bannerElement == nullptr)
+    void BannerSetColourAction::Serialise(DataSerialiser& stream)
     {
-        LOG_ERROR("No banner at x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z, _loc.direction);
-        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
+        GameAction::Serialise(stream);
+
+        stream << DS_TAG(_loc) << DS_TAG(_primaryColour);
     }
 
-    auto index = bannerElement->GetIndex();
-    auto banner = GetBanner(index);
-    if (banner == nullptr)
+    Result BannerSetColourAction::Query() const
     {
-        LOG_ERROR("Invalid banner index %u", index);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
+        return QueryExecute(false);
     }
 
-    if (isExecuting)
+    Result BannerSetColourAction::Execute() const
     {
-        auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
-        intent.PutExtra(INTENT_EXTRA_BANNER_INDEX, index);
-        ContextBroadcastIntent(&intent);
-
-        banner->colour = _primaryColour;
-        MapInvalidateTileZoom1({ _loc, _loc.z, _loc.z + 32 });
+        return QueryExecute(true);
     }
 
-    return res;
-}
+    Result BannerSetColourAction::QueryExecute(bool isExecuting) const
+    {
+        auto res = Result();
+        res.Expenditure = ExpenditureType::landscaping;
+        res.Position.x = _loc.x + 16;
+        res.Position.y = _loc.y + 16;
+        res.Position.z = _loc.z;
+        res.ErrorTitle = STR_CANT_REPAINT_THIS;
+
+        if (!LocationValid(_loc))
+        {
+            LOG_ERROR("Invalid x / y coordinates: x = %d, y = %d", _loc.x, _loc.y);
+            return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_OFF_EDGE_OF_MAP);
+        }
+
+        if (_primaryColour > 31)
+        {
+            LOG_ERROR("Invalid primary colour %u", _primaryColour);
+            return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_ERR_INVALID_COLOUR);
+        }
+
+        if (!MapCanBuildAt({ _loc.x, _loc.y, _loc.z - 16 }))
+        {
+            return Result(Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+        }
+
+        auto bannerElement = MapGetBannerElementAt(_loc, _loc.direction);
+
+        if (bannerElement == nullptr)
+        {
+            LOG_ERROR("No banner at x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z, _loc.direction);
+            return Result(Status::Unknown, STR_CANT_REPAINT_THIS, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
+        }
+
+        auto index = bannerElement->GetIndex();
+        auto banner = GetBanner(index);
+        if (banner == nullptr)
+        {
+            LOG_ERROR("Invalid banner index %u", index);
+            return Result(Status::InvalidParameters, STR_CANT_REPAINT_THIS, kStringIdNone);
+        }
+
+        if (isExecuting)
+        {
+            auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
+            intent.PutExtra(INTENT_EXTRA_BANNER_INDEX, index);
+            ContextBroadcastIntent(&intent);
+
+            banner->colour = _primaryColour;
+            MapInvalidateTileZoom1({ _loc, _loc.z, _loc.z + 32 });
+        }
+
+        return res;
+    }
+} // namespace OpenRCT2::GameActions

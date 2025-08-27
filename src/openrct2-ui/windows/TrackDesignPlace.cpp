@@ -213,7 +213,7 @@ namespace OpenRCT2::Ui::Windows
                 if (res.Error == GameActions::Status::Ok)
                 {
                     // Valid location found. Place the ghost at the location.
-                    auto tdAction = TrackDesignAction(trackLoc, *_trackDesign);
+                    auto tdAction = GameActions::TrackDesignAction(trackLoc, *_trackDesign);
                     tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
                     tdAction.SetCallback([&](const GameAction*, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
@@ -282,7 +282,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto tdAction = TrackDesignAction({ trackLoc, _currentTrackPieceDirection }, *_trackDesign);
+            auto tdAction = GameActions::TrackDesignAction({ trackLoc, _currentTrackPieceDirection }, *_trackDesign);
             tdAction.SetCallback([&](const GameAction*, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                 {
@@ -378,7 +378,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (_hasPlacementGhost)
             {
-                auto tdAction = TrackDesignAction({ _placementGhostLoc }, *_trackDesign);
+                auto tdAction = GameActions::TrackDesignAction({ _placementGhostLoc }, *_trackDesign);
                 tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
                 auto res = GameActions::Execute(&tdAction);
                 if (res.Error != GameActions::Status::Ok)
@@ -703,7 +703,7 @@ namespace OpenRCT2::Ui::Windows
             GameActions::Result res;
             for (int32_t i = 0; i < 7; i++, loc.z += kCoordsZStep)
             {
-                auto tdAction = TrackDesignAction(
+                auto tdAction = GameActions::TrackDesignAction(
                     CoordsXYZD{ loc.x, loc.y, loc.z, _currentTrackPieceDirection }, *_trackDesign);
                 tdAction.SetFlags(newFlags);
                 res = GameActions::Query(&tdAction);

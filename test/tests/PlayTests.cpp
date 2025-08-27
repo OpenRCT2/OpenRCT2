@@ -102,8 +102,8 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     auto& gameState = getGameState();
 
     // Open park for free but charging for rides
-    execute<ParkSetParameterAction>(ParkParameter::Open);
-    execute<ParkSetEntranceFeeAction>(0);
+    execute<GameActions::ParkSetParameterAction>(GameActions::ParkParameter::Open);
+    execute<GameActions::ParkSetEntranceFeeAction>(0);
     gameState.park.flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find ferris wheel
@@ -114,8 +114,8 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     Ride& ferrisWheel = *it;
 
     // Open it for free
-    execute<RideSetStatusAction>(ferrisWheel.id, RideStatus::open);
-    execute<RideSetPriceAction>(ferrisWheel.id, 0, true);
+    execute<GameActions::RideSetStatusAction>(ferrisWheel.id, RideStatus::open);
+    execute<GameActions::RideSetPriceAction>(ferrisWheel.id, 0, true);
 
     // Ignore intensity to stimulate peeps to queue into ferris wheel
     gameState.cheats.ignoreRideIntensity = true;
@@ -137,7 +137,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     ASSERT_TRUE(matched);
 
     // Raise the price of the ride to a value poor guest can't pay
-    execute<RideSetPriceAction>(ferrisWheel.id, 10, true);
+    execute<GameActions::RideSetPriceAction>(ferrisWheel.id, 10, true);
 
     // Verify that the poor guest goes back to walking without riding
     // since it doesn't have enough money to pay for it
@@ -162,8 +162,8 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     auto& gameState = getGameState();
 
     // Open park for free but charging for rides
-    execute<ParkSetParameterAction>(ParkParameter::Open);
-    execute<ParkSetEntranceFeeAction>(0);
+    execute<GameActions::ParkSetParameterAction>(GameActions::ParkParameter::Open);
+    execute<GameActions::ParkSetEntranceFeeAction>(0);
     gameState.park.flags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find car ride
@@ -173,8 +173,8 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     Ride& carRide = *it;
 
     // Open it for free
-    execute<RideSetStatusAction>(carRide.id, RideStatus::open);
-    execute<RideSetPriceAction>(carRide.id, 0, true);
+    execute<GameActions::RideSetStatusAction>(carRide.id, RideStatus::open);
+    execute<GameActions::RideSetPriceAction>(carRide.id, 0, true);
 
     // Ignore intensity to stimulate peeps to queue into the ride
     gameState.cheats.ignoreRideIntensity = true;

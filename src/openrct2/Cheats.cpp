@@ -61,7 +61,7 @@ void CheatsReset()
 
 void CheatsSet(CheatType cheatType, int64_t param1 /* = 0*/, int64_t param2 /* = 0*/)
 {
-    auto cheatSetAction = CheatSetAction(cheatType, param1, param2);
+    auto cheatSetAction = GameActions::CheatSetAction(cheatType, param1, param2);
     GameActions::Execute(&cheatSetAction);
 }
 

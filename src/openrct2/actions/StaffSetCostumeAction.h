@@ -12,21 +12,24 @@
 #include "../entity/Staff.h"
 #include "GameAction.h"
 
-class StaffSetCostumeAction final : public GameActionBase<GameCommand::SetStaffCostume>
+namespace OpenRCT2::GameActions
 {
-private:
-    EntityId _spriteIndex{ EntityId::GetNull() };
-    OpenRCT2::ObjectEntryIndex _costume = OpenRCT2::kObjectEntryIndexNull;
+    class StaffSetCostumeAction final : public GameActionBase<GameCommand::SetStaffCostume>
+    {
+    private:
+        EntityId _spriteIndex{ EntityId::GetNull() };
+        ObjectEntryIndex _costume = OpenRCT2::kObjectEntryIndexNull;
 
-public:
-    StaffSetCostumeAction() = default;
-    StaffSetCostumeAction(EntityId spriteIndex, OpenRCT2::ObjectEntryIndex costume);
+    public:
+        StaffSetCostumeAction() = default;
+        StaffSetCostumeAction(EntityId spriteIndex, OpenRCT2::ObjectEntryIndex costume);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
-};
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
+    };
+} // namespace OpenRCT2::GameActions

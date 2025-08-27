@@ -11,37 +11,38 @@
 
 #include "../network/Network.h"
 
-using namespace OpenRCT2;
-
-PlayerSetGroupAction::PlayerSetGroupAction(NetworkPlayerId_t playerId, uint8_t groupId)
-    : _playerId(playerId)
-    , _groupId(groupId)
+namespace OpenRCT2::GameActions
 {
-}
+    PlayerSetGroupAction::PlayerSetGroupAction(NetworkPlayerId_t playerId, uint8_t groupId)
+        : _playerId(playerId)
+        , _groupId(groupId)
+    {
+    }
 
-void PlayerSetGroupAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("playerId", _playerId);
-    visitor.Visit("groupId", _groupId);
-}
+    void PlayerSetGroupAction::AcceptParameters(GameActionParameterVisitor& visitor)
+    {
+        visitor.Visit("playerId", _playerId);
+        visitor.Visit("groupId", _groupId);
+    }
 
-uint16_t PlayerSetGroupAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
+    uint16_t PlayerSetGroupAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags() | Flags::AllowWhilePaused;
+    }
 
-void PlayerSetGroupAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
+    void PlayerSetGroupAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
 
-    stream << DS_TAG(_playerId) << DS_TAG(_groupId);
-}
-GameActions::Result PlayerSetGroupAction::Query() const
-{
-    return NetworkSetPlayerGroup(GetPlayer(), _playerId, _groupId, false);
-}
+        stream << DS_TAG(_playerId) << DS_TAG(_groupId);
+    }
+    Result PlayerSetGroupAction::Query() const
+    {
+        return NetworkSetPlayerGroup(GetPlayer(), _playerId, _groupId, false);
+    }
 
-GameActions::Result PlayerSetGroupAction::Execute() const
-{
-    return NetworkSetPlayerGroup(GetPlayer(), _playerId, _groupId, true);
-}
+    Result PlayerSetGroupAction::Execute() const
+    {
+        return NetworkSetPlayerGroup(GetPlayer(), _playerId, _groupId, true);
+    }
+} // namespace OpenRCT2::GameActions

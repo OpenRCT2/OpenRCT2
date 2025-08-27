@@ -1145,7 +1145,7 @@ namespace OpenRCT2::Ui::Windows
             auto selectedType = gFootpathSelection.GetSelectedSurface();
             PathConstructFlags constructFlags = FootpathCreateConstructFlags(selectedType);
 
-            auto footpathPlaceAction = FootpathPlaceAction(
+            auto footpathPlaceAction = GameActions::FootpathPlaceAction(
                 { *mapPos, baseZ }, slope, selectedType, gFootpathSelection.Railings, kInvalidDirection, constructFlags);
             footpathPlaceAction.SetCallback([this](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error == GameActions::Status::Ok)
@@ -1237,7 +1237,7 @@ namespace OpenRCT2::Ui::Windows
 
             PathConstructFlags constructFlags = FootpathCreateConstructFlags(type);
 
-            auto footpathPlaceAction = FootpathPlaceAction(
+            auto footpathPlaceAction = GameActions::FootpathPlaceAction(
                 footpathLoc, slope, type, gFootpathSelection.Railings, _footpathConstructDirection, constructFlags);
 
             footpathPlaceAction.SetCallback([footpathLoc](const GameAction* ga, const GameActions::Result* result) {
@@ -1320,7 +1320,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             gFootpathConstructFromPosition.z = tileElement->GetBaseZ();
-            auto action = FootpathRemoveAction(gFootpathConstructFromPosition);
+            auto action = GameActions::FootpathRemoveAction(gFootpathConstructFromPosition);
             GameActions::Execute(&action);
 
             // Move selection
@@ -1756,7 +1756,7 @@ namespace OpenRCT2::Ui::Windows
 
         FootpathRemoveProvisional();
 
-        auto footpathPlaceAction = FootpathPlaceAction(
+        auto footpathPlaceAction = GameActions::FootpathPlaceAction(
             footpathLoc, slope, type, railingsType, kInvalidDirection, constructFlags);
         footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         auto res = GameActions::Execute(&footpathPlaceAction);
@@ -1814,7 +1814,7 @@ namespace OpenRCT2::Ui::Windows
         {
             _provisionalFootpath.flags.unset(ProvisionalPathFlag::placed);
 
-            auto action = FootpathRemoveAction(_provisionalFootpath.position);
+            auto action = GameActions::FootpathRemoveAction(_provisionalFootpath.position);
             action.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
             GameActions::Execute(&action);
         }

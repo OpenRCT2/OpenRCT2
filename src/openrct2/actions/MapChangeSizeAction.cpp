@@ -17,85 +17,84 @@
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 
-using namespace OpenRCT2;
-
-MapChangeSizeAction::MapChangeSizeAction(const TileCoordsXY& targetSize)
-    : MapChangeSizeAction(targetSize, TileCoordsXY())
+namespace OpenRCT2::GameActions
 {
-}
-
-MapChangeSizeAction::MapChangeSizeAction(const TileCoordsXY& targetSize, const TileCoordsXY& shift)
-    : _targetSize(targetSize)
-    , _shift(shift)
-{
-}
-
-uint16_t MapChangeSizeAction::GetActionFlags() const
-{
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-}
-
-void MapChangeSizeAction::Serialise(DataSerialiser& stream)
-{
-    GameAction::Serialise(stream);
-    stream << DS_TAG(_targetSize);
-    stream << DS_TAG(_shift);
-}
-
-GameActions::Result MapChangeSizeAction::Query() const
-{
-    if (_targetSize.x > kMaximumMapSizeTechnical || _targetSize.y > kMaximumMapSizeTechnical)
+    MapChangeSizeAction::MapChangeSizeAction(const TileCoordsXY& targetSize)
+        : MapChangeSizeAction(targetSize, TileCoordsXY())
     {
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_INCREASE_MAP_SIZE_ANY_FURTHER, STR_ERR_VALUE_OUT_OF_RANGE);
-    }
-    if (_targetSize.x < kMinimumMapSizeTechnical || _targetSize.y < kMinimumMapSizeTechnical)
-    {
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_DECREASE_MAP_SIZE_ANY_FURTHER, STR_ERR_VALUE_OUT_OF_RANGE);
-    }
-    return GameActions::Result();
-}
-
-GameActions::Result MapChangeSizeAction::Execute() const
-{
-    auto& gameState = getGameState();
-    // Expand map
-    while (_targetSize.x > gameState.mapSize.x)
-    {
-        gameState.mapSize.x++;
-        MapExtendBoundarySurfaceX();
-    }
-    while (_targetSize.y > gameState.mapSize.y)
-    {
-        gameState.mapSize.y++;
-        MapExtendBoundarySurfaceY();
     }
 
-    // Shift the map (allows increasing the map at the 0,0 position
-    ShiftMap(_shift);
-
-    // Shrink map
-    if (_targetSize.x < gameState.mapSize.x || _targetSize.y < gameState.mapSize.y)
+    MapChangeSizeAction::MapChangeSizeAction(const TileCoordsXY& targetSize, const TileCoordsXY& shift)
+        : _targetSize(targetSize)
+        , _shift(shift)
     {
-        gameState.mapSize = _targetSize;
-        MapRemoveOutOfRangeElements();
     }
 
-    auto* ctx = OpenRCT2::GetContext();
-    auto& uiContext = ctx->GetUiContext();
-    auto* windowManager = uiContext.GetWindowManager();
-    OpenRCT2::Park::UpdateSize(gameState);
+    uint16_t MapChangeSizeAction::GetActionFlags() const
+    {
+        return GameAction::GetActionFlags() | Flags::AllowWhilePaused;
+    }
 
-    windowManager->BroadcastIntent(Intent(INTENT_ACTION_MAP));
-    GfxInvalidateScreen();
-    return GameActions::Result();
-}
+    void MapChangeSizeAction::Serialise(DataSerialiser& stream)
+    {
+        GameAction::Serialise(stream);
+        stream << DS_TAG(_targetSize);
+        stream << DS_TAG(_shift);
+    }
 
-void MapChangeSizeAction::AcceptParameters(GameActionParameterVisitor& visitor)
-{
-    visitor.Visit("targetSizeX", _targetSize.x);
-    visitor.Visit("targetSizeY", _targetSize.y);
-    visitor.Visit("shiftX", _shift.x);
-    visitor.Visit("shiftY", _shift.y);
-}
+    Result MapChangeSizeAction::Query() const
+    {
+        if (_targetSize.x > kMaximumMapSizeTechnical || _targetSize.y > kMaximumMapSizeTechnical)
+        {
+            return Result(Status::InvalidParameters, STR_CANT_INCREASE_MAP_SIZE_ANY_FURTHER, STR_ERR_VALUE_OUT_OF_RANGE);
+        }
+        if (_targetSize.x < kMinimumMapSizeTechnical || _targetSize.y < kMinimumMapSizeTechnical)
+        {
+            return Result(Status::InvalidParameters, STR_CANT_DECREASE_MAP_SIZE_ANY_FURTHER, STR_ERR_VALUE_OUT_OF_RANGE);
+        }
+        return Result();
+    }
+
+    Result MapChangeSizeAction::Execute() const
+    {
+        auto& gameState = getGameState();
+        // Expand map
+        while (_targetSize.x > gameState.mapSize.x)
+        {
+            gameState.mapSize.x++;
+            MapExtendBoundarySurfaceX();
+        }
+        while (_targetSize.y > gameState.mapSize.y)
+        {
+            gameState.mapSize.y++;
+            MapExtendBoundarySurfaceY();
+        }
+
+        // Shift the map (allows increasing the map at the 0,0 position
+        ShiftMap(_shift);
+
+        // Shrink map
+        if (_targetSize.x < gameState.mapSize.x || _targetSize.y < gameState.mapSize.y)
+        {
+            gameState.mapSize = _targetSize;
+            MapRemoveOutOfRangeElements();
+        }
+
+        auto* ctx = OpenRCT2::GetContext();
+        auto& uiContext = ctx->GetUiContext();
+        auto* windowManager = uiContext.GetWindowManager();
+        Park::UpdateSize(gameState);
+
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_MAP));
+        GfxInvalidateScreen();
+        return Result();
+    }
+
+    void MapChangeSizeAction::AcceptParameters(GameActionParameterVisitor& visitor)
+    {
+        visitor.Visit("targetSizeX", _targetSize.x);
+        visitor.Visit("targetSizeY", _targetSize.y);
+        visitor.Visit("shiftX", _shift.x);
+        visitor.Visit("shiftY", _shift.y);
+    }
+} // namespace OpenRCT2::GameActions

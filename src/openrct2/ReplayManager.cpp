@@ -21,7 +21,7 @@
 #include "actions/FootpathPlaceAction.h"
 #include "actions/GameAction.h"
 #include "actions/RideEntranceExitPlaceAction.h"
-#include "actions/RideSetSettingAction.h"
+// #include "actions/RideSetSettingAction.h"
 #include "actions/TileModifyAction.h"
 #include "actions/TrackPlaceAction.h"
 #include "config/Config.h"

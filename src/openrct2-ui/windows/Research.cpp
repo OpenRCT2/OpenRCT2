@@ -506,7 +506,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto activeResearchTypes = gameState.researchPriorities;
                 activeResearchTypes ^= 1uLL << (widgetIndex - (WIDX_TRANSPORT_RIDES + widgetOffset));
-                auto gameAction = ParkSetResearchFundingAction(activeResearchTypes, gameState.researchFundingLevel);
+                auto gameAction = GameActions::ParkSetResearchFundingAction(
+                    activeResearchTypes, gameState.researchFundingLevel);
                 GameActions::Execute(&gameAction);
                 break;
             }
@@ -521,7 +522,7 @@ namespace OpenRCT2::Ui::Windows
         if (widgetIndex != (WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset) || selectedIndex == -1)
             return;
 
-        auto gameAction = ParkSetResearchFundingAction(gameState.researchPriorities, selectedIndex);
+        auto gameAction = GameActions::ParkSetResearchFundingAction(gameState.researchPriorities, selectedIndex);
         GameActions::Execute(&gameAction);
     }
 

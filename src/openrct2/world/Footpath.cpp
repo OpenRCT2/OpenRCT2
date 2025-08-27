@@ -1012,7 +1012,8 @@ static void FootpathFixOwnership(const CoordsXY& mapPos)
         ownership = OWNERSHIP_UNOWNED;
     }
 
-    auto landSetRightsAction = LandSetRightsAction(mapPos, LandSetRightSetting::SetOwnershipWithChecks, ownership);
+    auto landSetRightsAction = GameActions::LandSetRightsAction(
+        mapPos, GameActions::LandSetRightSetting::SetOwnershipWithChecks, ownership);
     landSetRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
     GameActions::Execute(&landSetRightsAction);
 }

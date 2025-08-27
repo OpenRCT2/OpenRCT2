@@ -11,26 +11,28 @@
 
 #include "GameAction.h"
 
-class ParkEntrancePlaceAction final : public GameActionBase<GameCommand::PlaceParkEntrance>
+namespace OpenRCT2::GameActions
 {
-private:
-    CoordsXYZD _loc;
-    OpenRCT2::ObjectEntryIndex _pathType;
-    OpenRCT2::ObjectEntryIndex _entranceType;
+    class ParkEntrancePlaceAction final : public GameActionBase<GameCommand::PlaceParkEntrance>
+    {
+    private:
+        CoordsXYZD _loc;
+        ObjectEntryIndex _pathType;
+        ObjectEntryIndex _entranceType;
 
-public:
-    ParkEntrancePlaceAction() = default;
-    ParkEntrancePlaceAction(
-        const CoordsXYZD& location, OpenRCT2::ObjectEntryIndex pathType, OpenRCT2::ObjectEntryIndex entranceType);
+    public:
+        ParkEntrancePlaceAction() = default;
+        ParkEntrancePlaceAction(const CoordsXYZD& location, ObjectEntryIndex pathType, ObjectEntryIndex entranceType);
 
-    void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    void Serialise(DataSerialiser& stream) override;
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
+        void Serialise(DataSerialiser& stream) override;
+        Result Query() const override;
+        Result Execute() const override;
 
-private:
-    bool CheckMapCapacity(int16_t numTiles) const;
-};
+    private:
+        bool CheckMapCapacity(int16_t numTiles) const;
+    };
+} // namespace OpenRCT2::GameActions

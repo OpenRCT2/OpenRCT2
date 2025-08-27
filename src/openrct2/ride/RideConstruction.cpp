@@ -12,11 +12,9 @@
 #include "../Context.h"
 #include "../GameState.h"
 #include "../Input.h"
-#include "../actions/MazeSetTrackAction.h"
 #include "../actions/RideEntranceExitRemoveAction.h"
 #include "../actions/RideSetSettingAction.h"
 #include "../actions/RideSetStatusAction.h"
-#include "../actions/RideSetVehicleAction.h"
 #include "../actions/TrackRemoveAction.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
@@ -37,6 +35,7 @@
 #include "../world/TileElementsView.h"
 #include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/PathElement.h"
+#include "../world/tile_element/TileElement.h"
 #include "../world/tile_element/TrackElement.h"
 #include "Ride.h"
 #include "RideData.h"
@@ -895,7 +894,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
     else
     {
         // Remove entrance / exit
-        auto rideEntranceExitRemove = RideEntranceExitRemoveAction(
+        auto rideEntranceExitRemove = GameActions::RideEntranceExitRemoveAction(
             { tileElement.x, tileElement.y }, rideIndex, stationIndex, entranceType == ENTRANCE_TYPE_RIDE_EXIT);
 
         rideEntranceExitRemove.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
@@ -977,7 +976,7 @@ bool RideModify(const CoordsXYE& input)
     // Stop the ride again to clear all vehicles and peeps (compatible with network games)
     if (ride->status != RideStatus::simulating)
     {
-        auto gameAction = RideSetStatusAction(ride->id, RideStatus::closed);
+        auto gameAction = GameActions::RideSetStatusAction(ride->id, RideStatus::closed);
         GameActions::Execute(&gameAction);
     }
 
@@ -1123,7 +1122,7 @@ money64 RideGetRefundPrice(const Ride& ride)
 
     do
     {
-        auto trackRemoveAction = TrackRemoveAction(
+        auto trackRemoveAction = GameActions::TrackRemoveAction(
             trackElement.element->AsTrack()->GetTrackType(), trackElement.element->AsTrack()->GetSequenceIndex(),
             { trackElement.x, trackElement.y, trackElement.element->GetBaseZ(), direction });
         trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
@@ -1153,16 +1152,16 @@ money64 RideGetRefundPrice(const Ride& ride)
     return cost;
 }
 
-money64 SetOperatingSetting(RideId rideId, RideSetSetting setting, uint8_t value)
+money64 SetOperatingSetting(RideId rideId, GameActions::RideSetSetting setting, uint8_t value)
 {
-    auto rideSetSetting = RideSetSettingAction(rideId, setting, value);
+    auto rideSetSetting = GameActions::RideSetSettingAction(rideId, setting, value);
     auto res = GameActions::Execute(&rideSetSetting);
     return res.Error == GameActions::Status::Ok ? 0 : kMoney64Undefined;
 }
 
-money64 SetOperatingSettingNested(RideId rideId, RideSetSetting setting, uint8_t value, uint8_t flags)
+money64 SetOperatingSettingNested(RideId rideId, GameActions::RideSetSetting setting, uint8_t value, uint8_t flags)
 {
-    auto rideSetSetting = RideSetSettingAction(rideId, setting, value);
+    auto rideSetSetting = GameActions::RideSetSettingAction(rideId, setting, value);
     rideSetSetting.SetFlags(flags);
     auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetSetting)
                                                : GameActions::QueryNested(&rideSetSetting);

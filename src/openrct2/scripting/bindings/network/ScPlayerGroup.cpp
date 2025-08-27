@@ -46,7 +46,7 @@ namespace OpenRCT2::Scripting
     void ScPlayerGroup::name_set(std::string value)
     {
     #ifndef DISABLE_NETWORK
-        auto action = NetworkModifyGroupAction(ModifyGroupType::SetName, _id, value);
+        auto action = GameActions::NetworkModifyGroupAction(GameActions::ModifyGroupType::SetName, _id, value);
         GameActions::Execute(&action);
     #endif
     }
@@ -100,7 +100,8 @@ namespace OpenRCT2::Scripting
             return;
 
         // First clear all permissions
-        auto networkAction = NetworkModifyGroupAction(ModifyGroupType::SetPermissions, _id, "", 0, PermissionState::ClearAll);
+        auto networkAction = GameActions::NetworkModifyGroupAction(
+            GameActions::ModifyGroupType::SetPermissions, _id, "", 0, GameActions::PermissionState::ClearAll);
         GameActions::Execute(&networkAction);
 
         std::vector<bool> enabledPermissions;
@@ -126,8 +127,9 @@ namespace OpenRCT2::Scripting
                 = (enabledPermissions[i] != (NetworkCanPerformAction(groupIndex, static_cast<NetworkPermission>(i)) != 0));
             if (toggle)
             {
-                auto networkAction2 = NetworkModifyGroupAction(
-                    ModifyGroupType::SetPermissions, _id, "", static_cast<uint32_t>(i), PermissionState::Toggle);
+                auto networkAction2 = GameActions::NetworkModifyGroupAction(
+                    GameActions::ModifyGroupType::SetPermissions, _id, "", static_cast<uint32_t>(i),
+                    GameActions::PermissionState::Toggle);
                 GameActions::Execute(&networkAction2);
             }
         }

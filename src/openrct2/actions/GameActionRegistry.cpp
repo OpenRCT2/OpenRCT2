@@ -94,8 +94,6 @@
 
 #include <array>
 
-using namespace OpenRCT2;
-
 namespace OpenRCT2::GameActions
 {
     struct GameActionEntry

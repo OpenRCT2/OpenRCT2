@@ -312,7 +312,7 @@ namespace OpenRCT2::Ui::Windows
                     if (!_autoOpeningShop)
                     {
                         _autoOpeningShop = true;
-                        auto gameAction = RideSetStatusAction(currentRide->id, RideStatus::open);
+                        auto gameAction = GameActions::RideSetStatusAction(currentRide->id, RideStatus::open);
                         GameActions::Execute(&gameAction);
                         _autoOpeningShop = false;
                     }
@@ -325,7 +325,7 @@ namespace OpenRCT2::Ui::Windows
             }
             else
             {
-                auto gameAction = RideDemolishAction(currentRide->id, RideModifyType::demolish);
+                auto gameAction = GameActions::RideDemolishAction(currentRide->id, GameActions::RideModifyType::demolish);
                 gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
                 GameActions::Execute(&gameAction);
             }
@@ -1099,7 +1099,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         auto status = currentRide->status == RideStatus::simulating ? RideStatus::closed
                                                                                     : RideStatus::simulating;
-                        auto gameAction = RideSetStatusAction(currentRide->id, status);
+                        auto gameAction = GameActions::RideSetStatusAction(currentRide->id, status);
                         GameActions::Execute(&gameAction);
                     }
                     break;
@@ -2318,7 +2318,7 @@ namespace OpenRCT2::Ui::Windows
                 return;
             }
 
-            auto trackPlaceAction = TrackPlaceAction(
+            auto trackPlaceAction = GameActions::TrackPlaceAction(
                 rideIndex, trackType, currentRide->type, { trackPos, static_cast<uint8_t>(trackDirection) }, properties & 0xFF,
                 (properties >> 8) & 0x0F, (properties >> 12) & 0x0F, liftHillAndAlternativeState, false);
             if (_rideConstructionState == RideConstructionState::Back)
@@ -2353,7 +2353,7 @@ namespace OpenRCT2::Ui::Windows
                 _currentTrackSelectionFlags.set(TrackSelectionFlag::trackPlaceActionQueued);
             }
 
-            const auto resultData = res.GetData<TrackPlaceActionResult>();
+            const auto resultData = res.GetData<GameActions::TrackPlaceActionResult>();
             if (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
                 ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
@@ -2448,7 +2448,7 @@ namespace OpenRCT2::Ui::Windows
                 _gotoStartPlacementMode = true;
             }
 
-            auto trackRemoveAction = TrackRemoveAction(
+            auto trackRemoveAction = GameActions::TrackRemoveAction(
                 _currentTrackPieceType, 0,
                 { _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z, currentDirection });
 
@@ -2567,7 +2567,7 @@ namespace OpenRCT2::Ui::Windows
                     &tileElement, {})
                 != std::nullopt)
             {
-                auto trackSetBrakeSpeed = TrackSetBrakeSpeedAction(
+                auto trackSetBrakeSpeed = GameActions::TrackSetBrakeSpeedAction(
                     _currentTrackBegin, tileElement->AsTrack()->GetTrackType(), brakesSpeed);
                 trackSetBrakeSpeed.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                     WindowRideConstructionUpdateActiveElements();
@@ -2653,7 +2653,7 @@ namespace OpenRCT2::Ui::Windows
             if (gRideEntranceExitPlaceDirection == kInvalidDirection)
                 return;
 
-            auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
+            auto rideEntranceExitPlaceAction = GameActions::RideEntranceExitPlaceAction(
                 entranceOrExitCoords, DirectionReverse(gRideEntranceExitPlaceDirection), gRideEntranceExitPlaceRideIndex,
                 gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
@@ -3700,7 +3700,7 @@ namespace OpenRCT2::Ui::Windows
 
                 gDisableErrorWindowSound = true;
 
-                auto gameAction = MazeSetTrackAction(
+                auto gameAction = GameActions::MazeSetTrackAction(
                     CoordsXYZD{ _currentTrackBegin, 0 }, true, _currentRideIndex, GC_SET_MAZE_TRACK_BUILD);
                 auto mazeSetTrackResult = GameActions::Execute(&gameAction);
                 if (mazeSetTrackResult.Error == GameActions::Status::Ok)
@@ -4760,7 +4760,8 @@ namespace OpenRCT2::Ui::Windows
         if (rtd.specialType == RtdSpecialType::maze)
         {
             int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
-            auto gameAction = MazeSetTrackAction(CoordsXYZD{ trackPos, 0 }, true, rideIndex, GC_SET_MAZE_TRACK_BUILD);
+            auto gameAction = GameActions::MazeSetTrackAction(
+                CoordsXYZD{ trackPos, 0 }, true, rideIndex, GC_SET_MAZE_TRACK_BUILD);
             gameAction.SetFlags(flags);
             auto result = GameActions::Execute(&gameAction);
 
@@ -4776,7 +4777,7 @@ namespace OpenRCT2::Ui::Windows
             return result.Cost;
         }
 
-        auto trackPlaceAction = TrackPlaceAction(
+        auto trackPlaceAction = GameActions::TrackPlaceAction(
             rideIndex, trackType, ride->type, { trackPos, static_cast<uint8_t>(trackDirection) }, 0, 0, 0,
             liftHillAndAlternativeState, false);
         trackPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
@@ -4801,7 +4802,7 @@ namespace OpenRCT2::Ui::Windows
         _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + zBegin, static_cast<Direction>(trackDirection) };
         _currentTrackSelectionFlags.set(TrackSelectionFlag::track);
 
-        const auto resultData = res.GetData<TrackPlaceActionResult>();
+        const auto resultData = res.GetData<GameActions::TrackPlaceActionResult>();
         const auto visiblity = (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? ViewportVisibility::UndergroundViewOn
                                                                                  : ViewportVisibility::UndergroundViewOff;
         ViewportSetVisibility(visiblity);
@@ -5148,7 +5149,7 @@ namespace OpenRCT2::Ui::Windows
             };
             for (const auto& quadrant : quadrants)
             {
-                auto gameAction = MazeSetTrackAction(quadrant, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
+                auto gameAction = GameActions::MazeSetTrackAction(quadrant, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
                 gameAction.SetFlags(flags);
                 auto res = GameActions::Execute(&gameAction);
             }
@@ -5166,7 +5167,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto trackType = next_track.element->AsTrack()->GetTrackType();
                 int32_t trackSequence = next_track.element->AsTrack()->GetSequenceIndex();
-                auto trackRemoveAction = TrackRemoveAction{
+                auto trackRemoveAction = GameActions::TrackRemoveAction{
                     trackType, trackSequence, { next_track.x, next_track.y, z, static_cast<Direction>(direction) }
                 };
                 trackRemoveAction.SetFlags(

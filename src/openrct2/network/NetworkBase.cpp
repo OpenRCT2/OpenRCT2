@@ -2062,10 +2062,10 @@ void NetworkBase::ServerClientDisconnected(std::unique_ptr<NetworkConnection>& c
     Peep* pickup_peep = NetworkGetPickupPeep(connection_player->Id);
     if (pickup_peep != nullptr)
     {
-        PeepPickupAction pickupAction{ PeepPickupType::Cancel,
-                                       pickup_peep->Id,
-                                       { NetworkGetPickupPeepOldX(connection_player->Id), 0, 0 },
-                                       NetworkGetCurrentPlayerId() };
+        GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Cancel,
+                                                    pickup_peep->Id,
+                                                    { NetworkGetPickupPeepOldX(connection_player->Id), 0, 0 },
+                                                    NetworkGetCurrentPlayerId() };
         auto res = GameActions::Execute(&pickupAction);
     }
     ServerSendEventPlayerDisconnected(
@@ -2827,7 +2827,8 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
         else
         {
             // Something went wrong, game is not loaded. Return to main screen.
-            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PromptMode::saveBeforeQuit);
+            auto loadOrQuitAction = GameActions::LoadOrQuitAction(
+                GameActions::LoadOrQuitModes::OpenSavePrompt, PromptMode::saveBeforeQuit);
             GameActions::Execute(&loadOrQuitAction);
         }
         if (has_to_free)
@@ -3633,13 +3634,13 @@ GameActions::Result NetworkSetPlayerGroup(
 }
 
 GameActions::Result NetworkModifyGroups(
-    NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
-    PermissionState permissionState, bool isExecuting)
+    NetworkPlayerId_t actionPlayerId, GameActions::ModifyGroupType type, uint8_t groupId, const std::string& name,
+    uint32_t permissionIndex, GameActions::PermissionState permissionState, bool isExecuting)
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
     switch (type)
     {
-        case ModifyGroupType::AddGroup:
+        case GameActions::ModifyGroupType::AddGroup:
         {
             if (isExecuting)
             {
@@ -3651,7 +3652,7 @@ GameActions::Result NetworkModifyGroups(
             }
         }
         break;
-        case ModifyGroupType::RemoveGroup:
+        case GameActions::ModifyGroupType::RemoveGroup:
         {
             if (groupId == 0)
             {
@@ -3671,7 +3672,7 @@ GameActions::Result NetworkModifyGroups(
             }
         }
         break;
-        case ModifyGroupType::SetPermissions:
+        case GameActions::ModifyGroupType::SetPermissions:
         {
             if (groupId == 0)
             { // can't change admin group permissions
@@ -3680,7 +3681,7 @@ GameActions::Result NetworkModifyGroups(
             NetworkGroup* mygroup = nullptr;
             NetworkPlayer* player = network.GetPlayerByID(actionPlayerId);
             auto networkPermission = static_cast<NetworkPermission>(permissionIndex);
-            if (player != nullptr && permissionState == PermissionState::Toggle)
+            if (player != nullptr && permissionState == GameActions::PermissionState::Toggle)
             {
                 mygroup = network.GetGroupByID(player->Group);
                 if (mygroup == nullptr || !mygroup->CanPerformAction(networkPermission))
@@ -3695,11 +3696,11 @@ GameActions::Result NetworkModifyGroups(
                 NetworkGroup* group = network.GetGroupByID(groupId);
                 if (group != nullptr)
                 {
-                    if (permissionState != PermissionState::Toggle)
+                    if (permissionState != GameActions::PermissionState::Toggle)
                     {
                         if (mygroup != nullptr)
                         {
-                            if (permissionState == PermissionState::SetAll)
+                            if (permissionState == GameActions::PermissionState::SetAll)
                             {
                                 group->ActionsAllowed = mygroup->ActionsAllowed;
                             }
@@ -3717,7 +3718,7 @@ GameActions::Result NetworkModifyGroups(
             }
         }
         break;
-        case ModifyGroupType::SetName:
+        case GameActions::ModifyGroupType::SetName:
         {
             NetworkGroup* group = network.GetGroupByID(groupId);
             if (group == nullptr)
@@ -3747,7 +3748,7 @@ GameActions::Result NetworkModifyGroups(
             }
         }
         break;
-        case ModifyGroupType::SetDefault:
+        case GameActions::ModifyGroupType::SetDefault:
         {
             if (groupId == 0)
             {
@@ -4233,8 +4234,8 @@ GameActions::Result NetworkSetPlayerGroup(
     return GameActions::Result();
 }
 GameActions::Result NetworkModifyGroups(
-    NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
-    PermissionState permissionState, bool isExecuting)
+    NetworkPlayerId_t actionPlayerId, GameActions::ModifyGroupType type, uint8_t groupId, const std::string& name,
+    uint32_t permissionIndex, GameActions::PermissionState permissionState, bool isExecuting)
 {
     return GameActions::Result();
 }

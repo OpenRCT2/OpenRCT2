@@ -1866,14 +1866,14 @@ static uint64_t PageDisabledWidgets[] = {
         void RemoveElement(int32_t elementIndex)
         {
             Guard::Assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
-            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::AnyRemove, elementIndex);
+            auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::AnyRemove, elementIndex);
             GameActions::Execute(&modifyTile);
         }
 
         void RotateElement(int32_t elementIndex)
         {
             Guard::Assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
-            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::AnyRotate, elementIndex);
+            auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::AnyRotate, elementIndex);
             GameActions::Execute(&modifyTile);
         }
 
@@ -1885,14 +1885,14 @@ static uint64_t PageDisabledWidgets[] = {
             // This might happen if two people are modifying the same tile.
             if (!firstInRange || !secondInRange)
                 return;
-            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::AnySwap, first, second);
+            auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::AnySwap, first, second);
             GameActions::Execute(&modifyTile);
         }
 
         void SortElements()
         {
             Guard::Assert(_tileSelected, "No tile selected");
-            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::AnySort);
+            auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::AnySort);
             GameActions::Execute(&modifyTile);
         }
 
@@ -1916,50 +1916,56 @@ static uint64_t PageDisabledWidgets[] = {
 
         void PasteElement()
         {
-            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::AnyPaste, 0, 0, _copiedElement, _copiedBanner);
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap, GameActions::TileModifyType::AnyPaste, 0, 0, _copiedElement, _copiedBanner);
             GameActions::Execute(&modifyTile);
         }
 
         void BaseHeightOffset(int16_t elementIndex, int8_t heightOffset)
         {
-            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::AnyBaseHeightOffset, elementIndex, heightOffset);
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap, GameActions::TileModifyType::AnyBaseHeightOffset, elementIndex, heightOffset);
             GameActions::Execute(&modifyTile);
         }
 
         void SurfaceShowParkFences(bool showFences)
         {
-            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::SurfaceShowParkFences, showFences);
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap, GameActions::TileModifyType::SurfaceShowParkFences, showFences);
             GameActions::Execute(&modifyTile);
         }
 
         void SurfaceToggleCorner(int32_t cornerIndex)
         {
-            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::SurfaceToggleCorner, cornerIndex);
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap, GameActions::TileModifyType::SurfaceToggleCorner, cornerIndex);
             GameActions::Execute(&modifyTile);
         }
 
         void SurfaceToggleDiagonal()
         {
-            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::SurfaceToggleDiagonal);
+            auto modifyTile = GameActions::TileModifyAction(_toolMap, GameActions::TileModifyType::SurfaceToggleDiagonal);
             GameActions::Execute(&modifyTile);
         }
 
         void PathSetSloped(int32_t elementIndex, bool sloped)
         {
-            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::PathSetSlope, elementIndex, sloped);
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap, GameActions::TileModifyType::PathSetSlope, elementIndex, sloped);
             GameActions::Execute(&modifyTile);
         }
 
         void PathSetJunctionRailings(int32_t elementIndex, bool hasJunctionRailings)
         {
-            auto modifyTile = TileModifyAction(
-                _toolMap, TileModifyType::PathSetJunctionRailings, elementIndex, hasJunctionRailings);
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap, GameActions::TileModifyType::PathSetJunctionRailings, elementIndex, hasJunctionRailings);
             GameActions::Execute(&modifyTile);
         }
 
         void PathSetBroken(int32_t elementIndex, bool broken)
         {
-            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::PathSetBroken, elementIndex, broken);
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap, GameActions::TileModifyType::PathSetBroken, elementIndex, broken);
             GameActions::Execute(&modifyTile);
         }
 
@@ -1967,14 +1973,16 @@ static uint64_t PageDisabledWidgets[] = {
         {
             Guard::Assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
             Guard::Assert(cornerIndex >= 0 && cornerIndex < 8, "cornerIndex out of range");
-            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::PathToggleEdge, elementIndex, cornerIndex);
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap, GameActions::TileModifyType::PathToggleEdge, elementIndex, cornerIndex);
             GameActions::Execute(&modifyTile);
         }
 
         void EntranceMakeUsable(int32_t elementIndex)
         {
             Guard::ArgumentInRange(elementIndex, 0, windowTileInspectorElementCount - 1);
-            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::EntranceMakeUsable, elementIndex);
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap, GameActions::TileModifyType::EntranceMakeUsable, elementIndex);
             GameActions::Execute(&modifyTile);
         }
 
@@ -1982,41 +1990,45 @@ static uint64_t PageDisabledWidgets[] = {
         {
             // Make sure only the correct bits are set
             Guard::Assert((slopeValue & 3) == slopeValue, "slopeValue doesn't match its mask");
-            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::WallSetSlope, elementIndex, slopeValue);
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap, GameActions::TileModifyType::WallSetSlope, elementIndex, slopeValue);
             GameActions::Execute(&modifyTile);
         }
 
         void WallAnimationFrameOffset(int16_t elementIndex, int8_t animationFrameOffset)
         {
-            auto modifyTile = TileModifyAction(
-                _toolMap, TileModifyType::WallSetAnimationFrame, elementIndex, animationFrameOffset);
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap, GameActions::TileModifyType::WallSetAnimationFrame, elementIndex, animationFrameOffset);
             GameActions::Execute(&modifyTile);
         }
 
         void TrackBlockHeightOffset(int32_t elementIndex, int8_t heightOffset)
         {
-            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::TrackBaseHeightOffset, elementIndex, heightOffset);
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap, GameActions::TileModifyType::TrackBaseHeightOffset, elementIndex, heightOffset);
             GameActions::Execute(&modifyTile);
         }
 
         void TrackBlockSetLift(int32_t elementIndex, bool entireTrackBlock, bool chain)
         {
-            auto modifyTile = TileModifyAction(
-                _toolMap, entireTrackBlock ? TileModifyType::TrackSetChainBlock : TileModifyType::TrackSetChain, elementIndex,
-                chain);
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap,
+                entireTrackBlock ? GameActions::TileModifyType::TrackSetChainBlock : GameActions::TileModifyType::TrackSetChain,
+                elementIndex, chain);
             GameActions::Execute(&modifyTile);
         }
 
         void TrackSetBrakeClosed(int32_t elementIndex, bool isClosed)
         {
-            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::TrackSetBrake, elementIndex, isClosed);
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap, GameActions::TileModifyType::TrackSetBrake, elementIndex, isClosed);
             GameActions::Execute(&modifyTile);
         }
 
         void TrackSetIndestructible(int32_t elementIndex, bool isIndestructible)
         {
-            auto modifyTile = TileModifyAction(
-                _toolMap, TileModifyType::TrackSetIndestructible, elementIndex, isIndestructible);
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap, GameActions::TileModifyType::TrackSetIndestructible, elementIndex, isIndestructible);
             GameActions::Execute(&modifyTile);
         }
 
@@ -2024,16 +2036,17 @@ static uint64_t PageDisabledWidgets[] = {
         {
             // quarterIndex is widget index relative to WIDX_SCENERY_CHECK_QUARTER_N, so a value from 0-3
             Guard::Assert(quarterIndex >= 0 && quarterIndex < 4, "quarterIndex out of range");
-            auto modifyTile = TileModifyAction(
-                _toolMap, TileModifyType::ScenerySetQuarterLocation, elementIndex, (quarterIndex - GetCurrentRotation()) & 3);
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap, GameActions::TileModifyType::ScenerySetQuarterLocation, elementIndex,
+                (quarterIndex - GetCurrentRotation()) & 3);
             GameActions::Execute(&modifyTile);
         }
 
         // ToggleQuadrantCollision?
         void ToggleQuadrantCollosion(int32_t elementIndex, const int32_t quadrantIndex)
         {
-            auto modifyTile = TileModifyAction(
-                _toolMap, TileModifyType::ScenerySetQuarterCollision, elementIndex,
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap, GameActions::TileModifyType::ScenerySetQuarterCollision, elementIndex,
                 (quadrantIndex + 2 - GetCurrentRotation()) & 3);
             GameActions::Execute(&modifyTile);
         }
@@ -2043,20 +2056,23 @@ static uint64_t PageDisabledWidgets[] = {
             Guard::Assert(edgeIndex >= 0 && edgeIndex < 4, "edgeIndex out of range");
             // Make edgeIndex  = 0
             edgeIndex = (edgeIndex - GetCurrentRotation()) & 3;
-            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::BannerToggleBlockingEdge, elementIndex, edgeIndex);
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap, GameActions::TileModifyType::BannerToggleBlockingEdge, elementIndex, edgeIndex);
             GameActions::Execute(&modifyTile);
         }
 
         void ToggleInvisibility(int32_t elementIndex)
         {
             Guard::Assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
-            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::AnyToggleInvisilibity, elementIndex);
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap, GameActions::TileModifyType::AnyToggleInvisilibity, elementIndex);
             GameActions::Execute(&modifyTile);
         }
 
         void WallSetAnimationIsBackwards(int32_t elementIndex, bool backwards)
         {
-            auto modifyTile = TileModifyAction(_toolMap, TileModifyType::WallSetAnimationIsBackwards, elementIndex, backwards);
+            auto modifyTile = GameActions::TileModifyAction(
+                _toolMap, GameActions::TileModifyType::WallSetAnimationIsBackwards, elementIndex, backwards);
             GameActions::Execute(&modifyTile);
         }
 

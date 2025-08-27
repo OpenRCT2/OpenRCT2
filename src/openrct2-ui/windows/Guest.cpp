@@ -651,8 +651,9 @@ namespace OpenRCT2::Ui::Windows
                     _pickedPeepX = peep->x;
                     CoordsXYZ nullLoc{};
                     nullLoc.SetNull();
-                    PeepPickupAction pickupAction{ PeepPickupType::Pickup, EntityId::FromUnderlying(number), nullLoc,
-                                                   NetworkGetCurrentPlayerId() };
+                    GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Pickup,
+                                                                EntityId::FromUnderlying(number), nullLoc,
+                                                                NetworkGetCurrentPlayerId() };
                     pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error != GameActions::Status::Ok)
                             return;
@@ -677,7 +678,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     uint32_t guestFlags = peep->PeepFlags ^ PEEP_FLAGS_TRACKING;
 
-                    auto guestSetFlagsAction = GuestSetFlagsAction(EntityId::FromUnderlying(number), guestFlags);
+                    auto guestSetFlagsAction = GameActions::GuestSetFlagsAction(EntityId::FromUnderlying(number), guestFlags);
                     GameActions::Execute(&guestSetFlagsAction);
                 }
                 break;
@@ -961,7 +962,7 @@ namespace OpenRCT2::Ui::Windows
             if (text.empty())
                 return;
             std::string sText(text);
-            auto gameAction = GuestSetNameAction(EntityId::FromUnderlying(number), sText);
+            auto gameAction = GameActions::GuestSetNameAction(EntityId::FromUnderlying(number), sText);
             GameActions::Execute(&gameAction);
         }
 
@@ -1018,10 +1019,10 @@ namespace OpenRCT2::Ui::Windows
             if (destCoords.IsNull())
                 return;
 
-            PeepPickupAction pickupAction{ PeepPickupType::Place,
-                                           EntityId::FromUnderlying(number),
-                                           { destCoords, tileElement->GetBaseZ() },
-                                           NetworkGetCurrentPlayerId() };
+            GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Place,
+                                                        EntityId::FromUnderlying(number),
+                                                        { destCoords, tileElement->GetBaseZ() },
+                                                        NetworkGetCurrentPlayerId() };
             pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                     return;
@@ -1036,9 +1037,10 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex != WIDX_PICKUP)
                 return;
 
-            PeepPickupAction pickupAction{
-                PeepPickupType::Cancel, EntityId::FromUnderlying(number), { _pickedPeepX, 0, 0 }, NetworkGetCurrentPlayerId()
-            };
+            GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Cancel,
+                                                        EntityId::FromUnderlying(number),
+                                                        { _pickedPeepX, 0, 0 },
+                                                        NetworkGetCurrentPlayerId() };
             GameActions::Execute(&pickupAction);
         }
 

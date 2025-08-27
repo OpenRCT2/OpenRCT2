@@ -25,6 +25,11 @@ namespace OpenRCT2
     struct TileElement;
 }
 
+namespace OpenRCT2::GameActions
+{
+    enum class RideSetSetting : uint8_t;
+}
+
 struct CoordsXYE;
 struct RideTypeDescriptor;
 struct TrackDrawerDescriptor;
@@ -131,6 +136,9 @@ void RideSelectNextSection();
 void RideSelectPreviousSection();
 
 bool RideModify(const CoordsXYE& input);
+
+money64 SetOperatingSetting(RideId rideId, OpenRCT2::GameActions::RideSetSetting setting, uint8_t value);
+money64 SetOperatingSettingNested(RideId rideId, OpenRCT2::GameActions::RideSetSetting setting, uint8_t value, uint8_t flags);
 
 bool RideSelectBackwardsFromFront();
 bool RideSelectForwardsFromBack();

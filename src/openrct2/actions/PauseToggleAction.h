@@ -11,16 +11,17 @@
 
 #include "GameAction.h"
 
-// Clang format is broken for small game actions
-// clang-format off
-class PauseToggleAction final : public GameActionBase<GameCommand::TogglePause>
+namespace OpenRCT2::GameActions
 {
-public:
-    PauseToggleAction() = default;
+    class PauseToggleAction final : public GameActionBase<GameCommand::TogglePause>
+    {
+    public:
+        PauseToggleAction() = default;
 
-    uint16_t GetActionFlags() const override;
+        uint16_t GetActionFlags() const override;
 
-    OpenRCT2::GameActions::Result Query() const override;
-    OpenRCT2::GameActions::Result Execute() const override;
-};
-// clang-format on
+        Result Query() const override;
+        Result Execute() const override;
+    };
+    // clang-format on
+} // namespace OpenRCT2::GameActions

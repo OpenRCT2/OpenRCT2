@@ -147,7 +147,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         windowMgr->CloseByClass(WindowClass::ScenarioSelect);
                         windowMgr->CloseByClass(WindowClass::ServerList);
-                        auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
+                        auto loadOrQuitAction = GameActions::LoadOrQuitAction(GameActions::LoadOrQuitModes::OpenSavePrompt);
                         GameActions::Execute(&loadOrQuitAction);
                     }
                     break;
