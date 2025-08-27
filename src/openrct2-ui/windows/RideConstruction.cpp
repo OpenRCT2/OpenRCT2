@@ -312,7 +312,7 @@ namespace OpenRCT2::Ui::Windows
                     if (!_autoOpeningShop)
                     {
                         _autoOpeningShop = true;
-                        auto gameAction = RideSetStatusAction(currentRide->id, RideStatus::open);
+                        auto gameAction = GameActions::RideSetStatusAction(currentRide->id, RideStatus::open);
                         GameActions::Execute(&gameAction);
                         _autoOpeningShop = false;
                     }
@@ -1099,7 +1099,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         auto status = currentRide->status == RideStatus::simulating ? RideStatus::closed
                                                                                     : RideStatus::simulating;
-                        auto gameAction = RideSetStatusAction(currentRide->id, status);
+                        auto gameAction = GameActions::RideSetStatusAction(currentRide->id, status);
                         GameActions::Execute(&gameAction);
                     }
                     break;

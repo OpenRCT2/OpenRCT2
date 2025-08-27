@@ -1671,7 +1671,7 @@ namespace OpenRCT2::Ui::Windows
                                 status = RideStatus::open;
                                 break;
                         }
-                        auto gameAction = RideSetStatusAction(ride->id, status);
+                        auto gameAction = GameActions::RideSetStatusAction(ride->id, status);
                         GameActions::Execute(&gameAction);
                     }
                     break;
@@ -2220,7 +2220,7 @@ namespace OpenRCT2::Ui::Windows
                                     break;
                             }
                         }
-                        auto gameAction = RideSetStatusAction(ride->id, status);
+                        auto gameAction = GameActions::RideSetStatusAction(ride->id, status);
                         GameActions::Execute(&gameAction);
                     }
                     break;

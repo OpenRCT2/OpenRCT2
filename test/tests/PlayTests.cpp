@@ -114,7 +114,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     Ride& ferrisWheel = *it;
 
     // Open it for free
-    execute<RideSetStatusAction>(ferrisWheel.id, RideStatus::open);
+    execute<GameActions::RideSetStatusAction>(ferrisWheel.id, RideStatus::open);
     execute<GameActions::RideSetPriceAction>(ferrisWheel.id, 0, true);
 
     // Ignore intensity to stimulate peeps to queue into ferris wheel
@@ -173,7 +173,7 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     Ride& carRide = *it;
 
     // Open it for free
-    execute<RideSetStatusAction>(carRide.id, RideStatus::open);
+    execute<GameActions::RideSetStatusAction>(carRide.id, RideStatus::open);
     execute<GameActions::RideSetPriceAction>(carRide.id, 0, true);
 
     // Ignore intensity to stimulate peeps to queue into the ride

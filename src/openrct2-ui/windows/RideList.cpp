@@ -1110,7 +1110,7 @@ namespace OpenRCT2::Ui::Windows
                 if (rideRef.status != RideStatus::closed
                     && rideRef.getClassification() == static_cast<RideClassification>(page))
                 {
-                    auto gameAction = RideSetStatusAction(rideRef.id, RideStatus::closed);
+                    auto gameAction = GameActions::RideSetStatusAction(rideRef.id, RideStatus::closed);
                     GameActions::Execute(&gameAction);
                 }
             }
@@ -1123,7 +1123,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (rideRef.status != RideStatus::open && rideRef.getClassification() == static_cast<RideClassification>(page))
                 {
-                    auto gameAction = RideSetStatusAction(rideRef.id, RideStatus::open);
+                    auto gameAction = GameActions::RideSetStatusAction(rideRef.id, RideStatus::open);
                     GameActions::Execute(&gameAction);
                 }
             }

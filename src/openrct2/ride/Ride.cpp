@@ -1129,13 +1129,13 @@ void Ride::update()
         if (mode == RideMode::continuousCircuitBlockSectioned || mode == RideMode::poweredLaunchBlockSectioned)
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
-            RideSetStatusAction gameAction = RideSetStatusAction(id, RideStatus::closed);
+            auto gameAction = GameActions::RideSetStatusAction(id, RideStatus::closed);
             GameActions::ExecuteNested(&gameAction);
         }
         else
         {
             // We require this to execute right away during the simulation, always ignore network and queue.
-            RideSetStatusAction gameAction = RideSetStatusAction(id, RideStatus::simulating);
+            auto gameAction = GameActions::RideSetStatusAction(id, RideStatus::simulating);
             GameActions::ExecuteNested(&gameAction);
         }
     }
@@ -5233,25 +5233,28 @@ void Ride::updateNumberOfCircuits()
 void Ride::setRideEntry(ObjectEntryIndex entryIndex)
 {
     auto colour = RideGetUnusedPresetVehicleColour(entryIndex);
-    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::RideEntry, entryIndex, colour);
+    auto rideSetVehicleAction = GameActions::RideSetVehicleAction(
+        id, GameActions::RideSetVehicleType::RideEntry, entryIndex, colour);
     GameActions::Execute(&rideSetVehicleAction);
 }
 
 void Ride::setNumTrains(int32_t newNumTrains)
 {
-    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::NumTrains, newNumTrains);
+    auto rideSetVehicleAction = GameActions::RideSetVehicleAction(id, GameActions::RideSetVehicleType::NumTrains, newNumTrains);
     GameActions::Execute(&rideSetVehicleAction);
 }
 
 void Ride::setNumCarsPerTrain(int32_t numCarsPerVehicle)
 {
-    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::NumCarsPerTrain, numCarsPerVehicle);
+    auto rideSetVehicleAction = GameActions::RideSetVehicleAction(
+        id, GameActions::RideSetVehicleType::NumCarsPerTrain, numCarsPerVehicle);
     GameActions::Execute(&rideSetVehicleAction);
 }
 
 void Ride::setReversedTrains(bool reverseTrains)
 {
-    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::TrainsReversed, reverseTrains);
+    auto rideSetVehicleAction = GameActions::RideSetVehicleAction(
+        id, GameActions::RideSetVehicleType::TrainsReversed, reverseTrains);
     GameActions::Execute(&rideSetVehicleAction);
 }
 

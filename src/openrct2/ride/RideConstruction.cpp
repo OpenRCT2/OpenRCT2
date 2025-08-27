@@ -976,7 +976,7 @@ bool RideModify(const CoordsXYE& input)
     // Stop the ride again to clear all vehicles and peeps (compatible with network games)
     if (ride->status != RideStatus::simulating)
     {
-        auto gameAction = RideSetStatusAction(ride->id, RideStatus::closed);
+        auto gameAction = GameActions::RideSetStatusAction(ride->id, RideStatus::closed);
         GameActions::Execute(&gameAction);
     }
 
