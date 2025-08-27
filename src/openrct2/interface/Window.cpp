@@ -469,6 +469,9 @@ static constexpr float kWindowScrollLocations[][2] = {
             }
         }
 
+        v->viewPos.x = w.savedViewPos.x;
+        v->viewPos.y = w.savedViewPos.y;
+
         // HACK: Prevents the redraw from failing when there is
         // a window on top of the viewport.
         auto* windowMgr = Ui::GetWindowManager();
