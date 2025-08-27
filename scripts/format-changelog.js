@@ -6,7 +6,7 @@ const ChangeTypes = ["Headline feature", "Feature", "Improved", "Change", "Remov
 const ChangeTypeSubstitutions = {
     "Improve": "Improved",
 };
-const HeaderSeperator = "------------------------------------------------------------------------";
+const HeaderSeparator = "------------------------------------------------------------------------";
 
 function reportError(ctx, message) {
     console.error(`Error on line ${ctx.lineIndex}: ${message}`);
@@ -42,10 +42,10 @@ function readVersionHeader(ctx) {
         reportLineError(versionLine, "Expected a version number");
     }
 
-    // Check the version seperator
-    const versionSeperator = consumeLine(ctx);
-    if (versionSeperator.text != HeaderSeperator) {
-        reportLineError(versionSeperator, "Expected version seperator");
+    // Check the version separator
+    const versionSeparator = consumeLine(ctx);
+    if (versionSeparator.text != HeaderSeparator) {
+        reportLineError(versionSeparator, "Expected version separator");
     }
 
     // Check for optional headline, this means the there is text not starting with - and an empty line before
@@ -263,7 +263,7 @@ function cleanupVersions(versions) {
 function printChangelog(versions) {
     for (const version of versions) {
         console.log(`${version.version} (${version.date})`);
-        console.log(HeaderSeperator);
+        console.log(HeaderSeparator);
         if (version.headline != "") {
             console.log(version.headline);
             console.log();

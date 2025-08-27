@@ -144,7 +144,7 @@ namespace OpenRCT2::Ui::Windows
         void PaintHeading(
             WindowBase* w, RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
             ColumnSortOrder sortOrder, bool isPressed) const;
-        void PaintSeperator(RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const;
+        void PaintSeparator(RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const;
         void PaintCell(
             RenderTarget& rt, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text, bool isHighlighted) const;
         std::optional<RowColumn> GetItemIndexAt(const ScreenCoordsXY& pos);
