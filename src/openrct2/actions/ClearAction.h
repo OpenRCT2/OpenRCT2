@@ -44,8 +44,8 @@ namespace OpenRCT2::GameActions
 
     private:
         Result CreateResult() const;
-        Result QueryExecute(bool executing) const;
-        money64 ClearSceneryFromTile(const CoordsXY& tilePos, bool executing) const;
+        Result QueryExecute(bool executing, GameState_t& gameState) const;
+        money64 ClearSceneryFromTile(const CoordsXY& tilePos, bool executing, GameState_t& gameState) const;
 
         /**
          * Function to clear the flag that is set to prevent cost duplication
