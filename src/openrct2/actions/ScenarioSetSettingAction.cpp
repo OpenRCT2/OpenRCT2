@@ -33,19 +33,18 @@ namespace OpenRCT2::GameActions
         visitor.Visit("value", _value);
     }
 
-    GameActions::Result ScenarioSetSettingAction::Query() const
+    Result ScenarioSetSettingAction::Query() const
     {
         if (_setting >= ScenarioSetSetting::Count)
         {
             LOG_ERROR("Invalid scenario setting: %u", _setting);
-            return GameActions::Result(
-                GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+            return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        return GameActions::Result();
+        return Result();
     }
 
-    GameActions::Result ScenarioSetSettingAction::Execute() const
+    Result ScenarioSetSettingAction::Execute() const
     {
         auto& gameState = getGameState();
         auto* windowMgr = Ui::GetWindowManager();
@@ -265,10 +264,9 @@ namespace OpenRCT2::GameActions
             }
             default:
                 LOG_ERROR("Invalid scenario setting %u", _setting);
-                return GameActions::Result(
-                    GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+                return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
         windowMgr->InvalidateByClass(WindowClass::EditorScenarioOptions);
-        return GameActions::Result();
+        return Result();
     }
 } // namespace OpenRCT2::GameActions

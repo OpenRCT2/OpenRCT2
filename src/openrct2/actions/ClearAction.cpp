@@ -51,19 +51,19 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_range) << DS_TAG(_itemsToClear);
     }
 
-    GameActions::Result ClearAction::Query() const
+    Result ClearAction::Query() const
     {
         return QueryExecute(false);
     }
 
-    GameActions::Result ClearAction::Execute() const
+    Result ClearAction::Execute() const
     {
         return QueryExecute(true);
     }
 
-    GameActions::Result ClearAction::CreateResult() const
+    Result ClearAction::CreateResult() const
     {
-        auto result = GameActions::Result();
+        auto result = Result();
         result.ErrorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
         result.Expenditure = ExpenditureType::landscaping;
 
@@ -75,12 +75,12 @@ namespace OpenRCT2::GameActions
         return result;
     }
 
-    GameActions::Result ClearAction::QueryExecute(bool executing) const
+    Result ClearAction::QueryExecute(bool executing) const
     {
         auto result = CreateResult();
 
         auto noValidTiles = true;
-        auto error = GameActions::Status::Ok;
+        auto error = Status::Ok;
         StringId errorMessage = kStringIdNone;
         money64 totalCost = 0;
 
@@ -100,7 +100,7 @@ namespace OpenRCT2::GameActions
                 }
                 else
                 {
-                    error = GameActions::Status::NotOwned;
+                    error = Status::NotOwned;
                     errorMessage = STR_LAND_NOT_OWNED_BY_PARK;
                 }
             }
@@ -143,13 +143,12 @@ namespace OpenRCT2::GameActions
                     case TileElementType::Path:
                         if (_itemsToClear & CLEARABLE_ITEMS::kSceneryFootpath)
                         {
-                            auto footpathRemoveAction = GameActions::FootpathRemoveAction({ tilePos, tileElement->GetBaseZ() });
+                            auto footpathRemoveAction = FootpathRemoveAction({ tilePos, tileElement->GetBaseZ() });
                             footpathRemoveAction.SetFlags(GetFlags());
 
-                            auto res = executing ? GameActions::ExecuteNested(&footpathRemoveAction)
-                                                 : GameActions::QueryNested(&footpathRemoveAction);
+                            auto res = executing ? ExecuteNested(&footpathRemoveAction) : QueryNested(&footpathRemoveAction);
 
-                            if (res.Error == GameActions::Status::Ok)
+                            if (res.Error == Status::Ok)
                             {
                                 totalCost += res.Cost;
                                 tileEdited = executing;
@@ -159,15 +158,14 @@ namespace OpenRCT2::GameActions
                     case TileElementType::SmallScenery:
                         if (_itemsToClear & CLEARABLE_ITEMS::kScenerySmall)
                         {
-                            auto removeSceneryAction = GameActions::SmallSceneryRemoveAction(
+                            auto removeSceneryAction = SmallSceneryRemoveAction(
                                 { tilePos, tileElement->GetBaseZ() }, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
                                 tileElement->AsSmallScenery()->GetEntryIndex());
                             removeSceneryAction.SetFlags(GetFlags());
 
-                            auto res = executing ? GameActions::ExecuteNested(&removeSceneryAction)
-                                                 : GameActions::QueryNested(&removeSceneryAction);
+                            auto res = executing ? ExecuteNested(&removeSceneryAction) : QueryNested(&removeSceneryAction);
 
-                            if (res.Error == GameActions::Status::Ok)
+                            if (res.Error == Status::Ok)
                             {
                                 totalCost += res.Cost;
                                 tileEdited = executing;
@@ -178,13 +176,12 @@ namespace OpenRCT2::GameActions
                         if (_itemsToClear & CLEARABLE_ITEMS::kScenerySmall)
                         {
                             CoordsXYZD wallLocation = { tilePos, tileElement->GetBaseZ(), tileElement->GetDirection() };
-                            auto wallRemoveAction = GameActions::WallRemoveAction(wallLocation);
+                            auto wallRemoveAction = WallRemoveAction(wallLocation);
                             wallRemoveAction.SetFlags(GetFlags());
 
-                            auto res = executing ? GameActions::ExecuteNested(&wallRemoveAction)
-                                                 : GameActions::QueryNested(&wallRemoveAction);
+                            auto res = executing ? ExecuteNested(&wallRemoveAction) : QueryNested(&wallRemoveAction);
 
-                            if (res.Error == GameActions::Status::Ok)
+                            if (res.Error == Status::Ok)
                             {
                                 totalCost += res.Cost;
                                 tileEdited = executing;
@@ -194,15 +191,14 @@ namespace OpenRCT2::GameActions
                     case TileElementType::LargeScenery:
                         if (_itemsToClear & CLEARABLE_ITEMS::kSceneryLarge)
                         {
-                            auto removeSceneryAction = GameActions::LargeSceneryRemoveAction(
+                            auto removeSceneryAction = LargeSceneryRemoveAction(
                                 { tilePos, tileElement->GetBaseZ(), tileElement->GetDirection() },
                                 tileElement->AsLargeScenery()->GetSequenceIndex());
                             removeSceneryAction.SetFlags(GetFlags() | GAME_COMMAND_FLAG_TRACK_DESIGN);
 
-                            auto res = executing ? GameActions::ExecuteNested(&removeSceneryAction)
-                                                 : GameActions::QueryNested(&removeSceneryAction);
+                            auto res = executing ? ExecuteNested(&removeSceneryAction) : QueryNested(&removeSceneryAction);
 
-                            if (res.Error == GameActions::Status::Ok)
+                            if (res.Error == Status::Ok)
                             {
                                 totalCost += res.Cost;
                                 tileEdited = executing;
