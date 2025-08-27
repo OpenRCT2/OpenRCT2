@@ -2952,7 +2952,7 @@ STR_5858    :Usar GPU para a visualización en vez da CPU. Mellora a compatibili
 STR_5859    :Activa a interpolación de fotogramas para unha experiencia visual{NEWLINE}máis fluída. Se está desactivado,{NEWLINE}o xogo correrá a 40 FPS.
 STR_5860    :Alternar entre debuxo orixinal/descompilado das vías
 STR_5861    :Fallo na verificación da clave.
-STR_5862    :Bloquear xogadores descoñecidos.
+STR_5862    :Bloquear xogadores descoñecidos
 STR_5863    :Só permitir que xogadores con claves coñecidas se unan.
 STR_5864    :Este servidor só permite a conexión de xogadores incluídos na lista branca.
 STR_5865    :Rexistrar historial do chat
@@ -3836,3 +3836,6 @@ STR_6797    :Sen vista previa
 STR_6798    :Captura de pantalla
 STR_6799    :Minimapa
 STR_7000    :ou
+STR_7001    :Nome da atracción
+STR_7002    :{STRINGID} {STRINGID}
+STR_7003    :O ficheiro de son ‘{STRING}’ está incompleto. Agardabase {INT32} mostras, pero só {INT32} están dispoñibles. Considera reinstalar RCT2.
