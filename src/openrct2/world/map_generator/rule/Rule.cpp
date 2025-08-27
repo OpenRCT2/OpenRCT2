@@ -294,7 +294,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             }
             case Type::Noise:
             {
-                auto noiseValue = (1.0f + ctx.conditionNoiseFns[key]->Generate(ctx.quadCoords)) / 2.0f;
+                auto noiseValue = (1.0f + ctx.conditionNoiseFns[key]->generate(ctx.quadCoords)) / 2.0f;
                 auto noiseCondition = std::get<NoiseData>(condition.data).value;
                 return evaluatePredicate(noiseValue, condition.predicate, noiseCondition);
             }
@@ -312,7 +312,7 @@ namespace OpenRCT2::World::MapGenerator::Rule
             case Type::BlendNoise:
             {
                 auto& noiseBlendData = std::get<BlendNoiseData>(condition.data);
-                auto noiseValue = (1.0f + ctx.conditionNoiseFns[key]->Generate(ctx.quadCoords)) / 2.0f;
+                auto noiseValue = (1.0f + ctx.conditionNoiseFns[key]->generate(ctx.quadCoords)) / 2.0f;
                 auto noiseSs = Smoothstep(noiseBlendData.edgeLow, noiseBlendData.edgeHigh, noiseValue);
                 auto prngValue = ctx.prngDist(ctx.conditionPrngs[key]);
                 return evaluatePredicate(prngValue, condition.predicate, noiseSs);
@@ -482,8 +482,11 @@ namespace OpenRCT2::World::MapGenerator::Rule
         if (condition.type == Type::Noise)
         {
             auto& noiseData = std::get<NoiseData>(condition.data);
-            auto noise = std::make_unique<SimplexFbmNoise>(
-                settings.seed + noiseData.seedOffset, noiseData.frequency * NOISE_SCALE, noiseData.octaves, 2.0f, 0.5f);
+
+            BaseSettings baseSettings = {BaseType::Simplex, settings.seed + noiseData.seedOffset, noiseData.frequency * NOISE_SCALE};
+            FractalSettings fractalSettings = {FractalType::Fbm, noiseData.octaves, 2.0f, 0.5f, 0.0f };
+
+            auto noise = std::make_unique<Noise>(baseSettings, fractalSettings, std::nullopt, std::nullopt );
             ctx.conditionNoiseFns[key] = std::move(noise);
         }
         else if (condition.type == Type::Random)
@@ -499,9 +502,11 @@ namespace OpenRCT2::World::MapGenerator::Rule
         else if (condition.type == Type::BlendNoise)
         {
             auto& noiseBlendData = std::get<BlendNoiseData>(condition.data);
-            auto noise = std::make_unique<SimplexFbmNoise>(
-                settings.seed + noiseBlendData.seedOffset, noiseBlendData.frequency * NOISE_SCALE, noiseBlendData.octaves, 2.0f,
-                0.5f);
+
+            BaseSettings baseSettings = {BaseType::Simplex, settings.seed + noiseBlendData.seedOffset, noiseBlendData.frequency * NOISE_SCALE};
+            FractalSettings fractalSettings = {FractalType::Fbm, noiseBlendData.octaves, 2.0f, 0.5f, 0.0f };
+
+            auto noise = std::make_unique<Noise>(baseSettings, fractalSettings, std::nullopt, std::nullopt );
             ctx.conditionNoiseFns[key] = std::move(noise);
             // shouldn't cause artifacts to use the same seed for prng and noise?
             std::mt19937 prng(settings.seed + noiseBlendData.seedOffset);

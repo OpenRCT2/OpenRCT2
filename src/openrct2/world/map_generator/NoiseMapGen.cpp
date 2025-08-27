@@ -67,15 +67,21 @@ namespace OpenRCT2::World::MapGenerator
         }
         else if (settings->bias == Bias::canyon)
         {
-            ctx = std::make_unique<RidgeFbmNoise>(settings->seed + 1, 1.0f / 384.0f, 6, 2.5f, .55f);
+            BaseSettings baseSettings = { BaseType::Simplex, settings->seed + 1, 1.0f / 384.0f };
+            FractalSettings fractalSettings = { FractalType::Ridge, 6, 2.5f, 0.55f, 0.0f };
+            ctx = std::make_unique<Noise>(baseSettings, fractalSettings, std::nullopt, std::nullopt );
         }
         else if (settings->bias == Bias::mountain)
         {
-            ctx = std::make_unique<RidgeFbmNoise>(settings->seed + 1, 1.0f / 768.0f, 7, 2.5f, .5f);
+            BaseSettings baseSettings = { BaseType::Simplex, settings->seed + 1, 1.0f / 768.0f };
+            FractalSettings fractalSettings = { FractalType::Ridge, 7, 2.5f, 0.5f, 0.0f };
+            ctx = std::make_unique<Noise>(baseSettings, fractalSettings, std::nullopt, std::nullopt );
         }
         else if (settings->bias == Bias::cliff)
         {
-            ctx = std::make_unique<SimplexFbmNoise>(settings->seed + 1, 1.0f / 512.0f, 6, 2.25f, .5f);
+            BaseSettings baseSettings = { BaseType::Simplex, settings->seed + 1, 1.0f / 512.0f };
+            FractalSettings fractalSettings = { FractalType::Fbm, 6, 2.25f, 0.5f, 0.0f };
+            ctx = std::make_unique<Noise>(baseSettings, fractalSettings, std::nullopt, std::nullopt );
         }
 
         return ctx;
@@ -136,18 +142,18 @@ namespace OpenRCT2::World::MapGenerator
             case Bias::canyon:
             {
                 auto canyonScale = 3.0f + biasStrength * 3.0f;
-                auto canyonNoise = canyonScale * std::pow(std::get<std::unique_ptr<Noise>>(ctx)->Generate(pos), 3);
+                auto canyonNoise = canyonScale * std::pow(std::get<std::unique_ptr<Noise>>(ctx)->generate(pos), 3);
                 return Smoothstep(0.0f, 1.0f, 1.0f - canyonNoise * biasStrength) * noise;
             }
             case Bias::mountain:
             {
                 auto mountainScale = 2.0f + biasStrength * 2.0f;
-                auto mountainNoise = mountainScale * std::pow(std::get<std::unique_ptr<Noise>>(ctx)->Generate(pos), 2);
+                auto mountainNoise = mountainScale * std::pow(std::get<std::unique_ptr<Noise>>(ctx)->generate(pos), 2);
                 return Smoothstep(0.0f, 1.0f, 1.0f - (1.0f - mountainNoise) * biasStrength) * noise;
             }
             case Bias::cliff:
             {
-                auto cliffBias = std::get<std::unique_ptr<Noise>>(ctx)->Generate(pos) > 0.2f ? 1.0f : 0.0f;
+                auto cliffBias = std::get<std::unique_ptr<Noise>>(ctx)->generate(pos) > 0.2f ? 1.0f : 0.0f;
                 return noise * (1 - biasStrength) + cliffBias * biasStrength;
             }
             default:
@@ -170,7 +176,7 @@ namespace OpenRCT2::World::MapGenerator
             for (int32_t x = 0; x < heightMap.width; x++)
             {
                 VecXY pos = { x, y };
-                float noiseValue = noise.Generate(pos);
+                float noiseValue = noise.generate(pos);
                 float normalisedNoiseValue = (noiseValue + 1.0f) / 2.0f;
                 float biasedNoiseValue = applyBias(settings, ctx, pos, normalisedNoiseValue);
 
@@ -214,7 +220,10 @@ namespace OpenRCT2::World::MapGenerator
         // TODO should freq really be influenced by map width?
         float freq = settings->simplex_base_freq / 100.0f * (1.0f / heightMap.width);
 
-        auto simplexFbmNoise = SimplexFbmNoise{ settings->seed, freq, settings->simplex_octaves, 2.0f, 0.65f };
+        BaseSettings baseSettings = { BaseType::Simplex, settings->seed, freq };
+        FractalSettings fractalSettings = { FractalType::Fbm, settings->simplex_octaves, 2.0f, 0.65f, 0.0f };
+
+        auto simplexFbmNoise = Noise(baseSettings, fractalSettings, std::nullopt, std::nullopt);
 
         generateMap(settings, heightMap, simplexFbmNoise);
         generateCommon(settings, heightMap);
@@ -223,10 +232,14 @@ namespace OpenRCT2::World::MapGenerator
     void generateWarpedMap(Settings* settings)
     {
         auto heightMap = HeightMap(settings->mapSize);
-        VecXY domainSize{ settings->mapSize.x, settings->mapSize.y };
 
-        auto freq = (settings->simplex_base_freq / 100.0f) * 0.095f;
-        auto warpedNoise = SimplexWarpedNoise{ settings->seed, freq, settings->simplex_octaves, 2.0f, 0.5f, domainSize };
+        auto freq = settings->simplex_base_freq / std::pow(2.0f, 15.0f);
+
+        BaseSettings baseSettings = { BaseType::Simplex, settings->seed, freq };
+        FractalSettings fractalSettings = { FractalType::Fbm, settings->simplex_octaves, 2.0f, 0.5f, 0.0f };
+        WarpSettings warpSettings = {WarpFractalType::Independent, 666, settings->seed, freq,  4, 2.0f, 0.5f };
+
+        auto warpedNoise = Noise(baseSettings, fractalSettings, std::nullopt, warpSettings);
 
         generateMap(settings, heightMap, warpedNoise);
         generateCommon(settings, heightMap);
