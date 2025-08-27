@@ -121,20 +121,12 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_ZOOM_IN:
                 {
-                    if (viewport != nullptr && viewport->zoom > ZoomLevel::min())
-                    {
-                        viewport->zoom--;
-                        Invalidate();
-                    }
+                    WindowZoomIn(*this, false);
                     break;
                 }
                 case WIDX_ZOOM_OUT:
                 {
-                    if (viewport != nullptr && viewport->zoom < ZoomLevel::max())
-                    {
-                        viewport->zoom++;
-                        Invalidate();
-                    }
+                    WindowZoomOut(*this, false);
                     break;
                 }
                 case WIDX_LOCATE:
