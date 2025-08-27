@@ -16,16 +16,6 @@
 
 namespace OpenRCT2
 {
-    union Entity_t
-    {
-        uint8_t Pad00[0x200];
-        EntityBase base;
-        Entity_t()
-            : Pad00()
-        {
-        }
-    };
-
     constexpr uint16_t kMaxEntities = 65535;
 
     EntityBase* GetEntity(EntityId entityId);

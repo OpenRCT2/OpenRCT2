@@ -44,6 +44,16 @@ namespace OpenRCT2
 {
     using namespace OpenRCT2::Core;
 
+    union Entity_t
+    {
+        uint8_t Pad00[0x200];
+        EntityBase base;
+        Entity_t()
+            : Pad00()
+        {
+        }
+    };
+
     static constexpr const uint32_t kSpatialIndexSize = (kMaximumMapSizeTechnical * kMaximumMapSizeTechnical) + 1;
     static constexpr uint32_t kSpatialIndexNullBucket = kSpatialIndexSize - 1;
 
@@ -51,6 +61,7 @@ namespace OpenRCT2
     static constexpr uint32_t kSpatialIndexDirtyMask = 1u << 31;
 
     // TODO: move into GameState_t
+    static Entity_t entities[kMaxEntities]{};
     static std::array<std::list<EntityId>, EnumValue(EntityType::Count)> gEntityLists;
     static std::vector<EntityId> _freeIdList;
 
@@ -118,9 +129,8 @@ namespace OpenRCT2
 
     EntityBase* TryGetEntity(EntityId entityIndex)
     {
-        auto& gameState = getGameState();
         const auto idx = entityIndex.ToUnderlying();
-        return idx >= kMaxEntities ? nullptr : &gameState.entities[idx].base;
+        return idx >= kMaxEntities ? nullptr : &entities[idx].base;
     }
 
     EntityBase* GetEntity(EntityId entityIndex)
@@ -181,10 +191,9 @@ namespace OpenRCT2
             FreeEntity(*spr);
         }
 
-        auto& gameState = getGameState();
-        std::fill(std::begin(gameState.entities), std::end(gameState.entities), Entity_t());
-        OpenRCT2::RideUse::GetHistory().Clear();
-        OpenRCT2::RideUse::GetTypeHistory().Clear();
+        std::fill(std::begin(entities), std::end(entities), Entity_t());
+        RideUse::GetHistory().Clear();
+        RideUse::GetTypeHistory().Clear();
         for (int32_t i = 0; i < kMaxEntities; ++i)
         {
             auto* spr = GetEntity(EntityId::FromUnderlying(i));
@@ -247,7 +256,7 @@ namespace OpenRCT2
     {
         EntitiesChecksum checksum{};
 
-        OpenRCT2::ChecksumStream ms(checksum.raw);
+        ChecksumStream ms(checksum.raw);
         DataSerialiser ds(true, ms);
         NetworkSerialiseEntityTypes<Guest, Staff, Vehicle, Litter>(ds);
 
@@ -576,8 +585,8 @@ namespace OpenRCT2
             guest->SetName({});
             guest->GuestNextInQueue = EntityId::GetNull();
 
-            OpenRCT2::RideUse::GetHistory().RemoveHandle(guest->Id);
-            OpenRCT2::RideUse::GetTypeHistory().RemoveHandle(guest->Id);
+            RideUse::GetHistory().RemoveHandle(guest->Id);
+            RideUse::GetTypeHistory().RemoveHandle(guest->Id);
         }
     }
 
