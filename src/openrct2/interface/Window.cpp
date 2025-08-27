@@ -490,15 +490,7 @@ static constexpr float kWindowScrollLocations[][2] = {
         if (v->zoom == zoomLevel)
             return;
 
-        // Zooming to cursor? Remember where we're pointing at the moment.
-        int32_t saved_map_x = 0;
-        int32_t saved_map_y = 0;
-        int32_t offset_x = 0;
-        int32_t offset_y = 0;
-        if (Config::Get().general.ZoomToCursor && atCursor)
-        {
-            WindowViewportGetMapCoordsByCursor(w, &saved_map_x, &saved_map_y, &offset_x, &offset_y);
-        }
+        const ZoomLevel previousZoomLevel = v->zoom;
 
         // Zoom in
         while (v->zoom > zoomLevel)
@@ -516,10 +508,21 @@ static constexpr float kWindowScrollLocations[][2] = {
             w.savedViewPos.y -= v->ViewHeight() / 4;
         }
 
-        // Zooming to cursor? Centre around the tile we were hovering over just now.
         if (Config::Get().general.ZoomToCursor && atCursor)
         {
-            WindowViewportCentreTileAroundCursor(w, saved_map_x, saved_map_y, offset_x, offset_y);
+            const auto mouseCoords = ContextGetCursorPositionScaled() - v->pos;
+            const int32_t diffX = (mouseCoords.x - (zoomLevel.ApplyInversedTo(v->ViewWidth()) / 2));
+            const int32_t diffY = (mouseCoords.y - (zoomLevel.ApplyInversedTo(v->ViewHeight()) / 2));
+            if (previousZoomLevel > zoomLevel)
+            {
+                w.savedViewPos.x += zoomLevel.ApplyTo(diffX);
+                w.savedViewPos.y += zoomLevel.ApplyTo(diffY);
+            }
+            else
+            {
+                w.savedViewPos.x -= previousZoomLevel.ApplyTo(diffX);
+                w.savedViewPos.y -= previousZoomLevel.ApplyTo(diffY);
+            }
         }
 
         // HACK: Prevents the redraw from failing when there is
