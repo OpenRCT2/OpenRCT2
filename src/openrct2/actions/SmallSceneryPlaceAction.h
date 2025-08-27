@@ -38,7 +38,7 @@ namespace OpenRCT2::GameActions
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 
-        uint32_t GetCooldownTime() const override;
+        uint32_t GetCooldownTime() const final;
         uint16_t GetActionFlags() const override;
 
         void Serialise(DataSerialiser& stream) override;
