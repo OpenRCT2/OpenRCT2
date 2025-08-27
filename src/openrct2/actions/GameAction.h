@@ -27,9 +27,13 @@ namespace OpenRCT2::GameActions
         constexpr uint16_t IgnoreForReplays = 1 << 3;
     } // namespace Flags
 
-    /**
-     *
-     */
+    // GCC 15.1 is overzealous with its 'final' warnings
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+    #pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#endif
+
     class GameActionParameterVisitor
     {
     public:
@@ -234,6 +238,10 @@ namespace OpenRCT2::GameActions
 
         bool LocationValid(const CoordsXY& coords) const;
     };
+
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+    #pragma GCC diagnostic pop
+#endif
 
     template<GameCommand TId>
     struct GameActionNameQuery
