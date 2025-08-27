@@ -411,30 +411,6 @@ static constexpr float kWindowScrollLocations[][2] = {
         }
     }
 
-    void WindowViewportCentreTileAroundCursor(WindowBase& w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y)
-    {
-        // Get viewport coordinates centring around the tile.
-        int32_t z = TileElementHeight({ map_x, map_y });
-        auto centreLoc = centre_2d_coordinates({ map_x, map_y, z }, w.viewport);
-
-        if (!centreLoc.has_value())
-        {
-            LOG_ERROR("Invalid location.");
-            return;
-        }
-
-        // Get mouse position to offset against.
-        auto mouseCoords = ContextGetCursorPositionScaled();
-
-        // Rebase mouse position onto centre of window, and compensate for zoom level.
-        int32_t rebased_x = w.viewport->zoom.ApplyTo((w.width >> 1) - mouseCoords.x);
-        int32_t rebased_y = w.viewport->zoom.ApplyTo((w.height >> 1) - mouseCoords.y);
-
-        // Apply offset to the viewport.
-        w.savedViewPos = { centreLoc->x + rebased_x + w.viewport->zoom.ApplyInversedTo(offset_x),
-                           centreLoc->y + rebased_y + w.viewport->zoom.ApplyInversedTo(offset_y) };
-    }
-
     /**
      * For all windows with viewports, ensure they do not have a zoom level less than the minimum.
      */
