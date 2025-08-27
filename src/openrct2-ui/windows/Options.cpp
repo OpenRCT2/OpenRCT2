@@ -824,7 +824,7 @@ namespace OpenRCT2::Ui::Windows
 
                         gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
 
-                        uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdown.items[i].args);
+                        uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdown.items[i].args.generic);
                         args[0] = STR_RESOLUTION_X_BY_Y;
                         args[1] = resolution.Width;
                         args[2] = resolution.Height;
@@ -840,33 +840,29 @@ namespace OpenRCT2::Ui::Windows
 
                     if (selectedResolution != -1 && selectedResolution < 32)
                     {
-                        Dropdown::SetChecked(selectedResolution, true);
+                        gDropdown.items[selectedResolution].setChecked(true);
                     }
                 }
 
                 break;
                 case WIDX_FULLSCREEN_DROPDOWN:
-                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[2].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[0].args = STR_OPTIONS_DISPLAY_WINDOWED;
-                    gDropdown.items[1].args = STR_OPTIONS_DISPLAY_FULLSCREEN;
-                    gDropdown.items[2].args = STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS;
+                    gDropdown.items[0] = Dropdown::MenuLabel(STR_OPTIONS_DISPLAY_WINDOWED);
+                    gDropdown.items[1] = Dropdown::MenuLabel(STR_OPTIONS_DISPLAY_FULLSCREEN);
+                    gDropdown.items[2] = Dropdown::MenuLabel(STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS);
 
                     ShowDropdown(widget, 3);
 
-                    Dropdown::SetChecked(Config::Get().general.FullscreenMode, true);
+                    gDropdown.items[Config::Get().general.FullscreenMode].setChecked(true);
                     break;
                 case WIDX_DRAWING_ENGINE_DROPDOWN:
                 {
                     const auto numItems = static_cast<int32_t>(std::size(kDrawingEngineStringIds));
                     for (int32_t i = 0; i < numItems; i++)
                     {
-                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdown.items[i].args = kDrawingEngineStringIds[i];
+                        gDropdown.items[i] = Dropdown::MenuLabel(kDrawingEngineStringIds[i]);
                     }
                     ShowDropdown(widget, numItems);
-                    Dropdown::SetChecked(EnumValue(Config::Get().general.DrawingEngine), true);
+                    gDropdown.items[EnumValue(Config::Get().general.DrawingEngine)].setChecked(true);
                     break;
                 }
                 case WIDX_SCALE_UP:
@@ -886,12 +882,9 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_FRAME_RATE_LIMIT_DROPDOWN:
                 {
-                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[2].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[0].args = STR_FRAME_RATE_LIMIT_DEFAULT;
-                    gDropdown.items[1].args = STR_FRAME_RATE_LIMIT_VSYNC;
-                    gDropdown.items[2].args = STR_FRAME_RATE_LIMIT_UNRESTRICTED;
+                    gDropdown.items[0] = Dropdown::MenuLabel(STR_FRAME_RATE_LIMIT_DEFAULT);
+                    gDropdown.items[1] = Dropdown::MenuLabel(STR_FRAME_RATE_LIMIT_VSYNC);
+                    gDropdown.items[2] = Dropdown::MenuLabel(STR_FRAME_RATE_LIMIT_UNRESTRICTED);
 
                     ShowDropdown(widget, 3);
 
@@ -902,7 +895,7 @@ namespace OpenRCT2::Ui::Windows
                         activeItem = config.UseVSync ? 1 : 2;
                     }
 
-                    Dropdown::SetChecked(activeItem, true);
+                    gDropdown.items[activeItem].setChecked(true);
                     break;
                 }
             }
@@ -1112,17 +1105,14 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_VIRTUAL_FLOOR_DROPDOWN:
-                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[2].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[0].args = STR_VIRTUAL_FLOOR_STYLE_DISABLED;
-                    gDropdown.items[1].args = STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT;
-                    gDropdown.items[2].args = STR_VIRTUAL_FLOOR_STYLE_GLASSY;
+                    gDropdown.items[0] = Dropdown::MenuLabel(STR_VIRTUAL_FLOOR_STYLE_DISABLED);
+                    gDropdown.items[1] = Dropdown::MenuLabel(STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT);
+                    gDropdown.items[2] = Dropdown::MenuLabel(STR_VIRTUAL_FLOOR_STYLE_GLASSY);
 
                     Widget* widget = &widgets[widgetIndex - 1];
                     ShowDropdown(widget, 3);
 
-                    Dropdown::SetChecked(static_cast<int32_t>(Config::Get().general.VirtualFloorStyle), true);
+                    gDropdown.items[static_cast<int32_t>(Config::Get().general.VirtualFloorStyle)].setChecked(true);
                     break;
             }
         }
@@ -1205,14 +1195,12 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_HEIGHT_LABELS_DROPDOWN:
-                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[0].args = STR_HEIGHT_IN_UNITS;
-                    gDropdown.items[1].args = STR_REAL_VALUES;
+                    gDropdown.items[0] = Dropdown::MenuLabel(STR_HEIGHT_IN_UNITS);
+                    gDropdown.items[1] = Dropdown::MenuLabel(STR_REAL_VALUES);
 
                     ShowDropdown(widget, 2);
 
-                    Dropdown::SetChecked(Config::Get().general.ShowHeightAsUnits ? 0 : 1, true);
+                    gDropdown.items[Config::Get().general.ShowHeightAsUnits ? 0 : 1].setChecked(true);
                     break;
                 case WIDX_CURRENCY_DROPDOWN:
                 {
@@ -1224,67 +1212,58 @@ namespace OpenRCT2::Ui::Windows
 
                     for (size_t i = 0; i < numOrdinaryCurrencies; i++)
                     {
-                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdown.items[i].args = CurrencyDescriptors[i].stringId;
+                        gDropdown.items[i] = Dropdown::MenuLabel(CurrencyDescriptors[i].stringId);
                     }
 
-                    gDropdown.items[numOrdinaryCurrencies].format = Dropdown::kSeparatorString;
+                    gDropdown.items[numOrdinaryCurrencies] = Dropdown::Separator();
 
-                    gDropdown.items[numOrdinaryCurrencies + 1].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[numOrdinaryCurrencies + 1].args = CurrencyDescriptors[EnumValue(CurrencyType::Custom)]
-                                                                          .stringId;
+                    gDropdown.items[numOrdinaryCurrencies + 1] = Dropdown::MenuLabel(
+                        CurrencyDescriptors[EnumValue(CurrencyType::Custom)].stringId);
 
                     ShowDropdown(widget, numItems);
 
                     if (Config::Get().general.CurrencyFormat == CurrencyType::Custom)
                     {
-                        Dropdown::SetChecked(EnumValue(Config::Get().general.CurrencyFormat) + 1, true);
+                        gDropdown.items[EnumValue(Config::Get().general.CurrencyFormat) + 1].setChecked(true);
                     }
                     else
                     {
-                        Dropdown::SetChecked(EnumValue(Config::Get().general.CurrencyFormat), true);
+                        gDropdown.items[EnumValue(Config::Get().general.CurrencyFormat)].setChecked(true);
                     }
                     break;
                 }
                 case WIDX_DISTANCE_DROPDOWN:
-                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[2].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[0].args = STR_IMPERIAL;
-                    gDropdown.items[1].args = STR_METRIC;
-                    gDropdown.items[2].args = STR_SI;
+                    gDropdown.items[0] = Dropdown::MenuLabel(STR_IMPERIAL);
+                    gDropdown.items[1] = Dropdown::MenuLabel(STR_METRIC);
+                    gDropdown.items[2] = Dropdown::MenuLabel(STR_SI);
 
                     ShowDropdown(widget, 3);
 
-                    Dropdown::SetChecked(static_cast<int32_t>(Config::Get().general.MeasurementFormat), true);
+                    gDropdown.items[static_cast<int32_t>(Config::Get().general.MeasurementFormat)].setChecked(true);
                     break;
                 case WIDX_TEMPERATURE_DROPDOWN:
-                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[0].args = STR_CELSIUS;
-                    gDropdown.items[1].args = STR_FAHRENHEIT;
+                    gDropdown.items[0] = Dropdown::MenuLabel(STR_CELSIUS);
+                    gDropdown.items[1] = Dropdown::MenuLabel(STR_FAHRENHEIT);
 
                     ShowDropdown(widget, 2);
 
-                    Dropdown::SetChecked(static_cast<int32_t>(Config::Get().general.TemperatureFormat), true);
+                    gDropdown.items[static_cast<int32_t>(Config::Get().general.TemperatureFormat)].setChecked(true);
                     break;
                 case WIDX_LANGUAGE_DROPDOWN:
                     for (size_t i = 1; i < LANGUAGE_COUNT; i++)
                     {
-                        gDropdown.items[i - 1].format = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdown.items[i - 1].args = reinterpret_cast<uintptr_t>(LanguagesDescriptors[i].native_name);
+                        gDropdown.items[i - 1] = Dropdown::MenuLabel(LanguagesDescriptors[i].native_name);
                     }
                     ShowDropdown(widget, LANGUAGE_COUNT - 1);
-                    Dropdown::SetChecked(LocalisationService_GetCurrentLanguage() - 1, true);
+                    gDropdown.items[LocalisationService_GetCurrentLanguage() - 1].setChecked(true);
                     break;
                 case WIDX_DATE_FORMAT_DROPDOWN:
                     for (size_t i = 0; i < 4; i++)
                     {
-                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdown.items[i].args = DateFormatStringIDs[i];
+                        gDropdown.items[i] = Dropdown::MenuLabel(DateFormatStringIDs[i]);
                     }
                     ShowDropdown(widget, 4);
-                    Dropdown::SetChecked(Config::Get().general.DateFormat, true);
+                    gDropdown.items[Config::Get().general.DateFormat].setChecked(true);
                     break;
             }
         }
@@ -1464,13 +1443,12 @@ namespace OpenRCT2::Ui::Windows
                     // populate the list with the sound devices
                     for (int32_t i = 0; i < OpenRCT2::Audio::GetDeviceCount(); i++)
                     {
-                        gDropdown.items[i].format = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdown.items[i].args = reinterpret_cast<uintptr_t>(OpenRCT2::Audio::GetDeviceName(i).c_str());
+                        gDropdown.items[i] = Dropdown::MenuLabel(OpenRCT2::Audio::GetDeviceName(i).c_str());
                     }
 
                     ShowDropdown(widget, OpenRCT2::Audio::GetDeviceCount());
 
-                    Dropdown::SetChecked(OpenRCT2::Audio::GetCurrentDeviceIndex(), true);
+                    gDropdown.items[OpenRCT2::Audio::GetCurrentDeviceIndex()].setChecked(true);
                     break;
                 case WIDX_TITLE_MUSIC_DROPDOWN:
                 {
@@ -1485,11 +1463,10 @@ namespace OpenRCT2::Ui::Windows
                         if (Config::Get().sound.TitleMusic == theme.Kind)
                             checkedIndex = numItems;
 
-                        gDropdown.items[numItems].format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdown.items[numItems++].args = theme.Name;
+                        gDropdown.items[numItems++] = Dropdown::MenuLabel(theme.Name);
                     }
                     ShowDropdown(widget, numItems);
-                    Dropdown::SetChecked(checkedIndex, true);
+                    gDropdown.items[checkedIndex].setChecked(true);
                     break;
                 }
             }
@@ -1822,15 +1799,14 @@ namespace OpenRCT2::Ui::Windows
 
                     for (size_t i = 0; i < numItems; i++)
                     {
-                        gDropdown.items[i].format = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdown.items[i].args = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
+                        gDropdown.items[i] = Dropdown::MenuLabel(ThemeManagerGetAvailableThemeName(i));
                     }
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
                         Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
 
-                    Dropdown::SetChecked(static_cast<int32_t>(ThemeManagerGetAvailableThemeIndex()), true);
+                    gDropdown.items[static_cast<int32_t>(ThemeManagerGetAvailableThemeIndex())].setChecked(true);
                     InvalidateWidget(WIDX_THEMES_DROPDOWN);
                     break;
             }
@@ -1932,14 +1908,12 @@ namespace OpenRCT2::Ui::Windows
                     uint32_t numItems = static_cast<int32_t>(TitleSequenceManager::GetCount());
                     for (size_t i = 0; i < numItems; i++)
                     {
-                        gDropdown.items[i].format = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdown.items[i].args = reinterpret_cast<uintptr_t>(TitleSequenceManager::GetName(i));
+                        gDropdown.items[i] = Dropdown::MenuLabel(TitleSequenceManager::GetName(i));
                     }
 
-                    gDropdown.items[numItems].format = 0;
+                    gDropdown.items[numItems] = Dropdown::Separator();
                     numItems++;
-                    gDropdown.items[numItems].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[numItems].args = STR_TITLE_SEQUENCE_RANDOM;
+                    gDropdown.items[numItems] = Dropdown::MenuLabel(STR_TITLE_SEQUENCE_RANDOM);
                     numItems++;
 
                     WindowDropdownShowText(
@@ -1949,34 +1923,31 @@ namespace OpenRCT2::Ui::Windows
                     auto selectedIndex = Config::Get().interface.RandomTitleSequence
                         ? numItems - 1
                         : static_cast<int32_t>(TitleGetCurrentSequence());
-                    Dropdown::SetChecked(selectedIndex, true);
+                    gDropdown.items[selectedIndex].setChecked(true);
                     break;
                 }
                 case WIDX_SCENARIO_PREVIEWS_DROPDOWN:
                 {
                     uint32_t numItems = 2;
 
-                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[0].args = STR_SCENARIO_PREVIEWS_MINIMAPS;
-                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[1].args = STR_SCENARIO_PREVIEWS_SCREENSHOTS;
+                    gDropdown.items[0] = Dropdown::MenuLabel(STR_SCENARIO_PREVIEWS_MINIMAPS);
+                    gDropdown.items[1] = Dropdown::MenuLabel(STR_SCENARIO_PREVIEWS_SCREENSHOTS);
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
                         Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
 
-                    Dropdown::SetChecked(Config::Get().interface.scenarioPreviewScreenshots, true);
+                    gDropdown.items[Config::Get().interface.scenarioPreviewScreenshots].setChecked(true);
                     break;
                 }
                 case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
                     for (size_t i = 0; i < 7; i++)
                     {
-                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdown.items[i].args = kRideInspectionIntervalNames[i];
+                        gDropdown.items[i] = Dropdown::MenuLabel(kRideInspectionIntervalNames[i]);
                     }
 
                     ShowDropdown(widget, 7);
-                    Dropdown::SetChecked(Config::Get().general.DefaultInspectionInterval, true);
+                    gDropdown.items[Config::Get().general.DefaultInspectionInterval].setChecked(true);
                     break;
             }
         }
@@ -2167,12 +2138,11 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_AUTOSAVE_FREQUENCY_DROPDOWN:
                     for (size_t i = AUTOSAVE_EVERY_MINUTE; i <= AUTOSAVE_NEVER; i++)
                     {
-                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdown.items[i].args = AutosaveNames[i];
+                        gDropdown.items[i] = Dropdown::MenuLabel(AutosaveNames[i]);
                     }
 
                     ShowDropdown(widget, AUTOSAVE_NEVER + 1);
-                    Dropdown::SetChecked(Config::Get().general.AutosaveFrequency, true);
+                    gDropdown.items[Config::Get().general.AutosaveFrequency].setChecked(true);
                     break;
                 case WIDX_AUTOSAVE_AMOUNT_UP:
                     Config::Get().general.AutosaveAmount += 1;

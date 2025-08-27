@@ -12,6 +12,7 @@
 #include <array>
 #include <openrct2-ui/UiStringIds.h>
 #include <openrct2/core/EnumUtils.hpp>
+#include <openrct2/core/StringTypes.h>
 #include <openrct2/interface/Window.h>
 #include <span>
 
@@ -65,12 +66,6 @@ namespace OpenRCT2::Ui::Windows
 
 namespace OpenRCT2::Dropdown
 {
-    bool IsChecked(int32_t index);
-    bool IsDisabled(int32_t index);
-    void SetChecked(int32_t index, bool value);
-    void SetDisabled(int32_t index, bool value);
-    void SetImage(int32_t index, ImageId image);
-
     enum Flag
     {
         CustomHeight = (1 << 6), // never set?
@@ -87,8 +82,14 @@ namespace OpenRCT2::Dropdown
     struct Item
     {
         StringId format{};
-        int64_t args{};
+        union
+        {
+            int64_t generic;
+            const utf8* string;
+            ImageId image;
+        } args{};
         ItemFlags flags{};
+        StringId tooltip{};
 
         constexpr bool isSeparator() const
         {
@@ -100,9 +101,19 @@ namespace OpenRCT2::Dropdown
             return flags.has(ItemFlag::isDisabled);
         }
 
+        constexpr void setDisabled(bool on)
+        {
+            flags.set(ItemFlag::isDisabled, on);
+        }
+
         constexpr bool isChecked() const
         {
             return flags.has(ItemFlag::isChecked);
+        }
+
+        constexpr void setChecked(bool on)
+        {
+            flags.set(ItemFlag::isChecked, on);
         }
     };
 
@@ -125,17 +136,52 @@ namespace OpenRCT2::Dropdown
         return ItemExt(_expectedItemIndex, STR_TOGGLE_OPTION, _stringId);
     }
 
-    constexpr ItemExt Separator()
+    constexpr ItemExt ExtSeparator()
     {
         return ItemExt(-1, Dropdown::kSeparatorString, kStringIdEmpty);
+    }
+
+    /**
+     * Regular menu item, which shows a » symbol when selected
+     */
+    constexpr Item MenuLabel(StringId stringId)
+    {
+        return Item{ STR_DROPDOWN_MENU_LABEL, stringId };
+    }
+
+    /**
+     * Leaves out the left padding where a checkmark can be drawn, use only for menu where no item can be checked.
+     */
+    constexpr Item PlainMenuLabel(StringId stringId)
+    {
+        return Item{ stringId };
+    }
+
+    Item MenuLabel(const utf8* string);
+    Item PlainMenuLabel(const utf8* string);
+
+    /**
+     * Like MenuLabel, but shows a tick when selected.
+     */
+    constexpr Item ToggleOption(StringId stringId)
+    {
+        return Item{ STR_TOGGLE_OPTION, stringId };
+    }
+
+    constexpr Item Separator()
+    {
+        return Item{ kSeparatorString };
+    }
+
+    constexpr Item ImageItem(ImageId image, StringId tooltip = kStringIdEmpty)
+    {
+        return Item{ .format = Dropdown::kFormatLandPicker, .args = { .image = image }, .tooltip = tooltip };
     }
 
     struct DropdownState
     {
         int32_t numItems{};
         std::array<Dropdown::Item, Dropdown::kItemsMaxSize> items{};
-        std::array<StringId, Dropdown::kItemsMaxSize> tooltips{};
-        std::array<ImageId, Dropdown::kItemsMaxSize> itemsImages{};
         bool hasTooltips{};
         int32_t lastTooltipHover{};
         int32_t highlightedIndex{};
@@ -149,7 +195,7 @@ namespace OpenRCT2::Dropdown
         {
             const ItemExt& item = items[i];
             OpenRCT2::Ui::Windows::gDropdown.items[i].format = item.itemFormat;
-            OpenRCT2::Ui::Windows::gDropdown.items[i].args = item.stringId;
+            OpenRCT2::Ui::Windows::gDropdown.items[i].args.generic = item.stringId;
         }
     }
 

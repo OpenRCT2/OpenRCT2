@@ -513,8 +513,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_FILTER_DROPDOWN_BTN:
                     for (auto ddIdx = EnumValue(DDIX_FILTER_RCT1); ddIdx <= EnumValue(DDIX_FILTER_CUSTOM); ddIdx++)
                     {
-                        gDropdown.items[ddIdx].args = kSourceStringIds[ddIdx];
-                        gDropdown.items[ddIdx].format = STR_TOGGLE_OPTION;
+                        gDropdown.items[ddIdx] = Dropdown::ToggleOption(kSourceStringIds[ddIdx]);
                     }
 
                     // Track designs manager cannot select multiple, so only show selection filters if not in track designs
@@ -522,12 +521,10 @@ namespace OpenRCT2::Ui::Windows
                     if (!(gLegacyScene == LegacyScene::trackDesignsManager))
                     {
                         numSelectionItems = 3;
-                        gDropdown.items[DDIX_FILTER_SEPARATOR].format = 0;
-                        gDropdown.items[DDIX_FILTER_SELECTED].format = STR_TOGGLE_OPTION;
-                        gDropdown.items[DDIX_FILTER_NONSELECTED].format = STR_TOGGLE_OPTION;
-                        gDropdown.items[DDIX_FILTER_SEPARATOR].args = kStringIdNone;
-                        gDropdown.items[DDIX_FILTER_SELECTED].args = STR_SELECTED_ONLY;
-                        gDropdown.items[DDIX_FILTER_NONSELECTED].args = STR_NON_SELECTED_ONLY;
+                        gDropdown.items[DDIX_FILTER_SEPARATOR] = Dropdown::Separator();
+
+                        gDropdown.items[DDIX_FILTER_SELECTED] = Dropdown::ToggleOption(STR_SELECTED_ONLY);
+                        gDropdown.items[DDIX_FILTER_NONSELECTED] = Dropdown::ToggleOption(STR_NON_SELECTED_ONLY);
                     }
 
                     auto& ddWidget = widgets[WIDX_FILTER_DROPDOWN];
@@ -539,14 +536,14 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (_filterFlags & (1 << i))
                         {
-                            Dropdown::SetChecked(i, true);
+                            gDropdown.items[i].setChecked(true);
                         }
                     }
 
                     if (!(gLegacyScene == LegacyScene::trackDesignsManager))
                     {
-                        Dropdown::SetChecked(DDIX_FILTER_SELECTED, IsFilterActive(FILTER_SELECTED));
-                        Dropdown::SetChecked(DDIX_FILTER_NONSELECTED, IsFilterActive(FILTER_NONSELECTED));
+                        gDropdown.items[DDIX_FILTER_SELECTED].setChecked(IsFilterActive(FILTER_SELECTED));
+                        gDropdown.items[DDIX_FILTER_NONSELECTED].setChecked(IsFilterActive(FILTER_NONSELECTED));
                     }
                     break;
             }

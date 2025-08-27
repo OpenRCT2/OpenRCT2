@@ -478,15 +478,14 @@ namespace OpenRCT2::Ui::Windows
 
         for (std::size_t i = 0; i < std::size(kResearchFundingLevelNames); i++)
         {
-            gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-            gDropdown.items[i].args = kResearchFundingLevelNames[i];
+            gDropdown.items[i] = Dropdown::MenuLabel(kResearchFundingLevelNames[i]);
         }
         WindowDropdownShowTextCustomWidth(
             { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
             w->colours[1], 0, Dropdown::Flag::StayOpen, 4, dropdownWidget->width() - 3);
 
         int32_t currentResearchLevel = gameState.researchFundingLevel;
-        Dropdown::SetChecked(currentResearchLevel, true);
+        gDropdown.items[currentResearchLevel].setChecked(true);
     }
 
     void WindowResearchFundingMouseUp(WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex)

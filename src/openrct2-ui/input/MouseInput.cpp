@@ -1343,7 +1343,7 @@ namespace OpenRCT2
                         {
                             dropdown_index = DropdownIndexFromPoint(screenCoords, w);
                             dropdownCleanup = dropdown_index == -1
-                                || (dropdown_index < Dropdown::kItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
+                                || (dropdown_index < Dropdown::kItemsMaxSize && gDropdown.items[dropdown_index].isDisabled())
                                 || gDropdown.items[dropdown_index].isSeparator();
                             w = nullptr; // To be closed right next
                         }
@@ -1392,7 +1392,7 @@ namespace OpenRCT2
 
                             if (dropdown_index == -1)
                             {
-                                if (!Dropdown::IsDisabled(gDropdown.defaultIndex))
+                                if (!gDropdown.items[gDropdown.defaultIndex].isDisabled())
                                 {
                                     dropdown_index = gDropdown.defaultIndex;
                                 }
@@ -1473,10 +1473,10 @@ namespace OpenRCT2
                 gDropdown.lastTooltipHover = dropdown_index;
                 WindowTooltipClose();
 
-                WindowTooltipShow(OpenRCT2String{ gDropdown.tooltips[dropdown_index], {} }, screenCoords);
+                WindowTooltipShow(OpenRCT2String{ gDropdown.items[dropdown_index].tooltip, {} }, screenCoords);
             }
 
-            if (dropdown_index < Dropdown::kItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
+            if (dropdown_index < Dropdown::kItemsMaxSize && gDropdown.items[dropdown_index].isDisabled())
             {
                 return;
             }

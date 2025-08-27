@@ -749,8 +749,7 @@ namespace OpenRCT2::Ui::Windows
 
                 if (objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings)
                 {
-                    gDropdown.items[numItems].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[numItems].args = ObjectiveDropdownOptionNames[i];
+                    gDropdown.items[numItems] = Dropdown::MenuLabel(ObjectiveDropdownOptionNames[i]);
                     numItems++;
                 }
             }
@@ -763,9 +762,9 @@ namespace OpenRCT2::Ui::Windows
             auto objectiveType = EnumValue(scenarioOptions.objective.Type);
             for (int32_t j = 0; j < numItems; j++)
             {
-                if (gDropdown.items[j].args - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType)
+                if (gDropdown.items[j].args.generic - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType)
                 {
-                    Dropdown::SetChecked(j, true);
+                    gDropdown.items[j].setChecked(true);
                     break;
                 }
             }
@@ -775,8 +774,7 @@ namespace OpenRCT2::Ui::Windows
         {
             for (int32_t i = EnumValue(Scenario::Category::beginner); i <= EnumValue(Scenario::Category::other); i++)
             {
-                gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                gDropdown.items[i].args = Scenario::kScenarioCategoryStringIds[i];
+                gDropdown.items[i] = Dropdown::MenuLabel(Scenario::kScenarioCategoryStringIds[i]);
             }
 
             Widget* dropdownWidget = &widgets[WIDX_CATEGORY];
@@ -784,7 +782,7 @@ namespace OpenRCT2::Ui::Windows
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                 colours[1], 0, Dropdown::Flag::StayOpen, 5, dropdownWidget->width() - 3);
 
-            Dropdown::SetChecked(EnumValue(getGameState().scenarioOptions.category), true);
+            gDropdown.items[EnumValue(getGameState().scenarioOptions.category)].setChecked(true);
         }
 
         void Arg1Increase()
@@ -1021,7 +1019,7 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_OBJECTIVE_DROPDOWN:
                     // TODO: Don't rely on string ID order
                     auto newObjectiveType = static_cast<Scenario::ObjectiveType>(
-                        gDropdown.items[dropdownIndex].args - STR_OBJECTIVE_DROPDOWN_NONE);
+                        gDropdown.items[dropdownIndex].args.generic - STR_OBJECTIVE_DROPDOWN_NONE);
                     if (gameState.scenarioOptions.objective.Type != newObjectiveType)
                         SetObjective(newObjectiveType);
                     break;
@@ -1557,23 +1555,20 @@ namespace OpenRCT2::Ui::Windows
                 {
                     Widget* dropdownWidget = &widgets[widgetIndex - 1];
 
-                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[0].args = STR_FREE_PARK_ENTER;
-                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[1].args = STR_PAY_PARK_ENTER;
-                    gDropdown.items[2].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[2].args = STR_PAID_ENTRY_PAID_RIDES;
+                    gDropdown.items[0] = Dropdown::MenuLabel(STR_FREE_PARK_ENTER);
+                    gDropdown.items[1] = Dropdown::MenuLabel(STR_PAY_PARK_ENTER);
+                    gDropdown.items[2] = Dropdown::MenuLabel(STR_PAID_ENTRY_PAID_RIDES);
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() - 1,
                         colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
 
                     if (gameState.park.flags & PARK_FLAGS_UNLOCK_ALL_PRICES)
-                        Dropdown::SetChecked(2, true);
+                        gDropdown.items[2].setChecked(true);
                     else if (gameState.park.flags & PARK_FLAGS_PARK_FREE_ENTRY)
-                        Dropdown::SetChecked(0, true);
+                        gDropdown.items[0].setChecked(true);
                     else
-                        Dropdown::SetChecked(1, true);
+                        gDropdown.items[1].setChecked(true);
 
                     break;
                 }
@@ -1896,15 +1891,10 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto& dropdownWidget = widgets[widgetIndex - 1];
 
-                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[2].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[3].format = STR_DROPDOWN_MENU_LABEL;
-
-                    gDropdown.items[0].args = STR_GUESTS_PREFER_INTENSITY_NONE;
-                    gDropdown.items[1].args = STR_GUESTS_PREFER_INTENSITY_BALANCED;
-                    gDropdown.items[2].args = STR_GUESTS_PREFER_INTENSITY_LESS_INTENSE_RIDES;
-                    gDropdown.items[3].args = STR_GUESTS_PREFER_INTENSITY_MORE_INTENSE_RIDES;
+                    gDropdown.items[0] = Dropdown::MenuLabel(STR_GUESTS_PREFER_INTENSITY_NONE);
+                    gDropdown.items[1] = Dropdown::MenuLabel(STR_GUESTS_PREFER_INTENSITY_BALANCED);
+                    gDropdown.items[2] = Dropdown::MenuLabel(STR_GUESTS_PREFER_INTENSITY_LESS_INTENSE_RIDES);
+                    gDropdown.items[3] = Dropdown::MenuLabel(STR_GUESTS_PREFER_INTENSITY_MORE_INTENSE_RIDES);
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.top }, dropdownWidget.height() - 1,
@@ -1921,7 +1911,7 @@ namespace OpenRCT2::Ui::Windows
                     else if (!preferLess && preferMore)
                         prefItem = 3;
 
-                    Dropdown::SetChecked(prefItem, true);
+                    gDropdown.items[prefItem].setChecked(true);
                     break;
                 }
                 case WIDX_HARD_GUEST_GENERATION:

@@ -175,11 +175,11 @@ namespace OpenRCT2::Ui::Windows
             if (widgetIndex == WIDX_GAME_TOOLS)
             {
                 int32_t i = 0;
-                gDropdown.items[i++].format = STR_SCENARIO_EDITOR;
-                gDropdown.items[i++].format = STR_CONVERT_SAVED_GAME_TO_SCENARIO;
-                gDropdown.items[i++].format = STR_ROLLER_COASTER_DESIGNER;
-                gDropdown.items[i++].format = STR_TRACK_DESIGNS_MANAGER;
-                gDropdown.items[i++].format = STR_OPEN_USER_CONTENT_FOLDER;
+                gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_SCENARIO_EDITOR);
+                gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_CONVERT_SAVED_GAME_TO_SCENARIO);
+                gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_ROLLER_COASTER_DESIGNER);
+                gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_TRACK_DESIGNS_MANAGER);
+                gDropdown.items[i++] = Dropdown::PlainMenuLabel(STR_OPEN_USER_CONTENT_FOLDER);
 
 #ifdef ENABLE_SCRIPTING
                 auto hasCustomItems = false;
@@ -190,16 +190,13 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Toolbox)
                         {
-                            // Add seperator
                             if (!hasCustomItems)
                             {
                                 hasCustomItems = true;
-                                gDropdown.items[i++].format = kStringIdEmpty;
+                                gDropdown.items[i++] = Dropdown::Separator();
                             }
 
-                            gDropdown.items[i].format = STR_STRING;
-                            auto sz = item.Text.c_str();
-                            std::memcpy(&gDropdown.items[i].args, &sz, sizeof(const char*));
+                            gDropdown.items[i] = Dropdown::PlainMenuLabel(item.Text.c_str());
                             i++;
                         }
                     }

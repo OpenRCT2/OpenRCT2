@@ -530,16 +530,15 @@ namespace OpenRCT2::Ui::Windows
 
         for (auto i = 0; i < NetworkGetNumGroups(); i++)
         {
-            gDropdown.items[i].format = STR_OPTIONS_DROPDOWN_ITEM;
-            gDropdown.items[i].args = reinterpret_cast<uintptr_t>(NetworkGetGroupName(i));
+            gDropdown.items[i] = Dropdown::MenuLabel(NetworkGetGroupName(i));
         }
         if (widget == &widgets[WIDX_DEFAULT_GROUP_DROPDOWN])
         {
-            Dropdown::SetChecked(NetworkGetGroupIndex(NetworkGetDefaultGroup()), true);
+            gDropdown.items[NetworkGetGroupIndex(NetworkGetDefaultGroup())].setChecked(true);
         }
         else if (widget == &widgets[WIDX_SELECTED_GROUP_DROPDOWN])
         {
-            Dropdown::SetChecked(NetworkGetGroupIndex(_selectedGroup), true);
+            gDropdown.items[NetworkGetGroupIndex(_selectedGroup)].setChecked(true);
         }
     }
 

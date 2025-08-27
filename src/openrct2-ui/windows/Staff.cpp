@@ -428,8 +428,8 @@ namespace OpenRCT2::Ui::Windows
                 case WIDX_PATROL:
                 {
                     // Dropdown names
-                    gDropdown.items[0].format = STR_SET_PATROL_AREA;
-                    gDropdown.items[1].format = STR_CLEAR_PATROL_AREA;
+                    gDropdown.items[0] = Dropdown::PlainMenuLabel(STR_SET_PATROL_AREA);
+                    gDropdown.items[1] = Dropdown::PlainMenuLabel(STR_CLEAR_PATROL_AREA);
 
                     auto ddPos = ScreenCoordsXY{ widget->left + windowPos.x, widget->top + windowPos.y };
                     int32_t extraHeight = widget->height() + 1;
@@ -445,7 +445,7 @@ namespace OpenRCT2::Ui::Windows
                     // Disable clear patrol area if no area is set.
                     if (!staff->HasPatrolArea())
                     {
-                        Dropdown::SetDisabled(1, true);
+                        gDropdown.items[1].setDisabled(true);
                     }
                 }
             }
@@ -783,10 +783,7 @@ namespace OpenRCT2::Ui::Windows
             auto numCostumes = _availableCostumes.size();
             for (auto i = 0u; i < numCostumes; i++)
             {
-                // TODO: rework interface to dropdown arguments so memcpy won't be needed
-                auto* nameStr = _availableCostumes[i].friendlyName.c_str();
-                std::memcpy(&gDropdown.items[i].args, &nameStr, sizeof(const char*));
-                gDropdown.items[i].format = STR_OPTIONS_DROPDOWN_ITEM;
+                gDropdown.items[i] = Dropdown::MenuLabel(_availableCostumes[i].friendlyName.c_str());
 
                 // Remember what item to check for the end of this event function
                 auto costumeIndex = _availableCostumes[i].index;
@@ -801,7 +798,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Set selection
             if (checkedIndex != -1)
-                Dropdown::SetChecked(checkedIndex, true);
+                gDropdown.items[checkedIndex].setChecked(true);
         }
 
         void OptionsOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
@@ -1167,8 +1164,8 @@ namespace OpenRCT2::Ui::Windows
 
         void ShowLocateDropdown(Widget* widget)
         {
-            gDropdown.items[0].format = STR_LOCATE_SUBJECT_TIP;
-            gDropdown.items[1].format = STR_FOLLOW_SUBJECT_TIP;
+            gDropdown.items[0] = Dropdown::PlainMenuLabel(STR_LOCATE_SUBJECT_TIP);
+            gDropdown.items[1] = Dropdown::PlainMenuLabel(STR_FOLLOW_SUBJECT_TIP);
 
             WindowDropdownShowText(
                 { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 2);

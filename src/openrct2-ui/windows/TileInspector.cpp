@@ -894,18 +894,15 @@ static uint64_t PageDisabledWidgets[] = {
                             // Use dropdown instead of dropdown button
                             widget--;
                             // Fill dropdown list
-                            gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-                            gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
-                            gDropdown.items[2].format = STR_DROPDOWN_MENU_LABEL;
-                            gDropdown.items[0].args = STR_TILE_INSPECTOR_WALL_FLAT;
-                            gDropdown.items[1].args = STR_TILE_INSPECTOR_WALL_SLOPED_LEFT;
-                            gDropdown.items[2].args = STR_TILE_INSPECTOR_WALL_SLOPED_RIGHT;
+                            gDropdown.items[0] = Dropdown::MenuLabel(STR_TILE_INSPECTOR_WALL_FLAT);
+                            gDropdown.items[1] = Dropdown::MenuLabel(STR_TILE_INSPECTOR_WALL_SLOPED_LEFT);
+                            gDropdown.items[2] = Dropdown::MenuLabel(STR_TILE_INSPECTOR_WALL_SLOPED_RIGHT);
                             WindowDropdownShowTextCustomWidth(
                                 { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
                                 Dropdown::Flag::StayOpen, 3, widget->width() - 3);
 
                             // Set current value as checked
-                            Dropdown::SetChecked(tileElement->AsWall()->GetSlope(), true);
+                            gDropdown.items[tileElement->AsWall()->GetSlope()].setChecked(true);
                             break;
                         }
 

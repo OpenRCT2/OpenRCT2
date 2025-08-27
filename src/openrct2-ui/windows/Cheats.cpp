@@ -996,14 +996,13 @@ static StringId window_cheats_page_titles[] = {
 
                     for (size_t i = 0; i < std::size(_staffSpeedNames); i++)
                     {
-                        gDropdown.items[i].args = _staffSpeedNames[i];
-                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
+                        gDropdown.items[i] = Dropdown::MenuLabel(_staffSpeedNames[i]);
                     }
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                         colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
-                    Dropdown::SetChecked(EnumValue(gameState.cheats.selectedStaffSpeed), true);
+                    gDropdown.items[EnumValue(gameState.cheats.selectedStaffSpeed)].setChecked(true);
                 }
             }
         }
@@ -1020,15 +1019,14 @@ static StringId window_cheats_page_titles[] = {
 
                     for (size_t i = 0; i < std::size(WeatherTypes); i++)
                     {
-                        gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdown.items[i].args = WeatherTypes[i];
+                        gDropdown.items[i] = Dropdown::MenuLabel(WeatherTypes[i]);
                     }
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                         colours[1], 0, Dropdown::Flag::StayOpen, std::size(WeatherTypes), dropdownWidget->width() - 3);
 
                     auto currentWeather = gameState.weatherCurrent.weatherType;
-                    Dropdown::SetChecked(EnumValue(currentWeather), true);
+                    gDropdown.items[EnumValue(currentWeather)].setChecked(true);
 
                     break;
                 }

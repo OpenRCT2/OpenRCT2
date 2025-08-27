@@ -87,11 +87,8 @@ namespace OpenRCT2::Ui::Windows
                     }
                     break;
                 case WIDX_AFFIX_DROPDOWN_BUTTON:
-                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[0].args = STR_PREFIX;
-
-                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[1].args = STR_SUFFIX;
+                    gDropdown.items[0] = Dropdown::MenuLabel(STR_PREFIX);
+                    gDropdown.items[1] = Dropdown::MenuLabel(STR_SUFFIX);
 
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
@@ -99,11 +96,11 @@ namespace OpenRCT2::Ui::Windows
 
                     if (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode == CurrencyAffix::Prefix)
                     {
-                        Dropdown::SetChecked(0, true);
+                        gDropdown.items[0].setChecked(true);
                     }
                     else
                     {
-                        Dropdown::SetChecked(1, true);
+                        gDropdown.items[1].setChecked(true);
                     }
 
                     break;

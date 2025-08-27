@@ -339,26 +339,24 @@ namespace OpenRCT2::Ui::Windows
                     for (size_t i = 0; i < _numPages; i++)
                     {
                         gDropdown.items[i].format = STR_DROPDOWN_MENU_LABEL;
-                        uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdown.items[i].args);
+                        uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdown.items[i].args.generic);
                         args[0] = STR_PAGE_X;
                         args[1] = static_cast<uint16_t>(i + 1);
                     }
-                    Dropdown::SetChecked(static_cast<int32_t>(_selectedPage), true);
+                    gDropdown.items[static_cast<int32_t>(_selectedPage)].setChecked(true);
                     break;
                 }
                 case WIDX_INFO_TYPE_DROPDOWN_BUTTON:
                 {
-                    gDropdown.items[0].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[0].args = GetViewName(GuestViewType::Actions);
-                    gDropdown.items[1].format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdown.items[1].args = GetViewName(GuestViewType::Thoughts);
+                    gDropdown.items[0] = Dropdown::MenuLabel(GetViewName(GuestViewType::Actions));
+                    gDropdown.items[1] = Dropdown::MenuLabel(GetViewName(GuestViewType::Thoughts));
 
                     auto* widget = &widgets[widgetIndex - 1];
                     WindowDropdownShowTextCustomWidth(
                         { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
                         Dropdown::Flag::StayOpen, 2, widget->width() - 3);
 
-                    Dropdown::SetChecked(static_cast<int32_t>(_selectedView), true);
+                    gDropdown.items[static_cast<int32_t>(_selectedView)].setChecked(true);
                     break;
                 }
             }
