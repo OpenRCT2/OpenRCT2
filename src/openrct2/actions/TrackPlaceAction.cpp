@@ -14,10 +14,13 @@
 #include "../core/Money.hpp"
 #include "../core/Numerics.hpp"
 #include "../management/Finance.h"
+#include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"
+#include "../ui/WindowManager.h"
+#include "../windows/Intent.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"
 #include "../world/MapAnimation.h"
@@ -743,6 +746,13 @@ GameActions::Result TrackPlaceAction::Execute() const
     price >>= 16;
     res.Cost = costs + supportCosts + price;
     res.SetData(std::move(resultData));
+
+    // On any non-ghost placement, refresh the RideList so new rides appear immediately.
+    if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+    {
+        auto* windowMgr = Ui::GetWindowManager();
+        windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
+    }
 
     return res;
 }

@@ -12,10 +12,13 @@
 #include "../Diagnostic.h"
 #include "../GameState.h"
 #include "../management/Finance.h"
+#include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"
+#include "../ui/WindowManager.h"
+#include "../windows/Intent.h"
 #include "../world/Footpath.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TrackElement.h"
@@ -496,6 +499,18 @@ GameActions::Result TrackRemoveAction::Execute() const
                 break;
             default:
                 break;
+        }
+    }
+
+    // If removing non-ghost track resulted in no remaining track for this ride,
+    // invalidate and refresh the Ride List so it disappears immediately.
+    if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+    {
+        if (!RideHasAnyTrackElements(*ride))
+        {
+            ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_LIST;
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
         }
     }
 

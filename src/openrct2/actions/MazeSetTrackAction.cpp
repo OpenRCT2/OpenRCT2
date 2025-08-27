@@ -19,6 +19,8 @@
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
+#include "../ui/WindowManager.h"
+#include "../windows/Intent.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"
 #include "../world/Park.h"
@@ -239,6 +241,14 @@ GameActions::Result MazeSetTrackAction::Execute() const
         if (_initialPlacement && !(flags & GAME_COMMAND_FLAG_GHOST))
         {
             ride->overallView = startLoc;
+        }
+
+        // Broadcast a Ride List refresh only on the first actual (non-ghost) placement
+        // to align maze behavior with standard rides.
+        if (_initialPlacement && !(flags & GAME_COMMAND_FLAG_GHOST))
+        {
+            auto* windowMgr = Ui::GetWindowManager();
+            windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
         }
     }
 

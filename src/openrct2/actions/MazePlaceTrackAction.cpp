@@ -14,6 +14,8 @@
 #include "../ride/MazeCost.h"
 #include "../ride/RideData.h"
 #include "../ride/TrackData.h"
+#include "../ui/WindowManager.h"
+#include "../windows/Intent.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"
 #include "../world/Wall.h"
@@ -201,6 +203,9 @@ GameActions::Result MazePlaceTrackAction::Execute() const
     {
         ride->overallView = startLoc;
     }
+
+    auto* windowMgr = Ui::GetWindowManager();
+    windowMgr->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
 
     return res;
 }

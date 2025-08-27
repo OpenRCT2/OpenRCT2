@@ -251,6 +251,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * (QuestionableDeer)
 * David Sungaila (sungaila)
 * Garrett Leach (GarrettLeach)
+* Jacob Malone (jacobmalone28)
 
 ## Toolchain
 * (Balletie) - macOS

@@ -1147,8 +1147,13 @@ namespace OpenRCT2::Ui::Windows
         return window;
     }
 
-    void WindowRideListRefreshList(WindowBase* w)
+    void WindowRideListRefreshList()
     {
-        dynamic_cast<RideListWindow*>(w)->RefreshListWrapper();
+        auto* windowMgr = GetWindowManager();
+        auto w = static_cast<RideListWindow*>(windowMgr->FindByClass(WindowClass::RideList));
+        if (w)
+        {
+            w->RefreshListWrapper();
+        }
     }
 } // namespace OpenRCT2::Ui::Windows

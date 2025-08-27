@@ -20,7 +20,6 @@
 #include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/input/MouseInput.h>
 #include <openrct2-ui/input/ShortcutManager.h>
-#include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
@@ -413,12 +412,7 @@ public:
 
             case INTENT_ACTION_REFRESH_RIDE_LIST:
             {
-                auto window = FindByClass(WindowClass::RideList);
-                if (window != nullptr)
-                {
-                    WindowRideListRefreshList(window);
-                }
-
+                WindowRideListRefreshList();
                 break;
             }
 

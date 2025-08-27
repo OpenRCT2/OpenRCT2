@@ -259,7 +259,7 @@ namespace OpenRCT2::Ui::Windows
 
     // RideList
     WindowBase* RideListOpen();
-    void WindowRideListRefreshList(WindowBase* w);
+    void WindowRideListRefreshList();
 
     // SavePrompt
     WindowBase* SavePromptOpen();
