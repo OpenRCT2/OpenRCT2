@@ -22,7 +22,7 @@ namespace OpenRCT2::GameActions
         GameSetSpeedAction() = default;
         GameSetSpeedAction(uint8_t speed);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

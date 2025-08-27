@@ -25,7 +25,7 @@ namespace OpenRCT2::GameActions
         SignSetStyleAction() = default;
         SignSetStyleAction(BannerIndex bannerIndex, uint8_t mainColour, uint8_t textColour, bool isLarge);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

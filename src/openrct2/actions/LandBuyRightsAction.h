@@ -36,7 +36,7 @@ namespace OpenRCT2::GameActions
         LandBuyRightsAction(const MapRange& range, LandBuyRightSetting setting);
         LandBuyRightsAction(const CoordsXY& coord, LandBuyRightSetting setting);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

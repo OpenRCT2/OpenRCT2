@@ -24,7 +24,7 @@ namespace OpenRCT2::GameActions
         RideSetPriceAction() = default;
         RideSetPriceAction(RideId rideIndex, money64 price, bool primaryPrice);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

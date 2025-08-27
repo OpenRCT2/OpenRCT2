@@ -30,7 +30,7 @@ namespace OpenRCT2::GameActions
         LoadOrQuitAction() = default;
         LoadOrQuitAction(LoadOrQuitModes mode, PromptMode savePromptMode = PromptMode::saveBeforeLoad);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

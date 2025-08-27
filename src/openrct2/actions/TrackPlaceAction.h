@@ -38,9 +38,9 @@ namespace OpenRCT2::GameActions
             RideId rideIndex, TrackElemType trackType, ride_type_t rideType, const CoordsXYZD& origin, int32_t brakeSpeed,
             int32_t colour, int32_t seatRotation, SelectedLiftAndInverted liftHillAndAlternativeState, bool fromTrackDesign);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
-        uint16_t GetActionFlags() const override final;
+        uint16_t GetActionFlags() const final;
 
         void Serialise(DataSerialiser& stream) override;
         GameActions::Result Query() const override;

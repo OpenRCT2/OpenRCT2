@@ -44,9 +44,9 @@ namespace OpenRCT2::GameActions
             ObjectEntryIndex wallType, const CoordsXYZ& loc, uint8_t edge, int32_t primaryColour, int32_t secondaryColour,
             int32_t tertiaryColour);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
-        uint16_t GetActionFlags() const override final;
+        uint16_t GetActionFlags() const final;
 
         void Serialise(DataSerialiser& stream) override;
         Result Query() const override;

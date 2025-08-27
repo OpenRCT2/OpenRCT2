@@ -34,7 +34,7 @@ namespace OpenRCT2::GameActions
         BannerSetStyleAction() = default;
         BannerSetStyleAction(BannerSetStyleType type, BannerIndex bannerIndex, uint8_t parameter);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

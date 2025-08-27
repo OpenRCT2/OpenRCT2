@@ -35,7 +35,7 @@ namespace OpenRCT2::GameActions
 
         uint16_t GetActionFlags() const override;
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
         void Serialise(DataSerialiser& stream) override;
         Result Query() const override;
         Result Execute() const override;

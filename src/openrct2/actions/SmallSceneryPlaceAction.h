@@ -36,7 +36,7 @@ namespace OpenRCT2::GameActions
             const CoordsXYZD& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour,
             uint8_t secondaryColour, uint8_t tertiaryColour);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint32_t GetCooldownTime() const override;
         uint16_t GetActionFlags() const override;

@@ -24,7 +24,7 @@ namespace OpenRCT2::GameActions
         RideSetColourSchemeAction() = default;
         RideSetColourSchemeAction(const CoordsXYZD& location, TrackElemType trackType, uint16_t newColourScheme);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

@@ -22,7 +22,7 @@ namespace OpenRCT2::GameActions
         ParkSetEntranceFeeAction() = default;
         ParkSetEntranceFeeAction(money64 fee);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

@@ -29,7 +29,7 @@ namespace OpenRCT2::GameActions
         RideDemolishAction() = default;
         RideDemolishAction(RideId rideIndex, RideModifyType modifyType);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint32_t GetCooldownTime() const override;
 

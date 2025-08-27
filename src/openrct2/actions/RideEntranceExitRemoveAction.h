@@ -25,7 +25,7 @@ namespace OpenRCT2::GameActions
         RideEntranceExitRemoveAction() = default;
         RideEntranceExitRemoveAction(const CoordsXY& loc, RideId rideIndex, StationIndex stationNum, bool isExit);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 
