@@ -529,13 +529,14 @@ namespace OpenRCT2::Ui::Windows
             const auto groupId = NetworkGetGroupID(dropdownIndex);
             const auto windowHandle = std::make_pair(classification, number);
             auto playerSetGroupAction = GameActions::PlayerSetGroupAction(playerId, groupId);
-            playerSetGroupAction.SetCallback([windowHandle](const GameAction* ga, const GameActions::Result* result) {
-                if (result->Error == GameActions::Status::Ok)
-                {
-                    auto* windowMgr = Ui::GetWindowManager();
-                    windowMgr->InvalidateByNumber(windowHandle.first, windowHandle.second);
-                }
-            });
+            playerSetGroupAction.SetCallback(
+                [windowHandle](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                    if (result->Error == GameActions::Status::Ok)
+                    {
+                        auto* windowMgr = Ui::GetWindowManager();
+                        windowMgr->InvalidateByNumber(windowHandle.first, windowHandle.second);
+                    }
+                });
             GameActions::Execute(&playerSetGroupAction);
         }
 

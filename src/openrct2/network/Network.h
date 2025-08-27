@@ -25,15 +25,17 @@ constexpr const char* kNetworkLanBroadcastMsg = "openrct2.server.query";
 constexpr const char* kMasterServerURL = "https://servers.openrct2.io";
 constexpr uint16_t kMaxServerDescriptionLength = 256;
 
-class GameAction;
 struct Peep;
 struct CoordsXYZ;
+
 namespace OpenRCT2::GameActions
 {
+    class GameAction;
     enum class ModifyGroupType : uint8_t;
     enum class PermissionState : uint8_t;
     class Result;
 } // namespace OpenRCT2::GameActions
+
 enum class NetworkPermission : uint32_t;
 
 void NetworkReconnect();
@@ -97,7 +99,7 @@ void NetworkSetPickupPeepOldX(uint8_t playerid, int32_t x);
 [[nodiscard]] bool NetworkIsServerPlayerInvisible();
 
 void NetworkSendChat(const char* text, const std::vector<uint8_t>& playerIds = {});
-void NetworkSendGameAction(const GameAction* action);
+void NetworkSendGameAction(const OpenRCT2::GameActions::GameAction* action);
 void NetworkSendPassword(const std::string& password);
 
 void NetworkSetPassword(const char* password);

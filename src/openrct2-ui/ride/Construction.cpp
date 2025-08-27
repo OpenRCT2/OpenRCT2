@@ -232,7 +232,7 @@ namespace OpenRCT2
         auto gameAction = GameActions::RideCreateAction(
             listItem.Type, listItem.EntryIndex, colour1, colour2, getGameState().lastEntranceStyle);
 
-        gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
+        gameAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
             if (result->Error != GameActions::Status::Ok)
                 return;
             const auto rideIndex = result->GetData<RideId>();

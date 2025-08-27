@@ -538,7 +538,7 @@ namespace OpenRCT2::Ui::Windows
                 costume = findPeepAnimationsIndexForType(animPeepType);
 
             auto hireStaffAction = GameActions::StaffHireNewAction(autoPosition, staffType, costume, staffOrders);
-            hireStaffAction.SetCallback([=](const GameAction*, const GameActions::Result* res) -> void {
+            hireStaffAction.SetCallback([=](const GameActions::GameAction*, const GameActions::Result* res) -> void {
                 if (res->Error != GameActions::Status::Ok)
                     return;
 
@@ -555,19 +555,20 @@ namespace OpenRCT2::Ui::Windows
 
                     GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Pickup, staff->Id, nullLoc,
                                                                 NetworkGetCurrentPlayerId() };
-                    pickupAction.SetCallback([staffId = staff->Id](const GameAction* ga, const GameActions::Result* result) {
-                        if (result->Error != GameActions::Status::Ok)
-                            return;
+                    pickupAction.SetCallback(
+                        [staffId = staff->Id](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                            if (result->Error != GameActions::Status::Ok)
+                                return;
 
-                        auto* staff2 = GetEntity<Staff>(staffId);
-                        auto intent = Intent(WindowClass::Peep);
-                        intent.PutExtra(INTENT_EXTRA_PEEP, staff2);
-                        auto* wind = ContextOpenIntent(&intent);
-                        if (wind != nullptr)
-                        {
-                            ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::picker);
-                        }
-                    });
+                            auto* staff2 = GetEntity<Staff>(staffId);
+                            auto intent = Intent(WindowClass::Peep);
+                            intent.PutExtra(INTENT_EXTRA_PEEP, staff2);
+                            auto* wind = ContextOpenIntent(&intent);
+                            if (wind != nullptr)
+                            {
+                                ToolSet(*wind, WC_STAFF__WIDX_PICKUP, Tool::picker);
+                            }
+                        });
                     GameActions::Execute(&pickupAction);
                 }
                 else

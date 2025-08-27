@@ -221,8 +221,10 @@ namespace OpenRCT2::Ui::Windows
             windowMgr->Close(*w);
     }
 
-    static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const GameActions::Result* result);
-    static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const GameActions::Result* result);
+    static void RideConstructPlacedForwardGameActionCallback(
+        const GameActions::GameAction* ga, const GameActions::Result* result);
+    static void RideConstructPlacedBackwardGameActionCallback(
+        const GameActions::GameAction* ga, const GameActions::Result* result);
     static void CloseConstructWindowOnCompletion(const Ride& ride);
 
     class RideConstructionWindow final : public Window
@@ -2452,7 +2454,7 @@ namespace OpenRCT2::Ui::Windows
                 _currentTrackPieceType, 0,
                 { _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z, currentDirection });
 
-            trackRemoveAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+            trackRemoveAction.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                 {
                     WindowRideConstructionUpdateActiveElements();
@@ -2569,7 +2571,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto trackSetBrakeSpeed = GameActions::TrackSetBrakeSpeedAction(
                     _currentTrackBegin, tileElement->AsTrack()->GetTrackType(), brakesSpeed);
-                trackSetBrakeSpeed.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
+                trackSetBrakeSpeed.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
                     WindowRideConstructionUpdateActiveElements();
                 });
                 GameActions::Execute(&trackSetBrakeSpeed);
@@ -2657,36 +2659,37 @@ namespace OpenRCT2::Ui::Windows
                 entranceOrExitCoords, DirectionReverse(gRideEntranceExitPlaceDirection), gRideEntranceExitPlaceRideIndex,
                 gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
-            rideEntranceExitPlaceAction.SetCallback([=, this](const GameAction* ga, const GameActions::Result* result) {
-                if (result->Error != GameActions::Status::Ok)
-                    return;
+            rideEntranceExitPlaceAction.SetCallback(
+                [=, this](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                    if (result->Error != GameActions::Status::Ok)
+                        return;
 
-                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
 
-                auto* windowMgr = GetWindowManager();
+                    auto* windowMgr = GetWindowManager();
 
-                auto currentRide = GetRide(gRideEntranceExitPlaceRideIndex);
-                if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)
-                {
-                    ToolCancel();
-                    if (!currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+                    auto currentRide = GetRide(gRideEntranceExitPlaceRideIndex);
+                    if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)
                     {
-                        windowMgr->CloseByClass(WindowClass::RideConstruction);
+                        ToolCancel();
+                        if (!currentRide->getRideTypeDescriptor().HasFlag(RtdFlag::hasTrack))
+                        {
+                            windowMgr->CloseByClass(WindowClass::RideConstruction);
+                        }
                     }
-                }
-                else
-                {
-                    gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
-                    windowMgr->InvalidateByClass(WindowClass::RideConstruction);
+                    else
+                    {
+                        gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
+                        windowMgr->InvalidateByClass(WindowClass::RideConstruction);
 
-                    auto newToolWidgetIndex = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
-                        ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
-                        : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
+                        auto newToolWidgetIndex = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
+                            ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
+                            : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
 
-                    ToolCancel();
-                    ToolSet(*this, newToolWidgetIndex, Tool::crosshair);
-                }
-            });
+                        ToolCancel();
+                        ToolSet(*this, newToolWidgetIndex, Tool::crosshair);
+                    }
+                });
             auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
         }
 
@@ -2941,7 +2944,8 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const GameActions::Result* result)
+    static void RideConstructPlacedForwardGameActionCallback(
+        const GameActions::GameAction* ga, const GameActions::Result* result)
     {
         if (result->Error != GameActions::Status::Ok)
         {
@@ -2987,7 +2991,8 @@ namespace OpenRCT2::Ui::Windows
             CloseConstructWindowOnCompletion(*ride);
     }
 
-    static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const GameActions::Result* result)
+    static void RideConstructPlacedBackwardGameActionCallback(
+        const GameActions::GameAction* ga, const GameActions::Result* result)
     {
         if (result->Error != GameActions::Status::Ok)
         {

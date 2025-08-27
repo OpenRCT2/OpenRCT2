@@ -1147,7 +1147,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto footpathPlaceAction = GameActions::FootpathPlaceAction(
                 { *mapPos, baseZ }, slope, selectedType, gFootpathSelection.Railings, kInvalidDirection, constructFlags);
-            footpathPlaceAction.SetCallback([this](const GameAction* ga, const GameActions::Result* result) {
+            footpathPlaceAction.SetCallback([this](const GameActions::GameAction* ga, const GameActions::Result* result) {
                 if (result->Error == GameActions::Status::Ok)
                 {
                     // Don't play sound if it is no cost to prevent multiple sounds. TODO: make this work in no money scenarios
@@ -1240,46 +1240,47 @@ namespace OpenRCT2::Ui::Windows
             auto footpathPlaceAction = GameActions::FootpathPlaceAction(
                 footpathLoc, slope, type, gFootpathSelection.Railings, _footpathConstructDirection, constructFlags);
 
-            footpathPlaceAction.SetCallback([footpathLoc](const GameAction* ga, const GameActions::Result* result) {
-                if (result->Error == GameActions::Status::Ok)
-                {
-                    Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
-                }
-
-                auto* windowMgr = GetWindowManager();
-                auto* self = static_cast<FootpathWindow*>(windowMgr->FindByClass(WindowClass::Footpath));
-                if (self == nullptr)
-                {
-                    return;
-                }
-
-                if (result->Error == GameActions::Status::Ok)
-                {
-                    if (gFootpathConstructSlope == 0)
+            footpathPlaceAction.SetCallback(
+                [footpathLoc](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                    if (result->Error == GameActions::Status::Ok)
                     {
-                        self->_footpathConstructValidDirections = kInvalidDirection;
-                    }
-                    else
-                    {
-                        self->_footpathConstructValidDirections = self->_footpathConstructDirection;
+                        Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
                     }
 
-                    if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
+                    auto* windowMgr = GetWindowManager();
+                    auto* self = static_cast<FootpathWindow*>(windowMgr->FindByClass(WindowClass::Footpath));
+                    if (self == nullptr)
                     {
-                        ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
+                        return;
                     }
 
-                    gFootpathConstructFromPosition = footpathLoc;
-                    // If we have just built an upwards slope, the next path to construct is
-                    // a bit higher. Note that the z returned by footpath_get_next_path_info
-                    // already is lowered if we are building a downwards slope.
-                    if (gFootpathConstructSlope == 2)
+                    if (result->Error == GameActions::Status::Ok)
                     {
-                        gFootpathConstructFromPosition.z += kPathHeightStep;
+                        if (gFootpathConstructSlope == 0)
+                        {
+                            self->_footpathConstructValidDirections = kInvalidDirection;
+                        }
+                        else
+                        {
+                            self->_footpathConstructValidDirections = self->_footpathConstructDirection;
+                        }
+
+                        if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
+                        {
+                            ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
+                        }
+
+                        gFootpathConstructFromPosition = footpathLoc;
+                        // If we have just built an upwards slope, the next path to construct is
+                        // a bit higher. Note that the z returned by footpath_get_next_path_info
+                        // already is lowered if we are building a downwards slope.
+                        if (gFootpathConstructSlope == 2)
+                        {
+                            gFootpathConstructFromPosition.z += kPathHeightStep;
+                        }
                     }
-                }
-                self->WindowFootpathSetEnabledAndPressedWidgets();
-            });
+                    self->WindowFootpathSetEnabledAndPressedWidgets();
+                });
             GameActions::Execute(&footpathPlaceAction);
         }
 

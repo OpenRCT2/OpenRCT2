@@ -2234,13 +2234,14 @@ namespace OpenRCT2::Ui::Windows
                         {
                             auto rideSetSetting = GameActions::RideSetSettingAction(
                                 rideId, GameActions::RideSetSetting::RideType, rideType);
-                            rideSetSetting.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
-                                // Reset ghost track if ride construction window is open, prevents a crash
-                                // Will get set to the correct Alternative variable during set_default_next_piece.
-                                // TODO: Rework construction window to prevent the need for this.
-                                _currentTrackAlternative.clearAll();
-                                RideConstructionSetDefaultNextPiece();
-                            });
+                            rideSetSetting.SetCallback(
+                                [](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                                    // Reset ghost track if ride construction window is open, prevents a crash
+                                    // Will get set to the correct Alternative variable during set_default_next_piece.
+                                    // TODO: Rework construction window to prevent the need for this.
+                                    _currentTrackAlternative.clearAll();
+                                    RideConstructionSetDefaultNextPiece();
+                                });
                             GameActions::Execute(&rideSetSetting);
                         }
                     }
@@ -4503,11 +4504,12 @@ namespace OpenRCT2::Ui::Windows
                     auto objIndex = _entranceDropdownData[dropdownIndex].EntranceTypeId;
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
                         rideId, GameActions::RideSetAppearanceType::EntranceStyle, objIndex, 0);
-                    rideSetAppearanceAction.SetCallback([objIndex](const GameAction*, const GameActions::Result* res) {
-                        if (res->Error != GameActions::Status::Ok)
-                            return;
-                        getGameState().lastEntranceStyle = objIndex;
-                    });
+                    rideSetAppearanceAction.SetCallback(
+                        [objIndex](const GameActions::GameAction*, const GameActions::Result* res) {
+                            if (res->Error != GameActions::Status::Ok)
+                                return;
+                            getGameState().lastEntranceStyle = objIndex;
+                        });
                     GameActions::Execute(&rideSetAppearanceAction);
                     break;
                 }
@@ -4515,12 +4517,13 @@ namespace OpenRCT2::Ui::Windows
                 {
                     auto rideSetAppearanceAction = GameActions::RideSetAppearanceAction(
                         rideId, GameActions::RideSetAppearanceType::VehicleColourScheme, dropdownIndex, 0);
-                    rideSetAppearanceAction.SetCallback([this](const GameAction* ga, const GameActions::Result* result) {
-                        if (result->Error == GameActions::Status::Ok)
-                        {
-                            ResetVehicleIndex();
-                        }
-                    });
+                    rideSetAppearanceAction.SetCallback(
+                        [this](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                            if (result->Error == GameActions::Status::Ok)
+                            {
+                                ResetVehicleIndex();
+                            }
+                        });
                     GameActions::Execute(&rideSetAppearanceAction);
                     break;
                 }

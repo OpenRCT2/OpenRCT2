@@ -46,6 +46,8 @@
 
 namespace OpenRCT2
 {
+    using namespace OpenRCT2::GameActions;
+
     struct ReplayCommand
     {
         uint32_t tick = 0;

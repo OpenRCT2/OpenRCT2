@@ -1195,7 +1195,7 @@ ExpenditureType ScriptEngine::StringToExpenditureType(std::string_view expenditu
     return ExpenditureType::count;
 }
 
-DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const GameActions::Result& result)
+DukValue ScriptEngine::GameActionResultToDuk(const GameActions::GameAction& action, const GameActions::Result& result)
 {
     DukStackFrame frame(_context);
     DukObject obj(_context);
@@ -1298,7 +1298,7 @@ void ScriptEngine::RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin
     }
 }
 
-class DukToGameActionParameterVisitor : public GameActionParameterVisitor
+class DukToGameActionParameterVisitor : public GameActions::GameActionParameterVisitor
 {
 private:
     DukValue _dukValue;
@@ -1325,7 +1325,7 @@ public:
     }
 };
 
-class DukFromGameActionParameterVisitor : public GameActionParameterVisitor
+class DukFromGameActionParameterVisitor : public GameActions::GameActionParameterVisitor
 {
 private:
     DukObject& _dukObject;
@@ -1451,7 +1451,7 @@ static std::string GetActionName(GameCommand commandId)
     return {};
 }
 
-static std::unique_ptr<GameAction> CreateGameActionFromActionId(const std::string& name)
+static std::unique_ptr<GameActions::GameAction> CreateGameActionFromActionId(const std::string& name)
 {
     auto result = ActionNameToType.find(name);
     if (result != ActionNameToType.end())
@@ -1461,7 +1461,7 @@ static std::unique_ptr<GameAction> CreateGameActionFromActionId(const std::strin
     return nullptr;
 }
 
-void ScriptEngine::RunGameActionHooks(const GameAction& action, GameActions::Result& result, bool isExecute)
+void ScriptEngine::RunGameActionHooks(const GameActions::GameAction& action, GameActions::Result& result, bool isExecute)
 {
     DukStackFrame frame(_context);
 
@@ -1497,8 +1497,8 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, GameActions::Res
 
             DukObject args(_context);
             DukFromGameActionParameterVisitor visitor(args);
-            const_cast<GameAction&>(action).AcceptParameters(visitor);
-            const_cast<GameAction&>(action).AcceptFlags(visitor);
+            const_cast<GameActions::GameAction&>(action).AcceptParameters(visitor);
+            const_cast<GameActions::GameAction&>(action).AcceptFlags(visitor);
             obj.Set("args", args.Take());
         }
 
@@ -1530,7 +1530,7 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, GameActions::Res
     }
 }
 
-std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(
+std::unique_ptr<GameActions::GameAction> ScriptEngine::CreateGameAction(
     const std::string& actionid, const DukValue& args, const std::string& pluginName)
 {
     auto action = CreateGameActionFromActionId(actionid);

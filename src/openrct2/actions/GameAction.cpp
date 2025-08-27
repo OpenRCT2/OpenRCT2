@@ -463,43 +463,43 @@ namespace OpenRCT2::GameActions
     {
         return ExecuteInternal(action, false);
     }
-} // namespace OpenRCT2::GameActions
 
-const char* GameAction::GetName() const
-{
-    return OpenRCT2::GameActions::GetName(_type);
-}
-
-bool GameAction::LocationValid(const CoordsXY& coords) const
-{
-    auto result = MapIsLocationValid(coords);
-    if (!result)
-        return false;
-#ifdef ENABLE_SCRIPTING
-    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::actionLocation))
+    const char* GameAction::GetName() const
     {
-        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
-
-        // Create event args object
-        auto obj = OpenRCT2::Scripting::DukObject(ctx);
-        obj.Set("x", coords.x);
-        obj.Set("y", coords.y);
-        obj.Set("player", _playerId);
-        obj.Set("type", EnumValue(_type));
-
-        auto flags = GetActionFlags();
-        obj.Set("isClientOnly", (flags & OpenRCT2::GameActions::Flags::ClientOnly) != 0);
-        obj.Set("result", true);
-
-        // Call the subscriptions
-        auto e = obj.Take();
-        hookEngine.Call(OpenRCT2::Scripting::HookType::actionLocation, e, true);
-
-        auto scriptResult = OpenRCT2::Scripting::AsOrDefault(e["result"], true);
-
-        return scriptResult;
+        return OpenRCT2::GameActions::GetName(_type);
     }
+
+    bool GameAction::LocationValid(const CoordsXY& coords) const
+    {
+        auto result = MapIsLocationValid(coords);
+        if (!result)
+            return false;
+#ifdef ENABLE_SCRIPTING
+        auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+        if (hookEngine.HasSubscriptions(Scripting::HookType::actionLocation))
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+
+            // Create event args object
+            auto obj = Scripting::DukObject(ctx);
+            obj.Set("x", coords.x);
+            obj.Set("y", coords.y);
+            obj.Set("player", _playerId);
+            obj.Set("type", EnumValue(_type));
+
+            auto flags = GetActionFlags();
+            obj.Set("isClientOnly", (flags & GameActions::Flags::ClientOnly) != 0);
+            obj.Set("result", true);
+
+            // Call the subscriptions
+            auto e = obj.Take();
+            hookEngine.Call(Scripting::HookType::actionLocation, e, true);
+
+            auto scriptResult = Scripting::AsOrDefault(e["result"], true);
+
+            return scriptResult;
+        }
 #endif
-    return true;
-}
+        return true;
+    }
+} // namespace OpenRCT2::GameActions
