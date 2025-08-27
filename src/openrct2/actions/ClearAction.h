@@ -51,8 +51,8 @@ namespace OpenRCT2::GameActions
          * Function to clear the flag that is set to prevent cost duplication
          * when using the clear scenery tool with large scenery.
          */
-        static void ResetClearLargeSceneryFlag();
+        static void ResetClearLargeSceneryFlag(GameState_t& gameState);
 
-        static bool MapCanClearAt(const CoordsXY& location);
+        static bool MapCanClearAt(const GameState_t& gameState, const CoordsXY& location);
     };
 } // namespace OpenRCT2::GameActions

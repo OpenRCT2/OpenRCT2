@@ -31,7 +31,7 @@ namespace OpenRCT2::GameActions
         Result Execute(GameState_t& gameState) const override;
 
     private:
-        Result QueryExecute(bool isExecuting) const;
-        uint8_t GetLowestHeight(const MapRange& validRange) const;
+        Result QueryExecute(GameState_t& gameState, bool isExecuting) const;
+        uint8_t GetLowestHeight(const GameState_t& gameState, const MapRange& validRange) const;
     };
 } // namespace OpenRCT2::GameActions

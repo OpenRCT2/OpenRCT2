@@ -89,7 +89,7 @@ namespace OpenRCT2::GameActions
         {
             for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += kCoordsXYStep)
             {
-                if (LocationValid({ x, y }) && MapCanClearAt({ x, y }))
+                if (LocationValid({ x, y }) && MapCanClearAt(gameState, { x, y }))
                 {
                     auto cost = ClearSceneryFromTile({ x, y }, executing, gameState);
                     if (cost != kMoney64Undefined)
@@ -239,7 +239,7 @@ namespace OpenRCT2::GameActions
         }
     }
 
-    bool ClearAction::MapCanClearAt(const CoordsXY& location, GameState_t& gameState)
+    bool ClearAction::MapCanClearAt(const GameState_t& gameState, const CoordsXY& location)
     {
         return gLegacyScene == LegacyScene::scenarioEditor || gameState.cheats.sandboxMode
             || MapIsLocationOwnedOrHasRights(location);

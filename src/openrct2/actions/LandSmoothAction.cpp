@@ -62,16 +62,16 @@ namespace OpenRCT2::GameActions
 
     Result LandSmoothAction::Query(GameState_t& gameState) const
     {
-        return SmoothLand(false);
+        return SmoothLand(gameState, false);
     }
 
     Result LandSmoothAction::Execute(GameState_t& gameState) const
     {
-        return SmoothLand(true);
+        return SmoothLand(gameState, true);
     }
 
     Result LandSmoothAction::SmoothLandTile(
-        int32_t direction, bool isExecuting, const CoordsXY& loc, SurfaceElement* surfaceElement) const
+        GameState_t& gameState, int32_t direction, bool isExecuting, const CoordsXY& loc, SurfaceElement* surfaceElement) const
     {
         int32_t targetBaseZ = surfaceElement->BaseHeight;
         int32_t slope = surfaceElement->GetSlope();
@@ -96,14 +96,15 @@ namespace OpenRCT2::GameActions
 
         auto landSetHeightAction = LandSetHeightAction(loc, targetBaseZ, slope);
         landSetHeightAction.SetFlags(GetFlags());
-        auto res = isExecuting ? ExecuteNested(&landSetHeightAction) : QueryNested(&landSetHeightAction);
+        auto res = isExecuting ? ExecuteNested(&landSetHeightAction, gameState) : QueryNested(&landSetHeightAction, gameState);
 
         return res;
     }
 
     money64 LandSmoothAction::SmoothLandRowByEdge(
-        bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight1, int32_t expectedLandHeight2, int32_t stepX,
-        int32_t stepY, int32_t direction1, int32_t direction2, int32_t checkDirection1, int32_t checkDirection2) const
+        GameState_t& gameState, bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight1, int32_t expectedLandHeight2,
+        int32_t stepX, int32_t stepY, int32_t direction1, int32_t direction2, int32_t checkDirection1,
+        int32_t checkDirection2) const
     {
         uint8_t shouldContinue = 0xF;
         int32_t landChangePerTile = _isLowering ? 2 : -2;
@@ -235,7 +236,8 @@ namespace OpenRCT2::GameActions
             }
             auto landSetHeightAction = LandSetHeightAction(nextLoc, targetBaseZ, slope);
             landSetHeightAction.SetFlags(GetFlags());
-            auto res = isExecuting ? ExecuteNested(&landSetHeightAction) : QueryNested(&landSetHeightAction);
+            auto res = isExecuting ? ExecuteNested(&landSetHeightAction, gameState)
+                                   : QueryNested(&landSetHeightAction, gameState);
             if (res.Error == Status::Ok)
             {
                 totalCost += res.Cost;
@@ -245,8 +247,8 @@ namespace OpenRCT2::GameActions
     }
 
     money64 LandSmoothAction::SmoothLandRowByCorner(
-        bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight, int32_t stepX, int32_t stepY, int32_t direction,
-        int32_t checkDirection) const
+        GameState_t& gameState, bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight, int32_t stepX, int32_t stepY,
+        int32_t direction, int32_t checkDirection) const
     {
         bool shouldContinue = true;
         money64 totalCost = 0;
@@ -315,15 +317,15 @@ namespace OpenRCT2::GameActions
             if (stepX * stepY != 0)
             {
                 totalCost += SmoothLandRowByCorner(
-                    isExecuting, nextLoc, expectedLandHeight + (landChangePerTile / 2), 0, stepY, direction,
+                    gameState, isExecuting, nextLoc, expectedLandHeight + (landChangePerTile / 2), 0, stepY, direction,
                     checkDirection ^ 3);
                 totalCost += SmoothLandRowByCorner(
-                    isExecuting, nextLoc, expectedLandHeight + (landChangePerTile / 2), stepX, 0, direction,
+                    gameState, isExecuting, nextLoc, expectedLandHeight + (landChangePerTile / 2), stepX, 0, direction,
                     checkDirection ^ 1);
             }
             expectedLandHeight += landChangePerTile;
             // change land of current tile
-            auto result = SmoothLandTile(direction, isExecuting, nextLoc, surfaceElement);
+            auto result = SmoothLandTile(gameState, direction, isExecuting, nextLoc, surfaceElement);
             if (result.Error == Status::Ok)
             {
                 totalCost += result.Cost;
@@ -332,7 +334,7 @@ namespace OpenRCT2::GameActions
         return totalCost;
     }
 
-    Result LandSmoothAction::SmoothLand(bool isExecuting) const
+    Result LandSmoothAction::SmoothLand(GameState_t& gameState, bool isExecuting) const
     {
         const bool raiseLand = !_isLowering;
         const int32_t selectionType = _selectionType;
@@ -369,7 +371,7 @@ namespace OpenRCT2::GameActions
                         int32_t z = std::clamp(
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 2)), minHeight, maxHeight);
                         res.Cost += SmoothLandRowByCorner(
-                            isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, -32, -32, 0, 2);
+                            gameState, isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, -32, -32, 0, 2);
                     }
                 }
                 { // bottom-left
@@ -379,7 +381,7 @@ namespace OpenRCT2::GameActions
                         int32_t z = std::clamp(
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 3)), minHeight, maxHeight);
                         res.Cost += SmoothLandRowByCorner(
-                            isExecuting, { validRange.GetLeft(), validRange.GetBottom() }, z, -32, 32, 1, 3);
+                            gameState, isExecuting, { validRange.GetLeft(), validRange.GetBottom() }, z, -32, 32, 1, 3);
                     }
                 }
                 { // bottom-right
@@ -389,7 +391,7 @@ namespace OpenRCT2::GameActions
                         int32_t z = std::clamp(
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 0)), minHeight, maxHeight);
                         res.Cost += SmoothLandRowByCorner(
-                            isExecuting, { validRange.GetRight(), validRange.GetBottom() }, z, 32, 32, 2, 0);
+                            gameState, isExecuting, { validRange.GetRight(), validRange.GetBottom() }, z, 32, 32, 2, 0);
                     }
                 }
                 { // top-right
@@ -399,7 +401,7 @@ namespace OpenRCT2::GameActions
                         int32_t z = std::clamp(
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 1)), minHeight, maxHeight);
                         res.Cost += SmoothLandRowByCorner(
-                            isExecuting, { validRange.GetRight(), validRange.GetTop() }, z, 32, -32, 3, 1);
+                            gameState, isExecuting, { validRange.GetRight(), validRange.GetTop() }, z, 32, -32, 3, 1);
                     }
                 }
 
@@ -414,7 +416,8 @@ namespace OpenRCT2::GameActions
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 3)), minHeight, maxHeight);
                         z2 = std::clamp(
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 2)), minHeight, maxHeight);
-                        res.Cost += SmoothLandRowByEdge(isExecuting, { validRange.GetLeft(), y }, z1, z2, -32, 0, 0, 1, 3, 2);
+                        res.Cost += SmoothLandRowByEdge(
+                            gameState, isExecuting, { validRange.GetLeft(), y }, z1, z2, -32, 0, 0, 1, 3, 2);
                     }
 
                     surfaceElement = MapGetSurfaceElementAt(CoordsXY{ validRange.GetRight(), y });
@@ -424,7 +427,8 @@ namespace OpenRCT2::GameActions
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 1)), minHeight, maxHeight);
                         z2 = std::clamp(
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 0)), minHeight, maxHeight);
-                        res.Cost += SmoothLandRowByEdge(isExecuting, { validRange.GetRight(), y }, z1, z2, 32, 0, 2, 3, 1, 0);
+                        res.Cost += SmoothLandRowByEdge(
+                            gameState, isExecuting, { validRange.GetRight(), y }, z1, z2, 32, 0, 2, 3, 1, 0);
                     }
                 }
 
@@ -437,7 +441,8 @@ namespace OpenRCT2::GameActions
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 1)), minHeight, maxHeight);
                         z2 = std::clamp(
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 2)), minHeight, maxHeight);
-                        res.Cost += SmoothLandRowByEdge(isExecuting, { x, validRange.GetTop() }, z1, z2, 0, -32, 0, 3, 1, 2);
+                        res.Cost += SmoothLandRowByEdge(
+                            gameState, isExecuting, { x, validRange.GetTop() }, z1, z2, 0, -32, 0, 3, 1, 2);
                     }
 
                     surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, validRange.GetBottom() });
@@ -447,7 +452,8 @@ namespace OpenRCT2::GameActions
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 0)), minHeight, maxHeight);
                         z2 = std::clamp(
                             static_cast<uint8_t>(TileElementGetCornerHeight(surfaceElement, 3)), minHeight, maxHeight);
-                        res.Cost += SmoothLandRowByEdge(isExecuting, { x, validRange.GetBottom() }, z1, z2, 0, 32, 1, 2, 0, 3);
+                        res.Cost += SmoothLandRowByEdge(
+                            gameState, isExecuting, { x, validRange.GetBottom() }, z1, z2, 0, 32, 1, 2, 0, 3);
                     }
                 }
                 break;

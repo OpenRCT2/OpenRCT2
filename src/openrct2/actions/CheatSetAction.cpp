@@ -167,7 +167,7 @@ namespace OpenRCT2::GameActions
                 SetMoney(_param1);
                 break;
             case CheatType::ClearLoan:
-                ClearLoan();
+                ClearLoan(gameState);
                 break;
             case CheatType::SetGuestParameter:
                 SetGuestParameter(_param1, _param2);
@@ -229,7 +229,7 @@ namespace OpenRCT2::GameActions
                 gameState.cheats.neverendingMarketing = _param1 != 0;
                 break;
             case CheatType::OpenClosePark:
-                ParkSetOpen(!Park::IsOpen(gameState.park));
+                ParkSetOpen(!Park::IsOpen(gameState.park), gameState);
                 break;
             case CheatType::HaveFun:
                 gameState.scenarioOptions.objective.Type = Scenario::ObjectiveType::haveFun;
@@ -623,14 +623,14 @@ namespace OpenRCT2::GameActions
         windowMgr->InvalidateByClass(WindowClass::BottomToolbar);
     }
 
-    void CheatSetAction::ClearLoan() const
+    void CheatSetAction::ClearLoan(GameState_t& gameState) const
     {
         // First give money
         AddMoney(getGameState().park.bankLoan);
 
         // Then pay the loan
         auto gameAction = ParkSetLoanAction(0.00_GBP);
-        ExecuteNested(&gameAction);
+        ExecuteNested(&gameAction, gameState);
     }
 
     void CheatSetAction::GenerateGuests(int32_t count) const
@@ -832,10 +832,10 @@ namespace OpenRCT2::GameActions
         MapCountRemainingLandRights();
     }
 
-    void CheatSetAction::ParkSetOpen(bool isOpen) const
+    void CheatSetAction::ParkSetOpen(bool isOpen, GameState_t& gameState) const
     {
         auto parkSetParameter = ParkSetParameterAction(isOpen ? ParkParameter::Open : ParkParameter::Close);
-        ExecuteNested(&parkSetParameter);
+        ExecuteNested(&parkSetParameter, gameState);
     }
 
     void CheatSetAction::CreateDucks(int count) const

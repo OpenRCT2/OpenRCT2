@@ -91,7 +91,7 @@ namespace OpenRCT2::GameActions
                 location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
             rideEntranceExitRemove.SetFlags(GetFlags());
 
-            auto result = QueryNested(&rideEntranceExitRemove);
+            auto result = QueryNested(&rideEntranceExitRemove, gameState);
             if (result.Error != Status::Ok)
             {
                 result.ErrorTitle = errorTitle;
@@ -167,7 +167,7 @@ namespace OpenRCT2::GameActions
                 location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
             rideEntranceExitRemove.SetFlags(GetFlags());
 
-            auto result = ExecuteNested(&rideEntranceExitRemove);
+            auto result = ExecuteNested(&rideEntranceExitRemove, gameState);
             if (result.Error != Status::Ok)
             {
                 result.ErrorTitle = errorTitle;

@@ -46,7 +46,6 @@ namespace OpenRCT2::GameActions
 
     Result ScenarioSetSettingAction::Execute(GameState_t& gameState) const
     {
-        auto& gameState = getGameState();
         auto* windowMgr = Ui::GetWindowManager();
 
         switch (_setting)

@@ -84,7 +84,7 @@ namespace OpenRCT2::GameActions
                     PeepPickupAction existingPickupAction{
                         PeepPickupType::Cancel, existing->Id, { Network::GetPickupPeepOldX(_owner), 0, 0 }, _owner
                     };
-                    auto result = QueryNested(&existingPickupAction);
+                    auto result = QueryNested(&existingPickupAction, gameState);
 
                     if (existing == peep)
                     {
@@ -139,7 +139,7 @@ namespace OpenRCT2::GameActions
                     PeepPickupAction existingPickupAction{
                         PeepPickupType::Cancel, existing->Id, { Network::GetPickupPeepOldX(_owner), 0, 0 }, _owner
                     };
-                    auto result = ExecuteNested(&existingPickupAction);
+                    auto result = ExecuteNested(&existingPickupAction, gameState);
 
                     if (existing == peep)
                     {

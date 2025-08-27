@@ -78,7 +78,6 @@ namespace OpenRCT2::GameActions
             return Result(Status::NoFreeElements, STR_CANT_BUILD_THIS_HERE, STR_ERR_LANDSCAPE_DATA_AREA_FULL);
         }
 
-        const auto& gameState = getGameState();
         if (gameState.park.entrances.size() >= OpenRCT2::Limits::kMaxParkEntrances)
         {
             return Result(Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);

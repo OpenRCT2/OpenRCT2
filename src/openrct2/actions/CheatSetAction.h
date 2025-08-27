@@ -47,14 +47,14 @@ namespace OpenRCT2::GameActions
         void SetScenarioNoMoney(bool enabled) const;
         void SetMoney(money64 amount) const;
         void AddMoney(money64 amount) const;
-        void ClearLoan() const;
+        void ClearLoan(GameState_t& gameState) const;
         void GenerateGuests(int32_t count) const;
         void SetGuestParameter(int32_t parameter, int32_t value) const;
         void GiveObjectToGuests(int32_t object) const;
         void RemoveAllGuests() const;
         void SetStaffSpeed(uint8_t value) const;
         void OwnAllLand() const;
-        void ParkSetOpen(bool isOpen) const;
+        void ParkSetOpen(bool isOpen, GameState_t& gameState) const;
         void CreateDucks(int count) const;
         void RemoveParkFences() const;
     };
