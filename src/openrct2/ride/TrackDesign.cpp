@@ -1378,7 +1378,7 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                             flags |= GAME_COMMAND_FLAG_REPLAY;
                         }
 
-                        auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
+                        auto rideEntranceExitPlaceAction = GameActions::RideEntranceExitPlaceAction(
                             newCoords, rotation, rideId, stationIndex, entrance.isExit);
                         rideEntranceExitPlaceAction.SetFlags(flags);
                         auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideEntranceExitPlaceAction)
@@ -1396,7 +1396,7 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                 }
                 else
                 {
-                    auto res = RideEntranceExitPlaceAction::TrackPlaceQuery(newCoords, false);
+                    auto res = GameActions::RideEntranceExitPlaceAction::TrackPlaceQuery(newCoords, false);
                     if (res.Error != GameActions::Status::Ok)
                     {
                         return res;

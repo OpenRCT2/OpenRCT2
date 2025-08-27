@@ -43,7 +43,7 @@ StationIndex gRideEntranceExitGhostStationIndex;
 static money64 RideEntranceExitPlaceGhost(
     RideId rideIndex, const CoordsXY& entranceExitCoords, Direction direction, uint8_t placeType, StationIndex stationNum)
 {
-    auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
+    auto rideEntranceExitPlaceAction = GameActions::RideEntranceExitPlaceAction(
         entranceExitCoords, direction, rideIndex, stationNum, placeType == ENTRANCE_TYPE_RIDE_EXIT);
     rideEntranceExitPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
     auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
@@ -99,7 +99,7 @@ void RideEntranceExitRemoveGhost()
 {
     if (_currentTrackSelectionFlags.has(TrackSelectionFlag::entranceOrExit))
     {
-        auto rideEntranceExitRemove = RideEntranceExitRemoveAction(
+        auto rideEntranceExitRemove = GameActions::RideEntranceExitRemoveAction(
             gRideEntranceExitGhostPosition, _currentRideIndex, gRideEntranceExitGhostStationIndex,
             gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 

@@ -2653,7 +2653,7 @@ namespace OpenRCT2::Ui::Windows
             if (gRideEntranceExitPlaceDirection == kInvalidDirection)
                 return;
 
-            auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
+            auto rideEntranceExitPlaceAction = GameActions::RideEntranceExitPlaceAction(
                 entranceOrExitCoords, DirectionReverse(gRideEntranceExitPlaceDirection), gRideEntranceExitPlaceRideIndex,
                 gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 

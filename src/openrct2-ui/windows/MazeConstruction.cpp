@@ -355,7 +355,7 @@ namespace OpenRCT2::Ui::Windows
 
             RideId rideIndex = gRideEntranceExitPlaceRideIndex;
 
-            auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
+            auto rideEntranceExitPlaceAction = GameActions::RideEntranceExitPlaceAction(
                 entranceOrExitCoords, DirectionReverse(entranceOrExitCoords.direction), rideIndex,
                 gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 

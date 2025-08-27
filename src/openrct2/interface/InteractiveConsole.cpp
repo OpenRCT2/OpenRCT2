@@ -313,7 +313,8 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     }
                     else
                     {
-                        auto rideAction = RideFreezeRatingAction(rideIndex, RideRatingType::Excitement, excitement);
+                        auto rideAction = GameActions::RideFreezeRatingAction(
+                            rideIndex, GameActions::RideRatingType::Excitement, excitement);
                         GameActions::Execute(&rideAction);
                     }
                 }
@@ -346,7 +347,8 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     }
                     else
                     {
-                        auto rideAction = RideFreezeRatingAction(rideIndex, RideRatingType::Intensity, intensity);
+                        auto rideAction = GameActions::RideFreezeRatingAction(
+                            rideIndex, GameActions::RideRatingType::Intensity, intensity);
                         GameActions::Execute(&rideAction);
                     }
                 }
@@ -379,7 +381,8 @@ static void ConsoleCommandRides(InteractiveConsole& console, const arguments_t& 
                     }
                     else
                     {
-                        auto rideAction = RideFreezeRatingAction(rideIndex, RideRatingType::Nausea, nausea);
+                        auto rideAction = GameActions::RideFreezeRatingAction(
+                            rideIndex, GameActions::RideRatingType::Nausea, nausea);
                         GameActions::Execute(&rideAction);
                     }
                 }
