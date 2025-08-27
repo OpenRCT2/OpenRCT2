@@ -12,7 +12,7 @@
 
 ---
 
-![OpenRCT2.io Group Park 5](https://i.imgur.com/e7CK5Sc.png)
+![OpenRCT2.org Group Park 5](https://i.imgur.com/e7CK5Sc.png)
 
 ---
 
