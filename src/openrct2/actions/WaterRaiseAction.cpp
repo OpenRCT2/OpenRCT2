@@ -41,12 +41,12 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_range);
     }
 
-    Result WaterRaiseAction::Query() const
+    Result WaterRaiseAction::Query(GameState_t& gameState) const
     {
         return QueryExecute(false);
     }
 
-    Result WaterRaiseAction::Execute() const
+    Result WaterRaiseAction::Execute(GameState_t& gameState) const
     {
         return QueryExecute(true);
     }

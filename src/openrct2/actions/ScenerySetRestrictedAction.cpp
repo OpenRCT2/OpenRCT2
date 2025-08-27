@@ -34,7 +34,7 @@ namespace OpenRCT2::GameActions
         return GameAction::GetActionFlags() | Flags::AllowWhilePaused;
     }
 
-    Result ScenerySetRestrictedAction::Query() const
+    Result ScenerySetRestrictedAction::Query(GameState_t& gameState) const
     {
         if (!ObjectTypeCanBeRestricted(_objectType))
         {
@@ -49,7 +49,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result ScenerySetRestrictedAction::Execute() const
+    Result ScenerySetRestrictedAction::Execute(GameState_t& gameState) const
     {
         auto sceneryType = GetSceneryTypeFromObjectType(_objectType);
         SetSceneryItemRestricted({ sceneryType, _objectIndex }, _isRestricted);

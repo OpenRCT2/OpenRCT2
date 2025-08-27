@@ -41,7 +41,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_peepId) << DS_TAG(_newFlags);
     }
 
-    Result GuestSetFlagsAction::Query() const
+    Result GuestSetFlagsAction::Query(GameState_t& gameState) const
     {
         auto& gameState = getGameState();
         auto* peep = gameState.entities.TryGetEntity<Guest>(_peepId);
@@ -53,7 +53,7 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result GuestSetFlagsAction::Execute() const
+    Result GuestSetFlagsAction::Execute(GameState_t& gameState) const
     {
         auto& gameState = getGameState();
         auto* peep = gameState.entities.TryGetEntity<Guest>(_peepId);

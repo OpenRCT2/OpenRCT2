@@ -45,7 +45,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc) << DS_TAG(_rideIndex) << DS_TAG(_mazeEntry);
     }
 
-    Result MazePlaceTrackAction::Query() const
+    Result MazePlaceTrackAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
 
@@ -65,7 +65,7 @@ namespace OpenRCT2::GameActions
             res.ErrorMessage = STR_OFF_EDGE_OF_MAP;
             return res;
         }
-        auto& gameState = getGameState();
+
         if (!MapIsLocationOwned(_loc) && !gameState.cheats.sandboxMode)
         {
             res.Error = Status::NotOwned;
@@ -142,7 +142,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result MazePlaceTrackAction::Execute() const
+    Result MazePlaceTrackAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
 

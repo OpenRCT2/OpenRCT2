@@ -64,7 +64,7 @@ namespace OpenRCT2::GameActions
         return GameAction::GetActionFlags();
     }
 
-    Result FootpathLayoutPlaceAction::Query() const
+    Result FootpathLayoutPlaceAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
         res.Cost = 0;
@@ -96,7 +96,7 @@ namespace OpenRCT2::GameActions
         return ElementInsertQuery(std::move(res));
     }
 
-    Result FootpathLayoutPlaceAction::Execute() const
+    Result FootpathLayoutPlaceAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
         res.Cost = 0;

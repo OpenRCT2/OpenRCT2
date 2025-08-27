@@ -78,7 +78,7 @@ namespace OpenRCT2::GameActions
                << DS_TAG(_secondaryColour) << DS_TAG(_tertiaryColour);
     }
 
-    Result SmallSceneryPlaceAction::Query() const
+    Result SmallSceneryPlaceAction::Query(GameState_t& gameState) const
     {
         bool isOnWater = false;
         bool supportsRequired = false;
@@ -170,7 +170,6 @@ namespace OpenRCT2::GameActions
             targetHeight = surfaceHeight;
         }
 
-        auto& gameState = getGameState();
         if (gLegacyScene != LegacyScene::scenarioEditor && !gameState.cheats.sandboxMode
             && !MapIsLocationOwned({ _loc.x, _loc.y, targetHeight }))
         {
@@ -285,7 +284,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result SmallSceneryPlaceAction::Execute() const
+    Result SmallSceneryPlaceAction::Execute(GameState_t& gameState) const
     {
         bool supportsRequired = false;
         if (_loc.z != 0)

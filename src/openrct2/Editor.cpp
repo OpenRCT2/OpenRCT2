@@ -238,16 +238,17 @@ namespace OpenRCT2::Editor
     static void SetAllLandOwned()
     {
         auto& gameState = getGameState();
+
         MapRange range = { 2 * kCoordsXYStep, 2 * kCoordsXYStep, (gameState.mapSize.x - 3) * kCoordsXYStep,
                            (gameState.mapSize.y - 3) * kCoordsXYStep };
 
         auto landSetRightsAction = GameActions::LandSetRightsAction(range, GameActions::LandSetRightSetting::SetForSale);
         landSetRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
-        GameActions::Execute(&landSetRightsAction);
+        GameActions::Execute(&landSetRightsAction, gameState);
 
         auto landBuyRightsAction = GameActions::LandBuyRightsAction(range, GameActions::LandBuyRightSetting::BuyLand);
         landBuyRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
-        GameActions::Execute(&landBuyRightsAction);
+        GameActions::Execute(&landBuyRightsAction, gameState);
     }
 
     static void AfterLoadCleanup(bool loadedFromSave)

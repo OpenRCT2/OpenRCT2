@@ -62,12 +62,12 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_autoPosition) << DS_TAG(_staffType) << DS_TAG(_costumeIndex) << DS_TAG(_staffOrders);
     }
 
-    Result StaffHireNewAction::Query() const
+    Result StaffHireNewAction::Query(GameState_t& gameState) const
     {
         return QueryExecute(false);
     }
 
-    Result StaffHireNewAction::Execute() const
+    Result StaffHireNewAction::Execute(GameState_t& gameState) const
     {
         return QueryExecute(true);
     }

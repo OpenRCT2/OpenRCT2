@@ -74,7 +74,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_cheatType) << DS_TAG(_param1) << DS_TAG(_param2);
     }
 
-    Result CheatSetAction::Query() const
+    Result CheatSetAction::Query(GameState_t& gameState) const
     {
         if (static_cast<uint32_t>(_cheatType) >= static_cast<uint32_t>(CheatType::Count))
         {
@@ -102,9 +102,8 @@ namespace OpenRCT2::GameActions
         return Result();
     }
 
-    Result CheatSetAction::Execute() const
+    Result CheatSetAction::Execute(GameState_t& gameState) const
     {
-        auto& gameState = getGameState();
         auto* windowMgr = Ui::GetWindowManager();
 
         switch (static_cast<CheatType>(_cheatType.id))

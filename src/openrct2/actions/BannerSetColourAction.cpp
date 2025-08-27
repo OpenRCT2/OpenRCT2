@@ -44,12 +44,12 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc) << DS_TAG(_primaryColour);
     }
 
-    Result BannerSetColourAction::Query() const
+    Result BannerSetColourAction::Query(GameState_t& gameState) const
     {
         return QueryExecute(false);
     }
 
-    Result BannerSetColourAction::Execute() const
+    Result BannerSetColourAction::Execute(GameState_t& gameState) const
     {
         return QueryExecute(true);
     }

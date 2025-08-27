@@ -47,7 +47,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_type) << DS_TAG(_bannerIndex) << DS_TAG(_parameter);
     }
 
-    Result BannerSetStyleAction::Query() const
+    Result BannerSetStyleAction::Query(GameState_t& gameState) const
     {
         StringId errorTitle = STR_CANT_REPAINT_THIS;
         if (_type == BannerSetStyleType::NoEntry)
@@ -119,7 +119,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result BannerSetStyleAction::Execute() const
+    Result BannerSetStyleAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
 

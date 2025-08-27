@@ -52,7 +52,7 @@ namespace OpenRCT2::GameActions
         _td.Serialise(stream);
     }
 
-    Result TrackDesignAction::Query() const
+    Result TrackDesignAction::Query(GameState_t& gameState) const
     {
         auto res = Result();
         res.Position.x = _loc.x + 16;
@@ -65,7 +65,6 @@ namespace OpenRCT2::GameActions
             return Result(Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
-        auto& gameState = getGameState();
         auto& objManager = GetContext()->GetObjectManager();
         auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.trackAndVehicle.vehicleObject);
         if (entryIndex == kObjectEntryIndexNull)
@@ -130,7 +129,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result TrackDesignAction::Execute() const
+    Result TrackDesignAction::Execute(GameState_t& gameState) const
     {
         auto res = Result();
         res.Position.x = _loc.x + 16;
@@ -138,7 +137,6 @@ namespace OpenRCT2::GameActions
         res.Position.z = _loc.z;
         res.Expenditure = ExpenditureType::rideConstruction;
 
-        auto& gameState = getGameState();
         auto& objManager = GetContext()->GetObjectManager();
         auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.trackAndVehicle.vehicleObject);
         if (entryIndex != kObjectEntryIndexNull)

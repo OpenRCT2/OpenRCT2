@@ -64,12 +64,12 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_range) << DS_TAG(_setting) << DS_TAG(_ownership);
     }
 
-    Result LandSetRightsAction::Query() const
+    Result LandSetRightsAction::Query(GameState_t& gameState) const
     {
         return QueryExecute(false);
     }
 
-    Result LandSetRightsAction::Execute() const
+    Result LandSetRightsAction::Execute(GameState_t& gameState) const
     {
         return QueryExecute(true);
     }

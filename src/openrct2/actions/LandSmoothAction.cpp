@@ -60,12 +60,12 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_coords) << DS_TAG(_range) << DS_TAG(_selectionType) << DS_TAG(_isLowering);
     }
 
-    Result LandSmoothAction::Query() const
+    Result LandSmoothAction::Query(GameState_t& gameState) const
     {
         return SmoothLand(false);
     }
 
-    Result LandSmoothAction::Execute() const
+    Result LandSmoothAction::Execute(GameState_t& gameState) const
     {
         return SmoothLand(true);
     }

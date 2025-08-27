@@ -54,7 +54,7 @@ namespace OpenRCT2::GameActions
         stream << DS_TAG(_loc) << DS_TAG(_direction) << DS_TAG(_rideIndex) << DS_TAG(_stationNum) << DS_TAG(_isExit);
     }
 
-    Result RideEntranceExitPlaceAction::Query() const
+    Result RideEntranceExitPlaceAction::Query(GameState_t& gameState) const
     {
         const auto errorTitle = _isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                                         : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
@@ -140,7 +140,7 @@ namespace OpenRCT2::GameActions
         return res;
     }
 
-    Result RideEntranceExitPlaceAction::Execute() const
+    Result RideEntranceExitPlaceAction::Execute(GameState_t& gameState) const
     {
         // Remember when in unknown station num mode rideIndex is unknown and z is set
         // When in known station num mode rideIndex is known and z is unknown
