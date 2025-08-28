@@ -7,6 +7,7 @@
 - Improved: [#24921] The command line sprite build command now prints out the images table entry for the compiled sprite file.
 - Improved: [#24953] Opening the Scenario Editor, Track Designer or Track Designs Manager now display the progress bar.
 - Improved: [#25027] Land style dropdown now has tooltips with the name of the land types.
+- Improved: [#25057] The progress window now has a Go Karts variant.
 - Change: [#23351] Diagonal sloped Go-Kart track can no longer be built without cheats if the karts do not have sprites for them.
 - Change: [#24606] Increase Misc Entity limit from 1600 to 3200.
 - Change: [#24974] Raise the Go-Karts maximum support height to allow 2 large sloped turns to be built on flat ground.
