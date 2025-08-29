@@ -21,7 +21,7 @@ namespace OpenRCT2::GameActions
         MapChangeSizeAction(const TileCoordsXY& targetSize);
         MapChangeSizeAction(const TileCoordsXY& targetSize, const TileCoordsXY& shift);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
         uint16_t GetActionFlags() const override;
 
         void Serialise(DataSerialiser& stream) override;

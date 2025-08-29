@@ -89,7 +89,7 @@ public: // Server
     void ServerSendToken(NetworkConnection& connection);
     void ServerSendMap(NetworkConnection* connection = nullptr);
     void ServerSendChat(const char* text, const std::vector<uint8_t>& playerIds = {});
-    void ServerSendGameAction(const GameAction* action);
+    void ServerSendGameAction(const OpenRCT2::GameActions::GameAction* action);
     void ServerSendTick();
     void ServerSendPlayerInfo(int32_t playerId);
     void ServerSendPlayerList();
@@ -142,7 +142,7 @@ public: // Client
     void Client_Send_AUTH(
         const std::string& name, const std::string& password, const std::string& pubkey, const std::vector<uint8_t>& signature);
     void Client_Send_CHAT(const char* text);
-    void Client_Send_GAME_ACTION(const GameAction* action);
+    void Client_Send_GAME_ACTION(const OpenRCT2::GameActions::GameAction* action);
     void Client_Send_PING();
     void Client_Send_GAMEINFO();
     void Client_Send_MAPREQUEST(const std::vector<OpenRCT2::ObjectEntryDescriptor>& objects);
@@ -170,7 +170,7 @@ public: // Client
     void Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet);
 
     std::vector<uint8_t> _challenge;
-    std::map<uint32_t, GameAction::Callback_t> _gameActionCallbacks;
+    std::map<uint32_t, OpenRCT2::GameActions::GameAction::Callback_t> _gameActionCallbacks;
     NetworkKey _key;
     NetworkUserManager _userManager;
 

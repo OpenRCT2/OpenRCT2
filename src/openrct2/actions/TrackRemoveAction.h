@@ -24,9 +24,9 @@ namespace OpenRCT2::GameActions
         TrackRemoveAction() = default;
         TrackRemoveAction(TrackElemType trackType, int32_t sequence, const CoordsXYZD& origin);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
-        uint16_t GetActionFlags() const override final;
+        uint16_t GetActionFlags() const final;
 
         void Serialise(DataSerialiser& stream) override;
         Result Query() const override;

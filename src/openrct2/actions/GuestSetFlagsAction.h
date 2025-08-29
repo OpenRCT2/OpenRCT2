@@ -23,7 +23,7 @@ namespace OpenRCT2::GameActions
         GuestSetFlagsAction() = default;
         GuestSetFlagsAction(EntityId peepId, uint32_t flags);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

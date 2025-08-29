@@ -39,7 +39,7 @@ namespace OpenRCT2::GameActions
         RideSetSettingAction() = default;
         RideSetSettingAction(RideId rideIndex, RideSetSetting setting, uint8_t value);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

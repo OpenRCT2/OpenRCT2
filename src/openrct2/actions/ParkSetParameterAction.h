@@ -38,7 +38,7 @@ namespace OpenRCT2::GameActions
         ParkSetParameterAction() = default;
         ParkSetParameterAction(ParkParameter parameter, uint64_t value = 0);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

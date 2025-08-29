@@ -26,7 +26,7 @@ namespace OpenRCT2::GameActions
         CheatSetAction() = default;
         CheatSetAction(CheatType cheatType, int64_t param1 = 0, int64_t param2 = 0);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

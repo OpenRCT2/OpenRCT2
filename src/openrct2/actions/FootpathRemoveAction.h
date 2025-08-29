@@ -23,7 +23,7 @@ namespace OpenRCT2::GameActions
         FootpathRemoveAction() = default;
         FootpathRemoveAction(const CoordsXYZ& location);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

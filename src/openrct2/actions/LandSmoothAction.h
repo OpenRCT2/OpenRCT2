@@ -30,7 +30,7 @@ namespace OpenRCT2::GameActions
         LandSmoothAction() = default;
         LandSmoothAction(const CoordsXY& coords, MapRange range, uint8_t selectionType, bool isLowering);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

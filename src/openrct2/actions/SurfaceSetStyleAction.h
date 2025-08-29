@@ -24,7 +24,7 @@ namespace OpenRCT2::GameActions
         SurfaceSetStyleAction() = default;
         SurfaceSetStyleAction(MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         void Serialise(DataSerialiser& stream) override;
         Result Query() const override;

@@ -654,16 +654,17 @@ namespace OpenRCT2::Ui::Windows
                     GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Pickup,
                                                                 EntityId::FromUnderlying(number), nullLoc,
                                                                 NetworkGetCurrentPlayerId() };
-                    pickupAction.SetCallback([peepnum = number](const GameAction* ga, const GameActions::Result* result) {
-                        if (result->Error != GameActions::Status::Ok)
-                            return;
-                        auto* windowMgr = GetWindowManager();
-                        WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
-                        if (wind != nullptr)
-                        {
-                            ToolSet(*wind, WC_PEEP__WIDX_PICKUP, Tool::picker);
-                        }
-                    });
+                    pickupAction.SetCallback(
+                        [peepnum = number](const GameActions::GameAction* ga, const GameActions::Result* result) {
+                            if (result->Error != GameActions::Status::Ok)
+                                return;
+                            auto* windowMgr = GetWindowManager();
+                            WindowBase* wind = windowMgr->FindByNumber(WindowClass::Peep, peepnum);
+                            if (wind != nullptr)
+                            {
+                                ToolSet(*wind, WC_PEEP__WIDX_PICKUP, Tool::picker);
+                            }
+                        });
                     GameActions::Execute(&pickupAction);
                 }
                 break;
@@ -1023,7 +1024,7 @@ namespace OpenRCT2::Ui::Windows
                                                         EntityId::FromUnderlying(number),
                                                         { destCoords, tileElement->GetBaseZ() },
                                                         NetworkGetCurrentPlayerId() };
-            pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
+            pickupAction.SetCallback([](const GameActions::GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                     return;
                 ToolCancel();

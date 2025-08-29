@@ -24,7 +24,7 @@ namespace OpenRCT2::GameActions
         ParkEntrancePlaceAction() = default;
         ParkEntrancePlaceAction(const CoordsXYZD& location, ObjectEntryIndex pathType, ObjectEntryIndex entranceType);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

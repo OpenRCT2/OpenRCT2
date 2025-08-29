@@ -25,7 +25,7 @@ namespace OpenRCT2::GameActions
         MazeSetTrackAction() = default;
         MazeSetTrackAction(const CoordsXYZD& location, bool initialPlacement, RideId rideIndex, uint8_t mode);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
         void Serialise(DataSerialiser& stream) override;
         Result Query() const override;
         Result Execute() const override;

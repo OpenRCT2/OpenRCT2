@@ -28,7 +28,7 @@ namespace OpenRCT2::GameActions
             ride_type_t rideType, ObjectEntryIndex subType, colour_t colour1, colour_t colour2,
             ObjectEntryIndex entranceStyleIndex);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         ride_type_t GetRideType() const;
         ObjectEntryIndex GetRideObject() const;

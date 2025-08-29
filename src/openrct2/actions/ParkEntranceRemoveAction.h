@@ -22,7 +22,7 @@ namespace OpenRCT2::GameActions
         ParkEntranceRemoveAction() = default;
         ParkEntranceRemoveAction(const CoordsXYZ& loc);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

@@ -22,7 +22,7 @@ namespace OpenRCT2::GameActions
         WallRemoveAction() = default;
         WallRemoveAction(const CoordsXYZD& loc);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
         void Serialise(DataSerialiser& stream) override;
         Result Query() const override;
         Result Execute() const override;

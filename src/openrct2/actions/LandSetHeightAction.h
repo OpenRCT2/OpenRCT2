@@ -24,7 +24,7 @@ namespace OpenRCT2::GameActions
         LandSetHeightAction() = default;
         LandSetHeightAction(const CoordsXY& coords, uint8_t height, uint8_t style);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

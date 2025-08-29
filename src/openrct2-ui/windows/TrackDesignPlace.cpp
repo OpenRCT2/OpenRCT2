@@ -215,7 +215,7 @@ namespace OpenRCT2::Ui::Windows
                     // Valid location found. Place the ghost at the location.
                     auto tdAction = GameActions::TrackDesignAction(trackLoc, *_trackDesign);
                     tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
-                    tdAction.SetCallback([&](const GameAction*, const GameActions::Result* result) {
+                    tdAction.SetCallback([&](const GameActions::GameAction*, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
                         {
                             _placementGhostRideId = result->GetData<RideId>();
@@ -283,7 +283,7 @@ namespace OpenRCT2::Ui::Windows
             }
 
             auto tdAction = GameActions::TrackDesignAction({ trackLoc, _currentTrackPieceDirection }, *_trackDesign);
-            tdAction.SetCallback([&](const GameAction*, const GameActions::Result* result) {
+            tdAction.SetCallback([&](const GameActions::GameAction*, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                 {
                     Audio::Play3D(Audio::SoundId::Error, result->Position);

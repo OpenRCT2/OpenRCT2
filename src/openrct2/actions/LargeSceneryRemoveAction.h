@@ -23,7 +23,7 @@ namespace OpenRCT2::GameActions
         LargeSceneryRemoveAction() = default;
         LargeSceneryRemoveAction(const CoordsXYZD& location, uint16_t tileIndex);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

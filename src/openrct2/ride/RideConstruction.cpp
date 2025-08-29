@@ -897,7 +897,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
         auto rideEntranceExitRemove = GameActions::RideEntranceExitRemoveAction(
             { tileElement.x, tileElement.y }, rideIndex, stationIndex, entranceType == ENTRANCE_TYPE_RIDE_EXIT);
 
-        rideEntranceExitRemove.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+        rideEntranceExitRemove.SetCallback([=](const GameActions::GameAction* ga, const GameActions::Result* result) {
             gRideEntranceExitPlaceType = entranceType;
             windowMgr->InvalidateByClass(WindowClass::RideConstruction);
 

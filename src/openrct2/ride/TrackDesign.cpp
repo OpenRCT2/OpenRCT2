@@ -953,7 +953,7 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
     uint8_t sceneryRotation = (rotation + scenery.getRotation()) & kTileElementDirectionMask;
     const uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
         | GAME_COMMAND_FLAG_GHOST;
-    std::unique_ptr<GameAction> ga;
+    std::unique_ptr<GameActions::GameAction> ga;
     switch (entryInfo->Type)
     {
         case ObjectType::smallScenery:
