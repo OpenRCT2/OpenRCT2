@@ -322,8 +322,13 @@ bool Peep::ShouldWaitForLevelCrossing() const
 
 bool Peep::IsOnLevelCrossing() const
 {
-    auto trackElement = MapGetTrackElementAt(GetLocation());
-    return trackElement != nullptr;
+    auto loc = GetLocation();
+    auto pathElement = MapGetFootpathElement(loc);
+    if (pathElement != nullptr)
+    {
+        return pathElement->AsPath()->IsLevelCrossing(loc);
+    }
+    return false;
 }
 
 bool Peep::IsOnPathBlockedByVehicle() const
