@@ -1392,7 +1392,7 @@ namespace OpenRCT2
 
                             if (dropdown_index == -1)
                             {
-                                if (!gDropdown.items[gDropdown.defaultIndex].isDisabled())
+                                if (gDropdown.defaultIndex != -1 && !gDropdown.items[gDropdown.defaultIndex].isDisabled())
                                 {
                                     dropdown_index = gDropdown.defaultIndex;
                                 }
