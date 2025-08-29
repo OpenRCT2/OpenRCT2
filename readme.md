@@ -155,6 +155,9 @@ See [PRIVACY.md](PRIVACY.md) for more information.
 - [Facebook](https://www.facebook.com/OpenRCT2)
 - [RCT subreddit](https://www.reddit.com/r/rct/)
 - [OpenRCT2 subreddit](https://www.reddit.com/r/openrct2/)
+- OpenRCT2 plug-ins
+    - [Plug-in directory (unofficial)](https://openrct2plugins.org)
+    - [Plug-in development documentation](https://github.com/OpenRCT2/OpenRCT2/blob/develop/distribution/scripting.md)
 
 ## Similar Projects
 
