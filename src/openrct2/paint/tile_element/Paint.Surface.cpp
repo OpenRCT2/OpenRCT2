@@ -78,61 +78,7 @@ static constexpr CoordsXY viewport_surface_paint_data[][4] = {
     },
 };
 
-enum
-{
-    CORNER_TOP,
-    CORNER_RIGHT,
-    CORNER_BOTTOM,
-    CORNER_LEFT
-};
-
-struct CornerHeight
-{
-    uint8_t top;
-    uint8_t right;
-    uint8_t bottom;
-    uint8_t left;
-};
-
 // clang-format off
-/**
-*  rct2: 0x0097B4A4 (R), 0x0097B4C4 (T), 0x0097B4E4 (L), 0x0097B504 (B)
-*/
-static constexpr CornerHeight corner_heights[] = {
-    // T  R  B  L
-    { 0, 0, 0, 0 },
-    { 0, 0, 1, 0 },
-    { 0, 0, 0, 1 },
-    { 0, 0, 1, 1 },
-    { 1, 0, 0, 0 },
-    { 1, 0, 1, 0 },
-    { 1, 0, 0, 1 },
-    { 1, 0, 1, 1 },
-    { 0, 1, 0, 0 },
-    { 0, 1, 1, 0 },
-    { 0, 1, 0, 1 },
-    { 0, 1, 1, 1 },
-    { 1, 1, 0, 0 },
-    { 1, 1, 1, 0 },
-    { 1, 1, 0, 1 },
-    { 1, 1, 1, 1 },
-    { 0, 0, 0, 0 },
-    { 0, 0, 1, 0 },
-    { 0, 0, 0, 1 },
-    { 0, 0, 1, 1 },
-    { 1, 0, 0, 0 },
-    { 1, 0, 1, 0 },
-    { 1, 0, 0, 1 },
-    { 1, 0, 1, 2 },
-    { 0, 1, 0, 0 },
-    { 0, 1, 1, 0 },
-    { 0, 1, 0, 1 },
-    { 0, 1, 2, 1 },
-    { 1, 1, 0, 0 },
-    { 1, 2, 1, 0 },
-    { 2, 1, 0, 1 },
-    { 1, 1, 1, 1 },
-};
 
 // bottom left tint
 static constexpr uint8_t Byte97B524[] = {
@@ -214,7 +160,7 @@ struct TileDescriptor
     const TileElement* tile_element;
     const TerrainSurfaceObject* surfaceObject;
     uint8_t slope;
-    CornerHeight corner_heights;
+    SlopeRelativeCornerHeights corner_heights;
 };
 
 struct TileSurfaceBoundaryData
@@ -997,7 +943,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     const uint8_t rotation = session.CurrentRotation;
     const uint8_t surfaceShape = ViewportSurfacePaintSetupGetRelativeSlope(tileElement, rotation);
     const CoordsXY& base = session.SpritePosition;
-    const CornerHeight& cornerHeights = corner_heights[surfaceShape];
+    const auto cornerHeights = GetSlopeRelativeCornerHeights(surfaceShape);
     const TileElement* elementPtr = &reinterpret_cast<const TileElement&>(tileElement);
 
     const auto* surfaceObject = tileElement.GetSurfaceObject();
@@ -1039,7 +985,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
         const uint32_t surfaceSlope = ViewportSurfacePaintSetupGetRelativeSlope(*surfaceElement, rotation);
         const uint8_t baseHeight = surfaceElement->GetBaseZ() / 16;
-        const CornerHeight& ch = corner_heights[surfaceSlope];
+        const auto ch = GetSlopeRelativeCornerHeights(surfaceSlope);
 
         descriptor.tile_coords = TileCoordsXY{ position };
         descriptor.tile_element = reinterpret_cast<TileElement*>(surfaceElement);
