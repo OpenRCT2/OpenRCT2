@@ -10,6 +10,7 @@
 - Improved: [#25027] Land style dropdown now has tooltips with the name of the land types.
 - Improved: [#25057] The progress window now has a Go Karts variant.
 - Change: [#23351] Diagonal sloped Go-Kart track can no longer be built without cheats if the karts do not have sprites for them.
+- Change: [#24511] [Plugin] Separated new seatedInPairs field from numSeats field on vehicles and vehicle objects; seatedInPairs can now be set on vehicle entities.
 - Change: [#24606] Increase Misc Entity limit from 1600 to 3200.
 - Change: [#24974] Raise the Go-Karts maximum support height to allow 2 large sloped turns to be built on flat ground.
 - Fix: [#12831] Zooming to cursor on land edges sometimes causes the camera to move to the wrong position.
@@ -20,6 +21,7 @@
 - Fix: [#24001] Sloped diagonal metal supports that are offset with a crossbeam draw incorrectly.
 - Fix: [#24151] Sprites are cut off by 1 row of pixels when using OpenGL on Intel Macs.
 - Fix: [#24173] Allow all game speeds between 1 and 8 if developer mode is on.
+- Fix: [#24510] Ride vehicles that load in pairs do not load properly when the ride is in either Race or Dodgems mode.
 - Fix: [#24745] Potential crash when lighting effects are enabled and loading a save or a new scenario.
 - Fix: [#24835] Dive loop track pieces do not have tunnels.
 - Fix: [#24884] Smooth map and add beaches functions use incorrect map size with height map image files.

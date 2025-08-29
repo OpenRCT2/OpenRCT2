@@ -707,7 +707,7 @@ namespace OpenRCT2
         car.car_mass = Json::GetNumber<uint16_t>(jCar["mass"]);
         car.tab_height = Json::GetNumber<int8_t>(jCar["tabOffset"]);
         car.num_seats = Json::GetNumber<uint8_t>(jCar["numSeats"]);
-        if (Json::GetBoolean(jCar["seatsInPairs"], true) && car.num_seats > 1)
+        if (Json::GetBoolean(jCar["seatsInPairs"], true) && car.getNumSeats() > 1)
         {
             car.num_seats |= kVehicleSeatPairFlag;
         }
