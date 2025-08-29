@@ -520,6 +520,17 @@
         "path": "loader/loader_wooden_vehicle.png"
     },
     {
+        "path": "loader/loader_gokarts_supports.png",
+        "y": 5
+    },
+    {
+        "path": "loader/loader_gokarts_track.png",
+        "y": 9
+    },
+    {
+        "path": "loader/loader_gokarts_vehicles.png"
+    },
+    {
         "path": "palette_map/palette_map_dark_olive_dark.png",
         "palette": "keep",
         "format": "raw"
