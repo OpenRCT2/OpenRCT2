@@ -331,7 +331,7 @@ public:
 private:
     void update();
     void updateQueueLength(StationIndex stationIndex);
-    ResultWithMessage createVehicles(const CoordsXYE& element, bool isApplying);
+    ResultWithMessage createVehicles(const CoordsXYE& element, bool isApplying, bool isSimulating);
     void moveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, OpenRCT2::TrackElement& firstBlock);
     money64 calculateIncomePerHour() const;
     void chainQueues() const;
@@ -340,8 +340,8 @@ private:
     ResultWithMessage changeStatusDoStationChecks(StationIndex& stationIndex);
     ResultWithMessage changeStatusGetStartElement(StationIndex stationIndex, CoordsXYE& trackElement);
     ResultWithMessage changeStatusCheckCompleteCircuit(const CoordsXYE& trackElement);
-    ResultWithMessage changeStatusCheckTrackValidity(const CoordsXYE& trackElement);
-    ResultWithMessage changeStatusCreateVehicles(bool isApplying, const CoordsXYE& trackElement);
+    ResultWithMessage changeStatusCheckTrackValidity(const CoordsXYE& trackElement, bool isSimulating);
+    ResultWithMessage changeStatusCreateVehicles(bool isApplying, const CoordsXYE& trackElement, bool isSimulating);
 
 public:
     bool canBreakDown() const;
