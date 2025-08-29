@@ -35,6 +35,7 @@
 
 #include <algorithm>
 #include <array>
+#include <atomic>
 #include <memory>
 #include <mutex>
 #include <thread>
@@ -614,7 +615,7 @@ namespace OpenRCT2
             objectsToLoad.erase(std::unique(objectsToLoad.begin(), objectsToLoad.end()), objectsToLoad.end());
 
             // Prepare for loading objects multi-threaded
-            auto numProcessed = 0;
+            std::atomic<int> numProcessed = 0;
             auto numRequired = objectsToLoad.size();
             std::mutex commonMutex;
             auto loadSingleObject = [&](const ObjectRepositoryItem* requiredObject) {
@@ -635,12 +636,13 @@ namespace OpenRCT2
                     _objectRepository.RegisterLoadedObject(requiredObject, std::move(newObject));
                 }
 
-                numProcessed++;
+                numProcessed.fetch_add(1);
             };
 
             auto completionFn = [&]() {
-                if (reportProgress && (numProcessed % 100) == 0)
-                    ReportProgress(numProcessed, numRequired);
+                auto processed = numProcessed.load();
+                if (reportProgress && (processed % 100) == 0)
+                    ReportProgress(processed, numRequired);
             };
 
             // Dispatch loading the objects
