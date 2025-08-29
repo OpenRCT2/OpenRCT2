@@ -9,6 +9,8 @@
 
 #include "Slope.h"
 
+#include "../../world/MapLimits.h"
+
 #include <array>
 
 namespace OpenRCT2
@@ -53,5 +55,15 @@ namespace OpenRCT2
     SlopeRelativeCornerHeights GetSlopeRelativeCornerHeights(const uint8_t slope)
     {
         return kSlopeRelativeCornerHeights[slope & kTileSlopeMask];
+    }
+
+    TileCornersZ GetSlopeCornerHeights(const int32_t height, const uint8_t slope)
+    {
+        const auto cornerHeights = GetSlopeRelativeCornerHeights(slope);
+        const int32_t northZ = height + (cornerHeights.bottom * kLandHeightStep);
+        const int32_t eastZ = height + (cornerHeights.left * kLandHeightStep);
+        const int32_t southZ = height + (cornerHeights.top * kLandHeightStep);
+        const int32_t westZ = height + (cornerHeights.right * kLandHeightStep);
+        return { northZ, eastZ, southZ, westZ };
     }
 } // namespace OpenRCT2

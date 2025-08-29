@@ -228,35 +228,8 @@ GameActions::Result MapCanConstructWithClearAt(
             }
             else
             {
-                auto northZ = tileElement->GetBaseZ();
-                auto eastZ = northZ;
-                auto southZ = northZ;
-                auto westZ = northZ;
-                const auto slope = tileElement->AsSurface()->GetSlope();
-                if (slope & kTileSlopeNCornerUp)
-                {
-                    northZ += kLandHeightStep;
-                    if (slope == (kTileSlopeSCornerDown | kTileSlopeDiagonalFlag))
-                        northZ += kLandHeightStep;
-                }
-                if (slope & kTileSlopeECornerUp)
-                {
-                    eastZ += kLandHeightStep;
-                    if (slope == (kTileSlopeWCornerDown | kTileSlopeDiagonalFlag))
-                        eastZ += kLandHeightStep;
-                }
-                if (slope & kTileSlopeSCornerUp)
-                {
-                    southZ += kLandHeightStep;
-                    if (slope == (kTileSlopeNCornerDown | kTileSlopeDiagonalFlag))
-                        southZ += kLandHeightStep;
-                }
-                if (slope & kTileSlopeWCornerUp)
-                {
-                    westZ += kLandHeightStep;
-                    if (slope == (kTileSlopeECornerDown | kTileSlopeDiagonalFlag))
-                        westZ += kLandHeightStep;
-                }
+                const auto [northZ, eastZ, southZ, westZ] = GetSlopeCornerHeights(
+                    tileElement->GetBaseZ(), tileElement->AsSurface()->GetSlope());
                 const auto baseHeight = pos.baseZ + (4 * kCoordsZStep);
                 const auto baseQuarter = quarterTile.GetBaseQuarterOccupied();
                 const auto zQuarter = quarterTile.GetZQuarterOccupied();

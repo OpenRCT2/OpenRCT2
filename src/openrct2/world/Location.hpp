@@ -899,3 +899,12 @@ struct ScreenRect : public RectRange<ScreenCoordsXY>
         return coords.x >= GetLeft() && coords.x <= GetRight() && coords.y >= GetTop() && coords.y <= GetBottom();
     }
 };
+
+// This uses the convention from the kTileSlope constants that north is at the bottom of the tile at rotation 0
+struct TileCornersZ
+{
+    int32_t north;
+    int32_t east;
+    int32_t south;
+    int32_t west;
+};

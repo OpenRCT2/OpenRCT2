@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "../../world/Location.hpp"
+
 #include <cstdint>
 
 namespace OpenRCT2
@@ -49,4 +51,5 @@ namespace OpenRCT2
     };
 
     SlopeRelativeCornerHeights GetSlopeRelativeCornerHeights(const uint8_t slope);
+    TileCornersZ GetSlopeCornerHeights(const int32_t height, const uint8_t slope);
 } // namespace OpenRCT2
