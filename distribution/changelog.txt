@@ -39,6 +39,7 @@
 - Fix: [#25005] The Corkscrew Roller Coaster inline twist inverted supports draw below the track.
 - Fix: [#25006] The Twister Roller Coaster inline twists do not draw in tunnels at some angles.
 - Fix: [#25046] Zooming with the zoom buttons on the extra viewport is not focused on the centre of the viewport.
+- Fix: [#25054] Panning a viewport in a window that is partially outside the game’s window can draw incorrectly or crash in software rendering.
 - Fix: [#25062] Certain peep actions cannot be triggered if they are under or inside a track piece due to faulty verification of them being on a level crossing.
 - Fix: [#25067] Progress bars can flicker when downloading maps in multiplayer mode.
 

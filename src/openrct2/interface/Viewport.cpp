@@ -433,7 +433,8 @@ namespace OpenRCT2
         }
     }
 
-    static void ViewportShiftPixels(RenderTarget& rt, WindowBase* window, Viewport* viewport, int32_t x_diff, int32_t y_diff)
+    static void ViewportShiftPixels(
+        RenderTarget& rt, WindowBase* window, const ScreenRect& drawRect, const ScreenCoordsXY& shift)
     {
         // This loop redraws all parts covered by transparent windows.
         auto it = WindowGetIterator(window);
@@ -442,51 +443,35 @@ namespace OpenRCT2
             auto w = it->get();
             if (!(w->flags & WF_TRANSPARENT) || (w->flags & WF_DEAD))
                 continue;
-            if (w->viewport == viewport)
+            if (w->viewport == window->viewport)
                 continue;
 
-            if (viewport->pos.x + viewport->width <= w->windowPos.x)
+            if (drawRect.GetRight() <= w->windowPos.x)
                 continue;
-            if (w->windowPos.x + w->width <= viewport->pos.x)
-                continue;
-
-            if (viewport->pos.y + viewport->height <= w->windowPos.y)
-                continue;
-            if (w->windowPos.y + w->height <= viewport->pos.y)
+            if (w->windowPos.x + w->width <= drawRect.GetLeft())
                 continue;
 
-            auto left = w->windowPos.x;
-            auto right = w->windowPos.x + w->width;
-            auto top = w->windowPos.y;
-            auto bottom = w->windowPos.y + w->height;
-
-            if (left < viewport->pos.x)
-                left = viewport->pos.x;
-            if (right > viewport->pos.x + viewport->width)
-                right = viewport->pos.x + viewport->width;
-
-            if (top < viewport->pos.y)
-                top = viewport->pos.y;
-            if (bottom > viewport->pos.y + viewport->height)
-                bottom = viewport->pos.y + viewport->height;
-
-            if (left >= right)
+            if (drawRect.GetBottom() <= w->windowPos.y)
                 continue;
-            if (top >= bottom)
+            if (w->windowPos.y + w->height <= drawRect.GetTop())
+                continue;
+
+            const int32_t left = std::max(w->windowPos.x, drawRect.GetLeft());
+            const int32_t right = std::min(w->windowPos.x + w->width, drawRect.GetRight());
+            const int32_t top = std::max(w->windowPos.y, drawRect.GetTop());
+            const int32_t bottom = std::min(w->windowPos.y + w->height, drawRect.GetBottom());
+
+            if (left >= right || top >= bottom)
                 continue;
 
             WindowDrawAll(rt, left, top, right, bottom);
         }
 
-        ViewportRedrawAfterShift(
-            rt, window, window, { x_diff, y_diff },
-            { viewport->pos, { viewport->pos.x + viewport->width, viewport->pos.y + viewport->height } });
+        ViewportRedrawAfterShift(rt, window, window, shift, drawRect);
     }
 
     static void ViewportMove(const ScreenCoordsXY& coords, WindowBase* w, Viewport* viewport)
     {
-        auto zoom = viewport->zoom;
-
         // Note: do not do the subtraction and then divide!
         // Note: Due to arithmetic shift != /zoom a shift will have to be used
         // hopefully when 0x006E7FF3 is finished this can be converted to /zoom.
@@ -523,57 +508,23 @@ namespace OpenRCT2
             }
         }
 
-        Viewport view_copy = *viewport;
+        const int32_t left = std::max(viewport->pos.x, 0);
+        const int32_t top = std::max(viewport->pos.y, 0);
+        const int32_t right = std::min(left + viewport->width + std::min(viewport->pos.x, 0), ContextGetWidth());
+        const int32_t bottom = std::min(top + viewport->height + std::min(viewport->pos.y, 0), ContextGetHeight());
 
-        if (viewport->pos.x < 0)
-        {
-            viewport->width += viewport->pos.x;
-            viewport->viewPos.x -= zoom.ApplyTo(viewport->pos.x);
-            viewport->pos.x = 0;
-        }
-
-        int32_t eax = viewport->pos.x + viewport->width - ContextGetWidth();
-        if (eax > 0)
-        {
-            viewport->width -= eax;
-        }
-
-        if (viewport->width <= 0)
-        {
-            *viewport = view_copy;
+        if (left >= right || top >= bottom)
             return;
-        }
-
-        if (viewport->pos.y < 0)
-        {
-            viewport->height += viewport->pos.y;
-            viewport->viewPos.y -= zoom.ApplyTo(viewport->pos.y);
-            viewport->pos.y = 0;
-        }
-
-        eax = viewport->pos.y + viewport->height - ContextGetHeight();
-        if (eax > 0)
-        {
-            viewport->height -= eax;
-        }
-
-        if (viewport->height <= 0)
-        {
-            *viewport = view_copy;
-            return;
-        }
 
         if (DrawingEngineHasDirtyOptimisations())
         {
             RenderTarget& rt = DrawingEngineGetDpi();
-            ViewportShiftPixels(rt, w, viewport, x_diff, y_diff);
+            ViewportShiftPixels(rt, w, { left, top, right, bottom }, { x_diff, y_diff });
         }
         else
         {
             GfxInvalidateScreen();
         }
-
-        *viewport = view_copy;
     }
 
     // rct2: 0x006E7A15
