@@ -538,14 +538,6 @@ namespace OpenRCT2::Ui::Windows
 
             widgets[WIDX_FIRE].left = width - 25;
             widgets[WIDX_FIRE].right = width - 2;
-
-            if (viewport != nullptr)
-            {
-                const Widget& viewportWidget = widgets[WIDX_VIEWPORT];
-                viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 };
-                viewport->width = widgets[WIDX_VIEWPORT].width() - 1;
-                viewport->height = widgets[WIDX_VIEWPORT].height() - 1;
-            }
         }
 
         void OverviewDraw(RenderTarget& rt)
@@ -619,6 +611,20 @@ namespace OpenRCT2::Ui::Windows
         void OverviewResize()
         {
             WindowSetResize(*this, kWindowSize, { 500, 450 });
+
+            if (viewport != nullptr)
+            {
+                const Widget& viewportWidget = widgets[WIDX_VIEWPORT];
+                const auto reqViewportWidth = viewportWidget.width() - 1;
+                const auto reqViewportHeight = viewportWidget.height() - 1;
+
+                viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 };
+                if (viewport->width != reqViewportWidth || viewport->height != reqViewportHeight)
+                {
+                    viewport->width = reqViewportWidth;
+                    viewport->height = reqViewportHeight;
+                }
+            }
 
             ViewportInit();
         }
