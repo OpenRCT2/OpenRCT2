@@ -15,7 +15,6 @@
 #include <openrct2/core/StringTypes.h>
 #include <openrct2/interface/Window.h>
 #include <span>
-#include <variant>
 
 struct ImageId;
 class Formatter;

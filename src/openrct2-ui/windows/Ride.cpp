@@ -1771,7 +1771,6 @@ namespace OpenRCT2::Ui::Windows
                 Formatter ft;
                 ft.Add<uint16_t>(i + 1);
                 gDropdown.items[currentItem] = Dropdown::MenuLabel(name, ft);
-                gDropdown.items[currentItem].value = (1 << 16) | i;
 
                 if (TrainMustBeHidden(*ride, i))
                 {
@@ -1787,7 +1786,6 @@ namespace OpenRCT2::Ui::Windows
                 Formatter ft;
                 ft.Add<uint16_t>(i + 1);
                 gDropdown.items[currentItem] = Dropdown::MenuLabel(name, ft);
-                gDropdown.items[currentItem].value = (1 << 16) | i;
                 currentItem++;
             }
 
