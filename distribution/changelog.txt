@@ -1,6 +1,7 @@
 0.4.26 (in development)
 ------------------------------------------------------------------------
 - Feature: [#24949] Add an option to the command line screenshot function to draw debug bounding boxes.
+- Feature: [#25070] Allow custom number of spin frames for some types of spinning vehicles.
 - Improved: [#9890, #18714] Rides using block-sectioned operating modes can now enter simulating mode without having to complete the circuit first.
 - Improved: [#24734] Save files now use Zstd compression for faster saving and smaller files.
 - Improved: [#24890] The ride list is now searchable.
