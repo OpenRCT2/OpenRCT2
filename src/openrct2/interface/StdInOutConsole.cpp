@@ -16,6 +16,7 @@
 #include "../platform/Platform.h"
 #include "../scripting/ScriptEngine.h"
 
+#include <cstdlib>
 #include <linenoise.hpp>
 
 // Ignore isatty warning on WIN32
@@ -27,6 +28,12 @@ void StdInOutConsole::Start()
 {
     // Only start if stdin/stdout is a TTY
     if (!isatty(fileno(stdin)) || !isatty(fileno(stdout)))
+    {
+        return;
+    }
+
+    // Allow user to disable the console REPL. Setting this environment variable to any value will prevent REPL from starting.
+    if (getenv("OPENRCT2_NO_REPL"))
     {
         return;
     }
