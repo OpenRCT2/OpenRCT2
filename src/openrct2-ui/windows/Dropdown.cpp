@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "openrct2/core/String.hpp"
+
 #include <algorithm>
 #include <bitset>
 #include <iterator>
@@ -91,7 +93,7 @@ namespace OpenRCT2::Ui::Windows
 
             auto yOffset = GetAdditionalRowPadding();
             Formatter ft;
-            ft.Add<const utf8*>(item.text.c_str());
+            ft.Add<const utf8*>(item.text);
 
             DrawTextEllipsised(rt, { screenCoords.x + 2, screenCoords.y + yOffset }, width - 7, format, ft, { colour });
         }
@@ -347,7 +349,7 @@ namespace OpenRCT2::Ui::Windows
         int32_t max_string_width = 0;
         for (size_t i = 0; i < num_items; i++)
         {
-            int32_t string_width = GfxGetStringWidth(gDropdown.items[i].text.c_str(), FontStyle::Medium);
+            int32_t string_width = GfxGetStringWidth(gDropdown.items[i].text, FontStyle::Medium);
             max_string_width = std::max(string_width, max_string_width);
         }
 
@@ -644,34 +646,51 @@ using namespace OpenRCT2;
 
 namespace OpenRCT2::Dropdown
 {
-    Item MenuLabel(StringId stringId)
+    static Item StringItem(ItemType _type, const utf8* string)
     {
-        return Item{ ItemType::regular, LanguageGetString(stringId) };
+        auto ret = Item{ .type = _type };
+        String::safeUtf8Copy(ret.text, string, sizeof(ret.text));
+        return ret;
     }
 
-    Item MenuLabel(u8string_view string)
+    Item MenuLabel(StringId stringId)
     {
-        return Item{ .type = ItemType::regular, .text = u8string(string) };
+        return StringItem(ItemType::regular, LanguageGetString(stringId));
+    }
+
+    Item MenuLabel(u8string string)
+    {
+        return StringItem(ItemType::regular, string.c_str());
+    }
+
+    Item MenuLabel(const utf8* string)
+    {
+        return StringItem(ItemType::regular, string);
     }
 
     Item MenuLabel(StringId format, const Formatter& ft)
     {
         auto string = FormatStringIDLegacy(format, ft.Data());
-        return Item{ .type = ItemType::regular, .text = string };
+        return MenuLabel(string);
     }
 
-    Item PlainMenuLabel(u8string_view string)
+    Item PlainMenuLabel(u8string string)
     {
-        return Item{ .type = ItemType::plain, .text = u8string(string) };
+        return StringItem(ItemType::plain, string.c_str());
+    }
+
+    Item PlainMenuLabel(const utf8* string)
+    {
+        return StringItem(ItemType::plain, string);
     }
 
     Item PlainMenuLabel(StringId stringId)
     {
-        return Item{ ItemType::plain, LanguageGetString(stringId) };
+        return StringItem(ItemType::plain, LanguageGetString(stringId));
     }
 
     Item ToggleOption(StringId stringId)
     {
-        return Item{ ItemType::toggle, LanguageGetString(stringId) };
+        return StringItem(ItemType::toggle, LanguageGetString(stringId));
     }
 } // namespace OpenRCT2::Dropdown

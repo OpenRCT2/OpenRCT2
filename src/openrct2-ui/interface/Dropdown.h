@@ -64,8 +64,6 @@ namespace OpenRCT2::Ui::Windows
     uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems);
 } // namespace OpenRCT2::Ui::Windows
 
-using StringVariant = std::variant<std::string, StringId>;
-
 namespace OpenRCT2::Dropdown
 {
     enum Flag
@@ -102,8 +100,8 @@ namespace OpenRCT2::Dropdown
 
     struct Item
     {
-        ItemType type;
-        u8string text{};
+        ItemType type = ItemType::regular;
+        utf8 text[256]{};
         /**
          * Underlying value, e.g. the ID of an object, the backing value of an enum, etc.
          */
@@ -166,14 +164,16 @@ namespace OpenRCT2::Dropdown
      * Regular menu item, which shows a » symbol when selected
      */
     Item MenuLabel(StringId stringId);
-    Item MenuLabel(u8string_view string);
+    Item MenuLabel(u8string string);
+    Item MenuLabel(const utf8* string);
     Item MenuLabel(StringId format, const Formatter& ft);
 
     /**
      * Leaves out the left padding where a checkmark can be drawn, use only for menu where no item can be checked.
      */
     Item PlainMenuLabel(StringId stringId);
-    Item PlainMenuLabel(u8string_view string);
+    Item PlainMenuLabel(u8string string);
+    Item PlainMenuLabel(const utf8* string);
 
     /**
      * Like MenuLabel, but shows a tick when selected.
