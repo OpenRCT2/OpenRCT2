@@ -23,7 +23,7 @@ namespace OpenRCT2::GameActions
         PlayerSetGroupAction() = default;
         PlayerSetGroupAction(NetworkPlayerId_t playerId, uint8_t groupId);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

@@ -22,7 +22,7 @@ namespace OpenRCT2::GameActions
         PeepSpawnPlaceAction() = default;
         PeepSpawnPlaceAction(const CoordsXYZD& location);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

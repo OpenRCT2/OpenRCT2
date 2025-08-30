@@ -24,7 +24,7 @@ namespace OpenRCT2::GameActions
         StaffSetCostumeAction() = default;
         StaffSetCostumeAction(EntityId spriteIndex, OpenRCT2::ObjectEntryIndex costume);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

@@ -13,7 +13,10 @@
 #include <set>
 #include <string>
 
-class GameAction;
+namespace OpenRCT2::GameActions
+{
+    class GameAction;
+}
 
 namespace OpenRCT2
 {
@@ -48,7 +51,7 @@ namespace OpenRCT2
         virtual bool IsNormalising() const = 0;
         virtual bool ShouldDisplayNotice() const = 0;
 
-        virtual void AddGameAction(uint32_t tick, const GameAction* action) = 0;
+        virtual void AddGameAction(uint32_t tick, const GameActions::GameAction* action) = 0;
 
         virtual bool StartRecording(
             const std::string& name, uint32_t maxTicks = k_MaxReplayTicks, RecordType rt = RecordType::NORMAL)

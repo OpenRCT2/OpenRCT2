@@ -44,7 +44,7 @@ namespace OpenRCT2::Ui::Windows
         ImageId vehicle;
     };
 
-    static std::array<LoaderVehicleStyle, 3> kVehicleStyles = { {
+    static std::array<LoaderVehicleStyle, 4> kVehicleStyles = { {
         {
             ImageId{SPR_G2_LOADER_HYBRID_SUPPORTS, COLOUR_LIGHT_ORANGE, COLOUR_DARK_BROWN },
             ImageId{SPR_G2_LOADER_HYBRID_TRACK, COLOUR_LIGHT_ORANGE, COLOUR_LIGHT_ORANGE },
@@ -59,6 +59,11 @@ namespace OpenRCT2::Ui::Windows
             ImageId{SPR_G2_LOADER_WOODEN_SUPPORTS, COLOUR_BLACK, COLOUR_WHITE },
             ImageId{SPR_G2_LOADER_WOODEN_TRACK, COLOUR_BORDEAUX_RED, COLOUR_BLACK },
             ImageId{SPR_G2_LOADER_WOODEN_VEHICLE, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_SATURATED_BROWN}
+        },
+        {
+            ImageId{SPR_G2_LOADER_GO_KARTS_SUPPORTS, COLOUR_DARK_BROWN, COLOUR_DARK_BROWN },
+            ImageId{SPR_G2_LOADER_GO_KARTS_TRACK, COLOUR_BLACK, COLOUR_BLACK },
+            ImageId{SPR_G2_LOADER_GO_KARTS_VEHICLES }
         },
     } };
 

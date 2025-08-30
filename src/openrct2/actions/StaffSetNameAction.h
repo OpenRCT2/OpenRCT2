@@ -23,7 +23,7 @@ namespace OpenRCT2::GameActions
         StaffSetNameAction() = default;
         StaffSetNameAction(EntityId spriteIndex, const std::string& name);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
         void Serialise(DataSerialiser& stream) override;

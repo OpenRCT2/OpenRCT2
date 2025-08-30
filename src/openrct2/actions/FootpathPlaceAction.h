@@ -29,7 +29,7 @@ namespace OpenRCT2::GameActions
         FootpathPlaceAction(
             const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType,
             Direction direction = kInvalidDirection, PathConstructFlags constructFlags = 0);
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

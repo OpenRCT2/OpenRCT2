@@ -23,7 +23,7 @@ namespace OpenRCT2::GameActions
 
         PlayerKickAction(NetworkPlayerId_t playerId);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

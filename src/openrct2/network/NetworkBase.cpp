@@ -49,7 +49,7 @@ using namespace OpenRCT2;
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-constexpr uint8_t kNetworkStreamVersion = 3;
+constexpr uint8_t kNetworkStreamVersion = 5;
 
 const std::string kNetworkStreamID = std::string(kOpenRCT2Version) + "-" + std::to_string(kNetworkStreamVersion);
 
@@ -112,8 +112,8 @@ static u8string NetworkGetKeysDirectory();
 static u8string NetworkGetPrivateKeyPath(u8string_view playerName);
 static u8string NetworkGetPublicKeyPath(u8string_view playerName, u8string_view hash);
 
-NetworkBase::NetworkBase(OpenRCT2::IContext& context)
-    : OpenRCT2::System(context)
+NetworkBase::NetworkBase(IContext& context)
+    : System(context)
 {
     mode = NETWORK_MODE_NONE;
     status = NETWORK_STATUS_NONE;
@@ -1496,7 +1496,7 @@ void NetworkBase::ServerSendMap(NetworkConnection* connection)
 std::vector<uint8_t> NetworkBase::SaveForNetwork(const std::vector<const ObjectRepositoryItem*>& objects) const
 {
     std::vector<uint8_t> result;
-    auto ms = OpenRCT2::MemoryStream();
+    auto ms = MemoryStream();
     if (SaveMap(&ms, objects))
     {
         result.resize(ms.GetLength());
@@ -1539,7 +1539,7 @@ void NetworkBase::ServerSendChat(const char* text, const std::vector<uint8_t>& p
     }
 }
 
-void NetworkBase::Client_Send_GAME_ACTION(const GameAction* action)
+void NetworkBase::Client_Send_GAME_ACTION(const GameActions::GameAction* action)
 {
     NetworkPacket packet(NetworkCommand::GameAction);
 
@@ -1547,7 +1547,7 @@ void NetworkBase::Client_Send_GAME_ACTION(const GameAction* action)
     networkId = ++_actionId;
 
     // I know its ugly, want basic functionality for now.
-    const_cast<GameAction*>(action)->SetNetworkId(networkId);
+    const_cast<GameActions::GameAction*>(action)->SetNetworkId(networkId);
     if (action->GetCallback())
     {
         _gameActionCallbacks.insert(std::make_pair(networkId, action->GetCallback()));
@@ -1560,7 +1560,7 @@ void NetworkBase::Client_Send_GAME_ACTION(const GameAction* action)
     _serverConnection->QueuePacket(std::move(packet));
 }
 
-void NetworkBase::ServerSendGameAction(const GameAction* action)
+void NetworkBase::ServerSendGameAction(const GameActions::GameAction* action)
 {
     NetworkPacket packet(NetworkCommand::GameAction);
 
@@ -1823,7 +1823,7 @@ static bool ProcessPlayerAuthenticatePluginHooks(
     using namespace OpenRCT2::Scripting;
 
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::networkAuthenticate))
+    if (hookEngine.HasSubscriptions(Scripting::HookType::networkAuthenticate))
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -1836,7 +1836,7 @@ static bool ProcessPlayerAuthenticatePluginHooks(
         auto e = eObj.Take();
 
         // Call the subscriptions
-        hookEngine.Call(OpenRCT2::Scripting::HookType::networkAuthenticate, e, false);
+        hookEngine.Call(Scripting::HookType::networkAuthenticate, e, false);
 
         // Check if any hook has cancelled the join
         if (AsOrDefault(e["cancel"], false))
@@ -1854,7 +1854,7 @@ static void ProcessPlayerJoinedPluginHooks(uint8_t playerId)
     using namespace OpenRCT2::Scripting;
 
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::networkJoin))
+    if (hookEngine.HasSubscriptions(Scripting::HookType::networkJoin))
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -1864,7 +1864,7 @@ static void ProcessPlayerJoinedPluginHooks(uint8_t playerId)
         auto e = eObj.Take();
 
         // Call the subscriptions
-        hookEngine.Call(OpenRCT2::Scripting::HookType::networkJoin, e, false);
+        hookEngine.Call(Scripting::HookType::networkJoin, e, false);
     }
     #endif
 }
@@ -1875,7 +1875,7 @@ static void ProcessPlayerLeftPluginHooks(uint8_t playerId)
     using namespace OpenRCT2::Scripting;
 
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::networkLeave))
+    if (hookEngine.HasSubscriptions(Scripting::HookType::networkLeave))
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -1885,7 +1885,7 @@ static void ProcessPlayerLeftPluginHooks(uint8_t playerId)
         auto e = eObj.Take();
 
         // Call the subscriptions
-        hookEngine.Call(OpenRCT2::Scripting::HookType::networkLeave, e, false);
+        hookEngine.Call(Scripting::HookType::networkLeave, e, false);
     }
     #endif
 }
@@ -2776,6 +2776,8 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
 
         _serverTickData.clear();
         _clientMapLoaded = false;
+
+        OpenNetworkProgress(STR_MULTIPLAYER_DOWNLOADING_MAP);
     }
     if (size > chunk_buffer.size())
     {
@@ -2785,7 +2787,6 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
     const auto currentProgressKiB = (offset + chunksize) / 1024;
     const auto totalSizeKiB = size / 1024;
 
-    OpenNetworkProgress(STR_MULTIPLAYER_DOWNLOADING_MAP);
     GetContext().SetProgress(currentProgressKiB, totalSizeKiB, STR_STRING_M_OF_N_KIB);
 
     std::memcpy(&chunk_buffer[offset], const_cast<void*>(static_cast<const void*>(packet.Read(chunksize))), chunksize);
@@ -2900,7 +2901,7 @@ static bool ProcessChatMessagePluginHooks(uint8_t playerId, std::string& text)
 {
     #ifdef ENABLE_SCRIPTING
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
-    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HookType::networkChat))
+    if (hookEngine.HasSubscriptions(Scripting::HookType::networkChat))
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
 
@@ -2913,7 +2914,7 @@ static bool ProcessChatMessagePluginHooks(uint8_t playerId, std::string& text)
         auto e = DukValue::take_from_stack(ctx);
 
         // Call the subscriptions
-        hookEngine.Call(OpenRCT2::Scripting::HookType::networkChat, e, false);
+        hookEngine.Call(Scripting::HookType::networkChat, e, false);
 
         // Update text from object if subscriptions changed it
         if (e["message"].type() != DukValue::Type::STRING)
@@ -2975,7 +2976,7 @@ void NetworkBase::Client_Handle_GAME_ACTION([[maybe_unused]] NetworkConnection& 
 
     DataSerialiser ds(false, stream);
 
-    GameAction::Ptr action = GameActions::Create(actionType);
+    GameActions::GameAction::Ptr action = GameActions::Create(actionType);
     if (action == nullptr)
     {
         LOG_ERROR("Received unregistered game action type: 0x%08X", actionType);
@@ -3029,7 +3030,7 @@ void NetworkBase::ServerHandleGameAction(NetworkConnection& connection, NetworkP
     }
 
     // Create and enqueue the action.
-    GameAction::Ptr ga = GameActions::Create(actionType);
+    GameActions::GameAction::Ptr ga = GameActions::Create(actionType);
     if (ga == nullptr)
     {
         LOG_ERROR(
@@ -3272,97 +3273,97 @@ void NetworkBase::Client_Handle_GAMEINFO([[maybe_unused]] NetworkConnection& con
 
 void NetworkReconnect()
 {
-    OpenRCT2::GetContext()->GetNetwork().Reconnect();
+    GetContext()->GetNetwork().Reconnect();
 }
 
 void NetworkShutdownClient()
 {
-    OpenRCT2::GetContext()->GetNetwork().ServerClientDisconnected();
+    GetContext()->GetNetwork().ServerClientDisconnected();
 }
 
 int32_t NetworkBeginClient(const std::string& host, int32_t port)
 {
-    return OpenRCT2::GetContext()->GetNetwork().BeginClient(host, port);
+    return GetContext()->GetNetwork().BeginClient(host, port);
 }
 
 int32_t NetworkBeginServer(int32_t port, const std::string& address)
 {
-    return OpenRCT2::GetContext()->GetNetwork().BeginServer(port, address);
+    return GetContext()->GetNetwork().BeginServer(port, address);
 }
 
 void NetworkUpdate()
 {
-    OpenRCT2::GetContext()->GetNetwork().Update();
+    GetContext()->GetNetwork().Update();
 }
 
 void NetworkProcessPending()
 {
-    OpenRCT2::GetContext()->GetNetwork().ProcessPending();
+    GetContext()->GetNetwork().ProcessPending();
 }
 
 void NetworkFlush()
 {
-    OpenRCT2::GetContext()->GetNetwork().Flush();
+    GetContext()->GetNetwork().Flush();
 }
 
 int32_t NetworkGetMode()
 {
-    return OpenRCT2::GetContext()->GetNetwork().GetMode();
+    return GetContext()->GetNetwork().GetMode();
 }
 
 int32_t NetworkGetStatus()
 {
-    return OpenRCT2::GetContext()->GetNetwork().GetStatus();
+    return GetContext()->GetNetwork().GetStatus();
 }
 
 bool NetworkIsDesynchronised()
 {
-    return OpenRCT2::GetContext()->GetNetwork().IsDesynchronised();
+    return GetContext()->GetNetwork().IsDesynchronised();
 }
 
 bool NetworkCheckDesynchronisation()
 {
-    return OpenRCT2::GetContext()->GetNetwork().CheckDesynchronizaton();
+    return GetContext()->GetNetwork().CheckDesynchronizaton();
 }
 
 void NetworkRequestGamestateSnapshot()
 {
-    return OpenRCT2::GetContext()->GetNetwork().RequestStateSnapshot();
+    return GetContext()->GetNetwork().RequestStateSnapshot();
 }
 
 void NetworkSendTick()
 {
-    OpenRCT2::GetContext()->GetNetwork().ServerSendTick();
+    GetContext()->GetNetwork().ServerSendTick();
 }
 
 NetworkAuth NetworkGetAuthstatus()
 {
-    return OpenRCT2::GetContext()->GetNetwork().GetAuthStatus();
+    return GetContext()->GetNetwork().GetAuthStatus();
 }
 
 uint32_t NetworkGetServerTick()
 {
-    return OpenRCT2::GetContext()->GetNetwork().GetServerTick();
+    return GetContext()->GetNetwork().GetServerTick();
 }
 
 uint8_t NetworkGetCurrentPlayerId()
 {
-    return OpenRCT2::GetContext()->GetNetwork().GetPlayerID();
+    return GetContext()->GetNetwork().GetPlayerID();
 }
 
 int32_t NetworkGetNumPlayers()
 {
-    return OpenRCT2::GetContext()->GetNetwork().GetTotalNumPlayers();
+    return GetContext()->GetNetwork().GetTotalNumPlayers();
 }
 
 int32_t NetworkGetNumVisiblePlayers()
 {
-    return OpenRCT2::GetContext()->GetNetwork().GetNumVisiblePlayers();
+    return GetContext()->GetNetwork().GetNumVisiblePlayers();
 }
 
 const char* NetworkGetPlayerName(uint32_t index)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     Guard::IndexInRange(index, network.player_list);
 
     return static_cast<const char*>(network.player_list[index]->Name.c_str());
@@ -3370,7 +3371,7 @@ const char* NetworkGetPlayerName(uint32_t index)
 
 uint32_t NetworkGetPlayerFlags(uint32_t index)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     Guard::IndexInRange(index, network.player_list);
 
     return network.player_list[index]->Flags;
@@ -3378,7 +3379,7 @@ uint32_t NetworkGetPlayerFlags(uint32_t index)
 
 int32_t NetworkGetPlayerPing(uint32_t index)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     Guard::IndexInRange(index, network.player_list);
 
     return network.player_list[index]->Ping;
@@ -3386,7 +3387,7 @@ int32_t NetworkGetPlayerPing(uint32_t index)
 
 int32_t NetworkGetPlayerID(uint32_t index)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     Guard::IndexInRange(index, network.player_list);
 
     return network.player_list[index]->Id;
@@ -3394,7 +3395,7 @@ int32_t NetworkGetPlayerID(uint32_t index)
 
 money64 NetworkGetPlayerMoneySpent(uint32_t index)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     Guard::IndexInRange(index, network.player_list);
 
     return network.player_list[index]->MoneySpent;
@@ -3402,7 +3403,7 @@ money64 NetworkGetPlayerMoneySpent(uint32_t index)
 
 std::string NetworkGetPlayerIPAddress(uint32_t id)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     auto conn = network.GetPlayerConnection(id);
     if (conn != nullptr && conn->Socket != nullptr)
     {
@@ -3413,7 +3414,7 @@ std::string NetworkGetPlayerIPAddress(uint32_t id)
 
 std::string NetworkGetPlayerPublicKeyHash(uint32_t id)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     auto player = network.GetPlayerByID(id);
     if (player != nullptr)
     {
@@ -3424,7 +3425,7 @@ std::string NetworkGetPlayerPublicKeyHash(uint32_t id)
 
 void NetworkIncrementPlayerNumCommands(uint32_t playerIndex)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     Guard::IndexInRange(playerIndex, network.player_list);
 
     network.player_list[playerIndex]->IncrementNumCommands();
@@ -3432,7 +3433,7 @@ void NetworkIncrementPlayerNumCommands(uint32_t playerIndex)
 
 void NetworkAddPlayerMoneySpent(uint32_t index, money64 cost)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     Guard::IndexInRange(index, network.player_list);
 
     network.player_list[index]->AddMoneySpent(cost);
@@ -3440,7 +3441,7 @@ void NetworkAddPlayerMoneySpent(uint32_t index, money64 cost)
 
 int32_t NetworkGetPlayerLastAction(uint32_t index, int32_t time)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     Guard::IndexInRange(index, network.player_list);
 
     if (time && Platform::GetTicks() > network.player_list[index]->LastActionTime + time)
@@ -3452,7 +3453,7 @@ int32_t NetworkGetPlayerLastAction(uint32_t index, int32_t time)
 
 void NetworkSetPlayerLastAction(uint32_t index, GameCommand command)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     Guard::IndexInRange(index, network.player_list);
 
     network.player_list[index]->LastAction = static_cast<int32_t>(NetworkActions::FindCommand(command));
@@ -3461,15 +3462,15 @@ void NetworkSetPlayerLastAction(uint32_t index, GameCommand command)
 
 CoordsXYZ NetworkGetPlayerLastActionCoord(uint32_t index)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
-    Guard::IndexInRange(index, OpenRCT2::GetContext()->GetNetwork().player_list);
+    auto& network = GetContext()->GetNetwork();
+    Guard::IndexInRange(index, GetContext()->GetNetwork().player_list);
 
     return network.player_list[index]->LastActionCoord;
 }
 
 void NetworkSetPlayerLastActionCoord(uint32_t index, const CoordsXYZ& coord)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     Guard::IndexInRange(index, network.player_list);
 
     if (index < network.player_list.size())
@@ -3480,15 +3481,15 @@ void NetworkSetPlayerLastActionCoord(uint32_t index, const CoordsXYZ& coord)
 
 uint32_t NetworkGetPlayerCommandsRan(uint32_t index)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
-    Guard::IndexInRange(index, OpenRCT2::GetContext()->GetNetwork().player_list);
+    auto& network = GetContext()->GetNetwork();
+    Guard::IndexInRange(index, GetContext()->GetNetwork().player_list);
 
     return network.player_list[index]->CommandsRan;
 }
 
 int32_t NetworkGetPlayerIndex(uint32_t id)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     auto it = network.GetPlayerIteratorByID(id);
     if (it == network.player_list.end())
     {
@@ -3499,7 +3500,7 @@ int32_t NetworkGetPlayerIndex(uint32_t id)
 
 uint8_t NetworkGetPlayerGroup(uint32_t index)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     Guard::IndexInRange(index, network.player_list);
 
     return network.player_list[index]->Group;
@@ -3507,7 +3508,7 @@ uint8_t NetworkGetPlayerGroup(uint32_t index)
 
 void NetworkSetPlayerGroup(uint32_t index, uint32_t groupindex)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     Guard::IndexInRange(index, network.player_list);
     Guard::IndexInRange(groupindex, network.group_list);
 
@@ -3516,7 +3517,7 @@ void NetworkSetPlayerGroup(uint32_t index, uint32_t groupindex)
 
 int32_t NetworkGetGroupIndex(uint8_t id)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     auto it = network.GetGroupIteratorByID(id);
     if (it == network.group_list.end())
     {
@@ -3527,7 +3528,7 @@ int32_t NetworkGetGroupIndex(uint8_t id)
 
 uint8_t NetworkGetGroupID(uint32_t index)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     Guard::IndexInRange(index, network.group_list);
 
     return network.group_list[index]->Id;
@@ -3535,13 +3536,13 @@ uint8_t NetworkGetGroupID(uint32_t index)
 
 int32_t NetworkGetNumGroups()
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     return static_cast<int32_t>(network.group_list.size());
 }
 
 const char* NetworkGetGroupName(uint32_t index)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     return network.group_list[index]->GetName().c_str();
 }
 
@@ -3576,7 +3577,7 @@ void NetworkChatShowServerGreeting()
 GameActions::Result NetworkSetPlayerGroup(
     NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     NetworkPlayer* player = network.GetPlayerByID(playerId);
 
     NetworkGroup* fromgroup = network.GetGroupByID(actionPlayerId);
@@ -3637,7 +3638,7 @@ GameActions::Result NetworkModifyGroups(
     NetworkPlayerId_t actionPlayerId, GameActions::ModifyGroupType type, uint8_t groupId, const std::string& name,
     uint32_t permissionIndex, GameActions::PermissionState permissionState, bool isExecuting)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     switch (type)
     {
         case GameActions::ModifyGroupType::AddGroup:
@@ -3773,7 +3774,7 @@ GameActions::Result NetworkModifyGroups(
 
 GameActions::Result NetworkKickPlayer(NetworkPlayerId_t playerId, bool isExecuting)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     NetworkPlayer* player = network.GetPlayerByID(playerId);
     if (player == nullptr)
     {
@@ -3804,7 +3805,7 @@ GameActions::Result NetworkKickPlayer(NetworkPlayerId_t playerId, bool isExecuti
 
 uint8_t NetworkGetDefaultGroup()
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     return network.GetDefaultGroup();
 }
 
@@ -3825,7 +3826,7 @@ StringId NetworkGetActionNameStringID(uint32_t index)
 
 int32_t NetworkCanPerformAction(uint32_t groupindex, NetworkPermission index)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     Guard::IndexInRange(groupindex, network.group_list);
 
     return network.group_list[groupindex]->CanPerformAction(index);
@@ -3833,7 +3834,7 @@ int32_t NetworkCanPerformAction(uint32_t groupindex, NetworkPermission index)
 
 int32_t NetworkCanPerformCommand(uint32_t groupindex, int32_t index)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     Guard::IndexInRange(groupindex, network.group_list);
 
     return network.group_list[groupindex]->CanPerformCommand(static_cast<GameCommand>(index)); // TODO
@@ -3841,7 +3842,7 @@ int32_t NetworkCanPerformCommand(uint32_t groupindex, int32_t index)
 
 void NetworkSetPickupPeep(uint8_t playerid, Peep* peep)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     if (network.GetMode() == NETWORK_MODE_NONE)
     {
         _pickup_peep = peep;
@@ -3858,7 +3859,7 @@ void NetworkSetPickupPeep(uint8_t playerid, Peep* peep)
 
 Peep* NetworkGetPickupPeep(uint8_t playerid)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     if (network.GetMode() == NETWORK_MODE_NONE)
     {
         return _pickup_peep;
@@ -3874,7 +3875,7 @@ Peep* NetworkGetPickupPeep(uint8_t playerid)
 
 void NetworkSetPickupPeepOldX(uint8_t playerid, int32_t x)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     if (network.GetMode() == NETWORK_MODE_NONE)
     {
         _pickup_peep_old_x = x;
@@ -3891,7 +3892,7 @@ void NetworkSetPickupPeepOldX(uint8_t playerid, int32_t x)
 
 int32_t NetworkGetPickupPeepOldX(uint8_t playerid)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     if (network.GetMode() == NETWORK_MODE_NONE)
     {
         return _pickup_peep_old_x;
@@ -3907,12 +3908,12 @@ int32_t NetworkGetPickupPeepOldX(uint8_t playerid)
 
 bool NetworkIsServerPlayerInvisible()
 {
-    return OpenRCT2::GetContext()->GetNetwork().IsServerPlayerInvisible;
+    return GetContext()->GetNetwork().IsServerPlayerInvisible;
 }
 
 int32_t NetworkGetCurrentPlayerGroupIndex()
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     NetworkPlayer* player = network.GetPlayerByID(network.GetPlayerID());
     if (player != nullptr)
     {
@@ -3923,7 +3924,7 @@ int32_t NetworkGetCurrentPlayerGroupIndex()
 
 void NetworkSendChat(const char* text, const std::vector<uint8_t>& playerIds)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     if (network.GetMode() == NETWORK_MODE_CLIENT)
     {
         network.Client_Send_CHAT(text);
@@ -3949,9 +3950,9 @@ void NetworkSendChat(const char* text, const std::vector<uint8_t>& playerIds)
     }
 }
 
-void NetworkSendGameAction(const GameAction* action)
+void NetworkSendGameAction(const GameActions::GameAction* action)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     switch (network.GetMode())
     {
         case NETWORK_MODE_SERVER:
@@ -3965,7 +3966,7 @@ void NetworkSendGameAction(const GameAction* action)
 
 void NetworkSendPassword(const std::string& password)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     const auto keyPath = NetworkGetPrivateKeyPath(Config::Get().network.PlayerName);
     if (!File::Exists(keyPath))
     {
@@ -3994,19 +3995,19 @@ void NetworkSendPassword(const std::string& password)
 
 void NetworkSetPassword(const char* password)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     network.SetPassword(password);
 }
 
 void NetworkAppendChatLog(std::string_view text)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     network.AppendChatLog(text);
 }
 
 void NetworkAppendServerLog(const utf8* text)
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     network.AppendServerLog(text);
 }
 
@@ -4029,32 +4030,32 @@ static u8string NetworkGetPublicKeyPath(u8string_view playerName, u8string_view 
 
 u8string NetworkGetServerName()
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     return network.ServerName;
 }
 u8string NetworkGetServerDescription()
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     return network.ServerDescription;
 }
 u8string NetworkGetServerGreeting()
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     return network.ServerGreeting;
 }
 u8string NetworkGetServerProviderName()
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     return network.ServerProviderName;
 }
 u8string NetworkGetServerProviderEmail()
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     return network.ServerProviderEmail;
 }
 u8string NetworkGetServerProviderWebsite()
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     return network.ServerProviderWebsite;
 }
 
@@ -4065,13 +4066,13 @@ std::string NetworkGetVersion()
 
 NetworkStats NetworkGetStats()
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     return network.GetStats();
 }
 
 NetworkServerState NetworkGetServerState()
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     return network.GetServerState();
 }
 
@@ -4082,7 +4083,7 @@ bool NetworkGamestateSnapshotsEnabled()
 
 json_t NetworkGetServerInfoAsJson()
 {
-    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto& network = GetContext()->GetNetwork();
     return network.GetServerInfoAsJson();
 }
 #else
@@ -4123,7 +4124,7 @@ bool NetworkCheckDesynchronisation()
 void NetworkRequestGamestateSnapshot()
 {
 }
-void NetworkSendGameAction(const GameAction* action)
+void NetworkSendGameAction(const GameActions::GameAction* action)
 {
 }
 void NetworkUpdate()

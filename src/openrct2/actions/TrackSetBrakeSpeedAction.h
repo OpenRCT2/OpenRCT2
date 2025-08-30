@@ -24,9 +24,9 @@ namespace OpenRCT2::GameActions
         TrackSetBrakeSpeedAction() = default;
         TrackSetBrakeSpeedAction(const CoordsXYZ& loc, OpenRCT2::TrackElemType trackType, uint8_t brakeSpeed);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
-        uint16_t GetActionFlags() const override final;
+        uint16_t GetActionFlags() const final;
 
         void Serialise(DataSerialiser& stream) override;
         Result Query() const override;

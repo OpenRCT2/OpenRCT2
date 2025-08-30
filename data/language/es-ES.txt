@@ -2956,7 +2956,7 @@ STR_5858    :Utilizar el GPU para la visualización en lugar del CPU. Esto mejor
 STR_5859    :Permite la interpolación de{NEWLINE}los FPS (Fotograma por segundo) para un juego visualmente más suave. Si se encuentra desactivado el juego funcionará a 40 FPS como máximo.
 STR_5860    :Cambiar dibujado vía orig./decomp.
 STR_5861    :Error en la comprobación de la clave.
-STR_5862    :Bloquear jugadores desconocidos.
+STR_5862    :Bloquear jugadores desconocidos
 STR_5863    :Sólo se permite unirse a jugadores con claves conocidas.
 STR_5864    :Sólo se permiten jugadores que estén en la lista blanca.
 STR_5865    :Registrar historial de chat.
@@ -3834,3 +3834,11 @@ STR_6791    :Sensibilidad: {COMMA32}%
 STR_6792    :Edificios de entrada
 STR_6793    :Visitantes y personal
 STR_6794    :Decoración y temas
+STR_6795    :{MOVE_X}{10}{STRINGID}
+STR_6796    :•{MOVE_X}{10}{STRINGID}
+STR_6797    :No vista previa
+STR_6798    :Captura de pantalla
+STR_6799    :Mini mapa
+STR_7000    :o
+STR_7001    :Nombre de Atracción
+STR_7002    :{STRINGID} {STRINGID}

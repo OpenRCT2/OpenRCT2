@@ -1,12 +1,14 @@
 0.4.26 (in development)
 ------------------------------------------------------------------------
 - Feature: [#24949] Add an option to the command line screenshot function to draw debug bounding boxes.
+- Improved: [#9890, #18714] Rides using block-sectioned operating modes can now enter simulating mode without having to complete the circuit first.
 - Improved: [#24734] Save files now use Zstd compression for faster saving and smaller files.
 - Improved: [#24890] The ride list is now searchable.
 - Improved: [#24893] The ride list now has headers, and can be sorted in both directions.
 - Improved: [#24921] The command line sprite build command now prints out the images table entry for the compiled sprite file.
 - Improved: [#24953] Opening the Scenario Editor, Track Designer or Track Designs Manager now display the progress bar.
 - Improved: [#25027] Land style dropdown now has tooltips with the name of the land types.
+- Improved: [#25057] The progress window now has a Go Karts variant.
 - Change: [#23351] Diagonal sloped Go-Kart track can no longer be built without cheats if the karts do not have sprites for them.
 - Change: [#24606] Increase Misc Entity limit from 1600 to 3200.
 - Change: [#24974] Raise the Go-Karts maximum support height to allow 2 large sloped turns to be built on flat ground.
@@ -38,6 +40,8 @@
 - Fix: [#25006] The Twister Roller Coaster inline twists do not draw in tunnels at some angles.
 - Fix: [#25046] Zooming with the zoom buttons on the extra viewport is not focused on the centre of the viewport.
 - Fix: [#25054] Panning a viewport in a window that is partially outside the game’s window can draw incorrectly or crash in software rendering.
+- Fix: [#25062] Certain peep actions cannot be triggered if they are under or inside a track piece due to faulty verification of them being on a level crossing.
+- Fix: [#25067] Progress bars can flicker when downloading maps in multiplayer mode.
 
 0.4.25 (2025-08-03)
 ------------------------------------------------------------------------

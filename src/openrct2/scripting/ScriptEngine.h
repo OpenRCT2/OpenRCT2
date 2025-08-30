@@ -31,11 +31,12 @@
 struct duk_hthread;
 typedef struct duk_hthread duk_context;
 
-class GameAction;
 namespace OpenRCT2::GameActions
 {
+    class GameAction;
     class Result;
-}
+} // namespace OpenRCT2::GameActions
+
 class FileWatcher;
 class InteractiveConsole;
 
@@ -252,10 +253,10 @@ namespace OpenRCT2::Scripting
             const GameActions::CustomAction& action, bool isExecute);
         bool RegisterCustomAction(
             const std::shared_ptr<Plugin>& plugin, std::string_view action, const DukValue& query, const DukValue& execute);
-        void RunGameActionHooks(const GameAction& action, GameActions::Result& result, bool isExecute);
-        [[nodiscard]] std::unique_ptr<GameAction> CreateGameAction(
+        void RunGameActionHooks(const GameActions::GameAction& action, GameActions::Result& result, bool isExecute);
+        [[nodiscard]] std::unique_ptr<GameActions::GameAction> CreateGameAction(
             const std::string& actionid, const DukValue& args, const std::string& pluginName);
-        [[nodiscard]] DukValue GameActionResultToDuk(const GameAction& action, const GameActions::Result& result);
+        [[nodiscard]] DukValue GameActionResultToDuk(const GameActions::GameAction& action, const GameActions::Result& result);
 
         void SaveSharedStorage();
 

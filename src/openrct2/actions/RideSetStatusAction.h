@@ -23,7 +23,7 @@ namespace OpenRCT2::GameActions
         RideSetStatusAction() = default;
         RideSetStatusAction(RideId rideIndex, RideStatus status);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

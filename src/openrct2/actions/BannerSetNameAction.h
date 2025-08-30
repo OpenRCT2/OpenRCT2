@@ -23,7 +23,7 @@ namespace OpenRCT2::GameActions
         BannerSetNameAction() = default;
         BannerSetNameAction(BannerIndex bannerIndex, const std::string& name);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

@@ -24,7 +24,7 @@ namespace OpenRCT2::GameActions
         StaffSetColourAction() = default;
         StaffSetColourAction(StaffType staffType, uint8_t colour);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

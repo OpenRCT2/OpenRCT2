@@ -2952,7 +2952,7 @@ STR_5858    :CPU helyett a GPU használata megjelenítéshez. Nagyobb kompatibil
 STR_5859    :A képkocka fázisolás bekapcsolása, hogy {NEWLINE}folyamatosabb legyen a játékmenet megjelenítése. Ha ki van kapcsolva,{NEWLINE}a játék 40 FPS-el fut.
 STR_5860    :Váltás az eredeti és a visszafejtett pályarajzok között
 STR_5861    :Kulcs hitelesítési hiba.
-STR_5862    :Ismeretlen játékosok blokkolása.
+STR_5862    :Ismeretlen játékosok blokkolása
 STR_5863    :Csak az ismert kulcsokkal rendelkező játékosok csatlakozhassanak.
 STR_5864    :Ehhez a szerverhez csak fehérlistás játékosok csatlakozhatnak.
 STR_5865    :Chat előzmények naplózása

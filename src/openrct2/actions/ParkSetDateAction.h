@@ -24,7 +24,7 @@ namespace OpenRCT2::GameActions
         ParkSetDateAction() = default;
         ParkSetDateAction(int32_t year, int32_t month, int32_t day);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

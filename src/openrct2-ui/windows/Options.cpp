@@ -1887,8 +1887,8 @@ namespace OpenRCT2::Ui::Windows
                     // current value of allow_early_completion to all clients
                     if (NetworkGetMode() == NETWORK_MODE_SERVER)
                     {
-                        auto setAllowEarlyCompletionAction = ScenarioSetSettingAction(
-                            ScenarioSetSetting::AllowEarlyCompletion, Config::Get().general.AllowEarlyCompletion);
+                        auto setAllowEarlyCompletionAction = GameActions::ScenarioSetSettingAction(
+                            GameActions::ScenarioSetSetting::AllowEarlyCompletion, Config::Get().general.AllowEarlyCompletion);
                         GameActions::Execute(&setAllowEarlyCompletionAction);
                     }
                     Config::Save();

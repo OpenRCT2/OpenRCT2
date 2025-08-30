@@ -24,7 +24,7 @@ namespace OpenRCT2::GameActions
         ParkMarketingAction() = default;
         ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

@@ -35,7 +35,7 @@ namespace OpenRCT2::GameActions
         LandSetRightsAction(const MapRange& range, LandSetRightSetting setting, uint8_t ownership = 0);
         LandSetRightsAction(const CoordsXY& coord, LandSetRightSetting setting, uint8_t ownership = 0);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

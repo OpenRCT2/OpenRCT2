@@ -23,7 +23,7 @@ namespace OpenRCT2::GameActions
         BannerSetColourAction() = default;
         BannerSetColourAction(const CoordsXYZD& loc, uint8_t primaryColour);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 

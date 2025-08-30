@@ -23,7 +23,7 @@ namespace OpenRCT2::GameActions
         FootpathAdditionPlaceAction() = default;
         FootpathAdditionPlaceAction(const CoordsXYZ& loc, ObjectEntryIndex pathItemType);
 
-        void AcceptParameters(GameActionParameterVisitor& visitor) override;
+        void AcceptParameters(GameActionParameterVisitor&) final;
 
         uint16_t GetActionFlags() const override;
 
