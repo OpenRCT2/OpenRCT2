@@ -126,7 +126,7 @@ namespace OpenRCT2::Scripting
         {
             auto type = ProcessString(d["type"]);
             // This type was misspelt between 2020 and 2025.
-            if (type == "separator" || type == "separator")
+            if (type == "seperator" || type == "separator")
             {
                 auto text = ProcessString(d["text"]);
                 result = ListViewItem(text);
