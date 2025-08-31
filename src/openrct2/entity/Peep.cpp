@@ -1533,6 +1533,9 @@ bool Peep::IsActionInterruptable() const
     return IsActionIdle() || IsActionWalking();
 }
 
+/**
+ * Used to avoid peep action and animation triggers that might put them at risk of getting run over at level crossings.
+ */
 bool Peep::IsActionInterruptableSafely() const
 {
     return IsActionInterruptable() && !IsOnLevelCrossing();
