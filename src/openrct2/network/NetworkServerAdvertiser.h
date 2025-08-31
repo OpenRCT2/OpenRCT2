@@ -11,21 +11,24 @@
 
 #include <memory>
 
-enum class AdvertiseStatus
+namespace OpenRCT2::Network
 {
-    disabled,
-    unregistered,
-    registered,
-};
-
-struct INetworkServerAdvertiser
-{
-    virtual ~INetworkServerAdvertiser()
+    enum class AdvertiseStatus
     {
-    }
+        disabled,
+        unregistered,
+        registered,
+    };
 
-    virtual AdvertiseStatus GetStatus() const = 0;
-    virtual void Update() = 0;
-};
+    struct INetworkServerAdvertiser
+    {
+        virtual ~INetworkServerAdvertiser()
+        {
+        }
 
-[[nodiscard]] std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(uint16_t port);
+        virtual AdvertiseStatus GetStatus() const = 0;
+        virtual void Update() = 0;
+    };
+
+    [[nodiscard]] std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(uint16_t port);
+} // namespace OpenRCT2::Network
