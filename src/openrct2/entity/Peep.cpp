@@ -1229,7 +1229,7 @@ void PeepApplause()
         GuestReleaseBalloon(peep, peep->z + 9);
 
         // Clap
-        if ((peep->State == PeepState::Walking || peep->State == PeepState::Queuing) && peep->IsActionInterruptable())
+        if ((peep->State == PeepState::Walking || peep->State == PeepState::Queuing) && peep->IsActionInterruptableSafely())
         {
             peep->Action = PeepActionType::Clap;
             peep->AnimationFrameNum = 0;
@@ -1531,6 +1531,11 @@ bool Peep::IsActionIdle() const
 bool Peep::IsActionInterruptable() const
 {
     return IsActionIdle() || IsActionWalking();
+}
+
+bool Peep::IsActionInterruptableSafely() const
+{
+    return IsActionInterruptable() && !IsOnLevelCrossing();
 }
 
 void PeepSetMapTooltip(Peep* peep)

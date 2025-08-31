@@ -388,6 +388,7 @@ public: // Peep
     bool IsActionWalking() const;
     bool IsActionIdle() const;
     bool IsActionInterruptable() const;
+    bool IsActionInterruptableSafely() const;
 
     // Reset the peep's stored goal, which means they will forget any stored pathfinding history
     // on the next GuestPathfinding::ChooseDirection call.
