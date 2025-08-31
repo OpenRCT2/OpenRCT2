@@ -191,7 +191,7 @@ bool Peep::CanBePickedUp() const
 
 int32_t PeepGetStaffCount()
 {
-    return GetEntityListCount(EntityType::Staff);
+    return getGameState().entities.GetEntityListCount(EntityType::Staff);
 }
 
 /**
@@ -744,7 +744,7 @@ void PeepEntityRemove(Peep* peep)
 
         News::DisableNewsItems(News::ItemType::peep, staff->Id.ToUnderlying());
     }
-    EntityRemove(peep);
+    getGameState().entities.EntityRemove(peep);
 
     auto intent = Intent(wasGuest ? INTENT_ACTION_REFRESH_GUEST_LIST : INTENT_ACTION_REFRESH_STAFF_LIST);
     ContextBroadcastIntent(&intent);
@@ -2531,8 +2531,8 @@ StringId GetRealNameStringIDFromPeepID(uint32_t id)
 
 int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b)
 {
-    Peep const* peep_a = GetEntity<Peep>(sprite_index_a);
-    Peep const* peep_b = GetEntity<Peep>(sprite_index_b);
+    Peep const* peep_a = getGameState().entities.GetEntity<Peep>(sprite_index_a);
+    Peep const* peep_b = getGameState().entities.GetEntity<Peep>(sprite_index_b);
     if (peep_a == nullptr || peep_b == nullptr)
     {
         return 0;

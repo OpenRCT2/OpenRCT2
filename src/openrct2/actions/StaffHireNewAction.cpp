@@ -83,7 +83,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        if (GetNumFreeEntities() < 400)
+        if (getGameState().entities.GetNumFreeEntities() < 400)
         {
             return Result(Status::NoFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_PEOPLE_IN_GAME);
         }
@@ -98,7 +98,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        Staff* newPeep = CreateEntity<Staff>();
+        Staff* newPeep = getGameState().entities.CreateEntity<Staff>();
         if (newPeep == nullptr)
         {
             // Too many peeps exist already.
@@ -108,7 +108,7 @@ namespace OpenRCT2::GameActions
         if (execute == false)
         {
             // In query we just want to see if we can obtain a sprite slot.
-            EntityRemove(newPeep);
+            getGameState().entities.EntityRemove(newPeep);
 
             res.SetData(StaffHireNewActionResult{ EntityId::GetNull() });
         }

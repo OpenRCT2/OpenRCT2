@@ -498,7 +498,7 @@ namespace OpenRCT2::GameActions
     {
         for (auto litter : EntityList<Litter>())
         {
-            EntityRemove(litter);
+            getGameState().entities.EntityRemove(litter);
         }
 
         TileElementIterator it{};
@@ -732,8 +732,8 @@ namespace OpenRCT2::GameActions
 
             for (auto trainIndex : ride.vehicles)
             {
-                for (Vehicle* vehicle = TryGetEntity<Vehicle>(trainIndex); vehicle != nullptr;
-                     vehicle = TryGetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+                for (Vehicle* vehicle = getGameState().entities.TryGetEntity<Vehicle>(trainIndex); vehicle != nullptr;
+                     vehicle = getGameState().entities.TryGetEntity<Vehicle>(vehicle->next_vehicle_on_train))
                 {
                     auto i = 0;
                     for (auto& peepInTrainIndex : vehicle->peep)
@@ -741,7 +741,7 @@ namespace OpenRCT2::GameActions
                         if (i >= vehicle->num_peeps)
                             break;
 
-                        auto peep = TryGetEntity<Guest>(peepInTrainIndex);
+                        auto peep = getGameState().entities.TryGetEntity<Guest>(peepInTrainIndex);
                         if (peep != nullptr && peep->CurrentRide == ride.id)
                         {
                             if ((peep->State == PeepState::OnRide && peep->RideSubState == PeepRideSubState::OnRide)

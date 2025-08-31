@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Diagnostic.h"
+#include "../GameState.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../entity/EntityRegistry.h"
@@ -62,7 +63,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        auto guest = TryGetEntity<Guest>(_spriteIndex);
+        auto guest = getGameState().entities.TryGetEntity<Guest>(_spriteIndex);
         if (guest == nullptr)
         {
             LOG_ERROR("Guest entity not found for spriteIndex %u", _spriteIndex);
@@ -74,7 +75,7 @@ namespace OpenRCT2::GameActions
 
     Result GuestSetNameAction::Execute() const
     {
-        auto guest = TryGetEntity<Guest>(_spriteIndex);
+        auto guest = getGameState().entities.TryGetEntity<Guest>(_spriteIndex);
         if (guest == nullptr)
         {
             LOG_ERROR("Guest entity not found for spriteIndex %u", _spriteIndex);

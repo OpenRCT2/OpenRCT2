@@ -2639,7 +2639,7 @@ namespace OpenRCT2
     template<typename T>
     void ParkFile::WriteEntitiesOfType(GameState_t& gameState, OrcaStream& os, OrcaStream::ChunkStream& cs)
     {
-        uint16_t count = GetEntityListCount(T::cEntityType);
+        uint16_t count = gameState.entities.GetEntityListCount(T::cEntityType);
         cs.write(T::cEntityType);
         cs.write(count);
         for (auto* ent : EntityList<T>())
@@ -2666,7 +2666,7 @@ namespace OpenRCT2
             T placeholder{};
 
             auto index = cs.read<EntityId>();
-            auto* ent = CreateEntityAt<T>(index);
+            auto* ent = getGameState().entities.CreateEntityAt<T>(index);
             if (ent == nullptr)
             {
                 // Unable to allocate entity
@@ -2687,7 +2687,7 @@ namespace OpenRCT2
         os.readWriteChunk(ParkFileChunkType::ENTITIES, [this, &gameState, &os](OrcaStream::ChunkStream& cs) {
             if (cs.getMode() == OrcaStream::Mode::reading)
             {
-                ResetAllEntities();
+                getGameState().entities.ResetAllEntities();
             }
 
             std::vector<uint16_t> entityIndices;

@@ -728,7 +728,7 @@ namespace OpenRCT2::Drawing::LightFx
     void AddLightsMagicVehicle_BoatHire(const Vehicle* vehicle)
     {
         Vehicle* vehicle_draw = vehicle->TrainHead();
-        auto* nextVeh = GetEntity<Vehicle>(vehicle_draw->next_vehicle_on_train);
+        auto* nextVeh = getGameState().entities.GetEntity<Vehicle>(vehicle_draw->next_vehicle_on_train);
         if (nextVeh != nullptr)
         {
             vehicle_draw = nextVeh;

@@ -56,7 +56,7 @@ static std::unique_ptr<IContext> localStartGame(const std::string& parkPath)
     auto& gameState = getGameState();
     importer->Import(gameState);
 
-    ResetEntitySpatialIndices();
+    gameState.entities.ResetEntitySpatialIndices();
 
     ResetAllSpriteQuadrantPlacements();
     LoadPalette();

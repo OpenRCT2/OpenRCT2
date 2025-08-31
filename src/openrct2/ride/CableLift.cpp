@@ -27,7 +27,7 @@ using namespace OpenRCT2;
 Vehicle* CableLiftSegmentCreate(
     Ride& ride, int32_t x, int32_t y, int32_t z, int32_t direction, uint16_t var_44, int32_t remaining_distance, bool head)
 {
-    Vehicle* current = CreateEntity<Vehicle>();
+    Vehicle* current = getGameState().entities.CreateEntity<Vehicle>();
     current->ride = ride.id;
     current->ride_subtype = kObjectEntryIndexNull;
     if (head)
@@ -158,8 +158,8 @@ void Vehicle::CableLiftUpdateWaitingToDepart()
     // Next check to see if the second part of the cable lift
     // is at the front of the passenger vehicle to simulate the
     // cable being attached underneath the train.
-    Vehicle* passengerVehicle = GetEntity<Vehicle>(cable_lift_target);
-    Vehicle* cableLiftSecondPart = GetEntity<Vehicle>(prev_vehicle_on_ride);
+    Vehicle* passengerVehicle = getGameState().entities.GetEntity<Vehicle>(cable_lift_target);
+    Vehicle* cableLiftSecondPart = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
     if (passengerVehicle == nullptr || cableLiftSecondPart == nullptr)
     {
         return;
@@ -186,7 +186,7 @@ void Vehicle::CableLiftUpdateDeparting()
     if (sub_state < 16)
         return;
 
-    Vehicle* passengerVehicle = GetEntity<Vehicle>(cable_lift_target);
+    Vehicle* passengerVehicle = getGameState().entities.GetEntity<Vehicle>(cable_lift_target);
     if (passengerVehicle == nullptr)
     {
         return;
@@ -201,7 +201,7 @@ void Vehicle::CableLiftUpdateDeparting()
  */
 void Vehicle::CableLiftUpdateTravelling()
 {
-    Vehicle* passengerVehicle = GetEntity<Vehicle>(cable_lift_target);
+    Vehicle* passengerVehicle = getGameState().entities.GetEntity<Vehicle>(cable_lift_target);
     if (passengerVehicle == nullptr)
     {
         return;
@@ -436,13 +436,13 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
         vehicle->acceleration /= _vehicleUnkF64E10;
         if (_vehicleVelocityF64E08 >= 0)
         {
-            vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
+            vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
         }
         else
         {
             if (vehicle == this)
                 break;
-            vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+            vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
         }
     }
 
@@ -450,8 +450,8 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
     uint16_t massTotal = 0;
     int32_t accelerationTotal = 0;
 
-    for (Vehicle* vehicle = GetEntity<Vehicle>(Id); vehicle != nullptr;
-         vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(Id); vehicle != nullptr;
+         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         vehicleCount++;
 

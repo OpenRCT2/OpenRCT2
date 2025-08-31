@@ -280,8 +280,9 @@ static bool AwardIsDeservedBestStaff(int32_t activeAwardTypes)
     if (activeAwardTypes & EnumToFlag(AwardType::MostUntidy))
         return false;
 
-    auto staffCount = GetEntityListCount(EntityType::Staff);
-    auto peepCount = GetEntityListCount(EntityType::Guest);
+    auto& gameState = getGameState();
+    auto staffCount = gameState.entities.GetEntityListCount(EntityType::Staff);
+    auto peepCount = gameState.entities.GetEntityListCount(EntityType::Guest);
 
     return ((staffCount != 0) && staffCount >= 20 && staffCount >= peepCount / 32);
 }

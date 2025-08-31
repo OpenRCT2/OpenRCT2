@@ -10,6 +10,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/actions/StaffFireAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
@@ -76,7 +77,7 @@ namespace OpenRCT2::Ui::Windows
         {
             DrawWidgets(rt);
 
-            Peep* peep = GetEntity<Staff>(EntityId::FromUnderlying(number));
+            Peep* peep = getGameState().entities.GetEntity<Staff>(EntityId::FromUnderlying(number));
             // The staff member may have been fired in the meantime.
             if (peep == nullptr)
             {

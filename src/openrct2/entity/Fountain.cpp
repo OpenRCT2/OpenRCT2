@@ -144,7 +144,7 @@ void JumpingFountain::Create(
     const JumpingFountainType newType, const CoordsXYZ& newLoc, const int32_t direction, const OpenRCT2::FountainFlags newFlags,
     const int32_t iteration)
 {
-    auto* jumpingFountain = CreateEntity<JumpingFountain>();
+    auto* jumpingFountain = getGameState().entities.CreateEntity<JumpingFountain>();
     if (jumpingFountain != nullptr)
     {
         jumpingFountain->Iteration = iteration;
@@ -199,7 +199,7 @@ void JumpingFountain::Update()
 
     if (frame == 16)
     {
-        EntityRemove(this);
+        getGameState().entities.EntityRemove(this);
     }
 }
 

@@ -64,7 +64,7 @@ void Litter::Create(const CoordsXYZD& litterPos, Type type)
     if (!IsLocationLitterable(offsetLitterPos))
         return;
 
-    if (GetEntityListCount(EntityType::Litter) >= 500)
+    if (gameState.entities.GetEntityListCount(EntityType::Litter) >= 500)
     {
         Litter* newestLitter = nullptr;
         uint32_t newestLitterCreationTick = 0;
@@ -80,11 +80,11 @@ void Litter::Create(const CoordsXYZD& litterPos, Type type)
         if (newestLitter != nullptr)
         {
             newestLitter->Invalidate();
-            EntityRemove(newestLitter);
+            gameState.entities.EntityRemove(newestLitter);
         }
     }
 
-    Litter* litter = CreateEntity<Litter>();
+    Litter* litter = gameState.entities.CreateEntity<Litter>();
     if (litter == nullptr)
         return;
 
@@ -119,7 +119,7 @@ void Litter::RemoveAt(const CoordsXYZ& litterPos)
     for (auto* litter : removals)
     {
         litter->Invalidate();
-        EntityRemove(litter);
+        getGameState().entities.EntityRemove(litter);
     }
 }
 

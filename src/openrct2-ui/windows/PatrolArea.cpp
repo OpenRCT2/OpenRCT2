@@ -15,6 +15,7 @@
 #include <openrct2-ui/windows/Windows.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/SpriteIds.h>
 #include <openrct2/actions/StaffSetPatrolAreaAction.h>
@@ -204,7 +205,7 @@ namespace OpenRCT2::Ui::Windows
             auto mapTile = GetBestCoordsFromPos(screenCoords);
             if (mapTile)
             {
-                auto staff = GetEntity<Staff>(_staffId);
+                auto staff = getGameState().entities.GetEntity<Staff>(_staffId);
                 if (staff != nullptr)
                 {
                     _mode = staff->IsPatrolAreaSet(*mapTile) ? GameActions::StaffSetPatrolAreaMode::Unset
@@ -217,7 +218,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
         {
-            auto staff = GetEntity<Staff>(_staffId);
+            auto staff = getGameState().entities.GetEntity<Staff>(_staffId);
             if (staff != nullptr)
             {
                 MapRange range(gMapSelectPositionA, gMapSelectPositionB);

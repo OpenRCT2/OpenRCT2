@@ -1617,7 +1617,7 @@ static bool GuestDecideAndBuyItem(Guest& guest, Ride& ride, const ShopItem shopI
                     if (guest.Happiness >= 180)
                         itemValue /= 2;
                 }
-                if (itemValue > (static_cast<money64>(ScenarioRand() & 0x07)) && !(getGameState().cheats.ignorePrice))
+                if (itemValue > (static_cast<money64>(ScenarioRand() & 0x07)) && !(gameState.cheats.ignorePrice))
                 {
                     // "I'm not paying that much for x"
                     guest.InsertNewThought(shopItemDescriptor.TooMuchThought, ride.id);
@@ -2003,7 +2003,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
             else
             {
                 // Check if there's room in the queue for the peep to enter.
-                Guest* lastPeepInQueue = GetEntity<Guest>(station.LastPeepInQueue);
+                Guest* lastPeepInQueue = getGameState().entities.GetEntity<Guest>(station.LastPeepInQueue);
                 if (lastPeepInQueue != nullptr && (abs(lastPeepInQueue->z - z) <= 6))
                 {
                     int32_t dx = abs(lastPeepInQueue->x - x);
@@ -2084,7 +2084,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 // excitement check and will only do a basic intensity check when they arrive at the ride itself.
                 if (ride.id == GuestHeadingToRideId)
                 {
-                    if (ride.ratings.intensity > RideRating::make(10, 00) && !getGameState().cheats.ignoreRideIntensity)
+                    if (ride.ratings.intensity > RideRating::make(10, 00) && !gameState.cheats.ignoreRideIntensity)
                     {
                         GuestRideIsTooIntense(*this, ride, peepAtRide);
                         return false;
@@ -2111,7 +2111,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                     // ride intensity check and get me on a sheltered ride!
                     if (!isPrecipitating || !GuestShouldRideWhileRaining(*this, ride))
                     {
-                        if (!getGameState().cheats.ignoreRideIntensity)
+                        if (!gameState.cheats.ignoreRideIntensity)
                         {
                             // Intensity calculations. Even though the max intensity can go up to 15, it's capped
                             // at 10.0 (before happiness calculations). A full happiness bar will increase the max
@@ -2177,7 +2177,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                     return false;
                 }
 
-                if (!getGameState().cheats.ignoreRideIntensity)
+                if (!gameState.cheats.ignoreRideIntensity)
                 {
                     if (ride.maxPositiveVerticalG > MakeFixed16_2dp(5, 00)
                         || ride.maxNegativeVerticalG < MakeFixed16_2dp(-4, 00) || ride.maxLateralG > MakeFixed16_2dp(4, 00))
@@ -2490,7 +2490,7 @@ static Vehicle* PeepChooseCarFromRide(Guest& guest, const Ride& ride, std::span<
 
     guest.CurrentCar = carArray[chosen_car];
 
-    Vehicle* vehicle = GetEntity<Vehicle>(ride.vehicles[guest.CurrentTrain]);
+    Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[guest.CurrentTrain]);
     if (vehicle == nullptr)
     {
         return nullptr;
@@ -2581,7 +2581,7 @@ static bool FindVehicleToEnter(
 
         for (int32_t i = 0; i < ride.numTrains; ++i)
         {
-            Vehicle* vehicle = GetEntity<Vehicle>(ride.vehicles[i]);
+            Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[i]);
             if (vehicle == nullptr)
                 continue;
 
@@ -2608,8 +2608,8 @@ static bool FindVehicleToEnter(
     int32_t i = 0;
 
     auto vehicle_id = ride.vehicles[chosen_train];
-    for (Vehicle* vehicle = GetEntity<Vehicle>(vehicle_id); vehicle != nullptr;
-         vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train), ++i)
+    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle_id); vehicle != nullptr;
+         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train), ++i)
     {
         uint8_t num_seats = vehicle->num_seats;
         if (vehicle->IsUsedInPairs())
@@ -3670,7 +3670,7 @@ void Guest::UpdateRideLeaveEntranceWaypoints(const Ride& ride)
 
     uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
 
-    auto vehicle = GetEntity<Vehicle>(ride.vehicles[CurrentTrain]);
+    auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[CurrentTrain]);
     if (vehicle == nullptr)
     {
         // TODO: Goto ride exit on failure.
@@ -3760,7 +3760,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         return;
     }
 
-    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+    Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
     if (vehicle == nullptr)
     {
         return;
@@ -3995,7 +3995,8 @@ void Guest::UpdateRideFreeVehicleCheck()
         return;
     }
 
-    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+    auto& gameState = getGameState();
+    Vehicle* vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
     if (vehicle == nullptr)
     {
         // TODO: Leave ride on failure goes for all returns on nullptr in this function
@@ -4017,11 +4018,11 @@ void Guest::UpdateRideFreeVehicleCheck()
 
         for (size_t i = 0; i < ride->numTrains; ++i)
         {
-            Vehicle* train = GetEntity<Vehicle>(ride->vehicles[i]);
+            Vehicle* train = gameState.entities.GetEntity<Vehicle>(ride->vehicles[i]);
             if (train == nullptr)
                 continue;
 
-            Vehicle* second_vehicle = GetEntity<Vehicle>(train->next_vehicle_on_train);
+            Vehicle* second_vehicle = gameState.entities.GetEntity<Vehicle>(train->next_vehicle_on_train);
             if (second_vehicle == nullptr)
                 continue;
 
@@ -4059,7 +4060,7 @@ void Guest::UpdateRideFreeVehicleCheck()
         }
     }
 
-    Vehicle* currentTrain = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+    Vehicle* currentTrain = gameState.entities.GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
     if (currentTrain == nullptr)
     {
         return;
@@ -4093,10 +4094,11 @@ void Guest::UpdateRideApproachVehicle()
 
 void Guest::UpdateRideEnterVehicle()
 {
+    auto& gameState = getGameState();
     auto* ride = GetRide(CurrentRide);
     if (ride != nullptr)
     {
-        auto* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+        auto* vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
         if (vehicle != nullptr)
         {
             vehicle = vehicle->GetCar(CurrentCar);
@@ -4113,7 +4115,7 @@ void Guest::UpdateRideEnterVehicle()
 
             if (vehicle->IsUsedInPairs())
             {
-                auto* seatedGuest = GetEntity<Guest>(vehicle->peep[CurrentSeat ^ 1]);
+                auto* seatedGuest = gameState.entities.GetEntity<Guest>(vehicle->peep[CurrentSeat ^ 1]);
                 if (seatedGuest != nullptr)
                 {
                     if (seatedGuest->RideSubState != PeepRideSubState::EnterVehicle)
@@ -4154,11 +4156,12 @@ void Guest::UpdateRideEnterVehicle()
  */
 void Guest::UpdateRideLeaveVehicle()
 {
+    auto& gameState = getGameState();
     auto ride = GetRide(CurrentRide);
     if (ride == nullptr)
         return;
 
-    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+    Vehicle* vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
     if (vehicle == nullptr)
         return;
 
@@ -4218,7 +4221,8 @@ void Guest::UpdateRideLeaveVehicle()
 
         if (!ride->getRideTypeDescriptor().HasFlag(RtdFlag::vehicleIsIntegral))
         {
-            for (; vehicle != nullptr && !vehicle->IsHead(); vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
+            for (; vehicle != nullptr && !vehicle->IsHead();
+                 vehicle = gameState.entities.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
             {
                 auto trackType = vehicle->GetTrackType();
                 if (trackType == TrackElemType::Flat || trackType > TrackElemType::MiddleStation)
@@ -4335,7 +4339,7 @@ void Guest::UpdateRideLeaveVehicle()
 
     Direction station_direction = (trackElement == nullptr ? 0 : trackElement->GetDirection());
 
-    vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+    vehicle = gameState.entities.GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
     if (vehicle == nullptr)
     {
         return;
@@ -4517,7 +4521,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
     // This is incrementing the actual peep waypoint
     Var37++;
 
-    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+    Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
     if (vehicle == nullptr)
     {
         return;
@@ -4615,7 +4619,7 @@ void Guest::UpdateRideApproachExitWaypoints()
         }
 
         Var37--;
-        Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+        Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
         if (vehicle == nullptr)
         {
             return;
@@ -5762,7 +5766,7 @@ void Guest::UpdateQueuing()
         // first check if the next in queue is actually nearby
         // if they are not then it's safe to assume that this is
         // the front of the queue.
-        Peep* nextGuest = GetEntity<Guest>(GuestNextInQueue);
+        Peep* nextGuest = getGameState().entities.GetEntity<Guest>(GuestNextInQueue);
         if (nextGuest != nullptr)
         {
             if (abs(nextGuest->x - x) < 32 && abs(nextGuest->y - y) < 32)
@@ -7264,11 +7268,11 @@ static constexpr uint8_t kTshirtColours[] = {
  */
 Guest* Guest::Generate(const CoordsXYZ& coords)
 {
-    if (GetNumFreeEntities() < 400)
+    auto& gameState = getGameState();
+    if (gameState.entities.GetNumFreeEntities() < 400)
         return nullptr;
 
-    auto& gameState = getGameState();
-    Guest* peep = CreateEntity<Guest>();
+    Guest* peep = gameState.entities.CreateEntity<Guest>();
 
     peep->AnimationObjectIndex = findPeepAnimationsIndexForType(AnimationPeepType::Guest);
     peep->AnimationGroup = PeepAnimationGroup::Normal;
@@ -7563,7 +7567,7 @@ bool Guest::UpdateQueuePosition(PeepActionType previous_action)
 {
     TimeInQueue++;
 
-    auto* guestNext = GetEntity<Guest>(GuestNextInQueue);
+    auto* guestNext = getGameState().entities.GetEntity<Guest>(GuestNextInQueue);
     if (guestNext == nullptr)
     {
         return false;
@@ -7653,13 +7657,14 @@ void Guest::RemoveFromQueue()
         return;
     }
 
-    auto* otherGuest = GetEntity<Guest>(station.LastPeepInQueue);
+    auto& gameState = getGameState();
+    auto* otherGuest = gameState.entities.GetEntity<Guest>(station.LastPeepInQueue);
     if (otherGuest == nullptr)
     {
         LOG_ERROR("Invalid Guest Queue list!");
         return;
     }
-    for (; otherGuest != nullptr; otherGuest = GetEntity<Guest>(otherGuest->GuestNextInQueue))
+    for (; otherGuest != nullptr; otherGuest = gameState.entities.GetEntity<Guest>(otherGuest->GuestNextInQueue))
     {
         if (Id == otherGuest->GuestNextInQueue)
         {

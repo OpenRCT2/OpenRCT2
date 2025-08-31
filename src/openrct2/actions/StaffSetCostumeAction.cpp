@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
+#include "../GameState.h"
 #include "../entity/EntityRegistry.h"
 #include "../localisation/StringIds.h"
 #include "../object/ObjectManager.h"
@@ -52,7 +53,7 @@ namespace OpenRCT2::GameActions
             return Result(Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
 
-        auto* staff = TryGetEntity<Staff>(_spriteIndex);
+        auto* staff = getGameState().entities.TryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);
@@ -73,7 +74,7 @@ namespace OpenRCT2::GameActions
 
     Result StaffSetCostumeAction::Execute() const
     {
-        auto* staff = TryGetEntity<Staff>(_spriteIndex);
+        auto* staff = getGameState().entities.TryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr)
         {
             LOG_ERROR("Staff entity not found for spriteIndex %u", _spriteIndex);

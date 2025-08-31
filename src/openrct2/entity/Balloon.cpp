@@ -10,6 +10,7 @@
 #include "Balloon.h"
 
 #include "../Game.h"
+#include "../GameState.h"
 #include "../audio/Audio.h"
 #include "../core/DataSerialiser.h"
 #include "../network/Network.h"
@@ -36,7 +37,7 @@ void Balloon::Update()
         frame++;
         if (frame >= 5)
         {
-            EntityRemove(this);
+            getGameState().entities.EntityRemove(this);
         }
     }
     else
@@ -100,7 +101,7 @@ void Balloon::Pop(bool playSound)
 
 void Balloon::Create(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped)
 {
-    auto* balloon = CreateEntity<Balloon>();
+    auto* balloon = getGameState().entities.CreateEntity<Balloon>();
     if (balloon == nullptr)
         return;
 

@@ -881,7 +881,7 @@ std::optional<colour_t> GetPatrolAreaTileColour(const CoordsXY& pos)
     else
     {
         auto& staffId = std::get<EntityId>(patrolAreaToRender);
-        auto* staff = GetEntity<Staff>(staffId);
+        auto* staff = getGameState().entities.GetEntity<Staff>(staffId);
         if (staff != nullptr)
         {
             if (staff->IsPatrolAreaSet(pos))

@@ -141,7 +141,7 @@ void FootpathRemoveLitter(const CoordsXYZ& footpathPos)
     for (auto* litter : removals)
     {
         litter->Invalidate();
-        EntityRemove(litter);
+        getGameState().entities.EntityRemove(litter);
     }
 }
 

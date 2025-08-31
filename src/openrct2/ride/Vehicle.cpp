@@ -606,7 +606,7 @@ void Vehicle::UpdateTrackChange()
 
 Vehicle* TryGetVehicle(EntityId spriteIndex)
 {
-    return TryGetEntity<Vehicle>(spriteIndex);
+    return getGameState().entities.TryGetEntity<Vehicle>(spriteIndex);
 }
 
 void VehicleSoundsUpdate()
@@ -647,8 +647,8 @@ bool Vehicle::CloseRestraints()
         return true;
 
     bool restraintsClosed = true;
-    for (Vehicle* vehicle = GetEntity<Vehicle>(Id); vehicle != nullptr;
-         vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(Id); vehicle != nullptr;
+         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         if (vehicle->HasFlag(VehicleFlags::CarIsBroken) && vehicle->restraints_position != 0
             && (curRide->breakdownReasonPending == BREAKDOWN_RESTRAINTS_STUCK_OPEN
@@ -665,7 +665,7 @@ bool Vehicle::CloseRestraints()
 
                 curRide->mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
 
-                Vehicle* broken_vehicle = GetEntity<Vehicle>(curRide->vehicles[curRide->brokenTrain]);
+                Vehicle* broken_vehicle = getGameState().entities.GetEntity<Vehicle>(curRide->vehicles[curRide->brokenTrain]);
                 if (broken_vehicle != nullptr)
                 {
                     curRide->inspectionStation = broken_vehicle->current_station;
@@ -696,8 +696,8 @@ bool Vehicle::CloseRestraints()
 bool Vehicle::OpenRestraints()
 {
     int32_t restraintsOpen = true;
-    for (Vehicle* vehicle = GetEntity<Vehicle>(Id); vehicle != nullptr;
-         vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(Id); vehicle != nullptr;
+         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         vehicle->SwingPosition = 0;
         vehicle->SwingSpeed = 0;
@@ -781,7 +781,7 @@ bool Vehicle::OpenRestraints()
 
                 curRide->mechanicStatus = RIDE_MECHANIC_STATUS_CALLING;
 
-                Vehicle* broken_vehicle = GetEntity<Vehicle>(curRide->vehicles[curRide->brokenTrain]);
+                Vehicle* broken_vehicle = getGameState().entities.GetEntity<Vehicle>(curRide->vehicles[curRide->brokenTrain]);
                 if (broken_vehicle != nullptr)
                 {
                     curRide->inspectionStation = broken_vehicle->current_station;
@@ -1596,8 +1596,8 @@ void Vehicle::UpdateWaitingForPassengers()
         // 0xF64E31, 0xF64E32, 0xF64E33
         uint8_t num_peeps_on_train = 0, num_used_seats_on_train = 0, num_seats_on_train = 0;
 
-        for (const Vehicle* trainCar = GetEntity<Vehicle>(Id); trainCar != nullptr;
-             trainCar = GetEntity<Vehicle>(trainCar->next_vehicle_on_train))
+        for (const Vehicle* trainCar = getGameState().entities.GetEntity<Vehicle>(Id); trainCar != nullptr;
+             trainCar = getGameState().entities.GetEntity<Vehicle>(trainCar->next_vehicle_on_train))
         {
             num_peeps_on_train += trainCar->num_peeps;
             num_used_seats_on_train += trainCar->next_free_seat;
@@ -1651,7 +1651,7 @@ void Vehicle::UpdateWaitingForPassengers()
                 if (train_id == Id)
                     continue;
 
-                Vehicle* train = GetEntity<Vehicle>(train_id);
+                Vehicle* train = getGameState().entities.GetEntity<Vehicle>(train_id);
                 if (train == nullptr)
                     continue;
 
@@ -1810,8 +1810,8 @@ void Vehicle::UpdateWaitingToDepart()
         }
         else
         {
-            for (const Vehicle* trainCar = GetEntity<Vehicle>(Id); trainCar != nullptr;
-                 trainCar = GetEntity<Vehicle>(trainCar->next_vehicle_on_train))
+            for (const Vehicle* trainCar = getGameState().entities.GetEntity<Vehicle>(Id); trainCar != nullptr;
+                 trainCar = getGameState().entities.GetEntity<Vehicle>(trainCar->next_vehicle_on_train))
             {
                 if (trainCar->num_peeps != 0)
                 {
@@ -2056,7 +2056,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
     // Look for a vehicle on this station waiting to depart.
     for (int32_t i = 0; i < ride->numTrains; i++)
     {
-        auto* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
+        auto* vehicle = getGameState().entities.GetEntity<Vehicle>(ride->vehicles[i]);
         if (vehicle == nullptr)
         {
             continue;
@@ -2194,7 +2194,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                         {
                             for (int32_t i = 0; i < curRide->numTrains; i++)
                             {
-                                Vehicle* v = GetEntity<Vehicle>(curRide->vehicles[i]);
+                                Vehicle* v = getGameState().entities.GetEntity<Vehicle>(curRide->vehicles[i]);
                                 if (v == nullptr)
                                 {
                                     continue;
@@ -2232,7 +2232,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                     auto currentStation = sv->stationIndex;
                     for (int32_t i = 0; i < sv_ride->numTrains; i++)
                     {
-                        auto* otherVehicle = GetEntity<Vehicle>(sv_ride->vehicles[i]);
+                        auto* otherVehicle = getGameState().entities.GetEntity<Vehicle>(sv_ride->vehicles[i]);
                         if (otherVehicle == nullptr)
                         {
                             continue;
@@ -2277,7 +2277,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
     // At this point all vehicles in _snychronisedVehicles can depart.
     for (SynchronisedVehicle* sv = _synchronisedVehicles; sv < _lastSynchronisedVehicle; sv++)
     {
-        auto v = GetEntity<Vehicle>(sv->vehicle_id);
+        auto v = getGameState().entities.GetEntity<Vehicle>(sv->vehicle_id);
         if (v != nullptr)
         {
             v->ClearFlag(VehicleFlags::WaitingOnAdjacentStation);
@@ -2301,12 +2301,12 @@ bool Vehicle::CanDepartSynchronised() const
  */
 void Vehicle::PeepEasterEggHereWeAre() const
 {
-    for (Vehicle* vehicle = GetEntity<Vehicle>(Id); vehicle != nullptr;
-         vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    for (Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(Id); vehicle != nullptr;
+         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         for (int32_t i = 0; i < vehicle->num_peeps; ++i)
         {
-            auto* curPeep = GetEntity<Guest>(vehicle->peep[i]);
+            auto* curPeep = getGameState().entities.GetEntity<Guest>(vehicle->peep[i]);
             if (curPeep != nullptr && curPeep->PeepFlags & PEEP_FLAGS_HERE_WE_ARE)
             {
                 curPeep->InsertNewThought(PeepThoughtType::HereWeAre, curPeep->CurrentRide);
@@ -2875,7 +2875,8 @@ void Vehicle::UpdateCollisionSetup()
     KillAllPassengersInTrain();
 
     Vehicle* lastVehicle = this;
-    for (Vehicle* train = GetEntity<Vehicle>(Id); train != nullptr; train = GetEntity<Vehicle>(train->next_vehicle_on_train))
+    for (Vehicle* train = getGameState().entities.GetEntity<Vehicle>(Id); train != nullptr;
+         train = getGameState().entities.GetEntity<Vehicle>(train->next_vehicle_on_train))
     {
         lastVehicle = train;
 
@@ -2909,8 +2910,8 @@ void Vehicle::UpdateCollisionSetup()
     }
 
     // Remove the current train from the ride linked list of trains
-    auto prevTrain = GetEntity<Vehicle>(prev_vehicle_on_ride);
-    auto nextTrain = GetEntity<Vehicle>(lastVehicle->next_vehicle_on_ride);
+    auto prevTrain = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
+    auto nextTrain = getGameState().entities.GetEntity<Vehicle>(lastVehicle->next_vehicle_on_ride);
     if (prevTrain == nullptr || nextTrain == nullptr)
     {
         LOG_ERROR("Corrupted vehicle list for ride!");
@@ -2955,7 +2956,7 @@ void Vehicle::UpdateCrashSetup()
     auto spriteId = Id;
     for (Vehicle* trainVehicle; !spriteId.IsNull(); spriteId = trainVehicle->next_vehicle_on_train)
     {
-        trainVehicle = GetEntity<Vehicle>(spriteId);
+        trainVehicle = getGameState().entities.GetEntity<Vehicle>(spriteId);
         if (trainVehicle == nullptr)
         {
             break;
@@ -2990,8 +2991,8 @@ void Vehicle::UpdateCrashSetup()
     }
 
     // Remove the current train from the ride linked list of trains
-    auto prevTrain = GetEntity<Vehicle>(prev_vehicle_on_ride);
-    auto nextTrain = GetEntity<Vehicle>(lastVehicle->next_vehicle_on_ride);
+    auto prevTrain = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
+    auto nextTrain = getGameState().entities.GetEntity<Vehicle>(lastVehicle->next_vehicle_on_ride);
     if (prevTrain == nullptr || nextTrain == nullptr)
     {
         LOG_ERROR("Corrupted vehicle list for ride!");
@@ -3429,7 +3430,7 @@ void Vehicle::UpdateUnloadingPassengers()
         {
             next_free_seat -= 2;
 
-            auto firstGuest = GetEntity<Guest>(peep[seat * 2]);
+            auto firstGuest = getGameState().entities.GetEntity<Guest>(peep[seat * 2]);
             peep[seat * 2] = EntityId::GetNull();
 
             if (firstGuest != nullptr)
@@ -3438,7 +3439,7 @@ void Vehicle::UpdateUnloadingPassengers()
                 firstGuest->RideSubState = PeepRideSubState::LeaveVehicle;
             }
 
-            auto secondGuest = GetEntity<Guest>(peep[seat * 2 + 1]);
+            auto secondGuest = getGameState().entities.GetEntity<Guest>(peep[seat * 2 + 1]);
             peep[seat * 2 + 1] = EntityId::GetNull();
 
             if (secondGuest != nullptr)
@@ -3464,8 +3465,8 @@ void Vehicle::UpdateUnloadingPassengers()
             return;
         }
 
-        for (Vehicle* train = GetEntity<Vehicle>(Id); train != nullptr;
-             train = GetEntity<Vehicle>(train->next_vehicle_on_train))
+        for (Vehicle* train = getGameState().entities.GetEntity<Vehicle>(Id); train != nullptr;
+             train = getGameState().entities.GetEntity<Vehicle>(train->next_vehicle_on_train))
         {
             if (train->restraints_position != 255)
                 continue;
@@ -3476,7 +3477,7 @@ void Vehicle::UpdateUnloadingPassengers()
             train->next_free_seat = 0;
             for (uint8_t peepIndex = 0; peepIndex < train->num_peeps; peepIndex++)
             {
-                Peep* curPeep = GetEntity<Guest>(train->peep[peepIndex]);
+                Peep* curPeep = getGameState().entities.GetEntity<Guest>(train->peep[peepIndex]);
                 if (curPeep != nullptr)
                 {
                     curPeep->SetState(PeepState::LeavingRide);
@@ -3489,7 +3490,8 @@ void Vehicle::UpdateUnloadingPassengers()
     if (sub_state != 1)
         return;
 
-    for (Vehicle* train = GetEntity<Vehicle>(Id); train != nullptr; train = GetEntity<Vehicle>(train->next_vehicle_on_train))
+    for (Vehicle* train = getGameState().entities.GetEntity<Vehicle>(Id); train != nullptr;
+         train = getGameState().entities.GetEntity<Vehicle>(train->next_vehicle_on_train))
     {
         if (train->num_peeps != train->next_free_seat)
             return;
@@ -3513,7 +3515,7 @@ void Vehicle::UpdateWaitingForCableLift()
     if (curRide == nullptr)
         return;
 
-    Vehicle* cableLift = GetEntity<Vehicle>(curRide->cableLift);
+    Vehicle* cableLift = getGameState().entities.GetEntity<Vehicle>(curRide->cableLift);
     if (cableLift == nullptr)
         return;
 
@@ -4592,8 +4594,8 @@ void Vehicle::KillAllPassengersInTrain()
 
     ride_train_crash(*curRide, NumPeepsUntilTrainTail());
 
-    for (Vehicle* trainCar = GetEntity<Vehicle>(Id); trainCar != nullptr;
-         trainCar = GetEntity<Vehicle>(trainCar->next_vehicle_on_train))
+    for (Vehicle* trainCar = getGameState().entities.GetEntity<Vehicle>(Id); trainCar != nullptr;
+         trainCar = getGameState().entities.GetEntity<Vehicle>(trainCar->next_vehicle_on_train))
     {
         trainCar->KillPassengers(*curRide);
     }
@@ -4609,7 +4611,7 @@ void Vehicle::KillPassengers(const Ride& curRide)
 
     for (auto i = 0; i < num_peeps; i++)
     {
-        auto* curPeep = GetEntity<Guest>(peep[i]);
+        auto* curPeep = getGameState().entities.GetEntity<Guest>(peep[i]);
         if (curPeep == nullptr)
             continue;
 
@@ -4769,8 +4771,8 @@ void Vehicle::CrashOnWater()
  */
 void Vehicle::UpdateCrash()
 {
-    for (Vehicle* curVehicle = GetEntity<Vehicle>(Id); curVehicle != nullptr;
-         curVehicle = GetEntity<Vehicle>(curVehicle->next_vehicle_on_train))
+    for (Vehicle* curVehicle = getGameState().entities.GetEntity<Vehicle>(Id); curVehicle != nullptr;
+         curVehicle = getGameState().entities.GetEntity<Vehicle>(curVehicle->next_vehicle_on_train))
     {
         CoordsXYZ curPos = curVehicle->GetLocation();
 
@@ -4982,8 +4984,8 @@ OpenRCT2::Audio::SoundId Vehicle::UpdateScreamSound()
         if (velocity > -2.75_mph)
             return OpenRCT2::Audio::SoundId::Null;
 
-        for (Vehicle* vehicle2 = GetEntity<Vehicle>(Id); vehicle2 != nullptr;
-             vehicle2 = GetEntity<Vehicle>(vehicle2->next_vehicle_on_train))
+        for (Vehicle* vehicle2 = getGameState().entities.GetEntity<Vehicle>(Id); vehicle2 != nullptr;
+             vehicle2 = getGameState().entities.GetEntity<Vehicle>(vehicle2->next_vehicle_on_train))
         {
             if (vehicle2->Pitch < 1)
                 continue;
@@ -5004,8 +5006,8 @@ OpenRCT2::Audio::SoundId Vehicle::UpdateScreamSound()
     if (velocity < 2.75_mph)
         return OpenRCT2::Audio::SoundId::Null;
 
-    for (Vehicle* vehicle2 = GetEntity<Vehicle>(Id); vehicle2 != nullptr;
-         vehicle2 = GetEntity<Vehicle>(vehicle2->next_vehicle_on_train))
+    for (Vehicle* vehicle2 = getGameState().entities.GetEntity<Vehicle>(Id); vehicle2 != nullptr;
+         vehicle2 = getGameState().entities.GetEntity<Vehicle>(vehicle2->next_vehicle_on_train))
     {
         if (vehicle2->Pitch < 5)
             continue;
@@ -5127,7 +5129,7 @@ Vehicle* Vehicle::TrainHead() const
 
     for (;;)
     {
-        prevVehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+        prevVehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
         if (prevVehicle == nullptr)
             return nullptr;
         if (prevVehicle->next_vehicle_on_train.IsNull())
@@ -5146,7 +5148,7 @@ Vehicle* Vehicle::TrainTail() const
     EntityId spriteIndex = vehicle->next_vehicle_on_train;
     while (!spriteIndex.IsNull())
     {
-        vehicle = GetEntity<Vehicle>(spriteIndex);
+        vehicle = getGameState().entities.GetEntity<Vehicle>(spriteIndex);
         if (vehicle == nullptr)
         {
             return const_cast<Vehicle*>(this);
@@ -5276,7 +5278,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             velocity = 0;
             uint8_t direction = Orientation | 1;
 
-            Vehicle* collideVehicle = GetEntity<Vehicle>(collideSprite.value());
+            Vehicle* collideVehicle = getGameState().entities.GetEntity<Vehicle>(collideSprite.value());
             if (collideVehicle != nullptr)
             {
                 var_34 = (ScenarioRand() & 1) ? 1 : -1;
@@ -6507,11 +6509,11 @@ void Vehicle::UpdateHandleWaterSplash() const
             {
                 if (IsOnCoveredTrack())
                 {
-                    Vehicle* nextVehicle = GetEntity<Vehicle>(next_vehicle_on_ride);
+                    Vehicle* nextVehicle = getGameState().entities.GetEntity<Vehicle>(next_vehicle_on_ride);
                     if (nextVehicle == nullptr)
                         return;
 
-                    Vehicle* nextNextVehicle = GetEntity<Vehicle>(nextVehicle->next_vehicle_on_ride);
+                    Vehicle* nextNextVehicle = getGameState().entities.GetEntity<Vehicle>(nextVehicle->next_vehicle_on_ride);
                     if (nextNextVehicle == nullptr)
                         return;
                     if (!nextNextVehicle->IsOnCoveredTrack())
@@ -6590,7 +6592,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
         if (otherVehicleIndex == nullptr)
             return false;
 
-        Vehicle* collideVehicle = GetEntity<Vehicle>(*otherVehicleIndex);
+        Vehicle* collideVehicle = getGameState().entities.GetEntity<Vehicle>(*otherVehicleIndex);
         if (collideVehicle == nullptr)
             return false;
 
@@ -6781,8 +6783,8 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
  */
 void Vehicle::ReverseReverserCar()
 {
-    Vehicle* previousVehicle = GetEntity<Vehicle>(prev_vehicle_on_ride);
-    Vehicle* nextVehicle = GetEntity<Vehicle>(next_vehicle_on_ride);
+    Vehicle* previousVehicle = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
+    Vehicle* nextVehicle = getGameState().entities.GetEntity<Vehicle>(next_vehicle_on_ride);
     if (previousVehicle == nullptr || nextVehicle == nullptr)
     {
         return;
@@ -7338,7 +7340,7 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
                         remaining_distance = -1;
 
                         // Might need to be bp rather than this, but hopefully not
-                        auto otherVeh = GetEntity<Vehicle>(otherVehicleIndex);
+                        auto otherVeh = getGameState().entities.GetEntity<Vehicle>(otherVehicleIndex);
                         if (otherVeh == nullptr)
                         {
                             // This can never happen as prev_vehicle_on_ride will always be set to a vehicle
@@ -7649,7 +7651,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                         _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
                         remaining_distance = 0x368A;
 
-                        Vehicle* v3 = GetEntity<Vehicle>(otherVehicleIndex);
+                        Vehicle* v3 = getGameState().entities.GetEntity<Vehicle>(otherVehicleIndex);
                         Vehicle* v4 = gCurrentVehicle;
                         if (v3 == nullptr)
                         {
@@ -7744,7 +7746,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
     if (mini_golf_flags & MiniGolfFlag::Flag0)
     {
         auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
-        Vehicle* vEDI = GetEntity<Vehicle>(vehicleIdx);
+        Vehicle* vEDI = getGameState().entities.GetEntity<Vehicle>(vehicleIdx);
         if (vEDI == nullptr)
         {
             return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
@@ -7790,7 +7792,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
     if (mini_golf_flags & MiniGolfFlag::Flag1)
     {
         auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
-        Vehicle* vEDI = GetEntity<Vehicle>(vehicleIdx);
+        Vehicle* vEDI = getGameState().entities.GetEntity<Vehicle>(vehicleIdx);
         if (vEDI == nullptr)
         {
             return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
@@ -7839,7 +7841,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
 
         for (;;)
         {
-            vEDI = GetEntity<Vehicle>(vEDI->prev_vehicle_on_ride);
+            vEDI = getGameState().entities.GetEntity<Vehicle>(vEDI->prev_vehicle_on_ride);
             if (vEDI == this || vEDI == nullptr)
             {
                 break;
@@ -7926,7 +7928,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
 
             if (!IsHead())
             {
-                Vehicle* prevVehicle = GetEntity<Vehicle>(prev_vehicle_on_ride);
+                Vehicle* prevVehicle = getGameState().entities.GetEntity<Vehicle>(prev_vehicle_on_ride);
                 if (prevVehicle != nullptr)
                 {
                     TrackSubposition = prevVehicle->TrackSubposition;
@@ -8008,7 +8010,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                     // When the ride is closed occasionally the peep is removed
                     // but the vehicle is still on the track. This will prevent
                     // it from crashing in that situation.
-                    auto* curPeep = TryGetEntity<Guest>(peep[0]);
+                    auto* curPeep = getGameState().entities.TryGetEntity<Guest>(peep[0]);
                     if (curPeep != nullptr)
                     {
                         if (animation == MiniGolfAnimation::SwingLeft)
@@ -8162,7 +8164,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                     _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
                     remaining_distance = 0x368A;
                     {
-                        Vehicle* vEBP = GetEntity<Vehicle>(otherVehicleIndex);
+                        Vehicle* vEBP = getGameState().entities.GetEntity<Vehicle>(otherVehicleIndex);
                         if (vEBP == nullptr)
                         {
                             return UpdateMiniGolfSubroutineStatus::stop;
@@ -8316,7 +8318,8 @@ int32_t Vehicle::UpdateTrackMotionMiniGolfCalculateAcceleration(const CarEntry& 
     int32_t numVehicles = 0;
     uint16_t totalMass = 0;
 
-    for (Vehicle* vehicle = this; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    for (Vehicle* vehicle = this; vehicle != nullptr;
+         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         numVehicles++;
         totalMass += vehicle->mass;
@@ -8383,7 +8386,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
         }
         if (_vehicleVelocityF64E08 >= 0)
         {
-            vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
+            vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
         }
         else
         {
@@ -8391,7 +8394,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
             {
                 break;
             }
-            vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+            vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
         }
     }
 
@@ -8625,7 +8628,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     auto spriteId = vehicle->Id;
     while (!spriteId.IsNull())
     {
-        Vehicle* car = GetEntity<Vehicle>(spriteId);
+        Vehicle* car = getGameState().entities.GetEntity<Vehicle>(spriteId);
         if (car == nullptr)
         {
             break;
@@ -8673,7 +8676,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     // ebx
     int32_t numVehicles = 0;
 
-    for (; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    for (; vehicle != nullptr; vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         numVehicles++;
         totalMass += vehicle->mass;
@@ -8760,8 +8763,8 @@ Ride* Vehicle::GetRide() const
 int32_t Vehicle::NumPeepsUntilTrainTail() const
 {
     int32_t numPeeps = 0;
-    for (const Vehicle* vehicle = GetEntity<Vehicle>(Id); vehicle != nullptr;
-         vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    for (const Vehicle* vehicle = getGameState().entities.GetEntity<Vehicle>(Id); vehicle != nullptr;
+         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         numPeeps += vehicle->num_peeps;
     }
@@ -8939,7 +8942,7 @@ Vehicle* Vehicle::GetHead()
     auto v = this;
     while (v != nullptr && !v->IsHead())
     {
-        v = GetEntity<Vehicle>(v->prev_vehicle_on_ride);
+        v = getGameState().entities.GetEntity<Vehicle>(v->prev_vehicle_on_ride);
     }
     return v;
 }
@@ -8954,7 +8957,7 @@ Vehicle* Vehicle::GetCar(size_t carIndex) const
     auto car = const_cast<Vehicle*>(this);
     for (; carIndex != 0; carIndex--)
     {
-        car = GetEntity<Vehicle>(car->next_vehicle_on_train);
+        car = getGameState().entities.GetEntity<Vehicle>(car->next_vehicle_on_train);
         if (car == nullptr)
         {
             LOG_ERROR("Tried to get non-existent car from index!");
@@ -8980,7 +8983,8 @@ bool Vehicle::IsGhost() const
 void Vehicle::EnableCollisionsForTrain()
 {
     assert(this->IsHead());
-    for (auto vehicle = this; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    for (auto vehicle = this; vehicle != nullptr;
+         vehicle = getGameState().entities.GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         vehicle->ClearFlag(VehicleFlags::CollisionDisabled);
     }

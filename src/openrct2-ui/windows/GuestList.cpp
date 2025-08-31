@@ -541,7 +541,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         if (i == 0)
                         {
-                            auto guest = GetEntity<Guest>(guestItem.Id);
+                            auto guest = getGameState().entities.GetEntity<Guest>(guestItem.Id);
                             if (guest != nullptr)
                             {
                                 GuestOpen(guest);
@@ -600,14 +600,14 @@ namespace OpenRCT2::Ui::Windows
 
                 for (auto peep : EntityList<Guest>())
                 {
-                    EntitySetFlashing(peep, false);
+                    getGameState().entities.EntitySetFlashing(peep, false);
                     if (peep->OutsideOfPark)
                         continue;
                     if (_selectedFilter)
                     {
                         if (!IsPeepInFilter(*peep))
                             continue;
-                        EntitySetFlashing(peep, true);
+                        getGameState().entities.EntitySetFlashing(peep, true);
                     }
                     if (!GuestShouldBeVisible(*peep))
                         continue;
@@ -661,7 +661,7 @@ namespace OpenRCT2::Ui::Windows
                     }
 
                     // Guest name
-                    auto peep = GetEntity<Guest>(guestItem.Id);
+                    auto peep = getGameState().entities.GetEntity<Guest>(guestItem.Id);
                     if (peep == nullptr)
                     {
                         continue;
@@ -916,8 +916,8 @@ namespace OpenRCT2::Ui::Windows
         template<bool TRealNames>
         static bool CompareGuestItem(const GuestItem& a, const GuestItem& b)
         {
-            const auto* peepA = GetEntity<Peep>(a.Id);
-            const auto* peepB = GetEntity<Peep>(b.Id);
+            const auto* peepA = getGameState().entities.GetEntity<Peep>(a.Id);
+            const auto* peepB = getGameState().entities.GetEntity<Peep>(b.Id);
             if (peepA != nullptr && peepB != nullptr)
             {
                 // Compare types

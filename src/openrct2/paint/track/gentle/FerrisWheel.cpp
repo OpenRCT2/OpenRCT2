@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../GameState.h"
 #include "../../../entity/EntityRegistry.h"
 #include "../../../entity/Guest.h"
 #include "../../../interface/Viewport.h"
@@ -51,7 +52,7 @@ static void PaintFerrisWheelRiders(
 {
     for (int32_t i = 0; i < 32; i += 2)
     {
-        auto* peep = GetEntity<Guest>(vehicle.peep[i]);
+        auto* peep = getGameState().entities.GetEntity<Guest>(vehicle.peep[i]);
         if (peep == nullptr || peep->State != PeepState::OnRide)
             continue;
 
@@ -69,7 +70,7 @@ static void PaintFerrisWheelStructure(
     if (rideEntry == nullptr)
         return;
 
-    auto vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
+    auto vehicle = getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
     if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         session.InteractionType = ViewportInteractionItem::Entity;

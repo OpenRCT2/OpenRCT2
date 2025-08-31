@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../../GameState.h"
 #include "../../../entity/EntityRegistry.h"
 #include "../../../interface/Viewport.h"
 #include "../../../object/StationObject.h"
@@ -95,7 +96,7 @@ static Vehicle* GetFirstVehicle(const Ride& ride)
 {
     if (ride.lifecycleFlags & RIDE_LIFECYCLE_ON_TRACK)
     {
-        return GetEntity<Vehicle>(ride.vehicles[0]);
+        return getGameState().entities.GetEntity<Vehicle>(ride.vehicles[0]);
     }
     return nullptr;
 }

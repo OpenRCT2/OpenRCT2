@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../GameState.h"
 #include "../rct12/RCT12.h"
 #include "../world/Location.hpp"
 #include "EntityBase.h"
@@ -19,13 +20,6 @@
 
 namespace OpenRCT2
 {
-    const std::list<EntityId>& GetEntityList(const EntityType id);
-
-    uint16_t GetEntityListCount(EntityType list);
-    uint16_t GetMiscEntityCount();
-    uint16_t GetNumFreeEntities();
-    const std::vector<EntityId>& GetEntityTileList(const CoordsXY& spritePos);
-
     template<typename T>
     class EntityTileIterator
     {
@@ -45,9 +39,12 @@ namespace OpenRCT2
         {
             Entity = nullptr;
 
+            // TODO: don't use global game state!
+            auto& gameState = getGameState();
+
             while (iter != end && Entity == nullptr)
             {
-                Entity = TryGetEntity<T>(*iter++);
+                Entity = gameState.entities.TryGetEntity<T>(*iter++);
             }
             return *this;
         }
@@ -86,7 +83,7 @@ namespace OpenRCT2
 
     public:
         EntityTileList(const CoordsXY& loc)
-            : vec(GetEntityTileList(loc))
+            : vec(getGameState().entities.GetEntityTileList(loc))
         {
         }
 
@@ -119,9 +116,12 @@ namespace OpenRCT2
         {
             Entity = nullptr;
 
+            // TODO: don't use global game state!
+            auto& gameState = getGameState();
+
             while (iter != end && Entity == nullptr)
             {
-                Entity = TryGetEntity<T>(*iter++);
+                Entity = gameState.entities.TryGetEntity<T>(*iter++);
             }
             return *this;
         }
@@ -161,7 +161,7 @@ namespace OpenRCT2
 
     public:
         EntityList()
-            : vec(GetEntityList(T::cEntityType))
+            : vec(getGameState().entities.GetEntityList(T::cEntityType))
         {
         }
 

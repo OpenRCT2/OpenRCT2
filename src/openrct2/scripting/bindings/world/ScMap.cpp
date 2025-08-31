@@ -92,7 +92,7 @@ namespace OpenRCT2::Scripting
         if (id >= 0 && id < kMaxEntities)
         {
             auto spriteId = EntityId::FromUnderlying(id);
-            auto sprite = GetEntity(spriteId);
+            auto sprite = getGameState().entities.GetEntity(spriteId);
             if (sprite != nullptr && sprite->Type != EntityType::Null)
             {
                 return GetEntityAsDukValue(sprite);
@@ -118,7 +118,7 @@ namespace OpenRCT2::Scripting
             {
                 for (auto carId = trainHead->Id; !carId.IsNull();)
                 {
-                    auto car = GetEntity<Vehicle>(carId);
+                    auto car = getGameState().entities.GetEntity<Vehicle>(carId);
 
                     if (car == nullptr)
                     {
@@ -181,7 +181,7 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityList<Staff>())
             {
-                auto staff = GetEntity<Staff>(sprite->Id);
+                auto staff = getGameState().entities.GetEntity<Staff>(sprite->Id);
                 if (staff != nullptr)
                 {
                     switch (staff->AssignedStaffType)
@@ -277,7 +277,7 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityTileList<Staff>(pos))
             {
-                auto staff = GetEntity<Staff>(sprite->Id);
+                auto staff = getGameState().entities.GetEntity<Staff>(sprite->Id);
                 if (staff != nullptr)
                 {
                     switch (staff->AssignedStaffType)
@@ -321,7 +321,7 @@ namespace OpenRCT2::Scripting
     template<typename TEntityType, typename TScriptType>
     DukValue createEntityType(duk_context* ctx, const DukValue& initializer)
     {
-        TEntityType* entity = CreateEntity<TEntityType>();
+        TEntityType* entity = getGameState().entities.CreateEntity<TEntityType>();
         if (entity == nullptr)
         {
             // Probably no more space for entities for this specified entity type.
@@ -340,7 +340,7 @@ namespace OpenRCT2::Scripting
         DukValue res;
         if (type == "car")
         {
-            Vehicle* entity = CreateEntity<Vehicle>();
+            Vehicle* entity = getGameState().entities.CreateEntity<Vehicle>();
             if (entity == nullptr)
             {
                 // Probably no more space for entities for this specified entity type.
@@ -456,7 +456,7 @@ namespace OpenRCT2::Scripting
                 return GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(spriteId));
             case EntityType::Staff:
             {
-                auto staff = GetEntity<Staff>(spriteId);
+                auto staff = getGameState().entities.GetEntity<Staff>(spriteId);
                 if (staff != nullptr)
                 {
                     switch (staff->AssignedStaffType)

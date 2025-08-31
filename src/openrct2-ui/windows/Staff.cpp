@@ -1209,7 +1209,7 @@ namespace OpenRCT2::Ui::Windows
 
         Staff* GetStaff()
         {
-            return GetEntity<Staff>(EntityId::FromUnderlying(number));
+            return getGameState().entities.GetEntity<Staff>(EntityId::FromUnderlying(number));
         }
 
         static constexpr int32_t TabAnimationDivisor[] = {

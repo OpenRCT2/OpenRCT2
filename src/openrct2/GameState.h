@@ -63,6 +63,8 @@ namespace OpenRCT2
 
         std::vector<Banner> banners;
 
+        EntityRegistry entities;
+
         // Ride storage for all the rides in the park, rides with RideId::Null are considered free.
         std::array<Ride, Limits::kMaxRidesInPark> rides{};
         size_t ridesEndOfUsedRange{};
@@ -86,7 +88,6 @@ namespace OpenRCT2
         uint8_t researchExpectedDay;
         std::optional<ResearchItem> researchLastItem;
         std::optional<ResearchItem> researchNextItem;
-
         std::vector<ResearchItem> researchItemsUninvented;
         std::vector<ResearchItem> researchItemsInvented;
         uint8_t researchUncompletedCategories;
