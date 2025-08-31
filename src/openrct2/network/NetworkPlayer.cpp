@@ -41,14 +41,14 @@ namespace OpenRCT2::Network
     void NetworkPlayer::IncrementNumCommands()
     {
         CommandsRan++;
-        auto* windowMgr = OpenRCT2::Ui::GetWindowManager();
+        auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByNumber(WindowClass::Player, Id);
     }
 
     void NetworkPlayer::AddMoneySpent(money64 cost)
     {
         MoneySpent += cost;
-        auto* windowMgr = OpenRCT2::Ui::GetWindowManager();
+        auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByNumber(WindowClass::Player, Id);
     }
 } // namespace OpenRCT2::Network

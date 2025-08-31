@@ -198,7 +198,7 @@ namespace OpenRCT2::Network
     void NetworkConnection::SetLastDisconnectReason(const StringId string_id, void* args)
     {
         char buffer[kNetworkDisconnectReasonBufSize];
-        OpenRCT2::FormatStringLegacy(buffer, kNetworkDisconnectReasonBufSize, string_id, args);
+        FormatStringLegacy(buffer, kNetworkDisconnectReasonBufSize, string_id, args);
         SetLastDisconnectReason(buffer);
     }
 

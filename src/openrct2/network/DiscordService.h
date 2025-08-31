@@ -20,7 +20,7 @@ namespace OpenRCT2::Network
     class DiscordService final
     {
     private:
-        OpenRCT2::Timer _updateTimer;
+        Timer _updateTimer;
 
     public:
         DiscordService();

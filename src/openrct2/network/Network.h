@@ -83,12 +83,12 @@ namespace OpenRCT2::Network
     [[nodiscard]] uint8_t NetworkGetGroupID(uint32_t index);
     [[nodiscard]] int32_t NetworkGetNumGroups();
     [[nodiscard]] const char* NetworkGetGroupName(uint32_t index);
-    [[nodiscard]] OpenRCT2::GameActions::Result NetworkSetPlayerGroup(
+    [[nodiscard]] GameActions::Result NetworkSetPlayerGroup(
         NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting);
-    [[nodiscard]] OpenRCT2::GameActions::Result NetworkModifyGroups(
-        NetworkPlayerId_t actionPlayerId, OpenRCT2::GameActions::ModifyGroupType type, uint8_t groupId, const std::string& name,
-        uint32_t permissionIndex, OpenRCT2::GameActions::PermissionState permissionState, bool isExecuting);
-    [[nodiscard]] OpenRCT2::GameActions::Result NetworkKickPlayer(NetworkPlayerId_t playerId, bool isExecuting);
+    [[nodiscard]] GameActions::Result NetworkModifyGroups(
+        NetworkPlayerId_t actionPlayerId, GameActions::ModifyGroupType type, uint8_t groupId, const std::string& name,
+        uint32_t permissionIndex, GameActions::PermissionState permissionState, bool isExecuting);
+    [[nodiscard]] GameActions::Result NetworkKickPlayer(NetworkPlayerId_t playerId, bool isExecuting);
     [[nodiscard]] uint8_t NetworkGetDefaultGroup();
     [[nodiscard]] int32_t NetworkGetNumActions();
     [[nodiscard]] StringId NetworkGetActionNameStringID(uint32_t index);
@@ -101,7 +101,7 @@ namespace OpenRCT2::Network
     [[nodiscard]] bool NetworkIsServerPlayerInvisible();
 
     void NetworkSendChat(const char* text, const std::vector<uint8_t>& playerIds = {});
-    void NetworkSendGameAction(const OpenRCT2::GameActions::GameAction* action);
+    void NetworkSendGameAction(const GameActions::GameAction* action);
     void NetworkSendPassword(const std::string& password);
 
     void NetworkSetPassword(const char* password);

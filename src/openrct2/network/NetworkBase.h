@@ -24,10 +24,10 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Network
 {
-    class NetworkBase : public OpenRCT2::System
+    class NetworkBase : public System
     {
     public:
-        NetworkBase(OpenRCT2::IContext& context);
+        NetworkBase(IContext& context);
 
     public: // Uncategorized
         bool BeginServer(uint16_t port, const std::string& address);
@@ -82,8 +82,8 @@ namespace OpenRCT2::Network
         void RemovePlayer(std::unique_ptr<NetworkConnection>& connection);
         void UpdateServer();
         void ServerClientDisconnected(std::unique_ptr<NetworkConnection>& connection);
-        bool SaveMap(OpenRCT2::IStream* stream, const std::vector<const OpenRCT2::ObjectRepositoryItem*>& objects) const;
-        std::vector<uint8_t> SaveForNetwork(const std::vector<const OpenRCT2::ObjectRepositoryItem*>& objects) const;
+        bool SaveMap(IStream* stream, const std::vector<const ObjectRepositoryItem*>& objects) const;
+        std::vector<uint8_t> SaveForNetwork(const std::vector<const ObjectRepositoryItem*>& objects) const;
         std::string MakePlayerNameUnique(const std::string& name);
 
         // Packet dispatchers.
@@ -91,7 +91,7 @@ namespace OpenRCT2::Network
         void ServerSendToken(NetworkConnection& connection);
         void ServerSendMap(NetworkConnection* connection = nullptr);
         void ServerSendChat(const char* text, const std::vector<uint8_t>& playerIds = {});
-        void ServerSendGameAction(const OpenRCT2::GameActions::GameAction* action);
+        void ServerSendGameAction(const GameActions::GameAction* action);
         void ServerSendTick();
         void ServerSendPlayerInfo(int32_t playerId);
         void ServerSendPlayerList();
@@ -104,7 +104,7 @@ namespace OpenRCT2::Network
         void ServerSendEventPlayerJoined(const char* playerName);
         void ServerSendEventPlayerDisconnected(const char* playerName, const char* reason);
         void ServerSendObjectsList(
-            NetworkConnection& connection, const std::vector<const OpenRCT2::ObjectRepositoryItem*>& objects) const;
+            NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
         void ServerSendScripts(NetworkConnection& connection);
 
         // Handlers
@@ -135,7 +135,7 @@ namespace OpenRCT2::Network
         bool IsDesynchronised() const noexcept;
         NetworkServerState GetServerState() const noexcept;
         void ServerClientDisconnected();
-        bool LoadMap(OpenRCT2::IStream* stream);
+        bool LoadMap(IStream* stream);
         void UpdateClient();
 
         // Packet dispatchers.
@@ -145,10 +145,10 @@ namespace OpenRCT2::Network
             const std::string& name, const std::string& password, const std::string& pubkey,
             const std::vector<uint8_t>& signature);
         void Client_Send_CHAT(const char* text);
-        void Client_Send_GAME_ACTION(const OpenRCT2::GameActions::GameAction* action);
+        void Client_Send_GAME_ACTION(const GameActions::GameAction* action);
         void Client_Send_PING();
         void Client_Send_GAMEINFO();
-        void Client_Send_MAPREQUEST(const std::vector<OpenRCT2::ObjectEntryDescriptor>& objects);
+        void Client_Send_MAPREQUEST(const std::vector<ObjectEntryDescriptor>& objects);
         void Client_Send_HEARTBEAT(NetworkConnection& connection) const;
 
         // Handlers.
@@ -173,7 +173,7 @@ namespace OpenRCT2::Network
         void Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet);
 
         std::vector<uint8_t> _challenge;
-        std::map<uint32_t, OpenRCT2::GameActions::GameAction::Callback_t> _gameActionCallbacks;
+        std::map<uint32_t, GameActions::GameAction::Callback_t> _gameActionCallbacks;
         NetworkKey _key;
         NetworkUserManager _userManager;
 
@@ -228,7 +228,7 @@ namespace OpenRCT2::Network
         {
             uint32_t pluginCount{};
             uint32_t dataSize{};
-            OpenRCT2::MemoryStream data;
+            MemoryStream data;
         };
 
         std::unordered_map<NetworkCommand, CommandHandler> client_command_handlers;
@@ -236,12 +236,12 @@ namespace OpenRCT2::Network
         std::map<uint32_t, PlayerListUpdate> _pendingPlayerLists;
         std::multimap<uint32_t, NetworkPlayer> _pendingPlayerInfo;
         std::map<uint32_t, ServerTickData> _serverTickData;
-        std::vector<OpenRCT2::ObjectEntryDescriptor> _missingObjects;
+        std::vector<ObjectEntryDescriptor> _missingObjects;
         std::string _host;
         std::string _chatLogPath;
         std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
         std::string _password;
-        OpenRCT2::MemoryStream _serverGameState;
+        MemoryStream _serverGameState;
         NetworkServerState _serverState;
         uint32_t _lastSentHeartbeat = 0;
         uint32_t last_ping_sent_time = 0;

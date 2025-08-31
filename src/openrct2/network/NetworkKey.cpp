@@ -44,7 +44,7 @@ namespace OpenRCT2::Network
         }
     }
 
-    bool NetworkKey::LoadPrivate(OpenRCT2::IStream* stream)
+    bool NetworkKey::IStream* stream)
     {
         Guard::ArgumentNotNull(stream);
 
@@ -76,7 +76,7 @@ namespace OpenRCT2::Network
         }
     }
 
-    bool NetworkKey::LoadPublic(OpenRCT2::IStream* stream)
+    bool NetworkKey::LoadPublic(IStream* stream)
     {
         Guard::ArgumentNotNull(stream);
 
@@ -108,7 +108,7 @@ namespace OpenRCT2::Network
         }
     }
 
-    bool NetworkKey::SavePrivate(OpenRCT2::IStream* stream)
+    bool NetworkKey::SavePrivate(IStream* stream)
     {
         try
         {
@@ -127,7 +127,7 @@ namespace OpenRCT2::Network
         }
     }
 
-    bool NetworkKey::SavePublic(OpenRCT2::IStream* stream)
+    bool NetworkKey::SavePublic(IStream* stream)
     {
         try
         {

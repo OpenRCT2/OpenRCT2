@@ -40,7 +40,7 @@ namespace OpenRCT2::Network
         uint32_t PingTime = 0;
         NetworkKey Key;
         std::vector<uint8_t> Challenge;
-        std::vector<const OpenRCT2::ObjectRepositoryItem*> RequestedObjects;
+        std::vector<const ObjectRepositoryItem*> RequestedObjects;
         bool ShouldDisconnect = false;
 
         NetworkConnection() noexcept;

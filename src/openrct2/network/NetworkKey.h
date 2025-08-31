@@ -33,10 +33,10 @@ namespace OpenRCT2::Network
         NetworkKey();
         ~NetworkKey();
         bool Generate();
-        bool LoadPrivate(OpenRCT2::IStream* stream);
-        bool LoadPublic(OpenRCT2::IStream* stream);
-        bool SavePrivate(OpenRCT2::IStream* stream);
-        bool SavePublic(OpenRCT2::IStream* stream);
+        bool LoadPrivate(IStream* stream);
+        bool LoadPublic(IStream* stream);
+        bool SavePrivate(IStream* stream);
+        bool SavePublic(IStream* stream);
         std::string PublicKeyString();
         std::string PublicKeyHash();
         void Unload();
@@ -45,7 +45,7 @@ namespace OpenRCT2::Network
 
     private:
         NetworkKey(const NetworkKey&) = delete;
-        std::unique_ptr<OpenRCT2::Crypt::RsaKey> _key;
+        std::unique_ptr<Crypt::RsaKey> _key;
     };
 } // namespace OpenRCT2::Network
 

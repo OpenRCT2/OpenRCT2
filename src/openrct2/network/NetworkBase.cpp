@@ -719,7 +719,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
         if (fromPlayer != nullptr)
         {
-            auto& network = OpenRCT2::GetContext()->GetNetwork();
+            auto& network = GetContext()->GetNetwork();
             auto it = network.GetGroupByID(fromPlayer->Id);
             std::string groupName = "";
             std::vector<std::string> colours;

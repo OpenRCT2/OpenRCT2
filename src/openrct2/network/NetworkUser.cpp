@@ -212,8 +212,8 @@ namespace OpenRCT2::Network
 
     u8string NetworkUserManager::GetStorePath()
     {
-        auto& env = OpenRCT2::GetContext()->GetPlatformEnvironment();
-        return Path::Combine(env.GetDirectoryPath(OpenRCT2::DirBase::user), kUserStoreFilename);
+        auto& env = GetContext()->GetPlatformEnvironment();
+        return Path::Combine(env.GetDirectoryPath(DirBase::user), kUserStoreFilename);
     }
 } // namespace OpenRCT2::Network
 

@@ -97,7 +97,7 @@ namespace OpenRCT2::Network
                 }
                 else
                 {
-                    OpenRCT2::FmtString fmtServerName(NetworkGetServerName());
+                    FmtString fmtServerName(NetworkGetServerName());
                     std::string serverName;
                     for (const auto& token : fmtServerName)
                     {
