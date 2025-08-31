@@ -43,6 +43,7 @@
 - Fix: [#25062] Certain peep actions cannot be triggered if they are under or inside a track piece due to faulty verification of them being on a level crossing.
 - Fix: [#25067] Progress bars can flicker when downloading maps in multiplayer mode.
 - Fix: [#25075] The Hybrid Coaster quarter loops draw over land edges and walls directly next to them.
+- Fix: [#25080] Water has missing land edges when opposite corners of the tile and adjacent tile are the same height and the others are lower.
 
 0.4.25 (2025-08-03)
 ------------------------------------------------------------------------
