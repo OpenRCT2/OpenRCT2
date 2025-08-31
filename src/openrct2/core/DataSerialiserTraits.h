@@ -186,27 +186,27 @@ struct DataSerializerTraitsT<std::string>
 };
 
 template<>
-struct DataSerializerTraitsT<NetworkPlayerId_t>
+struct DataSerializerTraitsT<OpenRCT2::Network::PlayerId_t>
 {
-    static void encode(OpenRCT2::IStream* stream, const NetworkPlayerId_t& val)
+    static void encode(OpenRCT2::IStream* stream, const OpenRCT2::Network::PlayerId_t& val)
     {
         stream->WriteValue(ByteSwapBE(val.id));
     }
-    static void decode(OpenRCT2::IStream* stream, NetworkPlayerId_t& val)
+    static void decode(OpenRCT2::IStream* stream, OpenRCT2::Network::PlayerId_t& val)
     {
         val.id = ByteSwapBE(stream->ReadValue<int32_t>());
     }
-    static void log(OpenRCT2::IStream* stream, const NetworkPlayerId_t& val)
+    static void log(OpenRCT2::IStream* stream, const OpenRCT2::Network::PlayerId_t& val)
     {
         char playerId[28] = {};
         snprintf(playerId, sizeof(playerId), "%u", val.id);
 
         stream->Write(playerId, strlen(playerId));
 
-        int32_t playerIndex = NetworkGetPlayerIndex(val.id);
+        int32_t playerIndex = OpenRCT2::Network::GetPlayerIndex(val.id);
         if (playerIndex != -1)
         {
-            const char* playerName = NetworkGetPlayerName(playerIndex);
+            const char* playerName = OpenRCT2::Network::GetPlayerName(playerIndex);
             if (playerName != nullptr)
             {
                 stream->Write(" \"", 2);
@@ -591,17 +591,17 @@ struct DataSerializerTraitsT<CoordsXYZD>
 };
 
 template<>
-struct DataSerializerTraitsT<NetworkCheatType_t>
+struct DataSerializerTraitsT<OpenRCT2::Network::CheatType_t>
 {
-    static void encode(OpenRCT2::IStream* stream, const NetworkCheatType_t& val)
+    static void encode(OpenRCT2::IStream* stream, const OpenRCT2::Network::CheatType_t& val)
     {
         stream->WriteValue(ByteSwapBE(val.id));
     }
-    static void decode(OpenRCT2::IStream* stream, NetworkCheatType_t& val)
+    static void decode(OpenRCT2::IStream* stream, OpenRCT2::Network::CheatType_t& val)
     {
         val.id = ByteSwapBE(stream->ReadValue<int32_t>());
     }
-    static void log(OpenRCT2::IStream* stream, const NetworkCheatType_t& val)
+    static void log(OpenRCT2::IStream* stream, const OpenRCT2::Network::CheatType_t& val)
     {
         const char* cheatName = CheatsGetName(static_cast<CheatType>(val.id));
         stream->Write(cheatName, strlen(cheatName));

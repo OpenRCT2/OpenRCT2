@@ -252,7 +252,7 @@ namespace OpenRCT2::Network
     class TcpSocket final : public ITcpSocket, protected Socket
     {
     private:
-        std::atomic<SocketStatus> _status{ SocketStatus::Closed };
+        std::atomic<SocketStatus> _status{ SocketStatus::closed };
         uint16_t _listeningPort = 0;
         SOCKET _socket = INVALID_SOCKET;
 
@@ -265,7 +265,7 @@ namespace OpenRCT2::Network
         TcpSocket() noexcept = default;
 
         explicit TcpSocket(SOCKET socket, std::string hostName, std::string ipAddress) noexcept
-            : _status(SocketStatus::Connected)
+            : _status(SocketStatus::connected)
             , _socket(socket)
             , _ipAddress(std::move(ipAddress))
             , _hostName(std::move(hostName))
@@ -306,7 +306,7 @@ namespace OpenRCT2::Network
 
         void Listen(const std::string& address, uint16_t port) override
         {
-            if (_status != SocketStatus::Closed)
+            if (_status != SocketStatus::closed)
             {
                 throw std::runtime_error("Socket not closed.");
             }
@@ -361,12 +361,12 @@ namespace OpenRCT2::Network
             }
 
             _listeningPort = port;
-            _status = SocketStatus::Listening;
+            _status = SocketStatus::listening;
         }
 
         std::unique_ptr<ITcpSocket> Accept() override
         {
-            if (_status != SocketStatus::Listening)
+            if (_status != SocketStatus::listening)
             {
                 throw std::runtime_error("Socket not listening.");
             }
@@ -414,7 +414,7 @@ namespace OpenRCT2::Network
 
         void Connect(const std::string& address, uint16_t port) override
         {
-            if (_status != SocketStatus::Closed && _status != SocketStatus::Waiting)
+            if (_status != SocketStatus::closed && _status != SocketStatus::waiting)
             {
                 throw std::runtime_error("Socket not closed.");
             }
@@ -422,7 +422,7 @@ namespace OpenRCT2::Network
             try
             {
                 // Resolve address
-                _status = SocketStatus::Resolving;
+                _status = SocketStatus::resolving;
 
                 sockaddr_storage ss{};
                 socklen_t ss_len;
@@ -431,7 +431,7 @@ namespace OpenRCT2::Network
                     throw SocketException("Unable to resolve address.");
                 }
 
-                _status = SocketStatus::Connecting;
+                _status = SocketStatus::connecting;
                 _socket = socket(ss.ss_family, SOCK_STREAM, IPPROTO_TCP);
                 if (_socket == INVALID_SOCKET)
                 {
@@ -488,7 +488,7 @@ namespace OpenRCT2::Network
                         }
                         if (error == 0)
                         {
-                            _status = SocketStatus::Connected;
+                            _status = SocketStatus::connected;
                             return;
                         }
                     }
@@ -506,7 +506,7 @@ namespace OpenRCT2::Network
 
         void ConnectAsync(const std::string& address, uint16_t port) override
         {
-            if (_status != SocketStatus::Closed)
+            if (_status != SocketStatus::closed)
             {
                 throw std::runtime_error("Socket not closed.");
             }
@@ -514,7 +514,7 @@ namespace OpenRCT2::Network
             // When connect is called, the status is set to resolving, but we want to make sure
             // the status is changed before this async method exits. Otherwise, the consumer
             // might think the status has closed before it started to connect.
-            _status = SocketStatus::Waiting;
+            _status = SocketStatus::waiting;
 
             auto saddress = std::string(address);
             std::promise<void> barrier;
@@ -537,7 +537,7 @@ namespace OpenRCT2::Network
 
         void Finish() override
         {
-            if (_status == SocketStatus::Connected)
+            if (_status == SocketStatus::connected)
             {
                 shutdown(_socket, SHUT_WR);
             }
@@ -545,16 +545,16 @@ namespace OpenRCT2::Network
 
         void Disconnect() override
         {
-            if (_status == SocketStatus::Connected)
+            if (_status == SocketStatus::connected)
             {
                 shutdown(_socket, SHUT_RDWR);
             }
-            _status = SocketStatus::Closed;
+            _status = SocketStatus::closed;
         }
 
         size_t SendData(const void* buffer, size_t size) override
         {
-            if (_status != SocketStatus::Connected)
+            if (_status != SocketStatus::connected)
             {
                 throw std::runtime_error("Socket not connected.");
             }
@@ -576,7 +576,7 @@ namespace OpenRCT2::Network
 
         NetworkReadPacket ReceiveData(void* buffer, size_t size, size_t* sizeReceived) override
         {
-            if (_status != SocketStatus::Connected)
+            if (_status != SocketStatus::connected)
             {
                 throw std::runtime_error("Socket not connected.");
             }
@@ -585,7 +585,7 @@ namespace OpenRCT2::Network
             if (readBytes == 0)
             {
                 *sizeReceived = 0;
-                return NetworkReadPacket::Disconnected;
+                return NetworkReadPacket::disconnected;
             }
 
             if (readBytes == SOCKET_ERROR)
@@ -605,14 +605,14 @@ namespace OpenRCT2::Network
     #endif // _WIN32
                 if (LAST_SOCKET_ERROR() != EWOULDBLOCK)
                 {
-                    return NetworkReadPacket::Disconnected;
+                    return NetworkReadPacket::disconnected;
                 }
 
-                return NetworkReadPacket::NoData;
+                return NetworkReadPacket::noData;
             }
 
             *sizeReceived = readBytes;
-            return NetworkReadPacket::Success;
+            return NetworkReadPacket::success;
         }
 
         void Close() override
@@ -642,7 +642,7 @@ namespace OpenRCT2::Network
                 closesocket(_socket);
                 _socket = INVALID_SOCKET;
             }
-            _status = SocketStatus::Closed;
+            _status = SocketStatus::closed;
         }
 
         std::string GetIpAddressFromSocket(const sockaddr_in* addr) const
@@ -668,7 +668,7 @@ namespace OpenRCT2::Network
     class UdpSocket final : public IUdpSocket, protected Socket
     {
     private:
-        SocketStatus _status = SocketStatus::Closed;
+        SocketStatus _status = SocketStatus::closed;
         uint16_t _listeningPort = 0;
         SOCKET _socket = INVALID_SOCKET;
         NetworkEndpoint _endpoint;
@@ -701,7 +701,7 @@ namespace OpenRCT2::Network
 
         void Listen(const std::string& address, uint16_t port) override
         {
-            if (_status != SocketStatus::Closed)
+            if (_status != SocketStatus::closed)
             {
                 throw std::runtime_error("Socket not closed.");
             }
@@ -730,7 +730,7 @@ namespace OpenRCT2::Network
             }
 
             _listeningPort = port;
-            _status = SocketStatus::Listening;
+            _status = SocketStatus::listening;
         }
 
         size_t SendData(const std::string& address, uint16_t port, const void* buffer, size_t size) override
@@ -760,7 +760,7 @@ namespace OpenRCT2::Network
             auto ss = &dest->GetAddress();
             auto ss_len = dest->GetAddressLen();
 
-            if (_status != SocketStatus::Listening)
+            if (_status != SocketStatus::listening)
             {
                 _endpoint = *dest;
             }
@@ -787,7 +787,7 @@ namespace OpenRCT2::Network
         {
             sockaddr_in senderAddr{};
             socklen_t senderAddrLen = sizeof(sockaddr_in);
-            if (_status != SocketStatus::Listening)
+            if (_status != SocketStatus::listening)
             {
                 senderAddrLen = _endpoint.GetAddressLen();
                 std::memcpy(&senderAddr, &_endpoint.GetAddress(), senderAddrLen);
@@ -798,7 +798,7 @@ namespace OpenRCT2::Network
             if (readBytes <= 0)
             {
                 *sizeReceived = 0;
-                return NetworkReadPacket::NoData;
+                return NetworkReadPacket::noData;
             }
 
             *sizeReceived = readBytes;
@@ -806,7 +806,7 @@ namespace OpenRCT2::Network
             {
                 *sender = std::make_unique<NetworkEndpoint>(reinterpret_cast<sockaddr*>(&senderAddr), senderAddrLen);
             }
-            return NetworkReadPacket::Success;
+            return NetworkReadPacket::success;
         }
 
         void Close() override
@@ -860,7 +860,7 @@ namespace OpenRCT2::Network
                 closesocket(_socket);
                 _socket = INVALID_SOCKET;
             }
-            _status = SocketStatus::Closed;
+            _status = SocketStatus::closed;
         }
     };
 

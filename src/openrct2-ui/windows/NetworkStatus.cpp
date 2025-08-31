@@ -78,11 +78,11 @@ namespace OpenRCT2::Ui::Windows
             }
             if (text.empty())
             {
-                NetworkShutdownClient();
+                Network::ShutdownClient();
             }
             else
             {
-                NetworkSendPassword(_password);
+                Network::SendPassword(_password);
             }
         }
 

@@ -27,16 +27,16 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Network
 {
-    class NetworkPlayer;
+    class Player;
 
     class NetworkConnection final
     {
     public:
         std::unique_ptr<ITcpSocket> Socket = nullptr;
         NetworkPacket InboundPacket;
-        NetworkAuth AuthStatus = NetworkAuth::None;
-        NetworkStats Stats = {};
-        NetworkPlayer* Player = nullptr;
+        Auth AuthStatus = Auth::none;
+        Stats stats = {};
+        Player* player = nullptr;
         uint32_t PingTime = 0;
         NetworkKey Key;
         std::vector<uint8_t> Challenge;

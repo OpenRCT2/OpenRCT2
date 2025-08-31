@@ -37,7 +37,7 @@ namespace OpenRCT2::Ui
         }
         // This is in non performant so only make network games suffer for it
         // non networked games do not need this as its to prevent desyncs.
-        if ((NetworkGetMode() != NETWORK_MODE_NONE) && windowMgr->FindByClass(WindowClass::TrackDesignPlace) != nullptr)
+        if ((Network::GetMode() != Network::Mode::none) && windowMgr->FindByClass(WindowClass::TrackDesignPlace) != nullptr)
         {
             TrackPlaceClearProvisionalTemporarily();
         }
@@ -57,7 +57,7 @@ namespace OpenRCT2::Ui
         }
         // This is in non performant so only make network games suffer for it
         // non networked games do not need this as its to prevent desyncs.
-        if ((NetworkGetMode() != NETWORK_MODE_NONE) && windowMgr->FindByClass(WindowClass::TrackDesignPlace) != nullptr)
+        if ((Network::GetMode() != Network::Mode::none) && windowMgr->FindByClass(WindowClass::TrackDesignPlace) != nullptr)
         {
             TrackPlaceRestoreProvisional();
         }

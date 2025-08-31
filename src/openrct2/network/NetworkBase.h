@@ -44,7 +44,7 @@ namespace OpenRCT2::Network
         void ProcessPlayerList();
         auto GetPlayerIteratorByID(uint8_t id) const;
         auto GetGroupIteratorByID(uint8_t id) const;
-        NetworkPlayer* GetPlayerByID(uint8_t id) const;
+        Player* GetPlayerByID(uint8_t id) const;
         NetworkGroup* GetGroupByID(uint8_t id) const;
         int32_t GetTotalNumPlayers() const noexcept;
         int32_t GetNumVisiblePlayers() const noexcept;
@@ -55,11 +55,11 @@ namespace OpenRCT2::Network
         void BeginChatLog();
         void AppendChatLog(std::string_view s);
         void CloseChatLog();
-        NetworkStats GetStats() const;
+        Stats GetStats() const;
         json_t GetServerInfoAsJson() const;
         bool ProcessConnection(NetworkConnection& connection);
         void CloseConnection();
-        NetworkPlayer* AddPlayer(const std::string& name, const std::string& keyhash);
+        Player* AddPlayer(const std::string& name, const std::string& keyhash);
         void ProcessPacket(NetworkConnection& connection, NetworkPacket& packet);
 
     public: // Server
@@ -74,7 +74,7 @@ namespace OpenRCT2::Network
         void BeginServerLog();
         void AppendServerLog(const std::string& s);
         void CloseServerLog();
-        void DecayCooldown(NetworkPlayer* player);
+        void DecayCooldown(Player* player);
         void AddClient(std::unique_ptr<ITcpSocket>&& socket);
         std::string GetMasterServerUrl();
         std::string GenerateAdvertiseKey();
@@ -121,19 +121,19 @@ namespace OpenRCT2::Network
 
     public: // Client
         void Reconnect();
-        int32_t GetMode() const noexcept;
-        NetworkAuth GetAuthStatus();
-        int32_t GetStatus() const noexcept;
-        uint8_t GetPlayerID() const noexcept;
+        Mode GetMode() const noexcept;
+        Auth GetAuthStatus();
+        Status GetStatus() const noexcept;
+        PlayerId_t GetPlayerID() const noexcept;
         void ProcessPlayerInfo();
         void ProcessDisconnectedClients();
-        static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
+        static const char* FormatChat(Player* fromplayer, const char* text);
         void SendPacketToClients(const NetworkPacket& packet, bool front = false, bool gameCmd = false) const;
         bool CheckSRAND(uint32_t tick, uint32_t srand0);
         bool CheckDesynchronizaton();
         void RequestStateSnapshot();
         bool IsDesynchronised() const noexcept;
-        NetworkServerState GetServerState() const noexcept;
+        ServerState GetServerState() const noexcept;
         void ServerClientDisconnected();
         bool LoadMap(IStream* stream);
         void UpdateClient();
@@ -184,7 +184,7 @@ namespace OpenRCT2::Network
         std::string ServerProviderName;
         std::string ServerProviderEmail;
         std::string ServerProviderWebsite;
-        std::vector<std::unique_ptr<NetworkPlayer>> player_list;
+        std::vector<std::unique_ptr<Player>> player_list;
         std::vector<std::unique_ptr<NetworkGroup>> group_list;
         bool IsServerPlayerInvisible = false;
 
@@ -195,13 +195,13 @@ namespace OpenRCT2::Network
         std::ofstream _chat_log_fs;
         uint32_t _lastUpdateTime = 0;
         uint32_t _currentDeltaTime = 0;
-        int32_t mode = NETWORK_MODE_NONE;
+        Mode mode = Network::Mode::none;
         uint8_t default_group = 0;
         bool _closeLock = false;
         bool _requireClose = false;
 
     private: // Server Data
-        std::unordered_map<NetworkCommand, CommandHandler> server_command_handlers;
+        std::unordered_map<Command, CommandHandler> server_command_handlers;
         std::unique_ptr<ITcpSocket> _listenSocket;
         std::unique_ptr<INetworkServerAdvertiser> _advertiser;
         std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
@@ -214,7 +214,7 @@ namespace OpenRCT2::Network
     private: // Client Data
         struct PlayerListUpdate
         {
-            std::vector<NetworkPlayer> players;
+            std::vector<Player> players;
         };
 
         struct ServerTickData
@@ -231,10 +231,10 @@ namespace OpenRCT2::Network
             MemoryStream data;
         };
 
-        std::unordered_map<NetworkCommand, CommandHandler> client_command_handlers;
+        std::unordered_map<Command, CommandHandler> client_command_handlers;
         std::unique_ptr<NetworkConnection> _serverConnection;
         std::map<uint32_t, PlayerListUpdate> _pendingPlayerLists;
-        std::multimap<uint32_t, NetworkPlayer> _pendingPlayerInfo;
+        std::multimap<uint32_t, Player> _pendingPlayerInfo;
         std::map<uint32_t, ServerTickData> _serverTickData;
         std::vector<ObjectEntryDescriptor> _missingObjects;
         std::string _host;
@@ -242,15 +242,15 @@ namespace OpenRCT2::Network
         std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
         std::string _password;
         MemoryStream _serverGameState;
-        NetworkServerState _serverState;
+        ServerState _serverState;
         uint32_t _lastSentHeartbeat = 0;
         uint32_t last_ping_sent_time = 0;
         uint32_t server_connect_time = 0;
         uint32_t _actionId;
-        int32_t status = NETWORK_STATUS_NONE;
+        Status status = Network::Status::none;
         uint8_t player_id = 0;
         uint16_t _port = 0;
-        SocketStatus _lastConnectStatus = SocketStatus::Closed;
+        SocketStatus _lastConnectStatus = SocketStatus::closed;
         bool _requireReconnect = false;
         bool _clientMapLoaded = false;
         ServerScriptsData _serverScriptsData{};

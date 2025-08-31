@@ -44,7 +44,7 @@ namespace OpenRCT2::Network
         }
     }
 
-    bool NetworkKey::IStream* stream)
+    bool NetworkKey::LoadPrivate(IStream* stream)
     {
         Guard::ArgumentNotNull(stream);
 

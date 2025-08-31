@@ -97,7 +97,7 @@ namespace OpenRCT2::Ui::Windows
                     WindowStartTextbox(*this, widgetIndex, _name, 64);
                     break;
                 case WIDX_DESCRIPTION_INPUT:
-                    WindowStartTextbox(*this, widgetIndex, _description, kMaxServerDescriptionLength);
+                    WindowStartTextbox(*this, widgetIndex, _description, Network::kMaxServerDescriptionLength);
                     break;
                 case WIDX_GREETING_INPUT:
                     WindowStartTextbox(*this, widgetIndex, _greeting, kChatInputSize);
@@ -127,11 +127,11 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                     break;
                 case WIDX_START_SERVER:
-                    NetworkSetPassword(_password);
+                    Network::SetPassword(_password);
                     ScenarioselectOpen(ScenarioSelectCallback);
                     break;
                 case WIDX_LOAD_SERVER:
-                    NetworkSetPassword(_password);
+                    Network::SetPassword(_password);
                     auto intent = Intent(WindowClass::Loadsave);
                     intent.PutEnumExtra<LoadSaveAction>(INTENT_EXTRA_LOADSAVE_ACTION, LoadSaveAction::load);
                     intent.PutEnumExtra<LoadSaveType>(INTENT_EXTRA_LOADSAVE_TYPE, LoadSaveType::park);
@@ -249,7 +249,7 @@ namespace OpenRCT2::Ui::Windows
     private:
         char _port[7];
         char _name[65];
-        char _description[kMaxServerDescriptionLength];
+        char _description[Network::kMaxServerDescriptionLength];
         char _greeting[kChatInputSize];
         char _password[33];
         static void ScenarioSelectCallback(const utf8* path)
@@ -257,7 +257,7 @@ namespace OpenRCT2::Ui::Windows
             GameNotifyMapChange();
             if (GetContext()->LoadParkFromFile(path, false, true))
             {
-                NetworkBeginServer(Config::Get().network.DefaultPort, Config::Get().network.ListenAddress);
+                Network::BeginServer(Config::Get().network.DefaultPort, Config::Get().network.ListenAddress);
             }
         }
 
@@ -267,7 +267,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 GameNotifyMapChange();
                 GetContext()->LoadParkFromFile(path);
-                NetworkBeginServer(Config::Get().network.DefaultPort, Config::Get().network.ListenAddress);
+                Network::BeginServer(Config::Get().network.DefaultPort, Config::Get().network.ListenAddress);
             }
         }
     };

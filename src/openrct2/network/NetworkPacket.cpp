@@ -17,7 +17,7 @@
 
 namespace OpenRCT2::Network
 {
-    NetworkPacket::NetworkPacket(NetworkCommand id) noexcept
+    NetworkPacket::NetworkPacket(Command id) noexcept
         : Header{ 0, id }
     {
     }
@@ -32,7 +32,7 @@ namespace OpenRCT2::Network
         return Data.data();
     }
 
-    NetworkCommand NetworkPacket::GetCommand() const noexcept
+    Command NetworkPacket::GetCommand() const noexcept
     {
         return Header.Id;
     }
@@ -48,15 +48,15 @@ namespace OpenRCT2::Network
     {
         switch (GetCommand())
         {
-            case NetworkCommand::Ping:
-            case NetworkCommand::Auth:
-            case NetworkCommand::Token:
-            case NetworkCommand::GameInfo:
-            case NetworkCommand::ObjectsList:
-            case NetworkCommand::ScriptsHeader:
-            case NetworkCommand::ScriptsData:
-            case NetworkCommand::MapRequest:
-            case NetworkCommand::Heartbeat:
+            case Command::ping:
+            case Command::auth:
+            case Command::token:
+            case Command::gameInfo:
+            case Command::objectsList:
+            case Command::scriptsHeader:
+            case Command::scriptsData:
+            case Command::mapRequest:
+            case Command::heartbeat:
                 return false;
             default:
                 return true;

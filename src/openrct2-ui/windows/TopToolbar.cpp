@@ -306,7 +306,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_PAUSE:
-                    if (NetworkGetMode() != NETWORK_MODE_CLIENT)
+                    if (Network::GetMode() != Network::Mode::client)
                     {
                         auto pauseToggleAction = GameActions::PauseToggleAction();
                         GameActions::Execute(&pauseToggleAction);
@@ -699,16 +699,16 @@ namespace OpenRCT2::Ui::Windows
 
         void ApplyNetworkMode()
         {
-            switch (NetworkGetMode())
+            switch (Network::GetMode())
             {
-                case NETWORK_MODE_NONE:
+                case Network::Mode::none:
                     widgets[WIDX_NETWORK].type = WidgetType::empty;
                     widgets[WIDX_CHAT].type = WidgetType::empty;
                     break;
-                case NETWORK_MODE_CLIENT:
+                case Network::Mode::client:
                     widgets[WIDX_PAUSE].type = WidgetType::empty;
                     [[fallthrough]];
-                case NETWORK_MODE_SERVER:
+                case Network::Mode::server:
                     widgets[WIDX_FASTFORWARD].type = WidgetType::empty;
                     break;
             }
@@ -983,12 +983,12 @@ namespace OpenRCT2::Ui::Windows
                     screenPos.y++;
 
                 // Draw (de)sync icon.
-                imgId = (NetworkIsDesynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
+                imgId = (Network::IsDesynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
                 GfxDrawSprite(rt, ImageId(imgId), screenPos + ScreenCoordsXY{ 3, 11 });
 
                 // Draw number of players.
                 auto ft = Formatter();
-                ft.Add<int32_t>(NetworkGetNumVisiblePlayers());
+                ft.Add<int32_t>(Network::GetNumVisiblePlayers());
                 auto colour = ColourWithFlags{ COLOUR_WHITE }.withFlag(ColourFlag::withOutline, true);
                 DrawTextBasic(rt, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, { colour, TextAlignment::RIGHT });
             }
@@ -1395,7 +1395,7 @@ namespace OpenRCT2::Ui::Windows
             colours[0].withFlag(ColourFlag::translucent, true), Dropdown::Flag::StayOpen, TOP_TOOLBAR_CHEATS_COUNT);
 
         // Disable items that are not yet available in multiplayer
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             gDropdown.items[DDIDX_OBJECT_SELECTION].setDisabled(true);
             gDropdown.items[DDIDX_INVENTIONS_LIST].setDisabled(true);
@@ -1514,7 +1514,7 @@ namespace OpenRCT2::Ui::Windows
             { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height() + 1,
             colours[0].withFlag(ColourFlag::translucent, true), 0, TOP_TOOLBAR_NETWORK_COUNT);
 
-        gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT].setDisabled(!NetworkIsDesynchronised());
+        gDropdown.items[DDIDX_MULTIPLAYER_RECONNECT].setDisabled(!Network::IsDesynchronised());
 
         gDropdown.defaultIndex = DDIDX_MULTIPLAYER;
     }
@@ -1530,7 +1530,7 @@ namespace OpenRCT2::Ui::Windows
                     ContextOpenWindow(WindowClass::Multiplayer);
                     break;
                 case DDIDX_MULTIPLAYER_RECONNECT:
-                    NetworkReconnect();
+                    Network::Reconnect();
                     break;
             }
         }

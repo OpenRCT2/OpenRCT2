@@ -18,7 +18,7 @@
 
 namespace OpenRCT2::Network
 {
-    enum class NetworkPermission : uint32_t;
+    enum class Permission : uint32_t;
 
     class NetworkGroup final
     {
@@ -40,8 +40,8 @@ namespace OpenRCT2::Network
 
         void Read(NetworkPacket& packet);
         void Write(NetworkPacket& packet) const;
-        void ToggleActionPermission(NetworkPermission index);
-        bool CanPerformAction(NetworkPermission index) const noexcept;
+        void ToggleActionPermission(Permission index);
+        bool CanPerformAction(Permission index) const noexcept;
         bool CanPerformCommand(GameCommand command) const;
 
         /**

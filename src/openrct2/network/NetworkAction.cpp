@@ -18,7 +18,7 @@
 
 namespace OpenRCT2::Network
 {
-    NetworkPermission NetworkActions::FindCommand(GameCommand command)
+    Permission NetworkActions::FindCommand(GameCommand command)
     {
         auto it = std::find_if(Actions.begin(), Actions.end(), [&command](NetworkAction const& action) {
             for (GameCommand currentCommand : action.Commands)
@@ -32,24 +32,24 @@ namespace OpenRCT2::Network
         });
         if (it != Actions.end())
         {
-            return static_cast<NetworkPermission>(it - Actions.begin());
+            return static_cast<Permission>(it - Actions.begin());
         }
-        return NetworkPermission::Count;
+        return Permission::Count;
     }
 
-    NetworkPermission NetworkActions::FindCommandByPermissionName(const std::string& permission_name)
+    Permission NetworkActions::FindCommandByPermissionName(const std::string& permission_name)
     {
         auto it = std::find_if(Actions.begin(), Actions.end(), [&permission_name](NetworkAction const& action) {
             return action.PermissionName == permission_name;
         });
         if (it != Actions.end())
         {
-            return static_cast<NetworkPermission>(it - Actions.begin());
+            return static_cast<Permission>(it - Actions.begin());
         }
-        return NetworkPermission::Count;
+        return Permission::Count;
     }
 
-    const std::array<NetworkAction, static_cast<size_t>(NetworkPermission::Count)> NetworkActions::Actions = {
+    const std::array<NetworkAction, static_cast<size_t>(Permission::Count)> NetworkActions::Actions = {
         NetworkAction{
             STR_ACTION_CHAT,
             "PERMISSION_CHAT",

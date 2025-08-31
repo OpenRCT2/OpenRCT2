@@ -48,8 +48,8 @@ namespace OpenRCT2::Network
             return a.Local ? -1 : 1;
         }
 
-        bool serverACompatible = a.Version == NetworkGetVersion();
-        bool serverBCompatible = b.Version == NetworkGetVersion();
+        bool serverACompatible = a.Version == Network::GetVersion();
+        bool serverBCompatible = b.Version == Network::GetVersion();
         if (serverACompatible != serverBCompatible)
         {
             return serverACompatible ? -1 : 1;
@@ -70,7 +70,7 @@ namespace OpenRCT2::Network
 
     bool ServerListEntry::IsVersionValid() const noexcept
     {
-        return Version.empty() || Version == NetworkGetVersion();
+        return Version.empty() || Version == Network::GetVersion();
     }
 
     std::optional<ServerListEntry> ServerListEntry::FromJson(json_t& server)
@@ -293,7 +293,7 @@ namespace OpenRCT2::Network
                     size_t recievedLen{};
                     std::unique_ptr<INetworkEndpoint> endpoint;
                     auto p = udpSocket->ReceiveData(buffer, sizeof(buffer) - 1, &recievedLen, &endpoint);
-                    if (p == NetworkReadPacket::Success)
+                    if (p == NetworkReadPacket::success)
                     {
                         auto sender = endpoint->GetHostname();
                         LOG_VERBOSE("Received %zu bytes back from %s", recievedLen, sender.c_str());

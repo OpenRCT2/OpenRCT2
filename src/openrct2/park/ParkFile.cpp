@@ -511,7 +511,7 @@ namespace OpenRCT2
                 if (cs.getMode() == OrcaStream::Mode::reading)
                 {
                     auto earlyCompletion = cs.read<bool>();
-                    if (NetworkGetMode() == NETWORK_MODE_CLIENT)
+                    if (Network::GetMode() == Network::Mode::client)
                     {
                         gAllowEarlyCompletionInNetworkPlay = earlyCompletion;
                     }

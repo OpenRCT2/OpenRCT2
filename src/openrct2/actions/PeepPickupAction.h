@@ -28,11 +28,11 @@ namespace OpenRCT2::GameActions
         PeepPickupType _type{ PeepPickupType::Count };
         EntityId _entityId{ EntityId::GetNull() };
         CoordsXYZ _loc;
-        NetworkPlayerId_t _owner{ -1 };
+        Network::PlayerId_t _owner{ -1 };
 
     public:
         PeepPickupAction() = default;
-        PeepPickupAction(PeepPickupType type, EntityId entityId, const CoordsXYZ& loc, NetworkPlayerId_t owner);
+        PeepPickupAction(PeepPickupType type, EntityId entityId, const CoordsXYZ& loc, Network::PlayerId_t owner);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

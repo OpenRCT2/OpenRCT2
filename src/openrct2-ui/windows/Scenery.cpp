@@ -303,8 +303,8 @@ namespace OpenRCT2::Ui::Windows
                     if (gWindowSceneryScatterEnabled)
                         windowMgr->CloseByClass(WindowClass::SceneryScatter);
                     else if (
-                        NetworkGetMode() != NETWORK_MODE_CLIENT
-                        || NetworkCanPerformCommand(NetworkGetCurrentPlayerGroupIndex(), -2))
+                        Network::GetMode() != Network::Mode::client
+                        || Network::CanPerformCommand(Network::GetCurrentPlayerGroupIndex(), -2))
                     {
                         SceneryScatterOpen();
                     }
@@ -2970,8 +2970,8 @@ namespace OpenRCT2::Ui::Windows
 
                     int32_t quantity = 1;
                     bool isCluster = gWindowSceneryScatterEnabled
-                        && (NetworkGetMode() != NETWORK_MODE_CLIENT
-                            || NetworkCanPerformCommand(NetworkGetCurrentPlayerGroupIndex(), -2));
+                        && (Network::GetMode() != Network::Mode::client
+                            || Network::CanPerformCommand(Network::GetCurrentPlayerGroupIndex(), -2));
 
                     if (isCluster)
                     {

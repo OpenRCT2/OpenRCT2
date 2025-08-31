@@ -18,7 +18,7 @@
 
 namespace OpenRCT2::Network
 {
-    enum class NetworkPermission : uint32_t
+    enum class Permission : uint32_t
     {
         Chat,
         Terraform,
@@ -58,9 +58,9 @@ namespace OpenRCT2::Network
     class NetworkActions final
     {
     public:
-        static const std::array<NetworkAction, static_cast<size_t>(NetworkPermission::Count)> Actions;
+        static const std::array<NetworkAction, static_cast<size_t>(Permission::Count)> Actions;
 
-        static NetworkPermission FindCommand(GameCommand command);
-        static NetworkPermission FindCommandByPermissionName(const std::string& permission_name);
+        static Permission FindCommand(GameCommand command);
+        static Permission FindCommandByPermissionName(const std::string& permission_name);
     };
 } // namespace OpenRCT2::Network

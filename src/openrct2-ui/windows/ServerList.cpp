@@ -78,8 +78,8 @@ namespace OpenRCT2::Ui::Windows
     {
     private:
         u8string _playerName;
-        ServerList _serverList;
-        std::future<std::tuple<std::vector<ServerListEntry>, StringId>> _fetchFuture;
+        Network::ServerList _serverList;
+        std::future<std::pair<std::vector<Network::ServerListEntry>, StringId>> _fetchFuture;
         uint32_t _numPlayersOnline = 0;
         StringId _statusText = STR_SERVER_LIST_CONNECTING;
 
@@ -283,7 +283,7 @@ namespace OpenRCT2::Ui::Windows
 
                 case WIDX_ADD_SERVER:
                 {
-                    ServerListEntry entry;
+                    Network::ServerListEntry entry;
                     entry.Address = text;
                     entry.Name = text;
                     entry.Favourite = true;
@@ -311,7 +311,7 @@ namespace OpenRCT2::Ui::Windows
                 { COLOUR_WHITE });
 
             // Draw version number
-            std::string version = NetworkGetVersion();
+            std::string version = Network::GetVersion();
             auto ft = Formatter();
             ft.Add<const char*>(version.c_str());
             DrawTextBasic(
@@ -399,7 +399,7 @@ namespace OpenRCT2::Ui::Windows
                 else
                 {
                     // Server online... check version
-                    bool correctVersion = serverDetails.Version == NetworkGetVersion();
+                    bool correctVersion = serverDetails.Version == Network::GetVersion();
                     compatibilitySpriteId = correctVersion ? SPR_G2_RCT1_OPEN_BUTTON_2 : SPR_G2_RCT1_CLOSE_BUTTON_2;
                 }
                 GfxDrawSprite(rt, ImageId(compatibilitySpriteId), { right, screenCoords.y + 1 });
@@ -442,7 +442,7 @@ namespace OpenRCT2::Ui::Windows
                 auto wanF = _serverList.FetchOnlineServerListAsync();
 
                 // Merge or deal with errors
-                std::vector<ServerListEntry> allEntries;
+                std::vector<Network::ServerListEntry> allEntries;
                 try
                 {
                     auto entries = lanF.get();
@@ -461,7 +461,7 @@ namespace OpenRCT2::Ui::Windows
                     allEntries.reserve(allEntries.capacity() + entries.size());
                     allEntries.insert(allEntries.end(), entries.begin(), entries.end());
                 }
-                catch (const MasterServerException& e)
+                catch (const Network::MasterServerException& e)
                 {
                     status = e.StatusText;
                 }
@@ -470,7 +470,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     status = STR_SERVER_LIST_NO_CONNECTION;
                 }
-                return std::make_tuple(allEntries, status);
+                return std::make_pair(allEntries, status);
             });
         }
 
@@ -493,7 +493,7 @@ namespace OpenRCT2::Ui::Windows
                             _statusText = statusText;
                         }
                     }
-                    catch (const MasterServerException& e)
+                    catch (const Network::MasterServerException& e)
                     {
                         _statusText = e.StatusText;
                     }
@@ -547,7 +547,7 @@ namespace OpenRCT2::Ui::Windows
 
     void JoinServer(std::string address)
     {
-        int32_t port = kNetworkDefaultPort;
+        int32_t port = Network::kNetworkDefaultPort;
         auto endBracketIndex = address.find(']');
         auto colonIndex = address.find_last_of(':');
         if (colonIndex != std::string::npos)
@@ -569,7 +569,7 @@ namespace OpenRCT2::Ui::Windows
             address = address.substr(beginBracketIndex + 1, endBracketIndex - beginBracketIndex - 1);
         }
 
-        if (!NetworkBeginClient(address, port))
+        if (!Network::BeginClient(address, port))
         {
             ContextShowError(STR_UNABLE_TO_CONNECT_TO_SERVER, kStringIdNone, {});
         }

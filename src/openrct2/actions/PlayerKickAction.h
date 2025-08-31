@@ -16,12 +16,12 @@ namespace OpenRCT2::GameActions
     class PlayerKickAction final : public GameActionBase<GameCommand::KickPlayer>
     {
     private:
-        NetworkPlayerId_t _playerId{ -1 };
+        Network::PlayerId_t _playerId{ -1 };
 
     public:
         PlayerKickAction() = default;
 
-        PlayerKickAction(NetworkPlayerId_t playerId);
+        PlayerKickAction(Network::PlayerId_t playerId);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

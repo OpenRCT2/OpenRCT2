@@ -98,7 +98,7 @@ namespace OpenRCT2::GameActions
         }
 
         template<typename T, size_t _TypeID>
-        void Visit(std::string_view name, NetworkObjectId<T, _TypeID>& param)
+        void Visit(std::string_view name, Network::NetworkObjectId<T, _TypeID>& param)
         {
             Visit(name, param.id);
         }
@@ -113,8 +113,8 @@ namespace OpenRCT2::GameActions
     private:
         GameCommand const _type;
 
-        NetworkPlayerId_t _playerId = { -1 }; // Callee
-        uint32_t _flags = 0;                  // GAME_COMMAND_FLAGS
+        Network::PlayerId_t _playerId = { -1 }; // Callee
+        uint32_t _flags = 0;                    // GAME_COMMAND_FLAGS
         uint32_t _networkId = 0;
         Callback_t _callback;
 
@@ -137,12 +137,12 @@ namespace OpenRCT2::GameActions
             visitor.Visit("flags", _flags);
         }
 
-        NetworkPlayerId_t GetPlayer() const
+        Network::PlayerId_t GetPlayer() const
         {
             return _playerId;
         }
 
-        void SetPlayer(NetworkPlayerId_t playerId)
+        void SetPlayer(Network::PlayerId_t playerId)
         {
             _playerId = playerId;
         }

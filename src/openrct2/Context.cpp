@@ -117,14 +117,14 @@ namespace OpenRCT2
         std::unique_ptr<IGameStateSnapshots> _gameStateSnapshots;
         std::unique_ptr<AssetPackManager> _assetPackManager;
 #ifdef __ENABLE_DISCORD__
-        std::unique_ptr<DiscordService> _discordService;
+        std::unique_ptr<Network::DiscordService> _discordService;
 #endif
         StdInOutConsole _stdInOutConsole;
 #ifdef ENABLE_SCRIPTING
         ScriptEngine _scriptEngine;
 #endif
 #ifndef DISABLE_NETWORK
-        NetworkBase _network;
+        Network::NetworkBase _network;
 #endif
 
         // Scenes
@@ -303,7 +303,7 @@ namespace OpenRCT2
         }
 
 #ifndef DISABLE_NETWORK
-        NetworkBase& GetNetwork() override
+        Network::NetworkBase& GetNetwork() override
         {
             return _network;
         }
@@ -476,7 +476,7 @@ namespace OpenRCT2
 #ifdef __ENABLE_DISCORD__
             if (!gOpenRCT2Headless)
             {
-                _discordService = std::make_unique<DiscordService>();
+                _discordService = std::make_unique<Network::DiscordService>();
             }
 #endif
 
@@ -842,14 +842,14 @@ namespace OpenRCT2
                 if (!asScenario && (info.Type == FileType::park || info.Type == FileType::savedGame))
                 {
 #ifndef DISABLE_NETWORK
-                    if (_network.GetMode() == NETWORK_MODE_CLIENT)
+                    if (_network.GetMode() == Network::Mode::client)
                     {
                         _network.Close();
                     }
 #endif
                     GameLoadInit();
 #ifndef DISABLE_NETWORK
-                    if (_network.GetMode() == NETWORK_MODE_SERVER)
+                    if (_network.GetMode() == Network::Mode::server)
                     {
                         sendMap = true;
                     }
@@ -859,11 +859,11 @@ namespace OpenRCT2
                 {
                     ScenarioBegin(gameState);
 #ifndef DISABLE_NETWORK
-                    if (_network.GetMode() == NETWORK_MODE_SERVER)
+                    if (_network.GetMode() == Network::Mode::server)
                     {
                         sendMap = true;
                     }
-                    if (_network.GetMode() == NETWORK_MODE_CLIENT)
+                    if (_network.GetMode() == Network::Mode::client)
                     {
                         _network.Close();
                     }
@@ -880,7 +880,7 @@ namespace OpenRCT2
 #endif
 
 #ifdef USE_BREAKPAD
-                if (_network.GetMode() == NETWORK_MODE_NONE)
+                if (_network.GetMode() == Network::Mode::none)
                 {
                     StartSilentRecord();
                 }
@@ -1155,7 +1155,7 @@ namespace OpenRCT2
             if (isGameScene)
             {
 #ifndef DISABLE_NETWORK
-                if (gNetworkStart == NETWORK_MODE_SERVER)
+                if (gNetworkStart == Network::Mode::server)
                 {
                     if (gNetworkStartPort == 0)
                     {
@@ -1186,7 +1186,7 @@ namespace OpenRCT2
             }
 
 #ifndef DISABLE_NETWORK
-            else if (gNetworkStart == NETWORK_MODE_CLIENT)
+            else if (gNetworkStart == Network::Mode::client)
             {
                 if (gNetworkStartPort == 0)
                 {

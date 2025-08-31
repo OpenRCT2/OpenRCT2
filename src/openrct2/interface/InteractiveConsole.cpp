@@ -1176,7 +1176,7 @@ static void ConsoleCommandOpen(InteractiveConsole& console, const arguments_t& a
         bool invalidTitle = false;
         if (argv[0] == "object_selection" && InvalidArguments(&invalidTitle, !title))
         {
-            if (NetworkGetMode() != NETWORK_MODE_NONE)
+            if (Network::GetMode() != Network::Mode::none)
             {
                 console.WriteLineError("Cannot open this window in multiplayer mode.");
             }
@@ -1190,7 +1190,7 @@ static void ConsoleCommandOpen(InteractiveConsole& console, const arguments_t& a
         }
         else if (argv[0] == "inventions_list" && InvalidArguments(&invalidTitle, !title))
         {
-            if (NetworkGetMode() != NETWORK_MODE_NONE)
+            if (Network::GetMode() != Network::Mode::none)
             {
                 console.WriteLineError("Cannot open this window in multiplayer mode.");
             }
@@ -1362,8 +1362,8 @@ static void ConsoleCommandSavePark([[maybe_unused]] InteractiveConsole& console,
 
 static void ConsoleCommandSay(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (NetworkGetMode() == NETWORK_MODE_NONE || NetworkGetStatus() != NETWORK_STATUS_CONNECTED
-        || NetworkGetAuthstatus() != NetworkAuth::Ok)
+    if (Network::GetMode() == Network::Mode::none || Network::GetStatus() != Network::Status::connected
+        || Network::GetAuthstatus() != Network::Auth::ok)
     {
         console.WriteFormatLine("This command only works in multiplayer mode.");
         return;
@@ -1371,7 +1371,7 @@ static void ConsoleCommandSay(InteractiveConsole& console, const arguments_t& ar
 
     if (!argv.empty())
     {
-        NetworkSendChat(argv[0].c_str());
+        Network::SendChat(argv[0].c_str());
         return;
     }
 
@@ -1380,7 +1380,7 @@ static void ConsoleCommandSay(InteractiveConsole& console, const arguments_t& ar
 
 static void ConsoleCommandReplayStartRecord(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (NetworkGetMode() != NETWORK_MODE_NONE)
+    if (Network::GetMode() != Network::Mode::none)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return;
@@ -1423,7 +1423,7 @@ static void ConsoleCommandReplayStartRecord(InteractiveConsole& console, const a
 
 static void ConsoleCommandReplayStopRecord(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (NetworkGetMode() != NETWORK_MODE_NONE)
+    if (Network::GetMode() != Network::Mode::none)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return;
@@ -1454,7 +1454,7 @@ static void ConsoleCommandReplayStopRecord(InteractiveConsole& console, const ar
 
 static void ConsoleCommandReplayStart(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (NetworkGetMode() != NETWORK_MODE_NONE)
+    if (Network::GetMode() != Network::Mode::none)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return;
@@ -1492,7 +1492,7 @@ static void ConsoleCommandReplayStart(InteractiveConsole& console, const argumen
 
 static void ConsoleCommandReplayStop(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (NetworkGetMode() != NETWORK_MODE_NONE)
+    if (Network::GetMode() != Network::Mode::none)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return;
@@ -1507,7 +1507,7 @@ static void ConsoleCommandReplayStop(InteractiveConsole& console, const argument
 
 static void ConsoleCommandReplayNormalise(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (NetworkGetMode() != NETWORK_MODE_NONE)
+    if (Network::GetMode() != Network::Mode::none)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
     }

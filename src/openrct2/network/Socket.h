@@ -17,20 +17,20 @@ namespace OpenRCT2::Network
 {
     enum class SocketStatus
     {
-        Closed,
-        Waiting,
-        Resolving,
-        Connecting,
-        Connected,
-        Listening,
+        closed,
+        waiting,
+        resolving,
+        connecting,
+        connected,
+        listening,
     };
 
     enum class NetworkReadPacket : int32_t
     {
-        Success,
-        NoData,
-        MoreData,
-        Disconnected
+        success,
+        noData,
+        moreData,
+        disconnected
     };
 
     /**

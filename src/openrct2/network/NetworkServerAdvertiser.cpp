@@ -38,10 +38,10 @@ namespace OpenRCT2::Network
 {
     enum class MasterServerStatus
     {
-        Ok = 200,
-        InvalidToken = 401,
-        ServerNotFound = 404,
-        InternalError = 500
+        ok = 200,
+        invalidToken = 401,
+        serverNotFound = 404,
+        internalError = 500
     };
 
     #ifndef DISABLE_HTTP
@@ -106,7 +106,7 @@ namespace OpenRCT2::Network
             auto ticks = Platform::GetTicks();
             if (ticks > _lastListenTime + 500)
             {
-                if (_lanListener->GetStatus() != SocketStatus::Listening)
+                if (_lanListener->GetStatus() != SocketStatus::listening)
                 {
                     _lanListener->Listen(kNetworkLanBroadcastPort);
                 }
@@ -116,7 +116,7 @@ namespace OpenRCT2::Network
                     size_t recievedBytes{};
                     std::unique_ptr<INetworkEndpoint> endpoint;
                     auto p = _lanListener->ReceiveData(buffer, sizeof(buffer) - 1, &recievedBytes, &endpoint);
-                    if (p == NetworkReadPacket::Success)
+                    if (p == NetworkReadPacket::success)
                     {
                         std::string sender = endpoint->GetHostname();
                         LOG_VERBOSE("Received %zu bytes from %s on LAN broadcast port", recievedBytes, sender.c_str());
@@ -136,7 +136,7 @@ namespace OpenRCT2::Network
 
         json_t GetBroadcastJson()
         {
-            json_t root = NetworkGetServerInfoAsJson();
+            json_t root = Network::GetServerInfoAsJson();
             root["port"] = _port;
             return root;
         }
@@ -236,9 +236,9 @@ namespace OpenRCT2::Network
         {
             Guard::Assert(jsonRoot.is_object(), "OnRegistrationResponse expects parameter jsonRoot to be object");
 
-            auto status = Json::GetEnum<MasterServerStatus>(jsonRoot["status"], MasterServerStatus::InternalError);
+            auto status = Json::GetEnum<MasterServerStatus>(jsonRoot["status"], MasterServerStatus::internalError);
 
-            if (status == MasterServerStatus::Ok)
+            if (status == MasterServerStatus::ok)
             {
                 Console::WriteLine("Server successfully registered on master server");
                 json_t jsonToken = jsonRoot["token"];
@@ -263,7 +263,7 @@ namespace OpenRCT2::Network
                 // Hack for https://github.com/OpenRCT2/OpenRCT2/issues/6277
                 // Master server may not reply correctly if using IPv6, retry forcing IPv4,
                 // don't wait the full timeout.
-                if (!_forceIPv4 && status == MasterServerStatus::InternalError)
+                if (!_forceIPv4 && status == MasterServerStatus::internalError)
                 {
                     _forceIPv4 = true;
                     _lastAdvertiseTime = 0;
@@ -280,12 +280,12 @@ namespace OpenRCT2::Network
         {
             Guard::Assert(jsonRoot.is_object(), "OnHeartbeatResponse expects parameter jsonRoot to be object");
 
-            auto status = Json::GetEnum<MasterServerStatus>(jsonRoot["status"], MasterServerStatus::InternalError);
-            if (status == MasterServerStatus::Ok)
+            auto status = Json::GetEnum<MasterServerStatus>(jsonRoot["status"], MasterServerStatus::internalError);
+            if (status == MasterServerStatus::ok)
             {
                 // Master server has successfully updated our server status
             }
-            else if (status == MasterServerStatus::InvalidToken)
+            else if (status == MasterServerStatus::invalidToken)
             {
                 _status = AdvertiseStatus::unregistered;
                 _lastAdvertiseTime = 0;
@@ -295,7 +295,7 @@ namespace OpenRCT2::Network
 
         json_t GetHeartbeatJson()
         {
-            uint32_t numPlayers = NetworkGetNumVisiblePlayers();
+            uint32_t numPlayers = Network::GetNumVisiblePlayers();
 
             json_t root = {
                 { "token", _token },

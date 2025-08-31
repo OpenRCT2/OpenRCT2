@@ -136,7 +136,7 @@ namespace OpenRCT2::Ui::Windows
 
     static bool IsServerPlayerInvisible()
     {
-        return NetworkIsServerPlayerInvisible() && !Config::Get().general.DebuggingTools;
+        return Network::IsServerPlayerInvisible() && !Config::Get().general.DebuggingTools;
     }
 
     class MultiplayerWindow final : public Window
@@ -263,8 +263,8 @@ namespace OpenRCT2::Ui::Windows
                     }
                     case WIDX_RENAME_GROUP:
                     {
-                        int32_t groupIndex = NetworkGetGroupIndex(_selectedGroup);
-                        const utf8* groupName = NetworkGetGroupName(groupIndex);
+                        int32_t groupIndex = Network::GetGroupIndex(_selectedGroup);
+                        const utf8* groupName = Network::GetGroupName(groupIndex);
                         WindowTextInputRawOpen(
                             this, widgetIndex, STR_GROUP_NAME, STR_ENTER_NEW_NAME_FOR_THIS_GROUP, {}, groupName, 32);
                         break;
@@ -307,12 +307,12 @@ namespace OpenRCT2::Ui::Windows
         // Server name is displayed word-wrapped, so figure out how high it will be.
         {
             int32_t numLines;
-            GfxWrapString(NetworkGetServerName(), baseWidth, FontStyle::Medium, nullptr, &numLines);
+            GfxWrapString(Network::GetServerName(), baseWidth, FontStyle::Medium, nullptr, &numLines);
             baseHeight += (numLines + 1) * lineHeight + (kListRowHeight / 2);
         }
 
         // Likewise, for the optional server description -- which can be a little longer.
-        const auto& descString = NetworkGetServerDescription();
+        const auto& descString = Network::GetServerDescription();
         if (!descString.empty())
         {
             int32_t numLines;
@@ -322,15 +322,15 @@ namespace OpenRCT2::Ui::Windows
 
         // Finally, account for provider info, if present.
         {
-            const auto& providerName = NetworkGetServerProviderName();
+            const auto& providerName = Network::GetServerProviderName();
             if (!providerName.empty())
                 baseHeight += kListRowHeight;
 
-            const auto& providerEmail = NetworkGetServerProviderEmail();
+            const auto& providerEmail = Network::GetServerProviderEmail();
             if (!providerEmail.empty())
                 baseHeight += kListRowHeight;
 
-            const auto& providerWebsite = NetworkGetServerProviderWebsite();
+            const auto& providerWebsite = Network::GetServerProviderWebsite();
             if (!providerWebsite.empty())
                 baseHeight += kListRowHeight;
         }
@@ -354,7 +354,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 WindowSetResize(*this, { 420, 124 }, { 500, 450 });
 
-                no_list_items = (IsServerPlayerInvisible() ? NetworkGetNumVisiblePlayers() : NetworkGetNumPlayers());
+                no_list_items = (IsServerPlayerInvisible() ? Network::GetNumVisiblePlayers() : Network::GetNumPlayers());
 
                 widgets[WIDX_HEADER_PING].right = width - 5;
 
@@ -366,7 +366,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 WindowSetResize(*this, { 320, 200 }, { 320, 500 });
 
-                no_list_items = NetworkGetNumActions();
+                no_list_items = Network::GetNumActions();
 
                 selected_list_item = -1;
                 Invalidate();
@@ -419,7 +419,7 @@ namespace OpenRCT2::Ui::Windows
                 WindowAlignTabs(this, WIDX_TAB1, WIDX_TAB4);
 
                 // select other group if one is removed
-                while (NetworkGetGroupIndex(_selectedGroup) == -1 && _selectedGroup > 0)
+                while (Network::GetGroupIndex(_selectedGroup) == -1 && _selectedGroup > 0)
                 {
                     _selectedGroup--;
                 }
@@ -429,7 +429,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 WindowAlignTabs(this, WIDX_TAB1, WIDX_TAB4);
 
-                if (NetworkGetMode() == NETWORK_MODE_CLIENT)
+                if (Network::GetMode() == Network::Mode::client)
                 {
                     widgets[WIDX_KNOWN_KEYS_ONLY_CHECKBOX].type = WidgetType::empty;
                 }
@@ -482,13 +482,13 @@ namespace OpenRCT2::Ui::Windows
                     case WIDX_DEFAULT_GROUP_DROPDOWN:
                     {
                         auto networkModifyGroup = GameActions::NetworkModifyGroupAction(
-                            GameActions::ModifyGroupType::SetDefault, NetworkGetGroupID(selectedIndex));
+                            GameActions::ModifyGroupType::SetDefault, Network::GetGroupID(selectedIndex));
                         GameActions::Execute(&networkModifyGroup);
                         break;
                     }
                     case WIDX_SELECTED_GROUP_DROPDOWN:
                     {
-                        _selectedGroup = NetworkGetGroupID(selectedIndex);
+                        _selectedGroup = Network::GetGroupID(selectedIndex);
                         break;
                     }
                 }
@@ -522,23 +522,23 @@ namespace OpenRCT2::Ui::Windows
     {
         auto widget = &widgets[widgetIndex];
         Widget* dropdownWidget = widget - 1;
-        auto numItems = NetworkGetNumGroups();
+        auto numItems = Network::GetNumGroups();
 
         WindowDropdownShowTextCustomWidth(
             windowPos + ScreenCoordsXY{ dropdownWidget->left, dropdownWidget->top }, dropdownWidget->height() + 1, colours[1],
             0, 0, numItems, widget->right - dropdownWidget->left);
 
-        for (auto i = 0; i < NetworkGetNumGroups(); i++)
+        for (auto i = 0; i < Network::GetNumGroups(); i++)
         {
-            gDropdown.items[i] = Dropdown::MenuLabel(NetworkGetGroupName(i));
+            gDropdown.items[i] = Dropdown::MenuLabel(Network::GetGroupName(i));
         }
         if (widget == &widgets[WIDX_DEFAULT_GROUP_DROPDOWN])
         {
-            gDropdown.items[NetworkGetGroupIndex(NetworkGetDefaultGroup())].setChecked(true);
+            gDropdown.items[Network::GetGroupIndex(Network::GetDefaultGroup())].setChecked(true);
         }
         else if (widget == &widgets[WIDX_SELECTED_GROUP_DROPDOWN])
         {
-            gDropdown.items[NetworkGetGroupIndex(_selectedGroup)].setChecked(true);
+            gDropdown.items[Network::GetGroupIndex(_selectedGroup)].setChecked(true);
         }
     }
 
@@ -573,7 +573,7 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                 }
 
-                screenSize = { 0, NetworkGetNumPlayers() * kScrollableRowHeight };
+                screenSize = { 0, Network::GetNumPlayers() * kScrollableRowHeight };
                 int32_t i = screenSize.height - widgets[WIDX_LIST].bottom + widgets[WIDX_LIST].top + 21;
                 if (i < 0)
                     i = 0;
@@ -593,7 +593,7 @@ namespace OpenRCT2::Ui::Windows
                     Invalidate();
                 }
 
-                screenSize = { 0, NetworkGetNumActions() * kScrollableRowHeight };
+                screenSize = { 0, Network::GetNumActions() * kScrollableRowHeight };
                 int32_t i = screenSize.height - widgets[WIDX_LIST].bottom + widgets[WIDX_LIST].top + 21;
                 if (i < 0)
                     i = 0;
@@ -622,7 +622,7 @@ namespace OpenRCT2::Ui::Windows
                 Invalidate();
 
                 int32_t player = (IsServerPlayerInvisible() ? index + 1 : index);
-                PlayerOpen(NetworkGetPlayerID(player));
+                PlayerOpen(Network::GetPlayerID(player));
                 break;
             }
 
@@ -684,7 +684,7 @@ namespace OpenRCT2::Ui::Windows
             auto screenCoords = ScreenCoordsXY{ 3, widgets[WIDX_CONTENT_PANEL].top + 7 };
             int32_t newWidth = width - 6;
 
-            const auto& name = NetworkGetServerName();
+            const auto& name = Network::GetServerName();
             {
                 auto ft = Formatter();
                 ft.Add<const char*>(name.c_str());
@@ -692,7 +692,7 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords.y += kListRowHeight / 2;
             }
 
-            const auto& description = NetworkGetServerDescription();
+            const auto& description = Network::GetServerDescription();
             if (!description.empty())
             {
                 auto ft = Formatter();
@@ -701,7 +701,7 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords.y += kListRowHeight / 2;
             }
 
-            const auto& providerName = NetworkGetServerProviderName();
+            const auto& providerName = Network::GetServerProviderName();
             if (!providerName.empty())
             {
                 auto ft = Formatter();
@@ -710,7 +710,7 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords.y += kListRowHeight;
             }
 
-            const auto& providerEmail = NetworkGetServerProviderEmail();
+            const auto& providerEmail = Network::GetServerProviderEmail();
             if (!providerEmail.empty())
             {
                 auto ft = Formatter();
@@ -719,7 +719,7 @@ namespace OpenRCT2::Ui::Windows
                 screenCoords.y += kListRowHeight;
             }
 
-            const auto& providerWebsite = NetworkGetServerProviderWebsite();
+            const auto& providerWebsite = Network::GetServerProviderWebsite();
             if (!providerWebsite.empty())
             {
                 auto ft = Formatter();
@@ -747,7 +747,7 @@ namespace OpenRCT2::Ui::Windows
         const int32_t firstPlayerInList = (IsServerPlayerInvisible() ? 1 : 0);
         int32_t listPosition = 0;
 
-        for (int32_t player = firstPlayerInList; player < NetworkGetNumPlayers(); player++)
+        for (int32_t player = firstPlayerInList; player < Network::GetNumPlayers(); player++)
         {
             if (screenCoords.y > rt.y + rt.height)
             {
@@ -767,12 +767,12 @@ namespace OpenRCT2::Ui::Windows
                     GfxFilterRect(
                         rt, { 0, screenCoords.y, 800, screenCoords.y + kScrollableRowHeight - 1 },
                         FilterPaletteID::PaletteDarken1);
-                    _buffer += NetworkGetPlayerName(player);
+                    _buffer += Network::GetPlayerName(player);
                     colour = colours[2];
                 }
                 else
                 {
-                    if (NetworkGetPlayerFlags(player) & NETWORK_PLAYER_FLAG_ISSERVER)
+                    if (Network::GetPlayerFlags(player) & Network::NETWORK_PLAYER_FLAG_ISSERVER)
                     {
                         _buffer += "{BABYBLUE}";
                     }
@@ -780,7 +780,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         _buffer += "{BLACK}";
                     }
-                    _buffer += NetworkGetPlayerName(player);
+                    _buffer += Network::GetPlayerName(player);
                 }
                 screenCoords.x = 0;
                 GfxClipString(_buffer.data(), 230, FontStyle::Medium);
@@ -788,22 +788,22 @@ namespace OpenRCT2::Ui::Windows
 
                 // Draw group name
                 _buffer.resize(0);
-                int32_t group = NetworkGetGroupIndex(NetworkGetPlayerGroup(player));
+                int32_t group = Network::GetGroupIndex(Network::GetPlayerGroup(player));
                 if (group != -1)
                 {
                     _buffer += "{BLACK}";
                     screenCoords.x = 173;
-                    _buffer += NetworkGetGroupName(group);
+                    _buffer += Network::GetGroupName(group);
                     GfxClipString(_buffer.data(), 80, FontStyle::Medium);
                     DrawText(rt, screenCoords, { colour }, _buffer.c_str());
                 }
 
                 // Draw last action
-                int32_t action = NetworkGetPlayerLastAction(player, 2000);
+                int32_t action = Network::GetPlayerLastAction(player, 2000);
                 auto ft = Formatter();
                 if (action != -999)
                 {
-                    ft.Add<StringId>(NetworkGetActionNameStringID(action));
+                    ft.Add<StringId>(Network::GetActionNameStringID(action));
                 }
                 else
                 {
@@ -813,7 +813,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Draw ping
                 _buffer.resize(0);
-                int32_t ping = NetworkGetPlayerPing(player);
+                int32_t ping = Network::GetPlayerPing(player);
                 if (ping <= 100)
                 {
                     _buffer += "{GREEN}";
@@ -844,11 +844,11 @@ namespace OpenRCT2::Ui::Windows
         thread_local std::string _buffer;
 
         Widget* widget = &widgets[WIDX_DEFAULT_GROUP];
-        int32_t group = NetworkGetGroupIndex(NetworkGetDefaultGroup());
+        int32_t group = Network::GetGroupIndex(Network::GetDefaultGroup());
         if (group != -1)
         {
             _buffer.assign("{WINDOW_COLOUR_2}");
-            _buffer += NetworkGetGroupName(group);
+            _buffer += Network::GetGroupName(group);
 
             auto ft = Formatter();
             ft.Add<const char*>(_buffer.c_str());
@@ -869,11 +869,11 @@ namespace OpenRCT2::Ui::Windows
             INSET_RECT_FLAG_BORDER_INSET);
 
         widget = &widgets[WIDX_SELECTED_GROUP];
-        group = NetworkGetGroupIndex(_selectedGroup);
+        group = Network::GetGroupIndex(_selectedGroup);
         if (group != -1)
         {
             _buffer.assign("{WINDOW_COLOUR_2}");
-            _buffer += NetworkGetGroupName(group);
+            _buffer += Network::GetGroupName(group);
             auto ft = Formatter();
             ft.Add<const char*>(_buffer.c_str());
             DrawTextEllipsised(
@@ -891,7 +891,7 @@ namespace OpenRCT2::Ui::Windows
             rt, { rtCoords, rtCoords + ScreenCoordsXY{ rt.width - 1, rt.height - 1 } },
             ColourMapA[colours[1].colour].mid_light);
 
-        for (int32_t i = 0; i < NetworkGetNumActions(); i++)
+        for (int32_t i = 0; i < Network::GetNumActions(); i++)
         {
             if (i == selected_list_item)
             {
@@ -905,10 +905,10 @@ namespace OpenRCT2::Ui::Windows
 
             if (screenCoords.y + kScrollableRowHeight + 1 >= rt.y)
             {
-                int32_t groupindex = NetworkGetGroupIndex(_selectedGroup);
+                int32_t groupindex = Network::GetGroupIndex(_selectedGroup);
                 if (groupindex != -1)
                 {
-                    if (NetworkCanPerformAction(groupindex, static_cast<NetworkPermission>(i)))
+                    if (Network::CanPerformAction(groupindex, static_cast<Network::Permission>(i)))
                     {
                         screenCoords.x = 0;
                         DrawText(rt, screenCoords, {}, u8"{WINDOW_COLOUR_2}✓");
@@ -917,7 +917,7 @@ namespace OpenRCT2::Ui::Windows
 
                 // Draw action name
                 auto ft = Formatter();
-                ft.Add<uint16_t>(NetworkGetActionNameStringID(i));
+                ft.Add<uint16_t>(Network::GetActionNameStringID(i));
                 DrawTextBasic(rt, { 10, screenCoords.y }, STR_WINDOW_COLOUR_2_STRINGID, ft);
             }
             screenCoords.y += kScrollableRowHeight;

@@ -23,7 +23,7 @@ namespace OpenRCT2::Network
 {
     struct NetworkPacket;
 
-    class NetworkPlayer final
+    class Player final
     {
     public:
         uint8_t Id = 0;
@@ -42,7 +42,7 @@ namespace OpenRCT2::Network
         uint32_t LastDemolishRideTime = 0;
         uint32_t LastPlaceSceneryTime = 0;
         std::unordered_map<GameCommand, int32_t> CooldownTime;
-        NetworkPlayer() noexcept = default;
+        Player() noexcept = default;
 
         void SetName(std::string_view name);
 

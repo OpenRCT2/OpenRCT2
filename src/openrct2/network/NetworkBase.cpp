@@ -102,51 +102,51 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
     #include <string>
     #include <vector>
 
-    using namespace OpenRCT2;
-
-    static void NetworkChatShowConnectedMessage();
-    static void NetworkChatShowServerGreeting();
-    static u8string NetworkGetKeysDirectory();
-    static u8string NetworkGetPrivateKeyPath(u8string_view playerName);
-    static u8string NetworkGetPublicKeyPath(u8string_view playerName, u8string_view hash);
+namespace OpenRCT2::Network
+{
+    static void ChatShowConnectedMessage();
+    static void ChatShowServerGreeting();
+    static u8string GetKeysDirectory();
+    static u8string GetPrivateKeyPath(u8string_view playerName);
+    static u8string GetPublicKeyPath(u8string_view playerName, u8string_view hash);
 
     NetworkBase::NetworkBase(IContext& context)
         : System(context)
     {
-        mode = NETWORK_MODE_NONE;
-        status = NETWORK_STATUS_NONE;
+        mode = Mode::none;
+        status = Status::none;
         last_ping_sent_time = 0;
         _actionId = 0;
 
-        client_command_handlers[NetworkCommand::Auth] = &NetworkBase::Client_Handle_AUTH;
-        client_command_handlers[NetworkCommand::Map] = &NetworkBase::Client_Handle_MAP;
-        client_command_handlers[NetworkCommand::Chat] = &NetworkBase::Client_Handle_CHAT;
-        client_command_handlers[NetworkCommand::GameAction] = &NetworkBase::Client_Handle_GAME_ACTION;
-        client_command_handlers[NetworkCommand::Tick] = &NetworkBase::Client_Handle_TICK;
-        client_command_handlers[NetworkCommand::PlayerList] = &NetworkBase::Client_Handle_PLAYERLIST;
-        client_command_handlers[NetworkCommand::PlayerInfo] = &NetworkBase::Client_Handle_PLAYERINFO;
-        client_command_handlers[NetworkCommand::Ping] = &NetworkBase::Client_Handle_PING;
-        client_command_handlers[NetworkCommand::PingList] = &NetworkBase::Client_Handle_PINGLIST;
-        client_command_handlers[NetworkCommand::DisconnectMessage] = &NetworkBase::Client_Handle_SETDISCONNECTMSG;
-        client_command_handlers[NetworkCommand::ShowError] = &NetworkBase::Client_Handle_SHOWERROR;
-        client_command_handlers[NetworkCommand::GroupList] = &NetworkBase::Client_Handle_GROUPLIST;
-        client_command_handlers[NetworkCommand::Event] = &NetworkBase::Client_Handle_EVENT;
-        client_command_handlers[NetworkCommand::GameInfo] = &NetworkBase::Client_Handle_GAMEINFO;
-        client_command_handlers[NetworkCommand::Token] = &NetworkBase::Client_Handle_TOKEN;
-        client_command_handlers[NetworkCommand::ObjectsList] = &NetworkBase::Client_Handle_OBJECTS_LIST;
-        client_command_handlers[NetworkCommand::ScriptsHeader] = &NetworkBase::Client_Handle_SCRIPTS_HEADER;
-        client_command_handlers[NetworkCommand::ScriptsData] = &NetworkBase::Client_Handle_SCRIPTS_DATA;
-        client_command_handlers[NetworkCommand::GameState] = &NetworkBase::Client_Handle_GAMESTATE;
+        client_command_handlers[Command::auth] = &NetworkBase::Client_Handle_AUTH;
+        client_command_handlers[Command::map] = &NetworkBase::Client_Handle_MAP;
+        client_command_handlers[Command::chat] = &NetworkBase::Client_Handle_CHAT;
+        client_command_handlers[Command::gameAction] = &NetworkBase::Client_Handle_GAME_ACTION;
+        client_command_handlers[Command::tick] = &NetworkBase::Client_Handle_TICK;
+        client_command_handlers[Command::playerList] = &NetworkBase::Client_Handle_PLAYERLIST;
+        client_command_handlers[Command::playerInfo] = &NetworkBase::Client_Handle_PLAYERINFO;
+        client_command_handlers[Command::ping] = &NetworkBase::Client_Handle_PING;
+        client_command_handlers[Command::pingList] = &NetworkBase::Client_Handle_PINGLIST;
+        client_command_handlers[Command::disconnectMessage] = &NetworkBase::Client_Handle_SETDISCONNECTMSG;
+        client_command_handlers[Command::showError] = &NetworkBase::Client_Handle_SHOWERROR;
+        client_command_handlers[Command::groupList] = &NetworkBase::Client_Handle_GROUPLIST;
+        client_command_handlers[Command::event] = &NetworkBase::Client_Handle_EVENT;
+        client_command_handlers[Command::gameInfo] = &NetworkBase::Client_Handle_GAMEINFO;
+        client_command_handlers[Command::token] = &NetworkBase::Client_Handle_TOKEN;
+        client_command_handlers[Command::objectsList] = &NetworkBase::Client_Handle_OBJECTS_LIST;
+        client_command_handlers[Command::scriptsHeader] = &NetworkBase::Client_Handle_SCRIPTS_HEADER;
+        client_command_handlers[Command::scriptsData] = &NetworkBase::Client_Handle_SCRIPTS_DATA;
+        client_command_handlers[Command::gameState] = &NetworkBase::Client_Handle_GAMESTATE;
 
-        server_command_handlers[NetworkCommand::Auth] = &NetworkBase::ServerHandleAuth;
-        server_command_handlers[NetworkCommand::Chat] = &NetworkBase::ServerHandleChat;
-        server_command_handlers[NetworkCommand::GameAction] = &NetworkBase::ServerHandleGameAction;
-        server_command_handlers[NetworkCommand::Ping] = &NetworkBase::ServerHandlePing;
-        server_command_handlers[NetworkCommand::GameInfo] = &NetworkBase::ServerHandleGameInfo;
-        server_command_handlers[NetworkCommand::Token] = &NetworkBase::ServerHandleToken;
-        server_command_handlers[NetworkCommand::MapRequest] = &NetworkBase::ServerHandleMapRequest;
-        server_command_handlers[NetworkCommand::RequestGameState] = &NetworkBase::ServerHandleRequestGamestate;
-        server_command_handlers[NetworkCommand::Heartbeat] = &NetworkBase::ServerHandleHeartbeat;
+        server_command_handlers[Command::auth] = &NetworkBase::ServerHandleAuth;
+        server_command_handlers[Command::chat] = &NetworkBase::ServerHandleChat;
+        server_command_handlers[Command::gameAction] = &NetworkBase::ServerHandleGameAction;
+        server_command_handlers[Command::ping] = &NetworkBase::ServerHandlePing;
+        server_command_handlers[Command::gameInfo] = &NetworkBase::ServerHandleGameInfo;
+        server_command_handlers[Command::token] = &NetworkBase::ServerHandleToken;
+        server_command_handlers[Command::mapRequest] = &NetworkBase::ServerHandleMapRequest;
+        server_command_handlers[Command::requestGameState] = &NetworkBase::ServerHandleRequestGamestate;
+        server_command_handlers[Command::heartbeat] = &NetworkBase::ServerHandleHeartbeat;
 
         _chat_log_fs << std::unitbuf;
         _server_log_fs << std::unitbuf;
@@ -154,7 +154,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     bool NetworkBase::Init()
     {
-        status = NETWORK_STATUS_READY;
+        status = Status::ready;
 
         ServerName.clear();
         ServerDescription.clear();
@@ -167,7 +167,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::Reconnect()
     {
-        if (status != NETWORK_STATUS_NONE)
+        if (status != Status::none)
         {
             Close();
         }
@@ -181,7 +181,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::Close()
     {
-        if (status != NETWORK_STATUS_NONE)
+        if (status != Status::none)
         {
             // HACK Because Close() is closed all over the place, it sometimes gets called inside an Update
             //      call. This then causes disposed data to be accessed. Therefore, save closing until the
@@ -216,7 +216,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         }
     }
 
-    void NetworkBase::DecayCooldown(NetworkPlayer* player)
+    void NetworkBase::DecayCooldown(Player* player)
     {
         if (player == nullptr)
             return; // No valid connection yet.
@@ -233,24 +233,24 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::CloseConnection()
     {
-        if (mode == NETWORK_MODE_CLIENT)
+        if (mode == Mode::client)
         {
             _serverConnection.reset();
         }
-        else if (mode == NETWORK_MODE_SERVER)
+        else if (mode == Mode::server)
         {
             _listenSocket.reset();
             _advertiser.reset();
         }
 
-        mode = NETWORK_MODE_NONE;
-        status = NETWORK_STATUS_NONE;
-        _lastConnectStatus = SocketStatus::Closed;
+        mode = Mode::none;
+        status = Status::none;
+        _lastConnectStatus = SocketStatus::closed;
     }
 
     bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
     {
-        if (GetMode() != NETWORK_MODE_NONE)
+        if (GetMode() != Mode::none)
         {
             return false;
         }
@@ -259,7 +259,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         if (!Init())
             return false;
 
-        mode = NETWORK_MODE_CLIENT;
+        mode = Mode::client;
 
         LOG_INFO("Connecting to %s:%u", host.c_str(), port);
         _host = host;
@@ -270,8 +270,8 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         _serverConnection->Socket->ConnectAsync(host, port);
         _serverState.gamestateSnapshotsEnabled = false;
 
-        status = NETWORK_STATUS_CONNECTING;
-        _lastConnectStatus = SocketStatus::Closed;
+        status = Status::connecting;
+        _lastConnectStatus = SocketStatus::closed;
         _clientMapLoaded = false;
         _serverTickData.clear();
 
@@ -283,7 +283,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         // risk of tick collision with the server map and title screen map.
         GameActions::SuspendQueue();
 
-        auto keyPath = NetworkGetPrivateKeyPath(Config::Get().network.PlayerName);
+        auto keyPath = GetPrivateKeyPath(Config::Get().network.PlayerName);
         if (!File::Exists(keyPath))
         {
             Console::WriteLine("Generating key... This may take a while");
@@ -291,7 +291,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
             _key.Generate();
             Console::WriteLine("Key generated, saving private bits as %s", keyPath.c_str());
 
-            const auto keysDirectory = NetworkGetKeysDirectory();
+            const auto keysDirectory = GetKeysDirectory();
             if (!Path::CreateDirectory(keysDirectory))
             {
                 LOG_ERROR("Unable to create directory %s.", keysDirectory.c_str());
@@ -311,7 +311,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
             const std::string hash = _key.PublicKeyHash();
             const utf8* publicKeyHash = hash.c_str();
-            keyPath = NetworkGetPublicKeyPath(Config::Get().network.PlayerName, publicKeyHash);
+            keyPath = GetPublicKeyPath(Config::Get().network.PlayerName, publicKeyHash);
             Console::WriteLine("Key generated, saving public bits as %s", keyPath.c_str());
 
             try
@@ -355,7 +355,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         if (!Init())
             return false;
 
-        mode = NETWORK_MODE_SERVER;
+        mode = Mode::server;
 
         _userManager.Load();
 
@@ -386,12 +386,12 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         BeginChatLog();
         BeginServerLog();
 
-        NetworkPlayer* player = AddPlayer(Config::Get().network.PlayerName, "");
+        Player* player = AddPlayer(Config::Get().network.PlayerName, "");
         player->Flags |= NETWORK_PLAYER_FLAG_ISSERVER;
         player->Group = 0;
         player_id = player->Id;
 
-        if (NetworkGetMode() == NETWORK_MODE_SERVER)
+        if (GetMode() == Mode::server)
         {
             // Add SERVER to users.json and save.
             NetworkUser* networkUser = _userManager.GetOrAddUser(player->KeyHash);
@@ -402,10 +402,10 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
         auto* szAddress = address.empty() ? "*" : address.c_str();
         Console::WriteLine("Listening for clients on %s:%hu", szAddress, port);
-        NetworkChatShowConnectedMessage();
-        NetworkChatShowServerGreeting();
+        ChatShowConnectedMessage();
+        ChatShowServerGreeting();
 
-        status = NETWORK_STATUS_CONNECTED;
+        status = Status::connected;
         listening_port = port;
         _serverState.gamestateSnapshotsEnabled = Config::Get().network.DesyncDebugging;
         _advertiser = CreateServerAdvertiser(listening_port);
@@ -416,27 +416,27 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return true;
     }
 
-    int32_t NetworkBase::GetMode() const noexcept
+    Mode NetworkBase::GetMode() const noexcept
     {
         return mode;
     }
 
-    int32_t NetworkBase::GetStatus() const noexcept
+    Status NetworkBase::GetStatus() const noexcept
     {
         return status;
     }
 
-    NetworkAuth NetworkBase::GetAuthStatus()
+    Auth NetworkBase::GetAuthStatus()
     {
-        if (GetMode() == NETWORK_MODE_CLIENT)
+        if (GetMode() == Mode::client)
         {
             return _serverConnection->AuthStatus;
         }
-        if (GetMode() == NETWORK_MODE_SERVER)
+        if (GetMode() == Mode::server)
         {
-            return NetworkAuth::Ok;
+            return Auth::ok;
         }
-        return NetworkAuth::None;
+        return Auth::none;
     }
 
     uint32_t NetworkBase::GetServerTick() const noexcept
@@ -444,7 +444,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return _serverState.tick;
     }
 
-    uint8_t NetworkBase::GetPlayerID() const noexcept
+    PlayerId_t NetworkBase::GetPlayerID() const noexcept
     {
         return player_id;
     }
@@ -456,7 +456,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         {
             auto clientIt = std::find_if(
                 client_connection_list.begin(), client_connection_list.end(),
-                [player](const auto& conn) -> bool { return conn->Player == player; });
+                [player](const auto& conn) -> bool { return conn->player == player; });
             return clientIt != client_connection_list.end() ? clientIt->get() : nullptr;
         }
         return nullptr;
@@ -473,11 +473,13 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
         switch (GetMode())
         {
-            case NETWORK_MODE_SERVER:
+            case Mode::server:
                 UpdateServer();
                 break;
-            case NETWORK_MODE_CLIENT:
+            case Mode::client:
                 UpdateClient();
+                break;
+            default:
                 break;
         }
 
@@ -495,7 +497,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::Flush()
     {
-        if (GetMode() == NETWORK_MODE_CLIENT)
+        if (GetMode() == Mode::client)
         {
             _serverConnection->SendQueuedData();
         }
@@ -522,7 +524,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
             }
             else
             {
-                DecayCooldown(connection->Player);
+                DecayCooldown(connection->player);
             }
         }
 
@@ -551,15 +553,15 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
         switch (status)
         {
-            case NETWORK_STATUS_CONNECTING:
+            case Status::connecting:
             {
                 switch (_serverConnection->Socket->GetStatus())
                 {
-                    case SocketStatus::Resolving:
+                    case SocketStatus::resolving:
                     {
-                        if (_lastConnectStatus != SocketStatus::Resolving)
+                        if (_lastConnectStatus != SocketStatus::resolving)
                         {
-                            _lastConnectStatus = SocketStatus::Resolving;
+                            _lastConnectStatus = SocketStatus::resolving;
                             char str_resolving[256];
                             FormatStringLegacy(str_resolving, 256, STR_MULTIPLAYER_RESOLVING, nullptr);
 
@@ -571,11 +573,11 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
                         }
                         break;
                     }
-                    case SocketStatus::Connecting:
+                    case SocketStatus::connecting:
                     {
-                        if (_lastConnectStatus != SocketStatus::Connecting)
+                        if (_lastConnectStatus != SocketStatus::connecting)
                         {
-                            _lastConnectStatus = SocketStatus::Connecting;
+                            _lastConnectStatus = SocketStatus::connecting;
                             char str_connecting[256];
                             FormatStringLegacy(str_connecting, 256, STR_MULTIPLAYER_CONNECTING, nullptr);
 
@@ -589,9 +591,9 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
                         }
                         break;
                     }
-                    case SocketStatus::Connected:
+                    case SocketStatus::connected:
                     {
-                        status = NETWORK_STATUS_CONNECTED;
+                        status = Status::connected;
                         _serverConnection->ResetLastPacketTime();
                         Client_Send_TOKEN();
                         char str_authenticating[256];
@@ -599,7 +601,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
                         auto intent = Intent(WindowClass::NetworkStatus);
                         intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string{ str_authenticating });
-                        intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
+                        intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { OpenRCT2::GetContext()->GetNetwork().Close(); });
                         ContextOpenIntent(&intent);
                         break;
                     }
@@ -619,12 +621,12 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
                 }
                 break;
             }
-            case NETWORK_STATUS_CONNECTED:
+            case Status::connected:
             {
                 if (!ProcessConnection(*_serverConnection))
                 {
                     // Do not show disconnect message window when password window closed/canceled
-                    if (_serverConnection->AuthStatus == NetworkAuth::RequirePassword)
+                    if (_serverConnection->AuthStatus == Auth::requirePassword)
                     {
                         ContextForceCloseWindowByClass(WindowClass::NetworkStatus);
                     }
@@ -664,17 +666,19 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
                 break;
             }
+
+            default:
+                break;
         }
     }
 
     auto NetworkBase::GetPlayerIteratorByID(uint8_t id) const
     {
-        return std::find_if(player_list.begin(), player_list.end(), [id](std::unique_ptr<NetworkPlayer> const& player) {
-            return player->Id == id;
-        });
+        return std::find_if(
+            player_list.begin(), player_list.end(), [id](std::unique_ptr<Player> const& player) { return player->Id == id; });
     }
 
-    NetworkPlayer* NetworkBase::GetPlayerByID(uint8_t id) const
+    Player* NetworkBase::GetPlayerByID(uint8_t id) const
     {
         auto it = GetPlayerIteratorByID(id);
         if (it != player_list.end())
@@ -712,14 +716,14 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return static_cast<int32_t>(player_list.size());
     }
 
-    const char* NetworkBase::FormatChat(NetworkPlayer* fromPlayer, const char* text)
+    const char* NetworkBase::FormatChat(Player* fromPlayer, const char* text)
     {
         static std::string formatted;
         formatted.clear();
 
         if (fromPlayer != nullptr)
         {
-            auto& network = GetContext()->GetNetwork();
+            auto& network = OpenRCT2::GetContext()->GetNetwork();
             auto it = network.GetGroupByID(fromPlayer->Id);
             std::string groupName = "";
             std::vector<std::string> colours;
@@ -793,7 +797,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
                 // Sending the packet would cause the client to store a command that is behind the tick where he starts,
                 // which would be essentially never executed. The clients do not require commands before the server has not sent
                 // the map data.
-                if (client_connection->Player == nullptr)
+                if (client_connection->player == nullptr)
                 {
                     continue;
                 }
@@ -838,7 +842,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     bool NetworkBase::IsDesynchronised() const noexcept
     {
-        return _serverState.state == NetworkServerStatus::Desynced;
+        return _serverState.state == ServerStatus::desynced;
     }
 
     bool NetworkBase::CheckDesynchronizaton()
@@ -846,10 +850,10 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         const auto currentTicks = getGameState().currentTicks;
 
         // Check synchronisation
-        if (GetMode() == NETWORK_MODE_CLIENT && _serverState.state != NetworkServerStatus::Desynced
+        if (GetMode() == Mode::client && _serverState.state != ServerStatus::desynced
             && !CheckSRAND(currentTicks, ScenarioRandState().s0))
         {
-            _serverState.state = NetworkServerStatus::Desynced;
+            _serverState.state = ServerStatus::desynced;
             _serverState.desyncTick = currentTicks;
 
             char str_desync[256];
@@ -877,7 +881,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         Client_Send_RequestGameState(_serverState.desyncTick);
     }
 
-    NetworkServerState NetworkBase::GetServerState() const noexcept
+    ServerState NetworkBase::GetServerState() const noexcept
     {
         return _serverState;
     }
@@ -886,7 +890,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
     {
         for (auto& client_connection : client_connection_list)
         {
-            if (client_connection->Player->Id == playerId)
+            if (client_connection->player->Id == playerId)
             {
                 // Disconnect the client gracefully
                 client_connection->SetLastDisconnectReason(STR_MULTIPLAYER_KICKED);
@@ -906,7 +910,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::ServerClientDisconnected()
     {
-        if (GetMode() == NETWORK_MODE_CLIENT)
+        if (GetMode() == Mode::client)
         {
             _serverConnection->Disconnect();
         }
@@ -974,7 +978,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
             group_list.erase(group);
         }
 
-        if (GetMode() == NETWORK_MODE_SERVER)
+        if (GetMode() == Mode::server)
         {
             _userManager.UnsetUsersOfGroup(id);
             _userManager.Save();
@@ -1018,7 +1022,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::SaveGroups()
     {
-        if (GetMode() == NETWORK_MODE_SERVER)
+        if (GetMode() == Mode::server)
         {
             auto& env = GetContext().GetPlatformEnvironment();
             auto path = Path::Combine(env.GetDirectoryPath(DirBase::user), u8"groups.json");
@@ -1055,7 +1059,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         // Spectator group
         auto spectator = std::make_unique<NetworkGroup>();
         spectator->SetName("Spectator");
-        spectator->ToggleActionPermission(NetworkPermission::Chat);
+        spectator->ToggleActionPermission(Permission::Chat);
         spectator->Id = 1;
         group_list.push_back(std::move(spectator));
 
@@ -1063,13 +1067,13 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         auto user = std::make_unique<NetworkGroup>();
         user->SetName("User");
         user->ActionsAllowed.fill(0xFF);
-        user->ToggleActionPermission(NetworkPermission::KickPlayer);
-        user->ToggleActionPermission(NetworkPermission::ModifyGroups);
-        user->ToggleActionPermission(NetworkPermission::SetPlayerGroup);
-        user->ToggleActionPermission(NetworkPermission::Cheat);
-        user->ToggleActionPermission(NetworkPermission::PasswordlessLogin);
-        user->ToggleActionPermission(NetworkPermission::ModifyTile);
-        user->ToggleActionPermission(NetworkPermission::EditScenarioOptions);
+        user->ToggleActionPermission(Permission::KickPlayer);
+        user->ToggleActionPermission(Permission::ModifyGroups);
+        user->ToggleActionPermission(Permission::SetPlayerGroup);
+        user->ToggleActionPermission(Permission::Cheat);
+        user->ToggleActionPermission(Permission::PasswordlessLogin);
+        user->ToggleActionPermission(Permission::ModifyTile);
+        user->ToggleActionPermission(Permission::EditScenarioOptions);
         user->Id = 2;
         group_list.push_back(std::move(user));
 
@@ -1196,11 +1200,11 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
         // Log server start event
         utf8 logMessage[256];
-        if (GetMode() == NETWORK_MODE_CLIENT)
+        if (GetMode() == Mode::client)
         {
             FormatStringLegacy(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STARTED, nullptr);
         }
-        else if (GetMode() == NETWORK_MODE_SERVER)
+        else if (GetMode() == Mode::server)
         {
             FormatStringLegacy(logMessage, sizeof(logMessage), STR_LOG_SERVER_STARTED, nullptr);
         }
@@ -1224,11 +1228,11 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
     {
         // Log server stopped event
         char logMessage[256];
-        if (GetMode() == NETWORK_MODE_CLIENT)
+        if (GetMode() == Mode::client)
         {
             FormatStringLegacy(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STOPPED, nullptr);
         }
-        else if (GetMode() == NETWORK_MODE_SERVER)
+        else if (GetMode() == Mode::server)
         {
             FormatStringLegacy(logMessage, sizeof(logMessage), STR_LOG_SERVER_STOPPED, nullptr);
         }
@@ -1251,7 +1255,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
         LOG_VERBOSE("Requesting gamestate from server for tick %u", tick);
 
-        NetworkPacket packet(NetworkCommand::RequestGameState);
+        NetworkPacket packet(Command::requestGameState);
         packet << tick;
         _serverConnection->QueuePacket(std::move(packet));
     }
@@ -1259,30 +1263,30 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
     void NetworkBase::Client_Send_TOKEN()
     {
         LOG_VERBOSE("requesting token");
-        NetworkPacket packet(NetworkCommand::Token);
-        _serverConnection->AuthStatus = NetworkAuth::Requested;
+        NetworkPacket packet(Command::token);
+        _serverConnection->AuthStatus = Auth::requested;
         _serverConnection->QueuePacket(std::move(packet));
     }
 
     void NetworkBase::Client_Send_AUTH(
         const std::string& name, const std::string& password, const std::string& pubkey, const std::vector<uint8_t>& signature)
     {
-        NetworkPacket packet(NetworkCommand::Auth);
-        packet.WriteString(NetworkGetVersion());
+        NetworkPacket packet(Command::auth);
+        packet.WriteString(GetVersion());
         packet.WriteString(name);
         packet.WriteString(password);
         packet.WriteString(pubkey);
         assert(signature.size() <= static_cast<size_t>(UINT32_MAX));
         packet << static_cast<uint32_t>(signature.size());
         packet.Write(signature.data(), signature.size());
-        _serverConnection->AuthStatus = NetworkAuth::Requested;
+        _serverConnection->AuthStatus = Auth::requested;
         _serverConnection->QueuePacket(std::move(packet));
     }
 
     void NetworkBase::Client_Send_MAPREQUEST(const std::vector<ObjectEntryDescriptor>& objects)
     {
         LOG_VERBOSE("client requests %u objects", uint32_t(objects.size()));
-        NetworkPacket packet(NetworkCommand::MapRequest);
+        NetworkPacket packet(Command::mapRequest);
         packet << static_cast<uint32_t>(objects.size());
         for (const auto& object : objects)
         {
@@ -1304,7 +1308,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::ServerSendToken(NetworkConnection& connection)
     {
-        NetworkPacket packet(NetworkCommand::Token);
+        NetworkPacket packet(Command::token);
         packet << static_cast<uint32_t>(connection.Challenge.size());
         packet.Write(connection.Challenge.data(), connection.Challenge.size());
         connection.QueuePacket(std::move(packet));
@@ -1317,7 +1321,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
         if (objects.empty())
         {
-            NetworkPacket packet(NetworkCommand::ObjectsList);
+            NetworkPacket packet(Command::objectsList);
             packet << static_cast<uint32_t>(0) << static_cast<uint32_t>(objects.size());
 
             connection.QueuePacket(std::move(packet));
@@ -1328,7 +1332,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
             {
                 const auto* object = objects[i];
 
-                NetworkPacket packet(NetworkCommand::ObjectsList);
+                NetworkPacket packet(Command::objectsList);
                 packet << static_cast<uint32_t>(i) << static_cast<uint32_t>(objects.size());
 
                 if (object->Identifier.empty())
@@ -1374,7 +1378,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         }
 
         // Send the header packet.
-        NetworkPacket packetScriptHeader(NetworkCommand::ScriptsHeader);
+        NetworkPacket packetScriptHeader(Command::scriptsHeader);
         packetScriptHeader << static_cast<uint32_t>(remotePlugins.size());
         packetScriptHeader << static_cast<uint32_t>(pluginData.GetLength());
         connection.QueuePacket(std::move(packetScriptHeader));
@@ -1386,7 +1390,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         {
             const uint32_t chunkSize = std::min<uint32_t>(pluginData.GetLength() - dataOffset, kChunkSize);
 
-            NetworkPacket packet(NetworkCommand::ScriptsData);
+            NetworkPacket packet(Command::scriptsData);
             packet << chunkSize;
             packet.Write(pluginDataBuffer + dataOffset, chunkSize);
 
@@ -1397,7 +1401,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         Guard::Assert(dataOffset == pluginData.GetLength());
 
     #else
-        NetworkPacket packetScriptHeader(NetworkCommand::ScriptsHeader);
+        NetworkPacket packetScriptHeader(Command::scriptsHeader);
         packetScriptHeader << static_cast<uint32_t>(0u);
         packetScriptHeader << static_cast<uint32_t>(0u);
     #endif
@@ -1407,25 +1411,25 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
     {
         LOG_VERBOSE("Sending heartbeat");
 
-        NetworkPacket packet(NetworkCommand::Heartbeat);
+        NetworkPacket packet(Command::heartbeat);
         connection.QueuePacket(std::move(packet));
     }
 
-    NetworkStats NetworkBase::GetStats() const
+    Stats NetworkBase::GetStats() const
     {
-        NetworkStats stats = {};
-        if (mode == NETWORK_MODE_CLIENT)
+        Stats stats = {};
+        if (mode == Mode::client)
         {
-            stats = _serverConnection->Stats;
+            stats = _serverConnection->stats;
         }
         else
         {
             for (auto& connection : client_connection_list)
             {
-                for (size_t n = 0; n < EnumValue(NetworkStatisticsGroup::Max); n++)
+                for (size_t n = 0; n < EnumValue(StatisticsGroup::Max); n++)
                 {
-                    stats.bytesReceived[n] += connection->Stats.bytesReceived[n];
-                    stats.bytesSent[n] += connection->Stats.bytesSent[n];
+                    stats.bytesReceived[n] += connection->stats.bytesReceived[n];
+                    stats.bytesSent[n] += connection->stats.bytesSent[n];
                 }
             }
         }
@@ -1435,18 +1439,18 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
     void NetworkBase::ServerSendAuth(NetworkConnection& connection)
     {
         uint8_t new_playerid = 0;
-        if (connection.Player != nullptr)
+        if (connection.player != nullptr)
         {
-            new_playerid = connection.Player->Id;
+            new_playerid = connection.player->Id;
         }
-        NetworkPacket packet(NetworkCommand::Auth);
+        NetworkPacket packet(Command::auth);
         packet << static_cast<uint32_t>(connection.AuthStatus) << new_playerid;
-        if (connection.AuthStatus == NetworkAuth::BadVersion)
+        if (connection.AuthStatus == Auth::badVersion)
         {
-            packet.WriteString(NetworkGetVersion());
+            packet.WriteString(GetVersion());
         }
         connection.QueuePacket(std::move(packet));
-        if (connection.AuthStatus != NetworkAuth::Ok && connection.AuthStatus != NetworkAuth::RequirePassword)
+        if (connection.AuthStatus != Auth::ok && connection.AuthStatus != Auth::requirePassword)
         {
             connection.Disconnect();
         }
@@ -1482,7 +1486,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         for (size_t i = 0; i < header.size(); i += chunksize)
         {
             size_t datasize = std::min(chunksize, header.size() - i);
-            NetworkPacket packet(NetworkCommand::Map);
+            NetworkPacket packet(Command::map);
             packet << static_cast<uint32_t>(header.size()) << static_cast<uint32_t>(i);
             packet.Write(&header[i], datasize);
             if (connection != nullptr)
@@ -1514,14 +1518,14 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::Client_Send_CHAT(const char* text)
     {
-        NetworkPacket packet(NetworkCommand::Chat);
+        NetworkPacket packet(Command::chat);
         packet.WriteString(text);
         _serverConnection->QueuePacket(std::move(packet));
     }
 
     void NetworkBase::ServerSendChat(const char* text, const std::vector<uint8_t>& playerIds)
     {
-        NetworkPacket packet(NetworkCommand::Chat);
+        NetworkPacket packet(Command::chat);
         packet.WriteString(text);
 
         if (playerIds.empty())
@@ -1544,7 +1548,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::Client_Send_GAME_ACTION(const GameActions::GameAction* action)
     {
-        NetworkPacket packet(NetworkCommand::GameAction);
+        NetworkPacket packet(Command::gameAction);
 
         uint32_t networkId = 0;
         networkId = ++_actionId;
@@ -1565,7 +1569,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::ServerSendGameAction(const GameActions::GameAction* action)
     {
-        NetworkPacket packet(NetworkCommand::GameAction);
+        NetworkPacket packet(Command::gameAction);
 
         DataSerialiser stream(true);
         action->Serialise(stream);
@@ -1577,7 +1581,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::ServerSendTick()
     {
-        NetworkPacket packet(NetworkCommand::Tick);
+        NetworkPacket packet(Command::tick);
         packet << getGameState().currentTicks << ScenarioRandState().s0;
         uint32_t flags = 0;
         // Simple counter which limits how often a sprite checksum gets sent.
@@ -1604,7 +1608,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::ServerSendPlayerInfo(int32_t playerId)
     {
-        NetworkPacket packet(NetworkCommand::PlayerInfo);
+        NetworkPacket packet(Command::playerInfo);
         packet << getGameState().currentTicks;
 
         auto* player = GetPlayerByID(playerId);
@@ -1617,7 +1621,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::ServerSendPlayerList()
     {
-        NetworkPacket packet(NetworkCommand::PlayerList);
+        NetworkPacket packet(Command::playerList);
         packet << getGameState().currentTicks << static_cast<uint8_t>(player_list.size());
         for (auto& player : player_list)
         {
@@ -1628,14 +1632,14 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::Client_Send_PING()
     {
-        NetworkPacket packet(NetworkCommand::Ping);
+        NetworkPacket packet(Command::ping);
         _serverConnection->QueuePacket(std::move(packet));
     }
 
     void NetworkBase::ServerSendPing()
     {
         last_ping_sent_time = Platform::GetTicks();
-        NetworkPacket packet(NetworkCommand::Ping);
+        NetworkPacket packet(Command::ping);
         for (auto& client_connection : client_connection_list)
         {
             client_connection->PingTime = Platform::GetTicks();
@@ -1645,7 +1649,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::ServerSendPingList()
     {
-        NetworkPacket packet(NetworkCommand::PingList);
+        NetworkPacket packet(Command::pingList);
         packet << static_cast<uint8_t>(player_list.size());
         for (auto& player : player_list)
         {
@@ -1656,7 +1660,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::ServerSendSetDisconnectMsg(NetworkConnection& connection, const char* msg)
     {
-        NetworkPacket packet(NetworkCommand::DisconnectMessage);
+        NetworkPacket packet(Command::disconnectMessage);
         packet.WriteString(msg);
         connection.QueuePacket(std::move(packet));
     }
@@ -1666,7 +1670,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         json_t jsonObj = {
             { "name", Config::Get().network.ServerName },
             { "requiresPassword", _password.size() > 0 },
-            { "version", NetworkGetVersion() },
+            { "version", GetVersion() },
             { "players", GetNumVisiblePlayers() },
             { "maxPlayers", Config::Get().network.Maxplayers },
             { "description", Config::Get().network.ServerDescription },
@@ -1678,7 +1682,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::ServerSendGameInfo(NetworkConnection& connection)
     {
-        NetworkPacket packet(NetworkCommand::GameInfo);
+        NetworkPacket packet(Command::gameInfo);
     #ifndef DISABLE_HTTP
         json_t jsonObj = GetServerInfoAsJson();
 
@@ -1701,14 +1705,14 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::ServerSendShowError(NetworkConnection& connection, StringId title, StringId message)
     {
-        NetworkPacket packet(NetworkCommand::ShowError);
+        NetworkPacket packet(Command::showError);
         packet << title << message;
         connection.QueuePacket(std::move(packet));
     }
 
     void NetworkBase::ServerSendGroupList(NetworkConnection& connection)
     {
-        NetworkPacket packet(NetworkCommand::GroupList);
+        NetworkPacket packet(Command::groupList);
         packet << static_cast<uint8_t>(group_list.size()) << default_group;
         for (auto& group : group_list)
         {
@@ -1719,7 +1723,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::ServerSendEventPlayerJoined(const char* playerName)
     {
-        NetworkPacket packet(NetworkCommand::Event);
+        NetworkPacket packet(Command::event);
         packet << static_cast<uint16_t>(SERVER_EVENT_PLAYER_JOINED);
         packet.WriteString(playerName);
         SendPacketToClients(packet);
@@ -1727,7 +1731,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::ServerSendEventPlayerDisconnected(const char* playerName, const char* reason)
     {
-        NetworkPacket packet(NetworkCommand::Event);
+        NetworkPacket packet(Command::event);
         packet << static_cast<uint16_t>(SERVER_EVENT_PLAYER_DISCONNECTED);
         packet.WriteString(playerName);
         packet.WriteString(reason);
@@ -1745,14 +1749,14 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
             packetStatus = connection.ReadPacket();
             switch (packetStatus)
             {
-                case NetworkReadPacket::Disconnected:
+                case NetworkReadPacket::disconnected:
                     // closed connection or network error
                     if (!connection.GetLastDisconnectReason())
                     {
                         connection.SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
                     }
                     return false;
-                case NetworkReadPacket::Success:
+                case NetworkReadPacket::success:
                     // done reading in packet
                     ProcessPacket(connection, connection.InboundPacket);
                     if (!connection.IsValid())
@@ -1760,14 +1764,14 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
                         return false;
                     }
                     break;
-                case NetworkReadPacket::MoreData:
+                case NetworkReadPacket::moreData:
                     // more data required to be read
                     break;
-                case NetworkReadPacket::NoData:
+                case NetworkReadPacket::noData:
                     // could not read anything from socket
                     break;
             }
-        } while (packetStatus == NetworkReadPacket::Success && countProcessed < kMaxPacketsPerUpdate);
+        } while (packetStatus == NetworkReadPacket::success && countProcessed < kMaxPacketsPerUpdate);
 
         if (!connection.ReceivedPacketRecently())
         {
@@ -1783,13 +1787,13 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::ProcessPacket(NetworkConnection& connection, NetworkPacket& packet)
     {
-        const auto& handlerList = GetMode() == NETWORK_MODE_SERVER ? server_command_handlers : client_command_handlers;
+        const auto& handlerList = GetMode() == Mode::server ? server_command_handlers : client_command_handlers;
 
         auto it = handlerList.find(packet.GetCommand());
         if (it != handlerList.end())
         {
             auto commandHandler = it->second;
-            if (connection.AuthStatus == NetworkAuth::Ok || !packet.CommandRequiresAuth())
+            if (connection.AuthStatus == Auth::ok || !packet.CommandRequiresAuth())
             {
                 try
                 {
@@ -1808,11 +1812,11 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
     // This is called at the end of each game tick, this where things should be processed that affects the game state.
     void NetworkBase::ProcessPending()
     {
-        if (GetMode() == NETWORK_MODE_SERVER)
+        if (GetMode() == Mode::server)
         {
             ProcessDisconnectedClients();
         }
-        else if (GetMode() == NETWORK_MODE_CLIENT)
+        else if (GetMode() == Mode::client)
         {
             ProcessPlayerInfo();
         }
@@ -1895,7 +1899,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::ProcessPlayerList()
     {
-        if (GetMode() == NETWORK_MODE_SERVER)
+        if (GetMode() == Mode::server)
         {
             // Avoid sending multiple times the player list, we mark the list invalidated on modifications
             // and then send at the end of the tick the final player list.
@@ -1934,7 +1938,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
                             *player = pendingPlayer;
                             if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
                             {
-                                _serverConnection->Player = player;
+                                _serverConnection->player = player;
                             }
                             newPlayers.push_back(player->Id);
                         }
@@ -1971,7 +1975,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
                 player_list.erase(
                     std::remove_if(
                         player_list.begin(), player_list.end(),
-                        [&removedPlayers](const std::unique_ptr<NetworkPlayer>& player) {
+                        [&removedPlayers](const std::unique_ptr<Player>& player) {
                             return std::find(removedPlayers.begin(), removedPlayers.end(), player->Id) != removedPlayers.end();
                         }),
                     player_list.end());
@@ -1992,7 +1996,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
             auto* player = GetPlayerByID(it->second.Id);
             if (player != nullptr)
             {
-                const NetworkPlayer& networkedInfo = it->second;
+                const Player& networkedInfo = it->second;
                 player->Flags = networkedInfo.Flags;
                 player->Group = networkedInfo.Group;
                 player->LastAction = networkedInfo.LastAction;
@@ -2043,7 +2047,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::ServerClientDisconnected(std::unique_ptr<NetworkConnection>& connection)
     {
-        NetworkPlayer* connection_player = connection->Player;
+        Player* connection_player = connection->player;
         if (connection_player == nullptr)
             return;
 
@@ -2062,13 +2066,13 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         }
 
         ChatAddHistory(text);
-        Peep* pickup_peep = NetworkGetPickupPeep(connection_player->Id);
+        Peep* pickup_peep = GetPickupPeep(connection_player->Id);
         if (pickup_peep != nullptr)
         {
             GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Cancel,
                                                         pickup_peep->Id,
-                                                        { NetworkGetPickupPeepOldX(connection_player->Id), 0, 0 },
-                                                        NetworkGetCurrentPlayerId() };
+                                                        { GetPickupPeepOldX(connection_player->Id), 0, 0 },
+                                                        GetCurrentPlayerId() };
             auto res = GameActions::Execute(&pickupAction);
         }
         ServerSendEventPlayerDisconnected(
@@ -2082,32 +2086,32 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::RemovePlayer(std::unique_ptr<NetworkConnection>& connection)
     {
-        NetworkPlayer* connection_player = connection->Player;
+        Player* connection_player = connection->player;
         if (connection_player == nullptr)
             return;
 
         player_list.erase(
             std::remove_if(
                 player_list.begin(), player_list.end(),
-                [connection_player](std::unique_ptr<NetworkPlayer>& player) { return player.get() == connection_player; }),
+                [connection_player](std::unique_ptr<Player>& player) { return player.get() == connection_player; }),
             player_list.end());
 
         // Send new player list.
         _playerListInvalidated = true;
     }
 
-    NetworkPlayer* NetworkBase::AddPlayer(const std::string& name, const std::string& keyhash)
+    Player* NetworkBase::AddPlayer(const std::string& name, const std::string& keyhash)
     {
-        NetworkPlayer* addedplayer = nullptr;
+        Player* addedplayer = nullptr;
         int32_t newid = -1;
-        if (GetMode() == NETWORK_MODE_SERVER)
+        if (GetMode() == Mode::server)
         {
             // Find first unused player id
             for (int32_t id = 0; id < 255; id++)
             {
                 if (std::find_if(
                         player_list.begin(), player_list.end(),
-                        [&id](std::unique_ptr<NetworkPlayer> const& player) { return player->Id == id; })
+                        [&id](std::unique_ptr<Player> const& player) { return player->Id == id; })
                     == player_list.end())
                 {
                     newid = id;
@@ -2121,8 +2125,8 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         }
         if (newid != -1)
         {
-            std::unique_ptr<NetworkPlayer> player;
-            if (GetMode() == NETWORK_MODE_SERVER)
+            std::unique_ptr<Player> player;
+            if (GetMode() == Mode::server)
             {
                 // Load keys host may have added manually
                 _userManager.Load();
@@ -2130,7 +2134,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
                 // Check if the key is registered
                 const NetworkUser* networkUser = _userManager.GetUserByHash(keyhash);
 
-                player = std::make_unique<NetworkPlayer>();
+                player = std::make_unique<Player>();
                 player->Id = newid;
                 player->KeyHash = keyhash;
                 if (networkUser == nullptr)
@@ -2152,7 +2156,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
             }
             else
             {
-                player = std::make_unique<NetworkPlayer>();
+                player = std::make_unique<Player>();
                 player->Id = newid;
                 player->Group = GetDefaultGroup();
                 player->SetName(String::trim(std::string(name)));
@@ -2206,7 +2210,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet)
     {
-        auto keyPath = NetworkGetPrivateKeyPath(Config::Get().network.PlayerName);
+        auto keyPath = GetPrivateKeyPath(Config::Get().network.PlayerName);
         if (!File::Exists(keyPath))
         {
             LOG_ERROR("Key file (%s) was not found. Restart client to re-generate it.", keyPath.c_str());
@@ -2283,7 +2287,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
                     dataSize = snapshotMemory.GetLength() - bytesSent;
                 }
 
-                NetworkPacket packetGameStateChunk(NetworkCommand::GameState);
+                NetworkPacket packetGameStateChunk(Command::gameState);
                 packetGameStateChunk << tick << length << bytesSent << dataSize;
                 packetGameStateChunk.Write(static_cast<const uint8_t*>(snapshotMemory.GetData()) + bytesSent, dataSize);
 
@@ -2304,17 +2308,17 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
     {
         uint32_t auth_status;
         packet >> auth_status >> const_cast<uint8_t&>(player_id);
-        connection.AuthStatus = static_cast<NetworkAuth>(auth_status);
+        connection.AuthStatus = static_cast<Auth>(auth_status);
         switch (connection.AuthStatus)
         {
-            case NetworkAuth::Ok:
+            case Auth::ok:
                 Client_Send_GAMEINFO();
                 break;
-            case NetworkAuth::BadName:
+            case Auth::badName:
                 connection.SetLastDisconnectReason(STR_MULTIPLAYER_BAD_PLAYER_NAME);
                 connection.Disconnect();
                 break;
-            case NetworkAuth::BadVersion:
+            case Auth::badVersion:
             {
                 auto version = std::string(packet.ReadString());
                 auto versionp = version.c_str();
@@ -2322,22 +2326,22 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
                 connection.Disconnect();
                 break;
             }
-            case NetworkAuth::BadPassword:
+            case Auth::badPassword:
                 connection.SetLastDisconnectReason(STR_MULTIPLAYER_BAD_PASSWORD);
                 connection.Disconnect();
                 break;
-            case NetworkAuth::VerificationFailure:
+            case Auth::verificationFailure:
                 connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
                 connection.Disconnect();
                 break;
-            case NetworkAuth::Full:
+            case Auth::full:
                 connection.SetLastDisconnectReason(STR_MULTIPLAYER_SERVER_FULL);
                 connection.Disconnect();
                 break;
-            case NetworkAuth::RequirePassword:
+            case Auth::requirePassword:
                 ContextOpenWindowView(WV_NETWORK_PASSWORD);
                 break;
-            case NetworkAuth::UnknownKeyDisallowed:
+            case Auth::unknownKeyDisallowed:
                 connection.SetLastDisconnectReason(STR_MULTIPLAYER_UNKNOWN_KEY_DISALLOWED);
                 connection.Disconnect();
                 break;
@@ -2351,7 +2355,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
     void NetworkBase::ServerClientJoined(std::string_view name, const std::string& keyhash, NetworkConnection& connection)
     {
         auto player = AddPlayer(std::string(name), keyhash);
-        connection.Player = player;
+        connection.player = player;
         if (player != nullptr)
         {
             char text[256];
@@ -2391,7 +2395,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         auto captionString = GetContext()->GetLocalisationService().GetString(captionStringId);
         auto intent = Intent(INTENT_ACTION_PROGRESS_OPEN);
         intent.PutExtra(INTENT_EXTRA_MESSAGE, captionString);
-        intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
+        intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { OpenRCT2::GetContext()->GetNetwork().Close(); });
         ContextOpenIntent(&intent);
     }
 
@@ -2626,7 +2630,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
             }
         }
 
-        auto player_name = connection.Player->Name.c_str();
+        auto player_name = connection.player->Name.c_str();
         ServerSendMap(&connection);
         ServerSendEventPlayerJoined(player_name);
         ServerSendGroupList(connection);
@@ -2634,7 +2638,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
     void NetworkBase::ServerHandleAuth(NetworkConnection& connection, NetworkPacket& packet)
     {
-        if (connection.AuthStatus != NetworkAuth::Ok)
+        if (connection.AuthStatus != Auth::ok)
         {
             auto* hostName = connection.Socket->GetHostName();
             auto gameversion = packet.ReadString();
@@ -2645,7 +2649,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
             packet >> sigsize;
             if (pubkey.empty())
             {
-                connection.AuthStatus = NetworkAuth::VerificationFailure;
+                connection.AuthStatus = Auth::verificationFailure;
             }
             else
             {
@@ -2685,75 +2689,75 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
                         if (Config::Get().network.KnownKeysOnly && _userManager.GetUserByHash(hash) == nullptr)
                         {
                             LOG_VERBOSE("Connection %s: Hash %s, not known", hostName, hash.c_str());
-                            connection.AuthStatus = NetworkAuth::UnknownKeyDisallowed;
+                            connection.AuthStatus = Auth::unknownKeyDisallowed;
                         }
                         else
                         {
-                            connection.AuthStatus = NetworkAuth::Verified;
+                            connection.AuthStatus = Auth::verified;
                         }
                     }
                     else
                     {
-                        connection.AuthStatus = NetworkAuth::VerificationFailure;
+                        connection.AuthStatus = Auth::verificationFailure;
                         LOG_VERBOSE("Connection %s: Signature verification failed!", hostName);
                     }
                 }
                 catch (const std::exception&)
                 {
-                    connection.AuthStatus = NetworkAuth::VerificationFailure;
+                    connection.AuthStatus = Auth::verificationFailure;
                     LOG_VERBOSE("Connection %s: Signature verification failed, invalid data!", hostName);
                 }
             }
 
             bool passwordless = false;
-            if (connection.AuthStatus == NetworkAuth::Verified)
+            if (connection.AuthStatus == Auth::verified)
             {
                 const NetworkGroup* group = GetGroupByID(GetGroupIDByHash(connection.Key.PublicKeyHash()));
                 if (group != nullptr)
                 {
-                    passwordless = group->CanPerformAction(NetworkPermission::PasswordlessLogin);
+                    passwordless = group->CanPerformAction(Permission::PasswordlessLogin);
                 }
             }
-            if (gameversion != NetworkGetVersion())
+            if (gameversion != GetVersion())
             {
-                connection.AuthStatus = NetworkAuth::BadVersion;
+                connection.AuthStatus = Auth::badVersion;
                 LOG_INFO("Connection %s: Bad version.", hostName);
             }
             else if (name.empty())
             {
-                connection.AuthStatus = NetworkAuth::BadName;
+                connection.AuthStatus = Auth::badName;
                 LOG_INFO("Connection %s: Bad name.", connection.Socket->GetHostName());
             }
             else if (!passwordless)
             {
                 if (password.empty() && !_password.empty())
                 {
-                    connection.AuthStatus = NetworkAuth::RequirePassword;
+                    connection.AuthStatus = Auth::requirePassword;
                     LOG_INFO("Connection %s: Requires password.", hostName);
                 }
                 else if (!password.empty() && _password != password)
                 {
-                    connection.AuthStatus = NetworkAuth::BadPassword;
+                    connection.AuthStatus = Auth::badPassword;
                     LOG_INFO("Connection %s: Bad password.", hostName);
                 }
             }
 
             if (GetNumVisiblePlayers() >= Config::Get().network.Maxplayers)
             {
-                connection.AuthStatus = NetworkAuth::Full;
+                connection.AuthStatus = Auth::full;
                 LOG_INFO("Connection %s: Server is full.", hostName);
             }
-            else if (connection.AuthStatus == NetworkAuth::Verified)
+            else if (connection.AuthStatus == Auth::verified)
             {
                 const std::string hash = connection.Key.PublicKeyHash();
                 if (ProcessPlayerAuthenticatePluginHooks(connection, name, hash))
                 {
-                    connection.AuthStatus = NetworkAuth::Ok;
+                    connection.AuthStatus = Auth::ok;
                     ServerClientJoined(name, hash, connection);
                 }
                 else
                 {
-                    connection.AuthStatus = NetworkAuth::VerificationFailure;
+                    connection.AuthStatus = Auth::verificationFailure;
                     LOG_INFO("Connection %s: Denied by plugin.", hostName);
                 }
             }
@@ -2814,12 +2818,12 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
                 GameNotifyMapChanged();
                 _serverState.tick = getGameState().currentTicks;
                 // NetworkStatusOpen("Loaded new map from network");
-                _serverState.state = NetworkServerStatus::Ok;
+                _serverState.state = ServerStatus::ok;
                 _clientMapLoaded = true;
                 gFirstTimeSaving = true;
 
                 // Notify user he is now online and which shortcut key enables chat
-                NetworkChatShowConnectedMessage();
+                ChatShowConnectedMessage();
 
                 // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
                 FixInvalidVehicleSpriteSizes();
@@ -2943,26 +2947,26 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         if (szText.empty())
             return;
 
-        if (connection.Player != nullptr)
+        if (connection.player != nullptr)
         {
-            NetworkGroup* group = GetGroupByID(connection.Player->Group);
-            if (group == nullptr || !group->CanPerformAction(NetworkPermission::Chat))
+            NetworkGroup* group = GetGroupByID(connection.player->Group);
+            if (group == nullptr || !group->CanPerformAction(Permission::Chat))
             {
                 return;
             }
         }
 
         std::string text(szText);
-        if (connection.Player != nullptr)
+        if (connection.player != nullptr)
         {
-            if (!ProcessChatMessagePluginHooks(connection.Player->Id, text))
+            if (!ProcessChatMessagePluginHooks(connection.player->Id, text))
             {
                 // Message not to be relayed
                 return;
             }
         }
 
-        const char* formatted = FormatChat(connection.Player, text.c_str());
+        const char* formatted = FormatChat(connection.player, text.c_str());
         ChatAddHistory(formatted);
         ServerSendChat(formatted);
     }
@@ -3008,7 +3012,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         uint32_t tick;
         GameCommand actionType;
 
-        NetworkPlayer* player = connection.Player;
+        Player* player = connection.player;
         if (player == nullptr)
         {
             return;
@@ -3025,7 +3029,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         if (actionType != GameCommand::Custom)
         {
             // Check if player's group permission allows command to run
-            NetworkGroup* group = GetGroupByID(connection.Player->Group);
+            NetworkGroup* group = GetGroupByID(connection.player->Group);
             if (group == nullptr || group->CanPerformCommand(actionType) == false)
             {
                 ServerSendShowError(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
@@ -3038,8 +3042,8 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         if (ga == nullptr)
         {
             LOG_ERROR(
-                "Received unregistered game action type: 0x%08X from player: (%d) %s", actionType, connection.Player->Id,
-                connection.Player->Name.c_str());
+                "Received unregistered game action type: 0x%08X from player: (%d) %s", actionType, connection.player->Id,
+                connection.player->Name.c_str());
             return;
         }
 
@@ -3070,7 +3074,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
         ga->Serialise(stream);
         // Set player to sender, should be 0 if sent from client.
-        ga->SetPlayer(NetworkPlayerId_t{ connection.Player->Id });
+        ga->SetPlayer(PlayerId_t{ connection.player->Id });
 
         GameActions::Enqueue(std::move(ga), tick);
     }
@@ -3111,7 +3115,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         uint32_t tick;
         packet >> tick;
 
-        NetworkPlayer playerInfo;
+        Player playerInfo;
         playerInfo.Read(packet);
 
         _pendingPlayerInfo.emplace(tick, playerInfo);
@@ -3128,7 +3132,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
         for (uint32_t i = 0; i < size; i++)
         {
-            NetworkPlayer tempplayer;
+            Player tempplayer;
             tempplayer.Read(packet);
 
             pending.players.push_back(std::move(tempplayer));
@@ -3147,11 +3151,11 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         {
             ping = 0;
         }
-        if (connection.Player != nullptr)
+        if (connection.player != nullptr)
         {
-            connection.Player->Ping = ping;
+            connection.player->Ping = ping;
             auto* windowMgr = Ui::GetWindowManager();
-            windowMgr->InvalidateByNumber(WindowClass::Player, connection.Player->Id);
+            windowMgr->InvalidateByNumber(WindowClass::Player, connection.player->Id);
         }
     }
 
@@ -3164,7 +3168,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
             uint8_t id;
             uint16_t ping;
             packet >> id >> ping;
-            NetworkPlayer* player = GetPlayerByID(id);
+            Player* player = GetPlayerByID(id);
             if (player != nullptr)
             {
                 player->Ping = ping;
@@ -3245,7 +3249,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
     void NetworkBase::Client_Send_GAMEINFO()
     {
         LOG_VERBOSE("requesting gameinfo");
-        NetworkPacket packet(NetworkCommand::GameInfo);
+        NetworkPacket packet(Command::gameInfo);
         _serverConnection->QueuePacket(std::move(packet));
     }
 
@@ -3272,100 +3276,100 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
             }
         }
 
-        NetworkChatShowServerGreeting();
+        ChatShowServerGreeting();
     }
 
-    void NetworkReconnect()
+    void Reconnect()
     {
         GetContext()->GetNetwork().Reconnect();
     }
 
-    void NetworkShutdownClient()
+    void ShutdownClient()
     {
         GetContext()->GetNetwork().ServerClientDisconnected();
     }
 
-    int32_t NetworkBeginClient(const std::string& host, int32_t port)
+    int32_t BeginClient(const std::string& host, int32_t port)
     {
         return GetContext()->GetNetwork().BeginClient(host, port);
     }
 
-    int32_t NetworkBeginServer(int32_t port, const std::string& address)
+    int32_t BeginServer(int32_t port, const std::string& address)
     {
         return GetContext()->GetNetwork().BeginServer(port, address);
     }
 
-    void NetworkUpdate()
+    void Update()
     {
         GetContext()->GetNetwork().Update();
     }
 
-    void NetworkProcessPending()
+    void ProcessPending()
     {
         GetContext()->GetNetwork().ProcessPending();
     }
 
-    void NetworkFlush()
+    void Flush()
     {
         GetContext()->GetNetwork().Flush();
     }
 
-    int32_t NetworkGetMode()
+    Mode GetMode()
     {
         return GetContext()->GetNetwork().GetMode();
     }
 
-    int32_t NetworkGetStatus()
+    Status GetStatus()
     {
         return GetContext()->GetNetwork().GetStatus();
     }
 
-    bool NetworkIsDesynchronised()
+    bool IsDesynchronised()
     {
         return GetContext()->GetNetwork().IsDesynchronised();
     }
 
-    bool NetworkCheckDesynchronisation()
+    bool CheckDesynchronisation()
     {
         return GetContext()->GetNetwork().CheckDesynchronizaton();
     }
 
-    void NetworkRequestGamestateSnapshot()
+    void RequestGamestateSnapshot()
     {
         return GetContext()->GetNetwork().RequestStateSnapshot();
     }
 
-    void NetworkSendTick()
+    void SendTick()
     {
         GetContext()->GetNetwork().ServerSendTick();
     }
 
-    NetworkAuth NetworkGetAuthstatus()
+    Auth GetAuthstatus()
     {
         return GetContext()->GetNetwork().GetAuthStatus();
     }
 
-    uint32_t NetworkGetServerTick()
+    uint32_t GetServerTick()
     {
         return GetContext()->GetNetwork().GetServerTick();
     }
 
-    uint8_t NetworkGetCurrentPlayerId()
+    uint8_t GetCurrentPlayerId()
     {
         return GetContext()->GetNetwork().GetPlayerID();
     }
 
-    int32_t NetworkGetNumPlayers()
+    int32_t GetNumPlayers()
     {
         return GetContext()->GetNetwork().GetTotalNumPlayers();
     }
 
-    int32_t NetworkGetNumVisiblePlayers()
+    int32_t GetNumVisiblePlayers()
     {
         return GetContext()->GetNetwork().GetNumVisiblePlayers();
     }
 
-    const char* NetworkGetPlayerName(uint32_t index)
+    const char* GetPlayerName(uint32_t index)
     {
         auto& network = GetContext()->GetNetwork();
         Guard::IndexInRange(index, network.player_list);
@@ -3373,7 +3377,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return static_cast<const char*>(network.player_list[index]->Name.c_str());
     }
 
-    uint32_t NetworkGetPlayerFlags(uint32_t index)
+    uint32_t GetPlayerFlags(uint32_t index)
     {
         auto& network = GetContext()->GetNetwork();
         Guard::IndexInRange(index, network.player_list);
@@ -3381,7 +3385,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return network.player_list[index]->Flags;
     }
 
-    int32_t NetworkGetPlayerPing(uint32_t index)
+    int32_t GetPlayerPing(uint32_t index)
     {
         auto& network = GetContext()->GetNetwork();
         Guard::IndexInRange(index, network.player_list);
@@ -3389,7 +3393,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return network.player_list[index]->Ping;
     }
 
-    int32_t NetworkGetPlayerID(uint32_t index)
+    int32_t GetPlayerID(uint32_t index)
     {
         auto& network = GetContext()->GetNetwork();
         Guard::IndexInRange(index, network.player_list);
@@ -3397,7 +3401,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return network.player_list[index]->Id;
     }
 
-    money64 NetworkGetPlayerMoneySpent(uint32_t index)
+    money64 GetPlayerMoneySpent(uint32_t index)
     {
         auto& network = GetContext()->GetNetwork();
         Guard::IndexInRange(index, network.player_list);
@@ -3405,7 +3409,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return network.player_list[index]->MoneySpent;
     }
 
-    std::string NetworkGetPlayerIPAddress(uint32_t id)
+    std::string GetPlayerIPAddress(uint32_t id)
     {
         auto& network = GetContext()->GetNetwork();
         auto conn = network.GetPlayerConnection(id);
@@ -3416,7 +3420,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return {};
     }
 
-    std::string NetworkGetPlayerPublicKeyHash(uint32_t id)
+    std::string GetPlayerPublicKeyHash(uint32_t id)
     {
         auto& network = GetContext()->GetNetwork();
         auto player = network.GetPlayerByID(id);
@@ -3427,7 +3431,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return {};
     }
 
-    void NetworkIncrementPlayerNumCommands(uint32_t playerIndex)
+    void IncrementPlayerNumCommands(uint32_t playerIndex)
     {
         auto& network = GetContext()->GetNetwork();
         Guard::IndexInRange(playerIndex, network.player_list);
@@ -3435,7 +3439,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         network.player_list[playerIndex]->IncrementNumCommands();
     }
 
-    void NetworkAddPlayerMoneySpent(uint32_t index, money64 cost)
+    void AddPlayerMoneySpent(uint32_t index, money64 cost)
     {
         auto& network = GetContext()->GetNetwork();
         Guard::IndexInRange(index, network.player_list);
@@ -3443,7 +3447,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         network.player_list[index]->AddMoneySpent(cost);
     }
 
-    int32_t NetworkGetPlayerLastAction(uint32_t index, int32_t time)
+    int32_t GetPlayerLastAction(uint32_t index, int32_t time)
     {
         auto& network = GetContext()->GetNetwork();
         Guard::IndexInRange(index, network.player_list);
@@ -3455,7 +3459,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return network.player_list[index]->LastAction;
     }
 
-    void NetworkSetPlayerLastAction(uint32_t index, GameCommand command)
+    void SetPlayerLastAction(uint32_t index, GameCommand command)
     {
         auto& network = GetContext()->GetNetwork();
         Guard::IndexInRange(index, network.player_list);
@@ -3464,7 +3468,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         network.player_list[index]->LastActionTime = Platform::GetTicks();
     }
 
-    CoordsXYZ NetworkGetPlayerLastActionCoord(uint32_t index)
+    CoordsXYZ GetPlayerLastActionCoord(uint32_t index)
     {
         auto& network = GetContext()->GetNetwork();
         Guard::IndexInRange(index, GetContext()->GetNetwork().player_list);
@@ -3472,7 +3476,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return network.player_list[index]->LastActionCoord;
     }
 
-    void NetworkSetPlayerLastActionCoord(uint32_t index, const CoordsXYZ& coord)
+    void SetPlayerLastActionCoord(uint32_t index, const CoordsXYZ& coord)
     {
         auto& network = GetContext()->GetNetwork();
         Guard::IndexInRange(index, network.player_list);
@@ -3483,7 +3487,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         }
     }
 
-    uint32_t NetworkGetPlayerCommandsRan(uint32_t index)
+    uint32_t GetPlayerCommandsRan(uint32_t index)
     {
         auto& network = GetContext()->GetNetwork();
         Guard::IndexInRange(index, GetContext()->GetNetwork().player_list);
@@ -3491,7 +3495,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return network.player_list[index]->CommandsRan;
     }
 
-    int32_t NetworkGetPlayerIndex(uint32_t id)
+    int32_t GetPlayerIndex(uint32_t id)
     {
         auto& network = GetContext()->GetNetwork();
         auto it = network.GetPlayerIteratorByID(id);
@@ -3502,7 +3506,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return static_cast<int32_t>(network.GetPlayerIteratorByID(id) - network.player_list.begin());
     }
 
-    uint8_t NetworkGetPlayerGroup(uint32_t index)
+    uint8_t GetPlayerGroup(uint32_t index)
     {
         auto& network = GetContext()->GetNetwork();
         Guard::IndexInRange(index, network.player_list);
@@ -3510,7 +3514,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return network.player_list[index]->Group;
     }
 
-    void NetworkSetPlayerGroup(uint32_t index, uint32_t groupindex)
+    void SetPlayerGroup(uint32_t index, uint32_t groupindex)
     {
         auto& network = GetContext()->GetNetwork();
         Guard::IndexInRange(index, network.player_list);
@@ -3519,7 +3523,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         network.player_list[index]->Group = network.group_list[groupindex]->Id;
     }
 
-    int32_t NetworkGetGroupIndex(uint8_t id)
+    int32_t GetGroupIndex(uint8_t id)
     {
         auto& network = GetContext()->GetNetwork();
         auto it = network.GetGroupIteratorByID(id);
@@ -3530,7 +3534,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return static_cast<int32_t>(network.GetGroupIteratorByID(id) - network.group_list.begin());
     }
 
-    uint8_t NetworkGetGroupID(uint32_t index)
+    uint8_t GetGroupID(uint32_t index)
     {
         auto& network = GetContext()->GetNetwork();
         Guard::IndexInRange(index, network.group_list);
@@ -3538,19 +3542,19 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return network.group_list[index]->Id;
     }
 
-    int32_t NetworkGetNumGroups()
+    int32_t GetNumGroups()
     {
         auto& network = GetContext()->GetNetwork();
         return static_cast<int32_t>(network.group_list.size());
     }
 
-    const char* NetworkGetGroupName(uint32_t index)
+    const char* GetGroupName(uint32_t index)
     {
         auto& network = GetContext()->GetNetwork();
         return network.group_list[index]->GetName().c_str();
     }
 
-    void NetworkChatShowConnectedMessage()
+    void ChatShowConnectedMessage()
     {
         auto windowManager = Ui::GetWindowManager();
         std::string s = windowManager->GetKeyboardShortcutString("interface.misc.multiplayer_chat");
@@ -3559,16 +3563,16 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         utf8 buffer[256];
         FormatStringLegacy(buffer, sizeof(buffer), STR_MULTIPLAYER_CONNECTED_CHAT_HINT, &sptr);
 
-        NetworkPlayer server;
+        Player server;
         server.Name = "Server";
         const char* formatted = NetworkBase::FormatChat(&server, buffer);
         ChatAddHistory(formatted);
     }
 
     // Display server greeting if one exists
-    void NetworkChatShowServerGreeting()
+    void ChatShowServerGreeting()
     {
-        const auto& greeting = NetworkGetServerGreeting();
+        const auto& greeting = GetServerGreeting();
         if (!greeting.empty())
         {
             thread_local std::string greeting_formatted;
@@ -3578,11 +3582,10 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         }
     }
 
-    GameActions::Result NetworkSetPlayerGroup(
-        NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting)
+    GameActions::Result SetPlayerGroup(PlayerId_t actionPlayerId, PlayerId_t playerId, uint8_t groupId, bool isExecuting)
     {
         auto& network = GetContext()->GetNetwork();
-        NetworkPlayer* player = network.GetPlayerByID(playerId);
+        Player* player = network.GetPlayerByID(playerId);
 
         NetworkGroup* fromgroup = network.GetGroupByID(actionPlayerId);
         if (player == nullptr)
@@ -3610,7 +3613,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         {
             player->Group = groupId;
 
-            if (NetworkGetMode() == NETWORK_MODE_SERVER)
+            if (GetMode() == Mode::server)
             {
                 // Add or update saved user
                 NetworkUserManager& userManager = network._userManager;
@@ -3624,7 +3627,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
             windowMgr->InvalidateByNumber(WindowClass::Player, playerId);
 
             // Log set player group event
-            NetworkPlayer* game_command_player = network.GetPlayerByID(actionPlayerId);
+            Player* game_command_player = network.GetPlayerByID(actionPlayerId);
             NetworkGroup* new_player_group = network.GetGroupByID(groupId);
             char log_msg[256];
             const char* args[3] = {
@@ -3633,13 +3636,13 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
                 game_command_player->Name.c_str(),
             };
             FormatStringLegacy(log_msg, 256, STR_LOG_SET_PLAYER_GROUP, args);
-            NetworkAppendServerLog(log_msg);
+            AppendServerLog(log_msg);
         }
         return GameActions::Result();
     }
 
-    GameActions::Result NetworkModifyGroups(
-        NetworkPlayerId_t actionPlayerId, GameActions::ModifyGroupType type, uint8_t groupId, const std::string& name,
+    GameActions::Result ModifyGroups(
+        PlayerId_t actionPlayerId, GameActions::ModifyGroupType type, uint8_t groupId, const std::string& name,
         uint32_t permissionIndex, GameActions::PermissionState permissionState, bool isExecuting)
     {
         auto& network = GetContext()->GetNetwork();
@@ -3686,8 +3689,8 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
                         GameActions::Status::Disallowed, STR_THIS_GROUP_CANNOT_BE_MODIFIED, kStringIdNone);
                 }
                 NetworkGroup* mygroup = nullptr;
-                NetworkPlayer* player = network.GetPlayerByID(actionPlayerId);
-                auto networkPermission = static_cast<NetworkPermission>(permissionIndex);
+                Player* player = network.GetPlayerByID(actionPlayerId);
+                auto networkPermission = static_cast<Permission>(permissionIndex);
                 if (player != nullptr && permissionState == GameActions::PermissionState::Toggle)
                 {
                     mygroup = network.GetGroupByID(player->Group);
@@ -3778,10 +3781,10 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return GameActions::Result();
     }
 
-    GameActions::Result NetworkKickPlayer(NetworkPlayerId_t playerId, bool isExecuting)
+    GameActions::Result KickPlayer(PlayerId_t playerId, bool isExecuting)
     {
         auto& network = GetContext()->GetNetwork();
-        NetworkPlayer* player = network.GetPlayerByID(playerId);
+        Player* player = network.GetPlayerByID(playerId);
         if (player == nullptr)
         {
             // Player might be already removed by the PLAYERLIST command, need to refactor non-game commands executing too
@@ -3797,7 +3800,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
         if (isExecuting)
         {
-            if (network.GetMode() == NETWORK_MODE_SERVER)
+            if (network.GetMode() == Mode::server)
             {
                 network.KickPlayer(playerId);
 
@@ -3810,18 +3813,18 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return GameActions::Result();
     }
 
-    uint8_t NetworkGetDefaultGroup()
+    uint8_t GetDefaultGroup()
     {
         auto& network = GetContext()->GetNetwork();
         return network.GetDefaultGroup();
     }
 
-    int32_t NetworkGetNumActions()
+    int32_t GetNumActions()
     {
         return static_cast<int32_t>(NetworkActions::Actions.size());
     }
 
-    StringId NetworkGetActionNameStringID(uint32_t index)
+    StringId GetActionNameStringID(uint32_t index)
     {
         if (index < NetworkActions::Actions.size())
         {
@@ -3831,7 +3834,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return kStringIdNone;
     }
 
-    int32_t NetworkCanPerformAction(uint32_t groupindex, NetworkPermission index)
+    int32_t CanPerformAction(uint32_t groupindex, Permission index)
     {
         auto& network = GetContext()->GetNetwork();
         Guard::IndexInRange(groupindex, network.group_list);
@@ -3839,7 +3842,7 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return network.group_list[groupindex]->CanPerformAction(index);
     }
 
-    int32_t NetworkCanPerformCommand(uint32_t groupindex, int32_t index)
+    int32_t CanPerformCommand(uint32_t groupindex, int32_t index)
     {
         auto& network = GetContext()->GetNetwork();
         Guard::IndexInRange(groupindex, network.group_list);
@@ -3847,16 +3850,16 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return network.group_list[groupindex]->CanPerformCommand(static_cast<GameCommand>(index)); // TODO
     }
 
-    void NetworkSetPickupPeep(uint8_t playerid, Peep* peep)
+    void SetPickupPeep(uint8_t playerid, Peep* peep)
     {
         auto& network = GetContext()->GetNetwork();
-        if (network.GetMode() == NETWORK_MODE_NONE)
+        if (network.GetMode() == Mode::none)
         {
             _pickup_peep = peep;
         }
         else
         {
-            NetworkPlayer* player = network.GetPlayerByID(playerid);
+            Player* player = network.GetPlayerByID(playerid);
             if (player != nullptr)
             {
                 player->PickupPeep = peep;
@@ -3864,15 +3867,15 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         }
     }
 
-    Peep* NetworkGetPickupPeep(uint8_t playerid)
+    Peep* GetPickupPeep(uint8_t playerid)
     {
         auto& network = GetContext()->GetNetwork();
-        if (network.GetMode() == NETWORK_MODE_NONE)
+        if (network.GetMode() == Mode::none)
         {
             return _pickup_peep;
         }
 
-        NetworkPlayer* player = network.GetPlayerByID(playerid);
+        Player* player = network.GetPlayerByID(playerid);
         if (player != nullptr)
         {
             return player->PickupPeep;
@@ -3880,16 +3883,16 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return nullptr;
     }
 
-    void NetworkSetPickupPeepOldX(uint8_t playerid, int32_t x)
+    void SetPickupPeepOldX(uint8_t playerid, int32_t x)
     {
         auto& network = GetContext()->GetNetwork();
-        if (network.GetMode() == NETWORK_MODE_NONE)
+        if (network.GetMode() == Mode::none)
         {
             _pickup_peep_old_x = x;
         }
         else
         {
-            NetworkPlayer* player = network.GetPlayerByID(playerid);
+            Player* player = network.GetPlayerByID(playerid);
             if (player != nullptr)
             {
                 player->PickupPeepOldX = x;
@@ -3897,15 +3900,15 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         }
     }
 
-    int32_t NetworkGetPickupPeepOldX(uint8_t playerid)
+    int32_t GetPickupPeepOldX(uint8_t playerid)
     {
         auto& network = GetContext()->GetNetwork();
-        if (network.GetMode() == NETWORK_MODE_NONE)
+        if (network.GetMode() == Mode::none)
         {
             return _pickup_peep_old_x;
         }
 
-        NetworkPlayer* player = network.GetPlayerByID(playerid);
+        Player* player = network.GetPlayerByID(playerid);
         if (player != nullptr)
         {
             return player->PickupPeepOldX;
@@ -3913,30 +3916,30 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         return -1;
     }
 
-    bool NetworkIsServerPlayerInvisible()
+    bool IsServerPlayerInvisible()
     {
         return GetContext()->GetNetwork().IsServerPlayerInvisible;
     }
 
-    int32_t NetworkGetCurrentPlayerGroupIndex()
+    int32_t GetCurrentPlayerGroupIndex()
     {
         auto& network = GetContext()->GetNetwork();
-        NetworkPlayer* player = network.GetPlayerByID(network.GetPlayerID());
+        Player* player = network.GetPlayerByID(network.GetPlayerID());
         if (player != nullptr)
         {
-            return NetworkGetGroupIndex(player->Group);
+            return GetGroupIndex(player->Group);
         }
         return -1;
     }
 
-    void NetworkSendChat(const char* text, const std::vector<uint8_t>& playerIds)
+    void SendChat(const char* text, const std::vector<uint8_t>& playerIds)
     {
         auto& network = GetContext()->GetNetwork();
-        if (network.GetMode() == NETWORK_MODE_CLIENT)
+        if (network.GetMode() == Mode::client)
         {
             network.Client_Send_CHAT(text);
         }
-        else if (network.GetMode() == NETWORK_MODE_SERVER)
+        else if (network.GetMode() == Mode::server)
         {
             std::string message = text;
             if (ProcessChatMessagePluginHooks(network.GetPlayerID(), message))
@@ -3957,24 +3960,26 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         }
     }
 
-    void NetworkSendGameAction(const GameActions::GameAction* action)
+    void SendGameAction(const GameActions::GameAction* action)
     {
         auto& network = GetContext()->GetNetwork();
         switch (network.GetMode())
         {
-            case NETWORK_MODE_SERVER:
+            case Mode::server:
                 network.ServerSendGameAction(action);
                 break;
-            case NETWORK_MODE_CLIENT:
+            case Mode::client:
                 network.Client_Send_GAME_ACTION(action);
+                break;
+            default:
                 break;
         }
     }
 
-    void NetworkSendPassword(const std::string& password)
+    void SendPassword(const std::string& password)
     {
         auto& network = GetContext()->GetNetwork();
-        const auto keyPath = NetworkGetPrivateKeyPath(Config::Get().network.PlayerName);
+        const auto keyPath = GetPrivateKeyPath(Config::Get().network.PlayerName);
         if (!File::Exists(keyPath))
         {
             LOG_ERROR("Private key %s missing! Restart the game to generate it.", keyPath.c_str());
@@ -4000,95 +4005,95 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
         network.Client_Send_AUTH(Config::Get().network.PlayerName, password, pubkey, signature);
     }
 
-    void NetworkSetPassword(const char* password)
+    void SetPassword(const char* password)
     {
         auto& network = GetContext()->GetNetwork();
         network.SetPassword(password);
     }
 
-    void NetworkAppendChatLog(std::string_view text)
+    void AppendChatLog(std::string_view text)
     {
         auto& network = GetContext()->GetNetwork();
         network.AppendChatLog(text);
     }
 
-    void NetworkAppendServerLog(const utf8* text)
+    void AppendServerLog(const utf8* text)
     {
         auto& network = GetContext()->GetNetwork();
         network.AppendServerLog(text);
     }
 
-    static u8string NetworkGetKeysDirectory()
+    static u8string GetKeysDirectory()
     {
         auto& env = GetContext()->GetPlatformEnvironment();
         return Path::Combine(env.GetDirectoryPath(DirBase::user), u8"keys");
     }
 
-    static u8string NetworkGetPrivateKeyPath(u8string_view playerName)
+    static u8string GetPrivateKeyPath(u8string_view playerName)
     {
-        return Path::Combine(NetworkGetKeysDirectory(), u8string(playerName) + u8".privkey");
+        return Path::Combine(GetKeysDirectory(), u8string(playerName) + u8".privkey");
     }
 
-    static u8string NetworkGetPublicKeyPath(u8string_view playerName, u8string_view hash)
+    static u8string GetPublicKeyPath(u8string_view playerName, u8string_view hash)
     {
         const auto filename = u8string(playerName) + u8"-" + u8string(hash) + u8".pubkey";
-        return Path::Combine(NetworkGetKeysDirectory(), filename);
+        return Path::Combine(GetKeysDirectory(), filename);
     }
 
-    u8string NetworkGetServerName()
+    u8string GetServerName()
     {
         auto& network = GetContext()->GetNetwork();
         return network.ServerName;
     }
-    u8string NetworkGetServerDescription()
+    u8string GetServerDescription()
     {
         auto& network = GetContext()->GetNetwork();
         return network.ServerDescription;
     }
-    u8string NetworkGetServerGreeting()
+    u8string GetServerGreeting()
     {
         auto& network = GetContext()->GetNetwork();
         return network.ServerGreeting;
     }
-    u8string NetworkGetServerProviderName()
+    u8string GetServerProviderName()
     {
         auto& network = GetContext()->GetNetwork();
         return network.ServerProviderName;
     }
-    u8string NetworkGetServerProviderEmail()
+    u8string GetServerProviderEmail()
     {
         auto& network = GetContext()->GetNetwork();
         return network.ServerProviderEmail;
     }
-    u8string NetworkGetServerProviderWebsite()
+    u8string GetServerProviderWebsite()
     {
         auto& network = GetContext()->GetNetwork();
         return network.ServerProviderWebsite;
     }
 
-    std::string NetworkGetVersion()
+    std::string GetVersion()
     {
         return kNetworkStreamID;
     }
 
-    NetworkStats NetworkGetStats()
+    Stats GetStats()
     {
         auto& network = GetContext()->GetNetwork();
         return network.GetStats();
     }
 
-    NetworkServerState NetworkGetServerState()
+    ServerState GetServerState()
     {
         auto& network = GetContext()->GetNetwork();
         return network.GetServerState();
     }
 
-    bool NetworkGamestateSnapshotsEnabled()
+    bool GamestateSnapshotsEnabled()
     {
-        return NetworkGetServerState().gamestateSnapshotsEnabled;
+        return GetServerState().gamestateSnapshotsEnabled;
     }
 
-    json_t NetworkGetServerInfoAsJson()
+    json_t GetServerInfoAsJson()
     {
         auto& network = GetContext()->GetNetwork();
         return network.GetServerInfoAsJson();
@@ -4100,269 +4105,268 @@ static constexpr uint32_t kMaxPacketsPerUpdate = 100;
 
 namespace OpenRCT2::Network
 {
-    int32_t NetworkGetMode()
+    Mode GetMode()
     {
-        return NETWORK_MODE_NONE;
+        return Mode::none;
     }
-    int32_t NetworkGetStatus()
+    Status GetStatus()
     {
-        return NETWORK_STATUS_NONE;
+        return Status::none;
     }
-    NetworkAuth NetworkGetAuthstatus()
+    Auth GetAuthstatus()
     {
-        return NetworkAuth::None;
+        return Auth::none;
     }
-    uint32_t NetworkGetServerTick()
+    uint32_t GetServerTick()
     {
         return getGameState().currentTicks;
     }
-    void NetworkFlush()
+    void Flush()
     {
     }
-    void NetworkSendTick()
+    void SendTick()
     {
     }
-    bool NetworkIsDesynchronised()
-    {
-        return false;
-    }
-    bool NetworkGamestateSnapshotsEnabled()
+    bool IsDesynchronised()
     {
         return false;
     }
-    bool NetworkCheckDesynchronisation()
+    bool GamestateSnapshotsEnabled()
     {
         return false;
     }
-    void NetworkRequestGamestateSnapshot()
+    bool CheckDesynchronisation()
+    {
+        return false;
+    }
+    void RequestGamestateSnapshot()
     {
     }
-    void NetworkSendGameAction(const GameActions::GameAction* action)
+    void SendGameAction(const GameActions::GameAction* action)
     {
     }
-    void NetworkUpdate()
+    void Update()
     {
     }
-    void NetworkProcessPending()
+    void ProcessPending()
     {
     }
-    int32_t NetworkBeginClient(const std::string& host, int32_t port)
-    {
-        return 1;
-    }
-    int32_t NetworkBeginServer(int32_t port, const std::string& address)
-    {
-        return 1;
-    }
-    int32_t NetworkGetNumPlayers()
+    int32_t BeginClient(const std::string& host, int32_t port)
     {
         return 1;
     }
-    int32_t NetworkGetNumVisiblePlayers()
+    int32_t BeginServer(int32_t port, const std::string& address)
     {
         return 1;
     }
-    const char* NetworkGetPlayerName(uint32_t index)
+    int32_t GetNumPlayers()
+    {
+        return 1;
+    }
+    int32_t GetNumVisiblePlayers()
+    {
+        return 1;
+    }
+    const char* GetPlayerName(uint32_t index)
     {
         return "local (OpenRCT2 compiled without MP)";
     }
-    uint32_t NetworkGetPlayerFlags(uint32_t index)
+    uint32_t GetPlayerFlags(uint32_t index)
     {
         return 0;
     }
-    int32_t NetworkGetPlayerPing(uint32_t index)
+    int32_t GetPlayerPing(uint32_t index)
     {
         return 0;
     }
-    int32_t NetworkGetPlayerID(uint32_t index)
+    int32_t GetPlayerID(uint32_t index)
     {
         return 0;
     }
-    money64 NetworkGetPlayerMoneySpent(uint32_t index)
+    money64 GetPlayerMoneySpent(uint32_t index)
     {
         return 0.00_GBP;
     }
-    std::string NetworkGetPlayerIPAddress(uint32_t id)
+    std::string GetPlayerIPAddress(uint32_t id)
     {
         return {};
     }
-    std::string NetworkGetPlayerPublicKeyHash(uint32_t id)
+    std::string GetPlayerPublicKeyHash(uint32_t id)
     {
         return {};
     }
-    void NetworkIncrementPlayerNumCommands(uint32_t playerIndex)
+    void IncrementPlayerNumCommands(uint32_t playerIndex)
     {
     }
-    void NetworkAddPlayerMoneySpent(uint32_t index, money64 cost)
+    void AddPlayerMoneySpent(uint32_t index, money64 cost)
     {
     }
-    int32_t NetworkGetPlayerLastAction(uint32_t index, int32_t time)
+    int32_t GetPlayerLastAction(uint32_t index, int32_t time)
     {
         return -999;
     }
-    void NetworkSetPlayerLastAction(uint32_t index, GameCommand command)
+    void SetPlayerLastAction(uint32_t index, GameCommand command)
     {
     }
-    CoordsXYZ NetworkGetPlayerLastActionCoord(uint32_t index)
+    CoordsXYZ GetPlayerLastActionCoord(uint32_t index)
     {
         return { 0, 0, 0 };
     }
-    void NetworkSetPlayerLastActionCoord(uint32_t index, const CoordsXYZ& coord)
+    void SetPlayerLastActionCoord(uint32_t index, const CoordsXYZ& coord)
     {
     }
-    uint32_t NetworkGetPlayerCommandsRan(uint32_t index)
+    uint32_t GetPlayerCommandsRan(uint32_t index)
     {
         return 0;
     }
-    int32_t NetworkGetPlayerIndex(uint32_t id)
+    int32_t GetPlayerIndex(uint32_t id)
     {
         return -1;
     }
-    uint8_t NetworkGetPlayerGroup(uint32_t index)
+    uint8_t GetPlayerGroup(uint32_t index)
     {
         return 0;
     }
-    void NetworkSetPlayerGroup(uint32_t index, uint32_t groupindex)
+    void SetPlayerGroup(uint32_t index, uint32_t groupindex)
     {
     }
-    int32_t NetworkGetGroupIndex(uint8_t id)
+    int32_t GetGroupIndex(uint8_t id)
     {
         return -1;
     }
-    uint8_t NetworkGetGroupID(uint32_t index)
+    uint8_t GetGroupID(uint32_t index)
     {
         return 0;
     }
-    int32_t NetworkGetNumGroups()
+    int32_t GetNumGroups()
     {
         return 0;
     }
-    const char* NetworkGetGroupName(uint32_t index)
+    const char* GetGroupName(uint32_t index)
     {
         return "";
     };
 
-    GameActions::Result NetworkSetPlayerGroup(
-        NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting)
+    GameActions::Result SetPlayerGroup(PlayerId_t actionPlayerId, PlayerId_t playerId, uint8_t groupId, bool isExecuting)
     {
         return GameActions::Result();
     }
-    GameActions::Result NetworkModifyGroups(
-        NetworkPlayerId_t actionPlayerId, GameActions::ModifyGroupType type, uint8_t groupId, const std::string& name,
+    GameActions::Result ModifyGroups(
+        PlayerId_t actionPlayerId, GameActions::ModifyGroupType type, uint8_t groupId, const std::string& name,
         uint32_t permissionIndex, GameActions::PermissionState permissionState, bool isExecuting)
     {
         return GameActions::Result();
     }
-    GameActions::Result NetworkKickPlayer(NetworkPlayerId_t playerId, bool isExecuting)
+    GameActions::Result KickPlayer(PlayerId_t playerId, bool isExecuting)
     {
         return GameActions::Result();
     }
-    uint8_t NetworkGetDefaultGroup()
+    uint8_t GetDefaultGroup()
     {
         return 0;
     }
-    int32_t NetworkGetNumActions()
+    int32_t GetNumActions()
     {
         return 0;
     }
-    StringId NetworkGetActionNameStringID(uint32_t index)
+    StringId GetActionNameStringID(uint32_t index)
     {
         return -1;
     }
-    int32_t NetworkCanPerformAction(uint32_t groupindex, NetworkPermission index)
+    int32_t CanPerformAction(uint32_t groupindex, Permission index)
     {
         return 0;
     }
-    int32_t NetworkCanPerformCommand(uint32_t groupindex, int32_t index)
+    int32_t CanPerformCommand(uint32_t groupindex, int32_t index)
     {
         return 0;
     }
-    void NetworkSetPickupPeep(uint8_t playerid, Peep* peep)
+    void SetPickupPeep(uint8_t playerid, Peep* peep)
     {
         _pickup_peep = peep;
     }
-    Peep* NetworkGetPickupPeep(uint8_t playerid)
+    Peep* GetPickupPeep(uint8_t playerid)
     {
         return _pickup_peep;
     }
-    void NetworkSetPickupPeepOldX(uint8_t playerid, int32_t x)
+    void SetPickupPeepOldX(uint8_t playerid, int32_t x)
     {
         _pickup_peep_old_x = x;
     }
-    int32_t NetworkGetPickupPeepOldX(uint8_t playerid)
+    int32_t GetPickupPeepOldX(uint8_t playerid)
     {
         return _pickup_peep_old_x;
     }
-    void NetworkSendChat(const char* text, const std::vector<uint8_t>& playerIds)
+    void SendChat(const char* text, const std::vector<uint8_t>& playerIds)
     {
     }
-    void NetworkSendPassword(const std::string& password)
+    void SendPassword(const std::string& password)
     {
     }
-    void NetworkReconnect()
+    void Reconnect()
     {
     }
-    void NetworkShutdownClient()
+    void ShutdownClient()
     {
     }
-    void NetworkSetPassword(const char* password)
+    void SetPassword(const char* password)
     {
     }
-    uint8_t NetworkGetCurrentPlayerId()
-    {
-        return 0;
-    }
-    int32_t NetworkGetCurrentPlayerGroupIndex()
+    uint8_t GetCurrentPlayerId()
     {
         return 0;
     }
-    bool NetworkIsServerPlayerInvisible()
+    int32_t GetCurrentPlayerGroupIndex()
+    {
+        return 0;
+    }
+    bool IsServerPlayerInvisible()
     {
         return false;
     }
-    void NetworkAppendChatLog(std::string_view)
+    void AppendChatLog(std::string_view)
     {
     }
-    void NetworkAppendServerLog(const utf8* text)
+    void AppendServerLog(const utf8* text)
     {
     }
-    u8string NetworkGetServerName()
-    {
-        return u8string();
-    }
-    u8string NetworkGetServerDescription()
+    u8string GetServerName()
     {
         return u8string();
     }
-    u8string NetworkGetServerGreeting()
+    u8string GetServerDescription()
     {
         return u8string();
     }
-    u8string NetworkGetServerProviderName()
+    u8string GetServerGreeting()
     {
         return u8string();
     }
-    u8string NetworkGetServerProviderEmail()
+    u8string GetServerProviderName()
     {
         return u8string();
     }
-    u8string NetworkGetServerProviderWebsite()
+    u8string GetServerProviderEmail()
     {
         return u8string();
     }
-    std::string NetworkGetVersion()
+    u8string GetServerProviderWebsite()
+    {
+        return u8string();
+    }
+    std::string GetVersion()
     {
         return "Multiplayer disabled";
     }
-    NetworkStats NetworkGetStats()
+    Stats GetStats()
     {
-        return NetworkStats{};
+        return Stats{};
     }
-    NetworkServerState NetworkGetServerState()
+    ServerState GetServerState()
     {
-        return NetworkServerState{};
+        return ServerState{};
     }
-    json_t NetworkGetServerInfoAsJson()
+    json_t GetServerInfoAsJson()
     {
         return {};
     }

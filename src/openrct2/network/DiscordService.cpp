@@ -91,13 +91,13 @@ namespace OpenRCT2::Network
         {
             default:
                 details = GetParkName();
-                if (NetworkGetMode() == NETWORK_MODE_NONE)
+                if (Network::GetMode() == Network::Mode::none)
                 {
                     state = "Playing Solo";
                 }
                 else
                 {
-                    FmtString fmtServerName(NetworkGetServerName());
+                    FmtString fmtServerName(Network::GetServerName());
                     std::string serverName;
                     for (const auto& token : fmtServerName)
                     {
@@ -115,10 +115,10 @@ namespace OpenRCT2::Network
                     }
                     state = serverName;
 
-                    partyId = NetworkGetServerName();
+                    partyId = Network::GetServerName();
                     // NOTE: the party size is displayed next to state
                     discordPresence.partyId = partyId.c_str();
-                    discordPresence.partySize = NetworkGetNumPlayers();
+                    discordPresence.partySize = Network::GetNumPlayers();
                     discordPresence.partyMax = 256;
 
                     // TODO generate secrets for the server

@@ -47,7 +47,7 @@ namespace OpenRCT2::Network
             uint8_t* buffer = reinterpret_cast<uint8_t*>(&InboundPacket.Header);
 
             NetworkReadPacket status = Socket->ReceiveData(buffer, missingLength, &bytesRead);
-            if (status != NetworkReadPacket::Success)
+            if (status != NetworkReadPacket::success)
             {
                 return status;
             }
@@ -56,7 +56,7 @@ namespace OpenRCT2::Network
             if (InboundPacket.BytesTransferred < sizeof(InboundPacket.Header))
             {
                 // If still not enough data for header, keep waiting.
-                return NetworkReadPacket::MoreData;
+                return NetworkReadPacket::moreData;
             }
 
             // Normalise values.
@@ -80,7 +80,7 @@ namespace OpenRCT2::Network
             if (missingLength > 0)
             {
                 NetworkReadPacket status = Socket->ReceiveData(buffer, std::min(missingLength, kNetworkBufferSize), &bytesRead);
-                if (status != NetworkReadPacket::Success)
+                if (status != NetworkReadPacket::success)
                 {
                     return status;
                 }
@@ -96,11 +96,11 @@ namespace OpenRCT2::Network
 
                 RecordPacketStats(InboundPacket, false);
 
-                return NetworkReadPacket::Success;
+                return NetworkReadPacket::success;
             }
         }
 
-        return NetworkReadPacket::MoreData;
+        return NetworkReadPacket::moreData;
     }
 
     static sfl::small_vector<uint8_t, 512> serializePacket(const NetworkPacket& packet)
@@ -127,7 +127,7 @@ namespace OpenRCT2::Network
 
     void NetworkConnection::QueuePacket(const NetworkPacket& packet, bool front)
     {
-        if (AuthStatus == NetworkAuth::Ok || !packet.CommandRequiresAuth())
+        if (AuthStatus == Auth::ok || !packet.CommandRequiresAuth())
         {
             const auto payload = serializePacket(packet);
             if (front)
@@ -150,7 +150,7 @@ namespace OpenRCT2::Network
 
     bool NetworkConnection::IsValid() const
     {
-        return !ShouldDisconnect && Socket->GetStatus() == SocketStatus::Connected;
+        return !ShouldDisconnect && Socket->GetStatus() == SocketStatus::connected;
     }
 
     void NetworkConnection::SendQueuedData()
@@ -205,30 +205,30 @@ namespace OpenRCT2::Network
     void NetworkConnection::RecordPacketStats(const NetworkPacket& packet, bool sending)
     {
         uint32_t packetSize = static_cast<uint32_t>(packet.BytesTransferred);
-        NetworkStatisticsGroup trafficGroup;
+        StatisticsGroup trafficGroup;
 
         switch (packet.GetCommand())
         {
-            case NetworkCommand::GameAction:
-                trafficGroup = NetworkStatisticsGroup::Commands;
+            case Command::gameAction:
+                trafficGroup = StatisticsGroup::Commands;
                 break;
-            case NetworkCommand::Map:
-                trafficGroup = NetworkStatisticsGroup::MapData;
+            case Command::map:
+                trafficGroup = StatisticsGroup::MapData;
                 break;
             default:
-                trafficGroup = NetworkStatisticsGroup::Base;
+                trafficGroup = StatisticsGroup::Base;
                 break;
         }
 
         if (sending)
         {
-            Stats.bytesSent[EnumValue(trafficGroup)] += packetSize;
-            Stats.bytesSent[EnumValue(NetworkStatisticsGroup::Total)] += packetSize;
+            stats.bytesSent[EnumValue(trafficGroup)] += packetSize;
+            stats.bytesSent[EnumValue(StatisticsGroup::Total)] += packetSize;
         }
         else
         {
-            Stats.bytesReceived[EnumValue(trafficGroup)] += packetSize;
-            Stats.bytesReceived[EnumValue(NetworkStatisticsGroup::Total)] += packetSize;
+            stats.bytesReceived[EnumValue(trafficGroup)] += packetSize;
+            stats.bytesReceived[EnumValue(StatisticsGroup::Total)] += packetSize;
         }
     }
 } // namespace OpenRCT2::Network

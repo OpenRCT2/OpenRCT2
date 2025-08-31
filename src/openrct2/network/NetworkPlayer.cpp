@@ -17,13 +17,13 @@
 
 namespace OpenRCT2::Network
 {
-    void NetworkPlayer::SetName(std::string_view name)
+    void Player::SetName(std::string_view name)
     {
         // 36 == 31 + strlen(" #255");
         Name = name.substr(0, 36);
     }
 
-    void NetworkPlayer::Read(NetworkPacket& packet)
+    void Player::Read(NetworkPacket& packet)
     {
         auto name = packet.ReadString();
         SetName(name);
@@ -31,21 +31,21 @@ namespace OpenRCT2::Network
             >> MoneySpent >> CommandsRan;
     }
 
-    void NetworkPlayer::Write(NetworkPacket& packet)
+    void Player::Write(NetworkPacket& packet)
     {
         packet.WriteString(Name);
         packet << Id << Flags << Group << LastAction << LastActionCoord.x << LastActionCoord.y << LastActionCoord.z
                << MoneySpent << CommandsRan;
     }
 
-    void NetworkPlayer::IncrementNumCommands()
+    void Player::IncrementNumCommands()
     {
         CommandsRan++;
         auto* windowMgr = Ui::GetWindowManager();
         windowMgr->InvalidateByNumber(WindowClass::Player, Id);
     }
 
-    void NetworkPlayer::AddMoneySpent(money64 cost)
+    void Player::AddMoneySpent(money64 cost)
     {
         MoneySpent += cost;
         auto* windowMgr = Ui::GetWindowManager();

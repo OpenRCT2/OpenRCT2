@@ -47,11 +47,11 @@ namespace OpenRCT2::GameActions
 
     Result NetworkModifyGroupAction::Query() const
     {
-        return NetworkModifyGroups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, false);
+        return Network::ModifyGroups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, false);
     }
 
     Result NetworkModifyGroupAction::Execute() const
     {
-        return NetworkModifyGroups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, true);
+        return Network::ModifyGroups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, true);
     }
 } // namespace OpenRCT2::GameActions

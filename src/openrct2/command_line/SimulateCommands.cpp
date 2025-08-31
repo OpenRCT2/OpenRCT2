@@ -57,7 +57,7 @@ static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator)
     gOpenRCT2Headless = true;
 
 #ifndef DISABLE_NETWORK
-    gNetworkStart = NETWORK_MODE_SERVER;
+    gNetworkStart = Network::Mode::server;
 #endif
 
     std::unique_ptr<IContext> context(CreateContext());

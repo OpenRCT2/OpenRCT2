@@ -22,7 +22,7 @@ namespace OpenRCT2::Network
     struct PacketHeader
     {
         uint16_t Size = 0;
-        NetworkCommand Id = NetworkCommand::Invalid;
+        Command Id = Command::invalid;
     };
     static_assert(sizeof(PacketHeader) == 6);
 #pragma pack(pop)
@@ -30,12 +30,12 @@ namespace OpenRCT2::Network
     struct NetworkPacket final
     {
         NetworkPacket() noexcept = default;
-        NetworkPacket(NetworkCommand id) noexcept;
+        NetworkPacket(Command id) noexcept;
 
         uint8_t* GetData() noexcept;
         const uint8_t* GetData() const noexcept;
 
-        NetworkCommand GetCommand() const noexcept;
+        Command GetCommand() const noexcept;
 
         void Clear() noexcept;
         bool CommandRequiresAuth() const noexcept;
