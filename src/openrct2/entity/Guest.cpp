@@ -5473,31 +5473,24 @@ void Guest::UpdateWalking()
 
     const auto currentTicks = getGameState().currentTicks;
 
-    if (PeepFlags & PEEP_FLAGS_WAVING && IsActionInterruptableSafely() && (0xFFFF & ScenarioRand()) < 936)
+    if (IsActionInterruptableSafely())
     {
-        Action = PeepActionType::Wave2;
-        AnimationFrameNum = 0;
-        AnimationImageIdOffset = 0;
+        PeepActionType NewAction = Action;
 
-        UpdateCurrentAnimationType();
-    }
+        if (PeepFlags & PEEP_FLAGS_WAVING && (0xFFFF & ScenarioRand()) < 936)
+            NewAction = PeepActionType::Wave2;
+        else if (PeepFlags & PEEP_FLAGS_PHOTO && (0xFFFF & ScenarioRand()) < 936)
+            NewAction = PeepActionType::TakePhoto;
+        else if (PeepFlags & PEEP_FLAGS_PAINTING && (0xFFFF & ScenarioRand()) < 936)
+            NewAction = PeepActionType::DrawPicture;
 
-    if (PeepFlags & PEEP_FLAGS_PHOTO && IsActionInterruptableSafely() && (0xFFFF & ScenarioRand()) < 936)
-    {
-        Action = PeepActionType::TakePhoto;
-        AnimationFrameNum = 0;
-        AnimationImageIdOffset = 0;
-
-        UpdateCurrentAnimationType();
-    }
-
-    if (PeepFlags & PEEP_FLAGS_PAINTING && IsActionInterruptableSafely() && (0xFFFF & ScenarioRand()) < 936)
-    {
-        Action = PeepActionType::DrawPicture;
-        AnimationFrameNum = 0;
-        AnimationImageIdOffset = 0;
-
-        UpdateCurrentAnimationType();
+        if (NewAction != Action)
+        {
+            Action = NewAction;
+            AnimationFrameNum = 0;
+            AnimationImageIdOffset = 0;
+            UpdateCurrentAnimationType();
+        }
     }
 
     if (PeepFlags & PEEP_FLAGS_LITTER)
