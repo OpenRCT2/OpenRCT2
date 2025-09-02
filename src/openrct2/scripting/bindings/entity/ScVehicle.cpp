@@ -140,7 +140,7 @@ namespace OpenRCT2::Scripting
     uint8_t ScVehicle::spriteType_get() const
     {
         auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->pitch : 0;
+        return vehicle != nullptr ? EnumValue(vehicle->pitch) : 0;
     }
     void ScVehicle::spriteType_set(uint8_t value)
     {
@@ -148,7 +148,7 @@ namespace OpenRCT2::Scripting
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            vehicle->pitch = value;
+            vehicle->pitch = static_cast<VehiclePitch>(value);
             vehicle->Invalidate();
         }
     }
@@ -337,7 +337,7 @@ namespace OpenRCT2::Scripting
     uint8_t ScVehicle::bankRotation_get() const
     {
         auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->roll : 0;
+        return vehicle != nullptr ? EnumValue(vehicle->roll) : 0;
     }
     void ScVehicle::bankRotation_set(uint8_t value)
     {
@@ -345,7 +345,7 @@ namespace OpenRCT2::Scripting
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            vehicle->roll = value;
+            vehicle->roll = static_cast<VehicleRoll>(value);
             vehicle->Invalidate();
         }
     }

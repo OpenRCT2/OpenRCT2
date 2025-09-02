@@ -940,19 +940,109 @@ const VehicleBoundBox VehicleBoundboxes[16][224] = {
 };
 
 // Opposite Pitch values for reversed cars
-const uint8_t PitchInvertTable[] = {
-    0,                                                                              // Flat Track
-    5,  6,  7,  8,  1,  2,  3,  4,                                                  // Slopes 1
-    17, 18, 19, 20, 21, 22, 23, 16, 9,  10, 11, 12, 13, 14, 15,                     // Vertical Loop
-    29, 30, 31, 32, 33, 24, 25, 26, 27, 28, 39, 40, 41, 42, 43, 34, 35, 36, 37, 38, // Corkscrews
-    0,  0,  0,  0,  0,  0,                                                          // Helices
-    53, 54, 55, 50, 51, 52,                                                         // Slopes 2
-    56, 57, 58,                                                                     // Zero-G Rolls
-    60, 59                                                                          // Spiral Lift Hills
-};
+const VehiclePitch PitchInvertTable[] = {
+    VehiclePitch::flat,
 
-// Opposite Bank values for reversed cars
-const uint8_t BankInvertTable[] = { 0, 3, 4, 1, 2, 10, 11, 12, 13, 14, 5, 6, 7, 8, 9, 15, 18, 19, 16, 17 };
+    VehiclePitch::down12,
+    VehiclePitch::down25,
+    VehiclePitch::down42,
+    VehiclePitch::down60,
+
+    VehiclePitch::up12,
+    VehiclePitch::up25,
+    VehiclePitch::up42,
+    VehiclePitch::up60,
+
+    VehiclePitch::down75,
+    VehiclePitch::down90,
+    VehiclePitch::down105,
+    VehiclePitch::down120,
+    VehiclePitch::down135,
+    VehiclePitch::down150,
+    VehiclePitch::down165,
+
+    VehiclePitch::inverted,
+
+    VehiclePitch::up75,
+    VehiclePitch::up90,
+    VehiclePitch::up105,
+    VehiclePitch::up120,
+    VehiclePitch::up135,
+    VehiclePitch::up150,
+    VehiclePitch::up165,
+
+    VehiclePitch::corkscrewDownLeft0,
+    VehiclePitch::corkscrewDownLeft1,
+    VehiclePitch::corkscrewDownLeft2,
+    VehiclePitch::corkscrewDownLeft3,
+    VehiclePitch::corkscrewDownLeft4,
+
+    VehiclePitch::corkscrewUpRight0,
+    VehiclePitch::corkscrewUpRight1,
+    VehiclePitch::corkscrewUpRight2,
+    VehiclePitch::corkscrewUpRight3,
+    VehiclePitch::corkscrewUpRight4,
+
+    VehiclePitch::corkscrewDownRight0,
+    VehiclePitch::corkscrewDownRight1,
+    VehiclePitch::corkscrewDownRight2,
+    VehiclePitch::corkscrewDownRight3,
+    VehiclePitch::corkscrewDownRight4,
+
+    VehiclePitch::corkscrewUpLeft0,
+    VehiclePitch::corkscrewUpLeft1,
+    VehiclePitch::corkscrewUpLeft2,
+    VehiclePitch::corkscrewUpLeft3,
+    VehiclePitch::corkscrewUpLeft4,
+
+    VehiclePitch::flat, // helixes
+    VehiclePitch::flat,
+    VehiclePitch::flat,
+    VehiclePitch::flat,
+    VehiclePitch::flat,
+    VehiclePitch::flat,
+
+    VehiclePitch::down8,
+    VehiclePitch::down16,
+    VehiclePitch::down50,
+
+    VehiclePitch::up8,
+    VehiclePitch::up16,
+    VehiclePitch::up50,
+
+    VehiclePitch::up25,
+    VehiclePitch::up42,
+    VehiclePitch::up60,
+
+    VehiclePitch::curvedLiftHillDown,
+    VehiclePitch::curvedLiftHillUp,
+};
+static_assert(std::size(PitchInvertTable) == EnumValue(VehiclePitch::pitchCount));
+
+// Opposite Roll values for reversed cars
+const VehicleRoll RollInvertTable[] = {
+    VehicleRoll::unbanked,
+    VehicleRoll::right22,
+    VehicleRoll::right45,
+    VehicleRoll::left22,
+    VehicleRoll::left45,
+    VehicleRoll::right67,
+    VehicleRoll::right90,
+    VehicleRoll::right112,
+    VehicleRoll::right135,
+    VehicleRoll::right157,
+    VehicleRoll::left67,
+    VehicleRoll::left90,
+    VehicleRoll::left112,
+    VehicleRoll::left135,
+    VehicleRoll::left157,
+    VehicleRoll::uninvertingUnbanked,
+    VehicleRoll::uninvertingRight22,
+    VehicleRoll::uninvertingRight45,
+    VehicleRoll::uninvertingLeft22,
+    VehicleRoll::uninvertingLeft45,
+};
+static_assert(std::size(RollInvertTable) == EnumValue(VehicleRoll::rollCount));
 
 constexpr uint32_t kBoundBoxIndexUndefined = std::numeric_limits<uint32_t>::max();
 constexpr uint32_t kBoundBoxIndexFlat = 0;
@@ -1069,9 +1159,9 @@ static void VehicleSpritePaintRestraints(
 }
 
 // Returns the opposite of the bank angle for reversed cars, normal bank angle otherwise
-static uint8_t GetPaintBankRotation(const Vehicle* vehicle)
+static VehicleRoll GetPaintBankRotation(const Vehicle* vehicle)
 {
-    return (vehicle->HasFlag(VehicleFlags::CarIsReversed)) ? BankInvertTable[vehicle->roll] : vehicle->roll;
+    return (vehicle->HasFlag(VehicleFlags::CarIsReversed)) ? RollInvertTable[EnumValue(vehicle->roll)] : vehicle->roll;
 }
 
 #pragma endregion
@@ -1432,67 +1522,65 @@ static void VehiclePitchFlat(
     // 0x009A3DE4:
     switch (GetPaintBankRotation(vehicle))
     {
-        case 0:
+        case VehicleRoll::unbanked:
             VehiclePitchFlatUnbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 1:
+        case VehicleRoll::left22:
             VehiclePitchFlatBankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 2:
+        case VehicleRoll::left45:
             VehiclePitchFlatBankedLeft45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 3:
+        case VehicleRoll::right22:
             VehiclePitchFlatBankedRight22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 4:
+        case VehicleRoll::right45:
             VehiclePitchFlatBankedRight45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 5:
+        case VehicleRoll::left67:
             VehiclePitchFlatBankedLeft67(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 6:
+        case VehicleRoll::left90:
             VehiclePitchFlatBankedLeft90(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 7:
+        case VehicleRoll::left112:
             VehiclePitchFlatBankedLeft112(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 8:
+        case VehicleRoll::left135:
             VehiclePitchFlatBankedLeft135(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 9:
+        case VehicleRoll::left157:
             VehiclePitchFlatBankedLeft157(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 10:
+        case VehicleRoll::right67:
             VehiclePitchFlatBankedRight67(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 11:
+        case VehicleRoll::right90:
             VehiclePitchFlatBankedRight90(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 12:
+        case VehicleRoll::right112:
             VehiclePitchFlatBankedRight112(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 13:
+        case VehicleRoll::right135:
             VehiclePitchFlatBankedRight135(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 14:
+        case VehicleRoll::right157:
             VehiclePitchFlatBankedRight157(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 15:
-            // what is roll 15?
-            VehiclePitchFlatUnbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
-            break;
-        case 16:
+        case VehicleRoll::uninvertingLeft22:
             VehiclePitchUninvertedFlatBankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 17:
+        case VehicleRoll::uninvertingLeft45:
             VehiclePitchUninvertedFlatBankedLeft45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 18:
+        case VehicleRoll::uninvertingRight22:
             VehiclePitchUninvertedFlatBankedRight22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 19:
+        case VehicleRoll::uninvertingRight45:
             VehiclePitchUninvertedFlatBankedRight45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
+        default:
+            VehiclePitchFlatUnbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
     }
 }
 
@@ -1600,31 +1688,31 @@ static void VehiclePitchUp12(
     // 0x009A3C04:
     switch (GetPaintBankRotation(vehicle))
     {
-        case 0:
+        case VehicleRoll::unbanked:
             VehiclePitchUp12Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 1:
+        case VehicleRoll::left22:
             VehiclePitchUp12BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 2:
+        case VehicleRoll::left45:
             VehiclePitchUp12BankedLeft45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 3:
+        case VehicleRoll::right22:
             VehiclePitchUp12BankedRight22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 4:
+        case VehicleRoll::right45:
             VehiclePitchUp12BankedRight45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 16:
+        case VehicleRoll::uninvertingLeft22:
             VehiclePitchUp12BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 17:
+        case VehicleRoll::uninvertingLeft45:
             VehiclePitchUp12BankedLeft45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 18:
+        case VehicleRoll::uninvertingRight22:
             VehiclePitchUp12BankedRight22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 19:
+        case VehicleRoll::uninvertingRight45:
             VehiclePitchUp12BankedRight45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
         default:
@@ -1916,66 +2004,65 @@ static void VehiclePitchUp25(
     // 0x009A3CA4:
     switch (GetPaintBankRotation(vehicle))
     {
-        case 0:
+        case VehicleRoll::unbanked:
             VehiclePitchUp25Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 1:
+        case VehicleRoll::left22:
             VehiclePitchUp25BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 2:
+        case VehicleRoll::left45:
             VehiclePitchUp25BankedLeft45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 3:
+        case VehicleRoll::right22:
             VehiclePitchUp25BankedRight22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 4:
+        case VehicleRoll::right45:
             VehiclePitchUp25BankedRight45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 5:
+        case VehicleRoll::left67:
             VehiclePitchUp25BankedLeft67(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 6:
+        case VehicleRoll::left90:
             VehiclePitchUp25BankedLeft90(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 7:
+        case VehicleRoll::left112:
             VehiclePitchUp25BankedLeft112(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 8:
+        case VehicleRoll::left135:
             VehiclePitchUp25BankedLeft135(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 9:
+        case VehicleRoll::left157:
             VehiclePitchUp25BankedLeft157(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 10:
+        case VehicleRoll::right67:
             VehiclePitchUp25BankedRight67(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 11:
+        case VehicleRoll::right90:
             VehiclePitchUp25BankedRight90(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 12:
+        case VehicleRoll::right112:
             VehiclePitchUp25BankedRight112(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 13:
+        case VehicleRoll::right135:
             VehiclePitchUp25BankedRight135(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 14:
+        case VehicleRoll::right157:
             VehiclePitchUp25BankedRight157(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 15:
-            VehiclePitchUp25Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
-            break;
-        case 16:
+        case VehicleRoll::uninvertingLeft22:
             VehiclePitchUp25BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 17:
+        case VehicleRoll::uninvertingLeft45:
             VehiclePitchUp25BankedLeft45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 18:
+        case VehicleRoll::uninvertingRight22:
             VehiclePitchUp25BankedRight22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 19:
+        case VehicleRoll::uninvertingRight45:
             VehiclePitchUp25BankedRight45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
+        default:
+            VehiclePitchUp25Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
     }
 }
 
@@ -2185,37 +2272,37 @@ static void VehiclePitchUp42(
 {
     switch (GetPaintBankRotation(vehicle))
     {
-        case 0:
+        case VehicleRoll::unbanked:
             VehiclePitchUp42Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 1:
+        case VehicleRoll::left22:
             VehiclePitchUp42BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 2:
+        case VehicleRoll::left45:
             VehiclePitchUp42BankedLeft45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 3:
+        case VehicleRoll::right22:
             VehiclePitchUp42BankedRight22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 4:
+        case VehicleRoll::right45:
             VehiclePitchUp42BankedRight45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 5:
+        case VehicleRoll::left67:
             VehiclePitchUp42BankedLeft67(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 6:
+        case VehicleRoll::left90:
             VehiclePitchUp42BankedLeft90(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 8:
+        case VehicleRoll::left135:
             VehiclePitchUp42BankedLeft135(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 10:
+        case VehicleRoll::right67:
             VehiclePitchUp42BankedRight67(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 11:
+        case VehicleRoll::right90:
             VehiclePitchUp42BankedRight90(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 13:
+        case VehicleRoll::right135:
             VehiclePitchUp42BankedRight135(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
         default:
@@ -2281,13 +2368,13 @@ static void VehiclePitchUp60(
 {
     switch (GetPaintBankRotation(vehicle))
     {
-        case 0:
+        case VehicleRoll::unbanked:
             VehiclePitchUp60Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 1:
+        case VehicleRoll::left22:
             VehiclePitchUp60BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 3:
+        case VehicleRoll::right22:
             VehiclePitchUp60BankedRight22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
         default:
@@ -2399,66 +2486,65 @@ static void VehiclePitchDown12(
     // 0x009A3C54:
     switch (GetPaintBankRotation(vehicle))
     {
-        case 0:
+        case VehicleRoll::unbanked:
             VehiclePitchDown12Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 1:
+        case VehicleRoll::left22:
             VehiclePitchDown12BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 2:
+        case VehicleRoll::left45:
             VehiclePitchDown12BankedLeft45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 3:
+        case VehicleRoll::right22:
             VehiclePitchDown12BankedRight22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 4:
+        case VehicleRoll::right45:
             VehiclePitchDown12BankedRight45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 5:
+        case VehicleRoll::left67:
             VehiclePitchDown12Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 6:
+        case VehicleRoll::left90:
             VehiclePitchDown12Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 7:
+        case VehicleRoll::left112:
             VehiclePitchDown12Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 8:
+        case VehicleRoll::left135:
             VehiclePitchDown12Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 9:
+        case VehicleRoll::left157:
             VehiclePitchDown12Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 10:
+        case VehicleRoll::right67:
             VehiclePitchDown12Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 11:
+        case VehicleRoll::right90:
             VehiclePitchDown12Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 12:
+        case VehicleRoll::right112:
             VehiclePitchDown12Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 13:
+        case VehicleRoll::right135:
             VehiclePitchDown12Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 14:
+        case VehicleRoll::right157:
             VehiclePitchDown12Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 15:
-            VehiclePitchDown12Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
-            break;
-        case 16:
+        case VehicleRoll::uninvertingLeft22:
             VehiclePitchDown12BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 17:
+        case VehicleRoll::uninvertingLeft45:
             VehiclePitchDown12BankedLeft45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 18:
+        case VehicleRoll::uninvertingRight22:
             VehiclePitchDown12BankedRight22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 19:
+        case VehicleRoll::uninvertingRight45:
             VehiclePitchDown12BankedRight45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
+        default:
+            VehiclePitchDown12Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
     }
 }
 #pragma endregion
@@ -2749,66 +2835,65 @@ static void VehiclePitchDown25(
     // 0x009A3CF4:
     switch (GetPaintBankRotation(vehicle))
     {
-        case 0:
+        case VehicleRoll::unbanked:
             VehiclePitchDown25Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 1:
+        case VehicleRoll::left22:
             VehiclePitchDown25BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 2:
+        case VehicleRoll::left45:
             VehiclePitchDown25BankedLeft45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 3:
+        case VehicleRoll::right22:
             VehiclePitchDown25BankedRight22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 4:
+        case VehicleRoll::right45:
             VehiclePitchDown25BankedRight45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 5:
+        case VehicleRoll::left67:
             VehiclePitchDown25BankedLeft67(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 6:
+        case VehicleRoll::left90:
             VehiclePitchDown25BankedLeft90(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 7:
+        case VehicleRoll::left112:
             VehiclePitchDown25BankedLeft112(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 8:
+        case VehicleRoll::left135:
             VehiclePitchDown25BankedLeft135(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 9:
+        case VehicleRoll::left157:
             VehiclePitchDown25BankedLeft157(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 10:
+        case VehicleRoll::right67:
             VehiclePitchDown25BankedRight67(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 11:
+        case VehicleRoll::right90:
             VehiclePitchDown25BankedRight90(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 12:
+        case VehicleRoll::right112:
             VehiclePitchDown25BankedRight112(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 13:
+        case VehicleRoll::right135:
             VehiclePitchDown25BankedRight135(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 14:
+        case VehicleRoll::right157:
             VehiclePitchDown25BankedRight157(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 15:
-            VehiclePitchDown25Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
-            break;
-        case 16:
+        case VehicleRoll::uninvertingLeft22:
             VehiclePitchDown25BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 17:
+        case VehicleRoll::uninvertingLeft45:
             VehiclePitchDown25BankedLeft45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 18:
+        case VehicleRoll::uninvertingRight22:
             VehiclePitchDown25BankedRight22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 19:
+        case VehicleRoll::uninvertingRight45:
             VehiclePitchDown25BankedRight45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
+        default:
+            VehiclePitchDown25Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
     }
 }
 
@@ -3017,37 +3102,37 @@ static void VehiclePitchDown42(
 {
     switch (GetPaintBankRotation(vehicle))
     {
-        case 0:
+        case VehicleRoll::unbanked:
             VehiclePitchDown42Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 1:
+        case VehicleRoll::left22:
             VehiclePitchDown42BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 2:
+        case VehicleRoll::left45:
             VehiclePitchDown42BankedLeft45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 3:
+        case VehicleRoll::right22:
             VehiclePitchDown42BankedRight22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 4:
+        case VehicleRoll::right45:
             VehiclePitchDown42BankedRight45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 5:
+        case VehicleRoll::left67:
             VehiclePitchDown42BankedLeft67(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 6:
+        case VehicleRoll::left90:
             VehiclePitchDown42BankedLeft90(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 8:
+        case VehicleRoll::left135:
             VehiclePitchDown42BankedLeft135(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 10:
+        case VehicleRoll::right67:
             VehiclePitchDown42BankedRight67(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 11:
+        case VehicleRoll::right90:
             VehiclePitchDown42BankedRight90(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 13:
+        case VehicleRoll::right135:
             VehiclePitchDown42BankedRight135(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
         default:
@@ -3113,13 +3198,13 @@ static void VehiclePitchDown60(
 {
     switch (GetPaintBankRotation(vehicle))
     {
-        case 0:
+        case VehicleRoll::unbanked:
             VehiclePitchDown60Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 1:
+        case VehicleRoll::left22:
             VehiclePitchDown60BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 3:
+        case VehicleRoll::right22:
             VehiclePitchDown60BankedRight22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
         default:
@@ -3583,21 +3668,21 @@ static void VehiclePitchUp8(
     // 0x009A3D44:
     switch (GetPaintBankRotation(vehicle))
     {
-        case 0:
+        case VehicleRoll::unbanked:
             VehiclePitchUp8Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 1:
-        case 16:
+        case VehicleRoll::left22:
+        case VehicleRoll::uninvertingLeft22:
             VehiclePitchUp8BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 3:
-        case 18:
+        case VehicleRoll::right22:
+        case VehicleRoll::uninvertingRight22:
             VehiclePitchUp8BankedRight22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 2:
+        case VehicleRoll::left45:
             VehiclePitchUp8BankedLeft45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 4:
+        case VehicleRoll::right45:
             VehiclePitchUp8BankedRight45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
         default:
@@ -3702,19 +3787,19 @@ static void VehiclePitchUp16(
 {
     switch (GetPaintBankRotation(vehicle))
     {
-        case 0:
+        case VehicleRoll::unbanked:
             VehiclePitchUp16Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 1:
+        case VehicleRoll::left22:
             VehiclePitchUp16BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 3:
+        case VehicleRoll::right22:
             VehiclePitchUp16BankedRight22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 2:
+        case VehicleRoll::left45:
             VehiclePitchUp16BankedLeft45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 4:
+        case VehicleRoll::right45:
             VehiclePitchUp16BankedRight45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
         default:
@@ -3853,25 +3938,25 @@ static void VehiclePitchUp50(
 {
     switch (GetPaintBankRotation(vehicle))
     {
-        case 0:
+        case VehicleRoll::unbanked:
             VehiclePitchUp50Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 2:
+        case VehicleRoll::left45:
             VehiclePitchUp50BankedLeft45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 4:
+        case VehicleRoll::right45:
             VehiclePitchUp50BankedRight45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 5:
+        case VehicleRoll::left67:
             VehiclePitchUp50BankedLeft67(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 6:
+        case VehicleRoll::left90:
             VehiclePitchUp50BankedLeft90(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 10:
+        case VehicleRoll::right67:
             VehiclePitchUp50BankedRight67(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 11:
+        case VehicleRoll::right90:
             VehiclePitchUp50BankedRight90(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
         default:
@@ -3983,21 +4068,21 @@ static void VehiclePitchDown8(
     // 0x009A3D94:
     switch (GetPaintBankRotation(vehicle))
     {
-        case 0:
+        case VehicleRoll::unbanked:
             VehiclePitchDown8Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 1:
-        case 16:
+        case VehicleRoll::left22:
+        case VehicleRoll::uninvertingLeft22:
             VehiclePitchDown8BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 3:
-        case 18:
+        case VehicleRoll::right22:
+        case VehicleRoll::uninvertingRight22:
             VehiclePitchDown8BankedRight22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 2:
+        case VehicleRoll::left45:
             VehiclePitchDown8BankedLeft45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 4:
+        case VehicleRoll::right45:
             VehiclePitchDown8BankedRight45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
         default:
@@ -4102,19 +4187,19 @@ static void VehiclePitchDown16(
 {
     switch (GetPaintBankRotation(vehicle))
     {
-        case 0:
+        case VehicleRoll::unbanked:
             VehiclePitchDown16Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 1:
+        case VehicleRoll::left22:
             VehiclePitchDown16BankedLeft22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 3:
+        case VehicleRoll::right22:
             VehiclePitchDown16BankedRight22(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 2:
+        case VehicleRoll::left45:
             VehiclePitchDown16BankedLeft45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 4:
+        case VehicleRoll::right45:
             VehiclePitchDown16BankedRight45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
         default:
@@ -4253,25 +4338,25 @@ static void VehiclePitchDown50(
 {
     switch (GetPaintBankRotation(vehicle))
     {
-        case 0:
+        case VehicleRoll::unbanked:
             VehiclePitchDown50Unbanked(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 2:
+        case VehicleRoll::left45:
             VehiclePitchDown50BankedLeft45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 4:
+        case VehicleRoll::right45:
             VehiclePitchDown50BankedRight45(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 5:
+        case VehicleRoll::left67:
             VehiclePitchDown50BankedLeft67(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 6:
+        case VehicleRoll::left90:
             VehiclePitchDown50BankedLeft90(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 10:
+        case VehicleRoll::right67:
             VehiclePitchDown50BankedRight67(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
-        case 11:
+        case VehicleRoll::right90:
             VehiclePitchDown50BankedRight90(session, vehicle, imageDirection, z, carEntry, boundingBoxIndex);
             break;
         default:
@@ -4424,6 +4509,8 @@ static constexpr vehicle_sprite_func PaintFunctionsByPitch[] = {
 };
 // clang-format on
 
+static_assert(std::size(PaintFunctionsByPitch) == EnumValue(VehiclePitch::pitchCount));
+
 #pragma region SplashEffects
 
 /**
@@ -4463,7 +4550,7 @@ static void vehicle_visual_splash2_effect(PaintSession& session, const int32_t z
     {
         return;
     }
-    if (vehicle->pitch != 0)
+    if (vehicle->pitch != VehiclePitch::flat)
     {
         return;
     }
@@ -4486,7 +4573,7 @@ static void vehicle_visual_splash3_effect(PaintSession& session, const int32_t z
     {
         return;
     }
-    if (vehicle->pitch != 0)
+    if (vehicle->pitch != VehiclePitch::flat)
     {
         return;
     }
@@ -4518,7 +4605,7 @@ static void vehicle_visual_splash4_effect(PaintSession& session, const int32_t z
     {
         return;
     }
-    if (vehicle->pitch != 0)
+    if (vehicle->pitch != VehiclePitch::flat)
     {
         return;
     }
@@ -4546,7 +4633,7 @@ static void vehicle_visual_splash5_effect(PaintSession& session, const int32_t z
     {
         return;
     }
-    if (vehicle->pitch != 0)
+    if (vehicle->pitch != VehiclePitch::flat)
     {
         return;
     }
@@ -4590,18 +4677,19 @@ void VehicleVisualSplashEffect(PaintSession& session, const int32_t z, const Veh
 void VehicleVisualDefault(
     PaintSession& session, int32_t imageDirection, const int32_t z, const Vehicle* vehicle, const CarEntry* carEntry)
 {
-    if (vehicle->pitch < std::size(PaintFunctionsByPitch))
+    if (vehicle->pitch < VehiclePitch::pitchCount)
     {
         if (vehicle->HasFlag(VehicleFlags::CarIsReversed))
         {
-            auto imagePitch = PitchInvertTable[vehicle->pitch];
+            auto imagePitch = PitchInvertTable[EnumValue(vehicle->pitch)];
             auto imageYaw = (imageDirection + (OpenRCT2::Entity::Yaw::kBaseRotation / 2))
                 & (OpenRCT2::Entity::Yaw::kBaseRotation - 1);
-            PaintFunctionsByPitch[imagePitch](session, vehicle, imageYaw, z, carEntry, kBoundBoxIndexUndefined);
+            PaintFunctionsByPitch[EnumValue(imagePitch)](session, vehicle, imageYaw, z, carEntry, kBoundBoxIndexUndefined);
         }
         else
         {
-            PaintFunctionsByPitch[vehicle->pitch](session, vehicle, imageDirection, z, carEntry, kBoundBoxIndexUndefined);
+            PaintFunctionsByPitch[EnumValue(vehicle->pitch)](
+                session, vehicle, imageDirection, z, carEntry, kBoundBoxIndexUndefined);
         }
     }
 }

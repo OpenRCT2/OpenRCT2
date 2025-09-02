@@ -1952,8 +1952,8 @@ namespace OpenRCT2::RCT2
 
         ImportEntityCommonProperties(dst, src);
         dst->SubType = ::Vehicle::Type(src->Type);
-        dst->pitch = src->Pitch;
-        dst->roll = src->BankRotation;
+        dst->pitch = src->pitch;
+        dst->roll = src->roll;
         dst->remaining_distance = src->RemainingDistance;
         dst->velocity = src->Velocity;
         dst->acceleration = src->Acceleration;
