@@ -182,7 +182,7 @@ void RCT2StringToUTF8Self(char* buffer, size_t length)
     }
 }
 
-static void FixGuestsHeadingToParkCount(const bool bIgnoreWarning)
+static void FixGuestsHeadingToParkCount()
 {
     uint32_t guestsHeadingToPark = 0;
 
@@ -195,16 +195,16 @@ static void FixGuestsHeadingToParkCount(const bool bIgnoreWarning)
     }
 
     auto& park = getGameState().park;
-    if (!bIgnoreWarning && park.numGuestsHeadingForPark != guestsHeadingToPark)
+    if (park.numGuestsHeadingForPark != guestsHeadingToPark)
     {
-        LOG_WARNING(
+        LOG_VERBOSE(
             "Corrected bad amount of guests heading to park: %u -> %u", park.numGuestsHeadingForPark, guestsHeadingToPark);
     }
 
     park.numGuestsHeadingForPark = guestsHeadingToPark;
 }
 
-static void FixGuestCount(const bool bIgnoreWarning)
+static void FixGuestCount()
 {
     // Recalculates peep count after loading a save to fix corrupted files
     uint32_t guestCount = 0;
@@ -218,9 +218,9 @@ static void FixGuestCount(const bool bIgnoreWarning)
     }
 
     auto& park = getGameState().park;
-    if (!bIgnoreWarning && park.numGuestsInPark != guestCount)
+    if (park.numGuestsInPark != guestCount)
     {
-        LOG_WARNING("Corrected bad amount of guests in park: %u -> %u", park.numGuestsInPark, guestCount);
+        LOG_VERBOSE("Corrected bad amount of guests in park: %u -> %u", park.numGuestsInPark, guestCount);
     }
 
     park.numGuestsInPark = guestCount;
@@ -317,11 +317,11 @@ static void FixInvalidSurfaces()
 
 // OpenRCT2 workaround to recalculate some values which are saved redundantly in the save to fix corrupted files.
 // For example recalculate guest count by looking at all the guests instead of trusting the value in the file.
-void GameFixSaveVars(const bool bShouldIgnoreWarning)
+void GameFixSaveVars()
 {
-    FixGuestsHeadingToParkCount(bShouldIgnoreWarning);
+    FixGuestsHeadingToParkCount();
 
-    FixGuestCount(bShouldIgnoreWarning);
+    FixGuestCount();
 
     FixPeepsWithInvalidRideReference();
 

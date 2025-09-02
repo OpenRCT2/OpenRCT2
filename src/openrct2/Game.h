@@ -174,7 +174,7 @@ void SaveGameCmd(u8string_view name = {});
 void SaveGameWithName(u8string_view name);
 void GameAutosave();
 void RCT2StringToUTF8Self(char* buffer, size_t length);
-void GameFixSaveVars(const bool bShouldIgnoreWarning = false);
+void GameFixSaveVars();
 void StartSilentRecord();
 bool StopSilentRecord();
 void PrepareMapForSave();

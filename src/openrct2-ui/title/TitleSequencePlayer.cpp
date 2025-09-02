@@ -327,7 +327,7 @@ namespace OpenRCT2::Title
                     auto& gameState = getGameState();
                     parkImporter->Import(gameState);
 
-                    GameFixSaveVars(true);
+                    GameFixSaveVars();
 
                     ReportProgress(100);
 
