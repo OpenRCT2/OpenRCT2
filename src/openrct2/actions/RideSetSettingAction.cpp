@@ -144,6 +144,14 @@ namespace OpenRCT2::GameActions
                     return Result(Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE, kStringIdNone);
                 }
                 break;
+            case RideSetSetting::MusicFromAllStations:
+                // Only allow 0 or 1
+                if (_value > 1)
+                {
+                    LOG_ERROR("Invalid value for MusicFromAllStations: %u", _value);
+                    return Result(Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
+                }
+                break;
             default:
                 LOG_ERROR("Invalid ride setting %u", static_cast<uint8_t>(_setting));
                 return Result(Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE, STR_ERR_VALUE_OUT_OF_RANGE);
@@ -230,6 +238,10 @@ namespace OpenRCT2::GameActions
                 ride->type = _value;
                 ride->updateRideTypeForAllPieces();
                 GfxInvalidateScreen();
+                break;
+            case RideSetSetting::MusicFromAllStations:
+                ride->musicFromAllStations = (_value != 0);
+                ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MUSIC;
                 break;
         }
 

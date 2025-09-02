@@ -26,6 +26,7 @@ namespace OpenRCT2::GameActions
         LiftHillSpeed,
         NumCircuits,
         RideType,
+        MusicFromAllStations,
     };
 
     class RideSetSettingAction final : public GameActionBase<GameCommand::SetRideSetting>

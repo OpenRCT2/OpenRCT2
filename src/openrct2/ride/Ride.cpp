@@ -1928,6 +1928,11 @@ void CircusMusicUpdate(Ride& ride)
             CoordsXYZ rideCoords = station.GetStart().ToTileCentre();
             OpenRCT2::RideAudio::UpdateMusicInstance(ride, rideCoords, sampleRate);
         }
+        // Stop after first station if not playing from all
+        if (!ride.musicFromAllStations)
+        {
+            break;
+        }
     }
 }
 
@@ -1970,6 +1975,11 @@ void DefaultMusicUpdate(Ride& ride)
         {
             CoordsXYZ rideCoords = station.GetStart().ToTileCentre();
             OpenRCT2::RideAudio::UpdateMusicInstance(ride, rideCoords, sampleRate);
+        }
+        // Stop after first station if not playing from all
+        if (!ride.musicFromAllStations)
+        {
+            break;
         }
     }
 }

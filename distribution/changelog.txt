@@ -15,7 +15,7 @@
 - Change: [#25024] Guests in mazes no longer jump during heavy snow or blizzards, as they would when it rains.
 - Fix: [#12831] Zooming to cursor on land edges sometimes causes the camera to move to the wrong position.
 - Fix: [#16988] AppImage version does not show changelog.
-- Fix: [#18048] Play music from all ride's stations.
+- Fix: [#18048, #25096] Allow playing music from all ride's stations.
 - Fix: [#19137] Non-inverted left corkscrew supports are incorrect at one angle (original bug).
 - Fix: [#23440] Quarter loops do not block metal supports correctly (original bug).
 - Fix: [#24001] Sloped diagonal metal supports that are offset with a crossbeam draw incorrectly.

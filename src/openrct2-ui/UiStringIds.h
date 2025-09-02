@@ -2304,5 +2304,9 @@ namespace OpenRCT2
         STR_ADJUST_LARGER_WATER_TIP = 2381,
         STR_ADJUST_SMALLER_WATER_TIP = 2380,
         STR_WATER = 2383,
+
+        // Ride music from all stations option
+        STR_RIDE_MUSIC_FROM_ALL_STATIONS = 7004,
+        STR_RIDE_MUSIC_FROM_ALL_STATIONS_TIP = 7005,
     };
 } // namespace OpenRCT2

@@ -298,6 +298,7 @@ struct Ride
     uint16_t totalAirTime{};
     StationIndex currentTestStation{ StationIndex::GetNull() };
     uint8_t numCircuits{};
+    bool musicFromAllStations{ true }; // Play music from all stations if true, only main if false
     CoordsXYZ cableLiftLoc{};
     EntityId cableLift{ EntityId::GetNull() };
 

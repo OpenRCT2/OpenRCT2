@@ -1730,6 +1730,15 @@ namespace OpenRCT2
                     cs.readWrite(ride.music);
                     cs.readWrite(ride.musicTuneId);
                     cs.readWrite(ride.musicPosition);
+
+                    if (version < kRideMusicFromAllStationsVersion)
+                    {
+                        ride.musicFromAllStations = false;
+                    }
+                    else
+                    {
+                        cs.readWrite(ride.musicFromAllStations);
+                    }
                     return true;
                 });
             });

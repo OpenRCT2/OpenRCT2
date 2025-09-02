@@ -205,6 +205,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_RANDOMISE_VEHICLE_COLOURS,
 
         WIDX_PLAY_MUSIC = 14,
+        WIDX_MUSIC_FROM_ALL_STATIONS_CHECKBOX,
         WIDX_MUSIC,
         WIDX_MUSIC_DROPDOWN,
         WIDX_MUSIC_IMAGE,
@@ -351,11 +352,12 @@ namespace OpenRCT2::Ui::Windows
     // 0x009AE4C8
     static constexpr auto _musicWidgets = makeWidgets(
         kMainRideWidgets,
-        makeWidget({  7, 47}, {302,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_PLAY_MUSIC,     STR_SELECT_MUSIC_TIP      ),
-        makeWidget({  7, 62}, {302,  12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                ),
-        makeWidget({297, 63}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH, STR_SELECT_MUSIC_STYLE_TIP),
-        makeWidget({154, 90}, {114, 114}, WidgetType::flatBtn,      WindowColour::secondary                                                ),
-        makeWidget({  7, 90}, {500, 450}, WidgetType::scroll,       WindowColour::secondary, SCROLL_BOTH                                   )
+        makeWidget({  7,  47}, {302,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_PLAY_MUSIC,                   STR_SELECT_MUSIC_TIP                ),
+        makeWidget({  7,  62}, {302,  12}, WidgetType::checkbox,     WindowColour::secondary, STR_RIDE_MUSIC_FROM_ALL_STATIONS, STR_RIDE_MUSIC_FROM_ALL_STATIONS_TIP),
+        makeWidget({  7,  77}, {302,  12}, WidgetType::dropdownMenu, WindowColour::secondary, kStringIdEmpty                                                        ),
+        makeWidget({297,  78}, { 11,  10}, WidgetType::button,       WindowColour::secondary, STR_DROPDOWN_GLYPH,               STR_SELECT_MUSIC_STYLE_TIP          ),
+        makeWidget({154, 105}, {114, 114}, WidgetType::flatBtn,      WindowColour::secondary                                                                        ),
+        makeWidget({  7, 105}, {500, 450}, WidgetType::scroll,       WindowColour::secondary, SCROLL_BOTH                                                           )
     );
 
     // 0x009AE5DC
@@ -4970,6 +4972,17 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
+        void ToggleMusicFromAllStations()
+        {
+            auto ride = GetRide(rideId);
+            if (ride != nullptr)
+            {
+                uint8_t newValue = ride->musicFromAllStations ? 0 : 1;
+                SetOperatingSetting(rideId, GameActions::RideSetSetting::MusicFromAllStations, newValue);
+                ride->windowInvalidateFlags |= RIDE_INVALIDATE_RIDE_MUSIC;
+            }
+        }
+
         void MusicOnMouseUp(WidgetIndex widgetIndex)
         {
             switch (widgetIndex)
@@ -4991,6 +5004,9 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 case WIDX_PLAY_MUSIC:
                     ToggleMusic();
+                    break;
+                case WIDX_MUSIC_FROM_ALL_STATIONS_CHECKBOX:
+                    ToggleMusicFromAllStations();
                     break;
             }
         }
@@ -5211,13 +5227,25 @@ namespace OpenRCT2::Ui::Windows
                 }
 
                 pressed_widgets |= (1uLL << WIDX_PLAY_MUSIC) | (1uLL << WIDX_MUSIC_IMAGE);
-                disabled_widgets &= ~((1uLL << WIDX_MUSIC) | (1uLL << WIDX_MUSIC_DROPDOWN) | (1uLL << WIDX_MUSIC_DATA));
+                disabled_widgets &= ~(
+                    (1uLL << WIDX_MUSIC) | (1uLL << WIDX_MUSIC_DROPDOWN) | (1uLL << WIDX_MUSIC_DATA)
+                    | (1uLL << WIDX_MUSIC_FROM_ALL_STATIONS_CHECKBOX));
             }
             else
             {
                 pressed_widgets &= ~(1uLL << WIDX_PLAY_MUSIC);
                 pressed_widgets |= (1uLL << WIDX_MUSIC_IMAGE);
-                disabled_widgets |= (1uLL << WIDX_MUSIC) | (1uLL << WIDX_MUSIC_DROPDOWN) | (1uLL << WIDX_MUSIC_DATA);
+                disabled_widgets |= (1uLL << WIDX_MUSIC) | (1uLL << WIDX_MUSIC_DROPDOWN) | (1uLL << WIDX_MUSIC_DATA)
+                    | (1uLL << WIDX_MUSIC_FROM_ALL_STATIONS_CHECKBOX);
+            }
+            // Music from all stations checkbox
+            if (ride->musicFromAllStations)
+            {
+                pressed_widgets |= (1uLL << WIDX_MUSIC_FROM_ALL_STATIONS_CHECKBOX);
+            }
+            else
+            {
+                pressed_widgets &= ~(1uLL << WIDX_MUSIC_FROM_ALL_STATIONS_CHECKBOX);
             }
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
