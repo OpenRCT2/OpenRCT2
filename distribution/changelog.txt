@@ -794,6 +794,7 @@
 - Improved: [#19953] Add keyboard shortcut to Keyboard Shortcuts window.
 - Improved: [#20055] Performance improvement for the software renderer.
 - Change: [OpenSFX#17] Update Hybrid RC lifthill loop.
+- Fix: [#11633, #19858] Issue drawing simulate flag icon on alternate colour palettes.
 - Fix: [#12598] Number of holes is not set correctly when saving track designs.
 - Fix: [#13130] Android always defaulting to UK locale for language, currency and temperature.
 - Fix: [#13397] Ride simulation causes strange station behaviour and makes the ride unusable in some cases.
@@ -809,7 +810,6 @@
 - Fix: [#19801] The in-game load/save window cannot be resized anymore.
 - Fix: [#19832] Some scenery group items missing from all scenery tab.
 - Fix: [#19854] Looping Coaster trains clipping through steep quarter turns down.
-- Fix: [#19858] Issue drawing simulate flag icon on alternate colour palettes.
 - Fix: [#19901] Random shop colours never assigning last colour.
 - Fix: [#19911] Guests stuck at certain railway crossings.
 - Fix: [#19924] Destructible cheat does not allow partial ride modification.
