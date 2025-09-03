@@ -99,7 +99,7 @@ namespace OpenRCT2::CommandLine
     constexpr const char* kHelpText = "openrct2 -ha shows help for all commands. "
                                       "openrct2 <command> -h will show help and details for a given command.";
 
-    static void PrintHelpFor(const CommandLineCommand* commands);
+    static void PrintHelpFor(const CommandLineCommand* commands, const char* parentCommandName);
     static void PrintOptions(const CommandLineOptionDefinition* options);
     static void PrintExamples(const CommandLineExample* examples);
     static utf8* GetOptionCaption(utf8* buffer, size_t bufferSize, const CommandLineOptionDefinition* option);
@@ -117,7 +117,7 @@ namespace OpenRCT2::CommandLine
 
     void PrintHelp(bool allCommands)
     {
-        PrintHelpFor(kRootCommands);
+        PrintHelpFor(kRootCommands, nullptr);
         PrintExamples(kRootExamples);
 
         if (allCommands)
@@ -138,7 +138,7 @@ namespace OpenRCT2::CommandLine
                         Console::Write("-");
                     }
                     Console::WriteLine();
-                    PrintHelpFor(command->SubCommands);
+                    PrintHelpFor(command->SubCommands, command->Name);
                 }
             }
         }
@@ -148,7 +148,7 @@ namespace OpenRCT2::CommandLine
         }
     }
 
-    static void PrintHelpFor(const CommandLineCommand* commands)
+    static void PrintHelpFor(const CommandLineCommand* commands, const char* parentCommandName)
     {
         // Print usage
         const char* usageString = "usage: openrct2 ";
@@ -170,6 +170,11 @@ namespace OpenRCT2::CommandLine
             if (command != commands)
             {
                 Console::WriteSpace(usageStringLength);
+            }
+            if (parentCommandName != nullptr)
+            {
+                Console::Write(parentCommandName);
+                Console::Write(" ");
             }
 
             Console::Write(command->Name);
@@ -552,7 +557,8 @@ namespace OpenRCT2
                 // Early exit if user is looking for subcommand help
                 if (String::equals(argument, "-h") || String::equals(argument, "--help"))
                 {
-                    OpenRCT2::CommandLine::PrintHelpFor(command);
+                    // TODO: pass parent command name for proper help
+                    OpenRCT2::CommandLine::PrintHelpFor(command, nullptr);
                     return EXITCODE_OK;
                 }
             }
