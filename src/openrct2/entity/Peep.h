@@ -335,6 +335,7 @@ struct Peep : EntityBase
             uint8_t TimeToStand;
             uint8_t StandingFlags;
         };
+        uint16_t TimesSlidDown;
     };
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
     uint8_t SpecialSprite;

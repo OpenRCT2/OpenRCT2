@@ -3605,7 +3605,7 @@ void PeepUpdateRideLeaveEntranceSpiralSlide(Guest& guest, Ride& ride, CoordsXYZD
     entrance_loc += kSpiralSlideWalkingPath[guest.Var37];
 
     guest.SetDestination(entrance_loc);
-    guest.CurrentCar = 0;
+    guest.TimesSlidDown = 0;
 
     ride.curNumCustomers++;
     guest.OnEnterRide(ride);
@@ -4711,11 +4711,11 @@ void Guest::UpdateRideApproachSpiralSlide()
         bool lastRide = false;
         if (ride->status != RideStatus::open)
             lastRide = true;
-        else if (CurrentCar++ != 0)
+        else if (TimesSlidDown++ != 0)
         {
             if (ride->mode == RideMode::singleRidePerAdmission)
                 lastRide = true;
-            if (static_cast<uint8_t>(CurrentCar - 1) > (ScenarioRand() & 0xF))
+            if (static_cast<uint8_t>(TimesSlidDown - 1) > (ScenarioRand() & 0xF))
                 lastRide = true;
         }
 

@@ -606,6 +606,7 @@ namespace OpenRCT2::RCT2
                 uint8_t TimeToStand;   // 0x6B
                 uint8_t StandingFlags; // 0x6C
             };
+            uint16_t TimesSlidDown; // 0x6B
         };
         uint8_t SpecialSprite;          // 0x6D
         uint8_t AnimationType;          // 0x6E

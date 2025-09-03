@@ -610,6 +610,7 @@ namespace OpenRCT2::RCT1
                 uint8_t TimeToStand;   // 0x6B
                 uint8_t StandingFlags; // 0x6C
             };
+            uint16_t TimesSlidDown; // 0x6B
         };
         // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
         uint8_t SpecialSprite; // 0x6D
