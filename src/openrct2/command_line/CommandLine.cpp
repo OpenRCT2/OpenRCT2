@@ -546,6 +546,19 @@ namespace OpenRCT2
         if (command->Options != nullptr)
         {
             auto argEnumeratorForOptions = CommandLineArgEnumerator(argEnumerator);
+            const char* argument;
+            if (argEnumeratorForOptions.TryPopString(&argument))
+            {
+                // Early exit if user is looking for subcommand help
+                if (String::equals(argument, "-h") || String::equals(argument, "--help"))
+                {
+                    OpenRCT2::CommandLine::PrintHelpFor(command);
+                    return EXITCODE_OK;
+                }
+            }
+
+            argEnumeratorForOptions.Backtrack();
+
             if (!CommandLine::ParseOptions(command->Options, &argEnumeratorForOptions))
             {
                 return EXITCODE_FAIL;
