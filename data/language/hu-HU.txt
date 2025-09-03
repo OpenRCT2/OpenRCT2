@@ -551,8 +551,8 @@ STR_1152    :Bármekkora terhelés
 STR_1153    :Magasságjelzők a játékpályákon
 STR_1154    :Magasságjelzők a talajon
 STR_1155    :Magasságjelzők az utakon
-STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :✓{MOVE_X}{10}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRING}
+STR_1157    :✓{MOVE_X}{10}{STRING}
 STR_1158    :Nem távolítható el…
 STR_1159    :Díszletek, kertek és egyéb kiegészítők elhelyezése
 STR_1160    :Tavak és vizek létrehozása/módosítása
