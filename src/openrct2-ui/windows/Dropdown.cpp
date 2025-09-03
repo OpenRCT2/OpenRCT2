@@ -30,6 +30,8 @@ namespace OpenRCT2::Ui::Windows
 {
     constexpr int32_t kDropdownItemHeight = 12;
     constexpr int32_t kDropdownItemHeightTouch = 24;
+    // Padding to the left of an item, where a marker can be drawn.
+    static constexpr int32_t kDropdownItemLeftPadding = 10;
 
     static constexpr std::array<uint8_t, 57> kAppropriateImageDropdownItemsPerRow = {
         1, 1, 1, 1, 2, 2, 3, 3, 4, 3, // 10
@@ -346,15 +348,17 @@ namespace OpenRCT2::Ui::Windows
         size_t prefRowsPerColumn)
     {
         // Calculate the longest string width
-        int32_t max_string_width = 0;
+        int32_t maxStringWidth = 0;
         for (size_t i = 0; i < num_items; i++)
         {
-            int32_t string_width = GfxGetStringWidth(gDropdown.items[i].text, FontStyle::Medium);
-            max_string_width = std::max(string_width, max_string_width);
+            int32_t stringWidth = GfxGetStringWidth(gDropdown.items[i].text, FontStyle::Medium);
+            if (gDropdown.items[i].type != Dropdown::ItemType::plain)
+                stringWidth += kDropdownItemLeftPadding;
+            maxStringWidth = std::max(stringWidth, maxStringWidth);
         }
 
         WindowDropdownShowTextCustomWidth(
-            screenPos, extray, colour, 0, flags, num_items, max_string_width + 3, prefRowsPerColumn);
+            screenPos, extray, colour, 0, flags, num_items, maxStringWidth + 3, prefRowsPerColumn);
     }
 
     void WindowDropdownShowText(
