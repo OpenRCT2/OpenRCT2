@@ -24,7 +24,6 @@
     #include "../../../ride/Ride.h"
     #include "../../../ride/RideManager.hpp"
     #include "../../../ride/TrainManager.h"
-    #include "../../../world/Map.h"
     #include "../../Duktape.hpp"
     #include "../entity/ScBalloon.hpp"
     #include "../entity/ScEntity.hpp"

@@ -17,6 +17,7 @@
 #include "../management/Finance.h"
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/tile_element/BannerElement.h"
 #include "../world/tile_element/PathElement.h"

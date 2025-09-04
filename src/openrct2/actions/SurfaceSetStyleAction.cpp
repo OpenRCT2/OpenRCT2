@@ -18,6 +18,7 @@
 #include "../object/TerrainEdgeObject.h"
 #include "../object/TerrainSurfaceObject.h"
 #include "../world/Footpath.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/tile_element/SurfaceElement.h"
 

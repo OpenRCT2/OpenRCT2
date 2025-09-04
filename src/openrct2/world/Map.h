@@ -19,8 +19,6 @@
 
 constexpr TileCoordsXY kDefaultMapSize = { 150, 150 };
 
-using PeepSpawn = CoordsXYZD;
-
 namespace OpenRCT2
 {
     struct BannerElement;

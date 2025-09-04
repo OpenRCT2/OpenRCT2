@@ -12,6 +12,7 @@
 #include "../Diagnostic.h"
 #include "../management/Finance.h"
 #include "../ride/RideConstruction.h"
+#include "../world/Map.h"
 #include "../world/tile_element/TrackElement.h"
 
 namespace OpenRCT2::GameActions

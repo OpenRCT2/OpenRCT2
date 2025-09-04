@@ -26,6 +26,7 @@
 #include "../scenario/Scenario.h"
 #include "../ui/WindowManager.h"
 #include "../world/Entrance.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 
 #include <set>

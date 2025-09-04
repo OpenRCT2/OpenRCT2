@@ -44,6 +44,7 @@
 #include "../windows/Intent.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
+#include "../world/Map.h"
 #include "../world/Scenery.h"
 #include "../world/tile_element/EntranceElement.h"
 #include "../world/tile_element/PathElement.h"

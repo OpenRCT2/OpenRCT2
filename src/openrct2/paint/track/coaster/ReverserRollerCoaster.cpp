@@ -14,7 +14,6 @@
 #include "../../../ride/TrackData.h"
 #include "../../../ride/TrackPaint.h"
 #include "../../../ride/Vehicle.h"
-#include "../../../world/Map.h"
 #include "../../../world/tile_element/TrackElement.h"
 #include "../../Paint.h"
 #include "../../support/WoodenSupports.h"

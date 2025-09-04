@@ -16,6 +16,7 @@
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
+#include "../world/Map.h"
 #include "../world/tile_element/TrackElement.h"
 #include "EntityRegistry.h"
 

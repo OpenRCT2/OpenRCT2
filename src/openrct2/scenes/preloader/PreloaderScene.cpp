@@ -19,6 +19,7 @@
 #include "../../localisation/StringIds.h"
 #include "../../ui/WindowManager.h"
 #include "../../windows/Intent.h"
+#include "../../world/Map.h"
 
 #include <sstream>
 

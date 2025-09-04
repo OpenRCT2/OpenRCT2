@@ -12,7 +12,6 @@
 #include "../../SpriteIds.h"
 #include "../../interface/Viewport.h"
 #include "../../ride/TrackData.h"
-#include "../../world/Map.h"
 #include "../../world/tile_element/Slope.h"
 #include "../Boundbox.h"
 #include "../Paint.SessionFlags.h"

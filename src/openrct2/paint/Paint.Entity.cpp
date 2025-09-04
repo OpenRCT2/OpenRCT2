@@ -25,6 +25,7 @@
 #include "../ride/TrackDesign.h"
 #include "../ride/Vehicle.h"
 #include "../world/Climate.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "Paint.h"
 #include "vehicle/VehiclePaint.h"

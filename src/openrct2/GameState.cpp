@@ -28,6 +28,7 @@
 #include "scripting/ScriptEngine.h"
 #include "ui/UiContext.h"
 #include "windows/Intent.h"
+#include "world/Map.h"
 #include "world/MapAnimation.h"
 #include "world/Park.h"
 #include "world/Scenery.h"

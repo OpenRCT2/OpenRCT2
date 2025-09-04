@@ -23,6 +23,7 @@
 #include "../ride/RideAudio.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
+#include "../world/Map.h"
 #include "../world/MapSelection.h"
 #include "Viewport.h"
 #include "Widget.h"

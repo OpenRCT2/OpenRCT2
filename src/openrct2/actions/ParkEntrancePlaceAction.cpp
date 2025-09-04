@@ -18,6 +18,7 @@
 #include "../world/ConstructionClearance.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
+#include "../world/Map.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/tile_element/EntranceElement.h"

@@ -55,6 +55,7 @@
 #include "../ride/RideConstruction.h"
 #include "../sawyer_coding/SawyerCoding.h"
 #include "../world/Footpath.h"
+#include "../world/Map.h"
 #include "../world/MapSelection.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"

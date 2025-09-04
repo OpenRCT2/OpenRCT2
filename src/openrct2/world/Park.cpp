@@ -39,6 +39,7 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "Entrance.h"
+#include "Map.h"
 #include "tile_element/EntranceElement.h"
 #include "tile_element/SurfaceElement.h"
 

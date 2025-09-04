@@ -9,9 +9,9 @@
 
 #include "MapHelpers.h"
 
-#include "../../world/tile_element/Slope.h"
-#include "../../world/tile_element/SurfaceElement.h"
 #include "../Map.h"
+#include "../tile_element/Slope.h"
+#include "../tile_element/SurfaceElement.h"
 
 #include <algorithm>
 

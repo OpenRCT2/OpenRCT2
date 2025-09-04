@@ -19,6 +19,7 @@
     #include <openrct2/scripting/Duktape.hpp>
     #include <openrct2/scripting/ScriptEngine.h>
     #include <openrct2/ui/WindowManager.h>
+    #include <openrct2/world/Map.h>
 
 namespace OpenRCT2::Scripting
 {

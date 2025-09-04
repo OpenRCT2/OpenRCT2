@@ -33,6 +33,8 @@
 
 namespace OpenRCT2
 {
+    using PeepSpawn = CoordsXYZD;
+
     struct GameState_t
     {
         Park::ParkData park{};

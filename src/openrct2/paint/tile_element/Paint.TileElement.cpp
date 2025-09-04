@@ -23,6 +23,7 @@
 #include "../../world/Banner.h"
 #include "../../world/Entrance.h"
 #include "../../world/Footpath.h"
+#include "../../world/Map.h"
 #include "../../world/MapSelection.h"
 #include "../../world/Scenery.h"
 #include "../../world/tile_element/Slope.h"

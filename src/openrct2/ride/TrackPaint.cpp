@@ -26,7 +26,6 @@
 #include "../paint/tile_element/Segment.h"
 #include "../paint/track/Segment.h"
 #include "../paint/track/Support.h"
-#include "../world/Map.h"
 #include "../world/tile_element/TrackElement.h"
 #include "RideData.h"
 #include "Station.h"

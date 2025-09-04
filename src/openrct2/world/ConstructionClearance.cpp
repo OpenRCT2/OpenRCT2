@@ -18,6 +18,7 @@
 #include "../openrct2/Cheats.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
+#include "Map.h"
 #include "Park.h"
 #include "QuarterTile.h"
 #include "Scenery.h"

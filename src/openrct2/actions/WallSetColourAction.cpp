@@ -17,6 +17,7 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../world/Banner.h"
+#include "../world/Map.h"
 #include "../world/Scenery.h"
 #include "../world/tile_element/WallElement.h"
 

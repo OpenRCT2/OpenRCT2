@@ -16,7 +16,6 @@
 #include "../../object/SmallSceneryEntry.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
-#include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/TileInspector.h"
 #include "../../world/tile_element/SmallSceneryElement.h"

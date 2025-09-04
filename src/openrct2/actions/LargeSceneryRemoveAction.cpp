@@ -18,6 +18,7 @@
 #include "../management/Finance.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../ride/Ride.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/TileElementsView.h"
 #include "../world/tile_element/LargeSceneryElement.h"

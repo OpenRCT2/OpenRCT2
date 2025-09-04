@@ -26,6 +26,7 @@
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Location.hpp"
+#include "../world/Map.h"
 
 #include <cassert>
 

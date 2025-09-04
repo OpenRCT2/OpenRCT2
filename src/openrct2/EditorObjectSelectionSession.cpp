@@ -32,6 +32,7 @@
 #include "ride/TrainManager.h"
 #include "ride/Vehicle.h"
 #include "windows/Intent.h"
+#include "world/Map.h"
 #include "world/tile_element/BannerElement.h"
 #include "world/tile_element/EntranceElement.h"
 #include "world/tile_element/LargeSceneryElement.h"

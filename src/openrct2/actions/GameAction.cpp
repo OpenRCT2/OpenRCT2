@@ -26,6 +26,7 @@
 #include "../scripting/HookEngine.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/WindowManager.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 

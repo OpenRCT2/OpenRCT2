@@ -15,6 +15,7 @@
 #include "../management/Finance.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
+#include "../world/Map.h"
 #include "../world/tile_element/BannerElement.h"
 #include "GameAction.h"
 

@@ -19,6 +19,7 @@
 #include "../windows/Intent.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/TileElementsView.h"

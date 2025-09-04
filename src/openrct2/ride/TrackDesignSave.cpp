@@ -23,6 +23,7 @@
 #include "../sawyer_coding/SawyerCoding.h"
 #include "../windows/Intent.h"
 #include "../world/Footpath.h"
+#include "../world/Map.h"
 #include "../world/Scenery.h"
 #include "../world/tile_element/BannerElement.h"
 #include "../world/tile_element/EntranceElement.h"

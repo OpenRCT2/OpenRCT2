@@ -19,6 +19,7 @@
 #include "../ride/RideConstruction.h"
 #include "../ride/RideData.h"
 #include "../windows/Intent.h"
+#include "../world/Map.h"
 #include "../world/MapSelection.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"

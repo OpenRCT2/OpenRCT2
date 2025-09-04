@@ -35,6 +35,7 @@
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Banner.h>
+#include <openrct2/world/Map.h>
 #include <openrct2/world/Scenery.h>
 #include <optional>
 

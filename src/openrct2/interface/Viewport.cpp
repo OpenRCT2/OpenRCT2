@@ -37,7 +37,7 @@
 #include "../ride/Vehicle.h"
 #include "../ui/WindowManager.h"
 #include "../world/Climate.h"
-// #include "../world/Map.h"
+#include "../world/Map.h"
 #include "../world/MapSelection.h"
 #include "../world/tile_element/LargeSceneryElement.h"
 #include "../world/tile_element/SmallSceneryElement.h"
