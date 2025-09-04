@@ -37,23 +37,6 @@ namespace OpenRCT2
     enum class TrackElemType : uint16_t;
 } // namespace OpenRCT2
 
-struct CoordsXYE : public CoordsXY
-{
-    CoordsXYE() = default;
-    constexpr CoordsXYE(int32_t _x, int32_t _y, OpenRCT2::TileElement* _e)
-        : CoordsXY(_x, _y)
-        , element(_e)
-    {
-    }
-
-    constexpr CoordsXYE(const CoordsXY& c, OpenRCT2::TileElement* _e)
-        : CoordsXY(c)
-        , element(_e)
-    {
-    }
-    OpenRCT2::TileElement* element = nullptr;
-};
-
 extern const std::array<CoordsXY, 8> CoordsDirectionDelta;
 extern const TileCoordsXY TileDirectionDelta[];
 
