@@ -647,22 +647,17 @@ static StringId window_cheats_page_titles[] = {
             }
             else if (page == WINDOW_CHEATS_PAGE_PARK)
             {
-                {
-                    auto ft = Formatter();
-                    ft.Add<int32_t>(_parkRatingSpinnerValue);
+                auto ft = Formatter();
+                ft.Add<int32_t>(_parkRatingSpinnerValue);
 
-                    auto& widget = widgets[WIDX_PARK_RATING_SPINNER];
-                    DrawTextBasic(
-                        rt, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 2 }, STR_FORMAT_INTEGER, ft,
-                        { colours[1] });
-                }
+                auto& widget = widgets[WIDX_PARK_RATING_SPINNER];
+                DrawTextBasic(
+                    rt, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 2 }, STR_FORMAT_INTEGER, ft, { colours[1] });
             }
             else if (page == WINDOW_CHEATS_PAGE_STAFF)
             {
-                {
-                    auto& widget = widgets[WIDX_STAFF_SPEED];
-                    DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHEAT_STAFF_SPEED);
-                }
+                auto& widget = widgets[WIDX_STAFF_SPEED];
+                DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHEAT_STAFF_SPEED);
             }
             else if (page == WINDOW_CHEATS_PAGE_GUESTS)
             {
@@ -703,10 +698,8 @@ static StringId window_cheats_page_titles[] = {
             }
             else if (page == WINDOW_CHEATS_PAGE_WEATHER)
             {
-                {
-                    auto& widget = widgets[WIDX_WEATHER];
-                    DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHANGE_WEATHER);
-                }
+                auto& widget = widgets[WIDX_WEATHER];
+                DrawTextBasic(rt, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHANGE_WEATHER);
             }
         }
 
