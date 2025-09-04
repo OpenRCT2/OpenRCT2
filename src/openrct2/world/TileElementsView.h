@@ -10,12 +10,13 @@
 #pragma once
 
 #include "Location.hpp"
-#include "Map.h"
 
 #include <iterator>
 
 namespace OpenRCT2
 {
+    struct TileElement;
+
     namespace Detail
     {
         template<typename T, typename T2>

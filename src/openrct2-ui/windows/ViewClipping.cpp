@@ -20,6 +20,7 @@
 #include <openrct2/paint/Paint.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/world/Location.hpp>
+#include <openrct2/world/Map.h>
 
 namespace OpenRCT2::Ui::Windows
 {

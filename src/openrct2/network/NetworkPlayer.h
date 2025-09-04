@@ -11,7 +11,7 @@
 
 #include "../Game.h"
 #include "../core/Money.hpp"
-#include "../world/Map.h"
+#include "../world/Location.hpp"
 
 #include <string>
 #include <string_view>

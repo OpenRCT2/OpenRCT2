@@ -17,34 +17,7 @@
 #include <optional>
 #include <vector>
 
-constexpr uint8_t kMinimumLandHeight = 2;
-constexpr uint8_t kMaximumLandHeight = 254;
-constexpr uint8_t kMinimumWaterHeight = 2;
-constexpr uint8_t kMaximumWaterHeight = 254;
-/**
- * The land height that counts as 0 metres/feet for the land height labels and altitude graphs.
- */
-constexpr uint8_t kMapBaseZ = 7;
-
-constexpr uint8_t kMinimumMapSizeTechnical = 5;
-constexpr uint16_t kMaximumMapSizeTechnical = 1001;
-constexpr int16_t kMinimumMapSizePractical = (kMinimumMapSizeTechnical - 2);
-constexpr int16_t kMaximumMapSizePractical = (kMaximumMapSizeTechnical - 2);
-constexpr const int32_t kMaximumMapSizeBig = kCoordsXYStep * kMaximumMapSizeTechnical;
-constexpr int32_t kMaximumTileStartXY = kMaximumMapSizeBig - kCoordsXYStep;
-constexpr const int32_t kLandHeightStep = 2 * kCoordsZStep;
-constexpr const int32_t kWaterHeightStep = 2 * kCoordsZStep;
-constexpr const int32_t kMinimumLandZ = kMinimumLandHeight * kCoordsZStep;
 constexpr TileCoordsXY kDefaultMapSize = { 150, 150 };
-// How high construction has to be off the ground when the player owns construction rights, in tile coords.
-constexpr uint8_t kConstructionRightsClearanceSmall = 3;
-// Same as previous, but in big coords.
-constexpr const uint8_t kConstructionRightsClearanceBig = 3 * kCoordsZStep;
-
-constexpr int16_t kMapMinimumXY = (-kMaximumMapSizeTechnical);
-
-constexpr uint32_t kMaxTileElementsWithSpaceRoom = 0x1000000;
-constexpr uint32_t kMaxTileElements = kMaxTileElementsWithSpaceRoom - 512;
 
 using PeepSpawn = CoordsXYZD;
 

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../world/Map.h"
+#include "../world/Location.hpp"
 #include "GameAction.h"
 
 namespace OpenRCT2::GameActions

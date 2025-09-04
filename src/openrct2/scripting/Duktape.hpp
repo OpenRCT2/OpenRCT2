@@ -14,7 +14,6 @@
     #include "../core/Console.hpp"
     #include "../core/EnumMap.hpp"
     #include "../ride/Vehicle.h"
-    #include "../world/Map.h"
 
     #include <cstdio>
     #include <dukglue/dukglue.h>
