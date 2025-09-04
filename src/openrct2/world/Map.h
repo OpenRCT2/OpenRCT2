@@ -54,48 +54,12 @@ struct CoordsXYE : public CoordsXY
     OpenRCT2::TileElement* element = nullptr;
 };
 
-enum
-{
-    MAP_SELECT_FLAG_ENABLE = 1 << 0,
-    MAP_SELECT_FLAG_ENABLE_CONSTRUCT = 1 << 1,
-    MAP_SELECT_FLAG_ENABLE_ARROW = 1 << 2,
-    MAP_SELECT_FLAG_GREEN = 1 << 3,
-};
-
-enum
-{
-    MAP_SELECT_TYPE_CORNER_0,
-    MAP_SELECT_TYPE_CORNER_1,
-    MAP_SELECT_TYPE_CORNER_2,
-    MAP_SELECT_TYPE_CORNER_3,
-    MAP_SELECT_TYPE_FULL,
-    MAP_SELECT_TYPE_FULL_WATER,
-    MAP_SELECT_TYPE_FULL_LAND_RIGHTS,
-    MAP_SELECT_TYPE_QUARTER_0,
-    MAP_SELECT_TYPE_QUARTER_1,
-    MAP_SELECT_TYPE_QUARTER_2,
-    MAP_SELECT_TYPE_QUARTER_3,
-    MAP_SELECT_TYPE_EDGE_0,
-    MAP_SELECT_TYPE_EDGE_1,
-    MAP_SELECT_TYPE_EDGE_2,
-    MAP_SELECT_TYPE_EDGE_3,
-};
-
 extern const std::array<CoordsXY, 8> CoordsDirectionDelta;
 extern const TileCoordsXY TileDirectionDelta[];
 
 CoordsXY GetMapSizeUnits();
 CoordsXY GetMapSizeMinus2();
 CoordsXY GetMapSizeMaxXY();
-
-extern uint16_t gMapSelectFlags;
-extern uint16_t gMapSelectType;
-extern CoordsXY gMapSelectPositionA;
-extern CoordsXY gMapSelectPositionB;
-extern CoordsXYZ gMapSelectArrowPosition;
-extern uint8_t gMapSelectArrowDirection;
-
-extern std::vector<CoordsXY> gMapSelectionTiles;
 
 extern uint32_t gLandRemainingOwnershipSales;
 extern uint32_t gLandRemainingConstructionSales;
@@ -147,8 +111,7 @@ bool MapIsLocationInPark(const CoordsXY& coords);
 bool MapIsLocationOwnedOrHasRights(const CoordsXY& loc);
 bool MapSurfaceIsBlocked(const CoordsXY& mapCoords);
 void MapRemoveAllRides();
-void MapInvalidateMapSelectionTiles();
-void MapInvalidateSelectionRect();
+void MapGetBoundingBox(const MapRange& _range, int32_t* left, int32_t* top, int32_t* right, int32_t* bottom);
 bool MapCheckCapacityAndReorganise(const CoordsXY& loc, size_t numElements = 1);
 int16_t TileElementHeight(const CoordsXY& loc);
 int16_t TileElementHeight(const CoordsXYZ& loc, uint8_t slope);

@@ -14,6 +14,7 @@
 #include "Peep.h"
 
 #include <cstdint>
+#include <vector>
 
 namespace OpenRCT2
 {

@@ -18,7 +18,7 @@
 #include "../interface/Viewport.h"
 #include "../profiling/Profiling.h"
 #include "../world/Location.hpp"
-#include "../world/Map.h"
+#include "../world/MapSelection.h"
 #include "../world/TileElementsView.h"
 #include "../world/tile_element/SurfaceElement.h"
 #include "../world/tile_element/TileElement.h"

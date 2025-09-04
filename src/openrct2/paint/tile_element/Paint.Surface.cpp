@@ -27,6 +27,7 @@
 #include "../../paint/Paint.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
+#include "../../world/MapSelection.h"
 #include "../../world/tile_element/Slope.h"
 #include "../../world/tile_element/SurfaceElement.h"
 #include "../../world/tile_element/TileElement.h"
