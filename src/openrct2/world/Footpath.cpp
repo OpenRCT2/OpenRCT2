@@ -1292,7 +1292,7 @@ static TileElement* FootpathCanBeWide(const CoordsXYZ& footpathPos)
  */
 void FootpathUpdatePathWideFlags(const CoordsXY& footpathPos)
 {
-    if (MapIsLocationAtEdge(footpathPos))
+    if (MapIsEdge(footpathPos))
         return;
 
     FootpathClearWide(footpathPos);

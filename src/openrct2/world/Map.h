@@ -171,8 +171,6 @@ OpenRCT2::TileElement* MapGetTrackElementAtFromRide(const CoordsXYZ& trackPos, R
 OpenRCT2::TileElement* MapGetTrackElementAtWithDirectionFromRide(const CoordsXYZD& trackPos, RideId rideIndex);
 OpenRCT2::TileElement* MapGetTrackElementAtBeforeSurfaceFromRide(const CoordsXYZ& trackPos, RideId rideIndex);
 
-bool MapIsLocationAtEdge(const CoordsXY& loc);
-
 uint16_t CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos);
 
 void FixLandOwnershipTilesWithOwnership(std::vector<TileCoordsXY> tiles, uint8_t ownership);
