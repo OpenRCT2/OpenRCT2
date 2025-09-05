@@ -772,7 +772,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 else
                 {
-                    if (Network::GetPlayerFlags(player) & Network::NETWORK_PLAYER_FLAG_ISSERVER)
+                    if (Network::GetPlayerFlags(player) & Network::PlayerFlags::kIsServer)
                     {
                         _buffer += "{BABYBLUE}";
                     }

@@ -387,7 +387,7 @@ namespace OpenRCT2::Network
         BeginServerLog();
 
         Player* player = AddPlayer(Config::Get().network.PlayerName, "");
-        player->Flags |= NETWORK_PLAYER_FLAG_ISSERVER;
+        player->Flags |= PlayerFlags::kIsServer;
         player->Group = 0;
         player_id = player->Id;
 
@@ -1583,7 +1583,9 @@ namespace OpenRCT2::Network
     {
         Packet packet(Command::tick);
         packet << getGameState().currentTicks << ScenarioRandState().s0;
+
         uint32_t flags = 0;
+
         // Simple counter which limits how often a sprite checksum gets sent.
         // This can get somewhat expensive, so we don't want to push it every tick in release,
         // but debug version can check more often.
@@ -1592,12 +1594,12 @@ namespace OpenRCT2::Network
         if (checksum_counter >= 100)
         {
             checksum_counter = 0;
-            flags |= NETWORK_TICK_FLAG_CHECKSUMS;
+            flags |= TickFlags::kChecksums;
         }
         // Send flags always, so we can understand packet structure on the other end,
         // and allow for some expansion.
         packet << flags;
-        if (flags & NETWORK_TICK_FLAG_CHECKSUMS)
+        if (flags & TickFlags::kChecksums)
         {
             EntitiesChecksum checksum = getGameState().entities.GetAllEntitiesChecksum();
             packet.WriteString(checksum.ToString());
@@ -1724,7 +1726,7 @@ namespace OpenRCT2::Network
     void NetworkBase::ServerSendEventPlayerJoined(const char* playerName)
     {
         Packet packet(Command::event);
-        packet << static_cast<uint16_t>(SERVER_EVENT_PLAYER_JOINED);
+        packet << static_cast<ServerEvent>(ServerEvent::playerJoined);
         packet.WriteString(playerName);
         SendPacketToClients(packet);
     }
@@ -1732,7 +1734,7 @@ namespace OpenRCT2::Network
     void NetworkBase::ServerSendEventPlayerDisconnected(const char* playerName, const char* reason)
     {
         Packet packet(Command::event);
-        packet << static_cast<uint16_t>(SERVER_EVENT_PLAYER_DISCONNECTED);
+        packet << static_cast<ServerEvent>(ServerEvent::playerDisconnected);
         packet.WriteString(playerName);
         packet.WriteString(reason);
         SendPacketToClients(packet);
@@ -1936,7 +1938,7 @@ namespace OpenRCT2::Network
                         if (player != nullptr)
                         {
                             *player = pendingPlayer;
-                            if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
+                            if (player->Flags & PlayerFlags::kIsServer)
                             {
                                 _serverConnection->player = player;
                             }
@@ -3048,7 +3050,7 @@ namespace OpenRCT2::Network
         }
 
         // Player who is hosting is not affected by cooldowns.
-        if ((player->Flags & NETWORK_PLAYER_FLAG_ISSERVER) == 0)
+        if ((player->Flags & PlayerFlags::kIsServer) == 0)
         {
             auto cooldownIt = player->CooldownTime.find(actionType);
             if (cooldownIt != std::end(player->CooldownTime))
@@ -3091,7 +3093,7 @@ namespace OpenRCT2::Network
         tickData.srand0 = srand0;
         tickData.tick = serverTick;
 
-        if (flags & NETWORK_TICK_FLAG_CHECKSUMS)
+        if (flags & TickFlags::kChecksums)
         {
             auto text = packet.ReadString();
             if (!text.empty())
@@ -3216,18 +3218,18 @@ namespace OpenRCT2::Network
 
     void NetworkBase::Client_Handle_EVENT([[maybe_unused]] Connection& connection, Packet& packet)
     {
-        uint16_t eventType;
+        ServerEvent eventType;
         packet >> eventType;
         switch (eventType)
         {
-            case SERVER_EVENT_PLAYER_JOINED:
+            case ServerEvent::playerJoined:
             {
                 auto playerName = packet.ReadString();
                 auto message = FormatStringID(STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, playerName);
                 ChatAddHistory(message);
                 break;
             }
-            case SERVER_EVENT_PLAYER_DISCONNECTED:
+            case ServerEvent::playerDisconnected:
             {
                 auto playerName = packet.ReadString();
                 auto reason = packet.ReadString();
@@ -3598,7 +3600,7 @@ namespace OpenRCT2::Network
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS, kStringIdNone);
         }
 
-        if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
+        if (player->Flags & PlayerFlags::kIsServer)
         {
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO, kStringIdNone);
@@ -3793,7 +3795,7 @@ namespace OpenRCT2::Network
                 GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_PLAYER_NOT_FOUND);
         }
 
-        if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
+        if (player->Flags & PlayerFlags::kIsServer)
         {
             return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_KICK_THE_HOST, kStringIdNone);
         }
