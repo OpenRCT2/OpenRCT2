@@ -27,10 +27,10 @@ namespace OpenRCT2::Network
     static_assert(sizeof(PacketHeader) == 6);
 #pragma pack(pop)
 
-    struct NetworkPacket final
+    struct Packet final
     {
-        NetworkPacket() noexcept = default;
-        NetworkPacket(Command id) noexcept;
+        Packet() noexcept = default;
+        Packet(Command id) noexcept;
 
         uint8_t* GetData() noexcept;
         const uint8_t* GetData() const noexcept;
@@ -47,7 +47,7 @@ namespace OpenRCT2::Network
         void WriteString(std::string_view s);
 
         template<typename T>
-        NetworkPacket& operator>>(T& value)
+        Packet& operator>>(T& value)
         {
             if (BytesRead + sizeof(value) > Header.Size)
             {
@@ -64,14 +64,14 @@ namespace OpenRCT2::Network
         }
 
         template<typename T>
-        NetworkPacket& operator<<(T value)
+        Packet& operator<<(T value)
         {
             T swapped = ByteSwapBE(value);
             Write(&swapped, sizeof(T));
             return *this;
         }
 
-        NetworkPacket& operator<<(DataSerialiser& data)
+        Packet& operator<<(DataSerialiser& data)
         {
             Write(static_cast<const uint8_t*>(data.GetStream().GetData()), data.GetStream().GetLength());
             return *this;

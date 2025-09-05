@@ -18,7 +18,7 @@
 
 namespace OpenRCT2::Network
 {
-    class NetworkUser final
+    class User final
     {
     public:
         std::string Hash;
@@ -27,28 +27,28 @@ namespace OpenRCT2::Network
         bool Remove;
 
         /**
-         * Creates a NetworkUser object from a JSON object
+         * Creates a User object from a JSON object
          * @param jsonData Must be a JSON node of type object
-         * @return Pointer to a new NetworkUser object
+         * @return Pointer to a new User object
          * @note jsonData is deliberately left non-const: json_t behaviour changes when const
          */
-        static std::unique_ptr<NetworkUser> FromJson(const json_t& jsonData);
+        static std::unique_ptr<User> FromJson(const json_t& jsonData);
 
         /**
-         * Serialise a NetworkUser object into a JSON object
+         * Serialise a User object into a JSON object
          *
-         * @return JSON representation of the NetworkUser object
+         * @return JSON representation of the User object
          */
         json_t ToJson() const;
     };
 
-    class NetworkUserManager final
+    class UserManager final
     {
     public:
         void Load();
 
         /**
-         * @brief NetworkUserManager::Save
+         * @brief UserManager::Save
          * Reads mappings from JSON, updates them in-place and saves JSON.
          *
          * Useful for retaining custom entries in JSON file.
@@ -58,12 +58,12 @@ namespace OpenRCT2::Network
         void UnsetUsersOfGroup(uint8_t groupId);
         void RemoveUser(const std::string& hash);
 
-        const NetworkUser* GetUserByHash(const std::string& hash) const;
-        const NetworkUser* GetUserByName(const std::string& name) const;
-        NetworkUser* GetOrAddUser(const std::string& hash);
+        const User* GetUserByHash(const std::string& hash) const;
+        const User* GetUserByName(const std::string& name) const;
+        User* GetOrAddUser(const std::string& hash);
 
     private:
-        std::unordered_map<std::string, std::unique_ptr<NetworkUser>> _usersByHash;
+        std::unordered_map<std::string, std::unique_ptr<User>> _usersByHash;
 
         static u8string GetStorePath();
     };

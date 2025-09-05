@@ -76,7 +76,7 @@ namespace OpenRCT2::Network
         _name = name;
     }
 
-    void NetworkGroup::Read(NetworkPacket& packet)
+    void NetworkGroup::Read(Packet& packet)
     {
         packet >> Id;
         SetName(packet.ReadString());
@@ -86,7 +86,7 @@ namespace OpenRCT2::Network
         }
     }
 
-    void NetworkGroup::Write(NetworkPacket& packet) const
+    void NetworkGroup::Write(Packet& packet) const
     {
         packet << Id;
         packet.WriteString(GetName().c_str());

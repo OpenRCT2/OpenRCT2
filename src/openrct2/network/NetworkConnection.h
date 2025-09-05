@@ -29,24 +29,24 @@ namespace OpenRCT2::Network
 {
     class Player;
 
-    class NetworkConnection final
+    class Connection final
     {
     public:
         std::unique_ptr<ITcpSocket> Socket = nullptr;
-        NetworkPacket InboundPacket;
+        Packet InboundPacket;
         Auth AuthStatus = Auth::none;
         Stats stats = {};
         Player* player = nullptr;
         uint32_t PingTime = 0;
-        NetworkKey Key;
+        Key key;
         std::vector<uint8_t> Challenge;
         std::vector<const ObjectRepositoryItem*> RequestedObjects;
         bool ShouldDisconnect = false;
 
-        NetworkConnection() noexcept;
+        Connection() noexcept;
 
-        NetworkReadPacket ReadPacket();
-        void QueuePacket(const NetworkPacket& packet, bool front = false);
+        ReadPacket readPacket();
+        void QueuePacket(const Packet& packet, bool front = false);
 
         // This will not immediately disconnect the client. The disconnect
         // will happen post-tick.
@@ -66,7 +66,7 @@ namespace OpenRCT2::Network
         uint32_t _lastPacketTime = 0;
         std::string _lastDisconnectReason;
 
-        void RecordPacketStats(const NetworkPacket& packet, bool sending);
+        void RecordPacketStats(const Packet& packet, bool sending);
     };
 } // namespace OpenRCT2::Network
 

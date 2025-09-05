@@ -25,7 +25,7 @@ namespace OpenRCT2::Network
         listening,
     };
 
-    enum class NetworkReadPacket : int32_t
+    enum class ReadPacket : int32_t
     {
         success,
         noData,
@@ -66,7 +66,7 @@ namespace OpenRCT2::Network
         virtual void ConnectAsync(const std::string& address, uint16_t port) = 0;
 
         virtual size_t SendData(const void* buffer, size_t size) = 0;
-        virtual NetworkReadPacket ReceiveData(void* buffer, size_t size, size_t* sizeReceived) = 0;
+        virtual ReadPacket ReceiveData(void* buffer, size_t size, size_t* sizeReceived) = 0;
 
         virtual void SetNoDelay(bool noDelay) = 0;
 
@@ -92,7 +92,7 @@ namespace OpenRCT2::Network
 
         virtual size_t SendData(const std::string& address, uint16_t port, const void* buffer, size_t size) = 0;
         virtual size_t SendData(const INetworkEndpoint& destination, const void* buffer, size_t size) = 0;
-        virtual NetworkReadPacket ReceiveData(
+        virtual ReadPacket ReceiveData(
             void* buffer, size_t size, size_t* sizeReceived, std::unique_ptr<INetworkEndpoint>* sender)
             = 0;
 

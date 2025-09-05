@@ -29,12 +29,12 @@ namespace OpenRCT2::Network
 
     static_assert(kBufferSize <= std::numeric_limits<uint16_t>::max(), "kBufferSize too big, uint16_t is max.");
 
-    NetworkConnection::NetworkConnection() noexcept
+    Connection::Connection() noexcept
     {
         ResetLastPacketTime();
     }
 
-    NetworkReadPacket NetworkConnection::ReadPacket()
+    ReadPacket Connection::readPacket()
     {
         size_t bytesRead = 0;
 
@@ -46,8 +46,8 @@ namespace OpenRCT2::Network
 
             uint8_t* buffer = reinterpret_cast<uint8_t*>(&InboundPacket.Header);
 
-            NetworkReadPacket status = Socket->ReceiveData(buffer, missingLength, &bytesRead);
-            if (status != NetworkReadPacket::success)
+            ReadPacket status = Socket->ReceiveData(buffer, missingLength, &bytesRead);
+            if (status != ReadPacket::success)
             {
                 return status;
             }
@@ -56,7 +56,7 @@ namespace OpenRCT2::Network
             if (InboundPacket.BytesTransferred < sizeof(InboundPacket.Header))
             {
                 // If still not enough data for header, keep waiting.
-                return NetworkReadPacket::moreData;
+                return ReadPacket::moreData;
             }
 
             // Normalise values.
@@ -79,8 +79,8 @@ namespace OpenRCT2::Network
 
             if (missingLength > 0)
             {
-                NetworkReadPacket status = Socket->ReceiveData(buffer, std::min(missingLength, kBufferSize), &bytesRead);
-                if (status != NetworkReadPacket::success)
+                ReadPacket status = Socket->ReceiveData(buffer, std::min(missingLength, kBufferSize), &bytesRead);
+                if (status != ReadPacket::success)
                 {
                     return status;
                 }
@@ -96,14 +96,14 @@ namespace OpenRCT2::Network
 
                 RecordPacketStats(InboundPacket, false);
 
-                return NetworkReadPacket::success;
+                return ReadPacket::success;
             }
         }
 
-        return NetworkReadPacket::moreData;
+        return ReadPacket::moreData;
     }
 
-    static sfl::small_vector<uint8_t, 512> serializePacket(const NetworkPacket& packet)
+    static sfl::small_vector<uint8_t, 512> serializePacket(const Packet& packet)
     {
         // NOTE: For compatibility reasons for the master server we need to add sizeof(Header.Id) to the size.
         // Previously the Id field was not part of the header rather part of the body.
@@ -125,7 +125,7 @@ namespace OpenRCT2::Network
         return buffer;
     }
 
-    void NetworkConnection::QueuePacket(const NetworkPacket& packet, bool front)
+    void Connection::QueuePacket(const Packet& packet, bool front)
     {
         if (AuthStatus == Auth::ok || !packet.CommandRequiresAuth())
         {
@@ -143,17 +143,17 @@ namespace OpenRCT2::Network
         }
     }
 
-    void NetworkConnection::Disconnect() noexcept
+    void Connection::Disconnect() noexcept
     {
         ShouldDisconnect = true;
     }
 
-    bool NetworkConnection::IsValid() const
+    bool Connection::IsValid() const
     {
         return !ShouldDisconnect && Socket->GetStatus() == SocketStatus::connected;
     }
 
-    void NetworkConnection::SendQueuedData()
+    void Connection::SendQueuedData()
     {
         if (_outboundBuffer.empty())
         {
@@ -168,12 +168,12 @@ namespace OpenRCT2::Network
         }
     }
 
-    void NetworkConnection::ResetLastPacketTime() noexcept
+    void Connection::ResetLastPacketTime() noexcept
     {
         _lastPacketTime = Platform::GetTicks();
     }
 
-    bool NetworkConnection::ReceivedPacketRecently() const noexcept
+    bool Connection::ReceivedPacketRecently() const noexcept
     {
     #ifndef DEBUG
         constexpr auto kTimeoutMs = kNoDataTimeout * 1000;
@@ -185,24 +185,24 @@ namespace OpenRCT2::Network
         return true;
     }
 
-    const utf8* NetworkConnection::GetLastDisconnectReason() const noexcept
+    const utf8* Connection::GetLastDisconnectReason() const noexcept
     {
         return this->_lastDisconnectReason.c_str();
     }
 
-    void NetworkConnection::SetLastDisconnectReason(std::string_view src)
+    void Connection::SetLastDisconnectReason(std::string_view src)
     {
         _lastDisconnectReason = src;
     }
 
-    void NetworkConnection::SetLastDisconnectReason(const StringId string_id, void* args)
+    void Connection::SetLastDisconnectReason(const StringId string_id, void* args)
     {
         char buffer[kDisconnectReasonBufSize];
         FormatStringLegacy(buffer, kDisconnectReasonBufSize, string_id, args);
         SetLastDisconnectReason(buffer);
     }
 
-    void NetworkConnection::RecordPacketStats(const NetworkPacket& packet, bool sending)
+    void Connection::RecordPacketStats(const Packet& packet, bool sending)
     {
         uint32_t packetSize = static_cast<uint32_t>(packet.BytesTransferred);
         StatisticsGroup trafficGroup;

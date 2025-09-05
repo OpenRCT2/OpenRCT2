@@ -21,15 +21,15 @@
 
 namespace OpenRCT2::Network
 {
-    NetworkKey::NetworkKey() = default;
-    NetworkKey::~NetworkKey() = default;
+    Key::Key() = default;
+    Key::~Key() = default;
 
-    void NetworkKey::Unload()
+    void Key::Unload()
     {
         _key = nullptr;
     }
 
-    bool NetworkKey::Generate()
+    bool Key::Generate()
     {
         try
         {
@@ -39,12 +39,12 @@ namespace OpenRCT2::Network
         }
         catch (const std::exception& e)
         {
-            LOG_ERROR("NetworkKey::Generate failed: %s", e.what());
+            LOG_ERROR("Network::Key::Generate failed: %s", e.what());
             return false;
         }
     }
 
-    bool NetworkKey::LoadPrivate(IStream* stream)
+    bool Key::LoadPrivate(IStream* stream)
     {
         Guard::ArgumentNotNull(stream);
 
@@ -71,12 +71,12 @@ namespace OpenRCT2::Network
         }
         catch (const std::exception& e)
         {
-            LOG_ERROR("NetworkKey::LoadPrivate failed: %s", e.what());
+            LOG_ERROR("Network::Key::LoadPrivate failed: %s", e.what());
             return false;
         }
     }
 
-    bool NetworkKey::LoadPublic(IStream* stream)
+    bool Key::LoadPublic(IStream* stream)
     {
         Guard::ArgumentNotNull(stream);
 
@@ -103,12 +103,12 @@ namespace OpenRCT2::Network
         }
         catch (const std::exception& e)
         {
-            LOG_ERROR("NetworkKey::LoadPublic failed: %s", e.what());
+            LOG_ERROR("Network::Key::LoadPublic failed: %s", e.what());
             return false;
         }
     }
 
-    bool NetworkKey::SavePrivate(IStream* stream)
+    bool Key::SavePrivate(IStream* stream)
     {
         try
         {
@@ -122,12 +122,12 @@ namespace OpenRCT2::Network
         }
         catch (const std::exception& e)
         {
-            LOG_ERROR("NetworkKey::SavePrivate failed: %s", e.what());
+            LOG_ERROR("Network::Key::SavePrivate failed: %s", e.what());
             return false;
         }
     }
 
-    bool NetworkKey::SavePublic(IStream* stream)
+    bool Key::SavePublic(IStream* stream)
     {
         try
         {
@@ -141,12 +141,12 @@ namespace OpenRCT2::Network
         }
         catch (const std::exception& e)
         {
-            LOG_ERROR("NetworkKey::SavePublic failed: %s", e.what());
+            LOG_ERROR("Network::Key::SavePublic failed: %s", e.what());
             return false;
         }
     }
 
-    std::string NetworkKey::PublicKeyString()
+    std::string Key::PublicKeyString()
     {
         if (_key == nullptr)
         {
@@ -156,7 +156,7 @@ namespace OpenRCT2::Network
     }
 
     /**
-     * @brief NetworkKey::PublicKeyHash
+     * @brief Key::PublicKeyHash
      * Computes a short, human-readable (e.g. asciif-ied hex) hash for a given
      * public key. Serves a purpose of easy identification keys in multiplayer
      * overview, multiplayer settings.
@@ -166,7 +166,7 @@ namespace OpenRCT2::Network
      *
      * @return returns a string containing key hash.
      */
-    std::string NetworkKey::PublicKeyHash()
+    std::string Key::PublicKeyHash()
     {
         try
         {
@@ -185,7 +185,7 @@ namespace OpenRCT2::Network
         return nullptr;
     }
 
-    bool NetworkKey::Sign(const uint8_t* md, const size_t len, std::vector<uint8_t>& signature) const
+    bool Key::Sign(const uint8_t* md, const size_t len, std::vector<uint8_t>& signature) const
     {
         try
         {
@@ -195,12 +195,12 @@ namespace OpenRCT2::Network
         }
         catch (const std::exception& e)
         {
-            LOG_ERROR("NetworkKey::Sign failed: %s", e.what());
+            LOG_ERROR("Network::Key::Sign failed: %s", e.what());
             return false;
         }
     }
 
-    bool NetworkKey::Verify(const uint8_t* md, const size_t len, const std::vector<uint8_t>& signature) const
+    bool Key::Verify(const uint8_t* md, const size_t len, const std::vector<uint8_t>& signature) const
     {
         try
         {
@@ -209,7 +209,7 @@ namespace OpenRCT2::Network
         }
         catch (const std::exception& e)
         {
-            LOG_ERROR("NetworkKey::Verify failed: %s", e.what());
+            LOG_ERROR("Network::Key::Verify failed: %s", e.what());
             return false;
         }
     }

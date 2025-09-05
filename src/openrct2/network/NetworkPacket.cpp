@@ -17,34 +17,34 @@
 
 namespace OpenRCT2::Network
 {
-    NetworkPacket::NetworkPacket(Command id) noexcept
+    Packet::Packet(Command id) noexcept
         : Header{ 0, id }
     {
     }
 
-    uint8_t* NetworkPacket::GetData() noexcept
+    uint8_t* Packet::GetData() noexcept
     {
         return Data.data();
     }
 
-    const uint8_t* NetworkPacket::GetData() const noexcept
+    const uint8_t* Packet::GetData() const noexcept
     {
         return Data.data();
     }
 
-    Command NetworkPacket::GetCommand() const noexcept
+    Command Packet::GetCommand() const noexcept
     {
         return Header.Id;
     }
 
-    void NetworkPacket::Clear() noexcept
+    void Packet::Clear() noexcept
     {
         BytesTransferred = 0;
         BytesRead = 0;
         Data.clear();
     }
 
-    bool NetworkPacket::CommandRequiresAuth() const noexcept
+    bool Packet::CommandRequiresAuth() const noexcept
     {
         switch (GetCommand())
         {
@@ -63,19 +63,19 @@ namespace OpenRCT2::Network
         }
     }
 
-    void NetworkPacket::Write(const void* bytes, size_t size)
+    void Packet::Write(const void* bytes, size_t size)
     {
         const uint8_t* src = reinterpret_cast<const uint8_t*>(bytes);
         Data.insert(Data.end(), src, src + size);
     }
 
-    void NetworkPacket::WriteString(std::string_view s)
+    void Packet::WriteString(std::string_view s)
     {
         Write(s.data(), s.size());
         Data.push_back(0);
     }
 
-    const uint8_t* NetworkPacket::Read(size_t size)
+    const uint8_t* Packet::Read(size_t size)
     {
         if (BytesRead + size > Data.size())
         {
@@ -87,7 +87,7 @@ namespace OpenRCT2::Network
         return data;
     }
 
-    std::string_view NetworkPacket::ReadString()
+    std::string_view Packet::ReadString()
     {
         if (BytesRead >= Data.size())
             return {};

@@ -293,7 +293,7 @@ namespace OpenRCT2::Network
                     size_t recievedLen{};
                     std::unique_ptr<INetworkEndpoint> endpoint;
                     auto p = udpSocket->ReceiveData(buffer, sizeof(buffer) - 1, &recievedLen, &endpoint);
-                    if (p == NetworkReadPacket::success)
+                    if (p == ReadPacket::success)
                     {
                         auto sender = endpoint->GetHostname();
                         LOG_VERBOSE("Received %zu bytes back from %s", recievedLen, sender.c_str());

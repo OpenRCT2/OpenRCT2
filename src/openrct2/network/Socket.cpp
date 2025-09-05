@@ -574,7 +574,7 @@ namespace OpenRCT2::Network
             return totalSent;
         }
 
-        NetworkReadPacket ReceiveData(void* buffer, size_t size, size_t* sizeReceived) override
+        ReadPacket ReceiveData(void* buffer, size_t size, size_t* sizeReceived) override
         {
             if (_status != SocketStatus::connected)
             {
@@ -585,7 +585,7 @@ namespace OpenRCT2::Network
             if (readBytes == 0)
             {
                 *sizeReceived = 0;
-                return NetworkReadPacket::disconnected;
+                return ReadPacket::disconnected;
             }
 
             if (readBytes == SOCKET_ERROR)
@@ -605,14 +605,14 @@ namespace OpenRCT2::Network
     #endif // _WIN32
                 if (LAST_SOCKET_ERROR() != EWOULDBLOCK)
                 {
-                    return NetworkReadPacket::disconnected;
+                    return ReadPacket::disconnected;
                 }
 
-                return NetworkReadPacket::noData;
+                return ReadPacket::noData;
             }
 
             *sizeReceived = readBytes;
-            return NetworkReadPacket::success;
+            return ReadPacket::success;
         }
 
         void Close() override
@@ -782,7 +782,7 @@ namespace OpenRCT2::Network
             return totalSent;
         }
 
-        NetworkReadPacket ReceiveData(
+        ReadPacket ReceiveData(
             void* buffer, size_t size, size_t* sizeReceived, std::unique_ptr<INetworkEndpoint>* sender) override
         {
             sockaddr_in senderAddr{};
@@ -798,7 +798,7 @@ namespace OpenRCT2::Network
             if (readBytes <= 0)
             {
                 *sizeReceived = 0;
-                return NetworkReadPacket::noData;
+                return ReadPacket::noData;
             }
 
             *sizeReceived = readBytes;
@@ -806,7 +806,7 @@ namespace OpenRCT2::Network
             {
                 *sender = std::make_unique<NetworkEndpoint>(reinterpret_cast<sockaddr*>(&senderAddr), senderAddrLen);
             }
-            return NetworkReadPacket::success;
+            return ReadPacket::success;
         }
 
         void Close() override

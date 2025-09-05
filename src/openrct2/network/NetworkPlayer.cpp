@@ -23,7 +23,7 @@ namespace OpenRCT2::Network
         Name = name.substr(0, 36);
     }
 
-    void Player::Read(NetworkPacket& packet)
+    void Player::Read(Packet& packet)
     {
         auto name = packet.ReadString();
         SetName(name);
@@ -31,7 +31,7 @@ namespace OpenRCT2::Network
             >> MoneySpent >> CommandsRan;
     }
 
-    void Player::Write(NetworkPacket& packet)
+    void Player::Write(Packet& packet)
     {
         packet.WriteString(Name);
         packet << Id << Flags << Group << LastAction << LastActionCoord.x << LastActionCoord.y << LastActionCoord.z

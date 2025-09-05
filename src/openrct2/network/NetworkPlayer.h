@@ -21,7 +21,7 @@ struct Peep;
 
 namespace OpenRCT2::Network
 {
-    struct NetworkPacket;
+    struct Packet;
 
     class Player final
     {
@@ -46,8 +46,8 @@ namespace OpenRCT2::Network
 
         void SetName(std::string_view name);
 
-        void Read(NetworkPacket& packet);
-        void Write(NetworkPacket& packet);
+        void Read(Packet& packet);
+        void Write(Packet& packet);
         void IncrementNumCommands();
         void AddMoneySpent(money64 cost);
     };

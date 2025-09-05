@@ -38,8 +38,8 @@ namespace OpenRCT2::Network
         const std::string& GetName() const noexcept;
         void SetName(std::string_view name);
 
-        void Read(NetworkPacket& packet);
-        void Write(NetworkPacket& packet) const;
+        void Read(Packet& packet);
+        void Write(Packet& packet) const;
         void ToggleActionPermission(Permission index);
         bool CanPerformAction(Permission index) const noexcept;
         bool CanPerformCommand(GameCommand command) const;

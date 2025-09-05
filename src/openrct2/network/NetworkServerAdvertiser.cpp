@@ -116,7 +116,7 @@ namespace OpenRCT2::Network
                     size_t recievedBytes{};
                     std::unique_ptr<INetworkEndpoint> endpoint;
                     auto p = _lanListener->ReceiveData(buffer, sizeof(buffer) - 1, &recievedBytes, &endpoint);
-                    if (p == NetworkReadPacket::success)
+                    if (p == ReadPacket::success)
                     {
                         std::string sender = endpoint->GetHostname();
                         LOG_VERBOSE("Received %zu bytes from %s on LAN broadcast port", recievedBytes, sender.c_str());

@@ -26,18 +26,18 @@ namespace OpenRCT2::Network
 {
     constexpr const utf8* kUserStoreFilename = "users.json";
 
-    std::unique_ptr<NetworkUser> NetworkUser::FromJson(const json_t& jsonData)
+    std::unique_ptr<User> User::FromJson(const json_t& jsonData)
     {
-        Guard::Assert(jsonData.is_object(), "NetworkUser::FromJson expects parameter jsonData to be object");
+        Guard::Assert(jsonData.is_object(), "Network::User::FromJson expects parameter jsonData to be object");
 
         const std::string hash = Json::GetString(jsonData["hash"]);
         const std::string name = Json::GetString(jsonData["name"]);
         json_t jsonGroupId = jsonData["groupId"];
 
-        std::unique_ptr<NetworkUser> user = nullptr;
+        std::unique_ptr<User> user = nullptr;
         if (!hash.empty() && !name.empty())
         {
-            user = std::make_unique<NetworkUser>();
+            user = std::make_unique<User>();
             user->Hash = hash;
             user->Name = name;
             if (jsonGroupId.is_number_integer())
@@ -49,7 +49,7 @@ namespace OpenRCT2::Network
         return user;
     }
 
-    json_t NetworkUser::ToJson() const
+    json_t User::ToJson() const
     {
         json_t jsonData;
         jsonData["hash"] = Hash;
@@ -65,7 +65,7 @@ namespace OpenRCT2::Network
         return jsonData;
     }
 
-    void NetworkUserManager::Load()
+    void UserManager::Load()
     {
         const auto path = GetStorePath();
 
@@ -80,7 +80,7 @@ namespace OpenRCT2::Network
                 {
                     if (jsonUser.is_object())
                     {
-                        auto networkUser = NetworkUser::FromJson(jsonUser);
+                        auto networkUser = User::FromJson(jsonUser);
                         if (networkUser != nullptr)
                         {
                             _usersByHash[networkUser->Hash] = std::move(networkUser);
@@ -95,7 +95,7 @@ namespace OpenRCT2::Network
         }
     }
 
-    void NetworkUserManager::Save()
+    void UserManager::Save()
     {
         const auto path = GetStorePath();
 
@@ -153,7 +153,7 @@ namespace OpenRCT2::Network
         Json::WriteToFile(path, jsonUsers);
     }
 
-    void NetworkUserManager::UnsetUsersOfGroup(uint8_t groupId)
+    void UserManager::UnsetUsersOfGroup(uint8_t groupId)
     {
         for (const auto& kvp : _usersByHash)
         {
@@ -165,16 +165,16 @@ namespace OpenRCT2::Network
         }
     }
 
-    void NetworkUserManager::RemoveUser(const std::string& hash)
+    void UserManager::RemoveUser(const std::string& hash)
     {
-        NetworkUser* networkUser = const_cast<NetworkUser*>(GetUserByHash(hash));
+        User* networkUser = const_cast<User*>(GetUserByHash(hash));
         if (networkUser != nullptr)
         {
             networkUser->Remove = true;
         }
     }
 
-    const NetworkUser* NetworkUserManager::GetUserByHash(const std::string& hash) const
+    const User* UserManager::GetUserByHash(const std::string& hash) const
     {
         auto it = _usersByHash.find(hash);
         if (it != _usersByHash.end())
@@ -184,7 +184,7 @@ namespace OpenRCT2::Network
         return nullptr;
     }
 
-    const NetworkUser* NetworkUserManager::GetUserByName(const std::string& name) const
+    const User* UserManager::GetUserByName(const std::string& name) const
     {
         for (const auto& kvp : _usersByHash)
         {
@@ -197,20 +197,20 @@ namespace OpenRCT2::Network
         return nullptr;
     }
 
-    NetworkUser* NetworkUserManager::GetOrAddUser(const std::string& hash)
+    User* UserManager::GetOrAddUser(const std::string& hash)
     {
-        NetworkUser* networkUser = const_cast<NetworkUser*>(GetUserByHash(hash));
+        User* networkUser = const_cast<User*>(GetUserByHash(hash));
         if (networkUser == nullptr)
         {
-            auto newNetworkUser = std::make_unique<NetworkUser>();
-            newNetworkUser->Hash = hash;
-            networkUser = newNetworkUser.get();
-            _usersByHash[hash] = std::move(newNetworkUser);
+            auto newUser = std::make_unique<User>();
+            newUser->Hash = hash;
+            networkUser = newUser.get();
+            _usersByHash[hash] = std::move(newUser);
         }
         return networkUser;
     }
 
-    u8string NetworkUserManager::GetStorePath()
+    u8string UserManager::GetStorePath()
     {
         auto& env = GetContext()->GetPlatformEnvironment();
         return Path::Combine(env.GetDirectoryPath(DirBase::user), kUserStoreFilename);

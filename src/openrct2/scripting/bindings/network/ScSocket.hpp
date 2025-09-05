@@ -349,14 +349,14 @@ namespace OpenRCT2::Scripting
                     auto result = _socket->ReceiveData(buffer, sizeof(buffer), &bytesRead);
                     switch (result)
                     {
-                        case Network::NetworkReadPacket::success:
+                        case Network::ReadPacket::success:
                             RaiseOnData(std::string(buffer, bytesRead));
                             break;
-                        case Network::NetworkReadPacket::noData:
+                        case Network::ReadPacket::noData:
                             break;
-                        case Network::NetworkReadPacket::moreData:
+                        case Network::ReadPacket::moreData:
                             break;
-                        case Network::NetworkReadPacket::disconnected:
+                        case Network::ReadPacket::disconnected:
                             CloseSocket();
                             break;
                     }

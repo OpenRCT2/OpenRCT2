@@ -27,11 +27,11 @@ namespace OpenRCT2::Crypt
 
 namespace OpenRCT2::Network
 {
-    class NetworkKey final
+    class Key final
     {
     public:
-        NetworkKey();
-        ~NetworkKey();
+        Key();
+        ~Key();
         bool Generate();
         bool LoadPrivate(IStream* stream);
         bool LoadPublic(IStream* stream);
@@ -44,7 +44,7 @@ namespace OpenRCT2::Network
         bool Verify(const uint8_t* md, const size_t len, const std::vector<uint8_t>& signature) const;
 
     private:
-        NetworkKey(const NetworkKey&) = delete;
+        Key(const Key&) = delete;
         std::unique_ptr<Crypt::RsaKey> _key;
     };
 } // namespace OpenRCT2::Network
