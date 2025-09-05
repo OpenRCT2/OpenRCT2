@@ -21,13 +21,13 @@
 
 namespace OpenRCT2::Network
 {
-    static constexpr size_t kNetworkDisconnectReasonBufSize = 256;
-    static constexpr size_t kNetworkBufferSize = (1024 * 64) - 1; // 64 KiB, maximum packet size.
+    static constexpr size_t kDisconnectReasonBufSize = 256;
+    static constexpr size_t kBufferSize = (1024 * 64) - 1; // 64 KiB, maximum packet size.
     #ifndef DEBUG
-    static constexpr size_t kNetworkNoDataTimeout = 20; // Seconds.
+    static constexpr size_t kNoDataTimeout = 20; // Seconds.
     #endif
 
-    static_assert(kNetworkBufferSize <= std::numeric_limits<uint16_t>::max(), "kNetworkBufferSize too big, uint16_t is max.");
+    static_assert(kBufferSize <= std::numeric_limits<uint16_t>::max(), "kBufferSize too big, uint16_t is max.");
 
     NetworkConnection::NetworkConnection() noexcept
     {
@@ -75,11 +75,11 @@ namespace OpenRCT2::Network
             // NOTE: BytesTransfered includes the header length, this will not underflow.
             const size_t missingLength = header.Size - (InboundPacket.BytesTransferred - sizeof(header));
 
-            uint8_t buffer[kNetworkBufferSize];
+            uint8_t buffer[kBufferSize];
 
             if (missingLength > 0)
             {
-                NetworkReadPacket status = Socket->ReceiveData(buffer, std::min(missingLength, kNetworkBufferSize), &bytesRead);
+                NetworkReadPacket status = Socket->ReceiveData(buffer, std::min(missingLength, kBufferSize), &bytesRead);
                 if (status != NetworkReadPacket::success)
                 {
                     return status;
@@ -176,7 +176,7 @@ namespace OpenRCT2::Network
     bool NetworkConnection::ReceivedPacketRecently() const noexcept
     {
     #ifndef DEBUG
-        constexpr auto kTimeoutMs = kNetworkNoDataTimeout * 1000;
+        constexpr auto kTimeoutMs = kNoDataTimeout * 1000;
         if (Platform::GetTicks() > _lastPacketTime + kTimeoutMs)
         {
             return false;
@@ -197,8 +197,8 @@ namespace OpenRCT2::Network
 
     void NetworkConnection::SetLastDisconnectReason(const StringId string_id, void* args)
     {
-        char buffer[kNetworkDisconnectReasonBufSize];
-        FormatStringLegacy(buffer, kNetworkDisconnectReasonBufSize, string_id, args);
+        char buffer[kDisconnectReasonBufSize];
+        FormatStringLegacy(buffer, kDisconnectReasonBufSize, string_id, args);
         SetLastDisconnectReason(buffer);
     }
 

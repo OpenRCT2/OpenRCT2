@@ -108,7 +108,7 @@ namespace OpenRCT2::Network
             {
                 if (_lanListener->GetStatus() != SocketStatus::listening)
                 {
-                    _lanListener->Listen(kNetworkLanBroadcastPort);
+                    _lanListener->Listen(kLanBroadcastPort);
                 }
                 else
                 {
@@ -120,7 +120,7 @@ namespace OpenRCT2::Network
                     {
                         std::string sender = endpoint->GetHostname();
                         LOG_VERBOSE("Received %zu bytes from %s on LAN broadcast port", recievedBytes, sender.c_str());
-                        if (String::equals(buffer, kNetworkLanBroadcastMsg))
+                        if (String::equals(buffer, kLanBroadcastMsg))
                         {
                             auto body = GetBroadcastJson();
                             auto bodyDump = body.dump();

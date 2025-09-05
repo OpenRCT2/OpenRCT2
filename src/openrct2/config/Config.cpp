@@ -473,7 +473,7 @@ namespace OpenRCT2::Config
 
             auto model = &_config.network;
             model->PlayerName = std::move(playerName);
-            model->DefaultPort = reader->GetInt32("default_port", ::Network::kNetworkDefaultPort);
+            model->DefaultPort = reader->GetInt32("default_port", ::Network::kDefaultPort);
             model->ListenAddress = reader->GetString("listen_address", "");
             model->DefaultPassword = reader->GetString("default_password", "");
             model->StayConnected = reader->GetBoolean("stay_connected", true);

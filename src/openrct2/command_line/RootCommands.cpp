@@ -42,7 +42,7 @@ using namespace OpenRCT2;
 #ifndef DISABLE_NETWORK
 Network::Mode gNetworkStart = Network::Mode::none;
 std::string gNetworkStartHost;
-int32_t gNetworkStartPort = Network::kNetworkDefaultPort;
+int32_t gNetworkStartPort = Network::kDefaultPort;
 std::string gNetworkStartAddress;
 
 static uint32_t _port = 0;

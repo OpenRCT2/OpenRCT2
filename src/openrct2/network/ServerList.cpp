@@ -273,11 +273,11 @@ namespace OpenRCT2::Network
             constexpr auto kReceiveDelayInMs = 10;
             constexpr auto kReceiveWaitInMs = 2000;
 
-            std::string_view msg = kNetworkLanBroadcastMsg;
+            std::string_view msg = kLanBroadcastMsg;
             auto udpSocket = CreateUdpSocket();
 
             LOG_VERBOSE("Broadcasting %zu bytes to the LAN (%s)", msg.size(), broadcastAddress.c_str());
-            auto len = udpSocket->SendData(broadcastAddress, kNetworkLanBroadcastPort, msg.data(), msg.size());
+            auto len = udpSocket->SendData(broadcastAddress, kLanBroadcastPort, msg.data(), msg.size());
             if (len != msg.size())
             {
                 throw std::runtime_error("Unable to broadcast server query.");

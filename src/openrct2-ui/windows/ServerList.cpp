@@ -547,7 +547,7 @@ namespace OpenRCT2::Ui::Windows
 
     void JoinServer(std::string address)
     {
-        int32_t port = Network::kNetworkDefaultPort;
+        int32_t port = Network::kDefaultPort;
         auto endBracketIndex = address.find(']');
         auto colonIndex = address.find_last_of(':');
         if (colonIndex != std::string::npos)

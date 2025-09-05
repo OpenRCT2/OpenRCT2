@@ -32,9 +32,9 @@ namespace OpenRCT2::GameActions
 
 namespace OpenRCT2::Network
 {
-    constexpr uint16_t kNetworkDefaultPort = 11753;
-    constexpr uint16_t kNetworkLanBroadcastPort = 11754;
-    constexpr const char* kNetworkLanBroadcastMsg = "openrct2.server.query";
+    constexpr uint16_t kDefaultPort = 11753;
+    constexpr uint16_t kLanBroadcastPort = 11754;
+    constexpr const char* kLanBroadcastMsg = "openrct2.server.query";
     constexpr const char* kMasterServerURL = "https://servers.openrct2.io";
     constexpr uint16_t kMaxServerDescriptionLength = 256;
 

@@ -62,7 +62,7 @@ static exitcode_t HandleUriJoin(const std::vector<std::string>& args)
 {
     std::string hostname;
     int32_t port;
-    if (args.size() > 1 && TryParseHostnamePort(args[1], &hostname, &port, Network::kNetworkDefaultPort))
+    if (args.size() > 1 && TryParseHostnamePort(args[1], &hostname, &port, Network::kDefaultPort))
     {
         // Set the network start configuration
         gNetworkStart = Network::Mode::client;
