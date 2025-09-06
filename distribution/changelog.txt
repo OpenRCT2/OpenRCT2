@@ -1,4 +1,4 @@
-0.4.26 (in development)
+0.4.26 (2025-09-06)
 ------------------------------------------------------------------------
 - Feature: [#24949] Add an option to the command line screenshot function to draw debug bounding boxes.
 - Improved: [#9890, #18714] Rides using block-sectioned operating modes can now enter simulating mode without having to complete the circuit first.
@@ -131,7 +131,7 @@
 - Fix: [#24343] Large gently sloped turns are buildable without cheats when the vehicles do not have sprites for them.
 - Fix: [#24346] Possible crash during line drawing in OpenGL mode.
 - Fix: [#24353] ‘Show dirty visuals’ is off by one pixel and does not work correctly with higher framerates.
-- Fix: [#24362] When upgrading from an older version on Windows, old versions of official objects are not always removed.  
+- Fix: [#24362] When upgrading from an older version on Windows, old versions of official objects are not always removed.
 - Fix: [#24366] Zero G Rolls have some incorrect vehicle yaw rotations.
 - Fix: [#24371] Fix divide by zero in the scenery window when there is no scenery.
 - Fix: [#24378] Prevent ride and stall statistics from overflowing.
