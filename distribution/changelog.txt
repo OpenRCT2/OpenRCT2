@@ -1,3 +1,6 @@
+0.4.27 (in development)
+------------------------------------------------------------------------
+
 0.4.26 (2025-09-06)
 ------------------------------------------------------------------------
 - Feature: [#24949] Add an option to the command line screenshot function to draw debug bounding boxes.
