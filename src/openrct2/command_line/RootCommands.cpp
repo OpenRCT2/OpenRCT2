@@ -40,9 +40,9 @@ using namespace OpenRCT2;
 #endif // USE_BREAKPAD
 
 #ifndef DISABLE_NETWORK
-int32_t gNetworkStart = NETWORK_MODE_NONE;
+Network::Mode gNetworkStart = Network::Mode::none;
 std::string gNetworkStartHost;
-int32_t gNetworkStartPort = kNetworkDefaultPort;
+int32_t gNetworkStartPort = Network::kDefaultPort;
 std::string gNetworkStartAddress;
 
 static uint32_t _port = 0;
@@ -304,7 +304,7 @@ exitcode_t HandleCommandHost(CommandLineArgEnumerator* enumerator)
     gOpenRCT2StartupAction = StartupAction::Open;
     String::set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
 
-    gNetworkStart = NETWORK_MODE_SERVER;
+    gNetworkStart = Network::Mode::server;
     gNetworkStartPort = _port;
     gNetworkStartAddress = String::toStd(_address);
 
@@ -326,7 +326,7 @@ exitcode_t HandleCommandJoin(CommandLineArgEnumerator* enumerator)
         return EXITCODE_FAIL;
     }
 
-    gNetworkStart = NETWORK_MODE_CLIENT;
+    gNetworkStart = Network::Mode::client;
     gNetworkStartPort = _port;
     gNetworkStartHost = hostname;
     return EXITCODE_CONTINUE;
@@ -452,7 +452,7 @@ static void PrintVersion()
     Console::WriteLine(versionInfo.c_str());
     Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
     Console::WriteLine();
-    Console::WriteFormat("Network version: %s", NetworkGetVersion().c_str());
+    Console::WriteFormat("Network version: %s", Network::GetVersion().c_str());
     Console::WriteLine();
 #ifdef ENABLE_SCRIPTING
     Console::WriteFormat("Plugin API version: %d", OpenRCT2::Scripting::kPluginApiVersion);

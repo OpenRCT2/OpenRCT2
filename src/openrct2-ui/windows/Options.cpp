@@ -1885,7 +1885,7 @@ namespace OpenRCT2::Ui::Windows
                     Config::Get().general.AllowEarlyCompletion ^= 1;
                     // Only the server can control this setting and needs to send the
                     // current value of allow_early_completion to all clients
-                    if (NetworkGetMode() == NETWORK_MODE_SERVER)
+                    if (Network::GetMode() == Network::Mode::server)
                     {
                         auto setAllowEarlyCompletionAction = GameActions::ScenarioSetSettingAction(
                             GameActions::ScenarioSetSetting::AllowEarlyCompletion, Config::Get().general.AllowEarlyCompletion);
@@ -2011,7 +2011,7 @@ namespace OpenRCT2::Ui::Windows
 
             // The real name setting of clients is fixed to that of the server
             // and the server cannot change the setting during gameplay to prevent desyncs
-            if (NetworkGetMode() != NETWORK_MODE_NONE)
+            if (Network::GetMode() != Network::Mode::none)
             {
                 disabled_widgets |= (1uLL << WIDX_REAL_NAMES_GUESTS_CHECKBOX) | (1uLL << WIDX_REAL_NAMES_STAFF_CHECKBOX);
                 widgets[WIDX_REAL_NAMES_GUESTS_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
@@ -2020,7 +2020,7 @@ namespace OpenRCT2::Ui::Windows
                 // Disable the use of the allow_early_completion option during network play on clients.
                 // This is to prevent confusion on clients because changing this setting during network play wouldn't change
                 // the way scenarios are completed during this network-session
-                if (NetworkGetMode() == NETWORK_MODE_CLIENT)
+                if (Network::GetMode() == Network::Mode::client)
                 {
                     disabled_widgets |= (1uLL << WIDX_ALLOW_EARLY_COMPLETION);
                     widgets[WIDX_ALLOW_EARLY_COMPLETION].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;

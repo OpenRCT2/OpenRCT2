@@ -280,7 +280,7 @@ namespace OpenRCT2::Ui::Windows
 
         void UpdateViewport(bool scroll)
         {
-            int32_t playerIndex = NetworkGetPlayerIndex(static_cast<uint8_t>(number));
+            int32_t playerIndex = Network::GetPlayerIndex(static_cast<uint8_t>(number));
             if (playerIndex == -1)
             {
                 return;
@@ -288,7 +288,7 @@ namespace OpenRCT2::Ui::Windows
 
             if (viewport != nullptr)
             {
-                auto coord = NetworkGetPlayerLastActionCoord(playerIndex);
+                auto coord = Network::GetPlayerLastActionCoord(playerIndex);
                 if (coord.x != 0 || coord.y != 0 || coord.z != 0)
                 {
                     auto centreLoc = centre_2d_coordinates(coord, viewport);
@@ -327,10 +327,10 @@ namespace OpenRCT2::Ui::Windows
         void UpdateTitle()
         {
             auto ft = Formatter::Common();
-            int32_t player = NetworkGetPlayerIndex(static_cast<uint8_t>(number));
+            int32_t player = Network::GetPlayerIndex(static_cast<uint8_t>(number));
             if (player != -1)
             {
-                ft.Add<const char*>(NetworkGetPlayerName(player)); // set title caption to player name
+                ft.Add<const char*>(Network::GetPlayerName(player)); // set title caption to player name
             }
             else
             {
@@ -350,7 +350,7 @@ namespace OpenRCT2::Ui::Windows
             frame_no++;
             InvalidateWidget(WIDX_TAB_1 + page);
 
-            if (NetworkGetPlayerIndex(static_cast<uint8_t>(number)) == -1)
+            if (Network::GetPlayerIndex(static_cast<uint8_t>(number)) == -1)
             {
                 Close();
                 return;
@@ -370,7 +370,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDrawOverview()
         {
-            int32_t playerIndex = NetworkGetPlayerIndex(static_cast<uint8_t>(number));
+            int32_t playerIndex = Network::GetPlayerIndex(static_cast<uint8_t>(number));
             if (playerIndex == -1)
             {
                 return;
@@ -407,9 +407,10 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Only enable kick button for other players
-            const bool canKick = NetworkCanPerformAction(NetworkGetCurrentPlayerGroupIndex(), NetworkPermission::KickPlayer);
-            const bool isServer = NetworkGetPlayerFlags(playerIndex) & NETWORK_PLAYER_FLAG_ISSERVER;
-            const bool isOwnWindow = (NetworkGetCurrentPlayerId() == number);
+            const bool canKick = Network::CanPerformAction(
+                Network::GetCurrentPlayerGroupIndex(), Network::Permission::KickPlayer);
+            const bool isServer = Network::GetPlayerFlags(playerIndex) & Network::PlayerFlags::kIsServer;
+            const bool isOwnWindow = (Network::GetCurrentPlayerId() == number);
             widgetSetEnabled(*this, WIDX_KICK, canKick && !isOwnWindow && !isServer);
         }
 
@@ -418,21 +419,21 @@ namespace OpenRCT2::Ui::Windows
             DrawWidgets(rt);
             DrawTabImages(rt);
 
-            int32_t player = NetworkGetPlayerIndex(static_cast<uint8_t>(number));
+            int32_t player = Network::GetPlayerIndex(static_cast<uint8_t>(number));
             if (player == -1)
             {
                 return;
             }
 
             // Draw current group
-            int32_t groupindex = NetworkGetGroupIndex(NetworkGetPlayerGroup(player));
+            int32_t groupindex = Network::GetGroupIndex(Network::GetPlayerGroup(player));
             if (groupindex != -1)
             {
                 Widget* widget = &widgets[WIDX_GROUP];
 
                 thread_local std::string _buffer;
                 _buffer.assign("{WINDOW_COLOUR_2}");
-                _buffer += NetworkGetGroupName(groupindex);
+                _buffer += Network::GetGroupName(groupindex);
                 auto ft = Formatter();
                 ft.Add<const char*>(_buffer.c_str());
 
@@ -448,17 +449,17 @@ namespace OpenRCT2::Ui::Windows
             ft.Add<StringId>(STR_PING);
             DrawTextBasic(rt, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
             char ping[64];
-            snprintf(ping, 64, "%d ms", NetworkGetPlayerPing(player));
+            snprintf(ping, 64, "%d ms", Network::GetPlayerPing(player));
             DrawText(rt, screenCoords + ScreenCoordsXY(30, 0), { colours[2] }, ping);
 
             // Draw last action
             screenCoords = windowPos + ScreenCoordsXY{ width / 2, height - 13 };
             int32_t updatedWidth = this->width - 8;
-            int32_t lastaction = NetworkGetPlayerLastAction(player, 0);
+            int32_t lastaction = Network::GetPlayerLastAction(player, 0);
             ft = Formatter();
             if (lastaction != -999)
             {
-                ft.Add<StringId>(NetworkGetActionNameStringID(lastaction));
+                ft.Add<StringId>(Network::GetActionNameStringID(lastaction));
             }
             else
             {
@@ -492,12 +493,12 @@ namespace OpenRCT2::Ui::Windows
                     WindowBase* mainWindow = WindowGetMain();
                     if (mainWindow != nullptr)
                     {
-                        int32_t player = NetworkGetPlayerIndex(static_cast<uint8_t>(number));
+                        int32_t player = Network::GetPlayerIndex(static_cast<uint8_t>(number));
                         if (player == -1)
                         {
                             return;
                         }
-                        auto coord = NetworkGetPlayerLastActionCoord(player);
+                        auto coord = Network::GetPlayerLastActionCoord(player);
                         if (coord.x || coord.y || coord.z)
                         {
                             WindowScrollToLocation(*mainWindow, coord);
@@ -517,7 +518,7 @@ namespace OpenRCT2::Ui::Windows
         void OnDropdownOverview(WidgetIndex widgetIndex, int32_t dropdownIndex)
         {
             const auto playerId = static_cast<uint8_t>(number);
-            const auto playerIdx = NetworkGetPlayerIndex(playerId);
+            const auto playerIdx = Network::GetPlayerIndex(playerId);
             if (playerIdx == -1)
             {
                 return;
@@ -526,7 +527,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 return;
             }
-            const auto groupId = NetworkGetGroupID(dropdownIndex);
+            const auto groupId = Network::GetGroupID(dropdownIndex);
             const auto windowHandle = std::make_pair(classification, number);
             auto playerSetGroupAction = GameActions::PlayerSetGroupAction(playerId, groupId);
             playerSetGroupAction.SetCallback(
@@ -544,7 +545,7 @@ namespace OpenRCT2::Ui::Windows
         {
             Widget* dropdownWidget;
             int32_t numItems, i;
-            int32_t player = NetworkGetPlayerIndex(static_cast<uint8_t>(number));
+            int32_t player = Network::GetPlayerIndex(static_cast<uint8_t>(number));
             if (player == -1)
             {
                 return;
@@ -552,18 +553,18 @@ namespace OpenRCT2::Ui::Windows
 
             dropdownWidget = widget - 1;
 
-            numItems = NetworkGetNumGroups();
+            numItems = Network::GetNumGroups();
 
             WindowDropdownShowTextCustomWidth(
                 { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                 colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
 
-            for (i = 0; i < NetworkGetNumGroups(); i++)
+            for (i = 0; i < Network::GetNumGroups(); i++)
             {
-                gDropdown.items[i] = Dropdown::MenuLabel(NetworkGetGroupName(i));
+                gDropdown.items[i] = Dropdown::MenuLabel(Network::GetGroupName(i));
             }
 
-            gDropdown.items[NetworkGetGroupIndex(NetworkGetPlayerGroup(player))].setChecked(true);
+            gDropdown.items[Network::GetGroupIndex(Network::GetPlayerGroup(player))].setChecked(true);
         }
 
 #pragma endregion
@@ -580,7 +581,7 @@ namespace OpenRCT2::Ui::Windows
             frame_no++;
             InvalidateWidget(WIDX_TAB_1 + page);
 
-            if (NetworkGetPlayerIndex(static_cast<uint8_t>(number)) == -1)
+            if (Network::GetPlayerIndex(static_cast<uint8_t>(number)) == -1)
             {
                 Close();
             }
@@ -602,7 +603,7 @@ namespace OpenRCT2::Ui::Windows
             DrawWidgets(rt);
             DrawTabImages(rt);
 
-            int32_t player = NetworkGetPlayerIndex(static_cast<uint8_t>(number));
+            int32_t player = Network::GetPlayerIndex(static_cast<uint8_t>(number));
             if (player == -1)
             {
                 return;
@@ -612,13 +613,13 @@ namespace OpenRCT2::Ui::Windows
                 + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
             auto ft = Formatter();
-            ft.Add<uint32_t>(NetworkGetPlayerCommandsRan(player));
+            ft.Add<uint32_t>(Network::GetPlayerCommandsRan(player));
             DrawTextBasic(rt, screenCoords, STR_COMMANDS_RAN, ft);
 
             screenCoords.y += kListRowHeight;
 
             ft = Formatter();
-            ft.Add<uint32_t>(NetworkGetPlayerMoneySpent(player));
+            ft.Add<uint32_t>(Network::GetPlayerMoneySpent(player));
             DrawTextBasic(rt, screenCoords, STR_MONEY_SPENT, ft);
         }
 

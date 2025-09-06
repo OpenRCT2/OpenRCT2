@@ -68,7 +68,7 @@ void MoneyEffect::Create(money64 value, const CoordsXYZ& loc)
     {
         // If game actions return no valid location of the action we can not use the screen
         // coordinates as every client will have different ones.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             LOG_WARNING("Attempted to create money effect without a valid location in multiplayer");
             return;

@@ -607,12 +607,12 @@ ResultWithMessage ScenarioPrepareForSave(GameState_t& gameState)
  */
 bool AllowEarlyCompletion()
 {
-    switch (NetworkGetMode())
+    switch (Network::GetMode())
     {
-        case NETWORK_MODE_CLIENT:
+        case Network::Mode::client:
             return gAllowEarlyCompletionInNetworkPlay;
-        case NETWORK_MODE_NONE:
-        case NETWORK_MODE_SERVER:
+        case Network::Mode::none:
+        case Network::Mode::server:
         default:
             return Config::Get().general.AllowEarlyCompletion;
     }

@@ -588,7 +588,7 @@ void ScriptEngine::RefreshPlugins()
     }
 
     // Turn on hot reload if not already enabled
-    if (!_hotReloadingInitialised && Config::Get().plugin.EnableHotReloading && NetworkGetMode() == NETWORK_MODE_NONE)
+    if (!_hotReloadingInitialised && Config::Get().plugin.EnableHotReloading && Network::GetMode() == Network::Mode::none)
     {
         SetupHotReloading();
     }
@@ -908,8 +908,8 @@ void ScriptEngine::StartTransientPlugins()
 
 bool ScriptEngine::ShouldStartPlugin(const std::shared_ptr<Plugin>& plugin)
 {
-    auto networkMode = NetworkGetMode();
-    if (networkMode == NETWORK_MODE_CLIENT)
+    auto networkMode = Network::GetMode();
+    if (networkMode == Network::Mode::client)
     {
         // Only client plugins and plugins downloaded from server should be started
         const auto& metadata = plugin->GetMetadata();
@@ -1561,9 +1561,9 @@ std::unique_ptr<GameActions::GameAction> ScriptEngine::CreateGameAction(
     duk_pop(ctx);
     auto customAction = std::make_unique<GameActions::CustomAction>(actionid, json, pluginName);
 
-    if (customAction->GetPlayer() == -1 && NetworkGetMode() != NETWORK_MODE_NONE)
+    if (customAction->GetPlayer() == -1 && Network::GetMode() != Network::Mode::none)
     {
-        customAction->SetPlayer(NetworkGetCurrentPlayerId());
+        customAction->SetPlayer(Network::GetCurrentPlayerId());
     }
     return customAction;
 }
@@ -1817,7 +1817,7 @@ std::string OpenRCT2::Scripting::ProcessString(const DukValue& value)
 bool OpenRCT2::Scripting::IsGameStateMutable()
 {
     // Allow single player to alter game state anywhere
-    if (NetworkGetMode() == NETWORK_MODE_NONE)
+    if (Network::GetMode() == Network::Mode::none)
     {
         return true;
     }
@@ -1830,7 +1830,7 @@ bool OpenRCT2::Scripting::IsGameStateMutable()
 void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()
 {
     // Allow single player to alter game state anywhere
-    if (NetworkGetMode() != NETWORK_MODE_NONE)
+    if (Network::GetMode() != Network::Mode::none)
     {
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto& execInfo = scriptEngine.GetExecInfo();

@@ -370,7 +370,7 @@ void GameLoadInit()
     auto& gameState = getGameState();
     windowManager->SetMainView(gameState.savedView, gameState.savedViewZoom, gameState.savedViewRotation);
 
-    if (NetworkGetMode() != NETWORK_MODE_CLIENT)
+    if (Network::GetMode() != Network::Mode::client)
     {
         GameActions::ClearQueue();
     }

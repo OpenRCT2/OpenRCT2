@@ -279,7 +279,7 @@ namespace OpenRCT2::Ui::Windows
                     OpenAllRides();
                     break;
                 case WIDX_QUICK_DEMOLISH:
-                    if (NetworkGetMode() != NETWORK_MODE_CLIENT)
+                    if (Network::GetMode() != Network::Mode::client)
                     {
                         _quickDemolishMode = !_quickDemolishMode;
                     }
@@ -470,7 +470,7 @@ namespace OpenRCT2::Ui::Windows
 
             // Open ride window
             const auto selectedRideId = _rideList[index].Id;
-            if (_quickDemolishMode && NetworkGetMode() != NETWORK_MODE_CLIENT)
+            if (_quickDemolishMode && Network::GetMode() != Network::Mode::client)
             {
                 auto gameAction = GameActions::RideDemolishAction(selectedRideId, GameActions::RideModifyType::demolish);
                 GameActions::Execute(&gameAction);
@@ -582,8 +582,8 @@ namespace OpenRCT2::Ui::Windows
                 widgets[WIDX_QUICK_DEMOLISH].top = widgets[WIDX_OPEN_CLOSE_ALL].bottom + 3;
             }
             widgets[WIDX_QUICK_DEMOLISH].bottom = widgets[WIDX_QUICK_DEMOLISH].top + 23;
-            widgets[WIDX_QUICK_DEMOLISH].type = NetworkGetMode() != NETWORK_MODE_CLIENT ? WidgetType::flatBtn
-                                                                                        : WidgetType::empty;
+            widgets[WIDX_QUICK_DEMOLISH].type = Network::GetMode() != Network::Mode::client ? WidgetType::flatBtn
+                                                                                            : WidgetType::empty;
         }
 
         /**

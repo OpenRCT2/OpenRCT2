@@ -44,8 +44,8 @@ static int32_t ChatHistoryDrawString(RenderTarget& rt, const char* text, const S
 
 bool ChatAvailable()
 {
-    return NetworkGetMode() != NETWORK_MODE_NONE && NetworkGetStatus() == NETWORK_STATUS_CONNECTED
-        && NetworkGetAuthstatus() == NetworkAuth::Ok;
+    return Network::GetMode() != Network::Mode::none && Network::GetStatus() == Network::Status::connected
+        && Network::GetAuthstatus() == Network::Auth::ok;
 }
 
 void ChatOpen()
@@ -243,7 +243,7 @@ void ChatAddHistory(std::string_view s)
     _chatHistoryTime.push_front(Platform::GetTicks());
 
     // Log to file (src only as logging does its own timestamp)
-    NetworkAppendChatLog(s);
+    Network::AppendChatLog(s);
 
     CreateAudioChannel(SoundId::NewsItem, 0, kMixerVolumeMax, 0.5f, 1.5f, true);
 }
@@ -255,7 +255,7 @@ void ChatInput(enum ChatInput input)
         case ChatInput::Send:
             if (!_chatCurrentLine.empty())
             {
-                NetworkSendChat(_chatCurrentLine.c_str());
+                Network::SendChat(_chatCurrentLine.c_str());
             }
             ChatClearInput();
             ChatClose();

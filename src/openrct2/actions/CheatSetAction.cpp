@@ -279,7 +279,7 @@ namespace OpenRCT2::GameActions
             }
         }
 
-        if (NetworkGetMode() == NETWORK_MODE_NONE)
+        if (Network::GetMode() == Network::Mode::none)
         {
             Config::Save();
         }

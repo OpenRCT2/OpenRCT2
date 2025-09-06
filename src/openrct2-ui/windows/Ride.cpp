@@ -4003,7 +4003,7 @@ namespace OpenRCT2::Ui::Windows
 
             WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
 
-            if (Config::Get().general.DebuggingTools && NetworkGetMode() == NETWORK_MODE_NONE)
+            if (Config::Get().general.DebuggingTools && Network::GetMode() == Network::Mode::none)
             {
                 widgets[WIDX_FORCE_BREAKDOWN].type = WidgetType::flatBtn;
             }

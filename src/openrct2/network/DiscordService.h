@@ -15,19 +15,22 @@
 
     #include <limits>
 
-class DiscordService final
+namespace OpenRCT2::Network
 {
-private:
-    OpenRCT2::Timer _updateTimer;
+    class DiscordService final
+    {
+    private:
+        Timer _updateTimer;
 
-public:
-    DiscordService();
-    ~DiscordService();
+    public:
+        DiscordService();
+        ~DiscordService();
 
-    void Tick();
+        void Tick();
 
-private:
-    void RefreshPresence() const;
-};
+    private:
+        void RefreshPresence() const;
+    };
+} // namespace OpenRCT2::Network
 
 #endif

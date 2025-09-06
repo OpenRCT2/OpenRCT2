@@ -77,8 +77,6 @@ enum
     CURSOR_PRESSED = CURSOR_DOWN | CURSOR_CHANGED,
 };
 
-class NetworkBase;
-
 namespace OpenRCT2
 {
     class AssetPackManager;
@@ -100,6 +98,11 @@ namespace OpenRCT2
     namespace Localisation
     {
         class LocalisationService;
+    }
+
+    namespace Network
+    {
+        class NetworkBase;
     }
 
     namespace Scripting
@@ -142,7 +145,7 @@ namespace OpenRCT2
         virtual Drawing::IDrawingEngine* GetDrawingEngine() = 0;
         virtual Paint::Painter* GetPainter() = 0;
 #ifndef DISABLE_NETWORK
-        virtual NetworkBase& GetNetwork() = 0;
+        virtual Network::NetworkBase& GetNetwork() = 0;
 #endif
 
         virtual IScene* GetPreloaderScene() = 0;

@@ -16,12 +16,12 @@ namespace OpenRCT2::GameActions
     class PlayerSetGroupAction final : public GameActionBase<GameCommand::SetPlayerGroup>
     {
     private:
-        NetworkPlayerId_t _playerId{ -1 };
+        Network::PlayerId_t _playerId{ -1 };
         uint8_t _groupId{ std::numeric_limits<uint8_t>::max() };
 
     public:
         PlayerSetGroupAction() = default;
-        PlayerSetGroupAction(NetworkPlayerId_t playerId, uint8_t groupId);
+        PlayerSetGroupAction(Network::PlayerId_t playerId, uint8_t groupId);
 
         void AcceptParameters(GameActionParameterVisitor&) final;
 

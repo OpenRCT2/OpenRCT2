@@ -19,199 +19,200 @@
 
     #include <vector>
 
-using namespace OpenRCT2;
-
-NetworkKey::NetworkKey() = default;
-NetworkKey::~NetworkKey() = default;
-
-void NetworkKey::Unload()
+namespace OpenRCT2::Network
 {
-    _key = nullptr;
-}
+    Key::Key() = default;
+    Key::~Key() = default;
 
-bool NetworkKey::Generate()
-{
-    try
+    void Key::Unload()
     {
-        _key = Crypt::CreateRSAKey();
-        _key->Generate();
-        return true;
-    }
-    catch (const std::exception& e)
-    {
-        LOG_ERROR("NetworkKey::Generate failed: %s", e.what());
-        return false;
-    }
-}
-
-bool NetworkKey::LoadPrivate(OpenRCT2::IStream* stream)
-{
-    Guard::ArgumentNotNull(stream);
-
-    size_t size = static_cast<size_t>(stream->GetLength());
-    if (size == static_cast<size_t>(-1))
-    {
-        LOG_ERROR("unknown size, refusing to load key");
-        return false;
-    }
-    if (size > 4 * 1024 * 1024)
-    {
-        LOG_ERROR("Key file suspiciously large, refusing to load it");
-        return false;
+        _key = nullptr;
     }
 
-    std::string pem(size, '\0');
-    stream->Read(pem.data(), pem.size());
-
-    try
+    bool Key::Generate()
     {
-        _key = Crypt::CreateRSAKey();
-        _key->SetPrivate(pem);
-        return true;
-    }
-    catch (const std::exception& e)
-    {
-        LOG_ERROR("NetworkKey::LoadPrivate failed: %s", e.what());
-        return false;
-    }
-}
-
-bool NetworkKey::LoadPublic(OpenRCT2::IStream* stream)
-{
-    Guard::ArgumentNotNull(stream);
-
-    size_t size = static_cast<size_t>(stream->GetLength());
-    if (size == static_cast<size_t>(-1))
-    {
-        LOG_ERROR("unknown size, refusing to load key");
-        return false;
-    }
-    if (size > 4 * 1024 * 1024)
-    {
-        LOG_ERROR("Key file suspiciously large, refusing to load it");
-        return false;
+        try
+        {
+            _key = Crypt::CreateRSAKey();
+            _key->Generate();
+            return true;
+        }
+        catch (const std::exception& e)
+        {
+            LOG_ERROR("Network::Key::Generate failed: %s", e.what());
+            return false;
+        }
     }
 
-    std::string pem(size, '\0');
-    stream->Read(pem.data(), pem.size());
-
-    try
+    bool Key::LoadPrivate(IStream* stream)
     {
-        _key = Crypt::CreateRSAKey();
-        _key->SetPublic(pem);
-        return true;
-    }
-    catch (const std::exception& e)
-    {
-        LOG_ERROR("NetworkKey::LoadPublic failed: %s", e.what());
-        return false;
-    }
-}
+        Guard::ArgumentNotNull(stream);
 
-bool NetworkKey::SavePrivate(OpenRCT2::IStream* stream)
-{
-    try
+        size_t size = static_cast<size_t>(stream->GetLength());
+        if (size == static_cast<size_t>(-1))
+        {
+            LOG_ERROR("unknown size, refusing to load key");
+            return false;
+        }
+        if (size > 4 * 1024 * 1024)
+        {
+            LOG_ERROR("Key file suspiciously large, refusing to load it");
+            return false;
+        }
+
+        std::string pem(size, '\0');
+        stream->Read(pem.data(), pem.size());
+
+        try
+        {
+            _key = Crypt::CreateRSAKey();
+            _key->SetPrivate(pem);
+            return true;
+        }
+        catch (const std::exception& e)
+        {
+            LOG_ERROR("Network::Key::LoadPrivate failed: %s", e.what());
+            return false;
+        }
+    }
+
+    bool Key::LoadPublic(IStream* stream)
+    {
+        Guard::ArgumentNotNull(stream);
+
+        size_t size = static_cast<size_t>(stream->GetLength());
+        if (size == static_cast<size_t>(-1))
+        {
+            LOG_ERROR("unknown size, refusing to load key");
+            return false;
+        }
+        if (size > 4 * 1024 * 1024)
+        {
+            LOG_ERROR("Key file suspiciously large, refusing to load it");
+            return false;
+        }
+
+        std::string pem(size, '\0');
+        stream->Read(pem.data(), pem.size());
+
+        try
+        {
+            _key = Crypt::CreateRSAKey();
+            _key->SetPublic(pem);
+            return true;
+        }
+        catch (const std::exception& e)
+        {
+            LOG_ERROR("Network::Key::LoadPublic failed: %s", e.what());
+            return false;
+        }
+    }
+
+    bool Key::SavePrivate(IStream* stream)
+    {
+        try
+        {
+            if (_key == nullptr)
+            {
+                throw std::runtime_error("No key loaded");
+            }
+            auto pem = _key->GetPrivate();
+            stream->Write(pem.data(), pem.size());
+            return true;
+        }
+        catch (const std::exception& e)
+        {
+            LOG_ERROR("Network::Key::SavePrivate failed: %s", e.what());
+            return false;
+        }
+    }
+
+    bool Key::SavePublic(IStream* stream)
+    {
+        try
+        {
+            if (_key == nullptr)
+            {
+                throw std::runtime_error("No key loaded");
+            }
+            auto pem = _key->GetPublic();
+            stream->Write(pem.data(), pem.size());
+            return true;
+        }
+        catch (const std::exception& e)
+        {
+            LOG_ERROR("Network::Key::SavePublic failed: %s", e.what());
+            return false;
+        }
+    }
+
+    std::string Key::PublicKeyString()
     {
         if (_key == nullptr)
         {
             throw std::runtime_error("No key loaded");
         }
-        auto pem = _key->GetPrivate();
-        stream->Write(pem.data(), pem.size());
-        return true;
+        return _key->GetPublic();
     }
-    catch (const std::exception& e)
-    {
-        LOG_ERROR("NetworkKey::SavePrivate failed: %s", e.what());
-        return false;
-    }
-}
 
-bool NetworkKey::SavePublic(OpenRCT2::IStream* stream)
-{
-    try
+    /**
+     * @brief Key::PublicKeyHash
+     * Computes a short, human-readable (e.g. asciif-ied hex) hash for a given
+     * public key. Serves a purpose of easy identification keys in multiplayer
+     * overview, multiplayer settings.
+     *
+     * In particular, any of digest functions applied to a standardised key
+     * representation, like PEM, will be sufficient.
+     *
+     * @return returns a string containing key hash.
+     */
+    std::string Key::PublicKeyHash()
     {
-        if (_key == nullptr)
+        try
         {
-            throw std::runtime_error("No key loaded");
+            std::string key = PublicKeyString();
+            if (key.empty())
+            {
+                throw std::runtime_error("No key found");
+            }
+            auto hash = Crypt::SHA1(key.c_str(), key.size());
+            return String::StringFromHex(hash);
         }
-        auto pem = _key->GetPublic();
-        stream->Write(pem.data(), pem.size());
-        return true;
-    }
-    catch (const std::exception& e)
-    {
-        LOG_ERROR("NetworkKey::SavePublic failed: %s", e.what());
-        return false;
-    }
-}
-
-std::string NetworkKey::PublicKeyString()
-{
-    if (_key == nullptr)
-    {
-        throw std::runtime_error("No key loaded");
-    }
-    return _key->GetPublic();
-}
-
-/**
- * @brief NetworkKey::PublicKeyHash
- * Computes a short, human-readable (e.g. asciif-ied hex) hash for a given
- * public key. Serves a purpose of easy identification keys in multiplayer
- * overview, multiplayer settings.
- *
- * In particular, any of digest functions applied to a standardised key
- * representation, like PEM, will be sufficient.
- *
- * @return returns a string containing key hash.
- */
-std::string NetworkKey::PublicKeyHash()
-{
-    try
-    {
-        std::string key = PublicKeyString();
-        if (key.empty())
+        catch (const std::exception& e)
         {
-            throw std::runtime_error("No key found");
+            LOG_ERROR("Failed to create hash of public key: %s", e.what());
         }
-        auto hash = Crypt::SHA1(key.c_str(), key.size());
-        return String::StringFromHex(hash);
+        return nullptr;
     }
-    catch (const std::exception& e)
-    {
-        LOG_ERROR("Failed to create hash of public key: %s", e.what());
-    }
-    return nullptr;
-}
 
-bool NetworkKey::Sign(const uint8_t* md, const size_t len, std::vector<uint8_t>& signature) const
-{
-    try
+    bool Key::Sign(const uint8_t* md, const size_t len, std::vector<uint8_t>& signature) const
     {
-        auto rsa = Crypt::CreateRSA();
-        signature = rsa->SignData(*_key, md, len);
-        return true;
+        try
+        {
+            auto rsa = Crypt::CreateRSA();
+            signature = rsa->SignData(*_key, md, len);
+            return true;
+        }
+        catch (const std::exception& e)
+        {
+            LOG_ERROR("Network::Key::Sign failed: %s", e.what());
+            return false;
+        }
     }
-    catch (const std::exception& e)
-    {
-        LOG_ERROR("NetworkKey::Sign failed: %s", e.what());
-        return false;
-    }
-}
 
-bool NetworkKey::Verify(const uint8_t* md, const size_t len, const std::vector<uint8_t>& signature) const
-{
-    try
+    bool Key::Verify(const uint8_t* md, const size_t len, const std::vector<uint8_t>& signature) const
     {
-        auto rsa = Crypt::CreateRSA();
-        return rsa->VerifyData(*_key, md, len, signature.data(), signature.size());
+        try
+        {
+            auto rsa = Crypt::CreateRSA();
+            return rsa->VerifyData(*_key, md, len, signature.data(), signature.size());
+        }
+        catch (const std::exception& e)
+        {
+            LOG_ERROR("Network::Key::Verify failed: %s", e.what());
+            return false;
+        }
     }
-    catch (const std::exception& e)
-    {
-        LOG_ERROR("NetworkKey::Verify failed: %s", e.what());
-        return false;
-    }
-}
+} // namespace OpenRCT2::Network
 
 #endif // DISABLE_NETWORK

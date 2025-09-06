@@ -51,7 +51,12 @@ extern u8string gSilentRecordingName;
 extern bool gSilentReplays;
 
 #ifndef DISABLE_NETWORK
-extern int32_t gNetworkStart;
+namespace OpenRCT2::Network
+{
+    enum class Mode : int32_t;
+}
+
+extern OpenRCT2::Network::Mode gNetworkStart;
 extern std::string gNetworkStartHost;
 extern int32_t gNetworkStartPort;
 extern std::string gNetworkStartAddress;

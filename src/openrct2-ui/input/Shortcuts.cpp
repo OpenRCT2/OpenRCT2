@@ -351,7 +351,7 @@ static void ShortcutReduceGameSpeed()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (NetworkGetMode() == NETWORK_MODE_NONE)
+    if (Network::GetMode() == Network::Mode::none)
         GameReduceGameSpeed();
 }
 
@@ -360,7 +360,7 @@ static void ShortcutIncreaseGameSpeed()
     if (gLegacyScene == LegacyScene::titleSequence)
         return;
 
-    if (NetworkGetMode() == NETWORK_MODE_NONE)
+    if (Network::GetMode() == Network::Mode::none)
         GameIncreaseGameSpeed();
 }
 
@@ -832,7 +832,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
         }
     });
     RegisterShortcut(ShortcutId::kInterfaceMultiplayerShow, STR_SHORTCUT_SHOW_MULTIPLAYER, []() {
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             OpenWindow(WindowClass::Multiplayer);
         }

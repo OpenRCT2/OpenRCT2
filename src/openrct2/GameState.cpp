@@ -121,12 +121,12 @@ namespace OpenRCT2
             }
         }
 
-        NetworkUpdate();
+        Network::Update();
 
-        if (NetworkGetMode() == NETWORK_MODE_CLIENT && NetworkGetStatus() == NETWORK_STATUS_CONNECTED
-            && NetworkGetAuthstatus() == NetworkAuth::Ok)
+        if (Network::GetMode() == Network::Mode::client && Network::GetStatus() == Network::Status::connected
+            && Network::GetAuthstatus() == Network::Auth::ok)
         {
-            numUpdates = std::clamp<uint32_t>(NetworkGetServerTick() - getGameState().currentTicks, 0, 10);
+            numUpdates = std::clamp<uint32_t>(Network::GetServerTick() - getGameState().currentTicks, 0, 10);
         }
         else
         {
@@ -139,10 +139,10 @@ namespace OpenRCT2
         }
 
         bool isPaused = GameIsPaused();
-        if (NetworkGetMode() == NETWORK_MODE_SERVER && Config::Get().network.PauseServerIfNoClients)
+        if (Network::GetMode() == Network::Mode::server && Config::Get().network.PauseServerIfNoClients)
         {
             // If we are headless we always have 1 player (host), pause if no one else is around.
-            if (gOpenRCT2Headless && NetworkGetNumPlayers() == 1)
+            if (gOpenRCT2Headless && Network::GetNumPlayers() == 1)
             {
                 isPaused |= true;
             }
@@ -151,7 +151,7 @@ namespace OpenRCT2
         bool didRunSingleFrame = false;
         if (isPaused)
         {
-            if (gDoSingleUpdate && NetworkGetMode() == NETWORK_MODE_NONE)
+            if (gDoSingleUpdate && Network::GetMode() == Network::Mode::none)
             {
                 didRunSingleFrame = true;
                 PauseToggle();
@@ -163,17 +163,17 @@ namespace OpenRCT2
                 // If the game is paused it will not call UpdateLogic at all.
                 numUpdates = 0;
 
-                if (NetworkGetMode() == NETWORK_MODE_SERVER)
+                if (Network::GetMode() == Network::Mode::server)
                 {
                     // Make sure the client always knows about what tick the host is on.
-                    NetworkSendTick();
+                    Network::SendTick();
                 }
 
                 // Keep updating the money effect even when paused.
                 getGameState().entities.UpdateMoneyEffect();
 
                 // Post-tick network update
-                NetworkProcessPending();
+                Network::ProcessPending();
 
                 // Post-tick game actions.
                 GameActions::ProcessQueue();
@@ -206,7 +206,7 @@ namespace OpenRCT2
                 break;
         }
 
-        NetworkFlush();
+        Network::Flush();
 
         if (!gOpenRCT2Headless)
         {
@@ -251,41 +251,41 @@ namespace OpenRCT2
 
         GetContext()->GetReplayManager()->Update();
 
-        NetworkUpdate();
+        Network::Update();
 
         auto& gameState = getGameState();
 
-        if (NetworkGetMode() == NETWORK_MODE_SERVER)
+        if (Network::GetMode() == Network::Mode::server)
         {
-            if (NetworkGamestateSnapshotsEnabled())
+            if (Network::GamestateSnapshotsEnabled())
             {
                 gameStateCreateStateSnapshot();
             }
 
             // Send current tick out.
-            NetworkSendTick();
+            Network::SendTick();
         }
-        else if (NetworkGetMode() == NETWORK_MODE_CLIENT)
+        else if (Network::GetMode() == Network::Mode::client)
         {
             // Don't run past the server, this condition can happen during map changes.
-            if (NetworkGetServerTick() == gameState.currentTicks)
+            if (Network::GetServerTick() == gameState.currentTicks)
             {
                 gInUpdateCode = false;
                 return;
             }
 
             // Check desync.
-            bool desynced = NetworkCheckDesynchronisation();
+            bool desynced = Network::CheckDesynchronisation();
             if (desynced)
             {
                 // If desync debugging is enabled and we are still connected request the specific game state from server.
-                if (NetworkGamestateSnapshotsEnabled() && NetworkGetStatus() == NETWORK_STATUS_CONNECTED)
+                if (Network::GamestateSnapshotsEnabled() && Network::GetStatus() == Network::Status::connected)
                 {
                     // Create snapshot from this tick so we can compare it later
                     // as we won't pause the game on this event.
                     gameStateCreateStateSnapshot();
 
-                    NetworkRequestGamestateSnapshot();
+                    Network::RequestGamestateSnapshot();
                 }
             }
         }
@@ -343,8 +343,8 @@ namespace OpenRCT2
 
         GameActions::ProcessQueue();
 
-        NetworkProcessPending();
-        NetworkFlush();
+        Network::ProcessPending();
+        Network::Flush();
 
         gameState.currentTicks++;
 

@@ -554,7 +554,7 @@ namespace OpenRCT2::Ui::Windows
                     nullLoc.SetNull();
 
                     GameActions::PeepPickupAction pickupAction{ GameActions::PeepPickupType::Pickup, staff->Id, nullLoc,
-                                                                NetworkGetCurrentPlayerId() };
+                                                                Network::GetCurrentPlayerId() };
                     pickupAction.SetCallback(
                         [staffId = staff->Id](const GameActions::GameAction* ga, const GameActions::Result* result) {
                             if (result->Error != GameActions::Status::Ok)

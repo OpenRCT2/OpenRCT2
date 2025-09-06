@@ -6430,7 +6430,7 @@ static bool PeepShouldWatchRide(TileElement* tileElement)
 {
     // Ghosts are purely this-client-side and should not cause any interaction,
     // as that may lead to a desync.
-    if (NetworkGetMode() != NETWORK_MODE_NONE)
+    if (Network::GetMode() != Network::Mode::none)
     {
         if (tileElement->IsGhost())
             return false;
@@ -6543,7 +6543,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6582,7 +6582,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6609,7 +6609,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6654,7 +6654,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6701,7 +6701,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6727,7 +6727,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6771,7 +6771,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6817,7 +6817,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             if (tileElement->IsGhost())
                 continue;
@@ -6843,7 +6843,7 @@ static bool GuestFindRideToLookAt(Guest& guest, uint8_t edge, RideId* rideToView
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (NetworkGetMode() != NETWORK_MODE_NONE)
+        if (Network::GetMode() != Network::Mode::none)
         {
             if (tileElement->IsGhost())
                 continue;

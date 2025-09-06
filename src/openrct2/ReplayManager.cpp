@@ -249,7 +249,7 @@ namespace OpenRCT2
             auto replayData = std::make_unique<ReplayRecordData>();
             replayData->magic = kReplayMagic;
             replayData->version = kReplayVersion;
-            replayData->networkId = NetworkGetVersion();
+            replayData->networkId = Network::GetVersion();
             replayData->name = name;
             replayData->tickStart = currentTicks;
             if (maxTicks != k_MaxReplayTicks)
@@ -715,11 +715,11 @@ namespace OpenRCT2
             serialiser << data.networkId;
 #ifndef DISABLE_NETWORK
             // NOTE: This does not mean the replay will not function, only a warning.
-            if (data.networkId != NetworkGetVersion())
+            if (data.networkId != Network::GetVersion())
             {
                 LOG_WARNING(
                     "Replay network version mismatch: '%s', expected: '%s'", data.networkId.c_str(),
-                    NetworkGetVersion().c_str());
+                    Network::GetVersion().c_str());
             }
 #endif
 
