@@ -56,7 +56,7 @@ static void PaintFerrisWheelRiders(
         if (peep == nullptr || peep->State != PeepState::OnRide)
             continue;
 
-        auto frameNum = (vehicle.Pitch + i * 4) % 128;
+        auto frameNum = (vehicle.pitch + i * 4) % 128;
         auto imageIndex = rideEntry.Cars[0].base_image_id + 32 + direction * 128 + frameNum;
         auto imageId = ImageId(imageIndex, vehicle.peep_tshirt_colours[i], vehicle.peep_tshirt_colours[i + 1]);
         PaintAddImageAsChild(session, imageId, offset, bb);
@@ -88,7 +88,7 @@ static void PaintFerrisWheelStructure(
         wheelImageTemplate = stationColour;
     }
 
-    auto imageOffset = vehicle != nullptr ? vehicle->Pitch % 8 : 0;
+    auto imageOffset = vehicle != nullptr ? vehicle->pitch % 8 : 0;
     auto leftSupportImageId = supportsImageTemplate.WithIndex(22150 + (direction & 1) * 2);
     auto wheelImageId = wheelImageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + direction * 8 + imageOffset);
     auto rightSupportImageId = leftSupportImageId.WithIndexOffset(1);

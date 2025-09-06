@@ -41,16 +41,16 @@ constexpr uint8_t NumVehiclePitches = 60;
 // Size: 0x09
 struct VehicleInfo
 {
-    int16_t x;             // 0x00
-    int16_t y;             // 0x02
-    int16_t z;             // 0x04
-    uint8_t direction;     // 0x06
-    uint8_t Pitch;         // 0x07
-    uint8_t bank_rotation; // 0x08
+    int16_t x;         // 0x00
+    int16_t y;         // 0x02
+    int16_t z;         // 0x04
+    uint8_t direction; // 0x06
+    uint8_t pitch;     // 0x07
+    uint8_t roll;      // 0x08
 
     bool IsInvalid() const
     {
-        return x == 0 && y == 0 && z == 0 && direction == 0 && Pitch == 0 && bank_rotation == 0;
+        return x == 0 && y == 0 && z == 0 && direction == 0 && pitch == 0 && roll == 0;
     }
 };
 
@@ -107,8 +107,8 @@ struct Vehicle : EntityBase
     };
 
     Type SubType;
-    uint8_t Pitch;
-    uint8_t bank_rotation;
+    uint8_t pitch;
+    uint8_t roll;
     int32_t remaining_distance;
     int32_t velocity;
     int32_t acceleration;

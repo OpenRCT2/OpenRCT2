@@ -135,8 +135,8 @@ static void PaintTopSpinVehicle(
         session.InteractionType = ViewportInteractionItem::Entity;
         session.CurrentlyDrawnEntity = vehicle;
 
-        armRotation = vehicle->Pitch;
-        seatRotation = vehicle->bank_rotation;
+        armRotation = vehicle->pitch;
+        seatRotation = vehicle->roll;
     }
 
     int32_t armImageOffset = armRotation;

@@ -44,7 +44,7 @@ static void PaintHauntedHouseStructure(
     {
         session.InteractionType = ViewportInteractionItem::Entity;
         session.CurrentlyDrawnEntity = vehicle;
-        frameNum = vehicle->Pitch;
+        frameNum = vehicle->pitch;
     }
 
     const auto& boundBox = kHauntedHouseData[part];

@@ -65,7 +65,7 @@ static void PaintMotionSimulatorVehicle(
         }
         else
         {
-            imageIndex += vehicle->Pitch * 4;
+            imageIndex += vehicle->pitch * 4;
         }
     }
 

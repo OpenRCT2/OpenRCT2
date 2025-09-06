@@ -59,8 +59,8 @@ Vehicle* CableLiftSegmentCreate(
     current->animation_frame = 0;
     current->animationState = 0;
     current->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
-    current->Pitch = 0;
-    current->bank_rotation = 0;
+    current->pitch = 0;
+    current->roll = 0;
     for (auto& peep : current->peep)
     {
         peep = EntityId::GetNull();
@@ -289,12 +289,12 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
         _vehicleCurPosition.z = nextVehiclePosition.z;
 
         Orientation = moveInfo->direction;
-        bank_rotation = moveInfo->bank_rotation;
-        Pitch = moveInfo->Pitch;
+        roll = moveInfo->roll;
+        pitch = moveInfo->pitch;
 
         if (remaining_distance >= 13962)
         {
-            acceleration += AccelerationFromPitch[Pitch];
+            acceleration += AccelerationFromPitch[pitch];
         }
     }
     return true;
@@ -358,12 +358,12 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
         _vehicleCurPosition.z = unk.z;
 
         Orientation = moveInfo->direction;
-        bank_rotation = moveInfo->bank_rotation;
-        Pitch = moveInfo->Pitch;
+        roll = moveInfo->roll;
+        pitch = moveInfo->pitch;
 
         if (remaining_distance < 0)
         {
-            acceleration += AccelerationFromPitch[Pitch];
+            acceleration += AccelerationFromPitch[pitch];
         }
     }
     return true;
@@ -394,7 +394,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
 
     for (Vehicle* vehicle = frontVehicle; vehicle != nullptr;)
     {
-        vehicle->acceleration = AccelerationFromPitch[vehicle->Pitch];
+        vehicle->acceleration = AccelerationFromPitch[vehicle->pitch];
         _vehicleUnkF64E10 = 1;
         vehicle->remaining_distance += _vehicleVelocityF64E0C;
 
@@ -415,7 +415,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                     _vehicleVelocityF64E0C -= vehicle->remaining_distance - 13962;
                     vehicle->remaining_distance = 13962;
-                    vehicle->acceleration += AccelerationFromPitch[vehicle->Pitch];
+                    vehicle->acceleration += AccelerationFromPitch[vehicle->pitch];
                     _vehicleUnkF64E10++;
                     continue;
                 }
@@ -428,7 +428,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
                 vehicle->remaining_distance = -1;
-                vehicle->acceleration += AccelerationFromPitch[vehicle->Pitch];
+                vehicle->acceleration += AccelerationFromPitch[vehicle->pitch];
                 _vehicleUnkF64E10++;
             }
             vehicle->MoveTo(_vehicleCurPosition);

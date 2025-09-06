@@ -88,7 +88,7 @@ static void PaintSwingingInverterShipStructure(
     ImageIndex vehicleImageIndex = rideEntry->Cars[0].base_image_id + kSwingingInverterShipBaseSpriteOffset[direction];
     if (vehicle != nullptr)
     {
-        int32_t rotation = static_cast<int8_t>(vehicle->Pitch);
+        int32_t rotation = static_cast<int8_t>(vehicle->pitch);
         if (rotation != 0)
         {
             vehicleImageIndex = rideEntry->Cars[0].base_image_id + kSwingingInverterShipAnimatingBaseSpriteOffset[direction];

@@ -192,7 +192,7 @@ static void PaintMagicCarpetStructure(
     auto* vehicle = GetFirstVehicle(ride);
     if (vehicle != nullptr)
     {
-        swing = vehicle->Pitch;
+        swing = vehicle->pitch;
         session.InteractionType = ViewportInteractionItem::Entity;
         session.CurrentlyDrawnEntity = vehicle;
     }

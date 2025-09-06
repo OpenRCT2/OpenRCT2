@@ -599,8 +599,8 @@ void Vehicle::UpdateTrackChange()
     _vehicleCurPosition = TrackLocation
         + CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z + GetRideTypeDescriptor((*curRide).type).Heights.VehicleZOffset };
     Orientation = moveInfo->direction;
-    bank_rotation = moveInfo->bank_rotation;
-    Pitch = moveInfo->Pitch;
+    roll = moveInfo->roll;
+    pitch = moveInfo->pitch;
     MoveTo(_vehicleCurPosition);
 }
 
@@ -1176,12 +1176,12 @@ void Vehicle::UpdateMeasurements()
 
         curRide->increaseNumShelteredSections();
 
-        if (Pitch != 0)
+        if (pitch != 0)
         {
             curRide->numShelteredSections |= ShelteredSectionsBits::kRotatingWhileSheltered;
         }
 
-        if (bank_rotation != 0)
+        if (roll != 0)
         {
             curRide->numShelteredSections |= ShelteredSectionsBits::kBankingWhileSheltered;
         }
@@ -1274,7 +1274,7 @@ void Vehicle::Update()
         auto carEntry = &rideEntry->Cars[vehicle_type];
         if ((carEntry->flags & CAR_ENTRY_FLAG_POWERED) && curRide->breakdownReasonPending == BREAKDOWN_SAFETY_CUT_OUT)
         {
-            if (!(carEntry->flags & CAR_ENTRY_FLAG_WATER_RIDE) || (Pitch == 2 && velocity <= 2.0_mph))
+            if (!(carEntry->flags & CAR_ENTRY_FLAG_WATER_RIDE) || (pitch == 2 && velocity <= 2.0_mph))
             {
                 SetFlag(VehicleFlags::StoppedOnLift);
             }
@@ -1501,7 +1501,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
 
     if (curRide->mode == RideMode::forwardRotation || curRide->mode == RideMode::backwardRotation)
     {
-        uint8_t seat = ((-Pitch) / 8) & 0xF;
+        uint8_t seat = ((-pitch) / 8) & 0xF;
         if (!peep[seat].IsNull())
         {
             curRide->getStation(current_station).TrainAtStation = RideStation::kNoTrain;
@@ -1791,7 +1791,7 @@ void Vehicle::UpdateWaitingToDepart()
     {
         if (curRide->mode == RideMode::forwardRotation || curRide->mode == RideMode::backwardRotation)
         {
-            uint8_t seat = ((-Pitch) >> 3) & 0xF;
+            uint8_t seat = ((-pitch) >> 3) & 0xF;
             if (peep[seat * 2].IsNull())
             {
                 if (num_peeps == 0)
@@ -1917,13 +1917,13 @@ void Vehicle::UpdateWaitingToDepart()
                 }
             }
             current_time = -1;
-            Pitch = 0;
-            bank_rotation = 0;
+            pitch = 0;
+            roll = 0;
             UpdateTopSpinOperating();
             break;
         case RideMode::forwardRotation:
         case RideMode::backwardRotation:
-            SetState(Vehicle::Status::FerrisWheelRotating, Pitch);
+            SetState(Vehicle::Status::FerrisWheelRotating, pitch);
             NumRotations = 0;
             ferris_wheel_var_0 = 8;
             ferris_wheel_var_1 = 8;
@@ -1960,19 +1960,19 @@ void Vehicle::UpdateWaitingToDepart()
             break;
         case RideMode::spaceRings:
             SetState(Vehicle::Status::SpaceRingsOperating);
-            Pitch = 0;
+            pitch = 0;
             current_time = -1;
             UpdateSpaceRingsOperating();
             break;
         case RideMode::hauntedHouse:
             SetState(Vehicle::Status::HauntedHouseOperating);
-            Pitch = 0;
+            pitch = 0;
             current_time = -1;
             UpdateHauntedHouseOperating();
             break;
         case RideMode::crookedHouse:
             SetState(Vehicle::Status::CrookedHouseOperating);
-            Pitch = 0;
+            pitch = 0;
             current_time = -1;
             UpdateCrookedHouseOperating();
             break;
@@ -2966,9 +2966,9 @@ void Vehicle::UpdateCrashSetup()
         trainVehicle->sub_state = 0;
         int32_t trainX = stru_9A3AC4[trainVehicle->Orientation / 2].x;
         int32_t trainY = stru_9A3AC4[trainVehicle->Orientation / 2].y;
-        auto trainZ = kUnk9A38D4[trainVehicle->Pitch] >> 23;
+        auto trainZ = kUnk9A38D4[trainVehicle->pitch] >> 23;
 
-        int32_t ecx = kUnk9A37E4[trainVehicle->Pitch] >> 15;
+        int32_t ecx = kUnk9A37E4[trainVehicle->pitch] >> 15;
         trainX *= ecx;
         trainY *= ecx;
         trainX >>= 16;
@@ -3425,7 +3425,7 @@ void Vehicle::UpdateUnloadingPassengers()
 
     if (curRide->mode == RideMode::forwardRotation || curRide->mode == RideMode::backwardRotation)
     {
-        uint8_t seat = ((-Pitch) >> 3) & 0xF;
+        uint8_t seat = ((-pitch) >> 3) & 0xF;
         if (restraints_position == 255 && !peep[seat * 2].IsNull())
         {
             next_free_seat -= 2;
@@ -4074,10 +4074,10 @@ void Vehicle::UpdateSwinging()
     if (spriteType != -128)
     {
         current_time++;
-        if (static_cast<uint8_t>(spriteType) != Pitch)
+        if (static_cast<uint8_t>(spriteType) != pitch)
         {
             // Used to know which sprite to draw
-            Pitch = static_cast<uint8_t>(spriteType);
+            pitch = static_cast<uint8_t>(spriteType);
             Invalidate();
         }
         return;
@@ -4152,14 +4152,14 @@ void Vehicle::UpdateFerrisWheelRotating()
         ferris_wheel_var_1 = curFerrisWheelVar0;
     }
 
-    uint8_t rotation = Pitch;
+    uint8_t rotation = pitch;
     if (curRide->mode == RideMode::forwardRotation)
         rotation++;
     else
         rotation--;
 
     rotation &= 0x7F;
-    Pitch = rotation;
+    pitch = rotation;
 
     if (rotation == sub_state)
         NumRotations++;
@@ -4173,7 +4173,7 @@ void Vehicle::UpdateFerrisWheelRotating()
         subState--;
     subState &= 0x7F;
 
-    if (subState == Pitch)
+    if (subState == pitch)
     {
         bool shouldStop = true;
         if (curRide->status != RideStatus::closed)
@@ -4200,7 +4200,7 @@ void Vehicle::UpdateFerrisWheelRotating()
         subState -= 8;
     subState &= 0x7F;
 
-    if (subState != Pitch)
+    if (subState != pitch)
         return;
 
     SetState(Vehicle::Status::Arriving);
@@ -4222,9 +4222,9 @@ void Vehicle::UpdateSimulatorOperating()
     if (al != 0xFF)
     {
         current_time++;
-        if (al == Pitch)
+        if (al == pitch)
             return;
-        Pitch = al;
+        pitch = al;
         Invalidate();
         return;
     }
@@ -4295,9 +4295,9 @@ void Vehicle::UpdateRotating()
     if (sprite != 0xFF)
     {
         current_time = time;
-        if (sprite == Pitch)
+        if (sprite == pitch)
             return;
-        Pitch = sprite;
+        pitch = sprite;
         Invalidate();
         return;
     }
@@ -4348,9 +4348,9 @@ void Vehicle::UpdateSpaceRingsOperating()
     if (spriteType != 255)
     {
         current_time++;
-        if (spriteType != Pitch)
+        if (spriteType != pitch)
         {
-            Pitch = spriteType;
+            pitch = spriteType;
             Invalidate();
         }
     }
@@ -4370,15 +4370,15 @@ void Vehicle::UpdateHauntedHouseOperating()
     if (_vehicleBreakdown == 0)
         return;
 
-    if (Pitch != 0)
+    if (pitch != 0)
     {
         if (getGameState().currentTicks & 1)
         {
-            Pitch++;
+            pitch++;
             Invalidate();
 
-            if (Pitch == 19)
-                Pitch = 0;
+            if (pitch == 19)
+                pitch = 0;
         }
     }
 
@@ -4396,7 +4396,7 @@ void Vehicle::UpdateHauntedHouseOperating()
             OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScare, GetLocation());
             break;
         case 75:
-            Pitch = 1;
+            pitch = 1;
             Invalidate();
             break;
         case 400:
@@ -4406,7 +4406,7 @@ void Vehicle::UpdateHauntedHouseOperating()
             OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::HauntedHouseScare, GetLocation());
             break;
         case 775:
-            Pitch = 1;
+            pitch = 1;
             Invalidate();
             break;
         case 1100:
@@ -4449,15 +4449,15 @@ void Vehicle::UpdateTopSpinOperating()
     if (rotation != 0xFF)
     {
         current_time = current_time + 1;
-        if (rotation != Pitch)
+        if (rotation != pitch)
         {
-            Pitch = rotation;
+            pitch = rotation;
             Invalidate();
         }
         rotation = sprite_map[current_time].bank_rotation;
-        if (rotation != bank_rotation)
+        if (rotation != roll)
         {
-            bank_rotation = rotation;
+            roll = rotation;
             Invalidate();
         }
         return;
@@ -4987,17 +4987,17 @@ OpenRCT2::Audio::SoundId Vehicle::UpdateScreamSound()
         for (Vehicle* vehicle2 = getGameState().entities.GetEntity<Vehicle>(Id); vehicle2 != nullptr;
              vehicle2 = getGameState().entities.GetEntity<Vehicle>(vehicle2->next_vehicle_on_train))
         {
-            if (vehicle2->Pitch < 1)
+            if (vehicle2->pitch < 1)
                 continue;
-            if (vehicle2->Pitch <= 4)
+            if (vehicle2->pitch <= 4)
                 return ProduceScreamSound(totalNumPeeps);
-            if (vehicle2->Pitch < 9)
+            if (vehicle2->pitch < 9)
                 continue;
-            if (vehicle2->Pitch <= 15)
+            if (vehicle2->pitch <= 15)
                 return ProduceScreamSound(totalNumPeeps);
             // Pitch 52 occurs on steep diagonal backward drops.
             // (50 and 51 occur on gentle ones.)
-            if (vehicle2->Pitch == 52)
+            if (vehicle2->pitch == 52)
                 return ProduceScreamSound(totalNumPeeps);
         }
         return OpenRCT2::Audio::SoundId::Null;
@@ -5009,17 +5009,17 @@ OpenRCT2::Audio::SoundId Vehicle::UpdateScreamSound()
     for (Vehicle* vehicle2 = getGameState().entities.GetEntity<Vehicle>(Id); vehicle2 != nullptr;
          vehicle2 = getGameState().entities.GetEntity<Vehicle>(vehicle2->next_vehicle_on_train))
     {
-        if (vehicle2->Pitch < 5)
+        if (vehicle2->pitch < 5)
             continue;
-        if (vehicle2->Pitch <= 8)
+        if (vehicle2->pitch <= 8)
             return ProduceScreamSound(totalNumPeeps);
-        if (vehicle2->Pitch < 17)
+        if (vehicle2->pitch < 17)
             continue;
-        if (vehicle2->Pitch <= 23)
+        if (vehicle2->pitch <= 23)
             return ProduceScreamSound(totalNumPeeps);
         // Pitch 55 occurs on steep diagonal drops.
         // (53 and 54 occur on gentle ones.)
-        if (vehicle2->Pitch == 55)
+        if (vehicle2->pitch == 55)
             return ProduceScreamSound(totalNumPeeps);
     }
     return OpenRCT2::Audio::SoundId::Null;
@@ -5069,8 +5069,8 @@ OpenRCT2::Audio::SoundId Vehicle::ProduceScreamSound(const int32_t totalNumPeeps
  */
 GForces Vehicle::GetGForces() const
 {
-    int32_t gForceVert = ((static_cast<int64_t>(0x280000)) * kUnk9A37E4[Pitch]) >> 32;
-    gForceVert = ((static_cast<int64_t>(gForceVert)) * kUnk9A39C4[bank_rotation]) >> 32;
+    int32_t gForceVert = ((static_cast<int64_t>(0x280000)) * kUnk9A37E4[pitch]) >> 32;
+    gForceVert = ((static_cast<int64_t>(gForceVert)) * kUnk9A39C4[roll]) >> 32;
 
     const auto& ted = GetTrackElementDescriptor(GetTrackType());
     const int32_t vertFactor = ted.verticalFactor(track_progress);
@@ -5419,7 +5419,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
             gForces.LateralG = std::abs(gForces.LateralG);
             if (gForces.LateralG <= 150)
             {
-                if (AccelerationFromPitch[Pitch] < 0)
+                if (AccelerationFromPitch[pitch] < 0)
                 {
                     if (gForces.VerticalG > -40)
                     {
@@ -5432,7 +5432,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
                 }
             }
 
-            if (Pitch != 8)
+            if (pitch != 8)
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
             }
@@ -5445,7 +5445,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
         {
             auto gForces = GetGForces();
 
-            if (AccelerationFromPitch[Pitch] < 0)
+            if (AccelerationFromPitch[pitch] < 0)
             {
                 if (gForces.VerticalG > -45)
                 {
@@ -5460,7 +5460,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
                 }
             }
 
-            if (Pitch != 8 && Pitch != 55)
+            if (pitch != 8 && pitch != 55)
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED;
             }
@@ -6146,7 +6146,7 @@ static void AnimateSteamLocomotive(Vehicle& vehicle, const CarEntry& carEntry)
                     || (vehicle.status != Vehicle::Status::MovingToEndOfStation && vehicle.status != Vehicle::Status::Arriving))
                 {
                     CoordsXYZ steamOffset = ComputeSteamOffset(
-                        carEntry.SteamEffect.Vertical, carEntry.SteamEffect.Longitudinal, vehicle.Pitch, vehicle.Orientation);
+                        carEntry.SteamEffect.Vertical, carEntry.SteamEffect.Longitudinal, vehicle.pitch, vehicle.Orientation);
                     SteamParticle::Create(CoordsXYZ(vehicle.x, vehicle.y, vehicle.z) + steamOffset);
                 }
             }
@@ -7316,12 +7316,12 @@ bool Vehicle::UpdateTrackMotionForwards(const CarEntry* carEntry, const Ride& cu
             remaining_distance -= SubpositionTranslationDistances[remainingDistanceFlags];
             _vehicleCurPosition = nextVehiclePosition;
             Orientation = moveInfo->direction;
-            bank_rotation = moveInfo->bank_rotation;
-            Pitch = moveInfo->Pitch;
+            roll = moveInfo->roll;
+            pitch = moveInfo->pitch;
 
-            moveInfovehicleAnimationGroup = moveInfo->Pitch;
+            moveInfovehicleAnimationGroup = moveInfo->pitch;
 
-            if ((carEntry->flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING) && moveInfo->Pitch != 0)
+            if ((carEntry->flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING) && moveInfo->pitch != 0)
             {
                 SwingSprite = 0;
                 SwingPosition = 0;
@@ -7630,11 +7630,11 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
 
             _vehicleCurPosition = nextVehiclePosition;
             Orientation = moveInfo->direction;
-            bank_rotation = moveInfo->bank_rotation;
-            Pitch = moveInfo->Pitch;
-            moveInfoVehicleAnimationGroup = moveInfo->Pitch;
+            roll = moveInfo->roll;
+            pitch = moveInfo->pitch;
+            moveInfoVehicleAnimationGroup = moveInfo->pitch;
 
-            if ((carEntry->flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING) && Pitch != 0)
+            if ((carEntry->flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING) && pitch != 0)
             {
                 SwingSprite = 0;
                 SwingPosition = 0;
@@ -7714,7 +7714,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             Loc6DCDE4(curRide);
             return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
         }
-        acceleration = AccelerationFromPitch[Pitch];
+        acceleration = AccelerationFromPitch[pitch];
         _vehicleUnkF64E10++;
         return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
     }
@@ -7736,7 +7736,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 Loc6DCDE4(curRide);
                 return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
             }
-            acceleration = AccelerationFromPitch[Pitch];
+            acceleration = AccelerationFromPitch[pitch];
             _vehicleUnkF64E10++;
             return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
         }
@@ -7764,7 +7764,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 Loc6DCDE4(curRide);
                 return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
             }
-            acceleration = AccelerationFromPitch[Pitch];
+            acceleration = AccelerationFromPitch[pitch];
             _vehicleUnkF64E10++;
             return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
         }
@@ -7781,7 +7781,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 Loc6DCDE4(curRide);
                 return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
             }
-            acceleration = AccelerationFromPitch[Pitch];
+            acceleration = AccelerationFromPitch[pitch];
             _vehicleUnkF64E10++;
             return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
         }
@@ -7810,7 +7810,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 Loc6DCDE4(curRide);
                 return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
             }
-            acceleration = AccelerationFromPitch[Pitch];
+            acceleration = AccelerationFromPitch[pitch];
             _vehicleUnkF64E10++;
             return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
         }
@@ -7827,7 +7827,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 Loc6DCDE4(curRide);
                 return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
             }
-            acceleration = AccelerationFromPitch[Pitch];
+            acceleration = AccelerationFromPitch[pitch];
             _vehicleUnkF64E10++;
             return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
         }
@@ -7863,7 +7863,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 Loc6DCDE4(curRide);
                 return Vehicle::UpdateMiniGolfSubroutineStatus::stop;
             }
-            acceleration = AccelerationFromPitch[Pitch];
+            acceleration = AccelerationFromPitch[pitch];
             _vehicleUnkF64E10++;
             return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
         }
@@ -7902,7 +7902,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= remaining_distance + 1;
                 remaining_distance = -1;
-                acceleration += AccelerationFromPitch[Pitch];
+                acceleration += AccelerationFromPitch[pitch];
                 _vehicleUnkF64E10++;
                 return UpdateMiniGolfSubroutineStatus::carryOn;
             }
@@ -7919,7 +7919,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 {
                     Loc6DCDE4(curRide);
                 }
-                acceleration += AccelerationFromPitch[Pitch];
+                acceleration += AccelerationFromPitch[pitch];
                 _vehicleUnkF64E10++;
                 return UpdateMiniGolfSubroutineStatus::carryOn;
             }
@@ -8061,8 +8061,8 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
 
         _vehicleCurPosition = trackPos;
         Orientation = moveInfo->direction;
-        bank_rotation = moveInfo->bank_rotation;
-        Pitch = moveInfo->Pitch;
+        roll = moveInfo->roll;
+        pitch = moveInfo->pitch;
 
         if (this == _vehicleFrontVehicle)
         {
@@ -8077,7 +8077,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             Loc6DCDE4(curRide);
             return UpdateMiniGolfSubroutineStatus::stop;
         }
-        acceleration = AccelerationFromPitch[Pitch];
+        acceleration = AccelerationFromPitch[pitch];
         _vehicleUnkF64E10++;
     }
 }
@@ -8095,7 +8095,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= remaining_distance + 1;
                 remaining_distance = -1;
-                acceleration += AccelerationFromPitch[Pitch];
+                acceleration += AccelerationFromPitch[pitch];
                 _vehicleUnkF64E10++;
                 continue;
             }
@@ -8108,7 +8108,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
                 remaining_distance = 0x368A;
-                acceleration = AccelerationFromPitch[Pitch];
+                acceleration = AccelerationFromPitch[pitch];
                 _vehicleUnkF64E10++;
                 return Vehicle::UpdateMiniGolfSubroutineStatus::restart;
             }
@@ -8151,8 +8151,8 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
 
         _vehicleCurPosition = trackPos;
         Orientation = moveInfo->direction;
-        bank_rotation = moveInfo->bank_rotation;
-        Pitch = moveInfo->Pitch;
+        roll = moveInfo->roll;
+        pitch = moveInfo->pitch;
 
         if (this == _vehicleFrontVehicle)
         {
@@ -8178,7 +8178,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
                         vEBP->velocity = vEDI->velocity >> 1;
                     }
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
-                    acceleration = AccelerationFromPitch[Pitch];
+                    acceleration = AccelerationFromPitch[pitch];
                     _vehicleUnkF64E10++;
                     return UpdateMiniGolfSubroutineStatus::restart;
                 }
@@ -8190,7 +8190,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             Loc6DCDE4(curRide);
             return UpdateMiniGolfSubroutineStatus::stop;
         }
-        acceleration += AccelerationFromPitch[Pitch];
+        acceleration += AccelerationFromPitch[pitch];
         _vehicleUnkF64E10++;
     }
 }
@@ -8204,7 +8204,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
 void Vehicle::UpdateTrackMotionMiniGolfVehicle(const Ride& curRide, const RideObjectEntry& rideEntry, const CarEntry* carEntry)
 {
     _vehicleUnkF64E10 = 1;
-    acceleration = AccelerationFromPitch[Pitch];
+    acceleration = AccelerationFromPitch[pitch];
     if (!HasFlag(VehicleFlags::MoveSingleCar))
     {
         remaining_distance = _vehicleVelocityF64E0C + remaining_distance;
@@ -8485,7 +8485,7 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
             spin_speed = std::clamp(spin_speed, kVehicleMinSpinSpeedWaterRide, kVehicleMaxSpinSpeedWaterRide);
         }
 
-        if (Pitch != 0)
+        if (pitch != 0)
         {
             if (poweredAcceleration < 0)
             {
@@ -8495,7 +8495,7 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
             if (carEntry->flags & CAR_ENTRY_FLAG_SPINNING)
             {
                 // If the vehicle is on the up slope kill the spin speedModifier
-                if (Pitch == 2)
+                if (pitch == 2)
                 {
                     spin_speed = 0;
                 }
@@ -8530,7 +8530,7 @@ void Vehicle::UpdateTrackMotionPreUpdate(
     {
         car.UpdateAdditionalAnimation();
     }
-    car.acceleration = AccelerationFromPitch[car.Pitch];
+    car.acceleration = AccelerationFromPitch[car.pitch];
     _vehicleUnkF64E10 = 1;
 
     if (!car.HasFlag(VehicleFlags::MoveSingleCar))
@@ -8558,7 +8558,7 @@ void Vehicle::UpdateTrackMotionPreUpdate(
             {
                 break;
             }
-            car.acceleration += AccelerationFromPitch[car.Pitch];
+            car.acceleration += AccelerationFromPitch[car.pitch];
             _vehicleUnkF64E10++;
             continue;
         }
@@ -8576,7 +8576,7 @@ void Vehicle::UpdateTrackMotionPreUpdate(
         {
             break;
         }
-        car.acceleration = AccelerationFromPitch[car.Pitch];
+        car.acceleration = AccelerationFromPitch[car.pitch];
         _vehicleUnkF64E10++;
         continue;
     }
@@ -8994,8 +8994,8 @@ void Vehicle::Serialise(DataSerialiser& stream)
 {
     EntityBase::Serialise(stream);
     stream << SubType;
-    stream << Pitch;
-    stream << bank_rotation;
+    stream << pitch;
+    stream << roll;
     stream << remaining_distance;
     stream << velocity;
     stream << acceleration;

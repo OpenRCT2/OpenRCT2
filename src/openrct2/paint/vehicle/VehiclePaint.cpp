@@ -1071,7 +1071,7 @@ static void VehicleSpritePaintRestraints(
 // Returns the opposite of the bank angle for reversed cars, normal bank angle otherwise
 static uint8_t GetPaintBankRotation(const Vehicle* vehicle)
 {
-    return (vehicle->HasFlag(VehicleFlags::CarIsReversed)) ? BankInvertTable[vehicle->bank_rotation] : vehicle->bank_rotation;
+    return (vehicle->HasFlag(VehicleFlags::CarIsReversed)) ? BankInvertTable[vehicle->roll] : vehicle->roll;
 }
 
 #pragma endregion
@@ -4463,7 +4463,7 @@ static void vehicle_visual_splash2_effect(PaintSession& session, const int32_t z
     {
         return;
     }
-    if (vehicle->Pitch != 0)
+    if (vehicle->pitch != 0)
     {
         return;
     }
@@ -4486,7 +4486,7 @@ static void vehicle_visual_splash3_effect(PaintSession& session, const int32_t z
     {
         return;
     }
-    if (vehicle->Pitch != 0)
+    if (vehicle->pitch != 0)
     {
         return;
     }
@@ -4518,7 +4518,7 @@ static void vehicle_visual_splash4_effect(PaintSession& session, const int32_t z
     {
         return;
     }
-    if (vehicle->Pitch != 0)
+    if (vehicle->pitch != 0)
     {
         return;
     }
@@ -4546,7 +4546,7 @@ static void vehicle_visual_splash5_effect(PaintSession& session, const int32_t z
     {
         return;
     }
-    if (vehicle->Pitch != 0)
+    if (vehicle->pitch != 0)
     {
         return;
     }
@@ -4590,18 +4590,18 @@ void VehicleVisualSplashEffect(PaintSession& session, const int32_t z, const Veh
 void VehicleVisualDefault(
     PaintSession& session, int32_t imageDirection, const int32_t z, const Vehicle* vehicle, const CarEntry* carEntry)
 {
-    if (vehicle->Pitch < std::size(PaintFunctionsByPitch))
+    if (vehicle->pitch < std::size(PaintFunctionsByPitch))
     {
         if (vehicle->HasFlag(VehicleFlags::CarIsReversed))
         {
-            auto imagePitch = PitchInvertTable[vehicle->Pitch];
+            auto imagePitch = PitchInvertTable[vehicle->pitch];
             auto imageYaw = (imageDirection + (OpenRCT2::Entity::Yaw::kBaseRotation / 2))
                 & (OpenRCT2::Entity::Yaw::kBaseRotation - 1);
             PaintFunctionsByPitch[imagePitch](session, vehicle, imageYaw, z, carEntry, kBoundBoxIndexUndefined);
         }
         else
         {
-            PaintFunctionsByPitch[vehicle->Pitch](session, vehicle, imageDirection, z, carEntry, kBoundBoxIndexUndefined);
+            PaintFunctionsByPitch[vehicle->pitch](session, vehicle, imageDirection, z, carEntry, kBoundBoxIndexUndefined);
         }
     }
 }

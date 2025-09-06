@@ -392,8 +392,8 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     void CompareSpriteDataVehicle(const Vehicle& spriteBase, const Vehicle& spriteCmp, GameStateSpriteChange& changeData) const
     {
         COMPARE_FIELD(Vehicle, SubType);
-        COMPARE_FIELD(Vehicle, Pitch);
-        COMPARE_FIELD(Vehicle, bank_rotation);
+        COMPARE_FIELD(Vehicle, pitch);
+        COMPARE_FIELD(Vehicle, roll);
         COMPARE_FIELD(Vehicle, remaining_distance);
         COMPARE_FIELD(Vehicle, velocity);
         COMPARE_FIELD(Vehicle, acceleration);

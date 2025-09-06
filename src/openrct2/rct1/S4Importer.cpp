@@ -2834,8 +2834,8 @@ namespace OpenRCT2::RCT1
         dst->NumLaps = src->NumLaps;
         dst->var_D3 = src->VarD3;
         dst->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
-        dst->Pitch = src->Pitch;
-        dst->bank_rotation = src->BankRotation;
+        dst->pitch = src->Pitch;
+        dst->roll = src->BankRotation;
 
         // Seat rotation was not in RCT1
         dst->target_seat_rotation = DEFAULT_SEAT_ROTATION;
