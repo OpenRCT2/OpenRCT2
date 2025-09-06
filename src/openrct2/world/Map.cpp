@@ -1006,11 +1006,6 @@ uint8_t MapGetHighestLandHeight(const MapRange& range)
     return max_height;
 }
 
-bool MapIsLocationAtEdge(const CoordsXY& loc)
-{
-    return loc.x < 32 || loc.y < 32 || loc.x >= (kMaximumTileStartXY) || loc.y >= (kMaximumTileStartXY);
-}
-
 /**
  *
  *  rct2: 0x0068B280
