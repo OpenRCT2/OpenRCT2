@@ -326,6 +326,9 @@ namespace OpenRCT2::Title
                     // TODO: Have a separate GameState and exchange once loaded.
                     auto& gameState = getGameState();
                     parkImporter->Import(gameState);
+
+                    GameFixSaveVars();
+
                     ReportProgress(100);
 
                     MapAnimations::MarkAllTiles();
